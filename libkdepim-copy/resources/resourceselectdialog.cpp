@@ -25,6 +25,7 @@
 #include <qlayout.h>
 
 #include "resourceselectdialog.h"
+#include "resourceselectdialog.moc"
 
 using namespace KPIM;
 
@@ -36,7 +37,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
 
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
   mainLayout->setMargin( marginHint() );
-    
+
   QGroupBox *groupBox = new QGroupBox( 2, Qt::Horizontal,  this );
   groupBox->setTitle( i18n( "Resources" ) );
 
@@ -48,7 +49,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
 
   KButtonBox *buttonBox = new KButtonBox( this );
 
-  buttonBox->addStretch();    
+  buttonBox->addStretch();
   buttonBox->addButton( i18n( "&OK" ), this, SLOT( accept() ) );
   buttonBox->addButton( i18n( "&Cancel" ), this, SLOT( reject() ) );
   buttonBox->layout();
