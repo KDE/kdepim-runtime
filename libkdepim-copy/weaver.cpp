@@ -48,14 +48,14 @@ namespace ThreadWeaver {
         m_thread = 0;
         m_mutex->unlock();
     }
-    
+
     Thread *Job::thread ()
     {
         QMutexLocker l (m_mutex);
         return m_thread;
     }
 
-    bool Job::isFinished()
+    bool Job::isFinished() const
     {
         QMutexLocker l (m_mutex);
         return m_finished;
@@ -110,11 +110,11 @@ namespace ThreadWeaver {
         m_mutex->lock ();
         m_wc = new QWaitCondition;
         m_mutex->unlock ();
-        
+
         thread()->post (KPIM::ThreadWeaver::Event::JobAPR, this);
         m_wc->wait ();
     }
-    
+
     void Job::wakeAPR ()
     {
         QMutexLocker l(m_mutex);
@@ -141,7 +141,7 @@ namespace ThreadWeaver {
         return Type;
     }
 
-    Thread* Event::thread ()
+    Thread* Event::thread () const
     {
         if ( m_thread != 0)
         {
@@ -151,12 +151,12 @@ namespace ThreadWeaver {
         }
     }
 
-    Job* Event::job ()
+    Job* Event::job () const
     {
         return m_job;
     }
 
-    Event::Action Event::action ()
+    Event::Action Event::action () const
     {
         return m_action;
     }
@@ -182,7 +182,7 @@ namespace ThreadWeaver {
         return ++sm_Id;
     }
 
-    const unsigned int Thread::id()
+    const unsigned int Thread::id() const
     {
         return m_id;
     }
@@ -303,7 +303,7 @@ namespace ThreadWeaver {
                 ( m_mutex->locked() ? "locked" : "not locked" ) );
     }
 
-    int Weaver::threads ()
+    int Weaver::threads () const
     {
         QMutexLocker l (m_mutex);
         return m_inventory.count ();
@@ -382,7 +382,7 @@ namespace ThreadWeaver {
             if ( e->type() == Event::type() )
             {
                 Event *event = (Event*) e;
-                
+
                 switch (event->action() )
                 {
                     case Event::JobFinished:
@@ -398,7 +398,7 @@ namespace ThreadWeaver {
                         emit ( suspended() );
                         break;
                     case Event::ThreadSuspended:
-                        if (!m_shuttingDown ) 
+                        if (!m_shuttingDown )
                         {
                             emit (threadSuspended ( event->thread() ) );
                         }
@@ -412,7 +412,7 @@ namespace ThreadWeaver {
                     default:
                         break;
                 }
-                
+
                 if ( event->job() !=0 )
                 {
                     event->job()->processEvent (event);
@@ -433,7 +433,7 @@ namespace ThreadWeaver {
         QApplication::postEvent (this, e);
     }
 
-    bool Weaver::isEmpty()
+    bool Weaver::isEmpty() const
     {
         QMutexLocker l (m_mutex);
         return  m_assignments.count()==0;
@@ -513,7 +513,7 @@ namespace ThreadWeaver {
         return m_assignments.count();
     }
 
-    bool Weaver::isIdle ()
+    bool Weaver::isIdle () const
     {
         QMutexLocker l (m_mutex);
         return isEmpty() && m_active == 0;
