@@ -93,7 +93,13 @@ class AddresseeView : public KTextBrowser
                                 bool showBirthday = true, bool showAddresses = true,
                                 bool showEmails = true, bool showPhones = true,
                                 bool showURLs = true );
-
+    /**
+     * Encodes a QPixmap as a PNG into a data: URL (rfc2397), readable by the data kio protocol
+     * @param pixmap the pixmap to encode
+     * @return a data: URL
+     */
+    static QString pixmapAsDataUrl( const QPixmap& pixmap );
+    
   signals:
     void urlHighlighted( const QString &url );
     void emailHighlighted( const QString &email );

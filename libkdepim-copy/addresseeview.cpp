@@ -19,6 +19,7 @@
     Boston, MA 02111-1307, USA.
 */
 
+#include <qbuffer.h>
 #include <qimage.h>
 #include <qpopupmenu.h>
 #include <qurl.h>
@@ -34,6 +35,7 @@
 #include <kiconloader.h>
 #include <kio/job.h>
 #include <klocale.h>
+#include <kmdcodec.h>
 #include <kmessagebox.h>
 #include <krun.h>
 #include <kstringhandler.h>
@@ -132,10 +134,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
   if ( !internalLoading ) {
     KABC::Picture pic = addr.photo();
     if ( pic.isIntern() && !pic.data().isNull() ) {
-      KTempFile tmpFile;
-      tmpFile.close();
-      pic.data().save( tmpFile.name(), "PNG" );
-      image = "file:" + tmpFile.name();
+      image = pixmapAsDataUrl( pic.data() );
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) ? pic.url() : "http://" + pic.url());
     } else {
@@ -318,6 +317,17 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
      .arg( dynamicPart, notes );
 
   return strAddr;
+}
+
+QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
+{
+  QByteArray ba;
+  QBuffer buffer( ba );
+  buffer.open( IO_WriteOnly );
+  pixmap.save( &buffer, "PNG" );
+  QString encoded = "data:image/png;base64,";
+  encoded.append( KCodecs::base64Encode( ba ) );
+  return encoded;
 }
 
 void AddresseeView::updateView()
