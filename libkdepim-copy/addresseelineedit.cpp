@@ -315,7 +315,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
 
   // cursor at end of string - or Ctrl+T pressed for substring completion?
   if ( ctrlT ) {
-    QStringList completions = s_completion->substringCompletion( s );
+    const QStringList completions = s_completion->substringCompletion( s );
 
     if ( completions.count() > 1 )
       m_previousAddresses = prevAddr;
@@ -463,8 +463,8 @@ void AddresseeLineEdit::loadContacts()
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
   //m_contactMap.insert( addr.realName(), addr );
-  QStringList emails = addr.emails();
-  QStringList::Iterator it;
+  const QStringList emails = addr.emails();
+  QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
     QString fullEmail = addr.fullEmail( *it );
     s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
