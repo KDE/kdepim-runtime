@@ -26,6 +26,8 @@
 #include "qglobal.h"
 #include "time.h"
 
+#include <kdepimmacros.h>
+
 /**
  * KDEPIM classes for drag and drop of mails
  * 
@@ -41,7 +43,7 @@
 
 namespace KPIM {
 
-class MailSummary 
+class KDE_EXPORT MailSummary 
 {
 public:
     MailSummary( Q_UINT32 serialNumber, QString messageId, QString subject, 
@@ -80,7 +82,7 @@ private:
 typedef QValueList<MailSummary> MailList;
 
 // Drag and drop object for mails
-class MailListDrag : public QStoredDrag
+class KDE_EXPORT MailListDrag : public QStoredDrag
 {
 public:
     MailListDrag( MailList, QWidget * parent = 0 );
