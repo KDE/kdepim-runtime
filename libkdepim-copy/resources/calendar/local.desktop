@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+
+[Misc]
+Encoding=UTF-8
+Name=Calendar in local file
+
+[Plugin]
+Type=file
+X-KDE-Library=libcalendarresources

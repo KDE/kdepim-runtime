@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Exec=kcmshell kcalendars
+Icon=calendars
+Type=Application
+Terminal=0
+
+X-KDE-ModuleType=Library
+X-KDE-Library=kcalendars
+X-KDE-FactoryName=kcalendars
+X-KDE-HasReadOnlyMode=false
+
+Name=Calendar Configuration
+
