@@ -26,9 +26,6 @@
             <property name="orientation">
                 <enum>Horizontal</enum>
             </property>
-            <property name="childrenCollapsible">
-                <bool>false</bool>
-            </property>
             <widget class="QGroupBox">
                 <property name="name">
                     <cstring>GroupBox3</cstring>
