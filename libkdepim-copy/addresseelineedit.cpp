@@ -229,6 +229,7 @@ void AddresseeLineEdit::insert( const QString &t )
 
   contents = contents.left( pos ) + newText + contents.mid( pos );
   setText( contents );
+  setEdited( true );
   setCursorPosition( pos + newText.length() );
 }
 
@@ -340,6 +341,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       m_previousAddresses = prevAddr;
     else if ( completions.count() == 1 )
       setText( prevAddr + completions.first() );
+      setEdited( true );
 
     setCompletedItems( completions, true ); // this makes sure the completion popup is closed if no matching items were found
 
@@ -398,6 +400,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       QString match = s_completion->makeCompletion( s );
       if ( !match.isNull() && match != s ) {
         setText( prevAddr + match );
+        setEdited( true );
         cursorAtEnd();
       }
       break;
@@ -425,6 +428,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
 void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
 {
   setText( m_previousAddresses + completion );
+  setEdited( true );
   cursorAtEnd();
 //  slotMatched( m_previousAddresses + completion );
 }
