@@ -300,14 +300,6 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="1">
-            <property name="name">
-                <cstring>mAddressBook</cstring>
-            </property>
-            <property name="text">
-                <string>Address &amp;Book</string>
-            </property>
-        </widget>
     </grid>
 </widget>
 <layoutdefaults spacing="6" margin="11"/>

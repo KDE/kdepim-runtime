@@ -527,7 +527,7 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
   else
   {
     selectedSelectedAddresses.remove(item);
-  } 
+  }
   if ( selected ) {
     AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
     while (child) {
@@ -550,8 +550,6 @@ AddressesDialog::initConnections()
            SLOT(addSelectedBCC())  );
   connect( d->ui->mSaveAs, SIGNAL(clicked()),
            SLOT(saveAs())  );
-  connect( d->ui->mAddressBook, SIGNAL(clicked()),
-           SLOT(launchAddressBook())  );
   connect( d->ui->mRemoveButton, SIGNAL(clicked()),
            SLOT(removeEntry()) );
   connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
@@ -762,7 +760,7 @@ void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
     selectedToAvailableMapping.remove( item );
     selectedToAvailableMapping.remove( correspondingItem );
   }
-    
+
   AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
   while (child)
   {
