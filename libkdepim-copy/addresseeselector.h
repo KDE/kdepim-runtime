@@ -134,7 +134,7 @@ class Selection
 };
 
 /**
-  Internal heper class
+  Internal helper class
  */
 class SelectionItem
 {
