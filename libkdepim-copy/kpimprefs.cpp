@@ -60,7 +60,7 @@ const QString KPimPrefs::timezone()
   QString zone = "";
 
   // Read TimeZoneId from korganizerrc.
-  KConfig korgcfg( locate( "config", QString::fromLatin1("korganizerrc") ) );
+  KConfig korgcfg( locate( "config", "korganizerrc" ) );
   korgcfg.setGroup( "Time & Date" );
   QString tz(korgcfg.readEntry( "TimeZoneId" ) );
   if ( ! tz.isEmpty() ) 
@@ -74,12 +74,10 @@ const QString KPimPrefs::timezone()
   {
     char zonefilebuf[PATH_MAX];
 
-    // readlink does not return a null-terminated string.
-    memset(zonefilebuf, '\0', PATH_MAX);
     int len = readlink("/etc/localtime", zonefilebuf, PATH_MAX);
     if ( len > 0 && len < PATH_MAX ) 
     {
-        zone = QString::fromLocal8Bit(zonefilebuf);
+        zone = QString::fromLocal8Bit(zonefilebuf, len);
         zone = zone.mid(zone.find("zoneinfo/") + 9);
         kdDebug(5300) << "system timezone from /etc/localtime is " << zone << endl;
     } 
