@@ -30,6 +30,7 @@
 #include <qsize.h>
 #include <qstringlist.h>
 #include <qvariant.h>
+#include <kglobalsettings.h>
 
 class KConfig;
 
@@ -370,7 +371,7 @@ class KPrefs {
                           this item.
     */
     void addItemFont( const QString &key, QFont &reference,
-                      const QFont &defaultValue = QFont( "helvetica", 12 ) );
+                      const QFont &defaultValue = KGlobalSettings::generalFont() );
 
     /**
       Register an item of type QRect.

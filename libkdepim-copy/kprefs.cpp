@@ -23,6 +23,7 @@
 #include <kconfig.h>
 #include <kstandarddirs.h>
 #include <kglobal.h>
+#include <kglobalsettings.h>
 #include <kdebug.h>
 
 #include "kprefs.h"
@@ -216,7 +217,7 @@ class KPrefsItemFont : public KGenericPrefsItem<QFont>
 {
   public:
     KPrefsItemFont( const QString &group, const QString &name, QFont &reference,
-                    const QFont &defaultValue = QFont( "helvetica", 12 ) )
+                    const QFont &defaultValue = KGlobalSettings::generalFont() )
       : KGenericPrefsItem<QFont>( group, name, reference, defaultValue ) {}
 
     void readConfig( KConfig *config )
