@@ -1,3 +1,19 @@
+/* -*- C++ -*-
+
+   This file implements the Thread Logger.
+
+   $ Author: Mirko Boehm $
+   $ Copyright: (C) 2004, Mirko Boehm $
+   $ Contact: mirko@kde.org
+         http://www.kde.org
+         http://www.hackerbuero.org $
+   $ License: LGPL with the following explicit clarification:
+         This code may be linked against any version of the Qt toolkit
+         from Troll Tech, Norway. $
+
+   $Id$
+*/
+
 #include <weaver.h>
 #include "weaverlogger.h"
 
@@ -17,13 +33,13 @@ namespace ThreadWeaver {
 
     void WeaverThreadLogger::threadCreated (KPIM::ThreadWeaver::Thread *thread)
     {
-        debug ( 1, "WeaverThreadLogger: thread (ID: %i) created.\n", 
+        debug ( 1, "WeaverThreadLogger: thread (ID: %i) created.\n",
                 thread->id() );
     }
 
     void WeaverThreadLogger::threadDestroyed (KPIM::ThreadWeaver::Thread *thread)
     {
-        debug ( 1, "WeaverThreadLogger: thread (ID: %i) destroyed.\n", 
+        debug ( 1, "WeaverThreadLogger: thread (ID: %i) destroyed.\n",
                 thread->id() );
     }
 
