@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/libkdepim -I$(top_srcdir) $(all_includes)
+AM_CPPFLAGS = -I$(top_builddir)/libkdepim -I$(top_srcdir) $(all_includes)
 
 check_PROGRAMS = example
 #autoexample

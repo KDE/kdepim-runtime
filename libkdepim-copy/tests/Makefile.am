@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/libkdepim -I$(top_srcdir)/libemailfunctions $(all_includes)
+AM_CPPFLAGS = -I$(top_builddir)/libkdepim -I$(top_srcdir)/libemailfunctions $(all_includes)
 AM_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 LDADD = ../libkdepim.la $(LIB_KDECORE)
 

@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/libkdepim/komposer/core $(all_includes)
+AM_CPPFLAGS = -I$(top_builddir)/libkdepim/komposer/core $(all_includes)
 
 kde_module_LTLIBRARIES = libkomposer_defaulteditor.la
 libkomposer_defaulteditor_la_LDFLAGS = $(KDE_PLUGIN) $(all_libraries)

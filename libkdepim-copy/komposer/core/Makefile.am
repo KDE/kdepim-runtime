@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/libkdepim  $(all_includes)
+AM_CPPFLAGS = -I$(top_builddir)/libkdepim  $(all_includes)
 METASOURCES = AUTO
 
 lib_LTLIBRARIES = libkomposer.la

@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/libkdepim/komposer/core $(all_includes)
+INCLUDES = -I$(top_builddir)/libkdepim/komposer/core $(all_includes)
 
 check_PROGRAMS = testfactory testmanager testkomposer
 
