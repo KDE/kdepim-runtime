@@ -88,7 +88,6 @@ void KAddrBookExternal::openAddressBook(QWidget *) {
 void KAddrBookExternal::addNewAddressee( QWidget* )
 {
   kapp->startServiceByDesktopName("kaddressbook");
-  sleep(2);
   DCOPRef call("kaddressbook", "KAddressBookIface");
   call.send("newContact()");
 }
