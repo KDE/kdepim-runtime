@@ -30,6 +30,8 @@
 #include <kconfig.h>
 #include <kstandarddirs.h>
 
+#include <libkdepim/kprefsdialog.h>
+
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "example", I18N_NOOP("cfgc example"), "0.1" );
@@ -37,7 +39,7 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
 
-  KApplication app( false, false );
+  KApplication app;
 
   ExamplePrefsBase *prefs = ExamplePrefsBase::self();
 
@@ -48,4 +50,14 @@ int main( int argc, char **argv )
   kdDebug() << "anotherOption 2: " << prefs->anotherOption() << endl;  
 
   prefs->writeConfig();
+
+  KPrefsDialog *dialog = new KPrefsDialog( prefs );
+  
+  dialog->autoCreate();
+  
+  app.setMainWidget( dialog );
+
+  dialog->show();
+    
+  return app.exec();
 }

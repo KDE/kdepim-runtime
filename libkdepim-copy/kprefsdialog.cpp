@@ -384,6 +384,43 @@ KPrefsDialog::~KPrefsDialog()
 {
 }
 
+void KPrefsDialog::autoCreate()
+{
+  KPrefsItem::List items = prefs()->items();
+  
+  QMap<QString,QWidget *> mGroupPages;
+  QMap<QString,QGridLayout *> mGroupLayouts;
+  QMap<QString,int> mCurrentRows;
+  
+  KPrefsItem::List::ConstIterator it;
+  for( it = items.begin(); it != items.end(); ++it ) {
+    QString group = (*it)->group();
+    QString name = (*it)->name();
+
+    kdDebug() << "ITEMS: " << (*it)->name() << endl;
+
+    QWidget *page;
+    QGridLayout *layout;
+    int currentRow;
+    if ( !mGroupPages.contains( group ) ) {
+      page = addPage( group );
+      layout = new QGridLayout( page );
+      mGroupPages.insert( group, page );
+      mGroupLayouts.insert( group, layout );
+      currentRow = 0;
+      mCurrentRows.insert( group, currentRow );
+    } else {
+      page = mGroupPages[ group ];
+      layout = mGroupLayouts[ group ];
+      currentRow = mCurrentRows[ group ];
+    }
+  
+    QWidget *wid = new QLabel( name, page );
+    layout->addWidget( wid, currentRow, 0 );
+    mCurrentRows.replace( group, ++currentRow );
+  }
+}
+
 void KPrefsDialog::setDefaults()
 {
   setWidDefaults();

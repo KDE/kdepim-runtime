@@ -350,6 +350,8 @@ class KPrefsWidManager
     */
     virtual ~KPrefsWidManager();
 
+    KPrefs *prefs() const { return mPrefs; }
+
     /**
       Register a custom KPrefsWid object.
     */
@@ -470,6 +472,8 @@ class KPrefsDialog : public KDialogBase, public KPrefsWidManager
       Destructor.
     */
     virtual ~KPrefsDialog();
+
+    void autoCreate();
 
   public slots:
     /** Set all widgets to default values. */

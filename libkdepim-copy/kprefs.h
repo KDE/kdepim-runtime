@@ -48,6 +48,8 @@ class KConfig;
 */
 class KPrefsItem {
   public:
+    typedef QValueList<KPrefsItem *> List;
+  
     /**
       Constructor.
       
@@ -61,6 +63,16 @@ class KPrefsItem {
       Destructor.
     */
     virtual ~KPrefsItem() {}
+    
+    /**
+      Return config file group.
+    */
+    QString group() const { return mGroup; }
+
+    /**
+      Return config file key.
+    */
+    QString name() const { return mName; }
     
     /**
       This function is called by @ref KPrefs to set this setting to its default
@@ -470,6 +482,11 @@ class KPrefs {
     */
     KConfig *config() const;
 
+    /**
+      Return list of items managed by this KPrefs object.
+    */
+    KPrefsItem::List items() const { return mItems; }
+
   protected:
     /**
       Implemented by subclasses that use special defaults.
@@ -491,7 +508,7 @@ class KPrefs {
 
     KConfig *mConfig;  // pointer to KConfig object
 
-    QPtrList<KPrefsItem> mItems;
+    KPrefsItem::List mItems;
 
     class Private;
     Private *d;

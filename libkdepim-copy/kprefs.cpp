@@ -343,12 +343,15 @@ KPrefs::KPrefs( const QString &configname )
   } else {
     mConfig = KGlobal::config();
   }
-
-  mItems.setAutoDelete( true );
 }
 
 KPrefs::~KPrefs()
 {
+  KPrefsItem::List::ConstIterator it;
+  for( it = mItems.begin(); it != mItems.end(); ++it ) {
+    delete *it;
+  }
+
   if ( mConfig != KGlobal::config() ) {
     delete mConfig;
   }
@@ -366,9 +369,9 @@ KConfig *KPrefs::config() const
 
 void KPrefs::setDefaults()
 {
-  KPrefsItem *item;
-  for( item = mItems.first(); item; item = mItems.next() ) {
-    item->setDefault();
+  KPrefsItem::List::ConstIterator it;
+  for( it = mItems.begin(); it != mItems.end(); ++it ) {
+    (*it)->setDefault();
   }
 
   usrSetDefaults();
@@ -376,9 +379,9 @@ void KPrefs::setDefaults()
 
 void KPrefs::readConfig()
 {
-  KPrefsItem *item;
-  for( item = mItems.first(); item; item = mItems.next() ) {
-    item->readConfig( mConfig );
+  KPrefsItem::List::ConstIterator it;
+  for( it = mItems.begin(); it != mItems.end(); ++it ) {
+    (*it)->readConfig( mConfig );
   }
 
   usrReadConfig();
@@ -386,9 +389,9 @@ void KPrefs::readConfig()
 
 void KPrefs::writeConfig()
 {
-  KPrefsItem *item;
-  for( item = mItems.first(); item; item = mItems.next() ) {
-    item->writeConfig( mConfig );
+  KPrefsItem::List::ConstIterator it;
+  for( it = mItems.begin(); it != mItems.end(); ++it ) {
+    (*it)->writeConfig( mConfig );
   }
 
   usrWriteConfig();
