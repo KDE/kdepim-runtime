@@ -69,9 +69,9 @@ KDE_EXPORT bool kByteArrayToFile(const QByteArray& buffer, const QString &fileNa
    * @return It will return a string with all files and folders which do not
    *         have the right permissions. If empty, then all permissions are ok.
    */
-QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
-   const bool &recursive, const bool &wantItReadable,
-   const bool &wantItWritable);
+QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
+   const bool recursive, const bool wantItReadable,
+   const bool wantItWritable );
 
   /**
    * Checks and corrects the permissions of a file or folder, and if requested
@@ -98,8 +98,8 @@ QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
    *         all errors.
    */
 bool checkAndCorrectPermissionsIfPossibleWithErrorHandling( QWidget *parent, 
-   const QString &toCheck, const bool &recursive, const bool &wantItReadable,
-   const bool &wantItWritable);
+   const QString &toCheck, const bool recursive, const bool wantItReadable,
+   const bool wantItWritable );
 }
 
 #endif /*kpim_kfileio_h*/

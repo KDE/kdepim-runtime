@@ -268,9 +268,9 @@ KDE_EXPORT bool kByteArrayToFile(const QByteArray& aBuffer, const QString &aFile
 }
 
 
-QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
-  const bool &recursive, const bool &wantItReadable,
-  const bool &wantItWritable)
+QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
+  const bool recursive, const bool wantItReadable,
+  const bool wantItWritable )
 {
   // First we have to find out which type the toCheck is. This can be
   // a directory (follow if recursive) or a file (check permissions).
@@ -366,8 +366,8 @@ QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
 }
 
 bool checkAndCorrectPermissionsIfPossibleWithErrorHandling( QWidget *parent,
-  const QString &toCheck, const bool &recursive, const bool &wantItReadable,
-  const bool &wantItWritable)
+  const QString &toCheck, const bool recursive, const bool wantItReadable,
+  const bool wantItWritable )
 {
   QString error = checkAndCorrectPermissionsIfPossible(toCheck, recursive, 
                                            wantItReadable, wantItWritable);
