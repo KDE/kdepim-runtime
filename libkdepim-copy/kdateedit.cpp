@@ -24,6 +24,7 @@
 
 #include <qevent.h>
 #include <qlineedit.h>
+#include <qapplication.h>
 #include <qlistbox.h>
 
 #include <kdatepicker.h>
@@ -32,8 +33,8 @@
 #include <kglobal.h>
 #include <klocale.h>
 
+#include "kdateedit.h"
 #include "kdateedit.moc"
-
 
 KDateEdit::KDateEdit(QWidget *parent, const char *name)
   : QComboBox(true, parent, name),
