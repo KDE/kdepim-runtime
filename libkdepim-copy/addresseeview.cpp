@@ -249,8 +249,6 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       } else {
         dynamicPart += rowFmtStr.arg( type ).arg( *emailIt );
       }
-
-      type = i18n( "Other" );
     }
   }
 
@@ -266,7 +264,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       }
       dynamicPart += rowFmtStr.arg( i18n("Homepage") ).arg( url );
     }
-    
+
     QString blog = addr.custom( "KADDRESSBOOK", "BlogFeed" );
     if ( !blog.isEmpty() ) {
       if ( linkMask & URLLinks ) {
