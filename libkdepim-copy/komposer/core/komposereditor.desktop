@@ -4,6 +4,14 @@ Type=ServiceType
 X-KDE-ServiceType=Komposer/Editor
 X-KDE-Derived=Komposer/Plugin
 Comment=Komposer Editor
+Comment[da]=Komposer editor
+Comment[es]=Editor Komposer
+Comment[et]=Komposeri redaktor
+Comment[fr]=Éditeur Komposer
+Comment[nl]=Komposer-bewerker
+Comment[pt_BR]=Editor de Mensagens
+Comment[sv]=Komposer editor
+Comment[ta]=கம்போசர் திருத்தி
 
 [PropertyDef::X-Komposer-Weight]
 Type=int
