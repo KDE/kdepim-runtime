@@ -46,9 +46,7 @@ void ResourceCached::writeConfig( KConfig *config )
 void ResourceCached::insertAddressee( const Addressee &addr )
 {
   if ( !mAddrMap.contains( addr.uid() ) ) { // new contact
-    qDebug( "insertAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
     if ( mDeletedAddressees.contains( addr.uid() ) ) {
-      qDebug( "update1Addressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
       // it was first removed, then added, so it's an update...
       mDeletedAddressees.remove( addr.uid() );
 
@@ -56,12 +54,10 @@ void ResourceCached::insertAddressee( const Addressee &addr )
       mChangedAddressees.insert( addr.uid(), addr );
       return;
     }
-    qDebug( "realInsertAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
 
     mAddrMap.insert( addr.uid(), addr );
     mAddedAddressees.insert( addr.uid(), addr );
   } else {
-    qDebug( "updateAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
     KABC::Addressee oldAddressee = mAddrMap.find( addr.uid() ).data();
     if ( oldAddressee != addr ) {
       mAddrMap.remove( addr.uid() );
@@ -73,12 +69,10 @@ void ResourceCached::insertAddressee( const Addressee &addr )
 
 void ResourceCached::removeAddressee( const Addressee &addr )
 {
-  qDebug( "removeAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
   if ( mAddedAddressees.contains( addr.uid() ) ) {
     mAddedAddressees.remove( addr.uid() );
     return;
   }
-  qDebug( "realRemoveAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
 
   if ( mDeletedAddressees.find( addr.uid() ) == mDeletedAddressees.end() )
     mDeletedAddressees.insert( addr.uid(), addr );
@@ -88,18 +82,11 @@ void ResourceCached::removeAddressee( const Addressee &addr )
 
 void ResourceCached::loadCache()
 {
-  mUidMap.clear();
   mAddrMap.clear();
 
   // load uid map
-  QFile mapFile( uidMapFile() );
-  if ( mapFile.open( IO_ReadOnly ) ) {
-    QDataStream stream( &mapFile );
-    stream >> mUidMap;
-    mapFile.close();
-  } else {
-    kdError() << "Can't open uid map file '" << mapFile.name() << "'" << endl;
-  }
+  if ( !mIdMapper.load( uidMapFile() ) )
+    kdError() << "Can't open uid map file '" << uidMapFile() << "'" << endl;
 
   // load cache
   QFile file( cacheFile() );
@@ -123,14 +110,8 @@ void ResourceCached::loadCache()
 void ResourceCached::saveCache()
 {
   // save uid map
-  QFile mapFile( uidMapFile() );
-  if ( mapFile.open( IO_WriteOnly ) ) {
-    QDataStream stream( &mapFile );
-    stream << mUidMap;
-    mapFile.close();
-  } else {
-    kdError() << "Can't open uid map file '" << mapFile.name() << "'" << endl;
-  }
+  if ( !mIdMapper.save( uidMapFile() ) )
+    kdError() << "Can't open uid map file '" << uidMapFile() << "'" << endl;
 
   // save cache
   QFile file( cacheFile() );
@@ -147,7 +128,6 @@ void ResourceCached::saveCache()
 
 void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 {
-  qDebug( "cleanup cache" );
   // load cache
   QFile file( cacheFile() );
   if ( !file.open( IO_ReadOnly ) )
@@ -160,8 +140,6 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
   KABC::Addressee::List::ConstIterator it;
 
   for ( cacheIt = list.begin(); cacheIt != list.end(); ++cacheIt ) {
-    qDebug( "check cache entry %s (%s)", (*cacheIt).assembledName().latin1(), (*cacheIt).uid().latin1() );
-
     bool found = false;
     for ( it = addrList.begin(); it != addrList.end(); ++it ) {
       if ( (*it).uid() == (*cacheIt).uid() )
@@ -169,8 +147,7 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
     }
 
     if ( !found ) {
-      qDebug( "didn't found %s", (*cacheIt).uid().latin1() );
-      removeRemoteUid( remoteUid( (*cacheIt).uid() ) );
+      mIdMapper.removeRemoteId( mIdMapper.remoteId( (*cacheIt).uid() ) );
       mAddrMap.remove( (*cacheIt).uid() );
     }
   }
@@ -178,40 +155,9 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
   file.close();
 }
 
-void ResourceCached::setRemoteUid( const QString &localUid, const QString &remoteUid )
+KPIM::IdMapper& ResourceCached::idMapper()
 {
-  mUidMap.insert( localUid, remoteUid );
-}
-
-void ResourceCached::removeRemoteUid( const QString &remoteUid )
-{
-  QMap<QString, QVariant>::Iterator it;
-  for ( it = mUidMap.begin(); it != mUidMap.end(); ++it )
-    if ( it.data().toString() == remoteUid ) {
-      mUidMap.remove( it );
-      return;
-    }
-}
-
-QString ResourceCached::remoteUid( const QString &localUid ) const
-{
-  QMap<QString, QVariant>::ConstIterator it;
-  it = mUidMap.find( localUid );
-
-  if ( it != mUidMap.end() )
-    return it.data().toString();
-  else
-    return QString::null;
-}
-
-QString ResourceCached::localUid( const QString &remoteUid ) const
-{
-  QMap<QString, QVariant>::ConstIterator it;
-  for ( it = mUidMap.begin(); it != mUidMap.end(); ++it )
-    if ( it.data().toString() == remoteUid )
-      return it.key();
-
-  return QString::null;
+  return mIdMapper;
 }
 
 bool ResourceCached::hasChanges() const

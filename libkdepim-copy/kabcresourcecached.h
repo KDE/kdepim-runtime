@@ -23,6 +23,8 @@
 
 #include <kabc/resource.h>
 
+#include "idmapper.h"
+
 namespace KABC {
 
 class ResourceCached : public Resource
@@ -53,24 +55,9 @@ class ResourceCached : public Resource
     void cleanUpCache( const KABC::Addressee::List &list );
 
     /**
-      Stores the remote uid for the given local uid.
+      Returns a reference to the id mapper.
      */
-    void setRemoteUid( const QString &localUid, const QString &remoteUid );
-
-    /**
-      Removes the remote uid.
-     */
-    void removeRemoteUid( const QString &remoteUid );
-
-    /**
-      Returns the remote uid of the given local uid.
-     */
-    QString remoteUid( const QString &localUid ) const;
-
-    /**
-      Returns the local uid for the given remote uid.
-     */
-    QString localUid( const QString &remoteUid ) const;
+    KPIM::IdMapper& idMapper();
 
     bool hasChanges() const;
     void clearChanges();
@@ -86,7 +73,7 @@ class ResourceCached : public Resource
     virtual QString uidMapFile() const;
 
   private:
-    QMap<QString, QVariant> mUidMap;
+    KPIM::IdMapper mIdMapper;
 
     QMap<QString, KABC::Addressee> mAddedAddressees;
     QMap<QString, KABC::Addressee> mChangedAddressees;
