@@ -136,7 +136,7 @@ QString AddressesDialog::sPersonalGroup = i18n("Personal Address Book");
 QString AddressesDialog::sRecentGroup = i18n("Recent Addresses");
 
 AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
-  : KDialogBase( widget, name, true, i18n("Address selection"),
+  : KDialogBase( widget, name, true, i18n("Address Selection"),
                  Ok|Cancel, Ok, true )
 {
   QVBox *page = makeVBoxMainWidget();
