@@ -13,5 +13,5 @@ libkdepim_la_LIBADD  = $(top_builddir)/libkdepim/resources/libkpimresources.la $
 
 METASOURCES = AUTO
 
-messages:
+messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/libkdepim.pot
