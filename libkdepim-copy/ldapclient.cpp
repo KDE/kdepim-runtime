@@ -261,7 +261,6 @@ LdapSearch::LdapSearch()
 
 void LdapSearch::readConfig()
 {
-  kdDebug() << k_funcinfo << endl;
   cancelSearch();
   QValueList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it )
