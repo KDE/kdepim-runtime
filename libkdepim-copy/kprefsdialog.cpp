@@ -37,35 +37,38 @@
 #include <klocale.h>
 #include <kfontdialog.h>
 #include <kmessagebox.h>
-
-#include "kprefs.h"
+#include <kconfigskeleton.h>
 
 #include "kprefsdialog.h"
 #include "kprefsdialog.moc"
 
 namespace KPrefsWidFactory {
 
-KPrefsWid *create( KPrefsItem *item, QWidget *parent )
+KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
 {
-  KPrefsItemBool *boolItem = dynamic_cast<KPrefsItemBool *>( item );
+  KConfigSkeleton::ItemBool *boolItem =
+      dynamic_cast<KConfigSkeleton::ItemBool *>( item );
   if ( boolItem ) {
     return new KPrefsWidBool( boolItem->name(), boolItem->value(), parent );
   }
 
-  KPrefsItemString *stringItem = dynamic_cast<KPrefsItemString *>( item );
+  KConfigSkeleton::ItemString *stringItem =
+      dynamic_cast<KConfigSkeleton::ItemString *>( item );
   if ( stringItem ) {
     return new KPrefsWidString( stringItem->name(), stringItem->value(),
                                 parent );
   }
   
-  KPrefsItemInt *intItem = dynamic_cast<KPrefsItemInt *>( item );
-  if ( intItem ) {
-    QStringList choices = intItem->choices();
+  KConfigSkeleton::ItemEnum *enumItem =
+      dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
+  if ( enumItem ) {
+    QStringList choices = enumItem->choices();
     if ( choices.isEmpty() ) {
-      return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
+      kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
+      return 0;
     } else {
-      KPrefsWidRadios *radios = new KPrefsWidRadios( intItem->name(),
-                                                     intItem->value(),
+      KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem->name(),
+                                                     enumItem->value(),
                                                      parent );
       QStringList::ConstIterator it;
       for( it = choices.begin(); it != choices.end(); ++it ) {
@@ -73,6 +76,12 @@ KPrefsWid *create( KPrefsItem *item, QWidget *parent )
       }
       return radios;
     }
+  }
+  
+  KConfigSkeleton::ItemInt *intItem =
+      dynamic_cast<KConfigSkeleton::ItemInt *>( item );
+  if ( intItem ) {
+    return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
   }
   
   return 0;
@@ -383,7 +392,7 @@ QValueList<QWidget *> KPrefsWidString::widgets() const
   return widgets;
 }
 
-KPrefsWidManager::KPrefsWidManager( KPrefs *prefs )
+KPrefsWidManager::KPrefsWidManager( KConfigSkeleton *prefs )
   : mPrefs( prefs )
 {
 }
@@ -486,7 +495,8 @@ void KPrefsWidManager::writeWidConfig()
 }
 
 
-KPrefsDialog::KPrefsDialog(KPrefs *prefs,QWidget *parent,char *name,bool modal)
+KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
+                            bool modal )
   : KDialogBase(IconList,i18n("Preferences"),Ok|Apply|Cancel|Default,Ok,parent,
                 name,modal,true),
     KPrefsWidManager( prefs )
@@ -504,13 +514,13 @@ KPrefsDialog::~KPrefsDialog()
 
 void KPrefsDialog::autoCreate()
 {
-  KPrefsItem::List items = prefs()->items();
+  KConfigSkeletonItem::List items = prefs()->items();
   
   QMap<QString,QWidget *> mGroupPages;
   QMap<QString,QGridLayout *> mGroupLayouts;
   QMap<QString,int> mCurrentRows;
   
-  KPrefsItem::List::ConstIterator it;
+  KConfigSkeletonItem::List::ConstIterator it;
   for( it = items.begin(); it != items.end(); ++it ) {
     QString group = (*it)->group();
     QString name = (*it)->name();
@@ -609,7 +619,8 @@ void KPrefsDialog::slotDefault()
 }
 
 
-KPrefsModule::KPrefsModule( KPrefs *prefs, QWidget *parent, const char *name )
+KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, QWidget *parent,
+                            const char *name )
   : KCModule( parent, name ),
     KPrefsWidManager( prefs )
 {

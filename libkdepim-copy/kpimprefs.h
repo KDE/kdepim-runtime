@@ -23,9 +23,9 @@
 
 #include <qstringlist.h>
 
-#include "kprefs.h"
+#include <kconfigskeleton.h>
 
-class KPimPrefs : public KPrefs
+class KPimPrefs : public KConfigSkeleton
 {
   public:
     KPimPrefs( const QString &name = QString::null );

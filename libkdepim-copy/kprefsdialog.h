@@ -28,7 +28,7 @@
 #include <kdialogbase.h>
 #include <kcmodule.h>
 
-class KPrefs;
+class KConfigSkeleton;
 class KPrefsDialog;
 
 class KColorButton;
@@ -396,13 +396,13 @@ class KPrefsWidManager
 
       @param prefs  KPrefs object used to access te configuration.
     */
-    KPrefsWidManager(KPrefs *prefs);
+    KPrefsWidManager( KConfigSkeleton *prefs );
     /**
       Destructor.
     */
     virtual ~KPrefsWidManager();
 
-    KPrefs *prefs() const { return mPrefs; }
+    KConfigSkeleton *prefs() const { return mPrefs; }
 
     /**
       Register a custom KPrefsWid object.
@@ -489,7 +489,7 @@ class KPrefsWidManager
     void writeWidConfig();
 
   private:
-    KPrefs *mPrefs;
+    KConfigSkeleton *mPrefs;
 
     QPtrList<KPrefsWid> mPrefsWids;
 };
@@ -519,7 +519,8 @@ class KPrefsDialog : public KDialogBase, public KPrefsWidManager
       @param name   Widget name.
       @param modal  true, if dialog has to be modal, false for non-modal.
     */
-    KPrefsDialog(KPrefs *prefs,QWidget *parent=0,char *name=0,bool modal=false);
+    KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent = 0, char *name = 0,
+                  bool modal = false );
     /**
       Destructor.
     */
@@ -563,9 +564,9 @@ class KPrefsModule : public KCModule, public KPrefsWidManager
 {
     Q_OBJECT
   public:
-    KPrefsModule( KPrefs *, QWidget *parent = 0, const char *name = 0 );
+    KPrefsModule( KConfigSkeleton *, QWidget *parent = 0, const char *name = 0 );
 
-    virtual void addWid(KPrefsWid *);
+    virtual void addWid( KPrefsWid * );
 
     void load();
     void save();

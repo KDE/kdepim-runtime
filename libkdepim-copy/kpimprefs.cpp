@@ -27,7 +27,7 @@
 #include "kpimprefs.h"
 
 KPimPrefs::KPimPrefs( const QString &name ) :
-  KPrefs( name )
+  KConfigSkeleton( name )
 {
 }
 
