@@ -24,12 +24,6 @@ class KConfigBase;
 class IdentityList;
 class QDataStream;
 
-QDataStream & operator<<( QDataStream & stream, const KPIM::Signature & sig );
-QDataStream & operator>>( QDataStream & stream, KPIM::Signature & sig );
-
-QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & ident );
-QDataStream & operator>>( QDataStream & stream, KPIM::Identity & ident );
-
 namespace KPIM {
 
 /**
@@ -39,8 +33,8 @@ namespace KPIM {
 class Signature {
   friend class Identity;
 
-  friend QDataStream & ::operator<<( QDataStream & stream, const Signature & sig );
-  friend QDataStream & ::operator>>( QDataStream & stream, Signature & sig );
+  friend QDataStream & KPIM::operator<<( QDataStream & stream, const Signature & sig );
+  friend QDataStream & KPIM::operator>>( QDataStream & stream, Signature & sig );
 
 public:
   /** Type of signature (ie. way to obtain the signature text) */
@@ -98,8 +92,8 @@ class Identity
   // QValueList<Identity> and especially qHeapSort().
   friend class IdentityManager;
 
-  friend QDataStream & ::operator<<( QDataStream & stream, const Identity & ident );
-  friend QDataStream & ::operator>>( QDataStream & stream, Identity & ident );
+  friend QDataStream & KPIM::operator<<( QDataStream & stream, const Identity & ident );
+  friend QDataStream & KPIM::operator>>( QDataStream & stream, Identity & ident );
 
 public:
   typedef QValueList<Identity> List;
@@ -298,6 +292,12 @@ protected:
   bool      mIsDefault;
   Kleo::CryptoMessageFormat mPreferredCryptoMessageFormat;
 };
+
+QDataStream & operator<<( QDataStream & stream, const KPIM::Signature & sig );
+QDataStream & operator>>( QDataStream & stream, KPIM::Signature & sig );
+
+QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & ident );
+QDataStream & operator>>( QDataStream & stream, KPIM::Identity & ident );
 
 } // namespace KPIM
 

@@ -210,13 +210,13 @@ void Signature::writeConfig( KConfigBase * config ) const
   }
 }
 
-QDataStream & operator<<( QDataStream & stream, const KPIM::Signature & sig ) {
+QDataStream & KPIM::operator<<( QDataStream & stream, const KPIM::Signature & sig ) {
   return stream << static_cast<Q_UINT8>(sig.mType)
 		<< sig.mUrl
 		<< sig.mText;
 }
 
-QDataStream & operator>>( QDataStream & stream, KPIM::Signature & sig ) {
+QDataStream & KPIM::operator>>( QDataStream & stream, KPIM::Signature & sig ) {
     Q_UINT8 s;
     stream >> s
            >> sig.mUrl
@@ -327,7 +327,7 @@ void Identity::writeConfig( KConfigBase * config ) const
   mSignature.writeConfig( config );
 }
 
-QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & i ) {
+QDataStream & KPIM::operator<<( QDataStream & stream, const KPIM::Identity & i ) {
   return stream << static_cast<Q_UINT32>(i.uoid())
 		<< i.identityName()
 		<< i.fullName()
@@ -348,7 +348,7 @@ QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & i ) {
 		<< QString( Kleo::cryptoMessageFormatToString( i.mPreferredCryptoMessageFormat ) );
 }
 
-QDataStream & operator>>( QDataStream & stream, KPIM::Identity & i ) {
+QDataStream & KPIM::operator>>( QDataStream & stream, KPIM::Identity & i ) {
   Q_UINT32 uoid;
   QString format;
   stream        >> uoid
