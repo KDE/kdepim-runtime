@@ -143,9 +143,6 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
                                     bool showEmails, bool showPhones, bool showURLs,
                                     bool showIMAddresses )
 {
-  QString name = ( addr.formattedName().isEmpty() ?
-                   addr.assembledName() : addr.formattedName() );
-
   QString image = QString( "contact_%1_image" ).arg( addr.uid() );
 
   // Style strings from Gentix; this is just an initial version.
@@ -335,13 +332,12 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     notes = rowFmtStr.arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) ;
   }
 
-  QString role, organization;
-  role = addr.role();
-  organization = addr.organization();
+  QString name( addr.realName() );
+  QString role( addr.role() );
+  QString organization( addr.organization() );
 
-  // when only an organization is set we use it as name
-  if ( !addr.organization().isEmpty() && name.isEmpty() ||
-       addr.formattedName() == addr.organization() ) {
+  // when only an organization is set (in which case name is empty!) we use it as name
+  if ( name.isEmpty() || name == addr.organization() ) {
     name = addr.organization();
     organization = QString::null;
   }
@@ -426,7 +422,7 @@ QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
   QBuffer buffer( ba );
   buffer.open( IO_WriteOnly );
   pixmap.save( &buffer, "PNG" );
-  QString encoded = "data:image/png;base64,";
+  QString encoded( "data:image/png;base64," );
   encoded.append( KCodecs::base64Encode( ba ) );
   return encoded;
 }
@@ -593,8 +589,7 @@ void AddresseeView::slotHighlighted( const QString &link )
     emit urlHighlighted( link );
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
   } else if ( link.startsWith( "im:" ) ) {
-    emit highlightedMessage( i18n( "Chat with %1" ).arg( ( mAddressee.formattedName().isEmpty() ?
-                   mAddressee.assembledName() : mAddressee.formattedName() ) ) );
+    emit highlightedMessage( i18n( "Chat with %1" ).arg( mAddressee.realName() ) );
   } else
     emit highlightedMessage( "" );
 }
