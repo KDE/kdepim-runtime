@@ -637,6 +637,8 @@ void KPrefsModule::load()
   readWidConfig();
 
   usrReadConfig();
+
+  setChanged( false );
 }
 
 void KPrefsModule::save()
@@ -655,4 +657,6 @@ void KPrefsModule::defaults()
   setWidDefaults();
 
   load();
+
+  setChanged( true );
 }
