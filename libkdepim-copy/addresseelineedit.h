@@ -36,9 +36,12 @@
 #include "kcompletion.h"
 
 class KConfig;
+template<typename T> class QValueList;
 
 namespace KPIM {
 class LdapSearch;
+class LdapResult;
+typedef QValueList<LdapResult> LdapResultList;
 }
 
 namespace KPIM {
