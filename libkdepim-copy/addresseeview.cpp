@@ -275,7 +275,7 @@ void AddresseeView::updateView()
       if ( mImageData.count() > 0 )
         QMimeSourceFactory::defaultFactory()->setImage( "myimage", mImageData );
       else {
-        mImageJob = KIO::get( picture.url(), false, false );
+        mImageJob = KIO::get( KURL( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
                  this, SLOT( data( KIO::Job*, const QByteArray& ) ) );
         connect( mImageJob, SIGNAL( result( KIO::Job* ) ),
