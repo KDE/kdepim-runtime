@@ -57,7 +57,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   if ( stringItem ) {
     return new KPrefsWidString( stringItem, parent );
   }
-  
+
   KConfigSkeleton::ItemEnum *enumItem =
       dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
   if ( enumItem ) {
@@ -74,13 +74,13 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
       return radios;
     }
   }
-  
+
   KConfigSkeleton::ItemInt *intItem =
       dynamic_cast<KConfigSkeleton::ItemInt *>( item );
   if ( intItem ) {
     return new KPrefsWidInt( intItem, parent );
   }
-  
+
   return 0;
 }
 
@@ -526,11 +526,11 @@ KPrefsDialog::~KPrefsDialog()
 void KPrefsDialog::autoCreate()
 {
   KConfigSkeletonItem::List items = prefs()->items();
-  
+
   QMap<QString,QWidget *> mGroupPages;
   QMap<QString,QGridLayout *> mGroupLayouts;
   QMap<QString,int> mCurrentRows;
-  
+
   KConfigSkeletonItem::List::ConstIterator it;
   for( it = items.begin(); it != items.end(); ++it ) {
     QString group = (*it)->group();
@@ -555,7 +555,7 @@ void KPrefsDialog::autoCreate()
     }
 
     KPrefsWid *wid = KPrefsWidFactory::create( *it, page );
-    
+
     if ( wid ) {
       QValueList<QWidget *> widgets = wid->widgets();
       if ( widgets.count() == 1 ) {
@@ -563,24 +563,24 @@ void KPrefsDialog::autoCreate()
                                     currentRow, currentRow, 0, 1 );
       } else if ( widgets.count() == 2 ) {
         layout->addWidget( widgets[ 0 ], currentRow, 0 );
-        layout->addWidget( widgets[ 1 ], currentRow, 1 );      
+        layout->addWidget( widgets[ 1 ], currentRow, 1 );
       } else {
         kdError() << "More widgets than expected: " << widgets.count() << endl;
       }
-  
+
       if ( (*it)->isImmutable() ) {
         QValueList<QWidget *>::Iterator it2;
         for( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
           (*it2)->setEnabled( false );
         }
       }
-  
+
       addWid( wid );
-  
+
       mCurrentRows.replace( group, ++currentRow );
     }
   }
-  
+
   readConfig();
 }
 
@@ -625,7 +625,7 @@ void KPrefsDialog::slotDefault()
   if (KMessageBox::warningContinueCancel(this,
       i18n("You are about to set all preferences to default values. All "
       "custom modifications will be lost."),i18n("Setting Default Preferences"),
-      i18n("Continue"))
+      i18n("Reset to Defaults"))
     == KMessageBox::Continue) setDefaults();
 }
 
