@@ -4,7 +4,6 @@ LDADD = ../libkdepim.la $(LIB_KDECORE)
 
 check_PROGRAMS = testwizard testaddresseelineedit \
                  testaddresseeselector \
-                 testemail \
                  testutf7decoder \
                  testutf7encoder \
                  test_kregexp
@@ -12,15 +11,12 @@ check_PROGRAMS = testwizard testaddresseelineedit \
 
 testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
 testaddresseelineedit_SOURCES = testaddresseelineedit.cpp
-testemail_SOURCES = testemail.cpp
 testaddresseeselector_SOURCES = testaddresseeselector.cpp
 testutf7encoder_SOURCES = testutf7encoder2.cpp
 testutf7decoder_SOURCES = testutf7decoder.cpp
 test_kregexp_SOURCES = test_kregexp.cpp
 
 METASOURCES = AUTO
-
-TESTS = testemail
 
 #example_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 #example_LDADD = ../libkdepim.la $(LIB_KDECORE)
