@@ -534,6 +534,7 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
           switch( c ){
             case '<':
               iMailStart = i;
+              break;
             case ')':
               if( !name.isEmpty() )
                 name.prepend( ' ' );
@@ -579,6 +580,7 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
           switch( c ){
             case '>':
               iMailEnd = i;
+              break;
             case '(':
               if( !name.isEmpty() )
                 name.append( ' ' );
