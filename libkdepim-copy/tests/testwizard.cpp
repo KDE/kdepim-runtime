@@ -60,6 +60,10 @@ class TestConfigWizard : public KConfigWizard
     {
     }
 
+    void usrReadConfig()
+    {
+    }
+
     void usrWriteConfig()
     {
       MyConfig::self()->setFixKMail( mFixKMailCheckBox->isChecked() );

@@ -1,0 +1,36 @@
+This directory contains the library for the kdenetwork package.
+
+Contents:
+  ksieve_*             The beginning of a Sieve parser and interpreter
+		       library.
+		       Maintainer: Marc Mutz <mutz@kde.org>
+		       License: GPL v2
+
+  kscoring/            scoring engine & rule editor
+  kscoringeditor       Maintainer: Mathias Waack <mathias@atoll-net.de>
+		       License: GPL
+
+  qutf7codec           A QTextCodec for UTF-7.
+		       Will hopefully be assimilated by the trolls.
+		       Maintainer: Marc Mutz <mutz@kde.org>
+		       License: GPL v2
+
+  kwidgetlister        a small and nice widget which enables one to dynamically
+                       add or delete widgets. Used by the filter and scoring
+                       dialogs, which needs to display for instance a variable
+                       number of conditions. 
+                       Maintainer: Marc Mutz <mutz@kde.org>
+		       License: GPL v2
+
+  kregexp3             A KRegExp replacement based on QRegExp from Qt3.x
+                       Maintainer: Marc Mutz <mutz@kde.org>
+		       License: GPL
+
+  kfoldertree/	       Base classes for KNode's and KMail's folder lists,
+  ksubscription/       subscription dialogs and accounts.
+  kaccount	       Maintainer: Carsten Burghardt <burghardt@kde.org>
+		       License: LGPL v2
+
+  cryptplugwrapper*    C++ wrapper around the CryptPlug interface.
+		       Maintainer: Karl-Heinz Zimmer <khz@kde.org>
+		       License: GPL v2

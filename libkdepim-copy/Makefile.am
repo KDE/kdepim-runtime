@@ -25,7 +25,11 @@ libkdepim_la_SOURCES = \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
   htmldiffalgodisplay.cpp broadcaststatus.cpp kresourceprefs.cpp \
   kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp \
-  kabcresourcecached.cpp
+  kabcresourcecached.cpp \
+  kaccount.cpp kaddrbook.cpp kfoldertree.cpp kregexp3.cpp \
+  kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
+  linklocator.cpp qutf7codec.cpp \
+  recentaddresses.cpp spellingfilter.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
@@ -37,7 +41,7 @@ AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) \
-  $(top_builddir)/libkcal/libkcal.la $(LIB_KDEUI) 
+  $(top_builddir)/libkcal/libkcal.la $(LIB_POLL) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 
