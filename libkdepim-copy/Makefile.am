@@ -1,6 +1,7 @@
 SUBDIRS = cfgc interfaces tests pics
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/libkdepim $(all_includes)
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/libkdepim \
+           -I$(top_srcdir)/libemailfunctions $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
@@ -29,7 +30,7 @@ libkdepim_la_SOURCES = \
   kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp \
-  addresseeselector.cpp addresseeemailselection.cpp idmapper.cpp
+  addresseeselector.cpp addresseeemailselection.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
