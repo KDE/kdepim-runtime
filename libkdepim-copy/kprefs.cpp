@@ -154,8 +154,10 @@ void KPrefsItemBool::setDefault()
 
 void KPrefsItemBool::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    config->writeEntry(mName,*mReference);
+  }
 }
 
 
@@ -181,8 +183,10 @@ void KPrefsItemInt::setDefault()
 
 void KPrefsItemInt::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    config->writeEntry(mName,*mReference);
+  }
 }
 
 void KPrefsItemInt::readConfig(KConfig *config)
@@ -207,8 +211,10 @@ void KPrefsItemColor::setDefault()
 
 void KPrefsItemColor::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    config->writeEntry(mName,*mReference);
+  }
 }
 
 void KPrefsItemColor::readConfig(KConfig *config)
@@ -233,8 +239,10 @@ void KPrefsItemFont::setDefault()
 
 void KPrefsItemFont::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    config->writeEntry(mName,*mReference);
+  }
 }
 
 void KPrefsItemFont::readConfig(KConfig *config)
@@ -271,11 +279,13 @@ void KPrefsItemString::setDefault()
 
 void KPrefsItemString::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  if ( mPassword )
-    config->writeEntry(mName, endecryptStr( *mReference ) );
-  else
-    config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    if ( mPassword )
+      config->writeEntry(mName, endecryptStr( *mReference ) );
+    else
+      config->writeEntry(mName,*mReference);
+  }
 }
 
 void KPrefsItemString::readConfig(KConfig *config)
@@ -333,8 +343,10 @@ void KPrefsItemIntList::setDefault()
 
 void KPrefsItemIntList::writeConfig(KConfig *config)
 {
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if (*mReference != mDefault) {
+    config->setGroup(mGroup);
+    config->writeEntry(mName,*mReference);
+  }
 }
 
 void KPrefsItemIntList::readConfig(KConfig *config)
