@@ -40,17 +40,17 @@ static QString toString( KCal::Attendee *attendee )
   return attendee->name() + "<" + attendee->email() + ">";
 }
 
-static QString toString( KCal::Alarm *alarm )
+static QString toString( KCal::Alarm * )
 {
   return QString::null;
 }
 
-static QString toString( KCal::Incidence *incidence )
+static QString toString( KCal::Incidence * )
 {
   return QString::null;
 }
 
-static QString toString( KCal::Attachment *attachment )
+static QString toString( KCal::Attachment * )
 {
   return QString::null;
 }
