@@ -15,7 +15,7 @@ libkdepim_la_SOURCES = \
   kconfigpropagator.cpp kconfigwizard.cpp \
   weaver.cpp weaverextensions.cpp weaverlogger.cpp \
   pluginloaderbase.cpp addresseelineedit.cpp \
-  klistviewsearchline_pimcopy.cpp
+  klistviewsearchline_pimcopy.cpp kdatepickerpopup.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
