@@ -124,7 +124,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
                    addr.assembledName() : addr.formattedName() );
 
   QString dynamicPart;
-  QString image = "contact_image";
+  QString image = QString( "contact_%1_image" ).arg( addr.uid() );
 
   QString rowFmtStr = QString::fromLatin1(
 			"<tr><td align=\"right\" valign=\"top\" width=\"30%\"><b>%1</b></td>"
@@ -336,10 +336,8 @@ void AddresseeView::updateView()
   // clear view
   setText( QString::null );
 
-  if ( mAddressee.isEmpty() ) {
-    QMimeSourceFactory::defaultFactory()->setImage( "contact_image", QByteArray() );
+  if ( mAddressee.isEmpty() )
     return;
-  }
 
   if ( mImageJob ) {
     mImageJob->kill();
@@ -365,13 +363,15 @@ void AddresseeView::updateView()
      .arg( KGlobalSettings::baseColor().name() )
      .arg( strAddr );
 
+  QString imageURL = QString( "contact_%1_image" ).arg( mAddressee.uid() );
+
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
-    QMimeSourceFactory::defaultFactory()->setImage( "contact_image", picture.data() );
+    QMimeSourceFactory::defaultFactory()->setImage( imageURL, picture.data() );
   else {
     if ( !picture.url().isEmpty() ) {
       if ( mImageData.count() > 0 )
-        QMimeSourceFactory::defaultFactory()->setImage( "contact_image", mImageData );
+        QMimeSourceFactory::defaultFactory()->setImage( imageURL, mImageData );
       else {
         mImageJob = KIO::get( KURL( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
@@ -380,7 +380,7 @@ void AddresseeView::updateView()
                  this, SLOT( result( KIO::Job* ) ) );
       }
     } else {
-      QMimeSourceFactory::defaultFactory()->setPixmap( "contact_image",
+      QMimeSourceFactory::defaultFactory()->setPixmap( imageURL,
         KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
     }
   }
