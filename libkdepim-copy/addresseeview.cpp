@@ -116,7 +116,30 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   KABC::Address::List::ConstIterator addrIt;
   for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
     if ( (*addrIt).label().isEmpty() ) {
-      QString formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
+      QString formattedAddress;
+
+#if KDE_VERSION >= 319
+      formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
+#else
+      if ( !(*addrIt).street().isEmpty() )
+        formattedAddress += (*addrIt).street() + "\n";
+
+      if ( !(*addrIt).postOfficeBox().isEmpty() )
+        formattedAddress += (*addrIt).postOfficeBox() + "\n";
+
+      formattedAddress += (*addrIt).locality() + QString(" ") + (*addrIt).region();
+
+      if ( !(*addrIt).postalCode().isEmpty() )
+        formattedAddress += QString(", ") + (*addrIt).postalCode();
+
+      formattedAddress += "\n";
+
+      if ( !(*addrIt).country().isEmpty() )
+        formattedAddress += (*addrIt).country() + "\n";
+
+      formattedAddress += (*addrIt).extended();
+#endif
+
       formattedAddress = formattedAddress.replace( '\n', "<br>" );
 
       dynamicPart += QString(
