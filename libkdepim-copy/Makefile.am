@@ -45,8 +45,8 @@ libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) \
 
 
 
+AM_CXXFLAGS = -DQT_PLUGIN
 kde_widget_LTLIBRARIES = kdepimwidgets.la
-kdepimwidgets_la_CXXFLAGS = -DQT_PLUGIN
 kdepimwidgets_la_LDFLAGS = $(KDE_PLUGIN) -module $(all_libraries)
 kdepimwidgets_la_LIBADD = $(LIB_KIO) libkdepim.la
 kdepimwidgets_la_SOURCES = kdepimwidgets.cpp 
