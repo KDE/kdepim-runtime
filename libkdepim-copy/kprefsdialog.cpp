@@ -372,6 +372,8 @@ void KPrefsDialog::writeConfig()
   writeWidConfig();
 
   usrWriteConfig();
+
+  readConfig();
 }
 
 
@@ -427,6 +429,8 @@ void KPrefsModule::save()
   writeWidConfig();
   
   usrWriteConfig();
+
+  load();
 }
 
 void KPrefsModule::defaults()
