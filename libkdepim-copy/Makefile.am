@@ -24,9 +24,11 @@ libkdepim_la_SOURCES = \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
-  htmldiffalgodisplay.cpp part.cpp broadcaststatus.cpp kresourceprefs.cpp
+  htmldiffalgodisplay.cpp part.cpp broadcaststatus.cpp kresourceprefs.cpp \
+  kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp
 
-noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 
+noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h \
+  kpixmapregionselectorwidget.h kpixmapregionselectordialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
 $(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h kimproxyiface.h kimiface.h
 
