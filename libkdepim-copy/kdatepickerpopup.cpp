@@ -34,7 +34,6 @@ KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *paren
 
   mDatePicker = new KDatePicker( this );
   mDatePicker->setCloseButton( false );
-  mDatePicker->hide();
 
   connect( mDatePicker, SIGNAL( dateEntered( QDate ) ),
            SLOT( slotDateChanged( QDate ) ) );
