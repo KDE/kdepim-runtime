@@ -27,7 +27,7 @@
 using namespace KPIM;
 
 KPixmapRegionSelectorDialog::KPixmapRegionSelectorDialog(QWidget *parent,
-     const char *name, bool modal ) : KDialogBase(parent, name, modal, i18n("Select a region of the Image"), Help|Ok|Cancel, Ok, true )
+     const char *name, bool modal ) : KDialogBase(parent, name, modal, i18n("Select Region of Image"), Help|Ok|Cancel, Ok, true )
 {
   QVBox *vbox=new QVBox(this);
   new QLabel(i18n("Please click and drag on the image to select the region of interest:"), vbox);

@@ -49,7 +49,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     KDialog *topFrame = this;
     QGridLayout *topLayout = new QGridLayout(topFrame,5,3);
     int iii = 0;
-    setCaption( i18n("Conflict detected"));
+    setCaption( i18n("Conflict Detected"));
     QLabel * lab;
     lab = new QLabel( i18n(
                         "<qt>A conflict was detected. This probably means someone edited the same entry on the server while you changed it locally."
@@ -59,11 +59,11 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     QHBox * b_box = new QHBox( topFrame );
     topLayout->addMultiCellWidget(b_box, iii,iii,0,2);
     ++iii;
-    QPushButton* button = new QPushButton( i18n("Take local"), b_box );
+    QPushButton* button = new QPushButton( i18n("Take Local"), b_box );
     connect ( button, SIGNAL( clicked()), this, SLOT (takeIncidence1() ) );
-    button = new QPushButton( i18n("Take new"), b_box );
+    button = new QPushButton( i18n("Take New"), b_box );
     connect ( button, SIGNAL( clicked()), this, SLOT (takeIncidence2() ) );
-    button = new QPushButton( i18n("Take both"), b_box );
+    button = new QPushButton( i18n("Take Both"), b_box );
     connect ( button, SIGNAL( clicked()), this, SLOT (takeBoth() ) );
     topLayout->setSpacing(spacingHint());
     topLayout->setMargin(marginHint());
@@ -76,7 +76,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod1lab = new QLabel ( "Set Last modified", topFrame);
     topLayout->addWidget(mMod1lab,iii,1);
-    showDetails1 = new QPushButton( i18n("Show details..."),topFrame );
+    showDetails1 = new QPushButton( i18n("Show Details..."),topFrame );
     connect ( showDetails1, SIGNAL( clicked()), this, SLOT (showIncidence1() ) );
     topLayout->addWidget(showDetails1,iii,2);
     ++iii;
@@ -89,14 +89,14 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod2lab = new QLabel ( "Set Last modified", topFrame);
     topLayout->addWidget(mMod2lab,iii,1);
-    showDetails2 = new QPushButton( i18n("Show details..."), topFrame);
+    showDetails2 = new QPushButton( i18n("Show Details..."), topFrame);
     connect ( showDetails2, SIGNAL( clicked()), this, SLOT (showIncidence2() ) );
     topLayout->addWidget(showDetails2,iii,2);
     ++iii;
     //
 #if 0
     // commented out for now, because the diff code has too many bugs
-    diffBut = new QPushButton( i18n("Show differences"), topFrame );
+    diffBut = new QPushButton( i18n("Show Differences"), topFrame );
     connect ( diffBut, SIGNAL( clicked()), this, SLOT ( showDiff() ) );
     topLayout->addMultiCellWidget(diffBut, iii,iii,0,2);
     ++iii;
@@ -116,7 +116,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     mTbN =  0;
     mDisplayDiff = 0;
     choosedIncidence = 0;
-    button = new QPushButton( i18n("Apply this to all conflicts of this sync"), topFrame );
+    button = new QPushButton( i18n("Apply This to All Conflicts of This Sync"), topFrame );
     connect ( button, SIGNAL( clicked()), this, SLOT ( setSyncMode() ) );
     topLayout->addMultiCellWidget(button, iii,iii,0,2);
 }
