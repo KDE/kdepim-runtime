@@ -23,7 +23,7 @@
 #include <qpushbutton.h>
 #include <qheader.h>
 
-#include <libkdepim/categoryselectdialog_base.h>
+#include "categoryselectdialog_base.h"
 #include <klocale.h>
 #include "categoryselectdialog.h"
 
