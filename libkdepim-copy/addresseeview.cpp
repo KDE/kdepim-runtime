@@ -136,13 +136,21 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
   QString name = ( addr.formattedName().isEmpty() ?
                    addr.assembledName() : addr.formattedName() );
 
-  QString dynamicPart;
   QString image = QString( "contact_%1_image" ).arg( addr.uid() );
 
+  // We'll be building a table to display the vCard in.
+  // Each row of the table will be built using this string for its HTML.
+  //
   QString rowFmtStr = QString::fromLatin1(
-			"<tr><td align=\"right\" valign=\"top\" width=\"30%\"><b>%1</b></td>"
-			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
-			);
+        "<tr>"
+        "<td align=\"right\" valign=\"top\" width=\"30%\">"
+        "<b>%1</b>"
+        "</td>"
+        "<td align=\"left\" width=\"70%\">"
+        "%2"
+        "</td>"
+        "</tr>\n"
+        );
 
   // Style strings from Gentix; this is just an initial version.
   //
@@ -152,8 +160,22 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
   // the global background color).
   //
   QString backgroundColor = KGlobalSettings::baseColor().name();
-  QString cellStyle = QString::fromLatin1("style=\"padding: 0em; margin: 0em; border-right: #000 dashed 1px; border-bottom: #000 dashed 1px; background: %1;\"").arg(backgroundColor);
-  QString tableStyle = QString::fromLatin1("style=\"border: solid 1px; padding: 8% ; margin: 0em;\"");
+  QString cellStyle = QString::fromLatin1(
+        "style=\""
+        "padding: 0em; "
+        "margin: 0em; "
+        "border-right: #000 dashed 1px; "
+        "border-bottom: #000 dashed 1px; "
+        "background: %1;\"").arg(backgroundColor);
+  QString tableStyle = QString::fromLatin1(
+        "style=\""
+        "border: solid 1px; "
+        "padding: 8% ; "
+        "margin: 0em;\"");
+
+  // Build the table's rows here
+  QString dynamicPart;
+
 
   if ( !internalLoading ) {
     KABC::Picture pic = addr.photo();
@@ -300,14 +322,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
     // @STYLE@ - substitute the cell style in first, and append
     // the data afterwards (keeps us safe from possible % signs
     // in either one).
-    notes = QString::fromLatin1(
-      "<tr>"
-      "<td align=\"right\" valign=\"top\" width=\"30%\" %1>").arg(cellStyle);
-    notes.append(QString::fromLatin1(
-      "<b>%1:</b>"
-      "</td>"  // note label
-      "<td align=\"left\" valign=\"top\">%2</td>"  // note
-      "</tr>" ).arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) );
+    notes = rowFmtStr.arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) ;
   }
 
   QString role, organization;
@@ -323,35 +338,41 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
 
 
   // @STYLE@ - construct the string by parts, substituting in
-  // the styles first.
+  // the styles first. There are lots of appends, but we need to
+  // do it this way to avoid cases where the substituted string
+  // contains %1 and the like.
   //
   QString strAddr = QString::fromLatin1(
     "<div>"
     "<table width=\"100%\" %1>"
-    "<tr>"
+    "<tr>").arg(tableStyle);
+
+  strAddr.append( QString::fromLatin1(
     "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\" %2>")
-    .arg(tableStyle).arg(cellStyle);
-  strAddr.append(QString::fromLatin1(
+    .arg( cellStyle ) );
+  strAddr.append( QString::fromLatin1(
     "<img src=\"%1\" width=\"50\" height=\"70\">" // image
-    "</td>"
+    "</td>")
+    .arg( image ) );
+  strAddr.append( QString::fromLatin1(
     "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%2</b></font></td>"  // name
-    "</tr>"
+    "</tr>")
+    .arg( name ) );
+  strAddr.append( QString::fromLatin1(
     "<tr>"
     "<td align=\"left\" width=\"70%\">%3</td>"  // role
-    "</tr>"
+    "</tr>")
+    .arg( role ) );
+  strAddr.append( QString::fromLatin1(
     "<tr>"
     "<td align=\"left\" width=\"70%\">%4</td>"  // organization
-    "</tr>"
-    "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
-    "%5"  // dynamic part
-    "%6"  // notes
-    "</table>"
-    "</div>" )
-     .arg( image )
-     .arg( name )
-     .arg( role )
-     .arg( organization )
-     .arg( dynamicPart, notes ) );
+    "</tr>")
+    .arg( organization ) );
+  strAddr.append( QString::fromLatin1(
+    "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>") );
+  strAddr.append(dynamicPart);
+  strAddr.append(notes);
+  strAddr.append( QString::fromLatin1("</table></div>") );
 
   return strAddr;
 }
