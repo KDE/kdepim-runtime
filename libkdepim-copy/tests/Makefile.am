@@ -7,7 +7,8 @@ check_PROGRAMS = testwizard testaddresseelineedit \
                  testutf7decoder \
                  testutf7encoder \
                  test_kregexp \
-                 testdateedit
+                 testdateedit \
+                 testlinklocator
 
 
 testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
@@ -17,6 +18,7 @@ testutf7encoder_SOURCES = testutf7encoder2.cpp
 testutf7decoder_SOURCES = testutf7decoder.cpp
 test_kregexp_SOURCES = test_kregexp.cpp
 testdateedit_SOURCES = testdateedit.cpp
+testlinklocator_SOURCES = testlinklocator.cpp
 
 METASOURCES = AUTO
 
