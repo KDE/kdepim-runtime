@@ -129,7 +129,6 @@ QCString KPIM::getEmailAddr(const QString& aStr)
   return aStr.mid(i+1,len).latin1();
 }
 
-//static:
 bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
 {
   name = QString::null;
@@ -284,4 +283,16 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
   mail = mail.simplifyWhiteSpace();
   
   return ! (name.isEmpty() || mail.isEmpty());
+}
+
+bool KPIM::compareEmail( const QString& email1, const QString& email2,
+                         bool matchName )
+{
+  QString e1Name, e1Email, e2Name, e2Email;
+
+  getNameAndMail( email1, e1Name, e1Email );
+  getNameAndMail( email2, e2Name, e2Email );
+
+  return e1Email == e2Email &&
+    ( !matchName || ( e1Name == e2Name ) );
 }

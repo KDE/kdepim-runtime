@@ -56,6 +56,14 @@ QCString getEmailAddr(const QString& aStr);
  */
 bool getNameAndMail(const QString& aStr, QString& name, QString& mail);
 
+/**
+ * Compare two email addresses. If matchName is false, it just checks
+ * the email address, and returns true if this matches. If matchName
+ * is true, both the name and the email must be the same.
+ */
+bool compareEmail( const QString& email1, const QString& email2,
+                   bool matchName );
+
 } // namespace
 
 #endif /* EMAIL_H */
