@@ -72,6 +72,15 @@ class KDE_EXPORT ResourceCached : public Resource
   protected:
     virtual QString cacheFile() const;
 
+    /**
+      Functions for keeping the changes persistent.
+     */
+    virtual QString changesCacheFile( const QString& ) const;
+    void loadChangesCache( QMap<QString, KABC::Addressee>&, const QString& );
+    void loadChangesCache();
+    void saveChangesCache( const QMap<QString, KABC::Addressee>&, const QString& );
+    void saveChangesCache();
+
     void setIdMapperIdentifier();
 
   private:

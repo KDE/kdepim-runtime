@@ -206,6 +206,61 @@ QString ResourceCached::cacheFile() const
   return locateLocal( "cache", "kabc/kresources/" + identifier() );
 }
 
+QString ResourceCached::changesCacheFile( const QString &type ) const
+{
+  return locateLocal( "cache", "kabc/changescache/" + identifier() + "_" + type );
+}
+
+void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map, const QString &type )
+{
+  QFile file( changesCacheFile( type ) );
+
+  const KABC::Addressee::List list = map.values();
+  if ( list.isEmpty() ) {
+    file.remove();
+  } else {
+    if ( !file.open( IO_WriteOnly ) ) {
+      kdError() << "Can't open changes cache file '" << file.name() << "' for saving." << endl;
+      return;
+    }
+
+    KABC::VCardConverter converter;
+    const QString vCards = converter.createVCards( list );
+    QCString content = vCards.utf8();
+    file.writeBlock( content, content.length() );
+  }
+}
+
+void ResourceCached::saveChangesCache()
+{
+  saveChangesCache( mAddedAddressees, "added" );
+  saveChangesCache( mDeletedAddressees, "deleted" );
+  saveChangesCache( mChangedAddressees, "changed" );
+}
+
+void ResourceCached::loadChangesCache( QMap<QString, KABC::Addressee> &map, const QString &type )
+{
+  QFile file( changesCacheFile( type ) );
+  if ( !file.open( IO_ReadOnly ) )
+    return;
+
+  KABC::VCardConverter converter;
+
+  const KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
+  KABC::Addressee::List::ConstIterator it;
+  for ( it = list.begin(); it != list.end(); ++it )
+    map.insert( (*it).uid(), *it );
+
+  file.close();
+}
+
+void ResourceCached::loadChangesCache()
+{
+  loadChangesCache( mAddedAddressees, "added" );
+  loadChangesCache( mDeletedAddressees, "deleted" );
+  loadChangesCache( mChangedAddressees, "changed" );
+}
+
 void ResourceCached::setIdMapperIdentifier()
 {
   mIdMapper.setIdentifier( type() + "_" + identifier() );
