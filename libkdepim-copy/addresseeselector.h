@@ -190,6 +190,7 @@ class AddresseeSelector : public QWidget
     void initGUI();
 
     void updateSelectionView( int index );
+    void updateSelectionViews();
 
     Selection *mSelection;
 

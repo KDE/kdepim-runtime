@@ -148,7 +148,7 @@ SelectionItem::SelectionItem( KABC::DistributionList *list, uint index )
 }
 
 SelectionItem::SelectionItem()
-  : mIndex( 0 )
+  : mDistributionList( 0 ), mIndex( 0 )
 {
   mField.fill( false, 10 );
 }
@@ -262,9 +262,6 @@ void AddresseeSelector::init()
   connect( mRemoveMapper, SIGNAL( mapped( int ) ),
            this, SLOT( remove( int ) ) );
 
-  KABC::StdAddressBook::setAutomaticSave( false );
-
-//  QTimer::singleShot( 0, this, SLOT( reloadAddressBook() ) );
   reloadAddressBook();
 }
 
@@ -369,15 +366,19 @@ void AddresseeSelector::updateAddresseeView()
     if ( mAddressBookManager->contains( addressBookIndex, *it ) ) {
       if ( (*it).distributionList() == 0 ) {
         if ( mAddresseeFilter->text().isEmpty() ||
-             mSelection->itemMatches( (*it).addressee(), (*it).index(), mAddresseeFilter->text() ) )
+             mSelection->itemMatches( (*it).addressee(), (*it).index(),
+                                      mAddresseeFilter->text() ) )
           new SelectionViewItem( mAddresseeView, mSelection, &(*it) );
       } else {
         if ( mAddresseeFilter->text().isEmpty() ||
-             mSelection->distributionListMatches( (*it).distributionList(), mAddresseeFilter->text() ) )
+             mSelection->distributionListMatches( (*it).distributionList(),
+                                                  mAddresseeFilter->text() ) )
           new SelectionViewItem( mAddresseeView, mSelection, &(*it) );
       }
     }
   }
+
+  updateSelectionViews();
 }
 
 void AddresseeSelector::move( int index )
@@ -451,30 +452,66 @@ void AddresseeSelector::updateSelectionView( int index )
   view->clear();
 
   SelectionItem::List::Iterator it;
-  for ( it = mSelectionItems.begin(); it != mSelectionItems.end(); ++it )
+  for ( it = mSelectionItems.begin(); it != mSelectionItems.end(); ++it ) {
     if ( (*it).isInField( index ) )
       new SelectionViewItem( view, mSelection, &(*it) );
+  }
+}
+
+void AddresseeSelector::updateSelectionViews()
+{
+  for ( uint i = 0; i < mSelection->fieldCount(); ++i )
+    updateSelectionView( i );
 }
 
 void AddresseeSelector::reloadAddressBook()
 {
-  // TODO: smarter delete
-  mSelectionItems.clear();
-
   // load contacts
   KABC::Addressee::List list = KABC::StdAddressBook::self( true )->allAddressees();
   KABC::Addressee::List::Iterator it;
+
+  SelectionItem::List selectedItems;
+
+  SelectionItem::List::Iterator itemIt;
+  for ( itemIt = mSelectionItems.begin(); itemIt != mSelectionItems.end(); ++itemIt ) {
+    bool isSelected = false;
+    for ( uint i = 0; i < mSelection->fieldCount(); ++i ) {
+      if ( (*itemIt).isInField( i ) ) {
+        isSelected = true;
+        break;
+      }
+    }
+
+    // we don't save distribution lists, since this leads to crashes
+    if ( isSelected && (*itemIt).distributionList() == 0 ) {
+      selectedItems.append( *itemIt );
+    }
+  }
+
+  mSelectionItems.clear();
+  mSelectionItems = selectedItems;
+
   for ( it = list.begin(); it != list.end(); ++it ) {
     uint itemCount = mSelection->itemCount( *it );
     for ( uint index = 0; index < itemCount; ++index ) {
-      SelectionItem item( *it, index );
-      mSelectionItems.append( item );
+      bool available = false;
+      for ( itemIt = mSelectionItems.begin(); itemIt != mSelectionItems.end(); ++itemIt ) {
+        if ( (*itemIt).addressee() == (*it) && (*itemIt).index() == index ) {
+          available = true;
+          break;
+        }
+      }
+
+      if ( !available ) {
+        SelectionItem item( *it, index );
+        mSelectionItems.append( item );
+      }
     }
   }
 
   // load distribution lists
-  if ( !mManager )
-    mManager = new KABC::DistributionListManager( KABC::StdAddressBook::self( true ) );
+  delete mManager;
+  mManager = new KABC::DistributionListManager( KABC::StdAddressBook::self( true ) );
 
   mManager->load();
 
