@@ -436,6 +436,12 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
                                                  QWidget *parent )
 {
   KPrefsWidRadios *w = new KPrefsWidRadios( item, parent );
+  QValueList<KConfigSkeleton::ItemEnum::Choice> choices;
+  choices = item->choices();
+  QValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+  for( it = choices.begin(); it != choices.end(); ++it ) {
+    w->addRadio( (*it).label, (*it).whatsThis );
+  }
   addWid( w );
   return w;
 }
