@@ -371,7 +371,7 @@ AddressesDialog::allToAddressesNoDuplicates()  const
 {
   KABC::Addressee::List aList = allAddressee( d->toItem );
   QStringList dList = toDistributionLists();
-  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self( true ) );
   manager.load();
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
     QValueList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
@@ -565,7 +565,7 @@ AddressesDialog::initConnections()
   connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
            this, SLOT( updateAvailableAddressees() ) );
 
-  connect( KABC::StdAddressBook::self(), SIGNAL( addressBookChanged(AddressBook*) ),
+  connect( KABC::StdAddressBook::self( true ), SIGNAL( addressBookChanged(AddressBook*) ),
            this, SLOT( updateAvailableAddressees() ) );
 }
 

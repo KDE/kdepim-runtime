@@ -183,7 +183,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
     //kdDebug(5300) << "LDAP: host " << (*it)->host() << " weight " << (*it)->completionWeight() << endl;
     mItems.append( new LDAPCompletionItem( *it ) );
   }
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   QPtrList<KABC::Resource> resources = addressBook->resources();
   for( QPtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
     //kdDebug(5300) << "KABC Resource: " << (*resit)->className() << endl;

@@ -25,7 +25,7 @@
 //-----------------------------------------------------------------------------
 void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QWidget *) {
   //QString email = KMMessage::getEmailAddr(addr);
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
   if ( kapp->dcopClient()->isApplicationRegistered( "kaddressbook" ) ){
     //make sure kaddressbook is loaded, otherwise showContactEditor
@@ -52,11 +52,11 @@ void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
 
   KABC::Addressee::parseEmailAddress( addr, name, email );
 
-  KABC::AddressBook *ab = KABC::StdAddressBook::self();
+  KABC::AddressBook *ab = KABC::StdAddressBook::self( true );
 
   // force a reload of the address book file so that changes that were made
   // by other programs are loaded
-  ab->load();
+  ab->asyncLoad();
 
   KABC::Addressee::List addressees = ab->findByEmail( email );
 
@@ -94,7 +94,7 @@ void KAddrBookExternal::addNewAddressee( QWidget* )
 
 bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *parent )
 {
-  KABC::AddressBook *ab = KABC::StdAddressBook::self();
+  KABC::AddressBook *ab = KABC::StdAddressBook::self( true );
   bool inserted = false;
 
   KABC::Addressee::List addressees =
@@ -125,7 +125,7 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *par
 
 bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 {
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
 
   // Select a resource
   QPtrList<KABC::Resource> kabcResources = addressBook->resources();
@@ -164,7 +164,7 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
     return QString::null;
 
   const QString lowerListName = listName.lower();
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::DistributionListManager manager( addressBook );
   manager.load();
   const QStringList listNames = manager.listNames();
