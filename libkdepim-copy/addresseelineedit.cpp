@@ -495,86 +495,99 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
     ++i;
   }
   
-  if( !iAd )
-    return false;
+  if( !iAd ){
+    // We suppose the customer is typing the string manually and just
+    // has not finished typing the mail address part.
+    // So we take everything that's left of the '<' as name and the rest as mail
+    for( i = 0; len > i; ++i ) {
+      c = aStr[i];
+      if( '<' != c )
+        name.append( c );
+      else
+        break;
+    }
+    mail = aStr.mid( i+1 );
+    
+  }else{
   
-  // Loop backwards until we find the start of the string
-  // or a ',' outside of a comment.
-  bInComment = false;
-  for( i = iAd-1; 0 <= i; --i ) {
-    c = aStr[i];
-    if( bInComment ){
-      if( '(' == c ){
-        if( !name.isEmpty() )
-          name.prepend( ' ' );
-        bInComment = false;
+    // Loop backwards until we find the start of the string
+    // or a ',' outside of a comment.
+    bInComment = false;
+    for( i = iAd-1; 0 <= i; --i ) {
+      c = aStr[i];
+      if( bInComment ){
+        if( '(' == c ){
+          if( !name.isEmpty() )
+            name.prepend( ' ' );
+          bInComment = false;
+        }else{
+          name.prepend( c ); // all comment stuff is part of the name
+        }
       }else{
-        name.prepend( c ); // all comment stuff is part of the name
-      }
-    }else{
-      // found the start of this addressee ?
-      if( ',' == c )
-        break; 
-      // stuff is before the leading '<' ?
-      if( iMailStart ){
-        name.prepend( c ); 
-      }else{
-        switch( c ){
-          case '<':
-            iMailStart = i;
-          case ')':
-            if( !name.isEmpty() )
-              name.prepend( ' ' );
-            bInComment = true;
-            break;
-          default:
-            if( ' ' != c )
-              mail.prepend( c );
+        // found the start of this addressee ?
+        if( ',' == c )
+          break; 
+        // stuff is before the leading '<' ?
+        if( iMailStart ){
+          name.prepend( c ); 
+        }else{
+          switch( c ){
+            case '<':
+              iMailStart = i;
+            case ')':
+              if( !name.isEmpty() )
+                name.prepend( ' ' );
+              bInComment = true;
+              break;
+            default:
+              if( ' ' != c )
+                mail.prepend( c );
+          }
         }
       }
     }
-  }
-  
-  name = name.simplifyWhiteSpace();
-  mail = mail.simplifyWhiteSpace();
-  
-  if( mail.isEmpty() )
-    return false;
     
-  mail.append('@');
-  
-  // Loop forward until we find the end of the string
-  // or a ',' outside of a comment.
-  bInComment = false;
-  for( i = iAd+1; len > i; --i ) {
-    c = aStr[i];
-    if( bInComment ){
-      if( ')' == c ){
-        if( !name.isEmpty() )
-          name.append( ' ' );
-        bInComment = false;
+    name = name.simplifyWhiteSpace();
+    mail = mail.simplifyWhiteSpace();
+    
+    if( mail.isEmpty() )
+      return false;
+      
+    mail.append('@');
+    
+    // Loop forward until we find the end of the string
+    // or a ',' outside of a comment.
+    bInComment = false;
+    for( i = iAd+1; len > i; --i ) {
+      c = aStr[i];
+      if( bInComment ){
+        if( ')' == c ){
+          if( !name.isEmpty() )
+            name.append( ' ' );
+          bInComment = false;
+        }else{
+          name.append( c ); // all comment stuff is part of the name
+        }
       }else{
-        name.append( c ); // all comment stuff is part of the name
-      }
-    }else{
-      // found the end of this addressee ?
-      if( ',' == c )
-        break; 
-      // stuff is behind the trailing '<' ?
-      if( iMailEnd ){
-        name.append( c ); 
-      }else{
-        switch( c ){
-          case '>':
-            iMailEnd = i;
-          case '(':
-            if( !name.isEmpty() )
-              name.append( ' ' );
-            bInComment = true;
-            break;
-          default:
-            if( ' ' != c )
-              mail.append( c );
+        // found the end of this addressee ?
+        if( ',' == c )
+          break; 
+        // stuff is behind the trailing '<' ?
+        if( iMailEnd ){
+          name.append( c ); 
+        }else{
+          switch( c ){
+            case '>':
+              iMailEnd = i;
+            case '(':
+              if( !name.isEmpty() )
+                name.append( ' ' );
+              bInComment = true;
+              break;
+            default:
+              if( ' ' != c )
+                mail.append( c );
+          }
         }
       }
     }
