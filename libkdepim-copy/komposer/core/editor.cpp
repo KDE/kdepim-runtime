@@ -1,3 +1,4 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
  * editor.cpp
  *
@@ -27,13 +28,11 @@ namespace Komposer {
 class Editor::Private {
 public:
   QString id;
-  Core*   core;
 };
 
 Editor::Editor( Core* core, QObject* parent, const char* name )
   : QObject( parent, name ), d( new Private )
 {
-  d->core = core;
 }
 
 Editor::~Editor()
@@ -58,11 +57,6 @@ Editor::identifier() const
   return d->id;
 }
 
-Core*
-Editor::core() const
-{
-  return d->core;
-}
 
 }
 

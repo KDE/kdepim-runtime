@@ -1,3 +1,4 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
  * core.cpp
  *
@@ -21,7 +22,6 @@
 
 #include "core.h"
 #include "editor.h"
-#include "prefs.h"
 
 #include <kparts/partmanager.h>
 #include <kparts/part.h>
@@ -83,7 +83,7 @@ Core::~Core()
   parts.setAutoDelete( true );
   parts.clear();
 
-  Prefs::self()->writeConfig();
+  //Prefs::self()->writeConfig();
 }
 
 void
@@ -97,8 +97,8 @@ Core::loadEditors()
   uint i;
 
   kdDebug()<<"Offers = "<< offers.count()  << endl;
-  QStringList activeEditors = Prefs::self()->m_activeEditors;
-  kdDebug()<<"Active editor " << activeEditors <<endl;
+  QStringList activeEditors;// = Prefs::self()->m_activeEditors;
+  //kdDebug()<<"Active editor " << activeEditors <<endl;
   for ( KTrader::OfferList::ConstIterator it = offers.begin(); it != offers.end(); ++it )
   {
     kdDebug(5600) << "Loading Editor: " << (*it)->name() << endl;
@@ -226,8 +226,8 @@ Core::selectEditor( const QString &editorName )
 void
 Core::loadSettings()
 {
-  kdDebug()<<"Trying to select "<< Prefs::self()->m_activeEditor <<endl;
-  selectEditor( Prefs::self()->m_activeEditor );
+  //kdDebug()<<"Trying to select "<< Prefs::self()->m_activeEditor <<endl;
+  //selectEditor( Prefs::self()->m_activeEditor );
 
   //m_activeEditors = Prefs::self()->m_activeEditors;
 }
@@ -235,8 +235,8 @@ Core::loadSettings()
 void
 Core::saveSettings()
 {
-  if ( m_currentEditor )
-    Prefs::self()->m_activeEditor = m_currentEditor->identifier();
+  //if ( m_currentEditor )
+    //Prefs::self()->m_activeEditor = m_currentEditor->identifier();
 }
 
 void
@@ -248,31 +248,9 @@ Core::slotQuit()
 void
 Core::slotPreferences()
 {
-  KCMultiDialog *dialog = new KCMultiDialog( this, "KomposerPreferences" );
-  connect( dialog, SIGNAL( applyClicked() ), SLOT( updateConfig() ) );
-  connect( dialog, SIGNAL( okClicked() ), SLOT( updateConfig() ) );
-
-  QStringList modules;
-
-  modules.append( "PIM/komposerconfig.desktop" );
-
-  // find all all modules for all editors
-  QPtrListIterator<Komposer::Editor> pit( m_editors );
-  for( ; pit.current(); ++pit )
-  {
-    QStringList tmp;
-    //QStringList tmp = pit.current()->configModules();
-    if( !tmp.isEmpty() )
-      modules += tmp;
-  }
-
-  // add them all
-  QStringList::iterator mit;
-  for ( mit = modules.begin(); mit != modules.end(); ++mit )
-    dialog->addModule( *mit );
-
-  dialog->show();
-  dialog->raise();
+  if ( m_dlg == 0 )
+    m_dlg = new KSettings::Dialog( this );
+  m_dlg->show();
 }
 
 KParts::ReadWritePart*

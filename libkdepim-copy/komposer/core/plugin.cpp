@@ -1,5 +1,6 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
- * prefs.cpp<2>
+ * plugin.cpp
  *
  * Copyright (C)  2003  Zack Rusin <zack@kde.org>
  *
@@ -18,46 +19,51 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307  USA
  */
+#include "plugin.h"
 
-#include "prefs.h"
+#include <qstring.h>
 
-#include <kconfig.h>
-#include <kdebug.h>
-#include <kglobal.h>
-#include <klocale.h>
-#include <kstaticdeleter.h>
-
-using namespace Komposer;
-
-Prefs *Prefs::s_instance = 0;
-
-static KStaticDeleter<Prefs> insd;
-
-
-Prefs::Prefs()
-  : KPrefs( "komposerrc" )
+namespace Komposer
 {
-  KPrefs::setCurrentGroup( "View" );
 
-  addItemString( "ActiveEditor", m_activeEditor, "krichtext" );
+class Plugin::Private
+{
+public:
+  Core* core;
+};
 
-  QStringList defaultEditors;
-  defaultEditors << "krichtext";
-  addItemStringList( "ActiveEditors", m_activeEditors, defaultEditors );
+Plugin::Plugin( Core* core, QObject* parent, const char* name )
+    : QObject( parent, name ), d( new Private )
+{
+  d->core = core;
 }
 
-Prefs::~Prefs()
+Plugin::~Plugin()
 {
-  if ( s_instance == this )
-    s_instance = insd.setObject( 0 );
+  delete d; d = 0;
 }
 
-Prefs *Prefs::self()
+void
+Plugin::startedComposing()
 {
-  if ( !s_instance ) {
-    insd.setObject( s_instance, new Prefs() );
-    s_instance->readConfig();
-  }
-
-  return s_instance;
 }
+
+void
+Plugin::sendClicked()
+{
+}
+
+void
+Plugin::quitClicked()
+{
+}
+
+Core*
+Editor::core() const
+{
+  return d->core;
+}
+
+}//end namespace Komposer
+
+#include "plugin.moc"

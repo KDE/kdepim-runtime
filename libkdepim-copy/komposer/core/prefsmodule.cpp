@@ -20,7 +20,6 @@
  */
 
 #include "prefsmodule.h"
-#include "prefs.h"
 
 #include <kaboutdata.h>
 #include <kdebug.h>

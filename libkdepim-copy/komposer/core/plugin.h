@@ -1,5 +1,6 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
- * prefs.h
+ * plugin.h
  *
  * Copyright (C)  2003  Zack Rusin <zack@kde.org>
  *
@@ -18,37 +19,48 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307  USA
  */
-#ifndef KOMPOSER_PREFS_H
-#define KOMPOSER_PREFS_H
+#ifndef KOMPOSER_PLUGIN_H
+#define KOMPOSER_PLUGIN_H
 
-#include <kprefs.h>
+#include <qobject.h>
+#include <kxmlguiclient.h>
 
 namespace Komposer
 {
-
-  class Prefs : public KPrefs
+  class Plugin : public QObject, virtual public KXMLGUIClient
   {
+    Q_OBJECT
   public:
-    ~Prefs();
+    virtual ~Plugin();
+
+  signals:
+    void statusMessage( const QString& );
+
+  protected slots:
+    /**
+     * Called when a new message is created.
+     */
+    virtual void startedComposing();
 
     /**
-      Get instance of Prefs. It is made sure that there is only one
-      instance (singleton design pattern).
-    */
-    static Prefs *self();
+     * Called after the send button has been pressed
+     * and before the message has been sent.
+     */
+    virtual void sendClicked();
+
+    /**
+     * Called after the quit button has been pressed
+     */
+    virtual void quitClicked();
+
+  protected:
+    Core* core() const;
+  protected:
+    Plugin( Core* core, QObject* parent, const char* name );
+
   private:
-    /**
-      Constructor disabled for public. Use self() to create a Prefs
-      object.
-    */
-    Prefs();
-
-    static Prefs *s_instance;
-
-  public:
-    // preferences data
-    QString m_activeEditor;
-    QStringList m_activeEditors;
+    class Private;
+    Private* d;
   };
 
 }

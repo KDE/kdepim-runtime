@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=ServiceType
+X-KDE-ServiceType=Komposer/Editor
+X-KDE-Derived=Komposer/Plugin
+Comment=Komposer Editor
+
+[PropertyDef::X-Komposer-Weight]
+Type=int

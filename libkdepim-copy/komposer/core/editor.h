@@ -1,3 +1,4 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
  * editor.h
  *
@@ -22,8 +23,8 @@
 #ifndef KOMPOSER_EDITOR_H
 #define KOMPOSER_EDITOR_H
 
-#include <qobject.h>
-#include <kxmlguiclient.h>
+#include "plugin.h"
+
 #include <qstringlist.h>
 
 namespace KParts {
@@ -34,23 +35,16 @@ namespace Komposer {
 
   class Core;
 
-  class Editor : public QObject, virtual public KXMLGUIClient
+  class Editor : public Plugin
   {
     Q_OBJECT
   public:
+    enum TextType {
+      Plain    = 1 << 0,
+      RichText = 1 << 1,
+      HTML     = 1 << 2
+    };
     virtual ~Editor();
-
-    /**
-     *  Sets the identifier.
-     */
-    void setIdentifier( const QString &identifier );
-
-    /**
-     * Returns the identifier. It is used as argument for several
-     * methods of Komposer core.
-     */
-    QString identifier() const;
-
 
     /**
      * This is the magic function that all derivatives have to reimplement.
@@ -58,16 +52,12 @@ namespace Komposer {
      */
     virtual KParts::Part* part() =0;
 
+    int supportedTextFormats() const;
+
     /**
      * Returns the full text inside the editor.
      */
     virtual QString text() const =0;
-
-    /**
-     * Return the weight of the editor. The higher the weight the lower it will
-     * be displayed in the combobox. The default implementation returns 0.
-     */
-    virtual int weight() const { return 0; }
 
     /**
      * This function is called when the plugin is selected by the user before the
@@ -86,7 +76,6 @@ namespace Komposer {
      */
     virtual QStringList configModules() const { return QStringList(); }
 
-    Core* core() const;
 
   public slots:
     /**

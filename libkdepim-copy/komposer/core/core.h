@@ -1,3 +1,4 @@
+// -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 /**
  * core.h
  *
@@ -86,6 +87,7 @@ namespace Komposer
     QWidgetStack* m_stack;
     Editor* m_currentEditor;
     QPtrList<Komposer::Editor> m_editors;
+    KSettings::Dialog* m_dlg;
 
     class Private;
     Private *d;
