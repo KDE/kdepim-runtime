@@ -489,6 +489,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
   QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
     int len = (*it).length();
+    if ( len == 0 ) continue;
     if( '\0' == (*it)[len-1] )
       --len;
     const QString tmp = (*it).left( len );
