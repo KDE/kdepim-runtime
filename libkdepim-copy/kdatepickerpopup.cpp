@@ -83,6 +83,11 @@ KDatePicker *KDatePickerPopup::datePicker() const
   return mDatePicker;
 }
 
+void KDatePickerPopup::setDate( const QDate &date )
+{
+  mDatePicker->setDate( date );
+}
+
 #if 0
 void KDatePickerPopup::setItems( int items )
 {
