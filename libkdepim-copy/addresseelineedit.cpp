@@ -344,10 +344,18 @@ void AddresseeLineEdit::loadContacts()
   s_addressesDirty = false;
   //m_contactMap.clear();
 
-  KABC::Addressee::List list = contacts();
-  KABC::Addressee::List::Iterator it;
+  const KABC::Addressee::List list = contacts();
+  KABC::Addressee::List::ConstIterator it;
   for ( it = list.begin(); it != list.end(); ++it )
     addContact( *it, 100 );
+
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  manager.load();
+  const QStringList distLists = manager.listNames();
+  QStringList::const_iterator listIt;
+  for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
+    s_completion->addItem( (*listIt).simplifyWhiteSpace(), 100 );
+  }
 }
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
