@@ -39,6 +39,7 @@ namespace Komposer
 {
 
   class Editor;
+  class PluginManager;
 
   /**
    * This class provides the interface to the Komposer core for the editor.
@@ -49,22 +50,6 @@ namespace Komposer
   public:
     Core( QWidget *parentWidget = 0, const char *name = 0 );
     virtual ~Core();
-
-    /**
-      Selects the given editor @param editor and raises the associated
-      part.
-     */
-    virtual void selectEditor( Komposer::Editor* editor );
-    /**
-      This is an overloaded member function. It behaves essentially like the
-      above function.
-     */
-    virtual void selectEditor( const QString& editor );
-
-    /**
-      Returns the pointer list of available editors.
-     */
-    virtual QPtrList<Komposer::Editor> editorList() const { return m_editors; }
 
     KParts::ReadWritePart* createPart( const char *libname );
 
@@ -89,7 +74,9 @@ namespace Komposer
     KParts::PartManager* m_partManager;
     QWidgetStack* m_stack;
     Editor* m_currentEditor;
-    QPtrList<Komposer::Editor> m_editors;
+
+    PluginManager* m_pluginManager;
+
     KSettings::Dialog* m_dlg;
 
     class Private;

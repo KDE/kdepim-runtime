@@ -29,7 +29,8 @@ namespace Komposer
 {
   class Core;
 
-  class Plugin : public QObject, virtual public KXMLGUIClient
+  class Plugin : public QObject,
+                 virtual public KXMLGUIClient
   {
     Q_OBJECT
   public:
@@ -55,9 +56,12 @@ namespace Komposer
      */
     virtual void quitClicked();
 
+    virtual void aboutToUnload();
+
   protected:
     Core* core() const;
   protected:
+    friend class PluginManager;
     Plugin( Core* core, QObject* parent, const char* name );
 
   private:

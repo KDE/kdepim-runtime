@@ -54,15 +54,15 @@ using namespace Komposer;
 Core::Core( QWidget *parent, const char *name )
   : KParts::MainWindow( parent, name ), m_currentEditor( 0 )
 {
-  m_editors.setAutoDelete( true );
+  //m_editors.setAutoDelete( true );
   statusBar()->show();
 
   initWidgets();
 
   // prepare the part manager
   m_partManager = new KParts::PartManager( this );
-  connect( m_partManager, SIGNAL( activePartChanged( KParts::Part* ) ),
-           this, SLOT( slotActivePartChanged( KParts::Part* ) ) );
+  connect( m_partManager, SIGNAL(activePartChanged(KParts::Part*) ),
+           this, SLOT(slotActivePartChanged(KParts::Part*)) );
 
   loadEditors();
 
@@ -90,70 +90,18 @@ Core::~Core()
 void
 Core::loadEditors()
 {
-  KTrader::OfferList offers = KTrader::self()->query( QString::fromLatin1( "Komposer/Editor" ),
-                                                      QString::fromLatin1("[X-KDE-KomposerEditorVersion] == 1"));
-
-  QPtrList<Editor> editors;
-
-  uint i;
-
-  kdDebug()<<"Offers = "<< offers.count()  << endl;
-  QStringList activeEditors;// = Prefs::self()->m_activeEditors;
-  //kdDebug()<<"Active editor " << activeEditors <<endl;
-  for ( KTrader::OfferList::ConstIterator it = offers.begin(); it != offers.end(); ++it )
-  {
-    kdDebug(5600) << "Loading Editor: " << (*it)->name() << endl;
-    Komposer::Editor *editor = KParts::ComponentFactory
-      ::createInstanceFromService<Komposer::Editor>( *it, this );
-
-    if ( !editor ) {
-      kdWarning()<<"Problem with " << (*it)->name() << endl;
-      continue;
-    }
-
-    QString identifier = (*it)->property( "X-KDE-KomposerIdentifier" ).toString();
-    kdDebug()<<"Identifier "<<identifier<<endl;
-    if ( !activeEditors.contains( identifier ) )
-      continue;
-
-    //editor->setIdentifier( identifier );
-
-    for( i = 0; i < editors.count(); ++i ) {
-      Editor *p = editors.at( i );
-      //if ( editor->weight() < p->weight() ) break;
-    }
-
-    editors.insert( i, editor );
-  }
-
-  for( i = 0; i < editors.count(); ++ i ) {
-    Editor *editor = editors.at( i );
-
-    addEditor( editor );
-  }
+  //m_pluginManager->loadEditors();
 }
+
 void
 Core::unloadEditors()
 {
-  QPtrList<KParts::Part> parts = *m_partManager->parts();
-  parts.setAutoDelete( true );
-  parts.clear();
-
-  for( uint i = 0; i < m_editors.count(); ++ i ) {
-    Editor *editor = m_editors.at( i );
-
-    removeChildClient( editor );
-  }
-
-  m_editors.clear();
 }
 
 void
 Core::addEditor( Komposer::Editor *editor )
 {
   kdDebug(5600) << "Added editor" << endl;
-
-  m_editors.append( editor );
 
   // merge the editors GUI into the main window
   insertChildClient( editor );
@@ -182,7 +130,7 @@ Core::slotActivePartChanged( KParts::Part* part )
 
   createGUI( part );
 }
-
+/*
 void
 Core::selectEditor( Komposer::Editor *editor )
 {
@@ -214,15 +162,8 @@ Core::selectEditor( Komposer::Editor *editor )
 void
 Core::selectEditor( const QString &editorName )
 {
-  kdDebug()<<"Sectionee = "<< m_editors.count() <<endl;
-  for ( Komposer::Editor *editor = m_editors.first(); editor; editor = m_editors.next() ) {
-    //kdDebug()<<"X " << editor->identifier()  << " == " << editorName << endl;
-    //if ( editor->identifier() == editorName ) {
-      selectEditor( editor );
-      //return;
-      //}
-  }
-}
+
+}*/
 
 void
 Core::loadSettings()

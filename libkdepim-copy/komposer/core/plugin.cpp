@@ -60,6 +60,11 @@ Plugin::quitClicked()
 {
 }
 
+void
+Plugin::aboutToUnload()
+{
+}
+
 Core*
 Plugin::core() const
 {
