@@ -355,6 +355,8 @@ void KPrefsItemIntList::readConfig( KConfig *config )
 KPrefs::KPrefs( const QString &configname )
   : mCurrentGroup( "No Group" )
 {
+  kdDebug(5310) << "Creating KPrefs (" << int(this) << ")" << endl;
+
   if ( !configname.isEmpty() ) {
     mConfig = new KConfig( configname );
   } else {
@@ -396,6 +398,8 @@ void KPrefs::setDefaults()
 
 void KPrefs::readConfig()
 {
+  kdDebug(5310) << "KPrefs::readConfig()" << endl;
+
   KPrefsItem::List::ConstIterator it;
   for( it = mItems.begin(); it != mItems.end(); ++it ) {
     (*it)->readConfig( mConfig );
@@ -406,6 +410,8 @@ void KPrefs::readConfig()
 
 void KPrefs::writeConfig()
 {
+  kdDebug(5310) << "KPrefs::writeConfig()" << endl;
+
   KPrefsItem::List::ConstIterator it;
   for( it = mItems.begin(); it != mItems.end(); ++it ) {
     (*it)->writeConfig( mConfig );

@@ -92,6 +92,7 @@ KPrefsWidBool::KPrefsWidBool(const QString &text,bool &reference,
   : mReference( reference )
 {
   mCheck = new QCheckBox(text,parent);
+  connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mCheck, whatsThis);
   }
@@ -126,6 +127,7 @@ KPrefsWidInt::KPrefsWidInt( const QString &text, int &reference,
 {
   mLabel = new QLabel( text, parent );
   mSpin = new QSpinBox( parent );
+  connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mLabel->setBuddy( mSpin );
   if ( !whatsThis.isEmpty() ) {
     QWhatsThis::add( mLabel, whatsThis );
@@ -167,6 +169,7 @@ KPrefsWidColor::KPrefsWidColor(const QString &text,QColor &reference,
   : mReference( reference )
 {
   mButton = new KColorButton(parent);
+  connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
   mLabel = new QLabel(mButton, text, parent);
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mButton, whatsThis);
@@ -251,6 +254,7 @@ void KPrefsWidFont::selectFont()
   int result = KFontDialog::getFont(myFont);
   if (result == KFontDialog::Accepted) {
     mPreview->setFont(myFont);
+    emit changed();
   }
 }
 
@@ -261,6 +265,7 @@ KPrefsWidTime::KPrefsWidTime(const QString &text,int &reference,
 {
   mLabel = new QLabel(text,parent);
   mSpin = new QSpinBox(0,23,1,parent);
+  connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mSpin->setSuffix(":00");
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mSpin, whatsThis);
@@ -338,6 +343,8 @@ KPrefsWidString::KPrefsWidString(const QString &text,QString &reference,
 {
   mLabel = new QLabel(text,parent);
   mEdit = new QLineEdit(parent);
+  connect( mEdit, SIGNAL( textChanged( conbst QString & ) ),
+           SIGNAL( changed() ) );
   mEdit->setEchoMode( echomode );
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mEdit, whatsThis);
@@ -458,6 +465,8 @@ void KPrefsWidManager::setWidDefaults()
 
 void KPrefsWidManager::readWidConfig()
 {
+  kdDebug(5310) << "KPrefsWidManager::readWidConfig()" << endl;
+
   KPrefsWid *wid;
   for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
     wid->readConfig();
@@ -466,6 +475,8 @@ void KPrefsWidManager::readWidConfig()
 
 void KPrefsWidManager::writeWidConfig()
 {
+  kdDebug(5310) << "KPrefsWidManager::writeWidConfig()" << endl;
+
   KPrefsWid *wid;
   for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
     wid->writeConfig();
@@ -613,11 +624,15 @@ void KPrefsModule::addWid( KPrefsWid *wid )
 
 void KPrefsModule::slotWidChanged()
 {
-  emit changed( true );
+  kdDebug(5310) << "KPrefsModule::slotWidChanged()" << endl;
+
+  setChanged( true );
 }
 
 void KPrefsModule::load()
 {
+  kdDebug(5310) << "KPrefsModule::load()" << endl;
+
   readWidConfig();
 
   usrReadConfig();
@@ -625,6 +640,8 @@ void KPrefsModule::load()
 
 void KPrefsModule::save()
 {
+  kdDebug(5310) << "KPrefsModule::save()" << endl;
+
   writeWidConfig();
 
   usrWriteConfig();
