@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
-  kprefs.cpp kprefsdialog.cpp kpimprefs.cpp \
+  kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
