@@ -6,6 +6,13 @@ testwizard_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 testwizard_LDADD = ../libkdepim.la $(LIB_KDECORE)
 testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
 
+check_PROGRAMS = testaddresseelineedit
+
+testaddresseelineedit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
+testaddresseelineedit_LDADD = ../libkdepim.la $(LIB_KDECORE)
+testaddresseelineedit_SOURCES = testaddresseelineedit.cpp
+
+
 METASOURCES = AUTO
 
 #example_LDFLAGS = $(all_libraries) $(KDE_RPATH)
