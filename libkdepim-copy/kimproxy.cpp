@@ -383,6 +383,9 @@ void KIMProxy::registeredToDCOP( const QCString& appId )
 	// there's no chance
 	if ( appId.isEmpty() || QChar( appId[ appId.length() - 1 ] ).isDigit() )
 		return;
+	// So there is no error from a failed query when using kdelibs 3.2, which don't have this servicetype
+	if ( !KServiceType::serviceType( IM_SERVICE_TYPE ) ) 
+		return;
 
 	kdDebug( 5301 ) << k_funcinfo << appId << endl;
 	bool newApp = false;
