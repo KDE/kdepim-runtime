@@ -308,7 +308,13 @@ void KIMProxy::unregisteredFromDCOP( const QCString& appId )
 	kdDebug( 5301 ) << k_funcinfo << appId << endl;
 	if ( m_im_client_stubs.find( appId ) )
 	{
-		// invalidate all 
+		// invalidate all
+        QDictIterator<AppPresence> it( m_presence_map ); 
+        for ( ; it.current(); ++it )
+        {
+          if (  it.current()->appId == QString( appId ) )
+            m_presence_map.remove( it.currentKey() );
+        }
 		m_im_client_stubs.remove( appId );
 		emit sigPresenceInfoExpired();
 	}
