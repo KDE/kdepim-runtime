@@ -28,13 +28,8 @@
 
 #include "kpimprefs.h"
 
-KPimPrefs::KPimPrefs() :
-  KPrefs("")
-{
-}
-
-KPimPrefs::KPimPrefs(const QString& configname) :
-  KPrefs(configname)
+KPimPrefs::KPimPrefs( const QString &name ) :
+  KPrefs( name )
 {
 }
 

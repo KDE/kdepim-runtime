@@ -30,8 +30,8 @@
 class KPimPrefs : public KPrefs
 {
   public:
-    KPimPrefs();
-    KPimPrefs( const QString& configname );
+    KPimPrefs( const QString &name = QString::null );
+
     virtual ~KPimPrefs();
 
     /** Set preferences to default values */
