@@ -24,7 +24,7 @@
 #include <kio/job.h>
 #include <kdebug.h>
 
-using namespace PIM;
+using namespace KPIM;
 
 KIO::TransferJob *GroupwareJob::getCalendar( const KURL &u )
 {
@@ -32,6 +32,16 @@ KIO::TransferJob *GroupwareJob::getCalendar( const KURL &u )
   url.setPath( "/calendar/" );
   
   kdDebug() << "GroupwareJob::getCalendar(): URL: " << url << endl;
+  
+  return KIO::get( url, false, false );
+}
+
+KIO::TransferJob *GroupwareJob::getAddressBook( const KURL &u )
+{
+  KURL url = u;
+  url.setPath( "/addressbook/" );
+  
+  kdDebug() << "GroupwareJob::getAddressBook(): URL: " << url << endl;
   
   return KIO::get( url, false, false );
 }

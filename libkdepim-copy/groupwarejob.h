@@ -23,12 +23,13 @@
 
 #include <kio/jobclasses.h>
 
-namespace PIM {
+namespace KPIM {
 
 class GroupwareJob
 {
   public:
-    static KIO::TransferJob *getCalendar( const KURL & );  
+    static KIO::TransferJob *getCalendar( const KURL & );
+    static KIO::TransferJob *getAddressBook( const KURL & );
 };
 
 }
