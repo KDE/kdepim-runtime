@@ -98,6 +98,12 @@ namespace KPIM {
      * Note that this doesn't include the distribution lists
      */
     KABC::Addressee::List toAddresses()  const;
+   /**
+     * Returns the list of picked "To" addresses as KABC::Addressee::List.
+     * Note that this does include the distribution lists
+     * Multiple Addressees are removed
+     */
+    KABC::Addressee::List allToAddressesNoDuplicates()  const;
     /**
      * Returns the list of picked "CC" addresses as KABC::Addressee::List.
      * Note that this doesn't include the distribution lists

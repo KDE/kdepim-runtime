@@ -354,6 +354,36 @@ AddressesDialog::toAddresses()  const
 {
   return allAddressee( d->toItem );
 }
+KABC::Addressee::List
+AddressesDialog::allToAddressesNoDuplicates()  const
+{
+  KABC::Addressee::List aList = allAddressee( d->toItem );
+  QStringList dList = toDistributionLists();
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  manager.load();
+  for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
+    QValueList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
+    QValueList<KABC::DistributionList::Entry>::Iterator eit;
+    if ( eList.count() > 0 )
+      for( eit = eList.begin(); eit != eList.end(); ++eit ) {
+        KABC::Addressee a = (*eit).addressee;
+        bool found = false;
+         for ( KABC::Addressee::List::iterator itr = aList.begin();
+              itr != aList.end(); ++itr ) {
+            KABC::Addressee ad = (*itr);
+            if ( ad == a ) {
+              found = true;
+              break;
+            }
+        }
+         if ( !found ) {
+           if ( ! a.preferredEmail().isEmpty () )
+             aList.append( a ) ;
+         }
+      }
+  }
+  return aList;
+}
 
 KABC::Addressee::List
 AddressesDialog::ccAddresses()  const
@@ -395,8 +425,8 @@ AddressesDialog::updateAvailableAddressees()
   static const QString &personalGroup = KGlobal::staticQString( i18n( "Other Addresses" ) );
   d->ui->mAvailableView->setRootIsDecorated( true );
   d->personal = new AddresseeViewItem( d->ui->mAvailableView, personalGroup );
-  connect(d->personal, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
+  //connect(d->personal, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
+  //        this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   d->personal->setVisible( false );
   d->groupDict.insert( personalGroup, d->personal );
 
@@ -473,6 +503,12 @@ AddressesDialog::availableAddressSelected( AddresseeViewItem* item, bool selecte
 void
 AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected )
 {
+  // we have to avoid that a parent and a child is selected together
+  // because in this case we get a double object deletion ( program crashes )
+  // when removing the selected items from list
+  AddresseeViewItem* parent = static_cast<AddresseeViewItem*>(((QListViewItem*)item)->parent());
+  if ( parent  && selected )
+    parent->setSelected( false );
   if (selected)
   {
     selectedSelectedAddresses.append(item);
@@ -480,6 +516,13 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
   else
   {
     selectedSelectedAddresses.remove(item);
+  } 
+  if ( selected ) {
+    AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
+    while (child) {
+      child->setSelected( false );
+      child = static_cast<AddresseeViewItem*>(child->nextSibling());
+    }
   }
 }
 
@@ -696,7 +739,7 @@ void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
     selectedToAvailableMapping.remove( item );
     selectedToAvailableMapping.remove( correspondingItem );
   }
-
+    
   AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
   while (child)
   {
@@ -714,7 +757,6 @@ AddressesDialog::removeEntry()
   bool resetBCC = false;
 
   lst.setAutoDelete( false );
-
   QPtrListIterator<AddresseeViewItem> it( selectedSelectedAddresses );
   while ( it.current() ) {
     AddresseeViewItem* item = it.current();
@@ -725,12 +767,11 @@ AddressesDialog::removeEntry()
       resetCC = true;
     else if( d->bccItem == item )
       resetBCC = true;
-
+    // we may only append parent items
     unmapSelectedAddress(item);
     lst.append( item );
   }
   selectedSelectedAddresses.clear();
-
   lst.setAutoDelete( true );
   lst.clear();
   if ( resetTo )
@@ -740,7 +781,6 @@ AddressesDialog::removeEntry()
     delete d->toItem;
     d->toItem = 0;
   }
-
   if ( resetCC )
     d->ccItem = 0;
   else if ( d->ccItem && d->ccItem->childCount() == 0 )
@@ -748,7 +788,6 @@ AddressesDialog::removeEntry()
     delete d->ccItem;
     d->ccItem = 0;
   }
-
   if ( resetBCC )
     d->bccItem  = 0;
   else if ( d->bccItem && d->bccItem->childCount() == 0 )
@@ -756,7 +795,6 @@ AddressesDialog::removeEntry()
     delete d->bccItem;
     d->bccItem = 0;
   }
-
   d->ui->mSaveAs->setEnabled(d->ui->mSelectedView->firstChild() != 0);
 }
 
