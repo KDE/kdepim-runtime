@@ -1,6 +1,7 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2001 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -19,24 +20,75 @@
 */
 
 #include <kdebug.h>
+#include <kapplication.h>
 
 #include "resource.h"
 
-using namespace KPIM;
+using namespace KRES;
 
-Resource::Resource() 
+Resource::Resource( const KConfig* config ) :
+  mOpenCount( 0 )
 {
-  mReadOnly = true;
-  mFastResource = true;
+  if ( config ) {
+    mType = config->readEntry( "ResourceType" );
+    mName = config->readEntry( "ResourceName" );
+    mReadOnly = config->readBoolEntry( "ResourceIsReadOnly" );
+    mIdentifier = config->readEntry( "ResourceIdentifier" );
+  } else {
+    mType = "type";
+    mName = "resource-name";
+    mReadOnly = false;
+    mIdentifier = KApplication::randomString( 10 );
+  }
 }
 
 Resource::~Resource()
 {
 }
 
+void Resource::writeConfig( KConfig* config )
+{
+  config->writeEntry( "ResourceType", mType );
+  config->writeEntry( "ResourceName", mName );
+  config->writeEntry( "ResourceIsReadOnly", mReadOnly );
+  config->writeEntry( "ResourceIdentifier", mIdentifier );
+}
+
+bool Resource::open() 
+{
+  bool result = true;
+  mMutex.lock();
+  if ( ! mOpenCount ) {
+    kdDebug() << "Opening resource " << name() << endl;
+    result = doOpen();
+  }
+  mOpenCount++;
+  mMutex.unlock();
+  return result;
+}
+
+void Resource::close() 
+{
+  mMutex.lock();
+  if ( ! mOpenCount )
+  {
+    kdDebug() << "ERROR: Resource " << name() << " closed more times than previously opened" << endl;
+    mMutex.unlock();
+    return;
+  }
+  mOpenCount--;
+  if ( ! mOpenCount ) {
+    kdDebug() << "Closing resource " << name() << endl;
+    doClose();
+  } else {
+    kdDebug() << "Not yet closing resource " << name() << ", open count = " << mOpenCount << endl;
+  }
+  mMutex.unlock();
+}
+
 QString Resource::identifier() const
 {
-  return "NoIdentifier";
+  return mIdentifier;
 }
 
 void Resource::setReadOnly( bool value )
@@ -47,16 +99,6 @@ void Resource::setReadOnly( bool value )
 bool Resource::readOnly() const
 {
   return mReadOnly;
-}
-
-void Resource::setFastResource( bool value )
-{
-  mFastResource = value;
-}
-
-bool Resource::fastResource() const
-{
-  return mFastResource;
 }
 
 void Resource::setName( const QString &name )

@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -30,13 +30,13 @@
 #include "resourcefactory.h"
 #include "resourceconfigdlg.h"
 
-using namespace KPIM;
+using namespace KRES;
 
-ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceType,
-    const QString& type, KConfig *config, const char *name )
-  : KDialog( parent, name, true ), mConfig( config )
+ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceFamily,
+    /*const QString& type,*/ Resource* resource, /*KConfig *config, */const char *name )
+  : KDialog( parent, name, true )/*, mConfig( config )*/, mResource( resource )
 {
-  ResourceFactory *factory = ResourceFactory::self( resourceType );
+  ResourceFactory *factory = ResourceFactory::self( resourceFamily );
 
   setCaption( i18n( "Resource Configuration" ) );
   resize( 250, 240 );
@@ -52,9 +52,8 @@ ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceTy
 
   mReadOnly = new QCheckBox( i18n( "Read-only" ), generalGroupBox );
 
-  mFast = new QCheckBox( i18n( "Fast resource" ), generalGroupBox );
-  // we hide this checkbox until we find a meanigfull name :)
-  mFast->hide();
+  mName->setText( mResource->name() );
+  mReadOnly->setChecked( mResource->readOnly() );
 
   mainLayout->addWidget( generalGroupBox );
 
@@ -65,13 +64,13 @@ ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceTy
   mainLayout->addWidget( resourceGroupBox );
   mainLayout->addSpacing( 10 );
 
-  mConfigWidget = factory->configWidget( type, resourceGroupBox );
-  if ( mConfigWidget && mConfig ) {
-    mConfigWidget->loadSettings( mConfig );
+  mConfigWidget = factory->configWidget( resource->type(), resourceGroupBox );
+  if ( mConfigWidget ) { // && mConfig ) {
+    mConfigWidget->loadSettings( mResource );
     mConfigWidget->show();
-    connect( mConfigWidget, SIGNAL( setResourceName( const QString & ) ), SLOT( setResourceName( const QString & ) ) );
+    // connect( mConfigWidget, SIGNAL( setResourceName( const QString & ) ), SLOT( setResourceName( const QString & ) ) );
     connect( mConfigWidget, SIGNAL( setReadOnly( bool ) ), SLOT( setReadOnly( bool ) ) );
-    connect( mConfigWidget, SIGNAL( setFast( bool ) ), SLOT( setFast( bool ) ) );
+    // connect( mConfigWidget, SIGNAL( setFast( bool ) ), SLOT( setFast( bool ) ) );
   }
 
   mButtonBox = new KButtonBox( this );
@@ -89,34 +88,9 @@ int ResourceConfigDlg::exec()
   return QDialog::exec();
 }
 
-bool ResourceConfigDlg::readOnly()
-{
-  return mReadOnly->isChecked();
-}
-
-bool ResourceConfigDlg::fast()
-{
-  return mFast->isChecked();
-}
-
-QString ResourceConfigDlg::resourceName()
-{
-  return mName->text();
-}
-
 void ResourceConfigDlg::setReadOnly( bool value )
 {
   mReadOnly->setChecked( value );
-}
-
-void ResourceConfigDlg::setFast( bool value )
-{
-  mFast->setChecked( value );
-}
-
-void ResourceConfigDlg::setResourceName( const QString &name )
-{
-  mName->setText( name );
 }
 
 void ResourceConfigDlg::accept()
@@ -126,8 +100,14 @@ void ResourceConfigDlg::accept()
     return;
   }
 
-  if ( mConfigWidget && mConfig )
-    mConfigWidget->saveSettings( mConfig );
+  mResource->setName( mName->text() );
+  mResource->setReadOnly( mReadOnly->isChecked() );
+
+  if ( mConfigWidget /*&& mConfig*/ ) {
+    // First save generic information
+    // Also save setting of specific resource type
+    mConfigWidget->saveSettings( mResource );
+  }
 
   QDialog::accept();
 }

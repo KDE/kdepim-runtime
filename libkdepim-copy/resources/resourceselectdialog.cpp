@@ -1,6 +1,7 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,14 +21,15 @@
 
 #include <klocale.h>
 #include <kbuttonbox.h>
+#include <klistbox.h>
 
 #include <qgroupbox.h>
 #include <qlayout.h>
 
+#include "resource.h"
 #include "resourceselectdialog.h"
-#include "resourceselectdialog.moc"
 
-using namespace KPIM;
+using namespace KRES;
 
 ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *parent, const char *name )
     : KDialog( parent, name, true )
@@ -37,7 +39,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
 
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
   mainLayout->setMargin( marginHint() );
-
+    
   QGroupBox *groupBox = new QGroupBox( 2, Qt::Horizontal,  this );
   groupBox->setTitle( i18n( "Resources" ) );
 
@@ -49,7 +51,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
 
   KButtonBox *buttonBox = new KButtonBox( this );
 
-  buttonBox->addStretch();
+  buttonBox->addStretch();    
   buttonBox->addButton( i18n( "&OK" ), this, SLOT( accept() ) );
   buttonBox->addButton( i18n( "&Cancel" ), this, SLOT( reject() ) );
   buttonBox->layout();
@@ -62,9 +64,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
     Resource *resource = list.at( i );
     if ( resource && !resource->readOnly() ) {
       mResourceMap.insert( counter, resource );
-      mResourceId->insertItem( QString( resource->name() ) + " " +
-                  ( resource->fastResource() ? i18n( "(search)" ) :
-                                               QString( "" ) ) );
+      mResourceId->insertItem( resource->name() );
       counter++;
     }
   }
@@ -92,4 +92,6 @@ Resource *ResourceSelectDialog::getResource( QPtrList<Resource> list, QWidget *p
   if ( dlg.exec() == KDialog::Accepted ) return dlg.resource();
   else return 0;
 }
+
+#include "resourceselectdialog.moc"
 

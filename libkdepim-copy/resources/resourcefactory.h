@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -19,8 +19,8 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef KPIM_RESOURCEFACTORY_H
-#define KPIM_RESOURCEFACTORY_H
+#ifndef KRESOURCES_RESOURCEFACTORY_H
+#define KRESOURCES_RESOURCEFACTORY_H
 
 #include <qdict.h>
 #include <qstring.h>
@@ -31,7 +31,7 @@
 #include "resource.h"
 #include "resourceconfigwidget.h"
 
-namespace KPIM {
+namespace KRES {
 
 struct ResourceInfo {
   QString library;
@@ -41,6 +41,7 @@ struct ResourceInfo {
 
 /**
  * Class for loading resource plugins.
+ * Do not use this class directly. Use ResourceManager instead
  *
  * Example:
  *
@@ -63,13 +64,16 @@ public:
   /**
    * Returns the global resource factory.
    */
-  static ResourceFactory *self( QString resourceType );
+  static ResourceFactory *self( const QString& resourceFamily );
+
+  ~ResourceFactory();
 
   /**
    * Returns the config widget for the given resource type,
    * or a null pointer if resource type doesn't exist.
    *
    * @param type   The type of the resource, returned by @ref resources()
+   * @param resource The resource to be editted. 
    * @param parent The parent widget
    */
   ResourceConfigWidget *configWidget( const QString& type, QWidget *parent = 0 );
@@ -80,14 +84,14 @@ public:
    *
    * @param type   The type of the resource, returned by @ref resources()
    * @param ab     The address book, the resource should belong to
-   * @param config The config object where the resource get it settings from
+   * @param config The config object where the resource get it settings from, or 0 if a new resource should be created.
    */
   Resource *resource( const QString& type, const KConfig *config );
 
   /**
    * Returns a list of all available resource types.
    */
-  QStringList resources();
+  QStringList resourceTypeNames();
 
   /**
    * Returns the info structure for a special type.
@@ -95,16 +99,14 @@ public:
   ResourceInfo *info( const QString &type );
 
 protected:
-  ResourceFactory( QString resourceType );
-  ~ResourceFactory();
-
-  QString mResourceType;
+  ResourceFactory( const QString& resourceFamily );
 
 private:
   KLibrary *openLibrary( const QString& libName );
 
-  static ResourceFactory *mSelf;
+  static QDict<ResourceFactory> *mSelves;
 
+  QString mResourceFamily;
   QDict<ResourceInfo> mResourceList;
 };
 

@@ -1,6 +1,7 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -18,19 +19,19 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef KDEPIM_RESOURCESELECTDIALOG_H
-#define KDEPIM_RESOURCESELECTDIALOG_H
+#ifndef KRESOURCES_RESOURCESELECTDIALOG_H
+#define KRESOURCES_RESOURCESELECTDIALOG_H
 
 #include <qobject.h>
 #include <qptrlist.h>
 #include <qmap.h>
 
 #include <kdialog.h>
-#include <klistbox.h>
+class KListBox;
 
-#include "resource.h"
+namespace KRES {
 
-namespace KPIM {
+class Resource;
 
 /**
  * Dialog for selecting a resource.

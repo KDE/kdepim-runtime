@@ -2,16 +2,21 @@ INCLUDES = $(all_includes)
 
 METASOURCES = AUTO
 
-noinst_LTLIBRARIES = libkpimresources.la
+lib_LTLIBRARIES = libkderesources.la
 
-libkpimresources_la_SOURCES = plugin.cpp resource.cpp \
-             resourcefactory.cpp resourceconfigwidget.cpp \
-             resourceconfigdlg.cpp resourceselectdialog.cpp 
-libkpimresources_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
-libkpimresources_la_LIBADD = $(LIB_KIO)
+libkderesources_la_SOURCES = resource.cpp \
+             resourcefactory.cpp resourcemanageriface.skel resourcemanageriface.stub resourcemanagerimpl.cpp \
+	     resourceconfigwidget.cpp resourceconfigdlg.cpp resourceselectdialog.cpp \
+	     resourcesconfigpage.cpp
 
-kdepimincludedir = $(includedir)/kdepim
-kdepiminclude_HEADER = resource.h resourcefactory.h resourceconfigwidget.h \
-	resourceconfigdlg.h resourceselectdialog.h 
-noinst_HEADERS = plugin.h 
+libkderesources_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
+libkderesources_la_LIBADD = $(LIB_KDECORE) $(LIB_KDEUI)
+
+kresincludedir = $(includedir)/kresources
+kresinclude_HEADERS = resource.h resourceconfigwidget.h \
+	 resourcefactory.h resourcemanageriface.h resourcemanagerimpl.h resourcemanager.h \
+         resourceselectdialog.h resourceconfigdlg.h resourcesconfigpage.h 
+        
+# noinst_HEADERS = 
+# plugin.h 
 	

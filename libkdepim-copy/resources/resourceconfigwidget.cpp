@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -21,18 +21,18 @@
 
 #include "resourceconfigwidget.h"
 
-using namespace KPIM;
+using namespace KRES;
 
 ResourceConfigWidget::ResourceConfigWidget( QWidget *parent, const char *name )
     : QWidget( parent, name )
 {
 }
 
-void ResourceConfigWidget::loadSettings( KConfig * )
+void ResourceConfigWidget::loadSettings( Resource* )
 {
 }
 
-void ResourceConfigWidget::saveSettings( KConfig * )
+void ResourceConfigWidget::saveSettings( Resource* )
 {
 }
 

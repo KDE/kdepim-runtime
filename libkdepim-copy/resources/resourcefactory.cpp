@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -26,30 +26,38 @@
 
 #include <qfile.h>
 
+#include "resource.h"
 #include "resourcefactory.h"
 
-using namespace KPIM;
+using namespace KRES;
 
-ResourceFactory *ResourceFactory::mSelf = 0;
+QDict<ResourceFactory> *ResourceFactory::mSelves = 0;
 
-ResourceFactory *ResourceFactory::self( QString resourceType )
+ResourceFactory *ResourceFactory::self( const QString& resourceFamily )
 {
   kdDebug(5700) << "ResourceFactory::self()" << endl;
 
-  if ( !mSelf ) {
-    mSelf = new ResourceFactory( resourceType );
-  }
+  ResourceFactory *factory = 0;
+  if ( ! mSelves )
+    mSelves = new QDict<ResourceFactory>;
 
-  return mSelf;
+  factory = mSelves->find( resourceFamily );
+
+  if ( !factory ) {
+    factory = new ResourceFactory( resourceFamily );
+    mSelves->insert( resourceFamily, factory );
+  } 
+  return factory;
 }
 
-ResourceFactory::ResourceFactory( QString resourceType ) :
-  mResourceType(resourceType)
+ResourceFactory::ResourceFactory( const QString& resourceFamily ) :
+  mResourceFamily( resourceFamily )
 {
   mResourceList.setAutoDelete( true );
 
-  QStringList list = KGlobal::dirs()->findAllResources( "services", 
-      "resources/" + mResourceType + "/*.desktop", true, true );
+  QStringList list = KGlobal::dirs()->findAllResources( "data", 
+      "resources/" + mResourceFamily + "/*.desktop", true, true );
+  // kdDebug() << "Resource list: " << list.toString() << endl;
   for ( QStringList::iterator it = list.begin(); it != list.end(); ++it ) {
     KSimpleConfig config( *it, true );
 
@@ -60,6 +68,7 @@ ResourceFactory::ResourceFactory( QString resourceType ) :
 
     config.setGroup( "Plugin" );
     QString type = config.readEntry( "Type" );
+    kdDebug(5700) << "Found plugin of type " << type << endl;
     info->library = config.readEntry( "X-KDE-Library" );
 	
     config.setGroup( "Misc" );
@@ -75,8 +84,9 @@ ResourceFactory::~ResourceFactory()
   mResourceList.clear();
 }
 
-QStringList ResourceFactory::resources()
+QStringList ResourceFactory::resourceTypeNames()
 {
+  kdDebug(5700) << "ResourceFactory::resourceTypeNames()" << endl;
   QStringList retval;
 	
   QDictIterator<ResourceInfo> it( mResourceList );
@@ -102,9 +112,10 @@ ResourceConfigWidget *ResourceFactory::configWidget( const QString& type, QWidge
   void *widget_func = library->symbol( "config_widget" );
 
   if ( widget_func ) {
+    kdDebug() << "Creating config widget for type " << type << endl;
     widget = ((ResourceConfigWidget* (*)(QWidget *wdg))widget_func)( parent );
   } else {
-    kdDebug( 5700 ) << "'" << libName << "' is not a " + mResourceType + " plugin." << endl;
+    kdDebug( 5700 ) << "'" << libName << "' is not a " + mResourceFamily + " plugin." << endl;
     return 0;
   }
 
@@ -121,6 +132,7 @@ ResourceInfo *ResourceFactory::info( const QString &type )
 
 Resource *ResourceFactory::resource( const QString& type, const KConfig *config )
 {
+  kdDebug() << "ResourceFactory::resource( " << type << ", config)" << endl;
   Resource *resource = 0;
 
   if ( type.isEmpty() )
@@ -135,15 +147,17 @@ Resource *ResourceFactory::resource( const QString& type, const KConfig *config 
   void *resource_func = library->symbol( "resource" );
 
   if ( resource_func ) {
+    kdDebug(5700) << "Creating resource of type " << type << endl;
     resource = ((Resource* (*)(const KConfig *))resource_func)( config );
     resource->setType( type );
-    resource->setNameLabel( mResourceList[ type ]->nameLabel );
-    resource->setDescriptionLabel( mResourceList[ type ]->descriptionLabel );
+//    resource->setNameLabel( mResourceList[ type ]->nameLabel );
+//    resource->setDescriptionLabel( mResourceList[ type ]->descriptionLabel );
   } else {
-    kdDebug( 5700 ) << "'" << libName << "' is not a " + mResourceType + " plugin." << endl;
+    kdDebug( 5700 ) << "'" << libName << "' is not a " + mResourceFamily + " plugin." << endl;
     return 0;
   }
 
+  kdDebug() << "Created resource of type " << type << endl;
   return resource;
 }
 

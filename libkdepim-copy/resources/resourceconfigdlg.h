@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -19,48 +19,48 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef KPIM_RESOURCECONFIGDLG_H
-#define KPIM_RESOURCECONFIGDLG_H
+#ifndef KRESOURCES_RESOURCECONFIGDLG_H
+#define KRESOURCES_RESOURCECONFIGDLG_H
 
 #include <qcheckbox.h>
 
 #include <kbuttonbox.h>
 #include <kdialog.h>
-#include <kconfig.h>
+// #include <kconfig.h>
 #include <klineedit.h>
 
-#include "resourceconfigwidget.h"
+// #include "resource.h"
+// #include "resourceconfigwidget.h"
+
+namespace KRES {
+  class Resource;
+  class ResourceConfigWidget;
 
 class ResourceConfigDlg : KDialog
 {
   Q_OBJECT
 
 public:
-  ResourceConfigDlg( QWidget *parent, const QString& resourceType, 
-	  const QString& type, KConfig *config, const char *name = 0);
-
-  bool readOnly();
-  bool fast();
-  QString resourceName();
+  // Resource=0: create new resource
+  ResourceConfigDlg( QWidget *parent, const QString& resourceFamily, 
+	  /*const QString& type,*/ Resource* resource, /*KConfig *config,*/ const char *name = 0);
 
 public slots:
   int exec();
 
-  void setReadOnly( bool value );
-  void setFast( bool value );
-  void setResourceName( const QString &name );
-
 protected slots:
   void accept();
+  void setReadOnly( bool value );
 
 private:
-  KPIM::ResourceConfigWidget *mConfigWidget;
-  KConfig *mConfig;
+  ResourceConfigWidget *mConfigWidget;
+  Resource* mResource;
 
   KButtonBox *mButtonBox;
   KLineEdit *mName;
   QCheckBox *mReadOnly;
-  QCheckBox *mFast;
 };
+
+}
 
 #endif

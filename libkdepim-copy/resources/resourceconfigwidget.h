@@ -1,5 +1,5 @@
 /*
-    This file is part of libkdepim.
+    This file is part of libkresources.
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2002 Jan-Pascal van Best <janpascal@vanbest.org>
 
@@ -19,14 +19,16 @@
     Boston, MA 02111-1307, USA.
 */
 
-#ifndef KPIM_RESOURCECONFIGWIDGET_H
-#define KPIM_RESOURCECONFIGWIDGET_H
+#ifndef KRESOURCES_RESOURCECONFIGWIDGET_H
+#define KRESOURCES_RESOURCECONFIGWIDGET_H
 
 #include <qwidget.h>
 
 #include <kconfig.h>
 
-namespace KPIM {
+#include "resource.h"
+
+namespace KRES {
 
 class ResourceConfigWidget : public QWidget
 {
@@ -36,13 +38,16 @@ public:
   ResourceConfigWidget( QWidget *parent = 0, const char *name = 0 );
 
 public slots:
-  virtual void loadSettings( KConfig *config );
-  virtual void saveSettings( KConfig *config );
+  virtual void loadSettings( Resource *resource );
+  virtual void saveSettings( Resource *resource );
 
 signals:
-  void setResourceName( const QString &name );
+//  void setResourceName( const QString &name );
   void setReadOnly( bool value );
-  void setFast( bool value );
+//  void setFast( bool value );
+
+protected:
+  Resource* mResource;
 };
 
 }
