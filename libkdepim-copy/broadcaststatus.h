@@ -1,8 +1,11 @@
-/* KMail broadcast status message and related classes
+/*
+  broadcaststatus.h
 
-   Copyright (C) 2000 Don Sanders <sanders@kde.org>
+  This file is part of KDEPIM.
 
-   License GPL
+  Copyright (C) 2000 Don Sanders <sanders@kde.org>
+
+  License GPL
 */
 
 #ifndef __kpim_broadcast_status_h
@@ -17,12 +20,11 @@ namespace KPIM {
 
 class ProgressItem;
 
-/** When KMail is running it is possible to have multiple KMMainWin open
-    at the same time. We want certain messages/information to be displayed
-    in all active KMMainWins. BroadcastStatus make this possible, it
-    defines a singleton object that broadcasts status messages by emitting
-    signals. All KMMainWins connect up these signals to appropriate slots
-    for updating their status bar. */
+/**
+    Provides a singleton which broadcasts status messages by emitting
+    signals. Interested mainwindows can connect to the statusMsg()
+    signal and update statusBars or whatever they use for showing status.
+  */
 
 class BroadcastStatus : public QObject
 {
@@ -54,6 +56,17 @@ public:
                                           bool mLeaveOnServer = false,
                                           KPIM::ProgressItem* progressItem = 0 ); // set the same status in this progress item
 
+  /**
+      Set a status message that will go away again with the next call of
+      reset().
+   */
+  void setTransientStatusMsg( const QString& msg );
+  /**
+      Reset the status message to what ever non-transient message was last
+      active or has since been set.
+   */
+  void reset();
+
 signals:
 
   /** Emitted when setStatusMsg is called. */
@@ -63,6 +76,7 @@ protected:
 
   BroadcastStatus();
   QString mStatusMsg;
+  bool mTransientActive;
   static BroadcastStatus* instance_;
 };
 

@@ -1,7 +1,7 @@
 /*
   progressmanager.h
 
-  This file is part of KMail, the KDE mail client.
+  This file is part of KDEPIM.
 
   Author: Till Adam <adam@kde.org> (C) 2004
 

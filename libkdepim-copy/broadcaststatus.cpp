@@ -1,9 +1,13 @@
-/* Authors: Don Sanders <sanders@kde.org>
+/*
+  broadcaststatus.cpp
 
-   Copyright (C) 2000 Don Sanders <sanders@kde.org>
+  This file is part of KDEPIM.
 
+  Author: Don Sanders <sanders@kde.org>
 
-   License GPL
+  Copyright (C) 2000 Don Sanders <sanders@kde.org>
+
+  License GPL
 */
 
 #ifdef HAVE_CONFIG_H
@@ -36,7 +40,8 @@ BroadcastStatus::BroadcastStatus()
 void BroadcastStatus::setStatusMsg( const QString& message )
 {
   mStatusMsg = message;
-  emit statusMsg( message );
+  if( !mTransientActive )
+    emit statusMsg( message );
 }
 
 void BroadcastStatus::setStatusMsgWithTimestamp( const QString& message )
@@ -131,6 +136,19 @@ void BroadcastStatus::setStatusMsgTransmissionCompleted( const QString& account,
   setStatusMsgWithTimestamp( statusMsg );
   if ( item )
     item->setStatus( statusMsg );
+}
+
+void BroadcastStatus::setTransientStatusMsg( const QString& msg )
+{
+  mTransientActive = true;
+  emit statusMsg( msg );
+}
+
+void BroadcastStatus::reset()
+{
+  mTransientActive = false;
+  // restore
+  emit statusMsg( mStatusMsg );
 }
 
 }
