@@ -57,8 +57,8 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   connect(this,SIGNAL(textChanged(const QString &)),
           SLOT(slotTextChanged(const QString &)));
 
-  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SIGNAL(dateEntered(QDate)));
-  connect(mDatePicker,SIGNAL(dateSelected(QDate)),SIGNAL(dateSelected(QDate)));
+  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SLOT(dateEntered(QDate)));
+  connect(mDatePicker,SIGNAL(dateSelected(QDate)),SLOT(dateSelected(QDate)));
 
   // Create the keyword list. This will be used to match against when the user
   // enters information.
