@@ -10,7 +10,8 @@ libkdepim_la_SOURCES = \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
   kinputdialog.cpp sidebarextension.cpp infoextension.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
-  MailTransportServiceIface.skel AddressBookServiceIface.skel
+  MailTransportServiceIface.skel AddressBookServiceIface.skel \
+  aboutdataextension.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
