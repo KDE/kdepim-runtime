@@ -24,6 +24,8 @@
 #include <klocale.h>
 #include <kdebug.h>
 #include <kconfigskeleton.h>
+#include <kmessagebox.h>
+#include <kapplication.h>
 
 #include <qlistview.h>
 #include <qlayout.h>
@@ -158,6 +160,13 @@ void KConfigWizard::updateChanges()
 void KConfigWizard::readConfig()
 {
   kdDebug() << "KConfigWizard::readConfig()" << endl;
+
+  int result = KMessageBox::warningContinueCancel( this,
+      i18n("Please make sure that the programs which are "
+           "configured by the wizard don't run in parallel to the wizard. "
+           "Otherwise changes done by the wizard could be lost."),
+      i18n("Warning"), i18n("Run wizard now"), "warning_running_instances" );
+  if ( result != KMessageBox::Continue ) kapp->quit();
 
   usrReadConfig();
 }
