@@ -531,3 +531,5 @@ namespace ThreadWeaver {
 
 }
 }
+
+#include "weaver.moc"

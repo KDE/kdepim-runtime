@@ -41,3 +41,5 @@ namespace ThreadWeaver {
 
 }
 }
+
+#include "weaverlogger.moc"

@@ -43,3 +43,5 @@ namespace ThreadWeaver {
 
 }
 }
+
+#include "weaverextensions.moc"
