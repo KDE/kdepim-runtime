@@ -1,4 +1,4 @@
-SUBDIRS = interfaces
+SUBDIRS = cfgc interfaces
 
 INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
 

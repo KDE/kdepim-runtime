@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT cfg (cfgfile,class,group*)>
+
+<!ELEMENT cfgfile EMPTY>
+  <!ATTLIST cfgfile name CDATA #IMPLIED>
+  
+<!ELEMENT class (include?)>
+  <!ATTLIST class name CDATA #REQUIRED>
+  <!ATTLIST class file CDATA #REQUIRED>
+  <!ATTLIST class singleton (true|false) #IMPLIED>
+  <!ATTLIST class inherits CDATA #IMPLIED>
+  <!ATTLIST class membervariables (public|protected|private) #IMPLIED>
+
+<!ELEMENT include EMPTY>
+  <!ATTLIST include file CDATA #REQUIRED>
+  <!ATTLIST include local (true|false) #IMPLIED>
+
+<!ELEMENT group (entry*)>
+  <!ATTLIST group name CDATA #REQUIRED>
+
+<!ELEMENT entry (key?,name?,label,default)>
+  <!ATTLIST entry type CDATA #REQUIRED>
+
+<!ELEMENT key (#PCDATA)>
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT label (#PCDATA)>
+
+<!ELEMENT default (#PCDATA)>
