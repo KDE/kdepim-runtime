@@ -1,36 +1,7 @@
 [Desktop Entry]
 Type=ServiceType
-X-KDE-ServiceType=Komposer/Editor
+X-KDE-ServiceType=Komposer/Plugin
 Name=Komposer Plugin
-Name[bg]=Приставки на Komposer
-Name[ca]=Connector per a Komposer
-Name[cs]=Komposer modul
-Name[cy]=Ategyn Kyfansoddydd
-Name[da]=Brevskriver-plugin
-Name[de]=Komposer-Plugin
-Name[el]=Πρόσθετο του Komposer
-Name[es]=Accesorio Komposer
-Name[et]=Komposeri plugin
-Name[fi]=Komposer liitännäinen
-Name[fr]=Module de Komposer
-Name[hi]=कम्पोज़र प्लगइन
-Name[hu]=Komposer bővítőmodul
-Name[it]=Plugin Komposer
-Name[nb]=Komposer-programtillegg
-Name[nn]=Komposer-programtillegg
-Name[pt]='Plugin' do Kompositor
-Name[pt_BR]=Plug-in do Komposer
-Name[ru]=Модуль композитора KDE
-Name[sl]=Vstavek za Komposer
-Name[sr]=Додатак састављача
-Name[sv]=Komposer-insticksprogram
-Name[ta]=Kம்போசர் சோருகுதல்
-Name[tr]=Komposer Eklentisi
-Name[uk]=Втулок Komposer
-Name[xx]=xxKomposer Pluginxx
-Name[zh_CN]=Komposer 插件
 
-[PropertyDef::X-KDE-KomposerIdentifier]
-Type=QString
-[PropertyDef::X-KDE-KomposerEditorVersion]
+[PropertyDef::X-Komposer-Version]
 Type=int
