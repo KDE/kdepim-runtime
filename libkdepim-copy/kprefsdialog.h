@@ -26,6 +26,7 @@
 #include <qptrlist.h>
 #include <qlineedit.h>
 #include <qvaluelist.h>
+#include <qdatetimeedit.h>
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
