@@ -40,14 +40,14 @@ namespace KPIM {
 
         @param vCard The vCard in string representation.
        */
-      virtual void importVCard( const QString& vCard ) = 0L;
+      virtual void importVCard( const QString& vCard ) = 0;
 
       /**
         This method will add a vcard to the address book.
 
         @param url The url where the vcard is located.
        */
-      virtual void importVCard( const KURL& url ) = 0L;
+      virtual void importVCard( const KURL& url ) = 0;
   };
 
 }

@@ -42,7 +42,7 @@ namespace KPim {
 	   * @return true when the message was send successfully, false on failure.
        **/
       virtual bool sendMessage(const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const KURL::List& attachments) = 0L;
+                               const QString& subject, const QString& body, const KURL::List& attachments) = 0;
       /**
        * This method basically behaves like the one above, but takes only one attachment as QByteArray. This is
        * useful if you want to attach simple text files (e.g. a vCalendar). The mimetype is determined using
@@ -51,7 +51,7 @@ namespace KPim {
        * @return true when the message was send successfully, false on failure.
        **/
       virtual bool sendMessage(const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const QByteArray& attachment) = 0L;
+                               const QString& subject, const QString& body, const QByteArray& attachment) = 0;
 
   };
 
