@@ -45,7 +45,7 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   QString today = KGlobal::locale()->formatDate(value, true);
   insertItem(today);
   setCurrentItem(0);
-  setEditText(today);
+  changeItem(today, 0);
   setMinimumSize(sizeHint());
 
   mDateFrame = new QVBox(0,0,WType_Popup);
@@ -101,7 +101,7 @@ void KDateEdit::setDate(const QDate& newDate)
   // the date
   bool b = signalsBlocked();
   blockSignals(true);
-  setEditText(dateString);
+  changeItem(dateString, 0);
   blockSignals(b);
 
   value = newDate;
@@ -181,7 +181,7 @@ void KDateEdit::popup()
   }
 
   mDateFrame->show();
-#if 0
+
   // The combo box is now shown pressed. Make it show not pressed again
   // by causing its (invisible) list box to emit a 'selected' signal.
   QListBox *lb = listBox();
@@ -190,7 +190,6 @@ void KDateEdit::popup()
     QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
     QApplication::postEvent(lb, keyEvent);
   }
-#endif
 }
 
 void KDateEdit::dateSelected(QDate newDate)
