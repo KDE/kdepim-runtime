@@ -31,6 +31,8 @@
 #include <qlabel.h>
 #include <qbuttongroup.h>
 
+#include <kdepimmacros.h>
+
 extern "C"
 {
   KDE_EXPORT KCModule *create_komposerconfig( QWidget *parent, const char * ) {
