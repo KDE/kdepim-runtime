@@ -29,6 +29,8 @@
 #include <qtextstream.h>
 #include <qurl.h>
 
+#include <kabc/ldapurl.h>
+#include <kabc/ldif.h>
 #include <kapplication.h>
 #include <kconfig.h>
 #include <kdebug.h>
@@ -38,8 +40,6 @@
 #include <kstandarddirs.h>
 
 #include "ldapclient.h"
-#include "ldif.h"
-#include "ldapurl.h"
 
 using namespace KPIM;
 
@@ -47,7 +47,7 @@ class LdapClient::LdapClientPrivate{
 public:
   QString bindDN;
   QString pwdBindDN;
-  LDIF ldif;
+  KABC::LDIF ldif;
   int clientNumber;
   int completionWeight;
 };
@@ -58,7 +58,7 @@ QString LdapObject::toString() const
   for ( LdapAttrMap::ConstIterator it = attrs.begin(); it != attrs.end(); ++it ) {
     QString attr = it.key();
     for ( LdapAttrValue::ConstIterator it2 = (*it).begin(); it2 != (*it).end(); ++it2 ) {
-      result += QString::fromUtf8( LDIF::assembleLine( attr, *it2, 76 ) ) + "\n";
+      result += QString::fromUtf8( KABC::LDIF::assembleLine( attr, *it2, 76 ) ) + "\n";
     }
   }
 
@@ -135,7 +135,7 @@ void LdapClient::setAttrs( const QStringList& attrs )
 void LdapClient::startQuery( const QString& filter )
 {
   cancelQuery();
-  LDAPUrl url;
+  KABC::LDAPUrl url;
 
   url.setProtocol( "ldap" );
   url.setUser( d->bindDN );
@@ -144,7 +144,7 @@ void LdapClient::startQuery( const QString& filter )
   url.setPort( mPort.toUInt() );
   url.setDn( mBase );
   url.setAttributes( mAttrs );
-  url.setScope( mScope == "one" ? LDAPUrl::One : LDAPUrl::Sub );
+  url.setScope( mScope == "one" ? KABC::LDAPUrl::One : KABC::LDAPUrl::Sub );
   url.setFilter( "("+filter+")" );
 
   kdDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
@@ -253,13 +253,13 @@ void LdapClient::parseLDIF( const QByteArray& data )
     d->ldif.endLDIF();
   }
 
-  LDIF::ParseVal ret;
+  KABC::LDIF::ParseVal ret;
   QString name;
   QByteArray value;
   do {
     ret = d->ldif.nextItem();
     switch ( ret ) {
-      case LDIF::Item: 
+      case KABC::LDIF::Item: 
         {
           name = d->ldif.attr();
           value = d->ldif.val();
@@ -271,13 +271,13 @@ void LdapClient::parseLDIF( const QByteArray& data )
           //kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
         }
         break;
-     case LDIF::EndEntry:
+     case KABC::LDIF::EndEntry:
         finishCurrentObject();
         break;
       default:
         break;
     }
-  } while ( ret != LDIF::MoreData );
+  } while ( ret != KABC::LDIF::MoreData );
 }
 
 QString LdapClient::bindDN() const

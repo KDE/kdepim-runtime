@@ -19,7 +19,7 @@ libkdepim_la_SOURCES = \
   kdatepickerpopup.cpp \
   clicklineedit.cpp \
   email.cpp kfileio.cpp configmanager.cpp \
-  collectingprocess.cpp ldapclient.cpp ldapurl.cpp ldif.cpp \
+  collectingprocess.cpp ldapclient.cpp \
   kimproxy.cpp kimiface.stub kimproxyiface.skel \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
