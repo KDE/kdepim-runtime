@@ -33,10 +33,11 @@
 #define __KACCOUNT
 
 #include <qstring.h>
+#include <kdepimmacros.h>
 
 class KConfig;
 
-class KAccount
+class KDE_EXPORT KAccount
 {
   public:
     /** Type information */

@@ -34,6 +34,8 @@
 #include <kio/job.h>
 #include <kabc/ldif.h>
 
+#include <kdepimmacros.h>
+
 namespace KPIM {
 
 class LdapClient;
@@ -129,7 +131,7 @@ class LdapObject
   * We mean it!
   *
   */
-class LdapClient : public QObject
+class KDE_EXPORT LdapClient : public QObject
 {
   Q_OBJECT
 
@@ -232,7 +234,7 @@ typedef QValueList<LdapResult> LdapResultList;
   * We mean it!
   *
   */
-class LdapSearch : public QObject
+class KDE_EXPORT LdapSearch : public QObject
 {
   Q_OBJECT
 

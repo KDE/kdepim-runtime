@@ -34,6 +34,8 @@
 
 #include <qstring.h>
 
+#include <kdepimmacros.h>
+
 /** This class is simply there to provide a namespace for some nice
     enhancements of the mighty @ref QRegExp (Qt3 version) regular
     expression engine, namely the method @ref replace, which can be
@@ -73,7 +75,7 @@
     @see QRegExp
 */
 
-class KRegExp3 : public QRegExp
+class KDE_EXPORT KRegExp3 : public QRegExp
 {
 public:
   KRegExp3()

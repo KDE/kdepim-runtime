@@ -30,6 +30,8 @@ extern "C"
 #include <qmutex.h>
 #include <qevent.h>
 
+#include <kdepimmacros.h>
+
 namespace KPIM {
 namespace ThreadWeaver {
 
@@ -49,22 +51,22 @@ namespace ThreadWeaver {
         Use setDebugLevel () to integrate adapt debug () to your platform.
     */
 
-    extern bool Debug;
-    extern int DebugLevel;
+    KDE_EXPORT extern bool Debug;
+    KDE_EXPORT extern int DebugLevel;
 
-    inline void setDebugLevel (bool debug, int level)
+    KDE_EXPORT inline void setDebugLevel (bool debug, int level)
         {
             Debug = debug;
             DebugLevel = level;
         }
 
-    inline void debug(int severity, const char * cformat, ...)
+    KDE_EXPORT inline void debug(int severity, const char * cformat, ...)
 #ifdef __GNUC__
         __attribute__ ( (format (printf, 2, 3 ) ) )
 #endif
 ;
 
-    inline void debug(int severity, const char * cformat, ...)
+    KDE_EXPORT inline void debug(int severity, const char * cformat, ...)
     {
         if ( Debug == true && ( severity<=DebugLevel || severity == 0) )
         {
@@ -95,7 +97,7 @@ namespace ThreadWeaver {
         Note: Do not create and use SPR/APR events, use Job::triggerSPR or
         Job::triggerAPR to create the requests. */
 
-    class Event : public QCustomEvent
+    class KDE_EXPORT Event : public QCustomEvent
     {
     public:
         enum Action {
@@ -159,7 +161,7 @@ namespace ThreadWeaver {
         Note: When using an APR, you better make sure to receive the signal
         with some object, otherwise the calling thread will block forever!
     */
-    class Job : public QObject
+    class KDE_EXPORT Job : public QObject
     {
         Q_OBJECT
     public:
@@ -244,7 +246,7 @@ namespace ThreadWeaver {
 
     /** The class Thread is used to represent the worker threads in
         the weaver's inventory. It is not meant to be overloaded. */
-    class Thread : public QThread
+    class KDE_EXPORT Thread : public QThread
     {
     public:
         /** Create a thread.
@@ -291,7 +293,7 @@ namespace ThreadWeaver {
 
     /** A weaver is the manager of worker threads (Thread objects) to
         which it assigns jobs from it's queue. */
-    class Weaver : public QObject
+    class KDE_EXPORT Weaver : public QObject
     {
         Q_OBJECT
     public:

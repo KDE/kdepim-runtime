@@ -35,6 +35,7 @@
 #include <qcheckbox.h>
 
 #include <kdialogbase.h>
+#include <kdepimmacros.h>
 #include "kfoldertree.h"
 
 class KSubscription;
@@ -47,7 +48,7 @@ class KAccount;
 
 //==========================================================================
 
-class KGroupInfo
+class KDE_EXPORT KGroupInfo
 {
   public:
     enum Status {
@@ -73,7 +74,7 @@ class KGroupInfo
 
 //==========================================================================
 
-class GroupItem : public QCheckListItem
+class KDE_EXPORT GroupItem : public QCheckListItem
 {
   public:
     GroupItem( QListView *v, const KGroupInfo &gi, KSubscription* browser,
@@ -177,7 +178,7 @@ class GroupItem : public QCheckListItem
 
 //==========================================================================
 
-class KSubscription : public KDialogBase
+class KDE_EXPORT KSubscription : public KDialogBase
 {
   Q_OBJECT
 

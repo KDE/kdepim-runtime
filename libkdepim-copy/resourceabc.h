@@ -26,6 +26,7 @@
 
 #include <kabc/resource.h>
 #include <qmap.h>
+#include <kdepimmacros.h>
 
 // This is here because it can't go to kdelibs/kabc yet, but ultimately
 // it should probably go there (maybe redesigned to have a real object
@@ -39,7 +40,7 @@ namespace KPIM {
  * handle subresources.
  */
 
-class ResourceABC : public KABC::Resource
+class KDE_EXPORT ResourceABC : public KABC::Resource
 {
   Q_OBJECT
 

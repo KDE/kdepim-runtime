@@ -28,9 +28,11 @@
 #include <qpair.h>
 #include <qstringlist.h>
 
+#include <kdepimmacros.h>
+
 namespace KPIM {
 
-class DesignerFields : public QWidget
+class KDE_EXPORT DesignerFields : public QWidget
 {
     Q_OBJECT
   public:

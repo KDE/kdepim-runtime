@@ -28,9 +28,13 @@
 #include <qstring.h>
 #include <qcstring.h>
 
+#include <kdepimmacros.h>
+
 namespace KPim {
 
+#define MailTransportServiceIface KDE_EXPORT MailTransportServiceIface
   class MailTransportServiceIface : virtual public DCOPObject
+#undef MailTransportServiceIface
   {
     K_DCOP
       

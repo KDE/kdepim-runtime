@@ -173,7 +173,7 @@ QByteArray kFileToBytes(const QString &aFileName, bool aVerbose)
 #endif
 
 //-----------------------------------------------------------------------------
-bool kBytesToFile(const char* aBuffer, int len,
+KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
 		   const QString &aFileName,
 		   bool aAskIfExists, bool aBackup, bool aVerbose)
 {
@@ -253,14 +253,14 @@ bool kBytesToFile(const char* aBuffer, int len,
   return TRUE;
 }
 
-bool kCStringToFile(const QCString& aBuffer, const QString &aFileName,
+KDE_EXPORT bool kCStringToFile(const QCString& aBuffer, const QString &aFileName,
 		   bool aAskIfExists, bool aBackup, bool aVerbose)
 {
     return kBytesToFile(aBuffer, aBuffer.length(), aFileName, aAskIfExists,
 	aBackup, aVerbose);
 }
 
-bool kByteArrayToFile(const QByteArray& aBuffer, const QString &aFileName,
+KDE_EXPORT bool kByteArrayToFile(const QByteArray& aBuffer, const QString &aFileName,
 		   bool aAskIfExists, bool aBackup, bool aVerbose)
 {
     return kBytesToFile(aBuffer, aBuffer.size(), aFileName, aAskIfExists,

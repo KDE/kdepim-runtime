@@ -29,6 +29,8 @@
 #include "qtextcodec.h"
 #endif
 
+#include <kdepimmacros.h>
+
 #ifndef QT_NO_TEXTCODEC
 
 /** This is a @ref QTextCodec for the UTF-7 transformation of Unicode,
@@ -44,7 +46,7 @@
     @short A QTextCodec for the UTF-7 transformation of Unicode.
     @author Marc Mutz <mutz@kde.org> */
 
-class Q_EXPORT QUtf7Codec : public QTextCodec {
+class KDE_EXPORT QUtf7Codec : public QTextCodec {
     bool encOpt, encLwsp;
 public:
     QUtf7Codec() : QTextCodec() {}
@@ -80,7 +82,7 @@ public:
     @short A variant of @ref QUtf7Codec, which protectes certain
     characters in MIME transport
     @author Marc Mutz <mutz@kde.org> */
-class Q_EXPORT QStrictUtf7Codec : public QUtf7Codec {
+class KDE_EXPORT QStrictUtf7Codec : public QUtf7Codec {
 public:
   QStrictUtf7Codec() : QUtf7Codec() {}
 

@@ -23,6 +23,7 @@
 #include <kdialogbase.h>
 #include <libkdepim/kpixmapregionselectorwidget.h>
 #include <qimage.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 
@@ -40,7 +41,7 @@ namespace KPIM {
  * @author Antonio Larrosa <larrosa@kde.org>
  * @since 3.4
  */ 
-class KPixmapRegionSelectorDialog : public KDialogBase
+class KDE_EXPORT KPixmapRegionSelectorDialog : public KDialogBase
 {
 public:
    /**

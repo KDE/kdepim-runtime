@@ -23,13 +23,14 @@
 #define KPIM_CATEGORYSELECTDIALOG_H
 
 #include <kdialogbase.h>
+#include <kdepimmacros.h>
 
 class KPimPrefs;
 class CategorySelectDialog_base;
 
 namespace KPIM {
 
-class CategorySelectDialog : public KDialogBase
+class KDE_EXPORT CategorySelectDialog : public KDialogBase
 { 
     Q_OBJECT
   public:

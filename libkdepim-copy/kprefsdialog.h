@@ -233,7 +233,7 @@ class KDE_EXPORT KPrefsWidDate : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KPrefsWidColor : public KPrefsWid
+class KDE_EXPORT KPrefsWidColor : public KPrefsWid
 {
     Q_OBJECT
   public:

@@ -26,6 +26,7 @@
 #include <kabc/distributionlist.h>
 #include <kabc/resource.h>
 #include <kdialogbase.h>
+#include <kdepimmacros.h>
 
 #include <qbitarray.h>
 #include <qpixmap.h>
@@ -38,7 +39,7 @@ class QSignalMapper;
 
 namespace KPIM {
 
-class Selection
+class KDE_EXPORT Selection
 {
   friend class AddresseeSelector;
 
@@ -160,7 +161,7 @@ class SelectionItem
     QBitArray mField;
 };
 
-class AddresseeSelector : public QWidget
+class KDE_EXPORT AddresseeSelector : public QWidget
 {
   Q_OBJECT
 
@@ -209,7 +210,7 @@ class AddresseeSelector : public QWidget
     AddressBookManager *mAddressBookManager;
 };
 
-class AddresseeSelectorDialog : public KDialogBase
+class KDE_EXPORT AddresseeSelectorDialog : public KDialogBase
 {
   Q_OBJECT
 

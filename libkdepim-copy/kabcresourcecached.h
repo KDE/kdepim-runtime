@@ -22,12 +22,13 @@
 #define KABC_RESOURCECACHED_H
 
 #include <kabc/resource.h>
+#include <kdepimmacros.h>
 
 #include "libemailfunctions/idmapper.h"
 
 namespace KABC {
 
-class ResourceCached : public Resource
+class KDE_EXPORT ResourceCached : public Resource
 {
   Q_OBJECT
 

@@ -24,6 +24,7 @@
 #define LINKLOCATOR_H_INCLUDED
 
 #include <qstring.h>
+#include <kdepimmacros.h>
 
 /**
  * LinkLocator assists in identifying sections of text that can
@@ -35,7 +36,7 @@
  * @short Identifies URLs and email addresses embedded in plaintext.
  * @author Dave Corrie <kde@davecorrie.com>
  */
-class LinkLocator
+class KDE_EXPORT LinkLocator
 {
 public:
   /**

@@ -27,6 +27,7 @@
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
 #include <kimproxy.h>
+#include <kdepimmacros.h>
 
 namespace KIO {
 class Job;
@@ -39,7 +40,7 @@ class QPopupMenu;
 namespace KPIM {
 
 
-class AddresseeView : public KTextBrowser
+class KDE_EXPORT AddresseeView : public KTextBrowser
 {
   Q_OBJECT
   public:

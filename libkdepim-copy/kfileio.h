@@ -45,7 +45,7 @@ bool kCStringToFile(const QCString& buffer, const QString &fileName,
 		   bool askIfExists=false, bool createBackup=true,
 		   bool withDialogs=true) KDE_EXPORT;
 /** Does not stop at NUL */
-bool kByteArrayToFile(const QByteArray& buffer, const QString &fileName,
+KDE_EXPORT bool kByteArrayToFile(const QByteArray& buffer, const QString &fileName,
 		   bool askIfExists=false, bool createBackup=true,
 		   bool withDialogs=true) KDE_EXPORT;
 

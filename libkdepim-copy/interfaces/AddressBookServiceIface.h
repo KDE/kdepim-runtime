@@ -27,10 +27,13 @@
 #include <kurl.h>
 #include <qstring.h>
 #include <qcstring.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 
+#define AddressBookServiceIface KDE_EXPORT AddressBookServiceIface 
   class AddressBookServiceIface : virtual public DCOPObject
+#undef AddressBookServiceIface
   {
     K_DCOP
 

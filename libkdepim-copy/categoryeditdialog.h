@@ -22,13 +22,14 @@
 #define KPIM_CATEGORYEDITDIALOG_H
 
 #include <kdialogbase.h>
+#include <kdepimmacros.h>
 
 class KPimPrefs;
 class CategoryEditDialog_base;
 
 namespace KPIM {
 
-class CategoryEditDialog : public KDialogBase
+class KDE_EXPORT CategoryEditDialog : public KDialogBase
 {
     Q_OBJECT
   public:

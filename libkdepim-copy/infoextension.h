@@ -21,6 +21,7 @@
 #define  INFOEXTENSION_H
 
 #include <qobject.h>
+#include <kdepimmacros.h>
 
 class QWidget;
 
@@ -32,7 +33,7 @@ namespace KParts
   /**
    * Provides a way to get information out of a PIM-Part
    **/
-	class InfoExtension : public QObject
+	class KDE_EXPORT InfoExtension : public QObject
 	{
 		Q_OBJECT
 

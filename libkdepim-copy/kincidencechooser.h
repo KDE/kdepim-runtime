@@ -27,6 +27,7 @@
 #include <kdialogbase.h>
 #include <qptrlist.h>
 #include <qmutex.h>
+#include <kdepimmacros.h>
 
 #include <libkcal/incidence.h>
 #include "htmldiffalgodisplay.h"
@@ -43,7 +44,7 @@ class QTextBrowser;
 /** Dialog to change the korganizer configuration.
   */
 
-class KIncidenceChooser : public KDialog
+class KDE_EXPORT KIncidenceChooser : public KDialog
 {
     Q_OBJECT
 public:

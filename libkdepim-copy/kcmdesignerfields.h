@@ -23,6 +23,7 @@
 #define KPIM_KCMDESIGNERFIELDS_H
 
 #include <kcmodule.h>
+#include <kdepimmacros.h>
 
 class KListView;
 
@@ -32,7 +33,7 @@ class QPushButton;
 
 namespace KPIM {
 
-class KCMDesignerFields : public KCModule
+class KDE_EXPORT KCMDesignerFields : public KCModule
 {
   Q_OBJECT
 

@@ -76,7 +76,7 @@ namespace KPIM {
    *
    **/
   template< typename T, typename T_config >
-  class PluginLoader : public PluginLoaderBase {
+  class KDE_EXPORT PluginLoader : public PluginLoaderBase {
   protected:
     PluginLoader() : PluginLoaderBase() {}
 
@@ -122,7 +122,7 @@ namespace KPIM {
 
 #define KPIM_DEFINE_PLUGIN_LOADER( pl, t, mf, p ) \
   namespace { /* don't pollute namespaces */ \
-    struct pl##Config { \
+    struct KDE_EXPORT pl##Config { \
       static const char * const mainfunc; \
       static const char * const path; \
     }; \
