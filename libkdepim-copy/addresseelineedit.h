@@ -44,6 +44,7 @@ namespace KPIM {
 class LdapSearch;
 class LdapResult;
 typedef QValueList<LdapResult> LdapResultList;
+typedef QMap<QString, int> CompletionItemsMap;
 }
 
 namespace KPIM {
@@ -105,6 +106,7 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     void stopLDAPLookup();
 
     void setCompletedItems( const QStringList& items, bool autoSuggest );
+    void addCompletionItem( const QString& string, int weight );
     QString completionSearchText( QString& );
 
     QString m_previousAddresses;
@@ -118,6 +120,7 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
 
     static bool s_addressesDirty;
     static KCompletion *s_completion;
+    static CompletionItemsMap* s_completionItemMap;
     static QTimer *s_LDAPTimer;
     static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;

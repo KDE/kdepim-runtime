@@ -54,6 +54,7 @@
 using namespace KPIM;
 
 KCompletion * AddresseeLineEdit::s_completion = 0L;
+KPIM::CompletionItemsMap* AddresseeLineEdit::s_completionItemMap = 0L;
 bool AddresseeLineEdit::s_addressesDirty = false;
 QTimer* AddresseeLineEdit::s_LDAPTimer = 0L;
 KPIM::LdapSearch* AddresseeLineEdit::s_LDAPSearch = 0L;
@@ -61,6 +62,7 @@ QString* AddresseeLineEdit::s_LDAPText = 0L;
 AddresseeLineEdit* AddresseeLineEdit::s_LDAPLineEdit = 0L;
 
 static KStaticDeleter<KCompletion> completionDeleter;
+static KStaticDeleter<KPIM::CompletionItemsMap> completionItemsDeleter;
 static KStaticDeleter<QTimer> ldapTimerDeleter;
 static KStaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
 static KStaticDeleter<QString> ldapTextDeleter;
@@ -99,6 +101,8 @@ void AddresseeLineEdit::init()
     completionDeleter.setObject( s_completion, new KCompletion() );
     s_completion->setOrder( KCompletion::Weighted );
     s_completion->setIgnoreCase( true );
+
+    completionItemsDeleter.setObject( s_completionItemMap, new KPIM::CompletionItemsMap() );
   }
 
 //  connect( s_completion, SIGNAL( match( const QString& ) ),
@@ -483,11 +487,66 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
     if( '\0' == (*it)[len-1] )
       --len;
     const QString tmp = (*it).left( len );
-    //kdDebug(5300) << "     AddresseeLineEdit::addContact() \"" << tmp << "\"" << endl;
-    QString fullEmail = addr.fullEmail( tmp );
-    //kdDebug(5300) << "                                     \"" << fullEmail << "\"" << endl;
-    s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
+    const QString fullEmail = addr.fullEmail( tmp );
+    //kdDebug(5300) << "AddresseeLineEdit::addContact() \"" << fullEmail << "\" weight=" << weight << endl;
+    addCompletionItem( fullEmail.simplifyWhiteSpace(), weight );
+    // Try to guess the last name: if found, we add an extra
+    // entry to the list to make sure completion works even
+    // if the user starts by typing in the last name.
+    QString name( addr.realName().simplifyWhiteSpace() );
+    if( name.endsWith("\"") )
+      name.truncate( name.length()-1 );
+    if( name.startsWith("\"") )
+      name = name.mid( 1 );
+
+    // While we're here also add "email (full name)" for completion on the email
+    if ( !name.isEmpty() )
+      addCompletionItem( addr.preferredEmail() + " (" + name + ")", weight );
+
+    bool bDone = false;
+    int i = 1;
+    do{
+      i = name.findRev(' ');
+      if( 1 < i ){
+        QString sLastName( name.mid(i+1) );
+        if( ! sLastName.isEmpty() &&
+            2 <= sLastName.length() &&   // last names must be at least 2 chars long
+            ! sLastName.endsWith(".") ){ // last names must not end with a dot (like "Jr." or "Sr.")
+          name.truncate( i );
+          if( !name.isEmpty() ){
+            sLastName.prepend( "\"" );
+            sLastName.append( ", " + name + "\" <" );
+          }
+          QString sExtraEntry( sLastName );
+          sExtraEntry.append( tmp.isEmpty() ? addr.preferredEmail() : tmp );
+          sExtraEntry.append( ">" );
+          //kdDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplifyWhiteSpace() << "\" weight=" << weight << endl;
+          addCompletionItem( sExtraEntry.simplifyWhiteSpace(), weight );
+          bDone = true;
+        }
+      }
+      if( !bDone ){
+        name.truncate( i );
+        if( name.endsWith("\"") )
+          name.truncate( name.length()-1 );
+      }
+    }while( 1 < i && !bDone );
   }
+}
+
+void AddresseeLineEdit::addCompletionItem( const QString& string, int weight )
+{
+  // Check if there is an exact match for item already, and use the max weight if so.
+  // Since there's no way to get the information from KCompletion, we have to keep our own QMap
+  CompletionItemsMap::iterator it = s_completionItemMap->begin();
+  if ( it != s_completionItemMap->end() ) {
+    weight = QMAX( *it, weight );
+    *it = weight;
+  } else {
+    s_completionItemMap->insert( string, weight );
+  }
+
+  s_completion->addItem( string, weight );
 }
 
 void AddresseeLineEdit::slotStartLDAPLookup()
@@ -502,6 +561,7 @@ void AddresseeLineEdit::stopLDAPLookup()
 {
   s_LDAPSearch->cancelSearch();
   s_LDAPLineEdit = NULL;
+  s_completionItemMap->clear();
 }
 
 void AddresseeLineEdit::startLoadingLDAPEntries()
