@@ -72,6 +72,8 @@ class AddresseeView : public KTextBrowser
 
     void highlightedMessage( const QString &message );
 
+    void addressClicked( const QString &uid );
+
   protected:
     virtual void urlClicked( const QString &url );
     virtual void emailClicked( const QString &mail );

@@ -219,13 +219,19 @@ void AddresseeView::updateView()
 
         formattedAddress = formattedAddress.replace( '\n', "<br>" );
 
+        QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
+                       formattedAddress + "</a>";
+
         dynamicPart += rowFmtStr
           .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-          .arg( formattedAddress );
+          .arg( link );
       } else {
+        QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
+                       (*addrIt).label().replace( '\n', "<br>" ) + "</a>";
+
         dynamicPart += rowFmtStr
           .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-          .arg( (*addrIt).label().replace( '\n', "<br>" ) );
+          .arg( link );
       }
     }
   }
@@ -372,6 +378,8 @@ void AddresseeView::slotUrlClicked( const QString &url )
     phoneNumberClicked( strippedNumber( url.mid( 8 ) ) );
   else if ( url.startsWith( "fax:" ) )
     faxNumberClicked( strippedNumber( url.mid( 6 ) ) );
+  else if ( url.startsWith( "addr:" ) )
+    emit addressClicked( url.mid( 7 ) );
   else
     urlClicked( url );
 }
@@ -393,6 +401,8 @@ void AddresseeView::slotHighlighted( const QString &link )
 
     emit faxNumberHighlighted( strippedNumber( number ) );
     emit highlightedMessage( i18n( "Send fax to %1" ).arg( number ) );
+  } else if ( link.startsWith( "addr:" ) ) {
+    emit highlightedMessage( i18n( "Show address on map" ) );
   } else if ( link.startsWith( "http:" ) ) {
     emit urlHighlighted( link );
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
