@@ -41,6 +41,8 @@
 #include <kstringhandler.h>
 #include <ktempfile.h>
 
+#include <kdebug.h>
+
 #include "addresseeview.h"
 
 using namespace KPIM;
@@ -48,7 +50,7 @@ using namespace KPIM;
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
                               KConfig *config )
   : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
-    mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks )
+    mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks )
 {
   setWrapPolicy( QTextEdit::AtWordBoundary );
   setLinkUnderline( false );
@@ -94,6 +96,9 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
     mConfig = config;
 
   load();
+  
+  mKIMProxy = new ::KIMProxy( kapp->dcopClient() );
+  //connect( mKIMProxy, SIGNAL( sigContactStatusChanged( QString ) ), this, SLOT( statusChanged( ) ) );
 }
 
 AddresseeView::~AddresseeView()
@@ -107,6 +112,8 @@ AddresseeView::~AddresseeView()
   delete mActionShowEmails;
   delete mActionShowPhones;
   delete mActionShowURLs;
+  
+  delete mKIMProxy;
 }
 
 void AddresseeView::setAddressee( const KABC::Addressee& addr )
@@ -128,10 +135,11 @@ void AddresseeView::enableLinks( int linkMask )
   mLinkMask = linkMask;
 }
 
-QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
+QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, int linkMask,
                                     bool internalLoading,
                                     bool showBirthday, bool showAddresses,
-                                    bool showEmails, bool showPhones, bool showURLs )
+                                    bool showEmails, bool showPhones, bool showURLs,
+                                    bool showIMAddresses )
 {
   QString name = ( addr.formattedName().isEmpty() ?
                    addr.assembledName() : addr.formattedName() );
@@ -335,7 +343,37 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
     name = addr.organization();
     organization = QString::null;
   }
+ 
+  if ( showIMAddresses )
+  {
+    if ( proxy->isPresent( addr.uid() ) )
+    {
+      // set image source to either a QMimeSourceFactory key or a data:/ URL
+      QString imgSrc;
+      if ( internalLoading )
+      {
+        imgSrc = QString::fromLatin1( "im_status_%1_image").arg( addr.uid() );
+        QMimeSourceFactory::defaultFactory()->setPixmap( imgSrc, proxy->presenceIcon( addr.uid() ) );
+      }
+      else
+        imgSrc = pixmapAsDataUrl( proxy->presenceIcon( addr.uid() ) );
 
+      // make the status a link, if required
+      QString imStatus;
+      if ( linkMask & IMLinks )
+        imStatus = QString::fromLatin1( "<a href=\"im:\"><img src=\"%1\"> (%2)</a>" );
+      else
+        imStatus = QString::fromLatin1( "<img src=\"%1\"> (%2)" );
+
+      // append our status to the rest of the dynamic part of the addressee
+      dynamicPart += rowFmtStr
+              .arg( i18n( "IM Status" ) )
+              .arg( imStatus
+                        .arg( imgSrc )
+                        .arg( proxy->presenceString( addr.uid() ) )
+                  );
+    }
+  }
 
   // @STYLE@ - construct the string by parts, substituting in
   // the styles first. There are lots of appends, but we need to
@@ -403,7 +441,7 @@ void AddresseeView::updateView()
     mImageData.truncate( 0 );
   }
 
-  QString strAddr = vCardAsHTML( mAddressee, mLinkMask, true,
+  QString strAddr = vCardAsHTML( mAddressee, mKIMProxy, mLinkMask, true,
                                  mActionShowBirthday->isChecked(),
                                  mActionShowAddresses->isChecked(),
                                  mActionShowEmails->isChecked(),
@@ -441,7 +479,7 @@ void AddresseeView::updateView()
         KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
     }
   }
-
+  
   // at last display it...
   setText( strAddr );
 }
@@ -491,6 +529,11 @@ void AddresseeView::faxNumberClicked( const QString &number )
   KRun::runCommand( commandLine );
 }
 
+void AddresseeView::imAddressClicked()
+{
+  mKIMProxy->chatWithContact( mAddressee.uid() );
+}
+
 QPopupMenu *AddresseeView::createPopupMenu( const QPoint& )
 {
   QPopupMenu *menu = new QPopupMenu( this );
@@ -516,6 +559,8 @@ void AddresseeView::slotUrlClicked( const QString &url )
     faxNumberClicked( strippedNumber( url.mid( 6 ) ) );
   else if ( url.startsWith( "addr:" ) )
     emit addressClicked( url.mid( 7 ) );
+  else if ( url.startsWith( "im:" ) )
+    imAddressClicked();
   else
     urlClicked( url );
 }
@@ -542,6 +587,9 @@ void AddresseeView::slotHighlighted( const QString &link )
   } else if ( link.startsWith( "http:" ) || link.startsWith( "https:" ) ) {
     emit urlHighlighted( link );
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
+  } else if ( link.startsWith( "im:" ) ) {
+    emit highlightedMessage( i18n( "Chat with %1" ).arg( ( mAddressee.formattedName().isEmpty() ?
+                   mAddressee.assembledName() : mAddressee.formattedName() ) ) );
   } else
     emit highlightedMessage( "" );
 }

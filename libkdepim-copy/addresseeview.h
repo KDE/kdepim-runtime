@@ -26,6 +26,7 @@
 
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
+#include "kimproxy.h"
 
 namespace KIO {
 class Job;
@@ -34,12 +35,13 @@ class KToggleAction;
 
 class QPopupMenu;
 
+
 namespace KPIM {
+
 
 class AddresseeView : public KTextBrowser
 {
   Q_OBJECT
-
   public:
     /**
       Constructor.
@@ -69,7 +71,7 @@ class AddresseeView : public KTextBrowser
       This enums are used by enableLinks to set which kind of links shall
       be enabled.
      */
-    enum LinkMask { AddressLinks = 1, EmailLinks = 2, PhoneLinks = 4, URLLinks = 8 };
+    enum LinkMask { AddressLinks = 1, EmailLinks = 2, PhoneLinks = 4, URLLinks = 8, IMLinks = 16 };
 
     /**
       Sets which parts of the contact shall be presented as links.
@@ -94,6 +96,7 @@ class AddresseeView : public KTextBrowser
                         "mailto:<email address>" for emails
                         "phone://<phone number>" for phone numbers
                         "http://<url>" for urls
+                        "im:<im addrss>" for instant messaging addresses
       @param internalLoading If true, the loading of internal pictures is done automatically.
       @param showBirthday If true, the birthday is included.
       @param showAddresses If true, the addresses are included.
@@ -101,11 +104,11 @@ class AddresseeView : public KTextBrowser
       @param showPhones If true, the phone numbers are included.
       @param showURLs If true, the urls are included.
      */
-    static QString vCardAsHTML( const KABC::Addressee& addr, int linkMask = true,
+    static QString vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, int linkMask = true,
                                 bool internalLoading = true,
                                 bool showBirthday = true, bool showAddresses = true,
                                 bool showEmails = true, bool showPhones = true,
-                                bool showURLs = true );
+                                bool showURLs = true, bool showIMAddresses = true );
     /**
      * Encodes a QPixmap as a PNG into a data: URL (rfc2397), readable by the data kio protocol
      * @param pixmap the pixmap to encode
@@ -128,7 +131,8 @@ class AddresseeView : public KTextBrowser
     virtual void emailClicked( const QString &mail );
     virtual void phoneNumberClicked( const QString &number );
     virtual void faxNumberClicked( const QString &number );
-
+    virtual void imAddressClicked();
+    
     virtual QPopupMenu *createPopupMenu( const QPoint& );
 
   private slots:
@@ -165,6 +169,7 @@ class AddresseeView : public KTextBrowser
 
     class AddresseeViewPrivate;
     AddresseeViewPrivate *d;
+    ::KIMProxy *mKIMProxy;
 };
 
 }
