@@ -42,22 +42,21 @@
 #include "kprefsdialog.h"
 #include "kprefsdialog.moc"
 
-KPrefsWidBool::KPrefsWidBool(const QString &text,bool *reference,
+KPrefsWidBool::KPrefsWidBool(const QString &text,bool &reference,
                              QWidget *parent)
+  : mReference( reference )
 {
-  mReference = reference;
-
   mCheck = new QCheckBox(text,parent);
 }
 
 void KPrefsWidBool::readConfig()
 {
-  mCheck->setChecked(*mReference);
+  mCheck->setChecked(mReference);
 }
 
 void KPrefsWidBool::writeConfig()
 {
-  *mReference = mCheck->isChecked();
+  mReference = mCheck->isChecked();
 }
 
 QCheckBox *KPrefsWidBool::checkBox()
@@ -66,11 +65,10 @@ QCheckBox *KPrefsWidBool::checkBox()
 }
 
 
-KPrefsWidColor::KPrefsWidColor(const QString &text,QColor *reference,
+KPrefsWidColor::KPrefsWidColor(const QString &text,QColor &reference,
                                QWidget *parent)
+  : mReference( reference )
 {
-  mReference = reference;
-
   mButton = new KColorButton(parent);
   mLabel = new QLabel(mButton, text, parent);
 }
@@ -82,12 +80,12 @@ KPrefsWidColor::~KPrefsWidColor()
 
 void KPrefsWidColor::readConfig()
 {
-  mButton->setColor(*mReference);
+  mButton->setColor(mReference);
 }
 
 void KPrefsWidColor::writeConfig()
 {
-  *mReference = mButton->color();
+  mReference = mButton->color();
 }
 
 QLabel *KPrefsWidColor::label()
@@ -101,10 +99,9 @@ KColorButton *KPrefsWidColor::button()
 }
 
 KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &labelText,
-                             QFont *reference,QWidget *parent)
+                             QFont &reference,QWidget *parent)
+  : mReference( reference )
 {
-  mReference = reference;
-
   mLabel = new QLabel(labelText, parent);
 
   mPreview = new QLabel(sampleText,parent);
@@ -120,12 +117,12 @@ KPrefsWidFont::~KPrefsWidFont()
 
 void KPrefsWidFont::readConfig()
 {
-  mPreview->setFont(*mReference);
+  mPreview->setFont(mReference);
 }
 
 void KPrefsWidFont::writeConfig()
 {
-  *mReference = mPreview->font();
+  mReference = mPreview->font();
 }
 
 QLabel *KPrefsWidFont::label()
@@ -153,11 +150,10 @@ void KPrefsWidFont::selectFont()
 }
 
 
-KPrefsWidTime::KPrefsWidTime(const QString &text,int *reference,
+KPrefsWidTime::KPrefsWidTime(const QString &text,int &reference,
                              QWidget *parent)
+  : mReference( reference )
 {
-  mReference = reference;
-
   mLabel = new QLabel(text,parent);
   mSpin = new QSpinBox(0,23,1,parent);
   mSpin->setSuffix(":00");
@@ -165,12 +161,12 @@ KPrefsWidTime::KPrefsWidTime(const QString &text,int *reference,
 
 void KPrefsWidTime::readConfig()
 {
-  mSpin->setValue(*mReference);
+  mSpin->setValue(mReference);
 }
 
 void KPrefsWidTime::writeConfig()
 {
-  *mReference = mSpin->value();
+  mReference = mSpin->value();
 }
 
 QLabel *KPrefsWidTime::label()
@@ -184,12 +180,12 @@ QSpinBox *KPrefsWidTime::spinBox()
 }
 
 
-KPrefsWidRadios::KPrefsWidRadios(const QString &text,int *reference,
-                QWidget *parent)
+KPrefsWidRadios::KPrefsWidRadios(const QString &text,int &reference,
+                                 QWidget *parent)
+  : mReference( reference )
 {
-  mReference = reference;
-
   mBox = new QButtonGroup(1,Qt::Horizontal,text,parent);
+  connect( mBox, SIGNAL( clicked( int ) ), SIGNAL( changed() ) );
 }
 
 KPrefsWidRadios::~KPrefsWidRadios()
@@ -208,20 +204,19 @@ QButtonGroup *KPrefsWidRadios::groupBox()
 
 void KPrefsWidRadios::readConfig()
 {
-  mBox->setButton(*mReference);
+  mBox->setButton(mReference);
 }
 
 void KPrefsWidRadios::writeConfig()
 {
-  *mReference = mBox->id(mBox->selected());
+  mReference = mBox->id(mBox->selected());
 }
 
 
-KPrefsWidString::KPrefsWidString(const QString &text,QString *reference,
+KPrefsWidString::KPrefsWidString(const QString &text,QString &reference,
                                  QWidget *parent, QLineEdit::EchoMode echomode)
+  : mReference( reference )
 {
-  mReference = reference;
-  
   mLabel = new QLabel(text,parent);
   mEdit = new QLineEdit(parent);
   mEdit->setEchoMode( echomode );
@@ -233,12 +228,12 @@ KPrefsWidString::~KPrefsWidString()
 
 void KPrefsWidString::readConfig()
 {
-  mEdit->setText(*mReference);
+  mEdit->setText(mReference);
 }
 
 void KPrefsWidString::writeConfig()
 {
-  *mReference = mEdit->text();
+  mReference = mEdit->text();
 }
 
 QLabel *KPrefsWidString::label()
@@ -252,13 +247,102 @@ QLineEdit *KPrefsWidString::lineEdit()
 }
 
 
-KPrefsDialog::KPrefsDialog(KPrefs *prefs,QWidget *parent,char *name,bool modal) :
-  KDialogBase(IconList,i18n("Preferences"),Ok|Apply|Cancel|Default,Ok,parent,
-              name,modal,true)
+KPrefsWidManager::KPrefsWidManager( KPrefs *prefs )
+  : mPrefs( prefs )
 {
-  mPrefs = prefs;
+}
 
-// This seems to cause a crash on exit. Investigate later.
+KPrefsWidManager::~KPrefsWidManager()
+{
+}
+
+void KPrefsWidManager::addWid(KPrefsWid *wid)
+{
+  mPrefsWids.append(wid);
+}
+
+KPrefsWidBool *KPrefsWidManager::addWidBool(const QString &text,bool &reference,QWidget *parent)
+{
+  KPrefsWidBool *w = new KPrefsWidBool(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidTime *KPrefsWidManager::addWidTime(const QString &text,int &reference,QWidget *parent)
+{
+  KPrefsWidTime *w = new KPrefsWidTime(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidColor *KPrefsWidManager::addWidColor(const QString &text,QColor &reference,QWidget *parent)
+{
+  KPrefsWidColor *w = new KPrefsWidColor(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidRadios *KPrefsWidManager::addWidRadios(const QString &text,int &reference,QWidget *parent)
+{
+  KPrefsWidRadios *w = new KPrefsWidRadios(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidString *KPrefsWidManager::addWidString(const QString &text,QString &reference,QWidget *parent)
+{
+  KPrefsWidString *w = new KPrefsWidString(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidString *KPrefsWidManager::addWidPassword(const QString &text,QString &reference,QWidget *parent)
+{
+  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidFont *KPrefsWidManager::addWidFont(const QString &sampleText,const QString &buttonText,
+                                            QFont &reference,QWidget *parent)
+{
+  KPrefsWidFont *w = new KPrefsWidFont(sampleText,buttonText,reference,parent);
+  addWid(w);
+  return w;
+}
+
+void KPrefsWidManager::setWidDefaults()
+{
+  mPrefs->setDefaults();
+  
+  readWidConfig();
+}
+
+void KPrefsWidManager::readWidConfig()
+{
+  KPrefsWid *wid;
+  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
+    wid->readConfig();
+  }
+}
+
+void KPrefsWidManager::writeWidConfig()
+{
+  KPrefsWid *wid;
+  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
+    wid->writeConfig();
+  }
+  
+  mPrefs->writeConfig();
+}
+
+
+KPrefsDialog::KPrefsDialog(KPrefs *prefs,QWidget *parent,char *name,bool modal)
+  : KDialogBase(IconList,i18n("Preferences"),Ok|Apply|Cancel|Default,Ok,parent,
+                name,modal,true),
+    KPrefsWidManager( prefs )
+{
+// TODO: This seems to cause a crash on exit. Investigate later.
 //  mPrefsWids.setAutoDelete(true);
 
   connect(this,SIGNAL(defaultClicked()),SLOT(setDefaults()));
@@ -269,96 +353,25 @@ KPrefsDialog::~KPrefsDialog()
 {
 }
 
-void KPrefsDialog::addWid(KPrefsWid *wid)
-{
-  mPrefsWids.append(wid);
-}
-
-KPrefsWidBool *KPrefsDialog::addWidBool(const QString &text,bool *reference,QWidget *parent)
-{
-  KPrefsWidBool *w = new KPrefsWidBool(text,reference,parent);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidTime *KPrefsDialog::addWidTime(const QString &text,int *reference,QWidget *parent)
-{
-  KPrefsWidTime *w = new KPrefsWidTime(text,reference,parent);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidColor *KPrefsDialog::addWidColor(const QString &text,QColor *reference,QWidget *parent)
-{
-  KPrefsWidColor *w = new KPrefsWidColor(text,reference,parent);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidRadios *KPrefsDialog::addWidRadios(const QString &text,int *reference,QWidget *parent)
-{
-  KPrefsWidRadios *w = new KPrefsWidRadios(text,reference,parent);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidString *KPrefsDialog::addWidString(const QString &text,QString *reference,QWidget *parent)
-{
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidString *KPrefsDialog::addWidPassword(const QString &text,QString *reference,QWidget *parent)
-{
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password);
-  addWid(w);
-  return w;
-}
-
-KPrefsWidFont *KPrefsDialog::addWidFont(const QString &sampleText,const QString &buttonText,
-                                        QFont *reference,QWidget *parent)
-{
-  KPrefsWidFont *w = new KPrefsWidFont(sampleText,buttonText,reference,parent);
-  addWid(w);
-  return w;
-}
-
 void KPrefsDialog::setDefaults()
 {
-  mPrefs->setDefaults();
+  setWidDefaults();
   
   readConfig();
 }
 
 void KPrefsDialog::readConfig()
 {
-//  kdDebug(5300) << "KPrefsDialog::readConfig()" << endl;
-
-  KPrefsWid *wid;
-  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
-    wid->readConfig();
-  }
+  readWidConfig();
 
   usrReadConfig();
 }
 
 void KPrefsDialog::writeConfig()
 {
-//  kdDebug(5300) << "KPrefsDialog::writeConfig()" << endl;
-
-  KPrefsWid *wid;
-  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
-    wid->writeConfig();
-  }
+  writeWidConfig();
 
   usrWriteConfig();
-
-//  kdDebug(5300) << "KPrefsDialog::writeConfig() now writing..." << endl;
-  
-  mPrefs->writeConfig();
-
-//  kdDebug(5300) << "KPrefsDialog::writeConfig() done" << endl;
 }
 
 
@@ -381,4 +394,44 @@ void KPrefsDialog::slotDefault()
       "custom modifications will be lost."),i18n("Setting Default Preferences"),
       i18n("Continue"))
     == KMessageBox::Continue) setDefaults(); 
+}
+
+
+KPrefsModule::KPrefsModule( KPrefs *prefs, QWidget *parent, const char *name )
+  : KCModule( parent, name ),
+    KPrefsWidManager( prefs )
+{
+}
+
+void KPrefsModule::addWid( KPrefsWid *wid )
+{
+  KPrefsWidManager::addWid( wid );
+
+  connect( wid, SIGNAL( changed() ), SLOT( slotWidChanged() ) );
+}
+
+void KPrefsModule::slotWidChanged()
+{
+  emit changed( true );
+}
+
+void KPrefsModule::load()
+{
+  readWidConfig();
+
+  usrReadConfig();
+}
+
+void KPrefsModule::save()
+{
+  writeWidConfig();
+  
+  usrWriteConfig();
+}
+
+void KPrefsModule::defaults()
+{
+  setWidDefaults();
+  
+  load();
 }
