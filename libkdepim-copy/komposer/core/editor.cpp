@@ -31,7 +31,7 @@ public:
 };
 
 Editor::Editor( Core* core, QObject* parent, const char* name )
-  : QObject( parent, name ), d( new Private )
+  : Plugin( core, parent, name ), d( new Private )
 {
 }
 
@@ -43,18 +43,6 @@ Editor::~Editor()
 void
 Editor::select()
 {
-}
-
-void
-Editor::setIdentifier( const QString &identifier )
-{
-  d->id = identifier;
-}
-
-QString
-Editor::identifier() const
-{
-  return d->id;
 }
 
 

@@ -23,6 +23,7 @@
 #include "core.h"
 #include "editor.h"
 
+#include <ksettings/dialog.h>
 #include <kparts/partmanager.h>
 #include <kparts/part.h>
 #include <kparts/componentfactory.h>
@@ -115,11 +116,11 @@ Core::loadEditors()
     if ( !activeEditors.contains( identifier ) )
       continue;
 
-    editor->setIdentifier( identifier );
+    //editor->setIdentifier( identifier );
 
     for( i = 0; i < editors.count(); ++i ) {
       Editor *p = editors.at( i );
-      if ( editor->weight() < p->weight() ) break;
+      //if ( editor->weight() < p->weight() ) break;
     }
 
     editors.insert( i, editor );
@@ -215,11 +216,11 @@ Core::selectEditor( const QString &editorName )
 {
   kdDebug()<<"Sectionee = "<< m_editors.count() <<endl;
   for ( Komposer::Editor *editor = m_editors.first(); editor; editor = m_editors.next() ) {
-    kdDebug()<<"X " << editor->identifier()  << " == " << editorName << endl;
-    if ( editor->identifier() == editorName ) {
+    //kdDebug()<<"X " << editor->identifier()  << " == " << editorName << endl;
+    //if ( editor->identifier() == editorName ) {
       selectEditor( editor );
-      return;
-    }
+      //return;
+      //}
   }
 }
 

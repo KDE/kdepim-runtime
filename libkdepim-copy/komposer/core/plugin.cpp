@@ -21,6 +21,8 @@
  */
 #include "plugin.h"
 
+#include "core.h"
+
 #include <qstring.h>
 
 namespace Komposer
@@ -59,7 +61,7 @@ Plugin::quitClicked()
 }
 
 Core*
-Editor::core() const
+Plugin::core() const
 {
   return d->core;
 }

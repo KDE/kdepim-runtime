@@ -30,6 +30,9 @@
 namespace KParts {
   class PartManager;
 }
+namespace KSettings {
+  class Dialog;
+}
 class QWidgetStack;
 
 namespace Komposer

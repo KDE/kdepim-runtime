@@ -27,6 +27,8 @@
 
 namespace Komposer
 {
+  class Core;
+
   class Plugin : public QObject, virtual public KXMLGUIClient
   {
     Q_OBJECT
