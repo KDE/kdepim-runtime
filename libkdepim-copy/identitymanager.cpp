@@ -367,23 +367,45 @@ Identity & IdentityManager::newFromExisting( const Identity & other,
 }
 
 void IdentityManager::createDefaultIdentity() {
-  KUser user;
-  QString fullName = user.fullName();
+  QString fullName, emailAddress;
+  bool done = false;
 
-  QString emailAddress = user.loginName();
-  if ( !emailAddress.isEmpty() ) {
-    KConfigGroup general( mConfig, "General" );
-    QString defaultdomain = general.readEntry( "Default domain" );
-    if( !defaultdomain.isEmpty() ) {
-      emailAddress += '@' + defaultdomain;
-    }
-    else {
-      emailAddress = QString::null;
+  // Check if the application has any settings
+  createDefaultIdentity( fullName, emailAddress );
+
+  // If not, then use the kcontrol settings
+  if ( fullName.isEmpty() && emailAddress.isEmpty() ) {
+    KEMailSettings emailSettings;
+    fullName = emailSettings.getSetting( KEMailSettings::RealName );
+    emailAddress = emailSettings.getSetting( KEMailSettings::EmailAddress );
+
+    if ( !fullName.isEmpty() && !emailAddress.isEmpty() ) {
+      mShadowIdentities << newFromControlCenter( i18n("Default") );
+      done = true;
+    } else {
+      // If KEmailSettings doesn't have name and address, generate something from KUser
+      KUser user;
+      if ( fullName.isEmpty() )
+        fullName = user.fullName();
+      if ( emailAddress.isEmpty() ) {
+        emailAddress = user.loginName();
+        if ( !emailAddress.isEmpty() ) {
+          KConfigGroup general( mConfig, "General" );
+          QString defaultdomain = general.readEntry( "Default domain" );
+          if( !defaultdomain.isEmpty() ) {
+            emailAddress += '@' + defaultdomain;
+          }
+          else {
+            emailAddress = QString::null;
+          }
+        }
+      }
     }
   }
-  // Let the application adjust those parameters
-  createDefaultIdentity( fullName, emailAddress );
-  mShadowIdentities << Identity( i18n("Default"), fullName, emailAddress );
+
+  if ( !done )
+    mShadowIdentities << Identity( i18n("Default"), fullName, emailAddress );
+
   mShadowIdentities.last().setIsDefault( true );
   mShadowIdentities.last().setUoid( newUoid() );
   if ( mReadOnly ) // commit won't do it in readonly mode
