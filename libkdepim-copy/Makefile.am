@@ -1,4 +1,4 @@
-SUBDIRS = interfaces
+SUBDIRS = .
 
 INCLUDES = $(all_includes)
 
