@@ -348,7 +348,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 
   if ( proxy && showIMAddresses )
   {
-    if ( proxy->isPresent( addr.uid() ) )
+    if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 )
     {
       // set image source to either a QMimeSourceFactory key or a data:/ URL
       QString imgSrc;
