@@ -22,5 +22,5 @@ rc_DATA = komposerui.rc
 servicetypedir = $(kde_servicetypesdir)
 servicetype_DATA = komposerplugin.desktop
 
-pim_DATA = komposerconfig.desktop
-pimdir = $(kde_appsdir)/PIM
+xdg_apps_DATA = komposerconfig.desktop
+

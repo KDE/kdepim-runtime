@@ -12,4 +12,8 @@ X-KDE-HasReadOnlyMode=false
 
 Name=Komposer
 Comment=KDE Komposer
+Comment[ru]=Композитор KDE
 Keywords=komposer
+Keywords[ru]=komposer,ноты
+
+Categories=Qt;KDE;PIM
