@@ -165,7 +165,7 @@ void KConfigWizard::readConfig()
       i18n("Please make sure that the programs which are "
            "configured by the wizard don't run in parallel to the wizard. "
            "Otherwise changes done by the wizard could be lost."),
-      i18n("Warning"), i18n("Run wizard now"), "warning_running_instances" );
+      i18n("Warning"), i18n("Run Wizard Now"), "warning_running_instances" );
   if ( result != KMessageBox::Continue ) kapp->quit();
 
   usrReadConfig();
