@@ -1,4 +1,4 @@
-SUBDIRS = resources
+SUBDIRS =
 
 INCLUDES = $(all_includes)
 
