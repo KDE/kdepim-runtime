@@ -54,10 +54,11 @@ static const char configKeyDefaultIdentity[] = "Default Identity";
 
 using namespace KPIM;
 
-IdentityManager::IdentityManager( QObject * parent, const char * name )
+IdentityManager::IdentityManager( bool readonly, QObject * parent, const char * name )
   : ConfigManager( parent, name ), DCOPObject( "KPIM::IdentityManager" )
 {
-  mConfig = new KConfig( "emailidentities" );
+  mConfig = new KConfig( "emailidentities", readonly );
+  mReadOnly = readonly;
   readConfig();
   mShadowIdentities = mIdentities;
   // we need at least a default identity:
@@ -78,7 +79,7 @@ IdentityManager::~IdentityManager()
 void IdentityManager::commit()
 {
   // early out:
-  if ( !hasPendingChanges() ) return;
+  if ( !hasPendingChanges() || mReadOnly ) return;
 
   QValueList<uint> seenUOIDs;
   for ( QValueList<Identity>::ConstIterator it = mIdentities.begin() ;
@@ -385,6 +386,8 @@ void IdentityManager::createDefaultIdentity() {
   mShadowIdentities << Identity( i18n("Default"), fullName, emailAddress );
   mShadowIdentities.last().setIsDefault( true );
   mShadowIdentities.last().setUoid( newUoid() );
+  if ( mReadOnly ) // commit won't do it in readonly mode
+    mIdentities = mShadowIdentities;
 }
 
 int IdentityManager::newUoid()

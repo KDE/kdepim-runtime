@@ -54,7 +54,14 @@ class IdentityManager : public ConfigManager, public DCOPObject
   K_DCOP
 
 public:
-  IdentityManager( QObject * parent=0, const char * name=0 );
+  /**
+   * Create an identity manager, which loads the emailidentities file
+   * to create identities.
+   * @param readonly if true, no changes can be made to the identity manager
+   * This means in particular that if there is no identity configured,
+   * the default identity created here will not be saved.
+   */
+  IdentityManager( bool readonly = false, QObject * parent=0, const char * name=0 );
   virtual ~IdentityManager();
 
 public:
@@ -217,6 +224,7 @@ private:
 
 private:
   KConfig* mConfig;
+  bool mReadOnly;
 };
 
 } // namespace
