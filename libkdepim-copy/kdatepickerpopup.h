@@ -56,7 +56,7 @@ class KDE_EXPORT KDatePickerPopup: public QPopupMenu
        @param parent The object's parent.
        @param name The object's name.
     */
-    KDatePickerPopup( int items = 1, const QDate &date = QDate::currentDate(),
+    KDatePickerPopup( int items = 2, const QDate &date = QDate::currentDate(),
                       QWidget *parent = 0, const char *name = 0 );
 
     virtual ~KDatePickerPopup();
