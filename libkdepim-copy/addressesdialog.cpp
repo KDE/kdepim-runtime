@@ -159,7 +159,7 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   d = new AddressesDialogPrivate;
   d->ui = new AddressPickerUI( page );
 
-  initGUI();
+  updateAvailableAddressees();
   initConnections();
 }
 
@@ -283,8 +283,10 @@ AddressesDialog::bccAddresses()  const
 }
 
 void
-AddressesDialog::initGUI()
+AddressesDialog::updateAvailableAddressees()
 {
+  d->ui->mAvailableView->clear();
+
   static const QString &personalGroup = KGlobal::staticQString( i18n( "Other Addresses" ) );
   d->ui->mAvailableView->setRootIsDecorated( true );
   d->personal = new AddresseeViewItem( d->ui->mAvailableView, personalGroup );
@@ -326,6 +328,9 @@ AddressesDialog::initConnections()
                     SLOT(saveAs())  );
   QObject::connect( d->ui->mRemoveButton, SIGNAL(pressed()),
                     SLOT(removeEntry())  );
+
+  connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
+           this, SLOT( updateAvailableAddressees() ) );
 }
 
 void

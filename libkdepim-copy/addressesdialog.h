@@ -140,8 +140,9 @@ namespace KPIM {
     void cleanEdit();
     void filterChanged( const QString & );
 
+    void updateAvailableAddressees();
+
   protected:
-    void initGUI();
     void initConnections();
     void addDistributionLists();
     void addAddresseeToAvailable( const KABC::Addressee& addr,
