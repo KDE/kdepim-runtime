@@ -6,7 +6,8 @@ libkdepim_la_LIBADD  = $(LIB_KDEUI)
 libkdepim_la_SOURCES = \
   kprefs.cpp kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
-  categoryeditdialog_base.ui categoryeditdialog.cpp
+  categoryeditdialog_base.ui categoryeditdialog.cpp \
+  kdateedit.cpp
 
 METASOURCES = AUTO
 
