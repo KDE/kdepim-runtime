@@ -29,10 +29,10 @@
 
 #include <qlabel.h>
 
-static const char *description =
+static const char description[] =
     I18N_NOOP( "A KDE Mail Editing Manager" );
 
-static const char *version = "0.0.1 (CVS)";
+static const char version[] = "0.0.1 (CVS)";
 
 int main(int argc, char **argv)
 {

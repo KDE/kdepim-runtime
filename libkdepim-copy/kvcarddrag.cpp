@@ -20,7 +20,7 @@
 
 #include "kvcarddrag.h"
 
-static const char *vcard_mime_string = "text/x-vcard";
+static const char vcard_mime_string[] = "text/x-vcard";
 
 KVCardDrag::KVCardDrag( const QString &content, QWidget *dragsource, 
                         const char *name )
