@@ -38,6 +38,7 @@
 #include <kfontdialog.h>
 #include <kmessagebox.h>
 #include <kconfigskeleton.h>
+#include "ktimeedit.h"
 
 #include "kprefsdialog.h"
 #include "kprefsdialog.moc"
@@ -267,28 +268,27 @@ void KPrefsWidFont::selectFont()
 }
 
 
-KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemInt *item,
+KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
                               QWidget *parent )
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label(), parent );
-  mSpin = new QSpinBox( 0, 23, 1, parent );
-  connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
-  mSpin->setSuffix( ":00" );
+  mTimeEdit = new KTimeEdit( parent );
+  connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mSpin, whatsThis );
+    QWhatsThis::add( mTimeEdit, whatsThis );
   }
 }
 
 void KPrefsWidTime::readConfig()
 {
-  mSpin->setValue( mItem->value() );
+  mTimeEdit->setTime( mItem->value().time() );
 }
 
 void KPrefsWidTime::writeConfig()
 {
-  mItem->setValue( mSpin->value() );
+  mItem->setValue( QDateTime( QDate(0,0,0), mTimeEdit->getTime() ) );
 }
 
 QLabel *KPrefsWidTime::label()
@@ -296,9 +296,9 @@ QLabel *KPrefsWidTime::label()
   return mLabel;
 }
 
-QSpinBox *KPrefsWidTime::spinBox()
+KTimeEdit *KPrefsWidTime::timeEdit()
 {
-  return mSpin;
+  return mTimeEdit;
 }
 
 
@@ -416,7 +416,7 @@ KPrefsWidBool *KPrefsWidManager::addWidBool( KConfigSkeleton::ItemBool *item,
   return w;
 }
 
-KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemInt *item,
+KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemDateTime *item,
                                              QWidget *parent )
 {
   KPrefsWidTime *w = new KPrefsWidTime( item, parent );

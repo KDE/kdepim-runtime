@@ -4,6 +4,7 @@ INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
+	ktimeedit.cpp \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
@@ -17,7 +18,7 @@ libkdepim_la_SOURCES = \
   pluginloaderbase.cpp addresseelineedit.cpp \
   klistviewsearchline_pimcopy.cpp kdatepickerpopup.cpp
 
-noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
+noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
 $(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h
 

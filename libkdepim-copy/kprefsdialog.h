@@ -29,11 +29,13 @@
 #include <kcmodule.h>
 #include <kconfigskeleton.h>
 
+
 class KColorButton;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
 class QButtonGroup;
+class KTimeEdit;
 
 /**
   @short Base class for GUI control elements used by @ref KPrefsDialog.
@@ -161,7 +163,7 @@ class KPrefsWidTime : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidTime( KConfigSkeleton::ItemInt *item, QWidget *parent );
+    KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
 
     /**
       Return QLabel used by this widget.
@@ -170,16 +172,16 @@ class KPrefsWidTime : public KPrefsWid
     /**
       Return QSpinBox used by this widget.
     */
-    QSpinBox *spinBox();
+    KTimeEdit *timeEdit();
 
     void readConfig();
     void writeConfig();
 
   private:
-    KConfigSkeleton::ItemInt *mItem;
+    KConfigSkeleton::ItemDateTime *mItem;
 
     QLabel *mLabel;
-    QSpinBox *mSpin;
+    KTimeEdit *mTimeEdit;
 };
 
 /**
@@ -416,7 +418,7 @@ class KPrefsWidManager
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidTime *addWidTime( KConfigSkeleton::ItemInt *item,
+    KPrefsWidTime *addWidTime( KConfigSkeleton::ItemDateTime *item,
                                QWidget *parent );
 
     /**
