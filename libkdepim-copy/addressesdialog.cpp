@@ -48,7 +48,7 @@ struct AddresseeViewItem::AddresseeViewItemPrivate {
 };
 
 struct AddressesDialog::AddressesDialogPrivate {
-  AddressesDialogPrivate() : ui(0), toItem(0), ccItem(0), bccItem(0)
+  AddressesDialogPrivate() : ui(0), personal(0), recent(0), toItem(0), ccItem(0), bccItem(0)
   {}
 
   AddressPickerUI             *ui;
