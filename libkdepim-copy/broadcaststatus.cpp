@@ -34,6 +34,7 @@ BroadcastStatus* BroadcastStatus::instance()
 }
 
 BroadcastStatus::BroadcastStatus()
+  :mTransientActive( false )
 {
 }
 
