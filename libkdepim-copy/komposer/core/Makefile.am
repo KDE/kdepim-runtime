@@ -4,7 +4,7 @@ METASOURCES = AUTO
 lib_LTLIBRARIES = libkomposer.la
 
 libkomposer_la_SOURCES = plugin.cpp editor.cpp core.cpp attachment.cpp corewidget.cpp \
-	settings.kcfgc pluginmanager.cpp
+	settings.kcfgc pluginmanager.cpp komposerIface.skel
 libkomposer_la_LDFLAGS = -no-undefined $(KDE_RPATH) -version-info 1:0:0 $(all_libraries)
 libkomposer_la_LIBADD = $(LIB_KPARTS) $(top_builddir)/libkdepim/libkdepim.la -lkutils
 

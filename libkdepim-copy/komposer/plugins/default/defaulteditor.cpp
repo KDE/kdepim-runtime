@@ -50,7 +50,9 @@ DefaultEditor::DefaultEditor( QObject *parent, const char *name, const QStringLi
   : Editor( parent, name, args ), m_textEdit( 0 )
 {
   setInstance( DefaultEditorFactory::instance() );
+
   m_textEdit = new QTextEdit( 0 );
+
   createActions( actionCollection() );
 
   setXMLFile( "defaulteditorui.rc" );
@@ -64,29 +66,32 @@ DefaultEditor::~DefaultEditor()
 QWidget*
 DefaultEditor::widget()
 {
-  if ( !m_textEdit ) {
-    m_textEdit = new QTextEdit( 0 );
-    return m_textEdit;
-  } else
     return m_textEdit;
 }
 
 QString
 DefaultEditor::text() const
 {
-  return QString();
+  return m_textEdit->text();
 }
 
 void
-DefaultEditor::setText( const QString & )
+DefaultEditor::setText( const QString &text )
 {
+  m_textEdit->setText( text );
 }
 
 void
-DefaultEditor::changeSignature( const QString & )
+DefaultEditor::changeSignature( const QString &sig )
 {
+  QString text = m_textEdit->text();
 
+  int sigStart = text.findRev( "-- " );
+  QString sigText = QString( "-- \n%1" ).arg( sig );
+
+  text.replace( sigStart, text.length(), sigText );
 }
+
 void
 DefaultEditor::createActions( KActionCollection *ac )
 {

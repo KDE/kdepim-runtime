@@ -54,7 +54,8 @@
 using namespace Komposer;
 
 Core::Core( QWidget *parent, const char *name )
-  : KMainWindow( parent, name ), m_currentEditor( 0 )
+  : KomposerIface( "KomposerIface" ),
+    KMainWindow( parent, name ), m_currentEditor( 0 )
 {
   initWidgets();
   initCore();
@@ -86,6 +87,7 @@ Core::addEditor( Komposer::Editor *editor )
     m_stack->addWidget( editor->widget() );
     m_stack->raiseWidget( editor->widget() );
     editor->widget()->show();
+    m_currentEditor = editor;
   }
 
   // merge the editors GUI into the main window
@@ -315,7 +317,39 @@ Core::slotNewComposer()
 
 }
 
-void Core::slotAttachFile()
+void
+Core::slotAttachFile()
+{
+
+}
+
+void
+Core::send( int how )
+{
+
+}
+
+void
+Core::addAttachment( const KURL &url, const QString &comment )
+{
+
+}
+
+void
+Core::setBody( const QString &body )
+{
+  m_currentEditor->setText( body );
+}
+
+void
+Core::addAttachment( const QString &name,
+                     const QCString &cte,
+                     const QByteArray &data,
+                     const QCString &type,
+                     const QCString &subType,
+                     const QCString &paramAttr,
+                     const QString &paramValue,
+                     const QCString &contDisp )
 {
 
 }

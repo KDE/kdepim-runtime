@@ -22,6 +22,8 @@
 #ifndef KOMPOSER_CORE_H
 #define KOMPOSER_CORE_H
 
+#include "komposerIface.h"
+
 #include <kmainwindow.h>
 #include <qptrlist.h>
 
@@ -40,12 +42,27 @@ namespace Komposer
   /**
    * This class provides the interface to the Komposer core for the editor.
    */
-  class Core : public KMainWindow
+  class Core : public KMainWindow, virtual public KomposerIface
   {
     Q_OBJECT
   public:
     Core( QWidget *parentWidget = 0, const char *name = 0 );
     virtual ~Core();
+
+  public slots:
+    virtual void send( int how );
+    virtual void addAttachment( const KURL &url, const QString &comment );
+    virtual void setBody( const QString &body );
+    virtual void addAttachment( const QString &name,
+                                const QCString &cte,
+                                const QByteArray &data,
+                                const QCString &type,
+                                const QCString &subType,
+                                const QCString &paramAttr,
+                                const QString &paramValue,
+                                const QCString &contDisp );
+
+
 
   protected slots:
     //void slotActivePartChanged( KParts::Part *part );
