@@ -24,7 +24,7 @@ libkdepim_la_SOURCES = \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
-  htmldiffalgodisplay.cpp broadcaststatus.cpp
+  htmldiffalgodisplay.cpp part.cpp broadcaststatus.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
@@ -36,7 +36,7 @@ MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
-libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) \
+libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) \
   $(top_builddir)/libkcal/libkcal.la $(LIB_KDEUI) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
