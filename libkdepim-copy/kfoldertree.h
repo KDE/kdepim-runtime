@@ -1,6 +1,7 @@
 /* -*- mode: C++; c-file-style: "gnu" -*-
 
-   This file is part of the KDE libraries
+   This file is part of libkdepim.
+
    Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
    Copyright (C) 2002 Marc Mutz <mutz@kde.org>
 

@@ -2,6 +2,7 @@
     kaccount.cpp
 
     This file is part of KMail, the KDE mail client.
+
     Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
 
     KMail is free software; you can redistribute it and/or modify it

@@ -1,5 +1,6 @@
 /*
-    This file is part of the KDE PIM library.
+    This file is part of libkdepim.
+
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
 
     This library is free software; you can redistribute it and/or
@@ -24,7 +25,7 @@
 
 static const char vcard_mime_string[] = "text/x-vcard";
 
-KVCardDrag::KVCardDrag( const QString &content, QWidget *dragsource, 
+KVCardDrag::KVCardDrag( const QString &content, QWidget *dragsource,
                         const char *name )
   : QStoredDrag( vcard_mime_string, dragsource, name )
 {

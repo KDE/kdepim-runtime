@@ -1,4 +1,6 @@
-/* This file is part of the KDE project
+/*
+   This file is part of libkdepim.
+
    Copyright (C) 2003 Daniel Molkentin <molkentin@kde.org>
 
    This library is free software; you can redistribute it and/or

@@ -1,5 +1,6 @@
 /*
-    This file is part of KAddressBook.
+    This file is part of libkdepim.
+
     Copyright (c) 2004 Bo Thorsen <bo@sonofthor.dk>
 
     This program is free software; you can redistribute it and/or modify

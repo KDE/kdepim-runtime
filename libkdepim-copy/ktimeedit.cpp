@@ -1,6 +1,8 @@
 /*
-    This file is part of KOrganizer.
-    Copyright (c) 1999 Preston Brown, Ian Dawes
+    This file is part of libkdepim.
+
+    Copyright (c) 1999 Preston Brown <pbrown@kde.org>
+    Copyright (c) 1999 Ian Dawes <iadawes@globalserve.net>
     Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
 
     This program is free software; you can redistribute it and/or modify
@@ -47,9 +49,9 @@ public:
     {
         int length = str.length();
         // empty string is intermediate so one can clear the edit line and start from scratch
-        if ( length <= 0 ) 
+        if ( length <= 0 )
             return Intermediate;
-        
+
         bool ok = false;
         /*QTime time =*/ KGlobal::locale()->readTime(str, KLocale::WithoutSeconds, &ok);
         if ( ok )
@@ -60,11 +62,11 @@ public:
         if ( ok && ( 0 <= tm ) ) {
           if ( ( tm < 2400 ) && ( tm%100 < 60 ) )
             return Acceptable;
-          else 
+          else
             return Intermediate;
         }
 //         kdDebug(5300)<<str<<" not acceptable or intermediate for military format, either "<<str<<endl;
-        
+
         // readTime doesn't help knowing when the string is "Intermediate".
         // HACK. Not fully locale aware etc. (esp. the separator is '.' in sv_SE...)
         QChar sep = ':';

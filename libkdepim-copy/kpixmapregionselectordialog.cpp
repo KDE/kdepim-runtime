@@ -1,4 +1,6 @@
-/* This file is part of the KDE libraries
+/*
+    This file is part of libkdepim.
+
     Copyright (C) 2004 Antonio Larrosa <larrosa@kde.org
 
     This library is free software; you can redistribute it and/or
@@ -34,7 +36,7 @@ KPixmapRegionSelectorDialog::KPixmapRegionSelectorDialog(QWidget *parent,
   m_pixmapSelectorWidget= new KPixmapRegionSelectorWidget(vbox);
 
   vbox->setSpacing( KDialog::spacingHint() );
-  
+
   setMainWidget(vbox);
 }
 

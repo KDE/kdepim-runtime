@@ -1,6 +1,8 @@
 /*
-    This file is part of KOrganizer.
-    Copyright (c) 1999 Preston Brown, Ian Dawes
+    This file is part of libkdepim.
+
+    Copyright (c) 1999 Preston Brown <pbrown@kde.org>
+    Copyright (c) 1999 Ian Dawes <iadawes@globalserve.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

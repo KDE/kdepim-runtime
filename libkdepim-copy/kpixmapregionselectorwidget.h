@@ -1,4 +1,6 @@
-/* This file is part of the KDE libraries
+/*
+    This file is part of libkdepim.
+
     Copyright (C) 2004 Antonio Larrosa <larrosa@kde.org
 
     This library is free software; you can redistribute it and/or
@@ -38,7 +40,7 @@ namespace KPIM {
  * One copy is in kdelibs/kdeui, and the other copy is in kdepim/libkdepim
  * This is because kdepim has to remain backwards compatible.  Any changes
  * to either file should be made to the other.
- * 
+ *
  * @author Antonio Larrosa <larrosa@kde.org>
  * @since 3.4
  */
@@ -108,7 +110,7 @@ public:
     * @see setSelectionAspectRatio()
     */
    void setFreeSelectionAspectRatio();
- 
+
    /**
     * Sets the maximum size for the widget. If the image is larger than this
     * (either horizontally or vertically), it's scaled to adjust to the maximum
@@ -126,7 +128,7 @@ public:
 
 public slots:
    /**
-    * Rotates the current image 90º clockwise 
+    * Rotates the current image 90º clockwise
     */
    void rotateClockwise();
    /**
@@ -146,7 +148,7 @@ private:
 
    /**
     * Recalculates the pixmap that is shown based on the current selected area,
-    * the original image, etc. 
+    * the original image, etc.
     */
    void updatePixmap();
 

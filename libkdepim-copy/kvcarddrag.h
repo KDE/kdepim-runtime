@@ -1,5 +1,6 @@
 /*
-    This file is part of the KDE PIM library.
+    This file is part of libkdepim.
+
     Copyright (c) 2002 Tobias Koenig <tokoe@kde.org>
 
     This library is free software; you can redistribute it and/or
@@ -65,7 +66,7 @@ class KDE_EXPORT KVCardDrag : public QStoredDrag
      * Decodes the MIME source @p e and puts the resulting vcard into @p content.
      */
     static bool decode( QMimeSource *e, QString &content );
- 
+
     /**
      * Decodes the MIME source @p e and puts the resulting vcard into @p addresseess.
      */

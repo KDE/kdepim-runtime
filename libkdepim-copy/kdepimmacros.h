@@ -1,5 +1,6 @@
 /*
-    This file is part of libkdepim
+    This file is part of libkdepim.
+
     Copyright (c) 2002-2003 KDE Team
 
     This library is free software; you can redistribute it and/or

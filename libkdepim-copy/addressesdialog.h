@@ -1,6 +1,7 @@
 /*  -*- mode: C++; c-file-style: "gnu" -*-
  *
  *  This file is part of libkdepim.
+ *
  *  Copyright (c) 2003 Zack Rusin <zack@kde.org>
  *  Copyright (c) 2003 Aaron J. Seigo <aseigo@kde.org>
  *

@@ -1,4 +1,6 @@
-/* This file is part of the KDE project
+/*
+   This file is part of libkdepim.
+
    Copyright (C) 2003 Daniel Molkentin <molkentin@kde.org>
 
    This library is free software; you can redistribute it and/or
@@ -41,7 +43,7 @@ namespace KParts
       /**
        * Constucts a SideBarExtension.
        *
-       * @param exported A @ref QWidget derived widget that will be provided for the 
+       * @param exported A @ref QWidget derived widget that will be provided for the
        *                 users of SideBarExtension.
        * @param parent   The parent widget.
        * @param name     The name of the class.
@@ -61,6 +63,6 @@ namespace KParts
       SideBarExtensionPrivate *d;
   };
 }
-#endif // SIDEBAREXTENSION_H 
+#endif // SIDEBAREXTENSION_H
 
 // vim: ts=2 sw=2 et
