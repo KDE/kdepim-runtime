@@ -61,15 +61,15 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   KConfigSkeleton::ItemEnum *enumItem =
       dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
   if ( enumItem ) {
-    QStringList choices = enumItem->choices();
+    QValueList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
       kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
       return 0;
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
-      QStringList::ConstIterator it;
+      QValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
       for( it = choices.begin(); it != choices.end(); ++it ) {
-        radios->addRadio( *it );
+        radios->addRadio( (*it).label );
       }
       return radios;
     }
