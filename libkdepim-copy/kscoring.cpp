@@ -151,7 +151,7 @@ QStringList ActionBase::userNames()
   return l;
 }
 
-ActionBase* ActionBase::factory(int type, QString value)
+ActionBase* ActionBase::factory(int type, const QString &value)
 {
   switch (type) {
     case SETSCORE: return new ActionSetScore(value);

@@ -87,7 +87,7 @@ class ActionBase {
   virtual int getType() const =0;
   virtual QString getValueString() const =0;
   virtual void setValue(const QString&) =0;
-  static ActionBase* factory(int type, QString value);
+  static ActionBase* factory(int type, const QString &value);
   static QStringList userNames();
   static QString userName(int type);
   static int getTypeForName(const QString& name);
@@ -217,12 +217,12 @@ class KScoringRule
 
   QString getName() const { return name; }
   QStringList getGroups() const { return groups; }
-  void setGroups(QStringList l) { groups = l; }
+  void setGroups(const QStringList &l) { groups = l; }
   LinkMode getLinkMode() const { return link; }
   QString getLinkModeName() const;
   QString getExpireDateString() const;
   QDate getExpireDate() const { return expires; }
-  void setExpireDate(QDate d) { expires = d; }
+  void setExpireDate(const QDate &d) { expires = d; }
   bool isExpired() const;
   ScoreExprList getExpressions() const { return expressions; }
   ActionList getActions() const { return actions; }
@@ -250,7 +250,7 @@ class KScoringRule
   void write(QTextStream& ) const;
 protected:
   //! assert that the name is unique
-  void setName(QString n) { name = n; }
+  void setName(const QString &n) { name = n; }
 private:
   QString name;
   GroupList groups;
