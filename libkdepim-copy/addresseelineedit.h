@@ -91,7 +91,7 @@ class AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     void slotIMAPCompletionOrderChanged();
 
   private slots:
-    void slotCompletion() { doCompletion(false); }
+    void slotCompletion();
     void slotPopupCompletion( const QString& );
     void slotStartLDAPLookup();
     void slotLDAPSearchData( const KPIM::LdapResultList& );
@@ -107,6 +107,7 @@ class AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     QString completionSearchText( QString& );
 
     QString m_previousAddresses;
+    QString m_searchString;
     bool m_useCompletion;
     bool m_completionInitialized;
     bool m_smartPaste;
