@@ -29,14 +29,15 @@
 #include <qobject.h>
 #include <qptrlist.h>
 #include <qtimer.h>
+#include <qvaluelist.h>
 
 #include <kabc/addressee.h>
 
 #include "clicklineedit.h"
 #include "kcompletion.h"
+#include <dcopobject.h>
 
 class KConfig;
-template<typename T> class QValueList;
 
 namespace KPIM {
 class LdapSearch;
@@ -46,8 +47,9 @@ typedef QValueList<LdapResult> LdapResultList;
 
 namespace KPIM {
 
-class AddresseeLineEdit : public ClickLineEdit
+class AddresseeLineEdit : public ClickLineEdit, public DCOPObject
 {
+  K_DCOP
   Q_OBJECT
 
   public:
@@ -83,6 +85,10 @@ class AddresseeLineEdit : public ClickLineEdit
     virtual void dropEvent( QDropEvent *e );
     void doCompletion( bool ctrlT );
     virtual QPopupMenu *createPopupMenu();
+
+  k_dcop:
+    // Connected to the DCOP signal
+    void slotIMAPCompletionOrderChanged();
 
   private slots:
     void slotCompletion() { doCompletion(false); }
