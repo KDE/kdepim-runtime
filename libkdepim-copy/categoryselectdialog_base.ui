@@ -62,9 +62,6 @@
                     <property name="text">
                         <string>&amp;Clear Selection</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+C</string>
-                    </property>
                 </widget>
                 <spacer>
                     <property name="name">
