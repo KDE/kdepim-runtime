@@ -71,6 +71,9 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
   d = new AddresseeViewItemPrivate;
   d->address = addr;
   d->category = Entry;
+
+  if ( text(0).stripWhiteSpace().isEmpty() )
+    setText( 0, addr.preferredEmail() );
 }
 
 AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Category cat )
@@ -132,7 +135,7 @@ AddresseeViewItem::compare( QListViewItem * i, int col, bool ascending ) const
       return -1;
 }
 
-QString AddressesDialog::sPersonalGroup = i18n("Personal Address Book");
+QString AddressesDialog::sPersonalGroup = i18n("Other Addresses");
 QString AddressesDialog::sRecentGroup = i18n("Recent Addresses");
 
 AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
@@ -326,7 +329,7 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
     }
   }
 
-  if ( defaultParent ) {
+  if ( defaultParent && categories.isEmpty() ) { // only non-categorized items here
     new AddresseeViewItem( defaultParent, addr );
   }
 }
