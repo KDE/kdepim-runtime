@@ -678,7 +678,7 @@ void KImportDialog::addColumn(KImportColumn *col)
 void KImportDialog::setData( uint row, uint col, const QString &value )
 {
   QString val = value;
-  val.replace( QRegExp("\\\\n"), "\n" );
+  val.replace( "\\n", "\n" );
 
   if ( row >= mData.count() ) {
     mData.resize( row + 1 );
