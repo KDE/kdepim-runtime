@@ -21,15 +21,12 @@
 #ifndef KPIMPREFS_H
 #define KPIMPREFS_H
 
-#include <qobject.h>
 #include <qstringlist.h>
 
 #include <kconfigskeleton.h>
 
-class KPimPrefs : public QObject, public KConfigSkeleton
+class KPimPrefs : public KConfigSkeleton
 {
-  Q_OBJECT
-
   public:
     KPimPrefs( const QString &name = QString::null );
 
@@ -49,9 +46,6 @@ class KPimPrefs : public QObject, public KConfigSkeleton
   
   protected:
     virtual void setCategoryDefaults() {};
-
-  private slots:
-    void reloadConfig();
 };
 
 #endif
