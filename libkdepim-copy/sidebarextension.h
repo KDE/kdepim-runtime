@@ -20,6 +20,7 @@
 #define  SIDEBAREXTENSION_H
 
 #include <qobject.h>
+#include <kdepimmacros.h>
 
 class QWidget;
 
@@ -32,7 +33,7 @@ namespace KParts
    * Provides a way to export a widget which will be displayed in Kontacts
    * stackview at the left
    **/
-  class SideBarExtension : public QObject
+  class KDE_EXPORT SideBarExtension : public QObject
   {
     Q_OBJECT
 
