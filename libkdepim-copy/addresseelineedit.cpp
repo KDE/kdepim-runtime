@@ -461,4 +461,129 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
     }
 }
 
+//static:
+bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QString& mail)
+{
+  name = QString::null;
+  mail = QString::null;
+  
+  const int len=aStr.length();
+  
+  bool bInComment;
+  int i=0, iAd=0, iMailStart=0, iMailEnd=0;
+  QChar c;
+  
+  // Find the '@' of the email address
+  // skipping all '@' inside "(...)" comments:
+  bInComment = false;
+  while( i < len ){
+    c = aStr[i];
+    if( !bInComment ){
+      if( '(' == c ){
+        bInComment = true;
+      }else{
+        if( '@' == c ){
+          iAd = i;
+          break; // found it
+        }
+      }
+    }else{
+      if( ')' == c ){
+        bInComment = false;
+      }
+    }
+    ++i;
+  }
+  
+  if( !iAd )
+    return false;
+  
+  // Loop backwards until we find the start of the string
+  // or a ',' outside of a comment.
+  bInComment = false;
+  for( i = iAd-1; 0 <= i; --i ) {
+    c = aStr[i];
+    if( bInComment ){
+      if( '(' == c ){
+        if( !name.isEmpty() )
+          name.prepend( ' ' );
+        bInComment = false;
+      }else{
+        name.prepend( c ); // all comment stuff is part of the name
+      }
+    }else{
+      // found the start of this addressee ?
+      if( ',' == c )
+        break; 
+      // stuff is before the leading '<' ?
+      if( iMailStart ){
+        name.prepend( c ); 
+      }else{
+        switch( c ){
+          case '<':
+            iMailStart = i;
+          case ')':
+            if( !name.isEmpty() )
+              name.prepend( ' ' );
+            bInComment = true;
+            break;
+          default:
+            if( ' ' != c )
+              mail.prepend( c );
+        }
+      }
+    }
+  }
+  
+  name = name.simplifyWhiteSpace();
+  mail = mail.simplifyWhiteSpace();
+  
+  if( mail.isEmpty() )
+    return false;
+    
+  mail.append('@');
+  
+  // Loop forward until we find the end of the string
+  // or a ',' outside of a comment.
+  bInComment = false;
+  for( i = iAd+1; len > i; --i ) {
+    c = aStr[i];
+    if( bInComment ){
+      if( ')' == c ){
+        if( !name.isEmpty() )
+          name.append( ' ' );
+        bInComment = false;
+      }else{
+        name.append( c ); // all comment stuff is part of the name
+      }
+    }else{
+      // found the end of this addressee ?
+      if( ',' == c )
+        break; 
+      // stuff is behind the trailing '<' ?
+      if( iMailEnd ){
+        name.append( c ); 
+      }else{
+        switch( c ){
+          case '>':
+            iMailEnd = i;
+          case '(':
+            if( !name.isEmpty() )
+              name.append( ' ' );
+            bInComment = true;
+            break;
+          default:
+            if( ' ' != c )
+              mail.append( c );
+        }
+      }
+    }
+  }
+  
+  name = name.simplifyWhiteSpace();
+  mail = mail.simplifyWhiteSpace();
+  
+  return ! (name.isEmpty() || mail.isEmpty());
+}
+
 #include "addresseelineedit.moc"

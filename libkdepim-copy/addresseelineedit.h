@@ -51,7 +51,8 @@ class AddresseeLineEdit : public ClickLineEdit
     virtual void setFont( const QFont& );
 
     static KConfig *config();
-
+    static bool getNameAndMail(const QString& aStr, QString& name, QString& mail);
+  
   public slots:
     void cursorAtEnd();
     void enableCompletion( bool enable );
