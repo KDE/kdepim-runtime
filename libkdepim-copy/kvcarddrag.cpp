@@ -18,6 +18,8 @@
     Boston, MA 02111-1307, USA.
 */
 
+#include <kabc/vcardconverter.h>
+
 #include "kvcarddrag.h"
 
 static const char vcard_mime_string[] = "text/x-vcard";
@@ -48,6 +50,12 @@ bool KVCardDrag::canDecode( QMimeSource *e )
 bool KVCardDrag::decode( QMimeSource *e, QString &content )
 {
   content = QString::fromUtf8( e->encodedData( vcard_mime_string ) );
+  return true;
+}
+
+bool KVCardDrag::decode( QMimeSource *e, KABC::Addressee::List& addressees )
+{
+  addressees = KABC::VCardConverter().parseVCards( e->encodedData( vcard_mime_string ) );
   return true;
 }
 
