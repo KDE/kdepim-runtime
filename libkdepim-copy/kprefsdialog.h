@@ -132,7 +132,7 @@ class KPrefsWidInt : public KPrefsWid
     QLabel *label();
 
     /**
-      Return the QSpinkbox used by this widget.
+      Return the QSpinBox used by this widget.
     */
     QSpinBox *spinBox();
 
