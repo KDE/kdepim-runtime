@@ -35,8 +35,8 @@
              <value>cry_1</value>
              <value>cry_2</value>
              <value>cry_3</value>
-             <value>cup_0</value>
-             <value>cup_1</value>
+             <!--value>cup_0</value-->
+             <!--value>cup_1</value-->
              <value>dog_0</value>
              <value>embarassed_0</value>
              <value>embarassed_1</value>
@@ -117,8 +117,8 @@
          <default param='cry_1'>:'-(</default>
          <default param='cry_2'>;-(</default>
          <default param='cry_3'>;(</default>
-         <default param='cup_0'>(C)</default>
-         <default param='cup_1'>(c)</default>
+         <!--default param='cup_0'>(C)</default-->  <!-- We don't want coffee cups in the copyright headers of cvs commit messages. -->
+         <!--default param='cup_1'>(c)</default-->
          <default param='dog_0'>(&amp;)</default>
          <default param='embarassed_0'>:-$</default>
          <default param='embarassed_1'>:$</default>
