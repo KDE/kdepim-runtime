@@ -1,6 +1,7 @@
 /*
-    This file is part of KOrganizer.
-    Copyright (c) 2001 Cornelius Schumacher <schumacher@kde.org>
+    This file is part of KDE.
+
+    Copyright (c) 2001,2002,2003 Cornelius Schumacher <schumacher@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -98,6 +99,9 @@ class KPrefsItem {
     */
     virtual void readDefault( KConfig * ) = 0;
 
+    /**
+      Return if the entry can be modified.
+    */
     bool isImmutable() const { return mIsImmutable; }
 
   protected:
@@ -120,11 +124,27 @@ class KGenericPrefsItem : public KPrefsItem
       : KPrefsItem( group, name ), mReference( reference ),
         mDefault( defaultValue ), mLoadedValue( defaultValue ) {}
 
+    /**
+      Set value of this KPrefsItem.
+    */
+    void setValue( const T &v )
+    {
+      mReference = v;
+    }
+
+    /*
+      Return value of this KPrefsItem.
+    */
     T &value()
     {
       return mReference;
     }
 
+    /**
+      Reset value of this KPrefsItem to its default value. This is the value
+      read from a global configuration file or the builtin default, if no entry
+      from a global configuration file exists.
+    */
     virtual void setDefault()
     {
       mReference = mDefault;
