@@ -19,9 +19,12 @@
     Boston, MA 02111-1307, USA.
 */
 
+#include <qpopupmenu.h>
+
 #include <kabc/address.h>
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
+#include <kactionclasses.h>
 #include <kapplication.h>
 #include <kconfig.h>
 #include <kglobal.h>
@@ -36,8 +39,9 @@
 
 using namespace KPIM;
 
-AddresseeView::AddresseeView( QWidget *parent, const char *name )
-  : KTextBrowser( parent, name )
+AddresseeView::AddresseeView( QWidget *parent, const char *name,
+                              KConfig *config )
+  : KTextBrowser( parent, name ), mDefaultConfig( false )
 {
   setWrapPolicy( QTextEdit::AtWordBoundary );
   setLinkUnderline( false );
@@ -56,12 +60,45 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name )
            this, SLOT( slotHighlighted( const QString& ) ) );
 
   setNotifyClick( true );
+
+  mActionShowBirthday = new KToggleAction( i18n( "Show Birthday" ) );
+  mActionShowAddresses = new KToggleAction( i18n( "Show Postal Addresses" ) );
+  mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ) );
+  mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ) );
+  mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ) );
+
+  connect( mActionShowBirthday, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowEmails, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowPhones, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowURLs, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+
+  if ( !config ) {
+    mConfig = new KConfig( "kaddressbookrc" );
+    mDefaultConfig = true;
+  } else
+    mConfig = config;
+
+  load();
+}
+
+AddresseeView::~AddresseeView()
+{
+  if ( mDefaultConfig )
+    delete mConfig;
+
+  mConfig = 0;
 }
 
 void AddresseeView::setAddressee( const KABC::Addressee& addr )
 {
   mAddressee = addr;
 
+  updateView();
+}
+
+void AddresseeView::updateView()
+{
   // clear view
   setText( QString::null );
 
@@ -73,87 +110,105 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
 
   QString dynamicPart;
 
-  KABC::PhoneNumber::List phones = mAddressee.phoneNumbers();
-  KABC::PhoneNumber::List::ConstIterator phoneIt;
-  for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
-    QString number = (*phoneIt).number();
+  if ( mActionShowBirthday->isChecked() ) {
+    QDate date = mAddressee.birthday().date();
 
-    QString url;
-    if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
-      url = "fax:" + number;
-    else
-      url = "phone:" + number;
-
-    dynamicPart += QString(
-      "<tr><td align=\"right\"><b>%1</b></td>"
-      "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
-      .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-      .arg( url )
-      .arg( number );
-  }
-
-  QStringList emails = mAddressee.emails();
-  QStringList::ConstIterator emailIt;
-  QString type = i18n( "Email" );
-  for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
-    dynamicPart += QString(
-      "<tr><td align=\"right\"><b>%1</b></td>"
-      "<td align=\"left\"><a href=\"mailto:%2\">%3</a></td></tr>" )
-      .arg( type )
-      .arg( *emailIt )
-      .arg( *emailIt );
-    type = i18n( "Other" );
-  }
-
-  if ( !mAddressee.url().url().isEmpty() ) {
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
       "<td align=\"left\">%2</td></tr>" )
-      .arg( i18n( "Homepage" ) )
-      .arg( KStringHandler::tagURLs( mAddressee.url().url() ) );
+      .arg( KABC::Addressee::birthdayLabel() )
+      .arg( date.isValid() ? KGlobal::locale()->formatDate( date, true ) : i18n( "none" ) );
   }
 
-  KABC::Address::List addresses = mAddressee.addresses();
-  KABC::Address::List::ConstIterator addrIt;
-  for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
-    if ( (*addrIt).label().isEmpty() ) {
-      QString formattedAddress;
+  if ( mActionShowPhones->isChecked() ) {
+    KABC::PhoneNumber::List phones = mAddressee.phoneNumbers();
+    KABC::PhoneNumber::List::ConstIterator phoneIt;
+    for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
+      QString number = (*phoneIt).number();
+
+      QString url;
+      if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
+        url = "fax:" + number;
+      else
+        url = "phone:" + number;
+
+      dynamicPart += QString(
+        "<tr><td align=\"right\"><b>%1</b></td>"
+        "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
+        .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
+        .arg( url )
+        .arg( number );
+    }
+  }
+
+  if ( mActionShowEmails->isChecked() ) {
+    QStringList emails = mAddressee.emails();
+    QStringList::ConstIterator emailIt;
+    QString type = i18n( "Email" );
+    for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
+      dynamicPart += QString(
+        "<tr><td align=\"right\"><b>%1</b></td>"
+        "<td align=\"left\"><a href=\"mailto:%2\">%3</a></td></tr>" )
+        .arg( type )
+        .arg( *emailIt )
+        .arg( *emailIt );
+      type = i18n( "Other" );
+    }
+  }
+
+  if ( mActionShowURLs->isChecked() ) {
+    if ( !mAddressee.url().url().isEmpty() ) {
+      dynamicPart += QString(
+        "<tr><td align=\"right\"><b>%1</b></td>"
+        "<td align=\"left\">%2</td></tr>" )
+        .arg( i18n( "Homepage" ) )
+        .arg( KStringHandler::tagURLs( mAddressee.url().url() ) );
+    }
+  }
+
+  if ( mActionShowAddresses->isChecked() ) {
+    KABC::Address::List addresses = mAddressee.addresses();
+    KABC::Address::List::ConstIterator addrIt;
+    for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
+      if ( (*addrIt).label().isEmpty() ) {
+        QString formattedAddress;
 
 #if KDE_VERSION >= 319
-      formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
+        formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
 #else
-      if ( !(*addrIt).street().isEmpty() )
-        formattedAddress += (*addrIt).street() + "\n";
+        if ( !(*addrIt).street().isEmpty() )
+          formattedAddress += (*addrIt).street() + "\n";
 
-      if ( !(*addrIt).postOfficeBox().isEmpty() )
-        formattedAddress += (*addrIt).postOfficeBox() + "\n";
+        if ( !(*addrIt).postOfficeBox().isEmpty() )
+          formattedAddress += (*addrIt).postOfficeBox() + "\n";
 
-      formattedAddress += (*addrIt).locality() + QString(" ") + (*addrIt).region();
+        formattedAddress += (*addrIt).locality() + QString(" ") + (*addrIt).region();
 
-      if ( !(*addrIt).postalCode().isEmpty() )
-        formattedAddress += QString(", ") + (*addrIt).postalCode();
+        if ( !(*addrIt).postalCode().isEmpty() )
+          formattedAddress += QString(", ") + (*addrIt).postalCode();
 
-      formattedAddress += "\n";
+        formattedAddress += "\n";
 
-      if ( !(*addrIt).country().isEmpty() )
-        formattedAddress += (*addrIt).country() + "\n";
+        if ( !(*addrIt).country().isEmpty() )
+          formattedAddress += (*addrIt).country() + "\n";
 
-      formattedAddress += (*addrIt).extended();
+        formattedAddress += (*addrIt).extended();
 #endif
 
-      formattedAddress = formattedAddress.replace( '\n', "<br>" );
+        formattedAddress = formattedAddress.replace( '\n', "<br>" );
 
-      dynamicPart += QString(
-        "<tr><td align=\"right\"><b>%1</b></td>"
-        "<td align=\"left\">%2</td></tr>" )
-        .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-        .arg( formattedAddress );
-    } else {
-      dynamicPart += QString(
-        "<tr><td align=\"right\"><b>%1</b></td>"
-        "<td align=\"left\">%2</td></tr>" )
-        .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-        .arg( (*addrIt).label().replace( '\n', "<br>" ) );
+        dynamicPart += QString(
+          "<tr><td align=\"right\"><b>%1</b></td>"
+          "<td align=\"left\">%2</td></tr>" )
+          .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+          .arg( formattedAddress );
+      } else {
+        dynamicPart += QString(
+          "<tr><td align=\"right\"><b>%1</b></td>"
+          "<td align=\"left\">%2</td></tr>" )
+          .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+          .arg( (*addrIt).label().replace( '\n', "<br>" ) );
+      }
     }
   }
 
@@ -252,6 +307,18 @@ void AddresseeView::faxNumberClicked( const QString &number )
   KRun::runCommand( commandLine );
 }
 
+QPopupMenu *AddresseeView::createPopupMenu( const QPoint& )
+{
+  QPopupMenu *menu = new QPopupMenu( this );
+  mActionShowBirthday->plug( menu );
+  mActionShowAddresses->plug( menu );
+  mActionShowEmails->plug( menu );
+  mActionShowPhones->plug( menu );
+  mActionShowURLs->plug( menu );
+
+  return menu;
+}
+
 void AddresseeView::slotMailClicked( const QString&, const QString &email )
 {
   emailClicked( email );
@@ -289,6 +356,33 @@ void AddresseeView::slotHighlighted( const QString &link )
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
   } else
     emit highlightedMessage( "" );
+}
+
+void AddresseeView::configChanged()
+{
+  save();
+  updateView();
+}
+
+void AddresseeView::load()
+{
+  mConfig->setGroup( "AddresseeViewSettings" );
+  mActionShowBirthday->setChecked( mConfig->readBoolEntry( "ShowBirthday", false ) );
+  mActionShowAddresses->setChecked( mConfig->readBoolEntry( "ShowAddresses", true ) );
+  mActionShowEmails->setChecked( mConfig->readBoolEntry( "ShowEmails", true ) );
+  mActionShowPhones->setChecked( mConfig->readBoolEntry( "ShowPhones", true ) );
+  mActionShowURLs->setChecked( mConfig->readBoolEntry( "ShowURLs", true ) );
+}
+
+void AddresseeView::save()
+{
+  mConfig->setGroup( "AddresseeViewSettings" );
+  mConfig->writeEntry( "ShowBirthday", mActionShowBirthday->isChecked() );
+  mConfig->writeEntry( "ShowAddresses", mActionShowAddresses->isChecked() );
+  mConfig->writeEntry( "ShowEmails", mActionShowEmails->isChecked() );
+  mConfig->writeEntry( "ShowPhones", mActionShowPhones->isChecked() );
+  mConfig->writeEntry( "ShowURLs", mActionShowURLs->isChecked() );
+  mConfig->sync();
 }
 
 QString AddresseeView::strippedNumber( const QString &number )

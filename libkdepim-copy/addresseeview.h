@@ -25,6 +25,9 @@
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
 
+class KToggleAction;
+class QPopupMenu;
+
 namespace KPIM {
 
 class AddresseeView : public KTextBrowser
@@ -32,7 +35,16 @@ class AddresseeView : public KTextBrowser
   Q_OBJECT
 
   public:
-    AddresseeView( QWidget *parent = 0, const char *name = 0 );
+    /**
+      Constructor.
+ 
+      @param config The config object where the settings are stored
+                    which fields will be shown.
+     */
+    AddresseeView( QWidget *parent = 0, const char *name = 0,
+                   KConfig *config = 0 );
+
+    ~AddresseeView();
 
     /**
       Sets the addressee object. The addressee is displayed immediately.
@@ -60,13 +72,30 @@ class AddresseeView : public KTextBrowser
     virtual void phoneNumberClicked( const QString &number );
     virtual void faxNumberClicked( const QString &number );
 
+    virtual QPopupMenu *createPopupMenu( const QPoint& );
+
   private slots:
     void slotMailClicked( const QString&, const QString& );
     void slotUrlClicked( const QString& );
     void slotHighlighted( const QString& );
+    void configChanged();
 
   private:
+    void load();
+    void save();
+
+    void updateView();
+
     QString strippedNumber( const QString &number );
+
+    KConfig *mConfig;
+    bool mDefaultConfig;
+
+    KToggleAction *mActionShowBirthday;
+    KToggleAction *mActionShowAddresses;
+    KToggleAction *mActionShowEmails;
+    KToggleAction *mActionShowPhones;
+    KToggleAction *mActionShowURLs;
 
     KABC::Addressee mAddressee;
 
