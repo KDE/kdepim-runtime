@@ -19,7 +19,6 @@
 */
 #ifndef _KPREFS_H
 #define _KPREFS_H
-// $Id$
 
 #include <qptrlist.h>
 #include <qcolor.h>
@@ -81,24 +80,24 @@ template <typename T>
 class KGenericPrefsItem : public KPrefsItem
 {
   public:
-    KGenericPrefsItem( const QString &group, const QString &name, T *reference,
+    KGenericPrefsItem( const QString &group, const QString &name, T &reference,
                        T defaultValue)
       : KPrefsItem( group, name ), mReference( reference ),
         mDefault( defaultValue ) {}
 
     virtual void setDefault()
     {
-        *mReference = mDefault;
+        mReference = mDefault;
     }
 
     virtual void writeConfig( KConfig *config )
     {
         config->setGroup( mGroup );
-        config->writeEntry( mName, *mReference );
+        config->writeEntry( mName, mReference );
     }
 
   protected:
-    T *mReference;
+    T &mReference;
     T mDefault;
 };
 
@@ -123,11 +122,11 @@ class KGenericPrefsItem : public KPrefsItem
       MyPrefs()
       {
         setCurrentGroup("MyGroup");
-        addItemBool("MySetting1",&mMyBool,false);
-        addItemColor("MySetting2",&mMyColor,QColor(1,2,3));
+        addItemBool("MySetting1",mMyBool,false);
+        addItemColor("MySetting2",mMyColor,QColor(1,2,3));
         
         setCurrentGroup("MyOtherGroup");
-        addItemFont("MySetting3",&mMyFont,QFont("helvetica",12));
+        addItemFont("MySetting3",mMyFont,QFont("helvetica",12));
       }
       
       bool mMyBool;
@@ -208,7 +207,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemBool(const QString &key,bool *reference,
+    void addItemBool(const QString &key,bool &reference,
                      bool defaultValue=false);
     /**
       Register an item of type int.
@@ -220,7 +219,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemInt(const QString &key,int *reference,
+    void addItemInt(const QString &key,int &reference,
                     int defaultValue=0);
     /**
       Register an item of type QColor.
@@ -232,7 +231,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemColor(const QString &key,QColor *reference,
+    void addItemColor(const QString &key,QColor &reference,
                       const QColor &defaultValue=QColor(128,128,128));
     /**
       Register an item of type QFont.
@@ -244,7 +243,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemFont(const QString &key,QFont *reference,
+    void addItemFont(const QString &key,QFont &reference,
                      const QFont &defaultValue=QFont("helvetica",12));
     /**
       Register an item of type QString.
@@ -256,7 +255,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemString(const QString &key,QString *reference,
+    void addItemString(const QString &key,QString &reference,
                        const QString &defaultValue="");
     /**
       Register a password item of type QString. The string value is written 
@@ -270,7 +269,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemPassword(const QString &key,QString *reference,
+    void addItemPassword(const QString &key,QString &reference,
                          const QString &defaultValue="");
     /**
       Register an item of type QStringList.
@@ -282,7 +281,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemStringList(const QString &key,QStringList *reference,
+    void addItemStringList(const QString &key,QStringList &reference,
                            const QStringList &defaultValue=QStringList());
 
     /**
@@ -295,7 +294,7 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemIntList(const QString &key,QValueList<int> *reference,
+    void addItemIntList(const QString &key,QValueList<int> &reference,
                         const QValueList<int> &defaultValue=QValueList<int>());
 
   protected:
