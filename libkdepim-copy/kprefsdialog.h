@@ -68,7 +68,7 @@ class KPrefsWid : public QObject
 
 /**
   @short Widget for bool settings in @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring bool values. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management.
 */
@@ -77,30 +77,32 @@ class KPrefsWidBool : public KPrefsWid
   public:
     /**
       Create a bool widget consisting of a QCheckbox.
-      
+
       @param text      Text of QCheckBox.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidBool(const QString &text,bool &reference,QWidget *parent);
-    
+    KPrefsWidBool(const QString &text,bool &reference,QWidget *parent,
+                  const QString &whatsThis = QString::null);
+
     /**
       Return the QCheckbox used by this widget.
     */
     QCheckBox *checkBox();
-    
+
     void readConfig();
     void writeConfig();
-    
+
   private:
     bool &mReference;
-    
+
     QCheckBox *mCheck;
 };
 
 /**
   @short Widget for time settings in @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring time values. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management.
 */
@@ -109,13 +111,15 @@ class KPrefsWidTime : public KPrefsWid
   public:
     /**
       Create a time widget consisting of a label and a spinbox.
-      
+
       @param text      Text of Label.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidTime(const QString &text,int &reference,QWidget *parent);
-    
+    KPrefsWidTime(const QString &text,int &reference,QWidget *parent,
+                  const QString &whatsThis = QString::null);
+
     /**
       Return QLabel used by this widget.
     */
@@ -124,20 +128,20 @@ class KPrefsWidTime : public KPrefsWid
       Return QSpinBox used by this widget.
     */
     QSpinBox *spinBox();
-    
+
     void readConfig();
     void writeConfig();
-    
+
   private:
     int &mReference;
-    
+
     QLabel *mLabel;
     QSpinBox *mSpin;
 };
 
 /**
   @short Widget for color settings in @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring color values. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management.
 */
@@ -148,17 +152,19 @@ class KPrefsWidColor : public KPrefsWid
     /**
       Create a color widget consisting of a test field and a button for opening
       a color dialog.
-      
+
       @param text      Text of button.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidColor(const QString &text,QColor &reference,QWidget *parent);
+    KPrefsWidColor(const QString &text,QColor &reference,QWidget *parent,
+                   const QString &whatsThis = QString::null);
     /**
       Destruct color setting widget.
     */
     ~KPrefsWidColor();
-    
+
     /**
       Return QLabel for the button
     */
@@ -167,20 +173,20 @@ class KPrefsWidColor : public KPrefsWid
       Return button opening the color dialog.
     */
     KColorButton *button();
-    
+
     void readConfig();
     void writeConfig();
-    
+
   private:
     QColor &mReference;
-    
+
     QLabel *mLabel;
     KColorButton *mButton;
 };
 
 /**
   @short Widget for font settings in @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring font values. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management.
 */
@@ -191,18 +197,20 @@ class KPrefsWidFont : public KPrefsWid
     /**
       Create a font widget consisting of a test field and a button for opening
       a font dialog.
-      
+
       @param label     Text of label.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
     KPrefsWidFont(const QString &sampleText,const QString &labelText,
-                  QFont &reference,QWidget *parent);
+                  QFont &reference,QWidget *parent,
+		  const QString &whatsThis = QString::null);
     /**
       Destruct font setting widget.
     */
     ~KPrefsWidFont();
-    
+
     /**
       Return label.
     */
@@ -215,16 +223,16 @@ class KPrefsWidFont : public KPrefsWid
       Return button opening the font dialog.
     */
     QPushButton *button();
-    
+
     void readConfig();
     void writeConfig();
 
   protected slots:
     void selectFont();
-    
+
   private:
     QFont &mReference;
-    
+
     QLabel *mLabel;
     QLabel *mPreview;
     QPushButton *mButton;
@@ -233,7 +241,7 @@ class KPrefsWidFont : public KPrefsWid
 /**
   @short Widget for settings represented by a group of radio buttons in
   @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring selections. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management. The
   setting is interpreted as an int value, corresponding to the position of the
@@ -246,29 +254,30 @@ class KPrefsWidRadios : public KPrefsWid
     /**
       Create a widget for selection of an option. It consists of a box with
       several radio buttons.
-      
+
       @param text      Text of main box.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
     */
-    KPrefsWidRadios(const QString &text,int &reference,QWidget *parent);
+    KPrefsWidRadios(const QString &text, int &reference,QWidget *parent);
     virtual ~KPrefsWidRadios();
 
     /**
       Add a radio button.
-      
+
       @param text Text of the button.
+      @param whatsThis What's This help for the button.
     */
-    void addRadio(const QString &text);
-    
+    void addRadio(const QString &text, const QString &whatsThis = QString::null);
+
     /**
       Return the box widget used by this widget.
     */
     QButtonGroup *groupBox();
-    
+
     void readConfig();
     void writeConfig();
-    
+
   private:
     int &mReference;
 
@@ -278,7 +287,7 @@ class KPrefsWidRadios : public KPrefsWid
 
 /**
   @short Widget for string settings in @ref KPrefsDialog.
-  
+
   This class provides a widget for configuring string values. It is meant to be
   used by KPrefsDialog. The user is responsible for the layout management.
 */
@@ -287,12 +296,13 @@ class KPrefsWidString : public KPrefsWid
   public:
     /**
       Create a string widget consisting of a test label and a line edit.
-      
+
       @param text      Text of label.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString(const QString &text,QString &reference,QWidget *parent,QLineEdit::EchoMode echomode=QLineEdit::Normal);
+    KPrefsWidString(const QString &text,QString &reference,QWidget *parent,QLineEdit::EchoMode echomode=QLineEdit::Normal, const QString &whatsThis = QString::null);
     /**
       Destructor.
     */
@@ -306,10 +316,10 @@ class KPrefsWidString : public KPrefsWid
       Return QLineEdit used by this widget.
     */
     QLineEdit *lineEdit();
-    
+
     void readConfig();
     void writeConfig();
-    
+
   private:
     QString &mReference;
 
@@ -320,7 +330,7 @@ class KPrefsWidString : public KPrefsWid
 
 /**
   @short Class for managing KPrefsWid objects.
-  
+
   This class manages standard configuration widgets provided bz the KPrefsWid
   subclasses. It handles creation, loading, saving and default values in a
   transparent way. The user has to add the widgets by the corresponding addWid
@@ -331,7 +341,7 @@ class KPrefsWidManager
   public:
     /**
       Create a KPrefsWidManager object for a KPrefs object.
-      
+
       @param prefs  KPrefs object used to access te configuration.
     */
     KPrefsWidManager(KPrefs *prefs);
@@ -346,31 +356,37 @@ class KPrefsWidManager
     virtual void addWid(KPrefsWid *);
     /**
       Register a @ref KPrefsWidBool object.
-      
+
       @param text      Text of bool widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidBool *addWidBool(const QString &text,bool &reference,QWidget *parent);
+    KPrefsWidBool *addWidBool(const QString &text,bool &reference,QWidget *parent,
+                              const QString &whatsThis = QString::null);
     /**
       Register a @ref KPrefsWidTime object.
-      
+
       @param text      Text of time widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidTime *addWidTime(const QString &text,int &reference,QWidget *parent);
+    KPrefsWidTime *addWidTime(const QString &text,int &reference,QWidget *parent,
+                              const QString &whatsThis = QString::null);
     /**
       Register a @ref KPrefsWidColor object.
-      
+
       @param text      Text of color widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidColor *addWidColor(const QString &text,QColor &reference,QWidget *parent);
+    KPrefsWidColor *addWidColor(const QString &text,QColor &reference,QWidget *parent,
+                                const QString &whatsThis = QString::null);
     /**
       Register a @ref KPrefsWidRadios object.
-      
+
       @param text      Text of radio button box widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
@@ -378,34 +394,40 @@ class KPrefsWidManager
     KPrefsWidRadios *addWidRadios(const QString &text,int &reference,QWidget *parent);
     /**
       Register a @ref KPrefsWidString object.
-      
+
       @param text      Text of string widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString *addWidString(const QString &text,QString &reference,QWidget *parent);
+    KPrefsWidString *addWidString(const QString &text,QString &reference,QWidget *parent,
+                                  const QString &whatsThis = QString::null);
     /**
       Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.
-      
+
       @param text      Text of string widget.
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString *addWidPassword (const QString &text,QString &reference,QWidget *parent);
+    KPrefsWidString *addWidPassword (const QString &text,QString &reference,QWidget *parent,
+                                     const QString &whatsThis = QString::null);
     /**
       Register a @ref KPrefsWidFont object.
-      
+
       @param sampleText Sample text of font widget.
       @param buttonText Button text of font widget.
       @param reference  Reference to variable storing the setting.
       @param parent     Parent widget.
+      @param whatsThis What's This help for the widget.
     */
     KPrefsWidFont *addWidFont(const QString &sampleText,const QString &buttonText,
-                              QFont &reference,QWidget *parent);
+                              QFont &reference,QWidget *parent,
+			      const QString &whatsThis = QString::null);
 
     /** Set all widgets to default values. */
     void setWidDefaults();
-  
+
     /** Read preferences from config file. */
     void readWidConfig();
 
@@ -421,11 +443,11 @@ class KPrefsWidManager
 
 /**
   @short Base class for a preferences dialog.
-  
+
   This class provides the framework for a preferences dialog. You have to
   subclass it and add the code to create the actual configuration widgets and
   do the layout management.
-  
+
   KPrefsDialog provides functions to add subclasses of @ref KPrefsWid via
   KPrefsWidManager. For these widgets the reading, writing and setting to
   default values is handled automatically. Custom widgets have to be handled in
@@ -437,7 +459,7 @@ class KPrefsDialog : public KDialogBase, public KPrefsWidManager
   public:
     /**
       Create a KPrefsDialog for a KPrefs object.
-      
+
       @param prefs  KPrefs object used to access te configuration.
       @param parent Parent widget.
       @param name   Widget name.
@@ -452,7 +474,7 @@ class KPrefsDialog : public KDialogBase, public KPrefsWidManager
   public slots:
     /** Set all widgets to default values. */
     void setDefaults();
-  
+
     /** Read preferences from config file. */
     void readConfig();
 
@@ -469,10 +491,10 @@ class KPrefsDialog : public KDialogBase, public KPrefsWidManager
 
     /** Accept changes to preferences and close dialog */
     void slotOk();
-  
+
     /** Set preferences to default values */
     void slotDefault();
-  
+
   protected:
     /** Implement this to read custom configuration widgets. */
     virtual void usrReadConfig() {}
@@ -488,7 +510,7 @@ class KPrefsModule : public KCModule, public KPrefsWidManager
     KPrefsModule( KPrefs *, QWidget *parent = 0, const char *name = 0 );
 
     virtual void addWid(KPrefsWid *);
-    
+
     void load();
     void save();
     void defaults();

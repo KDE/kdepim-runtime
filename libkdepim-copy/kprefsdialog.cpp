@@ -30,6 +30,7 @@
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
+#include <qwhatsthis.h>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -43,10 +44,13 @@
 #include "kprefsdialog.moc"
 
 KPrefsWidBool::KPrefsWidBool(const QString &text,bool &reference,
-                             QWidget *parent)
+                             QWidget *parent, const QString &whatsThis)
   : mReference( reference )
 {
   mCheck = new QCheckBox(text,parent);
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(mCheck, whatsThis);
+  }
 }
 
 void KPrefsWidBool::readConfig()
@@ -66,11 +70,14 @@ QCheckBox *KPrefsWidBool::checkBox()
 
 
 KPrefsWidColor::KPrefsWidColor(const QString &text,QColor &reference,
-                               QWidget *parent)
+                               QWidget *parent, const QString &whatsThis)
   : mReference( reference )
 {
   mButton = new KColorButton(parent);
   mLabel = new QLabel(mButton, text, parent);
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(mButton, whatsThis);
+  }
 }
 
 KPrefsWidColor::~KPrefsWidColor()
@@ -99,7 +106,8 @@ KColorButton *KPrefsWidColor::button()
 }
 
 KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &labelText,
-                             QFont &reference,QWidget *parent)
+                             QFont &reference,QWidget *parent,
+			     const QString &whatsThis)
   : mReference( reference )
 {
   mLabel = new QLabel(labelText, parent);
@@ -109,6 +117,10 @@ KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &labelText,
 
   mButton = new QPushButton(i18n("Choose..."), parent);
   connect(mButton,SIGNAL(clicked()),SLOT(selectFont()));
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(mPreview, whatsThis);
+    QWhatsThis::add(mButton, whatsThis);
+  }
 }
 
 KPrefsWidFont::~KPrefsWidFont()
@@ -151,12 +163,15 @@ void KPrefsWidFont::selectFont()
 
 
 KPrefsWidTime::KPrefsWidTime(const QString &text,int &reference,
-                             QWidget *parent)
+                             QWidget *parent, const QString &whatsThis)
   : mReference( reference )
 {
   mLabel = new QLabel(text,parent);
   mSpin = new QSpinBox(0,23,1,parent);
   mSpin->setSuffix(":00");
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(mSpin, whatsThis);
+  }
 }
 
 void KPrefsWidTime::readConfig()
@@ -192,9 +207,12 @@ KPrefsWidRadios::~KPrefsWidRadios()
 {
 }
 
-void KPrefsWidRadios::addRadio(const QString &text)
+void KPrefsWidRadios::addRadio(const QString &text, const QString &whatsThis)
 {
-  new QRadioButton(text,mBox);
+  QRadioButton *r = new QRadioButton(text,mBox);
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(r, whatsThis);
+  }
 }
 
 QButtonGroup *KPrefsWidRadios::groupBox()
@@ -214,12 +232,16 @@ void KPrefsWidRadios::writeConfig()
 
 
 KPrefsWidString::KPrefsWidString(const QString &text,QString &reference,
-                                 QWidget *parent, QLineEdit::EchoMode echomode)
+                                 QWidget *parent, QLineEdit::EchoMode echomode,
+				 const QString &whatsThis)
   : mReference( reference )
 {
   mLabel = new QLabel(text,parent);
   mEdit = new QLineEdit(parent);
   mEdit->setEchoMode( echomode );
+  if (!whatsThis.isNull()) {
+    QWhatsThis::add(mEdit, whatsThis);
+  }
 }
 
 KPrefsWidString::~KPrefsWidString()
@@ -261,23 +283,26 @@ void KPrefsWidManager::addWid(KPrefsWid *wid)
   mPrefsWids.append(wid);
 }
 
-KPrefsWidBool *KPrefsWidManager::addWidBool(const QString &text,bool &reference,QWidget *parent)
+KPrefsWidBool *KPrefsWidManager::addWidBool(const QString &text,bool &reference,QWidget *parent,
+                                            const QString &whatsThis)
 {
-  KPrefsWidBool *w = new KPrefsWidBool(text,reference,parent);
+  KPrefsWidBool *w = new KPrefsWidBool(text,reference,parent, whatsThis);
   addWid(w);
   return w;
 }
 
-KPrefsWidTime *KPrefsWidManager::addWidTime(const QString &text,int &reference,QWidget *parent)
+KPrefsWidTime *KPrefsWidManager::addWidTime(const QString &text,int &reference,QWidget *parent,
+                                            const QString &whatsThis)
 {
-  KPrefsWidTime *w = new KPrefsWidTime(text,reference,parent);
+  KPrefsWidTime *w = new KPrefsWidTime(text,reference,parent, whatsThis);
   addWid(w);
   return w;
 }
 
-KPrefsWidColor *KPrefsWidManager::addWidColor(const QString &text,QColor &reference,QWidget *parent)
+KPrefsWidColor *KPrefsWidManager::addWidColor(const QString &text,QColor &reference,
+                                              QWidget *parent, const QString &whatsThis)
 {
-  KPrefsWidColor *w = new KPrefsWidColor(text,reference,parent);
+  KPrefsWidColor *w = new KPrefsWidColor(text,reference,parent, whatsThis);
   addWid(w);
   return w;
 }
@@ -289,24 +314,30 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios(const QString &text,int &referen
   return w;
 }
 
-KPrefsWidString *KPrefsWidManager::addWidString(const QString &text,QString &reference,QWidget *parent)
+KPrefsWidString *KPrefsWidManager::addWidString(const QString &text,QString &reference,
+                                                QWidget *parent, const QString &whatsThis)
 {
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent);
+  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,
+                                           QLineEdit::Normal, whatsThis);
   addWid(w);
   return w;
 }
 
-KPrefsWidString *KPrefsWidManager::addWidPassword(const QString &text,QString &reference,QWidget *parent)
+KPrefsWidString *KPrefsWidManager::addWidPassword(const QString &text,QString &reference,
+                                                  QWidget *parent, const QString &whatsThis)
 {
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password);
+  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password,
+                                           whatsThis);
   addWid(w);
   return w;
 }
 
 KPrefsWidFont *KPrefsWidManager::addWidFont(const QString &sampleText,const QString &buttonText,
-                                            QFont &reference,QWidget *parent)
+                                            QFont &reference,QWidget *parent,
+					    const QString &whatsThis)
 {
-  KPrefsWidFont *w = new KPrefsWidFont(sampleText,buttonText,reference,parent);
+  KPrefsWidFont *w = new KPrefsWidFont(sampleText,buttonText,reference,parent,
+                                       whatsThis);
   addWid(w);
   return w;
 }
@@ -314,7 +345,7 @@ KPrefsWidFont *KPrefsWidManager::addWidFont(const QString &sampleText,const QStr
 void KPrefsWidManager::setWidDefaults()
 {
   mPrefs->setDefaults();
-  
+
   readWidConfig();
 }
 
@@ -332,7 +363,7 @@ void KPrefsWidManager::writeWidConfig()
   for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
     wid->writeConfig();
   }
-  
+
   mPrefs->writeConfig();
 }
 
@@ -356,7 +387,7 @@ KPrefsDialog::~KPrefsDialog()
 void KPrefsDialog::setDefaults()
 {
   setWidDefaults();
-  
+
   readConfig();
 }
 
@@ -395,7 +426,7 @@ void KPrefsDialog::slotDefault()
       i18n("You are about to set all preferences to default values. All "
       "custom modifications will be lost."),i18n("Setting Default Preferences"),
       i18n("Continue"))
-    == KMessageBox::Continue) setDefaults(); 
+    == KMessageBox::Continue) setDefaults();
 }
 
 
@@ -427,7 +458,7 @@ void KPrefsModule::load()
 void KPrefsModule::save()
 {
   writeWidConfig();
-  
+
   usrWriteConfig();
 
   load();
@@ -436,6 +467,6 @@ void KPrefsModule::save()
 void KPrefsModule::defaults()
 {
   setWidDefaults();
-  
+
   load();
 }
