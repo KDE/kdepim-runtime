@@ -1,6 +1,6 @@
 SUBDIRS = cfgc interfaces tests
 
-INCLUDES =  $(all_includes)
+INCLUDES = -I$(top_srcdir) $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
