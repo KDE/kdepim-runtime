@@ -30,6 +30,7 @@
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
+#include <kio/job.h>
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <krun.h>
@@ -41,7 +42,7 @@ using namespace KPIM;
 
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
                               KConfig *config )
-  : KTextBrowser( parent, name ), mDefaultConfig( false )
+  : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 )
 {
   setWrapPolicy( QTextEdit::AtWordBoundary );
   setLinkUnderline( false );
@@ -94,6 +95,13 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
 {
   mAddressee = addr;
 
+  if ( mImageJob ) {
+    mImageJob->kill();
+    mImageJob = 0;
+  }
+
+  mImageData.truncate( 0 );
+
   updateView();
 }
 
@@ -102,8 +110,17 @@ void AddresseeView::updateView()
   // clear view
   setText( QString::null );
 
-  if ( mAddressee.isEmpty() )
+  if ( mAddressee.isEmpty() ) {
+    QMimeSourceFactory::defaultFactory()->setImage( "myimage", QByteArray() );
     return;
+  }
+
+  if ( mImageJob ) {
+    mImageJob->kill();
+    mImageJob = 0;
+
+    mImageData.truncate( 0 );
+  }
 
   QString name = ( mAddressee.formattedName().isEmpty() ?
                    mAddressee.assembledName() : mAddressee.formattedName() );
@@ -254,9 +271,22 @@ void AddresseeView::updateView()
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
     QMimeSourceFactory::defaultFactory()->setImage( "myimage", picture.data() );
-  else
-    QMimeSourceFactory::defaultFactory()->setPixmap( "myimage",
-      KGlobal::iconLoader()->loadIcon( "identity", KIcon::Desktop, 128 ) );
+  else {
+    if ( !picture.url().isEmpty() ) {
+      if ( mImageData.count() > 0 )
+        QMimeSourceFactory::defaultFactory()->setImage( "myimage", mImageData );
+      else {
+        mImageJob = KIO::get( picture.url(), false, false );
+        connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
+                 this, SLOT( data( KIO::Job*, const QByteArray& ) ) );
+        connect( mImageJob, SIGNAL( result( KIO::Job* ) ),
+                 this, SLOT( result( KIO::Job* ) ) );
+      }
+    } else {
+      QMimeSourceFactory::defaultFactory()->setPixmap( "myimage",
+        KGlobal::iconLoader()->loadIcon( "identity", KIcon::Desktop, 128 ) );
+    }
+  }
 
   // at last display it...
   setText( strAddr );
@@ -362,6 +392,21 @@ void AddresseeView::configChanged()
 {
   save();
   updateView();
+}
+
+void AddresseeView::data( KIO::Job*, const QByteArray &d )
+{
+  unsigned int oldSize = mImageData.size();
+  mImageData.resize( oldSize + d.size() );
+  memcpy( mImageData.data() + oldSize, d.data(), d.size() );
+}
+
+void AddresseeView::result( KIO::Job *job )
+{
+  if ( !job->error() ) {
+    mImageJob = 0;
+    updateView();
+  }
 }
 
 void AddresseeView::load()

@@ -22,10 +22,16 @@
 #ifndef KPIM_ADDRESSEEVIEW_H
 #define KPIM_ADDRESSEEVIEW_H
 
+#include <qcstring.h>
+
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
 
+namespace KIO {
+class Job;
+}
 class KToggleAction;
+
 class QPopupMenu;
 
 namespace KPIM {
@@ -80,6 +86,9 @@ class AddresseeView : public KTextBrowser
     void slotHighlighted( const QString& );
     void configChanged();
 
+    void data( KIO::Job*, const QByteArray& );
+    void result( KIO::Job* );
+
   private:
     void load();
     void save();
@@ -90,6 +99,9 @@ class AddresseeView : public KTextBrowser
 
     KConfig *mConfig;
     bool mDefaultConfig;
+
+    QByteArray mImageData;
+    KIO::Job *mImageJob;
 
     KToggleAction *mActionShowBirthday;
     KToggleAction *mActionShowAddresses;
