@@ -30,6 +30,7 @@
 #include <qcombobox.h>
 
 #include <kapplication.h>
+#include <kdepimmacros.h>
 
 /**
   This is a class that provides an easy, user friendly way to edit times.

@@ -24,6 +24,7 @@
 
 #include <ktextbrowser.h>
 #include <libkdepim/diffalgo.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 

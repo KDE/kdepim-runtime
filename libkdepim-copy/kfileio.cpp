@@ -21,6 +21,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <kdepimmacros.h>
+
 namespace KPIM {
 
 //-----------------------------------------------------------------------------
