@@ -481,12 +481,20 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
       if( isDistributionList ) {
         kdDebug(5300) << "LdapSearch::makeSearchData() found a list: " << name << endl;
         ret.append( name );
-        mail = (*it1).client->base().simplifyWhiteSpace();
-        mail.replace( ",dc=", ".", false );
-        if( mail.startsWith("dc=", false) )
-          mail.remove(0, 3);
-        mail.prepend( '@' );
-        mail.prepend( name );
+        // following lines commented out for bugfixing kolab issue #177:
+        //
+        // Unlike we thought previously we may NOT append the server name here.
+        //
+        // The right server is found by the SMTP server instead: Kolab users
+        // must use the correct SMTP server, by definition.
+        //
+        //mail = (*it1).client->base().simplifyWhiteSpace();
+        //mail.replace( ",dc=", ".", false );
+        //if( mail.startsWith("dc=", false) )
+        //  mail.remove(0, 3);
+        //mail.prepend( '@' );
+        //mail.prepend( name );
+        mail = name;
       } else {
         kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: " << name << endl;
         continue; // nothing, bad entry
