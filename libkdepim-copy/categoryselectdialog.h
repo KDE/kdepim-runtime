@@ -40,6 +40,8 @@ class CategorySelectDialog : public CategorySelectDialog_base
 
     void setCategories();
     void setSelected(const QStringList &selList);
+
+    QStringList selectedCategories() const;
     
   public slots:
     void slotOk();
@@ -53,7 +55,8 @@ class CategorySelectDialog : public CategorySelectDialog_base
     void editCategories();
 
   private:
-    KPimPrefs *mPrefs;
+    class CategorySelectDialogPrivate;
+    CategorySelectDialogPrivate *d;
 };
 
 }

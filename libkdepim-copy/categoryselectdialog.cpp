@@ -31,14 +31,22 @@
 
 using namespace KPIM;
 
+class CategorySelectDialog::CategorySelectDialogPrivate
+{
+  public:
+    KPimPrefs *mPrefs;
+    QStringList mCategories;
+};
+
 CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
                                             const char* name, 
                                             bool modal, WFlags fl )
   : CategorySelectDialog_base( parent, name, modal, fl ),
-    mPrefs( prefs )
+    d( new CategorySelectDialogPrivate )
 {
-  mCategories->header()->hide();
+  d->mPrefs = prefs;
 
+  mCategories->header()->hide();
   setCategories();
  
   connect(mButtonEdit,SIGNAL(clicked()),SIGNAL(editCategories()));
@@ -47,17 +55,20 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
 void CategorySelectDialog::setCategories()
 {
   mCategories->clear();
+  d->mCategories.clear();
 
   QStringList::Iterator it;
 
-  for (it = mPrefs->mCustomCategories.begin();
-       it != mPrefs->mCustomCategories.end(); ++it ) {
+  for (it = d->mPrefs->mCustomCategories.begin();
+       it != d->mPrefs->mCustomCategories.end(); ++it ) {
     new QCheckListItem(mCategories,*it,QCheckListItem::CheckBox);
   }
 }
 
 CategorySelectDialog::~CategorySelectDialog()
 {
+  delete d;
+  d = 0;
 }
 
 void CategorySelectDialog::setSelected(const QStringList &selList)
@@ -77,6 +88,11 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
   }
 }
 
+QStringList CategorySelectDialog::selectedCategories() const
+{
+  return d->mCategories;
+}
+
 void CategorySelectDialog::slotApply()
 {
   QStringList categories;
@@ -89,6 +105,8 @@ void CategorySelectDialog::slotApply()
   }
   
   QString categoriesStr = categories.join(", ");
+
+  d->mCategories = categories;
 
   emit categoriesSelected(categories);
   emit categoriesSelected(categoriesStr);
