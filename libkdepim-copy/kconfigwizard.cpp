@@ -83,10 +83,10 @@ void KConfigWizard::setupRulesPage()
 {
   QFrame *topFrame = addPage( i18n("Rules") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
-  
+
   mRuleView = new QListView( topFrame );
   topLayout->addWidget( mRuleView );
-  
+
   mRuleView->addColumn( i18n("Source") );
   mRuleView->addColumn( i18n("Target") );
   mRuleView->addColumn( i18n("Condition") );
@@ -124,13 +124,14 @@ void KConfigWizard::setupChangesPage()
 {
   QFrame *topFrame = addPage( i18n("Changes") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
-  
+
   mChangeView = new QListView( topFrame );
   topLayout->addWidget( mChangeView );
-  
+
   mChangeView->addColumn( i18n("Action") );
   mChangeView->addColumn( i18n("Option") );
   mChangeView->addColumn( i18n("Value") );
+  mChangeView->setSorting( -1 );
 
   mChangesPage = topFrame;
 }
@@ -153,7 +154,7 @@ void KConfigWizard::updateChanges()
   KConfigPropagator::Change::List changes = mPropagator->changes();
   KConfigPropagator::Change *c;
   for( c = changes.first(); c; c = changes.next() ) {
-    new QListViewItem( mChangeView, c->title(), c->arg1(), c->arg2() );
+    new QListViewItem( mChangeView, mChangeView->lastItem(), c->title(), c->arg1(), c->arg2() );
   }
 }
 
@@ -184,7 +185,7 @@ void KConfigWizard::slotOk()
     }
     mPropagator->commit();
   }
-  
+
   accept();
 }
 
