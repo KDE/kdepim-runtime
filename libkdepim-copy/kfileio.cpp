@@ -15,6 +15,12 @@
 #include <klocale.h>
 #include <kstdguiitem.h>
 
+#include <qwidget.h>
+#include <qfile.h>
+#include <qfileinfo.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 namespace KPIM {
 
 //-----------------------------------------------------------------------------
@@ -257,6 +263,105 @@ bool kByteArrayToFile(const QByteArray& aBuffer, const QString &aFileName,
 {
     return kBytesToFile(aBuffer, aBuffer.size(), aFileName, aAskIfExists,
 	aBackup, aVerbose);
+}
+
+
+QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
+  const bool &recursive, const bool &wantItReadable,
+  const bool &wantItWritable)
+{
+  // First we have to find out which type the toCheck is. This can be
+  // a directory (follow if recursive) or a file (check permissions).
+  // Symlinks are followed as expected.
+  QFileInfo fiToCheck(toCheck);
+  fiToCheck.setCaching(false);
+  QCString toCheckEnc = QFile::encodeName(toCheck);
+  QString error;
+
+  // For each file or folder  we can check if the file is readable 
+  // and writable, as requested.
+  if ( fiToCheck.isFile() || fiToCheck.isDir() ){
+    struct stat statbuffer;
+
+    if ( !fiToCheck.isReadable() && wantItReadable ){
+      // Get the current permissions. No need to do anything with an 
+      // error, it will het added to errors anyhow, later on.
+      if (stat(toCheckEnc,&statbuffer) != 0) {
+        kdDebug() << "wantItR: Can't read perms of " << toCheck << endl;
+      }
+
+      // Lets try changing it.
+      if ( chmod( toCheckEnc, statbuffer.st_mode + S_IRUSR ) != 0 ){
+        error.append( i18n("%1 is not readable and that is unchangeable.")
+                           .arg(toCheck) + "\n");
+      } else {
+        kdDebug() << "Changed the read bit for " << toCheck << endl;
+      }
+    }
+
+    if ( !fiToCheck.isWritable() && wantItWritable ){
+      // Gets the current persmissions. Needed because it can be changed
+      // curing previous operation.
+      if (stat(toCheckEnc,&statbuffer) != 0) {
+        kdDebug() << "wantItW: Can't read perms of " << toCheck << endl;
+      }
+
+      // Lets try changing it.
+      if ( chmod (toCheckEnc, statbuffer.st_mode + S_IWUSR ) != 0 ) {
+        error.append( i18n("%1 is not writable and that is unchangeable.")
+                           .arg(toCheck) + "\n");
+      } else {
+        kdDebug() << "Changed the write bit for " << toCheck << endl;
+      }
+    }
+  }
+
+  // If it is a folder and recursive is true, then we check the contents of 
+  // the folder.
+  if ( fiToCheck.isDir() && recursive ){
+    QDir g(toCheck);
+    // First check if the folder is readable for us. If not, we get
+    // some ugly crashes.
+    if ( !g.isReadable() ){
+      error.append(i18n("Folder %1 is inaccessible.").arg(toCheck) + "\n");
+    } else {
+      const QFileInfoList *list = g.entryInfoList();
+      QFileInfoListIterator it( *list );
+      QFileInfo *fi;
+      while ((fi = it.current()) != 0) {
+        QString newToCheck = toCheck + "/" + fi->fileName();
+        QFileInfo fiNewToCheck(newToCheck);
+        if ( fi->fileName() != "." && fi->fileName() != ".." ) {
+          error.append ( checkAndCorrectPermissionsIfPossible( newToCheck, 
+                                recursive, wantItReadable, wantItWritable) );
+        }
+        ++it;
+      }
+    }
+  }
+  return error;
+}
+
+bool checkAndCorrectPermissionsIfPossibleWithErrorHandling( QWidget *parent,
+  const QString &toCheck, const bool &recursive, const bool &wantItReadable,
+  const bool &wantItWritable)
+{
+  QString error = checkAndCorrectPermissionsIfPossible(toCheck, recursive, 
+                                           wantItReadable, wantItWritable);
+  // There is no KMessageBox with Retry, Cancel and Details. 
+  // so, I can't provide a functionality to recheck. So it now 
+  // it is just a warning.
+  if ( !error.isEmpty() ) {
+    kdDebug() << "checkPermissions found:" << error << endl;
+    KMessageBox::detailedSorry(parent, 
+                               i18n("Some files or folders do not have "
+                               "the right permissions, please correct them "
+                               "manually."),
+                               error, i18n("Permissions Check"), false);
+    return false;
+  } else {
+    return true;
+  }
 }
 
 }
