@@ -140,9 +140,10 @@ void AddresseeView::updateView()
   if ( mActionShowBirthday->isChecked() ) {
     QDate date = mAddressee.birthday().date();
 
-    dynamicPart += rowFmtStr
-      .arg( KABC::Addressee::birthdayLabel() )
-      .arg( date.isValid() ? KGlobal::locale()->formatDate( date, true ) : i18n( "unknown" ) );
+    if ( date.isValid() )
+      dynamicPart += rowFmtStr
+        .arg( KABC::Addressee::birthdayLabel() )
+        .arg( KGlobal::locale()->formatDate( date, true ) );
   }
 
   if ( mActionShowPhones->isChecked() ) {
