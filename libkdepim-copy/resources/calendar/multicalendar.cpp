@@ -35,7 +35,7 @@
 #include <libkcal/journal.h>
 #include <libkcal/filestorage.h>
 
-#include <resourcemanager.h>
+#include <kresources/resourcemanager.h>
 
 #include "resourcecalendar.h"
 #include "resourcelocal.h"

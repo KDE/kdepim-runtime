@@ -39,9 +39,10 @@
 #include <libkcal/journal.h>
 #include <libkcal/filestorage.h>
 
+#include <kresources/resourceconfigwidget.h>
+
 #include "multicalendar.h"
 #include "resourcelocalconfig.h"
-#include "resourceconfigwidget.h"
 
 #include "resourcelocal.h"
 

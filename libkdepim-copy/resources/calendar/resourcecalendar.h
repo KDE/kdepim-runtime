@@ -31,7 +31,7 @@
 
 #include <libkcal/alarm.h>
 
-#include "resource.h"
+#include <kresources/resource.h>
 
 namespace KCal {
 

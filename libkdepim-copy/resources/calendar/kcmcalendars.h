@@ -23,7 +23,7 @@
 
 #include <kcmodule.h>
 
-#include <resourcesconfigpage.h>
+#include <kresources/resourcesconfigpage.h>
 
 class KCMCalendars : public KCModule
 {

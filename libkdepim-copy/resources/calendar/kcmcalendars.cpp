@@ -20,7 +20,7 @@
 
 #include <qlayout.h>
 
-#include <resourcesconfigpage.h>
+#include <kresources/resourcesconfigpage.h>
 
 #include "kcmcalendars.h"
 

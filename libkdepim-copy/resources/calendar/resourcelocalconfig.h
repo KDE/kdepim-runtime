@@ -26,8 +26,8 @@
 #include <qbuttongroup.h>
 #include <kurlrequester.h>
 
-#include <resource.h>
-#include <resourceconfigwidget.h>
+#include <kresources/resource.h>
+#include <kresources/resourceconfigwidget.h>
 
 namespace KCal {
 
