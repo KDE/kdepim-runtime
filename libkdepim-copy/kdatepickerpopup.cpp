@@ -48,6 +48,7 @@ KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *paren
 
 void KDatePickerPopup::buildMenu()
 {
+  if ( isVisible() ) return;
   clear();
 
   if ( ( mItems & DatePicker ) == DatePicker ) {
@@ -58,12 +59,12 @@ void KDatePickerPopup::buildMenu()
   }
 
   if ( ( mItems & Words ) == Words ) {
-    insertItem( i18n("Today"), this, SLOT( slotToday() ) );
-    insertItem( i18n("Tomorrow"), this, SLOT( slotTomorrow() ) );
-    insertItem( i18n("Friday"), this, SLOT( slotFriday() ) );
-    insertItem( i18n("Sunday"), this, SLOT( slotSunday() ) );
-    insertItem( i18n("Next Week"), this, SLOT( slotNextWeek() ) );
-    insertItem( i18n("Next Month"), this, SLOT( slotNextMonth() ) );
+    insertItem( i18n("&Today"), this, SLOT( slotToday() ) );
+    insertItem( i18n("To&morrow"), this, SLOT( slotTomorrow() ) );
+    insertItem( i18n("&Friday"), this, SLOT( slotFriday() ) );
+    insertItem( i18n("&Sunday"), this, SLOT( slotSunday() ) );
+    insertItem( i18n("Next &Week"), this, SLOT( slotNextWeek() ) );
+    insertItem( i18n("Next M&onth"), this, SLOT( slotNextMonth() ) );
 
     if ( ( mItems & NoDate ) == NoDate )
       insertSeparator();
