@@ -135,7 +135,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
       KTempFile tmpFile;
       tmpFile.close();
       pic.data().save( tmpFile.name(), "PNG" );
-      image = "file:/" + tmpFile.name();
+      image = "file:" + tmpFile.name();
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) ? pic.url() : "http://" + pic.url());
     }
