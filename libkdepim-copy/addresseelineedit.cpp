@@ -459,6 +459,9 @@ void AddresseeLineEdit::loadContacts()
 
   QApplication::restoreOverrideCursor();
 
+  disconnect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
+              this, SLOT( loadContacts() ) );
+
   connect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ), SLOT( loadContacts() ) );
 }
 
