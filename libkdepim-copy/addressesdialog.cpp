@@ -31,7 +31,7 @@
 #include <kprocess.h>
 #include <klocale.h>
 #include <kdebug.h>
-#include <qinputdialog.h>
+#include <kinputdialog.h>
 #include <qlayout.h>
 #include <qvbox.h>
 #include <qwidget.h>
@@ -716,9 +716,9 @@ AddressesDialog::saveAs()
   }
 
   bool ok = false;
-  QString name = QInputDialog::getText( i18n("New Distribution List"),
+  QString name = KInputDialog::getText( i18n("New Distribution List"),
                                         i18n("Please enter name."),
-                                        QLineEdit::Normal, QString::null, &ok,
+                                        QString::null, &ok,
                                         this );
   if ( !ok || name.isEmpty() )
     return;
