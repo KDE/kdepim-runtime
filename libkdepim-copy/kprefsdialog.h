@@ -38,6 +38,7 @@ class QCheckBox;
 class QLabel;
 class QSpinBox;
 class QButtonGroup;
+class QTimeEdit;
 class KTimeEdit;
 class KDateEdit;
 class KURLRequester;
@@ -187,6 +188,44 @@ class KDE_EXPORT KPrefsWidTime : public KPrefsWid
 
     QLabel *mLabel;
     KTimeEdit *mTimeEdit;
+};
+
+/**
+  @short Widgets for duration settings in @ref KPrefsDialog.
+
+  This class provides a control element for configuring duration values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
+*/
+class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
+{
+  public:
+    /**
+      Create a duration value control element consisting of a label and a
+      spinbox.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
+
+    /**
+      Return QLabel used by this widget.
+    */
+    QLabel *label();
+    /**
+      Return QSpinBox used by this widget.
+    */
+    QTimeEdit *timeEdit();
+
+    void readConfig();
+    void writeConfig();
+
+  private:
+    KConfigSkeleton::ItemDateTime *mItem;
+
+    QLabel *mLabel;
+    QTimeEdit *mTimeEdit;
 };
 
 /**

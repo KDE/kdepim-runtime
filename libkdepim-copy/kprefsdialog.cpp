@@ -31,6 +31,7 @@
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
+#include <qdatetimeedit.h>
 #include <qwhatsthis.h>
 
 #include <kcolorbutton.h>
@@ -39,7 +40,7 @@
 #include <kfontdialog.h>
 #include <kmessagebox.h>
 #include <kconfigskeleton.h>
-#include <kurlrequester.h> 
+#include <kurlrequester.h>
 #include "ktimeedit.h"
 #include "kdateedit.h"
 
@@ -297,7 +298,7 @@ void KPrefsWidTime::readConfig()
 
 void KPrefsWidTime::writeConfig()
 {
-  // Don't overwrite the date value of the QDateTime, so we can use a 
+  // Don't overwrite the date value of the QDateTime, so we can use a
   // KPrefsWidTime and a KPrefsWidDate on the same config entry!
   QDateTime dt( mItem->value() );
   dt.setTime( mTimeEdit->getTime() );
@@ -310,6 +311,42 @@ QLabel *KPrefsWidTime::label()
 }
 
 KTimeEdit *KPrefsWidTime::timeEdit()
+{
+  return mTimeEdit;
+}
+
+
+KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                      QWidget *parent )
+  : mItem( item )
+{
+  mLabel = new QLabel( mItem->label()+':', parent );
+  mTimeEdit = new QTimeEdit( parent );
+  connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isNull() ) {
+    QWhatsThis::add( mTimeEdit, whatsThis );
+  }
+}
+
+void KPrefsWidDuration::readConfig()
+{
+  mTimeEdit->setTime( mItem->value().time() );
+}
+
+void KPrefsWidDuration::writeConfig()
+{
+  QDateTime dt;
+  dt.setTime( mTimeEdit->time() );
+  mItem->setValue( dt );
+}
+
+QLabel *KPrefsWidDuration::label()
+{
+  return mLabel;
+}
+
+QTimeEdit *KPrefsWidDuration::timeEdit()
 {
   return mTimeEdit;
 }
@@ -443,7 +480,7 @@ QValueList<QWidget *> KPrefsWidString::widgets() const
 }
 
 
-KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent, 
+KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
                               const QString &filter, uint mode )
   : mItem( item )
 {
