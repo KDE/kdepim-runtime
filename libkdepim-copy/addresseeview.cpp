@@ -304,8 +304,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
     "<tr>"
     "<td align=\"left\" width=\"70%\">%4</td>"  // organization
     "</tr>"
-    "</tr>"
-    "<tr><td colspan=\"2\">&nbsp;</td></tr>"
+    "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
     "%5"  // dynamic part
     "%6"  // notes
     "</table>"
