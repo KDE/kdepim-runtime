@@ -29,13 +29,16 @@ class CategoryEditDialog_base;
 namespace KPIM {
 
 class CategoryEditDialog : public KDialogBase
-{ 
+{
     Q_OBJECT
   public:
     CategoryEditDialog( KPimPrefs *prefs, QWidget* parent = 0,
-                        const char* name = 0, 
+                        const char* name = 0,
                         bool modal = false );
     ~CategoryEditDialog();
+
+  public slots:
+    void reload();
 
   protected slots:
     void slotOk();
@@ -45,8 +48,7 @@ class CategoryEditDialog : public KDialogBase
     void modify();
     void remove();
     void editItem( QListViewItem *item );
-    void reload();
-  
+
   signals:
     void categoryConfigChanged();
 
