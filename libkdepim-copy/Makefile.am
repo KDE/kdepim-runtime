@@ -29,7 +29,7 @@ libkdepim_la_SOURCES = \
   kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp \
-  addresseeselector.cpp addresseeemailselection.cpp
+  addresseeselector.cpp addresseeemailselection.cpp idmapper.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h

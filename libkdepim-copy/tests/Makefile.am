@@ -1,10 +1,11 @@
 AM_CPPFLAGS = -I$(top_srcdir)/libkdepim $(all_includes)
 LDADD = ../libkdepim.la $(LIB_KDECORE)
 
-check_PROGRAMS = testwizard testaddresseelineedit \
-		 testutf7decoder \
-		 testutf7encoder \
-		 test_kregexp
+check_PROGRAMS = testwizard testaddresseelineedit testidmapper \
+                 testaddresseeselector \
+                 testutf7decoder \
+                 testutf7encoder \
+                 test_kregexp
 
 
 testwizard_LDFLAGS = $(all_libraries) $(KDE_RPATH)
@@ -12,6 +13,12 @@ testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
 
 testaddresseelineedit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 testaddresseelineedit_SOURCES = testaddresseelineedit.cpp
+
+testidmapper_LDFLAGS = $(all_libraries) $(KDE_RPATH)
+testidmapper_SOURCES = testidmapper.cpp
+
+testaddresseeselector_LDFLAGS = $(all_libraries) $(KDE_RPATH)
+testaddresseeselector_SOURCES = testaddresseeselector.cpp
 
 testutf7encoder_SOURCES = testutf7encoder2.cpp
 testutf7decoder_SOURCES = testutf7decoder.cpp
