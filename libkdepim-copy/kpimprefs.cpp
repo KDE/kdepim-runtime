@@ -51,8 +51,8 @@ void KPimPrefs::usrReadConfig()
   kdDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
 
   config()->setGroup("General");
-  mCustomCategories = config()->readListEntry("Custom Categories");
-  if (mCustomCategories.isEmpty()) setCategoryDefaults();
+  mCustomCategories = config()->readListEntry( "Custom Categories" );
+  if ( mCustomCategories.isEmpty() ) setCategoryDefaults();
 }
 
 const QString KPimPrefs::timezone()
@@ -62,39 +62,34 @@ const QString KPimPrefs::timezone()
   // Read TimeZoneId from korganizerrc.
   KConfig korgcfg( locate( "config", "korganizerrc" ) );
   korgcfg.setGroup( "Time & Date" );
-  QString tz(korgcfg.readEntry( "TimeZoneId" ) );
-  if ( ! tz.isEmpty() ) 
-  {
+  QString tz( korgcfg.readEntry( "TimeZoneId" ) );
+  if ( !tz.isEmpty() ) {
     zone = tz;
     kdDebug(5300) << "timezone from korganizerrc is " << zone << endl;
   }
 
   // If timezone not found in KOrg, use the system's default timezone.
-  if ( zone.isEmpty() )
-  {
-    char zonefilebuf[PATH_MAX];
+  if ( zone.isEmpty() ) {
+    char zonefilebuf[ PATH_MAX ];
 
-    int len = readlink("/etc/localtime", zonefilebuf, PATH_MAX);
-    if ( len > 0 && len < PATH_MAX ) 
-    {
-        zone = QString::fromLocal8Bit(zonefilebuf, len);
-        zone = zone.mid(zone.find("zoneinfo/") + 9);
-        kdDebug(5300) << "system timezone from /etc/localtime is " << zone << endl;
-    } 
-    else 
-    {
-        tzset();
-        zone = tzname[0];
-        kdDebug(5300)  << "system timezone from tzset() is " << zone << endl;
+    int len = readlink( "/etc/localtime", zonefilebuf, PATH_MAX );
+    if ( len > 0 && len < PATH_MAX ) {
+      zone = QString::fromLocal8Bit( zonefilebuf, len );
+      zone = zone.mid( zone.find( "zoneinfo/" ) + 9 );
+      kdDebug(5300) << "system timezone from /etc/localtime is " << zone
+                    << endl;
+    } else {
+      tzset();
+      zone = tzname[ 0 ];
+      kdDebug(5300) << "system timezone from tzset() is " << zone << endl;
     }
   }
 
   return( zone );
-
 }
 
 void KPimPrefs::usrWriteConfig()
 {
-  config()->setGroup("General");
-  config()->writeEntry("Custom Categories",mCustomCategories);
+  config()->setGroup( "General" );
+  config()->writeEntry( "Custom Categories", mCustomCategories );
 }
