@@ -334,8 +334,7 @@ void LdapSearch::writeConfig( const LdapServer &server, KConfig *config, int j, 
 KConfig* LdapSearch::config()
 {
   if ( !s_config )
-    configDeleter.setObject( s_config, new KConfig( locateLocal( "config",
-                             "kabldaprc" ) ) );
+    configDeleter.setObject( s_config, new KConfig( "kabldaprc", false, false ) ); // Open read-write, no kdeglobals
 
   return s_config;
 }
