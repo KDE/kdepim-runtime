@@ -2,6 +2,28 @@
 Type=ServiceType
 X-KDE-ServiceType=Komposer/Editor
 Name=Komposer Plugin
+Name[bg]=Приставки на Komposer
+Name[ca]=Connector per a Komposer
+Name[cs]=Komposer modul
+Name[da]=Brevskriver-plugin
+Name[de]=Komposer-Plugin
+Name[el]=Πρόσθετο του Komposer
+Name[es]=Accesorio Komposer
+Name[et]=Komposeri plugin
+Name[fr]=Module de Komposer
+Name[hu]=Komposer bővítőmodul
+Name[it]=Plugin Komposer
+Name[nn]=Komposer-programtillegg
+Name[pt]='Plugin' do Kompositor
+Name[pt_BR]=Plug-in do Komposer
+Name[ru]=Модуль композитора KDE
+Name[sl]=Vstavek za Komposer
+Name[sr]=Додатак састављача
+Name[sv]=Komposer-insticksprogram
+Name[tr]=Komposer Eklentisi
+Name[uk]=Втулок Komposer
+Name[xx]=xxKomposer Pluginxx
+Name[zh_CN]=Komposer 插件
 
 [PropertyDef::X-KDE-KomposerIdentifier]
 Type=QString
