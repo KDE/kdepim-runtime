@@ -47,7 +47,7 @@ typedef QValueList<LdapResult> LdapResultList;
 
 namespace KPIM {
 
-class AddresseeLineEdit : public ClickLineEdit, public DCOPObject
+class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
 {
   K_DCOP
   Q_OBJECT

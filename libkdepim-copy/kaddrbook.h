@@ -12,7 +12,7 @@
 
 class QWidget;
 
-class KAddrBookExternal {
+class KDE_EXPORT KAddrBookExternal {
 public:
   static void addEmail( const QString &addr, QWidget *parent );
   static void addNewAddressee( QWidget* );

@@ -27,7 +27,7 @@
 
 namespace KPIM {
 
-class HTMLDiffAlgoDisplay : virtual public DiffAlgoDisplay, public KTextBrowser
+class KDE_EXPORT HTMLDiffAlgoDisplay : virtual public DiffAlgoDisplay, public KTextBrowser
 {
   public:
     HTMLDiffAlgoDisplay( QWidget *parent );

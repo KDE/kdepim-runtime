@@ -111,7 +111,7 @@ protected:
   ProgressItem* mItem;
 };
 
-class ProgressDialog : public OverlayWidget
+class KDE_EXPORT ProgressDialog : public OverlayWidget
 {
     Q_OBJECT
 

@@ -73,7 +73,7 @@ namespace KPIM {
     AddresseeViewItemPrivate *d;
   };
 
-  class AddressesDialog : public KDialogBase
+  class KDE_EXPORT AddressesDialog : public KDialogBase
   {
     Q_OBJECT
   public:

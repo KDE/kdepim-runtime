@@ -45,7 +45,7 @@ namespace KPIM {
  *
  * @author Ingo Kloecker <kloecker@kde.org>
  */
-class CollectingProcess : public KProcess {
+class KDE_EXPORT CollectingProcess : public KProcess {
   Q_OBJECT
 public:
   CollectingProcess( QObject * parent = 0, const char * name = 0 );

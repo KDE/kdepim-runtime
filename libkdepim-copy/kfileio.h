@@ -11,6 +11,8 @@
 #include <qcstring.h>
 #include <qwidget.h>
 
+#include <kdemacros.h>
+
 class QString;
 
 namespace KPIM {
@@ -24,7 +26,7 @@ namespace KPIM {
  * If ensureNewline is TRUE the string will always have a trailing newline.
  */
 QCString kFileToString(const QString &fileName, bool ensureNewline=true,
-		      bool withDialogs=true);
+		      bool withDialogs=true) KDE_EXPORT;
 
 // unused
 //QByteArray kFileToBytes(const QString &fileName, bool withDialogs=true);
@@ -37,15 +39,15 @@ QCString kFileToString(const QString &fileName, bool ensureNewline=true,
  */
 bool kBytesToFile(const char* aBuffer, int len,
                   const QString &aFileName,
-                  bool aAskIfExists, bool aBackup, bool aVerbose);
+                  bool aAskIfExists, bool aBackup, bool aVerbose) KDE_EXPORT;
 
 bool kCStringToFile(const QCString& buffer, const QString &fileName,
 		   bool askIfExists=false, bool createBackup=true,
-		   bool withDialogs=true);
+		   bool withDialogs=true) KDE_EXPORT;
 /** Does not stop at NUL */
 bool kByteArrayToFile(const QByteArray& buffer, const QString &fileName,
 		   bool askIfExists=false, bool createBackup=true,
-		   bool withDialogs=true);
+		   bool withDialogs=true) KDE_EXPORT;
 
 
   /**

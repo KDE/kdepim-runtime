@@ -14,6 +14,8 @@
 #include <qobject.h>
 #include <qmap.h>
 
+#include <kdemacros.h>
+
 #undef None
 
 namespace KPIM {
@@ -27,7 +29,7 @@ class ProgressItem;
   */
 
 
-class BroadcastStatus : public QObject
+class KDE_EXPORT BroadcastStatus : public QObject
 {
 
   Q_OBJECT

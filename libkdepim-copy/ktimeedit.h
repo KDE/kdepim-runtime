@@ -38,7 +38,7 @@
   @short Provides a way to edit times in a user-friendly manner.
   @author Preston Brown, Ian Dawes
 */
-class KTimeEdit : public QComboBox
+class KDE_EXPORT KTimeEdit : public QComboBox
 {
     Q_OBJECT
   public:

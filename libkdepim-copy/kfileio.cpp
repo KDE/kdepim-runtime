@@ -31,7 +31,7 @@ static void msgDialog(const QString &msg)
 
 
 //-----------------------------------------------------------------------------
-QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool aVerbose)
+KDE_EXPORT QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool aVerbose)
 {
   QCString result;
   QFileInfo info(aFileName);

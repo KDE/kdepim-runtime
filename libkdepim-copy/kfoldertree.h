@@ -123,7 +123,7 @@ struct KPaintInfo {
 
 //==========================================================================
 
-class KFolderTreeItem : public KListViewItem
+class KDE_EXPORT KFolderTreeItem : public KListViewItem
 {
   public:
     /** Protocol information */
@@ -211,7 +211,7 @@ class KFolderTreeItem : public KListViewItem
 
 //==========================================================================
 
-class KFolderTree : public KListView
+class KDE_EXPORT KFolderTree : public KListView
 {
   Q_OBJECT
 

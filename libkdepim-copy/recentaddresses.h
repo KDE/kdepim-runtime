@@ -39,7 +39,7 @@ class KConfig;
 class KEditListBox;
 namespace KRecentAddress {
 
-class RecentAddressDialog : public KDialogBase
+class KDE_EXPORT RecentAddressDialog : public KDialogBase
 {
  public:
   RecentAddressDialog( QWidget *parent, const char *name = 0 );
@@ -56,7 +56,7 @@ class RecentAddressDialog : public KDialogBase
  * @author Carsten Pfeiffer <pfeiffer@kde.org>
  */
 
-class RecentAddresses
+class KDE_EXPORT RecentAddresses
 {
 public:
     ~RecentAddresses();

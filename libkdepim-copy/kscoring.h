@@ -52,13 +52,13 @@ class QLabel;
  */
 
 //----------------------------------------------------------------------------
-class ScorableGroup
+class KDE_EXPORT ScorableGroup
 {
 public:
   virtual ~ScorableGroup();
 };
 
-class ScorableArticle
+class KDE_EXPORT ScorableArticle
 {
 public:
   virtual ~ScorableArticle();
@@ -77,7 +77,7 @@ public:
 /**
   Base class for other Action classes.
  */
-class ActionBase {
+class KDE_EXPORT ActionBase {
  public:
   ActionBase();
   virtual ~ActionBase();
@@ -96,7 +96,7 @@ class ActionBase {
   enum ActionTypes { SETSCORE, NOTIFY, COLOR };
 };
 
-class ActionColor : public ActionBase {
+class KDE_EXPORT ActionColor : public ActionBase {
 public:
   ActionColor(const QColor&);
   ActionColor(const QString&);
@@ -114,7 +114,7 @@ private:
   QColor color;
 };
 
-class ActionSetScore : public ActionBase {
+class KDE_EXPORT ActionSetScore : public ActionBase {
  public:
   ActionSetScore(short);
   ActionSetScore(const ActionSetScore&);
@@ -132,7 +132,7 @@ class ActionSetScore : public ActionBase {
   short val;
 };
 
-class ActionNotify : public ActionBase {
+class KDE_EXPORT ActionNotify : public ActionBase {
  public:
   ActionNotify(const QString&);
   ActionNotify(const ActionNotify&);
@@ -147,7 +147,7 @@ class ActionNotify : public ActionBase {
   QString note;
 };
 
-class NotifyCollection
+class KDE_EXPORT NotifyCollection
 {
 public:
   NotifyCollection();
@@ -167,7 +167,7 @@ private:
 
 
 //----------------------------------------------------------------------------
-class KScoringExpression
+class KDE_EXPORT KScoringExpression
 {
   friend class KScoringRule;
  public:
@@ -202,7 +202,7 @@ class KScoringExpression
 };
 
 //----------------------------------------------------------------------------
-class KScoringRule
+class KDE_EXPORT KScoringRule
 {
   friend class KScoringManager;
  public:
@@ -265,7 +265,7 @@ private:
     With the help of this class its very easy for the KScoringManager
     to temporary drop lists of rules and restore them afterwards
 */
-class RuleStack
+class KDE_EXPORT RuleStack
 {
 public:
   RuleStack();
@@ -285,7 +285,7 @@ private:
 
 //----------------------------------------------------------------------------
 // Manages the score rules.
-class KScoringManager : public QObject
+class KDE_EXPORT KScoringManager : public QObject
 {
   Q_OBJECT
 
@@ -388,7 +388,7 @@ class KScoringManager : public QObject
 
 
 //----------------------------------------------------------------------------
-class NotifyDialog : public KDialogBase
+class KDE_EXPORT NotifyDialog : public KDialogBase
 {
   Q_OBJECT
 public:

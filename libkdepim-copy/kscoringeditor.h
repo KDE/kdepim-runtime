@@ -46,7 +46,7 @@ class KColorCombo;
 /** this widget implements an editor for one condition.
     It is used in ExpressionEditWidget
 */
-class SingleConditionWidget : public QFrame
+class KDE_EXPORT SingleConditionWidget : public QFrame
 {
   Q_OBJECT
   friend class ConditionEditWidget;
@@ -125,7 +125,7 @@ private:
 
 /** this widget implements the action editor
  */
-class ActionEditWidget : public KWidgetLister
+class KDE_EXPORT ActionEditWidget : public KWidgetLister
 {
   Q_OBJECT
 public:
@@ -190,7 +190,7 @@ private:
 /** This widget shows a list of rules with buttons for
     copy, delete aso.
 */
-class RuleListWidget : public QWidget
+class KDE_EXPORT RuleListWidget : public QWidget
 {
   Q_OBJECT
 public:
@@ -235,7 +235,7 @@ private:
   QPushButton *copyRule;
 };
 
-class KScoringEditor : public KDialogBase
+class KDE_EXPORT KScoringEditor : public KDialogBase
 {
   Q_OBJECT
 public:
@@ -281,7 +281,7 @@ private:
   QString ruleName;
 };
 
-class KScoringEditorWidget : public QWidget
+class KDE_EXPORT KScoringEditorWidget : public QWidget
 {
   Q_OBJECT
 public:

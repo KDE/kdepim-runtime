@@ -49,7 +49,7 @@ class SSLLabel;
 class ProgressItem;
 class ProgressDialog;
 
-class StatusbarProgressWidget : public QFrame {
+class KDE_EXPORT StatusbarProgressWidget : public QFrame {
 
   Q_OBJECT
 

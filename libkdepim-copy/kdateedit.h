@@ -27,6 +27,8 @@
 #include <qdatetime.h>
 #include <qmap.h>
 
+#include <kdemacros.h>
+
 class QEvent;
 class QVBox;
 
@@ -47,7 +49,7 @@ class KDatePicker;
   @author David Jarvie <software@astrojar.org.uk>
   @author Tobias Koenig <tokoe@kde.org>
 */
-class KDateEdit : public QComboBox
+class KDE_EXPORT KDateEdit : public QComboBox
 {
   Q_OBJECT
 

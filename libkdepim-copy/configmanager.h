@@ -19,6 +19,8 @@
 
 #include <qobject.h>
 
+#include <kdemacros.h>
+
 class KMKernel;
 
 namespace KPIM {
@@ -27,7 +29,7 @@ namespace KPIM {
  * @short Class for managing a set of config options.
  * @author Marc Mutz <mutz@kde.org>
  **/
-class ConfigManager : public QObject {
+class KDE_EXPORT ConfigManager : public QObject {
   Q_OBJECT
 public:
   /** Commit changes to disk and emit changed() if necessary. */
