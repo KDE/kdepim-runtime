@@ -281,13 +281,14 @@ void KPrefsItemString::writeConfig(KConfig *config)
 void KPrefsItemString::readConfig(KConfig *config)
 {
   config->setGroup(mGroup);
-  if ( mPassword ) 
-    if ( config->hasKey( mName ) )
-      *mReference = endecryptStr( config->readEntry( mName ) );
-    else
-      *mReference = mDefault;
-  else
-    *mReference = config->readEntry(mName,mDefault);
+
+  QString value;
+  if ( mPassword ) {
+    value = config->readEntry( mName, endecryptStr( mDefault ) );
+    *mReference = endecryptStr( value );
+  } else {
+    *mReference = config->readEntry( mName, mDefault );
+  }
 }
 
 
