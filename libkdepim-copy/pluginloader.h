@@ -33,7 +33,7 @@ namespace KPIM {
    * This is a generic plugin loader / factory for small plugins that
    * don't want to be QObjects.
    *
-   * @sect Usage
+   * @section Usage
    *
    * A PluginLoader takes two template arguments, <code>T</code> and
    * <code>T_config</code>:
@@ -130,6 +130,6 @@ namespace KPIM {
     const char * const pl##Config::path = p; \
   }; \
   typedef KPIM::PluginLoader< t, pl##Config > pl; \
-      
+
 
 #endif // __KPIM_SHARED_PLUGINLOADER_H__

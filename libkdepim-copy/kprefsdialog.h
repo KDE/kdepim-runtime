@@ -243,6 +243,7 @@ class KPrefsWidFont : public KPrefsWid
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
+      @param sampleText Sample text for previewing the selected font.
     */
     KPrefsWidFont( KConfigSkeleton::ItemFont *item,
                    QWidget *parent, const QString &sampleText );
@@ -284,7 +285,7 @@ class KPrefsWidFont : public KPrefsWid
 
   This class provides a control element for configuring selections. It is meant
   to be used by KPrefsDialog. The user is responsible for the layout management.
-  
+
   The setting is interpreted as an int value, corresponding to the position of
   the radio button. The position of the button is defined by the sequence of
   @ref addRadio() calls, starting with 0.
@@ -319,7 +320,7 @@ class KPrefsWidRadios : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;    
+    QValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemEnum *mItem;
@@ -344,6 +345,7 @@ class KPrefsWidString : public KPrefsWid
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
+      @param echomode  Describes how a line edit should display its contents.
     */
     KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent,
                      QLineEdit::EchoMode echomode=QLineEdit::Normal );
@@ -438,7 +440,7 @@ class KPrefsWidManager
     */
     KPrefsWidColor *addWidColor( KConfigSkeleton::ItemColor *item,
                                  QWidget *parent );
-        
+
     /**
       Register a @ref KPrefsWidRadios object. The choices represented by the
       given item object are automatically added as radio buttons.
@@ -448,7 +450,7 @@ class KPrefsWidManager
     */
     KPrefsWidRadios *addWidRadios( KConfigSkeleton::ItemEnum *item,
                                    QWidget *parent );
-    
+
     /**
       Register a @ref KPrefsWidString object.
 

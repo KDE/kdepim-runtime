@@ -69,7 +69,6 @@ private:
   class Private;
   Private * d;
 protected:
-  /*! \reimp */
   void virtual_hook( int id, void * data );
 };
 
