@@ -215,7 +215,7 @@ void KImportDialog::slotUrlChanged(const QString & text)
 bool KImportDialog::setFile(const QString& file)
 {
     enableButtonOK(!file.isEmpty());
-  kdDebug() << "KImportDialog::setFile(): " << file << endl;
+  kdDebug(5300) << "KImportDialog::setFile(): " << file << endl;
 
   QFile f(file);
 
@@ -230,7 +230,7 @@ bool KImportDialog::setFile(const QString& file)
 
     return true;
   } else {
-    kdDebug() << " Open failed" << endl;
+    kdDebug(5300) << " Open failed" << endl;
     return false;
   }
 }
@@ -246,7 +246,7 @@ void KImportDialog::registerColumns()
 
 void KImportDialog::fillTable()
 {
-//  kdDebug() << "KImportDialog::fillTable()" << endl;
+//  kdDebug(5300) << "KImportDialog::fillTable()" << endl;
 
   int row, column;
 
@@ -264,7 +264,7 @@ void KImportDialog::fillTable()
 
 void KImportDialog::readFile( int rows )
 {
-  kdDebug() << "KImportDialog::readFile(): " << rows << endl;
+  kdDebug(5300) << "KImportDialog::readFile(): " << rows << endl;
 
   mData.clear();
 
@@ -418,7 +418,7 @@ void KImportDialog::setCellText(int row, int col, const QString& text)
 
 void KImportDialog::formatSelected(QListViewItem*)
 {
-//    kdDebug() << "KImportDialog::formatSelected()" << endl;
+//    kdDebug(5300) << "KImportDialog::formatSelected()" << endl;
 }
 
 void KImportDialog::headerSelected(QListViewItem* item)
@@ -507,14 +507,14 @@ void KImportDialog::assignColumn(QListViewItem *item)
 {
   if (!item) return;
 
-//  kdDebug() << "KImportDialog::assignColumn(): current Col: " << mTable->currentColumn()
+//  kdDebug(5300) << "KImportDialog::assignColumn(): current Col: " << mTable->currentColumn()
 //            << endl;
 
   ColumnItem *colItem = (ColumnItem *)item;
 
   QTableSelection selection = mTable->selection(mTable->currentSelection());
 
-//  kdDebug() << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
+//  kdDebug(5300) << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
 
   for(int i=selection.leftCol();i<=selection.rightCol();++i) {
     if (i >= 0) {
@@ -538,7 +538,7 @@ void KImportDialog::removeColumn()
 {
   QTableSelection selection = mTable->selection(mTable->currentSelection());
 
-//  kdDebug() << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
+//  kdDebug(5300) << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
 
   for(int i=selection.leftCol();i<=selection.rightCol();++i) {
     if (i >= 0) {
@@ -557,7 +557,7 @@ void KImportDialog::removeColumn()
 
 void KImportDialog::applyConverter()
 {
-  kdDebug() << "KImportDialog::applyConverter" << endl;
+  kdDebug(5300) << "KImportDialog::applyConverter" << endl;
 
   KProgressDialog pDialog(this, 0, i18n("Importing Progress"),
                     i18n("Please wait while the data is imported."), true);
@@ -590,7 +590,7 @@ int KImportDialog::findFormat(int column)
   if (formatIt == mFormats.end()) format = KImportColumn::FormatUndefined;
   else format = *formatIt;
 
-//  kdDebug() << "KImportDialog::findformat(): " << column << ": " << format << endl;
+//  kdDebug(5300) << "KImportDialog::findformat(): " << column << ": " << format << endl;
 
   return format;
 }

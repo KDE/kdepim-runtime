@@ -44,7 +44,7 @@ void KPimPrefs::usrSetDefaults()
 
 void KPimPrefs::usrReadConfig()
 {
-  kdDebug() << "KPimPrefs::usrReadConfig()" << endl;
+  kdDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
 
   config()->setGroup("General");
   mCustomCategories = config()->readListEntry("Custom Categories");

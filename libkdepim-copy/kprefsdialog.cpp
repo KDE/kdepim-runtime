@@ -91,7 +91,7 @@ KPrefsWidColor::KPrefsWidColor(const QString &text,QColor *reference,
 
 KPrefsWidColor::~KPrefsWidColor()
 {
-//  kdDebug() << "KPrefsWidColor::~KPrefsWidColor()" << endl;
+//  kdDebug(5300) << "KPrefsWidColor::~KPrefsWidColor()" << endl;
 }
 
 void KPrefsWidColor::readConfig()
@@ -332,7 +332,7 @@ void KPrefsDialog::setDefaults()
 
 void KPrefsDialog::readConfig()
 {
-//  kdDebug() << "KPrefsDialog::readConfig()" << endl;
+//  kdDebug(5300) << "KPrefsDialog::readConfig()" << endl;
 
   KPrefsWid *wid;
   for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
@@ -344,7 +344,7 @@ void KPrefsDialog::readConfig()
 
 void KPrefsDialog::writeConfig()
 {
-//  kdDebug() << "KPrefsDialog::writeConfig()" << endl;
+//  kdDebug(5300) << "KPrefsDialog::writeConfig()" << endl;
 
   KPrefsWid *wid;
   for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
@@ -353,11 +353,11 @@ void KPrefsDialog::writeConfig()
 
   usrWriteConfig();
 
-//  kdDebug() << "KPrefsDialog::writeConfig() now writing..." << endl;
+//  kdDebug(5300) << "KPrefsDialog::writeConfig() now writing..." << endl;
   
   mPrefs->writeConfig();
 
-//  kdDebug() << "KPrefsDialog::writeConfig() done" << endl;
+//  kdDebug(5300) << "KPrefsDialog::writeConfig() done" << endl;
 }
 
 
