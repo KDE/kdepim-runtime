@@ -313,9 +313,9 @@ void KCMDesignerFields::initGUI()
                          " correspond to your custom entry '<i>X-Foo</i>', set the widget's"
                          " <i>name</i> property to '<i>X_Foo</i>'.</p>"
                          "<p><b>Important:</b> The widget will edit custom fields with an"
-                         " application name of %1.  To change the application name"
+                         " application name of %2.  To change the application name"
                          " to be edited, set the widget name in Qt Designer.</p></qt>" )
-                         .arg( applicationName() );
+                         .arg( applicationName(), applicationName() );
 
   KActiveLabel *activeLabel = new KActiveLabel(
       i18n( "<a href=\"whatsthis:%1\">How does this work?</a>" ).arg(cwHowto), this );
