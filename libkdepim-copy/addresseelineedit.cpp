@@ -558,7 +558,7 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
     // Loop forward until we find the end of the string
     // or a ',' outside of a comment.
     bInComment = false;
-    for( i = iAd+1; len > i; --i ) {
+    for( i = iAd+1; len > i; ++i ) {
       c = aStr[i];
       if( bInComment ){
         if( ')' == c ){
