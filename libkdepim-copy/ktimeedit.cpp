@@ -266,7 +266,7 @@ void KTimeEdit::updateText()
 
 //  kdDebug(5300) << "KTimeEdit::updateText(): " << s << endl;
 
-  if (!mTime.minute() % 15) {
+  if (!(mTime.minute() % 15)) {
     setCurrentItem((mTime.hour()*4)+(mTime.minute()/15));
   }
 }
