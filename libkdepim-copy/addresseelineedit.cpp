@@ -355,7 +355,7 @@ void AddresseeLineEdit::loadContacts()
   KConfig config( "kpimcompletionorder" ); // The weights for non-imap kabc resources is there.
   config.setGroup( "CompletionWeights" );
 
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   // Can't just use the addressbook's iterator, we need to know which subresource
   // is behind which contact.
   QPtrList<KABC::Resource> resources( addressBook->resources() );
@@ -390,6 +390,8 @@ void AddresseeLineEdit::loadContacts()
   }
 
   QApplication::restoreOverrideCursor();
+
+  connect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ), SLOT( loadContacts() ) );
 }
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
