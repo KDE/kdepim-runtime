@@ -45,7 +45,10 @@ void ResourceCached::writeConfig( KConfig *config )
 
 void ResourceCached::insertAddressee( const Addressee &addr )
 {
-  if ( mAddrMap.find( addr.uid() ) == mAddrMap.end() ) { // new contact
+  if ( !mAddrMap.contains( addr.uid() ) ) { // new contact
+    if ( mDeletedAddressees.contains( addr.uid() ) )
+      mDeletedAddressees.remove( addr.uid() );
+
     mAddrMap.insert( addr.uid(), addr );
     mAddedAddressees.insert( addr.uid(), addr );
   } else {
@@ -60,6 +63,9 @@ void ResourceCached::insertAddressee( const Addressee &addr )
 
 void ResourceCached::removeAddressee( const Addressee &addr )
 {
+  if ( mAddedAddressees.contains( addr.uid() ) )
+    mAddedAddressees.remove( addr.uid() );
+
   if ( mDeletedAddressees.find( addr.uid() ) == mDeletedAddressees.end() )
     mDeletedAddressees.insert( addr.uid(), addr );
 
@@ -125,6 +131,36 @@ void ResourceCached::saveCache()
   file.close();
 }
 
+void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
+{
+  // load uid map
+  QFile mapFile( uidMapFile() );
+  if ( mapFile.open( IO_ReadOnly ) ) {
+    QDataStream stream( &mapFile );
+    stream >> mUidMap;
+    mapFile.close();
+  } else {
+    kdError() << "Can't open uid map file '" << mapFile.name() << "'" << endl;
+  }
+
+  // load cache
+  QFile file( cacheFile() );
+  if ( !file.open( IO_ReadOnly ) )
+    return;
+
+
+  KABC::VCardConverter converter;
+  KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
+  KABC::Addressee::List::Iterator it;
+
+  for ( it = list.begin(); it != list.end(); ++it ) {
+    if ( !addrList.contains( *it ) )
+      mAddrMap.remove( (*it).uid() );
+  }
+
+  file.close();
+}
+
 void ResourceCached::setRemoteUid( const QString &localUid, const QString &remoteUid )
 {
   mUidMap.insert( localUid, remoteUid );
@@ -180,6 +216,13 @@ void ResourceCached::clearChange( const KABC::Addressee &addr )
   mAddedAddressees.remove( addr.uid() );
   mChangedAddressees.remove( addr.uid() );
   mDeletedAddressees.remove( addr.uid() );
+}
+
+void ResourceCached::clearChange( const QString &uid )
+{
+  mAddedAddressees.remove( uid );
+  mChangedAddressees.remove( uid );
+  mDeletedAddressees.remove( uid );
 }
 
 KABC::Addressee::List ResourceCached::addedAddressees() const

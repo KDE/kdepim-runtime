@@ -50,6 +50,7 @@ class ResourceCached : public Resource
 
     void loadCache();
     void saveCache();
+    void cleanUpCache( const KABC::Addressee::List &list );
 
     /**
       Stores the remote uid for the given local uid.
@@ -74,6 +75,7 @@ class ResourceCached : public Resource
     bool hasChanges() const;
     void clearChanges();
     void clearChange( const KABC::Addressee& );
+    void clearChange( const QString& );
 
     KABC::Addressee::List addedAddressees() const;
     KABC::Addressee::List changedAddressees() const;
