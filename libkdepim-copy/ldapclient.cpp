@@ -250,8 +250,7 @@ void LdapClient::finishCurrentObject()
 
 void LdapClient::parseLDIF( const QByteArray& data )
 {
-  kdDebug(5300) << "LdapClient::parseLDIF( " << QCString(data) << " )" << endl;
-  
+  //kdDebug(5300) << "LdapClient::parseLDIF( " << QCString(data) << " )" << endl;
   if ( data.size() ) {
     d->ldif.setLDIF( data );
   } else {
@@ -273,7 +272,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
             mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
           if( mReportObjectClass || !bFoundOC )
             mCurrentObject.attrs[ name ].append( value );
-          kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
+          //kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
         }
         break;
      case LDIF::EndEntry:
