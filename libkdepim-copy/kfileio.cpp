@@ -278,6 +278,11 @@ QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
   QCString toCheckEnc = QFile::encodeName(toCheck);
   QString error;
 
+  if ( !fiToCheck.exists() ) {
+    error.append( i18n("%1 does not exist")
+                  .arg(toCheck) + "\n");
+  }
+    
   // For each file or folder  we can check if the file is readable 
   // and writable, as requested.
   if ( fiToCheck.isFile() || fiToCheck.isDir() ){
