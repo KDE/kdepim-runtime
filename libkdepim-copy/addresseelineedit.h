@@ -71,18 +71,19 @@ class AddresseeLineEdit : public ClickLineEdit
     virtual void paste();
     virtual void insert( const QString &text );
     void doCompletion( bool ctrlT );
+    virtual QPopupMenu *createPopupMenu();
 
   private slots:
     void slotCompletion() { doCompletion(false); }
     void slotPopupCompletion( const QString& );
     void slotStartLDAPLookup();
     void slotLDAPSearchData( const KPIM::LdapResultList& );
+    void slotEditCompletionOrder();
 
   private:
     void init();
     void startLoadingLDAPEntries();
     void stopLDAPLookup();
-    KABC::Addressee::List contacts();
 
     void setCompletedItems( const QStringList& items, bool autoSuggest );
 

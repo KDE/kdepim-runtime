@@ -48,6 +48,8 @@ public:
   QString bindDN;
   QString pwdBindDN;
   LDIF ldif;
+  int clientNumber;
+  int completionWeight;
 };
 
 QString LdapObject::toString() const
@@ -78,10 +80,12 @@ void LdapObject::assign( const LdapObject& that )
   }
 }
 
-LdapClient::LdapClient( QObject* parent, const char* name )
+LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
   : QObject( parent, name ), mJob( 0 ), mActive( false )
 {
   d = new LdapClientPrivate;
+  d->clientNumber = clientNumber;
+  d->completionWeight = 50 - clientNumber;
 }
 
 LdapClient::~LdapClient()
@@ -246,6 +250,21 @@ QString LdapClient::pwdBindDN() const
   return d->pwdBindDN;
 }
 
+int LdapClient::clientNumber() const
+{
+  return d->clientNumber;
+}
+
+int LdapClient::completionWeight() const
+{
+  return d->completionWeight;
+}
+
+void KPIM::LdapClient::setCompletionWeight( int weight )
+{
+  d->completionWeight = weight;
+}
+
 LdapSearch::LdapSearch()
     : mActiveClients( 0 ), mNoLDAPLookup( false )
 {
@@ -275,7 +294,7 @@ void LdapSearch::readConfig()
     mNoLDAPLookup = true;
   } else {
     for ( int j = 0; j < numHosts; j++ ) {
-      LdapClient* ldapClient = new LdapClient( this );
+      LdapClient* ldapClient = new LdapClient( j, this );
 
       QString host =  config.readEntry( QString( "SelectedHost%1" ).arg( j ), "" ).stripWhiteSpace();
       if ( !host.isEmpty() )
@@ -296,6 +315,10 @@ void LdapSearch::readConfig()
       QString pwdBindDN = config.readEntry( QString( "SelectedPwdBind%1" ).arg( j ) ).stripWhiteSpace();
       if ( !pwdBindDN.isEmpty() )
         ldapClient->setPwdBindDN( pwdBindDN );
+
+      int completionWeight = config.readNumEntry( QString( "SelectedCompletionWeight%1" ).arg( j ), -1 );
+      if ( completionWeight != -1 )
+        ldapClient->setCompletionWeight( completionWeight );
 
       QStringList attrs;
       // note: we need "objectClass" to detect distribution lists
@@ -413,9 +436,9 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     bool isDistributionList = false;
     //bool wasCN = false;
     //bool wasDC = false;
-    
+
     kdDebug(5300) << "LdapSearch::makeSearchData() " << endl;
-    
+
     LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
       const QString tmp = QString::fromUtf8( (*it2).first(), (*it2).first().size() );
@@ -477,7 +500,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     }
 
     LdapResult sr;
-    sr.clientNumber = mClients.findIndex( (*it1).client );
+    sr.clientNumber = (*it1).client->clientNumber();
+    sr.completionWeight = (*it1).client->completionWeight();
     sr.name = name;
     sr.email = mail;
     resList.append( sr );
@@ -490,6 +514,5 @@ bool LdapSearch::isAvailable() const
 {
   return !mNoLDAPLookup;
 }
-
 
 #include "ldapclient.moc"

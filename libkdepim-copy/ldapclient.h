@@ -76,7 +76,7 @@ class LdapObject
 };
 
 /**
-  * This class is internal. Binary compatibiliy might be broken any time
+  * This class is internal. Binary compatibility might be broken any time
   * without notification. Do not use it.
   *
   * We mean it!
@@ -87,11 +87,26 @@ class LdapClient : public QObject
   Q_OBJECT
 
   public:
-    LdapClient( QObject* parent = 0, const char* name = 0 );
+    LdapClient( int clientNumber, QObject* parent = 0, const char* name = 0 );
     virtual ~LdapClient();
 
     /*! returns true if there is a query running */
     bool isActive() const { return mActive; }
+
+    int clientNumber() const;
+    int completionWeight() const;
+    void setCompletionWeight( int );
+
+    QString host() const { return mHost; }
+    QString port() const { return mPort; }
+    QString base() const { return mBase; }
+    QString bindDN() const;
+    QString pwdBindDN() const;
+    /*! Return the attributes that should be
+     * returned, or an empty list if
+     * all attributes are wanted
+     */
+    QStringList attrs() const { return mAttrs; }
 
   signals:
     /*! Emitted when the query is done */
@@ -105,44 +120,38 @@ class LdapClient : public QObject
      */
     void result( const KPIM::LdapObject& );
 
-  public slots:
+  public slots: // why are those slots?
     /*!
      * Set the name or IP of the LDAP server
      */
     void setHost( const QString& host );
-    QString host() const { return mHost; }
 
     /*!
      * Set the port of the LDAP server
      * if using a nonstandard port
      */
     void setPort( const QString& port );
-    QString port() const { return mPort; }
 
     /*!
      * Set the base DN
      */
     void setBase( const QString& base );
-    QString base() const { return mBase; }
 
     /*!
      * Set the bind DN
      */
     void setBindDN( const QString& bindDN );
-    QString bindDN() const;
 
     /*!
      * Set the bind password DN
      */
     void setPwdBindDN( const QString& pwdBindDN );
-    QString pwdBindDN() const;
 
     /*! Set the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
      */
     void setAttrs( const QStringList& attrs );
-    QStringList attrs() const { return mAttrs; }
 
     void setScope( const QString scope ) { mScope = scope; }
 
@@ -192,7 +201,8 @@ class LdapClient : public QObject
 struct LdapResult {
   QString name;     ///< full name
   QString email;    ///< email
-  int clientNumber; ///< for sorting
+  int clientNumber; ///< for sorting in a ldap-only lookup
+  int completionWeight; ///< for sorting in a completion list
 };
 typedef QValueList<LdapResult> LdapResultList;
 
@@ -214,6 +224,8 @@ class LdapSearch : public QObject
     void startSearch( const QString& txt );
     void cancelSearch();
     bool isAvailable() const;
+
+    QValueList< LdapClient* > clients() const { return mClients; }
 
   signals:
     /// Results, assembled as "Full Name <email>"

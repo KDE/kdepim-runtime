@@ -23,12 +23,11 @@
     Boston, MA 02111-1307, USA.
 */
 
-#include <qapplication.h>
-#include <qobject.h>
-#include <qptrlist.h>
-#include <qregexp.h>
-#include <qevent.h>
-#include <qdragobject.h>
+#include "addresseelineedit.h"
+
+#include <kabc/distributionlist.h>
+#include <kabc/stdaddressbook.h>
+#include <kabc/resource.h>
 
 #include <kcompletionbox.h>
 #include <kcursor.h>
@@ -37,12 +36,19 @@
 #include <kstaticdeleter.h>
 #include <kstdaccel.h>
 #include <kurldrag.h>
+#include <klocale.h>
 
-#include <kabc/distributionlist.h>
+#include "completionordereditor.h"
 #include "ldapclient.h"
-#include <kabc/stdaddressbook.h>
 
-#include "addresseelineedit.h"
+#include <qpopupmenu.h>
+#include <qapplication.h>
+#include <qobject.h>
+#include <qptrlist.h>
+#include <qregexp.h>
+#include <qevent.h>
+#include <qdragobject.h>
+#include "resourceabc.h"
 
 using namespace KPIM;
 
@@ -249,7 +255,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       m_previousAddresses = prevAddr;
     else if ( completions.count() == 1 )
       setText( prevAddr + completions.first() );
-    
+
     setCompletedItems( completions, true ); // this makes sure the completion popup is closed if no matching items were found
 
     cursorAtEnd();
@@ -344,24 +350,53 @@ void AddresseeLineEdit::loadContacts()
   s_addressesDirty = false;
   //m_contactMap.clear();
 
-  const KABC::Addressee::List list = contacts();
-  KABC::Addressee::List::ConstIterator it;
-  for ( it = list.begin(); it != list.end(); ++it )
-    addContact( *it, 100 );
+  QApplication::setOverrideCursor( KCursor::waitCursor() ); // loading might take a while
 
-  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  KConfig config( "kpimcompletionorder" ); // The weights for non-imap kabc resources is there.
+  config.setGroup( "CompletionWeights" );
+
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  // Can't just use the addressbook's iterator, we need to know which subresource
+  // is behind which contact.
+  QPtrList<KABC::Resource> resources( addressBook->resources() );
+  for( QPtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
+    KABC::Resource* resource = *resit;
+    KPIM::ResourceABC* resabc = dynamic_cast<ResourceABC *>( resource );
+    if ( resabc ) { // IMAP KABC resource; need to associate each contact with the subresource
+      const QMap<QString, QString> uidToResourceMap = resabc->uidToResourceMap();
+      KABC::Resource::Iterator it;
+      for ( it = resource->begin(); it != resource->end(); ++it ) {
+        QString uid = (*it).uid();
+        QMap<QString, QString>::const_iterator wit = uidToResourceMap.find( uid );
+        int weight = ( wit != uidToResourceMap.end() ) ? resabc->subresourceCompletionWeight( *wit ) : 80;
+        //kdDebug(5300) << (*it).fullEmail() << " subres=" << *wit << " weight=" << weight << endl;
+        addContact( *it, weight );
+      }
+    } else { // KABC non-imap resource
+      int weight = config.readNumEntry( resource->identifier(), 60 );
+      KABC::Resource::Iterator it;
+      for ( it = resource->begin(); it != resource->end(); ++it )
+        addContact( *it, weight );
+    }
+  }
+
+  int weight = config.readNumEntry( "DistributionLists", 60 );
+  KABC::DistributionListManager manager( addressBook );
   manager.load();
   const QStringList distLists = manager.listNames();
   QStringList::const_iterator listIt;
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
-    s_completion->addItem( (*listIt).simplifyWhiteSpace(), 100 );
+    s_completion->addItem( (*listIt).simplifyWhiteSpace(), weight );
   }
+
+  QApplication::restoreOverrideCursor();
 }
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
   //m_contactMap.insert( addr.realName(), addr );
   QString fullEmail = addr.fullEmail();
+  //kdDebug(5300) << "addContact: " << fullEmail << " weight=" << weight << endl;
   s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
 }
 
@@ -403,34 +438,15 @@ void AddresseeLineEdit::slotLDAPSearchData( const KPIM::LdapResultList& adrs )
     return;
 
   for ( KPIM::LdapResultList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
-    kdDebug(5300) << "LDAP completion entry: " << (*it).name << " " << (*it).email << " order=" << (*it).clientNumber << endl;
     KABC::Addressee addr;
     addr.setNameFromString( (*it).name );
     addr.insertEmail( (*it).email, true );
-    // The weight is bigger for the first clients, lower for the last clients.
-    // So weight = 50 - clientNumber;
-    addContact( addr, 50 - (*it).clientNumber );
+    addContact( addr, (*it).completionWeight );
   }
 
   if ( hasFocus() || completionBox()->hasFocus() )
     if ( completionMode() != KGlobalSettings::CompletionNone )
       doCompletion( false );
-}
-
-KABC::Addressee::List AddresseeLineEdit::contacts()
-{
-  QApplication::setOverrideCursor( KCursor::waitCursor() ); // loading might take a while
-
-  KABC::Addressee::List result;
-
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
-  KABC::AddressBook::Iterator it;
-  for ( it = addressBook->begin(); it != addressBook->end(); ++it )
-    result.append( *it );
-
-  QApplication::restoreOverrideCursor();
-
-  return result;
 }
 
 void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSuggest )
@@ -599,6 +615,25 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
   mail = mail.simplifyWhiteSpace();
 
   return ! (name.isEmpty() || mail.isEmpty());
+}
+
+QPopupMenu* AddresseeLineEdit::createPopupMenu()
+{
+  QPopupMenu *menu = KLineEdit::createPopupMenu();
+  if ( !menu )
+    return 0;
+
+  if ( m_useCompletion )
+    menu->insertItem( i18n( "Edit Completion Order..." ),
+                      this, SLOT( slotEditCompletionOrder() ) );
+  return menu;
+}
+
+void AddresseeLineEdit::slotEditCompletionOrder()
+{
+  init(); // for s_LDAPSearch
+  CompletionOrderEditor editor( s_LDAPSearch, this );
+  editor.exec();
 }
 
 #include "addresseelineedit.moc"
