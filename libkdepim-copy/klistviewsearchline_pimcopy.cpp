@@ -21,6 +21,8 @@
 #include <klistview.h>
 #include <kdebug.h>
 
+#include <qtimer.h>
+
 namespace KPIM {
 
 class KListViewSearchLine::KListViewSearchLinePrivate
@@ -30,13 +32,15 @@ public:
         listView(0),
         caseSensitive(false),
         activeSearch(false),
-        keepParentsVisible(true) {}
+        keepParentsVisible(true),
+        queuedSearches(0) {}
     
     KListView *listView;
     bool caseSensitive;
     bool activeSearch;
     bool keepParentsVisible;
     QString search;
+    int queuedSearches;
     QValueList<int> searchColumns;
     QValueList<QListViewItem *> parents;
 };
@@ -52,15 +56,18 @@ KListViewSearchLine::KListViewSearchLine(QWidget *parent, KListView *listView, c
 
     d->listView = listView;
 
-    // Delete this lineedit if the list view it's attached to is deleted.
-
-    connect(listView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
-
     connect(this, SIGNAL(textChanged(const QString &)),
-	    this, SLOT(updateSearch(const QString &)));
+            this, SLOT(queueSearch(const QString &)));
 
-    connect(listView, SIGNAL(itemAdded(QListViewItem *)),
-	    this, SLOT(itemAdded(QListViewItem *)));
+    if(listView) {
+        connect(listView, SIGNAL(destroyed()),
+                this, SLOT(listViewDeleted()));
+
+        connect(listView, SIGNAL(itemAdded(QListViewItem *)),
+                this, SLOT(itemAdded(QListViewItem *)));
+    }
+    else
+        setEnabled(false);
 }
 
 KListViewSearchLine::~KListViewSearchLine()
@@ -83,14 +90,51 @@ bool KListViewSearchLine::keepParentsVisible() const
     return d->keepParentsVisible;
 }
 
+KListView *KListViewSearchLine::listView() const
+{
+    return d->listView;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // public slots
 ////////////////////////////////////////////////////////////////////////////////
 
 void KListViewSearchLine::updateSearch(const QString &s)
 {
+    if(!d->listView)
+        return;
+
     d->search = s.isNull() ? text() : s;
+
+    // If there's a selected item that is visible, make sure that it's visible
+    // when the search changes too (assuming that it still matches).
+
+    QListViewItem *currentItem = 0;
+
+    switch(d->listView->selectionMode())
+    {
+    case KListView::NoSelection:
+        break;
+    case KListView::Single:
+        currentItem = d->listView->selectedItem();
+        break;
+    default:
+    {
+        int flags = QListViewItemIterator::Selected | QListViewItemIterator::Visible;
+        for(QListViewItemIterator it(d->listView, flags);
+            it.current() && !currentItem;
+            ++it)
+        {
+            if(d->listView->itemRect(it.current()).isValid())
+                currentItem = it.current();
+        }
+    }
+    }
+
     checkItem(d->listView->firstChild());
+
+    if(currentItem)
+        d->listView->ensureItemVisible(currentItem);
 }
 
 void KListViewSearchLine::setCaseSensitive(bool cs)
@@ -108,6 +152,29 @@ void KListViewSearchLine::setSearchColumns(const QValueList<int> &columns)
     d->searchColumns = columns;
 }
 
+void KListViewSearchLine::setListView(KListView *lv)
+{
+    if(d->listView) {
+        disconnect(d->listView, SIGNAL(destroyed()),
+                   this, SLOT(listViewDeleted()));
+
+        disconnect(d->listView, SIGNAL(itemAdded(QListViewItem *)),
+                   this, SLOT(itemAdded(QListViewItem *)));
+    }
+
+    d->listView = lv;
+
+    if(lv) {
+        connect(d->listView, SIGNAL(destroyed()),
+                this, SLOT(listViewDeleted()));
+
+        connect(d->listView, SIGNAL(itemAdded(QListViewItem *)),
+                this, SLOT(itemAdded(QListViewItem *)));
+    }
+
+    setEnabled(bool(lv));
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // protected members
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +190,7 @@ bool KListViewSearchLine::itemMatches(const QListViewItem *item, const QString &
     if(!d->searchColumns.isEmpty()) {
         QValueList<int>::ConstIterator it = d->searchColumns.begin(); 
         for(; it != d->searchColumns.end(); ++it) {
-            if(*it < d->listView->columns() &&
+            if(*it < item->listView()->columns() &&
                item->text(*it).find(s, 0, d->caseSensitive) >= 0)
             {
                 return true;
@@ -131,7 +198,7 @@ bool KListViewSearchLine::itemMatches(const QListViewItem *item, const QString &
         }
     }
     else {
-        for(int i = 0; i < d->listView->columns(); i++) {
+        for(int i = 0; i < item->listView()->columns(); i++) {
             if(item->text(i).find(s, 0, d->caseSensitive) >= 0)
                 return true;
         }
@@ -141,12 +208,37 @@ bool KListViewSearchLine::itemMatches(const QListViewItem *item, const QString &
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// protected slots
+////////////////////////////////////////////////////////////////////////////////
+
+void KListViewSearchLine::queueSearch(const QString &search)
+{
+    d->queuedSearches++;
+    d->search = search;
+    QTimer::singleShot(200, this, SLOT(activateSearch()));
+}
+
+void KListViewSearchLine::activateSearch()
+{
+    d->queuedSearches--;
+
+    if(d->queuedSearches == 0)
+        updateSearch(d->search);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // private slots
 ////////////////////////////////////////////////////////////////////////////////
 
 void KListViewSearchLine::itemAdded(QListViewItem *item) const
 {
     item->setVisible(itemMatches(item, text()));
+}
+
+void KListViewSearchLine::listViewDeleted()
+{
+    d->listView = 0;
+    setEnabled(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -177,6 +269,5 @@ void KListViewSearchLine::checkItem(QListViewItem *item)
         item = item->nextSibling();
     }
 }
-
 }
 #include "klistviewsearchline_pimcopy.moc"
