@@ -1,7 +1,7 @@
 /*
     This file is part of libkdepim.
 
-    Copyright (c) 2001 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (c) 2001-2003 Cornelius Schumacher <schumacher@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -18,8 +18,8 @@
     the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
     Boston, MA 02111-1307, USA.
 */
-#ifndef _KPREFSDIALOG_H
-#define _KPREFSDIALOG_H
+#ifndef KPREFSDIALOG_H
+#define KPREFSDIALOG_H
 
 #include <qptrlist.h>
 #include <qlineedit.h>
@@ -27,9 +27,7 @@
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
-
-class KConfigSkeleton;
-class KPrefsDialog;
+#include <kconfigskeleton.h>
 
 class KColorButton;
 class QCheckBox;
@@ -86,8 +84,7 @@ class KPrefsWidBool : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidBool(const QString &text,bool &reference,QWidget *parent,
-                  const QString &whatsThis = QString::null);
+    KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent );
 
     /**
       Return the QCheckbox used by this widget.
@@ -100,7 +97,7 @@ class KPrefsWidBool : public KPrefsWid
     QValueList<QWidget *> widgets() const;
 
   private:
-    bool &mReference;
+    KConfigSkeleton::ItemBool *mItem;
 
     QCheckBox *mCheck;
 };
@@ -122,9 +119,7 @@ class KPrefsWidInt : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidInt( const QString &text, int &reference,
-                  QWidget *parent,
-                  const QString &whatsThis = QString::null );
+    KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent );
 
     /**
       Return QLabel used by this widget.
@@ -142,7 +137,7 @@ class KPrefsWidInt : public KPrefsWid
     QValueList<QWidget *> widgets() const;
 
   private:
-    int &mReference;
+    KConfigSkeleton::ItemInt *mItem;
 
     QLabel *mLabel;
     QSpinBox *mSpin;
@@ -165,8 +160,7 @@ class KPrefsWidTime : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidTime(const QString &text,int &reference,QWidget *parent,
-                  const QString &whatsThis = QString::null);
+    KPrefsWidTime( KConfigSkeleton::ItemInt *item, QWidget *parent );
 
     /**
       Return QLabel used by this widget.
@@ -181,7 +175,7 @@ class KPrefsWidTime : public KPrefsWid
     void writeConfig();
 
   private:
-    int &mReference;
+    KConfigSkeleton::ItemInt *mItem;
 
     QLabel *mLabel;
     QSpinBox *mSpin;
@@ -206,8 +200,7 @@ class KPrefsWidColor : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidColor(const QString &text,QColor &reference,QWidget *parent,
-                   const QString &whatsThis = QString::null);
+    KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent );
     /**
       Destruct color setting widget.
     */
@@ -226,7 +219,7 @@ class KPrefsWidColor : public KPrefsWid
     void writeConfig();
 
   private:
-    QColor &mReference;
+    KConfigSkeleton::ItemColor *mItem;
 
     QLabel *mLabel;
     KColorButton *mButton;
@@ -251,9 +244,8 @@ class KPrefsWidFont : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidFont(const QString &sampleText,const QString &labelText,
-                  QFont &reference,QWidget *parent,
-		  const QString &whatsThis = QString::null);
+    KPrefsWidFont( KConfigSkeleton::ItemFont *item,
+                   QWidget *parent, const QString &sampleText );
     /**
       Destruct font setting widget.
     */
@@ -279,7 +271,7 @@ class KPrefsWidFont : public KPrefsWid
     void selectFont();
 
   private:
-    QFont &mReference;
+    KConfigSkeleton::ItemFont *mItem;
 
     QLabel *mLabel;
     QLabel *mPreview;
@@ -307,7 +299,7 @@ class KPrefsWidRadios : public KPrefsWid
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
     */
-    KPrefsWidRadios(const QString &text, int &reference,QWidget *parent);
+    KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent );
     virtual ~KPrefsWidRadios();
 
     /**
@@ -329,7 +321,7 @@ class KPrefsWidRadios : public KPrefsWid
     QValueList<QWidget *> widgets() const;    
 
   private:
-    int &mReference;
+    KConfigSkeleton::ItemEnum *mItem;
 
     QButtonGroup *mBox;
 };
@@ -352,7 +344,8 @@ class KPrefsWidString : public KPrefsWid
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString(const QString &text,QString &reference,QWidget *parent,QLineEdit::EchoMode echomode=QLineEdit::Normal, const QString &whatsThis = QString::null);
+    KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent,
+                     QLineEdit::EchoMode echomode=QLineEdit::Normal );
     /**
       Destructor.
     */
@@ -373,7 +366,7 @@ class KPrefsWidString : public KPrefsWid
     QValueList<QWidget *> widgets() const;
 
   private:
-    QString &mReference;
+    KConfigSkeleton::ItemString *mItem;
 
     QLabel *mLabel;
     QLineEdit *mEdit;
@@ -408,6 +401,7 @@ class KPrefsWidManager
       Register a custom KPrefsWid object.
     */
     virtual void addWid(KPrefsWid *);
+
     /**
       Register a @ref KPrefsWidBool object.
 
@@ -416,8 +410,9 @@ class KPrefsWidManager
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidBool *addWidBool(const QString &text,bool &reference,QWidget *parent,
-                              const QString &whatsThis = QString::null);
+    KPrefsWidBool *addWidBool( KConfigSkeleton::ItemBool *item,
+                               QWidget *parent );
+
     /**
       Register a @ref KPrefsWidTime object.
 
@@ -426,8 +421,9 @@ class KPrefsWidManager
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidTime *addWidTime(const QString &text,int &reference,QWidget *parent,
-                              const QString &whatsThis = QString::null);
+    KPrefsWidTime *addWidTime( KConfigSkeleton::ItemInt *item,
+                               QWidget *parent );
+
     /**
       Register a @ref KPrefsWidColor object.
 
@@ -436,8 +432,9 @@ class KPrefsWidManager
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidColor *addWidColor(const QString &text,QColor &reference,QWidget *parent,
-                                const QString &whatsThis = QString::null);
+    KPrefsWidColor *addWidColor( KConfigSkeleton::ItemColor *item,
+                                 QWidget *parent );
+        
     /**
       Register a @ref KPrefsWidRadios object.
 
@@ -445,7 +442,9 @@ class KPrefsWidManager
       @param reference Reference to variable storing the setting.
       @param parent    Parent widget.
     */
-    KPrefsWidRadios *addWidRadios(const QString &text,int &reference,QWidget *parent);
+    KPrefsWidRadios *addWidRadios( KConfigSkeleton::ItemEnum *item,
+                                   QWidget *parent );
+    
     /**
       Register a @ref KPrefsWidString object.
 
@@ -454,8 +453,9 @@ class KPrefsWidManager
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString *addWidString(const QString &text,QString &reference,QWidget *parent,
-                                  const QString &whatsThis = QString::null);
+    KPrefsWidString *addWidString( KConfigSkeleton::ItemString *item,
+                                   QWidget *parent );
+
     /**
       Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.
 
@@ -464,8 +464,9 @@ class KPrefsWidManager
       @param parent    Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidString *addWidPassword (const QString &text,QString &reference,QWidget *parent,
-                                     const QString &whatsThis = QString::null);
+    KPrefsWidString *addWidPassword ( KConfigSkeleton::ItemString *item,
+                                      QWidget *parent );
+
     /**
       Register a @ref KPrefsWidFont object.
 
@@ -475,9 +476,8 @@ class KPrefsWidManager
       @param parent     Parent widget.
       @param whatsThis What's This help for the widget.
     */
-    KPrefsWidFont *addWidFont(const QString &sampleText,const QString &buttonText,
-                              QFont &reference,QWidget *parent,
-			      const QString &whatsThis = QString::null);
+    KPrefsWidFont *addWidFont( KConfigSkeleton::ItemFont *item,
+                               QWidget *parent, const QString &sampleText );
 
     /** Set all widgets to default values. */
     void setWidDefaults();

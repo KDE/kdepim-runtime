@@ -49,14 +49,13 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   KConfigSkeleton::ItemBool *boolItem =
       dynamic_cast<KConfigSkeleton::ItemBool *>( item );
   if ( boolItem ) {
-    return new KPrefsWidBool( boolItem->name(), boolItem->value(), parent );
+    return new KPrefsWidBool( boolItem, parent );
   }
 
   KConfigSkeleton::ItemString *stringItem =
       dynamic_cast<KConfigSkeleton::ItemString *>( item );
   if ( stringItem ) {
-    return new KPrefsWidString( stringItem->name(), stringItem->value(),
-                                parent );
+    return new KPrefsWidString( stringItem, parent );
   }
   
   KConfigSkeleton::ItemEnum *enumItem =
@@ -67,9 +66,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
       kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
       return 0;
     } else {
-      KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem->name(),
-                                                     enumItem->value(),
-                                                     parent );
+      KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
       QStringList::ConstIterator it;
       for( it = choices.begin(); it != choices.end(); ++it ) {
         radios->addRadio( *it );
@@ -81,7 +78,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   KConfigSkeleton::ItemInt *intItem =
       dynamic_cast<KConfigSkeleton::ItemInt *>( item );
   if ( intItem ) {
-    return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
+    return new KPrefsWidInt( intItem, parent );
   }
   
   return 0;
@@ -96,25 +93,24 @@ QValueList<QWidget *> KPrefsWid::widgets() const
 }
 
 
-KPrefsWidBool::KPrefsWidBool(const QString &text,bool &reference,
-                             QWidget *parent, const QString &whatsThis)
-  : mReference( reference )
+KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
+  : mItem( item )
 {
-  mCheck = new QCheckBox(text,parent);
+  mCheck = new QCheckBox( item->label(), parent);
   connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
-  if (!whatsThis.isNull()) {
-    QWhatsThis::add(mCheck, whatsThis);
+  if ( !item->whatsThis().isNull() ) {
+    QWhatsThis::add( mCheck, item->whatsThis() );
   }
 }
 
 void KPrefsWidBool::readConfig()
 {
-  mCheck->setChecked(mReference);
+  mCheck->setChecked( mItem->value() );
 }
 
 void KPrefsWidBool::writeConfig()
 {
-  mReference = mCheck->isChecked();
+  mItem->setValue( mCheck->isChecked() );
 }
 
 QCheckBox *KPrefsWidBool::checkBox()
@@ -130,14 +126,15 @@ QValueList<QWidget *> KPrefsWidBool::widgets() const
 }
 
 
-KPrefsWidInt::KPrefsWidInt( const QString &text, int &reference,
-                            QWidget *parent, const QString &whatsThis )
-  : mReference( reference )
+KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
+                            QWidget *parent )
+  : mItem( item )
 {
-  mLabel = new QLabel( text, parent );
+  mLabel = new QLabel( mItem->label(), parent );
   mSpin = new QSpinBox( parent );
   connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mLabel->setBuddy( mSpin );
+  QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     QWhatsThis::add( mLabel, whatsThis );
     QWhatsThis::add( mSpin, whatsThis );
@@ -146,12 +143,12 @@ KPrefsWidInt::KPrefsWidInt( const QString &text, int &reference,
 
 void KPrefsWidInt::readConfig()
 {
-  mSpin->setValue( mReference );
+  mSpin->setValue( mItem->value() );
 }
 
 void KPrefsWidInt::writeConfig()
 {
-  mReference = mSpin->value();
+  mItem->setValue( mSpin->value() );
 }
 
 QLabel *KPrefsWidInt::label()
@@ -173,13 +170,14 @@ QValueList<QWidget *> KPrefsWidInt::widgets() const
 }
 
 
-KPrefsWidColor::KPrefsWidColor(const QString &text,QColor &reference,
-                               QWidget *parent, const QString &whatsThis)
-  : mReference( reference )
+KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
+                                QWidget *parent )
+  : mItem( item )
 {
-  mButton = new KColorButton(parent);
+  mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
-  mLabel = new QLabel(mButton, text, parent);
+  mLabel = new QLabel( mButton, mItem->label(), parent );
+  QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mButton, whatsThis);
   }
@@ -192,12 +190,12 @@ KPrefsWidColor::~KPrefsWidColor()
 
 void KPrefsWidColor::readConfig()
 {
-  mButton->setColor(mReference);
+  mButton->setColor( mItem->value() );
 }
 
 void KPrefsWidColor::writeConfig()
 {
-  mReference = mButton->color();
+  mItem->setValue( mButton->color() );
 }
 
 QLabel *KPrefsWidColor::label()
@@ -210,18 +208,19 @@ KColorButton *KPrefsWidColor::button()
   return mButton;
 }
 
-KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &labelText,
-                             QFont &reference,QWidget *parent,
-			     const QString &whatsThis)
-  : mReference( reference )
+
+KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
+                              QWidget *parent, const QString &sampleText )
+  : mItem( item )
 {
-  mLabel = new QLabel(labelText, parent);
+  mLabel = new QLabel( mItem->label(), parent );
 
-  mPreview = new QLabel(sampleText,parent);
-  mPreview->setFrameStyle(QFrame::Panel|QFrame::Sunken);
+  mPreview = new QLabel( sampleText, parent );
+  mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 
-  mButton = new QPushButton(i18n("Choose..."), parent);
-  connect(mButton,SIGNAL(clicked()),SLOT(selectFont()));
+  mButton = new QPushButton( i18n("Choose..."), parent );
+  connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
+  QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mPreview, whatsThis);
     QWhatsThis::add(mButton, whatsThis);
@@ -234,12 +233,12 @@ KPrefsWidFont::~KPrefsWidFont()
 
 void KPrefsWidFont::readConfig()
 {
-  mPreview->setFont(mReference);
+  mPreview->setFont( mItem->value() );
 }
 
 void KPrefsWidFont::writeConfig()
 {
-  mReference = mPreview->font();
+  mItem->setValue( mPreview->font() );
 }
 
 QLabel *KPrefsWidFont::label()
@@ -268,27 +267,28 @@ void KPrefsWidFont::selectFont()
 }
 
 
-KPrefsWidTime::KPrefsWidTime(const QString &text,int &reference,
-                             QWidget *parent, const QString &whatsThis)
-  : mReference( reference )
+KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemInt *item,
+                              QWidget *parent )
+  : mItem( item )
 {
-  mLabel = new QLabel(text,parent);
-  mSpin = new QSpinBox(0,23,1,parent);
+  mLabel = new QLabel( mItem->label(), parent );
+  mSpin = new QSpinBox( 0, 23, 1, parent );
   connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
-  mSpin->setSuffix(":00");
-  if (!whatsThis.isNull()) {
-    QWhatsThis::add(mSpin, whatsThis);
+  mSpin->setSuffix( ":00" );
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isNull() ) {
+    QWhatsThis::add( mSpin, whatsThis );
   }
 }
 
 void KPrefsWidTime::readConfig()
 {
-  mSpin->setValue(mReference);
+  mSpin->setValue( mItem->value() );
 }
 
 void KPrefsWidTime::writeConfig()
 {
-  mReference = mSpin->value();
+  mItem->setValue( mSpin->value() );
 }
 
 QLabel *KPrefsWidTime::label()
@@ -302,11 +302,11 @@ QSpinBox *KPrefsWidTime::spinBox()
 }
 
 
-KPrefsWidRadios::KPrefsWidRadios(const QString &text,int &reference,
-                                 QWidget *parent)
-  : mReference( reference )
+KPrefsWidRadios::KPrefsWidRadios( KConfigSkeleton::ItemEnum *item,
+                                  QWidget *parent )
+  : mItem( item )
 {
-  mBox = new QButtonGroup(1,Qt::Horizontal,text,parent);
+  mBox = new QButtonGroup( 1, Qt::Horizontal, mItem->label(), parent );
   connect( mBox, SIGNAL( clicked( int ) ), SIGNAL( changed() ) );
 }
 
@@ -329,12 +329,12 @@ QButtonGroup *KPrefsWidRadios::groupBox()
 
 void KPrefsWidRadios::readConfig()
 {
-  mBox->setButton(mReference);
+  mBox->setButton( mItem->value() );
 }
 
 void KPrefsWidRadios::writeConfig()
 {
-  mReference = mBox->id(mBox->selected());
+  mItem->setValue( mBox->id( mBox->selected() ) );
 }
 
 QValueList<QWidget *> KPrefsWidRadios::widgets() const
@@ -345,18 +345,19 @@ QValueList<QWidget *> KPrefsWidRadios::widgets() const
 }
 
 
-KPrefsWidString::KPrefsWidString(const QString &text,QString &reference,
-                                 QWidget *parent, QLineEdit::EchoMode echomode,
-				 const QString &whatsThis)
-  : mReference( reference )
+KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
+                                  QWidget *parent,
+                                  QLineEdit::EchoMode echomode )
+  : mItem( item )
 {
-  mLabel = new QLabel(text,parent);
-  mEdit = new QLineEdit(parent);
+  mLabel = new QLabel( mItem->label(), parent );
+  mEdit = new QLineEdit( parent );
   connect( mEdit, SIGNAL( textChanged( const QString & ) ),
            SIGNAL( changed() ) );
   mEdit->setEchoMode( echomode );
-  if (!whatsThis.isNull()) {
-    QWhatsThis::add(mEdit, whatsThis);
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isNull() ) {
+    QWhatsThis::add( mEdit, whatsThis );
   }
 }
 
@@ -366,12 +367,12 @@ KPrefsWidString::~KPrefsWidString()
 
 void KPrefsWidString::readConfig()
 {
-  mEdit->setText(mReference);
+  mEdit->setText( mItem->value() );
 }
 
 void KPrefsWidString::writeConfig()
 {
-  mReference = mEdit->text();
+  mItem->setValue( mEdit->text() );
 }
 
 QLabel *KPrefsWidString::label()
@@ -392,6 +393,7 @@ QValueList<QWidget *> KPrefsWidString::widgets() const
   return widgets;
 }
 
+
 KPrefsWidManager::KPrefsWidManager( KConfigSkeleton *prefs )
   : mPrefs( prefs )
 {
@@ -401,75 +403,78 @@ KPrefsWidManager::~KPrefsWidManager()
 {
 }
 
-void KPrefsWidManager::addWid(KPrefsWid *wid)
+void KPrefsWidManager::addWid( KPrefsWid *wid )
 {
-  mPrefsWids.append(wid);
+  mPrefsWids.append( wid );
 }
 
-KPrefsWidBool *KPrefsWidManager::addWidBool(const QString &text,bool &reference,QWidget *parent,
-                                            const QString &whatsThis)
+KPrefsWidBool *KPrefsWidManager::addWidBool( KConfigSkeleton::ItemBool *item,
+                                             QWidget *parent )
 {
-  KPrefsWidBool *w = new KPrefsWidBool(text,reference,parent, whatsThis);
-  addWid(w);
+  KPrefsWidBool *w = new KPrefsWidBool( item, parent );
+  addWid( w );
   return w;
 }
 
-KPrefsWidTime *KPrefsWidManager::addWidTime(const QString &text,int &reference,QWidget *parent,
-                                            const QString &whatsThis)
+KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemInt *item,
+                                             QWidget *parent )
 {
-  KPrefsWidTime *w = new KPrefsWidTime(text,reference,parent, whatsThis);
-  addWid(w);
+  KPrefsWidTime *w = new KPrefsWidTime( item, parent );
+  addWid( w );
   return w;
 }
 
-KPrefsWidColor *KPrefsWidManager::addWidColor(const QString &text,QColor &reference,
-                                              QWidget *parent, const QString &whatsThis)
+KPrefsWidColor *KPrefsWidManager::addWidColor( KConfigSkeleton::ItemColor *item,
+                                               QWidget *parent )
 {
-  KPrefsWidColor *w = new KPrefsWidColor(text,reference,parent, whatsThis);
-  addWid(w);
+  KPrefsWidColor *w = new KPrefsWidColor( item, parent );
+  addWid( w );
   return w;
 }
 
-KPrefsWidRadios *KPrefsWidManager::addWidRadios(const QString &text,int &reference,QWidget *parent)
+KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item,
+                                                 QWidget *parent )
 {
-  KPrefsWidRadios *w = new KPrefsWidRadios(text,reference,parent);
-  addWid(w);
+  KPrefsWidRadios *w = new KPrefsWidRadios( item, parent );
+  addWid( w );
   return w;
 }
 
-KPrefsWidString *KPrefsWidManager::addWidString(const QString &text,QString &reference,
-                                                QWidget *parent, const QString &whatsThis)
+KPrefsWidString *KPrefsWidManager::addWidString( KConfigSkeleton::ItemString *item,
+                                                 QWidget *parent )
 {
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,
-                                           QLineEdit::Normal, whatsThis);
-  addWid(w);
+  KPrefsWidString *w = new KPrefsWidString( item, parent,
+                                            QLineEdit::Normal );
+  addWid( w );
   return w;
 }
 
-KPrefsWidString *KPrefsWidManager::addWidPassword(const QString &text,QString &reference,
-                                                  QWidget *parent, const QString &whatsThis)
+KPrefsWidString *KPrefsWidManager::addWidPassword( KConfigSkeleton::ItemString *item,
+                                                   QWidget *parent )
 {
-  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password,
-                                           whatsThis);
-  addWid(w);
+  KPrefsWidString *w = new KPrefsWidString( item, parent, QLineEdit::Password );
+  addWid( w );
   return w;
 }
 
-KPrefsWidFont *KPrefsWidManager::addWidFont(const QString &sampleText,const QString &buttonText,
-                                            QFont &reference,QWidget *parent,
-					    const QString &whatsThis)
+KPrefsWidFont *KPrefsWidManager::addWidFont( KConfigSkeleton::ItemFont *item,
+                                             QWidget *parent,
+                                             const QString &sampleText )
 {
-  KPrefsWidFont *w = new KPrefsWidFont(sampleText,buttonText,reference,parent,
-                                       whatsThis);
-  addWid(w);
+  KPrefsWidFont *w = new KPrefsWidFont( item, parent, sampleText );
+  addWid( w );
   return w;
 }
 
 void KPrefsWidManager::setWidDefaults()
 {
-  mPrefs->setDefaults();
+  kdDebug() << "KPrefsWidManager::setWidDefaults()" << endl;
+
+  bool tmp = mPrefs->useDefaults( true );
 
   readWidConfig();
+
+  mPrefs->useDefaults( tmp );
 }
 
 void KPrefsWidManager::readWidConfig()
@@ -477,7 +482,7 @@ void KPrefsWidManager::readWidConfig()
   kdDebug(5310) << "KPrefsWidManager::readWidConfig()" << endl;
 
   KPrefsWid *wid;
-  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
+  for( wid = mPrefsWids.first(); wid; wid = mPrefsWids.next() ) {
     wid->readConfig();
   }
 }
@@ -487,7 +492,7 @@ void KPrefsWidManager::writeWidConfig()
   kdDebug(5310) << "KPrefsWidManager::writeWidConfig()" << endl;
 
   KPrefsWid *wid;
-  for(wid = mPrefsWids.first();wid;wid=mPrefsWids.next()) {
+  for( wid = mPrefsWids.first(); wid; wid = mPrefsWids.next() ) {
     wid->writeConfig();
   }
 
@@ -504,7 +509,7 @@ KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
 // TODO: This seems to cause a crash on exit. Investigate later.
 //  mPrefsWids.setAutoDelete(true);
 
-  connect(this,SIGNAL(defaultClicked()),SLOT(setDefaults()));
+//  connect(this,SIGNAL(defaultClicked()),SLOT(setDefaults()));
   connect(this,SIGNAL(cancelClicked()),SLOT(reject()));
 }
 
@@ -576,8 +581,6 @@ void KPrefsDialog::autoCreate()
 void KPrefsDialog::setDefaults()
 {
   setWidDefaults();
-
-  readConfig();
 }
 
 void KPrefsDialog::readConfig()
@@ -611,6 +614,8 @@ void KPrefsDialog::slotOk()
 
 void KPrefsDialog::slotDefault()
 {
+  kdDebug() << "KPrefsDialog::slotDefault()" << endl;
+
   if (KMessageBox::warningContinueCancel(this,
       i18n("You are about to set all preferences to default values. All "
       "custom modifications will be lost."),i18n("Setting Default Preferences"),
@@ -659,15 +664,11 @@ void KPrefsModule::save()
   writeWidConfig();
 
   usrWriteConfig();
-
-  load();
 }
 
 void KPrefsModule::defaults()
 {
   setWidDefaults();
-
-  load();
 
   setChanged( true );
 }
