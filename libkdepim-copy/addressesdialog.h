@@ -95,14 +95,17 @@ namespace KPIM {
 
     /**
      * Returns the list of picked "To" addresses as KABC::Addressee::List.
+     * Note that this doesn't include the distribution lists
      */
     KABC::Addressee::List toAddresses()  const;
     /**
      * Returns the list of picked "CC" addresses as KABC::Addressee::List.
+     * Note that this doesn't include the distribution lists
      */
     KABC::Addressee::List ccAddresses()  const;
     /**
      * Returns the list of picked "BCC" addresses as KABC::Addressee::List.
+     * Note that this doesn't include the distribution lists
      */
     KABC::Addressee::List bccAddresses() const;
 
