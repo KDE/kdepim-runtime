@@ -38,8 +38,10 @@ KIMProxy * KIMProxy::mInstance = 0L;
 
 KIMProxy * KIMProxy::instance( DCOPClient * client ) 
 {
-	if ( !mInstance && client ) {
-		mInstance = new KIMProxy(client);
+	if ( client )
+	{
+		if ( !mInstance )
+			mInstance = new KIMProxy(client);
 		return mInstance;
 	}
 	else
@@ -312,7 +314,7 @@ void KIMProxy::unregisteredFromDCOP( const QCString& appId )
         QDictIterator<AppPresence> it( m_presence_map ); 
         for ( ; it.current(); ++it )
         {
-          if (  it.current()->appId == QString( appId ) )
+          if ( it.current()->appId == QString( appId ) )
             m_presence_map.remove( it.currentKey() );
         }
 		m_im_client_stubs.remove( appId );
