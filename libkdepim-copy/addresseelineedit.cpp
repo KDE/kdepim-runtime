@@ -507,7 +507,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 
     bool bDone = false;
     int i = -1;
-    while( ( i = name.findRev(' ') > 1 ) && !bDone ) {
+    while( ( i = name.findRev(' ') ) > 1 && !bDone ) {
       QString sLastName( name.mid( i+1 ) );
       if( ! sLastName.isEmpty() &&
             2 <= sLastName.length() &&   // last names must be at least 2 chars long
@@ -524,7 +524,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
         addCompletionItem( sExtraEntry.simplifyWhiteSpace(), weight );
         bDone = true;
       }
-      if( !bDone ){
+      if( !bDone ) {
         name.truncate( i );
         if( name.endsWith("\"") )
           name.truncate( name.length()-1 );
