@@ -129,6 +129,7 @@ void LdapClient::setAttrs( const QStringList& attrs )
       return;
     }
   mAttrs << "objectClass"; // via objectClass we detect distribution lists
+  mReportObjectClass = false;
 }
 
 void LdapClient::startQuery( const QString& filter )
