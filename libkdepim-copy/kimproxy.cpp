@@ -142,21 +142,21 @@ bool KIMProxy::initialize()
 			// for each registered app
 			for ( app = registeredApps.begin(); app != end; ++app )
 			{
-				kdDebug( 5301 ) << " considering: " << *app << endl;
+				//kdDebug( 5301 ) << " considering: " << *app << endl;
 				//for each offer
 				for ( offer = offers.begin(); offer != offers.end(); ++offer )
 				{
 					QCString dcopService = (*offer)->property("X-DCOP-ServiceName").toString().latin1();
 					if ( !dcopService.isEmpty() )
 					{
-						kdDebug( 5301 ) << " is it: " << dcopService << "?" << endl;
+						//kdDebug( 5301 ) << " is it: " << dcopService << "?" << endl;
 						// get the application name ( minus any process ID )
 						QCString instanceName =  (*app).left( dcopService.length() );
 						// if the application implements the dcop service, add it 
 						if ( instanceName == dcopService )
 						{
 							m_apps_available = true;
-							kdDebug( 5301 ) << " app name: " << (*offer)->name() << ", has instance " << *app << ", dcopService: " << dcopService << endl;
+							//kdDebug( 5301 ) << " app name: " << (*offer)->name() << ", has instance " << *app << ", dcopService: " << dcopService << endl;
 							if ( !m_im_client_stubs.find( dcopService ) )
 							{
 								kdDebug( 5301 ) << "inserting new stub for " << *app << " dcopObjectId " << dcopObjectId << endl;
@@ -257,7 +257,7 @@ QString KIMProxy::displayName( const QString& uid )
 		if ( KIMIface_stub* s = stubForUid( uid ) )
 			name = s->displayName( uid );
 	}
-	kdDebug( 5301 ) << k_funcinfo << name << endl;
+	//kdDebug( 5301 ) << k_funcinfo << name << endl;
     return name;
 }
 
@@ -276,7 +276,7 @@ int KIMProxy::presenceNumeric( const QString& uid )
 
 QString KIMProxy::presenceString( const QString& uid )
 {
-    kdDebug( 5301 ) << k_funcinfo << endl;
+	//kdDebug( 5301 ) << k_funcinfo << endl;
 	
 	QString presence;
 	KIMIface_stub* s = stubForUid( uid );
@@ -286,7 +286,7 @@ QString KIMProxy::presenceString( const QString& uid )
 		PresenceStringMap * appPresenceStrings = m_client_presence_strings[ s ];
 		if ( !appPresenceStrings ) // we have no presence strings mapped at all for this stub
 		{
-			kdDebug( 5301 ) << " no string cache found for this stub , creating one" << endl;
+			//kdDebug( 5301 ) << " no string cache found for this stub , creating one" << endl;
 			appPresenceStrings = new PresenceStringMap();
 			m_client_presence_strings.insert( s, appPresenceStrings );
 		}
@@ -294,11 +294,11 @@ QString KIMProxy::presenceString( const QString& uid )
 		presence = (*appPresenceStrings)[ numeric ];
 		if ( presence.isEmpty() ) //  cache miss
 		{
-			kdDebug( 5301 ) << " no cached string found for this app, fetching it" << endl;
+			//kdDebug( 5301 ) << " no cached string found for this app, fetching it" << endl;
 			presence = s->presenceString( uid );
 			appPresenceStrings->insert( numeric, presence );
 		}
-		kdDebug( 5301 ) << " resulting presence string for " << uid << " : " << presence << endl;
+		//kdDebug( 5301 ) << " resulting presence string for " << uid << " : " << presence << endl;
 	}
 	return presence;
 }
@@ -495,7 +495,7 @@ void KIMProxy::registeredToDCOP( const QCString& appId )
 			}
 		}
 		else
-			kdDebug( 5301 ) << "App doesn't implement our ServiceType" << endl;
+			//kdDebug( 5301 ) << "App doesn't implement our ServiceType" << endl;
 	}
 	if ( newApp )
 		emit sigPresenceInfoExpired();
@@ -591,7 +591,7 @@ QString KIMProxy::preferredApp()
 	KConfig *store = new KSimpleConfig( IM_CLIENT_PREFERENCES_FILE );
 	store->setGroup( IM_CLIENT_PREFERENCES_SECTION );
 	QString preferredApp = store->readEntry( IM_CLIENT_PREFERENCES_ENTRY );
-	kdDebug( 5301 ) << k_funcinfo << "found preferred app: " << preferredApp << endl;
+	//kdDebug( 5301 ) << k_funcinfo << "found preferred app: " << preferredApp << endl;
 	return preferredApp;
 }	
 

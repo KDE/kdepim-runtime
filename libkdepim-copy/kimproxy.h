@@ -41,12 +41,6 @@ class DCOPClient;
 class KIMIface_stub;
 class KURL;
 
-// struct AppPresence
-// {
-// 	int presence;
-// 	QString appId;
-// };
-
 typedef QMap<QCString, int> AppPresence; 		// appId->presence; contains all applications' ideas of a user's presence
 typedef QDict<AppPresence> PresenceMap;			// uid->AppPresence; contains a AppPresences for all users
 typedef QMap<int, QString> PresenceStringMap;
