@@ -216,7 +216,8 @@ void LdapClient::endParseLDIF()
 void LdapClient::finishCurrentObject()
 {
   mCurrentObject.dn = d->ldif.dn();
-  if( mCurrentObject.objectClass.lower() == "groupofnames" ){
+  const QString sClass( mCurrentObject.objectClass.lower() );
+  if( sClass == "groupofnames" || sClass == "kolabgroupofnames" ){
     LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
     if( it == mCurrentObject.attrs.end() ){
       // No explicit mail address found so far?
@@ -521,7 +522,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         givenname = tmp;
       else if( it2.key() == "sn" )
         sn = tmp;
-      else if( it2.key() == "objectClass" && tmp == "groupOfNames" ) {
+      else if( it2.key() == "objectClass" &&
+               (tmp == "groupOfNames" || tmp == "kolabGroupOfNames") ) {
         isDistributionList = true;
       }
     }
