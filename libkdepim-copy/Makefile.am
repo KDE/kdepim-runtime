@@ -28,10 +28,8 @@ libkdepim_la_SOURCES = \
   kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp \
   kabcresourcecached.cpp
 
-noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h \
-  kpixmapregionselectorwidget.h kpixmapregionselectordialog.h
-$(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
-$(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h kimproxyiface.h kimiface.h
+libkdepimincludedir = $(includedir)/libkdepim
+libkdepiminclude_HEADERS = part.h
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
