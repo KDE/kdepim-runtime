@@ -2,6 +2,7 @@
     This file is part of libkdepim.
 
     Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -43,28 +44,16 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
   mWidget->mCategories->header()->hide();
   setMainWidget( mWidget );
 
-  QStringList::Iterator it;
-  bool categoriesExist=false;
-  for ( it = mPrefs->mCustomCategories.begin();
-        it != mPrefs->mCustomCategories.end(); ++it ) {
-    new QListViewItem( mWidget->mCategories, *it );
-    categoriesExist = true;
-  }
-
+  fillList();
+  
   connect( mWidget->mCategories, SIGNAL( selectionChanged( QListViewItem * )),
            SLOT( editItem( QListViewItem * )) );
   connect( mWidget->mEdit, SIGNAL( textChanged( const QString & )),
            this, SLOT( slotTextChanged( const QString & )));
   connect( mWidget->mButtonAdd, SIGNAL( clicked() ),
            this, SLOT( add() ) );
-  connect( mWidget->mButtonModify, SIGNAL( clicked() ),
-           this, SLOT( modify() ) );
   connect( mWidget->mButtonRemove, SIGNAL( clicked() ),
            this, SLOT( remove() ) );
-  
-  mWidget->mButtonRemove->setEnabled( categoriesExist );
-  mWidget->mButtonModify->setEnabled( categoriesExist );
-  mWidget->mButtonAdd->setEnabled( !mWidget->mEdit->text().isEmpty() );
 }
 
 /*
@@ -75,18 +64,37 @@ CategoryEditDialog::~CategoryEditDialog()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void CategoryEditDialog::fillList()
+{
+  mWidget->mCategories->clear();
+  QStringList::Iterator it;
+  bool categoriesExist=false;
+  for ( it = mPrefs->mCustomCategories.begin();
+        it != mPrefs->mCustomCategories.end(); ++it ) {
+    new QListViewItem( mWidget->mCategories, *it );
+    categoriesExist = true;
+  }
+  mWidget->mButtonRemove->setEnabled( categoriesExist );
+  mWidget->mCategories->setSelected( mWidget->mCategories->firstChild(), true );
+}
+
 void CategoryEditDialog::slotTextChanged(const QString &text)
 {
-  mWidget->mButtonAdd->setEnabled( !text.isEmpty() );
+  QListViewItem *item = mWidget->mCategories->currentItem();
+  if ( item ) {
+    item->setText( 0, text );
+  }
 }
 
 void CategoryEditDialog::add()
 {
   if ( !mWidget->mEdit->text().isEmpty() ) {
-    new QListViewItem( mWidget->mCategories, mWidget->mEdit->text() );
-    mWidget->mEdit->setText("");
+    QListViewItem *newItem = new QListViewItem( mWidget->mCategories, "" );
+    // FIXME: Use a better string once string changes are allowed again
+//                                                i18n("New category") );
+    mWidget->mCategories->setSelected( newItem, true );
+    mWidget->mCategories->ensureItemVisible( newItem );
     mWidget->mButtonRemove->setEnabled( mWidget->mCategories->childCount()>0 );
-    mWidget->mButtonModify->setEnabled( mWidget->mCategories->childCount()>0 );
   }
 }
 
@@ -94,17 +102,8 @@ void CategoryEditDialog::remove()
 {
   if (mWidget->mCategories->currentItem()) {
     delete mWidget->mCategories->currentItem();
+    mWidget->mCategories->setSelected( mWidget->mCategories->currentItem(), true );
     mWidget->mButtonRemove->setEnabled( mWidget->mCategories->childCount()>0 );
-    mWidget->mButtonModify->setEnabled( mWidget->mCategories->childCount()>0 );
-  }
-}
-
-void CategoryEditDialog::modify()
-{
-  if ( !mWidget->mEdit->text().isEmpty() ) {
-    if ( mWidget->mCategories->currentItem() ) {
-      mWidget->mCategories->currentItem()->setText( 0, mWidget->mEdit->text() );
-    }
   }
 }
 
@@ -128,21 +127,21 @@ void CategoryEditDialog::slotApply()
   emit categoryConfigChanged();
 }
 
+void CategoryEditDialog::slotCancel()
+{
+  reload();
+  KDialogBase::slotCancel();
+}
+
 void CategoryEditDialog::editItem( QListViewItem *item )
 {
   mWidget->mEdit->setText( item->text(0) );
   mWidget->mButtonRemove->setEnabled( true );
-  mWidget->mButtonModify->setEnabled( true );
 }
 
 void CategoryEditDialog::reload() 
 {
-  QStringList::Iterator it;
-  mWidget->mCategories->clear();
-  for ( it = mPrefs->mCustomCategories.begin();
-        it != mPrefs->mCustomCategories.end(); ++it ) {
-    new QListViewItem( mWidget->mCategories, *it );
-  }
+  fillList();
 }
 
 #include "categoryeditdialog.moc"

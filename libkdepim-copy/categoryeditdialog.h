@@ -2,6 +2,7 @@
     This file is part of libkdepim.
 
     Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -44,14 +45,17 @@ class KDE_EXPORT CategoryEditDialog : public KDialogBase
   protected slots:
     void slotOk();
     void slotApply();
+    void slotCancel();
     void slotTextChanged(const QString &text);
     void add();
-    void modify();
     void remove();
     void editItem( QListViewItem *item );
 
   signals:
     void categoryConfigChanged();
+    
+  protected:
+    void fillList();
 
   private:
     KPimPrefs *mPrefs;
