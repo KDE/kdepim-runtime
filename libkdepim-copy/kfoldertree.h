@@ -39,6 +39,7 @@ struct KPaintInfo {
     COL_SIZE,
     COL_ATTACHMENT,
     COL_IMPORTANT,
+    COL_TODO,
     COL_SPAM_HAM,
     COL_WATCHED_IGNORED,
     COL_STATUS,
@@ -54,6 +55,7 @@ struct KPaintInfo {
     showSize(false),
     showAttachment(false),
     showImportant(false),
+    showTodo( false ),
     showSpamHam(false),
     showWatchedIgnored(false),
     showStatus(false),
@@ -71,6 +73,7 @@ struct KPaintInfo {
     sizeCol(-1),
     attachmentCol(-1),
     importantCol(-1),
+    todoCol(-1),
     spamHamCol(-1),
     watchedIgnoredCol(-1),
     statusCol(-1),
@@ -90,10 +93,12 @@ struct KPaintInfo {
   QColor colNew;
   QColor colUnread;
   QColor colFlag;
+  QColor colTodo;
 
   bool showSize;
   bool showAttachment;
   bool showImportant;
+  bool showTodo;
   bool showSpamHam;
   bool showWatchedIgnored;
   bool showStatus;
@@ -111,6 +116,7 @@ struct KPaintInfo {
   int sizeCol;
   int attachmentCol;
   int importantCol;
+  int todoCol;
   int spamHamCol;
   int watchedIgnoredCol;
   int statusCol;
