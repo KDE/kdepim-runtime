@@ -8,7 +8,7 @@ libkdepim_la_SOURCES = \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
-  kinputdialog.cpp
+  kinputdialog.cpp sidebarextension.cpp
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
 libkdepim_la_LIBADD  = $(LIB_KIO) 
