@@ -51,6 +51,7 @@ class CategoryEditDialog : public CategoryEditDialog_base
     void editItem(QListViewItem *item);
     void slotTextChanged(const QString &text);
 
+  private:
     KPimPrefs *mPrefs;
 };
 
