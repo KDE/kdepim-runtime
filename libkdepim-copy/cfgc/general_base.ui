@@ -37,7 +37,7 @@
                 <cstring>textLabel1</cstring>
             </property>
             <property name="text">
-                <string>AnotherOption</string>
+                <string>AnotherOption:</string>
             </property>
         </widget>
     </grid>
