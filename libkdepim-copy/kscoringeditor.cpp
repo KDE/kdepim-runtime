@@ -71,7 +71,7 @@ SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, cons
   headers = new KComboBox(this);
   headers->insertStringList(manager->getDefaultHeaders());
   headers->setEditable( true );
-  QToolTip::add(headers,i18n("Select the header against this condition match"));
+  QToolTip::add(headers,i18n("Select the header to match this condition against"));
   firstRow->addWidget(headers,1);
   matches = new KComboBox(this);
   matches->insertStringList(KScoringExpression::conditionNames());
