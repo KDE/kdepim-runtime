@@ -26,7 +26,7 @@
 
 #include "resourcemanager.h"
 
-#include "calendar.h"
+#include <libkcal/calendar.h>
 
 namespace KCal {
 
