@@ -62,6 +62,11 @@ class KVCardDrag : public QStoredDrag
      * Decodes the MIME source @p e and puts the resulting vcard into @p content.
      */
     static bool decode( QMimeSource *e, QString &content );
+ 
+    /**
+     * Decodes the MIME source @p e and puts the resulting vcard into @p addresseess.
+     */
+    static bool KVCardDrag::decode( QMimeSource *e, KABC::Addressee::List& addressees );
 
   protected:
      virtual void virtual_hook( int id, void* data );
