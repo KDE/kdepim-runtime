@@ -514,7 +514,6 @@ static const Prob freqs[16] = {
 static const char HexDigits[] = "0123456789ABCDEF";
 
 
-class QBitmap;
 class QImage;
 class QString;
 
@@ -536,7 +535,7 @@ namespace KPIM {
       /**
        * creates a pixmap from @p xface
        */
-      QBitmap toBitmap(const QString &xface);
+      QImage toImage(const QString &xface);
 
 
     private:

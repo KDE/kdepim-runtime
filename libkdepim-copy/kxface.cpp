@@ -27,11 +27,9 @@
 
 #include <kdebug.h>
 
-#include <qbitmap.h>
 #include <qbuffer.h>
 #include <qcstring.h>
 #include <qimage.h>
-#include <qpixmap.h>
 #include <qregexp.h>
 #include <qstring.h>
 #include <qpainter.h>
@@ -152,10 +150,10 @@ QString KXFace::fromImage( const QImage &image )
   return ret;
 }
 
-QBitmap KXFace::toBitmap(const QString &xface)
+QImage KXFace::toImage(const QString &xface)
 {
   if ( xface.length() > MAX_XFACE_LENGTH )
-    return QBitmap();
+    return QImage();
 
   char *fbuf = (char *)malloc( MAX_XFACE_LENGTH );
   memset( fbuf, '\0', MAX_XFACE_LENGTH );
@@ -168,10 +166,10 @@ QBitmap KXFace::toBitmap(const QString &xface)
     img = WriteFace();
   }
   free( fbuf );
-  QBitmap b( 48, 48, true );
-  b.loadFromData( img, "XBM" );
-  b.setMask( b );
-  return b;
+  QImage p;
+  p.loadFromData( img, "XBM" );
+
+  return p;
 }
 
 //============================================================================
