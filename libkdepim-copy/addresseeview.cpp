@@ -242,7 +242,8 @@ void AddresseeView::updateView()
 	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.organization());
 
   // when only an organization is set we use it as name
-  if ( !mAddressee.organization().isEmpty() && name.isEmpty() ) {
+  if ( !mAddressee.organization().isEmpty() && name.isEmpty() ||
+       mAddressee.formattedName() == mAddressee.organization() ) {
     name = mAddressee.organization();
     organization = QString::null;
   }
