@@ -28,6 +28,7 @@
 #include <kabc/distributionlist.h>
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
+#include <libemailfunctions/email.h>
 
 #include <kcompletionbox.h>
 #include <kcursor.h>
@@ -482,6 +483,19 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
+
+    if ( addr.givenName().isEmpty() && addr.familyName().isEmpty() ) {
+      addCompletionItem( addr.fullEmail( (*it) ), weight ); // use whatever is there
+    } else {
+      const QString byFirstName= KPIM::quoteNameIfNecessary( addr.givenName() + " " + addr.familyName() ) + " <" + (*it) + ">";
+      const QString byLastName= "\"" + addr.familyName() + ", " + addr.givenName() + "\" "  + "<" + (*it) + ">";
+      const QString byEmail= (*it) + " (" + addr.realName() + ")";
+      addCompletionItem( byFirstName, weight );
+      addCompletionItem( byLastName, weight );
+      addCompletionItem( byEmail, weight );
+    }
+
+#if 0
     int len = (*it).length();
     if ( len == 0 ) continue;
     if( '\0' == (*it)[len-1] )
@@ -530,6 +544,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
           name.truncate( name.length()-1 );
       }
     }
+#endif
   }
 }
 
@@ -571,8 +586,9 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
   int n = s.findRev( ',' );
   if ( n >= 0 ) {
     prevAddr = s.left( n + 1 ) + ' ';
-    s = s.mid( n + 1, 255 ).stripWhiteSpace();
+    s = s.mid( n + 1, 255 );
   }
+  s = s.stripWhiteSpace();
 
   if ( s.isEmpty() )
     return;
