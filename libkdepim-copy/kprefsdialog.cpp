@@ -21,17 +21,10 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qgroupbox.h>
 #include <qbuttongroup.h>
 #include <qlineedit.h>
 #include <qfont.h>
-#include <qslider.h>
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
-#include <qdatetime.h>
 #include <qframe.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
@@ -41,11 +34,8 @@
 #include <kcolorbutton.h>
 #include <kdebug.h>
 #include <klocale.h>
-#include <kglobal.h>
 #include <kfontdialog.h>
 #include <kmessagebox.h>
-#include <kcolordialog.h>
-#include <kiconloader.h>
 
 #include "kprefs.h"
 
