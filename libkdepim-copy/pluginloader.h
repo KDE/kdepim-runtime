@@ -128,7 +128,7 @@ namespace KPIM {
     }; \
     const char * const pl##Config::mainfunc = mf; \
     const char * const pl##Config::path = p; \
-  }; \
+  } \
   typedef KPIM::PluginLoader< t, pl##Config > pl; \
 
 
