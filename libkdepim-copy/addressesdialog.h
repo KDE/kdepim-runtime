@@ -185,7 +185,7 @@ namespace KPIM {
     void initConnections();
     void addDistributionLists();
     void addAddresseeToAvailable( const KABC::Addressee& addr,
-                                  AddresseeViewItem* defaultParent=0 );
+                                  AddresseeViewItem* defaultParent=0, bool useCategory=true );
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
     void addAddresseesToSelected( AddresseeViewItem *parent,

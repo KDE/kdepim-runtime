@@ -569,24 +569,33 @@ AddressesDialog::initConnections()
 }
 
 void
-AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, AddresseeViewItem* defaultParent )
+AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, AddresseeViewItem* defaultParent, bool useCategory )
 {
   if ( addr.preferredEmail().isEmpty() )
     return;
 
-  QStringList categories = addr.categories();
+  if ( useCategory ) {
+    QStringList categories = addr.categories();
 
-  for ( QStringList::Iterator it = categories.begin(); it != categories.end(); ++it ) {
-    if ( !d->groupDict[ *it ] ) {  //we don't have the category yet
-      AddresseeViewItem* category = new AddresseeViewItem( d->ui->mAvailableView, *it );
-      d->groupDict.insert( *it,  category );
+    for ( QStringList::Iterator it = categories.begin(); it != categories.end(); ++it ) {
+      if ( !d->groupDict[ *it ] ) {  //we don't have the category yet
+        AddresseeViewItem* category = new AddresseeViewItem( d->ui->mAvailableView, *it );
+        d->groupDict.insert( *it,  category );
+      }
+      AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr );
+      connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
+              this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
     }
-    AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr );
-    connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
   }
 
-  if ( defaultParent && categories.isEmpty() ) { // only non-categorized items here
+  bool noCategory = false;
+  if ( useCategory ) {
+    if ( addr.categories().isEmpty() )
+      noCategory = true;
+  } else
+    noCategory = true;
+
+  if ( defaultParent && noCategory ) { // only non-categorized items here
     AddresseeViewItem* addressee = new AddresseeViewItem( defaultParent, addr );
     connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
             this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
@@ -973,7 +982,7 @@ AddressesDialog::addDistributionLists()
 
     KABC::DistributionList::Entry::List::Iterator itemIt;
     for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
-      addAddresseeToAvailable( (*itemIt).addressee, item );
+      addAddresseeToAvailable( (*itemIt).addressee, item, false );
   }
 }
 
