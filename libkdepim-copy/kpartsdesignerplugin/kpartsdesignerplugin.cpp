@@ -102,6 +102,14 @@ bool KPartsWidgetPlugin::isContainer( const QString & /*key*/ ) const {
     return false;
 }
 
+/// Duplicated from kdelibs/kdecore/kdemacros.h.in for those with kdelibs < 3.4
+#ifndef KDE_Q_EXPORT_PLUGIN
+#define KDE_Q_EXPORT_PLUGIN(PLUGIN) \
+  Q_EXTERN_C KDE_EXPORT const char* qt_ucm_query_verification_data(); \
+  Q_EXTERN_C KDE_EXPORT QUnknownInterface* ucm_instantiate(); \
+  Q_EXPORT_PLUGIN(PLUGIN)
+#endif
+
 KDE_Q_EXPORT_PLUGIN( KPartsWidgetPlugin )
 
 #include "kpartsdesignerplugin.moc"
