@@ -60,7 +60,7 @@
                         <cstring>mClear</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Delete</string>
+                        <string>&amp;Clear Selection</string>
                     </property>
                 </widget>
                 <spacer>
