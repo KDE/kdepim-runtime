@@ -21,19 +21,19 @@
 #ifndef KPIM_CATEGORYSELECTDIALOG_H
 #define KPIM_CATEGORYSELECTDIALOG_H
 
-#include <libkdepim/categoryselectdialog_base.h>
+#include <kdialogbase.h>
 
 class KPimPrefs;
+class CategorySelectDialog_base;
 
 namespace KPIM {
 
-class CategorySelectDialog : public CategorySelectDialog_base
+class CategorySelectDialog : public KDialogBase
 { 
     Q_OBJECT
   public:
     CategorySelectDialog( KPimPrefs *prefs, QWidget *parent = 0,
-                          const char *name = 0, bool modal = false,
-                          WFlags fl = 0 );
+                          const char *name = 0, bool modal = false );
     ~CategorySelectDialog();
 
     void setCategories();
@@ -54,6 +54,7 @@ class CategorySelectDialog : public CategorySelectDialog_base
 
   private:
     KPimPrefs *mPrefs;
+    CategorySelectDialog_base *mWidget;
     QStringList mCategoryList;
 
     class CategorySelectDialogPrivate;

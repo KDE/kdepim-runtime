@@ -24,35 +24,47 @@
 #include <qlistview.h>
 #include <qheader.h>
 #include <qpushbutton.h>
+#include <klocale.h>
 
 #include "kpimprefs.h"
 
+#include "categoryeditdialog_base.h"
 #include "categoryeditdialog.h"
 
 using namespace KPIM;
 
 CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
-                                        const char* name, bool modal,
-                                        WFlags fl )
-  : CategoryEditDialog_base( parent, name, modal, fl ),
+                                        const char* name, bool modal )
+  : KDialogBase::KDialogBase( parent, name, modal,
+    i18n("Edit Categories"), Ok|Apply|Cancel|Help, Ok, true ),
     mPrefs( prefs )  
 {
-  mCategories->header()->hide();
+  mWidget = new CategoryEditDialog_base( this, "CategoryEdit" );
+  mWidget->mCategories->header()->hide();
+  setMainWidget( mWidget );
 
   QStringList::Iterator it;
   bool categoriesExist=false;
-  for (it = mPrefs->mCustomCategories.begin();
-       it != mPrefs->mCustomCategories.end(); ++it ) {
-    new QListViewItem(mCategories,*it);
-    categoriesExist=true;
+  for ( it = mPrefs->mCustomCategories.begin();
+        it != mPrefs->mCustomCategories.end(); ++it ) {
+    new QListViewItem( mWidget->mCategories, *it );
+    categoriesExist = true;
   }
 
-  connect(mCategories,SIGNAL(selectionChanged(QListViewItem *)),
-          SLOT(editItem(QListViewItem *)));
-  connect(mEdit,SIGNAL(textChanged ( const QString & )),this,SLOT(slotTextChanged(const QString &)));
-  mButtonRemove->setEnabled(categoriesExist);
-  mButtonModify->setEnabled(categoriesExist);
-  mButtonAdd->setEnabled(!mEdit->text().isEmpty());
+  connect( mWidget->mCategories, SIGNAL( selectionChanged( QListViewItem * )),
+           SLOT( editItem( QListViewItem * )) );
+  connect( mWidget->mEdit, SIGNAL( textChanged( const QString & )),
+           this, SLOT( slotTextChanged( const QString & )));
+  connect( mWidget->mButtonAdd, SIGNAL( clicked() ),
+           this, SLOT( add() ) );
+  connect( mWidget->mButtonModify, SIGNAL( clicked() ),
+           this, SLOT( modify() ) );
+  connect( mWidget->mButtonRemove, SIGNAL( clicked() ),
+           this, SLOT( remove() ) );
+  
+  mWidget->mButtonRemove->setEnabled( categoriesExist );
+  mWidget->mButtonModify->setEnabled( categoriesExist );
+  mWidget->mButtonAdd->setEnabled( !mWidget->mEdit->text().isEmpty() );
 }
 
 /*
@@ -65,33 +77,33 @@ CategoryEditDialog::~CategoryEditDialog()
 
 void CategoryEditDialog::slotTextChanged(const QString &text)
 {
-    mButtonAdd->setEnabled(!text.isEmpty());
+  mWidget->mButtonAdd->setEnabled( !text.isEmpty() );
 }
 
 void CategoryEditDialog::add()
 {
-  if (!mEdit->text().isEmpty()) {
-    new QListViewItem(mCategories,mEdit->text());
-    mEdit->setText("");
-    mButtonRemove->setEnabled(mCategories->childCount()>0);
-    mButtonModify->setEnabled(mCategories->childCount()>0);
+  if ( !mWidget->mEdit->text().isEmpty() ) {
+    new QListViewItem( mWidget->mCategories, mWidget->mEdit->text() );
+    mWidget->mEdit->setText("");
+    mWidget->mButtonRemove->setEnabled( mWidget->mCategories->childCount()>0 );
+    mWidget->mButtonModify->setEnabled( mWidget->mCategories->childCount()>0 );
   }
 }
 
 void CategoryEditDialog::remove()
 {
-  if (mCategories->currentItem()) {
-    delete mCategories->currentItem();
-    mButtonRemove->setEnabled(mCategories->childCount()>0);
-    mButtonModify->setEnabled(mCategories->childCount()>0);
+  if (mWidget->mCategories->currentItem()) {
+    delete mWidget->mCategories->currentItem();
+    mWidget->mButtonRemove->setEnabled( mWidget->mCategories->childCount()>0 );
+    mWidget->mButtonModify->setEnabled( mWidget->mCategories->childCount()>0 );
   }
 }
 
 void CategoryEditDialog::modify()
 {
-  if (!mEdit->text().isEmpty()) {
-    if (mCategories->currentItem()) {
-      mCategories->currentItem()->setText(0,mEdit->text());
+  if ( !mWidget->mEdit->text().isEmpty() ) {
+    if ( mWidget->mCategories->currentItem() ) {
+      mWidget->mCategories->currentItem()->setText( 0, mWidget->mEdit->text() );
     }
   }
 }
@@ -106,9 +118,9 @@ void CategoryEditDialog::slotApply()
 {
   mPrefs->mCustomCategories.clear();
 
-  QListViewItem *item = mCategories->firstChild();
-  while(item) {
-    mPrefs->mCustomCategories.append(item->text(0));
+  QListViewItem *item = mWidget->mCategories->firstChild();
+  while ( item ) {
+    mPrefs->mCustomCategories.append( item->text(0) );
     item = item->nextSibling();
   }
   mPrefs->writeConfig();
@@ -116,11 +128,11 @@ void CategoryEditDialog::slotApply()
   emit categoryConfigChanged();
 }
 
-void CategoryEditDialog::editItem(QListViewItem *item)
+void CategoryEditDialog::editItem( QListViewItem *item )
 {
-  mEdit->setText(item->text(0));
-  mButtonRemove->setEnabled(true);
-  mButtonModify->setEnabled(true);
+  mWidget->mEdit->setText( item->text(0) );
+  mWidget->mButtonRemove->setEnabled( true );
+  mWidget->mButtonModify->setEnabled( true );
 }
 
 #include "categoryeditdialog.moc"

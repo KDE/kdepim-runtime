@@ -23,6 +23,8 @@
 #include <qpushbutton.h>
 #include <qheader.h>
 
+#include <libkdepim/categoryselectdialog_base.h>
+#include <klocale.h>
 #include "categoryselectdialog.h"
 
 #include "kpimprefs.h"
@@ -30,28 +32,33 @@
 using namespace KPIM;
 
 CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
-                                            const char* name, 
-                                            bool modal, WFlags fl )
-  : CategorySelectDialog_base( parent, name, modal, fl ),
+                                            const char* name, bool modal )
+  : KDialogBase::KDialogBase( parent, name, modal,
+    i18n("Select Categories"), Ok|Apply|Cancel|Help, Ok, true ),
     mPrefs( prefs )
 {
-  mCategories->header()->hide();
+  mWidget = new CategorySelectDialog_base( this, "CategorySelection" );
+  mWidget->mCategories->header()->hide();
+  setMainWidget( mWidget );
 
   setCategories();
  
-  connect(mButtonEdit,SIGNAL(clicked()),SIGNAL(editCategories()));
+  connect( mWidget->mButtonEdit, SIGNAL(clicked()),
+           SIGNAL(editCategories()) );
+  connect( mWidget->mButtonClear, SIGNAL(clicked()),
+           SLOT(clear()) );
 }
 
 void CategorySelectDialog::setCategories()
 {
-  mCategories->clear();
+  mWidget->mCategories->clear();
   mCategoryList.clear();
 
   QStringList::Iterator it;
 
   for (it = mPrefs->mCustomCategories.begin();
        it != mPrefs->mCustomCategories.end(); ++it ) {
-    new QCheckListItem(mCategories,*it,QCheckListItem::CheckBox);
+    new QCheckListItem( mWidget->mCategories, *it, QCheckListItem::CheckBox );
   }
 }
 
@@ -64,8 +71,8 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
   clear();
 
   QStringList::ConstIterator it;
-  for (it=selList.begin();it!=selList.end();++it) {
-    QCheckListItem *item = (QCheckListItem *)mCategories->firstChild();
+  for ( it = selList.begin(); it != selList.end(); ++it ) {
+    QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
     while (item) {
       if (item->text() == *it) {
         item->setOn(true);
@@ -84,7 +91,7 @@ QStringList CategorySelectDialog::selectedCategories() const
 void CategorySelectDialog::slotApply()
 {
   QStringList categories;
-  QCheckListItem *item = (QCheckListItem *)mCategories->firstChild();
+  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
     if (item->isOn()) {
       categories.append(item->text());
@@ -108,7 +115,7 @@ void CategorySelectDialog::slotOk()
 
 void CategorySelectDialog::clear()
 {
-  QCheckListItem *item = (QCheckListItem *)mCategories->firstChild();
+  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
     item->setOn(false);
     item = (QCheckListItem *)item->nextSibling();
@@ -118,7 +125,7 @@ void CategorySelectDialog::clear()
 void CategorySelectDialog::updateCategoryConfig()
 {
   QStringList selected;
-  QCheckListItem *item = (QCheckListItem *)mCategories->firstChild();
+  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
     if (item->isOn()) {
       selected.append(item->text());

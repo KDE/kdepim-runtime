@@ -1,6 +1,6 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
 <class>CategorySelectDialog_base</class>
-<widget class="QDialog">
+<widget class="QWidget">
     <property name="name">
         <cstring>CategorySelectDialog_base</cstring>
     </property>
@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>387</width>
-            <height>276</height>
+            <height>280</height>
         </rect>
     </property>
     <property name="caption">
@@ -20,7 +20,7 @@
             <cstring>unnamed</cstring>
         </property>
         <property name="margin">
-            <number>11</number>
+            <number>0</number>
         </property>
         <property name="spacing">
             <number>6</number>
@@ -57,10 +57,13 @@
                 </property>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>mClear</cstring>
+                        <cstring>mButtonClear</cstring>
                     </property>
                     <property name="text">
                         <string>&amp;Clear Selection</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+C</string>
                     </property>
                 </widget>
                 <spacer>
@@ -90,132 +93,12 @@
                 </widget>
             </hbox>
         </widget>
-        <widget class="Line">
-            <property name="name">
-                <cstring>line2</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>HLine</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Sunken</enum>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout8</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <property name="margin">
-                    <number>0</number>
-                </property>
-                <property name="spacing">
-                    <number>6</number>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonHelp</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Help</string>
-                    </property>
-                </widget>
-                <spacer>
-                    <property name="name">
-                        <cstring>Spacer4</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>52</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonOk</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;OK</string>
-                    </property>
-                    <property name="on">
-                        <bool>false</bool>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mApply</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Apply</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonCancel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Cancel</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
     </vbox>
 </widget>
-<connections>
-    <connection>
-        <sender>mButtonCancel</sender>
-        <signal>clicked()</signal>
-        <receiver>CategorySelectDialog_base</receiver>
-        <slot>reject()</slot>
-    </connection>
-    <connection>
-        <sender>mButtonOk</sender>
-        <signal>clicked()</signal>
-        <receiver>CategorySelectDialog_base</receiver>
-        <slot>slotOk()</slot>
-    </connection>
-    <connection>
-        <sender>mClear</sender>
-        <signal>clicked()</signal>
-        <receiver>CategorySelectDialog_base</receiver>
-        <slot>clear()</slot>
-    </connection>
-    <connection>
-        <sender>mApply</sender>
-        <signal>clicked()</signal>
-        <receiver>CategorySelectDialog_base</receiver>
-        <slot>slotApply()</slot>
-    </connection>
-</connections>
 <tabstops>
     <tabstop>mCategories</tabstop>
-    <tabstop>mClear</tabstop>
+    <tabstop>mButtonClear</tabstop>
     <tabstop>mButtonEdit</tabstop>
-    <tabstop>mButtonHelp</tabstop>
-    <tabstop>mApply</tabstop>
-    <tabstop>mButtonOk</tabstop>
-    <tabstop>mButtonCancel</tabstop>
 </tabstops>
-<slots>
-    <slot>clear()</slot>
-    <slot>slotApply()</slot>
-    <slot>slotOk()</slot>
-</slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

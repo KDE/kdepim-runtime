@@ -21,38 +21,37 @@
 #ifndef KPIM_CATEGORYEDITDIALOG_H
 #define KPIM_CATEGORYEDITDIALOG_H
 
-#include <libkdepim/categoryeditdialog_base.h>
+#include <kdialogbase.h>
 
 class KPimPrefs;
+class CategoryEditDialog_base;
 
 namespace KPIM {
 
-class CategoryEditDialog : public CategoryEditDialog_base
+class CategoryEditDialog : public KDialogBase
 { 
     Q_OBJECT
   public:
     CategoryEditDialog( KPimPrefs *prefs, QWidget* parent = 0,
                         const char* name = 0, 
-                        bool modal = FALSE, WFlags fl = 0 );
+                        bool modal = false );
     ~CategoryEditDialog();
 
-  public slots:
-    void add();
-    void remove();
-    void modify();
-
+  protected slots:
     void slotOk();
     void slotApply();
-    
+    void slotTextChanged(const QString &text);
+    void add();
+    void modify();
+    void remove();
+    void editItem( QListViewItem *item );
+  
   signals:
     void categoryConfigChanged();
 
-  private slots:
-    void editItem(QListViewItem *item);
-    void slotTextChanged(const QString &text);
-
   private:
     KPimPrefs *mPrefs;
+    CategoryEditDialog_base *mWidget;
 };
 
 }
