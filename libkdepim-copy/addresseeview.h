@@ -64,6 +64,19 @@ class AddresseeView : public KTextBrowser
      */
     KABC::Addressee addressee() const;
 
+
+    /**
+      This enums are used by enableLinks to set which kind of links shall
+      be enabled.
+     */
+    enum LinkMask { AddressLinks = 1, EmailLinks = 2, PhoneLinks = 4, URLLinks = 8 };
+
+    /**
+      Sets which parts of the contact shall be presented as links.
+      The mask can be OR'ed LinkMask. By default all links are enabled.
+     */
+    void enableLinks( int linkMask );
+
     /**
       Returns the HTML representation of a contact.
       The HTML code looks like
@@ -74,7 +87,7 @@ class AddresseeView : public KTextBrowser
         </div>
 
       @param addr The addressee object.
-      @param useLinks If true, the addresses, emails, phone numbers and urls will
+      @param linkMask The mask for which parts of the contact will
                       be displayed as links.
                       The links looks like this:
                         "addr://<addr id>" for addresses
@@ -88,7 +101,7 @@ class AddresseeView : public KTextBrowser
       @param showPhones If true, the phone numbers are included.
       @param showURLs If true, the urls are included.
      */
-    static QString vCardAsHTML( const KABC::Addressee& addr, bool useLinks = true,
+    static QString vCardAsHTML( const KABC::Addressee& addr, int linkMask = true,
                                 bool internalLoading = true,
                                 bool showBirthday = true, bool showAddresses = true,
                                 bool showEmails = true, bool showPhones = true,
@@ -99,7 +112,7 @@ class AddresseeView : public KTextBrowser
      * @return a data: URL
      */
     static QString pixmapAsDataUrl( const QPixmap& pixmap );
-    
+
   signals:
     void urlHighlighted( const QString &url );
     void emailHighlighted( const QString &email );
@@ -148,6 +161,7 @@ class AddresseeView : public KTextBrowser
     KToggleAction *mActionShowURLs;
 
     KABC::Addressee mAddressee;
+    int mLinkMask;
 
     class AddresseeViewPrivate;
     AddresseeViewPrivate *d;

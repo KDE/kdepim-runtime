@@ -47,7 +47,8 @@ using namespace KPIM;
 
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
                               KConfig *config )
-  : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 )
+  : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
+    mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks )
 {
   setWrapPolicy( QTextEdit::AtWordBoundary );
   setLinkUnderline( false );
@@ -115,7 +116,12 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   updateView();
 }
 
-QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
+void AddresseeView::enableLinks( int linkMask )
+{
+  mLinkMask = linkMask;
+}
+
+QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
                                     bool internalLoading,
                                     bool showBirthday, bool showAddresses,
                                     bool showEmails, bool showPhones, bool showURLs )
@@ -163,7 +169,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
       else
         url = QString::fromLatin1( "phone:" ) + number;
 
-      if ( useLinks ) {
+      if ( linkMask & PhoneLinks ) {
         dynamicPart += rowFmtStr
           .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
           .arg( QString::fromLatin1( "<a href=\"%1\">%2</a>" ).arg(url).arg(number) );
@@ -183,7 +189,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
       QString fullEmail = addr.fullEmail( *emailIt );
       QUrl::encode( fullEmail );
 
-      if ( useLinks ) {
+      if ( linkMask & EmailLinks ) {
         dynamicPart += rowFmtStr.arg( type )
           .arg( QString::fromLatin1( "<a href=\"mailto:%1\">%2</a>" )
           .arg( fullEmail, *emailIt ) );
@@ -197,7 +203,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
 
   if ( showURLs ) {
     if ( !addr.url().url().isEmpty() ) {
-      if ( useLinks ) {
+      if ( linkMask & URLLinks ) {
         QString url = (addr.url().url().startsWith( "http://" ) ? addr.url().url() :
                        "http://" + addr.url().url());
         dynamicPart += rowFmtStr
@@ -245,7 +251,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
         QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
                        formattedAddress + "</a>";
 
-        if ( useLinks ) {
+        if ( linkMask & AddressLinks ) {
           dynamicPart += rowFmtStr
             .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
             .arg( link );
@@ -258,7 +264,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
         QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
                        (*addrIt).label().replace( '\n', "<br>" ) + "</a>";
 
-        if ( useLinks ) {
+        if ( linkMask & AddressLinks ) {
           dynamicPart += rowFmtStr
             .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
             .arg( link );
@@ -346,7 +352,7 @@ void AddresseeView::updateView()
     mImageData.truncate( 0 );
   }
 
-  QString strAddr = vCardAsHTML( mAddressee, true, true,
+  QString strAddr = vCardAsHTML( mAddressee, mLinkMask, true,
                                  mActionShowBirthday->isChecked(),
                                  mActionShowAddresses->isChecked(),
                                  mActionShowEmails->isChecked(),
