@@ -31,7 +31,8 @@ libkdepim_la_SOURCES = \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp \
   addresseeselector.cpp addresseeemailselection.cpp \
-  designerfields.cpp kcmdesignerfields.cpp
+  designerfields.cpp kcmdesignerfields.cpp \
+  kincidencechooser.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
