@@ -111,6 +111,30 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &dt,
   return result;
 }
 
+QDateTime KPimPrefs::localTimeToUtc( const QDateTime &dt,
+                                     const QString &timeZoneId )
+{
+//  kdDebug() << "--- LOCAL: " << dt.toString() << endl;
+
+  QCString origTz = getenv("TZ");
+
+  setenv( "TZ", timeZoneId.local8Bit(), 1 );
+  time_t utcTime = dt.toTime_t();
+
+  setenv( "TZ", "UTC", 1 );
+  struct tm *local = localtime( &utcTime );
+
+  setenv( "TZ", origTz, 1 );
+
+  QDateTime result( QDate( local->tm_year + 1900, local->tm_mon + 1,
+                           local->tm_mday ),
+                    QTime( local->tm_hour, local->tm_min, local->tm_sec ) );
+
+//  kdDebug() << "---   UTC: " << result.toString() << endl;
+
+  return result;
+}
+
 void KPimPrefs::usrWriteConfig()
 {
   config()->setGroup( "General" );

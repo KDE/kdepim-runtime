@@ -68,6 +68,13 @@ class KPimPrefs : public KConfigSkeleton
     static QDateTime utcToLocalTime( const QDateTime &dt,
                                      const QString &timeZoneId );
 
+    /**
+      Convert time given in local time at timezone specified by given
+      timezone id to UTC.
+    */
+    static QDateTime localTimeToUtc( const QDateTime &dt,
+                                     const QString &timeZoneId );
+
   public:
     QStringList mCustomCategories;
   
