@@ -1,4 +1,6 @@
-INCLUDES = $(all_includes)
+SUBDIRS = interfaces
+
+INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
