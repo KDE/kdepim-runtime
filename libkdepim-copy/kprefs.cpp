@@ -394,6 +394,8 @@ void KPrefs::writeConfig()
   usrWriteConfig();
 
   mConfig->sync();
+
+  readConfig();
 }
 
 
