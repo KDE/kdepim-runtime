@@ -36,21 +36,19 @@
 #include <kmessagebox.h>
 #include <knotifyclient.h>
 
-#include "kdateedit.h"
 #include "kdateedit.moc"
 
-KDateEdit::KDateEdit(QWidget *parent, const char *name)
-  : QHBox(parent, name)
-{
-  mDateEdit = new QLineEdit(this);
-  mDateEdit->setText(KGlobal::locale()->formatDate(QDate::currentDate(),true));
-  setFocusProxy(mDateEdit);
-  mDateEdit->installEventFilter(this);
 
-  QPixmap pixmap = SmallIcon("smallcal");
-  mDateButton = new QPushButton(this);
-  mDateButton->setPixmap(pixmap);
-  
+KDateEdit::KDateEdit(QWidget *parent, const char *name)
+  : QComboBox(true, parent, name)
+{
+  setMaxCount(1);       // need at least one entry for popup to work
+  QString today = KGlobal::locale()->formatDate(QDate::currentDate(), true);
+  insertItem(today);
+  setCurrentItem(0);
+  setCurrentText(today);
+  setMinimumSize(sizeHint());
+
   mDateFrame = new QVBox(0,0,WType_Popup);
   mDateFrame->setFrameStyle(QFrame::PopupPanel | QFrame::Raised);
   mDateFrame->setLineWidth(3);
@@ -58,24 +56,22 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
 
   mDatePicker = new KDatePicker(mDateFrame,QDate::currentDate());
 
-  connect(mDateEdit,SIGNAL(returnPressed()),SLOT(lineEnterPressed()));
-  connect(mDateEdit,SIGNAL(textChanged(const QString &)),
-          SLOT(textChanged(const QString &)));
-
-  connect(mDateButton,SIGNAL(clicked()),SLOT(toggleDatePicker()));
+  connect(lineEdit(),SIGNAL(returnPressed()),SLOT(lineEnterPressed()));
+  connect(this,SIGNAL(textChanged(const QString &)),
+          SLOT(slotTextChanged(const QString &)));
 
   connect(mDatePicker,SIGNAL(dateEntered(QDate)),SLOT(setDate(QDate)));
   connect(mDatePicker,SIGNAL(dateEntered(QDate)),SIGNAL(dateChanged(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),SLOT(setDate(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),SIGNAL(dateChanged(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),mDateFrame,SLOT(hide()));
-  
+
   // Create the keyword list. This will be used to match against when the user
   // enters information.
   mKeywordMap[i18n("tomorrow")] = 1;
   mKeywordMap[i18n("today")] = 0;
   mKeywordMap[i18n("yesterday")] = -1;
-  
+
   /*
    * This loop uses some math tricks to figure out the offset in days
    * to the next date the given day of the week occurs. There
@@ -94,7 +90,7 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
     else
       mKeywordMap[dayName] = 7 - currentDay + i;
   }
-  
+
   mTextChanged = false;
   mHandleInvalid = false;
 }
@@ -114,24 +110,18 @@ void KDateEdit::setDate(QDate newDate)
     dateString = KGlobal::locale()->formatDate( newDate, true );
 
   mTextChanged = false;
-  
+
   // We do not want to generate a signal here, since we explicity setting
   // the date
-  bool b = mDateEdit->signalsBlocked();
-  mDateEdit->blockSignals(true);
-  mDateEdit->setText(dateString);
-  mDateEdit->blockSignals(b);
+  bool b = signalsBlocked();
+  blockSignals(true);
+  setCurrentText(dateString);
+  blockSignals(b);
 }
 
 void KDateEdit::setHandleInvalid(bool handleInvalid)
 {
   mHandleInvalid = handleInvalid;
-}
-
-void KDateEdit::setEnabled(bool on)
-{
-  mDateEdit->setEnabled(on);
-  mDateButton->setEnabled(on);
 }
 
 QDate KDateEdit::date() const
@@ -146,31 +136,30 @@ QDate KDateEdit::date() const
   }
 }
 
-void KDateEdit::toggleDatePicker()
+void KDateEdit::popup()
 {
-  if( mDateFrame->isVisible() ) {
-    mDateFrame->hide();
+  QPoint popupPoint = mapToGlobal( QPoint( 0,0 ) );
+  if ( popupPoint.x() < 0 ) popupPoint.setX( 0 );
+
+  int desktopHeight = QApplication::desktop()->height();
+  int dateFrameHeight = mDateFrame->sizeHint().height();
+
+  if ( popupPoint.y() + height() + dateFrameHeight > desktopHeight ) {
+    popupPoint.setY( popupPoint.y() - dateFrameHeight );
   } else {
-    QPoint tmpPoint = mapToGlobal(mDateButton->geometry().bottomRight());
-    QSize datepickersize = mDatePicker->sizeHint();
-
-    if ( tmpPoint.x() < 7+datepickersize.width() ) tmpPoint.setX( 7+datepickersize.width() );
-
-    int h = QApplication::desktop()->height();
-
-    if ( tmpPoint.y() + datepickersize.height() > h ) tmpPoint.setY( h - datepickersize.height() );
-
-    mDateFrame->setGeometry(tmpPoint.x()-datepickersize.width()-7, tmpPoint.y(),
-     datepickersize.width()+2*mDateFrame->lineWidth(), datepickersize.height()+2*mDateFrame->lineWidth());
-
-    QDate date = readDate();
-    if(date.isValid()) {
-      mDatePicker->setDate(date);
-    } else {
-      mDatePicker->setDate(QDate::currentDate());
-    }
-    mDateFrame->show();
+    popupPoint.setY( popupPoint.y() + height() );
   }
+
+  mDateFrame->move( popupPoint );
+
+  QDate date = readDate();
+  if(date.isValid()) {
+    mDatePicker->setDate( date );
+  } else {
+    mDatePicker->setDate( QDate::currentDate() );
+  }
+
+  mDateFrame->show();
 }
 
 
@@ -178,17 +167,17 @@ void KDateEdit::lineEnterPressed()
 {
   QDate date = readDate();
 
-  if(date.isValid()) 
+  if(date.isValid())
   {
-    // Update the edit. This is needed if the user has entered a 
+    // Update the edit. This is needed if the user has entered a
     // word rather than the actual date.
     setDate(date);
-    
+
     emit(dateChanged(date));
   }
   else
   {
-    if ( !mDateEdit->text().isEmpty() ) {
+    if ( !currentText().isEmpty() ) {
       mTextChanged = false;
       QString text = i18n( "You entered an invalid date! Will use current date instead." );
       if ( KMessageBox::warningContinueCancel( 0, text ) == KMessageBox::Continue ) {
@@ -206,9 +195,9 @@ bool KDateEdit::inputIsValid()
 
 QDate KDateEdit::readDate() const
 {
-  QString text = mDateEdit->text();
+  QString text = currentText();
   QDate date;
-  
+
   if (mKeywordMap.contains(text.lower()))
   {
     date = QDate::currentDate().addDays(mKeywordMap[text.lower()]);
@@ -217,26 +206,24 @@ QDate KDateEdit::readDate() const
   {
     date = KGlobal::locale()->readDate(text);
   }
-  
+
   return date;
 }
 
-bool KDateEdit::eventFilter(QObject *, QEvent *e)
+void KDateEdit::focusOutEvent(QFocusEvent*)
 {
   // We only process the focus out event if the text has changed
   // since we got focus
-  if ((e->type() == QEvent::FocusOut) && mTextChanged)
+  if (mTextChanged)
   {
     lineEnterPressed();
     mTextChanged = false;
   }
-    
-  return false;
 }
 
-void KDateEdit::textChanged(const QString &)
+void KDateEdit::slotTextChanged(const QString &)
 {
-  if(mHandleInvalid && mDateEdit->text().stripWhiteSpace().isEmpty()) {
+  if(mHandleInvalid && currentText().stripWhiteSpace().isEmpty()) {
     QDate date; //invalid date
     emit(dateChanged(date));
   } else  {
