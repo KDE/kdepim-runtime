@@ -270,9 +270,11 @@ bool KDateEdit::eventFilter(QObject *, QEvent *e)
       QDate date;
       if (readDate(date) && date.isValid()) {
         date = date.addDays(step);
-        setDate(date);
-        emit(dateChanged(date));
-        return true;
+        if (validate(date)) {
+          setDate(date);
+          emit(dateChanged(date));
+          return true;
+        }
       }
     }
   }
