@@ -27,9 +27,7 @@ using namespace KPIM;
 
 static QString textToHTML( const QString &text )
 {
-  QString retval = text;
-  
-  return retval.replace( '\n', "<br>" );
+  return QStyleSheet::convertFromPlainText( text );
 }
 
 HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
