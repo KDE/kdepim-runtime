@@ -34,7 +34,7 @@ KPixmapRegionSelectorWidget::KPixmapRegionSelectorWidget( QWidget *parent,
    QHBoxLayout * hboxLayout=new QHBoxLayout( this );
    
    hboxLayout->addStretch();
-   QVBoxLayout * vboxLayout=new QVBoxLayout( this );
+   QVBoxLayout * vboxLayout=new QVBoxLayout( hboxLayout );
 
    vboxLayout->addStretch();
    m_label = new QLabel(this, "pixmapHolder");
@@ -44,7 +44,6 @@ KPixmapRegionSelectorWidget::KPixmapRegionSelectorWidget( QWidget *parent,
    vboxLayout->addWidget(m_label);
    vboxLayout->addStretch();
 
-   hboxLayout->addLayout(vboxLayout);
    hboxLayout->addStretch();
 
    m_forcedAspectRatio=0;
