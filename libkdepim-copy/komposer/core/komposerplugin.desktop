@@ -3,6 +3,7 @@ Type=ServiceType
 X-KDE-ServiceType=Komposer/Plugin
 Name=Komposer Plugin
 Name[bg]=Приставки на Komposer
+Name[br]=Lugent Komposer
 Name[ca]=Connector per a Komposer
 Name[cs]=Komposer modul
 Name[cy]=Ategyn Kyfansoddydd
