@@ -187,19 +187,21 @@ void KDateEdit::popup()
 
 void KDateEdit::dateSelected( QDate date )
 {
-  assignDate( date );
-  updateView();
-  emit dateChanged( date );
+  if (assignDate( date ) ) {
+    updateView();
+    emit dateChanged( date );
 
-  if ( date.isValid() )
-    mDateFrame->hide();
+    if ( date.isValid() )
+      mDateFrame->hide();
+  }
 }
 
 void KDateEdit::dateEntered( QDate date )
 {
-  assignDate( date );
-  updateView();
-  emit dateChanged( date );
+  if (assignDate( date ) ) {
+    updateView();
+    emit dateChanged( date );
+  }
 }
 
 void KDateEdit::lineEnterPressed()
@@ -208,11 +210,12 @@ void KDateEdit::lineEnterPressed()
 
   QDate date = parseDate( &replaced );
 
-  assignDate( date );
-  if ( replaced )
-    updateView();
+  if (assignDate( date ) ) {
+    if ( replaced )
+      updateView();
 
-  emit dateChanged( date );
+    emit dateChanged( date );
+  }
 }
 
 QDate KDateEdit::parseDate( bool *replaced ) const
@@ -281,10 +284,11 @@ bool KDateEdit::eventFilter( QObject *object, QEvent *event )
         QDate date = parseDate();        
         if ( date.isValid() ) {
           date = date.addDays( step );
-          assignDate( date );
-          updateView();
-          emit dateChanged( date );
-          return true;
+          if ( assignDate( date ) ) {
+            updateView();
+            emit dateChanged( date );
+            return true;
+          }
         }
       }
     }
@@ -327,8 +331,8 @@ void KDateEdit::slotTextChanged( const QString& )
 {
   QDate date = parseDate();
 
-  assignDate( date );
-  emit dateChanged( date );
+  if ( assignDate( date ) )
+    emit dateChanged( date );
 
   mTextChanged = true;
 }
@@ -348,10 +352,11 @@ void KDateEdit::setupKeywords()
   }
 }
 
-void KDateEdit::assignDate( const QDate& date )
+bool KDateEdit::assignDate( const QDate& date )
 {
   mDate = date;
   mTextChanged = false;
+  return true;
 }
 
 void KDateEdit::updateView()

@@ -105,6 +105,19 @@ class KDE_EXPORT KDateEdit : public QComboBox
     virtual void mousePressEvent( QMouseEvent* );
 
     /**
+      Sets the date, without altering the display.
+      This method is used internally to set the widget's date value.
+      As a virtual method, it allows derived classes to perform additional validation
+      on the date value before it is set. Derived classes should return true if
+      QDate::isValid(@p date) returns false.
+
+      @param date The new date to set.
+      @return True if the date was set, false if it was considered invalid and
+              remains unchanged.
+     */
+    virtual bool assignDate( const QDate &date );
+
+    /**
       Fills the keyword map. Reimplement it if you want additional
       keywords.
      */
@@ -113,7 +126,6 @@ class KDE_EXPORT KDateEdit : public QComboBox
   private:
     QDate parseDate( bool* = 0 ) const;
     void updateView();
-    void assignDate( const QDate& );
 
     KDatePicker *mDatePicker;
     QVBox *mDateFrame;
