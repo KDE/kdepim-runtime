@@ -23,7 +23,7 @@
 
 #include <kabc/resource.h>
 
-#include "idmapper.h"
+#include "libemailfunctions/idmapper.h"
 
 namespace KABC {
 
