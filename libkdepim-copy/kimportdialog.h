@@ -37,6 +37,8 @@ class KImportColumn
     void addColId(int i);
     void removeColId(int i);
 
+    QValueList<int> colIdList();
+
   protected:
 
   private:
@@ -84,6 +86,7 @@ class KImportDialog : public KDialogBase
     void applyConverter();
     void tableSelected();
     void slotUrlChanged(const QString & );
+    void saveTemplate();
 
   private:
     void updateFormatSelection(int column);

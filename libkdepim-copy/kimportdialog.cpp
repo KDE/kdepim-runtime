@@ -26,6 +26,7 @@
 #include <ksimpleconfig.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
+#include <kfiledialog.h>
 
 #include "kimportdialog.h"
 #include "kimportdialog.moc"
@@ -92,6 +93,11 @@ void KImportColumn::addColId(int id)
 void KImportColumn::removeColId(int id)
 {
   mColIds.remove(id);
+}
+
+QValueList<int> KImportColumn::colIdList()
+{
+  return mColIds;
 }
 
 QString KImportColumn::convert()
@@ -200,6 +206,10 @@ KImportDialog::KImportDialog(QWidget* parent)
   QPushButton *assignTemplateButton = new QPushButton(i18n("Assign with Template"),
                                               assignBox);
   connect(assignTemplateButton,SIGNAL(clicked()),SLOT(assignTemplate()));
+
+  QPushButton *saveTemplateButton = new QPushButton(i18n("Save current Template"),
+                                              assignBox);
+  connect(saveTemplateButton,SIGNAL(clicked()),SLOT(saveTemplate()));
 
   resize(500,300);
 
@@ -632,7 +642,6 @@ void KImportDialog::applyConverter()
   
   pDialog.show();
   for( uint i = mStartRow->value() - 1; i < mData.count() && !pDialog.wasCancelled(); ++i ) {
-    // i starts with 1 to skip header line
     mCurrentRow = i;
     progress->setValue(i);
     if (i % 5 == 0)  // try to avoid constantly processing events
@@ -693,4 +702,45 @@ void KImportDialog::setData( uint row, uint col, const QString &value )
 QString KImportDialog::data( uint row, uint col )
 {
   return mData[ row ]->at( col );
+}
+
+void KImportDialog::saveTemplate()
+{
+  QString fileName = KFileDialog::getSaveFileName(
+                      locateLocal( "data", QString( kapp->name() ) + "/csv-templates/" ),
+                      "*.desktop", this );
+
+  if ( fileName.isEmpty() )
+    return;
+
+  if ( !fileName.contains( ".desktop" ) )
+    fileName += ".desktop";
+
+  QString name = QInputDialog::getText( i18n( "Template name" ), i18n( "Please enter a name for the template" ) );
+
+  if ( name.isEmpty() )
+    return;
+
+  KConfig config( fileName );
+  config.setGroup( "General" );
+  config.writeEntry( "Columns", mColumns.count() );
+  config.writeEntry( "Format", mFormatCombo->currentItem() + 1 );
+
+  config.setGroup( "Misc" );
+  config.writeEntry( "Name", name );
+
+  config.setGroup( "csv column map" );
+  
+  KImportColumn *column;
+  uint counter = 0;
+  for ( column = mColumns.first(); column; column = mColumns.next() ) {
+    QValueList<int> list = column->colIdList();
+    if ( list.count() > 0 )
+      config.writeEntry( QString::number( counter ), list[ 0 ] );
+    else
+      config.writeEntry( QString::number( counter ), -1 );
+    counter++;
+  }
+
+  config.sync();
 }
