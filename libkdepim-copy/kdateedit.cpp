@@ -23,16 +23,17 @@
 */
 
 #include <qapplication.h>
-#include <qpixmap.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
 #include <qevent.h>
+#include <qlineedit.h>
+#include <qpixmap.h>
+#include <qpushbutton.h>
 
+#include <kdatepicker.h>
 #include <kdebug.h>
-#include <klocale.h>
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kdatepicker.h>
+#include <klocale.h>
+#include <kmessagebox.h>
 #include <knotifyclient.h>
 
 #include "kdateedit.h"
@@ -184,7 +185,14 @@ void KDateEdit::lineEnterPressed()
   }
   else
   {
-    KNotifyClient::beep();
+    if ( !mDateEdit->text().isEmpty() ) {
+      mTextChanged = false;
+      QString text = i18n( "You entered an invalid date! Will use current date instead." );
+      if ( KMessageBox::warningContinueCancel( 0, text ) == KMessageBox::Continue ) {
+          setDate( QDate::currentDate() );
+          emit dateChanged( QDate::currentDate() );
+      }
+    }
   }
 }
 
