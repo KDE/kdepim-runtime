@@ -62,6 +62,7 @@ KPixmapRegionSelectorWidget::~KPixmapRegionSelectorWidget()
 
 void KPixmapRegionSelectorWidget::setPixmap( const QPixmap &pixmap )
 {
+   Q_ASSERT(!pixmap.isNull()); //This class isn't designed to deal with null pixmaps.
    m_originalPixmap = pixmap;
    m_unzoomedPixmap = pixmap;
    m_label->setPixmap( pixmap );
@@ -93,6 +94,7 @@ void KPixmapRegionSelectorWidget::setSelectedRegion(const QRect &rect)
 
 void KPixmapRegionSelectorWidget::updatePixmap()
 {
+   Q_ASSERT(!m_originalPixmap.isNull()); if(m_originalPixmap.isNull()) return;
    if (m_selectedRegion.width()>m_originalPixmap.width()) m_selectedRegion.setWidth( m_originalPixmap.width() );
    if (m_selectedRegion.height()>m_originalPixmap.height()) m_selectedRegion.setHeight( m_originalPixmap.height() );
 

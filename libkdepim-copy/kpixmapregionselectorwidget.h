@@ -54,6 +54,7 @@ public:
 
    /**
     * Sets the pixmap which will be shown for the user to select a region from.
+    * @param pixmap The pixmap.  Must be non-null.
     */
    void setPixmap( const QPixmap &pixmap );
 
