@@ -412,10 +412,12 @@ void AddresseeView::data( KIO::Job*, const QByteArray &d )
 
 void AddresseeView::result( KIO::Job *job )
 {
-  if ( !job->error() ) {
-    mImageJob = 0;
-    updateView();
-  }
+  mImageJob = 0;
+
+  if ( job->error() )
+    mImageData.truncate( 0 );
+
+  updateView();
 }
 
 void AddresseeView::load()
