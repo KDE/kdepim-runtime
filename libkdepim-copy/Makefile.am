@@ -25,7 +25,7 @@ libkdepim_la_SOURCES = \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
   htmldiffalgodisplay.cpp broadcaststatus.cpp kresourceprefs.cpp \
   kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp \
-  kabcresourcecached.cpp \
+  kabcresourcecached.cpp kxface.cpp \
   kaccount.cpp kaddrbook.cpp kfoldertree.cpp kregexp3.cpp \
   kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
   linklocator.cpp qutf7codec.cpp \
