@@ -58,9 +58,10 @@ ProgressItem::~ProgressItem()
 void ProgressItem::setComplete()
 {
 //   kdDebug(5300) << "ProgressItem::setComplete - " << label() << endl;
-   if ( !mCanceled )
-     setProgress( 100 );
+
    if ( mChildren.isEmpty() ) {
+     if ( !mCanceled )
+       setProgress( 100 );
      emit progressItemCompleted( this );
      if ( parent() )
        parent()->removeChild( this );
