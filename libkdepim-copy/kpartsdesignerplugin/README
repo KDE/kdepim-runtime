@@ -1,0 +1,2 @@
+When moving this to kdelibs: the KPartsGenericPart class should move to libkparts so
+that it's possible to add an accessor for m_part there.
