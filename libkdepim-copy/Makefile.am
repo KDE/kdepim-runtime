@@ -1,6 +1,6 @@
 SUBDIRS = cfgc interfaces tests
 
-INCLUDES = -I$(top_srcdir)/libkdepim -I$(top_srcdir)/certmanager/lib $(all_includes)
+INCLUDES = -I$(top_srcdir)/libkdepim -I$(top_srcdir)/certmanager/lib -I$(top_srcdir)/certmanager/lib/kleo $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
