@@ -31,6 +31,8 @@
 #include <qstylesheet.h>
 #include <qfile.h>
 
+#include <limits.h>
+
 QMap<QString, QString> *LinkLocator::s_smileyEmoticonNameMap = 0;
 QMap<QString, QString> *LinkLocator::s_smileyEmoticonHTMLCache = 0;
 
@@ -161,54 +163,57 @@ QString LinkLocator::getEmailAddress()
 {
   QString address;
 
-  if(mText[mPos] == '@')
-  {
+  if ( mText[mPos] == '@' ) {
     // the following characters are allowed in a dot-atom (RFC 2822):
     // a-z A-Z 0-9 . ! # $ % & ' * + - / = ? ^ _ ` { | } ~
     const QString allowedSpecialChars = QString(".!#$%&'*+-/=?^_`{|}~");
 
     // determine the local part of the email address
     int start = mPos - 1;
-    while (start >= 0 && mText[start].unicode() < 128 &&
-      (mText[start].isLetterOrNumber() ||
-        mText[start] == '@' || // allow @ to find invalid email addresses
-        allowedSpecialChars.find(mText[start]) != -1))
-    {
+    while ( start >= 0 && mText[start].unicode() < 128 &&
+            ( mText[start].isLetterOrNumber() ||
+              mText[start] == '@' || // allow @ to find invalid email addresses
+              allowedSpecialChars.find( mText[start] ) != -1 ) ) {
+      if ( mText[start] == '@' )
+        return QString(); // local part contains '@' -> no email address
       --start;
     }
     ++start;
     // we assume that an email address starts with a letter or a digit
-    while (allowedSpecialChars.find(mText[start]) != -1)
+    while ( ( start < mPos ) && !mText[start].isLetterOrNumber() )
       ++start;
+    if ( start == mPos )
+      return QString(); // local part is empty -> no email address
 
     // determine the domain part of the email address
+    int dotPos = INT_MAX;
     int end = mPos + 1;
-    while (end < (int)mText.length() &&
-      (mText[end].isLetterOrNumber() ||
-        mText[end] == '@' || // allow @ to find invalid email addresses
-        allowedSpecialChars.find(mText[end]) != -1))
-    {
+    while ( end < (int)mText.length() &&
+            ( mText[end].isLetterOrNumber() ||
+              mText[end] == '@' || // allow @ to find invalid email addresses
+              mText[end] == '.' ||
+              mText[end] == '-' ) ) {
+      if ( mText[end] == '@' )
+        return QString(); // domain part contains '@' -> no email address
+      if ( mText[end] == '.' )
+        dotPos = QMIN( dotPos, end ); // remember index of first dot in domain
       ++end;
     }
     // we assume that an email address ends with a letter or a digit
-    while (allowedSpecialChars.find(mText[end - 1]) != -1)
+    while ( ( end > mPos ) && !mText[end - 1].isLetterOrNumber() )
       --end;
+    if ( end == mPos )
+      return QString(); // domain part is empty -> no email address
+    if ( dotPos >= end )
+      return QString(); // domain part doesn't contain a dot
 
-    address = mText.mid(start, end - start);
-    if(isEmptyAddress(address) || end - start > maxAddressLen() || address.contains('@') != 1)
-      address = "";
+    if ( end - start > maxAddressLen() )
+      return QString(); // too long -> most likely no email address
+    address = mText.mid( start, end - start );
 
-    if(!address.isEmpty())
-      mPos = end - 1;
+    mPos = end - 1;
   }
   return address;
-}
-
-bool LinkLocator::isEmptyAddress(const QString& address)
-{
-  return address.isEmpty() ||
-         address[0] == '@' ||
-         address[address.length() - 1] == '@';
 }
 
 QString LinkLocator::convertToHtml(const QString& plainText, int flags,

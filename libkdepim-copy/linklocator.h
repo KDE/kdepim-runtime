@@ -151,7 +151,6 @@ protected:
 private:
   bool atUrl() const;
   bool isEmptyUrl(const QString& url);
-  bool isEmptyAddress(const QString& address);
 
   /**
    * Replaces smiley text with an <img> tag containing the relevant image.
