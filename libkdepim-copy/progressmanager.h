@@ -121,10 +121,10 @@ class ProgressItem : public QObject
 
     // Often needed values for calculating progress.
     void setTotalItems( unsigned int v ) { mTotal = v; }
-    unsigned int totalItems() const;
+    unsigned int totalItems() const { return mTotal; }
     void setCompletedItems( unsigned int v ) { mCompleted = v; }
     void incCompletedItems( unsigned int v = 1 ) { mCompleted += v; }
-    unsigned int completedItems() const;
+    unsigned int completedItems() const { return mCompleted; }
 
     /**
      * Recalculate progress according to total/completed items and update.
