@@ -21,6 +21,8 @@
 #ifndef KDEPIMMACROS_H
 #define KDEPIMMACROS_H
 
+#include <kdeversion.h>
+
 /**
  * The KDE_NO_EXPORT macro marks the symbol of the given variable 
  * to be hidden. A hidden symbol is stripped during the linking step, 
@@ -34,10 +36,12 @@
  * int KDE_EXPORT bar;
  * \end
  */
+#undef KDE_NO_EXPORT
+#undef KDE_EXPORT
+
 #if KDE_IS_VERSION(3,3,2)
 #include <kdemacros.h>
 #else
-
 #if @HAVE_GCC_VISIBILITY@
 #define KDE_NO_EXPORT __attribute__ ((visibility("hidden")))
 #define KDE_EXPORT __attribute__ ((visibility("default")))
