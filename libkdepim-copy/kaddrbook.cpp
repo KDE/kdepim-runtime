@@ -155,6 +155,8 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
       addressBook->releaseSaveTicket( ticket );
   }
 
+  addressBook->emitAddressBookChanged();
+
   return saved;
 }
 
