@@ -64,6 +64,8 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
 
   connect(mDateButton,SIGNAL(clicked()),SLOT(toggleDatePicker()));
 
+  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SLOT(setDate(QDate)));
+  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SIGNAL(dateChanged(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),SLOT(setDate(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),SIGNAL(dateChanged(QDate)));
   connect(mDatePicker,SIGNAL(dateSelected(QDate)),mDateFrame,SLOT(hide()));
