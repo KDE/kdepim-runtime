@@ -138,6 +138,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
       image = "file:" + tmpFile.name();
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) ? pic.url() : "http://" + pic.url());
+    } else {
+      image = "file:" + KGlobal::iconLoader()->iconPath( "personal", KIcon::Desktop );
     }
   }
 
@@ -368,7 +370,7 @@ void AddresseeView::updateView()
       }
     } else {
       QMimeSourceFactory::defaultFactory()->setPixmap( "contact_image",
-        KGlobal::iconLoader()->loadIcon( "identity", KIcon::Desktop, 128 ) );
+        KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
     }
   }
 
