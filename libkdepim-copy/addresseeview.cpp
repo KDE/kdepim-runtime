@@ -336,12 +336,6 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   QString role( addr.role() );
   QString organization( addr.organization() );
 
-  // when only an organization is set (in which case name is empty!) we use it as name
-  if ( name.isEmpty() || name == addr.organization() ) {
-    name = addr.organization();
-    organization = QString::null;
-  }
- 
   if ( proxy && showIMAddresses )
   {
     if ( proxy->isPresent( addr.uid() ) )
