@@ -46,6 +46,7 @@ namespace KPIM {
 struct AddresseeViewItem::AddresseeViewItemPrivate {
   KABC::Addressee               address;
   AddresseeViewItem::Category   category;
+  KABC::Addressee::List         addresses;
 };
 
 struct AddressesDialog::AddressesDialogPrivate {
@@ -83,6 +84,15 @@ AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Catego
   d->category = cat;
 }
 
+AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name,
+                                       const KABC::Addressee::List &lst )
+  : KListViewItem( parent, name, i18n("<group>") )
+{
+  d = new AddresseeViewItemPrivate;
+  d->category = FilledGroup;
+  d->addresses = lst;
+}
+
 AddresseeViewItem::~AddresseeViewItem()
 {
   delete d;
@@ -93,6 +103,12 @@ KABC::Addressee
 AddresseeViewItem::addressee() const
 {
   return d->address;
+}
+
+KABC::Addressee::List
+AddresseeViewItem::addresses() const
+{
+  return d->addresses;
 }
 
 AddresseeViewItem::Category
@@ -350,6 +366,24 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
   }
 }
 
+void
+AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent, const KABC::Addressee::List &lst,
+                                          const QPtrList<AddresseeViewItem>& groups )
+{
+  Q_ASSERT( parent );
+
+  QPtrListIterator<AddresseeViewItem> itr( groups );
+  while ( itr.current() ) {
+    new AddresseeViewItem( parent, itr.current()->name(),
+                           allAddressee( itr.current() ) );
+    ++itr;
+  }
+
+  for( KABC::Addressee::List::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
+    addAddresseeToSelected( *it, parent );
+  }
+}
+
 QStringList
 AddressesDialog::entryToString( const KABC::Addressee::List& l ) const
 {
@@ -364,13 +398,12 @@ AddressesDialog::entryToString( const KABC::Addressee::List& l ) const
 void
 AddressesDialog::addSelectedTo()
 {
-  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView );
+  QPtrList<AddresseeViewItem> groups;
+  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView, groups );
   if ( !d->toItem )
     d->toItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("To"), AddresseeViewItem::To );
 
-  for( KABC::Addressee::List::Iterator it = lst.begin(); it != lst.end(); ++it ) {
-    addAddresseeToSelected( *it, d->toItem );
-  }
+  addAddresseesToSelected( d->toItem, lst, groups );
   if ( d->toItem->childCount() > 0 )
     d->toItem->setVisible( true );
 }
@@ -378,13 +411,13 @@ AddressesDialog::addSelectedTo()
 void
 AddressesDialog::addSelectedCC()
 {
-  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView );
+  QPtrList<AddresseeViewItem> groups;
+  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView, groups );
   if ( !d->ccItem )
     d->ccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("CC"), AddresseeViewItem::CC );
 
-  for( KABC::Addressee::List::Iterator it = lst.begin(); it != lst.end(); ++it ) {
-    addAddresseeToSelected( *it, d->ccItem );
-  }
+  addAddresseesToSelected( d->ccItem, lst, groups );
+
   if ( d->ccItem->childCount() > 0 )
     d->ccItem->setVisible( true );
 }
@@ -392,13 +425,13 @@ AddressesDialog::addSelectedCC()
 void
 AddressesDialog::addSelectedBCC()
 {
-  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView );
+  QPtrList<AddresseeViewItem> groups;
+  KABC::Addressee::List lst = selectedAddressee( d->ui->mAvailableView, groups );
   if ( !d->bccItem )
     d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
 
-  for( KABC::Addressee::List::Iterator it = lst.begin(); it != lst.end(); ++it ) {
-    addAddresseeToSelected( *it, d->bccItem );
-  }
+  addAddresseesToSelected( d->ccItem, lst, groups );
+
   if ( d->bccItem->childCount() > 0 )
     d->bccItem->setVisible( true );
 }
@@ -566,7 +599,6 @@ AddressesDialog::selectedAddressee( KListView* view ) const
   QListViewItemIterator it( view );
   while ( it.current() ) {
     AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
-    ++it;
     if ( item->isSelected() ) {
       if ( item->category() != AddresseeViewItem::Entry  ) {
         AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( item->firstChild() );
@@ -578,6 +610,28 @@ AddressesDialog::selectedAddressee( KListView* view ) const
         lst.append( item->addressee() );
       }
     }
+    ++it;
+  }
+  return lst;
+}
+KABC::Addressee::List
+AddressesDialog::selectedAddressee( KListView* view,
+                                    QPtrList<AddresseeViewItem>& selectedGroups ) const
+{
+  KABC::Addressee::List lst;
+
+  QListViewItemIterator it( view );
+  while ( it.current() ) {
+    AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
+    if ( item->isSelected() ) {
+      if ( item->category() != AddresseeViewItem::Entry  ) {
+        if ( item->category() == AddresseeViewItem::Group )
+          selectedGroups.append( item );
+      } else {
+        lst.append( item->addressee() );
+      }
+    }
+    ++it;
   }
   return lst;
 }
@@ -591,7 +645,10 @@ AddressesDialog::allAddressee( AddresseeViewItem* parent ) const
 
   AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( parent->firstChild() );
   while( myChild ) {
-    lst.append( myChild->addressee() );
+    if ( myChild->category() == AddresseeViewItem::FilledGroup )
+      lst += myChild->addresses();
+    else
+      lst.append( myChild->addressee() );
     myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
   }
 

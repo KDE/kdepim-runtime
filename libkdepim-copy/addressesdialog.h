@@ -23,11 +23,11 @@
 #ifndef ADDRESSESDIALOG_H
 #define ADDRESSESDIALOG_H
 
-
+#include <kabc/addressee.h>
 #include <kdialogbase.h>
 #include <klistview.h>
 #include <qstringlist.h>
-#include <kabc/addressee.h>
+#include <qptrlist.h>
 
 namespace KPIM {
 
@@ -35,20 +35,23 @@ namespace KPIM {
   {
   public:
     enum Category {
-      To    =0,
-      CC    =1,
-      BCC   =2,
-      Group =3,
-      Entry =4
+      To          =0,
+      CC          =1,
+      BCC         =2,
+      Group       =3,
+      Entry       =4,
+      FilledGroup =5
     };
     AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr );
     AddresseeViewItem( KListView *lv, const QString& name, Category cat=Group );
+    AddresseeViewItem( AddresseeViewItem *parent, const QString& name, const KABC::Addressee::List &lst );
     //AddresseeViewItem( AddresseeViewItem *parent, const QString& name,
     //                       const QString& email = QString::null );
     ~AddresseeViewItem();
 
-    KABC::Addressee  addressee() const;
-    Category         category() const;
+    KABC::Addressee       addressee() const;
+    KABC::Addressee::List addresses() const;
+    Category              category() const;
 
     QString name()  const;
     QString email() const;
@@ -145,8 +148,13 @@ namespace KPIM {
                                   AddresseeViewItem* defaultParent=0 );
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
+    void addAddresseesToSelected( AddresseeViewItem *parent,
+                                  const KABC::Addressee::List &lst,
+                                  const QPtrList<AddresseeViewItem>& groups );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List selectedAddressee( KListView* view ) const;
+    KABC::Addressee::List selectedAddressee( KListView* view,
+                                             QPtrList<AddresseeViewItem>& selectedGroups ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
   private:
     struct AddressesDialogPrivate;
