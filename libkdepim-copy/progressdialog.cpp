@@ -266,6 +266,8 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
               this, SLOT( slotTransactionLabel( ProgressItem*, const QString& ) ) );
     connect ( pm, SIGNAL( progressItemUsesCrypto( ProgressItem*, bool ) ),
               this, SLOT( slotTransactionUsesCrypto( ProgressItem*, bool ) ) );
+    connect ( pm, SIGNAL( showProgressDialog() ),
+              this, SLOT( slotShow() ) );
 }
 
 void ProgressDialog::closeEvent( QCloseEvent* e )
@@ -353,6 +355,11 @@ void ProgressDialog::slotTransactionUsesCrypto( ProgressItem *item,
      TransactionItem *ti = mTransactionsToListviewItems[ item ];
      ti->setCrypto( value );
    }
+}
+
+void ProgressDialog::slotShow()
+{
+   setVisible( true );
 }
 
 void ProgressDialog::slotHide()

@@ -185,6 +185,11 @@ ProgressItem* ProgressManager::createProgressItemImpl(
    return createProgressItemImpl( p, id, label, status, canBeCanceled, usesCrypto );
 }
 
+void ProgressManager::emitShowProgressDialogImpl()
+{
+   emit showProgressDialog();
+}
+
 
 // slots
 

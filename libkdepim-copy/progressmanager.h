@@ -197,6 +197,7 @@ signals:
      */
     void progressItemUsesCrypto( ProgressItem*, bool );
 
+
   protected:
     /* Only to be used by our good friend the ProgressManager */
     ProgressItem( ProgressItem* parent,
@@ -237,6 +238,11 @@ signals:
  * calling setComplete() on the item, even if it is canceled. Use the
  * standardCancelHandler() slot if that is all you want to do on cancel.
  *
+ * Note that if you request an item with a certain id and there is already
+ * one with that id, there will not be a new one created but the existing
+ * one will be returned. This is convenient for accessing items that are
+ * needed regularly without the to store a pointer to them or to add child
+ * items to parents by id.
  */
 
 
@@ -264,6 +270,16 @@ class ProgressManager : public QObject
      * @return
      */
     static QString getUniqueID() { return QString::number( ++uID ); };
+
+     /**
+      * Creates a ProgressItem with a unique id and the given label.
+      * This is the simplest way to aquire a progress item. It will not
+      * have a parent and will be set to be cancellable and not using crypto.
+      */
+     static ProgressItem * createProgressItem( const QString &label ) {
+       return instance()->createProgressItemImpl( 0, getUniqueID(), label,
+                                                  QString::null, true, false );
+     }
 
     /**
      * Creates a new progressItem with the given parent, id, label and initial
@@ -315,6 +331,7 @@ class ProgressManager : public QObject
                                                   canBeCanceled, usesCrypto );
      }
 
+
     /**
      * @return true when there is no more progress item
      */
@@ -326,6 +343,13 @@ class ProgressManager : public QObject
      */
     ProgressItem* singleItem() const;
 
+    /**
+     * Ask all listeners to show the progress dialog, because there is
+     * something that wants to be shown.
+     */
+    static void emitShowProgressDialog() {
+       instance()->emitShowProgressDialogImpl();
+    }
 
   signals:
     /** @see ProgressItem::progressItemAdded() */
@@ -343,6 +367,11 @@ class ProgressManager : public QObject
     /** @see ProgressItem::progressItemUsesCrypto() */
     void progressItemUsesCrypto( ProgressItem*, bool );
 
+    /**
+     * Emitted when an operation requests the listeners to be shown.
+     * Use emitShowProgressDialog() to trigger it.
+     */
+    void showProgressDialog();
   public slots:
 
     /**
@@ -374,6 +403,7 @@ class ProgressManager : public QObject
                 const QString& parent,  const QString& id,
                 const QString& label, const QString& status,
                 bool cancellable, bool usesCrypto );
+    void emitShowProgressDialogImpl();
 
     QDict< ProgressItem > mTransactions;
     static ProgressManager *mInstance;

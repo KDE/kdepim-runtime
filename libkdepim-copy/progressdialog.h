@@ -118,7 +118,6 @@ class ProgressDialog : public OverlayWidget
 public:
   ProgressDialog( QWidget* alignWidget, QWidget* parent, const char* name = 0 );
   ~ProgressDialog();
-
   void setVisible( bool b );
 
 public slots:
@@ -134,6 +133,7 @@ protected slots:
   void slotTransactionUsesCrypto( ProgressItem *item, bool );
 
   void slotClose();
+  void slotShow();
   void slotHide();
 
 signals:
