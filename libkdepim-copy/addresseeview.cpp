@@ -142,7 +142,7 @@ void AddresseeView::updateView()
 
     dynamicPart += rowFmtStr
       .arg( KABC::Addressee::birthdayLabel() )
-      .arg( date.isValid() ? KGlobal::locale()->formatDate( date, true ) : i18n( "none" ) );
+      .arg( date.isValid() ? KGlobal::locale()->formatDate( date, true ) : i18n( "unknown" ) );
   }
 
   if ( mActionShowPhones->isChecked() ) {
