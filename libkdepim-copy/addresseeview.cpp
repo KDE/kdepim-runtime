@@ -511,7 +511,10 @@ void AddresseeView::urlClicked( const QString &url )
 
 void AddresseeView::emailClicked( const QString &email )
 {
-  kapp->invokeMailer( email, QString::null );
+  if ( email.startsWith( "mailto:" ) )
+    kapp->invokeMailer( email.mid( 7 ), QString::null );
+  else
+    kapp->invokeMailer( email, QString::null );
 }
 
 void AddresseeView::phoneNumberClicked( const QString &number )
