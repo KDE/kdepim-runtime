@@ -28,6 +28,7 @@
 #include <kdialogbase.h>
 #include <kcmodule.h>
 #include <kconfigskeleton.h>
+#include <kfile.h>
 
 
 class KColorButton;
@@ -36,6 +37,8 @@ class QLabel;
 class QSpinBox;
 class QButtonGroup;
 class KTimeEdit;
+class KDateEdit;
+class KURLRequester;
 
 /**
   @short Base class for GUI control elements used by @ref KPrefsDialog.
@@ -182,6 +185,43 @@ class KPrefsWidTime : public KPrefsWid
 
     QLabel *mLabel;
     KTimeEdit *mTimeEdit;
+};
+
+/**
+  @short Widgets for time settings in @ref KPrefsDialog.
+
+  This class provides a control element for configuring date values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
+*/
+class KPrefsWidDate : public KPrefsWid
+{
+  public:
+    /**
+      Create a time value control element consisting of a label and a date box.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
+
+    /**
+      Return QLabel used by this widget.
+    */
+    QLabel *label();
+    /**
+      Return QSpinBox used by this widget.
+    */
+    KDateEdit *dateEdit();
+
+    void readConfig();
+    void writeConfig();
+
+  private:
+    KConfigSkeleton::ItemDateTime *mItem;
+
+    QLabel *mLabel;
+    KDateEdit *mDateEdit;
 };
 
 /**
@@ -377,6 +417,53 @@ class KPrefsWidString : public KPrefsWid
 
 
 /**
+  @short Widgets for string settings in @ref KPrefsDialog.
+
+  This class provides a control element for configuring string values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
+*/
+class KPrefsWidPath : public KPrefsWid
+{
+  public:
+    /**
+      Create a string value control element consisting of a test label and a
+      line edit.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+      @param echomode  Describes how a line edit should display its contents.
+    */
+    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent, 
+                   const QString &filter = QString::null, uint mode = KFile::File );
+    /**
+      Destructor.
+    */
+    virtual ~KPrefsWidPath();
+
+    /**
+      Return QLabel used by this widget.
+    */
+    QLabel *label();
+    /**
+      Return QLineEdit used by this widget.
+    */
+    KURLRequester *urlRequester();
+
+    void readConfig();
+    void writeConfig();
+
+    QValueList<QWidget *> widgets() const;
+
+  private:
+    KConfigSkeleton::ItemPath *mItem;
+
+    QLabel *mLabel;
+    KURLRequester *mURLRequester;
+};
+
+
+/**
   @short Class for managing KPrefsWid objects.
 
   This class manages standard configuration widgets provided bz the KPrefsWid
@@ -424,6 +511,15 @@ class KPrefsWidManager
                              QWidget *parent );
 
     /**
+      Register a @ref KPrefsWidDate object.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidDate *addWidDate( KConfigSkeleton::ItemDateTime *item,
+                               QWidget *parent );
+
+    /**
       Register a @ref KPrefsWidTime object.
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
@@ -459,6 +555,16 @@ class KPrefsWidManager
     */
     KPrefsWidString *addWidString( KConfigSkeleton::ItemString *item,
                                    QWidget *parent );
+
+    /**
+      Register a path @ref KPrefsWidPath object.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item, QWidget *parent,
+                                const QString &filter = QString::null, 
+                                uint mode = KFile::File );
 
     /**
       Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.

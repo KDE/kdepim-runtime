@@ -38,7 +38,9 @@
 #include <kfontdialog.h>
 #include <kmessagebox.h>
 #include <kconfigskeleton.h>
+#include <kurlrequester.h> 
 #include "ktimeedit.h"
+#include "kdateedit.h"
 
 #include "kprefsdialog.h"
 #include "kprefsdialog.moc"
@@ -294,7 +296,11 @@ void KPrefsWidTime::readConfig()
 
 void KPrefsWidTime::writeConfig()
 {
-  mItem->setValue( QDateTime( QDate(0,0,0), mTimeEdit->getTime() ) );
+  // Don't overwrite the date value of the QDateTime, so we can use a 
+  // KPrefsWidTime and a KPrefsWidDate on the same config entry!
+  QDateTime dt( mItem->value() );
+  dt.setTime( mTimeEdit->getTime() );
+  mItem->setValue( dt );
 }
 
 QLabel *KPrefsWidTime::label()
@@ -305,6 +311,42 @@ QLabel *KPrefsWidTime::label()
 KTimeEdit *KPrefsWidTime::timeEdit()
 {
   return mTimeEdit;
+}
+
+
+KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
+                              QWidget *parent )
+  : mItem( item )
+{
+  mLabel = new QLabel( mItem->label()+':', parent );
+  mDateEdit = new KDateEdit( parent );
+  connect( mDateEdit, SIGNAL( dateChanged( QDate ) ), SIGNAL( changed() ) );
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isNull() ) {
+    QWhatsThis::add( mDateEdit, whatsThis );
+  }
+}
+
+void KPrefsWidDate::readConfig()
+{
+  mDateEdit->setDate( mItem->value().date() );
+}
+
+void KPrefsWidDate::writeConfig()
+{
+  QDateTime dt( mItem->value() );
+  dt.setDate( mDateEdit->date() );
+  mItem->setValue( dt );
+}
+
+QLabel *KPrefsWidDate::label()
+{
+  return mLabel;
+}
+
+KDateEdit *KPrefsWidDate::dateEdit()
+{
+  return mDateEdit;
 }
 
 
@@ -400,6 +442,55 @@ QValueList<QWidget *> KPrefsWidString::widgets() const
 }
 
 
+KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent, 
+                              const QString &filter, uint mode )
+  : mItem( item )
+{
+  mLabel = new QLabel( mItem->label()+':', parent );
+  mURLRequester = new KURLRequester( parent );
+  mURLRequester->setMode( mode );
+  mURLRequester->setFilter( filter );
+  connect( mURLRequester, SIGNAL( textChanged( const QString & ) ),
+           SIGNAL( changed() ) );
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isNull() ) {
+    QWhatsThis::add( mURLRequester, whatsThis );
+  }
+}
+
+KPrefsWidPath::~KPrefsWidPath()
+{
+}
+
+void KPrefsWidPath::readConfig()
+{
+  mURLRequester->setURL( mItem->value() );
+}
+
+void KPrefsWidPath::writeConfig()
+{
+  mItem->setValue( mURLRequester->url() );
+}
+
+QLabel *KPrefsWidPath::label()
+{
+  return mLabel;
+}
+
+KURLRequester *KPrefsWidPath::urlRequester()
+{
+  return mURLRequester;
+}
+
+QValueList<QWidget *> KPrefsWidPath::widgets() const
+{
+  QValueList<QWidget *> widgets;
+  widgets.append( mLabel );
+  widgets.append( mURLRequester );
+  return widgets;
+}
+
+
 KPrefsWidManager::KPrefsWidManager( KConfigSkeleton *prefs )
   : mPrefs( prefs )
 {
@@ -426,6 +517,14 @@ KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemDateTime *item
                                              QWidget *parent )
 {
   KPrefsWidTime *w = new KPrefsWidTime( item, parent );
+  addWid( w );
+  return w;
+}
+
+KPrefsWidDate *KPrefsWidManager::addWidDate( KConfigSkeleton::ItemDateTime *item,
+                                             QWidget *parent )
+{
+  KPrefsWidDate *w = new KPrefsWidDate( item, parent );
   addWid( w );
   return w;
 }
@@ -457,6 +556,14 @@ KPrefsWidString *KPrefsWidManager::addWidString( KConfigSkeleton::ItemString *it
 {
   KPrefsWidString *w = new KPrefsWidString( item, parent,
                                             QLineEdit::Normal );
+  addWid( w );
+  return w;
+}
+
+KPrefsWidPath *KPrefsWidManager::addWidPath( KConfigSkeleton::ItemPath *item,
+                                             QWidget *parent, const QString &filter, uint mode )
+{
+  KPrefsWidPath *w = new KPrefsWidPath( item, parent, filter, mode );
   addWid( w );
   return w;
 }
