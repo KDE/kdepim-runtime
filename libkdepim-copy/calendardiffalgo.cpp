@@ -170,7 +170,7 @@ void CalendarDiffAlgo::diffEvent( KCal::Event *left, KCal::Event *right )
     conflictField( i18n( "Has End Date" ), toString( left->hasEndDate() ), toString( right->hasEndDate() ) );
 
   if ( left->dtEnd() != right->dtEnd() )
-    conflictField( i18n( "End Date" ), left->dtEnd().toString(), right->dtEnd().toString() );
+    conflictField( i18n( "End Date" ), left->dtEndStr(), right->dtEndStr() );
 
   // TODO: check transparency
 }
