@@ -94,9 +94,6 @@
                                 <property name="text">
                                     <string>De&amp;lete</string>
                                 </property>
-                                <property name="accel">
-                                    <string>Alt+L</string>
-                                </property>
                             </widget>
                             <widget class="KListView" row="1" column="0" rowspan="1" colspan="3">
                                 <column>
@@ -150,9 +147,6 @@
                                 <property name="text">
                                     <string>&amp;New...</string>
                                 </property>
-                                <property name="accel">
-                                    <string>Alt+N</string>
-                                </property>
                             </widget>
                             <widget class="QLayoutWidget" row="2" column="0" rowspan="1" colspan="3">
                                 <property name="name">
@@ -200,9 +194,6 @@
                                 </property>
                                 <property name="text">
                                     <string>&amp;Edit...</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+E</string>
                                 </property>
                             </widget>
                         </grid>
@@ -261,9 +252,6 @@
                         <property name="text">
                             <string>&amp;To &gt;&gt;</string>
                         </property>
-                        <property name="accel">
-                            <string>Alt+T</string>
-                        </property>
                     </widget>
                     <widget class="KPushButton">
                         <property name="name">
@@ -275,9 +263,6 @@
                         <property name="text">
                             <string>CC &amp;&gt;&gt;</string>
                         </property>
-                        <property name="accel">
-                            <string>Alt+&gt;</string>
-                        </property>
                     </widget>
                     <widget class="KPushButton">
                         <property name="name">
@@ -288,9 +273,6 @@
                         </property>
                         <property name="text">
                             <string>&amp;BCC &gt;&gt;</string>
-                        </property>
-                        <property name="accel">
-                            <string>Alt+B</string>
                         </property>
                     </widget>
                     <spacer>
@@ -319,9 +301,6 @@
                         </property>
                         <property name="text">
                             <string>&lt;&lt; &amp;Remove</string>
-                        </property>
-                        <property name="accel">
-                            <string>Alt+R</string>
                         </property>
                     </widget>
                     <spacer>
@@ -469,9 +448,6 @@
                                 </property>
                                 <property name="text">
                                     <string>Save as &amp;Distribution List</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+D</string>
                                 </property>
                             </widget>
                         </vbox>
