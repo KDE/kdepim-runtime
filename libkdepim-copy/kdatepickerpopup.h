@@ -29,10 +29,17 @@
 class KDatePicker;
 
 /**
-   A popup-menu which contains a KDatePicker.
+   @short This menu helps the user to select a date quickly.
 
-   Actually, this is just a popup-menu with only one widget. The user can choose
-   a date like a normal KDatePicker.
+   This menu helps the user to select a date quicly. It offers various ways of selecting, e.g. with a KDatePicker or with words like "Tomorrow".
+
+   The available items are:
+
+   @li NoDate: A menu-item with "No Date". If choosen, the datepicker will emit a null QDate.
+   @li DatePicker: Show a KDatePicker-widget.
+   @li Words: Show items like "Today", "Tomorrow" or "Next Week".
+
+   When supplying multiple items, separate each item with a bitwise OR.
 
    @author Bram Schoenmakers <bram_s@softhome.net>
 */
@@ -40,23 +47,18 @@ class KDatePickerPopup: public QPopupMenu
 {
     Q_OBJECT
   public:
+    enum { NoDate, DatePicker, Words };
+
     /**
        A constructor for the KDatePickerPopup.
 
+       @param items List of all desirable items, separated with a bitwise OR.
+       @param date Initial date of datepicker-widget.
        @param parent The object's parent.
        @param name The object's name.
     */
-    KDatePickerPopup( QWidget *parent = 0, const char *name = 0 );
-
-    /**
-       A constructor for the KDatePickerPopup
-
-       @param date The initial date.
-       @param parent The object's parent.
-       @param name The object's name.
-    */
-    KDatePickerPopup( const QDate &date, QWidget *parent = 0,
-                      const char *name = 0 );
+    KDatePickerPopup( int items = 1, const QDate &date = QDate::currentDate(),
+                      QWidget *parent = 0, const char *name = 0 );
 
     virtual ~KDatePickerPopup();
 
@@ -66,21 +68,37 @@ class KDatePickerPopup: public QPopupMenu
     */
     KDatePicker *datePicker() const;
 
+    /** Set items which should be shown and rebuilds the menu afterwards.
+    @param items List of all desirable items, separated with a bitwise OR.
+    */
+    void setItems( int items = 1 );
+    /** @return To be written */
+    int items() const { return mItems; }
+
   signals:
 
     /**
-       This signal gets emitted when the user chooses a date from the
-       KDatePicker widget.
+      This signal emits the new date (selected with datepicker or other
+      menu-items).
     */
     void dateChanged ( QDate );
 
   protected slots:
     void slotDateChanged ( QDate );
 
+    void slotToday();
+    void slotTomorrow();
+    void slotFriday();
+    void slotSunday();
+    void slotNextWeek();
+    void slotNextMonth();
+    void slotNoDate();
+
   private:
-    void init();
+    void buildMenu();
 
     KDatePicker *mDatePicker;
+    int mItems;
 };
 
 #endif
