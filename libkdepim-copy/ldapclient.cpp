@@ -311,7 +311,7 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
   server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ) ) );
 }
 
-void LdapSearch::writeConfig( LdapServer &server, KConfig *config, int j, bool active )
+void LdapSearch::writeConfig( const LdapServer &server, KConfig *config, int j, bool active )
 {
   QString prefix;
   if ( active ) prefix = "Selected";

@@ -47,16 +47,16 @@ class LdapServer
 
     QString host() const { return mHost; }
     int port() const { return mPort; }
-    QString baseDN() const { return mBaseDN; }
-    QString user() const { return mUser; }
-    QString bindDN() const { return mBindDN; }
-    QString pwdBindDN() const { return mPwdBindDN; }
+    const QString &baseDN() const { return mBaseDN; }
+    const QString &user() const { return mUser; }
+    const QString &bindDN() const { return mBindDN; }
+    const QString &pwdBindDN() const { return mPwdBindDN; }
     int timeLimit() const { return mTimeLimit; }
     int sizeLimit() const { return mSizeLimit; }
     int version() const { return mVersion; }
     int security() const { return mSecurity; }
     int auth() const { return mAuth; }
-    QString mech() const { return mMech; }
+    const QString &mech() const { return mMech; }
 
     void setHost( const QString &host ) { mHost = host; }
     void setPort( int port ) { mPort = port; }
@@ -142,8 +142,8 @@ class LdapClient : public QObject
     int completionWeight() const;
     void setCompletionWeight( int );
 
-    LdapServer& server() { return mServer; }
-    void setServer( const LdapServer server ) { mServer = server; }
+    const LdapServer& server() { return mServer; }
+    void setServer( const LdapServer &server ) { mServer = server; }
     /*! Return the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
@@ -239,7 +239,7 @@ class LdapSearch : public QObject
 
     static KConfig *config();
     static void readConfig( LdapServer &server, KConfig *config, int num, bool active );
-    static void writeConfig( LdapServer &server, KConfig *config, int j, bool active );
+    static void writeConfig( const LdapServer &server, KConfig *config, int j, bool active );
 
     void startSearch( const QString& txt );
     void cancelSearch();
