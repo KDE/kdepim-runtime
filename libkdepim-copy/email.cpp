@@ -136,8 +136,9 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
   mail = QString::null;
 
   const int len=aStr.length();
-
-  bool bInComment;
+  const char cQuotes = '"';
+  
+  bool bInComment, bInQuotesOutsideOfEmail;
   int i=0, iAd=0, iMailStart=0, iMailEnd=0;
   QChar c;
 
@@ -179,8 +180,10 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
   }else{
 
     // Loop backwards until we find the start of the string
-    // or a ',' outside of a comment.
+    // or a ',' that is outside of a comment
+    //          and outside of quoted text before the leading '<'.
     bInComment = false;
+    bInQuotesOutsideOfEmail = false;
     for( i = iAd-1; 0 <= i; --i ) {
       c = aStr[i];
       if( bInComment ){
@@ -191,12 +194,18 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
         }else{
           name.prepend( c ); // all comment stuff is part of the name
         }
+      }else if( bInQuotesOutsideOfEmail ){
+        if( cQuotes == c )
+          bInQuotesOutsideOfEmail = false;
+        name.prepend( c );
       }else{
         // found the start of this addressee ?
         if( ',' == c )
           break;
         // stuff is before the leading '<' ?
         if( iMailStart ){
+          if( cQuotes == c )
+            bInQuotesOutsideOfEmail = true; // end of quoted text found
           name.prepend( c );
         }else{
           switch( c ){
@@ -225,8 +234,10 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
     mail.append('@');
 
     // Loop forward until we find the end of the string
-    // or a ',' outside of a comment.
+    // or a ',' that is outside of a comment 
+    //          and outside of quoted text behind the trailing '>'.
     bInComment = false;
+    bInQuotesOutsideOfEmail = false;
     for( i = iAd+1; len > i; ++i ) {
       c = aStr[i];
       if( bInComment ){
@@ -237,12 +248,18 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
         }else{
           name.append( c ); // all comment stuff is part of the name
         }
+      }else if( bInQuotesOutsideOfEmail ){
+        if( cQuotes == c )
+          bInQuotesOutsideOfEmail = false;
+        name.append( c );
       }else{
         // found the end of this addressee ?
         if( ',' == c )
           break;
-        // stuff is behind the trailing '<' ?
+        // stuff is behind the trailing '>' ?
         if( iMailEnd ){
+          if( cQuotes == c )
+            bInQuotesOutsideOfEmail = true; // start of quoted text found
           name.append( c );
         }else{
           switch( c ){
@@ -265,6 +282,6 @@ bool KPIM::getNameAndMail(const QString& aStr, QString& name, QString& mail)
 
   name = name.simplifyWhiteSpace();
   mail = mail.simplifyWhiteSpace();
-
+  
   return ! (name.isEmpty() || mail.isEmpty());
 }
