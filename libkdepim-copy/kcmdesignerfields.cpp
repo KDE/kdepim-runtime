@@ -298,7 +298,7 @@ void KCMDesignerFields::initGUI()
 
   QString cwHowto = i18n("<qt><p>This section allows you to add your own GUI"
                          "  Elements ('<i>Widgets</i>') to store your own values"
-                         " into the address book. Proceed as described below:</p>"
+                         " into %1. Proceed as described below:</p>"
                          "<ol>"
                          "<li>Click on '<i>Edit with Qt Designer</i>'"
                          "<li>In the dialog, select '<i>Widget</i>', then click <i>OK</i>"
