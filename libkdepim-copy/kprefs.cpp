@@ -28,310 +28,279 @@
 
 #include "kprefs.h"
 
-class KPrefsItemString : public KGenericPrefsItem<QString>
+KPrefsItemString::KPrefsItemString( const QString &group, const QString &name,
+                                    QString &reference,
+                                    const QString &defaultValue,
+                                    Type type )
+  : KGenericPrefsItem<QString>( group, name, reference, defaultValue ),
+    mType( type )
 {
-  public:
+}
 
-    enum Type { Normal, Password, Path };
-
-    KPrefsItemString( const QString &group, const QString &name,
-                      QString &reference,
-                      const QString &defaultValue = QString::null,
-                      Type type = Normal )
-      : KGenericPrefsItem<QString>( group, name, reference, defaultValue ),
-        mType( type ) {}
-
-    void writeConfig( KConfig *config )
-    {
-      if ( mLoadedValue != mReference ) {
-        config->setGroup( mGroup );
-        if ( mType == Path )
-          config->writePathEntry( mName, mReference );
-        else if ( mType == Password )
-          config->writeEntry( mName, endecryptStr( mReference ) );
-        else
-          config->writeEntry( mName, mReference );
-      }
-    }
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-
-      if ( mType == Path )
-        mReference = config->readPathEntry( mName, mDefault );
-      else if ( mType == Password ) {
-        QString value = config->readEntry( mName, endecryptStr( mDefault ) );
-        mReference = endecryptStr( value );
-      } else
-        mReference = config->readEntry( mName, mDefault );
-
-      mLoadedValue = mReference;
-    }
-
-  protected:
-    QString endecryptStr( const QString &aStr )
-    {
-      QString result;
-      for ( uint i = 0; i < aStr.length(); i++ )
-        result += (aStr[i].unicode() < 0x20) ? aStr[i] :
-          QChar(0x1001F - aStr[i].unicode());
-      return result;
-    }
-
-  private:
-    Type mType;
-};
-
-
-class KPrefsItemProperty : public KGenericPrefsItem<QVariant>
+void KPrefsItemString::writeConfig( KConfig *config )
 {
-  public:
-    KPrefsItemProperty( const QString &group, const QString &name,
-                        QVariant &reference, QVariant defaultValue = 0 )
-      : KGenericPrefsItem<QVariant>( group, name, reference, defaultValue ) {}
+  if ( mLoadedValue != mReference ) {
+    config->setGroup( mGroup );
+    if ( mType == Path )
+      config->writePathEntry( mName, mReference );
+    else if ( mType == Password )
+      config->writeEntry( mName, endecryptStr( mReference ) );
+    else
+      config->writeEntry( mName, mReference );
+  }
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readPropertyEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemBool : public KGenericPrefsItem<bool>
+void KPrefsItemString::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemBool( const QString &group, const QString &name, bool &reference,
-                    bool defaultValue = true )
-      : KGenericPrefsItem<bool>( group, name, reference, defaultValue ) {}
+  config->setGroup( mGroup );
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readBoolEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  if ( mType == Path )
+    mReference = config->readPathEntry( mName, mDefault );
+  else if ( mType == Password ) {
+    QString value = config->readEntry( mName, endecryptStr( mDefault ) );
+    mReference = endecryptStr( value );
+  } else
+    mReference = config->readEntry( mName, mDefault );
 
+  mLoadedValue = mReference;
+}
 
-class KPrefsItemInt : public KGenericPrefsItem<int>
+QString KPrefsItemString::endecryptStr( const QString &aStr )
 {
-  public:
-    KPrefsItemInt( const QString &group, const QString &name, int &reference,
-                   int defaultValue = 0 )
-      : KGenericPrefsItem<int>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readNumEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  QString result;
+  for ( uint i = 0; i < aStr.length(); i++ )
+    result += (aStr[i].unicode() < 0x20) ? aStr[i] :
+      QChar(0x1001F - aStr[i].unicode());
+  return result;
+}
 
 
-class KPrefsItemUInt : public KGenericPrefsItem<unsigned int>
+KPrefsItemProperty::KPrefsItemProperty( const QString &group,
+                                        const QString &name,
+                                        QVariant &reference,
+                                        QVariant defaultValue )
+  : KGenericPrefsItem<QVariant>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemUInt( const QString &group, const QString &name,
-                    unsigned int &reference, unsigned int defaultValue = 0 )
-      : KGenericPrefsItem<unsigned int>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readUnsignedNumEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemLong : public KGenericPrefsItem<long>
+void KPrefsItemProperty::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemLong( const QString &group, const QString &name, long &reference,
-                    long defaultValue = 0 )
-      : KGenericPrefsItem<long>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readLongNumEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  config->setGroup( mGroup );
+  mReference = config->readPropertyEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
 
-class KPrefsItemULong : public KGenericPrefsItem<unsigned long>
+KPrefsItemBool::KPrefsItemBool( const QString &group, const QString &name,
+                                bool &reference, bool defaultValue )
+  : KGenericPrefsItem<bool>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemULong( const QString &group, const QString &name,
-                     unsigned long &reference, unsigned long defaultValue = 0 )
-      : KGenericPrefsItem<unsigned long>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readUnsignedLongNumEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemDouble : public KGenericPrefsItem<double>
+void KPrefsItemBool::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemDouble( const QString &group, const QString &name,
-                      double &reference, double defaultValue = 0 )
-      : KGenericPrefsItem<double>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readDoubleNumEntry( mName, mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  config->setGroup( mGroup );
+  mReference = config->readBoolEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
 
-class KPrefsItemColor : public KGenericPrefsItem<QColor>
+KPrefsItemInt::KPrefsItemInt( const QString &group, const QString &name,
+                              int &reference, int defaultValue )
+  : KGenericPrefsItem<int>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemColor( const QString &group, const QString &name,
-                     QColor &reference,
-                     const QColor &defaultValue = QColor( 128, 128, 128 ) )
-      : KGenericPrefsItem<QColor>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readColorEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemFont : public KGenericPrefsItem<QFont>
+void KPrefsItemInt::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemFont( const QString &group, const QString &name, QFont &reference,
-                    const QFont &defaultValue = KGlobalSettings::generalFont() )
-      : KGenericPrefsItem<QFont>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readFontEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  config->setGroup( mGroup );
+  mReference = config->readNumEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
 
-class KPrefsItemRect : public KGenericPrefsItem<QRect>
+KPrefsItemUInt::KPrefsItemUInt( const QString &group, const QString &name,
+                                unsigned int &reference,
+                                unsigned int defaultValue )
+  : KGenericPrefsItem<unsigned int>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemRect( const QString &group, const QString &name, QRect &reference,
-                    const QRect &defaultValue = QRect() )
-      : KGenericPrefsItem<QRect>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readRectEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemPoint : public KGenericPrefsItem<QPoint>
+void KPrefsItemUInt::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemPoint( const QString &group, const QString &name, QPoint &reference,
-                     const QPoint &defaultValue = QPoint() )
-      : KGenericPrefsItem<QPoint>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readPointEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  config->setGroup( mGroup );
+  mReference = config->readUnsignedNumEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
 
-class KPrefsItemSize : public KGenericPrefsItem<QSize>
+KPrefsItemLong::KPrefsItemLong( const QString &group, const QString &name,
+                                long &reference, long defaultValue )
+  : KGenericPrefsItem<long>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemSize( const QString &group, const QString &name, QSize &reference,
-                    const QSize &defaultValue = QSize() )
-      : KGenericPrefsItem<QSize>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readSizeEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemDateTime : public KGenericPrefsItem<QDateTime>
+void KPrefsItemLong::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemDateTime( const QString &group, const QString &name,
-                        QDateTime &reference,
-                        const QDateTime &defaultValue = QDateTime() )
-      : KGenericPrefsItem<QDateTime>( group, name, reference, defaultValue ) {}
-
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      mReference = config->readDateTimeEntry( mName, &mDefault );
-      mLoadedValue = mReference;
-    }
-};
+  config->setGroup( mGroup );
+  mReference = config->readLongNumEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
 
-class KPrefsItemStringList : public KGenericPrefsItem<QStringList>
+KPrefsItemULong::KPrefsItemULong( const QString &group, const QString &name,
+                                  unsigned long &reference,
+                                  unsigned long defaultValue )
+  : KGenericPrefsItem<unsigned long>( group, name, reference, defaultValue )
 {
-  public:
-    KPrefsItemStringList( const QString &group, const QString &name,
-                          QStringList &reference,
-                          const QStringList &defaultValue = QStringList() )
-      : KGenericPrefsItem<QStringList>( group, name, reference, defaultValue ) {}
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      if ( !config->hasKey( mName ) )
-        mReference = mDefault;
-      else
-        mReference = config->readListEntry( mName );
-      mLoadedValue = mReference;
-    }
-};
-
-
-class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
+void KPrefsItemULong::readConfig( KConfig *config )
 {
-  public:
-    KPrefsItemIntList( const QString &group, const QString &name,
-                       QValueList<int> &reference,
-                       const QValueList<int> &defaultValue = QValueList<int>() )
-      : KGenericPrefsItem<QValueList<int> >( group, name, reference, defaultValue ) {}
+  config->setGroup( mGroup );
+  mReference = config->readUnsignedLongNumEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
 
-    void readConfig( KConfig *config )
-    {
-      config->setGroup( mGroup );
-      if ( !config->hasKey( mName ) )
-        mReference = mDefault;
-      else
-        mReference = config->readIntListEntry( mName );
-      mLoadedValue = mReference;
-    }
-};
+
+KPrefsItemDouble::KPrefsItemDouble( const QString &group, const QString &name,
+                                    double &reference, double defaultValue )
+  : KGenericPrefsItem<double>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemDouble::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readDoubleNumEntry( mName, mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemColor::KPrefsItemColor( const QString &group, const QString &name,
+                                  QColor &reference,
+                                  const QColor &defaultValue )
+  : KGenericPrefsItem<QColor>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemColor::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readColorEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemFont::KPrefsItemFont( const QString &group, const QString &name,
+                                QFont &reference,
+                                const QFont &defaultValue )
+  : KGenericPrefsItem<QFont>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemFont::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readFontEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemRect::KPrefsItemRect( const QString &group, const QString &name,
+                                QRect &reference,
+                                const QRect &defaultValue )
+  : KGenericPrefsItem<QRect>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemRect::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readRectEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemPoint::KPrefsItemPoint( const QString &group, const QString &name,
+                                  QPoint &reference,
+                                  const QPoint &defaultValue )
+  : KGenericPrefsItem<QPoint>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemPoint::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readPointEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemSize::KPrefsItemSize( const QString &group, const QString &name,
+                                QSize &reference,
+                                const QSize &defaultValue )
+  : KGenericPrefsItem<QSize>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemSize::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readSizeEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemDateTime::KPrefsItemDateTime( const QString &group, const QString &name,
+                                        QDateTime &reference,
+                                        const QDateTime &defaultValue )
+  : KGenericPrefsItem<QDateTime>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemDateTime::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  mReference = config->readDateTimeEntry( mName, &mDefault );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemStringList::KPrefsItemStringList( const QString &group, const QString &name,
+                                            QStringList &reference,
+                                            const QStringList &defaultValue )
+  : KGenericPrefsItem<QStringList>( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemStringList::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  if ( !config->hasKey( mName ) )
+    mReference = mDefault;
+  else
+    mReference = config->readListEntry( mName );
+  mLoadedValue = mReference;
+}
+
+
+KPrefsItemIntList::KPrefsItemIntList( const QString &group, const QString &name,
+                                      QValueList<int> &reference,
+                                      const QValueList<int> &defaultValue )
+  : KGenericPrefsItem<QValueList<int> >( group, name, reference, defaultValue )
+{
+}
+
+void KPrefsItemIntList::readConfig( KConfig *config )
+{
+  config->setGroup( mGroup );
+  if ( !config->hasKey( mName ) )
+    mReference = mDefault;
+  else
+    mReference = config->readIntListEntry( mName );
+  mLoadedValue = mReference;
+}
 
 
 

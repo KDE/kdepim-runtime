@@ -113,6 +113,11 @@ class KGenericPrefsItem : public KPrefsItem
       : KPrefsItem( group, name ), mReference( reference ),
         mDefault( defaultValue ), mLoadedValue( defaultValue ) {}
 
+    T &value()
+    {
+      return mReference;
+    }
+
     virtual void setDefault()
     {
       mReference = mDefault;
@@ -138,6 +143,231 @@ class KGenericPrefsItem : public KPrefsItem
     T &mReference;
     T mDefault;
     T mLoadedValue;
+};
+
+
+/**
+  Class for handling a string preferences item.
+*/
+class KPrefsItemString : public KGenericPrefsItem<QString>
+{
+  public:
+    enum Type { Normal, Password, Path };
+
+    KPrefsItemString( const QString &group, const QString &name,
+                      QString &reference,
+                      const QString &defaultValue = QString::null,
+                      Type type = Normal );
+
+    void writeConfig( KConfig *config );
+    void readConfig( KConfig *config );
+
+  protected:
+    QString endecryptStr( const QString &aStr );
+
+  private:
+    Type mType;
+};
+
+
+/**
+  Class for handling a QVariant preferences item.
+*/
+class KPrefsItemProperty : public KGenericPrefsItem<QVariant>
+{
+  public:
+    KPrefsItemProperty( const QString &group, const QString &name,
+                        QVariant &reference, QVariant defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a bool preferences item.
+*/
+class KPrefsItemBool : public KGenericPrefsItem<bool>
+{
+  public:
+    KPrefsItemBool( const QString &group, const QString &name, bool &reference,
+                    bool defaultValue = true );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling an integer preferences item.
+  */
+class KPrefsItemInt : public KGenericPrefsItem<int>
+{
+  public:
+    KPrefsItemInt( const QString &group, const QString &name, int &reference,
+                   int defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling an unsingend integer preferences item.
+*/
+class KPrefsItemUInt : public KGenericPrefsItem<unsigned int>
+{
+  public:
+    KPrefsItemUInt( const QString &group, const QString &name,
+                    unsigned int &reference, unsigned int defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for hanlding a long integer preferences item.
+*/
+class KPrefsItemLong : public KGenericPrefsItem<long>
+{
+  public:
+    KPrefsItemLong( const QString &group, const QString &name, long &reference,
+                    long defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling an unsigned long integer preferences item.
+*/
+class KPrefsItemULong : public KGenericPrefsItem<unsigned long>
+{
+  public:
+    KPrefsItemULong( const QString &group, const QString &name,
+                     unsigned long &reference, unsigned long defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a floating point preference item.
+*/
+class KPrefsItemDouble : public KGenericPrefsItem<double>
+{
+  public:
+    KPrefsItemDouble( const QString &group, const QString &name,
+                      double &reference, double defaultValue = 0 );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a color preferences item.
+*/
+class KPrefsItemColor : public KGenericPrefsItem<QColor>
+{
+  public:
+    KPrefsItemColor( const QString &group, const QString &name,
+                     QColor &reference,
+                     const QColor &defaultValue = QColor( 128, 128, 128 ) );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a font preferences item.
+*/
+class KPrefsItemFont : public KGenericPrefsItem<QFont>
+{
+  public:
+    KPrefsItemFont( const QString &group, const QString &name, QFont &reference,
+                    const QFont &defaultValue =
+                    KGlobalSettings::generalFont() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a QRect preferences item.
+*/
+class KPrefsItemRect : public KGenericPrefsItem<QRect>
+{
+  public:
+    KPrefsItemRect( const QString &group, const QString &name, QRect &reference,
+                    const QRect &defaultValue = QRect() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a QPoint preferences item.
+*/
+class KPrefsItemPoint : public KGenericPrefsItem<QPoint>
+{
+  public:
+    KPrefsItemPoint( const QString &group, const QString &name, QPoint &reference,
+                     const QPoint &defaultValue = QPoint() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a QSize preferences item.
+*/
+class KPrefsItemSize : public KGenericPrefsItem<QSize>
+{
+  public:
+    KPrefsItemSize( const QString &group, const QString &name, QSize &reference,
+                    const QSize &defaultValue = QSize() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a QDateTime preferences item.
+*/
+class KPrefsItemDateTime : public KGenericPrefsItem<QDateTime>
+{
+  public:
+    KPrefsItemDateTime( const QString &group, const QString &name,
+                        QDateTime &reference,
+                        const QDateTime &defaultValue = QDateTime() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling a string list preferences item.
+*/
+class KPrefsItemStringList : public KGenericPrefsItem<QStringList>
+{
+  public:
+    KPrefsItemStringList( const QString &group, const QString &name,
+                          QStringList &reference,
+                          const QStringList &defaultValue = QStringList() );
+
+    void readConfig( KConfig *config );
+};
+
+
+/**
+  Class for handling an integer list preferences item.
+*/
+class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
+{
+  public:
+    KPrefsItemIntList( const QString &group, const QString &name,
+                       QValueList<int> &reference,
+                       const QValueList<int> &defaultValue =
+                       QValueList<int>() );
+
+    void readConfig( KConfig *config );
 };
 
 

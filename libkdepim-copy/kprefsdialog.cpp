@@ -1,7 +1,7 @@
 /*
     This file is part of libkdepim.
 
-    Copyright (c) 2001 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (c) 2001,2003 Cornelius Schumacher <schumacher@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -43,6 +43,33 @@
 #include "kprefsdialog.h"
 #include "kprefsdialog.moc"
 
+namespace KPrefsWidFactory {
+
+KPrefsWid *create( KPrefsItem *item, QWidget *parent )
+{
+  KPrefsItemBool *boolItem = dynamic_cast<KPrefsItemBool *>( item );
+  if ( boolItem ) {
+    return new KPrefsWidBool( boolItem->name(), boolItem->value(), parent );
+  }
+
+  KPrefsItemString *stringItem = dynamic_cast<KPrefsItemString *>( item );
+  if ( stringItem ) {
+    return new KPrefsWidString( stringItem->name(), stringItem->value(),
+                                parent );
+  }
+  
+  return 0;
+}
+
+}
+
+
+QValueList<QWidget *> KPrefsWid::widgets() const
+{
+  return QValueList<QWidget *>();
+}
+
+
 KPrefsWidBool::KPrefsWidBool(const QString &text,bool &reference,
                              QWidget *parent, const QString &whatsThis)
   : mReference( reference )
@@ -66,6 +93,13 @@ void KPrefsWidBool::writeConfig()
 QCheckBox *KPrefsWidBool::checkBox()
 {
   return mCheck;
+}
+
+QValueList<QWidget *> KPrefsWidBool::widgets() const
+{
+  QValueList<QWidget *> widgets;
+  widgets.append( mCheck );
+  return widgets;
 }
 
 
@@ -268,6 +302,13 @@ QLineEdit *KPrefsWidString::lineEdit()
   return mEdit;
 }
 
+QValueList<QWidget *> KPrefsWidString::widgets() const
+{
+  QValueList<QWidget *> widgets;
+  widgets.append( mLabel );
+  widgets.append( mEdit );
+  return widgets;
+}
 
 KPrefsWidManager::KPrefsWidManager( KPrefs *prefs )
   : mPrefs( prefs )
@@ -414,11 +455,28 @@ void KPrefsDialog::autoCreate()
       layout = mGroupLayouts[ group ];
       currentRow = mCurrentRows[ group ];
     }
+
+    KPrefsWid *wid = KPrefsWidFactory::create( *it, page );
+    
+    if ( wid ) {
+      QValueList<QWidget *> widgets = wid->widgets();
+      if ( widgets.count() == 1 ) {
+        layout->addMultiCellWidget( widgets[ 0 ],
+                                    currentRow, currentRow, 0, 1 );
+      } else if ( widgets.count() == 2 ) {
+        layout->addWidget( widgets[ 0 ], currentRow, 0 );
+        layout->addWidget( widgets[ 1 ], currentRow, 1 );      
+      } else {
+        kdError() << "More widgets than expected: " << widgets.count() << endl;
+      }
   
-    QWidget *wid = new QLabel( name, page );
-    layout->addWidget( wid, currentRow, 0 );
-    mCurrentRows.replace( group, ++currentRow );
+      addWid( wid );
+  
+      mCurrentRows.replace( group, ++currentRow );
+    }
   }
+  
+  readConfig();
 }
 
 void KPrefsDialog::setDefaults()

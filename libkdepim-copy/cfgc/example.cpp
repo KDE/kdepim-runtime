@@ -43,14 +43,6 @@ int main( int argc, char **argv )
 
   ExamplePrefsBase *prefs = ExamplePrefsBase::self();
 
-  kdDebug() << "anotherOption 1: " << prefs->anotherOption() << endl;
-  
-  prefs->setAnotherOption( 42 );
-  
-  kdDebug() << "anotherOption 2: " << prefs->anotherOption() << endl;  
-
-  prefs->writeConfig();
-
   KPrefsDialog *dialog = new KPrefsDialog( prefs );
   
   dialog->autoCreate();

@@ -23,6 +23,7 @@
 
 #include <qptrlist.h>
 #include <qlineedit.h>
+#include <qvaluelist.h>
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
@@ -59,6 +60,8 @@ class KPrefsWid : public QObject
     */
     virtual void writeConfig() = 0;
 
+    virtual QValueList<QWidget *> widgets() const;
+
   signals:
     /**
       Emitted when widget value has changed.
@@ -93,6 +96,8 @@ class KPrefsWidBool : public KPrefsWid
 
     void readConfig();
     void writeConfig();
+
+    QValueList<QWidget *> widgets() const;
 
   private:
     bool &mReference;
@@ -319,6 +324,8 @@ class KPrefsWidString : public KPrefsWid
 
     void readConfig();
     void writeConfig();
+
+    QValueList<QWidget *> widgets() const;
 
   private:
     QString &mReference;
