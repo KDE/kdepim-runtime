@@ -33,43 +33,53 @@ namespace KPim {
   class MailTransportServiceIface : virtual public DCOPObject
   {
     K_DCOP
-
+      
     k_dcop:
       /**
-       * This method will compose a message and send it using the mailers pefererred transport. The mimetype
-       * of the attachments passed is determined using mime magic.
-	   *
-	   * @return true when the message was send successfully, false on failure.
+       * This method will compose a message and send it using the mailers
+       * preferred transport. The mimetype of the attachments passed is
+       * determined using mime magic.
+       *
+       * @return true when the message was send successfully, false on failure.
        **/
-      virtual bool sendMessage(const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const KURL::List& attachments) = 0;
-			       
-	/**
-           * This method basically behaves like the one above, but takes also "from" as a parameter.
-	   *
-	   * @return true when the message was send successfully, false on failure.
-       **/
-      virtual bool sendMessage( const QString& from, const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const KURL::List& attachments) = 0;
+      virtual bool sendMessage( const QString& from, const QString& to, 
+                                const QString& cc, const QString& bcc,
+                                const QString& subject, const QString& body, 
+                                const KURL::List& attachments ) = 0;
+
       /**
-       * This method basically behaves like the one above, but takes only one attachment as QByteArray. This is
-       * useful if you want to attach simple text files (e.g. a vCalendar). The mimetype is determined using
-	   * mime magic.
+       * This method basically behaves like the one above, but takes only one
+       * attachment as QByteArray. This is useful if you want to attach simple
+       * text files (e.g. a vCalendar). The mimetype is determined using
+       * mime magic.
        *
        * @return true when the message was send successfully, false on failure.
        **/
-      virtual bool sendMessage(const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const QByteArray& attachment) = 0;
+      virtual bool sendMessage( const QString& from, const QString& to, 
+                                const QString& cc, const QString& bcc,
+                                const QString& subject, const QString& body, 
+                                const QByteArray& attachment ) = 0;
 
- /**
-       * This method basically behaves like the one above, but takes also a "from" as a parameter.
-       *
-       * @return true when the message was send successfully, false on failure.
+    k_dcop_hidden:
+      /**
+       * This method is deprecated. Use the corresponding method with the
+       * additional parameter from instead.
        **/
-      virtual bool sendMessage( const QString& from, const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const QByteArray& attachment) = 0;
-      
-
+      // FIXME KDE 4.0: Remove this.
+      virtual bool sendMessage( const QString& to, 
+                                const QString& cc, const QString& bcc,
+                                const QString& subject, const QString& body, 
+                                const KURL::List& attachments ) = 0;
+			       
+      /**
+       * This method is deprecated. Use the corresponding method with the
+       * additional parameter from instead.
+       **/
+      // FIXME KDE 4.0: Remove this.
+      virtual bool sendMessage( const QString& to,
+                                const QString& cc, const QString& bcc,
+                                const QString& subject, const QString& body, 
+                                const QByteArray& attachment ) = 0;
 
   };
 

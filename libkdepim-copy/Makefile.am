@@ -23,7 +23,9 @@ noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
 $(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h
 
+MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
+
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
