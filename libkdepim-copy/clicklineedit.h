@@ -41,11 +41,13 @@ class ClickLineEdit : public KLineEdit
 
     void setClickMessage( const QString &msg );
     QString clickMessage() const { return mClickMessage; } 
+  
+    virtual void setText( const QString& txt );
 
   protected:
-    void drawContents( QPainter *p );
-    void focusInEvent( QFocusEvent *ev );
-    void focusOutEvent( QFocusEvent *ev );
+    virtual void drawContents( QPainter *p );
+    virtual void focusInEvent( QFocusEvent *ev );
+    virtual void focusOutEvent( QFocusEvent *ev );
 
   private:
     QString mClickMessage;

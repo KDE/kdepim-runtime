@@ -36,17 +36,24 @@ ClickLineEdit::ClickLineEdit(QWidget *parent, const QString &msg, const char* na
 ClickLineEdit::~ClickLineEdit() {}
 
 
-void ClickLineEdit::setClickMessage( const QString &msg)
+void ClickLineEdit::setClickMessage( const QString &msg )
 {
   mClickMessage = msg;
   repaint();
+}
+
+void ClickLineEdit::setText( const QString &txt )
+{
+  mDrawClickMsg = txt.isEmpty();
+  repaint();
+  KLineEdit::setText( txt );
 }
 
 void ClickLineEdit::drawContents( QPainter *p )
 {
   KLineEdit::drawContents( p );
 
-  if ( mDrawClickMsg == true ) {
+  if ( mDrawClickMsg == true && !hasFocus() ) {
     QPen tmp = p->pen();
     p->setPen( gray );
     QRect cr = contentsRect();
