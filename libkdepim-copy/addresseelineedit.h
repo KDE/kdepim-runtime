@@ -1,7 +1,11 @@
 /*
-    This file is part of KAddressBook.
+    This file is part of libkdepim.
     Copyright (c) 2002 Helge Deller <deller@gmx.de>
                   2002 Lubos Lunak <llunak@suse.cz>
+                  2001,2003 Carsten Pfeiffer <pfeiffer@kde.org>
+                  2001 Waldo Bastian <bastian@kde.org>
+                  2004 Daniel Molkentin <danimo@klaralvdalens-datakonsult.se>
+                  2004 Karl-Heinz Zimmer <khz@klaralvdalens-datakonsult.se>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public

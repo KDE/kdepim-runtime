@@ -1,9 +1,11 @@
 /*
-    This file is part of KAddressBook.
+    This file is part of libkdepim.
     Copyright (c) 2002 Helge Deller <deller@gmx.de>
                   2002 Lubos Lunak <llunak@suse.cz>
                   2001,2003 Carsten Pfeiffer <pfeiffer@kde.org>
                   2001 Waldo Bastian <bastian@kde.org>
+                  2004 Daniel Molkentin <danimo@klaralvdalens-datakonsult.se>
+                  2004 Karl-Heinz Zimmer <khz@klaralvdalens-datakonsult.se>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -266,7 +268,6 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       m_previousAddresses = prevAddr;
       QStringList items = s_completion->allMatches( s );
       items += s_completion->allMatches( "\"" + s );
-      items += s_completion->substringCompletion( '<' + s );
       uint beforeDollarCompletionCount = items.count();
 
       if ( s.find( ' ' ) == -1 ) // one word, possibly given name
@@ -349,7 +350,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
   //m_contactMap.insert( addr.realName(), addr );
   QString fullEmail = addr.fullEmail();
-  s_completion->addItem( fullEmail, weight );
+  s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
 }
 
 void AddresseeLineEdit::slotStartLDAPLookup()
@@ -396,7 +397,7 @@ void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
     getNameAndMail(*it, name, email);
     addr.setNameFromString( name );
     addr.insertEmail( email, true );
-    addContact( addr, 1 );
+    addContact( addr, 10 );
   }
 
   if ( hasFocus() || completionBox()->hasFocus() )
@@ -483,7 +484,7 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
   }
   
   if( !iAd ){
-    // We suppose the customer is typing the string manually and just
+    // We suppose the user is typing the string manually and just
     // has not finished typing the mail address part.
     // So we take everything that's left of the '<' as name and the rest as mail
     for( i = 0; len > i; ++i ) {
