@@ -400,12 +400,11 @@ QString LinkLocator::getEmoticon()
       htmlRep = QString::null;
     }
     else {
-      // create an image tag with nested span (the text in the span is used
+      // create an image tag (the text in attribute alt is used
       // for copy & paste) representing the smiley
-      htmlRep = QString("<span class=\"pimsmileytext\">%1</span>"
-                        "<img class=\"pimsmileyimg\" src=\"%2\" "
+      htmlRep = QString("<img class=\"pimsmileyimg\" src=\"%2\" "
                         "alt=\"%3\" title=\"%4\"/>")
-                .arg( QStyleSheet::escape( smiley ), dataUrl,
+                .arg( dataUrl,
                       QStyleSheet::escape( smiley ),
                       QStyleSheet::escape( smiley ) );
     }
