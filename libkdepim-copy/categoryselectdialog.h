@@ -55,6 +55,9 @@ class CategorySelectDialog : public CategorySelectDialog_base
     void editCategories();
 
   private:
+    KPimPrefs *mPrefs;
+    QStringList mCategoryList;
+
     class CategorySelectDialogPrivate;
     CategorySelectDialogPrivate *d;
 };
