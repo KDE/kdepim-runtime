@@ -30,6 +30,9 @@ libkdepim_la_SOURCES = \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp
 
+$(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
+$(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h kimproxyiface.h kimiface.h
+  
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
 
