@@ -30,9 +30,11 @@
 #include <kdebug.h>
 #include <kglobal.h>
 #include <klocale.h>
+#include <kcalendarsystem.h>
 
 #include "kdateedit.h"
 #include "kdateedit.moc"
+
 
 KDateEdit::KDateEdit(QWidget *parent, const char *name)
   : QComboBox(true, parent, name),
@@ -72,7 +74,7 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   QString dayName;
   for (int i = 1; i <= 7; ++i)
   {
-    dayName = KGlobal::locale()->weekDayName(i).lower();
+    dayName = KGlobal::locale()->calendar()->weekDayName(i).lower();
     mKeywordMap[dayName] = i + 100;
   }
   lineEdit()->installEventFilter(this);   // handle keyword entry
