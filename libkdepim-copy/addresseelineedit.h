@@ -68,8 +68,21 @@ class AddresseeLineEdit : public ClickLineEdit
   protected:
     void addContact( const KABC::Addressee&, int weight );
     virtual void keyPressEvent( QKeyEvent* );
-    virtual void paste();
+    /**
+     * Reimplemented for smart insertion of email addresses.
+     * Features:
+     * - Automatically adds ',' if necessary to separate email addresses
+     * - Correctly decodes mailto URLs
+     * - Recognizes email addresses which are protected against address
+     *   harvesters, i.e. "name at kde dot org" and "name(at)kde.org"
+     */
     virtual void insert( const QString &text );
+    /** Reimplemented for smart insertion of pasted email addresses. */
+    virtual void paste();
+    /** Reimplemented for smart insertion with middle mouse button. */
+    virtual void mouseReleaseEvent( QMouseEvent *e );
+    /** Reimplemented for smart insertion of dragged email addresses. */
+    virtual void dropEvent( QDropEvent *e );
     void doCompletion( bool ctrlT );
     virtual QPopupMenu *createPopupMenu();
 

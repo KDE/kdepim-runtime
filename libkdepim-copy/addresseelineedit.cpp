@@ -48,6 +48,7 @@
 #include <qregexp.h>
 #include <qevent.h>
 #include <qdragobject.h>
+#include <qclipboard.h>
 #include "resourceabc.h"
 
 using namespace KPIM;
@@ -171,8 +172,22 @@ void AddresseeLineEdit::insert( const QString &t )
   if ( newText.isEmpty() )
     return;
 
-  // remove newlines in the to-be-pasted string
+  // remove newlines in the to-be-pasted string as well as an eventual
+  // mailto: protocol
   newText.replace( QRegExp("\r?\n"), ", " );
+
+  if ( newText.startsWith("mailto:") ) {
+    KURL url( newText );
+    newText = url.path();
+  }
+  else if ( newText.find(" at ") != -1 ) {
+    // Anti-spam stuff
+    newText.replace( " at ", "@" );
+    newText.replace( " dot ", "." );
+  }
+  else if ( newText.find("(at)") != -1 ) {
+    newText.replace( QRegExp("\\s*\\(at\\)\\s*"), "@" );
+  }
 
   QString contents = text();
   int start_sel = 0;
@@ -211,6 +226,55 @@ void AddresseeLineEdit::paste()
 
   KLineEdit::paste();
   m_smartPaste = false;
+}
+
+void AddresseeLineEdit::mouseReleaseEvent( QMouseEvent *e )
+{
+  // reimplemented from QLineEdit::mouseReleaseEvent()
+  if ( m_useCompletion
+       && QApplication::clipboard()->supportsSelection()
+       && !isReadOnly()
+       && e->button() == MidButton ) {
+    m_smartPaste = true;
+  }
+
+  KLineEdit::mouseReleaseEvent( e );
+  m_smartPaste = false;
+}
+
+void AddresseeLineEdit::dropEvent( QDropEvent *e )
+{
+  KURL::List uriList;
+  if ( !isReadOnly()
+       && KURLDrag::canDecode(e) && KURLDrag::decode( e, uriList ) ) {
+    QString contents = text();
+    // remove trailing white space and comma
+    int eot = contents.length();
+    while ( ( eot > 0 ) && contents[ eot - 1 ].isSpace() )
+      eot--;
+    if ( eot == 0 )
+      contents = QString::null;
+    else if ( contents[ eot - 1 ] == ',' ) {
+      eot--;
+      contents.truncate( eot );
+    }
+    // append the mailto URLs
+    for ( KURL::List::Iterator it = uriList.begin();
+          it != uriList.end(); ++it ) {
+      if ( !contents.isEmpty() )
+        contents.append( ", " );
+      KURL u( *it );
+      contents.append( (*it).path() );
+    }
+    setText( contents );
+    setEdited( true );
+  }
+  else {
+    if ( m_useCompletion )
+       m_smartPaste = true;
+    QLineEdit::dropEvent( e );
+    m_smartPaste = false;
+  }
 }
 
 void AddresseeLineEdit::cursorAtEnd()
