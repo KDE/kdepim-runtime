@@ -241,6 +241,12 @@ void AddresseeView::updateView()
   organization = mAddressee.organization().isEmpty() ?
 	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.organization());
 
+  // when only an organization is set we use it as name
+  if ( !mAddressee.organization().isEmpty() && name.isEmpty() ) {
+    name = mAddressee.organization();
+    organization = QString::null;
+  }
+
   QString strAddr = QString::fromLatin1(
   "<html>"
   "<body text=\"%1\" bgcolor=\"%2\">" // text and background color
