@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=ServiceType
+X-KDE-ServiceType=Komposer/Editor
+Name=Komposer Plugin
+
+[PropertyDef::X-KDE-KomposerIdentifier]
+Type=QString
+[PropertyDef::X-KDE-KomposerEditorVersion]
+Type=int

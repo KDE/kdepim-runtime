@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+Exec=
+Comment=Komposer KRichText Plugin
+Name=KRichText
+Icon=editor
+ServiceTypes=Komposer/Editor
+X-KDE-Library=libkomposer_krichtextplugin
+X-KDE-KomposerIdentifier=krichtext
+X-KDE-KomposerEditorVersion=1
