@@ -17,13 +17,19 @@
     the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
     Boston, MA 02111-1307, USA.
 */
+
 #ifndef _KPREFS_H
 #define _KPREFS_H
 
-#include <qptrlist.h>
 #include <qcolor.h>
+#include <qdatetime.h>
 #include <qfont.h>
+#include <qpoint.h>
+#include <qptrlist.h>
+#include <qrect.h>
+#include <qsize.h>
 #include <qstringlist.h>
+#include <qvariant.h>
 
 class KConfig;
 
@@ -46,8 +52,9 @@ class KPrefsItem {
       @param group Config file group.
       @param name Config file key.
     */
-    KPrefsItem(const QString &group,const QString &name) :
-      mGroup(group),mName(name) {}
+    KPrefsItem( const QString &group, const QString &name )
+      : mGroup( group ), mName( name ) {}
+
     /**
       Destructor.
     */
@@ -58,17 +65,19 @@ class KPrefsItem {
       value.
     */
     virtual void setDefault() = 0;
+
     /**
       This function is called by @ref KPrefs to read the value for this setting
       from a config file.
       value.
     */
-    virtual void readConfig(KConfig *) = 0;
+    virtual void readConfig( KConfig* ) = 0;
+
     /**
       This function is called by @ref KPrefs to write the value of this setting
       to a config file.
     */
-    virtual void writeConfig(KConfig *) = 0;
+    virtual void writeConfig( KConfig* ) = 0;
 
   protected:
     QString mGroup;
@@ -164,7 +173,8 @@ class KPrefs {
       @param configname name of config file. If no name is given, the default
                         config file as returned by kapp()->config() is used.
     */
-    KPrefs(const QString &configname=QString::null);
+    KPrefs( const QString &configname = QString::null );
+
     /**
       Destructor
     */
@@ -193,61 +203,13 @@ class KPrefs {
       until setCurrentGroup() is called with a new argument. Call this before
       you add any items. The default value is "No Group".
     */
-    static void setCurrentGroup(const QString &group);
+    static void setCurrentGroup( const QString &group );
 
     /**
       Register a custom @ref KPrefsItem.
     */
-    void addItem(KPrefsItem *);
+    void addItem( KPrefsItem* );
 
-    /**
-      Register an item of type bool.
-      
-      @param key Key used in config file.
-      @param reference Pointer to the variable, which is set by readConfig()
-                       and setDefaults() calls and read by writeConfig() calls.
-      @param defaultValue Default value, which is used by setDefaults() and
-                          when the config file does not yet contain the key of
-                          this item.
-    */
-    void addItemBool(const QString &key,bool &reference,
-                     bool defaultValue=false);
-    /**
-      Register an item of type int.
-      
-      @param key Key used in config file.
-      @param reference Pointer to the variable, which is set by readConfig()
-                       and setDefaults() calls and read by writeConfig() calls.
-      @param defaultValue Default value, which is used by setDefaults() and
-                          when the config file does not yet contain the key of
-                          this item.
-    */
-    void addItemInt(const QString &key,int &reference,
-                    int defaultValue=0);
-    /**
-      Register an item of type QColor.
-      
-      @param key Key used in config file.
-      @param reference Pointer to the variable, which is set by readConfig()
-                       and setDefaults() calls and read by writeConfig() calls.
-      @param defaultValue Default value, which is used by setDefaults() and
-                          when the config file does not yet contain the key of
-                          this item.
-    */
-    void addItemColor(const QString &key,QColor &reference,
-                      const QColor &defaultValue=QColor(128,128,128));
-    /**
-      Register an item of type QFont.
-      
-      @param key Key used in config file.
-      @param reference Pointer to the variable, which is set by readConfig()
-                       and setDefaults() calls and read by writeConfig() calls.
-      @param defaultValue Default value, which is used by setDefaults() and
-                          when the config file does not yet contain the key of
-                          this item.
-    */
-    void addItemFont(const QString &key,QFont &reference,
-                     const QFont &defaultValue=QFont("helvetica",12));
     /**
       Register an item of type QString.
       
@@ -258,8 +220,9 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemString(const QString &key,QString &reference,
-                       const QString &defaultValue="");
+    void addItemString( const QString &key, QString &reference,
+                        const QString &defaultValue = "" );
+
     /**
       Register a password item of type QString. The string value is written 
       encrypted to the config file. Note that the current encryption scheme 
@@ -272,8 +235,195 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemPassword(const QString &key,QString &reference,
-                         const QString &defaultValue="");
+    void addItemPassword( const QString &key, QString &reference,
+                          const QString &defaultValue = "" );
+
+    /**
+      Register a path item of type QString. The string value is interpreted
+      as a path. This means, dollar expension is activated for this value, so
+      that e.g. $HOME gets expanded. 
+
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemPath( const QString &key, QString &reference,
+                      const QString &defaultValue = "" );
+
+    /**
+      Register a property item of type QVariant. Note that only the following
+      QVariant types are allowed: String, StringList, Font, Point, Rect, Size,
+      Color, Int, UInt, Bool, Double, DateTime and Date.
+
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemProperty( const QString &key, QVariant &reference,
+                          const QVariant &defaultValue = QVariant() );
+
+    /**
+      Register an item of type bool.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemBool( const QString &key, bool &reference,
+                      bool defaultValue = false );
+
+    /**
+      Register an item of type int.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemInt( const QString &key, int &reference,
+                     int defaultValue = 0 );
+
+    /**
+      Register an item of type unsigned int.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemUInt( const QString &key, unsigned int &reference,
+                      unsigned int defaultValue = 0 );
+
+    /**
+      Register an item of type long.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemLong( const QString &key, long &reference,
+                      long defaultValue = 0 );
+
+    /**
+      Register an item of type unsigned long.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemULong( const QString &key, unsigned long &reference,
+                       unsigned long defaultValue = 0 );
+
+    /**
+      Register an item of type double.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemDouble( const QString &key, double &reference,
+                        double defaultValue = 0.0 );
+
+    /**
+      Register an item of type QColor.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemColor( const QString &key, QColor &reference,
+                       const QColor &defaultValue = QColor( 128, 128, 128 ) );
+
+    /**
+      Register an item of type QFont.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemFont( const QString &key, QFont &reference,
+                      const QFont &defaultValue = QFont( "helvetica", 12 ) );
+
+    /**
+      Register an item of type QRect.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemRect( const QString &key, QRect &reference,
+                      const QRect &defaultValue = QRect() );
+
+    /**
+      Register an item of type QPoint.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemPoint( const QString &key, QPoint &reference,
+                       const QPoint &defaultValue = QPoint() );
+
+    /**
+      Register an item of type QSize.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemSize( const QString &key, QSize &reference,
+                      const QSize &defaultValue = QSize() );
+
+    /**
+      Register an item of type QDateTime.
+      
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemDateTime( const QString &key, QDateTime &reference,
+                          const QDateTime &defaultValue = QDateTime() );
+
     /**
       Register an item of type QStringList.
       
@@ -284,8 +434,8 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemStringList(const QString &key,QStringList &reference,
-                           const QStringList &defaultValue=QStringList());
+    void addItemStringList( const QString &key, QStringList &reference,
+                            const QStringList &defaultValue = QStringList() );
 
     /**
       Register an item of type QValueList<int>.
@@ -297,18 +447,20 @@ class KPrefs {
                           when the config file does not yet contain the key of
                           this item.
     */
-    void addItemIntList(const QString &key,QValueList<int> &reference,
-                        const QValueList<int> &defaultValue=QValueList<int>());
+    void addItemIntList( const QString &key, QValueList<int> &reference,
+                         const QValueList<int> &defaultValue = QValueList<int>() );
 
   protected:
     /**
       Implemented by subclasses that use special defaults.
     */
     virtual void usrSetDefaults() {};
+
     /**
       Implemented by subclasses that read special config values.
     */
     virtual void usrReadConfig() {};
+
     /**
       Implemented by subclasses that write special config values.
     */
