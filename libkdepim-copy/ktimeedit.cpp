@@ -83,7 +83,8 @@ public:
             if ( ok && h >= 0 && h < 24 )
                 return Intermediate;
         }
-        return Invalid;
+//        return Invalid;
+        return Intermediate;
     }
     virtual void fixup ( QString & input ) const {
       bool ok = false;
