@@ -50,7 +50,7 @@ kdepimwidgets_la_LIBADD = $(LIB_KIO) libkdepim.la
 kdepimwidgets_la_SOURCES = kdepimwidgets.cpp 
 
 kdepimwidgets.cpp: kdepim.widgets
-	makekdewidgets -o kdepimwidgets.cpp $<
+	$(MAKEKDEWIDGETS) -o kdepimwidgets.cpp $<
 
 CLEANFILES = kdepimwidgets.cpp
 
