@@ -46,6 +46,12 @@ QStringList splitEmailAddrList(const QString& aStr);
  * returns the first address. */
 QCString getEmailAddr(const QString& aStr);
 
+/** Return email address and name from string. Examples:
+ * "Stefan Taferner <taferner@kde.org>" returns "taferner@kde.org"
+ * and "Stefan Taferner". "joe@nowhere.com" returns "joe@nowhere.com"
+ * and "". Note that this only returns the first address. */
+bool getNameAndMail(const QString& aStr, QString& name, QString& mail);
+
 } // namespace
 
 #endif /* EMAIL_H */
