@@ -294,8 +294,7 @@ void AddresseeSelector::initGUI()
   uint count = mSelection->fieldCount();
   for ( uint i = 0; i < count; ++i, ++row ) {
     KListView *listView = new KListView( this );
-    listView->addColumn( "" );
-    listView->header()->hide();
+    listView->addColumn( mSelection->fieldTitle( i ) );
     listView->setFullWidth( true );
     mSelectionViews.append( listView );
 
@@ -570,7 +569,7 @@ AddresseeSelectorDialog::AddresseeSelectorDialog( Selection *selection,
   mSelector = new KPIM::AddresseeSelector( selection, frame );
   layout->addWidget( mSelector );
 
-  setInitialSize( QSize( 250, 220 ) );
+  resize( 500, 490 );
 }
 
 void AddresseeSelectorDialog::accept()
