@@ -502,7 +502,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
       QByteArray val = (*it2).first();
       int len = val.size();
-      if( '\0' == val[len-1] )
+      if( len > 0 && '\0' == val[len-1] )
         --len;
       const QString tmp = QString::fromUtf8( val, len );
       kdDebug(5300) << "      key: \"" << it2.key() << "\" value: \"" << tmp << "\"" << endl;
