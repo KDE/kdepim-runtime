@@ -51,9 +51,9 @@ namespace KPim {
        * @return true when the message was send successfully, false on failure.
        **/
       virtual bool sendMessage(const QString& to, const QString& cc, const QString& bcc,
-                               const QString& subject, const QString& body, const QCString& attachment) = 0L;
+                               const QString& subject, const QString& body, const QByteArray& attachment) = 0L;
 
-  }
+  };
 
 }
 
