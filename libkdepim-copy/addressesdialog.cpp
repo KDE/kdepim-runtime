@@ -197,18 +197,18 @@ AddresseeViewItem* AddressesDialog::selectedCcItem()
 {
   if ( !d->ccItem )
   {
-    d->ccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("To"), AddresseeViewItem::CC );
+    d->ccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("CC"), AddresseeViewItem::CC );
     connect(d->ccItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
-  return d->toItem;
+  return d->ccItem;
 }
 
 AddresseeViewItem* AddressesDialog::selectedBccItem()
 {
   if ( !d->bccItem )
   {
-    d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("To"), AddresseeViewItem::BCC );
+    d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
     connect(d->bccItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
@@ -612,7 +612,7 @@ AddressesDialog::addSelectedBCC()
   if ( !d->bccItem )
   {
     d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
-    connect(d->ccItem , SIGNAL(addressSelected(AddresseeViewItem*, bool)),
+    connect(d->bccItem , SIGNAL(addressSelected(AddresseeViewItem*, bool)),
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
 
