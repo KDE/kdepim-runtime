@@ -28,11 +28,14 @@
 #include <klistview.h>
 #include <qstringlist.h>
 #include <qptrlist.h>
+#include <qptrdict.h>
 
 namespace KPIM {
 
-  class AddresseeViewItem : public KListViewItem
+  class AddresseeViewItem : public QObject, public KListViewItem
   {
+  Q_OBJECT
+
   public:
     enum Category {
       To          =0,
@@ -56,7 +59,13 @@ namespace KPIM {
     QString name()  const;
     QString email() const;
 
+    bool matches( const QString& ) const;
+
     virtual int compare( QListViewItem * i, int col, bool ascending ) const;
+    virtual void setSelected( bool );
+
+  signals:
+    void addressSelected( AddresseeViewItem*, bool );
 
   private:
     struct AddresseeViewItemPrivate;
@@ -137,12 +146,19 @@ namespace KPIM {
     void newEntry();
     void deleteEntry();
 
-    void cleanEdit();
     void filterChanged( const QString & );
 
     void updateAvailableAddressees();
+    void availableSelectionChanged();
+    void selectedSelectionChanged();
+    void availableAddressSelected( AddresseeViewItem* item, bool selected );
+    void selectedAddressSelected( AddresseeViewItem* item, bool selected );
 
   protected:
+    AddresseeViewItem* selectedToItem();
+    AddresseeViewItem* selectedCcItem();
+    AddresseeViewItem* selectedBccItem();
+
     void initConnections();
     void addDistributionLists();
     void addAddresseeToAvailable( const KABC::Addressee& addr,
@@ -150,16 +166,20 @@ namespace KPIM {
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
     void addAddresseesToSelected( AddresseeViewItem *parent,
-                                  const KABC::Addressee::List &lst,
-                                  const QPtrList<AddresseeViewItem>& groups );
+                                  const QPtrList<AddresseeViewItem>& addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
-    KABC::Addressee::List selectedAddressee( KListView* view ) const;
-    KABC::Addressee::List selectedAddressee( KListView* view,
-                                             QPtrList<AddresseeViewItem>& selectedGroups ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
+    KABC::Addressee::List allAddressee( KListView* view, bool onlySelected = true ) const;
+
   private:
+    void checkForSingleAvailableGroup();
+
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
+
+    QPtrList<AddresseeViewItem> selectedAvailableAddresses;
+    QPtrList<AddresseeViewItem> selectedSelectedAddresses;
+    QPtrDict<AddresseeViewItem> selectedToAvailableMapping;
   };
 
 }
