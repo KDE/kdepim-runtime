@@ -30,6 +30,7 @@
 #include <kprocess.h>
 #include <klocale.h>
 #include <kdebug.h>
+#include <qinputdialog.h>
 #include <qlayout.h>
 #include <qvbox.h>
 #include <qwidget.h>
@@ -278,6 +279,7 @@ AddressesDialog::initGUI()
     addAddresseeToAvailable( *it, d->personal );
   }
 
+  addDistributionLists();
   if ( d->personal->childCount() > 0 ) {
     d->personal->setVisible( true );
   }
@@ -445,6 +447,40 @@ AddressesDialog::removeEntry()
 void
 AddressesDialog::saveAs()
 {
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  manager.load();
+
+  KABC::Addressee::List addrl = selectedAddressee( d->ui->mSelectedView );
+  if ( addrl.count() == 0 ) {
+    KMessageBox::information( 0,
+                              i18n("You have to select the addressees which you wish to save "
+                                   "as distribution list members.") );
+    return;
+  }
+
+  bool ok = false;
+  QString name = QInputDialog::getText( i18n("New Distribution List"),
+                                        i18n("Please enter name."),
+                                        QLineEdit::Normal, QString::null, &ok,
+                                        this );
+  if ( !ok || name.isEmpty() )
+    return;
+
+  if ( manager.list( name ) ) {
+    KMessageBox::information( 0,
+                              i18n( "Distribution list with the given name (%1)"
+                                    "already exists please select a different name" )
+                              .arg( name ) );
+  }
+
+  KABC::DistributionList *dlist = new KABC::DistributionList( &manager, name );
+
+  for ( KABC::Addressee::List::iterator itr = addrl.begin();
+        itr != addrl.end(); ++itr ) {
+    dlist->insertEntry( *itr );
+  }
+
+  manager.save();
 }
 
 void
@@ -526,7 +562,7 @@ AddressesDialog::selectedAddressee( KListView* view ) const
     AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
     ++it;
     if ( item->isSelected() ) {
-      if ( item->category() == AddresseeViewItem::Group ) {
+      if ( item->category() != AddresseeViewItem::Entry  ) {
         AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( item->firstChild() );
         while( myChild ) {
           lst.append( myChild->addressee() );
@@ -554,6 +590,26 @@ AddressesDialog::allAddressee( AddresseeViewItem* parent ) const
   }
 
   return lst;
+}
+
+void
+AddressesDialog::addDistributionLists()
+{
+  KABC::DistributionListManager *manager =
+    new KABC::DistributionListManager( KABC::StdAddressBook::self() );
+  manager->load();
+
+  QStringList distLists = manager->listNames();
+
+  for( QStringList::iterator itr = distLists.begin(); itr != distLists.end(); ++itr ) {
+    KABC::DistributionList* dlist = manager->list( *itr );
+    KABC::DistributionList::Entry::List elist = dlist->entries();
+    AddresseeViewItem *parent = new AddresseeViewItem( d->ui->mAvailableView, dlist->name() );
+    for( KABC::DistributionList::Entry::List::iterator itr = elist.begin();
+         itr != elist.end(); ++itr ) {
+      addAddresseeToAvailable( (*itr).addressee, parent );
+    }
+  }
 }
 
 }//end namespace KPIM

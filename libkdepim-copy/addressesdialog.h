@@ -140,6 +140,7 @@ namespace KPIM {
   protected:
     void initGUI();
     void initConnections();
+    void addDistributionLists();
     void addAddresseeToAvailable( const KABC::Addressee& addr,
                                   AddresseeViewItem* defaultParent=0 );
     void addAddresseeToSelected( const KABC::Addressee& addr,
