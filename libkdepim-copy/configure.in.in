@@ -1,1 +1,16 @@
-AM_CONFIG_HEADER(libkdepim/kdepimmacros.h)
+# What's below is a simpler version of AM_CONFIG_HEADER(libkdepim/kdepimmacros.h)
+# which keeps the other #undef than the one we want to replace, untouched.
+
+if test "$HAVE_GCC_VISIBILITY" = "1"; then
+    # Generate it in the toplevel builddir
+    kdepimmacros=kdepimmacros.h
+    sed -e 's/#undef __KDE_HAVE_GCC_VISIBILITY/#define __KDE_HAVE_GCC_VISIBILITY 1/' $srcdir/libkdepim/kdepimmacros.h.in > $kdepimmacros.tmp
+    if diff $kdepimmacros $kdepimmacros.tmp >/dev/null 2>&1; then 
+       rm -f $kdepimmacros.tmp
+    else
+       echo updating $kdepimmacros
+       mv $kdepimmacros.tmp $kdepimmacros
+    fi
+fi
+
+all_includes="-I$(top_builddir) $all_includes"
