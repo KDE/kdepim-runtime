@@ -196,7 +196,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   mStartRow = new QSpinBox( rowsBox );
   mStartRow->setMinValue( 1 );
 /*
-  new QLabel( i18n( "and ends at row" ), rowsBox );
+  new QLabel( i18n( "And ends at row:" ), rowsBox );
   mEndRow = new QSpinBox( rowsBox );
   mEndRow->setMinValue( 1 );
 */

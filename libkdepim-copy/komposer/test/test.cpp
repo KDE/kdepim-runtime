@@ -30,7 +30,7 @@
 #include <qlabel.h>
 
 static const char description[] =
-    I18N_NOOP( "A KDE Mail Editing Manager" );
+    I18N_NOOP( "KDE mail editing manager" );
 
 static const char version[] = "0.0.1 (CVS)";
 
