@@ -302,11 +302,11 @@ void KImportDialog::readFile( int rows )
   pDialog.setAutoClose(true);
   
   KProgress *progress = pDialog.progressBar();
-  progress->setRange(0, mFile.contains(mSeparator, false));
+  progress->setTotalSteps( mFile.contains(mSeparator, false) );
   progress->setValue(0);
   int progressValue = 0;
   
-  if (progress->maxValue() > 0)  // We have data
+  if (progress->totalSteps() > 0)  // We have data
     pDialog.show();
     
   while (!inputStream.atEnd() && !pDialog.wasCancelled()) {
@@ -635,7 +635,7 @@ void KImportDialog::applyConverter()
   pDialog.setAutoClose(true);
   
   KProgress *progress = pDialog.progressBar();
-  progress->setRange(0, mTable->numRows()-1);
+  progress->setTotalSteps( mTable->numRows()-1 );
   progress->setValue(0);
 
   readFile( 0 );
