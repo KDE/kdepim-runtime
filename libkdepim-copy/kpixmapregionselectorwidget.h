@@ -34,6 +34,11 @@ namespace KPIM {
  * KPixmapRegionSelectorWidget is a widget that shows a picture and provides the
  * user with a friendly way to select a rectangular subregion of the pixmap.
  *
+ * NOTE: There are two copies of this .h and the .cpp file, with subtle differences.
+ * One copy is in kdelibs/kdeui, and the other copy is in kdepim/libkdepim
+ * This is because kdepim has to remain backwards compatible.  Any changes
+ * to either file should be made to the other.
+ * 
  * @author Antonio Larrosa <larrosa@kde.org>
  * @since 3.4
  */
