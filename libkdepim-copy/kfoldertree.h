@@ -50,7 +50,7 @@ struct KPaintInfo {
     pixmapOn(false),
 
     showSize(false),
-    showAttachment(false), 
+    showAttachment(false),
     showImportant(false),
     showSpamHam(false),
     showWatchedIgnored(false),
@@ -198,6 +198,11 @@ class KFolderTreeItem : public KListViewItem
     int typeSortingKey() const;
 
   protected:
+    /** reimplement to use special squeezing algorithm for the folder name */
+    virtual QString squeezeFolderName( const QString &text,
+                                       const QFontMetrics &fm,
+                                       uint width ) const;
+
     Protocol mProtocol;
     Type mType;
     int mUnread;
@@ -268,6 +273,12 @@ class KFolderTree : public KListView
      * -1 is deactivated */
     int mUnreadIndex;
     int mTotalIndex;
+
+  private slots:
+    /** repaints the complete column (instead of only parts of it as done in
+        QListView) if the size has changed */
+    void slotSizeChanged( int section, int oldSize, int newSize );
+
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kdebug.h>
+#include <kstringhandler.h>
 #include <qpainter.h>
 #include <qapplication.h>
 #include <qheader.h>
@@ -194,19 +195,25 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
   const int unreadRecursiveCount = countUnreadRecursive();
   const int unreadCount = ( mUnread > 0 ) ? mUnread : 0;
 
+  // use a bold-font for the folder- and the unread-columns
+  if ( (column == 0 || column == ft->unreadIndex())
+        && ( unreadCount > 0
+        || ( !isOpen() && unreadRecursiveCount > 0 ) ) )
+  {
+    QFont f = p->font();
+    f.setWeight(QFont::Bold);
+    p->setFont(f);
+  }
+
+  // most cells can be handled by KListView::paintCell, we only need to
+  // deal with the folder column if the unread column is not shown
+
   /* The below is exceedingly silly, but Ingo insists that the unread
    * count that is shown in parenthesis after the folder name must
    * be configurable in color. That means that paintCell needs to do
    * two painting passes which flickers. Since that flicker is not
    * needed when there is the unread column, special case that. */
-  if ( ft->isUnreadActive() ) {
-    if ( (column == 0 || column == ft->unreadIndex())
-          && ( unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) )
-    {
-      QFont f = p->font();
-      f.setWeight(QFont::Bold);
-      p->setFont(f);
-    }
+  if ( ft->isUnreadActive() || column != 0 ) {
     KListViewItem::paintCell( p, cg, column, width, align );
   } else {
     QListView *lv = listView();
@@ -236,40 +243,44 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     t = text( column );
     if ( !t.isEmpty() )
     {
-      // use a bold-font for the folder- and the unread-columns
-      if ( (column == 0 || column == ft->unreadIndex())
-            && ( unreadCount > 0
-                 || ( !isOpen() && unreadRecursiveCount > 0 ) ) )
-      {
-        QFont f = p->font();
-        f.setWeight(QFont::Bold);
-        p->setFont(f);
+      // draw the unread-count if the unread-column is not active
+      QString unread;
+
+      if ( unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) {
+        if ( isOpen() )
+          unread = " (" + QString::number( unreadCount ) + ")";
+        else if ( unreadRecursiveCount == unreadCount || mType == Root )
+          unread = " (" + QString::number( unreadRecursiveCount ) + ")";
+        else
+          unread = " (" + QString::number( unreadCount ) + " + " +
+                    QString::number( unreadRecursiveCount-unreadCount ) + ")";
       }
+
+      // check if the text needs to be squeezed
+      QFontMetrics fm( p->fontMetrics() );
+      int unreadWidth = fm.width( unread );
+      if ( fm.width( t ) + marg + r + unreadWidth > width )
+        t = squeezeFolderName( t, fm, width - marg - r - unreadWidth );
+
       p->drawText( r, 0, width-marg-r, height(),
-          align | AlignVCenter, t, -1, &br );
-      if (!isSelected())
-        p->setPen( ft->paintInfo().colUnread );
-      if (column == 0) {
-        // draw the unread-count if the unread-column is not active
-        QString unread;
+                    align | AlignVCenter, t, -1, &br );
 
-        if ( !ft->isUnreadActive()
-             && ( unreadCount > 0
-                  || ( !isOpen() && unreadRecursiveCount > 0 ) ) ) {
-          if ( isOpen() )
-            unread = " (" + QString::number( unreadCount ) + ")";
-          else if ( unreadRecursiveCount == unreadCount || mType == Root )
-            unread = " (" + QString::number( unreadRecursiveCount ) + ")";
-          else
-            unread = " (" + QString::number( unreadCount ) + " + " +
-                     QString::number( unreadRecursiveCount-unreadCount ) + ")";
-
-          p->drawText( br.right(), 0, width-marg-br.right(), height(),
-                       align | AlignVCenter, unread );
-        }
+      if ( !unread.isEmpty() ) {
+        if (!isSelected())
+          p->setPen( ft->paintInfo().colUnread );
+        p->drawText( br.right(), 0, width-marg-br.right(), height(),
+                      align | AlignVCenter, unread );
       }
     } // end !t.isEmpty()
   }
+}
+
+
+QString KFolderTreeItem::squeezeFolderName( const QString &text,
+                                            const QFontMetrics &fm,
+                                            uint width ) const
+{
+  return KStringHandler::rPixelSqueeze( text, fm, width );
 }
 
 
@@ -292,6 +303,10 @@ KFolderTree::KFolderTree( QWidget *parent, const char* name )
   setAlternateBackground(QColor());
   setFullWidth(true);
   disableAutoSelection();
+
+  disconnect( header(), SIGNAL( sizeChange( int, int, int ) ) );
+  connect( header(), SIGNAL( sizeChange( int, int, int ) ),
+           SLOT( slotSizeChanged( int, int, int ) ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -412,6 +427,13 @@ void KFolderTree::setFullWidth( bool fullWidth )
 {
   if (fullWidth)
     header()->setStretchEnabled( true, 0 );
+}
+
+//-----------------------------------------------------------------------------
+void KFolderTree::slotSizeChanged( int section, int, int newSize )
+{
+  viewport()->repaint(
+      header()->sectionPos(section), 0, newSize, visibleHeight(), false );
 }
 
 #include "kfoldertree.moc"
