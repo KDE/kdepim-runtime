@@ -10,9 +10,10 @@ libkdepim_la_SOURCES = \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
   kinputdialog.cpp sidebarextension.cpp infoextension.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
-  MailTransportServiceIface.skel
+  MailTransportServiceIface.skel AddressBookServiceIface.skel
 
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
+AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
 libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC)
