@@ -432,9 +432,10 @@ class KPrefsWidPath : public KPrefsWid
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
-      @param echomode  Describes how a line edit should display its contents.
+      @param filter URLRequester filter
+      @param mode  Describes how a line edit should display its contents.
     */
-    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent, 
+    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
                    const QString &filter = QString::null, uint mode = KFile::File );
     /**
       Destructor.
@@ -561,9 +562,11 @@ class KPrefsWidManager
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
+      @param filter URLRequester filter
+      @param mode URLRequester mode
     */
     KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item, QWidget *parent,
-                                const QString &filter = QString::null, 
+                                const QString &filter = QString::null,
                                 uint mode = KFile::File );
 
     /**
