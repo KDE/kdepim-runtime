@@ -387,7 +387,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\" %2>")
     .arg( cellStyle ) );
   strAddr.append( QString::fromLatin1(
-    "<img src=\"%1\" width=\"50\" height=\"70\" vspace=\"1\">" // image
+    "<img src=\"%1\" width=\"50\" vspace=\"1\">" // image
     "</td>")
     .arg( image ) );
   strAddr.append( QString::fromLatin1(
