@@ -413,6 +413,15 @@ class KPrefsWidManager
                                QWidget *parent );
 
     /**
+      Register a @ref KPrefsWidInt object.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidInt *addWidInt( KConfigSkeleton::ItemInt *item,
+                             QWidget *parent );
+
+    /**
       Register a @ref KPrefsWidTime object.
 
       @param item    The KConfigSkeletonItem representing the preferences entry.

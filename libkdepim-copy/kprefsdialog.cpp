@@ -133,6 +133,12 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mSpin = new QSpinBox( parent );
+  if ( !item->minValue().isNull() ) {
+    mSpin->setMinValue( item->minValue().toInt() );
+  }
+  if ( !item->maxValue().isNull() ) {
+    mSpin->setMaxValue( item->maxValue().toInt() );
+  }
   connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mLabel->setBuddy( mSpin );
   QString whatsThis = mItem->whatsThis();
@@ -468,6 +474,14 @@ KPrefsWidFont *KPrefsWidManager::addWidFont( KConfigSkeleton::ItemFont *item,
                                              const QString &sampleText )
 {
   KPrefsWidFont *w = new KPrefsWidFont( item, parent, sampleText );
+  addWid( w );
+  return w;
+}
+
+KPrefsWidInt *KPrefsWidManager::addWidInt( KConfigSkeleton::ItemInt *item,
+                                           QWidget *parent )
+{
+  KPrefsWidInt *w = new KPrefsWidInt( item, parent );
   addWid( w );
   return w;
 }
