@@ -21,7 +21,6 @@
 
 #include <qobject.h>
 
-class QString;
 class QWidget;
 
 namespace KParts
@@ -38,41 +37,24 @@ namespace KParts
     Q_OBJECT
 
     public:
-      SideBarExtension(KParts::ReadOnlyPart *parent, const char* name);
+      /**
+       * Constucts a SideBarExtension.
+       *
+       * @param exported A @ref QWidget derived widget that will be provided for the 
+       *                 users of SideBarExtension.
+       * @param parent   The parent widget.
+       * @param name     The name of the class.
+       **/
+      SideBarExtension(QWidget *exported, KParts::ReadOnlyPart *parent, const char* name);
       ~SideBarExtension();
 
       /**
-       * Pass the sidebar widget here. It will be reparented by kontact
+       * Retrieve a pointer to the widget. May be 0 if 0 was passed in the constructor
        **/
-      void setWidget(QWidget *widget) { m_child = widget; };
-      /**
-       * Set the display name of the Service your part is to provide
-       **/
-      void setDisplayName(const QString& name) { m_name = name; };
-      /**
-       * Set the name of the icon. 
-       **/
-      void setIcon(const QString& icon) { m_icon = icon; };
-
-      /**
-       * Retrieve a pointer to the widget
-       **/
-      QWidget* widget() const { return m_child; };
-
-      /**
-       * Retrieve the display name
-       **/
-      QString displayName() const { return m_name; };
-
-      /**
-       * Retrieve the name of the icon
-       **/
-      QString icon() const { return m_icon; };
+      QWidget* widget() const { return m_exported; };
 
     private:
-      QWidget* m_child;
-      QString  m_name;
-      QString  m_icon;
+      QWidget* m_exported;
 
       class SideBarExtensionPrivate;
       SideBarExtensionPrivate *d;

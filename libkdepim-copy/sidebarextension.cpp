@@ -24,8 +24,8 @@
 
 using namespace KParts;
 
-SideBarExtension::SideBarExtension(KParts::ReadOnlyPart *parent, const char* name)
-: QObject(parent, name), m_child(0), d(0)
+SideBarExtension::SideBarExtension(QWidget *exported, KParts::ReadOnlyPart *parent, const char* name)
+: QObject(parent, name), m_exported(exported), d(0)
 {
 }
 
