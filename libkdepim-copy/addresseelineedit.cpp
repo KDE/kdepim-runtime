@@ -58,7 +58,7 @@ static KStaticDeleter<QString> ldapTextDeleter;
 
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
                                       const char *name )
-  : KLineEdit( parent, name )
+  : ClickLineEdit( parent, QString::null, name )
 {
   m_useCompletion = useCompletion;
   m_completionInitialized = false;

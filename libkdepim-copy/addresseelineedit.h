@@ -28,7 +28,7 @@
 
 #include <kabc/addressee.h>
 
-#include "klineedit.h"
+#include "clicklineedit.h"
 #include "kcompletion.h"
 
 class KConfig;
@@ -39,7 +39,7 @@ class LdapSearch;
 
 namespace KPIM {
 
-class AddresseeLineEdit : public KLineEdit
+class AddresseeLineEdit : public ClickLineEdit 
 {
   Q_OBJECT
 
