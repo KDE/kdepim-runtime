@@ -36,12 +36,12 @@
  * int KDE_EXPORT bar;
  * \end
  */
-#undef KDE_NO_EXPORT
-#undef KDE_EXPORT
-
 #if KDE_IS_VERSION(3,3,2)
 #include <kdemacros.h>
 #else
+#undef KDE_NO_EXPORT
+#undef KDE_EXPORT
+
 #if @HAVE_GCC_VISIBILITY@
 #define KDE_NO_EXPORT __attribute__ ((visibility("hidden")))
 #define KDE_EXPORT __attribute__ ((visibility("default")))
