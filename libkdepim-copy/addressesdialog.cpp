@@ -810,7 +810,7 @@ AddressesDialog::removeEntry()
 void
 AddressesDialog::saveAs()
 {
-  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self( true ) );
   manager.load();
 
   if ( !d->ui->mSelectedView->firstChild() ) {
@@ -952,7 +952,7 @@ AddressesDialog::allDistributionLists( AddresseeViewItem* parent ) const
 void
 AddressesDialog::addDistributionLists()
 {
-  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self( true ) );
   manager.load();
 
   QStringList distLists = manager.listNames();
