@@ -11,7 +11,8 @@ libkdepim_la_SOURCES = \
   sidebarextension.cpp infoextension.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   maillistdrag.cpp MailTransportServiceIface.skel \
-  AddressBookServiceIface.skel
+  AddressBookServiceIface.skel \
+  weaver.cpp weaverextensions.cpp weaverlogger.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
