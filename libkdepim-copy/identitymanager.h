@@ -183,6 +183,14 @@ signals:
   /** Emitted on @ref commit() for each new identity */
   void added( const KPIM::Identity & ident );
 
+protected:
+  /**
+   * This is called when no identity has been defined, so we need to create a default one
+   * The parameters are filled with some default values from KUser,
+   * but reimplementations of this method can give them another value.
+   */
+  virtual void createDefaultIdentity( QString& /*fullName*/, QString& /*emailAddress*/ ) {}
+
 protected slots:
   void slotRollback() { rollback(); };
 

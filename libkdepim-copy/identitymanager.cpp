@@ -380,6 +380,8 @@ void IdentityManager::createDefaultIdentity() {
       emailAddress = QString::null;
     }
   }
+  // Let the application adjust those parameters
+  createDefaultIdentity( fullName, emailAddress );
   mShadowIdentities << Identity( i18n("Default"), fullName, emailAddress );
   mShadowIdentities.last().setIsDefault( true );
   mShadowIdentities.last().setUoid( newUoid() );
