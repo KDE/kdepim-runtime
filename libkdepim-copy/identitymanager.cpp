@@ -57,15 +57,26 @@ using namespace KPIM;
 IdentityManager::IdentityManager( bool readonly, QObject * parent, const char * name )
   : ConfigManager( parent, name ), DCOPObject( "KPIM::IdentityManager" )
 {
-  mConfig = new KConfig( "emailidentities", readonly );
   mReadOnly = readonly;
-  readConfig();
+  mConfig = new KConfig( "emailidentities", readonly );
+  readConfig(mConfig);
+  if ( mIdentities.isEmpty() ) {
+    kdDebug(5006) << "emailidentities is empty -> convert from kmailrc" << endl;
+    // No emailidentities file, or an empty one due to broken conversion (kconf_update bug in kdelibs <= 3.2.2)
+    // => convert it, i.e. read settings from kmailrc
+    KConfig kmailConf( "kmailrc", true );
+    readConfig( &kmailConf );
+  }
   mShadowIdentities = mIdentities;
   // we need at least a default identity:
   if ( mIdentities.isEmpty() ) {
     kdDebug( 5006 ) << "IdentityManager: No identity found. Creating default." << endl;
     createDefaultIdentity();
     commit();
+  }
+  // Migration: people without settings in kemailsettings should get some
+  if ( KEMailSettings().getSetting( KEMailSettings::EmailAddress ).isEmpty() ) {
+    writeConfig();
   }
 }
 
@@ -151,7 +162,7 @@ void IdentityManager::sort() {
 }
 
 void IdentityManager::writeConfig() const {
-  QStringList identities = groupList();
+  QStringList identities = groupList(mConfig);
   for ( QStringList::Iterator group = identities.begin() ;
 	group != identities.end() ; ++group )
     mConfig->deleteGroup( *group );
@@ -164,26 +175,34 @@ void IdentityManager::writeConfig() const {
       // remember which one is default:
       KConfigGroup general( mConfig, "General" );
       general.writeEntry( configKeyDefaultIdentity, (*it).uoid() );
+
+      // Also write the default identity to emailsettings
+      KEMailSettings es;
+      es.setSetting( KEMailSettings::RealName, (*it).fullName() );
+      es.setSetting( KEMailSettings::EmailAddress, (*it).emailAddr() );
+      es.setSetting( KEMailSettings::Organization, (*it).organization() );
+      es.setSetting( KEMailSettings::ReplyToAddress, (*it).replyToAddr() );
     }
   }
   mConfig->sync();
+
 }
 
-void IdentityManager::readConfig() {
+void IdentityManager::readConfig(KConfigBase* config) {
   mIdentities.clear();
 
-  QStringList identities = groupList();
+  QStringList identities = groupList(config);
   if ( identities.isEmpty() ) return; // nothing to be done...
 
-  KConfigGroup general( mConfig, "General" );
+  KConfigGroup general( config, "General" );
   uint defaultIdentity = general.readUnsignedNumEntry( configKeyDefaultIdentity );
   bool haveDefault = false;
 
   for ( QStringList::Iterator group = identities.begin() ;
 	group != identities.end() ; ++group ) {
-    KConfigGroup config( mConfig, *group );
+    KConfigGroup configGroup( config, *group );
     mIdentities << Identity();
-    mIdentities.last().readConfig( &config );
+    mIdentities.last().readConfig( &configGroup );
     if ( !haveDefault && mIdentities.last().uoid() == defaultIdentity ) {
       haveDefault = true;
       mIdentities.last().setIsDefault( true );
@@ -196,8 +215,8 @@ void IdentityManager::readConfig() {
   qHeapSort( mIdentities );
 }
 
-QStringList IdentityManager::groupList() const {
-  return mConfig->groupList().grep( QRegExp("^Identity #\\d+$") );
+QStringList IdentityManager::groupList(KConfigBase* config) const {
+  return config->groupList().grep( QRegExp("^Identity #\\d+$") );
 }
 
 IdentityManager::ConstIterator IdentityManager::begin() const {

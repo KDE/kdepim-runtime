@@ -36,6 +36,7 @@
 #include <qvaluelist.h>
 #include <dcopobject.h>
 
+class KConfigBase;
 class KConfig;
 class KMKernel;
 class QStringList;
@@ -215,8 +216,8 @@ k_dcop_signals:
 
 private:
   void writeConfig() const;
-  void readConfig();
-  QStringList groupList() const;
+  void readConfig(KConfigBase* config);
+  QStringList groupList(KConfigBase* config) const;
   void createDefaultIdentity();
 
   // returns a new Unique Object Identifier
