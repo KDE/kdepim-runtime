@@ -32,7 +32,8 @@ libkdepim_la_SOURCES = \
   recentaddresses.cpp spellingfilter.cpp \
   addresseeselector.cpp addresseeemailselection.cpp \
   designerfields.cpp kcmdesignerfields.cpp \
-  kincidencechooser.cpp
+  kincidencechooser.cpp \
+  groupwarejob.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
