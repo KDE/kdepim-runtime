@@ -65,4 +65,4 @@ METASOURCES = AUTO
 messages: rc.cpp
 	$(XGETTEXT) ../libkpimidentities/*.cpp ../libemailfunctions/*.cpp *.cpp -o $(podir)/libkdepim.pot
 
-include ../admin/Doxyfile.am
+include $(top_srcdir)/doc/api/Doxyfile.am
