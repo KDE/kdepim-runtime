@@ -97,7 +97,7 @@ void KDateEdit::setDate(const QDate& newDate)
 
   mTextChanged = false;
 
-  // We do not want to generate a signal here, since we explicity setting
+  // We do not want to generate a signal here, since we explicitly setting
   // the date
   bool b = signalsBlocked();
   blockSignals(true);
