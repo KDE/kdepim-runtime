@@ -1,10 +1,10 @@
 SUBDIRS = cfgc interfaces tests
 
-INCLUDES = -I$(top_srcdir)/libkdepim -I$(top_srcdir)/certmanager/lib $(all_includes)
+INCLUDES = -I$(top_srcdir)/certmanager/lib $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
-	ktimeedit.cpp \
+  ktimeedit.cpp \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
@@ -19,8 +19,6 @@ libkdepim_la_SOURCES = \
   klistviewsearchline_pimcopy.cpp kdatepickerpopup.cpp \
   clicklineedit.cpp \
   email.cpp kfileio.cpp configmanager.cpp \
-  identitymanager.cpp identity.cpp identitymanager.skel \
-  identitycombo.cpp \
   collectingprocess.cpp ldapclient.cpp ldapurl.cpp ldif.cpp \
   kimproxy.cpp kimiface.stub kimproxyiface.skel \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
@@ -39,11 +37,9 @@ libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = ../certmanager/lib/libkleopatra.la $(LIB_KIO) $(LIB_KABC) $(LIB_KDEUI) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
-identitymanager_DCOPIDLNG = true
-
 METASOURCES = AUTO
 
 messages: rc.cpp
-	$(XGETTEXT) *.cpp -o $(podir)/libkdepim.pot
+	$(XGETTEXT)../libkpimidentity/*.cpp *.cpp -o $(podir)/libkdepim.pot
 
 include ../admin/Doxyfile.am
