@@ -72,6 +72,11 @@ public:
    */
   virtual int subresourceCompletionWeight( const QString& ) const = 0;
 
+  /**
+   * Label for a given subresource
+   */
+  virtual QString subresourceLabel( const QString& ) const = 0;
+
 public slots:
   /**
    * (De-)activate a subresource.

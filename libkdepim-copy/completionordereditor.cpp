@@ -150,7 +150,7 @@ public:
   KABCImapSubResCompletionItem( ResourceABC* resource, const QString& subResource )
     : mResource( resource ), mSubResource( subResource ), mWeight( completionWeight() ) {}
   virtual QString label() const {
-    return QString( "%1 %2" ).arg( mResource->resourceName() ).arg( mSubResource );
+    return QString( "%1 %2" ).arg( mResource->resourceName() ).arg( mResource->subresourceLabel( mSubResource ) );
   }
   virtual int completionWeight() const {
     return mResource->subresourceCompletionWeight( mSubResource );
