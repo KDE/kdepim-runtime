@@ -221,6 +221,7 @@ KConfigPropagator::Change::List KConfigPropagator::changes()
     KConfig target( r.targetFile );
     target.setGroup( r.targetGroup );
     QString targetValue = target.readEntry( r.targetEntry );
+    if ( r.hideValue ) targetValue = KStringHandler::obscure( targetValue );
     if ( targetValue != value ) {
       Change change;
       change.file = r.targetFile;
