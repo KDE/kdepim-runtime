@@ -22,16 +22,13 @@
 #ifndef KRESOURCES_RESOURCECONFIGDLG_H
 #define KRESOURCES_RESOURCECONFIGDLG_H
 
-#include <qcheckbox.h>
-
-#include <kbuttonbox.h>
 #include <kdialog.h>
-// #include <kconfig.h>
-#include <klineedit.h>
 
 // #include "resource.h"
 // #include "resourceconfigwidget.h"
-
+class KLineEdit;
+class QCheckBox;
+class KButtonBox;
 namespace KRES {
   class Resource;
   class ResourceConfigWidget;

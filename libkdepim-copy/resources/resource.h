@@ -23,8 +23,7 @@
 #define KRESOURCES_RESOURCE_H
 
 #include <qmutex.h>
-#include <kconfig.h>
-
+class KConfig;
 namespace KRES {
 
 /**
@@ -39,13 +38,13 @@ namespace KRES {
  * is currently used for addressbook resources in libkabc and for
  * calendar resources in libkcal.
  *
- * When you want to use the framework for a new family, you need to 
+ * When you want to use the framework for a new family, you need to
  * <ul><li>Define a name for your resource family</li>
  * <li>subclass Resource and add the fields and method that are needed
  * in your application</li>
  * <li>If needed, override the doOpen() and doClose() methods.
  * <li> Provide a configuration possibility for resources in your
- * new family. You can use @ref ResourcesConfigPage to easily create a 
+ * new family. You can use @ref ResourcesConfigPage to easily create a
  * KControl applet</li>
  * <li>In your application, you can use @ref ResourceManager to keep track
  * of the resources in your family, and you can use @ref ResourceSelectDialog
@@ -61,8 +60,8 @@ namespace KRES {
  * <li>Provide a .desktop file so that the new resource type can be found
  * automatically by the ResourceManager</li>
  * </ul>
- * 
- * Example:  
+ *
+ * Example:
  *
 <B>resourceexample.h</B>:
 <pre>
@@ -204,27 +203,27 @@ kde_module_LTLIBRARIES = resourceexample.la
 
 resourceexample_la_SOURCES = resourceexample.cpp resourceexampleconfig.cpp
 resourceexample_la_LDFLAGS= $(all_libraries) -module $(KDE_PLUGIN)
-resourceexample_la_LIBADD= -lkderesources 
+resourceexample_la_LIBADD= -lkderesources
 
 linkdir= $(kde_datadir)/resources/family
 link_DATA= resourceexample.desktop
 </pre>
- * 
+ *
  *
  */
 
 /**
  * A @ref Resource  is a ...
- * 
+ *
  * A subclass should reimplement at least the constructor and the
  * @ref writeConfig method.
  *
    */
-class Resource 
+class Resource
 {
 public:
   /**
-   * Constructor. Construct resource from config. 
+   * Constructor. Construct resource from config.
    * @param config Configuration to read persistence information from.
    *               If config==0, create object using default settings.
    */
@@ -316,12 +315,12 @@ protected:
    * Open this resource. When called, the resource must be in
    * a closed state.
    *
-   * Returns true if the resource was opened successfully; 
+   * Returns true if the resource was opened successfully;
    * returns false if the resource was not opened successfully.
    */
   virtual bool doOpen() { return true; }
   /**
-   * Close this resource. Pre-condition: resource is open. 
+   * Close this resource. Pre-condition: resource is open.
    * Post-condition: resource is closed.
    */
   virtual void doClose() {}

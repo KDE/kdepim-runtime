@@ -32,6 +32,8 @@
 #include <ksimpleconfig.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
+#include <klistview.h>
+#include <kbuttonbox.h>
 
 #include "resource.h"
 #include "resourceconfigdlg.h"
@@ -62,7 +64,7 @@ private:
   bool isStandard;
 };
 
-ConfigViewItem::ConfigViewItem( QListView *parent, Resource* resource, // QString name, QString type, 
+ConfigViewItem::ConfigViewItem( QListView *parent, Resource* resource, // QString name, QString type,
   QString )
   : QCheckListItem( parent, resource->name(), CheckBox )
 {
@@ -122,7 +124,7 @@ void ResourcesConfigPage::load()
 
   delete manager;
   manager = new ResourceManager<Resource>( mFamily );
-  if ( !manager ) 
+  if ( !manager )
     kdDebug() << "ERROR: cannot create ResourceManager<Resource>( mFamily )" << endl;
 
   mListView->clear();
@@ -214,7 +216,7 @@ void ResourcesConfigPage::slotAdd()
 
   if ( dlg.exec() ) {
     manager->add( resource );
-    
+
     ConfigViewItem *item = new ConfigViewItem( mListView, resource );
     item->setOn( true );
 
@@ -257,7 +259,7 @@ void ResourcesConfigPage::slotRemove()
 
   manager->remove( confItem->mResource );
   delete confItem->mResource;
- 
+
 //  config->deleteGroup( "Resource_" + confItem->key );
 
   if ( item == mLastItem )

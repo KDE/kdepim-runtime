@@ -23,17 +23,16 @@
 #ifndef KRESOURCES_RESOURCES_CONFIG_PAGE_H
 #define KRESOURCES_RESOURCES_CONFIG_PAGE_H
 
-#include <qcombobox.h>
 #include <qstringlist.h>
 #include <qwidget.h>
 
 #include <kcmodule.h>
-#include <klineedit.h>
-#include <klistview.h>
-#include <kpushbutton.h>
 
 // #include "resource.h"
 #include "resourcemanager.h"
+class KListView;
+class QPushButton;
+class QListViewItem;
 
 namespace KRES {
 

@@ -26,10 +26,9 @@
 #include <qptrlist.h>
 #include <qdict.h>
 
-#include <kconfig.h>
 
 #include "resourcemanageriface.h"
-
+class KConfig;
 namespace KRES {
 
 class Resource;

@@ -27,6 +27,12 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 
+#include <qcheckbox.h>
+
+#include <kbuttonbox.h>
+#include <kdialog.h>
+#include <klineedit.h>
+
 #include "resourcefactory.h"
 #include "resourceconfigdlg.h"
 

@@ -21,6 +21,7 @@
 
 #include <kdebug.h>
 #include <kapplication.h>
+#include <kconfig.h>
 
 #include "resource.h"
 #include "resource.moc"
