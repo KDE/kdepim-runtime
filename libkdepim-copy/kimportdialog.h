@@ -4,6 +4,7 @@
 
 #include <qintdict.h>
 #include <qstringlist.h>
+#include <qspinbox.h>
 #include <qptrvector.h>
 #include <qvaluevector.h>
 
@@ -13,6 +14,7 @@ class QTable;
 class QListView;
 
 class KImportDialog;
+class KComboBox;
 
 class KImportColumn
 {
@@ -77,6 +79,7 @@ class KImportDialog : public KDialogBase
     void headerSelected(QListViewItem* item);
     void assignColumn(QListViewItem *);
     void assignColumn();
+    void assignTemplate();
     void removeColumn();
     void applyConverter();
     void tableSelected();
@@ -89,17 +92,21 @@ class KImportDialog : public KDialogBase
     void setData( uint row, uint col, const QString &text );
     QString data( uint row, uint col );
 
-    QTable *mTable;
     QListView *mHeaderList;
-    QListView *mFormatList;
-    
+    QSpinBox *mStartRow;
+    QSpinBox *mEndRow;
+    QTable *mTable;
+
+    KComboBox *mFormatCombo;
+    KComboBox *mSeparatorCombo;
+
     QString mSeparator;
+    int mCurrentRow;
     QString mFile;
     QIntDict<KImportColumn> mColumnDict;
+    QIntDict<uint> mTemplateDict;
     QMap<int,int> mFormats;
-    int mCurrentRow;
     QPtrList<KImportColumn> mColumns;
-
     QPtrVector<QValueVector<QString> > mData;
 };
 
