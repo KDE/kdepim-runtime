@@ -22,7 +22,6 @@
 */
 #ifndef _KPREFSDIALOG_H
 #define _KPREFSDIALOG_H
-// $Id$
 
 #include <qptrlist.h>
 #include <qlineedit.h>

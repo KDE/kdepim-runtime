@@ -1,6 +1,5 @@
 #ifndef KIMPORTDIALOG_H
 #define KIMPORTDIALOG_H
-// $Id$
 
 #include <qintdict.h>
 #include <qstringlist.h>

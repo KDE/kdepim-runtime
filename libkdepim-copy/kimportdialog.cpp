@@ -1,4 +1,3 @@
-// $Id$
 //
 // Generic CSV import. Please do not add application specific code to this
 // class. Application specific code should go to a subclass provided by the
