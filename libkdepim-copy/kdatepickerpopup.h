@@ -59,8 +59,6 @@ class KDE_EXPORT KDatePickerPopup: public QPopupMenu
     KDatePickerPopup( int items = 2, const QDate &date = QDate::currentDate(),
                       QWidget *parent = 0, const char *name = 0 );
 
-    virtual ~KDatePickerPopup();
-
     /**
        @return A pointer to the private variable mDatePicker, an instance of
        KDatePicker.

@@ -32,8 +32,9 @@ KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *paren
 {
   mItems = items;
 
-  mDatePicker = new KDatePicker();
+  mDatePicker = new KDatePicker( this );
   mDatePicker->setCloseButton( false );
+  mDatePicker->hide();
 
   connect( mDatePicker, SIGNAL( dateEntered( QDate ) ),
            SLOT( slotDateChanged( QDate ) ) );
@@ -71,11 +72,6 @@ void KDatePickerPopup::buildMenu()
 
   if ( mItems & NoDate )
     insertItem( i18n("No Date"), this, SLOT( slotNoDate() ) );
-}
-
-KDatePickerPopup::~KDatePickerPopup()
-{
-  delete mDatePicker;
 }
 
 KDatePicker *KDatePickerPopup::datePicker() const
