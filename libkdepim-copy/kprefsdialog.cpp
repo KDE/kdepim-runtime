@@ -536,6 +536,13 @@ void KPrefsDialog::autoCreate()
         kdError() << "More widgets than expected: " << widgets.count() << endl;
       }
   
+      if ( (*it)->isImmutable() ) {
+        QValueList<QWidget *>::Iterator it2;
+        for( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
+          (*it2)->setEnabled( false );
+        }
+      }
+  
       addWid( wid );
   
       mCurrentRows.replace( group, ++currentRow );
