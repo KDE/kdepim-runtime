@@ -1,4 +1,4 @@
-SUBDIRS = cfgc interfaces
+SUBDIRS = cfgc interfaces tests
 
 INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
 
@@ -12,7 +12,9 @@ libkdepim_la_SOURCES = \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   maillistdrag.cpp MailTransportServiceIface.skel \
   AddressBookServiceIface.skel \
-  weaver.cpp weaverextensions.cpp weaverlogger.cpp
+  kconfigpropagator.cpp kconfigwizard.cpp \
+  weaver.cpp weaverextensions.cpp weaverlogger.cpp \
+  pluginloaderbase.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h

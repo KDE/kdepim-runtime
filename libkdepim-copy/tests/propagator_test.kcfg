@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+
+  <kcfgfile name="testwizardrc"/>
+
+  <group name="MySettings">
+    <entry name="FixKMail" type="Bool">
+      <label>Fix KMail</label>
+      <default>true</default>
+    </entry>
+    <entry name="BreakKMail" type="Bool">
+      <label>Fix KMail</label>
+      <default>false</default>
+    </entry>
+    <entry name="DisableDefaultSigning" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="EnableDefaultSigning" type="Int">
+      <default>1</default>
+    </entry>
+    <entry name="ThisIsAString" type="String">
+      <default>hallo</default>
+    </entry>
+  </group>
+
+  <condition key="testwizardrc/MySettings/FixKMail" value="true">
+    <propagation source="testwizardrc/MySettings/DisableDefaultSigning"
+                 target="kmailrc/CryptPlug #0/SignEmail" />
+  </condition>
+
+  <condition key="testwizardrc/MySettings/BreakKMail" value="true">
+    <propagation source="testwizardrc/MySettings/EnableDefaultSigning"
+                 target="kmailrc/CryptPlug #0/SignEmail" />
+  </condition>
+
+  <propagation source="file1/group1/entry1" target="file2/group2/entry2" />
+  <propagation source="file1/group1/entry3" target="file2/group2/entry4" />
+  <condition key="myfile/mygroup/myentry" value="123">
+    <propagation source="file1/group1/entry1" target="filex/groupx/entryx" />
+  </condition>
+
+</kcfg>
