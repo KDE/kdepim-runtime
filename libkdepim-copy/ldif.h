@@ -74,6 +74,15 @@ namespace KPIM {
      */
     static bool splitLine( const QCString &line, QString &fieldname, QByteArray &value );
     /**
+     * Splits a control specification (without the "control:" directive)
+     * @param line is the control directive
+     * @oid will contain the OID
+     * @critical will contain the criticality of control
+     * @value is the control value
+     */
+    static bool splitControl( const QCString &line, QString &oid, bool &critical,
+      QByteArray &value );
+    /**
      * Starts the parsing of a new LDIF
      */
     void startParsing();
@@ -89,15 +98,20 @@ namespace KPIM {
      * EndEntry if the parser reached the end of the current entry
      * and MoreData if the parser encountered the end of the current chunk of 
      * the LDIF. If you want to finish the parsing after receiving 
-     * MoreData, then supply a buffer with '\\n\\n\\n' with setLDIF, so the 
-     * parser can safely flush the current entry.
+     * MoreData, then call endLDIF(), so the parser can safely flush 
+     * the current entry.
      */
     ParseVal nextItem();
     /**
      * Sets a chunk of LDIF. Call before startParsing(), or if nextItem() returned
      * MoreData.
      */
-    void setLDIF(QByteArray ldif) { mLdif = ldif; mPos = 0; };
+    void setLDIF( const QByteArray &ldif ) { mLdif = ldif; mPos = 0; };
+    /**
+      * Indicates the end of the LDIF file/stream. Call if nextItem() returned
+      * MoreData, but actually you don't have more data.
+      */
+    void endLDIF();
     /**
      * Returns the requested LDAP operation extracted from the current entry.
      */
@@ -109,15 +123,15 @@ namespace KPIM {
     /**
      * Returns the Distinguished Name of the current entry.
      */
-    QString dn() const { return mDn; }
+    const QString& dn() const { return mDn; }
     /**
      * Returns the new Relative Distinguished Name if modType() returned Entry_Modrdn.
      */
-    QString newRdn() const { return mNewRdn; }
+    const QString& newRdn() const { return mNewRdn; }
     /**
      * Returns the new parent of the entry if modType() returned Entry_Modrdn.
      */
-    QString newSuperior() const { return mNewSuperior; }
+    const QString& newSuperior() const { return mNewSuperior; }
     /**
      * Returns if the delete of the old RDN is required.
      */
@@ -125,11 +139,15 @@ namespace KPIM {
     /**
      * Returns the attribute name.
      */
-    QString attr() const { return mAttr; }
+    const QString& attr() const { return mAttr; }
     /**
      * Returns the attribute value.
      */
-    QByteArray val() const { return mVal; }
+    const QByteArray& val() const { return mVal; }
+    /**
+     * Returns if val() is an url
+     */
+    bool isUrl() const { return mUrl; }
     /**
      * Returns the criticality level when modType() returned Control.
      */
@@ -137,14 +155,14 @@ namespace KPIM {
     /**
      * Returns the OID when modType() returned Control.
      */
-    QString oid() const { return mOid; }
+    const QString& oid() const { return mOid; }
     /**
      * Returns the line number which the parser processes.
      */
     uint lineNo() const { return mLineNo; }
   private:
     int mModType;
-    bool mDelOldRdn;
+    bool mDelOldRdn, mUrl;
     QString mDn,mAttr,mNewRdn,mNewSuperior, mOid;
     QByteArray mLdif, mVal;
     EntryType mEntryType;
