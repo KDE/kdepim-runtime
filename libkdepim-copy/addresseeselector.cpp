@@ -270,7 +270,7 @@ void AddresseeSelector::initGUI()
   QGridLayout *layout = new QGridLayout( this, 2, 3, KDialog::marginHint(), KDialog::spacingHint() );
   QGridLayout *topLayout = new QGridLayout( this, 2, 2, KDialog::marginHint() );
 
-  QLabel *label = new QLabel( i18n( "AddressBook:" ), this );
+  QLabel *label = new QLabel( i18n( "Address book:" ), this );
   mAddressBookCombo = new KComboBox( false, this );
 
   topLayout->addWidget( label, 0, 0 );
