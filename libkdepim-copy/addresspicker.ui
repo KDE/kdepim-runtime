@@ -99,9 +99,6 @@
                     <property name="text">
                         <string>&amp;To &gt;&gt;</string>
                     </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
                 </widget>
                 <widget class="KPushButton">
                     <property name="name">
@@ -113,9 +110,6 @@
                     <property name="text">
                         <string>&amp;CC &gt;&gt;</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+C</string>
-                    </property>
                 </widget>
                 <widget class="KPushButton">
                     <property name="name">
@@ -126,9 +120,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;BCC &gt;&gt;</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+B</string>
                     </property>
                 </widget>
                 <spacer>
@@ -157,9 +148,6 @@
                     </property>
                     <property name="text">
                         <string>&lt;&lt; &amp;Remove</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+R</string>
                     </property>
                 </widget>
                 <spacer>
@@ -190,9 +178,6 @@
             </property>
             <property name="text">
                 <string>Save as &amp;Distribution List...</string>
-            </property>
-            <property name="accel">
-                <string>Alt+D</string>
             </property>
         </widget>
         <widget class="QLabel" row="0" column="2">
@@ -321,9 +306,6 @@
             </property>
             <property name="text">
                 <string>Address B&amp;ook...</string>
-            </property>
-            <property name="accel">
-                <string>Alt+O</string>
             </property>
         </widget>
     </grid>
