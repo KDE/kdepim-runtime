@@ -8,10 +8,12 @@ Comment[da]=Komposer editor
 Comment[es]=Editor Komposer
 Comment[et]=Komposeri redaktor
 Comment[fr]=Éditeur Komposer
-Comment[nl]=Komposer-bewerker
+Comment[nl]=Komposer-editor
 Comment[pt_BR]=Editor de Mensagens
+Comment[sl]=Urejevalnik Komposer
 Comment[sv]=Komposer editor
 Comment[ta]=கம்போசர் திருத்தி
+Comment[xx]=xxKomposer Editorxx
 
 [PropertyDef::X-Komposer-Weight]
 Type=int
