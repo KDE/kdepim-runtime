@@ -138,9 +138,8 @@ bool KDateEdit::validate( const QDate & )
 QDate KDateEdit::date() const
 {
   QDate dt;
-  if (readDate(dt) && (mHandleInvalid || dt.isValid())) {
-    return dt;
-  }
+  if ( mHandleInvalid || value.isValid() )
+    return value;
   return defaultValue;
 }
 
@@ -179,10 +178,8 @@ void KDateEdit::popup()
 
   mDateFrame->move( popupPoint );
 
-  QDate date;
-  readDate(date);
-  if (date.isValid()) {
-    mDatePicker->setDate( date );
+  if (value.isValid()) {
+    mDatePicker->setDate( value );
   } else {
     mDatePicker->setDate( defaultValue );
   }
