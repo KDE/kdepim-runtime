@@ -21,6 +21,7 @@
 #include <kmessagebox.h>
 #include <ksimpleconfig.h>
 #include <kiconloader.h>
+#include <kservicetype.h>
 
 #include "kimiface_stub.h"
 
