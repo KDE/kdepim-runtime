@@ -3,7 +3,7 @@ cfgc - The Configuration Compiler
 
 cfgc generates C++ source code from an XML file containing information about
 configuration options. The generated class is bases on KPrefs and provides an
-API for the application to access its configration data.
+API for the application to access its configuration data.
 
 [insert description of the class tag here]
 [insert description of the cfgfile tag here]
