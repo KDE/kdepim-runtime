@@ -167,6 +167,8 @@ void AddresseeLineEdit::insert( const QString &t )
     KLineEdit::insert( t );
     return;
   }
+        
+  //kdDebug(5300) << "     AddresseeLineEdit::insert( \"" << t << "\" )" << endl;
 
   QString newText = t.stripWhiteSpace();
   if ( newText.isEmpty() )
@@ -466,7 +468,13 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
-    QString fullEmail = addr.fullEmail( *it );
+    int len = (*it).length();
+    if( '\0' == (*it)[len-1] )
+      --len;
+    const QString tmp = (*it).left( len );
+    //kdDebug(5300) << "     AddresseeLineEdit::addContact() \"" << tmp << "\"" << endl;
+    QString fullEmail = addr.fullEmail( tmp );
+    //kdDebug(5300) << "                                     \"" << fullEmail << "\"" << endl;
     s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
   }
 }
