@@ -19,6 +19,12 @@
     Boston, MA 02111-1307, USA.
 */
 
+#include <time.h>
+#include <unistd.h>
+
+#include <qstring.h>
+
+#include <kstandarddirs.h>
 #include <kglobal.h>
 #include <kconfig.h>
 #include <klocale.h>
@@ -49,6 +55,45 @@ void KPimPrefs::usrReadConfig()
   if (mCustomCategories.isEmpty()) setCategoryDefaults();
 }
 
+const QString KPimPrefs::timezone()
+{
+  QString zone = "";
+
+  // Read TimeZoneId from korganizerrc.
+  KConfig korgcfg( locate( "config", QString::fromLatin1("korganizerrc") ) );
+  korgcfg.setGroup( "Time & Date" );
+  QString tz(korgcfg.readEntry( "TimeZoneId" ) );
+  if ( ! tz.isEmpty() ) 
+  {
+    zone = tz;
+    kdDebug(5300) << "timezone from korganizerrc is " << zone << endl;
+  }
+
+  // If timezone not found in KOrg, use the system's default timezone.
+  if ( zone.isEmpty() )
+  {
+    char zonefilebuf[PATH_MAX];
+
+    // readlink does not return a null-terminated string.
+    memset(zonefilebuf, '\0', PATH_MAX);
+    int len = readlink("/etc/localtime", zonefilebuf, PATH_MAX);
+    if ( len > 0 && len < PATH_MAX ) 
+    {
+        zone = QString::fromLocal8Bit(zonefilebuf);
+        zone = zone.mid(zone.find("zoneinfo/") + 9);
+        kdDebug(5300) << "system timezone from /etc/localtime is " << zone << endl;
+    } 
+    else 
+    {
+        tzset();
+        zone = tzname[0];
+        kdDebug(5300)  << "system timezone from tzset() is " << zone << endl;
+    }
+  }
+
+  return( zone );
+
+}
 
 void KPimPrefs::usrWriteConfig()
 {

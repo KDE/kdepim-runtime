@@ -25,6 +25,8 @@
 
 #include <kconfigskeleton.h>
 
+class QString;
+
 class KPimPrefs : public KConfigSkeleton
 {
   public:
@@ -40,6 +42,24 @@ class KPimPrefs : public KConfigSkeleton
 
     /** Write preferences to config file */
     void usrWriteConfig();
+
+    /** 
+     * Get user's timezone.
+     *
+     * This will first look for whatever timezone is stored in KOrganizer's
+     * configuration file.  If no timezone is found there, it uses
+     * /etc/localtime.
+     *
+     * The value returned may be in various formats (for example,
+     * America/New_York or EST) so your program should be prepared to these
+     * formats.
+     *
+     * The Calendar class in libkcal says accepts all timezone codes that are
+     * listed in /usr/share/zoneinfo/zone.tab.
+     *
+     * @see Calendar
+     */
+    static const QString timezone();
 
   public:
     QStringList mCustomCategories;
