@@ -30,6 +30,57 @@ class KFolderTree;
 
 /** Information shared by all items in a list view */
 struct KPaintInfo {
+
+  // Popup ids for toggle-able columns
+  enum ColumnIds
+  {
+    COL_SIZE,
+    COL_ATTACHMENT,
+    COL_IMPORTANT,
+    COL_SPAM_HAM,
+    COL_WATCHED_IGNORED,
+    COL_STATUS,
+    COL_SIGNED,
+    COL_CRYPTO,
+    COL_RECEIVER
+  };
+
+  KPaintInfo() :
+    pixmapOn(false),
+
+    showSize(false),
+    showAttachment(false), 
+    showImportant(false),
+    showSpamHam(false),
+    showWatchedIgnored(false),
+    showStatus(false),
+    showSigned(false),
+    showCrypto(false),
+    showReceiver(false),
+#ifdef SCORING
+    showScore(false),
+    scoreCol(-1),
+#endif
+
+    senderCol(-1),
+    receiverCol(-1),
+    subCol(-1),
+    dateCol(-1),
+    sizeCol(-1),
+    attachmentCol(-1),
+    importantCol(-1),
+    spamHamCol(-1),
+    watchedIgnoredCol(-1),
+    statusCol(-1),
+    signedCol(-1),
+    cryptoCol(-1),
+
+    orderOfArrival(false),
+    status(false),
+    showCryptoIcons(false),
+    showAttachmentIcon(false)
+    {}
+
   bool pixmapOn;
   QPixmap pixmap;
   QColor colFore;
@@ -37,18 +88,36 @@ struct KPaintInfo {
   QColor colNew;
   QColor colUnread;
   QColor colFlag;
+
   bool showSize;
+  bool showAttachment;
+  bool showImportant;
+  bool showSpamHam;
+  bool showWatchedIgnored;
+  bool showStatus;
+  bool showSigned;
+  bool showCrypto;
+  bool showReceiver;
 #ifdef SCORING
   bool showScore;
   int scoreCol;
 #endif
-  bool orderOfArrival;
-  bool status;
-  int flagCol;
+
   int senderCol;
+  int receiverCol;
   int subCol;
   int dateCol;
   int sizeCol;
+  int attachmentCol;
+  int importantCol;
+  int spamHamCol;
+  int watchedIgnoredCol;
+  int statusCol;
+  int signedCol;
+  int cryptoCol;
+
+  bool orderOfArrival;
+  bool status;
   bool showCryptoIcons;
   bool showAttachmentIcon;
 };
