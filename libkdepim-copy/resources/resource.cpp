@@ -23,7 +23,7 @@
 #include <kapplication.h>
 
 #include "resource.h"
-
+#include "resource.moc"
 using namespace KRES;
 
 Resource::Resource( const KConfig* config ) :
@@ -54,7 +54,7 @@ void Resource::writeConfig( KConfig* config )
   config->writeEntry( "ResourceIdentifier", mIdentifier );
 }
 
-bool Resource::open() 
+bool Resource::open()
 {
   bool result = true;
   mMutex.lock();
@@ -67,7 +67,7 @@ bool Resource::open()
   return result;
 }
 
-void Resource::close() 
+void Resource::close()
 {
   mMutex.lock();
   if ( ! mOpenCount )
@@ -117,7 +117,7 @@ QString Resource::encryptStr( const QString &str )
   for ( uint i = 0; i < str.length(); ++i )
     result += ( str[ i ].unicode() < 0x20 ) ? str[ i ] :
         QChar( 0x1001F - str[ i ].unicode() );
-                
+
   return result;
 }
 
