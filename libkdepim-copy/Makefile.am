@@ -1,7 +1,7 @@
 SUBDIRS = cfgc interfaces tests pics
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/libkdepim \
-           -I$(top_srcdir)/libemailfunctions $(all_includes)
+           $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
