@@ -24,6 +24,8 @@
 #define LINKLOCATOR_H_INCLUDED
 
 #include <qstring.h>
+#include <qmap.h>
+
 #include <kdepimmacros.h>
 
 /**
@@ -125,8 +127,11 @@ public:
    * @return An HTML version of the text supplied in the 'plainText' parameter, suitable
    *         for inclusion in the BODY of an HTML document.
    */
-  static QString convertToHtml(const QString& plainText, bool preserveBlanks = false,
+  static QString convertToHtml(const QString& plainText, int flag = 0,
     int maxUrlLen = 4096, int maxAddressLen = 255);
+
+  static const int PreserveSpaces = 0x01;
+  static const int ReplaceSmileys = 0x02;
 
 protected:
   /**
@@ -139,12 +144,25 @@ protected:
   int mPos;
 
 private:
-  int mMaxUrlLen;
-  int mMaxAddressLen;
-
   bool atUrl() const;
   bool isEmptyUrl(const QString& url);
   bool isEmptyAddress(const QString& address);
+
+  /**
+   * Replaces smiley text with an <img> tag containing the relevant image.
+   * For an emoticon text to be recognised it has to match 
+   * "(^|\s+)text(\s+|$)"
+   * @return An HTML String with <img> for an emoticon
+   */
+  QString getEmoticon();
+
+  int mMaxUrlLen;
+  int mMaxAddressLen;
+
+  // maps the smiley text to the corresponding emoticon name
+  static QMap<QString, QString> *s_smileyEmoticonNameMap;
+  // cache for the HTML representation of a smiley
+  static QMap<QString, QString> *s_smileyEmoticonHTMLCache;
 };
 
 #endif // LINKLOCATOR_H_INCLUDED

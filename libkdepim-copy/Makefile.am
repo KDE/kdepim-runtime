@@ -32,7 +32,7 @@ libkdepim_la_SOURCES = \
   addresseeselector.cpp addresseeemailselection.cpp \
   designerfields.cpp kcmdesignerfields.cpp \
   embeddedurlpage.cpp kincidencechooser.cpp \
-  groupwarejob.cpp \
+  groupwarejob.cpp pimemoticons.kcfgc \
   krsqueezedtextlabel.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
@@ -58,7 +58,7 @@ kdepimwidgets.cpp: $(srcdir)/kdepim.widgets
 
 CLEANFILES = kdepimwidgets.cpp
 
-
+kde_kcfg_DATA = pimemoticons.kcfg
 
 METASOURCES = AUTO
 

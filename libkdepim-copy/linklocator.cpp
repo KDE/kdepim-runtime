@@ -21,7 +21,21 @@
  */
 
 #include "linklocator.h"
+#include "pimemoticons.h"
+#include <kglobal.h>
+#include <kstandarddirs.h>
+#include <kstaticdeleter.h>
+#include <kmdcodec.h>
+#include <kdebug.h>
 
+#include <qstylesheet.h>
+#include <qfile.h>
+
+QMap<QString, QString> *LinkLocator::s_smileyEmoticonNameMap = 0;
+QMap<QString, QString> *LinkLocator::s_smileyEmoticonHTMLCache = 0;
+
+static KStaticDeleter< QMap<QString, QString> > smileyMapDeleter;
+static KStaticDeleter< QMap<QString, QString> > smileyCacheDeleter;
 
 LinkLocator::LinkLocator(const QString& text, int pos)
   : mText(text), mPos(pos), mMaxUrlLen(4096), mMaxAddressLen(255)
@@ -31,6 +45,20 @@ LinkLocator::LinkLocator(const QString& text, int pos)
   // setMaxUrlLen()/setMaxAddressLen() in the header file AND the
   // default values used for the maxUrlLen/maxAddressLen parameters
   // of convertToHtml().
+
+  if ( !s_smileyEmoticonNameMap ) {
+    smileyMapDeleter.setObject( s_smileyEmoticonNameMap,
+                                new QMap<QString, QString>() );
+    for ( int i = 0; i < EmotIcons::EnumSindex::COUNT; ++i ) {
+      QString imageName( EmotIcons::EnumSindex::enumToString[i] );
+      imageName.truncate( imageName.length() - 2 ); //remove the _0 bit
+      s_smileyEmoticonNameMap->insert( EmotIcons::smiley(i), imageName );
+    }
+  }
+
+  if ( !s_smileyEmoticonHTMLCache )
+    smileyCacheDeleter.setObject( s_smileyEmoticonHTMLCache,
+                                  new QMap<QString, QString>() );
 }
 
 void LinkLocator::setMaxUrlLen(int length)
@@ -183,7 +211,7 @@ bool LinkLocator::isEmptyAddress(const QString& address)
          address[address.length() - 1] == '@';
 }
 
-QString LinkLocator::convertToHtml(const QString& plainText, bool preserveBlanks,
+QString LinkLocator::convertToHtml(const QString& plainText, int flags,
   int maxUrlLen, int maxAddressLen)
 {
   LinkLocator locator(plainText);
@@ -195,11 +223,12 @@ QString LinkLocator::convertToHtml(const QString& plainText, bool preserveBlanks
   QChar ch;
   int x;
   bool startOfLine = true;
+  QString emoticon;
 
   for (locator.mPos = 0, x = 0; locator.mPos < (int)locator.mText.length(); locator.mPos++, x++)
   {
     ch = locator.mText[locator.mPos];
-    if (preserveBlanks)
+    if ( flags & PreserveSpaces )
     {
       if (ch==' ')
       {
@@ -252,7 +281,7 @@ QString LinkLocator::convertToHtml(const QString& plainText, bool preserveBlanks
       result += "&gt;";
     else
     {
-      int start = locator.mPos;
+      const int start = locator.mPos;
       str = locator.getUrl();
       if(!str.isEmpty())
       {
@@ -285,9 +314,16 @@ QString LinkLocator::convertToHtml(const QString& plainText, bool preserveBlanks
           result += "<a href=\"mailto:" + str + "\">" + str + "</a>";
           x += str.length() - 1;
         }
-        else
-        {
-          result += ch;
+        else {
+          if ( flags & ReplaceSmileys )
+            str = locator.getEmoticon();
+          if ( ! str.isEmpty() ) {
+            result += str;
+            x += locator.mPos - start;
+          }
+          else {
+            result += ch;
+          }
         }
       }
     }
@@ -296,4 +332,90 @@ QString LinkLocator::convertToHtml(const QString& plainText, bool preserveBlanks
   return result;
 }
 
+static QString pngToDataUrl( const QString & iconPath )
+{
+  if ( iconPath.isEmpty() )
+    return QString::null;
+
+  QFile pngFile( iconPath );
+  if ( !pngFile.open( IO_ReadOnly | IO_Raw ) )
+    return QString::null;
+
+  QByteArray ba = pngFile.readAll();
+  pngFile.close();
+  return QString::fromLatin1("data:image/png;base64,%1")
+         .arg( KCodecs::base64Encode( ba ) );
+}
+
+
+QString LinkLocator::getEmoticon()
+{
+  // smileys have to be prepended by whitespace
+  if ( ( mPos > 0 ) && !mText[mPos-1].isSpace() )
+    return QString::null;
+
+  // since smileys start with ':', ';', '(' or '8' short circuit method
+  const QChar ch = mText[mPos];
+  if ( ch !=':' && ch != ';' && ch != '(' && ch != '8' )
+    return QString::null;
+
+  // find the end of the smiley (a smiley is at most 4 chars long and ends at
+  // lineend or whitespace)
+  const int MinSmileyLen = 2;
+  const int MaxSmileyLen = 4;
+  int smileyLen = 1;
+  while ( ( smileyLen <= MaxSmileyLen ) &&
+          ( mPos+smileyLen < (int)mText.length() ) &&
+          !mText[mPos+smileyLen].isSpace() )
+    smileyLen++;
+  if ( smileyLen < MinSmileyLen || smileyLen > MaxSmileyLen )
+    return QString::null;
+
+  const QString smiley = mText.mid( mPos, smileyLen );
+  if ( !s_smileyEmoticonNameMap->contains( smiley ) )
+    return QString::null; // that's not a (known) smiley
+
+  QString htmlRep;
+  if ( s_smileyEmoticonHTMLCache->contains( smiley ) ) {
+    htmlRep = (*s_smileyEmoticonHTMLCache)[smiley];
+  }
+  else {
+    const QString imageName = (*s_smileyEmoticonNameMap)[smiley];
+
+#if KDE_IS_VERSION( 3, 3, 91 )
+    const QString iconPath = locate( "emoticons",
+                                     QString::fromLatin1( "/" ) +
+                                     EmotIcons::theme() +
+                                     QString::fromLatin1( "/" ) +
+                                     imageName + QString::fromLatin1(".png") );
+#else
+    const QString iconPath = locate( "data",
+                                     QString::fromLatin1( "kopete/pics/emoticons/" )+
+                                     EmotIcons::theme() +
+                                     QString::fromLatin1( "/" ) +
+                                     imageName + QString::fromLatin1(".png") );
+#endif
+
+    const QString dataUrl = pngToDataUrl( iconPath );
+    if ( dataUrl.isEmpty() ) {
+      htmlRep = QString::null;
+    }
+    else {
+      // create an image tag with nested span (the text in the span is used
+      // for copy & paste) representing the smiley
+      htmlRep = QString("<span class=\"pimsmileytext\">%1</span>"
+                        "<img class=\"pimsmileyimg\" src=\"%2\" "
+                        "alt=\"%3\" title=\"%4\"/>")
+                .arg( QStyleSheet::escape( smiley ), dataUrl,
+                      QStyleSheet::escape( smiley ),
+                      QStyleSheet::escape( smiley ) );
+    }
+    s_smileyEmoticonHTMLCache->insert( smiley, htmlRep );
+  }
+
+  if ( !htmlRep.isEmpty() )
+    mPos += smileyLen - 1;
+
+  return htmlRep;
+}
 

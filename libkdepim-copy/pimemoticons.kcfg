@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+  <kcfgfile name="pimemoticonsrc"/>
+    <group name="General">
+      <entry name="Theme" type="String">
+        <default>Default</default>
+        <label>Emoticon theme</label>
+        <whatsthis>This allows you to change the emoticon theme that should be used.</whatsthis> 
+      </entry>
+      <entry name="smiley$(sindex)" type="String" key="smiley_$(sindex)">
+        <parameter name="sindex" type="Enum">
+          <values>
+             <value>angry_0</value>
+             <value>angry_1</value>
+             <!--value>angry_2</value-->
+             <!--value>angry_3</value-->
+             <value>bat_0</value>
+             <value>bat_1</value>
+             <value>beer_0</value>
+             <value>beer_1</value>
+             <value>cake_0</value>
+             <value>camera_0</value>
+             <value>camera_1</value>
+             <value>cat_0</value>
+             <value>clock_0</value>
+             <value>clock_1</value>
+             <value>cocktail_0</value>
+             <value>cocktail_1</value>
+             <value>confused_0</value>
+             <value>confused_1</value>
+             <value>confused_2</value>
+             <value>confused_3</value>
+             <value>cry_0</value>
+             <value>cry_1</value>
+             <value>cry_2</value>
+             <value>cry_3</value>
+             <value>cup_0</value>
+             <value>cup_1</value>
+             <value>dog_0</value>
+             <value>embarassed_0</value>
+             <value>embarassed_1</value>
+             <value>email_0</value>
+             <value>email_1</value>
+             <value>film_0</value>
+             <value>kiss_0</value>
+             <value>kiss_1</value>
+             <value>kiss_2</value>
+             <value>kiss_3</value>
+             <value>kiss_4</value>
+             <value>kiss_5</value>
+             <value>lightbulb_0</value>
+             <value>lightbulb_1</value>
+             <value>love_0</value>
+             <value>love_1</value>
+             <value>note_0</value>
+             <value>omg_0</value>
+             <value>omg_1</value>
+             <value>omg_2</value>
+             <value>omg_3</value>
+             <value>phone_0</value>
+             <value>phone_1</value>
+             <value>present_0</value>
+             <value>present_1</value>
+             <value>rose_0</value>
+             <value>rose_1</value>
+             <value>sad_0</value>
+             <value>sad_1</value>
+             <value>shade_0</value>
+             <value>shade_1</value>
+             <value>shade_2</value>
+             <value>smile_0</value>
+             <value>smile_1</value>
+             <value>smile_2</value>
+             <value>star_0</value>
+             <value>teeth_0</value>
+             <value>teeth_1</value>
+             <value>teeth_2</value>
+             <value>teeth_3</value>
+             <value>thumbs_down_0</value>
+             <value>thumbs_down_1</value>
+             <value>thumbs_up_0</value>
+             <value>thumbs_up_1</value>
+             <value>tongue_0</value>
+             <value>tongue_1</value>
+             <value>tongue_2</value>
+             <value>tongue_3</value>
+             <value>unlove_0</value>
+             <value>unlove_1</value>
+             <value>wilted_rose_0</value>
+             <value>wilted_rose_1</value>
+             <value>wink_0</value>
+             <value>wink_1</value>
+           </values>
+         </parameter>
+         <default param='angry_0'>:-@</default>
+         <default param='angry_1'>:@</default>
+         <!--default param='angry_2'>&gt;:-(</default-->
+         <!--default param='angry_3'>&gt;:(</default-->
+         <default param='bat_0'>:-[</default>
+         <default param='bat_1'>:[</default>
+         <default param='beer_0'>(B)</default>
+         <default param='beer_1'>(b)</default>
+         <default param='cake_0'>(^)</default>
+         <default param='camera_0'>(P)</default>
+         <default param='camera_1'>(p)</default>
+         <default param='cat_0'>(@)</default>
+         <default param='clock_0'>(O)</default>
+         <default param='clock_1'>(o)</default>
+         <default param='cocktail_0'>(D)</default>
+         <default param='cocktail_1'>(d)</default>
+         <default param='confused_0'>:-S</default>
+         <default param='confused_1'>:S</default>
+         <default param='confused_2'>:-s</default>
+         <default param='confused_3'>:s</default>
+         <default param='cry_0'>:'(</default>
+         <default param='cry_1'>:'-(</default>
+         <default param='cry_2'>;-(</default>
+         <default param='cry_3'>;(</default>
+         <default param='cup_0'>(C)</default>
+         <default param='cup_1'>(c)</default>
+         <default param='dog_0'>(&amp;)</default>
+         <default param='embarassed_0'>:-$</default>
+         <default param='embarassed_1'>:$</default>
+         <default param='email_0'>(E)</default>
+         <default param='email_1'>(e)</default>
+         <default param='film_0'>(~)</default>
+         <default param='kiss_0'>(K)</default>
+         <default param='kiss_1'>(k)</default>
+         <default param='kiss_2'>:-X</default>
+         <default param='kiss_3'>:X</default>
+         <default param='kiss_4'>:-x</default>
+         <default param='kiss_5'>:x</default>
+         <default param='lightbulb_0'>(I)</default>
+         <default param='lightbulb_1'>(i)</default>
+         <default param='love_0'>(L)</default>
+         <default param='love_1'>(l)</default>
+         <default param='note_0'>(8)</default>
+         <default param='omg_0'>:-O</default>
+         <default param='omg_1'>:O</default>
+         <default param='omg_2'>:-o</default>
+         <default param='omg_3'>:o</default>
+         <default param='phone_0'>(T)</default>
+         <default param='phone_1'>(t)</default>
+         <default param='present_0'>(G)</default>
+         <default param='present_1'>(g)</default>
+         <default param='rose_0'>(F)</default>
+         <default param='rose_1'>(f)</default>
+         <default param='sad_0'>:-(</default>
+         <default param='sad_1'>:(</default>
+         <default param='shade_0'>(H)</default>
+         <default param='shade_1'>8-)</default>
+         <default param='shade_2'>8)</default>
+         <default param='smile_0'>:-)</default>
+         <default param='smile_1'>:)</default>
+         <default param='smile_2'>:o)</default>
+         <default param='star_0'>(*)</default>
+         <default param='teeth_0'>:-D</default>
+         <default param='teeth_1'>:D</default>
+         <default param='teeth_2'>:-d</default>
+         <default param='teeth_3'>:d</default>
+         <default param='thumbs_down_0'>(N)</default>
+         <default param='thumbs_down_1'>(n)</default>
+         <default param='thumbs_up_0'>(Y)</default>
+         <default param='thumbs_up_1'>(y)</default>
+         <default param='tongue_0'>:-P</default>
+         <default param='tongue_1'>:P</default>
+         <default param='tongue_2'>:-p</default>
+         <default param='tongue_3'>:p</default>
+         <default param='unlove_0'>(U)</default>
+         <default param='unlove_1'>(u)</default>
+         <default param='wilted_rose_0'>(W)</default>
+         <default param='wilted_rose_1'>(w)</default>
+         <default param='wink_0'>;-)</default>
+         <default param='wink_1'>;)</default>
+      </entry>
+    </group>
+</kcfg>
