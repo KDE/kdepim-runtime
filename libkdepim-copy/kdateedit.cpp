@@ -31,7 +31,6 @@
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
-#include <kmessagebox.h>
 #include <knotifyclient.h>
 
 #include "kdateedit.moc"
@@ -176,17 +175,6 @@ void KDateEdit::lineEnterPressed()
     setDate(date);
 
     emit(dateChanged(date));
-  }
-  else
-  {
-    if ( !currentText().isEmpty() ) {
-      mTextChanged = false;
-      QString text = i18n( "You entered an invalid date! Will use current date instead." );
-      if ( KMessageBox::warningContinueCancel( 0, text ) == KMessageBox::Continue ) {
-          setDate( QDate::currentDate() );
-          emit dateChanged( QDate::currentDate() );
-      }
-    }
   }
 }
 
