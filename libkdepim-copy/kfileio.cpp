@@ -169,6 +169,7 @@ bool kBytesToFile(const char* aBuffer, int len,
 		   const QString &aFileName,
 		   bool aAskIfExists, bool aBackup, bool aVerbose)
 {
+  // TODO: use KSaveFile
   QFile file(aFileName);
   int writeLen, rc;
 
@@ -190,6 +191,7 @@ bool kBytesToFile(const char* aBuffer, int len,
     if (aBackup)
     {
       // make a backup copy
+      // TODO: use KSaveFile::backupFile()
       QString bakName = aFileName;
       bakName += '~';
       QFile::remove(bakName);
