@@ -367,6 +367,25 @@ AddressesDialog::bccAddresses()  const
   return allAddressee( d->bccItem );
 }
 
+
+QStringList
+AddressesDialog::toDistributionLists() const
+{
+  return allDistributionLists( d->toItem );
+}
+
+QStringList
+AddressesDialog::ccDistributionLists() const
+{
+  return allDistributionLists( d->ccItem );
+}
+
+QStringList
+AddressesDialog::bccDistributionLists() const
+{
+  return allDistributionLists( d->bccItem );
+}
+
 void
 AddressesDialog::updateAvailableAddressees()
 {

@@ -109,6 +109,22 @@ namespace KPIM {
      */
     KABC::Addressee::List bccAddresses() const;
 
+    /**
+     * Returns the list of picked "To" distribution lists.
+     * This complements @ref toAddresses.
+     */
+    QStringList toDistributionLists() const;
+    /**
+     * Returns the list of picked "CC" distribution lists.
+     * This complements @ref ccAddresses.
+     */
+    QStringList ccDistributionLists() const;
+    /**
+     * Returns the list of picked "BCC" distribution lists.
+     * This complements @ref bccAddresses.
+     */
+    QStringList bccDistributionLists() const;
+
   public slots:
     /**
      * Displays the CC field if @p b is true, else
