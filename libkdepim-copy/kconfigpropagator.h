@@ -38,6 +38,7 @@ class KConfigPropagator
       @param kcfgFile file name of kcfg file containing the propagation rules
     */
     KConfigPropagator( KConfigSkeleton *skeleton, const QString &kcfgFile );
+    virtual ~KConfigPropagator() {}
 
     KConfigSkeleton *skeleton() { return mSkeleton; }
 
@@ -64,6 +65,8 @@ class KConfigPropagator
       public:
         typedef QValueList<Rule> List;
         
+        Rule() : hideValue( false ) {}
+        
         QString sourceFile;
         QString sourceGroup;
         QString sourceEntry;
@@ -73,18 +76,23 @@ class KConfigPropagator
         QString targetEntry;
 
         Condition condition;
+
+        bool hideValue;
     };
 
     class Change
     {
       public:
         typedef QValueList<Change> List;
+
+        Change() : hideValue( false ) {}
       
         QString file;
         QString group;
         QString name;
         QString label;
         QString value;
+        bool hideValue;
     };
     
     Change::List changes();
@@ -92,6 +100,12 @@ class KConfigPropagator
     Rule::List rules();
 
   protected:
+    /**
+      Implement this function in a subclass if you want to add changes which
+      can't be expressed as propagations in the kcfg file.
+    */
+    virtual void addCustomChanges( Change::List & ) {};
+
     KConfigSkeletonItem *findItem( const QString &group, const QString &name );
 
     QString itemValueAsString( KConfigSkeletonItem * );

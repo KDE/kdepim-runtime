@@ -25,6 +25,7 @@
 #include <kconfig.h>
 #include <kconfigskeleton.h>
 #include <kstandarddirs.h>
+#include <kstringhandler.h>
 
 #include <qfile.h>
 #include <qstringlist.h>
@@ -98,6 +99,9 @@ KConfigPropagator::Rule KConfigPropagator::parsePropagation( const QDomElement &
 
   QString target = e.attribute( "target" );
   parseConfigEntryPath( target, r.targetFile, r.targetGroup, r.targetEntry );
+
+  r.hideValue = e.hasAttribute( "hidevalue" ) &&
+                e.attribute( "hidevalue" ) == "true";
 
   return r;
 }
@@ -222,10 +226,14 @@ KConfigPropagator::Change::List KConfigPropagator::changes()
       change.file = r.targetFile;
       change.group = r.targetGroup;
       change.name = r.targetEntry;
+      if ( r.hideValue ) value = KStringHandler::obscure( value );
       change.value = value;
+      change.hideValue = r.hideValue;
       changes.append( change );
     }
   }
+
+  addCustomChanges( changes );
 
   return changes;
 }

@@ -27,6 +27,7 @@
 
 #include <qlistview.h>
 #include <qlayout.h>
+#include <qtimer.h>
 
 KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
                               char *name, bool modal )
@@ -36,6 +37,8 @@ KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
 {
   connect( this, SIGNAL( aboutToShowPage( QWidget * ) ),
            SLOT( slotAboutToShowPage( QWidget * ) ) );
+
+  QTimer::singleShot( 0, this, SLOT( readConfig() ) );
 }
 
 KConfigWizard::~KConfigWizard()
@@ -118,8 +121,17 @@ void KConfigWizard::updateChanges()
   for( it = changes.begin(); it != changes.end(); ++it ) {
     KConfigPropagator::Change c = *it;
     QString option = c.file + "/" + c.group + "/" + c.name;
-    new QListViewItem( mChangeView, option, c.value );
+    QString value = c.value;
+    if ( c.hideValue ) value = "*";
+    new QListViewItem( mChangeView, option, value );
   }
+}
+
+void KConfigWizard::readConfig()
+{
+  kdDebug() << "KConfigWizard::readConfig()" << endl;
+
+  usrReadConfig();
 }
 
 void KConfigWizard::slotOk()

@@ -56,13 +56,21 @@ class KConfigWizard : public KDialogBase
     QFrame *createWizardPage( const QString &title );
 
     /**
+      Use this function to read the configuration from the KConfigSkeleton
+      object to the GUI.
+    */
+    virtual void usrReadConfig() = 0;
+
+    /**
       This function is called when the wizard is finished. You have to save all
-      settings from the GUI to the config files here, so that the
+      settings from the GUI to the KConfigSkeleton object here, so that the
       KConfigPropagator can take them up from there.
     */
     virtual void usrWriteConfig() = 0;
 
   protected slots:
+    void readConfig();
+  
     void slotOk();
 
     void slotAboutToShowPage( QWidget *page );
