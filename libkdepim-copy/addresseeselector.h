@@ -39,6 +39,8 @@ class QSignalMapper;
 
 namespace KPIM {
 
+class AddresseeSelector;
+
 class KDE_EXPORT Selection
 {
   friend class AddresseeSelector;
