@@ -68,7 +68,7 @@
              <value>sad_1</value>
              <!--value>shade_0</value-->
              <value>shade_1</value>
-             <value>shade_2</value>
+             <!--value>shade_2</value-->
              <value>smile_0</value>
              <value>smile_1</value>
              <value>smile_2</value>
@@ -150,7 +150,7 @@
          <default param='sad_1'>:(</default>
          <!--default param='shade_0'>(H)</default-->
          <default param='shade_1'>8-)</default>
-         <default param='shade_2'>8)</default>
+         <!--default param='shade_2'>8)</default-->
          <default param='smile_0'>:-)</default>
          <default param='smile_1'>:)</default>
          <default param='smile_2'>:o)</default>
