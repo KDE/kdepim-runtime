@@ -39,7 +39,7 @@
 #include <kurldrag.h>
 
 #include <kabc/distributionlist.h>
-#include <kabc/ldapclient.h>
+#include "ldapclient.h"
 #include <kabc/stdaddressbook.h>
 
 #include "addresseelineedit.h"
@@ -49,13 +49,13 @@ using namespace KPIM;
 KCompletion * AddresseeLineEdit::s_completion = 0L;
 bool AddresseeLineEdit::s_addressesDirty = false;
 QTimer* AddresseeLineEdit::s_LDAPTimer = 0L;
-KABC::LdapSearch* AddresseeLineEdit::s_LDAPSearch = 0L;
+KPIM::LdapSearch* AddresseeLineEdit::s_LDAPSearch = 0L;
 QString* AddresseeLineEdit::s_LDAPText = 0L;
 AddresseeLineEdit* AddresseeLineEdit::s_LDAPLineEdit = 0L;
 
 static KStaticDeleter<KCompletion> completionDeleter;
 static KStaticDeleter<QTimer> ldapTimerDeleter;
-static KStaticDeleter<KABC::LdapSearch> ldapSearchDeleter;
+static KStaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
 static KStaticDeleter<QString> ldapTextDeleter;
 
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
@@ -87,12 +87,12 @@ void AddresseeLineEdit::init()
   if ( m_useCompletion ) {
     if ( !s_LDAPTimer ) {
       ldapTimerDeleter.setObject( s_LDAPTimer, new QTimer );
-      ldapSearchDeleter.setObject( s_LDAPSearch, new KABC::LdapSearch );
+      ldapSearchDeleter.setObject( s_LDAPSearch, new KPIM::LdapSearch );
       ldapTextDeleter.setObject( s_LDAPText, new QString );
     }
     connect( s_LDAPTimer, SIGNAL( timeout() ), SLOT( slotStartLDAPLookup() ) );
-    connect( s_LDAPSearch, SIGNAL( searchData( const QStringList& ) ),
-             SLOT( slotLDAPSearchData( const QStringList& ) ) );
+    connect( s_LDAPSearch, SIGNAL( searchData( const KPIM::LdapResultList& ) ),
+             SLOT( slotLDAPSearchData( const KPIM::LdapResultList& ) ) );
   }
 
   if ( m_useCompletion && !m_completionInitialized ) {
@@ -378,26 +378,26 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
     s = s.mid( n + 1, 255 ).stripWhiteSpace();
   }
 
-  if ( s.length() == 0 )
+  if ( s.isEmpty() )
     return;
 
   loadContacts(); // TODO reuse these?
   s_LDAPSearch->startSearch( s );
 }
 
-void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
+void AddresseeLineEdit::slotLDAPSearchData( const KPIM::LdapResultList& adrs )
 {
   if ( s_LDAPLineEdit != this )
     return;
 
-  QString name, email;
-
-  for ( QStringList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
+  for ( KPIM::LdapResultList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
+    kdDebug(5300) << "LDAP completion entry: " << (*it).name << " " << (*it).email << " order=" << (*it).clientNumber << endl;
     KABC::Addressee addr;
-    getNameAndMail(*it, name, email);
-    addr.setNameFromString( name );
-    addr.insertEmail( email, true );
-    addContact( addr, 10 );
+    addr.setNameFromString( (*it).name );
+    addr.insertEmail( (*it).email, true );
+    // The weight is bigger for the first clients, lower for the last clients.
+    // So weight = 50 - clientNumber;
+    addContact( addr, 50 - (*it).clientNumber );
   }
 
   if ( hasFocus() || completionBox()->hasFocus() )

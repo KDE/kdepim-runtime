@@ -21,7 +21,7 @@ libkdepim_la_SOURCES = \
   email.cpp kfileio.cpp configmanager.cpp \
   identitymanager.cpp identity.cpp identitymanager.skel \
   identitycombo.cpp \
-  collectingprocess.cpp \
+  collectingprocess.cpp ldapclient.cpp ldapurl.cpp ldif.cpp \
   kimproxy.cpp kimiface.stub kimproxyiface.skel
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 

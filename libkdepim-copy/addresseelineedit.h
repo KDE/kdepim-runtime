@@ -37,7 +37,7 @@
 
 class KConfig;
 
-namespace KABC {
+namespace KPIM {
 class LdapSearch;
 }
 
@@ -73,7 +73,7 @@ class AddresseeLineEdit : public ClickLineEdit
     void slotCompletion() { doCompletion(false); }
     void slotPopupCompletion( const QString& );
     void slotStartLDAPLookup();
-    void slotLDAPSearchData( const QStringList& );
+    void slotLDAPSearchData( const KPIM::LdapResultList& );
 
   private:
     void init();
@@ -93,7 +93,7 @@ class AddresseeLineEdit : public ClickLineEdit
     static bool s_addressesDirty;
     static KCompletion *s_completion;
     static QTimer *s_LDAPTimer;
-    static KABC::LdapSearch *s_LDAPSearch;
+    static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;
     static AddresseeLineEdit *s_LDAPLineEdit;
 
