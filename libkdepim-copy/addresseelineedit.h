@@ -100,6 +100,7 @@ class AddresseeLineEdit : public ClickLineEdit
     static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;
     static AddresseeLineEdit *s_LDAPLineEdit;
+    static KConfig *s_config;
 
     class AddresseeLineEditPrivate;
     AddresseeLineEditPrivate *d;
