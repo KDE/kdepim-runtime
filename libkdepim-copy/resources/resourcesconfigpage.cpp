@@ -49,7 +49,7 @@ public:
 
   void setStandard( bool value )
   {
-    setText( 2, ( value ? i18n( "yes" ) : "" ) );
+    setText( 2, ( value ? i18n( "yes" ) : QString( "" ) ) );
     isStandard = value;
   }
 
