@@ -23,12 +23,12 @@
 
 using namespace KPIM;
 
-static QString filterString( const QString &str )
+static bool compareString( const QString &left, const QString &right )
 {
-  if ( str.isEmpty() )
-    return QString::null;
+  if ( left.isEmpty() && right.isEmpty() )
+    return true;
   else
-    return str;
+    return left == right;
 }
 
 AddresseeDiffAlgo::AddresseeDiffAlgo( const KABC::Addressee &leftAddressee,
@@ -41,38 +41,38 @@ void AddresseeDiffAlgo::run()
 {
   begin();
 
-  if ( filterString( mLeftAddressee.uid() ) != filterString( mRightAddressee.uid() ) )
+  if ( !compareString( mLeftAddressee.uid(), mRightAddressee.uid() ) )
     conflictField( KABC::Addressee::uidLabel(), mLeftAddressee.uid(), mRightAddressee.uid() );
 
-  if ( filterString( mLeftAddressee.name() ) != filterString( mRightAddressee.name() ) )
+  if ( !compareString( mLeftAddressee.name(), mRightAddressee.name() ) )
     conflictField( KABC::Addressee::nameLabel(), mLeftAddressee.name(), mRightAddressee.name() );
 
-  if ( filterString( mLeftAddressee.formattedName() ) != filterString( mRightAddressee.formattedName() ) )
+  if ( !compareString( mLeftAddressee.formattedName(), mRightAddressee.formattedName() ) )
     conflictField( KABC::Addressee::formattedNameLabel(), mLeftAddressee.formattedName(), mRightAddressee.formattedName() );
 
-  if ( filterString( mLeftAddressee.familyName() ) != filterString( mRightAddressee.familyName() ) )
+  if ( !compareString( mLeftAddressee.familyName(), mRightAddressee.familyName() ) )
     conflictField( KABC::Addressee::familyNameLabel(), mLeftAddressee.familyName(), mRightAddressee.familyName() );
 
-  if ( filterString( mLeftAddressee.givenName() ) != filterString( mRightAddressee.givenName() ) )
+  if ( !compareString( mLeftAddressee.givenName(), mRightAddressee.givenName() ) )
     conflictField( KABC::Addressee::givenNameLabel(), mLeftAddressee.givenName(), mRightAddressee.givenName() );
 
-  if ( filterString( mLeftAddressee.additionalName() ) != filterString( mRightAddressee.additionalName() ) )
+  if ( !compareString( mLeftAddressee.additionalName(), mRightAddressee.additionalName() ) )
     conflictField( KABC::Addressee::additionalNameLabel(), mLeftAddressee.additionalName(), mRightAddressee.additionalName() );
 
-  if ( filterString( mLeftAddressee.prefix() ) != filterString( mRightAddressee.prefix() ) )
+  if ( !compareString( mLeftAddressee.prefix(), mRightAddressee.prefix() ) )
     conflictField( KABC::Addressee::prefixLabel(), mLeftAddressee.prefix(), mRightAddressee.prefix() );
 
-  if ( filterString( mLeftAddressee.suffix() ) != filterString( mRightAddressee.suffix() ) )
+  if ( !compareString( mLeftAddressee.suffix(), mRightAddressee.suffix() ) )
     conflictField( KABC::Addressee::suffixLabel(), mLeftAddressee.suffix(), mRightAddressee.suffix() );
 
-  if ( filterString( mLeftAddressee.nickName() ) != filterString( mRightAddressee.nickName() ) )
+  if ( !compareString( mLeftAddressee.nickName(), mRightAddressee.nickName() ) )
     conflictField( KABC::Addressee::nickNameLabel(), mLeftAddressee.nickName(), mRightAddressee.nickName() );
 
   if ( mLeftAddressee.birthday() != mRightAddressee.birthday() )
     conflictField( KABC::Addressee::birthdayLabel(), mLeftAddressee.birthday().toString(),
                    mRightAddressee.birthday().toString() );
 
-  if ( filterString( mLeftAddressee.mailer() ) != filterString( mRightAddressee.mailer() ) )
+  if ( !compareString( mLeftAddressee.mailer(), mRightAddressee.mailer() ) )
     conflictField( KABC::Addressee::mailerLabel(), mLeftAddressee.mailer(), mRightAddressee.mailer() );
 
   if ( mLeftAddressee.timeZone() != mRightAddressee.timeZone() )
@@ -81,22 +81,22 @@ void AddresseeDiffAlgo::run()
   if ( mLeftAddressee.geo() != mRightAddressee.geo() )
     conflictField( KABC::Addressee::geoLabel(), mLeftAddressee.geo().asString(), mRightAddressee.geo().asString() );
 
-  if ( filterString( mLeftAddressee.title() ) != filterString( mRightAddressee.title() ) )
+  if ( !compareString( mLeftAddressee.title(), mRightAddressee.title() ) )
     conflictField( KABC::Addressee::titleLabel(), mLeftAddressee.title(), mRightAddressee.title() );
 
-  if ( filterString( mLeftAddressee.role() ) != filterString( mRightAddressee.role() ) )
+  if ( !compareString( mLeftAddressee.role(), mRightAddressee.role() ) )
     conflictField( KABC::Addressee::roleLabel(), mLeftAddressee.role(), mRightAddressee.role() );
 
-  if ( filterString( mLeftAddressee.organization() ) != filterString( mRightAddressee.organization() ) )
+  if ( !compareString( mLeftAddressee.organization(), mRightAddressee.organization() ) )
     conflictField( KABC::Addressee::organizationLabel(), mLeftAddressee.organization(), mRightAddressee.organization() );
 
-  if ( filterString( mLeftAddressee.note() ) != filterString( mRightAddressee.note() ) )
+  if ( !compareString( mLeftAddressee.note(), mRightAddressee.note() ) )
     conflictField( KABC::Addressee::noteLabel(), mLeftAddressee.note(), mRightAddressee.note() );
 
-  if ( filterString( mLeftAddressee.productId() ) != filterString( mRightAddressee.productId() ) )
+  if ( !compareString( mLeftAddressee.productId(), mRightAddressee.productId() ) )
     conflictField( KABC::Addressee::productIdLabel(), mLeftAddressee.productId(), mRightAddressee.productId() );
 
-  if ( filterString( mLeftAddressee.sortString() ) != filterString( mRightAddressee.sortString() ) )
+  if ( !compareString( mLeftAddressee.sortString(), mRightAddressee.sortString() ) )
     conflictField( KABC::Addressee::sortStringLabel(), mLeftAddressee.sortString(), mRightAddressee.sortString() );
 
   if ( mLeftAddressee.secrecy() != mRightAddressee.secrecy() ) {
