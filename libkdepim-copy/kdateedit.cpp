@@ -296,6 +296,13 @@ bool KDateEdit::eventFilter(QObject *obj, QEvent *e)
     {
       // Up and down arrow keys step the date
       QKeyEvent* ke = (QKeyEvent*)e;
+
+      if (ke->key() == Qt::Key_Return)
+      {
+        lineEnterPressed();
+        return true;
+      }
+
       int step = 0;
       if (ke->key() == Qt::Key_Up)
         step = 1;
