@@ -482,8 +482,12 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 
     LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
-      const QString tmp = QString::fromUtf8( (*it2).first(), (*it2).first().size() );
-      kdDebug(5300) << "      " << it2.key() << ": " << tmp << endl;
+      QByteArray val = (*it2).first();
+      int len = val.size();
+      if( '\0' == val[len-1] )
+        --len;
+      const QString tmp = QString::fromUtf8( val, len );
+      kdDebug(5300) << "      key: \"" << it2.key() << "\" value: \"" << tmp << "\"" << endl;
       if ( it2.key() == "cn" ) {
         name = tmp;
         if( mail.isEmpty() )
@@ -542,14 +546,14 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         //mail.prepend( name );
         //mail = name;
       } else {
-        kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: " << name << endl;
+        kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: \"" << name << "\"" << endl;
         continue; // nothing, bad entry
       }
     } else if ( name.isEmpty() ) {
-      kdDebug(5300) << "LdapSearch::makeSearchData(): " << mail << endl;
+      kdDebug(5300) << "LdapSearch::makeSearchData() mail: \"" << mail << "\"" << endl;
       ret.append( mail );
     } else {
-      kdDebug(5300) << "LdapSearch::makeSearchData(): <" << name << "><" << mail << ">" << endl;
+      kdDebug(5300) << "LdapSearch::makeSearchData() name: \"" << name << "\"  mail: \"" << mail << "\"" << endl;
       ret.append( QString( "%1 <%2>" ).arg( name ).arg( mail ) );
     }
 
