@@ -326,7 +326,8 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
   mTimeEdit->setAutoAdvance( true );
   mTimeEdit->setDisplay( QTimeEdit::Hours | QTimeEdit::Minutes );
   mTimeEdit->setRange( QTime( 0, 1 ), QTime( 24, 0 ) ); // [1min, 24hr]
-  connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
+  connect( mTimeEdit,
+           SIGNAL( valueChanged( const QTime & ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
     QWhatsThis::add( mTimeEdit, whatsThis );
@@ -340,7 +341,7 @@ void KPrefsWidDuration::readConfig()
 
 void KPrefsWidDuration::writeConfig()
 {
-  QDateTime dt;
+  QDateTime dt( mItem->value() );
   dt.setTime( mTimeEdit->time() );
   mItem->setValue( dt );
 }
