@@ -15,333 +15,341 @@
     <property name="caption">
         <string>Address Selection</string>
     </property>
-    <hbox>
+    <vbox>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QGroupBox">
+        <widget class="QSplitter">
             <property name="name">
-                <cstring>GroupBox3</cstring>
+                <cstring>splitter2</cstring>
             </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>5</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
+            <property name="orientation">
+                <enum>Horizontal</enum>
             </property>
-            <property name="frameShape">
-                <enum>GroupBoxPanel</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Sunken</enum>
-            </property>
-            <property name="title">
-                <string>Available Addresses</string>
-            </property>
-            <grid>
+            <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>unnamed</cstring>
+                    <cstring>GroupBox3</cstring>
                 </property>
-                <widget class="KPushButton" row="2" column="2">
+                <property name="sizePolicy">
+                    <sizepolicy>
+                        <hsizetype>5</hsizetype>
+                        <vsizetype>5</vsizetype>
+                        <horstretch>1</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <property name="frameShape">
+                    <enum>GroupBoxPanel</enum>
+                </property>
+                <property name="frameShadow">
+                    <enum>Sunken</enum>
+                </property>
+                <property name="title">
+                    <string>Available Addresses</string>
+                </property>
+                <grid>
                     <property name="name">
-                        <cstring>mDeleteButton</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="text">
-                        <string>Delete</string>
-                    </property>
-                </widget>
-                <widget class="KPushButton" row="2" column="1">
-                    <property name="name">
-                        <cstring>mNewButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>New...</string>
-                    </property>
-                </widget>
-                <widget class="KPushButton" row="2" column="0">
-                    <property name="name">
-                        <cstring>mEditButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Edit...</string>
-                    </property>
-                </widget>
-                <widget class="KListView" row="0" column="0" rowspan="1" colspan="3">
-                    <column>
-                        <property name="text">
-                            <string>Name</string>
-                        </property>
-                        <property name="clickable">
-                            <bool>true</bool>
-                        </property>
-                        <property name="resizable">
-                            <bool>true</bool>
-                        </property>
-                    </column>
-                    <column>
-                        <property name="text">
-                            <string>Email Address</string>
-                        </property>
-                        <property name="clickable">
-                            <bool>true</bool>
-                        </property>
-                        <property name="resizable">
-                            <bool>true</bool>
-                        </property>
-                    </column>
-                    <property name="name">
-                        <cstring>mAvailableView</cstring>
-                    </property>
-                    <property name="selectionMode" stdset="0">
-                        <enum>Extended</enum>
-                    </property>
-                    <property name="allColumnsShowFocus">
-                        <bool>true</bool>
-                    </property>
-                    <property name="showSortIndicator">
-                        <bool>true</bool>
-                    </property>
-                    <property name="rootIsDecorated">
-                        <bool>true</bool>
-                    </property>
-                    <property name="resizeMode">
-                        <enum>AllColumns</enum>
-                    </property>
-                    <property name="fullWidth">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLayoutWidget" row="1" column="0" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>layout1</cstring>
-                    </property>
-                    <hbox>
+                    <widget class="KPushButton" row="2" column="2">
                         <property name="name">
-                            <cstring>unnamed</cstring>
+                            <cstring>mDeleteButton</cstring>
                         </property>
-                        <widget class="QPushButton">
-                            <property name="name">
-                                <cstring>mClearButton</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>1</hsizetype>
-                                    <vsizetype>1</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
+                        <property name="text">
+                            <string>Delete</string>
+                        </property>
+                    </widget>
+                    <widget class="KPushButton" row="2" column="1">
+                        <property name="name">
+                            <cstring>mNewButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>New...</string>
+                        </property>
+                    </widget>
+                    <widget class="KPushButton" row="2" column="0">
+                        <property name="name">
+                            <cstring>mEditButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Edit...</string>
+                        </property>
+                    </widget>
+                    <widget class="KListView" row="0" column="0" rowspan="1" colspan="3">
+                        <column>
                             <property name="text">
-                                <string></string>
+                                <string>Name</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap>image0</pixmap>
-                            </property>
-                            <property name="flat">
+                            <property name="clickable">
                                 <bool>true</bool>
                             </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>TextLabel2</cstring>
+                            <property name="resizable">
+                                <bool>true</bool>
                             </property>
+                        </column>
+                        <column>
                             <property name="text">
-                                <string>Filter on:</string>
+                                <string>Email Address</string>
                             </property>
-                        </widget>
-                        <widget class="QLineEdit">
+                            <property name="clickable">
+                                <bool>true</bool>
+                            </property>
+                            <property name="resizable">
+                                <bool>true</bool>
+                            </property>
+                        </column>
+                        <property name="name">
+                            <cstring>mAvailableView</cstring>
+                        </property>
+                        <property name="selectionMode" stdset="0">
+                            <enum>Extended</enum>
+                        </property>
+                        <property name="allColumnsShowFocus">
+                            <bool>true</bool>
+                        </property>
+                        <property name="showSortIndicator">
+                            <bool>true</bool>
+                        </property>
+                        <property name="rootIsDecorated">
+                            <bool>true</bool>
+                        </property>
+                        <property name="resizeMode">
+                            <enum>AllColumns</enum>
+                        </property>
+                        <property name="fullWidth">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="1" column="0" rowspan="1" colspan="3">
+                        <property name="name">
+                            <cstring>layout1</cstring>
+                        </property>
+                        <hbox>
                             <property name="name">
-                                <cstring>mFilterEdit</cstring>
+                                <cstring>unnamed</cstring>
                             </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>1</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
+                            <widget class="QPushButton">
+                                <property name="name">
+                                    <cstring>mClearButton</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>1</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap>image0</pixmap>
+                                </property>
+                                <property name="flat">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>TextLabel2</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Filter on:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>mFilterEdit</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>7</hsizetype>
+                                        <vsizetype>0</vsizetype>
+                                        <horstretch>1</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                        </hbox>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QLayoutWidget">
+                <property name="name">
+                    <cstring>layout3</cstring>
+                </property>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <spacer>
+                        <property name="name">
+                            <cstring>spacer1</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>80</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="KPushButton">
+                        <property name="name">
+                            <cstring>mToButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>To &gt;&gt;</string>
+                        </property>
+                    </widget>
+                    <widget class="KPushButton">
+                        <property name="name">
+                            <cstring>mCCButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>CC &gt;&gt;</string>
+                        </property>
+                    </widget>
+                    <widget class="KPushButton">
+                        <property name="name">
+                            <cstring>mBCCButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>BCC &gt;&gt;</string>
+                        </property>
+                    </widget>
+                    <spacer>
+                        <property name="name">
+                            <cstring>spacer2</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>73</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="KPushButton">
+                        <property name="name">
+                            <cstring>mRemoveButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>&lt;&lt; Remove</string>
+                        </property>
+                    </widget>
+                    <spacer>
+                        <property name="name">
+                            <cstring>spacer2_2</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>160</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </vbox>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox2</cstring>
+                </property>
+                <property name="sizePolicy">
+                    <sizepolicy>
+                        <hsizetype>5</hsizetype>
+                        <vsizetype>5</vsizetype>
+                        <horstretch>1</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <property name="title">
+                    <string>Selected Addresses</string>
+                </property>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="KListView">
+                        <column>
                             <property name="text">
-                                <string></string>
+                                <string>Name</string>
                             </property>
-                        </widget>
-                    </hbox>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout3</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <spacer>
-                    <property name="name">
-                        <cstring>spacer1</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>172</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="KPushButton">
-                    <property name="name">
-                        <cstring>mToButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>To &gt;&gt;</string>
-                    </property>
-                </widget>
-                <widget class="KPushButton">
-                    <property name="name">
-                        <cstring>mCCButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>CC &gt;&gt;</string>
-                    </property>
-                </widget>
-                <widget class="KPushButton">
-                    <property name="name">
-                        <cstring>mBCCButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>BCC &gt;&gt;</string>
-                    </property>
-                </widget>
-                <spacer>
-                    <property name="name">
-                        <cstring>spacer2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>50</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="KPushButton">
-                    <property name="name">
-                        <cstring>mRemoveButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&lt;&lt; Remove</string>
-                    </property>
-                </widget>
-                <spacer>
-                    <property name="name">
-                        <cstring>spacer2_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>50</height>
-                        </size>
-                    </property>
-                </spacer>
-            </vbox>
-        </widget>
-        <widget class="QGroupBox">
-            <property name="name">
-                <cstring>GroupBox2</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>5</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="title">
-                <string>Selected Addresses</string>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="KListView">
-                    <column>
+                            <property name="clickable">
+                                <bool>true</bool>
+                            </property>
+                            <property name="resizable">
+                                <bool>true</bool>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Email Address</string>
+                            </property>
+                            <property name="clickable">
+                                <bool>true</bool>
+                            </property>
+                            <property name="resizable">
+                                <bool>true</bool>
+                            </property>
+                        </column>
+                        <property name="name">
+                            <cstring>mSelectedView</cstring>
+                        </property>
+                        <property name="resizePolicy">
+                            <enum>AutoOne</enum>
+                        </property>
+                        <property name="selectionMode" stdset="0">
+                            <enum>Single</enum>
+                        </property>
+                        <property name="allColumnsShowFocus">
+                            <bool>true</bool>
+                        </property>
+                        <property name="showSortIndicator">
+                            <bool>true</bool>
+                        </property>
+                        <property name="rootIsDecorated">
+                            <bool>true</bool>
+                        </property>
+                        <property name="resizeMode">
+                            <enum>AllColumns</enum>
+                        </property>
+                        <property name="fullWidth">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="KPushButton">
+                        <property name="name">
+                            <cstring>mSaveAs</cstring>
+                        </property>
                         <property name="text">
-                            <string>Name</string>
+                            <string>Save as Distribution List</string>
                         </property>
-                        <property name="clickable">
-                            <bool>true</bool>
-                        </property>
-                        <property name="resizable">
-                            <bool>true</bool>
-                        </property>
-                    </column>
-                    <column>
-                        <property name="text">
-                            <string>Email Address</string>
-                        </property>
-                        <property name="clickable">
-                            <bool>true</bool>
-                        </property>
-                        <property name="resizable">
-                            <bool>true</bool>
-                        </property>
-                    </column>
-                    <property name="name">
-                        <cstring>mSelectedView</cstring>
-                    </property>
-                    <property name="resizePolicy">
-                        <enum>AutoOne</enum>
-                    </property>
-                    <property name="selectionMode" stdset="0">
-                        <enum>Single</enum>
-                    </property>
-                    <property name="allColumnsShowFocus">
-                        <bool>true</bool>
-                    </property>
-                    <property name="showSortIndicator">
-                        <bool>true</bool>
-                    </property>
-                    <property name="rootIsDecorated">
-                        <bool>true</bool>
-                    </property>
-                    <property name="resizeMode">
-                        <enum>AllColumns</enum>
-                    </property>
-                    <property name="fullWidth">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="KPushButton">
-                    <property name="name">
-                        <cstring>mSaveAs</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Save as Distribution List</string>
-                    </property>
-                </widget>
-            </vbox>
+                    </widget>
+                </vbox>
+            </widget>
         </widget>
-    </hbox>
+    </vbox>
 </widget>
 <images>
     <image name="image0">
