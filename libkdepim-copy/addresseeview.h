@@ -139,6 +139,8 @@ class AddresseeView : public KTextBrowser
     void slotMailClicked( const QString&, const QString& );
     void slotUrlClicked( const QString& );
     void slotHighlighted( const QString& );
+    void slotPresenceChanged( const QString & );
+    void slotPresenceInfoExpired();
     void configChanged();
 
     void data( KIO::Job*, const QByteArray& );

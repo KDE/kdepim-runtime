@@ -97,8 +97,10 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
 
   load();
   
+  // set up IMProxy to display contacts' IM presence and make connections to keep the display live
   mKIMProxy = ::KIMProxy::instance( kapp->dcopClient() );
-  //connect( mKIMProxy, SIGNAL( sigContactStatusChanged( QString ) ), this, SLOT( statusChanged( ) ) );
+  connect( mKIMProxy, SIGNAL( sigContactPresenceChanged( const QString & ) ), this, SLOT( slotPresenceChanged( const QString & ) ) );
+  connect( mKIMProxy, SIGNAL( sigPresenceInfoExpired() ), this, SLOT( slotPresenceInfoExpired() ) );
 }
 
 AddresseeView::~AddresseeView()
@@ -592,6 +594,19 @@ void AddresseeView::slotHighlighted( const QString &link )
                    mAddressee.assembledName() : mAddressee.formattedName() ) ) );
   } else
     emit highlightedMessage( "" );
+}
+
+void AddresseeView::slotPresenceChanged( const QString &uid )
+{
+  kdDebug() << k_funcinfo << " uid is: " << uid << " mAddressee is: " << mAddressee.uid() << endl;
+  if ( uid == mAddressee.uid() )
+    updateView();
+}
+
+
+void AddresseeView::slotPresenceInfoExpired()
+{
+  updateView();
 }
 
 void AddresseeView::configChanged()
