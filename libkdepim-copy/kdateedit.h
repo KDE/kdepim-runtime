@@ -123,6 +123,7 @@ class KDateEdit : public QComboBox
     void dateEntered(QDate);
     void lineEnterPressed();
     void slotTextChanged(const QString &);
+    virtual void mousePressEvent(QMouseEvent *);
 
   private:
     virtual bool eventFilter(QObject *o, QEvent *e);
@@ -140,6 +141,7 @@ class KDateEdit : public QComboBox
     QDate  defaultValue;
     QDate  value;
     bool   mReadOnly;
+    bool   mDiscardNextMousePress;
 };
 
 #endif
