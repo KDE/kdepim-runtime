@@ -46,30 +46,28 @@ using namespace KRES;
 class ConfigViewItem : public QCheckListItem
 {
 public:
-  ConfigViewItem( QListView *parent, Resource* resource, // QString name, QString type,
-      QString identifier = QString::null );
+  ConfigViewItem( QListView *parent, Resource* resource, QString identifier = QString::null );
 
   void setStandard( bool value )
   {
     setText( 2, ( value ? i18n( "yes" ) : QString( "" ) ) );
-    isStandard = value;
+    mIsStandard = value;
   }
 
-  bool standard() { return isStandard; }
+  bool standard() { return mIsStandard; }
   bool readOnly() { return mResource->readOnly(); }
 
   Resource* mResource;
 
 private:
-  bool isStandard;
+  bool mIsStandard;
 };
 
-ConfigViewItem::ConfigViewItem( QListView *parent, Resource* resource, // QString name, QString type,
-  QString )
+ConfigViewItem::ConfigViewItem( QListView *parent, Resource* resource, QString )
   : QCheckListItem( parent, resource->resourceName(), CheckBox )
 {
   mResource = resource;
-  isStandard = false;
+  mIsStandard = false;
   setText( 1, resource->type() );
 }
 
@@ -112,32 +110,37 @@ ResourcesConfigPage::ResourcesConfigPage( const QString& resourceFamily, QWidget
 
   connect( mListView, SIGNAL(selectionChanged()), this, SLOT(slotSelectionChanged()) );
 
-  manager = 0;
+  mManager = 0;
   mLastItem = 0;
 
   load();
+}
+
+ResourcesConfigPage::~ResourcesConfigPage()
+{
+  mManager->removeListener( this );
 }
 
 void ResourcesConfigPage::load()
 {
   kdDebug() << "ResourcesConfigPage::load()" << endl;
 
-  delete manager;
-  manager = new ResourceManager<Resource>( mFamily );
-  if ( !manager )
+  delete mManager;
+  mManager = new ResourceManager<Resource>( mFamily );
+  if ( !mManager )
     kdDebug() << "ERROR: cannot create ResourceManager<Resource>( mFamily )" << endl;
 
   mListView->clear();
-  QPtrList<Resource> activeResources = manager->resources( true );
-  QPtrList<Resource> passiveResources = manager->resources( false );
+  QPtrList<Resource> activeResources = mManager->resources( true );
+  QPtrList<Resource> passiveResources = mManager->resources( false );
 
   if ( activeResources.isEmpty() && passiveResources.isEmpty() ) {
     defaults();
-    activeResources = manager->resources( true );
-    passiveResources = manager->resources( false );
+    activeResources = mManager->resources( true );
+    passiveResources = mManager->resources( false );
   }
 
-  Resource *standardResource = manager->standardResource();
+  Resource *standardResource = mManager->standardResource();
 
   Resource *resource;
   for ( resource = activeResources.first(); resource; resource = activeResources.next() ) {
@@ -154,22 +157,18 @@ void ResourcesConfigPage::load()
       item->setStandard( true );
   }
 
-  manager->addListener( this );
+  mManager->addListener( this );
 
   if ( mListView->childCount() == 0 ) {
     defaults();
     emit changed( true );
-    manager->sync();
+    mManager->sync();
   } else {
     if ( !standardResource )
       KMessageBox::error( this, i18n( "There is no standard resource! Please select one." ) );
 
     emit changed( false );
   }
-}
-
-ResourcesConfigPage::~ResourcesConfigPage() {
-  manager->removeListener( this );
 }
 
 void ResourcesConfigPage::save()
@@ -180,16 +179,16 @@ void ResourcesConfigPage::save()
 
     // check if standard resource
     if ( configItem->standard() && !configItem->readOnly() && configItem->isOn() )
-      manager->setStandardResource( configItem->mResource );
+      mManager->setStandardResource( configItem->mResource );
 
     // check if active or passive resource
-    manager->setActive( configItem->mResource, ( (QCheckListItem*)item )->isOn() );
+    mManager->setActive( configItem->mResource, ( (QCheckListItem*)item )->isOn() );
 
     item = item->itemBelow();
   }
-  manager->sync();
+  mManager->sync();
 
-  if ( !manager->standardResource() )
+  if ( !mManager->standardResource() )
     KMessageBox::error( this, i18n( "There is no valid standard resource! Please select one which is neither read-only nor inactive." ) );
 
   emit changed( false );
@@ -201,7 +200,7 @@ void ResourcesConfigPage::defaults()
 
 void ResourcesConfigPage::slotAdd()
 {
-  QStringList types = manager->resourceTypeNames();
+  QStringList types = mManager->resourceTypeNames();
   bool ok = false;
   QString type = QInputDialog::getItem( i18n( "Resource Configuration" ),
 	    i18n( "Please select type of the new resource:" ), types, 0, false, &ok, this );
@@ -209,13 +208,13 @@ void ResourcesConfigPage::slotAdd()
     return;
 
   // Create new resource
-  Resource *resource = manager->createResource( type );
+  Resource *resource = mManager->createResource( type );
   resource->setResourceName( type + "-resource" );
 
-  ResourceConfigDlg dlg( this, mFamily, /*type,*/ resource, /*config,*/ "ResourceConfigDlg" );
+  ResourceConfigDlg dlg( this, mFamily, resource, "ResourceConfigDlg" );
 
   if ( dlg.exec() ) {
-    manager->add( resource );
+    mManager->add( resource );
 
     ConfigViewItem *item = new ConfigViewItem( mListView, resource );
     item->setOn( true );
@@ -241,6 +240,8 @@ void ResourcesConfigPage::slotAdd()
 
     emit changed( true );
   } else {
+    delete resource;
+    resource = 0;
   }
 }
 
@@ -257,10 +258,8 @@ void ResourcesConfigPage::slotRemove()
     return;
   }
 
-  manager->remove( confItem->mResource );
+  mManager->remove( confItem->mResource );
   delete confItem->mResource;
-
-//  config->deleteGroup( "Resource_" + confItem->key );
 
   if ( item == mLastItem )
     mLastItem = 0;
@@ -291,7 +290,7 @@ void ResourcesConfigPage::slotEdit()
       configItem->setStandard( false );
     }
 
-    manager->resourceChanged( resource );
+    mManager->resourceChanged( resource );
     emit changed( true );
   }
 }
@@ -321,7 +320,7 @@ void ResourcesConfigPage::slotStandard()
   }
 
   item->setStandard( true );
-  manager->setStandardResource( item->mResource );
+  mManager->setStandardResource( item->mResource );
 }
 
 void ResourcesConfigPage::slotSelectionChanged()
@@ -357,6 +356,5 @@ void ResourcesConfigPage::resourceDeleted( Resource* resource )
   kdDebug() << "ResourcesConfigPage::resourceDeleted( " << resource->resourceName() << " )" << endl;
 }
 
-
-
 #include "resourcesconfigpage.moc"
+

@@ -88,6 +88,24 @@ Resource *ResourceSelectDialog::getResource( QPtrList<Resource> list, QWidget *p
 {
   if ( list.count() == 1 ) return list.first();
 
+  // the following lines will return a writeable resource if only _one_ writeable
+  // resource exists
+  Resource *found = 0;
+  Resource *it = list.first();
+  while ( it ) {
+    if ( !it->readOnly() ) {
+      if ( found ) {
+        found = 0;
+	break;
+      } else
+        found = it;
+    }
+    it = list.next();
+  }
+
+  if ( found )
+    return found;
+
   ResourceSelectDialog dlg( list, parent );
   if ( dlg.exec() == KDialog::Accepted ) return dlg.resource();
   else return 0;

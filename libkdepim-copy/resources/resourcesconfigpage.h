@@ -67,7 +67,7 @@ signals:
   void changed(bool);
 
 private:
-  ResourceManager<Resource>* manager;
+  ResourceManager<Resource>* mManager;
   QString mFamily;
 
   KListView* mListView;
