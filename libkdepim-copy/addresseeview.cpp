@@ -71,17 +71,15 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   setNotifyClick( true );
 
   mActionShowBirthday = new KToggleAction( i18n( "Show Birthday" ) );
-  mActionShowAddresses = new KToggleAction( i18n( "Show Postal Addresses" ) );
-  mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ) );
-  mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ) );
-  mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ) );
-#if KDE_IS_VERSION(3,2,90)
   mActionShowBirthday->setCheckedState(i18n("Hide Birthday"));
+  mActionShowAddresses = new KToggleAction( i18n( "Show Postal Addresses" ) );
   mActionShowAddresses->setCheckedState(i18n("Hide Postal Addresses"));
+  mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ) );
   mActionShowEmails->setCheckedState(i18n("Hide Email Addresses"));
+  mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ) );
   mActionShowPhones->setCheckedState(i18n("Hide Telephone Numbers"));
+  mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ) );
   mActionShowURLs->setCheckedState(i18n("Hide Web Pages (URLs)"));
-#endif
 
   connect( mActionShowBirthday, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
