@@ -384,7 +384,6 @@ QString LinkLocator::getEmoticon()
 
 #if KDE_IS_VERSION( 3, 3, 91 )
     const QString iconPath = locate( "emoticons",
-                                     QString::fromLatin1( "/" ) +
                                      EmotIcons::theme() +
                                      QString::fromLatin1( "/" ) +
                                      imageName + QString::fromLatin1(".png") );
