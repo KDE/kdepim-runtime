@@ -96,6 +96,9 @@ int main(int argc, char *argv[])
   // If multiple emails are there, only return the first one
   checkGetNameAndEmail( "\"Faure, David\" <faure@kde.org>, KHZ <khz@khz.khz>", "Faure, David", "faure@kde.org", true );
 
+  // No '@'
+  checkGetNameAndEmail(  "foo <distlist>", "foo", "distlist", true );
+
   printf("\nTest OK !\n");
 
   return 0;
