@@ -269,7 +269,7 @@ void KCMDesignerFields::initGUI()
   {
     QString txt =
       i18n("<qt><b>Warning:</b> Qt Designer could not be found. It is probably not "
-         "installed. You will only be able to import existing designer files!</qt>");
+         "installed. You will only be able to import existing designer files.</qt>");
     QLabel *lbl = new QLabel( txt, this );
     layout->addWidget( lbl );
   }

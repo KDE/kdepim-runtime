@@ -53,7 +53,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     QLabel * lab;
     lab = new QLabel( i18n(
                         "<qt>A conflict was detected. This probably means someone edited the same entry on the server while you changed it locally."
-                        "<br/>NOTE: You have to check mail again to apply your changes to the server!</qt>"), topFrame);
+                        "<br/>NOTE: You have to check mail again to apply your changes to the server.</qt>"), topFrame);
     topLayout->addMultiCellWidget(lab, iii,iii,0,2);
     ++iii;
     QHBox * b_box = new QHBox( topFrame );
@@ -255,7 +255,7 @@ void KIncidenceChooser::showDiff()
 
     diff = new KPIM::CalendarDiffAlgo( mInc1, mInc2);
     diff->setLeftSourceTitle(  i18n( "Local entry"));
-    diff->setRightSourceTitle(i18n( "New (remote)  entry") );
+    diff->setRightSourceTitle(i18n( "New (remote) entry") );
     diff->addDisplay( mDisplayDiff );
     diff->run();
     mDisplayDiff->show();
