@@ -17,27 +17,11 @@
     the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
     Boston, MA 02111-1307, USA.
 */
-/*
-#include <qgroupbox.h>
-#include <qinputdialog.h>
-#include <qlabel.h>
-
-#include <kapplication.h>
-#include <kcombobox.h>
-#include <kdebug.h>
-#include <klocale.h>
-#include <kmessagebox.h>
-#include <ksimpleconfig.h>
-#include <kstandarddirs.h>
-#include <kurlrequester.h>
-*/
-// #include "resource.h"
-// #include "resourceconfigdlg.h"
-// #include "resourcefactory.h"
 
 #include <qlayout.h>
 
 #include <resourcesconfigpage.h>
+
 #include "kcmcalendars.h"
 
 KCMCalendars::KCMCalendars( QWidget *parent, const char *name )

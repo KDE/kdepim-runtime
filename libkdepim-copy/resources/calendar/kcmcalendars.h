@@ -21,14 +21,7 @@
 #ifndef KCMCALENDARS_H
 #define KCMCALENDARS_H
 
-//#include <qcombobox.h>
-//#include <qstringlist.h>
-//#include <qwidget.h>
-
 #include <kcmodule.h>
-//#include <klineedit.h>
-//#include <klistview.h>
-//#include <kpushbutton.h>
 
 #include <resourcesconfigpage.h>
 

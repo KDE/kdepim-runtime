@@ -26,18 +26,19 @@
 #include <qptrlist.h>
 
 #include <kdebug.h>
-#include "resourcemanager.h"
 
-#include "vcaldrag.h"
-#include "vcalformat.h"
-#include "icalformat.h"
-#include "exceptions.h"
-#include "incidence.h"
-#include "journal.h"
-#include "filestorage.h"
+#include <libkcal/vcaldrag.h>
+#include <libkcal/vcalformat.h>
+#include <libkcal/icalformat.h>
+#include <libkcal/exceptions.h>
+#include <libkcal/incidence.h>
+#include <libkcal/journal.h>
+#include <libkcal/filestorage.h>
 
-#include "resourcelocal.h"
+#include <resourcemanager.h>
+
 #include "resourcecalendar.h"
+#include "resourcelocal.h"
 
 #include "multicalendar.h"
 

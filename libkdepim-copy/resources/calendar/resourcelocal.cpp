@@ -29,21 +29,21 @@
 #include <kdebug.h>
 #include <kurl.h>
 
-#include "resourceconfigwidget.h"
-
-#include "vcaldrag.h"
-#include "vcalformat.h"
-#include "icalformat.h"
-#include "exceptions.h"
-#include "incidence.h"
-#include "event.h"
-#include "todo.h"
-#include "journal.h"
-#include "filestorage.h"
+#include <libkcal/vcaldrag.h>
+#include <libkcal/vcalformat.h>
+#include <libkcal/icalformat.h>
+#include <libkcal/exceptions.h>
+#include <libkcal/incidence.h>
+#include <libkcal/event.h>
+#include <libkcal/todo.h>
+#include <libkcal/journal.h>
+#include <libkcal/filestorage.h>
 
 #include "multicalendar.h"
-#include "resourcelocal.h"
 #include "resourcelocalconfig.h"
+#include "resourceconfigwidget.h"
+
+#include "resourcelocal.h"
 
 using namespace KCal;
 

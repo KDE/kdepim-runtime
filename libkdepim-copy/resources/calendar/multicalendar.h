@@ -24,8 +24,9 @@
 #include <qintdict.h>
 #include <qmap.h>
 
-#include "resourcemanager.h"
-#include "calendar.h"
+#include <libkcal/calendar.h>
+
+#include <resourcemanager.h>
 
 namespace KCal {
 

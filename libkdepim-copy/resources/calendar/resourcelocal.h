@@ -1,4 +1,4 @@
-/*
+ /*
     This file is part of libkcal.
     Copyright (c) 1998 Preston Brown
     Copyright (c) 2001 Cornelius Schumacher <schumacher@kde.org>
@@ -30,10 +30,9 @@
 #include <kurl.h>
 #include <kconfig.h>
 
-#include "incidence.h"
-#include "resourcecalendar.h"
+#include <libkcal/incidence.h>
 
-// #include "calendar.h"
+#include "resourcecalendar.h"
 
 #define BIGPRIME 1031 /* should allow for at least 4 appointments 365 days/yr
 			 to be almost instantly fast. */

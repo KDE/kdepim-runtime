@@ -28,11 +28,13 @@
 #include <kdebug.h>
 #include <kstandarddirs.h>
 
-#include "vcaldrag.h"
-#include "vcalformat.h"
-#include "icalformat.h"
-#include "resourcelocalconfig.h"
+#include <libkcal/vcaldrag.h>
+#include <libkcal/vcalformat.h>
+#include <libkcal/icalformat.h>
+
 #include "resourcelocal.h"
+
+#include "resourcelocalconfig.h"
 
 using namespace KCal;
 
