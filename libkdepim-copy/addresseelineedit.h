@@ -43,7 +43,7 @@ class LdapSearch;
 
 namespace KPIM {
 
-class AddresseeLineEdit : public ClickLineEdit 
+class AddresseeLineEdit : public ClickLineEdit
 {
   Q_OBJECT
 
@@ -56,7 +56,7 @@ class AddresseeLineEdit : public ClickLineEdit
 
     static KConfig *config();
     static bool getNameAndMail(const QString& aStr, QString& name, QString& mail);
-  
+
   public slots:
     void cursorAtEnd();
     void enableCompletion( bool enable );

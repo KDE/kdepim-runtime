@@ -391,7 +391,7 @@ void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
     return;
 
   QString name, email;
-  
+
   for ( QStringList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
     KABC::Addressee addr;
     getNameAndMail(*it, name, email);
@@ -454,13 +454,13 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
 {
   name = QString::null;
   mail = QString::null;
-  
+
   const int len=aStr.length();
-  
+
   bool bInComment;
   int i=0, iAd=0, iMailStart=0, iMailEnd=0;
   QChar c;
-  
+
   // Find the '@' of the email address
   // skipping all '@' inside "(...)" comments:
   bInComment = false;
@@ -482,7 +482,7 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
     }
     ++i;
   }
-  
+
   if( !iAd ){
     // We suppose the user is typing the string manually and just
     // has not finished typing the mail address part.
@@ -495,9 +495,9 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
         break;
     }
     mail = aStr.mid( i+1 );
-    
+
   }else{
-  
+
     // Loop backwards until we find the start of the string
     // or a ',' outside of a comment.
     bInComment = false;
@@ -514,10 +514,10 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
       }else{
         // found the start of this addressee ?
         if( ',' == c )
-          break; 
+          break;
         // stuff is before the leading '<' ?
         if( iMailStart ){
-          name.prepend( c ); 
+          name.prepend( c );
         }else{
           switch( c ){
             case '<':
@@ -535,15 +535,15 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
         }
       }
     }
-    
+
     name = name.simplifyWhiteSpace();
     mail = mail.simplifyWhiteSpace();
-    
+
     if( mail.isEmpty() )
       return false;
-      
+
     mail.append('@');
-    
+
     // Loop forward until we find the end of the string
     // or a ',' outside of a comment.
     bInComment = false;
@@ -560,10 +560,10 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
       }else{
         // found the end of this addressee ?
         if( ',' == c )
-          break; 
+          break;
         // stuff is behind the trailing '<' ?
         if( iMailEnd ){
-          name.append( c ); 
+          name.append( c );
         }else{
           switch( c ){
             case '>':
@@ -582,10 +582,10 @@ bool AddresseeLineEdit::getNameAndMail(const QString& aStr, QString& name, QStri
       }
     }
   }
-  
+
   name = name.simplifyWhiteSpace();
   mail = mail.simplifyWhiteSpace();
-  
+
   return ! (name.isEmpty() || mail.isEmpty());
 }
 
