@@ -22,7 +22,7 @@
 #define KCONFIGWIZARD_H
 
 #include <kconfigpropagator.h>
-
+#include <kdepimmacros.h>
 #include <kdialogbase.h>
 
 class QListView;
@@ -30,7 +30,7 @@ class QListView;
 /**
   @short Configuration wizard base class
 */
-class KConfigWizard : public KDialogBase
+class KDE_EXPORT KConfigWizard : public KDialogBase
 {
     Q_OBJECT
   public:

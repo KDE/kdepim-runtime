@@ -26,10 +26,12 @@
 #include <qdom.h>
 #include <qptrlist.h>
 
+#include <kdepimmacros.h>
+
 class KConfigSkeleton;
 class KConfigSkeletonItem;
 
-class KConfigPropagator
+class KDE_EXPORT KConfigPropagator
 {
   public:
 
@@ -53,7 +55,7 @@ class KConfigPropagator
     */
     void commit();
 
-    class Condition
+    class KDE_EXPORT Condition
     {
       public:
         Condition() : isValid( false ) {}
@@ -66,7 +68,7 @@ class KConfigPropagator
         bool isValid;
     };
 
-    class Rule
+    class KDE_EXPORT Rule
     {
       public:
         typedef QValueList<Rule> List;
@@ -86,7 +88,7 @@ class KConfigPropagator
         bool hideValue;
     };
 
-    class Change
+    class KDE_EXPORT Change
     {
       public:
         typedef QPtrList<Change> List;
@@ -106,7 +108,7 @@ class KConfigPropagator
         QString mTitle;
     };
 
-    class ChangeConfig : public Change
+    class KDE_EXPORT ChangeConfig : public Change
     {
       public:
         ChangeConfig();

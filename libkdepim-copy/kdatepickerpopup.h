@@ -24,6 +24,7 @@
 #include <qdatetime.h>
 #include <qpopupmenu.h>
 
+#include <kdepimmacros.h>
 #include <kdatepicker.h>
 
 /**
@@ -41,7 +42,7 @@
 
    @author Bram Schoenmakers <bram_s@softhome.net>
 */
-class KDatePickerPopup: public QPopupMenu
+class KDE_EXPORT KDatePickerPopup: public QPopupMenu
 {
     Q_OBJECT
   public:
