@@ -25,10 +25,8 @@
 #include <qlineedit.h>
 #include <qlistbox.h>
 #include <qvalidator.h>
-#include <qvbox.h>
 
 #include <kcalendarsystem.h>
-#include <kdatepicker.h>
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <klocale.h>
@@ -47,7 +45,7 @@ class DateValidator : public QValidator
       int length = str.length();
 
       // empty string is intermediate so one can clear the edit line and start from scratch
-      if ( length <= 0 ) 
+      if ( length <= 0 )
         return Intermediate;
 
       if ( mKeywords.contains( str.lower() ) )
@@ -81,22 +79,16 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
   changeItem( today, 0 );
   setMinimumSize( sizeHint() );
 
-  mDateFrame = new QVBox( 0, 0, WType_Popup );
-  mDateFrame->setFrameStyle( QFrame::PopupPanel | QFrame::Raised );
-  mDateFrame->setLineWidth( 3 );
-  mDateFrame->hide();
-  mDateFrame->installEventFilter( this );
-
-  mDatePicker = new KDatePicker( mDateFrame, mDate );
-
   connect( lineEdit(), SIGNAL( returnPressed() ),
            this, SLOT( lineEnterPressed() ) );
   connect( this, SIGNAL( textChanged( const QString& ) ),
            SLOT( slotTextChanged( const QString& ) ) );
 
-  connect( mDatePicker, SIGNAL( dateEntered( QDate ) ),
-           SLOT( dateEntered( QDate ) ) );
-  connect( mDatePicker, SIGNAL( dateSelected( QDate ) ),
+  mPopup = new KDatePickerPopup( KDatePickerPopup::DatePicker | KDatePickerPopup::Words );
+  mPopup->hide();
+  mPopup->installEventFilter( this );
+
+  connect( mPopup, SIGNAL( dateChanged( QDate ) ),
            SLOT( dateSelected( QDate ) ) );
 
   // handle keyword entry
@@ -110,8 +102,8 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
 
 KDateEdit::~KDateEdit()
 {
-  delete mDateFrame;
-  mDateFrame = 0;
+  delete mPopup;
+  mPopup = 0;
 }
 
 void KDateEdit::setDate( const QDate& date )
@@ -145,13 +137,13 @@ void KDateEdit::popup()
 
   QPoint popupPoint = mapToGlobal( QPoint( 0,0 ) );
 
-  int dateFrameHeight = mDateFrame->sizeHint().height();
+  int dateFrameHeight = mPopup->sizeHint().height();
   if ( popupPoint.y() + height() + dateFrameHeight > desk.bottom() )
     popupPoint.setY( popupPoint.y() - dateFrameHeight );
   else
     popupPoint.setY( popupPoint.y() + height() );
 
-  int dateFrameWidth = mDateFrame->sizeHint().width();
+  int dateFrameWidth = mPopup->sizeHint().width();
   if ( popupPoint.x() + dateFrameWidth > desk.right() )
     popupPoint.setX( desk.right() - dateFrameWidth );
 
@@ -161,14 +153,12 @@ void KDateEdit::popup()
   if ( popupPoint.y() < desk.top() )
     popupPoint.setY( desk.top() );
 
-  mDateFrame->move( popupPoint );
-
   if ( mDate.isValid() )
-    mDatePicker->setDate( mDate );
+    mPopup->setDate( mDate );
   else
-    mDatePicker->setDate( QDate::currentDate() );
+    mPopup->setDate( QDate::currentDate() );
 
-  mDateFrame->show();
+  mPopup->popup( popupPoint );
 
   // The combo box is now shown pressed. Make it show not pressed again
   // by causing its (invisible) list box to emit a 'selected' signal.
@@ -191,8 +181,9 @@ void KDateEdit::dateSelected( QDate date )
     updateView();
     emit dateChanged( date );
 
-    if ( date.isValid() )
-      mDateFrame->hide();
+    if ( date.isValid() ) {
+      mPopup->hide();
+    }
   }
 }
 
@@ -281,7 +272,7 @@ bool KDateEdit::eventFilter( QObject *object, QEvent *event )
       else if ( keyEvent->key() == Qt::Key_Down )
         step = -1;
       if ( step && !mReadOnly ) {
-        QDate date = parseDate();        
+        QDate date = parseDate();
         if ( date.isValid() ) {
           date = date.addDays( step );
           if ( assignDate( date ) ) {
@@ -298,8 +289,8 @@ bool KDateEdit::eventFilter( QObject *object, QEvent *event )
       case QEvent::MouseButtonDblClick:
       case QEvent::MouseButtonPress: {
         QMouseEvent *mouseEvent = (QMouseEvent*)event;
-        if ( !mDateFrame->rect().contains( mouseEvent->pos() ) ) {
-          QPoint globalPos = mDateFrame->mapToGlobal( mouseEvent->pos() );
+        if ( !mPopup->rect().contains( mouseEvent->pos() ) ) {
+          QPoint globalPos = mPopup->mapToGlobal( mouseEvent->pos() );
           if ( QApplication::widgetAt( globalPos, true ) == this ) {
             // The date picker is being closed by a click on the
             // KDateEdit widget. Avoid popping it up again immediately.

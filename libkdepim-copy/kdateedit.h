@@ -29,10 +29,9 @@
 
 #include <kdepimmacros.h>
 
-class QEvent;
-class QVBox;
+#include "kdatepickerpopup.h"
 
-class KDatePicker;
+class QEvent;
 
 /**
   A date editing widget that consists of an editable combo box.
@@ -127,8 +126,7 @@ class KDE_EXPORT KDateEdit : public QComboBox
     QDate parseDate( bool* = 0 ) const;
     void updateView();
 
-    KDatePicker *mDatePicker;
-    QVBox *mDateFrame;
+    KDatePickerPopup *mPopup;
 
     QDate mDate;
     bool mReadOnly;
