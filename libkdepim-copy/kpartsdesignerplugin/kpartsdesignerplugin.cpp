@@ -24,6 +24,7 @@
 #include <kmimetype.h>
 #include <qlayout.h>
 #include <kapplication.h>
+#include <kdepimmacros.h>
 
 KPartsGenericPart::KPartsGenericPart( QWidget* parentWidget, const char* name )
     : QWidget( parentWidget, name ), m_part( 0 )
