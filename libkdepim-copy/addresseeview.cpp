@@ -111,25 +111,12 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   updateView();
 }
 
-void AddresseeView::updateView()
+QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
+                                   bool showBirthday, bool showAddresses,
+                                   bool showEmails, bool showPhones, bool showURLs )
 {
-  // clear view
-  setText( QString::null );
-
-  if ( mAddressee.isEmpty() ) {
-    QMimeSourceFactory::defaultFactory()->setImage( "myimage", QByteArray() );
-    return;
-  }
-
-  if ( mImageJob ) {
-    mImageJob->kill();
-    mImageJob = 0;
-
-    mImageData.truncate( 0 );
-  }
-
-  QString name = ( mAddressee.formattedName().isEmpty() ?
-                   mAddressee.assembledName() : mAddressee.formattedName() );
+  QString name = ( addr.formattedName().isEmpty() ?
+                   addr.assembledName() : addr.formattedName() );
 
   QString dynamicPart;
 
@@ -138,8 +125,8 @@ void AddresseeView::updateView()
 			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
 			);
 
-  if ( mActionShowBirthday->isChecked() ) {
-    QDate date = mAddressee.birthday().date();
+  if ( showBirthday ) {
+    QDate date = addr.birthday().date();
 
     if ( date.isValid() )
       dynamicPart += rowFmtStr
@@ -147,49 +134,66 @@ void AddresseeView::updateView()
         .arg( KGlobal::locale()->formatDate( date, true ) );
   }
 
-  if ( mActionShowPhones->isChecked() ) {
-    KABC::PhoneNumber::List phones = mAddressee.phoneNumbers();
+  if ( showPhones ) {
+    KABC::PhoneNumber::List phones = addr.phoneNumbers();
     KABC::PhoneNumber::List::ConstIterator phoneIt;
     for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
       QString number = (*phoneIt).number();
 
       QString url;
       if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
-        url = QString::fromLatin1("fax:") + number;
+        url = QString::fromLatin1( "fax:" ) + number;
       else
-        url = QString::fromLatin1("phone:") + number;
+        url = QString::fromLatin1( "phone:" ) + number;
 
-      dynamicPart += rowFmtStr
-        .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-        .arg( QString::fromLatin1("<a href=\"%1\">%2</a>").arg(url).arg(number) );
+      if ( useLinks ) {
+        dynamicPart += rowFmtStr
+          .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
+          .arg( QString::fromLatin1( "<a href=\"%1\">%2</a>" ).arg(url).arg(number) );
+      } else {
+        dynamicPart += rowFmtStr
+          .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
+          .arg( number );
+      }
     }
   }
 
-  if ( mActionShowEmails->isChecked() ) {
-    QStringList emails = mAddressee.emails();
+  if ( showEmails ) {
+    QStringList emails = addr.emails();
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
-      QString fullEmail = mAddressee.fullEmail( *emailIt );
+      QString fullEmail = addr.fullEmail( *emailIt );
       QUrl::encode( fullEmail );
-      dynamicPart += rowFmtStr
-        .arg( type )
-        .arg( QString::fromLatin1( "<a href=\"mailto:%1\">%2</a>" )
-        .arg( fullEmail, *emailIt ) );
+
+      if ( useLinks ) {
+        dynamicPart += rowFmtStr.arg( type )
+          .arg( QString::fromLatin1( "<a href=\"mailto:%1\">%2</a>" )
+          .arg( fullEmail, *emailIt ) );
+      } else {
+        dynamicPart += rowFmtStr.arg( type ).arg( *emailIt );
+      }
+
       type = i18n( "Other" );
     }
   }
 
-  if ( mActionShowURLs->isChecked() ) {
-    if ( !mAddressee.url().url().isEmpty() ) {
-      dynamicPart += rowFmtStr
-        .arg( i18n( "Homepage" ) )
-        .arg( KStringHandler::tagURLs( mAddressee.url().url() ) );
+  if ( showURLs ) {
+    if ( !addr.url().url().isEmpty() ) {
+      if ( useLinks ) {
+        dynamicPart += rowFmtStr
+          .arg( i18n( "Homepage" ) )
+          .arg( KStringHandler::tagURLs( addr.url().url() ) );
+      } else {
+        dynamicPart += rowFmtStr
+          .arg( i18n( "Homepage" ) )
+          .arg( addr.url().url() );
+      }
     }
   }
 
-  if ( mActionShowAddresses->isChecked() ) {
-    KABC::Address::List addresses = mAddressee.addresses();
+  if ( showAddresses ) {
+    KABC::Address::List addresses = addr.addresses();
     KABC::Address::List::ConstIterator addrIt;
     for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
       if ( (*addrIt).label().isEmpty() ) {
@@ -222,37 +226,49 @@ void AddresseeView::updateView()
         QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
                        formattedAddress + "</a>";
 
-        dynamicPart += rowFmtStr
-          .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-          .arg( link );
+        if ( useLinks ) {
+          dynamicPart += rowFmtStr
+            .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+            .arg( link );
+        } else {
+          dynamicPart += rowFmtStr
+            .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+            .arg( formattedAddress );
+        }
       } else {
         QString link = "<a href=\"addr:" + (*addrIt).id() + "\">" +
                        (*addrIt).label().replace( '\n', "<br>" ) + "</a>";
 
-        dynamicPart += rowFmtStr
-          .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
-          .arg( link );
+        if ( useLinks ) {
+          dynamicPart += rowFmtStr
+            .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+            .arg( link );
+        } else {
+          dynamicPart += rowFmtStr
+            .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
+            .arg( (*addrIt).label().replace( '\n', "<br>" ) );
+        }
       }
     }
   }
 
   QString notes;
-  if ( !mAddressee.note().isEmpty() ) {
+  if ( !addr.note().isEmpty() ) {
     notes = QString::fromLatin1(
       "<tr>"
       "<td align=\"right\" valign=\"top\" width=\"30%\"><b>%1:</b></td>"  // note label
       "<td align=\"left\" valign=\"top\">%2</td>"  // note
-      "</tr>" ).arg( i18n( "Notes" ) ).arg( mAddressee.note().replace( '\n', "<br>" ) );
+      "</tr>" ).arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) );
   }
 
   QString role, organization;
-  role = mAddressee.role();
-  organization = mAddressee.organization();
+  role = addr.role();
+  organization = addr.organization();
 
   // when only an organization is set we use it as name
-  if ( !mAddressee.organization().isEmpty() && name.isEmpty() ||
-       mAddressee.formattedName() == mAddressee.organization() ) {
-    name = mAddressee.organization();
+  if ( !addr.organization().isEmpty() && name.isEmpty() ||
+       addr.formattedName() == addr.organization() ) {
+    name = addr.organization();
     organization = QString::null;
   }
 
@@ -285,6 +301,34 @@ void AddresseeView::updateView()
    .arg( role )
    .arg( organization )
    .arg( dynamicPart, notes );
+
+  return strAddr;
+}
+
+void AddresseeView::updateView()
+{
+  // clear view
+  setText( QString::null );
+
+  if ( mAddressee.isEmpty() ) {
+    QMimeSourceFactory::defaultFactory()->setImage( "myimage", QByteArray() );
+    return;
+  }
+
+  if ( mImageJob ) {
+    mImageJob->kill();
+    mImageJob = 0;
+
+    mImageData.truncate( 0 );
+  }
+
+  QString strAddr = vCardAsHTML( mAddressee, true,
+                                 mActionShowBirthday->isChecked(),
+                                 mActionShowAddresses->isChecked(),
+                                 mActionShowEmails->isChecked(),
+                                 mActionShowPhones->isChecked(),
+                                 mActionShowURLs->isChecked() );
+
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )

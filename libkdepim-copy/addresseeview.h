@@ -64,6 +64,11 @@ class AddresseeView : public KTextBrowser
      */
     KABC::Addressee addressee() const;
 
+    static QString vCardAsHTML( const KABC::Addressee& addr, bool useLinks = true,
+                                bool showBirthday = true, bool showAddresses = true,
+                                bool showEmails = true, bool showPhones = true,
+                                bool showURLs = true );
+
   signals:
     void urlHighlighted( const QString &url );
     void emailHighlighted( const QString &email );
