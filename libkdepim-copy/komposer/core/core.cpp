@@ -248,7 +248,7 @@ Core::slotQuit()
 void
 Core::slotPreferences()
 {
-  KCMultiDialog *dialog = new KCMultiDialog( "PIM", this, "KomposerPreferences" );
+  KCMultiDialog *dialog = new KCMultiDialog( this, "KomposerPreferences" );
   connect( dialog, SIGNAL( applyClicked() ), SLOT( updateConfig() ) );
   connect( dialog, SIGNAL( okClicked() ), SLOT( updateConfig() ) );
 
