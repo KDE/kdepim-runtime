@@ -29,6 +29,11 @@ namespace KPIM {
 /**
   This special part should be used as base class for all applications
   which shall be integrated in Kontact.
+
+  WARNING: This class is not open for public use yet. It *will* change
+           and will be marked as stable as soon as we feel confident
+           about the API. We mean it! If you have questions or want to
+           use it nevertheless, please contact kde-pim@kde.org.
  */
 class Part : public KParts::ReadOnlyPart
 {
