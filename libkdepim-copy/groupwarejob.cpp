@@ -24,7 +24,7 @@
 #include <kio/job.h>
 #include <kdebug.h>
 
-using namespace KPIM;
+using namespace KIO;
 
 KIO::TransferJob *GroupwareJob::getCalendar( const KURL &u )
 {

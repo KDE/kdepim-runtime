@@ -18,12 +18,12 @@
     the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
     Boston, MA 02111-1307, USA.
 */
-#ifndef PIM_GROUPWAREJOB_H
-#define PIM_GROUPWAREJOB_H
+#ifndef KIO_GROUPWAREJOB_H
+#define KIO_GROUPWAREJOB_H
 
 #include <kio/jobclasses.h>
 
-namespace KPIM {
+namespace KIO {
 
 class GroupwareJob
 {
