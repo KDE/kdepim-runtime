@@ -244,11 +244,13 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
   // cursor at end of string - or Ctrl+T pressed for substring completion?
   if ( ctrlT ) {
     QStringList completions = s_completion->substringCompletion( s );
-    if ( completions.count() > 1 ) {
+
+    if ( completions.count() > 1 )
       m_previousAddresses = prevAddr;
-      setCompletedItems( completions, true );
-    } else if ( completions.count() == 1 )
+    else if ( completions.count() == 1 )
       setText( prevAddr + completions.first() );
+    
+    setCompletedItems( completions, true ); // this makes sure the completion popup is closed if no matching items were found
 
     cursorAtEnd();
     return;
@@ -274,6 +276,8 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
         items += s_completion->allMatches( "$$" + s );
 
       if ( !items.isEmpty() ) {
+        setCompletedItems( items, false );
+      } else {
         if ( items.count() > beforeDollarCompletionCount ) {
           // remove the '$$whatever$' part
           for ( QStringList::Iterator it = items.begin(); it != items.end(); ++it ) {
