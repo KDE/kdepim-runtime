@@ -275,7 +275,7 @@ int main( int argc, char **argv )
     return 1;
   }
 
-  if ( entries.count() == 0 ) {
+  if ( entries.isEmpty() ) {
     kdWarning() << "No entries." << endl;
   }
 
