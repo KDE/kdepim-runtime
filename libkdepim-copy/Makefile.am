@@ -12,6 +12,10 @@ libkdepim_la_SOURCES = \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   MailTransportServiceIface.skel AddressBookServiceIface.skel
 
+noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
+$(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
+$(srcdir)/categoryeditdialog.h: categoryeditdialog_base.h
+
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
