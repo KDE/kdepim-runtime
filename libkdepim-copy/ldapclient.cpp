@@ -38,19 +38,14 @@
 #include <kmdcodec.h>
 #include <kprotocolinfo.h>
 #include <kstandarddirs.h>
+#include <kstaticdeleter.h>
 
 #include "ldapclient.h"
 
 using namespace KPIM;
 
-class LdapClient::LdapClientPrivate{
-public:
-  QString bindDN;
-  QString pwdBindDN;
-  KABC::LDIF ldif;
-  int clientNumber;
-  int completionWeight;
-};
+KConfig *KPIM::LdapSearch::s_config = 0L;
+static KStaticDeleter<KConfig> configDeleter;
 
 QString LdapObject::toString() const
 {
@@ -84,40 +79,15 @@ void LdapObject::assign( const LdapObject& that )
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
   : QObject( parent, name ), mJob( 0 ), mActive( false ), mReportObjectClass( false )
 {
-  d = new LdapClientPrivate;
-  d->clientNumber = clientNumber;
-  d->completionWeight = 50 - clientNumber;
+//  d = new LdapClientPrivate;
+  mClientNumber = clientNumber;
+  mCompletionWeight = 50 - mClientNumber;
 }
 
 LdapClient::~LdapClient()
 {
   cancelQuery();
-  delete d; d = 0;
-}
-
-void LdapClient::setHost( const QString& host )
-{
-  mHost = host;
-}
-
-void LdapClient::setPort( const QString& port )
-{
-  mPort = port;
-}
-
-void LdapClient::setBase( const QString& base )
-{
-  mBase = base;
-}
-
-void LdapClient::setBindDN( const QString& bindDN )
-{
-  d->bindDN = bindDN;
-}
-
-void LdapClient::setPwdBindDN( const QString& pwdBindDN )
-{
-  d->pwdBindDN = pwdBindDN;
+//  delete d; d = 0;
 }
 
 void LdapClient::setAttrs( const QStringList& attrs )
@@ -137,12 +107,25 @@ void LdapClient::startQuery( const QString& filter )
   cancelQuery();
   KABC::LDAPUrl url;
 
-  url.setProtocol( "ldap" );
-  url.setUser( d->bindDN );
-  url.setPass( d->pwdBindDN );
-  url.setHost( mHost );
-  url.setPort( mPort.toUInt() );
-  url.setDn( mBase );
+  url.setProtocol( ( mServer.security() == 2 ) ? "ldaps" : "ldap" );
+  url.setUser( mServer.user() );
+  url.setPass( mServer.pwdBindDN() );
+  url.setHost( mServer.host() );
+  url.setPort( mServer.port() );
+  url.setExtension( "x-ver", QString::number( mServer.version() ) );
+  url.setDn( mServer.baseDN() );
+  url.setDn( mServer.baseDN() );
+  if ( mServer.security() == 1 ) url.setExtension( "x-tls","" );
+  if ( mServer.auth() == 2 ) {
+    url.setExtension( "x-sasl","" );
+    if ( !mServer.bindDN().isEmpty() ) url.setExtension( "x-bindname", mServer.bindDN() );
+    if ( !mServer.mech().isEmpty() ) url.setExtension( "x-mech", mServer.mech() );
+  }
+  if ( mServer.timeLimit() != 0 ) url.setExtension( "x-timelimit", 
+    QString::number( mServer.timeLimit() ) );
+  if ( mServer.sizeLimit() != 0 ) url.setExtension( "x-sizelimit", 
+    QString::number( mServer.sizeLimit() ) );
+  
   url.setAttributes( mAttrs );
   url.setScope( mScope == "one" ? KABC::LDAPUrl::One : KABC::LDAPUrl::Sub );
   url.setFilter( "("+filter+")" );
@@ -195,7 +178,7 @@ void LdapClient::slotDone()
 #endif
   int err = mJob->error();
   if ( err && err != KIO::ERR_USER_CANCELED ) {
-    emit error( KIO::buildErrorString( err, QString("%1:%2").arg( mHost ).arg( mPort ) ) );
+    emit error( KIO::buildErrorString( err, QString("%1:%2").arg( mServer.host() ).arg( mServer.port() ) ) );
   }
   emit done();
 }
@@ -203,10 +186,7 @@ void LdapClient::slotDone()
 void LdapClient::startParseLDIF()
 {
   mCurrentObject.clear();
-  mLastAttrName  = 0;
-  mLastAttrValue = 0;
-  mIsBase64 = false;
-  d->ldif.startParsing();
+  mLdif.startParsing();
 }
 
 void LdapClient::endParseLDIF()
@@ -215,7 +195,7 @@ void LdapClient::endParseLDIF()
 
 void LdapClient::finishCurrentObject()
 {
-  mCurrentObject.dn = d->ldif.dn();
+  mCurrentObject.dn = mLdif.dn();
   const QString sClass( mCurrentObject.objectClass.lower() );
   if( sClass == "groupofnames" || sClass == "kolabgroupofnames" ){
     LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
@@ -249,21 +229,21 @@ void LdapClient::parseLDIF( const QByteArray& data )
 {
   //kdDebug(5300) << "LdapClient::parseLDIF( " << QCString(data) << " )" << endl;
   if ( data.size() ) {
-    d->ldif.setLDIF( data );
+    mLdif.setLDIF( data );
   } else {
-    d->ldif.endLDIF();
+    mLdif.endLDIF();
   }
 
   KABC::LDIF::ParseVal ret;
   QString name;
   QByteArray value;
   do {
-    ret = d->ldif.nextItem();
+    ret = mLdif.nextItem();
     switch ( ret ) {
       case KABC::LDIF::Item: 
         {
-          name = d->ldif.attr();
-          value = d->ldif.val();
+          name = mLdif.attr();
+          value = mLdif.val();
           bool bFoundOC = name.lower() == "objectclass";
           if( bFoundOC )
             mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
@@ -281,30 +261,83 @@ void LdapClient::parseLDIF( const QByteArray& data )
   } while ( ret != KABC::LDIF::MoreData );
 }
 
-QString LdapClient::bindDN() const
-{
-  return d->bindDN;
-}
-
-QString LdapClient::pwdBindDN() const
-{
-  return d->pwdBindDN;
-}
-
 int LdapClient::clientNumber() const
 {
-  return d->clientNumber;
+  return mClientNumber;
 }
 
 int LdapClient::completionWeight() const
 {
-  return d->completionWeight;
+  return mCompletionWeight;
 }
 
-void KPIM::LdapClient::setCompletionWeight( int weight )
+void LdapClient::setCompletionWeight( int weight )
 {
-  d->completionWeight = weight;
+  mCompletionWeight = weight;
 }
+
+void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool active )
+{
+  QString prefix;
+  if ( active ) prefix = "Selected";
+  QString host =  config->readEntry( prefix + QString( "Host%1" ).arg( j ), "" ).stripWhiteSpace();
+  if ( !host.isEmpty() )
+    server.setHost( host );
+
+  int port = config->readNumEntry( prefix + QString( "Port%1" ).arg( j ), 389 );
+  server.setPort( port );
+
+  QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), "" ).stripWhiteSpace();
+  if ( !base.isEmpty() )
+    server.setBaseDN( base );
+
+  QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ) ).stripWhiteSpace();
+  if ( !user.isEmpty() )
+    server.setUser( user );
+
+  QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ) ).stripWhiteSpace();
+  if ( !bindDN.isEmpty() )
+    server.setBindDN( bindDN );
+
+  QString pwdBindDN = config->readEntry( prefix + QString( "PwdBind%1" ).arg( j ) );
+  if ( !pwdBindDN.isEmpty() )
+    server.setPwdBindDN( pwdBindDN );
+
+  server.setTimeLimit( config->readNumEntry( prefix + QString( "TimeLimit%1" ).arg( j ) ) );
+  server.setSizeLimit( config->readNumEntry( prefix + QString( "SizeLimit%1" ).arg( j ) ) );
+  server.setVersion( config->readNumEntry( prefix + QString( "Version%1" ).arg( j ), 3 ) );
+  server.setSecurity( config->readNumEntry( prefix + QString( "Security%1" ).arg( j ) ) );
+  server.setAuth( config->readNumEntry( prefix + QString( "Auth%1" ).arg( j ) ) );
+  server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ) ) );
+}
+
+void LdapSearch::writeConfig( LdapServer &server, KConfig *config, int j, bool active )
+{
+  QString prefix;
+  if ( active ) prefix = "Selected";
+  config->writeEntry( prefix + QString( "Host%1" ).arg( j ), server.host() );
+  config->writeEntry( prefix + QString( "Port%1" ).arg( j ), server.port() );
+  config->writeEntry( prefix + QString( "Base%1" ).arg( j ), server.baseDN() );
+  config->writeEntry( prefix + QString( "User%1" ).arg( j ), server.user() );
+  config->writeEntry( prefix + QString( "Bind%1" ).arg( j ), server.bindDN() );
+  config->writeEntry( prefix + QString( "PwdBind%1" ).arg( j ), server.pwdBindDN() );
+  config->writeEntry( prefix + QString( "TimeLimit%1" ).arg( j ), server.timeLimit() );
+  config->writeEntry( prefix + QString( "SizeLimit%1" ).arg( j ), server.sizeLimit() );
+  config->writeEntry( prefix + QString( "Version%1" ).arg( j ), server.version() );
+  config->writeEntry( prefix + QString( "Security%1" ).arg( j ), server.security() );
+  config->writeEntry( prefix + QString( "Auth%1" ).arg( j ), server.auth() );
+  config->writeEntry( prefix + QString( "Mech%1" ).arg( j ), server.mech() );
+}
+
+KConfig* LdapSearch::config()
+{
+  if ( !s_config )
+    configDeleter.setObject( s_config, new KConfig( locateLocal( "config",
+                             "kabldaprc" ) ) );
+
+  return s_config;
+}
+
 
 LdapSearch::LdapSearch()
     : mActiveClients( 0 ), mNoLDAPLookup( false )
@@ -328,38 +361,20 @@ void LdapSearch::readConfig()
   mClients.clear();
 
   // stolen from KAddressBook
-  KConfig config( "kabldaprc", true );
-  config.setGroup( "LDAP" );
-  int numHosts = config.readUnsignedNumEntry( "NumSelectedHosts");
+  KConfig *config = KPIM::LdapSearch::config();
+  config->setGroup( "LDAP" );
+  int numHosts = config->readUnsignedNumEntry( "NumSelectedHosts");
   if ( !numHosts ) {
     mNoLDAPLookup = true;
   } else {
     for ( int j = 0; j < numHosts; j++ ) {
       LdapClient* ldapClient = new LdapClient( j, this );
+      LdapServer server;
+      readConfig( server, config, j, true );
+      if ( !server.host().isEmpty() ) mNoLDAPLookup = false;
+      ldapClient->setServer( server );
 
-      QString host =  config.readEntry( QString( "SelectedHost%1" ).arg( j ), "" ).stripWhiteSpace();
-      if ( !host.isEmpty() ){
-        ldapClient->setHost( host );
-        mNoLDAPLookup = false;
-      }
-
-      QString port = QString::number( config.readUnsignedNumEntry( QString( "SelectedPort%1" ).arg( j ) ) );
-      if ( !port.isEmpty() )
-        ldapClient->setPort( port );
-
-      QString base = config.readEntry( QString( "SelectedBase%1" ).arg( j ), "" ).stripWhiteSpace();
-      if ( !base.isEmpty() )
-        ldapClient->setBase( base );
-
-      QString bindDN = config.readEntry( QString( "SelectedBind%1" ).arg( j ) ).stripWhiteSpace();
-      if ( !bindDN.isEmpty() )
-        ldapClient->setBindDN( bindDN );
-
-      QString pwdBindDN = config.readEntry( QString( "SelectedPwdBind%1" ).arg( j ) ).stripWhiteSpace();
-      if ( !pwdBindDN.isEmpty() )
-        ldapClient->setPwdBindDN( pwdBindDN );
-
-      int completionWeight = config.readNumEntry( QString( "SelectedCompletionWeight%1" ).arg( j ), -1 );
+      int completionWeight = config->readNumEntry( QString( "SelectedCompletionWeight%1" ).arg( j ), -1 );
       if ( completionWeight != -1 )
         ldapClient->setCompletionWeight( completionWeight );
 
@@ -576,5 +591,6 @@ bool LdapSearch::isAvailable() const
 {
   return !mNoLDAPLookup;
 }
+
 
 #include "ldapclient.moc"

@@ -57,8 +57,6 @@ class AddresseeLineEdit : public ClickLineEdit
 
     virtual void setFont( const QFont& );
 
-    static KConfig *config();
-
   public slots:
     void cursorAtEnd();
     void enableCompletion( bool enable );
@@ -113,7 +111,6 @@ class AddresseeLineEdit : public ClickLineEdit
     static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;
     static AddresseeLineEdit *s_LDAPLineEdit;
-    static KConfig *s_config;
 
     class AddresseeLineEditPrivate;
     AddresseeLineEditPrivate *d;

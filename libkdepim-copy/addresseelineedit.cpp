@@ -59,13 +59,11 @@ QTimer* AddresseeLineEdit::s_LDAPTimer = 0L;
 KPIM::LdapSearch* AddresseeLineEdit::s_LDAPSearch = 0L;
 QString* AddresseeLineEdit::s_LDAPText = 0L;
 AddresseeLineEdit* AddresseeLineEdit::s_LDAPLineEdit = 0L;
-KConfig *AddresseeLineEdit::s_config = 0L;
 
 static KStaticDeleter<KCompletion> completionDeleter;
 static KStaticDeleter<QTimer> ldapTimerDeleter;
 static KStaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
 static KStaticDeleter<QString> ldapTextDeleter;
-static KStaticDeleter<KConfig> configDeleter;
 
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
                                       const char *name )
@@ -574,15 +572,6 @@ void AddresseeLineEdit::slotEditCompletionOrder()
   init(); // for s_LDAPSearch
   CompletionOrderEditor editor( s_LDAPSearch, this );
   editor.exec();
-}
-
-KConfig* AddresseeLineEdit::config()
-{
-  if ( !s_config )
-    configDeleter.setObject( s_config, new KConfig( locateLocal( "config",
-                             "kabldaprc" ) ) );
-
-  return s_config;
 }
 
 #include "addresseelineedit.moc"

@@ -32,12 +32,56 @@
 #include <qtimer.h>
 
 #include <kio/job.h>
+#include <kabc/ldif.h>
 
 namespace KPIM {
 
 class LdapClient;
 typedef QValueList<QByteArray> LdapAttrValue;
 typedef QMap<QString,LdapAttrValue > LdapAttrMap;
+
+class LdapServer
+{
+  public:
+    LdapServer() : mPort( 389 ) {}
+
+    QString host() const { return mHost; }
+    int port() const { return mPort; }
+    QString baseDN() const { return mBaseDN; }
+    QString user() const { return mUser; }
+    QString bindDN() const { return mBindDN; }
+    QString pwdBindDN() const { return mPwdBindDN; }
+    int timeLimit() const { return mTimeLimit; }
+    int sizeLimit() const { return mSizeLimit; }
+    int version() const { return mVersion; }
+    int security() const { return mSecurity; }
+    int auth() const { return mAuth; }
+    QString mech() const { return mMech; }
+
+    void setHost( const QString &host ) { mHost = host; }
+    void setPort( int port ) { mPort = port; }
+    void setBaseDN( const QString &baseDN ) {  mBaseDN = baseDN; }
+    void setUser( const QString &user ) { mUser = user; }
+    void setBindDN( const QString &bindDN ) {  mBindDN = bindDN; }
+    void setPwdBindDN( const QString &pwdBindDN ) {  mPwdBindDN = pwdBindDN; }
+    void setTimeLimit( int timelimit ) { mTimeLimit = timelimit; }
+    void setSizeLimit( int sizelimit ) { mSizeLimit = sizelimit; }
+    void setVersion( int version ) { mVersion = version; }
+    void setSecurity( int security ) { mSecurity = security; } //0-No, 1-TLS, 2-SSL - KDE4: add an enum to Lda
+    void setAuth( int auth ) { mAuth = auth; }; //0-Anonymous, 1-simple, 2-SASL - KDE4: add an enum to LdapCon
+    void setMech( const QString &mech ) { mMech = mech; }
+
+  private:
+    QString mHost;
+    int mPort;
+    QString mBaseDN;
+    QString mUser;
+    QString mBindDN;
+    QString mPwdBindDN;
+    QString mMech;
+    int mTimeLimit, mSizeLimit, mVersion, mSecurity, mAuth;
+};
+
 
 /**
   * This class is internal. Binary compatibiliy might be broken any time
@@ -98,11 +142,8 @@ class LdapClient : public QObject
     int completionWeight() const;
     void setCompletionWeight( int );
 
-    QString host() const { return mHost; }
-    QString port() const { return mPort; }
-    QString base() const { return mBase; }
-    QString bindDN() const;
-    QString pwdBindDN() const;
+    LdapServer& server() { return mServer; }
+    void setServer( const LdapServer server ) { mServer = server; }
     /*! Return the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
@@ -122,32 +163,6 @@ class LdapClient : public QObject
     void result( const KPIM::LdapObject& );
 
   public slots: // why are those slots?
-    /*!
-     * Set the name or IP of the LDAP server
-     */
-    void setHost( const QString& host );
-
-    /*!
-     * Set the port of the LDAP server
-     * if using a nonstandard port
-     */
-    void setPort( const QString& port );
-
-    /*!
-     * Set the base DN
-     */
-    void setBase( const QString& base );
-
-    /*!
-     * Set the bind DN
-     */
-    void setBindDN( const QString& bindDN );
-
-    /*!
-     * Set the bind password DN
-     */
-    void setPwdBindDN( const QString& pwdBindDN );
-
     /*! Set the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
@@ -177,9 +192,7 @@ class LdapClient : public QObject
     void endParseLDIF();
     void finishCurrentObject();
 
-    QString mHost;
-    QString mPort;
-    QString mBase;
+    LdapServer mServer;
     QString mScope;
     QStringList mAttrs;
 
@@ -188,14 +201,14 @@ class LdapClient : public QObject
     bool mReportObjectClass;
 
     LdapObject mCurrentObject;
-    QCString mBuf;
-    QCString mLastAttrName;
-    QCString mLastAttrValue;
-    bool mIsBase64;
 
   private:
-    class LdapClientPrivate;
-    LdapClientPrivate* d;
+    KABC::LDIF mLdif;
+    int mClientNumber;
+    int mCompletionWeight;
+
+//    class LdapClientPrivate;
+//    LdapClientPrivate* d;
 };
 
 /**
@@ -223,6 +236,10 @@ class LdapSearch : public QObject
 
   public:
     LdapSearch();
+
+    static KConfig *config();
+    static void readConfig( LdapServer &server, KConfig *config, int num, bool active );
+    static void writeConfig( LdapServer &server, KConfig *config, int j, bool active );
 
     void startSearch( const QString& txt );
     void cancelSearch();
@@ -259,6 +276,7 @@ class LdapSearch : public QObject
     QString mConfigFile;
 
   private:
+    static KConfig *s_config;
     class LdapSearchPrivate* d;
 };
 
