@@ -338,8 +338,10 @@ void LdapSearch::readConfig()
       LdapClient* ldapClient = new LdapClient( j, this );
 
       QString host =  config.readEntry( QString( "SelectedHost%1" ).arg( j ), "" ).stripWhiteSpace();
-      if ( !host.isEmpty() )
+      if ( !host.isEmpty() ){
         ldapClient->setHost( host );
+        mNoLDAPLookup = false;
+      }
 
       QString port = QString::number( config.readUnsignedNumEntry( QString( "SelectedPort%1" ).arg( j ) ) );
       if ( !port.isEmpty() )
