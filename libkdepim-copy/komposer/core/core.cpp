@@ -65,9 +65,12 @@ Core::Core( QWidget *parent, const char *name )
 
   loadEditors();
 
+  setXMLFile( "komposerui.rc" );
+
   createGUI( 0 );
 
   resize( 600, 400 ); // initial size
+  setAutoSaveSettings();
 
   loadSettings();
 }

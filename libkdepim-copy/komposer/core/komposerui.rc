@@ -1,0 +1,23 @@
+<!DOCTYPE kpartgui >
+<kpartgui version="1" name="komposer" >
+<MenuBar>
+  <Menu name="file" noMerge="1">
+    <text>&amp;File</text>
+	<Merge/>
+	<Separator/>
+    <Action name="file_quit"/>
+	<Merge/>
+  </Menu>
+  <Merge />
+  <Menu noMerge="1" name="settings">
+     <text>&amp;Settings</text>
+     <Merge/>
+     <Separator/>
+     <Action name="settings_configure_komposer"/>
+  </Menu>
+</MenuBar>
+<ToolBar position="Top" iconText="IconOnly" noMerge="1" name="mainToolBar">
+  <Merge/>
+  <Action name="help_whats_this"/>
+</ToolBar>
+</kpartgui>

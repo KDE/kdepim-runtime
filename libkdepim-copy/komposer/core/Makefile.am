@@ -16,6 +16,9 @@ kcm_komposer_la_LIBADD = libkomposer.la $(top_builddir)/libkdepim/libkdepim.la $
 kpincludedir = $(includedir)/komposer
 kpinclude_HEADERS = editor.h core.h
 
+rcdir = $(kde_datadir)/komposer
+rc_DATA = komposerui.rc
+
 servicetypedir = $(kde_servicetypesdir)
 servicetype_DATA = komposerplugin.desktop
 
