@@ -203,6 +203,15 @@ void LdapClient::startParseLDIF()
 
 void LdapClient::endParseLDIF()
 {
+  // make sure we do not loose the last entry in case there was
+  // no LDIF::EndEntry at its end
+  if( ! mCurrentObject.attrs.isEmpty()){
+    mCurrentObject.dn = d->ldif.dn();
+    //kdDebug(5300) << "\nendParseLDIF(): " << mCurrentObject.dn << endl;
+    mCurrentObject.client = this;
+    emit result( mCurrentObject );
+    mCurrentObject.clear();
+  }
 }
 
 void LdapClient::parseLDIF( const QByteArray& data )
