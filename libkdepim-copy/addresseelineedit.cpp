@@ -489,7 +489,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
     } else {
       const QString byFirstName= KPIM::quoteNameIfNecessary( addr.givenName() + " " + addr.familyName() ) + " <" + (*it) + ">";
       const QString byLastName= "\"" + addr.familyName() + ", " + addr.givenName() + "\" "  + "<" + (*it) + ">";
-      const QString byEmail= (*it) + " (" + addr.realName() + ")";
+      const QString byEmail= (*it) + " (" + KPIM::quoteNameIfNecessary( addr.realName() ) + ")";
       addCompletionItem( byFirstName, weight );
       addCompletionItem( byLastName, weight );
       addCompletionItem( byEmail, weight );
