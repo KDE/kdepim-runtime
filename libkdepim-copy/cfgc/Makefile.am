@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/libkdepim -I$(top_srcdir) $(all_includes)
+AM_CPPFLAGS = -I$(top_srcdir)/libkdepim -I$(top_srcdir) $(all_includes)
 
 bin_PROGRAMS = cfgc
 
@@ -16,12 +16,13 @@ autoexample_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 autoexample_LDADD = ../libkdepim.la $(LIB_KDECORE)
 autoexample_SOURCES = general_base.ui myoptions_base.ui autoexample.cpp
 
-exampleprefs_base.h: $(top_srcdir)/libkdepim/cfgc/example.cfg \
-                $(top_builddir)/libkdepim/cfgc/cfgc
-	./cfgc $(top_srcdir)/libkdepim/cfgc/example.cfg
-
-exampleprefs_base.cpp: $(top_srcdir)/libkdepim/cfgc/example.cfg \
-                $(top_builddir)/libkdepim/cfgc/cfgc
-	./cfgc $(top_srcdir)/libkdepim/cfgc/example.cfg
+example.o exampleprefs_base.o: exampleprefs_base.h
+# avoid running the below command in parallel
+exampleprefs_base.cpp: exampleprefs_base.h
+exampleprefs_base.cpp exampleprefs_base.h: $(srcdir)/example.cfg cfgc
+	./cfgc $(srcdir)/example.cfg
 
 METASOURCES = AUTO
+
+CLEANFILES = exampleprefs_base.h exampleprefs_base.cpp
+
