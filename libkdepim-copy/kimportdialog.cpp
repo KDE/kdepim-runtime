@@ -570,7 +570,7 @@ void KImportDialog::assignTemplate()
   bool ok = false;
   QString tmp;
   tmp = KInputDialog::getItem( i18n( "Template Selection" ),
-                  i18n( "Please select a template, that matches the CSV file." ),
+                  i18n( "Please select a template, that matches the CSV file:" ),
                   templates, 0, false, &ok, this );
 
   if ( !ok )
