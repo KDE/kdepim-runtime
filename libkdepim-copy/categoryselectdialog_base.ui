@@ -85,7 +85,7 @@
                         <cstring>mButtonEdit</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Edit Categories</string>
+                        <string>&amp;Edit Categories...</string>
                     </property>
                 </widget>
             </hbox>
