@@ -64,8 +64,9 @@ class AddresseeLineEdit : public ClickLineEdit
     void cursorAtEnd();
     void enableCompletion( bool enable );
 
-  protected:
+  protected slots:
     virtual void loadContacts();
+  protected:
     void addContact( const KABC::Addressee&, int weight );
     virtual void keyPressEvent( QKeyEvent* );
     virtual void paste();
