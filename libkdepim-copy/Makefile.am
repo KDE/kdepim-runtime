@@ -8,7 +8,7 @@ libkdepim_la_SOURCES = \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
-  kinputdialog.cpp sidebarextension.cpp infoextension.cpp \
+  sidebarextension.cpp infoextension.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   MailTransportServiceIface.skel AddressBookServiceIface.skel
 
