@@ -305,7 +305,7 @@
                 <cstring>mAddressBook</cstring>
             </property>
             <property name="text">
-                <string>Address B&amp;ook...</string>
+                <string>Address &amp;Book...</string>
             </property>
         </widget>
     </grid>
