@@ -60,7 +60,19 @@ KPrefsWid *create( KPrefsItem *item, QWidget *parent )
   
   KPrefsItemInt *intItem = dynamic_cast<KPrefsItemInt *>( item );
   if ( intItem ) {
-    return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
+    QStringList choices = intItem->choices();
+    if ( choices.isEmpty() ) {
+      return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
+    } else {
+      KPrefsWidRadios *radios = new KPrefsWidRadios( intItem->name(),
+                                                     intItem->value(),
+                                                     parent );
+      QStringList::ConstIterator it;
+      for( it = choices.begin(); it != choices.end(); ++it ) {
+        radios->addRadio( *it );
+      }
+      return radios;
+    }
   }
   
   return 0;
@@ -308,6 +320,13 @@ void KPrefsWidRadios::readConfig()
 void KPrefsWidRadios::writeConfig()
 {
   mReference = mBox->id(mBox->selected());
+}
+
+QValueList<QWidget *> KPrefsWidRadios::widgets() const
+{
+  QValueList<QWidget *> w;
+  w.append( mBox );
+  return w;
 }
 
 

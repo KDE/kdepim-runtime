@@ -205,7 +205,13 @@ class KPrefsItemInt : public KGenericPrefsItem<int>
     KPrefsItemInt( const QString &group, const QString &name, int &reference,
                    int defaultValue = 0 );
 
+    void setChoices( const QStringList & );
+    QStringList choices() const;
+
     void readConfig( KConfig *config );
+
+  private:
+    QStringList mChoices;
 };
 
 

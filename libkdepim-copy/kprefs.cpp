@@ -118,6 +118,16 @@ void KPrefsItemInt::readConfig( KConfig *config )
   mLoadedValue = mReference;
 }
 
+void KPrefsItemInt::setChoices( const QStringList &c )
+{
+  mChoices = c;
+}
+
+QStringList KPrefsItemInt::choices() const
+{
+  return mChoices;
+}
+
 
 KPrefsItemUInt::KPrefsItemUInt( const QString &group, const QString &name,
                                 unsigned int &reference,

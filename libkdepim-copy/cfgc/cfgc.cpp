@@ -444,10 +444,25 @@ int main( int argc, char **argv )
       cpp << "  setCurrentGroup( \"" << group << "\" );" << endl << endl;
     }
     
-    cpp << "  " << addFunction( e->type() ) << "( \"" << e->key() << "\", m"
-        << e->name();
-    if ( !e->defaultValue().isEmpty() ) cpp << ", " << e->defaultValue();
-    cpp << " );" << endl;
+    if ( e->type() == "int" && !e->values().isEmpty() ) {
+      cpp << "  KPrefsItemInt *item" << e->name() << " = new KPrefsItemInt( \""
+          << group << "\", \"" << e->key() << "\", m" << e->name()
+          << " );" << endl;
+      cpp << "  QStringList values" << e->name() << ";" << endl;
+      QStringList values = e->values();
+      QStringList::ConstIterator it;
+      for( it =  values.begin(); it != values.end(); ++it ) {
+        cpp << "  values" << e->name() << ".append( \"" << *it << "\" );" << endl; 
+      }
+      cpp << "  item" << e->name() << "->setChoices( values" << e->name()
+          << " );" << endl;
+      cpp << "  addItem( item" << e->name() << " );" << endl;
+    } else {
+      cpp << "  " << addFunction( e->type() ) << "( \"" << e->key() << "\", m"
+          << e->name();
+      if ( !e->defaultValue().isEmpty() ) cpp << ", " << e->defaultValue();
+      cpp << " );" << endl;
+    }
   }
 
   cpp << "}" << endl << endl;

@@ -326,6 +326,8 @@ class KPrefsWidRadios : public KPrefsWid
     void readConfig();
     void writeConfig();
 
+    QValueList<QWidget *> widgets() const;    
+
   private:
     int &mReference;
 
