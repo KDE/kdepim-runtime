@@ -114,15 +114,17 @@ KColorButton *KPrefsWidColor::button()
   return mButton;
 }
 
-KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &buttonText,
+KPrefsWidFont::KPrefsWidFont(const QString &sampleText,const QString &labelText,
                              QFont *reference,QWidget *parent)
 {
   mReference = reference;
 
+  mLabel = new QLabel(labelText, parent);
+
   mPreview = new QLabel(sampleText,parent);
   mPreview->setFrameStyle(QFrame::Panel|QFrame::Sunken);
 
-  mButton = new QPushButton(buttonText,parent);
+  mButton = new QPushButton(i18n("Choose..."), parent);
   connect(mButton,SIGNAL(clicked()),SLOT(selectFont()));
 }
 
@@ -138,6 +140,11 @@ void KPrefsWidFont::readConfig()
 void KPrefsWidFont::writeConfig()
 {
   *mReference = mPreview->font();
+}
+
+QLabel *KPrefsWidFont::label()
+{
+  return mLabel;
 }
 
 QFrame *KPrefsWidFont::preview()

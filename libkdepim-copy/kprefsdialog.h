@@ -187,17 +187,21 @@ class KPrefsWidFont : public QObject, public KPrefsWid
       Create a font widget consisting of a test field and a button for opening
       a font dialog.
       
-      @param text      Text of button.
+      @param label     Text of label.
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
     */
-    KPrefsWidFont(const QString &sampleText,const QString &buttonText,
+    KPrefsWidFont(const QString &sampleText,const QString &labelText,
                   QFont *reference,QWidget *parent);
     /**
       Destruct font setting widget.
     */
     ~KPrefsWidFont();
     
+    /**
+      Return label.
+    */
+    QLabel *label();
     /**
       Return QFrame used as preview field.
     */
@@ -216,6 +220,7 @@ class KPrefsWidFont : public QObject, public KPrefsWid
   private:
     QFont *mReference;
     
+    QLabel *mLabel;
     QLabel *mPreview;
     QPushButton *mButton;
 };
