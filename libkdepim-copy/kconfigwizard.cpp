@@ -163,8 +163,8 @@ void KConfigWizard::readConfig()
 
   int result = KMessageBox::warningContinueCancel( this,
       i18n("Please make sure that the programs which are "
-           "configured by the wizard don't run in parallel to the wizard. "
-           "Otherwise changes done by the wizard could be lost."),
+           "configured by the wizard do not run in parallel to the wizard; "
+           "otherwise, changes done by the wizard could be lost."),
       i18n("Warning"), i18n("Run Wizard Now"), "warning_running_instances" );
   if ( result != KMessageBox::Continue ) kapp->quit();
 
