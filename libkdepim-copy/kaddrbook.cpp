@@ -12,9 +12,11 @@
 #include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
-#include <kabc/stdaddressbook.h>
 #include <kabc/distributionlist.h>
+#include <kabc/resource.h>
+#include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
+#include <kresources/selectdialog.h>
 #include <dcopref.h>
 #include <dcopclient.h> 
 
@@ -122,17 +124,38 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *par
   return inserted;
 }
 
-bool KAddrBookExternal::addAddressee( const KABC::Addressee& addressee )
+bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 {
-  KABC::AddressBook *ab = KABC::StdAddressBook::self();
-  KABC::Ticket *t = ab->requestSaveTicket();
-  bool saved = false;
-  if ( t ) {
-    ab->insertAddressee( addressee );
-    saved = ab->save( t );
-    if ( !saved )
-      ab->releaseSaveTicket( t );
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+
+  // Select a resource
+  QPtrList<KABC::Resource> kabcResources = addressBook->resources();
+
+  QPtrList<KRES::Resource> kresResources;
+  QPtrListIterator<KABC::Resource> resIt( kabcResources );
+  KABC::Resource *kabcResource;
+  while ( ( kabcResource = resIt.current() ) != 0 ) {
+    ++resIt;
+    if ( !kabcResource->readOnly() ) {
+      KRES::Resource *res = static_cast<KRES::Resource*>( kabcResource );
+      if ( res )
+        kresResources.append( res );
+    }
   }
+
+  kabcResource = static_cast<KABC::Resource*>( KRES::SelectDialog::getResource( kresResources, 0 ) );
+
+  KABC::Ticket *ticket = addressBook->requestSaveTicket( kabcResource );
+  bool saved = false;
+  if ( ticket ) {
+    KABC::Addressee addressee( addr );
+    addressee.setResource( kabcResource );
+    addressBook->insertAddressee( addressee );
+    saved = addressBook->save( ticket );
+    if ( !saved )
+      addressBook->releaseSaveTicket( ticket );
+  }
+
   return saved;
 }
 
