@@ -172,7 +172,12 @@ namespace KPIM {
     KABC::Addressee::List allAddressee( KListView* view, bool onlySelected = true ) const;
 
   private:
+    // if there's only one group in the available list, open it
     void checkForSingleAvailableGroup();
+
+    // used to re-show items in the available list
+    // it is recursive, but should only ever recurse once so should be fine
+    void unmapSelectedAddress(AddresseeViewItem* item);
 
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;

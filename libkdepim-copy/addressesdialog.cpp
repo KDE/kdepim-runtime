@@ -627,6 +627,24 @@ AddressesDialog::addSelectedBCC()
   }
 }
 
+void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
+{
+  AddresseeViewItem* correspondingItem = selectedToAvailableMapping[item];
+  if (correspondingItem)
+  {
+    correspondingItem->setVisible( true );
+    selectedToAvailableMapping.remove( item );
+    selectedToAvailableMapping.remove( correspondingItem );
+  }
+
+  AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
+  while (child)
+  {
+    unmapSelectedAddress(child);
+    child = static_cast<AddresseeViewItem*>(child->nextSibling());
+  }
+}
+
 void
 AddressesDialog::removeEntry()
 {
@@ -647,16 +665,9 @@ AddressesDialog::removeEntry()
       resetCC = true;
     else if( d->bccItem == item )
       resetBCC = true;
-    lst.append( item );
 
-    // now show the available address item
-    AddresseeViewItem* correspondingItem = selectedToAvailableMapping[item];
-    if (correspondingItem)
-    {
-        correspondingItem->setVisible( true );
-        selectedToAvailableMapping.remove( item );
-        selectedToAvailableMapping.remove( correspondingItem );
-    }
+    unmapSelectedAddress(item);
+    lst.append( item );
   }
   selectedSelectedAddresses.clear();
 
