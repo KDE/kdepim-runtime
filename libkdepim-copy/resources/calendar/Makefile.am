@@ -1,4 +1,3 @@
-SUBDIRS = 
 
 INCLUDES = -I$(srcdir)/.. -I$(top_srcdir)/libkcal -I$(top_builddir)/libkcal $(all_includes) 
 
@@ -28,6 +27,6 @@ linkdir= $(kde_datadir)/resources/calendar
 link_DATA = local.desktop
 
 messages:
-	$(XGETTEXT) *.cpp -o $(podir)/libkcal.pot
+	$(XGETTEXT) *.cpp -o $(podir)/libcalendarresources.pot
 
 include $(top_srcdir)/admin/Doxyfile.am
