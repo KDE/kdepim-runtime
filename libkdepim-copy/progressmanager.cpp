@@ -24,8 +24,10 @@
 #include <qvaluevector.h>
 #include <kdebug.h>
 
-#include "progressmanager.h"
 #include <klocale.h>
+#include <kstaticdeleter.h>
+
+#include "progressmanager.h"
 
 namespace KPIM {
 
@@ -128,6 +130,15 @@ ProgressManager::ProgressManager() :QObject() {
 }
 
 ProgressManager::~ProgressManager() { mInstance = 0; }
+static KStaticDeleter<ProgressManager> sd;
+
+ProgressManager* ProgressManager::instance()
+{
+   if ( !mInstance ) {
+     sd.setObject( mInstance, new ProgressManager() );
+   }
+   return mInstance;
+}
 
 ProgressItem* ProgressManager::createProgressItemImpl(
      ProgressItem* parent, const QString& id,

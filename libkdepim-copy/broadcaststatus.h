@@ -26,12 +26,14 @@ class ProgressItem;
     signal and update statusBars or whatever they use for showing status.
   */
 
+
 class BroadcastStatus : public QObject
 {
 
   Q_OBJECT
 
 public:
+  virtual ~BroadcastStatus();
 
   /** Return the instance of the singleton object for this class */
   static BroadcastStatus *instance();

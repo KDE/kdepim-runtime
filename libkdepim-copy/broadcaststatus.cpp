@@ -18,24 +18,32 @@
 
 #include <klocale.h>
 #include <kglobal.h>
+#include <kstaticdeleter.h>
 
 #include "broadcaststatus.h"
 #include "progressmanager.h"
 
 KPIM::BroadcastStatus* KPIM::BroadcastStatus::instance_ = 0;
+static KStaticDeleter<KPIM::BroadcastStatus> sd;
 
 namespace KPIM {
 
 BroadcastStatus* BroadcastStatus::instance()
 {
   if (!instance_)
-    instance_ = new BroadcastStatus();
+    sd.setObject( instance_, new BroadcastStatus() );
+
   return instance_;
 }
 
 BroadcastStatus::BroadcastStatus()
   :mTransientActive( false )
 {
+}
+
+BroadcastStatus::~BroadcastStatus()
+{
+  instance_ = 0;
 }
 
 void BroadcastStatus::setStatusMsg( const QString& message )

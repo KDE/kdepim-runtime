@@ -236,23 +236,18 @@ signals:
  * items to parents by id.
  */
 
-
 class ProgressManager : public QObject
 {
 
   Q_OBJECT;
 
   public:
+    virtual ~ProgressManager();
 
     /**
      * @return The singleton instance of this class.
      */
-    static ProgressManager * instance() {
-      if ( !mInstance ) {
-        mInstance = new ProgressManager();
-      }
-      return mInstance;
-    }
+    static ProgressManager * instance();
 
     /**
      * Use this to aquire a unique id number which can be used to discern
@@ -384,7 +379,6 @@ class ProgressManager : public QObject
     ProgressManager();
      // prevent unsolicited copies
     ProgressManager( const ProgressManager& );
-    virtual ~ProgressManager();
 
     virtual ProgressItem* createProgressItemImpl(
                 ProgressItem* parent, const QString& id,
