@@ -53,7 +53,6 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   
   mDateFrame = new QVBox(0,0,WType_Popup);
   mDateFrame->setFrameStyle(QFrame::PopupPanel | QFrame::Raised);
-  mDateFrame->setFixedSize(200,200);
   mDateFrame->setLineWidth(3);
   mDateFrame->hide();
 
@@ -151,14 +150,16 @@ void KDateEdit::toggleDatePicker()
     mDateFrame->hide();
   } else {
     QPoint tmpPoint = mapToGlobal(mDateButton->geometry().bottomRight());
+    QSize datepickersize = mDatePicker->sizeHint();
 
-    if ( tmpPoint.x() < 207 ) tmpPoint.setX( 207 );
+    if ( tmpPoint.x() < 7+datepickersize.width() ) tmpPoint.setX( 7+datepickersize.width() );
 
     int h = QApplication::desktop()->height();
 
-    if ( tmpPoint.y() + 200 > h ) tmpPoint.setY( h - 200 );
-    	
-    mDateFrame->setGeometry(tmpPoint.x()-207, tmpPoint.y(), 200, 200);
+    if ( tmpPoint.y() + datepickersize.height() > h ) tmpPoint.setY( h - datepickersize.height() );
+
+    mDateFrame->setGeometry(tmpPoint.x()-datepickersize.width()-7, tmpPoint.y(),
+     datepickersize.width()+2*mDateFrame->lineWidth(), datepickersize.height()+2*mDateFrame->lineWidth());
 
     QDate date = readDate();
     if(date.isValid()) {
