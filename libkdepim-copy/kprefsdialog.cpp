@@ -126,6 +126,7 @@ KPrefsWidInt::KPrefsWidInt( const QString &text, int &reference,
 {
   mLabel = new QLabel( text, parent );
   mSpin = new QSpinBox( parent );
+  mLabel->setBuddy( mSpin );
   if ( !whatsThis.isEmpty() ) {
     QWhatsThis::add( mLabel, whatsThis );
     QWhatsThis::add( mSpin, whatsThis );

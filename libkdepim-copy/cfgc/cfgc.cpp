@@ -93,6 +93,11 @@ class CfgEntry
     QStringList mValues;
 };
 
+void addQuotes( QString &s )
+{
+  if ( s.left( 1 ) != "\"" ) s.prepend( "\"" );
+  if ( s.right( 1 ) != "\"" ) s.append( "\"" );       
+}
 
 CfgEntry *parseEntry( const QString &group, const QDomElement &element )
 {
@@ -139,17 +144,17 @@ CfgEntry *parseEntry( const QString &group, const QDomElement &element )
   if ( type.isEmpty() ) type = "QString";
   if ( name.isEmpty() || key.isEmpty() ) return 0;
   
-  if ( ( type == "QString" || type == "QStringList" ) &&
-       !defaultValue.isEmpty() ) {
-    if ( defaultValue.left( 1 ) != "\"" ) defaultValue.prepend( "\"" );
-    if ( defaultValue.right( 1 ) != "\"" ) defaultValue.append( "\"" );     
+  if ( type == "QString" && !defaultValue.isEmpty() ) {
+    addQuotes( defaultValue );
+  } else if ( type == "QStringList" && !defaultValue.isEmpty() ) {
+    if ( !defaultValue.contains( "," ) ) addQuotes( defaultValue );
   } else if ( type == "QColor" ) {
     if ( !defaultValue.startsWith( "QColor" ) ) {
       defaultValue = "QColor( " + defaultValue + " )";
     }
   }
   
-  return new CfgEntry( group, type, key, name, label, defaultValue,values );
+  return new CfgEntry( group, type, key, name, label, defaultValue, values );
 }
 
 /**
@@ -457,6 +462,17 @@ int main( int argc, char **argv )
       cpp << "  item" << e->name() << "->setChoices( values" << e->name()
           << " );" << endl;
       cpp << "  addItem( item" << e->name() << " );" << endl;
+    } else if ( e->type() == "QStringList" &&
+                e->defaultValue().contains( "," ) ) {
+      cpp << "  QStringList default" << e->name() << ";" << endl;
+      QStringList defaults = QStringList::split( ",", e->defaultValue() );
+      QStringList::ConstIterator it;
+      for( it = defaults.begin(); it != defaults.end(); ++it ) {
+        cpp << "  default" << e->name() << ".append( \"" << *it << "\" );"
+            << endl;
+      }
+      cpp << "  addItemStringList( \"" << e->key() << "\", m" << e->name()
+          << ", default" << e->name() << " );" << endl;
     } else {
       cpp << "  " << addFunction( e->type() ) << "( \"" << e->key() << "\", m"
           << e->name();
