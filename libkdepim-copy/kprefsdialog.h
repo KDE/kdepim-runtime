@@ -3,6 +3,7 @@
 
     Copyright (c) 2001-2003 Cornelius Schumacher <schumacher@kde.org>
     Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+    Copyright (C) 2005 Allen Winter <winter@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -569,6 +570,15 @@ class KDE_EXPORT KPrefsWidManager
     */
     KPrefsWidTime *addWidTime( KConfigSkeleton::ItemDateTime *item,
                                QWidget *parent );
+
+    /**
+      Register a @ref KPrefsWidDuration object.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidDuration *addWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                       QWidget *parent );
 
     /**
       Register a @ref KPrefsWidColor object.

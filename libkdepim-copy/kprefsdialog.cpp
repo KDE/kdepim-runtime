@@ -3,6 +3,7 @@
 
     Copyright (c) 2001,2003 Cornelius Schumacher <schumacher@kde.org>
     Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+    Copyright (C) 2005 Allen Winter <winter@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -322,6 +323,9 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mTimeEdit = new QTimeEdit( parent );
+  mTimeEdit->setAutoAdvance( true );
+  mTimeEdit->setDisplay( QTimeEdit::Hours | QTimeEdit::Minutes );
+  mTimeEdit->setRange( QTime( 0, 1 ), QTime( 24, 0 ) ); // [1min, 24hr]
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
@@ -555,6 +559,14 @@ KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemDateTime *item
                                              QWidget *parent )
 {
   KPrefsWidTime *w = new KPrefsWidTime( item, parent );
+  addWid( w );
+  return w;
+}
+
+KPrefsWidDuration *KPrefsWidManager::addWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                                     QWidget *parent )
+{
+  KPrefsWidDuration *w = new KPrefsWidDuration( item, parent );
   addWid( w );
   return w;
 }
