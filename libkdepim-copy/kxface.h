@@ -573,7 +573,7 @@ namespace KPIM {
       void BigAdd(unsigned char a);
       void BigClear();
 
-      void WriteFace(char *fbuf);
+      QCString WriteFace();
       void UnCompAll(char *fbuf);
       void UnCompress(register char *f, register int wid, register int hei, register int lev);
       void BigWrite(register char *fbuf);

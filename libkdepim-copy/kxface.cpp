@@ -138,7 +138,7 @@ QString KXFace::fromImage( const QImage &image )
   tmp.replace( QRegExp( "(\\w{4})" ), "0x\\1," );
   len = tmp.length();
   char *fbuf = (char *)malloc( len + 1 );
-  strncpy( fbuf, xbm.latin1(), len );
+  strncpy( fbuf, (const char *)tmp, len );
   fbuf[len] = '\0';
   if ( !( status = setjmp( comp_env ) ) )
   {
@@ -160,125 +160,17 @@ QBitmap KXFace::toBitmap(const QString &xface)
   char *fbuf = (char *)malloc( MAX_XFACE_LENGTH );
   memset( fbuf, '\0', MAX_XFACE_LENGTH );
   strncpy( fbuf, xface.latin1(), xface.length() );
+  QCString img;
   if ( !( status = setjmp( comp_env ) ) )
   {
     UnCompAll( fbuf );/* compress otherwise */
     UnGenFace();
-    WriteFace( fbuf );
+    img = WriteFace();
   }
-  QString ikon( fbuf );
   free( fbuf );
-
   QBitmap b( 48, 48, true );
-  QPainter p( &b );
-  p.setPen( Qt::color1 );
-
-  ikon.remove( "0x", true );
-  ikon.remove( ",", true );
-  ikon.remove( "\n", true );
-  ikon.remove( " ", true );
-
-  uint i = 0;
-  int pos = 0;
-  for( i=0; i<ikon.length(); i++ )
-  {
-    switch( ikon.at( i ).latin1() )
-    {
-      case '0':
-        pos += 4;
-        break;
-      case '1':
-        pos += 3;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case '2':
-        pos += 2;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        break;
-      case '3':
-        pos += 2;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case '4':
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        pos += 2;
-        break;
-      case '5':
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case '6':
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        break;
-      case '7':
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case '8':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        pos += 3;
-        break;
-      case '9':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        pos += 2;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case 'A':
-      case 'a':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        break;
-      case 'B':
-      case 'b':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case 'c':
-      case 'C':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        pos += 2;
-        break;
-      case 'd':
-      case 'D':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-      case 'e':
-      case 'E':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        ++pos;
-        break;
-      case 'f':
-      case 'F':
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        p.drawPoint(x(pos), y(pos)); ++pos;
-        break;
-    }
-  }
-  p.end();
+  b.loadFromData( img, "XBM" );
   b.setMask( b );
-
   return b;
 }
 
@@ -447,44 +339,54 @@ void KXFace::BigClear()
   B.b_words = 0;
 }
 
-void KXFace::WriteFace(char *fbuf)
+QCString KXFace::WriteFace()
 {
-  register char *s, *t;
-  register int i, bits, digits, words;
+  register char *s;
+  register int i, j, bits, digits, words;
   int digsperword = DIGSPERWORD;
   int wordsperline = WORDSPERLINE;
+  QCString t( "#define noname_width 48\n#define noname_height 48\nstatic char noname_bits[] = {\n " );
+  j = t.length() - 1;
 
   s = F;
-  t = fbuf;
   bits = digits = words = i = 0;
-  while (s < F + PIXELS)
+  t.resize( MAX_XFACE_LENGTH );
+  digsperword = 2;
+  wordsperline = 15;
+  while ( s < F + PIXELS )
   {
-    if ((bits == 0) && (digits == 0))
+    if ( ( bits == 0 ) && ( digits == 0 ) )
     {
-      *(t++) = '0';
-      *(t++) = 'x';
+      t[j++] = '0';
+      t[j++] = 'x';
     }
-    if (*(s++))
-      i = i * 2 + 1;
+    if ( *(s++) )
+      i = ( i >> 1 ) | 0x8;
     else
-      i *= 2;
-    if (++bits == BITSPERDIG)
+      i >>= 1;
+    if ( ++bits == BITSPERDIG )
     {
-      *(t++) = *(i + HexDigits);
+      j++;
+      t[j-( ( digits & 1 ) * 2 )] = *(i + HexDigits);
       bits = i = 0;
-      if (++digits == digsperword)
+      if ( ++digits == digsperword )
       {
-        *(t++) = ',';
+        if ( s >= F + PIXELS )
+          break;
+        t[j++] = ',';
         digits = 0;
-        if (++words == wordsperline)
+        if ( ++words == wordsperline )
         {
-          *(t++) = '\n';
+          t[j++] = '\n';
+          t[j++] = ' ';
           words = 0;
         }
       }
     }
   }
-  *(t++) = '\0';
+  t.resize( j + 1 );
+  t += "};\n";
+  return t;
 }
 
 void KXFace::UnCompAll(char *fbuf)
