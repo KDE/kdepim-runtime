@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir) $(all_includes)
 lib_LTLIBRARIES   = libcalendarresources.la
 libcalendarresources_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 0:1:0 -module
 libcalendarresources_la_LIBADD  = $(LIB_QT) $(top_builddir)/libkcal/libkcal.la \
-                     $(top_builddir)/libkdepim/resources/libkderesources.la 
+                     -lkderesources
 
 libcalendarresources_la_SOURCES = \
 	resourcecalendar.cpp resourcelocal.cpp resourcelocalconfig.cpp \
@@ -17,7 +17,7 @@ kde_module_LTLIBRARIES = libkcm_kcalendars.la
 libkcm_kcalendars_la_SOURCES = kcmcalendars.cpp
 libkcm_kcalendars_la_LDFLAGS = $(all_libraries) -module -avoid-version -no-undefined
 libkcm_kcalendars_la_LIBADD = $(top_builddir)/libkcal/libkcal.la \
-        $(top_builddir)/libkdepim/resources/libkderesources.la \
+        -lkderesources \
 	./libcalendarresources.la
 
 datadir = $(kde_appsdir)/Settings/Components
