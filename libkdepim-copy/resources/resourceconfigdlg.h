@@ -42,7 +42,7 @@ class ResourceConfigDlg : KDialog
 
 public:
   // Resource=0: create new resource
-  ResourceConfigDlg( QWidget *parent, const QString& resourceFamily, 
+  ResourceConfigDlg( QWidget *parent, const QString& resourceFamily,
 	  /*const QString& type,*/ Resource* resource, /*KConfig *config,*/ const char *name = 0);
 
 public slots:
@@ -51,7 +51,7 @@ public slots:
 protected slots:
   void accept();
   void setReadOnly( bool value );
-
+    void slotNameChanged( const QString &text);
 private:
   ResourceConfigWidget *mConfigWidget;
   Resource* mResource;
@@ -59,6 +59,7 @@ private:
   KButtonBox *mButtonBox;
   KLineEdit *mName;
   QCheckBox *mReadOnly;
+    QPushButton *mbuttonOk;
 };
 
 }

@@ -42,7 +42,7 @@ ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceFa
   resize( 250, 240 );
 
   QVBoxLayout *mainLayout = new QVBoxLayout( this, marginHint(), spacingHint() );
-    
+
   QGroupBox *generalGroupBox = new QGroupBox( 2, Qt::Horizontal,  this );
   generalGroupBox->setTitle( i18n( "General Settings" ) );
 
@@ -73,14 +73,23 @@ ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceFa
     // connect( mConfigWidget, SIGNAL( setFast( bool ) ), SLOT( setFast( bool ) ) );
   }
 
-  mButtonBox = new KButtonBox( this );
 
-  mButtonBox->addStretch();    
-  mButtonBox->addButton( i18n( "&OK" ), this, SLOT( accept() ) )->setFocus();
+  KButtonBox *mButtonBox = new KButtonBox( this );
+
+  mButtonBox->addStretch();
+  mbuttonOk = mButtonBox->addButton( i18n( "&OK" ), this, SLOT( accept() ) );
+  mbuttonOk->setFocus();
   mButtonBox->addButton( i18n( "&Cancel" ), this, SLOT( reject() ) );
   mButtonBox->layout();
-
+  connect( mName, SIGNAL( textChanged ( const QString & )),this, SLOT( slotNameChanged( const QString &)));
   mainLayout->addWidget( mButtonBox );
+  slotNameChanged( mName->text());
+
+}
+
+void ResourceConfigDlg::slotNameChanged( const QString &text)
+{
+    mbuttonOk->setEnabled( !text.isEmpty() );
 }
 
 int ResourceConfigDlg::exec()
