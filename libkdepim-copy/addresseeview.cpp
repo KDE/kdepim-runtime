@@ -78,16 +78,17 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
     QString number = (*phoneIt).number();
 
+    QString url;
     if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
-      number = "fax:" + number;
+      url = "fax:" + number;
     else
-      number = "phone:" + number;
+      url = "phone:" + number;
 
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
       "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
       .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-      .arg( number )
+      .arg( url )
       .arg( number );
   }
 
