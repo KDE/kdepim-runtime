@@ -237,8 +237,9 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
   }
 
   if ( s_addressesDirty )
-    loadContacts();
+    loadContacts(); // read from local address book
 
+  // cursor at end of string - or Ctrl+T pressed for substring completion?
   if ( ctrlT ) {
     QStringList completions = s_completion->substringCompletion( s );
     if ( completions.count() > 1 ) {
