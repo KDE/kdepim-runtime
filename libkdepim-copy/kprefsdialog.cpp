@@ -343,7 +343,7 @@ KPrefsWidString::KPrefsWidString(const QString &text,QString &reference,
 {
   mLabel = new QLabel(text,parent);
   mEdit = new QLineEdit(parent);
-  connect( mEdit, SIGNAL( textChanged( conbst QString & ) ),
+  connect( mEdit, SIGNAL( textChanged( const QString & ) ),
            SIGNAL( changed() ) );
   mEdit->setEchoMode( echomode );
   if (!whatsThis.isNull()) {
