@@ -22,5 +22,5 @@ rc_DATA = komposerui.rc
 servicetypedir = $(kde_servicetypesdir)
 servicetype_DATA = komposerplugin.desktop
 
-xdg_apps_DATA = komposerconfig.desktop
-
+hidden_apps_DATA = komposerconfig.desktop  
+hidden_appsdir = $(kde_appsdir)/.hidden
