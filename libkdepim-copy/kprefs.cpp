@@ -28,6 +28,12 @@
 
 #include "kprefs.h"
 
+void KPrefsItem::readImmutability( KConfig *config )
+{
+  mIsImmutable = config->entryIsImmutable( mName );
+}
+
+
 KPrefsItemString::KPrefsItemString( const QString &group, const QString &name,
                                     QString &reference,
                                     const QString &defaultValue,
@@ -63,6 +69,8 @@ void KPrefsItemString::readConfig( KConfig *config )
     mReference = config->readEntry( mName, mDefault );
 
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 QString KPrefsItemString::endecryptStr( const QString &aStr )
@@ -88,6 +96,8 @@ void KPrefsItemProperty::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readPropertyEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -102,6 +112,8 @@ void KPrefsItemBool::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readBoolEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -116,6 +128,8 @@ void KPrefsItemInt::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readNumEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 void KPrefsItemInt::setChoices( const QStringList &c )
@@ -141,6 +155,8 @@ void KPrefsItemUInt::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readUnsignedNumEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -155,6 +171,8 @@ void KPrefsItemLong::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readLongNumEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -170,6 +188,8 @@ void KPrefsItemULong::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readUnsignedLongNumEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -184,6 +204,8 @@ void KPrefsItemDouble::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readDoubleNumEntry( mName, mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -199,6 +221,8 @@ void KPrefsItemColor::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readColorEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -214,6 +238,8 @@ void KPrefsItemFont::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readFontEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -229,6 +255,8 @@ void KPrefsItemRect::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readRectEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -244,6 +272,8 @@ void KPrefsItemPoint::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readPointEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -259,6 +289,8 @@ void KPrefsItemSize::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readSizeEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -274,6 +306,8 @@ void KPrefsItemDateTime::readConfig( KConfig *config )
   config->setGroup( mGroup );
   mReference = config->readDateTimeEntry( mName, &mDefault );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -292,6 +326,8 @@ void KPrefsItemStringList::readConfig( KConfig *config )
   else
     mReference = config->readListEntry( mName );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 
@@ -310,6 +346,8 @@ void KPrefsItemIntList::readConfig( KConfig *config )
   else
     mReference = config->readIntListEntry( mName );
   mLoadedValue = mReference;
+
+  readImmutability( config );
 }
 
 

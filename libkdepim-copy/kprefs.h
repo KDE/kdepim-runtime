@@ -57,7 +57,7 @@ class KPrefsItem {
       @param name Config file key.
     */
     KPrefsItem( const QString &group, const QString &name )
-      : mGroup( group ), mName( name ) {}
+      : mGroup( group ), mName( name ), mIsImmutable( true ) {}
 
     /**
       Destructor.
@@ -98,9 +98,16 @@ class KPrefsItem {
     */
     virtual void readDefault( KConfig * ) = 0;
 
+    bool isImmutable() const { return mIsImmutable; }
+
   protected:
+    void readImmutability( KConfig * );
+
     QString mGroup;
     QString mName;
+
+  private:
+    bool mIsImmutable;
 };
 
 
