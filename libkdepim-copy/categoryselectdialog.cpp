@@ -49,15 +49,19 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
            SLOT(clear()) );
 }
 
-void CategorySelectDialog::setCategories()
+void CategorySelectDialog::setCategories( const QStringList &categoryList )
 {
   mWidget->mCategories->clear();
   mCategoryList.clear();
 
-  QStringList::Iterator it;
+  QStringList::ConstIterator it;
 
-  for (it = mPrefs->mCustomCategories.begin();
-       it != mPrefs->mCustomCategories.end(); ++it ) {
+  for ( it = categoryList.begin(); it != categoryList.end(); ++it )
+    if ( mPrefs->mCustomCategories.find( *it ) == mPrefs->mCustomCategories.end() )
+      mPrefs->mCustomCategories.append( *it );
+
+  for ( it = mPrefs->mCustomCategories.begin();
+        it != mPrefs->mCustomCategories.end(); ++it ) {
     new QCheckListItem( mWidget->mCategories, *it, QCheckListItem::CheckBox );
   }
 }

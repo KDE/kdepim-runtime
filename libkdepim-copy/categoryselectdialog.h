@@ -36,7 +36,10 @@ class CategorySelectDialog : public KDialogBase
                           const char *name = 0, bool modal = false );
     ~CategorySelectDialog();
 
-    void setCategories();
+    /**
+      Adds this categories to the default categories.
+     */
+    void setCategories( const QStringList &categoryList = QStringList() );
     void setSelected( const QStringList &selList );
 
     QStringList selectedCategories() const;
