@@ -45,6 +45,7 @@ class CategoryEditDialog : public KDialogBase
     void modify();
     void remove();
     void editItem( QListViewItem *item );
+    void reload();
   
   signals:
     void categoryConfigChanged();

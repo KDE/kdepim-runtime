@@ -135,4 +135,14 @@ void CategoryEditDialog::editItem( QListViewItem *item )
   mWidget->mButtonModify->setEnabled( true );
 }
 
+void CategoryEditDialog::reload() 
+{
+  QStringList::Iterator it;
+  mWidget->mCategories->clear();
+  for ( it = mPrefs->mCustomCategories.begin();
+        it != mPrefs->mCustomCategories.end(); ++it ) {
+    new QListViewItem( mWidget->mCategories, *it );
+  }
+}
+
 #include "categoryeditdialog.moc"
