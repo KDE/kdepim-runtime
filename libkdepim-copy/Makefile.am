@@ -30,7 +30,8 @@ libkdepim_la_SOURCES = \
   kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp \
-  addresseeselector.cpp addresseeemailselection.cpp
+  addresseeselector.cpp addresseeemailselection.cpp \
+  designerfields.cpp
 
 libkdepimincludedir = $(includedir)/libkdepim
 libkdepiminclude_HEADERS = part.h
@@ -42,7 +43,7 @@ AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) \
-  $(top_builddir)/libkcal/libkcal.la $(LIB_POLL) 
+  $(top_builddir)/libkcal/libkcal.la $(LIB_POLL) -lqui
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 
