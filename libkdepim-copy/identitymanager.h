@@ -166,6 +166,9 @@ public:
   Identity & newFromExisting( const Identity & other,
 				const QString & name=QString::null );
 
+  /** Returns the list of all email addresses (only name@host) from all identities */
+  QStringList allEmails() const;
+
 signals:
   /** Emitted whenever the identity with Unique Object Identifier
       (UOID) @p uoid changed. Useful for more fine-grained change

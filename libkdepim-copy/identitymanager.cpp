@@ -416,4 +416,13 @@ int IdentityManager::newUoid()
   return uoid;
 }
 
+QStringList KPIM::IdentityManager::allEmails() const
+{
+  QStringList lst;
+  for ( ConstIterator it = begin() ; it != end() ; ++it ) {
+    lst << (*it).emailAddr();
+  }
+  return lst;
+}
+
 #include "identitymanager.moc"
