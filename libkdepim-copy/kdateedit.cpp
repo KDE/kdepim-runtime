@@ -22,25 +22,25 @@
     without including the source code for Qt in the source distribution.
 */
 
-#include <qapplication.h>
 #include <qevent.h>
 #include <qlineedit.h>
 
 #include <kdatepicker.h>
+#include <knotifyclient.h>
 #include <kdebug.h>
 #include <kglobal.h>
-#include <kiconloader.h>
 #include <klocale.h>
-#include <knotifyclient.h>
 
 #include "kdateedit.moc"
 
 
 KDateEdit::KDateEdit(QWidget *parent, const char *name)
-  : QComboBox(true, parent, name)
+  : QComboBox(true, parent, name),
+    defaultValue(QDate::currentDate())
 {
   setMaxCount(1);       // need at least one entry for popup to work
-  QString today = KGlobal::locale()->formatDate(QDate::currentDate(), true);
+  value = defaultValue;
+  QString today = KGlobal::locale()->formatDate(value, true);
   insertItem(today);
   setCurrentItem(0);
   setCurrentText(today);
@@ -51,7 +51,7 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   mDateFrame->setLineWidth(3);
   mDateFrame->hide();
 
-  mDatePicker = new KDatePicker(mDateFrame,QDate::currentDate());
+  mDatePicker = new KDatePicker(mDateFrame, value);
 
   connect(lineEdit(),SIGNAL(returnPressed()),SLOT(lineEnterPressed()));
   connect(this,SIGNAL(textChanged(const QString &)),
@@ -83,7 +83,7 @@ KDateEdit::~KDateEdit()
   delete mDateFrame;
 }
 
-void KDateEdit::setDate(QDate newDate)
+void KDateEdit::setDate(const QDate& newDate)
 {
   if (!newDate.isValid() && !mHandleInvalid)
     return;
@@ -100,6 +100,8 @@ void KDateEdit::setDate(QDate newDate)
   blockSignals(true);
   setCurrentText(dateString);
   blockSignals(b);
+
+  value = newDate;
 }
 
 void KDateEdit::setHandleInvalid(bool handleInvalid)
@@ -109,14 +111,21 @@ void KDateEdit::setHandleInvalid(bool handleInvalid)
 
 QDate KDateEdit::date() const
 {
-  QDate date = readDate();
-
-  if (date.isValid() || mHandleInvalid) {
-    return date;
-  } else {
-    KNotifyClient::beep();
-    return QDate::currentDate();
+  QDate dt;
+  if (readDate(dt) && (mHandleInvalid || dt.isValid())) {
+    return dt;
   }
+  return defaultValue;
+}
+
+QDate KDateEdit::defaultDate() const
+{
+  return defaultValue;
+}
+
+void KDateEdit::setDefaultDate(const QDate& date)
+{
+  defaultValue = date;
 }
 
 void KDateEdit::popup()
@@ -135,11 +144,12 @@ void KDateEdit::popup()
 
   mDateFrame->move( popupPoint );
 
-  QDate date = readDate();
-  if(date.isValid()) {
+  QDate date;
+  readDate(date);
+  if (date.isValid()) {
     mDatePicker->setDate( date );
   } else {
-    mDatePicker->setDate( QDate::currentDate() );
+    mDatePicker->setDate( defaultValue );
   }
 
   mDateFrame->show();
@@ -147,8 +157,7 @@ void KDateEdit::popup()
 
 void KDateEdit::dateSelected(QDate newDate)
 {
-  if (newDate.isValid() || mHandleInvalid)
-  {
+  if ((mHandleInvalid || newDate.isValid()) && validate(newDate)) {
     setDate(newDate);
     emit dateChanged(newDate);
     mDateFrame->hide();
@@ -157,8 +166,7 @@ void KDateEdit::dateSelected(QDate newDate)
 
 void KDateEdit::dateEntered(QDate newDate)
 {
-  if (newDate.isValid() || mHandleInvalid)
-  {
+  if ((mHandleInvalid || newDate.isValid()) && validate(newDate)) {
     setDate(newDate);
     emit dateChanged(newDate);
   }
@@ -166,30 +174,42 @@ void KDateEdit::dateEntered(QDate newDate)
 
 void KDateEdit::lineEnterPressed()
 {
-  QDate date = readDate();
-
-  if(date.isValid())
+  QDate date;
+  if (readDate(date) && (mHandleInvalid || date.isValid()) && validate(date))
   {
     // Update the edit. This is needed if the user has entered a
     // word rather than the actual date.
     setDate(date);
-
     emit(dateChanged(date));
+  }
+  else {
+    // Invalid or unacceptable date - revert to previous value
+    KNotifyClient::beep();
+    setDate(value);
   }
 }
 
-bool KDateEdit::inputIsValid()
+bool KDateEdit::inputIsValid() const
 {
-  return readDate().isValid();
+  QDate date;
+  return readDate(date) && date.isValid();
 }
 
-QDate KDateEdit::readDate() const
+/* Reads the text from the line edit. If the text is a keyword, the
+ * word will be translated to a date. If the text is not a keyword, the
+ * text will be interpreted as a date.
+ * Returns true if the date text is blank or valid, false otherwise.
+ */
+bool KDateEdit::readDate(QDate& result) const
 {
   QString text = currentText();
-  QDate date;
 
-  if (mKeywordMap.contains(text.lower()))
+  if (text.isEmpty()) {
+    result = QDate();
+  }
+  else if (mKeywordMap.contains(text.lower()))
   {
+    QDate today = QDate::currentDate();
     int i = mKeywordMap[text.lower()];
     if (i >= 100)
     {
@@ -197,27 +217,31 @@ QDate KDateEdit::readDate() const
        * This uses some math tricks to figure out the offset in days
        * to the next date the given day of the week occurs. There
        * are two cases, that the new day is >= the current day, which means
-       * the new day has not occured yet or that the new day < the current day,
+       * the new day has not occurred yet or that the new day < the current day,
        * which means the new day is already passed (so we need to find the
        * day in the next week).
        */
       i -= 100;
-      int currentDay = QDate::currentDate().dayOfWeek();
+      int currentDay = today.dayOfWeek();
       if (i >= currentDay)
         i -= currentDay;
       else
         i += 7 - currentDay;
     }
-    date = QDate::currentDate().addDays(i);
+    result = today.addDays(i);
   }
   else
   {
-    date = KGlobal::locale()->readDate(text);
+    result = KGlobal::locale()->readDate(text);
+    return result.isValid();
   }
 
-  return date;
+  return true;
 }
 
+/* Checks for a focus out event. The display of the date is updated
+ * to display the proper date when the focus leaves.
+ */
 bool KDateEdit::eventFilter(QObject *, QEvent *e)
 {
   // We only process the focus out event if the text has changed
@@ -233,10 +257,5 @@ bool KDateEdit::eventFilter(QObject *, QEvent *e)
 
 void KDateEdit::slotTextChanged(const QString &)
 {
-  if(mHandleInvalid && currentText().stripWhiteSpace().isEmpty()) {
-    QDate date; //invalid date
-    emit(dateChanged(date));
-  } else  {
-    mTextChanged = true;
-  }
+  mTextChanged = true;
 }

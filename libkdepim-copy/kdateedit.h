@@ -24,7 +24,6 @@
 #ifndef KDATEEDIT_H
 #define KDATEEDIT_H
 
-#include <qhbox.h>
 #include <qvbox.h>
 #include <qdatetime.h>
 #include <qcombobox.h>
@@ -58,7 +57,7 @@ class KDateEdit : public QComboBox
     * false otherwise. This will not modify the display of the date,
     * but only check for validity.
     */
-    bool inputIsValid();
+    bool inputIsValid() const;
 
     /** @return The date entered. This will not
     * modify the display of the date, but only return it.
@@ -70,7 +69,17 @@ class KDateEdit : public QComboBox
     * @param date The new date to display. This date must be valid or
     * it will not be displayed.
     */
-    void setDate(QDate date);
+    void setDate(const QDate& date);
+
+    /** @return The default date used if no valid date has been set or entered.
+    */
+    QDate defaultDate() const;
+
+    /** Sets the default date to use if no valid date has been set or entered.
+    * If no default date has been set, the current date is used as the default.
+    * @param date The default date.
+    */
+    void setDefaultDate(const QDate& date);
 
     /** @param handleInvalid If true the date edit accepts invalid dates
     * and displays them as the empty ("") string. It also returns an invalid date.
@@ -79,16 +88,20 @@ class KDateEdit : public QComboBox
     */
     void setHandleInvalid(bool handleInvalid);
 
-    /** Checks for a focus out event. The display of the date is updated
-    * to display the proper date when the focus leaves.
+    /** Called when a new date has been entered, to validate its value.
+    * @param newDate The new date which has been entered.
+    * @return True to accept the new date, false to reject the new date.
+    * If false is returned, the value reverts to what it was before the
+    * new date was entered.
     */
-    virtual bool eventFilter(QObject *o, QEvent *e);
+    virtual bool validate(const QDate &newDate)  { return true; }
 
     virtual void popup();
+
   signals:
     /** This signal is emitted whenever the user modifies the date. This
     * may not get emitted until the user presses enter in the line edit or
-    * focus leaves the widget (ie: the user confirms their selection).
+    * focus leaves the widget (i.e. the user confirms their selection).
     */
     void dateChanged(QDate);
 
@@ -99,11 +112,8 @@ class KDateEdit : public QComboBox
     void slotTextChanged(const QString &);
 
   private:
-    /** Reads the text from the line edit. If the text is a keyword, the
-    * word will be translated to a date. If the text is not a keyword, the
-    * text will be interpreted as a date.
-    */
-    QDate readDate() const;
+    virtual bool eventFilter(QObject *o, QEvent *e);
+    bool readDate(QDate& result) const;
 
     /** Maps the text that the user can enter to the offset in days from
     * today. For example, the text 'tomorrow' is mapped to +1.
@@ -114,6 +124,8 @@ class KDateEdit : public QComboBox
 
     KDatePicker *mDatePicker;
     QVBox *mDateFrame;
+    QDate  defaultValue;
+    QDate  value;
 };
 
 #endif
