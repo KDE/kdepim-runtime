@@ -450,6 +450,11 @@ class KPrefs {
     void addItemIntList( const QString &key, QValueList<int> &reference,
                          const QValueList<int> &defaultValue = QValueList<int>() );
 
+    /**
+      Return the @ref KConfig object used for reading and writing the settings.
+    */
+    KConfig *config() const;
+
   protected:
     /**
       Implemented by subclasses that use special defaults.
@@ -465,11 +470,6 @@ class KPrefs {
       Implemented by subclasses that write special config values.
     */
     virtual void usrWriteConfig() {};
-
-    /**
-      Return the @ref KConfig object used for reading and writing the settings.
-    */
-    KConfig *config() const;
 
   private:
     static QString *mCurrentGroup;

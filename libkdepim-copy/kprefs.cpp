@@ -304,7 +304,10 @@ class KPrefsItemStringList : public KGenericPrefsItem<QStringList>
     void readConfig( KConfig *config )
     {
       config->setGroup( mGroup );
-      mReference = config->readListEntry( mName );
+      if ( !config->hasKey( mName ) )
+        mReference = mDefault;
+      else
+        mReference = config->readListEntry( mName );
       mLoadedValue = mReference;
     }
 };
@@ -321,7 +324,10 @@ class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
     void readConfig( KConfig *config )
     {
       config->setGroup( mGroup );
-      mReference = config->readIntListEntry( mName );
+      if ( !config->hasKey( mName ) )
+        mReference = mDefault;
+      else
+        mReference = config->readIntListEntry( mName );
       mLoadedValue = mReference;
     }
 };
