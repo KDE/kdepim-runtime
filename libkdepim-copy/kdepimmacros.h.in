@@ -18,9 +18,6 @@
     Boston, MA 02111-1307, USA.
 */
 
-// #ifndef KDEPIMMACROS_H
-// #define KDEPIMMACROS_H
-
 #include <kdeversion.h>
 
 /**
@@ -36,9 +33,6 @@
  * int KDE_EXPORT bar;
  * \end
  */
-#if KDE_IS_VERSION(3,3,2)
-#include <kdemacros.h>
-#else
 #undef KDE_NO_EXPORT
 #undef KDE_EXPORT
 
@@ -52,7 +46,3 @@
 #define KDE_NO_EXPORT
 #define KDE_EXPORT
 #endif
-
-#endif /* KDE_IS_VERSION */
-
-// #endif /* KDEPIMMACROS_H */
