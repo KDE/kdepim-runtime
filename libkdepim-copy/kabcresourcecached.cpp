@@ -46,12 +46,22 @@ void ResourceCached::writeConfig( KConfig *config )
 void ResourceCached::insertAddressee( const Addressee &addr )
 {
   if ( !mAddrMap.contains( addr.uid() ) ) { // new contact
-    if ( mDeletedAddressees.contains( addr.uid() ) )
+    qDebug( "insertAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
+    if ( mDeletedAddressees.contains( addr.uid() ) ) {
+      qDebug( "update1Addressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
+      // it was first removed, then added, so it's an update...
       mDeletedAddressees.remove( addr.uid() );
+
+      mAddrMap.insert( addr.uid(), addr );
+      mChangedAddressees.insert( addr.uid(), addr );
+      return;
+    }
+    qDebug( "realInsertAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
 
     mAddrMap.insert( addr.uid(), addr );
     mAddedAddressees.insert( addr.uid(), addr );
   } else {
+    qDebug( "updateAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
     KABC::Addressee oldAddressee = mAddrMap.find( addr.uid() ).data();
     if ( oldAddressee != addr ) {
       mAddrMap.remove( addr.uid() );
@@ -63,8 +73,12 @@ void ResourceCached::insertAddressee( const Addressee &addr )
 
 void ResourceCached::removeAddressee( const Addressee &addr )
 {
-  if ( mAddedAddressees.contains( addr.uid() ) )
+  qDebug( "removeAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
+  if ( mAddedAddressees.contains( addr.uid() ) ) {
     mAddedAddressees.remove( addr.uid() );
+    return;
+  }
+  qDebug( "realRemoveAddressee: %s (%s)", addr.assembledName().latin1(), addr.uid().latin1() );
 
   if ( mDeletedAddressees.find( addr.uid() ) == mDeletedAddressees.end() )
     mDeletedAddressees.insert( addr.uid(), addr );
@@ -127,22 +141,13 @@ void ResourceCached::saveCache()
 
   KABC::VCardConverter converter;
   QString vCard = converter.createVCards( list );
-  file.writeBlock( vCard.utf8() );
+  file.writeBlock( vCard.utf8(), vCard.utf8().length() );
   file.close();
 }
 
 void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 {
-  // load uid map
-  QFile mapFile( uidMapFile() );
-  if ( mapFile.open( IO_ReadOnly ) ) {
-    QDataStream stream( &mapFile );
-    stream >> mUidMap;
-    mapFile.close();
-  } else {
-    kdError() << "Can't open uid map file '" << mapFile.name() << "'" << endl;
-  }
-
+  qDebug( "cleanup cache" );
   // load cache
   QFile file( cacheFile() );
   if ( !file.open( IO_ReadOnly ) )
@@ -151,11 +156,23 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 
   KABC::VCardConverter converter;
   KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
-  KABC::Addressee::List::Iterator it;
+  KABC::Addressee::List::Iterator cacheIt;
+  KABC::Addressee::List::ConstIterator it;
 
-  for ( it = list.begin(); it != list.end(); ++it ) {
-    if ( !addrList.contains( *it ) )
-      mAddrMap.remove( (*it).uid() );
+  for ( cacheIt = list.begin(); cacheIt != list.end(); ++cacheIt ) {
+    qDebug( "check cache entry %s (%s)", (*cacheIt).assembledName().latin1(), (*cacheIt).uid().latin1() );
+
+    bool found = false;
+    for ( it = addrList.begin(); it != addrList.end(); ++it ) {
+      if ( (*it).uid() == (*cacheIt).uid() )
+        found = true;
+    }
+
+    if ( !found ) {
+      qDebug( "didn't found %s", (*cacheIt).uid().latin1() );
+      removeRemoteUid( remoteUid( (*cacheIt).uid() ) );
+      mAddrMap.remove( (*cacheIt).uid() );
+    }
   }
 
   file.close();
