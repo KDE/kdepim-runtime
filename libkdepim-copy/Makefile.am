@@ -1,4 +1,4 @@
-SUBDIRS = cfgc interfaces tests
+SUBDIRS = cfgc interfaces tests pics
 
 INCLUDES = -I$(top_srcdir) $(all_includes)
 
@@ -42,6 +42,21 @@ libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) \
   $(top_builddir)/libkcal/libkcal.la $(LIB_KDEUI) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
+
+
+
+kde_widget_LTLIBRARIES = kdepimwidgets.la
+kdepimwidgets_la_CXXFLAGS = -DQT_PLUGIN
+kdepimwidgets_la_LDFLAGS = $(KDE_PLUGIN) -module $(all_libraries)
+kdepimwidgets_la_LIBADD = $(LIB_KIO) libkdepim.la
+kdepimwidgets_la_SOURCES = kdepimwidgets.cpp 
+
+kdepimwidgets.cpp: kdepim.widgets
+	makekdewidgets -o kdepimwidgets.cpp $<
+
+CLEANFILES = kdepimwidgets.cpp
+
+
 
 METASOURCES = AUTO
 

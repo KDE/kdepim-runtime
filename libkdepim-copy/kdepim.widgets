@@ -1,0 +1,29 @@
+[Global]
+PluginName=KDEPimWidgets
+Includes=kinstance.h
+Init=new KInstance("kdepimwidgets");
+
+[KPIM::AddresseeLineEdit]
+ToolTip=Addressee Line Edit (KDE-PIM)
+WhatsThis=A line edit which lets you select addressees from the addressbook
+IncludeFile=libkdepim/addresseelineedit.h
+Group=Input (KDE-PIM)
+
+[KPIM::ClickLineEdit]
+ToolTip=Click Line Edit (KDE-PIM)
+WhatsThis=A line edit that shows grayed-out default text when no text is set.
+IncludeFile=libkdepim/clicklineedit.h
+Group=Input (KDE-PIM)
+
+[KDateEdit]
+ToolTip=Date Edit Combobox (KDE-PIM)
+WhatsThis=A widget to enter a date. It can also be selected from a date picker calendar.
+IncludeFile=libkdepim/kdateedit.h
+Group=Input (KDE-PIM)
+
+[KTimeEdit]
+ToolTip=Time Edit Combobox (KDE-PIM)
+WhatsThis=A widget to enter a time. It can also be selected from a drop-down list.
+IncludeFile=libkdepim/ktimeedit.h
+ConstructorArgs=(parent, QTime::currentTime(), name)
+Group=Input (KDE-PIM)
