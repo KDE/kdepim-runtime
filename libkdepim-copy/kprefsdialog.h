@@ -377,7 +377,7 @@ class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KPrefsWidString : public KPrefsWid
+class KDE_EXPORT KPrefsWidString : public KPrefsWid
 {
   public:
     /**
@@ -473,7 +473,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
   transparent way. The user has to add the widgets by the corresponding addWid
   functions and KPrefsWidManager handles the rest automatically.
 */
-class KPrefsWidManager
+class KDE_EXPORT KPrefsWidManager
 {
   public:
     /**

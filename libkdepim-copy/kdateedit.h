@@ -27,7 +27,7 @@
 #include <qdatetime.h>
 #include <qmap.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 class QEvent;
 class QVBox;

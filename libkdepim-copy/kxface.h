@@ -30,7 +30,7 @@
 #include <qobject.h>
 #include <setjmp.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 // #define WIDTH 48
 // #define HEIGHT WIDTH

@@ -11,7 +11,7 @@
 #include <qcstring.h>
 #include <qwidget.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 class QString;
 

@@ -28,7 +28,7 @@
 #include <qdict.h>
 #include <qstring.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 

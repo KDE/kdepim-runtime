@@ -19,7 +19,7 @@
 
 #include <qobject.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 class KMKernel;
 

@@ -14,7 +14,7 @@
 #include <qobject.h>
 #include <qmap.h>
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 #undef None
 

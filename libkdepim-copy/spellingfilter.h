@@ -27,7 +27,7 @@
 #include <qstringlist.h>
 #include "linklocator.h"
 
-#include <kdemacros.h>
+#include <kdepimmacros.h>
 
 class KDE_EXPORT SpellingFilter
 {
