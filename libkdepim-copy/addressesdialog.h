@@ -44,13 +44,13 @@ namespace KPIM {
       BCC         =2,
       Group       =3,
       Entry       =4,
-      FilledGroup =5
+      FilledGroup =5,
+      DistList    =6
     };
     AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr );
     AddresseeViewItem( KListView *lv, const QString& name, Category cat=Group );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name, const KABC::Addressee::List &lst );
-    //AddresseeViewItem( AddresseeViewItem *parent, const QString& name,
-    //                       const QString& email = QString::null );
+    AddresseeViewItem( AddresseeViewItem *parent, const QString& name );
     ~AddresseeViewItem();
 
     KABC::Addressee       addressee() const;
@@ -142,10 +142,7 @@ namespace KPIM {
 
     void removeEntry();
     void saveAs();
-
-    void editEntry();
-    void newEntry();
-    void deleteEntry();
+    void launchAddressBook();
 
     void filterChanged( const QString & );
 
@@ -171,6 +168,7 @@ namespace KPIM {
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
     KABC::Addressee::List allAddressee( KListView* view, bool onlySelected = true ) const;
+    QStringList allDistributionLists( AddresseeViewItem* parent ) const;
 
   private:
     // if there's only one group in the available list, open it

@@ -22,20 +22,23 @@
  */
 #include <kabc/stdaddressbook.h>
 #include <kabc/distributionlist.h>
-
-#include <kmessagebox.h>
-#include <kpushbutton.h>
+#include <kapplication.h>
+#include <kdebug.h>
+#include <kglobal.h>
+#include <kiconloader.h>
+#include <kinputdialog.h>
 #include <klineedit.h>
+#include <klocale.h>
+#include <kmessagebox.h>
+#include <kprocess.h>
+#include <kpushbutton.h>
 #include <krun.h>
 #include <kstandarddirs.h>
-#include <kprocess.h>
-#include <klocale.h>
-#include <kdebug.h>
-#include <kinputdialog.h>
+
+#include <qdict.h>
 #include <qlayout.h>
 #include <qvbox.h>
 #include <qwidget.h>
-#include <qdict.h>
 
 #include "addressesdialog.h"
 #include "addresspicker.h"
@@ -75,6 +78,8 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
 
   if ( text(0).stripWhiteSpace().isEmpty() )
     setText( 0, addr.preferredEmail() );
+
+  setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small ) );
 }
 
 AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Category cat )
@@ -91,6 +96,15 @@ AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString&
   d = new AddresseeViewItemPrivate;
   d->category = FilledGroup;
   d->addresses = lst;
+}
+
+AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name )
+  : QObject(0), KListViewItem( parent, name, i18n("<group>") )
+{
+  d = new AddresseeViewItemPrivate;
+  d->category = DistList;
+
+  setPixmap( 0, KGlobal::iconLoader()->loadIcon( "kdmconfig", KIcon::Small ) );
 }
 
 AddresseeViewItem::~AddresseeViewItem()
@@ -140,6 +154,7 @@ void AddresseeViewItem::setSelected(bool selected)
     {
         return;
     }
+
     emit addressSelected( this, selected );
     QListViewItem::setSelected(selected);
 }
@@ -180,6 +195,8 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
 
 AddressesDialog::~AddressesDialog()
 {
+  delete d;
+  d = 0;
 }
 
 AddresseeViewItem* AddressesDialog::selectedToItem()
@@ -292,22 +309,32 @@ AddressesDialog::setShowBCC( bool b )
 QStringList
 AddressesDialog::to() const
 {
+  QStringList emails = allDistributionLists( d->toItem );
   KABC::Addressee::List l = toAddresses();
-  return entryToString( l );
+  emails += entryToString( l );
+
+  return emails;
 }
 
 QStringList
 AddressesDialog::cc() const
 {
+  QStringList emails = allDistributionLists( d->ccItem );
   KABC::Addressee::List l = ccAddresses();
-  return entryToString( l );
+  emails += entryToString( l );
+
+  return emails;
 }
 
 QStringList
 AddressesDialog::bcc() const
 {
+  QStringList emails = allDistributionLists( d->bccItem );
+
   KABC::Addressee::List l = bccAddresses();
-  return entryToString( l );
+  emails += entryToString( l );
+
+  return emails;
 }
 
 KABC::Addressee::List
@@ -383,8 +410,6 @@ void
 AddressesDialog::availableSelectionChanged()
 {
   bool selection = !selectedAvailableAddresses.isEmpty();
-  d->ui->mEditButton->setEnabled(selection);
-  d->ui->mDeleteButton->setEnabled(selection);
   d->ui->mToButton->setEnabled(selection);
   d->ui->mCCButton->setEnabled(selection);
   d->ui->mBCCButton->setEnabled(selection);
@@ -426,38 +451,36 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
 void
 AddressesDialog::initConnections()
 {
-  QObject::connect( d->ui->mDeleteButton, SIGNAL(clicked()),
-                    SLOT(deleteEntry()) );
-  QObject::connect( d->ui->mNewButton, SIGNAL(clicked()),
-                    SLOT(newEntry()) );
-  QObject::connect( d->ui->mEditButton, SIGNAL(clicked()),
-                    SLOT(editEntry()) );
-  QObject::connect( d->ui->mFilterEdit, SIGNAL(textChanged(const QString &)),
-                    SLOT(filterChanged(const QString &)) );
-  QObject::connect( d->ui->mToButton, SIGNAL(clicked()),
-                    SLOT(addSelectedTo()) );
-  QObject::connect( d->ui->mCCButton, SIGNAL(clicked()),
-                    SLOT(addSelectedCC()) );
-  QObject::connect( d->ui->mBCCButton, SIGNAL(clicked()),
-                    SLOT(addSelectedBCC())  );
-  QObject::connect( d->ui->mSaveAs, SIGNAL(clicked()),
-                    SLOT(saveAs())  );
-  QObject::connect( d->ui->mRemoveButton, SIGNAL(clicked()),
-                    SLOT(removeEntry()) );
-  QObject::connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
-                    SLOT(availableSelectionChanged())  );
-  QObject::connect( d->ui->mAvailableView, SIGNAL(doubleClicked(QListViewItem*)),
-                    SLOT(addSelectedTo()) );
-  QObject::connect( d->ui->mSelectedView, SIGNAL(selectionChanged()),
-                    SLOT(selectedSelectionChanged()) );
-  QObject::connect( d->ui->mSelectedView, SIGNAL(doubleClicked(QListViewItem*)),
-                    SLOT(removeEntry()) );
-
+  connect( d->ui->mFilterEdit, SIGNAL(textChanged(const QString &)),
+           SLOT(filterChanged(const QString &)) );
+  connect( d->ui->mToButton, SIGNAL(clicked()),
+           SLOT(addSelectedTo()) );
+  connect( d->ui->mCCButton, SIGNAL(clicked()),
+           SLOT(addSelectedCC()) );
+  connect( d->ui->mBCCButton, SIGNAL(clicked()),
+           SLOT(addSelectedBCC())  );
+  connect( d->ui->mSaveAs, SIGNAL(clicked()),
+           SLOT(saveAs())  );
+  connect( d->ui->mAddressBook, SIGNAL(clicked()),
+           SLOT(launchAddressBook())  );
+  connect( d->ui->mRemoveButton, SIGNAL(clicked()),
+           SLOT(removeEntry()) );
+  connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
+           SLOT(availableSelectionChanged())  );
+  connect( d->ui->mAvailableView, SIGNAL(doubleClicked(QListViewItem*)),
+           SLOT(addSelectedTo()) );
+  connect( d->ui->mSelectedView, SIGNAL(selectionChanged()),
+           SLOT(selectedSelectionChanged()) );
+  connect( d->ui->mSelectedView, SIGNAL(doubleClicked(QListViewItem*)),
+           SLOT(removeEntry()) );
+/* FIXME: I'm not sure what's going on here, but this code suddenly crashes :/
+          Did somebody changed the KDirWatcher stuff during the last weeks?
   connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
            this, SLOT( updateAvailableAddressees() ) );
 
   connect( KABC::StdAddressBook::self(), SIGNAL( addressBookChanged(AddressBook*) ),
            this, SLOT( updateAvailableAddressees() ) );
+*/
 }
 
 void
@@ -503,6 +526,7 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
     defaultParent->setOpen( true );
   }
+
   d->ui->mSaveAs->setEnabled(true);
 }
 
@@ -532,6 +556,10 @@ AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent,
     if (address->category() == AddresseeViewItem::Entry)
     {
       newItem = new AddresseeViewItem( parent, address->addressee() );
+    }
+    else if (address->category() == AddresseeViewItem::DistList)
+    {
+      newItem = new AddresseeViewItem( parent, address->name() );
     }
     else
     {
@@ -739,39 +767,9 @@ AddressesDialog::saveAs()
 }
 
 void
-AddressesDialog::editEntry()
+AddressesDialog::launchAddressBook()
 {
-  AddresseeViewItem *item = static_cast<AddresseeViewItem*>( d->ui->mAvailableView->currentItem() );
-
-#if defined( Q_CC_GNU )
-#warning "This is rather crappy"
-#endif
-  if ( item ) {
-    if ( ! KStandardDirs::findExe( "kaddressbook" ).isEmpty()  ) {
-      KRun::runCommand( "kaddressbook -a " + KProcess::quote( item->addressee().fullEmail() ) );
-    } else {
-      KMessageBox::information( 0,
-                                i18n("No external address book application found. You might want to "
-                                     "install KAddressBook from the kdepim module.") );
-    }
-  } else {
-    KMessageBox::information( 0,
-                              i18n("Please select the entry which you want to edit.") );
-  }
-}
-
-void
-AddressesDialog::newEntry()
-{
-#if defined( Q_CC_GNU )
-#warning "FIXME: do not call kaddressbook"
-#endif
-  KRun::runCommand( "kaddressbook --editor-only --new-contact" );
-}
-
-void
-AddressesDialog::deleteEntry()
-{
+  kapp->startServiceByDesktopName( "kaddressbook", QString() );
 }
 
 void
@@ -822,6 +820,7 @@ AddressesDialog::allAddressee( KListView* view, bool onlySelected ) const
     }
     ++it;
   }
+
   return lst;
 }
 
@@ -850,6 +849,26 @@ AddressesDialog::allAddressee( AddresseeViewItem* parent ) const
   return lst;
 }
 
+QStringList
+AddressesDialog::allDistributionLists( AddresseeViewItem* parent ) const
+{
+  QStringList lists;
+
+  if ( !parent )
+    return QStringList();
+
+  QListViewItemIterator it( parent );
+  while ( it.current() ) {
+    AddresseeViewItem *item = static_cast<AddresseeViewItem*>( it.current() );
+    if ( item && item->category() == AddresseeViewItem::DistList && !item->name().isEmpty() )
+      lists.append( item->name() );
+
+    ++it;
+  }
+
+  return lists;
+}
+
 void
 AddressesDialog::addDistributionLists()
 {
@@ -858,21 +877,27 @@ AddressesDialog::addDistributionLists()
   manager->load();
 
   QStringList distLists = manager->listNames();
+  if ( distLists.isEmpty() )
+    return;
 
-  for( QStringList::iterator itr = distLists.begin(); itr != distLists.end(); ++itr ) {
-    KABC::DistributionList* dlist = manager->list( *itr );
-    KABC::DistributionList::Entry::List elist = dlist->entries();
-    AddresseeViewItem *parent = new AddresseeViewItem( d->ui->mAvailableView, dlist->name() );
-    connect(parent, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
+  AddresseeViewItem *topItem = new AddresseeViewItem( d->ui->mAvailableView, 
+                                                      i18n( "Distribution Lists" ) );
 
-    for( KABC::DistributionList::Entry::List::iterator itr = elist.begin();
-         itr != elist.end(); ++itr ) {
-      addAddresseeToAvailable( (*itr).addressee, parent );
-    }
+  QStringList::Iterator listIt;
+  for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
+    KABC::DistributionList* dlist = manager->list( *listIt );
+    KABC::DistributionList::Entry::List entries = dlist->entries();
+
+    AddresseeViewItem *item = new AddresseeViewItem( topItem, dlist->name() );
+    connect( item, SIGNAL( addressSelected( AddresseeViewItem*, bool ) ),
+             this, SLOT( availableAddressSelected( AddresseeViewItem*, bool ) ) );
+
+    KABC::DistributionList::Entry::List::Iterator itemIt;
+    for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
+      addAddresseeToAvailable( (*itemIt).addressee, item );
   }
 }
 
-}//end namespace KPIM
+}
 
 #include "addressesdialog.moc"
