@@ -146,6 +146,7 @@ protected:
   TransactionItemView* mScrollView;
   TransactionItem* mPreviousItem;
   QMap< const ProgressItem*, TransactionItem* > mTransactionsToListviewItems;
+  bool mWasLastShown;
 };
 
 

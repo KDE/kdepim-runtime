@@ -229,7 +229,7 @@ void TransactionItem::addSubTransaction( ProgressItem* /*item*/ )
 // ---------------------------------------------------------------------------
 
 ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const char* name )
-    : OverlayWidget( alignWidget, parent, name )
+    : OverlayWidget( alignWidget, parent, name ), mWasLastShown( false )
 {
     setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
     setSpacing( 0 ); // QHBox
@@ -296,9 +296,13 @@ void ProgressDialog::slotTransactionAdded( ProgressItem *item )
        parent->addSubTransaction( item );
      }
    } else {
-     TransactionItem *ti = mScrollView->addTransactionItem( item, mTransactionsToListviewItems.empty() );
+     const bool first = mTransactionsToListviewItems.empty();
+     TransactionItem *ti = mScrollView->addTransactionItem( item, first );
      if ( ti )
        mTransactionsToListviewItems.replace( item, ti );
+     if ( first && mWasLastShown )
+       QTimer::singleShot( 1000, this, SLOT( slotShow() ) );
+
    }
 }
 
@@ -374,15 +378,16 @@ void ProgressDialog::slotHide()
 
 void ProgressDialog::slotClose()
 {
+  mWasLastShown = false;
   setVisible( false );
 }
 
 void ProgressDialog::setVisible( bool b )
 {
   if ( b )
-      show();
-    else
-      hide();
+    show();
+  else
+    hide();
   emit visibilityChanged( b );
 }
 
@@ -393,6 +398,7 @@ void ProgressDialog::slotToggleVisibility()
    * the statusbarwidget should not display the dialog, because there
    * are no items to be shown anymore. Guard against that.
    */
+  mWasLastShown = !isShown();
   if ( isShown() || !mTransactionsToListviewItems.isEmpty() )
     setVisible( !isShown() );
 }
