@@ -96,7 +96,7 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
     mConfig = config;
 
   load();
-  
+
   // set up IMProxy to display contacts' IM presence and make connections to keep the display live
   mKIMProxy = ::KIMProxy::instance( kapp->dcopClient() );
   connect( mKIMProxy, SIGNAL( sigContactPresenceChanged( const QString & ) ), this, SLOT( slotPresenceChanged( const QString & ) ) );
@@ -114,7 +114,7 @@ AddresseeView::~AddresseeView()
   delete mActionShowEmails;
   delete mActionShowPhones;
   delete mActionShowURLs;
-  
+
   mKIMProxy = 0;
 }
 
@@ -148,7 +148,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   // Style strings from Gentix; this is just an initial version.
   //
   // These will be substituted into various HTML strings with .arg().
-  // Search for @STYLE@ to find where. Note how we use %1 as a 
+  // Search for @STYLE@ to find where. Note how we use %1 as a
   // placeholder where we fill in something else (in this case,
   // the global background color).
   //
@@ -158,6 +158,11 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
         "padding-right: 2px; "
         "border-right: #000 dashed 1px; "
         "background: %1;\"").arg(backgroundColor);
+  QString backgroundColor2 = KGlobalSettings::baseColor().name();
+  QString cellStyle2 = QString::fromLatin1(
+        "style=\""
+        "padding-left: 2px; "
+        "background: %1;\"").arg(backgroundColor2);
   QString tableStyle = QString::fromLatin1(
         "style=\""
         "border: solid 1px; "
@@ -174,7 +179,10 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 	">" // Close tag
         "<b>%1</b>"
         "</td>"
-        "<td align=\"left\" valign=\"top\" width=\"70%\" style=\"padding-left: 2px;\">"
+        "<td align=\"left\" valign=\"top\" width=\"70%\" ") ); // Tag unclosed
+  rowFmtStr.append( cellStyle2 );
+  rowFmtStr.append( QString::fromLatin1(
+	">" // Close tag
         "%2"
         "</td>"
         "</tr>\n"
@@ -373,8 +381,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   // contains %1 and the like.
   //
   QString strAddr = QString::fromLatin1(
-    "<div>"
-    "<table width=\"98%\" cellpadding=\"0\" cellspacing=\"0\" %1>"
+    "<div align=\"center\">"
+    "<table cellpadding=\"0\" cellspacing=\"0\" %1>"
     "<tr>").arg(tableStyle);
 
   strAddr.append( QString::fromLatin1(
@@ -385,24 +393,34 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     "</td>")
     .arg( image ) );
   strAddr.append( QString::fromLatin1(
-    "<td align=\"left\" width=\"70%\" style=\"padding-left: 2px;\"><font size=\"+2\"><b>%2</b></font></td>"  // name
+    "<td align=\"left\" width=\"70%\" %2>")
+    .arg( cellStyle2 ) );
+  strAddr.append( QString::fromLatin1(
+    "<font size=\"+2\"><b>%2</b></font></td>"  // name
     "</tr>")
     .arg( name ) );
   strAddr.append( QString::fromLatin1(
     "<tr>"
-    "<td align=\"left\" width=\"70%\" style=\"padding-left: 2px;\">%3</td>"  // role
+    "<td align=\"left\" width=\"70%\" %2>")
+    .arg( cellStyle2 ) );
+  strAddr.append( QString::fromLatin1(
+    "%3</td>"  // role
     "</tr>")
     .arg( role ) );
   strAddr.append( QString::fromLatin1(
     "<tr>"
-    "<td align=\"left\" width=\"70%\" style=\"padding-left: 2px;\">%4</td>"  // organization
+    "<td align=\"left\" width=\"70%\" %2>")
+    .arg( cellStyle2 ) );
+  strAddr.append( QString::fromLatin1(
+    "%4</td>"  // organization
     "</tr>")
     .arg( organization ) );
   strAddr.append( QString::fromLatin1(
     "<tr><td %2>")
     .arg( cellStyle ) );
   strAddr.append( QString::fromLatin1(
-    "&nbsp;</td><td>&nbsp;</td></tr>") );
+    "&nbsp;</td><td %2>&nbsp;</td></tr>")
+    .arg( cellStyle2 ) );
   strAddr.append(dynamicPart);
   strAddr.append(notes);
   strAddr.append( QString::fromLatin1("</table></div>\n") );
@@ -474,7 +492,7 @@ void AddresseeView::updateView()
         KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
     }
   }
-  
+
   // at last display it...
   setText( strAddr );
 }
