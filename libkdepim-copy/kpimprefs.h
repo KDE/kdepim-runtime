@@ -24,6 +24,7 @@
 #include <qstringlist.h>
 
 #include <kconfigskeleton.h>
+#include <kdepimmacros.h>
 
 class QString;
 
