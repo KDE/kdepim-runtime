@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir) $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
-  ktimeedit.cpp \
+  ktimeedit.cpp part.cpp \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
@@ -24,7 +24,7 @@ libkdepim_la_SOURCES = \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
-  htmldiffalgodisplay.cpp part.cpp broadcaststatus.cpp kresourceprefs.cpp \
+  htmldiffalgodisplay.cpp broadcaststatus.cpp kresourceprefs.cpp \
   kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h \
