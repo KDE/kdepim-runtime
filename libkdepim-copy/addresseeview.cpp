@@ -434,9 +434,11 @@ QString AddresseeView::strippedNumber( const QString &number )
 {
   QString retval;
 
-  for ( uint i = 0; i < number.length(); ++i )
-    if ( number[ i ].isDigit() || number[ i ] == '*' || number[ i ] == '#' )
-      retval.append( number[ i ] );
+  for ( uint i = 0; i < number.length(); ++i ) {
+    QChar c = number[ i ];
+    if ( c.isDigit() || c == '*' || c == '#' || c == '+' && i == 0 )
+      retval.append( c );
+  }
 
   return retval;
 }
