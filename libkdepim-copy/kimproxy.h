@@ -24,6 +24,7 @@
 #ifndef KIMPROXY_H
 #define KIMPROXY_H
 
+#include <qdict.h>
 #include <qstringlist.h>
 
 
@@ -37,6 +38,15 @@
 class DCOPClient;
 class KIMIface_stub;
 class KURL;
+
+struct AppPresence
+{
+	int presence;
+	QString appId;
+};
+
+typedef QDict<AppPresence> PresenceMap;
+
 class KIMProxy : public QObject, virtual public KIMProxyIface
 {
 	Q_OBJECT
@@ -152,7 +162,7 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 		/**
 		* Send the file to the contact
 		*/
-		void sendFile(const QString &metaContactId, const KURL &sourceURL, const QString &altFileName = QString::null, uint fileSize = 0);
+		void sendFile(const QString &uid, const KURL &sourceURL, const QString &altFileName = QString::null, uint fileSize = 0);
 
 		/**
 		* Add a contact to the contact list
@@ -164,26 +174,63 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 		 * Are there any compatible instant messaging apps available
 		 */
 		bool imAppsAvailable();
+		
+		/**
+		 * Start the user's preferred IM application
+		 * @return whether a preferred app was found
+		 */
+		bool startPreferredApp();
 		 
 		/**
 		* Just exists to let the idl compiler make the DCOP signal for this
 		*/
-		void contactStatusChanged( QString uid );
+		void contactPresenceChanged( QString uid, QCString appId, int presence );
+		
 	public slots:
-		void unregisteredFromDCOP( const QCString& appId );
-signals:
+		void registeredToDCOP( const QCString& appId );
+        void unregisteredFromDCOP( const QCString& appId );
+	signals:
 		/**
 		 * Indicates that the specified UID's status changed
 		 */
-		void sigContactStatusChanged( const QString &uid );
+		void sigContactPresenceChanged( const QString &uid );
 		
 		/**
-		 * Indicates that the source of status information is no longer available
+		 * Indicates that the sources of status information have changed
 		 * so any previously supplied presence info is invalid.
 		 */
 		void sigPresenceInfoExpired();
 	protected:
-		KIMIface_stub *m_im_client_stub;
+		/** 
+		 * Bootstrap our presence data by polling all known apps
+		 */
+		void KIMProxy::pollAll( const QString &uid );
+		
+		/**
+		 * Update our records with the given data
+		 */
+		bool updatePresence( const QString &uid, const QString &appId, int presence );
+
+		/**
+		 * Get the name of the user's IM weapon of choice
+		 */
+		QString preferredApp();
+		
+		/**
+		 * Get the app stub best able to reach this uid
+		 */
+		KIMIface_stub * stubForUid( const QString &uid );
+
+		/**
+		 * Get the app stub for this protocol.  
+		 * Take the preferred app first, then any other.
+		 */
+		KIMIface_stub * stubForProtocol( const QString &protocol );
+
+		//KIMIface_stub *m_im_client_stub;
+		QDict<KIMIface_stub> m_im_client_stubs;
+		PresenceMap m_presence_map;
+		
 		DCOPClient *m_dc;
 		bool m_apps_available;
 	private:

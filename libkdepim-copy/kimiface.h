@@ -85,7 +85,7 @@ k_dcop:
 	virtual bool addContact( const QString &contactId, const QString &protocol ) = 0;
 // SIGNALS
 k_dcop_signals:
-	void contactStatusChanged( const QString &uid);
+	void contactPresenceChanged( QString uid, QCString appId, int presence );
 };
 
 #endif
