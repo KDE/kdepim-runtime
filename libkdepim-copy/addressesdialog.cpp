@@ -363,6 +363,7 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
       myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
     }
     new AddresseeViewItem( defaultParent, addr );
+    defaultParent->setOpen( true );
   }
 }
 
@@ -382,6 +383,7 @@ AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent, const KABC:
   for( KABC::Addressee::List::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
     addAddresseeToSelected( *it, parent );
   }
+  parent->setOpen( true );
 }
 
 QStringList
@@ -430,7 +432,7 @@ AddressesDialog::addSelectedBCC()
   if ( !d->bccItem )
     d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
 
-  addAddresseesToSelected( d->ccItem, lst, groups );
+  addAddresseesToSelected( d->bccItem, lst, groups );
 
   if ( d->bccItem->childCount() > 0 )
     d->bccItem->setVisible( true );
