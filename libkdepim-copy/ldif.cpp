@@ -339,6 +339,7 @@ void LDIF::endLDIF()
   mLdif[ 0 ] = '\n';
   mLdif[ 1 ] = '\n';
   mLdif[ 2 ] = '\n';
+  mPos = 0;
 }
 
 void LDIF::startParsing()

@@ -211,10 +211,6 @@ void LdapClient::startParseLDIF()
 
 void LdapClient::endParseLDIF()
 {
-  // make sure we do not loose the last entry in case there was
-  // no LDIF::EndEntry at its end
-  if( ! mCurrentObject.attrs.isEmpty())
-    finishCurrentObject();
 }
 
 void LdapClient::finishCurrentObject()
