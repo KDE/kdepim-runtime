@@ -62,9 +62,9 @@ public slots:
   void slotClean();
   void slotSetSSL( bool );
 
-  void slotProgressItemAdded( ProgressItem *i );
-  void slotProgressItemCompleted( ProgressItem *i );
-  void slotProgressItemProgress( ProgressItem *i, unsigned int value );
+  void slotProgressItemAdded( KPIM::ProgressItem *i );
+  void slotProgressItemCompleted( KPIM::ProgressItem *i );
+  void slotProgressItemProgress( KPIM::ProgressItem *i, unsigned int value );
 
 protected slots:
   void slotProgressDialogVisible( bool );

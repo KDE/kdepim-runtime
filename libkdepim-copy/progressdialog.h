@@ -124,13 +124,13 @@ public slots:
   void slotToggleVisibility();
 
 protected slots:
-  void slotTransactionAdded( ProgressItem *item );
-  void slotTransactionCompleted( ProgressItem *item );
-  void slotTransactionCanceled( ProgressItem *item );
-  void slotTransactionProgress( ProgressItem *item, unsigned int progress );
-  void slotTransactionStatus( ProgressItem *item, const QString& );
-  void slotTransactionLabel( ProgressItem *item, const QString& );
-  void slotTransactionUsesCrypto( ProgressItem *item, bool );
+void slotTransactionAdded( KPIM::ProgressItem *item );
+  void slotTransactionCompleted( KPIM::ProgressItem *item );
+  void slotTransactionCanceled( KPIM::ProgressItem *item );
+  void slotTransactionProgress( KPIM::ProgressItem *item, unsigned int progress );
+  void slotTransactionStatus( KPIM::ProgressItem *item, const QString& );
+  void slotTransactionLabel( KPIM::ProgressItem *item, const QString& );
+  void slotTransactionUsesCrypto( KPIM::ProgressItem *item, bool );
 
   void slotClose();
   void slotShow();

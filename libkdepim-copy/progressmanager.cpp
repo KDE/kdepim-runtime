@@ -156,20 +156,20 @@ ProgressItem* ProgressManager::createProgressItemImpl(
        }
      }
      // connect all signals
-     connect ( t, SIGNAL( progressItemCompleted( ProgressItem* ) ),
-               this, SLOT( slotTransactionCompleted( ProgressItem* ) ) );
-     connect ( t, SIGNAL( progressItemProgress( ProgressItem*, unsigned int ) ),
-               this, SIGNAL( progressItemProgress( ProgressItem*, unsigned int ) ) );
-     connect ( t, SIGNAL( progressItemAdded( ProgressItem* ) ),
-               this, SIGNAL( progressItemAdded( ProgressItem* ) ) );
-     connect ( t, SIGNAL( progressItemCanceled( ProgressItem* ) ),
-               this, SIGNAL( progressItemCanceled( ProgressItem* ) ) );
-     connect ( t, SIGNAL( progressItemStatus( ProgressItem*, const QString& ) ),
-               this, SIGNAL( progressItemStatus( ProgressItem*, const QString& ) ) );
-     connect ( t, SIGNAL( progressItemLabel( ProgressItem*, const QString& ) ),
-               this, SIGNAL( progressItemLabel( ProgressItem*, const QString& ) ) );
-     connect ( t, SIGNAL( progressItemUsesCrypto( ProgressItem*, bool ) ),
-               this, SIGNAL( progressItemUsesCrypto( ProgressItem*, bool ) ) );
+     connect ( t, SIGNAL( progressItemCompleted(KPIM::ProgressItem*) ),
+               this, SLOT( slotTransactionCompleted(KPIM::ProgressItem*) ) );
+     connect ( t, SIGNAL( progressItemProgress(KPIM::ProgressItem*, unsigned int) ),
+               this, SIGNAL( progressItemProgress(KPIM::ProgressItem*, unsigned int) ) );
+     connect ( t, SIGNAL( progressItemAdded(KPIM::ProgressItem*) ),
+               this, SIGNAL( progressItemAdded(KPIM::ProgressItem*) ) );
+     connect ( t, SIGNAL( progressItemCanceled(KPIM::ProgressItem*) ),
+               this, SIGNAL( progressItemCanceled(KPIM::ProgressItem*) ) );
+     connect ( t, SIGNAL( progressItemStatus(KPIM::ProgressItem*, const QString&) ),
+               this, SIGNAL( progressItemStatus(KPIM::ProgressItem*, const QString&) ) );
+     connect ( t, SIGNAL( progressItemLabel(KPIM::ProgressItem*, const QString&) ),
+               this, SIGNAL( progressItemLabel(KPIM::ProgressItem*, const QString&) ) );
+     connect ( t, SIGNAL( progressItemUsesCrypto(KPIM::ProgressItem*, bool) ),
+               this, SIGNAL( progressItemUsesCrypto(KPIM::ProgressItem*, bool) ) );
 
      emit progressItemAdded( t );
    } else {

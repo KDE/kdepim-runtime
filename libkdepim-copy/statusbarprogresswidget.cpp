@@ -101,10 +101,10 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   connect( m_pButton, SIGNAL( clicked() ),
            progressDialog, SLOT( slotToggleVisibility() ) );
 
-  connect ( ProgressManager::instance(), SIGNAL( progressItemAdded( ProgressItem * ) ),
-            this, SLOT( slotProgressItemAdded( ProgressItem * ) ) );
-  connect ( ProgressManager::instance(), SIGNAL( progressItemCompleted( ProgressItem * ) ),
-            this, SLOT( slotProgressItemCompleted( ProgressItem * ) ) );
+  connect ( ProgressManager::instance(), SIGNAL( progressItemAdded( KPIM::ProgressItem * ) ),
+            this, SLOT( slotProgressItemAdded( KPIM::ProgressItem * ) ) );
+  connect ( ProgressManager::instance(), SIGNAL( progressItemCompleted( KPIM::ProgressItem * ) ),
+            this, SLOT( slotProgressItemCompleted( KPIM::ProgressItem * ) ) );
 
   connect ( progressDialog, SIGNAL( visibilityChanged( bool )),
             this, SLOT( slotProgressDialogVisible( bool ) ) );
@@ -155,14 +155,14 @@ void StatusbarProgressWidget::slotProgressItemCompleted( ProgressItem *item )
 void StatusbarProgressWidget::connectSingleItem()
 {
   if ( mCurrentItem ) {
-    disconnect ( mCurrentItem, SIGNAL( progressItemProgress( ProgressItem *, unsigned int ) ),
-                this, SLOT( slotProgressItemProgress( ProgressItem *, unsigned int ) ) );
+    disconnect ( mCurrentItem, SIGNAL( progressItemProgress( KPIM::ProgressItem *, unsigned int ) ),
+                 this, SLOT( slotProgressItemProgress( KPIM::ProgressItem *, unsigned int ) ) );
     mCurrentItem = 0;
   }
   mCurrentItem = ProgressManager::instance()->singleItem();
   if ( mCurrentItem ) {
-    connect ( mCurrentItem, SIGNAL( progressItemProgress( ProgressItem *, unsigned int ) ),
-              this, SLOT( slotProgressItemProgress( ProgressItem *, unsigned int ) ) );
+    connect ( mCurrentItem, SIGNAL( progressItemProgress( KPIM::ProgressItem *, unsigned int ) ),
+              this, SLOT( slotProgressItemProgress( KPIM::ProgressItem *, unsigned int ) ) );
   }
 }
 

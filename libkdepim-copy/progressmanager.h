@@ -141,20 +141,20 @@ signals:
      * Emitted when a new ProgressItem is added.
      * @param The ProgressItem that was added.
      */
-    void progressItemAdded( ProgressItem* );
+    void progressItemAdded( KPIM::ProgressItem* );
     /**
      * Emitted when the progress value of an item changes.
      * @param  The item which got a new value.
      * @param  The value, for convenience.
      */
-    void progressItemProgress( ProgressItem*, unsigned int );
+    void progressItemProgress( KPIM::ProgressItem*, unsigned int );
     /**
      * Emitted when a progress item was completed. The item will be
      * deleted afterwards, so slots connected to this are the last
      * chance to work with this item.
      * @param The completed item.
      */
-    void progressItemCompleted( ProgressItem* );
+    void progressItemCompleted( KPIM::ProgressItem* );
     /**
      * Emitted when an item was cancelled. It will _not_ go away immediately,
      * only when the owner sets it complete, which will usually happen. Can be
@@ -165,28 +165,28 @@ signals:
      * be done on cancel.
      * @param The canceled item;
      */
-    void progressItemCanceled( ProgressItem* );
+    void progressItemCanceled( KPIM::ProgressItem* );
     /**
      * Emitted when the status message of an item changed. Should be used by
      * progress dialogs to update the status message for an item.
      * @param  The updated item.
      * @param  The new message.
      */
-    void progressItemStatus( ProgressItem*, const QString& );
+    void progressItemStatus( KPIM::ProgressItem*, const QString& );
     /**
      * Emitted when the label of an item changed. Should be used by
      * progress dialogs to update the label of an item.
      * @param  The updated item.
      * @param  The new label.
      */
-    void progressItemLabel( ProgressItem*, const QString& );
+    void progressItemLabel( KPIM::ProgressItem*, const QString& );
     /**
      * Emitted when the crypto status of an item changed. Should be used by
      * progress dialogs to update the crypto indicator of an item.
      * @param  The updated item.
      * @param  The new state.
      */
-    void progressItemUsesCrypto( ProgressItem*, bool );
+    void progressItemUsesCrypto( KPIM::ProgressItem*, bool );
 
 
   protected:
@@ -339,19 +339,19 @@ class ProgressManager : public QObject
 
   signals:
     /** @see ProgressItem::progressItemAdded() */
-    void progressItemAdded( ProgressItem* );
+    void progressItemAdded( KPIM::ProgressItem* );
     /** @see ProgressItem::progressItemProgress() */
-    void progressItemProgress( ProgressItem*, unsigned int );
+    void progressItemProgress( KPIM::ProgressItem*, unsigned int );
     /** @see ProgressItem::progressItemCompleted() */
-    void progressItemCompleted( ProgressItem* );
+    void progressItemCompleted( KPIM::ProgressItem* );
     /** @see ProgressItem::progressItemCanceled() */
-    void progressItemCanceled( ProgressItem* );
+    void progressItemCanceled( KPIM::ProgressItem* );
     /** @see ProgressItem::progressItemStatus() */
-    void progressItemStatus( ProgressItem*, const QString& );
+    void progressItemStatus( KPIM::ProgressItem*, const QString& );
     /** @see ProgressItem::progressItemLabel() */
-    void progressItemLabel( ProgressItem*, const QString& );
+    void progressItemLabel( KPIM::ProgressItem*, const QString& );
     /** @see ProgressItem::progressItemUsesCrypto() */
-    void progressItemUsesCrypto( ProgressItem*, bool );
+    void progressItemUsesCrypto( KPIM::ProgressItem*, bool );
 
     /**
      * Emitted when an operation requests the listeners to be shown.
@@ -365,7 +365,7 @@ class ProgressManager : public QObject
      * Provided for convenience.
      * @param item the canceled item.
      */
-    void slotStandardCancelHandler( ProgressItem* item );
+    void slotStandardCancelHandler( KPIM::ProgressItem* item );
 
     /**
      * Aborts all running jobs. Bound to "Esc"
@@ -373,7 +373,7 @@ class ProgressManager : public QObject
     void slotAbortAll();
 
   private slots:
-    void slotTransactionCompleted( ProgressItem *item );
+    void slotTransactionCompleted( KPIM::ProgressItem *item );
 
   private:
     ProgressManager();

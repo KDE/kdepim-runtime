@@ -254,18 +254,18 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
      * appearing and vanishing items.
      */
     ProgressManager *pm = ProgressManager::instance();
-    connect ( pm, SIGNAL( progressItemAdded( ProgressItem* ) ),
-              this, SLOT( slotTransactionAdded( ProgressItem* ) ) );
-    connect ( pm, SIGNAL( progressItemCompleted( ProgressItem* ) ),
-              this, SLOT( slotTransactionCompleted( ProgressItem* ) ) );
-    connect ( pm, SIGNAL( progressItemProgress( ProgressItem*, unsigned int ) ),
-              this, SLOT( slotTransactionProgress( ProgressItem*, unsigned int ) ) );
-    connect ( pm, SIGNAL( progressItemStatus( ProgressItem*, const QString& ) ),
-              this, SLOT( slotTransactionStatus( ProgressItem*, const QString& ) ) );
-    connect ( pm, SIGNAL( progressItemLabel( ProgressItem*, const QString& ) ),
-              this, SLOT( slotTransactionLabel( ProgressItem*, const QString& ) ) );
-    connect ( pm, SIGNAL( progressItemUsesCrypto( ProgressItem*, bool ) ),
-              this, SLOT( slotTransactionUsesCrypto( ProgressItem*, bool ) ) );
+    connect ( pm, SIGNAL( progressItemAdded( KPIM::ProgressItem* ) ),
+              this, SLOT( slotTransactionAdded( KPIM::ProgressItem* ) ) );
+    connect ( pm, SIGNAL( progressItemCompleted( KPIM::ProgressItem* ) ),
+              this, SLOT( slotTransactionCompleted( KPIM::ProgressItem* ) ) );
+    connect ( pm, SIGNAL( progressItemProgress( KPIM::ProgressItem*, unsigned int ) ),
+              this, SLOT( slotTransactionProgress( KPIM::ProgressItem*, unsigned int ) ) );
+    connect ( pm, SIGNAL( progressItemStatus( KPIM::ProgressItem*, const QString& ) ),
+              this, SLOT( slotTransactionStatus( KPIM::ProgressItem*, const QString& ) ) );
+    connect ( pm, SIGNAL( progressItemLabel( KPIM::ProgressItem*, const QString& ) ),
+              this, SLOT( slotTransactionLabel( KPIM::ProgressItem*, const QString& ) ) );
+    connect ( pm, SIGNAL( progressItemUsesCrypto(KPIM::ProgressItem*, bool) ),
+              this, SLOT( slotTransactionUsesCrypto( KPIM::ProgressItem*, bool ) ) );
     connect ( pm, SIGNAL( showProgressDialog() ),
               this, SLOT( slotShow() ) );
 }
