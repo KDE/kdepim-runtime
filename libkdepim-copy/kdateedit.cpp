@@ -162,15 +162,20 @@ void KDateEdit::popup()
   QRect desk = KGlobalSettings::desktopGeometry(this);
 
   QPoint popupPoint = mapToGlobal( QPoint( 0,0 ) );
-  if ( popupPoint.x() < desk.left() ) popupPoint.setX( desk.x() );
 
   int dateFrameHeight = mDateFrame->sizeHint().height();
-
   if ( popupPoint.y() + height() + dateFrameHeight > desk.bottom() ) {
     popupPoint.setY( popupPoint.y() - dateFrameHeight );
   } else {
     popupPoint.setY( popupPoint.y() + height() );
   }
+  int dateFrameWidth = mDateFrame->sizeHint().width();
+  if ( popupPoint.x() + dateFrameWidth > desk.right() ) {
+    popupPoint.setX( desk.right() - dateFrameWidth );
+  }
+
+  if ( popupPoint.x() < desk.left() ) popupPoint.setX( desk.left() );
+  if ( popupPoint.y() < desk.top() ) popupPoint.setY( desk.top() );
 
   mDateFrame->move( popupPoint );
 
