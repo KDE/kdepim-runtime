@@ -94,7 +94,7 @@ public:
     
     /* Returns TRUE if the information in e can be decoded into a QString;
        otherwsie returns FALSE */
-    static bool canDecode( QDragMoveEvent* e );
+    static bool canDecode( QMimeSource* e );
 
     /* Attempts to decode the dropped information;
        Returns TRUE if successful; otherwise return false */

@@ -84,7 +84,7 @@ const char* MailListDrag::format()
     return "x-kmail-drag/message-list";
 }
 
-bool MailListDrag::canDecode( QDragMoveEvent* e )
+bool MailListDrag::canDecode( QMimeSource *e )
 {
     return e->provides( MailListDrag::format() );
 }
