@@ -33,6 +33,18 @@
 
 #include "kimproxy.h"
 
+KIMProxy * KIMProxy::mInstance = 0L;
+
+KIMProxy * KIMProxy::instance( DCOPClient * client ) 
+{
+	if ( !mInstance && client ) {
+		mInstance = new KIMProxy(client);
+		return mInstance;
+	}
+	else
+		return 0L;
+}
+
 KIMProxy::KIMProxy( DCOPClient* dc ) : DCOPObject( "KIMProxyIface" ), QObject()
 {
 	m_im_client_stub = 0L;
@@ -253,10 +265,13 @@ bool KIMProxy::addContact( const QString &contactId, const QString &protocol )
 
 void KIMProxy::unregisteredFromDCOP( const QCString& appId )
 {
+	kdDebug( 5301 ) << k_funcinfo << appId << endl;
 	if ( m_im_client_stub && m_im_client_stub->app() == appId )
 	{
 		delete m_im_client_stub;
 		m_im_client_stub = 0L;
+		
+		emit sigPresenceInfoExpired();
 	}
 }
 

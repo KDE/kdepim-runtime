@@ -97,7 +97,7 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
 
   load();
   
-  mKIMProxy = new ::KIMProxy( kapp->dcopClient() );
+  mKIMProxy = ::KIMProxy::instance( kapp->dcopClient() );
   //connect( mKIMProxy, SIGNAL( sigContactStatusChanged( QString ) ), this, SLOT( statusChanged( ) ) );
 }
 
@@ -344,7 +344,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     organization = QString::null;
   }
  
-  if ( showIMAddresses )
+  if ( proxy && showIMAddresses )
   {
     if ( proxy->isPresent( addr.uid() ) )
     {

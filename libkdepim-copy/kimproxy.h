@@ -43,10 +43,15 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 
 	public:
 		/**
-		* Construct an instance of the proxy library
-		* @param your app's DCOP client 
-		*/
-		KIMProxy( DCOPClient *);
+		 * Note, if you share DCOPClients with your own app,
+		 * that kimproxy uses DCOPClient::setNotifications() to make sure 
+		 * it updates its information when the IM application it is interfacing to 
+		 * exits.  
+		 * @param client your app's DCOP client 
+		 * @return The singleton instance of this class.
+		 */
+		static KIMProxy * instance( DCOPClient * client );
+		
 		~KIMProxy();
 
 		/**
@@ -159,13 +164,28 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 		* Just exists to let the idl compiler make the DCOP signal for this
 		*/
 		void contactStatusChanged( QString uid );
-		public slots:
-			void unregisteredFromDCOP( const QCString& appId );
+	public slots:
+		void unregisteredFromDCOP( const QCString& appId );
 signals:
+		/**
+		 * Indicates that the specified UID's status changed
+		 */
 		void sigContactStatusChanged( QString uid );
+		
+		/**
+		 * Indicates that the source of status information is no longer available
+		 * so any previously supplied presence info is invalid.
+		 */
+		void sigPresenceInfoExpired();
 	protected:
 		KIMIface_stub *m_im_client_stub;
 		DCOPClient *m_dc;
+	private:
+		/**
+		 * Construct an instance of the proxy library.
+		 */
+		KIMProxy( DCOPClient * client);
+		static KIMProxy * mInstance;
 };
 
 #endif
