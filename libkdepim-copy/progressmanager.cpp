@@ -206,9 +206,17 @@ void ProgressManager::slotStandardCancelHandler( ProgressItem *item )
 
 ProgressItem* ProgressManager::singleItem() const
 {
-  if ( mTransactions.count() == 1 )
-    return QDictIterator< ProgressItem >( mTransactions ).current();
-  return 0;
+  ProgressItem *item = 0;
+  QDictIterator< ProgressItem > it( mTransactions );
+  for ( ; it.current(); ++it ) {
+    if ( !(*it)->parent() ) { // if it's a top level one, only those count
+      if ( item )
+        return 0; // we found more than one
+      else
+        item = (*it);
+    }
+  }
+  return item;
 }
 
 void ProgressManager::slotAbortAll()
