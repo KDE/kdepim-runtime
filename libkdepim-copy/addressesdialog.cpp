@@ -359,6 +359,7 @@ void
 AddressesDialog::updateAvailableAddressees()
 {
   d->ui->mAvailableView->clear();
+  d->groupDict.clear();
 
   static const QString &personalGroup = KGlobal::staticQString( i18n( "Other Addresses" ) );
   d->ui->mAvailableView->setRootIsDecorated( true );
@@ -473,14 +474,12 @@ AddressesDialog::initConnections()
            SLOT(selectedSelectionChanged()) );
   connect( d->ui->mSelectedView, SIGNAL(doubleClicked(QListViewItem*)),
            SLOT(removeEntry()) );
-/* FIXME: I'm not sure what's going on here, but this code suddenly crashes :/
-          Did somebody changed the KDirWatcher stuff during the last weeks?
+
   connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
            this, SLOT( updateAvailableAddressees() ) );
 
   connect( KABC::StdAddressBook::self(), SIGNAL( addressBookChanged(AddressBook*) ),
            this, SLOT( updateAvailableAddressees() ) );
-*/
 }
 
 void
@@ -754,6 +753,7 @@ AddressesDialog::saveAs()
                               i18n( "<qt>Distribution list with the given name <b>%1</b> "
                                     "already exists. Please select a different name.</qt>" )
                               .arg( name ) );
+    return;
   }
 
   KABC::DistributionList *dlist = new KABC::DistributionList( &manager, name );
@@ -857,13 +857,12 @@ AddressesDialog::allDistributionLists( AddresseeViewItem* parent ) const
   if ( !parent )
     return QStringList();
 
-  QListViewItemIterator it( parent );
-  while ( it.current() ) {
-    AddresseeViewItem *item = static_cast<AddresseeViewItem*>( it.current() );
-    if ( item && item->category() == AddresseeViewItem::DistList && !item->name().isEmpty() )
+  AddresseeViewItem *item = static_cast<AddresseeViewItem*>( parent->firstChild() );
+  while ( item ) {
+    if ( item->category() == AddresseeViewItem::DistList && !item->name().isEmpty() )
       lists.append( item->name() );
 
-    ++it;
+    item = static_cast<AddresseeViewItem*>( item->nextSibling() );
   }
 
   return lists;
