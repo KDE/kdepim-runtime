@@ -27,6 +27,7 @@
 #include <kmessagebox.h>
 #include <ksimpleconfig.h>
 #include <kiconloader.h>
+#include <kservice.h>
 #include <kservicetype.h>
 
 #include "kimiface_stub.h"
@@ -48,11 +49,12 @@ KIMProxy * KIMProxy::instance( DCOPClient * client )
 KIMProxy::KIMProxy( DCOPClient* dc ) : DCOPObject( "KIMProxyIface" ), QObject()
 {
 	m_im_client_stub = 0L;
+	m_apps_available = false;
 	m_dc = dc;
-	// hope the notifications is refcounted!
-	m_dc->setNotifications( true );
 	connect( m_dc, SIGNAL( applicationRemoved( const QCString& ) ) , this, SLOT( unregisteredFromDCOP( const QCString& ) ) );
-	//QCString senderApp = "Kopete";
+	m_dc->setNotifications( true );
+
+    //QCString senderApp = "Kopete";
 	//QCString senderObjectId = "KIMIface";
 	QCString method = "contactStatusChanged(QString)";
 	//QCString receiverObjectId = "KIMProxyIface";
@@ -75,21 +77,39 @@ bool KIMProxy::initialize()
 		// So there is no error from a failed query when using kdelibs 3.2, which don't have this servicetype
 		if ( KServiceType::serviceType( IM_SERVICE_TYPE ) ) 
 		{
-			// start/find an instance of DCOP/InstantMessenger
-			QString error;
-			QCString dcopService;
-			// Get a preferred IM client
-			QString preferences = QString::null;
-			// FIXME: we are getting preferences from a config specified by hardcoded literals - the interface or kcm_componentchooser specification should be all we need to know and say where we get preferences from.
+			kdDebug( 5301 ) << k_funcinfo << endl;
+			QCString dcopObjectId = "KIMIface";
+			
+/*			// FIXME: we are getting preferences from a config specified by hardcoded literals - the interface or kcm_componentchooser specification should be all we need to know and say where we get preferences from.
 			KConfig *store = new KSimpleConfig( IM_CLIENT_PREFERENCES_FILE );
 			store->setGroup( IM_CLIENT_PREFERENCES_SECTION );
 			QString preferredApp = store->readEntry( IM_CLIENT_PREFERENCES_ENTRY );
 			kdDebug( 5301 ) << k_funcinfo << "found preferred app: " << preferredApp << endl;
+			
 			if ( !preferredApp.isNull() )
 			{
 				// construct a preferences trader expression - Name == value
 				preferences = QString("[X-DCOP-ServiceName] == '%1'").arg( preferredApp );
-			}	
+			}	*/
+			
+			// see what apps implementing our service type are out there
+			KService::List offers = KServiceType::offers( IM_SERVICE_TYPE );
+			KService::List::iterator it;
+			m_apps_available = false;
+			for ( it = offers.begin(); it != offers.end(); ++it )
+			{
+				m_apps_available = true;
+				QCString dcopService = (*it)->property("X-DCOP-ServiceName").toString().latin1();
+				kdDebug( 5301 ) << " app name: " << (*it)->name() << " dcopService: " << dcopService << endl;
+				if ( !dcopService.isEmpty() && m_dc->isApplicationRegistered( dcopService ) )
+					m_im_client_stub = new KIMIface_stub( m_dc, dcopService, dcopObjectId );
+			}
+			
+/*			// start/find an instance of DCOP/InstantMessenger
+			QString error;
+			QCString dcopService;
+			// Get a preferred IM client
+			QString preferences = QString::null;
 			// FIXME: we never get any hits if searching using the obvious kinds of prefs expressions - maybe they do not fit 'an expression in the constraint language that must return a number' (ktrader.h)
 			//int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, QString::null, &error, &dcopService );
 			int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, preferences, &error, &dcopService );
@@ -101,7 +121,7 @@ bool KIMProxy::initialize()
 				KMessageBox::error( 0, QString( "Couldn't find an IM service.\nCheck you have one selected in KControl ->Component Chooser\ndebug error: %1, using query: %2" ).arg( error ).arg( preferences ) );
 			}
 			QCString dcopObjectId = "KIMIface";
-			m_im_client_stub = new KIMIface_stub( m_dc, dcopService, dcopObjectId );
+			m_im_client_stub = new KIMIface_stub( m_dc, dcopService, dcopObjectId );*/
 		}
 	}
 	return m_im_client_stub != 0L;
@@ -173,6 +193,7 @@ int KIMProxy::presenceNumeric( const QString& uid )
 
 QString KIMProxy::presenceString( const QString& uid )
 {
+    kdDebug( 5301 ) << k_funcinfo << endl;
 	if ( initialize() )
 	{
 		// get a QString from  m_kim_client_stub->onlineStatus( uid );
@@ -261,6 +282,12 @@ bool KIMProxy::addContact( const QString &contactId, const QString &protocol )
 		return m_im_client_stub->addContact( contactId, protocol );
 	}
 	return false;
+}
+
+bool KIMProxy::imAppsAvailable()
+{
+	kdDebug( 5301 ) << k_funcinfo << " m_apps_available: " << m_apps_available<< endl;
+    return m_apps_available;
 }
 
 void KIMProxy::unregisteredFromDCOP( const QCString& appId )

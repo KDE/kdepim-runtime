@@ -161,6 +161,11 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 		bool addContact( const QString &contactId, const QString &protocol );
 		
 		/**
+		 * Are there any compatible instant messaging apps available
+		 */
+		bool imAppsAvailable();
+		 
+		/**
 		* Just exists to let the idl compiler make the DCOP signal for this
 		*/
 		void contactStatusChanged( QString uid );
@@ -180,6 +185,7 @@ signals:
 	protected:
 		KIMIface_stub *m_im_client_stub;
 		DCOPClient *m_dc;
+		bool m_apps_available;
 	private:
 		/**
 		 * Construct an instance of the proxy library.
