@@ -225,12 +225,13 @@ void KPrefsWidRadios::writeConfig()
 
 
 KPrefsWidString::KPrefsWidString(const QString &text,QString *reference,
-                                 QWidget *parent)
+                                 QWidget *parent, QLineEdit::EchoMode echomode)
 {
   mReference = reference;
   
   mLabel = new QLabel(text,parent);
   mEdit = new QLineEdit(parent);
+  mEdit->setEchoMode( echomode );
 }
 
 KPrefsWidString::~KPrefsWidString()
@@ -311,6 +312,13 @@ KPrefsWidRadios *KPrefsDialog::addWidRadios(const QString &text,int *reference,Q
 KPrefsWidString *KPrefsDialog::addWidString(const QString &text,QString *reference,QWidget *parent)
 {
   KPrefsWidString *w = new KPrefsWidString(text,reference,parent);
+  addWid(w);
+  return w;
+}
+
+KPrefsWidString *KPrefsDialog::addWidPassword(const QString &text,QString *reference,QWidget *parent)
+{
+  KPrefsWidString *w = new KPrefsWidString(text,reference,parent,QLineEdit::Password);
   addWid(w);
   return w;
 }

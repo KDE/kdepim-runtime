@@ -30,7 +30,7 @@ class KConfig;
 
 /**
   @short Class for storing a preferences setting
-  @author Cornelius Schumache
+  @author Cornelius Schumacher
   @see KPref
   
   This class represents one preferences setting as used by @ref KPrefs.
@@ -231,6 +231,20 @@ class KPrefs {
     */
     void addItemString(const QString &key,QString *reference,
                        const QString &defaultValue="");
+    /**
+      Register a password item of type QString. The string value is written 
+      encrypted to the config file. Note that the current encryption scheme 
+      is very weak.
+
+      @param key Key used in config file.
+      @param reference Pointer to the variable, which is set by readConfig()
+                       and setDefaults() calls and read by writeConfig() calls.
+      @param defaultValue Default value, which is used by setDefaults() and
+                          when the config file does not yet contain the key of
+                          this item.
+    */
+    void addItemPassword(const QString &key,QString *reference,
+                         const QString &defaultValue="");
     /**
       Register an item of type QStringList.
       

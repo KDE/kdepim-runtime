@@ -25,6 +25,7 @@
 // $Id$
 
 #include <qptrlist.h>
+#include <qlineedit.h>
 
 #include <kdialogbase.h>
 
@@ -35,7 +36,6 @@ class KColorButton;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
-class QLineEdit;
 class QButtonGroup;
 
 /**
@@ -282,7 +282,7 @@ class KPrefsWidString : public KPrefsWid
       @param reference Pointer to variable read and written by this widget.
       @param parent    Parent widget.
     */
-    KPrefsWidString(const QString &text,QString *reference,QWidget *parent);
+    KPrefsWidString(const QString &text,QString *reference,QWidget *parent,QLineEdit::EchoMode echomode=QLineEdit::Normal);
     /**
       Destructor.
     */
@@ -382,6 +382,14 @@ class KPrefsDialog : public KDialogBase
       @param parent    Parent widget.
     */
     KPrefsWidString *addWidString(const QString &text,QString *reference,QWidget *parent);
+    /**
+      Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.
+      
+      @param text      Text of string widget.
+      @param reference Reference to variable storing the setting.
+      @param parent    Parent widget.
+    */
+    KPrefsWidString *addWidPassword (const QString &text,QString *reference,QWidget *parent);
     /**
       Register a @ref KPrefsWidFont object.
       

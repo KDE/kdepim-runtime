@@ -93,7 +93,7 @@ class KPrefsItemFont : public KPrefsItem {
 class KPrefsItemString : public KPrefsItem {
   public:
     KPrefsItemString(const QString &group,const QString &name,QString *,
-                     const QString &defaultValue="");
+                     const QString &defaultValue="", bool isPassword=false);
     virtual ~KPrefsItemString() {}
     
     void setDefault();
@@ -103,6 +103,7 @@ class KPrefsItemString : public KPrefsItem {
   private:
     QString *mReference;
     QString mDefault;
+    bool mPassword;
 };
 
 
@@ -243,12 +244,24 @@ void KPrefsItemFont::readConfig(KConfig *config)
 }
 
 
+QString endecryptStr( const QString &aStr )
+{
+  QString result;
+  for (uint i = 0; i < aStr.length(); i++)
+    result += (aStr[i].unicode() < 0x20) ? aStr[i] :
+      QChar(0x1001F - aStr[i].unicode());
+  return result;
+}
+
+
 KPrefsItemString::KPrefsItemString(const QString &group,const QString &name,
-                                   QString *reference,const QString &defaultValue) :
+                                   QString *reference,const QString &defaultValue,
+				   bool isPassword) :
   KPrefsItem(group,name)
 {
   mReference = reference;
   mDefault = defaultValue;
+  mPassword = isPassword;
 }
 
 void KPrefsItemString::setDefault()
@@ -259,13 +272,22 @@ void KPrefsItemString::setDefault()
 void KPrefsItemString::writeConfig(KConfig *config)
 {
   config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
+  if ( mPassword )
+    config->writeEntry(mName, endecryptStr( *mReference ) );
+  else
+    config->writeEntry(mName,*mReference);
 }
 
 void KPrefsItemString::readConfig(KConfig *config)
 {
   config->setGroup(mGroup);
-  *mReference = config->readEntry(mName,mDefault);
+  if ( mPassword ) 
+    if ( config->hasKey( mName ) )
+      *mReference = endecryptStr( config->readEntry( mName ) );
+    else
+      *mReference = mDefault;
+  else
+    *mReference = config->readEntry(mName,mDefault);
 }
 
 
@@ -415,7 +437,12 @@ void KPrefs::addItemFont(const QString &key,QFont *reference,const QFont &defaul
 
 void KPrefs::addItemString(const QString &key,QString *reference,const QString &defaultValue)
 {
-  addItem(new KPrefsItemString(*mCurrentGroup,key,reference,defaultValue));
+  addItem(new KPrefsItemString(*mCurrentGroup,key,reference,defaultValue,false));
+}
+
+void KPrefs::addItemPassword(const QString &key,QString *reference,const QString &defaultValue)
+{
+  addItem(new KPrefsItemString(*mCurrentGroup,key,reference,defaultValue,true));
 }
 
 void KPrefs::addItemStringList(const QString &key,QStringList *reference,
