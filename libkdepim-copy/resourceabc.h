@@ -92,14 +92,14 @@ signals:
   /**
    * This signal is emitted when a subresource is added.
    */
-  void signalSubresourceAdded( ResourceABC *, const QString &,
-                               const QString & );
+  void signalSubresourceAdded( KPIM::ResourceABC *, const QString &type,
+                               const QString &subResource );
 
   /**
    * This signal is emitted when a subresource is removed.
    */
-  void signalSubresourceRemoved( ResourceABC *, const QString &,
-                                 const QString & );
+  void signalSubresourceRemoved( KPIM::ResourceABC *, const QString &type,
+                                 const QString &subResource );
 
 };
 
