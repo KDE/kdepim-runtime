@@ -5,7 +5,7 @@ INCLUDES = -I$(top_srcdir) -I$(top_builddir)/libkdepim \
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
-  ktimeedit.cpp part.cpp \
+  ktimeedit.cpp \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
@@ -34,9 +34,6 @@ libkdepim_la_SOURCES = \
   designerfields.cpp kcmdesignerfields.cpp \
   kincidencechooser.cpp \
   groupwarejob.cpp
-
-libkdepimincludedir = $(includedir)/libkdepim
-libkdepiminclude_HEADERS = part.h
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
