@@ -1,7 +1,7 @@
 /*
   This file is part of libkdepim.
 
-  Copyright (c) 2004 Bram Schoenmakers <bram_s@softhome.net>
+  Copyright (c) 2004 Bram Schoenmakers <bramschoenmakers@kde.nl>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Library General Public
@@ -26,8 +26,6 @@
 
 #include <kdatepicker.h>
 
-class KDatePicker;
-
 /**
    @short This menu helps the user to select a date quickly.
 
@@ -47,7 +45,7 @@ class KDatePickerPopup: public QPopupMenu
 {
     Q_OBJECT
   public:
-    enum { NoDate, DatePicker, Words };
+    enum { NoDate = 1, DatePicker = 2, Words = 4 };
 
     /**
        A constructor for the KDatePickerPopup.
@@ -68,11 +66,15 @@ class KDatePickerPopup: public QPopupMenu
     */
     KDatePicker *datePicker() const;
 
-    /** Set items which should be shown and rebuilds the menu afterwards.
+    void setDate( const QDate &date );
+
+#if 0
+    /** Set items which should be shown and rebuilds the menu afterwards. Only if the menu is not visible.
     @param items List of all desirable items, separated with a bitwise OR.
     */
     void setItems( int items = 1 );
-    /** @return To be written */
+#endif
+    /** @return Returns the bitwise result of the active items in the popup. */
     int items() const { return mItems; }
 
   signals:
