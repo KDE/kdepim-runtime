@@ -24,6 +24,7 @@
 #include <kdebug.h>
 #include <kconfig.h>
 #include <kconfigskeleton.h>
+#include <kstandarddirs.h>
 
 #include <qfile.h>
 #include <qstringlist.h>
@@ -37,7 +38,13 @@ KConfigPropagator::KConfigPropagator( KConfigSkeleton *skeleton,
 
 void KConfigPropagator::readKcfgFile()
 {
-  QFile input( mKcfgFile );
+  QString filename = locate( "kcfg", mKcfgFile );
+  if ( filename.isEmpty() ) {
+    kdError() << "Unable to find kcfg file '" << mKcfgFile << "'" << endl;
+    return;
+  }
+
+  QFile input( filename );
   QDomDocument doc;
   QString errorMsg;
   int errorRow;
