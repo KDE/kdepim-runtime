@@ -53,33 +53,37 @@ bool KIMProxy::initialize()
 {
 	if ( !m_im_client_stub )
 	{
-		// start/find an instance of DCOP/InstantMessenger
-		QString error;
-		QCString dcopService;
-		// Get a preferred IM client
-		QString preferences = QString::null;
-		// FIXME: we are getting preferences from a config specified by hardcoded literals - the interface or kcm_componentchooser specification should be all we need to know and say where we get preferences from.
-		KConfig *store = new KSimpleConfig( IM_CLIENT_PREFERENCES_FILE );
-		store->setGroup( IM_CLIENT_PREFERENCES_SECTION );
-		QString preferredApp = store->readEntry( IM_CLIENT_PREFERENCES_ENTRY );
-		kdDebug( 5301 ) << k_funcinfo << "found preferred app: " << preferredApp << endl;
-		if ( !preferredApp.isNull() )
+		// So there is no error from the a failed query when using kdelibs 3.2, which don't have this servicetype
+		if ( KServiceType::serviceType( IM_SERVICE_TYPE ) ) 
 		{
-			// construct a preferences trader expression - Name == value
-			preferences = QString("[X-DCOP-ServiceName] == '%1'").arg( preferredApp );
-		}	
-		// FIXME: we never get any hits if searching using the obvious kinds of prefs expressions - maybe they do not fit 'an expression in the constraint language that must return a number' (ktrader.h)
-		//int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, QString::null, &error, &dcopService );
-		int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, preferences, &error, &dcopService );
-		
-		// set up our stub, connecting to the client
-		if ( result != 0 )
-		{
-			return false; // FIXME return error
-			KMessageBox::error( 0, QString( "Couldn't find an IM service.\nCheck you have one selected in KControl ->Component Chooser\ndebug error: %1, using query: %2" ).arg( error ).arg( preferences ) );
+			// start/find an instance of DCOP/InstantMessenger
+			QString error;
+			QCString dcopService;
+			// Get a preferred IM client
+			QString preferences = QString::null;
+			// FIXME: we are getting preferences from a config specified by hardcoded literals - the interface or kcm_componentchooser specification should be all we need to know and say where we get preferences from.
+			KConfig *store = new KSimpleConfig( IM_CLIENT_PREFERENCES_FILE );
+			store->setGroup( IM_CLIENT_PREFERENCES_SECTION );
+			QString preferredApp = store->readEntry( IM_CLIENT_PREFERENCES_ENTRY );
+			kdDebug( 5301 ) << k_funcinfo << "found preferred app: " << preferredApp << endl;
+			if ( !preferredApp.isNull() )
+			{
+				// construct a preferences trader expression - Name == value
+				preferences = QString("[X-DCOP-ServiceName] == '%1'").arg( preferredApp );
+			}	
+			// FIXME: we never get any hits if searching using the obvious kinds of prefs expressions - maybe they do not fit 'an expression in the constraint language that must return a number' (ktrader.h)
+			//int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, QString::null, &error, &dcopService );
+			int result = KDCOPServiceStarter::self()->findServiceFor( IM_SERVICE_TYPE, QString::null, preferences, &error, &dcopService );
+			
+			// set up our stub, connecting to the client
+			if ( result != 0 )
+			{
+				return false; // FIXME return error
+				KMessageBox::error( 0, QString( "Couldn't find an IM service.\nCheck you have one selected in KControl ->Component Chooser\ndebug error: %1, using query: %2" ).arg( error ).arg( preferences ) );
+			}
+			QCString dcopObjectId = "KIMIface";
+			m_im_client_stub = new KIMIface_stub( m_dc, dcopService, dcopObjectId );
 		}
-		QCString dcopObjectId = "KIMIface";
-		m_im_client_stub = new KIMIface_stub( m_dc, dcopService, dcopObjectId );
 	}
 	return m_im_client_stub != 0L;
 }
