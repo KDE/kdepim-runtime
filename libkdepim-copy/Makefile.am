@@ -9,7 +9,9 @@ libkdepim_la_SOURCES = \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
   kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
   kinputdialog.cpp sidebarextension.cpp infoextension.cpp addressesdialog.cpp addresspicker.ui \
-  interfaces/MailTransportServiceIface.skel
+  MailTransportServiceIface.skel
+
+MailTransportServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
 libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC)
