@@ -102,7 +102,12 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &dt,
   setenv( "TZ", timeZoneId.local8Bit(), 1 );
   struct tm *local = localtime( &utcTime );
 
-  setenv( "TZ", origTz, 1 );
+  if ( origTz.isNull() ) {
+    unsetenv( "TZ" );
+  } else {
+    setenv( "TZ", origTz, 1 );
+  }
+  tzset();
 
   QDateTime result( QDate( local->tm_year + 1900, local->tm_mon + 1,
                            local->tm_mday ),
@@ -119,16 +124,21 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &dt,
   QCString origTz = getenv("TZ");
 
   setenv( "TZ", timeZoneId.local8Bit(), 1 );
-  time_t utcTime = dt.toTime_t();
+  time_t localTime = dt.toTime_t();
 
   setenv( "TZ", "UTC", 1 );
-  struct tm *local = localtime( &utcTime );
+  struct tm *utc = gmtime( &localTime );
 
-  setenv( "TZ", origTz, 1 );
+  if ( origTz.isNull() ) {
+    unsetenv( "TZ" );
+  } else {
+    setenv( "TZ", origTz, 1 );
+  }
+  tzset();
 
-  QDateTime result( QDate( local->tm_year + 1900, local->tm_mon + 1,
-                           local->tm_mday ),
-                    QTime( local->tm_hour, local->tm_min, local->tm_sec ) );
+  QDateTime result( QDate( utc->tm_year + 1900, utc->tm_mon + 1,
+                           utc->tm_mday ),
+                    QTime( utc->tm_hour, utc->tm_min, utc->tm_sec ) );
 
 //  kdDebug() << "---   UTC: " << result.toString() << endl;
 
