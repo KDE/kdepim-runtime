@@ -191,6 +191,7 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   d = new AddressesDialogPrivate;
   d->ui = new AddressPickerUI( page );
 
+  KABC::StdAddressBook::self( true );
   updateAvailableAddressees();
   initConnections();
 }
@@ -379,13 +380,13 @@ AddressesDialog::updateAvailableAddressees()
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   d->personal->setVisible( false );
   d->groupDict.insert( personalGroup, d->personal );
-
-  KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
+  
+  KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   for( KABC::AddressBook::Iterator it = addressBook->begin();
        it != addressBook->end(); ++it ) {
     addAddresseeToAvailable( *it, d->personal );
   }
-
+  
   d->recent = 0;
   updateRecentAddresses();
 
