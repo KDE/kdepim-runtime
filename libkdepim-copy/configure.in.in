@@ -1,1 +1,1 @@
-dnl AC_OUTPUT(libkdepim/kdepimmacros.h)
+AM_CONFIG_HEADER(libkdepim/kdepimmacros.h)

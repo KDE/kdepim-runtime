@@ -25,6 +25,9 @@
 // Prevent kdemacros.h from being included after kdepimmacros.h
 #define _KDE_MACROS_H_
 
+/* set by configure if available */
+#undef __KDE_HAVE_GCC_VISIBILITY
+
 /**
  * The KDE_NO_EXPORT macro marks the symbol of the given variable 
  * to be hidden. A hidden symbol is stripped during the linking step, 
@@ -41,8 +44,7 @@
 #undef KDE_NO_EXPORT
 #undef KDE_EXPORT
 
-
-#if @HAVE_GCC_VISIBILITY@
+#ifdef __KDE_HAVE_GCC_VISIBILITY
 #define KDE_NO_EXPORT __attribute__ ((visibility("hidden")))
 #define KDE_EXPORT __attribute__ ((visibility("default")))
 #elif defined(Q_WS_WIN)
