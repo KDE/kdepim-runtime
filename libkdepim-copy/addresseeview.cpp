@@ -198,9 +198,11 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
   if ( showURLs ) {
     if ( !addr.url().url().isEmpty() ) {
       if ( useLinks ) {
+        QString url = (addr.url().url().startsWith( "http://" ) ? addr.url().url() :
+                       "http://" + addr.url().url());
         dynamicPart += rowFmtStr
           .arg( i18n( "Homepage" ) )
-          .arg( KStringHandler::tagURLs( addr.url().url() ) );
+          .arg( KStringHandler::tagURLs( url ) );
       } else {
         dynamicPart += rowFmtStr
           .arg( i18n( "Homepage" ) )
