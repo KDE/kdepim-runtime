@@ -463,9 +463,12 @@ void AddresseeLineEdit::loadContacts()
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
   //m_contactMap.insert( addr.realName(), addr );
-  QString fullEmail = addr.fullEmail();
-  //kdDebug(5300) << "addContact: " << fullEmail << " weight=" << weight << endl;
-  s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
+  QStringList emails = addr.emails();
+  QStringList::Iterator it;
+  for ( it = emails.begin(); it != emails.end(); ++it ) {
+    QString fullEmail = addr.fullEmail( *it );
+    s_completion->addItem( fullEmail.simplifyWhiteSpace(), weight );
+  }
 }
 
 void AddresseeLineEdit::slotStartLDAPLookup()
