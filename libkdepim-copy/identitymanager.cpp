@@ -47,6 +47,7 @@ static const char configKeyDefaultIdentity[] = "Default Identity";
 #include <kdebug.h>
 #include <kconfig.h>
 #include <kuser.h>
+#include <dcopclient.h>
 
 #include <qregexp.h>
 
@@ -54,8 +55,19 @@ static const char configKeyDefaultIdentity[] = "Default Identity";
 
 using namespace KPIM;
 
+static QCString newDCOPObjectName()
+{
+    static int s_count = 0;
+    QCString name( "KPIM::IdentityManager" );
+    if ( s_count++ ) {
+      name += '-';
+      name += QCString().setNum( s_count );
+    }
+    return name;
+}
+
 IdentityManager::IdentityManager( bool readonly, QObject * parent, const char * name )
-  : ConfigManager( parent, name ), DCOPObject( "KPIM::IdentityManager" )
+  : ConfigManager( parent, name ), DCOPObject( newDCOPObjectName() )
 {
   mReadOnly = readonly;
   mConfig = new KConfig( "emailidentities", readonly );
@@ -78,6 +90,11 @@ IdentityManager::IdentityManager( bool readonly, QObject * parent, const char * 
   if ( KEMailSettings().getSetting( KEMailSettings::EmailAddress ).isEmpty() ) {
     writeConfig();
   }
+
+  // The emitter is always called KPIM::IdentityManager even if we are not
+  if ( !connectDCOPSignal( 0, "KPIM::IdentityManager", "identitiesChanged(QCString,QCString)",
+                           "slotIdentitiesChanged(QCString,QCString)", false ) )
+      kdError(5650) << "IdentityManager: connection to identitiesChanged failed" << endl;
 }
 
 IdentityManager::~IdentityManager()
@@ -126,7 +143,15 @@ void IdentityManager::commit()
 
   mIdentities = mShadowIdentities;
   writeConfig();
-  emit ConfigManager::changed();
+  emit ConfigManager::changed(); // normal signal
+
+  // DCOP signal for other IdentityManager instances
+  // The emitter is always set to KPIM::IdentityManager, so that the connect works
+  // This is why we can't use k_dcop_signals here, but need to use emitDCOPSignal
+  QByteArray data; QDataStream arg( data, IO_WriteOnly );
+  arg << kapp->dcopClient()->appId();
+  arg << DCOPObject::objId(); // the real objId, for checking in slotIdentitiesChanged
+  kapp->dcopClient()->emitDCOPSignal( "KPIM::IdentityManager", "identitiesChanged(QCString,QCString)", data );
 }
 
 void IdentityManager::rollback()
@@ -467,6 +492,17 @@ QStringList KPIM::IdentityManager::allEmails() const
     lst << (*it).emailAddr();
   }
   return lst;
+}
+
+void KPIM::IdentityManager::slotIdentitiesChanged( QCString appId, QCString objId )
+{
+  // From standalone kmail to standalone korganizer, the appId will differ
+  // From kontact the appId will match, so we need to test the objId
+  if ( kapp->dcopClient()->appId() != appId || DCOPObject::objId() != objId ) {
+    mConfig->reparseConfiguration();
+    Q_ASSERT( !hasPendingChanges() );
+    readConfig( mConfig );
+  }
 }
 
 #include "identitymanager.moc"

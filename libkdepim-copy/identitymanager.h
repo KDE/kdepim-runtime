@@ -211,8 +211,12 @@ protected:
   /** The list that will be seen by the config dialog */
   QValueList<Identity> mShadowIdentities;
 
-k_dcop_signals:
-  void identitiesChanged();
+//k_dcop_signals:
+//  void identitiesChanged( QCString appId, QCString objId );
+
+k_dcop:
+  // Connected to the DCOP signal
+  void slotIdentitiesChanged( QCString appId, QCString objId );
 
 private:
   void writeConfig() const;
