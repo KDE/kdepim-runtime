@@ -51,8 +51,8 @@ kdepimwidgets_la_LDFLAGS = $(KDE_PLUGIN) -module $(all_libraries)
 kdepimwidgets_la_LIBADD = $(LIB_KIO) libkdepim.la
 kdepimwidgets_la_SOURCES = kdepimwidgets.cpp 
 
-kdepimwidgets.cpp: kdepim.widgets
-	$(MAKEKDEWIDGETS) -o kdepimwidgets.cpp $<
+kdepimwidgets.cpp: $(srcdir)/kdepim.widgets
+	$(MAKEKDEWIDGETS) -o kdepimwidgets.cpp $(srcdir)/kdepim.widgets
 
 CLEANFILES = kdepimwidgets.cpp
 
