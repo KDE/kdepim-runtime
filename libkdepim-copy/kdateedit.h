@@ -94,7 +94,7 @@ class KDateEdit : public QComboBox
     * If false is returned, the value reverts to what it was before the
     * new date was entered.
     */
-    virtual bool validate(const QDate &newDate)  { return true; }
+    virtual bool validate(const QDate &newDate);
 
     virtual void popup();
 

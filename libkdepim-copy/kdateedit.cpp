@@ -109,6 +109,11 @@ void KDateEdit::setHandleInvalid(bool handleInvalid)
   mHandleInvalid = handleInvalid;
 }
 
+bool KDateEdit::validate( const QDate & )
+{
+  return true;
+}
+
 QDate KDateEdit::date() const
 {
   QDate dt;
