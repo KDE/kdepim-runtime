@@ -1,4 +1,4 @@
-SUBDIRS = cfgc interfaces tests pics
+SUBDIRS = cfgc interfaces tests pics kpartsdesignerplugin
 
 INCLUDES = -I$(top_srcdir) -I$(top_builddir)/libkdepim \
            $(all_includes)
