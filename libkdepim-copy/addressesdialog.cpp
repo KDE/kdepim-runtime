@@ -717,7 +717,7 @@ AddressesDialog::saveAs()
 
   bool ok = false;
   QString name = KInputDialog::getText( i18n("New Distribution List"),
-                                        i18n("Please enter name."),
+                                        i18n("Please enter name:"),
                                         QString::null, &ok,
                                         this );
   if ( !ok || name.isEmpty() )

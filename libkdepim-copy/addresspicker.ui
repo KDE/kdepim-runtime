@@ -444,7 +444,7 @@
                                     <bool>false</bool>
                                 </property>
                                 <property name="text">
-                                    <string>Save as &amp;Distribution List</string>
+                                    <string>Save as &amp;Distribution List...</string>
                                 </property>
                             </widget>
                         </vbox>
