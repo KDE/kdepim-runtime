@@ -204,7 +204,7 @@ class KPrefs {
       until setCurrentGroup() is called with a new argument. Call this before
       you add any items. The default value is "No Group".
     */
-    static void setCurrentGroup( const QString &group );
+    void setCurrentGroup( const QString &group );
 
     /**
       Register a custom @ref KPrefsItem.
@@ -473,11 +473,14 @@ class KPrefs {
     virtual void usrWriteConfig() {};
 
   private:
-    static QString *mCurrentGroup;
+    QString mCurrentGroup;
 
     KConfig *mConfig;  // pointer to KConfig object
 
     QPtrList<KPrefsItem> mItems;
+
+    class Private;
+    Private *d;
 };
 
 #endif

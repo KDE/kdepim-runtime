@@ -335,9 +335,8 @@ class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
 
 
 
-QString *KPrefs::mCurrentGroup = 0;
-
 KPrefs::KPrefs( const QString &configname )
+  : mCurrentGroup( "No Group" )
 {
   if ( !configname.isEmpty() ) {
     mConfig = new KConfig( locateLocal( "config", configname ) );
@@ -346,9 +345,6 @@ KPrefs::KPrefs( const QString &configname )
   }
 
   mItems.setAutoDelete( true );
-
-  // Set default group
-  if ( mCurrentGroup == 0 ) mCurrentGroup = new QString( "No Group" );
 }
 
 KPrefs::~KPrefs()
@@ -360,8 +356,7 @@ KPrefs::~KPrefs()
 
 void KPrefs::setCurrentGroup( const QString &group )
 {
-  if ( mCurrentGroup ) delete mCurrentGroup;
-  mCurrentGroup = new QString( group );
+  mCurrentGroup = group;
 }
 
 KConfig *KPrefs::config() const
@@ -409,100 +404,100 @@ void KPrefs::addItem( KPrefsItem *item )
 
 void KPrefs::addItemString( const QString &key, QString &reference, const QString &defaultValue )
 {
-  addItem( new KPrefsItemString( *mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Normal ) );
+  addItem( new KPrefsItemString( mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Normal ) );
 }
 
 void KPrefs::addItemPassword( const QString &key, QString &reference, const QString &defaultValue )
 {
-  addItem( new KPrefsItemString( *mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Password ) );
+  addItem( new KPrefsItemString( mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Password ) );
 }
 
 void KPrefs::addItemPath( const QString &key, QString &reference, const QString &defaultValue )
 {
-  addItem( new KPrefsItemString( *mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Path ) );
+  addItem( new KPrefsItemString( mCurrentGroup, key, reference, defaultValue, KPrefsItemString::Path ) );
 }
 
 void KPrefs::addItemProperty( const QString &key, QVariant &reference,
                               const QVariant &defaultValue )
 {
-  addItem( new KPrefsItemProperty( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemProperty( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemBool( const QString &key, bool &reference, bool defaultValue )
 {
-  addItem( new KPrefsItemBool( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemBool( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemInt( const QString &key, int &reference, int defaultValue )
 {
-  addItem( new KPrefsItemInt( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemInt( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemUInt( const QString &key, unsigned int &reference,
                           unsigned int defaultValue )
 {
-  addItem( new KPrefsItemUInt( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemUInt( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemLong( const QString &key, long &reference, long defaultValue )
 {
-  addItem( new KPrefsItemLong( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemLong( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemULong( const QString &key, unsigned long &reference,
                            unsigned long defaultValue )
 {
-  addItem( new KPrefsItemULong( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemULong( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemDouble( const QString &key, double &reference,
                             double defaultValue )
 {
-  addItem( new KPrefsItemDouble( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemDouble( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemColor( const QString &key, QColor &reference, const QColor &defaultValue )
 {
-  addItem( new KPrefsItemColor( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemColor( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemFont( const QString &key, QFont &reference, const QFont &defaultValue )
 {
-  addItem( new KPrefsItemFont( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemFont( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemRect( const QString &key, QRect &reference,
                           const QRect &defaultValue )
 {
-  addItem( new KPrefsItemRect( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemRect( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemPoint( const QString &key, QPoint &reference,
                            const QPoint &defaultValue )
 {
-  addItem( new KPrefsItemPoint( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemPoint( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemSize( const QString &key, QSize &reference,
                           const QSize &defaultValue )
 {
-  addItem( new KPrefsItemSize( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemSize( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemDateTime( const QString &key, QDateTime &reference,
                               const QDateTime &defaultValue )
 {
-  addItem( new KPrefsItemDateTime( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemDateTime( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemStringList( const QString &key, QStringList &reference,
                                 const QStringList &defaultValue )
 {
-  addItem( new KPrefsItemStringList( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemStringList( mCurrentGroup, key, reference, defaultValue ) );
 }
 
 void KPrefs::addItemIntList( const QString &key, QValueList<int> &reference,
                              const QValueList<int> &defaultValue )
 {
-  addItem( new KPrefsItemIntList( *mCurrentGroup, key, reference, defaultValue ) );
+  addItem( new KPrefsItemIntList( mCurrentGroup, key, reference, defaultValue ) );
 }
