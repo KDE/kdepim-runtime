@@ -380,13 +380,13 @@ AddressesDialog::updateAvailableAddressees()
             this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   d->personal->setVisible( false );
   d->groupDict.insert( personalGroup, d->personal );
-  
+
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   for( KABC::AddressBook::Iterator it = addressBook->begin();
        it != addressBook->end(); ++it ) {
     addAddresseeToAvailable( *it, d->personal );
   }
-  
+
   d->recent = 0;
   updateRecentAddresses();
 
@@ -844,19 +844,19 @@ AddressesDialog::allAddressee( AddresseeViewItem* parent ) const
 {
   KABC::Addressee::List lst;
 
-  if ( !parent ) return KABC::Addressee::List();
+  if ( !parent ) return lst;
 
   if ( parent->category() == AddresseeViewItem::Entry )
   {
-      lst.append( parent->addressee() );
-      return lst;
+    lst.append( parent->addressee() );
+    return lst;
   }
 
   AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( parent->firstChild() );
   while( myChild ) {
     if ( myChild->category() == AddresseeViewItem::FilledGroup )
       lst += myChild->addresses();
-    else
+    else if ( !myChild->addressee().isEmpty() )
       lst.append( myChild->addressee() );
     myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
   }
@@ -893,7 +893,7 @@ AddressesDialog::addDistributionLists()
   if ( distLists.isEmpty() )
     return;
 
-  AddresseeViewItem *topItem = new AddresseeViewItem( d->ui->mAvailableView, 
+  AddresseeViewItem *topItem = new AddresseeViewItem( d->ui->mAvailableView,
                                                       i18n( "Distribution Lists" ) );
 
   QStringList::Iterator listIt;
