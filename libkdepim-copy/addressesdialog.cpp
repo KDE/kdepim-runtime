@@ -872,11 +872,10 @@ AddressesDialog::allDistributionLists( AddresseeViewItem* parent ) const
 void
 AddressesDialog::addDistributionLists()
 {
-  KABC::DistributionListManager *manager =
-    new KABC::DistributionListManager( KABC::StdAddressBook::self() );
-  manager->load();
+  KABC::DistributionListManager manager( KABC::StdAddressBook::self() );
+  manager.load();
 
-  QStringList distLists = manager->listNames();
+  QStringList distLists = manager.listNames();
   if ( distLists.isEmpty() )
     return;
 
@@ -885,7 +884,7 @@ AddressesDialog::addDistributionLists()
 
   QStringList::Iterator listIt;
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
-    KABC::DistributionList* dlist = manager->list( *listIt );
+    KABC::DistributionList* dlist = manager.list( *listIt );
     KABC::DistributionList::Entry::List entries = dlist->entries();
 
     AddresseeViewItem *item = new AddresseeViewItem( topItem, dlist->name() );
