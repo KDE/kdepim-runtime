@@ -37,7 +37,8 @@
 
 KDateEdit::KDateEdit(QWidget *parent, const char *name)
   : QComboBox(true, parent, name),
-    defaultValue(QDate::currentDate())
+    defaultValue(QDate::currentDate()),
+    mReadOnly(false)
 {
   setMaxCount(1);       // need at least one entry for popup to work
   value = defaultValue;
@@ -110,6 +111,17 @@ void KDateEdit::setHandleInvalid(bool handleInvalid)
   mHandleInvalid = handleInvalid;
 }
 
+void KDateEdit::setReadOnly(bool readOnly)
+{
+  mReadOnly = readOnly;
+  lineEdit()->setReadOnly(readOnly);
+}
+
+bool KDateEdit::isReadOnly() const
+{
+  return mReadOnly;
+}
+
 bool KDateEdit::validate( const QDate & )
 {
   return true;
@@ -136,6 +148,8 @@ void KDateEdit::setDefaultDate(const QDate& date)
 
 void KDateEdit::popup()
 {
+  if (mReadOnly)
+    return;
   QPoint popupPoint = mapToGlobal( QPoint( 0,0 ) );
   if ( popupPoint.x() < 0 ) popupPoint.setX( 0 );
 
@@ -276,7 +290,7 @@ bool KDateEdit::eventFilter(QObject *, QEvent *e)
       step = 1;
     else if (ke->key() == Qt::Key_Down)
       step = -1;
-    if (step)
+    if (step && !mReadOnly)
     {
       QDate date;
       if (readDate(date) && date.isValid()) {
