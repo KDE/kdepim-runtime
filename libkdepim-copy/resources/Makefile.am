@@ -1,4 +1,4 @@
-SUBDIRS = calendar
+SUBDIRS = . calendar
 
 INCLUDES = $(all_includes)
 
