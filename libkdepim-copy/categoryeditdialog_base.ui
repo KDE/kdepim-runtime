@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
 <class>CategoryEditDialog_base</class>
 <widget class="QDialog">
     <property name="name">
@@ -73,6 +73,12 @@
                     <property name="sizeType">
                         <enum>Expanding</enum>
                     </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
+                    </property>
                 </spacer>
             </grid>
         </widget>
@@ -115,6 +121,12 @@
                     </property>
                     <property name="sizeType">
                         <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
                     </property>
                 </spacer>
                 <widget class="QPushButton">
@@ -160,7 +172,7 @@
                 <property name="clickable">
                     <bool>true</bool>
                 </property>
-                <property name="resizeable">
+                <property name="resizable">
                     <bool>true</bool>
                 </property>
             </column>
@@ -208,6 +220,17 @@
         <slot>slotApply()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>mEdit</tabstop>
+    <tabstop>mButtonAdd</tabstop>
+    <tabstop>mCategories</tabstop>
+    <tabstop>mButtonModify</tabstop>
+    <tabstop>mButtonRemove</tabstop>
+    <tabstop>mButtonOk</tabstop>
+    <tabstop>mApply</tabstop>
+    <tabstop>mButtonCancel</tabstop>
+    <tabstop>mButtonHelp</tabstop>
+</tabstops>
 <slots>
     <slot>add()</slot>
     <slot>modify()</slot>
