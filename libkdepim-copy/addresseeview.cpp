@@ -115,7 +115,7 @@ AddresseeView::~AddresseeView()
   delete mActionShowPhones;
   delete mActionShowURLs;
   
-  delete mKIMProxy;
+  mKIMProxy = 0;
 }
 
 void AddresseeView::setAddressee( const KABC::Addressee& addr )
@@ -369,7 +369,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 
       // append our status to the rest of the dynamic part of the addressee
       dynamicPart += rowFmtStr
-              .arg( i18n( "IM Status" ) )
+              .arg( i18n( "Presence" ) )
               .arg( imStatus
                         .arg( imgSrc )
                         .arg( proxy->presenceString( addr.uid() ) )
