@@ -31,7 +31,7 @@ libkdepim_la_SOURCES = \
   recentaddresses.cpp spellingfilter.cpp \
   addresseeselector.cpp addresseeemailselection.cpp \
   designerfields.cpp kcmdesignerfields.cpp \
-  kincidencechooser.cpp \
+  embeddedurlpage.cpp kincidencechooser.cpp \
   groupwarejob.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
