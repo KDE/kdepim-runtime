@@ -271,23 +271,29 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
       eot--;
       contents.truncate( eot );
     }
+    bool mailtoURL = false;
     // append the mailto URLs
     for ( KURL::List::Iterator it = uriList.begin();
           it != uriList.end(); ++it ) {
       if ( !contents.isEmpty() )
         contents.append( ", " );
       KURL u( *it );
-      contents.append( (*it).path() );
+      if ( u.protocol() == "mailto" ) {
+        mailtoURL = true;
+        contents.append( (*it).path() );
+      }
     }
-    setText( contents );
-    setEdited( true );
+    if ( mailtoURL ) {
+      setText( contents );
+      setEdited( true );
+      return;
+    }
   }
-  else {
-    if ( m_useCompletion )
-       m_smartPaste = true;
-    QLineEdit::dropEvent( e );
-    m_smartPaste = false;
-  }
+
+  if ( m_useCompletion )
+    m_smartPaste = true;
+  QLineEdit::dropEvent( e );
+  m_smartPaste = false;
 }
 
 void AddresseeLineEdit::cursorAtEnd()
