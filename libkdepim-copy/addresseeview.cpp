@@ -240,10 +240,8 @@ void AddresseeView::updateView()
   }
 
   QString role, organization;
-  role = mAddressee.role().isEmpty() ? 
-	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.role());
-  organization = mAddressee.organization().isEmpty() ?
-	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.organization());
+  role = mAddressee.role();
+  organization = mAddressee.organization();
 
   // when only an organization is set we use it as name
   if ( !mAddressee.organization().isEmpty() && name.isEmpty() ||
@@ -257,14 +255,19 @@ void AddresseeView::updateView()
   "<body text=\"%1\" bgcolor=\"%2\">" // text and background color
   "<table width=\"100%\">"
   "<tr>"
-  "<td align=\"right\" valign=\"top\" width=\"30%\">"
+  "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\">"
   "<img src=\"myimage\" width=\"50\" height=\"70\">"
   "</td>"
   "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%3</b></font></td>"  // name
   "</tr>"
-  "%4"	// role
-  "%5"	// organization
-  "<tr><td></td></tr>"
+  "<tr>"
+  "<td align=\"left\" width=\"70%\">%4</td>"  // role
+  "</tr>"
+  "<tr>"
+  "<td align=\"left\" width=\"70%\">%5</td>"  // organization
+  "</tr>"
+  "</tr>"
+  "<tr><td colspan=\"2\">&nbsp;</td></tr>"
   "%6"  // dynamic part
   "%7"  // notes
   "</table>"
