@@ -35,6 +35,8 @@
 
 #include <kdialogbase.h>
 
+#include <kdepimmacros.h>
+
 class KConfig;
 class KEditListBox;
 namespace KRecentAddress {

@@ -26,6 +26,8 @@
 #include <qdragobject.h>
 #include <klistview.h>
 
+#include <kdepimmacros.h>
+
 class KFolderTree;
 
 /** Information shared by all items in a list view */

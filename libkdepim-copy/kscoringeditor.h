@@ -24,6 +24,8 @@
 
 #include "kwidgetlister.h"
 
+#include <kdepimmacros.h>
+
 class KComboBox;
 class KLineEdit;
 class KIntSpinBox;
