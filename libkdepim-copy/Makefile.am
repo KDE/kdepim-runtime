@@ -1,5 +1,3 @@
-SUBDIRS = .
-
 INCLUDES = $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
