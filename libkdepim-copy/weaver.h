@@ -11,7 +11,6 @@
          This code may be linked against any version of the Qt toolkit
          from Troll Tech, Norway. $
 
-   $Id$
 */
 
 #ifndef WEAVER_H
