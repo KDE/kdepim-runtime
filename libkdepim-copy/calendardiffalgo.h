@@ -28,7 +28,7 @@
 
 namespace KPIM {
 
-class CalendarDiffAlgo : public DiffAlgo
+class KDE_EXPORT CalendarDiffAlgo : public DiffAlgo
 {
   public:
     CalendarDiffAlgo( KCal::Incidence *leftIncidence, KCal::Incidence *rightIncidence );

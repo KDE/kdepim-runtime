@@ -27,7 +27,7 @@
 
 class QString;
 
-class KPimPrefs : public KConfigSkeleton
+class KDE_EXPORT KPimPrefs : public KConfigSkeleton
 {
   public:
     KPimPrefs( const QString &name = QString::null );
