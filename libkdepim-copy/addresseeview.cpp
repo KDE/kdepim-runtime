@@ -273,34 +273,30 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
   }
 
   QString strAddr = QString::fromLatin1(
-  "<html>"
-  "<body text=\"%1\" bgcolor=\"%2\">" // text and background color
-  "<table width=\"100%\">"
-  "<tr>"
-  "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\">"
-  "<img src=\"myimage\" width=\"50\" height=\"70\">"
-  "</td>"
-  "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%3</b></font></td>"  // name
-  "</tr>"
-  "<tr>"
-  "<td align=\"left\" width=\"70%\">%4</td>"  // role
-  "</tr>"
-  "<tr>"
-  "<td align=\"left\" width=\"70%\">%5</td>"  // organization
-  "</tr>"
-  "</tr>"
-  "<tr><td colspan=\"2\">&nbsp;</td></tr>"
-  "%6"  // dynamic part
-  "%7"  // notes
-  "</table>"
-  "</body>"
-  "</html>")
-   .arg( KGlobalSettings::textColor().name() )
-   .arg( KGlobalSettings::baseColor().name() )
-   .arg( name )
-   .arg( role )
-   .arg( organization )
-   .arg( dynamicPart, notes );
+    "<div>"
+    "<table width=\"100%\">"
+    "<tr>"
+    "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\">"
+    "<img src=\"contact_image\" width=\"50\" height=\"70\">"
+    "</td>"
+    "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%1</b></font></td>"  // name
+    "</tr>"
+    "<tr>"
+    "<td align=\"left\" width=\"70%\">%2</td>"  // role
+    "</tr>"
+    "<tr>"
+    "<td align=\"left\" width=\"70%\">%3</td>"  // organization
+    "</tr>"
+    "</tr>"
+    "<tr><td colspan=\"2\">&nbsp;</td></tr>"
+    "%4"  // dynamic part
+    "%5"  // notes
+    "</table>"
+    "</div>" )
+     .arg( name )
+     .arg( role )
+     .arg( organization )
+     .arg( dynamicPart, notes );
 
   return strAddr;
 }
@@ -311,7 +307,7 @@ void AddresseeView::updateView()
   setText( QString::null );
 
   if ( mAddressee.isEmpty() ) {
-    QMimeSourceFactory::defaultFactory()->setImage( "myimage", QByteArray() );
+    QMimeSourceFactory::defaultFactory()->setImage( "contact_image", QByteArray() );
     return;
   }
 
@@ -329,14 +325,23 @@ void AddresseeView::updateView()
                                  mActionShowPhones->isChecked(),
                                  mActionShowURLs->isChecked() );
 
+  strAddr = QString::fromLatin1(
+    "<html>"
+    "<body text=\"%1\" bgcolor=\"%2\">" // text and background color
+    "%3" // dynamic part
+    "</body>"
+    "</html>" )
+     .arg( KGlobalSettings::textColor().name() )
+     .arg( KGlobalSettings::baseColor().name() )
+     .arg( strAddr );
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
-    QMimeSourceFactory::defaultFactory()->setImage( "myimage", picture.data() );
+    QMimeSourceFactory::defaultFactory()->setImage( "contact_image", picture.data() );
   else {
     if ( !picture.url().isEmpty() ) {
       if ( mImageData.count() > 0 )
-        QMimeSourceFactory::defaultFactory()->setImage( "myimage", mImageData );
+        QMimeSourceFactory::defaultFactory()->setImage( "contact_image", mImageData );
       else {
         mImageJob = KIO::get( KURL( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
@@ -345,7 +350,7 @@ void AddresseeView::updateView()
                  this, SLOT( result( KIO::Job* ) ) );
       }
     } else {
-      QMimeSourceFactory::defaultFactory()->setPixmap( "myimage",
+      QMimeSourceFactory::defaultFactory()->setPixmap( "contact_image",
         KGlobal::iconLoader()->loadIcon( "identity", KIcon::Desktop, 128 ) );
     }
   }
