@@ -16,3 +16,5 @@ METASOURCES = AUTO
 
 messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/libkdepim.pot
+
+include ../admin/Doxyfile.am
