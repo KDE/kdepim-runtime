@@ -102,12 +102,17 @@ void AddresseeDiffAlgo::run()
   if ( mLeftAddressee.secrecy() != mRightAddressee.secrecy() ) {
     conflictField( KABC::Addressee::secrecyLabel(), mLeftAddressee.secrecy().asString(), mRightAddressee.secrecy().asString() );
   }
-
+  if ( mLeftAddressee.url()!= mRightAddressee.url() )
+    conflictField( KABC::Addressee::urlLabel(), mLeftAddressee.url().prettyURL(),
+      mRightAddressee.url().prettyURL() );
+    
   if ( mLeftAddressee.logo() != mRightAddressee.logo() ) {
   }
 
   if ( mLeftAddressee.photo() != mRightAddressee.photo() ) {
   }
+
+  diffList( "emails", mLeftAddressee.emails(), mRightAddressee.emails() );
 
   diffList( "Phone Numbers", mLeftAddressee.phoneNumbers(), mRightAddressee.phoneNumbers() );
   diffList( "Addresses", mLeftAddressee.addresses(), mRightAddressee.addresses() );
