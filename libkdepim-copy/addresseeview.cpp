@@ -22,6 +22,7 @@
 #include <kabc/address.h>
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
+#include <kapplication.h>
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
@@ -43,6 +44,13 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name )
   QStyleSheet *sheet = styleSheet();
   QStyleSheetItem *link = sheet->item( "a" );
   link->setColor( KGlobalSettings::linkColor() );
+
+  connect( this, SIGNAL( mailClick( const QString&, const QString& ) ),
+           this, SLOT( mailClicked( const QString&, const QString& ) ) );
+  connect( this, SIGNAL( urlClick( const QString& ) ),
+           this, SLOT( urlClicked( const QString& ) ) );
+
+  setNotifyClick( true );
 }
 
 void AddresseeView::setAddressee( const KABC::Addressee& addr )
@@ -63,11 +71,19 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   KABC::PhoneNumber::List phones = mAddressee.phoneNumbers();
   KABC::PhoneNumber::List::ConstIterator phoneIt;
   for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
+    QString number = (*phoneIt).number();
+    QString strippedNumber;
+    for ( uint i = 0; i < number.length(); ++i ) {
+      if ( number[ i ].isDigit() )
+        strippedNumber.append( number[ i ] );
+    }
+
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
-      "<td align=\"left\">%2</td></tr>" )
+      "<td align=\"left\"><a href=\"phone:%2\">%3</a></td></tr>" )
       .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ) )
-      .arg( (*phoneIt).number() );
+      .arg( strippedNumber )
+      .arg( number );
   }
 
   QStringList emails = mAddressee.emails();
@@ -166,3 +182,18 @@ KABC::Addressee AddresseeView::addressee() const
 {
   return mAddressee;
 }
+
+void AddresseeView::mailClicked( const QString&, const QString &email )
+{
+  kapp->invokeMailer( email, QString::null );
+}
+
+void AddresseeView::urlClicked( const QString &url )
+{
+  if ( url.startsWith( "phone:" ) )
+    emit phoneNumberClicked( url.mid( 8 ) );
+  else
+    kapp->invokeBrowser( url );
+}
+
+#include "addresseeview.moc"

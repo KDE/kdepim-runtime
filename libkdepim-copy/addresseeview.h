@@ -29,6 +29,8 @@ namespace KPIM {
 
 class AddresseeView : public KTextBrowser
 {
+  Q_OBJECT
+
   public:
     AddresseeView( QWidget *parent = 0, const char *name = 0 );
 
@@ -43,6 +45,13 @@ class AddresseeView : public KTextBrowser
       Returns the current addressee object.
      */
     KABC::Addressee addressee() const;
+
+  signals:
+    void phoneNumberClicked( const QString &number );
+
+  private slots:
+    void mailClicked( const QString&, const QString& );
+    void urlClicked( const QString& );
 
   private:
     KABC::Addressee mAddressee;
