@@ -47,16 +47,29 @@ class AddresseeView : public KTextBrowser
     KABC::Addressee addressee() const;
 
   signals:
-    void phoneNumberClicked( const QString &number );
-    void faxNumberClicked( const QString &number );
+    void urlHighlighted( const QString &url );
+    void emailHighlighted( const QString &email );
+    void phoneNumberHighlighted( const QString &number );
+    void faxNumberHighlighted( const QString &number );
+
+    void highlightedMessage( const QString &message );
+
+  protected:
+    virtual void urlClicked( const QString &url );
+    virtual void emailClicked( const QString &mail );
+    virtual void phoneNumberClicked( const QString &number );
+    virtual void faxNumberClicked( const QString &number );
 
   private slots:
-    void mailClicked( const QString&, const QString& );
-    void urlClicked( const QString& );
+    void slotMailClicked( const QString&, const QString& );
+    void slotUrlClicked( const QString& );
+    void slotHighlighted( const QString& );
 
   private:
+    QString strippedNumber( const QString &number );
+
     KABC::Addressee mAddressee;
-    
+
     class AddresseeViewPrivate;
     AddresseeViewPrivate *d;
 };

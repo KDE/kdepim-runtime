@@ -23,10 +23,13 @@
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
 #include <kapplication.h>
+#include <kconfig.h>
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
 #include <klocale.h>
+#include <kmessagebox.h>
+#include <krun.h>
 #include <kstringhandler.h>
 
 #include "addresseeview.h"
@@ -46,9 +49,11 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name )
   link->setColor( KGlobalSettings::linkColor() );
 
   connect( this, SIGNAL( mailClick( const QString&, const QString& ) ),
-           this, SLOT( mailClicked( const QString&, const QString& ) ) );
+           this, SLOT( slotMailClicked( const QString&, const QString& ) ) );
   connect( this, SIGNAL( urlClick( const QString& ) ),
-           this, SLOT( urlClicked( const QString& ) ) );
+           this, SLOT( slotUrlClicked( const QString& ) ) );
+  connect( this, SIGNAL( highlighted( const QString& ) ),
+           this, SLOT( slotHighlighted( const QString& ) ) );
 
   setNotifyClick( true );
 }
@@ -72,22 +77,17 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
   KABC::PhoneNumber::List::ConstIterator phoneIt;
   for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
     QString number = (*phoneIt).number();
-    QString strippedNumber;
-    for ( uint i = 0; i < number.length(); ++i ) {
-      if ( number[ i ].isDigit() )
-        strippedNumber.append( number[ i ] );
-    }
 
     if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
-      strippedNumber = "fax:" + strippedNumber;
+      number = "fax:" + number;
     else
-      strippedNumber = "phone:" + strippedNumber;
+      number = "phone:" + number;
 
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
       "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
       .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-      .arg( strippedNumber )
+      .arg( number )
       .arg( number );
   }
 
@@ -200,7 +200,7 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
     QMimeSourceFactory::defaultFactory()->setImage( "myimage", picture.data() );
   else
     QMimeSourceFactory::defaultFactory()->setPixmap( "myimage",
-      KGlobal::iconLoader()->loadIcon( "penguin", KIcon::Desktop, 128 ) );
+      KGlobal::iconLoader()->loadIcon( "identity", KIcon::Desktop, 128 ) );
 
   // at last display it...
   setText( strAddr );
@@ -211,19 +211,94 @@ KABC::Addressee AddresseeView::addressee() const
   return mAddressee;
 }
 
-void AddresseeView::mailClicked( const QString&, const QString &email )
+void AddresseeView::urlClicked( const QString &url )
+{
+  kapp->invokeBrowser( url );
+}
+
+void AddresseeView::emailClicked( const QString &email )
 {
   kapp->invokeMailer( email, QString::null );
 }
 
-void AddresseeView::urlClicked( const QString &url )
+void AddresseeView::phoneNumberClicked( const QString &number )
+{
+  KConfig config( "kaddressbookrc" );
+  config.setGroup( "General" );
+  QString commandLine = config.readEntry( "PhoneHookApplication" );
+
+  if ( commandLine.isEmpty() ) {
+    KMessageBox::sorry( this, i18n( "There is no application set which could be executed. Please go to the settings dialog and configure one." ) );
+    return;
+  }
+
+  commandLine.replace( "%N", number );
+  KRun::runCommand( commandLine );
+}
+
+void AddresseeView::faxNumberClicked( const QString &number )
+{
+  KConfig config( "kaddressbookrc" );
+  config.setGroup( "General" );
+  QString commandLine = config.readEntry( "FaxHookApplication", "kdeprintfax --phone %N" );
+
+  if ( commandLine.isEmpty() ) {
+    KMessageBox::sorry( this, i18n( "There is no application set which could be executed. Please go to the settings dialog and configure one." ) );
+    return;
+  }
+
+  commandLine.replace( "%N", number );
+  KRun::runCommand( commandLine );
+}
+
+void AddresseeView::slotMailClicked( const QString&, const QString &email )
+{
+  emailClicked( email );
+}
+
+void AddresseeView::slotUrlClicked( const QString &url )
 {
   if ( url.startsWith( "phone:" ) )
-    emit phoneNumberClicked( url.mid( 8 ) );
+    phoneNumberClicked( strippedNumber( url.mid( 8 ) ) );
   else if ( url.startsWith( "fax:" ) )
-    emit faxNumberClicked( url.mid( 6 ) );
+    faxNumberClicked( strippedNumber( url.mid( 6 ) ) );
   else
-    kapp->invokeBrowser( url );
+    urlClicked( url );
+}
+
+void AddresseeView::slotHighlighted( const QString &link )
+{
+  if ( link.startsWith( "mailto:" ) ) {
+    QString email = link.mid( 7 );
+
+    emit emailHighlighted( email );
+    emit highlightedMessage( i18n( "Send mail to <%1>" ).arg( email ) );
+  } else if ( link.startsWith( "phone:" ) ) {
+    QString number = link.mid( 8 );
+
+    emit phoneNumberHighlighted( strippedNumber( number ) );
+    emit highlightedMessage( i18n( "Call number %1" ).arg( number ) );
+  } else if ( link.startsWith( "fax:" ) ) {
+    QString number = link.mid( 6 );
+
+    emit faxNumberHighlighted( strippedNumber( number ) );
+    emit highlightedMessage( i18n( "Send fax to %1" ).arg( number ) );
+  } else if ( link.startsWith( "http:" ) ) {
+    emit urlHighlighted( link );
+    emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
+  } else
+    emit highlightedMessage( "" );
+}
+
+QString AddresseeView::strippedNumber( const QString &number )
+{
+  QString retval;
+
+  for ( uint i = 0; i < number.length(); ++i )
+    if ( number[ i ].isDigit() )
+      retval.append( number[ i ] );
+
+  return retval;
 }
 
 #include "addresseeview.moc"
