@@ -28,18 +28,15 @@
 #include <qvbox.h>
 #include <qdatetime.h>
 #include <qcombobox.h>
+#include <qmap.h>
 
-class DateEdit;
-class QPushButton;
-class QObject;
 class QEvent;
 class KDatePicker;
-class KDateValidator;
 
 /**
-* A date editing widget that consists of a line edit followed by
-* a small push button. The line edit contains the date in text form,
-* and the push button will display a 'popup' style date picker.
+* A date editing widget that consists of an editable combo box.
+* The combo box contains the date in text form, and clicking the combo
+* box arrow will display a 'popup' style date picker.
 *
 * This widget also supports advanced features like allowing the user
 * to type in the day name to get the date. The following keywords
@@ -48,6 +45,7 @@ class KDateValidator;
 *
 * @author Cornelius Schumacher <schumacher@kde.org>
 * @author Mike Pilone <mpilone@slac.com>
+* @author David Jarvie <software@astrojar.org.uk>
 */
 class KDateEdit : public QComboBox
 {
@@ -67,12 +65,24 @@ class KDateEdit : public QComboBox
     */
     QDate date() const;
 
+    /** Sets the date.
+    *
+    * @param date The new date to display. This date must be valid or
+    * it will not be displayed.
+    */
+    void setDate(QDate date);
+
     /** @param handleInvalid If true the date edit accepts invalid dates
     * and displays them as the empty ("") string. It also returns an invalid date.
     * If false (default) invalid dates are not accepted and instead the date
     * of today will be returned.
     */
     void setHandleInvalid(bool handleInvalid);
+
+    /** Checks for a focus out event. The display of the date is updated
+    * to display the proper date when the focus leaves.
+    */
+    virtual bool eventFilter(QObject *o, QEvent *e);
 
     virtual void popup();
   signals:
@@ -82,20 +92,11 @@ class KDateEdit : public QComboBox
     */
     void dateChanged(QDate);
 
-  public slots:
-    /** Sets the date.
-    *
-    * @param date The new date to display. This date must be valid or
-    * it will not be displayed.
-    */
-    void setDate(QDate date);
-
   protected slots:
+    void dateSelected(QDate);
+    void dateEntered(QDate);
     void lineEnterPressed();
     void slotTextChanged(const QString &);
-
-  protected:
-    virtual void focusOutEvent(QFocusEvent*);
 
   private:
     /** Reads the text from the line edit. If the text is a keyword, the

@@ -25,8 +25,6 @@
 #include <qapplication.h>
 #include <qevent.h>
 #include <qlineedit.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
 
 #include <kdatepicker.h>
 #include <kdebug.h>
@@ -60,11 +58,8 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   connect(this,SIGNAL(textChanged(const QString &)),
           SLOT(slotTextChanged(const QString &)));
 
-  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SLOT(setDate(QDate)));
-  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SIGNAL(dateChanged(QDate)));
-  connect(mDatePicker,SIGNAL(dateSelected(QDate)),SLOT(setDate(QDate)));
-  connect(mDatePicker,SIGNAL(dateSelected(QDate)),SIGNAL(dateChanged(QDate)));
-  connect(mDatePicker,SIGNAL(dateSelected(QDate)),mDateFrame,SLOT(hide()));
+  connect(mDatePicker,SIGNAL(dateEntered(QDate)),SIGNAL(dateEntered(QDate)));
+  connect(mDatePicker,SIGNAL(dateSelected(QDate)),SIGNAL(dateSelected(QDate)));
 
   // Create the keyword list. This will be used to match against when the user
   // enters information.
@@ -72,24 +67,13 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   mKeywordMap[i18n("today")] = 0;
   mKeywordMap[i18n("yesterday")] = -1;
 
-  /*
-   * This loop uses some math tricks to figure out the offset in days
-   * to the next date the given day of the week occurs. There
-   * are two cases, that the new day is >= the current day, which means
-   * the new day has not occured yet or that the new day < the current day,
-   * which means the new day is already passed (so we need to find the
-   * day in the next week).
-   */
   QString dayName;
-  int currentDay = QDate::currentDate().dayOfWeek();
   for (int i = 1; i <= 7; ++i)
   {
     dayName = KGlobal::locale()->weekDayName(i).lower();
-    if (i >= currentDay)
-      mKeywordMap[dayName] = i - currentDay;
-    else
-      mKeywordMap[dayName] = 7 - currentDay + i;
+    mKeywordMap[dayName] = i + 100;
   }
+  lineEdit()->installEventFilter(this);   // handle keyword entry
 
   mTextChanged = false;
   mHandleInvalid = false;
@@ -162,6 +146,24 @@ void KDateEdit::popup()
   mDateFrame->show();
 }
 
+void KDateEdit::dateSelected(QDate newDate)
+{
+  if (newDate.isValid() || mHandleInvalid)
+  {
+    setDate(newDate);
+    emit dateChanged(newDate);
+    mDateFrame->hide();
+  }
+}
+
+void KDateEdit::dateEntered(QDate newDate)
+{
+  if (newDate.isValid() || mHandleInvalid)
+  {
+    setDate(newDate);
+    emit dateChanged(newDate);
+  }
+}
 
 void KDateEdit::lineEnterPressed()
 {
@@ -200,7 +202,25 @@ QDate KDateEdit::readDate() const
 
   if (mKeywordMap.contains(text.lower()))
   {
-    date = QDate::currentDate().addDays(mKeywordMap[text.lower()]);
+    int i = mKeywordMap[text.lower()];
+    if (i >= 100)
+    {
+      /* A day name has been entered. Convert to offset from today.
+       * This uses some math tricks to figure out the offset in days
+       * to the next date the given day of the week occurs. There
+       * are two cases, that the new day is >= the current day, which means
+       * the new day has not occured yet or that the new day < the current day,
+       * which means the new day is already passed (so we need to find the
+       * day in the next week).
+       */
+      i -= 100;
+      int currentDay = QDate::currentDate().dayOfWeek();
+      if (i >= currentDay)
+        i -= currentDay;
+      else
+        i += 7 - currentDay;
+    }
+    date = QDate::currentDate().addDays(i);
   }
   else
   {
@@ -210,15 +230,17 @@ QDate KDateEdit::readDate() const
   return date;
 }
 
-void KDateEdit::focusOutEvent(QFocusEvent*)
+bool KDateEdit::eventFilter(QObject *, QEvent *e)
 {
   // We only process the focus out event if the text has changed
   // since we got focus
-  if (mTextChanged)
+  if ((e->type() == QEvent::FocusOut) && mTextChanged)
   {
     lineEnterPressed();
     mTextChanged = false;
   }
+
+  return false;
 }
 
 void KDateEdit::slotTextChanged(const QString &)
