@@ -31,6 +31,8 @@
 
 #include "categoryeditdialog.h"
 
+using namespace KPIM;
+
 CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
                                         const char* name, bool modal,
                                         WFlags fl )

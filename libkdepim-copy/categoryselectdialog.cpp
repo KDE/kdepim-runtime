@@ -29,6 +29,8 @@
 
 #include "kpimprefs.h"
 
+using namespace KPIM;
+
 CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
                                             const char* name, 
                                             bool modal, WFlags fl )

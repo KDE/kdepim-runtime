@@ -27,6 +27,8 @@
 
 class KPimPrefs;
 
+namespace KPIM {
+
 class CategorySelectDialog : public CategorySelectDialog_base
 { 
     Q_OBJECT
@@ -53,5 +55,7 @@ class CategorySelectDialog : public CategorySelectDialog_base
   private:
     KPimPrefs *mPrefs;
 };
+
+}
 
 #endif
