@@ -78,9 +78,14 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
         strippedNumber.append( number[ i ] );
     }
 
+    if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
+      strippedNumber = "fax:" + strippedNumber;
+    else
+      strippedNumber = "phone:" + strippedNumber;
+
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
-      "<td align=\"left\"><a href=\"phone:%2\">%3</a></td></tr>" )
+      "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
       .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ) )
       .arg( strippedNumber )
       .arg( number );
@@ -192,6 +197,8 @@ void AddresseeView::urlClicked( const QString &url )
 {
   if ( url.startsWith( "phone:" ) )
     emit phoneNumberClicked( url.mid( 8 ) );
+  else if ( url.startsWith( "fax:" ) )
+    emit faxNumberClicked( url.mid( 6 ) );
   else
     kapp->invokeBrowser( url );
 }

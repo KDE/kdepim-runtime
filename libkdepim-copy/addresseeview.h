@@ -48,6 +48,7 @@ class AddresseeView : public KTextBrowser
 
   signals:
     void phoneNumberClicked( const QString &number );
+    void faxNumberClicked( const QString &number );
 
   private slots:
     void mailClicked( const QString&, const QString& );
