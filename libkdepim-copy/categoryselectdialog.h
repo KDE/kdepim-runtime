@@ -1,5 +1,6 @@
 /*
     This file is part of libkdepim.
+
     Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
 
     This library is free software; you can redistribute it and/or
@@ -30,13 +31,13 @@ class CategorySelectDialog : public CategorySelectDialog_base
 { 
     Q_OBJECT
   public:
-    CategorySelectDialog( KPimPrefs *prefs, QWidget* parent = 0,
-                          const char* name = 0, 
-                          bool modal = FALSE, WFlags fl = 0 );
+    CategorySelectDialog( KPimPrefs *prefs, QWidget *parent = 0,
+                          const char *name = 0, bool modal = false,
+                          WFlags fl = 0 );
     ~CategorySelectDialog();
 
     void setCategories();
-    void setSelected(const QStringList &selList);
+    void setSelected( const QStringList &selList );
 
     QStringList selectedCategories() const;
     
@@ -47,8 +48,8 @@ class CategorySelectDialog : public CategorySelectDialog_base
     void updateCategoryConfig();
     
   signals:
-    void categoriesSelected(const QString &);
-    void categoriesSelected(const QStringList &);
+    void categoriesSelected( const QString & );
+    void categoriesSelected( const QStringList & );
     void editCategories();
 
   private:
