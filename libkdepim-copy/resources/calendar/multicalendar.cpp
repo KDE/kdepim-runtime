@@ -83,7 +83,7 @@ void MultiCalendar::init( ResourceCalendar* resource )
     // Open all active resources
     ResourceCalendar *resource;
     for ( resource = mResources.first(); resource; resource = mResources.next() ) {
-      kdDebug(5800) << "Opening resource " + resource->name() << endl;
+      kdDebug(5800) << "Opening resource " + resource->resourceName() << endl;
       bool result = resource->open();
       // Really should remove resource if open not successful
     }
@@ -224,7 +224,7 @@ QPtrList<Todo> MultiCalendar::rawTodos() const
     QPtrListIterator<ResourceCalendar> it( mResources );
     while ( ( resource = it.current() ) != 0 ) {
       ++it;
-      kdDebug() << "Getting raw todos from " << resource->name() << endl;
+      kdDebug() << "Getting raw todos from " << resource->resourceName() << endl;
       QPtrList<Todo> todos = resource->rawTodos();
       Todo* todo;
       for ( todo = todos.first(); todo; todo = todos.next() ) {
@@ -336,7 +336,7 @@ QPtrList<Event> MultiCalendar::rawEventsForDate(const QDate &qd, bool sorted)
     QPtrList<Event> result;
     ResourceCalendar *resource;
     for ( resource = mResources.first(); resource; resource = mResources.next() ) {
-      // kdDebug() << "Getting events from " << resource->name() << endl;
+      // kdDebug() << "Getting events from " << resource->resourceName() << endl;
       QPtrList<Event> list = resource->rawEventsForDate( qd, sorted );
       if ( sorted ) {
         Event* item;
@@ -497,15 +497,15 @@ QPtrList<Journal> MultiCalendar::journals()
 
 // KRES::ManagerListener stuff
 void MultiCalendar::resourceAdded( ResourceCalendar* resource ) {
-  kdDebug() << "MultiCalendar::resourceAdded( " << resource->name() << " )" << endl;
+  kdDebug() << "MultiCalendar::resourceAdded( " << resource->resourceName() << " )" << endl;
   kdDebug() << "Ignoring for now..." << endl;
 }
 void MultiCalendar::resourceModified( ResourceCalendar* resource ) {
-  kdDebug() << "MultiCalendar::resourceModified( " << resource->name() << " )" << endl;
+  kdDebug() << "MultiCalendar::resourceModified( " << resource->resourceName() << " )" << endl;
   kdDebug() << "We should probably close and re-open the resource now!" << endl;
 }
 void MultiCalendar::resourceDeleted( ResourceCalendar* resource ) {
-  kdDebug() << "MultiCalendar::resourceDeleted( " << resource->name() << " )" << endl;
+  kdDebug() << "MultiCalendar::resourceDeleted( " << resource->resourceName() << " )" << endl;
   kdDebug() << "Closing the resource..." << endl;
   mResources.remove( resource );
   resource->close();

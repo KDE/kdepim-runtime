@@ -60,7 +60,7 @@ bool Resource::open()
   bool result = true;
   mMutex.lock();
   if ( ! mOpenCount ) {
-    kdDebug() << "Opening resource " << name() << endl;
+    kdDebug() << "Opening resource " << resourceName() << endl;
     result = doOpen();
   }
   mOpenCount++;
@@ -73,16 +73,16 @@ void Resource::close()
   mMutex.lock();
   if ( ! mOpenCount )
   {
-    kdDebug() << "ERROR: Resource " << name() << " closed more times than previously opened" << endl;
+    kdDebug() << "ERROR: Resource " << resourceName() << " closed more times than previously opened" << endl;
     mMutex.unlock();
     return;
   }
   mOpenCount--;
   if ( ! mOpenCount ) {
-    kdDebug() << "Closing resource " << name() << endl;
+    kdDebug() << "Closing resource " << resourceName() << endl;
     doClose();
   } else {
-    kdDebug() << "Not yet closing resource " << name() << ", open count = " << mOpenCount << endl;
+    kdDebug() << "Not yet closing resource " << resourceName() << ", open count = " << mOpenCount << endl;
   }
   mMutex.unlock();
 }
@@ -102,12 +102,12 @@ bool Resource::readOnly() const
   return mReadOnly;
 }
 
-void Resource::setName( const QString &name )
+void Resource::setResourceName( const QString &name )
 {
   mName = name;
 }
 
-QString Resource::name() const
+QString Resource::resourceName() const
 {
   return mName;
 }

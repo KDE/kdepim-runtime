@@ -235,7 +235,7 @@ QStringList ResourceManagerImpl::resourceNames()
 
   ResourceItem *item;
   for ( item = mResources->first(); item; item = mResources->next() ) {
-    result.append( item->resource->name() );
+    result.append( item->resource->resourceName() );
   }
   return result;
 }

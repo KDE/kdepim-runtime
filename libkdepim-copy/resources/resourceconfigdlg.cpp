@@ -58,7 +58,7 @@ ResourceConfigDlg::ResourceConfigDlg( QWidget *parent, const QString& resourceFa
 
   mReadOnly = new QCheckBox( i18n( "Read-only" ), generalGroupBox );
 
-  mName->setText( mResource->name() );
+  mName->setText( mResource->resourceName() );
   mReadOnly->setChecked( mResource->readOnly() );
 
   mainLayout->addWidget( generalGroupBox );
@@ -115,7 +115,7 @@ void ResourceConfigDlg::accept()
     return;
   }
 
-  mResource->setName( mName->text() );
+  mResource->setResourceName( mName->text() );
   mResource->setReadOnly( mReadOnly->isChecked() );
 
   if ( mConfigWidget /*&& mConfig*/ ) {

@@ -162,7 +162,7 @@ public:
   }
 
   virtual void resourceAdded( Resource* res ) {
-    kdDebug() << "ResourceManager::resourceAdded " << res->name() << endl;
+    kdDebug() << "ResourceManager::resourceAdded " << res->resourceName() << endl;
     T* resource = dynamic_cast<T *>( res );
     ManagerListener<T> *listener;
     for ( listener = mListeners->first(); listener; listener = mListeners->next() )
@@ -170,14 +170,14 @@ public:
   }
 
   virtual void resourceModified( Resource* res ) {
-    kdDebug() << "ResourceManager::resourceModified " << res->name() << endl;
+    kdDebug() << "ResourceManager::resourceModified " << res->resourceName() << endl;
     T* resource = dynamic_cast<T *>( res );
     ManagerListener<T> *listener;
     for ( listener = mListeners->first(); listener; listener = mListeners->next() )
       listener->resourceModified( resource );
   }
   virtual void resourceDeleted( Resource* res ) {
-    kdDebug() << "ResourceManager::resourceDeleted " << res->name() << endl;
+    kdDebug() << "ResourceManager::resourceDeleted " << res->resourceName() << endl;
     T* resource = dynamic_cast<T *>( res );
     ManagerListener<T> *listener;
     for ( listener = mListeners->first(); listener; listener = mListeners->next() ) {

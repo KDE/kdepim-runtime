@@ -287,14 +287,14 @@ public:
 
   /**
    * Set the name of resource.You can override this method,
-   * but also remember to call Resource::setName().
+   * but also remember to call Resource::setResourceName().
    */
-  virtual void setName( const QString &name );
+  virtual void setResourceName( const QString &name );
 
   /**
    * Returns the name of resource.
    */
-  virtual QString name() const;
+  virtual QString resourceName() const;
 
   /**
    * This method can be used by all resources to encrypt

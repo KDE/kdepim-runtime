@@ -64,7 +64,7 @@ ResourceSelectDialog::ResourceSelectDialog( QPtrList<Resource> list, QWidget *pa
     Resource *resource = list.at( i );
     if ( resource && !resource->readOnly() ) {
       mResourceMap.insert( counter, resource );
-      mResourceId->insertItem( resource->name() );
+      mResourceId->insertItem( resource->resourceName() );
       counter++;
     }
   }

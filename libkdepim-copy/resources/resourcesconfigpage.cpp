@@ -66,7 +66,7 @@ private:
 
 ConfigViewItem::ConfigViewItem( QListView *parent, Resource* resource, // QString name, QString type,
   QString )
-  : QCheckListItem( parent, resource->name(), CheckBox )
+  : QCheckListItem( parent, resource->resourceName(), CheckBox )
 {
   mResource = resource;
   isStandard = false;
@@ -210,7 +210,7 @@ void ResourcesConfigPage::slotAdd()
 
   // Create new resource
   Resource *resource = manager->createResource( type );
-  resource->setName( type + "-resource" );
+  resource->setResourceName( type + "-resource" );
 
   ResourceConfigDlg dlg( this, mFamily, /*type,*/ resource, /*config,*/ "ResourceConfigDlg" );
 
@@ -283,7 +283,7 @@ void ResourcesConfigPage::slotEdit()
   ResourceConfigDlg dlg( this, mFamily, resource, "ResourceConfigDlg" );
 
   if ( dlg.exec() ) {
-    configItem->setText( 0, resource->name() );
+    configItem->setText( 0, resource->resourceName() );
     configItem->setText( 1, resource->type() );
 
     if ( configItem->standard() && configItem->readOnly() ) {
@@ -335,7 +335,7 @@ void ResourcesConfigPage::slotSelectionChanged()
 
 void ResourcesConfigPage::resourceAdded( Resource* resource )
 {
-  kdDebug() << "ResourcesConfigPage::resourceAdded( " << resource->name() << " )" << endl;
+  kdDebug() << "ResourcesConfigPage::resourceAdded( " << resource->resourceName() << " )" << endl;
   ConfigViewItem *item = new ConfigViewItem( mListView, resource );
 
   // FIXME: this sucks. This should be in the config file,
@@ -349,12 +349,12 @@ void ResourcesConfigPage::resourceAdded( Resource* resource )
 
 void ResourcesConfigPage::resourceModified( Resource* resource )
 {
-  kdDebug() << "ResourcesConfigPage::resourceModified( " << resource->name() << " )" << endl;
+  kdDebug() << "ResourcesConfigPage::resourceModified( " << resource->resourceName() << " )" << endl;
 }
 
 void ResourcesConfigPage::resourceDeleted( Resource* resource )
 {
-  kdDebug() << "ResourcesConfigPage::resourceDeleted( " << resource->name() << " )" << endl;
+  kdDebug() << "ResourcesConfigPage::resourceDeleted( " << resource->resourceName() << " )" << endl;
 }
 
 

@@ -42,4 +42,4 @@ void ResourceCalendar::writeConfig( KConfig* config )
   KRES::Resource::writeConfig( config );
 }
 
-
+#include "resourcecalendar.moc"

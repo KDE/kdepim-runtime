@@ -127,7 +127,7 @@ ResourceLocal::~ResourceLocal()
 
 bool ResourceLocal::doOpen()
 {
-  kdDebug(5800) << "Opening resource " << name() << " with URL " << mURL.prettyURL() << endl;
+  kdDebug(5800) << "Opening resource " << resourceName() << " with URL " << mURL.prettyURL() << endl;
   Calendar *calendar = new MultiCalendar( this );
   FileStorage storage( calendar, mURL.path() );
   bool result = storage.load();

@@ -41,12 +41,13 @@ class Todo;
 class IncidenceBase;
 class Journal;
 
-
 /**
   @internal
 */
-class ResourceCalendar : public KRES::Resource
-{
+class ResourceCalendar : public QObject, public KRES::Resource
+{ 
+  Q_OBJECT
+
   public:
     ResourceCalendar( const KConfig * );
     virtual ~ResourceCalendar();
@@ -65,6 +66,10 @@ class ResourceCalendar : public KRES::Resource
     /** deletes an event from this calendar. */
     virtual void deleteEvent(Event *) = 0;
 
+    /** signals that an event has been changed by the app */
+    // virtual void eventChanged(Event *) = 0;
+
+    /** Synchronous functions */
 
     /**
       Retrieves an event on the basis of the unique string ID.
@@ -97,15 +102,44 @@ class ResourceCalendar : public KRES::Resource
 
     /** returns the number of events that are present on the specified date. */
     virtual int numEvents(const QDate &qd) = 0;
-  
-    
-    /*
-      Returns a QString with the text of the holiday (if any) that falls
-      on the specified date.
-    */
-    //virtual QString getHolidayForDate(const QDate &qd) = 0;
-    
 
+    /** Asynchronous functions */
+
+    /**
+      Request events for the given period (inclusive). This will result
+      in one or more eventsAdded() signals and, in the longer term, also
+      possibly in eventsModified() and eventsDeleted() signals.
+    */
+    // should be pure virtual
+    virtual void subscribeEvents( const QDate& start, const QDate& end ) {};
+
+    /**
+      Stop receiving event signals for the given period (inclusive). After this call,
+      the calendar resource will no longer send eventsAdded, eventsModified or
+      eventsDeleted signals for events falling completely in this period. The resource
+      MAY delete the Events objects. The application MUST NOT dereference pointers 
+      to the relevant Events after this call.
+    */
+    // should be pure virtual
+    virtual void unsubscribeEvents( const QDate& start, const QDate& end ) {};
+
+  signals:
+    // Maybe: make one signal, with bools or a flag for "is deleted" and "is new"?
+    /** These Events are added to the calendar, or they are in the calendar
+     * and I haven't yet told you about them
+     */
+    void eventsAdded( QPtrList<Event>& events );
+    /**
+     * The Events in events have been modified
+     */
+    void eventsModified( QPtrList<Event>& events );
+    /**
+     * The Events in events have been deleted. Do not reference these
+     * events after this call.
+     */
+    void eventsDeleted( QPtrList<Event>& events );
+
+  public:
     /**
       Add a todo to the todolist.
     */
