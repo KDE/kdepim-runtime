@@ -7,13 +7,15 @@
 #endif
 
 #include "identity.h"
+
 #include "kfileio.h"
+#include "collectingprocess.h"
 
 #include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
-#include <kprocess.h>
 #include <kconfig.h>
+#include <kurl.h>
 
 #include <qfileinfo.h>
 
@@ -22,8 +24,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include <assert.h>
-#include "processcollector.h"
-#include <kurl.h>
 
 using namespace KPIM;
 
@@ -87,12 +87,9 @@ QString Signature::textFromCommand( bool * ok ) const
   }
 
   // create a shell process:
-  KProcess proc;
+  CollectingProcess proc;
   proc.setUseShell(true);
   proc << mUrl;
-
-  // let the processcollector collect the output for us:
-  ProcessCollector collector( &proc );
 
   // run the process:
   int rc = 0;
@@ -114,7 +111,7 @@ QString Signature::textFromCommand( bool * ok ) const
   if ( ok ) *ok = true;
 
   // get output:
-  QByteArray output = collector.collectedStdOut();
+  QByteArray output = proc.collectedStdout();
 
   // ### hmm, should we allow other encodings, too?
   return QString::fromLocal8Bit( output.data(), output.size() );

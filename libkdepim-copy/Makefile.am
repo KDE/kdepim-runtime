@@ -18,9 +18,10 @@ libkdepim_la_SOURCES = \
   pluginloaderbase.cpp addresseelineedit.cpp \
   klistviewsearchline_pimcopy.cpp kdatepickerpopup.cpp \
   clicklineedit.cpp \
-  email.cpp kfileio.cpp processcollector.cpp configmanager.cpp \
+  email.cpp kfileio.cpp configmanager.cpp \
   identitymanager.cpp identity.cpp identitymanager.skel \
-  identitycombo.cpp
+  identitycombo.cpp \
+	collectingprocess.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
