@@ -147,7 +147,7 @@ AddresseeViewItem::email() const
 
 bool AddresseeViewItem::matches(const QString& txt) const
 {
-    return d->address.realName().contains(txt) || d->address.preferredEmail().contains(txt);
+    return d->address.realName().contains(txt, false) || d->address.preferredEmail().contains(txt, false);
 }
 
 void AddresseeViewItem::setSelected(bool selected)
