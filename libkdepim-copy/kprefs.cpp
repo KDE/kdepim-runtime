@@ -38,6 +38,7 @@ class KPrefsItemBool : public KGenericPrefsItem<bool>
     {
       config->setGroup( mGroup );
       mReference = config->readBoolEntry( mName, mDefault );
+      mLoadedValue = mReference;
     }
 };
 
@@ -53,6 +54,7 @@ class KPrefsItemInt : public KGenericPrefsItem<int>
     {
       config->setGroup( mGroup );
       mReference = config->readNumEntry( mName, mDefault );
+      mLoadedValue = mReference;
     }
 };
 
@@ -69,6 +71,7 @@ class KPrefsItemColor : public KGenericPrefsItem<QColor>
     {
       config->setGroup( mGroup );
       mReference = config->readColorEntry( mName, &mDefault );
+      mLoadedValue = mReference;
     }
 };
 
@@ -84,6 +87,7 @@ class KPrefsItemFont : public KGenericPrefsItem<QFont>
     {
       config->setGroup( mGroup );
       mReference = config->readFontEntry( mName, &mDefault );
+      mLoadedValue = mReference;
     }
 };
 
@@ -100,11 +104,13 @@ class KPrefsItemString : public KGenericPrefsItem<QString>
     
     void writeConfig(KConfig *config)
     {
-      config->setGroup( mGroup );
-      if ( mIsPassword )
-        config->writeEntry( mName, endecryptStr( mReference ) );
-      else
-        config->writeEntry( mName, mReference );
+      if ( mLoadedValue != mReference ) {
+        config->setGroup( mGroup );
+        if ( mIsPassword )
+          config->writeEntry( mName, endecryptStr( mReference ) );
+        else
+          config->writeEntry( mName, mReference );
+      }
     }
 
     void readConfig(KConfig *config)
@@ -117,6 +123,7 @@ class KPrefsItemString : public KGenericPrefsItem<QString>
       } else {
         mReference = config->readEntry( mName, mDefault );
       }
+      mLoadedValue = mReference;
     }
 
   protected:
@@ -146,6 +153,7 @@ class KPrefsItemStringList : public KGenericPrefsItem<QStringList>
     {
       config->setGroup( mGroup );
       mReference = config->readListEntry( mName );
+      mLoadedValue = mReference;
     }
 };
 
@@ -162,6 +170,7 @@ class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
     {
       config->setGroup( mGroup );
       mReference = config->readIntListEntry( mName );
+      mLoadedValue = mReference;
     }
 };
 

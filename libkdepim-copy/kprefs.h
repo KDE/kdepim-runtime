@@ -83,22 +83,25 @@ class KGenericPrefsItem : public KPrefsItem
     KGenericPrefsItem( const QString &group, const QString &name, T &reference,
                        T defaultValue)
       : KPrefsItem( group, name ), mReference( reference ),
-        mDefault( defaultValue ) {}
+        mDefault( defaultValue ), mLoadedValue( defaultValue ) {}
 
     virtual void setDefault()
     {
-        mReference = mDefault;
+      mReference = mDefault;
     }
 
     virtual void writeConfig( KConfig *config )
     {
+      if ( mReference != mLoadedValue ) {
         config->setGroup( mGroup );
         config->writeEntry( mName, mReference );
+      }
     }
 
   protected:
     T &mReference;
     T mDefault;
+    T mLoadedValue;
 };
 
 
