@@ -73,7 +73,7 @@ KIMProxy::KIMProxy( DCOPClient* dc ) : DCOPObject( "KIMProxyIface" ), QObject()
 
 KIMProxy::~KIMProxy( )
 {
-	m_dc->setNotifications( false );
+	//m_dc->setNotifications( false );
 }
 
 bool KIMProxy::initialize()
