@@ -469,13 +469,11 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
   QStringList categories = addr.categories();
 
   for ( QStringList::Iterator it = categories.begin(); it != categories.end(); ++it ) {
-    AddresseeViewItem* addressee = 0;
-    if ( d->groupDict[ *it ] ) {
-      addressee = new AddresseeViewItem( d->groupDict[ *it ], addr );
-    } else {
-      addressee = new AddresseeViewItem( d->ui->mAvailableView, *it );
-      d->groupDict.insert( *it,  addressee);
+    if ( !d->groupDict[ *it ] ) {  //we don't have the category yet
+      AddresseeViewItem* category = new AddresseeViewItem( d->ui->mAvailableView, *it );
+      d->groupDict.insert( *it,  category );
     }
+    AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr );
     connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
             this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
   }
