@@ -635,7 +635,7 @@ KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, QWidget *parent,
   : KCModule( parent, name ),
     KPrefsWidManager( prefs )
 {
-  setChanged( false );
+  emit changed( false );
 }
 
 void KPrefsModule::addWid( KPrefsWid *wid )
@@ -649,7 +649,7 @@ void KPrefsModule::slotWidChanged()
 {
   kdDebug(5310) << "KPrefsModule::slotWidChanged()" << endl;
 
-  setChanged( true );
+  emit changed( true );
 }
 
 void KPrefsModule::load()
@@ -660,7 +660,7 @@ void KPrefsModule::load()
 
   usrReadConfig();
 
-  setChanged( false );
+  emit changed( false );
 }
 
 void KPrefsModule::save()
@@ -676,5 +676,5 @@ void KPrefsModule::defaults()
 {
   setWidDefaults();
 
-  setChanged( true );
+  emit changed( true );
 }
