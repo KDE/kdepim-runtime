@@ -16,7 +16,7 @@ libkdepim_la_SOURCES = \
   kconfigpropagator.cpp kconfigwizard.cpp \
   weaver.cpp weaverextensions.cpp weaverlogger.cpp \
   pluginloaderbase.cpp addresseelineedit.cpp \
-  klistviewsearchline_pimcopy.cpp kdatepickerpopup.cpp \
+  kdatepickerpopup.cpp \
   clicklineedit.cpp \
   email.cpp kfileio.cpp configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp ldapurl.cpp ldif.cpp \
