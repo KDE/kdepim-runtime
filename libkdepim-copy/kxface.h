@@ -512,7 +512,6 @@ static const Prob freqs[16] = {
 static const char HexDigits[] = "0123456789ABCDEF";
 
 
-
 class QBitmap;
 class QImage;
 class QString;
@@ -528,7 +527,7 @@ namespace KPIM {
       virtual ~KXFace();
 
       /**
-       * @p generates the xface string from @p image
+       * generates the xface string from @p image
        */
       QString fromImage(const QImage &image);
 
@@ -561,9 +560,6 @@ namespace KPIM {
       } BigInt;
 
       BigInt B;
-
-      static int x(const int pos);
-      static int y(const int pos);
 
       void RevPush(const Prob *p);
       void BigPush(Prob *p);

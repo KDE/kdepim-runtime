@@ -174,16 +174,6 @@ QBitmap KXFace::toBitmap(const QString &xface)
   return b;
 }
 
-int KXFace::x(const int pos)
-{
-  return pos%48;
-}
-
-int KXFace::y(const int pos)
-{
-  return pos/48;
-}
-
 //============================================================================
 // more or less original compface 1.4 source
 
