@@ -205,17 +205,47 @@ void LdapClient::endParseLDIF()
 {
   // make sure we do not loose the last entry in case there was
   // no LDIF::EndEntry at its end
-  if( ! mCurrentObject.attrs.isEmpty()){
-    mCurrentObject.dn = d->ldif.dn();
-    //kdDebug(5300) << "\nendParseLDIF(): " << mCurrentObject.dn << endl;
-    mCurrentObject.client = this;
-    emit result( mCurrentObject );
-    mCurrentObject.clear();
+  if( ! mCurrentObject.attrs.isEmpty())
+    finishCurrentObject();
+}
+
+void LdapClient::finishCurrentObject()
+{
+  mCurrentObject.dn = d->ldif.dn();
+  //kdDebug(5300) << "finishCurrentObject(): " << d->ldif.objectClass()
+  //  << " " << mCurrentObject.dn << endl;
+  if( d->ldif.objectClass().lower() == "groupofnames" ){
+    LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
+    if( it == mCurrentObject.attrs.end() ){
+      // No explicit mail address found so far?
+      // Fine, then we use the address stored in the DN.
+      QString sMail;
+      QStringList lMail = QStringList::split(",dc=", mCurrentObject.dn);
+      const int n = lMail.count();
+      if( n ){
+        if( lMail.first().lower().startsWith("cn=") ){
+          sMail = lMail.first().simplifyWhiteSpace().mid(3);
+          if( 1 < n )
+            sMail.append('@');
+          for( int i=1; i<n; ++i){
+            sMail.append( lMail[i] );
+            if( i < n-1 )
+              sMail.append('.');
+          }
+          mCurrentObject.attrs["mail"].append( sMail.utf8() );
+        }
+      }
+    }
   }
+  mCurrentObject.client = this;
+  emit result( mCurrentObject );
+  mCurrentObject.clear();
 }
 
 void LdapClient::parseLDIF( const QByteArray& data )
 {
+  kdDebug(5300) << "LdapClient::parseLDIF( " << QCString(data) << " )" << endl;
+  
   if ( data.size() ) {
     d->ldif.setLDIF( data );
   } else {
@@ -232,12 +262,10 @@ void LdapClient::parseLDIF( const QByteArray& data )
         name = d->ldif.attr();
         value = d->ldif.val();
         mCurrentObject.attrs[ name ].append( value );
+        //kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
         break;
      case LDIF::EndEntry:
-        mCurrentObject.dn = d->ldif.dn();
-        mCurrentObject.client = this;
-        emit result( mCurrentObject );
-        mCurrentObject.clear();
+        finishCurrentObject();
         break;
       default:
         break;
@@ -439,10 +467,10 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
     QString name, mail, givenname, sn;
     bool isDistributionList = false;
-    //bool wasCN = false;
-    //bool wasDC = false;
+    bool wasCN = false;
+    bool wasDC = false;
 
-    kdDebug(5300) << "LdapSearch::makeSearchData() " << endl;
+    kdDebug(5300) << "\n\nLdapSearch::makeSearchData()\n\n" << endl;
 
     LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
@@ -450,7 +478,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
       kdDebug(5300) << "      " << it2.key() << ": " << tmp << endl;
       if ( it2.key() == "cn" ) {
         name = tmp;
-        /*if( mail.isEmpty() )
+        if( mail.isEmpty() )
           mail = tmp;
         else{
           if( wasCN )
@@ -470,7 +498,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
             mail.append( "@" );
           mail.append( tmp );
         }
-        wasDC = true;*/
+        wasDC = true;
       } else if( it2.key() == "mail" )
         mail = tmp;
       else if( it2.key() == "givenName" )
@@ -484,7 +512,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 
     if( mail.isEmpty()) {
       if( isDistributionList ) {
-        kdDebug(5300) << "LdapSearch::makeSearchData() found a list: " << name << endl;
+        kdDebug(5300) << "\n\nLdapSearch::makeSearchData() found a list: " << name << "\n\n" << endl;
         ret.append( name );
         // following lines commented out for bugfixing kolab issue #177:
         //
@@ -499,7 +527,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         //  mail.remove(0, 3);
         //mail.prepend( '@' );
         //mail.prepend( name );
-        mail = name;
+        //mail = name;
       } else {
         kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: " << name << endl;
         continue; // nothing, bad entry

@@ -206,8 +206,12 @@ LDIF::ParseVal LDIF::processLine()
       } else if ( attrLower == "dn" ) {
         kdDebug(5700) << "ldapentry dn: " << QString::fromUtf8( mVal, mVal.size() ) << endl;
         mDn = QString::fromUtf8( mVal, mVal.size() );
-        mModType = Mod_None;
         retval = NewEntry;
+      } else if ( attrLower == "objectclass" ) {
+        kdDebug(5700) << "ldapentry objectClass: " << QString::fromUtf8( mVal, mVal.size() ) << endl;
+        mObjectClass = QString::fromUtf8( mVal, mVal.size() );
+        mModType = Mod_None;
+        retval = Item;
       } else if ( attrLower == "changetype" ) {
         if ( mDn.isEmpty() )
           retval = Err;
@@ -348,7 +352,7 @@ void LDIF::startParsing()
   mDelOldRdn = false;
   mEntryType = Entry_None;
   mModType = Mod_None;
-  mDn = mNewRdn = mNewSuperior = "";
+  mDn = mObjectClass = mNewRdn = mNewSuperior = "";
   line = "";
   mIsNewLine = false;
   mIsComment = false;

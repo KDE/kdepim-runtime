@@ -174,6 +174,7 @@ class LdapClient : public QObject
     void startParseLDIF();
     void parseLDIF( const QByteArray& data );
     void endParseLDIF();
+    void finishCurrentObject();
 
     QString mHost;
     QString mPort;
