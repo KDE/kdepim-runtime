@@ -88,7 +88,7 @@ public:
     MailTextSource() {}
     virtual ~MailTextSource() {}
 
-    virtual QString text(Q_UINT32 serialNumber) const = 0;
+    virtual QCString text(Q_UINT32 serialNumber) const = 0;
 };
 
 // Drag and drop object for mails
