@@ -2,6 +2,7 @@
     This file is part of libkdepim.
 
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
+    Copyright (c) 2005 George Staikos <staikos@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,8 +21,12 @@
 */
 
 #include "maillistdrag.h"
-#include "qdatastream.h"
-#include "qbuffer.h"
+#include <qbuffer.h>
+#include <qdatastream.h>
+#include <qeventloop.h>
+#include <kapplication.h>
+#include <klocale.h>
+#include <kprogress.h>
 
 using namespace KPIM;
 
@@ -73,10 +78,16 @@ void MailSummary::set( Q_UINT32 serialNumber, QString messageId,
     mDate = date;
 }
 
-MailListDrag::MailListDrag( MailList mailList, QWidget * parent )
-    : QStoredDrag( MailListDrag::format(), parent )
+MailListDrag::MailListDrag( MailList mailList, QWidget * parent, MailTextSource *src )
+    : QStoredDrag( MailListDrag::format(), parent ), _src(src)
 {
     setMailList( mailList );
+}
+
+MailListDrag::~MailListDrag()
+{
+    delete _src;
+    _src = 0;
 }
 
 const char* MailListDrag::format()
@@ -187,3 +198,62 @@ void MailListDrag::setMailList( MailList mailList )
     buffer.close();
     setEncodedData( array );
 }
+
+const char *MailListDrag::format(int i) const
+{
+    if (_src) {
+        if (i == 0) {
+            return "message/rfc822";
+        } else {
+            return QStoredDrag::format(i - 1);
+        }
+    }
+
+    return QStoredDrag::format(i);
+}
+
+bool MailListDrag::provides(const char *mimeType) const
+{
+    if (_src && QCString(mimeType) == "message/rfc822") {
+        return true;
+    }
+
+    return QStoredDrag::provides(mimeType);
+}
+
+QByteArray MailListDrag::encodedData(const char *mimeType) const
+{
+    if (QCString(mimeType) != "message/rfc822") {
+        return QStoredDrag::encodedData(mimeType);
+    }
+
+    QByteArray rc; 
+    if (_src) {
+        MailList ml;
+        QByteArray enc = QStoredDrag::encodedData(format());
+        decode(enc, ml);
+
+        KProgressDialog *dlg = new KProgressDialog(0, 0, QString::null, i18n("Retrieving and storing messages..."), true);
+        dlg->setAllowCancel(true);
+        dlg->progressBar()->setTotalSteps(ml.count());
+        int i = 0;
+        dlg->progressBar()->setValue(i);
+        dlg->show();
+
+        QTextStream *ts = new QTextStream(rc, IO_WriteOnly);
+        for (MailList::ConstIterator it = ml.begin(); it != ml.end(); ++it) {
+            MailSummary mailDrag = *it;
+            *ts << _src->text(mailDrag.serialNumber());
+            if (dlg->wasCancelled()) {
+                break;
+            }
+            dlg->progressBar()->setValue(++i);
+            kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
+        }
+
+        delete dlg;
+        delete ts;
+    }
+    return rc;
+}
+

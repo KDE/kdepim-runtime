@@ -2,6 +2,7 @@
     This file is part of libkdepim.
 
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
+    Copyright (c) 2005 George Staikos <staikos@kde.org.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -48,8 +49,8 @@ class KDE_EXPORT MailSummary
 public:
     MailSummary( Q_UINT32 serialNumber, QString messageId, QString subject, 
 		 QString from, QString to, time_t date );
-    MailSummary() {};
-    ~MailSummary() {};
+    MailSummary() {}
+    ~MailSummary() {}
 
     /*** Set fields for this mail summary  ***/
     void set( Q_UINT32, QString, QString, QString, QString, time_t );
@@ -81,12 +82,28 @@ private:
 // List of mail summaries
 typedef QValueList<MailSummary> MailList;
 
+// Object for the drag object to call-back for message fulltext
+class KDE_EXPORT MailTextSource {
+public:
+    MailTextSource() {}
+    virtual ~MailTextSource() {}
+
+    virtual QString text(Q_UINT32 serialNumber) const = 0;
+};
+
 // Drag and drop object for mails
 class KDE_EXPORT MailListDrag : public QStoredDrag
 {
 public:
-    MailListDrag( MailList, QWidget * parent = 0 );
-    ~MailListDrag() {};
+    // Takes ownership of "src" and deletes it when done
+    MailListDrag( MailList, QWidget * parent = 0, MailTextSource *src = 0 );
+    ~MailListDrag();
+
+    const char *format(int i) const;
+
+    bool provides(const char *mimeType) const;
+
+    QByteArray encodedData(const char *) const;
 
     /* Reset the list of mail summaries */
     void setMailList( MailList );
@@ -109,6 +126,9 @@ public:
     /* Attempts to decode the encoded MailList;
        Returns TRUE if successful; otherwise return false */
     static bool decode( QByteArray& a, MailList& s );
+
+private:
+    MailTextSource *_src;
 };
 
 }
