@@ -75,7 +75,7 @@ private:
 
 class TransactionItem : public QVBox {
 
-  Q_OBJECT;
+  Q_OBJECT
 
 public:
   TransactionItem( QWidget * parent,

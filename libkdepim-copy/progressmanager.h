@@ -36,7 +36,7 @@ typedef QMap<ProgressItem*, bool> ProgressItemMap;
 
 class ProgressItem : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
   friend class ProgressManager;
   friend class QDict< ProgressItem >; // so it can be deleted from dicts
 
@@ -239,7 +239,7 @@ signals:
 class ProgressManager : public QObject
 {
 
-  Q_OBJECT;
+  Q_OBJECT
 
   public:
     virtual ~ProgressManager();
