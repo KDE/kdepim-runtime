@@ -45,7 +45,7 @@ class KPimPrefs : public KPrefs
     QStringList mCustomCategories;
   
   protected:
-    virtual void setCategoryDefaults() = 0;
+    virtual void setCategoryDefaults() {};
 };
 
 #endif
