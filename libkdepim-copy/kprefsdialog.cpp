@@ -613,6 +613,7 @@ KPrefsModule::KPrefsModule( KPrefs *prefs, QWidget *parent, const char *name )
   : KCModule( parent, name ),
     KPrefsWidManager( prefs )
 {
+  setChanged( false );
 }
 
 void KPrefsModule::addWid( KPrefsWid *wid )
