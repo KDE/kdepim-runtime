@@ -127,7 +127,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
   QString image = "contact_image";
 
   QString rowFmtStr = QString::fromLatin1(
-			"<tr><td align=\"right\" width=\"30%\"><b>%1</b></td>"
+			"<tr><td align=\"right\" valign=\"top\" width=\"30%\"><b>%1</b></td>"
 			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
 			);
 
