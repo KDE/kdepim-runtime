@@ -23,12 +23,22 @@
 #include <kconfig.h>
 #include <klocale.h>
 #include <kdebug.h>
+#include <kdirwatch.h>
+#include <kstandarddirs.h>
 
 #include "kpimprefs.h"
 
-KPimPrefs::KPimPrefs( const QString &name ) :
-  KConfigSkeleton( name )
+KPimPrefs::KPimPrefs( const QString &name )
+  : QObject( 0 ), KConfigSkeleton( name )
 {
+  if ( !name.isEmpty() ) {
+    KDirWatch *watch = new KDirWatch( this, "ConfigDirWatcher" );
+    watch->addFile( locateLocal( "config", name ) );
+
+    connect( watch, SIGNAL( dirty(const QString&) ), this, SLOT( reloadConfig() ) );
+
+    watch->startScan();
+  }
 }
 
 KPimPrefs::~KPimPrefs()
@@ -55,3 +65,12 @@ void KPimPrefs::usrWriteConfig()
   config()->setGroup("General");
   config()->writeEntry("Custom Categories",mCustomCategories);
 }
+
+void KPimPrefs::reloadConfig()
+{
+  config()->reparseConfiguration();
+  readConfig();
+  usrReadConfig();
+}
+
+#include "kpimprefs.moc"
