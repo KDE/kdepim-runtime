@@ -275,7 +275,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       if ( s.find( ' ' ) == -1 ) // one word, possibly given name
         items += s_completion->allMatches( "$$" + s );
 
-      if ( !items.isEmpty() ) {
+      if ( items.isEmpty() ) {
         setCompletedItems( items, false );
       } else {
         if ( items.count() > beforeDollarCompletionCount ) {
