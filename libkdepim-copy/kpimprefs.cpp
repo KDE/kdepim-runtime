@@ -56,6 +56,7 @@ void KPimPrefs::usrReadConfig()
   config()->setGroup("General");
   mCustomCategories = config()->readListEntry( "Custom Categories" );
   if ( mCustomCategories.isEmpty() ) setCategoryDefaults();
+  mCustomCategories.sort();
 }
 
 const QString KPimPrefs::timezone()
