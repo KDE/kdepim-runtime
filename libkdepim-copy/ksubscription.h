@@ -354,7 +354,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
     KLineEdit *filterEdit;
     QCheckBox *noTreeCB, *subCB, *newCB;
     QPushButton  *arrowBtn1, *arrowBtn2;
-    QPixmap pmRight, pmLeft;
+    QIconSet pmRight, pmLeft;
     QGridLayout *listL;
     QLabel *leftLabel, *rightLabel;
 

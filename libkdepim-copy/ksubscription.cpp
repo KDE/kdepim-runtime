@@ -239,15 +239,15 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   rightLabel->setFont(fnt);
 
   // icons
-  pmRight = BarIcon("forward");
-  pmLeft = BarIcon("back");
+  pmRight = BarIconSet("forward");
+  pmLeft = BarIconSet("back");
 
   arrowBtn1 = new QPushButton(page);
   arrowBtn1->setEnabled(false);
   arrowBtn2 = new QPushButton(page);
   arrowBtn2->setEnabled(false);
-  arrowBtn1->setPixmap(pmRight);
-  arrowBtn2->setPixmap(pmRight);
+  arrowBtn1->setIconSet(pmRight);
+  arrowBtn2->setIconSet(pmRight);
   arrowBtn1->setFixedSize(35,30);
   arrowBtn2->setFixedSize(35,30);
 
@@ -406,9 +406,9 @@ void KSubscription::setDirectionButton1( Direction dir )
 {
   mDirButton1 = dir;
   if (dir == Left)
-    arrowBtn1->setPixmap(pmLeft);
+    arrowBtn1->setIconSet(pmLeft);
   else
-    arrowBtn1->setPixmap(pmRight);
+    arrowBtn1->setIconSet(pmRight);
 }
 
 //------------------------------------------------------------------------------
@@ -416,9 +416,9 @@ void KSubscription::setDirectionButton2( Direction dir )
 {
   mDirButton2 = dir;
   if (dir == Left)
-    arrowBtn2->setPixmap(pmLeft);
+    arrowBtn2->setIconSet(pmLeft);
   else
-    arrowBtn2->setPixmap(pmRight);
+    arrowBtn2->setIconSet(pmRight);
 }
 
 //------------------------------------------------------------------------------

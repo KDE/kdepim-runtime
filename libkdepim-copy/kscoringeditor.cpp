@@ -605,18 +605,18 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   // if we're standalone, we need an additional edit button
   if (standalone) {
     editRule = new QPushButton(this);
-    editRule->setPixmap( BarIcon("edit", KIcon::SizeSmall) );
+    editRule->setIconSet( BarIconSet("edit", KIcon::SizeSmall) );
     QToolTip::add(editRule,i18n("Edit rule"));
     btnL->addWidget(editRule);
     connect(editRule,SIGNAL(clicked()),this,SLOT(slotEditRule()));
   }
   delRule = new QPushButton(this);
-  delRule->setPixmap( BarIcon( "editdelete", KIcon::SizeSmall ) );
+  delRule->setIconSet( BarIconSet( "editdelete", KIcon::SizeSmall ) );
   QToolTip::add(delRule,i18n("Remove rule"));
   btnL->addWidget(delRule);
   connect(delRule, SIGNAL(clicked()), this, SLOT(slotDelRule()));
   copyRule = new QPushButton(this);
-  copyRule->setPixmap(BarIcon("editcopy", KIcon::SizeSmall));
+  copyRule->setIconSet(BarIconSet("editcopy", KIcon::SizeSmall));
   QToolTip::add(copyRule,i18n("Copy rule"));
   btnL->addWidget(copyRule);
   connect(copyRule, SIGNAL(clicked()), this, SLOT(slotCopyRule()));
