@@ -156,4 +156,4 @@ namespace KPIM {
   }
 
 
-}; // namespace KMime
+} // namespace KMime

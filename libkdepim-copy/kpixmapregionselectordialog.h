@@ -104,6 +104,6 @@ protected:
    KPIM::KPixmapRegionSelectorWidget *m_pixmapSelectorWidget;
 };
 
-};
+}
 
 #endif

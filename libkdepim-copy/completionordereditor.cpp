@@ -74,17 +74,6 @@ using namespace KPIM;
 
 namespace KPIM {
 
-// Base class for items in the list
-class CompletionItem
-{
-public:
-  virtual ~CompletionItem() {}
-  virtual QString label() const = 0;
-  virtual int completionWeight() const = 0;
-  virtual void setCompletionWeight( int weight ) = 0;
-  virtual void save( CompletionOrderEditor* ) = 0;
-};
-
 int CompletionItemList::compareItems( QPtrCollection::Item s1, QPtrCollection::Item s2 )
 {
   int w1 = ( (CompletionItem*)s1 )->completionWeight();

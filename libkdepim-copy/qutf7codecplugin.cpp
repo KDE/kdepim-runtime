@@ -59,4 +59,4 @@ QTextCodec * QUtf7CodecPlugin::createForName( const QString & name ) {
   return 0;
 }
 
-Q_EXPORT_PLUGIN( QUtf7CodecPlugin );
+KDE_Q_EXPORT_PLUGIN( QUtf7CodecPlugin );

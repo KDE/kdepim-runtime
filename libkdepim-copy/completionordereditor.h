@@ -38,8 +38,20 @@ class QToolButton;
 class KListView;
 namespace KPIM {
 
-class CompletionItem;
 class LdapSearch;
+class CompletionOrderEditor;
+
+// Base class for items in the list
+class CompletionItem
+{
+public:
+  virtual ~CompletionItem() {}
+  virtual QString label() const = 0;
+  virtual int completionWeight() const = 0;
+  virtual void setCompletionWeight( int weight ) = 0;
+  virtual void save( CompletionOrderEditor* ) = 0;
+};
+
 
 // I don't like QPtrList much, but it has compareItems, which QValueList doesn't
 class CompletionItemList : public QPtrList<CompletionItem>

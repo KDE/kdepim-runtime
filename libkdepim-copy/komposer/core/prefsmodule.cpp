@@ -33,7 +33,7 @@
 
 extern "C"
 {
-  KCModule *create_komposerconfig( QWidget *parent, const char * ) {
+  KDE_EXPORT KCModule *create_komposerconfig( QWidget *parent, const char * ) {
     return new Komposer::PrefsModule( parent, "komposerprefs" );
   }
 }

@@ -79,6 +79,6 @@ namespace KPIM {
     Private * d;
   };
 
-}; // namespace KMime
+} // namespace KMime
 
 #endif // __LIBKDEPIM_PLUGINLOADERBASE_H__

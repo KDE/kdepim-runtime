@@ -168,6 +168,6 @@ private:
    double m_zoomFactor;
 };
 
-}; // for namespace
+} // for namespace
 
 #endif
