@@ -24,14 +24,14 @@
 #include "progressmanager.h"
 
 KPIM::BroadcastStatus* KPIM::BroadcastStatus::instance_ = 0;
-static KStaticDeleter<KPIM::BroadcastStatus> sd;
+static KStaticDeleter<KPIM::BroadcastStatus> broadcastStatusDeleter;
 
 namespace KPIM {
 
 BroadcastStatus* BroadcastStatus::instance()
 {
   if (!instance_)
-    sd.setObject( instance_, new BroadcastStatus() );
+    broadcastStatusDeleter.setObject( instance_, new BroadcastStatus() );
 
   return instance_;
 }

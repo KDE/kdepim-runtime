@@ -130,12 +130,12 @@ ProgressManager::ProgressManager() :QObject() {
 }
 
 ProgressManager::~ProgressManager() { mInstance = 0; }
-static KStaticDeleter<ProgressManager> sd;
+static KStaticDeleter<ProgressManager> progressManagerDeleter;
 
 ProgressManager* ProgressManager::instance()
 {
    if ( !mInstance ) {
-     sd.setObject( mInstance, new ProgressManager() );
+     progressManagerDeleter.setObject( mInstance, new ProgressManager() );
    }
    return mInstance;
 }
