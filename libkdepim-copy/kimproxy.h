@@ -170,7 +170,7 @@ signals:
 		/**
 		 * Indicates that the specified UID's status changed
 		 */
-		void sigContactStatusChanged( QString uid );
+		void sigContactStatusChanged( const QString &uid );
 		
 		/**
 		 * Indicates that the source of status information is no longer available
