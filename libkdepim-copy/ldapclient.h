@@ -229,8 +229,10 @@ class LdapSearch : public QObject
     void slotLDAPError( const QString& );
     void slotLDAPDone();
     void slotDataTimer();
+    void slotFileChanged( const QString& );
 
   private:
+    void readConfig();
     void finish();
     void makeSearchData( QStringList& ret, LdapResultList& resList );
     QValueList< LdapClient* > mClients;
@@ -239,6 +241,7 @@ class LdapSearch : public QObject
     int mActiveClients;
     bool mNoLDAPLookup;
     QValueList< LdapObject > mResults;
+    QString mConfigFile;
 
   private:
     class LdapSearchPrivate* d;

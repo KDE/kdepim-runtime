@@ -32,8 +32,10 @@
 #include <kapplication.h>
 #include <kconfig.h>
 #include <kdebug.h>
+#include <kdirwatch.h>
 #include <kmdcodec.h>
 #include <kprotocolinfo.h>
+#include <kstandarddirs.h>
 
 #include "ldapclient.h"
 #include "ldif.h"
@@ -252,13 +254,26 @@ LdapSearch::LdapSearch()
     return;
   }
 
+  readConfig();
+  connect(KDirWatch::self(), SIGNAL(dirty (const QString&)),this,
+          SLOT(slotFileChanged(const QString&)));
+}
+
+void LdapSearch::readConfig()
+{
+  kdDebug() << k_funcinfo << endl;
+  cancelSearch();
+  QValueList< LdapClient* >::Iterator it;
+  for ( it = mClients.begin(); it != mClients.end(); ++it )
+    delete *it;
+  mClients.clear();
+
   // stolen from KAddressBook
   KConfig config( "kabldaprc", true );
   config.setGroup( "LDAP" );
   int numHosts = config.readUnsignedNumEntry( "NumSelectedHosts");
   if ( !numHosts ) {
     mNoLDAPLookup = true;
-    return;
   } else {
     for ( int j = 0; j < numHosts; j++ ) {
       LdapClient* ldapClient = new LdapClient( this );
@@ -296,9 +311,17 @@ LdapSearch::LdapSearch()
 
       mClients.append( ldapClient );
     }
-  }
 
-  connect( &mDataTimer, SIGNAL( timeout() ), SLOT( slotDataTimer() ) );
+    connect( &mDataTimer, SIGNAL( timeout() ), SLOT( slotDataTimer() ) );
+  }
+  mConfigFile = locateLocal( "config", "kabldaprc" );
+  KDirWatch::self()->addFile( mConfigFile );
+}
+
+void LdapSearch::slotFileChanged( const QString& file )
+{
+  if ( file == mConfigFile )
+    readConfig();
 }
 
 void LdapSearch::startSearch( const QString& txt )
@@ -423,7 +446,6 @@ bool LdapSearch::isAvailable() const
 {
   return !mNoLDAPLookup;
 }
-
 
 
 #include "ldapclient.moc"
