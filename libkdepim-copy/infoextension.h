@@ -54,5 +54,5 @@ namespace KParts
 		void textChanged( const QString& );
 		void iconChanged( const QPixmap& );
   	};
-};
+}
 #endif // INFOEXTENSION_H

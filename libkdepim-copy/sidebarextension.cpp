@@ -31,7 +31,7 @@ SideBarExtension::SideBarExtension(QWidget *exported, KParts::ReadOnlyPart *pare
 
 SideBarExtension::~SideBarExtension()
 {
-};
+}
 
 #include "sidebarextension.moc"
 

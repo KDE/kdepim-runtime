@@ -31,6 +31,6 @@ InfoExtension::InfoExtension( KParts::ReadOnlyPart *parent, const char* name)
 
 InfoExtension::~InfoExtension()
 {
-};
+}
 
 #include "infoextension.moc"

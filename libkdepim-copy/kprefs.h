@@ -30,6 +30,7 @@
 #include <qsize.h>
 #include <qstringlist.h>
 #include <qvariant.h>
+#include <kconfig.h>
 #include <kglobalsettings.h>
 
 class KConfig;

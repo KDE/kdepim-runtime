@@ -59,7 +59,7 @@ namespace KParts
       class SideBarExtensionPrivate;
       SideBarExtensionPrivate *d;
   };
-};
+}
 #endif // SIDEBAREXTENSION_H 
 
 // vim: ts=2 sw=2 et
