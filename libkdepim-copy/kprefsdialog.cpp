@@ -321,7 +321,7 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mDateEdit = new KDateEdit( parent );
-  connect( mDateEdit, SIGNAL( dateChanged( QDate ) ), SIGNAL( changed() ) );
+  connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
     QWhatsThis::add( mDateEdit, whatsThis );
