@@ -92,11 +92,26 @@ const QString KPimPrefs::timezone()
   return( zone );
 }
 
-QDateTime KPimPrefs::utcToLocalTime( const QDateTime &dt,
+QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
                                      const QString &timeZoneId )
 {
+  QDateTime dt(_dt);
 //  kdDebug() << "---   UTC: " << dt.toString() << endl;
 
+  int yearCorrection = 0;
+  // The timezone conversion only works for dates > 1970
+  // For dates < 1970 we adjust the date to be in 1970, 
+  // do the correction there and then re-adjust back.
+  // Actually, we use 1971 to prevent errors around
+  // January 1, 1970
+  int year = dt.date().year();
+  if (year < 1971)
+  {
+    yearCorrection = 1971 - year;
+    dt = dt.addYears(yearCorrection);
+//    kdDebug() << "---   Adjusted UTC: " << dt.toString() << endl;
+  }
+  
   QCString origTz = getenv("TZ");
 
   setenv( "TZ", "UTC", 1 );
@@ -112,17 +127,34 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &dt,
   }
   tzset();
 
-  QDateTime result( QDate( local->tm_year + 1900, local->tm_mon + 1,
-                           local->tm_mday ),
+  QDateTime result( QDate( local->tm_year + 1900 - yearCorrection,
+                           local->tm_mon + 1, local->tm_mday ),
                     QTime( local->tm_hour, local->tm_min, local->tm_sec ) );
+
 //  kdDebug() << "--- LOCAL: " << result.toString() << endl;
   return result;
 }
 
-QDateTime KPimPrefs::localTimeToUtc( const QDateTime &dt,
+QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
                                      const QString &timeZoneId )
 {
+  QDateTime dt(_dt);
 //  kdDebug() << "--- LOCAL: " << dt.toString() << endl;
+
+  int yearCorrection = 0;
+  // The timezone conversion only works for dates > 1970
+  // For dates < 1970 we adjust the date to be in 1970, 
+  // do the correction there and then re-adjust back.
+  // Actually, we use 1971 to prevent errors around
+  // January 1, 1970
+  
+  int year = dt.date().year();
+  if (year < 1971)
+  {
+    yearCorrection = 1971 - year;
+    dt = dt.addYears(yearCorrection);
+//    kdDebug() << "---   Adjusted LOCAL: " << dt.toString() << endl;
+  }
 
   QCString origTz = getenv("TZ");
 
@@ -139,8 +171,8 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &dt,
   }
   tzset();
 
-  QDateTime result( QDate( utc->tm_year + 1900, utc->tm_mon + 1,
-                           utc->tm_mday ),
+  QDateTime result( QDate( utc->tm_year + 1900 - yearCorrection,
+                           utc->tm_mon + 1, utc->tm_mday ),
                     QTime( utc->tm_hour, utc->tm_min, utc->tm_sec ) );
 
 //  kdDebug() << "---   UTC: " << result.toString() << endl;
