@@ -1,3 +1,5 @@
+SUBDIRS = calendar
+
 INCLUDES = $(all_includes)
 
 METASOURCES = AUTO
