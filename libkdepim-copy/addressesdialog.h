@@ -151,8 +151,6 @@ namespace KPIM {
   private:
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
-    static QString sPersonalGroup;
-    static QString sRecentGroup;
   };
 
 }

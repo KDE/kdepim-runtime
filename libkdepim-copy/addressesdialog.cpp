@@ -135,9 +135,6 @@ AddresseeViewItem::compare( QListViewItem * i, int col, bool ascending ) const
       return -1;
 }
 
-QString AddressesDialog::sPersonalGroup = i18n("Other Addresses");
-QString AddressesDialog::sRecentGroup = i18n("Recent Addresses");
-
 AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   : KDialogBase( widget, name, true, i18n("Address Selection"),
                  Ok|Cancel, Ok, true )
@@ -202,10 +199,11 @@ AddressesDialog::setSelectedBCC( const QStringList& l )
 void
 AddressesDialog::setRecentAddresses( const KABC::Addressee::List& addr )
 {
+  static const QString &recentGroup = KGlobal::staticQString( i18n( "Recent Addresses" ) );
   if ( !d->recent ) {
-    d->recent   = new AddresseeViewItem( d->ui->mAvailableView, sRecentGroup );
+    d->recent   = new AddresseeViewItem( d->ui->mAvailableView, recentGroup );
     d->recent->setVisible( false );
-    d->groupDict.insert( sRecentGroup, d->recent );
+    d->groupDict.insert( recentGroup, d->recent );
   }
 
   for( KABC::Addressee::List::ConstIterator it = addr.begin();
@@ -271,10 +269,11 @@ AddressesDialog::bccAddresses()  const
 void
 AddressesDialog::initGUI()
 {
+  static const QString &personalGroup = KGlobal::staticQString( i18n( "Other Addresses" ) );
   d->ui->mAvailableView->setRootIsDecorated( true );
-  d->personal = new AddresseeViewItem( d->ui->mAvailableView, sPersonalGroup );
+  d->personal = new AddresseeViewItem( d->ui->mAvailableView, personalGroup );
   d->personal->setVisible( false );
-  d->groupDict.insert( sPersonalGroup, d->personal );
+  d->groupDict.insert( personalGroup, d->personal );
 
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
   for( KABC::AddressBook::Iterator it = addressBook->begin();
@@ -491,7 +490,9 @@ AddressesDialog::editEntry()
 {
   AddresseeViewItem *item = static_cast<AddresseeViewItem*>( d->ui->mAvailableView->currentItem() );
 
+#if defined( Q_CC_GNU )
 #warning "This is rather crappy"
+#endif
   if ( item ) {
     if ( ! KStandardDirs::findExe( "kaddressbook" ).isEmpty()  ) {
       KRun::runCommand( "kaddressbook -a " + KProcess::quote( item->addressee().fullEmail() ) );
@@ -509,7 +510,9 @@ AddressesDialog::editEntry()
 void
 AddressesDialog::newEntry()
 {
+#if defined( Q_CC_GNU )
 #warning "FIXME: do not call kaddressbook"
+#endif
   KRun::runCommand( "kaddressbook --editor-only --new-contact" );
 }
 
