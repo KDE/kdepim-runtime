@@ -35,6 +35,8 @@ void ManagerTest::allTests()
     CHECK( m_manager->availablePlugins().isEmpty(), true );
     CHECK( m_manager->loadedPlugins().empty(), true );
     CHECK( m_manager->plugin( "non-existing" ), ( Plugin* )0 );
+    m_manager->loadAllPlugins();
+    CHECK( m_manager->loadedPlugins().empty(), true );
     m_manager->shutdown();
 }
 

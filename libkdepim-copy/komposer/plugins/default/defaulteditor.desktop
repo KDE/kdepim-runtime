@@ -1,0 +1,21 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Service
+Icon=editor
+ServiceTypes=Komposer/Editor
+
+X-KDE-Library=libkomposer_defaulteditor
+X-Komposer-Version=1
+X-Komposer-Weight=10
+
+X-KDE-PluginInfo-Author=Zack Rusin
+X-KDE-PluginInfo-Email=zack@kde.org
+X-KDE-PluginInfo-Name=komposer_defaulteditor
+X-KDE-PluginInfo-Version=0.0.1
+X-KDE-PluginInfo-Website=http://www.kde.org
+X-KDE-PluginInfo-Category=Editors
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true
+Name=Komposer Editor
+Comment=Komposer default editor

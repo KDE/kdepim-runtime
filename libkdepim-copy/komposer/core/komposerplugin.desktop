@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=ServiceType
 X-KDE-ServiceType=Komposer/Plugin
+X-KDE-Derived=KPluginInfo
 Name=Komposer Plugin
 Name[bg]=Приставки на Komposer
 Name[br]=Lugent Komposer

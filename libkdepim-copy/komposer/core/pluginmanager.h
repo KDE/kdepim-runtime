@@ -42,7 +42,7 @@ namespace Komposer
     Q_OBJECT
 
   public:
-    PluginManager( QObject* );
+    PluginManager( QObject * );
 
     ~PluginManager();
 
@@ -56,7 +56,7 @@ namespace Komposer
      * You can query all information on the plugins through the @ref KPluginInfo
      * interface.
      */
-    QValueList<KPluginInfo*> availablePlugins( const QString& category
+    QValueList<KPluginInfo*> availablePlugins( const QString &category
                                                = QString::null ) const;
 
     /**
@@ -64,20 +64,21 @@ namespace Komposer
      * If you omit the category you get all, otherwise it's a filtered list.
      * See also @ref availablePlugins().
      */
-    QMap<KPluginInfo*, Plugin*> loadedPlugins( const QString& category
+    QMap<KPluginInfo*, Plugin*> loadedPlugins( const QString &category
                                                = QString::null ) const;
 
     /**
-     * @brief Search by plugin name. This is the key used as X-KDE-PluginInfo-Name in
-     * the .desktop file, e.g. "komposer_attachment"
+     * @brief Search by plugin name. This is the key used as X-KDE-PluginInfo-Name
+     * in the .desktop file, e.g. "komposer_attachment"
      *
      * @return The @ref Plugin object found by the search, or a null
      * pointer if the plugin is not loaded.
      *
-     * If you want to also load the plugin you can better use @ref loadPlugin, which returns
+     * If you want to also load the plugin you can better use @ref loadPlugin,
+     * which returns
      * the pointer to the plugin if it's already loaded.
      */
-    Plugin* plugin( const QString& pluginName ) const;
+    Plugin* plugin( const QString &pluginName ) const;
 
     /**
      * @brief Return the short user-visible name of the plugin.
@@ -86,7 +87,7 @@ namespace Komposer
      *
      * @return The name of the protocol, in the user's locale.
      */
-    QString pluginName( const Plugin* plugin ) const;
+    QString pluginName( const Plugin *plugin ) const;
 
     /**
      * @brief Return the internal name of the plugin.
@@ -96,12 +97,12 @@ namespace Komposer
      *
      * @return The name of the protocol, in the user's locale.
      */
-    QString pluginId( const Plugin* plugin ) const;
+    QString pluginId( const Plugin *plugin ) const;
 
     /**
      * @brief Unload the plugin specified by @p pluginName
      */
-    bool unloadPlugin( const QString& pluginName );
+    bool unloadPlugin( const QString &pluginName );
 
     /**
      * @brief Retrieve the name of the icon for a @ref Plugin.
@@ -109,7 +110,7 @@ namespace Komposer
      * @return An empty string if the given plugin is not loaded
      * or the filename of the icon to use.
      */
-    QString pluginIcon( const Plugin* plugin ) const;
+    QString pluginIcon( const Plugin *plugin ) const;
 
     /**
      * Shuts down the plugin manager on Komposer shutdown, but first
@@ -137,7 +138,7 @@ namespace Komposer
      *
      * Returns false when no appropriate plugin can be found.
      */
-    bool setPluginEnabled( const QString& name, bool enabled = true );
+    bool setPluginEnabled( const QString &name, bool enabled = true );
 
     /**
      * Plugin loading mode. Used by @loadPlugin. Code that doesn't want to block
@@ -157,7 +158,7 @@ namespace Komposer
      *
      * See also @ref plugin().
      */
-    Plugin* loadPlugin( const QString& pluginId, PluginLoadMode mode = LoadSync );
+    Plugin* loadPlugin( const QString &pluginId, PluginLoadMode mode = LoadSync );
 
     /**
      * @brief Loads all the enabled plugins. Also used to reread the
@@ -169,7 +170,7 @@ namespace Komposer
     /**
      * @brief Signals a new plugin has just been loaded.
      */
-    void pluginLoaded( Plugin* plugin );
+    void pluginLoaded( Plugin *plugin );
 
     /**
      * @brief All plugins have been loaded by the plugin manager.
@@ -196,7 +197,7 @@ namespace Komposer
     /**
      * @brief Cleans up some references if the plugin is destroyed
      */
-    void slotPluginDestroyed( QObject* plugin );
+    void slotPluginDestroyed( QObject *plugin );
 
     /**
      * shutdown() starts a timer, when it fires we force all plugins
@@ -230,7 +231,7 @@ namespace Komposer
      * Called by @ref loadPlugin directly or through the queue for async plugin
      * loading.
      */
-    Plugin * loadPluginInternal( const QString &pluginId );
+    Plugin *loadPluginInternal( const QString &pluginId );
 
     /**
      * @internal
@@ -239,10 +240,10 @@ namespace Komposer
      *
      * Returns a null pointer when no plugin info is found.
      */
-    KPluginInfo* infoForPluginId( const QString& pluginId ) const;
+    KPluginInfo *infoForPluginId( const QString &pluginId ) const;
   private:
     class Private;
-    Private* d;
+    Private *d;
   };
 
 }

@@ -56,7 +56,7 @@ protected:
                 QTextStream ts( &error, IO_WriteOnly );
                 ts << file << "["<< line <<"]:"
                    <<" failed on \""<<  str <<"\""
-                   << "\n\t\t result = "
+                   << "\ntests:\t\t result = "
                    << result
                    << ", expected = "<< expectedResult;
                 m_errorList.append( error );

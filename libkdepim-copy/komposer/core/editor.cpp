@@ -30,8 +30,8 @@ public:
   QString id;
 };
 
-Editor::Editor( Core* core, QObject* parent, const char* name )
-  : Plugin( core, parent, name ), d( new Private )
+Editor::Editor( QObject *parent, const char *name, const QStringList &args )
+  : Plugin( parent, name, args ), d( new Private )
 {
 }
 

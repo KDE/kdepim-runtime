@@ -21,12 +21,13 @@
  */
 
 #include "core.h"
+
+#include "pluginmanager.h"
 #include "editor.h"
+#include "plugin.h"
 
 #include <ksettings/dialog.h>
-#include <kparts/partmanager.h>
-#include <kparts/part.h>
-#include <kparts/componentfactory.h>
+#include <kplugininfo.h>
 #include <kapplication.h>
 #include <kconfig.h>
 #include <ktrader.h>
@@ -36,13 +37,14 @@
 #include <kiconloader.h>
 #include <kstandarddirs.h>
 #include <kshortcut.h>
-#include <kparts/componentfactory.h>
 #include <klocale.h>
 #include <kstatusbar.h>
 #include <kguiitem.h>
 #include <kpopupmenu.h>
 #include <kshortcut.h>
 #include <kcmultidialog.h>
+#include <kaction.h>
+#include <kstdaccel.h>
 #include <kdebug.h>
 
 #include <qwidgetstack.h>
@@ -52,20 +54,14 @@
 using namespace Komposer;
 
 Core::Core( QWidget *parent, const char *name )
-  : KParts::MainWindow( parent, name ), m_currentEditor( 0 )
+  : KMainWindow( parent, name ), m_currentEditor( 0 )
 {
-  //m_editors.setAutoDelete( true );
-  statusBar()->show();
-
   initWidgets();
+  initCore();
+  initConnections();
+  setInstance( new KInstance( "komposer" ) );
 
-  // prepare the part manager
-  m_partManager = new KParts::PartManager( this );
-  connect( m_partManager, SIGNAL(activePartChanged(KParts::Part*) ),
-           this, SLOT(slotActivePartChanged(KParts::Part*)) );
-
-  loadEditors();
-
+  createActions();
   setXMLFile( "komposerui.rc" );
 
   createGUI( 0 );
@@ -80,45 +76,62 @@ Core::~Core()
 {
   saveSettings();
 
-  QPtrList<KParts::Part> parts = *m_partManager->parts();
-  parts.setAutoDelete( true );
-  parts.clear();
-
   //Prefs::self()->writeConfig();
-}
-
-void
-Core::loadEditors()
-{
-  //m_pluginManager->loadEditors();
-}
-
-void
-Core::unloadEditors()
-{
 }
 
 void
 Core::addEditor( Komposer::Editor *editor )
 {
-  kdDebug(5600) << "Added editor" << endl;
+  if ( editor->widget() ) {
+    m_stack->addWidget( editor->widget() );
+    m_stack->raiseWidget( editor->widget() );
+    editor->widget()->show();
+  }
 
   // merge the editors GUI into the main window
-  insertChildClient( editor );
+  //insertChildClient( editor );
+  guiFactory()->addClient( editor );
 }
 
 void
-Core::addPart( KParts::Part* part )
+Core::addPlugin( Komposer::Plugin *plugin )
 {
-  kdDebug()<<"Part = "<< part << " widget = "<< part->widget() <<endl;
-  if ( part->widget() )
-    m_stack->addWidget( part->widget(), 0 );
-
-  m_partManager->addPart( part, false );
+  //insertChildClient( plugin );
+  guiFactory()->addClient( plugin );
 }
 
 void
-Core::slotActivePartChanged( KParts::Part* part )
+Core::slotPluginLoaded( Plugin *plugin )
+{
+  kdDebug() << "Plugin loaded "<<endl;
+
+  Editor *editor = dynamic_cast<Editor*>( plugin );
+  if ( editor ) {
+    addEditor( editor );
+  } else {
+    addPlugin( plugin );
+  }
+}
+
+void
+Core::slotAllPluginsLoaded()
+{
+  QValueList<KPluginInfo*> plugins = m_pluginManager->availablePlugins();
+  kdDebug()<<"Number of available plugins is "<< plugins.count() <<endl;
+  for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
+    KPluginInfo *i = ( *it );
+    kdDebug()<<"\tAvailable plugin "<< i->pluginName()
+             <<", comment = "<< i->comment() <<endl;
+  }
+
+  if ( !m_stack->visibleWidget() ) {
+    m_pluginManager->loadPlugin( "komposer_defaulteditor", PluginManager::LoadAsync );
+  }
+}
+
+#if 0
+void
+Core::slotActivePartChanged( KParts::Part *part )
 {
   if ( !part ) {
     createGUI( 0 );
@@ -130,7 +143,7 @@ Core::slotActivePartChanged( KParts::Part* part )
 
   createGUI( part );
 }
-/*
+
 void
 Core::selectEditor( Komposer::Editor *editor )
 {
@@ -141,7 +154,8 @@ Core::selectEditor( Komposer::Editor *editor )
 
   editor->select();
 
-  QPtrList<KParts::Part> *partList = const_cast<QPtrList<KParts::Part>*>( m_partManager->parts() );
+  QPtrList<KParts::Part> *partList = const_cast<QPtrList<KParts::Part>*>(
+                                                   m_partManager->parts() );
   if ( partList->find( part ) == -1 )
     addPart( part );
 
@@ -163,7 +177,8 @@ void
 Core::selectEditor( const QString &editorName )
 {
 
-}*/
+}
+#endif
 
 void
 Core::loadSettings()
@@ -184,7 +199,8 @@ Core::saveSettings()
 void
 Core::slotQuit()
 {
-  close();
+  kdDebug()<<"exit"<<endl;
+  m_pluginManager->shutdown();
 }
 
 void
@@ -195,37 +211,113 @@ Core::slotPreferences()
   m_dlg->show();
 }
 
-KParts::ReadWritePart*
-Core::createPart( const char *libname )
-{
-  kdDebug() << "Core:createPart(): " << libname << endl;
-
-  QMap<QCString,KParts::ReadWritePart *>::ConstIterator it;
-
-  it = m_parts.find( libname );
-
-  if ( it != m_parts.end() )
-    return it.data();
-
-  kdDebug() << "Creating new KPart" << endl;
-
-  KParts::ReadWritePart *part =
-    KParts::ComponentFactory::
-      createPartInstanceFromLibrary<KParts::ReadWritePart>
-        ( libname, this, 0, this, "komposer" );
-
-  if ( part )
-    m_parts.insert( libname, part );
-
-  return part;
-}
-
 void
 Core::initWidgets()
 {
+  statusBar()->show();
   QHBox *topWidget = new QHBox( this );
   setCentralWidget( topWidget );
   m_stack = new QWidgetStack( topWidget );
+}
+
+void
+Core::initCore()
+{
+  m_pluginManager = new PluginManager( this );
+  connect( m_pluginManager, SIGNAL(pluginLoaded(Plugin*)),
+           SLOT(slotPluginLoaded(Plugin*)) );
+  connect( m_pluginManager, SIGNAL(allPluginsLoaded()),
+           SLOT(slotAllPluginsLoaded()) );
+
+
+  m_pluginManager->loadAllPlugins();
+  kdDebug()<<"Loading"<<endl;
+}
+
+void
+Core::initConnections()
+{
+  connect( kapp, SIGNAL(shutDown()),
+           SLOT(slotQuit()) );
+}
+
+void
+Core::createActions()
+{
+  KStdAction::close( this, SLOT(slotClose()), actionCollection() );
+
+  (void) new KAction( i18n( "&Send" ), "mail_send", CTRL+Key_Return,
+                      this, SLOT(slotSendNow()), actionCollection(),
+                      "send_default" );
+
+  (void) new KAction( i18n( "&Queue" ), "queue", 0,
+                      this, SLOT(slotSendLater()),
+                      actionCollection(), "send_alternative" );
+
+  (void) new KAction( i18n( "Save in &Drafts Folder" ), "filesave", 0,
+                      this, SLOT(slotSaveDraft()),
+                      actionCollection(), "save_in_drafts" );
+  (void) new KAction( i18n( "&Insert File..." ), "fileopen", 0,
+                      this,  SLOT(slotInsertFile()),
+                      actionCollection(), "insert_file" );
+  (void) new KAction( i18n( "&Address Book" ), "contents",0,
+                      this, SLOT(slotAddrBook()),
+                      actionCollection(), "addressbook" );
+  (void) new KAction( i18n( "&New Composer" ), "mail_new",
+                      KStdAccel::shortcut( KStdAccel::New ),
+                      this, SLOT(slotNewComposer()),
+                      actionCollection(), "new_composer" );
+
+  (void) new KAction( i18n( "&Attach File..." ), "attach",
+                      0, this, SLOT(slotAttachFile()),
+                      actionCollection(), "attach_file" );
+}
+
+void
+Core::slotClose()
+{
+  close( false );
+}
+
+void
+Core::slotSendNow()
+{
+
+}
+
+void
+Core::slotSendLater()
+{
+
+}
+
+void
+Core::slotSaveDraft()
+{
+
+}
+
+void
+Core::slotInsertFile()
+{
+
+}
+
+void
+Core::slotAddrBook()
+{
+
+}
+
+void
+Core::slotNewComposer()
+{
+
+}
+
+void Core::slotAttachFile()
+{
+
 }
 
 #include "core.moc"

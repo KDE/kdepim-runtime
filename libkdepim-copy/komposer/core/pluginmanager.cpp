@@ -66,7 +66,7 @@ public:
   QValueStack<QString> pluginsToLoad;
 };
 
-PluginManager::PluginManager( QObject* parent )
+PluginManager::PluginManager( QObject *parent )
   : QObject( parent )
 {
   d = new Private;
@@ -88,11 +88,16 @@ PluginManager::PluginManager( QObject* parent )
 
 PluginManager::~PluginManager()
 {
-  if ( d->shutdownMode != Private::DoneShutdown )
+  if ( d->shutdownMode != Private::DoneShutdown ) {
+    slotShutdownTimeout();
+#if 0
     kdWarning() << k_funcinfo
-                       << "Destructing plugin manager without going through the shutdown process!"
-                       << endl
-                       << kdBacktrace() << endl;
+                << "Destructing plugin manager without going through "
+                << "the shutdown process!"
+                << endl
+                << kdBacktrace(10) << endl;
+#endif
+  }
 
   // Quick cleanup of the remaining plugins, hope it helps
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
@@ -111,7 +116,7 @@ PluginManager::~PluginManager()
 }
 
 QValueList<KPluginInfo*>
-PluginManager::availablePlugins( const QString& category ) const
+PluginManager::availablePlugins( const QString &category ) const
 {
   if ( category.isEmpty() )
     return d->plugins;
@@ -128,7 +133,7 @@ PluginManager::availablePlugins( const QString& category ) const
 }
 
 QMap<KPluginInfo*, Plugin*>
-PluginManager::loadedPlugins( const QString& category ) const
+PluginManager::loadedPlugins( const QString &category ) const
 {
   QMap<KPluginInfo*, Plugin*> result;
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
@@ -144,8 +149,6 @@ PluginManager::loadedPlugins( const QString& category ) const
 void
 PluginManager::shutdown()
 {
-  kdDebug() << k_funcinfo << endl;
-
   d->shutdownMode = Private::ShuttingDown;
 
   // Remove any pending plugins to load, we're shutting down now :)
@@ -182,7 +185,7 @@ PluginManager::slotPluginReadyForUnload()
     return;
 
   }
-
+  kdDebug()<<"manager unloading"<<endl;
   plugin->deleteLater();
 }
 
@@ -212,8 +215,6 @@ PluginManager::slotShutdownTimeout()
 void
 PluginManager::slotShutdownDone()
 {
-  kdDebug() << k_funcinfo << endl;
-
   d->shutdownMode = Private::DoneShutdown;
 
   kapp->deref();
@@ -246,8 +247,9 @@ PluginManager::loadAllPlugins()
       }
       else
       {
-        // FIXME: Does this ever happen? As loadAllPlugins is only called on startup I'd say 'no'.
-        //        If it does, it should be made async though. - Martijn
+        // FIXME: Does this ever happen? As loadAllPlugins is only called on startup
+        //        I'd say 'no'. If it does, it should be made async
+        //        though. - Martijn
         if ( plugin( key ) )
           unloadPlugin( key );
       }
@@ -281,7 +283,7 @@ void PluginManager::slotLoadNextPlugin()
 }
 
 Plugin*
-PluginManager::loadPlugin( const QString& pluginId,
+PluginManager::loadPlugin( const QString &pluginId,
                            PluginLoadMode mode /* = LoadSync */ )
 {
   if ( mode == LoadSync ) {
@@ -294,10 +296,8 @@ PluginManager::loadPlugin( const QString& pluginId,
 }
 
 Plugin*
-PluginManager::loadPluginInternal( const QString& pluginId )
+PluginManager::loadPluginInternal( const QString &pluginId )
 {
-  kdDebug() << k_funcinfo << pluginId << endl;
-
   KPluginInfo* info = infoForPluginId( pluginId );
   if ( !info ) {
     kdWarning() << k_funcinfo << "Unable to find a plugin named '"
@@ -309,7 +309,7 @@ PluginManager::loadPluginInternal( const QString& pluginId )
     return d->loadedPlugins[ info ];
 
   int error = 0;
-  Plugin* plugin = KParts::ComponentFactory::createInstanceFromQuery<Plugin>(
+  Plugin *plugin = KParts::ComponentFactory::createInstanceFromQuery<Komposer::Plugin>(
     QString::fromLatin1( "Komposer/Plugin" ),
     QString::fromLatin1( "[X-KDE-PluginInfo-Name]=='%1'" ).arg( pluginId ),
     this, 0, QStringList(), &error );
@@ -320,7 +320,7 @@ PluginManager::loadPluginInternal( const QString& pluginId )
 
     connect( plugin, SIGNAL(destroyed(QObject*)),
              this, SLOT(slotPluginDestroyed(QObject*)) );
-    connect( plugin, SIGNAL( readyForUnload() ),
+    connect( plugin, SIGNAL(readyForUnload()),
              this, SLOT(slotPluginReadyForUnload()) );
 
     kdDebug() << k_funcinfo << "Successfully loaded plugin '"
@@ -349,13 +349,14 @@ PluginManager::loadPluginInternal( const QString& pluginId )
       break;
 
     case KParts::ComponentFactory::ErrNoComponent:
-      kdDebug() << "the factory does not support creating components of the specified type."
+      kdDebug() << "the factory does not support creating components "
+                << "of the specified type."
                 << endl;
       break;
     }
 
     kdDebug() << k_funcinfo << "Loading plugin '" << pluginId
-              << "' failed, KLibLoader reported error: '" << endl
+              << "' failed, KLibLoader reported error: '"
               << KLibLoader::self()->lastErrorMessage()
               << "'" << endl;
   }
@@ -364,10 +365,8 @@ PluginManager::loadPluginInternal( const QString& pluginId )
 }
 
 bool
-PluginManager::unloadPlugin( const QString& spec )
+PluginManager::unloadPlugin( const QString &spec )
 {
-  kdDebug() << k_funcinfo << spec << endl;
-
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
@@ -382,7 +381,7 @@ PluginManager::unloadPlugin( const QString& spec )
 }
 
 void
-PluginManager::slotPluginDestroyed( QObject* plugin )
+PluginManager::slotPluginDestroyed( QObject *plugin )
 {
   QMap<KPluginInfo*, Plugin*>::Iterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
@@ -403,9 +402,9 @@ PluginManager::slotPluginDestroyed( QObject* plugin )
 }
 
 Plugin*
-PluginManager::plugin( const QString& pluginId ) const
+PluginManager::plugin( const QString &pluginId ) const
 {
-  KPluginInfo* info = infoForPluginId( pluginId );
+  KPluginInfo *info = infoForPluginId( pluginId );
   if ( !info )
     return 0;
 
@@ -416,7 +415,7 @@ PluginManager::plugin( const QString& pluginId ) const
 }
 
 QString
-PluginManager::pluginName( const Plugin* plugin ) const
+PluginManager::pluginName( const Plugin *plugin ) const
 {
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
@@ -429,7 +428,7 @@ PluginManager::pluginName( const Plugin* plugin ) const
 }
 
 QString
-PluginManager::pluginId( const Plugin* plugin ) const
+PluginManager::pluginId( const Plugin *plugin ) const
 {
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
@@ -442,7 +441,7 @@ PluginManager::pluginId( const Plugin* plugin ) const
 }
 
 QString
-PluginManager::pluginIcon( const Plugin* plugin ) const
+PluginManager::pluginIcon( const Plugin *plugin ) const
 {
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
@@ -455,7 +454,7 @@ PluginManager::pluginIcon( const Plugin* plugin ) const
 }
 
 KPluginInfo*
-PluginManager::infoForPluginId( const QString& pluginId ) const
+PluginManager::infoForPluginId( const QString &pluginId ) const
 {
   QValueList<KPluginInfo*>::ConstIterator it;
   for ( it = d->plugins.begin(); it != d->plugins.end(); ++it )
@@ -468,7 +467,7 @@ PluginManager::infoForPluginId( const QString& pluginId ) const
 }
 
 bool
-PluginManager::setPluginEnabled( const QString& pluginId, bool enabled /* = true */ )
+PluginManager::setPluginEnabled( const QString &pluginId, bool enabled /* = true */ )
 {
   if ( !d->config )
     d->config = KSharedConfig::openConfig( "komposerrc" );

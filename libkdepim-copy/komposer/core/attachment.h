@@ -53,7 +53,7 @@ namespace Komposer
 
   private:
     class Private;
-    Private* d;
+    Private *d;
   };
   typedef QValueList<Attachment> AttachmentList;
 }

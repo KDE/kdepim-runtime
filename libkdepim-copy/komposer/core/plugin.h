@@ -37,7 +37,8 @@ namespace Komposer
     virtual ~Plugin();
 
   signals:
-    void statusMessage( const QString& );
+    void statusMessage( const QString & );
+    void readyForUnload();
 
   protected slots:
     /**
@@ -59,14 +60,14 @@ namespace Komposer
     virtual void aboutToUnload();
 
   protected:
-    Core* core() const;
+    Core *core() const;
   protected:
     friend class PluginManager;
-    Plugin( Core* core, QObject* parent, const char* name );
+    Plugin( QObject *parent, const char *name, const QStringList& args = QStringList() );
 
   private:
     class Private;
-    Private* d;
+    Private *d;
   };
 
 }

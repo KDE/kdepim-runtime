@@ -36,13 +36,13 @@ namespace Komposer {
   {
     Q_OBJECT
   public:
-    PrefsModule( QWidget* parent=0, const char* name=0 );
-    virtual const KAboutData* aboutData() const;
+    PrefsModule( QWidget *parent=0, const char *name=0 );
+    virtual const KAboutData *aboutData() const;
   };
 
   class EditorSelection : public KPrefsWid
   {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
     EditorSelection( const QString &text, QString &reference, QWidget *parent );
@@ -54,12 +54,12 @@ namespace Komposer {
     QGroupBox *groupBox() const;
 
   private slots:
-    void slotActivated( const QString& );
+    void slotActivated( const QString & );
 
   private:
-    void setItem( const QString& );
+    void setItem( const QString & );
   private:
-    QString& m_reference;
+    QString &m_reference;
 
     QGroupBox *m_box;
     KComboBox *m_editorsCombo;

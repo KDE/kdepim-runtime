@@ -22,14 +22,9 @@
 #ifndef KOMPOSER_CORE_H
 #define KOMPOSER_CORE_H
 
-#include <kparts/mainwindow.h>
-#include <kparts/part.h>
-
+#include <kmainwindow.h>
 #include <qptrlist.h>
 
-namespace KParts {
-  class PartManager;
-}
 namespace KSettings {
   class Dialog;
 }
@@ -39,45 +34,52 @@ namespace Komposer
 {
 
   class Editor;
+  class Plugin;
   class PluginManager;
 
   /**
    * This class provides the interface to the Komposer core for the editor.
    */
-  class Core : public KParts::MainWindow
+  class Core : public KMainWindow
   {
     Q_OBJECT
   public:
     Core( QWidget *parentWidget = 0, const char *name = 0 );
     virtual ~Core();
 
-    KParts::ReadWritePart* createPart( const char *libname );
-
   protected slots:
-    void slotActivePartChanged( KParts::Part *part );
+    //void slotActivePartChanged( KParts::Part *part );
+    void slotPluginLoaded( Plugin* );
+    void slotAllPluginsLoaded();
     void slotPreferences();
     void slotQuit();
+    void slotClose();
+
+    void slotSendNow();
+    void slotSendLater();
+    void slotSaveDraft();
+    void slotInsertFile();
+    void slotAddrBook();
+    void slotNewComposer();
+    void slotAttachFile();
 
   protected:
-    //virtual void initWidgets();
     virtual void initWidgets();
+    void initCore();
+    void initConnections();
     void loadSettings();
     void saveSettings();
+    void createActions();
 
-    void loadEditors();
-    void unloadEditors();
     void addEditor( Komposer::Editor *editor );
-    void addPart( KParts::Part *part );
+    void addPlugin( Komposer::Plugin *plugin );
 
   private:
-    QMap<QCString, KParts::ReadWritePart*> m_parts;
-    KParts::PartManager* m_partManager;
-    QWidgetStack* m_stack;
-    Editor* m_currentEditor;
+    QWidgetStack *m_stack;
+    Editor *m_currentEditor;
+    PluginManager *m_pluginManager;
 
-    PluginManager* m_pluginManager;
-
-    KSettings::Dialog* m_dlg;
+    KSettings::Dialog *m_dlg;
 
     class Private;
     Private *d;

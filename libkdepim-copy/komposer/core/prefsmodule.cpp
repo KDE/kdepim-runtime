@@ -1,7 +1,7 @@
 /**
  * prefsmodule.cpp
  *
- * Copyright (C)  2003  Zack Rusin <zack@kde.org>
+ * Copyright (C)  2003-2004  Zack Rusin <zack@kde.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -60,7 +60,7 @@ PrefsModule::aboutData() const
   KAboutData *about = new KAboutData( I18N_NOOP( "komposerconfig" ),
                                       I18N_NOOP( "KDE Komposer" ),
                                       0, 0, KAboutData::License_LGPL,
-                                      I18N_NOOP( "(c), 2003 Zack Rusin" ) );
+                                      I18N_NOOP( "(c), 2003-2004 Zack Rusin" ) );
 
   about->addAuthor( "Zack Rusin", 0, "zack@kde.org" );;
 
@@ -68,7 +68,7 @@ PrefsModule::aboutData() const
 }
 
 
-EditorSelection::EditorSelection( const QString& text, QString& reference,
+EditorSelection::EditorSelection( const QString &text, QString &reference,
                                   QWidget *parent )
   : m_reference( reference )
 {
@@ -98,7 +98,8 @@ EditorSelection::readConfig()
 {
   m_editorsCombo->clear();
 
-  KTrader::OfferList editors = KTrader::self()->query( QString::fromLatin1( "Komposer/Editor" ) );
+  KTrader::OfferList editors = KTrader::self()->query(
+    QString::fromLatin1( "Komposer/Editor" ) );
   KTrader::OfferList::ConstIterator it;
   int i = 0;
   for ( it = editors.begin(); it != editors.end(); ++it, ++i ) {
@@ -119,14 +120,14 @@ void EditorSelection::writeConfig()
 }
 
 void
-EditorSelection::slotActivated( const QString& editor )
+EditorSelection::slotActivated( const QString &editor )
 {
   if ( !editor.isEmpty() )
     emit changed();
 }
 
 void
-EditorSelection::setItem( const QString& str )
+EditorSelection::setItem( const QString &str )
 {
   for ( int i = 0; i < m_editorsCombo->count(); ++i ) {
     if ( m_editorsCombo->text( i ) == str ) {

@@ -1,1 +1,1 @@
-SUBDIRS = krichtext
+SUBDIRS = default

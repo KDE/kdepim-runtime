@@ -2,7 +2,7 @@
 /**
  * editor.h
  *
- * Copyright (C)  2003  Zack Rusin <zack@kde.org>
+ * Copyright (C)  2003-2004  Zack Rusin <zack@kde.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ namespace Komposer {
      * This is the magic function that all derivatives have to reimplement.
      * It returns the actual editor component.
      */
-    virtual KParts::Part* part() =0;
+    virtual QWidget *widget() =0;
 
     int supportedTextFormats() const;
 
@@ -83,20 +83,20 @@ namespace Komposer {
      * Most commonly used on replaying.
      * If any text is present if will be deleted.
      */
-    virtual void setText( const QString& txt ) =0;
+    virtual void setText( const QString &txt ) =0;
 
     /**
      * Changes currently used signature. If no signature is present
      * a new one should be appened.
      */
-    virtual void changeSignature( const QString& txt ) =0;
+    virtual void changeSignature( const QString &txt ) =0;
 
   protected:
-    Editor( Core* core, QObject* parent, const char* name );
+    Editor( QObject *parent, const char *name, const QStringList &args );
 
   private:
     class Private;
-    Private* d;
+    Private *d;
   };
 
 }

@@ -23,6 +23,7 @@
 
 #include "core.h"
 
+#include <kdebug.h>
 #include <qstring.h>
 
 namespace Komposer
@@ -31,13 +32,13 @@ namespace Komposer
 class Plugin::Private
 {
 public:
-  Core* core;
+  //Core* core;
 };
 
-Plugin::Plugin( Core* core, QObject* parent, const char* name )
+Plugin::Plugin( QObject *parent, const char *name, const QStringList & )
     : QObject( parent, name ), d( new Private )
 {
-  d->core = core;
+  //d->core = core;
 }
 
 Plugin::~Plugin()
@@ -63,12 +64,15 @@ Plugin::quitClicked()
 void
 Plugin::aboutToUnload()
 {
+  kdDebug()<<"plugin unloading"<<endl;
+  emit readyForUnload();
 }
 
 Core*
 Plugin::core() const
 {
-  return d->core;
+  return 0;
+  //return d->core;
 }
 
 }//end namespace Komposer
