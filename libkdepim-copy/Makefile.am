@@ -41,8 +41,8 @@ MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
-libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) \
-  $(top_builddir)/libkcal/libkcal.la $(LIB_POLL) -lqui
+libkdepim_la_LIBADD  = $(top_builddir)/libkcal/libkcal.la \
+                       $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) -lqui
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 include_HEADERS = kdepimmacros.h
