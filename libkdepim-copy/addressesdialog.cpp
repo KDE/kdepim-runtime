@@ -66,6 +66,8 @@ struct AddressesDialog::AddressesDialogPrivate {
   AddresseeViewItem           *bccItem;
 
   QDict<AddresseeViewItem>     groupDict;
+
+  KABC::Addressee::List       recentAddresses;
 };
 // privates end
 
@@ -272,9 +274,20 @@ AddressesDialog::setSelectedBCC( const QStringList& l )
 }
 
 void
-AddressesDialog::setRecentAddresses( const KABC::Addressee::List& addr )
+AddressesDialog::setRecentAddresses( const KABC::Addressee::List& list )
+{
+  d->recentAddresses = list;
+
+  updateRecentAddresses();
+
+  checkForSingleAvailableGroup();
+}
+
+void
+AddressesDialog::updateRecentAddresses()
 {
   static const QString &recentGroup = KGlobal::staticQString( i18n( "Recent Addresses" ) );
+
   if ( !d->recent ) {
     d->recent = new AddresseeViewItem( d->ui->mAvailableView, recentGroup );
     connect(d->recent, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
@@ -283,15 +296,13 @@ AddressesDialog::setRecentAddresses( const KABC::Addressee::List& addr )
     d->groupDict.insert( recentGroup, d->recent );
   }
 
-  for( KABC::Addressee::List::ConstIterator it = addr.begin();
-       it != addr.end(); ++it ) {
+  KABC::Addressee::List::ConstIterator it;
+  for ( it = d->recentAddresses.begin(); it != d->recentAddresses.end(); ++it )
     addAddresseeToAvailable( *it, d->recent );
-  }
+
   if ( d->recent->childCount() > 0 ) {
     d->recent->setVisible( true );
   }
-
-  checkForSingleAvailableGroup();
 }
 
 void
@@ -374,6 +385,9 @@ AddressesDialog::updateAvailableAddressees()
        it != addressBook->end(); ++it ) {
     addAddresseeToAvailable( *it, d->personal );
   }
+
+  d->recent = 0;
+  updateRecentAddresses();
 
   addDistributionLists();
   if ( d->personal->childCount() > 0 ) {

@@ -177,6 +177,7 @@ namespace KPIM {
     // used to re-show items in the available list
     // it is recursive, but should only ever recurse once so should be fine
     void unmapSelectedAddress(AddresseeViewItem* item);
+    void updateRecentAddresses();
 
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
