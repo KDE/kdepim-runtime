@@ -62,6 +62,7 @@ struct KPaintInfo {
     scoreCol(-1),
 #endif
 
+    flagCol(-1),
     senderCol(-1),
     receiverCol(-1),
     subCol(-1),
@@ -103,6 +104,7 @@ struct KPaintInfo {
   int scoreCol;
 #endif
 
+  int flagCol;
   int senderCol;
   int receiverCol;
   int subCol;
