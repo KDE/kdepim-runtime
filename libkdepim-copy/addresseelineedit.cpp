@@ -79,6 +79,9 @@ void AddresseeLineEdit::init()
     s_completion->setIgnoreCase( true );
   }
 
+  connect( s_completion, SIGNAL( match( const QString& ) ),
+           this, SLOT( slotMatched( const QString& ) ) );
+
   if ( m_useCompletion ) {
     if ( !s_LDAPTimer ) {
       ldapTimerDeleter.setObject( s_LDAPTimer, new QTimer );
@@ -146,19 +149,7 @@ void AddresseeLineEdit::keyPressEvent( QKeyEvent *e )
     }
   }
 }
-/*
-void AddresseeLineEdit::mouseReleaseEvent( QMouseEvent * e )
-{
-  if ( m_useCompletion && (e->button() == MidButton) ) {
-    m_smartPaste = true;
-    KLineEdit::mouseReleaseEvent(e);
-    m_smartPaste = false;
-    return;
-  }
 
-  KLineEdit::mouseReleaseEvent( e );
-}
-*/
 void AddresseeLineEdit::insert( const QString &t )
 {
   if ( !m_smartPaste ) {
@@ -170,8 +161,7 @@ void AddresseeLineEdit::insert( const QString &t )
   if ( newText.isEmpty() )
     return;
 
-  // remove newlines in the to-be-pasted string as well as an eventual
-  // mailto: protocol
+  // remove newlines in the to-be-pasted string
   newText.replace( QRegExp("\r?\n"), ", " );
 
   QString contents = text();
@@ -247,7 +237,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
   }
 
   if ( s_addressesDirty )
-    loadAddresses();
+    loadContacts();
 
   if ( ctrlT ) {
     QStringList completions = s_completion->substringCompletion( s );
@@ -339,21 +329,25 @@ void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
 {
   setText( m_previousAddresses + completion );
   cursorAtEnd();
+  slotMatched( m_previousAddresses + completion );
 }
 
-void AddresseeLineEdit::loadAddresses()
+void AddresseeLineEdit::loadContacts()
 {
   s_completion->clear();
   s_addressesDirty = false;
+  m_contactMap.clear();
 
-  QStringList adrs = addresses();
-  for ( QStringList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it)
-    addAddress( *it );
+  KABC::Addressee::List list = contacts();
+  KABC::Addressee::List::Iterator it;
+  for ( it = list.begin(); it != list.end(); ++it )
+    addContact( *it );
 }
 
-void AddresseeLineEdit::addAddress( const QString& adr )
+void AddresseeLineEdit::addContact( const KABC::Addressee& addr )
 {
-  s_completion->addItem( adr );
+  m_contactMap.insert( addr.realName(), addr );
+  s_completion->addItem( addr.realName() );
 }
 
 void AddresseeLineEdit::slotStartLDAPLookup()
@@ -384,7 +378,7 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
   if ( s.length() == 0 )
     return;
 
-  loadAddresses(); // TODO reuse these?
+  loadContacts(); // TODO reuse these?
   s_LDAPSearch->startSearch( s );
 }
 
@@ -396,13 +390,20 @@ void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
   for ( QStringList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
     int pos = (*it).find( '<' );
 
-    if ( pos == -1 )
-      addAddress( *it );
-    else {
+    KABC::Addressee addr;
+    if ( pos == -1 ) {
+      if ( (*it).find( '@' ) == -1 )
+        addr.setNameFromString( *it );
+    } else {
       QString name = (*it).left( pos );
       if ( name.find( '@' ) == -1 )
-        addAddress( name );
+        addr.setNameFromString( name );
+
+      name = (*it).mid( pos + 1 );
+      name = name.left( name.find( '>' ) );
+      addr.insertEmail( name );
     }
+    addContact( addr );
   }
 
   if ( hasFocus() || completionBox()->hasFocus() )
@@ -410,16 +411,21 @@ void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
       doCompletion( false );
 }
 
-QStringList AddresseeLineEdit::addresses()
+void AddresseeLineEdit::slotMatched( const QString &name )
+{
+  emit contactMatched( m_contactMap[ name ] );
+}
+
+KABC::Addressee::List AddresseeLineEdit::contacts()
 {
   QApplication::setOverrideCursor( KCursor::waitCursor() ); // loading might take a while
 
-  QStringList result;
+  KABC::Addressee::List result;
 
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self();
   KABC::AddressBook::Iterator it;
   for ( it = addressBook->begin(); it != addressBook->end(); ++it )
-    result.append( (*it).realName() );
+    result.append( *it );
 
   QApplication::restoreOverrideCursor();
 

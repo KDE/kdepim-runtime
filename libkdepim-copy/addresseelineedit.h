@@ -26,6 +26,8 @@
 #include <qptrlist.h>
 #include <qtimer.h>
 
+#include <kabc/addressee.h>
+
 #include "klineedit.h"
 #include "kcompletion.h"
 
@@ -54,12 +56,15 @@ class AddresseeLineEdit : public KLineEdit
     void cursorAtEnd();
     void enableCompletion( bool enable );
 
+  signals:
+    void contactMatched( const KABC::Addressee& );
+
   protected:
-    virtual void loadAddresses();
-    void addAddress( const QString& );
+    virtual void loadContacts();
+    void addContact( const KABC::Addressee& );
     virtual void keyPressEvent( QKeyEvent* );
     virtual void paste();
-    virtual void insert( const QString &t );
+    virtual void insert( const QString &text );
     void doCompletion( bool ctrlT );
 
   private slots:
@@ -67,12 +72,13 @@ class AddresseeLineEdit : public KLineEdit
     void slotPopupCompletion( const QString& );
     void slotStartLDAPLookup();
     void slotLDAPSearchData( const QStringList& );
+    void slotMatched( const QString& );
 
   private:
     void init();
     void startLoadingLDAPEntries();
     void stopLDAPLookup();
-    QStringList addresses();
+    KABC::Addressee::List contacts();
 
     void setCompletedItems( const QStringList& items, bool autoSuggest );
 
@@ -80,6 +86,8 @@ class AddresseeLineEdit : public KLineEdit
     bool m_useCompletion;
     bool m_completionInitialized;
     bool m_smartPaste;
+
+    QMap<QString, KABC::Addressee> m_contactMap;
 
     static bool s_addressesDirty;
     static KCompletion *s_completion;
