@@ -131,7 +131,7 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
                             QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label(), parent );
+  mLabel = new QLabel( mItem->label()+':', parent );
   mSpin = new QSpinBox( parent );
   connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mLabel->setBuddy( mSpin );
@@ -177,7 +177,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
 {
   mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
-  mLabel = new QLabel( mButton, mItem->label(), parent );
+  mLabel = new QLabel( mButton, mItem->label()+':', parent );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mButton, whatsThis);
@@ -214,7 +214,7 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
                               QWidget *parent, const QString &sampleText )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label(), parent );
+  mLabel = new QLabel( mItem->label()+':', parent );
 
   mPreview = new QLabel( sampleText, parent );
   mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
@@ -272,7 +272,7 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
                               QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label(), parent );
+  mLabel = new QLabel( mItem->label()+':', parent );
   mTimeEdit = new KTimeEdit( parent );
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
@@ -350,7 +350,7 @@ KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
                                   QLineEdit::EchoMode echomode )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label(), parent );
+  mLabel = new QLabel( mItem->label()+':', parent );
   mEdit = new QLineEdit( parent );
   connect( mEdit, SIGNAL( textChanged( const QString & ) ),
            SIGNAL( changed() ) );
