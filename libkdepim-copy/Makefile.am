@@ -16,9 +16,8 @@ libkdepim_la_SOURCES = \
   kconfigpropagator.cpp kconfigwizard.cpp \
   weaver.cpp weaverextensions.cpp weaverlogger.cpp \
   pluginloaderbase.cpp addresseelineedit.cpp \
-  kdatepickerpopup.cpp \
-  clicklineedit.cpp \
-  email.cpp kfileio.cpp configmanager.cpp \
+  kdatepickerpopup.cpp kfileio.cpp \
+  clicklineedit.cpp configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
@@ -62,6 +61,6 @@ CLEANFILES = kdepimwidgets.cpp
 METASOURCES = AUTO
 
 messages: rc.cpp
-	$(XGETTEXT) ../libkpimidentities/*.cpp *.cpp -o $(podir)/libkdepim.pot
+	$(XGETTEXT) ../libkpimidentities/*.cpp ../libemailfunctions/*.cpp *.cpp -o $(podir)/libkdepim.pot
 
 include ../admin/Doxyfile.am
