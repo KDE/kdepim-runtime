@@ -86,7 +86,7 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
     dynamicPart += QString(
       "<tr><td align=\"right\"><b>%1</b></td>"
       "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
-      .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ) )
+      .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
       .arg( strippedNumber )
       .arg( number );
   }
