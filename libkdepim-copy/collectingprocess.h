@@ -34,6 +34,7 @@
 #define __KPIM_COLLECTINGPROCESS_H__
 
 #include <kprocess.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 
