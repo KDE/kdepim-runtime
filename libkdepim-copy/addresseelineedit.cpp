@@ -84,6 +84,7 @@ AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
   m_useCompletion = useCompletion;
   m_completionInitialized = false;
   m_smartPaste = false;
+  m_addressBookConnected = false;
 
   init();
 
@@ -484,10 +485,10 @@ void AddresseeLineEdit::loadContacts()
 
   QApplication::restoreOverrideCursor();
 
-  disconnect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
-              this, SLOT( loadContacts() ) );
-
-  connect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ), SLOT( loadContacts() ) );
+  if ( !m_addressBookConnected ) {
+    connect( addressBook, SIGNAL( addressBookChanged( AddressBook* ) ), SLOT( loadContacts() ) );
+    m_addressBookConnected = true;
+  }
 }
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )

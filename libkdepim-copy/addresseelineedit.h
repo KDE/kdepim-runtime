@@ -109,6 +109,7 @@ class AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     bool m_useCompletion;
     bool m_completionInitialized;
     bool m_smartPaste;
+    bool m_addressBookConnected;
 
     //QMap<QString, KABC::Addressee> m_contactMap;
 
