@@ -14,7 +14,8 @@ libkdepim_la_SOURCES = \
   AddressBookServiceIface.skel \
   kconfigpropagator.cpp kconfigwizard.cpp \
   weaver.cpp weaverextensions.cpp weaverlogger.cpp \
-  pluginloaderbase.cpp addresseelineedit.cpp
+  pluginloaderbase.cpp addresseelineedit.cpp \
+  klistviewsearchline_pimcopy.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
@@ -24,7 +25,7 @@ MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
-libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC)
+libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KDEUI)
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 METASOURCES = AUTO
