@@ -14,7 +14,7 @@ libkdepim_la_SOURCES = \
   AddressBookServiceIface.skel \
   kconfigpropagator.cpp kconfigwizard.cpp \
   weaver.cpp weaverextensions.cpp weaverlogger.cpp \
-  pluginloaderbase.cpp
+  pluginloaderbase.cpp addresseelineedit.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
