@@ -260,15 +260,16 @@ void KTimeEdit::updateText()
   QLineEdit *line = lineEdit();
   line->blockSignals(true);
   int pos = line->cursorPosition();
+
+  // select item with nearest time, must be done while line edit is blocked
+  // as setCurrentItem() calls setText() with triggers KTimeEdit::changedText()
+  setCurrentItem((mTime.hour()*4)+((mTime.minute()+7)/15));
+
   line->setText(s);
   line->setCursorPosition(pos);
   line->blockSignals(false);
 
 //  kdDebug(5300) << "KTimeEdit::updateText(): " << s << endl;
-
-  if (!(mTime.minute() % 15)) {
-    setCurrentItem((mTime.hour()*4)+(mTime.minute()/15));
-  }
 }
 
 bool KTimeEdit::inputIsValid() const
