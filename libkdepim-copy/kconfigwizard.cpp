@@ -35,10 +35,7 @@ KConfigWizard::KConfigWizard( QWidget *parent,
                  name, modal ),
     mPropagator( 0 ), mChangesPage( 0 )
 {
-  connect( this, SIGNAL( aboutToShowPage( QWidget * ) ),
-           SLOT( slotAboutToShowPage( QWidget * ) ) );
-
-  QTimer::singleShot( 0, this, SLOT( readConfig() ) );
+  init();
 }
 
 KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
@@ -47,15 +44,25 @@ KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
                  name, modal ),
     mPropagator( propagator ), mChangesPage( 0 )
 {
+  init();
+}
+
+KConfigWizard::~KConfigWizard()
+{
+  delete mPropagator;
+}
+
+void KConfigWizard::init()
+{
   connect( this, SIGNAL( aboutToShowPage( QWidget * ) ),
            SLOT( slotAboutToShowPage( QWidget * ) ) );
 
   QTimer::singleShot( 0, this, SLOT( readConfig() ) );
 }
 
-KConfigWizard::~KConfigWizard()
+void KConfigWizard::setPropagator( KConfigPropagator *p )
 {
-  delete mPropagator;
+  mPropagator = p;
 }
 
 void KConfigWizard::slotAboutToShowPage( QWidget *page )
@@ -87,6 +94,11 @@ void KConfigWizard::setupRulesPage()
 
 void KConfigWizard::updateRules()
 {
+  if ( !mPropagator ) {
+    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+    return;
+  }
+
   mRuleView->clear();
 
   KConfigPropagator::Rule::List rules = mPropagator->rules();
@@ -125,6 +137,11 @@ void KConfigWizard::updateChanges()
 {
   kdDebug() << "KConfigWizard::updateChanges()" << endl;
 
+  if ( !mPropagator ) {
+    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+    return;
+  }
+
   usrWriteConfig();
 
   mPropagator->updateChanges();
@@ -148,8 +165,17 @@ void KConfigWizard::readConfig()
 void KConfigWizard::slotOk()
 {
   usrWriteConfig();
-  mPropagator->skeleton()->writeConfig();
-  mPropagator->commit();
+
+  if ( !mPropagator ) {
+    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+    return;
+  } else {
+    if ( mPropagator->skeleton() ) {
+      mPropagator->skeleton()->writeConfig();
+    }
+    mPropagator->commit();
+  }
+  
   accept();
 }
 

@@ -34,6 +34,9 @@ class KConfigWizard : public KDialogBase
 {
     Q_OBJECT
   public:
+    /**
+      Create wizard. You have to set a propgator with setPropagator() later.
+    */
     KConfigWizard( QWidget *parent = 0, char *name = 0, bool modal = false );
     /**
       Create wizard for given KConfigPropagator. The wizard takes ownership of
@@ -46,7 +49,10 @@ class KConfigWizard : public KDialogBase
     */
     virtual ~KConfigWizard();
 
-    void setPropagator( KConfigPropagator *p ) { mPropagator = p; }
+    /**
+      Set propagator the wizard operates on.
+    */
+    void setPropagator( KConfigPropagator * );
     /**
       Return propagator the wizard operates on.
     */
@@ -78,6 +84,8 @@ class KConfigWizard : public KDialogBase
     void slotAboutToShowPage( QWidget *page );
 
   protected:
+    void init();
+    
     void setupRulesPage();
     void updateRules();
     void setupChangesPage();

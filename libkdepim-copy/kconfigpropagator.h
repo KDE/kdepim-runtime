@@ -33,6 +33,9 @@ class KConfigPropagator
 {
   public:
 
+    /**
+      Create KConfigPropagator object without associated source configuration.
+    */
     KConfigPropagator();
     /**
       Create KConfigPropagator object.
@@ -129,6 +132,8 @@ class KConfigPropagator
     Rule::List rules();
 
   protected:
+    void init();
+
     /**
       Implement this function in a subclass if you want to add changes which
       can't be expressed as propagations in the kcfg file.

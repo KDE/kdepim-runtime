@@ -62,17 +62,23 @@ void KConfigPropagator::ChangeConfig::apply()
 }
 
 KConfigPropagator::KConfigPropagator()
+  : mSkeleton( 0 )
 {
-  mChanges.setAutoDelete( true );
+  init();
 }
 
 KConfigPropagator::KConfigPropagator( KConfigSkeleton *skeleton,
                                       const QString &kcfgFile )
   : mSkeleton( skeleton ), mKcfgFile( kcfgFile )
 {
-  mChanges.setAutoDelete( true );
+  init();
 
   readKcfgFile();
+}
+
+void KConfigPropagator::init()
+{
+  mChanges.setAutoDelete( true );
 }
 
 void KConfigPropagator::readKcfgFile()
@@ -195,6 +201,8 @@ KConfigSkeletonItem *KConfigPropagator::findItem( const QString &group,
                                                   const QString &name )
 {
 //  kdDebug() << "KConfigPropagator::findItem()" << endl;
+
+  if ( !mSkeleton ) return 0;
 
   KConfigSkeletonItem::List items = mSkeleton->items();
   KConfigSkeletonItem::List::ConstIterator it;
