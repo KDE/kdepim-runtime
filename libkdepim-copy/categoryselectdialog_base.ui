@@ -40,9 +40,6 @@
             <property name="name">
                 <cstring>mCategories</cstring>
             </property>
-            <property name="resizeMode">
-                <enum>AllColumns</enum>
-            </property>
         </widget>
         <widget class="QLayoutWidget">
             <property name="name">
