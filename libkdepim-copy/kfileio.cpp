@@ -277,26 +277,42 @@ QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
   fiToCheck.setCaching(false);
   QCString toCheckEnc = QFile::encodeName(toCheck);
   QString error;
+  struct stat statbuffer;
 
   if ( !fiToCheck.exists() ) {
     error.append( i18n("%1 does not exist")
                   .arg(toCheck) + "\n");
   }
-    
+
+  // check the access bit of a folder.
+  if ( fiToCheck.isDir() ) {
+    if ( stat( toCheckEnc,&statbuffer ) != 0 ) {
+      kdDebug() << "wantItA: Can't read perms of " << toCheck << endl;
+    }
+    QDir g( toCheck );
+    if ( !g.isReadable() ) {
+      if ( chmod( toCheckEnc, statbuffer.st_mode + S_IXUSR ) != 0 ) {
+        error.append( i18n("%1 is not accessible and that is "
+                           "unchangeable.").arg(toCheck) + "\n");
+      } else {
+        kdDebug() << "Changed access bit for " << toCheck << endl;
+      }
+    }
+  }
+
   // For each file or folder  we can check if the file is readable 
   // and writable, as requested.
-  if ( fiToCheck.isFile() || fiToCheck.isDir() ){
-    struct stat statbuffer;
+  if ( fiToCheck.isFile() || fiToCheck.isDir() ) {
 
-    if ( !fiToCheck.isReadable() && wantItReadable ){
+    if ( !fiToCheck.isReadable() && wantItReadable ) {
       // Get the current permissions. No need to do anything with an 
       // error, it will het added to errors anyhow, later on.
-      if (stat(toCheckEnc,&statbuffer) != 0) {
+      if ( stat(toCheckEnc,&statbuffer) != 0 ) {
         kdDebug() << "wantItR: Can't read perms of " << toCheck << endl;
       }
 
       // Lets try changing it.
-      if ( chmod( toCheckEnc, statbuffer.st_mode + S_IRUSR ) != 0 ){
+      if ( chmod( toCheckEnc, statbuffer.st_mode + S_IRUSR ) != 0 ) {
         error.append( i18n("%1 is not readable and that is unchangeable.")
                            .arg(toCheck) + "\n");
       } else {
@@ -304,7 +320,7 @@ QString checkAndCorrectPermissionsIfPossible(const QString &toCheck,
       }
     }
 
-    if ( !fiToCheck.isWritable() && wantItWritable ){
+    if ( !fiToCheck.isWritable() && wantItWritable ) {
       // Gets the current persmissions. Needed because it can be changed
       // curing previous operation.
       if (stat(toCheckEnc,&statbuffer) != 0) {
