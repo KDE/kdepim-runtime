@@ -502,35 +502,34 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
     // While we're here also add "email (full name)" for completion on the email
     if ( !name.isEmpty() )
       addCompletionItem( addr.preferredEmail() + " (" + name + ")", weight );
+    
+    if ( name.find( ',' ) ) return; // probably already of the form "Lastname, Firstname"
 
     bool bDone = false;
-    int i = 1;
-    do{
-      i = name.findRev(' ');
-      if( 1 < i ){
-        QString sLastName( name.mid(i+1) );
-        if( ! sLastName.isEmpty() &&
+    int i = -1;
+    while( ( i = name.findRev(' ') > 1 ) && !bDone ) {
+      QString sLastName( name.mid( i+1 ) );
+      if( ! sLastName.isEmpty() &&
             2 <= sLastName.length() &&   // last names must be at least 2 chars long
-            ! sLastName.endsWith(".") ){ // last names must not end with a dot (like "Jr." or "Sr.")
-          name.truncate( i );
-          if( !name.isEmpty() ){
-            sLastName.prepend( "\"" );
-            sLastName.append( ", " + name + "\" <" );
-          }
-          QString sExtraEntry( sLastName );
-          sExtraEntry.append( tmp.isEmpty() ? addr.preferredEmail() : tmp );
-          sExtraEntry.append( ">" );
-          //kdDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplifyWhiteSpace() << "\" weight=" << weight << endl;
-          addCompletionItem( sExtraEntry.simplifyWhiteSpace(), weight );
-          bDone = true;
+          ! sLastName.endsWith(".") ) { // last names must not end with a dot (like "Jr." or "Sr.")
+        name.truncate( i );
+        if( !name.isEmpty() ){
+          sLastName.prepend( "\"" );
+          sLastName.append( ", " + name + "\" <" );
         }
+        QString sExtraEntry( sLastName );
+        sExtraEntry.append( tmp.isEmpty() ? addr.preferredEmail() : tmp );
+        sExtraEntry.append( ">" );
+        //kdDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplifyWhiteSpace() << "\" weight=" << weight << endl;
+        addCompletionItem( sExtraEntry.simplifyWhiteSpace(), weight );
+        bDone = true;
       }
       if( !bDone ){
         name.truncate( i );
         if( name.endsWith("\"") )
           name.truncate( name.length()-1 );
       }
-    }while( 1 < i && !bDone );
+    }
   }
 }
 
