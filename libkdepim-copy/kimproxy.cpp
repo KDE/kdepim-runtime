@@ -494,8 +494,8 @@ void KIMProxy::registeredToDCOP( const QCString& appId )
 				m_im_client_stubs.insert( appId, new KIMIface_stub( m_dc, appId, dcopObjectId ) );
 			}
 		}
-		else
-			//kdDebug( 5301 ) << "App doesn't implement our ServiceType" << endl;
+		//else
+		//	kdDebug( 5301 ) << "App doesn't implement our ServiceType" << endl;
 	}
 	if ( newApp )
 		emit sigPresenceInfoExpired();
