@@ -118,16 +118,21 @@ public:
    * entities: & " < >. Newlines are also preserved.
    *
    * @param  plainText      The text to be converted into HTML.
-   * @param  preserveBlanks Whether to preserve the appearance of sequences of space
-   *                        characters and tab characters in the resulting HTML.
+   * @param  flags          The flags to consider when processing plainText.
+   *                        Currently supported flags are:
+   *                         - PreserveSpaces, preserves the appearance of
+   *                                           sequences of space and tab
+   *                                           characters in the resulting HTML.
+   *                         - ReplaceSmileys, replace text smileys with
+   *                                           emoticon images.
    * @param  maxUrlLen      The maximum length of permitted URLs. (See
    *                        @ref maxUrlLen().)
    * @param  maxAddressLen  The maximum length of permitted email addresses.
    *                        (See @ref maxAddressLen().)
-   * @return An HTML version of the text supplied in the 'plainText' parameter, suitable
-   *         for inclusion in the BODY of an HTML document.
+   * @return An HTML version of the text supplied in the 'plainText' parameter,
+   *         suitable for inclusion in the BODY of an HTML document.
    */
-  static QString convertToHtml(const QString& plainText, int flag = 0,
+  static QString convertToHtml(const QString& plainText, int flags = 0,
     int maxUrlLen = 4096, int maxAddressLen = 255);
 
   static const int PreserveSpaces = 0x01;
@@ -150,7 +155,7 @@ private:
 
   /**
    * Replaces smiley text with an <img> tag containing the relevant image.
-   * For an emoticon text to be recognised it has to match 
+   * For an emoticon text to be recognised it has to match
    * "(^|\s+)text(\s+|$)"
    * @return An HTML String with <img> for an emoticon
    */
