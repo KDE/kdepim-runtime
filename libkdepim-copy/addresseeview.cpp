@@ -144,6 +144,17 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
 			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
 			);
 
+  // Style strings from Gentix; this is just an initial version.
+  //
+  // These will be substituted into various HTML strings with .arg().
+  // Search for @STYLE@ to find where. Note how we use %1 as a 
+  // placeholder where we fill in something else (in this case,
+  // the global background color).
+  //
+  QString backgroundColor = KGlobalSettings::baseColor().name();
+  QString cellStyle = QString::fromLatin1("style=\"padding: 0em; margin: 0em; border-right: #000 dashed 1px; border-bottom: #000 dashed 1px; background: %1;\"").arg(backgroundColor);
+  QString tableStyle = QString::fromLatin1("style=\"border: solid 1px; padding: 8% ; margin: 0em;\"");
+
   if ( !internalLoading ) {
     KABC::Picture pic = addr.photo();
     if ( pic.isIntern() && !pic.data().isNull() ) {
@@ -286,11 +297,17 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
 
   QString notes;
   if ( !addr.note().isEmpty() ) {
+    // @STYLE@ - substitute the cell style in first, and append
+    // the data afterwards (keeps us safe from possible % signs
+    // in either one).
     notes = QString::fromLatin1(
       "<tr>"
-      "<td align=\"right\" valign=\"top\" width=\"30%\"><b>%1:</b></td>"  // note label
+      "<td align=\"right\" valign=\"top\" width=\"30%\" %1>").arg(cellStyle);
+    notes.append(QString::fromLatin1(
+      "<b>%1:</b>"
+      "</td>"  // note label
       "<td align=\"left\" valign=\"top\">%2</td>"  // note
-      "</tr>" ).arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) );
+      "</tr>" ).arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) );
   }
 
   QString role, organization;
@@ -304,11 +321,17 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
     organization = QString::null;
   }
 
+
+  // @STYLE@ - construct the string by parts, substituting in
+  // the styles first.
+  //
   QString strAddr = QString::fromLatin1(
     "<div>"
-    "<table width=\"100%\">"
+    "<table width=\"100%\" %1>"
     "<tr>"
-    "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\">"
+    "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\" %2>")
+    .arg(tableStyle).arg(cellStyle);
+  strAddr.append(QString::fromLatin1(
     "<img src=\"%1\" width=\"50\" height=\"70\">" // image
     "</td>"
     "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%2</b></font></td>"  // name
@@ -328,7 +351,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
      .arg( name )
      .arg( role )
      .arg( organization )
-     .arg( dynamicPart, notes );
+     .arg( dynamicPart, notes ) );
 
   return strAddr;
 }
