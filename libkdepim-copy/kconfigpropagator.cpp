@@ -61,6 +61,11 @@ void KConfigPropagator::ChangeConfig::apply()
   cfg.sync();
 }
 
+KConfigPropagator::KConfigPropagator()
+{
+  mChanges.setAutoDelete( true );
+}
+
 KConfigPropagator::KConfigPropagator( KConfigSkeleton *skeleton,
                                       const QString &kcfgFile )
   : mSkeleton( skeleton ), mKcfgFile( kcfgFile )

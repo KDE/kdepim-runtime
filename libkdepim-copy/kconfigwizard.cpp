@@ -29,6 +29,18 @@
 #include <qlayout.h>
 #include <qtimer.h>
 
+KConfigWizard::KConfigWizard( QWidget *parent,
+                              char *name, bool modal )
+  : KDialogBase( TreeList, i18n("Configuration Wizard"), Ok|Cancel, Ok, parent,
+                 name, modal ),
+    mPropagator( 0 ), mChangesPage( 0 )
+{
+  connect( this, SIGNAL( aboutToShowPage( QWidget * ) ),
+           SLOT( slotAboutToShowPage( QWidget * ) ) );
+
+  QTimer::singleShot( 0, this, SLOT( readConfig() ) );
+}
+
 KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
                               char *name, bool modal )
   : KDialogBase( TreeList, i18n("Configuration Wizard"), Ok|Cancel, Ok, parent,

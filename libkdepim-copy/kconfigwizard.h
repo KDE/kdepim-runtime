@@ -34,6 +34,7 @@ class KConfigWizard : public KDialogBase
 {
     Q_OBJECT
   public:
+    KConfigWizard( QWidget *parent = 0, char *name = 0, bool modal = false );
     /**
       Create wizard for given KConfigPropagator. The wizard takes ownership of
       the propagator.
@@ -45,6 +46,7 @@ class KConfigWizard : public KDialogBase
     */
     virtual ~KConfigWizard();
 
+    void setPropagator( KConfigPropagator *p ) { mPropagator = p; }
     /**
       Return propagator the wizard operates on.
     */

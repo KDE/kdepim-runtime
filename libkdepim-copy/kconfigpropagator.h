@@ -32,6 +32,8 @@ class KConfigSkeletonItem;
 class KConfigPropagator
 {
   public:
+
+    KConfigPropagator();
     /**
       Create KConfigPropagator object.
       
