@@ -3,9 +3,8 @@
 
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qinputdialog.h>
 
-class KInputDialog : public QInputDialog
+class KInputDialog
 {
   public:
     static QString getItem( const QString &caption, const QString &label,
