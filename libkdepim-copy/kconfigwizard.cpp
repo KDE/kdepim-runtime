@@ -174,19 +174,24 @@ void KConfigWizard::readConfig()
 
 void KConfigWizard::slotOk()
 {
-  usrWriteConfig();
+  QString error = validate();
+  if ( error.isNull() ) {
+    usrWriteConfig();
 
-  if ( !mPropagator ) {
-    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
-    return;
-  } else {
-    if ( mPropagator->skeleton() ) {
-      mPropagator->skeleton()->writeConfig();
+    if ( !mPropagator ) {
+      kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+      return;
+    } else {
+      if ( mPropagator->skeleton() ) {
+        mPropagator->skeleton()->writeConfig();
+      }
+      mPropagator->commit();
     }
-    mPropagator->commit();
-  }
 
-  accept();
+    accept();
+  } else {
+    KMessageBox::sorry( this, error );
+  }
 }
 
 #include "kconfigwizard.moc"

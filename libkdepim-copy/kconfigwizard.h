@@ -76,16 +76,22 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
     */
     virtual void usrWriteConfig() = 0;
 
+    /**
+      Validates the supplied data. Returns a appropiate error when some data
+      is invalid. Return QString::null if all data is valid.
+    */
+    virtual QString validate() { return QString::null; }
+
   protected slots:
     void readConfig();
-  
+
     void slotOk();
 
     void slotAboutToShowPage( QWidget *page );
 
   protected:
     void init();
-    
+
     void setupRulesPage();
     void updateRules();
     void setupChangesPage();
@@ -93,7 +99,7 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
 
   private:
     KConfigPropagator *mPropagator;
-    
+
     QListView *mRuleView;
     QListView *mChangeView;
 
