@@ -426,23 +426,23 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
 void
 AddressesDialog::initConnections()
 {
-  QObject::connect( d->ui->mDeleteButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mDeleteButton, SIGNAL(clicked()),
                     SLOT(deleteEntry()) );
-  QObject::connect( d->ui->mNewButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mNewButton, SIGNAL(clicked()),
                     SLOT(newEntry()) );
-  QObject::connect( d->ui->mEditButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mEditButton, SIGNAL(clicked()),
                     SLOT(editEntry()) );
   QObject::connect( d->ui->mFilterEdit, SIGNAL(textChanged(const QString &)),
                     SLOT(filterChanged(const QString &)) );
-  QObject::connect( d->ui->mToButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mToButton, SIGNAL(clicked()),
                     SLOT(addSelectedTo()) );
-  QObject::connect( d->ui->mCCButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mCCButton, SIGNAL(clicked()),
                     SLOT(addSelectedCC()) );
-  QObject::connect( d->ui->mBCCButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mBCCButton, SIGNAL(clicked()),
                     SLOT(addSelectedBCC())  );
-  QObject::connect( d->ui->mSaveAs, SIGNAL(pressed()),
+  QObject::connect( d->ui->mSaveAs, SIGNAL(clicked()),
                     SLOT(saveAs())  );
-  QObject::connect( d->ui->mRemoveButton, SIGNAL(pressed()),
+  QObject::connect( d->ui->mRemoveButton, SIGNAL(clicked()),
                     SLOT(removeEntry()) );
   QObject::connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
                     SLOT(availableSelectionChanged())  );
