@@ -21,41 +21,57 @@
 
 
 #include "clicklineedit.h"
-#include <assert.h>
 
+#include "qpainter.h"
 
 using namespace KPIM;
 
 ClickLineEdit::ClickLineEdit(QWidget *parent, const QString &msg, const char* name) :
-  KLineEdit(parent, name), mClickMessage(msg)
+  KLineEdit(parent, name) 
 {
-  setClickMessage( msg );
+  mDrawClickMsg = true;
+  setClickMessage( msg ); 
 }
 
 ClickLineEdit::~ClickLineEdit() {}
 
+
 void ClickLineEdit::setClickMessage( const QString &msg)
-
 {
-  if ( msg.isEmpty() ) return;
-
   mClickMessage = msg;
-  setText( msg );
-  mFGColor = paletteForegroundColor();
-  setPaletteForegroundColor( gray );
+  repaint();
 }
 
-void ClickLineEdit::focusInEvent(QFocusEvent *ev)
+void ClickLineEdit::drawContents( QPainter *p )
 {
-  if ( text() == mClickMessage ) setText( QString::null );
-  setPaletteForegroundColor( mFGColor );
+  KLineEdit::drawContents( p );
+
+  if ( mDrawClickMsg == true ) {
+    QPen tmp = p->pen();
+    p->setPen( gray );
+    QRect cr = contentsRect();
+    p->drawText( cr, AlignAuto|AlignVCenter, mClickMessage );
+    p->setPen( tmp );
+  }
+}
+
+void ClickLineEdit::focusInEvent( QFocusEvent *ev )
+{
+  if ( mDrawClickMsg == true ) 
+  { 
+    mDrawClickMsg = false;
+    repaint();
+  }
   QLineEdit::focusInEvent( ev );
 }
 
-void ClickLineEdit::focusOutEvent(QFocusEvent *ev)
+void ClickLineEdit::focusOutEvent( QFocusEvent *ev )
 {
-  if ( text().isEmpty() ) setText( mClickMessage );
-  setPaletteForegroundColor( gray );
+  if ( text().isEmpty() )
+  {
+    mDrawClickMsg = true;
+    repaint();
+  }
   QLineEdit::focusOutEvent( ev );
 }
 
