@@ -386,7 +386,13 @@ void ProgressDialog::setVisible( bool b )
 
 void ProgressDialog::slotToggleVisibility()
 {
-  setVisible( !isShown() );
+  /* Since we are only hiding with a timeout, there is a short period of
+   * time where the last item is still visible, but clicking on it in
+   * the statusbarwidget should not display the dialog, because there
+   * are no items to be shown anymore. Guard against that.
+   */
+  if ( isShown() || !mTransactionsToListviewItems.isEmpty() )
+    setVisible( !isShown() );
 }
 
 }
