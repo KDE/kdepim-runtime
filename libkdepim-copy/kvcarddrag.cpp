@@ -52,7 +52,7 @@ bool KVCardDrag::canDecode( QMimeSource *e )
 
 bool KVCardDrag::decode( QMimeSource *e, QString &content )
 {
-  content = QString( e->encodedData( vcard_mime_string ) );
+  content = QString::fromUtf8( e->encodedData( vcard_mime_string ) );
   return true;
 }
 
