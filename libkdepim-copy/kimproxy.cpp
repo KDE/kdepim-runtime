@@ -52,6 +52,7 @@ KIMProxy::KIMProxy( DCOPClient* dc ) : DCOPObject( "KIMProxyIface" ), QObject()
 {
 	m_im_client_stubs.setAutoDelete( true );
 	m_apps_available = false;
+	m_initialized = false;
 	m_dc = dc;
 	connect( m_dc, SIGNAL( applicationRemoved( const QCString& ) ) , this, SLOT( unregisteredFromDCOP( const QCString& ) ) );
 	connect( m_dc, SIGNAL( applicationRegistered( const QCString& ) ) , this, SLOT( registeredToDCOP( const QCString& ) ) );
@@ -74,29 +75,34 @@ KIMProxy::~KIMProxy( )
 
 bool KIMProxy::initialize()
 {
-	// So there is no error from a failed query when using kdelibs 3.2, which don't have this servicetype
-	if ( KServiceType::serviceType( IM_SERVICE_TYPE ) ) 
+	if ( !m_initialized )
 	{
-		kdDebug( 5301 ) << k_funcinfo << endl;
-		QCString dcopObjectId = "KIMIface";
-	
-		// see what apps implementing our service type are out there
-		KService::List offers = KServiceType::offers( IM_SERVICE_TYPE );
-		KService::List::iterator it;
-		m_apps_available = false;
-		for ( it = offers.begin(); it != offers.end(); ++it )
+		m_initialized = true;
+		// So there is no error from a failed query when using kdelibs 3.2, which don't have this servicetype
+		if ( KServiceType::serviceType( IM_SERVICE_TYPE ) ) 
 		{
-			m_apps_available = true;
-			QCString dcopService = (*it)->property("X-DCOP-ServiceName").toString().latin1();
-			kdDebug( 5301 ) << " app name: " << (*it)->name() << " dcopService: " << dcopService << endl;
-			if ( !dcopService.isEmpty() && m_dc->isApplicationRegistered( dcopService ) && !m_im_client_stubs.find( dcopService ) )
+			kdDebug( 5301 ) << k_funcinfo << endl;
+			QCString dcopObjectId = "KIMIface";
+	
+			// see what apps implementing our service type are out there
+			KService::List offers = KServiceType::offers( IM_SERVICE_TYPE );
+			KService::List::iterator it;
+			for ( it = offers.begin(); it != offers.end(); ++it )
 			{
-				kdDebug( 5301 ) << "inserting new stub for " << dcopService << " dcopObjectId " << dcopObjectId << endl;
-				m_im_client_stubs.insert( dcopService, new KIMIface_stub( m_dc, dcopService, dcopObjectId ) );
+				QCString dcopService = (*it)->property("X-DCOP-ServiceName").toString().latin1();
+				if ( !dcopService.isEmpty() ) {
+					m_apps_available = true;
+					kdDebug( 5301 ) << " app name: " << (*it)->name() << " dcopService: " << dcopService << endl;
+					if ( m_dc->isApplicationRegistered( dcopService ) && !m_im_client_stubs.find( dcopService ) )
+					{
+						kdDebug( 5301 ) << "inserting new stub for " << dcopService << " dcopObjectId " << dcopObjectId << endl;
+						m_im_client_stubs.insert( dcopService, new KIMIface_stub( m_dc, dcopService, dcopObjectId ) );
+					}
+				}
 			}
 		}
 	}
-	return m_im_client_stubs.count() != 0;
+	return !m_im_client_stubs.isEmpty();
 }
 
 QStringList KIMProxy::imAddresseeUids()
@@ -285,8 +291,8 @@ QString KIMProxy::locate( const QString & contactId, const QString & protocol )
 
 bool KIMProxy::imAppsAvailable()
 {
-	kdDebug( 5301 ) << k_funcinfo << " m_apps_available: " << m_apps_available<< endl;
-    return m_apps_available;
+	kdDebug( 5301 ) << k_funcinfo << " returning " << m_apps_available << endl;
+	return m_apps_available;
 }
 
 bool KIMProxy::startPreferredApp()
@@ -324,12 +330,15 @@ void KIMProxy::unregisteredFromDCOP( const QCString& appId )
 
 void KIMProxy::registeredToDCOP( const QCString& appId )
 {
-	kdDebug( 5301 ) << k_funcinfo << appId << endl;
 	// check that appId implements our service
+	// if the appId ends with a number, i.e. a pid like in foobar-12345, there's no chance
+	if ( appId.isEmpty() || QChar( appId[ appId.length() - 1 ] ).isDigit() )
+		return;
+	kdDebug( 5301 ) << k_funcinfo << appId << endl;
 	bool newApp = false;
 	// get an up to date list of offers in case a new app was installed
-	KService::List offers = KServiceType::offers( IM_SERVICE_TYPE );
-	KService::List::iterator it;
+	const KService::List offers = KServiceType::offers( IM_SERVICE_TYPE );
+	KService::List::const_iterator it;
 	for ( it = offers.begin(); it != offers.end(); ++it )
 	{
 		QCString dcopObjectId = "KIMIface";

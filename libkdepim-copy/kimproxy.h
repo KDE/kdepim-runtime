@@ -226,14 +226,13 @@ class KIMProxy : public QObject, virtual public KIMProxyIface
 		 * Take the preferred app first, then any other.
 		 */
 		KIMIface_stub * stubForProtocol( const QString &protocol );
-
-		//KIMIface_stub *m_im_client_stub;
+	private:
 		QDict<KIMIface_stub> m_im_client_stubs;
 		PresenceMap m_presence_map;
 		
 		DCOPClient *m_dc;
 		bool m_apps_available;
-	private:
+		bool m_initialized;
 		/**
 		 * Construct an instance of the proxy library.
 		 */
