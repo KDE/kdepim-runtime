@@ -104,7 +104,7 @@
                     </property>
                     <property stdset="1">
                         <name>text</name>
-                        <string>&amp;Edit Categories...</string>
+                        <string>&amp;Edit Categories</string>
                     </property>
                 </widget>
             </hbox>

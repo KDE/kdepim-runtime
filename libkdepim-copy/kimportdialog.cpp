@@ -156,7 +156,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   QHBox *separatorBox = new QHBox( topBox );
   separatorBox->setSpacing( spacingHint() );
 
-  new QLabel( i18n( "Separator" ), separatorBox );
+  new QLabel( i18n( "Separator:" ), separatorBox );
 
   mSeparatorCombo = new KComboBox( separatorBox );
   mSeparatorCombo->insertItem( "," );
@@ -171,7 +171,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   QHBox *rowsBox = new QHBox( topBox );
   rowsBox->setSpacing( spacingHint() );
 
-  new QLabel( i18n( "Import starts at row" ), rowsBox );
+  new QLabel( i18n( "Import starts at row:" ), rowsBox );
   mStartRow = new QSpinBox( rowsBox );
   mStartRow->setMinValue( 1 );
 /*
@@ -203,11 +203,11 @@ KImportDialog::KImportDialog(QWidget* parent)
                                               assignBox);
   connect(removeButton,SIGNAL(clicked()),SLOT(removeColumn()));
 
-  QPushButton *assignTemplateButton = new QPushButton(i18n("Assign with Template"),
+  QPushButton *assignTemplateButton = new QPushButton(i18n("Assign with Template..."),
                                               assignBox);
   connect(assignTemplateButton,SIGNAL(clicked()),SLOT(assignTemplate()));
 
-  QPushButton *saveTemplateButton = new QPushButton(i18n("Save current Template"),
+  QPushButton *saveTemplateButton = new QPushButton(i18n("Save Current Template"),
                                               assignBox);
   connect(saveTemplateButton,SIGNAL(clicked()),SLOT(saveTemplate()));
 
@@ -569,7 +569,7 @@ void KImportDialog::assignTemplate()
   // let the user chose, what to take
   bool ok = false;
   QString tmp;
-  tmp = QInputDialog::getItem( i18n( "Template selection" ),
+  tmp = QInputDialog::getItem( i18n( "Template Selection" ),
                   i18n( "Please select a template, that matches the csv file." ),
                   templates, 0, false, &ok, this );
 
