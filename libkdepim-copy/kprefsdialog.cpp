@@ -58,6 +58,11 @@ KPrefsWid *create( KPrefsItem *item, QWidget *parent )
                                 parent );
   }
   
+  KPrefsItemInt *intItem = dynamic_cast<KPrefsItemInt *>( item );
+  if ( intItem ) {
+    return new KPrefsWidInt( intItem->name(), intItem->value(), parent );
+  }
+  
   return 0;
 }
 
@@ -99,6 +104,47 @@ QValueList<QWidget *> KPrefsWidBool::widgets() const
 {
   QValueList<QWidget *> widgets;
   widgets.append( mCheck );
+  return widgets;
+}
+
+
+KPrefsWidInt::KPrefsWidInt( const QString &text, int &reference,
+                            QWidget *parent, const QString &whatsThis )
+  : mReference( reference )
+{
+  mLabel = new QLabel( text, parent );
+  mSpin = new QSpinBox( parent );
+  if ( !whatsThis.isEmpty() ) {
+    QWhatsThis::add( mLabel, whatsThis );
+    QWhatsThis::add( mSpin, whatsThis );
+  }
+}
+
+void KPrefsWidInt::readConfig()
+{
+  mSpin->setValue( mReference );
+}
+
+void KPrefsWidInt::writeConfig()
+{
+  mReference = mSpin->value();
+}
+
+QLabel *KPrefsWidInt::label()
+{
+  return mLabel;
+}
+
+QSpinBox *KPrefsWidInt::spinBox()
+{
+  return mSpin;
+}
+
+QValueList<QWidget *> KPrefsWidInt::widgets() const
+{
+  QValueList<QWidget *> widgets;
+  widgets.append( mLabel );
+  widgets.append( mSpin );
   return widgets;
 }
 

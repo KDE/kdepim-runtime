@@ -106,6 +106,49 @@ class KPrefsWidBool : public KPrefsWid
 };
 
 /**
+  @short Widget for int settings in @ref KPrefsDialog.
+
+  This class provides a widget for configuring integer values. It is meant to be
+  used by KPrefsDialog. The user is responsible for the layout management.
+*/
+class KPrefsWidInt : public KPrefsWid
+{
+  public:
+    /**
+      Create a bool widget consisting of a label and a spinbox.
+
+      @param text      Text of label.
+      @param reference Pointer to variable read and written by this widget.
+      @param parent    Parent widget.
+      @param whatsThis What's This help for the widget.
+    */
+    KPrefsWidInt( const QString &text, int &reference,
+                  QWidget *parent,
+                  const QString &whatsThis = QString::null );
+
+    /**
+      Return QLabel used by this widget.
+    */
+    QLabel *label();
+
+    /**
+      Return the QSpinkbox used by this widget.
+    */
+    QSpinBox *spinBox();
+
+    void readConfig();
+    void writeConfig();
+
+    QValueList<QWidget *> widgets() const;
+
+  private:
+    int &mReference;
+
+    QLabel *mLabel;
+    QSpinBox *mSpin;
+};
+
+/**
   @short Widget for time settings in @ref KPrefsDialog.
 
   This class provides a widget for configuring time values. It is meant to be
