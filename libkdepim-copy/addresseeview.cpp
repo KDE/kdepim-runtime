@@ -232,10 +232,9 @@ void AddresseeView::updateView()
   QString notes;
   if ( !mAddressee.note().isEmpty() ) {
     notes = QString(
-      "<tr><td colspan=\"2\"><hr noshade=\"1\"></td></tr>"
       "<tr>"
       "<td align=\"right\" valign=\"top\"><b>%1:</b></td>"  // note label
-      "<td align=\"left\">%2</td>"  // note
+      "<td align=\"left\" valign=\"top\">%2</td>"  // note
       "</tr>" ).arg( i18n( "Notes" ) ).arg( mAddressee.note().replace( '\n', "<br>" ) );
   }
 
