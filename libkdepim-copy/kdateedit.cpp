@@ -256,6 +256,26 @@ bool KDateEdit::eventFilter(QObject *, QEvent *e)
     lineEnterPressed();
     mTextChanged = false;
   }
+  else if (e->type() == QEvent::KeyPress)
+  {
+    // Up and down arrow keys step the date
+    QKeyEvent* ke = (QKeyEvent*)e;
+    int step = 0;
+    if (ke->key() == Qt::Key_Up)
+      step = 1;
+    else if (ke->key() == Qt::Key_Down)
+      step = -1;
+    if (step)
+    {
+      QDate date;
+      if (readDate(date) && date.isValid()) {
+        date = date.addDays(step);
+        setDate(date);
+        emit(dateChanged(date));
+        return true;
+      }
+    }
+  }
 
   return false;
 }
