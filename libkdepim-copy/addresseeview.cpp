@@ -142,7 +142,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
     if ( pic.isIntern() && !pic.data().isNull() ) {
       image = pixmapAsDataUrl( pic.data() );
     } else if ( !pic.url().isEmpty() ) {
-      image = (pic.url().startsWith( "http://" ) ? pic.url() : "http://" + pic.url());
+      image = (pic.url().startsWith( "http://" ) || pic.url().startsWith( "https://" ) ? pic.url() : "http://" + pic.url());
     } else {
       image = "file:" + KGlobal::iconLoader()->iconPath( "personal", KIcon::Desktop );
     }
@@ -204,7 +204,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, int linkMask,
   if ( showURLs ) {
     if ( !addr.url().url().isEmpty() ) {
       if ( linkMask & URLLinks ) {
-        QString url = (addr.url().url().startsWith( "http://" ) ? addr.url().url() :
+        QString url = (addr.url().url().startsWith( "http://" ) || addr.url().url().startsWith( "https://" ) ? addr.url().url() :
                        "http://" + addr.url().url());
         dynamicPart += rowFmtStr
           .arg( i18n( "Homepage" ) )
@@ -488,7 +488,7 @@ void AddresseeView::slotHighlighted( const QString &link )
     emit highlightedMessage( i18n( "Send fax to %1" ).arg( number ) );
   } else if ( link.startsWith( "addr:" ) ) {
     emit highlightedMessage( i18n( "Show address on map" ) );
-  } else if ( link.startsWith( "http:" ) ) {
+  } else if ( link.startsWith( "http:" ) || link.startsWith( "https:" ) ) {
     emit urlHighlighted( link );
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
   } else
