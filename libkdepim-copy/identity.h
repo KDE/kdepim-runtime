@@ -7,6 +7,10 @@
 #ifndef kpim_identity_h
 #define kpim_identity_h
 
+#include <kleo/enum.h>
+
+#include <kdemacros.h>
+
 #include <qstring.h>
 #include <qcstring.h>
 #include <qstringlist.h>
@@ -14,10 +18,17 @@
 class KProcess;
 namespace KPIM {
   class Identity;
+  class Signature;
 }
 class KConfigBase;
 class IdentityList;
 class QDataStream;
+
+QDataStream & operator<<( QDataStream & stream, const KPIM::Signature & sig );
+QDataStream & operator>>( QDataStream & stream, KPIM::Signature & sig );
+
+QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & ident );
+QDataStream & operator>>( QDataStream & stream, KPIM::Identity & ident );
 
 namespace KPIM {
 
@@ -28,8 +39,8 @@ namespace KPIM {
 class Signature {
   friend class Identity;
 
-  friend QDataStream & operator<<( QDataStream & stream, const Signature & sig );
-  friend QDataStream & operator>>( QDataStream & stream, Signature & sig );
+  friend QDataStream & ::operator<<( QDataStream & stream, const Signature & sig );
+  friend QDataStream & ::operator>>( QDataStream & stream, Signature & sig );
 
 public:
   /** Type of signature (ie. way to obtain the signature text) */
@@ -87,8 +98,8 @@ class Identity
   // QValueList<Identity> and especially qHeapSort().
   friend class IdentityManager;
 
-  friend QDataStream & operator<<( QDataStream & stream, const Identity & ident );
-  friend QDataStream & operator>>( QDataStream & stream, Identity & ident );
+  friend QDataStream & ::operator<<( QDataStream & stream, const Identity & ident );
+  friend QDataStream & ::operator>>( QDataStream & stream, Identity & ident );
 
 public:
   typedef QValueList<Identity> List;
@@ -174,9 +185,30 @@ public:
   QString organization() const { return mOrganization; }
   void setOrganization(const QString&);
 
-  /** The user's PGP identity */
-  QCString pgpIdentity() const { return mPgpIdentity; }
-  void setPgpIdentity(const QCString&);
+  KDE_DEPRECATED QCString pgpIdentity() const { return pgpEncryptionKey(); }
+  KDE_DEPRECATED void setPgpIdentity( const QCString & key ) {
+    setPGPEncryptionKey( key );
+    setPGPSigningKey( key );
+  }
+
+  /** The user's OpenPGP encryption key */
+  QCString pgpEncryptionKey() const { return mPGPEncryptionKey; }
+  void setPGPEncryptionKey( const QCString & key );
+
+  /** The user's OpenPGP signing key */
+  QCString pgpSigningKey() const { return mPGPSigningKey; }
+  void setPGPSigningKey( const QCString & key );
+
+  /** The user's S/MIME encryption key */
+  QCString smimeEncryptionKey() const { return mSMIMEEncryptionKey; }
+  void setSMIMEEncryptionKey( const QCString & key );
+
+  /** The user's S/MIME signing key */
+  QCString smimeSigningKey() const { return mSMIMESigningKey; }
+  void setSMIMESigningKey( const QCString & key );
+
+  Kleo::CryptoMessageFormat preferredCryptoMessageFormat() const { return mPreferredCryptoMessageFormat; }
+  void setPreferredCryptoMessageFormat( Kleo::CryptoMessageFormat format ) { mPreferredCryptoMessageFormat = format; }
 
   /** email address (without the user name - only name@host) */
   QString emailAddr() const { return mEmailAddr; }
@@ -259,19 +291,14 @@ protected:
   QString mReplyToAddr;
   QString mBcc;
   QString mVCardFile;
-  QCString mPgpIdentity;
+  QCString mPGPEncryptionKey, mPGPSigningKey, mSMIMEEncryptionKey, mSMIMESigningKey;
   QString mFcc, mDrafts, mTransport;
   QString mDictionary;
   Signature mSignature;
   bool      mIsDefault;
+  Kleo::CryptoMessageFormat mPreferredCryptoMessageFormat;
 };
 
-QDataStream & operator<<( QDataStream & stream, const Signature & sig );
-QDataStream & operator>>( QDataStream & stream, Signature & sig );
-
-QDataStream & operator<<( QDataStream & stream, const Identity & ident );
-QDataStream & operator>>( QDataStream & stream, Identity & ident );
-
-}
+} // namespace KPIM
 
 #endif /*kpim_identity_h*/

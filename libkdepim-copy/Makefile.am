@@ -1,6 +1,6 @@
 SUBDIRS = cfgc interfaces tests
 
-INCLUDES = -I$(top_srcdir)/libkdepim $(all_includes)
+INCLUDES = -I$(top_srcdir)/libkdepim -I$(top_srcdir)/certmanager/lib $(all_includes)
 
 lib_LTLIBRARIES   = libkdepim.la
 libkdepim_la_SOURCES = \
@@ -34,7 +34,7 @@ MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
-libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KDEUI) 
+libkdepim_la_LIBADD  = ../certmanager/lib/libkleopatra.la $(LIB_KIO) $(LIB_KABC) $(LIB_KDEUI) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 identitymanager_DCOPIDLNG = true

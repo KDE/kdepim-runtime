@@ -210,13 +210,13 @@ void Signature::writeConfig( KConfigBase * config ) const
   }
 }
 
-QDataStream & KPIM::operator<<( QDataStream & stream, const Signature & sig ) {
+QDataStream & operator<<( QDataStream & stream, const KPIM::Signature & sig ) {
   return stream << static_cast<Q_UINT8>(sig.mType)
 		<< sig.mUrl
 		<< sig.mText;
 }
 
-QDataStream & KPIM::operator>>( QDataStream & stream, Signature & sig ) {
+QDataStream & operator>>( QDataStream & stream, KPIM::Signature & sig ) {
     Q_UINT8 s;
     stream >> s
            >> sig.mUrl
@@ -232,8 +232,11 @@ bool Identity::isNull() const {
   return mIdentity.isNull() && mFullName.isNull() && mEmailAddr.isNull() &&
     mOrganization.isNull() && mReplyToAddr.isNull() && mBcc.isNull() &&
     mVCardFile.isNull() &&
-    mPgpIdentity.isNull() && mFcc.isNull() && mDrafts.isNull() &&
+    mFcc.isNull() && mDrafts.isNull() &&
+    mPGPEncryptionKey.isNull() && mPGPSigningKey.isNull() &&
+    mSMIMEEncryptionKey.isNull() && mSMIMESigningKey.isNull() &&
     mTransport.isNull() && mDictionary.isNull() &&
+    mPreferredCryptoMessageFormat == Kleo::AutoFormat &&
     mSignature.type() == Signature::Disabled;
 }
 
@@ -243,7 +246,12 @@ bool Identity::operator==( const Identity & other ) const {
       mEmailAddr == other.mEmailAddr && mOrganization == other.mOrganization &&
       mReplyToAddr == other.mReplyToAddr && mBcc == other.mBcc &&
       mVCardFile == other.mVCardFile &&
-      mPgpIdentity == other.mPgpIdentity && mFcc == other.mFcc &&
+      mFcc == other.mFcc &&
+      mPGPEncryptionKey == other.mPGPEncryptionKey &&
+      mPGPSigningKey == other.mPGPSigningKey &&
+      mSMIMEEncryptionKey == other.mSMIMEEncryptionKey &&
+      mSMIMESigningKey == other.mSMIMESigningKey &&
+      mPreferredCryptoMessageFormat == other.mPreferredCryptoMessageFormat &&
       mDrafts == other.mDrafts && mTransport == other.mTransport &&
       mDictionary == other.mDictionary && mSignature == other.mSignature;
 }
@@ -253,7 +261,8 @@ Identity::Identity( const QString & id, const QString & fullName,
 			const QString & replyToAddr )
   : mUoid( 0 ), mIdentity( id ), mFullName( fullName ),
     mEmailAddr( emailAddr ), mOrganization( organization ),
-    mReplyToAddr( replyToAddr ), mIsDefault( false )
+    mReplyToAddr( replyToAddr ), mIsDefault( false ),
+    mPreferredCryptoMessageFormat( Kleo::AutoFormat )
 {
 
 }
@@ -272,7 +281,11 @@ void Identity::readConfig( const KConfigBase * config )
   mEmailAddr = config->readEntry("Email Address");
   mVCardFile = config->readPathEntry("VCardFile");
   mOrganization = config->readEntry("Organization");
-  mPgpIdentity = config->readEntry("Default PGP Key").local8Bit();
+  mPGPSigningKey = config->readEntry("PGP Signing Key").latin1();
+  mPGPEncryptionKey = config->readEntry("PGP Encryption Key").latin1();
+  mSMIMESigningKey = config->readEntry("SMIME Signing Key").latin1();
+  mSMIMEEncryptionKey = config->readEntry("SMIME Encryption Key").latin1();
+  mPreferredCryptoMessageFormat = Kleo::stringToCryptoMessageFormat( config->readEntry("Preferred Crypto Message Format", "none" ) );
   mReplyToAddr = config->readEntry("Reply-To Address");
   mBcc = config->readEntry("Bcc");
   mFcc = config->readEntry("Fcc", "sent-mail");
@@ -297,7 +310,11 @@ void Identity::writeConfig( KConfigBase * config ) const
   config->writeEntry("Identity", mIdentity);
   config->writeEntry("Name", mFullName);
   config->writeEntry("Organization", mOrganization);
-  config->writeEntry("Default PGP Key", mPgpIdentity.data());
+  config->writeEntry("PGP Signing Key", mPGPSigningKey.data());
+  config->writeEntry("PGP Encryption Key", mPGPEncryptionKey.data());
+  config->writeEntry("SMIME Signing Key", mSMIMESigningKey.data());
+  config->writeEntry("SMIME Encryption Key", mSMIMEEncryptionKey.data());
+  config->writeEntry("Preferred Crypto Message Format", Kleo::cryptoMessageFormatToString( mPreferredCryptoMessageFormat ) );
   config->writeEntry("Email Address", mEmailAddr);
   config->writeEntry("Reply-To Address", mReplyToAddr);
   config->writeEntry("Bcc", mBcc);
@@ -310,12 +327,15 @@ void Identity::writeConfig( KConfigBase * config ) const
   mSignature.writeConfig( config );
 }
 
-QDataStream & KPIM::operator<<( QDataStream & stream, const Identity & i ) {
+QDataStream & operator<<( QDataStream & stream, const KPIM::Identity & i ) {
   return stream << static_cast<Q_UINT32>(i.uoid())
 		<< i.identityName()
 		<< i.fullName()
 		<< i.organization()
-		<< i.pgpIdentity()
+		<< i.pgpSigningKey()
+		<< i.pgpEncryptionKey()
+		<< i.smimeSigningKey()
+		<< i.smimeEncryptionKey()
 		<< i.emailAddr()
 		<< i.replyToAddr()
 		<< i.bcc()
@@ -324,18 +344,21 @@ QDataStream & KPIM::operator<<( QDataStream & stream, const Identity & i ) {
 		<< i.fcc()
 		<< i.drafts()
 		<< i.mSignature
-                << i.dictionary();
+                << i.dictionary()
+		<< QString( Kleo::cryptoMessageFormatToString( i.mPreferredCryptoMessageFormat ) );
 }
 
-QDataStream & KPIM::operator>>( QDataStream & stream, Identity & i ) {
+QDataStream & operator>>( QDataStream & stream, KPIM::Identity & i ) {
   Q_UINT32 uoid;
-  stream >> uoid;
-  i.mUoid = uoid;
-  return stream
+  QString format;
+  stream        >> uoid
 		>> i.mIdentity
 		>> i.mFullName
 		>> i.mOrganization
-		>> i.mPgpIdentity
+		>> i.mPGPSigningKey
+		>> i.mPGPEncryptionKey
+		>> i.mSMIMESigningKey
+		>> i.mSMIMEEncryptionKey
 		>> i.mEmailAddr
 		>> i.mReplyToAddr
 		>> i.mBcc
@@ -344,7 +367,12 @@ QDataStream & KPIM::operator>>( QDataStream & stream, Identity & i ) {
 		>> i.mFcc
 		>> i.mDrafts
 		>> i.mSignature
-                >> i.mDictionary;
+                >> i.mDictionary
+		>> format;
+  i.mUoid = uoid;
+  i.mPreferredCryptoMessageFormat = Kleo::stringToCryptoMessageFormat( format.latin1() );
+
+  return stream;
 }
 
 //-----------------------------------------------------------------------------
@@ -374,13 +402,25 @@ void Identity::setOrganization(const QString &str)
   mOrganization = str;
 }
 
-
-//-----------------------------------------------------------------------------
-void Identity::setPgpIdentity(const QCString &str)
+void Identity::setPGPSigningKey(const QCString &str)
 {
-  mPgpIdentity = str;
+  mPGPSigningKey = str;
 }
 
+void Identity::setPGPEncryptionKey(const QCString &str)
+{
+  mPGPEncryptionKey = str;
+}
+
+void Identity::setSMIMESigningKey(const QCString &str)
+{
+  mSMIMESigningKey = str;
+}
+
+void Identity::setSMIMEEncryptionKey(const QCString &str)
+{
+  mSMIMEEncryptionKey = str;
+}
 
 //-----------------------------------------------------------------------------
 void Identity::setEmailAddr(const QString &str)
