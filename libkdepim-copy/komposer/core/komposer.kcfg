@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+  <kcfgfile name="komposerrc"/>
+
+  <group name="Colors">
+
+    <entry type="Color" name="foregroundColor">
+    </entry>
+
+    <entry type="Color" name="backgroundColor">
+    </entry>
+
+    <entry type="Color" name="QuotedText$(Level)" key="quotedColor_$(Level)">
+      <parameter name="Level" type="Int" max="3"/>
+      <default param="0">#ff0000</default>
+      <default param="1">#00ff00</default>
+      <default param="2">#0000ff</default>
+      <default param="3">#ffff00</default>
+    </entry>	
+
+  </group>
+
+</kcfg>

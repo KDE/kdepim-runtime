@@ -3,7 +3,8 @@ METASOURCES = AUTO
 
 lib_LTLIBRARIES = libkomposer.la
 
-libkomposer_la_SOURCES = editor.cpp core.cpp prefs.cpp attachment.cpp corewidget.cpp
+libkomposer_la_SOURCES = editor.cpp core.cpp prefs.cpp attachment.cpp corewidget.cpp \
+	komposer.kcfgc
 libkomposer_la_LDFLAGS = -no-undefined $(KDE_RPATH) -version-info 1:0:0 $(all_libraries)
 libkomposer_la_LIBADD = $(LIB_KPARTS) $(top_builddir)/libkdepim/libkdepim.la -lkutils
 
@@ -18,6 +19,8 @@ kpinclude_HEADERS = editor.h core.h
 
 rcdir = $(kde_datadir)/komposer
 rc_DATA = komposerui.rc
+
+kde_kcfg_DATA = komposer.kcfg
 
 servicetypedir = $(kde_servicetypesdir)
 servicetype_DATA = komposerplugin.desktop

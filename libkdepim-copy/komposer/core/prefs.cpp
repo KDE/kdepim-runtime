@@ -55,7 +55,7 @@ Prefs::~Prefs()
 Prefs *Prefs::self()
 {
   if ( !s_instance ) {
-    s_instance = insd.setObject( new Prefs() );
+    insd.setObject( s_instance, new Prefs() );
     s_instance->readConfig();
   }
 
