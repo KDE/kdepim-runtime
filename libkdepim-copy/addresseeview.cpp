@@ -19,6 +19,7 @@
     Boston, MA 02111-1307, USA.
 */
 
+#include <qimage.h>
 #include <qpopupmenu.h>
 #include <qurl.h>
 
@@ -36,6 +37,7 @@
 #include <kmessagebox.h>
 #include <krun.h>
 #include <kstringhandler.h>
+#include <ktempfile.h>
 
 #include "addresseeview.h"
 
@@ -112,18 +114,32 @@ void AddresseeView::setAddressee( const KABC::Addressee& addr )
 }
 
 QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
-                                   bool showBirthday, bool showAddresses,
-                                   bool showEmails, bool showPhones, bool showURLs )
+                                    bool internalLoading,
+                                    bool showBirthday, bool showAddresses,
+                                    bool showEmails, bool showPhones, bool showURLs )
 {
   QString name = ( addr.formattedName().isEmpty() ?
                    addr.assembledName() : addr.formattedName() );
 
   QString dynamicPart;
+  QString image = "contact_image";
 
   QString rowFmtStr = QString::fromLatin1(
 			"<tr><td align=\"right\" width=\"30%\"><b>%1</b></td>"
 			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
 			);
+
+  if ( !internalLoading ) {
+    KABC::Picture pic = addr.photo();
+    if ( pic.isIntern() && !pic.data().isNull() ) {
+      KTempFile tmpFile;
+      tmpFile.close();
+      pic.data().save( tmpFile.name(), "PNG" );
+      image = "file:/" + tmpFile.name();
+    } else if ( !pic.url().isEmpty() ) {
+      image = (pic.url().startsWith( "http://" ) ? pic.url() : "http://" + pic.url());
+    }
+  }
 
   if ( showBirthday ) {
     QDate date = addr.birthday().date();
@@ -277,22 +293,23 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, bool useLinks,
     "<table width=\"100%\">"
     "<tr>"
     "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\">"
-    "<img src=\"contact_image\" width=\"50\" height=\"70\">"
+    "<img src=\"%1\" width=\"50\" height=\"70\">" // image
     "</td>"
-    "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%1</b></font></td>"  // name
+    "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%2</b></font></td>"  // name
     "</tr>"
     "<tr>"
-    "<td align=\"left\" width=\"70%\">%2</td>"  // role
+    "<td align=\"left\" width=\"70%\">%3</td>"  // role
     "</tr>"
     "<tr>"
-    "<td align=\"left\" width=\"70%\">%3</td>"  // organization
+    "<td align=\"left\" width=\"70%\">%4</td>"  // organization
     "</tr>"
     "</tr>"
     "<tr><td colspan=\"2\">&nbsp;</td></tr>"
-    "%4"  // dynamic part
-    "%5"  // notes
+    "%5"  // dynamic part
+    "%6"  // notes
     "</table>"
     "</div>" )
+     .arg( image )
      .arg( name )
      .arg( role )
      .arg( organization )
@@ -318,7 +335,7 @@ void AddresseeView::updateView()
     mImageData.truncate( 0 );
   }
 
-  QString strAddr = vCardAsHTML( mAddressee, true,
+  QString strAddr = vCardAsHTML( mAddressee, true, true,
                                  mActionShowBirthday->isChecked(),
                                  mActionShowAddresses->isChecked(),
                                  mActionShowEmails->isChecked(),

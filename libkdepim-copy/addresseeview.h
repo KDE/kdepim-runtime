@@ -64,7 +64,32 @@ class AddresseeView : public KTextBrowser
      */
     KABC::Addressee addressee() const;
 
+    /**
+      Returns the HTML representation of a contact.
+      The HTML code looks like
+        <div>
+        <table>
+        ...
+        </table>
+        </div>
+
+      @param addr The addressee object.
+      @param useLinks If true, the addresses, emails, phone numbers and urls will
+                      be displayed as links.
+                      The links looks like this:
+                        "addr://<addr id>" for addresses
+                        "mailto:<email address>" for emails
+                        "phone://<phone number>" for phone numbers
+                        "http://<url>" for urls
+      @param internalLoading If true, the loading of internal pictures is done automatically.
+      @param showBirthday If true, the birthday is included.
+      @param showAddresses If true, the addresses are included.
+      @param showEmails If true, the emails are included.
+      @param showPhones If true, the phone numbers are included.
+      @param showURLs If true, the urls are included.
+     */
     static QString vCardAsHTML( const KABC::Addressee& addr, bool useLinks = true,
+                                bool internalLoading = true,
                                 bool showBirthday = true, bool showAddresses = true,
                                 bool showEmails = true, bool showPhones = true,
                                 bool showURLs = true );
