@@ -135,7 +135,7 @@ void LdapClient::startQuery( const QString& filter )
   url.setScope( mScope == "one" ? LDAPUrl::One : LDAPUrl::Sub );
   url.setFilter( "("+filter+")" );
 
-  kdDebug(5700) << "Doing query: " << url.prettyURL() << endl;
+  kdDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
 
   startParseLDIF();
   mActive = true;
@@ -298,7 +298,8 @@ void LdapSearch::readConfig()
         ldapClient->setPwdBindDN( pwdBindDN );
 
       QStringList attrs;
-      attrs << "cn" << "mail" << "givenname" << "sn";
+      // note: we need "objectClass" to detect distribution lists
+      attrs << "cn" << "mail" << "givenname" << "sn" << "objectClass";
       ldapClient->setAttrs( attrs );
 
       connect( ldapClient, SIGNAL( result( const KPIM::LdapObject& ) ),
@@ -348,6 +349,7 @@ void LdapSearch::startSearch( const QString& txt )
   QValueList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it ) {
     (*it)->startQuery( filter );
+    kdDebug(5300) << "LdapSearch::startSearch() " << filter << endl;
     ++mActiveClients;
   }
 }
@@ -408,26 +410,69 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
   QValueList< KPIM::LdapObject >::ConstIterator it1;
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
     QString name, mail, givenname, sn;
-
+    bool isDistributionList = false;
+    //bool wasCN = false;
+    //bool wasDC = false;
+    
+    kdDebug(5300) << "LdapSearch::makeSearchData() " << endl;
+    
     LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
-      QString tmp = QString::fromUtf8( (*it2).first(), (*it2).first().size() );
-      if ( it2.key() == "cn" )
-        name = tmp; // TODO loop?
-      else if( it2.key() == "mail" )
+      const QString tmp = QString::fromUtf8( (*it2).first(), (*it2).first().size() );
+      kdDebug(5300) << "      " << it2.key() << ": " << tmp << endl;
+      if ( it2.key() == "cn" ) {
+        name = tmp;
+        /*if( mail.isEmpty() )
+          mail = tmp;
+        else{
+          if( wasCN )
+            mail.prepend( "." );
+          else
+            mail.prepend( "@" );
+          mail.prepend( tmp );
+        }
+        wasCN = true;
+      } else if ( it2.key() == "dc" ) {
+        if( mail.isEmpty() )
+          mail = tmp;
+        else{
+          if( wasDC )
+            mail.append( "." );
+          else
+            mail.append( "@" );
+          mail.append( tmp );
+        }
+        wasDC = true;*/
+      } else if( it2.key() == "mail" )
         mail = tmp;
       else if( it2.key() == "givenName" )
         givenname = tmp;
       else if( it2.key() == "sn" )
         sn = tmp;
+      else if( it2.key() == "objectClass" && tmp == "groupOfNames" ) {
+        isDistributionList = true;
+      }
     }
 
-    if( mail.isEmpty())
-      continue; // nothing, bad entry
-    else if ( name.isEmpty() )
+    if( mail.isEmpty()) {
+      if( isDistributionList ) {
+        kdDebug(5300) << "LdapSearch::makeSearchData() found a list: " << name << endl;
+        ret.append( name );
+        mail = (*it1).client->base().simplifyWhiteSpace();
+        mail.replace( ",dc=", ".", false );
+        if( mail.startsWith("dc=", false) )
+          mail.remove(0, 3);
+        mail.prepend( '@' );
+        mail.prepend( name );
+      } else {
+        kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: " << name << endl;
+        continue; // nothing, bad entry
+      }
+    } else if ( name.isEmpty() ) {
+      kdDebug(5300) << "LdapSearch::makeSearchData(): " << mail << endl;
       ret.append( mail );
-    else {
-      kdDebug(5700) << "<" << name << "><" << mail << ">" << endl;
+    } else {
+      kdDebug(5300) << "LdapSearch::makeSearchData(): <" << name << "><" << mail << ">" << endl;
       ret.append( QString( "%1 <%2>" ).arg( name ).arg( mail ) );
     }
 
