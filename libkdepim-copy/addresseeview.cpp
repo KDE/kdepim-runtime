@@ -87,8 +87,13 @@ AddresseeView::~AddresseeView()
 {
   if ( mDefaultConfig )
     delete mConfig;
-
   mConfig = 0;
+
+  delete mActionShowBirthday;
+  delete mActionShowAddresses;
+  delete mActionShowEmails;
+  delete mActionShowPhones;
+  delete mActionShowURLs;
 }
 
 void AddresseeView::setAddressee( const KABC::Addressee& addr )
@@ -127,12 +132,15 @@ void AddresseeView::updateView()
 
   QString dynamicPart;
 
+  QString rowFmtStr = QString::fromLatin1(
+			"<tr><td align=\"right\" width=\"30%\"><b>%1</b></td>"
+			"<td align=\"left\" width=\"70%\">%2</td></tr>\n"
+			);
+
   if ( mActionShowBirthday->isChecked() ) {
     QDate date = mAddressee.birthday().date();
 
-    dynamicPart += QString(
-      "<tr><td align=\"right\"><b>%1</b></td>"
-      "<td align=\"left\">%2</td></tr>" )
+    dynamicPart += rowFmtStr
       .arg( KABC::Addressee::birthdayLabel() )
       .arg( date.isValid() ? KGlobal::locale()->formatDate( date, true ) : i18n( "none" ) );
   }
@@ -145,16 +153,13 @@ void AddresseeView::updateView()
 
       QString url;
       if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
-        url = "fax:" + number;
+        url = QString::fromLatin1("fax:") + number;
       else
-        url = "phone:" + number;
+        url = QString::fromLatin1("phone:") + number;
 
-      dynamicPart += QString(
-        "<tr><td align=\"right\"><b>%1</b></td>"
-        "<td align=\"left\"><a href=\"%2\">%3</a></td></tr>" )
+      dynamicPart += rowFmtStr
         .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-        .arg( url )
-        .arg( number );
+        .arg( QString::fromLatin1("<a href=\"%1\">%2</a>").arg(url).arg(number) );
     }
   }
 
@@ -163,21 +168,16 @@ void AddresseeView::updateView()
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
-      dynamicPart += QString(
-        "<tr><td align=\"right\"><b>%1</b></td>"
-        "<td align=\"left\"><a href=\"mailto:%2\">%3</a></td></tr>" )
+      dynamicPart += rowFmtStr
         .arg( type )
-        .arg( *emailIt )
-        .arg( *emailIt );
+        .arg( QString::fromLatin1("<a href=\"mailto:%1\">%2</a>").arg(*emailIt).arg(*emailIt) );
       type = i18n( "Other" );
     }
   }
 
   if ( mActionShowURLs->isChecked() ) {
     if ( !mAddressee.url().url().isEmpty() ) {
-      dynamicPart += QString(
-        "<tr><td align=\"right\"><b>%1</b></td>"
-        "<td align=\"left\">%2</td></tr>" )
+      dynamicPart += rowFmtStr
         .arg( i18n( "Homepage" ) )
         .arg( KStringHandler::tagURLs( mAddressee.url().url() ) );
     }
@@ -190,7 +190,7 @@ void AddresseeView::updateView()
       if ( (*addrIt).label().isEmpty() ) {
         QString formattedAddress;
 
-#if KDE_VERSION >= 319
+#if KDE_IS_VERSION(3,1,90)
         formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
 #else
         if ( !(*addrIt).street().isEmpty() )
@@ -199,10 +199,10 @@ void AddresseeView::updateView()
         if ( !(*addrIt).postOfficeBox().isEmpty() )
           formattedAddress += (*addrIt).postOfficeBox() + "\n";
 
-        formattedAddress += (*addrIt).locality() + QString(" ") + (*addrIt).region();
+        formattedAddress += (*addrIt).locality() + QString::fromLatin1(" ") + (*addrIt).region();
 
         if ( !(*addrIt).postalCode().isEmpty() )
-          formattedAddress += QString(", ") + (*addrIt).postalCode();
+          formattedAddress += QString::fromLatin1(", ") + (*addrIt).postalCode();
 
         formattedAddress += "\n";
 
@@ -214,15 +214,11 @@ void AddresseeView::updateView()
 
         formattedAddress = formattedAddress.replace( '\n', "<br>" );
 
-        dynamicPart += QString(
-          "<tr><td align=\"right\"><b>%1</b></td>"
-          "<td align=\"left\">%2</td></tr>" )
+        dynamicPart += rowFmtStr
           .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
           .arg( formattedAddress );
       } else {
-        dynamicPart += QString(
-          "<tr><td align=\"right\"><b>%1</b></td>"
-          "<td align=\"left\">%2</td></tr>" )
+        dynamicPart += rowFmtStr
           .arg( KABC::Address::typeLabel( (*addrIt).type() ) )
           .arg( (*addrIt).label().replace( '\n', "<br>" ) );
       }
@@ -231,41 +227,45 @@ void AddresseeView::updateView()
 
   QString notes;
   if ( !mAddressee.note().isEmpty() ) {
-    notes = QString(
+    notes = QString::fromLatin1(
       "<tr>"
-      "<td align=\"right\" valign=\"top\"><b>%1:</b></td>"  // note label
+      "<td align=\"right\" valign=\"top\" width=\"30%\"><b>%1:</b></td>"  // note label
       "<td align=\"left\" valign=\"top\">%2</td>"  // note
       "</tr>" ).arg( i18n( "Notes" ) ).arg( mAddressee.note().replace( '\n', "<br>" ) );
   }
 
+  QString role, organization;
+  role = mAddressee.role().isEmpty() ? 
+	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.role());
+  organization = mAddressee.organization().isEmpty() ?
+	QString::null : rowFmtStr.arg(QString::null).arg(mAddressee.organization());
+
   QString strAddr = QString::fromLatin1(
   "<html>"
   "<body text=\"%1\" bgcolor=\"%2\">" // text and background color
-  "<table>"
+  "<table width=\"100%\">"
   "<tr>"
-  "<td rowspan=\"3\" align=\"right\" valign=\"top\">"
+  "<td align=\"right\" valign=\"top\" width=\"30%\">"
   "<img src=\"myimage\" width=\"50\" height=\"70\">"
   "</td>"
-  "<td align=\"left\"><font size=\"+2\"><b>%3</b></font></td>"  // name
+  "<td align=\"left\" width=\"70%\"><font size=\"+2\"><b>%3</b></font></td>"  // name
   "</tr>"
-  "<tr>"
-  "<td align=\"left\">%4</td>"  // role
-  "</tr>"
-  "<tr>"
-  "<td align=\"left\">%5</td>"  // organization
-  "</tr>"
-  "<tr><td colspan=\"2\">&nbsp;</td></tr>"
+  "%4"	// role
+  "%5"	// organization
+  "<tr><td></td></tr>"
   "%6"  // dynamic part
   "%7"  // notes
   "</table>"
   "</body>"
-  "</html>").arg( KGlobalSettings::textColor().name() )
-  .arg( KGlobalSettings::baseColor().name() )
-  .arg( name )
-  .arg( mAddressee.role() )
-  .arg( mAddressee.organization() )
-  .arg( dynamicPart )
-  .arg( notes );
+  "</html>")
+   .arg( KGlobalSettings::textColor().name() )
+   .arg( KGlobalSettings::baseColor().name() )
+   .arg( name )
+   .arg( role )
+   .arg( organization )
+   .arg( dynamicPart )
+   .arg( notes )
+   ;
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
