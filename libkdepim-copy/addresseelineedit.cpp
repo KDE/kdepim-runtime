@@ -121,7 +121,7 @@ void AddresseeLineEdit::init()
     connect( box, SIGNAL( highlighted( const QString& ) ),
              this, SLOT( slotPopupCompletion( const QString& ) ) );
     connect( box, SIGNAL( userCancelled( const QString& ) ),
-             SLOT( userCancelled( const QString& ) ) );
+             SLOT( slotUserCancelled( const QString& ) ) );
 
     // The emitter is always called KPIM::IMAPCompletionOrder by contract
     if ( !connectDCOPSignal( 0, "KPIM::IMAPCompletionOrder", "orderChanged()",
@@ -604,6 +604,13 @@ void KPIM::AddresseeLineEdit::slotIMAPCompletionOrderChanged()
 {
   if ( m_useCompletion )
     s_addressesDirty = true;
+}
+
+void KPIM::AddresseeLineEdit::slotUserCancelled( const QString& cancelText )
+{
+  if ( s_LDAPSearch && s_LDAPLineEdit == this )
+    stopLDAPLookup();
+  userCancelled( cancelText ); // in KLineEdit
 }
 
 #include "addresseelineedit.moc"
