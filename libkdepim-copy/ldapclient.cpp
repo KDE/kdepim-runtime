@@ -107,16 +107,18 @@ void LdapClient::startQuery( const QString& filter )
   cancelQuery();
   KABC::LDAPUrl url;
 
-  url.setProtocol( ( mServer.security() == 2 ) ? "ldaps" : "ldap" );
-  url.setUser( mServer.user() );
-  url.setPass( mServer.pwdBindDN() );
+  url.setProtocol( ( mServer.security() == LdapServer::SSL ) ? "ldaps" : "ldap" );
+  if ( mServer.auth() != LdapServer::Anonymous ) {
+    url.setUser( mServer.user() );
+    url.setPass( mServer.pwdBindDN() );
+  }
   url.setHost( mServer.host() );
   url.setPort( mServer.port() );
   url.setExtension( "x-ver", QString::number( mServer.version() ) );
   url.setDn( mServer.baseDN() );
   url.setDn( mServer.baseDN() );
-  if ( mServer.security() == 1 ) url.setExtension( "x-tls","" );
-  if ( mServer.auth() == 2 ) {
+  if ( mServer.security() == LdapServer::TLS ) url.setExtension( "x-tls","" );
+  if ( mServer.auth() == LdapServer::SASL ) {
     url.setExtension( "x-sasl","" );
     if ( !mServer.bindDN().isEmpty() ) url.setExtension( "x-bindname", mServer.bindDN() );
     if ( !mServer.mech().isEmpty() ) url.setExtension( "x-mech", mServer.mech() );
@@ -178,7 +180,7 @@ void LdapClient::slotDone()
 #endif
   int err = mJob->error();
   if ( err && err != KIO::ERR_USER_CANCELED ) {
-    emit error( KIO::buildErrorString( err, QString("%1:%2").arg( mServer.host() ).arg( mServer.port() ) ) );
+    emit error( mJob->errorString() );
   }
   emit done();
 }

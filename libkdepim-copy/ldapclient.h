@@ -45,6 +45,8 @@ class LdapServer
   public:
     LdapServer() : mPort( 389 ) {}
 
+    enum Security{ Sec_None, TLS, SSL };
+    enum Auth{ Anonymous, Simple, SASL };
     QString host() const { return mHost; }
     int port() const { return mPort; }
     const QString &baseDN() const { return mBaseDN; }
