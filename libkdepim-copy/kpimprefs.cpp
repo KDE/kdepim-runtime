@@ -21,6 +21,7 @@
 
 #include <time.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <qstring.h>
 
@@ -86,6 +87,28 @@ const QString KPimPrefs::timezone()
   }
 
   return( zone );
+}
+
+QDateTime KPimPrefs::utcToLocalTime( const QDateTime &dt,
+                                     const QString &timeZoneId )
+{
+//  kdDebug() << "---   UTC: " << dt.toString() << endl;
+
+  QCString origTz = getenv("TZ");
+
+  setenv( "TZ", "UTC", 1 );
+  time_t utcTime = dt.toTime_t();
+
+  setenv( "TZ", timeZoneId.local8Bit(), 1 );
+  struct tm *local = localtime( &utcTime );
+
+  setenv( "TZ", origTz, 1 );
+
+  QDateTime result( QDate( local->tm_year + 1900, local->tm_mon + 1,
+                           local->tm_mday ),
+                    QTime( local->tm_hour, local->tm_min, local->tm_sec ) );
+//  kdDebug() << "--- LOCAL: " << result.toString() << endl;
+  return result;
 }
 
 void KPimPrefs::usrWriteConfig()
