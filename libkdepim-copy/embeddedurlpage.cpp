@@ -23,6 +23,7 @@
 
 #include "embeddedurlpage.h"
 #include <kparts/componentfactory.h>
+#include <kparts/browserextension.h>
 #include <kparts/part.h>
 #include <kmimetype.h>
 #include <klocale.h>
@@ -59,6 +60,10 @@ void EmbeddedURLPage::loadContents()
         mPart->openURL( mUri );
         mPart->widget()->show();
     }
+//void KParts::BrowserExtension::openURLRequestDelayed( const KURL &url, const KParts::URLArgs &args = KParts::URLArgs() )
+    KParts::BrowserExtension* be = KParts::BrowserExtension::childObject( mPart );
+    connect( be, SIGNAL( openURLRequestDelayed( const KURL &, const KParts::URLArgs & ) ),
+             mPart, SLOT( openURL( const KURL & ) ) );
   }
 }
 

@@ -46,7 +46,6 @@ class KDE_EXPORT CategoryEditDialog : public KDialogBase
     void slotApply();
     void slotTextChanged(const QString &text);
     void add();
-    void modify();
     void remove();
     void editItem( QListViewItem *item );
 
