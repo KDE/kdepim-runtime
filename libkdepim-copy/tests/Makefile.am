@@ -1,12 +1,10 @@
 AM_CPPFLAGS = -I$(top_srcdir)/libkdepim $(all_includes)
 
-check_PROGRAMS = testwizard
+check_PROGRAMS = testwizard testaddresseelineedit
 
 testwizard_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 testwizard_LDADD = ../libkdepim.la $(LIB_KDECORE)
 testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
-
-check_PROGRAMS = testaddresseelineedit
 
 testaddresseelineedit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 testaddresseelineedit_LDADD = ../libkdepim.la $(LIB_KDECORE)
