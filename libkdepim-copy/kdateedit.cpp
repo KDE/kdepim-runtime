@@ -191,6 +191,7 @@ void KDateEdit::lineEnterPressed()
     // Invalid or unacceptable date - revert to previous value
     KNotifyClient::beep();
     setDate(value);
+    emit invalidDateEntered();
   }
 }
 

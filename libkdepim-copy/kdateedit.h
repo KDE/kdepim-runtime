@@ -105,6 +105,10 @@ class KDateEdit : public QComboBox
     */
     void dateChanged(QDate);
 
+    /** This signal is emitted whenever the user enters an invalid date.
+    */
+    void invalidDateEntered();
+
   protected slots:
     void dateSelected(QDate);
     void dateEntered(QDate);
