@@ -20,6 +20,7 @@
 */
 
 #include <qpopupmenu.h>
+#include <qurl.h>
 
 #include <kabc/address.h>
 #include <kabc/addressee.h>
@@ -169,9 +170,12 @@ void AddresseeView::updateView()
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
+      QString fullEmail = mAddressee.fullEmail( *emailIt );
+      QUrl::encode( fullEmail );
       dynamicPart += rowFmtStr
         .arg( type )
-        .arg( QString::fromLatin1("<a href=\"mailto:%1\">%2</a>").arg(*emailIt).arg(*emailIt) );
+        .arg( QString::fromLatin1( "<a href=\"mailto:%1\">%2</a>" )
+        .arg( fullEmail, *emailIt ) );
       type = i18n( "Other" );
     }
   }
@@ -271,9 +275,7 @@ void AddresseeView::updateView()
    .arg( name )
    .arg( role )
    .arg( organization )
-   .arg( dynamicPart )
-   .arg( notes )
-   ;
+   .arg( dynamicPart, notes );
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
@@ -377,7 +379,7 @@ void AddresseeView::slotHighlighted( const QString &link )
     QString email = link.mid( 7 );
 
     emit emailHighlighted( email );
-    emit highlightedMessage( i18n( "Send mail to <%1>" ).arg( email ) );
+    emit highlightedMessage( i18n( "Send mail to '%1'" ).arg( email ) );
   } else if ( link.startsWith( "phone:" ) ) {
     QString number = link.mid( 8 );
 
