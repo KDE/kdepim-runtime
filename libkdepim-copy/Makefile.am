@@ -11,7 +11,8 @@ libkdepim_la_SOURCES = \
   kinputdialog.cpp
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0 -module
-libkdepim_la_LIBADD  = $(top_builddir)/libkdepim/resources/libkpimresources.la $(LIB_KIO) 
+libkdepim_la_LIBADD  = $(LIB_KIO) 
+#               $top_builddir)/libkdepim/resources/libkpimresources.la 
 
 METASOURCES = AUTO
 
