@@ -178,7 +178,7 @@ void KDateEdit::popup()
   }
 
   mDateFrame->show();
-
+#if 0
   // The combo box is now shown pressed. Make it show not pressed again
   // by causing its (invisible) list box to emit a 'selected' signal.
   QListBox *lb = listBox();
@@ -187,6 +187,7 @@ void KDateEdit::popup()
     QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
     QApplication::postEvent(lb, keyEvent);
   }
+#endif
 }
 
 void KDateEdit::dateSelected(QDate newDate)
