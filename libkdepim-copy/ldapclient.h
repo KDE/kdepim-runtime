@@ -65,6 +65,7 @@ class LdapObject
     void clear();
 
     QString dn;
+    QString objectClass;
     LdapAttrMap attrs;
     LdapClient* client;
 
@@ -184,6 +185,7 @@ class LdapClient : public QObject
 
     QGuardedPtr<KIO::SimpleJob> mJob;
     bool mActive;
+    bool mReportObjectClass;
 
     LdapObject mCurrentObject;
     QCString mBuf;

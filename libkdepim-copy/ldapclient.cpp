@@ -68,6 +68,7 @@ QString LdapObject::toString() const
 void LdapObject::clear()
 {
   dn = QString::null;
+  objectClass = QString::null;
   attrs.clear();
 }
 
@@ -81,7 +82,7 @@ void LdapObject::assign( const LdapObject& that )
 }
 
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
-  : QObject( parent, name ), mJob( 0 ), mActive( false )
+  : QObject( parent, name ), mJob( 0 ), mActive( false ), mReportObjectClass( false )
 {
   d = new LdapClientPrivate;
   d->clientNumber = clientNumber;
@@ -122,6 +123,12 @@ void LdapClient::setPwdBindDN( const QString& pwdBindDN )
 void LdapClient::setAttrs( const QStringList& attrs )
 {
   mAttrs = attrs;
+  for ( QStringList::Iterator it = mAttrs.begin(); it != mAttrs.end(); ++it )
+    if( (*it).lower() == "objectclass" ){
+      mReportObjectClass = true;
+      return;
+    }
+  mAttrs << "objectClass"; // via objectClass we detect distribution lists
 }
 
 void LdapClient::startQuery( const QString& filter )
@@ -212,9 +219,7 @@ void LdapClient::endParseLDIF()
 void LdapClient::finishCurrentObject()
 {
   mCurrentObject.dn = d->ldif.dn();
-  //kdDebug(5300) << "finishCurrentObject(): " << d->ldif.objectClass()
-  //  << " " << mCurrentObject.dn << endl;
-  if( d->ldif.objectClass().lower() == "groupofnames" ){
+  if( mCurrentObject.objectClass.lower() == "groupofnames" ){
     LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
     if( it == mCurrentObject.attrs.end() ){
       // No explicit mail address found so far?
@@ -258,11 +263,17 @@ void LdapClient::parseLDIF( const QByteArray& data )
   do {
     ret = d->ldif.nextItem();
     switch ( ret ) {
-      case LDIF::Item:
-        name = d->ldif.attr();
-        value = d->ldif.val();
-        mCurrentObject.attrs[ name ].append( value );
-        //kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
+      case LDIF::Item: 
+        {
+          name = d->ldif.attr();
+          value = d->ldif.val();
+          bool bFoundOC = name.lower() == "objectclass";
+          if( bFoundOC )
+            mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
+          if( mReportObjectClass || !bFoundOC )
+            mCurrentObject.attrs[ name ].append( value );
+          kdDebug(5300) << "LdapClient::parseLDIF()" << name << " / " << value << endl;
+        }
         break;
      case LDIF::EndEntry:
         finishCurrentObject();

@@ -125,10 +125,6 @@ namespace KPIM {
      */
     const QString& dn() const { return mDn; }
     /**
-     * Returns the Object Class of the current entry.
-     */
-    const QString& objectClass() const { return mObjectClass; }
-    /**
      * Returns the new Relative Distinguished Name if modType() returned Entry_Modrdn.
      */
     const QString& newRdn() const { return mNewRdn; }
@@ -167,7 +163,7 @@ namespace KPIM {
   private:
     int mModType;
     bool mDelOldRdn, mUrl;
-    QString mDn,mObjectClass,mAttr,mNewRdn,mNewSuperior, mOid;
+    QString mDn,mAttr,mNewRdn,mNewSuperior, mOid;
     QByteArray mLdif, mVal;
     EntryType mEntryType;
     
