@@ -516,3 +516,7 @@ void MultiCalendar::resourceDeleted( ResourceCalendar* resource ) {
   setModified( true ); // let 'm know
 
 }
+
+void MultiCalendar::incidenceUpdated( IncidenceBase * ) {
+  kdDebug() << "MultiCalendar::incidenceUpdated( IncidenceBase * ): Not yet implemented\n";
+}

@@ -137,6 +137,11 @@ class MultiCalendar : public Calendar, private KRES::ManagerListener<ResourceCal
 
   protected:
     /**
+      The observer interface. So far not implemented.
+    */
+    virtual void incidenceUpdated( IncidenceBase * );
+
+    /**
       Builds and then returns a list of all events that match for the
       date specified. useful for dayView, etc. etc.
     */
