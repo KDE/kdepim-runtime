@@ -71,14 +71,16 @@ struct AddressesDialog::AddressesDialogPrivate {
 };
 // privates end
 
-AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr )
-  : QObject(0), KListViewItem( parent, addr.realName(), addr.preferredEmail() )
+AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr,
+                                      int emailIndex )
+  : QObject( 0 ), KListViewItem( parent, addr.realName(),
+                               ( emailIndex == 0 ? addr.preferredEmail() : addr.emails()[ emailIndex ] ) )
 {
   d = new AddresseeViewItemPrivate;
   d->address = addr;
   d->category = Entry;
 
-  if ( text(0).stripWhiteSpace().isEmpty() )
+  if ( text( 0 ).stripWhiteSpace().isEmpty() )
     setText( 0, addr.preferredEmail() );
 
   if ( addr.photo().url().isEmpty() ) {
@@ -582,9 +584,12 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
         AddresseeViewItem* category = new AddresseeViewItem( d->ui->mAvailableView, *it );
         d->groupDict.insert( *it,  category );
       }
-      AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr );
-      connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-              this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
+
+      for ( uint i = 0; i < addr.emails().count(); ++i ) {
+        AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr, i );
+        connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
+                this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
+      }
     }
   }
 

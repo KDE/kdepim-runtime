@@ -47,7 +47,7 @@ namespace KPIM {
       FilledGroup =5,
       DistList    =6
     };
-    AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr );
+    AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr, int emailIndex = 0 );
     AddresseeViewItem( KListView *lv, const QString& name, Category cat=Group );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name, const KABC::Addressee::List &lst );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name );
