@@ -81,7 +81,14 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
   if ( text(0).stripWhiteSpace().isEmpty() )
     setText( 0, addr.preferredEmail() );
 
-  setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small ) );
+  if ( addr.photo().url().isEmpty() ) {
+    if ( addr.photo().data().isNull() )
+      setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small ) );
+    else
+      setPixmap( 0, addr.photo().data().smoothScale( 16, 16 ) );
+  } else {
+    setPixmap( 0, KGlobal::iconLoader()->loadIcon( addr.photo().url(), KIcon::Small ) );
+  }
 }
 
 AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Category cat )
@@ -194,6 +201,8 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   KABC::StdAddressBook::self( true );
   updateAvailableAddressees();
   initConnections();
+
+  d->ui->mAvailableView->setFocus();
 }
 
 AddressesDialog::~AddressesDialog()
