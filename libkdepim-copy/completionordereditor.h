@@ -34,7 +34,7 @@
 #include <kdialogbase.h>
 #include <kconfig.h>
 
-class QToolButton;
+class KPushButton;
 class KListView;
 namespace KPIM {
 
@@ -80,8 +80,8 @@ private:
   KConfig mConfig;
   CompletionItemList mItems;
   KListView* mListView;
-  QToolButton* mUpButton;
-  QToolButton* mDownButton;
+  KPushButton* mUpButton;
+  KPushButton* mDownButton;
 
   bool mDirty;
 };

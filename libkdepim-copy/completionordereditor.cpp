@@ -39,6 +39,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <klistview.h>
+#include <kpushbutton.h>
 
 #include <qhbox.h>
 #include <qvbox.h>
@@ -215,13 +216,13 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   }
 
   QVBox* upDownBox = new QVBox( page );
-  mUpButton = new QToolButton( upDownBox, "mUpButton" );
-  mUpButton->setPixmap( BarIcon( "up", KIcon::SizeSmall ) );
+  mUpButton = new KPushButton( upDownBox, "mUpButton" );
+  mUpButton->setIconSet( BarIconSet( "up", KIcon::SizeSmall ) );
   mUpButton->setEnabled( false ); // b/c no item is selected yet
   mUpButton->setFocusPolicy( StrongFocus );
 
-  mDownButton = new QToolButton( upDownBox, "mDownButton" );
-  mDownButton->setPixmap( BarIcon( "down", KIcon::SizeSmall ) );
+  mDownButton = new KPushButton( upDownBox, "mDownButton" );
+  mDownButton->setIconSet( BarIconSet( "down", KIcon::SizeSmall ) );
   mDownButton->setEnabled( false ); // b/c no item is selected yet
   mDownButton->setFocusPolicy( StrongFocus );
 
