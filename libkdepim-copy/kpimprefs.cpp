@@ -33,6 +33,11 @@ KPimPrefs::KPimPrefs() :
 {
 }
 
+KPimPrefs::KPimPrefs(const QString& configname) :
+  KPrefs(configname)
+{
+}
+
 KPimPrefs::~KPimPrefs()
 {
 }

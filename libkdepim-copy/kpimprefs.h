@@ -31,6 +31,7 @@ class KPimPrefs : public KPrefs
 {
   public:
     KPimPrefs();
+    KPimPrefs( const QString& configname );
     virtual ~KPimPrefs();
 
     /** Set preferences to default values */
