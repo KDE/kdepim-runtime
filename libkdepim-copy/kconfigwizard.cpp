@@ -102,6 +102,7 @@ void KConfigWizard::setupChangesPage()
   mChangeView = new QListView( topFrame );
   topLayout->addWidget( mChangeView );
   
+  mChangeView->addColumn( i18n("Action") );
   mChangeView->addColumn( i18n("Option") );
   mChangeView->addColumn( i18n("Value") );
 
@@ -114,16 +115,14 @@ void KConfigWizard::updateChanges()
 
   usrWriteConfig();
 
+  mPropagator->updateChanges();
+
   mChangeView->clear();
 
   KConfigPropagator::Change::List changes = mPropagator->changes();
-  KConfigPropagator::Change::List::ConstIterator it;
-  for( it = changes.begin(); it != changes.end(); ++it ) {
-    KConfigPropagator::Change c = *it;
-    QString option = c.file + "/" + c.group + "/" + c.name;
-    QString value = c.value;
-    if ( c.hideValue ) value = "*";
-    new QListViewItem( mChangeView, option, value );
+  KConfigPropagator::Change *c;
+  for( c = changes.first(); c; c = changes.next() ) {
+    new QListViewItem( mChangeView, c->title(), c->arg1(), c->arg2() );
   }
 }
 

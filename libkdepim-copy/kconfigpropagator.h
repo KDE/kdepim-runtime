@@ -24,6 +24,7 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 #include <qdom.h>
+#include <qptrlist.h>
 
 class KConfigSkeleton;
 class KConfigSkeletonItem;
@@ -83,10 +84,34 @@ class KConfigPropagator
     class Change
     {
       public:
-        typedef QValueList<Change> List;
+        typedef QPtrList<Change> List;
 
-        Change() : hideValue( false ) {}
+        Change( const QString &title ) : mTitle( title ) {}
+        virtual ~Change();
       
+        void setTitle( const QString &title ) { mTitle = title; }
+        QString title() const { return mTitle; }
+
+        virtual QString arg1() const { return QString::null; }
+        virtual QString arg2() const { return QString::null; }
+
+        virtual void apply() = 0;
+
+      private:
+        QString mTitle;
+    };
+
+    class ChangeConfig : public Change
+    {
+      public:
+        ChangeConfig();
+        ~ChangeConfig() {}
+
+        QString arg1() const;
+        QString arg2() const;
+
+        void apply();
+
         QString file;
         QString group;
         QString name;
@@ -94,6 +119,8 @@ class KConfigPropagator
         QString value;
         bool hideValue;
     };
+
+    void updateChanges();
     
     Change::List changes();
 
@@ -104,7 +131,7 @@ class KConfigPropagator
       Implement this function in a subclass if you want to add changes which
       can't be expressed as propagations in the kcfg file.
     */
-    virtual void addCustomChanges( Change::List & ) {};
+    virtual void addCustomChanges( Change::List & ) {}
 
     KConfigSkeletonItem *findItem( const QString &group, const QString &name );
 
@@ -122,7 +149,8 @@ class KConfigPropagator
     KConfigSkeleton *mSkeleton;
     QString mKcfgFile;
 
-    Rule::List mRules;    
+    Rule::List mRules;
+    Change::List mChanges;    
 };
 
 #endif

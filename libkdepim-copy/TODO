@@ -1,0 +1,10 @@
+KConfigPropagator:
+
+- Title for all changes.
+- Write DTD for extended kcfg file.
+- Check validity of rules against the installed kcfg files.
+- Turn public members of Change, Rule, Condition into proper accessors/mutators
+
+KConfigWizard:
+
+- More pretty changes view.

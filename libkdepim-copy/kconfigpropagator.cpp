@@ -26,14 +26,47 @@
 #include <kconfigskeleton.h>
 #include <kstandarddirs.h>
 #include <kstringhandler.h>
+#include <klocale.h>
 
 #include <qfile.h>
 #include <qstringlist.h>
+
+KConfigPropagator::Change::~Change()
+{
+}
+
+KConfigPropagator::ChangeConfig::ChangeConfig()
+  : KConfigPropagator::Change( i18n("Change Config Value") ),
+    hideValue( false )
+{
+}
+
+QString KConfigPropagator::ChangeConfig::arg1() const
+{
+  return file + "/" + group + "/" + name;
+}
+
+QString KConfigPropagator::ChangeConfig::arg2() const
+{
+  if ( hideValue ) return "*";
+  else return value;
+}
+
+void KConfigPropagator::ChangeConfig::apply()
+{
+  KConfig cfg( file );
+  cfg.setGroup( group );
+  cfg.writeEntry( name, value );
+
+  cfg.sync();
+}
 
 KConfigPropagator::KConfigPropagator( KConfigSkeleton *skeleton,
                                       const QString &kcfgFile )
   : mSkeleton( skeleton ), mKcfgFile( kcfgFile )
 {
+  mChanges.setAutoDelete( true );
+
   readKcfgFile();
 }
 
@@ -145,16 +178,11 @@ KConfigPropagator::Condition KConfigPropagator::parseCondition( const QDomElemen
 
 void KConfigPropagator::commit()
 {
-  Change::List changeList = changes();
-  
-  Change::List::ConstIterator it;
-  for( it = changeList.begin(); it != changeList.end(); ++it ) {
-    Change c = *it;
-    KConfig cfg( c.file );
-    cfg.setGroup( c.group );
-    cfg.writeEntry( c.name, c.value );
-    
-    cfg.sync();
+  updateChanges();
+
+  Change *c;
+  for( c = mChanges.first(); c; c = mChanges.next() ) {
+    c->apply();
   }
 }
 
@@ -188,9 +216,9 @@ QString KConfigPropagator::itemValueAsString( KConfigSkeletonItem *item )
   return p.toString();
 }
 
-KConfigPropagator::Change::List KConfigPropagator::changes()
+void KConfigPropagator::updateChanges()
 {
-  Change::List changes;
+  mChanges.clear();
 
   Rule::List::ConstIterator it;
   for( it = mRules.begin(); it != mRules.end(); ++it ) {
@@ -223,20 +251,23 @@ KConfigPropagator::Change::List KConfigPropagator::changes()
     QString targetValue = target.readEntry( r.targetEntry );
     if ( r.hideValue ) targetValue = KStringHandler::obscure( targetValue );
     if ( targetValue != value ) {
-      Change change;
-      change.file = r.targetFile;
-      change.group = r.targetGroup;
-      change.name = r.targetEntry;
+      ChangeConfig *change = new ChangeConfig();
+      change->file = r.targetFile;
+      change->group = r.targetGroup;
+      change->name = r.targetEntry;
       if ( r.hideValue ) value = KStringHandler::obscure( value );
-      change.value = value;
-      change.hideValue = r.hideValue;
-      changes.append( change );
+      change->value = value;
+      change->hideValue = r.hideValue;
+      mChanges.append( change );
     }
   }
 
-  addCustomChanges( changes );
+  addCustomChanges( mChanges );
+}
 
-  return changes;
+KConfigPropagator::Change::List KConfigPropagator::changes()
+{
+  return mChanges;
 }
 
 KConfigPropagator::Rule::List KConfigPropagator::rules()
