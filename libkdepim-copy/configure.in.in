@@ -13,4 +13,4 @@ if test "$HAVE_GCC_VISIBILITY" = "1"; then
     fi
 fi
 
-all_includes="-I$(top_builddir) $all_includes"
+all_includes="-I`pwd` $all_includes"
