@@ -37,6 +37,8 @@
 #include <klineedit.h>
 #include <knuminput.h>
 
+#include <kdepimmacros.h>
+
 class QDomNode;
 class QDomDocument;
 class QDomElement;
