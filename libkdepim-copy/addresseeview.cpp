@@ -382,7 +382,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   //
   QString strAddr = QString::fromLatin1(
     "<div align=\"center\">"
-    "<table cellpadding=\"0\" cellspacing=\"0\" %1>"
+    "<table cellpadding=\"1\" cellspacing=\"0\" %1>"
     "<tr>").arg(tableStyle);
 
   strAddr.append( QString::fromLatin1(
