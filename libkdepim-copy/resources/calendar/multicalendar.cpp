@@ -339,7 +339,7 @@ QPtrList<Event> MultiCalendar::rawEventsForDate(const QDate &qd, bool sorted)
       QPtrList<Event> list = resource->rawEventsForDate( qd, sorted );
       if ( sorted ) {
         Event* item;
-        int insertionPoint = 0;
+        uint insertionPoint = 0;
         for ( item = list.first(); item; item = list.next() ) {
           while ( insertionPoint<result.count() && 
                   result.at( insertionPoint )->dtStart().time() <= item->dtStart().time() ) 

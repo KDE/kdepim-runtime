@@ -139,6 +139,8 @@ bool ResourceLocal::sync()
 {
 //  FileStorage storage( this, mURL.path(), mFormat );
 //  return storage.save();
+
+  return false;
 }
 
 void ResourceLocal::doClose()

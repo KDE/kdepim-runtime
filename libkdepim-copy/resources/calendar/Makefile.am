@@ -1,6 +1,6 @@
 SUBDIRS = 
 
-INCLUDES = -I.. -I$(top_srcdir)/libkcal -I$(top_builddir)/libkcal $(all_includes) 
+INCLUDES = -I$(srcdir)/.. -I$(top_srcdir)/libkcal -I$(top_builddir)/libkcal $(all_includes) 
 
 lib_LTLIBRARIES   = libcalendarresources.la
 libcalendarresources_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 0:1:0 -module
