@@ -30,6 +30,7 @@
 #include <qstringlist.h>
 #include <qptrlist.h>
 #include <qptrdict.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 

@@ -30,6 +30,7 @@
 #include <kcmodule.h>
 #include <kconfigskeleton.h>
 #include <kfile.h>
+#include <kdepimmacros.h>
 
 
 class KColorButton;

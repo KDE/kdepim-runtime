@@ -38,6 +38,7 @@
 #include <qlabel.h>
 #include <qvbox.h>
 #include "overlaywidget.h"
+#include <kdepimmacros.h>
 
 class QProgressBar;
 class QScrollView;

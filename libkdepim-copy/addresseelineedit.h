@@ -36,6 +36,7 @@
 #include "clicklineedit.h"
 #include "kcompletion.h"
 #include <dcopobject.h>
+#include <kdepimmacros.h>
 
 class KConfig;
 

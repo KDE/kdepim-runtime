@@ -9,6 +9,7 @@
 
 #include <kdeversion.h>
 #include <kabc/addressee.h>
+#include <kdepimmacros.h>
 
 class QWidget;
 

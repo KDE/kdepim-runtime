@@ -25,7 +25,6 @@
 #include <qbitarray.h>
 #include <qdragobject.h>
 #include <klistview.h>
-
 #include <kdepimmacros.h>
 
 class KFolderTree;

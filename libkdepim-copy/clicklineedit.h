@@ -22,6 +22,7 @@
 #define CLICKLINEEDIT_H
 
 #include <klineedit.h>
+#include <kdepimmacros.h>
 
 namespace KPIM {
 

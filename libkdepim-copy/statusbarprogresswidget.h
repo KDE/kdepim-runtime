@@ -36,6 +36,8 @@
   *  kio_littleprogress_dlg (it looks similar)
   */
 
+#include <kdepimmacros.h>
+
 class KMMainWidget;
 class KProgress;
 class QPushButton;
