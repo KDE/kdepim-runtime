@@ -66,6 +66,13 @@ class KDateEdit : public QHBox
     */
     QDate date() const;
     
+    /** @param handleInvalid If true the date edit accepts invalid dates
+    * and displays them as the empty ("") string. It also returns an invalid date.
+    * If false (default) invalid dates are not accepted and instead the date
+    * of today will be returned.
+    */
+    void setHandleInvalid(bool handleInvalid);
+
     /** Checks for a focus out event. The display of the date is updated
     * to display the proper date when the focus leaves.
     */
@@ -109,6 +116,7 @@ class KDateEdit : public QHBox
     */
     QMap<QString, int> mKeywordMap;
     bool mTextChanged;
+    bool mHandleInvalid;
     
     QPushButton *mDateButton;
     QLineEdit *mDateEdit;

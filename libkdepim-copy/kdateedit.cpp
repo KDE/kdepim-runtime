@@ -94,6 +94,7 @@ KDateEdit::KDateEdit(QWidget *parent, const char *name)
   }
   
   mTextChanged = false;
+  mHandleInvalid = false;
 }
 
 KDateEdit::~KDateEdit()
@@ -103,8 +104,12 @@ KDateEdit::~KDateEdit()
 
 void KDateEdit::setDate(QDate newDate)
 {
-  if (!newDate.isValid())
+  if (!newDate.isValid() && !mHandleInvalid)
     return;
+
+  QString dateString = "";
+  if(newDate.isValid())
+    dateString = KGlobal::locale()->formatDate( newDate, true );
 
   mTextChanged = false;
   
@@ -112,8 +117,13 @@ void KDateEdit::setDate(QDate newDate)
   // the date
   bool b = mDateEdit->signalsBlocked();
   mDateEdit->blockSignals(true);
-  mDateEdit->setText(KGlobal::locale()->formatDate( newDate, true ));
+  mDateEdit->setText(dateString);
   mDateEdit->blockSignals(b);
+}
+
+void KDateEdit::setHandleInvalid(bool handleInvalid)
+{
+  mHandleInvalid = handleInvalid;
 }
 
 void KDateEdit::setEnabled(bool on)
@@ -126,7 +136,7 @@ QDate KDateEdit::date() const
 {
   QDate date = readDate();
 
-  if (date.isValid()) {
+  if (date.isValid() || mHandleInvalid) {
     return date;
   } else {
     KNotifyClient::beep();
@@ -215,5 +225,10 @@ bool KDateEdit::eventFilter(QObject *, QEvent *e)
 
 void KDateEdit::textChanged(const QString &)
 {
-  mTextChanged = true;
+  if(mHandleInvalid && mDateEdit->text().stripWhiteSpace().isEmpty()) {
+    QDate date; //invalid date
+    emit(dateChanged(date));
+  } else  {
+    mTextChanged = true;
+  }
 }
