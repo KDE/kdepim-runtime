@@ -73,6 +73,13 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ) );
   mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ) );
   mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ) );
+#if KDE_IS_VERSION(3,2,90)
+  mActionShowBirthday->setCheckedState(i18n("Hide Birthday"));
+  mActionShowAddresses->setCheckedState(i18n("Hide Postal Addresses"));
+  mActionShowEmails->setCheckedState(i18n("Hide Email Addresses"));
+  mActionShowPhones->setCheckedState(i18n("Hide Telephone Numbers"));
+  mActionShowURLs->setCheckedState(i18n("Hide Web Pages (URLs)"));
+#endif
 
   connect( mActionShowBirthday, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
