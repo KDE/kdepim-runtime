@@ -419,8 +419,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   strAddr.append( QString::fromLatin1(
     "&nbsp;</td><td %2>&nbsp;</td></tr>")
     .arg( cellStyle2 ) );
-  strAddr.append(dynamicPart);
-  strAddr.append(notes);
+  strAddr.append( dynamicPart );
+  strAddr.append( notes );
   strAddr.append( QString::fromLatin1("</table></div>\n") );
 
   return strAddr;
@@ -636,8 +636,8 @@ void AddresseeView::result( KIO::Job *job )
 
   if ( job->error() )
     mImageData.truncate( 0 );
-
-  updateView();
+  else
+    updateView();
 }
 
 void AddresseeView::load()
