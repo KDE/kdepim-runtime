@@ -25,6 +25,13 @@
 
 using namespace KPIM;
 
+static QString textToHTML( const QString &text )
+{
+  QString retval = text;
+  
+  return retval.replace( '\n', "<br>" );
+}
+
 HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
   : KTextBrowser( parent )
 {
@@ -72,14 +79,14 @@ void HTMLDiffAlgoDisplay::additionalLeftField( const QString &id, const QString 
 {
   mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#9cff83\">%2</td><td></td><td></td></tr>" )
                .arg( id )
-               .arg( value ) );
+               .arg( textToHTML( value ) ) );
 }
 
 void HTMLDiffAlgoDisplay::additionalRightField( const QString &id, const QString &value )
 {
   mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td></td><td></td><td bgcolor=\"#9cff83\">%2</td></tr>" )
                .arg( id )
-               .arg( value ) );
+               .arg( textToHTML( value ) ) );
 }
 
 void HTMLDiffAlgoDisplay::conflictField( const QString &id, const QString &leftValue,
@@ -87,6 +94,6 @@ void HTMLDiffAlgoDisplay::conflictField( const QString &id, const QString &leftV
 {
   mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#ff8686\">%2</td><td></td><td bgcolor=\"#ff8686\">%3</td></tr>" )
                .arg( id )
-               .arg( leftValue )
-               .arg( rightValue ) );
+               .arg( textToHTML( leftValue ) )
+               .arg( textToHTML( rightValue ) ) );
 }
