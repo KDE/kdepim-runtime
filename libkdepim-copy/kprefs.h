@@ -80,6 +80,11 @@ class KPrefsItem {
     */
     virtual void writeConfig( KConfig* ) = 0;
 
+    /**
+      Read global default value.
+    */
+    virtual void readDefault( KConfig * ) = 0;
+
   protected:
     QString mGroup;
     QString mName;
@@ -106,6 +111,14 @@ class KGenericPrefsItem : public KPrefsItem
         config->setGroup( mGroup );
         config->writeEntry( mName, mReference );
       }
+    }
+
+    void readDefault( KConfig *config )
+    {
+      config->setReadDefaults( true );
+      readConfig( config );
+      config->setReadDefaults( false );
+      mDefault = mReference;
     }
 
   protected:

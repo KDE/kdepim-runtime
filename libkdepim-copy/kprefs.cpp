@@ -339,7 +339,7 @@ KPrefs::KPrefs( const QString &configname )
   : mCurrentGroup( "No Group" )
 {
   if ( !configname.isEmpty() ) {
-    mConfig = new KConfig( locateLocal( "config", configname ) );
+    mConfig = new KConfig( configname );
   } else {
     mConfig = KGlobal::config();
   }
@@ -400,6 +400,7 @@ void KPrefs::writeConfig()
 void KPrefs::addItem( KPrefsItem *item )
 {
   mItems.append( item );
+  item->readDefault( mConfig );
 }
 
 void KPrefs::addItemString( const QString &key, QString &reference, const QString &defaultValue )
