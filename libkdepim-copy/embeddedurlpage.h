@@ -23,6 +23,7 @@
 
 #include <qwidget.h>
 #include <kdepimmacros.h>
+#include <kurl.h>
 
 namespace KParts { class ReadOnlyPart; }
 
@@ -37,6 +38,8 @@ class KDE_EXPORT EmbeddedURLPage : public QWidget
 
   public slots:
     void loadContents();
+  signals:
+    void openURL( const KURL &url );
   private:
     void initGUI( const QString &url, const QString &mimetype );
 
