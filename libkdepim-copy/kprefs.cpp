@@ -29,331 +29,144 @@
 
 #include "kprefs.h"
 
-class KPrefsItemBool : public KPrefsItem {
+class KPrefsItemBool : public KGenericPrefsItem<bool>
+{
   public:
-    KPrefsItemBool(const QString &group,const QString &name,bool *,bool defaultValue=true);
-    virtual ~KPrefsItemBool() {}
+    KPrefsItemBool( const QString &group, const QString &name, bool *reference,
+                    bool defaultValue = true )
+      : KGenericPrefsItem<bool>( group, name, reference, defaultValue ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);
-
-  private:
-    bool *mReference;
-    bool mDefault;
-};
-
-class KPrefsItemInt : public KPrefsItem {
-  public:
-    KPrefsItemInt(const QString &group,const QString &name,int *,int defaultValue=0);
-    virtual ~KPrefsItemInt() {}
-    
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);
-
-  private:
-    int *mReference;
-    int mDefault;
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readBoolEntry( mName, mDefault );
+    }
 };
 
 
-class KPrefsItemColor : public KPrefsItem {
+class KPrefsItemInt : public KGenericPrefsItem<int>
+{
   public:
-    KPrefsItemColor(const QString &group,const QString &name,QColor *,
-                    const QColor &defaultValue=QColor(128,128,128));
-    virtual ~KPrefsItemColor() {}
+    KPrefsItemInt( const QString &group, const QString &name, int *reference,
+                   int defaultValue = 0 )
+      : KGenericPrefsItem<int>( group, name, reference, defaultValue ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);    
-
-  private:
-    QColor *mReference;
-    QColor mDefault;
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readNumEntry( mName, mDefault );
+    }
 };
 
 
-class KPrefsItemFont : public KPrefsItem {
+class KPrefsItemColor : public KGenericPrefsItem<QColor>
+{
   public:
-    KPrefsItemFont(const QString &group,const QString &name,QFont *,
-                   const QFont &defaultValue=QFont("helvetica",12));
-    virtual ~KPrefsItemFont() {}
+    KPrefsItemColor( const QString &group, const QString &name,
+                     QColor *reference,
+                     const QColor &defaultValue = QColor( 128, 128, 128 ) )
+      : KGenericPrefsItem<QColor>( group, name, reference, defaultValue ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);    
-
-  private:
-    QFont *mReference;
-    QFont mDefault;
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readColorEntry( mName, &mDefault );
+    }
 };
 
 
-class KPrefsItemString : public KPrefsItem {
+class KPrefsItemFont : public KGenericPrefsItem<QFont>
+{
   public:
-    KPrefsItemString(const QString &group,const QString &name,QString *,
-                     const QString &defaultValue="", bool isPassword=false);
-    virtual ~KPrefsItemString() {}
+    KPrefsItemFont( const QString &group, const QString &name, QFont *reference,
+                    const QFont &defaultValue = QFont( "helvetica", 12 ) )
+      : KGenericPrefsItem<QFont>( group, name, reference, defaultValue ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);    
-
-  private:
-    QString *mReference;
-    QString mDefault;
-    bool mPassword;
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readFontEntry( mName, &mDefault );
+    }
 };
 
 
-class KPrefsItemStringList : public KPrefsItem {
+class KPrefsItemString : public KGenericPrefsItem<QString>
+{
   public:
-    KPrefsItemStringList(const QString &group,const QString &name,QStringList *,
-                         const QStringList &defaultValue=QStringList());
-    virtual ~KPrefsItemStringList() {}
+    KPrefsItemString( const QString &group, const QString &name,
+                      QString *reference,
+                      const QString &defaultValue = QString::null,
+                      bool isPassword = false )
+      : KGenericPrefsItem<QString>( group, name, reference, defaultValue ),
+        mIsPassword( isPassword ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);    
+    void writeConfig(KConfig *config)
+    {
+      config->setGroup( mGroup );
+      if ( mIsPassword )
+        config->writeEntry(mName, endecryptStr( *mReference ) );
+      else
+        config->writeEntry(mName,*mReference);
+    }
+
+    void readConfig(KConfig *config)
+    {
+      config->setGroup( mGroup );
+
+      if ( mIsPassword ) {
+        QString value = config->readEntry( mName, endecryptStr( mDefault ) );
+        *mReference = endecryptStr( value );
+      } else {
+        *mReference = config->readEntry( mName, mDefault );
+      }
+    }
+
+  protected:
+    QString endecryptStr( const QString &aStr )
+    {
+      QString result;
+      for ( uint i = 0; i < aStr.length(); i++ )
+        result += (aStr[i].unicode() < 0x20) ? aStr[i] :
+          QChar(0x1001F - aStr[i].unicode());
+      return result;
+    }
 
   private:
-    QStringList *mReference;
-    QStringList mDefault;
+    bool mIsPassword;
 };
 
 
-class KPrefsItemIntList : public KPrefsItem {
+class KPrefsItemStringList : public KGenericPrefsItem<QStringList>
+{
   public:
-    KPrefsItemIntList(const QString &group,const QString &name,QValueList<int> *,
-                      const QValueList<int> &defaultValue=QValueList<int>());
-    virtual ~KPrefsItemIntList() {}
+    KPrefsItemStringList( const QString &group, const QString &name,
+                          QStringList *reference,
+                          const QStringList &defaultValue = QStringList() )
+      : KGenericPrefsItem<QStringList>( group, name, reference, defaultValue ) {}
     
-    void setDefault();
-    void readConfig(KConfig *);
-    void writeConfig(KConfig *);    
-
-  private:
-    QValueList<int> *mReference;
-    QValueList<int> mDefault;
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readListEntry( mName );
+    }
 };
 
 
-KPrefsItemBool::KPrefsItemBool(const QString &group,const QString &name,
-                               bool *reference,bool defaultValue) :
-  KPrefsItem(group,name)
+class KPrefsItemIntList : public KGenericPrefsItem<QValueList<int> >
 {
-  mReference = reference;
-  mDefault = defaultValue;
-}
+  public:
+    KPrefsItemIntList( const QString &group, const QString &name,
+                       QValueList<int> *reference,
+                       const QValueList<int> &defaultValue = QValueList<int>() )
+      : KGenericPrefsItem<QValueList<int> >( group, name, reference, defaultValue ) {}
+    
+    void readConfig( KConfig *config )
+    {
+      config->setGroup( mGroup );
+      *mReference = config->readIntListEntry( mName );
+    }
+};
 
-void KPrefsItemBool::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemBool::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    config->writeEntry(mName,*mReference);
-  }
-}
-
-
-void KPrefsItemBool::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readBoolEntry(mName,mDefault);
-}
-
-
-KPrefsItemInt::KPrefsItemInt(const QString &group,const QString &name,
-                             int *reference,int defaultValue) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-}
-
-void KPrefsItemInt::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemInt::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    config->writeEntry(mName,*mReference);
-  }
-}
-
-void KPrefsItemInt::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readNumEntry(mName,mDefault);
-}
-
-
-KPrefsItemColor::KPrefsItemColor(const QString &group,const QString &name,
-                                 QColor *reference,const QColor &defaultValue) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-}
-
-void KPrefsItemColor::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemColor::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    config->writeEntry(mName,*mReference);
-  }
-}
-
-void KPrefsItemColor::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readColorEntry(mName,&mDefault);
-}
-
-
-KPrefsItemFont::KPrefsItemFont(const QString &group,const QString &name,
-                               QFont *reference,const QFont &defaultValue) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-}
-
-void KPrefsItemFont::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemFont::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    config->writeEntry(mName,*mReference);
-  }
-}
-
-void KPrefsItemFont::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readFontEntry(mName,&mDefault);
-}
-
-
-QString endecryptStr( const QString &aStr )
-{
-  QString result;
-  for (uint i = 0; i < aStr.length(); i++)
-    result += (aStr[i].unicode() < 0x20) ? aStr[i] :
-      QChar(0x1001F - aStr[i].unicode());
-  return result;
-}
-
-
-KPrefsItemString::KPrefsItemString(const QString &group,const QString &name,
-                                   QString *reference,const QString &defaultValue,
-				   bool isPassword) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-  mPassword = isPassword;
-}
-
-void KPrefsItemString::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemString::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    if ( mPassword )
-      config->writeEntry(mName, endecryptStr( *mReference ) );
-    else
-      config->writeEntry(mName,*mReference);
-  }
-}
-
-void KPrefsItemString::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-
-  QString value;
-  if ( mPassword ) {
-    value = config->readEntry( mName, endecryptStr( mDefault ) );
-    *mReference = endecryptStr( value );
-  } else {
-    *mReference = config->readEntry( mName, mDefault );
-  }
-}
-
-
-KPrefsItemStringList::KPrefsItemStringList(const QString &group,const QString &name,
-                                           QStringList *reference,const QStringList &defaultValue) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-}
-
-void KPrefsItemStringList::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemStringList::writeConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  config->writeEntry(mName,*mReference);
-}
-
-void KPrefsItemStringList::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readListEntry(mName);
-}
-
-
-KPrefsItemIntList::KPrefsItemIntList(const QString &group,const QString &name,
-                                     QValueList<int> *reference,const QValueList<int> &defaultValue) :
-  KPrefsItem(group,name)
-{
-  mReference = reference;
-  mDefault = defaultValue;
-}
-
-void KPrefsItemIntList::setDefault()
-{
-  *mReference = mDefault;
-}
-
-void KPrefsItemIntList::writeConfig(KConfig *config)
-{
-  if (*mReference != mDefault) {
-    config->setGroup(mGroup);
-    config->writeEntry(mName,*mReference);
-  }
-}
-
-void KPrefsItemIntList::readConfig(KConfig *config)
-{
-  config->setGroup(mGroup);
-  *mReference = config->readIntListEntry(mName);
-}
 
 
 QString *KPrefs::mCurrentGroup = 0;

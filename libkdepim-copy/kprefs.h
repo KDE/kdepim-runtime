@@ -76,6 +76,33 @@ class KPrefsItem {
     QString mName;
 };
 
+
+template <typename T>
+class KGenericPrefsItem : public KPrefsItem
+{
+  public:
+    KGenericPrefsItem( const QString &group, const QString &name, T *reference,
+                       T defaultValue)
+      : KPrefsItem( group, name ), mReference( reference ),
+        mDefault( defaultValue ) {}
+
+    virtual void setDefault()
+    {
+        *mReference = mDefault;
+    }
+
+    virtual void writeConfig( KConfig *config )
+    {
+        config->setGroup( mGroup );
+        config->writeEntry( mName, *mReference );
+    }
+
+  protected:
+    T *mReference;
+    T mDefault;
+};
+
+
 /**
   @short Class for handling preferences settings for an application.
   @author Cornelius Schumacher
