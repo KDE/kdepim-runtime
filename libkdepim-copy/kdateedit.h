@@ -88,6 +88,9 @@ class KDateEdit : public QComboBox
     */
     void setHandleInvalid(bool handleInvalid);
 
+    /** @return True if the widget is accepts invalid dates, false otherwise. */
+    bool handlesInvalid() const;
+
     /** Sets whether the widget is read-only for the user. If read-only, the date
     * picker pop-up is inactive, and the displayed date cannot be edited.
     * @param readOnly True to set the widget read-only, false to set it read-write.

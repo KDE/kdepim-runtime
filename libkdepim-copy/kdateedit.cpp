@@ -114,6 +114,11 @@ void KDateEdit::setHandleInvalid(bool handleInvalid)
   mHandleInvalid = handleInvalid;
 }
 
+bool KDateEdit::handlesInvalid() const
+{
+  return mHandleInvalid;
+}
+
 void KDateEdit::setReadOnly(bool readOnly)
 {
   mReadOnly = readOnly;
