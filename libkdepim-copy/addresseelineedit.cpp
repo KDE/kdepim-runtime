@@ -75,12 +75,12 @@ void AddresseeLineEdit::init()
 {
   if ( !s_completion ) {
     completionDeleter.setObject( s_completion, new KCompletion() );
-    s_completion->setOrder( KCompletion::Sorted );
+    s_completion->setOrder( KCompletion::Weighted );
     s_completion->setIgnoreCase( true );
   }
 
-  connect( s_completion, SIGNAL( match( const QString& ) ),
-           this, SLOT( slotMatched( const QString& ) ) );
+//  connect( s_completion, SIGNAL( match( const QString& ) ),
+//           this, SLOT( slotMatched( const QString& ) ) );
 
   if ( m_useCompletion ) {
     if ( !s_LDAPTimer ) {
@@ -330,25 +330,26 @@ void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
 {
   setText( m_previousAddresses + completion );
   cursorAtEnd();
-  slotMatched( m_previousAddresses + completion );
+//  slotMatched( m_previousAddresses + completion );
 }
 
 void AddresseeLineEdit::loadContacts()
 {
   s_completion->clear();
   s_addressesDirty = false;
-  m_contactMap.clear();
+  //m_contactMap.clear();
 
   KABC::Addressee::List list = contacts();
   KABC::Addressee::List::Iterator it;
   for ( it = list.begin(); it != list.end(); ++it )
-    addContact( *it );
+    addContact( *it, 100 );
 }
 
-void AddresseeLineEdit::addContact( const KABC::Addressee& addr )
+void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
-  m_contactMap.insert( addr.realName(), addr );
-  s_completion->addItem( addr.realName() );
+  //m_contactMap.insert( addr.realName(), addr );
+  QString fullEmail = addr.fullEmail();
+  s_completion->addItem( fullEmail, weight );
 }
 
 void AddresseeLineEdit::slotStartLDAPLookup()
@@ -388,33 +389,19 @@ void AddresseeLineEdit::slotLDAPSearchData( const QStringList& adrs )
   if ( s_LDAPLineEdit != this )
     return;
 
+  QString name, email;
+  
   for ( QStringList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
-    int pos = (*it).find( '<' );
-
     KABC::Addressee addr;
-    if ( pos == -1 ) {
-      if ( (*it).find( '@' ) == -1 )
-        addr.setNameFromString( *it );
-    } else {
-      QString name = (*it).left( pos );
-      if ( name.find( '@' ) == -1 )
-        addr.setNameFromString( name );
-
-      name = (*it).mid( pos + 1 );
-      name = name.left( name.find( '>' ) );
-      addr.insertEmail( name );
-    }
-    addContact( addr );
+    getNameAndMail(*it, name, email);
+    addr.setNameFromString( name );
+    addr.insertEmail( email, true );
+    addContact( addr, 1 );
   }
 
   if ( hasFocus() || completionBox()->hasFocus() )
     if ( completionMode() != KGlobalSettings::CompletionNone )
       doCompletion( false );
-}
-
-void AddresseeLineEdit::slotMatched( const QString &name )
-{
-  emit contactMatched( m_contactMap[ name ] );
 }
 
 KABC::Addressee::List AddresseeLineEdit::contacts()

@@ -57,12 +57,9 @@ class AddresseeLineEdit : public ClickLineEdit
     void cursorAtEnd();
     void enableCompletion( bool enable );
 
-  signals:
-    void contactMatched( const KABC::Addressee& );
-
   protected:
     virtual void loadContacts();
-    void addContact( const KABC::Addressee& );
+    void addContact( const KABC::Addressee&, int weight );
     virtual void keyPressEvent( QKeyEvent* );
     virtual void paste();
     virtual void insert( const QString &text );
@@ -73,7 +70,6 @@ class AddresseeLineEdit : public ClickLineEdit
     void slotPopupCompletion( const QString& );
     void slotStartLDAPLookup();
     void slotLDAPSearchData( const QStringList& );
-    void slotMatched( const QString& );
 
   private:
     void init();
@@ -88,7 +84,7 @@ class AddresseeLineEdit : public ClickLineEdit
     bool m_completionInitialized;
     bool m_smartPaste;
 
-    QMap<QString, KABC::Addressee> m_contactMap;
+    //QMap<QString, KABC::Addressee> m_contactMap;
 
     static bool s_addressesDirty;
     static KCompletion *s_completion;
