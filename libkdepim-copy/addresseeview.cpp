@@ -435,7 +435,7 @@ QString AddresseeView::strippedNumber( const QString &number )
   QString retval;
 
   for ( uint i = 0; i < number.length(); ++i )
-    if ( number[ i ].isDigit() )
+    if ( number[ i ].isDigit() || number[ i ] == '*' || number[ i ] == '#' )
       retval.append( number[ i ] );
 
   return retval;
