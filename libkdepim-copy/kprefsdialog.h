@@ -36,12 +36,13 @@ class QSpinBox;
 class QButtonGroup;
 
 /**
-  @short Base class for widgets used by @ref KPrefsDialog.
+  @short Base class for GUI control elements used by @ref KPrefsDialog.
   @author Cornelius Schumacher
   @see KPrefsDialog
 
-  This class provides the interface for the preferences widgets used by
-  KPrefsDialog.
+  This class provides the interface for the GUI control elements used by
+  KPrefsDialog. The control element consists of a set of widgets for handling
+  a certain type of configuration information.
 */
 class KPrefsWid : public QObject
 {
@@ -58,6 +59,9 @@ class KPrefsWid : public QObject
     */
     virtual void writeConfig() = 0;
 
+    /**
+      Return a list of widgets used by this control element.
+    */
     virtual QValueList<QWidget *> widgets() const;
 
   signals:
@@ -68,26 +72,24 @@ class KPrefsWid : public QObject
 };
 
 /**
-  @short Widget for bool settings in @ref KPrefsDialog.
+  @short Widgets for bool settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring bool values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring bool values. It is meant
+  to be used by KPrefsDialog. The user is responsible for the layout management.
 */
 class KPrefsWidBool : public KPrefsWid
 {
   public:
     /**
-      Create a bool widget consisting of a QCheckbox.
+      Create a bool value control element consisting of a QCheckbox.
 
-      @param text      Text of QCheckBox.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent );
 
     /**
-      Return the QCheckbox used by this widget.
+      Return the QCheckbox used by this control element.
     */
     QCheckBox *checkBox();
 
@@ -103,31 +105,31 @@ class KPrefsWidBool : public KPrefsWid
 };
 
 /**
-  @short Widget for int settings in @ref KPrefsDialog.
+  @short Widgets for int settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring integer values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring integer values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
 */
 class KPrefsWidInt : public KPrefsWid
 {
   public:
     /**
-      Create a bool widget consisting of a label and a spinbox.
+      Create a integer value control element consisting of a label and a
+      spinbox.
 
-      @param text      Text of label.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent );
 
     /**
-      Return QLabel used by this widget.
+      Return QLabel used by this control element.
     */
     QLabel *label();
 
     /**
-      Return the QSpinBox used by this widget.
+      Return the QSpinBox used by this control element.
     */
     QSpinBox *spinBox();
 
@@ -144,21 +146,20 @@ class KPrefsWidInt : public KPrefsWid
 };
 
 /**
-  @short Widget for time settings in @ref KPrefsDialog.
+  @short Widgets for time settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring time values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring time values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
 */
 class KPrefsWidTime : public KPrefsWid
 {
   public:
     /**
-      Create a time widget consisting of a label and a spinbox.
+      Create a time value control element consisting of a label and a spinbox.
 
-      @param text      Text of Label.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidTime( KConfigSkeleton::ItemInt *item, QWidget *parent );
 
@@ -182,23 +183,22 @@ class KPrefsWidTime : public KPrefsWid
 };
 
 /**
-  @short Widget for color settings in @ref KPrefsDialog.
+  @short Widgets for color settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring color values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring color values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
 */
 class KPrefsWidColor : public KPrefsWid
 {
     Q_OBJECT
   public:
     /**
-      Create a color widget consisting of a test field and a button for opening
-      a color dialog.
+      Create a color value control element consisting of a test field and a
+      button for opening a color dialog.
 
-      @param text      Text of button.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent );
     /**
@@ -226,23 +226,21 @@ class KPrefsWidColor : public KPrefsWid
 };
 
 /**
-  @short Widget for font settings in @ref KPrefsDialog.
+  @short Widgets for font settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring font values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring font values. It is meant
+  to be used by KPrefsDialog. The user is responsible for the layout management.
 */
 class KPrefsWidFont : public KPrefsWid
 {
     Q_OBJECT
   public:
     /**
-      Create a font widget consisting of a test field and a button for opening
-      a font dialog.
+      Create a font value control element consisting of a test field and a
+      button for opening a font dialog.
 
-      @param label     Text of label.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidFont( KConfigSkeleton::ItemFont *item,
                    QWidget *parent, const QString &sampleText );
@@ -252,7 +250,7 @@ class KPrefsWidFont : public KPrefsWid
     ~KPrefsWidFont();
 
     /**
-      Return label.
+      Return QLabel.
     */
     QLabel *label();
     /**
@@ -279,25 +277,25 @@ class KPrefsWidFont : public KPrefsWid
 };
 
 /**
-  @short Widget for settings represented by a group of radio buttons in
+  @short Widgets for settings represented by a group of radio buttons in
   @ref KPrefsDialog.
 
-  This class provides a widget for configuring selections. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management. The
-  setting is interpreted as an int value, corresponding to the position of the
-  radio button. The position of the button is defined by the sequence of @ref
-  addRadio() calls, starting with 0.
+  This class provides a control element for configuring selections. It is meant
+  to be used by KPrefsDialog. The user is responsible for the layout management.
+  
+  The setting is interpreted as an int value, corresponding to the position of
+  the radio button. The position of the button is defined by the sequence of
+  @ref addRadio() calls, starting with 0.
 */
 class KPrefsWidRadios : public KPrefsWid
 {
   public:
     /**
-      Create a widget for selection of an option. It consists of a box with
-      several radio buttons.
+      Create a control element for selection of an option. It consists of a box
+      with several radio buttons.
 
-      @param text      Text of main box.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent );
     virtual ~KPrefsWidRadios();
@@ -308,7 +306,8 @@ class KPrefsWidRadios : public KPrefsWid
       @param text Text of the button.
       @param whatsThis What's This help for the button.
     */
-    void addRadio(const QString &text, const QString &whatsThis = QString::null);
+    void addRadio( const QString &text,
+                   const QString &whatsThis = QString::null );
 
     /**
       Return the box widget used by this widget.
@@ -328,21 +327,21 @@ class KPrefsWidRadios : public KPrefsWid
 
 
 /**
-  @short Widget for string settings in @ref KPrefsDialog.
+  @short Widgets for string settings in @ref KPrefsDialog.
 
-  This class provides a widget for configuring string values. It is meant to be
-  used by KPrefsDialog. The user is responsible for the layout management.
+  This class provides a control element for configuring string values. It is
+  meant to be used by KPrefsDialog. The user is responsible for the layout
+  management.
 */
 class KPrefsWidString : public KPrefsWid
 {
   public:
     /**
-      Create a string widget consisting of a test label and a line edit.
+      Create a string value control element consisting of a test label and a
+      line edit.
 
-      @param text      Text of label.
-      @param reference Pointer to variable read and written by this widget.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent,
                      QLineEdit::EchoMode echomode=QLineEdit::Normal );
@@ -352,7 +351,7 @@ class KPrefsWidString : public KPrefsWid
     virtual ~KPrefsWidString();
 
     /**
-      Return label used by this widget.
+      Return QLabel used by this widget.
     */
     QLabel *label();
     /**
@@ -400,15 +399,13 @@ class KPrefsWidManager
     /**
       Register a custom KPrefsWid object.
     */
-    virtual void addWid(KPrefsWid *);
+    virtual void addWid( KPrefsWid * );
 
     /**
       Register a @ref KPrefsWidBool object.
 
-      @param text      Text of bool widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidBool *addWidBool( KConfigSkeleton::ItemBool *item,
                                QWidget *parent );
@@ -416,10 +413,8 @@ class KPrefsWidManager
     /**
       Register a @ref KPrefsWidTime object.
 
-      @param text      Text of time widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidTime *addWidTime( KConfigSkeleton::ItemInt *item,
                                QWidget *parent );
@@ -427,20 +422,18 @@ class KPrefsWidManager
     /**
       Register a @ref KPrefsWidColor object.
 
-      @param text      Text of color widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidColor *addWidColor( KConfigSkeleton::ItemColor *item,
                                  QWidget *parent );
         
     /**
-      Register a @ref KPrefsWidRadios object.
+      Register a @ref KPrefsWidRadios object. The choices represented by the
+      given item object are automatically added as radio buttons.
 
-      @param text      Text of radio button box widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidRadios *addWidRadios( KConfigSkeleton::ItemEnum *item,
                                    QWidget *parent );
@@ -448,10 +441,8 @@ class KPrefsWidManager
     /**
       Register a @ref KPrefsWidString object.
 
-      @param text      Text of string widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidString *addWidString( KConfigSkeleton::ItemString *item,
                                    QWidget *parent );
@@ -459,10 +450,8 @@ class KPrefsWidManager
     /**
       Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.
 
-      @param text      Text of string widget.
-      @param reference Reference to variable storing the setting.
-      @param parent    Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
     */
     KPrefsWidString *addWidPassword ( KConfigSkeleton::ItemString *item,
                                       QWidget *parent );
@@ -470,11 +459,10 @@ class KPrefsWidManager
     /**
       Register a @ref KPrefsWidFont object.
 
-      @param sampleText Sample text of font widget.
-      @param buttonText Button text of font widget.
-      @param reference  Reference to variable storing the setting.
+      @param item       The KConfigSkeletonItem representing the preferences
+                        entry.
       @param parent     Parent widget.
-      @param whatsThis What's This help for the widget.
+      @param sampleText Sample text for previewing the selected font.
     */
     KPrefsWidFont *addWidFont( KConfigSkeleton::ItemFont *item,
                                QWidget *parent, const QString &sampleText );
