@@ -38,49 +38,49 @@ class KDatePicker;
 */
 class KDatePickerPopup: public QPopupMenu
 {
-  Q_OBJECT
-public:
-  /**
-     A constructor for the KDatePickerPopup.
+    Q_OBJECT
+  public:
+    /**
+       A constructor for the KDatePickerPopup.
 
-     @param parent The object's parent.
-     @param name The object's name.
-  */
-  KDatePickerPopup ( QWidget *parent=0, const char *name=0 );
+       @param parent The object's parent.
+       @param name The object's name.
+    */
+    KDatePickerPopup( QWidget *parent = 0, const char *name = 0 );
 
-  /**
-     A constructor for the KDatePickerPopup
+    /**
+       A constructor for the KDatePickerPopup
 
-     @param date The initial date.
-     @param parent The object's parent.
-     @param name The object's name.
-  */
-  KDatePickerPopup( const QDate & date, QWidget *parent=0,
-                    const char *name = 0 );
+       @param date The initial date.
+       @param parent The object's parent.
+       @param name The object's name.
+    */
+    KDatePickerPopup( const QDate &date, QWidget *parent = 0,
+                      const char *name = 0 );
 
-  virtual ~KDatePickerPopup();
+    virtual ~KDatePickerPopup();
 
-  /**
-     @return A pointer to the private variable mDatePicker, an instance of
-     KDatePicker.
-  */
-  KDatePicker *datePicker() const;
+    /**
+       @return A pointer to the private variable mDatePicker, an instance of
+       KDatePicker.
+    */
+    KDatePicker *datePicker() const;
 
-signals:
+  signals:
 
-  /**
-     This signal gets emitted when the user chooses a date from the
-     KDatePicker widget.
-  */
-  void dateChanged ( QDate );
+    /**
+       This signal gets emitted when the user chooses a date from the
+       KDatePicker widget.
+    */
+    void dateChanged ( QDate );
 
-protected slots:
-  void slotDateChanged ( QDate );
+  protected slots:
+    void slotDateChanged ( QDate );
 
-private:
-  void init();
+  private:
+    void init();
 
-  KDatePicker *mDatePicker;
+    KDatePicker *mDatePicker;
 };
 
 #endif

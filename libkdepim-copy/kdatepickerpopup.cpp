@@ -27,31 +27,31 @@
 
 #include "kdatepickerpopup.h"
 
-KDatePickerPopup::KDatePickerPopup(QWidget *parent, const char *name)
+KDatePickerPopup::KDatePickerPopup( QWidget *parent, const char *name )
   : QPopupMenu( parent, name )
 {
   init();
 }
 
-KDatePickerPopup::KDatePickerPopup(const QDate &date, QWidget *parent,
-                                   const char *name)
+KDatePickerPopup::KDatePickerPopup( const QDate &date, QWidget *parent,
+                                    const char *name )
   : QPopupMenu( parent, name )
 {
   init();
-  mDatePicker -> setDate( date );
+  mDatePicker->setDate( date );
 }
 
 void KDatePickerPopup::init()
 {
-  mDatePicker = new KDatePicker( this, QDate::currentDate() ,0 );
-  mDatePicker -> setCloseButton( false );
+  mDatePicker = new KDatePicker( this, QDate::currentDate(), 0 );
+  mDatePicker->setCloseButton( false );
 
-  insertItem( mDatePicker,0,0 );
+  insertItem( mDatePicker, 0, 0 );
 
-  connect(mDatePicker, SIGNAL( dateEntered( QDate ) ),
-          SLOT( slotDateChanged( QDate ) ) );
-  connect(mDatePicker, SIGNAL( dateSelected( QDate ) ),
-          SLOT( slotDateChanged( QDate ) ) );
+  connect( mDatePicker, SIGNAL( dateEntered( QDate ) ),
+           SLOT( slotDateChanged( QDate ) ) );
+  connect( mDatePicker, SIGNAL( dateSelected( QDate ) ),
+           SLOT( slotDateChanged( QDate ) ) );
 }
 
 KDatePickerPopup::~KDatePickerPopup()
