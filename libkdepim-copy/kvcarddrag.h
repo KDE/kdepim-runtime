@@ -24,6 +24,8 @@
 #include <qdragobject.h>
 #include <qstring.h>
 
+#include <kabc/addressee.h>
+
 class KVCardDragPrivate;
 
 /**

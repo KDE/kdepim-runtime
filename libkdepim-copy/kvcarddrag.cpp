@@ -18,9 +18,9 @@
     Boston, MA 02111-1307, USA.
 */
 
-#include <kabc/vcardconverter.h>
-
 #include "kvcarddrag.h"
+
+#include <kabc/vcardconverter.h>
 
 static const char vcard_mime_string[] = "text/x-vcard";
 
