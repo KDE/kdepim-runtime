@@ -468,8 +468,8 @@ AddressesDialog::saveAs()
 
   if ( manager.list( name ) ) {
     KMessageBox::information( 0,
-                              i18n( "Distribution list with the given name (%1)"
-                                    "already exists please select a different name" )
+                              i18n( "<qt>Distribution list with the given name <b>%1</b> "
+                                    "already exists. Please select a different name.</qt>" )
                               .arg( name ) );
   }
 
@@ -499,7 +499,7 @@ AddressesDialog::editEntry()
     }
   } else {
     KMessageBox::information( 0,
-                              i18n("Fist select the entry which you want to edit.") );
+                              i18n("Please select the entry which you want to edit.") );
   }
 }
 
