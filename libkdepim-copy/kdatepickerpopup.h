@@ -28,26 +28,59 @@
         
 class KDatePicker;
 
+/**
+  A popup-menu which contains a KDatePicker.
+ 
+  Actually, this is just a popup-menu with only one widget. The user can choose
+  a date like a normal KDatePicker.
+ 
+  @author Bram Schoenmakers <bram_s@softhome.net>
+*/
 class KDatePickerPopup: public QPopupMenu
 {
     Q_OBJECT
   public:
+    /** 
+      A constructor for the KDatePickerPopup.
+    
+      @param parent The object's parent.
+      @param name The object's name.
+    */
     KDatePickerPopup ( QWidget *parent=0, const char *name=0 );
-    KDatePickerPopup( const QDate & date, QWidget *parent=0, const char *name = 0 );
+    
+    /** 
+      A constructor for the KDatePickerPopup
+    
+      @param date The initial date.
+      @param parent The object's parent.
+      @param name The object's name.
+    */
+    KDatePickerPopup( const QDate & date, QWidget *parent=0, 
+                      const char *name = 0 );
+    
     virtual ~KDatePickerPopup();
     
-    void init();
-     
-    KDatePicker *DatePicker();
+    /** 
+      @return A pointer to the private variable mDatePicker, an instance of 
+      KDatePicker.
+    */
+    KDatePicker *datePicker() const;
                  
   signals:
+
+    /** 
+      This signal gets emitted when the user chooses a date from the
+      KDatePicker widget.
+    */
     void dateChanged ( QDate );
         
   protected slots:
     void slotDateChanged ( QDate );
     
   private:
-     KDatePicker *mdatepicker;
+    void init();
+   
+    KDatePicker *mDatePicker;
 };
 
 #endif

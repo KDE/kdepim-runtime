@@ -33,34 +33,35 @@ KDatePickerPopup::KDatePickerPopup(QWidget *parent, const char *name)
   init();
 }
 
-KDatePickerPopup::KDatePickerPopup(const QDate &date, QWidget *parent, const char *name)
+KDatePickerPopup::KDatePickerPopup(const QDate &date, QWidget *parent, 
+                                   const char *name)
   : QPopupMenu( parent, name )
 {
   init();
-  mdatepicker->setDate( date );
+  mDatePicker -> setDate( date );
 }
 
 void KDatePickerPopup::init()
 {
-  mdatepicker = new KDatePicker( this, QDate::currentDate() ,0 );
-  mdatepicker->setCloseButton( false );
+  mDatePicker = new KDatePicker( this, QDate::currentDate() ,0 );
+  mDatePicker -> setCloseButton( false );
   
-  insertItem(mdatepicker,0,0);
+  insertItem( mDatePicker,0,0 );
   
-  connect(mdatepicker, SIGNAL( dateEntered( QDate ) ),
+  connect(mDatePicker, SIGNAL( dateEntered( QDate ) ),
           SLOT( slotDateChanged( QDate ) ) );
-  connect(mdatepicker, SIGNAL( dateSelected( QDate ) ),
+  connect(mDatePicker, SIGNAL( dateSelected( QDate ) ),
           SLOT( slotDateChanged( QDate ) ) );
 }
 
 KDatePickerPopup::~KDatePickerPopup()
 {
-  delete mdatepicker;
+  delete mDatePicker;
 }
 
-KDatePicker *KDatePickerPopup::DatePicker()
+KDatePicker *KDatePickerPopup::datePicker() const
 {
-  return mdatepicker;
+  return mDatePicker;
 }
 
 void KDatePickerPopup::slotDateChanged( QDate date )
