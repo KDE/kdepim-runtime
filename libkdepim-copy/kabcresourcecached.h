@@ -70,7 +70,8 @@ class ResourceCached : public Resource
 
   protected:
     virtual QString cacheFile() const;
-    virtual QString uidMapFile() const;
+
+    void setIdMapperIdentifier();
 
   private:
     KPIM::IdMapper mIdMapper;

@@ -30,7 +30,7 @@
 using namespace KABC;
 
 ResourceCached::ResourceCached( const KConfig *config )
-  : KABC::Resource( config )
+  : KABC::Resource( config ), mIdMapper( "kabc/uidmaps/" )
 {
 }
 
@@ -84,9 +84,8 @@ void ResourceCached::loadCache()
 {
   mAddrMap.clear();
 
-  // load uid map
-  if ( !mIdMapper.load( uidMapFile() ) )
-    kdError() << "Can't open uid map file '" << uidMapFile() << "'" << endl;
+  setIdMapperIdentifier();
+  mIdMapper.load();
 
   // load cache
   QFile file( cacheFile() );
@@ -109,9 +108,8 @@ void ResourceCached::loadCache()
 
 void ResourceCached::saveCache()
 {
-  // save uid map
-  if ( !mIdMapper.save( uidMapFile() ) )
-    kdError() << "Can't open uid map file '" << uidMapFile() << "'" << endl;
+  setIdMapperIdentifier();
+  mIdMapper.save();
 
   // save cache
   QFile file( cacheFile() );
@@ -208,9 +206,9 @@ QString ResourceCached::cacheFile() const
   return locateLocal( "cache", "kabc/kresources/" + identifier() );
 }
 
-QString ResourceCached::uidMapFile() const
+void ResourceCached::setIdMapperIdentifier()
 {
-  return locateLocal( "data", "kabc/uidmaps/" + type() + "/" + identifier() );
+  mIdMapper.setIdentifier( type() + "_" + identifier() );
 }
 
 #include "kabcresourcecached.moc"
