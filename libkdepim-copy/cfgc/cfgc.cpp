@@ -35,7 +35,7 @@
 static const KCmdLineOptions options[] =
 {
   { "+file", I18N_NOOP("Input cfg XML file."), 0 },
-  { 0, 0, 0 }
+  KCmdLineLastOption
 };
 
 
