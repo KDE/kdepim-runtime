@@ -26,6 +26,7 @@
 
 #include <kdatepicker.h>
 #include <knotifyclient.h>
+#include <kglobalsettings.h>
 #include <kdebug.h>
 #include <kglobal.h>
 #include <klocale.h>
@@ -155,10 +156,13 @@ void KDateEdit::popup()
 {
   if (mReadOnly)
     return;
-  QPoint popupPoint = mapToGlobal( QPoint( 0,0 ) );
-  if ( popupPoint.x() < 0 ) popupPoint.setX( 0 );
 
-  int desktopHeight = QApplication::desktop()->height();
+  QRect desk = KGlobalSettings::desktopGeometry(this);
+
+  QPoint popupPoint = desk.topLeft();
+  if ( popupPoint.x() < desk.x() ) popupPoint.setX( desk.x() );
+
+  int desktopHeight = desk.height();
   int dateFrameHeight = mDateFrame->sizeHint().height();
 
   if ( popupPoint.y() + height() + dateFrameHeight > desktopHeight ) {
