@@ -69,7 +69,7 @@ QStringList KPIM::splitEmailAddrList(const QString& aStr)
         if (commentlevel > 0)
           commentlevel--;
         else {
-          kdDebug(5006) << "Error in address splitting: Unmatched ')'"
+          kdDebug(5300) << "Error in address splitting: Unmatched ')'"
                         << endl;
           return list;
         }
@@ -95,7 +95,7 @@ QStringList KPIM::splitEmailAddrList(const QString& aStr)
       list += addr.simplifyWhiteSpace();
   }
   else
-    kdDebug(5006) << "Error in address splitting: "
+    kdDebug(5300) << "Error in address splitting: "
                   << "Unexpected end of address list"
                   << endl;
 
