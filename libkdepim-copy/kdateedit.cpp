@@ -24,6 +24,7 @@
 
 #include <qevent.h>
 #include <qlineedit.h>
+#include <qlistbox.h>
 
 #include <kdatepicker.h>
 #include <knotifyclient.h>
@@ -158,6 +159,15 @@ void KDateEdit::popup()
   }
 
   mDateFrame->show();
+
+  // The combo box is now shown pressed. Make it show not pressed again
+  // by causing its (invisible) list box to emit a 'selected' signal.
+  QListBox *lb = listBox();
+  if (lb) {
+    lb->setCurrentItem(0);
+    QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
+    QApplication::postEvent(lb, keyEvent);
+  }
 }
 
 void KDateEdit::dateSelected(QDate newDate)
