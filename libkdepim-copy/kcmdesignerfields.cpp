@@ -175,7 +175,7 @@ void KCMDesignerFields::deleteFile()
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
     if (KMessageBox::warningContinueCancel(this,
-         i18n( "<qt>Do you really want to delete '<b>%1</b>'?</qt>").arg( pageItem->text(0) ), "", KGuiItem( i18n("&Delete"), "editdelete") )
+	i18n( "<qt>Do you really want to delete '<b>%1</b>'?</qt>").arg( pageItem->text(0) ), "", KStdGuiItem::del() )
          == KMessageBox::Continue)
       KIO::NetAccess::del( pageItem->path(), 0 );
   }

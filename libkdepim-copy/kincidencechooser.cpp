@@ -76,7 +76,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod1lab = new QLabel ( "Set Last modified", topFrame);
     topLayout->addWidget(mMod1lab,iii,1);
-    showDetails1 = new QPushButton( i18n("Show Details..."),topFrame );
+    showDetails1 = new QPushButton( i18n("Show Details"),topFrame );
     connect ( showDetails1, SIGNAL( clicked()), this, SLOT (showIncidence1() ) );
     topLayout->addWidget(showDetails1,iii,2);
     ++iii;
@@ -89,7 +89,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod2lab = new QLabel ( "Set Last modified", topFrame);
     topLayout->addWidget(mMod2lab,iii,1);
-    showDetails2 = new QPushButton( i18n("Show Details..."), topFrame);
+    showDetails2 = new QPushButton( i18n("Show Details"), topFrame);
     connect ( showDetails2, SIGNAL( clicked()), this, SLOT (showIncidence2() ) );
     topLayout->addWidget(showDetails2,iii,2);
     ++iii;
@@ -223,10 +223,10 @@ void KIncidenceChooser::showIncidence1()
 {
     if ( mTbL ) {
         if ( mTbL->isVisible() ) {
-            showDetails1->setText( i18n("Show details..."));
+            showDetails1->setText( i18n("Show Details"));
             mTbL->hide();
         } else {
-            showDetails1->setText( i18n("Hide details"));
+            showDetails1->setText( i18n("Hide Details"));
             mTbL->show();
             mTbL->raise();
         }
@@ -236,7 +236,7 @@ void KIncidenceChooser::showIncidence1()
     mTbL->setCaption(mInc1lab->text() );
     mTbL->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 )  );
     mTbL->resize( 300, 300 );
-    showDetails1->setText( i18n("Hide details"));
+    showDetails1->setText( i18n("Hide Details"));
     mTbL->show();
     mTbL->raise();
 }
@@ -265,10 +265,10 @@ void KIncidenceChooser::showIncidence2()
 {
    if ( mTbN ) {
         if ( mTbN->isVisible() ) {
-            showDetails2->setText( i18n("Show details..."));
+            showDetails2->setText( i18n("Show Details"));
             mTbN->hide();
         } else {
-            showDetails2->setText( i18n("Hide details"));
+            showDetails2->setText( i18n("Hide Details"));
             mTbN->show();
             mTbN->raise();
         }
@@ -278,7 +278,7 @@ void KIncidenceChooser::showIncidence2()
     mTbN->setCaption(mInc2lab->text() );
     mTbN->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
     mTbN->resize( 300, 300 );
-    showDetails2->setText( i18n("Hide details"));
+    showDetails2->setText( i18n("Hide Details"));
     mTbN->show();
     mTbN->raise();
 }
