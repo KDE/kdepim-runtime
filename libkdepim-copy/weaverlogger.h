@@ -16,7 +16,7 @@
 #ifndef WEAVERLOGGER_H
 #define WEAVERLOGGER_H
 
-#include <weaverextensions.h>
+#include "weaverextensions.h"
 
 namespace KPIM {
 namespace ThreadWeaver {
