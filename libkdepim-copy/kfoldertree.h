@@ -42,7 +42,8 @@ struct KPaintInfo {
     COL_STATUS,
     COL_SIGNED,
     COL_CRYPTO,
-    COL_RECEIVER
+    COL_RECEIVER,
+    COL_SCORE
   };
 
   KPaintInfo() :
@@ -57,11 +58,9 @@ struct KPaintInfo {
     showSigned(false),
     showCrypto(false),
     showReceiver(false),
-#ifdef SCORING
     showScore(false),
-    scoreCol(-1),
-#endif
 
+    scoreCol(-1),
     flagCol(-1),
     senderCol(-1),
     receiverCol(-1),
@@ -99,11 +98,9 @@ struct KPaintInfo {
   bool showSigned;
   bool showCrypto;
   bool showReceiver;
-#ifdef SCORING
   bool showScore;
-  int scoreCol;
-#endif
 
+  int scoreCol;
   int flagCol;
   int senderCol;
   int receiverCol;
