@@ -173,7 +173,7 @@ class KDE_EXPORT KScoringExpression
 {
   friend class KScoringRule;
  public:
-  enum Condition { CONTAINS, MATCH, EQUALS, SMALLER, GREATER };
+  enum Condition { CONTAINS, MATCH, EQUALS, SMALLER, GREATER, MATCHCS };
 
   KScoringExpression(const QString&,const QString&,const QString&, const QString&);
   ~KScoringExpression();
@@ -383,7 +383,7 @@ class KDE_EXPORT KScoringManager : public QObject
   QString group;
 
   //ScorableServer* _s;
-  
+
   // filename of the scorefile
   QString mFilename;
 };

@@ -370,6 +370,11 @@ KScoringExpression::KScoringExpression(const QString& h, const QString& t, const
     expr.setPattern(expr_str);
     expr.setCaseSensitive(false);
   }
+  else if ( t == "MATCHCS" ) {
+    cond = MATCHCS;
+    expr.setPattern( expr_str );
+    expr.setCaseSensitive( true );
+  }
   else if (t == "CONTAINS" ) cond = CONTAINS;
   else if (t == "EQUALS" ) cond = EQUALS;
   else if (t == "GREATER") {
@@ -396,6 +401,7 @@ int KScoringExpression::getConditionForName(const QString& s)
 {
   if (s == getNameForCondition(CONTAINS)) return CONTAINS;
   else if (s == getNameForCondition(MATCH)) return MATCH;
+  else if (s == getNameForCondition(MATCHCS)) return MATCHCS;
   else if (s == getNameForCondition(EQUALS)) return EQUALS;
   else if (s == getNameForCondition(SMALLER)) return SMALLER;
   else if (s == getNameForCondition(GREATER)) return GREATER;
@@ -412,6 +418,7 @@ QString KScoringExpression::getNameForCondition(int cond)
   switch (cond) {
   case CONTAINS: return i18n("Contains Substring");
   case MATCH: return i18n("Matches Regular Expression");
+  case MATCHCS: return i18n("Matches Regular Expression (Case Sensitive)");
   case EQUALS: return i18n("Is Exactly the Same As");
   case SMALLER: return i18n("Less Than");
   case GREATER: return i18n("Greater Than");
@@ -428,6 +435,7 @@ QStringList KScoringExpression::conditionNames()
   QStringList l;
   l << getNameForCondition(CONTAINS);
   l << getNameForCondition(MATCH);
+  l << getNameForCondition(MATCHCS);
   l << getNameForCondition(EQUALS);
   l << getNameForCondition(SMALLER);
   l << getNameForCondition(GREATER);
@@ -476,6 +484,7 @@ bool KScoringExpression::match(ScorableArticle& a) const
       res = (head.lower().find(expr_str.lower()) >= 0);
       break;
     case MATCH:
+    case MATCHCS:
       res = (expr.search(head)!=-1);
       break;
     case GREATER:
@@ -526,6 +535,7 @@ QString KScoringExpression::getTypeString(int cond)
   switch (cond) {
   case CONTAINS: return "CONTAINS";
   case MATCH: return "MATCH";
+  case MATCHCS: return "MATCHCS";
   case EQUALS: return "EQUALS";
   case SMALLER: return "SMALLER";
   case GREATER: return "GREATER";
