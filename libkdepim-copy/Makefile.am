@@ -20,7 +20,6 @@ libkdepim_la_SOURCES = \
   clicklineedit.cpp \
   email.cpp kfileio.cpp configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp \
-  kimproxy.cpp kimiface.stub kimproxyiface.skel \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
@@ -37,7 +36,7 @@ MailTransportServiceIface_DIR = $(srcdir)/interfaces
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
 
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
-libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) \
+libkdepim_la_LIBADD  = $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) \
   $(top_builddir)/libkcal/libkcal.la $(LIB_KDEUI) 
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 

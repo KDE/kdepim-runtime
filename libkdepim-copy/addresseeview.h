@@ -26,7 +26,7 @@
 
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
-#include "kimproxy.h"
+#include <kimproxy.h>
 
 namespace KIO {
 class Job;
