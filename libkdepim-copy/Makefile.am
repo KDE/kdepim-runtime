@@ -22,7 +22,9 @@ libkdepim_la_SOURCES = \
   identitymanager.cpp identity.cpp identitymanager.skel \
   identitycombo.cpp \
   collectingprocess.cpp ldapclient.cpp ldapurl.cpp ldif.cpp \
-  kimproxy.cpp kimiface.stub kimproxyiface.skel
+  kimproxy.cpp kimiface.stub kimproxyiface.skel \
+  overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
+  statusbarprogresswidget.cpp ssllabel.cpp
 
 noinst_HEADERS = categoryselectdialog.h categoryeditdialog.h ktimeedit.h 
 $(srcdir)/categoryselectdialog.h: categoryselectdialog_base.h
