@@ -511,7 +511,7 @@ void AddresseeLineEdit::slotLDAPSearchData( const KPIM::LdapResultList& adrs )
   for ( KPIM::LdapResultList::ConstIterator it = adrs.begin(); it != adrs.end(); ++it ) {
     KABC::Addressee addr;
     addr.setNameFromString( (*it).name );
-    addr.insertEmail( (*it).email, true );
+    addr.setEmails( (*it).email );
     addContact( addr, (*it).completionWeight );
   }
 

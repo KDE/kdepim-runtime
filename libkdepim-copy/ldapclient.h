@@ -203,7 +203,7 @@ class LdapClient : public QObject
  */
 struct LdapResult {
   QString name;     ///< full name
-  QString email;    ///< email
+  QStringList email;    ///< emails
   int clientNumber; ///< for sorting in a ldap-only lookup
   int completionWeight; ///< for sorting in a completion list
 };

@@ -473,6 +473,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
   QValueList< KPIM::LdapObject >::ConstIterator it1;
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
     QString name, mail, givenname, sn;
+    QStringList mails;
     bool isDistributionList = false;
     bool wasCN = false;
     bool wasDC = false;
@@ -506,9 +507,13 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
           mail.append( tmp );
         }
         wasDC = true;
-      } else if( it2.key() == "mail" )
+      } else if( it2.key() == "mail" ) {
         mail = tmp;
-      else if( it2.key() == "givenName" )
+        LdapAttrValue::ConstIterator it3 = it2.data().begin();
+        for ( ; it3 != it2.data().end(); ++it3 ) {
+          mails.append( QString::fromUtf8( (*it3).data(), (*it3).size() ) );
+        }
+      } else if( it2.key() == "givenName" )
         givenname = tmp;
       else if( it2.key() == "sn" )
         sn = tmp;
@@ -517,7 +522,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
       }
     }
 
-    if( mail.isEmpty()) {
+    if( mails.isEmpty()) {
+      if ( !mail.isEmpty() ) mails.append( mail );
       if( isDistributionList ) {
         kdDebug(5300) << "\n\nLdapSearch::makeSearchData() found a list: " << name << "\n\n" << endl;
         ret.append( name );
@@ -551,7 +557,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     sr.clientNumber = (*it1).client->clientNumber();
     sr.completionWeight = (*it1).client->completionWeight();
     sr.name = name;
-    sr.email = mail;
+    sr.email = mails;
     resList.append( sr );
   }
 
