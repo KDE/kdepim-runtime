@@ -331,6 +331,9 @@ AddressesDialog::initConnections()
 
   connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
            this, SLOT( updateAvailableAddressees() ) );
+
+  connect( KABC::StdAddressBook::self(), SIGNAL( addressBookChanged(AddressBook*) ),
+           this, SLOT( updateAvailableAddressees() ) );
 }
 
 void
