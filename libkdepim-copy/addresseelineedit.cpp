@@ -552,7 +552,7 @@ void AddresseeLineEdit::addCompletionItem( const QString& string, int weight )
 {
   // Check if there is an exact match for item already, and use the max weight if so.
   // Since there's no way to get the information from KCompletion, we have to keep our own QMap
-  CompletionItemsMap::iterator it = s_completionItemMap->begin();
+  CompletionItemsMap::iterator it = s_completionItemMap->find( string );
   if ( it != s_completionItemMap->end() ) {
     weight = QMAX( *it, weight );
     *it = weight;
