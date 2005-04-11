@@ -52,7 +52,7 @@ namespace KPIM {
    *
    * The last two parameters being strings, they are passed via an
    * encapsulating class, of which <code>mainfunc</code> and
-   * <code>path</path> are public static members:
+   * <code>path</code> are public static members:
    *
    * <pre>
    * struct MyObjectPluginLoaderConfig {
