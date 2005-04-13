@@ -12,6 +12,7 @@
 #include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <kdeversion.h>
 #include <kabc/distributionlist.h>
 #include <kabc/resource.h>
 #include <kabc/stdaddressbook.h>
@@ -20,6 +21,7 @@
 #include <dcopref.h>
 #include <dcopclient.h> 
 
+#include <qeventloop.h>
 #include <qregexp.h>
 
 //-----------------------------------------------------------------------------
@@ -126,6 +128,16 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *par
 bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 {
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
+
+#if KDE_IS_VERSION(3,4,89)
+  // This ugly hack will be removed in 4.0
+  while ( !addressBook->loadingHasFinished() ) {
+    QApplication::eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+
+    // use sleep here to reduce cpu usage
+    usleep( 100 );
+  }
+#endif
 
   // Select a resource
   QPtrList<KABC::Resource> kabcResources = addressBook->resources();
