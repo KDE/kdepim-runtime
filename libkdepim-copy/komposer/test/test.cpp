@@ -32,7 +32,7 @@
 static const char description[] =
     I18N_NOOP( "KDE mail editing manager" );
 
-static const char version[] = "0.0.1 (CVS)";
+static const char version[] = "0.0.1 (SVN)";
 
 int main(int argc, char **argv)
 {
