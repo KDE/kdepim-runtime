@@ -425,7 +425,13 @@ void LdapSearch::startSearch( const QString& txt )
   } else
     mSearchText = txt;
 
-  QString filter = QString( "|(cn=%1*)(mail=%2*)(givenName=%3*)(sn=%4*)" )
+  /* The reasoning behind this filter is:
+   * If it's a person, or a distlist, show it, even if it doesn't have an email address.
+   * If it's not a person, or a distlist, only show it if it has an email attribute.
+   * This allows both resource accounts with an email address which are not a person and
+   * person entries without an email address to show up, while still not showing things
+   * like structural entries in the ldap tree. */
+  QString filter = QString( "&(|(objectclass=person)(objectclass=groupOfNames)(mail=*))(|(cn=%1*)(mail=%2*)(givenName=%3*)(sn=%4*))" )
       .arg( mSearchText ).arg( mSearchText ).arg( mSearchText ).arg( mSearchText );
 
   QValueList< LdapClient* >::Iterator it;
