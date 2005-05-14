@@ -155,7 +155,7 @@ namespace KPIM {
   }
 
   QString CSSHelper::cssDefinitions( bool fixed ) const {
-    assert( d );
+    //assert( d );
     return
       commonCssDefinitions()
       +
