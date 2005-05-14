@@ -125,6 +125,10 @@ public:
    *                                           characters in the resulting HTML.
    *                         - ReplaceSmileys, replace text smileys with
    *                                           emoticon images.
+   *                         - IgnoreUrls, doesn't parse any URLs.
+   *                         - HighlightText, interprets text highlighting markup
+   *                                           like *bold*, _underlined_ and
+   *                                           /italic/.
    * @param  maxUrlLen      The maximum length of permitted URLs. (See
    *                        @ref maxUrlLen().)
    * @param  maxAddressLen  The maximum length of permitted email addresses.
@@ -137,6 +141,14 @@ public:
 
   static const int PreserveSpaces = 0x01;
   static const int ReplaceSmileys = 0x02;
+  static const int IgnoreUrls     = 0x04;
+  static const int HighlightText  = 0x08;
+
+  /** Embed the given PNG image into a data URL.
+   *  @param iconPath path to the PNG image
+   *  @return A data URL, QString::null if the image could not be read.
+   */
+  static QString pngToDataUrl( const QString & iconPath );
 
 protected:
   /**
@@ -159,6 +171,11 @@ private:
    * @return An HTML String with <img> for an emoticon
    */
   QString getEmoticon();
+  /**
+   * Highlight text according to *bold*, /italic/ and _underlined_ markup.
+   * @return A HTML string.
+   */
+  QString highlightedText();
 
   int mMaxUrlLen;
   int mMaxAddressLen;

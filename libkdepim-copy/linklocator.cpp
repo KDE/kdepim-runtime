@@ -30,6 +30,7 @@
 
 #include <qstylesheet.h>
 #include <qfile.h>
+#include <qregexp.h>
 
 #include <limits.h>
 
@@ -140,7 +141,8 @@ bool LinkLocator::atUrl() const
                        mText.mid(mPos, 6) == "smb://") ) ||
          (ch=='m' && mText.mid(mPos, 7) == "mailto:") ||
          (ch=='w' && mText.mid(mPos, 4) == "www.") ||
-         (ch=='f' && mText.mid(mPos, 4) == "ftp.");
+         (ch=='f' && mText.mid(mPos, 4) == "ftp.") ||
+         (ch=='n' && mText.mid(mPos, 5) == "news:");
          // note: no "file:" for security reasons
 }
 
@@ -156,7 +158,9 @@ bool LinkLocator::isEmptyUrl(const QString& url)
          url == "vnc://" ||
          url == "mailto" ||
          url == "www" ||
-         url == "ftp";
+         url == "ftp" ||
+         url == "news" ||
+         url == "news://";
 }
 
 QString LinkLocator::getEmailAddress()
@@ -287,23 +291,23 @@ QString LinkLocator::convertToHtml(const QString& plainText, int flags,
     else
     {
       const int start = locator.mPos;
-      str = locator.getUrl();
-      if(!str.isEmpty())
-      {
-        QString hyperlink;
-        if(str.left(4) == "www.")
-          hyperlink = "http://" + str;
-        else if(str.left(4) == "ftp.")
-          hyperlink = "ftp://" + str;
-        else
-          hyperlink = str;
+      if ( !(flags & IgnoreUrls) ) {
+        str = locator.getUrl();
+        if (!str.isEmpty())
+        {
+          QString hyperlink;
+          if(str.left(4) == "www.")
+            hyperlink = "http://" + str;
+          else if(str.left(4) == "ftp.")
+            hyperlink = "ftp://" + str;
+          else
+            hyperlink = str;
 
-	str = str.replace('&', "&amp;");
-        result += "<a href=\"" + hyperlink + "\">" + str + "</a>";
-        x += locator.mPos - start;
-      }
-      else
-      {
+          str = str.replace('&', "&amp;");
+          result += "<a href=\"" + hyperlink + "\">" + str + "</a>";
+          x += locator.mPos - start;
+          continue;
+        }
         str = locator.getEmailAddress();
         if(!str.isEmpty())
         {
@@ -318,26 +322,33 @@ QString LinkLocator::convertToHtml(const QString& plainText, int flags,
 
           result += "<a href=\"mailto:" + str + "\">" + str + "</a>";
           x += str.length() - 1;
-        }
-        else {
-          if ( flags & ReplaceSmileys )
-            str = locator.getEmoticon();
-          if ( ! str.isEmpty() ) {
-            result += str;
-            x += locator.mPos - start;
-          }
-          else {
-            result += ch;
-          }
+          continue;
         }
       }
+      if ( flags & ReplaceSmileys ) {
+        str = locator.getEmoticon();
+        if ( ! str.isEmpty() ) {
+          result += str;
+          x += locator.mPos - start;
+          continue;
+        }
+      }
+      if ( flags & HighlightText ) {
+        str = locator.highlightedText();
+        if ( !str.isEmpty() ) {
+          result += str;
+          x += locator.mPos - start;
+          continue;
+        }
+      }
+      result += ch;
     }
   }
 
   return result;
 }
 
-static QString pngToDataUrl( const QString & iconPath )
+QString LinkLocator::pngToDataUrl( const QString & iconPath )
 {
   if ( iconPath.isEmpty() )
     return QString::null;
@@ -420,5 +431,34 @@ QString LinkLocator::getEmoticon()
     mPos += smileyLen - 1;
 
   return htmlRep;
+}
+
+QString LinkLocator::highlightedText()
+{
+  // formating symbols must be prepended with a whitespace
+  if ( ( mPos > 0 ) && !mText[mPos-1].isSpace() )
+    return QString::null;
+
+  const QChar ch = mText[mPos];
+  if ( ch != '/' && ch != '*' && ch != '_' )
+    return QString::null;
+
+  QRegExp re = QRegExp( QString("\\%1([0-9A-Za-z]+)\\%2").arg( ch ).arg( ch ) );
+  if ( re.search( mText, mPos ) == mPos ) {
+    uint length = re.matchedLength();
+    // there must be a whitespace after the closing formating symbol
+    if ( mPos + length < mText.length() && !mText[mPos + length].isSpace() )
+      return QString::null;
+    mPos += length - 1;
+    switch ( ch.latin1() ) {
+      case '*':
+        return "<b>" + re.cap( 1 ) + "</b>";
+      case '_':
+        return "<u>" + re.cap( 1 ) + "</u>";
+      case '/':
+        return "<i>" + re.cap( 1 ) + "</i>";
+    }
+  }
+  return QString::null;
 }
 
