@@ -33,7 +33,7 @@ libkdepim_la_SOURCES = \
   designerfields.cpp kcmdesignerfields.cpp \
   embeddedurlpage.cpp kincidencechooser.cpp \
   groupwarejob.cpp pimemoticons.kcfgc \
-  krsqueezedtextlabel.cpp
+  krsqueezedtextlabel.cpp csshelper.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
