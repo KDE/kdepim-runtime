@@ -39,8 +39,6 @@
 #include <qstring.h>
 #include <qapplication.h>
 
-#include <cassert>
-
 namespace KPIM {
 
   namespace {
@@ -155,7 +153,6 @@ namespace KPIM {
   }
 
   QString CSSHelper::cssDefinitions( bool fixed ) const {
-    //assert( d );
     return
       commonCssDefinitions()
       +
