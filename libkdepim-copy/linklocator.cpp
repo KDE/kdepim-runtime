@@ -419,7 +419,7 @@ QString LinkLocator::getEmoticon()
       // create an image tag (the text in attribute alt is used
       // for copy & paste) representing the smiley
       htmlRep = QString("<img class=\"pimsmileyimg\" src=\"%1\" "
-                        "alt=\"%2\" title=\"%3\"/>")
+                        "alt=\"%2\" title=\"%3\" width=\"16\" height=\"16\"/>")
                 .arg( dataUrl,
                       QStyleSheet::escape( smiley ),
                       QStyleSheet::escape( smiley ) );

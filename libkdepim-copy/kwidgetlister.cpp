@@ -39,6 +39,9 @@
 #include <qhbox.h>
 
 #include <assert.h>
+#include <kguiitem.h>
+#include <kpushbutton.h>
+#include <kdialog.h>
 
 KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, const char* name )
   : QWidget( parent, name )
@@ -51,18 +54,20 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
   //--------- the button box
   mLayout = new QVBoxLayout(this, 0, 4);
   mButtonBox = new QHBox(this);
+  mButtonBox->setSpacing( KDialog::spacingHint() );
   mLayout->addWidget( mButtonBox );
 
-  mBtnMore = new QPushButton( i18n("more widgets","More"), mButtonBox );
+  mBtnMore = new KPushButton( KGuiItem( i18n( "more widgets", "More" ), "button_more" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnMore, 0 );
 
-  mBtnFewer = new QPushButton( i18n("fewer widgets","Fewer"), mButtonBox );
+  mBtnFewer = new KPushButton( KGuiItem( i18n( "fewer widgets", "Fewer" ), "button_fewer" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnFewer, 0 );
 
   QWidget *spacer = new QWidget( mButtonBox );
   mButtonBox->setStretchFactor( spacer, 1 );
 
-  mBtnClear = new QPushButton( i18n("clear widgets","Clear"), mButtonBox );
+  // FIXME: We need a KStdGuiItem::clear here and in other locations to be automagically RTL aware - Martijn
+  mBtnClear = new KPushButton( KGuiItem( i18n( "clear widgets", "Clear" ), "locationbar_erase" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnClear, 0 );
 
   //---------- connect everything
