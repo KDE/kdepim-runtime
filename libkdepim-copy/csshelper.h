@@ -75,6 +75,7 @@ class CSSHelper {
     QColor mQuoteColor[3];
     bool mRecycleQuoteColors;
     bool mBackingPixmapOn;
+    bool mShrinkQuotes;
     QString mBackingPixmapStr;
     QColor mForegroundColor, mLinkColor, mVisitedLinkColor, mBackgroundColor;
     // colors for PGP (Frame, Header, Body)

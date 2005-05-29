@@ -69,6 +69,7 @@ namespace KPIM {
   }
 
   CSSHelper::CSSHelper( const QPaintDeviceMetrics &pdm ) :
+    mShrinkQuotes( false ),
     mMetrics( pdm )
   {
     // initialize with defaults - should match the corresponding application defaults
@@ -178,11 +179,14 @@ namespace KPIM {
   QString CSSHelper::quoteFontTag( int level ) const {
     if ( level < 0 )
       level = 0;
-    static const int numQuoteLevels = sizeof mQuoteFont / sizeof *mQuoteFont ;
+    static const int numQuoteLevels = sizeof mQuoteFont / sizeof *mQuoteFont;
     const int effectiveLevel = mRecycleQuoteColors
       ? level % numQuoteLevels + 1
       : kMin( level + 1, numQuoteLevels ) ;
-    return QString( "<div class=\"quotelevel%1\">" ).arg( effectiveLevel );
+    if ( level >= numQuoteLevels )
+      return QString( "<div class=\"deepquotelevel%1\">" ).arg( effectiveLevel );
+    else
+      return QString( "<div class=\"quotelevel%1\">" ).arg( effectiveLevel );
   }
 
   QString CSSHelper::nonQuotedFontTag() const {
@@ -204,6 +208,8 @@ namespace KPIM {
       return ( pointSize * metrics.logicalDpiY() + 36 ) / 72 ;
     }
   }
+
+  static const char * const quoteFontSizes[] = { "85", "80", "75" };
 
   QString CSSHelper::printCssDefinitions( bool fixed ) const {
     const QString headerFont = QString( "  font-family: \"%1\" ! important;\n"
@@ -307,6 +313,7 @@ namespace KPIM {
     if ( !quoteCSS.isEmpty() )
       quoteCSS = "div.noquote {\n" + quoteCSS + "}\n\n";
 
+    // CSS definitions for quote levels 1-3
     for ( int i = 0 ; i < 3 ; ++i ) {
       quoteCSS += QString( "div.quotelevel%1 {\n"
                            "  color: %2 ! important;\n" )
@@ -315,6 +322,23 @@ namespace KPIM {
         quoteCSS += "  font-style: italic ! important;\n";
       if ( mQuoteFont[i].bold() )
         quoteCSS += "  font-weight: bold ! important;\n";
+      if ( mShrinkQuotes )
+        quoteCSS += "  font-size: " + QString::fromLatin1( quoteFontSizes[i] )
+          + "% ! important;\n";
+      quoteCSS += "}\n\n";
+    }
+
+    // CSS definitions for quote levels 4+
+    for ( int i = 0 ; i < 3 ; ++i ) {
+      quoteCSS += QString( "div.deepquotelevel%1 {\n"
+                           "  color: %2 ! important;\n" )
+        .arg( QString::number(i+1), mQuoteColor[i].name() );
+      if ( mQuoteFont[i].italic() )
+        quoteCSS += "  font-style: italic ! important;\n";
+      if ( mQuoteFont[i].bold() )
+        quoteCSS += "  font-weight: bold ! important;\n";
+      if ( mShrinkQuotes )
+        quoteCSS += "  font-size: 70% ! important;\n";
       quoteCSS += "}\n\n";
     }
 
