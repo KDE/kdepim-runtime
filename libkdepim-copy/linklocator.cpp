@@ -135,7 +135,8 @@ bool LinkLocator::atUrl() const
   return (ch=='h' && ( mText.mid(mPos, 7) == "http://" ||
                        mText.mid(mPos, 8) == "https://") ) ||
          (ch=='v' && mText.mid(mPos, 6) == "vnc://") ||
-         (ch=='f' && ( mText.mid(mPos, 6) == "ftp://" ||
+         (ch=='f' && ( mText.mid(mPos, 7) == "fish://" ||
+                       mText.mid(mPos, 6) == "ftp://" ||
                        mText.mid(mPos, 7) == "ftps://") ) ||
          (ch=='s' && ( mText.mid(mPos, 7) == "sftp://" ||
                        mText.mid(mPos, 6) == "smb://") ) ||
@@ -151,6 +152,7 @@ bool LinkLocator::isEmptyUrl(const QString& url)
   return url.isEmpty() ||
          url == "http://" ||
          url == "https://" ||
+         url == "fish://" ||
          url == "ftp://" ||
          url == "ftps://" ||
          url == "sftp://" ||
