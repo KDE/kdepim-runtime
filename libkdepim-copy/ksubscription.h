@@ -18,20 +18,12 @@
    Boston, MA 02111-1307, USA.
 */
 
+/** @file
+* This file defines a generic subscription widget and some support classes.
+*/
+
 #ifndef __KSUBSCRIPTION
 #define __KSUBSCRIPTION
-
-/**
- * This class provides a generic subscription widget
- * The dialog itself has a main listview that holds all items and two listviews that
- * show all changes. The user can change the state of the items via checkable items.
- * When you construct a new instance you need to provide an account and a caption
- * After inserting your items (checkable or not) you need to call @ref slotLoadingComplete()
- * You should at least connect slots to the signals @ref #okClicked() (to save your changes)
- * and @ref #user1Clicked() (to reload the list)
- * You can hide unwanted checkboxes via the respective hide<checkboxname> methods
- *
- */
 
 #include <qlistview.h>
 #include <qcheckbox.h>
@@ -76,6 +68,7 @@ class KDE_EXPORT KGroupInfo
 
 //==========================================================================
 
+/** A class representing a single group item (what's that?) */
 class KDE_EXPORT GroupItem : public QCheckListItem
 {
   public:
@@ -179,6 +172,18 @@ class KDE_EXPORT GroupItem : public QCheckListItem
 };
 
 //==========================================================================
+
+/**
+ * This class provides a generic subscription widget
+ * The dialog itself has a main listview that holds all items and two listviews that
+ * show all changes. The user can change the state of the items via checkable items.
+ * When you construct a new instance you need to provide an account and a caption
+ * After inserting your items (checkable or not) you need to call slotLoadingComplete()
+ * You should at least connect slots to the signals okClicked() (to save your changes)
+ * and user1Clicked() (to reload the list)
+ * You can hide unwanted checkboxes via the respective hide<checkboxname> methods
+ *
+ */
 
 class KDE_EXPORT KSubscription : public KDialogBase
 {
