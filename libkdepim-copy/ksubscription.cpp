@@ -18,8 +18,10 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qheader.h>
+#include <qtoolbutton.h>
 
 #include <kseparator.h>
+#include <kapplication.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kdebug.h>
@@ -217,6 +219,14 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   page = new QWidget(this);
   setMainWidget(page);
 
+  QLabel *comment = new QLabel("<p>"+
+          i18n("Manage which mail folders you want to see in your folder view") + "</p>", page);
+
+  QToolButton *clearButton = new QToolButton( page );
+  clearButton->setIconSet( KGlobal::iconLoader()->loadIconSet(
+              KApplication::reverseLayout() ? "clear_left":"locationbar_erase", KIcon::Small, 0 ) );
+  connect( clearButton, SIGNAL( clicked() ), SLOT( resetSearch() ) );
+
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(filterEdit,i18n("S&earch:"), page);
 
@@ -262,15 +272,17 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
     groupView->header()->setStretchEnabled(true, 0);
 
   // layout
-  QGridLayout *topL = new QGridLayout(page,3,1,0,5);
-  QHBoxLayout *filterL = new QHBoxLayout(10);
-  QVBoxLayout *arrL = new QVBoxLayout(10);
-  listL = new QGridLayout(2, 3, 5);
+  QGridLayout *topL = new QGridLayout(page,4,1,0, KDialog::spacingHint());
+  QHBoxLayout *filterL = new QHBoxLayout(KDialog::spacingHint());
+  QVBoxLayout *arrL = new QVBoxLayout(KDialog::spacingHint());
+  listL = new QGridLayout(2, 3, KDialog::spacingHint());
 
-  topL->addLayout(filterL, 0,0);
-  topL->addWidget(sep,1,0);
-  topL->addLayout(listL, 2,0);
+  topL->addWidget(comment, 0,0);
+  topL->addLayout(filterL, 1,0);
+  topL->addWidget(sep,2,0);
+  topL->addLayout(listL, 3,0);
 
+  filterL->addWidget(clearButton);
   filterL->addWidget(l);
   filterL->addWidget(filterEdit, 1);
   filterL->addWidget(noTreeCB);
@@ -771,9 +783,16 @@ void KSubscription::slotUpdateStatusLabel()
 //------------------------------------------------------------------------------
 void KSubscription::slotLoadFolders()
 {
+  enableButton(User1, false);
   subView->clear();
   unsubView->clear();
   groupView->clear();
+}
+
+//------------------------------------------------------------------------------
+void KSubscription::resetSearch()
+{
+    searchField()->clear();
 }
 
 #include "ksubscription.moc"

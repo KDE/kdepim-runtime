@@ -341,6 +341,10 @@ class KDE_EXPORT KSubscription : public KDialogBase
      */
     void slotFilterTextChanged( const QString & text );
 
+    /**
+     * Called when the user clicks the 'clear' button next to the search line.
+     */
+    void resetSearch();
 
   signals:
     /**
