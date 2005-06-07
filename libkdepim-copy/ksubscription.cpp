@@ -225,10 +225,9 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   QToolButton *clearButton = new QToolButton( page );
   clearButton->setIconSet( KGlobal::iconLoader()->loadIconSet(
               KApplication::reverseLayout() ? "clear_left":"locationbar_erase", KIcon::Small, 0 ) );
-  connect( clearButton, SIGNAL( clicked() ), SLOT( resetSearch() ) );
-
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(filterEdit,i18n("S&earch:"), page);
+  connect( clearButton, SIGNAL( clicked() ), filterEdit, SLOT( clear() ) );
 
   // checkboxes
   noTreeCB = new QCheckBox(i18n("Disable &tree view"), page);
@@ -237,6 +236,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   subCB->setChecked(false);
   newCB = new QCheckBox(i18n("&New only"), page);
   newCB->setChecked(false);
+
 
   KSeparator *sep = new KSeparator(KSeparator::HLine, page);
 
@@ -787,12 +787,6 @@ void KSubscription::slotLoadFolders()
   subView->clear();
   unsubView->clear();
   groupView->clear();
-}
-
-//------------------------------------------------------------------------------
-void KSubscription::resetSearch()
-{
-    searchField()->clear();
 }
 
 #include "ksubscription.moc"
