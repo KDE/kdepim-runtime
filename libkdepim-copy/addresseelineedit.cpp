@@ -25,7 +25,18 @@
 
 #include "addresseelineedit.h"
 
+#include "resourceabc.h"
+#include "completionordereditor.h"
+#include "ldapclient.h"
+
+#include <config.h>
+
+#ifdef KDEPIM_NEW_DISTRLISTS
+#include "distributionlist.h"
+#else
 #include <kabc/distributionlist.h>
+#endif
+
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
 #include <libemailfunctions/email.h>
@@ -39,9 +50,6 @@
 #include <kurldrag.h>
 #include <klocale.h>
 
-#include "completionordereditor.h"
-#include "ldapclient.h"
-
 #include <qpopupmenu.h>
 #include <qapplication.h>
 #include <qobject.h>
@@ -50,7 +58,6 @@
 #include <qevent.h>
 #include <qdragobject.h>
 #include <qclipboard.h>
-#include "resourceabc.h"
 
 using namespace KPIM;
 
@@ -460,6 +467,7 @@ void AddresseeLineEdit::loadContacts()
     }
   }
 
+#ifndef KDEPIM_NEW_DISTRLISTS // new distr lists are normal contact, already done above
   int weight = config.readNumEntry( "DistributionLists", 60 );
   KABC::DistributionListManager manager( addressBook );
   manager.load();
@@ -468,6 +476,7 @@ void AddresseeLineEdit::loadContacts()
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
     s_completion->addItem( (*listIt).simplifyWhiteSpace(), weight );
   }
+#endif
 
   QApplication::restoreOverrideCursor();
 
@@ -479,6 +488,13 @@ void AddresseeLineEdit::loadContacts()
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
+#ifndef KDEPIM_NEW_DISTRLISTS
+  if ( KPIM::DistributionList::isDistributionList( addr ) ) {
+    //kdDebug(5300) << "AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() << "\" weight=" << weight << endl;
+    addCompletionItem( addr.formattedName(), weight );
+    return;
+  }
+#endif
   //m_contactMap.insert( addr.realName(), addr );
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
@@ -516,7 +532,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
     // While we're here also add "email (full name)" for completion on the email
     if ( !name.isEmpty() )
       addCompletionItem( addr.preferredEmail() + " (" + name + ")", weight );
-    
+
     if ( name.find( ',' ) != -1 ) return; // probably already of the form "Lastname, Firstname"
 
     bool bDone = false;

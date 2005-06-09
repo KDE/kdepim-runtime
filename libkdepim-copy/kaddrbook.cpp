@@ -4,25 +4,31 @@
 // This code is under GPL
 
 #include <config.h>
-#include <unistd.h>
 
 #include "kaddrbook.h"
+
+#ifdef KDEPIM_NEW_DISTRLISTS
+#include "distributionlist.h"
+#else
+#include <kabc/distributionlist.h>
+#endif
 
 #include <kapplication.h>
 #include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <kdeversion.h>
-#include <kabc/distributionlist.h>
 #include <kabc/resource.h>
 #include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
 #include <kresources/selectdialog.h>
 #include <dcopref.h>
-#include <dcopclient.h> 
+#include <dcopclient.h>
 
 #include <qeventloop.h>
 #include <qregexp.h>
+
+#include <unistd.h>
 
 //-----------------------------------------------------------------------------
 void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QWidget *) {
@@ -37,7 +43,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   }
   else
     kapp->startServiceByDesktopName( "kaddressbook" );
-    
+
   DCOPRef call( "kaddressbook", "KAddressBookIface" );
   if( !addresseeList.isEmpty() ) {
     call.send( "showContactEditor(QString)", addresseeList.first().uid() );
@@ -179,6 +185,12 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
 
   const QString lowerListName = listName.lower();
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
+#ifdef KDEPIM_NEW_DISTRLISTS
+  KPIM::DistributionList distrList = KPIM::DistributionList::findByName( addressBook, lowerListName, false );
+  if ( !distrList.isEmpty() ) {
+    return distrList.emails( addressBook ).join( ", " );
+  }
+#else
   KABC::DistributionListManager manager( addressBook );
   manager.load();
   const QStringList listNames = manager.listNames();
@@ -190,5 +202,6 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
       return addressList.join( ", " );
     }
   }
+#endif
   return QString::null;
 }

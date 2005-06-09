@@ -1,0 +1,20 @@
+AC_MSG_CHECKING([whether to use new-style distribution lists])
+AC_ARG_ENABLE(newdistrlists,
+[AC_HELP_STRING([--enable-newdistrlists],
+                [Whether to use new distribution lists, to store them like normal contacts; useful for Kolab])],
+[case "${enableval}" in
+        yes)
+                AC_MSG_RESULT([yes])
+                AC_DEFINE(KDEPIM_NEW_DISTRLISTS, 1, [Define to 1 if you want to use the new distribution lists])
+                enable_new_distrlists="yes"
+                ;;
+        no)
+                AC_MSG_RESULT([no])
+                ;;
+        *)
+                AC_MSG_ERROR([bad value ${enableval} for --enable-newdistrlists])
+                ;;
+esac
+], [AC_MSG_RESULT([no])])
+
+dnl AM_CONDITIONAL(compile_newdistrlists, test "$enable_new_distrlists" = "xyes")
