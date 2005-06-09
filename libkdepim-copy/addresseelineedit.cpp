@@ -488,7 +488,7 @@ void AddresseeLineEdit::loadContacts()
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight )
 {
-#ifndef KDEPIM_NEW_DISTRLISTS
+#ifdef KDEPIM_NEW_DISTRLISTS
   if ( KPIM::DistributionList::isDistributionList( addr ) ) {
     //kdDebug(5300) << "AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() << "\" weight=" << weight << endl;
     addCompletionItem( addr.formattedName(), weight );
