@@ -134,7 +134,7 @@ class DistributionList : public KABC::Addressee
     // can't have any data here, use Addressee's methods instead
 };
 
-};
+}
 
 #endif /* DISTRIBUTIONLIST_H */
 
