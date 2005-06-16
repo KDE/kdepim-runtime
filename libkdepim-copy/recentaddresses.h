@@ -70,7 +70,7 @@ public:
     /*
      * @return true if self() was called, i.e. a RecentAddresses instance exists
      */
-    static bool exists() { return s_self = 0; }
+    static bool exists() { return s_self != 0; }
 
     /**
      * @returns the list of recent addresses.
