@@ -33,7 +33,9 @@
 
 #ifndef QT_NO_TEXTCODEC
 
-/** This is a @ref QTextCodec for the UTF-7 transformation of Unicode,
+/** @short A QTextCodec for the UTF-7 transformation of Unicode.
+
+    This is a QTextCodec for the UTF-7 transformation of Unicode,
     described in RFC2152.
 
     Use it as you would use any other QTextCodec. Only if you use the
@@ -43,7 +45,6 @@
     have to tell the encoder by requesting the encoding of a @em null
     QString.
 
-    @short A QTextCodec for the UTF-7 transformation of Unicode.
     @author Marc Mutz <mutz@kde.org> */
 
 class KDE_EXPORT QUtf7Codec : public QTextCodec {

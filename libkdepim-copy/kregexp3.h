@@ -36,9 +36,11 @@
 
 #include <kdepimmacros.h>
 
-/** This class is simply there to provide a namespace for some nice
-    enhancements of the mighty @ref QRegExp (Qt3 version) regular
-    expression engine, namely the method @ref replace, which can be
+/** @short A QRegExp (Qt3.x) with a replace() method.
+
+    This class is simply there to provide a namespace for some nice
+    enhancements of the mighty QRegExp (Qt3 version) regular
+    expression engine, namely the method replace(), which can be
     used to do search-and-replace like one is used to from perl or sed.
     
     It "simply" adds the ability to define a replacement string which
@@ -70,7 +72,6 @@
     In all modes, counting of captured substrings starts with 1 (one)!
     To reference the entire matched string, use $0, ${0} or \\0.
 
-    @short A QRegExp (Qt3.x) with a replace() method.
     @author Marc Mutz <mutz@kde.org>
     @see QRegExp
 */
@@ -91,7 +92,7 @@ public:
 
   /** Replaces each matching subpattern in @p str with
       @p replacementStr, inserting captured substrings for
-      \n, $n and ${nn} as described in the class documentation.
+      \\n, $n and ${nn} as described in the class documentation.
       @param str The source string.
       @param replacementStr The string which replaces matched
              substrings of @p str.

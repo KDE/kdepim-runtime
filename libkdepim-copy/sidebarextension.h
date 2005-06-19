@@ -43,7 +43,7 @@ namespace KParts
       /**
        * Constucts a SideBarExtension.
        *
-       * @param exported A @ref QWidget derived widget that will be provided for the
+       * @param exported A QWidget derived widget that will be provided for the
        *                 users of SideBarExtension.
        * @param parent   The parent widget.
        * @param name     The name of the class.
