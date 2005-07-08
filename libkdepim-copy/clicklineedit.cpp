@@ -56,7 +56,6 @@ void ClickLineEdit::drawContents( QPainter *p )
   if ( mDrawClickMsg == true && !hasFocus() ) {
     QPen tmp = p->pen();
     p->setPen( palette().color( QPalette::Disabled, QColorGroup::Text ) );
-    p->setPen( gray );
     QRect cr = contentsRect();
     p->drawText( cr, AlignAuto|AlignVCenter, mClickMessage );
     p->setPen( tmp );
