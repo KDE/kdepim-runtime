@@ -351,14 +351,14 @@ QString NotifyCollection::collection() const
 void NotifyCollection::displayCollection(QWidget *p) const
 {
   //KMessageBox::information(p,collection(),i18n("Collected Notes"));
-  KDialogBase *dlg = new KDialogBase(p,0,true,i18n("Collected Notes"),
-                                     KDialogBase::Close, KDialogBase::Close);
+  KDialogBase *dlg = new KDialogBase( p, 0, false, i18n("Collected Notes"),
+                                      KDialogBase::Close, KDialogBase::Close );
   QTextView *text = new QTextView(dlg);
   text->setText(collection());
   dlg->setMainWidget(text);
   dlg->setMinimumWidth(300);
   dlg->setMinimumHeight(300);
-  dlg->exec();
+  dlg->show();
 }
 
 //----------------------------------------------------------------------------
