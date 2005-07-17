@@ -2,6 +2,7 @@
     kscoringeditor.cpp
 
     Copyright (c) 2001 Mathias Waack
+    Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
 
     Author: Mathias Waack <mathias@atoll-net.de>
 
@@ -243,6 +244,9 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
         case ActionBase::COLOR:
           w = colorEditor = new KColorCombo(stack);
           break;
+        case ActionBase::MARKASREAD:
+          w = new QLabel( stack ); // empty dummy
+          break;
       }
       stack->addWidget(w,index++);
     }
@@ -275,6 +279,9 @@ void SingleActionWidget::setAction(ActionBase *act)
     case ActionBase::COLOR:
       colorEditor->setColor(QColor(act->getValueString()));
       break;
+    case ActionBase::MARKASREAD:
+      // nothing
+      break;
     default:
       kdWarning(5100) << "unknown action type in SingleActionWidget::setAction()" << endl;
   }
@@ -294,6 +301,8 @@ ActionBase* SingleActionWidget::createAction() const
       return new ActionNotify(notifyEditor->text());
     case ActionBase::COLOR:
       return new ActionColor(colorEditor->color().name());
+    case ActionBase::MARKASREAD:
+      return new ActionMarkAsRead();
     default:
       kdWarning(5100) << "unknown action type in SingleActionWidget::getValue()" << endl;
       return 0;

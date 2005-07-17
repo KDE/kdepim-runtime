@@ -2,6 +2,7 @@
     kscoring.h
 
     Copyright (c) 2001 Mathias Waack
+    Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
 
     Author: Mathias Waack <mathias@atoll-net.de>
 
@@ -68,6 +69,7 @@ public:
   virtual void addScore(short) {}
   virtual void displayMessage(const QString&);
   virtual void changeColor(const QColor&) {}
+  virtual void markAsRead() {}
   virtual QString from() const = 0;
   virtual QString subject() const = 0;
   virtual QString getHeaderByType(const QString&) const = 0;
@@ -87,15 +89,15 @@ class KDE_EXPORT ActionBase {
   virtual void apply(ScorableArticle&) const =0;
   virtual ActionBase* clone() const =0;
   virtual int getType() const =0;
-  virtual QString getValueString() const =0;
-  virtual void setValue(const QString&) =0;
+  virtual QString getValueString() const { return QString(); }
+  virtual void setValue(const QString&) {};
   static ActionBase* factory(int type, const QString &value);
   static QStringList userNames();
   static QString userName(int type);
   static int getTypeForName(const QString& name);
   static int getTypeForUserName(const QString& name);
   QString userName() { return userName(getType()); }
-  enum ActionTypes { SETSCORE, NOTIFY, COLOR };
+  enum ActionTypes { SETSCORE, NOTIFY, COLOR, MARKASREAD };
 };
 
 class KDE_EXPORT ActionColor : public ActionBase {
@@ -147,6 +149,17 @@ class KDE_EXPORT ActionNotify : public ActionBase {
   virtual ActionNotify* clone() const;
  private:
   QString note;
+};
+
+class KDE_EXPORT ActionMarkAsRead : public ActionBase {
+  public:
+    ActionMarkAsRead();
+    ActionMarkAsRead( const ActionMarkAsRead& );
+    virtual ~ActionMarkAsRead() {}
+    virtual QString toString() const;
+    virtual int getType() const { return MARKASREAD; }
+    virtual void apply( ScorableArticle &article ) const;
+    virtual ActionMarkAsRead* clone() const;
 };
 
 class KDE_EXPORT NotifyCollection
@@ -357,6 +370,7 @@ class KDE_EXPORT KScoringManager : public QObject
   virtual bool canScores() const { return true; }
   virtual bool canNotes() const { return true; }
   virtual bool canColors() const { return false; }
+  virtual bool canMarkAsRead() const { return false; }
   virtual bool hasFeature(int);
 
  signals:

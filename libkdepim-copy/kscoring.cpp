@@ -2,6 +2,7 @@
     kscoring.cpp
 
     Copyright (c) 2001 Mathias Waack
+    Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
 
     Author: Mathias Waack <mathias@atoll-net.de>
 
@@ -148,6 +149,7 @@ QStringList ActionBase::userNames()
   l << userName(SETSCORE);
   l << userName(NOTIFY);
   l << userName(COLOR);
+  l << userName(MARKASREAD);
   return l;
 }
 
@@ -157,6 +159,7 @@ ActionBase* ActionBase::factory(int type, const QString &value)
     case SETSCORE: return new ActionSetScore(value);
     case NOTIFY:   return new ActionNotify(value);
     case COLOR:    return new ActionColor(value);
+    case MARKASREAD: return new ActionMarkAsRead();
   default:
     kdWarning(5100) << "unknown type " << type << " in ActionBase::factory()" << endl;
     return 0;
@@ -169,6 +172,7 @@ QString ActionBase::userName(int type)
     case SETSCORE: return i18n("Adjust Score");
     case NOTIFY:   return i18n("Display Message");
     case COLOR:    return i18n("Colorize Header");
+    case MARKASREAD: return i18n("Mark As Read");
   default:
     kdWarning(5100) << "unknown type " << type << " in ActionBase::userName()" << endl;
     return 0;
@@ -180,6 +184,7 @@ int ActionBase::getTypeForName(const QString& name)
   if (name == "SETSCORE") return SETSCORE;
   else if (name == "NOTIFY") return NOTIFY;
   else if (name == "COLOR") return COLOR;
+  else if (name == "MARKASREAD") return MARKASREAD;
   else {
     kdWarning(5100) << "unknown type string " << name
                     << " in ActionBase::getTypeForName()" << endl;
@@ -192,6 +197,7 @@ int ActionBase::getTypeForUserName(const QString& name)
   if (name == userName(SETSCORE)) return SETSCORE;
   else if (name == userName(NOTIFY)) return NOTIFY;
   else if (name == userName(COLOR)) return COLOR;
+  else if ( name == userName(MARKASREAD) ) return MARKASREAD;
   else {
     kdWarning(5100) << "unknown type string " << name
                     << " in ActionBase::getTypeForUserName()" << endl;
@@ -302,6 +308,33 @@ ActionNotify* ActionNotify::clone() const
   return new ActionNotify(*this);
 }
 
+
+// mark as read action
+ActionMarkAsRead::ActionMarkAsRead() :
+  ActionBase()
+{
+}
+
+ActionMarkAsRead::ActionMarkAsRead( const ActionMarkAsRead &action ) :
+  ActionBase()
+{
+  Q_UNUSED( action );
+}
+
+QString ActionMarkAsRead::toString() const
+{
+  return "<Action type=\"MARKASREAD\"/>";
+}
+
+void ActionMarkAsRead::apply( ScorableArticle &article ) const
+{
+  article.markAsRead();
+}
+
+ActionMarkAsRead* ActionMarkAsRead::clone() const
+{
+  return new ActionMarkAsRead(*this);
+}
 
 //----------------------------------------------------------------------------
 NotifyCollection::NotifyCollection()
@@ -1128,6 +1161,7 @@ bool KScoringManager::hasFeature(int p)
     case ActionBase::SETSCORE: return canScores();
     case ActionBase::NOTIFY: return canNotes();
     case ActionBase::COLOR: return canColors();
+    case ActionBase::MARKASREAD: return canMarkAsRead();
     default: return false;
   }
 }

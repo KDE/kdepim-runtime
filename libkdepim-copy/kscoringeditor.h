@@ -2,6 +2,7 @@
     kscoringeditor.h
 
     Copyright (c) 2001 Mathias Waack
+    Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
 
     Author: Mathias Waack <mathias@atoll-net.de>
 
