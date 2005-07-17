@@ -221,6 +221,9 @@ protected slots:
   void slotDelRule();
   void slotNewRule();
   void slotCopyRule();
+  void slotRuleUp();
+  void slotRuleDown();
+
 private:
   /** the list of rules */
   KListBox *ruleList;
@@ -235,6 +238,8 @@ private:
   QPushButton *newRule;
   QPushButton *delRule;
   QPushButton *copyRule;
+  QPushButton *mRuleUp;
+  QPushButton *mRuleDown;
 };
 
 class KDE_EXPORT KScoringEditor : public KDialogBase

@@ -593,9 +593,20 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   connect(ruleList, SIGNAL(currentChanged(QListBoxItem*)),
           this, SLOT(slotRuleSelected(QListBoxItem*)));
   topL->addWidget(ruleList);
-  updateRuleList();
-  QHBoxLayout *btnL = new QHBoxLayout(topL,KDialog::spacingHint());
 
+  QHBoxLayout *btnL = new QHBoxLayout( topL, KDialog::spacingHint() );
+  mRuleUp = new QPushButton( this );
+  mRuleUp->setPixmap( BarIcon( "up", KIcon::SizeSmall ) );
+  QToolTip::add( mRuleUp, i18n("Move rule up") );
+  btnL->addWidget( mRuleUp );
+  connect( mRuleUp, SIGNAL( clicked() ), SLOT( slotRuleUp() ) );
+  mRuleDown = new QPushButton( this );
+  mRuleDown->setPixmap( BarIcon( "down", KIcon::SizeSmall ) );
+  QToolTip::add( mRuleDown, i18n("Move rule down") );
+  btnL->addWidget( mRuleDown );
+  connect( mRuleDown, SIGNAL( clicked() ), SLOT( slotRuleDown() ) );
+
+  btnL = new QHBoxLayout( topL, KDialog::spacingHint() );
   editRule=0L;
   newRule = new QPushButton(this);
   newRule->setPixmap( BarIcon( "filenew", KIcon::SizeSmall ) );
@@ -639,6 +650,8 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
           this,SLOT(updateRuleList()));
   connect(manager,SIGNAL(changedRuleName(const QString&,const QString&)),
           this,SLOT(slotRuleNameChanged(const QString&,const QString&)));
+
+  updateRuleList();
   updateButton();
 }
 
@@ -648,11 +661,17 @@ RuleListWidget::~RuleListWidget()
 
 void RuleListWidget::updateButton()
 {
-  bool state=ruleList->count()>0;
+  bool state = ruleList->count() > 0;
   if(editRule)
     editRule->setEnabled(state);
   delRule->setEnabled(state);
   copyRule->setEnabled(state);
+
+  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  if ( item ) {
+    mRuleUp->setEnabled( item->prev() != 0 );
+    mRuleDown->setEnabled( item->next() != 0 );
+  }
 }
 
 void RuleListWidget::updateRuleList()
@@ -731,6 +750,7 @@ void RuleListWidget::slotRuleSelected(const QString& ruleName)
   if (ruleName != ruleList->currentText()) {
     setCurrentItem(ruleList,ruleName);
   }
+  updateButton();
   emit ruleSelected(ruleName);
 }
 
@@ -747,7 +767,6 @@ void RuleListWidget::slotRuleSelected(int index)
   if (idx >= ruleList->count()) return;
   QString ruleName = ruleList->text(index);
   slotRuleSelected(ruleName);
-  updateButton();
 }
 
 void RuleListWidget::slotNewRule()
@@ -779,6 +798,38 @@ void RuleListWidget::slotCopyRule()
     updateRuleList(nrule);
     slotEditRule(nrule->getName());
   }
+  updateButton();
+}
+
+void RuleListWidget::slotRuleUp()
+{
+  KScoringRule *rule = 0, *below = 0;
+  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  if ( item ) {
+    rule = manager->findRule( item->text() );
+    item = item->prev();
+    if ( item )
+      below = manager->findRule( item->text() );
+  }
+  if ( rule && below )
+    manager->moveRuleAbove( rule, below );
+  updateRuleList();
+  updateButton();
+}
+
+void RuleListWidget::slotRuleDown()
+{
+  KScoringRule *rule = 0, *above = 0;
+  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  if ( item ) {
+    rule = manager->findRule( item->text() );
+    item = item->next();
+    if ( item )
+      above = manager->findRule( item->text() );
+  }
+  if ( rule && above )
+    manager->moveRuleBelow( rule, above );
+  updateRuleList();
   updateButton();
 }
 

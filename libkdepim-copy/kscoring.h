@@ -328,6 +328,8 @@ class KDE_EXPORT KScoringManager : public QObject
   void deleteRule(KScoringRule *);
   void editRule(KScoringRule *e, QWidget *w=0);
   KScoringRule* copyRule(KScoringRule *);
+  void moveRuleAbove( KScoringRule *above, KScoringRule *below );
+  void moveRuleBelow( KScoringRule *below, KScoringRule *above );
   void setGroup(const QString& g);
   // has to be called after setGroup() or initCache()
   bool hasRulesForCurrentGroup();

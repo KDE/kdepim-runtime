@@ -984,6 +984,30 @@ void KScoringManager::editRule(KScoringRule *e, QWidget *w)
   delete edit;
 }
 
+void KScoringManager::moveRuleAbove( KScoringRule *above, KScoringRule *below )
+{
+  int aindex = allRules.findRef( above );
+  int bindex = allRules.findRef( below );
+  if ( aindex <= 0 || bindex < 0 )
+    return;
+  if ( aindex < bindex )
+    --bindex;
+  allRules.take( aindex );
+  allRules.insert( bindex, above );
+}
+
+void KScoringManager::moveRuleBelow( KScoringRule *below, KScoringRule *above )
+{
+  int bindex = allRules.findRef( below );
+  int aindex = allRules.findRef( above );
+  if ( bindex < 0 || bindex >= (int)allRules.count() - 1 || aindex < 0 )
+    return;
+  if ( bindex < aindex )
+    --aindex;
+  allRules.take( bindex );
+  allRules.insert( aindex + 1, below );
+}
+
 void KScoringManager::editorReady()
 {
   kdDebug(5100) << "emitting signal finishedEditing" << endl;
