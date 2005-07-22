@@ -154,8 +154,9 @@ void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *ri
   diffList( i18n( "Resources" ), left->resources(), right->resources() );
   diffList( i18n( "Relations" ), left->relations(), right->relations() );
   diffList( i18n( "Attachments" ), left->attachments(), right->attachments() );
-  diffList( i18n( "Exception Dates" ), left->exDates(), right->exDates() );
-  diffList( i18n( "Exception Times" ), left->exDateTimes(), right->exDateTimes() );
+  diffList( i18n( "Exception Dates" ), left->recurrence()->exDates(), right->recurrence()->exDates() );
+  diffList( i18n( "Exception Times" ), left->recurrence()->exDateTimes(), right->recurrence()->exDateTimes() );
+	// TODO: recurrence dates and date/times, exrules, rrules
 
   if ( left->created() != right->created() )
     conflictField( i18n( "Created" ), left->created().toString(), right->created().toString() );
