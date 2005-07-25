@@ -168,11 +168,13 @@ void KIncidenceChooser::setSyncMode()
         QDialog::accept();
 
 }
+
 void KIncidenceChooser::useGlobalMode()
 {
- if ( chooseMode != KIncidenceChooser::ask )
+    if ( chooseMode != KIncidenceChooser::ask )
         QDialog::reject();
 }
+
 void KIncidenceChooser::setLabels()
 {
   KCal::Incidence* inc = mInc1;
@@ -233,14 +235,27 @@ void KIncidenceChooser::showIncidence1()
         }
         return;
     }
-    mTbL =  new QTextBrowser( 0, "incviewer" );
-    mTbL->setCaption(mInc1lab->text() );
-    mTbL->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 )  );
-    mTbL->resize( 300, 300 );
+    mTbL = new KDialogBase( this, "", false /*not modal*/, mInc1lab->text(), KDialogBase::Ok );
+    mTbL->setEscapeButton( KDialogBase::Ok );
+    connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
+    QTextBrowser* textBrowser = new QTextBrowser( mTbL );
+    mTbL->setMainWidget( textBrowser );
+    textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 )  );
+    mTbL->setMinimumSize( 400, 400 );
     showDetails1->setText( i18n("Hide Details"));
     mTbL->show();
     mTbL->raise();
 }
+
+void KIncidenceChooser::detailsDialogClosed()
+{
+    KDialogBase* dialog = static_cast<KDialogBase *>( const_cast<QObject *>( sender() ) );
+    if ( dialog == mTbL )
+        showDetails1->setText( i18n( "Show details..." ) );
+    else
+        showDetails2->setText( i18n( "Show details..." ) );
+}
+
 void KIncidenceChooser::showDiff()
 {
     if ( mDisplayDiff ) {
@@ -248,7 +263,7 @@ void KIncidenceChooser::showDiff()
         mDisplayDiff->raise();
         return;
     }
-    mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay (0);
+    mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay (this);
     if ( mInc1->summary().left( 20 ) != mInc2->summary().left( 20 ) )
         mDisplayDiff->setCaption( i18n( "Differences of %1 and %2").arg( mInc1->summary().left( 20 ) ).arg( mInc2->summary().left( 20 ) ) );
     else
@@ -262,6 +277,7 @@ void KIncidenceChooser::showDiff()
     mDisplayDiff->show();
     mDisplayDiff->raise();
 }
+
 void KIncidenceChooser::showIncidence2()
 {
    if ( mTbN ) {
@@ -275,25 +291,30 @@ void KIncidenceChooser::showIncidence2()
         }
         return;
     }
-    mTbN =  new QTextBrowser( 0, "incviewer" );
-    mTbN->setCaption(mInc2lab->text() );
-    mTbN->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
-    mTbN->resize( 300, 300 );
+    mTbN = new KDialogBase( this, "", false /*not modal*/, mInc2lab->text(), KDialogBase::Ok );
+    mTbN->setEscapeButton( KDialogBase::Ok );
+    connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
+    QTextBrowser* textBrowser = new QTextBrowser( mTbN );
+    mTbN->setMainWidget( textBrowser );
+    textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
+    mTbN->setMinimumSize( 400, 400 );
     showDetails2->setText( i18n("Hide Details"));
     mTbN->show();
     mTbN->raise();
 }
+
 void KIncidenceChooser::takeIncidence1()
 {
     choosedIncidence = mInc1;
     QDialog::accept();
 }
+
 void KIncidenceChooser::takeIncidence2()
 {
-
     choosedIncidence = mInc2;
     QDialog::accept();
 }
+
 void KIncidenceChooser::takeBoth()
 {
 

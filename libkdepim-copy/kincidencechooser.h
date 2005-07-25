@@ -40,7 +40,7 @@ class QButtonGroup;
 class QVBox;
 class QStringList;
 class QTextBrowser;
-
+class KDialogBase;
 
 /** Dialog to change the korganizer configuration.
   */
@@ -58,10 +58,10 @@ public:
     KCal::Incidence* getIncidence();
     static int chooseMode;
 
-    public slots:
+public slots:
     void useGlobalMode();
 
-    protected slots:
+protected slots:
     void showIncidence1();
     void showIncidence2();
     void showDiff();
@@ -70,12 +70,13 @@ public:
     void takeBoth();
     void setLabels();
     void setSyncMode();
+    void detailsDialogClosed();
 
- protected:
- private:
+protected:
+private:
     KPIM::HTMLDiffAlgoDisplay* mDisplayDiff;
     KPIM::CalendarDiffAlgo* diff;
-    QTextBrowser* mTbL, *mTbN;
+    KDialogBase* mTbL, *mTbN;
     KCal::Incidence* choosedIncidence;
     KCal::Incidence* mInc1, *mInc2;
     QButtonGroup *mBg;
