@@ -189,7 +189,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
   mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
   mLabel = new QLabel( mButton, mItem->label()+':', parent );
-	mLabel->setBuddy( mButton );
+  mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mButton, whatsThis);
@@ -496,7 +496,7 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mURLRequester = new KURLRequester( parent );
-	mLabel->setBuddy( mURLRequester );
+  mLabel->setBuddy( mURLRequester );
   mURLRequester->setMode( mode );
   mURLRequester->setFilter( filter );
   connect( mURLRequester, SIGNAL( textChanged( const QString & ) ),
