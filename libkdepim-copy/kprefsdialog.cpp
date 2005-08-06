@@ -189,6 +189,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
   mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
   mLabel = new QLabel( mButton, mItem->label()+':', parent );
+	mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
     QWhatsThis::add(mButton, whatsThis);
@@ -285,6 +286,7 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mTimeEdit = new KTimeEdit( parent );
+  mLabel->setBuddy( mTimeEdit );
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
@@ -323,6 +325,7 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mTimeEdit = new QTimeEdit( parent );
+  mLabel->setBuddy( mTimeEdit );
   mTimeEdit->setAutoAdvance( true );
   mTimeEdit->setDisplay( QTimeEdit::Hours | QTimeEdit::Minutes );
   mTimeEdit->setRange( QTime( 0, 1 ), QTime( 24, 0 ) ); // [1min, 24hr]
@@ -363,6 +366,7 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mDateEdit = new KDateEdit( parent );
+  mLabel->setBuddy( mDateEdit );
   connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
@@ -443,6 +447,7 @@ KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mEdit = new QLineEdit( parent );
+  mLabel->setBuddy( mEdit );
   connect( mEdit, SIGNAL( textChanged( const QString & ) ),
            SIGNAL( changed() ) );
   mEdit->setEchoMode( echomode );
@@ -491,6 +496,7 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
 {
   mLabel = new QLabel( mItem->label()+':', parent );
   mURLRequester = new KURLRequester( parent );
+	mLabel->setBuddy( mURLRequester );
   mURLRequester->setMode( mode );
   mURLRequester->setFilter( filter );
   connect( mURLRequester, SIGNAL( textChanged( const QString & ) ),
