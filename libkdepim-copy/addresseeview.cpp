@@ -44,6 +44,7 @@
 #include <kdebug.h>
 
 #include "addresseeview.h"
+#include "sendsmsdialog.h"
 
 using namespace KPIM;
 
@@ -223,9 +224,13 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
         url = QString::fromLatin1( "phone:" ) + number;
 
       if ( linkMask & PhoneLinks ) {
+        QString smsURL;
+        if ( (*phoneIt).type() & KABC::PhoneNumber::Cell )
+          smsURL = QString(" (<a href=\"sms:%1\">%2</a>)" ).arg( number ).arg( i18n( "SMS") );
+
         dynamicPart += rowFmtStr
           .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
-          .arg( QString::fromLatin1( "<a href=\"%1\">%2</a>" ).arg(url).arg(number) );
+          .arg( QString::fromLatin1( "<a href=\"%1\">%2</a>%3" ).arg( url ).arg( number ).arg( smsURL ) );
       } else {
         dynamicPart += rowFmtStr
           .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
@@ -532,6 +537,33 @@ void AddresseeView::phoneNumberClicked( const QString &number )
   KRun::runCommand( commandLine );
 }
 
+void AddresseeView::smsTextClicked( const QString &number )
+{
+  SendSMSDialog dlg( mAddressee.realName(), this );
+
+  if ( dlg.exec() )
+    sendSMS ( number, dlg.text() );
+}
+
+void AddresseeView::sendSMS( const QString &number, const QString &text )
+{
+  KConfig config( "kaddressbookrc" );
+  config.setGroup( "General" );
+  QString commandLine = config.readEntry( "SMSHookApplication" );
+
+  if ( commandLine.isEmpty() ) {
+    KMessageBox::sorry( this, i18n( "There is no application set which could be executed. Please go to the settings dialog and configure one." ) );
+    return;
+  }
+  KTempFile msgFile ;
+  QTextStream* file = msgFile.textStream();
+  *file << text;
+  msgFile.close();
+  commandLine.replace( "%N", number );
+  commandLine.replace( "%F", msgFile.name() );
+  KRun::runCommand( commandLine );
+}
+
 void AddresseeView::faxNumberClicked( const QString &number )
 {
   KConfig config( "kaddressbookrc" );
@@ -573,6 +605,8 @@ void AddresseeView::slotUrlClicked( const QString &url )
 {
   if ( url.startsWith( "phone:" ) )
     phoneNumberClicked( strippedNumber( url.mid( 8 ) ) );
+  else if ( url.startsWith( "sms:" ) )
+    smsTextClicked( strippedNumber( url.mid( 6 ) ) );
   else if ( url.startsWith( "fax:" ) )
     faxNumberClicked( strippedNumber( url.mid( 6 ) ) );
   else if ( url.startsWith( "addr:" ) )
@@ -602,6 +636,9 @@ void AddresseeView::slotHighlighted( const QString &link )
     emit highlightedMessage( i18n( "Send fax to %1" ).arg( number ) );
   } else if ( link.startsWith( "addr:" ) ) {
     emit highlightedMessage( i18n( "Show address on map" ) );
+  } else if ( link.startsWith( "sms:" ) ) {
+    QString number = link.mid( 6 );
+    emit highlightedMessage( i18n( "Send SMS to %1" ).arg( number ) );
   } else if ( link.startsWith( "http:" ) || link.startsWith( "https:" ) ) {
     emit urlHighlighted( link );
     emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );

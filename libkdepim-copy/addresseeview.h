@@ -131,6 +131,8 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     virtual void urlClicked( const QString &url );
     virtual void emailClicked( const QString &mail );
     virtual void phoneNumberClicked( const QString &number );
+    virtual void smsTextClicked( const QString &number );
+    virtual void sendSMS( const QString &number, const QString &msg );
     virtual void faxNumberClicked( const QString &number );
     virtual void imAddressClicked();
     
