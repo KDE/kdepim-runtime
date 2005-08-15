@@ -72,13 +72,37 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
       This enums are used by enableLinks to set which kind of links shall
       be enabled.
      */
-    enum LinkMask { AddressLinks = 1, EmailLinks = 2, PhoneLinks = 4, URLLinks = 8, IMLinks = 16 };
+    enum LinkMask {
+      NoLinks = 0,
+      AddressLinks = 1,
+      EmailLinks = 2,
+      PhoneLinks = 4,
+      URLLinks = 8,
+      IMLinks = 16,
+      DefaultLinks = AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks
+    };
 
     /**
       Sets which parts of the contact shall be presented as links.
       The mask can be OR'ed LinkMask. By default all links are enabled.
      */
     void enableLinks( int linkMask );
+
+    /**
+      This enums are used by vCardAsHTML to decide which fields shall be
+      shown.
+     */
+    enum FieldMask {
+      NoFields = 0,
+      BirthdayFields = 1,
+      AddressFields = 2,
+      EmailFields = 4,
+      PhoneFields = 8,
+      URLFields = 16,
+      IMFields = 32,
+      CustomFields = 64,
+      DefaultFields = AddressFields | EmailFields | PhoneFields | URLFields
+    };
 
     /**
       Returns the HTML representation of a contact.
@@ -98,18 +122,14 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
                         "phone://<phone number>" for phone numbers
                         "http://<url>" for urls
                         "im:<im addrss>" for instant messaging addresses
+                        "sms://<phone number>" for sending a sms
       @param internalLoading If true, the loading of internal pictures is done automatically.
-      @param showBirthday If true, the birthday is included.
-      @param showAddresses If true, the addresses are included.
-      @param showEmails If true, the emails are included.
-      @param showPhones If true, the phone numbers are included.
-      @param showURLs If true, the urls are included.
+      @param fieldMask The mask for which fields of the contact will
+                       be displayed.
      */
-    static QString vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, int linkMask = true,
-                                bool internalLoading = true,
-                                bool showBirthday = true, bool showAddresses = true,
-                                bool showEmails = true, bool showPhones = true,
-                                bool showURLs = true, bool showIMAddresses = true );
+    static QString vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, LinkMask linkMask = DefaultLinks,
+                                bool internalLoading = true, FieldMask fieldMask = DefaultFields );
+
     /**
      * Encodes a QPixmap as a PNG into a data: URL (rfc2397), readable by the data kio protocol
      * @param pixmap the pixmap to encode
@@ -135,7 +155,7 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     virtual void sendSMS( const QString &number, const QString &msg );
     virtual void faxNumberClicked( const QString &number );
     virtual void imAddressClicked();
-    
+
     virtual QPopupMenu *createPopupMenu( const QPoint& );
 
   private slots:
@@ -168,6 +188,8 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     KToggleAction *mActionShowEmails;
     KToggleAction *mActionShowPhones;
     KToggleAction *mActionShowURLs;
+    KToggleAction *mActionShowIMAddresses;
+    KToggleAction *mActionShowCustomFields;
 
     KABC::Addressee mAddressee;
     int mLinkMask;

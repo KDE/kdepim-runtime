@@ -51,7 +51,7 @@ using namespace KPIM;
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
                               KConfig *config )
   : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
-    mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks )
+    mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
   setWrapPolicy( QTextEdit::AtWordBoundary );
   setLinkUnderline( false );
@@ -72,21 +72,27 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   setNotifyClick( true );
 
   mActionShowBirthday = new KToggleAction( i18n( "Show Birthday" ) );
-  mActionShowBirthday->setCheckedState(i18n("Hide Birthday"));
+  mActionShowBirthday->setCheckedState( i18n( "Hide Birthday" ) );
   mActionShowAddresses = new KToggleAction( i18n( "Show Postal Addresses" ) );
-  mActionShowAddresses->setCheckedState(i18n("Hide Postal Addresses"));
+  mActionShowAddresses->setCheckedState( i18n( "Hide Postal Addresses" ) );
   mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ) );
-  mActionShowEmails->setCheckedState(i18n("Hide Email Addresses"));
+  mActionShowEmails->setCheckedState( i18n( "Hide Email Addresses" ) );
   mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ) );
-  mActionShowPhones->setCheckedState(i18n("Hide Telephone Numbers"));
+  mActionShowPhones->setCheckedState( i18n( "Hide Telephone Numbers" ) );
   mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ) );
-  mActionShowURLs->setCheckedState(i18n("Hide Web Pages (URLs)"));
+  mActionShowURLs->setCheckedState( i18n( "Hide Web Pages (URLs)" ) );
+  mActionShowIMAddresses = new KToggleAction( i18n( "Show Instant Messaging Addresses" ) );
+  mActionShowIMAddresses->setCheckedState( i18n( "Hide Instant Messaging Addresses" ) );
+  mActionShowCustomFields = new KToggleAction( i18n( "Show Custom Fields" ) );
+  mActionShowCustomFields->setCheckedState( i18n( "Hide Custom Fields" ) );
 
   connect( mActionShowBirthday, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowEmails, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowPhones, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowURLs, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowIMAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
+  connect( mActionShowCustomFields, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
 
   if ( !config ) {
     mConfig = new KConfig( "kaddressbookrc" );
@@ -98,8 +104,10 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
 
   // set up IMProxy to display contacts' IM presence and make connections to keep the display live
   mKIMProxy = ::KIMProxy::instance( kapp->dcopClient() );
-  connect( mKIMProxy, SIGNAL( sigContactPresenceChanged( const QString & ) ), this, SLOT( slotPresenceChanged( const QString & ) ) );
-  connect( mKIMProxy, SIGNAL( sigPresenceInfoExpired() ), this, SLOT( slotPresenceInfoExpired() ) );
+  connect( mKIMProxy, SIGNAL( sigContactPresenceChanged( const QString& ) ),
+           this, SLOT( slotPresenceChanged( const QString& ) ) );
+  connect( mKIMProxy, SIGNAL( sigPresenceInfoExpired() ),
+           this, SLOT( slotPresenceInfoExpired() ) );
 }
 
 AddresseeView::~AddresseeView()
@@ -113,6 +121,8 @@ AddresseeView::~AddresseeView()
   delete mActionShowEmails;
   delete mActionShowPhones;
   delete mActionShowURLs;
+  delete mActionShowIMAddresses;
+  delete mActionShowCustomFields;
 
   mKIMProxy = 0;
 }
@@ -136,11 +146,8 @@ void AddresseeView::enableLinks( int linkMask )
   mLinkMask = linkMask;
 }
 
-QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, int linkMask,
-                                    bool internalLoading,
-                                    bool showBirthday, bool showAddresses,
-                                    bool showEmails, bool showPhones, bool showURLs,
-                                    bool showIMAddresses )
+QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, LinkMask linkMask,
+                                    bool internalLoading, FieldMask fieldMask )
 {
   QString image = QString( "contact_%1_image" ).arg( addr.uid() );
 
@@ -202,7 +209,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     }
   }
 
-  if ( showBirthday ) {
+  if ( fieldMask & BirthdayFields ) {
     QDate date = addr.birthday().date();
 
     if ( date.isValid() )
@@ -211,7 +218,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
         .arg( KGlobal::locale()->formatDate( date, true ) );
   }
 
-  if ( showPhones ) {
+  if ( fieldMask & PhoneFields ) {
     KABC::PhoneNumber::List phones = addr.phoneNumbers();
     KABC::PhoneNumber::List::ConstIterator phoneIt;
     for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
@@ -239,7 +246,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     }
   }
 
-  if ( showEmails ) {
+  if ( fieldMask & EmailFields ) {
     QStringList emails = addr.emails();
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
@@ -257,7 +264,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     }
   }
 
-  if ( showURLs ) {
+  if ( fieldMask & URLFields ) {
     if ( !addr.url().url().isEmpty() ) {
       QString url;
       if ( linkMask & URLLinks ) {
@@ -279,7 +286,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     }
   }
 
-  if ( showAddresses ) {
+  if ( fieldMask & AddressFields ) {
     KABC::Address::List addresses = addr.addresses();
     KABC::Address::List::ConstIterator addrIt;
     for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
@@ -347,22 +354,34 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     notes = rowFmtStr.arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) ;
   }
 
+  QString customData;
+  if ( fieldMask & CustomFields ) {
+    if ( !addr.customs().empty() ) {
+      QStringList customs = addr.customs();
+      for ( QStringList::Iterator it = customs.begin(); it != customs.end(); ++it ) {
+        QString customEntry = *it;
+        if ( customEntry.startsWith ( "KADDRESSBOOK-" ) ) {
+          customEntry.remove("KADDRESSBOOK-X-");
+          customEntry.remove("KADDRESSBOOK-");
+          int pos = customEntry.find( ':' );
+          customData += rowFmtStr.arg( customEntry.left( pos ) ).arg( customEntry.mid( pos + 1 ) ) ;
+        }
+      }
+    }
+  }
+
   QString name( addr.realName() );
   QString role( addr.role() );
   QString organization( addr.organization() );
 
-  if ( proxy && showIMAddresses )
-  {
-    if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 )
-    {
+  if ( proxy && (fieldMask & IMFields) ) {
+    if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
       // set image source to either a QMimeSourceFactory key or a data:/ URL
       QString imgSrc;
-      if ( internalLoading )
-      {
+      if ( internalLoading ) {
         imgSrc = QString::fromLatin1( "im_status_%1_image").arg( addr.uid() );
         QMimeSourceFactory::defaultFactory()->setPixmap( imgSrc, proxy->presenceIcon( addr.uid() ) );
-      }
-      else
+      } else
         imgSrc = pixmapAsDataUrl( proxy->presenceIcon( addr.uid() ) );
 
       // make the status a link, if required
@@ -430,7 +449,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     .arg( cellStyle2 ) );
   strAddr.append( dynamicPart );
   strAddr.append( notes );
-  strAddr.append( QString::fromLatin1("</table></div>\n") );
+  strAddr.append( customData );
+  strAddr.append( QString::fromLatin1( "</table></div>\n" ) );
 
   return strAddr;
 }
@@ -461,12 +481,24 @@ void AddresseeView::updateView()
     mImageData.truncate( 0 );
   }
 
-  QString strAddr = vCardAsHTML( mAddressee, mKIMProxy, mLinkMask, true,
-                                 mActionShowBirthday->isChecked(),
-                                 mActionShowAddresses->isChecked(),
-                                 mActionShowEmails->isChecked(),
-                                 mActionShowPhones->isChecked(),
-                                 mActionShowURLs->isChecked() );
+  int fieldMask = NoFields;
+  if ( mActionShowBirthday->isChecked() )
+    fieldMask |= ( FieldMask )BirthdayFields;
+  if ( mActionShowAddresses->isChecked() )
+    fieldMask |= AddressFields;
+  if ( mActionShowEmails->isChecked() )
+    fieldMask |= EmailFields;
+  if ( mActionShowPhones->isChecked() )
+    fieldMask |= PhoneFields;
+  if ( mActionShowURLs->isChecked() )
+    fieldMask |= URLFields;
+  if ( mActionShowIMAddresses->isChecked() )
+    fieldMask |= IMFields;
+  if ( mActionShowCustomFields->isChecked() )
+    fieldMask |= CustomFields;
+
+  QString strAddr = vCardAsHTML( mAddressee, mKIMProxy, (LinkMask)mLinkMask,
+                                 true, (FieldMask)fieldMask );
 
   strAddr = QString::fromLatin1(
     "<html>"
@@ -592,6 +624,8 @@ QPopupMenu *AddresseeView::createPopupMenu( const QPoint& )
   mActionShowEmails->plug( menu );
   mActionShowPhones->plug( menu );
   mActionShowURLs->plug( menu );
+  mActionShowIMAddresses->plug( menu );
+  mActionShowCustomFields->plug( menu );
 
   return menu;
 }
