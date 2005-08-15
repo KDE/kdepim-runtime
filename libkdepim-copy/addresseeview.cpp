@@ -356,15 +356,41 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 
   QString customData;
   if ( fieldMask & CustomFields ) {
+    static QMap<QString, QString> titleMap;
+    if ( titleMap.isEmpty() ) {
+      titleMap.insert( "Department", i18n( "Department" ) );
+      titleMap.insert( "Profession", i18n( "Profession" ) );
+      titleMap.insert( "AssistantsName", i18n( "Assistant's Name" ) );
+      titleMap.insert( "ManagersName", i18n( "Manager's Name" ) );
+      titleMap.insert( "SpousesName", i18n( "Partner's Name" ) );
+      titleMap.insert( "Office", i18n( "Office" ) );
+      titleMap.insert( "IMAddress", i18n( "IM Address" ) );
+      titleMap.insert( "Anniversary", i18n( "Anniversary" ) );
+    }
+
     if ( !addr.customs().empty() ) {
       QStringList customs = addr.customs();
-      for ( QStringList::Iterator it = customs.begin(); it != customs.end(); ++it ) {
+      QStringList::Iterator it( customs.begin() );
+      const QStringList::Iterator endIt( customs.end() );
+      for ( ; it != endIt; ++it ) {
         QString customEntry = *it;
         if ( customEntry.startsWith ( "KADDRESSBOOK-" ) ) {
-          customEntry.remove("KADDRESSBOOK-X-");
-          customEntry.remove("KADDRESSBOOK-");
+          customEntry.remove( "KADDRESSBOOK-X-" );
+          customEntry.remove( "KADDRESSBOOK-" );
+
           int pos = customEntry.find( ':' );
-          customData += rowFmtStr.arg( customEntry.left( pos ) ).arg( customEntry.mid( pos + 1 ) ) ;
+          QString key = customEntry.left( pos );
+          const QString value = customEntry.mid( pos + 1 );
+
+          // blog is handled separated
+          if ( key == "BlogFeed" )
+            continue;
+
+          const QMap<QString, QString>::ConstIterator keyIt = titleMap.find( key );
+          if ( keyIt != titleMap.end() )
+            key = keyIt.data();
+
+          customData += rowFmtStr.arg( key ).arg( value ) ;
         }
       }
     }
@@ -726,6 +752,8 @@ void AddresseeView::load()
   mActionShowEmails->setChecked( mConfig->readBoolEntry( "ShowEmails", true ) );
   mActionShowPhones->setChecked( mConfig->readBoolEntry( "ShowPhones", true ) );
   mActionShowURLs->setChecked( mConfig->readBoolEntry( "ShowURLs", true ) );
+  mActionShowIMAddresses->setChecked( mConfig->readBoolEntry( "ShowIMAddresses", false ) );
+  mActionShowCustomFields->setChecked( mConfig->readBoolEntry( "ShowCustomFields", false ) );
 }
 
 void AddresseeView::save()
@@ -736,6 +764,8 @@ void AddresseeView::save()
   mConfig->writeEntry( "ShowEmails", mActionShowEmails->isChecked() );
   mConfig->writeEntry( "ShowPhones", mActionShowPhones->isChecked() );
   mConfig->writeEntry( "ShowURLs", mActionShowURLs->isChecked() );
+  mConfig->writeEntry( "ShowIMAddresses", mActionShowIMAddresses->isChecked() );
+  mConfig->writeEntry( "ShowCustomFields", mActionShowCustomFields->isChecked() );
   mConfig->sync();
 }
 
