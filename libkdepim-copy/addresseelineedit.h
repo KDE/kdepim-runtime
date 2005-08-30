@@ -29,6 +29,7 @@
 #include <qobject.h>
 #include <qptrlist.h>
 #include <qtimer.h>
+#include <qpair.h>
 #include <qvaluelist.h>
 
 #include <kabc/addressee.h>
@@ -44,7 +45,7 @@ namespace KPIM {
 class LdapSearch;
 class LdapResult;
 typedef QValueList<LdapResult> LdapResultList;
-typedef QMap<QString, int> CompletionItemsMap;
+typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 }
 
 namespace KPIM {
@@ -64,11 +65,13 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
   public slots:
     void cursorAtEnd();
     void enableCompletion( bool enable );
+    /** Reimplemented for stripping whitespace after completion */
+    virtual void setText( const QString& txt );
 
   protected slots:
     virtual void loadContacts();
   protected:
-    void addContact( const KABC::Addressee&, int weight );
+    void addContact( const KABC::Addressee&, int weight, int source = -1 );
     virtual void keyPressEvent( QKeyEvent* );
     /**
      * Reimplemented for smart insertion of email addresses.
@@ -88,6 +91,16 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     void doCompletion( bool ctrlT );
     virtual QPopupMenu *createPopupMenu();
 
+    /**
+     * Adds the name of a completion source to the internal list of 
+     * such sources and returns its index, such that that can be used
+     * for insertion of items associated with that source.
+     */
+    int addCompletionSource( const QString& );
+    
+    /** return whether we are using sorted or weighted display */
+    static KCompletion::CompOrder completionOrder();
+
   k_dcop:
     // Connected to the DCOP signal
     void slotIMAPCompletionOrderChanged();
@@ -101,13 +114,15 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     void slotUserCancelled( const QString& );
 
   private:
+    virtual bool eventFilter(QObject *o, QEvent *e);
     void init();
     void startLoadingLDAPEntries();
     void stopLDAPLookup();
 
     void setCompletedItems( const QStringList& items, bool autoSuggest );
-    void addCompletionItem( const QString& string, int weight );
+    void addCompletionItem( const QString& string, int weight, int source );
     QString completionSearchText( QString& );
+    const QStringList getAdjustedCompletionItems( bool fullSearch );
 
     QString m_previousAddresses;
     QString m_searchString;
@@ -125,6 +140,7 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;
     static AddresseeLineEdit *s_LDAPLineEdit;
+    static QStringList *s_completionSources;
 
     class AddresseeLineEditPrivate;
     AddresseeLineEditPrivate *d;
