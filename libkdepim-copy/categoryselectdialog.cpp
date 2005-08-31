@@ -27,6 +27,8 @@
 #include "categoryselectdialog_base.h"
 #include <klocale.h>
 #include "categoryselectdialog.h"
+#include "categoryhierarchyreader.h"
+#include "autoselectingchecklistitem.h"
 
 #include "kpimprefs.h"
 
@@ -61,10 +63,9 @@ void CategorySelectDialog::setCategories( const QStringList &categoryList )
     if ( mPrefs->mCustomCategories.find( *it ) == mPrefs->mCustomCategories.end() )
       mPrefs->mCustomCategories.append( *it );
 
-  for ( it = mPrefs->mCustomCategories.begin();
-        it != mPrefs->mCustomCategories.end(); ++it ) {
-    new QCheckListItem( mWidget->mCategories, *it, QCheckListItem::CheckBox );
-  }
+  
+  CategoryHierarchyReaderQListView( mWidget->mCategories, false, true ).
+      read( mPrefs->mCustomCategories );
 }
 
 CategorySelectDialog::~CategorySelectDialog()
@@ -77,13 +78,19 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
 
   QStringList::ConstIterator it;
   for ( it = selList.begin(); it != selList.end(); ++it ) {
+    QStringList path = CategoryHierarchyReader::path( *it );
     QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
     while (item) {
-      if (item->text() == *it) {
-        item->setOn(true);
-        break;
-      }
-      item = (QCheckListItem *)item->nextSibling();
+      if (item->text() == path.first()) {
+        if ( path.count() == 1 ) {
+          item->setOn(true);
+          break;
+        } else {
+          item = (QCheckListItem *)item->firstChild();
+          path.pop_front();
+        }
+      } else
+        item = (QCheckListItem *)item->nextSibling();
     }
   }
 }
@@ -93,16 +100,37 @@ QStringList CategorySelectDialog::selectedCategories() const
   return mCategoryList;
 }
 
-void CategorySelectDialog::slotApply()
+static QStringList getSelectedCategories( const QListView *categoriesView )
 {
   QStringList categories;
-  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
+  QCheckListItem *item = (QCheckListItem *)categoriesView->firstChild();
+  QStringList path;
   while (item) {
+    path.append( item->text() );
     if (item->isOn()) {
-      categories.append(item->text());
+      QStringList _path = path;
+      _path.gres( KPimPrefs::categorySeparator, QString( "\\" ) + 
+                  KPimPrefs::categorySeparator );
+      categories.append( _path.join( KPimPrefs::categorySeparator ) );
     }
-    item = (QCheckListItem *)item->nextSibling();
+    if ( item->firstChild() ) {
+      item = (QCheckListItem *)item->firstChild();
+    } else {
+      QCheckListItem *next_item = 0;
+      while ( !next_item && item ) {
+        path.pop_back();
+        next_item = (QCheckListItem *)item->nextSibling();
+        item = (QCheckListItem *)item->parent();
+      }
+      item = next_item;
+    }
   }
+  return categories;
+}
+
+void CategorySelectDialog::slotApply()
+{
+  QStringList categories = getSelectedCategories( mWidget->mCategories );
   
   QString categoriesStr = categories.join(", ");
 
@@ -122,25 +150,34 @@ void CategorySelectDialog::clear()
 {
   QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
-    item->setOn(false);
-    item = (QCheckListItem *)item->nextSibling();
-  }  
+    item->setOn( false );
+    if ( item->firstChild() ) {
+      item = (QCheckListItem *)item->firstChild();
+    } else {
+      QCheckListItem *next_item = 0;
+      while ( !next_item && item ) {
+        next_item = (QCheckListItem *)item->nextSibling();
+        item = (QCheckListItem *)item->parent();
+      }
+      item = next_item;
+    }
+  }
 }
 
 void CategorySelectDialog::updateCategoryConfig()
 {
-  QStringList selected;
-  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
-  while (item) {
-    if (item->isOn()) {
-      selected.append(item->text());
-    }
-    item = (QCheckListItem *)item->nextSibling();
-  }
+  QStringList selected = getSelectedCategories( mWidget->mCategories );
 
   setCategories();
   
   setSelected(selected);
+}
+
+void CategorySelectDialog::setAutoselectChildren( bool autoselectChildren )
+{
+  for ( QListViewItemIterator it( mWidget->mCategories ); it.current(); ++it)
+    ( ( AutoselectingCheckListItem *) it.current() )->
+            setAutoselectChildren( autoselectChildren );
 }
 
 #include "categoryselectdialog.moc"

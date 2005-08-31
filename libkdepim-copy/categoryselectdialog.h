@@ -46,6 +46,8 @@ class KDE_EXPORT CategorySelectDialog : public KDialogBase
 
     QStringList selectedCategories() const;
     
+    void setAutoselectChildren( bool autoselectChildren );
+    
   public slots:
     void slotOk();
     void slotApply();

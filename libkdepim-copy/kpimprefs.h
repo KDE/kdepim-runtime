@@ -2,6 +2,7 @@
     This file is part of libkdepim.
 
     Copyright (c) 2002 Cornelius Schumacher <schumacher@kde.org>
+    Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -81,6 +82,9 @@ class KDE_EXPORT KPimPrefs : public KConfigSkeleton
   
   protected:
     virtual void setCategoryDefaults() {};
+  
+  public:
+    static const QString categorySeparator;
 };
 
 #endif

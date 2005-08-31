@@ -30,28 +30,6 @@
                 <cstring>mEdit</cstring>
             </property>
         </widget>
-        <widget class="QListView" row="0" column="0">
-            <column>
-                <property name="text">
-                    <string>Category</string>
-                </property>
-                <property name="clickable">
-                    <bool>true</bool>
-                </property>
-                <property name="resizable">
-                    <bool>true</bool>
-                </property>
-            </column>
-            <property name="name">
-                <cstring>mCategories</cstring>
-            </property>
-            <property name="allColumnsShowFocus">
-                <bool>true</bool>
-            </property>
-            <property name="resizeMode">
-                <enum>AllColumns</enum>
-            </property>
-        </widget>
         <widget class="QLayoutWidget" row="0" column="1">
             <property name="name">
                 <cstring>layout103</cstring>
@@ -66,6 +44,14 @@
                     </property>
                     <property name="text">
                         <string>A&amp;dd</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>mButtonAddSubcategory</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Add &amp;subcategory</string>
                     </property>
                 </widget>
                 <widget class="QPushButton">
@@ -89,18 +75,29 @@
                     <property name="sizeHint">
                         <size>
                             <width>20</width>
-                            <height>20</height>
+                            <height>50</height>
                         </size>
                     </property>
                 </spacer>
             </vbox>
         </widget>
+        <widget class="QFrame" row="0" column="0">
+            <property name="name">
+                <cstring>mCategoriesFrame</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Plain</enum>
+            </property>
+        </widget>
     </grid>
 </widget>
 <tabstops>
-    <tabstop>mCategories</tabstop>
     <tabstop>mEdit</tabstop>
     <tabstop>mButtonAdd</tabstop>
+    <tabstop>mButtonAddSubcategory</tabstop>
     <tabstop>mButtonRemove</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>

@@ -34,7 +34,9 @@ libkdepim_la_SOURCES = \
   embeddedurlpage.cpp kincidencechooser.cpp \
   groupwarejob.cpp pimemoticons.kcfgc \
   krsqueezedtextlabel.cpp csshelper.cpp distributionlist.cpp \
-  kpimurlrequesterdlg.cpp sendsmsdialog.cpp
+  kpimurlrequesterdlg.cpp sendsmsdialog.cpp \
+  categoryhierarchyreader.cpp autoselectingchecklistitem.cpp \
+  improvedlistview.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
@@ -47,7 +49,7 @@ libkdepim_la_LIBADD  = $(top_builddir)/libkcal/libkcal.la \
                        $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) -lqui
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
-include_HEADERS = kdepimmacros.h
+include_HEADERS = kdepimmacros.h kdepimprotocols.h
 
 AM_CXXFLAGS = -DQT_PLUGIN
 kde_widget_LTLIBRARIES = kdepimwidgets.la

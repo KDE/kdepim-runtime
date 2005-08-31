@@ -3,6 +3,7 @@
 
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
     Copyright (c) 2005 George Staikos <staikos@kde.org.
+    Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -28,6 +29,8 @@
 #include "time.h"
 
 #include <kdepimmacros.h>
+
+class KURL;
 
 /**
  * KDEPIM classes for drag and drop of mails
@@ -56,22 +59,25 @@ public:
     void set( Q_UINT32, QString, QString, QString, QString, time_t );
 
     /*** KMail unique identification number ***/
-    Q_UINT32 serialNumber();
+    Q_UINT32 serialNumber() const;
 
     /*** MD5 checksum of message identification string ***/
-    QString messageId();
+    QString messageId() const;
 
     /*** Subject of the message including prefixes ***/
-    QString subject();
+    QString subject() const;
 
     /*** Simplified from address ***/
-    QString from();
+    QString from() const;
 
     /** Simplified to address ***/
-    QString to();
+    QString to() const;
 
     /*** Date the message was sent ***/
-    time_t date();
+    time_t date() const;
+    
+    /** returns kmail:<serial number>/<message id> style uri */
+    operator KURL() const;
 
 private:
     Q_UINT32 mSerialNumber;
@@ -92,11 +98,11 @@ public:
 };
 
 // Drag and drop object for mails
-class KDE_EXPORT MailListDrag : public QStoredDrag
+class KDE_EXPORT MailListDrag : public QDragObject
 {
 public:
     // Takes ownership of "src" and deletes it when done
-    MailListDrag( MailList, QWidget * parent = 0, MailTextSource *src = 0 );
+    MailListDrag( const MailList &, QWidget * parent = 0, MailTextSource *src = 0 );
     ~MailListDrag();
 
     const char *format(int i) const;
@@ -106,7 +112,7 @@ public:
     QByteArray encodedData(const char *) const;
 
     /* Reset the list of mail summaries */
-    void setMailList( MailList );
+    void setMailList( const MailList & );
 
     /* The format for this drag - "x-kmail-drag/message-list" */
     static const char* format();
@@ -129,6 +135,8 @@ public:
 
 private:
     MailTextSource *_src;
+    MailList mMailList;
+    QDragObject *mUrlDrag;
 };
 
 }
