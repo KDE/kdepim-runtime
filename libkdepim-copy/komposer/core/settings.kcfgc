@@ -1,0 +1,9 @@
+# Code generation options for kconfig_compiler
+File=komposer.kcfg
+NameSpace=Komposer
+ClassName=Config
+Singleton=true
+Mutators=true
+#MemberVariables=public
+GlobalEnums=true
+#SetUserTexts=true
