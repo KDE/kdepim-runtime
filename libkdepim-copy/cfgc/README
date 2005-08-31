@@ -1,6 +1,0 @@
-This directory contains text and example code for automatic creation of
-configuration dialogs based on KConfigSkeleton, kconfig_compiler and
-KPrefsDialog.
-
-If you have questions or comments please contact Cornelius Schumacher
-<schumacher@kde.org>.
