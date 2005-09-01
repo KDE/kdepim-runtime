@@ -21,8 +21,6 @@
 
 #include <kdepimmacros.h>
 
-class KMKernel;
-
 namespace KPIM {
 
 /**
