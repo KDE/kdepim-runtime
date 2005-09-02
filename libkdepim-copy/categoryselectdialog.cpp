@@ -103,7 +103,7 @@ QStringList CategorySelectDialog::selectedCategories() const
 static QStringList getSelectedCategories( const Q3ListView *categoriesView )
 {
   QStringList categories;
-  Q3CheckListItem *item = (Q3CheckListItem *)mCategories->firstChild();
+  Q3CheckListItem *item = (Q3CheckListItem *)categoriesView->firstChild();
   QStringList path;
   while (item) {
     path.append( item->text() );
