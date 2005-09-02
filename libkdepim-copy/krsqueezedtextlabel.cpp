@@ -73,7 +73,6 @@ void KRSqueezedTextLabel::squeezeTextToLabel() {
     QLabel::setText(fullText);
 
     QToolTip::remove( this );
-    QToolTip::hide();
 
   }
 }

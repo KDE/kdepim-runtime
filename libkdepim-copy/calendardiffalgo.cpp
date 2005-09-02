@@ -201,14 +201,14 @@ void CalendarDiffAlgo::diffTodo( KCal::Todo *left, KCal::Todo *right )
 
 template <class L>
 void CalendarDiffAlgo::diffList( const QString &id,
-                                 const Q3ValueList<L> &left, const Q3ValueList<L> &right )
+                                 const QList<L> &left, const QList<L> &right )
 {
-  for ( uint i = 0; i < left.count(); ++i ) {
+  for ( int i = 0; i < left.count(); ++i ) {
     if ( right.find( left[ i ] ) == right.end() )
       additionalLeftField( id, toString( left[ i ] ) );
   }
 
-  for ( uint i = 0; i < right.count(); ++i ) {
+  for ( int i = 0; i < right.count(); ++i ) {
     if ( left.find( right[ i ] ) == left.end() )
       additionalRightField( id, toString( right[ i ] ) );
   }
