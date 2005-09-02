@@ -36,15 +36,15 @@ void ImprovedListView::setLeavesAcceptChildren( bool b )
 }
 
 /* Just copied from kdelibs/kdeui/klistview.cpp with one small change. */
-void ImprovedListView::findDrop ( const QPoint &pos, QListViewItem *&parent,
-                                  QListViewItem *&after )
+void ImprovedListView::findDrop ( const QPoint &pos, Q3ListViewItem *&parent,
+                                  Q3ListViewItem *&after )
 {
   QPoint p (contentsToViewport(pos));
 
         // Get the position to put it in
-  QListViewItem *atpos = itemAt(p);
+  Q3ListViewItem *atpos = itemAt(p);
 
-  QListViewItem *above;
+  Q3ListViewItem *above;
   if (!atpos) // put it at the end
     above = lastItem();
   else
@@ -83,8 +83,8 @@ void ImprovedListView::findDrop ( const QPoint &pos, QListViewItem *&parent,
 
       // Ok, there's one more level of complexity. We may want to become a new
       // sibling, but of an upper-level group, rather than the "above" item
-    QListViewItem * betterAbove = above->parent();
-    QListViewItem * last = above;
+    Q3ListViewItem * betterAbove = above->parent();
+    Q3ListViewItem * last = above;
     while ( betterAbove )
     {
           // We are allowed to become a sibling of "betterAbove" only if we are

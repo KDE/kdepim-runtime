@@ -22,13 +22,13 @@
 #ifndef KPIM_AUTOSELECTINGCHECKLISTITEM_H
 #define KPIM_AUTOSELECTINGCHECKLISTITEM_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 
-class AutoselectingCheckListItem : public QCheckListItem
+class AutoselectingCheckListItem : public Q3CheckListItem
 {
   public:
-    AutoselectingCheckListItem( QListViewItem * parent, const QString & text, QCheckListItem::Type tt = QCheckListItem::RadioButtonController );
-    AutoselectingCheckListItem( QListView * parent, const QString & text, QCheckListItem::Type tt = QCheckListItem::RadioButtonController );
+    AutoselectingCheckListItem( Q3ListViewItem * parent, const QString & text, Q3CheckListItem::Type tt = Q3CheckListItem::RadioButtonController );
+    AutoselectingCheckListItem( Q3ListView * parent, const QString & text, Q3CheckListItem::Type tt = Q3CheckListItem::RadioButtonController );
     virtual ~AutoselectingCheckListItem();
     void setAutoselectChildren( bool autoselectChildren );
     bool autoselectChildren() const;

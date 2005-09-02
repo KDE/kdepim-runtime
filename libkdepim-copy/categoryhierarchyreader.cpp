@@ -21,7 +21,7 @@
 
 #include <qcombobox.h>
 #include <qstringlist.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include "autoselectingchecklistitem.h"
 #include "categoryhierarchyreader.h"
@@ -107,16 +107,16 @@ void CategoryHierarchyReaderQListView::addChild( const QString &label )
 {
   if ( mCheckList ) {
     if ( mItem )
-      mItem = (QListViewItem *)new AutoselectingCheckListItem( mItem, label, 
-                                                   QCheckListItem::CheckBox );
+      mItem = (Q3ListViewItem *)new AutoselectingCheckListItem( mItem, label, 
+                                                   Q3CheckListItem::CheckBox );
     else
-      mItem = (QListViewItem *)new AutoselectingCheckListItem( mView, label, 
-                                                   QCheckListItem::CheckBox );
+      mItem = (Q3ListViewItem *)new AutoselectingCheckListItem( mView, label, 
+                                                   Q3CheckListItem::CheckBox );
   } else {
     if ( mItem )
-      mItem = new QListViewItem( mItem, label );
+      mItem = new Q3ListViewItem( mItem, label );
     else
-      mItem = new QListViewItem( mView, label );
+      mItem = new Q3ListViewItem( mView, label );
   }
   mItem->setExpandable( mExpandable );
   mItem->setOpen( true );

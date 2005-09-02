@@ -100,7 +100,7 @@ QStringList CategorySelectDialog::selectedCategories() const
   return mCategoryList;
 }
 
-static QStringList getSelectedCategories( const QListView *categoriesView )
+static QStringList getSelectedCategories( const Q3ListView *categoriesView )
 {
   QStringList categories;
   Q3CheckListItem *item = (Q3CheckListItem *)mCategories->firstChild();
@@ -116,11 +116,11 @@ static QStringList getSelectedCategories( const QListView *categoriesView )
     if ( item->firstChild() ) {
       item = (Q3CheckListItem *)item->nextSibling();
     } else {
-      QCheckListItem *next_item = 0;
+      Q3CheckListItem *next_item = 0;
       while ( !next_item && item ) {
         path.pop_back();
-        next_item = (QCheckListItem *)item->nextSibling();
-        item = (QCheckListItem *)item->parent();
+        next_item = (Q3CheckListItem *)item->nextSibling();
+        item = (Q3CheckListItem *)item->parent();
       }
       item = next_item;
     }
@@ -150,40 +150,23 @@ void CategorySelectDialog::clear()
 {
   Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
-<<<<<<< .mine
-    item->setOn(false);
-    item = (Q3CheckListItem *)item->nextSibling();
-  }  
-=======
     item->setOn( false );
     if ( item->firstChild() ) {
-      item = (QCheckListItem *)item->firstChild();
+      item = (Q3CheckListItem *)item->firstChild();
     } else {
-      QCheckListItem *next_item = 0;
+      Q3CheckListItem *next_item = 0;
       while ( !next_item && item ) {
-        next_item = (QCheckListItem *)item->nextSibling();
-        item = (QCheckListItem *)item->parent();
+        next_item = (Q3CheckListItem *)item->nextSibling();
+        item = (Q3CheckListItem *)item->parent();
       }
       item = next_item;
     }
   }
->>>>>>> .r456277
 }
 
 void CategorySelectDialog::updateCategoryConfig()
 {
-<<<<<<< .mine
-  QStringList selected;
-  Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
-  while (item) {
-    if (item->isOn()) {
-      selected.append(item->text());
-    }
-    item = (Q3CheckListItem *)item->nextSibling();
-  }
-=======
   QStringList selected = getSelectedCategories( mWidget->mCategories );
->>>>>>> .r456277
 
   setCategories();
   
@@ -192,7 +175,7 @@ void CategorySelectDialog::updateCategoryConfig()
 
 void CategorySelectDialog::setAutoselectChildren( bool autoselectChildren )
 {
-  for ( QListViewItemIterator it( mWidget->mCategories ); it.current(); ++it)
+  for ( Q3ListViewItemIterator it( mWidget->mCategories ); it.current(); ++it)
     ( ( AutoselectingCheckListItem *) it.current() )->
             setAutoselectChildren( autoselectChildren );
 }

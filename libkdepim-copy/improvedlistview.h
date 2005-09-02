@@ -53,8 +53,8 @@ class ImprovedListView : public KListView
     /**
      * @reimp from KListView.
      */
-    virtual void findDrop ( const QPoint &pos, QListViewItem *&parent,
-                            QListViewItem *&after );
+    virtual void findDrop ( const QPoint &pos, Q3ListViewItem *&parent,
+                            Q3ListViewItem *&after );
   private:
     bool mLeavesAcceptChildren;
 };

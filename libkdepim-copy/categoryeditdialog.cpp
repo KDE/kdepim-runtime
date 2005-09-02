@@ -27,6 +27,10 @@
 #include <q3listview.h>
 #include <q3header.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QBoxLayout>
+#include <Q3PtrList>
 #include <klocale.h>
 // #include <kmessagebox.h>
 
@@ -72,11 +76,11 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
   fillList();
   
   connect( mCategories, SIGNAL( currentChanged( Q3ListViewItem * )),
-           SLOT( editItem( QListViewItem * )) );
+           SLOT( editItem( Q3ListViewItem * )) );
   connect( mCategories, SIGNAL( selectionChanged() ),
            SLOT( slotSelectionChanged() ) );
-  connect( mCategories, SIGNAL( collapsed( QListViewItem * ) ),
-           SLOT( expandIfToplevel( QListViewItem * ) ) );
+  connect( mCategories, SIGNAL( collapsed( Q3ListViewItem * ) ),
+           SLOT( expandIfToplevel( Q3ListViewItem * ) ) );
   connect( mWidget->mEdit, SIGNAL( textChanged( const QString & )),
            this, SLOT( slotTextChanged( const QString & )));
   connect( mWidget->mButtonAdd, SIGNAL( clicked() ),
@@ -115,7 +119,7 @@ void CategoryEditDialog::slotTextChanged(const QString &text)
 
 void CategoryEditDialog::slotSelectionChanged()
 {
-  QListViewItem *item = mCategories->firstChild();
+  Q3ListViewItem *item = mCategories->firstChild();
   while (item) {
     if ( item->isSelected() ) {
       mWidget->mButtonRemove->setEnabled( true );
@@ -154,7 +158,7 @@ void CategoryEditDialog::add()
 void CategoryEditDialog::addSubcategory()
 {
   if ( !mWidget->mEdit->text().isEmpty() ) {
-    QListViewItem *newItem = new QListViewItem( mCategories->
+    Q3ListViewItem *newItem = new Q3ListViewItem( mCategories->
                                                 currentItem(), "" );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
@@ -169,8 +173,8 @@ void CategoryEditDialog::addSubcategory()
 
 void CategoryEditDialog::remove()
 {
-  QListViewItem *item = mCategories->firstChild();
-  QPtrList<QListViewItem> to_remove;
+  Q3ListViewItem *item = mCategories->firstChild();
+  Q3PtrList<Q3ListViewItem> to_remove;
   bool subs = false;
   while (item) {
     if ( item->isSelected() ) {
@@ -194,7 +198,7 @@ void CategoryEditDialog::remove()
           == KMessageBox::No )
     return;*/ // no need for the message box since the dialog is cancellable
   // we run backwards to delete children before parents
-  for ( QListViewItem *it = to_remove.last(); it; it = to_remove.prev())
+  for ( Q3ListViewItem *it = to_remove.last(); it; it = to_remove.prev())
     delete it;
   mWidget->mButtonRemove->setEnabled( mCategories->childCount()>0 );
   mWidget->mButtonAddSubcategory->setEnabled( mCategories->childCount()>0 );
@@ -223,7 +227,7 @@ void CategoryEditDialog::slotApply()
     if ( item->firstChild() ) {
       item = item->firstChild();
     } else {
-      QListViewItem *next_item = 0;
+      Q3ListViewItem *next_item = 0;
       while ( !next_item && item ) {
         path.pop_back();
         next_item = item->nextSibling();
@@ -256,7 +260,7 @@ void CategoryEditDialog::reload()
 
 void CategoryEditDialog::show()
 {
-  QListViewItem *first = mCategories->firstChild();
+  Q3ListViewItem *first = mCategories->firstChild();
   mCategories->setCurrentItem( first );
   mCategories->clearSelection();
   if ( first ) {
@@ -266,7 +270,7 @@ void CategoryEditDialog::show()
   KDialog::show();
 }
 
-void CategoryEditDialog::expandIfToplevel( QListViewItem *item )
+void CategoryEditDialog::expandIfToplevel( Q3ListViewItem *item )
 {
   if ( !item->parent() )
     item->setOpen( true );

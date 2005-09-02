@@ -24,8 +24,8 @@
 class QComboBox;
 class QStringList;
 class QString;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 
 namespace KPIM {
 
@@ -46,7 +46,7 @@ class CategoryHierarchyReader
 class CategoryHierarchyReaderQListView : public CategoryHierarchyReader
 {
   public:
-    CategoryHierarchyReaderQListView( QListView *view, bool expandable = true,
+    CategoryHierarchyReaderQListView( Q3ListView *view, bool expandable = true,
                                       bool checkList = false )
         : mView( view ), mItem( 0 ), mExpandable( expandable ), 
           mCheckList( checkList ) { }
@@ -58,8 +58,8 @@ class CategoryHierarchyReaderQListView : public CategoryHierarchyReader
     virtual void addChild( const QString &label );
     virtual int depth() const;
   private:
-    QListView *mView;
-    QListViewItem *mItem;
+    Q3ListView *mView;
+    Q3ListViewItem *mItem;
     const bool mExpandable;
     const bool mCheckList;
 };

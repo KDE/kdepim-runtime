@@ -21,17 +21,17 @@
 
 #include "autoselectingchecklistitem.h"
 
-AutoselectingCheckListItem::AutoselectingCheckListItem( QListViewItem * parent, 
+AutoselectingCheckListItem::AutoselectingCheckListItem( Q3ListViewItem * parent, 
                                      const QString & text, 
-                                     QCheckListItem::Type tt )
-  : QCheckListItem( parent, text, tt ), mAutoselectChildren( false )
+                                     Q3CheckListItem::Type tt )
+  : Q3CheckListItem( parent, text, tt ), mAutoselectChildren( false )
 {
 }
 
-AutoselectingCheckListItem::AutoselectingCheckListItem( QListView * parent, 
+AutoselectingCheckListItem::AutoselectingCheckListItem( Q3ListView * parent, 
                                      const QString & text, 
-                                     QCheckListItem::Type tt )
-  : QCheckListItem( parent, text, tt ), mAutoselectChildren( false )
+                                     Q3CheckListItem::Type tt )
+  : Q3CheckListItem( parent, text, tt ), mAutoselectChildren( false )
 {
 }
 
