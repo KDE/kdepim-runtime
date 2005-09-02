@@ -21,8 +21,8 @@
 #include <unistd.h>
 
 #include <qglobal.h>
-#include <qptrlist.h>
-#include <qptrstack.h>
+#include <q3ptrlist.h>
+#include <q3ptrstack.h>
 #include <qregexp.h>
 
 #include <qobject.h>
@@ -30,9 +30,13 @@
 #include <qstringlist.h>
 #include <qdatetime.h>
 #include <qcolor.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qmap.h>
-#include <qdict.h>
+#include <q3dict.h>
+//Added by qt3to4:
+#include <QTextStream>
+#include <QLabel>
+#include <Q3ValueList>
 
 #include <kdialogbase.h>
 #include <klineedit.h>
@@ -175,8 +179,8 @@ private:
     QString from;
     QString subject;
   };
-  typedef QValueList<article_info> article_list;
-  typedef QDict<article_list> note_list;
+  typedef Q3ValueList<article_info> article_list;
+  typedef Q3Dict<article_list> note_list;
   note_list notifyList;
 };
 
@@ -225,8 +229,8 @@ class KDE_EXPORT KScoringRule
   KScoringRule(const KScoringRule& r);
   ~KScoringRule();
 
-  typedef QPtrList<KScoringExpression> ScoreExprList;
-  typedef QPtrList<ActionBase> ActionList;
+  typedef Q3PtrList<KScoringExpression> ScoreExprList;
+  typedef Q3PtrList<ActionBase> ActionList;
   typedef QStringList GroupList;
   enum LinkMode { AND, OR };
 
@@ -286,16 +290,16 @@ public:
   RuleStack();
   ~RuleStack();
   //! puts the list on the stack, doesn't change the list
-  void push(QPtrList<KScoringRule>&);
+  void push(Q3PtrList<KScoringRule>&);
   //! clears the argument list and copy the content of the TOS into it
   //! after that the TOS gets dropped
-  void pop(QPtrList<KScoringRule>&);
+  void pop(Q3PtrList<KScoringRule>&);
   //! like pop but without dropping the TOS
-  void top(QPtrList<KScoringRule>&);
+  void top(Q3PtrList<KScoringRule>&);
   //! drops the TOS
   void drop();
 private:
-  QPtrStack< QPtrList<KScoringRule> > stack;
+  Q3PtrStack< Q3PtrList<KScoringRule> > stack;
 };
 
 //----------------------------------------------------------------------------
@@ -306,7 +310,7 @@ class KDE_EXPORT KScoringManager : public QObject
 
  public:
   //* this is the container for all rules
-  typedef QPtrList<KScoringRule> ScoringRuleList;
+  typedef Q3PtrList<KScoringRule> ScoringRuleList;
 
   KScoringManager(const QString& appName = QString::null);
   virtual ~KScoringManager();

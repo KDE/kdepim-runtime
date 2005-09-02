@@ -22,7 +22,7 @@
 #ifndef KVCARDDRAG_H
 #define KVCARDDRAG_H
 
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qstring.h>
 
 #include <kabc/addressee.h>
@@ -36,7 +36,7 @@ class KVCardDragPrivate;
  *
  * See the Qt drag'n'drop documentation.
  */
-class KDE_EXPORT KVCardDrag : public QStoredDrag
+class KDE_EXPORT KVCardDrag : public Q3StoredDrag
 {
   Q_OBJECT
 

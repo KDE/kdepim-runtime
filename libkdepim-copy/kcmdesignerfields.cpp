@@ -25,14 +25,18 @@
 #include <qimage.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qobjectlist.h>
+#include <qobject.h>
 #include <qpixmap.h>
 #include <qpushbutton.h>
-#include <qwhatsthis.h>
-#include <qgroupbox.h>
+#include <q3whatsthis.h>
+#include <q3groupbox.h>
 #include <qwidgetfactory.h>
 #include <qregexp.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QHBoxLayout>
+#include <Q3Frame>
+#include <QVBoxLayout>
 
 #include <kaboutdata.h>
 #include <kdebug.h>
@@ -52,11 +56,11 @@
 
 using namespace KPIM;
 
-class PageItem : public QCheckListItem
+class PageItem : public Q3CheckListItem
 {
   public:
-    PageItem( QListView *parent, const QString &path )
-      : QCheckListItem( parent, "", QCheckListItem::CheckBox ),
+    PageItem( Q3ListView *parent, const QString &path )
+      : Q3CheckListItem( parent, "", Q3CheckListItem::CheckBox ),
         mPath( path ), mIsActive( false )
     {
       mName = path.mid( path.findRev( '/' ) + 1 );
@@ -87,10 +91,10 @@ class PageItem : public QCheckListItem
           if ( allowedTypes.find( it.current()->className() ) != allowedTypes.end() ) {
             QString name = it.current()->name();
             if ( name.startsWith( "X_" ) ) {
-              new QListViewItem( this, name,
+              new Q3ListViewItem( this, name,
                                  allowedTypes[ it.current()->className() ],
                                  it.current()->className(),
-                                 QWhatsThis::textFor( static_cast<QWidget*>( it.current() ) ) );
+                                 Q3WhatsThis::textFor( static_cast<QWidget*>( it.current() ) ) );
             }
           }
 
@@ -116,7 +120,7 @@ class PageItem : public QCheckListItem
   protected:
     void paintBranches( QPainter *p, const QColorGroup & cg, int w, int y, int h )
     {
-      QListViewItem::paintBranches( p, cg, w, y, h );
+      Q3ListViewItem::paintBranches( p, cg, w, y, h );
     }
 
   private:
@@ -147,10 +151,10 @@ void KCMDesignerFields::delayedInit()
 
   initGUI();
 
-  connect( mPageView, SIGNAL( selectionChanged( QListViewItem* ) ),
-           this, SLOT( updatePreview( QListViewItem* ) ) );
-  connect( mPageView, SIGNAL( clicked( QListViewItem* ) ),
-           this, SLOT( itemClicked( QListViewItem* ) ) );
+  connect( mPageView, SIGNAL( selectionChanged( Q3ListViewItem* ) ),
+           this, SLOT( updatePreview( Q3ListViewItem* ) ) );
+  connect( mPageView, SIGNAL( clicked( Q3ListViewItem* ) ),
+           this, SLOT( itemClicked( Q3ListViewItem* ) ) );
 
   connect( mDeleteButton, SIGNAL( clicked() ),
            this, SLOT( deleteFile() ) );
@@ -171,7 +175,7 @@ void KCMDesignerFields::delayedInit()
 
 void KCMDesignerFields::deleteFile()
 {
-  QListViewItem *item = mPageView->selectedItem();
+  Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
     if (KMessageBox::warningContinueCancel(this,
@@ -212,7 +216,7 @@ void KCMDesignerFields::rebuildList()
 
 void KCMDesignerFields::loadActivePages(const QStringList& ai)
 {
-  QListViewItemIterator it( mPageView );
+  Q3ListViewItemIterator it( mPageView );
   while ( it.current() ) {
     if ( it.current()->parent() == 0 ) {
       PageItem *item = static_cast<PageItem*>( it.current() );
@@ -233,8 +237,8 @@ void KCMDesignerFields::load()
 
 QStringList KCMDesignerFields::saveActivePages()
 {
-  QListViewItemIterator it( mPageView, QListViewItemIterator::Checked |
-                            QListViewItemIterator::Selectable );
+  Q3ListViewItemIterator it( mPageView, Q3ListViewItemIterator::Checked |
+                            Q3ListViewItemIterator::Selectable );
 
   QStringList activePages;
   while ( it.current() ) {
@@ -283,7 +287,7 @@ void KCMDesignerFields::initGUI()
   mPageView->setFullWidth( true );
   hbox->addWidget( mPageView );
 
-  QGroupBox *box = new QGroupBox(1, Qt::Horizontal, i18n("Preview of Selected Page"), this );
+  Q3GroupBox *box = new Q3GroupBox(1, Qt::Horizontal, i18n("Preview of Selected Page"), this );
 
   mPagePreview = new QLabel( box );
   mPagePreview->setMinimumWidth( 300 );
@@ -347,7 +351,7 @@ void KCMDesignerFields::initGUI()
   mDesignerButton->show();
 }
 
-void KCMDesignerFields::updatePreview( QListViewItem *item )
+void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
 {
   bool widgetItemSelected = false;
 
@@ -381,7 +385,7 @@ void KCMDesignerFields::updatePreview( QListViewItem *item )
       widgetItemSelected = true;
     }
 
-    mPagePreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+    mPagePreview->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
   } else {
     mPagePreview->setPixmap( QPixmap() );
     mPagePreview->setFrameStyle( 0 );
@@ -391,7 +395,7 @@ void KCMDesignerFields::updatePreview( QListViewItem *item )
   mDeleteButton->setEnabled( widgetItemSelected );
 }
 
-void KCMDesignerFields::itemClicked( QListViewItem *item )
+void KCMDesignerFields::itemClicked( Q3ListViewItem *item )
 {
   if ( !item || item->parent() != 0 )
     return;
@@ -417,7 +421,7 @@ void KCMDesignerFields::startDesigner()
   // finally jump there
   chdir(cepPath.local8Bit());
 
-  QListViewItem *item = mPageView->selectedItem();
+  Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
     cmdLine += " " + pageItem->path();

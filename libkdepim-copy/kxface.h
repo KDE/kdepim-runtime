@@ -28,6 +28,8 @@
 
 
 #include <qobject.h>
+//Added by qt3to4:
+#include <Q3CString>
 #include <setjmp.h>
 
 #include <kdepimmacros.h>
@@ -570,7 +572,7 @@ namespace KPIM {
       void BigAdd(unsigned char a);
       void BigClear();
 
-      QCString WriteFace();
+      Q3CString WriteFace();
       void UnCompAll(char *fbuf);
       void UnCompress(register char *f, register int wid, register int hei, register int lev);
       void BigWrite(register char *fbuf);

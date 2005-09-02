@@ -23,6 +23,8 @@
 #include "clicklineedit.h"
 
 #include "qpainter.h"
+//Added by qt3to4:
+#include <QFocusEvent>
 
 using namespace KPIM;
 
@@ -49,16 +51,17 @@ void ClickLineEdit::setText( const QString &txt )
   KLineEdit::setText( txt );
 }
 
-void ClickLineEdit::drawContents( QPainter *p )
+void ClickLineEdit::paintEvent( QPaintEvent *ev )
 {
-  KLineEdit::drawContents( p );
+  KLineEdit::paintEvent( ev );
 
+  QPainter p( this );
   if ( mDrawClickMsg == true && !hasFocus() ) {
-    QPen tmp = p->pen();
-    p->setPen( palette().color( QPalette::Disabled, QColorGroup::Text ) );
+    QPen tmp = p.pen();
+    p.setPen( palette().color( QPalette::Disabled, QColorGroup::Text ) );
     QRect cr = contentsRect();
-    p->drawText( cr, AlignAuto|AlignVCenter, mClickMessage );
-    p->setPen( tmp );
+    p.drawText( cr, Qt::AlignLeft|Qt::AlignVCenter, mClickMessage );
+    p.setPen( tmp );
   }
 }
 

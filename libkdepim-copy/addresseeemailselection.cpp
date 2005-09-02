@@ -26,6 +26,8 @@
 #include "recentaddresses.h"
 
 #include "addresseeemailselection.h"
+//Added by qt3to4:
+#include <QPixmap>
 
 using namespace KPIM;
 using KRecentAddress::RecentAddresses;
@@ -35,12 +37,12 @@ AddresseeEmailSelection::AddresseeEmailSelection()
 {
 }
 
-uint AddresseeEmailSelection::fieldCount() const
+int AddresseeEmailSelection::fieldCount() const
 {
   return 3;
 }
 
-QString AddresseeEmailSelection::fieldTitle( uint index ) const
+QString AddresseeEmailSelection::fieldTitle( int index ) const
 {
   switch ( index ) {
     case 0:
@@ -118,36 +120,36 @@ void AddresseeEmailSelection::setSelectedBCC( const QStringList &emails )
 }
 
 
-uint AddresseeEmailSelection::itemCount( const KABC::Addressee &addressee ) const
+int AddresseeEmailSelection::itemCount( const KABC::Addressee &addressee ) const
 {
   return addressee.emails().count();
 }
 
-QString AddresseeEmailSelection::itemText( const KABC::Addressee &addressee, uint index ) const
+QString AddresseeEmailSelection::itemText( const KABC::Addressee &addressee, int index ) const
 {
   return addressee.formattedName() + " " + email( addressee, index );
 }
 
-QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, uint ) const
+QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int ) const
 {
   if ( !addressee.photo().data().isNull() )
-    return addressee.photo().data().smoothScale( 16, 16 );
+    return QPixmap::fromImage( addressee.photo().data().smoothScale( 16, 16 ) );
   else
     return KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small );
 }
 
-bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, uint ) const
+bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int ) const
 {
   return addressee.emails().count() != 0;
 }
 
-bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee, uint index, const QString &pattern ) const
+bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee, int index, const QString &pattern ) const
 {
   return addressee.formattedName().startsWith( pattern, false ) ||
          email( addressee, index ).startsWith( pattern, false );
 }
 
-bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee, uint index, const QString &pattern ) const
+bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee, int index, const QString &pattern ) const
 {
   return (pattern == addressee.formattedName() + " " + email( addressee, index )) ||
          (addressee.emails().contains( pattern ));
@@ -184,13 +186,13 @@ bool AddresseeEmailSelection::distributionListMatches( const KABC::DistributionL
   return ok;
 }
 
-uint AddresseeEmailSelection::addressBookCount() const
+int AddresseeEmailSelection::addressBookCount() const
 {
   // we provide the recent email addresses via the custom addressbooks
   return 1;
 }
 
-QString AddresseeEmailSelection::addressBookTitle( uint index ) const
+QString AddresseeEmailSelection::addressBookTitle( int index ) const
 {
   if ( index == 0 )
     return i18n( "Recent Addresses" );
@@ -198,7 +200,7 @@ QString AddresseeEmailSelection::addressBookTitle( uint index ) const
     return QString::null;
 }
 
-KABC::Addressee::List AddresseeEmailSelection::addressBookContent( uint index ) const
+KABC::Addressee::List AddresseeEmailSelection::addressBookContent( int index ) const
 {
   if ( index == 0 ) {
     KConfig config( "kmailrc" );
@@ -208,12 +210,12 @@ KABC::Addressee::List AddresseeEmailSelection::addressBookContent( uint index ) 
   }
 }
 
-QString AddresseeEmailSelection::email( const KABC::Addressee &addressee, uint index ) const
+QString AddresseeEmailSelection::email( const KABC::Addressee &addressee, int index ) const
 {
   return addressee.emails()[ index ];
 }
 
-void AddresseeEmailSelection::setSelectedItem( uint fieldIndex, const QStringList &emails )
+void AddresseeEmailSelection::setSelectedItem( int fieldIndex, const QStringList &emails )
 {
   QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
@@ -224,7 +226,7 @@ void AddresseeEmailSelection::setSelectedItem( uint fieldIndex, const QStringLis
   }
 }
 
-void AddresseeEmailSelection::addSelectedAddressees( uint fieldIndex, const KABC::Addressee &addressee, uint itemIndex )
+void AddresseeEmailSelection::addSelectedAddressees( int fieldIndex, const KABC::Addressee &addressee, int itemIndex )
 {
   switch ( fieldIndex ) {
     case 0:
@@ -245,7 +247,7 @@ void AddresseeEmailSelection::addSelectedAddressees( uint fieldIndex, const KABC
   }
 }
 
-void AddresseeEmailSelection::addSelectedDistributionList( uint fieldIndex, const KABC::DistributionList *list )
+void AddresseeEmailSelection::addSelectedDistributionList( int fieldIndex, const KABC::DistributionList *list )
 {
   switch ( fieldIndex ) {
     case 0:

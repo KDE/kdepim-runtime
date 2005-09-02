@@ -31,6 +31,8 @@
 #include <qbitarray.h>
 #include <qpixmap.h>
 #include <qwidget.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 class KComboBox;
 class KLineEdit;
@@ -51,42 +53,42 @@ class KDE_EXPORT Selection
     /**
       Returns the number of fields the selection offers.
      */
-    virtual uint fieldCount() const = 0;
+    virtual int fieldCount() const = 0;
 
     /**
       Returns the title for the field specified by index.
      */
-    virtual QString fieldTitle( uint index ) const = 0;
+    virtual QString fieldTitle( int index ) const = 0;
 
     /**
       Returns the number of items for the given addressee.
      */
-    virtual uint itemCount( const KABC::Addressee &addresse ) const = 0;
+    virtual int itemCount( const KABC::Addressee &addresse ) const = 0;
 
     /**
       Returns the text that's used for the item specified by index.
      */
-    virtual QString itemText( const KABC::Addressee &addresse, uint index ) const = 0;
+    virtual QString itemText( const KABC::Addressee &addresse, int index ) const = 0;
 
     /**
       Returns the icon that's used for the item specified by index.
      */
-    virtual QPixmap itemIcon( const KABC::Addressee &addresse, uint index ) const = 0;
+    virtual QPixmap itemIcon( const KABC::Addressee &addresse, int index ) const = 0;
 
     /**
       Returns whether the item specified by index is enabled.
      */
-    virtual bool itemEnabled( const KABC::Addressee &addresse, uint index ) const = 0;
+    virtual bool itemEnabled( const KABC::Addressee &addresse, int index ) const = 0;
 
     /**
       Returns whether the item specified by index matches the passed pattern.
      */
-    virtual bool itemMatches( const KABC::Addressee &addresse, uint index, const QString &pattern ) const = 0;
+    virtual bool itemMatches( const KABC::Addressee &addresse, int index, const QString &pattern ) const = 0;
 
     /**
       Returns whether the item specified by index equals the passed pattern.
      */
-    virtual bool itemEquals( const KABC::Addressee &addresse, uint index, const QString &pattern ) const = 0;
+    virtual bool itemEquals( const KABC::Addressee &addresse, int index, const QString &pattern ) const = 0;
 
     /**
       Returns the text that's used for the given distribution list.
@@ -112,24 +114,24 @@ class KDE_EXPORT Selection
     /**
       Returns the number of additional address books.
      */
-    virtual uint addressBookCount() const = 0;
+    virtual int addressBookCount() const = 0;
 
     /**
       Returns the title for an additional address book.
      */
-    virtual QString addressBookTitle( uint index ) const = 0;
+    virtual QString addressBookTitle( int index ) const = 0;
 
     /**
       Returns the content for an additional address book.
      */
-    virtual KABC::Addressee::List addressBookContent( uint index ) const = 0;
+    virtual KABC::Addressee::List addressBookContent( int index ) const = 0;
 
   protected:
     AddresseeSelector* selector() { return mSelector; }
 
   private:
-    virtual void addSelectedAddressees( uint fieldIndex, const KABC::Addressee&, uint itemIndex ) = 0;
-    virtual void addSelectedDistributionList( uint fieldIndex, const KABC::DistributionList* ) = 0;
+    virtual void addSelectedAddressees( int fieldIndex, const KABC::Addressee&, int itemIndex ) = 0;
+    virtual void addSelectedDistributionList( int fieldIndex, const KABC::DistributionList* ) = 0;
 
     void setSelector( AddresseeSelector *selector ) { mSelector = selector; }
 
@@ -142,10 +144,10 @@ class KDE_EXPORT Selection
 class SelectionItem
 {
   public:
-    typedef QValueList<SelectionItem> List;
+    typedef Q3ValueList<SelectionItem> List;
 
-    SelectionItem( const KABC::Addressee &addressee, uint index );
-    SelectionItem( KABC::DistributionList *list, uint index );
+    SelectionItem( const KABC::Addressee &addressee, int index );
+    SelectionItem( KABC::DistributionList *list, int index );
     SelectionItem();
 
     void addToField( int index );
@@ -154,12 +156,12 @@ class SelectionItem
 
     KABC::Addressee addressee() const;
     KABC::DistributionList* distributionList() const;
-    uint index() const;
+    int index() const;
 
   private:
     KABC::Addressee mAddressee;
     KABC::DistributionList *mDistributionList;
-    uint mIndex;
+    int mIndex;
     QBitArray mField;
 };
 
@@ -177,9 +179,9 @@ class KDE_EXPORT AddresseeSelector : public QWidget
      */
     void finish();
 
-    void setItemSelected( uint fieldIndex, const KABC::Addressee&, uint itemIndex );
-    void setItemSelected( uint fieldIndex, const KABC::Addressee&,
-                          uint itemIndex, const QString& );
+    void setItemSelected( int fieldIndex, const KABC::Addressee&, int itemIndex );
+    void setItemSelected( int fieldIndex, const KABC::Addressee&,
+                          int itemIndex, const QString& );
 
   private slots:
     void move( int index );
@@ -202,7 +204,7 @@ class KDE_EXPORT AddresseeSelector : public QWidget
     KListView *mAddresseeView;
     SelectionItem::List mSelectionItems;
 
-    QValueList<KListView*> mSelectionViews;
+    Q3ValueList<KListView*> mSelectionViews;
     QSignalMapper *mMoveMapper;
     QSignalMapper *mRemoveMapper;
 

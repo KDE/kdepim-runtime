@@ -25,8 +25,11 @@
 #ifndef __KSUBSCRIPTION
 #define __KSUBSCRIPTION
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QGridLayout>
+#include <QLabel>
 
 #include <kdialogbase.h>
 #include <kdepimmacros.h>
@@ -69,12 +72,12 @@ class KDE_EXPORT KGroupInfo
 //==========================================================================
 
 /** A class representing a single group item (what's that?) */
-class KDE_EXPORT GroupItem : public QCheckListItem
+class KDE_EXPORT GroupItem : public Q3CheckListItem
 {
   public:
-    GroupItem( QListView *v, const KGroupInfo &gi, KSubscription* browser,
+    GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription* browser,
         bool isCheckItem = false );
-    GroupItem( QListViewItem *i, const KGroupInfo &gi, KSubscription* browser,
+    GroupItem( Q3ListViewItem *i, const KGroupInfo &gi, KSubscription* browser,
         bool isCheckItem = false );
 
     /**
@@ -86,8 +89,8 @@ class KDE_EXPORT GroupItem : public QCheckListItem
     /**
      * Get/Set the original parent
      */
-    QListViewItem* originalParent() { return mOriginalParent; }
-    void setOriginalParent( QListViewItem* parent ) { mOriginalParent = parent; }
+    Q3ListViewItem* originalParent() { return mOriginalParent; }
+    void setOriginalParent( Q3ListViewItem* parent ) { mOriginalParent = parent; }
 
     /**
      * Get/Set the last open state
@@ -148,7 +151,7 @@ class KDE_EXPORT GroupItem : public QCheckListItem
      * Reimplemented
      * Calls QListViewItem or QCheckListItem
      */
-    virtual int width( const QFontMetrics&, const QListView*, int column) const;
+    virtual int width( const QFontMetrics&, const Q3ListView*, int column) const;
 
     /**
      * Reimplemented
@@ -162,7 +165,7 @@ class KDE_EXPORT GroupItem : public QCheckListItem
   protected:
     KGroupInfo mInfo;
     KSubscription* mBrowser;
-    QListViewItem* mOriginalParent;
+    Q3ListViewItem* mOriginalParent;
     // remember last open state
     bool mLastOpenState;
     // is this a checkable item
@@ -213,7 +216,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
     /**
      * Access to the treewidget that holds the GroupItems
      */
-    QListView* folderTree() { return groupView; }
+    Q3ListView* folderTree() { return groupView; }
 
     /**
      * Access to the searchfield
@@ -228,18 +231,18 @@ class KDE_EXPORT KSubscription : public KDialogBase
     /**
      * Removes the item from the listview
      */
-    void removeListItem( QListView *view, const KGroupInfo &gi );
+    void removeListItem( Q3ListView *view, const KGroupInfo &gi );
 
     /**
      * Gets the item from the listview
      * Returns 0 if the item can't be found
      */
-    QListViewItem* getListItem( QListView *view, const KGroupInfo &gi );
+    Q3ListViewItem* getListItem( Q3ListView *view, const KGroupInfo &gi );
 
     /**
      * Is the item in the given listview
      */
-    bool itemInListView( QListView *view, const KGroupInfo &gi );
+    bool itemInListView( Q3ListView *view, const KGroupInfo &gi );
 
     /**
      * Makes all changes after an item is toggled
@@ -279,13 +282,13 @@ class KDE_EXPORT KSubscription : public KDialogBase
      * Update the item-states (visible, enabled) when a filter
      * criteria changed
      */
-    void filterChanged( QListViewItem* item = 0,
+    void filterChanged( Q3ListViewItem* item = 0,
         const QString & text = QString::null );
 
     /**
      * The amount of items that are visible and enabled
      */
-    uint activeItemCount();
+    int activeItemCount();
 
     /**
      * Moves all items from toplevel back to their original position
@@ -312,7 +315,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
     /**
      * Changes the current state of the buttons
      */
-    void slotChangeButtonState( QListViewItem* );
+    void slotChangeButtonState( Q3ListViewItem* );
 
     /**
      * Buttons are clicked
@@ -355,12 +358,12 @@ class KDE_EXPORT KSubscription : public KDialogBase
 
     // widgets
     QWidget *page;
-    QListView *groupView;
-    QListView *subView, *unsubView;
+    Q3ListView *groupView;
+    Q3ListView *subView, *unsubView;
     KLineEdit *filterEdit;
     QCheckBox *noTreeCB, *subCB, *newCB;
     QPushButton  *arrowBtn1, *arrowBtn2;
-    QIconSet pmRight, pmLeft;
+    QIcon pmRight, pmLeft;
     QGridLayout *listL;
     QLabel *leftLabel, *rightLabel;
 

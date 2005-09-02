@@ -23,10 +23,13 @@
 #ifndef KPREFSDIALOG_H
 #define KPREFSDIALOG_H
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qlineedit.h>
-#include <qvaluelist.h>
-#include <qdatetimeedit.h>
+#include <q3valuelist.h>
+#include <q3datetimeedit.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QFrame>
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
@@ -39,8 +42,8 @@ class KColorButton;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
-class QButtonGroup;
-class QTimeEdit;
+class Q3ButtonGroup;
+class Q3TimeEdit;
 class KTimeEdit;
 class KDateEdit;
 class KURLRequester;
@@ -72,7 +75,7 @@ class KDE_EXPORT KPrefsWid : public QObject
     /**
       Return a list of widgets used by this control element.
     */
-    virtual QValueList<QWidget *> widgets() const;
+    virtual Q3ValueList<QWidget *> widgets() const;
 
   signals:
     /**
@@ -106,7 +109,7 @@ class KDE_EXPORT KPrefsWidBool : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;
+    Q3ValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemBool *mItem;
@@ -146,7 +149,7 @@ class KDE_EXPORT KPrefsWidInt : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;
+    Q3ValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemInt *mItem;
@@ -218,7 +221,7 @@ class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
     /**
       Return QSpinBox used by this widget.
     */
-    QTimeEdit *timeEdit();
+    Q3TimeEdit *timeEdit();
 
     void readConfig();
     void writeConfig();
@@ -227,7 +230,7 @@ class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
     KConfigSkeleton::ItemDateTime *mItem;
 
     QLabel *mLabel;
-    QTimeEdit *mTimeEdit;
+    Q3TimeEdit *mTimeEdit;
 };
 
 /**
@@ -398,17 +401,17 @@ class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
     /**
       Return the box widget used by this widget.
     */
-    QButtonGroup *groupBox();
+    Q3ButtonGroup *groupBox();
 
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;
+    Q3ValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemEnum *mItem;
 
-    QButtonGroup *mBox;
+    Q3ButtonGroup *mBox;
 };
 
 
@@ -449,7 +452,7 @@ class KDE_EXPORT KPrefsWidString : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;
+    Q3ValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemString *mItem;
@@ -497,7 +500,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    QValueList<QWidget *> widgets() const;
+    Q3ValueList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemPath *mItem;
@@ -653,7 +656,7 @@ class KDE_EXPORT KPrefsWidManager
   private:
     KConfigSkeleton *mPrefs;
 
-    QPtrList<KPrefsWid> mPrefsWids;
+    Q3PtrList<KPrefsWid> mPrefsWids;
 };
 
 

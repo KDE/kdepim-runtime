@@ -17,8 +17,13 @@
 #include <qtimer.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qheader.h>
+#include <q3header.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <QGridLayout>
+#include <Q3PtrList>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include <kseparator.h>
 #include <kapplication.h>
@@ -53,9 +58,9 @@ bool KGroupInfo::operator< (const KGroupInfo &gi2)
 
 //=============================================================================
 
-GroupItem::GroupItem( QListView *v, const KGroupInfo &gi, KSubscription* browser,
+GroupItem::GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription* browser,
     bool isCheckItem )
-  : QCheckListItem( v, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
+  : Q3CheckListItem( v, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
     mInfo( gi ), mBrowser( browser ), mIsCheckItem( isCheckItem ),
     mIgnoreStateChange( false )
 {
@@ -64,9 +69,9 @@ GroupItem::GroupItem( QListView *v, const KGroupInfo &gi, KSubscription* browser
 }
 
 //-----------------------------------------------------------------------------
-GroupItem::GroupItem( QListViewItem *i, const KGroupInfo &gi, KSubscription* browser,
+GroupItem::GroupItem( Q3ListViewItem *i, const KGroupInfo &gi, KSubscription* browser,
     bool isCheckItem )
-  : QCheckListItem( i, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
+  : Q3CheckListItem( i, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
     mInfo( gi ), mBrowser( browser ), mIsCheckItem( isCheckItem ),
     mIgnoreStateChange( false )
 {
@@ -99,7 +104,7 @@ void GroupItem::setOn( bool on )
     mInfo.subscribed = on;
   }
   if (isCheckItem())
-    QCheckListItem::setOn(on);
+    Q3CheckListItem::setOn(on);
 }
 
 //------------------------------------------------------------------------------
@@ -115,7 +120,7 @@ void GroupItem::setVisible( bool b )
 {
   if (b)
   {
-    QListViewItem::setVisible(b);
+    Q3ListViewItem::setVisible(b);
     setEnabled(true);
   }
   else
@@ -123,14 +128,14 @@ void GroupItem::setVisible( bool b )
     if (isCheckItem())
     {
       bool setInvisible = true;
-      for (QListViewItem * lvchild = firstChild(); lvchild != 0;
+      for (Q3ListViewItem * lvchild = firstChild(); lvchild != 0;
           lvchild = lvchild->nextSibling())
       {
         if (lvchild->isVisible()) // item has a visible child
           setInvisible = false;
       }
       if (setInvisible)
-        QListViewItem::setVisible(b);
+        Q3ListViewItem::setVisible(b);
       else
       {
         // leave it visible so that children remain visible
@@ -141,9 +146,9 @@ void GroupItem::setVisible( bool b )
     else
     {
       // non-checkable item
-      QPtrList<QListViewItem> moveItems;
+      Q3PtrList<Q3ListViewItem> moveItems;
 
-      for (QListViewItem * lvchild = firstChild(); lvchild != 0;
+      for (Q3ListViewItem * lvchild = firstChild(); lvchild != 0;
           lvchild = lvchild->nextSibling())
       {
         if (static_cast<GroupItem*>(lvchild)->isCheckItem())
@@ -152,15 +157,15 @@ void GroupItem::setVisible( bool b )
           moveItems.append(lvchild);
         }
       }
-      QPtrListIterator<QListViewItem> it( moveItems );
+      Q3PtrListIterator<Q3ListViewItem> it( moveItems );
       for ( ; it.current(); ++it)
       {
         // move the checkitem to top
-        QListViewItem* parent = it.current()->parent();
+        Q3ListViewItem* parent = it.current()->parent();
         if (parent) parent->takeItem(it.current());
         listView()->insertItem(it.current());
       }
-      QListViewItem::setVisible(false);
+      Q3ListViewItem::setVisible(false);
     }
   }
 }
@@ -170,9 +175,9 @@ void GroupItem::paintCell( QPainter * p, const QColorGroup & cg,
     int column, int width, int align )
 {
   if (mIsCheckItem)
-    return QCheckListItem::paintCell( p, cg, column, width, align );
+    return Q3CheckListItem::paintCell( p, cg, column, width, align );
   else
-    return QListViewItem::paintCell( p, cg, column, width, align );
+    return Q3ListViewItem::paintCell( p, cg, column, width, align );
 }
 
 //-----------------------------------------------------------------------------
@@ -180,27 +185,27 @@ void GroupItem::paintFocus( QPainter * p, const QColorGroup & cg,
     const QRect & r )
 {
   if (mIsCheckItem)
-    QCheckListItem::paintFocus(p, cg, r);
+    Q3CheckListItem::paintFocus(p, cg, r);
   else
-    QListViewItem::paintFocus(p, cg, r);
+    Q3ListViewItem::paintFocus(p, cg, r);
 }
 
 //-----------------------------------------------------------------------------
-int GroupItem::width( const QFontMetrics& fm, const QListView* lv, int column) const
+int GroupItem::width( const QFontMetrics& fm, const Q3ListView* lv, int column) const
 {
   if (mIsCheckItem)
-    return QCheckListItem::width(fm, lv, column);
+    return Q3CheckListItem::width(fm, lv, column);
   else
-    return QListViewItem::width(fm, lv, column);
+    return Q3ListViewItem::width(fm, lv, column);
 }
 
 //-----------------------------------------------------------------------------
 void GroupItem::setup()
 {
   if (mIsCheckItem)
-    QCheckListItem::setup();
+    Q3CheckListItem::setup();
   else
-    QListViewItem::setup();
+    Q3ListViewItem::setup();
 }
 
 
@@ -213,7 +218,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
     mAcct( acct )
 {
   mLoading = true;
-  setWFlags( getWFlags() | WDestructiveClose );
+  setAttribute( Qt::WA_DeleteOnClose );
 
   // create Widgets
   page = new QWidget(this);
@@ -262,7 +267,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   arrowBtn2->setFixedSize(35,30);
 
   // the main listview
-  groupView = new QListView(page);
+  groupView = new Q3ListView(page);
   groupView->setRootIsDecorated(true);
   groupView->addColumn(i18n("Name"));
   groupView->setAllColumnsShowFocus(true);
@@ -297,14 +302,14 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   listL->setColStretch(0,5);
   listL->setColStretch(2,2);
 
-  arrL->addWidget(arrowBtn1, AlignCenter);
-  arrL->addWidget(arrowBtn2, AlignCenter);
+  arrL->addWidget(arrowBtn1, Qt::AlignCenter);
+  arrL->addWidget(arrowBtn2, Qt::AlignCenter);
 
   // listviews
-  subView = new QListView(page);
+  subView = new Q3ListView(page);
   subView->addColumn(i18n("Subscribe To"));
   subView->header()->setStretchEnabled(true, 0);
-  unsubView = new QListView(page);
+  unsubView = new Q3ListView(page);
   unsubView->addColumn(i18n("Unsubscribe From"));
   unsubView->header()->setStretchEnabled(true, 0);
 
@@ -323,12 +328,12 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   filterEdit->setFocus();
 
    // items clicked
-  connect(groupView, SIGNAL(clicked(QListViewItem *)),
-      this, SLOT(slotChangeButtonState(QListViewItem*)));
-  connect(subView, SIGNAL(clicked(QListViewItem *)),
-      this, SLOT(slotChangeButtonState(QListViewItem*)));
-  connect(unsubView, SIGNAL(clicked(QListViewItem *)),
-      this, SLOT(slotChangeButtonState(QListViewItem*)));
+  connect(groupView, SIGNAL(clicked(Q3ListViewItem *)),
+      this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
+  connect(subView, SIGNAL(clicked(Q3ListViewItem *)),
+      this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
+  connect(unsubView, SIGNAL(clicked(Q3ListViewItem *)),
+      this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
 
   // connect buttons
   connect(arrowBtn1, SIGNAL(clicked()), SLOT(slotButton1()));
@@ -356,7 +361,7 @@ KSubscription::~KSubscription()
 //-----------------------------------------------------------------------------
 void KSubscription::setStartItem( const KGroupInfo &info )
 {
-  QListViewItemIterator it(groupView);
+  Q3ListViewItemIterator it(groupView);
 
   for ( ; it.current(); ++it)
   {
@@ -369,10 +374,10 @@ void KSubscription::setStartItem( const KGroupInfo &info )
 }
 
 //-----------------------------------------------------------------------------
-void KSubscription::removeListItem( QListView *view, const KGroupInfo &gi )
+void KSubscription::removeListItem( Q3ListView *view, const KGroupInfo &gi )
 {
   if(!view) return;
-  QListViewItemIterator it(view);
+  Q3ListViewItemIterator it(view);
 
   for ( ; it.current(); ++it)
   {
@@ -387,10 +392,10 @@ void KSubscription::removeListItem( QListView *view, const KGroupInfo &gi )
 }
 
 //-----------------------------------------------------------------------------
-QListViewItem* KSubscription::getListItem( QListView *view, const KGroupInfo &gi )
+Q3ListViewItem* KSubscription::getListItem( Q3ListView *view, const KGroupInfo &gi )
 {
   if(!view) return 0;
-  QListViewItemIterator it(view);
+  Q3ListViewItemIterator it(view);
 
   for ( ; it.current(); ++it)
   {
@@ -401,10 +406,10 @@ QListViewItem* KSubscription::getListItem( QListView *view, const KGroupInfo &gi
 }
 
 //-----------------------------------------------------------------------------
-bool KSubscription::itemInListView( QListView *view, const KGroupInfo &gi )
+bool KSubscription::itemInListView( Q3ListView *view, const KGroupInfo &gi )
 {
   if(!view) return false;
-  QListViewItemIterator it(view);
+  Q3ListViewItemIterator it(view);
 
   for ( ; it.current(); ++it)
     if (static_cast<GroupItem*>(it.current())->info() == gi)
@@ -445,7 +450,7 @@ void KSubscription::changeItemState( GroupItem* item, bool on )
   {
     if (!itemInListView(unsubView, item->info()))
     {
-      QListViewItem *p = item->parent();
+      Q3ListViewItem *p = item->parent();
       while (p)
       {
         // make sure all parents are subscribed
@@ -477,7 +482,7 @@ void KSubscription::changeItemState( GroupItem* item, bool on )
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::filterChanged( QListViewItem* item, const QString & text )
+void KSubscription::filterChanged( Q3ListViewItem* item, const QString & text )
 {
   if ( !item && groupView )
     item = groupView->firstChild();
@@ -536,11 +541,11 @@ void KSubscription::filterChanged( QListViewItem* item, const QString & text )
 }
 
 //------------------------------------------------------------------------------
-uint KSubscription::activeItemCount()
+int KSubscription::activeItemCount()
 {
-  QListViewItemIterator it(groupView);
+  Q3ListViewItemIterator it(groupView);
 
-  uint count = 0;
+  int count = 0;
   for ( ; it.current(); ++it)
   {
     if (static_cast<GroupItem*>(it.current())->isCheckItem() &&
@@ -554,11 +559,11 @@ uint KSubscription::activeItemCount()
 //------------------------------------------------------------------------------
 void KSubscription::restoreOriginalParent()
 {
-  QPtrList<QListViewItem> move;
-  QListViewItemIterator it(groupView);
+  Q3PtrList<Q3ListViewItem> move;
+  Q3ListViewItemIterator it(groupView);
   for ( ; it.current(); ++it)
   {
-    QListViewItem* origParent = static_cast<GroupItem*>(it.current())->
+    Q3ListViewItem* origParent = static_cast<GroupItem*>(it.current())->
       originalParent();
     if (origParent && origParent != it.current()->parent())
     {
@@ -566,11 +571,11 @@ void KSubscription::restoreOriginalParent()
       move.append(it.current());
     }
   }
-  QPtrListIterator<QListViewItem> it2( move );
+  Q3PtrListIterator<Q3ListViewItem> it2( move );
   for ( ; it2.current(); ++it2)
   {
     // restore the original parent
-    QListViewItem* origParent = static_cast<GroupItem*>(it2.current())->
+    Q3ListViewItem* origParent = static_cast<GroupItem*>(it2.current())->
       originalParent();
     groupView->takeItem(it2.current());
     origParent->insertItem(it2.current());
@@ -580,7 +585,7 @@ void KSubscription::restoreOriginalParent()
 //-----------------------------------------------------------------------------
 void KSubscription::saveOpenStates()
 {
-  QListViewItemIterator it(groupView);
+  Q3ListViewItemIterator it(groupView);
 
   for ( ; it.current(); ++it)
   {
@@ -592,7 +597,7 @@ void KSubscription::saveOpenStates()
 //-----------------------------------------------------------------------------
 void KSubscription::restoreOpenStates()
 {
-  QListViewItemIterator it(groupView);
+  Q3ListViewItemIterator it(groupView);
 
   for ( ; it.current(); ++it)
   {
@@ -613,7 +618,7 @@ void KSubscription::slotLoadingComplete()
   subCB->setEnabled(true);
 
   // remember the correct parent
-  QListViewItemIterator it(groupView);
+  Q3ListViewItemIterator it(groupView);
   for ( ; it.current(); ++it)
   {
     static_cast<GroupItem*>(it.current())->
@@ -624,7 +629,7 @@ void KSubscription::slotLoadingComplete()
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::slotChangeButtonState( QListViewItem *item )
+void KSubscription::slotChangeButtonState( Q3ListViewItem *item )
 {
   if (!item ||
       (item->listView() == groupView &&
@@ -636,7 +641,7 @@ void KSubscription::slotChangeButtonState( QListViewItem *item )
     return;
   }
   // set the direction of the buttons and enable/disable them
-  QListView* currentView = item->listView();
+  Q3ListView* currentView = item->listView();
   if (currentView == groupView)
   {
     setDirectionButton1(Right);
@@ -686,7 +691,7 @@ void KSubscription::slotButton1()
     {
       GroupItem* item = static_cast<GroupItem*>(subView->currentItem());
       // get the corresponding item from the groupView
-      QListViewItem* listitem = getListItem(groupView, item->info());
+      Q3ListViewItem* listitem = getListItem(groupView, item->info());
       if (listitem)
       {
         // deactivate
@@ -715,7 +720,7 @@ void KSubscription::slotButton2()
     {
       GroupItem* item = static_cast<GroupItem*>(unsubView->currentItem());
       // get the corresponding item from the groupView
-      QListViewItem* listitem = getListItem(groupView, item->info());
+      Q3ListViewItem* listitem = getListItem(groupView, item->info());
       if (listitem)
       {
         // activate
@@ -749,7 +754,7 @@ void KSubscription::slotFilterTextChanged( const QString & text )
   {
     // reset
     restoreOriginalParent();
-    QListViewItemIterator it(groupView);
+    Q3ListViewItemIterator it(groupView);
     for ( ; it.current(); ++it)
     {
       it.current()->setVisible(true);

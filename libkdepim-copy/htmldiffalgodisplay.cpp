@@ -27,15 +27,15 @@ using namespace KPIM;
 
 static QString textToHTML( const QString &text )
 {
-  return QStyleSheet::convertFromPlainText( text );
+  return Q3StyleSheet::convertFromPlainText( text );
 }
 
 HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
   : KTextBrowser( parent )
 {
-  setWrapPolicy( QTextEdit::AtWordBoundary );
-  setVScrollBarMode( QScrollView::AlwaysOff );
-  setHScrollBarMode( QScrollView::AlwaysOff );
+  setWrapPolicy( Q3TextEdit::AtWordBoundary );
+  setVScrollBarMode( Q3ScrollView::AlwaysOff );
+  setHScrollBarMode( Q3ScrollView::AlwaysOff );
 }
 
 void HTMLDiffAlgoDisplay::begin()

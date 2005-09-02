@@ -24,8 +24,10 @@
 #include <kconfigpropagator.h>
 #include <kdepimmacros.h>
 #include <kdialogbase.h>
+//Added by qt3to4:
+#include <QFrame>
 
-class QListView;
+class Q3ListView;
 
 /**
   @short Configuration wizard base class
@@ -100,8 +102,8 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
   private:
     KConfigPropagator *mPropagator;
 
-    QListView *mRuleView;
-    QListView *mChangeView;
+    Q3ListView *mRuleView;
+    Q3ListView *mChangeView;
 
     QWidget *mChangesPage;
 };

@@ -22,6 +22,8 @@
 #include <klocale.h>
 
 #include "calendardiffalgo.h"
+//Added by qt3to4:
+#include <Q3ValueList>
 
 using namespace KPIM;
 
@@ -199,7 +201,7 @@ void CalendarDiffAlgo::diffTodo( KCal::Todo *left, KCal::Todo *right )
 
 template <class L>
 void CalendarDiffAlgo::diffList( const QString &id,
-                                 const QValueList<L> &left, const QValueList<L> &right )
+                                 const Q3ValueList<L> &left, const Q3ValueList<L> &right )
 {
   for ( uint i = 0; i < left.count(); ++i ) {
     if ( right.find( left[ i ] ) == right.end() )

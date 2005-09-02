@@ -7,8 +7,12 @@
 #include <kstringhandler.h>
 #include <qpainter.h>
 #include <qapplication.h>
-#include <qheader.h>
+#include <q3header.h>
 #include <qstyle.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QDropEvent>
 
 //-----------------------------------------------------------------------------
 KFolderTreeItem::KFolderTreeItem( KFolderTree *parent, const QString & label,
@@ -79,7 +83,7 @@ int KFolderTreeItem::typeSortingKey() const
 }
 
 //-----------------------------------------------------------------------------
-int KFolderTreeItem::compare( QListViewItem * i, int col, bool ) const
+int KFolderTreeItem::compare( Q3ListViewItem * i, int col, bool ) const
 {
   KFolderTreeItem* other = static_cast<KFolderTreeItem*>( i );
 
@@ -177,7 +181,7 @@ int KFolderTreeItem::countUnreadRecursive()
 {
   int count = (mUnread > 0) ? mUnread : 0;
 
-  for ( QListViewItem *item = firstChild() ;
+  for ( Q3ListViewItem *item = firstChild() ;
       item ; item = item->nextSibling() )
   {
     count += static_cast<KFolderTreeItem*>(item)->countUnreadRecursive();
@@ -216,7 +220,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
   if ( ft->isUnreadActive() || column != 0 ) {
     KListViewItem::paintCell( p, cg, column, width, align );
   } else {
-    QListView *lv = listView();
+    Q3ListView *lv = listView();
     QString oldText = text(column);
 
     // set an empty text so that we can have our own implementation (see further down)
@@ -263,13 +267,13 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
         t = squeezeFolderName( t, fm, width - marg - r - unreadWidth );
 
       p->drawText( r, 0, width-marg-r, height(),
-                    align | AlignVCenter, t, -1, &br );
+                    align | Qt::AlignVCenter, t, -1, &br );
 
       if ( !unread.isEmpty() ) {
         if (!isSelected())
           p->setPen( ft->paintInfo().colUnread );
         p->drawText( br.right(), 0, width-marg-br.right(), height(),
-                      align | AlignVCenter, unread );
+                      align | Qt::AlignVCenter, unread );
       }
     } // end !t.isEmpty()
   }
@@ -317,10 +321,10 @@ void KFolderTree::setStyleDependantFrameWidth()
 {
   // set the width of the frame to a reasonable value for the current GUI style
   int frameWidth;
-  if( style().isA("KeramikStyle") )
-    frameWidth = style().pixelMetric( QStyle::PM_DefaultFrameWidth ) - 1;
+  if( style()->isA("KeramikStyle") )
+    frameWidth = style()->pixelMetric( QStyle::PM_DefaultFrameWidth ) - 1;
   else
-    frameWidth = style().pixelMetric( QStyle::PM_DefaultFrameWidth );
+    frameWidth = style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
   if ( frameWidth < 0 )
     frameWidth = 0;
   if ( frameWidth != lineWidth() )
@@ -372,7 +376,7 @@ void KFolderTree::addAcceptableDropMimetype( const char *mimeType, bool outsideO
 //-----------------------------------------------------------------------------
 bool KFolderTree::acceptDrag( QDropEvent* event ) const
 {
-  QListViewItem* item = itemAt(contentsToViewport(event->pos()));
+  Q3ListViewItem* item = itemAt(contentsToViewport(event->pos()));
 
   for (uint i = 0; i < mAcceptableDropMimetypes.size(); i++)
   {

@@ -25,11 +25,13 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qcstring.h>
+#include <q3cstring.h>
 #include <qstringlist.h>
-#include <qmemarray.h>
-#include <qguardedptr.h>
+#include <q3memarray.h>
+#include <qpointer.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 #include <kio/job.h>
 #include <kabc/ldif.h>
@@ -39,7 +41,7 @@
 namespace KPIM {
 
 class LdapClient;
-typedef QValueList<QByteArray> LdapAttrValue;
+typedef Q3ValueList<QByteArray> LdapAttrValue;
 typedef QMap<QString,LdapAttrValue > LdapAttrMap;
 
 class LdapServer
@@ -200,7 +202,7 @@ class KDE_EXPORT LdapClient : public QObject
     QString mScope;
     QStringList mAttrs;
 
-    QGuardedPtr<KIO::SimpleJob> mJob;
+    QPointer<KIO::SimpleJob> mJob;
     bool mActive;
     bool mReportObjectClass;
 
@@ -224,7 +226,7 @@ struct LdapResult {
   int clientNumber; ///< for sorting in a ldap-only lookup
   int completionWeight; ///< for sorting in a completion list
 };
-typedef QValueList<LdapResult> LdapResultList;
+typedef Q3ValueList<LdapResult> LdapResultList;
 
 
 /**
@@ -249,7 +251,7 @@ class KDE_EXPORT LdapSearch : public QObject
     void cancelSearch();
     bool isAvailable() const;
 
-    QValueList< LdapClient* > clients() const { return mClients; }
+    Q3ValueList< LdapClient* > clients() const { return mClients; }
 
   signals:
     /// Results, assembled as "Full Name <email>"
@@ -271,12 +273,12 @@ class KDE_EXPORT LdapSearch : public QObject
     void readConfig();
     void finish();
     void makeSearchData( QStringList& ret, LdapResultList& resList );
-    QValueList< LdapClient* > mClients;
+    Q3ValueList< LdapClient* > mClients;
     QString mSearchText;
     QTimer mDataTimer;
     int mActiveClients;
     bool mNoLDAPLookup;
-    QValueList< LdapObject > mResults;
+    Q3ValueList< LdapObject > mResults;
     QString mConfigFile;
 
   private:

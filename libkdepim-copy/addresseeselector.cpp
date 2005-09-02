@@ -19,11 +19,18 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qheader.h>
+#include <q3header.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qsignalmapper.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QFrame>
+#include <QGridLayout>
+#include <Q3PtrList>
+#include <Q3ValueList>
+#include <QVBoxLayout>
 
 #include <kabc/stdaddressbook.h>
 #include <kcombobox.h>
@@ -47,7 +54,7 @@ class AddresseeSelector::AddressBookManager
     void addAddressBook( const QString &title, SelectionItem::List &list );
 
     void clear();
-    bool contains( uint index, const SelectionItem& );
+    bool contains( int index, const SelectionItem& );
 
   private:
     struct AddressBookEntry {
@@ -55,8 +62,8 @@ class AddresseeSelector::AddressBookManager
       SelectionItem::List list;
     };
 
-    QValueList<KABC::Resource*> mResources;
-    QValueList<AddressBookEntry> mAddressBooks;
+    Q3ValueList<KABC::Resource*> mResources;
+    Q3ValueList<AddressBookEntry> mAddressBooks;
 };
 
 QStringList AddresseeSelector::AddressBookManager::titles() const
@@ -66,11 +73,11 @@ QStringList AddresseeSelector::AddressBookManager::titles() const
   // we've always an 'all' entry
   titles.append( i18n( "All" ) );
 
-  QValueList<KABC::Resource*>::ConstIterator resIt;
+  Q3ValueList<KABC::Resource*>::ConstIterator resIt;
   for ( resIt = mResources.begin(); resIt != mResources.end(); ++resIt )
     titles.append( (*resIt)->resourceName() );
 
-  QValueList<AddressBookEntry>::ConstIterator abIt;
+  Q3ValueList<AddressBookEntry>::ConstIterator abIt;
   for ( abIt = mAddressBooks.begin(); abIt != mAddressBooks.end(); ++abIt )
     titles.append( (*abIt).title );
 
@@ -101,7 +108,7 @@ void AddresseeSelector::AddressBookManager::clear()
   mAddressBooks.clear();
 }
 
-bool AddresseeSelector::AddressBookManager::contains( uint index, const SelectionItem &item )
+bool AddresseeSelector::AddressBookManager::contains( int index, const SelectionItem &item )
 {
   if ( index == 0 ) // the 'all' entry
     return true;
@@ -135,13 +142,13 @@ bool AddresseeSelector::AddressBookManager::contains( uint index, const Selectio
 }
 
 
-SelectionItem::SelectionItem( const KABC::Addressee &addressee, uint index )
+SelectionItem::SelectionItem( const KABC::Addressee &addressee, int index )
   : mAddressee( addressee ), mDistributionList( 0 ), mIndex( index )
 {
   mField.fill( false, 10 );
 }
 
-SelectionItem::SelectionItem( KABC::DistributionList *list, uint index )
+SelectionItem::SelectionItem( KABC::DistributionList *list, int index )
   : mDistributionList( list ), mIndex( index )
 {
   mField.fill( false, 10 );
@@ -178,18 +185,18 @@ KABC::DistributionList* SelectionItem::distributionList() const
   return mDistributionList;
 }
 
-uint SelectionItem::index() const
+int SelectionItem::index() const
 {
   return mIndex;
 }
 
 
-class SelectionViewItem : public QListViewItem
+class SelectionViewItem : public Q3ListViewItem
 {
   public:
-    SelectionViewItem( QListView *parent, Selection *selection,
+    SelectionViewItem( Q3ListView *parent, Selection *selection,
                        SelectionItem *item )
-      : QListViewItem( parent, "" ), mSelection( selection ), mItem( item )
+      : Q3ListViewItem( parent, "" ), mSelection( selection ), mItem( item )
     {
       if ( mItem->distributionList() == 0 )
         mIcon = mSelection->itemIcon( mItem->addressee(), mItem->index() );
@@ -288,17 +295,17 @@ void AddresseeSelector::initGUI()
 
   int row = 1;
 
-  QIconSet moveSet = KGlobal::iconLoader()->loadIconSet( "next", KIcon::Small );
-  QIconSet removeSet = KGlobal::iconLoader()->loadIconSet( "previous", KIcon::Small );
+  QIcon moveSet = KGlobal::iconLoader()->loadIconSet( "next", KIcon::Small );
+  QIcon removeSet = KGlobal::iconLoader()->loadIconSet( "previous", KIcon::Small );
 
-  uint count = mSelection->fieldCount();
-  for ( uint i = 0; i < count; ++i, ++row ) {
+  int count = mSelection->fieldCount();
+  for ( int i = 0; i < count; ++i, ++row ) {
     KListView *listView = new KListView( this );
     listView->addColumn( mSelection->fieldTitle( i ) );
     listView->setFullWidth( true );
     mSelectionViews.append( listView );
 
-    connect( listView, SIGNAL( doubleClicked( QListViewItem*, const QPoint&, int ) ),
+    connect( listView, SIGNAL( doubleClicked( Q3ListViewItem*, const QPoint&, int ) ),
              mRemoveMapper, SLOT( map() ) );
     mRemoveMapper->setMapping( listView, i );
 
@@ -342,7 +349,7 @@ void AddresseeSelector::finish()
 {
   SelectionItem::List::Iterator it;
 
-  for ( uint field = 0; field < mSelection->fieldCount(); ++field ) {
+  for ( int field = 0; field < mSelection->fieldCount(); ++field ) {
     for ( it = mSelectionItems.begin(); it != mSelectionItems.end(); ++it ) {
       if ( (*it).isInField( field ) ) {
         if ( (*it).distributionList() == 0 )
@@ -400,7 +407,7 @@ void AddresseeSelector::remove( int index )
   }
 }
 
-void AddresseeSelector::setItemSelected( uint fieldIndex, const KABC::Addressee &addr, uint itemIndex )
+void AddresseeSelector::setItemSelected( int fieldIndex, const KABC::Addressee &addr, int itemIndex )
 {
   bool found = false;
 
@@ -422,8 +429,8 @@ void AddresseeSelector::setItemSelected( uint fieldIndex, const KABC::Addressee 
   updateSelectionView( fieldIndex );
 }
 
-void AddresseeSelector::setItemSelected( uint fieldIndex, const KABC::Addressee &addr,
-                                         uint itemIndex, const QString &text )
+void AddresseeSelector::setItemSelected( int fieldIndex, const KABC::Addressee &addr,
+                                         int itemIndex, const QString &text )
 {
   bool found = false;
 
@@ -459,7 +466,7 @@ void AddresseeSelector::updateSelectionView( int index )
 
 void AddresseeSelector::updateSelectionViews()
 {
-  for ( uint i = 0; i < mSelection->fieldCount(); ++i )
+  for ( int i = 0; i < mSelection->fieldCount(); ++i )
     updateSelectionView( i );
 }
 
@@ -474,7 +481,7 @@ void AddresseeSelector::reloadAddressBook()
   SelectionItem::List::Iterator itemIt;
   for ( itemIt = mSelectionItems.begin(); itemIt != mSelectionItems.end(); ++itemIt ) {
     bool isSelected = false;
-    for ( uint i = 0; i < mSelection->fieldCount(); ++i ) {
+    for ( int i = 0; i < mSelection->fieldCount(); ++i ) {
       if ( (*itemIt).isInField( i ) ) {
         isSelected = true;
         break;
@@ -491,8 +498,8 @@ void AddresseeSelector::reloadAddressBook()
   mSelectionItems = selectedItems;
 
   for ( it = list.begin(); it != list.end(); ++it ) {
-    uint itemCount = mSelection->itemCount( *it );
-    for ( uint index = 0; index < itemCount; ++index ) {
+    int itemCount = mSelection->itemCount( *it );
+    for ( int index = 0; index < itemCount; ++index ) {
       bool available = false;
       for ( itemIt = mSelectionItems.begin(); itemIt != mSelectionItems.end(); ++itemIt ) {
         if ( (*itemIt).addressee() == (*it) && (*itemIt).index() == index ) {
@@ -528,8 +535,8 @@ void AddresseeSelector::reloadAddressBook()
   // update address book combo
   mAddressBookCombo->clear();
 
-  QPtrList<KABC::Resource> resources = KABC::StdAddressBook::self( true )->resources();
-  QPtrListIterator<KABC::Resource> resIt( resources );
+  Q3PtrList<KABC::Resource> resources = KABC::StdAddressBook::self( true )->resources();
+  Q3PtrListIterator<KABC::Resource> resIt( resources );
   while ( resIt.current() ) {
     if ( resIt.current()->isActive() )
       mAddressBookManager->addResource( resIt );
@@ -537,13 +544,13 @@ void AddresseeSelector::reloadAddressBook()
     ++resIt;
   }
 
-  for ( uint i = 0; i < mSelection->addressBookCount(); ++i ) {
+  for ( int i = 0; i < mSelection->addressBookCount(); ++i ) {
     SelectionItem::List itemList;
 
     KABC::Addressee::List addrList = mSelection->addressBookContent( i );
     for ( it = addrList.begin(); it != addrList.end(); ++it ) {
-      uint itemCount = mSelection->itemCount( *it );
-      for ( uint index = 0; index < itemCount; ++index ) {
+      int itemCount = mSelection->itemCount( *it );
+      for ( int index = 0; index < itemCount; ++index ) {
         SelectionItem item( *it, index );
         mSelectionItems.append( item );
         itemList.append( item );

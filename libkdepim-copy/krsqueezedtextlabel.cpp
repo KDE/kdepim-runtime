@@ -21,6 +21,9 @@
 #include "krsqueezedtextlabel.h"
 #include "kstringhandler.h"
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QResizeEvent>
 
 KRSqueezedTextLabel::KRSqueezedTextLabel( const QString &text , QWidget *parent, const char *name )
  : QLabel ( parent, name ) {

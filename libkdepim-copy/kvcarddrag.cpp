@@ -27,13 +27,13 @@ static const char vcard_mime_string[] = "text/x-vcard";
 
 KVCardDrag::KVCardDrag( const QString &content, QWidget *dragsource,
                         const char *name )
-  : QStoredDrag( vcard_mime_string, dragsource, name )
+  : Q3StoredDrag( vcard_mime_string, dragsource, name )
 {
   setVCard( content );
 }
 
 KVCardDrag::KVCardDrag( QWidget *dragsource, const char *name )
-  : QStoredDrag( vcard_mime_string, dragsource, name )
+  : Q3StoredDrag( vcard_mime_string, dragsource, name )
 {
   setVCard( QString::null );
 }

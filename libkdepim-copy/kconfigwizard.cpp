@@ -27,9 +27,12 @@
 #include <kmessagebox.h>
 #include <kapplication.h>
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlayout.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QFrame>
 
 KConfigWizard::KConfigWizard( QWidget *parent,
                               char *name, bool modal )
@@ -84,7 +87,7 @@ void KConfigWizard::setupRulesPage()
   QFrame *topFrame = addPage( i18n("Rules") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
-  mRuleView = new QListView( topFrame );
+  mRuleView = new Q3ListView( topFrame );
   topLayout->addWidget( mRuleView );
 
   mRuleView->addColumn( i18n("Source") );
@@ -116,7 +119,7 @@ void KConfigWizard::updateRules()
     if ( c.isValid ) {
       condition = c.file + "/" + c.group + "/" + c.key + " = " + c.value;
     }
-    new QListViewItem( mRuleView, source, target, condition );
+    new Q3ListViewItem( mRuleView, source, target, condition );
   }
 }
 
@@ -125,7 +128,7 @@ void KConfigWizard::setupChangesPage()
   QFrame *topFrame = addPage( i18n("Changes") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
-  mChangeView = new QListView( topFrame );
+  mChangeView = new Q3ListView( topFrame );
   topLayout->addWidget( mChangeView );
 
   mChangeView->addColumn( i18n("Action") );
@@ -154,7 +157,7 @@ void KConfigWizard::updateChanges()
   KConfigPropagator::Change::List changes = mPropagator->changes();
   KConfigPropagator::Change *c;
   for( c = changes.first(); c; c = changes.next() ) {
-    new QListViewItem( mChangeView, mChangeView->lastItem(), c->title(), c->arg1(), c->arg2() );
+    new Q3ListViewItem( mChangeView, mChangeView->lastItem(), c->title(), c->arg1(), c->arg2() );
   }
 }
 

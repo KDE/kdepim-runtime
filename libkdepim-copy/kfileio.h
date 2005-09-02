@@ -8,7 +8,7 @@
 #ifndef kpim_kfileio_h
 #define kpim_kfileio_h
 
-#include <qcstring.h>
+#include <q3cstring.h>
 #include <qwidget.h>
 
 #include <kdepimmacros.h>
@@ -25,7 +25,7 @@ namespace KPIM {
  * byte longer than the file itself.
  * If ensureNewline is TRUE the string will always have a trailing newline.
  */
-QCString kFileToString(const QString &fileName, bool ensureNewline=true,
+Q3CString kFileToString(const QString &fileName, bool ensureNewline=true,
 		      bool withDialogs=true) KDE_EXPORT;
 
 // unused
@@ -41,7 +41,7 @@ bool kBytesToFile(const char* aBuffer, int len,
                   const QString &aFileName,
                   bool aAskIfExists, bool aBackup, bool aVerbose) KDE_EXPORT;
 
-bool kCStringToFile(const QCString& buffer, const QString &fileName,
+bool kCStringToFile(const Q3CString& buffer, const QString &fileName,
 		   bool askIfExists=false, bool createBackup=true,
 		   bool withDialogs=true) KDE_EXPORT;
 /** Does not stop at NUL */

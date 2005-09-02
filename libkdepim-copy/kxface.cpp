@@ -28,7 +28,7 @@
 #include <kdebug.h>
 
 #include <qbuffer.h>
-#include <qcstring.h>
+#include <q3cstring.h>
 #include <qimage.h>
 #include <qregexp.h>
 #include <qstring.h>
@@ -90,8 +90,8 @@ QString KXFace::fromImage( const QImage &image )
 
   QImage scaledImg = image.smoothScale( 48, 48 );
   QByteArray ba;
-  QBuffer buffer( ba );
-  buffer.open( IO_WriteOnly );
+  QBuffer buffer( &ba, this );
+  buffer.open( QIODevice::WriteOnly );
   scaledImg.save( &buffer, "XBM" );
   QString xbm( ba );
   xbm.remove( 0, xbm.find( "{" ) + 1 );
@@ -101,11 +101,11 @@ QString KXFace::fromImage( const QImage &image )
   xbm.remove( "0x" );
   xbm.remove( "\n" );
   xbm.truncate( 576 );
-  QCString tmp = QCString( xbm.latin1() );
-  uint len = tmp.length();
-  for( uint i=0; i<len; ++i )
+  QString tmp = xbm.latin1();
+  int len = tmp.length();
+  for( int i=0; i<len; ++i )
   {
-    switch( tmp[i] )
+    switch( tmp[i].latin1() )
     {
       case '1': tmp[i] = '8'; break;
       case '2': tmp[i] = '4'; break;
@@ -127,7 +127,7 @@ QString KXFace::fromImage( const QImage &image )
     }
     if ( i % 2 )
     {
-      char t = tmp[i];
+      QChar t = tmp[i];
       tmp[i] = tmp[i-1];
       tmp[i-1] = t;
     }
@@ -136,7 +136,7 @@ QString KXFace::fromImage( const QImage &image )
   tmp.replace( QRegExp( "(\\w{4})" ), "0x\\1," );
   len = tmp.length();
   char *fbuf = (char *)malloc( len + 1 );
-  strncpy( fbuf, (const char *)tmp, len );
+  strncpy( fbuf, (const char *)tmp.toLatin1(), len );
   fbuf[len] = '\0';
   if ( !( status = setjmp( comp_env ) ) )
   {
@@ -158,7 +158,7 @@ QImage KXFace::toImage(const QString &xface)
   char *fbuf = (char *)malloc( MAX_XFACE_LENGTH );
   memset( fbuf, '\0', MAX_XFACE_LENGTH );
   strncpy( fbuf, xface.latin1(), xface.length() );
-  QCString img;
+  Q3CString img;
   if ( !( status = setjmp( comp_env ) ) )
   {
     UnCompAll( fbuf );/* compress otherwise */
@@ -327,13 +327,13 @@ void KXFace::BigClear()
   B.b_words = 0;
 }
 
-QCString KXFace::WriteFace()
+Q3CString KXFace::WriteFace()
 {
   register char *s;
   register int i, j, bits, digits, words;
   int digsperword = DIGSPERWORD;
   int wordsperline = WORDSPERLINE;
-  QCString t( "#define noname_width 48\n#define noname_height 48\nstatic char noname_bits[] = {\n " );
+  Q3CString t( "#define noname_width 48\n#define noname_height 48\nstatic char noname_bits[] = {\n " );
   j = t.length() - 1;
 
   s = F;

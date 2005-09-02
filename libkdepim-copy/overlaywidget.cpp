@@ -29,10 +29,14 @@
  */
 
 #include "overlaywidget.h"
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QResizeEvent>
+#include <QEvent>
 using namespace KPIM;
 
 OverlayWidget::OverlayWidget( QWidget* alignWidget, QWidget* parent, const char* name )
-  : QHBox( parent, name ), mAlignWidget( 0 )
+  : Q3HBox( parent, name ), mAlignWidget( 0 )
 {
   setAlignWidget( alignWidget );
 }
@@ -80,13 +84,13 @@ bool OverlayWidget::eventFilter( QObject* o, QEvent* e)
        ( e->type() == QEvent::Move || e->type() == QEvent::Resize ) ) {
     reposition();
   }
-  return QFrame::eventFilter(o,e);
+  return Q3Frame::eventFilter(o,e);
 }
 
 void OverlayWidget::resizeEvent( QResizeEvent* ev )
 {
   reposition();
-  QFrame::resizeEvent( ev );
+  Q3Frame::resizeEvent( ev );
 }
 
 #include "overlaywidget.moc"

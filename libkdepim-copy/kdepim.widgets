@@ -25,5 +25,5 @@ Group=Input (KDE-PIM)
 ToolTip=Time Edit Combobox (KDE-PIM)
 WhatsThis=A widget to enter a time. It can also be selected from a drop-down list.
 IncludeFile=libkdepim/ktimeedit.h
-ConstructorArgs=(parent, QTime::currentTime(), name)
+ConstructorArgs=(parent, QTime::currentTime())
 Group=Input (KDE-PIM)

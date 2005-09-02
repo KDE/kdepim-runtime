@@ -23,17 +23,20 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qlineedit.h>
 #include <qfont.h>
 #include <qspinbox.h>
-#include <qframe.h>
+#include <q3frame.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
-#include <qdatetimeedit.h>
-#include <qwhatsthis.h>
+#include <q3datetimeedit.h>
+#include <q3whatsthis.h>
+//Added by qt3to4:
+#include <QGridLayout>
+#include <Q3ValueList>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -67,13 +70,13 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   KConfigSkeleton::ItemEnum *enumItem =
       dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
   if ( enumItem ) {
-    QValueList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
+    Q3ValueList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
       kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
       return 0;
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
-      QValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+      Q3ValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
       for( it = choices.begin(); it != choices.end(); ++it ) {
         radios->addRadio( (*it).label );
       }
@@ -93,9 +96,9 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
 }
 
 
-QValueList<QWidget *> KPrefsWid::widgets() const
+Q3ValueList<QWidget *> KPrefsWid::widgets() const
 {
-  return QValueList<QWidget *>();
+  return Q3ValueList<QWidget *>();
 }
 
 
@@ -105,7 +108,7 @@ KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
   mCheck = new QCheckBox( item->label(), parent);
   connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
   if ( !item->whatsThis().isNull() ) {
-    QWhatsThis::add( mCheck, item->whatsThis() );
+    Q3WhatsThis::add( mCheck, item->whatsThis() );
   }
 }
 
@@ -124,9 +127,9 @@ QCheckBox *KPrefsWidBool::checkBox()
   return mCheck;
 }
 
-QValueList<QWidget *> KPrefsWidBool::widgets() const
+Q3ValueList<QWidget *> KPrefsWidBool::widgets() const
 {
-  QValueList<QWidget *> widgets;
+  Q3ValueList<QWidget *> widgets;
   widgets.append( mCheck );
   return widgets;
 }
@@ -148,8 +151,8 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
   mLabel->setBuddy( mSpin );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
-    QWhatsThis::add( mLabel, whatsThis );
-    QWhatsThis::add( mSpin, whatsThis );
+    Q3WhatsThis::add( mLabel, whatsThis );
+    Q3WhatsThis::add( mSpin, whatsThis );
   }
 }
 
@@ -173,9 +176,9 @@ QSpinBox *KPrefsWidInt::spinBox()
   return mSpin;
 }
 
-QValueList<QWidget *> KPrefsWidInt::widgets() const
+Q3ValueList<QWidget *> KPrefsWidInt::widgets() const
 {
-  QValueList<QWidget *> widgets;
+  Q3ValueList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mSpin );
   return widgets;
@@ -192,7 +195,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
   mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
-    QWhatsThis::add(mButton, whatsThis);
+    Q3WhatsThis::add(mButton, whatsThis);
   }
 }
 
@@ -229,14 +232,14 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
   mLabel = new QLabel( mItem->label()+':', parent );
 
   mPreview = new QLabel( sampleText, parent );
-  mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+  mPreview->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
 
   mButton = new QPushButton( i18n("Choose..."), parent );
   connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
-    QWhatsThis::add(mPreview, whatsThis);
-    QWhatsThis::add(mButton, whatsThis);
+    Q3WhatsThis::add(mPreview, whatsThis);
+    Q3WhatsThis::add(mButton, whatsThis);
   }
 }
 
@@ -290,7 +293,7 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mTimeEdit, whatsThis );
+    Q3WhatsThis::add( mTimeEdit, whatsThis );
   }
 }
 
@@ -324,16 +327,16 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label()+':', parent );
-  mTimeEdit = new QTimeEdit( parent );
+  mTimeEdit = new Q3TimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
   mTimeEdit->setAutoAdvance( true );
-  mTimeEdit->setDisplay( QTimeEdit::Hours | QTimeEdit::Minutes );
+  mTimeEdit->setDisplay( Q3TimeEdit::Hours | Q3TimeEdit::Minutes );
   mTimeEdit->setRange( QTime( 0, 1 ), QTime( 24, 0 ) ); // [1min, 24hr]
   connect( mTimeEdit,
            SIGNAL( valueChanged( const QTime & ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mTimeEdit, whatsThis );
+    Q3WhatsThis::add( mTimeEdit, whatsThis );
   }
 }
 
@@ -354,7 +357,7 @@ QLabel *KPrefsWidDuration::label()
   return mLabel;
 }
 
-QTimeEdit *KPrefsWidDuration::timeEdit()
+Q3TimeEdit *KPrefsWidDuration::timeEdit()
 {
   return mTimeEdit;
 }
@@ -370,7 +373,7 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
   connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mDateEdit, whatsThis );
+    Q3WhatsThis::add( mDateEdit, whatsThis );
   }
 }
 
@@ -401,7 +404,7 @@ KPrefsWidRadios::KPrefsWidRadios( KConfigSkeleton::ItemEnum *item,
                                   QWidget *parent )
   : mItem( item )
 {
-  mBox = new QButtonGroup( 1, Qt::Horizontal, mItem->label(), parent );
+  mBox = new Q3ButtonGroup( 1, Qt::Horizontal, mItem->label(), parent );
   connect( mBox, SIGNAL( clicked( int ) ), SIGNAL( changed() ) );
 }
 
@@ -413,11 +416,11 @@ void KPrefsWidRadios::addRadio(const QString &text, const QString &whatsThis)
 {
   QRadioButton *r = new QRadioButton(text,mBox);
   if (!whatsThis.isNull()) {
-    QWhatsThis::add(r, whatsThis);
+    Q3WhatsThis::add(r, whatsThis);
   }
 }
 
-QButtonGroup *KPrefsWidRadios::groupBox()
+Q3ButtonGroup *KPrefsWidRadios::groupBox()
 {
   return mBox;
 }
@@ -432,9 +435,9 @@ void KPrefsWidRadios::writeConfig()
   mItem->setValue( mBox->id( mBox->selected() ) );
 }
 
-QValueList<QWidget *> KPrefsWidRadios::widgets() const
+Q3ValueList<QWidget *> KPrefsWidRadios::widgets() const
 {
-  QValueList<QWidget *> w;
+  Q3ValueList<QWidget *> w;
   w.append( mBox );
   return w;
 }
@@ -453,7 +456,7 @@ KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
   mEdit->setEchoMode( echomode );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mEdit, whatsThis );
+    Q3WhatsThis::add( mEdit, whatsThis );
   }
 }
 
@@ -481,9 +484,9 @@ QLineEdit *KPrefsWidString::lineEdit()
   return mEdit;
 }
 
-QValueList<QWidget *> KPrefsWidString::widgets() const
+Q3ValueList<QWidget *> KPrefsWidString::widgets() const
 {
-  QValueList<QWidget *> widgets;
+  Q3ValueList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mEdit );
   return widgets;
@@ -503,7 +506,7 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
            SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    QWhatsThis::add( mURLRequester, whatsThis );
+    Q3WhatsThis::add( mURLRequester, whatsThis );
   }
 }
 
@@ -531,9 +534,9 @@ KURLRequester *KPrefsWidPath::urlRequester()
   return mURLRequester;
 }
 
-QValueList<QWidget *> KPrefsWidPath::widgets() const
+Q3ValueList<QWidget *> KPrefsWidPath::widgets() const
 {
-  QValueList<QWidget *> widgets;
+  Q3ValueList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mURLRequester );
   return widgets;
@@ -598,9 +601,9 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
                                                  QWidget *parent )
 {
   KPrefsWidRadios *w = new KPrefsWidRadios( item, parent );
-  QValueList<KConfigSkeleton::ItemEnum::Choice> choices;
+  Q3ValueList<KConfigSkeleton::ItemEnum::Choice> choices;
   choices = item->choices();
-  QValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+  Q3ValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
   for( it = choices.begin(); it != choices.end(); ++it ) {
     w->addRadio( (*it).label, (*it).whatsThis );
   }
@@ -735,7 +738,7 @@ void KPrefsDialog::autoCreate()
     KPrefsWid *wid = KPrefsWidFactory::create( *it, page );
 
     if ( wid ) {
-      QValueList<QWidget *> widgets = wid->widgets();
+      Q3ValueList<QWidget *> widgets = wid->widgets();
       if ( widgets.count() == 1 ) {
         layout->addMultiCellWidget( widgets[ 0 ],
                                     currentRow, currentRow, 0, 1 );
@@ -747,7 +750,7 @@ void KPrefsDialog::autoCreate()
       }
 
       if ( (*it)->isImmutable() ) {
-        QValueList<QWidget *>::Iterator it2;
+        Q3ValueList<QWidget *>::Iterator it2;
         for( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
           (*it2)->setEnabled( false );
         }

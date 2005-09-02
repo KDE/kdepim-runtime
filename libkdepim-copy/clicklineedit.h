@@ -23,6 +23,8 @@
 
 #include <klineedit.h>
 #include <kdepimmacros.h>
+//Added by qt3to4:
+#include <QFocusEvent>
 
 namespace KPIM {
 
@@ -47,7 +49,7 @@ class KDE_EXPORT ClickLineEdit : public KLineEdit
     virtual void setText( const QString& txt );
 
   protected:
-    virtual void drawContents( QPainter *p );
+    virtual void paintEvent( QPaintEvent *ev );
     virtual void focusInEvent( QFocusEvent *ev );
     virtual void focusOutEvent( QFocusEvent *ev );
 

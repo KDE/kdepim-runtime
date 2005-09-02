@@ -1,5 +1,7 @@
 #include "distributionlist.h"
 #include <kabc/addressbook.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 static const char* s_customFieldName = "DistributionList";
 
@@ -28,7 +30,7 @@ void KPIM::DistributionList::setName( const QString &name )
 
 // Helper function, to parse the contents of the custom field
 // Returns a list of { uid, email }
-typedef QValueList<QPair<QString, QString> > ParseList;
+typedef Q3ValueList<QPair<QString, QString> > ParseList;
 static ParseList parseCustom( const QString& str )
 {
   ParseList res;
@@ -210,10 +212,10 @@ QStringList KPIM::DistributionList::emails( KABC::AddressBook* book ) const
   return emails;
 }
 
-QValueList<KPIM::DistributionList>
+Q3ValueList<KPIM::DistributionList>
  KPIM::DistributionList::allDistributionLists( KABC::AddressBook* book )
 {
-  QValueList<KPIM::DistributionList> lst;
+  Q3ValueList<KPIM::DistributionList> lst;
   KABC::AddressBook::Iterator abIt;
   for ( abIt = book->begin(); abIt != book->end(); ++abIt )
   {

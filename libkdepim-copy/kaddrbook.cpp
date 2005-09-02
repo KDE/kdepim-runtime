@@ -27,6 +27,8 @@
 
 #include <qeventloop.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3PtrList>
 
 #include <unistd.h>
 
@@ -136,9 +138,9 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
 
 #if KDE_IS_VERSION(3,4,89)
-  // This ugly hack will be removed in 4.0
+  // PORT. FIXME: This ugly hack will be removed in 4.0
   while ( !addressBook->loadingHasFinished() ) {
-    QApplication::eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+    qApp->processEvents( QEventLoop::ExcludeUserInput );
 
     // use sleep here to reduce cpu usage
     usleep( 100 );
@@ -146,10 +148,10 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 #endif
 
   // Select a resource
-  QPtrList<KABC::Resource> kabcResources = addressBook->resources();
+  Q3PtrList<KABC::Resource> kabcResources = addressBook->resources();
 
-  QPtrList<KRES::Resource> kresResources;
-  QPtrListIterator<KABC::Resource> resIt( kabcResources );
+  Q3PtrList<KRES::Resource> kresResources;
+  Q3PtrListIterator<KABC::Resource> resIt( kabcResources );
   KABC::Resource *kabcResource;
   while ( ( kabcResource = resIt.current() ) != 0 ) {
     ++resIt;

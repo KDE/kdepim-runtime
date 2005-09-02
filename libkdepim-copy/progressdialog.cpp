@@ -35,15 +35,20 @@
 
 #include <qapplication.h>
 #include <qlayout.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qtimer.h>
-#include <qheader.h>
+#include <q3header.h>
 #include <qobject.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qtoolbutton.h>
 #include <qpushbutton.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QEvent>
+#include <Q3Frame>
+#include <QLabel>
 
 #include <klocale.h>
 #include <kdialog.h>
@@ -54,7 +59,7 @@
 #include "progressdialog.h"
 #include "progressmanager.h"
 #include "ssllabel.h"
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 
 namespace KPIM {
 
@@ -62,13 +67,13 @@ class TransactionItem;
 
 TransactionItemView::TransactionItemView( QWidget * parent,
                                           const char * name,
-                                          WFlags f )
-    : QScrollView( parent, name, f ) {
+                                          Qt::WFlags f )
+    : Q3ScrollView( parent, name, f ) {
   setFrameStyle( NoFrame );
-  mBigBox = new QVBox( viewport() );
+  mBigBox = new Q3VBox( viewport() );
   mBigBox->setSpacing( 5 );
   addChild( mBigBox );
-  setResizePolicy( QScrollView::AutoOneFit ); // Fit so that the box expands horizontally
+  setResizePolicy( Q3ScrollView::AutoOneFit ); // Fit so that the box expands horizontally
 }
 
 TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bool first )
@@ -82,7 +87,7 @@ TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bo
 void TransactionItemView::resizeContents( int w, int h )
 {
   //kdDebug(5300) << k_funcinfo << w << "," << h << endl;
-  QScrollView::resizeContents( w, h );
+  Q3ScrollView::resizeContents( w, h );
   // Tell the layout in the parent (progressdialog) that our size changed
   updateGeometry();
   // Resize the parent (progressdialog) - this works but resize horizontally too often
@@ -140,26 +145,26 @@ void TransactionItemView::slotLayoutFirstItem()
 
 TransactionItem::TransactionItem( QWidget* parent,
                                   ProgressItem *item, bool first )
-  : QVBox( parent, "TransactionItem" ), mCancelButton( 0 ), mItem( item )
+  : Q3VBox( parent, "TransactionItem" ), mCancelButton( 0 ), mItem( item )
 
 {
   setSpacing( 2 );
   setMargin( 2 );
   setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
-  mFrame = new QFrame( this );
-  mFrame->setFrameShape( QFrame::HLine );
-  mFrame->setFrameShadow( QFrame::Raised );
+  mFrame = new Q3Frame( this );
+  mFrame->setFrameShape( Q3Frame::HLine );
+  mFrame->setFrameShadow( Q3Frame::Raised );
   mFrame->show();
   setStretchFactor( mFrame, 3 );
 
-  QHBox *h = new QHBox( this );
+  Q3HBox *h = new Q3HBox( this );
   h->setSpacing( 5 );
 
   mItemLabel = new QLabel( item->label(), h );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
-  mProgress = new QProgressBar( 100, h );
+  mProgress = new Q3ProgressBar( 100, h );
   mProgress->setProgress( item->progress() );
 
   if ( item->canBeCanceled() ) {
@@ -169,7 +174,7 @@ TransactionItem::TransactionItem( QWidget* parent,
               this, SLOT( slotItemCanceled() ));
   }
   
-  h = new QHBox( this );
+  h = new Q3HBox( this );
   h->setSpacing( 5 );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
   mSSLLabel = new SSLLabel( h );
@@ -231,7 +236,7 @@ void TransactionItem::addSubTransaction( ProgressItem* /*item*/ )
 ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const char* name )
     : OverlayWidget( alignWidget, parent, name ), mWasLastShown( false )
 {
-    setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
+    setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken ); // QFrame
     setSpacing( 0 ); // QHBox
     setMargin( 1 );
 

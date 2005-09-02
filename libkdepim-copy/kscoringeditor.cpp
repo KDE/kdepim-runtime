@@ -35,12 +35,18 @@
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
-#include <qwidgetstack.h>
+#include <q3widgetstack.h>
 #include <qapplication.h>
 #include <qtimer.h>
-#include <qhbox.h>
+#include <q3hbox.h>
+//Added by qt3to4:
+#include <QGridLayout>
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QBoxLayout>
+#include <QVBoxLayout>
 
 // works for both ListBox and ComboBox
 template <class T> static int setCurrentItem(T *box, const QString& s)
@@ -61,8 +67,8 @@ template <class T> static int setCurrentItem(T *box, const QString& s)
 // class SingleConditionWidget (editor for one condition, used in ConditionEditWidget)
 //
 //============================================================================
-SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, const char *n)
-  : QFrame(p,n), manager(m)
+SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, const char *)
+  : QFrame(p), manager(m)
 {
   QBoxLayout *topL = new QVBoxLayout(this,5);
   QBoxLayout *firstRow = new QHBoxLayout(topL);
@@ -137,7 +143,7 @@ void SingleConditionWidget::showRegExpDialog()
 {
   QDialog *editorDialog = KParts::ComponentFactory::createInstanceFromQuery<QDialog>( "KRegExpEditor/KRegExpEditor" );
   if ( editorDialog ) {
-    KRegExpEditorInterface *editor = static_cast<KRegExpEditorInterface *>( editorDialog->qt_cast( "KRegExpEditorInterface" ) );
+    KRegExpEditorInterface *editor = qobject_cast<KRegExpEditorInterface *>( editorDialog );
     Q_ASSERT( editor ); // This should not fail!
     editor->setRegExp( expr->text() );
     editorDialog->exec();
@@ -218,7 +224,7 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
   types = new KComboBox(this);
   types->setEditable(false);
   topL->addWidget(types);
-  stack = new QWidgetStack(this);
+  stack = new Q3WidgetStack(this);
   topL->addWidget(stack);
 
   dummyLabel = new QLabel(i18n("Select an action."), stack);
@@ -236,7 +242,9 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
       QWidget *w=0;
       switch (feature) {
         case ActionBase::SETSCORE:
-          w = scoreEditor = new KIntSpinBox(-99999,99999,1,0,10, stack);
+          w = scoreEditor = new KIntSpinBox(stack);
+          scoreEditor->setRange( -99999, 99999 );
+          scoreEditor->setValue( 30 );
           break;
         case ActionBase::NOTIFY:
           w = notifyEditor = new KLineEdit(stack);
@@ -396,7 +404,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   QVBoxLayout *topLayout = new QVBoxLayout( this, 5, KDialog::spacingHint() );
 
   //------------- Name, Servers, Groups ---------------------
-  QGroupBox *groupB = new QGroupBox(i18n("Properties"),this);
+  Q3GroupBox *groupB = new Q3GroupBox(i18n("Properties"),this);
   topLayout->addWidget(groupB);
   QGridLayout* groupL = new QGridLayout(groupB, 6,2, 8,5);
   groupL->addRowSpacing(0, fontMetrics().lineSpacing()-4);
@@ -426,7 +434,9 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   // expires
   expireCheck = new QCheckBox(i18n("&Expire rule automatically"), groupB);
   groupL->addMultiCellWidget( expireCheck, 4,4, 0,1 );
-  expireEdit = new KIntSpinBox(1,99999,1,30,10, groupB, "expireWidget");
+  expireEdit = new KIntSpinBox( groupB );
+  expireEdit->setRange( 1, 9999 );
+  expireEdit->setValue( 30 );
   expireEdit->setSuffix(i18n(" days"));
   groupL->addWidget( expireEdit, 5, 1 );
   expireLabel = new QLabel(expireEdit, i18n("&Rule is valid for:"), groupB, "expireLabel");
@@ -438,13 +448,13 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   connect(expireCheck, SIGNAL(toggled(bool)), expireEdit, SLOT(setEnabled(bool)));
 
   //------------- Conditions ---------------------
-  QGroupBox *groupConds = new QGroupBox(i18n("Conditions"), this);
+  Q3GroupBox *groupConds = new Q3GroupBox(i18n("Conditions"), this);
   topLayout->addWidget(groupConds);
   QGridLayout *condL = new QGridLayout(groupConds, 3,2, 8,5);
 
   condL->addRowSpacing(0, fontMetrics().lineSpacing()-4);
 
-  QButtonGroup *buttonGroup = new QButtonGroup(groupConds);
+  Q3ButtonGroup *buttonGroup = new Q3ButtonGroup(groupConds);
   buttonGroup->hide();
   linkModeAnd = new QRadioButton(i18n("Match a&ll conditions"), groupConds);
   buttonGroup->insert(linkModeAnd);
@@ -459,7 +469,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   connect(condEditor,SIGNAL(widgetRemoved()),this,SLOT(slotShrink()));
 
   //------------- Actions ---------------------
-  QGroupBox *groupActions = new QGroupBox(i18n("Actions"), this);
+  Q3GroupBox *groupActions = new Q3GroupBox(i18n("Actions"), this);
   topLayout->addWidget(groupActions);
   QBoxLayout *actionL = new QVBoxLayout(groupActions,8,5);
   actionL->addSpacing(fontMetrics().lineSpacing()-4);
@@ -594,13 +604,13 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   QVBoxLayout *topL = new QVBoxLayout(this,standalone? 0:5,KDialog::spacingHint());
   ruleList = new KListBox(this);
   if (standalone) {
-    connect(ruleList,SIGNAL(doubleClicked(QListBoxItem*)),
-            this,SLOT(slotEditRule(QListBoxItem*)));
-    connect(ruleList,SIGNAL(returnPressed(QListBoxItem*)),
-            this,SLOT(slotEditRule(QListBoxItem*)));
+    connect(ruleList,SIGNAL(doubleClicked(Q3ListBoxItem*)),
+            this,SLOT(slotEditRule(Q3ListBoxItem*)));
+    connect(ruleList,SIGNAL(returnPressed(Q3ListBoxItem*)),
+            this,SLOT(slotEditRule(Q3ListBoxItem*)));
   }
-  connect(ruleList, SIGNAL(currentChanged(QListBoxItem*)),
-          this, SLOT(slotRuleSelected(QListBoxItem*)));
+  connect(ruleList, SIGNAL(currentChanged(Q3ListBoxItem*)),
+          this, SLOT(slotRuleSelected(Q3ListBoxItem*)));
   topL->addWidget(ruleList);
 
   QHBoxLayout *btnL = new QHBoxLayout( topL, KDialog::spacingHint() );
@@ -676,7 +686,7 @@ void RuleListWidget::updateButton()
   delRule->setEnabled(state);
   copyRule->setEnabled(state);
 
-  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  Q3ListBoxItem *item = ruleList->item( ruleList->currentItem() );
   if ( item ) {
     mRuleUp->setEnabled( item->prev() != 0 );
     mRuleDown->setEnabled( item->next() != 0 );
@@ -741,7 +751,7 @@ void RuleListWidget::slotEditRule()
     emit ruleEdited(QString::null);
 }
 
-void RuleListWidget::slotEditRule(QListBoxItem* item)
+void RuleListWidget::slotEditRule(Q3ListBoxItem* item)
 {
   slotEditRule(item->text());
 }
@@ -763,7 +773,7 @@ void RuleListWidget::slotRuleSelected(const QString& ruleName)
   emit ruleSelected(ruleName);
 }
 
-void RuleListWidget::slotRuleSelected(QListBoxItem *item)
+void RuleListWidget::slotRuleSelected(Q3ListBoxItem *item)
 {
   if (!item) return;
   QString ruleName = item->text();
@@ -813,7 +823,7 @@ void RuleListWidget::slotCopyRule()
 void RuleListWidget::slotRuleUp()
 {
   KScoringRule *rule = 0, *below = 0;
-  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  Q3ListBoxItem *item = ruleList->item( ruleList->currentItem() );
   if ( item ) {
     rule = manager->findRule( item->text() );
     item = item->prev();
@@ -829,7 +839,7 @@ void RuleListWidget::slotRuleUp()
 void RuleListWidget::slotRuleDown()
 {
   KScoringRule *rule = 0, *above = 0;
-  QListBoxItem *item = ruleList->item( ruleList->currentItem() );
+  Q3ListBoxItem *item = ruleList->item( ruleList->currentItem() );
   if ( item ) {
     rule = manager->findRule( item->text() );
     item = item->next();

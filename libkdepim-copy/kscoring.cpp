@@ -27,7 +27,12 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qtextview.h>
+#include <q3textview.h>
+//Added by qt3to4:
+#include <QTextStream>
+#include <Q3PtrList>
+#include <QFrame>
+#include <QVBoxLayout>
 
 #include <klocale.h>
 #include <kstandarddirs.h>
@@ -81,7 +86,7 @@ NotifyDialog::NotifyDialog(QWidget* p)
   QFrame *f = makeMainWidget();
   QVBoxLayout *topL = new QVBoxLayout(f);
   note = new QLabel(f);
-  note->setTextFormat(RichText);
+  note->setTextFormat(Qt::RichText);
   topL->addWidget(note);
   QCheckBox *check = new QCheckBox(i18n("Do not show this message again"),f);
   check->setChecked(true);
@@ -364,7 +369,7 @@ QString NotifyCollection::collection() const
   QString notifyCollection = i18n("<h1>List of collected notes</h1>");
   notifyCollection += "<p><ul>";
   // first look thru the notes and create one string
-  QDictIterator<article_list> it(notifyList);
+  Q3DictIterator<article_list> it(notifyList);
   for(;it.current();++it) {
     const QString& note = it.currentKey();
     notifyCollection += "<li>" + note + "<ul>";
@@ -386,7 +391,7 @@ void NotifyCollection::displayCollection(QWidget *p) const
   //KMessageBox::information(p,collection(),i18n("Collected Notes"));
   KDialogBase *dlg = new KDialogBase( p, 0, false, i18n("Collected Notes"),
                                       KDialogBase::Close, KDialogBase::Close );
-  QTextView *text = new QTextView(dlg);
+  Q3TextView *text = new Q3TextView(dlg);
   text->setText(collection());
   dlg->setMainWidget(text);
   dlg->setMinimumWidth(300);
@@ -600,7 +605,7 @@ KScoringRule::KScoringRule(const KScoringRule& r)
   // copy expressions
   expressions.clear();
   const ScoreExprList& rexpr = r.expressions;
-  QPtrListIterator<KScoringExpression> it(rexpr);
+  Q3PtrListIterator<KScoringExpression> it(rexpr);
   for ( ; it.current(); ++it ) {
     KScoringExpression *t = new KScoringExpression(**it);
     expressions.append(t);
@@ -608,7 +613,7 @@ KScoringRule::KScoringRule(const KScoringRule& r)
   // copy actions
   actions.clear();
   const ActionList& ract = r.actions;
-  QPtrListIterator<ActionBase> ait(ract);
+  Q3PtrListIterator<ActionBase> ait(ract);
   for ( ; ait.current(); ++ait ) {
     ActionBase *t = *ait;
     actions.append(t->clone());
@@ -666,9 +671,7 @@ void KScoringRule::setExpire(const QString& e)
   if (e != "never") {
     QStringList l = QStringList::split("-",e);
     Q_ASSERT( l.count() == 3 );
-    expires.setYMD( (*(l.at(0))).toInt(),
-        (*(l.at(1))).toInt(),
-        (*(l.at(2))).toInt());
+    expires.setYMD( l.at(0).toInt(), l.at(1).toInt(), l.at(2).toInt() );
   }
   kdDebug(5100) << "Rule " << getName() << " expires at " << getExpireDateString() << endl;
 }
@@ -678,7 +681,7 @@ bool KScoringRule::matchGroup(const QString& group) const
   for(GroupList::ConstIterator i=groups.begin(); i!=groups.end();++i) {
     QRegExp e(*i);
     if (e.search(group, 0) != -1 &&
-	(uint)e.matchedLength() == group.length())
+	    e.matchedLength() == group.length())
         return true;
   }
   return false;
@@ -686,7 +689,7 @@ bool KScoringRule::matchGroup(const QString& group) const
 
 void KScoringRule::applyAction(ScorableArticle& a) const
 {
-  QPtrListIterator<ActionBase> it(actions);
+  Q3PtrListIterator<ActionBase> it(actions);
   for(; it.current(); ++it) {
     it.current()->apply(a);
   }
@@ -700,7 +703,7 @@ void KScoringRule::applyRule(ScorableArticle& a) const
   //              << endl;
   bool oper_and = (link == AND);
   bool res = true;
-  QPtrListIterator<KScoringExpression> it(expressions);
+  Q3PtrListIterator<KScoringExpression> it(expressions);
   //kdDebug(5100) << "checking " << expressions.count() << " expressions" << endl;
   for (; it.current(); ++it) {
     Q_ASSERT( it.current() );
@@ -738,12 +741,12 @@ QString KScoringRule::toString() const
     r += "<Group name=\"" + toXml(*i) + "\" />";
   }
   //kdDebug(5100) << "building expressionlist..." << endl;
-  QPtrListIterator<KScoringExpression> eit(expressions);
+  Q3PtrListIterator<KScoringExpression> eit(expressions);
   for (; eit.current(); ++eit) {
     r += eit.current()->toString();
   }
   //kdDebug(5100) << "building actionlist..." << endl;
-  QPtrListIterator<ActionBase> ait(actions);
+  Q3PtrListIterator<ActionBase> ait(actions);
   for (; ait.current(); ++ait) {
     r += ait.current()->toString();
   }
@@ -801,7 +804,7 @@ void KScoringManager::load()
 {
   QDomDocument sdoc("Scorefile");
   QFile f( mFilename );
-  if ( !f.open( IO_ReadOnly ) )
+  if ( !f.open( QIODevice::ReadOnly ) )
     return;
   if ( !sdoc.setContent( &f ) ) {
     f.close();
@@ -820,7 +823,7 @@ void KScoringManager::save()
 {
   kdDebug(5100) << "KScoringManager::save() starts" << endl;
   QFile f( mFilename );
-  if ( !f.open( IO_WriteOnly ) )
+  if ( !f.open( QIODevice::WriteOnly ) )
     return;
   QTextStream stream(&f);
   stream.setEncoding(QTextStream::Unicode);
@@ -847,7 +850,7 @@ QString KScoringManager::toString() const
 {
   QString s;
   s += "<Scorefile>\n";
-  QPtrListIterator<KScoringRule> it(allRules);
+  Q3PtrListIterator<KScoringRule> it(allRules);
   for( ; it.current(); ++it) {
     s += it.current()->toString();
   }
@@ -910,9 +913,9 @@ void KScoringManager::createInternalFromXML(QDomNode n)
       ;
     }
     QDomNodeList nodelist = n.childNodes();
-    unsigned cnt = nodelist.count();
+    int cnt = nodelist.count();
     //kdDebug(5100) << "recursive checking " << cnt << " nodes" << endl;
-    for (unsigned i=0;i<cnt;++i)
+    for (int i=0;i<cnt;++i)
       createInternalFromXML(nodelist.item(i));
   }
 }
@@ -982,7 +985,7 @@ void KScoringManager::setRuleName(KScoringRule *r, const QString& s)
   QString oldName = r->getName();
   while (cont) {
     cont = false;
-    QPtrListIterator<KScoringRule> it(allRules);
+    Q3PtrListIterator<KScoringRule> it(allRules);
     for (; it.current(); ++it) {
       if ( it.current() != r && it.current()->getName() == text ) {
         kdDebug(5100) << "rule name " << text << " is not unique" << endl;
@@ -1069,7 +1072,7 @@ void KScoringManager::applyRules(ScorableArticle& article, const QString& group)
 
 void KScoringManager::applyRules(ScorableArticle& a)
 {
-  QPtrListIterator<KScoringRule> it(isCacheValid()? ruleList : allRules);
+  Q3PtrListIterator<KScoringRule> it(isCacheValid()? ruleList : allRules);
   for( ; it.current(); ++it) {
     it.current()->applyRule(a);
   }
@@ -1079,7 +1082,7 @@ void KScoringManager::initCache(const QString& g)
 {
   group = g;
   ruleList.clear();
-  QPtrListIterator<KScoringRule> it(allRules);
+  Q3PtrListIterator<KScoringRule> it(allRules);
   for (; it.current(); ++it) {
     if ( it.current()->matchGroup(group) ) {
       ruleList.append(it.current());
@@ -1104,7 +1107,7 @@ bool KScoringManager::hasRulesForCurrentGroup()
 QStringList KScoringManager::getRuleNames()
 {
   QStringList l;
-  QPtrListIterator<KScoringRule> it(allRules);
+  Q3PtrListIterator<KScoringRule> it(allRules);
   for( ; it.current(); ++it) {
     l << it.current()->getName();
   }
@@ -1113,7 +1116,7 @@ QStringList KScoringManager::getRuleNames()
 
 KScoringRule* KScoringManager::findRule(const QString& ruleName)
 {
-  QPtrListIterator<KScoringRule> it(allRules);
+  Q3PtrListIterator<KScoringRule> it(allRules);
   for (; it.current(); ++it) {
     if ( it.current()->getName() == ruleName ) {
       return it;
@@ -1140,7 +1143,7 @@ QString KScoringManager::findUniqueName() const
     ret = i18n("rule %1").arg(nr);
 
     duplicated=false;
-    QPtrListIterator<KScoringRule> it(allRules);
+    Q3PtrListIterator<KScoringRule> it(allRules);
     for( ; it.current(); ++it) {
       if (it.current()->getName() == ret) {
         duplicated = true;
@@ -1198,7 +1201,7 @@ RuleStack::RuleStack()
 RuleStack::~RuleStack()
 {}
 
-void RuleStack::push(QPtrList<KScoringRule>& l)
+void RuleStack::push(Q3PtrList<KScoringRule>& l)
 {
   kdDebug(5100) << "RuleStack::push pushing list with " << l.count() << " rules" << endl;
   KScoringManager::ScoringRuleList *l1 = new KScoringManager::ScoringRuleList;
@@ -1209,7 +1212,7 @@ void RuleStack::push(QPtrList<KScoringRule>& l)
   kdDebug(5100) << "now there are " << stack.count() << " lists on the stack" << endl;
 }
 
-void RuleStack::pop(QPtrList<KScoringRule>& l)
+void RuleStack::pop(Q3PtrList<KScoringRule>& l)
 {
   top(l);
   drop();
@@ -1217,7 +1220,7 @@ void RuleStack::pop(QPtrList<KScoringRule>& l)
   kdDebug(5100) << "now there are " << stack.count() << " lists on the stack" << endl;
 }
 
-void RuleStack::top(QPtrList<KScoringRule>& l)
+void RuleStack::top(Q3PtrList<KScoringRule>& l)
 {
   l.clear();
   KScoringManager::ScoringRuleList *l1 = stack.top();

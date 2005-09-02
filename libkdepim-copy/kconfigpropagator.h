@@ -22,9 +22,9 @@
 #define KCONFIGPROPAGATOR_H
 
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 #include <qdom.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 
 #include <kdepimmacros.h>
 
@@ -71,7 +71,7 @@ class KDE_EXPORT KConfigPropagator
     class KDE_EXPORT Rule
     {
       public:
-        typedef QValueList<Rule> List;
+        typedef Q3ValueList<Rule> List;
         
         Rule() : hideValue( false ) {}
         
@@ -91,7 +91,7 @@ class KDE_EXPORT KConfigPropagator
     class KDE_EXPORT Change
     {
       public:
-        typedef QPtrList<Change> List;
+        typedef Q3PtrList<Change> List;
 
         Change( const QString &title ) : mTitle( title ) {}
         virtual ~Change();

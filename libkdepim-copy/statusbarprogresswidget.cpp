@@ -34,6 +34,10 @@
 
 
 #include "ssllabel.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QHBoxLayout>
+#include <QEvent>
 using KPIM::SSLLabel;
 #include "progressmanager.h"
 using KPIM::ProgressItem;
@@ -49,8 +53,8 @@ using KPIM::ProgressManager;
 #include <qtooltip.h>
 #include <klocale.h>
 #include <qlayout.h>
-#include <qwidgetstack.h>
-#include <qframe.h>
+#include <q3widgetstack.h>
+#include <q3frame.h>
 
 #include "progressdialog.h"
 #include "statusbarprogresswidget.h"
@@ -59,7 +63,7 @@ using namespace KPIM;
 
 //-----------------------------------------------------------------------------
 StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog, QWidget* parent, bool button )
-  : QFrame( parent ), mCurrentItem( 0 ), mProgressDialog( progressDialog ),
+  : Q3Frame( parent ), mCurrentItem( 0 ), mProgressDialog( progressDialog ),
     mDelayTimer( 0 ), mBusyTimer( 0 )
 {
   m_bShowButton = button;
@@ -71,7 +75,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
                                          QSizePolicy::Minimum ) );
   m_pButton->setPixmap( SmallIcon( "up" ) );
   box->addWidget( m_pButton  );
-  stack = new QWidgetStack( this );
+  stack = new Q3WidgetStack( this );
   stack->setMaximumHeight( fontMetrics().height() );
   box->addWidget( stack );
 
@@ -82,13 +86,13 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
 
   m_pProgressBar = new KProgress( this );
   m_pProgressBar->setLineWidth( 1 );
-  m_pProgressBar->setFrameStyle( QFrame::Box );
+  m_pProgressBar->setFrameStyle( Q3Frame::Box );
   m_pProgressBar->installEventFilter( this );
   m_pProgressBar->setMinimumWidth( w );
   stack->addWidget( m_pProgressBar, 1 );
 
   m_pLabel = new QLabel( QString::null, this );
-  m_pLabel->setAlignment( AlignHCenter | AlignVCenter );
+  m_pLabel->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
   m_pLabel->installEventFilter( this );
   m_pLabel->setMinimumWidth( w );
   stack->addWidget( m_pLabel, 2 );
@@ -259,7 +263,7 @@ bool StatusbarProgressWidget::eventFilter( QObject *, QEvent *ev )
   if ( ev->type() == QEvent::MouseButtonPress ) {
     QMouseEvent *e = (QMouseEvent*)ev;
 
-    if ( e->button() == LeftButton && mode != None ) {    // toggle view on left mouse button
+    if ( e->button() == Qt::LeftButton && mode != None ) {    // toggle view on left mouse button
       // Consensus seems to be that we should show/hide the fancy dialog when the user
       // clicks anywhere in the small one.
       mProgressDialog->slotToggleVisibility();

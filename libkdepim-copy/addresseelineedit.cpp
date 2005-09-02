@@ -50,14 +50,20 @@
 #include <kurldrag.h>
 #include <klocale.h>
 
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qapplication.h>
 #include <qobject.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qregexp.h>
 #include <qevent.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qclipboard.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <QKeyEvent>
+#include <QDropEvent>
+#include <Q3ValueList>
+#include <QMouseEvent>
 
 using namespace KPIM;
 
@@ -79,13 +85,13 @@ static KStaticDeleter<KConfig> configDeleter;
 static KStaticDeleter<QStringList> completionSourcesDeleter;
 
 // needs to be unique, but the actual name doesn't matter much
-static QCString newLineEditDCOPObjectName()
+static Q3CString newLineEditDCOPObjectName()
 {
     static int s_count = 0;
-    QCString name( "KPIM::AddresseeLineEdit" );
+    Q3CString name( "KPIM::AddresseeLineEdit" );
     if ( s_count++ ) {
       name += '-';
-      name += QCString().setNum( s_count );
+      name += Q3CString().setNum( s_count );
     }
     return name;
 }
@@ -130,8 +136,8 @@ void AddresseeLineEdit::init()
 
       /* Add completion sources for all ldap server, 0 to n. Added first so 
        * that they map to the ldapclient::clientNumber() */
-      QValueList< LdapClient* > clients =  s_LDAPSearch->clients();
-      for ( QValueList<LdapClient*>::iterator it = clients.begin(); it != clients.end(); ++it ) {
+      Q3ValueList< LdapClient* > clients =  s_LDAPSearch->clients();
+      for ( Q3ValueList<LdapClient*>::iterator it = clients.begin(); it != clients.end(); ++it ) {
         addCompletionSource( "LDAP server: " + (*it)->server().host() );
       }
     }
@@ -285,7 +291,7 @@ void AddresseeLineEdit::mouseReleaseEvent( QMouseEvent *e )
   if ( m_useCompletion
        && QApplication::clipboard()->supportsSelection()
        && !isReadOnly()
-       && e->button() == MidButton ) {
+       && e->button() == Qt::MidButton ) {
     m_smartPaste = true;
   }
 
@@ -445,8 +451,8 @@ void AddresseeLineEdit::loadContacts()
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   // Can't just use the addressbook's iterator, we need to know which subresource
   // is behind which contact.
-  QPtrList<KABC::Resource> resources( addressBook->resources() );
-  for( QPtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
+  Q3PtrList<KABC::Resource> resources( addressBook->resources() );
+  for( Q3PtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
     KABC::Resource* resource = *resit;
     KPIM::ResourceABC* resabc = dynamic_cast<ResourceABC *>( resource );
     if ( resabc ) { // IMAP KABC resource; need to associate each contact with the subresource
@@ -648,7 +654,7 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
           bool wasSelected = completionBox->isSelected( completionBox->currentItem() );
           const QString currentSelection = completionBox->currentText();
           completionBox->setItems( items );
-          QListBoxItem* item = completionBox->findItem( currentSelection, Qt::ExactMatch );
+          Q3ListBoxItem* item = completionBox->findItem( currentSelection, Q3ListBox::ExactMatch );
           if ( item )
           {
             completionBox->blockSignals( true );
@@ -686,14 +692,14 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
     }
 }
 
-QPopupMenu* AddresseeLineEdit::createPopupMenu()
+QMenu* AddresseeLineEdit::createStandardContextMenu()
 {
-  QPopupMenu *menu = KLineEdit::createPopupMenu();
+  QMenu *menu = KLineEdit::createStandardContextMenu();
   if ( !menu )
     return 0;
 
   if ( m_useCompletion )
-    menu->insertItem( i18n( "Configure Completion Order..." ),
+    menu->addAction( i18n( "Configure Completion Order..." ),
                       this, SLOT( slotEditCompletionOrder() ) );
   return menu;
 }
@@ -771,7 +777,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       || e->type() == QEvent::MouseButtonRelease ) {
       QMouseEvent* me = static_cast<QMouseEvent*>( e );
       // find list box item at the event position
-      QListBoxItem *item = completionBox()->itemAt( me->pos() );
+      Q3ListBoxItem *item = completionBox()->itemAt( me->pos() );
       if ( !item ) {
         // In the case of a mouse move outside of the box we don't want
         // the parent to fuzzy select a header by mistake.
@@ -781,8 +787,8 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       // avoid selection of headers on button press, or move or release while
       // a button is pressed
       if ( e->type() == QEvent::MouseButtonPress 
-          || me->state() & LeftButton || me->state() & MidButton 
-          || me->state() & RightButton ) {
+          || me->state() & Qt::LeftButton || me->state() & Qt::MidButton 
+          || me->state() & Qt::RightButton ) {
         if ( !item->text().startsWith( s_completionItemIndentString ) ) {
           return true; // eat the event, we don't want anything to happen
         } else {
@@ -798,9 +804,9 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
     }
   }
   if ( ( obj == this ) &&
-     ( e->type() == QEvent::AccelOverride ) ) {
+     ( e->type() == QEvent::ShortcutOverride ) ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
-    if ( ke->key() == Key_Up || ke->key() == Key_Down ) {
+    if ( ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ) {
       ke->accept();
       return true;
     }
@@ -810,11 +816,11 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       completionBox()->isVisible() ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
     unsigned int currentIndex = completionBox()->currentItem();
-    if ( ke->key() == Key_Up ) {
+    if ( ke->key() == Qt::Key_Up ) {
       //kdDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
-      QListBoxItem *itemAbove = completionBox()->item( currentIndex - 1 );
+      Q3ListBoxItem *itemAbove = completionBox()->item( currentIndex - 1 );
       if ( itemAbove && !itemAbove->text().startsWith( s_completionItemIndentString ) ) {
         // there is a header above is, check if there is even further up
         // and if so go one up, so it'll be selected
@@ -829,10 +835,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
         }
         return true;
       }
-    } else if ( ke->key() == Key_Down ) {
+    } else if ( ke->key() == Qt::Key_Down ) {
       // same strategy for downwards
       //kdDebug() << "EVENTFILTER: Key_Down. currentIndex=" << currentIndex << endl;
-      QListBoxItem *itemBelow = completionBox()->item( currentIndex + 1 );
+      Q3ListBoxItem *itemBelow = completionBox()->item( currentIndex + 1 );
       if ( itemBelow && !itemBelow->text().startsWith( s_completionItemIndentString ) ) {
         if ( completionBox()->item( currentIndex + 2 ) ) {
           //kdDebug() << "EVENTFILTER: Key_Down -> skipping " << currentIndex+1 << endl;
@@ -846,7 +852,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       // special case of the initial selection, which is unfortunately a header.
       // Setting it to selected tricks KCompletionBox into not treating is special
       // and selecting making it current, instead of the one below.
-      QListBoxItem *item = completionBox()->item( currentIndex );
+      Q3ListBoxItem *item = completionBox()->item( currentIndex );
       if ( item && !item->text().startsWith( s_completionItemIndentString )  ) {
         completionBox()->setSelected( currentIndex, true );
       }

@@ -20,6 +20,8 @@
 */
 
 #include "addresseediffalgo.h"
+//Added by qt3to4:
+#include <QList>
 
 using namespace KPIM;
 
@@ -132,14 +134,14 @@ QString AddresseeDiffAlgo::toString( const KABC::Address &addr )
 
 template <class L>
 void AddresseeDiffAlgo::diffList( const QString &id,
-                                  const QValueList<L> &left, const QValueList<L> &right )
+                                  const QList<L> &left, const QList<L> &right )
 {
-  for ( uint i = 0; i < left.count(); ++i ) {
+  for ( int i = 0; i < left.count(); ++i ) {
     if ( right.find( left[ i ] ) == right.end() )
       additionalLeftField( id, toString( left[ i ] ) );
   }
 
-  for ( uint i = 0; i < right.count(); ++i ) {
+  for ( int i = 0; i < right.count(); ++i ) {
     if ( left.find( right[ i ] ) == left.end() )
       additionalRightField( id, toString( right[ i ] ) );
   }

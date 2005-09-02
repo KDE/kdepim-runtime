@@ -11,6 +11,8 @@
 
 #include <assert.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include <klocale.h>
 #include <kstdguiitem.h>
@@ -33,9 +35,9 @@ static void msgDialog(const QString &msg)
 
 
 //-----------------------------------------------------------------------------
-KDE_EXPORT QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool aVerbose)
+KDE_EXPORT Q3CString kFileToString(const QString &aFileName, bool aEnsureNL, bool aVerbose)
 {
-  QCString result;
+  Q3CString result;
   QFileInfo info(aFileName);
   unsigned int readLen;
   unsigned int len = info.size();
@@ -49,24 +51,24 @@ KDE_EXPORT QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool
   {
     if (aVerbose)
       msgDialog(i18n("The specified file does not exist:\n%1").arg(aFileName));
-    return QCString();
+    return Q3CString();
   }
   if (info.isDir())
   {
     if (aVerbose)
       msgDialog(i18n("This is a folder and not a file:\n%1").arg(aFileName));
-    return QCString();
+    return Q3CString();
   }
   if (!info.isReadable())
   {
     if (aVerbose)
       msgDialog(i18n("You do not have read permissions "
 				   "to the file:\n%1").arg(aFileName));
-    return QCString();
+    return Q3CString();
   }
-  if (len <= 0) return QCString();
+  if (len <= 0) return Q3CString();
 
-  if (!file.open(IO_Raw|IO_ReadOnly))
+  if (!file.open(QIODevice::Unbuffered|QIODevice::ReadOnly))
   {
     if (aVerbose) switch(file.status())
     {
@@ -79,7 +81,7 @@ KDE_EXPORT QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool
     default:
       msgDialog(i18n("Error while reading file:\n%1").arg(aFileName));
     }
-    return QCString();
+    return Q3CString();
   }
 
   result.resize(len + (int)aEnsureNL + 1);
@@ -96,7 +98,7 @@ KDE_EXPORT QCString kFileToString(const QString &aFileName, bool aEnsureNL, bool
     QString msg = i18n("Could only read %1 bytes of %2.")
 		.arg(readLen).arg(len);
     msgDialog(msg);
-    return QCString();
+    return Q3CString();
   }
 
   return result;
@@ -139,7 +141,7 @@ QByteArray kFileToBytes(const QString &aFileName, bool aVerbose)
   }
   if (len <= 0) return result;
 
-  if (!file.open(IO_Raw|IO_ReadOnly))
+  if (!file.open(IO_Raw|QIODevice::ReadOnly))
   {
     if (aVerbose) switch(file.status())
     {
@@ -216,7 +218,7 @@ KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
     }
   }
 
-  if (!file.open(IO_Raw|IO_WriteOnly|IO_Truncate))
+  if (!file.open(QIODevice::Unbuffered|QIODevice::WriteOnly|QIODevice::Truncate))
   {
     if (aVerbose) switch(file.status())
     {
@@ -253,7 +255,7 @@ KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
   return TRUE;
 }
 
-KDE_EXPORT bool kCStringToFile(const QCString& aBuffer, const QString &aFileName,
+KDE_EXPORT bool kCStringToFile(const Q3CString& aBuffer, const QString &aFileName,
 		   bool aAskIfExists, bool aBackup, bool aVerbose)
 {
     return kBytesToFile(aBuffer, aBuffer.length(), aFileName, aAskIfExists,
@@ -277,7 +279,7 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
   // Symlinks are followed as expected.
   QFileInfo fiToCheck(toCheck);
   fiToCheck.setCaching(false);
-  QCString toCheckEnc = QFile::encodeName(toCheck);
+  Q3CString toCheckEnc = QFile::encodeName(toCheck);
   QString error;
   struct stat statbuffer;
 
@@ -348,17 +350,14 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
     if ( !g.isReadable() ){
       error.append(i18n("Folder %1 is inaccessible.").arg(toCheck) + "\n");
     } else {
-      const QFileInfoList *list = g.entryInfoList();
-      QFileInfoListIterator it( *list );
-      QFileInfo *fi;
-      while ((fi = it.current()) != 0) {
-        QString newToCheck = toCheck + "/" + fi->fileName();
+      foreach(QFileInfo fi, g.entryInfoList())
+      { 
+        QString newToCheck = toCheck + "/" + fi.fileName();
         QFileInfo fiNewToCheck(newToCheck);
-        if ( fi->fileName() != "." && fi->fileName() != ".." ) {
+        if ( fi.fileName() != "." && fi.fileName() != ".." ) {
           error.append ( checkAndCorrectPermissionsIfPossible( newToCheck, 
                                 recursive, wantItReadable, wantItWritable) );
         }
-        ++it;
       }
     }
   }

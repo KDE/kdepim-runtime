@@ -41,10 +41,13 @@
 #include <klistview.h>
 #include <kpushbutton.h>
 
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qheader.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
+#include <q3header.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <Q3PtrList>
 #include <kapplication.h>
 #include <dcopclient.h>
 
@@ -75,7 +78,7 @@ using namespace KPIM;
 
 namespace KPIM {
 
-int CompletionItemList::compareItems( QPtrCollection::Item s1, QPtrCollection::Item s2 )
+int CompletionItemList::compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 )
 {
   int w1 = ( (CompletionItem*)s1 )->completionWeight();
   int w2 = ( (CompletionItem*)s2 )->completionWeight();
@@ -159,11 +162,11 @@ private:
 
 /////////
 
-class CompletionViewItem : public QListViewItem
+class CompletionViewItem : public Q3ListViewItem
 {
 public:
-  CompletionViewItem( QListView* lv, CompletionItem* item )
-    : QListViewItem( lv, lv->lastItem(), item->label() ), mItem( item ) {}
+  CompletionViewItem( Q3ListView* lv, CompletionItem* item )
+    : Q3ListViewItem( lv, lv->lastItem(), item->label() ), mItem( item ) {}
   CompletionItem* item() const { return mItem; }
   void setItem( CompletionItem* i ) { mItem = i; setText( 0, mItem->label() ); }
 
@@ -178,14 +181,14 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
 {
   mItems.setAutoDelete( true );
   // The first step is to gather all the data, creating CompletionItem objects
-  QValueList< LdapClient* > ldapClients = ldapSearch->clients();
-  for( QValueList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
+  Q3ValueList< LdapClient* > ldapClients = ldapSearch->clients();
+  for( Q3ValueList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
     //kdDebug(5300) << "LDAP: host " << (*it)->host() << " weight " << (*it)->completionWeight() << endl;
     mItems.append( new LDAPCompletionItem( *it ) );
   }
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
-  QPtrList<KABC::Resource> resources = addressBook->resources();
-  for( QPtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
+  Q3PtrList<KABC::Resource> resources = addressBook->resources();
+  for( Q3PtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
     //kdDebug(5300) << "KABC Resource: " << (*resit)->className() << endl;
     ResourceABC* res = dynamic_cast<ResourceABC *>( *resit );
     if ( res ) { // IMAP KABC resource
@@ -207,33 +210,33 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   // Now sort the items, then create the GUI
   mItems.sort();
 
-  QHBox* page = makeHBoxMainWidget();
+  Q3HBox* page = makeHBoxMainWidget();
   mListView = new KListView( page );
   mListView->setSorting( -1 );
   mListView->addColumn( QString::null );
   mListView->header()->hide();
 
-  for( QPtrListIterator<CompletionItem> compit( mItems ); *compit; ++compit ) {
+  for( Q3PtrListIterator<CompletionItem> compit( mItems ); *compit; ++compit ) {
     new CompletionViewItem( mListView, *compit );
     kdDebug(5300) << "  " << (*compit)->label() << " " << (*compit)->completionWeight() << endl;
   }
 
-  QVBox* upDownBox = new QVBox( page );
+  Q3VBox* upDownBox = new Q3VBox( page );
   mUpButton = new KPushButton( upDownBox, "mUpButton" );
   mUpButton->setIconSet( BarIconSet( "up", KIcon::SizeSmall ) );
   mUpButton->setEnabled( false ); // b/c no item is selected yet
-  mUpButton->setFocusPolicy( StrongFocus );
+  mUpButton->setFocusPolicy( Qt::StrongFocus );
 
   mDownButton = new KPushButton( upDownBox, "mDownButton" );
   mDownButton->setIconSet( BarIconSet( "down", KIcon::SizeSmall ) );
   mDownButton->setEnabled( false ); // b/c no item is selected yet
-  mDownButton->setFocusPolicy( StrongFocus );
+  mDownButton->setFocusPolicy( Qt::StrongFocus );
 
   QWidget* spacer = new QWidget( upDownBox );
   upDownBox->setStretchFactor( spacer, 100 );
 
-  connect( mListView, SIGNAL( selectionChanged( QListViewItem* ) ),
-           SLOT( slotSelectionChanged( QListViewItem* ) ) );
+  connect( mListView, SIGNAL( selectionChanged( Q3ListViewItem* ) ),
+           SLOT( slotSelectionChanged( Q3ListViewItem* ) ) );
   connect( mUpButton, SIGNAL( clicked() ), this, SLOT( slotMoveUp() ) );
   connect( mDownButton, SIGNAL( clicked() ), this, SLOT( slotMoveDown() ) );
 }
@@ -242,7 +245,7 @@ CompletionOrderEditor::~CompletionOrderEditor()
 {
 }
 
-void CompletionOrderEditor::slotSelectionChanged( QListViewItem *item )
+void CompletionOrderEditor::slotSelectionChanged( Q3ListViewItem *item )
 {
   mDownButton->setEnabled( item && item->itemBelow() );
   mUpButton->setEnabled( item && item->itemAbove() );
@@ -283,7 +286,7 @@ void CompletionOrderEditor::slotOk()
 {
   if ( mDirty ) {
     int w = 100;
-    for ( QListViewItem* it = mListView->firstChild(); it; it = it->nextSibling() ) {
+    for ( Q3ListViewItem* it = mListView->firstChild(); it; it = it->nextSibling() ) {
       CompletionViewItem *item = static_cast<CompletionViewItem *>( it );
       item->item()->setCompletionWeight( w );
       item->item()->save( this );

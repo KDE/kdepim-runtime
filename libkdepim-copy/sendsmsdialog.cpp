@@ -21,7 +21,9 @@
  */
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QGridLayout>
 
 #include <klocale.h>
 
@@ -40,7 +42,7 @@ SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent, con
   mMessageLength->setAlignment( Qt::AlignRight );
   layout->addWidget( mMessageLength, 0, 2 );
 
-  mText = new QTextEdit( page );
+  mText = new Q3TextEdit( page );
   layout->addMultiCellWidget( mText, 1, 1, 0, 2 );
 
   layout->addWidget( new QLabel( i18n( "Recipient:" ), page ), 2, 0 );

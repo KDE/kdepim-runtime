@@ -19,8 +19,10 @@
 #define SCOREEDITWIDGET_H
 
 #include <qmap.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <kdialogbase.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qframe.h>
 
 #include "kwidgetlister.h"
@@ -31,9 +33,8 @@ class KComboBox;
 class KLineEdit;
 class KIntSpinBox;
 class KListBox;
-class QFrame;
 class QLabel;
-class QListBoxItem;
+class Q3ListBoxItem;
 class QPushButton;
 class QCheckBox;
 class QRadioButton;
@@ -113,7 +114,7 @@ private:
   /** the list of available action */
   KComboBox *types;
   /** the stack of the edit widgets for each action type */
-  QWidgetStack *stack;
+  Q3WidgetStack *stack;
   /** the notify action editor */
   KLineEdit *notifyEditor;
   /** the score acton editor */
@@ -209,14 +210,14 @@ signals:
   void leavingRule();
 public slots:
   void slotRuleSelected(const QString&);
-  void slotRuleSelected(QListBoxItem *);
+  void slotRuleSelected(Q3ListBoxItem *);
   void slotRuleSelected(int);
   void updateRuleList();
   void updateRuleList(const KScoringRule*);
   void slotRuleNameChanged(const QString&,const QString&);
 protected slots:
   void slotGroupFilter(const QString&);
-  void slotEditRule(QListBoxItem*);
+  void slotEditRule(Q3ListBoxItem*);
   void slotEditRule(const QString&);
   void slotEditRule();
   void slotDelRule();

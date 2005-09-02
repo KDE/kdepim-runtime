@@ -23,9 +23,12 @@
 #ifndef maillistdrag_h
 #define maillistdrag_h
 
-#include "qdragobject.h"
-#include "qvaluelist.h"
+#include "q3dragobject.h"
+#include "q3valuelist.h"
 #include "qglobal.h"
+//Added by qt3to4:
+#include <Q3CString>
+#include <QDropEvent>
 #include "time.h"
 
 #include <kdepimmacros.h>
@@ -86,7 +89,7 @@ private:
 };
 
 // List of mail summaries
-typedef QValueList<MailSummary> MailList;
+typedef Q3ValueList<MailSummary> MailList;
 
 // Object for the drag object to call-back for message fulltext
 class KDE_EXPORT MailTextSource {
@@ -94,11 +97,12 @@ public:
     MailTextSource() {}
     virtual ~MailTextSource() {}
 
-    virtual QCString text(Q_UINT32 serialNumber) const = 0;
+    virtual Q3CString text(Q_UINT32 serialNumber) const = 0;
 };
 
 // Drag and drop object for mails
-class KDE_EXPORT MailListDrag : public QDragObject
+
+class KDE_EXPORT MailListDrag : public Q3DragObject
 {
 public:
     // Takes ownership of "src" and deletes it when done

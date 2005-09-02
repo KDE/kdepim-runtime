@@ -23,9 +23,11 @@
 #define SENDSMSDIALOG_H
 
 #include <kdialogbase.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class QLabel;
-class QTextEdit;
+class Q3TextEdit;
 
 class SendSMSDialog : public KDialogBase
 {
@@ -42,7 +44,7 @@ class SendSMSDialog : public KDialogBase
 
   private:
     QLabel *mMessageLength;
-    QTextEdit *mText;
+    Q3TextEdit *mText;
 };
 
 #endif

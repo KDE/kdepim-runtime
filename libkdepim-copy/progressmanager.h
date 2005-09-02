@@ -25,8 +25,9 @@
 #define __KPIM_PROGRESSMANAGER_H__
 
 #include <qobject.h>
-#include <qdict.h>
+#include <q3dict.h>
 #include <qstring.h>
+#include <QMap>
 
 #include <kdepimmacros.h>
 
@@ -40,7 +41,7 @@ class KDE_EXPORT ProgressItem : public QObject
 {
   Q_OBJECT
   friend class ProgressManager;
-  friend class QDict< ProgressItem >; // so it can be deleted from dicts
+  friend class Q3Dict< ProgressItem >; // so it can be deleted from dicts
 
   public:
 
@@ -392,7 +393,7 @@ class KDE_EXPORT ProgressManager : public QObject
                 bool cancellable, bool usesCrypto );
     void emitShowProgressDialogImpl();
 
-    QDict< ProgressItem > mTransactions;
+    Q3Dict< ProgressItem > mTransactions;
     static ProgressManager *mInstance;
     static unsigned int uID;
 };

@@ -22,13 +22,15 @@
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlayout.h>
-#include <qobjectlist.h>
+#include <qobject.h>
 #include <qspinbox.h>
 #include <qregexp.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qwidgetfactory.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
 
 #include <kdatepicker.h>
 #include <kdatetimewidget.h>
@@ -153,7 +155,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       QCheckBox *wdg = static_cast<QCheckBox*>( widIt.data() );
       wdg->setChecked( false );
     } else if ( widIt.data()->inherits( "QDateTimeEdit" ) ) {
-      QDateTimeEdit *wdg = static_cast<QDateTimeEdit*>( widIt.data() );
+      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( widIt.data() );
       wdg->setDateTime( QDateTime::currentDateTime() );
     } else if ( widIt.data()->inherits( "KDateTimeWidget" ) ) {
       KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( widIt.data() );
@@ -165,7 +167,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       QComboBox *wdg = static_cast<QComboBox*>( widIt.data() );
       wdg->setCurrentItem( 0 );
     } else if ( widIt.data()->inherits( "QTextEdit" ) ) {
-      QTextEdit *wdg = static_cast<QTextEdit*>( widIt.data() );
+      Q3TextEdit *wdg = static_cast<Q3TextEdit*>( widIt.data() );
       wdg->setText( QString::null );
     }
   }
@@ -186,7 +188,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
         QCheckBox *wdg = static_cast<QCheckBox*>( it.data() );
         wdg->setChecked( value == "true" || value == "1" );
       } else if ( it.data()->inherits( "QDateTimeEdit" ) ) {
-        QDateTimeEdit *wdg = static_cast<QDateTimeEdit*>( it.data() );
+        Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.data() );
         wdg->setDateTime( QDateTime::fromString( value, Qt::ISODate ) );
       } else if ( it.data()->inherits( "KDateTimeWidget" ) ) {
         KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.data() );
@@ -198,7 +200,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
         QComboBox *wdg = static_cast<QComboBox*>( it.data() );
         wdg->setCurrentText( value );
       } else if ( it.data()->inherits( "QTextEdit" ) ) {
-        QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
+        Q3TextEdit *wdg = static_cast<Q3TextEdit*>( it.data() );
         wdg->setText( value );
       }
     }
@@ -220,7 +222,7 @@ void DesignerFields::save( DesignerFields::Storage *storage )
       QCheckBox *wdg = static_cast<QCheckBox*>( it.data() );
       value = ( wdg->isChecked() ? "true" : "false" );
     } else if ( it.data()->inherits( "QDateTimeEdit" ) ) {
-      QDateTimeEdit *wdg = static_cast<QDateTimeEdit*>( it.data() );
+      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.data() );
       value = wdg->dateTime().toString( Qt::ISODate );
     } else if ( it.data()->inherits( "KDateTimeWidget" ) ) {
       KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.data() );
@@ -232,7 +234,7 @@ void DesignerFields::save( DesignerFields::Storage *storage )
       QComboBox *wdg = static_cast<QComboBox*>( it.data() );
       value = wdg->currentText();
     } else if ( it.data()->inherits( "QTextEdit" ) ) {
-      QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
+      Q3TextEdit *wdg = static_cast<Q3TextEdit*>( it.data() );
       value = wdg->text();
    }
 

@@ -24,17 +24,19 @@
 // class. Application specific code should go to a subclass provided by the
 // application using this dialog.
 
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qfile.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qradiobutton.h>
 #include <qregexp.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qtextstream.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 #include <kapplication.h>
 #include <kdebug.h>
@@ -66,7 +68,7 @@ KImportColumn::KImportColumn(KImportDialog *dlg,const QString &header, int count
   mDialog->addColumn(this);
 }
 
-QValueList<int> KImportColumn::formats()
+Q3ValueList<int> KImportColumn::formats()
 {
   return mFormats;
 }
@@ -115,22 +117,22 @@ void KImportColumn::removeColId(int id)
   mColIds.remove(id);
 }
 
-QValueList<int> KImportColumn::colIdList()
+Q3ValueList<int> KImportColumn::colIdList()
 {
   return mColIds;
 }
 
 QString KImportColumn::convert()
 {
-  QValueList<int>::ConstIterator it = mColIds.begin();
+  Q3ValueList<int>::ConstIterator it = mColIds.begin();
   if (it == mColIds.end()) return "";
   else return mDialog->cell(*it);
 }
 
 
-class ColumnItem : public QListViewItem {
+class ColumnItem : public Q3ListViewItem {
   public:
-    ColumnItem(KImportColumn *col,QListView *parent) : QListViewItem(parent), mColumn(col)
+    ColumnItem(KImportColumn *col,Q3ListView *parent) : Q3ListViewItem(parent), mColumn(col)
     {
       setText(0,mColumn->header());
     }
@@ -155,11 +157,11 @@ KImportDialog::KImportDialog(QWidget* parent)
 {
   mData.setAutoDelete( true );
 
-  QVBox *topBox = new QVBox(this);
+  Q3VBox *topBox = new Q3VBox(this);
   setMainWidget(topBox);
   topBox->setSpacing(spacingHint());
 
-  QHBox *fileBox = new QHBox(topBox);
+  Q3HBox *fileBox = new Q3HBox(topBox);
   fileBox->setSpacing(spacingHint());
   new QLabel(i18n("File to import:"),fileBox);
   KURLRequester *urlRequester = new KURLRequester(fileBox);
@@ -170,11 +172,11 @@ KImportDialog::KImportDialog(QWidget* parent)
           SLOT(setFile(const QString &)));
   connect(urlRequester->lineEdit(),SIGNAL(textChanged ( const QString & )),
           SLOT(slotUrlChanged(const QString & )));
-  mTable = new QTable(5,5,topBox);
+  mTable = new Q3Table(5,5,topBox);
   mTable->setMinimumHeight( 150 );
   connect(mTable,SIGNAL(selectionChanged()),SLOT(tableSelected()));
 
-  QHBox *separatorBox = new QHBox( topBox );
+  Q3HBox *separatorBox = new Q3HBox( topBox );
   separatorBox->setSpacing( spacingHint() );
 
   new QLabel( i18n( "Separator:" ), separatorBox );
@@ -189,7 +191,7 @@ KImportDialog::KImportDialog(QWidget* parent)
           this, SLOT( separatorClicked(int) ) );
   mSeparatorCombo->setCurrentItem( 0 );
 
-  QHBox *rowsBox = new QHBox( topBox );
+  Q3HBox *rowsBox = new Q3HBox( topBox );
   rowsBox->setSpacing( spacingHint() );
 
   new QLabel( i18n( "Import starts at row:" ), rowsBox );
@@ -200,18 +202,18 @@ KImportDialog::KImportDialog(QWidget* parent)
   mEndRow = new QSpinBox( rowsBox );
   mEndRow->setMinValue( 1 );
 */
-  QVBox *assignBox = new QVBox(topBox);
+  Q3VBox *assignBox = new Q3VBox(topBox);
   assignBox->setSpacing(spacingHint());
 
-  QHBox *listsBox = new QHBox(assignBox);
+  Q3HBox *listsBox = new Q3HBox(assignBox);
   listsBox->setSpacing(spacingHint());
 
-  mHeaderList = new QListView(listsBox);
+  mHeaderList = new Q3ListView(listsBox);
   mHeaderList->addColumn(i18n("Header"));
-  connect(mHeaderList, SIGNAL(selectionChanged(QListViewItem*)),
-          this, SLOT(headerSelected(QListViewItem*)));
-  connect(mHeaderList,SIGNAL(doubleClicked(QListViewItem*)),
-          SLOT(assignColumn(QListViewItem *)));
+  connect(mHeaderList, SIGNAL(selectionChanged(Q3ListViewItem*)),
+          this, SLOT(headerSelected(Q3ListViewItem*)));
+  connect(mHeaderList,SIGNAL(doubleClicked(Q3ListViewItem*)),
+          SLOT(assignColumn(Q3ListViewItem *)));
 
   mFormatCombo = new KComboBox( listsBox );
   mFormatCombo->setDuplicatesEnabled( false );
@@ -251,7 +253,7 @@ bool KImportDialog::setFile(const QString& file)
 
   QFile f(file);
 
-  if (f.open(IO_ReadOnly)) {
+  if (f.open(QIODevice::ReadOnly)) {
     mFile = "";
     QTextStream t(&f);
     mFile = t.read();
@@ -271,7 +273,7 @@ bool KImportDialog::setFile(const QString& file)
 
 void KImportDialog::registerColumns()
 {
-  QPtrListIterator<KImportColumn> colIt(mColumns);
+  Q3PtrListIterator<KImportColumn> colIt(mColumns);
   for (; colIt.current(); ++colIt) {
     new ColumnItem(*colIt,mHeaderList);
   }
@@ -289,7 +291,7 @@ void KImportDialog::fillTable()
           mTable->clearCell(row, column);
 
   for ( row = 0; row < int(mData.count()); ++row ) {
-    QValueVector<QString> *rowVector = mData[ row ];
+    Q3ValueVector<QString> *rowVector = mData[ row ];
     for( column = 0; column < int(rowVector->size()); ++column ) {
       setCellText( row, column, rowVector->at( column ) );
     }
@@ -313,7 +315,7 @@ void KImportDialog::readFile( int rows )
   QString field = "";
 
   row = column = 0;
-  QTextStream inputStream(mFile, IO_ReadOnly);
+  QTextStream inputStream(&mFile, QIODevice::ReadOnly);
   inputStream.setEncoding(QTextStream::Locale);
 
   KProgressDialog pDialog(this, 0, i18n("Loading Progress"),
@@ -323,7 +325,7 @@ void KImportDialog::readFile( int rows )
   pDialog.setAutoClose(true);
   
   KProgress *progress = pDialog.progressBar();
-  progress->setTotalSteps( mFile.contains(mSeparator, false) );
+  progress->setTotalSteps( mFile.count(mSeparator, Qt::CaseSensitive) );
   progress->setValue(0);
   int progressValue = 0;
   
@@ -334,7 +336,7 @@ void KImportDialog::readFile( int rows )
     inputStream >> x; // read one char
 
     // update the dialog if needed
-    if (x == mSeparator)
+    if (QString( x ) == mSeparator) // PORT: HUH???
     {
       progress->setValue(progressValue++);
       if (progressValue % 15 == 0) // try not to constantly repaint
@@ -348,7 +350,7 @@ void KImportDialog::readFile( int rows )
         if (x == m_textquote) {
           field += x;
           state = S_QUOTED_FIELD;
-        } else if (x == mSeparator) {
+        } else if (QString( x ) == mSeparator) {
           ++column;
         } else if (x == '\n')  {
           ++row;
@@ -380,7 +382,7 @@ void KImportDialog::readFile( int rows )
         if (x == m_textquote) {
           field += x;
           state = S_QUOTED_FIELD;
-        } else if (x == mSeparator || x == '\n') {
+        } else if (QString( x ) == mSeparator || x == '\n') {
           setData(row - m_startline, column, field);
           field = "";
           if (x == '\n') {
@@ -395,7 +397,7 @@ void KImportDialog::readFile( int rows )
         }
         break;
       case S_END_OF_QUOTED_FIELD :
-        if (x == mSeparator || x == '\n') {
+        if (QString( x ) == mSeparator || x == '\n') {
           setData(row - m_startline, column, field);
           field = "";
           if (x == '\n') {
@@ -415,7 +417,7 @@ void KImportDialog::readFile( int rows )
           state = S_QUOTED_FIELD;
         }
       case S_NORMAL_FIELD :
-        if (x == mSeparator || x == '\n') {
+        if (QString( x ) == mSeparator || x == '\n') {
           setData(row - m_startline, column, field);
           field = "";
           if (x == '\n') {
@@ -450,12 +452,12 @@ void KImportDialog::setCellText(int row, int col, const QString& text)
   mTable->setText(row, col, formattedText);
 }
 
-void KImportDialog::formatSelected(QListViewItem*)
+void KImportDialog::formatSelected(Q3ListViewItem*)
 {
 //    kdDebug(5300) << "KImportDialog::formatSelected()" << endl;
 }
 
-void KImportDialog::headerSelected(QListViewItem* item)
+void KImportDialog::headerSelected(Q3ListViewItem* item)
 {
   KImportColumn *col = ((ColumnItem *)item)->column();
 
@@ -463,16 +465,16 @@ void KImportDialog::headerSelected(QListViewItem* item)
 
   mFormatCombo->clear();
 
-  QValueList<int> formats = col->formats();
+  Q3ValueList<int> formats = col->formats();
 
-  QValueList<int>::ConstIterator it = formats.begin();
-  QValueList<int>::ConstIterator end = formats.end();
+  Q3ValueList<int>::ConstIterator it = formats.begin();
+  Q3ValueList<int>::ConstIterator end = formats.end();
   while(it != end) {
     mFormatCombo->insertItem( col->formatName(*it), *it - 1 );
     ++it;
   }
 
-  QTableSelection selection = mTable->selection(mTable->currentSelection());
+  Q3TableSelection selection = mTable->selection(mTable->currentSelection());
 
   updateFormatSelection(selection.leftCol());
 }
@@ -489,9 +491,9 @@ void KImportDialog::updateFormatSelection(int column)
 
 void KImportDialog::tableSelected()
 {
-  QTableSelection selection = mTable->selection(mTable->currentSelection());
+  Q3TableSelection selection = mTable->selection(mTable->currentSelection());
 
-  QListViewItem *item = mHeaderList->firstChild();
+  Q3ListViewItem *item = mHeaderList->firstChild();
   KImportColumn *col = mColumnDict.find(selection.leftCol());
   if (col) {
     while(item) {
@@ -534,7 +536,7 @@ void KImportDialog::separatorClicked(int id)
   readFile();
 }
 
-void KImportDialog::assignColumn(QListViewItem *item)
+void KImportDialog::assignColumn(Q3ListViewItem *item)
 {
   if (!item) return;
 
@@ -543,7 +545,7 @@ void KImportDialog::assignColumn(QListViewItem *item)
 
   ColumnItem *colItem = (ColumnItem *)item;
 
-  QTableSelection selection = mTable->selection(mTable->currentSelection());
+  Q3TableSelection selection = mTable->selection(mTable->currentSelection());
 
 //  kdDebug(5300) << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
 
@@ -567,7 +569,7 @@ void KImportDialog::assignColumn()
 
 void KImportDialog::assignTemplate()
 {
-  QMap<uint,int> columnMap;
+  QMap<int,int> columnMap;
   QMap<QString, QString> fileMap;
   QStringList templates;
 
@@ -599,18 +601,18 @@ void KImportDialog::assignTemplate()
 
   KSimpleConfig config( fileMap[ tmp ], true );
   config.setGroup( "General" );
-  uint numColumns = config.readUnsignedNumEntry( "Columns" );
+  int numColumns = config.readUnsignedNumEntry( "Columns" );
   int format = config.readNumEntry( "Format" );
 
   // create the column map
   config.setGroup( "csv column map" );
-  for ( uint i = 0; i < numColumns; ++i ) {
+  for ( int i = 0; i < numColumns; ++i ) {
     int col = config.readNumEntry( QString::number( i ) );
     columnMap.insert( i, col );
   }
 
   // apply the column map
-  for ( uint i = 0; i < columnMap.count(); ++i ) {
+  for ( int i = 0; i < columnMap.count(); ++i ) {
     int tableColumn = columnMap[i];
     if ( tableColumn == -1 )
       continue;
@@ -626,7 +628,7 @@ void KImportDialog::assignTemplate()
 
 void KImportDialog::removeColumn()
 {
-  QTableSelection selection = mTable->selection(mTable->currentSelection());
+  Q3TableSelection selection = mTable->selection(mTable->currentSelection());
 
 //  kdDebug(5300) << " l: " << selection.leftCol() << "  r: " << selection.rightCol() << endl;
 
@@ -662,7 +664,7 @@ void KImportDialog::applyConverter()
   readFile( 0 );
   
   pDialog.show();
-  for( uint i = mStartRow->value() - 1; i < mData.count() && !pDialog.wasCancelled(); ++i ) {
+  for( int i = mStartRow->value() - 1; i < mData.count() && !pDialog.wasCancelled(); ++i ) {
     mCurrentRow = i;
     progress->setValue(i);
     if (i % 5 == 0)  // try to avoid constantly processing events
@@ -684,7 +686,7 @@ int KImportDialog::findFormat(int column)
   return format;
 }
 
-QString KImportDialog::cell(uint col)
+QString KImportDialog::cell(int col)
 {
   if ( col >= mData[ mCurrentRow ]->size() ) return "";
   else return data( mCurrentRow, col );
@@ -695,7 +697,7 @@ void KImportDialog::addColumn(KImportColumn *col)
   mColumns.append(col);
 }
 
-void KImportDialog::setData( uint row, uint col, const QString &value )
+void KImportDialog::setData( int row, int col, const QString &value )
 {
   QString val = value;
   val.replace( "\\n", "\n" );
@@ -704,9 +706,9 @@ void KImportDialog::setData( uint row, uint col, const QString &value )
     mData.resize( row + 1 );
   }
   
-  QValueVector<QString> *rowVector = mData[ row ];
+  Q3ValueVector<QString> *rowVector = mData[ row ];
   if ( !rowVector ) {
-    rowVector = new QValueVector<QString>;
+    rowVector = new Q3ValueVector<QString>;
     mData.insert( row, rowVector );
   }
   if ( col >= rowVector->size() ) {
@@ -720,7 +722,7 @@ void KImportDialog::setData( uint row, uint col, const QString &value )
     rowVector->at( col ) = val;
 }
 
-QString KImportDialog::data( uint row, uint col )
+QString KImportDialog::data( int row, int col )
 {
   return mData[ row ]->at( col );
 }
@@ -753,9 +755,9 @@ void KImportDialog::saveTemplate()
   config.setGroup( "csv column map" );
   
   KImportColumn *column;
-  uint counter = 0;
+  int counter = 0;
   for ( column = mColumns.first(); column; column = mColumns.next() ) {
-    QValueList<int> list = column->colIdList();
+    Q3ValueList<int> list = column->colIdList();
     if ( list.count() > 0 )
       config.writeEntry( QString::number( counter ), list[ 0 ] );
     else

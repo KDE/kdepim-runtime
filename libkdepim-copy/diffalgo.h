@@ -22,7 +22,7 @@
 #ifndef DIFFALGO_H
 #define DIFFALGO_H
 
-#include <qvaluelist.h>
+#include <qlist.h>
 #include <kdepimmacros.h>
 
 namespace KPIM {
@@ -130,7 +130,7 @@ class KDE_EXPORT DiffAlgo
 
 
   private:
-    QValueList<DiffAlgoDisplay*> mDisplays;
+    QList<DiffAlgoDisplay*> mDisplays;
 };
 
 }

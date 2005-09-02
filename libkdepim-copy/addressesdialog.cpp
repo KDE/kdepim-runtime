@@ -49,10 +49,13 @@
 #include <krun.h>
 #include <kstandarddirs.h>
 
-#include <qdict.h>
+#include <q3dict.h>
 #include <qlayout.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 #include <qwidget.h>
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <Q3PtrList>
 
 namespace KPIM {
 
@@ -76,7 +79,7 @@ struct AddressesDialog::AddressesDialogPrivate {
   AddresseeViewItem           *ccItem;
   AddresseeViewItem           *bccItem;
 
-  QDict<AddresseeViewItem>     groupDict;
+  Q3Dict<AddresseeViewItem>     groupDict;
 
   KABC::Addressee::List       recentAddresses;
 };
@@ -98,7 +101,7 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
     if ( addr.photo().data().isNull() )
       setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small ) );
     else
-      setPixmap( 0, addr.photo().data().smoothScale( 16, 16 ) );
+      setPixmap( 0, QPixmap::fromImage( addr.photo().data().smoothScale( 16, 16 ) ) );
   } else {
     setPixmap( 0, KGlobal::iconLoader()->loadIcon( addr.photo().url(), KIcon::Small ) );
   }
@@ -178,11 +181,11 @@ void AddresseeViewItem::setSelected(bool selected)
     }
 
     emit addressSelected( this, selected );
-    QListViewItem::setSelected(selected);
+    Q3ListViewItem::setSelected(selected);
 }
 
 int
-AddresseeViewItem::compare( QListViewItem * i, int col, bool ascending ) const
+AddresseeViewItem::compare( Q3ListViewItem * i, int col, bool ascending ) const
 {
   if ( category() == Group || category() == Entry )
     return KListViewItem::compare( i , col, ascending );
@@ -207,7 +210,7 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   : KDialogBase( widget, name, true, i18n("Address Selection"),
                  Ok|Cancel, Ok, true )
 {
-  QVBox *page = makeVBoxMainWidget();
+  Q3VBox *page = makeVBoxMainWidget();
   d = new AddressesDialogPrivate;
   d->ui = new AddressPickerUI( page );
 
@@ -384,9 +387,9 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
 #ifdef KDEPIM_NEW_DISTRLISTS
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
-    const QValueList<KPIM::DistributionList::Entry> eList
+    const Q3ValueList<KPIM::DistributionList::Entry> eList
       = KPIM::DistributionList::findByName(abook, *it).entries(abook);
-    QValueList<KPIM::DistributionList::Entry>::ConstIterator eit;
+    Q3ValueList<KPIM::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && aList.find( a ) == aList.end() ) {
@@ -398,8 +401,8 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   KABC::DistributionListManager manager( abook );
   manager.load();
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
-    const QValueList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
-    QValueList<KABC::DistributionList::Entry>::ConstIterator eit;
+    const Q3ValueList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
+    Q3ValueList<KABC::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && aList.find( a ) == aList.end() ) {
@@ -475,8 +478,8 @@ AddressesDialog::updateAvailableAddressees()
 
 void AddressesDialog::checkForSingleAvailableGroup()
 {
-  QListViewItem* item = d->ui->mAvailableView->firstChild();
-  QListViewItem* firstGroup = 0;
+  Q3ListViewItem* item = d->ui->mAvailableView->firstChild();
+  Q3ListViewItem* firstGroup = 0;
   int found = 0;
   while (item)
   {
@@ -532,7 +535,7 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
   // we have to avoid that a parent and a child is selected together
   // because in this case we get a double object deletion ( program crashes )
   // when removing the selected items from list
-  AddresseeViewItem* parent = static_cast<AddresseeViewItem*>(((QListViewItem*)item)->parent());
+  AddresseeViewItem* parent = static_cast<AddresseeViewItem*>(((Q3ListViewItem*)item)->parent());
   if ( parent  && selected )
     parent->setSelected( false );
   if (selected)
@@ -569,11 +572,11 @@ AddressesDialog::initConnections()
            SLOT(removeEntry()) );
   connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
            SLOT(availableSelectionChanged())  );
-  connect( d->ui->mAvailableView, SIGNAL(doubleClicked(QListViewItem*)),
+  connect( d->ui->mAvailableView, SIGNAL(doubleClicked(Q3ListViewItem*)),
            SLOT(addSelectedTo()) );
   connect( d->ui->mSelectedView, SIGNAL(selectionChanged()),
            SLOT(selectedSelectionChanged()) );
-  connect( d->ui->mSelectedView, SIGNAL(doubleClicked(QListViewItem*)),
+  connect( d->ui->mSelectedView, SIGNAL(doubleClicked(Q3ListViewItem*)),
            SLOT(removeEntry()) );
 
 #ifndef KDEPIM_NEW_DISTRLISTS
@@ -600,7 +603,7 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
         d->groupDict.insert( *it,  category );
       }
 
-      for ( uint i = 0; i < addr.emails().count(); ++i ) {
+      for ( int i = 0; i < addr.emails().count(); ++i ) {
         AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr, i );
         connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
                 this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
@@ -646,11 +649,11 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
 
 void
 AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent,
-                                          const QPtrList<AddresseeViewItem>& addresses )
+                                          const Q3PtrList<AddresseeViewItem>& addresses )
 {
   Q_ASSERT( parent );
 
-  QPtrListIterator<AddresseeViewItem> itr( addresses );
+  Q3PtrListIterator<AddresseeViewItem> itr( addresses );
 
   if (itr.current())
   {
@@ -789,13 +792,13 @@ void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
 void
 AddressesDialog::removeEntry()
 {
-  QPtrList<AddresseeViewItem> lst;
+  Q3PtrList<AddresseeViewItem> lst;
   bool resetTo  = false;
   bool resetCC  = false;
   bool resetBCC = false;
 
   lst.setAutoDelete( false );
-  QPtrListIterator<AddresseeViewItem> it( selectedSelectedAddresses );
+  Q3PtrListIterator<AddresseeViewItem> it( selectedSelectedAddresses );
   while ( it.current() ) {
     AddresseeViewItem* item = it.current();
     ++it;
@@ -842,10 +845,10 @@ AddressesDialog::removeEntry()
 // KDE4: should be in libkabc I think
 static KABC::Resource *requestResource( KABC::AddressBook* abook, QWidget *parent )
 {
-  QPtrList<KABC::Resource> kabcResources = abook->resources();
+  Q3PtrList<KABC::Resource> kabcResources = abook->resources();
 
-  QPtrList<KRES::Resource> kresResources;
-  QPtrListIterator<KABC::Resource> resIt( kabcResources );
+  Q3PtrList<KRES::Resource> kresResources;
+  Q3PtrListIterator<KABC::Resource> resIt( kabcResources );
   KABC::Resource *resource;
   while ( ( resource = resIt.current() ) != 0 ) {
     ++resIt;
@@ -936,7 +939,7 @@ AddressesDialog::launchAddressBook()
 void
 AddressesDialog::filterChanged( const QString& txt )
 {
-  QListViewItemIterator it( d->ui->mAvailableView );
+  Q3ListViewItemIterator it( d->ui->mAvailableView );
   bool showAll = false;
 
   if ( txt.isEmpty() )
@@ -954,8 +957,8 @@ AddressesDialog::filterChanged( const QString& txt )
     if ( item->category() == AddresseeViewItem::Entry ) {
       bool matches = item->matches( txt ) ;
       item->setVisible( matches );
-      if ( matches && static_cast<QListViewItem*>(item)->parent() ) {
-          static_cast<QListViewItem*>(item)->parent()->setOpen( true );//open the parents with found entries
+      if ( matches && static_cast<Q3ListViewItem*>(item)->parent() ) {
+          static_cast<Q3ListViewItem*>(item)->parent()->setOpen( true );//open the parents with found entries
       }
     }
   }
@@ -965,7 +968,7 @@ KABC::Addressee::List
 AddressesDialog::allAddressee( KListView* view, bool onlySelected ) const
 {
   KABC::Addressee::List lst;
-  QListViewItemIterator it( view );
+  Q3ListViewItemIterator it( view );
   while ( it.current() ) {
     AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
     if ( !onlySelected || item->isSelected() ) {
@@ -1035,7 +1038,7 @@ AddressesDialog::addDistributionLists()
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
 
 #ifdef KDEPIM_NEW_DISTRLISTS
-  const QValueList<KPIM::DistributionList> distLists =
+  const Q3ValueList<KPIM::DistributionList> distLists =
     KPIM::DistributionList::allDistributionLists( abook );
 #else
   KABC::DistributionListManager manager( abook );
@@ -1051,7 +1054,7 @@ AddressesDialog::addDistributionLists()
                                                       i18n( "Distribution Lists" ) );
 
 #ifdef KDEPIM_NEW_DISTRLISTS
-  QValueList<KPIM::DistributionList>::ConstIterator listIt;
+  Q3ValueList<KPIM::DistributionList>::ConstIterator listIt;
 #else
   QStringList::Iterator listIt;
 #endif

@@ -20,9 +20,9 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
-#include <qheader.h>
+#include <q3header.h>
 
 #include "categoryselectdialog_base.h"
 #include <klocale.h>
@@ -63,7 +63,6 @@ void CategorySelectDialog::setCategories( const QStringList &categoryList )
     if ( mPrefs->mCustomCategories.find( *it ) == mPrefs->mCustomCategories.end() )
       mPrefs->mCustomCategories.append( *it );
 
-  
   CategoryHierarchyReaderQListView( mWidget->mCategories, false, true ).
       read( mPrefs->mCustomCategories );
 }
@@ -79,18 +78,19 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
   QStringList::ConstIterator it;
   for ( it = selList.begin(); it != selList.end(); ++it ) {
     QStringList path = CategoryHierarchyReader::path( *it );
-    QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
+    Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
     while (item) {
+     item = (Q3CheckListItem *)item->nextSibling();
       if (item->text() == path.first()) {
         if ( path.count() == 1 ) {
           item->setOn(true);
           break;
         } else {
-          item = (QCheckListItem *)item->firstChild();
+          item = (Q3CheckListItem *)item->nextSibling();
           path.pop_front();
         }
       } else
-        item = (QCheckListItem *)item->nextSibling();
+        item = (Q3CheckListItem *)item->nextSibling();
     }
   }
 }
@@ -103,7 +103,7 @@ QStringList CategorySelectDialog::selectedCategories() const
 static QStringList getSelectedCategories( const QListView *categoriesView )
 {
   QStringList categories;
-  QCheckListItem *item = (QCheckListItem *)categoriesView->firstChild();
+  Q3CheckListItem *item = (Q3CheckListItem *)mCategories->firstChild();
   QStringList path;
   while (item) {
     path.append( item->text() );
@@ -114,7 +114,7 @@ static QStringList getSelectedCategories( const QListView *categoriesView )
       categories.append( _path.join( KPimPrefs::categorySeparator ) );
     }
     if ( item->firstChild() ) {
-      item = (QCheckListItem *)item->firstChild();
+      item = (Q3CheckListItem *)item->nextSibling();
     } else {
       QCheckListItem *next_item = 0;
       while ( !next_item && item ) {
@@ -148,8 +148,13 @@ void CategorySelectDialog::slotOk()
 
 void CategorySelectDialog::clear()
 {
-  QCheckListItem *item = (QCheckListItem *)mWidget->mCategories->firstChild();
+  Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
   while (item) {
+<<<<<<< .mine
+    item->setOn(false);
+    item = (Q3CheckListItem *)item->nextSibling();
+  }  
+=======
     item->setOn( false );
     if ( item->firstChild() ) {
       item = (QCheckListItem *)item->firstChild();
@@ -162,11 +167,23 @@ void CategorySelectDialog::clear()
       item = next_item;
     }
   }
+>>>>>>> .r456277
 }
 
 void CategorySelectDialog::updateCategoryConfig()
 {
+<<<<<<< .mine
+  QStringList selected;
+  Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
+  while (item) {
+    if (item->isOn()) {
+      selected.append(item->text());
+    }
+    item = (Q3CheckListItem *)item->nextSibling();
+  }
+=======
   QStringList selected = getSelectedCategories( mWidget->mCategories );
+>>>>>>> .r456277
 
   setCategories();
   

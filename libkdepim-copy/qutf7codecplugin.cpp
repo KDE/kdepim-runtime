@@ -27,7 +27,7 @@
 #include <qtextcodecplugin.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 class QTextCodec;
 
@@ -38,7 +38,7 @@ public:
   QUtf7CodecPlugin() {}
 
   QStringList names() const { return QStringList() << "UTF-7" << "X-QT-UTF-7-STRICT"; }
-  QValueList<int> mibEnums() const { return QValueList<int>() << 1012 << -1012; }
+  Q3ValueList<int> mibEnums() const { return Q3ValueList<int>() << 1012 << -1012; }
   QTextCodec * createForMib( int );
   QTextCodec * createForName( const QString & );
 };

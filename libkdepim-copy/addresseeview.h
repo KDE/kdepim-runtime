@@ -22,7 +22,10 @@
 #ifndef KPIM_ADDRESSEEVIEW_H
 #define KPIM_ADDRESSEEVIEW_H
 
-#include <qcstring.h>
+#include <q3cstring.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3PopupMenu>
 
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
@@ -34,7 +37,7 @@ class Job;
 }
 class KToggleAction;
 
-class QPopupMenu;
+class Q3PopupMenu;
 
 
 namespace KPIM {
@@ -156,7 +159,7 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     virtual void faxNumberClicked( const QString &number );
     virtual void imAddressClicked();
 
-    virtual QPopupMenu *createPopupMenu( const QPoint& );
+    virtual Q3PopupMenu *createPopupMenu( const QPoint& );
 
   private slots:
     void slotMailClicked( const QString&, const QString& );

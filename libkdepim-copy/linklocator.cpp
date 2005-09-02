@@ -25,10 +25,10 @@
 #include <kglobal.h>
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
-#include <kmdcodec.h>
+#include <kcodecs.h>
 #include <kdebug.h>
 
-#include <qstylesheet.h>
+#include <q3stylesheet.h>
 #include <qfile.h>
 #include <qregexp.h>
 
@@ -319,7 +319,7 @@ QString LinkLocator::convertToHtml(const QString& plainText, int flags,
 
           // remove the local part from the result (as '&'s have been expanded to
           // &amp; we have to take care of the 4 additional characters per '&')
-          result.truncate(result.length() - len - (localPart.contains('&')*4));
+          result.truncate(result.length() - len - (localPart.count('&')*4));
           x -= len;
 
           result += "<a href=\"mailto:" + str + "\">" + str + "</a>";
@@ -356,13 +356,13 @@ QString LinkLocator::pngToDataUrl( const QString & iconPath )
     return QString::null;
 
   QFile pngFile( iconPath );
-  if ( !pngFile.open( IO_ReadOnly | IO_Raw ) )
+  if ( !pngFile.open( QIODevice::ReadOnly | QIODevice::Unbuffered ) )
     return QString::null;
 
   QByteArray ba = pngFile.readAll();
   pngFile.close();
   return QString::fromLatin1("data:image/png;base64,%1")
-         .arg( KCodecs::base64Encode( ba ) );
+         .arg( QString::fromAscii( KCodecs::base64Encode( ba ) ) );
 }
 
 
@@ -423,8 +423,8 @@ QString LinkLocator::getEmoticon()
       htmlRep = QString("<img class=\"pimsmileyimg\" src=\"%1\" "
                         "alt=\"%2\" title=\"%3\" width=\"16\" height=\"16\"/>")
                 .arg( dataUrl,
-                      QStyleSheet::escape( smiley ),
-                      QStyleSheet::escape( smiley ) );
+                      Q3StyleSheet::escape( smiley ),
+                      Q3StyleSheet::escape( smiley ) );
     }
     s_smileyEmoticonHTMLCache->insert( smiley, htmlRep );
   }
@@ -447,7 +447,7 @@ QString LinkLocator::highlightedText()
 
   QRegExp re = QRegExp( QString("\\%1([0-9A-Za-z]+)\\%2").arg( ch ).arg( ch ) );
   if ( re.search( mText, mPos ) == mPos ) {
-    uint length = re.matchedLength();
+    int length = re.matchedLength();
     // there must be a whitespace after the closing formating symbol
     if ( mPos + length < mText.length() && !mText[mPos + length].isSpace() )
       return QString::null;

@@ -34,7 +34,7 @@
 
 #include <qcolor.h>
 #include <qfont.h>
-#include <qpaintdevicemetrics.h>
+#include <q3paintdevicemetrics.h>
 
 class QString;
 
@@ -46,7 +46,7 @@ class CSSHelper {
         default values.
         Sub-Classes should put their config loading here.
      */
-    CSSHelper( const QPaintDeviceMetrics &pdm );
+    CSSHelper( const Q3PaintDeviceMetrics &pdm );
 
     /** @return HTML head including style sheet definitions and the
         &gt;body&lt; tag */
@@ -97,7 +97,7 @@ class CSSHelper {
     QString commonCssDefinitions() const;
 
   private:
-    const QPaintDeviceMetrics mMetrics;
+    const Q3PaintDeviceMetrics mMetrics;
 
 };
 

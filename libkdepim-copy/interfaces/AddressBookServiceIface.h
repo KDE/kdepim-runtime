@@ -26,7 +26,6 @@
 #include <dcopref.h>
 #include <kurl.h>
 #include <qstring.h>
-#include <qcstring.h>
 #include <kdepimmacros.h>
 
 namespace KPIM {

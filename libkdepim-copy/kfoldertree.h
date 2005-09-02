@@ -24,7 +24,11 @@
 
 #include <qpixmap.h>
 #include <qbitarray.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QDropEvent>
+#include <Q3MemArray>
 #include <klistview.h>
 #include <kdepimmacros.h>
 
@@ -170,7 +174,7 @@ class KDE_EXPORT KFolderTreeItem : public KListViewItem
         Protocol protocol=NONE, Type type=Other, int unread=0, int total=0 );
 
     /** compare */
-    virtual int compare( QListViewItem * i, int col,
+    virtual int compare( Q3ListViewItem * i, int col,
         bool ascending ) const;
 
     /** set/get the unread-count */
@@ -271,7 +275,7 @@ class KDE_EXPORT KFolderTree : public KListView
     virtual void contentsMouseReleaseEvent( QMouseEvent *e );
 
     /** for mimetypes */
-    QMemArray<const char*> mAcceptableDropMimetypes;
+    Q3MemArray<const char*> mAcceptableDropMimetypes;
     QBitArray mAcceptOutside;
 
     /** shared information */ // ### why isn't it then static? ;-)

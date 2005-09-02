@@ -8,24 +8,23 @@ libkdepim_la_SOURCES = \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
-  kdateedit.cpp kimportdialog.cpp kvcarddrag.cpp \
-  sidebarextension.cpp infoextension.cpp \
+#  kdateedit.cpp 
+  kimportdialog.cpp kvcarddrag.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   maillistdrag.cpp MailTransportServiceIface.skel \
   AddressBookServiceIface.skel \
   kconfigpropagator.cpp kconfigwizard.cpp \
-  weaver.cpp weaverextensions.cpp weaverlogger.cpp \
   pluginloaderbase.cpp addresseelineedit.cpp addresseelineedit.skel \
-  kdatepickerpopup.cpp kfileio.cpp \
+#  kdatepickerpopup.cpp 
+  kfileio.cpp \
   clicklineedit.cpp configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
   resourceabc.cpp diffalgo.cpp addresseediffalgo.cpp calendardiffalgo.cpp \
   htmldiffalgodisplay.cpp broadcaststatus.cpp kresourceprefs.cpp \
-  kpixmapregionselectorwidget.cpp kpixmapregionselectordialog.cpp \
   kabcresourcecached.cpp kxface.cpp \
-  kaccount.cpp kaddrbook.cpp kfoldertree.cpp kregexp3.cpp \
+  kaccount.cpp kaddrbook.cpp kfoldertree.cpp \
   kscoring.cpp kscoringeditor.cpp ksubscription.cpp kwidgetlister.cpp \
   linklocator.cpp qutf7codec.cpp \
   recentaddresses.cpp spellingfilter.cpp \

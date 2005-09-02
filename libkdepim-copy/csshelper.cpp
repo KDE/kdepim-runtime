@@ -68,7 +68,7 @@ namespace KPIM {
     }
   }
 
-  CSSHelper::CSSHelper( const QPaintDeviceMetrics &pdm ) :
+  CSSHelper::CSSHelper( const Q3PaintDeviceMetrics &pdm ) :
     mShrinkQuotes( false ),
     mMetrics( pdm )
   {
@@ -204,7 +204,7 @@ namespace KPIM {
 
 
   namespace {
-    int pointsToPixel( const QPaintDeviceMetrics & metrics, int pointSize ) {
+    int pointsToPixel( const Q3PaintDeviceMetrics & metrics, int pointSize ) {
       return ( pointSize * metrics.logicalDpiY() + 36 ) / 72 ;
     }
   }

@@ -29,8 +29,8 @@
 #include <kdialogbase.h>
 #include <klistview.h>
 #include <qstringlist.h>
-#include <qptrlist.h>
-#include <qptrdict.h>
+#include <q3ptrlist.h>
+#include <q3ptrdict.h>
 #include <kdepimmacros.h>
 
 namespace KPIM {
@@ -64,7 +64,7 @@ namespace KPIM {
 
     bool matches( const QString& ) const;
 
-    virtual int compare( QListViewItem * i, int col, bool ascending ) const;
+    virtual int compare( Q3ListViewItem * i, int col, bool ascending ) const;
     virtual void setSelected( bool );
 
   signals:
@@ -191,7 +191,7 @@ namespace KPIM {
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
     void addAddresseesToSelected( AddresseeViewItem *parent,
-                                  const QPtrList<AddresseeViewItem>& addresses );
+                                  const Q3PtrList<AddresseeViewItem>& addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
     KABC::Addressee::List allAddressee( KListView* view, bool onlySelected = true ) const;
@@ -209,9 +209,9 @@ namespace KPIM {
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
 
-    QPtrList<AddresseeViewItem> selectedAvailableAddresses;
-    QPtrList<AddresseeViewItem> selectedSelectedAddresses;
-    QPtrDict<AddresseeViewItem> selectedToAvailableMapping;
+    Q3PtrList<AddresseeViewItem> selectedAvailableAddresses;
+    Q3PtrList<AddresseeViewItem> selectedSelectedAddresses;
+    Q3PtrDict<AddresseeViewItem> selectedToAvailableMapping;
   };
 
 }

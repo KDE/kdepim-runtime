@@ -21,7 +21,9 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include <qvaluevector.h>
+#include <q3valuevector.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 #include <kdebug.h>
 
 #include <klocale.h>
@@ -85,9 +87,9 @@ void ProgressItem::cancel()
    kdDebug(5300) << "ProgressItem::cancel() - " << label() << endl;
    mCanceled = true;
    // Cancel all children.
-   QValueList<ProgressItem*> kids = mChildren.keys();
-   QValueList<ProgressItem*>::Iterator it( kids.begin() );
-   QValueList<ProgressItem*>::Iterator end( kids.end() );
+   Q3ValueList<ProgressItem*> kids = mChildren.keys();
+   Q3ValueList<ProgressItem*>::Iterator it( kids.begin() );
+   Q3ValueList<ProgressItem*>::Iterator end( kids.end() );
    for ( ; it != end; it++ ) {
      ProgressItem *kid = *it;
      if ( kid->canBeCanceled() )
@@ -210,7 +212,7 @@ void ProgressManager::slotStandardCancelHandler( ProgressItem *item )
 ProgressItem* ProgressManager::singleItem() const
 {
   ProgressItem *item = 0;
-  QDictIterator< ProgressItem > it( mTransactions );
+  Q3DictIterator< ProgressItem > it( mTransactions );
   for ( ; it.current(); ++it ) {
     if ( !(*it)->parent() ) { // if it's a top level one, only those count
       if ( item )
@@ -224,7 +226,7 @@ ProgressItem* ProgressManager::singleItem() const
 
 void ProgressManager::slotAbortAll()
 {
-  QDictIterator< ProgressItem > it( mTransactions );
+  Q3DictIterator< ProgressItem > it( mTransactions );
   for ( ; it.current(); ++it ) {
     it.current()->cancel();
   }

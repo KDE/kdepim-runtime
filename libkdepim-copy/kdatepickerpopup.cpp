@@ -20,7 +20,7 @@
 */
 
 #include <qdatetime.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 
 #include <klocale.h>
 
@@ -28,7 +28,7 @@
 
 KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *parent,
                                     const char *name )
-  : QPopupMenu( parent, name )
+  : Q3PopupMenu( parent, name )
 {
   mItems = items;
 

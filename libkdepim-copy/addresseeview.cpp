@@ -21,8 +21,11 @@
 
 #include <qbuffer.h>
 #include <qimage.h>
-#include <qpopupmenu.h>
-#include <qurl.h>
+#include <q3popupmenu.h>
+#include <q3url.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QTextStream>
 
 #include <kabc/address.h>
 #include <kabc/addressee.h>
@@ -35,7 +38,7 @@
 #include <kiconloader.h>
 #include <kio/job.h>
 #include <klocale.h>
-#include <kmdcodec.h>
+#include <kcodecs.h>
 #include <kmessagebox.h>
 #include <krun.h>
 #include <kstringhandler.h>
@@ -53,13 +56,13 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
     mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
-  setWrapPolicy( QTextEdit::AtWordBoundary );
+  setWrapPolicy( Q3TextEdit::AtWordBoundary );
   setLinkUnderline( false );
-  setVScrollBarMode( QScrollView::AlwaysOff );
-  setHScrollBarMode( QScrollView::AlwaysOff );
+  setVScrollBarMode( Q3ScrollView::AlwaysOff );
+  setHScrollBarMode( Q3ScrollView::AlwaysOff );
 
-  QStyleSheet *sheet = styleSheet();
-  QStyleSheetItem *link = sheet->item( "a" );
+  Q3StyleSheet *sheet = styleSheet();
+  Q3StyleSheetItem *link = sheet->item( "a" );
   link->setColor( KGlobalSettings::linkColor() );
 
   connect( this, SIGNAL( mailClick( const QString&, const QString& ) ),
@@ -201,7 +204,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   if ( !internalLoading ) {
     KABC::Picture pic = addr.photo();
     if ( pic.isIntern() && !pic.data().isNull() ) {
-      image = pixmapAsDataUrl( pic.data() );
+      image = pixmapAsDataUrl( QPixmap::fromImage( pic.data() ) );
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) || pic.url().startsWith( "https://" ) ? pic.url() : "http://" + pic.url());
     } else {
@@ -252,7 +255,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
       QString fullEmail = addr.fullEmail( *emailIt );
-      QUrl::encode( fullEmail );
+      Q3Url::encode( fullEmail );
 
       if ( linkMask & EmailLinks ) {
         dynamicPart += rowFmtStr.arg( type )
@@ -406,7 +409,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       QString imgSrc;
       if ( internalLoading ) {
         imgSrc = QString::fromLatin1( "im_status_%1_image").arg( addr.uid() );
-        QMimeSourceFactory::defaultFactory()->setPixmap( imgSrc, proxy->presenceIcon( addr.uid() ) );
+        Q3MimeSourceFactory::defaultFactory()->setPixmap( imgSrc, proxy->presenceIcon( addr.uid() ) );
       } else
         imgSrc = pixmapAsDataUrl( proxy->presenceIcon( addr.uid() ) );
 
@@ -484,8 +487,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
 {
   QByteArray ba;
-  QBuffer buffer( ba );
-  buffer.open( IO_WriteOnly );
+  QBuffer buffer( &ba, 0 );
+  buffer.open( QIODevice::WriteOnly );
   pixmap.save( &buffer, "PNG" );
   QString encoded( "data:image/png;base64," );
   encoded.append( KCodecs::base64Encode( ba ) );
@@ -540,11 +543,11 @@ void AddresseeView::updateView()
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
-    QMimeSourceFactory::defaultFactory()->setImage( imageURL, picture.data() );
+    Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, picture.data() );
   else {
     if ( !picture.url().isEmpty() ) {
       if ( mImageData.count() > 0 )
-        QMimeSourceFactory::defaultFactory()->setImage( imageURL, mImageData );
+        Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, QImage( mImageData ) );
       else {
         mImageJob = KIO::get( KURL( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
@@ -553,7 +556,7 @@ void AddresseeView::updateView()
                  this, SLOT( result( KIO::Job* ) ) );
       }
     } else {
-      QMimeSourceFactory::defaultFactory()->setPixmap( imageURL,
+      Q3MimeSourceFactory::defaultFactory()->setPixmap( imageURL,
         KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
     }
   }
@@ -642,9 +645,9 @@ void AddresseeView::imAddressClicked()
   mKIMProxy->chatWithContact( mAddressee.uid() );
 }
 
-QPopupMenu *AddresseeView::createPopupMenu( const QPoint& )
+Q3PopupMenu *AddresseeView::createPopupMenu( const QPoint& )
 {
-  QPopupMenu *menu = new QPopupMenu( this );
+  Q3PopupMenu *menu = new Q3PopupMenu( this );
   mActionShowBirthday->plug( menu );
   mActionShowAddresses->plug( menu );
   mActionShowEmails->plug( menu );
@@ -773,7 +776,7 @@ QString AddresseeView::strippedNumber( const QString &number )
 {
   QString retval;
 
-  for ( uint i = 0; i < number.length(); ++i ) {
+  for ( int i = 0; i < number.length(); ++i ) {
     QChar c = number[ i ];
     if ( c.isDigit() || c == '*' || c == '#' || c == '+' && i == 0 )
       retval.append( c );

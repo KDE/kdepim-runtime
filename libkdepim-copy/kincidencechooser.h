@@ -26,8 +26,10 @@
 
 
 #include <kdialogbase.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qmutex.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <kdepimmacros.h>
 
 #include <libkcal/incidence.h>
@@ -36,10 +38,10 @@
 
 
 class QRadioButton;
-class QButtonGroup;
-class QVBox;
+class Q3ButtonGroup;
+class Q3VBox;
 class QStringList;
-class QTextBrowser;
+class Q3TextBrowser;
 class KDialogBase;
 
 /** Dialog to change the korganizer configuration.
@@ -79,7 +81,7 @@ private:
     KDialogBase* mTbL, *mTbN;
     KCal::Incidence* choosedIncidence;
     KCal::Incidence* mInc1, *mInc2;
-    QButtonGroup *mBg;
+    Q3ButtonGroup *mBg;
     QPushButton *diffBut,*showDetails1,*showDetails2;
     QLabel* mInc1lab, *mInc2lab,* mInc1Sumlab, *mInc2Sumlab,*mMod1lab,*mMod2lab;
 

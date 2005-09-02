@@ -24,8 +24,8 @@
 #include <qlayout.h>
 #include <qstringlist.h>
 #include <qlineedit.h>
-#include <klistview.h>
-#include <qheader.h>
+#include <q3listview.h>
+#include <q3header.h>
 #include <qpushbutton.h>
 #include <klocale.h>
 // #include <kmessagebox.h>
@@ -71,7 +71,7 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
 
   fillList();
   
-  connect( mCategories, SIGNAL( currentChanged( QListViewItem * )),
+  connect( mCategories, SIGNAL( currentChanged( Q3ListViewItem * )),
            SLOT( editItem( QListViewItem * )) );
   connect( mCategories, SIGNAL( selectionChanged() ),
            SLOT( slotSelectionChanged() ) );
@@ -107,7 +107,7 @@ void CategoryEditDialog::fillList()
 
 void CategoryEditDialog::slotTextChanged(const QString &text)
 {
-  QListViewItem *item = mCategories->currentItem();
+  Q3ListViewItem *item = mCategories->currentItem();
   if ( item ) {
     item->setText( 0, text );
   }
@@ -137,7 +137,7 @@ void CategoryEditDialog::slotSelectionChanged()
 void CategoryEditDialog::add()
 {
   if ( !mWidget->mEdit->text().isEmpty() ) {
-    QListViewItem *newItem = new QListViewItem( mCategories, "" );
+    Q3ListViewItem *newItem = new Q3ListViewItem( mCategories, "" );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
     newItem->setOpen( true );
@@ -213,7 +213,7 @@ void CategoryEditDialog::slotApply()
   mPrefs->mCustomCategories.clear();
 
   QStringList path;
-  QListViewItem *item = mCategories->firstChild();
+  Q3ListViewItem *item = mCategories->firstChild();
   while ( item ) {
     path.append( item->text(0) );
     QStringList _path = path;
@@ -243,7 +243,7 @@ void CategoryEditDialog::slotCancel()
   KDialogBase::slotCancel();
 }
 
-void CategoryEditDialog::editItem( QListViewItem *item )
+void CategoryEditDialog::editItem( Q3ListViewItem *item )
 {
   if ( item )
     mWidget->mEdit->setText( item->text(0) );

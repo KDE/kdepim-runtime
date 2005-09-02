@@ -34,15 +34,18 @@
 #define __KPIM_PROGRESSDIALOG_H__
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlabel.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QCloseEvent>
 #include "overlaywidget.h"
 #include <kdepimmacros.h>
 
-class QProgressBar;
-class QScrollView;
-class QFrame;
+class Q3ProgressBar;
+class Q3ScrollView;
+class Q3Frame;
 
 namespace KPIM {
 class ProgressItem;
@@ -50,12 +53,12 @@ class TransactionItemListView;
 class TransactionItem;
 class SSLLabel;
 
-class TransactionItemView : public QScrollView {
+class TransactionItemView : public Q3ScrollView {
   Q_OBJECT
 public:
   TransactionItemView( QWidget * parent = 0,
                        const char * name = 0,
-                       WFlags f = 0 );
+                       Qt::WFlags f = 0 );
 
   virtual ~TransactionItemView()
   {}
@@ -71,10 +74,10 @@ protected:
   virtual void resizeContents ( int w, int h );
 
 private:
-  QVBox *                  mBigBox;
+  Q3VBox *                  mBigBox;
 };
 
-class TransactionItem : public QVBox {
+class TransactionItem : public Q3VBox {
 
   Q_OBJECT
 
@@ -103,11 +106,11 @@ public slots:
   void slotItemCanceled();
 
 protected:
-  QProgressBar* mProgress;
+  Q3ProgressBar* mProgress;
   QPushButton*  mCancelButton;
   QLabel*       mItemLabel;
   QLabel*       mItemStatus;
-  QFrame*       mFrame;
+  Q3Frame*       mFrame;
   SSLLabel*     mSSLLabel;
   ProgressItem* mItem;
 };

@@ -24,15 +24,17 @@
 
 #include <qlayout.h>
 #include <qlabel.h>
-#include <qbuttongroup.h>
-#include <qvbox.h>
-#include <qhbox.h>
+#include <q3buttongroup.h>
+#include <q3vbox.h>
+#include <q3hbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
-#include <qscrollview.h>
-#include <qtextbrowser.h>
+#include <q3scrollview.h>
+#include <q3textbrowser.h>
 #include <qapplication.h>
+//Added by qt3to4:
+#include <QGridLayout>
 
 
 #include <klocale.h>
@@ -57,7 +59,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
                         "<br/>NOTE: You have to check mail again to apply your changes to the server.</qt>"), topFrame);
     topLayout->addMultiCellWidget(lab, iii,iii,0,2);
     ++iii;
-    QHBox * b_box = new QHBox( topFrame );
+    Q3HBox * b_box = new Q3HBox( topFrame );
     topLayout->addMultiCellWidget(b_box, iii,iii,0,2);
     ++iii;
     QPushButton* button = new QPushButton( i18n("Take Local"), b_box );
@@ -104,7 +106,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
 #else
     diffBut = 0;
 #endif
-    mBg = new QButtonGroup ( 1,  Qt::Horizontal, i18n("Sync Preferences"), topFrame);
+    mBg = new Q3ButtonGroup ( 1,  Qt::Horizontal, i18n("Sync Preferences"), topFrame);
     topLayout->addMultiCellWidget(mBg, iii,iii,0,2);
     ++iii;
     mBg->insert( new QRadioButton ( i18n("Take local entry on conflict"), mBg ), KIncidenceChooser::local);
@@ -238,7 +240,7 @@ void KIncidenceChooser::showIncidence1()
     mTbL = new KDialogBase( this, "", false /*not modal*/, mInc1lab->text(), KDialogBase::Ok );
     mTbL->setEscapeButton( KDialogBase::Ok );
     connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-    QTextBrowser* textBrowser = new QTextBrowser( mTbL );
+    Q3TextBrowser* textBrowser = new Q3TextBrowser( mTbL );
     mTbL->setMainWidget( textBrowser );
     textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 )  );
     mTbL->setMinimumSize( 400, 400 );
@@ -294,7 +296,7 @@ void KIncidenceChooser::showIncidence2()
     mTbN = new KDialogBase( this, "", false /*not modal*/, mInc2lab->text(), KDialogBase::Ok );
     mTbN->setEscapeButton( KDialogBase::Ok );
     connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-    QTextBrowser* textBrowser = new QTextBrowser( mTbN );
+    Q3TextBrowser* textBrowser = new Q3TextBrowser( mTbN );
     mTbN->setMainWidget( textBrowser );
     textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
     mTbN->setMinimumSize( 400, 400 );

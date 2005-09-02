@@ -36,7 +36,9 @@
 
 #include <qpushbutton.h>
 #include <qlayout.h>
-#include <qhbox.h>
+#include <q3hbox.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
 
 #include <assert.h>
 #include <kguiitem.h>
@@ -53,7 +55,7 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
 
   //--------- the button box
   mLayout = new QVBoxLayout(this, 0, 4);
-  mButtonBox = new QHBox(this);
+  mButtonBox = new Q3HBox(this);
   mButtonBox->setSpacing( KDialog::spacingHint() );
   mLayout->addWidget( mButtonBox );
 
@@ -112,7 +114,7 @@ void KWidgetLister::slotClear()
   setNumberOfShownWidgetsTo( mMinWidgets );
 
   // clear remaining widgets
-  QPtrListIterator<QWidget> it( mWidgetList );
+  Q3PtrListIterator<QWidget> it( mWidgetList );
   for ( it.toFirst() ; it.current() ; ++it )
     clearWidget( (*it) );
 

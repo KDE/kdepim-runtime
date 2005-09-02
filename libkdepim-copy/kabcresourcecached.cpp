@@ -19,6 +19,8 @@
 */
 
 #include <qfile.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include <kabc/vcardconverter.h>
 #include <kdebug.h>
@@ -89,7 +91,7 @@ void ResourceCached::loadCache()
 
   // load cache
   QFile file( cacheFile() );
-  if ( !file.open( IO_ReadOnly ) )
+  if ( !file.open( QIODevice::ReadOnly ) )
     return;
 
 
@@ -113,7 +115,7 @@ void ResourceCached::saveCache()
 
   // save cache
   QFile file( cacheFile() );
-  if ( !file.open( IO_WriteOnly ) )
+  if ( !file.open( QIODevice::WriteOnly ) )
     return;
 
   KABC::Addressee::List list = mAddrMap.values();
@@ -128,7 +130,7 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 {
   // load cache
   QFile file( cacheFile() );
-  if ( !file.open( IO_ReadOnly ) )
+  if ( !file.open( QIODevice::ReadOnly ) )
     return;
 
 
@@ -219,14 +221,14 @@ void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map
   if ( list.isEmpty() ) {
     file.remove();
   } else {
-    if ( !file.open( IO_WriteOnly ) ) {
+    if ( !file.open( QIODevice::WriteOnly ) ) {
       kdError() << "Can't open changes cache file '" << file.name() << "' for saving." << endl;
       return;
     }
 
     KABC::VCardConverter converter;
     const QString vCards = converter.createVCards( list );
-    QCString content = vCards.utf8();
+    Q3CString content = vCards.utf8();
     file.writeBlock( content, content.length() );
   }
 }
@@ -241,7 +243,7 @@ void ResourceCached::saveChangesCache()
 void ResourceCached::loadChangesCache( QMap<QString, KABC::Addressee> &map, const QString &type )
 {
   QFile file( changesCacheFile( type ) );
-  if ( !file.open( IO_ReadOnly ) )
+  if ( !file.open( QIODevice::ReadOnly ) )
     return;
 
   KABC::VCardConverter converter;

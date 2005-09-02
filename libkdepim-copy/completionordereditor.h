@@ -33,6 +33,8 @@
 
 #include <kdialogbase.h>
 #include <kconfig.h>
+//Added by qt3to4:
+#include <Q3PtrList>
 
 class KPushButton;
 class KListView;
@@ -54,11 +56,11 @@ public:
 
 
 // I don't like QPtrList much, but it has compareItems, which QValueList doesn't
-class CompletionItemList : public QPtrList<CompletionItem>
+class CompletionItemList : public Q3PtrList<CompletionItem>
 {
 public:
   CompletionItemList() {}
-  virtual int compareItems( QPtrCollection::Item s1, QPtrCollection::Item s2 );
+  virtual int compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 );
 };
 
 class CompletionOrderEditor : public KDialogBase {
@@ -71,7 +73,7 @@ public:
   KConfig* configFile() { return &mConfig; }
 
 private slots:
-  void slotSelectionChanged( QListViewItem* );
+  void slotSelectionChanged( Q3ListViewItem* );
   void slotMoveUp();
   void slotMoveDown();
   virtual void slotOk();

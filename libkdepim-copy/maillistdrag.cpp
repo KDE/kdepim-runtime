@@ -26,6 +26,10 @@
 #include <qbuffer.h>
 #include <qdatastream.h>
 #include <qeventloop.h>
+//Added by qt3to4:
+#include <QTextStream>
+#include <Q3CString>
+#include <QDropEvent>
 #include <kapplication.h>
 #include <klocale.h>
 #include <kprogress.h>
@@ -88,7 +92,7 @@ MailSummary::operator KURL() const
 }
 
 MailListDrag::MailListDrag( const MailList &mailList, QWidget * parent, MailTextSource *src )
-    : QDragObject( parent ), _src(src), mUrlDrag( 0 )
+    : Q3DragObject( parent ), _src(src), mUrlDrag( 0 )
 {
   setMailList( mailList );
 }
@@ -161,7 +165,7 @@ QDataStream& operator>> ( QDataStream &s, MailList &mailList )
 bool MailListDrag::decode( QDropEvent* e, MailList& mailList )
 {
     QByteArray payload = e->encodedData( MailListDrag::format() );
-    QDataStream buffer( payload, IO_ReadOnly );
+    QDataStream buffer( payload, QIODevice::ReadOnly );
     if ( payload.size() ) {
 	e->accept();
 	buffer >> mailList;
@@ -172,7 +176,7 @@ bool MailListDrag::decode( QDropEvent* e, MailList& mailList )
 
 bool MailListDrag::decode( QByteArray& payload, MailList& mailList )
 {
-    QDataStream stream( payload, IO_ReadOnly );
+    QDataStream stream( payload, QIODevice::ReadOnly );
     if ( payload.size() ) {
 	stream >> mailList;
 	return TRUE;
@@ -186,7 +190,7 @@ bool MailListDrag::decode( QDropEvent* e, QByteArray &a )
     if (decode( e, mailList )) {
 	MailList::iterator it;
 	QBuffer buffer( a );
-	buffer.open( IO_WriteOnly );
+	buffer.open( QIODevice::WriteOnly );
 	QDataStream stream( &buffer );
 	for (it = mailList.begin(); it != mailList.end(); ++it) {
 	    MailSummary mailDrag = *it;
@@ -228,7 +232,7 @@ const char *MailListDrag::format(int i) const
 
 bool MailListDrag::provides(const char *mimeType) const
 {
-    if (_src && QCString(mimeType) == "message/rfc822") {
+    if (_src && Q3CString(mimeType) == "message/rfc822") {
         return true;
     } else if ( QCString( mimeType ) == format() )
       return true;
@@ -238,15 +242,15 @@ bool MailListDrag::provides(const char *mimeType) const
 
 QByteArray MailListDrag::encodedData(const char *mimeType) const
 {
-    if ( QCString(mimeType) == format() ) {
+    if ( Q3CString(mimeType) == format() ) {
       QByteArray array;
-      QBuffer buffer( array );
+      QBuffer buffer( &array, 0 );
       buffer.open( IO_WriteOnly);
       QDataStream stream( array, IO_WriteOnly );
       stream << mMailList;
       buffer.close();
       return array;
-    } else if ( QCString( mimeType ) == "message/rfc822" ) {
+    } else if ( Q3CString( mimeType ) == "message/rfc822" ) {
   
       QByteArray rc; 
       if (_src) {
@@ -276,4 +280,33 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
     } else {
       return mUrlDrag->encodedData( mimeType );
     }
+
+    QByteArray rc; 
+    if (_src) {
+        MailList ml;
+        QByteArray enc = Q3StoredDrag::encodedData(format());
+        decode(enc, ml);
+
+        KProgressDialog *dlg = new KProgressDialog(0, 0, QString::null, i18n("Retrieving and storing messages..."), true);
+        dlg->setAllowCancel(true);
+        dlg->progressBar()->setTotalSteps(ml.count());
+        int i = 0;
+        dlg->progressBar()->setValue(i);
+        dlg->show();
+
+        QTextStream *ts = new QTextStream(rc, QIODevice::WriteOnly);
+        for (MailList::ConstIterator it = ml.begin(); it != ml.end(); ++it) {
+            MailSummary mailDrag = *it;
+            *ts << _src->text(mailDrag.serialNumber());
+            if (dlg->wasCancelled()) {
+                break;
+            }
+            dlg->progressBar()->setValue(++i);
+            kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
+        }
+
+        delete dlg;
+        delete ts;
+    }
+    return rc;
 }

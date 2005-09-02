@@ -55,7 +55,7 @@ class KDE_EXPORT CategoryEditDialog : public KDialogBase
     void add();
     void addSubcategory();
     void remove();
-    void editItem( QListViewItem *item );
+    void editItem( Q3ListViewItem *item );
     void expandIfToplevel( QListViewItem *item );
 
   signals:

@@ -27,10 +27,16 @@
 #define ADDRESSEELINEEDIT_H
 
 #include <qobject.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qtimer.h>
 #include <qpair.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QEvent>
+#include <Q3PopupMenu>
+#include <QDropEvent>
 
 #include <kabc/addressee.h>
 
@@ -44,7 +50,7 @@ class KConfig;
 namespace KPIM {
 class LdapSearch;
 class LdapResult;
-typedef QValueList<LdapResult> LdapResultList;
+typedef Q3ValueList<LdapResult> LdapResultList;
 typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 }
 
@@ -89,7 +95,7 @@ class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
     /** Reimplemented for smart insertion of dragged email addresses. */
     virtual void dropEvent( QDropEvent *e );
     void doCompletion( bool ctrlT );
-    virtual QPopupMenu *createPopupMenu();
+    virtual QMenu *createStandardContextMenu();
 
     /**
      * Adds the name of a completion source to the internal list of 

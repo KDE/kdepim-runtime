@@ -26,10 +26,12 @@
 #define _KTIMEEDIT_H
 
 #include <qevent.h>
-#include <qkeycode.h>
+#include <qnamespace.h>
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 #include <kapplication.h>
 #include <kdepimmacros.h>

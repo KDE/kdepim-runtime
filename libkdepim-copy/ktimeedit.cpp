@@ -24,10 +24,12 @@
     without including the source code for Qt in the source distribution.
 */
 
-#include <qkeycode.h>
+#include <qnamespace.h>
 #include <qcombobox.h>
 #include <qdatetime.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 #include <kmessagebox.h>
 #include <kglobal.h>
@@ -126,7 +128,7 @@ KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char *name )
   insertItem( KGlobal::locale()->formatTime( QTime( 23, 59, 59 ) ) );
 
   updateText();
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
 
   connect(this, SIGNAL(activated(int)), this, SLOT(active(int)));
   connect(this, SIGNAL(highlighted(int)), this, SLOT(hilit(int)));
@@ -236,16 +238,16 @@ void KTimeEdit::subTime(QTime qt)
 void KTimeEdit::keyPressEvent(QKeyEvent *qke)
 {
   switch(qke->key()) {
-  case Key_Down:
+  case Qt::Key_Down:
     addTime(QTime(0,1,0));
     break;
-  case Key_Up:
+  case Qt::Key_Up:
     subTime(QTime(0,1,0));
     break;
-  case Key_Prior:
+  case Qt::Key_PageUp:
     subTime(QTime(1,0,0));
     break;
-  case Key_Next:
+  case Qt::Key_PageDown:
     addTime(QTime(1,0,0));
     break;
   default:

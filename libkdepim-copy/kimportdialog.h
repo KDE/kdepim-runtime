@@ -22,16 +22,19 @@
 #ifndef KIMPORTDIALOG_H
 #define KIMPORTDIALOG_H
 
-#include <qintdict.h>
+#include <q3intdict.h>
 #include <qstringlist.h>
 #include <qspinbox.h>
-#include <qptrvector.h>
-#include <qvaluevector.h>
+#include <q3ptrvector.h>
+#include <q3valuevector.h>
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <Q3PtrList>
 
 #include <kdialogbase.h>
 
-class QTable;
-class QListView;
+class Q3Table;
+class Q3ListView;
 
 class KImportDialog;
 class KComboBox;
@@ -46,7 +49,7 @@ class KImportColumn
 
     QString header() const { return m_header; }
 
-    QValueList<int> formats();
+    Q3ValueList<int> formats();
     QString formatName(int format);
     int defaultFormat();
 
@@ -57,7 +60,7 @@ class KImportColumn
     void addColId(int i);
     void removeColId(int i);
 
-    QValueList<int> colIdList();
+    Q3ValueList<int> colIdList();
 
   protected:
 
@@ -65,10 +68,10 @@ class KImportColumn
     int m_maxCount, m_refCount;
 
     QString m_header;
-    QValueList<int> mFormats;
+    Q3ValueList<int> mFormats;
     int mDefaultFormat;
     
-    QValueList<int> mColIds;
+    Q3ValueList<int> mColIds;
     
     KImportDialog *mDialog;
 };
@@ -82,7 +85,7 @@ class KImportDialog : public KDialogBase
   public slots:
     bool setFile(const QString& file);
 
-    QString cell(uint row);
+    QString cell(int row);
 
     void addColumn(KImportColumn *);
 
@@ -97,9 +100,9 @@ class KImportDialog : public KDialogBase
 
   protected slots:
     void separatorClicked(int id);
-    void formatSelected(QListViewItem* item);
-    void headerSelected(QListViewItem* item);
-    void assignColumn(QListViewItem *);
+    void formatSelected(Q3ListViewItem* item);
+    void headerSelected(Q3ListViewItem* item);
+    void assignColumn(Q3ListViewItem *);
     void assignColumn();
     void assignTemplate();
     void removeColumn();
@@ -112,13 +115,13 @@ class KImportDialog : public KDialogBase
     void updateFormatSelection(int column);
     void setCellText(int row, int col, const QString& text);
 
-    void setData( uint row, uint col, const QString &text );
-    QString data( uint row, uint col );
+    void setData( int row, int col, const QString &text );
+    QString data( int row, int col );
 
-    QListView *mHeaderList;
+    Q3ListView *mHeaderList;
     QSpinBox *mStartRow;
     QSpinBox *mEndRow;
-    QTable *mTable;
+    Q3Table *mTable;
 
     KComboBox *mFormatCombo;
     KComboBox *mSeparatorCombo;
@@ -126,11 +129,11 @@ class KImportDialog : public KDialogBase
     QString mSeparator;
     int mCurrentRow;
     QString mFile;
-    QIntDict<KImportColumn> mColumnDict;
-    QIntDict<uint> mTemplateDict;
+    Q3IntDict<KImportColumn> mColumnDict;
+    Q3IntDict<int> mTemplateDict;
     QMap<int,int> mFormats;
-    QPtrList<KImportColumn> mColumns;
-    QPtrVector<QValueVector<QString> > mData;
+    Q3PtrList<KImportColumn> mColumns;
+    Q3PtrVector<Q3ValueVector<QString> > mData;
 };
 
 #endif

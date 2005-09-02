@@ -24,6 +24,8 @@
 
 
 #include "qutf7codec.h"
+//Added by qt3to4:
+#include <Q3CString>
 
 #ifndef QT_NO_TEXTCODEC
 
@@ -357,7 +359,7 @@ private:
       return '/';
   }
 
-  void addToShiftedSequence(QCString::Iterator & t, ushort u) {
+  void addToShiftedSequence(Q3CString::Iterator & t, ushort u) {
     switch (stepNo) {
       // no outbits; use uppermost 6 bits of u
     case 0:
@@ -396,7 +398,7 @@ private:
     stepNo = (stepNo + 1) % 3;
   }
 
-  void endShiftedSequence(QCString::Iterator & t) {
+  void endShiftedSequence(Q3CString::Iterator & t) {
     switch (stepNo) {
     case 1: // four outbits still to be written
     case 2: // two outbits still to be written
@@ -418,7 +420,7 @@ private:
       ( stepNo == 2 && (u & 0xC000) == 0 );
   }
 
-  void processDoesntNeedEncoding(QCString::Iterator & t, ushort ch) {
+  void processDoesntNeedEncoding(Q3CString::Iterator & t, ushort ch) {
     // doesn't need encoding
     if (shifted) {
       endShiftedSequence(t);
@@ -440,7 +442,7 @@ private:
   }
 
 public:
-  QCString fromUnicode(const QString & uc, int & len_in_out)
+  Q3CString fromUnicode(const QString & uc, int & len_in_out)
   {
     // allocate place for worst case:
     //   len/2 * (5+1) for an alternating sequence of e.g. "A\",
@@ -448,7 +450,7 @@ public:
     // + 1             for the trailing \0
     // 
     int maxreslen = 3 * len_in_out + 5;
-    QCString result( maxreslen );
+    Q3CString result( maxreslen );
 
 #if 0
     //    if (len_in_out == 1) {
@@ -463,7 +465,7 @@ public:
 
     // source and destination cursor
     const QChar * s = uc.unicode();
-    QCString::Iterator t = result.data();
+    Q3CString::Iterator t = result.data();
 
     if ( uc.isNull() ) {
       // return to ascii requested:

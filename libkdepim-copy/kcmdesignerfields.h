@@ -24,11 +24,13 @@
 
 #include <kcmodule.h>
 #include <kdepimmacros.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class KListView;
 
 class QLabel;
-class QListViewItem;
+class Q3ListViewItem;
 class QPushButton;
 
 namespace KPIM {
@@ -56,8 +58,8 @@ class KDE_EXPORT KCMDesignerFields : public KCModule
     virtual QString applicationName() = 0;
 
   private slots:
-    void updatePreview( QListViewItem* );
-    void itemClicked( QListViewItem* );
+    void updatePreview( Q3ListViewItem* );
+    void itemClicked( Q3ListViewItem* );
     void startDesigner();
     void rebuildList();
     void deleteFile();

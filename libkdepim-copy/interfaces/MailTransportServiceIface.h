@@ -26,7 +26,6 @@
 #include <dcopref.h>
 #include <kurl.h>
 #include <qstring.h>
-#include <qcstring.h>
 
 #include <kdepimmacros.h>
 
@@ -64,6 +63,7 @@ namespace KPim {
                                 const QString& subject, const QString& body, 
                                 const QByteArray& attachment ) = 0;
 
+#   if 0
     k_dcop_hidden:
       /**
        * This method is deprecated. Use the corresponding method with the
@@ -85,8 +85,8 @@ namespace KPim {
                                 const QString& subject, const QString& body, 
                                 const QByteArray& attachment ) = 0;
 
+#   endif
   };
-
 }
 
 #endif // MAILTRANSPORTSERVICEIFACE_H

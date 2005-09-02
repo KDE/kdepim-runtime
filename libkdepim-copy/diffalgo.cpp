@@ -20,47 +20,48 @@
 */
 
 #include <libkdepim/diffalgo.h>
+#include <QList>
 
 using namespace KPIM;
 
 void DiffAlgo::begin()
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->begin();
 }
 
 void DiffAlgo::end()
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->end();
 }
 
 void DiffAlgo::setLeftSourceTitle( const QString &title )
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->setLeftSourceTitle( title );
 }
 
 void DiffAlgo::setRightSourceTitle( const QString &title )
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->setRightSourceTitle( title );
 }
 
 void DiffAlgo::additionalLeftField( const QString &id, const QString &value )
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->additionalLeftField( id, value );
 }
 
 void DiffAlgo::additionalRightField( const QString &id, const QString &value )
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->additionalRightField( id, value );
 }
@@ -68,7 +69,7 @@ void DiffAlgo::additionalRightField( const QString &id, const QString &value )
 void DiffAlgo::conflictField( const QString &id, const QString &leftValue,
                                  const QString &rightValue )
 {
-  QValueList<DiffAlgoDisplay*>::Iterator it;
+  QList<DiffAlgoDisplay*>::Iterator it;
   for ( it = mDisplays.begin(); it != mDisplays.end(); ++it )
     (*it)->conflictField( id, leftValue, rightValue );
 }

@@ -37,11 +37,16 @@
   */
 
 #include <kdepimmacros.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <Q3Frame>
+#include <QEvent>
+#include <QBoxLayout>
 
 class KMMainWidget;
 class KProgress;
 class QPushButton;
-class QWidgetStack;
+class Q3WidgetStack;
 class QBoxLayout;
 class QLabel;
 class QTimer;
@@ -51,7 +56,7 @@ class SSLLabel;
 class ProgressItem;
 class ProgressDialog;
 
-class KDE_EXPORT StatusbarProgressWidget : public QFrame {
+class KDE_EXPORT StatusbarProgressWidget : public Q3Frame {
 
   Q_OBJECT
 
@@ -92,7 +97,7 @@ private:
   bool m_bShowButton;
 
   QBoxLayout *box;
-  QWidgetStack *stack;
+  Q3WidgetStack *stack;
   ProgressItem *mCurrentItem;
   ProgressDialog* mProgressDialog;
   QTimer *mDelayTimer;

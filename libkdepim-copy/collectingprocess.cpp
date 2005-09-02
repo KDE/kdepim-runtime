@@ -32,7 +32,7 @@
 
 #include "collectingprocess.h"
 
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 #include <string.h>
 
@@ -43,9 +43,9 @@ struct CollectingProcess::Private {
     {}
 
   uint stdoutSize;
-  QValueList<QByteArray> stdoutBuffer;
+  Q3ValueList<QByteArray> stdoutBuffer;
   uint stderrSize;
-  QValueList<QByteArray> stderrBuffer;
+  Q3ValueList<QByteArray> stderrBuffer;
 };
 
 
@@ -101,7 +101,7 @@ QByteArray CollectingProcess::collectedStdout()
 
   uint offset = 0;
   QByteArray b( d->stdoutSize );
-  for ( QValueList<QByteArray>::const_iterator it = d->stdoutBuffer.begin();
+  for ( Q3ValueList<QByteArray>::const_iterator it = d->stdoutBuffer.begin();
         it != d->stdoutBuffer.end();
         ++it ) {
     memcpy( b.data() + offset, (*it).data(), (*it).size() );
@@ -121,7 +121,7 @@ QByteArray CollectingProcess::collectedStderr()
 
   uint offset = 0;
   QByteArray b( d->stderrSize );
-  for ( QValueList<QByteArray>::const_iterator it = d->stderrBuffer.begin();
+  for ( Q3ValueList<QByteArray>::const_iterator it = d->stderrBuffer.begin();
         it != d->stderrBuffer.end();
         ++it ) {
     memcpy( b.data() + offset, (*it).data(), (*it).size() );

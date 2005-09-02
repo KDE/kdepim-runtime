@@ -33,12 +33,14 @@
 #define _KWIDGETLISTER_H_
 
 #include <qwidget.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
 #include <kdepimmacros.h>
 
 class QPushButton;
 class QVBoxLayout;
-class QHBox;
+class Q3HBox;
 
 /** 
     @short Widget that manages a list of other widgets (incl. 'more', 'fewer' and 'clear' buttons).
@@ -124,7 +126,7 @@ protected:
   /** The list of widgets. Note that this list is set to auto-delete,
       meaning that widgets that are removed from the screen by either
       @ref slotFewer or @ref slotClear will be destroyed! */
-  QPtrList<QWidget> mWidgetList;
+  Q3PtrList<QWidget> mWidgetList;
   /** The minimum number of widgets that are to stay on screen. */
   int mMinWidgets;
   /** The maximum number of widgets that are to be shown on screen. */
@@ -145,7 +147,7 @@ private:
 
   QPushButton *mBtnMore, *mBtnFewer, *mBtnClear;
   QVBoxLayout *mLayout;
-  QHBox       *mButtonBox;
+  Q3HBox       *mButtonBox;
 };
 
 

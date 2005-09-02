@@ -25,6 +25,8 @@
 #include <libkcal/event.h>
 #include <libkcal/todo.h>
 #include <libkdepim/diffalgo.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 namespace KPIM {
 
@@ -37,7 +39,7 @@ class KDE_EXPORT CalendarDiffAlgo : public DiffAlgo
 
   private:
     template <class L>
-    void diffList( const QString &id, const QValueList<L> &left, const QValueList<L> &right );
+    void diffList( const QString &id, const Q3ValueList<L> &left, const Q3ValueList<L> &right );
 
     void diffIncidenceBase( KCal::IncidenceBase*, KCal::IncidenceBase* );
     void diffIncidence( KCal::Incidence*, KCal::Incidence* );
