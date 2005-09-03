@@ -83,7 +83,7 @@ NotifyDialog::NotesMap NotifyDialog::dict;
 NotifyDialog::NotifyDialog(QWidget* p)
   : KDialogBase(p,"notify action dialog",true,"Notify Message",Close,Close,true)
 {
-  Q3Frame *f = makeMainWidget();
+  QFrame *f = makeMainWidget();
   QVBoxLayout *topL = new QVBoxLayout(f);
   note = new QLabel(f);
   note->setTextFormat(Qt::RichText);

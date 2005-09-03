@@ -84,7 +84,7 @@ Q3Frame *KConfigWizard::createWizardPage( const QString &title )
 
 void KConfigWizard::setupRulesPage()
 {
-  Q3Frame *topFrame = addPage( i18n("Rules") );
+  QFrame *topFrame = addPage( i18n("Rules") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mRuleView = new Q3ListView( topFrame );
@@ -125,7 +125,7 @@ void KConfigWizard::updateRules()
 
 void KConfigWizard::setupChangesPage()
 {
-  Q3Frame *topFrame = addPage( i18n("Changes") );
+  QFrame *topFrame = addPage( i18n("Changes") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mChangeView = new Q3ListView( topFrame );

@@ -965,7 +965,7 @@ KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const
                 KDialogBase::Ok,true),
     manager(m), ruleName(r)
 {
-  Q3Frame *f = makeMainWidget();
+  QFrame *f = makeMainWidget();
   QBoxLayout *topL = new QVBoxLayout(f);
   ruleEditor = new RuleEditWidget(manager,f);
   connect(ruleEditor, SIGNAL(shrink()), SLOT(slotShrink()));
