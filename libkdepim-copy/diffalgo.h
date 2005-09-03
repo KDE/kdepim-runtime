@@ -37,7 +37,7 @@ namespace KPIM {
 class DiffAlgoDisplay
 {
   public:
-
+	virtual ~DiffAlgoDisplay(){}
     /**
       Is called on the start of the diff.
      */

@@ -571,7 +571,7 @@ AddresseeSelectorDialog::AddresseeSelectorDialog( Selection *selection,
                                                   QWidget *parent, const char *name )
   : KDialogBase( Plain, "", Ok | Cancel, Ok, parent, name, true )
 {
-  QFrame *frame = plainPage();
+  Q3Frame *frame = plainPage();
   QVBoxLayout *layout = new QVBoxLayout( frame );
   mSelector = new KPIM::AddresseeSelector( selection, frame );
   layout->addWidget( mSelector );
