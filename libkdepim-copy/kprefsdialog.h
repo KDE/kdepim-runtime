@@ -29,7 +29,7 @@
 #include <q3datetimeedit.h>
 //Added by qt3to4:
 #include <QLabel>
-#include <QFrame>
+#include <Q3Frame>
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
@@ -345,7 +345,7 @@ class KDE_EXPORT KPrefsWidFont : public KPrefsWid
     /**
       Return QFrame used as preview field.
     */
-    QFrame *preview();
+    Q3Frame *preview();
     /**
       Return button opening the font dialog.
     */

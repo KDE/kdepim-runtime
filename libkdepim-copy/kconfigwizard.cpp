@@ -32,7 +32,7 @@
 #include <qtimer.h>
 //Added by qt3to4:
 #include <QVBoxLayout>
-#include <QFrame>
+#include <Q3Frame>
 
 KConfigWizard::KConfigWizard( QWidget *parent,
                               char *name, bool modal )
@@ -77,14 +77,14 @@ void KConfigWizard::slotAboutToShowPage( QWidget *page )
   }
 }
 
-QFrame *KConfigWizard::createWizardPage( const QString &title )
+Q3Frame *KConfigWizard::createWizardPage( const QString &title )
 {
   return addPage( title );
 }
 
 void KConfigWizard::setupRulesPage()
 {
-  QFrame *topFrame = addPage( i18n("Rules") );
+  Q3Frame *topFrame = addPage( i18n("Rules") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mRuleView = new Q3ListView( topFrame );
@@ -125,7 +125,7 @@ void KConfigWizard::updateRules()
 
 void KConfigWizard::setupChangesPage()
 {
-  QFrame *topFrame = addPage( i18n("Changes") );
+  Q3Frame *topFrame = addPage( i18n("Changes") );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mChangeView = new Q3ListView( topFrame );

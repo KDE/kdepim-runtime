@@ -25,6 +25,8 @@
 #include <kdepimmacros.h>
 //Added by qt3to4:
 #include <QFocusEvent>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 namespace KPIM {
 

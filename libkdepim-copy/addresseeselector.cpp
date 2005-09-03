@@ -26,7 +26,7 @@
 #include <qtoolbutton.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <QFrame>
+#include <Q3Frame>
 #include <QGridLayout>
 #include <Q3PtrList>
 #include <Q3ValueList>
@@ -571,7 +571,7 @@ AddresseeSelectorDialog::AddresseeSelectorDialog( Selection *selection,
                                                   QWidget *parent, const char *name )
   : KDialogBase( Plain, "", Ok | Cancel, Ok, parent, name, true )
 {
-  QFrame *frame = plainPage();
+  Q3Frame *frame = plainPage();
   QVBoxLayout *layout = new QVBoxLayout( frame );
   mSelector = new KPIM::AddresseeSelector( selection, frame );
   layout->addWidget( mSelector );

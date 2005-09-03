@@ -31,7 +31,7 @@
 //Added by qt3to4:
 #include <QTextStream>
 #include <Q3PtrList>
-#include <QFrame>
+#include <Q3Frame>
 #include <QVBoxLayout>
 
 #include <klocale.h>
@@ -83,7 +83,7 @@ NotifyDialog::NotesMap NotifyDialog::dict;
 NotifyDialog::NotifyDialog(QWidget* p)
   : KDialogBase(p,"notify action dialog",true,"Notify Message",Close,Close,true)
 {
-  QFrame *f = makeMainWidget();
+  Q3Frame *f = makeMainWidget();
   QVBoxLayout *topL = new QVBoxLayout(f);
   note = new QLabel(f);
   note->setTextFormat(Qt::RichText);

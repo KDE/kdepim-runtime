@@ -43,7 +43,7 @@
 #include <q3hbox.h>
 //Added by qt3to4:
 #include <QGridLayout>
-#include <QFrame>
+#include <Q3Frame>
 #include <QHBoxLayout>
 #include <QBoxLayout>
 #include <QVBoxLayout>
@@ -68,7 +68,7 @@ template <class T> static int setCurrentItem(T *box, const QString& s)
 //
 //============================================================================
 SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, const char *)
-  : QFrame(p), manager(m)
+  : Q3Frame(p), manager(m)
 {
   QBoxLayout *topL = new QVBoxLayout(this,5);
   QBoxLayout *firstRow = new QHBoxLayout(topL);
@@ -965,7 +965,7 @@ KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const
                 KDialogBase::Ok,true),
     manager(m), ruleName(r)
 {
-  QFrame *f = makeMainWidget();
+  Q3Frame *f = makeMainWidget();
   QBoxLayout *topL = new QVBoxLayout(f);
   ruleEditor = new RuleEditWidget(manager,f);
   connect(ruleEditor, SIGNAL(shrink()), SLOT(slotShrink()));

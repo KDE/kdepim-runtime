@@ -140,7 +140,7 @@ public:
 private:
     MailTextSource *_src;
     MailList mMailList;
-    QDragObject *mUrlDrag;
+    Q3DragObject *mUrlDrag;
 };
 
 }

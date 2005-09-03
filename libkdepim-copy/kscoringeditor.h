@@ -23,7 +23,7 @@
 #include <QLabel>
 #include <kdialogbase.h>
 #include <q3table.h>
-#include <qframe.h>
+#include <q3frame.h>
 
 #include "kwidgetlister.h"
 
@@ -50,7 +50,7 @@ class KColorCombo;
 /** this widget implements an editor for one condition.
     It is used in ExpressionEditWidget
 */
-class KDE_EXPORT SingleConditionWidget : public QFrame
+class KDE_EXPORT SingleConditionWidget : public Q3Frame
 {
   Q_OBJECT
   friend class ConditionEditWidget;

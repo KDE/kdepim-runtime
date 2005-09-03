@@ -262,7 +262,7 @@ QLabel *KPrefsWidFont::label()
   return mLabel;
 }
 
-QFrame *KPrefsWidFont::preview()
+Q3Frame *KPrefsWidFont::preview()
 {
   return mPreview;
 }
