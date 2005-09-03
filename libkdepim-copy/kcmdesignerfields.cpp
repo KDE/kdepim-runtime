@@ -28,7 +28,7 @@
 #include <qobject.h>
 #include <qpixmap.h>
 #include <qpushbutton.h>
-#include <q3whatsthis.h>
+
 #include <q3groupbox.h>
 #include <qwidgetfactory.h>
 #include <qregexp.h>
