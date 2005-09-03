@@ -77,7 +77,7 @@ void KConfigWizard::slotAboutToShowPage( QWidget *page )
   }
 }
 
-Q3Frame *KConfigWizard::createWizardPage( const QString &title )
+QFrame *KConfigWizard::createWizardPage( const QString &title )
 {
   return addPage( title );
 }

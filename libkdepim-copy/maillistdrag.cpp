@@ -176,7 +176,7 @@ bool MailListDrag::decode( QDropEvent* e, MailList& mailList )
 
 bool MailListDrag::decode( QByteArray& payload, MailList& mailList )
 {
-    QDataStream stream( payload, QIODevice::ReadOnly );
+    QDataStream stream( &payload, QIODevice::ReadOnly );
     if ( payload.size() ) {
 	stream >> mailList;
 	return TRUE;
