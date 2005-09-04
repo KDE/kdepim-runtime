@@ -23,6 +23,8 @@
 #include <kparts/part.h>
 #include <kmimetype.h>
 #include <qlayout.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
 #include <kapplication.h>
 #include <kdepimmacros.h>
 
@@ -76,8 +78,8 @@ QString KPartsWidgetPlugin::group( const QString & key ) const {
 }
 
 #if 0
-QIconSet KPartsWidgetPlugin::iconSet( const QString & key ) const {
-  return QIconSet();
+QIcon KPartsWidgetPlugin::iconSet( const QString & key ) const {
+  return QIcon();
 }
 #endif
 
