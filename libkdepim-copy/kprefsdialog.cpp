@@ -232,7 +232,7 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
   mLabel = new QLabel( mItem->label()+':', parent );
 
   mPreview = new QLabel( sampleText, parent );
-  mPreview->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
+  mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 
   mButton = new QPushButton( i18n("Choose..."), parent );
   connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
@@ -262,7 +262,7 @@ QLabel *KPrefsWidFont::label()
   return mLabel;
 }
 
-Q3Frame *KPrefsWidFont::preview()
+QFrame *KPrefsWidFont::preview()
 {
   return mPreview;
 }
