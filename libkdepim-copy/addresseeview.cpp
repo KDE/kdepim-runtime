@@ -40,6 +40,7 @@
 #include <klocale.h>
 #include <kcodecs.h>
 #include <kmessagebox.h>
+#include <kprocess.h>
 #include <krun.h>
 #include <kstringhandler.h>
 #include <ktempfile.h>

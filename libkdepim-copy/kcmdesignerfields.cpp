@@ -424,7 +424,7 @@ void KCMDesignerFields::startDesigner()
   Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
-    cmdLine += " " + pageItem->path();
+    cmdLine += " " + KProcess::quote( pageItem->path() );
   }
 
   KRun::runCommand( cmdLine );
