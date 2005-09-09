@@ -151,10 +151,10 @@ QStringList RecentAddresses::addresses() const
 
 RecentAddressDialog::RecentAddressDialog( QWidget *parent, const char *name )
   : KDialogBase( Plain, i18n( "Edit Recent Addresses" ), Ok | Cancel, Ok,
-                 parent, name, true, true )
+                 parent, name, true )
 {
   QWidget *page = plainPage();
-  QVBoxLayout *layout = new QVBoxLayout( page, marginHint(), spacingHint() );
+  QVBoxLayout *layout = new QVBoxLayout( page, 0, spacingHint() );
 
   mEditor = new KEditListBox( i18n( "Recent Addresses" ), page, "", false,
                               KEditListBox::Add | KEditListBox::Remove );
