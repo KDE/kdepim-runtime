@@ -28,7 +28,8 @@
 #include <qspinbox.h>
 #include <qregexp.h>
 #include <q3textedit.h>
-#include <qwidgetfactory.h>
+#include <QFile>
+#include <QtDesigner/QFormBuilder>
 //Added by qt3to4:
 #include <QVBoxLayout>
 
@@ -54,7 +55,9 @@ void DesignerFields::initGUI( const QString &uiFile )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
 
-  QWidget *wdg = QWidgetFactory::create( uiFile, 0, this );
+  QFile f( uiFile );
+  QFormBuilder builder;
+  QWidget *wdg = builder.load( &f, this );
   if ( !wdg ) {
     kdError() << "No ui file found" << endl;
     return;
@@ -65,8 +68,8 @@ void DesignerFields::initGUI( const QString &uiFile )
 
   layout->addWidget( wdg );
 
-  QObjectList *list = wdg->queryList( "QWidget" );
-  QObjectListIt it( *list );
+  QObjectList list = wdg->queryList( "QWidget" );
+  QObject *it;
 
   QStringList allowedTypes;
   allowedTypes << "QLineEdit"
@@ -79,50 +82,46 @@ void DesignerFields::initGUI( const QString &uiFile )
                << "KDateTimeWidget"
                << "KDatePicker";
 
-  while ( it.current() ) {
-    if ( allowedTypes.contains( it.current()->className() ) ) {
-      QString name = it.current()->name();
+  Q_FOREACH( it, list ) {
+    if ( allowedTypes.contains( it->className() ) ) {
+      QString name = it->name();
       if ( name.startsWith( "X_" ) ) {
         name = name.mid( 2 );
 
-        QWidget *widget = static_cast<QWidget*>( it.current() );
+        QWidget *widget = static_cast<QWidget*>( it );
         if ( !name.isEmpty() )
           mWidgets.insert( name, widget );
 
-        if ( it.current()->inherits( "QLineEdit" ) )
-          connect( it.current(), SIGNAL( textChanged( const QString& ) ),
+        if ( it->inherits( "QLineEdit" ) )
+          connect( it, SIGNAL( textChanged( const QString& ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "QSpinBox" ) )
-          connect( it.current(), SIGNAL( valueChanged( int ) ),
+        else if ( it->inherits( "QSpinBox" ) )
+          connect( it, SIGNAL( valueChanged( int ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "QCheckBox" ) )
-          connect( it.current(), SIGNAL( toggled( bool ) ),
+        else if ( it->inherits( "QCheckBox" ) )
+          connect( it, SIGNAL( toggled( bool ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "QComboBox" ) )
-          connect( it.current(), SIGNAL( activated( const QString& ) ),
+        else if ( it->inherits( "QComboBox" ) )
+          connect( it, SIGNAL( activated( const QString& ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "QDateTimeEdit" ) )
-          connect( it.current(), SIGNAL( valueChanged( const QDateTime& ) ),
+        else if ( it->inherits( "QDateTimeEdit" ) )
+          connect( it, SIGNAL( valueChanged( const QDateTime& ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "KDateTimeWidget" ) )
-          connect( it.current(), SIGNAL( valueChanged( const QDateTime& ) ),
+        else if ( it->inherits( "KDateTimeWidget" ) )
+          connect( it, SIGNAL( valueChanged( const QDateTime& ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "KDatePicker" ) )
-          connect( it.current(), SIGNAL( dateChanged( QDate ) ),
+        else if ( it->inherits( "KDatePicker" ) )
+          connect( it, SIGNAL( dateChanged( QDate ) ),
                    SIGNAL( modified() ) );
-        else if ( it.current()->inherits( "QTextEdit" ) )
-          connect( it.current(), SIGNAL( textChanged() ),
+        else if ( it->inherits( "QTextEdit" ) )
+          connect( it, SIGNAL( textChanged() ),
                    SIGNAL( modified() ) );
 
         if ( !widget->isEnabled() )
           mDisabledWidgets.append( widget );
       }
     }
-
-    ++it;
   }
-
-  delete list;
 }
 
 QString DesignerFields::identifier() const
