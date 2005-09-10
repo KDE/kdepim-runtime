@@ -122,7 +122,7 @@ private:
 
     void adjustSize();
 
-    uint m_maxCount;
+    int m_maxCount;
 
     static RecentAddresses *s_self;
 };

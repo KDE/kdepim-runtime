@@ -196,9 +196,9 @@ class KDE_EXPORT KSubscription : public KDialogBase
     /**
      * The direction of the buttons
      */
-    enum Qt::Orientation {
-      Qt::DockLeft,
-      Qt::DockRight
+    enum Direction {
+      Left,
+      Right
     };
 
     KSubscription( QWidget *parent, const QString &caption, KAccount* acct,
@@ -253,14 +253,14 @@ class KDE_EXPORT KSubscription : public KDialogBase
     /**
      * Get/Set the direction of button1
      */
-    Qt::Orientation directionButton1() { return mDirButton1; }
-    void setDirectionButton1( Qt::Orientation dir );
+    Direction directionButton1() { return mDirButton1; }
+    void setDirectionButton1( Direction dir );
 
     /**
      * Get/Set the direction of button2
      */
-    Qt::Orientation directionButton2() { return mDirButton2; }
-    void setDirectionButton2( Qt::Orientation dir );
+    Direction directionButton2() { return mDirButton2; }
+    void setDirectionButton2( Direction dir );
 
     /**
      * Returns true if items are being constructed

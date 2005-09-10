@@ -37,11 +37,11 @@ int QStrictUtf7Codec::mibEnum() const {
   return -1012;
 }
 
-const char* QUtf7Codec::name() const {
+QByteArray QUtf7Codec::name() const {
   return "UTF-7";
 }
 
-const char* QStrictUtf7Codec::name() const {
+QByteArray QStrictUtf7Codec::name() const {
   return "X-QT-UTF-7-STRICT";
 }
 
@@ -158,7 +158,9 @@ class QUtf7Decoder : public QTextDecoder {
   // of a shifted-sequence.
   bool rightAfterEscape;
 public:
-  QUtf7Decoder() : uc(0), stepNo(0), shifted(FALSE), rightAfterEscape(FALSE)
+  QUtf7Decoder( const QTextCodec *codec ) :
+    QTextDecoder( codec ),
+    uc(0), stepNo(0), shifted(false), rightAfterEscape(false)
   {
   }
 
@@ -316,7 +318,7 @@ public:
 
 QTextDecoder* QUtf7Codec::makeDecoder() const
 {
-  return new QUtf7Decoder;
+  return new QUtf7Decoder( this );
 }
 
 
@@ -327,8 +329,9 @@ class QUtf7Encoder : public QTextEncoder {
   bool shifted : 1;
   bool mayContinueShiftedSequence : 1;
 public:
-  QUtf7Encoder(bool encOpt, bool encLwsp)
-    : outbits(0), stepNo(0),
+  QUtf7Encoder(bool encOpt, bool encLwsp, const QTextCodec *codec)
+    : QTextEncoder( codec ),
+      outbits(0), stepNo(0),
       shifted(FALSE), mayContinueShiftedSequence(FALSE)
   {
     for ( int i = 0; i < 16 ; i++) {
@@ -542,11 +545,11 @@ public:
 }; // class QUtf7Encoder
 
 QTextEncoder* QUtf7Codec::makeEncoder() const {
-  return new QUtf7Encoder( false, false );
+  return new QUtf7Encoder( false, false, this );
 }
 
 QTextEncoder* QStrictUtf7Codec::makeEncoder() const {
-  return new QUtf7Encoder( true, false );
+  return new QUtf7Encoder( true, false, this );
 }
 
 #endif // QT_NO_TEXTCODEC

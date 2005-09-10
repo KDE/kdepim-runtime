@@ -129,7 +129,7 @@ void RecentAddresses::setMaxCount( int count )
 void RecentAddresses::adjustSize()
 {
     while ( m_addresseeList.count() > m_maxCount )
-        m_addresseeList.remove( m_addresseeList.fromLast() );
+        m_addresseeList.takeLast();
 }
 
 void RecentAddresses::clear()

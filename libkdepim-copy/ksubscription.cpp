@@ -419,20 +419,20 @@ bool KSubscription::itemInListView( Q3ListView *view, const KGroupInfo &gi )
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::setDirectionButton1( Qt::Orientation dir )
+void KSubscription::setDirectionButton1( Direction dir )
 {
   mDirButton1 = dir;
-  if (dir == Qt::DockLeft)
+  if (dir == Left)
     arrowBtn1->setIconSet(pmLeft);
   else
     arrowBtn1->setIconSet(pmRight);
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::setDirectionButton2( Qt::Orientation dir )
+void KSubscription::setDirectionButton2( Direction dir )
 {
   mDirButton2 = dir;
-  if (dir == Qt::DockLeft)
+  if (dir == Left)
     arrowBtn2->setIconSet(pmLeft);
   else
     arrowBtn2->setIconSet(pmRight);
@@ -644,8 +644,8 @@ void KSubscription::slotChangeButtonState( Q3ListViewItem *item )
   Q3ListView* currentView = item->listView();
   if (currentView == groupView)
   {
-    setDirectionButton1(Qt::DockRight);
-    setDirectionButton2(Qt::DockRight);
+    setDirectionButton1(Right);
+    setDirectionButton2(Right);
     if (static_cast<GroupItem*>(item)->isOn())
     {
       // already subscribed
@@ -659,14 +659,14 @@ void KSubscription::slotChangeButtonState( Q3ListViewItem *item )
   } else if (currentView == subView)
   {
     // undo possible
-    setDirectionButton1(Qt::DockLeft);
+    setDirectionButton1(Left);
 
     arrowBtn1->setEnabled(true);
     arrowBtn2->setEnabled(false);
   } else if (currentView == unsubView)
   {
     // undo possible
-    setDirectionButton2(Qt::DockLeft);
+    setDirectionButton2(Left);
 
     arrowBtn1->setEnabled(false);
     arrowBtn2->setEnabled(true);
@@ -676,7 +676,7 @@ void KSubscription::slotChangeButtonState( Q3ListViewItem *item )
 //------------------------------------------------------------------------------
 void KSubscription::slotButton1()
 {
-  if (mDirButton1 == Qt::DockRight)
+  if (mDirButton1 == Right)
   {
     if (groupView->currentItem() &&
         static_cast<GroupItem*>(groupView->currentItem())->isCheckItem())
@@ -705,7 +705,7 @@ void KSubscription::slotButton1()
 //------------------------------------------------------------------------------
 void KSubscription::slotButton2()
 {
-  if (mDirButton2 == Qt::DockRight)
+  if (mDirButton2 == Right)
   {
     if (groupView->currentItem() &&
         static_cast<GroupItem*>(groupView->currentItem())->isCheckItem())
