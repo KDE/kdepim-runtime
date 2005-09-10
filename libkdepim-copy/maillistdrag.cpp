@@ -189,7 +189,7 @@ bool MailListDrag::decode( QDropEvent* e, QByteArray &a )
     MailList mailList;
     if (decode( e, mailList )) {
 	MailList::iterator it;
-	QBuffer buffer( a );
+	QBuffer buffer( &a );
 	buffer.open( QIODevice::WriteOnly );
 	QDataStream stream( &buffer );
 	for (it = mailList.begin(); it != mailList.end(); ++it) {
