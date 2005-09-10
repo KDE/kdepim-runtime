@@ -297,27 +297,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       if ( (*addrIt).label().isEmpty() ) {
         QString formattedAddress;
 
-#if KDE_IS_VERSION(3,1,90)
         formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
-#else
-        if ( !(*addrIt).street().isEmpty() )
-          formattedAddress += (*addrIt).street() + "\n";
-
-        if ( !(*addrIt).postOfficeBox().isEmpty() )
-          formattedAddress += (*addrIt).postOfficeBox() + "\n";
-
-        formattedAddress += (*addrIt).locality() + QString::fromLatin1(" ") + (*addrIt).region();
-
-        if ( !(*addrIt).postalCode().isEmpty() )
-          formattedAddress += QString::fromLatin1(", ") + (*addrIt).postalCode();
-
-        formattedAddress += "\n";
-
-        if ( !(*addrIt).country().isEmpty() )
-          formattedAddress += (*addrIt).country() + "\n";
-
-        formattedAddress += (*addrIt).extended();
-#endif
 
         formattedAddress = formattedAddress.replace( '\n', "<br>" );
 

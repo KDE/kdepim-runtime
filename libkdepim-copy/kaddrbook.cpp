@@ -137,7 +137,6 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 {
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
 
-#if KDE_IS_VERSION(3,4,89)
   // PORT. FIXME: This ugly hack will be removed in 4.0
   while ( !addressBook->loadingHasFinished() ) {
     qApp->processEvents( QEventLoop::ExcludeUserInput );
@@ -145,7 +144,6 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
     // use sleep here to reduce cpu usage
     usleep( 100 );
   }
-#endif
 
   // Select a resource
   Q3PtrList<KABC::Resource> kabcResources = addressBook->resources();

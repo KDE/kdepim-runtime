@@ -400,18 +400,10 @@ QString LinkLocator::getEmoticon()
   else {
     const QString imageName = (*s_smileyEmoticonNameMap)[smiley];
 
-#if KDE_IS_VERSION( 3, 3, 91 )
     const QString iconPath = locate( "emoticons",
                                      EmotIcons::theme() +
                                      QString::fromLatin1( "/" ) +
                                      imageName + QString::fromLatin1(".png") );
-#else
-    const QString iconPath = locate( "data",
-                                     QString::fromLatin1( "kopete/pics/emoticons/" )+
-                                     EmotIcons::theme() +
-                                     QString::fromLatin1( "/" ) +
-                                     imageName + QString::fromLatin1(".png") );
-#endif
 
     const QString dataUrl = pngToDataUrl( iconPath );
     if ( dataUrl.isEmpty() ) {

@@ -305,9 +305,7 @@ KFolderTree::KFolderTree( QWidget *parent, const char* name )
   setRootIsDecorated(true);
   setSelectionModeExt(Extended);
   setAlternateBackground(QColor());
-#if KDE_IS_VERSION( 3, 3, 90 )
   setShadeSortColumn ( false );
-#endif
   setFullWidth(true);
   disableAutoSelection();
 
