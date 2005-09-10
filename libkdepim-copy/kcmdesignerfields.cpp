@@ -30,13 +30,14 @@
 #include <qpushbutton.h>
 
 #include <q3groupbox.h>
-#include <qwidgetfactory.h>
 #include <qregexp.h>
 #include <qtimer.h>
+#include <QtDesigner/QFormBuilder>
 //Added by qt3to4:
 #include <QHBoxLayout>
 #include <Q3Frame>
 #include <QVBoxLayout>
+#include <Q3WhatsThis>
 
 #include <kaboutdata.h>
 #include <kdebug.h>
@@ -44,6 +45,7 @@
 #include <kglobal.h>
 #include <klistview.h>
 #include <klocale.h>
+#include <kprocess.h>
 #include <krun.h>
 #include <kstandarddirs.h>
 #include <kactivelabel.h>
@@ -65,16 +67,18 @@ class PageItem : public Q3CheckListItem
     {
       mName = path.mid( path.findRev( '/' ) + 1 );
 
-      QWidget *wdg = QWidgetFactory::create( mPath, 0, 0 );
+      QFile f( mPath );
+      QFormBuilder builder;
+      QWidget *wdg = builder.load( &f, 0 );
       if ( wdg ) {
         setText( 0, wdg->caption() );
 
         QPixmap pm = QPixmap::grabWidget( wdg );
-        QImage img = pm.convertToImage().smoothScale( 300, 300, QImage::ScaleMin );
+        QImage img = pm.convertToImage().smoothScale( 300, 300, Qt::KeepAspectRatio );
         mPreview = img;
 
-        QObjectList *list = wdg->queryList( "QWidget" );
-        QObjectListIt it( *list );
+        QObjectList list = wdg->queryList( "QWidget" );
+        QObject *it;
 
         QMap<QString, QString> allowedTypes;
         allowedTypes.insert( "QLineEdit", i18n( "Text" ) );
@@ -87,21 +91,18 @@ class PageItem : public Q3CheckListItem
         allowedTypes.insert( "KDateTimeWidget", i18n( "Date & Time" ) );
         allowedTypes.insert( "KDatePicker", i18n( "Date" ) );
 
-        while ( it.current() ) {
-          if ( allowedTypes.find( it.current()->className() ) != allowedTypes.end() ) {
-            QString name = it.current()->name();
+        Q_FOREACH( it, list ) {
+          if ( allowedTypes.find( it->className() ) != allowedTypes.end() ) {
+            QString name = it->name();
             if ( name.startsWith( "X_" ) ) {
               new Q3ListViewItem( this, name,
-                                 allowedTypes[ it.current()->className() ],
-                                 it.current()->className(),
-                                 Q3WhatsThis::textFor( static_cast<QWidget*>( it.current() ) ) );
+                                 allowedTypes[ it->className() ],
+                                 it->className(),
+                                 static_cast<QWidget*>( it )->whatsThis() );
             }
           }
-
-          ++it;
         }
 
-        delete list;
       } else
         delete wdg;
     }
