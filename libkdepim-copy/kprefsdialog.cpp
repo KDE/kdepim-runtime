@@ -33,7 +33,7 @@
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <q3datetimeedit.h>
-#include <q3whatsthis.h>
+
 //Added by qt3to4:
 #include <QGridLayout>
 #include <Q3ValueList>
@@ -108,7 +108,7 @@ KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
   mCheck = new QCheckBox( item->label(), parent);
   connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
   if ( !item->whatsThis().isNull() ) {
-    Q3WhatsThis::add( mCheck, item->whatsThis() );
+    mCheck->setWhatsThis( item->whatsThis() );
   }
 }
 
@@ -151,8 +151,8 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
   mLabel->setBuddy( mSpin );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
-    Q3WhatsThis::add( mLabel, whatsThis );
-    Q3WhatsThis::add( mSpin, whatsThis );
+    mLabel->setWhatsThis( whatsThis );
+    mSpin->setWhatsThis( whatsThis );
   }
 }
 
@@ -195,7 +195,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
   mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
-    Q3WhatsThis::add(mButton, whatsThis);
+    mButton->setWhatsThis( whatsThis);
   }
 }
 
@@ -238,8 +238,8 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
   connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
-    Q3WhatsThis::add(mPreview, whatsThis);
-    Q3WhatsThis::add(mButton, whatsThis);
+    mPreview->setWhatsThis( whatsThis);
+    mButton->setWhatsThis( whatsThis);
   }
 }
 
@@ -293,7 +293,7 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    Q3WhatsThis::add( mTimeEdit, whatsThis );
+    mTimeEdit->setWhatsThis( whatsThis );
   }
 }
 
@@ -336,7 +336,7 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
            SIGNAL( valueChanged( const QTime & ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    Q3WhatsThis::add( mTimeEdit, whatsThis );
+    mTimeEdit->setWhatsThis( whatsThis );
   }
 }
 
@@ -373,7 +373,7 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
   connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    Q3WhatsThis::add( mDateEdit, whatsThis );
+    mDateEdit->setWhatsThis( whatsThis );
   }
 }
 
@@ -416,7 +416,7 @@ void KPrefsWidRadios::addRadio(const QString &text, const QString &whatsThis)
 {
   QRadioButton *r = new QRadioButton(text,mBox);
   if (!whatsThis.isNull()) {
-    Q3WhatsThis::add(r, whatsThis);
+    r->setWhatsThis( whatsThis);
   }
 }
 
@@ -456,7 +456,7 @@ KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
   mEdit->setEchoMode( echomode );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    Q3WhatsThis::add( mEdit, whatsThis );
+    mEdit->setWhatsThis( whatsThis );
   }
 }
 
@@ -506,7 +506,7 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
            SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
-    Q3WhatsThis::add( mURLRequester, whatsThis );
+    mURLRequester->setWhatsThis( whatsThis );
   }
 }
 
