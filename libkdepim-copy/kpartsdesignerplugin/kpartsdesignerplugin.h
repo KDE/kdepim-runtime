@@ -21,7 +21,7 @@
 #ifndef DESIGNER_PARTPLUGIN_H
 #define DESIGNER_PARTPLUGIN_H
 
-#include <qwidgetplugin.h>
+#include <QtDesigner/QDesignerCustomWidgetInterface>
 #include <qwidget.h>
 namespace KParts { class ReadOnlyPart; }
 
@@ -34,7 +34,7 @@ class KPartsGenericPart : public QWidget {
     Q_PROPERTY( QString url READ url WRITE setURL )
     Q_PROPERTY( QString mimetype READ mimetype WRITE setMimetype )
 public:
-    KPartsGenericPart( QWidget* parentWidget, const char* name );
+    KPartsGenericPart( QWidget* parentWidget, const char* name = 0);
 
     QString url() const { return m_url; }
     void setURL( const QString& url ) { m_url = url; load(); }
@@ -55,16 +55,19 @@ private:
 /**
  * Qt designer plugin for embedding a KParts using KPartsGenericPart
  */
-class KPartsWidgetPlugin : public QWidgetPlugin {
+class KPartsWidgetPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
-  QStringList keys() const;
-  QWidget * create( const QString & key, QWidget * parent, const char * name );
-  QString group( const QString & key ) const;
-  //QIconSet iconSet( const QString & key ) const;
-  QString includeFile( const QString & key ) const;
-  QString toolTip( const QString & key ) const;
-  QString whatsThis( const QString & key ) const;
-  bool isContainer( const QString & key ) const;
+  QWidget * createWidget( QWidget * parent );
+  QString group() const;
+  QIcon icon() const;
+  QString includeFile() const;
+  QString toolTip() const;
+  QString whatsThis() const;
+  bool isContainer() const;
+  QString name() const;
 };
 
 #endif

@@ -25,6 +25,7 @@
 #include <qlayout.h>
 //Added by qt3to4:
 #include <QVBoxLayout>
+#include <qplugin.h>
 #include <kapplication.h>
 #include <kdepimmacros.h>
 
@@ -59,61 +60,39 @@ void KPartsGenericPart::load()
 
 ////
 
-static const char* mykey = "KPartsGenericPart";
-
-QStringList KPartsWidgetPlugin::keys() const {
-    return QStringList() << mykey;
+QWidget * KPartsWidgetPlugin::createWidget( QWidget * parent ) {
+    return new KPartsGenericPart( parent );
 }
 
-QWidget * KPartsWidgetPlugin::create( const QString & key, QWidget * parent, const char * name ) {
-    if ( key == mykey )
-        return new KPartsGenericPart( parent, name );
-    return 0;
+QString KPartsWidgetPlugin::group() const {
+    return "Display (KDE)";
 }
 
-QString KPartsWidgetPlugin::group( const QString & key ) const {
-    if ( key == mykey )
-        return "Display (KDE)";
-    return QString::null;
-}
-
-#if 0
-QIcon KPartsWidgetPlugin::iconSet( const QString & key ) const {
+QIcon KPartsWidgetPlugin::icon() const {
   return QIcon();
 }
-#endif
 
-QString KPartsWidgetPlugin::includeFile( const QString & key ) const {
-    if ( key == mykey )
-        return "partplugin.h";
-    return QString::null;
+QString KPartsWidgetPlugin::includeFile() const {
+    return "partplugin.h";
 }
 
-QString KPartsWidgetPlugin::toolTip( const QString & key ) const {
-    if ( key == mykey )
-        return "Generic KParts viewer";
-    return QString::null;
+QString KPartsWidgetPlugin::toolTip() const {
+    return "Generic KParts viewer";
 }
 
-QString KPartsWidgetPlugin::whatsThis( const QString & key ) const {
-    if ( key == mykey )
-        return "A widget to embed any KParts viewer, given a url and optionally a mimetype";
-    return QString::null;
+QString KPartsWidgetPlugin::whatsThis() const {
+    return "A widget to embed any KParts viewer, given a url and optionally a mimetype";
 }
 
-bool KPartsWidgetPlugin::isContainer( const QString & /*key*/ ) const {
+bool KPartsWidgetPlugin::isContainer() const {
     return false;
 }
 
-/// Duplicated from kdelibs/kdecore/kdemacros.h.in for those with kdelibs < 3.4
-#ifndef KDE_Q_EXPORT_PLUGIN
-#define KDE_Q_EXPORT_PLUGIN(PLUGIN) \
-  Q_EXTERN_C KDE_EXPORT const char* qt_ucm_query_verification_data(); \
-  Q_EXTERN_C KDE_EXPORT QUnknownInterface* ucm_instantiate(); \
-  Q_EXPORT_PLUGIN(PLUGIN)
-#endif
+QString KPartsWidgetPlugin::name() const {
+    return "KParts";
+}
 
-KDE_Q_EXPORT_PLUGIN( KPartsWidgetPlugin )
+Q_EXPORT_PLUGIN( KPartsWidgetPlugin )
 
 #include "kpartsdesignerplugin.moc"
 
