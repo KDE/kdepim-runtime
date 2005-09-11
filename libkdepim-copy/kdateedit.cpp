@@ -23,7 +23,7 @@
 
 #include <qapplication.h>
 #include <qlineedit.h>
-#include <q3listbox.h>
+#include <QAbstractItemView>
 #include <qvalidator.h>
 //Added by qt3to4:
 #include <QMouseEvent>
@@ -171,9 +171,9 @@ void KDateEdit::popup()
   assignDate( date );
   updateView();
   // Now, simulate an Enter to unpress it
-  Q3ListBox *lb = listBox();
+  QAbstractItemView *lb = view();
   if (lb) {
-    lb->setCurrentItem(0);
+    lb->setCurrentIndex( lb->model()->index( 0, 0 ) );
     QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
     QApplication::postEvent(lb, keyEvent);
   }

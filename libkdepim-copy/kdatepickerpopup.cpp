@@ -51,7 +51,8 @@ void KDatePickerPopup::buildMenu()
   clear();
 
   if ( mItems & DatePicker ) {
-    insertItem( mDatePicker );
+    #warning Port me!
+    //insertItem( mDatePicker );
 
     if ( ( mItems & NoDate ) || ( mItems & Words ) )
       insertSeparator();

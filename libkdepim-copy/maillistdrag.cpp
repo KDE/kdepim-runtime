@@ -122,7 +122,8 @@ QDataStream& operator<< ( QDataStream &s, const MailSummary &d )
     s << d.subject();
     s << d.from();
     s << d.to();
-    s << d.date();
+    #warning Port me!
+    //s << d.date();
     return s;
 }
 
@@ -136,7 +137,8 @@ QDataStream& operator>> ( QDataStream &s, MailSummary &d )
     s >> subject;
     s >> from;
     s >> to;
-    s >> date;
+    #warning Port me!
+    //s >> date;
     d.set( serialNumber, messageId, subject, from, to, date );
     return s;
 }
@@ -270,7 +272,8 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
                   break;
               }
               dlg->progressBar()->setValue(++i);
-              kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
+              #warning Port me!
+              //kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
           }
   
           delete dlg;
@@ -281,6 +284,7 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
       return mUrlDrag->encodedData( mimeType );
     }
 
+    /* danimo, wth is this!?!?!
     QByteArray rc; 
     if (_src) {
         MailList ml;
@@ -308,5 +312,5 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
         delete dlg;
         delete ts;
     }
-    return rc;
+    return rc;*/
 }

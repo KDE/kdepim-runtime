@@ -8,14 +8,14 @@ libkdepim_la_SOURCES = \
   kprefsdialog.cpp kpimprefs.cpp \
   categoryselectdialog_base.ui categoryselectdialog.cpp \
   categoryeditdialog_base.ui categoryeditdialog.cpp \
-#  kdateedit.cpp 
+  kdateedit.cpp \ 
   kimportdialog.cpp kvcarddrag.cpp \
   addressesdialog.cpp addresspicker.ui addresseeview.cpp \
   maillistdrag.cpp MailTransportServiceIface.skel \
   AddressBookServiceIface.skel \
   kconfigpropagator.cpp kconfigwizard.cpp \
   pluginloaderbase.cpp addresseelineedit.cpp addresseelineedit.skel \
-#  kdatepickerpopup.cpp 
+  kdatepickerpopup.cpp \ 
   kfileio.cpp \
   clicklineedit.cpp configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp \
@@ -45,7 +45,7 @@ AddressBookServiceIface_DIR = $(srcdir)/interfaces
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = $(top_builddir)/libkcal/libkcal.la \
                        $(top_builddir)/libemailfunctions/libemailfunctions.la \
-                       $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) -lqui
+                       $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) -lQtDesigner
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 include_HEADERS = kdepimmacros.h kdepimprotocols.h

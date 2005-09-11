@@ -888,7 +888,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m,
 
 void KScoringEditor::setDirty()
 {
-  KPushButton *applyBtn = actionButton(Apply);
+  QPushButton *applyBtn = actionButton(Apply);
   applyBtn->setEnabled(true);
 }
 
