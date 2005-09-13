@@ -389,10 +389,7 @@ void ProgressDialog::slotClose()
 
 void ProgressDialog::setVisible( bool b )
 {
-  if ( b )
-    show();
-  else
-    hide();
+  OverlayWidget::setVisible( b );
   emit visibilityChanged( b );
 }
 
