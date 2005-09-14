@@ -340,10 +340,11 @@ void KFolderTree::styleChange( QStyle& oldStyle )
 void KFolderTree::drawContentsOffset( QPainter * p, int ox, int oy,
                                        int cx, int cy, int cw, int ch )
 {
-  bool oldUpdatesEnabled = isUpdatesEnabled();
-  setUpdatesEnabled(false);
+//  bool oldUpdatesEnabled = isUpdatesEnabled();
+//  setUpdatesEnabled(false);
   KListView::drawContentsOffset( p, ox, oy, cx, cy, cw, ch );
-  setUpdatesEnabled(oldUpdatesEnabled);
+#warning This will trigger a repaint and thus an infinite loop!
+//  setUpdatesEnabled(oldUpdatesEnabled);
 }
 
 //-----------------------------------------------------------------------------
