@@ -1,7 +1,5 @@
 // -*- Mode: C++; c-basic-offset: 2; indent-tabs-mode: nil; -*-
-/**
- * pluginmanager.h
- *
+/*
  * Copyright (C)  2004  Zack Rusin <zack@kde.org>
  * Copyright (C)  2003  Martijn Klingens <klingens@kde.org>
  *

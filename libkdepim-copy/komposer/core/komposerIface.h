@@ -1,6 +1,4 @@
-/**
- * komposerIface.h
- *
+/*
  * Copyright (C)  2004  Zack Rusin <zack@kde.org>
  *
  * This library is free software; you can redistribute it and/or

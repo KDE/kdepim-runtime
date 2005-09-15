@@ -1,6 +1,4 @@
-/**
- * prefsmodule.h
- *
+/*
  * Copyright (C)  2003  Zack Rusin <zack@kde.org>
  *
  * This library is free software; you can redistribute it and/or
