@@ -73,22 +73,22 @@ SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, cons
   QBoxLayout *topL = new QVBoxLayout(this,5);
   QBoxLayout *firstRow = new QHBoxLayout(topL);
   neg = new QCheckBox(i18n("Not"),this);
-  QToolTip::add(neg,i18n("Negate this condition"));
+  neg->setToolTip(i18n("Negate this condition"));
   firstRow->addWidget(neg);
   headers = new KComboBox(this);
   headers->insertStringList(manager->getDefaultHeaders());
   headers->setEditable( true );
-  QToolTip::add(headers,i18n("Select the header to match this condition against"));
+  headers->setToolTip(i18n("Select the header to match this condition against"));
   firstRow->addWidget(headers,1);
   matches = new KComboBox(this);
   matches->insertStringList(KScoringExpression::conditionNames());
-  QToolTip::add(matches,i18n("Select the type of match"));
+  matches->setToolTip(i18n("Select the type of match"));
   firstRow->addWidget(matches,1);
   connect( matches, SIGNAL( activated( int ) ), SLOT( toggleRegExpButton( int ) ) );
   QHBoxLayout *secondRow = new QHBoxLayout( topL );
   secondRow->setSpacing( 1 );
   expr = new KLineEdit( this );
-  QToolTip::add(expr,i18n("The condition for the match"));
+  expr->setToolTip(i18n("The condition for the match"));
   // reserve space for at least 20 characters
   expr->setMinimumWidth(fontMetrics().maxWidth()*20);
   secondRow->addWidget( expr );
@@ -616,12 +616,12 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   QHBoxLayout *btnL = new QHBoxLayout( topL, KDialog::spacingHint() );
   mRuleUp = new QPushButton( this );
   mRuleUp->setPixmap( BarIcon( "up", KIcon::SizeSmall ) );
-  QToolTip::add( mRuleUp, i18n("Move rule up") );
+  mRuleUp->setToolTip( i18n("Move rule up") );
   btnL->addWidget( mRuleUp );
   connect( mRuleUp, SIGNAL( clicked() ), SLOT( slotRuleUp() ) );
   mRuleDown = new QPushButton( this );
   mRuleDown->setPixmap( BarIcon( "down", KIcon::SizeSmall ) );
-  QToolTip::add( mRuleDown, i18n("Move rule down") );
+  mRuleDown->setToolTip( i18n("Move rule down") );
   btnL->addWidget( mRuleDown );
   connect( mRuleDown, SIGNAL( clicked() ), SLOT( slotRuleDown() ) );
 
@@ -629,25 +629,25 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   editRule=0L;
   newRule = new QPushButton(this);
   newRule->setPixmap( BarIcon( "filenew", KIcon::SizeSmall ) );
-  QToolTip::add(newRule,i18n("New rule")),
+  newRule->setToolTip(i18n("New rule")),
   btnL->addWidget(newRule);
   connect(newRule, SIGNAL(clicked()), this, SLOT(slotNewRule()));
   // if we're standalone, we need an additional edit button
   if (standalone) {
     editRule = new QPushButton(this);
     editRule->setIconSet( BarIconSet("edit", KIcon::SizeSmall) );
-    QToolTip::add(editRule,i18n("Edit rule"));
+    editRule->setToolTip(i18n("Edit rule"));
     btnL->addWidget(editRule);
     connect(editRule,SIGNAL(clicked()),this,SLOT(slotEditRule()));
   }
   delRule = new QPushButton(this);
   delRule->setIconSet( BarIconSet( "editdelete", KIcon::SizeSmall ) );
-  QToolTip::add(delRule,i18n("Remove rule"));
+  delRule->setToolTip(i18n("Remove rule"));
   btnL->addWidget(delRule);
   connect(delRule, SIGNAL(clicked()), this, SLOT(slotDelRule()));
   copyRule = new QPushButton(this);
   copyRule->setIconSet(BarIconSet("editcopy", KIcon::SizeSmall));
-  QToolTip::add(copyRule,i18n("Copy rule"));
+  copyRule->setToolTip(i18n("Copy rule"));
   btnL->addWidget(copyRule);
   connect(copyRule, SIGNAL(clicked()), this, SLOT(slotCopyRule()));
 

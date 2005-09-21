@@ -82,7 +82,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   m_sslLabel = new SSLLabel( this );
   box->addWidget( m_sslLabel );
 
-  QToolTip::add( m_pButton, i18n("Open detailed progress dialog") );
+  m_pButton->setToolTip( i18n("Open detailed progress dialog") );
 
   m_pProgressBar = new KProgress( this );
   m_pProgressBar->setLineWidth( 1 );
@@ -279,12 +279,12 @@ void StatusbarProgressWidget::slotProgressDialogVisible( bool b )
   if ( b ) {
     m_pButton->setPixmap( SmallIcon( "down" ) );
     QToolTip::remove( m_pButton );
-    QToolTip::add( m_pButton, i18n("Hide detailed progress window") );
+    m_pButton->setToolTip( i18n("Hide detailed progress window") );
     setMode();
   } else {
     m_pButton->setPixmap( SmallIcon( "up" ) );
     QToolTip::remove( m_pButton );
-    QToolTip::add( m_pButton, i18n("Show detailed progress window") );
+    m_pButton->setToolTip( i18n("Show detailed progress window") );
   }
 }
 

@@ -68,13 +68,13 @@ void SSLLabel::setState( State state )
   switch( state ) {
   case Encrypted:
     QToolTip::remove( this );
-    QToolTip::add( this, i18n("Connection is encrypted") );
+    this->setToolTip( i18n("Connection is encrypted") );
     setPixmap( SmallIcon( "encrypted", KGlobal::instance() ) );
     show();
     break;
   case Unencrypted:
     QToolTip::remove( this );
-    QToolTip::add( this, i18n("Connection is unencrypted") );
+    this->setToolTip( i18n("Connection is unencrypted") );
     setPixmap( SmallIcon( "decrypted" ) );
     show();
     break;

@@ -59,7 +59,7 @@
 #include "progressdialog.h"
 #include "progressmanager.h"
 #include "ssllabel.h"
-#include <q3whatsthis.h>
+
 
 namespace KPIM {
 
@@ -169,7 +169,7 @@ TransactionItem::TransactionItem( QWidget* parent,
 
   if ( item->canBeCanceled() ) {
     mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString::null, h );
-    QToolTip::add( mCancelButton, i18n("Cancel this operation.") );
+    mCancelButton->setToolTip( i18n("Cancel this operation.") );
     connect ( mCancelButton, SIGNAL( clicked() ),
               this, SLOT( slotItemCanceled() ));
   }
@@ -250,7 +250,7 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
     pbClose->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
     pbClose->setFixedSize( 16, 16 );
     pbClose->setIconSet( KGlobal::iconLoader()->loadIconSet( "fileclose", KIcon::Small, 14 ) );
-    QToolTip::add( pbClose, i18n( "Hide detailed progress window" ) );
+    pbClose->setToolTip( i18n( "Hide detailed progress window" ) );
     connect(pbClose, SIGNAL(clicked()), this, SLOT(slotClose()));
     QWidget* spacer = new QWidget( rightBox ); // don't let the close button take up all the height
     rightBox->setStretchFactor( spacer, 100 );

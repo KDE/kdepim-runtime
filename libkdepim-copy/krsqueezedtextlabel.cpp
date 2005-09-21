@@ -67,7 +67,7 @@ void KRSqueezedTextLabel::squeezeTextToLabel() {
     QLabel::setText(squeezedText);
 
     QToolTip::remove( this );
-    QToolTip::add( this, fullText );
+    this->setToolTip( fullText );
 
   } else {
     QLabel::setText(fullText);
