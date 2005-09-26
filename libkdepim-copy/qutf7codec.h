@@ -62,6 +62,11 @@ public:
     bool canEncode( QChar ) const;
     bool canEncode( const QString& ) const;
 
+#warning Implement convertFromUnicode
+    QByteArray convertFromUnicode( const QChar * input, int number, ConverterState * state ) const { return QByteArray(); }
+#warning Implement convertToUnicode
+    QString convertToUnicode( const char * chars, int len, ConverterState * state ) const { return QString(); }
+
     int heuristicContentMatch( const char* chars, int len ) const;
 };
 
