@@ -38,6 +38,7 @@
 
 #include <qstring.h>
 #include <qapplication.h>
+#include <QPaintDevice>
 
 namespace KPIM {
 
@@ -68,9 +69,9 @@ namespace KPIM {
     }
   }
 
-  CSSHelper::CSSHelper( const Q3PaintDeviceMetrics &pdm ) :
+  CSSHelper::CSSHelper( const QPaintDevice *pd ) :
     mShrinkQuotes( false ),
-    mMetrics( pdm )
+    mPaintDevice( pd )
   {
     // initialize with defaults - should match the corresponding application defaults
     mForegroundColor = QApplication::palette().active().text();
@@ -204,8 +205,8 @@ namespace KPIM {
 
 
   namespace {
-    int pointsToPixel( const Q3PaintDeviceMetrics & metrics, int pointSize ) {
-      return ( pointSize * metrics.logicalDpiY() + 36 ) / 72 ;
+    int pointsToPixel( const QPaintDevice *pd, int pointSize ) {
+      return ( pointSize * pd->logicalDpiY() + 36 ) / 72 ;
     }
   }
 
@@ -296,13 +297,13 @@ namespace KPIM {
     const QString headerFont = QString("  font-family: \"%1\" ! important;\n"
                                        "  font-size: %2px ! important;\n")
       .arg( mBodyFont.family() )
-      .arg( pointsToPixel( helper->mMetrics, mBodyFont.pointSize() ) );
+      .arg( pointsToPixel( helper->mPaintDevice, mBodyFont.pointSize() ) );
     const QString background = ( mBackingPixmapOn
                          ? QString( "  background-image:url(file://%1) ! important;\n" )
                            .arg( mBackingPixmapStr )
                          : QString( "  background-color: %1 ! important;\n" )
                            .arg( bgColor ) );
-    const QString bodyFontSize = QString::number( pointsToPixel( helper->mMetrics, fontSize( fixed ) ) ) + "px" ;
+    const QString bodyFontSize = QString::number( pointsToPixel( helper->mPaintDevice, fontSize( fixed ) ) ) + "px" ;
     const QColorGroup & cg = QApplication::palette().active();
 
     QString quoteCSS;

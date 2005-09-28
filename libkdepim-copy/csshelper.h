@@ -34,9 +34,9 @@
 
 #include <qcolor.h>
 #include <qfont.h>
-#include <q3paintdevicemetrics.h>
 
 class QString;
+class QPaintDevice;
 
 namespace KPIM {
 
@@ -46,7 +46,7 @@ class CSSHelper {
         default values.
         Sub-Classes should put their config loading here.
      */
-    CSSHelper( const Q3PaintDeviceMetrics &pdm );
+    CSSHelper( const QPaintDevice *pd );
 
     /** @return HTML head including style sheet definitions and the
         &gt;body&lt; tag */
@@ -97,7 +97,7 @@ class CSSHelper {
     QString commonCssDefinitions() const;
 
   private:
-    const Q3PaintDeviceMetrics mMetrics;
+    const QPaintDevice *mPaintDevice;
 
 };
 
