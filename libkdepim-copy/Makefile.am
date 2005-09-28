@@ -59,6 +59,10 @@ kdepimwidgets_la_SOURCES = kdepimwidgets.cpp
 kdepimwidgets.cpp: $(srcdir)/kdepim.widgets
 	$(MAKEKDEWIDGETS) -o kdepimwidgets.cpp $(srcdir)/kdepim.widgets
 
+kdepimwidgets.lo: kdepimwidgets.moc
+kdepimwidgets.moc: kdepimwidgets.cpp
+	$(MOC) -o kdepimwidgets.moc kdepimwidgets.cpp
+
 CLEANFILES = kdepimwidgets.cpp
 
 kde_kcfg_DATA = pimemoticons.kcfg
