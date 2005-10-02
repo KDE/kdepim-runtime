@@ -11,8 +11,7 @@
 
 #include <assert.h>
 #include <qdir.h>
-//Added by qt3to4:
-#include <Q3CString>
+#include <QByteArray>
 
 #include <klocale.h>
 #include <kstdguiitem.h>
@@ -35,9 +34,10 @@ static void msgDialog(const QString &msg)
 
 
 //-----------------------------------------------------------------------------
-KDE_EXPORT Q3CString kFileToString(const QString &aFileName, bool aEnsureNL, bool aVerbose)
+KDE_EXPORT
+QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVerbose )
 {
-  Q3CString result;
+  QByteArray result;
   QFileInfo info(aFileName);
   unsigned int readLen;
   unsigned int len = info.size();
@@ -51,22 +51,22 @@ KDE_EXPORT Q3CString kFileToString(const QString &aFileName, bool aEnsureNL, boo
   {
     if (aVerbose)
       msgDialog(i18n("The specified file does not exist:\n%1").arg(aFileName));
-    return Q3CString();
+    return QByteArray();
   }
   if (info.isDir())
   {
     if (aVerbose)
       msgDialog(i18n("This is a folder and not a file:\n%1").arg(aFileName));
-    return Q3CString();
+    return QByteArray();
   }
   if (!info.isReadable())
   {
     if (aVerbose)
       msgDialog(i18n("You do not have read permissions "
 				   "to the file:\n%1").arg(aFileName));
-    return Q3CString();
+    return QByteArray();
   }
-  if (len <= 0) return Q3CString();
+  if (len <= 0) return QByteArray();
 
   if (!file.open(QIODevice::Unbuffered|QIODevice::ReadOnly))
   {
@@ -81,107 +81,38 @@ KDE_EXPORT Q3CString kFileToString(const QString &aFileName, bool aEnsureNL, boo
     default:
       msgDialog(i18n("Error while reading file:\n%1").arg(aFileName));
     }
-    return Q3CString();
+    return QByteArray();
   }
 
-  result.resize(len + (int)aEnsureNL + 1);
-  readLen = file.readBlock(result.data(), len);
-  if (aEnsureNL && result[len-1]!='\n')
-  {
-    result[len++] = '\n';
-    readLen++;
+  result.resize( len + int( aEnsureNL ) );
+  readLen = file.readBlock( result.data(), len );
+  if ( aEnsureNL ) {
+    if ( result[readLen-1] != '\n' ) {
+      result[readLen++] = '\n';
+      len++;
+    }
+    else
+      result.truncate( len );
   }
-  result[len] = '\0';
 
   if (readLen < len)
   {
     QString msg = i18n("Could only read %1 bytes of %2.")
-		.arg(readLen).arg(len);
+                  .arg(readLen).arg(len);
     msgDialog(msg);
-    return Q3CString();
+    result.truncate( readLen );
   }
 
   return result;
 }
 
 //-----------------------------------------------------------------------------
-#if 0 // unused
-QByteArray kFileToBytes(const QString &aFileName, bool aVerbose)
-{
-  QByteArray result;
-  QFileInfo info(aFileName);
-  unsigned int readLen;
-  unsigned int len = info.size();
-  QFile file(aFileName);
-
-  //assert(aFileName!=0);
-  if( aFileName.isEmpty() )
-    return result;
-
-  if (!info.exists())
-  {
-    if (aVerbose)
-      msgDialog(i18n("The specified file does not exist:\n%1")
-		.arg(aFileName));
-    return result;
-  }
-  if (info.isDir())
-  {
-    if (aVerbose)
-      msgDialog(i18n("This is a folder and not a file:\n%1")
-		.arg(aFileName));
-    return result;
-  }
-  if (!info.isReadable())
-  {
-    if (aVerbose)
-      msgDialog(i18n("You do not have read permissions "
-				   "to the file:\n%1").arg(aFileName));
-    return result;
-  }
-  if (len <= 0) return result;
-
-  if (!file.open(IO_Raw|QIODevice::ReadOnly))
-  {
-    if (aVerbose) switch(file.status())
-    {
-    case IO_ReadError:
-      msgDialog(i18n("Could not read file:\n%1").arg(aFileName));
-      break;
-    case IO_OpenError:
-      msgDialog(i18n("Could not open file:\n%1").arg(aFileName));
-      break;
-    default:
-      msgDialog(i18n("Error while reading file:\n%1").arg(aFileName));
-    }
-    return result;
-  }
-
-  result.resize(len);
-  readLen = file.readBlock(result.data(), len);
-  kdDebug(5300) << QString( "len %1" ).arg(len) << endl;
-
-  if (readLen < len)
-  {
-    QString msg;
-    msg = i18n("Could only read %1 bytes of %2.")
-		.arg(readLen).arg(len);
-    msgDialog(msg);
-    return result;
-  }
-
-  return result;
-}
-#endif
-
-//-----------------------------------------------------------------------------
-KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
-		   const QString &aFileName,
-		   bool aAskIfExists, bool aBackup, bool aVerbose)
+KDE_EXPORT
+bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
+                       bool aAskIfExists, bool aBackup, bool aVerbose )
 {
   // TODO: use KSaveFile
   QFile file(aFileName);
-  int writeLen, rc;
 
   //assert(aFileName!=0);
   if(aFileName.isEmpty())
@@ -194,7 +125,7 @@ KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
       QString str;
       str = i18n("File %1 exists.\nDo you want to replace it?")
 		  .arg(aFileName);
-      rc = KMessageBox::warningContinueCancel(0,
+      const int rc = KMessageBox::warningContinueCancel(0,
 	   str, i18n("Save to File"), i18n("&Replace"));
       if (rc != KMessageBox::Continue) return FALSE;
     }
@@ -209,7 +140,7 @@ KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
       {
 	// failed to rename file
 	if (!aVerbose) return FALSE;
-	rc = KMessageBox::warningContinueCancel(0,
+	const int rc = KMessageBox::warningContinueCancel(0,
 	     i18n("Failed to make a backup copy of %1.\nContinue anyway?")
 	     .arg(aFileName),
              i18n("Save to File"), KStdGuiItem::save() );
@@ -235,38 +166,23 @@ KDE_EXPORT bool kBytesToFile(const char* aBuffer, int len,
     return FALSE;
   }
 
-  writeLen = file.writeBlock(aBuffer, len);
+  const int writeLen = file.writeBlock( aBuffer.data(), aBuffer.size() );
 
-  if (writeLen < 0)
-  {
+  if ( writeLen < 0 ) {
     if (aVerbose)
       msgDialog(i18n("Could not write to file:\n%1").arg(aFileName));
     return FALSE;
   }
-  else if (writeLen < len)
-  {
+  else if ( writeLen < aBuffer.size() ) {
     QString msg = i18n("Could only write %1 bytes of %2.")
-		.arg(writeLen).arg(len);
+                  .arg( writeLen )
+                  .arg( aBuffer.size() );
     if (aVerbose)
       msgDialog(msg);
     return FALSE;
   }
 
   return TRUE;
-}
-
-KDE_EXPORT bool kCStringToFile(const Q3CString& aBuffer, const QString &aFileName,
-		   bool aAskIfExists, bool aBackup, bool aVerbose)
-{
-    return kBytesToFile(aBuffer, aBuffer.length(), aFileName, aAskIfExists,
-	aBackup, aVerbose);
-}
-
-KDE_EXPORT bool kByteArrayToFile(const QByteArray& aBuffer, const QString &aFileName,
-		   bool aAskIfExists, bool aBackup, bool aVerbose)
-{
-    return kBytesToFile(aBuffer, aBuffer.size(), aFileName, aAskIfExists,
-	aBackup, aVerbose);
 }
 
 
@@ -279,7 +195,7 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
   // Symlinks are followed as expected.
   QFileInfo fiToCheck(toCheck);
   fiToCheck.setCaching(false);
-  Q3CString toCheckEnc = QFile::encodeName(toCheck);
+  QByteArray toCheckEnc = QFile::encodeName( toCheck );
   QString error;
   struct stat statbuffer;
 
