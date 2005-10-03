@@ -223,9 +223,14 @@ void AddresseeLineEdit::insert( const QString &t )
   if ( newText.isEmpty() )
     return;
 
-  // remove newlines in the to-be-pasted string as well as an eventual
-  // mailto: protocol
-  newText.replace( QRegExp("\r?\n"), ", " );
+  // remove newlines in the to-be-pasted string
+  QStringList lines = QStringList::split( QRegExp("\r?\n"), newText, false );
+  for ( QStringList::iterator it = lines.begin();
+       it != lines.end(); ++it ) {
+    // remove trailing commas and whitespace
+    (*it).remove( QRegExp(",?\\s*$") );
+  }
+  newText = lines.join( ", " );
 
   if ( newText.startsWith("mailto:") ) {
     KURL url( newText );
