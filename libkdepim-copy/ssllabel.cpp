@@ -40,7 +40,7 @@
 #include <qtooltip.h>
 //Added by qt3to4:
 #include <QLabel>
-
+#include <QPixmap>
 namespace KPIM {
 
 SSLLabel::SSLLabel( QWidget* parent )

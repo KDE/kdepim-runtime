@@ -51,13 +51,14 @@
 
 #include <q3dict.h>
 #include <qlayout.h>
-#include <q3vbox.h>
+#include <kvbox.h>
 #include <qwidget.h>
 //Added by qt3to4:
 #include <Q3ValueList>
 #include <Q3PtrList>
 //Added by qt3to4:
 #include <QPixmap>
+#include <ktoolinvocation.h>
 
 namespace KPIM {
 
@@ -212,7 +213,7 @@ AddressesDialog::AddressesDialog( QWidget *widget, const char *name )
   : KDialogBase( widget, name, true, i18n("Address Selection"),
                  Ok|Cancel, Ok, true )
 {
-  Q3VBox *page = makeVBoxMainWidget();
+  KVBox *page = makeVBoxMainWidget();
   d = new AddressesDialogPrivate;
   d->ui = new AddressPickerUI( page );
 
@@ -935,7 +936,7 @@ AddressesDialog::saveAs()
 void
 AddressesDialog::launchAddressBook()
 {
-  kapp->startServiceByDesktopName( "kaddressbook", QString() );
+  KToolInvocation::startServiceByDesktopName( "kaddressbook", QString() );
 }
 
 void

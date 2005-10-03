@@ -34,7 +34,7 @@
 #include <klocale.h>
 #include <kprogress.h>
 #include <kurl.h>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 
 using namespace KPIM;
 
@@ -219,7 +219,7 @@ void MailListDrag::setMailList( const MailList &mailList )
   }
   QMap<QString,QString> metadata;
   metadata["labels"] = labels.join( ":" );
-  mUrlDrag = new KURLDrag( urllist, metadata );
+  mUrlDrag = new K3URLDrag( urllist, metadata );
 }
 
 const char *MailListDrag::format(int i) const

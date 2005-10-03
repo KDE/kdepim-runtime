@@ -31,6 +31,7 @@
 #include <Q3PtrList>
 
 #include <unistd.h>
+#include <ktoolinvocation.h>
 
 //-----------------------------------------------------------------------------
 void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QWidget *) {
@@ -44,7 +45,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
     call.send( "newInstance()" );
   }
   else
-    kapp->startServiceByDesktopName( "kaddressbook" );
+    KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 
   DCOPRef call( "kaddressbook", "KAddressBookIface" );
   if( !addresseeList.isEmpty() ) {
@@ -92,12 +93,12 @@ void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
 }
 
 void KAddrBookExternal::openAddressBook(QWidget *) {
-  kapp->startServiceByDesktopName( "kaddressbook" );
+  KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 }
 
 void KAddrBookExternal::addNewAddressee( QWidget* )
 {
-  kapp->startServiceByDesktopName("kaddressbook");
+  KToolInvocation::startServiceByDesktopName("kaddressbook");
   DCOPRef call("kaddressbook", "KAddressBookIface");
   call.send("newContact()");
 }

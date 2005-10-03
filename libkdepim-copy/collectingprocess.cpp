@@ -50,8 +50,9 @@ struct CollectingProcess::Private {
 
 
 CollectingProcess::CollectingProcess( QObject * parent, const char * name )
-  : KProcess( parent, name )
+  : KProcess( parent )
 {
+  setObjectName(name);
   d = new Private();
 }
 

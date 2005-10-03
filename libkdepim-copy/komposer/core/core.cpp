@@ -40,7 +40,7 @@
 #include <klocale.h>
 #include <kstatusbar.h>
 #include <kguiitem.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kshortcut.h>
 #include <kcmultidialog.h>
 #include <kaction.h>

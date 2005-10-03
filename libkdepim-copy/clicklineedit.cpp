@@ -31,8 +31,9 @@
 using namespace KPIM;
 
 ClickLineEdit::ClickLineEdit(QWidget *parent, const QString &msg, const char* name) :
-  KLineEdit(parent, name) 
+  KLineEdit(parent) 
 {
+  setObjectName(name);
   mDrawClickMsg = true;
   setClickMessage( msg ); 
 }

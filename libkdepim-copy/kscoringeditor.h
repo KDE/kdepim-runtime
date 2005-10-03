@@ -24,7 +24,7 @@
 #include <kdialogbase.h>
 #include <q3table.h>
 #include <q3frame.h>
-
+#include <Q3WidgetStack>
 #include "kwidgetlister.h"
 
 #include <kdepimmacros.h>

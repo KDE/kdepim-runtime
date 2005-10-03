@@ -28,7 +28,7 @@
 #include <kregexpeditorinterface.h>
 #include <ktrader.h>
 #include <kparts/componentfactory.h>
-
+#include <kpushbutton.h>
 
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -410,13 +410,13 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   groupL->addRowSpacing(0, fontMetrics().lineSpacing()-4);
 
   // name
-  ruleNameEdit = new KLineEdit( groupB, "ruleNameEdit" );
+  ruleNameEdit = new KLineEdit( groupB );
   groupL->addWidget( ruleNameEdit, 1, 1 );
   QLabel *ruleNameLabel = new QLabel(ruleNameEdit, i18n("&Name:"), groupB, "ruleNameLabel");
   groupL->addWidget( ruleNameLabel, 1, 0 );
 
   // groups
-  groupsEdit = new KLineEdit( groupB, "groupsEdit" );
+  groupsEdit = new KLineEdit( groupB );
   groupL->addWidget( groupsEdit, 2, 1 );
   QLabel *groupsLabel = new QLabel(groupsEdit, i18n("&Groups:"), groupB, "groupsLabel");
   groupL->addWidget( groupsLabel, 2, 0 );
@@ -425,7 +425,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   connect(groupsBtn,SIGNAL(clicked()),SLOT(slotAddGroup()));
   groupL->addWidget( groupsBtn, 3, 0 );
 
-  groupsBox = new KComboBox( false, groupB, "groupsBox" );
+  groupsBox = new KComboBox( false, groupB );
   groupsBox->setDuplicatesEnabled(false);
   groupsBox->insertStringList(manager->getGroups());
   groupsBox->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
@@ -888,7 +888,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m,
 
 void KScoringEditor::setDirty()
 {
-  QPushButton *applyBtn = actionButton(Apply);
+  KPushButton *applyBtn = actionButton(Apply);
   applyBtn->setEnabled(true);
 }
 

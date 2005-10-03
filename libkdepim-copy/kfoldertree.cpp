@@ -292,8 +292,9 @@ QString KFolderTreeItem::squeezeFolderName( const QString &text,
 
 
 KFolderTree::KFolderTree( QWidget *parent, const char* name )
-  : KListView( parent, name ), mUnreadIndex(-1), mTotalIndex(-1)
+  : KListView( parent ), mUnreadIndex(-1), mTotalIndex(-1)
 {
+  setObjectName(name);
   // GUI-options
   setStyleDependantFrameWidth();
   setAcceptDrops(true);

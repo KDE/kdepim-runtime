@@ -41,7 +41,7 @@
 #include <klistview.h>
 #include <kpushbutton.h>
 
-#include <q3hbox.h>
+#include <khbox.h>
 #include <q3vbox.h>
 #include <q3header.h>
 #include <qtoolbutton.h>
@@ -210,7 +210,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   // Now sort the items, then create the GUI
   mItems.sort();
 
-  Q3HBox* page = makeHBoxMainWidget();
+  KHBox* page = makeHBoxMainWidget();
   mListView = new KListView( page );
   mListView->setSorting( -1 );
   mListView->addColumn( QString::null );

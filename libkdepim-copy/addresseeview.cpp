@@ -46,6 +46,7 @@
 #include <ktempfile.h>
 
 #include <kdebug.h>
+#include <ktoolinvocation.h>
 
 #include "addresseeview.h"
 #include "sendsmsdialog.h"
@@ -553,15 +554,15 @@ KABC::Addressee AddresseeView::addressee() const
 
 void AddresseeView::urlClicked( const QString &url )
 {
-  kapp->invokeBrowser( url );
+  KToolInvocation::invokeBrowser( url );
 }
 
 void AddresseeView::emailClicked( const QString &email )
 {
   if ( email.startsWith( "mailto:" ) )
-    kapp->invokeMailer( email.mid( 7 ), QString::null );
+    KToolInvocation::invokeMailer( email.mid( 7 ), QString::null );
   else
-    kapp->invokeMailer( email, QString::null );
+    KToolInvocation::invokeMailer( email, QString::null );
 }
 
 void AddresseeView::phoneNumberClicked( const QString &number )

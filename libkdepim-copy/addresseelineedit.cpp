@@ -47,7 +47,7 @@
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
 #include <kstdaccel.h>
-#include <kurldrag.h>
+#include <k3urldrag.h>
 #include <klocale.h>
 
 #include <q3popupmenu.h>
@@ -308,7 +308,7 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
 {
   KURL::List uriList;
   if ( !isReadOnly()
-       && KURLDrag::canDecode(e) && KURLDrag::decode( e, uriList ) ) {
+       && K3URLDrag::canDecode(e) && K3URLDrag::decode( e, uriList ) ) {
     QString contents = text();
     // remove trailing white space and comma
     int eot = contents.length();
