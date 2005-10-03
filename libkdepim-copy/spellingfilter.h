@@ -1,4 +1,4 @@
-/**
+/*
  * spellingfilter.h
  *
  * Copyright (c) 2002 Dave Corrie <kde@davecorrie.com>

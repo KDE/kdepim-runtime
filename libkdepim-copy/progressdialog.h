@@ -1,4 +1,4 @@
-/** -*- c++ -*-
+/* -*- c++ -*-
  * progressdialog.h
  *
  *  Copyright (c) 2004 Till Adam <adam@kde.org>

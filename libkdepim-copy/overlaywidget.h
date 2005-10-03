@@ -1,4 +1,4 @@
-/** -*- c++ -*-
+/* -*- c++ -*-
  * overlaywidget.h
  *
  *  Copyright (c) 2004 David Faure <faure@kde.org>
