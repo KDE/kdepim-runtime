@@ -116,8 +116,8 @@ QSize TransactionItemView::minimumSizeHint() const
   int minw = topLevelWidget()->width() / 3;
   int maxh = topLevelWidget()->height() / 2;
   QSize sz( mBigBox->minimumSizeHint() );
-  sz.setWidth( QMAX( sz.width(), minw ) + f + vsbExt );
-  sz.setHeight( QMIN( sz.height(), maxh ) + f );
+  sz.setWidth( qMax( sz.width(), minw ) + f + vsbExt );
+  sz.setHeight( qMin( sz.height(), maxh ) + f );
   return sz;
 }
 

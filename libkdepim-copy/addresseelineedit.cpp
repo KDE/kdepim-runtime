@@ -586,7 +586,7 @@ void AddresseeLineEdit::addCompletionItem( const QString& string, int weight, in
   // Since there's no way to get the information from KCompletion, we have to keep our own QMap
   CompletionItemsMap::iterator it = s_completionItemMap->find( string );
   if ( it != s_completionItemMap->end() ) {
-    weight = QMAX( ( *it ).first, weight );
+    weight = qMax( ( *it ).first, weight );
     ( *it ).first = weight;
   } else {
     s_completionItemMap->insert( string, qMakePair( weight, completionItemSource ) );

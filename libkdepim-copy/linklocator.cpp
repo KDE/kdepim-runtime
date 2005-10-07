@@ -202,7 +202,7 @@ QString LinkLocator::getEmailAddress()
       if ( mText[end] == '@' )
         return QString(); // domain part contains '@' -> no email address
       if ( mText[end] == '.' )
-        dotPos = QMIN( dotPos, end ); // remember index of first dot in domain
+        dotPos = qMin( dotPos, end ); // remember index of first dot in domain
       ++end;
     }
     // we assume that an email address ends with a letter or a digit

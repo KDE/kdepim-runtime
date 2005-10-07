@@ -50,8 +50,8 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
 {
   mWidgetList.setAutoDelete(TRUE);
 
-  mMinWidgets = QMAX( minWidgets, 1 );
-  mMaxWidgets = QMAX( maxWidgets, mMinWidgets + 1 );
+  mMinWidgets = qMax( minWidgets, 1 );
+  mMaxWidgets = qMax( maxWidgets, mMinWidgets + 1 );
 
   //--------- the button box
   mLayout = new QVBoxLayout(this, 0, 4);
@@ -155,8 +155,8 @@ QWidget* KWidgetLister::createWidget( QWidget* parent )
 
 void KWidgetLister::setNumberOfShownWidgetsTo( int aNum )
 {
-  int superfluousWidgets = QMAX( (int)mWidgetList.count() - aNum, 0 );
-  int missingWidgets     = QMAX( aNum - (int)mWidgetList.count(), 0 );
+  int superfluousWidgets = qMax( (int)mWidgetList.count() - aNum, 0 );
+  int missingWidgets     = qMax( aNum - (int)mWidgetList.count(), 0 );
 
   // remove superfluous widgets
   for ( ; superfluousWidgets ; superfluousWidgets-- )
