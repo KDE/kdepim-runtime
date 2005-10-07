@@ -53,16 +53,16 @@ namespace KPIM {
 class KDE_EXPORT MailSummary 
 {
 public:
-    MailSummary( Q_UINT32 serialNumber, QString messageId, QString subject, 
+    MailSummary( quint32 serialNumber, QString messageId, QString subject, 
 		 QString from, QString to, time_t date );
     MailSummary() {}
     ~MailSummary() {}
 
     /*** Set fields for this mail summary  ***/
-    void set( Q_UINT32, QString, QString, QString, QString, time_t );
+    void set( quint32, QString, QString, QString, QString, time_t );
 
     /*** KMail unique identification number ***/
-    Q_UINT32 serialNumber() const;
+    quint32 serialNumber() const;
 
     /*** MD5 checksum of message identification string ***/
     QString messageId() const;
@@ -83,7 +83,7 @@ public:
     operator KURL() const;
 
 private:
-    Q_UINT32 mSerialNumber;
+    quint32 mSerialNumber;
     QString mMessageId, mSubject, mFrom, mTo;
     time_t mDate;
 };
@@ -97,7 +97,7 @@ public:
     MailTextSource() {}
     virtual ~MailTextSource() {}
 
-    virtual Q3CString text(Q_UINT32 serialNumber) const = 0;
+    virtual Q3CString text(quint32 serialNumber) const = 0;
 };
 
 // Drag and drop object for mails
