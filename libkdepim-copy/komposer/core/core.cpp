@@ -239,7 +239,7 @@ Core::initCore()
 void
 Core::initConnections()
 {
-  connect( kapp, SIGNAL(shutDown()),
+  connect( kapp, SIGNAL(aboutToQuit()),
            SLOT(slotQuit()) );
 }
 
