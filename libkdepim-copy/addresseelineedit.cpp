@@ -776,7 +776,10 @@ int KPIM::AddresseeLineEdit::addCompletionSource( const QString &source )
 
 bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
 {
-  if ( obj == completionBox() ) {
+#warning Port me!
+  // FIXME Temporary avoid the constructor in the IF because of endless loops!
+  //if ( obj == completionBox() ) {
+  if (  0 && obj == completionBox() ) {
     if ( e->type() == QEvent::MouseButtonPress
       || e->type() == QEvent::MouseMove
       || e->type() == QEvent::MouseButtonRelease ) {
