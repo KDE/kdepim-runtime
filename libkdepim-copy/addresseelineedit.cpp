@@ -491,8 +491,9 @@ void AddresseeLineEdit::loadContacts()
   manager.load();
   const QStringList distLists = manager.listNames();
   QStringList::const_iterator listIt;
+  int idx = addCompletionSource( i18n( "Distribution Lists" ) );
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
-    s_completion->addItem( (*listIt).simplifyWhiteSpace(), weight );
+    addCompletionItem( (*listIt).simplifyWhiteSpace(), weight, idx );
   }
 #endif
 
