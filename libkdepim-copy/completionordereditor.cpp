@@ -222,12 +222,14 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   }
 
   Q3VBox* upDownBox = new Q3VBox( page );
-  mUpButton = new KPushButton( upDownBox, "mUpButton" );
+  mUpButton = new KPushButton( upDownBox );
+  mUpButton->setObjectName( "mUpButton" );
   mUpButton->setIconSet( BarIconSet( "up", KIcon::SizeSmall ) );
   mUpButton->setEnabled( false ); // b/c no item is selected yet
   mUpButton->setFocusPolicy( Qt::StrongFocus );
 
-  mDownButton = new KPushButton( upDownBox, "mDownButton" );
+  mDownButton = new KPushButton( upDownBox );
+  mDownButton->setObjectName( "mDownButton" );
   mDownButton->setIconSet( BarIconSet( "down", KIcon::SizeSmall ) );
   mDownButton->setEnabled( false ); // b/c no item is selected yet
   mDownButton->setFocusPolicy( Qt::StrongFocus );

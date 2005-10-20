@@ -27,11 +27,13 @@
 //Added by qt3to4:
 #include <QLabel>
 
+class KInstance;
 class KListView;
 
 class QLabel;
 class Q3ListViewItem;
 class QPushButton;
+class QStringList;
 
 namespace KPIM {
 
@@ -40,7 +42,7 @@ class KDE_EXPORT KCMDesignerFields : public KCModule
   Q_OBJECT
 
   public:
-    KCMDesignerFields( QWidget *parent = 0, const char *name = 0 );
+    KCMDesignerFields( KInstance *instance, QWidget *parent=0, const QStringList &args=QStringList() );
 
     virtual void load();
     virtual void save();

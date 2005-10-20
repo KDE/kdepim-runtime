@@ -131,8 +131,8 @@ class PageItem : public Q3CheckListItem
     bool mIsActive;
 };
 
-KCMDesignerFields::KCMDesignerFields( QWidget *parent, const char *name )
-  : KCModule( parent, name )
+KCMDesignerFields::KCMDesignerFields( KInstance *instance, QWidget *parent, const QStringList &args )
+  : KCModule( instance, parent, args )
 {
   QTimer::singleShot( 0, this, SLOT( delayedInit() ) );
   

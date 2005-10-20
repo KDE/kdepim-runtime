@@ -42,8 +42,10 @@ class KColorButton;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
+class QStringList;
 class Q3ButtonGroup;
 class Q3TimeEdit;
+class KInstance;
 class KTimeEdit;
 class KDateEdit;
 class KURLRequester;
@@ -729,7 +731,7 @@ class KDE_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
 {
     Q_OBJECT
   public:
-    KPrefsModule( KConfigSkeleton *, QWidget *parent = 0, const char *name = 0 );
+    KPrefsModule( KConfigSkeleton *, KInstance *instance, QWidget *parent=0, const QStringList &args=QStringList() );
 
     virtual void addWid( KPrefsWid * );
 
