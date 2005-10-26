@@ -35,7 +35,7 @@ libkdepim_la_SOURCES = \
   krsqueezedtextlabel.cpp csshelper.cpp distributionlist.cpp \
   kpimurlrequesterdlg.cpp sendsmsdialog.cpp \
   categoryhierarchyreader.cpp autoselectingchecklistitem.cpp \
-  improvedlistview.cpp
+  improvedlistview.cpp messagestatus.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
