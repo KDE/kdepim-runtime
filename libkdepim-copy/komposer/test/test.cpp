@@ -44,7 +44,7 @@ int main(int argc, char **argv)
   KUniqueApplication app;
 
   // see if we are starting with session management
-  if ( app.isRestored() )
+  if ( app.isSessionRestored() )
     RESTORE( Komposer::Core )
   else {
     // no session.. just start up normally

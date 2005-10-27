@@ -183,7 +183,7 @@ namespace KPIM {
     static const int numQuoteLevels = sizeof mQuoteFont / sizeof *mQuoteFont;
     const int effectiveLevel = mRecycleQuoteColors
       ? level % numQuoteLevels + 1
-      : kMin( level + 1, numQuoteLevels ) ;
+      : qMin( level + 1, numQuoteLevels ) ;
     if ( level >= numQuoteLevels )
       return QString( "<div class=\"deepquotelevel%1\">" ).arg( effectiveLevel );
     else
