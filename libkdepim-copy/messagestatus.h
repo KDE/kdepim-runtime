@@ -61,6 +61,7 @@ enum MsgStatus
     KMMsgStatusHasNoAttach =       0x00010000  // to be removed before KDE 4
 };
 
+// TODO should become QInt32
 typedef uint KMMsgStatus;
 
 
@@ -90,68 +91,116 @@ class MessageStatus
     /** Assign the status from another instance. */
     MessageStatus& operator = ( const MessageStatus& other );
 
-    /** Compare the status with that from another instance. */
+    /** Compare the status with that from another instance.
+        @return TRUE if the stati are equal, false if different.
+    */
     bool operator == ( const MessageStatus& other ) const;
+
+    /** Compare the status with that from another instance.
+        @return TRUE if the stati are equal, false if different.
+    */
+    bool operator != ( const MessageStatus& other ) const;
+
+    /** Check, if some of the flags in the status match 
+        with those flags from another instance.
+        @return TRUE if at least one flag is set in both stati.
+    */
+    bool operator & ( const MessageStatus& other ) const;
 
     /** Clear all status flags, this resets to unknown. */
     void clear();
 
-    /* ----- getters ------------------------------------------------------- */
+    /* ----- getters ----------------------------------------------------- */
 
-    /** Returns TRUE if status is unknown. */
+    /** Check for Unknown status.
+        @return TRUE if status is unknown.
+    */
     bool isOfUnknownStatus() const;
 
-    /** Returns TRUE if status is new. */
+    /** Check for New status. Ignored messages are not new.
+        @return TRUE if status is new.
+    */
     bool isNew() const;
 
-    /** Returns TRUE if status unread.  Note that new messages are not unread. */
+    /** Check for Unread status. Note that new messages are not unread.
+        Ignored messages are not unread as well.
+        @return TRUE if status is unread.
+    */
     bool isUnread() const;
 
-    /** Returns TRUE if status is read. Note that ignored messages are read. */
+    /** Check for Read status. Note that ignored messages are read.
+        @return TRUE if status is read.
+    */
     bool isRead() const;
 
-    /** Returns TRUE if status is old. */
+    /** Check for Old status.
+        @return TRUE if status is old.
+    */
     bool isOld() const;
 
-    /** Returns TRUE if status is deleted. */
+    /** Check for Deleted status.
+        @return TRUE if status is deleted.
+    */
     bool isDeleted() const;
 
-    /** Returns TRUE if status is replied. */
+    /** Check for Replied status.
+        @return TRUE if status is replied.
+    */
     bool isReplied() const;
 
-    /** Returns TRUE if status is forwarded. */
+    /** Check for Forwarded status.
+        @return TRUE if status is forwarded.
+    */
     bool isForwarded() const;
 
-    /** Returns TRUE if status is queued. */
+    /** Check for Queued status.
+        @return TRUE if status is queued.
+    */
     bool isQueued() const;
 
-    /** Returns TRUE if status is sent. */
+    /** Check for Sent status.
+        @return TRUE if status is sent.
+    */
     bool isSent() const;
 
-    /** Returns TRUE if status is important. */
+    /** Check for Important status.
+        @return TRUE if status is important.
+    */
     bool isImportant() const;
 
-    /** Returns TRUE if status is watched. */
+    /** Check for Watched status.
+        @return TRUE if status is watched.
+    */
     bool isWatched() const;
 
-    /** Returns TRUE if status is ignored. */
+    /** Check for Ignored status.
+        @return TRUE if status is ignored.
+    */
     bool isIgnored() const;
 
-    /** Returns TRUE if status is todo flaged. */
+    /** Check for Todo status.
+        @return TRUE if status is todo.
+    */
     bool isTodo() const;
 
-    /** Returns TRUE if status is spam. */
+    /** Check for Spam status.
+        @return TRUE if status is spam.
+    */
     bool isSpam() const;
 
-    /** Returns TRUE if status is not spam. */
+    /** Check for Ham status.
+        @return TRUE if status is not spam.
+    */
     bool isHam() const;
 
-    /** Returns TRUE if status indicates an attachment. */
+    /** Check for Attachment status.
+        @return TRUE if status indicates an attachment.
+    */
     bool hasAttachment() const;
 
-    /* ----- setters ------------------------------------------------------- */
+    /* ----- setters ----------------------------------------------------- */
 
-    /** Returns TRUE if status is new. */
+    /** Set the status to new. */
     void setNew();
 
     /** Set the status to unread. */
@@ -203,7 +252,9 @@ class MessageStatus
     */
     void setIgnored( bool ignored = true );
 
-    /** Set the status to todo flaged. */
+    /** Set the status to todo.
+        @param ignored Set (true) or unset (false) this status flag.
+    */
     void setTodo( bool todo = true );
 
     /** Set the status to spam.
@@ -221,26 +272,60 @@ class MessageStatus
     */
     void setHasAttachment( bool withAttachment = true );
 
-    /* ----- state representation  ---------------------------------------- */
+    /* ----- state representation  --------------------------------------- */
 
-    /** Get the status as a whole e.g. for storage in an index. */
-    const KMMsgStatus getStatus() const;
+    /** Get the status as a whole e.g. for storage in an index.
+        Don't manipulte the index via this value, this bypasses
+        all integrity checks in the setter methods.
+        @return The status encoded in bits.
+    */
+    const KMMsgStatus toQInt32() const;
 
     /** Set the status as a whole e.g. for reading from an index.
-        @param status The status to be set in this instance.
+        Don't manipulte the index via this value, this bypasses
+        all integrity checks in the setter methods.
+        @param status The status encoded in bits to be set in this instance.
     */
-    void setStatus( KMMsgStatus status );
+    void fromQInt32( KMMsgStatus status );
 
-    /** Convert the status to a string representation. */
+    /** Convert the status to a string representation.
+        @return A string containing coded upercase letters
+                which describe the status.
+    */
     QString getStatusStr() const;
 
     /** Set the status based on a string representation.
         @param aStr The status string to be analyzed.
+                    Normally its a string obtained using
+                    getStatusStr().
     */
     void setStatusFromStr( QString aStr );
 
-    /** Convert the status to a string for sorting. */
+    /** Convert the status to a string for sorting.
+        @return A string containing coded lowercase letters
+                which allows a predefined sorting by status.
+    */
     QString getSortRank() const;
+
+    /* ----- static accessors to simple states --------------------------- */
+
+    /** Return a predefined status initialized as New as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as New.
+    */
+    static MessageStatus statusNew();
+
+    /** Return a predefined status initialized as Read as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Read.
+    */
+    static MessageStatus statusRead();
+
+    /** Return a predefined status initialized as Unread as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Unread.
+    */
+    static MessageStatus statusUnread();
 
   private:
     KMMsgStatus mStatus;

@@ -49,6 +49,16 @@ bool MessageStatus::operator == ( const MessageStatus& other ) const
   return ( mStatus == other.mStatus );
 }
 
+bool MessageStatus::operator != ( const MessageStatus& other ) const
+{
+  return ( mStatus != other.mStatus );
+}
+
+bool MessageStatus::operator & ( const MessageStatus& other ) const
+{
+  return ( mStatus & other.mStatus );
+}
+
 void MessageStatus::clear()
 {
   mStatus = KMMsgStatusUnknown;
@@ -296,12 +306,12 @@ void MessageStatus::setHasAttachment( bool withAttachment )
 
 
 
-const KMMsgStatus MessageStatus::getStatus() const
+const KMMsgStatus MessageStatus::toQInt32() const
 {
   return mStatus;
 }
 
-void MessageStatus::setStatus( KMMsgStatus status)
+void MessageStatus::fromQInt32( KMMsgStatus status)
 {
   mStatus = status;
 }
@@ -345,6 +355,8 @@ void MessageStatus::setStatusFromStr( QString aStr )
   if ( aStr.contains( 'K' ) ) setTodo();
   if ( aStr.contains( 'S' ) ) setSent();
   if ( aStr.contains( 'G' ) ) setImportant();
+  if ( aStr.contains( 'W' ) ) setWatched();
+  if ( aStr.contains( 'I' ) ) setIgnored();
   if ( aStr.contains( 'P' ) ) setSpam();
   if ( aStr.contains( 'H' ) ) setHam();
   if ( aStr.contains( 'T' ) ) setHasAttachment();
@@ -379,3 +391,25 @@ QString MessageStatus::getSortRank() const
   return sstr;
 }
 
+
+
+MessageStatus MessageStatus::statusNew()
+{
+  MessageStatus st;
+  st.setNew();
+  return st;
+}
+
+MessageStatus MessageStatus::statusRead()
+{
+  MessageStatus st;
+  st.setRead();
+  return st;
+}
+
+MessageStatus MessageStatus::statusUnread()
+{
+  MessageStatus st;
+  st.setUnread();
+  return st;
+}
