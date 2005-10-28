@@ -88,7 +88,10 @@ class MessageStatus
     /** Constructor - sets status initially to unknown. */
     MessageStatus();
 
-    /** Assign the status from another instance. */
+    /** Assign the status from another instance. The internal
+        representation is identical afterwards, i.e. a comparison
+        by operator == will return true.
+    */
     MessageStatus& operator = ( const MessageStatus& other );
 
     /** Compare the status with that from another instance.
@@ -109,6 +112,22 @@ class MessageStatus
 
     /** Clear all status flags, this resets to unknown. */
     void clear();
+
+    /** Set / add stati described by another MessageStatus object.
+        This can be used to merge in multiple stati at once without
+        using the single setter methods.
+        However, internally the setters are used anyway to ensure the
+        integrity of the resulting status.
+    */
+    void set( const MessageStatus& other );
+
+    /** Toggle one or more stati described by another MessageStatus object.
+        Internally the setters are used to ensure the integrity of the
+        resulting status.
+        Toggling of the stati New, Unread, Read and Old is not supported.
+        These stati are completely ignored.
+    */
+    void toggle( const MessageStatus& other );
 
     /* ----- getters ----------------------------------------------------- */
 
@@ -326,6 +345,90 @@ class MessageStatus
         @return A reference to a status instance initialized as Unread.
     */
     static MessageStatus statusUnread();
+
+    /** Return a predefined status initialized as New and Unread as is
+        usefull e.g. when searching for unread messages.
+        @return A reference to a status instance initialized as New | Unread.
+    */
+    static MessageStatus statusNewAndUnread();
+
+    /** Return a predefined status initialized as Old as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Old.
+    */
+    static MessageStatus statusOld();
+
+    /** Return a predefined status initialized as Deleted as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Deleted.
+    */
+    static MessageStatus statusDeleted();
+
+    /** Return a predefined status initialized as Replied as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Replied.
+    */
+    static MessageStatus statusReplied();
+
+    /** Return a predefined status initialized as Forwarded as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Forwarded.
+    */
+    static MessageStatus statusForwarded();
+
+    /** Return a predefined status initialized as Queued as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Queued.
+    */
+    static MessageStatus statusQueued();
+
+    /** Return a predefined status initialized as Sent as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Sent.
+    */
+    static MessageStatus statusSent();
+
+    /** Return a predefined status initialized as Important as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Important.
+    */
+    static MessageStatus statusImportant();
+
+    /** Return a predefined status initialized as Watched as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Watched.
+    */
+    static MessageStatus statusWatched();
+
+    /** Return a predefined status initialized as Ignored as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Ignored.
+    */
+    static MessageStatus statusIgnored();
+
+    /** Return a predefined status initialized as Todo as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Todo.
+    */
+    static MessageStatus statusTodo();
+
+    /** Return a predefined status initialized as Spam as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Spam.
+    */
+    static MessageStatus statusSpam();
+
+    /** Return a predefined status initialized as Ham as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Ham.
+    */
+    static MessageStatus statusHam();
+
+    /** Return a predefined status initialized as Attachment as is usefull
+        e.g. when providing a state for comparison.
+        @return A reference to a status instance initialized as Attachment.
+    */
+    static MessageStatus statusHasAttachment();
 
   private:
     KMMsgStatus mStatus;

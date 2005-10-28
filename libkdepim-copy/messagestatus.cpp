@@ -64,6 +64,60 @@ void MessageStatus::clear()
   mStatus = KMMsgStatusUnknown;
 }
 
+void MessageStatus::set( const MessageStatus& other )
+{
+  // Those stati are exclusive, but we have to lock at the
+  // internal representation because Ignored can manipulate
+  // the result of the getter methods.
+  if ( other.mStatus & KMMsgStatusNew ) setNew();
+  if ( other.mStatus & KMMsgStatusUnread ) setUnread();
+  if ( other.mStatus & KMMsgStatusRead ) setRead();
+  if ( other.mStatus & KMMsgStatusOld ) setOld();
+
+  if ( other.isDeleted() ) setDeleted();
+  if ( other.isReplied() ) setReplied();
+  if ( other.isForwarded() ) setForwarded();
+  if ( other.isQueued() ) setQueued();
+  if ( other.isSent() ) setSent();
+  if ( other.isImportant() ) setImportant();
+
+  if ( other.isWatched() ) setWatched();
+  if ( other.isIgnored() ) setIgnored();
+  if ( other.isTodo() ) setTodo();
+  if ( other.isSpam() ) setSpam();
+  if ( other.isHam() ) setHam();
+  if ( other.hasAttachment() ) setHasAttachment();
+}
+
+void MessageStatus::toggle( const MessageStatus& other )
+{
+  if ( other.isDeleted() )
+    setDeleted( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isReplied() )
+    setReplied( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isForwarded() )
+    setForwarded( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isQueued() )
+    setQueued( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isSent() )
+    setSent( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isImportant() )
+    setImportant( !( mStatus & KMMsgStatusNew ) );
+
+  if ( other.isWatched() )
+    setWatched( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isIgnored() )
+  setIgnored( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isTodo() )
+    setTodo( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isSpam() )
+    setSpam( !( mStatus & KMMsgStatusNew ) );
+  if ( other.isHam() )
+    setHam( !( mStatus & KMMsgStatusNew ) );
+  if ( other.hasAttachment() )
+    setHasAttachment( !( mStatus & KMMsgStatusNew ) );
+}
+
 
 bool MessageStatus::isOfUnknownStatus() const
 {
@@ -411,5 +465,104 @@ MessageStatus MessageStatus::statusUnread()
 {
   MessageStatus st;
   st.setUnread();
+  return st;
+}
+
+MessageStatus MessageStatus::statusNewAndUnread()
+{
+  MessageStatus st;
+  st.setUnread();
+  st.setNew();
+  return st;
+}
+
+MessageStatus MessageStatus::statusOld()
+{
+  MessageStatus st;
+  st.setOld();
+  return st;
+}
+
+MessageStatus MessageStatus::statusDeleted()
+{
+  MessageStatus st;
+  st.setDeleted();
+  return st;
+}
+
+MessageStatus MessageStatus::statusReplied()
+{
+  MessageStatus st;
+  st.setReplied();
+  return st;
+}
+
+MessageStatus MessageStatus::statusForwarded()
+{
+  MessageStatus st;
+  st.setForwarded();
+  return st;
+}
+
+MessageStatus MessageStatus::statusQueued()
+{
+  MessageStatus st;
+  st.setQueued();
+  return st;
+}
+
+MessageStatus MessageStatus::statusSent()
+{
+  MessageStatus st;
+  st.setSent();
+  return st;
+}
+
+MessageStatus MessageStatus::statusImportant()
+{
+  MessageStatus st;
+  st.setImportant();
+  return st;
+}
+
+MessageStatus MessageStatus::statusWatched()
+{
+  MessageStatus st;
+  st.setWatched();
+  return st;
+}
+
+MessageStatus MessageStatus::statusIgnored()
+{
+  MessageStatus st;
+  st.setIgnored();
+  return st;
+}
+
+MessageStatus MessageStatus::statusTodo()
+{
+  MessageStatus st;
+  st.setTodo();
+  return st;
+}
+
+MessageStatus MessageStatus::statusSpam()
+{
+  MessageStatus st;
+  st.setSpam();
+  return st;
+}
+
+MessageStatus MessageStatus::statusHam()
+{
+  MessageStatus st;
+  st.setHam();
+  return st;
+}
+
+MessageStatus MessageStatus::statusHasAttachment()
+{
+  MessageStatus st;
+  st.setHasAttachment();
   return st;
 }
