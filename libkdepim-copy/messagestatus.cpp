@@ -29,7 +29,39 @@
 
 #include "messagestatus.h"
 
+#include <qstring.h>
+
 using namespace KPIM;
+
+
+/** The message status format. These can be or'd together.
+    Note, that the KMMsgStatusIgnored implies the
+    status to be Read even if the flags are set
+    to Unread or New. This is done in isRead()
+    and related getters. So we can preserve the state
+    when switching a thread to Ignored and back. */
+enum MsgStatus
+{
+    KMMsgStatusUnknown =           0x00000000,
+    KMMsgStatusNew =               0x00000001,
+    KMMsgStatusUnread =            0x00000002,
+    KMMsgStatusRead =              0x00000004,
+    KMMsgStatusOld =               0x00000008,
+    KMMsgStatusDeleted =           0x00000010,
+    KMMsgStatusReplied =           0x00000020,
+    KMMsgStatusForwarded =         0x00000040,
+    KMMsgStatusQueued =            0x00000080,
+    KMMsgStatusSent =              0x00000100,
+    KMMsgStatusFlag =              0x00000200, // flag means important
+    KMMsgStatusWatched =           0x00000400,
+    KMMsgStatusIgnored =           0x00000800, // forces isRead()
+    KMMsgStatusTodo =              0x00001000,
+    KMMsgStatusSpam =              0x00002000,
+    KMMsgStatusHam =               0x00004000,
+    KMMsgStatusHasAttach =         0x00008000,
+    KMMsgStatusHasNoAttach =       0x00010000  // to be removed before KDE 4
+};
+
 
 
 MessageStatus::MessageStatus()
@@ -360,12 +392,12 @@ void MessageStatus::setHasAttachment( bool withAttachment )
 
 
 
-const KMMsgStatus MessageStatus::toQInt32() const
+const qint32 MessageStatus::toQInt32() const
 {
   return mStatus;
 }
 
-void MessageStatus::fromQInt32( KMMsgStatus status)
+void MessageStatus::fromQInt32( qint32 status)
 {
   mStatus = status;
 }

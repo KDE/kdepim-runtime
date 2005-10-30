@@ -29,41 +29,8 @@
 #ifndef KMAIL_MESSAGESTATUS_H
 #define KMAIL_MESSAGESTATUS_H
 
-#include <qstring.h>
-
+#include <qglobal.h>
 class QString;
-
-/** The message status format. These can be or'd together.
-    Note, that the KMMsgStatusIgnored implies the
-    status to be Read even if the flags are set
-    to Unread or New. This is done in isRead()
-    and related getters. So we can preserve the state
-    when switching a thread to Ignored and back. */
-enum MsgStatus
-{
-    KMMsgStatusUnknown =           0x00000000,
-    KMMsgStatusNew =               0x00000001,
-    KMMsgStatusUnread =            0x00000002,
-    KMMsgStatusRead =              0x00000004,
-    KMMsgStatusOld =               0x00000008,
-    KMMsgStatusDeleted =           0x00000010,
-    KMMsgStatusReplied =           0x00000020,
-    KMMsgStatusForwarded =         0x00000040,
-    KMMsgStatusQueued =            0x00000080,
-    KMMsgStatusSent =              0x00000100,
-    KMMsgStatusFlag =              0x00000200, // flag means important
-    KMMsgStatusWatched =           0x00000400,
-    KMMsgStatusIgnored =           0x00000800, // forces isRead()
-    KMMsgStatusTodo =              0x00001000,
-    KMMsgStatusSpam =              0x00002000,
-    KMMsgStatusHam =               0x00004000,
-    KMMsgStatusHasAttach =         0x00008000,
-    KMMsgStatusHasNoAttach =       0x00010000  // to be removed before KDE 4
-};
-
-// TODO should become QInt32
-typedef uint KMMsgStatus;
-
 
 namespace KPIM {
 
@@ -298,14 +265,14 @@ class MessageStatus
         all integrity checks in the setter methods.
         @return The status encoded in bits.
     */
-    const KMMsgStatus toQInt32() const;
+    const qint32 toQInt32() const;
 
     /** Set the status as a whole e.g. for reading from an index.
         Don't manipulte the index via this value, this bypasses
         all integrity checks in the setter methods.
         @param status The status encoded in bits to be set in this instance.
     */
-    void fromQInt32( KMMsgStatus status );
+    void fromQInt32( qint32 status );
 
     /** Convert the status to a string representation.
         @return A string containing coded upercase letters
@@ -431,7 +398,7 @@ class MessageStatus
     static MessageStatus statusHasAttachment();
 
   private:
-    KMMsgStatus mStatus;
+    qint32 mStatus;
 };
 
 } // namespace KPIM
