@@ -76,9 +76,9 @@ void RecentAddresses::load( KConfig *config )
     QString email;
 
     m_addresseeList.clear();
-    KConfigGroupSaver cs( config, "General" );
-    m_maxCount = config->readNumEntry( "Maximum Recent Addresses", 40 );
-    addresses = config->readListEntry( "Recent Addresses" );
+    KConfigGroup cg( config, "General" );
+    m_maxCount = cg.readNumEntry( "Maximum Recent Addresses", 40 );
+    addresses = cg.readListEntry( "Recent Addresses" );
     for ( QStringList::Iterator it = addresses.begin(); it != addresses.end(); ++it ) {
         KABC::Addressee::parseEmailAddress( *it, name, email );
         if ( !email.isEmpty() ) {
@@ -94,8 +94,8 @@ void RecentAddresses::load( KConfig *config )
 
 void RecentAddresses::save( KConfig *config )
 {
-    KConfigGroupSaver cs( config, "General" );
-    config->writeEntry( "Recent Addresses", addresses() );
+    KConfigGroup cg( config, "General" );
+    cg.writeEntry( "Recent Addresses", addresses() );
 }
 
 void RecentAddresses::add( const QString& entry )

@@ -243,7 +243,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   newCB->setChecked(false);
 
 
-  KSeparator *sep = new KSeparator(KSeparator::HLine, page);
+  KSeparator *sep = new KSeparator(Qt::Horizontal, page);
 
   // init the labels
   QFont fnt = font();
