@@ -97,7 +97,7 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
   d->address = addr;
   d->category = Entry;
 
-  if ( text( 0 ).stripWhiteSpace().isEmpty() )
+  if ( text( 0 ).trimmed().isEmpty() )
     setText( 0, addr.preferredEmail() );
 
   if ( addr.photo().url().isEmpty() ) {

@@ -298,7 +298,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       if ( (*addrIt).label().isEmpty() ) {
         QString formattedAddress;
 
-        formattedAddress = (*addrIt).formattedAddress().stripWhiteSpace();
+        formattedAddress = (*addrIt).formattedAddress().trimmed();
 
         formattedAddress = formattedAddress.replace( '\n', "<br>" );
 

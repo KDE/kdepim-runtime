@@ -574,7 +574,7 @@ void RuleEditWidget::slotAddGroup()
   QString grp = groupsBox->currentText();
   if ( grp.isEmpty() )
       return;
-  QString txt = groupsEdit->text().stripWhiteSpace();
+  QString txt = groupsEdit->text().trimmed();
   if ( txt == ".*" || txt.isEmpty() ) groupsEdit->setText(grp);
   else groupsEdit->setText(txt + ";" + grp);
 }

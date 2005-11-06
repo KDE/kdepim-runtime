@@ -219,7 +219,7 @@ void AddresseeLineEdit::insert( const QString &t )
 
   //kdDebug(5300) << "     AddresseeLineEdit::insert( \"" << t << "\" )" << endl;
 
-  QString newText = t.stripWhiteSpace();
+  QString newText = t.trimmed();
   if ( newText.isEmpty() )
     return;
 
@@ -278,7 +278,7 @@ void AddresseeLineEdit::insert( const QString &t )
 
 void AddresseeLineEdit::setText( const QString & text )
 {
-  ClickLineEdit::setText( text.stripWhiteSpace() );
+  ClickLineEdit::setText( text.trimmed() );
 }
 
 void AddresseeLineEdit::paste()
@@ -372,7 +372,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
     if ( completions.count() > 1 )
       ; //m_previousAddresses = prevAddr;
     else if ( completions.count() == 1 )
-      setText( m_previousAddresses + completions.first().stripWhiteSpace() );
+      setText( m_previousAddresses + completions.first().trimmed() );
 
     setCompletedItems( completions, true ); // this makes sure the completion popup is closed if no matching items were found
 
@@ -397,7 +397,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
 
       if ( !autoSuggest ) {
         int index = items.first().find( m_searchString );
-        QString newText = m_previousAddresses + items.first().mid( index ).stripWhiteSpace();
+        QString newText = m_previousAddresses + items.first().mid( index ).trimmed();
         setUserSelection( false );
         setCompletedText( newText, true );
       }
@@ -436,7 +436,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
 
 void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
 {
-  setText( m_previousAddresses + completion.stripWhiteSpace() );
+  setText( m_previousAddresses + completion.trimmed() );
   cursorAtEnd();
 //  slotMatched( m_previousAddresses + completion );
 }
@@ -493,7 +493,7 @@ void AddresseeLineEdit::loadContacts()
   QStringList::const_iterator listIt;
   int idx = addCompletionSource( i18n( "Distribution Lists" ) );
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
-    addCompletionItem( (*listIt).simplifyWhiteSpace(), weight, idx );
+    addCompletionItem( (*listIt).simplified(), weight, idx );
   }
 #endif
 
@@ -538,11 +538,11 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
     const QString tmp = (*it).left( len );
     const QString fullEmail = addr.fullEmail( tmp );
     //kdDebug(5300) << "AddresseeLineEdit::addContact() \"" << fullEmail << "\" weight=" << weight << endl;
-    addCompletionItem( fullEmail.simplifyWhiteSpace(), weight, source );
+    addCompletionItem( fullEmail.simplified(), weight, source );
     // Try to guess the last name: if found, we add an extra
     // entry to the list to make sure completion works even
     // if the user starts by typing in the last name.
-    QString name( addr.realName().simplifyWhiteSpace() );
+    QString name( addr.realName().simplified() );
     if( name.endsWith("\"") )
       name.truncate( name.length()-1 );
     if( name.startsWith("\"") )
@@ -567,8 +567,8 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
         QString sExtraEntry( sLastName );
         sExtraEntry.append( tmp.isEmpty() ? addr.preferredEmail() : tmp );
         sExtraEntry.append( ">" );
-        //kdDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplifyWhiteSpace() << "\" weight=" << weight << endl;
-        addCompletionItem( sExtraEntry.simplifyWhiteSpace(), weight, source );
+        //kdDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplified() << "\" weight=" << weight << endl;
+        addCompletionItem( sExtraEntry.simplified(), weight, source );
         bDone = true;
       }
       if( !bDone ) {
@@ -620,7 +620,7 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
   int n = s.findRev( ',' );
   if ( n >= 0 ) {
     prevAddr = s.left( n + 1 ) + ' ';
-    s = s.mid( n + 1, 255 ).stripWhiteSpace();
+    s = s.mid( n + 1, 255 ).trimmed();
   }
 
   if ( s.isEmpty() )
@@ -745,7 +745,7 @@ void KPIM::AddresseeLineEdit::slotCompletion()
       ++n;
 
     m_previousAddresses = m_searchString.left( n );
-    m_searchString = m_searchString.mid( n ).stripWhiteSpace();
+    m_searchString = m_searchString.mid( n ).trimmed();
   }
   else
   {

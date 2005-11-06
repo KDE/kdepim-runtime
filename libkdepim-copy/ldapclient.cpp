@@ -207,7 +207,7 @@ void LdapClient::finishCurrentObject()
       const int n = lMail.count();
       if( n ){
         if( lMail.first().lower().startsWith("cn=") ){
-          sMail = lMail.first().simplifyWhiteSpace().mid(3);
+          sMail = lMail.first().simplified().mid(3);
           if( 1 < n )
             sMail.append('@');
           for( int i=1; i<n; ++i){
@@ -279,22 +279,22 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
 {
   QString prefix;
   if ( active ) prefix = "Selected";
-  QString host =  config->readEntry( prefix + QString( "Host%1" ).arg( j ), "" ).stripWhiteSpace();
+  QString host =  config->readEntry( prefix + QString( "Host%1" ).arg( j ), "" ).trimmed();
   if ( !host.isEmpty() )
     server.setHost( host );
 
   int port = config->readNumEntry( prefix + QString( "Port%1" ).arg( j ), 389 );
   server.setPort( port );
 
-  QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), "" ).stripWhiteSpace();
+  QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), "" ).trimmed();
   if ( !base.isEmpty() )
     server.setBaseDN( base );
 
-  QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ) ).stripWhiteSpace();
+  QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ) ).trimmed();
   if ( !user.isEmpty() )
     server.setUser( user );
 
-  QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ) ).stripWhiteSpace();
+  QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ) ).trimmed();
   if ( !bindDN.isEmpty() )
     server.setBindDN( bindDN );
 
@@ -561,7 +561,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         // The right server is found by the SMTP server instead: Kolab users
         // must use the correct SMTP server, by definition.
         //
-        //mail = (*it1).client->base().simplifyWhiteSpace();
+        //mail = (*it1).client->base().simplified();
         //mail.replace( ",dc=", ".", false );
         //if( mail.startsWith("dc=", false) )
         //  mail.remove(0, 3);

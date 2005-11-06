@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 {
     // Use another directory than the real one, just to keep things clean
     // KDEHOME needs to be writable though, for a ksycoca database
-    setenv( "KDEHOME", QFile::encodeName( QDir::homeDirPath() + "/.kde-testdistrlist" ), true );
+    setenv( "KDEHOME", QFile::encodeName( QDir::homePath() + "/.kde-testdistrlist" ), true );
     setenv( "KDE_FORK_SLAVES", "yes", true ); // simpler, for the final cleanup
 
     KApplication::disableAutoDcopRegistration();
