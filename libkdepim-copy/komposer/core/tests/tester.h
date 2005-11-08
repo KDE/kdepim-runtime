@@ -53,7 +53,7 @@ protected:
         {
             if ( result != expectedResult ) {
                 QString error;
-                QTextStream ts( &error, IO_WriteOnly );
+                QTextStream ts( &error, QIODevice::WriteOnly );
                 ts << file << "["<< line <<"]:"
                    <<" failed on \""<<  str <<"\""
                    << "\ntests:\t\t result = "
