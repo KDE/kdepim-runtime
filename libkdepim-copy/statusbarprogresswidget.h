@@ -46,7 +46,7 @@
 class KMMainWidget;
 class KProgress;
 class QPushButton;
-class Q3WidgetStack;
+class QStackedWidget;
 class QBoxLayout;
 class QLabel;
 class QTimer;
@@ -97,7 +97,7 @@ private:
   bool m_bShowButton;
 
   QBoxLayout *box;
-  Q3WidgetStack *stack;
+  QStackedWidget *stack;
   ProgressItem *mCurrentItem;
   ProgressDialog* mProgressDialog;
   QTimer *mDelayTimer;

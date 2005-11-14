@@ -53,7 +53,7 @@ using KPIM::ProgressManager;
 #include <qtooltip.h>
 #include <klocale.h>
 #include <qlayout.h>
-#include <q3widgetstack.h>
+#include <QStackedWidget>
 #include <q3frame.h>
 
 #include "progressdialog.h"
@@ -75,7 +75,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
                                          QSizePolicy::Minimum ) );
   m_pButton->setPixmap( SmallIcon( "up" ) );
   box->addWidget( m_pButton  );
-  stack = new Q3WidgetStack( this );
+  stack = new QStackedWidget( this );
   stack->setMaximumHeight( fontMetrics().height() );
   box->addWidget( stack );
 
@@ -89,13 +89,13 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   m_pProgressBar->setFrameStyle( Q3Frame::Box );
   m_pProgressBar->installEventFilter( this );
   m_pProgressBar->setMinimumWidth( w );
-  stack->addWidget( m_pProgressBar, 1 );
+  stack->insertWidget( 1,m_pProgressBar );
 
   m_pLabel = new QLabel( QString::null, this );
   m_pLabel->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
   m_pLabel->installEventFilter( this );
   m_pLabel->setMinimumWidth( w );
-  stack->addWidget( m_pLabel, 2 );
+  stack->insertWidget( 2, m_pLabel );
   m_pButton->setMaximumHeight( fontMetrics().height() );
   setMinimumWidth( minimumSizeHint().width() );
 
@@ -222,7 +222,7 @@ void StatusbarProgressWidget::setMode() {
     m_sslLabel->setState( SSLLabel::Done );
     // show the empty label in order to make the status bar look better
     stack->show();
-    stack->raiseWidget( m_pLabel );
+    stack->setCurrentWidget( m_pLabel );
     break;
 
 #if 0
@@ -238,7 +238,7 @@ void StatusbarProgressWidget::setMode() {
 
   case Progress:
     stack->show();
-    stack->raiseWidget( m_pProgressBar );
+    stack->setCurrentWidget( m_pProgressBar );
     if ( m_bShowButton ) {
       m_pButton->show();
     }

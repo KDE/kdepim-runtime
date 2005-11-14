@@ -24,7 +24,7 @@
 #include <kdialogbase.h>
 #include <q3table.h>
 #include <q3frame.h>
-#include <Q3WidgetStack>
+#include <QStackedWidget>
 #include "kwidgetlister.h"
 
 #include <kdepimmacros.h>
@@ -114,7 +114,7 @@ private:
   /** the list of available action */
   KComboBox *types;
   /** the stack of the edit widgets for each action type */
-  Q3WidgetStack *stack;
+  QStackedWidget *stack;
   /** the notify action editor */
   KLineEdit *notifyEditor;
   /** the score acton editor */

@@ -36,7 +36,7 @@
 
 #include <qpushbutton.h>
 #include <qlayout.h>
-#include <q3hbox.h>
+#include <khbox.h>
 //Added by qt3to4:
 #include <QVBoxLayout>
 
@@ -55,7 +55,7 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
 
   //--------- the button box
   mLayout = new QVBoxLayout(this, 0, 4);
-  mButtonBox = new Q3HBox(this);
+  mButtonBox = new KHBox(this);
   mButtonBox->setSpacing( KDialog::spacingHint() );
   mLayout->addWidget( mButtonBox );
 

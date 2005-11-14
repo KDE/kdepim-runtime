@@ -37,7 +37,6 @@
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
 #include <qradiobutton.h>
-#include <q3widgetstack.h>
 #include <qapplication.h>
 #include <qtimer.h>
 #include <q3hbox.h>
@@ -224,11 +223,11 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
   types = new KComboBox(this);
   types->setEditable(false);
   topL->addWidget(types);
-  stack = new Q3WidgetStack(this);
+  stack = new QStackedWidget(this);
   topL->addWidget(stack);
 
   dummyLabel = new QLabel(i18n("Select an action."), stack);
-  stack->addWidget(dummyLabel, 0);
+  stack->insertWidget(0,dummyLabel);
 
   // init widget stack and the types combo box
   int index = 1;
@@ -256,15 +255,15 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
           w = new QLabel( stack ); // empty dummy
           break;
       }
-      stack->addWidget(w,index++);
+      stack->insertWidget(index++,w);
     }
   }
 
-  connect(types,SIGNAL(activated(int)),stack,SLOT(raiseWidget(int)));
+  connect(types,SIGNAL(activated(int)),stack,SLOT(setCurrentIndex(int)));
 
   // raise the dummy label
   types->setCurrentItem(0);
-  stack->raiseWidget(dummyLabel);
+  stack->setCurrentWidget(dummyLabel);
 }
 
 SingleActionWidget::~SingleActionWidget()
@@ -276,7 +275,7 @@ void SingleActionWidget::setAction(ActionBase *act)
   kdDebug(5100) << "SingleActionWidget::setAction()" << endl;
   setCurrentItem(types,ActionBase::userName(act->getType()));
   int index = types->currentItem();
-  stack->raiseWidget(index);
+  stack->setCurrentIndex(index);
   switch (act->getType()) {
     case ActionBase::SETSCORE:
       scoreEditor->setValue(act->getValueString().toInt());
@@ -323,7 +322,7 @@ void SingleActionWidget::clear()
   if (notifyEditor) notifyEditor->clear();
   if (colorEditor) colorEditor->setCurrentItem(0);
   types->setCurrentItem(0);
-  stack->raiseWidget(dummyLabel);
+  stack->setCurrentWidget(dummyLabel);
 }
 
 //============================================================================

@@ -36,7 +36,7 @@
 using namespace KPIM;
 
 OverlayWidget::OverlayWidget( QWidget* alignWidget, QWidget* parent, const char* name )
-  : Q3HBox( parent, name ), mAlignWidget( 0 )
+  : KHBox( parent ), mAlignWidget( 0 )
 {
   setAlignWidget( alignWidget );
 }
@@ -84,13 +84,13 @@ bool OverlayWidget::eventFilter( QObject* o, QEvent* e)
        ( e->type() == QEvent::Move || e->type() == QEvent::Resize ) ) {
     reposition();
   }
-  return Q3Frame::eventFilter(o,e);
+  return QFrame::eventFilter(o,e);
 }
 
 void OverlayWidget::resizeEvent( QResizeEvent* ev )
 {
   reposition();
-  Q3Frame::resizeEvent( ev );
+  QFrame::resizeEvent( ev );
 }
 
 #include "overlaywidget.moc"

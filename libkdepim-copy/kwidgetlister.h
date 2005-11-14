@@ -40,7 +40,7 @@
 
 class QPushButton;
 class QVBoxLayout;
-class Q3HBox;
+class KHBox;
 
 /** 
     @short Widget that manages a list of other widgets (incl. 'more', 'fewer' and 'clear' buttons).
@@ -147,7 +147,7 @@ private:
 
   QPushButton *mBtnMore, *mBtnFewer, *mBtnClear;
   QVBoxLayout *mLayout;
-  Q3HBox       *mButtonBox;
+  KHBox       *mButtonBox;
 };
 
 

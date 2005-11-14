@@ -30,7 +30,7 @@
 #ifndef OVERLAYWIDGET_H
 #define OVERLAYWIDGET_H
 
-#include <q3hbox.h>
+#include <khbox.h>
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <QEvent>
@@ -44,7 +44,7 @@ namespace KPIM {
  *
  * OverlayWidget inherits QHBox for convenience purposes (layout, and frame)
  */
-class OverlayWidget : public Q3HBox
+class OverlayWidget : public KHBox
 {
   Q_OBJECT
 
