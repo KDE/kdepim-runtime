@@ -42,11 +42,10 @@
 #include <kpushbutton.h>
 
 #include <khbox.h>
-#include <q3vbox.h>
+#include <kvbox.h>
 #include <q3header.h>
 #include <qtoolbutton.h>
 //Added by qt3to4:
-#include <Q3ValueList>
 #include <Q3PtrList>
 #include <kapplication.h>
 #include <dcopclient.h>
@@ -181,8 +180,8 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
 {
   mItems.setAutoDelete( true );
   // The first step is to gather all the data, creating CompletionItem objects
-  Q3ValueList< LdapClient* > ldapClients = ldapSearch->clients();
-  for( Q3ValueList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
+  QList< LdapClient* > ldapClients = ldapSearch->clients();
+  for( QList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
     //kdDebug(5300) << "LDAP: host " << (*it)->host() << " weight " << (*it)->completionWeight() << endl;
     mItems.append( new LDAPCompletionItem( *it ) );
   }
@@ -221,7 +220,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
     kdDebug(5300) << "  " << (*compit)->label() << " " << (*compit)->completionWeight() << endl;
   }
 
-  Q3VBox* upDownBox = new Q3VBox( page );
+  KVBox* upDownBox = new KVBox( page );
   mUpButton = new KPushButton( upDownBox );
   mUpButton->setObjectName( "mUpButton" );
   mUpButton->setIconSet( BarIconSet( "up", KIcon::SizeSmall ) );

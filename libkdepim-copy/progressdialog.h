@@ -36,7 +36,7 @@
 #include <qdialog.h>
 #include <q3listview.h>
 #include <qlabel.h>
-#include <q3vbox.h>
+#include <kvbox.h>
 //Added by qt3to4:
 #include <Q3Frame>
 #include <QCloseEvent>
@@ -74,10 +74,10 @@ protected:
   virtual void resizeContents ( int w, int h );
 
 private:
-  Q3VBox *                  mBigBox;
+  KVBox *                  mBigBox;
 };
 
-class TransactionItem : public Q3VBox {
+class TransactionItem : public KVBox {
 
   Q_OBJECT
 

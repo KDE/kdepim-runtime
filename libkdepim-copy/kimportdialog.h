@@ -27,8 +27,6 @@
 #include <qspinbox.h>
 #include <q3ptrvector.h>
 #include <q3valuevector.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 #include <Q3PtrList>
 
 #include <kdialogbase.h>
@@ -49,7 +47,7 @@ class KImportColumn
 
     QString header() const { return m_header; }
 
-    Q3ValueList<int> formats();
+    QList<int> formats();
     QString formatName(int format);
     int defaultFormat();
 
@@ -60,7 +58,7 @@ class KImportColumn
     void addColId(int i);
     void removeColId(int i);
 
-    Q3ValueList<int> colIdList();
+    QList<int> colIdList();
 
   protected:
 
@@ -68,10 +66,10 @@ class KImportColumn
     int m_maxCount, m_refCount;
 
     QString m_header;
-    Q3ValueList<int> mFormats;
+    QList<int> mFormats;
     int mDefaultFormat;
     
-    Q3ValueList<int> mColIds;
+    QList<int> mColIds;
     
     KImportDialog *mDialog;
 };

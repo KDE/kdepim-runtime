@@ -42,7 +42,8 @@
 #include <q3scrollview.h>
 #include <qtoolbutton.h>
 #include <qpushbutton.h>
-#include <q3vbox.h>
+#include <khbox.h>
+#include <kvbox.h>
 #include <qtooltip.h>
 //Added by qt3to4:
 #include <QCloseEvent>
@@ -70,7 +71,7 @@ TransactionItemView::TransactionItemView( QWidget * parent,
                                           Qt::WFlags f )
     : Q3ScrollView( parent, name, f ) {
   setFrameStyle( NoFrame );
-  mBigBox = new Q3VBox( viewport() );
+  mBigBox = new KVBox( viewport() );
   mBigBox->setSpacing( 5 );
   addChild( mBigBox );
   setResizePolicy( Q3ScrollView::AutoOneFit ); // Fit so that the box expands horizontally
@@ -145,7 +146,7 @@ void TransactionItemView::slotLayoutFirstItem()
 
 TransactionItem::TransactionItem( QWidget* parent,
                                   ProgressItem *item, bool first )
-  : Q3VBox( parent, "TransactionItem" ), mCancelButton( 0 ), mItem( item )
+  : KVBox( parent ), mCancelButton( 0 ), mItem( item )
 
 {
   setSpacing( 2 );
@@ -158,7 +159,7 @@ TransactionItem::TransactionItem( QWidget* parent,
   mFrame->show();
   setStretchFactor( mFrame, 3 );
 
-  Q3HBox *h = new Q3HBox( this );
+  KHBox *h = new KHBox( this );
   h->setSpacing( 5 );
 
   mItemLabel = new QLabel( item->label(), h );
@@ -174,7 +175,7 @@ TransactionItem::TransactionItem( QWidget* parent,
               this, SLOT( slotItemCanceled() ));
   }
   
-  h = new Q3HBox( this );
+  h = new KHBox( this );
   h->setSpacing( 5 );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
   mSSLLabel = new SSLLabel( h );

@@ -34,9 +34,7 @@
 #include <qregexp.h>
 #include <q3table.h>
 #include <qtextstream.h>
-#include <q3vbox.h>
-//Added by qt3to4:
-#include <Q3ValueList>
+#include <kvbox.h>
 
 #include <kapplication.h>
 #include <kdebug.h>
@@ -68,7 +66,7 @@ KImportColumn::KImportColumn(KImportDialog *dlg,const QString &header, int count
   mDialog->addColumn(this);
 }
 
-Q3ValueList<int> KImportColumn::formats()
+QList<int> KImportColumn::formats()
 {
   return mFormats;
 }
@@ -117,14 +115,14 @@ void KImportColumn::removeColId(int id)
   mColIds.remove(id);
 }
 
-Q3ValueList<int> KImportColumn::colIdList()
+QList<int> KImportColumn::colIdList()
 {
   return mColIds;
 }
 
 QString KImportColumn::convert()
 {
-  Q3ValueList<int>::ConstIterator it = mColIds.begin();
+  QList<int>::ConstIterator it = mColIds.begin();
   if (it == mColIds.end()) return "";
   else return mDialog->cell(*it);
 }
@@ -157,11 +155,11 @@ KImportDialog::KImportDialog(QWidget* parent)
 {
   mData.setAutoDelete( true );
 
-  Q3VBox *topBox = new Q3VBox(this);
+  KVBox *topBox = new KVBox(this);
   setMainWidget(topBox);
   topBox->setSpacing(spacingHint());
 
-  Q3HBox *fileBox = new Q3HBox(topBox);
+  KHBox *fileBox = new KHBox(topBox);
   fileBox->setSpacing(spacingHint());
   new QLabel(i18n("File to import:"),fileBox);
   KURLRequester *urlRequester = new KURLRequester(fileBox);
@@ -176,7 +174,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   mTable->setMinimumHeight( 150 );
   connect(mTable,SIGNAL(selectionChanged()),SLOT(tableSelected()));
 
-  Q3HBox *separatorBox = new Q3HBox( topBox );
+  KHBox *separatorBox = new KHBox( topBox );
   separatorBox->setSpacing( spacingHint() );
 
   new QLabel( i18n( "Separator:" ), separatorBox );
@@ -191,7 +189,7 @@ KImportDialog::KImportDialog(QWidget* parent)
           this, SLOT( separatorClicked(int) ) );
   mSeparatorCombo->setCurrentItem( 0 );
 
-  Q3HBox *rowsBox = new Q3HBox( topBox );
+  KHBox *rowsBox = new KHBox( topBox );
   rowsBox->setSpacing( spacingHint() );
 
   new QLabel( i18n( "Import starts at row:" ), rowsBox );
@@ -202,10 +200,10 @@ KImportDialog::KImportDialog(QWidget* parent)
   mEndRow = new QSpinBox( rowsBox );
   mEndRow->setMinValue( 1 );
 */
-  Q3VBox *assignBox = new Q3VBox(topBox);
+  KVBox *assignBox = new KVBox(topBox);
   assignBox->setSpacing(spacingHint());
 
-  Q3HBox *listsBox = new Q3HBox(assignBox);
+  KHBox *listsBox = new KHBox(assignBox);
   listsBox->setSpacing(spacingHint());
 
   mHeaderList = new Q3ListView(listsBox);
@@ -465,10 +463,10 @@ void KImportDialog::headerSelected(Q3ListViewItem* item)
 
   mFormatCombo->clear();
 
-  Q3ValueList<int> formats = col->formats();
+  QList<int> formats = col->formats();
 
-  Q3ValueList<int>::ConstIterator it = formats.begin();
-  Q3ValueList<int>::ConstIterator end = formats.end();
+  QList<int>::ConstIterator it = formats.begin();
+  QList<int>::ConstIterator end = formats.end();
   while(it != end) {
     mFormatCombo->insertItem( col->formatName(*it), *it - 1 );
     ++it;
@@ -757,7 +755,7 @@ void KImportDialog::saveTemplate()
   KImportColumn *column;
   int counter = 0;
   for ( column = mColumns.first(); column; column = mColumns.next() ) {
-    Q3ValueList<int> list = column->colIdList();
+    QList<int> list = column->colIdList();
     if ( list.count() > 0 )
       config.writeEntry( QString::number( counter ), list[ 0 ] );
     else
