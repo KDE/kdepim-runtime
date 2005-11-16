@@ -25,6 +25,7 @@
 #include <q3table.h>
 #include <q3frame.h>
 #include <QStackedWidget>
+#include <klistbox.h>
 #include "kwidgetlister.h"
 
 #include <kdepimmacros.h>
@@ -32,7 +33,6 @@
 class KComboBox;
 class KLineEdit;
 class KIntSpinBox;
-class KListBox;
 class QLabel;
 class Q3ListBoxItem;
 class QPushButton;
