@@ -85,7 +85,7 @@ class KDE_EXPORT KDatePickerPopup: public Q3PopupMenu
     void dateChanged ( QDate );
 
   protected slots:
-    void slotDateChanged ( QDate );
+    void slotDateChanged ( const QDate& );
 
     void slotToday();
     void slotTomorrow();

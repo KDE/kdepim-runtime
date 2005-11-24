@@ -35,10 +35,10 @@ KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *paren
   mDatePicker = new KDatePicker( this );
   mDatePicker->setCloseButton( false );
 
-  connect( mDatePicker, SIGNAL( dateEntered( QDate ) ),
-           SLOT( slotDateChanged( QDate ) ) );
-  connect( mDatePicker, SIGNAL( dateSelected( QDate ) ),
-           SLOT( slotDateChanged( QDate ) ) );
+  connect( mDatePicker, SIGNAL( dateEntered( const QDate& ) ),
+           SLOT( slotDateChanged( const QDate& ) ) );
+  connect( mDatePicker, SIGNAL( dateSelected( const QDate& ) ),
+           SLOT( slotDateChanged( const QDate& ) ) );
 
   mDatePicker->setDate( date );
 
@@ -92,8 +92,9 @@ void KDatePickerPopup::setItems( int items )
 }
 #endif
 
-void KDatePickerPopup::slotDateChanged( QDate date )
+void KDatePickerPopup::slotDateChanged( const QDate &date )
 {
+#warning "kde4: fix datechanged parameter make it const"
   emit dateChanged( date );
   hide();
 }
