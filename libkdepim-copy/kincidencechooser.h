@@ -39,7 +39,6 @@
 
 class QRadioButton;
 class Q3ButtonGroup;
-class Q3VBox;
 class QStringList;
 class Q3TextBrowser;
 class KDialogBase;
