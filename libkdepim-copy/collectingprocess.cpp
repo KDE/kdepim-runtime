@@ -43,9 +43,9 @@ struct CollectingProcess::Private {
     {}
 
   uint stdoutSize;
-  Q3ValueList<QByteArray> stdoutBuffer;
+  QList<QByteArray> stdoutBuffer;
   uint stderrSize;
-  Q3ValueList<QByteArray> stderrBuffer;
+  QList<QByteArray> stderrBuffer;
 };
 
 
@@ -102,7 +102,7 @@ QByteArray CollectingProcess::collectedStdout()
 
   uint offset = 0;
   QByteArray b( d->stdoutSize );
-  for ( Q3ValueList<QByteArray>::const_iterator it = d->stdoutBuffer.begin();
+  for ( QList<QByteArray>::const_iterator it = d->stdoutBuffer.begin();
         it != d->stdoutBuffer.end();
         ++it ) {
     memcpy( b.data() + offset, (*it).data(), (*it).size() );
@@ -122,7 +122,7 @@ QByteArray CollectingProcess::collectedStderr()
 
   uint offset = 0;
   QByteArray b( d->stderrSize );
-  for ( Q3ValueList<QByteArray>::const_iterator it = d->stderrBuffer.begin();
+  for ( QList<QByteArray>::const_iterator it = d->stderrBuffer.begin();
         it != d->stderrBuffer.end();
         ++it ) {
     memcpy( b.data() + offset, (*it).data(), (*it).size() );

@@ -22,8 +22,6 @@
 #define DISTRIBUTIONLIST_H
 
 #include <kabc/addressee.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 
 namespace KABC {
 class AddressBook;
@@ -54,7 +52,7 @@ class DistributionList : public KABC::Addressee
      */
     struct Entry
     {
-      typedef Q3ValueList<Entry> List;
+      typedef QList<Entry> List;
 
       Entry() {}
       Entry( const Addressee &_addressee, const QString &_email ) :
@@ -64,7 +62,7 @@ class DistributionList : public KABC::Addressee
       QString email;
     };
 
-    typedef Q3ValueList<DistributionList> List;
+    typedef QList<DistributionList> List;
 
     /**
      * Create a distribution list.
@@ -129,7 +127,7 @@ class DistributionList : public KABC::Addressee
     // KDE4: should be a method of AddressBook
     // A bit slow (but no more than findByName).
     // From KAddressbook, use Core::distributionLists() instead.
-    static Q3ValueList<DistributionList> allDistributionLists( KABC::AddressBook* book );
+    static QList<DistributionList> allDistributionLists( KABC::AddressBook* book );
 
 
   private:

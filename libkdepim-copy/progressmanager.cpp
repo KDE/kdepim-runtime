@@ -22,8 +22,6 @@
 */
 
 #include <q3valuevector.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 #include <kdebug.h>
 
 #include <klocale.h>
@@ -87,9 +85,9 @@ void ProgressItem::cancel()
    kdDebug(5300) << "ProgressItem::cancel() - " << label() << endl;
    mCanceled = true;
    // Cancel all children.
-   Q3ValueList<ProgressItem*> kids = mChildren.keys();
-   Q3ValueList<ProgressItem*>::Iterator it( kids.begin() );
-   Q3ValueList<ProgressItem*>::Iterator end( kids.end() );
+   QList<ProgressItem*> kids = mChildren.keys();
+   QList<ProgressItem*>::Iterator it( kids.begin() );
+   QList<ProgressItem*>::Iterator end( kids.end() );
    for ( ; it != end; it++ ) {
      ProgressItem *kid = *it;
      if ( kid->canBeCanceled() )

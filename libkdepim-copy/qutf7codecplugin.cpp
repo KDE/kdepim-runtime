@@ -38,7 +38,7 @@ public:
   QUtf7CodecPlugin() {}
 
   QStringList names() const { return QStringList() << "UTF-7" << "X-QT-UTF-7-STRICT"; }
-  Q3ValueList<int> mibEnums() const { return Q3ValueList<int>() << 1012 << -1012; }
+  QList<int> mibEnums() const { return QList<int>() << 1012 << -1012; }
   QTextCodec * createForMib( int );
   QTextCodec * createForName( const QString & );
 };

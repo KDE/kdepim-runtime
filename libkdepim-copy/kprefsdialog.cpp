@@ -36,7 +36,6 @@
 
 //Added by qt3to4:
 #include <QGridLayout>
-#include <Q3ValueList>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -70,13 +69,13 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   KConfigSkeleton::ItemEnum *enumItem =
       dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
   if ( enumItem ) {
-    Q3ValueList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
+    QList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
       kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
       return 0;
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
-      Q3ValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+      QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
       for( it = choices.begin(); it != choices.end(); ++it ) {
         radios->addRadio( (*it).label );
       }
@@ -96,9 +95,9 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
 }
 
 
-Q3ValueList<QWidget *> KPrefsWid::widgets() const
+QList<QWidget *> KPrefsWid::widgets() const
 {
-  return Q3ValueList<QWidget *>();
+  return QList<QWidget *>();
 }
 
 
@@ -127,9 +126,9 @@ QCheckBox *KPrefsWidBool::checkBox()
   return mCheck;
 }
 
-Q3ValueList<QWidget *> KPrefsWidBool::widgets() const
+QList<QWidget *> KPrefsWidBool::widgets() const
 {
-  Q3ValueList<QWidget *> widgets;
+  QList<QWidget *> widgets;
   widgets.append( mCheck );
   return widgets;
 }
@@ -176,9 +175,9 @@ QSpinBox *KPrefsWidInt::spinBox()
   return mSpin;
 }
 
-Q3ValueList<QWidget *> KPrefsWidInt::widgets() const
+QList<QWidget *> KPrefsWidInt::widgets() const
 {
-  Q3ValueList<QWidget *> widgets;
+  QList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mSpin );
   return widgets;
@@ -435,9 +434,9 @@ void KPrefsWidRadios::writeConfig()
   mItem->setValue( mBox->id( mBox->selected() ) );
 }
 
-Q3ValueList<QWidget *> KPrefsWidRadios::widgets() const
+QList<QWidget *> KPrefsWidRadios::widgets() const
 {
-  Q3ValueList<QWidget *> w;
+  QList<QWidget *> w;
   w.append( mBox );
   return w;
 }
@@ -484,9 +483,9 @@ QLineEdit *KPrefsWidString::lineEdit()
   return mEdit;
 }
 
-Q3ValueList<QWidget *> KPrefsWidString::widgets() const
+QList<QWidget *> KPrefsWidString::widgets() const
 {
-  Q3ValueList<QWidget *> widgets;
+  QList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mEdit );
   return widgets;
@@ -534,9 +533,9 @@ KURLRequester *KPrefsWidPath::urlRequester()
   return mURLRequester;
 }
 
-Q3ValueList<QWidget *> KPrefsWidPath::widgets() const
+QList<QWidget *> KPrefsWidPath::widgets() const
 {
-  Q3ValueList<QWidget *> widgets;
+  QList<QWidget *> widgets;
   widgets.append( mLabel );
   widgets.append( mURLRequester );
   return widgets;
@@ -601,9 +600,9 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
                                                  QWidget *parent )
 {
   KPrefsWidRadios *w = new KPrefsWidRadios( item, parent );
-  Q3ValueList<KConfigSkeleton::ItemEnum::Choice> choices;
+  QList<KConfigSkeleton::ItemEnum::Choice> choices;
   choices = item->choices();
-  Q3ValueList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+  QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
   for( it = choices.begin(); it != choices.end(); ++it ) {
     w->addRadio( (*it).label, (*it).whatsThis );
   }
@@ -738,7 +737,7 @@ void KPrefsDialog::autoCreate()
     KPrefsWid *wid = KPrefsWidFactory::create( *it, page );
 
     if ( wid ) {
-      Q3ValueList<QWidget *> widgets = wid->widgets();
+      QList<QWidget *> widgets = wid->widgets();
       if ( widgets.count() == 1 ) {
         layout->addMultiCellWidget( widgets[ 0 ],
                                     currentRow, currentRow, 0, 1 );
@@ -750,7 +749,7 @@ void KPrefsDialog::autoCreate()
       }
 
       if ( (*it)->isImmutable() ) {
-        Q3ValueList<QWidget *>::Iterator it2;
+        QList<QWidget *>::Iterator it2;
         for( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
           (*it2)->setEnabled( false );
         }

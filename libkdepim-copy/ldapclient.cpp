@@ -28,8 +28,6 @@
 #include <qpixmap.h>
 #include <qtextstream.h>
 #include <q3url.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 
 #include <kabc/ldapurl.h>
 #include <kabc/ldif.h>
@@ -353,7 +351,7 @@ LdapSearch::LdapSearch()
 void LdapSearch::readConfig()
 {
   cancelSearch();
-  Q3ValueList< LdapClient* >::Iterator it;
+  QList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it )
     delete *it;
   mClients.clear();
@@ -431,7 +429,7 @@ void LdapSearch::startSearch( const QString& txt )
   QString filter = QString( "&(|(objectclass=person)(objectclass=groupOfNames)(mail=*))(|(cn=%1*)(mail=%2*)(givenName=%3*)(sn=%4*))" )
       .arg( mSearchText ).arg( mSearchText ).arg( mSearchText ).arg( mSearchText );
 
-  Q3ValueList< LdapClient* >::Iterator it;
+  QList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it ) {
     (*it)->startQuery( filter );
     kdDebug(5300) << "LdapSearch::startSearch() " << filter << endl;
@@ -441,7 +439,7 @@ void LdapSearch::startSearch( const QString& txt )
 
 void LdapSearch::cancelSearch()
 {
-  Q3ValueList< LdapClient* >::Iterator it;
+  QList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it )
     (*it)->cancelQuery();
 
@@ -492,7 +490,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 {
   QString search_text_upper = mSearchText.upper();
 
-  Q3ValueList< KPIM::LdapObject >::ConstIterator it1;
+  QList< KPIM::LdapObject >::ConstIterator it1;
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
     QString name, mail, givenname, sn;
     QStringList mails;

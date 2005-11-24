@@ -36,7 +36,6 @@
 //Added by qt3to4:
 #include <QTextStream>
 #include <QLabel>
-#include <Q3ValueList>
 
 #include <kdialogbase.h>
 #include <klineedit.h>
@@ -179,7 +178,7 @@ private:
     QString from;
     QString subject;
   };
-  typedef Q3ValueList<article_info> article_list;
+  typedef QList<article_info> article_list;
   typedef Q3Dict<article_list> note_list;
   note_list notifyList;
 };

@@ -29,7 +29,6 @@
 #include <Q3Frame>
 #include <QGridLayout>
 #include <Q3PtrList>
-#include <Q3ValueList>
 #include <QVBoxLayout>
 
 #include <kabc/stdaddressbook.h>
@@ -62,8 +61,8 @@ class AddresseeSelector::AddressBookManager
       SelectionItem::List list;
     };
 
-    Q3ValueList<KABC::Resource*> mResources;
-    Q3ValueList<AddressBookEntry> mAddressBooks;
+    QList<KABC::Resource*> mResources;
+    QList<AddressBookEntry> mAddressBooks;
 };
 
 QStringList AddresseeSelector::AddressBookManager::titles() const
@@ -73,11 +72,11 @@ QStringList AddresseeSelector::AddressBookManager::titles() const
   // we've always an 'all' entry
   titles.append( i18n( "All" ) );
 
-  Q3ValueList<KABC::Resource*>::ConstIterator resIt;
+  QList<KABC::Resource*>::ConstIterator resIt;
   for ( resIt = mResources.begin(); resIt != mResources.end(); ++resIt )
     titles.append( (*resIt)->resourceName() );
 
-  Q3ValueList<AddressBookEntry>::ConstIterator abIt;
+  QList<AddressBookEntry>::ConstIterator abIt;
   for ( abIt = mAddressBooks.begin(); abIt != mAddressBooks.end(); ++abIt )
     titles.append( (*abIt).title );
 

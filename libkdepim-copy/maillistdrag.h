@@ -89,7 +89,7 @@ private:
 };
 
 // List of mail summaries
-typedef Q3ValueList<MailSummary> MailList;
+typedef QList<MailSummary> MailList;
 
 // Object for the drag object to call-back for message fulltext
 class KDE_EXPORT MailTextSource {

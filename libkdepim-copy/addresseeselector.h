@@ -31,8 +31,6 @@
 #include <qbitarray.h>
 #include <qpixmap.h>
 #include <qwidget.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 
 class KComboBox;
 class KLineEdit;
@@ -144,7 +142,7 @@ class KDE_EXPORT Selection
 class SelectionItem
 {
   public:
-    typedef Q3ValueList<SelectionItem> List;
+    typedef QList<SelectionItem> List;
 
     SelectionItem( const KABC::Addressee &addressee, int index );
     SelectionItem( KABC::DistributionList *list, int index );
@@ -204,7 +202,7 @@ class KDE_EXPORT AddresseeSelector : public QWidget
     KListView *mAddresseeView;
     SelectionItem::List mSelectionItems;
 
-    Q3ValueList<KListView*> mSelectionViews;
+    QList<KListView*> mSelectionViews;
     QSignalMapper *mMoveMapper;
     QSignalMapper *mRemoveMapper;
 

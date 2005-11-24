@@ -28,7 +28,6 @@
 #include <qpair.h>
 #include <qstringlist.h>
 //Added by qt3to4:
-#include <Q3ValueList>
 
 #include <kdepimmacros.h>
 
@@ -66,7 +65,7 @@ class KDE_EXPORT DesignerFields : public QWidget
     void initGUI( const QString& );
 
     QMap<QString, QWidget *> mWidgets;
-    Q3ValueList<QWidget *> mDisabledWidgets;
+    QList<QWidget *> mDisabledWidgets;
     QString mTitle;
     QString mIdentifier;
 };

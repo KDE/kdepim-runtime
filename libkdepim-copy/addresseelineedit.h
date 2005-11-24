@@ -50,7 +50,7 @@ class KConfig;
 namespace KPIM {
 class LdapSearch;
 class LdapResult;
-typedef Q3ValueList<LdapResult> LdapResultList;
+typedef QList<LdapResult> LdapResultList;
 typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 }
 

@@ -77,7 +77,7 @@ class KDE_EXPORT KPrefsWid : public QObject
     /**
       Return a list of widgets used by this control element.
     */
-    virtual Q3ValueList<QWidget *> widgets() const;
+    virtual QList<QWidget *> widgets() const;
 
   signals:
     /**
@@ -111,7 +111,7 @@ class KDE_EXPORT KPrefsWidBool : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    Q3ValueList<QWidget *> widgets() const;
+    QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemBool *mItem;
@@ -151,7 +151,7 @@ class KDE_EXPORT KPrefsWidInt : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    Q3ValueList<QWidget *> widgets() const;
+    QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemInt *mItem;
@@ -408,7 +408,7 @@ class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    Q3ValueList<QWidget *> widgets() const;
+    QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemEnum *mItem;
@@ -454,7 +454,7 @@ class KDE_EXPORT KPrefsWidString : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    Q3ValueList<QWidget *> widgets() const;
+    QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemString *mItem;
@@ -502,7 +502,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-    Q3ValueList<QWidget *> widgets() const;
+    QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemPath *mItem;

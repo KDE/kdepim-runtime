@@ -71,7 +71,7 @@ class KDE_EXPORT KConfigPropagator
     class KDE_EXPORT Rule
     {
       public:
-        typedef Q3ValueList<Rule> List;
+        typedef QList<Rule> List;
         
         Rule() : hideValue( false ) {}
         

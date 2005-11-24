@@ -54,7 +54,6 @@
 #include <kvbox.h>
 #include <qwidget.h>
 //Added by qt3to4:
-#include <Q3ValueList>
 #include <Q3PtrList>
 //Added by qt3to4:
 #include <QPixmap>
@@ -390,9 +389,9 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
 #ifdef KDEPIM_NEW_DISTRLISTS
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
-    const Q3ValueList<KPIM::DistributionList::Entry> eList
+    const QList<KPIM::DistributionList::Entry> eList
       = KPIM::DistributionList::findByName(abook, *it).entries(abook);
-    Q3ValueList<KPIM::DistributionList::Entry>::ConstIterator eit;
+    QList<KPIM::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && aList.find( a ) == aList.end() ) {
@@ -404,8 +403,8 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   KABC::DistributionListManager manager( abook );
   manager.load();
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
-    const Q3ValueList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
-    Q3ValueList<KABC::DistributionList::Entry>::ConstIterator eit;
+    const QList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
+    QList<KABC::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && aList.find( a ) == aList.end() ) {
@@ -1041,7 +1040,7 @@ AddressesDialog::addDistributionLists()
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
 
 #ifdef KDEPIM_NEW_DISTRLISTS
-  const Q3ValueList<KPIM::DistributionList> distLists =
+  const QList<KPIM::DistributionList> distLists =
     KPIM::DistributionList::allDistributionLists( abook );
 #else
   KABC::DistributionListManager manager( abook );
@@ -1057,7 +1056,7 @@ AddressesDialog::addDistributionLists()
                                                       i18n( "Distribution Lists" ) );
 
 #ifdef KDEPIM_NEW_DISTRLISTS
-  Q3ValueList<KPIM::DistributionList>::ConstIterator listIt;
+  QList<KPIM::DistributionList>::ConstIterator listIt;
 #else
   QStringList::Iterator listIt;
 #endif

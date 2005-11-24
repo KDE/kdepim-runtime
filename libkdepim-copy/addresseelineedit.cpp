@@ -62,7 +62,6 @@
 #include <Q3CString>
 #include <QKeyEvent>
 #include <QDropEvent>
-#include <Q3ValueList>
 #include <QMouseEvent>
 
 using namespace KPIM;
@@ -136,8 +135,8 @@ void AddresseeLineEdit::init()
 
       /* Add completion sources for all ldap server, 0 to n. Added first so 
        * that they map to the ldapclient::clientNumber() */
-      Q3ValueList< LdapClient* > clients =  s_LDAPSearch->clients();
-      for ( Q3ValueList<LdapClient*>::iterator it = clients.begin(); it != clients.end(); ++it ) {
+      QList< LdapClient* > clients =  s_LDAPSearch->clients();
+      for ( QList<LdapClient*>::iterator it = clients.begin(); it != clients.end(); ++it ) {
         addCompletionSource( "LDAP server: " + (*it)->server().host() );
       }
     }
