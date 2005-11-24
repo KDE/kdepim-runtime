@@ -38,8 +38,8 @@
 
 using namespace KPIM;
 
-MailSummary::MailSummary( quint32 serialNumber, QString messageId, 
-			  QString subject, QString from, QString to, 
+MailSummary::MailSummary( quint32 serialNumber, const QString &messageId, 
+			  const QString &subject, const QString &from, const QString &to, 
 			  time_t date )
     : mSerialNumber( serialNumber ), mMessageId( messageId ),
       mSubject( subject ), mFrom( from ), mTo( to ), mDate( date )
@@ -75,8 +75,8 @@ time_t MailSummary::date() const
     return mDate;
 }
 
-void MailSummary::set( quint32 serialNumber, QString messageId, 
-		       QString subject, QString from, QString to, time_t date )
+void MailSummary::set( quint32 serialNumber, const QString &messageId, 
+		       const QString &subject, const QString &from, const QString &to, time_t date )
 {
     mSerialNumber = serialNumber;
     mMessageId = messageId;

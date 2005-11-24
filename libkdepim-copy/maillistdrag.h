@@ -53,13 +53,13 @@ namespace KPIM {
 class KDE_EXPORT MailSummary 
 {
 public:
-    MailSummary( quint32 serialNumber, QString messageId, QString subject, 
-		 QString from, QString to, time_t date );
+    MailSummary( quint32 serialNumber, const QString &messageId, const QString &subject, 
+		 const QString &from, const QString &to, time_t date );
     MailSummary() {}
     ~MailSummary() {}
 
     /*** Set fields for this mail summary  ***/
-    void set( quint32, QString, QString, QString, QString, time_t );
+    void set( quint32, const QString&, const QString&, const QString&, const QString&, time_t );
 
     /*** KMail unique identification number ***/
     quint32 serialNumber() const;
