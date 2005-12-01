@@ -25,8 +25,7 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <q3buttongroup.h>
-#include <q3vbox.h>
-#include <q3hbox.h>
+#include <khbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
@@ -59,7 +58,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
                         "<br/>NOTE: You have to check mail again to apply your changes to the server.</qt>"), topFrame);
     topLayout->addMultiCellWidget(lab, iii,iii,0,2);
     ++iii;
-    Q3HBox * b_box = new Q3HBox( topFrame );
+    KHBox * b_box = new KHBox( topFrame );
     topLayout->addMultiCellWidget(b_box, iii,iii,0,2);
     ++iii;
     QPushButton* button = new QPushButton( i18n("Take Local"), b_box );
