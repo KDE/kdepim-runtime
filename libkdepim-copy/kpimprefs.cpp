@@ -28,8 +28,6 @@
 #include <limits.h>
 
 #include <qstring.h>
-//Added by qt3to4:
-#include <Q3CString>
 
 #include <kstandarddirs.h>
 #include <kglobal.h>
@@ -116,7 +114,7 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
 //    kdDebug() << "---   Adjusted UTC: " << dt.toString() << endl;
   }
   
-  Q3CString origTz = getenv("TZ");
+  QByteArray origTz = getenv("TZ");
 
   setenv( "TZ", "UTC", 1 );
   time_t utcTime = dt.toTime_t();
@@ -160,7 +158,7 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
 //    kdDebug() << "---   Adjusted LOCAL: " << dt.toString() << endl;
   }
 
-  Q3CString origTz = getenv("TZ");
+  QByteArray origTz = getenv("TZ");
 
   setenv( "TZ", timeZoneId.local8Bit(), 1 );
   time_t localTime = dt.toTime_t();
