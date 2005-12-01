@@ -28,7 +28,6 @@
 #include <qeventloop.h>
 //Added by qt3to4:
 #include <QTextStream>
-#include <Q3CString>
 #include <QDropEvent>
 #include <kapplication.h>
 #include <klocale.h>
@@ -234,9 +233,9 @@ const char *MailListDrag::format(int i) const
 
 bool MailListDrag::provides(const char *mimeType) const
 {
-    if (_src && Q3CString(mimeType) == "message/rfc822") {
+    if (_src && QByteArray(mimeType) == "message/rfc822") {
         return true;
-    } else if ( Q3CString( mimeType ) == format() )
+    } else if ( QByteArray( mimeType ) == format() )
       return true;
     
     return mUrlDrag->provides( mimeType );
@@ -244,7 +243,7 @@ bool MailListDrag::provides(const char *mimeType) const
 
 QByteArray MailListDrag::encodedData(const char *mimeType) const
 {
-    if ( Q3CString(mimeType) == format() ) {
+    if ( QByteArray(mimeType) == format() ) {
       QByteArray array;
       QBuffer buffer( &array, 0 );
       buffer.open( QIODevice::WriteOnly);
@@ -252,7 +251,7 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
       stream << mMailList;
       buffer.close();
       return array;
-    } else if ( Q3CString( mimeType ) == "message/rfc822" ) {
+    } else if ( QByteArray( mimeType ) == "message/rfc822" ) {
   
       QByteArray rc; 
       if (_src) {

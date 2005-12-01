@@ -26,8 +26,6 @@
 #include "q3dragobject.h"
 #include "q3valuelist.h"
 #include "qglobal.h"
-//Added by qt3to4:
-#include <Q3CString>
 #include <QDropEvent>
 #include "time.h"
 
@@ -97,7 +95,7 @@ public:
     MailTextSource() {}
     virtual ~MailTextSource() {}
 
-    virtual Q3CString text(quint32 serialNumber) const = 0;
+    virtual QByteArray text(quint32 serialNumber) const = 0;
 };
 
 // Drag and drop object for mails
