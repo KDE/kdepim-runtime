@@ -144,18 +144,18 @@ DefaultEditor::createActions( KActionCollection *ac )
   //
   // Character Formatting
   //
-  m_actionBold = new KToggleAction( i18n("&Bold"), "text_bold", CTRL+Key_B,
+  m_actionBold = new KToggleAction( i18n("&Bold"), "text_bold", Qt::CTRL+Qt::Key_B,
                                     ac, "format_bold" );
   connect( m_actionBold, SIGNAL(toggled(bool)),
            m_textEdit, SLOT(setBold(bool)) );
 
-  m_actionItalic = new KToggleAction( i18n("&Italic"), "text_italic", CTRL+Key_I,
+  m_actionItalic = new KToggleAction( i18n("&Italic"), "text_italic", Qt::CTRL+Qt::Key_I,
                                       ac, "format_italic" );
 
   connect( m_actionItalic, SIGNAL(toggled(bool)),
            m_textEdit, SLOT(setItalic(bool) ));
 
-  m_actionUnderline = new KToggleAction( i18n("&Underline"), "text_under", CTRL+Key_U,
+  m_actionUnderline = new KToggleAction( i18n("&Underline"), "text_under", Qt::CTRL+Qt::Key_U,
                                          ac, "format_underline" );
 
   connect( m_actionUnderline, SIGNAL(toggled(bool)),

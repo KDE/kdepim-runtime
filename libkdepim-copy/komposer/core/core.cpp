@@ -248,7 +248,7 @@ Core::createActions()
 {
   KStdAction::close( this, SLOT(slotClose()), actionCollection() );
 
-  (void) new KAction( i18n( "&Send" ), "mail_send", CTRL+Key_Return,
+  (void) new KAction( i18n( "&Send" ), "mail_send", Qt::CTRL+Qt::Key_Return,
                       this, SLOT(slotSendNow()), actionCollection(),
                       "send_default" );
 
