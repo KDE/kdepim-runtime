@@ -5,7 +5,7 @@
   Copyright (c) James Ashton - Sydney University - June 1990.
 
   Additions for KDE:
-  Copyright (c) 2004 Jakob Schröter <js@camaya.net>
+  Copyright (c) 2004 Jakob SchrÃ¶ter <js@camaya.net>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Library General Public

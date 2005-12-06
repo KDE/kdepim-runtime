@@ -81,7 +81,7 @@ EditorSelection::EditorSelection( const QString &text, QString &reference,
   m_editorsCombo = new KComboBox( m_box );
   boxLayout->addWidget( m_editorsCombo );
 
-  connect( m_editorsCombo, SIGNAL(activated(const QString&)),
+  connect( m_editorsCombo, SIGNAL(activated(const QString&)),
            SLOT(slotActivated(const QString&)) );
 }
 
