@@ -391,14 +391,19 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
     case KGlobalSettings::CompletionPopup:
     {
       const QStringList items = getAdjustedCompletionItems( true );
-      bool autoSuggest = !items.isEmpty() && (mode != KGlobalSettings::CompletionPopupAuto);
-      setCompletedItems( items, autoSuggest );
+      if ( items.isEmpty() ) {
+        setCompletedItems( items, false );
+      }
+      else {
+        const bool autoSuggest = (mode != KGlobalSettings::CompletionPopupAuto);
+        setCompletedItems( items, autoSuggest );
 
-      if ( !autoSuggest ) {
-        int index = items.first().find( m_searchString );
-        QString newText = m_previousAddresses + items.first().mid( index ).trimmed();
-        setUserSelection( false );
-        setCompletedText( newText, true );
+        if ( !autoSuggest ) {
+          const int index = items.first().find( m_searchString );
+          QString newText = m_previousAddresses + items.first().mid( index ).trimmed();
+          setUserSelection( false );
+          setCompletedText( newText, true );
+        }
       }
       break;
     }
