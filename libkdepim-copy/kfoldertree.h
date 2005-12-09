@@ -23,12 +23,10 @@
 #define __KFOLDERTREE
 
 #include <qpixmap.h>
-#include <qbitarray.h>
 #include <q3dragobject.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QDropEvent>
-#include <Q3MemArray>
+#include <QVector>
 #include <klistview.h>
 #include <kdepimmacros.h>
 
@@ -275,8 +273,8 @@ class KDE_EXPORT KFolderTree : public KListView
     virtual void contentsMouseReleaseEvent( QMouseEvent *e );
 
     /** for mimetypes */
-    Q3MemArray<const char*> mAcceptableDropMimetypes;
-    QBitArray mAcceptOutside;
+    QVector<const char*> mAcceptableDropMimetypes;
+    QVector<bool> mAcceptOutside;
 
     /** shared information */ // ### why isn't it then static? ;-)
     KPaintInfo mPaintInfo;

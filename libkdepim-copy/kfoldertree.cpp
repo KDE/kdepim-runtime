@@ -365,12 +365,8 @@ void KFolderTree::contentsMouseReleaseEvent( QMouseEvent *e )
 //-----------------------------------------------------------------------------
 void KFolderTree::addAcceptableDropMimetype( const char *mimeType, bool outsideOk )
 {
-  int oldSize = mAcceptableDropMimetypes.size();
-  mAcceptableDropMimetypes.resize(oldSize+1);
-  mAcceptOutside.resize(oldSize+1);
-
-  mAcceptableDropMimetypes.at(oldSize) =  mimeType;
-  mAcceptOutside.setBit(oldSize, outsideOk);
+  mAcceptableDropMimetypes.append( mimeType );
+  mAcceptOutside.append( outsideOk );
 }
 
 //-----------------------------------------------------------------------------
@@ -378,7 +374,7 @@ bool KFolderTree::acceptDrag( QDropEvent* event ) const
 {
   Q3ListViewItem* item = itemAt(contentsToViewport(event->pos()));
 
-  for (uint i = 0; i < mAcceptableDropMimetypes.size(); i++)
+  for ( int i = 0; i < mAcceptableDropMimetypes.size(); i++ )
   {
     if (event->provides(mAcceptableDropMimetypes[i]))
     {
