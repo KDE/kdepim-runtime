@@ -23,7 +23,6 @@
 #define __KFOLDERTREE
 
 #include <qpixmap.h>
-#include <q3dragobject.h>
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QVector>
