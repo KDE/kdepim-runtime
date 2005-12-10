@@ -30,6 +30,7 @@
 #include <qlineedit.h>
 //Added by qt3to4:
 #include <QKeyEvent>
+#include <QDebug>
 
 #include <kmessagebox.h>
 #include <kglobal.h>
@@ -120,10 +121,11 @@ KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char *name )
 
   // Fill combo box with selection of times in localized format.
   QTime timeEntry(0,0,0);
+  QTime endEntry = timeEntry;
   do {
     insertItem(KGlobal::locale()->formatTime(timeEntry));
     timeEntry = timeEntry.addSecs(60*15);
-  } while (!timeEntry.isNull());
+  } while (timeEntry != endEntry);
   // Add end of day.
   insertItem( KGlobal::locale()->formatTime( QTime( 23, 59, 59 ) ) );
 
