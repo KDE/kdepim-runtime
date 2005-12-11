@@ -82,7 +82,7 @@ class KDE_EXPORT KDatePickerPopup: public Q3PopupMenu
       This signal emits the new date (selected with datepicker or other
       menu-items).
     */
-    void dateChanged ( QDate );
+    void dateChanged ( const QDate& );
 
   protected slots:
     void slotDateChanged ( const QDate& );

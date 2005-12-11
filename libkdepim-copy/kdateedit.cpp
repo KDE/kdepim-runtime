@@ -92,8 +92,8 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
   mPopup->hide();
   mPopup->installEventFilter( this );
 
-  connect( mPopup, SIGNAL( dateChanged( QDate ) ),
-           SLOT( dateSelected( QDate ) ) );
+  connect( mPopup, SIGNAL( dateChanged( const QDate& ) ),
+           SLOT( dateSelected( const QDate& ) ) );
 
   // handle keyword entry
   setupKeywords();
@@ -179,7 +179,7 @@ void KDateEdit::popup()
   }
 }
 
-void KDateEdit::dateSelected( QDate date )
+void KDateEdit::dateSelected( const QDate &date )
 {
   if (assignDate( date ) ) {
     updateView();
@@ -191,7 +191,7 @@ void KDateEdit::dateSelected( QDate date )
   }
 }
 
-void KDateEdit::dateEntered( QDate date )
+void KDateEdit::dateEntered( const QDate &date )
 {
   if (assignDate( date ) ) {
     updateView();

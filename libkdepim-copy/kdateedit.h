@@ -101,8 +101,8 @@ class KDE_EXPORT KDateEdit : public QComboBox
   protected slots:
     void lineEnterPressed();
     void slotTextChanged( const QString& );
-    void dateEntered( QDate );
-    void dateSelected( QDate );
+    void dateEntered( const QDate& );
+    void dateSelected( const QDate& );
 
   protected:
     virtual bool eventFilter( QObject*, QEvent* );

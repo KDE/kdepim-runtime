@@ -94,7 +94,6 @@ void KDatePickerPopup::setItems( int items )
 
 void KDatePickerPopup::slotDateChanged( const QDate &date )
 {
-#warning "kde4: fix datechanged parameter make it const"
   emit dateChanged( date );
   hide();
 }
