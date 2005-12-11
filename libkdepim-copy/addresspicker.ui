@@ -186,7 +186,8 @@
             </property>
             <property name="font">
                 <font>
-                    <bold>1</bold>
+			<bold>1</bold>
+			<pointSize>8</pointSize>
                 </font>
             </property>
             <property name="text">
@@ -205,7 +206,8 @@
             </property>
             <property name="font">
                 <font>
-                    <bold>1</bold>
+			<bold>1</bold>
+			<pointSize>8</pointSize>
                 </font>
             </property>
             <property name="text">
