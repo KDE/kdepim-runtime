@@ -85,7 +85,7 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
   }
 
   result.resize( len + int( aEnsureNL ) );
-  readLen = file.readBlock( result.data(), len );
+  readLen = file.read( result.data(), len );
   if ( aEnsureNL ) {
     if ( result[readLen-1] != '\n' ) {
       result[readLen++] = '\n';
@@ -166,7 +166,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
     return FALSE;
   }
 
-  const int writeLen = file.writeBlock( aBuffer.data(), aBuffer.size() );
+  const int writeLen = file.write( aBuffer.data(), aBuffer.size() );
 
   if ( writeLen < 0 ) {
     if (aVerbose)

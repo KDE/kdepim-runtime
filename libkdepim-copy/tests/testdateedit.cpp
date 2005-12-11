@@ -46,7 +46,7 @@ DateEdit::DateEdit( QWidget *parent, const char *name )
 void DateEdit::dateChanged( const QDate &date )
 {
   if ( date.isValid() )
-    qDebug( "%s", date.toString().latin1() );
+    qDebug( "%s", date.toString().toLatin1() );
   else
     qDebug( "invalid date entered" );
 }

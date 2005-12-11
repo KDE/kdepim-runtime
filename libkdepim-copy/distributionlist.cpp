@@ -110,7 +110,7 @@ static KABC::Addressee::List findByFormattedName( KABC::AddressBook* book,
   {
     if ( caseSensitive && (*abIt).formattedName() == name )
       res.append( *abIt );
-    if ( !caseSensitive && (*abIt).formattedName().lower() == name.lower() )
+    if ( !caseSensitive && (*abIt).formattedName().toLower() == name.toLower() )
       res.append( *abIt );
   }
   return res;
@@ -126,7 +126,7 @@ KPIM::DistributionList KPIM::DistributionList::findByName( KABC::AddressBook* bo
     if ( isDistributionList( *abIt ) ) {
       if ( caseSensitive && (*abIt).formattedName() == name )
         return *abIt;
-      if ( !caseSensitive && (*abIt).formattedName().lower() == name.lower() )
+      if ( !caseSensitive && (*abIt).formattedName().toLower() == name.toLower() )
         return *abIt;
     }
   }

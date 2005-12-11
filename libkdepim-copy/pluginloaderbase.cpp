@@ -73,7 +73,7 @@ namespace KPIM {
       if ( config.hasGroup( "Misc" ) && config.hasGroup( "Plugin" ) ) {
 	config.setGroup( "Plugin" );
 
-	const QString type = config.readEntry( "Type" ).lower();
+	const QString type = config.readEntry( "Type" ).toLower();
 	if ( type.isEmpty() ) {
 	  warning() << "missing or empty [Plugin]Type value in \""
 		    << *it << "\" - skipping" << endl;
@@ -128,14 +128,14 @@ namespace KPIM {
     mPluginMap[ type ].loaded = true;
 
     const QString factory_name = libName + '_' + mf_name;
-    if ( !lib->hasSymbol( factory_name.latin1() ) ) {
-      warning() << "No symbol named \"" << factory_name.latin1() << "\" ("
+    if ( !lib->hasSymbol( factory_name.toLatin1() ) ) {
+      warning() << "No symbol named \"" << factory_name.toLatin1() << "\" ("
 		<< factory_name << ") was found in library \"" << libName
 		<< "\"" << endl;
       return 0;
     }
 
-    return lib->symbol( factory_name.latin1() );
+    return lib->symbol( factory_name.toLatin1() );
   }
 
   const KLibrary * PluginLoaderBase::openLibrary( const QString & libName ) const {

@@ -111,7 +111,7 @@ public:
 KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char *name )
   : QComboBox( true, parent, name )
 {
-  setInsertionPolicy( NoInsertion );
+  setInsertPolicy( NoInsert );
   setValidator( new KOTimeValidator( this ) );
 
   mTime = qt;

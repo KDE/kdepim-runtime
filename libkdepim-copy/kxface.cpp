@@ -101,11 +101,11 @@ QString KXFace::fromImage( const QImage &image )
   xbm.remove( "0x" );
   xbm.remove( "\n" );
   xbm.truncate( 576 );
-  QString tmp = xbm.latin1();
+  QString tmp = xbm.toLatin1();
   int len = tmp.length();
   for( int i=0; i<len; ++i )
   {
-    switch( tmp[i].latin1() )
+    switch( tmp[i].toLatin1() )
     {
       case '1': tmp[i] = '8'; break;
       case '2': tmp[i] = '4'; break;
@@ -157,7 +157,7 @@ QImage KXFace::toImage(const QString &xface)
 
   char *fbuf = (char *)malloc( MAX_XFACE_LENGTH );
   memset( fbuf, '\0', MAX_XFACE_LENGTH );
-  strncpy( fbuf, xface.latin1(), xface.length() );
+  strncpy( fbuf, xface.toLatin1(), xface.length() );
   Q3CString img;
   if ( !( status = setjmp( comp_env ) ) )
   {

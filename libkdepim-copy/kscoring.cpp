@@ -428,7 +428,7 @@ KScoringExpression::KScoringExpression(const QString& h, const QString& t, const
   }
 
   neg = ng.toInt();
-  c_header = header.latin1();
+  c_header = header.toLatin1();
 
   kdDebug(5100) << "new expr: " << c_header << "  " << t << "  "
                 << expr_str << "  " << neg << endl;
@@ -516,10 +516,10 @@ bool KScoringExpression::match(ScorableArticle& a) const
   if (!head.isEmpty()) {
     switch (cond) {
     case EQUALS:
-      res = (head.lower() == expr_str.lower());
+      res = (head.toLower() == expr_str.toLower());
       break;
     case CONTAINS:
-      res = (head.lower().find(expr_str.lower()) >= 0);
+      res = (head.toLower().find(expr_str.toLower()) >= 0);
       break;
     case MATCH:
     case MATCHCS:
@@ -884,7 +884,7 @@ void KScoringManager::createInternalFromXML(QDomNode n)
       // Server, Newsgroup, Rule, Expression, Action
       QDomElement e = n.toElement();
       //kdDebug(5100) << "The name of the element is "
-      //<< e.tagName().latin1() << endl;
+      //<< e.tagName().toLatin1() << endl;
       QString s = e.tagName();
       if (s == "Rule") {
         cR = new KScoringRule(e.attribute("name"));

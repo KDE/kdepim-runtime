@@ -122,7 +122,7 @@ void ResourceCached::saveCache()
 
   KABC::VCardConverter converter;
   QString vCard = converter.createVCards( list );
-  file.writeBlock( vCard.utf8(), vCard.utf8().length() );
+  file.write( vCard.utf8(), vCard.utf8().length() );
   file.close();
 }
 
@@ -229,7 +229,7 @@ void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map
     KABC::VCardConverter converter;
     const QString vCards = converter.createVCards( list );
     Q3CString content = vCards.utf8();
-    file.writeBlock( content, content.length() );
+    file.write( content, content.length() );
   }
 }
 

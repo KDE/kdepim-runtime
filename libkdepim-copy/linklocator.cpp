@@ -444,7 +444,7 @@ QString LinkLocator::highlightedText()
     if ( mPos + length < mText.length() && !mText[mPos + length].isSpace() )
       return QString::null;
     mPos += length - 1;
-    switch ( ch.latin1() ) {
+    switch ( ch.toLatin1() ) {
       case '*':
         return "<b>" + re.cap( 1 ) + "</b>";
       case '_':

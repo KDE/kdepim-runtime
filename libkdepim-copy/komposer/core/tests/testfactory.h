@@ -50,7 +50,7 @@ public:
                     kdDebug()<< it.currentKey() <<" errors:" << endl;
                     for ( QStringList::Iterator itr = errorList.begin();
                           itr != errorList.end(); ++itr ) {
-                        kdDebug()<< "\t" << (*itr).latin1() <<endl;;
+                        kdDebug()<< "\t" << (*itr).toLatin1() <<endl;;
                     }
                 } else {
                     kdDebug()<< it.currentKey()<< " OK "<<endl;

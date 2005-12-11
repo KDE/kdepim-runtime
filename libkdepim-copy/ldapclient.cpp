@@ -94,7 +94,7 @@ void LdapClient::setAttrs( const QStringList& attrs )
 {
   mAttrs = attrs;
   for ( QStringList::Iterator it = mAttrs.begin(); it != mAttrs.end(); ++it )
-    if( (*it).lower() == "objectclass" ){
+    if( (*it).toLower() == "objectclass" ){
       mReportObjectClass = true;
       return;
     }
@@ -162,7 +162,7 @@ void LdapClient::slotData( KIO::Job*, const QByteArray& data )
 
 void LdapClient::slotInfoMessage( KIO::Job*, const QString & )
 {
-  //qDebug("Job said \"%s\"", info.latin1());
+  //qDebug("Job said \"%s\"", info.toLatin1());
 }
 
 void LdapClient::slotDone()
@@ -171,7 +171,7 @@ void LdapClient::slotDone()
   mActive = false;
 #if 0
   for ( Q3ValueList<LdapObject>::Iterator it = mObjects.begin(); it != mObjects.end(); ++it ) {
-    qDebug( (*it).toString().latin1() );
+    qDebug( (*it).toString().toLatin1() );
   }
 #endif
   int err = mJob->error();
@@ -194,7 +194,7 @@ void LdapClient::endParseLDIF()
 void LdapClient::finishCurrentObject()
 {
   mCurrentObject.dn = mLdif.dn();
-  const QString sClass( mCurrentObject.objectClass.lower() );
+  const QString sClass( mCurrentObject.objectClass.toLower() );
   if( sClass == "groupofnames" || sClass == "kolabgroupofnames" ){
     LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
     if( it == mCurrentObject.attrs.end() ){
@@ -204,7 +204,7 @@ void LdapClient::finishCurrentObject()
       QStringList lMail = QStringList::split(",dc=", mCurrentObject.dn);
       const int n = lMail.count();
       if( n ){
-        if( lMail.first().lower().startsWith("cn=") ){
+        if( lMail.first().toLower().startsWith("cn=") ){
           sMail = lMail.first().simplified().mid(3);
           if( 1 < n )
             sMail.append('@');
@@ -241,7 +241,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
         {
           name = mLdif.attr();
           QByteArray value = mLdif.val();
-          bool bIsObjectClass = name.lower() == "objectclass";
+          bool bIsObjectClass = name.toLower() == "objectclass";
           if( bIsObjectClass )
             mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
           if( mReportObjectClass || !bIsObjectClass )
@@ -488,7 +488,7 @@ void LdapSearch::finish()
 
 void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 {
-  QString search_text_upper = mSearchText.upper();
+  QString search_text_upper = mSearchText.toUpper();
 
   QList< KPIM::LdapObject >::ConstIterator it1;
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {

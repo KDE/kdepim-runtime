@@ -184,7 +184,7 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
   if ( listName.isEmpty() )
     return QString::null;
 
-  const QString lowerListName = listName.lower();
+  const QString lowerListName = listName.toLower();
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
 #ifdef KDEPIM_NEW_DISTRLISTS
   KPIM::DistributionList distrList = KPIM::DistributionList::findByName( addressBook, lowerListName, false );
@@ -198,7 +198,7 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
 
   for ( QStringList::ConstIterator it = listNames.begin();
         it != listNames.end(); ++it) {
-    if ( (*it).lower() == lowerListName ) {
+    if ( (*it).toLower() == lowerListName ) {
       const QStringList addressList = manager.list( *it )->emails();
       return addressList.join( ", " );
     }
