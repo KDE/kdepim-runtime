@@ -37,7 +37,6 @@
 #include <QHBoxLayout>
 #include <Q3Frame>
 #include <QVBoxLayout>
-#include <Q3WhatsThis>
 
 #include <kaboutdata.h>
 #include <kdebug.h>
