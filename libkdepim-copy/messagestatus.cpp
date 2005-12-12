@@ -330,8 +330,8 @@ void MessageStatus::setImportant( bool important )
 void MessageStatus::setWatched( bool watched )
 {
   if ( watched ) {
-  mStatus &= ~KMMsgStatusIgnored;
-  mStatus |= KMMsgStatusWatched;
+    mStatus &= ~KMMsgStatusIgnored;
+    mStatus |= KMMsgStatusWatched;
   } else {
     mStatus &= ~KMMsgStatusWatched;
   }
@@ -340,8 +340,8 @@ void MessageStatus::setWatched( bool watched )
 void MessageStatus::setIgnored( bool ignored )
 {
   if ( ignored ) {
-  mStatus &= ~KMMsgStatusWatched;
-  mStatus |= KMMsgStatusIgnored;
+    mStatus &= ~KMMsgStatusWatched;
+    mStatus |= KMMsgStatusIgnored;
   } else {
     mStatus &= ~KMMsgStatusIgnored;
   }
