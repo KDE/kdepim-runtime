@@ -158,7 +158,7 @@ QImage KXFace::toImage(const QString &xface)
   char *fbuf = (char *)malloc( MAX_XFACE_LENGTH );
   memset( fbuf, '\0', MAX_XFACE_LENGTH );
   strncpy( fbuf, xface.toLatin1(), xface.length() );
-  Q3CString img;
+  QByteArray img;
   if ( !( status = setjmp( comp_env ) ) )
   {
     UnCompAll( fbuf );/* compress otherwise */
@@ -327,13 +327,13 @@ void KXFace::BigClear()
   B.b_words = 0;
 }
 
-Q3CString KXFace::WriteFace()
+QByteArray KXFace::WriteFace()
 {
   register char *s;
   register int i, j, bits, digits, words;
   int digsperword = DIGSPERWORD;
   int wordsperline = WORDSPERLINE;
-  Q3CString t( "#define noname_width 48\n#define noname_height 48\nstatic char noname_bits[] = {\n " );
+  QByteArray t( "#define noname_width 48\n#define noname_height 48\nstatic char noname_bits[] = {\n " );
   j = t.length() - 1;
 
   s = F;
