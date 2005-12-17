@@ -45,8 +45,6 @@
 #include <kvbox.h>
 #include <q3header.h>
 #include <qtoolbutton.h>
-//Added by qt3to4:
-#include <Q3PtrList>
 #include <kapplication.h>
 #include <dcopclient.h>
 
@@ -186,18 +184,20 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
     mItems.append( new LDAPCompletionItem( *it ) );
   }
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
-  Q3PtrList<KABC::Resource> resources = addressBook->resources();
-  for( Q3PtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
+  QList<KABC::Resource*> resources = addressBook->resources();
+  QListIterator<KABC::Resource*> resit( resources );
+  while ( resit.hasNext() ) {
+    KABC::Resource *resource = resit.next();
     //kdDebug(5300) << "KABC Resource: " << (*resit)->className() << endl;
-    ResourceABC* res = dynamic_cast<ResourceABC *>( *resit );
+    ResourceABC* res = dynamic_cast<ResourceABC *>( resource  );
     if ( res ) { // IMAP KABC resource
       const QStringList subresources = res->subresources();
       for( QStringList::const_iterator it = subresources.begin(); it != subresources.end(); ++it ) {
         mItems.append( new KABCImapSubResCompletionItem( res, *it ) );
       }
     } else { // non-IMAP KABC resource
-      mItems.append( new SimpleCompletionItem( this, (*resit)->resourceName(),
-                                               (*resit)->identifier() ) );
+      mItems.append( new SimpleCompletionItem( this, resource->resourceName(),
+                                               resource->identifier() ) );
     }
   }
 

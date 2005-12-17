@@ -27,8 +27,7 @@
 
 #include <qeventloop.h>
 #include <qregexp.h>
-//Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
 
 #include <unistd.h>
 #include <ktoolinvocation.h>
@@ -147,13 +146,12 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
   }
 
   // Select a resource
-  Q3PtrList<KABC::Resource> kabcResources = addressBook->resources();
-
-  Q3PtrList<KRES::Resource> kresResources;
-  Q3PtrListIterator<KABC::Resource> resIt( kabcResources );
+  QList<KABC::Resource*> kabcResources = addressBook->resources();
+  QList<KRES::Resource*> kresResources;
+  QListIterator<KABC::Resource*> resIt( kabcResources );
   KABC::Resource *kabcResource;
-  while ( ( kabcResource = resIt.current() ) != 0 ) {
-    ++resIt;
+  while ( resIt.hasNext() ) {
+    kabcResource = resIt.next();
     if ( !kabcResource->readOnly() ) {
       KRES::Resource *res = static_cast<KRES::Resource*>( kabcResource );
       if ( res )

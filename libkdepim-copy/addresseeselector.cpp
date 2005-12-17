@@ -28,7 +28,6 @@
 #include <QPixmap>
 #include <Q3Frame>
 #include <QGridLayout>
-#include <Q3PtrList>
 #include <QVBoxLayout>
 
 #include <kabc/stdaddressbook.h>
@@ -534,13 +533,12 @@ void AddresseeSelector::reloadAddressBook()
   // update address book combo
   mAddressBookCombo->clear();
 
-  Q3PtrList<KABC::Resource> resources = KABC::StdAddressBook::self( true )->resources();
-  Q3PtrListIterator<KABC::Resource> resIt( resources );
-  while ( resIt.current() ) {
-    if ( resIt.current()->isActive() )
-      mAddressBookManager->addResource( resIt );
-
-    ++resIt;
+  QList<KABC::Resource*> resources = KABC::StdAddressBook::self( true )->resources();
+  QListIterator<KABC::Resource*> resIt( resources );
+  while ( resIt.hasNext() ) {
+    KABC::Resource *res = resIt.next();
+    if ( res->isActive() )
+      mAddressBookManager->addResource( res );
   }
 
   for ( int i = 0; i < mSelection->addressBookCount(); ++i ) {

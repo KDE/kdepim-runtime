@@ -53,7 +53,6 @@
 #include <q3popupmenu.h>
 #include <qapplication.h>
 #include <qobject.h>
-#include <q3ptrlist.h>
 #include <qregexp.h>
 #include <qevent.h>
 #include <q3dragobject.h>
@@ -460,9 +459,10 @@ void AddresseeLineEdit::loadContacts()
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   // Can't just use the addressbook's iterator, we need to know which subresource
   // is behind which contact.
-  Q3PtrList<KABC::Resource> resources( addressBook->resources() );
-  for( Q3PtrListIterator<KABC::Resource> resit( resources ); *resit; ++resit ) {
-    KABC::Resource* resource = *resit;
+  QList<KABC::Resource*> resources( addressBook->resources() );
+  QListIterator<KABC::Resource*> resit( resources );
+  while ( resit.hasNext() ) {
+    KABC::Resource* resource = resit.next();
     KPIM::ResourceABC* resabc = dynamic_cast<ResourceABC *>( resource );
     if ( resabc ) { // IMAP KABC resource; need to associate each contact with the subresource
       const QMap<QString, QString> uidToResourceMap = resabc->uidToResourceMap();
