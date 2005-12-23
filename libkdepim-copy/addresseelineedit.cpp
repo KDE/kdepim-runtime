@@ -58,7 +58,6 @@
 #include <q3dragobject.h>
 #include <qclipboard.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <QKeyEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
@@ -83,13 +82,13 @@ static KStaticDeleter<KConfig> configDeleter;
 static KStaticDeleter<QStringList> completionSourcesDeleter;
 
 // needs to be unique, but the actual name doesn't matter much
-static Q3CString newLineEditDCOPObjectName()
+static QByteArray newLineEditDCOPObjectName()
 {
     static int s_count = 0;
-    Q3CString name( "KPIM::AddresseeLineEdit" );
+    QByteArray name( "KPIM::AddresseeLineEdit" );
     if ( s_count++ ) {
       name += '-';
-      name += Q3CString().setNum( s_count );
+      name += QByteArray().setNum( s_count );
     }
     return name;
 }

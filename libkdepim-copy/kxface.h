@@ -28,8 +28,6 @@
 
 
 #include <qobject.h>
-//Added by qt3to4:
-#include <Q3CString>
 #include <setjmp.h>
 
 #include <kdepimmacros.h>
