@@ -27,7 +27,7 @@
 #include <qtextcodecplugin.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <q3valuelist.h>
+
 
 class QTextCodec;
 

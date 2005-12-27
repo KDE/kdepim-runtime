@@ -25,7 +25,7 @@
 
 #include <q3ptrlist.h>
 #include <qlineedit.h>
-#include <q3valuelist.h>
+
 #include <q3datetimeedit.h>
 //Added by qt3to4:
 #include <QLabel>

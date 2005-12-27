@@ -24,7 +24,6 @@
 #define maillistdrag_h
 
 #include "q3dragobject.h"
-#include "q3valuelist.h"
 #include "qglobal.h"
 #include <QDropEvent>
 #include "time.h"

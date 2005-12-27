@@ -32,7 +32,7 @@
 
 #include "collectingprocess.h"
 
-#include <q3valuelist.h>
+
 
 #include <string.h>
 

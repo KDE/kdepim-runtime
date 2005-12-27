@@ -22,10 +22,10 @@
 #define KCONFIGPROPAGATOR_H
 
 #include <qstring.h>
-#include <q3valuelist.h>
+
 #include <qdom.h>
 #include <q3ptrlist.h>
-
+#include <QList>
 #include <kdepimmacros.h>
 
 class KConfigSkeleton;

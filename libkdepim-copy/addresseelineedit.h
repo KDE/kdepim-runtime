@@ -30,7 +30,7 @@
 #include <q3ptrlist.h>
 #include <qtimer.h>
 #include <qpair.h>
-#include <q3valuelist.h>
+
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QKeyEvent>
