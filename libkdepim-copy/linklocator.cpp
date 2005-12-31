@@ -33,6 +33,7 @@
 #include <qregexp.h>
 
 #include <limits.h>
+#include <QTextDocument>
 
 QMap<QString, QString> *LinkLocator::s_smileyEmoticonNameMap = 0;
 QMap<QString, QString> *LinkLocator::s_smileyEmoticonHTMLCache = 0;
@@ -415,8 +416,8 @@ QString LinkLocator::getEmoticon()
       htmlRep = QString("<img class=\"pimsmileyimg\" src=\"%1\" "
                         "alt=\"%2\" title=\"%3\" width=\"16\" height=\"16\"/>")
                 .arg( dataUrl,
-                      Q3StyleSheet::escape( smiley ),
-                      Q3StyleSheet::escape( smiley ) );
+                      Qt::escape( smiley ),
+                      Qt::escape( smiley ) );
     }
     s_smileyEmoticonHTMLCache->insert( smiley, htmlRep );
   }

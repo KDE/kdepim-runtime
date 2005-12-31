@@ -22,12 +22,13 @@
 #include <kglobalsettings.h>
 
 #include <libkdepim/htmldiffalgodisplay.h>
+#include <QTextDocument>
 
 using namespace KPIM;
 
 static QString textToHTML( const QString &text )
 {
-  return Q3StyleSheet::convertFromPlainText( text );
+  return Qt::convertFromPlainText( text );
 }
 
 HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
