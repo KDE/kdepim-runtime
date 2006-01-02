@@ -169,7 +169,7 @@ TransactionItem::TransactionItem( QWidget* parent,
   mProgress->setProgress( item->progress() );
 
   if ( item->canBeCanceled() ) {
-    mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString::null, h );
+    mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString(), h );
     mCancelButton->setToolTip( i18n("Cancel this operation.") );
     connect ( mCancelButton, SIGNAL( clicked() ),
               this, SLOT( slotItemCanceled() ));

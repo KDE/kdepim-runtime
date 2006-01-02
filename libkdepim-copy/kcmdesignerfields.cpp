@@ -377,7 +377,7 @@ void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
       PageItem *pageItem = static_cast<PageItem*>( item->parent() );
       mPagePreview->setPixmap( pageItem->preview() );
     } else {
-      mPageDetails->setText( QString::null );
+      mPageDetails->setText( QString() );
 
       PageItem *pageItem = static_cast<PageItem*>( item );
       mPagePreview->setPixmap( pageItem->preview() );
@@ -389,7 +389,7 @@ void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
   } else {
     mPagePreview->setPixmap( QPixmap() );
     mPagePreview->setFrameStyle( 0 );
-    mPageDetails->setText( QString::null );
+    mPageDetails->setText( QString() );
   }
 
   mDeleteButton->setEnabled( widgetItemSelected );

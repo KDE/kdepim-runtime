@@ -231,7 +231,7 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
 
   // init widget stack and the types combo box
   int index = 1;
-  types->insertItem(QString::null);
+  types->insertItem(QString());
   QStringList l = ActionBase::userNames();
   for ( QStringList::Iterator it = l.begin(); it != l.end(); ++it ) {
     QString name = *it;
@@ -396,7 +396,7 @@ void ActionEditWidget::clearWidget(QWidget *w)
 //
 //============================================================================
 RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
-  : QWidget(p,n), dirty(false), manager(m), oldRuleName(QString::null)
+  : QWidget(p,n), dirty(false), manager(m), oldRuleName(QString())
 {
   kdDebug(5100) << "RuleEditWidget::RuleEditWidget()" << endl;
   if ( !n ) setName( "RuleEditWidget" );
@@ -539,12 +539,12 @@ void RuleEditWidget::clearContents()
   expireEdit->setEnabled(false);
   condEditor->slotEditRule(0);
   actionEditor->slotEditRule(0);
-  oldRuleName = QString::null;
+  oldRuleName.clear();
 }
 
 void RuleEditWidget::updateRule(KScoringRule *rule)
 {
-  oldRuleName = QString::null;
+  oldRuleName.clear();
   QString groups = groupsEdit->text();
   if (groups.isEmpty())
     rule->setGroups(QStringList(".*"));
@@ -747,7 +747,7 @@ void RuleListWidget::slotEditRule()
     emit ruleEdited(ruleList->currentText());
   }
   else if (ruleList->count() == 0)
-    emit ruleEdited(QString::null);
+    emit ruleEdited(QString());
 }
 
 void RuleListWidget::slotEditRule(Q3ListBoxItem* item)

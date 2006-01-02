@@ -146,7 +146,7 @@ public:
 
   /** Embed the given PNG image into a data URL.
    *  @param iconPath path to the PNG image
-   *  @return A data URL, QString::null if the image could not be read.
+   *  @return A data URL, QString() if the image could not be read.
    */
   static QString pngToDataUrl( const QString & iconPath );
 

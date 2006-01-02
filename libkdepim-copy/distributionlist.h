@@ -89,18 +89,18 @@ class DistributionList : public KABC::Addressee
       Insert an entry into this distribution list. If the entry already exists
       nothing happens.
     */
-    void insertEntry( const Addressee &, const QString &email=QString::null );
+    void insertEntry( const Addressee &, const QString &email=QString() );
 
     /**
       Remove an entry from this distribution list. If the entry doesn't exist
       nothing happens.
     */
-    void removeEntry( const Addressee &, const QString &email=QString::null );
+    void removeEntry( const Addressee &, const QString &email=QString() );
 
     /// Overload, used by resources to avoid looking up the addressee
-    void insertEntry( const QString& uid, const QString& email=QString::null );
+    void insertEntry( const QString& uid, const QString& email=QString() );
     /// Overload, used by resources to avoid looking up the addressee
-    void removeEntry( const QString& uid, const QString& email=QString::null );
+    void removeEntry( const QString& uid, const QString& email=QString() );
 
 
     /**

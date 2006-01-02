@@ -38,7 +38,7 @@ class QString;
 class KDE_EXPORT KResourcePrefs : public KConfigSkeleton
 {
   public:
-    KResourcePrefs( const QString &name = QString::null );
+    KResourcePrefs( const QString &name = QString() );
 
     /**
       Adds a prefix to all groups of this prefs object.

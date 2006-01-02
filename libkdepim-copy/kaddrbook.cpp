@@ -81,12 +81,12 @@ void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
       QString text = i18n("<qt>The email address <b>%1</b> was added to your "
                           "addressbook; you can add more information to this "
                           "entry by opening the addressbook.</qt>").arg( addr );
-      KMessageBox::information( parent, text, QString::null, "addedtokabc" );
+      KMessageBox::information( parent, text, QString(), "addedtokabc" );
     }
   } else {
     QString text = i18n("<qt>The email address <b>%1</b> is already in your "
                         "addressbook.</qt>").arg( addr );
-    KMessageBox::information( parent, text, QString::null,
+    KMessageBox::information( parent, text, QString(),
                               "alreadyInAddressBook" );
   }
 }
@@ -118,7 +118,7 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *par
       QString text = i18n("The VCard was added to your addressbook; "
                           "you can add more information to this "
                           "entry by opening the addressbook.");
-      KMessageBox::information( parent, text, QString::null, "addedtokabc" );
+      KMessageBox::information( parent, text, QString(), "addedtokabc" );
       inserted = true;
     }
   } else {
@@ -180,7 +180,7 @@ bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
 QString KAddrBookExternal::expandDistributionList( const QString& listName )
 {
   if ( listName.isEmpty() )
-    return QString::null;
+    return QString();
 
   const QString lowerListName = listName.toLower();
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
@@ -202,5 +202,5 @@ QString KAddrBookExternal::expandDistributionList( const QString& listName )
     }
   }
 #endif
-  return QString::null;
+  return QString();
 }

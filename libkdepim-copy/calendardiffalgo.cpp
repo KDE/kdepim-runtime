@@ -42,17 +42,17 @@ static QString toString( KCal::Attendee *attendee )
 
 static QString toString( KCal::Alarm * )
 {
-  return QString::null;
+  return QString();
 }
 
 static QString toString( KCal::Incidence * )
 {
-  return QString::null;
+  return QString();
 }
 
 static QString toString( KCal::Attachment * )
 {
-  return QString::null;
+  return QString();
 }
 
 static QString toString( const QDate &date )

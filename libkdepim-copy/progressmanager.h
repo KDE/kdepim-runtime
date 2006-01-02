@@ -118,7 +118,7 @@ class KDE_EXPORT ProgressItem : public QObject
      * Reset the progress value of this item to 0 and the status string to
      * the empty string.
      */
-    void reset() { setProgress( 0 ); setStatus( QString::null ); mCompleted = 0; }
+    void reset() { setProgress( 0 ); setStatus( QString() ); mCompleted = 0; }
 
     void cancel();
 
@@ -267,7 +267,7 @@ class KDE_EXPORT ProgressManager : public QObject
       */
      static ProgressItem * createProgressItem( const QString &label ) {
        return instance()->createProgressItemImpl( 0, getUniqueID(), label,
-                                                  QString::null, true, false );
+                                                  QString(), true, false );
      }
 
     /**
@@ -287,7 +287,7 @@ class KDE_EXPORT ProgressManager : public QObject
      static ProgressItem * createProgressItem( ProgressItem* parent,
                                                const QString& id,
                                                const QString& label,
-                                               const QString& status = QString::null,
+                                               const QString& status = QString(),
                                                bool canBeCanceled = true,
                                                bool usesCrypto = false ) {
        return instance()->createProgressItemImpl( parent, id, label, status,
@@ -301,7 +301,7 @@ class KDE_EXPORT ProgressManager : public QObject
      static ProgressItem * createProgressItem( const QString& parent,
                                                const QString& id,
                                                const QString& label,
-                                               const QString& status = QString::null,
+                                               const QString& status = QString(),
                                                bool canBeCanceled = true,
                                                bool usesCrypto = false ) {
        return instance()->createProgressItemImpl( parent, id, label,
@@ -313,7 +313,7 @@ class KDE_EXPORT ProgressManager : public QObject
       */
      static ProgressItem * createProgressItem( const QString& id,
                                                const QString& label,
-                                               const QString& status = QString::null,
+                                               const QString& status = QString(),
                                                bool canBeCanceled = true,
                                                bool usesCrypto = false ) {
        return instance()->createProgressItemImpl( 0, id, label, status,

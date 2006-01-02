@@ -55,7 +55,7 @@ QString AddresseeEmailSelection::fieldTitle( int index ) const
       return i18n( "Bcc" );
       break;
     default:
-      return QString::null;
+      return QString();
   }
 }
 
@@ -197,7 +197,7 @@ QString AddresseeEmailSelection::addressBookTitle( int index ) const
   if ( index == 0 )
     return i18n( "Recent Addresses" );
   else
-    return QString::null;
+    return QString();
 }
 
 KABC::Addressee::List AddresseeEmailSelection::addressBookContent( int index ) const

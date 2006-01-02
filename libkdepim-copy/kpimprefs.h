@@ -32,7 +32,7 @@ class QString;
 class KDE_EXPORT KPimPrefs : public KConfigSkeleton
 {
   public:
-    KPimPrefs( const QString &name = QString::null );
+    KPimPrefs( const QString &name = QString() );
 
     virtual ~KPimPrefs();
 

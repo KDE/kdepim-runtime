@@ -86,7 +86,7 @@ KXFace::~KXFace()
 QString KXFace::fromImage( const QImage &image )
 {
   if( image.isNull() )
-    return QString::null;
+    return QString();
 
   QImage scaledImg = image.smoothScale( 48, 48 );
   QByteArray ba;

@@ -35,7 +35,7 @@ KVCardDrag::KVCardDrag( const QString &content, QWidget *dragsource,
 KVCardDrag::KVCardDrag( QWidget *dragsource, const char *name )
   : Q3StoredDrag( vcard_mime_string, dragsource, name )
 {
-  setVCard( QString::null );
+  setVCard( QString() );
 }
 
 void KVCardDrag::setVCard( const QString &content )

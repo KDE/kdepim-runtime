@@ -91,7 +91,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   m_pProgressBar->setMinimumWidth( w );
   stack->insertWidget( 1,m_pProgressBar );
 
-  m_pLabel = new QLabel( QString::null, this );
+  m_pLabel = new QLabel( QString(), this );
   m_pLabel->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
   m_pLabel->installEventFilter( this );
   m_pLabel->setMinimumWidth( w );

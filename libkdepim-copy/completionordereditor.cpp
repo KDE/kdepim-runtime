@@ -212,7 +212,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   KHBox* page = makeHBoxMainWidget();
   mListView = new KListView( page );
   mListView->setSorting( -1 );
-  mListView->addColumn( QString::null );
+  mListView->addColumn( QString() );
   mListView->header()->hide();
 
   for( Q3PtrListIterator<CompletionItem> compit( mItems ); *compit; ++compit ) {

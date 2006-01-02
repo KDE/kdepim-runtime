@@ -97,7 +97,7 @@ static const QString s_completionItemIndentString = "     ";
 
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
                                       const char *name )
-  : ClickLineEdit( parent, QString::null, name ), DCOPObject( newLineEditDCOPObjectName() )
+  : ClickLineEdit( parent, QString(), name ), DCOPObject( newLineEditDCOPObjectName() )
 {
   m_useCompletion = useCompletion;
   m_completionInitialized = false;
@@ -258,7 +258,7 @@ void AddresseeLineEdit::insert( const QString &t )
   int eot = contents.length();
   while ((eot > 0) && contents[ eot - 1 ].isSpace() ) eot--;
   if ( eot == 0 )
-    contents = QString::null;
+    contents.clear();
   else if ( pos >= eot ) {
     if ( contents[ eot - 1 ] == ',' )
       eot--;
@@ -312,7 +312,7 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
     while ( ( eot > 0 ) && contents[ eot - 1 ].isSpace() )
       eot--;
     if ( eot == 0 )
-      contents = QString::null;
+      contents.clear();
     else if ( contents[ eot - 1 ] == ',' ) {
       eot--;
       contents.truncate( eot );
@@ -752,7 +752,7 @@ void KPIM::AddresseeLineEdit::slotCompletion()
   }
   else
   {
-    m_previousAddresses = QString::null;
+    m_previousAddresses.clear();
   }
   if ( completionBox() )
     completionBox()->setCancelledText( m_searchString );

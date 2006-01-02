@@ -480,7 +480,7 @@ QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
 void AddresseeView::updateView()
 {
   // clear view
-  setText( QString::null );
+  setText( QString() );
 
   if ( mAddressee.isEmpty() )
     return;
@@ -560,9 +560,9 @@ void AddresseeView::urlClicked( const QString &url )
 void AddresseeView::emailClicked( const QString &email )
 {
   if ( email.startsWith( "mailto:" ) )
-    KToolInvocation::invokeMailer( email.mid( 7 ), QString::null );
+    KToolInvocation::invokeMailer( email.mid( 7 ), QString() );
   else
-    KToolInvocation::invokeMailer( email, QString::null );
+    KToolInvocation::invokeMailer( email, QString() );
 }
 
 void AddresseeView::phoneNumberClicked( const QString &number )

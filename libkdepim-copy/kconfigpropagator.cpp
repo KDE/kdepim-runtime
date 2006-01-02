@@ -159,9 +159,9 @@ void KConfigPropagator::parseConfigEntryPath( const QString &path,
 
   if ( p.count() != 3 ) {
     kdError() << "Path has to be of form file/group/entry" << endl;
-    file = QString::null;
-    group = QString::null;
-    entry = QString::null;
+    file.clear();
+    group.clear();
+    entry.clear();
     return;
   }
   

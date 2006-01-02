@@ -55,7 +55,7 @@ namespace Komposer
      * interface.
      */
     QValueList<KPluginInfo*> availablePlugins( const QString &category
-                                               = QString::null ) const;
+                                               = QString() ) const;
 
     /**
      * Returns a list of all plugins that are actually loaded.
@@ -63,7 +63,7 @@ namespace Komposer
      * See also @ref availablePlugins().
      */
     QMap<KPluginInfo*, Plugin*> loadedPlugins( const QString &category
-                                               = QString::null ) const;
+                                               = QString() ) const;
 
     /**
      * @brief Search by plugin name. This is the key used as X-KDE-PluginInfo-Name

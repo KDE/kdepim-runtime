@@ -50,7 +50,7 @@ class KDE_EXPORT KAccount
       Other
     };
 
-    KAccount( const uint id = 0, const QString &name = QString::null,
+    KAccount( const uint id = 0, const QString &name = QString(),
        const Type type = Other );
     
     /**
@@ -75,13 +75,13 @@ class KDE_EXPORT KAccount
      * Save the settings
      * If the group is empty it must be preset in the KConfig
      */
-    void writeConfig( KConfig &config, const QString &group = QString::null ); 
+    void writeConfig( KConfig &config, const QString &group = QString() ); 
 
     /**
      * Read the settings
      * If the group is empty it must be preset in the KConfig
      */
-    void readConfig( KConfig &config, const QString &group = QString::null ); 
+    void readConfig( KConfig &config, const QString &group = QString() ); 
 
   protected:
     uint mId;

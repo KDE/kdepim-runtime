@@ -62,8 +62,8 @@ QString LdapObject::toString() const
 
 void LdapObject::clear()
 {
-  dn = QString::null;
-  objectClass = QString::null;
+  dn.clear();
+  objectClass.clear();
   attrs.clear();
 }
 

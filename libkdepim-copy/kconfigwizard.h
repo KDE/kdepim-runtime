@@ -80,9 +80,9 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
 
     /**
       Validates the supplied data. Returns a appropiate error when some data
-      is invalid. Return QString::null if all data is valid.
+      is invalid. Return QString() if all data is valid.
     */
-    virtual QString validate() { return QString::null; }
+    virtual QString validate() { return QString(); }
 
   protected slots:
     void readConfig();

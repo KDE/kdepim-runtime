@@ -97,9 +97,9 @@ void TestDistrList::runAll()
 bool TestDistrList::check(const QString& txt, QString a, QString b)
 {
     if (a.isEmpty())
-        a = QString::null;
+        a.clear();
     if (b.isEmpty())
-        b = QString::null;
+        b.clear();
     if (a == b) {
         kdDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "ok" << endl;
     }
@@ -193,7 +193,7 @@ void TestDistrList::testInsertEntry()
     DistributionList::Entry::List entries = dl.entries( ab );
     check( "entries count", QString::number( entries.count() ), "3" );
     check( "first entry", entries[0].addressee.name(), "addr1" );
-    check( "first entry", entries[0].email, QString::null );
+    check( "first entry", entries[0].email, QString() );
     check( "second entry", entries[1].addressee.name(), "addr2" );
     check( "second entry", entries[1].email, "addr2-alternate@kde.org" );
     check( "third entry", entries[2].addressee.name(), "addr2" );

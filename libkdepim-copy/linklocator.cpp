@@ -354,11 +354,11 @@ QString LinkLocator::convertToHtml(const QString& plainText, int flags,
 QString LinkLocator::pngToDataUrl( const QString & iconPath )
 {
   if ( iconPath.isEmpty() )
-    return QString::null;
+    return QString();
 
   QFile pngFile( iconPath );
   if ( !pngFile.open( QIODevice::ReadOnly | QIODevice::Unbuffered ) )
-    return QString::null;
+    return QString();
 
   QByteArray ba = pngFile.readAll();
   pngFile.close();
@@ -371,12 +371,12 @@ QString LinkLocator::getEmoticon()
 {
   // smileys have to be prepended by whitespace
   if ( ( mPos > 0 ) && !mText[mPos-1].isSpace() )
-    return QString::null;
+    return QString();
 
   // since smileys start with ':', ';', '(' or '8' short circuit method
   const QChar ch = mText[mPos];
   if ( ch !=':' && ch != ';' && ch != '(' && ch != '8' )
-    return QString::null;
+    return QString();
 
   // find the end of the smiley (a smiley is at most 4 chars long and ends at
   // lineend or whitespace)
@@ -388,11 +388,11 @@ QString LinkLocator::getEmoticon()
           !mText[mPos+smileyLen].isSpace() )
     smileyLen++;
   if ( smileyLen < MinSmileyLen || smileyLen > MaxSmileyLen )
-    return QString::null;
+    return QString();
 
   const QString smiley = mText.mid( mPos, smileyLen );
   if ( !s_smileyEmoticonNameMap->contains( smiley ) )
-    return QString::null; // that's not a (known) smiley
+    return QString(); // that's not a (known) smiley
 
   QString htmlRep;
   if ( s_smileyEmoticonHTMLCache->contains( smiley ) ) {
@@ -408,7 +408,7 @@ QString LinkLocator::getEmoticon()
 
     const QString dataUrl = pngToDataUrl( iconPath );
     if ( dataUrl.isEmpty() ) {
-      htmlRep = QString::null;
+      htmlRep.clear();
     }
     else {
       // create an image tag (the text in attribute alt is used
@@ -432,18 +432,18 @@ QString LinkLocator::highlightedText()
 {
   // formating symbols must be prepended with a whitespace
   if ( ( mPos > 0 ) && !mText[mPos-1].isSpace() )
-    return QString::null;
+    return QString();
 
   const QChar ch = mText[mPos];
   if ( ch != '/' && ch != '*' && ch != '_' )
-    return QString::null;
+    return QString();
 
   QRegExp re = QRegExp( QString("\\%1([0-9A-Za-z]+)\\%2").arg( ch ).arg( ch ) );
   if ( re.search( mText, mPos ) == mPos ) {
     int length = re.matchedLength();
     // there must be a whitespace after the closing formating symbol
     if ( mPos + length < mText.length() && !mText[mPos + length].isSpace() )
-      return QString::null;
+      return QString();
     mPos += length - 1;
     switch ( ch.toLatin1() ) {
       case '*':
@@ -454,6 +454,6 @@ QString LinkLocator::highlightedText()
         return "<i>" + re.cap( 1 ) + "</i>";
     }
   }
-  return QString::null;
+  return QString();
 }
 

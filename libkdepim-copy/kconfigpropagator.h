@@ -99,8 +99,8 @@ class KDE_EXPORT KConfigPropagator
         void setTitle( const QString &title ) { mTitle = title; }
         QString title() const { return mTitle; }
 
-        virtual QString arg1() const { return QString::null; }
-        virtual QString arg2() const { return QString::null; }
+        virtual QString arg1() const { return QString(); }
+        virtual QString arg2() const { return QString(); }
 
         virtual void apply() = 0;
 

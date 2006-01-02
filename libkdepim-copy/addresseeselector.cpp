@@ -210,7 +210,7 @@ class SelectionViewItem : public Q3ListViewItem
         else
           return mSelection->distributionListText( mItem->distributionList() );
       } else
-        return QString::null;
+        return QString();
     }
 
     const QPixmap* pixmap( int column ) const

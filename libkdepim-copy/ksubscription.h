@@ -55,9 +55,9 @@ class KDE_EXPORT KGroupInfo
       moderated
     };
 
-    KGroupInfo( const QString &name, const QString &description = QString::null,
+    KGroupInfo( const QString &name, const QString &description = QString(),
         bool newGroup = false, bool subscribed = false,
-        Status status = unknown, QString path = QString::null );
+        Status status = unknown, QString path = QString() );
 
     QString name, description;
     bool newGroup, subscribed;
@@ -202,7 +202,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
     };
 
     KSubscription( QWidget *parent, const QString &caption, KAccount* acct,
-        int buttons = 0, const QString &user1 = QString::null,
+        int buttons = 0, const QString &user1 = QString(),
         bool descriptionColumn = true );
 
     ~KSubscription();
@@ -283,7 +283,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
      * criteria changed
      */
     void filterChanged( Q3ListViewItem* item = 0,
-        const QString & text = QString::null );
+        const QString & text = QString() );
 
     /**
      * The amount of items that are visible and enabled

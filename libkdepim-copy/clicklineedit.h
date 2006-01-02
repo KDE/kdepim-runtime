@@ -42,7 +42,7 @@ class KDE_EXPORT ClickLineEdit : public KLineEdit
   Q_OBJECT
   Q_PROPERTY( QString clickMessage READ clickMessage WRITE setClickMessage )
   public:
-    ClickLineEdit( QWidget *parent, const QString &msg = QString::null, const char* name = 0 );
+    ClickLineEdit( QWidget *parent, const QString &msg = QString(), const char* name = 0 );
     ~ClickLineEdit();
 
     void setClickMessage( const QString &msg );

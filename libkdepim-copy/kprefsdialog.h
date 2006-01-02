@@ -398,7 +398,7 @@ class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
       @param whatsThis What's This help for the button.
     */
     void addRadio( const QString &text,
-                   const QString &whatsThis = QString::null );
+                   const QString &whatsThis = QString() );
 
     /**
       Return the box widget used by this widget.
@@ -484,7 +484,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
       @param mode  Describes how a line edit should display its contents.
     */
     KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
-                   const QString &filter = QString::null, uint mode = KFile::File );
+                   const QString &filter = QString(), uint mode = KFile::File );
     /**
       Destructor.
     */
@@ -623,7 +623,7 @@ class KDE_EXPORT KPrefsWidManager
       @param mode URLRequester mode
     */
     KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item, QWidget *parent,
-                                const QString &filter = QString::null,
+                                const QString &filter = QString(),
                                 uint mode = KFile::File );
 
     /**

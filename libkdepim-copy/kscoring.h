@@ -311,7 +311,7 @@ class KDE_EXPORT KScoringManager : public QObject
   //* this is the container for all rules
   typedef Q3PtrList<KScoringRule> ScoringRuleList;
 
-  KScoringManager(const QString& appName = QString::null);
+  KScoringManager(const QString& appName = QString());
   virtual ~KScoringManager();
 
   //* returns a list of all available groups, must be overridden

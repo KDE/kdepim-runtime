@@ -146,7 +146,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
     QString value;
     if ( widIt.data()->inherits( "QLineEdit" ) ) {
       QLineEdit *wdg = static_cast<QLineEdit*>( widIt.data() );
-      wdg->setText( QString::null );
+      wdg->setText( QString() );
     } else if ( widIt.data()->inherits( "QSpinBox" ) ) {
       QSpinBox *wdg = static_cast<QSpinBox*>( widIt.data() );
       wdg->setValue( wdg->minValue() );
@@ -167,7 +167,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       wdg->setCurrentItem( 0 );
     } else if ( widIt.data()->inherits( "QTextEdit" ) ) {
       Q3TextEdit *wdg = static_cast<Q3TextEdit*>( widIt.data() );
-      wdg->setText( QString::null );
+      wdg->setText( QString() );
     }
   }
 

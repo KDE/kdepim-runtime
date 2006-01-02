@@ -163,11 +163,11 @@ class KDE_EXPORT KFolderTreeItem : public KListViewItem
     };
 
     /** constructs a root-item */
-    KFolderTreeItem( KFolderTree *parent, const QString & label=QString::null,
+    KFolderTreeItem( KFolderTree *parent, const QString & label=QString(),
         Protocol protocol=NONE, Type type=Root );
 
     /** constructs a child-item */
-    KFolderTreeItem( KFolderTreeItem *parent, const QString & label=QString::null,
+    KFolderTreeItem( KFolderTreeItem *parent, const QString & label=QString(),
         Protocol protocol=NONE, Type type=Other, int unread=0, int total=0 );
 
     /** compare */
