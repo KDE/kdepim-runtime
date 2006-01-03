@@ -277,26 +277,26 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
 {
   QString prefix;
   if ( active ) prefix = "Selected";
-  QString host =  config->readEntry( prefix + QString( "Host%1" ).arg( j ), "" ).trimmed();
+  QString host =  config->readEntry( prefix + QString( "Host%1" ).arg( j ), QString() ).trimmed();
   if ( !host.isEmpty() )
     server.setHost( host );
 
   int port = config->readNumEntry( prefix + QString( "Port%1" ).arg( j ), 389 );
   server.setPort( port );
 
-  QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), "" ).trimmed();
+  QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), QString() ).trimmed();
   if ( !base.isEmpty() )
     server.setBaseDN( base );
 
-  QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ) ).trimmed();
+  QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ), QString() ).trimmed();
   if ( !user.isEmpty() )
     server.setUser( user );
 
-  QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ) ).trimmed();
+  QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ), QString() ).trimmed();
   if ( !bindDN.isEmpty() )
     server.setBindDN( bindDN );
 
-  QString pwdBindDN = config->readEntry( prefix + QString( "PwdBind%1" ).arg( j ) );
+  QString pwdBindDN = config->readEntry( prefix + QString( "PwdBind%1" ).arg( j ), QString() );
   if ( !pwdBindDN.isEmpty() )
     server.setPwdBindDN( pwdBindDN );
 
@@ -305,7 +305,7 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
   server.setVersion( config->readNumEntry( prefix + QString( "Version%1" ).arg( j ), 3 ) );
   server.setSecurity( config->readNumEntry( prefix + QString( "Security%1" ).arg( j ) ) );
   server.setAuth( config->readNumEntry( prefix + QString( "Auth%1" ).arg( j ) ) );
-  server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ) ) );
+  server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ), QString() ) );
 }
 
 void LdapSearch::writeConfig( const LdapServer &server, KConfig *config, int j, bool active )

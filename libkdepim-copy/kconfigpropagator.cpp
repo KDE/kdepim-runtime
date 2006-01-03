@@ -261,7 +261,7 @@ void KConfigPropagator::updateChanges()
 
     KConfig target( r.targetFile );
     target.setGroup( r.targetGroup );
-    QString targetValue = target.readEntry( r.targetEntry );
+    QString targetValue = target.readEntry( r.targetEntry, QString() );
     if ( r.hideValue ) targetValue = KStringHandler::obscure( targetValue );
     if ( targetValue != value ) {
       ChangeConfig *change = new ChangeConfig();
