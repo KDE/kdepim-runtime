@@ -445,15 +445,16 @@ private:
   }
 
 public:
-  Q3CString fromUnicode(const QString & uc, int & len_in_out)
+  QByteArray fromUnicode(const QString & uc, int & len_in_out)
   {
     // allocate place for worst case:
     //   len/2 * (5+1) for an alternating sequence of e.g. "A\",
     // + 4             for a worst-case of another +ABC encoded char
     // + 1             for the trailing \0
     // 
-    int maxreslen = 3 * len_in_out + 5;
-    Q3CString result( maxreslen );
+    const int maxreslen = 3 * len_in_out + 5;
+    QByteArray result;
+    result.reserve( maxreslen );
 
 #if 0
     //    if (len_in_out == 1) {
