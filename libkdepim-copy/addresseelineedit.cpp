@@ -47,10 +47,10 @@
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
 #include <kstdaccel.h>
-#include <k3urldrag.h>
+#include <kurl.h>
 #include <klocale.h>
+#include <kdatastream.h>
 
-#include <q3popupmenu.h>
 #include <qapplication.h>
 #include <qobject.h>
 #include <qregexp.h>
@@ -61,6 +61,7 @@
 #include <QKeyEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
+#include <QMenu>
 
 using namespace KPIM;
 
@@ -303,36 +304,37 @@ void AddresseeLineEdit::mouseReleaseEvent( QMouseEvent *e )
 
 void AddresseeLineEdit::dropEvent( QDropEvent *e )
 {
-  KURL::List uriList;
-  if ( !isReadOnly()
-       && K3URLDrag::canDecode(e) && K3URLDrag::decode( e, uriList ) ) {
-    QString contents = text();
-    // remove trailing white space and comma
-    int eot = contents.length();
-    while ( ( eot > 0 ) && contents[ eot - 1 ].isSpace() )
-      eot--;
-    if ( eot == 0 )
-      contents.clear();
-    else if ( contents[ eot - 1 ] == ',' ) {
-      eot--;
-      contents.truncate( eot );
-    }
-    bool mailtoURL = false;
-    // append the mailto URLs
-    for ( KURL::List::Iterator it = uriList.begin();
-          it != uriList.end(); ++it ) {
-      if ( !contents.isEmpty() )
-        contents.append( ", " );
-      KURL u( *it );
-      if ( u.protocol() == "mailto" ) {
-        mailtoURL = true;
-        contents.append( (*it).path() );
+  if ( !isReadOnly() ) {
+    KURL::List uriList = KURL::List::fromMimeData( e->mimeData() );
+    if ( !uriList.isEmpty() ) {
+      QString contents = text();
+      // remove trailing white space and comma
+      int eot = contents.length();
+      while ( ( eot > 0 ) && contents[ eot - 1 ].isSpace() )
+        eot--;
+      if ( eot == 0 )
+        contents = QString::null;
+      else if ( contents[ eot - 1 ] == ',' ) {
+        eot--;
+        contents.truncate( eot );
       }
-    }
-    if ( mailtoURL ) {
-      setText( contents );
-      setEdited( true );
-      return;
+      bool mailtoURL = false;
+      // append the mailto URLs
+      for ( KURL::List::Iterator it = uriList.begin();
+            it != uriList.end(); ++it ) {
+        if ( !contents.isEmpty() )
+          contents.append( ", " );
+        KURL u( *it );
+        if ( u.protocol() == "mailto" ) {
+          mailtoURL = true;
+          contents.append( (*it).path() );
+        }
+      }
+      if ( mailtoURL ) {
+        setText( contents );
+        setEdited( true );
+        return;
+      }
     }
   }
 

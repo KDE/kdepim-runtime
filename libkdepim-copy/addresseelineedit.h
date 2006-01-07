@@ -35,7 +35,6 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <Q3PopupMenu>
 #include <QDropEvent>
 
 #include <kabc/addressee.h>
@@ -44,6 +43,8 @@
 #include "kcompletion.h"
 #include <dcopobject.h>
 #include <kdepimmacros.h>
+
+class QMenu;
 
 class KConfig;
 
