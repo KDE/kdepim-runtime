@@ -23,12 +23,11 @@
 #ifndef KDATEEDIT_H
 #define KDATEEDIT_H
 
-#include <qcombobox.h>
-#include <qdatetime.h>
-#include <qmap.h>
-//Added by qt3to4:
-#include <QMouseEvent>
+#include <QComboBox>
+#include <QDateTime>
 #include <QEvent>
+#include <QMap>
+#include <QMouseEvent>
 
 #include <kdepimmacros.h>
 

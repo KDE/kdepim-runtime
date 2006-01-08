@@ -81,7 +81,7 @@ const QString KPimPrefs::timezone()
     int len = readlink( "/etc/localtime", zonefilebuf, PATH_MAX );
     if ( len > 0 && len < PATH_MAX ) {
       zone = QString::fromLocal8Bit( zonefilebuf, len );
-      zone = zone.mid( zone.find( "zoneinfo/" ) + 9 );
+      zone = zone.mid( zone.indexOf( "zoneinfo/" ) + 9 );
       kdDebug(5300) << "system timezone from /etc/localtime is " << zone
                     << endl;
     } else {
@@ -119,7 +119,7 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
   setenv( "TZ", "UTC", 1 );
   time_t utcTime = dt.toTime_t();
 
-  setenv( "TZ", timeZoneId.local8Bit(), 1 );
+  setenv( "TZ", timeZoneId.toLocal8Bit(), 1 );
   struct tm *local = localtime( &utcTime );
 
   if ( origTz.isNull() ) {
@@ -160,7 +160,7 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
 
   QByteArray origTz = getenv("TZ");
 
-  setenv( "TZ", timeZoneId.local8Bit(), 1 );
+  setenv( "TZ", timeZoneId.toLocal8Bit(), 1 );
   time_t localTime = dt.toTime_t();
 
   setenv( "TZ", "UTC", 1 );

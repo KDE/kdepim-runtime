@@ -112,7 +112,7 @@ void KImportColumn::addColId(int id)
 
 void KImportColumn::removeColId(int id)
 {
-  mColIds.remove(id);
+  mColIds.removeAll(id);
 }
 
 QList<int> KImportColumn::colIdList()
@@ -180,11 +180,11 @@ KImportDialog::KImportDialog(QWidget* parent)
   new QLabel( i18n( "Separator:" ), separatorBox );
 
   mSeparatorCombo = new KComboBox( separatorBox );
-  mSeparatorCombo->insertItem( "," );
-  mSeparatorCombo->insertItem( i18n( "Tab" ) );
-  mSeparatorCombo->insertItem( i18n( "Space" ) );
-  mSeparatorCombo->insertItem( "=" );
-  mSeparatorCombo->insertItem( ";" );
+  mSeparatorCombo->addItem( "," );
+  mSeparatorCombo->addItem( i18n( "Tab" ) );
+  mSeparatorCombo->addItem( i18n( "Space" ) );
+  mSeparatorCombo->addItem( "=" );
+  mSeparatorCombo->addItem( ";" );
   connect(mSeparatorCombo, SIGNAL( activated(int) ),
           this, SLOT( separatorClicked(int) ) );
   mSeparatorCombo->setCurrentItem( 0 );
@@ -194,7 +194,7 @@ KImportDialog::KImportDialog(QWidget* parent)
 
   new QLabel( i18n( "Import starts at row:" ), rowsBox );
   mStartRow = new QSpinBox( rowsBox );
-  mStartRow->setMinValue( 1 );
+  mStartRow->setMinimum( 1 );
 /*
   new QLabel( i18n( "And ends at row:" ), rowsBox );
   mEndRow = new QSpinBox( rowsBox );
@@ -254,7 +254,7 @@ bool KImportDialog::setFile(const QString& file)
   if (f.open(QIODevice::ReadOnly)) {
     mFile = "";
     QTextStream t(&f);
-    mFile = t.read();
+    mFile = t.readAll();
 //    while (!t.eof()) mFile.append(t.readLine());
     f.close();
 
@@ -314,7 +314,7 @@ void KImportDialog::readFile( int rows )
 
   row = column = 0;
   QTextStream inputStream(&mFile, QIODevice::ReadOnly);
-  inputStream.setEncoding(QTextStream::Locale);
+  inputStream.setCodec("ISO 8859-1");
 
   KProgressDialog pDialog(this, 0, i18n("Loading Progress"),
                     i18n("Please wait while the file is loaded."), true);
@@ -468,7 +468,7 @@ void KImportDialog::headerSelected(Q3ListViewItem* item)
   QList<int>::ConstIterator it = formats.begin();
   QList<int>::ConstIterator end = formats.end();
   while(it != end) {
-    mFormatCombo->insertItem( col->formatName(*it), *it - 1 );
+    mFormatCombo->insertItem( *it - 1, col->formatName(*it) );
     ++it;
   }
 
@@ -551,8 +551,8 @@ void KImportDialog::assignColumn(Q3ListViewItem *item)
     if (i >= 0) {
       mTable->horizontalHeader()->setLabel(i,colItem->text(0));
       mColumnDict.replace(i,colItem->column());
-      int format = mFormatCombo->currentItem() + 1;
-      mFormats.replace(i,format);
+      int format = mFormatCombo->currentIndex() + 1;
+      mFormats.insert(i,format);
       colItem->column()->addColId(i);
     }
   }
@@ -572,7 +572,7 @@ void KImportDialog::assignTemplate()
   QStringList templates;
 
   // load all template files
-  QStringList list = KGlobal::dirs()->findAllResources( "data" , QString( kapp->name() ) +
+  QStringList list = KGlobal::dirs()->findAllResources( "data" , QString( kapp->applicationName() ) +
       "/csv-templates/*.desktop", true, true );
 
   for ( QStringList::iterator it = list.begin(); it != list.end(); ++it )
@@ -617,7 +617,7 @@ void KImportDialog::assignTemplate()
     KImportColumn *col = mColumns.at(i);
     mTable->horizontalHeader()->setLabel( tableColumn, col->header() );
     mColumnDict.replace( tableColumn, col );
-    mFormats.replace( tableColumn, format );
+    mFormats.insert( tableColumn, format );
     col->addColId( tableColumn );
   }
 
@@ -728,7 +728,7 @@ QString KImportDialog::data( int row, int col )
 void KImportDialog::saveTemplate()
 {
   QString fileName = KFileDialog::getSaveFileName(
-                      locateLocal( "data", QString( kapp->name() ) + "/csv-templates/" ),
+                      locateLocal( "data", QString( kapp->applicationName() ) + "/csv-templates/" ),
                       "*.desktop", this );
 
   if ( fileName.isEmpty() )
@@ -745,7 +745,7 @@ void KImportDialog::saveTemplate()
   KConfig config( fileName );
   config.setGroup( "General" );
   config.writeEntry( "Columns", mColumns.count() );
-  config.writeEntry( "Format", mFormatCombo->currentItem() + 1 );
+  config.writeEntry( "Format", mFormatCombo->currentIndex() + 1 );
 
   config.setGroup( "Misc" );
   config.writeEntry( "Name", name );

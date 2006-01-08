@@ -46,7 +46,7 @@
 class KOTimeValidator : public QValidator
 {
 public:
-    KOTimeValidator(QWidget* parent, const char* name=0) : QValidator(parent, name) {}
+    KOTimeValidator(QWidget* parent, const char* name=0) : QValidator(parent) {}
 
     virtual State validate(QString& str, int& /*cursorPos*/) const
     {
@@ -108,9 +108,10 @@ public:
 // KTimeWidget/QTimeEdit provide nicer editing, but don't provide a combobox.
 // Difficult to get all in one...
 // But Qt-3.2 will offer QLineEdit::setMask, so a "99:99" mask would help.
-KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char *name )
-  : QComboBox( true, parent, name )
+KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char* )
+  : QComboBox( parent )
 {
+  setEditable( true );
   setInsertPolicy( NoInsert );
   setValidator( new KOTimeValidator( this ) );
 
@@ -123,11 +124,11 @@ KTimeEdit::KTimeEdit( QWidget *parent, QTime qt, const char *name )
   QTime timeEntry(0,0,0);
   QTime endEntry = timeEntry;
   do {
-    insertItem(KGlobal::locale()->formatTime(timeEntry));
+    addItem(KGlobal::locale()->formatTime(timeEntry));
     timeEntry = timeEntry.addSecs(60*15);
   } while (timeEntry != endEntry);
   // Add end of day.
-  insertItem( KGlobal::locale()->formatTime( QTime( 23, 59, 59 ) ) );
+  addItem( KGlobal::locale()->formatTime( QTime( 23, 59, 59 ) ) );
 
   updateText();
   setFocusPolicy(Qt::StrongFocus);
@@ -269,7 +270,7 @@ void KTimeEdit::updateText()
 
   // select item with nearest time, must be done while line edit is blocked
   // as setCurrentItem() calls setText() with triggers KTimeEdit::changedText()
-  setCurrentItem((mTime.hour()*4)+((mTime.minute()+7)/15));
+  setCurrentIndex((mTime.hour()*4)+((mTime.minute()+7)/15));
 
   line->setText(s);
   line->setCursorPosition(pos);

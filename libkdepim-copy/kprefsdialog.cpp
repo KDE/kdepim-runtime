@@ -26,16 +26,14 @@
 #include <q3buttongroup.h>
 #include <qlineedit.h>
 #include <qfont.h>
-#include <qspinbox.h>
-#include <q3frame.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
-#include <q3datetimeedit.h>
 
-//Added by qt3to4:
+#include <QFrame>
 #include <QGridLayout>
+#include <QSpinBox>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -141,10 +139,10 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
   mLabel = new QLabel( mItem->label()+':', parent );
   mSpin = new QSpinBox( parent );
   if ( !item->minValue().isNull() ) {
-    mSpin->setMinValue( item->minValue().toInt() );
+    mSpin->setMinimum( item->minValue().toInt() );
   }
   if ( !item->maxValue().isNull() ) {
-    mSpin->setMaxValue( item->maxValue().toInt() );
+    mSpin->setMaximum( item->maxValue().toInt() );
   }
   connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
   mLabel->setBuddy( mSpin );
@@ -190,7 +188,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
 {
   mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
-  mLabel = new QLabel( mButton, mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label()+':', parent );
   mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
   if (!whatsThis.isNull()) {
@@ -326,13 +324,12 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label()+':', parent );
-  mTimeEdit = new Q3TimeEdit( parent );
+  mTimeEdit = new QTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
-  mTimeEdit->setAutoAdvance( true );
-  mTimeEdit->setDisplay( Q3TimeEdit::Hours | Q3TimeEdit::Minutes );
-  mTimeEdit->setRange( QTime( 0, 1 ), QTime( 24, 0 ) ); // [1min, 24hr]
-  connect( mTimeEdit,
-           SIGNAL( valueChanged( const QTime & ) ), SIGNAL( changed() ) );
+  mTimeEdit->setDisplayFormat( "hh:mm:ss" );
+  mTimeEdit->setMinimumTime( QTime( 0, 1 ) ); // [1 min]
+  mTimeEdit->setMaximumTime( QTime( 24, 0 ) ); // [24 hr]
+  connect( mTimeEdit, SIGNAL( timeChanged( const QTime & ) ), SIGNAL( changed() ) );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isNull() ) {
     mTimeEdit->setWhatsThis( whatsThis );
@@ -356,7 +353,7 @@ QLabel *KPrefsWidDuration::label()
   return mLabel;
 }
 
-Q3TimeEdit *KPrefsWidDuration::timeEdit()
+QTimeEdit *KPrefsWidDuration::timeEdit()
 {
   return mTimeEdit;
 }
@@ -549,6 +546,8 @@ KPrefsWidManager::KPrefsWidManager( KConfigSkeleton *prefs )
 
 KPrefsWidManager::~KPrefsWidManager()
 {
+  qDeleteAll( mPrefsWids );
+  mPrefsWids.clear();
 }
 
 void KPrefsWidManager::addWid( KPrefsWid *wid )
@@ -667,9 +666,9 @@ void KPrefsWidManager::readWidConfig()
 {
   kdDebug(5310) << "KPrefsWidManager::readWidConfig()" << endl;
 
-  KPrefsWid *wid;
-  for( wid = mPrefsWids.first(); wid; wid = mPrefsWids.next() ) {
-    wid->readConfig();
+  QList<KPrefsWid*>::Iterator it;
+  for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
+    (*it)->readConfig();
   }
 }
 
@@ -677,9 +676,9 @@ void KPrefsWidManager::writeWidConfig()
 {
   kdDebug(5310) << "KPrefsWidManager::writeWidConfig()" << endl;
 
-  KPrefsWid *wid;
-  for( wid = mPrefsWids.first(); wid; wid = mPrefsWids.next() ) {
-    wid->writeConfig();
+  QList<KPrefsWid*>::Iterator it;
+  for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
+    (*it)->writeConfig();
   }
 
   mPrefs->writeConfig();
@@ -692,15 +691,12 @@ KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
                 name,modal,true),
     KPrefsWidManager( prefs )
 {
-// TODO: This seems to cause a crash on exit. Investigate later.
-//  mPrefsWids.setAutoDelete(true);
-
-//  connect(this,SIGNAL(defaultClicked()),SLOT(setDefaults()));
   connect(this,SIGNAL(cancelClicked()),SLOT(reject()));
 }
 
 KPrefsDialog::~KPrefsDialog()
 {
+
 }
 
 void KPrefsDialog::autoCreate()
@@ -739,8 +735,7 @@ void KPrefsDialog::autoCreate()
     if ( wid ) {
       QList<QWidget *> widgets = wid->widgets();
       if ( widgets.count() == 1 ) {
-        layout->addMultiCellWidget( widgets[ 0 ],
-                                    currentRow, currentRow, 0, 1 );
+        layout->addWidget( widgets[ 0 ], currentRow, currentRow, 0, 1 );
       } else if ( widgets.count() == 2 ) {
         layout->addWidget( widgets[ 0 ], currentRow, 0 );
         layout->addWidget( widgets[ 1 ], currentRow, 1 );
@@ -757,7 +752,7 @@ void KPrefsDialog::autoCreate()
 
       addWid( wid );
 
-      mCurrentRows.replace( group, ++currentRow );
+      mCurrentRows.insert( group, ++currentRow );
     }
   }
 

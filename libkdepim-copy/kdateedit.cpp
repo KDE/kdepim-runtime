@@ -21,14 +21,13 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qapplication.h>
-#include <qlineedit.h>
 #include <QAbstractItemView>
-#include <qvalidator.h>
-//Added by qt3to4:
-#include <QMouseEvent>
-#include <QKeyEvent>
+#include <QApplication>
 #include <QEvent>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QMouseEvent>
+#include <QValidator>
 
 #include <kcalendarsystem.h>
 #include <kglobal.h>
@@ -41,7 +40,7 @@ class DateValidator : public QValidator
 {
   public:
     DateValidator( const QStringList &keywords, QWidget* parent, const char* name = 0 )
-      : QValidator( parent, name ), mKeywords( keywords )
+      : QValidator( parent ), mKeywords( keywords )
     {}
 
     virtual State validate( QString &str, int& ) const
@@ -68,19 +67,19 @@ class DateValidator : public QValidator
 };
 
 KDateEdit::KDateEdit( QWidget *parent, const char *name )
-  : QComboBox( true, parent, name ),
+  : QComboBox( parent ),
     mReadOnly( false ),
     mDiscardNextMousePress( false )
 {
   // need at least one entry for popup to work
   setMaxCount( 1 );
+  setEditable( true );
 
   mDate = QDate::currentDate();
   QString today = KGlobal::locale()->formatDate( mDate, true );
 
-  insertItem( today );
-  setCurrentItem( 0 );
-  changeItem( today, 0 );
+  addItem( today );
+  setCurrentIndex( 0 );
   setMinimumSize( sizeHint() );
 
   connect( lineEdit(), SIGNAL( returnPressed() ),
@@ -295,7 +294,7 @@ bool KDateEdit::eventFilter( QObject *object, QEvent *event )
         QMouseEvent *mouseEvent = (QMouseEvent*)event;
         if ( !mPopup->rect().contains( mouseEvent->pos() ) ) {
           QPoint globalPos = mPopup->mapToGlobal( mouseEvent->pos() );
-          if ( QApplication::widgetAt( globalPos, true ) == this ) {
+          if ( QApplication::widgetAt( globalPos ) == this ) {
             // The date picker is being closed by a click on the
             // KDateEdit widget. Avoid popping it up again immediately.
             mDiscardNextMousePress = true;
@@ -364,7 +363,8 @@ void KDateEdit::updateView()
   // since we explicitly setting the date
   bool blocked = signalsBlocked();
   blockSignals( true );
-  changeItem( dateString, 0 );
+  removeItem( 0 );
+  insertItem( 0, dateString );
   blockSignals( blocked );
 }
 

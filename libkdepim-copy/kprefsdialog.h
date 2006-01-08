@@ -23,13 +23,9 @@
 #ifndef KPREFSDIALOG_H
 #define KPREFSDIALOG_H
 
-#include <q3ptrlist.h>
-#include <qlineedit.h>
-
-#include <q3datetimeedit.h>
-//Added by qt3to4:
 #include <QLabel>
-//#include <Q3Frame>
+#include <QLineEdit>
+#include <QTimeEdit>
 
 #include <kdialogbase.h>
 #include <kcmodule.h>
@@ -44,7 +40,6 @@ class QLabel;
 class QSpinBox;
 class QStringList;
 class Q3ButtonGroup;
-class Q3TimeEdit;
 class KInstance;
 class KTimeEdit;
 class KDateEdit;
@@ -223,7 +218,7 @@ class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
     /**
       Return QSpinBox used by this widget.
     */
-    Q3TimeEdit *timeEdit();
+    QTimeEdit *timeEdit();
 
     void readConfig();
     void writeConfig();
@@ -232,7 +227,7 @@ class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
     KConfigSkeleton::ItemDateTime *mItem;
 
     QLabel *mLabel;
-    Q3TimeEdit *mTimeEdit;
+    QTimeEdit *mTimeEdit;
 };
 
 /**
@@ -658,7 +653,7 @@ class KDE_EXPORT KPrefsWidManager
   private:
     KConfigSkeleton *mPrefs;
 
-    Q3PtrList<KPrefsWid> mPrefsWids;
+    QList<KPrefsWid*> mPrefsWids;
 };
 
 
