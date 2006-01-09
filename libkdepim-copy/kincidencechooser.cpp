@@ -46,8 +46,9 @@
 int KIncidenceChooser::chooseMode = KIncidenceChooser::ask ;
 
 KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
-    KDialog(parent,name,true)
+    KDialog(parent,name)
 {
+    setModal( true );
     KDialog *topFrame = this;
     QGridLayout *topLayout = new QGridLayout(topFrame,5,3);
     int iii = 0;
