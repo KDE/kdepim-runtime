@@ -113,7 +113,7 @@ public:
   SimpleCompletionItem( CompletionOrderEditor* editor, const QString& label, const QString& identifier )
     : mLabel( label ), mIdentifier( identifier ) {
       KConfigGroup group( editor->configFile(), "CompletionWeights" );
-      mWeight = group.readNumEntry( mIdentifier, 60 );
+      mWeight = group.readEntry( mIdentifier, 60 );
     }
   virtual QString label() const { return mLabel; }
   virtual int completionWeight() const { return mWeight; }

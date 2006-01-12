@@ -281,7 +281,7 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
   if ( !host.isEmpty() )
     server.setHost( host );
 
-  int port = config->readNumEntry( prefix + QString( "Port%1" ).arg( j ), 389 );
+  int port = config->readEntry( prefix + QString( "Port%1" ).arg( j ), 389 );
   server.setPort( port );
 
   QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), QString() ).trimmed();
@@ -300,11 +300,11 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
   if ( !pwdBindDN.isEmpty() )
     server.setPwdBindDN( pwdBindDN );
 
-  server.setTimeLimit( config->readNumEntry( prefix + QString( "TimeLimit%1" ).arg( j ) ) );
-  server.setSizeLimit( config->readNumEntry( prefix + QString( "SizeLimit%1" ).arg( j ) ) );
-  server.setVersion( config->readNumEntry( prefix + QString( "Version%1" ).arg( j ), 3 ) );
-  server.setSecurity( config->readNumEntry( prefix + QString( "Security%1" ).arg( j ) ) );
-  server.setAuth( config->readNumEntry( prefix + QString( "Auth%1" ).arg( j ) ) );
+  server.setTimeLimit( config->readEntry( prefix + QString( "TimeLimit%1" ).arg( j ),0 ) );
+  server.setSizeLimit( config->readEntry( prefix + QString( "SizeLimit%1" ).arg( j ),0 ) );
+  server.setVersion( config->readEntry( prefix + QString( "Version%1" ).arg( j ), 3 ) );
+  server.setSecurity( config->readEntry( prefix + QString( "Security%1" ).arg( j ), 0) );
+  server.setAuth( config->readEntry( prefix + QString( "Auth%1" ).arg( j ),0 ) );
   server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ), QString() ) );
 }
 
@@ -370,7 +370,7 @@ void LdapSearch::readConfig()
       if ( !server.host().isEmpty() ) mNoLDAPLookup = false;
       ldapClient->setServer( server );
 
-      int completionWeight = config->readNumEntry( QString( "SelectedCompletionWeight%1" ).arg( j ), -1 );
+      int completionWeight = config->readEntry( QString( "SelectedCompletionWeight%1" ).arg( j ), -1 );
       if ( completionWeight != -1 )
         ldapClient->setCompletionWeight( completionWeight );
 

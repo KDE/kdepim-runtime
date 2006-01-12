@@ -482,7 +482,7 @@ void AddresseeLineEdit::loadContacts()
         addContact( *it, weight, idx );
       }
     } else { // KABC non-imap resource
-      int weight = config.readNumEntry( resource->identifier(), 60 );
+      int weight = config.readEntry( resource->identifier(), 60 );
       s_completionSources->append( resource->resourceName() );
       KABC::Resource::Iterator it;
       for ( it = resource->begin(); it != resource->end(); ++it )
@@ -491,7 +491,7 @@ void AddresseeLineEdit::loadContacts()
   }
 
 #ifndef KDEPIM_NEW_DISTRLISTS // new distr lists are normal contact, already done above
-  int weight = config.readNumEntry( "DistributionLists", 60 );
+  int weight = config.readEntry( "DistributionLists", 60 );
   KABC::DistributionListManager manager( addressBook );
   manager.load();
   const QStringList distLists = manager.listNames();

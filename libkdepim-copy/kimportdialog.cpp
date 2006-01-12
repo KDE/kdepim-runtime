@@ -600,12 +600,12 @@ void KImportDialog::assignTemplate()
   KSimpleConfig config( fileMap[ tmp ], true );
   config.setGroup( "General" );
   int numColumns = config.readUnsignedNumEntry( "Columns" );
-  int format = config.readNumEntry( "Format" );
+  int format = config.readEntry( "Format", 0 );
 
   // create the column map
   config.setGroup( "csv column map" );
   for ( int i = 0; i < numColumns; ++i ) {
-    int col = config.readNumEntry( QString::number( i ) );
+    int col = config.readEntry( QString::number( i ), 0 );
     columnMap.insert( i, col );
   }
 
