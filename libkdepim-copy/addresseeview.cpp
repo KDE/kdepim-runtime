@@ -732,13 +732,13 @@ void AddresseeView::result( KIO::Job *job )
 void AddresseeView::load()
 {
   mConfig->setGroup( "AddresseeViewSettings" );
-  mActionShowBirthday->setChecked( mConfig->readBoolEntry( "ShowBirthday", false ) );
-  mActionShowAddresses->setChecked( mConfig->readBoolEntry( "ShowAddresses", true ) );
-  mActionShowEmails->setChecked( mConfig->readBoolEntry( "ShowEmails", true ) );
-  mActionShowPhones->setChecked( mConfig->readBoolEntry( "ShowPhones", true ) );
-  mActionShowURLs->setChecked( mConfig->readBoolEntry( "ShowURLs", true ) );
-  mActionShowIMAddresses->setChecked( mConfig->readBoolEntry( "ShowIMAddresses", false ) );
-  mActionShowCustomFields->setChecked( mConfig->readBoolEntry( "ShowCustomFields", false ) );
+  mActionShowBirthday->setChecked( mConfig->readEntry( "ShowBirthday", false ) );
+  mActionShowAddresses->setChecked( mConfig->readEntry( "ShowAddresses", true ) );
+  mActionShowEmails->setChecked( mConfig->readEntry( "ShowEmails", true ) );
+  mActionShowPhones->setChecked( mConfig->readEntry( "ShowPhones", true ) );
+  mActionShowURLs->setChecked( mConfig->readEntry( "ShowURLs", true ) );
+  mActionShowIMAddresses->setChecked( mConfig->readEntry( "ShowIMAddresses", false ) );
+  mActionShowCustomFields->setChecked( mConfig->readEntry( "ShowCustomFields", false ) );
 }
 
 void AddresseeView::save()
