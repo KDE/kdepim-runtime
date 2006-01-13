@@ -599,7 +599,7 @@ void KImportDialog::assignTemplate()
 
   KSimpleConfig config( fileMap[ tmp ], true );
   config.setGroup( "General" );
-  int numColumns = config.readUnsignedNumEntry( "Columns" );
+  int numColumns = config.readEntry( "Columns", 0 );
   int format = config.readEntry( "Format", 0 );
 
   // create the column map

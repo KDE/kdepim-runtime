@@ -359,7 +359,7 @@ void LdapSearch::readConfig()
   // stolen from KAddressBook
   KConfig *config = KPIM::LdapSearch::config();
   config->setGroup( "LDAP" );
-  int numHosts = config->readUnsignedNumEntry( "NumSelectedHosts");
+  int numHosts = config->readEntry( "NumSelectedHosts",0);
   if ( !numHosts ) {
     mNoLDAPLookup = true;
   } else {

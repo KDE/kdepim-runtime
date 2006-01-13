@@ -55,7 +55,7 @@ void KAccount::readConfig( KConfig &config, const QString &group )
   QString oldGroup = config.group();
   if (!group.isEmpty())
     config.setGroup(group);
-  mId = config.readUnsignedNumEntry("Id", 0);
+  mId = config.readEntry("Id", 0);
   mName = config.readEntry("Name");
   if (!group.isEmpty()) // restore
     config.setGroup(oldGroup);
