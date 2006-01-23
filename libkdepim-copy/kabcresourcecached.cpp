@@ -96,7 +96,7 @@ void ResourceCached::loadCache()
 
 
   KABC::VCardConverter converter;
-  KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
+  KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
   KABC::Addressee::List::Iterator it;
 
   for ( it = list.begin(); it != list.end(); ++it ) {
@@ -135,7 +135,7 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 
 
   KABC::VCardConverter converter;
-  KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
+  KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
   KABC::Addressee::List::Iterator cacheIt;
   KABC::Addressee::List::ConstIterator it;
 
@@ -248,7 +248,7 @@ void ResourceCached::loadChangesCache( QMap<QString, KABC::Addressee> &map, cons
 
   KABC::VCardConverter converter;
 
-  const KABC::Addressee::List list = converter.parseVCards( QString::fromUtf8( file.readAll() ) );
+  const KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
   KABC::Addressee::List::ConstIterator it;
   for ( it = list.begin(); it != list.end(); ++it )
     map.insert( (*it).uid(), *it );
