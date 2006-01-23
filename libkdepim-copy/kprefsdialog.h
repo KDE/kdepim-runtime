@@ -43,7 +43,7 @@ class Q3ButtonGroup;
 class KInstance;
 class KTimeEdit;
 class KDateEdit;
-class KURLRequester;
+class KUrlRequester;
 
 /**
   @short Base class for GUI control elements used by @ref KPrefsDialog.
@@ -492,7 +492,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
     /**
       Return QLineEdit used by this widget.
     */
-    KURLRequester *urlRequester();
+    KUrlRequester *urlRequester();
 
     void readConfig();
     void writeConfig();
@@ -503,7 +503,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
     KConfigSkeleton::ItemPath *mItem;
 
     QLabel *mLabel;
-    KURLRequester *mURLRequester;
+    KUrlRequester *mURLRequester;
 };
 
 

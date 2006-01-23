@@ -30,7 +30,7 @@
 
 #include <kdepimmacros.h>
 
-class KURL;
+class KUrl;
 
 /**
  * KDEPIM classes for drag and drop of mails

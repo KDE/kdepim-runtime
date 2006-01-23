@@ -162,7 +162,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   KHBox *fileBox = new KHBox(topBox);
   fileBox->setSpacing(spacingHint());
   new QLabel(i18n("File to import:"),fileBox);
-  KURLRequester *urlRequester = new KURLRequester(fileBox);
+  KUrlRequester *urlRequester = new KUrlRequester(fileBox);
   urlRequester->setFilter( "*.csv" );
   connect(urlRequester,SIGNAL(returnPressed(const QString &)),
           SLOT(setFile(const QString &)));

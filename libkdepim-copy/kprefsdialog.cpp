@@ -494,7 +494,7 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label()+':', parent );
-  mURLRequester = new KURLRequester( parent );
+  mURLRequester = new KUrlRequester( parent );
   mLabel->setBuddy( mURLRequester );
   mURLRequester->setMode( mode );
   mURLRequester->setFilter( filter );
@@ -525,7 +525,7 @@ QLabel *KPrefsWidPath::label()
   return mLabel;
 }
 
-KURLRequester *KPrefsWidPath::urlRequester()
+KUrlRequester *KPrefsWidPath::urlRequester()
 {
   return mURLRequester;
 }
