@@ -31,7 +31,7 @@
 #include <QDropEvent>
 #include <kapplication.h>
 #include <klocale.h>
-#include <kprogress.h>
+#include <kprogressbar.h>
 #include <kurl.h>
 #include <k3urldrag.h>
 

@@ -43,7 +43,7 @@ using KPIM::SSLLabel;
 using KPIM::ProgressItem;
 using KPIM::ProgressManager;
 
-#include <kprogress.h>
+#include <kprogressbar.h>
 #include <kiconloader.h>
 #include <kdebug.h>
 

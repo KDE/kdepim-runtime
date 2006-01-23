@@ -42,7 +42,7 @@
 #include <kinputdialog.h>
 #include <klineedit.h>
 #include <klocale.h>
-#include <kprogress.h>
+#include <kprogressbar.h>
 #include <ksimpleconfig.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
