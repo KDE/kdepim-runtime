@@ -256,9 +256,9 @@ QByteArray MailListDrag::encodedData(const char *mimeType) const
   
       QByteArray rc; 
       if (_src) {
-          KProgressDialog *dlg = new KProgressDialog(0, 0, QString(), i18n("Retrieving and storing messages..."), true);
+          KProgressDialog *dlg = new KProgressDialog( 0, QString(), i18n("Retrieving and storing messages..."), true);
           dlg->setAllowCancel(true);
-          dlg->progressBar()->setTotalSteps(mMailList.count());
+          dlg->progressBar()->setMaximum(mMailList.count());
           int i = 0;
           dlg->progressBar()->setValue(i);
           dlg->show();

@@ -57,6 +57,7 @@ using KPIM::ProgressManager;
 #include <q3frame.h>
 
 #include "progressdialog.h"
+#include <kprogressbar.h>
 #include "statusbarprogresswidget.h"
 
 using namespace KPIM;

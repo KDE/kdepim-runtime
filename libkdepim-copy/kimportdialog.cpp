@@ -318,18 +318,18 @@ void KImportDialog::readFile( int rows )
   QTextStream inputStream(&mFile, QIODevice::ReadOnly);
   inputStream.setCodec("ISO 8859-1");
 
-  KProgressDialog pDialog(this, 0, i18n("Loading Progress"),
+  KProgressDialog pDialog(this, i18n("Loading Progress"),
                     i18n("Please wait while the file is loaded."), true);
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
   
-  KProgress *progress = pDialog.progressBar();
-  progress->setTotalSteps( mFile.count(mSeparator, Qt::CaseSensitive) );
+  KProgressBar *progress = pDialog.progressBar();
+  progress->setMaximum( mFile.count(mSeparator, Qt::CaseSensitive) );
   progress->setValue(0);
   int progressValue = 0;
   
-  if (progress->totalSteps() > 0)  // We have data
+  if (progress->maximum() > 0)  // We have data
     pDialog.show();
     
   while (!inputStream.atEnd() && !pDialog.wasCancelled()) {
@@ -651,14 +651,14 @@ void KImportDialog::applyConverter()
 {
   kdDebug(5300) << "KImportDialog::applyConverter" << endl;
 
-  KProgressDialog pDialog(this, 0, i18n("Importing Progress"),
+  KProgressDialog pDialog(this, i18n("Importing Progress"),
                     i18n("Please wait while the data is imported."), true);
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
   
   KProgressBar *progress = pDialog.progressBar();
-  progress->setTotalSteps( mTable->numRows()-1 );
+  progress->setMaximum( mTable->numRows()-1 );
   progress->setValue(0);
 
   readFile( 0 );
