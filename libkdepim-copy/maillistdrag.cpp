@@ -32,6 +32,7 @@
 #include <kapplication.h>
 #include <klocale.h>
 #include <kprogressbar.h>
+#include <kprogressdialog.h>
 #include <kurl.h>
 #include <k3urldrag.h>
 

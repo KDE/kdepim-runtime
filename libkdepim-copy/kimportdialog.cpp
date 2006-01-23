@@ -47,6 +47,8 @@
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
 #include <kfiledialog.h>
+#include <kprogressdialog.h>
+#include <kprogressbar.h>
 
 #include "kimportdialog.h"
 #include "kimportdialog.moc"
@@ -655,7 +657,7 @@ void KImportDialog::applyConverter()
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
   
-  KProgress *progress = pDialog.progressBar();
+  KProgressBar *progress = pDialog.progressBar();
   progress->setTotalSteps( mTable->numRows()-1 );
   progress->setValue(0);
 

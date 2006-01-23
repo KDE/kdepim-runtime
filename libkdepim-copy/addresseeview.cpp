@@ -50,6 +50,7 @@
 
 #include "addresseeview.h"
 #include "sendsmsdialog.h"
+#include <Q3TextEdit>
 
 using namespace KPIM;
 
