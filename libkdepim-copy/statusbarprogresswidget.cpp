@@ -175,7 +175,7 @@ void StatusbarProgressWidget::connectSingleItem()
 void StatusbarProgressWidget::activateSingleItemMode()
 {
   m_pProgressBar->setMaximum( 100 );
-  m_pProgressBar->setProgress( mCurrentItem->progress() );
+  m_pProgressBar->setValue( mCurrentItem->progress() );
   m_pProgressBar->setTextVisible( true );
 }
 
@@ -200,14 +200,14 @@ void StatusbarProgressWidget::slotShowItemDelayed()
 
 void StatusbarProgressWidget::slotBusyIndicator()
 {
-  int p = m_pProgressBar->progress();
-  m_pProgressBar->setProgress( p + 10 );
+  int p = m_pProgressBar->value();
+  m_pProgressBar->setValue( p + 10 );
 }
 
 void StatusbarProgressWidget::slotProgressItemProgress( ProgressItem *item, unsigned int value )
 {
   Q_ASSERT( item == mCurrentItem); // the only one we should be connected to
-  m_pProgressBar->setProgress( value );
+  m_pProgressBar->setValue( value );
 }
 
 void StatusbarProgressWidget::slotSetSSL( bool ssl )
@@ -253,7 +253,7 @@ void StatusbarProgressWidget::slotClean()
 {
   // check if a new item showed up since we started the timer. If not, clear
   if ( ProgressManager::instance()->isEmpty() ) {
-    m_pProgressBar->setProgress( 0 );
+    m_pProgressBar->setValue( 0 );
     //m_pLabel->clear();
     mode = None;
     setMode();

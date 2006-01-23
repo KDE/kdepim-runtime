@@ -34,9 +34,9 @@ static QString textToHTML( const QString &text )
 HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
   : KTextBrowser( parent )
 {
-  setWrapPolicy( Q3TextEdit::AtWordBoundary );
-  setVScrollBarMode( Q3ScrollView::AlwaysOff );
-  setHScrollBarMode( Q3ScrollView::AlwaysOff );
+  setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
+  setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff );
 }
 
 void HTMLDiffAlgoDisplay::begin()
