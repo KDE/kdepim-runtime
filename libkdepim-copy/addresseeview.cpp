@@ -59,15 +59,18 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
     mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
-  setWrapPolicy( Q3TextEdit::AtWordBoundary );
-  setLinkUnderline( false );
-  setVScrollBarMode( Q3ScrollView::AlwaysOff );
-  setHScrollBarMode( Q3ScrollView::AlwaysOff );
+  setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
+#warning "kde4: porting !!!!!!!!!!! setLinkUnderline( false );\n";
+  //setLinkUnderline( false );
+  setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+  setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
+#warning "kde4: porting stylesheet\n";
+#if 0
   Q3StyleSheet *sheet = styleSheet();
   Q3StyleSheetItem *link = sheet->item( "a" );
   link->setColor( KGlobalSettings::linkColor() );
-
+#endif
   connect( this, SIGNAL( mailClick( const QString&, const QString& ) ),
            this, SLOT( slotMailClicked( const QString&, const QString& ) ) );
   connect( this, SIGNAL( urlClick( const QString& ) ),

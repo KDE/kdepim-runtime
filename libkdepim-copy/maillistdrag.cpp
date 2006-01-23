@@ -86,9 +86,9 @@ void MailSummary::set( quint32 serialNumber, const QString &messageId,
     mDate = date;
 }
 
-MailSummary::operator KURL() const
+MailSummary::operator KUrl() const
 {
-  return KURL( KDEPIMPROTOCOL_EMAIL + QString::number( serialNumber() ) + "/" + messageId() );
+  return KUrl( KDEPIMPROTOCOL_EMAIL + QString::number( serialNumber() ) + "/" + messageId() );
 }
 
 MailListDrag::MailListDrag( const MailList &mailList, QWidget * parent, MailTextSource *src )
@@ -214,7 +214,7 @@ void MailListDrag::setMailList( const MailList &mailList )
   QStringList labels;
   for ( MailList::ConstIterator it = mailList.begin(); it != mailList.end();
         ++it ) {
-    urllist.append( *it );
+    urllist.append( (*it) );
     labels.append( KURL::encode_string( ( *it ).subject() ) );
   }
   QMap<QString,QString> metadata;

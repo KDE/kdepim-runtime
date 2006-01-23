@@ -44,7 +44,7 @@
 #include <QBoxLayout>
 
 class KMMainWidget;
-class KProgress;
+class KProgressBar;
 class QPushButton;
 class QStackedWidget;
 class QBoxLayout;
@@ -86,7 +86,7 @@ protected:
   virtual bool eventFilter( QObject *, QEvent * );
 
 private:
-  KProgress* m_pProgressBar;
+  KProgressBar* m_pProgressBar;
   QLabel* m_pLabel;
   SSLLabel* m_sslLabel;
   QPushButton* m_pButton;

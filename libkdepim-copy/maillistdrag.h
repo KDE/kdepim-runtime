@@ -77,7 +77,7 @@ public:
     time_t date() const;
     
     /** returns kmail:<serial number>/<message id> style uri */
-    operator KURL() const;
+    operator KUrl() const;
 
 private:
     quint32 mSerialNumber;

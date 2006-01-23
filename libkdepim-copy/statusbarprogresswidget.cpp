@@ -85,9 +85,10 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
 
   m_pButton->setToolTip( i18n("Open detailed progress dialog") );
 
-  m_pProgressBar = new KProgress( this );
-  m_pProgressBar->setLineWidth( 1 );
-  m_pProgressBar->setFrameStyle( Q3Frame::Box );
+  m_pProgressBar = new KProgressBar( this );
+#warning "kde4 porting\n";  
+  //m_pProgressBar->setLineWidth( 1 );
+  //m_pProgressBar->setFrameStyle( Q3Frame::Box );
   m_pProgressBar->installEventFilter( this );
   m_pProgressBar->setMinimumWidth( w );
   stack->insertWidget( 1,m_pProgressBar );
@@ -173,9 +174,9 @@ void StatusbarProgressWidget::connectSingleItem()
 
 void StatusbarProgressWidget::activateSingleItemMode()
 {
-  m_pProgressBar->setTotalSteps( 100 );
+  m_pProgressBar->setMaximum( 100 );
   m_pProgressBar->setProgress( mCurrentItem->progress() );
-  m_pProgressBar->setPercentageVisible( true );
+  m_pProgressBar->setTextVisible( true );
 }
 
 void StatusbarProgressWidget::slotShowItemDelayed()
@@ -184,8 +185,8 @@ void StatusbarProgressWidget::slotShowItemDelayed()
   if ( mCurrentItem ) {
     activateSingleItemMode();
   } else if ( !noItems ) { // N items
-    m_pProgressBar->setTotalSteps( 0 );
-    m_pProgressBar->setPercentageVisible( false );
+    m_pProgressBar->setMaximum( 0 );
+    m_pProgressBar->setTextVisible( false );
     Q_ASSERT( mBusyTimer );
     if ( mBusyTimer )
       mBusyTimer->start( 100 );
