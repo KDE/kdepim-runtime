@@ -39,7 +39,7 @@ class KDE_EXPORT EmbeddedURLPage : public QWidget
   public slots:
     void loadContents();
   signals:
-    void openURL( const KURL &url );
+    void openURL( const KUrl &url );
   private:
     void initGUI( const QString &url, const QString &mimetype );
 

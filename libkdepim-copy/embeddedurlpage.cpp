@@ -62,11 +62,11 @@ void EmbeddedURLPage::loadContents()
         mPart->openURL( mUri );
         mPart->widget()->show();
     }
-//void KParts::BrowserExtension::openURLRequestDelayed( const KURL &url, const KParts::URLArgs &args = KParts::URLArgs() )
+//void KParts::BrowserExtension::openURLRequestDelayed( const KUrl &url, const KParts::URLArgs &args = KParts::URLArgs() )
     KParts::BrowserExtension* be = KParts::BrowserExtension::childObject( mPart );
-    connect( be, SIGNAL( openURLRequestDelayed( const KURL &, const KParts::URLArgs & ) ),
-//              mPart, SLOT( openURL( const KURL & ) ) );
-             this, SIGNAL( openURL( const KURL & ) ) );
+    connect( be, SIGNAL( openURLRequestDelayed( const KUrl &, const KParts::URLArgs & ) ),
+//              mPart, SLOT( openURL( const KUrl & ) ) );
+             this, SIGNAL( openURL( const KUrl & ) ) );
   }
 }
 

@@ -231,7 +231,7 @@ void AddresseeLineEdit::insert( const QString &t )
   newText = lines.join( ", " );
 
   if ( newText.startsWith("mailto:") ) {
-    KURL url( newText );
+    KUrl url( newText );
     newText = url.path();
   }
   else if ( newText.find(" at ") != -1 ) {
@@ -305,7 +305,7 @@ void AddresseeLineEdit::mouseReleaseEvent( QMouseEvent *e )
 void AddresseeLineEdit::dropEvent( QDropEvent *e )
 {
   if ( !isReadOnly() ) {
-    KURL::List uriList = KURL::List::fromMimeData( e->mimeData() );
+    KUrl::List uriList = KUrl::List::fromMimeData( e->mimeData() );
     if ( !uriList.isEmpty() ) {
       QString contents = text();
       // remove trailing white space and comma
@@ -320,11 +320,11 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
       }
       bool mailtoURL = false;
       // append the mailto URLs
-      for ( KURL::List::Iterator it = uriList.begin();
+      for ( KUrl::List::Iterator it = uriList.begin();
             it != uriList.end(); ++it ) {
         if ( !contents.isEmpty() )
           contents.append( ", " );
-        KURL u( *it );
+        KUrl u( *it );
         if ( u.protocol() == "mailto" ) {
           mailtoURL = true;
           contents.append( (*it).path() );

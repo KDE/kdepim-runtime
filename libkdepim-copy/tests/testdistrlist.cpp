@@ -119,7 +119,7 @@ void TestDistrList::cleanup()
     KABC::StdAddressBook::close();
 
     QString kdehome = QFile::decodeName( getenv("KDEHOME") );
-    KURL urlkdehome; urlkdehome.setPath( kdehome );
+    KUrl urlkdehome; urlkdehome.setPath( kdehome );
     KIO::NetAccess::del( urlkdehome, 0 );
 }
 

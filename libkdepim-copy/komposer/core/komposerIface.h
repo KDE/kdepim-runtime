@@ -45,7 +45,7 @@ k_dcop:
   /**
      Add url as attachment with a user-defined comment.
   */
-    virtual void addAttachment( const KURL &url, const QString &comment) = 0;
+    virtual void addAttachment( const KUrl &url, const QString &comment) = 0;
 
   /**
      Set message body.

@@ -24,7 +24,7 @@
 #include <klocale.h>
 
 // KDE3.4 or KDE4.0: FIXME: Move to kdelibs!
-KURL KPimURLRequesterDlg::getURL( const QString& dir, const QString &label,
+KUrl KPimURLRequesterDlg::getURL( const QString& dir, const QString &label,
                                   QWidget *parent, const QString& caption )
 {
     KUrlRequesterDlg dlg(dir, label, parent, "filedialog", true);
@@ -33,7 +33,7 @@ KURL KPimURLRequesterDlg::getURL( const QString& dir, const QString &label,
 
     dlg.exec();
 
-    const KURL& url = dlg.selectedURL();
+    const KUrl& url = dlg.selectedURL();
     if (url.isValid())
         KRecentDocument::add(url);
 

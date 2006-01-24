@@ -210,12 +210,12 @@ void MailListDrag::setMailList( const MailList &mailList )
   if ( mUrlDrag )
     delete mUrlDrag;
   
-  KURL::List urllist;
+  KUrl::List urllist;
   QStringList labels;
   for ( MailList::ConstIterator it = mailList.begin(); it != mailList.end();
         ++it ) {
     urllist.append( (*it) );
-    labels.append( KURL::encode_string( ( *it ).subject() ) );
+    labels.append( KUrl::encode_string( ( *it ).subject() ) );
   }
   QMap<QString,QString> metadata;
   metadata["labels"] = labels.join( ":" );

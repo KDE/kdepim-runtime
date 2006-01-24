@@ -99,7 +99,7 @@ DefaultEditor::createActions( KActionCollection *ac )
   // File Actions
   //
   (void) KStdAction::open( this, SLOT(open()), ac );
-  (void) KStdAction::openRecent( this, SLOT(openURL(const KURL &)), ac );
+  (void) KStdAction::openRecent( this, SLOT(openURL(const KUrl &)), ac );
   (void) KStdAction::save( this, SLOT(save()), ac );
   (void) KStdAction::saveAs( this, SLOT(saveAs()), ac );
 
@@ -319,7 +319,7 @@ DefaultEditor::setAlignJustify( bool yes )
 bool
 DefaultEditor::open()
 {
-  KURL url = KFileDialog::getOpenURL();
+  KUrl url = KFileDialog::getOpenURL();
   if ( url.isEmpty() )
     return false;
 
@@ -331,7 +331,7 @@ DefaultEditor::open()
 bool
 DefaultEditor::saveAs()
 {
-  KURL url = KFileDialog::getSaveURL();
+  KUrl url = KFileDialog::getSaveURL();
   if ( url.isEmpty() )
     return false;
 

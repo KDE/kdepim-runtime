@@ -49,7 +49,7 @@ namespace Komposer
 
   public slots:
     virtual void send( int how );
-    virtual void addAttachment( const KURL &url, const QString &comment );
+    virtual void addAttachment( const KUrl &url, const QString &comment );
     virtual void setBody( const QString &body );
     virtual void addAttachment( const QString &name,
                                 const QCString &cte,

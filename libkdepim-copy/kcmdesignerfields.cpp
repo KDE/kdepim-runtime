@@ -188,9 +188,9 @@ void KCMDesignerFields::deleteFile()
 
 void KCMDesignerFields::importFile()
 {
-  KURL src = KFileDialog::getOpenFileName( QDir::homePath(), i18n("*.ui|Designer Files"),
+  KUrl src = KFileDialog::getOpenFileName( QDir::homePath(), i18n("*.ui|Designer Files"),
                                               this, i18n("Import Page") );
-  KURL dest = localUiDir();
+  KUrl dest = localUiDir();
   dest.setFileName(src.fileName());
   KIO::NetAccess::file_copy( src, dest, -1, true, false, this );
   // The actual view refresh will be done automagically by the slots connected to kdirwatch

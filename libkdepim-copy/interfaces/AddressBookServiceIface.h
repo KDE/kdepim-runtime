@@ -49,7 +49,7 @@ namespace KPIM {
 
         @param url The url where the vcard is located.
        */
-      virtual void importVCard( const KURL& url ) = 0;
+      virtual void importVCard( const KUrl& url ) = 0;
   };
 
 }

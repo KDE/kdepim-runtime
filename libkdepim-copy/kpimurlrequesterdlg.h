@@ -37,7 +37,7 @@ class KDE_EXPORT KPimURLRequesterDlg
 		 * @param text The text to be shown on the label.
      * @param parent The widget the dialog will be centered on initially.
      */
-		static KURL getURL( const QString &url = QString(), 
+		static KUrl getURL( const QString &url = QString(), 
 			                const QString &text = QString(),
                       QWidget *parent = 0, 
 			                const QString &caption = QString() );

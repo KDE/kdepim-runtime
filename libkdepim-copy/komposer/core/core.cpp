@@ -330,7 +330,7 @@ Core::send( int how )
 }
 
 void
-Core::addAttachment( const KURL &url, const QString &comment )
+Core::addAttachment( const KUrl &url, const QString &comment )
 {
 
 }

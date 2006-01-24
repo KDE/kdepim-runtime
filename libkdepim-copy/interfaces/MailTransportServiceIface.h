@@ -48,7 +48,7 @@ namespace KPim {
       virtual bool sendMessage( const QString& from, const QString& to, 
                                 const QString& cc, const QString& bcc,
                                 const QString& subject, const QString& body, 
-                                const KURL::List& attachments ) = 0;
+                                const KUrl::List& attachments ) = 0;
 
       /**
        * This method basically behaves like the one above, but takes only one
@@ -73,7 +73,7 @@ namespace KPim {
       virtual bool sendMessage( const QString& to, 
                                 const QString& cc, const QString& bcc,
                                 const QString& subject, const QString& body, 
-                                const KURL::List& attachments ) = 0;
+                                const KUrl::List& attachments ) = 0;
 			       
       /**
        * This method is deprecated. Use the corresponding method with the
