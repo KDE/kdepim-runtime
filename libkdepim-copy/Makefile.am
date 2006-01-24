@@ -35,7 +35,7 @@ libkdepim_la_SOURCES = \
   krsqueezedtextlabel.cpp csshelper.cpp distributionlist.cpp \
   kpimurlrequesterdlg.cpp sendsmsdialog.cpp \
   categoryhierarchyreader.cpp autoselectingchecklistitem.cpp \
-  improvedlistview.cpp messagestatus.cpp
+  improvedlistview.cpp messagestatus.cpp kemailquotinghighter.cpp
 
 MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
@@ -45,7 +45,7 @@ AddressBookServiceIface_DIR = $(srcdir)/interfaces
 libkdepim_la_LDFLAGS = $(all_libraries) -no-undefined -version-info 1:0:0
 libkdepim_la_LIBADD  = $(top_builddir)/libkcal/libkcal.la \
                        $(top_builddir)/libemailfunctions/libemailfunctions.la \
-                       $(LIB_KDE3SUPPORT) $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) $(LIB_QTDESIGNER)
+                       $(LIB_KDE3SUPPORT) $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) $(LIB_QTDESIGNER) -lkspell2
 #               $top_builddir)/libkdepim/resources/libkpimresources.la
 
 include_HEADERS = kdepimmacros.h kdepimprotocols.h
