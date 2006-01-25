@@ -56,7 +56,7 @@ void KPimPrefs::usrReadConfig()
   kdDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
 
   config()->setGroup("General");
-  mCustomCategories = config()->readListEntry( "Custom Categories" );
+  mCustomCategories = config()->readEntry( "Custom Categories" , QStringList() );
   if ( mCustomCategories.isEmpty() ) setCategoryDefaults();
   mCustomCategories.sort();
 }

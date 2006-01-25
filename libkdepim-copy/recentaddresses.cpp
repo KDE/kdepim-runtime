@@ -78,7 +78,7 @@ void RecentAddresses::load( KConfig *config )
     m_addresseeList.clear();
     KConfigGroup cg( config, "General" );
     m_maxCount = cg.readEntry( "Maximum Recent Addresses", 40 );
-    addresses = cg.readListEntry( "Recent Addresses" );
+    addresses = cg.readEntry( "Recent Addresses" , QStringList() );
     for ( QStringList::Iterator it = addresses.begin(); it != addresses.end(); ++it ) {
         KABC::Addressee::parseEmailAddress( *it, name, email );
         if ( !email.isEmpty() ) {
