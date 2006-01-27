@@ -39,11 +39,10 @@
 
 #include <kabc/addressee.h>
 
-#include "clicklineedit.h"
 #include "kcompletion.h"
 #include <dcopobject.h>
 #include <kdepimmacros.h>
-
+#include <klineedit.h>
 class QMenu;
 
 class KConfig;
@@ -57,7 +56,7 @@ typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 
 namespace KPIM {
 
-class KDE_EXPORT AddresseeLineEdit : public ClickLineEdit, public DCOPObject
+class KDE_EXPORT AddresseeLineEdit : public KLineEdit, public DCOPObject
 {
   K_DCOP
   Q_OBJECT

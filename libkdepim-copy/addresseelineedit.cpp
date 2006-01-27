@@ -98,8 +98,10 @@ static const QString s_completionItemIndentString = "     ";
 
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
                                       const char *name )
-  : ClickLineEdit( parent, QString(), name ), DCOPObject( newLineEditDCOPObjectName() )
+  : KLineEdit( parent ), DCOPObject( newLineEditDCOPObjectName() )
 {
+  setObjectName(name);
+  setClickMessage("");
   m_useCompletion = useCompletion;
   m_completionInitialized = false;
   m_smartPaste = false;
@@ -276,7 +278,7 @@ void AddresseeLineEdit::insert( const QString &t )
 
 void AddresseeLineEdit::setText( const QString & text )
 {
-  ClickLineEdit::setText( text.trimmed() );
+  KLineEdit::setText( text.trimmed() );
 }
 
 void AddresseeLineEdit::paste()
@@ -872,7 +874,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       }
     }
   }
-  return ClickLineEdit::eventFilter( obj, e );
+  return KLineEdit::eventFilter( obj, e );
 }
 
 const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool fullSearch )

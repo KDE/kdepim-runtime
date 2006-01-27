@@ -17,7 +17,7 @@ libkdepim_la_SOURCES = \
   pluginloaderbase.cpp addresseelineedit.cpp addresseelineedit.skel \
   kdatepickerpopup.cpp \ 
   kfileio.cpp \
-  clicklineedit.cpp configmanager.cpp \
+  configmanager.cpp \
   collectingprocess.cpp ldapclient.cpp \
   overlaywidget.cpp progressmanager.cpp progressdialog.cpp \
   statusbarprogresswidget.cpp ssllabel.cpp completionordereditor.cpp \
