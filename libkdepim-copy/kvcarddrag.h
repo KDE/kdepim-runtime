@@ -23,7 +23,7 @@
 #define KVCARDDRAG_H
 
 #include <q3dragobject.h>
-#include <qstring.h>
+#include <QByteArray>
 
 #include <kabc/addressee.h>
 #include <kdepimmacros.h>
@@ -49,13 +49,13 @@ class KDE_EXPORT KVCardDrag : public Q3StoredDrag
     /**
      * Constructs a vcard drag with the @p addressee.
      */
-    KVCardDrag( const QString &content, QWidget *dragsource = 0, const char *name = 0 );
+    KVCardDrag( const QByteArray &content, QWidget *dragsource = 0, const char *name = 0 );
     virtual ~KVCardDrag() {};
 
     /**
      * Sets the vcard of the drag to @p content.
      */
-    void setVCard( const QString &content );
+    void setVCard( const QByteArray &content );
 
     /**
      * Returns true if the MIME source @p e contains a vcard object.
@@ -65,7 +65,7 @@ class KDE_EXPORT KVCardDrag : public Q3StoredDrag
     /**
      * Decodes the MIME source @p e and puts the resulting vcard into @p content.
      */
-    static bool decode( QMimeSource *e, QString &content );
+    static bool decode( QMimeSource *e, QByteArray &content );
 
     /**
      * Decodes the MIME source @p e and puts the resulting vcard into @p addresseess.

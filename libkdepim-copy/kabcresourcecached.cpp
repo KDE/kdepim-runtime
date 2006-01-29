@@ -18,9 +18,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qfile.h>
-//Added by qt3to4:
-#include <Q3CString>
+#include <QFile>
 
 #include <kabc/vcardconverter.h>
 #include <kdebug.h>
@@ -96,7 +94,7 @@ void ResourceCached::loadCache()
 
 
   KABC::VCardConverter converter;
-  KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
+  KABC::Addressee::List list = converter.parseVCards( file.readAll() );
   KABC::Addressee::List::Iterator it;
 
   for ( it = list.begin(); it != list.end(); ++it ) {
@@ -121,8 +119,8 @@ void ResourceCached::saveCache()
   KABC::Addressee::List list = mAddrMap.values();
 
   KABC::VCardConverter converter;
-  QString vCard = converter.createVCards( list );
-  file.write( vCard.utf8(), vCard.utf8().length() );
+  QByteArray vCard = converter.createVCards( list );
+  file.write( vCard );
   file.close();
 }
 
@@ -135,7 +133,7 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
 
 
   KABC::VCardConverter converter;
-  KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
+  KABC::Addressee::List list = converter.parseVCards( file.readAll() );
   KABC::Addressee::List::Iterator cacheIt;
   KABC::Addressee::List::ConstIterator it;
 
@@ -227,9 +225,8 @@ void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map
     }
 
     KABC::VCardConverter converter;
-    const QString vCards = converter.createVCards( list );
-    Q3CString content = vCards.utf8();
-    file.write( content, content.length() );
+    const QByteArray vCards = converter.createVCards( list );
+    file.write( vCards );
   }
 }
 
@@ -248,7 +245,7 @@ void ResourceCached::loadChangesCache( QMap<QString, KABC::Addressee> &map, cons
 
   KABC::VCardConverter converter;
 
-  const KABC::Addressee::List list = converter.parseVCards( /*QString::fromUtf8*/( file.readAll() ) );
+  const KABC::Addressee::List list = converter.parseVCards( file.readAll() );
   KABC::Addressee::List::ConstIterator it;
   for ( it = list.begin(); it != list.end(); ++it )
     map.insert( (*it).uid(), *it );
