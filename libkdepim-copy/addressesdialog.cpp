@@ -847,15 +847,13 @@ AddressesDialog::removeEntry()
 // KDE4: should be in libkabc I think
 static KABC::Resource *requestResource( KABC::AddressBook* abook, QWidget *parent )
 {
-  Q3PtrList<KABC::Resource> kabcResources = abook->resources();
+  const QList<KABC::Resource*> kabcResources = abook->resources();
 
-  Q3PtrList<KRES::Resource> kresResources;
-  Q3PtrListIterator<KABC::Resource> resIt( kabcResources );
-  KABC::Resource *resource;
-  while ( ( resource = resIt.current() ) != 0 ) {
-    ++resIt;
-    if ( !resource->readOnly() ) {
-      KRES::Resource *res = static_cast<KRES::Resource*>( resource );
+  QList<KRES::Resource*> kresResources;
+  QList<KABC::Resource*>::const_iterator resIt;
+  for ( resIt = kabcResources.begin(); resIt != kabcResources.end(); ++resIt) {
+    if ( (*resIt)->readOnly() ) {
+      KRES::Resource *res = static_cast<KRES::Resource*>( *resIt );
       if ( res )
         kresResources.append( res );
     }
