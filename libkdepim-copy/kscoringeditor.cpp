@@ -201,7 +201,7 @@ void ConditionEditWidget::updateRule(KScoringRule *rule)
   rule->cleanExpressions();
   for(QWidget *w = mWidgetList.first(); w; w = mWidgetList.next()) {
     if (! w->isA("SingleConditionWidget")) {
-      kdWarning(5100) << "there is a widget in ConditionEditWidget "
+      kWarning(5100) << "there is a widget in ConditionEditWidget "
                       << "which isn't a SingleConditionWidget" << endl;
     } else {
       SingleConditionWidget *saw = dynamic_cast<SingleConditionWidget*>(w);
@@ -272,7 +272,7 @@ SingleActionWidget::~SingleActionWidget()
 
 void SingleActionWidget::setAction(ActionBase *act)
 {
-  kdDebug(5100) << "SingleActionWidget::setAction()" << endl;
+  kDebug(5100) << "SingleActionWidget::setAction()" << endl;
   setCurrentItem(types,ActionBase::userName(act->getType()));
   int index = types->currentItem();
   stack->setCurrentIndex(index);
@@ -290,7 +290,7 @@ void SingleActionWidget::setAction(ActionBase *act)
       // nothing
       break;
     default:
-      kdWarning(5100) << "unknown action type in SingleActionWidget::setAction()" << endl;
+      kWarning(5100) << "unknown action type in SingleActionWidget::setAction()" << endl;
   }
 }
 
@@ -311,7 +311,7 @@ ActionBase* SingleActionWidget::createAction() const
     case ActionBase::MARKASREAD:
       return new ActionMarkAsRead();
     default:
-      kdWarning(5100) << "unknown action type in SingleActionWidget::getValue()" << endl;
+      kWarning(5100) << "unknown action type in SingleActionWidget::getValue()" << endl;
       return 0;
   }
 }
@@ -368,7 +368,7 @@ void ActionEditWidget::updateRule(KScoringRule *rule)
   rule->cleanActions();
   for(QWidget *w = mWidgetList.first(); w; w = mWidgetList.next()) {
     if (! w->isA("SingleActionWidget")) {
-      kdWarning(5100) << "there is a widget in ActionEditWidget "
+      kWarning(5100) << "there is a widget in ActionEditWidget "
                       << "which isn't a SingleActionWidget" << endl;
     } else {
       SingleActionWidget *saw = dynamic_cast<SingleActionWidget*>(w);
@@ -398,7 +398,7 @@ void ActionEditWidget::clearWidget(QWidget *w)
 RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   : QWidget(p,n), dirty(false), manager(m), oldRuleName(QString())
 {
-  kdDebug(5100) << "RuleEditWidget::RuleEditWidget()" << endl;
+  kDebug(5100) << "RuleEditWidget::RuleEditWidget()" << endl;
   if ( !n ) setName( "RuleEditWidget" );
   QVBoxLayout *topLayout = new QVBoxLayout( this, 5, KDialog::spacingHint() );
 
@@ -478,7 +478,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
 
   topLayout->addStretch(1);
 
-  kdDebug(5100) << "constructed RuleEditWidget" << endl;
+  kDebug(5100) << "constructed RuleEditWidget" << endl;
 }
 
 RuleEditWidget::~RuleEditWidget()
@@ -487,21 +487,21 @@ RuleEditWidget::~RuleEditWidget()
 
 void RuleEditWidget::slotEditRule(const QString& ruleName)
 {
-  kdDebug(5100) << "RuleEditWidget::slotEditRule(" << ruleName << ")" << endl;
+  kDebug(5100) << "RuleEditWidget::slotEditRule(" << ruleName << ")" << endl;
 //   // first update the old rule if there is one
-//   kdDebug(5100) << "let see if we have a rule with name " << oldRuleName << endl;
+//   kDebug(5100) << "let see if we have a rule with name " << oldRuleName << endl;
 //   KScoringRule *rule;
 //   if (!oldRuleName.isNull() && oldRuleName != ruleName) {
 //     rule = manager->findRule(oldRuleName);
 //     if (rule) {
-//       kdDebug(5100) << "updating rule " << rule->getName() << endl;
+//       kDebug(5100) << "updating rule " << rule->getName() << endl;
 //       updateRule(rule);
 //     }
 //   }
 
   KScoringRule* rule = manager->findRule(ruleName);
   if (!rule) {
-    kdDebug(5100) << "no rule for ruleName " << ruleName << endl;
+    kDebug(5100) << "no rule for ruleName " << ruleName << endl;
     clearContents();
     return;
   }
@@ -527,7 +527,7 @@ void RuleEditWidget::slotEditRule(const QString& ruleName)
   condEditor->slotEditRule(rule);
   actionEditor->slotEditRule(rule);
 
-  kdDebug(5100) << "RuleEditWidget::slotEditRule() ready" << endl;
+  kDebug(5100) << "RuleEditWidget::slotEditRule() ready" << endl;
 }
 
 void RuleEditWidget::clearContents()
@@ -580,7 +580,7 @@ void RuleEditWidget::slotAddGroup()
 
 void RuleEditWidget::setDirty()
 {
-  kdDebug(5100) << "RuleEditWidget::setDirty()" << endl;
+  kDebug(5100) << "RuleEditWidget::setDirty()" << endl;
   if (dirty) return;
   dirty = true;
 }
@@ -598,7 +598,7 @@ void RuleEditWidget::slotShrink()
 RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, const char *n)
   : QWidget(p,n), alone(standalone), manager(m)
 {
-  kdDebug(5100) << "RuleListWidget::RuleListWidget()" << endl;
+  kDebug(5100) << "RuleListWidget::RuleListWidget()" << endl;
   if (!n) setName("RuleListWidget");
   QVBoxLayout *topL = new QVBoxLayout(this,standalone? 0:5,KDialog::spacingHint());
   ruleList = new KListBox(this);
@@ -695,7 +695,7 @@ void RuleListWidget::updateButton()
 void RuleListWidget::updateRuleList()
 {
   emit leavingRule();
-  kdDebug(5100) << "RuleListWidget::updateRuleList()" << endl;
+  kDebug(5100) << "RuleListWidget::updateRuleList()" << endl;
   QString curr = ruleList->currentText();
   ruleList->clear();
   if (group == i18n("<all groups>")) {
@@ -719,7 +719,7 @@ void RuleListWidget::updateRuleList()
 
 void RuleListWidget::updateRuleList(const KScoringRule *rule)
 {
-  kdDebug(5100) << "RuleListWidget::updateRuleList(" << rule->getName() << ")" << endl;
+  kDebug(5100) << "RuleListWidget::updateRuleList(" << rule->getName() << ")" << endl;
   QString name = rule->getName();
   updateRuleList();
   slotRuleSelected(name);
@@ -764,7 +764,7 @@ void RuleListWidget::slotGroupFilter(const QString& s)
 void RuleListWidget::slotRuleSelected(const QString& ruleName)
 {
   emit leavingRule();
-  kdDebug(5100) << "RuleListWidget::slotRuleSelected(" << ruleName << ")" << endl;
+  kDebug(5100) << "RuleListWidget::slotRuleSelected(" << ruleName << ")" << endl;
   if (ruleName != ruleList->currentText()) {
     setCurrentItem(ruleList,ruleName);
   }
@@ -864,7 +864,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m,
 {
   manager->pushRuleList();
   if (!scoreEditor) scoreEditor = this;
-  kdDebug(5100) << "KScoringEditor::KScoringEditor()" << endl;
+  kDebug(5100) << "KScoringEditor::KScoringEditor()" << endl;
   if (!name) setName("KScoringEditor");
   // the left side gives an overview about all rules, the right side
   // shows a detailed view of an selected rule
@@ -905,7 +905,7 @@ KScoringEditor* KScoringEditor::createEditor(KScoringManager* m,
 
 void KScoringEditor::setRule(KScoringRule* r)
 {
-  kdDebug(5100) << "KScoringEditor::setRule(" << r->getName() << ")" << endl;
+  kDebug(5100) << "KScoringEditor::setRule(" << r->getName() << ")" << endl;
   QString ruleName = r->getName();
   ruleLister->slotRuleSelected(ruleName);
 }

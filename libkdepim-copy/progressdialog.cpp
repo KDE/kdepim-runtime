@@ -87,7 +87,7 @@ TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bo
 
 void TransactionItemView::resizeContents( int w, int h )
 {
-  //kdDebug(5300) << k_funcinfo << w << "," << h << endl;
+  //kDebug(5300) << k_funcinfo << w << "," << h << endl;
   Q3ScrollView::resizeContents( w, h );
   // Tell the layout in the parent (progressdialog) that our size changed
   updateGeometry();

@@ -100,7 +100,7 @@ void KConfigWizard::setupRulesPage()
 void KConfigWizard::updateRules()
 {
   if ( !mPropagator ) {
-    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+    kError() << "KConfigWizard: No KConfigPropagator set." << endl;
     return;
   }
 
@@ -141,10 +141,10 @@ void KConfigWizard::setupChangesPage()
 
 void KConfigWizard::updateChanges()
 {
-  kdDebug() << "KConfigWizard::updateChanges()" << endl;
+  kDebug() << "KConfigWizard::updateChanges()" << endl;
 
   if ( !mPropagator ) {
-    kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+    kError() << "KConfigWizard: No KConfigPropagator set." << endl;
     return;
   }
 
@@ -163,7 +163,7 @@ void KConfigWizard::updateChanges()
 
 void KConfigWizard::readConfig()
 {
-  kdDebug() << "KConfigWizard::readConfig()" << endl;
+  kDebug() << "KConfigWizard::readConfig()" << endl;
 
   int result = KMessageBox::warningContinueCancel( this,
       i18n("Please make sure that the programs which are "
@@ -182,7 +182,7 @@ void KConfigWizard::slotOk()
     usrWriteConfig();
 
     if ( !mPropagator ) {
-      kdError() << "KConfigWizard: No KConfigPropagator set." << endl;
+      kError() << "KConfigWizard: No KConfigPropagator set." << endl;
       return;
     } else {
       if ( mPropagator->skeleton() ) {

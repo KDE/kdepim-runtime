@@ -69,7 +69,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   if ( enumItem ) {
     QList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
-      kdError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
+      kError() << "KPrefsWidFactory::create(): Enum has no choices." << endl;
       return 0;
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
@@ -198,7 +198,7 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
 
 KPrefsWidColor::~KPrefsWidColor()
 {
-//  kdDebug(5300) << "KPrefsWidColor::~KPrefsWidColor()" << endl;
+//  kDebug(5300) << "KPrefsWidColor::~KPrefsWidColor()" << endl;
 }
 
 void KPrefsWidColor::readConfig()
@@ -653,7 +653,7 @@ KPrefsWidInt *KPrefsWidManager::addWidInt( KConfigSkeleton::ItemInt *item,
 
 void KPrefsWidManager::setWidDefaults()
 {
-  kdDebug() << "KPrefsWidManager::setWidDefaults()" << endl;
+  kDebug() << "KPrefsWidManager::setWidDefaults()" << endl;
 
   bool tmp = mPrefs->useDefaults( true );
 
@@ -664,7 +664,7 @@ void KPrefsWidManager::setWidDefaults()
 
 void KPrefsWidManager::readWidConfig()
 {
-  kdDebug(5310) << "KPrefsWidManager::readWidConfig()" << endl;
+  kDebug(5310) << "KPrefsWidManager::readWidConfig()" << endl;
 
   QList<KPrefsWid*>::Iterator it;
   for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
@@ -674,7 +674,7 @@ void KPrefsWidManager::readWidConfig()
 
 void KPrefsWidManager::writeWidConfig()
 {
-  kdDebug(5310) << "KPrefsWidManager::writeWidConfig()" << endl;
+  kDebug(5310) << "KPrefsWidManager::writeWidConfig()" << endl;
 
   QList<KPrefsWid*>::Iterator it;
   for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
@@ -712,7 +712,7 @@ void KPrefsDialog::autoCreate()
     QString group = (*it)->group();
     QString name = (*it)->name();
 
-    kdDebug() << "ITEMS: " << (*it)->name() << endl;
+    kDebug() << "ITEMS: " << (*it)->name() << endl;
 
     QWidget *page;
     QGridLayout *layout;
@@ -740,7 +740,7 @@ void KPrefsDialog::autoCreate()
         layout->addWidget( widgets[ 0 ], currentRow, 0 );
         layout->addWidget( widgets[ 1 ], currentRow, 1 );
       } else {
-        kdError() << "More widgets than expected: " << widgets.count() << endl;
+        kError() << "More widgets than expected: " << widgets.count() << endl;
       }
 
       if ( (*it)->isImmutable() ) {
@@ -795,7 +795,7 @@ void KPrefsDialog::slotOk()
 
 void KPrefsDialog::slotDefault()
 {
-  kdDebug() << "KPrefsDialog::slotDefault()" << endl;
+  kDebug() << "KPrefsDialog::slotDefault()" << endl;
 
   if (KMessageBox::warningContinueCancel(this,
       i18n("You are about to set all preferences to default values. All "
@@ -821,14 +821,14 @@ void KPrefsModule::addWid( KPrefsWid *wid )
 
 void KPrefsModule::slotWidChanged()
 {
-  kdDebug(5310) << "KPrefsModule::slotWidChanged()" << endl;
+  kDebug(5310) << "KPrefsModule::slotWidChanged()" << endl;
 
   emit changed( true );
 }
 
 void KPrefsModule::load()
 {
-  kdDebug(5310) << "KPrefsModule::load()" << endl;
+  kDebug(5310) << "KPrefsModule::load()" << endl;
 
   readWidConfig();
 
@@ -839,7 +839,7 @@ void KPrefsModule::load()
 
 void KPrefsModule::save()
 {
-  kdDebug(5310) << "KPrefsModule::save()" << endl;
+  kDebug(5310) << "KPrefsModule::save()" << endl;
 
   writeWidConfig();
 

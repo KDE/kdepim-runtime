@@ -105,7 +105,7 @@ Core::addPlugin( Komposer::Plugin *plugin )
 void
 Core::slotPluginLoaded( Plugin *plugin )
 {
-  kdDebug() << "Plugin loaded "<<endl;
+  kDebug() << "Plugin loaded "<<endl;
 
   Editor *editor = dynamic_cast<Editor*>( plugin );
   if ( editor ) {
@@ -119,10 +119,10 @@ void
 Core::slotAllPluginsLoaded()
 {
   QValueList<KPluginInfo*> plugins = m_pluginManager->availablePlugins();
-  kdDebug()<<"Number of available plugins is "<< plugins.count() <<endl;
+  kDebug()<<"Number of available plugins is "<< plugins.count() <<endl;
   for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
     KPluginInfo *i = ( *it );
-    kdDebug()<<"\tAvailable plugin "<< i->pluginName()
+    kDebug()<<"\tAvailable plugin "<< i->pluginName()
              <<", comment = "<< i->comment() <<endl;
   }
 
@@ -140,7 +140,7 @@ Core::slotActivePartChanged( KParts::Part *part )
     return;
   }
 
-  kdDebug() << "Part activated: " << part << " with stack id. "
+  kDebug() << "Part activated: " << part << " with stack id. "
             << m_stack->id( part->widget() )<< endl;
 
   createGUI( part );
@@ -165,7 +165,7 @@ Core::selectEditor( Komposer::Editor *editor )
   QWidget *view = part->widget();
   Q_ASSERT( view );
 
-  kdDebug()<<"Raising view "<<view<<endl;
+  kDebug()<<"Raising view "<<view<<endl;
   if ( view )
   {
     m_stack->raiseWidget( view );
@@ -185,7 +185,7 @@ Core::selectEditor( const QString &editorName )
 void
 Core::loadSettings()
 {
-  //kdDebug()<<"Trying to select "<< Prefs::self()->m_activeEditor <<endl;
+  //kDebug()<<"Trying to select "<< Prefs::self()->m_activeEditor <<endl;
   //selectEditor( Prefs::self()->m_activeEditor );
 
   //m_activeEditors = Prefs::self()->m_activeEditors;
@@ -201,7 +201,7 @@ Core::saveSettings()
 void
 Core::slotQuit()
 {
-  kdDebug()<<"exit"<<endl;
+  kDebug()<<"exit"<<endl;
   m_pluginManager->shutdown();
 }
 
@@ -233,7 +233,7 @@ Core::initCore()
 
 
   m_pluginManager->loadAllPlugins();
-  kdDebug()<<"Loading"<<endl;
+  kDebug()<<"Loading"<<endl;
 }
 
 void

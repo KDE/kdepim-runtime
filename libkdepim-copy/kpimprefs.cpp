@@ -53,7 +53,7 @@ void KPimPrefs::usrSetDefaults()
 
 void KPimPrefs::usrReadConfig()
 {
-  kdDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
+  kDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
 
   config()->setGroup("General");
   mCustomCategories = config()->readEntry( "Custom Categories" , QStringList() );
@@ -71,7 +71,7 @@ const QString KPimPrefs::timezone()
   QString tz( korgcfg.readEntry( "TimeZoneId" ) );
   if ( !tz.isEmpty() ) {
     zone = tz;
-    kdDebug(5300) << "timezone from korganizerrc is " << zone << endl;
+    kDebug(5300) << "timezone from korganizerrc is " << zone << endl;
   }
 
   // If timezone not found in KOrg, use the system's default timezone.
@@ -82,12 +82,12 @@ const QString KPimPrefs::timezone()
     if ( len > 0 && len < PATH_MAX ) {
       zone = QString::fromLocal8Bit( zonefilebuf, len );
       zone = zone.mid( zone.indexOf( "zoneinfo/" ) + 9 );
-      kdDebug(5300) << "system timezone from /etc/localtime is " << zone
+      kDebug(5300) << "system timezone from /etc/localtime is " << zone
                     << endl;
     } else {
       tzset();
       zone = tzname[ 0 ];
-      kdDebug(5300) << "system timezone from tzset() is " << zone << endl;
+      kDebug(5300) << "system timezone from tzset() is " << zone << endl;
     }
   }
 
@@ -98,7 +98,7 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
                                      const QString &timeZoneId )
 {
   QDateTime dt(_dt);
-//  kdDebug() << "---   UTC: " << dt.toString() << endl;
+//  kDebug() << "---   UTC: " << dt.toString() << endl;
 
   int yearCorrection = 0;
   // The timezone conversion only works for dates > 1970
@@ -111,7 +111,7 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
   {
     yearCorrection = 1971 - year;
     dt = dt.addYears(yearCorrection);
-//    kdDebug() << "---   Adjusted UTC: " << dt.toString() << endl;
+//    kDebug() << "---   Adjusted UTC: " << dt.toString() << endl;
   }
   
   QByteArray origTz = getenv("TZ");
@@ -133,7 +133,7 @@ QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
                            local->tm_mon + 1, local->tm_mday ),
                     QTime( local->tm_hour, local->tm_min, local->tm_sec ) );
 
-//  kdDebug() << "--- LOCAL: " << result.toString() << endl;
+//  kDebug() << "--- LOCAL: " << result.toString() << endl;
   return result;
 }
 
@@ -141,7 +141,7 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
                                      const QString &timeZoneId )
 {
   QDateTime dt(_dt);
-//  kdDebug() << "--- LOCAL: " << dt.toString() << endl;
+//  kDebug() << "--- LOCAL: " << dt.toString() << endl;
 
   int yearCorrection = 0;
   // The timezone conversion only works for dates > 1970
@@ -155,7 +155,7 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
   {
     yearCorrection = 1971 - year;
     dt = dt.addYears(yearCorrection);
-//    kdDebug() << "---   Adjusted LOCAL: " << dt.toString() << endl;
+//    kDebug() << "---   Adjusted LOCAL: " << dt.toString() << endl;
   }
 
   QByteArray origTz = getenv("TZ");
@@ -177,7 +177,7 @@ QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
                            utc->tm_mon + 1, utc->tm_mday ),
                     QTime( utc->tm_hour, utc->tm_min, utc->tm_sec ) );
 
-//  kdDebug() << "---   UTC: " << result.toString() << endl;
+//  kDebug() << "---   UTC: " << result.toString() << endl;
 
   return result;
 }

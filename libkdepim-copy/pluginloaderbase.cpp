@@ -32,7 +32,7 @@
 #include <qstringlist.h>
 
 static kdbgstream warning() {
-  return kdWarning( 5300 ) << "PluginLoaderBase: ";
+  return kWarning( 5300 ) << "PluginLoaderBase: ";
 }
 #ifndef NDEBUG
 static kdbgstream debug( bool cond )
@@ -40,7 +40,7 @@ static kdbgstream debug( bool cond )
 static kndbgstream debug( bool cond )
 #endif
 {
-  return kdDebug( cond, 5300 ) << "PluginLoaderBase: ";
+  return kDebug( cond, 5300 ) << "PluginLoaderBase: ";
 }
 
 namespace KPIM {

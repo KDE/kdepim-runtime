@@ -11,6 +11,6 @@ main()
   KRegExp3 reg("^");
   QString res = reg.replace(QString::fromLatin1("Fun stuff"),
 			    QString::fromLatin1("[fun] "));
-  kdDebug() << res << endl;
+  kDebug() << res << endl;
 
 }

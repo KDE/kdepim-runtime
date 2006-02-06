@@ -59,7 +59,7 @@ void DesignerFields::initGUI( const QString &uiFile )
   QFormBuilder builder;
   QWidget *wdg = builder.load( &f, this );
   if ( !wdg ) {
-    kdError() << "No ui file found" << endl;
+    kError() << "No ui file found" << endl;
     return;
   }
 

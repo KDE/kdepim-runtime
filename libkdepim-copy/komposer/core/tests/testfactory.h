@@ -39,7 +39,7 @@ public:
     int runTests()
         {
             int result = 0;
-            kdDebug()<<"Running tests..."<<endl;
+            kDebug()<<"Running tests..."<<endl;
             QAsciiDictIterator<Tester> it( m_tests );
             for( ; it.current(); ++it ) {
                 Tester* test = it.current();
@@ -47,16 +47,16 @@ public:
                 QStringList errorList = test->errorList();
                 if ( !errorList.empty() ) {
                     ++result;
-                    kdDebug()<< it.currentKey() <<" errors:" << endl;
+                    kDebug()<< it.currentKey() <<" errors:" << endl;
                     for ( QStringList::Iterator itr = errorList.begin();
                           itr != errorList.end(); ++itr ) {
-                        kdDebug()<< "\t" << (*itr).toLatin1() <<endl;;
+                        kDebug()<< "\t" << (*itr).toLatin1() <<endl;;
                     }
                 } else {
-                    kdDebug()<< it.currentKey()<< " OK "<<endl;
+                    kDebug()<< it.currentKey()<< " OK "<<endl;
                 }
             }
-            kdDebug()<< "Done" <<endl;
+            kDebug()<< "Done" <<endl;
             return result;
         }
 public:

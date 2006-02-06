@@ -85,7 +85,7 @@ void KConfigPropagator::readKcfgFile()
 {
   QString filename = locate( "kcfg", mKcfgFile );
   if ( filename.isEmpty() ) {
-    kdError() << "Unable to find kcfg file '" << mKcfgFile << "'" << endl;
+    kError() << "Unable to find kcfg file '" << mKcfgFile << "'" << endl;
     return;
   }
 
@@ -95,14 +95,14 @@ void KConfigPropagator::readKcfgFile()
   int errorRow;
   int errorCol;
   if ( !doc.setContent( &input, &errorMsg, &errorRow, &errorCol ) ) {
-    kdError() << "Parse error in " << mKcfgFile << ", line " << errorRow << ", col " << errorCol << ": " << errorMsg << endl;
+    kError() << "Parse error in " << mKcfgFile << ", line " << errorRow << ", col " << errorCol << ": " << errorMsg << endl;
     return;
   }
 
   QDomElement cfgElement = doc.documentElement();
 
   if ( cfgElement.isNull() ) {
-    kdError() << "No document in kcfg file" << endl;
+    kError() << "No document in kcfg file" << endl;
     return;
   }
 
@@ -127,7 +127,7 @@ void KConfigPropagator::readKcfgFile()
           rule.condition = condition;
           mRules.append( rule );
         } else {
-          kdError() << "Unknow tag: " << e2.tagName() << endl;
+          kError() << "Unknow tag: " << e2.tagName() << endl;
         }
       }
     }
@@ -158,7 +158,7 @@ void KConfigPropagator::parseConfigEntryPath( const QString &path,
   QStringList p = path.split( "/" );
 
   if ( p.count() != 3 ) {
-    kdError() << "Path has to be of form file/group/entry" << endl;
+    kError() << "Path has to be of form file/group/entry" << endl;
     file.clear();
     group.clear();
     entry.clear();
@@ -200,14 +200,14 @@ void KConfigPropagator::commit()
 KConfigSkeletonItem *KConfigPropagator::findItem( const QString &group,
                                                   const QString &name )
 {
-//  kdDebug() << "KConfigPropagator::findItem()" << endl;
+//  kDebug() << "KConfigPropagator::findItem()" << endl;
 
   if ( !mSkeleton ) return 0;
 
   KConfigSkeletonItem::List items = mSkeleton->items();
   KConfigSkeletonItem::List::ConstIterator it;
   for( it = items.begin(); it != items.end(); ++it ) {
-//    kdDebug() << "  Item: " << (*it)->name() << "  Type: "
+//    kDebug() << "  Item: " << (*it)->name() << "  Type: "
 //              << (*it)->property().typeName() << endl;
     if ( (*it)->group() == group && (*it)->name() == name ) {
       break;
@@ -239,12 +239,12 @@ void KConfigPropagator::updateChanges()
     Condition c = r.condition;
     if ( c.isValid ) {
       KConfigSkeletonItem *item = findItem( c.group, c.key );
-      kdDebug() << "Item " << c.group << "/" << c.key << ":" << endl;
+      kDebug() << "Item " << c.group << "/" << c.key << ":" << endl;
       if ( !item ) {
-        kdError() << "  Item not found." << endl;
+        kError() << "  Item not found." << endl;
       } else {
         QString value = itemValueAsString( item );
-        kdDebug() << "  Value: " << value << endl;
+        kDebug() << "  Value: " << value << endl;
         if ( value != c.value ) {
           continue;
         }
@@ -253,7 +253,7 @@ void KConfigPropagator::updateChanges()
 
     KConfigSkeletonItem *item = findItem( r.sourceGroup, r.sourceEntry );
     if ( !item ) {
-      kdError() << "Item " << r.sourceGroup << "/" << r.sourceEntry 
+      kError() << "Item " << r.sourceGroup << "/" << r.sourceEntry 
                 << " not found." << endl;
       continue;
     }

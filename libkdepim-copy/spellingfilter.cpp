@@ -91,7 +91,7 @@ void SpellingFilter::TextCensor::censorQuotations(const QString& quotePrefix)
       spaces.fill(' ', len);
       mText.replace(start, len, spaces);
 
-      //kdDebug(5006) << "censored quotation ["
+      //kDebug(5006) << "censored quotation ["
       //  << start << ", " << mPos << ")" << endl;
     }
   }
@@ -118,7 +118,7 @@ void SpellingFilter::TextCensor::censorUrls()
       url.fill(' ');
       mText.replace(start, url.length(), url);
 
-      //kdDebug(5006) << "censored url ["
+      //kDebug(5006) << "censored url ["
       //  << start << ", " << mPos << ")" << endl;
     }
   }
@@ -143,7 +143,7 @@ void SpellingFilter::TextCensor::censorEmailAddresses()
         address.fill(' ');
         mText.replace(start, address.length(), address);
 
-        //kdDebug(5006) << "censored addr ["
+        //kDebug(5006) << "censored addr ["
         //  << start << ", "<< mPos << ")" << endl;
       }
     }
@@ -165,7 +165,7 @@ void SpellingFilter::TextCensor::censorString(const QString& s)
       mText.replace(mPos, s.length(), spaces);
       mPos += s.length();
 
-      //kdDebug(5006) << "censored string ["
+      //kDebug(5006) << "censored string ["
       //  << mPos << ", "<< mPos+s.length() << ")" << endl;
     }
   }

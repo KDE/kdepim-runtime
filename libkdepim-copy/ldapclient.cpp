@@ -132,7 +132,7 @@ void LdapClient::startQuery( const QString& filter )
   url.setScope( mScope == "one" ? KABC::LDAPUrl::One : KABC::LDAPUrl::Sub );
   url.setFilter( "("+filter+")" );
 
-  kdDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
+  kDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
 
   startParseLDIF();
   mActive = true;
@@ -225,7 +225,7 @@ void LdapClient::finishCurrentObject()
 
 void LdapClient::parseLDIF( const QByteArray& data )
 {
-  //kdDebug(5300) << "LdapClient::parseLDIF( " << QCString(data.data(), data.size()+1) << " )" << endl;
+  //kDebug(5300) << "LdapClient::parseLDIF( " << QCString(data.data(), data.size()+1) << " )" << endl;
   if ( data.size() ) {
     mLdif.setLDIF( data );
   } else {
@@ -246,7 +246,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
             mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
           if( mReportObjectClass || !bIsObjectClass )
             mCurrentObject.attrs[ name ].append( value );
-          //kdDebug(5300) << "LdapClient::parseLDIF(): name=" << name << " value=" << QCString(value.data(), value.size()+1) << endl;
+          //kDebug(5300) << "LdapClient::parseLDIF(): name=" << name << " value=" << QCString(value.data(), value.size()+1) << endl;
         }
         break;
      case KABC::LDIF::EndEntry:
@@ -432,7 +432,7 @@ void LdapSearch::startSearch( const QString& txt )
   QList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it ) {
     (*it)->startQuery( filter );
-    kdDebug(5300) << "LdapSearch::startSearch() " << filter << endl;
+    kDebug(5300) << "LdapSearch::startSearch() " << filter << endl;
     ++mActiveClients;
   }
 }
@@ -498,7 +498,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     bool wasCN = false;
     bool wasDC = false;
 
-    kdDebug(5300) << "\n\nLdapSearch::makeSearchData()\n\n" << endl;
+    kDebug(5300) << "\n\nLdapSearch::makeSearchData()\n\n" << endl;
 
     LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
@@ -507,7 +507,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
       if( len > 0 && '\0' == val[len-1] )
         --len;
       const QString tmp = QString::fromUtf8( val, len );
-      kdDebug(5300) << "      key: \"" << it2.key() << "\" value: \"" << tmp << "\"" << endl;
+      kDebug(5300) << "      key: \"" << it2.key() << "\" value: \"" << tmp << "\"" << endl;
       if ( it2.key() == "cn" ) {
         name = tmp;
         if( mail.isEmpty() )
@@ -550,7 +550,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     if( mails.isEmpty()) {
       if ( !mail.isEmpty() ) mails.append( mail );
       if( isDistributionList ) {
-        kdDebug(5300) << "\n\nLdapSearch::makeSearchData() found a list: " << name << "\n\n" << endl;
+        kDebug(5300) << "\n\nLdapSearch::makeSearchData() found a list: " << name << "\n\n" << endl;
         ret.append( name );
         // following lines commented out for bugfixing kolab issue #177:
         //
@@ -567,14 +567,14 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         //mail.prepend( name );
         //mail = name;
       } else {
-        kdDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: \"" << name << "\"" << endl;
+        kDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: \"" << name << "\"" << endl;
         continue; // nothing, bad entry
       }
     } else if ( name.isEmpty() ) {
-      kdDebug(5300) << "LdapSearch::makeSearchData() mail: \"" << mail << "\"" << endl;
+      kDebug(5300) << "LdapSearch::makeSearchData() mail: \"" << mail << "\"" << endl;
       ret.append( mail );
     } else {
-      kdDebug(5300) << "LdapSearch::makeSearchData() name: \"" << name << "\"  mail: \"" << mail << "\"" << endl;
+      kDebug(5300) << "LdapSearch::makeSearchData() name: \"" << name << "\"  mail: \"" << mail << "\"" << endl;
       ret.append( QString( "%1 <%2>" ).arg( name ).arg( mail ) );
     }
 

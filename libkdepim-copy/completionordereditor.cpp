@@ -180,7 +180,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   // The first step is to gather all the data, creating CompletionItem objects
   QList< LdapClient* > ldapClients = ldapSearch->clients();
   for( QList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
-    //kdDebug(5300) << "LDAP: host " << (*it)->host() << " weight " << (*it)->completionWeight() << endl;
+    //kDebug(5300) << "LDAP: host " << (*it)->host() << " weight " << (*it)->completionWeight() << endl;
     mItems.append( new LDAPCompletionItem( *it ) );
   }
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
@@ -188,7 +188,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   QListIterator<KABC::Resource*> resit( resources );
   while ( resit.hasNext() ) {
     KABC::Resource *resource = resit.next();
-    //kdDebug(5300) << "KABC Resource: " << (*resit)->className() << endl;
+    //kDebug(5300) << "KABC Resource: " << (*resit)->className() << endl;
     ResourceABC* res = dynamic_cast<ResourceABC *>( resource  );
     if ( res ) { // IMAP KABC resource
       const QStringList subresources = res->subresources();
@@ -217,7 +217,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
 
   for( Q3PtrListIterator<CompletionItem> compit( mItems ); *compit; ++compit ) {
     new CompletionViewItem( mListView, *compit );
-    kdDebug(5300) << "  " << (*compit)->label() << " " << (*compit)->completionWeight() << endl;
+    kDebug(5300) << "  " << (*compit)->label() << " " << (*compit)->completionWeight() << endl;
   }
 
   KVBox* upDownBox = new KVBox( page );
@@ -291,7 +291,7 @@ void CompletionOrderEditor::slotOk()
       CompletionViewItem *item = static_cast<CompletionViewItem *>( it );
       item->item()->setCompletionWeight( w );
       item->item()->save( this );
-      kdDebug(5300) << "slotOk:   " << item->item()->label() << " " << w << endl;
+      kDebug(5300) << "slotOk:   " << item->item()->label() << " " << w << endl;
       --w;
     }
 

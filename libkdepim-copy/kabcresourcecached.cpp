@@ -220,7 +220,7 @@ void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map
     file.remove();
   } else {
     if ( !file.open( QIODevice::WriteOnly ) ) {
-      kdError() << "Can't open changes cache file '" << file.name() << "' for saving." << endl;
+      kError() << "Can't open changes cache file '" << file.name() << "' for saving." << endl;
       return;
     }
 

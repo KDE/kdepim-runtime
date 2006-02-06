@@ -31,10 +31,10 @@
 static bool check(const QString& txt, const QString& a, const QString& b)
 {
   if (a == b) {
-    kdDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "ok" << endl;
+    kDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "ok" << endl;
   }
   else {
-    kdDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "KO !" << endl;
+    kDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "KO !" << endl;
     exit(1);
   }
   return true;
@@ -46,7 +46,7 @@ static bool checkGetEmailAddress( const QString & input,
                                   bool allowBadAtPos = false )
 {
   if ( !allowBadAtPos && ( input[atPos] != '@' ) ) {
-    kdDebug() << "atPos (" << atPos << ") doesn't point to '@' in \""
+    kDebug() << "atPos (" << atPos << ") doesn't point to '@' in \""
               << input << "\". Fix the check!" << endl;
     exit(1);
   }
