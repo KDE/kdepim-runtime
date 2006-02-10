@@ -280,12 +280,10 @@ void StatusbarProgressWidget::slotProgressDialogVisible( bool b )
   // Update the hide/show button when the detailed one is shown/hidden
   if ( b ) {
     m_pButton->setPixmap( SmallIcon( "down" ) );
-    QToolTip::remove( m_pButton );
     m_pButton->setToolTip( i18n("Hide detailed progress window") );
     setMode();
   } else {
     m_pButton->setPixmap( SmallIcon( "up" ) );
-    QToolTip::remove( m_pButton );
     m_pButton->setToolTip( i18n("Show detailed progress window") );
   }
 }

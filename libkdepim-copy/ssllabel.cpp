@@ -67,24 +67,22 @@ void SSLLabel::setState( State state )
 {
   switch( state ) {
   case Encrypted:
-    QToolTip::remove( this );
     this->setToolTip( i18n("Connection is encrypted") );
     setPixmap( SmallIcon( "encrypted", KGlobal::instance() ) );
     show();
     break;
   case Unencrypted:
-    QToolTip::remove( this );
     this->setToolTip( i18n("Connection is unencrypted") );
     setPixmap( SmallIcon( "decrypted" ) );
     show();
     break;
   case Done:
-    QToolTip::remove( this );
+	this->setToolTip("");
     hide();
     break;
   case Clean:
   default:
-    QToolTip::remove( this );
+    this->setToolTip("");
     hide();
     //we return because we do not save the state as the only
     //action we want to perform is to hide ourself
