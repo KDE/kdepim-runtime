@@ -27,7 +27,7 @@
 #include <QLabel>
 
 class QLabel;
-class Q3TextEdit;
+class QTextEdit;
 
 class SendSMSDialog : public KDialogBase
 {
@@ -44,7 +44,7 @@ class SendSMSDialog : public KDialogBase
 
   private:
     QLabel *mMessageLength;
-    Q3TextEdit *mText;
+    QTextEdit *mText;
 };
 
 #endif

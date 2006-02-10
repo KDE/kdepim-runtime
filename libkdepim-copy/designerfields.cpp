@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qspinbox.h>
 #include <qregexp.h>
-#include <q3textedit.h>
+#include <QTextEdit>
 #include <QFile>
 #include <QtDesigner/QFormBuilder>
 //Added by qt3to4:
@@ -166,7 +166,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       QComboBox *wdg = static_cast<QComboBox*>( widIt.data() );
       wdg->setCurrentItem( 0 );
     } else if ( widIt.data()->inherits( "QTextEdit" ) ) {
-      Q3TextEdit *wdg = static_cast<Q3TextEdit*>( widIt.data() );
+      QTextEdit *wdg = static_cast<QTextEdit*>( widIt.data() );
       wdg->setText( QString() );
     }
   }
@@ -199,7 +199,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
         QComboBox *wdg = static_cast<QComboBox*>( it.data() );
         wdg->setCurrentText( value );
       } else if ( it.data()->inherits( "QTextEdit" ) ) {
-        Q3TextEdit *wdg = static_cast<Q3TextEdit*>( it.data() );
+        QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
         wdg->setText( value );
       }
     }
@@ -233,7 +233,7 @@ void DesignerFields::save( DesignerFields::Storage *storage )
       QComboBox *wdg = static_cast<QComboBox*>( it.data() );
       value = wdg->currentText();
     } else if ( it.data()->inherits( "QTextEdit" ) ) {
-      Q3TextEdit *wdg = static_cast<Q3TextEdit*>( it.data() );
+      QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
       value = wdg->text();
    }
 

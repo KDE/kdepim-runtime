@@ -50,8 +50,7 @@
 
 #include "addresseeview.h"
 #include "sendsmsdialog.h"
-#include <Q3TextEdit>
-
+#include <Q3MimeSourceFactory>
 using namespace KPIM;
 
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
