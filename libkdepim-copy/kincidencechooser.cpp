@@ -30,7 +30,7 @@
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <q3scrollview.h>
-#include <q3textbrowser.h>
+#include <QTextBrowser>
 #include <qapplication.h>
 //Added by qt3to4:
 #include <QGridLayout>
@@ -240,7 +240,7 @@ void KIncidenceChooser::showIncidence1()
     mTbL = new KDialogBase( this, "", false /*not modal*/, mInc1lab->text(), KDialogBase::Ok );
     mTbL->setEscapeButton( KDialogBase::Ok );
     connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-    Q3TextBrowser* textBrowser = new Q3TextBrowser( mTbL );
+    QTextBrowser* textBrowser = new QTextBrowser( mTbL );
     mTbL->setMainWidget( textBrowser );
     textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 )  );
     mTbL->setMinimumSize( 400, 400 );
@@ -296,7 +296,7 @@ void KIncidenceChooser::showIncidence2()
     mTbN = new KDialogBase( this, "", false /*not modal*/, mInc2lab->text(), KDialogBase::Ok );
     mTbN->setEscapeButton( KDialogBase::Ok );
     connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-    Q3TextBrowser* textBrowser = new Q3TextBrowser( mTbN );
+    QTextBrowser* textBrowser = new QTextBrowser( mTbN );
     mTbN->setMainWidget( textBrowser );
     textBrowser->setText( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
     mTbN->setMinimumSize( 400, 400 );

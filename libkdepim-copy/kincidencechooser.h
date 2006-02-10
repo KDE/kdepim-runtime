@@ -40,7 +40,7 @@
 class QRadioButton;
 class Q3ButtonGroup;
 class QStringList;
-class Q3TextBrowser;
+class QTextBrowser;
 class KDialogBase;
 
 /** Dialog to change the korganizer configuration.
