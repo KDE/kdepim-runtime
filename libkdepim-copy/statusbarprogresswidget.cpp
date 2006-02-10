@@ -64,7 +64,7 @@ using namespace KPIM;
 
 //-----------------------------------------------------------------------------
 StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog, QWidget* parent, bool button )
-  : Q3Frame( parent ), mCurrentItem( 0 ), mProgressDialog( progressDialog ),
+  : QFrame( parent ), mCurrentItem( 0 ), mProgressDialog( progressDialog ),
     mDelayTimer( 0 ), mBusyTimer( 0 )
 {
   m_bShowButton = button;
