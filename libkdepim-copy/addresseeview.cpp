@@ -21,7 +21,7 @@
 
 #include <qbuffer.h>
 #include <qimage.h>
-#include <q3popupmenu.h>
+#include <QMenu>
 #include <q3url.h>
 //Added by qt3to4:
 #include <QPixmap>
@@ -627,12 +627,12 @@ void AddresseeView::faxNumberClicked( const QString &number )
 
 void AddresseeView::imAddressClicked()
 {
-  mKIMProxy->chatWithContact( mAddressee.uid() );
+   mKIMProxy->chatWithContact( mAddressee.uid() );
 }
 
-Q3PopupMenu *AddresseeView::createPopupMenu( const QPoint& )
+void AddresseeView::contextMenuEvent(QContextMenuEvent *e)
 {
-  Q3PopupMenu *menu = new Q3PopupMenu( this );
+  QMenu *menu = new QMenu( this );
   mActionShowBirthday->plug( menu );
   mActionShowAddresses->plug( menu );
   mActionShowEmails->plug( menu );
@@ -640,8 +640,8 @@ Q3PopupMenu *AddresseeView::createPopupMenu( const QPoint& )
   mActionShowURLs->plug( menu );
   mActionShowIMAddresses->plug( menu );
   mActionShowCustomFields->plug( menu );
-
-  return menu;
+  menu->exec(e->globalPos());
+  delete menu;
 }
 
 void AddresseeView::slotMailClicked( const QString&, const QString &email )

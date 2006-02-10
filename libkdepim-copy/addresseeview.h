@@ -158,8 +158,8 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     virtual void sendSMS( const QString &number, const QString &msg );
     virtual void faxNumberClicked( const QString &number );
     virtual void imAddressClicked();
+    virtual void contextMenuEvent( QContextMenuEvent *e );
 
-    virtual Q3PopupMenu *createPopupMenu( const QPoint& );
 
   private slots:
     void slotMailClicked( const QString&, const QString& );
