@@ -338,7 +338,7 @@ KConfig* LdapSearch::config()
 LdapSearch::LdapSearch()
     : mActiveClients( 0 ), mNoLDAPLookup( false )
 {
-  if ( !KProtocolInfo::isKnownProtocol( KURL("ldap://localhost") ) ) {
+  if ( !KProtocolInfo::isKnownProtocol( KUrl("ldap://localhost") ) ) {
     mNoLDAPLookup = true;
     return;
   }
