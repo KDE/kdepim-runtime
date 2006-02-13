@@ -42,7 +42,7 @@
 #include <q3hbox.h>
 //Added by qt3to4:
 #include <QGridLayout>
-#include <Q3Frame>
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QBoxLayout>
 #include <QVBoxLayout>
@@ -67,7 +67,7 @@ template <class T> static int setCurrentItem(T *box, const QString& s)
 //
 //============================================================================
 SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, const char *)
-  : Q3Frame(p), manager(m)
+  : QFrame(p), manager(m)
 {
   QBoxLayout *topL = new QVBoxLayout(this,5);
   QBoxLayout *firstRow = new QHBoxLayout(topL);
