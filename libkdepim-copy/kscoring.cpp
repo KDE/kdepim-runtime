@@ -31,7 +31,6 @@
 //Added by qt3to4:
 #include <QTextStream>
 #include <Q3PtrList>
-#include <Q3Frame>
 #include <QVBoxLayout>
 
 #include <klocale.h>

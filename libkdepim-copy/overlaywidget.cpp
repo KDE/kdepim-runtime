@@ -30,7 +30,6 @@
 
 #include "overlaywidget.h"
 //Added by qt3to4:
-#include <Q3Frame>
 #include <QResizeEvent>
 #include <QEvent>
 using namespace KPIM;

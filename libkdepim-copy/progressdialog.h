@@ -35,10 +35,9 @@
 
 #include <qdialog.h>
 #include <q3listview.h>
-#include <qlabel.h>
+#include <QLabel>
 #include <kvbox.h>
 //Added by qt3to4:
-#include <Q3Frame>
 #include <QCloseEvent>
 #include "overlaywidget.h"
 #include <kdepimmacros.h>
