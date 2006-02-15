@@ -12,7 +12,7 @@
             <height>270</height>
         </rect>
     </property>
-    <property name="caption">
+    <property name="windowTitle">
         <string>Edit Categories</string>
     </property>
     <grid>
