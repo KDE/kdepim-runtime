@@ -9,7 +9,8 @@ check_PROGRAMS = testwizard testaddresseelineedit \
                  test_kregexp \
                  testdateedit \
                  testlinklocator \
-                 testdistrlist
+                 testdistrlist \
+                 testldapclient
 
 
 testwizard_SOURCES = testwizard.cpp myconfig.kcfgc
@@ -21,6 +22,7 @@ test_kregexp_SOURCES = test_kregexp.cpp
 testdateedit_SOURCES = testdateedit.cpp
 testlinklocator_SOURCES = testlinklocator.cpp
 testdistrlist_SOURCES = testdistrlist.cpp
+testldapclient_SOURCES = testldapclient.cpp
 
 TESTS = testdistrlist
 
