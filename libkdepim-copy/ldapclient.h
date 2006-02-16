@@ -36,6 +36,8 @@
 
 #include <kdepimmacros.h>
 
+class KConfig;
+
 namespace KPIM {
 
 class LdapClient;

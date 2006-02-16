@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
+#include "ldapclient.h"
 
 #include <qfile.h>
 #include <qimage.h>
@@ -39,8 +39,6 @@
 #include <kprotocolinfo.h>
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
-
-#include "ldapclient.h"
 
 using namespace KPIM;
 
