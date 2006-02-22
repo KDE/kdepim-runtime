@@ -211,7 +211,7 @@ void LdapClient::finishCurrentObject()
             if( i < n-1 )
               sMail.append('.');
           }
-          mCurrentObject.attrs["mail"].append( sMail.utf8() );
+          mCurrentObject.attrs["mail"].append( sMail.toUtf8() );
         }
       }
     }
