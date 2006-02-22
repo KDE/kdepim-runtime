@@ -474,7 +474,7 @@ void AddresseeLineEdit::loadContacts()
         QString uid = (*it).uid();
         QMap<QString, QString>::const_iterator wit = uidToResourceMap.find( uid );
         const QString subresourceLabel = resabc->subresourceLabel( *wit );
-        int idx = s_completionSources->findIndex( subresourceLabel );
+        int idx = s_completionSources->indexOf( subresourceLabel );
         if ( idx == -1 ) {
           s_completionSources->append( subresourceLabel );
           idx = s_completionSources->size() -1;
