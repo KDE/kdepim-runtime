@@ -149,7 +149,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       wdg->setText( QString() );
     } else if ( widIt.value()->inherits( "QSpinBox" ) ) {
       QSpinBox *wdg = static_cast<QSpinBox*>( widIt.value() );
-      wdg->setValue( wdg->minValue() );
+      wdg->setValue( wdg->minimum() );
     } else if ( widIt.value()->inherits( "QCheckBox" ) ) {
       QCheckBox *wdg = static_cast<QCheckBox*>( widIt.value() );
       wdg->setChecked( false );
