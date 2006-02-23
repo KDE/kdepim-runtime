@@ -164,7 +164,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       wdg->setDate( QDate::currentDate() );
     } else if ( widIt.value()->inherits( "QComboBox" ) ) {
       QComboBox *wdg = static_cast<QComboBox*>( widIt.value() );
-      wdg->setCurrentItem( 0 );
+      wdg->setCurrentIndex( 0 );
     } else if ( widIt.value()->inherits( "QTextEdit" ) ) {
       QTextEdit *wdg = static_cast<QTextEdit*>( widIt.value() );
       wdg->setText( QString() );
