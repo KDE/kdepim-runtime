@@ -106,7 +106,7 @@ void NotifyDialog::display(ScorableArticle& a, const QString& s)
   me->msg = s;
 
   NotesMap::Iterator i = dict.find(s);
-  if (i == dict.end() || i.data()) {
+  if (i == dict.end() || i.value()) {
     QString msg = i18n("Article\n<b>%1</b><br><b>%2</b><br>caused the following"
                        " note to appear:<br>%3").
                   arg(a.from()).

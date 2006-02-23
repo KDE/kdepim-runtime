@@ -144,29 +144,29 @@ void DesignerFields::load( DesignerFields::Storage *storage )
   QMap<QString, QWidget *>::ConstIterator widIt;
   for ( widIt = mWidgets.begin(); widIt != mWidgets.end(); ++widIt ) {
     QString value;
-    if ( widIt.data()->inherits( "QLineEdit" ) ) {
-      QLineEdit *wdg = static_cast<QLineEdit*>( widIt.data() );
+    if ( widIt.value()->inherits( "QLineEdit" ) ) {
+      QLineEdit *wdg = static_cast<QLineEdit*>( widIt.value() );
       wdg->setText( QString() );
-    } else if ( widIt.data()->inherits( "QSpinBox" ) ) {
-      QSpinBox *wdg = static_cast<QSpinBox*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "QSpinBox" ) ) {
+      QSpinBox *wdg = static_cast<QSpinBox*>( widIt.value() );
       wdg->setValue( wdg->minValue() );
-    } else if ( widIt.data()->inherits( "QCheckBox" ) ) {
-      QCheckBox *wdg = static_cast<QCheckBox*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "QCheckBox" ) ) {
+      QCheckBox *wdg = static_cast<QCheckBox*>( widIt.value() );
       wdg->setChecked( false );
-    } else if ( widIt.data()->inherits( "QDateTimeEdit" ) ) {
-      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "QDateTimeEdit" ) ) {
+      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( widIt.value() );
       wdg->setDateTime( QDateTime::currentDateTime() );
-    } else if ( widIt.data()->inherits( "KDateTimeWidget" ) ) {
-      KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "KDateTimeWidget" ) ) {
+      KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( widIt.value() );
       wdg->setDateTime( QDateTime::currentDateTime() );
-    } else if ( widIt.data()->inherits( "KDatePicker" ) ) {
-      KDatePicker *wdg = static_cast<KDatePicker*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "KDatePicker" ) ) {
+      KDatePicker *wdg = static_cast<KDatePicker*>( widIt.value() );
       wdg->setDate( QDate::currentDate() );
-    } else if ( widIt.data()->inherits( "QComboBox" ) ) {
-      QComboBox *wdg = static_cast<QComboBox*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "QComboBox" ) ) {
+      QComboBox *wdg = static_cast<QComboBox*>( widIt.value() );
       wdg->setCurrentItem( 0 );
-    } else if ( widIt.data()->inherits( "QTextEdit" ) ) {
-      QTextEdit *wdg = static_cast<QTextEdit*>( widIt.data() );
+    } else if ( widIt.value()->inherits( "QTextEdit" ) ) {
+      QTextEdit *wdg = static_cast<QTextEdit*>( widIt.value() );
       wdg->setText( QString() );
     }
   }
@@ -177,29 +177,29 @@ void DesignerFields::load( DesignerFields::Storage *storage )
 
     QMap<QString, QWidget *>::ConstIterator it = mWidgets.find( *it2 );
     if ( it != mWidgets.end() ) {
-      if ( it.data()->inherits( "QLineEdit" ) ) {
-        QLineEdit *wdg = static_cast<QLineEdit*>( it.data() );
+      if ( it.value()->inherits( "QLineEdit" ) ) {
+        QLineEdit *wdg = static_cast<QLineEdit*>( it.value() );
         wdg->setText( value );
-      } else if ( it.data()->inherits( "QSpinBox" ) ) {
-        QSpinBox *wdg = static_cast<QSpinBox*>( it.data() );
+      } else if ( it.value()->inherits( "QSpinBox" ) ) {
+        QSpinBox *wdg = static_cast<QSpinBox*>( it.value() );
         wdg->setValue( value.toInt() );
-      } else if ( it.data()->inherits( "QCheckBox" ) ) {
-        QCheckBox *wdg = static_cast<QCheckBox*>( it.data() );
+      } else if ( it.value()->inherits( "QCheckBox" ) ) {
+        QCheckBox *wdg = static_cast<QCheckBox*>( it.value() );
         wdg->setChecked( value == "true" || value == "1" );
-      } else if ( it.data()->inherits( "QDateTimeEdit" ) ) {
-        Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.data() );
+      } else if ( it.value()->inherits( "QDateTimeEdit" ) ) {
+        Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.value() );
         wdg->setDateTime( QDateTime::fromString( value, Qt::ISODate ) );
-      } else if ( it.data()->inherits( "KDateTimeWidget" ) ) {
-        KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.data() );
+      } else if ( it.value()->inherits( "KDateTimeWidget" ) ) {
+        KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.value() );
         wdg->setDateTime( QDateTime::fromString( value, Qt::ISODate ) );
-      } else if ( it.data()->inherits( "KDatePicker" ) ) {
-        KDatePicker *wdg = static_cast<KDatePicker*>( it.data() );
+      } else if ( it.value()->inherits( "KDatePicker" ) ) {
+        KDatePicker *wdg = static_cast<KDatePicker*>( it.value() );
         wdg->setDate( QDate::fromString( value, Qt::ISODate ) );
-      } else if ( it.data()->inherits( "QComboBox" ) ) {
-        QComboBox *wdg = static_cast<QComboBox*>( it.data() );
+      } else if ( it.value()->inherits( "QComboBox" ) ) {
+        QComboBox *wdg = static_cast<QComboBox*>( it.value() );
         wdg->setCurrentText( value );
-      } else if ( it.data()->inherits( "QTextEdit" ) ) {
-        QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
+      } else if ( it.value()->inherits( "QTextEdit" ) ) {
+        QTextEdit *wdg = static_cast<QTextEdit*>( it.value() );
         wdg->setText( value );
       }
     }
@@ -211,29 +211,29 @@ void DesignerFields::save( DesignerFields::Storage *storage )
   QMap<QString, QWidget*>::Iterator it;
   for ( it = mWidgets.begin(); it != mWidgets.end(); ++it ) {
     QString value;
-    if ( it.data()->inherits( "QLineEdit" ) ) {
-      QLineEdit *wdg = static_cast<QLineEdit*>( it.data() );
+    if ( it.value()->inherits( "QLineEdit" ) ) {
+      QLineEdit *wdg = static_cast<QLineEdit*>( it.value() );
       value = wdg->text();
-    } else if ( it.data()->inherits( "QSpinBox" ) ) {
-      QSpinBox *wdg = static_cast<QSpinBox*>( it.data() );
+    } else if ( it.value()->inherits( "QSpinBox" ) ) {
+      QSpinBox *wdg = static_cast<QSpinBox*>( it.value() );
       value = QString::number( wdg->value() );
-    } else if ( it.data()->inherits( "QCheckBox" ) ) {
-      QCheckBox *wdg = static_cast<QCheckBox*>( it.data() );
+    } else if ( it.value()->inherits( "QCheckBox" ) ) {
+      QCheckBox *wdg = static_cast<QCheckBox*>( it.value() );
       value = ( wdg->isChecked() ? "true" : "false" );
-    } else if ( it.data()->inherits( "QDateTimeEdit" ) ) {
-      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.data() );
+    } else if ( it.value()->inherits( "QDateTimeEdit" ) ) {
+      Q3DateTimeEdit *wdg = static_cast<Q3DateTimeEdit*>( it.value() );
       value = wdg->dateTime().toString( Qt::ISODate );
-    } else if ( it.data()->inherits( "KDateTimeWidget" ) ) {
-      KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.data() );
+    } else if ( it.value()->inherits( "KDateTimeWidget" ) ) {
+      KDateTimeWidget *wdg = static_cast<KDateTimeWidget*>( it.value() );
       value = wdg->dateTime().toString( Qt::ISODate );
-    } else if ( it.data()->inherits( "KDatePicker" ) ) {
-      KDatePicker *wdg = static_cast<KDatePicker*>( it.data() );
+    } else if ( it.value()->inherits( "KDatePicker" ) ) {
+      KDatePicker *wdg = static_cast<KDatePicker*>( it.value() );
       value = wdg->date().toString( Qt::ISODate );
-    } else if ( it.data()->inherits( "QComboBox" ) ) {
-      QComboBox *wdg = static_cast<QComboBox*>( it.data() );
+    } else if ( it.value()->inherits( "QComboBox" ) ) {
+      QComboBox *wdg = static_cast<QComboBox*>( it.value() );
       value = wdg->currentText();
-    } else if ( it.data()->inherits( "QTextEdit" ) ) {
-      QTextEdit *wdg = static_cast<QTextEdit*>( it.data() );
+    } else if ( it.value()->inherits( "QTextEdit" ) ) {
+      QTextEdit *wdg = static_cast<QTextEdit*>( it.value() );
       value = wdg->text();
    }
 
@@ -245,8 +245,8 @@ void DesignerFields::setReadOnly( bool readOnly )
 {
   QMap<QString, QWidget*>::Iterator it;
   for ( it = mWidgets.begin(); it != mWidgets.end(); ++it )
-    if ( mDisabledWidgets.find( it.data() ) == mDisabledWidgets.end() )
-      it.data()->setEnabled( !readOnly );
+    if ( mDisabledWidgets.find( it.value() ) == mDisabledWidgets.end() )
+      it.value()->setEnabled( !readOnly );
 }
 
 #include "designerfields.moc"

@@ -58,7 +58,7 @@ void ResourceCached::insertAddressee( const Addressee &addr )
     mAddrMap.insert( addr.uid(), addr );
     mAddedAddressees.insert( addr.uid(), addr );
   } else {
-    KABC::Addressee oldAddressee = mAddrMap.find( addr.uid() ).data();
+    KABC::Addressee oldAddressee = mAddrMap.find( addr.uid() ).value();
     if ( oldAddressee != addr ) {
       mAddrMap.remove( addr.uid() );
       mAddrMap.insert( addr.uid(), addr );
