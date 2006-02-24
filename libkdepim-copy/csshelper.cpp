@@ -46,25 +46,25 @@ namespace KPIM {
     // some QColor manipulators that hide the ugly QColor API w.r.t. HSV:
     inline QColor darker( const QColor & c ) {
       int h, s, v;
-      c.hsv( &h, &s, &v );
+      c.getHsv( &h, &s, &v );
       return QColor( h, s, v*4/5, QColor::Hsv );
     }
 
     inline QColor desaturate( const QColor & c ) {
       int h, s, v;
-      c.hsv( &h, &s, &v );
+      c.getHsv( &h, &s, &v );
       return QColor( h, s/8, v, QColor::Hsv );
     }
 
     inline QColor fixValue( const QColor & c, int newV ) {
       int h, s, v;
-      c.hsv( &h, &s, &v );
+      c.getHsv( &h, &s, &v );
       return QColor( h, s, newV, QColor::Hsv );
     }
 
     inline int getValueOf( const QColor & c ) {
       int h, s, v;
-      c.hsv( &h, &s, &v );
+      c.getHsv( &h, &s, &v );
       return v;
     }
   }
