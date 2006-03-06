@@ -37,7 +37,6 @@ libkdepim_la_SOURCES = \
   categoryhierarchyreader.cpp autoselectingchecklistitem.cpp \
   improvedlistview.cpp messagestatus.cpp kemailquotinghighter.cpp
 
-MailTransportServiceIface_DCOPIDLNG = true
 MailTransportServiceIface_DIR = $(srcdir)/interfaces
 
 AddressBookServiceIface_DIR = $(srcdir)/interfaces
