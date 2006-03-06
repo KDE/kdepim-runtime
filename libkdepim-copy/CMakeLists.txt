@@ -19,7 +19,7 @@ add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp
   DEPENDS kdepim.widgets)
 
 
-set(kdepim_LIB_SRCS 
+set(kdepim_LIB_SRCS ${libemailfunctions_SRCS} 
    ktimeedit.cpp 
    kprefsdialog.cpp 
    kpimprefs.cpp 
@@ -94,7 +94,7 @@ kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc )
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
-target_link_libraries(kdepim  ${QT_AND_KDECORE_LIBS} kcal emailfunctions kde3support kio kparts kimproxy kspell2 )
+target_link_libraries(kdepim  ${QT_AND_KDECORE_LIBS} kcal kde3support kio kparts kimproxy kspell2 )
 
 set_target_properties(kdepim PROPERTIES VERSION 1.0.0 SOVERSION 1 )
 install_targets(${LIB_INSTALL_DIR} kdepim )
