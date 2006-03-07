@@ -419,7 +419,7 @@ void KCMDesignerFields::startDesigner()
   }
 
   // finally jump there
-  chdir(cepPath.local8Bit());
+  chdir(cepPath.toLocal8Bit());
 
   Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
