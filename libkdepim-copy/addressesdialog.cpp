@@ -336,13 +336,13 @@ AddressesDialog::updateRecentAddresses()
 void
 AddressesDialog::setShowCC( bool b )
 {
-  d->ui->mCCButton->setShown( b );
+  d->ui->mCCButton->setVisible( b );
 }
 
 void
 AddressesDialog::setShowBCC( bool b )
 {
-  d->ui->mBCCButton->setShown( b );
+  d->ui->mBCCButton->setVisible( b );
 }
 
 QStringList
