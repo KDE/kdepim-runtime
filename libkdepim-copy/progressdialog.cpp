@@ -305,7 +305,7 @@ void ProgressDialog::slotTransactionAdded( ProgressItem *item )
      const bool first = mTransactionsToListviewItems.empty();
      TransactionItem *ti = mScrollView->addTransactionItem( item, first );
      if ( ti )
-       mTransactionsToListviewItems.replace( item, ti );
+       mTransactionsToListviewItems.insert( item, ti );
      if ( first && mWasLastShown )
        QTimer::singleShot( 1000, this, SLOT( slotShow() ) );
 

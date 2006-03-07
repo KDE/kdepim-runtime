@@ -66,7 +66,7 @@ void ProgressItem::setComplete()
 
 void ProgressItem::addChild( ProgressItem *kiddo )
 {
-  mChildren.replace( kiddo, true );
+  mChildren.insert( kiddo, true );
 }
 
 void ProgressItem::removeChild( ProgressItem *kiddo )
