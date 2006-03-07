@@ -70,7 +70,7 @@ class PageItem : public Q3CheckListItem
       QFormBuilder builder;
       QWidget *wdg = builder.load( &f, 0 );
       if ( wdg ) {
-        setText( 0, wdg->caption() );
+        setText( 0, wdg->windowTitle() );
 
         QPixmap pm = QPixmap::grabWidget( wdg );
         QImage img = pm.convertToImage().smoothScale( 300, 300, Qt::KeepAspectRatio );

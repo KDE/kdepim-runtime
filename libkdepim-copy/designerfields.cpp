@@ -63,7 +63,7 @@ void DesignerFields::initGUI( const QString &uiFile )
     return;
   }
 
-  mTitle = wdg->caption();
+  mTitle = wdg->windowTitle();
   mIdentifier = wdg->name();
 
   layout->addWidget( wdg );
