@@ -171,9 +171,9 @@ bool MailListDrag::decode( QDropEvent* e, MailList& mailList )
     if ( payload.size() ) {
 	e->accept();
 	buffer >> mailList;
-	return TRUE;
+	return true;
     }
-    return FALSE;
+    return false;
 }
 
 bool MailListDrag::decode( QByteArray& payload, MailList& mailList )
@@ -181,9 +181,9 @@ bool MailListDrag::decode( QByteArray& payload, MailList& mailList )
     QDataStream stream( &payload, QIODevice::ReadOnly );
     if ( payload.size() ) {
 	stream >> mailList;
-	return TRUE;
+	return true;
     }
-    return FALSE;
+    return false;
 }
 
 bool MailListDrag::decode( QDropEvent* e, QByteArray &a )
@@ -199,9 +199,9 @@ bool MailListDrag::decode( QDropEvent* e, QByteArray &a )
 	    stream << mailDrag.serialNumber();
 	}
 	buffer.close();
-	return TRUE;
+	return true;
     }
-    return FALSE;
+    return false;
 }
 
 void MailListDrag::setMailList( const MailList &mailList )

@@ -116,7 +116,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 
   //assert(aFileName!=0);
   if(aFileName.isEmpty())
-    return FALSE;
+    return false;
 
   if (file.exists())
   {
@@ -127,7 +127,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 		  .arg(aFileName);
       const int rc = KMessageBox::warningContinueCancel(0,
 	   str, i18n("Save to File"), i18n("&Replace"));
-      if (rc != KMessageBox::Continue) return FALSE;
+      if (rc != KMessageBox::Continue) return false;
     }
     if (aBackup)
     {
@@ -139,12 +139,12 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
       if( !QDir::current().rename(aFileName, bakName) )
       {
 	// failed to rename file
-	if (!aVerbose) return FALSE;
+	if (!aVerbose) return false;
 	const int rc = KMessageBox::warningContinueCancel(0,
 	     i18n("Failed to make a backup copy of %1.\nContinue anyway?")
 	     .arg(aFileName),
              i18n("Save to File"), KStdGuiItem::save() );
-	if (rc != KMessageBox::Continue) return FALSE;
+	if (rc != KMessageBox::Continue) return false;
       }
     }
   }
@@ -163,7 +163,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
     default:
       msgDialog(i18n("Error while writing file:\n%1").arg(aFileName));
     }
-    return FALSE;
+    return false;
   }
 
   const int writeLen = file.write( aBuffer.data(), aBuffer.size() );
@@ -171,7 +171,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
   if ( writeLen < 0 ) {
     if (aVerbose)
       msgDialog(i18n("Could not write to file:\n%1").arg(aFileName));
-    return FALSE;
+    return false;
   }
   else if ( writeLen < aBuffer.size() ) {
     QString msg = i18n("Could only write %1 bytes of %2.")
@@ -179,10 +179,10 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
                   .arg( aBuffer.size() );
     if (aVerbose)
       msgDialog(msg);
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 

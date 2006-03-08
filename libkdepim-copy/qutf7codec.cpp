@@ -50,11 +50,11 @@ const char* QUtf7Codec::mimeName() const {
 }
 
 bool QUtf7Codec::canEncode( QChar ) const {
-  return TRUE;
+  return true;
 }
 
 bool QUtf7Codec::canEncode( const QString & ) const {
-  return TRUE;
+  return true;
 }
 
 static uchar base64Set[] = {
@@ -93,9 +93,9 @@ int QUtf7Codec::heuristicContentMatch(const char* chars, int len) const
 {
   int stepNo = 0;
   int i;
-  bool shifted = FALSE;
-  bool rightAfterEscape = FALSE;
-  bool onlyNullBitsSinceLastBoundary = TRUE;
+  bool shifted = false;
+  bool rightAfterEscape = false;
+  bool onlyNullBitsSinceLastBoundary = true;
   for ( i = 0; i < len ; i++ ) {
     if ((unsigned char)chars[i] >= 128) // 8bit chars not allowed.
       break;
@@ -103,7 +103,7 @@ int QUtf7Codec::heuristicContentMatch(const char* chars, int len) const
       if ( isOfSet(chars[i],base64Set) ) {
 	switch (stepNo) {
 	case 0:
-	  onlyNullBitsSinceLastBoundary = TRUE;
+	  onlyNullBitsSinceLastBoundary = true;
 	  break;
 	case 3:
 	  onlyNullBitsSinceLastBoundary
@@ -119,19 +119,19 @@ int QUtf7Codec::heuristicContentMatch(const char* chars, int len) const
 	     = onlyNullBitsSinceLastBoundary && (chars[i] == 'A');
 	}
 	stepNo = (stepNo + 1) % 8;
-	rightAfterEscape = FALSE;
+	rightAfterEscape = false;
       } else {
 	if (rightAfterEscape && chars[i] != '-')
 	  break; // a '+' must be followed by '-' or a base64 char
 	if (!onlyNullBitsSinceLastBoundary)
 	  break; // non-zero bits in the tail of the base64 encoding
-	shifted = FALSE;
+	shifted = false;
 	stepNo = 0;
       }
     } else {
       if (chars[i] == '+') {
-	shifted = TRUE;
-	rightAfterEscape = TRUE;
+	shifted = true;
+	rightAfterEscape = true;
       }
     }
   }
@@ -169,8 +169,8 @@ private:
   {
     uc = 0;
     stepNo = 0;
-    shifted = FALSE;
-    rightAfterEscape = FALSE;
+    shifted = false;
+    rightAfterEscape = false;
   }
 
 public:
@@ -283,7 +283,7 @@ public:
 	  // increase the step counter
 	  stepNo++;
 	  stepNo %= 8;
-	  rightAfterEscape = FALSE;
+	  rightAfterEscape = false;
 	  // and look at the next char.
 	  continue;
 	} // fi (still) shifted
@@ -299,11 +299,11 @@ public:
       if ( ch == '+' ) {
 	// '+' is the escape char for entering a
 	// shifted sequence:
-	shifted = TRUE;
+	shifted = true;
 	stepNo = 0;
 	// also, we're right at the beginning where
 	// special rules apply:
-	rightAfterEscape = TRUE;
+	rightAfterEscape = true;
       } else {
 	// US-ASCII values are directly used
 	result += QChar(ch);
@@ -332,7 +332,7 @@ public:
   QUtf7Encoder(bool encOpt, bool encLwsp, const QTextCodec *codec)
     : QTextEncoder( codec ),
       outbits(0), stepNo(0),
-      shifted(FALSE), mayContinueShiftedSequence(FALSE)
+      shifted(false), mayContinueShiftedSequence(false)
   {
     for ( int i = 0; i < 16 ; i++) {
       dontNeedEncodingSet[i] = directSet[i];
@@ -434,13 +434,13 @@ private:
     } else if (mayContinueShiftedSequence) {
       // if mayContinue is set, this means the
       // shifted-sequence needs a lead-out.
-      mayContinueShiftedSequence = FALSE;
+      mayContinueShiftedSequence = false;
       if (isOfSet(ch,base64Set) || ch == '-' ) {
 	*t++ = '-';
       }
     }
     *t++ = (uchar)ch;
-    shifted = FALSE;
+    shifted = false;
     stepNo = 0;
   }
 
@@ -500,8 +500,8 @@ public:
 	      // 24bits ("-+-") + some from ending the shifted-sequence
 	      // with 21,33 bits
 	      addToShiftedSequence(t,ch);
-	      mayContinueShiftedSequence = FALSE;
-	      shifted = TRUE;
+	      mayContinueShiftedSequence = false;
+	      shifted = true;
 	    } else {
 	      // shortcut encoding of '+':
 	      *t++ = '+';
@@ -518,15 +518,15 @@ public:
 	  stepNo = 0;
 	}
 	addToShiftedSequence(t,ch);
-	shifted = TRUE;
-	mayContinueShiftedSequence = FALSE;
+	shifted = true;
+	mayContinueShiftedSequence = false;
       }
 
       if ( shifted ) {
 	endShiftedSequence(t);
-	mayContinueShiftedSequence = TRUE;
+	mayContinueShiftedSequence = true;
       };
-      shifted = FALSE;
+      shifted = false;
     }
 
     *t = '\0';

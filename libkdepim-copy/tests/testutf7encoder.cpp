@@ -16,8 +16,8 @@ void main( int argc, char * argv[] ) {
 	 << "\"" << argv[1] << "\"\n" << endl;
 
     cout << "Encode optional direct set and whitespace:\n" << endl;
-    codec->setEncodeWhitespace(TRUE);
-    codec->setEncodeOptionalDirect(TRUE);
+    codec->setEncodeWhitespace(true);
+    codec->setEncodeOptionalDirect(true);
     enc = codec->makeEncoder();
 
     len = arg.length();
@@ -40,8 +40,8 @@ void main( int argc, char * argv[] ) {
     delete enc;
 
     cout << "Encode optional direct set and not whitespace:\n" << endl;
-    codec->setEncodeWhitespace(FALSE);
-    codec->setEncodeOptionalDirect(TRUE);
+    codec->setEncodeWhitespace(false);
+    codec->setEncodeOptionalDirect(true);
     enc = codec->makeEncoder();
 
     len = arg.length();
@@ -52,8 +52,8 @@ void main( int argc, char * argv[] ) {
     
 
     cout << "Don't encode optional direct set, but whitespace:\n" << endl;
-    codec->setEncodeWhitespace(TRUE);
-    codec->setEncodeOptionalDirect(FALSE);
+    codec->setEncodeWhitespace(true);
+    codec->setEncodeOptionalDirect(false);
     enc = codec->makeEncoder();
 
     len = arg.length();
@@ -64,8 +64,8 @@ void main( int argc, char * argv[] ) {
     
 
     cout << "Encode neither optional direct set, nor whitespace:\n" << endl;
-    codec->setEncodeWhitespace(FALSE);
-    codec->setEncodeOptionalDirect(FALSE);
+    codec->setEncodeWhitespace(false);
+    codec->setEncodeOptionalDirect(false);
     enc = codec->makeEncoder();
 
     len = arg.length();

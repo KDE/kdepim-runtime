@@ -48,7 +48,7 @@
 KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, const char* name )
   : QWidget( parent, name )
 {
-  mWidgetList.setAutoDelete(TRUE);
+  mWidgetList.setAutoDelete(true);
 
   mMinWidgets = qMax( minWidgets, 1 );
   mMaxWidgets = qMax( maxWidgets, mMinWidgets + 1 );
