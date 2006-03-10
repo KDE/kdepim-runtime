@@ -549,7 +549,7 @@ void RuleEditWidget::updateRule(KScoringRule *rule)
   if (groups.isEmpty())
     rule->setGroups(QStringList(".*"));
   else
-    rule->setGroups(QStringList::split(";",groups));
+    rule->setGroups(groups.split(";",QString::SkipEmptyParts));
   bool b = expireCheck->isChecked();
   if (b)
     rule->setExpireDate(QDate::currentDate().addDays(expireEdit->value()));

@@ -668,7 +668,7 @@ void KScoringRule::setLinkMode(const QString& l)
 void KScoringRule::setExpire(const QString& e)
 {
   if (e != "never") {
-    QStringList l = QStringList::split("-",e);
+    QStringList l = e.split("-", QString::SkipEmptyParts);
     Q_ASSERT( l.count() == 3 );
     expires.setYMD( l.at(0).toInt(), l.at(1).toInt(), l.at(2).toInt() );
   }

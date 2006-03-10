@@ -44,8 +44,7 @@ inline QStringList &unquote( QStringList &strings )
 
 QStringList CategoryHierarchyReader::path( QString string )
 {
-  QStringList _path = QStringList::split( KPimPrefs::categorySeparator, 
-                                         quote( string ) );
+  QStringList _path = quote( string).split( KPimPrefs::categorySeparator, QString::SkipEmptyParts );
   return unquote( _path );
 }
 

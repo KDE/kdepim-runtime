@@ -224,7 +224,7 @@ void AddresseeLineEdit::insert( const QString &t )
     return;
 
   // remove newlines in the to-be-pasted string
-  QStringList lines = QStringList::split( QRegExp("\r?\n"), newText, false );
+  QStringList lines = newText.split( QRegExp("\r?\n"), QString::SkipEmptyParts );
   for ( QStringList::iterator it = lines.begin();
        it != lines.end(); ++it ) {
     // remove trailing commas and whitespace

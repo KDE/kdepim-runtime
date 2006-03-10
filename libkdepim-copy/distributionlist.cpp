@@ -32,12 +32,12 @@ typedef QList<QPair<QString, QString> > ParseList;
 static ParseList parseCustom( const QString& str )
 {
   ParseList res;
-  const QStringList lst = QStringList::split( ';', str );
+  const QStringList lst = str.split( ';', QString::SkipEmptyParts );
   for( QStringList::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
     if ( (*it).isEmpty() )
       continue;
     // parse "uid,email"
-    QStringList helpList = QStringList::split( ',', (*it) );
+    QStringList helpList = (*it).split( ',', QString::SkipEmptyParts );
     Q_ASSERT( !helpList.isEmpty() );
     if ( helpList.isEmpty() )
       continue;
