@@ -26,7 +26,7 @@
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QVector>
-#include <klistview.h>
+#include <k3listview.h>
 #include <kdepimmacros.h>
 
 class KFolderTree;
@@ -132,7 +132,7 @@ struct KPaintInfo {
 
 //==========================================================================
 
-class KDE_EXPORT KFolderTreeItem : public KListViewItem
+class KDE_EXPORT KFolderTreeItem : public K3ListViewItem
 {
   public:
     /** Protocol information */
@@ -220,7 +220,7 @@ class KDE_EXPORT KFolderTreeItem : public KListViewItem
 
 //==========================================================================
 
-class KDE_EXPORT KFolderTree : public KListView
+class KDE_EXPORT KFolderTree : public K3ListView
 {
   Q_OBJECT
 

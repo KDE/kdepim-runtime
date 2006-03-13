@@ -229,7 +229,8 @@ void LdapClient::parseLDIF( const QByteArray& data )
   } else {
     mLdif.endLDIF();
   }
-
+#warning "KDE4: port it";
+#if 0
   KABC::LDIF::ParseVal ret;
   QString name;
   do {
@@ -254,6 +255,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
         break;
     }
   } while ( ret != KABC::LDIF::MoreData );
+#endif
 }
 
 int LdapClient::clientNumber() const

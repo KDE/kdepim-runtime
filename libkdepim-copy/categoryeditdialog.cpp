@@ -58,7 +58,7 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
   mCategories->setAcceptDrops( true );
   mCategories->setProperty( "selectionMode", "Extended" );
   mCategories->setAllColumnsShowFocus( true );
-  mCategories->setResizeMode( KListView::AllColumns );
+  mCategories->setResizeMode( K3ListView::AllColumns );
   mCategories->setDragEnabled( true );
   mCategories->header()->hide();
   mCategories->setLeavesAcceptChildren( true );

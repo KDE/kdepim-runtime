@@ -28,7 +28,7 @@
 #include <QLabel>
 
 class KInstance;
-class KListView;
+class K3ListView;
 
 class QLabel;
 class Q3ListViewItem;
@@ -71,7 +71,7 @@ class KDE_EXPORT KCMDesignerFields : public KCModule
   private:
     void initGUI();
 
-    KListView *mPageView;
+    K3ListView *mPageView;
     QLabel *mPagePreview;
     QLabel *mPageDetails;
     QPushButton *mDeleteButton;    

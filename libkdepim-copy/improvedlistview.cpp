@@ -23,7 +23,7 @@
 
 namespace KPIM {
 ImprovedListView::ImprovedListView( QWidget *parent, const char *name )
-  : KListView( parent ), mLeavesAcceptChildren( false ) 
+  : K3ListView( parent ), mLeavesAcceptChildren( false ) 
   {
 		 setObjectName(name);
   }

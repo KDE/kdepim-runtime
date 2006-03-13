@@ -27,7 +27,7 @@
 
 #include <kabc/addressee.h>
 #include <kdialogbase.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <qstringlist.h>
 #include <q3ptrlist.h>
 #include <q3ptrdict.h>
@@ -35,7 +35,7 @@
 
 namespace KPIM {
 
-  class AddresseeViewItem : public QObject, public KListViewItem
+  class AddresseeViewItem : public QObject, public K3ListViewItem
   {
   Q_OBJECT
 
@@ -50,7 +50,7 @@ namespace KPIM {
       DistList    =6
     };
     AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr, int emailIndex = 0 );
-    AddresseeViewItem( KListView *lv, const QString& name, Category cat=Group );
+    AddresseeViewItem( K3ListView *lv, const QString& name, Category cat=Group );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name, const KABC::Addressee::List &lst );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name );
     ~AddresseeViewItem();
@@ -194,7 +194,7 @@ namespace KPIM {
                                   const Q3PtrList<AddresseeViewItem>& addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
-    KABC::Addressee::List allAddressee( KListView* view, bool onlySelected = true ) const;
+    KABC::Addressee::List allAddressee( K3ListView* view, bool onlySelected = true ) const;
     QStringList allDistributionLists( AddresseeViewItem* parent ) const;
 
   private:

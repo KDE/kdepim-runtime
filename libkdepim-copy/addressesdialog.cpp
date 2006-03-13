@@ -89,7 +89,7 @@ struct AddressesDialog::AddressesDialogPrivate {
 
 AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr,
                                       int emailIndex )
-  : QObject( 0 ), KListViewItem( parent, addr.realName(),
+  : QObject( 0 ), K3ListViewItem( parent, addr.realName(),
                                ( emailIndex == 0 ? addr.preferredEmail() : addr.emails()[ emailIndex ] ) )
 {
   d = new AddresseeViewItemPrivate;
@@ -109,8 +109,8 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
   }
 }
 
-AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Category cat )
-  : QObject(0), KListViewItem( lv, name )
+AddresseeViewItem::AddresseeViewItem( K3ListView *lv, const QString& name, Category cat )
+  : QObject(0), K3ListViewItem( lv, name )
 {
   d = new AddresseeViewItemPrivate;
   d->category = cat;
@@ -118,7 +118,7 @@ AddresseeViewItem::AddresseeViewItem( KListView *lv, const QString& name, Catego
 
 AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name,
                                        const KABC::Addressee::List &lst )
-  : QObject(0), KListViewItem( parent, name, i18n("<group>") )
+  : QObject(0), K3ListViewItem( parent, name, i18n("<group>") )
 {
   d = new AddresseeViewItemPrivate;
   d->category = FilledGroup;
@@ -126,7 +126,7 @@ AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString&
 }
 
 AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name )
-  : QObject(0), KListViewItem( parent, name, i18n("<group>") )
+  : QObject(0), K3ListViewItem( parent, name, i18n("<group>") )
 {
   d = new AddresseeViewItemPrivate;
   d->category = DistList;
@@ -190,7 +190,7 @@ int
 AddresseeViewItem::compare( Q3ListViewItem * i, int col, bool ascending ) const
 {
   if ( category() == Group || category() == Entry )
-    return KListViewItem::compare( i , col, ascending );
+    return K3ListViewItem::compare( i , col, ascending );
 
   AddresseeViewItem *item = static_cast<AddresseeViewItem*>( i );
   int a = static_cast<int>( category() );
@@ -965,7 +965,7 @@ AddressesDialog::filterChanged( const QString& txt )
 }
 
 KABC::Addressee::List
-AddressesDialog::allAddressee( KListView* view, bool onlySelected ) const
+AddressesDialog::allAddressee( K3ListView* view, bool onlySelected ) const
 {
   KABC::Addressee::List lst;
   Q3ListViewItemIterator it( view );

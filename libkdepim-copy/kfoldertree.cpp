@@ -17,7 +17,7 @@
 //-----------------------------------------------------------------------------
 KFolderTreeItem::KFolderTreeItem( KFolderTree *parent, const QString & label,
 				  Protocol protocol, Type type )
-  : KListViewItem( parent, label ), mProtocol( protocol ), mType( type ),
+  : K3ListViewItem( parent, label ), mProtocol( protocol ), mType( type ),
     mUnread(-1), mTotal(0)
 {
 }
@@ -26,7 +26,7 @@ KFolderTreeItem::KFolderTreeItem( KFolderTree *parent, const QString & label,
 KFolderTreeItem::KFolderTreeItem( KFolderTreeItem *parent,
 				  const QString & label, Protocol protocol, Type type,
           int unread, int total )
-    : KListViewItem( parent, label ), mProtocol( protocol ), mType( type ),
+    : K3ListViewItem( parent, label ), mProtocol( protocol ), mType( type ),
       mUnread( unread ), mTotal( total )
 {
 }
@@ -209,7 +209,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     p->setFont(f);
   }
 
-  // most cells can be handled by KListView::paintCell, we only need to
+  // most cells can be handled by K3ListView::paintCell, we only need to
   // deal with the folder column if the unread column is not shown
 
   /* The below is exceedingly silly, but Ingo insists that the unread
@@ -218,16 +218,16 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
    * two painting passes which flickers. Since that flicker is not
    * needed when there is the unread column, special case that. */
   if ( ft->isUnreadActive() || column != 0 ) {
-    KListViewItem::paintCell( p, cg, column, width, align );
+    K3ListViewItem::paintCell( p, cg, column, width, align );
   } else {
     Q3ListView *lv = listView();
     QString oldText = text(column);
 
     // set an empty text so that we can have our own implementation (see further down)
-    // but still benefit from KListView::paintCell
+    // but still benefit from K3ListView::paintCell
     setText( column, "" );
 
-    KListViewItem::paintCell( p, cg, column, width, align );
+    K3ListViewItem::paintCell( p, cg, column, width, align );
 
     int r = lv ? lv->itemMargin() : 1;
     const QPixmap *icon = pixmap( column );
@@ -292,7 +292,7 @@ QString KFolderTreeItem::squeezeFolderName( const QString &text,
 
 
 KFolderTree::KFolderTree( QWidget *parent, const char* name )
-  : KListView( parent ), mUnreadIndex(-1), mTotalIndex(-1)
+  : K3ListView( parent ), mUnreadIndex(-1), mTotalIndex(-1)
 {
   setObjectName(name);
   // GUI-options
@@ -334,7 +334,7 @@ void KFolderTree::setStyleDependantFrameWidth()
 void KFolderTree::styleChange( QStyle& oldStyle )
 {
   setStyleDependantFrameWidth();
-  KListView::styleChange( oldStyle );
+  K3ListView::styleChange( oldStyle );
 }
 
 //-----------------------------------------------------------------------------
@@ -343,7 +343,7 @@ void KFolderTree::drawContentsOffset( QPainter * p, int ox, int oy,
 {
 //  bool oldUpdatesEnabled = isUpdatesEnabled();
 //  setUpdatesEnabled(false);
-  KListView::drawContentsOffset( p, ox, oy, cx, cy, cw, ch );
+  K3ListView::drawContentsOffset( p, ox, oy, cx, cy, cw, ch );
 #warning This will trigger a repaint and thus an infinite loop!
 //  setUpdatesEnabled(oldUpdatesEnabled);
 }
@@ -352,13 +352,13 @@ void KFolderTree::drawContentsOffset( QPainter * p, int ox, int oy,
 void KFolderTree::contentsMousePressEvent( QMouseEvent *e )
 {
     setSelectionModeExt(Single);
-    KListView::contentsMousePressEvent(e);
+    K3ListView::contentsMousePressEvent(e);
 }
 
 //-----------------------------------------------------------------------------
 void KFolderTree::contentsMouseReleaseEvent( QMouseEvent *e )
 {
-    KListView::contentsMouseReleaseEvent(e);
+    K3ListView::contentsMouseReleaseEvent(e);
     setSelectionModeExt(Extended);
 }
 

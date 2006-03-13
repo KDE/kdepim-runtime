@@ -38,7 +38,7 @@
 
 class Q3ListViewItem;
 class KPushButton;
-class KListView;
+class K3ListView;
 namespace KPIM {
 
 class LdapSearch;
@@ -82,7 +82,7 @@ private slots:
 private:
   KConfig mConfig;
   CompletionItemList mItems;
-  KListView* mListView;
+  K3ListView* mListView;
   KPushButton* mUpButton;
   KPushButton* mDownButton;
 

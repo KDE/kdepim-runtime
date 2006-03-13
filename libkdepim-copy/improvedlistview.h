@@ -21,7 +21,7 @@
 #ifndef KPIMIMPROVEDLISTVIEW_H
 #define KPIMIMPROVEDLISTVIEW_H
 
-#include <klistview.h>
+#include <k3listview.h>
 
 namespace KPIM {
 
@@ -30,7 +30,7 @@ A listview that controls expandibility and the ability to accept child items sep
 
 @author Rafal Rzepecki
 */
-class ImprovedListView : public KListView
+class ImprovedListView : public K3ListView
 {
     Q_OBJECT
     Q_PROPERTY( bool leavesAcceptChildren READ leavesAcceptChildren
@@ -51,7 +51,7 @@ class ImprovedListView : public KListView
 
   protected:
     /**
-     * @reimp from KListView.
+     * @reimp from K3ListView.
      */
     virtual void findDrop ( const QPoint &pos, Q3ListViewItem *&parent,
                             Q3ListViewItem *&after );

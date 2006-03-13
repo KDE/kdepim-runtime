@@ -42,7 +42,7 @@
 #include <kdebug.h>
 #include <kdialog.h>
 #include <kglobal.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <klocale.h>
 #include <kprocess.h>
 #include <krun.h>
@@ -280,7 +280,7 @@ void KCMDesignerFields::initGUI()
 
   QHBoxLayout *hbox = new QHBoxLayout( layout, KDialog::spacingHint() );
 
-  mPageView = new KListView( this );
+  mPageView = new K3ListView( this );
   mPageView->addColumn( i18n( "Available Pages" ) );
   mPageView->setRootIsDecorated( true );
   mPageView->setAllColumnsShowFocus( true );

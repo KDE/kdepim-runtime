@@ -34,7 +34,7 @@
 
 class KComboBox;
 class KLineEdit;
-class KListView;
+class K3ListView;
 class QSignalMapper;
 
 namespace KPIM {
@@ -199,10 +199,10 @@ class KDE_EXPORT AddresseeSelector : public QWidget
 
     KComboBox *mAddressBookCombo;
     KLineEdit *mAddresseeFilter;
-    KListView *mAddresseeView;
+    K3ListView *mAddresseeView;
     SelectionItem::List mSelectionItems;
 
-    QList<KListView*> mSelectionViews;
+    QList<K3ListView*> mSelectionViews;
     QSignalMapper *mMoveMapper;
     QSignalMapper *mRemoveMapper;
 

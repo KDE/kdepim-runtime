@@ -35,7 +35,7 @@
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klineedit.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <klocale.h>
 
 #include "addresseeselector.h"
@@ -297,7 +297,7 @@ void AddresseeSelector::initGUI()
 
   int count = mSelection->fieldCount();
   for ( int i = 0; i < count; ++i, ++row ) {
-    KListView *listView = new KListView( this );
+    K3ListView *listView = new K3ListView( this );
     listView->addColumn( mSelection->fieldTitle( i ) );
     listView->setFullWidth( true );
     mSelectionViews.append( listView );
@@ -334,7 +334,7 @@ void AddresseeSelector::initGUI()
     layout->addWidget( listView, row, 2 );
   }
 
-  mAddresseeView = new KListView( this );
+  mAddresseeView = new K3ListView( this );
   mAddresseeView->addColumn( "" );
   mAddresseeView->header()->hide();
   mAddresseeView->setFullWidth( true );
@@ -395,7 +395,7 @@ void AddresseeSelector::move( int index )
 
 void AddresseeSelector::remove( int index )
 {
-  KListView *view = mSelectionViews[ index ];
+  K3ListView *view = mSelectionViews[ index ];
 
   SelectionViewItem *item = dynamic_cast<SelectionViewItem*>( view->selectedItem() );
   if ( item ) {
@@ -451,7 +451,7 @@ void AddresseeSelector::setItemSelected( int fieldIndex, const KABC::Addressee &
 
 void AddresseeSelector::updateSelectionView( int index )
 {
-  KListView *view = mSelectionViews[ index ];
+  K3ListView *view = mSelectionViews[ index ];
   view->clear();
 
   SelectionItem::List::Iterator it;

@@ -38,7 +38,7 @@
 #include <kdebug.h>
 #include <klocale.h>
 #include <kiconloader.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <kpushbutton.h>
 
 #include <khbox.h>
@@ -210,7 +210,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   mItems.sort();
 
   KHBox* page = makeHBoxMainWidget();
-  mListView = new KListView( page );
+  mListView = new K3ListView( page );
   mListView->setSorting( -1 );
   mListView->addColumn( QString() );
   mListView->header()->hide();
