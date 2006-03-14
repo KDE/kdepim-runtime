@@ -103,15 +103,15 @@ install_targets(${LIB_INSTALL_DIR} kdepim )
 
 ########### next target ###############
 
-set(kdepimwidgets_PART_SRCS kdepimwidgets.cpp )
+qt4_generate_moc(${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.moc)
 
-kde4_automoc(${kdepimwidgets_PART_SRCS})
+set(kdepimwidgets_PART_SRCS kdepimwidgets.cpp )
 
 kde4_add_plugin(kdepimwidgets ${kdepimwidgets_PART_SRCS})
 
 kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kdepimwidgets )
 
-target_link_libraries(kdepimwidgets  ${QT_AND_KDECORE_LIBS} kio kdepim )
+target_link_libraries(kdepimwidgets  ${LIB_KIO} kdepim )
 
 install_targets(${LIB_INSTALL_DIR}/kde4 kdepimwidgets )
 
