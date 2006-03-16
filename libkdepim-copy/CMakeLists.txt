@@ -88,7 +88,10 @@ kde4_automoc(${kdepim_LIB_SRCS})
 
 kde4_add_ui3_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui addresspicker.ui )
 
-kde4_add_dcop_stubs(kdepim_LIB_SRCS MailTransportServiceIface.kidl AddressBookServiceIface.kidl)
+kde4_add_dcop_stubs(kdepim_LIB_SRCS 
+	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 
+	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
+	)
 kde4_add_dcop_skels(kdepim_LIB_SRCS addresseelineedit.h )
 
 kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc )
