@@ -229,9 +229,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
   } else {
     mLdif.endLDIF();
   }
-#warning "KDE4: port it";
-#if 0
-  KABC::LDIF::ParseVal ret;
+  KABC::LDIF::ParseValue ret;
   QString name;
   do {
     ret = mLdif.nextItem();
@@ -239,7 +237,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
       case KABC::LDIF::Item: 
         {
           name = mLdif.attr();
-          QByteArray value = mLdif.val();
+          QByteArray value = mLdif.value();
           bool bIsObjectClass = name.toLower() == "objectclass";
           if( bIsObjectClass )
             mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
@@ -255,7 +253,6 @@ void LdapClient::parseLDIF( const QByteArray& data )
         break;
     }
   } while ( ret != KABC::LDIF::MoreData );
-#endif
 }
 
 int LdapClient::clientNumber() const
