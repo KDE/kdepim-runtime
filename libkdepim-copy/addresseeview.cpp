@@ -213,7 +213,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) || pic.url().startsWith( "https://" ) ? pic.url() : "http://" + pic.url());
     } else {
-      image = "file:" + KGlobal::iconLoader()->iconPath( "personal", KIcon::Desktop );
+      image = "file:" + KGlobal::iconLoader()->iconPath( "personal", K3Icon::Desktop );
     }
   }
 
@@ -542,7 +542,7 @@ void AddresseeView::updateView()
       }
     } else {
       Q3MimeSourceFactory::defaultFactory()->setPixmap( imageURL,
-        KGlobal::iconLoader()->loadIcon( "personal", KIcon::Desktop, 128 ) );
+        KGlobal::iconLoader()->loadIcon( "personal", K3Icon::Desktop, 128 ) );
     }
   }
 

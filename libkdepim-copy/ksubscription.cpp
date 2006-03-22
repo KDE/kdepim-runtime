@@ -229,7 +229,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
 
   QToolButton *clearButton = new QToolButton( page );
   clearButton->setIconSet( KGlobal::iconLoader()->loadIconSet(
-              KApplication::reverseLayout() ? "clear_left":"locationbar_erase", KIcon::Small, 0 ) );
+              KApplication::reverseLayout() ? "clear_left":"locationbar_erase", K3Icon::Small, 0 ) );
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(filterEdit,i18n("S&earch:"), page);
   connect( clearButton, SIGNAL( clicked() ), filterEdit, SLOT( clear() ) );

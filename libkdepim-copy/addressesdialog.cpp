@@ -101,11 +101,11 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
 
   if ( addr.photo().url().isEmpty() ) {
     if ( addr.photo().data().isNull() )
-      setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small ) );
+      setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", K3Icon::Small ) );
     else
       setPixmap( 0, QPixmap::fromImage( addr.photo().data().smoothScale( 16, 16 ) ) );
   } else {
-    setPixmap( 0, KGlobal::iconLoader()->loadIcon( addr.photo().url(), KIcon::Small ) );
+    setPixmap( 0, KGlobal::iconLoader()->loadIcon( addr.photo().url(), K3Icon::Small ) );
   }
 }
 
@@ -131,7 +131,7 @@ AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString&
   d = new AddresseeViewItemPrivate;
   d->category = DistList;
 
-  setPixmap( 0, KGlobal::iconLoader()->loadIcon( "kdmconfig", KIcon::Small ) );
+  setPixmap( 0, KGlobal::iconLoader()->loadIcon( "kdmconfig", K3Icon::Small ) );
 }
 
 AddresseeViewItem::~AddresseeViewItem()

@@ -292,8 +292,8 @@ void AddresseeSelector::initGUI()
 
   int row = 1;
 
-  QIcon moveSet = KGlobal::iconLoader()->loadIconSet( "next", KIcon::Small );
-  QIcon removeSet = KGlobal::iconLoader()->loadIconSet( "previous", KIcon::Small );
+  QIcon moveSet = KGlobal::iconLoader()->loadIconSet( "next", K3Icon::Small );
+  QIcon removeSet = KGlobal::iconLoader()->loadIconSet( "previous", K3Icon::Small );
 
   int count = mSelection->fieldCount();
   for ( int i = 0; i < count; ++i, ++row ) {

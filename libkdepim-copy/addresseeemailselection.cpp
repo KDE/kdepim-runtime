@@ -135,7 +135,7 @@ QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int
   if ( !addressee.photo().data().isNull() )
     return QPixmap::fromImage( addressee.photo().data().smoothScale( 16, 16 ) );
   else
-    return KGlobal::iconLoader()->loadIcon( "personal", KIcon::Small );
+    return KGlobal::iconLoader()->loadIcon( "personal", K3Icon::Small );
 }
 
 bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int ) const
@@ -162,7 +162,7 @@ QString AddresseeEmailSelection::distributionListText( const KABC::DistributionL
 
 QPixmap AddresseeEmailSelection::distributionListIcon( const KABC::DistributionList* ) const
 {
-  return KGlobal::iconLoader()->loadIcon( "kdmconfig", KIcon::Small );
+  return KGlobal::iconLoader()->loadIcon( "kdmconfig", K3Icon::Small );
 }
 
 bool AddresseeEmailSelection::distributionListEnabled( const KABC::DistributionList* ) const
