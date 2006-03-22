@@ -15,7 +15,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(example ${example_SRCS})
 
-target_link_libraries(example  ${QT_AND_KDECORE_LIBS} kdepim )
+target_link_libraries(example  ${KDE4_KDECORE_LIBS} kdepim )
 
 endif(KDE4_BUILD_TESTS)
 

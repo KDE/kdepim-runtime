@@ -13,7 +13,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testfactory ${testfactory_SRCS})
 
-target_link_libraries(testfactory  ${QT_AND_KDECORE_LIBS} komposer )
+target_link_libraries(testfactory  ${KDE4_KDECORE_LIBS} komposer )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -27,7 +27,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testmanager ${testmanager_SRCS})
 
-target_link_libraries(testmanager  ${QT_AND_KDECORE_LIBS} komposer )
+target_link_libraries(testmanager  ${KDE4_KDECORE_LIBS} komposer )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -41,7 +41,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testkomposer ${testkomposer_SRCS})
 
-target_link_libraries(testkomposer  ${QT_AND_KDECORE_LIBS} komposer )
+target_link_libraries(testkomposer  ${KDE4_KDECORE_LIBS} komposer )
 
 endif(KDE4_BUILD_TESTS)
 
