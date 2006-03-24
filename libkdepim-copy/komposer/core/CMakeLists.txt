@@ -21,7 +21,7 @@ kde4_add_kcfg_files(komposer_LIB_SRCS settings.kcfgc )
 
 kde4_add_library(komposer SHARED ${komposer_LIB_SRCS})
 
-target_link_libraries(komposer  ${KDE4_KDECORE_LIBS} kparts kdepim kutils )
+target_link_libraries(komposer  ${KDE4_KPARTS_LIBS} kdepim kutils )
 
 set_target_properties(komposer PROPERTIES VERSION 1.0.0 SOVERSION 1 )
 install_targets(${LIB_INSTALL_DIR} komposer )
