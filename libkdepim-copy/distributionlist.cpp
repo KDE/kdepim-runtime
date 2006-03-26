@@ -51,10 +51,18 @@ static ParseList parseCustom( const QString& str )
   return res;
 }
 
+QString cleanupFormattedName( const QString & _formattedName )
+{
+  QString formattedName =_formattedName;
+  formattedName.replace(',', ' ' );
+  formattedName.replace(';', ' ' );
+  return formattedName;
+}
+
 void KPIM::DistributionList::insertEntry( const Addressee& addr, const QString& email )
 {
   // insertEntry will removeEntry(uid), but not with formattedName
-  removeEntry( addr.formattedName(), email );
+  removeEntry( cleanupFormattedName( addr.formattedName() ), email );
   insertEntry( addr.uid(), email );
 }
 
@@ -72,7 +80,7 @@ void KPIM::DistributionList::removeEntry( const Addressee& addr, const QString& 
 {
   removeEntry( addr.uid(), email );
   // Also remove entries with the full name as uid (for the kolab thing)
-  removeEntry( addr.formattedName(), email );
+  removeEntry( cleanupFormattedName( addr.formattedName() ), email );
 }
 
 void KPIM::DistributionList::removeEntry( const QString& uid, const QString& email )
