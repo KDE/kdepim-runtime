@@ -134,7 +134,7 @@ void AddresseeLineEdit::init()
       ldapSearchDeleter.setObject( s_LDAPSearch, new KPIM::LdapSearch );
       ldapTextDeleter.setObject( s_LDAPText, new QString );
 
-      /* Add completion sources for all ldap server, 0 to n. Added first so 
+      /* Add completion sources for all ldap server, 0 to n. Added first so
        * that they map to the ldapclient::clientNumber() */
       QList< LdapClient* > clients =  s_LDAPSearch->clients();
       for ( QList<LdapClient*>::iterator it = clients.begin(); it != clients.end(); ++it ) {
@@ -315,7 +315,7 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
       while ( ( eot > 0 ) && contents[ eot - 1 ].isSpace() )
         eot--;
       if ( eot == 0 )
-        contents = QString::null;
+        contents.clear();
       else if ( contents[ eot - 1 ] == ',' ) {
         eot--;
         contents.truncate( eot );
@@ -646,7 +646,7 @@ void AddresseeLineEdit::slotLDAPSearchData( const KPIM::LdapResultList& adrs )
     KABC::Addressee addr;
     addr.setNameFromString( (*it).name );
     addr.setEmails( (*it).email );
-    
+
     addContact( addr, (*it).completionWeight, (*it ).clientNumber  );
   }
 
@@ -682,7 +682,7 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
             completionBox->setCancelledText( m_searchString );
           completionBox->setItems( items );
           completionBox->popup();
-          // we have to install the event filter after popup(), since that 
+          // we have to install the event filter after popup(), since that
           // calls show(), and that's where KCompletionBox installs its filter.
           // We want to be first, though, so do it now.
           if ( s_completion->order() == KCompletion::Weighted )
@@ -802,8 +802,8 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       }
       // avoid selection of headers on button press, or move or release while
       // a button is pressed
-      if ( e->type() == QEvent::MouseButtonPress 
-          || me->state() & Qt::LeftButton || me->state() & Qt::MidButton 
+      if ( e->type() == QEvent::MouseButtonPress
+          || me->state() & Qt::LeftButton || me->state() & Qt::MidButton
           || me->state() & Qt::RightButton ) {
         if ( !item->text().startsWith( s_completionItemIndentString ) ) {
           return true; // eat the event, we don't want anything to happen
@@ -909,7 +909,7 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
       (*it) = (*it).prepend( s_completionItemIndentString );
       sections[idx].append( *it );
     }
-    if ( i > beforeDollarCompletionCount ) { 
+    if ( i > beforeDollarCompletionCount ) {
       // remove the '$$whatever$' part
       int pos = (*it).find( '$', 2 );
       if ( pos < 0 ) // ???
