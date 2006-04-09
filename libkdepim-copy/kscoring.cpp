@@ -668,7 +668,7 @@ void KScoringRule::setLinkMode(const QString& l)
 void KScoringRule::setExpire(const QString& e)
 {
   if (e != "never") {
-    QStringList l = e.split("-", QString::SkipEmptyParts);
+    QStringList l = e.split('-', QString::SkipEmptyParts);
     Q_ASSERT( l.count() == 3 );
     expires.setYMD( l.at(0).toInt(), l.at(1).toInt(), l.at(2).toInt() );
   }
@@ -767,8 +767,8 @@ QString KScoringRule::getExpireDateString() const
 {
   if (expires.isNull()) return "never";
   else {
-    return QString::number(expires.year()) + QString("-")
-      + QString::number(expires.month()) + QString("-")
+    return QString::number(expires.year()) + QString('-')
+      + QString::number(expires.month()) + QString('-')
       + QString::number(expires.day());
   }
 }
@@ -789,7 +789,7 @@ KScoringManager::KScoringManager(const QString& appName)
   if(appName.isEmpty())
     mFilename = KGlobal::dirs()->saveLocation("appdata") + "/scorefile";
   else
-    mFilename = KGlobal::dirs()->saveLocation("data") + "/" + appName + "/scorefile";
+    mFilename = KGlobal::dirs()->saveLocation("data") + '/' + appName + "/scorefile";
   // open the score file
   load();
 }

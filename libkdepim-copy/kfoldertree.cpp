@@ -252,12 +252,12 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
 
       if ( unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) {
         if ( isOpen() )
-          unread = " (" + QString::number( unreadCount ) + ")";
+          unread = " (" + QString::number( unreadCount ) + ')';
         else if ( unreadRecursiveCount == unreadCount || mType == Root )
-          unread = " (" + QString::number( unreadRecursiveCount ) + ")";
+          unread = " (" + QString::number( unreadRecursiveCount ) + ')';
         else
           unread = " (" + QString::number( unreadCount ) + " + " +
-                    QString::number( unreadRecursiveCount-unreadCount ) + ")";
+                    QString::number( unreadRecursiveCount-unreadCount ) + ')';
       }
 
       // check if the text needs to be squeezed

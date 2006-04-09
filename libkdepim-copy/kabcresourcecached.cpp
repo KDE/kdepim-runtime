@@ -208,7 +208,7 @@ QString ResourceCached::cacheFile() const
 
 QString ResourceCached::changesCacheFile( const QString &type ) const
 {
-  return locateLocal( "cache", "kabc/changescache/" + identifier() + "_" + type );
+  return locateLocal( "cache", "kabc/changescache/" + identifier() + '_' + type );
 }
 
 void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map, const QString &type )
@@ -262,7 +262,7 @@ void ResourceCached::loadChangesCache()
 
 void ResourceCached::setIdMapperIdentifier()
 {
-  mIdMapper.setIdentifier( type() + "_" + identifier() );
+  mIdMapper.setIdentifier( type() + '_' + identifier() );
 }
 
 #include "kabcresourcecached.moc"

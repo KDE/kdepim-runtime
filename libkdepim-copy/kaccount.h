@@ -37,6 +37,7 @@
 
 class KConfig;
 
+/** Base class for mail and news accounts. */
 class KDE_EXPORT KAccount
 {
   public:
