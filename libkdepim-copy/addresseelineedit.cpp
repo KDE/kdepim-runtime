@@ -183,10 +183,10 @@ void AddresseeLineEdit::keyPressEvent( QKeyEvent *e )
 {
   bool accept = false;
 
-  if ( KStdAccel::shortcut( KStdAccel::SubstringCompletion ).contains( KKey( e ) ) ) {
+  if ( KStdAccel::shortcut( KStdAccel::SubstringCompletion ).contains( Qt::Key_E ) ) {
     doCompletion( true );
     accept = true;
-  } else if ( KStdAccel::shortcut( KStdAccel::TextCompletion ).contains( KKey( e ) ) ) {
+  } else if ( KStdAccel::shortcut( KStdAccel::TextCompletion ).contains( Qt::Key_E ) ) {
     int len = text().length();
 
     if ( len == cursorPosition() ) { // at End?
