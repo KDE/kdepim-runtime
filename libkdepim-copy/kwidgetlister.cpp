@@ -59,17 +59,17 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
   mButtonBox->setSpacing( KDialog::spacingHint() );
   mLayout->addWidget( mButtonBox );
 
-  mBtnMore = new KPushButton( KGuiItem( i18n( "more widgets", "More" ), "button_more" ), mButtonBox );
+  mBtnMore = new KPushButton( KGuiItem( i18nc( "more widgets", "More" ), "button_more" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnMore, 0 );
 
-  mBtnFewer = new KPushButton( KGuiItem( i18n( "fewer widgets", "Fewer" ), "button_fewer" ), mButtonBox );
+  mBtnFewer = new KPushButton( KGuiItem( i18nc( "fewer widgets", "Fewer" ), "button_fewer" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnFewer, 0 );
 
   QWidget *spacer = new QWidget( mButtonBox );
   mButtonBox->setStretchFactor( spacer, 1 );
 
   // FIXME: We need a KStdGuiItem::clear here and in other locations to be automagically RTL aware - Martijn
-  mBtnClear = new KPushButton( KGuiItem( i18n( "clear widgets", "Clear" ), "locationbar_erase" ), mButtonBox );
+  mBtnClear = new KPushButton( KGuiItem( i18nc( "clear widgets", "Clear" ), "locationbar_erase" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnClear, 0 );
 
   //---------- connect everything

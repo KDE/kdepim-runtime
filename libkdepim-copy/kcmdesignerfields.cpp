@@ -179,7 +179,7 @@ void KCMDesignerFields::deleteFile()
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
     if (KMessageBox::warningContinueCancel(this,
-	i18n( "<qt>Do you really want to delete '<b>%1</b>'?</qt>").arg( pageItem->text(0) ), "", KStdGuiItem::del() )
+	i18n( "<qt>Do you really want to delete '<b>%1</b>'?</qt>", pageItem->text(0) ), "", KStdGuiItem::del() )
          == KMessageBox::Continue)
       KIO::NetAccess::del( pageItem->path(), 0 );
   }
@@ -318,11 +318,11 @@ void KCMDesignerFields::initGUI()
                          " <i>name</i> property to '<i>X_Foo</i>'.</p>"
                          "<p><b>Important:</b> The widget will edit custom fields with an"
                          " application name of %2.  To change the application name"
-                         " to be edited, set the widget name in Qt Designer.</p></qt>" )
-                         .arg( applicationName(), applicationName() );
+                         " to be edited, set the widget name in Qt Designer.</p></qt>",
+                         applicationName(), applicationName() );
 
   KActiveLabel *activeLabel = new KActiveLabel(
-      i18n( "<a href=\"whatsthis:%1\">How does this work?</a>" ).arg(cwHowto), this );
+      i18n( "<a href=\"whatsthis:%1\">How does this work?</a>" , cwHowto), this );
   hbox->addWidget( activeLabel );
 
   // ### why is this needed? Looks like a KActiveLabel bug...

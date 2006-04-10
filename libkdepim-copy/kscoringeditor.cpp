@@ -592,7 +592,7 @@ void RuleEditWidget::slotShrink()
 
 void RuleEditWidget::slotExpireEditChanged(int value)
 {
-  expireEdit->setSuffix(i18n(" day", " days", value));
+  expireEdit->setSuffix(i18np(" day", " days", value));
 }
 
 //============================================================================

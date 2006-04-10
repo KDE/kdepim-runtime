@@ -900,8 +900,8 @@ AddressesDialog::saveAs()
   if ( alreadyExists ) {
     KMessageBox::information( 0,
                               i18n( "<qt>Distribution list with the given name <b>%1</b> "
-                                    "already exists. Please select a different name.</qt>" )
-                              .arg( name ) );
+                                    "already exists. Please select a different name.</qt>" ,
+                                name ) );
     return;
   }
 

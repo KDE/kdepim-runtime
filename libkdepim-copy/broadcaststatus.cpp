@@ -56,10 +56,10 @@ void BroadcastStatus::setStatusMsg( const QString& message )
 void BroadcastStatus::setStatusMsgWithTimestamp( const QString& message )
 {
   KLocale* locale = KGlobal::locale();
-  setStatusMsg( i18n( "%1 is a time, %2 is a status message", "[%1] %2" )
-                .arg( locale->formatTime( QTime::currentTime(),
-                                          true /* with seconds */ ) )
-                .arg( message ) );
+  setStatusMsg( i18nc( "%1 is a time, %2 is a status message", "[%1] %2" ,
+                  locale->formatTime( QTime::currentTime(),
+                                          true /* with seconds */ ) ,
+                  message ) );
 }
 
 void BroadcastStatus::setStatusMsgTransmissionCompleted( int numMessages,
@@ -73,21 +73,21 @@ void BroadcastStatus::setStatusMsgTransmissionCompleted( int numMessages,
   if( numMessages > 0 ) {
     if( numBytes != -1 ) {
       if( ( numBytesToRead != numBytes ) && mLeaveOnServer )
-        statusMsg = i18n( "Transmission complete. %n new message in %1 KB "
+        statusMsg = i18np( "Transmission complete. %n new message in %1 KB "
                           "(%2 KB remaining on the server).",
                           "Transmission complete. %n new messages in %1 KB "
                           "(%2 KB remaining on the server).",
-                          numMessages )
-                    .arg( numBytesRead / 1024 )
-                    .arg( numBytes / 1024 );
+                          numMessages ,
+                      numBytesRead / 1024 ,
+                      numBytes / 1024 );
       else
-        statusMsg = i18n( "Transmission complete. %n message in %1 KB.",
+        statusMsg = i18np( "Transmission complete. %n message in %1 KB.",
                          "Transmission complete. %n messages in %1 KB.",
-                          numMessages )
-                    .arg( numBytesRead / 1024 );
+                          numMessages ,
+                      numBytesRead / 1024 );
     }
     else
-      statusMsg = i18n( "Transmission complete. %n new message.",
+      statusMsg = i18np( "Transmission complete. %n new message.",
                         "Transmission complete. %n new messages.",
                         numMessages );
   }
@@ -111,36 +111,36 @@ void BroadcastStatus::setStatusMsgTransmissionCompleted( const QString& account,
   if( numMessages > 0 ) {
     if( numBytes != -1 ) {
       if( ( numBytesToRead != numBytes ) && mLeaveOnServer )
-        statusMsg = i18n( "Transmission for account %3 complete. "
+        statusMsg = i18np( "Transmission for account %3 complete. "
                           "%n new message in %1 KB "
                           "(%2 KB remaining on the server).",
                           "Transmission for account %3 complete. "
                           "%n new messages in %1 KB "
                           "(%2 KB remaining on the server).",
-                          numMessages )
-                    .arg( numBytesRead / 1024 )
-                    .arg( numBytes / 1024 )
-                    .arg( account );
+                          numMessages ,
+                      numBytesRead / 1024 ,
+                      numBytes / 1024 ,
+                      account );
       else
-        statusMsg = i18n( "Transmission for account %2 complete. "
+        statusMsg = i18np( "Transmission for account %2 complete. "
                           "%n message in %1 KB.",
                           "Transmission for account %2 complete. "
                           "%n messages in %1 KB.",
-                          numMessages )
-                    .arg( numBytesRead / 1024 )
-                    .arg( account );
+                          numMessages ,
+                      numBytesRead / 1024 ,
+                      account );
     }
     else
-      statusMsg = i18n( "Transmission for account %1 complete. "
+      statusMsg = i18np( "Transmission for account %1 complete. "
                         "%n new message.",
                         "Transmission for account %1 complete. "
                         "%n new messages.",
-                        numMessages )
-                  .arg( account );
+                        numMessages ,
+                    account );
   }
   else
-    statusMsg = i18n( "Transmission for account %1 complete. No new messages.")
-                .arg( account );
+    statusMsg = i18n( "Transmission for account %1 complete. No new messages.",
+                  account );
 
   setStatusMsgWithTimestamp( statusMsg );
   if ( item )

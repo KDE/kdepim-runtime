@@ -50,20 +50,20 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
   if (!info.exists())
   {
     if (aVerbose)
-      msgDialog(i18n("The specified file does not exist:\n%1").arg(aFileName));
+      msgDialog(i18n("The specified file does not exist:\n%1", aFileName));
     return QByteArray();
   }
   if (info.isDir())
   {
     if (aVerbose)
-      msgDialog(i18n("This is a folder and not a file:\n%1").arg(aFileName));
+      msgDialog(i18n("This is a folder and not a file:\n%1", aFileName));
     return QByteArray();
   }
   if (!info.isReadable())
   {
     if (aVerbose)
       msgDialog(i18n("You do not have read permissions "
-				   "to the file:\n%1").arg(aFileName));
+				   "to the file:\n%1", aFileName));
     return QByteArray();
   }
   if (len <= 0) return QByteArray();
@@ -73,13 +73,13 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
     if (aVerbose) switch(file.status())
     {
     case IO_ReadError:
-      msgDialog(i18n("Could not read file:\n%1").arg(aFileName));
+      msgDialog(i18n("Could not read file:\n%1", aFileName));
       break;
     case IO_OpenError:
-      msgDialog(i18n("Could not open file:\n%1").arg(aFileName));
+      msgDialog(i18n("Could not open file:\n%1", aFileName));
       break;
     default:
-      msgDialog(i18n("Error while reading file:\n%1").arg(aFileName));
+      msgDialog(i18n("Error while reading file:\n%1", aFileName));
     }
     return QByteArray();
   }
@@ -97,8 +97,8 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
 
   if (readLen < len)
   {
-    QString msg = i18n("Could only read %1 bytes of %2.")
-                  .arg(readLen).arg(len);
+    QString msg = i18n("Could only read %1 bytes of %2.",
+                   readLen, len);
     msgDialog(msg);
     result.truncate( readLen );
   }
@@ -123,8 +123,8 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
     if (aAskIfExists)
     {
       QString str;
-      str = i18n("File %1 exists.\nDo you want to replace it?")
-		  .arg(aFileName);
+      str = i18n("File %1 exists.\nDo you want to replace it?",
+		   aFileName);
       const int rc = KMessageBox::warningContinueCancel(0,
 	   str, i18n("Save to File"), i18n("&Replace"));
       if (rc != KMessageBox::Continue) return false;
@@ -141,8 +141,8 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 	// failed to rename file
 	if (!aVerbose) return false;
 	const int rc = KMessageBox::warningContinueCancel(0,
-	     i18n("Failed to make a backup copy of %1.\nContinue anyway?")
-	     .arg(aFileName),
+	     i18n("Failed to make a backup copy of %1.\nContinue anyway?",
+	      aFileName),
              i18n("Save to File"), KStdGuiItem::save() );
 	if (rc != KMessageBox::Continue) return false;
       }
@@ -154,14 +154,14 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
     if (aVerbose) switch(file.status())
     {
     case IO_WriteError:
-      msgDialog(i18n("Could not write to file:\n%1").arg(aFileName));
+      msgDialog(i18n("Could not write to file:\n%1", aFileName));
       break;
     case IO_OpenError:
-      msgDialog(i18n("Could not open file for writing:\n%1")
-		.arg(aFileName));
+      msgDialog(i18n("Could not open file for writing:\n%1",
+		 aFileName));
       break;
     default:
-      msgDialog(i18n("Error while writing file:\n%1").arg(aFileName));
+      msgDialog(i18n("Error while writing file:\n%1", aFileName));
     }
     return false;
   }
@@ -170,13 +170,13 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 
   if ( writeLen < 0 ) {
     if (aVerbose)
-      msgDialog(i18n("Could not write to file:\n%1").arg(aFileName));
+      msgDialog(i18n("Could not write to file:\n%1", aFileName));
     return false;
   }
   else if ( writeLen < aBuffer.size() ) {
-    QString msg = i18n("Could only write %1 bytes of %2.")
-                  .arg( writeLen )
-                  .arg( aBuffer.size() );
+    QString msg = i18n("Could only write %1 bytes of %2.",
+                    writeLen ,
+                    aBuffer.size() );
     if (aVerbose)
       msgDialog(msg);
     return false;
@@ -200,8 +200,8 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
   struct stat statbuffer;
 
   if ( !fiToCheck.exists() ) {
-    error.append( i18n("%1 does not exist")
-                  .arg(toCheck) + "\n");
+    error.append( i18n("%1 does not exist",
+                   toCheck) + "\n");
   }
 
   // check the access bit of a folder.
@@ -213,7 +213,7 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
     if ( !g.isReadable() ) {
       if ( chmod( toCheckEnc, statbuffer.st_mode + S_IXUSR ) != 0 ) {
         error.append( i18n("%1 is not accessible and that is "
-                           "unchangeable.").arg(toCheck) + "\n");
+                           "unchangeable.", toCheck) + "\n");
       } else {
         kDebug() << "Changed access bit for " << toCheck << endl;
       }
@@ -233,8 +233,8 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
 
       // Lets try changing it.
       if ( chmod( toCheckEnc, statbuffer.st_mode + S_IRUSR ) != 0 ) {
-        error.append( i18n("%1 is not readable and that is unchangeable.")
-                           .arg(toCheck) + "\n");
+        error.append( i18n("%1 is not readable and that is unchangeable.",
+                            toCheck) + "\n");
       } else {
         kDebug() << "Changed the read bit for " << toCheck << endl;
       }
@@ -249,8 +249,8 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
 
       // Lets try changing it.
       if ( chmod (toCheckEnc, statbuffer.st_mode + S_IWUSR ) != 0 ) {
-        error.append( i18n("%1 is not writable and that is unchangeable.")
-                           .arg(toCheck) + "\n");
+        error.append( i18n("%1 is not writable and that is unchangeable.",
+                            toCheck) + "\n");
       } else {
         kDebug() << "Changed the write bit for " << toCheck << endl;
       }
@@ -264,7 +264,7 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
     // First check if the folder is readable for us. If not, we get
     // some ugly crashes.
     if ( !g.isReadable() ){
-      error.append(i18n("Folder %1 is inaccessible.").arg(toCheck) + "\n");
+      error.append(i18n("Folder %1 is inaccessible.", toCheck) + "\n");
     } else {
       foreach(QFileInfo fi, g.entryInfoList())
       { 

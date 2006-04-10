@@ -45,7 +45,7 @@ void EmbeddedURLPage::initGUI( const QString &url, const QString &/*mimetype*/ )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
   layout->setAutoAdd( true );
-  new QLabel( i18n("Showing URL %1").arg( url ), this );
+  new QLabel( i18n("Showing URL %1", url ), this );
 }
 
 void EmbeddedURLPage::loadContents()

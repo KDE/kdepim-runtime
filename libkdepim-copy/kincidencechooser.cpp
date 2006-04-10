@@ -267,9 +267,9 @@ void KIncidenceChooser::showDiff()
     }
     mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay (this);
     if ( mInc1->summary().left( 20 ) != mInc2->summary().left( 20 ) )
-        mDisplayDiff->setCaption( i18n( "Differences of %1 and %2").arg( mInc1->summary().left( 20 ) ).arg( mInc2->summary().left( 20 ) ) );
+        mDisplayDiff->setCaption( i18n( "Differences of %1 and %2", mInc1->summary().left( 20 ), mInc2->summary().left( 20 ) ) );
     else
-        mDisplayDiff->setCaption( i18n( "Differences of %1").arg( mInc1->summary().left( 20 ) ) );
+        mDisplayDiff->setCaption( i18n( "Differences of %1", mInc1->summary().left( 20 ) ) );
 
     diff = new KPIM::CalendarDiffAlgo( mInc1, mInc2);
     diff->setLeftSourceTitle(  i18n( "Local entry"));

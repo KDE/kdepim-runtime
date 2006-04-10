@@ -671,27 +671,27 @@ void AddresseeView::slotHighlighted( const QString &link )
     QString email = link.mid( 7 );
 
     emit emailHighlighted( email );
-    emit highlightedMessage( i18n( "Send mail to '%1'" ).arg( email ) );
+    emit highlightedMessage( i18n( "Send mail to '%1'", email ) );
   } else if ( link.startsWith( "phone:" ) ) {
     QString number = link.mid( 8 );
 
     emit phoneNumberHighlighted( strippedNumber( number ) );
-    emit highlightedMessage( i18n( "Call number %1" ).arg( number ) );
+    emit highlightedMessage( i18n( "Call number %1", number ) );
   } else if ( link.startsWith( "fax:" ) ) {
     QString number = link.mid( 6 );
 
     emit faxNumberHighlighted( strippedNumber( number ) );
-    emit highlightedMessage( i18n( "Send fax to %1" ).arg( number ) );
+    emit highlightedMessage( i18n( "Send fax to %1", number ) );
   } else if ( link.startsWith( "addr:" ) ) {
     emit highlightedMessage( i18n( "Show address on map" ) );
   } else if ( link.startsWith( "sms:" ) ) {
     QString number = link.mid( 6 );
-    emit highlightedMessage( i18n( "Send SMS to %1" ).arg( number ) );
+    emit highlightedMessage( i18n( "Send SMS to %1", number ) );
   } else if ( link.startsWith( "http:" ) || link.startsWith( "https:" ) ) {
     emit urlHighlighted( link );
-    emit highlightedMessage( i18n( "Open URL %1" ).arg( link ) );
+    emit highlightedMessage( i18n( "Open URL %1", link ) );
   } else if ( link.startsWith( "im:" ) ) {
-    emit highlightedMessage( i18n( "Chat with %1" ).arg( mAddressee.realName() ) );
+    emit highlightedMessage( i18n( "Chat with %1", mAddressee.realName() ) );
   } else
     emit highlightedMessage( "" );
 }

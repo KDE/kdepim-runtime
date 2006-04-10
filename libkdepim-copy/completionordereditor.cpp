@@ -87,7 +87,7 @@ class LDAPCompletionItem : public CompletionItem
 {
 public:
   LDAPCompletionItem( LdapClient* ldapClient ) : mLdapClient( ldapClient ) {}
-  virtual QString label() const { return i18n( "LDAP server %1" ).arg( mLdapClient->server().host() ); }
+  virtual QString label() const { return i18n( "LDAP server %1", mLdapClient->server().host() ); }
   virtual int completionWeight() const { return mLdapClient->completionWeight(); }
   virtual void save( CompletionOrderEditor* );
 protected:
