@@ -14,7 +14,7 @@ include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_D
 ########### next target ###############
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp
-  COMMAND ${CMAKE_INSTALL_PREFIX}/bin/makekdewidgets
+  COMMAND ${KDE4_MAKEKDEWIDGETS_EXECUTABLE}
   ARGS -o ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp ${CMAKE_CURRENT_SOURCE_DIR}/kdepim.widgets
   DEPENDS kdepim.widgets)
 
