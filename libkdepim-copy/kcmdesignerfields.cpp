@@ -102,8 +102,7 @@ class PageItem : public Q3CheckListItem
           }
         }
 
-      } else
-        delete wdg;
+      }
     }
 
     QString name() const { return mName; }
