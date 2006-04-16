@@ -13,6 +13,12 @@ include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_D
 
 ########### next target ###############
 
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp
+  COMMAND ${KDE4_MAKEKDEWIDGETS_EXECUTABLE}
+  ARGS -o ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp ${CMAKE_CURRENT_SOURCE_DIR}/kdepim.widgets
+  DEPENDS kdepim.widgets)
+
+
 set(kdepim_LIB_SRCS ${libemailfunctions_SRCS} 
    ktimeedit.cpp 
    kprefsdialog.cpp 
@@ -99,8 +105,9 @@ install_targets(${LIB_INSTALL_DIR} kdepim )
 
 ########### next target ###############
 
-set(kdepimwidgets_PART_SRCS) 
-kde4_add_widget_files(kdepimwidgets_PART_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/kdepim.widgets)
+qt4_generate_moc(${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.cpp ${CMAKE_CURRENT_BINARY_DIR}/kdepimwidgets.moc)
+
+set(kdepimwidgets_PART_SRCS kdepimwidgets.cpp )
 
 kde4_add_plugin(kdepimwidgets ${kdepimwidgets_PART_SRCS})
 
