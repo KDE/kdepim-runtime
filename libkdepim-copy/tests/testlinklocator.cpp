@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 {
   KApplication::disableAutoDcopRegistration();
   KCmdLineArgs::init( argc, argv, "testlinklocator", 0, 0, 0, 0 );
-  KApplication app( false, false );
+  KApplication app( false );
 
   // empty input
   checkGetEmailAddress( QString(), 0, QString(), true );

@@ -31,6 +31,9 @@
 
 #include <qlayout.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <Q3Frame>
 
 class TestConfigWizard : public KConfigWizard
 {
@@ -40,7 +43,7 @@ class TestConfigWizard : public KConfigWizard
                                             "propagator_test.kcfg" ) )
     {
       QFrame *page = createWizardPage( "My Wizard Page" );
-      QBoxLayout *topLayout = new QVBoxLayout( page );
+      Q3BoxLayout *topLayout = new Q3VBoxLayout( page );
       
       mFixKMailCheckBox = new QCheckBox( i18n("Fix KMail"), page );      
       topLayout->addWidget( mFixKMailCheckBox );

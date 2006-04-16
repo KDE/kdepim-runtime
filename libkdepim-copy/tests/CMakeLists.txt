@@ -1,6 +1,6 @@
 kde4_header()
 
-include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}  )
+include_directories( ${KDE4_INCLUDES} )
 
 
 ########### next target ###############
@@ -15,7 +15,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testwizard ${testwizard_SRCS})
 
-target_link_libraries(testwizard  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testwizard  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -29,7 +29,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testaddresseelineedit ${testaddresseelineedit_SRCS})
 
-target_link_libraries(testaddresseelineedit  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testaddresseelineedit  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -43,7 +43,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testaddresseeselector ${testaddresseeselector_SRCS})
 
-target_link_libraries(testaddresseeselector  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testaddresseeselector  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -57,7 +57,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testutf7decoder ${testutf7decoder_SRCS})
 
-target_link_libraries(testutf7decoder  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testutf7decoder  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -71,21 +71,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testutf7encoder ${testutf7encoder_SRCS})
 
-target_link_libraries(testutf7encoder  ${KDE4_KDECORE_LIBS} )
-
-endif(KDE4_BUILD_TESTS)
-
-########### next target ###############
-
-set(test_kregexp_SRCS test_kregexp.cpp )
-
-kde4_automoc(${test_kregexp_SRCS})
-
-if(KDE4_BUILD_TESTS)
-
-kde4_add_executable(test_kregexp ${test_kregexp_SRCS})
-
-target_link_libraries(test_kregexp  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testutf7encoder  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -99,7 +85,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testdateedit ${testdateedit_SRCS})
 
-target_link_libraries(testdateedit  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testdateedit  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -113,7 +99,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testlinklocator ${testlinklocator_SRCS})
 
-target_link_libraries(testlinklocator  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testlinklocator  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -127,7 +113,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testdistrlist ${testdistrlist_SRCS})
 
-target_link_libraries(testdistrlist  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testdistrlist  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 
@@ -141,7 +127,7 @@ if(KDE4_BUILD_TESTS)
 
 kde4_add_executable(testldapclient ${testldapclient_SRCS})
 
-target_link_libraries(testldapclient  ${KDE4_KDECORE_LIBS} )
+target_link_libraries(testldapclient  kdepim ${KDE4_KDECORE_LIBS} )
 
 endif(KDE4_BUILD_TESTS)
 

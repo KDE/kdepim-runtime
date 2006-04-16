@@ -41,5 +41,4 @@ int main( int argc, char * argv[] ) {
   } else {
     qWarning("usage: testutf7encoder2 < infile > outfile\n");
   }
-  QTextCodec::deleteAllCodecs();
 }

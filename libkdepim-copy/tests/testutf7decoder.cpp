@@ -22,5 +22,4 @@ int main( int argc, char * argv[] ) {
   } else {
     qWarning("usage: testutf7decoder string_to_decode\n");
   }
-  QTextCodec::deleteAllCodecs();
 }
