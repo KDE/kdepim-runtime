@@ -115,7 +115,7 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kdepimwidgets )
 
 target_link_libraries(kdepimwidgets  ${KDE4_KIO_LIBS} kdepim )
 
-install_targets(${LIB_INSTALL_DIR}/kde4 kdepimwidgets )
+install_targets(${PLUGIN_INSTALL_DIR} kdepimwidgets )
 
 
 ########### install files ###############

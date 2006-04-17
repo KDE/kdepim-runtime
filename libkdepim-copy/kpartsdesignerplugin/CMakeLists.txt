@@ -15,7 +15,7 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kpartsdesignerplugin )
 
 target_link_libraries(kpartsdesignerplugin  ${KDE4_KPARTS_LIBS} )
 
-install_targets(${LIB_INSTALL_DIR}/kde4 kpartsdesignerplugin )
+install_targets(${PLUGIN_INSTALL_DIR} kpartsdesignerplugin )
 
 
 ########### install files ###############
