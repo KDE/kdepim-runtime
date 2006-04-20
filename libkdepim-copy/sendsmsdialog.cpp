@@ -34,7 +34,9 @@ SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent, con
 {
   QWidget *page = plainPage();
 
-  QGridLayout *layout = new QGridLayout( page, 3, 3, marginHint(), spacingHint() );
+  QGridLayout *layout = new QGridLayout( page );
+  layout->setMargin( marginHint() );
+  layout->setSpacing( spacingHint() );
 
   layout->addWidget( new QLabel( i18n( "Message" ), page ), 0, 0 );
 
@@ -62,7 +64,7 @@ SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent, con
 
 QString SendSMSDialog::text() const
 {
-  return mText->text();
+  return mText->toPlainText();
 }
 
 void SendSMSDialog::updateMessageLength()

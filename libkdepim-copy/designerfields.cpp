@@ -46,8 +46,9 @@ using namespace KPIM;
 
 DesignerFields::DesignerFields( const QString &uiFile, QWidget *parent,
   const char *name )
-  : QWidget( parent, name )
+  : QWidget( parent )
 {
+  setObjectName(name);
   initGUI( uiFile );
 }
 
@@ -83,7 +84,7 @@ void DesignerFields::initGUI( const QString &uiFile )
                << "KDatePicker";
 
   Q_FOREACH( it, list ) {
-    if ( allowedTypes.contains( it->className() ) ) {
+    if ( allowedTypes.contains( it->metaObject()->className() ) ) {
       QString name = it->name();
       if ( name.startsWith( "X_" ) ) {
         name = name.mid( 2 );
@@ -197,7 +198,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
         wdg->setDate( QDate::fromString( value, Qt::ISODate ) );
       } else if ( it.value()->inherits( "QComboBox" ) ) {
         QComboBox *wdg = static_cast<QComboBox*>( it.value() );
-        wdg->setCurrentText( value );
+        wdg->setItemText(wdg->currentIndex(), value );
       } else if ( it.value()->inherits( "QTextEdit" ) ) {
         QTextEdit *wdg = static_cast<QTextEdit*>( it.value() );
         wdg->setText( value );

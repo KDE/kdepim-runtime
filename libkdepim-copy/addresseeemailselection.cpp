@@ -133,7 +133,7 @@ QString AddresseeEmailSelection::itemText( const KABC::Addressee &addressee, int
 QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int ) const
 {
   if ( !addressee.photo().data().isNull() )
-    return QPixmap::fromImage( addressee.photo().data().smoothScale( 16, 16 ) );
+    return QPixmap::fromImage( addressee.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
   else
     return KGlobal::iconLoader()->loadIcon( "personal", K3Icon::Small );
 }
@@ -145,8 +145,8 @@ bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int
 
 bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee, int index, const QString &pattern ) const
 {
-  return addressee.formattedName().startsWith( pattern, false ) ||
-         email( addressee, index ).startsWith( pattern, false );
+  return addressee.formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
+         email( addressee, index ).startsWith( pattern, Qt::CaseInsensitive );
 }
 
 bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee, int index, const QString &pattern ) const
@@ -174,13 +174,13 @@ bool AddresseeEmailSelection::distributionListMatches( const KABC::DistributionL
                                                        const QString &pattern ) const
 {
   // check whether the name of the distribution list matches the pattern or one of its entries.
-  bool ok = distributionList->name().startsWith( pattern, false );
+  bool ok = distributionList->name().startsWith( pattern, Qt::CaseInsensitive );
 
   KABC::DistributionList::Entry::List entries = distributionList->entries();
   KABC::DistributionList::Entry::List::ConstIterator it;
   for ( it = entries.begin(); it != entries.end(); ++it ) {
-    ok = ok || (*it).addressee.formattedName().startsWith( pattern, false ) ||
-               (*it).email.startsWith( pattern, false );
+    ok = ok || (*it).addressee.formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
+               (*it).email.startsWith( pattern, Qt::CaseInsensitive );
   }
 
   return ok;

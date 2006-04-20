@@ -30,8 +30,9 @@
 #include <kdepimmacros.h>
 
 KPartsGenericPart::KPartsGenericPart( QWidget* parentWidget, const char* name )
-    : QWidget( parentWidget, name ), m_part( 0 )
+    : QWidget( parentWidget ), m_part( 0 )
 {
+    setObjectName( name );
     QVBoxLayout* layout = new QVBoxLayout( this );
     layout->setAutoAdd( true );
 }

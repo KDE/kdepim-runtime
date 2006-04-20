@@ -50,9 +50,12 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
 {
     setModal( true );
     KDialog *topFrame = this;
-    QGridLayout *topLayout = new QGridLayout(topFrame,5,3);
+    QGridLayout *topLayout = new QGridLayout(topFrame);
+    topLayout->setMargin(5);
+    topLayout->setSpacing(3);
+
     int iii = 0;
-    setCaption( i18n("Conflict Detected"));
+    setWindowTitle( i18n("Conflict Detected"));
     QLabel * lab;
     lab = new QLabel( i18n(
                         "<qt>A conflict was detected. This probably means someone edited the same entry on the server while you changed it locally."
@@ -237,7 +240,7 @@ void KIncidenceChooser::showIncidence1()
         }
         return;
     }
-    mTbL = new KDialogBase( this, "", false /*not modal*/, mInc1lab->text(), KDialogBase::Ok );
+    mTbL = new KDialogBase( KDialogBase::Plain, mInc1lab->text(), KDialogBase::Ok, KDialogBase::Ok, this, "", false/*not modal*/ );
     mTbL->setEscapeButton( KDialogBase::Ok );
     connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
     QTextBrowser* textBrowser = new QTextBrowser( mTbL );
@@ -267,9 +270,9 @@ void KIncidenceChooser::showDiff()
     }
     mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay (this);
     if ( mInc1->summary().left( 20 ) != mInc2->summary().left( 20 ) )
-        mDisplayDiff->setCaption( i18n( "Differences of %1 and %2", mInc1->summary().left( 20 ), mInc2->summary().left( 20 ) ) );
+        mDisplayDiff->setWindowTitle( i18n( "Differences of %1 and %2", mInc1->summary().left( 20 ), mInc2->summary().left( 20 ) ) );
     else
-        mDisplayDiff->setCaption( i18n( "Differences of %1", mInc1->summary().left( 20 ) ) );
+        mDisplayDiff->setWindowTitle( i18n( "Differences of %1", mInc1->summary().left( 20 ) ) );
 
     diff = new KPIM::CalendarDiffAlgo( mInc1, mInc2);
     diff->setLeftSourceTitle(  i18n( "Local entry"));
@@ -293,7 +296,7 @@ void KIncidenceChooser::showIncidence2()
         }
         return;
     }
-    mTbN = new KDialogBase( this, "", false /*not modal*/, mInc2lab->text(), KDialogBase::Ok );
+    mTbN = new KDialogBase( KDialogBase::Plain, mInc2lab->text(), KDialogBase::Ok, KDialogBase::Ok, this, "", false /*not modal*/ );
     mTbN->setEscapeButton( KDialogBase::Ok );
     connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
     QTextBrowser* textBrowser = new QTextBrowser( mTbN );

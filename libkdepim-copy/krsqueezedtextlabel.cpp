@@ -26,14 +26,16 @@
 #include <QResizeEvent>
 
 KRSqueezedTextLabel::KRSqueezedTextLabel( const QString &text , QWidget *parent, const char *name )
- : QLabel ( parent, name ) {
+ : QLabel ( parent ) {
+  setObjectName( name );
   setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
   fullText = text;
   squeezeTextToLabel();
 }
 
 KRSqueezedTextLabel::KRSqueezedTextLabel( QWidget *parent, const char *name )
- : QLabel ( parent, name ) {
+ : QLabel ( parent ) {
+  setObjectName( name );
   setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
 }
 

@@ -143,7 +143,7 @@ void CategoryHierarchyReaderQComboBox::addChild( const QString &label )
 {
   QString spaces;
   spaces.fill( ' ', 2 * mCurrentDepth );
-  mBox->insertItem( spaces + label );
+  mBox->addItem( spaces + label );
   mCurrentDepth++;
 }
 
