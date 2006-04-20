@@ -221,8 +221,8 @@ void CategoryEditDialog::slotApply()
   while ( item ) {
     path.append( item->text(0) );
     QStringList _path = path;
-    _path.gres( KPimPrefs::categorySeparator, QString("\\") + 
-                KPimPrefs::categorySeparator );
+    _path.replaceInStrings( KPimPrefs::categorySeparator, QString("\\") + 
+                            KPimPrefs::categorySeparator );
     mPrefs->mCustomCategories.append( _path.join(KPimPrefs::categorySeparator) );
     if ( item->firstChild() ) {
       item = item->firstChild();

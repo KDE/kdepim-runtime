@@ -109,8 +109,8 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
     path.append( item->text() );
     if (item->isOn()) {
       QStringList _path = path;
-      _path.gres( KPimPrefs::categorySeparator, QString( "\\" ) + 
-                  KPimPrefs::categorySeparator );
+      _path.replaceInStrings( KPimPrefs::categorySeparator, QString( "\\" ) + 
+                              KPimPrefs::categorySeparator );
       categories.append( _path.join( KPimPrefs::categorySeparator ) );
     }
     if ( item->firstChild() ) {

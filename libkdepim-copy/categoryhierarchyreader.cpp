@@ -39,7 +39,7 @@ inline QString &quote( QString &string )
 
 inline QStringList &unquote( QStringList &strings )
 {
-  return strings.gres( "@1", KPimPrefs::categorySeparator ).gres( "@0", "@" );
+  return strings.replaceInStrings( "@1", KPimPrefs::categorySeparator ).replaceInStrings( "@0", "@" );
 }
 
 QStringList CategoryHierarchyReader::path( QString string )
