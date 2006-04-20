@@ -75,9 +75,10 @@ void LdapObject::assign( const LdapObject& that )
 }
 
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
-  : QObject( parent, name ), mJob( 0 ), mActive( false ), mReportObjectClass( false )
+  : QObject( parent ), mJob( 0 ), mActive( false ), mReportObjectClass( false )
 {
 //  d = new LdapClientPrivate;
+  setObjectName(name);
   mClientNumber = clientNumber;
   mCompletionWeight = 50 - mClientNumber;
 }
@@ -405,11 +406,11 @@ void LdapSearch::startSearch( const QString& txt )
 
   cancelSearch();
 
-  int pos = txt.find( '\"' );
+  int pos = txt.indexOf( '\"' );
   if( pos >= 0 )
   {
     ++pos;
-    int pos2 = txt.find( '\"', pos );
+    int pos2 = txt.indexOf( '\"', pos );
     if( pos2 >= 0 )
         mSearchText = txt.mid( pos , pos2 - pos );
     else
@@ -448,7 +449,10 @@ void LdapSearch::slotLDAPResult( const KPIM::LdapObject& obj )
 {
   mResults.append( obj );
   if ( !mDataTimer.isActive() )
-    mDataTimer.start( 500, true );
+  {
+    mDataTimer.setSingleShot( true );
+    mDataTimer.start( 500 );
+  }
 }
 
 void LdapSearch::slotLDAPError( const QString& )
@@ -530,8 +534,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         wasDC = true;
       } else if( it2.key() == "mail" ) {
         mail = tmp;
-        LdapAttrValue::ConstIterator it3 = it2.data().begin();
-        for ( ; it3 != it2.data().end(); ++it3 ) {
+        LdapAttrValue::ConstIterator it3 = it2.value().begin();
+        for ( ; it3 != it2.value().end(); ++it3 ) {
           mails.append( QString::fromUtf8( (*it3).data(), (*it3).size() ) );
         }
       } else if( it2.key() == "givenName" )

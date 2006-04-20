@@ -79,7 +79,7 @@ namespace KPIM {
   {
     Q_OBJECT
   public:
-    AddressesDialog( QWidget *widget=0, const char *name=0 );
+    AddressesDialog( QWidget *widget=0 );
     ~AddressesDialog();
 
     /**

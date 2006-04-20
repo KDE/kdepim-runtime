@@ -205,7 +205,8 @@ void AddresseeLineEdit::keyPressEvent( QKeyEvent *e )
 
       *s_LDAPText = text();
       s_LDAPLineEdit = this;
-      s_LDAPTimer->start( 500, true );
+      s_LDAPTimer->setSingleShot( true );
+      s_LDAPTimer->start( 500 );
     }
   }
 }
@@ -236,12 +237,12 @@ void AddresseeLineEdit::insert( const QString &t )
     KUrl url( newText );
     newText = url.path();
   }
-  else if ( newText.find(" at ") != -1 ) {
+  else if ( newText.indexOf(" at ") != -1 ) {
     // Anti-spam stuff
     newText.replace( " at ", "@" );
     newText.replace( " dot ", "." );
   }
-  else if ( newText.find("(at)") != -1 ) {
+  else if ( newText.indexOf("(at)") != -1 ) {
     newText.replace( QRegExp("\\s*\\(at\\)\\s*"), "@" );
   }
 
@@ -272,7 +273,7 @@ void AddresseeLineEdit::insert( const QString &t )
 
   contents = contents.left( pos ) + newText + contents.mid( pos );
   setText( contents );
-  setEdited( true );
+  setModified( true );
   setCursorPosition( pos + newText.length() );
 }
 
@@ -334,7 +335,7 @@ void AddresseeLineEdit::dropEvent( QDropEvent *e )
       }
       if ( mailtoURL ) {
         setText( contents );
-        setEdited( true );
+        setModified( true );
         return;
       }
     }
@@ -401,7 +402,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
         setCompletedItems( items, autoSuggest );
 
         if ( !autoSuggest ) {
-          const int index = items.first().find( m_searchString );
+          const int index = items.first().indexOf( m_searchString );
           QString newText = m_previousAddresses + items.first().mid( index ).trimmed();
           setUserSelection( false );
           setCompletedText( newText, true );
@@ -415,7 +416,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       QString match = s_completion->makeCompletion( m_searchString );
       if ( !match.isNull() && match != m_searchString ) {
         setText( m_previousAddresses + match );
-        setEdited( true );
+        setModified( true );
         cursorAtEnd();
       }
       break;
@@ -561,7 +562,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 
     bool bDone = false;
     int i = -1;
-    while( ( i = name.findRev(' ') ) > 1 && !bDone ) {
+    while( ( i = name.lastIndexOf(' ') ) > 1 && !bDone ) {
       QString sLastName( name.mid( i+1 ) );
       if( ! sLastName.isEmpty() &&
             2 <= sLastName.length() &&   // last names must be at least 2 chars long
@@ -624,7 +625,7 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
   QString s( *s_LDAPText );
   // TODO cache last?
   QString prevAddr;
-  int n = s.findRev( ',' );
+  int n = s.lastIndexOf( ',' );
   if ( n >= 0 ) {
     prevAddr = s.left( n + 1 ) + ' ';
     s = s.mid( n + 1, 255 ).trimmed();
@@ -691,7 +692,7 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
 
         if ( autoSuggest )
         {
-            int index = items.first().find( m_searchString );
+            int index = items.first().indexOf( m_searchString );
             QString newText = items.first().mid( index );
             setUserSelection(false);
             setCompletedText(newText,true);
@@ -741,7 +742,7 @@ void KPIM::AddresseeLineEdit::slotCompletion()
 {
   // Called by KLineEdit's keyPressEvent -> new text, update search string
   m_searchString = text();
-  int n = m_searchString.findRev(',');
+  int n = m_searchString.lastIndexOf(',');
   if ( n >= 0 ) {
     ++n; // Go past the ","
 
@@ -886,7 +887,7 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
     items += s_completion->allMatches( "\"" + m_searchString );
   unsigned int beforeDollarCompletionCount = items.count();
 
-  if ( fullSearch && m_searchString.find( ' ' ) == -1 ) // one word, possibly given name
+  if ( fullSearch && m_searchString.indexOf( ' ' ) == -1 ) // one word, possibly given name
     items += s_completion->allMatches( "$$" + m_searchString );
 
   // kDebug(5300) << "     AddresseeLineEdit::doCompletion() found: " << items.join(" AND ") << endl;
@@ -911,7 +912,7 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
     }
     if ( i > beforeDollarCompletionCount ) {
       // remove the '$$whatever$' part
-      int pos = (*it).find( '$', 2 );
+      int pos = (*it).indexOf( '$', 2 );
       if ( pos < 0 ) // ???
         continue;
       (*it) = (*it).mid( pos + 1 );

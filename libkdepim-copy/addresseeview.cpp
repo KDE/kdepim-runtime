@@ -366,7 +366,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
           customEntry.remove( "KADDRESSBOOK-X-" );
           customEntry.remove( "KADDRESSBOOK-" );
 
-          int pos = customEntry.find( ':' );
+          int pos = customEntry.indexOf( ':' );
           QString key = customEntry.left( pos );
           const QString value = customEntry.mid( pos + 1 );
 
@@ -376,7 +376,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
 
           const QMap<QString, QString>::ConstIterator keyIt = titleMap.find( key );
           if ( keyIt != titleMap.end() )
-            key = keyIt.data();
+            key = keyIt.value();
 
           customData += rowFmtStr.arg( key ).arg( value ) ;
         }
@@ -483,7 +483,7 @@ QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
 void AddresseeView::updateView()
 {
   // clear view
-  setText( QString() );
+  setPlainText( QString() );
 
   if ( mAddressee.isEmpty() )
     return;
@@ -532,7 +532,7 @@ void AddresseeView::updateView()
   else {
     if ( !picture.url().isEmpty() ) {
       if ( mImageData.count() > 0 )
-        Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, QImage( mImageData ) );
+        Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, QImage::fromData( mImageData ) );
       else {
         mImageJob = KIO::get( KUrl( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
@@ -547,7 +547,7 @@ void AddresseeView::updateView()
   }
 
   // at last display it...
-  setText( strAddr );
+  setHtml( strAddr );
 }
 
 KABC::Addressee AddresseeView::addressee() const

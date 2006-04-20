@@ -46,7 +46,8 @@
 class KOTimeValidator : public QValidator
 {
 public:
-    KOTimeValidator(QWidget* parent, const char* name=0) : QValidator(parent) {}
+    KOTimeValidator(QWidget* parent) : QValidator(parent) 
+    {}
 
     virtual State validate(QString& str, int& /*cursorPos*/) const
     {

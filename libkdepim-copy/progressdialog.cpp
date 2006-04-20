@@ -401,9 +401,9 @@ void ProgressDialog::slotToggleVisibility()
    * the statusbarwidget should not display the dialog, because there
    * are no items to be shown anymore. Guard against that.
    */
-  mWasLastShown = !isShown();
-  if ( isShown() || !mTransactionsToListviewItems.isEmpty() )
-    setVisible( !isShown() );
+  mWasLastShown = isHidden();
+  if ( !isHidden() || !mTransactionsToListviewItems.isEmpty() )
+    setVisible( isHidden() );
 }
 
 }

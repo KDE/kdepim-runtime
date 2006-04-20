@@ -151,7 +151,7 @@ class ColumnItem : public Q3ListViewItem {
   reimplements the convertRow() function.
 */
 KImportDialog::KImportDialog(QWidget* parent)
-    : KDialogBase(parent,"importdialog",true,i18n("Import Text File"),Ok|Cancel),
+    : KDialogBase(KDialogBase::Plain, i18n("Import Text File"), Ok|Cancel, Ok, parent, "importdialog", /*modal=*/true),
       mSeparator(","),
       mCurrentRow(0)
 {
@@ -189,7 +189,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   mSeparatorCombo->addItem( ";" );
   connect(mSeparatorCombo, SIGNAL( activated(int) ),
           this, SLOT( separatorClicked(int) ) );
-  mSeparatorCombo->setCurrentItem( 0 );
+  mSeparatorCombo->setCurrentIndex( 0 );
 
   KHBox *rowsBox = new KHBox( topBox );
   rowsBox->setSpacing( spacingHint() );
@@ -484,9 +484,9 @@ void KImportDialog::updateFormatSelection(int column)
   int format = findFormat(column);
 
   if ( format == KImportColumn::FormatUndefined )
-    mFormatCombo->setCurrentItem( 0 );
+    mFormatCombo->setCurrentIndex( 0 );
   else
-    mFormatCombo->setCurrentItem( format - 1 );
+    mFormatCombo->setCurrentIndex( format - 1 );
 }
 
 void KImportDialog::tableSelected()

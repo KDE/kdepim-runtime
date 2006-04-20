@@ -131,7 +131,7 @@ QDataStream& operator>> ( QDataStream &s, MailSummary &d )
 {
     quint32 serialNumber;
     QString messageId, subject, from, to;
-    time_t date;
+    time_t date = 0;
     s >> serialNumber;
     s >> messageId;
     s >> subject;

@@ -173,7 +173,8 @@ private:
 
 CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
                                               QWidget* parent, const char* name )
-  : KDialogBase( parent, name, true, i18n("Edit Completion Order"), Ok|Cancel, Ok, true ),
+  : KDialogBase( KDialogBase::Plain, i18n("Edit Completion Order"), Ok|Cancel, Ok, parent, name, /*modal=*/true, 
+                 /*separator=*/true ),
     mConfig( "kpimcompletionorder" ), mDirty( false )
 {
   mItems.setAutoDelete( true );

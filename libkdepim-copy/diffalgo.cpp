@@ -82,5 +82,5 @@ void DiffAlgo::addDisplay( DiffAlgoDisplay *display )
 
 void DiffAlgo::removeDisplay( DiffAlgoDisplay *display )
 {
-  mDisplays.remove( display );
+  mDisplays.removeAll( display );
 }

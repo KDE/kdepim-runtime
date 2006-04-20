@@ -45,8 +45,8 @@ using namespace KPIM;
 
 CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
                                         const char* name, bool modal )
-  : KDialogBase::KDialogBase( parent, name, modal,
-    i18n("Edit Categories"), Ok|Apply|Cancel|Help, Ok, true ),
+  : KDialogBase::KDialogBase( KDialogBase::Plain, i18n("Edit Categories"), Ok|Apply|Cancel|Help, 
+                              Ok, parent, name, modal, /*separator=*/true ),
     mPrefs( prefs )  
 {
   mWidget = new CategoryEditDialog_base( this, "CategoryEdit" );

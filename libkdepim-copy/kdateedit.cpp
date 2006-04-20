@@ -39,7 +39,7 @@
 class DateValidator : public QValidator
 {
   public:
-    DateValidator( const QStringList &keywords, QWidget* parent, const char* name = 0 )
+    DateValidator( const QStringList &keywords, QWidget* parent )
       : QValidator( parent ), mKeywords( keywords )
     {}
 
@@ -66,11 +66,12 @@ class DateValidator : public QValidator
     QStringList mKeywords;
 };
 
-KDateEdit::KDateEdit( QWidget *parent, const char *name )
+KDateEdit::KDateEdit( QWidget *parent, const char* name )
   : QComboBox( parent ),
     mReadOnly( false ),
     mDiscardNextMousePress( false )
 {
+  setObjectName(name);
   // need at least one entry for popup to work
   setMaxCount( 1 );
   setEditable( true );
@@ -173,7 +174,7 @@ void KDateEdit::popup()
   QAbstractItemView *lb = view();
   if (lb) {
     lb->setCurrentIndex( lb->model()->index( 0, 0 ) );
-    QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, 0, 0);
+    QKeyEvent* keyEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Enter, Qt::NoModifier);
     QApplication::postEvent(lb, keyEvent);
   }
 }

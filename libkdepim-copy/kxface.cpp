@@ -88,14 +88,14 @@ QString KXFace::fromImage( const QImage &image )
   if( image.isNull() )
     return QString();
 
-  QImage scaledImg = image.smoothScale( 48, 48 );
+  QImage scaledImg = image.scaled( 48, 48, Qt::IgnoreAspectRatio, Qt::SmoothTransformation );
   QByteArray ba;
   QBuffer buffer( &ba, this );
   buffer.open( QIODevice::WriteOnly );
   scaledImg.save( &buffer, "XBM" );
   QString xbm( ba );
-  xbm.remove( 0, xbm.find( "{" ) + 1 );
-  xbm.truncate( xbm.find( "}" ) );
+  xbm.remove( 0, xbm.indexOf( "{" ) + 1 );
+  xbm.truncate( xbm.indexOf( "}" ) );
   xbm.remove( " " );
   xbm.remove( "," );
   xbm.remove( "0x" );
