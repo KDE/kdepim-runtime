@@ -52,26 +52,26 @@ void KDatePickerPopup::buildMenu()
 
   if ( mItems & DatePicker ) {
     #warning Port me!
-    //insertItem( mDatePicker );
+    //addAction( mDatePicker );
 
     if ( ( mItems & NoDate ) || ( mItems & Words ) )
       addSeparator();
   }
 
   if ( mItems & Words ) {
-    insertItem( i18n("&Today"), this, SLOT( slotToday() ) );
-    insertItem( i18n("To&morrow"), this, SLOT( slotTomorrow() ) );
-    insertItem( i18n("&Friday"), this, SLOT( slotFriday() ) );
-    insertItem( i18n("&Sunday"), this, SLOT( slotSunday() ) );
-    insertItem( i18n("Next &Week"), this, SLOT( slotNextWeek() ) );
-    insertItem( i18n("Next M&onth"), this, SLOT( slotNextMonth() ) );
+    addAction( i18n("&Today"), this, SLOT( slotToday() ) );
+    addAction( i18n("To&morrow"), this, SLOT( slotTomorrow() ) );
+    addAction( i18n("&Friday"), this, SLOT( slotFriday() ) );
+    addAction( i18n("&Sunday"), this, SLOT( slotSunday() ) );
+    addAction( i18n("Next &Week"), this, SLOT( slotNextWeek() ) );
+    addAction( i18n("Next M&onth"), this, SLOT( slotNextMonth() ) );
 
     if ( mItems & NoDate )
       addSeparator();
   }
 
   if ( mItems & NoDate )
-    insertItem( i18n("No Date"), this, SLOT( slotNoDate() ) );
+    addAction( i18n("No Date"), this, SLOT( slotNoDate() ) );
 }
 
 KDatePicker *KDatePickerPopup::datePicker() const
