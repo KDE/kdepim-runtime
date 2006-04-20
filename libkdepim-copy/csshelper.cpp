@@ -47,19 +47,19 @@ namespace KPIM {
     inline QColor darker( const QColor & c ) {
       int h, s, v;
       c.getHsv( &h, &s, &v );
-      return QColor( h, s, v*4/5, QColor::Hsv );
+      return QColor::fromHsv( h, s, v*4/5 );
     }
 
     inline QColor desaturate( const QColor & c ) {
       int h, s, v;
       c.getHsv( &h, &s, &v );
-      return QColor( h, s/8, v, QColor::Hsv );
+      return QColor::fromHsv( h, s/8, v );
     }
 
     inline QColor fixValue( const QColor & c, int newV ) {
       int h, s, v;
       c.getHsv( &h, &s, &v );
-      return QColor( h, s, newV, QColor::Hsv );
+      return QColor::fromHsv( h, s, newV );
     }
 
     inline int getValueOf( const QColor & c ) {
