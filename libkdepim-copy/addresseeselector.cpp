@@ -286,7 +286,7 @@ void AddresseeSelector::initGUI()
   topLayout->addWidget( label, 1, 0 );
   topLayout->addWidget( mAddresseeFilter, 1, 1 );
 
-  topLayout->setColStretch( 1, 1 );
+  topLayout->setColumnStretch( 1, 1 );
 
   layout->addLayout( topLayout, 0, 0, 1, 3 );
 
