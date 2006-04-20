@@ -156,7 +156,7 @@ void SpellingFilter::TextCensor::censorString(const QString& s)
   while(mPos != -1)
   {
     // Find start of string
-    mPos = mText.find(s, mPos);
+    mPos = mText.indexOf(s, mPos);
     if(mPos != -1)
     {
       // Replace string with spaces
@@ -187,7 +187,7 @@ bool SpellingFilter::TextCensor::atLineStart() const
 
 void SpellingFilter::TextCensor::skipLine()
 {
-  mPos = mText.find('\n', mPos);
+  mPos = mText.indexOf('\n', mPos);
   if(mPos == -1)
     mPos = static_cast<int>(mText.length());
   else

@@ -374,19 +374,19 @@ void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
       mPageDetails->setText( details );
 
       PageItem *pageItem = static_cast<PageItem*>( item->parent() );
-      mPagePreview->setPixmap( pageItem->preview() );
+      mPagePreview->setIcon( pageItem->preview() );
     } else {
       mPageDetails->setText( QString() );
 
       PageItem *pageItem = static_cast<PageItem*>( item );
-      mPagePreview->setPixmap( pageItem->preview() );
+      mPagePreview->setIcon( pageItem->preview() );
 
       widgetItemSelected = true;
     }
 
     mPagePreview->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
   } else {
-    mPagePreview->setPixmap( QPixmap() );
+    mPagePreview->setIcon( QPixmap() );
     mPagePreview->setFrameStyle( 0 );
     mPageDetails->setText( QString() );
   }

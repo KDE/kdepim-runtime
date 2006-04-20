@@ -320,7 +320,7 @@ void KFolderTree::setStyleDependantFrameWidth()
 {
   // set the width of the frame to a reasonable value for the current GUI style
   int frameWidth;
-  if( style()->isA("KeramikStyle") )
+  if( QString(style()->metaObject()->className()) == "KeramikStyle" )
     frameWidth = style()->pixelMetric( QStyle::PM_DefaultFrameWidth ) - 1;
   else
     frameWidth = style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
@@ -391,7 +391,7 @@ bool KFolderTree::acceptDrag( QDropEvent* event ) const
 void KFolderTree::addUnreadColumn( const QString & name, int width )
 {
   mUnreadIndex = addColumn( name, width );
-  setColumnAlignment( mUnreadIndex, qApp->reverseLayout() ? Qt::AlignLeft : Qt::AlignRight );
+  setColumnAlignment( mUnreadIndex, qApp->isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight );
   header()->adjustHeaderSize();
 }
 
@@ -399,7 +399,7 @@ void KFolderTree::addUnreadColumn( const QString & name, int width )
 void KFolderTree::addTotalColumn( const QString & name, int width )
 {
   mTotalIndex = addColumn( name, width );
-  setColumnAlignment( mTotalIndex, qApp->reverseLayout() ? Qt::AlignLeft : Qt::AlignRight );
+  setColumnAlignment( mTotalIndex, qApp->isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight );
   header()->adjustHeaderSize();
 }
 

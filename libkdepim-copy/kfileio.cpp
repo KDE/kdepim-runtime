@@ -70,12 +70,12 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
 
   if (!file.open(QIODevice::Unbuffered|QIODevice::ReadOnly))
   {
-    if (aVerbose) switch(file.status())
+    if (aVerbose) switch(file.error())
     {
-    case IO_ReadError:
+    case QFile::ReadError:
       msgDialog(i18n("Could not read file:\n%1", aFileName));
       break;
-    case IO_OpenError:
+    case QFile::OpenError:
       msgDialog(i18n("Could not open file:\n%1", aFileName));
       break;
     default:
@@ -151,12 +151,12 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 
   if (!file.open(QIODevice::Unbuffered|QIODevice::WriteOnly|QIODevice::Truncate))
   {
-    if (aVerbose) switch(file.status())
+    if (aVerbose) switch(file.error())
     {
-    case IO_WriteError:
+    case QFile::WriteError:
       msgDialog(i18n("Could not write to file:\n%1", aFileName));
       break;
-    case IO_OpenError:
+    case QFile::OpenError:
       msgDialog(i18n("Could not open file for writing:\n%1",
 		 aFileName));
       break;

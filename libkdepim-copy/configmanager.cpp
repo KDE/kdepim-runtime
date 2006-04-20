@@ -22,9 +22,9 @@
 using namespace KPIM;
 
 ConfigManager::ConfigManager( QObject * parent, const char * name )
-  : QObject( parent, name )
+  : QObject( parent )
 {
-
+   setObjectName(name);
 }
 
 ConfigManager::~ConfigManager()

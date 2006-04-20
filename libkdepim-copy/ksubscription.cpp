@@ -21,7 +21,6 @@
 #include <qtoolbutton.h>
 //Added by qt3to4:
 #include <QGridLayout>
-#include <Q3PtrList>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
@@ -213,8 +212,8 @@ void GroupItem::setup()
 
 KSubscription::KSubscription( QWidget *parent, const QString &caption,
     KAccount * acct, int buttons, const QString &user1, bool descriptionColumn )
-  : KDialogBase( parent, 0, true, caption, buttons | Help | Ok | Cancel, Ok,
-      true, i18n("Reload &List"), user1 ),
+  : KDialogBase( KDialogBase::Plain, caption, buttons | Help | Ok | Cancel, Ok,
+      parent, /*name*/0, /*modal*/true, /*separator*/true, i18n("Reload &List"), user1 ),
     mAcct( acct )
 {
   mLoading = true;
@@ -228,10 +227,11 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
           i18n("Manage which mail folders you want to see in your folder view") + "</p>", page);
 
   QToolButton *clearButton = new QToolButton( page );
-  clearButton->setIconSet( KGlobal::iconLoader()->loadIconSet(
-              KApplication::reverseLayout() ? "clear_left":"locationbar_erase", K3Icon::Small, 0 ) );
+  clearButton->setIcon( KGlobal::iconLoader()->loadIconSet(
+              KApplication::isRightToLeft() ? "clear_left":"locationbar_erase", K3Icon::Small, 0 ) );
   filterEdit = new KLineEdit(page);
-  QLabel *l = new QLabel(filterEdit,i18n("S&earch:"), page);
+  QLabel *l = new QLabel(i18n("S&earch:"), page);
+  l->setBuddy(filterEdit);
   connect( clearButton, SIGNAL( clicked() ), filterEdit, SLOT( clear() ) );
 
   // checkboxes
@@ -261,8 +261,8 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   arrowBtn1->setEnabled(false);
   arrowBtn2 = new QPushButton(page);
   arrowBtn2->setEnabled(false);
-  arrowBtn1->setIconSet(pmRight);
-  arrowBtn2->setIconSet(pmRight);
+  arrowBtn1->setIcon(pmRight);
+  arrowBtn2->setIcon(pmRight);
   arrowBtn1->setFixedSize(35,30);
   arrowBtn2->setFixedSize(35,30);
 
@@ -277,10 +277,18 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
     groupView->header()->setStretchEnabled(true, 0);
 
   // layout
-  QGridLayout *topL = new QGridLayout(page,4,1,0, KDialog::spacingHint());
-  QHBoxLayout *filterL = new QHBoxLayout(KDialog::spacingHint());
-  QVBoxLayout *arrL = new QVBoxLayout(KDialog::spacingHint());
-  listL = new QGridLayout(2, 3, KDialog::spacingHint());
+  QGridLayout *topL = new QGridLayout(page);
+  topL->setMargin(0);
+  topL->setSpacing(KDialog::spacingHint());
+
+  QHBoxLayout *filterL = new QHBoxLayout();
+  filterL->setSpacing(KDialog::spacingHint());
+
+  QVBoxLayout *arrL = new QVBoxLayout();
+  arrL->setSpacing(KDialog::spacingHint());
+  
+  listL = new QGridLayout();
+  listL->setSpacing(KDialog::spacingHint());
 
   topL->addWidget(comment, 0,0);
   topL->addLayout(filterL, 1,0);
@@ -313,7 +321,9 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   unsubView->addColumn(i18n("Unsubscribe From"));
   unsubView->header()->setStretchEnabled(true, 0);
 
-  QVBoxLayout *protL = new QVBoxLayout(3);
+  QVBoxLayout *protL = new QVBoxLayout();
+  protL->setSpacing(3);
+
   listL->addLayout(protL, 1,2);
   protL->addWidget(subView);
   protL->addWidget(unsubView);
@@ -423,9 +433,9 @@ void KSubscription::setDirectionButton1( Direction dir )
 {
   mDirButton1 = dir;
   if (dir == Left)
-    arrowBtn1->setIconSet(pmLeft);
+    arrowBtn1->setIcon(pmLeft);
   else
-    arrowBtn1->setIconSet(pmRight);
+    arrowBtn1->setIcon(pmRight);
 }
 
 //------------------------------------------------------------------------------
@@ -433,9 +443,9 @@ void KSubscription::setDirectionButton2( Direction dir )
 {
   mDirButton2 = dir;
   if (dir == Left)
-    arrowBtn2->setIconSet(pmLeft);
+    arrowBtn2->setIcon(pmLeft);
   else
-    arrowBtn2->setIconSet(pmRight);
+    arrowBtn2->setIcon(pmRight);
 }
 
 //------------------------------------------------------------------------------
@@ -516,7 +526,7 @@ void KSubscription::filterChanged( Q3ListViewItem* item, const QString & text )
         continue;
       }
       if ( !text.isEmpty() &&
-           gr->text(0).find(text, 0, false) == -1)
+           gr->text(0).indexOf(text, 0, Qt::CaseInsensitive) == -1)
       {
         // searchfield
         gr->setVisible(false);

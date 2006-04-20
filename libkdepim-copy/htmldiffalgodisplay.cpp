@@ -61,7 +61,7 @@ void HTMLDiffAlgoDisplay::end()
                 "</body>"
                 "</html>" );
 
-  setText( mText );
+  setHtml( mText );
 }
 
 void HTMLDiffAlgoDisplay::setLeftSourceTitle( const QString &title )

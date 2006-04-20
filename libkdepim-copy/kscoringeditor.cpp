@@ -35,11 +35,11 @@
 #include <qlayout.h>
 #include <qtooltip.h>
 #include <qcheckbox.h>
-#include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <qapplication.h>
 #include <qtimer.h>
-#include <q3hbox.h>
+#include <QButtonGroup>
+#include <QGroupBox>
 //Added by qt3to4:
 #include <QGridLayout>
 #include <QFrame>
@@ -416,7 +416,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   topLayout->setSpacing(KDialog::spacingHint());
 
   //------------- Name, Servers, Groups ---------------------
-  Q3GroupBox *groupB = new Q3GroupBox(i18n("Properties"),this);
+  QGroupBox *groupB = new QGroupBox(i18n("Properties"),this);
   topLayout->addWidget(groupB);
   QGridLayout* groupL = new QGridLayout(groupB);
   groupL->setMargin(8);
@@ -469,7 +469,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   connect(expireCheck, SIGNAL(toggled(bool)), expireEdit, SLOT(setEnabled(bool)));
 
   //------------- Conditions ---------------------
-  Q3GroupBox *groupConds = new Q3GroupBox(i18n("Conditions"), this);
+  QGroupBox *groupConds = new QGroupBox(i18n("Conditions"), this);
   topLayout->addWidget(groupConds);
   QGridLayout *condL = new QGridLayout(groupConds);
   condL->setMargin(8);
@@ -477,13 +477,13 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   
   condL->addItem( new QSpacerItem( 0, fontMetrics().lineSpacing()-4), 0, 0 );
 
-  Q3ButtonGroup *buttonGroup = new Q3ButtonGroup(groupConds);
-  buttonGroup->hide();
+  QButtonGroup *buttonGroup = new QButtonGroup(groupConds);
+
   linkModeAnd = new QRadioButton(i18n("Match a&ll conditions"), groupConds);
-  buttonGroup->insert(linkModeAnd);
+  buttonGroup->addButton(linkModeAnd);
   condL->addWidget(linkModeAnd, 1,0);
   linkModeOr = new QRadioButton(i18n("Matc&h any condition"), groupConds);
-  buttonGroup->insert(linkModeOr);
+  buttonGroup->addButton(linkModeOr);
   condL->addWidget(linkModeOr, 1,1);
   linkModeAnd->setChecked(true);
 
@@ -492,7 +492,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   connect(condEditor,SIGNAL(widgetRemoved()),this,SLOT(slotShrink()));
 
   //------------- Actions ---------------------
-  Q3GroupBox *groupActions = new Q3GroupBox(i18n("Actions"), this);
+  QGroupBox *groupActions = new QGroupBox(i18n("Actions"), this);
   topLayout->addWidget(groupActions);
   QBoxLayout *actionL = new QVBoxLayout(groupActions);
   actionL->setMargin(8);

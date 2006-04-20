@@ -69,12 +69,14 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
 {
   m_bShowButton = button;
   int w = fontMetrics().width( " 999.9 kB/s 00:00:01 " ) + 8;
-  box = new QHBoxLayout( this, 0, 0 );
+  box = new QHBoxLayout( this );
+  box->setMargin(0);
+  box->setSpacing(0);
 
   m_pButton = new QPushButton( this );
   m_pButton->setSizePolicy( QSizePolicy( QSizePolicy::Minimum,
                                          QSizePolicy::Minimum ) );
-  m_pButton->setPixmap( SmallIcon( "up" ) );
+  m_pButton->setIcon( SmallIcon( "up" ) );
   box->addWidget( m_pButton  );
   stack = new QStackedWidget( this );
   stack->setMaximumHeight( fontMetrics().height() );
@@ -132,14 +134,16 @@ void StatusbarProgressWidget::slotProgressItemAdded( ProgressItem *item )
   if ( mCurrentItem ) { // Exactly one item
     delete mBusyTimer;
     mBusyTimer = 0;
-    mDelayTimer->start( 1000, true );
+    mDelayTimer->setSingleShot( true );
+    mDelayTimer->start( 1000 );
   }
   else { // N items
     if ( !mBusyTimer ) {
       mBusyTimer = new QTimer( this );
       connect( mBusyTimer, SIGNAL( timeout() ),
                this, SLOT( slotBusyIndicator() ) );
-      mDelayTimer->start( 1000, true );
+      mDelayTimer->setSingleShot( true );
+      mDelayTimer->start( 1000 );
     }
   }
 }
@@ -279,11 +283,11 @@ void StatusbarProgressWidget::slotProgressDialogVisible( bool b )
 {
   // Update the hide/show button when the detailed one is shown/hidden
   if ( b ) {
-    m_pButton->setPixmap( SmallIcon( "down" ) );
+    m_pButton->setIcon( SmallIcon( "down" ) );
     m_pButton->setToolTip( i18n("Hide detailed progress window") );
     setMode();
   } else {
-    m_pButton->setPixmap( SmallIcon( "up" ) );
+    m_pButton->setIcon( SmallIcon( "up" ) );
     m_pButton->setToolTip( i18n("Show detailed progress window") );
   }
 }

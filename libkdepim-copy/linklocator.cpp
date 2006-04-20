@@ -93,14 +93,14 @@ QString LinkLocator::getUrl()
     // handle cases like this: <link>http://foobar.org/</link>
     int start = mPos;
     while(mPos < (int)mText.length() && mText[mPos] > ' ' && mText[mPos] != '"' &&
-      QString("<>()[]").find(mText[mPos]) == -1)
+      QString("<>()[]").indexOf(mText[mPos]) == -1)
     {
       ++mPos;
     }
     /* some URLs really end with:  # / &     */
     const QString allowedSpecialChars = QString("#/&");
     while(mPos > start && mText[mPos-1].isPunct() &&
-		    allowedSpecialChars.find(mText[mPos-1]) == -1 )
+		    allowedSpecialChars.indexOf(mText[mPos-1]) == -1 )
     {
       --mPos;
     }
@@ -129,7 +129,7 @@ bool LinkLocator::atUrl() const
   // the character directly before the URL must not be a letter, a number or
   // any other character allowed in a dot-atom (RFC 2822).
   if( ( mPos > 0 ) && ( mText[mPos-1].isLetterOrNumber() ||
-                        ( allowedSpecialChars.find( mText[mPos-1] ) != -1 ) ) )
+                        ( allowedSpecialChars.indexOf( mText[mPos-1] ) != -1 ) ) )
     return false;
 
   QChar ch = mText[mPos];
@@ -180,7 +180,7 @@ QString LinkLocator::getEmailAddress()
     while ( start >= 0 && mText[start].unicode() < 128 &&
             ( mText[start].isLetterOrNumber() ||
               mText[start] == '@' || // allow @ to find invalid email addresses
-              allowedSpecialChars.find( mText[start] ) != -1 ) ) {
+              allowedSpecialChars.indexOf( mText[start] ) != -1 ) ) {
       if ( mText[start] == '@' )
         return QString(); // local part contains '@' -> no email address
       --start;
@@ -315,7 +315,7 @@ QString LinkLocator::convertToHtml(const QString& plainText, int flags,
         if(!str.isEmpty())
         {
           // len is the length of the local part
-          int len = str.find('@');
+          int len = str.indexOf('@');
           QString localPart = str.left(len);
 
           // remove the local part from the result (as '&'s have been expanded to
@@ -439,7 +439,7 @@ QString LinkLocator::highlightedText()
     return QString();
 
   QRegExp re = QRegExp( QString("\\%1([0-9A-Za-z]+)\\%2").arg( ch ).arg( ch ) );
-  if ( re.search( mText, mPos ) == mPos ) {
+  if ( re.indexIn( mText, mPos ) == mPos ) {
     int length = re.matchedLength();
     // there must be a whitespace after the closing formating symbol
     if ( mPos + length < mText.length() && !mText[mPos + length].isSpace() )

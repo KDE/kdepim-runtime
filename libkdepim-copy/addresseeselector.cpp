@@ -229,8 +229,9 @@ class SelectionViewItem : public Q3ListViewItem
 };
 
 AddresseeSelector::AddresseeSelector( Selection *selection, QWidget *parent, const char *name )
-  : QWidget( parent, name ), mSelection( selection ), mManager( 0 )
+  : QWidget( parent ), mSelection( selection ), mManager( 0 )
 {
+  setObjectName(name);
   mMoveMapper = new QSignalMapper( this );
   mRemoveMapper = new QSignalMapper( this );
 
@@ -271,8 +272,12 @@ void AddresseeSelector::init()
 
 void AddresseeSelector::initGUI()
 {
-  QGridLayout *layout = new QGridLayout( this, 2, 3, KDialog::marginHint(), KDialog::spacingHint() );
-  QGridLayout *topLayout = new QGridLayout( this, 2, 2, KDialog::marginHint() );
+  QGridLayout *layout = new QGridLayout( this );
+  layout->setMargin( KDialog::marginHint() );
+  layout->setSpacing( KDialog::spacingHint() );
+
+  QGridLayout *topLayout = new QGridLayout( this );
+  topLayout->setMargin(KDialog::marginHint() );
 
   QLabel *label = new QLabel( i18n( "Address book:" ), this );
   mAddressBookCombo = new KComboBox( false, this );
@@ -312,7 +317,7 @@ void AddresseeSelector::initGUI()
 
     // move button
     QToolButton *moveButton = new QToolButton( this );
-    moveButton->setIconSet( moveSet );
+    moveButton->setIcon( moveSet );
     moveButton->setFixedSize( 30, 30 );
 
     connect( moveButton, SIGNAL( clicked() ),
@@ -321,7 +326,7 @@ void AddresseeSelector::initGUI()
 
     // remove button
     QToolButton *removeButton = new QToolButton( this );
-    removeButton->setIconSet( removeSet );
+    removeButton->setIcon( removeSet );
     removeButton->setFixedSize( 30, 30 );
 
     connect( removeButton, SIGNAL( clicked() ),
@@ -362,7 +367,7 @@ void AddresseeSelector::updateAddresseeView()
 {
   mAddresseeView->clear();
 
-  int addressBookIndex = mAddressBookCombo->currentItem();
+  int addressBookIndex = mAddressBookCombo->currentIndex();
 
   SelectionItem::List::Iterator it;
   for ( it = mSelectionItems.begin(); it != mSelectionItems.end(); ++it ) {
@@ -557,7 +562,7 @@ void AddresseeSelector::reloadAddressBook()
                                          itemList );
   }
 
-  mAddressBookCombo->insertStringList( mAddressBookManager->titles() );
+  mAddressBookCombo->addItems( mAddressBookManager->titles() );
 
   updateAddresseeView();
 }

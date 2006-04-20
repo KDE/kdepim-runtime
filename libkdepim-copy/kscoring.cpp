@@ -79,8 +79,8 @@ static QString toXml(const QString& str)
 NotifyDialog* NotifyDialog::me = 0;
 NotifyDialog::NotesMap NotifyDialog::dict;
 
-NotifyDialog::NotifyDialog(QWidget* p)
-  : KDialogBase(p,"notify action dialog",true,"Notify Message",Close,Close,true)
+NotifyDialog::NotifyDialog(QWidget* parent)
+  : KDialogBase(KDialogBase::Plain,i18n("Notify Message"),Close,Close,parent,"notify action dialog",/*modal*/true)
 {
   QFrame *f = makeMainWidget();
   QVBoxLayout *topL = new QVBoxLayout(f);
@@ -95,7 +95,8 @@ NotifyDialog::NotifyDialog(QWidget* p)
 
 void NotifyDialog::slotShowAgainToggled(bool flag)
 {
-  dict.replace(msg,!flag);
+  dict.remove(msg);
+  dict.insert(msg,!flag);
   kDebug(5100) << "note \"" << note << "\" will popup again: " << flag << endl;
 }
 
@@ -113,7 +114,11 @@ void NotifyDialog::display(ScorableArticle& a, const QString& s)
                   a.subject(), 
                   s);
     me->note->setText(msg);
-    if ( i == dict.end() ) i = dict.replace(s,false);
+    if ( i == dict.end() )
+    {
+      dict.remove(s);
+      i = dict.insert(s, false);
+    }
     me->adjustSize();
     me->exec();
   }
@@ -388,8 +393,8 @@ QString NotifyCollection::collection() const
 void NotifyCollection::displayCollection(QWidget *p) const
 {
   //KMessageBox::information(p,collection(),i18n("Collected Notes"));
-  KDialogBase *dlg = new KDialogBase( p, 0, false, i18n("Collected Notes"),
-                                      KDialogBase::Close, KDialogBase::Close );
+  KDialogBase *dlg = new KDialogBase( KDialogBase::Plain, i18n("Collected Notes"),
+                                      KDialogBase::Close, KDialogBase::Close, p, 0, /*modal*/false );
   Q3TextView *text = new Q3TextView(dlg);
   text->setText(collection());
   dlg->setMainWidget(text);
@@ -405,12 +410,12 @@ KScoringExpression::KScoringExpression(const QString& h, const QString& t, const
   if (t == "MATCH" ) {
     cond = MATCH;
     expr.setPattern(expr_str);
-    expr.setCaseSensitive(false);
+    expr.setCaseSensitivity(Qt::CaseInsensitive);
   }
   else if ( t == "MATCHCS" ) {
     cond = MATCHCS;
     expr.setPattern( expr_str );
-    expr.setCaseSensitive( true );
+    expr.setCaseSensitivity( Qt::CaseSensitive );
   }
   else if (t == "CONTAINS" ) cond = CONTAINS;
   else if (t == "EQUALS" ) cond = EQUALS;
@@ -518,11 +523,11 @@ bool KScoringExpression::match(ScorableArticle& a) const
       res = (head.toLower() == expr_str.toLower());
       break;
     case CONTAINS:
-      res = (head.toLower().find(expr_str.toLower()) >= 0);
+      res = (head.toLower().indexOf(expr_str.toLower()) >= 0);
       break;
     case MATCH:
     case MATCHCS:
-      res = (expr.search(head)!=-1);
+      res = (expr.indexIn(head)!=-1);
       break;
     case GREATER:
       res = (head.toInt() > expr_int);
@@ -679,7 +684,7 @@ bool KScoringRule::matchGroup(const QString& group) const
 {
   for(GroupList::ConstIterator i=groups.begin(); i!=groups.end();++i) {
     QRegExp e(*i);
-    if (e.search(group, 0) != -1 &&
+    if (e.indexIn(group, 0) != -1 &&
 	    e.matchedLength() == group.length())
         return true;
   }
@@ -717,7 +722,7 @@ void KScoringRule::applyRule(ScorableArticle& a /*, const QString& s*/, const QS
 {
   // check if one of the groups match
   for (QStringList::ConstIterator i = groups.begin(); i != groups.end(); ++i) {
-    if (QRegExp(*i).search(g) != -1) {
+    if (QRegExp(*i).indexIn(g) != -1) {
       applyRule(a);
       return;
     }
@@ -825,7 +830,7 @@ void KScoringManager::save()
   if ( !f.open( QIODevice::WriteOnly ) )
     return;
   QTextStream stream(&f);
-  stream.setEncoding(QTextStream::Unicode);
+  stream.setCodec("UTF-8");
   kDebug(5100) << "KScoringManager::save() creating xml" << endl;
   createXMLfromInternal().save(stream,2);
   kDebug(5100) << "KScoringManager::save() finished" << endl;
