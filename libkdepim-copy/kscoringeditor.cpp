@@ -406,7 +406,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   Q3GroupBox *groupB = new Q3GroupBox(i18n("Properties"),this);
   topLayout->addWidget(groupB);
   QGridLayout* groupL = new QGridLayout(groupB, 6,2, 8,5);
-  groupL->addRowSpacing(0, fontMetrics().lineSpacing()-4);
+  groupL->addItem( new QSpacerItem( 0, fontMetrics().lineSpacing()-4), 0, 0 );
 
   // name
   ruleNameEdit = new KLineEdit( groupB );
@@ -451,7 +451,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   topLayout->addWidget(groupConds);
   QGridLayout *condL = new QGridLayout(groupConds, 3,2, 8,5);
 
-  condL->addRowSpacing(0, fontMetrics().lineSpacing()-4);
+  condL->addItem( new QSpacerItem( 0, fontMetrics().lineSpacing()-4), 0, 0 );
 
   Q3ButtonGroup *buttonGroup = new Q3ButtonGroup(groupConds);
   buttonGroup->hide();
