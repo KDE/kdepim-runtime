@@ -432,7 +432,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
 
   // expires
   expireCheck = new QCheckBox(i18n("&Expire rule automatically"), groupB);
-  groupL->addMultiCellWidget( expireCheck, 4,4, 0,1 );
+  groupL->addWidget( expireCheck, 4, 0, 1, 2 );
   expireEdit = new KIntSpinBox( groupB );
   expireEdit->setRange( 1, 9999 );
   expireEdit->setValue( 30 );
@@ -464,7 +464,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   linkModeAnd->setChecked(true);
 
   condEditor = new ConditionEditWidget(manager,groupConds);
-  condL->addMultiCellWidget(condEditor, 2,2, 0,1);
+  condL->addWidget(condEditor, 2, 0, 1, 2 );
   connect(condEditor,SIGNAL(widgetRemoved()),this,SLOT(slotShrink()));
 
   //------------- Actions ---------------------

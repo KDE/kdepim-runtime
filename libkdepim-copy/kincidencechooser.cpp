@@ -57,10 +57,10 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     lab = new QLabel( i18n(
                         "<qt>A conflict was detected. This probably means someone edited the same entry on the server while you changed it locally."
                         "<br/>NOTE: You have to check mail again to apply your changes to the server.</qt>"), topFrame);
-    topLayout->addMultiCellWidget(lab, iii,iii,0,2);
+    topLayout->addWidget(lab, iii,0, 1, 3 );
     ++iii;
     KHBox * b_box = new KHBox( topFrame );
-    topLayout->addMultiCellWidget(b_box, iii,iii,0,2);
+    topLayout->addWidget(b_box, iii,0, 1, 3 );
     ++iii;
     QPushButton* button = new QPushButton( i18n("Take Local"), b_box );
     connect ( button, SIGNAL( clicked()), this, SLOT (takeIncidence1() ) );
@@ -74,7 +74,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     mInc1lab = new QLabel ( i18n("Local incidence"), topFrame);
     topLayout->addWidget(mInc1lab ,iii,0);
     mInc1Sumlab = new QLabel ( i18n("Local incidence summary"), topFrame);
-    topLayout->addMultiCellWidget(mInc1Sumlab, iii,iii,1,2);
+    topLayout->addWidget(mInc1Sumlab, iii,1, 1,2);
     ++iii;
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod1lab = new QLabel ( "Set Last modified", topFrame);
@@ -87,7 +87,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     mInc2lab = new QLabel ( "Local incidence", topFrame);
     topLayout->addWidget(mInc2lab,iii,0);
     mInc2Sumlab = new QLabel ( "Local incidence summary", topFrame);
-    topLayout->addMultiCellWidget(mInc2Sumlab, iii,iii,1,2);
+    topLayout->addWidget(mInc2Sumlab, iii,1, 1,2);
     ++iii;
     topLayout->addWidget( new QLabel ( i18n("Last modified:"), topFrame) ,iii,0);
     mMod2lab = new QLabel ( "Set Last modified", topFrame);
@@ -101,13 +101,13 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     // commented out for now, because the diff code has too many bugs
     diffBut = new QPushButton( i18n("Show Differences"), topFrame );
     connect ( diffBut, SIGNAL( clicked()), this, SLOT ( showDiff() ) );
-    topLayout->addMultiCellWidget(diffBut, iii,iii,0,2);
+    topLayout->addWidget(diffBut, iii,0, 1, 3 );
     ++iii;
 #else
     diffBut = 0;
 #endif
     mBg = new Q3ButtonGroup ( 1,  Qt::Horizontal, i18n("Sync Preferences"), topFrame);
-    topLayout->addMultiCellWidget(mBg, iii,iii,0,2);
+    topLayout->addWidget(mBg, iii,0, 1, 3 );
     ++iii;
     mBg->insert( new QRadioButton ( i18n("Take local entry on conflict"), mBg ), KIncidenceChooser::local);
     mBg->insert( new QRadioButton ( i18n("Take new (remote) entry on conflict"), mBg ),  KIncidenceChooser::remote);
@@ -121,7 +121,7 @@ KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
     choosedIncidence = 0;
     button = new QPushButton( i18n("Apply This to All Conflicts of This Sync"), topFrame );
     connect ( button, SIGNAL( clicked()), this, SLOT ( setSyncMode() ) );
-    topLayout->addMultiCellWidget(button, iii,iii,0,2);
+    topLayout->addWidget(button, iii,0, 1, 3 );
 }
 
 KIncidenceChooser::~KIncidenceChooser()

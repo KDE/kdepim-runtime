@@ -288,7 +288,7 @@ void AddresseeSelector::initGUI()
 
   topLayout->setColStretch( 1, 1 );
 
-  layout->addMultiCellLayout( topLayout, 0, 0, 0, 2 );
+  layout->addLayout( topLayout, 0, 0, 1, 3 );
 
   int row = 1;
 
@@ -339,7 +339,7 @@ void AddresseeSelector::initGUI()
   mAddresseeView->header()->hide();
   mAddresseeView->setFullWidth( true );
 
-  layout->addMultiCellWidget( mAddresseeView, 1, row, 0, 0 );
+  layout->addWidget( mAddresseeView, 1, 0, row, 1);
 }
 
 void AddresseeSelector::finish()

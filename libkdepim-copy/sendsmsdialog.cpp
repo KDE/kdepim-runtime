@@ -43,7 +43,7 @@ SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent, con
   layout->addWidget( mMessageLength, 0, 2 );
 
   mText = new QTextEdit( page );
-  layout->addMultiCellWidget( mText, 1, 1, 0, 2 );
+  layout->addWidget( mText, 1, 0, 1, 3 );
 
   layout->addWidget( new QLabel( i18n( "Recipient:" ), page ), 2, 0 );
   layout->addWidget( new QLabel( recipientName, page ), 2, 2 );
