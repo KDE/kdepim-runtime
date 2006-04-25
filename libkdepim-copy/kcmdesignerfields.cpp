@@ -263,8 +263,7 @@ void KCMDesignerFields::defaults()
 
 void KCMDesignerFields::initGUI()
 {
-  QVBoxLayout *layout = new QVBoxLayout( this, KDialog::marginHint(),
-                                         KDialog::spacingHint() );
+  QVBoxLayout *layout = new QVBoxLayout( this, KDialog::marginHint(), KDialog::spacingHint() );
 
   bool noDesigner = KStandardDirs::findExe("designer").isEmpty();
 
