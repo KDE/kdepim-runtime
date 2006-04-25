@@ -278,7 +278,8 @@ void KCMDesignerFields::initGUI()
     layout->addWidget( lbl );
   }
 
-  QHBoxLayout *hbox = new QHBoxLayout( layout );
+  QHBoxLayout *hbox = new QHBoxLayout();
+  layout->addItem( hbox );
   hbox->setSpacing( KDialog::spacingHint() );
 
   mPageView = new K3ListView( this );
@@ -299,7 +300,8 @@ void KCMDesignerFields::initGUI()
 
   loadUiFiles();
 
-  hbox = new QHBoxLayout( layout );
+  hbox = new QHBoxLayout();
+  layout->addItem( hbox );
   hbox->setSpacing( KDialog::spacingHint() );
 
   QString cwHowto = i18n("<qt><p>This section allows you to add your own GUI"

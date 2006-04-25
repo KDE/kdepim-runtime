@@ -75,7 +75,8 @@ EditorSelection::EditorSelection( const QString &text, QString &reference,
   : m_reference( reference )
 {
   m_box = new QGroupBox( 0, Qt::Vertical, text, parent );
-  QVBoxLayout *boxLayout = new QVBoxLayout( m_box->layout() );
+  QVBoxLayout *boxLayout = new QVBoxLayout();
+  m_box->layout()->addItem( boxLayout );
   boxLayout->setAlignment( Qt::AlignTop );
 
   m_editorsCombo = new KComboBox( m_box );
