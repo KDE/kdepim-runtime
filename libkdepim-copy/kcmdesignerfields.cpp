@@ -263,7 +263,9 @@ void KCMDesignerFields::defaults()
 
 void KCMDesignerFields::initGUI()
 {
-  QVBoxLayout *layout = new QVBoxLayout( this, KDialog::marginHint(), KDialog::spacingHint() );
+  QVBoxLayout *layout = new QVBoxLayout( this );
+  layout->setSpacing( KDialog::spacingHint() );
+  layout->setMargin( KDialog::marginHint() );
 
   bool noDesigner = KStandardDirs::findExe("designer").isEmpty();
 
@@ -276,7 +278,8 @@ void KCMDesignerFields::initGUI()
     layout->addWidget( lbl );
   }
 
-  QHBoxLayout *hbox = new QHBoxLayout( layout, KDialog::spacingHint() );
+  QHBoxLayout *hbox = new QHBoxLayout( layout );
+  hbox->setSpacing( KDialog::spacingHint() );
 
   mPageView = new K3ListView( this );
   mPageView->addColumn( i18n( "Available Pages" ) );
@@ -296,7 +299,8 @@ void KCMDesignerFields::initGUI()
 
   loadUiFiles();
 
-  hbox = new QHBoxLayout( layout, KDialog::spacingHint() );
+  hbox = new QHBoxLayout( layout );
+  hbox->setSpacing( KDialog::spacingHint() );
 
   QString cwHowto = i18n("<qt><p>This section allows you to add your own GUI"
                          "  Elements ('<i>Widgets</i>') to store your own values"

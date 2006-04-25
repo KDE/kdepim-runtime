@@ -154,7 +154,9 @@ RecentAddressDialog::RecentAddressDialog( QWidget *parent, const char *name )
                  parent, name, true )
 {
   QWidget *page = plainPage();
-  QVBoxLayout *layout = new QVBoxLayout( page, 0, spacingHint() );
+  QVBoxLayout *layout = new QVBoxLayout( page );
+  layout->setSpacing( spacingHint() );
+  layout->setMargin( 0 );
 
   mEditor = new KEditListBox( i18n( "Recent Addresses" ), page, "", false,
                               KEditListBox::Add | KEditListBox::Remove );
