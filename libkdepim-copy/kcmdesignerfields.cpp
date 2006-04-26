@@ -73,8 +73,8 @@ class PageItem : public Q3CheckListItem
         setText( 0, wdg->windowTitle() );
 
         QPixmap pm = QPixmap::grabWidget( wdg );
-        QImage img = pm.convertToImage().smoothScale( 300, 300, Qt::KeepAspectRatio );
-        mPreview = img;
+        QImage img = pm.toImage().smoothScale( 300, 300, Qt::KeepAspectRatio );
+        mPreview = QPixmap::fromImage(img);
 
         QObjectList list = wdg->queryList( "QWidget" );
         QObject *it;
