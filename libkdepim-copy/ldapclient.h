@@ -189,7 +189,7 @@ class KDE_EXPORT LdapClient : public QObject
 
   protected slots:
     void slotData( KIO::Job*, const QByteArray &data );
-    void slotInfoMessage( KIO::Job*, const QString &info );
+    void slotInfoMessage( KJob*, const QString &info, const QString& );
     void slotDone();
 
   protected:

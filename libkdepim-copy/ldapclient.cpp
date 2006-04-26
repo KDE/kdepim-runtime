@@ -138,8 +138,8 @@ void LdapClient::startQuery( const QString& filter )
   mJob = KIO::get( url, false, false );
   connect( mJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
            this, SLOT( slotData( KIO::Job*, const QByteArray& ) ) );
-  connect( mJob, SIGNAL( infoMessage( KIO::Job*, const QString& ) ),
-           this, SLOT( slotInfoMessage( KIO::Job*, const QString& ) ) );
+  connect( mJob, SIGNAL( infoMessage( KJob*, const QString&, const QString& ) ),
+           this, SLOT( slotInfoMessage( KJob*, const QString&, const QString& ) ) );
   connect( mJob, SIGNAL( result( KJob* ) ),
            this, SLOT( slotDone() ) );
 }
@@ -159,7 +159,7 @@ void LdapClient::slotData( KIO::Job*, const QByteArray& data )
   parseLDIF( data );
 }
 
-void LdapClient::slotInfoMessage( KIO::Job*, const QString & )
+void LdapClient::slotInfoMessage( KJob*, const QString &, const QString& )
 {
   //qDebug("Job said \"%s\"", info.toLatin1());
 }
