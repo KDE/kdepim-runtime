@@ -537,8 +537,8 @@ void AddresseeView::updateView()
         mImageJob = KIO::get( KUrl( picture.url() ), false, false );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
                  this, SLOT( data( KIO::Job*, const QByteArray& ) ) );
-        connect( mImageJob, SIGNAL( result( KIO::Job* ) ),
-                 this, SLOT( result( KIO::Job* ) ) );
+        connect( mImageJob, SIGNAL( result( KJob* ) ),
+                 this, SLOT( result( KJob* ) ) );
       }
     } else {
       Q3MimeSourceFactory::defaultFactory()->setPixmap( imageURL,
@@ -722,7 +722,7 @@ void AddresseeView::data( KIO::Job*, const QByteArray &d )
   memcpy( mImageData.data() + oldSize, d.data(), d.size() );
 }
 
-void AddresseeView::result( KIO::Job *job )
+void AddresseeView::result( KJob *job )
 {
   mImageJob = 0;
 

@@ -140,7 +140,7 @@ void LdapClient::startQuery( const QString& filter )
            this, SLOT( slotData( KIO::Job*, const QByteArray& ) ) );
   connect( mJob, SIGNAL( infoMessage( KIO::Job*, const QString& ) ),
            this, SLOT( slotInfoMessage( KIO::Job*, const QString& ) ) );
-  connect( mJob, SIGNAL( result( KIO::Job* ) ),
+  connect( mJob, SIGNAL( result( KJob* ) ),
            this, SLOT( slotDone() ) );
 }
 

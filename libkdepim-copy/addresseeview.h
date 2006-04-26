@@ -38,7 +38,7 @@ class Job;
 class KToggleAction;
 
 class Q3PopupMenu;
-
+class KJob;
 
 namespace KPIM {
 
@@ -170,7 +170,7 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     void configChanged();
 
     void data( KIO::Job*, const QByteArray& );
-    void result( KIO::Job* );
+    void result( KJob* );
 
   private:
     void load();
