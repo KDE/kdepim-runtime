@@ -86,7 +86,7 @@ DefaultEditor::changeSignature( const QString &sig )
 {
   QString text = m_textEdit->text();
 
-  int sigStart = text.findRev( "-- " );
+  int sigStart = text.lastIndexOf( "-- " );
   QString sigText = QString( "-- \n%1" ).arg( sig );
 
   text.replace( sigStart, text.length(), sigText );

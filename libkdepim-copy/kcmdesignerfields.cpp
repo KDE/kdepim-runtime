@@ -64,7 +64,7 @@ class PageItem : public Q3CheckListItem
       : Q3CheckListItem( parent, "", Q3CheckListItem::CheckBox ),
         mPath( path ), mIsActive( false )
     {
-      mName = path.mid( path.findRev( '/' ) + 1 );
+      mName = path.mid( path.lastIndexOf( '/' ) + 1 );
 
       QFile f( mPath );
       QFormBuilder builder;
