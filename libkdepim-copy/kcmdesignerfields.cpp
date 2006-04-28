@@ -91,12 +91,12 @@ class PageItem : public Q3CheckListItem
         allowedTypes.insert( "KDatePicker", i18n( "Date" ) );
 
         Q_FOREACH( it, list ) {
-          if ( allowedTypes.contains( it->className() )  ) {
-            QString name = it->name();
+          if ( allowedTypes.contains( it->metaObject()->className() )  ) {
+            QString name = it->objectName();
             if ( name.startsWith( "X_" ) ) {
               new Q3ListViewItem( this, name,
-                                 allowedTypes[ it->className() ],
-                                 it->className(),
+                                 allowedTypes[ it->metaObject()->className() ],
+                                 it->metaObject()->className(),
                                  static_cast<QWidget*>( it )->whatsThis() );
             }
           }

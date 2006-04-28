@@ -65,7 +65,7 @@ void DesignerFields::initGUI( const QString &uiFile )
   }
 
   mTitle = wdg->windowTitle();
-  mIdentifier = wdg->name();
+  mIdentifier = wdg->objectName();
 
   layout->addWidget( wdg );
 
@@ -85,7 +85,7 @@ void DesignerFields::initGUI( const QString &uiFile )
 
   Q_FOREACH( it, list ) {
     if ( allowedTypes.contains( it->metaObject()->className() ) ) {
-      QString name = it->name();
+      QString name = it->objectName();
       if ( name.startsWith( "X_" ) ) {
         name = name.mid( 2 );
 
