@@ -91,7 +91,7 @@ class PageItem : public Q3CheckListItem
         allowedTypes.insert( "KDatePicker", i18n( "Date" ) );
 
         Q_FOREACH( it, list ) {
-          if ( allowedTypes.find( it->className() ) != allowedTypes.end() ) {
+          if ( allowedTypes.contains( it->className() )  ) {
             QString name = it->name();
             if ( name.startsWith( "X_" ) ) {
               new Q3ListViewItem( this, name,
@@ -219,7 +219,7 @@ void KCMDesignerFields::loadActivePages(const QStringList& ai)
   while ( it.current() ) {
     if ( it.current()->parent() == 0 ) {
       PageItem *item = static_cast<PageItem*>( it.current() );
-      if ( ai.find( item->name() ) != ai.end() ) {
+      if ( ai.contains( item->name() )  ) {
         item->setOn( true );
         item->setIsActive( true );
       }

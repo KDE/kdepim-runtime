@@ -396,7 +396,7 @@ AddressesDialog::allToAddressesNoDuplicates()  const
     QList<KPIM::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
-      if ( !a.preferredEmail().isEmpty() && aList.find( a ) == aList.end() ) {
+      if ( !a.preferredEmail().isEmpty() && !aList.contains( a ) ) {
           aList.append( a ) ;
       }
     }

@@ -246,7 +246,7 @@ void DesignerFields::setReadOnly( bool readOnly )
 {
   QMap<QString, QWidget*>::Iterator it;
   for ( it = mWidgets.begin(); it != mWidgets.end(); ++it )
-    if ( mDisabledWidgets.find( it.value() ) == mDisabledWidgets.end() )
+    if ( !mDisabledWidgets.contains( it.value() )  )
       it.value()->setEnabled( !readOnly );
 }
 
