@@ -76,7 +76,7 @@ void DiffAlgo::conflictField( const QString &id, const QString &leftValue,
 
 void DiffAlgo::addDisplay( DiffAlgoDisplay *display )
 {
-  if ( mDisplays.find( display ) == mDisplays.end() )
+  if ( !mDisplays.contains( display )  )
     mDisplays.append( display );
 }
 

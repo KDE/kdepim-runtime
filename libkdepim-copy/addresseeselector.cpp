@@ -83,7 +83,7 @@ QStringList AddresseeSelector::AddressBookManager::titles() const
 
 void AddresseeSelector::AddressBookManager::addResource( KABC::Resource *resource )
 {
-  if ( mResources.find( resource ) == mResources.end() )
+  if ( !mResources.contains( resource )  )
     mResources.append( resource );
 }
 

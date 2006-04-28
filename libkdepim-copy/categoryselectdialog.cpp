@@ -60,7 +60,7 @@ void CategorySelectDialog::setCategories( const QStringList &categoryList )
   QStringList::ConstIterator it;
 
   for ( it = categoryList.begin(); it != categoryList.end(); ++it )
-    if ( mPrefs->mCustomCategories.find( *it ) == mPrefs->mCustomCategories.end() )
+    if ( !mPrefs->mCustomCategories.contains( *it )  )
       mPrefs->mCustomCategories.append( *it );
 
   CategoryHierarchyReaderQListView( mWidget->mCategories, false, true ).

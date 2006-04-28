@@ -137,12 +137,12 @@ void AddresseeDiffAlgo::diffList( const QString &id,
                                   const QList<L> &left, const QList<L> &right )
 {
   for ( int i = 0; i < left.count(); ++i ) {
-    if ( right.find( left[ i ] ) == right.end() )
+    if ( !right.contains( left[ i ] )  )
       additionalLeftField( id, toString( left[ i ] ) );
   }
 
   for ( int i = 0; i < right.count(); ++i ) {
-    if ( left.find( right[ i ] ) == left.end() )
+    if ( !left.contains( right[ i ] )  )
       additionalRightField( id, toString( right[ i ] ) );
   }
 }
