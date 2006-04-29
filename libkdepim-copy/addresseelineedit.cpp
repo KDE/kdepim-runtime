@@ -806,9 +806,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       }
       // avoid selection of headers on button press, or move or release while
       // a button is pressed
+      Qt::MouseButtons btns = me->buttons();
       if ( e->type() == QEvent::MouseButtonPress
-          || me->state() & Qt::LeftButton || me->state() & Qt::MidButton
-          || me->state() & Qt::RightButton ) {
+          || btns & Qt::LeftButton || btns & Qt::MidButton
+          || btns & Qt::RightButton ) {
         if ( !item->text().startsWith( s_completionItemIndentString ) ) {
           return true; // eat the event, we don't want anything to happen
         } else {
