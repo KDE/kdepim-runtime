@@ -247,16 +247,19 @@ void AddresseeLineEdit::insert( const QString &t )
   }
 
   QString contents = text();
-  int start_sel = 0;
-  int end_sel = 0;
   int pos = cursorPosition( );
-  if ( getSelection( &start_sel, &end_sel ) ) {
+  int start_sel=selectionStart();
+  if ( start_sel>=0 ) {
+    QString selection = selectedText();
+    int end_sel = start_sel + selection.length();
+//   if ( getSelection( &start_sel, &end_sel ) ) {
+    
     // Cut away the selection.
-    if ( pos > end_sel )
-      pos -= (end_sel - start_sel);
+    if ( pos >= end_sel )
+      pos -= selection.length();
     else if ( pos > start_sel )
       pos = start_sel;
-    contents = contents.left( start_sel ) + contents.right( end_sel + 1 );
+    contents = contents.left( start_sel ) + contents.right( end_sel );
   }
 
   int eot = contents.length();
