@@ -80,16 +80,14 @@ bool CollectingProcess::start( RunMode runmode, Communication comm ) {
 
 void CollectingProcess::slotReceivedStdout( KProcess *, char *buf, int len )
 {
-  QByteArray b;
-  b.duplicate( buf, len );
+  QByteArray b( buf, len );
   d->stdoutBuffer.append( b );
   d->stdoutSize += len;
 }
 
 void CollectingProcess::slotReceivedStderr( KProcess *, char *buf, int len )
 {
-  QByteArray b;
-  b.duplicate( buf, len );
+  QByteArray b( buf, len );
   d->stderrBuffer.append( b );
   d->stderrSize += len;
 }
@@ -101,7 +99,7 @@ QByteArray CollectingProcess::collectedStdout()
   }
 
   uint offset = 0;
-  QByteArray b( d->stdoutSize );
+  QByteArray b( d->stdoutSize, '\0' );
   for ( QList<QByteArray>::const_iterator it = d->stdoutBuffer.begin();
         it != d->stdoutBuffer.end();
         ++it ) {
@@ -121,7 +119,7 @@ QByteArray CollectingProcess::collectedStderr()
   }
 
   uint offset = 0;
-  QByteArray b( d->stderrSize );
+  QByteArray b( d->stderrSize, '\0' );
   for ( QList<QByteArray>::const_iterator it = d->stderrBuffer.begin();
         it != d->stderrBuffer.end();
         ++it ) {
