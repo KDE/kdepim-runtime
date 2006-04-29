@@ -34,7 +34,7 @@ class KDE_EXPORT EmbeddedURLPage : public QWidget
     Q_OBJECT
   public:
     EmbeddedURLPage( const QString &url, const QString &mimetype,
-                     QWidget *parent, const char *name = 0 );
+                     QWidget *parent);
 
   public slots:
     void loadContents();

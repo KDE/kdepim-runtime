@@ -35,8 +35,8 @@
 using namespace KPIM;
 
 EmbeddedURLPage::EmbeddedURLPage( const QString &url, const QString &mimetype,
-                                  QWidget *parent, const char *name )
-  : QWidget( parent, name ), mUri(url), mMimeType( mimetype ), mPart( 0 )
+                                  QWidget *parent )
+  : QWidget( parent ), mUri(url), mMimeType( mimetype ), mPart( 0 )
 {
   initGUI( url, mimetype );
 }
