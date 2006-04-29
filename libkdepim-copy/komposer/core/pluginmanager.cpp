@@ -107,8 +107,8 @@ PluginManager::~PluginManager()
     QMap<KPluginInfo*, Plugin*>::ConstIterator nextIt( it );
     ++nextIt;
     kWarning() << k_funcinfo << "Deleting stale plugin '"
-                       << it.data()->name() << "'" << endl;
-    delete it.data();
+                       << it.value()->name() << "'" << endl;
+    delete it.value();
     it = nextIt;
   }
 
@@ -140,7 +140,7 @@ PluginManager::loadedPlugins( const QString &category ) const
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
     if ( category.isEmpty() || it.key()->category() == category )
-      result.insert( it.key(), it.data() );
+      result.insert( it.key(), it.value() );
   }
 
   return result;
@@ -164,7 +164,7 @@ PluginManager::shutdown()
       // Remove causes the iterator to become invalid, so pre-increment first
       QMap<KPluginInfo*, Plugin*>::ConstIterator nextIt( it );
       ++nextIt;
-      it.data()->aboutToUnload();
+      it.value()->aboutToUnload();
       it = nextIt;
     }
   }
@@ -238,9 +238,9 @@ PluginManager::loadAllPlugins()
     if ( key.endsWith( QString::fromLatin1( "Enabled" ) ) )
     {
       key.setLength( key.length() - 7 );
-      //kDebug() << k_funcinfo << "Set " << key << " to " << it.data() << endl;
+      //kDebug() << k_funcinfo << "Set " << key << " to " << it.value() << endl;
 
-      if ( it.data() == QString::fromLatin1( "true" ) )
+      if ( it.value() == QString::fromLatin1( "true" ) )
       {
         if ( !plugin( key ) )
           d->pluginsToLoad.push( key );
@@ -372,7 +372,7 @@ PluginManager::unloadPlugin( const QString &spec )
   {
     if ( it.key()->pluginName() == spec )
     {
-      it.data()->aboutToUnload();
+      it.value()->aboutToUnload();
       return true;
     }
   }
@@ -386,7 +386,7 @@ PluginManager::slotPluginDestroyed( QObject *plugin )
   QMap<KPluginInfo*, Plugin*>::Iterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
-    if ( it.data() == plugin )
+    if ( it.value() == plugin )
     {
       d->loadedPlugins.erase( it );
       break;
@@ -420,7 +420,7 @@ PluginManager::pluginName( const Plugin *plugin ) const
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
-    if ( it.data() == plugin )
+    if ( it.value() == plugin )
       return it.key()->name();
   }
 
@@ -433,7 +433,7 @@ PluginManager::pluginId( const Plugin *plugin ) const
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
-    if ( it.data() == plugin )
+    if ( it.value() == plugin )
       return it.key()->pluginName();
   }
 
@@ -446,7 +446,7 @@ PluginManager::pluginIcon( const Plugin *plugin ) const
   QMap<KPluginInfo*, Plugin*>::ConstIterator it;
   for ( it = d->loadedPlugins.begin(); it != d->loadedPlugins.end(); ++it )
   {
-    if ( it.data() == plugin )
+    if ( it.value() == plugin )
       return it.key()->icon();
   }
 
