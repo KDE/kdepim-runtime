@@ -24,7 +24,7 @@
 /* needed for KDE_EXPORT macros */
 #include <kdepimmacros.h>
 
-#if defined _WIN32 || defined _WIN64
+#if defined Q_OS_WIN
 # include <kdepim_export_win.h>
 #else /* UNIX */
 
