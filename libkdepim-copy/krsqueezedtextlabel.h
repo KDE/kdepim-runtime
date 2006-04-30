@@ -55,7 +55,7 @@ public:
   /**
    * Overridden for internal reasons; the API remains unaffected.
    */
-  virtual void setAlignment( int );
+  virtual void setAlignment( Qt::Alignment );
 
 public slots:
   void setText( const QString & );

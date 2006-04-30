@@ -77,7 +77,7 @@ void KRSqueezedTextLabel::squeezeTextToLabel() {
   }
 }
 
-void KRSqueezedTextLabel::setAlignment( int alignment )
+void KRSqueezedTextLabel::setAlignment( Qt::Alignment alignment )
 {
   // save fullText and restore it
   QString tmpFull(fullText);
