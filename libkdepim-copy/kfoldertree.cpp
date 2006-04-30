@@ -237,7 +237,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     QRect br;
     setText( column, oldText );
     if ( isSelected() )
-      p->setPen( cg.highlightedText() );
+      p->setPen( cg.color( QPalette::HighlightedText ) );
     else
       p->setPen( ft->paintInfo().colFore );
 

@@ -74,10 +74,10 @@ namespace KPIM {
     mPaintDevice( pd )
   {
     // initialize with defaults - should match the corresponding application defaults
-    mForegroundColor = QApplication::palette().active().text();
+    mForegroundColor = QApplication::palette().color( QPalette::Text );
     mLinkColor = KGlobalSettings::linkColor();
     mVisitedLinkColor = KGlobalSettings::visitedLinkColor();
-    mBackgroundColor = QApplication::palette().active().base();
+    mBackgroundColor = QApplication::palette().color( QPalette::Base );
     cHtmlWarning = QColor( 0xFF, 0x40, 0x40 ); // warning frame color: light red
 
     cPgpEncrH = QColor( 0x00, 0x80, 0xFF ); // light blue
@@ -217,7 +217,7 @@ namespace KPIM {
                                         "  font-size: %2pt ! important;\n" )
                            .arg( mPrintFont.family() )
                            .arg( mPrintFont.pointSize() );
-    const QColorGroup & cg = QApplication::palette().active();
+    const QPalette &pal = QApplication::palette();
 
     const QFont printFont = bodyFont( fixed, true /* print */ );
     QString quoteCSS;
@@ -285,8 +285,8 @@ namespace KPIM {
                "}\n\n"
             )
       .arg( headerFont,
-            cg.background().name(),
-            cg.foreground().name() )
+            pal.color( QPalette::Background ).name(),
+            pal.color( QPalette::Foreground ).name() )
       + quoteCSS;
   }
 
@@ -304,7 +304,7 @@ namespace KPIM {
                          : QString( "  background-color: %1 ! important;\n" )
                            .arg( bgColor ) );
     const QString bodyFontSize = QString::number( pointsToPixel( helper->mPaintDevice, fontSize( fixed ) ) ) + "px" ;
-    const QColorGroup & cg = QApplication::palette().active();
+    const QPalette & pal = QApplication::palette();
 
     QString quoteCSS;
     if ( bodyFont( fixed ).italic() )
@@ -506,11 +506,11 @@ namespace KPIM {
                )
 
       .arg( headerFont )
-      .arg( cg.highlight().name(),
-            cg.highlightedText().name(),
-            cg.foreground().name(),
-            cg.background().name() )
-      .arg( cg.mid().name() )
+      .arg( pal.color( QPalette::Highlight ).name(),
+            pal.color( QPalette::HighlightedText ).name(),
+            pal.color( QPalette::Foreground ).name(),
+            pal.color( QPalette::Background ).name() )
+      .arg( pal.color( QPalette::Mid ).name() )
       + quoteCSS;
   }
 
