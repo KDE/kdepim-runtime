@@ -168,7 +168,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
       wdg->setCurrentIndex( 0 );
     } else if ( widIt.value()->inherits( "QTextEdit" ) ) {
       QTextEdit *wdg = static_cast<QTextEdit*>( widIt.value() );
-      wdg->setText( QString() );
+      wdg->setPlainText( QString() );
     }
   }
 
@@ -201,7 +201,7 @@ void DesignerFields::load( DesignerFields::Storage *storage )
         wdg->setItemText( wdg->currentIndex(), value );
       } else if ( it.value()->inherits( "QTextEdit" ) ) {
         QTextEdit *wdg = static_cast<QTextEdit*>( it.value() );
-        wdg->setText( value );
+        wdg->setPlainText( value );
       }
     }
   }
@@ -235,7 +235,7 @@ void DesignerFields::save( DesignerFields::Storage *storage )
       value = wdg->currentText();
     } else if ( it.value()->inherits( "QTextEdit" ) ) {
       QTextEdit *wdg = static_cast<QTextEdit*>( it.value() );
-      value = wdg->text();
+      value = wdg->toPlainText();
    }
 
    storage->write( it.key(), value );
