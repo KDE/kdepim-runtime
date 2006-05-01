@@ -68,7 +68,5 @@ kde_kcfg_DATA = pimemoticons.kcfg
 
 METASOURCES = AUTO
 
-messages: rc.cpp
-	$(XGETTEXT) ../libkpimidentities/*.cpp ../libemailfunctions/*.cpp *.cpp -o $(podir)/libkdepim.pot
 
 include $(top_srcdir)/admin/Doxyfile.am
