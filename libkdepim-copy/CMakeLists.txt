@@ -116,8 +116,6 @@ install_targets(${PLUGIN_INSTALL_DIR} kdepimwidgets )
 install_files( ${KCFG_INSTALL_DIR} FILES pimemoticons.kcfg )
 install_files( /include FILES kdepimmacros.h kdepimprotocols.h )
 
-kde4_create_doxygen_docs(  )
-
 kde4_footer()
 
 
