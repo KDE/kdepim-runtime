@@ -257,7 +257,7 @@ bool KImportDialog::setFile(const QString& file)
     mFile = "";
     QTextStream t(&f);
     mFile = t.readAll();
-//    while (!t.eof()) mFile.append(t.readLine());
+//    while (!t.atEnd()) mFile.append(t.readLine());
     f.close();
 
     readFile();
