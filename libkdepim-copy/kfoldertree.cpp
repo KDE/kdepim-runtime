@@ -267,7 +267,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
         t = squeezeFolderName( t, fm, width - marg - r - unreadWidth );
 
       p->drawText( r, 0, width-marg-r, height(),
-                    align | Qt::AlignVCenter, t, -1, &br );
+                    align | Qt::AlignVCenter, t, &br );
 
       if ( !unread.isEmpty() ) {
         if (!isSelected())
