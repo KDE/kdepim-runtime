@@ -77,7 +77,7 @@ class KDE_EXPORT ProgressItem : public QObject
     void setStatus( const QString& v );
 
     /**
-     * @return Whether this item can be cancelled.
+     * @return Whether this item can be canceled.
      */
     bool canBeCanceled() const { return mCanBeCanceled; }
 
@@ -109,7 +109,7 @@ class KDE_EXPORT ProgressItem : public QObject
      * Tell the item it has finished. This will emit progressItemCompleted()
      * result in the destruction of the item after all slots connected to this
      * signal have executed. This is the only way to get rid of an item and
-     * needs to be called even if the item is cancelled. Don't use the item
+     * needs to be called even if the item is canceled. Don't use the item
      * after this has been called on it.
      */
     void setComplete();
@@ -159,11 +159,11 @@ signals:
      */
     void progressItemCompleted( KPIM::ProgressItem* );
     /**
-     * Emitted when an item was cancelled. It will _not_ go away immediately,
+     * Emitted when an item was canceled. It will _not_ go away immediately,
      * only when the owner sets it complete, which will usually happen. Can be
-     * used to visually indicate the cancelled status of an item. Should be used
+     * used to visually indicate the canceled status of an item. Should be used
      * by the owner of the item to make sure it is set completed even if it is
-     * cancelled. There is a ProgressManager::slotStandardCancelHandler which
+     * canceled. There is a ProgressManager::slotStandardCancelHandler which
      * simply sets the item completed and can be used if no other work needs to
      * be done on cancel.
      * @param The canceled item;
@@ -224,13 +224,13 @@ signals:
  * changes, when they are completed (by their owner), and when they are canceled.
  * Each ProgressItem emits those signals individually and the singleton
  * broadcasts them. Use the ::createProgressItem() statics to acquire an item
- * and then call ->setProgress( int percent ) on it everytime you want to update
- * the item and ->setComplete() when the operation is done. This will delete the
- * item. Connect to the item's progressItemCanceled() signal to be notified when
- * the user cancels the transaction using one of the observing progress dialogs
- * or by calling item->cancel() in some other way. The owner is responsible for
- * calling setComplete() on the item, even if it is canceled. Use the
- * standardCancelHandler() slot if that is all you want to do on cancel.
+ * and then call ->setProgress( int percent ) on it every time you want to
+ * update the item and ->setComplete() when the operation is done. This will
+ * delete the item. Connect to the item's progressItemCanceled() signal to be
+ * notified when the user cancels the transaction using one of the observing
+ * progress dialogs or by calling item->cancel() in some other way. The owner
+ * is responsible for calling setComplete() on the item, even if it is canceled.
+ * Use the standardCancelHandler() slot if that is all you want to do on cancel.
  *
  * Note that if you request an item with a certain id and there is already
  * one with that id, there will not be a new one created but the existing
@@ -253,7 +253,7 @@ class KDE_EXPORT ProgressManager : public QObject
     static ProgressManager * instance();
 
     /**
-     * Use this to aquire a unique id number which can be used to discern
+     * Use this to acquire a unique id number which can be used to discern
      * an operation from all others going on at the same time. Use that
      * number as the id string for your progressItem to ensure it is unique.
      * @return
@@ -262,7 +262,7 @@ class KDE_EXPORT ProgressManager : public QObject
 
      /**
       * Creates a ProgressItem with a unique id and the given label.
-      * This is the simplest way to aquire a progress item. It will not
+      * This is the simplest way to acquire a progress item. It will not
       * have a parent and will be set to be cancellable and not using crypto.
       */
      static ProgressItem * createProgressItem( const QString &label ) {
@@ -281,7 +281,7 @@ class KDE_EXPORT ProgressManager : public QObject
      * @param canBeCanceled can the user cancel this operation?
      * @param usesCrypto does the operation use secure transports (SSL)
      * Cancelling the parent will cancel the children as well (if they can be
-     * cancelled) and ongoing children prevent parents from finishing.
+     * canceled) and ongoing children prevent parents from finishing.
      * @return The ProgressItem representing the operation.
      */
      static ProgressItem * createProgressItem( ProgressItem* parent,

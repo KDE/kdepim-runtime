@@ -64,7 +64,7 @@ namespace KPIM {
   protected:
     /** Rescans the plugin directory to find any newly installed
 	plugins. Extend this method in subclasses to add any
-	builtins. Subclasses must call this explicitely. It's not
+	builtins. Subclasses must call this explicitly. It's not
 	called for them in the constructor.
     **/
     void doScan( const char * path );

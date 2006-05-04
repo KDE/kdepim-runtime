@@ -109,14 +109,14 @@ void KConfigWizard::updateRules()
   KConfigPropagator::Rule::List::ConstIterator it;
   for( it = rules.begin(); it != rules.end(); ++it ) {
     KConfigPropagator::Rule r = *it;
-    QString source = r.sourceFile + "/" + r.sourceGroup + "/" +
+    QString source = r.sourceFile + '/' + r.sourceGroup + '/' +
                      r.sourceEntry;
-    QString target = r.targetFile + "/" + r.targetGroup + "/" +
+    QString target = r.targetFile + '/' + r.targetGroup + '/' +
                      r.targetEntry;
     QString condition;
     KConfigPropagator::Condition c = r.condition;
     if ( c.isValid ) {
-      condition = c.file + "/" + c.group + "/" + c.key + " = " + c.value;
+      condition = c.file + '/' + c.group + '/' + c.key + " = " + c.value;
     }
     new Q3ListViewItem( mRuleView, source, target, condition );
   }

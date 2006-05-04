@@ -72,7 +72,7 @@ void KPIM::DistributionList::insertEntry( const QString& uid, const QString& ema
   removeEntry( uid, email ); // avoid duplicates
   QString str = custom( "KADDRESSBOOK", s_customFieldName );
   // Assumption: UIDs don't contain ; nor ,
-  str += ";" + uid + "," + email;
+  str += ';' + uid + ',' + email;
   insertCustom( "KADDRESSBOOK", s_customFieldName, str ); // replace old value
 }
 
@@ -94,7 +94,7 @@ void KPIM::DistributionList::removeEntry( const QString& uid, const QString& ema
     if ( thisUid == uid && thisEmail == email ) {
       continue; // remove that one
     }
-    str += ";" + thisUid + "," + thisEmail;
+    str += ';' + thisUid + ',' + thisEmail;
   }
   if ( str.isEmpty() )
     str = ";"; // keep something, for isDistributionList to work

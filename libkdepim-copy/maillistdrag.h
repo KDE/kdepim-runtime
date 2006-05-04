@@ -34,7 +34,7 @@ class KUrl;
 
 /**
  * KDEPIM classes for drag and drop of mails
- * 
+ *
  * // Code example for drag and drop enabled widget
  *
  * void SomeWidget::contentsDropEvent(QDropEvent *e)
@@ -47,10 +47,10 @@ class KUrl;
 
 namespace KPIM {
 
-class KDE_EXPORT MailSummary 
+class KDE_EXPORT MailSummary
 {
 public:
-    MailSummary( quint32 serialNumber, const QString &messageId, const QString &subject, 
+    MailSummary( quint32 serialNumber, const QString &messageId, const QString &subject,
 		 const QString &from, const QString &to, time_t date );
     MailSummary() {}
     ~MailSummary() {}
@@ -75,7 +75,7 @@ public:
 
     /*** Date the message was sent ***/
     time_t date() const;
-    
+
     /** returns kmail:<serial number>/<message id> style uri */
     operator KUrl() const;
 
@@ -117,21 +117,21 @@ public:
 
     /* The format for this drag - "x-kmail-drag/message-list" */
     static const char* format();
-    
-    /* Returns TRUE if the information in e can be decoded into a QString;
-       otherwsie returns FALSE */
+
+    /* Returns true if the information in e can be decoded into a QString;
+       otherwsie returns false */
     static bool canDecode( QMimeSource* e );
 
     /* Attempts to decode the dropped information;
-       Returns TRUE if successful; otherwise return false */
+       Returns true if successful; otherwise return false */
     static bool decode( QDropEvent* e, MailList& s );
 
     /* Attempts to decode the serialNumbers of the dropped information;
-       Returns TRUE if successful; otherwise return false */
+       Returns true if successful; otherwise return false */
     static bool decode( QDropEvent* e, QByteArray& a );
 
     /* Attempts to decode the encoded MailList;
-       Returns TRUE if successful; otherwise return false */
+       Returns true if successful; otherwise return false */
     static bool decode( QByteArray& a, MailList& s );
 
 private:

@@ -34,5 +34,5 @@ void KResourcePrefs::addGroupPrefix( const QString &prefix )
   KConfigSkeletonItem::List::Iterator it;
 
   for ( it = itemList.begin(); it != itemList.end(); ++it )
-    (*it)->setGroup( prefix + ":" + (*it)->group() );
+    (*it)->setGroup( prefix + ':' + (*it)->group() );
 }

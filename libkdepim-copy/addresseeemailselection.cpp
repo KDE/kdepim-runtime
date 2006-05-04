@@ -127,7 +127,7 @@ int AddresseeEmailSelection::itemCount( const KABC::Addressee &addressee ) const
 
 QString AddresseeEmailSelection::itemText( const KABC::Addressee &addressee, int index ) const
 {
-  return addressee.formattedName() + " " + email( addressee, index );
+  return addressee.formattedName() + ' ' + email( addressee, index );
 }
 
 QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int ) const
@@ -151,7 +151,7 @@ bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee, int
 
 bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee, int index, const QString &pattern ) const
 {
-  return (pattern == addressee.formattedName() + " " + email( addressee, index )) ||
+  return (pattern == addressee.formattedName() + ' ' + email( addressee, index )) ||
          (addressee.emails().contains( pattern ));
 }
 

@@ -95,7 +95,7 @@ int KImportColumn::defaultFormat()
 QString KImportColumn::preview(const QString &value, int format)
 {
   if (format == FormatBracketed) {
-    return "(" + value + ")";
+    return '(' + value + ')';
   } else if (format == FormatUnquoted) {
     if (value.left(1) == "\"" && value.right(1) == "\"") {
       return value.mid(1,value.length()-2);
@@ -323,15 +323,15 @@ void KImportDialog::readFile( int rows )
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
-  
+
   KProgressBar *progress = pDialog.progressBar();
   progress->setMaximum( mFile.count(mSeparator, Qt::CaseSensitive) );
   progress->setValue(0);
   int progressValue = 0;
-  
+
   if (progress->maximum() > 0)  // We have data
     pDialog.show();
-    
+
   while (!inputStream.atEnd() && !pDialog.wasCancelled()) {
     inputStream >> x; // read one char
 
@@ -342,7 +342,7 @@ void KImportDialog::readFile( int rows )
       if (progressValue % 15 == 0) // try not to constantly repaint
         kapp->processEvents();
     }
-    
+
     if (x == '\r') inputStream >> x; // eat '\r', to handle DOS/LOSEDOWS files correctly
 
     switch (state) {
@@ -656,20 +656,20 @@ void KImportDialog::applyConverter()
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
-  
+
   KProgressBar *progress = pDialog.progressBar();
   progress->setMaximum( mTable->numRows()-1 );
   progress->setValue(0);
 
   readFile( 0 );
-  
+
   pDialog.show();
   for( int i = mStartRow->value() - 1; i < mData.count() && !pDialog.wasCancelled(); ++i ) {
     mCurrentRow = i;
     progress->setValue(i);
     if (i % 5 == 0)  // try to avoid constantly processing events
       kapp->processEvents();
-      
+
     convertRow();
   }
 }
@@ -705,7 +705,7 @@ void KImportDialog::setData( int row, int col, const QString &value )
   if ( row >= mData.count() ) {
     mData.resize( row + 1 );
   }
-  
+
   Q3ValueVector<QString> *rowVector = mData[ row ];
   if ( !rowVector ) {
     rowVector = new Q3ValueVector<QString>;
@@ -714,7 +714,7 @@ void KImportDialog::setData( int row, int col, const QString &value )
   if ( col >= rowVector->size() ) {
     rowVector->resize( col + 1 );
   }
-  
+
   KImportColumn *c = mColumnDict.find( col );
   if ( c )
   	rowVector->at( col ) = c->preview( val, findFormat(col) );
@@ -753,7 +753,7 @@ void KImportDialog::saveTemplate()
   config.writeEntry( "Name", name );
 
   config.setGroup( "csv column map" );
-  
+
   KImportColumn *column;
   int counter = 0;
   for ( column = mColumns.first(); column; column = mColumns.next() ) {

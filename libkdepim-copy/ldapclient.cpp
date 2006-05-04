@@ -122,14 +122,14 @@ void LdapClient::startQuery( const QString& filter )
     if ( !mServer.bindDN().isEmpty() ) url.setExtension( "x-bindname", mServer.bindDN() );
     if ( !mServer.mech().isEmpty() ) url.setExtension( "x-mech", mServer.mech() );
   }
-  if ( mServer.timeLimit() != 0 ) url.setExtension( "x-timelimit", 
+  if ( mServer.timeLimit() != 0 ) url.setExtension( "x-timelimit",
     QString::number( mServer.timeLimit() ) );
-  if ( mServer.sizeLimit() != 0 ) url.setExtension( "x-sizelimit", 
+  if ( mServer.sizeLimit() != 0 ) url.setExtension( "x-sizelimit",
     QString::number( mServer.sizeLimit() ) );
-  
+
   url.setAttributes( mAttrs );
   url.setScope( mScope == "one" ? KABC::LDAPUrl::One : KABC::LDAPUrl::Sub );
-  url.setFilter( "("+filter+")" );
+  url.setFilter( '('+filter+')' );
 
   kDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
 
@@ -235,7 +235,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
   do {
     ret = mLdif.nextItem();
     switch ( ret ) {
-      case KABC::LDIF::Item: 
+      case KABC::LDIF::Item:
         {
           name = mLdif.attr();
           QByteArray value = mLdif.value();

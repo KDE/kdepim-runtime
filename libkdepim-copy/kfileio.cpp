@@ -220,12 +220,12 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
     }
   }
 
-  // For each file or folder  we can check if the file is readable 
+  // For each file or folder  we can check if the file is readable
   // and writable, as requested.
   if ( fiToCheck.isFile() || fiToCheck.isDir() ) {
 
     if ( !fiToCheck.isReadable() && wantItReadable ) {
-      // Get the current permissions. No need to do anything with an 
+      // Get the current permissions. No need to do anything with an
       // error, it will het added to errors anyhow, later on.
       if ( stat(toCheckEnc,&statbuffer) != 0 ) {
         kDebug() << "wantItR: Can't read perms of " << toCheck << endl;
@@ -257,7 +257,7 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
     }
   }
 
-  // If it is a folder and recursive is true, then we check the contents of 
+  // If it is a folder and recursive is true, then we check the contents of
   // the folder.
   if ( fiToCheck.isDir() && recursive ){
     QDir g(toCheck);
@@ -267,11 +267,11 @@ QString checkAndCorrectPermissionsIfPossible( const QString &toCheck,
       error.append(i18n("Folder %1 is inaccessible.", toCheck) + "\n");
     } else {
       foreach(QFileInfo fi, g.entryInfoList())
-      { 
-        QString newToCheck = toCheck + "/" + fi.fileName();
+      {
+        QString newToCheck = toCheck + '/' + fi.fileName();
         QFileInfo fiNewToCheck(newToCheck);
         if ( fi.fileName() != "." && fi.fileName() != ".." ) {
-          error.append ( checkAndCorrectPermissionsIfPossible( newToCheck, 
+          error.append ( checkAndCorrectPermissionsIfPossible( newToCheck,
                                 recursive, wantItReadable, wantItWritable) );
         }
       }
@@ -284,14 +284,14 @@ bool checkAndCorrectPermissionsIfPossibleWithErrorHandling( QWidget *parent,
   const QString &toCheck, const bool recursive, const bool wantItReadable,
   const bool wantItWritable )
 {
-  QString error = checkAndCorrectPermissionsIfPossible(toCheck, recursive, 
+  QString error = checkAndCorrectPermissionsIfPossible(toCheck, recursive,
                                            wantItReadable, wantItWritable);
-  // There is no KMessageBox with Retry, Cancel and Details. 
-  // so, I can't provide a functionality to recheck. So it now 
+  // There is no KMessageBox with Retry, Cancel and Details.
+  // so, I can't provide a functionality to recheck. So it now
   // it is just a warning.
   if ( !error.isEmpty() ) {
     kDebug() << "checkPermissions found:" << error << endl;
-    KMessageBox::detailedSorry(parent, 
+    KMessageBox::detailedSorry(parent,
                                i18n("Some files or folders do not have "
                                "the right permissions, please correct them "
                                "manually."),

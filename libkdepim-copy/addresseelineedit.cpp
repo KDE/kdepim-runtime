@@ -253,7 +253,7 @@ void AddresseeLineEdit::insert( const QString &t )
     QString selection = selectedText();
     int end_sel = start_sel + selection.length();
 //   if ( getSelection( &start_sel, &end_sel ) ) {
-    
+
     // Cut away the selection.
     if ( pos >= end_sel )
       pos -= selection.length();
@@ -533,9 +533,9 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
     if ( addr.givenName().isEmpty() && addr.familyName().isEmpty() ) {
       addCompletionItem( addr.fullEmail( (*it) ), weight, source ); // use whatever is there
     } else {
-      const QString byFirstName= KPIM::quoteNameIfNecessary( addr.givenName() + " " + addr.familyName() ) + " <" + (*it) + ">";
-      const QString byLastName= "\"" + addr.familyName() + ", " + addr.givenName() + "\" "  + "<" + (*it) + ">";
-      const QString byEmail= (*it) + " (" + KPIM::quoteNameIfNecessary( addr.realName() ) + ")";
+      const QString byFirstName= KPIM::quoteNameIfNecessary( addr.givenName() + ' ' + addr.familyName() ) + " <" + (*it) + '>';
+      const QString byLastName= "\"" + addr.familyName() + ", " + addr.givenName() + "\" "  + '<' + (*it) + '>';
+      const QString byEmail= (*it) + " (" + KPIM::quoteNameIfNecessary( addr.realName() ) + ')';
       addCompletionItem( byFirstName, weight, source );
       addCompletionItem( byLastName, weight, source );
       addCompletionItem( byEmail, weight, source );
@@ -561,7 +561,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 
     // While we're here also add "email (full name)" for completion on the email
     if ( !name.isEmpty() )
-      addCompletionItem( addr.preferredEmail() + " (" + name + ")", weight, source );
+      addCompletionItem( addr.preferredEmail() + " (" + name + ')', weight, source );
 
     bool bDone = false;
     int i = -1;

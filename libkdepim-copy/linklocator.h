@@ -166,7 +166,7 @@ private:
 
   /**
    * Replaces smiley text with an <img> tag containing the relevant image.
-   * For an emoticon text to be recognised it has to match
+   * For an emoticon text to be recognized it has to match
    * "(^|\s+)text(\s+|$)"
    * @return An HTML String with <img> for an emoticon
    */

@@ -37,7 +37,7 @@ static bool compareString( const QString &left, const QString &right )
 
 static QString toString( KCal::Attendee *attendee )
 {
-  return attendee->name() + "<" + attendee->email() + ">";
+  return attendee->name() + '<' + attendee->email() + '>';
 }
 
 static QString toString( KCal::Alarm * )
@@ -148,7 +148,7 @@ void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *ri
 
   if ( !compareString( left->location(), right->location() ) )
     conflictField( i18n( "Location" ), left->location(), right->location() );
-  
+
   diffList( i18n( "Categories" ), left->categories(), right->categories() );
   diffList( i18n( "Alarms" ), left->alarms(), right->alarms() );
   diffList( i18n( "Resources" ), left->resources(), right->resources() );

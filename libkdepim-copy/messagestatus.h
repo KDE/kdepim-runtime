@@ -62,18 +62,18 @@ class MessageStatus
     MessageStatus& operator = ( const MessageStatus& other );
 
     /** Compare the status with that from another instance.
-        @return TRUE if the stati are equal, false if different.
+        @return true if the stati are equal, false if different.
     */
     bool operator == ( const MessageStatus& other ) const;
 
     /** Compare the status with that from another instance.
-        @return TRUE if the stati are equal, false if different.
+        @return true if the stati are equal, false if different.
     */
     bool operator != ( const MessageStatus& other ) const;
 
-    /** Check, if some of the flags in the status match 
+    /** Check, if some of the flags in the status match
         with those flags from another instance.
-        @return TRUE if at least one flag is set in both stati.
+        @return true if at least one flag is set in both stati.
     */
     bool operator & ( const MessageStatus& other ) const;
 
@@ -99,88 +99,88 @@ class MessageStatus
     /* ----- getters ----------------------------------------------------- */
 
     /** Check for Unknown status.
-        @return TRUE if status is unknown.
+        @return true if status is unknown.
     */
     bool isOfUnknownStatus() const;
 
     /** Check for New status. Ignored messages are not new.
-        @return TRUE if status is new.
+        @return true if status is new.
     */
     bool isNew() const;
 
     /** Check for Unread status. Note that new messages are not unread.
         Ignored messages are not unread as well.
-        @return TRUE if status is unread.
+        @return true if status is unread.
     */
     bool isUnread() const;
 
     /** Check for Read status. Note that ignored messages are read.
-        @return TRUE if status is read.
+        @return true if status is read.
     */
     bool isRead() const;
 
     /** Check for Old status.
-        @return TRUE if status is old.
+        @return true if status is old.
     */
     bool isOld() const;
 
     /** Check for Deleted status.
-        @return TRUE if status is deleted.
+        @return true if status is deleted.
     */
     bool isDeleted() const;
 
     /** Check for Replied status.
-        @return TRUE if status is replied.
+        @return true if status is replied.
     */
     bool isReplied() const;
 
     /** Check for Forwarded status.
-        @return TRUE if status is forwarded.
+        @return true if status is forwarded.
     */
     bool isForwarded() const;
 
     /** Check for Queued status.
-        @return TRUE if status is queued.
+        @return true if status is queued.
     */
     bool isQueued() const;
 
     /** Check for Sent status.
-        @return TRUE if status is sent.
+        @return true if status is sent.
     */
     bool isSent() const;
 
     /** Check for Important status.
-        @return TRUE if status is important.
+        @return true if status is important.
     */
     bool isImportant() const;
 
     /** Check for Watched status.
-        @return TRUE if status is watched.
+        @return true if status is watched.
     */
     bool isWatched() const;
 
     /** Check for Ignored status.
-        @return TRUE if status is ignored.
+        @return true if status is ignored.
     */
     bool isIgnored() const;
 
     /** Check for Todo status.
-        @return TRUE if status is todo.
+        @return true if status is todo.
     */
     bool isTodo() const;
 
     /** Check for Spam status.
-        @return TRUE if status is spam.
+        @return true if status is spam.
     */
     bool isSpam() const;
 
     /** Check for Ham status.
-        @return TRUE if status is not spam.
+        @return true if status is not spam.
     */
     bool isHam() const;
 
     /** Check for Attachment status.
-        @return TRUE if status indicates an attachment.
+        @return true if status indicates an attachment.
     */
     bool hasAttachment() const;
 
@@ -295,103 +295,103 @@ class MessageStatus
 
     /* ----- static accessors to simple states --------------------------- */
 
-    /** Return a predefined status initialized as New as is usefull
+    /** Return a predefined status initialized as New as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as New.
     */
     static MessageStatus statusNew();
 
-    /** Return a predefined status initialized as Read as is usefull
+    /** Return a predefined status initialized as Read as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Read.
     */
     static MessageStatus statusRead();
 
-    /** Return a predefined status initialized as Unread as is usefull
+    /** Return a predefined status initialized as Unread as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Unread.
     */
     static MessageStatus statusUnread();
 
     /** Return a predefined status initialized as New and Unread as is
-        usefull e.g. when searching for unread messages.
+        useful e.g. when searching for unread messages.
         @return A reference to a status instance initialized as New | Unread.
     */
     static MessageStatus statusNewAndUnread();
 
-    /** Return a predefined status initialized as Old as is usefull
+    /** Return a predefined status initialized as Old as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Old.
     */
     static MessageStatus statusOld();
 
-    /** Return a predefined status initialized as Deleted as is usefull
+    /** Return a predefined status initialized as Deleted as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Deleted.
     */
     static MessageStatus statusDeleted();
 
-    /** Return a predefined status initialized as Replied as is usefull
+    /** Return a predefined status initialized as Replied as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Replied.
     */
     static MessageStatus statusReplied();
 
-    /** Return a predefined status initialized as Forwarded as is usefull
+    /** Return a predefined status initialized as Forwarded as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Forwarded.
     */
     static MessageStatus statusForwarded();
 
-    /** Return a predefined status initialized as Queued as is usefull
+    /** Return a predefined status initialized as Queued as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Queued.
     */
     static MessageStatus statusQueued();
 
-    /** Return a predefined status initialized as Sent as is usefull
+    /** Return a predefined status initialized as Sent as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Sent.
     */
     static MessageStatus statusSent();
 
-    /** Return a predefined status initialized as Important as is usefull
+    /** Return a predefined status initialized as Important as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Important.
     */
     static MessageStatus statusImportant();
 
-    /** Return a predefined status initialized as Watched as is usefull
+    /** Return a predefined status initialized as Watched as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Watched.
     */
     static MessageStatus statusWatched();
 
-    /** Return a predefined status initialized as Ignored as is usefull
+    /** Return a predefined status initialized as Ignored as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Ignored.
     */
     static MessageStatus statusIgnored();
 
-    /** Return a predefined status initialized as Todo as is usefull
+    /** Return a predefined status initialized as Todo as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Todo.
     */
     static MessageStatus statusTodo();
 
-    /** Return a predefined status initialized as Spam as is usefull
+    /** Return a predefined status initialized as Spam as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Spam.
     */
     static MessageStatus statusSpam();
 
-    /** Return a predefined status initialized as Ham as is usefull
+    /** Return a predefined status initialized as Ham as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Ham.
     */
     static MessageStatus statusHam();
 
-    /** Return a predefined status initialized as Attachment as is usefull
+    /** Return a predefined status initialized as Attachment as is useful
         e.g. when providing a state for comparison.
         @return A reference to a status instance initialized as Attachment.
     */

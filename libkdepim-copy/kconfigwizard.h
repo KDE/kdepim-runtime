@@ -77,7 +77,7 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
     virtual void usrWriteConfig() = 0;
 
     /**
-      Validates the supplied data. Returns a appropiate error when some data
+      Validates the supplied data. Returns an appropriate error when some data
       is invalid. Return QString() if all data is valid.
     */
     virtual QString validate() { return QString(); }

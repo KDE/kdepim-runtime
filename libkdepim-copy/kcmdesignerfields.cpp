@@ -133,7 +133,7 @@ KCMDesignerFields::KCMDesignerFields( KInstance *instance, QWidget *parent, cons
   : KCModule( instance, parent, args )
 {
   QTimer::singleShot( 0, this, SLOT( delayedInit() ) );
-  
+
   KAboutData *about = new KAboutData( I18N_NOOP( "KCMDesignerfields" ),
                                       I18N_NOOP( "Qt Designer Fields Dialog" ),
                                       0, 0, KAboutData::License_LGPL,
@@ -428,7 +428,7 @@ void KCMDesignerFields::startDesigner()
   Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
-    cmdLine += " " + KProcess::quote( pageItem->path() );
+    cmdLine += ' ' + KProcess::quote( pageItem->path() );
   }
 
   KRun::runCommand( cmdLine );

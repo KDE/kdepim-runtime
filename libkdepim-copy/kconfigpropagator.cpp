@@ -43,7 +43,7 @@ KConfigPropagator::ChangeConfig::ChangeConfig()
 
 QString KConfigPropagator::ChangeConfig::arg1() const
 {
-  return file + "/" + group + "/" + name;
+  return file + '/' + group + '/' + name;
 }
 
 QString KConfigPropagator::ChangeConfig::arg2() const
@@ -164,22 +164,22 @@ void KConfigPropagator::parseConfigEntryPath( const QString &path,
     entry.clear();
     return;
   }
-  
+
   file = p[ 0 ];
-  group = p[ 1 ];  
+  group = p[ 1 ];
   entry = p[ 2 ];
-  
+
   return;
 }
 
 KConfigPropagator::Condition KConfigPropagator::parseCondition( const QDomElement &e )
 {
   Condition c;
-  
+
   QString key = e.attribute( "key" );
-  
+
   parseConfigEntryPath( key, c.file, c.group, c.key );
-  
+
   c.value = e.attribute( "value" );
 
   c.isValid = true;
@@ -225,7 +225,7 @@ QString KConfigPropagator::itemValueAsString( KConfigSkeletonItem *item )
     if ( p.toBool() ) return "true";
     else return "false";
   }
-  
+
   return p.toString();
 }
 
@@ -253,7 +253,7 @@ void KConfigPropagator::updateChanges()
 
     KConfigSkeletonItem *item = findItem( r.sourceGroup, r.sourceEntry );
     if ( !item ) {
-      kError() << "Item " << r.sourceGroup << "/" << r.sourceEntry 
+      kError() << "Item " << r.sourceGroup << "/" << r.sourceEntry
                 << " not found." << endl;
       continue;
     }
