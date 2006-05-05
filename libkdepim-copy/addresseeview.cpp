@@ -633,13 +633,13 @@ void AddresseeView::imAddressClicked()
 void AddresseeView::contextMenuEvent(QContextMenuEvent *e)
 {
   QMenu *menu = new QMenu( this );
-  mActionShowBirthday->plug( menu );
-  mActionShowAddresses->plug( menu );
-  mActionShowEmails->plug( menu );
-  mActionShowPhones->plug( menu );
-  mActionShowURLs->plug( menu );
-  mActionShowIMAddresses->plug( menu );
-  mActionShowCustomFields->plug( menu );
+  menu->addAction( mActionShowBirthday );
+  menu->addAction( mActionShowAddresses );
+  menu->addAction( mActionShowEmails );
+  menu->addAction( mActionShowPhones );
+  menu->addAction( mActionShowURLs );
+  menu->addAction( mActionShowIMAddresses );
+  menu->addAction( mActionShowCustomFields );
   menu->exec(e->globalPos());
   delete menu;
 }
