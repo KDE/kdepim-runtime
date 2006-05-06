@@ -36,12 +36,13 @@ QByteArray kFileToByteArray( const QString & fileName,
  * Writes the contents of @p buffer to the file with the given filename.
  *
  * @param buffer       The data you want to write to the file.
+ * @param fileName     The output file name
  * @param askIfExists  If true, then you will be asked before an existing file
  *                     is overwritten. If false, then an existing file is
  *                     overwritten without warning.
  * @param createBackup If true, then a backup of existing files will be
  *                     created. Otherwise, no backup will be made.
- * @param verbose      If true, then you will be warned in case of problems.
+ * @param withDialogs  If true, then you will be warned in case of problems.
  *                     Otherwise, no warnings will be issued.
  *
  * @return True if writing the data to the file succeeded.

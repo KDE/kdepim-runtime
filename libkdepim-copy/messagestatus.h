@@ -239,7 +239,7 @@ class MessageStatus
     void setIgnored( bool ignored = true );
 
     /** Set the status to todo.
-        @param ignored Set (true) or unset (false) this status flag.
+        @param todo Set (true) or unset (false) this status flag.
     */
     void setTodo( bool todo = true );
 
@@ -254,7 +254,7 @@ class MessageStatus
     void setHam( bool ham = true );
 
     /** Set the status for an attachment.
-        @param deleted Set (true) or unset (false) this status flag.
+        @param withAttechment Set (true) or unset (false) this status flag.
     */
     void setHasAttachment( bool withAttachment = true );
 

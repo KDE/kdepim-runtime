@@ -76,7 +76,7 @@ public:
     /*** Date the message was sent ***/
     time_t date() const;
 
-    /** returns kmail:<serial number>/<message id> style uri */
+    /** returns kmail:&lt;serial number&gt;/&lt;message id&gt; style uri */
     operator KUrl() const;
 
 private:

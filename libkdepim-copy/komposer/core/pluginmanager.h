@@ -139,7 +139,7 @@ namespace Komposer
     bool setPluginEnabled( const QString &name, bool enabled = true );
 
     /**
-     * Plugin loading mode. Used by @loadPlugin. Code that doesn't want to block
+     * Plugin loading mode. Used by loadPlugin. Code that doesn't want to block
      * the GUI and/or lot a lot of plugins at once should use Async loading.
      * The default is sync loading.
      */

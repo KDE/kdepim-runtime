@@ -110,22 +110,22 @@ class KDE_EXPORT AddresseeView : public KTextBrowser
     /**
       Returns the HTML representation of a contact.
       The HTML code looks like
-        <div>
-        <table>
+        &lt;div&gt;
+        &lt;table&gt;
         ...
-        </table>
-        </div>
+        &lt;/table&gt;
+        &lt;/div&gt;
 
       @param addr The addressee object.
       @param linkMask The mask for which parts of the contact will
                       be displayed as links.
                       The links looks like this:
-                        "addr://<addr id>" for addresses
-                        "mailto:<email address>" for emails
-                        "phone://<phone number>" for phone numbers
-                        "http://<url>" for urls
-                        "im:<im addrss>" for instant messaging addresses
-                        "sms://<phone number>" for sending a sms
+                        "addr://&lt;addr id&gt;" for addresses
+                        "mailto:&lt;email address&gt;" for emails
+                        "phone://&lt;phone number&gt;" for phone numbers
+                        "http://&lt;url&gt;" for urls
+                        "im:&lt;im addrss&gt;" for instant messaging addresses
+                        "sms://&lt;phone number&gt;" for sending a sms
       @param internalLoading If true, the loading of internal pictures is done automatically.
       @param fieldMask The mask for which fields of the contact will
                        be displayed.
