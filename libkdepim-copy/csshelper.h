@@ -34,13 +34,14 @@
 
 #include <qcolor.h>
 #include <qfont.h>
+#include <kdepim_export.h>
 
 class QString;
 class QPaintDevice;
 
 namespace KPIM {
 
-class CSSHelper {
+class KDEPIM_EXPORT CSSHelper {
   public:
     /** Construct a CSSHelper object and set its font and color settings to
         default values.
