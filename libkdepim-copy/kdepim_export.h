@@ -29,6 +29,7 @@
 #else /* UNIX */
 
 /* export statements for unix */
+#define AKONADI_EXPORT KDE_EXPORT
 #define KHOLIDAYS_EXPORT KDE_EXPORT
 
 #endif
