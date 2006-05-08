@@ -31,6 +31,9 @@
 /* export statements for unix */
 #define AKONADI_EXPORT KDE_EXPORT
 #define KHOLIDAYS_EXPORT KDE_EXPORT
+#define KODE_SCHEMA_EXPORT KDE_EXPORT
+#define KSCHEMA_EXPORT KDE_EXPORT
+#define KXMLCOMMON_EXPORT KDE_EXPORT
 
 #endif
 
