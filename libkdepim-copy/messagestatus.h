@@ -30,6 +30,7 @@
 #define KMAIL_MESSAGESTATUS_H
 
 #include <qglobal.h>
+#include <kdepim_export.h>
 class QString;
 
 namespace KPIM {
@@ -49,7 +50,7 @@ namespace KPIM {
 
   The stati New/Unread/Read/Old are mutually exclusive.
 */
-class MessageStatus
+class KDEPIM_EXPORT MessageStatus
 {
   public:
     /** Constructor - sets status initially to unknown. */

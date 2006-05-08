@@ -33,6 +33,7 @@
 
 #include <kdialogbase.h>
 #include <kconfig.h>
+#include <kdepim_export.h>
 //Added by qt3to4:
 #include <Q3PtrList>
 
@@ -64,7 +65,7 @@ public:
   virtual int compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 );
 };
 
-class CompletionOrderEditor : public KDialogBase {
+class KDEPIM_EXPORT CompletionOrderEditor : public KDialogBase {
   Q_OBJECT
 
 public:
