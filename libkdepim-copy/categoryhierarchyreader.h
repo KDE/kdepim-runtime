@@ -21,6 +21,8 @@
 #ifndef KPIM_CATEGORYHIERARCHYREADER_H
 #define KPIM_CATEGORYHIERARCHYREADER_H
 
+#include <kdepim_export.h>
+
 class QComboBox;
 class QStringList;
 class QString;
@@ -29,7 +31,7 @@ class Q3ListViewItem;
 
 namespace KPIM {
 
-class CategoryHierarchyReader
+class KDEPIM_EXPORT CategoryHierarchyReader
 {
   public:
     void read( QStringList categories );
@@ -64,7 +66,7 @@ class CategoryHierarchyReaderQListView : public CategoryHierarchyReader
     const bool mCheckList;
 };
 
-class CategoryHierarchyReaderQComboBox : public CategoryHierarchyReader
+class KDEPIM_EXPORT CategoryHierarchyReaderQComboBox : public CategoryHierarchyReader
 {
   public:
     CategoryHierarchyReaderQComboBox( QComboBox *box )
