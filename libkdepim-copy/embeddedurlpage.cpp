@@ -57,7 +57,7 @@ void EmbeddedURLPage::loadContents()
     if ( mimetype == "auto" )
         mimetype == KMimeType::findByURL( mUri )->name();
     // "this" is both the parent widget and the parent object
-    mPart = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, 0, this, 0 );
+    mPart = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, this );
     if ( mPart ) {
         mPart->openURL( mUri );
         mPart->widget()->show();

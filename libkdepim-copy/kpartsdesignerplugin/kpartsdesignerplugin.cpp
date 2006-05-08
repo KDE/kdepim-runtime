@@ -52,7 +52,7 @@ void KPartsGenericPart::load()
         delete m_part;
     }
     // "this" is both the parent widget and the parent object
-    m_part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, 0, this, 0 );
+    m_part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, this );
     if ( m_part ) {
         m_part->openURL( m_url );
         m_part->widget()->show();

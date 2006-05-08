@@ -22,6 +22,7 @@
 #define DISTRIBUTIONLIST_H
 
 #include <kabc/addressee.h>
+#include <kdepim_export.h>
 
 namespace KABC {
 class AddressBook;
@@ -40,7 +41,7 @@ namespace KPIM {
  *
  * @author David Faure <faure@kde.org>
  */
-class DistributionList : public KABC::Addressee
+class KDEPIM_EXPORT DistributionList : public KABC::Addressee
 {
   public:
     /**
