@@ -585,6 +585,15 @@ void AddresseeView::phoneNumberClicked( const QString &number )
 
 void AddresseeView::smsTextClicked( const QString &number )
 {
+  KConfig config( "kaddressbookrc" );
+  config.setGroup( "General" );
+  QString commandLine = config.readEntry( "SMSHookApplication" );
+
+  if ( commandLine.isEmpty() ) {
+    KMessageBox::sorry( this, i18n( "There is no application set which could be executed. Please go to the settings dialog and configure one." ) );
+    return;
+  }
+
   SendSMSDialog dlg( mAddressee.realName(), this );
 
   if ( dlg.exec() )
@@ -597,16 +606,14 @@ void AddresseeView::sendSMS( const QString &number, const QString &text )
   config.setGroup( "General" );
   QString commandLine = config.readEntry( "SMSHookApplication" );
 
-  if ( commandLine.isEmpty() ) {
-    KMessageBox::sorry( this, i18n( "There is no application set which could be executed. Please go to the settings dialog and configure one." ) );
-    return;
-  }
-  KTempFile msgFile ;
-  QTextStream* file = msgFile.textStream();
-  *file << text;
-  msgFile.close();
+  KTempFile file ;
+  QTextStream* stream = file.textStream();
+  *stream << text;
+  file.close();
+
   commandLine.replace( "%N", number );
-  commandLine.replace( "%F", msgFile.name() );
+  commandLine.replace( "%F", file.name() );
+
   KRun::runCommand( commandLine );
 }
 
