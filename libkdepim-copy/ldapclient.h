@@ -24,7 +24,7 @@
 
 
 #include <qobject.h>
-#include <qstring.h>
+#include <QString>
 #include <q3cstring.h>
 #include <qstringlist.h>
 #include <q3memarray.h>

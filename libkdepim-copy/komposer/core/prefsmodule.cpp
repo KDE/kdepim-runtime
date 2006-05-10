@@ -27,8 +27,8 @@
 #include <klocale.h>
 #include <ktrader.h>
 
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QLayout>
+#include <QLabel>
 #include <qbuttongroup.h>
 
 #include <kdepimmacros.h>

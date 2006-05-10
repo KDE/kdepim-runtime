@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include <qstring.h>
+#include <QString>
 
 #include <kstandarddirs.h>
 #include <kglobal.h>

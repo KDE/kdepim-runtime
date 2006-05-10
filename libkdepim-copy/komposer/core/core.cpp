@@ -49,7 +49,7 @@
 
 #include <qwidgetstack.h>
 #include <qhbox.h>
-#include <qwidget.h>
+#include <QWidget>
 
 using namespace Komposer;
 

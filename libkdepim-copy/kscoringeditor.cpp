@@ -30,11 +30,11 @@
 #include <kparts/componentfactory.h>
 #include <kpushbutton.h>
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qcheckbox.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QLayout>
+#include <QToolTip>
+#include <QCheckBox>
 #include <qradiobutton.h>
 #include <qapplication.h>
 #include <qtimer.h>

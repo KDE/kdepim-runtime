@@ -24,7 +24,7 @@
 
 #include <klocale.h>
 
-#include <qmap.h>
+#include <QMap>
 #include <qpair.h>
 #include <qstringlist.h>
 //Added by qt3to4:

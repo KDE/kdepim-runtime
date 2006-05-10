@@ -27,7 +27,7 @@
 #include <klocale.h>
 #include <kuniqueapplication.h>
 
-#include <qlabel.h>
+#include <QLabel>
 
 static const char description[] =
     I18N_NOOP( "KDE mail editing manager" );

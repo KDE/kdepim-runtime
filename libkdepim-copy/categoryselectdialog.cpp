@@ -21,7 +21,7 @@
 */
 
 #include <q3listview.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <q3header.h>
 
 #include "categoryselectdialog_base.h"

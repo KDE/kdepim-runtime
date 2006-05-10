@@ -29,8 +29,8 @@
 #include <kdebug.h>
 
 #include <q3stylesheet.h>
-#include <qfile.h>
-#include <qregexp.h>
+#include <QFile>
+#include <QRegExp>
 
 #include <limits.h>
 #include <QTextDocument>

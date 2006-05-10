@@ -21,7 +21,7 @@
 #ifndef KCONFIGPROPAGATOR_H
 #define KCONFIGPROPAGATOR_H
 
-#include <qstring.h>
+#include <QString>
 
 #include <qdom.h>
 #include <q3ptrlist.h>

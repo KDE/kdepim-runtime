@@ -18,7 +18,7 @@
 #ifndef SCOREEDITWIDGET_H
 #define SCOREEDITWIDGET_H
 
-#include <qmap.h>
+#include <QMap>
 //Added by qt3to4:
 #include <QLabel>
 #include <kdialogbase.h>

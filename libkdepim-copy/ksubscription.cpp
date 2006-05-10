@@ -13,10 +13,10 @@
 #include "ksubscription.h"
 #include "kaccount.h"
 
-#include <qlayout.h>
+#include <QLayout>
 #include <qtimer.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 #include <q3header.h>
 #include <qtoolbutton.h>
 //Added by qt3to4:

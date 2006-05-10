@@ -22,11 +22,11 @@
 
 #include <iostream>
 
-#include <qfile.h>
+#include <QFile>
 #include <qdom.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
+#include <QLayout>
+#include <QLabel>
+#include <QCheckBox>
 #include <q3textview.h>
 //Added by qt3to4:
 #include <QTextStream>

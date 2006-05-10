@@ -23,14 +23,14 @@
 #include <unistd.h>
 
 #include <qimage.h>
-#include <qlabel.h>
-#include <qlayout.h>
+#include <QLabel>
+#include <QLayout>
 #include <qobject.h>
 #include <qpixmap.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <q3groupbox.h>
-#include <qregexp.h>
+#include <QRegExp>
 #include <qtimer.h>
 #include <QtDesigner/QFormBuilder>
 //Added by qt3to4:

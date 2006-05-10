@@ -24,7 +24,7 @@
 #include "core.h"
 
 #include <kdebug.h>
-#include <qstring.h>
+#include <QString>
 
 namespace Komposer
 {

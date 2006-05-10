@@ -53,7 +53,7 @@
 
 #include <qapplication.h>
 #include <qobject.h>
-#include <qregexp.h>
+#include <QRegExp>
 #include <qevent.h>
 #include <q3dragobject.h>
 #include <qclipboard.h>

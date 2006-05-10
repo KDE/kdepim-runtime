@@ -24,7 +24,7 @@
 
 #include <q3intdict.h>
 #include <qstringlist.h>
-#include <qspinbox.h>
+#include <QSpinBox>
 #include <q3ptrvector.h>
 #include <q3valuevector.h>
 #include <Q3PtrList>

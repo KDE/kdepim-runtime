@@ -28,7 +28,7 @@
 #include <kstringhandler.h>
 #include <klocale.h>
 
-#include <qfile.h>
+#include <QFile>
 #include <qstringlist.h>
 
 KConfigPropagator::Change::~Change()

@@ -30,8 +30,8 @@
 #include <qbuffer.h>
 #include <q3cstring.h>
 #include <qimage.h>
-#include <qregexp.h>
-#include <qstring.h>
+#include <QRegExp>
+#include <QString>
 #include <qpainter.h>
 
 #include <stdlib.h>

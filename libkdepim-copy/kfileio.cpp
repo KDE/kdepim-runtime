@@ -10,14 +10,14 @@
 #include <kdebug.h>
 
 #include <assert.h>
-#include <qdir.h>
+#include <QDir>
 #include <QByteArray>
 
 #include <klocale.h>
 #include <kstdguiitem.h>
 
-#include <qwidget.h>
-#include <qfile.h>
+#include <QWidget>
+#include <QFile>
 #include <qfileinfo.h>
 #include <sys/stat.h>
 #include <sys/types.h>

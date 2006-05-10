@@ -20,13 +20,13 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
+#include <QCheckBox>
+#include <QComboBox>
 #include <q3datetimeedit.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <qobject.h>
-#include <qspinbox.h>
-#include <qregexp.h>
+#include <QSpinBox>
+#include <QRegExp>
 #include <QTextEdit>
 #include <QFile>
 #include <QtDesigner/QFormBuilder>

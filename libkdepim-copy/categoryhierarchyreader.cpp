@@ -19,7 +19,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qcombobox.h>
+#include <QComboBox>
 #include <qstringlist.h>
 #include <q3listview.h>
 

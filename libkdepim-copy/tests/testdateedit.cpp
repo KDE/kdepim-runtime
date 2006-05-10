@@ -19,7 +19,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qlayout.h>
+#include <QLayout>
 
 #include <kaboutdata.h>
 #include <kapplication.h>

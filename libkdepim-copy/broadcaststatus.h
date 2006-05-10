@@ -12,7 +12,7 @@
 #define __kpim_broadcast_status_h
 
 #include <qobject.h>
-#include <qmap.h>
+#include <QMap>
 
 #include <kdepimmacros.h>
 

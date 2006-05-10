@@ -34,17 +34,17 @@
 #endif
 
 #include <qapplication.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <q3progressbar.h>
 #include <qtimer.h>
 #include <q3header.h>
 #include <qobject.h>
 #include <q3scrollview.h>
 #include <qtoolbutton.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <khbox.h>
 #include <kvbox.h>
-#include <qtooltip.h>
+#include <QToolTip>
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>

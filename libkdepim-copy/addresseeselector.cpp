@@ -20,8 +20,8 @@
 */
 
 #include <q3header.h>
-#include <qlabel.h>
-#include <qlayout.h>
+#include <QLabel>
+#include <QLayout>
 #include <qsignalmapper.h>
 #include <qtoolbutton.h>
 //Added by qt3to4:

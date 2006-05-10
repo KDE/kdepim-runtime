@@ -23,8 +23,8 @@
 #ifndef LINKLOCATOR_H_INCLUDED
 #define LINKLOCATOR_H_INCLUDED
 
-#include <qstring.h>
-#include <qmap.h>
+#include <QString>
+#include <QMap>
 
 #include <kdepimmacros.h>
 

@@ -22,7 +22,7 @@
 #ifndef TESTDATEEDIT_H
 #define TESTDATEEDIT_H
 
-#include <qwidget.h>
+#include <QWidget>
 
 class DateEdit : public QWidget
 {

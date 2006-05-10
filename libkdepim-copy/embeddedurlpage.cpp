@@ -27,8 +27,8 @@
 #include <kparts/part.h>
 #include <kmimetype.h>
 #include <klocale.h>
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QLayout>
+#include <QLabel>
 //Added by qt3to4:
 #include <QVBoxLayout>
 

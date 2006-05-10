@@ -40,7 +40,7 @@
 #include <kreplace.h>
 
 #include <qtextedit.h>
-#include <qwidget.h>
+#include <QWidget>
 
 typedef KGenericFactory<DefaultEditor> DefaultEditorFactory;
 K_EXPORT_COMPONENT_FACTORY( libkomposer_defaulteditor,

@@ -23,7 +23,7 @@
 #ifndef SPELLINGFILTER_H_INCLUDED
 #define SPELLINGFILTER_H_INCLUDED
 
-#include <qstring.h>
+#include <QString>
 #include <qstringlist.h>
 #include "linklocator.h"
 

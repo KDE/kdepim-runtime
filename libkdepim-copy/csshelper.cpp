@@ -36,7 +36,7 @@
 #include <kdebug.h>
 #include <kglobal.h>
 
-#include <qstring.h>
+#include <QString>
 #include <qapplication.h>
 #include <QPaintDevice>
 

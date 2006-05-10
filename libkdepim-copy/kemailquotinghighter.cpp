@@ -30,7 +30,7 @@
 
 #include <qtextedit.h>
 #include <qtimer.h>
-#include <qcolor.h>
+#include <QColor>
 #include <QHash>
 #include <QTextCursor>
 

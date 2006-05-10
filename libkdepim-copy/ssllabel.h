@@ -32,7 +32,7 @@
 #ifndef SSLLABEL_H
 #define SSLLABEL_H
 
-#include <qlabel.h>
+#include <QLabel>
 
 namespace KPIM {
 

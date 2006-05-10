@@ -22,8 +22,8 @@
 #ifndef __LIBKDEPIM_PLUGINLOADERBASE_H__
 #define __LIBKDEPIM_PLUGINLOADERBASE_H__
 
-#include <qstring.h>
-#include <qmap.h>
+#include <QString>
+#include <QMap>
 
 #include <kdepimmacros.h>
 

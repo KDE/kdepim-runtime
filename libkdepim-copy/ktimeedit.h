@@ -27,9 +27,9 @@
 
 #include <qevent.h>
 #include <qnamespace.h>
-#include <qstring.h>
+#include <QString>
 #include <qdatetime.h>
-#include <qcombobox.h>
+#include <QComboBox>
 //Added by qt3to4:
 #include <QKeyEvent>
 

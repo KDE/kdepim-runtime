@@ -24,7 +24,7 @@
 #include "maillistdrag.h"
 #include "kdepimprotocols.h"
 #include <qbuffer.h>
-#include <qdatastream.h>
+#include <QDataStream>
 #include <qeventloop.h>
 //Added by qt3to4:
 #include <QTextStream>

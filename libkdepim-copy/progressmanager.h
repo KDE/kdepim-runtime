@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 #include <q3dict.h>
-#include <qstring.h>
+#include <QString>
 #include <QMap>
 
 #include <kdepimmacros.h>

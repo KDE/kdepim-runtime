@@ -26,7 +26,7 @@
 #define __KSUBSCRIPTION
 
 #include <q3listview.h>
-#include <qcheckbox.h>
+#include <QCheckBox>
 //Added by qt3to4:
 #include <QGridLayout>
 #include <QLabel>

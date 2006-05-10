@@ -34,7 +34,7 @@
 #include <kstandarddirs.h>
 #include <kautoconfigdialog.h>
 
-#include <qlabel.h>
+#include <QLabel>
 
 int main( int argc, char **argv )
 {

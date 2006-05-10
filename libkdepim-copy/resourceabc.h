@@ -26,7 +26,7 @@
 #define RESOURCEABC_H
 
 #include <kabc/resource.h>
-#include <qmap.h>
+#include <QMap>
 #include <kdepimmacros.h>
 
 // This is here because it can't go to kdelibs/kabc yet, but ultimately

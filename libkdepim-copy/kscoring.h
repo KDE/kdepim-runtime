@@ -23,15 +23,15 @@
 #include <qglobal.h>
 #include <q3ptrlist.h>
 #include <q3ptrstack.h>
-#include <qregexp.h>
+#include <QRegExp>
 
 #include <qobject.h>
-#include <qstring.h>
+#include <QString>
 #include <qstringlist.h>
 #include <qdatetime.h>
-#include <qcolor.h>
+#include <QColor>
 #include <q3table.h>
-#include <qmap.h>
+#include <QMap>
 #include <q3dict.h>
 //Added by qt3to4:
 #include <QTextStream>

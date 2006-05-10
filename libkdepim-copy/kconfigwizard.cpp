@@ -28,7 +28,7 @@
 #include <kapplication.h>
 
 #include <q3listview.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <qtimer.h>
 //Added by qt3to4:
 #include <QVBoxLayout>

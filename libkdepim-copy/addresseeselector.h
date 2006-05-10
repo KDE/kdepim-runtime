@@ -30,7 +30,7 @@
 
 #include <qbitarray.h>
 #include <qpixmap.h>
-#include <qwidget.h>
+#include <QWidget>
 
 class KComboBox;
 class KLineEdit;

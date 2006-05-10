@@ -25,7 +25,7 @@
 #include <dcopobject.h>
 #include <dcopref.h>
 #include <kurl.h>
-#include <qstring.h>
+#include <QString>
 #include <kdepimmacros.h>
 
 namespace KPIM {

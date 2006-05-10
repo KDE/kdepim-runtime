@@ -29,7 +29,7 @@
 
 #include "messagestatus.h"
 
-#include <qstring.h>
+#include <QString>
 
 using namespace KPIM;
 

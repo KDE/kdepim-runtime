@@ -28,7 +28,7 @@
 #include <kglobal.h>
 #include <kdebug.h>
 
-#include <qfile.h>
+#include <QFile>
 #include <qstringlist.h>
 
 static kdbgstream warning() {

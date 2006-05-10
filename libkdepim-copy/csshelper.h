@@ -32,8 +32,8 @@
 #ifndef KPIM_CSSHELPER_H
 #define KPIM_CSSHELPER_H
 
-#include <qcolor.h>
-#include <qfont.h>
+#include <QColor>
+#include <QFont>
 #include <kdepim_export.h>
 
 class QString;

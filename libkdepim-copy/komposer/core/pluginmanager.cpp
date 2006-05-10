@@ -25,8 +25,8 @@
 #include "plugin.h"
 
 #include <qapplication.h>
-#include <qfile.h>
-#include <qregexp.h>
+#include <QFile>
+#include <QRegExp>
 #include <qtimer.h>
 #include <qvaluestack.h>
 

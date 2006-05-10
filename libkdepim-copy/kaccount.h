@@ -32,7 +32,7 @@
 #ifndef __KACCOUNT
 #define __KACCOUNT
 
-#include <qstring.h>
+#include <QString>
 #include <kdepimmacros.h>
 
 class KConfig;

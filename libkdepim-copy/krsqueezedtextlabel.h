@@ -21,7 +21,7 @@
 #ifndef KRSQUEEZEDTEXTLABEL_H
 #define KRSQUEEZEDTEXTLABEL_H
 
-#include <qlabel.h>
+#include <QLabel>
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <kdepimmacros.h>

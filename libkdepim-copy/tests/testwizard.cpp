@@ -29,8 +29,8 @@
 #include <klocale.h>
 #include <kcmdlineargs.h>
 
-#include <qlayout.h>
-#include <qcheckbox.h>
+#include <QLayout>
+#include <QCheckBox>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 #include <Q3Frame>

@@ -20,7 +20,7 @@
 #ifndef KOMPOSER_ATTACHMENT_H
 #define KOMPOSER_ATTACHMENT_H
 
-#include <qstring.h>
+#include <QString>
 #include <qcstring.h>
 #include <qvaluelist.h>
 

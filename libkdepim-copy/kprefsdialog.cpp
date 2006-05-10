@@ -21,15 +21,15 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QLayout>
+#include <QLabel>
 #include <q3buttongroup.h>
-#include <qlineedit.h>
-#include <qfont.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
+#include <QLineEdit>
+#include <QFont>
+#include <QComboBox>
+#include <QCheckBox>
 #include <qradiobutton.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <QFrame>
 #include <QGridLayout>

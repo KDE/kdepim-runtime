@@ -32,7 +32,7 @@
 #ifndef _KWIDGETLISTER_H_
 #define _KWIDGETLISTER_H_
 
-#include <qwidget.h>
+#include <QWidget>
 #include <q3ptrlist.h>
 //Added by qt3to4:
 #include <QVBoxLayout>

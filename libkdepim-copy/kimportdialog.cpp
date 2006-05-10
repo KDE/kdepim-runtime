@@ -25,13 +25,13 @@
 // application using this dialog.
 
 #include <q3buttongroup.h>
-#include <qfile.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
+#include <QFile>
+#include <QLabel>
+#include <QLayout>
+#include <QLineEdit>
 #include <q3listview.h>
 #include <qradiobutton.h>
-#include <qregexp.h>
+#include <QRegExp>
 #include <q3table.h>
 #include <qtextstream.h>
 #include <kvbox.h>

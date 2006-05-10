@@ -22,7 +22,7 @@
 #include <kparts/componentfactory.h>
 #include <kparts/part.h>
 #include <kmimetype.h>
-#include <qlayout.h>
+#include <QLayout>
 //Added by qt3to4:
 #include <QVBoxLayout>
 #include <qplugin.h>

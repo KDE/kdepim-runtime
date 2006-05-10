@@ -22,9 +22,9 @@
 #ifndef KOMPOSER_PLUGINMANAGER_H
 #define KOMPOSER_PLUGINMANAGER_H
 
-#include <qmap.h>
+#include <QMap>
 #include <qobject.h>
-#include <qstring.h>
+#include <QString>
 #include <qstringlist.h>
 #include <qvaluelist.h>
 

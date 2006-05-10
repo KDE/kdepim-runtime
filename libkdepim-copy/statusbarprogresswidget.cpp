@@ -48,11 +48,11 @@ using KPIM::ProgressManager;
 #include <kdebug.h>
 
 #include <qtimer.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qtooltip.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QToolTip>
 #include <klocale.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <QStackedWidget>
 #include <q3frame.h>
 

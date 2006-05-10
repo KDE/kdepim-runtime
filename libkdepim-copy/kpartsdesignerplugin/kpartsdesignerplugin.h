@@ -22,7 +22,7 @@
 #define DESIGNER_PARTPLUGIN_H
 
 #include <QtDesigner/QDesignerCustomWidgetInterface>
-#include <qwidget.h>
+#include <QWidget>
 namespace KParts { class ReadOnlyPart; }
 
 /**

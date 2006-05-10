@@ -21,7 +21,7 @@
 #ifndef KPIM_EMBEDDEDURLPAGE_H
 #define KPIM_EMBEDDEDURLPAGE_H
 
-#include <qwidget.h>
+#include <QWidget>
 #include <kdepimmacros.h>
 #include <kurl.h>
 

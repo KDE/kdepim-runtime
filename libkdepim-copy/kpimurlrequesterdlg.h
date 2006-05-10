@@ -22,7 +22,7 @@
 
 #include <kdepimmacros.h>
 #include <kurl.h>
-#include <qstring.h>
+#include <QString>
 
 class QWidget;
 

@@ -21,7 +21,7 @@
 
 #include <kprefsdialog.h>
 #include <kservice.h>
-#include <qmap.h>
+#include <QMap>
 class QGroupBox;
 class QListViewItem;
 

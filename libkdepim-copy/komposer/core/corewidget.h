@@ -22,7 +22,7 @@
 
 #include "attachment.h"
 
-#include <qwidget.h>
+#include <QWidget>
 
 namespace Komposer
 {

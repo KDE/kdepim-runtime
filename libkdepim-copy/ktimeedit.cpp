@@ -25,9 +25,9 @@
 */
 
 #include <qnamespace.h>
-#include <qcombobox.h>
+#include <QComboBox>
 #include <qdatetime.h>
-#include <qlineedit.h>
+#include <QLineEdit>
 //Added by qt3to4:
 #include <QKeyEvent>
 #include <QDebug>
