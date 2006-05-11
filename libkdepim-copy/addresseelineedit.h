@@ -26,10 +26,10 @@
 #ifndef ADDRESSEELINEEDIT_H
 #define ADDRESSEELINEEDIT_H
 
-#include <qobject.h>
+#include <QObject>
 #include <q3ptrlist.h>
-#include <qtimer.h>
-#include <qpair.h>
+#include <QTimer>
+#include <QPair>
 
 //Added by qt3to4:
 #include <QMouseEvent>

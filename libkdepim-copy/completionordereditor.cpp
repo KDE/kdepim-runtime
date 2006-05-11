@@ -44,7 +44,7 @@
 #include <khbox.h>
 #include <kvbox.h>
 #include <q3header.h>
-#include <qtoolbutton.h>
+#include <QToolButton>
 #include <kapplication.h>
 #include <dcopclient.h>
 

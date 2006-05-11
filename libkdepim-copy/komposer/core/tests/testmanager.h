@@ -1,7 +1,7 @@
 #ifndef TESTMANAGER_H
 #define TESTMANAGER_H
 
-#include <qobject.h>
+#include <QObject>
 
 namespace Komposer {
   class Plugin;

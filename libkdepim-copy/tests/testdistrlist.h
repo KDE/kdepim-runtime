@@ -19,7 +19,7 @@
 #ifndef TESTDISTRLIST_H
 #define TESTDISTRLIST_H
 
-#include <qobject.h>
+#include <QObject>
 
 class TestDistrList : public QObject
 {

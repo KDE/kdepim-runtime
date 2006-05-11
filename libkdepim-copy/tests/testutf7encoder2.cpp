@@ -1,6 +1,6 @@
 #include "qutf7codec.h"
 #include "qutf7codec.cpp"
-#include <qtextstream.h>
+#include <QTextStream>
 #include <string.h>
 #include <assert.h>
 #include <iostream.h>

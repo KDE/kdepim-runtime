@@ -23,7 +23,7 @@
 
 #include "managertest.h"
 
-#include <qasciidict.h>
+#include <Q3AsciiDict>
 
 #define ADD_TEST(x) addTest( #x, new x )
 

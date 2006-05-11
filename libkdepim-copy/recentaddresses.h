@@ -30,7 +30,7 @@
 #ifndef RECENTADDRESSES_H
 #define RECENTADDRESSES_H
 
-#include <qstringlist.h>
+#include <QStringList>
 #include <kabc/addressee.h>
 
 #include <kdialogbase.h>

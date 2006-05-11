@@ -20,7 +20,7 @@
 #ifndef KOMPOSER_PLUGIN_H
 #define KOMPOSER_PLUGIN_H
 
-#include <qobject.h>
+#include <QObject>
 #include <kxmlguiclient.h>
 
 namespace Komposer

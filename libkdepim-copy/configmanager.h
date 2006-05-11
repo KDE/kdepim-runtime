@@ -17,7 +17,7 @@
 #ifndef _KMAIL_CONFIGMANAGER_H_
 #define _KMAIL_CONFIGMANAGER_H_
 
-#include <qobject.h>
+#include <QObject>
 
 #include <kdepimmacros.h>
 

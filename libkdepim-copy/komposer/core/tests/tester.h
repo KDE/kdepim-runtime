@@ -22,7 +22,7 @@
 #define TESTER_H
 
 #include <kdebug.h>
-#include <qstringlist.h>
+#include <QStringList>
 
 #define CHECK( x, y ) check( __FILE__, __LINE__, #x, x, y )
 

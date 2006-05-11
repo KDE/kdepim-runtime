@@ -22,7 +22,7 @@
 #ifndef KPIMPREFS_H
 #define KPIMPREFS_H
 
-#include <qstringlist.h>
+#include <QStringList>
 
 #include <kconfigskeleton.h>
 #include <kdepimmacros.h>

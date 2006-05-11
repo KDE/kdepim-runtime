@@ -22,7 +22,7 @@
 #include <kdebug.h>
 #include <kcmdlineargs.h>
 
-#include <qeventloop.h>
+#include <QEventLoop>
 
 #include <assert.h>
 #include <stdlib.h>

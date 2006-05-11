@@ -21,7 +21,7 @@
 #ifndef MANAGERTEST_H
 #define MANAGERTEST_H
 
-#include <qobject.h>
+#include <QObject>
 #include "tester.h"
 
 namespace Komposer {

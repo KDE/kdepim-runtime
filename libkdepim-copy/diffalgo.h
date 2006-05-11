@@ -22,7 +22,7 @@
 #ifndef DIFFALGO_H
 #define DIFFALGO_H
 
-#include <qlist.h>
+#include <QList>
 #include <kdepimmacros.h>
 
 namespace KPIM {

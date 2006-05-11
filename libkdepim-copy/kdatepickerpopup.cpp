@@ -19,7 +19,7 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include <qdatetime.h>
+#include <QDateTime>
 #include <q3popupmenu.h>
 
 #include <klocale.h>

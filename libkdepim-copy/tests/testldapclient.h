@@ -19,7 +19,7 @@
 #ifndef TESTLDAPCLIENT_H
 #define TESTLDAPCLIENT_H
 
-#include <qobject.h>
+#include <QObject>
 
 #include "../ldapclient.h"
 typedef KPIM::LdapClient LdapClient;

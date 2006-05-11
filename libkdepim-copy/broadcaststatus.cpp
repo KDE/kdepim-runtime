@@ -14,7 +14,7 @@
 #include <config.h>
 #endif
 
-#include <qdatetime.h>
+#include <QDateTime>
 
 #include <klocale.h>
 #include <kglobal.h>

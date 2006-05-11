@@ -22,7 +22,7 @@
 #ifndef __KFOLDERTREE
 #define __KFOLDERTREE
 
-#include <qpixmap.h>
+#include <QPixmap>
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QVector>

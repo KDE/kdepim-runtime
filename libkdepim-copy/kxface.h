@@ -27,7 +27,7 @@
 #define __KXFACE_H
 
 
-#include <qobject.h>
+#include <QObject>
 #include <setjmp.h>
 
 #include <kdepimmacros.h>

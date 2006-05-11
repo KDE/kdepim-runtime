@@ -23,7 +23,7 @@
 
 #include "plugin.h"
 
-#include <qstringlist.h>
+#include <QStringList>
 
 namespace KParts {
   class Part;

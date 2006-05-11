@@ -33,7 +33,7 @@
 #ifndef __KPIM_PROGRESSDIALOG_H__
 #define __KPIM_PROGRESSDIALOG_H__
 
-#include <qdialog.h>
+#include <QDialog>
 #include <q3listview.h>
 #include <QLabel>
 #include <kvbox.h>
