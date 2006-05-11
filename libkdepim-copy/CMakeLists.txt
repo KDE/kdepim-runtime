@@ -8,6 +8,7 @@ add_subdirectory( pics )
 add_subdirectory( kpartsdesignerplugin ) 
 add_subdirectory( about ) 
 
+kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
 
 
 
@@ -76,7 +77,8 @@ set(kdepim_LIB_SRCS ${libemailfunctions_SRCS}
    autoselectingchecklistitem.cpp 
    improvedlistview.cpp 
    messagestatus.cpp 
-   kemailquotinghighter.cpp )
+   kemailquotinghighter.cpp
+   networkstatus.cpp )
 
 kde4_automoc(${kdepim_LIB_SRCS})
 
