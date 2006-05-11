@@ -153,7 +153,7 @@ void ResourceCached::cleanUpCache( const KABC::Addressee::List &addrList )
   file.close();
 }
 
-KPIM::IdMapper& ResourceCached::idMapper()
+KRES::IdMapper& ResourceCached::idMapper()
 {
   return mIdMapper;
 }

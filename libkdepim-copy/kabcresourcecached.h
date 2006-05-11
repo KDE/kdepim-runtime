@@ -24,7 +24,7 @@
 #include <kabc/resource.h>
 #include <kdepimmacros.h>
 
-#include "libemailfunctions/idmapper.h"
+#include <kresources/idmapper.h>
 
 namespace KABC {
 
@@ -58,7 +58,7 @@ class KDE_EXPORT ResourceCached : public Resource
     /**
       Returns a reference to the id mapper.
      */
-    KPIM::IdMapper& idMapper();
+    KRES::IdMapper& idMapper();
 
     bool hasChanges() const;
     void clearChanges();
@@ -84,7 +84,7 @@ class KDE_EXPORT ResourceCached : public Resource
     void setIdMapperIdentifier();
 
   private:
-    KPIM::IdMapper mIdMapper;
+    KRES::IdMapper mIdMapper;
 
     QMap<QString, KABC::Addressee> mAddedAddressees;
     QMap<QString, KABC::Addressee> mChangedAddressees;
