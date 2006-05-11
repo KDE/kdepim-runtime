@@ -664,7 +664,7 @@ void KImportDialog::applyConverter()
   readFile( 0 );
 
   pDialog.show();
-  for( int i = mStartRow->value() - 1; i < mData.count() && !pDialog.wasCancelled(); ++i ) {
+  for( int i = mStartRow->value() - 1; i < int(mData.count()) && !pDialog.wasCancelled(); ++i ) {
     mCurrentRow = i;
     progress->setValue(i);
     if (i % 5 == 0)  // try to avoid constantly processing events
@@ -702,7 +702,7 @@ void KImportDialog::setData( int row, int col, const QString &value )
   QString val = value;
   val.replace( "\\n", "\n" );
 
-  if ( row >= mData.count() ) {
+  if ( row >= int(mData.count()) ) {
     mData.resize( row + 1 );
   }
 
