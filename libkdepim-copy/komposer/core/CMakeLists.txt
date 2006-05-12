@@ -1,4 +1,3 @@
-kde4_header()
 
 
 
@@ -35,7 +34,6 @@ install_files( ${SERVICES_INSTALL_DIR} FILES komposerconfig.desktop   )
 install_files( ${DATA_INSTALL_DIR}/komposer FILES komposerui.rc )
 install_files( ${SERVICETYPES_INSTALL_DIR} FILES komposerplugin.desktop komposereditor.desktop )
 
-kde4_footer()
 
 
 

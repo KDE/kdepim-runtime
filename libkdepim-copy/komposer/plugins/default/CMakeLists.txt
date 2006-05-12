@@ -1,4 +1,3 @@
-kde4_header()
 
 
 
@@ -23,7 +22,6 @@ install_targets(${PLUGIN_INSTALL_DIR} komposer_defaulteditor )
 install_files( ${SERVICES_INSTALL_DIR}/komposer FILES defaulteditor.desktop )
 install_files( ${DATA_INSTALL_DIR}/komposer_defaulteditor FILES defaulteditorui.rc )
 
-kde4_footer()
 
 
 

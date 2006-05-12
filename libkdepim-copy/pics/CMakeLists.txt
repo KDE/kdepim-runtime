@@ -1,4 +1,3 @@
-kde4_header()
 
 
 
@@ -7,7 +6,6 @@ kde4_header()
 
 install_files( ${DATA_INSTALL_DIR}/kdepimwidgets/pics FILES addresseelineedit.png                           clicklineedit.png  kdateedit.png  ktimeedit.png )
 
-kde4_footer()
 
 
 
