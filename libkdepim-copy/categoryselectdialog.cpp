@@ -24,7 +24,7 @@
 #include <QPushButton>
 #include <q3header.h>
 
-#include "categoryselectdialog_base.h"
+#include "ui_categoryselectdialog_base.h"
 #include <klocale.h>
 #include "categoryselectdialog.h"
 #include "categoryhierarchyreader.h"
@@ -40,21 +40,23 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
     i18n("Select Categories"), Ok|Apply|Cancel|Help, Ok, parent, name, modal, /*separator=*/true ),
     mPrefs( prefs )
 {
-  mWidget = new CategorySelectDialog_base( this, "CategorySelection" );
-  mWidget->mCategories->header()->hide();
-  setMainWidget( mWidget );
+  mWidgets = new Ui::CategorySelectDialog_base();
+  QWidget *widget = new QWidget( this );
+  widget->setObjectName( "CategorySelection" );
+  mWidgets->mCategories->header()->hide();
+  setMainWidget( widget );
 
   setCategories();
  
-  connect( mWidget->mButtonEdit, SIGNAL(clicked()),
+  connect( mWidgets->mButtonEdit, SIGNAL(clicked()),
            SIGNAL(editCategories()) );
-  connect( mWidget->mButtonClear, SIGNAL(clicked()),
+  connect( mWidgets->mButtonClear, SIGNAL(clicked()),
            SLOT(clear()) );
 }
 
 void CategorySelectDialog::setCategories( const QStringList &categoryList )
 {
-  mWidget->mCategories->clear();
+  mWidgets->mCategories->clear();
   mCategoryList.clear();
 
   QStringList::ConstIterator it;
@@ -63,12 +65,13 @@ void CategorySelectDialog::setCategories( const QStringList &categoryList )
     if ( !mPrefs->mCustomCategories.contains( *it )  )
       mPrefs->mCustomCategories.append( *it );
 
-  CategoryHierarchyReaderQListView( mWidget->mCategories, false, true ).
+  CategoryHierarchyReaderQListView( mWidgets->mCategories, false, true ).
       read( mPrefs->mCustomCategories );
 }
 
 CategorySelectDialog::~CategorySelectDialog()
 {
+  delete mWidgets;
 }
 
 void CategorySelectDialog::setSelected(const QStringList &selList)
@@ -78,7 +81,7 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
   QStringList::ConstIterator it;
   for ( it = selList.begin(); it != selList.end(); ++it ) {
     QStringList path = CategoryHierarchyReader::path( *it );
-    Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
+    Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
     while (item) {
      item = (Q3CheckListItem *)item->nextSibling();
       if (item->text() == path.first()) {
@@ -130,7 +133,7 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
 
 void CategorySelectDialog::slotApply()
 {
-  QStringList categories = getSelectedCategories( mWidget->mCategories );
+  QStringList categories = getSelectedCategories( mWidgets->mCategories );
   
   QString categoriesStr = categories.join(", ");
 
@@ -148,7 +151,7 @@ void CategorySelectDialog::slotOk()
 
 void CategorySelectDialog::clear()
 {
-  Q3CheckListItem *item = (Q3CheckListItem *)mWidget->mCategories->firstChild();
+  Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
   while (item) {
     item->setOn( false );
     if ( item->firstChild() ) {
@@ -166,7 +169,7 @@ void CategorySelectDialog::clear()
 
 void CategorySelectDialog::updateCategoryConfig()
 {
-  QStringList selected = getSelectedCategories( mWidget->mCategories );
+  QStringList selected = getSelectedCategories( mWidgets->mCategories );
 
   setCategories();
   
@@ -175,7 +178,7 @@ void CategorySelectDialog::updateCategoryConfig()
 
 void CategorySelectDialog::setAutoselectChildren( bool autoselectChildren )
 {
-  for ( Q3ListViewItemIterator it( mWidget->mCategories ); it.current(); ++it)
+  for ( Q3ListViewItemIterator it( mWidgets->mCategories ); it.current(); ++it)
     ( ( AutoselectingCheckListItem *) it.current() )->
             setAutoselectChildren( autoselectChildren );
 }

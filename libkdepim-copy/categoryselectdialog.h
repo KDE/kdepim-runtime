@@ -26,7 +26,9 @@
 #include <kdepimmacros.h>
 
 class KPimPrefs;
+namespace Ui {
 class CategorySelectDialog_base;
+}
 
 namespace KPIM {
 
@@ -61,7 +63,7 @@ class KDE_EXPORT CategorySelectDialog : public KDialogBase
 
   private:
     KPimPrefs *mPrefs;
-    CategorySelectDialog_base *mWidget;
+    Ui::CategorySelectDialog_base *mWidgets;
     QStringList mCategoryList;
 
     class CategorySelectDialogPrivate;

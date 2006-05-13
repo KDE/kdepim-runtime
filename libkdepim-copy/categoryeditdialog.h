@@ -27,8 +27,9 @@
 #include <kdepimmacros.h>
 #include  <Q3ListViewItem>
 class KPimPrefs;
+namespace Ui {
 class CategoryEditDialog_base;
-
+}
 namespace KPIM {
 
 class ImprovedListView;
@@ -67,7 +68,7 @@ class KDE_EXPORT CategoryEditDialog : public KDialogBase
   private:
     ImprovedListView* mCategories;
     KPimPrefs *mPrefs;
-    CategoryEditDialog_base *mWidget;
+    Ui::CategoryEditDialog_base *mWidgets;
 };
 
 }

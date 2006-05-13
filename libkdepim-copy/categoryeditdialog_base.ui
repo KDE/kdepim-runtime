@@ -1,104 +1,90 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>CategoryEditDialog_base</class>
-<widget class="QWidget">
-    <property name="name">
-        <cstring>CategoryEditDialog_base</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>386</width>
-            <height>270</height>
-        </rect>
-    </property>
-    <property name="windowTitle">
-        <string>Edit Categories</string>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="margin">
-            <number>0</number>
-        </property>
-        <property name="spacing">
-            <number>6</number>
-        </property>
-        <widget class="QLineEdit" row="1" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>mEdit</cstring>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="0" column="1">
-            <property name="name">
-                <cstring>layout103</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonAdd</cstring>
-                    </property>
-                    <property name="text">
-                        <string>A&amp;dd</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonAddSubcategory</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Add &amp;subcategory</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>mButtonRemove</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Remove</string>
-                    </property>
-                </widget>
-                <spacer>
-                    <property name="name">
-                        <cstring>Spacer3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>50</height>
-                        </size>
-                    </property>
-                </spacer>
-            </vbox>
-        </widget>
-        <widget class="QFrame" row="0" column="0">
-            <property name="name">
-                <cstring>mCategoriesFrame</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Plain</enum>
-            </property>
-        </widget>
-    </grid>
-</widget>
-<tabstops>
-    <tabstop>mEdit</tabstop>
-    <tabstop>mButtonAdd</tabstop>
-    <tabstop>mButtonAddSubcategory</tabstop>
-    <tabstop>mButtonRemove</tabstop>
-</tabstops>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>CategoryEditDialog_base</class>
+ <widget class="QWidget" name="CategoryEditDialog_base" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>386</width>
+    <height>270</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Edit Categories</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="1" column="0" colspan="2" >
+    <widget class="QLineEdit" name="mEdit" />
+   </item>
+   <item row="0" column="1" >
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="mButtonAdd" >
+       <property name="text" >
+        <string>A&amp;dd</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mButtonAddSubcategory" >
+       <property name="text" >
+        <string>Add &amp;subcategory</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mButtonRemove" >
+       <property name="text" >
+        <string>&amp;Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>20</width>
+         <height>50</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QFrame" name="mCategoriesFrame" />
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <tabstops>
+  <tabstop>mEdit</tabstop>
+  <tabstop>mButtonAdd</tabstop>
+  <tabstop>mButtonAddSubcategory</tabstop>
+  <tabstop>mButtonRemove</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

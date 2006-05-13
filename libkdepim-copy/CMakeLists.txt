@@ -81,7 +81,8 @@ set(kdepim_LIB_SRCS ${libemailfunctions_SRCS}
 
 kde4_automoc(${kdepim_LIB_SRCS})
 
-kde4_add_ui3_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui addresspicker.ui )
+kde4_add_ui3_files(kdepim_LIB_SRCS addresspicker.ui )
+kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui )
 
 kde4_add_dcop_skels(kdepim_LIB_SRCS 
 	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 

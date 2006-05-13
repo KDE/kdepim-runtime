@@ -27,18 +27,16 @@
 #include <q3listview.h>
 #include <q3header.h>
 #include <QPushButton>
-//Added by qt3to4:
 #include <QVBoxLayout>
 #include <QBoxLayout>
 #include <Q3PtrList>
 #include <klocale.h>
-// #include <kmessagebox.h>
 
 #include "improvedlistview.h"
 #include "kpimprefs.h"
 #include "categoryhierarchyreader.h"
 
-#include "categoryeditdialog_base.h"
+#include "ui_categoryeditdialog_base.h"
 #include "categoryeditdialog.h"
 
 using namespace KPIM;
@@ -49,11 +47,13 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
                               Ok, parent, name, modal, /*separator=*/true ),
     mPrefs( prefs )  
 {
-  mWidget = new CategoryEditDialog_base( this, "CategoryEdit" );
+  mWidgets = new Ui::CategoryEditDialog_base();
+  QWidget *widget = new QWidget( this );
+  widget->setObjectName( "CategoryEdit" );
 
-  QBoxLayout *layout = new QVBoxLayout( mWidget->mCategoriesFrame );
-  mCategories = new ImprovedListView( mWidget->mCategoriesFrame,
-                                      "mCategories" );
+  QBoxLayout *layout = new QVBoxLayout( mWidgets->mCategoriesFrame );
+  mCategories = new ImprovedListView( mWidgets->mCategoriesFrame );
+  mCategories->setObjectName( "mCategories" );
   mCategories->addColumn( i18n( "Category" ) );
   mCategories->setAcceptDrops( true );
   mCategories->setProperty( "selectionMode", "Extended" );
@@ -65,13 +65,13 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
   layout->addWidget( mCategories );
 
   // fix the tab order
-  mWidget->setTabOrder( mCategories, mWidget->mEdit );
-  mWidget->setTabOrder( mWidget->mEdit, mWidget->mButtonAdd );
-  mWidget->setTabOrder( mWidget->mButtonAdd, mWidget->mButtonAddSubcategory );
-  mWidget->setTabOrder( mWidget->mButtonAddSubcategory,
-                        mWidget->mButtonRemove );
+  widget->setTabOrder( mCategories, mWidgets->mEdit );
+  widget->setTabOrder( mWidgets->mEdit, mWidgets->mButtonAdd );
+  widget->setTabOrder( mWidgets->mButtonAdd, mWidgets->mButtonAddSubcategory );
+  widget->setTabOrder( mWidgets->mButtonAddSubcategory,
+                        mWidgets->mButtonRemove );
   
-  setMainWidget( mWidget );
+  setMainWidget( widget );
 
   fillList();
   
@@ -81,13 +81,13 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
            SLOT( slotSelectionChanged() ) );
   connect( mCategories, SIGNAL( collapsed( Q3ListViewItem * ) ),
            SLOT( expandIfToplevel( Q3ListViewItem * ) ) );
-  connect( mWidget->mEdit, SIGNAL( textChanged( const QString & )),
+  connect( mWidgets->mEdit, SIGNAL( textChanged( const QString & )),
            this, SLOT( slotTextChanged( const QString & )));
-  connect( mWidget->mButtonAdd, SIGNAL( clicked() ),
+  connect( mWidgets->mButtonAdd, SIGNAL( clicked() ),
            this, SLOT( add() ) );
-  connect( mWidget->mButtonAddSubcategory, SIGNAL( clicked() ),
+  connect( mWidgets->mButtonAddSubcategory, SIGNAL( clicked() ),
            this, SLOT( addSubcategory() ) );
-  connect( mWidget->mButtonRemove, SIGNAL( clicked() ),
+  connect( mWidgets->mButtonRemove, SIGNAL( clicked() ),
            this, SLOT( remove() ) );
 }
 
@@ -96,7 +96,7 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
  */
 CategoryEditDialog::~CategoryEditDialog()
 {
-    // no need to delete child widgets, Qt does it all for us
+  delete mWidgets;
 }
 
 void CategoryEditDialog::fillList()
@@ -104,8 +104,8 @@ void CategoryEditDialog::fillList()
   CategoryHierarchyReaderQListView( mCategories, false ).
       read( mPrefs->mCustomCategories );
   
-  mWidget->mButtonRemove->setEnabled( mCategories->childCount() > 0 );
-  mWidget->mButtonAddSubcategory->setEnabled( mCategories->childCount()
+  mWidgets->mButtonRemove->setEnabled( mCategories->childCount() > 0 );
+  mWidgets->mButtonAddSubcategory->setEnabled( mCategories->childCount()
                                                > 0 );
 }
 
@@ -122,7 +122,7 @@ void CategoryEditDialog::slotSelectionChanged()
   Q3ListViewItem *item = mCategories->firstChild();
   while (item) {
     if ( item->isSelected() ) {
-      mWidget->mButtonRemove->setEnabled( true );
+      mWidgets->mButtonRemove->setEnabled( true );
       return;
     }
     if ( item->firstChild() )
@@ -135,12 +135,12 @@ void CategoryEditDialog::slotSelectionChanged()
       item = item->parent();
     }
   }
-  mWidget->mButtonRemove->setEnabled( false );
+  mWidgets->mButtonRemove->setEnabled( false );
 }
 
 void CategoryEditDialog::add()
 {
-  if ( !mWidget->mEdit->text().isEmpty() ) {
+  if ( !mWidgets->mEdit->text().isEmpty() ) {
     Q3ListViewItem *newItem = new Q3ListViewItem( mCategories, "" );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
@@ -149,15 +149,15 @@ void CategoryEditDialog::add()
     mCategories->clearSelection();
     mCategories->setSelected( newItem, true );
     mCategories->ensureItemVisible( newItem );
-    mWidget->mButtonRemove->setEnabled( mCategories->childCount()>0 );
-    mWidget->mButtonAddSubcategory->setEnabled( mCategories->childCount()>0 );
-    mWidget->mEdit->setFocus();
+    mWidgets->mButtonRemove->setEnabled( mCategories->childCount()>0 );
+    mWidgets->mButtonAddSubcategory->setEnabled( mCategories->childCount()>0 );
+    mWidgets->mEdit->setFocus();
   }
 }
 
 void CategoryEditDialog::addSubcategory()
 {
-  if ( !mWidget->mEdit->text().isEmpty() ) {
+  if ( !mWidgets->mEdit->text().isEmpty() ) {
     Q3ListViewItem *newItem = new Q3ListViewItem( mCategories->
                                                 currentItem(), "" );
     // FIXME: Use a better string once string changes are allowed again
@@ -167,7 +167,7 @@ void CategoryEditDialog::addSubcategory()
     mCategories->clearSelection();
     mCategories->setSelected( newItem, true );
     mCategories->ensureItemVisible( newItem );
-    mWidget->mEdit->setFocus();
+    mWidgets->mEdit->setFocus();
   }
 }
 
@@ -200,8 +200,8 @@ void CategoryEditDialog::remove()
   // we run backwards to delete children before parents
   for ( Q3ListViewItem *it = to_remove.last(); it; it = to_remove.prev())
     delete it;
-  mWidget->mButtonRemove->setEnabled( mCategories->childCount()>0 );
-  mWidget->mButtonAddSubcategory->setEnabled( mCategories->childCount()>0 );
+  mWidgets->mButtonRemove->setEnabled( mCategories->childCount()>0 );
+  mWidgets->mButtonAddSubcategory->setEnabled( mCategories->childCount()>0 );
   if ( mCategories->childCount()>0 )
     mCategories->setSelected( mCategories->currentItem(), true );
 }
@@ -250,7 +250,7 @@ void CategoryEditDialog::slotCancel()
 void CategoryEditDialog::editItem( Q3ListViewItem *item )
 {
   if ( item )
-    mWidget->mEdit->setText( item->text(0) );
+    mWidgets->mEdit->setText( item->text(0) );
 }
 
 void CategoryEditDialog::reload() 
