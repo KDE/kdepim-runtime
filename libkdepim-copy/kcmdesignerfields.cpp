@@ -22,16 +22,16 @@
 
 #include <unistd.h>
 
-#include <qimage.h>
+#include <QImage>
 #include <QLabel>
 #include <QLayout>
-#include <qobject.h>
-#include <qpixmap.h>
+#include <QObject>
+#include <QPixmap>
 #include <QPushButton>
 
 #include <q3groupbox.h>
 #include <QRegExp>
-#include <qtimer.h>
+#include <QTimer>
 #include <QtDesigner/QFormBuilder>
 //Added by qt3to4:
 #include <QHBoxLayout>

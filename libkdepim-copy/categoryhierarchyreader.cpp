@@ -20,7 +20,7 @@
 */
 
 #include <QComboBox>
-#include <qstringlist.h>
+#include <QStringList>
 #include <q3listview.h>
 
 #include "autoselectingchecklistitem.h"

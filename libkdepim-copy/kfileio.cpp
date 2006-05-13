@@ -18,7 +18,7 @@
 
 #include <QWidget>
 #include <QFile>
-#include <qfileinfo.h>
+#include <QFileInfo>
 #include <sys/stat.h>
 #include <sys/types.h>
 

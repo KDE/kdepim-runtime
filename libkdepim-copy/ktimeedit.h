@@ -25,10 +25,10 @@
 #ifndef _KTIMEEDIT_H
 #define _KTIMEEDIT_H
 
-#include <qevent.h>
+#include <QEvent>
 #include <qnamespace.h>
 #include <QString>
-#include <qdatetime.h>
+#include <QDateTime>
 #include <QComboBox>
 //Added by qt3to4:
 #include <QKeyEvent>

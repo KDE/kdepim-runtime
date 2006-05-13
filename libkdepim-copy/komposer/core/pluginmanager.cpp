@@ -24,11 +24,11 @@
 
 #include "plugin.h"
 
-#include <qapplication.h>
+#include <QApplication>
 #include <QFile>
 #include <QRegExp>
-#include <qtimer.h>
-#include <qvaluestack.h>
+#include <QTimer>
+#include <Q3ValueStack>
 
 #include <kapplication.h>
 #include <kdebug.h>

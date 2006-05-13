@@ -26,7 +26,7 @@
 
 #include <qnamespace.h>
 #include <QComboBox>
-#include <qdatetime.h>
+#include <QDateTime>
 #include <QLineEdit>
 //Added by qt3to4:
 #include <QKeyEvent>
@@ -38,7 +38,7 @@
 #include <klocale.h>
 
 #include "ktimeedit.h"
-#include <qvalidator.h>
+#include <QValidator>
 #include "ktimeedit.moc"
 
 // Validator for a time value with only hours and minutes (no seconds)

@@ -32,7 +32,7 @@ using KPIM::DistributionList;
 #include <kcmdlineargs.h>
 
 #include <QDir>
-#include <qfileinfo.h>
+#include <QFileInfo>
 
 #include <stdio.h>
 #include <stdlib.h>

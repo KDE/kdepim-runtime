@@ -21,7 +21,7 @@
 #ifndef KDATEPICKERPOPUP_H
 #define KDATEPICKERPOPUP_H
 
-#include <qdatetime.h>
+#include <QDateTime>
 #include <q3popupmenu.h>
 
 #include <kdepimmacros.h>

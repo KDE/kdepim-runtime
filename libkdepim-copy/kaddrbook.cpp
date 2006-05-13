@@ -25,7 +25,7 @@
 #include <dcopref.h>
 #include <dcopclient.h>
 
-#include <qeventloop.h>
+#include <QEventLoop>
 #include <QRegExp>
 #include <QList>
 

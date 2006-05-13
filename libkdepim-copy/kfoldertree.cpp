@@ -5,10 +5,10 @@
 #include <kiconloader.h>
 #include <kdebug.h>
 #include <kstringhandler.h>
-#include <qpainter.h>
-#include <qapplication.h>
+#include <QPainter>
+#include <QApplication>
 #include <q3header.h>
-#include <qstyle.h>
+#include <QStyle>
 //Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>

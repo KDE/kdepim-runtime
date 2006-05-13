@@ -35,9 +35,9 @@
 #include <QLayout>
 #include <QToolTip>
 #include <QCheckBox>
-#include <qradiobutton.h>
-#include <qapplication.h>
-#include <qtimer.h>
+#include <QRadioButton>
+#include <QApplication>
+#include <QTimer>
 #include <QButtonGroup>
 #include <QGroupBox>
 //Added by qt3to4:

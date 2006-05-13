@@ -24,9 +24,9 @@
 
 #include "qutf7codec.h"
 
-#include <qtextcodecplugin.h>
+#include <QTextCodecPlugin>
 #include <QString>
-#include <qstringlist.h>
+#include <QStringList>
 
 
 class QTextCodec;

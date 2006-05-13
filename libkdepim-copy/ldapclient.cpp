@@ -23,10 +23,10 @@
 #include "ldapclient.h"
 
 #include <QFile>
-#include <qimage.h>
+#include <QImage>
 #include <QLabel>
-#include <qpixmap.h>
-#include <qtextstream.h>
+#include <QPixmap>
+#include <QTextStream>
 #include <q3url.h>
 
 #include <kabc/ldapurl.h>

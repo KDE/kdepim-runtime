@@ -21,8 +21,8 @@
 #define KOMPOSER_ATTACHMENT_H
 
 #include <QString>
-#include <qcstring.h>
-#include <qvaluelist.h>
+#include <Q3CString>
+#include <Q3ValueList>
 
 namespace Komposer
 {

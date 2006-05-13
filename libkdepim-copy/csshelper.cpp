@@ -37,7 +37,7 @@
 #include <kglobal.h>
 
 #include <QString>
-#include <qapplication.h>
+#include <QApplication>
 #include <QPaintDevice>
 
 namespace KPIM {

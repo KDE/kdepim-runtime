@@ -29,7 +29,7 @@
 
 #include <QLayout>
 #include <QLabel>
-#include <qbuttongroup.h>
+#include <QButtonGroup>
 
 #include <kdepimmacros.h>
 

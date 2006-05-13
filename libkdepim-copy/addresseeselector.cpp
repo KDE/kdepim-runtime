@@ -22,8 +22,8 @@
 #include <q3header.h>
 #include <QLabel>
 #include <QLayout>
-#include <qsignalmapper.h>
-#include <qtoolbutton.h>
+#include <QSignalMapper>
+#include <QToolButton>
 //Added by qt3to4:
 #include <QPixmap>
 #include <QGridLayout>

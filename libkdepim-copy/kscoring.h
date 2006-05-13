@@ -25,10 +25,10 @@
 #include <q3ptrstack.h>
 #include <QRegExp>
 
-#include <qobject.h>
+#include <QObject>
 #include <QString>
-#include <qstringlist.h>
-#include <qdatetime.h>
+#include <QStringList>
+#include <QDateTime>
 #include <QColor>
 #include <q3table.h>
 #include <QMap>

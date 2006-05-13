@@ -28,8 +28,8 @@
 #include <kdialogbase.h>
 #include <kdepimmacros.h>
 
-#include <qbitarray.h>
-#include <qpixmap.h>
+#include <QBitArray>
+#include <QPixmap>
 #include <QWidget>
 
 class KComboBox;

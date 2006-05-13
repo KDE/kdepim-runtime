@@ -33,14 +33,14 @@
 #include <config.h>
 #endif
 
-#include <qapplication.h>
+#include <QApplication>
 #include <QLayout>
 #include <q3progressbar.h>
-#include <qtimer.h>
+#include <QTimer>
 #include <q3header.h>
-#include <qobject.h>
+#include <QObject>
 #include <q3scrollview.h>
-#include <qtoolbutton.h>
+#include <QToolButton>
 #include <QPushButton>
 #include <khbox.h>
 #include <kvbox.h>

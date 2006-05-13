@@ -23,7 +23,7 @@
 #define KIMPORTDIALOG_H
 
 #include <q3intdict.h>
-#include <qstringlist.h>
+#include <QStringList>
 #include <QSpinBox>
 #include <q3ptrvector.h>
 #include <q3valuevector.h>

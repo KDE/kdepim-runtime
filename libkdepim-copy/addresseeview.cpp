@@ -19,8 +19,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <qbuffer.h>
-#include <qimage.h>
+#include <QBuffer>
+#include <QImage>
 #include <QMenu>
 #include <q3url.h>
 //Added by qt3to4:

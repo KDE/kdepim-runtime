@@ -27,12 +27,12 @@
 
 #include <kdebug.h>
 
-#include <qbuffer.h>
+#include <QBuffer>
 #include <q3cstring.h>
-#include <qimage.h>
+#include <QImage>
 #include <QRegExp>
 #include <QString>
-#include <qpainter.h>
+#include <QPainter>
 
 #include <stdlib.h>
 #include <string.h>

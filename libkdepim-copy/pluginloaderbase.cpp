@@ -29,7 +29,7 @@
 #include <kdebug.h>
 
 #include <QFile>
-#include <qstringlist.h>
+#include <QStringList>
 
 static kdbgstream warning() {
   return kWarning( 5300 ) << "PluginLoaderBase: ";

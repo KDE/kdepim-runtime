@@ -29,7 +29,7 @@
 
 #include <q3listview.h>
 #include <QLayout>
-#include <qtimer.h>
+#include <QTimer>
 //Added by qt3to4:
 #include <QVBoxLayout>
 

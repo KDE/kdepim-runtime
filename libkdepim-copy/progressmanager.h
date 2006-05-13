@@ -24,7 +24,7 @@
 #ifndef __KPIM_PROGRESSMANAGER_H__
 #define __KPIM_PROGRESSMANAGER_H__
 
-#include <qobject.h>
+#include <QObject>
 #include <q3dict.h>
 #include <QString>
 #include <QMap>

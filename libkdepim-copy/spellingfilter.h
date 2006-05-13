@@ -24,7 +24,7 @@
 #define SPELLINGFILTER_H_INCLUDED
 
 #include <QString>
-#include <qstringlist.h>
+#include <QStringList>
 #include "linklocator.h"
 
 #include <kdepimmacros.h>

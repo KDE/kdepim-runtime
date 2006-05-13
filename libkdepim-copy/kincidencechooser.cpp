@@ -26,12 +26,12 @@
 #include <QLabel>
 #include <q3buttongroup.h>
 #include <khbox.h>
-#include <qradiobutton.h>
+#include <QRadioButton>
 #include <QPushButton>
 #include <QLayout>
 #include <q3scrollview.h>
 #include <QTextBrowser>
-#include <qapplication.h>
+#include <QApplication>
 //Added by qt3to4:
 #include <QGridLayout>
 

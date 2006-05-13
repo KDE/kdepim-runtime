@@ -29,7 +29,7 @@
 #include <klocale.h>
 
 #include <QFile>
-#include <qstringlist.h>
+#include <QStringList>
 
 KConfigPropagator::Change::~Change()
 {

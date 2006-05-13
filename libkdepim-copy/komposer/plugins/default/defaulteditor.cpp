@@ -39,7 +39,7 @@
 #include <kreplacedialog.h>
 #include <kreplace.h>
 
-#include <qtextedit.h>
+#include <QTextEdit>
 #include <QWidget>
 
 typedef KGenericFactory<DefaultEditor> DefaultEditorFactory;

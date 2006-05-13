@@ -23,13 +23,13 @@
 #define KPIM_LDAPCLIENT_H
 
 
-#include <qobject.h>
+#include <QObject>
 #include <QString>
 #include <q3cstring.h>
-#include <qstringlist.h>
+#include <QStringList>
 #include <q3memarray.h>
-#include <qpointer.h>
-#include <qtimer.h>
+#include <QPointer>
+#include <QTimer>
 
 #include <kio/job.h>
 #include <kabc/ldif.h>

@@ -11,7 +11,7 @@
 #ifndef __kpim_broadcast_status_h
 #define __kpim_broadcast_status_h
 
-#include <qobject.h>
+#include <QObject>
 #include <QMap>
 
 #include <kdepimmacros.h>

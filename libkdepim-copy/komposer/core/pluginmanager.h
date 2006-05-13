@@ -23,10 +23,10 @@
 #define KOMPOSER_PLUGINMANAGER_H
 
 #include <QMap>
-#include <qobject.h>
+#include <QObject>
 #include <QString>
-#include <qstringlist.h>
-#include <qvaluelist.h>
+#include <QStringList>
+#include <Q3ValueList>
 
 class KPluginInfo;
 

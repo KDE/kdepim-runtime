@@ -14,11 +14,11 @@
 #include "kaccount.h"
 
 #include <QLayout>
-#include <qtimer.h>
+#include <QTimer>
 #include <QLabel>
 #include <QPushButton>
 #include <q3header.h>
-#include <qtoolbutton.h>
+#include <QToolButton>
 //Added by qt3to4:
 #include <QGridLayout>
 #include <QHBoxLayout>

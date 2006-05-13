@@ -22,7 +22,7 @@
 */
 
 #include <QLayout>
-#include <qstringlist.h>
+#include <QStringList>
 #include <QLineEdit>
 #include <q3listview.h>
 #include <q3header.h>

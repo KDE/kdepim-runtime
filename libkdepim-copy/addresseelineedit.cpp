@@ -51,12 +51,12 @@
 #include <klocale.h>
 #include <kdatastream.h>
 
-#include <qapplication.h>
-#include <qobject.h>
+#include <QApplication>
+#include <QObject>
 #include <QRegExp>
-#include <qevent.h>
+#include <QEvent>
 #include <q3dragobject.h>
-#include <qclipboard.h>
+#include <QClipboard>
 //Added by qt3to4:
 #include <QKeyEvent>
 #include <QDropEvent>

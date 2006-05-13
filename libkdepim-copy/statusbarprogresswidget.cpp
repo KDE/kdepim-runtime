@@ -47,7 +47,7 @@ using KPIM::ProgressManager;
 #include <kiconloader.h>
 #include <kdebug.h>
 
-#include <qtimer.h>
+#include <QTimer>
 #include <QLabel>
 #include <QPushButton>
 #include <QToolTip>

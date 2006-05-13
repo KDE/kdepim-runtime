@@ -28,8 +28,8 @@
 #include <kdebug.h>
 #include <klocale.h>
 
-#include <qtextedit.h>
-#include <qtimer.h>
+#include <QTextEdit>
+#include <QTimer>
 #include <QColor>
 #include <QHash>
 #include <QTextCursor>
