@@ -533,9 +533,9 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
     if ( addr.givenName().isEmpty() && addr.familyName().isEmpty() ) {
       addCompletionItem( addr.fullEmail( (*it) ), weight, source ); // use whatever is there
     } else {
-      const QString byFirstName= KPIM::quoteNameIfNecessary( addr.givenName() + ' ' + addr.familyName() ) + " <" + (*it) + '>';
+      const QString byFirstName= EmailAddressTools::quoteNameIfNecessary( addr.givenName() + ' ' + addr.familyName() ) + " <" + (*it) + '>';
       const QString byLastName= "\"" + addr.familyName() + ", " + addr.givenName() + "\" "  + '<' + (*it) + '>';
-      const QString byEmail= (*it) + " (" + KPIM::quoteNameIfNecessary( addr.realName() ) + ')';
+      const QString byEmail= (*it) + " (" + EmailAddressTools::quoteNameIfNecessary( addr.realName() ) + ')';
       addCompletionItem( byFirstName, weight, source );
       addCompletionItem( byLastName, weight, source );
       addCompletionItem( byEmail, weight, source );
