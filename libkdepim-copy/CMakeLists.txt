@@ -15,6 +15,7 @@ kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h
 
 set(kdepim_LIB_SRCS ${libemailfunctions_SRCS} 
    ktimeedit.cpp 
+   alarmclient.cpp
    kprefsdialog.cpp 
    kpimprefs.cpp 
    categoryselectdialog.cpp 
