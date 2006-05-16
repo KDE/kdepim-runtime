@@ -51,8 +51,8 @@ class KDE_EXPORT ResourceCached : public Resource
      */
     virtual void removeAddressee( const Addressee& addr );
 
-    void loadCache();
-    void saveCache();
+    bool loadFromCache();
+    void saveToCache();
     void cleanUpCache( const KABC::Addressee::List &list );
 
     /**

@@ -80,7 +80,7 @@ void ResourceCached::removeAddressee( const Addressee &addr )
   mAddrMap.remove( addr.uid() );
 }
 
-void ResourceCached::loadCache()
+bool ResourceCached::loadFromCache()
 {
   mAddrMap.clear();
 
@@ -90,7 +90,7 @@ void ResourceCached::loadCache()
   // load cache
   QFile file( cacheFile() );
   if ( !file.open( QIODevice::ReadOnly ) )
-    return;
+    return false;
 
 
   KABC::VCardConverter converter;
@@ -104,9 +104,10 @@ void ResourceCached::loadCache()
   }
 
   file.close();
+  return true;
 }
 
-void ResourceCached::saveCache()
+void ResourceCached::saveToCache()
 {
   setIdMapperIdentifier();
   mIdMapper.save();
