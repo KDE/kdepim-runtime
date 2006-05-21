@@ -899,6 +899,7 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
   int lastSourceIndex = -1;
   unsigned int i = 0;
   QMap<int, QStringList> sections;
+  QStringList sortedItems;
   for ( QStringList::Iterator it = items.begin(); it != items.end(); ++it, ++i ) {
     CompletionItemsMap::const_iterator cit = s_completionItemMap->find(*it);
     if ( cit == s_completionItemMap->end() )continue;
@@ -912,8 +913,9 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
         lastSourceIndex = idx;
       }
       (*it) = (*it).prepend( s_completionItemIndentString );
-      sections[idx].append( *it );
     }
+    sections[idx].append( *it );
+
     if ( i > beforeDollarCompletionCount ) {
       // remove the '$$whatever$' part
       int pos = (*it).indexOf( '$', 2 );
@@ -921,13 +923,19 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
         continue;
       (*it) = (*it).mid( pos + 1 );
     }
-  }
-  QStringList sortedItems;
-  for ( QMap<int, QStringList>::Iterator it( sections.begin() ), end( sections.end() ); it != end; ++it ) {
-    sortedItems.append( (*s_completionSources)[it.key()] );
-    for ( QStringList::Iterator sit( (*it).begin() ), send( (*it).end() ); sit != send; ++sit ) {
-      sortedItems.append( *sit );
+    if ( s_completion->order() == KCompletion::Sorted ) {
+      sortedItems.append( *it );
     }
+  }
+  if ( s_completion->order() == KCompletion::Weighted ) {
+    for ( QMap<int, QStringList>::Iterator it( sections.begin() ), end( sections.end() ); it != end; ++it ) {
+      sortedItems.append( (*s_completionSources)[it.key()] );
+      for ( QStringList::Iterator sit( (*it).begin() ), send( (*it).end() ); sit != send; ++sit ) {
+        sortedItems.append( *sit );
+      }
+    }
+  } else {
+    sortedItems.sort();
   }
   return sortedItems;
 }
