@@ -512,7 +512,7 @@ KPrefsWidPath::~KPrefsWidPath()
 
 void KPrefsWidPath::readConfig()
 {
-  mURLRequester->setURL( mItem->value() );
+  mURLRequester->setUrl( mItem->value() );
 }
 
 void KPrefsWidPath::writeConfig()
