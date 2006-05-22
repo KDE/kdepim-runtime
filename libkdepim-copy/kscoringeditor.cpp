@@ -26,7 +26,7 @@
 #include <kcolorcombo.h>
 #include <kiconloader.h>
 #include <kregexpeditorinterface.h>
-#include <ktrader.h>
+#include <kservicetypeprofile.h>
 #include <kparts/componentfactory.h>
 #include <kpushbutton.h>
 
@@ -137,7 +137,7 @@ void SingleConditionWidget::toggleRegExpButton( int selected )
 {
   bool isRegExp = (KScoringExpression::MATCH == selected ||
       KScoringExpression::MATCHCS == selected) &&
-      !KTrader::self()->query("KRegExpEditor/KRegExpEditor").isEmpty();
+      !KServiceTypeTrader::self()->query("KRegExpEditor/KRegExpEditor").isEmpty();
   regExpButton->setEnabled( isRegExp );
 }
 
