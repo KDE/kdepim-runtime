@@ -517,7 +517,7 @@ void KPrefsWidPath::readConfig()
 
 void KPrefsWidPath::writeConfig()
 {
-  mItem->setValue( mURLRequester->url() );
+  mItem->setValue( mURLRequester->url().toString() );
 }
 
 QLabel *KPrefsWidPath::label()
