@@ -23,9 +23,9 @@
 #ifndef KPIM_CATEGORYEDITDIALOG_H
 #define KPIM_CATEGORYEDITDIALOG_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kdepimmacros.h>
-#include  <Q3ListViewItem>
+#include <Q3ListViewItem>
 class KPimPrefs;
 namespace Ui {
 class CategoryEditDialog_base;
@@ -34,13 +34,11 @@ namespace KPIM {
 
 class ImprovedListView;
 
-class KDE_EXPORT CategoryEditDialog : public KDialogBase
+class KDE_EXPORT CategoryEditDialog : public KDialog
 {
     Q_OBJECT
   public:
-    CategoryEditDialog( KPimPrefs *prefs, QWidget* parent = 0,
-                        const char* name = 0,
-                        bool modal = false );
+    CategoryEditDialog( KPimPrefs *prefs, QWidget* parent = 0 );
     ~CategoryEditDialog();
 
   public slots:

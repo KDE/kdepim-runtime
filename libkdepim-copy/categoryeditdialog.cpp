@@ -24,8 +24,8 @@
 #include <QLayout>
 #include <QStringList>
 #include <QLineEdit>
-#include <q3listview.h>
-#include <q3header.h>
+#include <Q3ListView>
+#include <Q3Header>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QBoxLayout>
@@ -41,15 +41,14 @@
 
 using namespace KPIM;
 
-CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
-                                        const char* name, bool modal )
-  : KDialogBase::KDialogBase( KDialogBase::Plain, i18n("Edit Categories"), Ok|Apply|Cancel|Help, 
-                              Ok, parent, name, modal, /*separator=*/true ),
-    mPrefs( prefs )  
+CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
+  : KDialog::KDialog( parent, i18n("Edit Categories"), Ok|Apply|Cancel|Help ),
+    mPrefs( prefs )
 {
   mWidgets = new Ui::CategoryEditDialog_base();
   QWidget *widget = new QWidget( this );
   widget->setObjectName( "CategoryEdit" );
+  mWidgets->setupUi( widget );
 
   QBoxLayout *layout = new QVBoxLayout( mWidgets->mCategoriesFrame );
   mCategories = new ImprovedListView( mWidgets->mCategoriesFrame );
@@ -89,6 +88,9 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
            this, SLOT( addSubcategory() ) );
   connect( mWidgets->mButtonRemove, SIGNAL( clicked() ),
            this, SLOT( remove() ) );
+  connect( this, SIGNAL( okClicked() ), this, SLOT( slotOk() ) );
+  connect( this, SIGNAL( cancelClicked() ), this, SLOT( slotCancel() ) );
+  connect( this, SIGNAL( applyClicked() ), this, SLOT( slotApply() ) );
 }
 
 /*
@@ -103,7 +105,10 @@ void CategoryEditDialog::fillList()
 {
   CategoryHierarchyReaderQListView( mCategories, false ).
       read( mPrefs->mCustomCategories );
-  
+
+kDebug() << " mWidgets: " << mWidgets << endl;
+kDebug() << " mCagegories: " << mCategories << endl;
+kDebug() << " mWidgets->mButtonRemove: " << mWidgets->mButtonRemove << endl;
   mWidgets->mButtonRemove->setEnabled( mCategories->childCount() > 0 );
   mWidgets->mButtonAddSubcategory->setEnabled( mCategories->childCount()
                                                > 0 );
@@ -244,7 +249,6 @@ void CategoryEditDialog::slotApply()
 void CategoryEditDialog::slotCancel()
 {
   reload();
-  KDialogBase::slotCancel();
 }
 
 void CategoryEditDialog::editItem( Q3ListViewItem *item )

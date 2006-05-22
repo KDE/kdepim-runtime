@@ -36,12 +36,14 @@ using namespace KPIM;
 
 CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
                                             const char* name, bool modal )
-  : KDialogBase::KDialogBase( KDialogBase::Plain, 
-    i18n("Select Categories"), Ok|Apply|Cancel|Help, Ok, parent, name, modal, /*separator=*/true ),
+  : KDialog( parent, i18n("Select Categories"), Ok|Apply|Cancel|Help  ),
     mPrefs( prefs )
 {
+  setModal( modal );
+  setObjectName( name );
   mWidgets = new Ui::CategorySelectDialog_base();
   QWidget *widget = new QWidget( this );
+  mWidgets->setupUi( widget );
   widget->setObjectName( "CategorySelection" );
   mWidgets->mCategories->header()->hide();
   setMainWidget( widget );
@@ -52,6 +54,8 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
            SIGNAL(editCategories()) );
   connect( mWidgets->mButtonClear, SIGNAL(clicked()),
            SLOT(clear()) );
+  connect( this, SIGNAL( okClicked() ), this, SLOT( slotOk() ) );
+  connect( this, SIGNAL( applyClicked() ), this, SLOT( slotApply() ) );
 }
 
 void CategorySelectDialog::setCategories( const QStringList &categoryList )
