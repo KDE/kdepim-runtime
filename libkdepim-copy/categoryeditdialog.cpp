@@ -106,9 +106,6 @@ void CategoryEditDialog::fillList()
   CategoryHierarchyReaderQListView( mCategories, false ).
       read( mPrefs->mCustomCategories );
 
-kDebug() << " mWidgets: " << mWidgets << endl;
-kDebug() << " mCagegories: " << mCategories << endl;
-kDebug() << " mWidgets->mButtonRemove: " << mWidgets->mButtonRemove << endl;
   mWidgets->mButtonRemove->setEnabled( mCategories->childCount() > 0 );
   mWidgets->mButtonAddSubcategory->setEnabled( mCategories->childCount()
                                                > 0 );
