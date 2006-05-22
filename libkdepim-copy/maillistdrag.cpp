@@ -215,7 +215,7 @@ void MailListDrag::setMailList( const MailList &mailList )
   for ( MailList::ConstIterator it = mailList.begin(); it != mailList.end();
         ++it ) {
     urllist.append( (*it) );
-    labels.append( KUrl::encode_string( ( *it ).subject() ) );
+    labels.append( KUrl::toPercentEncoding( ( *it ).subject() ) );
   }
   QMap<QString,QString> metadata;
   metadata["labels"] = labels.join( ":" );
