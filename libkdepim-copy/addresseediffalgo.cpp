@@ -105,8 +105,8 @@ void AddresseeDiffAlgo::run()
     conflictField( KABC::Addressee::secrecyLabel(), mLeftAddressee.secrecy().asString(), mRightAddressee.secrecy().asString() );
   }
   if ( mLeftAddressee.url()!= mRightAddressee.url() )
-    conflictField( KABC::Addressee::urlLabel(), mLeftAddressee.url().prettyURL(),
-      mRightAddressee.url().prettyURL() );
+    conflictField( KABC::Addressee::urlLabel(), mLeftAddressee.url().prettyUrl(),
+      mRightAddressee.url().prettyUrl() );
     
   if ( mLeftAddressee.logo() != mRightAddressee.logo() ) {
   }

@@ -131,7 +131,7 @@ void LdapClient::startQuery( const QString& filter )
   url.setScope( mScope == "one" ? KABC::LDAPUrl::One : KABC::LDAPUrl::Sub );
   url.setFilter( '('+filter+')' );
 
-  kDebug(5300) << "LdapClient: Doing query: " << url.prettyURL() << endl;
+  kDebug(5300) << "LdapClient: Doing query: " << url.prettyUrl() << endl;
 
   startParseLDIF();
   mActive = true;
