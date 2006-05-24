@@ -583,6 +583,8 @@ void KXFace::Gen(register char *f)
             default : GEN(g_40);
           }
           break;
+        /* i runs from 0 to WIDTH-1, so case can never occur. I leave the code in
+           because it appears exactly like this in the original compface code.
         case WIDTH :
           switch (j)
           {
@@ -591,6 +593,7 @@ void KXFace::Gen(register char *f)
             default : GEN(g_30);
           }
           break;
+        */
         default :
           switch (j)
           {
