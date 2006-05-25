@@ -19,7 +19,10 @@
 #include <QDebug>
 
 #include "akonadi.h"
+#include "akonadiconnection.h"
 #include "storagebackend.h"
+#include "storage/datastore.h"
+#include "storage/entity.h"
 
 #include "list.h"
 #include "response.h"
@@ -58,8 +61,13 @@ bool List::handleLine(const QByteArray& line )
     Response response;
     response.setUntagged();
     
-    StorageBackend *backend = AkonadiServer::instance()->storageBackend();
-    const CollectionList collections = backend->listCollections( mailbox );
+    Resource resource;
+    QList<Location> locations = connection()->storageBackend()->listLocations();
+    CollectionList collections;
+    foreach ( Location l, locations ) {
+      Collection c( l.getLocation() );
+      collections.append( c );
+    }
     CollectionListIterator it(collections);
     while ( it.hasNext() ) {
         Collection c = it.next();
@@ -69,7 +77,7 @@ bool List::handleLine(const QByteArray& line )
             list += "\\Noselect ";
         if ( c.isNoInferiors() )
             list += "\\Noinferiors ";
-        list += ")";
+        list += ") ";
         list += "\"/\" \""; // FIXME delimiter
         list += c.identifier();
         list += "\" ";
