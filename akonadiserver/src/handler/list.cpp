@@ -47,7 +47,7 @@ QByteArray List::constructRealMailboxName( const QByteArray& /*reference*/,
 bool List::handleLine(const QByteArray& line )
 {
     // parse out the reference name and mailbox name
-    int startOfCommand = line.indexOf( ' ', line.indexOf(' ') ) + 1;
+    int startOfCommand = line.indexOf( ' ' ) + 1;
     int startOfReference = line.indexOf( ' ', startOfCommand ) + 1;
     int startOfMailbox = line.indexOf( ' ', startOfReference ) + 1;
     QByteArray reference = line.mid( startOfReference, line.size() - startOfMailbox -1 );
