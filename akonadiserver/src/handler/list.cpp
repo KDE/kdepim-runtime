@@ -66,7 +66,7 @@ bool List::handleLine(const QByteArray& line )
     response.setUntagged();
 
     Resource resource;
-    CollectionList collections = connection()->storageBackend()->listCollections();
+    CollectionList collections = connection()->storageBackend()->listCollections( mailbox );
     CollectionListIterator it(collections);
     while ( it.hasNext() ) {
         Collection c = it.next();
