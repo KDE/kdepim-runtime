@@ -37,10 +37,6 @@ public:
 
     bool handleLine(const QByteArray& line);
 
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
 };
 
 }

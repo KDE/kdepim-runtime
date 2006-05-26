@@ -39,34 +39,24 @@ List::~List()
 }
 
 
-QByteArray List::constructRealMailboxName( const QByteArray& reference,
-                                           const QByteArray& mailbox )
-{
-    // use reference, otherwise use what's selected
-    QByteArray prefix = reference;
-    if ( prefix.isEmpty() )
-        prefix = connection()->selectedCollection();
-    // FIXME hierarchy delimeter handling
-    return prefix + '/' + mailbox;
-}
-
-
 bool List::handleLine(const QByteArray& line )
 {
     // parse out the reference name and mailbox name
     int startOfCommand = line.indexOf( ' ' ) + 1;
-    int startOfReference = line.indexOf( ' ', startOfCommand ) + 1;
-    int startOfMailbox = line.indexOf( ' ', startOfReference ) + 1;
-    QByteArray reference = line.mid( startOfReference, line.size() - startOfMailbox -1 );
+    int startOfReference = line.indexOf( '"', startOfCommand ) + 1;
+    int endOfReference = line.indexOf( '"', startOfReference );
+    int startOfMailbox = line.indexOf( ' ', endOfReference ) + 1;
+    QByteArray reference = line.mid( startOfReference, endOfReference - startOfReference );
     QByteArray mailbox = line.right( line.size() - startOfMailbox );
-//    qDebug() << "reference:" << reference << "mailbox:" << mailbox << endl;
+    //qDebug() << "reference:" << reference << "mailbox:" << mailbox << endl;
+    if ( reference.isEmpty() )
+        reference = connection()->selectedCollection();
 
-    mailbox = constructRealMailboxName( reference, mailbox );
     Response response;
     response.setUntagged();
 
     Resource resource;
-    CollectionList collections = connection()->storageBackend()->listCollections( mailbox );
+    CollectionList collections = connection()->storageBackend()->listCollections( reference, mailbox );
     CollectionListIterator it(collections);
     while ( it.hasNext() ) {
         Collection c = it.next();
