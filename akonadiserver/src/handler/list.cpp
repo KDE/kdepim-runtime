@@ -67,12 +67,20 @@ bool List::handleLine(const QByteArray& line )
             Collection c = it.next();
             QString list( "LIST ");
             list += "(";
-            if ( c.isNoSelect() )
+            bool first = true;
+            if ( c.isNoSelect() ) {
                 list += "\\Noselect";
+                first = false;
+            }
             if ( c.isNoInferiors() ) {
-                if ( c.isNoSelect() )
-                    list += " ";
+                if ( !first ) list += " ";
                 list += "\\Noinferiors";
+                first = false;
+            }
+            const QString supportedMimeTypes = c.getMimeTypes();
+            if ( !supportedMimeTypes.isEmpty() ) { 
+                if ( !first ) list += " ";
+                list += "\\MimeTypes["+ c.getMimeTypes() +"]";
             }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
