@@ -101,14 +101,11 @@ EditorSelection::readConfig()
 {
   m_editorsCombo->clear();
 
-  KTrader::OfferList editors = KTrader::self()->query(
+  const KService::List editors = KTrader::self()->query(
     QString::fromLatin1( "Komposer/Editor" ) );
-  KTrader::OfferList::ConstIterator it;
+  KService::List::ConstIterator it;
   int i = 0;
   for ( it = editors.begin(); it != editors.end(); ++it, ++i ) {
-    if ( !(*it)->hasServiceType( QString::fromLatin1( "Komposer/Editor" ) ) )
-      continue;
-
     QString name = (*it)->property( "X-KDE-KomposerIdentifier" ).toString();
     m_editorsCombo->insertItem( name );
     if ( m_reference.contains( name ) )
