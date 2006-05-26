@@ -64,14 +64,9 @@ bool List::handleLine(const QByteArray& line )
     mailbox = constructRealMailboxName( reference, mailbox );
     Response response;
     response.setUntagged();
-    
+
     Resource resource;
-    QList<Location> locations = connection()->storageBackend()->listLocations();
-    CollectionList collections;
-    foreach ( Location l, locations ) {
-      Collection c( l.getLocation() );
-      collections.append( c );
-    }
+    CollectionList collections = connection()->storageBackend()->listCollections();
     CollectionListIterator it(collections);
     while ( it.hasNext() ) {
         Collection c = it.next();
