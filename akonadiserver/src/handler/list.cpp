@@ -55,25 +55,30 @@ bool List::handleLine(const QByteArray& line )
     Response response;
     response.setUntagged();
 
-    Resource resource;
-    DataStore *db = connection()->storageBackend();
-    CollectionList collections = db->listCollections( reference, mailbox );
-    CollectionListIterator it(collections);
-    while ( it.hasNext() ) {
-        Collection c = it.next();
-        QString list( "LIST ");
-        list += "(";
-        if ( c.isNoSelect() )
-            list += "\\Noselect ";
-        if ( c.isNoInferiors() )
-            list += "\\Noinferiors ";
-        list += ") ";
-        list += "\"/\" \""; // FIXME delimiter
-        list += c.identifier();
-        list += "\" ";
-        response.setString( list.toLatin1() );
+    if ( mailbox == "\"\"" ) { // special case of asking for the delimiter
+        response.setString( "LIST (\\Noselect) \"/\" \"\"" );
         emit responseAvailable( response );
+    } else {
+        DataStore *db = connection()->storageBackend();
+        CollectionList collections = db->listCollections( reference, mailbox );
+        CollectionListIterator it(collections);
+        while ( it.hasNext() ) {
+            Collection c = it.next();
+            QString list( "LIST ");
+            list += "(";
+            if ( c.isNoSelect() )
+                list += "\\Noselect ";
+            if ( c.isNoInferiors() )
+                list += "\\Noinferiors ";
+            list += ") ";
+            list += "\"/\" \""; // FIXME delimiter
+            list += c.identifier();
+            list += "\" ";
+            response.setString( list.toLatin1() );
+            emit responseAvailable( response );
+        }
     }
+    
     response.setSuccess();
     response.setTag( tag() );
     response.setString( "List completed" );
