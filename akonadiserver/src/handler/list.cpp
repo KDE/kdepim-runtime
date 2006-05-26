@@ -68,9 +68,12 @@ bool List::handleLine(const QByteArray& line )
             QString list( "LIST ");
             list += "(";
             if ( c.isNoSelect() )
-                list += "\\Noselect ";
-            if ( c.isNoInferiors() )
-                list += "\\Noinferiors ";
+                list += "\\Noselect";
+            if ( c.isNoInferiors() ) {
+                if ( c.isNoSelect() )
+                    list += " ";
+                list += "\\Noinferiors";
+            }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
             list += c.identifier();
