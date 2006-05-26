@@ -39,11 +39,15 @@ List::~List()
 }
 
 
-QByteArray List::constructRealMailboxName( const QByteArray& /*reference*/,
+QByteArray List::constructRealMailboxName( const QByteArray& reference,
                                            const QByteArray& mailbox )
 {
-    // FIXME use reference, otherwise use what's selected
-    return mailbox;
+    // use reference, otherwise use what's selected
+    QByteArray prefix = reference;
+    if ( prefix.isEmpty() )
+        prefix = connection()->selectedCollection();
+    // FIXME hierarchy delimeter handling
+    return prefix + '/' + mailbox;
 }
 
 
