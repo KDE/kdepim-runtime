@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,35 +14,44 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#include "emailsearchprovider.h"
 
-#include <handler.h>
+#include "searchprovidermanager.h"
 
-namespace Akonadi {
+using namespace Akonadi;
 
-/**
-  Handler for the list command.
- */
-class List : public Handler
+SearchProviderManager* SearchProviderManager::mSelf = 0;
+
+SearchProviderManager::SearchProviderManager()
 {
-public:
-    List();
-
-    ~List();
-
-    bool handleLine(const QByteArray& line);
-
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
-};
-
 }
 
-#endif
+SearchProviderManager::~SearchProviderManager()
+{
+}
+
+SearchProviderManager* SearchProviderManager::self()
+{
+  if ( !mSelf )
+    mSelf = new SearchProviderManager;
+
+  return mSelf;
+}
+
+SearchProvider* SearchProviderManager::createSearchProviderForMimetype( const QByteArray &mimeType,
+                                                                        const AkonadiConnection *connection )
+{
+  SearchProvider *provider = 0;
+
+  if ( mimeType == "message/rfc822" || mimeType == "message/news" ) {
+    provider = new EmailSearchProvider;
+  }
+
+  if ( provider )
+    provider->setConnection( connection );
+
+  return provider;
+}

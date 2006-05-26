@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,35 +14,27 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#include "searchprovider.h"
 
-#include <handler.h>
+using namespace Akonadi;
 
-namespace Akonadi {
-
-/**
-  Handler for the list command.
- */
-class List : public Handler
+SearchProvider::SearchProvider()
 {
-public:
-    List();
-
-    ~List();
-
-    bool handleLine(const QByteArray& line);
-
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
-};
-
 }
 
-#endif
+SearchProvider::~SearchProvider()
+{
+}
+
+void SearchProvider::setConnection( const AkonadiConnection *connection )
+{
+  mConnection = connection;
+}
+
+const AkonadiConnection *SearchProvider::connection() const
+{
+  return mConnection;
+}

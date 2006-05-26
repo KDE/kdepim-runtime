@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                        *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -16,8 +16,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
+#ifndef AKONADISEARCH_H
+#define AKONADISEARCH_H
 
 #include <QByteArray>
 
@@ -26,21 +26,17 @@
 namespace Akonadi {
 
 /**
-  Handler for the list command.
+  Handler for the search command.
  */
-class List : public Handler
+class Search : public Handler
 {
 public:
-    List();
+    Search();
 
-    ~List();
+    ~Search();
 
     bool handleLine(const QByteArray& line);
 
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
 };
 
 }

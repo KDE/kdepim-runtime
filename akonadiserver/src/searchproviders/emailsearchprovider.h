@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,33 +14,25 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#ifndef AKONADIEMAILSEARCHPROVIDER_H
+#define AKONADIEMAILSEARCHPROVIDER_H
 
-#include <handler.h>
+#include "searchprovider.h"
 
 namespace Akonadi {
 
-/**
-  Handler for the list command.
- */
-class List : public Handler
+class EmailSearchProvider : public SearchProvider
 {
-public:
-    List();
+  public:
+    EmailSearchProvider();
+    virtual ~EmailSearchProvider();
 
-    ~List();
-
-    bool handleLine(const QByteArray& line);
-
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
+    virtual QList<QByteArray> supportedMimeTypes() const;
+    virtual QList<QByteArray> queryForUids( const QList<QByteArray> &searchCriteria );
+    virtual QList<QByteArray> queryForObjects( const QList<QByteArray> &searchCriteria );
 };
 
 }

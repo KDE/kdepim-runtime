@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,33 +14,53 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#ifndef AKONADISEARCHPROVIDER_H
+#define AKONADISEARCHPROVIDER_H
 
-#include <handler.h>
+#include <QList>
+
+#include "akonadiconnection.h"
 
 namespace Akonadi {
 
-/**
-  Handler for the list command.
- */
-class List : public Handler
+class SearchProvider
 {
-public:
-    List();
+  public:
+    SearchProvider();
+    virtual ~SearchProvider();
 
-    ~List();
+    /**
+     * Returns a list of supported mimetypes.
+     */
+    virtual QList<QByteArray> supportedMimeTypes() const = 0;
 
-    bool handleLine(const QByteArray& line);
+    /**
+     * Starts a query for the given search criteria and
+     * returns a list of matching uids.
+     */
+    virtual QList<QByteArray> queryForUids( const QList<QByteArray> &searchCriteria ) = 0;
 
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
+    /**
+     * Starts a query for the given search criteria and
+     * returns a list of matching objects.
+     */
+    virtual QList<QByteArray> queryForObjects( const QList<QByteArray> &searchCriteria ) = 0;
+
+    /**
+     * Sets the connection which shall be used to access the database.
+     */
+    void setConnection( const AkonadiConnection *connection );
+
+    /**
+     * Returns the connection which can be used to access the database.
+     */
+    const AkonadiConnection *connection() const;
+
+  private:
+    const AkonadiConnection *mConnection;
 };
 
 }

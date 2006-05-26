@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,35 +14,44 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#include "emailsearchprovider.h"
 
-#include <handler.h>
+using namespace Akonadi;
 
-namespace Akonadi {
-
-/**
-  Handler for the list command.
- */
-class List : public Handler
+EmailSearchProvider::EmailSearchProvider()
 {
-public:
-    List();
-
-    ~List();
-
-    bool handleLine(const QByteArray& line);
-
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
-};
-
 }
 
-#endif
+EmailSearchProvider::~EmailSearchProvider()
+{
+}
+
+QList<QByteArray> EmailSearchProvider::supportedMimeTypes() const
+{
+  QList<QByteArray> mimeTypes;
+
+  mimeTypes.append( "message/rfc822" );
+  mimeTypes.append( "message/news" );
+
+  return mimeTypes;
+}
+
+QList<QByteArray> EmailSearchProvider::queryForUids( const QList<QByteArray> &searchCriteria )
+{
+  QList<QByteArray> dummy;
+  dummy.append( "12" );
+  dummy.append( "22" );
+  dummy.append( "34" );
+  dummy.append( "108" );
+
+  return dummy;
+}
+
+QList<QByteArray> EmailSearchProvider::queryForObjects( const QList<QByteArray> &searchCriteria )
+{
+  return QList<QByteArray>();
+}
+

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Till Adam <adam@kde.org>                        *
+ *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -14,33 +14,35 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-#ifndef AKONADILIST_H
-#define AKONADILIST_H
 
-#include <QByteArray>
+#ifndef AKONADISEARCHPROVIDERMANAGER_H
+#define AKONADISEARCHPROVIDERMANAGER_H
 
-#include <handler.h>
+#include "searchprovider.h"
 
 namespace Akonadi {
 
-/**
-  Handler for the list command.
- */
-class List : public Handler
+class SearchProviderManager
 {
-public:
-    List();
+  public:
+    ~SearchProviderManager();
 
-    ~List();
+    static SearchProviderManager* self();
 
-    bool handleLine(const QByteArray& line);
+    /**
+     * Returns a new search provider for the given mimetype which
+     * uses the given connection for accessing the database.
+     *
+     * You have to delete the search provider yourself after use!
+     */
+    SearchProvider* createSearchProviderForMimetype( const QByteArray &mimeType, const AkonadiConnection *connection );
 
-protected:
-    // FIXME move into handler?
-    QByteArray constructRealMailboxName( const QByteArray& reference,
-                                         const QByteArray& mailbox );
+  private:
+    SearchProviderManager();
+
+    static SearchProviderManager* mSelf;
 };
 
 }
