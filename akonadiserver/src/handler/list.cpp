@@ -48,6 +48,8 @@ bool List::handleLine(const QByteArray& line )
     int startOfMailbox = line.indexOf( ' ', endOfReference ) + 1;
     QByteArray reference = line.mid( startOfReference, endOfReference - startOfReference );
     QByteArray mailbox = line.right( line.size() - startOfMailbox );
+    if ( mailbox.startsWith('"') && mailbox.endsWith('"') )
+        mailbox = mailbox.mid( 1, mailbox.size() - 2);
     //qDebug() << "reference:" << reference << "mailbox:" << mailbox << endl;
     if ( reference.isEmpty() )
         reference = connection()->selectedCollection();
