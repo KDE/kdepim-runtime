@@ -49,14 +49,14 @@ bool List::handleLine(const QByteArray& line )
     QByteArray reference = line.mid( startOfReference, endOfReference - startOfReference );
     QByteArray mailbox = stripQuotes( line.right( line.size() - startOfMailbox ) );
 
-    //qDebug() << "reference:" << reference << "mailbox:" << mailbox << endl;
+    //qDebug() << "reference:" << reference << "mailbox:" << mailbox << "::" << endl;
     if ( reference.isEmpty() )
         reference = connection()->selectedCollection();
 
     Response response;
     response.setUntagged();
 
-    if ( mailbox == "\"\"" ) { // special case of asking for the delimiter
+    if ( mailbox.isEmpty() ) { // special case of asking for the delimiter
         response.setString( "LIST (\\Noselect) \"/\" \"\"" );
         emit responseAvailable( response );
     } else {
