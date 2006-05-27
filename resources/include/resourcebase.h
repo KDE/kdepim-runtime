@@ -32,7 +32,7 @@ namespace PIM {
 
 /**
  */
-class AKONADI_EXPORT ResourceBase : public Resource
+class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 {
     Q_OBJECT
   public:

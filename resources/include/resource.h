@@ -30,7 +30,7 @@ namespace PIM {
 
 /**
  */
-class AKONADI_EXPORT Resource : public QObject
+class AKONADI_RESOURCES_EXPORT Resource : public QObject
 {
     Q_OBJECT
   public:
