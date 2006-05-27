@@ -21,19 +21,26 @@
 #define MAILDIR_H
 
 #include <libakonadi/itemappendjob.h>
+#include <resourcebase.h>
 
-class ItemDumper : public QObject
+namespace PIM {
+
+
+class MaildirResource : public ResourceBase
 {
   Q_OBJECT
   public:
-    ItemDumper( const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
+    MaildirResource( const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
+
+    void doStuff() {
+      // FIXME
+    }
 
   private slots:
     void done(PIM::Job* job);
 
 };
 
-
-
+}
 
 #endif

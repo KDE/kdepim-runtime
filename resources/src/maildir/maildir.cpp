@@ -26,7 +26,8 @@
 
 using namespace PIM;
 
-ItemDumper::ItemDumper( const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
+MaildirResource::MaildirResource( const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
+    :ResourceBase()
 {
   QFile f( filename );
   Q_ASSERT( f.open(QIODevice::ReadOnly) );
@@ -37,7 +38,7 @@ ItemDumper::ItemDumper( const QByteArray &path, const QByteArray &filename, cons
   job->start();
 }
 
-void ItemDumper::done( PIM::Job * job )
+void MaildirResource::done( PIM::Job * job )
 {
   if ( job->error() ) {
     qWarning() << "Error while creating item: " << job->errorText();
@@ -65,7 +66,7 @@ int main( int argc, char** argv )
   QByteArray path = args->getOption( "path" );
   QByteArray mimetype = args->getOption( "mimetype" );
   QByteArray file = args->getOption( "file" );
-  ItemDumper d( path, file, mimetype );
+  MaildirResource d( path, file, mimetype );
   return app.exec();
 }
 

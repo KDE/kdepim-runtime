@@ -15,6 +15,6 @@ kde4_automoc(${maildir_SRCS})
 
 kde4_add_executable(maildir RUN_UNINSTALLED ${maildir_SRCS})
 
-target_link_libraries(maildir  akonadi ${KDE4_KDECORE_LIBS} )
+target_link_libraries(maildir  akonadi akonadiresources ${KDE4_KDECORE_LIBS} )
 
 
