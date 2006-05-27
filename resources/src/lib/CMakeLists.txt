@@ -10,15 +10,15 @@ include_directories(
 ########### next target ###############
 
 set( akonadiresources_LIB_SRC
-	lib/resourcebase.cpp
+	resourcebase.cpp
 )
 
 set( akonadiresources_automoc_LIB_SRC
 )
 
 set( akonadiresources_manualmoc_LIB_SRC
-        ../include/resource.h
-        ../include/resourcebase.h
+        ../../include/resource.h
+        ../../include/resourcebase.h
 )
 
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
