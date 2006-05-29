@@ -50,8 +50,6 @@ bool List::handleLine(const QByteArray& line )
     QByteArray mailbox = stripQuotes( line.right( line.size() - startOfMailbox ) );
 
     //qDebug() << "reference:" << reference << "mailbox:" << mailbox << "::" << endl;
-    if ( reference.isEmpty() )
-        reference = connection()->selectedCollection();
 
     Response response;
     response.setUntagged();
