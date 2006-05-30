@@ -83,7 +83,7 @@ bool List::handleLine(const QByteArray& line )
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
             list += c.identifier();
-            list += "\" ";
+            list += "\"";
             response.setString( list.toLatin1() );
             emit responseAvailable( response );
         }
