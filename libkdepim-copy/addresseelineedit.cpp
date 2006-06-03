@@ -837,7 +837,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       completionBox()->isVisible() ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
     unsigned int currentIndex = completionBox()->currentItem();
-    if ( ke->key() == Qt::Key_Up ) {
+    if ( ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Backtab ) {
       //kDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
