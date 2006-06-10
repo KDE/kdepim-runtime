@@ -84,7 +84,7 @@ static KStaticDeleter<KConfig> configDeleter;
 static KStaticDeleter<QStringList> completionSourcesDeleter;
 
 // needs to be unique, but the actual name doesn't matter much
-static QByteArray newLineEditDCOPObjectName()
+static QByteArray newLineEditObjectName()
 {
     static int s_count = 0;
     QByteArray name( "KPIM::AddresseeLineEdit" );
@@ -100,7 +100,7 @@ static const QString s_completionItemIndentString = "     ";
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion )
   : KLineEdit( parent )
 {
-  setObjectName( newLineEditDCOPObjectName() );
+  setObjectName( newLineEditObjectName() );
   setClickMessage("");
   m_useCompletion = useCompletion;
   m_completionInitialized = false;
