@@ -23,7 +23,6 @@
 #define NETWORKSTATUS_H
 
 #include <QObject>
-#include <dcopobject.h>
 
 namespace KPIM {
 
@@ -32,7 +31,7 @@ namespace KPIM {
     the machine KDE is running on going from "online" mode to
     offline. What this means is left as an exercise for the reader.
  */
-class NetworkStatus : public QObject, public DCOPObject
+class NetworkStatus : public QObject
 {
   Q_OBJECT
 
@@ -67,7 +66,7 @@ class NetworkStatus : public QObject, public DCOPObject
      */
     Status status() const;
 
-  k_dcop:
+protected slots:
     /**
      * Called by the network interface watcher in KDED.
      */

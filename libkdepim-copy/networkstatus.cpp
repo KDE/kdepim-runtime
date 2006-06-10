@@ -23,8 +23,10 @@
 #include <kglobal.h>
 #include <kstaticdeleter.h>
 
-#include <dcopref.h>
+#include <dbus/qdbusconnection.h>
+#include <dbus/qdbusinterface.h>
 
+#include "networkstatus_p.h"
 #include "networkstatus.h"
 
 using namespace KPIM;
@@ -32,16 +34,25 @@ using namespace KPIM;
 static KStaticDeleter<NetworkStatus> networkStatusDeleter;
 NetworkStatus *NetworkStatus::mSelf = 0;
 
-NetworkStatus::NetworkStatus()
-  : QObject( 0 ), DCOPObject( "NetworkStatus" )
+NetworkStatusAdaptor::NetworkStatusAdaptor(QObject *parent)
+  : QDBusAbstractAdaptor(parent)
 {
+  setAutoRelaySignals(true);
+}
+
+NetworkStatus::NetworkStatus()
+  : QObject( 0 )
+{
+  new NetworkStatusAdaptor( this );
+  QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   KConfigGroup group( KGlobal::config(), "NetworkStatus" );
   if ( group.readEntry( "Online", true ) == true )
     mStatus = Online;
   else
     mStatus = Offline;
 
-  connectDCOPSignal( 0, 0, "onlineStatusChanged()", "onlineStatusChanged()", false );
+  QDBus::sessionBus().connect( "org.kde.kded", "/", "org.kde.NetworkStatus",
+                               "onlineStatusChanged", this, SLOT( onlineStatusChanged() ) );
 }
 
 NetworkStatus::~NetworkStatus()
@@ -64,10 +75,10 @@ NetworkStatus::Status NetworkStatus::status() const
 
 void NetworkStatus::onlineStatusChanged()
 {
-  DCOPRef dcopCall( "kded", "networkstatus" );
-  DCOPReply reply = dcopCall.call( "onlineStatus()", true );
-  if ( reply.isValid() ) {
-    int status = reply;
+  QDBusInterfacePtr call( "org.kde.kded", "/", "org.kde.kded" );
+  QDBusMessage reply = call->call( "onlineStatus", true );
+  if ( reply.type() == QDBusMessage::ReplyMessage ) {
+    int status = reply.at( 0 ).toInt();
     if ( status == 3 )
       setStatus( Online );
     else {
@@ -85,4 +96,5 @@ NetworkStatus *NetworkStatus::self()
   return mSelf;
 }
 
+#include "networkstatus_p.moc"
 #include "networkstatus.moc"

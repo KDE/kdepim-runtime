@@ -62,6 +62,7 @@
 #include <QDropEvent>
 #include <QMouseEvent>
 #include <QMenu>
+#include <dbus/qdbusconnection.h>
 
 using namespace KPIM;
 
@@ -96,11 +97,10 @@ static QByteArray newLineEditDCOPObjectName()
 
 static const QString s_completionItemIndentString = "     ";
 
-AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion,
-                                      const char *name )
-  : KLineEdit( parent ), DCOPObject( newLineEditDCOPObjectName() )
+AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion )
+  : KLineEdit( parent )
 {
-  setObjectName(name);
+  setObjectName( newLineEditDCOPObjectName() );
   setClickMessage("");
   m_useCompletion = useCompletion;
   m_completionInitialized = false;
@@ -153,9 +153,10 @@ void AddresseeLineEdit::init()
           SLOT( slotUserCancelled( const QString& ) ) );
 
       // The emitter is always called KPIM::IMAPCompletionOrder by contract
-      if ( !connectDCOPSignal( 0, "KPIM::IMAPCompletionOrder", "orderChanged()",
-            "slotIMAPCompletionOrderChanged()", false ) )
-        kError() << "AddresseeLineEdit: connection to orderChanged() failed" << endl;
+     if ( !QDBus::sessionBus().connect( "kde.org.pim.completionorder", "/",
+                 "kde.org.pim.CompletionOrder", "completionOrderChanged",
+                 this, SLOT( slotIMAPCompletionOrderChanged() ) ) )
+         kError() << "AddresseeLineEdit: connection to orderChanged() failed" << endl;
 
       connect( s_LDAPTimer, SIGNAL( timeout() ), SLOT( slotStartLDAPLookup() ) );
       connect( s_LDAPSearch, SIGNAL( searchData( const KPIM::LdapResultList& ) ),

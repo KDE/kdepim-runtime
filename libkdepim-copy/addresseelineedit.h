@@ -40,7 +40,6 @@
 #include <kabc/addressee.h>
 
 #include "kcompletion.h"
-#include <dcopobject.h>
 #include <kdepimmacros.h>
 #include <klineedit.h>
 class QMenu;
@@ -56,14 +55,12 @@ typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 
 namespace KPIM {
 
-class KDE_EXPORT AddresseeLineEdit : public KLineEdit, public DCOPObject
+class KDE_EXPORT AddresseeLineEdit : public KLineEdit
 {
-  K_DCOP
   Q_OBJECT
 
   public:
-    AddresseeLineEdit( QWidget* parent, bool useCompletion = true,
-                     const char *name = 0L);
+    AddresseeLineEdit( QWidget* parent, bool useCompletion = true );
     virtual ~AddresseeLineEdit();
 
     virtual void setFont( const QFont& );
@@ -76,6 +73,7 @@ class KDE_EXPORT AddresseeLineEdit : public KLineEdit, public DCOPObject
 
   protected slots:
     virtual void loadContacts();
+    void slotIMAPCompletionOrderChanged();
   protected:
     void addContact( const KABC::Addressee&, int weight, int source = -1 );
     virtual void keyPressEvent( QKeyEvent* );
@@ -106,10 +104,6 @@ class KDE_EXPORT AddresseeLineEdit : public KLineEdit, public DCOPObject
     
     /** return whether we are using sorted or weighted display */
     static KCompletion::CompOrder completionOrder();
-
-  k_dcop:
-    // Connected to the DCOP signal
-    void slotIMAPCompletionOrderChanged();
 
   private slots:
     void slotCompletion();

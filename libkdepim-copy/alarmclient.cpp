@@ -26,8 +26,8 @@
 #include <kdebug.h>
 #include <kstandarddirs.h>
 
-#include <dcopclient.h>
-#include <dcopref.h>
+#include <dbus/qdbusconnection.h>
+#include <dbus/qdbusinterface.h>
 #include <ktoolinvocation.h>
 
 AlarmClient::AlarmClient()
@@ -37,7 +37,7 @@ AlarmClient::AlarmClient()
 
 void AlarmClient::startDaemon()
 {
-  if ( kapp->dcopClient()->isApplicationRegistered( "korgac" ) ) {
+  if ( QDBus::sessionBus().findInterface( "org.kde.pim.korgac", "/" ) ) {
     // Alarm daemon already runs
     return;
   }
@@ -56,6 +56,6 @@ void AlarmClient::startDaemon()
 
 void AlarmClient::stopDaemon()
 {
-  DCOPRef ref( "korgac", "ac" );
-  ref.send( "quit" );
+  QDBusInterfacePtr korgac("org.kde.pim.korgac", "/", "org.kde.pim.AlarmClient" );
+  korgac->call("quit", QByteArray());
 }

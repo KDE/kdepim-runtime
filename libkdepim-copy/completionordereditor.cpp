@@ -29,8 +29,11 @@
  */
 
 #include "completionordereditor.h"
+#include "completionordereditor_p.h"
 #include "ldapclient.h"
 #include "resourceabc.h"
+
+#include <dbus/qdbusconnection.h>
 
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
@@ -46,7 +49,6 @@
 #include <q3header.h>
 #include <QToolButton>
 #include <kapplication.h>
-#include <dcopclient.h>
 
 /*
 
@@ -73,7 +75,11 @@ This dialog allows to change those weights, by showing one item per:
 
 using namespace KPIM;
 
-namespace KPIM {
+CompletionOrderEditorAdaptor::CompletionOrderEditorAdaptor(QObject *parent)
+  : QDBusAbstractAdaptor(parent)
+{
+  setAutoRelaySignals(true);
+}
 
 int CompletionItemList::compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 )
 {
@@ -177,6 +183,8 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
                  /*separator=*/true ),
     mConfig( "kpimcompletionorder" ), mDirty( false )
 {
+  new CompletionOrderEditorAdaptor( this );
+  QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   mItems.setAutoDelete( true );
   // The first step is to gather all the data, creating CompletionItem objects
   QList< LdapClient* > ldapClients = ldapSearch->clients();
@@ -295,15 +303,10 @@ void CompletionOrderEditor::slotOk()
       kDebug(5300) << "slotOk:   " << item->item()->label() << " " << w << endl;
       --w;
     }
-
-    // Emit DCOP signal
-    // The emitter is always set to KPIM::IMAPCompletionOrder, so that the connect works
-    // This is why we can't use k_dcop_signals here, but need to use emitDCOPSignal
-    kapp->dcopClient()->emitDCOPSignal( "KPIM::IMAPCompletionOrder", "orderChanged()", QByteArray() );
+    emit completionOrderChanged();
   }
   KDialogBase::slotOk();
 }
 
-} // namespace KPIM
-
+#include "completionordereditor_p.moc"
 #include "completionordereditor.moc"

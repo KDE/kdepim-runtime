@@ -22,8 +22,8 @@
 #include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
 #include <kresources/selectdialog.h>
-#include <dcopref.h>
-#include <dcopclient.h>
+#include <dbus/qdbusinterface.h>
+#include <dbus/qdbusconnection.h>
 
 #include <QEventLoop>
 #include <QRegExp>
@@ -37,21 +37,21 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   //QString email = KMMessage::getEmailAddr(addr);
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
-  if ( kapp->dcopClient()->isApplicationRegistered( "kaddressbook" ) ){
+  if ( QDBus::sessionBus().findInterface( "kaddressbook", "/" ) ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor
     //won't work as desired, see bug #87233
-    DCOPRef call ( "kaddressbook", "kaddressbook" );
-    call.send( "newInstance()" );
+    QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
+    call->call( "newInstance" );
   }
   else
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 
-  DCOPRef call( "kaddressbook", "KAddressBookIface" );
+  QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.KAddressbookIface" );
   if( !addresseeList.isEmpty() ) {
-    call.send( "showContactEditor(QString)", addresseeList.first().uid() );
+    call->call( "showContactEditor", addresseeList.first().uid() );
   }
   else {
-    call.send( "addEmail(QString)", addr );
+    call->call( "addEmail", addr );
   }
 }
 
@@ -98,8 +98,8 @@ void KAddrBookExternal::openAddressBook(QWidget *) {
 void KAddrBookExternal::addNewAddressee( QWidget* )
 {
   KToolInvocation::startServiceByDesktopName("kaddressbook");
-  DCOPRef call("kaddressbook", "KAddressBookIface");
-  call.send("newContact()");
+  QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
+  call->call("newContact");
 }
 
 bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *parent )

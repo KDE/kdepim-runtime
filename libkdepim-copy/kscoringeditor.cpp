@@ -143,7 +143,8 @@ void SingleConditionWidget::toggleRegExpButton( int selected )
 
 void SingleConditionWidget::showRegExpDialog()
 {
-  QDialog *editorDialog = KParts::ComponentFactory::createInstanceFromQuery<QDialog>( "KRegExpEditor/KRegExpEditor" );
+  QDialog *editorDialog = 
+      KParts::ComponentFactory::createPartInstanceFromQuery<QDialog>( "KRegExpEditor/KRegExpEditor", QString() );
   if ( editorDialog ) {
     KRegExpEditorInterface *editor = dynamic_cast<KRegExpEditorInterface *>( editorDialog );
     Q_ASSERT( editor ); // This should not fail!

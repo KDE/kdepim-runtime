@@ -74,6 +74,9 @@ public:
 
   KConfig* configFile() { return &mConfig; }
 
+signals:
+  void completionOrderChanged();
+
 private slots:
   void slotSelectionChanged( Q3ListViewItem* );
   void slotMoveUp();

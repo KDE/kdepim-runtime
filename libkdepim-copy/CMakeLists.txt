@@ -9,6 +9,8 @@ add_subdirectory( about )
 
 kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
 
+add_definitions(${QDBUS_DEFINITIONS})
+
 
 
 ########### next target ###############
@@ -85,10 +87,10 @@ kde4_automoc(${kdepim_LIB_SRCS})
 kde4_add_ui3_files(kdepim_LIB_SRCS addresspicker.ui )
 kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui )
 
-kde4_add_dcop_skels(kdepim_LIB_SRCS 
-	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 
-	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
-	addresseelineedit.h )
+#kde4_add_dcop_skels(kdepim_LIB_SRCS 
+#	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 
+#	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
+#	addresseelineedit.h )
 
 kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc )
 

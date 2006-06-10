@@ -111,7 +111,7 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
   load();
 
   // set up IMProxy to display contacts' IM presence and make connections to keep the display live
-  mKIMProxy = ::KIMProxy::instance( kapp->dcopClient() );
+  mKIMProxy = ::KIMProxy::instance();
   connect( mKIMProxy, SIGNAL( sigContactPresenceChanged( const QString& ) ),
            this, SLOT( slotPresenceChanged( const QString& ) ) );
   connect( mKIMProxy, SIGNAL( sigPresenceInfoExpired() ),
@@ -388,6 +388,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   QString role( addr.role() );
   QString organization( addr.organization() );
 
+#warning port me!
+#if NOT_PORTED 
   if ( proxy && (fieldMask & IMFields) ) {
     if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
       // set image source to either a QMimeSourceFactory key or a data:/ URL
@@ -414,6 +416,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
                   );
     }
   }
+#endif
 
   // @STYLE@ - construct the string by parts, substituting in
   // the styles first. There are lots of appends, but we need to
@@ -634,7 +637,8 @@ void AddresseeView::faxNumberClicked( const QString &number )
 
 void AddresseeView::imAddressClicked()
 {
-   mKIMProxy->chatWithContact( mAddressee.uid() );
+#warning port me!
+//   mKIMProxy->chatWithContact( mAddressee.uid() );
 }
 
 void AddresseeView::contextMenuEvent(QContextMenuEvent *e)
