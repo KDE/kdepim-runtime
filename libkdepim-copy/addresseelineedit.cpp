@@ -49,7 +49,6 @@
 #include <kstdaccel.h>
 #include <kurl.h>
 #include <klocale.h>
-#include <kdatastream.h>
 
 #include <QApplication>
 #include <QObject>

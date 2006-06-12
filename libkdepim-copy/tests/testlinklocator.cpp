@@ -59,7 +59,7 @@ static bool checkGetEmailAddress( const QString & input,
 
 int main(int argc, char *argv[])
 {
-  KApplication::disableAutoDcopRegistration();
+  // KApplication::disableAutoDcopRegistration();
   KCmdLineArgs::init( argc, argv, "testlinklocator", 0, 0, 0, 0 );
   KApplication app( false );
 

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     setenv( "KDEHOME", QFile::encodeName( QDir::homePath() + "/.kde-testdistrlist" ), true );
     setenv( "KDE_FORK_SLAVES", "yes", true ); // simpler, for the final cleanup
 
-    KApplication::disableAutoDcopRegistration();
+    // KApplication::disableAutoDcopRegistration();
     KCmdLineArgs::init(argc,argv,"testdistrlist", 0, 0, 0, 0);
     KApplication app;
 

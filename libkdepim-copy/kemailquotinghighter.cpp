@@ -20,7 +20,7 @@
  */
 
 #include "kemailquotinghighter.h"
-#include <kspell2/broker.h>
+#include <kspell2/loader.h>
 #include <kspell2/dictionary.h>
 #include <kspell2/settings.h>
 
