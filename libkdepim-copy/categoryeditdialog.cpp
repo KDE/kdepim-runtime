@@ -42,9 +42,10 @@
 using namespace KPIM;
 
 CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
-  : KDialog::KDialog( parent, i18n("Edit Categories"), Ok|Apply|Cancel|Help ),
-    mPrefs( prefs )
+  : KDialog::KDialog( parent ), mPrefs( prefs )
 {
+  setCaption( i18n( "Edit Categories" ) );
+  setButtons( Ok|Apply|Cancel|Help );
   mWidgets = new Ui::CategoryEditDialog_base();
   QWidget *widget = new QWidget( this );
   widget->setObjectName( "CategoryEdit" );
@@ -69,11 +70,11 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
   widget->setTabOrder( mWidgets->mButtonAdd, mWidgets->mButtonAddSubcategory );
   widget->setTabOrder( mWidgets->mButtonAddSubcategory,
                         mWidgets->mButtonRemove );
-  
+
   setMainWidget( widget );
 
   fillList();
-  
+
   connect( mCategories, SIGNAL( currentChanged( Q3ListViewItem * )),
            SLOT( editItem( Q3ListViewItem * )) );
   connect( mCategories, SIGNAL( selectionChanged() ),
@@ -223,7 +224,7 @@ void CategoryEditDialog::slotApply()
   while ( item ) {
     path.append( item->text(0) );
     QStringList _path = path;
-    _path.replaceInStrings( KPimPrefs::categorySeparator, QString("\\") + 
+    _path.replaceInStrings( KPimPrefs::categorySeparator, QString("\\") +
                             KPimPrefs::categorySeparator );
     mPrefs->mCustomCategories.append( _path.join(KPimPrefs::categorySeparator) );
     if ( item->firstChild() ) {
@@ -254,7 +255,7 @@ void CategoryEditDialog::editItem( Q3ListViewItem *item )
     mWidgets->mEdit->setText( item->text(0) );
 }
 
-void CategoryEditDialog::reload() 
+void CategoryEditDialog::reload()
 {
   fillList();
 }

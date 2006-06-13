@@ -36,10 +36,11 @@ using namespace KPIM;
 
 CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
                                             const char* name, bool modal )
-  : KDialog( parent, i18n("Select Categories"), Ok|Apply|Cancel|Help  ),
-    mPrefs( prefs )
+  : KDialog( parent ), mPrefs( prefs )
 {
+  setCaption( i18n( "Select Categories" ) );
   setModal( modal );
+  setButtons( Ok|Apply|Cancel|Help );
   setObjectName( name );
   mWidgets = new Ui::CategorySelectDialog_base();
   QWidget *widget = new QWidget( this );
@@ -49,7 +50,7 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
   setMainWidget( widget );
 
   setCategories();
- 
+
   connect( mWidgets->mButtonEdit, SIGNAL(clicked()),
            SIGNAL(editCategories()) );
   connect( mWidgets->mButtonClear, SIGNAL(clicked()),
@@ -116,7 +117,7 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
     path.append( item->text() );
     if (item->isOn()) {
       QStringList _path = path;
-      _path.replaceInStrings( KPimPrefs::categorySeparator, QString( "\\" ) + 
+      _path.replaceInStrings( KPimPrefs::categorySeparator, QString( "\\" ) +
                               KPimPrefs::categorySeparator );
       categories.append( _path.join( KPimPrefs::categorySeparator ) );
     }
@@ -138,7 +139,7 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
 void CategorySelectDialog::slotApply()
 {
   QStringList categories = getSelectedCategories( mWidgets->mCategories );
-  
+
   QString categoriesStr = categories.join(", ");
 
   mCategoryList = categories;
@@ -176,7 +177,7 @@ void CategorySelectDialog::updateCategoryConfig()
   QStringList selected = getSelectedCategories( mWidgets->mCategories );
 
   setCategories();
-  
+
   setSelected(selected);
 }
 
