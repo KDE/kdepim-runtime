@@ -52,7 +52,7 @@ class KDE_EXPORT KIncidenceChooser : public KDialog
 public:
     enum mode { local, remote, newest, ask, both };
     /** Initialize dialog and pages */
-    KIncidenceChooser(QWidget *parent=0,char *name=0);
+    KIncidenceChooser(QWidget *parent=0);
     ~KIncidenceChooser();
     //void setChooseText( QString );
     void setIncidence( KCal::Incidence*,KCal::Incidence*);

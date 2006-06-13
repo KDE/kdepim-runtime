@@ -45,8 +45,8 @@
 
 int KIncidenceChooser::chooseMode = KIncidenceChooser::ask ;
 
-KIncidenceChooser::KIncidenceChooser(QWidget *parent, char *name) :
-    KDialog(parent,name)
+KIncidenceChooser::KIncidenceChooser(QWidget *parent) :
+    KDialog(parent)
 {
     setModal( true );
     KDialog *topFrame = this;
