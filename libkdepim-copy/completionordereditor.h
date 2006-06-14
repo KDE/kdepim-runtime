@@ -31,7 +31,7 @@
 #ifndef COMPLETIONORDEREDITOR_H
 #define COMPLETIONORDEREDITOR_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kconfig.h>
 #include <kdepim_export.h>
 //Added by qt3to4:
@@ -65,11 +65,11 @@ public:
   virtual int compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 );
 };
 
-class KDEPIM_EXPORT CompletionOrderEditor : public KDialogBase {
+class KDEPIM_EXPORT CompletionOrderEditor : public KDialog {
   Q_OBJECT
 
 public:
-  CompletionOrderEditor( KPIM::LdapSearch* ldapSearch, QWidget* parent, const char* name = 0 );
+  CompletionOrderEditor( KPIM::LdapSearch* ldapSearch, QWidget* parent );
   ~CompletionOrderEditor();
 
   KConfig* configFile() { return &mConfig; }

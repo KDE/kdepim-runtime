@@ -178,11 +178,14 @@ private:
 };
 
 CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
-                                              QWidget* parent, const char* name )
-  : KDialogBase( KDialogBase::Plain, i18n("Edit Completion Order"), Ok|Cancel, Ok, parent, name, /*modal=*/true, 
-                 /*separator=*/true ),
-    mConfig( "kpimcompletionorder" ), mDirty( false )
+                                              QWidget* parent )
+  : KDialog( parent ), mConfig( "kpimcompletionorder" ), mDirty( false )
 {
+  setCaption( i18n( "Edit Completion Order" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( true );
+  enableButtonSeparator( true );
   new CompletionOrderEditorAdaptor( this );
   QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   mItems.setAutoDelete( true );
@@ -218,7 +221,8 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   // Now sort the items, then create the GUI
   mItems.sort();
 
-  KHBox* page = makeHBoxMainWidget();
+  KHBox* page = new KHBox( this );
+  setMainWidget( page );
   mListView = new K3ListView( page );
   mListView->setSorting( -1 );
   mListView->addColumn( QString() );
@@ -305,7 +309,6 @@ void CompletionOrderEditor::slotOk()
     }
     emit completionOrderChanged();
   }
-  KDialogBase::slotOk();
 }
 
 #include "completionordereditor_p.moc"
