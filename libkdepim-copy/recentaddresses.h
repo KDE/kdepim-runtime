@@ -33,7 +33,7 @@
 #include <QStringList>
 #include <kabc/addressee.h>
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 #include <kdepimmacros.h>
 
@@ -41,10 +41,10 @@ class KConfig;
 class KEditListBox;
 namespace KRecentAddress {
 
-class KDE_EXPORT RecentAddressDialog : public KDialogBase
+class KDE_EXPORT RecentAddressDialog : public KDialog
 {
  public:
-  RecentAddressDialog( QWidget *parent, const char *name = 0 );
+  RecentAddressDialog( QWidget *parent );
   void setAddresses( const QStringList &addrs );
   QStringList addresses() const;
  private:
