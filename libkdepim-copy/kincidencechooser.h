@@ -25,7 +25,7 @@
 #define _KINCIDENCECHOOSER_H
 
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <q3ptrlist.h>
 #include <QMutex>
 //Added by qt3to4:
@@ -41,7 +41,7 @@ class QRadioButton;
 class Q3ButtonGroup;
 class QStringList;
 class QTextBrowser;
-class KDialogBase;
+class KDialog;
 
 /** Dialog to change the korganizer configuration.
   */
@@ -77,7 +77,7 @@ protected:
 private:
     KPIM::HTMLDiffAlgoDisplay* mDisplayDiff;
     KPIM::CalendarDiffAlgo* diff;
-    KDialogBase* mTbL, *mTbN;
+    KDialog* mTbL, *mTbN;
     KCal::Incidence* choosedIncidence;
     KCal::Incidence* mInc1, *mInc2;
     Q3ButtonGroup *mBg;

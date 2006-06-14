@@ -240,8 +240,10 @@ void KIncidenceChooser::showIncidence1()
         }
         return;
     }
-    mTbL = new KDialogBase( KDialogBase::Plain, mInc1lab->text(), KDialogBase::Ok, KDialogBase::Ok, this, "", false/*not modal*/ );
-    mTbL->setEscapeButton( KDialogBase::Ok );
+    mTbL = new KDialog( this );
+    mTbL->setCaption( mInc1lab->text() );
+    mTbL->setModal( false );
+    mTbL->setButtons( Ok );
     connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
     QTextBrowser* textBrowser = new QTextBrowser( mTbL );
     mTbL->setMainWidget( textBrowser );
@@ -254,7 +256,7 @@ void KIncidenceChooser::showIncidence1()
 
 void KIncidenceChooser::detailsDialogClosed()
 {
-    KDialogBase* dialog = static_cast<KDialogBase *>( const_cast<QObject *>( sender() ) );
+    KDialog* dialog = static_cast<KDialog *>( const_cast<QObject *>( sender() ) );
     if ( dialog == mTbL )
         showDetails1->setText( i18n( "Show details..." ) );
     else
@@ -296,8 +298,10 @@ void KIncidenceChooser::showIncidence2()
         }
         return;
     }
-    mTbN = new KDialogBase( KDialogBase::Plain, mInc2lab->text(), KDialogBase::Ok, KDialogBase::Ok, this, "", false /*not modal*/ );
-    mTbN->setEscapeButton( KDialogBase::Ok );
+    mTbN = new KDialog( this );
+    mTbN->setCaption( mInc2lab->text() );
+    mTbN->setModal( false );
+    mTbN->setButtons( Ok );
     connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
     QTextBrowser* textBrowser = new QTextBrowser( mTbN );
     mTbN->setMainWidget( textBrowser );
