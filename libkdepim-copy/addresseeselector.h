@@ -25,7 +25,7 @@
 #include <kabc/addressee.h>
 #include <kabc/distributionlist.h>
 #include <kabc/resource.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kdepimmacros.h>
 
 #include <QBitArray>
@@ -212,13 +212,12 @@ class KDE_EXPORT AddresseeSelector : public QWidget
     AddressBookManager *mAddressBookManager;
 };
 
-class KDE_EXPORT AddresseeSelectorDialog : public KDialogBase
+class KDE_EXPORT AddresseeSelectorDialog : public KDialog
 {
   Q_OBJECT
 
   public:
-    AddresseeSelectorDialog( Selection *selection,
-                             QWidget *parent = 0, const char *name = 0 );
+    AddresseeSelectorDialog( Selection *selection, QWidget *parent = 0 );
 
   protected slots:
     void accept();

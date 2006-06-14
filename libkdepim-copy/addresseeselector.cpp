@@ -569,10 +569,15 @@ void AddresseeSelector::reloadAddressBook()
 
 
 AddresseeSelectorDialog::AddresseeSelectorDialog( Selection *selection,
-                                                  QWidget *parent, const char *name )
-  : KDialogBase( Plain, "", Ok | Cancel, Ok, parent, name, true )
+                                                  QWidget *parent )
+  : KDialog( parent )
 {
-  QFrame *frame = plainPage();
+  setCaption( "" );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( true );
+  QFrame *frame = new QFrame( this );
+  setMainWidget( frame );
   QVBoxLayout *layout = new QVBoxLayout( frame );
   mSelector = new KPIM::AddresseeSelector( selection, frame );
   layout->addWidget( mSelector );
