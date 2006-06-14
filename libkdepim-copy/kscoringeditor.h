@@ -21,7 +21,7 @@
 #include <QMap>
 //Added by qt3to4:
 #include <QLabel>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <q3table.h>
 #include <QFrame>
 #include <QStackedWidget>
@@ -246,17 +246,17 @@ private:
   QPushButton *mRuleDown;
 };
 
-class KDE_EXPORT KScoringEditor : public KDialogBase
+class KDE_EXPORT KScoringEditor : public KDialog
 {
   Q_OBJECT
 public:
   ~KScoringEditor();
   void setRule(KScoringRule*);
-  static KScoringEditor *createEditor(KScoringManager* m, QWidget *parent=0, const char *name=0);
+  static KScoringEditor *createEditor(KScoringManager* m, QWidget *parent=0);
   static KScoringEditor *editor() { return scoreEditor; }
   void setDirty();
 protected:
-  KScoringEditor(KScoringManager* m, QWidget *parent=0, const char *name=0);
+  KScoringEditor( KScoringManager* m, QWidget *parent=0 );
 private:
   /** the editor for the current rule */
   RuleEditWidget* ruleEditor;
@@ -276,11 +276,11 @@ private:
   static KScoringEditor *scoreEditor;
 };
 
-class KScoringEditorWidgetDialog : public KDialogBase
+class KScoringEditorWidgetDialog : public KDialog
 {
   Q_OBJECT
 public:
-  KScoringEditorWidgetDialog(KScoringManager *m, const QString& rName, QWidget *parent=0, const char *name=0);
+  KScoringEditorWidgetDialog(KScoringManager *m, const QString& rName, QWidget *parent=0);
 protected slots:
   void slotApply();
   void slotOk();

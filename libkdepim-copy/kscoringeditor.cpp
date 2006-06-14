@@ -88,7 +88,7 @@ SingleConditionWidget::SingleConditionWidget(KScoringManager *m,QWidget *p, cons
   QHBoxLayout *secondRow = new QHBoxLayout();
   secondRow->setSpacing( 1 );
   topL->addItem( secondRow );
-  
+
   expr = new KLineEdit( this );
   expr->setToolTip(i18n("The condition for the match"));
   // reserve space for at least 20 characters
@@ -143,7 +143,7 @@ void SingleConditionWidget::toggleRegExpButton( int selected )
 
 void SingleConditionWidget::showRegExpDialog()
 {
-  QDialog *editorDialog = 
+  QDialog *editorDialog =
       KParts::ComponentFactory::createPartInstanceFromQuery<QDialog>( "KRegExpEditor/KRegExpEditor", QString() );
   if ( editorDialog ) {
     KRegExpEditorInterface *editor = dynamic_cast<KRegExpEditorInterface *>( editorDialog );
@@ -227,7 +227,7 @@ SingleActionWidget::SingleActionWidget(KScoringManager *m,QWidget *p, const char
   QHBoxLayout *topL = new QHBoxLayout(this);
   topL->setMargin(0);
   topL->setSpacing(5);
-  
+
   types = new KComboBox(this);
   types->setEditable(false);
   topL->addWidget(types);
@@ -282,10 +282,10 @@ SingleActionWidget::~SingleActionWidget()
 void SingleActionWidget::setAction(ActionBase *act)
 {
   kDebug(5100) << "SingleActionWidget::setAction()" << endl;
-  
+
   int index = types->currentIndex();
   types->setItemText(index, ActionBase::userName(act->getType()));
-  
+
   stack->setCurrentIndex(index);
   switch (act->getType()) {
     case ActionBase::SETSCORE:
@@ -410,9 +410,9 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   : QWidget(p), dirty(false), manager(m), oldRuleName(QString())
 {
   kDebug(5100) << "RuleEditWidget::RuleEditWidget()" << endl;
-  
+
   setObjectName(n != 0L ? n : "RuleEditWidget");
-  
+
   QVBoxLayout *topLayout = new QVBoxLayout( this );
   topLayout->setMargin(5);
   topLayout->setSpacing(KDialog::spacingHint());
@@ -423,7 +423,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   QGridLayout* groupL = new QGridLayout(groupB);
   groupL->setMargin(8);
   groupL->setSpacing(5);
-  
+
   groupL->addItem( new QSpacerItem( 0, fontMetrics().lineSpacing()-4), 0, 0 );
 
   // name
@@ -476,7 +476,7 @@ RuleEditWidget::RuleEditWidget(KScoringManager *m,QWidget *p, const char *n)
   QGridLayout *condL = new QGridLayout(groupConds);
   condL->setMargin(8);
   condL->setSpacing(5);
-  
+
   condL->addItem( new QSpacerItem( 0, fontMetrics().lineSpacing()-4), 0, 0 );
 
   QButtonGroup *buttonGroup = new QButtonGroup(groupConds);
@@ -636,7 +636,7 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   QVBoxLayout *topL = new QVBoxLayout(this);
   topL->setMargin(standalone? 0:5);
   topL->setSpacing(KDialog::spacingHint());
-  
+
   ruleList = new KListBox(this);
   if (standalone) {
     connect(ruleList,SIGNAL(doubleClicked(Q3ListBoxItem*)),
@@ -650,9 +650,9 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
 
   QHBoxLayout *btnL = new QHBoxLayout();
   btnL->setSpacing(KDialog::spacingHint());
-  
+
   topL->addItem(btnL);
-  
+
   mRuleUp = new QPushButton( this );
   mRuleUp->setIcon( BarIcon( "up", K3Icon::SizeSmall ) );
   mRuleUp->setToolTip( i18n("Move rule up") );
@@ -666,9 +666,9 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
 
   btnL = new QHBoxLayout();
   btnL->setSpacing( KDialog::spacingHint() );
-  
+
   topL->addItem(btnL);
-  
+
   editRule=0L;
   newRule = new QPushButton(this);
   newRule->setIcon( BarIcon( "filenew", K3Icon::SizeSmall ) );
@@ -698,7 +698,7 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   QBoxLayout *filterL = new QVBoxLayout();
   topL->addItem(filterL);
   filterL->setSpacing(KDialog::spacingHint());
-  
+
   KComboBox *filterBox = new KComboBox(this);
   QStringList l = m->getGroups();
   filterBox->addItem(i18n("<all groups>"));
@@ -709,7 +709,7 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   slotGroupFilter(i18n("<all groups>"));
   QLabel *lab = new QLabel(i18n("Sho&w only rules for group:"),this);
   lab->setBuddy(filterBox);
-  
+
   filterL->addWidget(lab);
   filterL->addWidget(filterBox);
 
@@ -907,14 +907,17 @@ void RuleListWidget::slotRuleDown()
 //============================================================================
 KScoringEditor* KScoringEditor::scoreEditor = 0;
 
-KScoringEditor::KScoringEditor(KScoringManager* m,
-                               QWidget *parent, const char *name)
-    : KDialogBase(KDialogBase::Plain, i18n("Rule Editor"),Ok|Apply|Cancel,Ok,parent,name,/*modal=*/false,/*separator=*/true), manager(m)
+KScoringEditor::KScoringEditor(KScoringManager* m, QWidget *parent)
+    : KDialog(parent), manager(m)
 {
+  setCaption( i18n( "Rule Editor" ) );
+  setButtons( Ok|Apply|Cancel );
+  setDefaultButton( Ok );
+  setModal( false );
+  enableButtonSeparator( true );
   manager->pushRuleList();
   if (!scoreEditor) scoreEditor = this;
   kDebug(5100) << "KScoringEditor::KScoringEditor()" << endl;
-  if (!name) setObjectName("KScoringEditor");
   // the left side gives an overview about all rules, the right side
   // shows a detailed view of an selected rule
   QWidget *w = new QWidget(this);
@@ -922,7 +925,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m,
   QHBoxLayout *hbl = new QHBoxLayout(w);
   hbl->setMargin(0);
   hbl->setSpacing(spacingHint());
-  
+
   ruleLister = new RuleListWidget(manager,false,w);
   hbl->addWidget(ruleLister);
   ruleEditor = new RuleEditWidget(manager,w);
@@ -939,8 +942,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m,
 
 void KScoringEditor::setDirty()
 {
-  KPushButton *applyBtn = actionButton(Apply);
-  applyBtn->setEnabled(true);
+  enableButton( Apply, true );
 }
 
 KScoringEditor::~KScoringEditor()
@@ -949,10 +951,10 @@ KScoringEditor::~KScoringEditor()
 }
 
 KScoringEditor* KScoringEditor::createEditor(KScoringManager* m,
-                                             QWidget *parent, const char *name)
+                                             QWidget *parent)
 {
   if (scoreEditor) return scoreEditor;
-  else return new KScoringEditor(m,parent,name);
+  else return new KScoringEditor(m,parent);
 }
 
 void KScoringEditor::setRule(KScoringRule* r)
@@ -990,14 +992,14 @@ void KScoringEditor::slotOk()
 {
   slotApply();
   manager->removeTOS();
-  KDialogBase::slotOk();
+  KDialog::accept();
   manager->editorReady();
 }
 
 void KScoringEditor::slotCancel()
 {
   manager->popRuleList();
-  KDialogBase::slotCancel();
+  KDialog::reject();
 }
 
 void KScoringEditor::slotFinished()
@@ -1010,13 +1012,16 @@ void KScoringEditor::slotFinished()
 // class KScoringEditorWidgetDialog (a dialog for the KScoringEditorWidget)
 //
 //============================================================================
-KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const QString& r, QWidget *p, const char *n)
-    : KDialogBase(KDialogBase::Plain, i18n("Edit Rule"),
-                KDialogBase::Ok|KDialogBase::Apply|KDialogBase::Close,
-                KDialogBase::Ok,p,n,/*modal*/true,/*separator*/true),
-    manager(m), ruleName(r)
+KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const QString& r, QWidget *p)
+    : KDialog( p ), manager(m), ruleName(r)
 {
-  QFrame *f = makeMainWidget();
+  setCaption( i18n( "Edit Rule" ) );
+  setButtons( KDialog::Ok|KDialog::Apply|KDialog::Close );
+  setDefaultButton( KDialog::Ok );
+  setModal( true );
+  enableButtonSeparator( true );
+  QFrame *f = new QFrame( this );
+  setMainWidget( f );
   QBoxLayout *topL = new QVBoxLayout(f);
   ruleEditor = new RuleEditWidget(manager,f);
   connect(ruleEditor, SIGNAL(shrink()), SLOT(slotShrink()));
@@ -1037,7 +1042,7 @@ void KScoringEditorWidgetDialog::slotApply()
 void KScoringEditorWidgetDialog::slotOk()
 {
   slotApply();
-  KDialogBase::slotOk();
+  KDialog::accept();
 }
 
 void KScoringEditorWidgetDialog::slotShrink()
