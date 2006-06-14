@@ -29,10 +29,16 @@
 
 #include "sendsmsdialog.h"
 
-SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent, const char *name )
-  : KDialogBase( Plain, i18n( "Send SMS" ), Ok | Cancel, Ok, parent, name, true, true )
+SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent )
+  : KDialog( parent )
 {
-  QWidget *page = plainPage();
+  setCaption( i18n( "Send SMS" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( true );
+  enableButtonSeparator( true );
+  QWidget *page = new QWidget( this );
+  setMainWidget( page );
 
   QGridLayout *layout = new QGridLayout( page );
   layout->setMargin( marginHint() );

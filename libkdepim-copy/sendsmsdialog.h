@@ -22,19 +22,19 @@
 #ifndef SENDSMSDIALOG_H
 #define SENDSMSDIALOG_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 //Added by qt3to4:
 #include <QLabel>
 
 class QLabel;
 class QTextEdit;
 
-class SendSMSDialog : public KDialogBase
+class SendSMSDialog : public KDialog
 {
   Q_OBJECT
 
   public:
-    SendSMSDialog( const QString &recipientName, QWidget *parent, const char *name = 0 );
+    SendSMSDialog( const QString &recipientName, QWidget *parent );
 
     QString text() const;
 
