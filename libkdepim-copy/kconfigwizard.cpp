@@ -33,21 +33,26 @@
 //Added by qt3to4:
 #include <QVBoxLayout>
 
-KConfigWizard::KConfigWizard( QWidget *parent,
-                              char *name, bool modal )
-  : KDialogBase( TreeList, i18n("Configuration Wizard"), Ok|Cancel, Ok, parent,
-                 name, modal ),
-    mPropagator( 0 ), mChangesPage( 0 )
+KConfigWizard::KConfigWizard( QWidget *parent, bool modal )
+  : KPageDialog( parent ), mPropagator( 0 ), mChangesPage( 0 )
 {
+  setFaceType( KPageDialog::Tree );
+  setCaption( i18n( "Configuration Wizard" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( modal );
   init();
 }
 
 KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
-                              char *name, bool modal )
-  : KDialogBase( TreeList, i18n("Configuration Wizard"), Ok|Cancel, Ok, parent,
-                 name, modal ),
-    mPropagator( propagator ), mChangesPage( 0 )
+                              bool modal )
+  : KPageDialog( parent ), mPropagator( propagator ), mChangesPage( 0 )
 {
+  setFaceType( KPageDialog::Tree );
+  setCaption( i18n( "Configuration Wizard" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( modal );
   init();
 }
 
@@ -76,14 +81,19 @@ void KConfigWizard::slotAboutToShowPage( QWidget *page )
   }
 }
 
-QFrame *KConfigWizard::createWizardPage( const QString &title )
+KPageWidgetItem *KConfigWizard::createWizardPage( const QString &title )
 {
-  return addPage( title );
+  KVBox *page = new KVBox();
+  return addPage( page, title );
 }
 
 void KConfigWizard::setupRulesPage()
 {
-  QFrame *topFrame = addPage( i18n("Rules") );
+  KVBox *page = new KVBox();
+  KPageWidgetItem *item = addPage( page, i18n("Rules") );
+  item->setHeader( i18n( "Setup Rules" ) );
+  //TODO: set item icon
+  QFrame *topFrame = new QFrame( this );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mRuleView = new Q3ListView( topFrame );
@@ -124,7 +134,11 @@ void KConfigWizard::updateRules()
 
 void KConfigWizard::setupChangesPage()
 {
-  QFrame *topFrame = addPage( i18n("Changes") );
+  KVBox *page = new KVBox();
+  KPageWidgetItem *item = addPage( page, i18n("Changes") );
+  item->setHeader( i18n( "Setup Changes" ) );
+  //TODO: set item icon
+  QFrame *topFrame = new QFrame( this );
   QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
 
   mChangeView = new Q3ListView( topFrame );

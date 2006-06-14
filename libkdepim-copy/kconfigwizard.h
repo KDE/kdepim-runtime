@@ -23,27 +23,28 @@
 
 #include <kconfigpropagator.h>
 #include <kdepimmacros.h>
-#include <kdialogbase.h>
+#include <kpagedialog.h>
+#include <kvbox.h>
 
 class Q3ListView;
 
 /**
   @short Configuration wizard base class
 */
-class KDE_EXPORT KConfigWizard : public KDialogBase
+class KDE_EXPORT KConfigWizard : public KPageDialog
 {
     Q_OBJECT
   public:
     /**
       Create wizard. You have to set a propgator with setPropagator() later.
     */
-    KConfigWizard( QWidget *parent = 0, char *name = 0, bool modal = false );
+    KConfigWizard( QWidget *parent = 0, bool modal = false );
     /**
       Create wizard for given KConfigPropagator. The wizard takes ownership of
       the propagator.
     */
     KConfigWizard( KConfigPropagator *propagator, QWidget *parent = 0,
-                   char *name = 0, bool modal = false );
+                   bool modal = false );
     /**
       Destructor.
     */
@@ -61,7 +62,7 @@ class KDE_EXPORT KConfigWizard : public KDialogBase
     /**
       Create wizard page with given title.
     */
-    QFrame *createWizardPage( const QString &title );
+    KPageWidgetItem *createWizardPage( const QString &title );
 
     /**
       Use this function to read the configuration from the KConfigSkeleton
