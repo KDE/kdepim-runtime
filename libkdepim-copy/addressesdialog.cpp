@@ -103,7 +103,7 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
     if ( addr.photo().data().isNull() )
       setPixmap( 0, KGlobal::iconLoader()->loadIcon( "personal", K3Icon::Small ) );
     else
-      setPixmap( 0, QPixmap::fromImage( addr.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation 
+      setPixmap( 0, QPixmap::fromImage( addr.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation
 ) ) );
   } else {
     setPixmap( 0, KGlobal::iconLoader()->loadIcon( addr.photo().url(), K3Icon::Small ) );
@@ -173,7 +173,7 @@ AddresseeViewItem::email() const
 
 bool AddresseeViewItem::matches(const QString& txt) const
 {
-    return d->address.realName().contains(txt, Qt::CaseInsensitive) 
+    return d->address.realName().contains(txt, Qt::CaseInsensitive)
         || d->address.preferredEmail().contains(txt, Qt::CaseInsensitive);
 }
 
@@ -211,10 +211,14 @@ AddresseeViewItem::compare( Q3ListViewItem * i, int col, bool ascending ) const
 }
 
 AddressesDialog::AddressesDialog( QWidget* parent)
-  : KDialogBase( KDialogBase::Plain, i18n("Address Selection"),
-                 Ok|Cancel, Ok, parent, 0L/*name*/, true/*modal*/ )
+  : KDialog( parent )
 {
-  KVBox *page = makeVBoxMainWidget();
+  setCaption( i18n( "Address Selection" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( true );
+  KVBox *page = new KVBox( this );
+  setMainWidget( page );
   d = new AddressesDialogPrivate;
   d->ui = new AddressPickerUI( page );
 

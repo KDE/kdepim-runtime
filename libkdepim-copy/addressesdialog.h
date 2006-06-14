@@ -26,7 +26,7 @@
 #define ADDRESSESDIALOG_H
 
 #include <kabc/addressee.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <k3listview.h>
 #include <QStringList>
 #include <q3ptrlist.h>
@@ -75,7 +75,7 @@ namespace KPIM {
     AddresseeViewItemPrivate *d;
   };
 
-  class KDE_EXPORT AddressesDialog : public KDialogBase
+  class KDE_EXPORT AddressesDialog : public KDialog
   {
     Q_OBJECT
   public:
