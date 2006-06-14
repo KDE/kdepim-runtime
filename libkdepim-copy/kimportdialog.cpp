@@ -151,10 +151,12 @@ class ColumnItem : public Q3ListViewItem {
   reimplements the convertRow() function.
 */
 KImportDialog::KImportDialog(QWidget* parent)
-    : KDialogBase(KDialogBase::Plain, i18n("Import Text File"), Ok|Cancel, Ok, parent, "importdialog", /*modal=*/true),
-      mSeparator(","),
-      mCurrentRow(0)
+    : KDialog(parent ), mSeparator(","), mCurrentRow(0)
 {
+  setCaption( i18n( "Import Text File" ) );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+  setModal( true );
   mData.setAutoDelete( true );
 
   KVBox *topBox = new KVBox(this);

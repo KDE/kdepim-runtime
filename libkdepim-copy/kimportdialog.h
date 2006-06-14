@@ -29,7 +29,7 @@
 #include <q3valuevector.h>
 #include <Q3PtrList>
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 class Q3Table;
 class Q3ListView;
@@ -68,13 +68,13 @@ class KImportColumn
     QString m_header;
     QList<int> mFormats;
     int mDefaultFormat;
-    
+
     QList<int> mColIds;
-    
+
     KImportDialog *mDialog;
 };
 
-class KImportDialog : public KDialogBase
+class KImportDialog : public KDialog
 {
     Q_OBJECT
   public:
@@ -89,7 +89,7 @@ class KImportDialog : public KDialogBase
 
   protected:
     void readFile( int rows = 10 );
-  
+
     void fillTable();
     void registerColumns();
     int findFormat(int column);
