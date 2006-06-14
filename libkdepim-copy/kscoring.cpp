@@ -80,9 +80,15 @@ NotifyDialog* NotifyDialog::me = 0;
 NotifyDialog::NotesMap NotifyDialog::dict;
 
 NotifyDialog::NotifyDialog(QWidget* parent)
-  : KDialogBase(KDialogBase::Plain,i18n("Notify Message"),Close,Close,parent,"notify action dialog",/*modal*/true)
+  : KDialog( parent )
 {
-  QFrame *f = makeMainWidget();
+  setCaption( i18n( "Notify Message" ) );
+  setButtons( Close );
+  setDefaultButton( Close );
+  setModal( true );
+
+  QFrame *f = new QFrame( this );
+  setMainWidget ( f );
   QVBoxLayout *topL = new QVBoxLayout(f);
   note = new QLabel(f);
   note->setTextFormat(Qt::RichText);
@@ -109,9 +115,9 @@ void NotifyDialog::display(ScorableArticle& a, const QString& s)
   NotesMap::Iterator i = dict.find(s);
   if (i == dict.end() || i.value()) {
     QString msg = i18n("Article\n<b>%1</b><br><b>%2</b><br>caused the following"
-                       " note to appear:<br>%3", 
-                  a.from(), 
-                  a.subject(), 
+                       " note to appear:<br>%3",
+                  a.from(),
+                  a.subject(),
                   s);
     me->note->setText(msg);
     if ( i == dict.end() )
@@ -393,8 +399,11 @@ QString NotifyCollection::collection() const
 void NotifyCollection::displayCollection(QWidget *p) const
 {
   //KMessageBox::information(p,collection(),i18n("Collected Notes"));
-  KDialogBase *dlg = new KDialogBase( KDialogBase::Plain, i18n("Collected Notes"),
-                                      KDialogBase::Close, KDialogBase::Close, p, 0, /*modal*/false );
+  KDialog *dlg = new KDialog( p );
+  dlg->setCaption( i18n( "Collected Notes" ) );
+  dlg->setButtons( KDialog::Close );
+  dlg->setDefaultButton( KDialog::Close );
+  dlg->setModal( false );
   Q3TextView *text = new Q3TextView(dlg);
   text->setText(collection());
   dlg->setMainWidget(text);

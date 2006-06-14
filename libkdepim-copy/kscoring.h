@@ -37,7 +37,7 @@
 #include <QTextStream>
 #include <QLabel>
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <klineedit.h>
 #include <knuminput.h>
 
@@ -48,7 +48,6 @@ class QDomDocument;
 class QDomElement;
 class QTextStream;
 class QLabel;
-
 
 /**
   The following classes ScorableArticle, ScorableGroup define
@@ -409,7 +408,7 @@ class KDE_EXPORT KScoringManager : public QObject
 
 
 //----------------------------------------------------------------------------
-class KDE_EXPORT NotifyDialog : public KDialogBase
+class KDE_EXPORT NotifyDialog : public KDialog
 {
   Q_OBJECT
 public:
