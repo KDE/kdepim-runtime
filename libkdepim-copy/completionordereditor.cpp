@@ -309,6 +309,7 @@ void CompletionOrderEditor::slotOk()
     }
     emit completionOrderChanged();
   }
+  KDialog::accept();
 }
 
 #include "completionordereditor_p.moc"
