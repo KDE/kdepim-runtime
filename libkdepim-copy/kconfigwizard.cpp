@@ -81,10 +81,11 @@ void KConfigWizard::slotAboutToShowPage( QWidget *page )
   }
 }
 
-KPageWidgetItem *KConfigWizard::createWizardPage( const QString &title )
+QWidget *KConfigWizard::createWizardPage( const QString &title )
 {
   KVBox *page = new KVBox();
-  return addPage( page, title );
+  addPage( page, title );
+  return page;
 }
 
 void KConfigWizard::setupRulesPage()

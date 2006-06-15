@@ -42,7 +42,7 @@ class TestConfigWizard : public KConfigWizard
       KConfigWizard( new KConfigPropagator( MyConfig::self(),
                                             "propagator_test.kcfg" ) )
     {
-      QFrame *page = createWizardPage( "My Wizard Page" );
+      QWidget *page = createWizardPage( "My Wizard Page" );
       Q3BoxLayout *topLayout = new Q3VBoxLayout( page );
       
       mFixKMailCheckBox = new QCheckBox( i18n("Fix KMail"), page );      

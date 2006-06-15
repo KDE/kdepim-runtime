@@ -31,7 +31,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kdepimmacros.h>
 #include "kfoldertree.h"
 
@@ -188,7 +188,7 @@ class KDE_EXPORT GroupItem : public Q3CheckListItem
  *
  */
 
-class KDE_EXPORT KSubscription : public KDialogBase
+class KDE_EXPORT KSubscription : public KDialog
 {
   Q_OBJECT
 
@@ -202,7 +202,7 @@ class KDE_EXPORT KSubscription : public KDialogBase
     };
 
     KSubscription( QWidget *parent, const QString &caption, KAccount* acct,
-        int buttons = 0, const QString &user1 = QString(),
+        KDialog::ButtonCodes buttons = 0, const QString &user1 = QString(),
         bool descriptionColumn = true );
 
     ~KSubscription();

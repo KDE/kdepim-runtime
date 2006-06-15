@@ -27,7 +27,7 @@
 #include <QLineEdit>
 #include <QTimeEdit>
 
-#include <kdialogbase.h>
+#include <kpagedialog.h>
 #include <kcmodule.h>
 #include <kconfigskeleton.h>
 #include <kfile.h>
@@ -35,6 +35,7 @@
 
 
 class KColorButton;
+class KPageWidget;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
@@ -669,7 +670,7 @@ class KDE_EXPORT KPrefsWidManager
   default values is handled automatically. Custom widgets have to be handled in
   the functions @ref usrReadConfig() and @ref usrWriteConfig().
 */
-class KDE_EXPORT KPrefsDialog : public KDialogBase, public KPrefsWidManager
+class KDE_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
 {
     Q_OBJECT
   public:

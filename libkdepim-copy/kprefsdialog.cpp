@@ -41,6 +41,7 @@
 #include <kfontdialog.h>
 #include <kmessagebox.h>
 #include <kconfigskeleton.h>
+#include <kpagewidget.h>
 #include <kurlrequester.h>
 #include "ktimeedit.h"
 #include "kdateedit.h"
@@ -687,10 +688,16 @@ void KPrefsWidManager::writeWidConfig()
 
 KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
                             bool modal )
-  : KDialogBase(IconList,i18n("Preferences"),Ok|Apply|Cancel|Default,Ok,parent,
-                name,modal,true),
+  : KPageDialog( parent ),
     KPrefsWidManager( prefs )
 {
+  setFaceType( List );
+  setCaption( i18n("Preferences") );
+  setButtons( Ok|Apply|Cancel|Default );
+  setDefaultButton( Ok );
+  setModal( modal );
+  enableButtonSeparator( true );
+
   connect(this,SIGNAL(cancelClicked()),SLOT(reject()));
 }
 
@@ -718,7 +725,8 @@ void KPrefsDialog::autoCreate()
     QGridLayout *layout;
     int currentRow;
     if ( !mGroupPages.contains( group ) ) {
-      page = addPage( group );
+      page = new QWidget( this );
+      addPage( page, group );
       layout = new QGridLayout( page );
       mGroupPages.insert( group, page );
       mGroupLayouts.insert( group, layout );

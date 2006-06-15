@@ -211,11 +211,18 @@ void GroupItem::setup()
 //=============================================================================
 
 KSubscription::KSubscription( QWidget *parent, const QString &caption,
-    KAccount * acct, int buttons, const QString &user1, bool descriptionColumn )
-  : KDialogBase( KDialogBase::Plain, caption, buttons | Help | Ok | Cancel, Ok,
-      parent, /*name*/0, /*modal*/true, /*separator*/true, i18n("Reload &List"), user1 ),
+    KAccount * acct, KDialog::ButtonCodes buttons, const QString &user1, bool descriptionColumn )
+  : KDialog( parent ),
     mAcct( acct )
 {
+  setCaption( caption );
+  setButtons( buttons | Help | Ok | Cancel );
+  setDefaultButton( Ok );
+  setButtonText( User1, i18n("Reload &List") );
+  setButtonText( User2, user1 );
+  setModal( true );
+  enableButtonSeparator( true );
+
   mLoading = true;
   setAttribute( Qt::WA_DeleteOnClose );
 

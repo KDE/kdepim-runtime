@@ -62,7 +62,7 @@ class KDE_EXPORT KConfigWizard : public KPageDialog
     /**
       Create wizard page with given title.
     */
-    KPageWidgetItem *createWizardPage( const QString &title );
+    QWidget *createWizardPage( const QString &title );
 
     /**
       Use this function to read the configuration from the KConfigSkeleton
