@@ -240,17 +240,17 @@ KImportDialog::KImportDialog(QWidget* parent)
 
   connect(this,SIGNAL(okClicked()),SLOT(applyConverter()));
   connect(this,SIGNAL(applyClicked()),SLOT(applyConverter()));
-  enableButtonOk(!urlRequester->lineEdit()->text().isEmpty());
+  enableButton(KDialog::Ok, !urlRequester->lineEdit()->text().isEmpty());
 }
 
 void KImportDialog::slotUrlChanged(const QString & text)
 {
-    enableButtonOk(!text.isEmpty());
+    enableButton(KDialog::Ok,!text.isEmpty());
 }
 
 bool KImportDialog::setFile(const QString& file)
 {
-    enableButtonOk(!file.isEmpty());
+    enableButton(KDialog::Ok,!file.isEmpty());
   kDebug(5300) << "KImportDialog::setFile(): " << file << endl;
 
   QFile f(file);
