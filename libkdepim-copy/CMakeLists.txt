@@ -15,7 +15,7 @@ add_definitions(${QDBUS_DEFINITIONS})
 
 ########### next target ###############
 
-set(kdepim_LIB_SRCS ${libemailfunctions_SRCS} 
+set(kdepim_LIB_SRCS
    ktimeedit.cpp 
    alarmclient.cpp
    kprefsdialog.cpp 
