@@ -39,7 +39,7 @@
 
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
-#include <libemailfunctions/email.h>
+#include <emailfunctions/email.h>
 
 #include <kcompletionbox.h>
 #include <kcursor.h>
