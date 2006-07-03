@@ -21,7 +21,7 @@
 
 #include "kemailquotinghighter.h"
 #include <kspell2/loader.h>
-#include <kspell2/dictionary.h>
+#include <kspell2/speller.h>
 #include <kspell2/settings.h>
 
 #include <kconfig.h>
