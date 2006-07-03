@@ -914,7 +914,7 @@ KScoringEditor::KScoringEditor(KScoringManager* m, QWidget *parent)
   setButtons( Ok|Apply|Cancel );
   setDefaultButton( Ok );
   setModal( false );
-  enableButtonSeparator( true );
+  showButtonSeparator( true );
   manager->pushRuleList();
   if (!scoreEditor) scoreEditor = this;
   kDebug(5100) << "KScoringEditor::KScoringEditor()" << endl;
@@ -1019,7 +1019,7 @@ KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const
   setButtons( KDialog::Ok|KDialog::Apply|KDialog::Close );
   setDefaultButton( KDialog::Ok );
   setModal( true );
-  enableButtonSeparator( true );
+  showButtonSeparator( true );
   QFrame *f = new QFrame( this );
   setMainWidget( f );
   QBoxLayout *topL = new QVBoxLayout(f);

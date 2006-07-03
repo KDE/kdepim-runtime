@@ -22,8 +22,8 @@
 #include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
 #include <kresources/selectdialog.h>
-#include <dbus/qdbusinterface.h>
-#include <dbus/qdbusconnection.h>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusConnection>
 
 #include <QEventLoop>
 #include <QRegExp>

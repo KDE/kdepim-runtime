@@ -26,8 +26,8 @@
 #include <kdebug.h>
 #include <kstandarddirs.h>
 
-#include <dbus/qdbusconnection.h>
-#include <dbus/qdbusinterface.h>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
 #include <ktoolinvocation.h>
 
 AlarmClient::AlarmClient()
@@ -37,7 +37,8 @@ AlarmClient::AlarmClient()
 
 void AlarmClient::startDaemon()
 {
-  if ( QDBus::sessionBus().findInterface( "org.kde.pim.korgac", "/" ) ) {
+  QDBusInterface iface( "org.kde.pim.korgac", "/" );
+  if ( iface.isValid() ){
     // Alarm daemon already runs
     return;
   }
@@ -56,6 +57,6 @@ void AlarmClient::startDaemon()
 
 void AlarmClient::stopDaemon()
 {
-  QDBusInterfacePtr korgac("org.kde.pim.korgac", "/", "org.kde.pim.AlarmClient" );
-  korgac->call("quit", QByteArray());
+  QDBusInterface korgac( "org.kde.pim.korgac", "/", "org.kde.pim.AlarmClient" );
+  korgac.call("quit", QByteArray());
 }

@@ -61,7 +61,7 @@
 #include <QDropEvent>
 #include <QMouseEvent>
 #include <QMenu>
-#include <dbus/qdbusconnection.h>
+#include <QtDBus/QDBusConnection>
 
 using namespace KPIM;
 

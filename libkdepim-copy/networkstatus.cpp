@@ -23,8 +23,8 @@
 #include <kglobal.h>
 #include <kstaticdeleter.h>
 
-#include <dbus/qdbusconnection.h>
-#include <dbus/qdbusinterface.h>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
 
 #include "networkstatus_p.h"
 #include "networkstatus.h"

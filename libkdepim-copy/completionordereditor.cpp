@@ -33,7 +33,7 @@
 #include "ldapclient.h"
 #include "resourceabc.h"
 
-#include <dbus/qdbusconnection.h>
+#include <QtDBus/QDBusConnection>
 
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>

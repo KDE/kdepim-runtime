@@ -31,7 +31,7 @@
 #ifndef COMPLETIONORDEREDITOR_P_H
 #define COMPLETIONORDEREDITOR_P_H
 
-#include <dbus/qdbusabstractadaptor.h>
+#include <QtDBus/QtDBusAbstractAdaptor>
 
 namespace KPIM {
 

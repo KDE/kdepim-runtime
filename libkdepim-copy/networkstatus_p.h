@@ -22,7 +22,7 @@
 #ifndef NETWORKSTATUS_P_H
 #define NETWORKSTATUS_P_H
 
-#include <dbus/qdbusabstractadaptor.h>
+#include <QtDBus/QDBusAbstractAdaptor>
 
 namespace KPIM {
 

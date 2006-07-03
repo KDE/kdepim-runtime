@@ -696,7 +696,7 @@ KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
   setButtons( Ok|Apply|Cancel|Default );
   setDefaultButton( Ok );
   setModal( modal );
-  enableButtonSeparator( true );
+  showButtonSeparator( true );
 
   connect(this,SIGNAL(cancelClicked()),SLOT(reject()));
 }

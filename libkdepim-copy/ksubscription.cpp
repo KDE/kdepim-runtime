@@ -221,7 +221,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   setButtonText( User1, i18n("Reload &List") );
   setButtonText( User2, user1 );
   setModal( true );
-  enableButtonSeparator( true );
+  showButtonSeparator( true );
 
   mLoading = true;
   setAttribute( Qt::WA_DeleteOnClose );
