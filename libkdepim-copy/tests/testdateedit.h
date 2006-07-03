@@ -29,7 +29,7 @@ class DateEdit : public QWidget
   Q_OBJECT
 
   public:
-    DateEdit( QWidget *parent = 0, const char *name = 0 );
+    DateEdit( QWidget *parent = 0 );
 
   public slots:
     void dateChanged( const QDate& );

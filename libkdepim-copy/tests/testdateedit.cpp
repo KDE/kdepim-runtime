@@ -31,8 +31,8 @@
 
 #include "testdateedit.h"
 
-DateEdit::DateEdit( QWidget *parent, const char *name )
-  : QWidget( parent, name )
+DateEdit::DateEdit( QWidget *parent )
+  : QWidget( parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
   
