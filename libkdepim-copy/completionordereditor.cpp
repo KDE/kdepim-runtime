@@ -185,7 +185,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   setButtons( Ok|Cancel );
   setDefaultButton( Ok );
   setModal( true );
-  enableButtonSeparator( true );
+  showButtonSeparator( true );
   new CompletionOrderEditorAdaptor( this );
   QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   mItems.setAutoDelete( true );
