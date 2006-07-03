@@ -31,7 +31,7 @@
 #ifndef COMPLETIONORDEREDITOR_P_H
 #define COMPLETIONORDEREDITOR_P_H
 
-#include <QtDBus/QtDBusAbstractAdaptor>
+#include <QtDBus/QDBusAbstractAdaptor>
 
 namespace KPIM {
 
