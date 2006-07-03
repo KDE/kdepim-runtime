@@ -9,7 +9,7 @@ add_subdirectory( about )
 
 #kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
 
-add_definitions(${QDBUS_DEFINITIONS})
+add_definitions(${QT_QTDBUS_DEFINITIONS})
 
 
 
