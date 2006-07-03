@@ -7,7 +7,7 @@ add_subdirectory( pics )
 add_subdirectory( kpartsdesignerplugin ) 
 add_subdirectory( about ) 
 
-kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
+#kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
 
 add_definitions(${QDBUS_DEFINITIONS})
 
