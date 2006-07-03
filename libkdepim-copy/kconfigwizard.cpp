@@ -26,7 +26,7 @@
 #include <kconfigskeleton.h>
 #include <kmessagebox.h>
 #include <kapplication.h>
-#include <kpagewidgetmodel.h>
+#include <kpagedialog.h>
 
 #include <q3listview.h>
 #include <QLayout>
