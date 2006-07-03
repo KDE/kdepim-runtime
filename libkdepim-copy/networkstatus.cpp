@@ -75,8 +75,8 @@ NetworkStatus::Status NetworkStatus::status() const
 
 void NetworkStatus::onlineStatusChanged()
 {
-  QDBusInterfacePtr call( "org.kde.kded", "/", "org.kde.kded" );
-  QDBusMessage reply = call->call( "onlineStatus", true );
+  QDBusInterface call( "org.kde.kded", "/", "org.kde.kded" );
+  QDBusMessage reply = call.call( "onlineStatus", true );
   if ( reply.type() == QDBusMessage::ReplyMessage ) {
     int status = reply.at( 0 ).toInt();
     if ( status == 3 )
