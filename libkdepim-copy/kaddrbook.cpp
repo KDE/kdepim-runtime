@@ -37,21 +37,21 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   //QString email = KMMessage::getEmailAddr(addr);
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
-  if ( QDBus::sessionBus().findInterface( "kaddressbook", "/" ) ) {
+  QDBusInterface abinterface( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
+  if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor
     //won't work as desired, see bug #87233
-    QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
-    call->call( "newInstance" );
+    abinterface.call( "newInstance" );
   }
   else
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 
-  QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.KAddressbookIface" );
+  QDBusInterface abinterface1( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
   if( !addresseeList.isEmpty() ) {
-    call->call( "showContactEditor", addresseeList.first().uid() );
+    abinterface1.call( "showContactEditor", addresseeList.first().uid() );
   }
   else {
-    call->call( "addEmail", addr );
+    abinterface1.call( "addEmail", addr );
   }
 }
 
@@ -98,8 +98,8 @@ void KAddrBookExternal::openAddressBook(QWidget *) {
 void KAddrBookExternal::addNewAddressee( QWidget* )
 {
   KToolInvocation::startServiceByDesktopName("kaddressbook");
-  QDBusInterfacePtr call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
-  call->call("newContact");
+  QDBusInterface call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
+  call.call("newContact");
 }
 
 bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *parent )
