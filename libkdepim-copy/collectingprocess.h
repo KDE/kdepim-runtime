@@ -69,8 +69,6 @@ private slots:
 private:
   class Private;
   Private * d;
-protected:
-  void virtual_hook( int id, void * data );
 };
 
 } // namespace KPIM

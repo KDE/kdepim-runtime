@@ -132,8 +132,4 @@ QByteArray CollectingProcess::collectedStderr()
   return b;
 }
 
-void CollectingProcess::virtual_hook( int id, void * data ) {
-  KProcess::virtual_hook( id, data );
-}
-
 #include "collectingprocess.moc"
