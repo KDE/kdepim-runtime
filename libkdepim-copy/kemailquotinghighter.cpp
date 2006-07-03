@@ -20,9 +20,9 @@
  */
 
 #include "kemailquotinghighter.h"
-#include <kspell2/loader.h>
-#include <kspell2/speller.h>
-#include <kspell2/settings.h>
+#include <sonnet/loader.h>
+#include <sonnet/speller.h>
+#include <sonnet/settings.h>
 
 #include <kconfig.h>
 #include <kdebug.h>
