@@ -14,7 +14,7 @@ set(komposer_LIB_SRCS
 
 kde4_automoc(${komposer_LIB_SRCS})
 
-kde4_add_dcop_skels(komposer_LIB_SRCS komposerIface.h )
+#kde4_add_dcop_skels(komposer_LIB_SRCS komposerIface.h )
 
 kde4_add_kcfg_files(komposer_LIB_SRCS settings.kcfgc )
 
