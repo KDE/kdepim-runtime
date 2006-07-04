@@ -44,7 +44,7 @@ void AlarmClient::startDaemon()
   }
 
   KGlobal::dirs()->addResourceType("autostart", "share/autostart");
-  QString desktopFile = locate( "autostart", "korgac.desktop" );
+  QString desktopFile = KStandardDirs::locate( "autostart", "korgac.desktop" );
   if ( desktopFile.isEmpty() ) {
     kWarning() << "Couldn't find autostart/korgac.desktop!" << endl;
   }
