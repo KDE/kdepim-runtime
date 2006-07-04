@@ -204,12 +204,12 @@ KABC::Addressee::List ResourceCached::deletedAddressees() const
 
 QString ResourceCached::cacheFile() const
 {
-  return locateLocal( "cache", "kabc/kresources/" + identifier() );
+  return KStandardDirs::locateLocal( "cache", "kabc/kresources/" + identifier() );
 }
 
 QString ResourceCached::changesCacheFile( const QString &type ) const
 {
-  return locateLocal( "cache", "kabc/changescache/" + identifier() + '_' + type );
+  return KStandardDirs::locateLocal( "cache", "kabc/changescache/" + identifier() + '_' + type );
 }
 
 void ResourceCached::saveChangesCache( const QMap<QString, KABC::Addressee> &map, const QString &type )

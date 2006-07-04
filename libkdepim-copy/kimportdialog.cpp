@@ -732,7 +732,7 @@ QString KImportDialog::data( int row, int col )
 void KImportDialog::saveTemplate()
 {
   QString fileName = KFileDialog::getSaveFileName(
-                      locateLocal( "data", QString( kapp->applicationName() ) + "/csv-templates/" ),
+                      KStandardDirs::locateLocal( "data", QString( kapp->applicationName() ) + "/csv-templates/" ),
                       "*.desktop", this );
 
   if ( fileName.isEmpty() )

@@ -401,7 +401,7 @@ QString LinkLocator::getEmoticon()
   else {
     const QString imageName = (*s_smileyEmoticonNameMap)[smiley];
 
-    const QString iconPath = locate( "emoticons",
+    const QString iconPath = KStandardDirs::locate( "emoticons",
                                      EmotIcons::theme() +
                                      QString::fromLatin1( "/" ) +
                                      imageName + QString::fromLatin1(".png") );

@@ -83,7 +83,7 @@ void KConfigPropagator::init()
 
 void KConfigPropagator::readKcfgFile()
 {
-  QString filename = locate( "kcfg", mKcfgFile );
+  QString filename = KStandardDirs::locate( "kcfg", mKcfgFile );
   if ( filename.isEmpty() ) {
     kError() << "Unable to find kcfg file '" << mKcfgFile << "'" << endl;
     return;

@@ -66,7 +66,7 @@ const QString KPimPrefs::timezone()
   QString zone = "";
 
   // Read TimeZoneId from korganizerrc.
-  KConfig korgcfg( locate( "config", "korganizerrc" ) );
+  KConfig korgcfg( KStandardDirs::locate( "config", "korganizerrc" ) );
   korgcfg.setGroup( "Time & Date" );
   QString tz( korgcfg.readEntry( "TimeZoneId" ) );
   if ( !tz.isEmpty() ) {

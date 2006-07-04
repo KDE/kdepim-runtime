@@ -389,7 +389,7 @@ void LdapSearch::readConfig()
 
     connect( &mDataTimer, SIGNAL( timeout() ), SLOT( slotDataTimer() ) );
   }
-  mConfigFile = locateLocal( "config", "kabldaprc" );
+  mConfigFile = KStandardDirs::locateLocal( "config", "kabldaprc" );
   KDirWatch::self()->addFile( mConfigFile );
 }
 
