@@ -4,7 +4,7 @@
 
 ########### install files ###############
 
-install_files( ${DATA_INSTALL_DIR}/kdepimwidgets/pics FILES addresseelineedit.png                           clicklineedit.png  kdateedit.png  ktimeedit.png )
+install( FILES addresseelineedit.png                           clicklineedit.png  kdateedit.png  ktimeedit.png  DESTINATION ${DATA_INSTALL_DIR}/kdepimwidgets/pics)
 
 
 

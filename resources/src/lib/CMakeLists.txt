@@ -32,13 +32,12 @@ kde4_add_library(
 
 target_link_libraries( akonadiresources ${KDE4_KDECORE_LIBS} )
 set_target_properties( akonadiresources PROPERTIES VERSION 1.0.0 SOVERSION 1 )
-install_targets( ${LIB_INSTALL_DIR} akonadiresources )
+install(TARGETS akonadiresources  DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
 
-install_files( /include/libakonadiresources FILES
-        ../../include/resource.h
-        ../../include/resourcebase.h
+install( FILES ../../include/resource.h ../../include/resourcebase.h
+DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources 
 )
 
 

@@ -23,16 +23,16 @@ kde4_add_library(komposer SHARED ${komposer_LIB_SRCS})
 target_link_libraries(komposer  ${KDE4_KPARTS_LIBS} kdepim kutils )
 
 set_target_properties(komposer PROPERTIES VERSION 1.0.0 SOVERSION 1 )
-install_targets(${LIB_INSTALL_DIR} komposer )
+install(TARGETS komposer  DESTINATION ${LIB_INSTALL_DIR})
 
 
 ########### install files ###############
 
-install_files( ${KCFG_INSTALL_DIR} FILES komposer.kcfg )
-install_files( /include/komposer FILES plugin.h editor.h core.h )
-install_files( ${SERVICES_INSTALL_DIR} FILES komposerconfig.desktop   )
-install_files( ${DATA_INSTALL_DIR}/komposer FILES komposerui.rc )
-install_files( ${SERVICETYPES_INSTALL_DIR} FILES komposerplugin.desktop komposereditor.desktop )
+install( FILES komposer.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
+install( FILES plugin.h editor.h core.h  DESTINATION ${INCLUDE_INSTALL_DIR}/komposer)
+install( FILES komposerconfig.desktop    DESTINATION ${SERVICES_INSTALL_DIR})
+install( FILES komposerui.rc  DESTINATION ${DATA_INSTALL_DIR}/komposer)
+install( FILES komposerplugin.desktop komposereditor.desktop  DESTINATION ${SERVICETYPES_INSTALL_DIR})
 
 
 

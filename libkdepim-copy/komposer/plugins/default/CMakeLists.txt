@@ -14,13 +14,13 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} komposer_defaulteditor )
 
 target_link_libraries(komposer_defaulteditor  ${KDE4_KDECORE_LIBS} komposer kparts )
 
-install_targets(${PLUGIN_INSTALL_DIR} komposer_defaulteditor )
+install(TARGETS komposer_defaulteditor  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 
 ########### install files ###############
 
-install_files( ${SERVICES_INSTALL_DIR}/komposer FILES defaulteditor.desktop )
-install_files( ${DATA_INSTALL_DIR}/komposer_defaulteditor FILES defaulteditorui.rc )
+install( FILES defaulteditor.desktop  DESTINATION ${SERVICES_INSTALL_DIR}/komposer)
+install( FILES defaulteditorui.rc  DESTINATION ${DATA_INSTALL_DIR}/komposer_defaulteditor)
 
 
 

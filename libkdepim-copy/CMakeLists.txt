@@ -99,7 +99,7 @@ kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} kcal  kimproxy kspell2 )
 
 set_target_properties(kdepim PROPERTIES VERSION 1.0.0 SOVERSION 1 )
-install_targets(${LIB_INSTALL_DIR} kdepim )
+install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
 
 
 ########### next target ###############
@@ -113,13 +113,13 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kdepimwidgets )
 
 target_link_libraries(kdepimwidgets  ${KDE4_KIO_LIBS} kdepim )
 
-install_targets(${PLUGIN_INSTALL_DIR} kdepimwidgets )
+install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 
 ########### install files ###############
 
-install_files( ${KCFG_INSTALL_DIR} FILES pimemoticons.kcfg )
-install_files( /include FILES kdepimmacros.h kdepimprotocols.h )
+install( FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
+install( FILES kdepimmacros.h kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR} )
 
 
 
