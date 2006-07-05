@@ -94,4 +94,3 @@ void SSLLabel::setState( State state )
 
 } //end namespace KPIM
 
-//#include "ssllabel.moc"
