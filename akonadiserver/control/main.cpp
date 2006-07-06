@@ -35,7 +35,7 @@ int main( int argc, char **argv )
   }
 
   Akonadi::ProcessControl controller;
-  controller.start( "akonadi" );
+  controller.start( "akonadiserver" );
 
   AgentManager manager;
 

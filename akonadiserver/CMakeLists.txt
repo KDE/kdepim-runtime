@@ -68,10 +68,9 @@ set(akonadiserver_bin_SRCS ${libakonadiprivate_SRCS}
 
 kde4_automoc(${libakonadiprivate_SRCS} ${akonadiserver_bin_SRCS})
 
-kde4_add_executable(akonadi_bin ${akonadiserver_bin_SRCS})
-set_target_properties(akonadi_bin PROPERTIES OUTPUT_NAME akonadi)
-target_link_libraries(akonadi_bin ${QT_QTCORE_LIBRARIES}  ${QT_QTNETWORK_LIBRARIES} ${QT_QTSQL_LIBRARIES} ${QT_QTDBUS_LIBRARIES})
+kde4_add_executable(akonadiserver_bin ${akonadiserver_bin_SRCS})
+set_target_properties(akonadiserver_bin PROPERTIES OUTPUT_NAME akonadiserver)
+target_link_libraries(akonadiserver_bin ${QT_QTCORE_LIBRARIES}
+  ${QT_QTNETWORK_LIBRARIES} ${QT_QTSQL_LIBRARIES} ${QT_QTDBUS_LIBRARIES})
 
-install(TARGETS akonadi_bin DESTINATION ${BIN_INSTALL_DIR} )
-
-
+install(TARGETS akonadiserver_bin DESTINATION ${BIN_INSTALL_DIR} )
