@@ -24,6 +24,8 @@
 #include "out.h"
 
 #include <libakonadi/collectionlistjob.h>
+#include <libakonadi/messagefetchjob.h>
+#include <libkmime/kmime_message.h>
 
 ListCommand::ListCommand( const QString &path )
   : mPath( path )
@@ -33,12 +35,26 @@ ListCommand::ListCommand( const QString &path )
 
 void ListCommand::exec()
 {
-  PIM::CollectionListJob job( mPath.toUtf8() );
-  if ( !job.exec() ) {
-    err() << "Error listing /: " << job.errorText() << endl;
+  PIM::CollectionListJob collectionJob( mPath.toUtf8() );
+  if ( !collectionJob.exec() ) {
+    err() << "Error listing collection '" << mPath << "': "
+      << collectionJob.errorText()
+      << endl;
   } else {
-    foreach( PIM::Collection *collection, job.collections() ) {
+    foreach( PIM::Collection *collection, collectionJob.collections() ) {
       out() << collection->name() << endl;
+    }
+  }
+
+  PIM::MessageFetchJob messageJob( mPath.toUtf8() );
+  if ( !messageJob.exec() ) {
+    err() << "Error listing messages at '" << mPath << "': "
+      << messageJob.errorText()
+      << endl;
+  } else {
+    foreach( PIM::Message *m, messageJob.messages() ) {
+      KMime::Message *message = m->mime();
+      out() << "Subject: " << message->subject()->asUnicodeString() << endl;
     }
   }
 }

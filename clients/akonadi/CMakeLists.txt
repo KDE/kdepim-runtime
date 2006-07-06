@@ -1,3 +1,4 @@
+include_directories( ${CMAKE_SOURCE_DIR}/libkmime )
 
 set(akonadi_bin_SRCS 
   main.cpp listcommand.cpp
