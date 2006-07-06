@@ -24,34 +24,36 @@
 
 using namespace PIM;
 
-ResourceBase::ResourceBase( const QString & type )
+class ResourceBase::Private
+{
+  public:
+    org::kde::Akonadi::Tracer *mTracer;
+    QString mId;
+};
+
+ResourceBase::ResourceBase( const QString & id )
+  : d( new Private )
 {
   new ResourceAdaptor( this );
-  if ( !QDBus::sessionBus().registerObject( type, this, QDBusConnection::ExportAdaptors ) ) {
+  if ( !QDBus::sessionBus().registerObject( id, this, QDBusConnection::ExportAdaptors ) ) {
     qDebug( "Unable to connect to dbus service: %s", qPrintable( QDBus::sessionBus().lastError().message() ) );
   }
+
+  d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBus::sessionBus(), this );
+  d->mId = id;
 }
 
 ResourceBase::~ResourceBase()
 {
-}
-
-static QString prefixMessage( const QString& message )
-{
-    return "AkonadiResource: " + message;
-}
-
-void ResourceBase::log( const QString& message )
-{
-    return prefixMessage( message );
-}
-
-void ResourceBase::error( const QString& message )
-{
-    return prefixMessage( message );
+  delete d;
 }
 
 void ResourceBase::warning( const QString& message )
 {
-    return prefixMessage( message );
+    d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+}
+
+void ResourceBase::error( const QString& message )
+{
+    d->mTracer->error( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
 }

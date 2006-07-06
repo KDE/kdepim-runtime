@@ -1,6 +1,4 @@
 /*
-    This file is part of akonadiresources.
-
     Copyright (c) 2006 Till Adam <adam@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -19,50 +17,29 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCEBASE_H
-#define PIM_RESOURCEBASE_H
+#ifndef MAILDIR_H
+#define MAILDIR_H
 
-#include <QObject>
-
-#include <kdepim_export.h>
-
-#include "resource.h"
-#include "tracerinterface.h"
+#include <resourcebase.h>
 
 namespace PIM {
 
-/**
- */
-class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
+    class Job;
+
+class ICalResource : public ResourceBase
 {
   Q_OBJECT
+  public:
+    ICalResource( );
 
-  protected:
-    /**
-     * Creates a new base resource with the given @param id.
-     *
-     * The id is used to register at the dbus system.
-     */
-    ResourceBase( const QString & id );
+    void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 
-    /**
-     * Destroys the base resource.
-     */
-    ~ResourceBase();
+  public Q_SLOTS:
+    virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
 
-    /**
-     * This method shall be used to report warnings.
-     */
-    void warning( const QString& message );
+  private Q_SLOTS:
+    void done(PIM::Job* job);
 
-    /**
-     * This method shall be used to report errors.
-     */
-    void error( const QString& message );
-
-  private:
-    class Private;
-    Private* const d;
 };
 
 }

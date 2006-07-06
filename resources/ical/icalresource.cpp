@@ -1,6 +1,4 @@
 /*
-    This file is part of akonadiresources.
-
     Copyright (c) 2006 Till Adam <adam@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -19,52 +17,36 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCEBASE_H
-#define PIM_RESOURCEBASE_H
+#include "icalresource.h"
+#include <libakonadi/itemappendjob.h>
+#include <QDebug>
 
-#include <QObject>
+using namespace PIM;
 
-#include <kdepim_export.h>
-
-#include "resource.h"
-#include "tracerinterface.h"
-
-namespace PIM {
-
-/**
- */
-class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
+ICalResource::ICalResource()
+    :ResourceBase( "/ICalResource" )
 {
-  Q_OBJECT
 
-  protected:
-    /**
-     * Creates a new base resource with the given @param id.
-     *
-     * The id is used to register at the dbus system.
-     */
-    ResourceBase( const QString & id );
-
-    /**
-     * Destroys the base resource.
-     */
-    ~ResourceBase();
-
-    /**
-     * This method shall be used to report warnings.
-     */
-    void warning( const QString& message );
-
-    /**
-     * This method shall be used to report errors.
-     */
-    void error( const QString& message );
-
-  private:
-    class Private;
-    Private* const d;
-};
 
 }
 
-#endif
+void ICalResource::done( PIM::Job * job )
+{
+  if ( job->error() ) {
+    qWarning() << "Error while creating item: " << job->errorText();
+  } else {
+    qDebug() << "Done!";
+  }
+  job->deleteLater();
+}
+
+void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
+{
+}
+
+bool ICalResource::requestItemDelivery( const QString & uid, const QString & collection, int type )
+{
+    return true;
+}
+
+#include "icalresource.moc"

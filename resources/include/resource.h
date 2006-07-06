@@ -29,16 +29,34 @@
 namespace PIM {
 
 /**
+ * Abstract interface for all resource agent classes.
+ * You should however use @see ResourceBase as base class, as it
+ * provides a lot of convenience methods and abstracts parts
+ * of the protocol.
  */
 class AKONADI_RESOURCES_EXPORT Resource : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
+
   public:
     typedef QList<Resource*> List;
 
+    /**
+     * Destroys the resource.
+     */
     virtual ~Resource() { };
 
-    virtual bool requestItemDelivery( const QString & uid ) = 0;
+  public Q_SLOTS:
+    /**
+     * This method is called whenever an external query for putting data in the
+     * storage is received.
+     *
+     * @param uid The uid of the item that is requested.
+     * @param collection The id of the collection where the data should be put.
+     * @param type The type of the data that shall be put, either a full object or
+     *             just a lightweight version.
+     */
+    virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type ) = 0;
 };
 
 }

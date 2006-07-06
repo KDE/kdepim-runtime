@@ -49,6 +49,11 @@ void MaildirResource::done( PIM::Job * job )
   qApp->quit();
 }
 
+bool MaildirResource::requestItemDelivery( const QString & uid, const QString & collection, int type )
+{
+  return true;
+}
+
 static KCmdLineOptions options[] =
 {
   { "path <argument>", "IMAP destination path", 0 },

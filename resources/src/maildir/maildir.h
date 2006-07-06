@@ -36,7 +36,10 @@ class MaildirResource : public ResourceBase
       // FIXME
     }
 
-  private slots:
+  public Q_SLOTS:
+    virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
+
+  private Q_SLOTS:
     void done(PIM::Job* job);
 
 };
