@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi ICal Resource
+Type=AkonadiResource
+Exec=akonadi_ical_resource
+
+X-Akonadi-MimeTypes=text/calendar
+X-Akonadi-Capabilitites=text/calendar
+X-Akonadi-Identifier=akonadi_ical_resource
