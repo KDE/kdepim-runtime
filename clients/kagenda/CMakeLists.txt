@@ -1,3 +1,4 @@
+include_directories( ${CMAKE_SOURCE_DIR}/akonadi)
 
 set(kagenda_SRCS 
   agendaview.cpp main.cpp stripeview.cpp qwt_abstract_slider.cpp
