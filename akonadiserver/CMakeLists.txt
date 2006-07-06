@@ -53,14 +53,14 @@ set(libakonadiprivate_SRCS
 )
 
 qt4_add_dbus_adaptor( libakonadiprivate_SRCS
-  src/org.kde.Akonadi.NotificationManager.xml notificationmanager.h Akonadi::NotificationManager
+  interfaces/org.kde.Akonadi.NotificationManager.xml notificationmanager.h Akonadi::NotificationManager
 )
 qt4_add_dbus_adaptor( libakonadiprivate_SRCS
-  src/org.kde.Akonadi.Tracer.xml dbustracer.h Akonadi::DBusTracer
+  interfaces/org.kde.Akonadi.Tracer.xml dbustracer.h Akonadi::DBusTracer
 )
 
 
-qt4_add_dbus_interfaces( libakonadiprivate_SRCS control/org.kde.Akonadi.AgentManager.xml )
+qt4_add_dbus_interfaces( libakonadiprivate_SRCS interfaces/org.kde.Akonadi.AgentManager.xml )
 
 set(akonadiserver_bin_SRCS ${libakonadiprivate_SRCS}
     src/main.cpp
