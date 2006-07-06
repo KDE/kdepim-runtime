@@ -39,6 +39,10 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     ResourceBase( const QString& type );
     /* reimpl */
     ~ResourceBase();
+
+    void warning( const QString& );
+    void error( const QString& );
+    void log( const QString& );
 };
 
 }

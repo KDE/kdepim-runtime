@@ -36,4 +36,22 @@ ResourceBase::~ResourceBase()
 {
 }
 
+static QString prefixMessage( const QString& message )
+{
+    return "AkonadiResource: " + message;
+}
 
+void ResourceBase::log( const QString& message )
+{
+    return prefixMessage( message );
+}
+
+void ResourceBase::error( const QString& message )
+{
+    return prefixMessage( message );
+}
+
+void ResourceBase::warning( const QString& message )
+{
+    return prefixMessage( message );
+}
