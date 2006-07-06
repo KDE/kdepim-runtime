@@ -20,14 +20,20 @@
 */
 
 #include "resourcebase.h"
+#include "resourceadaptor.h"
 
 using namespace PIM;
 
-ResourceBase::ResourceBase()
+ResourceBase::ResourceBase( const QString & type )
 {
+  new ResourceAdaptor( this );
+  if ( !QDBus::sessionBus().registerObject( type, this, QDBusConnection::ExportAdaptors ) ) {
+    qDebug( "Unable to connect to dbus service: %s", qPrintable( QDBus::sessionBus().lastError().message() ) );
+  }
 }
 
 ResourceBase::~ResourceBase()
 {
 }
+
 

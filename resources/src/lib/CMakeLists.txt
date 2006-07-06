@@ -20,6 +20,7 @@ set( akonadiresources_manualmoc_LIB_SRC
         ../../include/resource.h
         ../../include/resourcebase.h
 )
+qt4_add_dbus_adaptor( akonadiresources_automoc_LIB_SRC ../../include/org.kde.Akonadi.Resource.xml resourcebase.h PIM::Resource )
 
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
 kde4_automoc( ${akonadiresources_automoc_LIB_SRC} )

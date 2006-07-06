@@ -1,6 +1,4 @@
 /*
-    This file is part of akonadiresources.
-
     Copyright (c) 2006 Till Adam <adam@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -19,28 +17,36 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCE_H
-#define PIM_RESOURCE_H
+#include "icalresource.h"
+#include <libakonadi/itemappendjob.h>
+#include <QDebug>
 
-#include <QObject>
+using namespace PIM;
 
-#include <kdepim_export.h>
-
-namespace PIM {
-
-/**
- */
-class AKONADI_RESOURCES_EXPORT Resource : public QObject
+ICalResource::ICalResource()
+    :ResourceBase( "/ICalResource" )
 {
-    Q_OBJECT
-  public:
-    typedef QList<Resource*> List;
 
-    virtual ~Resource() { };
-
-    virtual bool requestItemDelivery( const QString & uid ) = 0;
-};
 
 }
 
-#endif
+void ICalResource::done( PIM::Job * job )
+{
+  if ( job->error() ) {
+    qWarning() << "Error while creating item: " << job->errorText();
+  } else {
+    qDebug() << "Done!";
+  }
+  job->deleteLater();
+}
+
+void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
+{
+}
+
+bool ICalResource::requestItemDelivery( const QString & uid )
+{
+    return true;
+}
+
+#include "icalresource.moc"

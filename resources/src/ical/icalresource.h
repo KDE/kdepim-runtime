@@ -1,6 +1,4 @@
 /*
-    This file is part of akonadiresources.
-
     Copyright (c) 2006 Till Adam <adam@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -19,26 +17,28 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCE_H
-#define PIM_RESOURCE_H
+#ifndef MAILDIR_H
+#define MAILDIR_H
 
-#include <QObject>
-
-#include <kdepim_export.h>
+#include <resourcebase.h>
 
 namespace PIM {
 
-/**
- */
-class AKONADI_RESOURCES_EXPORT Resource : public QObject
+    class Job;
+
+class ICalResource : public ResourceBase
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
-    typedef QList<Resource*> List;
+    ICalResource( );
 
-    virtual ~Resource() { };
+    void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 
-    virtual bool requestItemDelivery( const QString & uid ) = 0;
+    bool requestItemDelivery( const QString & uid );
+
+  private slots:
+    void done(PIM::Job* job);
+
 };
 
 }

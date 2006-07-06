@@ -35,8 +35,8 @@ namespace PIM {
 class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 {
     Q_OBJECT
-  public:
-    ResourceBase();
+  protected:
+    ResourceBase( const QString& type );
     /* reimpl */
     ~ResourceBase();
 };
