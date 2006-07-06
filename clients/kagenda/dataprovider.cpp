@@ -190,7 +190,6 @@ void DataProvider::saveAkonadi()
       event->setDtEnd( e.end );
       event->setFloats( false );
       QString ical = format.toICalString( event );
-      ical = "aaa";
       PIM::ItemAppendJob *job = new PIM::ItemAppendJob( "res2/foo2", ical.toUtf8(),
         "text/calendar", this );
       if ( !job->exec() ) {
