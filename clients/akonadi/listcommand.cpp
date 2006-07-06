@@ -46,15 +46,17 @@ void ListCommand::exec()
     }
   }
 
-  PIM::MessageFetchJob messageJob( mPath.toUtf8() );
-  if ( !messageJob.exec() ) {
-    err() << "Error listing messages at '" << mPath << "': "
-      << messageJob.errorText()
-      << endl;
-  } else {
-    foreach( PIM::Message *m, messageJob.messages() ) {
-      KMime::Message *message = m->mime();
-      out() << "Subject: " << message->subject()->asUnicodeString() << endl;
+  if ( mPath.indexOf( "/", 1 ) > 0 ) {
+    PIM::MessageFetchJob messageJob( mPath.toUtf8() );
+    if ( !messageJob.exec() ) {
+      err() << "Error listing messages at '" << mPath << "': "
+        << messageJob.errorText()
+        << endl;
+    } else {
+      foreach( PIM::Message *m, messageJob.messages() ) {
+        KMime::Message *message = m->mime();
+        out() << "Subject: " << message->subject()->asUnicodeString() << endl;
+      }
     }
   }
 }

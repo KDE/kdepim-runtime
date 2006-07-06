@@ -59,6 +59,10 @@ bool List::handleLine(const QByteArray& line )
     } else {
         DataStore *db = connection()->storageBackend();
         CollectionList collections = db->listCollections( reference, mailbox );
+        if ( !collections.isValid() ) {
+          return failureResponse( "Unable to find collection" );
+        }
+
         CollectionListIterator it(collections);
         while ( it.hasNext() ) {
             Collection c = it.next();
