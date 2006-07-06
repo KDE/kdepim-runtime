@@ -27,7 +27,6 @@
 #include <kdepim_export.h>
 
 #include "resource.h"
-#include "tracerinterface.h"
 
 namespace PIM {
 

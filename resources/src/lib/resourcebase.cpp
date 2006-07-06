@@ -22,6 +22,8 @@
 #include "resourcebase.h"
 #include "resourceadaptor.h"
 
+#include "tracerinterface.h"
+
 using namespace PIM;
 
 class ResourceBase::Private

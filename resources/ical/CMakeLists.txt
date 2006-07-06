@@ -1,6 +1,6 @@
 include_directories(
 	${CMAKE_SOURCE_DIR}/libakonadi
-	${CMAKE_SOURCE_DIR}/akonadiresources/include
+	${CMAKE_SOURCE_DIR}/akonadi/resources/include
         ${QT_QTDBUS_INCLUDE_DIR} 
 )
 
