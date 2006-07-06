@@ -1,3 +1,0 @@
-libakonadi is the client access library for using the Akonadi PIM data server.  All processes that access Akonadi, including those which communicate only with a remote server, are considered clients.
-
-See libakonadi.xmi for UML documentation generated with Umbrello.
