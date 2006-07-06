@@ -40,6 +40,7 @@ void ListCommand::exec()
     err() << "Error listing collection '" << mPath << "': "
       << collectionJob.errorText()
       << endl;
+    return;
   } else {
     foreach( PIM::Collection *collection, collectionJob.collections() ) {
       out() << collection->name() << endl;
