@@ -63,6 +63,9 @@ bool List::handleLine(const QByteArray& line )
           return failureResponse( "Unable to find collection" );
         }
 
+        // TODO: Create a response with the mime types for the listed folder:
+        // * FLAGS (\MimeTypes[text/calendar/inode/directory])
+
         CollectionListIterator it(collections);
         while ( it.hasNext() ) {
             Collection c = it.next();
