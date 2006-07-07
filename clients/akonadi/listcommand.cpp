@@ -25,6 +25,7 @@
 
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/messagefetchjob.h>
+#include <libakonadi/itemlistjob.h>
 #include <libkmime/kmime_message.h>
 
 ListCommand::ListCommand( const QString &path )
@@ -48,6 +49,30 @@ void ListCommand::exec()
   }
 
   if ( mPath.indexOf( "/", 1 ) > 0 ) {
+    PIM::ItemListJob itemListJob( mPath.toUtf8() );
+    if ( !itemListJob.exec() ) {
+      err() << "Error listing items at '" << mPath << "': "
+        << itemListJob.errorText()
+        << endl;
+    } else {
+      foreach( PIM::Item *item, itemListJob.items() ) {
+        QString str;
+        str = "Item: " + item->reference().persistanceID();
+        if ( !item->reference().externalUrl().isEmpty() ) {
+          str += " [" + item->reference().externalUrl().toString() + "]";
+        }
+        if ( !item->flags().isEmpty() ) {
+          str += " ( ";
+          foreach( QByteArray flag, item->flags() ) {
+            str += flag + " ";
+          }
+          str += ")";
+        }
+        out() << str << endl;
+      }
+    }
+
+#if 0
     PIM::MessageFetchJob messageJob( mPath.toUtf8() );
     if ( !messageJob.exec() ) {
       err() << "Error listing messages at '" << mPath << "': "
@@ -59,5 +84,6 @@ void ListCommand::exec()
         out() << "Subject: " << message->subject()->asUnicodeString() << endl;
       }
     }
+#endif
   }
 }
