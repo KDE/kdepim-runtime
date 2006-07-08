@@ -23,6 +23,7 @@
 #define PIM_RESOURCEBASE_H
 
 #include <QObject>
+#include <QString>
 
 #include <kdepim_export.h>
 
@@ -40,7 +41,8 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     /**
      * Creates a new base resource with the given @param id.
      *
-     * The id is used to register at the dbus system.
+     * The id is used to register at the dbus system and to determine the
+     * resource configuration.
      */
     ResourceBase( const QString & id );
 

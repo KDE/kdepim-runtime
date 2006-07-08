@@ -30,7 +30,7 @@ class ICalResource : public ResourceBase
 {
   Q_OBJECT
   public:
-    ICalResource( );
+    ICalResource( const QString &id );
 
     void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 

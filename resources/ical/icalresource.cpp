@@ -23,8 +23,8 @@
 
 using namespace PIM;
 
-ICalResource::ICalResource()
-    :ResourceBase( "/ICalResource" )
+ICalResource::ICalResource( const QString &id )
+    :ResourceBase( id )
 {
 
 
