@@ -37,7 +37,7 @@ ResourceBase::ResourceBase( const QString & id )
   : d( new Private )
 {
   new ResourceAdaptor( this );
-  if ( !QDBus::sessionBus().registerObject( id, this, QDBusConnection::ExportAdaptors ) ) {
+  if ( !QDBus::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) ) {
     qDebug( "Unable to connect to dbus service: %s", qPrintable( QDBus::sessionBus().lastError().message() ) );
   }
 
