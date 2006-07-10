@@ -19,6 +19,8 @@
     02110-1301, USA.
 */
 
+#include <QtCore/QCoreApplication>
+
 #include "resourcebase.h"
 #include "resourceadaptor.h"
 
@@ -36,12 +38,15 @@ class ResourceBase::Private
 ResourceBase::ResourceBase( const QString & id )
   : d( new Private )
 {
-  new ResourceAdaptor( this );
-  if ( !QDBus::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) ) {
-    qDebug( "Unable to connect to dbus service: %s", qPrintable( QDBus::sessionBus().lastError().message() ) );
-  }
-
   d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBus::sessionBus(), this );
+
+  if ( !QDBus::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
+    error( QString( "Unable to register service at dbus: %1" ).arg( QDBus::sessionBus().lastError().message() ) );
+
+  new ResourceAdaptor( this );
+  if ( !QDBus::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) )
+    error( QString( "Unable to register object at dbus: %1" ).arg( QDBus::sessionBus().lastError().message() ) );
+
   d->mId = id;
 }
 
@@ -52,10 +57,31 @@ ResourceBase::~ResourceBase()
 
 void ResourceBase::warning( const QString& message )
 {
-    d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+  d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
 }
 
 void ResourceBase::error( const QString& message )
 {
-    d->mTracer->error( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+  d->mTracer->error( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+}
+
+QString ResourceBase::parseArguments( int argc, char **argv )
+{
+  if ( argc < 3 ) {
+    qDebug( "ResourceBase::parseArguments: Not enough arguments passed..." );
+    QCoreApplication::exit( 1 );
+  }
+
+  QString identifier;
+  for ( int i = 1; i < argc - 1; ++i ) {
+    if ( QString( argv[ i ] ) == "--identifier" )
+      identifier = QString( argv[ i + 1 ] );
+  }
+
+  if ( identifier.isEmpty() ) {
+    qDebug( "ResourceBase::parseArguments: Identifier argument missing" );
+    QCoreApplication::exit( 1 );
+  }
+
+  return identifier;
 }

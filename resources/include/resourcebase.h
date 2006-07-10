@@ -32,17 +32,52 @@
 namespace PIM {
 
 /**
+ * This class should be used as subclass by all resource agents
+ * since it encapsulates large parts of the protocol between
+ * resource agent, agent manager and storage.
+ *
+ * It provides many convenience methods to make implementing a
+ * new akonadi resource agent as simple as possible.
  */
 class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 {
   Q_OBJECT
 
+  public:
+    /**
+     * Use this method in the main function of your resource
+     * application to initialize your resource subclass.
+     *
+     * \code
+     *
+     *   class MyResource : public ResourceBase
+     *   {
+     *     ...
+     *   };
+     *
+     *   int main( int argc, char **argv )
+     *   {
+     *     QCoreApplication app;
+     *
+     *     ResourceBase::init<MyResource>( argc, argv );
+     *
+     *     return app.exec();
+     *   }
+     *
+     * \endcode
+     */
+    template <typename T>
+    static void init( int argc, char **argv )
+    {
+      QString id = parseArguments( argc, argv );
+      new T( id );
+    }
+
   protected:
     /**
-     * Creates a new base resource with the given @param id.
+     * Creates a base resource.
      *
-     * The id is used to register at the dbus system and to determine the
-     * resource configuration.
+     * @param id The instance id of the resource.
      */
     ResourceBase( const QString & id );
 
@@ -62,6 +97,8 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     void error( const QString& message );
 
   private:
+    static QString parseArguments( int, char** );
+
     class Private;
     Private* const d;
 };

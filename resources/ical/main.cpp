@@ -29,17 +29,8 @@ using namespace PIM;
 int main( int argc, char **argv )
 {
   QCoreApplication app( argc, argv );
-  QStringList args = QCoreApplication::arguments();
-  if ( args.count() <= 1 ) {
-    qDebug( "Unable to start agent: Missing resource identifier" );
-    return 1;
-  }
 
-  ICalResource resource( args.last() );
-  if ( !QDBus::sessionBus().registerService( "org.kde.Akonadi.Resource_" + args.last() ) ) {
-    qDebug( "Unable to connect to dbus service: %s", qPrintable( QDBus::sessionBus().lastError().message() ) );
-    return 1;
-  }
+  ResourceBase::init<ICalResource>( argc, argv );
 
   return app.exec();
 }
