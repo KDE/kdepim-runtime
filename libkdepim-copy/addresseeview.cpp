@@ -30,7 +30,6 @@
 #include <kabc/address.h>
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
-#include <kactionclasses.h>
 #include <kapplication.h>
 #include <kconfig.h>
 #include <kglobal.h>
@@ -51,6 +50,7 @@
 #include "addresseeview.h"
 #include "sendsmsdialog.h"
 #include <Q3MimeSourceFactory>
+#include <ktoggleaction.h>
 using namespace KPIM;
 
 AddresseeView::AddresseeView( QWidget *parent, const char *name,
@@ -389,7 +389,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   QString organization( addr.organization() );
 
 #warning port me!
-#if NOT_PORTED 
+#if NOT_PORTED
   if ( proxy && (fieldMask & IMFields) ) {
     if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
       // set image source to either a QMimeSourceFactory key or a data:/ URL
