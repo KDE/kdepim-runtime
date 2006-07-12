@@ -1,0 +1,22 @@
+
+AkonadiControl
+---------------
+ - rename AgentManager -> ??? and PluginManager -> AgentManager
+ - report ProcessControl errors with tracer
+ - create resource interfaces on the fly
+ - add method instanceAgentType() which returns the agent type of an instance
+ - add capability flag 'Resource' and accessor methods to find out whether an
+   agent is a resource or not
+ - add dbus method to tell the client to configure itself
+   (e.g. show a configure dialog to the user)
+
+AkonadiResource
+----------------
+ - add virtual configure() method to ResourceBase which is forwarded by
+   the AgentManager interface
+
+
+AkonadiServer
+--------------
+ - add db bootstrapping code, so akonadiserver will create all necessary tables
+   and initial data when they are not available (should be part of DataStore)
