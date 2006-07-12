@@ -26,8 +26,6 @@ using namespace PIM;
 ICalResource::ICalResource( const QString &id )
     :ResourceBase( id )
 {
-
-
 }
 
 void ICalResource::done( PIM::Job * job )

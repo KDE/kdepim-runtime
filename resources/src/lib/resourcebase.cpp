@@ -40,7 +40,7 @@ ResourceBase::ResourceBase( const QString & id )
 {
   d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBus::sessionBus(), this );
 
-  if ( !QDBus::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
+  if ( !QDBus::sessionBus().registerService( "org.kde.Akonadi.Resource_" + id ) )
     error( QString( "Unable to register service at dbus: %1" ).arg( QDBus::sessionBus().lastError().message() ) );
 
   new ResourceAdaptor( this );
