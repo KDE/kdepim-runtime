@@ -29,8 +29,8 @@
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/messagefetchjob.h>
 
-#include <libkcal/calendarlocal.h>
-#include <libkcal/icalformat.h>
+#include <kcal/calendarlocal.h>
+#include <kcal/icalformat.h>
 
 #include <kmessagebox.h>
 #include <klocale.h>

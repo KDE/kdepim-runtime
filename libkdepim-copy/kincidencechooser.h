@@ -32,7 +32,7 @@
 #include <QLabel>
 #include <kdepimmacros.h>
 
-#include <libkcal/incidence.h>
+#include <kcal/incidence.h>
 #include "htmldiffalgodisplay.h"
 #include "calendardiffalgo.h"
 

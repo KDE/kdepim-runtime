@@ -22,8 +22,8 @@
 #ifndef KPIM_CALENDARDIFFALGO_H
 #define KPIM_CALENDARDIFFALGO_H
 
-#include <libkcal/event.h>
-#include <libkcal/todo.h>
+#include <kcal/event.h>
+#include <kcal/todo.h>
 #include <libkdepim/diffalgo.h>
 #include <QList>
 

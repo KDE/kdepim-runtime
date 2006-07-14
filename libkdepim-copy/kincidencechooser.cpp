@@ -40,8 +40,8 @@
 #include <kglobal.h>
 
 #include "kincidencechooser.h"
-#include "libkcal/incidence.h"
-#include "libkcal/incidenceformatter.h"
+#include <kcal/incidence.h>
+#include <kcal/incidenceformatter.h>
 
 int KIncidenceChooser::chooseMode = KIncidenceChooser::ask ;
 
