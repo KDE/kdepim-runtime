@@ -96,7 +96,7 @@ kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc )
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
-target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} kcal  kimproxy kspell2 emailfunctions )
+target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} kresources kabc kcal  kimproxy kspell2 emailfunctions )
 
 set_target_properties(kdepim PROPERTIES VERSION 1.0.0 SOVERSION 1 )
 install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
