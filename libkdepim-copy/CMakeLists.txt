@@ -1,11 +1,11 @@
 
-add_subdirectory( cfgc ) 
-add_subdirectory( interfaces ) 
-add_subdirectory( tests ) 
-add_subdirectory( icons ) 
-add_subdirectory( pics ) 
-add_subdirectory( kpartsdesignerplugin ) 
-add_subdirectory( about ) 
+add_subdirectory(cfgc)
+add_subdirectory(interfaces)
+add_subdirectory(tests)
+add_subdirectory(icons)
+add_subdirectory(pics)
+add_subdirectory(kpartsdesignerplugin)
+add_subdirectory(about)
 
 #kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
 
@@ -80,25 +80,25 @@ set(kdepim_LIB_SRCS
    improvedlistview.cpp 
    messagestatus.cpp 
    kemailquotinghighter.cpp
-   networkstatus.cpp )
+   networkstatus.cpp)
 
 kde4_automoc(${kdepim_LIB_SRCS})
 
-kde4_add_ui3_files(kdepim_LIB_SRCS addresspicker.ui )
-kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui )
+kde4_add_ui3_files(kdepim_LIB_SRCS addresspicker.ui)
+kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui)
 
 #kde4_add_dcop_skels(kdepim_LIB_SRCS 
 #	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 
 #	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
-#	addresseelineedit.h )
+#	addresseelineedit.h)
 
-kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc )
+kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc)
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
-target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} kresources kabc ${KDE4_KCAL_LIBS}  kimproxy kspell2  ${KDE4_EMAILFUNCTIONS_LIBS} )
+target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy kspell2  ${KDE4_EMAILFUNCTIONS_LIBS})
 
-set_target_properties(kdepim PROPERTIES VERSION 1.0.0 SOVERSION 1 )
+set_target_properties(kdepim PROPERTIES VERSION 1.0.0 SOVERSION 1)
 install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
 
 
@@ -109,17 +109,17 @@ kde4_add_widget_files(kdepimwidgets_PART_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/kdepim
 
 kde4_add_plugin(kdepimwidgets ${kdepimwidgets_PART_SRCS})
 
-kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kdepimwidgets )
+kde4_install_libtool_file(${PLUGIN_INSTALL_DIR} kdepimwidgets)
 
-target_link_libraries(kdepimwidgets  ${KDE4_KIO_LIBS} kdepim )
+target_link_libraries(kdepimwidgets  ${KDE4_KIO_LIBS} kdepim)
 
 install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 
 ########### install files ###############
 
-install( FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
-install( FILES kdepimmacros.h kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR} )
+install(FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
+install(FILES kdepimmacros.h kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR})
 
 
 
