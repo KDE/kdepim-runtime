@@ -68,6 +68,7 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString & col
   QByteArray data = format.toString( incidence ).toUtf8();
 
   ItemAppendJob *job = new ItemAppendJob( collection.toUtf8(), data, "text/calendar", this );
+  job->setRemoteId( uid );
   connect( job, SIGNAL(done(PIM::Job*)), SLOT(done(PIM::Job*)) );
   job->start();
 
