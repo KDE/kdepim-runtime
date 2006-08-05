@@ -22,6 +22,10 @@
 
 #include <resourcebase.h>
 
+namespace KCal {
+  class CalendarLocal;
+}
+
 namespace PIM {
 
     class Job;
@@ -31,6 +35,7 @@ class ICalResource : public ResourceBase
   Q_OBJECT
   public:
     ICalResource( const QString &id );
+    ~ICalResource();
 
     void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 
@@ -39,6 +44,9 @@ class ICalResource : public ResourceBase
 
   private Q_SLOTS:
     void done(PIM::Job* job);
+
+  private:
+    KCal::CalendarLocal *mCalendar;
 
 };
 

@@ -19,19 +19,33 @@
 
 #include "icalresource.h"
 #include <libakonadi/itemappendjob.h>
+
+#include <kcal/calendarlocal.h>
+#include <kcal/incidence.h>
+#include <kcal/icalformat.h>
+
 #include <QDebug>
 
 using namespace PIM;
+using namespace KCal;
 
 ICalResource::ICalResource( const QString &id )
     :ResourceBase( id )
 {
+  // ### just for testing
+  mCalendar = new KCal::CalendarLocal( "UTC" );
+  mCalendar->load( "akonadi_ical_test.ics" );
+}
+
+PIM::ICalResource::~ ICalResource()
+{
+  delete mCalendar;
 }
 
 void ICalResource::done( PIM::Job * job )
 {
   if ( job->error() ) {
-    qWarning() << "Error while creating item: " << job->errorText();
+    error( "Error while creating item: " + job->errorText() );
   } else {
     qDebug() << "Done!";
   }
@@ -44,7 +58,20 @@ void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &
 
 bool ICalResource::requestItemDelivery( const QString & uid, const QString & collection, int type )
 {
-    return true;
+  Incidence *incidence = mCalendar->incidence( uid );
+  if ( !incidence ) {
+    error( QString("Incidence with uid '%1' not found!").arg( uid ) );
+    return false;
+  }
+
+  ICalFormat format;
+  QByteArray data = format.toString( incidence ).toUtf8();
+
+  ItemAppendJob *job = new ItemAppendJob( collection.toUtf8(), data, "text/calendar", this );
+  connect( job, SIGNAL(done(PIM::Job*)), SLOT(done(PIM::Job*)) );
+  job->start();
+
+  return true;
 }
 
 #include "icalresource.moc"
