@@ -17,61 +17,21 @@
     02110-1301, USA.
 */
 
-#include "item.h"
+#ifndef FETCHCOMMAND_H
+#define FETCHCOMMAND_H
 
-using namespace PIM;
+#include "command.h"
+#include <QString>
 
-class PIM::ItemPrivate {
+class FetchCommand : public Command
+{
   public:
-    DataReference ref;
-    Item::Flags flags;
-    QByteArray data;
+    FetchCommand( const QString &uid );
+
+    virtual void exec();
+
+  private:
+    QString mUid;
 };
 
-PIM::Item::Item( const DataReference & ref ) :
-    d( new ItemPrivate )
-{
-  d->ref = ref;
-}
-
-PIM::Item::~ Item( )
-{
-  delete d;
-}
-
-DataReference PIM::Item::reference( ) const
-{
-  return d->ref;
-}
-
-Item::Flags PIM::Item::flags( ) const
-{
-  return d->flags;
-}
-
-void PIM::Item::setFlag( const QByteArray & name )
-{
-  d->flags.insert( name );
-}
-
-void PIM::Item::unsetFlag( const QByteArray & name )
-{
-  d->flags.remove( name );
-}
-
-bool PIM::Item::hasFlag( const QByteArray & name ) const
-{
-  return d->flags.contains( name );
-}
-
-QByteArray PIM::Item::data() const
-{
-  return d->data;
-}
-
-void PIM::Item::setData(const QByteArray & data)
-{
-  d->data = data;
-}
-
-
+#endif

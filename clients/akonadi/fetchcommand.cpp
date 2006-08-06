@@ -17,61 +17,29 @@
     02110-1301, USA.
 */
 
-#include "item.h"
+#include "fetchcommand.h"
+#include "out.h"
+
+#include <libakonadi/itemfetchjob.h>
 
 using namespace PIM;
 
-class PIM::ItemPrivate {
-  public:
-    DataReference ref;
-    Item::Flags flags;
-    QByteArray data;
-};
-
-PIM::Item::Item( const DataReference & ref ) :
-    d( new ItemPrivate )
+FetchCommand::FetchCommand(const QString & uid) :
+    mUid( uid )
 {
-  d->ref = ref;
 }
 
-PIM::Item::~ Item( )
+void FetchCommand::exec()
 {
-  delete d;
+  DataReference ref( mUid, QString() );
+  ItemFetchJob fetchJob( ref );
+  if ( !fetchJob.exec() ) {
+    err() << "Error fetching item '" << mUid << "': "
+        << fetchJob.errorText()
+        << endl;
+  } else {
+    foreach( Item *item, fetchJob.items() ) {
+      out() << item->data() << endl;
+    }
+  }
 }
-
-DataReference PIM::Item::reference( ) const
-{
-  return d->ref;
-}
-
-Item::Flags PIM::Item::flags( ) const
-{
-  return d->flags;
-}
-
-void PIM::Item::setFlag( const QByteArray & name )
-{
-  d->flags.insert( name );
-}
-
-void PIM::Item::unsetFlag( const QByteArray & name )
-{
-  d->flags.remove( name );
-}
-
-bool PIM::Item::hasFlag( const QByteArray & name ) const
-{
-  return d->flags.contains( name );
-}
-
-QByteArray PIM::Item::data() const
-{
-  return d->data;
-}
-
-void PIM::Item::setData(const QByteArray & data)
-{
-  d->data = data;
-}
-
-

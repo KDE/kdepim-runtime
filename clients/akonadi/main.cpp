@@ -21,6 +21,7 @@
 
 #include "out.h"
 #include "listcommand.h"
+#include "fetchcommand.h"
 
 #include <qapplication.h>
 
@@ -39,6 +40,9 @@ int main( int argc, char **argv )
 
   if ( cmdarg == "ls" ) {
     cmd = new ListCommand( patharg );
+  }
+  else if ( cmdarg == "fetch" ) {
+    cmd = new FetchCommand( patharg );
   }
 
   if ( !cmd ) {
