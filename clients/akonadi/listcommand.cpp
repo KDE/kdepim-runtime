@@ -68,6 +68,7 @@ void ListCommand::exec()
           }
           str += ")";
         }
+        str += " [" + item->mimeType() + ']';
         out() << str << endl;
       }
     }
