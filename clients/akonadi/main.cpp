@@ -22,6 +22,7 @@
 #include "out.h"
 #include "listcommand.h"
 #include "fetchcommand.h"
+#include "deletecommand.h"
 
 #include <qapplication.h>
 
@@ -43,6 +44,9 @@ int main( int argc, char **argv )
   }
   else if ( cmdarg == "fetch" ) {
     cmd = new FetchCommand( patharg );
+  }
+  else if ( cmdarg == "rm" ) {
+    cmd = new DeleteCommand( patharg );
   }
 
   if ( !cmd ) {
