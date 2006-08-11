@@ -20,6 +20,7 @@
 */
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QTimer>
 
 #include "resourcebase.h"
 #include "resourceadaptor.h"
@@ -84,4 +85,16 @@ QString ResourceBase::parseArguments( int argc, char **argv )
   }
 
   return identifier;
+}
+
+void ResourceBase::quit()
+{
+  aboutToQuit();
+
+  QTimer::singleShot( 0, QCoreApplication::instance(), SLOT( quit() ) );
+}
+
+void ResourceBase::aboutToQuit()
+{
+  qDebug( "about to quit called" );
 }

@@ -47,6 +47,12 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
     virtual ~Resource() { };
 
   public Q_SLOTS:
+
+    /**
+     * This method is called to quit the resource.
+     */
+    virtual void quit() = 0;
+
     /**
      * This method is called whenever an external query for putting data in the
      * storage is received.

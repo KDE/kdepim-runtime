@@ -73,6 +73,16 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
       new T( id );
     }
 
+  public Q_SLOTS:
+    /**
+     * This method is called to quit the resource.
+     *
+     * Before the application is terminated @see aboutToQuit() is called,
+     * which can be reimplemented to do some session cleanup (e.g. disconnecting
+     * from groupware server).
+     */
+    void quit();
+
   protected:
     /**
      * Creates a base resource.
@@ -95,6 +105,15 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * This method shall be used to report errors.
      */
     void error( const QString& message );
+
+    /**
+     * This method is called whenever the application is about to
+     * quit.
+     *
+     * Reimplement this method to do session cleanup (e.g. disconnecting
+     * from groupware server).
+     */
+    virtual void aboutToQuit();
 
   private:
     static QString parseArguments( int, char** );
