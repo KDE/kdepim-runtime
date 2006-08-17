@@ -32,9 +32,37 @@ using namespace PIM;
 class ResourceBase::Private
 {
   public:
+    Private()
+      : mStatusCode( Ready )
+    {
+      mStatusMessage = defaultReadyMessage();
+    }
+
+    QString defaultReadyMessage() const;
+    QString defaultSyncingMessage() const;
+    QString defaultErrorMessage() const;
+
     org::kde::Akonadi::Tracer *mTracer;
     QString mId;
+
+    int mStatusCode;
+    QString mStatusMessage;
 };
+
+QString ResourceBase::Private::defaultReadyMessage() const
+{
+  return tr( "Ready" );
+}
+
+QString ResourceBase::Private::defaultSyncingMessage() const
+{
+  return tr( "Syncing..." );
+}
+
+QString ResourceBase::Private::defaultErrorMessage() const
+{
+  return tr( "Error!" );
+}
 
 ResourceBase::ResourceBase( const QString & id )
   : d( new Private )
@@ -56,6 +84,16 @@ ResourceBase::~ResourceBase()
   delete d;
 }
 
+int ResourceBase::status() const
+{
+  return d->mStatusCode;
+}
+
+QString ResourceBase::statusMessage() const
+{
+  return d->mStatusMessage;
+}
+
 void ResourceBase::warning( const QString& message )
 {
   d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
@@ -64,6 +102,38 @@ void ResourceBase::warning( const QString& message )
 void ResourceBase::error( const QString& message )
 {
   d->mTracer->error( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+}
+
+void ResourceBase::changeStatus( Status status, const QString &message )
+{
+  d->mStatusMessage = message;
+  d->mStatusCode = 0;
+
+  switch ( status ) {
+    case Ready:
+      if ( d->mStatusMessage.isEmpty() )
+        d->mStatusMessage = d->defaultReadyMessage();
+
+      d->mStatusCode = 0;
+      break;
+    case Syncing:
+      if ( d->mStatusMessage.isEmpty() )
+        d->mStatusMessage = d->defaultSyncingMessage();
+
+      d->mStatusCode = 1;
+      break;
+    case Error:
+      if ( d->mStatusMessage.isEmpty() )
+        d->mStatusMessage = d->defaultErrorMessage();
+
+      d->mStatusCode = 2;
+      break;
+    default:
+      Q_ASSERT( !"Unknown status passed" );
+      break;
+  }
+
+  emit statusChanged( d->mStatusCode, d->mStatusMessage );
 }
 
 QString ResourceBase::parseArguments( int argc, char **argv )

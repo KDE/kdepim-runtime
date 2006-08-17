@@ -54,6 +54,22 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
     virtual void quit() = 0;
 
     /**
+     * This method returns the current status code of the resource.
+     *
+     * The following return values are possible:
+     *
+     *  0 - Ready
+     *  1 - Syncing
+     *  2 - Error
+     */
+    virtual int status() const = 0;
+
+    /**
+     * This method returns an i18n'ed description of the current status code.
+     */
+    virtual QString statusMessage() const = 0;
+
+    /**
      * This method is called whenever an external query for putting data in the
      * storage is received.
      *
@@ -63,6 +79,15 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      *             just a lightweight version.
      */
     virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type ) = 0;
+
+  Q_SIGNALS:
+    /**
+     * This signal is emitted whenever the status of the resource has changed.
+     *
+     * @param status The status id of the resource (@see Status).
+     * @param message An i18n'ed message which describes the status in detail.
+     */
+    void statusChanged( int status, const QString &message );
 };
 
 }

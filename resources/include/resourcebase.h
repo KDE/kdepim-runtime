@@ -45,6 +45,17 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 
   public:
     /**
+     * This enum describes the different states the
+     * resource can be in.
+     */
+    enum Status
+    {
+      Ready = 0,
+      Syncing,
+      Error
+    };
+
+    /**
      * Use this method in the main function of your resource
      * application to initialize your resource subclass.
      *
@@ -72,6 +83,22 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
       QString id = parseArguments( argc, argv );
       new T( id );
     }
+
+    /**
+     * This method returns the current status code of the resource.
+     *
+     * The following return values are possible:
+     *
+     *  0 - Ready
+     *  1 - Syncing
+     *  2 - Error
+     */
+    virtual int status() const;
+
+    /**
+     * This method returns an i18n'ed description of the current status code.
+     */
+    virtual QString statusMessage() const;
 
   public Q_SLOTS:
     /**
@@ -105,6 +132,14 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * This method shall be used to report errors.
      */
     void error( const QString& message );
+
+    /**
+     * This method shall be used to signal a state change.
+     *
+     * @param status The new status of the resource.
+     * @param message An i18n'ed description of the status.
+     */
+    void changeStatus( Status status, const QString &message = QString() );
 
     /**
      * This method is called whenever the application is about to
