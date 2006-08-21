@@ -152,7 +152,7 @@ void AddresseeLineEdit::init()
           SLOT( slotUserCancelled( const QString& ) ) );
 
       // The emitter is always called KPIM::IMAPCompletionOrder by contract
-     if ( !QDBus::sessionBus().connect( "kde.org.pim.completionorder", "/",
+     if ( !QDBusConnection::sessionBus().connect( "kde.org.pim.completionorder", "/",
                  "kde.org.pim.CompletionOrder", "completionOrderChanged",
                  this, SLOT( slotIMAPCompletionOrderChanged() ) ) )
          kError() << "AddresseeLineEdit: connection to orderChanged() failed" << endl;

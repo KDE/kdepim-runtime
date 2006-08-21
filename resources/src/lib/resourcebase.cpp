@@ -67,14 +67,14 @@ QString ResourceBase::Private::defaultErrorMessage() const
 ResourceBase::ResourceBase( const QString & id )
   : d( new Private )
 {
-  d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBus::sessionBus(), this );
+  d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBusConnection::sessionBus(), this );
 
-  if ( !QDBus::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
-    error( QString( "Unable to register service at dbus: %1" ).arg( QDBus::sessionBus().lastError().message() ) );
+  if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
+    error( QString( "Unable to register service at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
 
   new ResourceAdaptor( this );
-  if ( !QDBus::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) )
-    error( QString( "Unable to register object at dbus: %1" ).arg( QDBus::sessionBus().lastError().message() ) );
+  if ( !QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) )
+    error( QString( "Unable to register object at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
 
   d->mId = id;
 }

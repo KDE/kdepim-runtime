@@ -78,7 +78,7 @@ class Dialog : public QDialog
 AgentWidget::AgentWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.AgentManager", "/", QDBus::sessionBus(), this );
+  mManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.AgentManager", "/", QDBusConnection::sessionBus(), this );
 
   QGridLayout *layout = new QGridLayout( this );
 

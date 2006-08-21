@@ -44,14 +44,14 @@ NetworkStatus::NetworkStatus()
   : QObject( 0 )
 {
   new NetworkStatusAdaptor( this );
-  QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
+  QDBusConnection::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   KConfigGroup group( KGlobal::config(), "NetworkStatus" );
   if ( group.readEntry( "Online", true ) == true )
     mStatus = Online;
   else
     mStatus = Offline;
 
-  QDBus::sessionBus().connect( "org.kde.kded", "/", "org.kde.NetworkStatus",
+  QDBusConnection::sessionBus().connect( "org.kde.kded", "/", "org.kde.NetworkStatus",
                                "onlineStatusChanged", this, SLOT( onlineStatusChanged() ) );
 }
 
@@ -78,7 +78,7 @@ void NetworkStatus::onlineStatusChanged()
   QDBusInterface call( "org.kde.kded", "/", "org.kde.kded" );
   QDBusMessage reply = call.call( "onlineStatus", true );
   if ( reply.type() == QDBusMessage::ReplyMessage ) {
-    int status = reply.at( 0 ).toInt();
+    int status = reply.arguments().at( 0 ).toInt();
     if ( status == 3 )
       setStatus( Online );
     else {

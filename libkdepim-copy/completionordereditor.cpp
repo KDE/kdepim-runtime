@@ -187,7 +187,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   setModal( true );
   showButtonSeparator( true );
   new CompletionOrderEditorAdaptor( this );
-  QDBus::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
+  QDBusConnection::sessionBus().registerObject("/", this, QDBusConnection::ExportAdaptors);
   mItems.setAutoDelete( true );
   // The first step is to gather all the data, creating CompletionItem objects
   QList< LdapClient* > ldapClients = ldapSearch->clients();
