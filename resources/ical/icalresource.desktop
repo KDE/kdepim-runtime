@@ -5,7 +5,7 @@ Name[x-test]=xxAkonadi ICal Resourcexx
 Comment=An agent to load data from a local iCal file
 Type=AkonadiResource
 Exec=akonadi_ical_resource
-Icon=ical.png
+Icon=ical
 
 X-Akonadi-MimeTypes=text/calendar
 X-Akonadi-Capabilitites=text/calendar
