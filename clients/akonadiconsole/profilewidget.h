@@ -24,7 +24,7 @@
 
 #include <QtGui/QWidget>
 
-#include "agentmanagerinterface.h"
+#include "profilemanagerinterface.h"
 
 namespace PIM {
 class ProfileView;
@@ -43,7 +43,7 @@ class ProfileWidget : public QWidget
 
   private:
     PIM::ProfileView *mView;
-    org::kde::Akonadi::AgentManager *mManager;
+    org::kde::Akonadi::ProfileManager *mManager;
 };
 
 #endif

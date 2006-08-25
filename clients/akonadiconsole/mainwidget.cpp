@@ -30,7 +30,7 @@
 MainWidget::MainWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mAgentManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.AgentManager", "/", QDBusConnection::sessionBus(), this );
+  mAgentManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.Control", "/AgentManager", QDBusConnection::sessionBus(), this );
 
   QGridLayout *layout = new QGridLayout( this );
 

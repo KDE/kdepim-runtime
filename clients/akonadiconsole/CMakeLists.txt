@@ -10,6 +10,7 @@ set(akonadiconsole_bin_SRCS
 
 qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
   ${CMAKE_SOURCE_DIR}/akonadi/server/interfaces/org.kde.Akonadi.AgentManager.xml
+  ${CMAKE_SOURCE_DIR}/akonadi/server/interfaces/org.kde.Akonadi.ProfileManager.xml
 )
 
 kde4_automoc(${akonadiconsole_bin_SRCS})
