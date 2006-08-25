@@ -24,15 +24,10 @@
 
 #include <QtGui/QWidget>
 
-#include "agentmanagerinterface.h"
-
 class MainWidget : public QWidget
 {
   public:
     MainWidget( QWidget *parent = 0 );
-
-  private:
-    org::kde::Akonadi::AgentManager *mAgentManager;
 };
 
 #endif

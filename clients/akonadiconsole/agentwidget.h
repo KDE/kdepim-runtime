@@ -24,10 +24,9 @@
 
 #include <QtGui/QWidget>
 
-#include "agentmanagerinterface.h"
-
 namespace PIM {
 class AgentInstanceView;
+class AgentManager;
 }
 
 class AgentWidget : public QWidget
@@ -43,7 +42,7 @@ class AgentWidget : public QWidget
 
   private:
     PIM::AgentInstanceView *mView;
-    org::kde::Akonadi::AgentManager *mManager;
+    PIM::AgentManager *mManager;
 };
 
 #endif

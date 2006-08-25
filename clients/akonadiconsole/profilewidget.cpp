@@ -19,19 +19,19 @@
     USA.
 */
 
-#include <QtDBus/QDBusConnection>
 #include <QtGui/QGridLayout>
 #include <QtGui/QInputDialog>
 #include <QtGui/QPushButton>
 
 #include "libakonadi/components/profileview.h"
+#include "libakonadi/profilemanager.h"
 
 #include "profilewidget.h"
 
 ProfileWidget::ProfileWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mManager = new org::kde::Akonadi::ProfileManager( "org.kde.Akonadi.Control", "/ProfileManager", QDBusConnection::sessionBus(), this );
+  mManager = new PIM::ProfileManager( this );
 
   QGridLayout *layout = new QGridLayout( this );
 

@@ -19,7 +19,6 @@
     USA.
 */
 
-#include <QtDBus/QDBusConnection>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
@@ -28,6 +27,7 @@
 
 #include "libakonadi/components/agenttypeview.h"
 #include "libakonadi/components/agentinstanceview.h"
+#include "libakonadi/agentmanager.h"
 
 #include "agentwidget.h"
 
@@ -78,7 +78,7 @@ class Dialog : public QDialog
 AgentWidget::AgentWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.Control", "/AgentManager", QDBusConnection::sessionBus(), this );
+  mManager = new PIM::AgentManager( this );
 
   QGridLayout *layout = new QGridLayout( this );
 

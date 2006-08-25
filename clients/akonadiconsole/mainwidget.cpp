@@ -19,7 +19,6 @@
     USA.
 */
 
-#include <QtDBus/QDBusConnection>
 #include <QtGui/QGridLayout>
 
 #include "agentwidget.h"
@@ -30,8 +29,6 @@
 MainWidget::MainWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mAgentManager = new org::kde::Akonadi::AgentManager( "org.kde.Akonadi.Control", "/AgentManager", QDBusConnection::sessionBus(), this );
-
   QGridLayout *layout = new QGridLayout( this );
 
   ProfileWidget *profileWidget = new ProfileWidget( this );
