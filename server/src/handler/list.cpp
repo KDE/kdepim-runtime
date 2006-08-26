@@ -70,21 +70,21 @@ bool List::handleLine(const QByteArray& line )
         while ( it.hasNext() ) {
             Collection c = it.next();
             QString list( "LIST ");
-            list += "(";
+            list += '(';
             bool first = true;
             if ( c.isNoSelect() ) {
                 list += "\\Noselect";
                 first = false;
             }
             if ( c.isNoInferiors() ) {
-                if ( !first ) list += " ";
+                if ( !first ) list += ' ';
                 list += "\\Noinferiors";
                 first = false;
             }
             const QString supportedMimeTypes = c.getMimeTypes();
-            if ( !supportedMimeTypes.isEmpty() ) { 
-                if ( !first ) list += " ";
-                list += "\\MimeTypes["+ c.getMimeTypes() +"]";
+            if ( !supportedMimeTypes.isEmpty() ) {
+                if ( !first ) list += ' ';
+                list += "\\MimeTypes[" + c.getMimeTypes() + ']';
             }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
@@ -94,7 +94,7 @@ bool List::handleLine(const QByteArray& line )
             emit responseAvailable( response );
         }
     }
-    
+
     response.setSuccess();
     response.setTag( tag() );
     response.setString( "List completed" );

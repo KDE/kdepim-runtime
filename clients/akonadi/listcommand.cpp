@@ -59,14 +59,14 @@ void ListCommand::exec()
         QString str;
         str = "Item: " + item->reference().persistanceID();
         if ( !item->reference().externalUrl().isEmpty() ) {
-          str += " [" + item->reference().externalUrl().toString() + "]";
+          str += " [" + item->reference().externalUrl().toString() + ']';
         }
         if ( !item->flags().isEmpty() ) {
           str += " ( ";
           foreach( QByteArray flag, item->flags() ) {
-            str += flag + " ";
+            str += flag + ' ';
           }
-          str += ")";
+          str += ')';
         }
         str += " [" + item->mimeType() + ']';
         out() << str << endl;

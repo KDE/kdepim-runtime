@@ -32,7 +32,7 @@ QString AgendaModel::label( int position ) const
 {
   QDate d = date( position );
   QString label = QDate::shortDayName( d.dayOfWeek() );
-  label += " " + QString::number( d.day() );
+  label += ' ' + QString::number( d.day() );
   return label;
 }
 
@@ -41,14 +41,14 @@ QColor AgendaModel::cellColor( int position ) const
   QDate d = date( position );
   if ( d.dayOfWeek() == 7 ) return QColor( "red" );
   if ( d.dayOfWeek() == 6 ) return QColor( 255, 128, 128 );
-  
+
   return QColor();
 }
 
 QColor AgendaModel::decorationColor( int position ) const
 {
   QDate d = date( position );
-  
+
   int month = d.month();
   bool isOddMonth = month % 2 == 0;
 
@@ -58,7 +58,7 @@ QColor AgendaModel::decorationColor( int position ) const
   } else {
     monthColor = "orange";
   }
-  
+
   return monthColor;
 }
 
@@ -66,8 +66,8 @@ QString AgendaModel::decorationLabel( int position ) const
 {
   QDate d = date( position );
   if ( d.day() != 1 ) return QString();
-  
-  return QDate::longMonthName( d.month() ) + " " + QString::number( d.year() );
+
+  return QDate::longMonthName( d.month() ) + ' ' + QString::number( d.year() );
 }
 
 bool AgendaModel::hasDecoration() const
@@ -97,7 +97,7 @@ void AgendaModel::paintCell( int position, QPainter *p, const QRect &rect )
       currentEvents.append( e );
     }
   }
-  
+
   foreach( Event e, currentEvents ) {
     QTime startTime = e.start.time();
     QTime endTime = e.end.time();
@@ -170,7 +170,7 @@ void AgendaModel::drawEventSummary( QPainter *p, const Event &event,
     int textTop = rect.top() + 12;
     if ( rect.height() > 26 ) {
       textTop += 14;
-      QString timeText = timeString( event.start.time() ) + "-" +
+      QString timeText = timeString( event.start.time() ) + '-' +
         timeString( event.end.time() );
       p->drawText( rect.left() + 4, rect.top() + 12, timeText );
     }
@@ -192,13 +192,13 @@ int AgendaModel::xForTime( const QRect &rect, const QTime &time ) const
 QString AgendaModel::timeString( const QTime &time )
 {
   QString result = QString::number( time.hour() );
-  result += ":";
+  result += ':';
 
   QString minuteString = QString::number( time.minute() );
   if ( minuteString.size() == 1 ) minuteString.prepend( "0" );
-  
+
   result += minuteString;
-  
+
   return result;
 }
 
