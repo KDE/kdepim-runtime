@@ -22,7 +22,7 @@
 #define KDATEPICKERPOPUP_H
 
 #include <QDateTime>
-#include <q3popupmenu.h>
+#include <QMenu>
 
 #include <kdepimmacros.h>
 #include <kdatepicker.h>
@@ -42,7 +42,7 @@
 
    @author Bram Schoenmakers <bram_s@softhome.net>
 */
-class KDE_EXPORT KDatePickerPopup: public Q3PopupMenu
+class KDE_EXPORT KDatePickerPopup: public QMenu
 {
     Q_OBJECT
   public:
@@ -57,7 +57,7 @@ class KDE_EXPORT KDatePickerPopup: public Q3PopupMenu
        @param name The object's name.
     */
     KDatePickerPopup( int items = 2, const QDate &date = QDate::currentDate(),
-                      QWidget *parent = 0, const char *name = 0 );
+                      QWidget *parent = 0 );
 
     /**
        @return A pointer to the private variable mDatePicker, an instance of
