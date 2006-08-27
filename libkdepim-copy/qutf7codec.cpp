@@ -24,8 +24,6 @@
 
 
 #include "qutf7codec.h"
-//Added by qt3to4:
-#include <Q3CString>
 
 #ifndef QT_NO_TEXTCODEC
 
@@ -362,7 +360,7 @@ private:
       return '/';
   }
 
-  void addToShiftedSequence(Q3CString::Iterator & t, ushort u) {
+  void addToShiftedSequence(QByteArray::Iterator & t, ushort u) {
     switch (stepNo) {
       // no outbits; use uppermost 6 bits of u
     case 0:
@@ -401,7 +399,7 @@ private:
     stepNo = (stepNo + 1) % 3;
   }
 
-  void endShiftedSequence(Q3CString::Iterator & t) {
+  void endShiftedSequence(QByteArray::Iterator & t) {
     switch (stepNo) {
     case 1: // four outbits still to be written
     case 2: // two outbits still to be written
@@ -423,7 +421,7 @@ private:
       ( stepNo == 2 && (u & 0xC000) == 0 );
   }
 
-  void processDoesntNeedEncoding(Q3CString::Iterator & t, ushort ch) {
+  void processDoesntNeedEncoding(QByteArray::Iterator & t, ushort ch) {
     // doesn't need encoding
     if (shifted) {
       endShiftedSequence(t);
@@ -469,7 +467,7 @@ public:
 
     // source and destination cursor
     const QChar * s = uc.unicode();
-    Q3CString::Iterator t = result.data();
+    QByteArray::Iterator t = result.data();
 
     if ( uc.isNull() ) {
       // return to ascii requested:
