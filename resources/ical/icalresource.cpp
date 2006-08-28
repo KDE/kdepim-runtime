@@ -30,11 +30,11 @@ using namespace PIM;
 using namespace KCal;
 
 ICalResource::ICalResource( const QString &id )
-    :ResourceBase( id )
+    :ResourceBase( id ), mCalendar( 0 )
 {
   // ### just for testing
   mCalendar = new KCal::CalendarLocal( "UTC" );
-  mCalendar->load( "akonadi_ical_test.ics" );
+  //mCalendar->load( "akonadi_ical_test.ics" );
 }
 
 PIM::ICalResource::~ ICalResource()

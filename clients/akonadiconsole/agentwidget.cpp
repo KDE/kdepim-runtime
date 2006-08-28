@@ -84,7 +84,7 @@ AgentWidget::AgentWidget( QWidget *parent )
 
   mView = new PIM::AgentInstanceView( this );
 
-  layout->addWidget( mView, 0, 0, 1, 3 );
+  layout->addWidget( mView, 0, 0, 1, 4 );
 
   QPushButton *button = new QPushButton( "Add...", this );
   connect( button, SIGNAL( clicked() ), this, SLOT( addAgent() ) );
@@ -93,6 +93,10 @@ AgentWidget::AgentWidget( QWidget *parent )
   button = new QPushButton( "Remove", this );
   connect( button, SIGNAL( clicked() ), this, SLOT( removeAgent() ) );
   layout->addWidget( button, 1, 2 );
+
+  button = new QPushButton( "Configure...", this );
+  connect( button, SIGNAL( clicked() ), this, SLOT( configureAgent() ) );
+  layout->addWidget( button, 1, 3 );
 }
 
 void AgentWidget::addAgent()
@@ -111,6 +115,13 @@ void AgentWidget::removeAgent()
   const QString agent = mView->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->removeAgentInstance( agent );
+}
+
+void AgentWidget::configureAgent()
+{
+  const QString agent = mView->currentAgentInstance();
+  if ( !agent.isEmpty() )
+    mManager->agentInstanceConfigure( agent );
 }
 
 #include "agentwidget.moc"

@@ -22,7 +22,7 @@
 #ifndef PIM_RESOURCE_H
 #define PIM_RESOURCE_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include <kdepim_export.h>
 
@@ -80,6 +80,26 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      */
     virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type ) = 0;
 
+    /**
+     * This method is called whenever the resource shall show its configuration dialog
+     * to the user.
+     */
+    virtual void configure() = 0;
+
+    /**
+     * This method is used to set the configuration of the resource explicitely.
+     *
+     * @param data The configuration in xml format.
+     * @returns true if the configuration was accepted and applyed, false otherwise.
+     */
+    virtual bool setConfiguration( const QString &data ) = 0;
+
+    /**
+     * This method returns the current configuration of the resource in xml format.
+     * If the resource has no configuration, an empty string is returned.
+     */
+    virtual QString configuration() const = 0;
+
   Q_SIGNALS:
     /**
      * This signal is emitted whenever the status of the resource has changed.
@@ -88,6 +108,14 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * @param message An i18n'ed message which describes the status in detail.
      */
     void statusChanged( int status, const QString &message );
+
+    /**
+     * This signal is emitted whenever the configuration of the resource has changed.
+     * That happens when either @p configure() or @p setConfiguration() was called.
+     *
+     * @param data The new configuration data in xml format.
+     */
+    void configurationChanged( const QString &data );
 };
 
 }

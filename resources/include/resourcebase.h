@@ -100,6 +100,26 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     virtual QString statusMessage() const;
 
+    /**
+     * This method is called whenever the resource shall show its configuration dialog
+     * to the user.
+     */
+    virtual void configure();
+
+    /**
+     * This method is used to set the configuration of the resource explicitely.
+     *
+     * @param data The configuration in xml format.
+     * @returns true if the configuration was accepted and applyed, false otherwise.
+     */
+    virtual bool setConfiguration( const QString &data );
+
+    /**
+     * This method returns the current configuration of the resource in xml format.
+     * If the resource has no configuration, an empty string is returned.
+     */
+    virtual QString configuration() const;
+
   public Q_SLOTS:
     /**
      * This method is called to quit the resource.

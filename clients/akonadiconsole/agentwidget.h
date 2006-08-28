@@ -39,6 +39,7 @@ class AgentWidget : public QWidget
   private Q_SLOTS:
     void addAgent();
     void removeAgent();
+    void configureAgent();
 
   private:
     PIM::AgentInstanceView *mView;

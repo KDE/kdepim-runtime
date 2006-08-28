@@ -136,6 +136,24 @@ void ResourceBase::changeStatus( Status status, const QString &message )
   emit statusChanged( d->mStatusCode, d->mStatusMessage );
 }
 
+void ResourceBase::configure()
+{
+  emit configurationChanged( QString() );
+}
+
+bool ResourceBase::setConfiguration( const QString &data )
+{
+  // TODO: add template method
+  emit configurationChanged( data );
+
+  return true;
+}
+
+QString ResourceBase::configuration() const
+{
+  return QString();
+}
+
 QString ResourceBase::parseArguments( int argc, char **argv )
 {
   if ( argc < 3 ) {
