@@ -278,7 +278,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
       if ( linkMask & URLLinks ) {
         url = (addr.url().url().startsWith( "http://" ) || addr.url().url().startsWith( "https://" ) ? addr.url().url() :
           "http://" + addr.url().url());
-        url = KStringHandler::tagURLs( url );
+        url = KStringHandler::tagUrls( url );
       } else {
         url = addr.url().url();
       }
@@ -288,7 +288,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     QString blog = addr.custom( "KADDRESSBOOK", "BlogFeed" );
     if ( !blog.isEmpty() ) {
       if ( linkMask & URLLinks ) {
-        blog = KStringHandler::tagURLs( blog );
+        blog = KStringHandler::tagUrls( blog );
       }
       dynamicPart += rowFmtStr.arg( i18n("Blog Feed") ).arg( blog );
     }

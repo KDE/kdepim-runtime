@@ -47,14 +47,14 @@ void KPartsGenericPart::load()
         return;
     QString mimetype = m_mimetype;
     if ( mimetype == "auto" )
-        mimetype == KMimeType::findByURL( m_url )->name();
+        mimetype == KMimeType::findByUrl( m_url )->name();
     if ( m_part ) {
         delete m_part;
     }
     // "this" is both the parent widget and the parent object
     m_part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, this );
     if ( m_part ) {
-        m_part->openURL( m_url );
+        m_part->openUrl( m_url );
         m_part->widget()->show();
     }
 }

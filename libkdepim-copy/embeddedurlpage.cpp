@@ -55,11 +55,11 @@ void EmbeddedURLPage::loadContents()
         return;
     QString mimetype = mMimeType;
     if ( mimetype == "auto" )
-        mimetype == KMimeType::findByURL( mUri )->name();
+        mimetype == KMimeType::findByUrl( mUri )->name();
     // "this" is both the parent widget and the parent object
     mPart = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, this );
     if ( mPart ) {
-        mPart->openURL( mUri );
+        mPart->openUrl( mUri );
         mPart->widget()->show();
     }
 //void KParts::BrowserExtension::openURLRequestDelayed( const KUrl &url, const KParts::URLArgs &args = KParts::URLArgs() )

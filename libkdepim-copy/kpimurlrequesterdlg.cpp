@@ -33,7 +33,7 @@ KUrl KPimURLRequesterDlg::getURL( const QString& dir, const QString &label,
 
     dlg.exec();
 
-    const KUrl& url = dlg.selectedURL();
+    const KUrl& url = dlg.selectedUrl();
     if (url.isValid())
         KRecentDocument::add(url);
 
