@@ -11,5 +11,9 @@ X-KDE-FactoryName=komposerconfig
 X-KDE-HasReadOnlyMode=false
 
 Name=Komposer
+Name[x-test]=xxKomposerxx
 Comment=KDE Komposer
+Comment[fr]=Komposer KDE
+Comment[x-test]=xxKDE Komposerxx
 Keywords=komposer
+Keywords[x-test]=xxkomposerxx
