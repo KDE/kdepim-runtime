@@ -18,11 +18,16 @@
 */
 
 #include "icalresource.h"
+#include <libakonadi/collectionlistjob.h>
+#include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
+#include <libakonadi/itemfetchjob.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 #include <kcal/icalformat.h>
+
+#include <klocale.h>
 
 #include <QDebug>
 
@@ -34,7 +39,8 @@ ICalResource::ICalResource( const QString &id )
 {
   // ### just for testing
   mCalendar = new KCal::CalendarLocal( "UTC" );
-  //mCalendar->load( "akonadi_ical_test.ics" );
+  mCalendar->load( "akonadi_ical_test.ics" );
+  sync();
 }
 
 PIM::ICalResource::~ ICalResource()
@@ -73,6 +79,66 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString & col
   job->start();
 
   return true;
+}
+
+void PIM::ICalResource::sync()
+{
+  changeStatus( Syncing, i18n("Syncing with ICal file.") );
+
+  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false );
+  ljob->setResource( identifier() );
+  ljob->exec();
+
+  if ( ljob->collections().count() != 1 ) {
+    changeStatus( Error, i18n("No or more than one collection found!") );
+    return;
+  }
+  QByteArray col = ljob->collections().first()->name().toUtf8();
+  delete ljob;
+
+  CollectionModifyJob *modify = new CollectionModifyJob( col, this );
+  QList<QByteArray> mimeTypes;
+  mimeTypes << "text/calendar";
+  modify->setContentTypes( mimeTypes );
+  if ( !modify->exec() ) {
+    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", QString::fromUtf8(col), modify->errorText()) );
+    return;
+  }
+
+  ItemFetchJob *fetch = new ItemFetchJob( col, this );
+  if ( !fetch->exec() ) {
+    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", QString::fromUtf8(col), fetch->errorText()) );
+    return;
+  }
+  Item::List items = fetch->items();
+  delete fetch;
+  Incidence::List incidences = mCalendar->incidences();
+  foreach ( Incidence *incidence, incidences ) {
+    QString uid = incidence->uid();
+    bool found = false;
+    foreach ( Item* item, items ) {
+      if ( item->reference().externalUrl().toString() == uid ) {
+        found = true;
+        break;
+      }
+    }
+    if ( found )
+      continue;
+    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", this );
+    append->setRemoteId( uid );
+    if ( !append->exec() ) {
+      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorText()) );
+      return;
+    }
+    delete append;
+  }
+
+  changeStatus( Ready, QString() );
+}
+
+void PIM::ICalResource::aboutToQuit()
+{
+  mCalendar->save();
 }
 
 #include "icalresource.moc"

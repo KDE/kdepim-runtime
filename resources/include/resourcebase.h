@@ -120,6 +120,11 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     virtual QString configuration() const;
 
+    /**
+      Returns the instance identifier of this resource.
+    */
+    QString identifier() const;
+
   public Q_SLOTS:
     /**
      * This method is called to quit the resource.

@@ -42,6 +42,12 @@ class ICalResource : public ResourceBase
   public Q_SLOTS:
     virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
 
+  protected:
+    virtual void aboutToQuit();
+
+  private:
+    void sync();
+
   private Q_SLOTS:
     void done(PIM::Job* job);
 

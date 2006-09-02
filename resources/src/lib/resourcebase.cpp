@@ -186,3 +186,9 @@ void ResourceBase::aboutToQuit()
 {
   qDebug( "about to quit called" );
 }
+
+QString PIM::ResourceBase::identifier() const
+{
+  return d->mId;
+}
+
