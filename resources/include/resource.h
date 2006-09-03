@@ -73,12 +73,13 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * This method is called whenever an external query for putting data in the
      * storage is received.
      *
-     * @param uid The uid of the item that is requested.
+     * @param uid The Akonadi uid of the item that is requested.
+     * @param remoteId The remote identifier of the item that is requested.
      * @param collection The id of the collection where the data should be put.
      * @param type The type of the data that shall be put, either a full object or
      *             just a lightweight version.
      */
-    virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type ) = 0;
+    virtual bool requestItemDelivery( const QString & uid, const QString &remoteId, const QString & collection, int type ) = 0;
 
     /**
      * This method is called whenever the resource shall show its configuration dialog

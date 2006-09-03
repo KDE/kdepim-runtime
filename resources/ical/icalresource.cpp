@@ -22,6 +22,7 @@
 #include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemstorejob.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -62,19 +63,19 @@ void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &
 {
 }
 
-bool ICalResource::requestItemDelivery( const QString & uid, const QString & collection, int type )
+bool ICalResource::requestItemDelivery( const QString & uid, const QString &remoteId, const QString & collection, int type )
 {
-  Incidence *incidence = mCalendar->incidence( uid );
+  Incidence *incidence = mCalendar->incidence( remoteId );
   if ( !incidence ) {
-    error( QString("Incidence with uid '%1' not found!").arg( uid ) );
+    error( QString("Incidence with uid '%1' not found!").arg( remoteId ) );
     return false;
   }
 
   ICalFormat format;
   QByteArray data = format.toString( incidence ).toUtf8();
 
-  ItemAppendJob *job = new ItemAppendJob( collection.toUtf8(), data, "text/calendar", this );
-  job->setRemoteId( uid );
+  ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), this );
+  job->setData( data );
   connect( job, SIGNAL(done(PIM::Job*)), SLOT(done(PIM::Job*)) );
   job->start();
 

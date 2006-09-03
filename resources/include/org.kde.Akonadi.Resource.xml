@@ -19,6 +19,7 @@
     <method name="requestItemDelivery">
       <arg type="b" direction="out"/>
       <arg name="uid" type="s" direction="in"/>
+      <arg name="remotedId" type="s" direction="in"/>
       <arg name="collection" type="s" direction="in"/>
       <arg name="type" type="i" direction="in"/>
     </method>

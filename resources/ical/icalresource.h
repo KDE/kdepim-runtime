@@ -40,7 +40,7 @@ class ICalResource : public ResourceBase
     void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
+    virtual bool requestItemDelivery( const QString & uid,const QString &remoteId, const QString & collection, int type );
 
   protected:
     virtual void aboutToQuit();
