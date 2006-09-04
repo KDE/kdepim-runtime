@@ -480,7 +480,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
       @param mode  Describes how a line edit should display its contents.
     */
     KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
-                   const QString &filter = QString(), uint mode = KFile::File );
+                   const QString &filter = QString(), KFile::Modes = KFile::File );
     /**
       Destructor.
     */
@@ -620,7 +620,7 @@ class KDE_EXPORT KPrefsWidManager
     */
     KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item, QWidget *parent,
                                 const QString &filter = QString(),
-                                uint mode = KFile::File );
+                                KFile::Modes mode = KFile::File );
 
     /**
       Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.

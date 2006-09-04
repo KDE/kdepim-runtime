@@ -491,7 +491,7 @@ QList<QWidget *> KPrefsWidString::widgets() const
 
 
 KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
-                              const QString &filter, uint mode )
+                              const QString &filter, KFile::Modes mode )
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label()+':', parent );
@@ -620,7 +620,7 @@ KPrefsWidString *KPrefsWidManager::addWidString( KConfigSkeleton::ItemString *it
 }
 
 KPrefsWidPath *KPrefsWidManager::addWidPath( KConfigSkeleton::ItemPath *item,
-                                             QWidget *parent, const QString &filter, uint mode )
+                                             QWidget *parent, const QString &filter, KFile::Modes mode )
 {
   KPrefsWidPath *w = new KPrefsWidPath( item, parent, filter, mode );
   addWid( w );
