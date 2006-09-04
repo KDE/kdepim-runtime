@@ -33,8 +33,7 @@ KPartsGenericPart::KPartsGenericPart( QWidget* parentWidget, const char* name )
     : QWidget( parentWidget ), m_part( 0 )
 {
     setObjectName( name );
-    QVBoxLayout* layout = new QVBoxLayout( this );
-    layout->setAutoAdd( true );
+    new QVBoxLayout( this );
 }
 
 void KPartsGenericPart::load()
@@ -48,12 +47,11 @@ void KPartsGenericPart::load()
     QString mimetype = m_mimetype;
     if ( mimetype == "auto" )
         mimetype == KMimeType::findByUrl( m_url )->name();
-    if ( m_part ) {
-        delete m_part;
-    }
+    delete m_part;
     // "this" is both the parent widget and the parent object
     m_part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>( mimetype, QString(), this, this );
     if ( m_part ) {
+        layout()->addWidget( m_part->widget() );
         m_part->openUrl( m_url );
         m_part->widget()->show();
     }
@@ -70,7 +68,7 @@ QString KPartsWidgetPlugin::group() const {
 }
 
 QIcon KPartsWidgetPlugin::icon() const {
-  return QIcon();
+    return QIcon();
 }
 
 QString KPartsWidgetPlugin::includeFile() const {
@@ -96,4 +94,3 @@ QString KPartsWidgetPlugin::name() const {
 Q_EXPORT_PLUGIN( KPartsWidgetPlugin )
 
 #include "kpartsdesignerplugin.moc"
-
