@@ -101,6 +101,12 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      */
     virtual QString configuration() const = 0;
 
+
+    /**
+     * This method is called whenever the resource should start synchronization.
+     */
+    virtual void synchronize() = 0;
+
   Q_SIGNALS:
     /**
      * This signal is emitted whenever the status of the resource has changed.

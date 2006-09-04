@@ -121,8 +121,13 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     virtual QString configuration() const;
 
     /**
-      Returns the instance identifier of this resource.
-    */
+     * This method is called whenever the resource should start synchronization.
+     */
+    virtual void synchronize() = 0;
+
+    /**
+     * Returns the instance identifier of this resource.
+     */
     QString identifier() const;
 
   public Q_SLOTS:

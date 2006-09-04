@@ -84,7 +84,7 @@ AgentWidget::AgentWidget( QWidget *parent )
 
   mView = new PIM::AgentInstanceView( this );
 
-  layout->addWidget( mView, 0, 0, 1, 4 );
+  layout->addWidget( mView, 0, 0, 1, 5 );
 
   QPushButton *button = new QPushButton( "Add...", this );
   connect( button, SIGNAL( clicked() ), this, SLOT( addAgent() ) );
@@ -97,6 +97,10 @@ AgentWidget::AgentWidget( QWidget *parent )
   button = new QPushButton( "Configure...", this );
   connect( button, SIGNAL( clicked() ), this, SLOT( configureAgent() ) );
   layout->addWidget( button, 1, 3 );
+
+  button = new QPushButton( "Synchronize", this );
+  connect( button, SIGNAL( clicked() ), this, SLOT( synchronizeAgent() ) );
+  layout->addWidget( button, 1, 4 );
 }
 
 void AgentWidget::addAgent()
@@ -122,6 +126,13 @@ void AgentWidget::configureAgent()
   const QString agent = mView->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->agentInstanceConfigure( agent );
+}
+
+void AgentWidget::synchronizeAgent()
+{
+  const QString agent = mView->currentAgentInstance();
+  if ( !agent.isEmpty() )
+    mManager->agentInstanceSynchronize( agent );
 }
 
 #include "agentwidget.moc"

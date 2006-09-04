@@ -41,7 +41,8 @@ ICalResource::ICalResource( const QString &id )
   // ### just for testing
   mCalendar = new KCal::CalendarLocal( "UTC" );
   mCalendar->load( "akonadi_ical_test.ics" );
-  sync();
+
+  synchronize();
 }
 
 PIM::ICalResource::~ ICalResource()
@@ -82,7 +83,7 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString &remo
   return true;
 }
 
-void PIM::ICalResource::sync()
+void PIM::ICalResource::synchronize()
 {
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 

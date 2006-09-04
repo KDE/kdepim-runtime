@@ -154,6 +154,10 @@ QString ResourceBase::configuration() const
   return QString();
 }
 
+void ResourceBase::synchronize()
+{
+}
+
 QString ResourceBase::parseArguments( int argc, char **argv )
 {
   if ( argc < 3 ) {

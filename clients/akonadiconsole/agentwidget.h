@@ -40,6 +40,7 @@ class AgentWidget : public QWidget
     void addAgent();
     void removeAgent();
     void configureAgent();
+    void synchronizeAgent();
 
   private:
     PIM::AgentInstanceView *mView;
