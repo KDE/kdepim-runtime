@@ -70,6 +70,16 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
     virtual QString statusMessage() const = 0;
 
     /**
+     * This method returns the current progress of the resource in percentage.
+     */
+    virtual uint progress() const = 0;
+
+    /**
+     * This method returns an i18n'ed description of the current progress.
+     */
+    virtual QString progressMessage() const = 0;
+
+    /**
      * This method is called whenever an external query for putting data in the
      * storage is received.
      *
@@ -115,6 +125,15 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * @param message An i18n'ed message which describes the status in detail.
      */
     void statusChanged( int status, const QString &message );
+
+    /**
+     * This signal is emitted whenever the progress information of the resource
+     * has changed.
+     *
+     * @param progress The progress in percent (0 - 100).
+     * @param message An i18n'ed message which describes the progress in detail.
+     */
+    void progressChanged( uint progress, const QString &message );
 
     /**
      * This signal is emitted whenever the configuration of the resource has changed.

@@ -5,6 +5,10 @@
       <arg name="status" type="i" direction="out"/>
       <arg name="message" type="s" direction="out"/>
     </signal>
+    <signal name="progressChanged">
+      <arg name="progress" type="u" direction="out"/>
+      <arg name="message" type="s" direction="out"/>
+    </signal>
     <signal name="configurationChanged">
       <arg name="data" type="s" direction="out"/>
     </signal>
@@ -14,6 +18,12 @@
       <arg type="i" direction="out"/>
     </method>
     <method name="statusMessage">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="progress">
+      <arg type="u" direction="out"/>
+    </method>
+    <method name="progressMessage">
       <arg type="s" direction="out"/>
     </method>
     <method name="requestItemDelivery">

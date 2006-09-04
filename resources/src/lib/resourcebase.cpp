@@ -33,7 +33,8 @@ class ResourceBase::Private
 {
   public:
     Private()
-      : mStatusCode( Ready )
+      : mStatusCode( Ready ),
+        mProgress( 0 )
     {
       mStatusMessage = defaultReadyMessage();
     }
@@ -47,6 +48,9 @@ class ResourceBase::Private
 
     int mStatusCode;
     QString mStatusMessage;
+
+    uint mProgress;
+    QString mProgressMessage;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -94,6 +98,16 @@ QString ResourceBase::statusMessage() const
   return d->mStatusMessage;
 }
 
+uint ResourceBase::progress() const
+{
+  return d->mProgress;
+}
+
+QString ResourceBase::progressMessage() const
+{
+  return d->mProgressMessage;
+}
+
 void ResourceBase::warning( const QString& message )
 {
   d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
@@ -134,6 +148,14 @@ void ResourceBase::changeStatus( Status status, const QString &message )
   }
 
   emit statusChanged( d->mStatusCode, d->mStatusMessage );
+}
+
+void ResourceBase::changeProgress( uint progress, const QString &message )
+{
+  d->mProgress = progress;
+  d->mProgressMessage = message;
+
+  emit progressChanged( d->mProgress, d->mProgressMessage );
 }
 
 void ResourceBase::configure()

@@ -101,6 +101,16 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     virtual QString statusMessage() const;
 
     /**
+     * This method returns the current progress of the resource in percentage.
+     */
+    virtual uint progress() const;
+
+    /**
+     * This method returns an i18n'ed description of the current progress.
+     */
+    virtual QString progressMessage() const;
+
+    /**
      * This method is called whenever the resource shall show its configuration dialog
      * to the user.
      */
@@ -167,9 +177,18 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * This method shall be used to signal a state change.
      *
      * @param status The new status of the resource.
-     * @param message An i18n'ed description of the status.
+     * @param message An i18n'ed description of the status. If message
+     *                is empty, the default description for the status is used.
      */
     void changeStatus( Status status, const QString &message = QString() );
+
+    /**
+     * This method shall be used to signal a progress change.
+     *
+     * @param progress The new progress of the resource in percentage.
+     * @param message An i18n'ed description of the progress.
+     */
+    void changeProgress( uint progress, const QString &message = QString() );
 
     /**
      * This method is called whenever the application is about to
