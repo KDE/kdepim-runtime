@@ -1,0 +1,9 @@
+Intro: Plans for cleaning up libkdepim.
+
+Goal: libkdepim should no longer be a dumping ground of misc stuff for pim apps.
+
+kpartsdesignerplugin: 
+  dfaure thinks that this can move into kdebase (runtime only), but it might be
+  needed at compile time too (by uic)? We don't know for sure. The README
+  says to move it into kdelibs.  But keeping it in libkdepim isn't right.
+  Step 1: find out where/if it is being used
