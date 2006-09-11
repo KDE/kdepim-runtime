@@ -22,15 +22,15 @@
 #define EVENT_H
 
 #include <QList>
-#include <QDateTime>
 #include <QString>
+#include <kdatetime.h>
 
 struct Event
 {
   typedef QList<Event> List;
 
-  QDateTime start;
-  QDateTime end;
+  KDateTime start;
+  KDateTime end;
 
   QString title;
 };

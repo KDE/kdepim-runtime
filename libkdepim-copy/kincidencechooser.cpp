@@ -206,7 +206,7 @@ void KIncidenceChooser::setLabels()
         if ( diffBut )
             diffBut->setEnabled( false );
     }
-    mMod1lab->setText( KGlobal::locale()->formatDateTime(inc->lastModified() ));
+    mMod1lab->setText( KGlobal::locale()->formatDateTime(inc->lastModified().dateTime() ));
     inc = mInc2;
     des = mInc2lab;
     sum = mInc2Sumlab;
@@ -224,7 +224,7 @@ void KIncidenceChooser::setLabels()
         sum->setText( inc->description().left( 30 ));
 
     }
-    mMod2lab->setText( KGlobal::locale()->formatDateTime(inc->lastModified() ));
+    mMod2lab->setText( KGlobal::locale()->formatDateTime(inc->lastModified().dateTime() ));
 }
 
 void KIncidenceChooser::showIncidence1()

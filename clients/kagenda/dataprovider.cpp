@@ -69,8 +69,9 @@ void DataProvider::addEvent( int year, int month, int day,
 
   Event e;
   
-  e.start = QDateTime( QDate( year, month, day ), QTime( startHour, 0 ) );
-  e.end = QDateTime( QDate( year, month, day ), QTime( endHour, 0 ) );
+#warning What time zone should be used? Default to local time zone.
+  e.start = KDateTime( QDate( year, month, day ), QTime( startHour, 0 ) );
+  e.end = KDateTime( QDate( year, month, day ), QTime( endHour, 0 ) );
   e.title = title;
   
   mAgendaModel->addEvent( e );

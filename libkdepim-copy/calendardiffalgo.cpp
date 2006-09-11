@@ -20,6 +20,7 @@
 */
 
 #include <klocale.h>
+#include <kdatetime.h>
 
 #include "calendardiffalgo.h"
 
@@ -60,9 +61,9 @@ static QString toString( const QDate &date )
   return date.toString();
 }
 
-static QString toString( const QDateTime &dateTime )
+static QString toString( const KDateTime &dateTime )
 {
-  return dateTime.toString();
+  return dateTime.dateTime().toString();
 }
 
 static QString toString( const QString str )

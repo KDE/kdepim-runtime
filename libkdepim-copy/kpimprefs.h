@@ -25,6 +25,7 @@
 #include <QStringList>
 
 #include <kconfigskeleton.h>
+#include <kdatetime.h>
 #include <kdepimmacros.h>
 
 class QString;
@@ -46,28 +47,23 @@ class KDE_EXPORT KPimPrefs : public KConfigSkeleton
     void usrWriteConfig();
 
     /** 
-     * Get user's timezone.
+     * Get user's time zone.
      *
-     * This will first look for whatever timezone is stored in KOrganizer's
-     * configuration file.  If no timezone is found there, it uses
-     * /etc/localtime.
-     *
-     * The value returned may be in various formats (for example,
-     * America/New_York or EST) so your program should be prepared to these
-     * formats.
-     *
-     * The Calendar class in libkcal says accepts all timezone codes that are
-     * listed in /usr/share/zoneinfo/zone.tab.
+     * This will first look for whatever time zone is stored in KOrganizer's
+     * configuration file.  If no time zone is found there, it uses the
+     * local system time zone.
      *
      * @see Calendar
      */
-    static const QString timezone();
+    static KDateTime::Spec timeSpec();
 
     /**
       Convert time given in UTC to local time at timezone specified by given
       timezone id.
     */
     static QDateTime utcToLocalTime( const QDateTime &dt,
+                                     const KDateTime::Spec &timeSpec );
+    static KDE_DEPRECATED QDateTime utcToLocalTime( const QDateTime &dt,
                                      const QString &timeZoneId );
 
     /**
@@ -75,6 +71,8 @@ class KDE_EXPORT KPimPrefs : public KConfigSkeleton
       timezone id to UTC.
     */
     static QDateTime localTimeToUtc( const QDateTime &dt,
+                                     const KDateTime::Spec &timeSpec );
+    static KDE_DEPRECATED QDateTime localTimeToUtc( const QDateTime &dt,
                                      const QString &timeZoneId );
 
   public:

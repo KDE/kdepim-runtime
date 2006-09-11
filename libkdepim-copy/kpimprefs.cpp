@@ -61,37 +61,44 @@ void KPimPrefs::usrReadConfig()
   mCustomCategories.sort();
 }
 
-const QString KPimPrefs::timezone()
+KDateTime::Spec KPimPrefs::timeSpec()
 {
-  QString zone = "";
+  const KTimeZone *zone = 0;
 
   // Read TimeZoneId from korganizerrc.
   KConfig korgcfg( KStandardDirs::locate( "config", "korganizerrc" ) );
   korgcfg.setGroup( "Time & Date" );
   QString tz( korgcfg.readEntry( "TimeZoneId" ) );
   if ( !tz.isEmpty() ) {
-    zone = tz;
-    kDebug(5300) << "timezone from korganizerrc is " << zone << endl;
+    zone = KSystemTimeZones::zone( tz );
+    if ( zone )
+      kDebug(5300) << "timezone from korganizerrc is " << tz << endl;
   }
 
   // If timezone not found in KOrg, use the system's default timezone.
-  if ( zone.isEmpty() ) {
-    char zonefilebuf[ PATH_MAX ];
-
-    int len = readlink( "/etc/localtime", zonefilebuf, PATH_MAX );
-    if ( len > 0 && len < PATH_MAX ) {
-      zone = QString::fromLocal8Bit( zonefilebuf, len );
-      zone = zone.mid( zone.indexOf( "zoneinfo/" ) + 9 );
-      kDebug(5300) << "system timezone from /etc/localtime is " << zone
-                    << endl;
-    } else {
-      tzset();
-      zone = tzname[ 0 ];
-      kDebug(5300) << "system timezone from tzset() is " << zone << endl;
-    }
+  if ( !zone ) {
+    zone = KSystemTimeZones::local();
+    if ( zone )
+      kDebug(5300) << "system timezone is " << zone->name() << endl;
   }
 
-  return( zone );
+  return zone ? KDateTime::Spec( zone ) : KDateTime::ClockTime;
+}
+
+QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
+                                     const KDateTime::Spec &timeSpec )
+{
+  QDateTime dt(_dt);
+  dt.setTimeSpec( Qt::UTC );
+  return KDateTime( dt, timeSpec ).dateTime();
+}
+
+QDateTime KPimPrefs::localTimeToUtc( const QDateTime &_dt,
+                                     const KDateTime::Spec &timeSpec )
+{
+  QDateTime dt(_dt);
+  dt.setTimeSpec( Qt::LocalTime );
+  return KDateTime( dt, timeSpec ).toUtc().dateTime();
 }
 
 QDateTime KPimPrefs::utcToLocalTime( const QDateTime &_dt,
