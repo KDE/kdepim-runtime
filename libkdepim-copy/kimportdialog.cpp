@@ -326,7 +326,7 @@ void KImportDialog::readFile( int rows )
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
 
-  KProgressBar *progress = pDialog.progressBar();
+  QProgressBar *progress = pDialog.progressBar();
   progress->setMaximum( mFile.count(mSeparator, Qt::CaseSensitive) );
   progress->setValue(0);
   int progressValue = 0;
@@ -659,7 +659,7 @@ void KImportDialog::applyConverter()
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
 
-  KProgressBar *progress = pDialog.progressBar();
+  QProgressBar *progress = pDialog.progressBar();
   progress->setMaximum( mTable->numRows()-1 );
   progress->setValue(0);
 
