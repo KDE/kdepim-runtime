@@ -57,24 +57,6 @@ class KDE_EXPORT KPimPrefs : public KConfigSkeleton
      */
     static KDateTime::Spec timeSpec();
 
-    /**
-      Convert time given in UTC to local time at timezone specified by given
-      timezone id.
-    */
-    static QDateTime utcToLocalTime( const QDateTime &dt,
-                                     const KDateTime::Spec &timeSpec );
-    static KDE_DEPRECATED QDateTime utcToLocalTime( const QDateTime &dt,
-                                     const QString &timeZoneId );
-
-    /**
-      Convert time given in local time at timezone specified by given
-      timezone id to UTC.
-    */
-    static QDateTime localTimeToUtc( const QDateTime &dt,
-                                     const KDateTime::Spec &timeSpec );
-    static KDE_DEPRECATED QDateTime localTimeToUtc( const QDateTime &dt,
-                                     const QString &timeZoneId );
-
   public:
     QStringList mCustomCategories;
   
