@@ -126,7 +126,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
       str = i18n("File %1 exists.\nDo you want to replace it?",
 		   aFileName);
       const int rc = KMessageBox::warningContinueCancel(0,
-	   str, i18n("Save to File"), i18n("&Replace"));
+	   str, i18n("Save to File"), KGuiItem(i18n("&Replace")));
       if (rc != KMessageBox::Continue) return false;
     }
     if (aBackup)
