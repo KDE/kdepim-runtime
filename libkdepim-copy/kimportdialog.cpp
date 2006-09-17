@@ -42,13 +42,11 @@
 #include <kinputdialog.h>
 #include <klineedit.h>
 #include <klocale.h>
-#include <kprogressbar.h>
 #include <ksimpleconfig.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
 #include <kfiledialog.h>
 #include <kprogressdialog.h>
-#include <kprogressbar.h>
 
 #include "kimportdialog.h"
 #include "kimportdialog.moc"

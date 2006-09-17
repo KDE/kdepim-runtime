@@ -34,16 +34,18 @@
 
 
 #include "ssllabel.h"
-//Added by qt3to4:
+
+
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QEvent>
+#include <QProgressBar>
+
 using KPIM::SSLLabel;
 #include "progressmanager.h"
 using KPIM::ProgressItem;
 using KPIM::ProgressManager;
 
-#include <kprogressbar.h>
 #include <kiconloader.h>
 #include <kdebug.h>
 
@@ -57,7 +59,6 @@ using KPIM::ProgressManager;
 #include <q3frame.h>
 
 #include "progressdialog.h"
-#include <kprogressbar.h>
 #include "statusbarprogresswidget.h"
 
 using namespace KPIM;
@@ -87,7 +88,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
 
   m_pButton->setToolTip( i18n("Open detailed progress dialog") );
 
-  m_pProgressBar = new KProgressBar( this );
+  m_pProgressBar = new QProgressBar( this );
 #warning "kde4 porting\n";  
   //m_pProgressBar->setLineWidth( 1 );
   //m_pProgressBar->setFrameStyle( Q3Frame::Box );
