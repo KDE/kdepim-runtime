@@ -64,7 +64,7 @@ void EmbeddedURLPage::loadContents()
     }
 //void KParts::BrowserExtension::openURLRequestDelayed( const KUrl &url, const KParts::URLArgs &args = KParts::URLArgs() )
     KParts::BrowserExtension* be = KParts::BrowserExtension::childObject( mPart );
-    connect( be, SIGNAL( openURLRequestDelayed( const KUrl &, const KParts::URLArgs & ) ),
+    connect( be, SIGNAL( openUrlRequestDelayed( const KUrl &, const KParts::URLArgs & ) ),
 //              mPart, SLOT( openURL( const KUrl & ) ) );
              this, SIGNAL( openURL( const KUrl & ) ) );
   }
