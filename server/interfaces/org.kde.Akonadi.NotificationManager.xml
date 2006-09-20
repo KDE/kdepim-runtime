@@ -4,29 +4,32 @@
     <signal name="itemChanged">
       <arg name="uid" type="ay" direction="out"/>
       <arg name="collection" type="ay" direction="out"/>
+      <arg name="mimetype" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
     <signal name="itemAdded">
       <arg name="uid" type="ay" direction="out"/>
       <arg name="collection" type="ay" direction="out"/>
+      <arg name="mimetype" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
     <signal name="itemRemoved">
       <arg name="uid" type="ay" direction="out"/>
       <arg name="collection" type="ay" direction="out"/>
+      <arg name="mimetype" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
     <signal name="collectionAdded">
       <arg name="path" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
     <signal name="collectionChanged">
       <arg name="path" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
     <signal name="collectionRemoved">
       <arg name="path" type="ay" direction="out"/>
+      <arg name="resource" type="ay" direction="out"/>
     </signal>
-    <method name="monitorCollection">
-      <arg name="path" type="ay" direction="in"/>
-    </method>
-    <method name="monitorItem">
-      <arg name="uid" type="ay" direction="in"/>
-    </method>
   </interface>
 </node>
