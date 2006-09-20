@@ -27,6 +27,7 @@
 #include <QDataStream>
 #include <QEventLoop>
 //Added by qt3to4:
+#include <QProgressBar>
 #include <QTextStream>
 #include <QDropEvent>
 #include <kapplication.h>

@@ -28,6 +28,7 @@
 #include <QFile>
 #include <QLabel>
 #include <QLayout>
+#include <QProgressBar>
 #include <QLineEdit>
 #include <q3listview.h>
 #include <qradiobutton.h>
