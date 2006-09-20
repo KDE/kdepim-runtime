@@ -109,7 +109,7 @@ kde4_add_widget_files(kdepimwidgets_PART_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/kdepim
 
 kde4_add_plugin(kdepimwidgets ${kdepimwidgets_PART_SRCS})
 
-kde4_install_libtool_file(${PLUGIN_INSTALL_DIR}}/plugins/designer kdepimwidgets)
+kde4_install_libtool_file(${PLUGIN_INSTALL_DIR}/plugins/designer kdepimwidgets)
 
 target_link_libraries(kdepimwidgets  ${KDE4_KIO_LIBS} kdepim)
 
