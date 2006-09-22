@@ -33,6 +33,7 @@
 
 #include <kio/job.h>
 #include <kldap/ldif.h>
+#include <kldap/ldapserver.h>
 
 #include <kdepimmacros.h>
 
@@ -43,51 +44,6 @@ namespace KPIM {
 class LdapClient;
 typedef QList<QByteArray> LdapAttrValue;
 typedef QMap<QString,LdapAttrValue > LdapAttrMap;
-
-class LdapServer
-{
-  public:
-    LdapServer() : mPort( 389 ) {}
-
-    enum Security{ Sec_None, TLS, SSL };
-    enum Auth{ Anonymous, Simple, SASL };
-    QString host() const { return mHost; }
-    int port() const { return mPort; }
-    const QString &baseDN() const { return mBaseDN; }
-    const QString &user() const { return mUser; }
-    const QString &bindDN() const { return mBindDN; }
-    const QString &pwdBindDN() const { return mPwdBindDN; }
-    int timeLimit() const { return mTimeLimit; }
-    int sizeLimit() const { return mSizeLimit; }
-    int version() const { return mVersion; }
-    int security() const { return mSecurity; }
-    int auth() const { return mAuth; }
-    const QString &mech() const { return mMech; }
-
-    void setHost( const QString &host ) { mHost = host; }
-    void setPort( int port ) { mPort = port; }
-    void setBaseDN( const QString &baseDN ) {  mBaseDN = baseDN; }
-    void setUser( const QString &user ) { mUser = user; }
-    void setBindDN( const QString &bindDN ) {  mBindDN = bindDN; }
-    void setPwdBindDN( const QString &pwdBindDN ) {  mPwdBindDN = pwdBindDN; }
-    void setTimeLimit( int timelimit ) { mTimeLimit = timelimit; }
-    void setSizeLimit( int sizelimit ) { mSizeLimit = sizelimit; }
-    void setVersion( int version ) { mVersion = version; }
-    void setSecurity( int security ) { mSecurity = security; } //0-No, 1-TLS, 2-SSL - KDE4: add an enum to Lda
-    void setAuth( int auth ) { mAuth = auth; }; //0-Anonymous, 1-simple, 2-SASL - KDE4: add an enum to LdapCon
-    void setMech( const QString &mech ) { mMech = mech; }
-
-  private:
-    QString mHost;
-    int mPort;
-    QString mBaseDN;
-    QString mUser;
-    QString mBindDN;
-    QString mPwdBindDN;
-    QString mMech;
-    int mTimeLimit, mSizeLimit, mVersion, mSecurity, mAuth;
-};
-
 
 /**
   * This class is internal. Binary compatibiliy might be broken any time
@@ -148,8 +104,8 @@ class KDE_EXPORT LdapClient : public QObject
     int completionWeight() const;
     void setCompletionWeight( int );
 
-    const LdapServer& server() { return mServer; }
-    void setServer( const LdapServer &server ) { mServer = server; }
+    const KLDAP::LdapServer& server() { return mServer; }
+    void setServer( const KLDAP::LdapServer &server ) { mServer = server; }
     /*! Return the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
@@ -198,7 +154,7 @@ class KDE_EXPORT LdapClient : public QObject
     void endParseLDIF();
     void finishCurrentObject();
 
-    LdapServer mServer;
+    KLDAP::LdapServer mServer;
     QString mScope;
     QStringList mAttrs;
 
@@ -244,8 +200,8 @@ class KDE_EXPORT LdapSearch : public QObject
     LdapSearch();
 
     static KConfig *config();
-    static void readConfig( LdapServer &server, KConfig *config, int num, bool active );
-    static void writeConfig( const LdapServer &server, KConfig *config, int j, bool active );
+    static void readConfig( KLDAP::LdapServer &server, KConfig *config, int num, bool active );
+    static void writeConfig( const KLDAP::LdapServer &server, KConfig *config, int j, bool active );
 
     void startSearch( const QString& txt );
     void cancelSearch();

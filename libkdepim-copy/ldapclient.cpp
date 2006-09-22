@@ -106,27 +106,8 @@ void LdapClient::startQuery( const QString& filter )
   cancelQuery();
   KLDAP::LdapUrl url;
 
-  url.setProtocol( ( mServer.security() == LdapServer::SSL ) ? "ldaps" : "ldap" );
-  if ( mServer.auth() != LdapServer::Anonymous ) {
-    url.setUser( mServer.user() );
-    url.setPass( mServer.pwdBindDN() );
-  }
-  url.setHost( mServer.host() );
-  url.setPort( mServer.port() );
-  url.setExtension( "x-ver", QString::number( mServer.version() ) );
-  url.setDn( mServer.baseDN() );
-  url.setDn( mServer.baseDN() );
-  if ( mServer.security() == LdapServer::TLS ) url.setExtension( "x-tls","" );
-  if ( mServer.auth() == LdapServer::SASL ) {
-    url.setExtension( "x-sasl","" );
-    if ( !mServer.bindDN().isEmpty() ) url.setExtension( "x-bindname", mServer.bindDN() );
-    if ( !mServer.mech().isEmpty() ) url.setExtension( "x-mech", mServer.mech() );
-  }
-  if ( mServer.timeLimit() != 0 ) url.setExtension( "x-timelimit",
-    QString::number( mServer.timeLimit() ) );
-  if ( mServer.sizeLimit() != 0 ) url.setExtension( "x-sizelimit",
-    QString::number( mServer.sizeLimit() ) );
-
+  url = mServer.url();
+  
   url.setAttributes( mAttrs );
   url.setScope( mScope == "one" ? KLDAP::LdapUrl::One : KLDAP::LdapUrl::Sub );
   url.setFilter( '('+filter+')' );
@@ -271,7 +252,7 @@ void LdapClient::setCompletionWeight( int weight )
   mCompletionWeight = weight;
 }
 
-void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool active )
+void LdapSearch::readConfig( KLDAP::LdapServer &server, KConfig *config, int j, bool active )
 {
   QString prefix;
   if ( active ) prefix = "Selected";
@@ -284,7 +265,7 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
 
   QString base = config->readEntry( prefix + QString( "Base%1" ).arg( j ), QString() ).trimmed();
   if ( !base.isEmpty() )
-    server.setBaseDN( base );
+    server.setBaseDn( base );
 
   QString user = config->readEntry( prefix + QString( "User%1" ).arg( j ), QString() ).trimmed();
   if ( !user.isEmpty() )
@@ -292,35 +273,68 @@ void LdapSearch::readConfig( LdapServer &server, KConfig *config, int j, bool ac
 
   QString bindDN = config->readEntry( prefix + QString( "Bind%1" ).arg( j ), QString() ).trimmed();
   if ( !bindDN.isEmpty() )
-    server.setBindDN( bindDN );
+    server.setBindDn( bindDN );
 
   QString pwdBindDN = config->readEntry( prefix + QString( "PwdBind%1" ).arg( j ), QString() );
   if ( !pwdBindDN.isEmpty() )
-    server.setPwdBindDN( pwdBindDN );
+    server.setPassword( pwdBindDN );
 
   server.setTimeLimit( config->readEntry( prefix + QString( "TimeLimit%1" ).arg( j ),0 ) );
   server.setSizeLimit( config->readEntry( prefix + QString( "SizeLimit%1" ).arg( j ),0 ) );
+  server.setPageSize( config->readEntry( prefix + QString( "PageSize%1" ).arg( j ),0 ) );
   server.setVersion( config->readEntry( prefix + QString( "Version%1" ).arg( j ), 3 ) );
-  server.setSecurity( config->readEntry( prefix + QString( "Security%1" ).arg( j ), 0) );
-  server.setAuth( config->readEntry( prefix + QString( "Auth%1" ).arg( j ),0 ) );
+
+  QString tmp;
+  tmp = config->readEntry( prefix + QString( "Security%1" ).arg( j ), QString::fromLatin1("None") );
+  server.setSecurity( KLDAP::LdapServer::None );
+  if ( tmp == "SSL" ) server.setSecurity( KLDAP::LdapServer::SSL ); 
+  else if ( tmp == "TLS" ) server.setSecurity( KLDAP::LdapServer::TLS ); 
+
+  tmp = config->readEntry( prefix + QString( "Auth%1" ).arg( j ), QString::fromLatin1("Anonymous") );
+  server.setAuth( KLDAP::LdapServer::Anonymous );
+  if ( tmp == "Simple" ) server.setAuth( KLDAP::LdapServer::Simple );
+  else if ( tmp == "SASL" ) server.setAuth( KLDAP::LdapServer::SASL );
+  
   server.setMech( config->readEntry( prefix + QString( "Mech%1" ).arg( j ), QString() ) );
 }
 
-void LdapSearch::writeConfig( const LdapServer &server, KConfig *config, int j, bool active )
+void LdapSearch::writeConfig( const KLDAP::LdapServer &server, KConfig *config, int j, bool active )
 {
   QString prefix;
   if ( active ) prefix = "Selected";
   config->writeEntry( prefix + QString( "Host%1" ).arg( j ), server.host() );
   config->writeEntry( prefix + QString( "Port%1" ).arg( j ), server.port() );
-  config->writeEntry( prefix + QString( "Base%1" ).arg( j ), server.baseDN() );
+  config->writeEntry( prefix + QString( "Base%1" ).arg( j ), server.baseDn() );
   config->writeEntry( prefix + QString( "User%1" ).arg( j ), server.user() );
-  config->writeEntry( prefix + QString( "Bind%1" ).arg( j ), server.bindDN() );
-  config->writeEntry( prefix + QString( "PwdBind%1" ).arg( j ), server.pwdBindDN() );
+  config->writeEntry( prefix + QString( "Bind%1" ).arg( j ), server.bindDn() );
+  config->writeEntry( prefix + QString( "PwdBind%1" ).arg( j ), server.password() );
   config->writeEntry( prefix + QString( "TimeLimit%1" ).arg( j ), server.timeLimit() );
   config->writeEntry( prefix + QString( "SizeLimit%1" ).arg( j ), server.sizeLimit() );
+  config->writeEntry( prefix + QString( "PageSize%1" ).arg( j ), server.pageSize() );
   config->writeEntry( prefix + QString( "Version%1" ).arg( j ), server.version() );
-  config->writeEntry( prefix + QString( "Security%1" ).arg( j ), server.security() );
-  config->writeEntry( prefix + QString( "Auth%1" ).arg( j ), server.auth() );
+  QString tmp;
+  switch ( server.security() ) {
+    case KLDAP::LdapServer::TLS:
+      tmp = "TLS";
+      break;
+    case KLDAP::LdapServer::SSL:
+      tmp = "SSL";
+      break;
+    default:
+      tmp = "None";
+  }
+  config->writeEntry( prefix + QString( "Security%1" ).arg( j ), tmp );
+  switch ( server.auth() ) {
+    case KLDAP::LdapServer::Simple:
+      tmp = "Simple";
+      break;
+    case KLDAP::LdapServer::SSL:
+      tmp = "SASL";
+      break;
+    default:
+      tmp = "Anonymous";
+  }
+  config->writeEntry( prefix + QString( "Auth%1" ).arg( j ), tmp );
   config->writeEntry( prefix + QString( "Mech%1" ).arg( j ), server.mech() );
 }
 
@@ -363,7 +377,7 @@ void LdapSearch::readConfig()
   } else {
     for ( int j = 0; j < numHosts; j++ ) {
       LdapClient* ldapClient = new LdapClient( j, this );
-      LdapServer server;
+      KLDAP::LdapServer server;
       readConfig( server, config, j, true );
       if ( !server.host().isEmpty() ) mNoLDAPLookup = false;
       ldapClient->setServer( server );
