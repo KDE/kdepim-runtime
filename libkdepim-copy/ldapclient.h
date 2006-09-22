@@ -33,6 +33,7 @@
 
 #include <kio/job.h>
 #include <kldap/ldif.h>
+#include <kldap/ldapobject.h>
 #include <kldap/ldapserver.h>
 
 #include <kdepimmacros.h>
@@ -40,47 +41,6 @@
 class KConfig;
 
 namespace KPIM {
-
-class LdapClient;
-typedef QList<QByteArray> LdapAttrValue;
-typedef QMap<QString,LdapAttrValue > LdapAttrMap;
-
-/**
-  * This class is internal. Binary compatibiliy might be broken any time
-  * without notification. Do not use it.
-  *
-  * We mean it!
-  *
-  */
-class LdapObject
-{
-  public:
-    LdapObject()
-      : dn( QString() ), client( 0 ) {}
-    explicit LdapObject( const QString& _dn, LdapClient* _cl ) : dn( _dn ), client( _cl ) {}
-    LdapObject( const LdapObject& that ) { assign( that ); }
-
-    LdapObject& operator=( const LdapObject& that )
-    {
-      assign( that );
-      return *this;
-    }
-
-    QString toString() const;
-
-    void clear();
-
-    QString dn;
-    QString objectClass;
-    LdapAttrMap attrs;
-    LdapClient* client;
-
-  protected:
-    void assign( const LdapObject& that );
-
-  private:
-    //class LdapObjectPrivate* d;
-};
 
 /**
   * This class is internal. Binary compatibility might be broken any time
@@ -122,7 +82,7 @@ class KDE_EXPORT LdapClient : public QObject
     /*! Emitted once for each object returned
      * from the query
      */
-    void result( const KPIM::LdapObject& );
+    void result( const LdapClient &client, const KLDAP::LdapObject& );
 
   public slots: // why are those slots?
     /*! Set the attributes that should be
@@ -160,9 +120,8 @@ class KDE_EXPORT LdapClient : public QObject
 
     QPointer<KIO::SimpleJob> mJob;
     bool mActive;
-    bool mReportObjectClass;
 
-    LdapObject mCurrentObject;
+    KLDAP::LdapObject mCurrentObject;
 
   private:
     KLDAP::Ldif mLdif;
@@ -219,13 +178,19 @@ class KDE_EXPORT LdapSearch : public QObject
     void searchDone();
 
   private slots:
-    void slotLDAPResult( const KPIM::LdapObject& );
+    void slotLDAPResult( const LdapClient& client, const KLDAP::LdapObject& );
     void slotLDAPError( const QString& );
     void slotLDAPDone();
     void slotDataTimer();
     void slotFileChanged( const QString& );
 
   private:
+    
+    typedef struct ResultObject {
+      const LdapClient *client;
+      KLDAP::LdapObject object;
+    };
+    
     void readConfig();
     void finish();
     void makeSearchData( QStringList& ret, LdapResultList& resList );
@@ -234,7 +199,7 @@ class KDE_EXPORT LdapSearch : public QObject
     QTimer mDataTimer;
     int mActiveClients;
     bool mNoLDAPLookup;
-    QList< LdapObject > mResults;
+    QList< ResultObject > mResults;
     QString mConfigFile;
 
   private:

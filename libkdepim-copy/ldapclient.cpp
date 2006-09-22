@@ -45,37 +45,8 @@ using namespace KPIM;
 KConfig *KPIM::LdapSearch::s_config = 0L;
 static KStaticDeleter<KConfig> configDeleter;
 
-QString LdapObject::toString() const
-{
-  QString result = QString::fromLatin1( "\ndn: %1\n" ).arg( dn );
-  for ( LdapAttrMap::ConstIterator it = attrs.begin(); it != attrs.end(); ++it ) {
-    QString attr = it.key();
-    for ( LdapAttrValue::ConstIterator it2 = (*it).begin(); it2 != (*it).end(); ++it2 ) {
-      result += QString::fromUtf8( KLDAP::Ldif::assembleLine( attr, *it2, 76 ) ) + "\n";
-    }
-  }
-
-  return result;
-}
-
-void LdapObject::clear()
-{
-  dn.clear();
-  objectClass.clear();
-  attrs.clear();
-}
-
-void LdapObject::assign( const LdapObject& that )
-{
-  if ( &that != this ) {
-    dn = that.dn;
-    attrs = that.attrs;
-    client = that.client;
-  }
-}
-
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
-  : QObject( parent ), mJob( 0 ), mActive( false ), mReportObjectClass( false )
+  : QObject( parent ), mJob( 0 ), mActive( false )
 {
 //  d = new LdapClientPrivate;
   setObjectName(name);
@@ -92,13 +63,6 @@ LdapClient::~LdapClient()
 void LdapClient::setAttrs( const QStringList& attrs )
 {
   mAttrs = attrs;
-  for ( QStringList::Iterator it = mAttrs.begin(); it != mAttrs.end(); ++it )
-    if( (*it).toLower() == "objectclass" ){
-      mReportObjectClass = true;
-      return;
-    }
-  mAttrs << "objectClass"; // via objectClass we detect distribution lists
-  mReportObjectClass = false;
 }
 
 void LdapClient::startQuery( const QString& filter )
@@ -173,15 +137,34 @@ void LdapClient::endParseLDIF()
 
 void LdapClient::finishCurrentObject()
 {
-  mCurrentObject.dn = mLdif.dn();
-  const QString sClass( mCurrentObject.objectClass.toLower() );
-  if( sClass == "groupofnames" || sClass == "kolabgroupofnames" ){
-    LdapAttrMap::ConstIterator it = mCurrentObject.attrs.find("mail");
-    if( it == mCurrentObject.attrs.end() ){
+  mCurrentObject.setDn( mLdif.dn() );
+  KLDAP::LdapAttrValue objectclasses;
+  for ( KLDAP::LdapAttrMap::ConstIterator it = mCurrentObject.attributes().begin(); 
+    it != mCurrentObject.attributes().end(); ++it ) {
+
+    if ( it.key().toLower() == "objectclass" ) {
+      objectclasses = it.value();
+      break;
+    }
+  }
+
+  bool groupofnames = false;
+  for ( KLDAP::LdapAttrValue::ConstIterator it = objectclasses.begin(); 
+    it != objectclasses.end(); ++it ) {
+  
+    QByteArray sClass = (*it).toLower();
+    if ( sClass == "groupofnames" || sClass == "kolabgroupofnames" ) {
+      groupofnames = true;
+    }
+  }
+
+  if( groupofnames ){
+    KLDAP::LdapAttrMap::ConstIterator it = mCurrentObject.attributes().find("mail");
+    if( it == mCurrentObject.attributes().end() ){
       // No explicit mail address found so far?
       // Fine, then we use the address stored in the DN.
       QString sMail;
-      QStringList lMail = mCurrentObject.dn.split(",dc=", QString::SkipEmptyParts);
+      QStringList lMail = mCurrentObject.dn().split(",dc=", QString::SkipEmptyParts);
       const int n = lMail.count();
       if( n ){
         if( lMail.first().toLower().startsWith("cn=") ){
@@ -193,13 +176,12 @@ void LdapClient::finishCurrentObject()
             if( i < n-1 )
               sMail.append('.');
           }
-          mCurrentObject.attrs["mail"].append( sMail.toUtf8() );
+          mCurrentObject.addValue("mail", sMail.toUtf8() );
         }
       }
     }
   }
-  mCurrentObject.client = this;
-  emit result( mCurrentObject );
+  emit result( *this, mCurrentObject );
   mCurrentObject.clear();
 }
 
@@ -220,11 +202,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
         {
           name = mLdif.attr();
           QByteArray value = mLdif.value();
-          bool bIsObjectClass = name.toLower() == "objectclass";
-          if( bIsObjectClass )
-            mCurrentObject.objectClass = QString::fromUtf8( value, value.size() );
-          if( mReportObjectClass || !bIsObjectClass )
-            mCurrentObject.attrs[ name ].append( value );
+          mCurrentObject.addValue( name, value );
           //kDebug(5300) << "LdapClient::parseLDIF(): name=" << name << " value=" << QCString(value.data(), value.size()+1) << endl;
         }
         break;
@@ -391,8 +369,8 @@ void LdapSearch::readConfig()
       attrs << "cn" << "mail" << "givenname" << "sn" << "objectClass";
       ldapClient->setAttrs( attrs );
 
-      connect( ldapClient, SIGNAL( result( const KPIM::LdapObject& ) ),
-               this, SLOT( slotLDAPResult( const KPIM::LdapObject& ) ) );
+      connect( ldapClient, SIGNAL( result( const LdapClient&, const KLDAP::LdapObject& ) ),
+               this, SLOT( slotLDAPResult( const LdapClient&, const KLDAP::LdapObject& ) ) );
       connect( ldapClient, SIGNAL( done() ),
                this, SLOT( slotLDAPDone() ) );
       connect( ldapClient, SIGNAL( error( const QString& ) ),
@@ -459,9 +437,13 @@ void LdapSearch::cancelSearch()
   mResults.clear();
 }
 
-void LdapSearch::slotLDAPResult( const KPIM::LdapObject& obj )
+void LdapSearch::slotLDAPResult( const LdapClient &client, const KLDAP::LdapObject& obj )
 {
-  mResults.append( obj );
+  ResultObject result;
+  result.client = &client;
+  result.object = obj;
+  
+  mResults.append( result );
   if ( !mDataTimer.isActive() )
   {
     mDataTimer.setSingleShot( true );
@@ -505,7 +487,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 {
   QString search_text_upper = mSearchText.toUpper();
 
-  QList< KPIM::LdapObject >::ConstIterator it1;
+  QList< ResultObject >::ConstIterator it1;
   for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
     QString name, mail, givenname, sn;
     QStringList mails;
@@ -515,8 +497,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
 
     kDebug(5300) << "\n\nLdapSearch::makeSearchData()\n\n" << endl;
 
-    LdapAttrMap::ConstIterator it2;
-    for ( it2 = (*it1).attrs.begin(); it2 != (*it1).attrs.end(); ++it2 ) {
+    KLDAP::LdapAttrMap::ConstIterator it2;
+    for ( it2 = (*it1).object.attributes().begin(); it2 != (*it1).object.attributes().end(); ++it2 ) {
       QByteArray val = (*it2).first();
       int len = val.size();
       if( len > 0 && '\0' == val[len-1] )
@@ -548,7 +530,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         wasDC = true;
       } else if( it2.key() == "mail" ) {
         mail = tmp;
-        LdapAttrValue::ConstIterator it3 = it2.value().begin();
+        KLDAP::LdapAttrValue::ConstIterator it3 = it2.value().begin();
         for ( ; it3 != it2.value().end(); ++it3 ) {
           mails.append( QString::fromUtf8( (*it3).data(), (*it3).size() ) );
         }
