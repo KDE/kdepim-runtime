@@ -27,7 +27,6 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QTextStream>
-#include <q3url.h>
 
 #include <kldap/ldapurl.h>
 #include <kldap/ldif.h>

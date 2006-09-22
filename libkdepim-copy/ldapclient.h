@@ -25,9 +25,7 @@
 
 #include <QObject>
 #include <QString>
-#include <q3cstring.h>
 #include <QStringList>
-#include <q3memarray.h>
 #include <QPointer>
 #include <QTimer>
 
