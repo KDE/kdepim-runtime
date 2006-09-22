@@ -32,7 +32,7 @@
 #include <QTimer>
 
 #include <kio/job.h>
-#include <kabc/ldif.h>
+#include <kldap/ldif.h>
 
 #include <kdepimmacros.h>
 
@@ -209,7 +209,7 @@ class KDE_EXPORT LdapClient : public QObject
     LdapObject mCurrentObject;
 
   private:
-    KABC::LDIF mLdif;
+    KLDAP::Ldif mLdif;
     int mClientNumber;
     int mCompletionWeight;
 
