@@ -100,8 +100,8 @@ void TestLDAPClient::testIntevation()
   // But this certainly looks fishy, it might break on non-utf8 systems.
   QString filter = "&(|(objectclass=person)(objectclass=groupofnames)(mail=*))(|(cn=*Ägypten MDK*)(sn=*Ägypten MDK*))";
 
-  connect( mClient, SIGNAL( result( const KPIM::LdapObject& ) ),
-           this, SLOT( slotLDAPResult( const KPIM::LdapObject& ) ) );
+  connect( mClient, SIGNAL( result( const LdapClient&, const KLDAP::LdapObject& ) ),
+           this, SLOT( slotLDAPResult( const LdapClient&, const KLDAP::LdapObject& ) ) );
   connect( mClient, SIGNAL( done() ),
            this, SLOT( slotLDAPDone() ) );
   connect( mClient, SIGNAL( error( const QString& ) ),
@@ -144,7 +144,7 @@ static QString join( const KLDAP::LdapAttrValue& lst, const QString& sep )
   return res;
 }
 
-void TestLDAPClient::slotLDAPResult( const KLDAP::LdapObject& obj )
+void TestLDAPClient::slotLDAPResult( const LdapClient&, const KLDAP::LdapObject& obj )
 {
   QString cn = join( obj.attributes()[ "cn" ], ", " );
   kDebug() << " cn:" << cn << endl;

@@ -41,7 +41,7 @@ Q_SIGNALS:
     void leaveModality();
 
 private Q_SLOTS:
-    void slotLDAPResult( const KLDAP::LdapObject& );
+    void slotLDAPResult( const LdapClient&, const KLDAP::LdapObject& );
     void slotLDAPError( const QString& );
     void slotLDAPDone();
 
