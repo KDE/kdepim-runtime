@@ -4,7 +4,8 @@
 #include <string.h>
 #include <assert.h>
 
-int main( int argc, char * argv[] ) {
+int main( int argc, char** )
+{
   if ( argc == 1 ) {
     (void)new QUtf7Codec;
 
@@ -15,8 +16,8 @@ int main( int argc, char * argv[] ) {
     my_cin.setCodec(codec);
 
     QTextOStream my_cout(stdout);
-    
-    QString buffer = my_cin.read();
+
+    QString buffer = my_cin.readAll();
 
     my_cout << buffer;
   } else {

@@ -17,7 +17,7 @@ int main( int argc, char * argv[] ) {
     QTextOStream my_cout(stdout);
     my_cout.setCodec(codec);
     
-    QString buffer = my_cin.read();
+    QString buffer = my_cin.readAll();
 
     //    qDebug("buffer == " + buffer);
 
