@@ -131,11 +131,11 @@ static QString asUtf8( const QByteArray &val )
     return QString::fromUtf8( data, val.size() );
 }
 
-static QString join( const KPIM::LdapAttrValue& lst, const QString& sep )
+static QString join( const KLDAP::LdapAttrValue& lst, const QString& sep )
 {
   QString res;
   bool already = false;
-  for ( KPIM::LdapAttrValue::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
+  for ( KLDAP::LdapAttrValue::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
     if ( already )
       res += sep;
     already = true;
@@ -144,12 +144,12 @@ static QString join( const KPIM::LdapAttrValue& lst, const QString& sep )
   return res;
 }
 
-void TestLDAPClient::slotLDAPResult( const KPIM::LdapObject& obj )
+void TestLDAPClient::slotLDAPResult( const KLDAP::LdapObject& obj )
 {
-  QString cn = join( obj.attrs[ "cn" ], ", " );
+  QString cn = join( obj.attributes()[ "cn" ], ", " );
   kDebug() << " cn:" << cn << endl;
-  assert( !obj.attrs[ "mail" ].isEmpty() );
-  QString mail = join( obj.attrs[ "mail" ], ", " );
+  assert( !obj.attributes()[ "mail" ].isEmpty() );
+  QString mail = join( obj.attributes()[ "mail" ], ", " );
   kDebug() << " mail:" << mail << endl;
   assert( mail.contains( '@' ) );
 }
