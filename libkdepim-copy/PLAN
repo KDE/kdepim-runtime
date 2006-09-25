@@ -6,4 +6,6 @@ kpartsdesignerplugin:
   dfaure thinks that this can move into kdebase (runtime only), but it might be
   needed at compile time too (by uic)? We don't know for sure. The README
   says to move it into kdelibs.  But keeping it in libkdepim isn't right.
-  Step 1: find out where/if it is being used
+  Note that this doesn't seem to be used by anything. dfaure can't recall
+  who asked him to whip this up.  Can we find who wanted it and why?
+  Else we should move it into an attic.
