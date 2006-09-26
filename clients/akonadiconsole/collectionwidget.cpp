@@ -19,26 +19,23 @@
     USA.
 */
 
-#include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "agentwidget.h"
+#include "libakonadi/messagecollectionmodel.h"
+#include "libakonadi/collectionview.h"
+
 #include "collectionwidget.h"
-#include "debugwidget.h"
-#include "profilewidget.h"
 
-#include "mainwidget.h"
-
-MainWidget::MainWidget( QWidget *parent )
+CollectionWidget::CollectionWidget( QWidget *parent )
   : QWidget( parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
 
-  QTabWidget *tabWidget = new QTabWidget( this );
-  layout->addWidget( tabWidget );
+  mView = new PIM::CollectionView();
+  layout->addWidget( mView );
 
-  tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
-  tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
-  tabWidget->addTab( new CollectionWidget( tabWidget ), "Collections" );
-  tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
+  mModel = new PIM::MessageCollectionModel( this );
+  mView->setModel( mModel );
 }
+
+#include "collectionwidget.moc"

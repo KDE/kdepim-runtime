@@ -19,13 +19,15 @@
     USA.
 */
 
-#include <QtGui/QApplication>
+#include <kapplication.h>
+#include <kcmdlineargs.h>
 
 #include "mainwindow.h"
 
 int main( int argc, char **argv )
 {
-  QApplication app( argc, argv );
+  KCmdLineArgs::init( argc, argv, "akonadiconsole", "AkonadiConsole", "The Management Console for Akonadi", "1.0" );
+  KApplication app;
 
   MainWindow window;
   window.show();

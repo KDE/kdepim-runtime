@@ -2,6 +2,7 @@ include_directories(${CMAKE_SOURCE_DIR}/akonadi)
 
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp
+  collectionwidget.cpp
   connectionpage.cpp
   debugwidget.cpp
   main.cpp
