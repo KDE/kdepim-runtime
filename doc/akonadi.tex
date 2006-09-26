@@ -98,7 +98,7 @@ Keep these considerations in mind when you read the following design concept.
 In the diagram below you can see a rough concept of structure of Akonadi:
 
 \begin{center}
-\includegraphics[height=10cm]{pics/concept.png}
+\includegraphics[height=6cm]{pics/concept.png}
 \end{center}
 
 The main components are:
@@ -240,5 +240,24 @@ trunk/KDE/kdepim/akonadi and has the following code layout:
     \end{itemize}
   \end{itemize}
 \end{itemize}
+
+\chapter{Usage}
+
+\section{How to get started}
+To start the Akonadi server you call 'akonadi\_control', which is the Control process,
+on the command line, now the Akonadi server is ready be accessed by client applications.
+
+\section{Debugging tools}
+From time to time it's necessary to debug the Akonadi system. For this purpose 2 utils are
+available:
+\begin{itemize}
+  \item akonadi\_debugger
+  \item akonadiconsole
+\end{itemize}
+
+akonadi\_debugger is a tool which shows you the whole communication between the Storage and
+the client.
+The akonadiconsole is a management tool to create, remove, configure and start synchronization
+of Resources. Furthermore you can create and remove profiles with it.
 
 \end{document}
