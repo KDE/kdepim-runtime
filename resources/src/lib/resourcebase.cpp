@@ -19,8 +19,10 @@
     02110-1301, USA.
 */
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
+#include <QtGui/QApplication>
+
+#include <stdlib.h>
 
 #include "resourcebase.h"
 #include "resourceadaptor.h"
@@ -184,7 +186,7 @@ QString ResourceBase::parseArguments( int argc, char **argv )
 {
   if ( argc < 3 ) {
     qDebug( "ResourceBase::parseArguments: Not enough arguments passed..." );
-    QCoreApplication::exit( 1 );
+    exit( 1 );
   }
 
   QString identifier;
@@ -195,8 +197,10 @@ QString ResourceBase::parseArguments( int argc, char **argv )
 
   if ( identifier.isEmpty() ) {
     qDebug( "ResourceBase::parseArguments: Identifier argument missing" );
-    QCoreApplication::exit( 1 );
+    exit( 1 );
   }
+
+  QApplication::setQuitOnLastWindowClosed( false );
 
   return identifier;
 }
