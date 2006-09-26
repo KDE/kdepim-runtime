@@ -112,9 +112,14 @@ void PIM::ICalResource::synchronize()
     changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", QString::fromUtf8(col), fetch->errorText()) );
     return;
   }
+
+  changeProgress( 0 );
+
   Item::List items = fetch->items();
   delete fetch;
   Incidence::List incidences = mCalendar->incidences();
+
+  int counter = 0;
   foreach ( Incidence *incidence, incidences ) {
     QString uid = incidence->uid();
     bool found = false;
@@ -129,10 +134,15 @@ void PIM::ICalResource::synchronize()
     ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", this );
     append->setRemoteId( uid );
     if ( !append->exec() ) {
+      changeProgress( 0 );
       changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorText()) );
       return;
     }
     delete append;
+
+    counter++;
+    int percentage = (counter * 100) / incidences.count();
+    changeProgress( percentage );
   }
 
   changeStatus( Ready, QString() );
