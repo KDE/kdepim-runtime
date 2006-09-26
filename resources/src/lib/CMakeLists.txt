@@ -10,6 +10,7 @@ include_directories(
 ########### next target ###############
 
 set( akonadiresources_LIB_SRC
+  kcrash.cpp
 	resourcebase.cpp
 )
 

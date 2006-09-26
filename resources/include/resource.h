@@ -111,11 +111,26 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      */
     virtual QString configuration() const = 0;
 
-
     /**
      * This method is called whenever the resource should start synchronization.
      */
     virtual void synchronize() = 0;
+
+    /**
+     * This method is used to set the name of the resource.
+     */
+    virtual void setName( const QString &name ) = 0;
+
+    /**
+     * Returns the name of the resource.
+     */
+    virtual QString name() const = 0;
+
+    /**
+     * This method is called when the resource is removed from
+     * the system, so it can do some cleanup stuff.
+     */
+    virtual void cleanup() const = 0;
 
   Q_SIGNALS:
     /**
@@ -142,6 +157,13 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * @param data The new configuration data in xml format.
      */
     void configurationChanged( const QString &data );
+
+    /**
+     * This signal is emitted whenever the name of the resource has changed.
+     *
+     * @param name The new name of the resource.
+     */
+    void nameChanged( const QString &name );
 };
 
 }

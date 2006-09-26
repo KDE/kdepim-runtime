@@ -19,11 +19,14 @@
     02110-1301, USA.
 */
 
+#include <QtCore/QDir>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 
+#include <signal.h>
 #include <stdlib.h>
 
+#include "kcrash.h"
 #include "resourcebase.h"
 #include "resourceadaptor.h"
 
@@ -31,12 +34,23 @@
 
 using namespace PIM;
 
+static ResourceBase *sResourceBase = 0;
+
+void crashHandler( int signal )
+{
+  if ( sResourceBase )
+    sResourceBase->crashHandler( signal );
+
+  exit( 255 );
+}
+
 class ResourceBase::Private
 {
   public:
     Private()
       : mStatusCode( Ready ),
-        mProgress( 0 )
+        mProgress( 0 ),
+        mSettings( 0 )
     {
       mStatusMessage = defaultReadyMessage();
     }
@@ -47,12 +61,15 @@ class ResourceBase::Private
 
     org::kde::Akonadi::Tracer *mTracer;
     QString mId;
+    QString mName;
 
     int mStatusCode;
     QString mStatusMessage;
 
     uint mProgress;
     QString mProgressMessage;
+
+    QSettings *mSettings;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -73,6 +90,10 @@ QString ResourceBase::Private::defaultErrorMessage() const
 ResourceBase::ResourceBase( const QString & id )
   : d( new Private )
 {
+  KCrash::init();
+  KCrash::setEmergencyMethod( ::crashHandler );
+  sResourceBase = this;
+
   d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBusConnection::sessionBus(), this );
 
   if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
@@ -83,10 +104,17 @@ ResourceBase::ResourceBase( const QString & id )
     error( QString( "Unable to register object at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
 
   d->mId = id;
+
+  d->mSettings = new QSettings( QString( "%1/.akonadi/resource_config_%2" ).arg( QDir::homePath(), id ), QSettings::IniFormat );
+
+  const QString name = d->mSettings->value( "Resource/Name" ).toString();
+  if ( !name.isEmpty() )
+    d->mName = name;
 }
 
 ResourceBase::~ResourceBase()
 {
+  delete d->mSettings;
   delete d;
 }
 
@@ -182,6 +210,32 @@ void ResourceBase::synchronize()
 {
 }
 
+void ResourceBase::setName( const QString &name )
+{
+  if ( name == d->mName )
+    return;
+
+  // TODO: rename collection
+  d->mName = name;
+
+  if ( d->mName.isEmpty() || d->mName == d->mId )
+    d->mSettings->remove( "Resource/Name" );
+  else
+    d->mSettings->setValue( "Resource/Name", d->mName );
+
+  d->mSettings->sync();
+
+  emit nameChanged( d->mName );
+}
+
+QString ResourceBase::name() const
+{
+  if ( d->mName.isEmpty() )
+    return d->mId;
+  else
+    return d->mName;
+}
+
 QString ResourceBase::parseArguments( int argc, char **argv )
 {
   if ( argc < 3 ) {
@@ -209,16 +263,48 @@ void ResourceBase::quit()
 {
   aboutToQuit();
 
-  QTimer::singleShot( 0, QCoreApplication::instance(), SLOT( quit() ) );
+  d->mSettings->sync();
+
+  QCoreApplication::exit( 0 );
 }
 
 void ResourceBase::aboutToQuit()
 {
-  qDebug( "about to quit called" );
 }
 
-QString PIM::ResourceBase::identifier() const
+QString ResourceBase::identifier() const
 {
   return d->mId;
 }
 
+void ResourceBase::cleanup() const
+{
+  const QString fileName = d->mSettings->fileName();
+
+  /**
+   * First destroy the settings object...
+   */
+  delete d->mSettings;
+  d->mSettings = 0;
+
+  /**
+   * ... then remove the file from hd.
+   */
+  QFile::remove( fileName );
+
+  QCoreApplication::exit( 0 );
+}
+
+void ResourceBase::crashHandler( int signal )
+{
+  /**
+   * If we retrieved a SIGINT or SIGTERM we close normally
+   */
+  if ( signal == SIGINT || signal == SIGTERM )
+    quit();
+}
+
+QSettings* ResourceBase::settings()
+{
+  return d->mSettings;
+}

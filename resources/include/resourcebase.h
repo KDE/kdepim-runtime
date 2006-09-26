@@ -22,8 +22,9 @@
 #ifndef PIM_RESOURCEBASE_H
 #define PIM_RESOURCEBASE_H
 
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QSettings>
+#include <QtCore/QString>
 
 #include <kdepim_export.h>
 
@@ -136,9 +137,31 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     virtual void synchronize() = 0;
 
     /**
+     * This method is used to set the name of the resource.
+     */
+    virtual void setName( const QString &name );
+
+    /**
+     * Returns the name of the resource.
+     */
+    virtual QString name() const;
+
+    /**
      * Returns the instance identifier of this resource.
      */
     QString identifier() const;
+
+    /**
+     * This method is called when the resource is removed from
+     * the system, so it can do some cleanup stuff.
+     */
+    virtual void cleanup() const;
+
+    /**
+     * This method is called from the crash handler, don't call
+     * it manually.
+     */
+    void crashHandler( int signal );
 
   public Q_SLOTS:
     /**
@@ -198,6 +221,14 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * from groupware server).
      */
     virtual void aboutToQuit();
+
+    /**
+     * This method returns the settings object which has to be used by the
+     * resource to store its configuration data.
+     *
+     * Don't delete this object!
+     */
+    QSettings* settings();
 
   private:
     static QString parseArguments( int, char** );

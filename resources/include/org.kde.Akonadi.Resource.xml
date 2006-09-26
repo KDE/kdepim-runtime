@@ -12,6 +12,9 @@
     <signal name="configurationChanged">
       <arg name="data" type="s" direction="out"/>
     </signal>
+    <signal name="nameChanged">
+      <arg name="name" type="s" direction="out"/>
+    </signal>
     <method name="quit">
     </method>
     <method name="status">
@@ -45,6 +48,15 @@
     </method>
     <method name="synchronize">
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="setName">
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="name">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="cleanup">
     </method>
   </interface>
 </node>
