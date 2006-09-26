@@ -22,6 +22,7 @@
 #include "akonadiconnection.h"
 #include "storage/datastore.h"
 #include "storage/entity.h"
+#include "imapparser.h"
 
 #include "list.h"
 #include "response.h"
@@ -41,14 +42,14 @@ List::~List()
 bool List::handleLine(const QByteArray& line )
 {
     // parse out the reference name and mailbox name
-    int startOfCommand = line.indexOf( ' ' ) + 1;
-    int startOfReference = line.indexOf( '"', startOfCommand ) + 1;
-    int endOfReference = line.indexOf( '"', startOfReference );
-    int startOfMailbox = line.indexOf( ' ', endOfReference ) + 1;
-    QByteArray reference = line.mid( startOfReference, endOfReference - startOfReference );
-    QByteArray mailbox = stripQuotes( line.right( line.size() - startOfMailbox ) );
+    int pos = line.indexOf( ' ' ) + 1; // skip tag
+    pos = line.indexOf( ' ', pos ) + 1; // skip command
+    QString reference;
+    pos = PIM::ImapParser::parseString( line, reference, pos );
+    QString mailbox;
+    PIM::ImapParser::parseString( line, mailbox, pos );
 
-    //qDebug() << "reference:" << reference << "mailbox:" << mailbox << "::" << endl;
+//     qDebug() << "reference:" << reference << "mailbox:" << mailbox << "::" << endl;
 
     Response response;
     response.setUntagged();
@@ -69,7 +70,7 @@ bool List::handleLine(const QByteArray& line )
         CollectionListIterator it(collections);
         while ( it.hasNext() ) {
             Collection c = it.next();
-            QString list( "LIST ");
+            QByteArray list( "LIST ");
             list += '(';
             bool first = true;
             if ( c.isNoSelect() ) {
@@ -81,16 +82,16 @@ bool List::handleLine(const QByteArray& line )
                 list += "\\Noinferiors";
                 first = false;
             }
-            const QString supportedMimeTypes = c.getMimeTypes();
+            const QByteArray supportedMimeTypes = c.getMimeTypes();
             if ( !supportedMimeTypes.isEmpty() ) {
                 if ( !first ) list += ' ';
                 list += "\\MimeTypes[" + c.getMimeTypes() + ']';
             }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
-            list += c.identifier();
+            list += c.identifier().toUtf8();
             list += "\"";
-            response.setString( list.toLatin1() );
+            response.setString( list );
             emit responseAvailable( response );
         }
     }
