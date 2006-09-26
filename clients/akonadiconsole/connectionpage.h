@@ -19,24 +19,30 @@
     USA.
 */
 
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
+#ifndef CONNECTIONPAGE_H
+#define CONNECTIONPAGE_H
 
-#include "agentwidget.h"
-#include "debugwidget.h"
-#include "profilewidget.h"
+#include <QtGui/QWidget>
 
-#include "mainwidget.h"
+class QTextEdit;
 
-MainWidget::MainWidget( QWidget *parent )
-  : QWidget( parent )
+class ConnectionPage : public QWidget
 {
-  QVBoxLayout *layout = new QVBoxLayout( this );
+  Q_OBJECT
 
-  QTabWidget *tabWidget = new QTabWidget( this );
-  layout->addWidget( tabWidget );
+  public:
+    ConnectionPage( const QString &identifier, QWidget *parent = 0 );
 
-  tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
-  tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
-  tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
-}
+    void showAllConnections( bool );
+
+  private Q_SLOTS:
+    void connectionDataInput( const QString&, const QString& );
+    void connectionDataOutput( const QString&, const QString& );
+
+  private:
+    QTextEdit *mDataView;
+    QString mIdentifier;
+    bool mShowAllConnections;
+};
+
+#endif

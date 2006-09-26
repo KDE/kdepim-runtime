@@ -39,6 +39,8 @@ class ProfileWidget : public QWidget
   private Q_SLOTS:
     void addProfile();
     void removeProfile();
+    void addAgentInstance();
+    void removeAgentInstance();
 
   private:
     PIM::ProfileView *mView;

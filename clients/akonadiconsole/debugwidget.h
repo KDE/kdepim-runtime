@@ -19,24 +19,35 @@
     USA.
 */
 
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
+#ifndef DEBUGWIDGET_H
+#define DEBUGWIDGET_H
 
-#include "agentwidget.h"
-#include "debugwidget.h"
-#include "profilewidget.h"
+#include <QtCore/QHash>
+#include <QtGui/QWidget>
 
-#include "mainwidget.h"
+class QTextEdit;
+class QTabWidget;
 
-MainWidget::MainWidget( QWidget *parent )
-  : QWidget( parent )
+class ConnectionPage;
+
+class DebugWidget : public QWidget
 {
-  QVBoxLayout *layout = new QVBoxLayout( this );
+  Q_OBJECT
 
-  QTabWidget *tabWidget = new QTabWidget( this );
-  layout->addWidget( tabWidget );
+  public:
+    DebugWidget( QWidget *parent = 0 );
 
-  tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
-  tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
-  tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
-}
+  private Q_SLOTS:
+    void connectionStarted( const QString&, const QString& );
+    void connectionEnded( const QString&, const QString& );
+    void signalEmitted( const QString&, const QString& );
+    void warningEmitted( const QString&, const QString& );
+    void errorEmitted( const QString&, const QString& );
+
+  private:
+    QTextEdit *mGeneralView;
+    QTabWidget *mConnectionPages;
+    QHash<QString, ConnectionPage*> mPageHash;
+};
+
+#endif

@@ -2,10 +2,16 @@ include_directories(${CMAKE_SOURCE_DIR}/akonadi)
 
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp
+  connectionpage.cpp
+  debugwidget.cpp
   main.cpp
   mainwidget.cpp
   mainwindow.cpp
   profilewidget.cpp
+)
+
+qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
+  ${CMAKE_SOURCE_DIR}/akonadi/server/interfaces/org.kde.Akonadi.TracerNotification.xml
 )
 
 kde4_automoc(${akonadiconsole_bin_SRCS})

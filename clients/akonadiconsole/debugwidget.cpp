@@ -1,36 +1,41 @@
-/***************************************************************************
- *   Copyright (C) 2006 by Tobias Koenig <tokoe@kde.org>                   *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this program; if not, write to the                 *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
- ***************************************************************************/
+/*
+    This file is part of Akonadi.
+
+    Copyright (c) 2006 Tobias Koenig <tokoe@kde.org>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+    USA.
+*/
 
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
+#include <QtGui/QVBoxLayout>
 
-#include "mainwindow.h"
+#include "debugwidget.h"
 
 #include "tracernotificationinterface.h"
 #include "connectionpage.h"
 
-MainWindow::MainWindow()
-  : QMainWindow( 0 )
+DebugWidget::DebugWidget( QWidget *parent )
+  : QWidget( parent )
 {
+  QVBoxLayout *layout = new QVBoxLayout( this );
+
   QSplitter *splitter = new QSplitter( Qt::Vertical, this );
-  setCentralWidget( splitter );
+  layout->addWidget( splitter );
 
   mConnectionPages = new QTabWidget( splitter );
 
@@ -55,7 +60,7 @@ MainWindow::MainWindow()
            this, SLOT( errorEmitted( const QString&, const QString& ) ) );
 }
 
-void MainWindow::connectionStarted( const QString &identifier, const QString &msg )
+void DebugWidget::connectionStarted( const QString &identifier, const QString &msg )
 {
   ConnectionPage *page = new ConnectionPage( identifier );
   mConnectionPages->addTab( page, msg );
@@ -63,7 +68,7 @@ void MainWindow::connectionStarted( const QString &identifier, const QString &ms
   mPageHash.insert( identifier, page );
 }
 
-void MainWindow::connectionEnded( const QString &identifier, const QString &msg )
+void DebugWidget::connectionEnded( const QString &identifier, const QString& )
 {
   if ( !mPageHash.contains( identifier ) )
     return;
@@ -76,19 +81,19 @@ void MainWindow::connectionEnded( const QString &identifier, const QString &msg 
   delete widget;
 }
 
-void MainWindow::signalEmitted( const QString &signalName, const QString &msg )
+void DebugWidget::signalEmitted( const QString &signalName, const QString &msg )
 {
   mGeneralView->append( QString( "<font color=\"green\">%1 ( %2 )</font>" ).arg( signalName, msg ) );
 }
 
-void MainWindow::warningEmitted( const QString &componentName, const QString &msg )
+void DebugWidget::warningEmitted( const QString &componentName, const QString &msg )
 {
   mGeneralView->append( QString( "<font color=\"blue\">%1: %2</font>" ).arg( componentName, msg ) );
 }
 
-void MainWindow::errorEmitted( const QString &componentName, const QString &msg )
+void DebugWidget::errorEmitted( const QString &componentName, const QString &msg )
 {
   mGeneralView->append( QString( "<font color=\"red\">%1: %2</font>" ).arg( componentName, msg ) );
 }
 
-#include "mainwindow.moc"
+#include "debugwidget.moc"
