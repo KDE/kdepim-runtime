@@ -22,6 +22,13 @@
 #include <QObject>
 
 #include "../ldapclient.h"
+
+
+namespace KPIM {
+class LdapClient;
+class LdapObject;
+}
+
 typedef KPIM::LdapClient LdapClient;
 
 class TestLDAPClient : public QObject
