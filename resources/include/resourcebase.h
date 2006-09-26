@@ -32,6 +32,8 @@
 
 namespace PIM {
 
+class JobQueue;
+
 /**
  * This class should be used as subclass by all resource agents
  * since it encapsulates large parts of the protocol between
@@ -229,6 +231,13 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * Don't delete this object!
      */
     QSettings* settings();
+
+    /**
+     * Returns a job queue which can be used for all jobs created by the
+     * resource. It's recommended to use it to avoid creating too many connections
+     * to the backend.
+     */
+    JobQueue* queue();
 
   private:
     static QString parseArguments( int, char** );

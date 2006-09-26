@@ -29,6 +29,7 @@
 #include "kcrash.h"
 #include "resourcebase.h"
 #include "resourceadaptor.h"
+#include "jobqueue.h"
 
 #include "tracerinterface.h"
 
@@ -70,6 +71,8 @@ class ResourceBase::Private
     QString mProgressMessage;
 
     QSettings *mSettings;
+
+    JobQueue *queue;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -110,6 +113,8 @@ ResourceBase::ResourceBase( const QString & id )
   const QString name = d->mSettings->value( "Resource/Name" ).toString();
   if ( !name.isEmpty() )
     d->mName = name;
+
+  d->queue = new JobQueue( this );
 }
 
 ResourceBase::~ResourceBase()
@@ -307,4 +312,9 @@ void ResourceBase::crashHandler( int signal )
 QSettings* ResourceBase::settings()
 {
   return d->mSettings;
+}
+
+JobQueue* ResourceBase::queue()
+{
+  return d->queue;
 }

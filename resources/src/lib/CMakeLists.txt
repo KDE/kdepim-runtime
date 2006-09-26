@@ -1,8 +1,7 @@
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/
-	${CMAKE_SOURCE_DIR}/libakonadi
-	${CMAKE_SOURCE_DIR}/libkmime
+	${CMAKE_SOURCE_DIR}/akonadi/libakonadi
 	${CMAKE_SOURCE_DIR}/akonadi/resources/include
 )
 
@@ -33,7 +32,7 @@ kde4_add_library(
 )
 
 
-target_link_libraries( akonadiresources ${KDE4_KDECORE_LIBS} )
+target_link_libraries( akonadiresources ${KDE4_KDECORE_LIBS} akonadi)
 set_target_properties( akonadiresources PROPERTIES VERSION 1.0.0 SOVERSION 1 )
 install(TARGETS akonadiresources  DESTINATION ${LIB_INSTALL_DIR})
 

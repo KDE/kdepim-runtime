@@ -23,6 +23,7 @@
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
+#include <libakonadi/jobqueue.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -75,10 +76,9 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString &remo
   ICalFormat format;
   QByteArray data = format.toString( incidence ).toUtf8();
 
-  ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), this );
+  ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
   job->setData( data );
   connect( job, SIGNAL(done(PIM::Job*)), SLOT(done(PIM::Job*)) );
-  job->start();
 
   return true;
 }
@@ -87,7 +87,7 @@ void PIM::ICalResource::synchronize()
 {
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 
-  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false );
+  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false, queue() );
   ljob->setResource( identifier() );
   ljob->exec();
 
@@ -95,21 +95,21 @@ void PIM::ICalResource::synchronize()
     changeStatus( Error, i18n("No or more than one collection found!") );
     return;
   }
-  QByteArray col = ljob->collections().first()->name().toUtf8();
+  QString col = ljob->collections().first()->name();
   delete ljob;
 
-  CollectionModifyJob *modify = new CollectionModifyJob( col, this );
+  CollectionModifyJob *modify = new CollectionModifyJob( col, queue() );
   QList<QByteArray> mimeTypes;
   mimeTypes << "text/calendar";
   modify->setContentTypes( mimeTypes );
   if ( !modify->exec() ) {
-    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", QString::fromUtf8(col), modify->errorText()) );
+    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col, modify->errorText()) );
     return;
   }
 
-  ItemFetchJob *fetch = new ItemFetchJob( col, this );
+  ItemFetchJob *fetch = new ItemFetchJob( col, queue() );
   if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", QString::fromUtf8(col), fetch->errorText()) );
+    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col, fetch->errorText()) );
     return;
   }
 
@@ -131,7 +131,7 @@ void PIM::ICalResource::synchronize()
     }
     if ( found )
       continue;
-    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", this );
+    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", queue() );
     append->setRemoteId( uid );
     if ( !append->exec() ) {
       changeProgress( 0 );
