@@ -21,6 +21,7 @@
 #define MAILDIR_H
 
 #include <resourcebase.h>
+#include <QDBusMessage>
 
 namespace KCal {
   class CalendarLocal;
@@ -33,6 +34,7 @@ namespace PIM {
 class ICalResource : public ResourceBase
 {
   Q_OBJECT
+
   public:
     ICalResource( const QString &id );
     ~ICalResource();
@@ -40,14 +42,11 @@ class ICalResource : public ResourceBase
     void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( const QString & uid,const QString &remoteId, const QString & collection, int type );
+    virtual bool requestItemDelivery( const QString & uid,const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg );
     virtual void synchronize();
 
   protected:
     virtual void aboutToQuit();
-
-  private Q_SLOTS:
-    void done(PIM::Job* job);
 
   private:
     KCal::CalendarLocal *mCalendar;

@@ -32,6 +32,7 @@
 
 namespace PIM {
 
+class Job;
 class JobQueue;
 
 /**
@@ -239,9 +240,21 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     JobQueue* queue();
 
+    /**
+      Call this method from in requestItemDelivery(). It will generate an appropriate
+      D-Bus reply as soon as the given job has finished.
+      @param job The job which actually delivers the item.
+      @param msg The D-Bus message requesting the delivery.
+    */
+    bool deliverItem( PIM::Job* job, const QDBusMessage &msg );
+
   private:
     static QString parseArguments( int, char** );
 
+  private slots:
+    void slotDeliveryDone( PIM::Job* job );
+
+  private:
     class Private;
     Private* const d;
 };

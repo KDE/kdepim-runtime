@@ -20,8 +20,10 @@
 */
 
 #include <QtCore/QDir>
+#include <QtCore/QHash>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
+#include <QtDBus/QtDBus>
 
 #include <signal.h>
 #include <stdlib.h>
@@ -32,6 +34,8 @@
 #include "jobqueue.h"
 
 #include "tracerinterface.h"
+
+#include <libakonadi/job.h>
 
 using namespace PIM;
 
@@ -73,6 +77,7 @@ class ResourceBase::Private
     QSettings *mSettings;
 
     JobQueue *queue;
+    QHash<PIM::Job*,QDBusMessage> pendingReplys;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -317,4 +322,26 @@ QSettings* ResourceBase::settings()
 JobQueue* ResourceBase::queue()
 {
   return d->queue;
+}
+
+bool PIM::ResourceBase::deliverItem(PIM::Job * job, const QDBusMessage & msg)
+{
+  msg.setDelayedReply( true );
+  d->pendingReplys.insert( job, msg.createReply() );
+  connect( job, SIGNAL(done(PIM::Job*)), SLOT(slotDeliveryDone(PIM::Job*)) );
+  return false;
+}
+
+void PIM::ResourceBase::slotDeliveryDone(PIM::Job * job)
+{
+  Q_ASSERT( d->pendingReplys.contains( job ) );
+  QDBusMessage reply = d->pendingReplys.take( job );
+  if ( job->error() ) {
+    error( "Error while creating item: " + job->errorText() );
+    reply << false;
+  } else {
+    reply << true;
+  }
+  QDBusConnection::sessionBus().send( reply );
+  job->deleteLater();
 }

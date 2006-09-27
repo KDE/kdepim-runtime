@@ -32,6 +32,7 @@
 #include <klocale.h>
 
 #include <QDebug>
+#include <QDBusConnection>
 
 using namespace PIM;
 using namespace KCal;
@@ -51,36 +52,24 @@ PIM::ICalResource::~ ICalResource()
   delete mCalendar;
 }
 
-void ICalResource::done( PIM::Job * job )
-{
-  if ( job->error() ) {
-    error( "Error while creating item: " + job->errorText() );
-  } else {
-    qDebug() << "Done!";
-  }
-  job->deleteLater();
-}
-
 void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
 {
 }
 
-bool ICalResource::requestItemDelivery( const QString & uid, const QString &remoteId, const QString & collection, int type )
+bool ICalResource::requestItemDelivery( const QString & uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg )
 {
   Incidence *incidence = mCalendar->incidence( remoteId );
   if ( !incidence ) {
     error( QString("Incidence with uid '%1' not found!").arg( remoteId ) );
     return false;
+  } else {
+    ICalFormat format;
+    QByteArray data = format.toString( incidence ).toUtf8();
+
+    ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
+    job->setData( data );
+    return deliverItem( job, msg );
   }
-
-  ICalFormat format;
-  QByteArray data = format.toString( incidence ).toUtf8();
-
-  ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
-  job->setData( data );
-  connect( job, SIGNAL(done(PIM::Job*)), SLOT(done(PIM::Job*)) );
-
-  return true;
 }
 
 void PIM::ICalResource::synchronize()
