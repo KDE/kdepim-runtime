@@ -21,7 +21,7 @@
 #define FETCHCOMMAND_H
 
 #include "command.h"
-#include <QString>
+#include <QtCore/QString>
 
 class FetchCommand : public Command
 {

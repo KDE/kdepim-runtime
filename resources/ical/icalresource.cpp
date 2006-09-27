@@ -31,8 +31,8 @@
 
 #include <klocale.h>
 
-#include <QDebug>
-#include <QDBusConnection>
+#include <QtCore/QDebug>
+#include <QtDBus/QDBusConnection>
 
 using namespace PIM;
 using namespace KCal;

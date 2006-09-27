@@ -23,7 +23,7 @@
 
 #include "command.h"
 
-#include <QString>
+#include <QtCore/QString>
 
 class ListCommand : public Command
 {

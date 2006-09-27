@@ -20,7 +20,7 @@
 #ifndef AKONADI_SEARCHPROVIDER_THREAD_H
 #define AKONADI_SEARCHPROVIDER_THREAD_H
 
-#include <QThread>
+#include <QtCore/QThread>
 
 namespace Akonadi {
 
@@ -62,7 +62,7 @@ class SearchProviderThread : public QThread
     */
     QStringList fetchResponse() const;
 
-  signals:
+  Q_SIGNALS:
     void finished( SearchProviderThread* thread );
 
   protected:
@@ -71,7 +71,7 @@ class SearchProviderThread : public QThread
     */
     virtual QStringList generateFetchResponse( const QList<int> uids, const QString &field ) = 0;
 
-  private slots:
+  private Q_SLOTS:
     void slotFinished();
 
   private:

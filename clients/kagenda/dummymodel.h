@@ -24,7 +24,7 @@
 #include "stripeview.h"
 #include "event.h"
 
-#include <QDate>
+#include <QtCore/QDate>
 
 class DummyModel : public StripeView::Model
 {

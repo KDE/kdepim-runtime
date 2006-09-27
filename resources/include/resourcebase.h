@@ -251,7 +251,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
   private:
     static QString parseArguments( int, char** );
 
-  private slots:
+  private Q_SLOTS:
     void slotDeliveryDone( PIM::Job* job );
 
   private:

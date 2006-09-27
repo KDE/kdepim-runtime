@@ -21,8 +21,8 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <QList>
-#include <QString>
+#include <QtCore/QList>
+#include <QtCore/QString>
 #include <kdatetime.h>
 
 struct Event

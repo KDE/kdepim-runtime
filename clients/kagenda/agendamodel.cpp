@@ -21,8 +21,8 @@
 
 #include "agendamodel.h"
 
-#include <QPainter>
-#include <QPainterPath>
+#include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 
 AgendaModel::AgendaModel()
 {

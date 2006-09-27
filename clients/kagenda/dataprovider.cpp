@@ -35,7 +35,7 @@
 #include <kmessagebox.h>
 #include <klocale.h>
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 DataProvider::DataProvider()
   : mAgendaModel( 0 ), mContactModel( 0 )

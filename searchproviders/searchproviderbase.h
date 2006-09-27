@@ -74,7 +74,7 @@ class SearchProviderBase : public SearchProvider
     }
 
 
-  private slots:
+  private Q_SLOTS:
     void slotThreadFinished( SearchProviderThread* thread );
 
   private:

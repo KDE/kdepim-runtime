@@ -21,7 +21,7 @@
 
 #include "dummymodel.h"
 
-#include <QPainter>
+#include <QtGui/QPainter>
 
 DummyModel::DummyModel()
 {

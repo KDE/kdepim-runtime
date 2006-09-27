@@ -21,7 +21,7 @@
 #ifndef AGENDAVIEW_H
 #define AGENDAVIEW_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class StripeView;
 class QwtWheel;
@@ -37,7 +37,7 @@ class AgendaView : public QWidget
 
     void setDataProvider( DataProvider * );
 
-  protected slots:
+  protected Q_SLOTS:
     void slotCoarseWheelValueChanged( double );
     void slotFineWheelValueChanged( double );
 

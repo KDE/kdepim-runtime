@@ -24,7 +24,7 @@
 #include "stripeview.h"
 #include "contact.h"
 
-#include <QDate>
+#include <QtCore/QDate>
 
 class ContactModel : public StripeView::Model
 {

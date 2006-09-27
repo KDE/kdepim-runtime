@@ -9,7 +9,7 @@
 
 #include <qevent.h>
 #include <qdatetime.h>
-#include <QDebug>
+#include <QtCore/QDebug>
 
 #include "qwt_abstract_slider.h"
 #include "qwt_math.h"

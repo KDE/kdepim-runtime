@@ -28,12 +28,12 @@
 #include "contactmodel.h"
 #include "dataprovider.h"
 
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QSlider>
-#include <QDebug>
-#include <QTime>
-#include <QPushButton>
+#include <QtCore/QDebug>
+#include <QtCore/QTime>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QSlider>
+#include <QtGui/QVBoxLayout>
 
 AgendaView::AgendaView( QWidget *parent )
   : QWidget( parent )

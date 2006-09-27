@@ -22,7 +22,7 @@
 
 #include "command.h"
 
-#include <QString>
+#include <QtCore/QString>
 
 class DeleteCommand : public Command
 {

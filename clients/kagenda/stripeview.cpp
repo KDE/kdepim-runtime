@@ -21,10 +21,10 @@
 
 #include "stripeview.h"
 
-#include <QPainter>
-#include <QPainterPath>
-#include <QDebug>
-#include <QMouseEvent>
+#include <QtCore/QDebug>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 
 #include <assert.h>
 

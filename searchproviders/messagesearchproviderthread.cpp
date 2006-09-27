@@ -19,7 +19,7 @@
 
 #include "messagesearchproviderthread.h"
 
-#include <QStringList>
+#include <QtCore/QStringList>
 
 using namespace Akonadi;
 

@@ -21,7 +21,7 @@
 #define MAILDIR_H
 
 #include <resourcebase.h>
-#include <QDBusMessage>
+#include <QtDBus/QDBusMessage>
 
 namespace KCal {
   class CalendarLocal;

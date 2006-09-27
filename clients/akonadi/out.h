@@ -21,7 +21,7 @@
 #ifndef OUT_H
 #define OUT_H
 
-#include <QTextOStream>
+#include <QtCore/QTextOStream>
 
 #include <stdio.h>
 

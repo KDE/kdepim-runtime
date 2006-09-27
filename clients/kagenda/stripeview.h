@@ -21,9 +21,9 @@
 #ifndef STRIPEVIEW_H
 #define STRIPEVIEW_H
 
-#include <QWidget>
-#include <QTimeLine>
-#include <QMap>
+#include <QtCore/QMap>
+#include <QtCore/QTimeLine>
+#include <QtGui/QWidget>
 
 class StripeView : public QWidget
 {
@@ -59,14 +59,14 @@ class StripeView : public QWidget
 
     int zoomPosition() const;
 
-  public slots:
+  public Q_SLOTS:
     void setTopPosition( int position );
     void movePosition( int delta );
     void centerCell( int position );
     void zoomCell( int position );
     void unzoomCell( int position );
 
-  signals:
+  Q_SIGNALS:
     void valueChanged( int position );
     void cellPressed( int position );
 
@@ -74,7 +74,7 @@ class StripeView : public QWidget
     void mousePressEvent ( QMouseEvent * event );
     void paintEvent( QPaintEvent * );
 
-  protected slots:
+  protected Q_SLOTS:
     void slotCenterFrameChanged( int value );
     void slotZoomFrameChanged( int value );
     void slotUnzoomFrameChanged( int value );

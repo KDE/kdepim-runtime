@@ -10,7 +10,7 @@
 #include "qwt_double_range.h"
 #include "qwt_math.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 static double MinRelStep = 1.0e-10;
 static double DefaultRelStep = 1.0e-2;

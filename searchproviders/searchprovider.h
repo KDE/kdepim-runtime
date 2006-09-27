@@ -20,8 +20,8 @@
 #ifndef AKONADISEARCHPROVIDER_H
 #define AKONADISEARCHPROVIDER_H
 
-#include <QList>
-#include <QObject>
+#include <QtCore/QList>
+#include <QtCore/QObject>
 
 namespace Akonadi {
 

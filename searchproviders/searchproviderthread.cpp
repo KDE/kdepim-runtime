@@ -19,8 +19,8 @@
 
 #include "searchproviderthread.h"
 
-#include <QString>
-#include <QStringList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 class Akonadi::SearchProviderThreadPrivate
 {

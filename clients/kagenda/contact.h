@@ -21,8 +21,8 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
-#include <QList>
-#include <QString>
+#include <QtCore/QList>
+#include <QtCore/QString>
 
 struct Contact
 {

@@ -23,7 +23,7 @@
 
 #include "stripeview.h"
 
-#include <QObject>
+#include <QtCore/QObject>
 
 class AgendaModel;
 class ContactModel;
