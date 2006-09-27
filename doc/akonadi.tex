@@ -242,6 +242,24 @@ trunk/KDE/kdepim/akonadi and has the following code layout:
   \end{itemize}
 \end{itemize}
 
+\section{Definitions}
+
+\subsection{Encodings}
+To let all components let play together nicely we have to use some common encoding
+definitions, the following list contains the most important ones:
+\begin{itemize}
+  \item \textbf{Collection names and pathes}\\
+        Are Unicodestrings (QString) to allow custom names by the user.
+  \item \textbf{DataReferences}\\
+        The persistent id is an unsigned interger and the external url
+        an Unicodestring (QString).
+  \item \textbf{Transfered data over IMAP}\\
+        The data transfered over IMAP are UTF-8 encoded byte arrays (QByteArray).
+  \item \textbf{Error/Status messages}\\
+        Error and Status messages are visible to the user, so they have to be
+        Unicodestrings (QString).
+\end{itemize}
+
 \chapter{Usage}
 
 \section{How to get started}
