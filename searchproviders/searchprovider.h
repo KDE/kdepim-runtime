@@ -27,6 +27,8 @@ namespace Akonadi {
 
 /**
   Abstract interface for search providers.
+  It's recommended to use SearchProviderBase as an base class for your search
+  provider though.
 */
 class SearchProvider : public QObject
 {

@@ -13,5 +13,11 @@
       <arg name="targetCollection" type="s" direction="in"/>
       <arg name="searchQuery" type="s" direction="in"/>
     </method>
+    <method name="fetchResponse">
+      <arg type="i" direction="out"/>
+      <arg name="uids" type="ai" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/>
+      <arg name="field" type="s" direction="in"/>
+    </method>
   </interface>
 </node>
