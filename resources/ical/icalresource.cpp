@@ -66,7 +66,7 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString &remo
     ICalFormat format;
     QByteArray data = format.toString( incidence ).toUtf8();
 
-    ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
+    ItemStoreJob *job = new ItemStoreJob( DataReference( uid.toUInt(), remoteId ), queue() );
     job->setData( data );
     return deliverItem( job, msg );
   }

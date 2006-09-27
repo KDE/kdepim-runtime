@@ -30,7 +30,7 @@ DeleteCommand::DeleteCommand(const QString & uid) :
 
 void DeleteCommand::exec()
 {
-  DataReference ref( mUid, QString() );
+  DataReference ref( mUid.toUInt(), QString() );
   ItemDeleteJob delJob( ref );
   if ( !delJob.exec() ) {
     err() << "Error deleting item '" << mUid << "': "
