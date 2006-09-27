@@ -24,7 +24,7 @@
 
 #include <QtGui/QWidget>
 
-namespace PIM {
+namespace Akonadi {
 class CollectionView;
 class MessageCollectionModel;
 }
@@ -37,8 +37,8 @@ class CollectionWidget : public QWidget
     CollectionWidget( QWidget *parent = 0 );
 
   private:
-    PIM::MessageCollectionModel *mModel;
-    PIM::CollectionView *mView;
+    Akonadi::MessageCollectionModel *mModel;
+    Akonadi::CollectionView *mView;
 };
 
 #endif

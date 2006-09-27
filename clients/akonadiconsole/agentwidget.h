@@ -24,7 +24,7 @@
 
 #include <QtGui/QWidget>
 
-namespace PIM {
+namespace Akonadi {
 class AgentInstanceView;
 class AgentManager;
 }
@@ -43,8 +43,8 @@ class AgentWidget : public QWidget
     void synchronizeAgent();
 
   private:
-    PIM::AgentInstanceView *mView;
-    PIM::AgentManager *mManager;
+    Akonadi::AgentInstanceView *mView;
+    Akonadi::AgentManager *mManager;
 };
 
 #endif

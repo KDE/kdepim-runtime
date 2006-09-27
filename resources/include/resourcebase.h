@@ -19,8 +19,8 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCEBASE_H
-#define PIM_RESOURCEBASE_H
+#ifndef AKONADI_RESOURCEBASE_H
+#define AKONADI_RESOURCEBASE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -30,7 +30,7 @@
 
 #include "resource.h"
 
-namespace PIM {
+namespace Akonadi {
 
 class Job;
 class JobQueue;
@@ -246,13 +246,13 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
       @param job The job which actually delivers the item.
       @param msg The D-Bus message requesting the delivery.
     */
-    bool deliverItem( PIM::Job* job, const QDBusMessage &msg );
+    bool deliverItem( Akonadi::Job* job, const QDBusMessage &msg );
 
   private:
     static QString parseArguments( int, char** );
 
   private Q_SLOTS:
-    void slotDeliveryDone( PIM::Job* job );
+    void slotDeliveryDone( Akonadi::Job* job );
 
   private:
     class Private;

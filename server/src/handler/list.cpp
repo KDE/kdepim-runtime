@@ -45,9 +45,9 @@ bool List::handleLine(const QByteArray& line )
     int pos = line.indexOf( ' ' ) + 1; // skip tag
     pos = line.indexOf( ' ', pos ) + 1; // skip command
     QString reference;
-    pos = PIM::ImapParser::parseString( line, reference, pos );
+    pos = ImapParser::parseString( line, reference, pos );
     QString mailbox;
-    PIM::ImapParser::parseString( line, mailbox, pos );
+    ImapParser::parseString( line, mailbox, pos );
 
 //     qDebug() << "reference:" << reference << "mailbox:" << mailbox << "::" << endl;
 

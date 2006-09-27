@@ -36,26 +36,26 @@ ListCommand::ListCommand( const QString &path )
 
 void ListCommand::exec()
 {
-  PIM::CollectionListJob collectionJob( mPath.toUtf8() );
+  Akonadi::CollectionListJob collectionJob( mPath.toUtf8() );
   if ( !collectionJob.exec() ) {
     err() << "Error listing collection '" << mPath << "': "
       << collectionJob.errorText()
       << endl;
     return;
   } else {
-    foreach( PIM::Collection *collection, collectionJob.collections() ) {
+    foreach( Akonadi::Collection *collection, collectionJob.collections() ) {
       out() << collection->name() << endl;
     }
   }
 
   if ( mPath.indexOf( "/", 1 ) > 0 ) {
-    PIM::ItemFetchJob itemFetchJob( mPath.toUtf8() );
+    Akonadi::ItemFetchJob itemFetchJob( mPath.toUtf8() );
     if ( !itemFetchJob.exec() ) {
       err() << "Error listing items at '" << mPath << "': "
         << itemFetchJob.errorText()
         << endl;
     } else {
-      foreach( PIM::Item *item, itemFetchJob.items() ) {
+      foreach( Akonadi::Item *item, itemFetchJob.items() ) {
         QString str;
         str = "Item: " + item->reference().persistanceID();
         if ( !item->reference().externalUrl().isEmpty() ) {
@@ -74,13 +74,13 @@ void ListCommand::exec()
     }
 
 #if 0
-    PIM::MessageFetchJob messageJob( mPath.toUtf8() );
+    Akonadi::MessageFetchJob messageJob( mPath.toUtf8() );
     if ( !messageJob.exec() ) {
       err() << "Error listing messages at '" << mPath << "': "
         << messageJob.errorText()
         << endl;
     } else {
-      foreach( PIM::Message *m, messageJob.messages() ) {
+      foreach( Akonadi::Message *m, messageJob.messages() ) {
         KMime::Message *message = m->mime();
         out() << "Subject: " << message->subject()->asUnicodeString() << endl;
       }

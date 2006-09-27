@@ -23,10 +23,7 @@
 #include <libakonadi/itemappendjob.h>
 #include <resourcebase.h>
 
-namespace PIM {
-
-
-class MaildirResource : public ResourceBase
+class MaildirResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
   public:
@@ -40,10 +37,7 @@ class MaildirResource : public ResourceBase
     virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
 
   private Q_SLOTS:
-    void done(PIM::Job* job);
-
+    void done(Akonadi::Job* job);
 };
-
-}
 
 #endif

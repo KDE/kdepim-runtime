@@ -34,7 +34,7 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
-using namespace PIM;
+using namespace Akonadi;
 using namespace KCal;
 
 ICalResource::ICalResource( const QString &id )
@@ -47,12 +47,12 @@ ICalResource::ICalResource( const QString &id )
   synchronize();
 }
 
-PIM::ICalResource::~ ICalResource()
+ICalResource::~ ICalResource()
 {
   delete mCalendar;
 }
 
-void PIM::ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
+void ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
 {
 }
 
@@ -72,7 +72,7 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString &remo
   }
 }
 
-void PIM::ICalResource::synchronize()
+void ICalResource::synchronize()
 {
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 
@@ -137,7 +137,7 @@ void PIM::ICalResource::synchronize()
   changeStatus( Ready, QString() );
 }
 
-void PIM::ICalResource::aboutToQuit()
+void ICalResource::aboutToQuit()
 {
   mCalendar->save();
 }

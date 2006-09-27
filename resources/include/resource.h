@@ -19,8 +19,8 @@
     02110-1301, USA.
 */
 
-#ifndef PIM_RESOURCE_H
-#define PIM_RESOURCE_H
+#ifndef AKONADI_RESOURCE_H
+#define AKONADI_RESOURCE_H
 
 #include <QtCore/QObject>
 
@@ -28,7 +28,7 @@
 
 class QDBusMessage;
 
-namespace PIM {
+namespace Akonadi {
 
 /**
  * Abstract interface for all resource agent classes.

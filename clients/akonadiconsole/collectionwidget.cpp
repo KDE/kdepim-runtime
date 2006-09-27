@@ -31,10 +31,10 @@ CollectionWidget::CollectionWidget( QWidget *parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
 
-  mView = new PIM::CollectionView();
+  mView = new Akonadi::CollectionView();
   layout->addWidget( mView );
 
-  mModel = new PIM::MessageCollectionModel( this );
+  mModel = new Akonadi::MessageCollectionModel( this );
   mView->setModel( mModel );
 }
 

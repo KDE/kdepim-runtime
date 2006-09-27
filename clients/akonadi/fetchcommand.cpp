@@ -22,7 +22,7 @@
 
 #include <libakonadi/itemfetchjob.h>
 
-using namespace PIM;
+using namespace Akonadi;
 
 FetchCommand::FetchCommand(const QString & uid) :
     mUid( uid )

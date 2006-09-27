@@ -21,7 +21,7 @@
 #include "deletecommand.h"
 #include <libakonadi/itemdeletejob.h>
 
-using namespace PIM;
+using namespace Akonadi;
 
 DeleteCommand::DeleteCommand(const QString & uid) :
   mUid( uid )

@@ -24,13 +24,11 @@
 
 #include "icalresource.h"
 
-using namespace PIM;
-
 int main( int argc, char **argv )
 {
   QCoreApplication app( argc, argv );
 
-  ResourceBase::init<ICalResource>( argc, argv );
+  Akonadi::ResourceBase::init<ICalResource>( argc, argv );
 
   return app.exec();
 }

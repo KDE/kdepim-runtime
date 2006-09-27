@@ -39,7 +39,9 @@ install(TARGETS akonadiresources  DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
 
-install( FILES ../../include/resource.h ../../include/resourcebase.h
+install( FILES ../../include/resource.h
+               ../../include/resourcebase.h
+               ../../include/org.kde.Akonadi.Resource.xml
 DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources 
 )
 

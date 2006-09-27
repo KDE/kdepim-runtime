@@ -37,7 +37,7 @@
 
 #include <libakonadi/job.h>
 
-using namespace PIM;
+using namespace Akonadi;
 
 static ResourceBase *sResourceBase = 0;
 
@@ -77,7 +77,7 @@ class ResourceBase::Private
     QSettings *mSettings;
 
     JobQueue *queue;
-    QHash<PIM::Job*,QDBusMessage> pendingReplys;
+    QHash<Akonadi::Job*, QDBusMessage> pendingReplys;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -324,15 +324,15 @@ JobQueue* ResourceBase::queue()
   return d->queue;
 }
 
-bool PIM::ResourceBase::deliverItem(PIM::Job * job, const QDBusMessage & msg)
+bool ResourceBase::deliverItem(Akonadi::Job * job, const QDBusMessage & msg)
 {
   msg.setDelayedReply( true );
   d->pendingReplys.insert( job, msg.createReply() );
-  connect( job, SIGNAL(done(PIM::Job*)), SLOT(slotDeliveryDone(PIM::Job*)) );
+  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(slotDeliveryDone(Akonadi::Job*)) );
   return false;
 }
 
-void PIM::ResourceBase::slotDeliveryDone(PIM::Job * job)
+void ResourceBase::slotDeliveryDone(Akonadi::Job * job)
 {
   Q_ASSERT( d->pendingReplys.contains( job ) );
   QDBusMessage reply = d->pendingReplys.take( job );

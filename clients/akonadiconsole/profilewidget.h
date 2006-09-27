@@ -24,7 +24,7 @@
 
 #include <QtGui/QWidget>
 
-namespace PIM {
+namespace Akonadi {
 class ProfileView;
 class ProfileManager;
 }
@@ -43,8 +43,8 @@ class ProfileWidget : public QWidget
     void removeAgentInstance();
 
   private:
-    PIM::ProfileView *mView;
-    PIM::ProfileManager *mManager;
+    Akonadi::ProfileView *mView;
+    Akonadi::ProfileManager *mManager;
 };
 
 #endif

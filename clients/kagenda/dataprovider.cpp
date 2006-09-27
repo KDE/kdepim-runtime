@@ -170,7 +170,7 @@ void DataProvider::saveFile()
 void DataProvider::loadAkonadi()
 {
   if ( mAgendaModel ) {
-    PIM::MessageFetchJob job( "res2/foo2" );
+    Akonadi::MessageFetchJob job( "res2/foo2" );
     if ( !job.exec() ) {
       KMessageBox::error( 0, "Error fetching messages" );
     } else {
@@ -182,7 +182,7 @@ void DataProvider::loadAkonadi()
 void DataProvider::saveAkonadi()
 {
   if ( mAgendaModel ) {
-//    PIM::JobQueue jobQueue( this );
+//    Akonadi::JobQueue jobQueue( this );
     KCal::ICalFormat format;
     foreach( Event e, mAgendaModel->events() ) {
       KCal::Event *event = new KCal::Event();
@@ -191,7 +191,7 @@ void DataProvider::saveAkonadi()
       event->setDtEnd( e.end );
       event->setFloats( false );
       QString ical = format.toICalString( event );
-      PIM::ItemAppendJob *job = new PIM::ItemAppendJob( "res2/foo2", ical.toUtf8(),
+      Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( "res2/foo2", ical.toUtf8(),
         "text/calendar", this );
       if ( !job->exec() ) {
         KMessageBox::error( 0, i18n("Error") );

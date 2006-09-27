@@ -27,11 +27,11 @@ namespace KCal {
   class CalendarLocal;
 }
 
-namespace PIM {
+namespace Akonadi {
+class Job;
+}
 
-    class Job;
-
-class ICalResource : public ResourceBase
+class ICalResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
 
@@ -52,7 +52,5 @@ class ICalResource : public ResourceBase
     KCal::CalendarLocal *mCalendar;
 
 };
-
-}
 
 #endif

@@ -39,7 +39,7 @@ class Dialog : public QDialog
     {
       QVBoxLayout *layout = new QVBoxLayout( this );
 
-      mView = new PIM::AgentTypeView( this );
+      mView = new Akonadi::AgentTypeView( this );
 
       QDialogButtonBox *box = new QDialogButtonBox( this );
 
@@ -71,18 +71,18 @@ class Dialog : public QDialog
     }
 
   private:
-    PIM::AgentTypeView *mView;
+    Akonadi::AgentTypeView *mView;
     QString mAgentType;
 };
 
 AgentWidget::AgentWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mManager = new PIM::AgentManager( this );
+  mManager = new Akonadi::AgentManager( this );
 
   QGridLayout *layout = new QGridLayout( this );
 
-  mView = new PIM::AgentInstanceView( this );
+  mView = new Akonadi::AgentInstanceView( this );
 
   layout->addWidget( mView, 0, 0, 1, 5 );
 
