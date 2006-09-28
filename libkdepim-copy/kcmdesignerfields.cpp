@@ -325,9 +325,12 @@ void KCMDesignerFields::initGUI()
                          " to be edited, set the widget name in Qt Designer.</p></qt>",
                          applicationName(), applicationName() );
 
-  KActiveLabel *activeLabel = new KActiveLabel(
+  QLabel *activeLabel = new QLabel(
       i18n( "<a href=\"whatsthis:%1\">How does this work?</a>" , cwHowto), this );
+  activeLabel->setOpenExternalLinks( true );
+  activeLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::LinksAccessibleByKeyboard);
   hbox->addWidget( activeLabel );
+
 
   // ### why is this needed? Looks like a KActiveLabel bug...
   activeLabel->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Maximum );
