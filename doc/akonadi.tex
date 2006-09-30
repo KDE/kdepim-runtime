@@ -98,9 +98,10 @@ Keep these considerations in mind when you read the following design concept.
 
 In the diagram below you can see a rough concept of structure of Akonadi:
 
-\begin{center}
-\includegraphics[height=6cm]{pics/concept.png}
-\end{center}
+\vspace{2cm}
+\begin{minipage}{5cm}
+\includegraphics[height=5cm]{pics/concept.eps}
+\end{minipage}
 
 The main components are:
 \begin{itemize}
@@ -177,6 +178,32 @@ libakonadi works on any type of data and knows nothing about the domain the data
 For the domain specific tasks libkabc and likcal should be used, which are located above the
 libakonadi and do the data conversion from the storage format to a Qt/KDE one.
 
+\section{Communication Schemas}
+
+The sequenze diagrams below show how general communication is done:
+
+\begin{center}
+\includegraphics[height=5cm]{pics/akonadi_client_search.eps}
+\end{center}
+
+The item search request is probably the call which is used most often
+by the clients (components or applications). This call enables the client
+to search for a list of items of a given mime type which match a
+given search criterion.
+
+In this case client will contact the SearchProvider which is responsible for
+the mime type to retrieve the list of matching uids. The SearchProvider has
+already a list of all available items of this mime type in its memory, so it
+can search fast and use indices for optimization.
+
+\begin{center}
+\includegraphics[height=2.5cm]{pics/akonadi_profile_handling.eps}
+\end{center}
+
+\begin{center}
+\includegraphics[height=4cm]{pics/akonadi_agent_handling.eps}
+\end{center}
+
 \chapter{Implementation}
 
 \section{Source Code Layout}
@@ -226,9 +253,6 @@ trunk/KDE/kdepim/akonadi and has the following code layout:
   \begin{itemize}
     \item \textbf{control}\\
       Contains the source code of the Control component.
-    \item \textbf{debugger}\\
-      Contains the akonadi\_debugger application, a debugger to monitor all the communication
-      between Akonadi and its clients.
     \item \textbf{interfaces}\\
       Contains the DBus interface descriptions of the Akonadi components.
     \item \textbf{src}\\
@@ -240,6 +264,170 @@ trunk/KDE/kdepim/akonadi and has the following code layout:
         Contains the source code for accessing the storage back-end.
     \end{itemize}
   \end{itemize}
+\end{itemize}
+
+\section{Database Layout}
+
+\subsection{CachePolicies}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for cache policies
+  \item \textbf{name}\\
+    The name of the cache policy
+\end{itemize}
+
+\subsection{Resources}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for resources
+  \item \textbf{name}\\
+    The name of the resource
+  \item \textbf{cachepolicy\_id}\\
+    The id of the cache policy that should be applyed for this resource
+\end{itemize}
+
+\subsection{Locations}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for locations
+  \item \textbf{uri}\\
+    The path of the location
+  \item \textbf{cachepolicy\_id}\\
+    The id of the cache policy that should be applyed for this location
+  \item \textbf{resource\_id}\\
+    The id of the resource this location belongs to
+  \item \textbf{exists\_count}\\
+    Contains the number of items in the location
+  \item \textbf{recent\_count}\\
+    Contains the number of recent items in the location (?)
+  \item \textbf{unseen\_count}\\
+    Contains the number of unseen items in the location (?)
+  \item \textbf{first\_unseen}\\
+    Contains the number of first unseen items in the location (?)
+  \item \textbf{uid\_validity}\\
+    Contains the uid validity value (IMAP specific)
+\end{itemize}
+
+\subsection{PersistentSearches}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for persistent searches
+  \item \textbf{name}\\
+    The name of the persistent search
+  \item \textbf{query}\\
+    Contains query string
+\end{itemize}
+
+\subsection{MimeTypes}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for mime types
+  \item \textbf{mime\_type}\\
+    The IANA registered mime type
+\end{itemize}
+
+\subsection{PimItems}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for pim items
+  \item \textbf{remote\_id}\\
+    The unique id of the item in the external data source
+  \item \textbf{data}\\
+    The data of the item (only if cache policy is enabled)
+  \item \textbf{location\_id}\\
+    The id of the location where the pim item is stored in
+  \item \textbf{mimetype\_id}\\
+    The id of the mime type of the pim item
+  \item \textbf{datetime}\\
+    The time stamp of the last modification
+\end{itemize}
+
+\subsection{SearchLocations}
+\begin{itemize}
+  \item \textbf{pimitem\_id}\\
+    The id of the pim item
+  \item \textbf{location\_id}\\
+    The id of the location
+  \item \textbf{mimetype\_id}\\
+    The id of the mime type
+\end{itemize}
+
+\subsection{ItemMetaData}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for item meta data
+  \item \textbf{data}\\
+    The data of the meta data
+  \item \textbf{mematype\_id}\\
+    The id of the meta type of the meta data
+  \item \textbf{pimitem\_id}\\
+    The id of the pim item where the meta data belong to
+\end{itemize}
+
+\subsection{Flags}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for flags
+  \item \textbf{name}\\
+    The name of the flag
+\end{itemize}
+
+\subsection{ItemFlags}
+\begin{itemize}
+  \item \textbf{flag\_id}\\
+    The id of the flag
+  \item \textbf{pimitem\_id}\\
+    The id of the pim item
+\end{itemize}
+
+\subsection{Parts}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for parts
+  \item \textbf{data}\\
+    The data of the part
+  \item \textbf{datasize}\\
+    The size of the data of the part
+  \item \textbf{pimitem\_id}\\
+    The id of the pim item where the part belongs to
+  \item \textbf{mimetype\_id}\\
+    The id of the mime type of the part
+\end{itemize}
+
+\subsection{PartMetaData}
+\begin{itemize}
+  \item \textbf{id}\\
+    The unique id for part meta data
+  \item \textbf{data}\\
+    The data of the meta data
+  \item \textbf{metatype\_id}\\
+    The id of the meta type of the meta data
+  \item \textbf{part\_id}\\
+    The id of the part where the meta data belongs to
+\end{itemize}
+
+\subsection{PartFlags}
+\begin{itemize}
+  \item \textbf{flag\_id}\\
+    The id of the part flag
+  \item \textbf{part\_id}\\
+    The id of the part
+\end{itemize}
+
+\subsection{LocationMimeTypes}
+\begin{itemize}
+  \item \textbf{location\_id}\\
+    The id of the location
+  \item \textbf{mimetype\_id}\\
+    The id of the mime type
+\end{itemize}
+
+\subsection{SearchLocationMimeTypes}
+\begin{itemize}
+  \item \textbf{searchlocation\_id}\\
+    The id of the search location
+  \item \textbf{mimetype\_id}\\
+    The id of the mime type
 \end{itemize}
 
 \section{Definitions}
@@ -267,16 +455,32 @@ To start the Akonadi server you call 'akonadi\_control', which is the Control pr
 on the command line, now the Akonadi server is ready be accessed by client applications.
 
 \section{Debugging tools}
-From time to time it's necessary to debug the Akonadi system. For this purpose 2 utils are
-available:
-\begin{itemize}
-  \item akonadi\_debugger
-  \item akonadiconsole
-\end{itemize}
+From time to time it's necessary to debug the Akonadi system. For this purpose akonadiconsole
+is available.
 
-akonadi\_debugger is a tool which shows you the whole communication between the Storage and
-the client.
-The akonadiconsole is a management tool to create, remove, configure and start synchronization
-of Resources. Furthermore you can create and remove profiles with it.
+It is a management tool which provides user interfaces for the following tasks:
+
+\begin{itemize}
+  \item Agent Management
+  \begin{itemize}
+    \item Creation
+    \item Deletion
+    \item Configuration
+    \item Synchronization
+  \end{itemize}
+  \item Profile Management
+  \begin{itemize}
+    \item Creation
+    \item Deletion
+  \end{itemize}
+  \item Collection Management
+  \begin{itemize}
+    \item Viewing
+  \end{itemize}
+  \item Error Management
+  \begin{itemize}
+    \item Signal and Data monitoring
+  \end{itemize}
+\end{itemize}
 
 \end{document}

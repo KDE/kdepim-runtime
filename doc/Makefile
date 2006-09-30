@@ -1,2 +1,2 @@
 all:
-	pdflatex akonadi.tex && pdflatex akonadi.tex && rm *.aux *.toc *.log
+	latex akonadi.tex && latex akonadi.tex && dvipdf akonadi.dvi && rm *.aux *.toc *.log *.dvi
