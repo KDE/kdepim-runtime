@@ -22,6 +22,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QDBusMessage>
 
 namespace Akonadi {
 
@@ -64,7 +65,13 @@ class SearchProvider : public QObject
      * @param uids List of item ids
      * @param field Fetch response field.
      */
-    virtual int fetchResponse( const QList<int> uids, const QString &field ) = 0;
+    // ### FIXME: QList<int> not yet supported by the qdbus bindings!
+    virtual QStringList fetchResponse( const QList<QString> uids, const QString &field, const QDBusMessage &msg ) = 0;
+
+    /**
+     * Terminate the search provider.
+    */
+    virtual void quit() = 0;
 
   Q_SIGNALS:
     /**

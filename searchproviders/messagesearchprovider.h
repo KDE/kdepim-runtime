@@ -27,7 +27,7 @@ namespace Akonadi {
 class MessageSearchProvider : public SearchProviderBase
 {
   public:
-    MessageSearchProvider();
+    MessageSearchProvider( const QString &id );
     virtual ~MessageSearchProvider() {};
     virtual QList<QByteArray> supportedMimeTypes() const;
     virtual SearchProviderThread* workerThread( int ticket );

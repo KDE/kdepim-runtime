@@ -14,10 +14,13 @@
       <arg name="searchQuery" type="s" direction="in"/>
     </method>
     <method name="fetchResponse">
-      <arg type="i" direction="out"/>
-      <arg name="uids" type="ai" direction="in"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/>
+      <arg type="as" direction="out"/>
+      <arg name="uids" type="as" direction="in"/>
+<!--       FIXME type ai doesn't work with qdbus binding -->
+<!--       <arg name="uids" type="ai" direction="in"/> -->
+<!--       <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/> -->
       <arg name="field" type="s" direction="in"/>
     </method>
+    <method name="quit"/>
   </interface>
 </node>

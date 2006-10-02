@@ -54,4 +54,6 @@ install( FILES
 DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi
 )
 
+install( FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders" )
+
 

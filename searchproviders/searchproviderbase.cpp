@@ -21,20 +21,25 @@
 #include "searchproviderthread.h"
 #include "searchprovideradaptor.h"
 
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDebug>
+#include <QtCore/QHash>
 #include <QtCore/QStringList>
 
 class Akonadi::SearchProviderBasePrivate
 {
   public:
     int ticketCounter;
+    QHash<SearchProviderThread*,QDBusMessage> pendingReplys;
 };
 
-Akonadi::SearchProviderBase::SearchProviderBase() :
+Akonadi::SearchProviderBase::SearchProviderBase( const QString &id ) :
     d( new SearchProviderBasePrivate )
 {
   d->ticketCounter = 0;
 
   new SearchProviderAdaptor( this );
+  Q_ASSERT( QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.SearchProvider." + id ) );
   Q_ASSERT( QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) );
 }
 
@@ -45,21 +50,44 @@ Akonadi::SearchProviderBase::~ SearchProviderBase()
 
 int Akonadi::SearchProviderBase::search(const QString & targetCollection, const QString & searchQuery)
 {
+  qDebug() << "SearchProviderBase::search()" << targetCollection << searchQuery;
   // TODO
   return d->ticketCounter++;
 }
 
-int Akonadi::SearchProviderBase::fetchResponse(const QList< int > uids, const QString & field)
+// FIXME: move back to QList<int>!
+QStringList Akonadi::SearchProviderBase::fetchResponse(const QList<QString> uids, const QString & field, const QDBusMessage &msg)
 {
+  qDebug() << "SearchProviderBase::fetchResponse()" << uids << field;
   SearchProviderThread* thread = workerThread( d->ticketCounter++ );
-  connect( thread, SIGNAL(finished(SearchProviderThread*)), SLOT(slotThreadFinished(SearchProviderThread*)) );
-  thread->start();
-  return thread->ticket();
+  QList<int> list;
+  foreach ( QString uid, uids )
+    list << uid.toInt();
+  thread->requestFetchResponse( list, field );
+  return performRequest( thread, msg );
 }
 
 void Akonadi::SearchProviderBase::slotThreadFinished(SearchProviderThread * thread)
 {
-  emit fetchResponseAvailable( thread->ticket(), thread->fetchResponse() );
+  Q_ASSERT( d->pendingReplys.contains( thread ) );
+  QDBusMessage reply = d->pendingReplys.take( thread );
+  reply << thread->fetchResponse();
+  QDBusConnection::sessionBus().send( reply );
+  thread->deleteLater();
+}
+
+void Akonadi::SearchProviderBase::quit()
+{
+  QCoreApplication::quit();
+}
+
+QStringList Akonadi::SearchProviderBase::performRequest(SearchProviderThread *thread, const QDBusMessage & msg)
+{
+  msg.setDelayedReply( true );
+  d->pendingReplys.insert( thread, msg.createReply() );
+  connect( thread, SIGNAL(finished(SearchProviderThread*)), SLOT(slotThreadFinished(SearchProviderThread*)) );
+  thread->start();
+  return QStringList();
 }
 
 #include  "searchproviderbase.moc"

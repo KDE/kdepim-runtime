@@ -36,11 +36,12 @@ class SearchProviderBase : public SearchProvider
   Q_OBJECT
 
   public:
-    SearchProviderBase();
+    SearchProviderBase( const QString &id );
     virtual ~SearchProviderBase();
 
     virtual int search( const QString &targetCollection, const QString &searchQuery );
-    virtual int fetchResponse( const QList<int> uids, const QString &field );
+    virtual QStringList fetchResponse( const QList<QString> uids, const QString &field, const QDBusMessage &msg );
+    virtual void quit();
 
     /**
       Returns a worker thread. You need to reimplement this method and return an
@@ -62,17 +63,19 @@ class SearchProviderBase : public SearchProvider
      *   int main( int argc, char **argv )
      *   {
      *     QCoreApplication app;
-     *     ResourceBase::init<MySearchProvider>( argc, argv );
+     *     ResourceBase::init<MySearchProvider>( argc, argv, "akonadi_foo_searchprovider" );
      *     return app.exec();
      *   }
      *
      * \endcode
      */
-    template <typename T> static void init( int argc, char **argv )
+    template <typename T> static void init( int argc, char **argv, const QString &id )
     {
-      new T();
+      new T( id );
     }
 
+  private:
+    QStringList performRequest( SearchProviderThread *thread, const QDBusMessage &msg );
 
   private Q_SLOTS:
     void slotThreadFinished( SearchProviderThread* thread );

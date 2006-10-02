@@ -20,6 +20,7 @@
 #include "messagesearchproviderthread.h"
 
 #include <QtCore/QStringList>
+#include <QtCore/QUuid>
 
 using namespace Akonadi;
 
@@ -31,8 +32,23 @@ Akonadi::MessageSearchProviderThread::MessageSearchProviderThread(int ticket, QO
 QStringList Akonadi::MessageSearchProviderThread::generateFetchResponse(const QList< int > uids, const QString & field)
 {
   QStringList result;
+
+  // ### FIXME
+  const QByteArray date( "\"Wed, 1 Feb 2006 13:37:19 UT\"" );
+  const QByteArray subject( "\"IMPORTANT: Akonadi Test\"" );
+  const QByteArray from( "\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\"" );
+  const QByteArray sender = from;
+  const QByteArray replyTo( "NIL" );
+  const QByteArray to( "\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\"" );
+  const QByteArray cc( "NIL" );
+  const QByteArray bcc( "NIL" );
+  const QByteArray inReplyTo( "NIL" );
+  const QByteArray messageId( '<' + QUuid::createUuid().toString().toLatin1() + "@server.kde.org>" );
+
+  QByteArray response( '('+date+' '+subject+" (("+from+")) (("+sender+")) "+replyTo+" (("+to+")) "+cc+' '+bcc+' '+inReplyTo+' '+messageId+')' );
+
   for ( int i = 0; i < uids.count(); ++i )
-    result << "bla";
+    result << QString::fromUtf8(response);
   return result;
 }
 

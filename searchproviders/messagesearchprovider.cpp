@@ -23,8 +23,8 @@
 
 using namespace Akonadi;
 
-Akonadi::MessageSearchProvider::MessageSearchProvider() :
-  SearchProviderBase()
+Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
+  SearchProviderBase( id )
 {
 }
 
@@ -44,6 +44,6 @@ SearchProviderThread* Akonadi::MessageSearchProvider::workerThread(int ticket)
 int main( int argc, char **argv )
 {
   QCoreApplication app( argc, argv );
-  Akonadi::SearchProviderBase::init<Akonadi::MessageSearchProvider>( argc, argv );
+  Akonadi::SearchProviderBase::init<Akonadi::MessageSearchProvider>( argc, argv, QLatin1String("akonadi_message_searchprovider") );
   return app.exec();
 }
