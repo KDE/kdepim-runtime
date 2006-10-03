@@ -64,6 +64,7 @@ void KPimPrefs::usrReadConfig()
 KDateTime::Spec KPimPrefs::timeSpec()
 {
   const KTimeZone *zone = 0;
+	// FIXME: In KDE 4, use KSystemTimeZones::local instead of system and file system calls!
 
   // Read TimeZoneId from korganizerrc.
   KConfig korgcfg( KStandardDirs::locate( "config", "korganizerrc" ) );
