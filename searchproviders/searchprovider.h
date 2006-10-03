@@ -44,26 +44,31 @@ class SearchProvider : public QObject
     virtual QList<QByteArray> supportedMimeTypes() const = 0;
 
     /**
-     * Asynchronously searches for all items that match the search query and
+     * Searches for all items that match the search query and
      * stores them in the target collection.
      *
-     * Returns an unique id used to identify this search request when the
-     * searchResultAvailable() signal is emitted.
+     * The search results are kept up-to-date until the search is removed
+     * with removeSearch() again.
      *
      * @param targetCollection The collection the search results are stored in.
      * @param searchQuery The search query.
+     * @param msg DBus message needed for delayed replys.
      */
-    virtual int search( const QString &targetCollection, const QString &searchQuery ) = 0;
+    virtual bool addSearch( const QString &targetCollection, const QString &searchQuery, const QDBusMessage &msg ) = 0;
 
     /**
-     * Asynchronously starts the generation of a fetch response
-     * for the given list of item ids.
+     * Stop updating a persistent search specified by the given collection.
      *
-     * Returns an unique id used to identify this search request when the
-     * searchResultAvailable() signal is emitted.
+     * @param collection The collection representing the corresponding persistent search.
+     */
+    virtual bool removeSearch( const QString &collection ) = 0;
+
+    /**
+     * Generates a fetch response for the given list of item ids.
      *
      * @param uids List of item ids
      * @param field Fetch response field.
+     * @param msg DBus message needed for delayed replys.
      */
     // ### FIXME: QList<int> not yet supported by the qdbus bindings!
     virtual QStringList fetchResponse( const QList<QString> uids, const QString &field, const QDBusMessage &msg ) = 0;
@@ -72,21 +77,6 @@ class SearchProvider : public QObject
      * Terminate the search provider.
     */
     virtual void quit() = 0;
-
-  Q_SIGNALS:
-    /**
-     * Emitted when a search operation has been finished.
-     * @param ticket Used to identify the corresponding search request.
-     */
-    void searchResultAvailable( int ticket );
-
-    /**
-     * Emitted when a fetch response generation has been finished.
-     * @param ticket Used to identify the corresponding searcg request.
-     * @param result A list containing the requested fetch response in the
-     * same order the uids were given in fetchResponse().
-     */
-    void fetchResponseAvailable( int ticket, const QStringList &result );
 };
 
 }

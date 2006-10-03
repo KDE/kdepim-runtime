@@ -24,8 +24,8 @@
 
 using namespace Akonadi;
 
-Akonadi::MessageSearchProviderThread::MessageSearchProviderThread(int ticket, QObject * parent) :
-  SearchProviderThread( ticket, parent )
+Akonadi::MessageSearchProviderThread::MessageSearchProviderThread(QObject * parent) :
+  SearchProviderThread( parent )
 {
 }
 

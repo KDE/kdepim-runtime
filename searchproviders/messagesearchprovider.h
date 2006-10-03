@@ -30,7 +30,7 @@ class MessageSearchProvider : public SearchProviderBase
     MessageSearchProvider( const QString &id );
     virtual ~MessageSearchProvider() {};
     virtual QList<QByteArray> supportedMimeTypes() const;
-    virtual SearchProviderThread* workerThread( int ticket );
+    virtual SearchProviderThread* workerThread();
 
 };
 

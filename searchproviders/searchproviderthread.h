@@ -42,15 +42,10 @@ class SearchProviderThread : public QThread
     /**
       Creates a new search provider worker thread.
     */
-    SearchProviderThread( int ticket, QObject *parent = 0 );
+    SearchProviderThread( QObject *parent = 0 );
 
     virtual ~SearchProviderThread();
     virtual void run();
-
-    /**
-     * Returns the job ticket.
-    */
-    int ticket() const;
 
     /**
       Request fetch response generation.

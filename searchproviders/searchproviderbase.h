@@ -30,6 +30,9 @@ class SearchProviderBasePrivate;
 /**
   This is a convenience base class for search providers which provides
   threading support.
+
+  @todo Where do we store active searches, in the control process or in
+  every search provider itself?
 */
 class SearchProviderBase : public SearchProvider
 {
@@ -39,7 +42,8 @@ class SearchProviderBase : public SearchProvider
     SearchProviderBase( const QString &id );
     virtual ~SearchProviderBase();
 
-    virtual int search( const QString &targetCollection, const QString &searchQuery );
+    virtual bool addSearch( const QString &targetCollection, const QString &searchQuery, const QDBusMessage &msg );
+    virtual bool removeSearch( const QString &collection );
     virtual QStringList fetchResponse( const QList<QString> uids, const QString &field, const QDBusMessage &msg );
     virtual void quit();
 
@@ -47,7 +51,7 @@ class SearchProviderBase : public SearchProvider
       Returns a worker thread. You need to reimplement this method and return an
       object derived from SearchProviderThread.
     */
-    virtual SearchProviderThread* workerThread( int ticket ) = 0;
+    virtual SearchProviderThread* workerThread() = 0;
 
     /**
      * Use this method in the main function of your search provider

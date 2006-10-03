@@ -25,17 +25,15 @@
 class Akonadi::SearchProviderThreadPrivate
 {
   public:
-    int ticket;
     int type;
     QList<int> fetchResponseIds;
     QString fetchResponseField;
     QStringList fetchResponse;
 };
 
-Akonadi::SearchProviderThread::SearchProviderThread(int ticket, QObject * parent) :
+Akonadi::SearchProviderThread::SearchProviderThread(QObject * parent) :
   QThread( parent ), d( new SearchProviderThreadPrivate )
 {
-  d->ticket = ticket;
   connect( this, SIGNAL(finished()), SLOT(slotFinished()) );
 }
 
@@ -51,11 +49,6 @@ void Akonadi::SearchProviderThread::run()
       d->fetchResponse = generateFetchResponse( d->fetchResponseIds, d->fetchResponseField );
       break;
   };
-}
-
-int Akonadi::SearchProviderThread::ticket() const
-{
-  return d->ticket;
 }
 
 void Akonadi::SearchProviderThread::slotFinished()

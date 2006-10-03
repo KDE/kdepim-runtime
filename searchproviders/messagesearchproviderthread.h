@@ -27,7 +27,7 @@ namespace Akonadi {
 class MessageSearchProviderThread : public SearchProviderThread
 {
   public:
-    MessageSearchProviderThread( int ticket, QObject *parent = 0 );
+    MessageSearchProviderThread( QObject *parent = 0 );
     ~MessageSearchProviderThread() {};
 
   protected:

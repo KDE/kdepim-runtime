@@ -35,9 +35,9 @@ QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
   return mimeTypes;
 }
 
-SearchProviderThread* Akonadi::MessageSearchProvider::workerThread(int ticket)
+SearchProviderThread* Akonadi::MessageSearchProvider::workerThread()
 {
-  return new MessageSearchProviderThread( ticket, this );
+  return new MessageSearchProviderThread( this );
 }
 
 

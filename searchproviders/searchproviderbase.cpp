@@ -29,15 +29,13 @@
 class Akonadi::SearchProviderBasePrivate
 {
   public:
-    int ticketCounter;
     QHash<SearchProviderThread*,QDBusMessage> pendingReplys;
+    QHash<QString, QString> activeSearches;
 };
 
 Akonadi::SearchProviderBase::SearchProviderBase( const QString &id ) :
     d( new SearchProviderBasePrivate )
 {
-  d->ticketCounter = 0;
-
   new SearchProviderAdaptor( this );
   Q_ASSERT( QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.SearchProvider." + id ) );
   Q_ASSERT( QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) );
@@ -48,18 +46,36 @@ Akonadi::SearchProviderBase::~ SearchProviderBase()
   delete d;
 }
 
-int Akonadi::SearchProviderBase::search(const QString & targetCollection, const QString & searchQuery)
+bool Akonadi::SearchProviderBase::addSearch(const QString & targetCollection, const QString & searchQuery, const QDBusMessage &msg)
 {
-  qDebug() << "SearchProviderBase::search()" << targetCollection << searchQuery;
-  // TODO
-  return d->ticketCounter++;
+  qDebug() << "SearchProviderBase::addSearch()" << targetCollection << searchQuery;
+
+  if ( d->activeSearches.contains( targetCollection ) )
+    return false;
+
+  // TODO: start worker thread
+
+  d->activeSearches.insert( targetCollection, searchQuery );
+  return true;
+}
+
+bool Akonadi::SearchProviderBase::removeSearch(const QString & collection)
+{
+  qDebug() << "SearchProviderBase::removeSearch()" << collection;
+
+  if ( !d->activeSearches.contains( collection ) )
+    return false;
+
+  d->activeSearches.remove( collection );
+
+  return true;
 }
 
 // FIXME: move back to QList<int>!
 QStringList Akonadi::SearchProviderBase::fetchResponse(const QList<QString> uids, const QString & field, const QDBusMessage &msg)
 {
   qDebug() << "SearchProviderBase::fetchResponse()" << uids << field;
-  SearchProviderThread* thread = workerThread( d->ticketCounter++ );
+  SearchProviderThread* thread = workerThread();
   QList<int> list;
   foreach ( QString uid, uids )
     list << uid.toInt();
