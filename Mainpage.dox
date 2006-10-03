@@ -1,0 +1,10 @@
+/**
+@mainpage Akonadi, the KDE PIM storage service.
+
+- <a href="libakonadi/index.html">Core library</a>
+- <a href="server/index.html">Server</a>
+- <a href="resources/index.html">Resources</a>
+- <a href="searchprovider/index.html">Search provider</a>
+*/
+
+// DOXYGEN_EXCLUDE = server libakonadi resources searchprovider
