@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Akonadi Message Search Provider 
+Name=Akonadi Message Search Provider
 Comment=Email specific extension to Akonadi
 Type=AkonadiSearchProvider
 Exec=akonadi_message_searchprovider
