@@ -5,6 +5,7 @@
 - <a href="../server/html/index.html">Server</a>
 - <a href="../resources/html/index.html">Resources</a>
 - <a href="../searchproviders/html/index.html">Search provider</a>
+- <a href="../clients/html/index.html">Clients</a>
 */
 
-// DOXYGEN_EXCLUDE = server libakonadi resources searchprovider
+// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients
