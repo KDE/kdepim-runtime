@@ -26,21 +26,29 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 
+static KCmdLineOptions options[] = {
+  { "+[init_type]", "Specifies which model to initialize: \"dummy\", \"contact\" or default if left blank" , 0 },
+  KCmdLineLastOption
+};
+
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "kagenda", "KAgenda", "0.1" );
   KCmdLineArgs::init( argc, argv , &aboutData );
+  KCmdLineArgs::addCmdLineOptions( options );
+
   KApplication app;
 
   AgendaView widget;
 
-  QString arg;
-  if ( argc == 2 ) arg = argv[ 1 ];
-
   DataProvider provider;
 
-  if ( arg == "contact" ) provider.setupContactData();
-  else if ( arg == "dummy" ) provider.setupDummyData();
+  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+  if ( args->count() ) {
+    QString arg ( args->arg( 0 ) );
+    if ( arg == "contact" ) provider.setupContactData();
+    else if ( arg == "dummy" ) provider.setupDummyData();
+  }
   else provider.setupEventData();
 
   widget.setDataProvider( &provider );
