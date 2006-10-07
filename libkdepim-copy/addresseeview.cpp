@@ -42,7 +42,7 @@
 #include <kprocess.h>
 #include <krun.h>
 #include <kstringhandler.h>
-#include <ktempfile.h>
+#include <ktemporaryfile.h>
 
 #include <kdebug.h>
 #include <ktoolinvocation.h>
@@ -609,13 +609,15 @@ void AddresseeView::sendSMS( const QString &number, const QString &text )
   config.setGroup( "General" );
   QString commandLine = config.readEntry( "SMSHookApplication" );
 
-  KTempFile file ;
-  QTextStream* stream = file.textStream();
-  *stream << text;
-  file.close();
+  KTemporaryFile file;
+  file.setAutoRemove(false);
+  file.open();
+  QTextStream stream ( &file );
+  stream << text;
+  stream.flush();
 
   commandLine.replace( "%N", number );
-  commandLine.replace( "%F", file.name() );
+  commandLine.replace( "%F", file.fileName() );
 
   KRun::runCommand( commandLine );
 }
