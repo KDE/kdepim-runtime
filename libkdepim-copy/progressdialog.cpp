@@ -48,7 +48,7 @@
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QLabel>
 
 #include <klocale.h>
@@ -153,9 +153,9 @@ TransactionItem::TransactionItem( QWidget* parent,
   setMargin( 2 );
   setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
-  mFrame = new Q3Frame( this );
-  mFrame->setFrameShape( Q3Frame::HLine );
-  mFrame->setFrameShadow( Q3Frame::Raised );
+  mFrame = new QFrame( this );
+  mFrame->setFrameShape( QFrame::HLine );
+  mFrame->setFrameShadow( QFrame::Raised );
   mFrame->show();
   setStretchFactor( mFrame, 3 );
 
@@ -237,7 +237,7 @@ void TransactionItem::addSubTransaction( ProgressItem* /*item*/ )
 ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const char* name )
     : OverlayWidget( alignWidget, parent, name ), mWasLastShown( false )
 {
-    setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken ); // QFrame
+    setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
     setSpacing( 0 ); // QHBox
     setMargin( 1 );
 

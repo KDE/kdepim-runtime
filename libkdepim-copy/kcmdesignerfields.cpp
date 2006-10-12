@@ -35,7 +35,7 @@
 #include <QtDesigner/QFormBuilder>
 //Added by qt3to4:
 #include <QHBoxLayout>
-#include <Q3Frame>
+#include <QFrame>
 #include <QVBoxLayout>
 
 #include <kaboutdata.h>
@@ -392,7 +392,7 @@ void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
       widgetItemSelected = true;
     }
 
-    mPagePreview->setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
+    mPagePreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
   } else {
     mPagePreview->setWindowIcon( QPixmap() );
     mPagePreview->setFrameStyle( 0 );

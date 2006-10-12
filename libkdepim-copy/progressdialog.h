@@ -44,7 +44,7 @@
 
 class Q3ProgressBar;
 class Q3ScrollView;
-class Q3Frame;
+class QFrame;
 
 namespace KPIM {
 class ProgressItem;
@@ -109,7 +109,7 @@ protected:
   QPushButton*  mCancelButton;
   QLabel*       mItemLabel;
   QLabel*       mItemStatus;
-  Q3Frame*       mFrame;
+  QFrame*       mFrame;
   SSLLabel*     mSSLLabel;
   ProgressItem* mItem;
 };
