@@ -59,7 +59,7 @@ enum MsgStatus
     KMMsgStatusSpam =              0x00002000,
     KMMsgStatusHam =               0x00004000,
     KMMsgStatusHasAttach =         0x00008000,
-    KMMsgStatusHasNoAttach =       0x00010000  // to be removed before KDE 4
+    KMMsgStatusHasNoAttach =       0x00010000  // TODO to be removed before KDE 4
 };
 
 
@@ -124,30 +124,30 @@ void MessageStatus::set( const MessageStatus& other )
 void MessageStatus::toggle( const MessageStatus& other )
 {
   if ( other.isDeleted() )
-    setDeleted( !( mStatus & KMMsgStatusNew ) );
+    setDeleted( !( mStatus & KMMsgStatusDeleted ) );
   if ( other.isReplied() )
-    setReplied( !( mStatus & KMMsgStatusNew ) );
+    setReplied( !( mStatus & KMMsgStatusReplied ) );
   if ( other.isForwarded() )
-    setForwarded( !( mStatus & KMMsgStatusNew ) );
+    setForwarded( !( mStatus & KMMsgStatusForwarded ) );
   if ( other.isQueued() )
-    setQueued( !( mStatus & KMMsgStatusNew ) );
+    setQueued( !( mStatus & KMMsgStatusQueued ) );
   if ( other.isSent() )
-    setSent( !( mStatus & KMMsgStatusNew ) );
+    setSent( !( mStatus & KMMsgStatusSent ) );
   if ( other.isImportant() )
-    setImportant( !( mStatus & KMMsgStatusNew ) );
+    setImportant( !( mStatus & KMMsgStatusFlag ) );
 
   if ( other.isWatched() )
-    setWatched( !( mStatus & KMMsgStatusNew ) );
+    setWatched( !( mStatus & KMMsgStatusWatched ) );
   if ( other.isIgnored() )
-  setIgnored( !( mStatus & KMMsgStatusNew ) );
+    setIgnored( !( mStatus & KMMsgStatusIgnored ) );
   if ( other.isTodo() )
-    setTodo( !( mStatus & KMMsgStatusNew ) );
+    setTodo( !( mStatus & KMMsgStatusTodo ) );
   if ( other.isSpam() )
-    setSpam( !( mStatus & KMMsgStatusNew ) );
+    setSpam( !( mStatus & KMMsgStatusSpam ) );
   if ( other.isHam() )
-    setHam( !( mStatus & KMMsgStatusNew ) );
+    setHam( !( mStatus & KMMsgStatusHam ) );
   if ( other.hasAttachment() )
-    setHasAttachment( !( mStatus & KMMsgStatusNew ) );
+    setHasAttachment( !( mStatus & KMMsgStatusHasAttach ) );
 }
 
 
