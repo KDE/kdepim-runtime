@@ -22,10 +22,8 @@
 #ifndef KPIM_ADDRESSEEVIEW_H
 #define KPIM_ADDRESSEEVIEW_H
 
-#include <q3cstring.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3PopupMenu>
 
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
@@ -37,7 +35,6 @@ class Job;
 }
 class KToggleAction;
 
-class Q3PopupMenu;
 class KJob;
 
 namespace KPIM {
