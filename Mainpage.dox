@@ -9,4 +9,3 @@
 */
 
 // DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients
-// DOXYGEN_REFERENCES = kdecore 
