@@ -8,7 +8,7 @@ set(testwizard_SRCS testwizard.cpp )
 
 kde4_automoc(testwizard ${testwizard_SRCS})
 
-kde4_add_kcfg_files(testwizard_SRCS myconfig.kcfgc )
+kde4_add_kcfg_files(testwizard testwizard_SRCS myconfig.kcfgc )
 
 if(KDE4_BUILD_TESTS)
 

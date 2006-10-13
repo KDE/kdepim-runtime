@@ -92,7 +92,7 @@ kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialo
 #	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
 #	addresseelineedit.h)
 
-kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc)
+kde4_add_kcfg_files(kdepim kdepim_LIB_SRCS pimemoticons.kcfgc)
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 

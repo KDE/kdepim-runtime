@@ -8,7 +8,7 @@ set(example_SRCS example.cpp )
 
 kde4_automoc(example ${example_SRCS})
 
-kde4_add_kcfg_files(example_SRCS exampleprefs_base.kcfgc )
+kde4_add_kcfg_files(example example_SRCS exampleprefs_base.kcfgc )
 
 if(KDE4_BUILD_TESTS)
 
