@@ -6,7 +6,7 @@
 
 set(testfactory_SRCS main.cpp managertest.cpp )
 
-kde4_automoc(${testfactory_SRCS})
+kde4_automoc(testfactory ${testfactory_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -20,7 +20,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testmanager_SRCS testmanager.cpp )
 
-kde4_automoc(${testmanager_SRCS})
+kde4_automoc(testmanager ${testmanager_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -34,7 +34,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testkomposer_SRCS testkomposer.cpp )
 
-kde4_automoc(${testkomposer_SRCS})
+kde4_automoc(testkomposer ${testkomposer_SRCS})
 
 if(KDE4_BUILD_TESTS)
 

@@ -12,7 +12,7 @@ set(komposer_LIB_SRCS
    corewidget.cpp 
    pluginmanager.cpp )
 
-kde4_automoc(${komposer_LIB_SRCS})
+kde4_automoc(komposer ${komposer_LIB_SRCS})
 
 #kde4_add_dcop_skels(komposer_LIB_SRCS komposerIface.h )
 

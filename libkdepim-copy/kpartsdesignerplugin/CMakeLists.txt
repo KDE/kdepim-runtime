@@ -6,7 +6,7 @@
 
 set(kpartsdesignerplugin_PART_SRCS kpartsdesignerplugin.cpp )
 
-kde4_automoc(${kpartsdesignerplugin_PART_SRCS})
+kde4_automoc(kpartsdesignerplugin ${kpartsdesignerplugin_PART_SRCS})
 
 kde4_add_plugin(kpartsdesignerplugin ${kpartsdesignerplugin_PART_SRCS})
 
