@@ -79,7 +79,6 @@ static KStaticDeleter<KPIM::CompletionItemsMap> completionItemsDeleter;
 static KStaticDeleter<QTimer> ldapTimerDeleter;
 static KStaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
 static KStaticDeleter<QString> ldapTextDeleter;
-static KStaticDeleter<KConfig> configDeleter;
 static KStaticDeleter<QStringList> completionSourcesDeleter;
 
 // needs to be unique, but the actual name doesn't matter much
