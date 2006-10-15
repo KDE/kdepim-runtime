@@ -1,11 +1,241 @@
 /**
-@mainpage Akonadi, the KDE PIM storage service.
+\mainpage Akonadi, the KDE PIM storage framework
+
+\section akonadi_overview Overview
+
+- \ref akonadi_history
+- \ref akonadi_design
+- \ref akonadi_usage
+- <a href="http://pim.kde.org/akonadi">Website</a>
+
+\section akonadi_building_blocks Building blocks
 
 - <a href="../libakonadi/html/index.html">Core library</a>
 - <a href="../server/html/index.html">Server</a>
 - <a href="../resources/html/index.html">Resources</a>
 - <a href="../searchproviders/html/index.html">Search provider</a>
 - <a href="../clients/html/index.html">Clients</a>
+
+\licenses \lgpl
+
+
+
+
+\page akonadi_history Historical background
+
+\section akonadi_history_genral General
+
+During the last 5 years, after the release of KDE 3.0, the requirements of our users
+have constantly increased. While it was sufficient that our PIM solution was able to handle 100 contacts,
+300 events and maybe 1000 mails in 2001, nowadays user expect that the software is able to
+handle a multiple of it. Over the years the KDE PIM developer tried to catch up with the new
+requirements, however since KDE 3.x had to stay binary compatible they were limited in their
+efforts.
+
+With the new major release KDE 4.0 it's possible to completely redesign the PIM libraries from
+ground up and using new concepts to face the requirements in 2006 and beyond.
+
+After some discussion at the yearly KDE PIM meeting in Osnabrück in January 2006 the PIM developers
+came to the conclusion that a service is needed which acts as a local cache on the users desktop
+and provides search facilities. The name Akonadi comes from a divinity from Ghana and was chosen since
+all other nice names were already used by other projects in the Internet ;)
+
+\section akonadi_history_probles Problems with the implementation of KDE 3.x
+
+Before digging into the internal of Akonadi we want to take a look at the implementation of the
+old KDE PIM libraries to understand the problems and conceptual shortcomings.
+
+The main PIM libraries libkabc (contacts) and libkcal (events) where designed at a time when the
+address book and calendar where files on the local file system, so there was no reason to think
+about access time and mode. The libraries accessed the files synchronously and loaded all data of the
+file into memory to be able to perform search queries on the data set. It worked well for local files
+but over time plug-ins for loading data from groupware server were written, so the synchronous access blocked
+the application which used libkabc/libkcal and loading all 2000 contacts from a server is not only
+time consuming but also needs a lot of memory to store them locally. The KDE PIM developer tried to
+address the first issue by adding an asynchronous API, but it was not well implemented and difficult to use.
+At the end, the design decision caused the following problems:
+
+\li Bad Performance
+\li Hugh Memory Consumption
+
+Another important but missing thing in the libraries were support for notifications and locking.
+The former was partly implemented (at least reflected by the API) but only implemented in the local
+file plug-in, so it was practical unusable. The latter was also partly implemented but never really tested and
+lead to deadlocks sometimes, so the following problems appeared as well:
+
+\li Missing Notifications
+\li Missing Locking
+
+The main aim of Akonadi is to solve these issues and make use of the goodies of the new design brings.
+
+
+
+
+\page akonadi_design Akonadi Design
+
+\section akonadi_design_basic Basic Thoughts
+
+To solve the \ref akonadi_history "problems of KDE 3" and make Akonadi ready for the requirements of the KDE 4 release
+cycle, some considerations had been made which had a deep influence on the design:
+
+\li <em>Functionality is spread into different processes.</em><br/>
+        This separation has the big advantage that if one process crashes because of
+        a programming error it doesn't effect the other components. That results in
+        robustness of the whole system. A disadvantage might be that there is an additional
+        overhead for inter-process communication.
+\li <em>Communication protocol is split into data and control channel.</em></br>
+        When doing communication between processes you have to differ between the type of data
+        that should be are transferred. For a large amount of data a high-performance
+        protocol should be used and for control data a low-latency protocol.
+        Matching both requirements in one protocol is mostly impossible and hard to
+        achieve with currently available software.
+\li <em>Separate logic from storage.</em><br/>
+        By separating the logic from the storage, the storage can be used to store data
+        of any type. In this case, the storage is a kind of service, which is available for
+        other components of the system. The logic is located in separated components and so
+        3rd-party developer can extend the system by providing their own components.
+\li <em>Keep communication asynchronous</em><br/>
+        To allow a non-blocking GUI all the communication with the back-end and within the
+        back-end itself must be asynchronous. For the application developer you can easily
+        provide a synchronous convenience API, however the back-end must communicate asynchronously.
+
+Keep these considerations in mind when you read the following design concept.
+
+\section akonadi_design_schema Schema
+
+In the diagram below you can see a rough concept of structure of Akonadi:
+
+\image latex doc/pics/concept.eps "Akonadi Design Schema" height=5cm
+\image html doc/pics/concept.eps "Akonadi Design Schema"
+
+The main components are:
+\li \ref akonadi_design_storage
+\li \ref akonadi_design_control
+\li \ref akonadi_design_agents (resources)
+\li \ref akonadi_design_searchprovider
+\li \ref akonadi_design_libakonadi (libakonadi)
+
+\subsection akonadi_design_storage The Storage
+The Storage is a process which provides an API for store arbitrary data over
+an IMAP interface. The advantage of IMAP is the mature state of the protocol
+and its capability to handle a huge amount of data.
+Whenever new items are added to the Storage or removed from, the Storage will
+emit a signal over its D-Bus interface to inform other components.
+As defined in the IMAP standard, also a simple type of search is supported,
+so you can query for all items of a special mime-type or email specific fields.
+For more complex search queries, another component, the SearchProvider, is included.
+
+\subsection akonadi_design_agents Agents
+Agents are processes which are controlled by the Akonadi server itself and which
+are able to work on the cache of the Storage. In the current design there are two
+types of Agents:
+
+\li Autonomous Agents
+\li Resources
+
+Autonomous Agents are processes which only work on the cache of the Storage
+and the user will seldom or never see them during work.
+
+Resources are processes which load data from an external data source, store them
+in the cache of the Storage and keep track of changes on both sides to keep
+the external data source and the cache synchronized.
+Resources can be grouped to profiles where one Resource can be part of different
+profiles. Profiles are useful in use cases like this:
+You have configured a local Resource and a groupware server Resource. You want both
+to be shown in the address book application but for synchronization with your mobile
+phone only the data from the local Resource are from interest. So the easy solution
+is to create a profile 'VIEW' where both the local Resource and the groupware server
+Resource are part of and a profile 'SYNCHRONIZE' where only the local Resource is
+assigned. Now you just have to tell the application which profile it shall use to
+access the data.
+
+\subsection akonadi_design_control The Control
+The Control process is the 'brain' of the system. It starts the Storage and Resource
+processes and monitors them, so if one of these processes crashes, it restarts them immediately.
+Furthermore it provides a D-Bus API with the following functionality:
+
+\li Managing Resources
+\li Managing Profiles
+\li Notifications when the state of Resources or Profiles have changed
+
+The Control should be started in the startkde script and terminated at the end of the session.
+
+\subsection akonadi_design_searchprovider The SearchProviders
+As mentioned before the \ref akonadi_design_storage "Storage" provides only a basic support for search queries.
+It's limited to mime types and email specific fields. However to query for contacts or events which match
+a specific criterion a more advanced query language is needed. Since this language will contain
+domain specific information (like telephon number or start date) but the Storage has no knowledge
+about the data it stores, so it can't handle the queries itself.
+For more robustness the handling of these queries is put into a separated process and these processes
+are called SearchProviders.
+
+\subsection akonadi_design_libakonadi The client library
+Every client application can access the Akonadi service directly via D-Bus and IMAP API, however
+for easier implementation and a better abstraction the library libakonadi is provided which does
+all the low level stuff and provides a Qt based API for all the functionality Akonadi provides.
+libakonadi works on any type of data and knows nothing about the domain the data are part of.
+For the domain specific tasks libkabc and likcal should be used, which are located above the
+libakonadi and do the data conversion from the storage format to a Qt/KDE one.
+
+\section akonadi_design_communication Communication Schemas
+
+The sequenze diagrams below show how general communication is done:
+
+\image html doc/pics/akonadi_client_search.eps "Akonadi Communication Schema"
+\image latex doc/pics/akonadi_client_search.eps "Akonadi Communication Schema" height=5cm
+
+The item search request is probably the call which is used most often
+by the clients (components or applications). This call enables the client
+to search for a list of items of a given mime type which match a
+given search criterion.
+
+In this case client will contact the SearchProvider which is responsible for
+the mime type to retrieve the list of matching uids. The SearchProvider has
+already a list of all available items of this mime type in its memory, so it
+can search fast and use indices for optimization.
+
+\image html doc/pics/akonadi_profile_handling.eps "Akonadi Profile Handling"
+\image latex doc/pics/akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
+
+\image html doc/pics/akonadi_agent_handling.eps "Akonadi Agent Handling"
+\image latex doc/pics/akonadi_agent_handling.eps "Akonadi Agent Handling" height=4cm
+
+
+
+
+\page akonadi_usage Usage
+
+\section akonadi_usage_start How to get started
+
+To start the Akonadi, you need to start the \ref akonadi_design_control "Control" process.
+This can be done by calling \c akonadi_control, on the command line.
+
+\section akonadi_usage_debugging Debugging Tools
+
+From time to time it is necessary to debug the Akonadi system. For this purpose \c akonadiconsole
+is available.
+
+It is a management tool which provides user interfaces for the following tasks:
+
+<ul>
+  <li>Agent Management<ul>
+    <li>Creation</li>
+    <li>Deletion</li>
+    <li>Configuration</li>
+    <li>Synchronization</li>
+  </ul></li>
+  <li>Profile Management<ul>
+    <li>Creation</li>
+    <li>Deletion</li>
+  </ul></li>
+  <li>Collection Management<ul>
+    <li>Viewing</li>
+  </ul></li>
+  <li>Error Management<ul>
+    <li>Signal and Data monitoring</li>
+  </ul></li>
+</ul>
+
 */
 
-// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients
+// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients kioslave
