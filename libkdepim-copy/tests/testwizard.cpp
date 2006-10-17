@@ -33,7 +33,7 @@
 #include <QCheckBox>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
-#include <Q3Frame>
+#include <QFrame>
 
 class TestConfigWizard : public KConfigWizard
 {
