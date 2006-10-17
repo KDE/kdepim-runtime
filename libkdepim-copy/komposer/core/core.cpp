@@ -47,8 +47,6 @@
 #include <kstdaccel.h>
 #include <kdebug.h>
 
-#include <Q3WidgetStack>
-#include <Q3HBox>
 #include <QWidget>
 
 using namespace Komposer;
