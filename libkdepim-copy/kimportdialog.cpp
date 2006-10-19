@@ -169,7 +169,7 @@ KImportDialog::KImportDialog(QWidget* parent)
   urlRequester->setFilter( "*.csv" );
   connect(urlRequester,SIGNAL(returnPressed(const QString &)),
           SLOT(setFile(const QString &)));
-  connect(urlRequester,SIGNAL(urlSelected(const QString &)),
+  connect(urlRequester,SIGNAL(urlSelected(const KUrl &)),
           SLOT(setFile(const QString &)));
   connect(urlRequester->lineEdit(),SIGNAL(textChanged ( const QString & )),
           SLOT(slotUrlChanged(const QString & )));
@@ -245,6 +245,11 @@ KImportDialog::KImportDialog(QWidget* parent)
 void KImportDialog::slotUrlChanged(const QString & text)
 {
     enableButton(KDialog::Ok,!text.isEmpty());
+}
+
+bool KImportDialog::setFile(const KUrl& file)
+{
+   return setFile(file.path());
 }
 
 bool KImportDialog::setFile(const QString& file)

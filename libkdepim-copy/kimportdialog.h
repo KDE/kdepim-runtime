@@ -82,7 +82,7 @@ class KImportDialog : public KDialog
 
   public slots:
     bool setFile(const QString& file);
-
+    bool setFile(const KUrl& file);
     QString cell(int row);
 
     void addColumn(KImportColumn *);
