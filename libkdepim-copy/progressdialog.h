@@ -42,7 +42,7 @@
 #include "overlaywidget.h"
 #include <kdepimmacros.h>
 
-class Q3ProgressBar;
+class QProgressBar;
 class Q3ScrollView;
 class QFrame;
 
@@ -105,7 +105,7 @@ public slots:
   void slotItemCanceled();
 
 protected:
-  Q3ProgressBar* mProgress;
+  QProgressBar* mProgress;
   QPushButton*  mCancelButton;
   QLabel*       mItemLabel;
   QLabel*       mItemStatus;

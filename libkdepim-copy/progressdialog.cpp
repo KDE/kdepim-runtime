@@ -35,7 +35,7 @@
 
 #include <QApplication>
 #include <QLayout>
-#include <q3progressbar.h>
+#include <QProgressBar>
 #include <QTimer>
 #include <q3header.h>
 #include <QObject>
@@ -165,8 +165,9 @@ TransactionItem::TransactionItem( QWidget* parent,
   mItemLabel = new QLabel( item->label(), h );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
-  mProgress = new Q3ProgressBar( 100, h );
-  mProgress->setProgress( item->progress() );
+  mProgress = new QProgressBar(h );
+  mProgress->setMaximum(100);
+  mProgress->setValue( item->progress() );
 
   if ( item->canBeCanceled() ) {
     mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString(), h );
@@ -196,7 +197,7 @@ void TransactionItem::hideHLine()
 
 void TransactionItem::setProgress( int progress )
 {
-  mProgress->setProgress( progress );
+  mProgress->setValue( progress );
 }
 
 void TransactionItem::setLabel( const QString& label )
