@@ -11,7 +11,7 @@ include_directories(
 
 set(maildir_SRCS maildir.cpp )
 
-kde4_automoc(maildir ${maildir_SRCS})
+kde4_automoc(${maildir_SRCS})
 
 kde4_add_executable(maildir RUN_UNINSTALLED ${maildir_SRCS})
 

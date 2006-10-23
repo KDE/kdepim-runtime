@@ -82,7 +82,7 @@ set(kdepim_LIB_SRCS
    kemailquotinghighter.cpp
    networkstatus.cpp)
 
-kde4_automoc(kdepim ${kdepim_LIB_SRCS})
+kde4_automoc(${kdepim_LIB_SRCS})
 
 kde4_add_ui3_files(kdepim_LIB_SRCS addresspicker.ui)
 kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui)
@@ -92,7 +92,7 @@ kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialo
 #	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
 #	addresseelineedit.h)
 
-kde4_add_kcfg_files(kdepim kdepim_LIB_SRCS pimemoticons.kcfgc)
+kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc)
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 

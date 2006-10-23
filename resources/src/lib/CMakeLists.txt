@@ -25,7 +25,7 @@ set( akonadiresources_manualmoc_LIB_SRC
 qt4_add_dbus_interfaces( akonadiresources_automoc_LIB_SRC ../../../server/interfaces/org.kde.Akonadi.Tracer.xml )
 
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
-kde4_automoc( akonadiresources_automoc ${akonadiresources_automoc_LIB_SRC} )
+kde4_automoc(${akonadiresources_manualmoc_LIB_SRC} ${akonadiresources_automoc_LIB_SRC})
 kde4_add_library(
         akonadiresources SHARED 
         ${akonadiresources_LIB_SRC} 

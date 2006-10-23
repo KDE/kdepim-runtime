@@ -18,7 +18,7 @@ set( akonadisearchprovider_LIB_SRC
 qt4_add_dbus_interfaces( akonadisearchprovider_LIB_SRC ../server/interfaces/org.kde.Akonadi.Tracer.xml )
 
 qt4_wrap_cpp(akonadisearchprovider_LIB_SRC searchprovider.h)
-kde4_automoc( akonadisearchprovider ${akonadisearchprovider_LIB_SRC} )
+kde4_automoc(${akonadisearchprovider_LIB_SRC})
 kde4_add_library(
         akonadisearchprovider SHARED 
         ${akonadisearchprovider_LIB_SRC} 
@@ -37,7 +37,7 @@ set( messagesearchprovider_SRCS
 	messagesearchproviderthread.cpp
 )
 
-kde4_automoc( messagesearchprovider ${messagesearchprovider_SRCS} )
+kde4_automoc(${messagesearchprovider_SRCS})
 
 kde4_add_executable(akonadi_message_searchprovider RUN_UNINSTALLED ${messagesearchprovider_SRCS})
 

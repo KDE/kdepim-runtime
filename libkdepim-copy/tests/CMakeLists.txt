@@ -6,9 +6,9 @@
 
 set(testwizard_SRCS testwizard.cpp )
 
-kde4_automoc(testwizard ${testwizard_SRCS})
+kde4_automoc(${testwizard_SRCS})
 
-kde4_add_kcfg_files(testwizard testwizard_SRCS myconfig.kcfgc )
+kde4_add_kcfg_files(testwizard_SRCS myconfig.kcfgc )
 
 if(KDE4_BUILD_TESTS)
 
@@ -22,7 +22,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testaddresseelineedit_SRCS testaddresseelineedit.cpp )
 
-kde4_automoc(testaddresseelineedit ${testaddresseelineedit_SRCS})
+kde4_automoc(${testaddresseelineedit_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -36,7 +36,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testaddresseeselector_SRCS testaddresseeselector.cpp )
 
-kde4_automoc(testaddresseeselector ${testaddresseeselector_SRCS})
+kde4_automoc(${testaddresseeselector_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -50,7 +50,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testutf7decoder_SRCS testutf7decoder.cpp )
 
-kde4_automoc(testutf7decoder ${testutf7decoder_SRCS})
+kde4_automoc(${testutf7decoder_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -64,7 +64,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testutf7encoder_SRCS testutf7encoder2.cpp )
 
-kde4_automoc(testutf7encoder ${testutf7encoder_SRCS})
+kde4_automoc(${testutf7encoder_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -78,7 +78,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testdateedit_SRCS testdateedit.cpp )
 
-kde4_automoc(testdateedit ${testdateedit_SRCS})
+kde4_automoc(${testdateedit_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -92,7 +92,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testlinklocator_SRCS testlinklocator.cpp )
 
-kde4_automoc(testlinklocator ${testlinklocator_SRCS})
+kde4_automoc(${testlinklocator_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -106,7 +106,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testdistrlist_SRCS testdistrlist.cpp )
 
-kde4_automoc(testdistrlist ${testdistrlist_SRCS})
+kde4_automoc(${testdistrlist_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
@@ -120,7 +120,7 @@ endif(KDE4_BUILD_TESTS)
 
 set(testldapclient_SRCS testldapclient.cpp )
 
-kde4_automoc(testldapclient ${testldapclient_SRCS})
+kde4_automoc(${testldapclient_SRCS})
 
 if(KDE4_BUILD_TESTS)
 
