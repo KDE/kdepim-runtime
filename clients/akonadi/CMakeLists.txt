@@ -1,4 +1,4 @@
-include_directories( ${CMAKE_SOURCE_DIR}/libkmime ${CMAKE_SOURCE_DIR}/akonadi)
+include_directories( ${CMAKE_SOURCE_DIR}/akonadi)
 
 set(akonadi_bin_SRCS
   main.cpp listcommand.cpp fetchcommand.cpp deletecommand.cpp

@@ -26,7 +26,7 @@
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/messagefetchjob.h>
 #include <libakonadi/itemfetchjob.h>
-#include <libkmime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 ListCommand::ListCommand( const QString &path )
   : mPath( path )
