@@ -57,6 +57,8 @@
 
 using namespace KPIM;
 
+namespace KPIM {
+
 class PageItem : public Q3CheckListItem
 {
   public:
@@ -128,6 +130,9 @@ class PageItem : public Q3CheckListItem
     QPixmap mPreview;
     bool mIsActive;
 };
+
+}
+
 
 KCMDesignerFields::KCMDesignerFields( KInstance *instance, QWidget *parent, const QStringList &args )
   : KCModule( instance, parent, args )
