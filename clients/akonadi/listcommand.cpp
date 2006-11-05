@@ -57,18 +57,18 @@ void ListCommand::exec()
     } else {
       foreach( Akonadi::Item *item, itemFetchJob.items() ) {
         QString str;
-        str = "Item: " + item->reference().persistanceID();
+        str = QLatin1String("Item: ") + QString::number( item->reference().persistanceID() );
         if ( !item->reference().externalUrl().isEmpty() ) {
-          str += " [" + item->reference().externalUrl().toString() + ']';
+          str += QLatin1String(" [") + item->reference().externalUrl().toString() + QLatin1Char(']');
         }
         if ( !item->flags().isEmpty() ) {
-          str += " ( ";
+          str += QLatin1String(" ( ");
           foreach( QByteArray flag, item->flags() ) {
-            str += flag + ' ';
+            str += flag + QLatin1Char(' ');
           }
-          str += ')';
+          str += QLatin1Char(')');
         }
-        str += " [" + item->mimeType() + ']';
+        str += QLatin1String(" [") + item->mimeType() + QLatin1Char(']');
         out() << str << endl;
       }
     }
