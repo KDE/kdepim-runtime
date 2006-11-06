@@ -1,3 +1,4 @@
+include_directories(${CMAKE_SOURCE_DIR}/akonadi)
 
 set(kio_akonadi_srcs akonadislave.cpp )
 
