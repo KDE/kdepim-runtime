@@ -114,3 +114,12 @@
 # endif
 #endif
 
+#ifndef QGPGME_EXPORT
+# ifdef MAKE_QGPGME_LIB
+#  define QGPGME_EXPORT KDE_EXPORT
+# else
+#  define QGPGME_EXPORT KDE_IMPORT
+# endif
+#endif
+
+
