@@ -31,7 +31,7 @@
 #include <kcmodule.h>
 #include <kconfigskeleton.h>
 #include <kfile.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 
 class KColorButton;
@@ -55,7 +55,7 @@ class KUrlRequester;
   KPrefsDialog. The control element consists of a set of widgets for handling
   a certain type of configuration information.
 */
-class KDE_EXPORT KPrefsWid : public QObject
+class KDEPIM_EXPORT KPrefsWid : public QObject
 {
     Q_OBJECT
   public:
@@ -88,7 +88,7 @@ class KDE_EXPORT KPrefsWid : public QObject
   This class provides a control element for configuring bool values. It is meant
   to be used by KPrefsDialog. The user is responsible for the layout management.
 */
-class KDE_EXPORT KPrefsWidBool : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidBool : public KPrefsWid
 {
   public:
     /**
@@ -122,7 +122,7 @@ class KDE_EXPORT KPrefsWidBool : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidInt : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidInt : public KPrefsWid
 {
   public:
     /**
@@ -163,7 +163,7 @@ class KDE_EXPORT KPrefsWidInt : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidTime : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidTime : public KPrefsWid
 {
   public:
     /**
@@ -200,7 +200,7 @@ class KDE_EXPORT KPrefsWidTime : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidDuration : public KPrefsWid
 {
   public:
     /**
@@ -238,7 +238,7 @@ class KDE_EXPORT KPrefsWidDuration : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidDate : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidDate : public KPrefsWid
 {
   public:
     /**
@@ -275,7 +275,7 @@ class KDE_EXPORT KPrefsWidDate : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidColor : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidColor : public KPrefsWid
 {
     Q_OBJECT
   public:
@@ -317,7 +317,7 @@ class KDE_EXPORT KPrefsWidColor : public KPrefsWid
   This class provides a control element for configuring font values. It is meant
   to be used by KPrefsDialog. The user is responsible for the layout management.
 */
-class KDE_EXPORT KPrefsWidFont : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
 {
     Q_OBJECT
   public:
@@ -374,7 +374,7 @@ class KDE_EXPORT KPrefsWidFont : public KPrefsWid
   the radio button. The position of the button is defined by the sequence of
   @ref addRadio() calls, starting with 0.
 */
-class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
 {
   public:
     /**
@@ -420,7 +420,7 @@ class KDE_EXPORT KPrefsWidRadios : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidString : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidString : public KPrefsWid
 {
   public:
     /**
@@ -467,7 +467,7 @@ class KDE_EXPORT KPrefsWidString : public KPrefsWid
   meant to be used by KPrefsDialog. The user is responsible for the layout
   management.
 */
-class KDE_EXPORT KPrefsWidPath : public KPrefsWid
+class KDEPIM_EXPORT KPrefsWidPath : public KPrefsWid
 {
   public:
     /**
@@ -516,7 +516,7 @@ class KDE_EXPORT KPrefsWidPath : public KPrefsWid
   transparent way. The user has to add the widgets by the corresponding addWid
   functions and KPrefsWidManager handles the rest automatically.
 */
-class KDE_EXPORT KPrefsWidManager
+class KDEPIM_EXPORT KPrefsWidManager
 {
   public:
     /**
@@ -670,7 +670,7 @@ class KDE_EXPORT KPrefsWidManager
   default values is handled automatically. Custom widgets have to be handled in
   the functions @ref usrReadConfig() and @ref usrWriteConfig().
 */
-class KDE_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
+class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
 {
     Q_OBJECT
   public:
@@ -723,7 +723,7 @@ class KDE_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
 };
 
 
-class KDE_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
+class KDEPIM_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
 {
     Q_OBJECT
   public:

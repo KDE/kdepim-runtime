@@ -33,12 +33,12 @@
 #define __KACCOUNT
 
 #include <QString>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KConfig;
 
 /** Base class for mail and news accounts. */
-class KDE_EXPORT KAccount
+class KDEPIM_EXPORT KAccount
 {
   public:
     /** Type information */

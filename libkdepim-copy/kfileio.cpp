@@ -22,7 +22,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -34,7 +34,7 @@ static void msgDialog(const QString &msg)
 
 
 //-----------------------------------------------------------------------------
-KDE_EXPORT
+KDEPIM_EXPORT
 QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVerbose )
 {
   QByteArray result;
@@ -107,7 +107,7 @@ QByteArray kFileToByteArray( const QString & aFileName, bool aEnsureNL, bool aVe
 }
 
 //-----------------------------------------------------------------------------
-KDE_EXPORT
+KDEPIM_EXPORT
 bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
                        bool aAskIfExists, bool aBackup, bool aVerbose )
 {

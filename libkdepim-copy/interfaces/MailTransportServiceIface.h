@@ -27,11 +27,11 @@
 #include <kurl.h>
 #include <QString>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPim {
 
-#define MailTransportServiceIface KDE_EXPORT MailTransportServiceIface
+#define MailTransportServiceIface KDEPIM_EXPORT MailTransportServiceIface
   class MailTransportServiceIface : virtual public DCOPObject
 #undef MailTransportServiceIface
   {

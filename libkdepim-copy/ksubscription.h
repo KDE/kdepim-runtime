@@ -32,7 +32,7 @@
 #include <QLabel>
 
 #include <kdialog.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include "kfoldertree.h"
 
 class KSubscription;
@@ -45,7 +45,7 @@ class KAccount;
 
 //==========================================================================
 
-class KDE_EXPORT KGroupInfo
+class KDEPIM_EXPORT KGroupInfo
 {
   public:
     enum Status {
@@ -72,7 +72,7 @@ class KDE_EXPORT KGroupInfo
 //==========================================================================
 
 /** A class representing a single group item (what's that?) */
-class KDE_EXPORT GroupItem : public Q3CheckListItem
+class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
 {
   public:
     GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription* browser,
@@ -188,7 +188,7 @@ class KDE_EXPORT GroupItem : public Q3CheckListItem
  *
  */
 
-class KDE_EXPORT KSubscription : public KDialog
+class KDEPIM_EXPORT KSubscription : public KDialog
 {
   Q_OBJECT
 

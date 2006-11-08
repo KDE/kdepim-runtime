@@ -24,11 +24,11 @@
 
 #include <ktextbrowser.h>
 #include <libkdepim/diffalgo.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
-class KDE_EXPORT HTMLDiffAlgoDisplay : virtual public DiffAlgoDisplay, public KTextBrowser
+class KDEPIM_EXPORT HTMLDiffAlgoDisplay : virtual public DiffAlgoDisplay, public KTextBrowser
 {
   public:
     HTMLDiffAlgoDisplay( QWidget *parent );

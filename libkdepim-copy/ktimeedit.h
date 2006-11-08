@@ -34,7 +34,7 @@
 #include <QKeyEvent>
 
 #include <kapplication.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 /**
   This is a class that provides an easy, user friendly way to edit times.
@@ -43,7 +43,7 @@
   @short Provides a way to edit times in a user-friendly manner.
   @author Preston Brown, Ian Dawes
 */
-class KDE_EXPORT KTimeEdit : public QComboBox
+class KDEPIM_EXPORT KTimeEdit : public QComboBox
 {
     Q_OBJECT
   public:

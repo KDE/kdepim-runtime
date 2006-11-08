@@ -23,7 +23,7 @@
 #define KPIM_KCMDESIGNERFIELDS_H
 
 #include <kcmodule.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 //Added by qt3to4:
 #include <QLabel>
 
@@ -37,7 +37,7 @@ class QStringList;
 
 namespace KPIM {
 
-class KDE_EXPORT KCMDesignerFields : public KCModule
+class KDEPIM_EXPORT KCMDesignerFields : public KCModule
 {
   Q_OBJECT
 

@@ -24,7 +24,7 @@
 #include <QDateTime>
 #include <QMenu>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <kdatepicker.h>
 
 /**
@@ -42,7 +42,7 @@
 
    @author Bram Schoenmakers <bram_s@softhome.net>
 */
-class KDE_EXPORT KDatePickerPopup: public QMenu
+class KDEPIM_EXPORT KDatePickerPopup: public QMenu
 {
     Q_OBJECT
   public:

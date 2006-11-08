@@ -24,7 +24,7 @@
 #include <QLabel>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 /**
  * @short A replacement for QLabel that squeezes its text
@@ -40,7 +40,7 @@
 /*
  * QLabel
  */
-class KDE_EXPORT KRSqueezedTextLabel : public QLabel {
+class KDEPIM_EXPORT KRSqueezedTextLabel : public QLabel {
   Q_OBJECT
 
 public:

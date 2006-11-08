@@ -29,11 +29,11 @@
 #include <QStringList>
 //Added by qt3to4:
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
-class KDE_EXPORT DesignerFields : public QWidget
+class KDEPIM_EXPORT DesignerFields : public QWidget
 {
     Q_OBJECT
   public:

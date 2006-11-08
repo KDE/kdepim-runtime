@@ -22,13 +22,13 @@
 #define KABC_RESOURCECACHED_H
 
 #include <kabc/resource.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 #include <kresources/idmapper.h>
 
 namespace KABC {
 
-class KDE_EXPORT ResourceCached : public Resource
+class KDEPIM_EXPORT ResourceCached : public Resource
 {
   Q_OBJECT
 

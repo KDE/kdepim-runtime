@@ -35,13 +35,13 @@
 
 #include <kdialog.h>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KConfig;
 class KEditListBox;
 namespace KRecentAddress {
 
-class KDE_EXPORT RecentAddressDialog : public KDialog
+class KDEPIM_EXPORT RecentAddressDialog : public KDialog
 {
  public:
   RecentAddressDialog( QWidget *parent );
@@ -58,7 +58,7 @@ class KDE_EXPORT RecentAddressDialog : public KDialog
  * @author Carsten Pfeiffer <pfeiffer@kde.org>
  */
 
-class KDE_EXPORT RecentAddresses
+class KDEPIM_EXPORT RecentAddresses
 {
 public:
     ~RecentAddresses();

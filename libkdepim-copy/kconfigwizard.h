@@ -22,7 +22,7 @@
 #define KCONFIGWIZARD_H
 
 #include <kconfigpropagator.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <kpagedialog.h>
 #include <kvbox.h>
 
@@ -31,7 +31,7 @@ class Q3ListView;
 /**
   @short Configuration wizard base class
 */
-class KDE_EXPORT KConfigWizard : public KPageDialog
+class KDEPIM_EXPORT KConfigWizard : public KPageDialog
 {
     Q_OBJECT
   public:

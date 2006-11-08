@@ -34,7 +34,7 @@
 #include <kldap/ldapobject.h>
 #include <kldap/ldapserver.h>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KConfig;
 
@@ -47,7 +47,7 @@ namespace KPIM {
   * We mean it!
   *
   */
-class KDE_EXPORT LdapClient : public QObject
+class KDEPIM_EXPORT LdapClient : public QObject
 {
   Q_OBJECT
 
@@ -149,7 +149,7 @@ typedef QList<LdapResult> LdapResultList;
   * We mean it!
   *
   */
-class KDE_EXPORT LdapSearch : public QObject
+class KDEPIM_EXPORT LdapSearch : public QObject
 {
   Q_OBJECT
 

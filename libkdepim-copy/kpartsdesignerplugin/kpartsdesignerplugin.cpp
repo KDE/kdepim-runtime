@@ -27,7 +27,7 @@
 #include <QVBoxLayout>
 #include <qplugin.h>
 #include <kapplication.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 KPartsGenericPart::KPartsGenericPart( QWidget* parentWidget, const char* name )
     : QWidget( parentWidget ), m_part( 0 )

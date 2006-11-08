@@ -26,7 +26,7 @@
 #include <QByteArray>
 
 #include <kabc/addressee.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KVCardDragPrivate;
 
@@ -36,7 +36,7 @@ class KVCardDragPrivate;
  *
  * See the Qt drag'n'drop documentation.
  */
-class KDE_EXPORT KVCardDrag : public Q3StoredDrag
+class KDEPIM_EXPORT KVCardDrag : public Q3StoredDrag
 {
   Q_OBJECT
 

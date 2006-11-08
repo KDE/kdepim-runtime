@@ -34,7 +34,7 @@
 #define __KPIM_COLLECTINGPROCESS_H__
 
 #include <kprocess.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -46,7 +46,7 @@ namespace KPIM {
  *
  * @author Ingo Kloecker <kloecker@kde.org>
  */
-class KDE_EXPORT CollectingProcess : public KProcess {
+class KDEPIM_EXPORT CollectingProcess : public KProcess {
   Q_OBJECT
 public:
   CollectingProcess( QObject * parent = 0, const char * name = 0 );

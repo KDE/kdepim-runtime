@@ -25,14 +25,14 @@
 #include <QString>
 #include <QMap>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KLibrary;
 class QStringList;
 
 namespace KPIM {
 
-  class KDE_EXPORT PluginMetaData {
+  class KDEPIM_EXPORT PluginMetaData {
   public:
     PluginMetaData() {}
     PluginMetaData( const QString & lib, const QString & name,
@@ -45,7 +45,7 @@ namespace KPIM {
     mutable bool loaded;
   };
 
-  class KDE_EXPORT PluginLoaderBase {
+  class KDEPIM_EXPORT PluginLoaderBase {
   protected:
     PluginLoaderBase();
     virtual ~PluginLoaderBase();

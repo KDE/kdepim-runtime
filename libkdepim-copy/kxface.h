@@ -30,7 +30,7 @@
 #include <QObject>
 #include <setjmp.h>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 // #define WIDTH 48
 // #define HEIGHT WIDTH
@@ -519,7 +519,7 @@ class QString;
 
 namespace KPIM {
 
-  class KDE_EXPORT KXFace : public QObject
+  class KDEPIM_EXPORT KXFace : public QObject
   {
     Q_OBJECT
 

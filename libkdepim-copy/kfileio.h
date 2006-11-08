@@ -8,7 +8,7 @@
 #ifndef kpim_kfileio_h
 #define kpim_kfileio_h
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QByteArray;
 class QString;
@@ -30,7 +30,7 @@ namespace KPIM {
  */
 QByteArray kFileToByteArray( const QString & fileName,
                              bool ensureNewline = true, 
-                             bool withDialogs = true ) KDE_EXPORT;
+                             bool withDialogs = true ) KDEPIM_EXPORT;
 
 /**
  * Writes the contents of @p buffer to the file with the given filename.
@@ -50,7 +50,7 @@ QByteArray kFileToByteArray( const QString & fileName,
  */
 bool kByteArrayToFile( const QByteArray & buffer, const QString & fileName,
                        bool askIfExists = false, bool createBackup = true,
-                       bool withDialogs = true ) KDE_EXPORT;
+                       bool withDialogs = true ) KDEPIM_EXPORT;
 
   /**
    * Checks and corrects the permissions of a file or folder, and if requested 

@@ -40,7 +40,7 @@
 //Added by qt3to4:
 #include <QCloseEvent>
 #include "overlaywidget.h"
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QProgressBar;
 class Q3ScrollView;
@@ -114,7 +114,7 @@ protected:
   ProgressItem* mItem;
 };
 
-class KDE_EXPORT ProgressDialog : public OverlayWidget
+class KDEPIM_EXPORT ProgressDialog : public OverlayWidget
 {
     Q_OBJECT
 

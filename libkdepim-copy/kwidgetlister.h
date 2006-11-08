@@ -36,7 +36,7 @@
 #include <q3ptrlist.h>
 //Added by qt3to4:
 #include <QVBoxLayout>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QPushButton;
 class QVBoxLayout;
@@ -64,7 +64,7 @@ class KHBox;
 
 */
 
-class KDE_EXPORT KWidgetLister : public QWidget
+class KDEPIM_EXPORT KWidgetLister : public QWidget
 {
   Q_OBJECT
 public:

@@ -26,7 +26,7 @@
 #include <QString>
 #include <QMap>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 /**
  * LinkLocator assists in identifying sections of text that can
@@ -38,7 +38,7 @@
  * @short Identifies URLs and email addresses embedded in plaintext.
  * @author Dave Corrie <kde@davecorrie.com>
  */
-class KDE_EXPORT LinkLocator
+class KDEPIM_EXPORT LinkLocator
 {
 public:
   /**

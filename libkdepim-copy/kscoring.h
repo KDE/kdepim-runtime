@@ -41,7 +41,7 @@
 #include <klineedit.h>
 #include <knuminput.h>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QDomNode;
 class QDomDocument;
@@ -57,13 +57,13 @@ class QLabel;
  */
 
 //----------------------------------------------------------------------------
-class KDE_EXPORT ScorableGroup
+class KDEPIM_EXPORT ScorableGroup
 {
 public:
   virtual ~ScorableGroup();
 };
 
-class KDE_EXPORT ScorableArticle
+class KDEPIM_EXPORT ScorableArticle
 {
 public:
   virtual ~ScorableArticle();
@@ -83,7 +83,7 @@ public:
 /**
   Base class for other Action classes.
  */
-class KDE_EXPORT ActionBase {
+class KDEPIM_EXPORT ActionBase {
  public:
   ActionBase();
   virtual ~ActionBase();
@@ -102,7 +102,7 @@ class KDE_EXPORT ActionBase {
   enum ActionTypes { SETSCORE, NOTIFY, COLOR, MARKASREAD };
 };
 
-class KDE_EXPORT ActionColor : public ActionBase {
+class KDEPIM_EXPORT ActionColor : public ActionBase {
 public:
   ActionColor(const QColor&);
   ActionColor(const QString&);
@@ -120,7 +120,7 @@ private:
   QColor color;
 };
 
-class KDE_EXPORT ActionSetScore : public ActionBase {
+class KDEPIM_EXPORT ActionSetScore : public ActionBase {
  public:
   ActionSetScore(short);
   ActionSetScore(const ActionSetScore&);
@@ -138,7 +138,7 @@ class KDE_EXPORT ActionSetScore : public ActionBase {
   short val;
 };
 
-class KDE_EXPORT ActionNotify : public ActionBase {
+class KDEPIM_EXPORT ActionNotify : public ActionBase {
  public:
   ActionNotify(const QString&);
   ActionNotify(const ActionNotify&);
@@ -153,7 +153,7 @@ class KDE_EXPORT ActionNotify : public ActionBase {
   QString note;
 };
 
-class KDE_EXPORT ActionMarkAsRead : public ActionBase {
+class KDEPIM_EXPORT ActionMarkAsRead : public ActionBase {
   public:
     ActionMarkAsRead();
     ActionMarkAsRead( const ActionMarkAsRead& );
@@ -164,7 +164,7 @@ class KDE_EXPORT ActionMarkAsRead : public ActionBase {
     virtual ActionMarkAsRead* clone() const;
 };
 
-class KDE_EXPORT NotifyCollection
+class KDEPIM_EXPORT NotifyCollection
 {
 public:
   NotifyCollection();
@@ -184,7 +184,7 @@ private:
 
 
 //----------------------------------------------------------------------------
-class KDE_EXPORT KScoringExpression
+class KDEPIM_EXPORT KScoringExpression
 {
   friend class KScoringRule;
  public:
@@ -219,7 +219,7 @@ class KDE_EXPORT KScoringExpression
 };
 
 //----------------------------------------------------------------------------
-class KDE_EXPORT KScoringRule
+class KDEPIM_EXPORT KScoringRule
 {
   friend class KScoringManager;
  public:
@@ -282,7 +282,7 @@ private:
     With the help of this class its very easy for the KScoringManager
     to temporary drop lists of rules and restore them afterwards
 */
-class KDE_EXPORT RuleStack
+class KDEPIM_EXPORT RuleStack
 {
 public:
   RuleStack();
@@ -302,7 +302,7 @@ private:
 
 //----------------------------------------------------------------------------
 // Manages the score rules.
-class KDE_EXPORT KScoringManager : public QObject
+class KDEPIM_EXPORT KScoringManager : public QObject
 {
   Q_OBJECT
 
@@ -408,7 +408,7 @@ class KDE_EXPORT KScoringManager : public QObject
 
 
 //----------------------------------------------------------------------------
-class KDE_EXPORT NotifyDialog : public KDialog
+class KDEPIM_EXPORT NotifyDialog : public KDialog
 {
   Q_OBJECT
 public:

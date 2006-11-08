@@ -28,7 +28,7 @@
 #include <klistbox.h>
 #include "kwidgetlister.h"
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KComboBox;
 class KLineEdit;
@@ -50,7 +50,7 @@ class KColorCombo;
 /** this widget implements an editor for one condition.
     It is used in ExpressionEditWidget
 */
-class KDE_EXPORT SingleConditionWidget : public QFrame
+class KDEPIM_EXPORT SingleConditionWidget : public QFrame
 {
   Q_OBJECT
   friend class ConditionEditWidget;
@@ -129,7 +129,7 @@ private:
 
 /** this widget implements the action editor
  */
-class KDE_EXPORT ActionEditWidget : public KWidgetLister
+class KDEPIM_EXPORT ActionEditWidget : public KWidgetLister
 {
   Q_OBJECT
 public:
@@ -196,7 +196,7 @@ private:
 /** This widget shows a list of rules with buttons for
     copy, delete aso.
 */
-class KDE_EXPORT RuleListWidget : public QWidget
+class KDEPIM_EXPORT RuleListWidget : public QWidget
 {
   Q_OBJECT
 public:
@@ -246,7 +246,7 @@ private:
   QPushButton *mRuleDown;
 };
 
-class KDE_EXPORT KScoringEditor : public KDialog
+class KDEPIM_EXPORT KScoringEditor : public KDialog
 {
   Q_OBJECT
 public:
@@ -292,7 +292,7 @@ private:
   QString ruleName;
 };
 
-class KDE_EXPORT KScoringEditorWidget : public QWidget
+class KDEPIM_EXPORT KScoringEditorWidget : public QWidget
 {
   Q_OBJECT
 public:

@@ -22,14 +22,14 @@
 #define KPIM_EMBEDDEDURLPAGE_H
 
 #include <QWidget>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <kurl.h>
 
 namespace KParts { class ReadOnlyPart; }
 
 namespace KPIM {
 
-class KDE_EXPORT EmbeddedURLPage : public QWidget
+class KDEPIM_EXPORT EmbeddedURLPage : public QWidget
 {
     Q_OBJECT
   public:

@@ -20,13 +20,13 @@
 #ifndef KPIMURLREQUESTDLG_H_INCLUDED
 #define KPIMURLREQUESTDLG_H_INCLUDED
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <kurl.h>
 #include <QString>
 
 class QWidget;
 
-class KDE_EXPORT KPimURLRequesterDlg
+class KDEPIM_EXPORT KPimURLRequesterDlg
 {
 	public:
     /**

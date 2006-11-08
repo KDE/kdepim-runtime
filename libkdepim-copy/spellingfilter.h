@@ -27,9 +27,9 @@
 #include <QStringList>
 #include "linklocator.h"
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
-class KDE_EXPORT SpellingFilter
+class KDEPIM_EXPORT SpellingFilter
 {
 public:
   enum UrlFiltering { DontFilterUrls, FilterUrls };

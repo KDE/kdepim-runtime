@@ -30,7 +30,7 @@
 #include <QMutex>
 //Added by qt3to4:
 #include <QLabel>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 #include <kcal/incidence.h>
 #include "htmldiffalgodisplay.h"
@@ -46,7 +46,7 @@ class KDialog;
 /** Dialog to change the korganizer configuration.
   */
 
-class KDE_EXPORT KIncidenceChooser : public KDialog
+class KDEPIM_EXPORT KIncidenceChooser : public KDialog
 {
     Q_OBJECT
 public:

@@ -9,11 +9,11 @@
 
 #include <kdeversion.h>
 #include <kabc/addressee.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QWidget;
 
-class KDE_EXPORT KAddrBookExternal {
+class KDEPIM_EXPORT KAddrBookExternal {
 public:
   static void addEmail( const QString &addr, QWidget *parent );
   static void addNewAddressee( QWidget* );

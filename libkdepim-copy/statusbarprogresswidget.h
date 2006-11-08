@@ -36,7 +36,7 @@
   *  kio_littleprogress_dlg (it looks similar)
   */
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 //Added by qt3to4:
 #include <QLabel>
 #include <QFrame>
@@ -56,7 +56,7 @@ class SSLLabel;
 class ProgressItem;
 class ProgressDialog;
 
-class KDE_EXPORT StatusbarProgressWidget : public QFrame {
+class KDEPIM_EXPORT StatusbarProgressWidget : public QFrame {
 
   Q_OBJECT
 

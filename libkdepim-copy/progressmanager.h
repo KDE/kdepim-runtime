@@ -29,7 +29,7 @@
 #include <QString>
 #include <QMap>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -37,7 +37,7 @@ class ProgressItem;
 class ProgressManager;
 typedef QMap<ProgressItem*, bool> ProgressItemMap;
 
-class KDE_EXPORT ProgressItem : public QObject
+class KDEPIM_EXPORT ProgressItem : public QObject
 {
   Q_OBJECT
   friend class ProgressManager;
@@ -239,7 +239,7 @@ signals:
  * items to parents by id.
  */
 
-class KDE_EXPORT ProgressManager : public QObject
+class KDEPIM_EXPORT ProgressManager : public QObject
 {
 
   Q_OBJECT

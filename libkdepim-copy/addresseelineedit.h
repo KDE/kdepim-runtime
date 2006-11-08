@@ -40,7 +40,7 @@
 #include <kabc/addressee.h>
 
 #include "kcompletion.h"
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <klineedit.h>
 class QMenu;
 
@@ -55,7 +55,7 @@ typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 
 namespace KPIM {
 
-class KDE_EXPORT AddresseeLineEdit : public KLineEdit
+class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
 {
   Q_OBJECT
 

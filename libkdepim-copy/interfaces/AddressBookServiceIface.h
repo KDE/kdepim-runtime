@@ -26,11 +26,11 @@
 #include <dcopref.h>
 #include <kurl.h>
 #include <QString>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
-#define AddressBookServiceIface KDE_EXPORT AddressBookServiceIface 
+#define AddressBookServiceIface KDEPIM_EXPORT AddressBookServiceIface 
   class AddressBookServiceIface : virtual public DCOPObject
 #undef AddressBookServiceIface
   {

@@ -14,7 +14,7 @@
 #include <QObject>
 #include <QMap>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 #undef None
 
@@ -29,7 +29,7 @@ class ProgressItem;
   */
 
 
-class KDE_EXPORT BroadcastStatus : public QObject
+class KDEPIM_EXPORT BroadcastStatus : public QObject
 {
 
   Q_OBJECT

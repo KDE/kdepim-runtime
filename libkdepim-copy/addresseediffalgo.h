@@ -22,7 +22,7 @@
 
 namespace KPIM {
 
-class KDE_EXPORT AddresseeDiffAlgo : public DiffAlgo
+class KDEPIM_EXPORT AddresseeDiffAlgo : public DiffAlgo
 {
   public:
     AddresseeDiffAlgo( const KABC::Addressee &leftAddressee, const KABC::Addressee &rightAddressee );

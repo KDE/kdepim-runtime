@@ -28,7 +28,7 @@
 #include <QDropEvent>
 #include "time.h"
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class KUrl;
 
@@ -47,7 +47,7 @@ class KUrl;
 
 namespace KPIM {
 
-class KDE_EXPORT MailSummary
+class KDEPIM_EXPORT MailSummary
 {
 public:
     MailSummary( quint32 serialNumber, const QString &messageId, const QString &subject,
@@ -89,7 +89,7 @@ private:
 typedef QList<MailSummary> MailList;
 
 // Object for the drag object to call-back for message fulltext
-class KDE_EXPORT MailTextSource {
+class KDEPIM_EXPORT MailTextSource {
 public:
     MailTextSource() {}
     virtual ~MailTextSource() {}
@@ -99,7 +99,7 @@ public:
 
 // Drag and drop object for mails
 
-class KDE_EXPORT MailListDrag : public Q3DragObject
+class KDEPIM_EXPORT MailListDrag : public Q3DragObject
 {
 public:
     // Takes ownership of "src" and deletes it when done

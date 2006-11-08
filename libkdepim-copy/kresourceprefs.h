@@ -23,7 +23,7 @@
 #define KRESOURCEPREFS_H
 
 #include <kconfigskeleton.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 class QString;
 
@@ -35,7 +35,7 @@ class QString;
   The prefix should be an unique identifier to avoid name clashes and the method
   has to be called before readConfig(), otherwise the wrong entries are read.
  */
-class KDE_EXPORT KResourcePrefs : public KConfigSkeleton
+class KDEPIM_EXPORT KResourcePrefs : public KConfigSkeleton
 {
   public:
     KResourcePrefs( const QString &name = QString() );

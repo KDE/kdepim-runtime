@@ -29,7 +29,7 @@
 #include "qtextcodec.h"
 #endif
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 #ifndef QT_NO_TEXTCODEC
 
@@ -47,7 +47,7 @@
 
     @author Marc Mutz <mutz@kde.org> */
 
-class KDE_EXPORT QUtf7Codec : public QTextCodec {
+class KDEPIM_EXPORT QUtf7Codec : public QTextCodec {
     bool encOpt, encLwsp;
 public:
     QUtf7Codec() : QTextCodec() {}
@@ -88,7 +88,7 @@ public:
     @short A variant of @ref QUtf7Codec, which protectes certain
     characters in MIME transport
     @author Marc Mutz <mutz@kde.org> */
-class KDE_EXPORT QStrictUtf7Codec : public QUtf7Codec {
+class KDEPIM_EXPORT QStrictUtf7Codec : public QUtf7Codec {
 public:
   QStrictUtf7Codec() : QUtf7Codec() {}
 

@@ -31,7 +31,7 @@
 #include <QStringList>
 #include <q3ptrlist.h>
 #include <q3ptrdict.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -75,7 +75,7 @@ namespace KPIM {
     AddresseeViewItemPrivate *d;
   };
 
-  class KDE_EXPORT AddressesDialog : public KDialog
+  class KDEPIM_EXPORT AddressesDialog : public KDialog
   {
     Q_OBJECT
   public:

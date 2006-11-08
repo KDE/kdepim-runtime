@@ -19,7 +19,7 @@
 
 #include <QObject>
 
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -27,7 +27,7 @@ namespace KPIM {
  * @short Class for managing a set of config options.
  * @author Marc Mutz <mutz@kde.org>
  **/
-class KDE_EXPORT ConfigManager : public QObject {
+class KDEPIM_EXPORT ConfigManager : public QObject {
   Q_OBJECT
 public:
   /** Commit changes to disk and emit changed() if necessary. */

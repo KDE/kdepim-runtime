@@ -26,11 +26,11 @@
 
 #include <kconfigskeleton.h>
 #include <kdatetime.h>
-#include <kdepimmacros.h>
+#include "kdepim_export.h"
 
 class QString;
 
-class KDE_EXPORT KPimPrefs : public KConfigSkeleton
+class KDEPIM_EXPORT KPimPrefs : public KConfigSkeleton
 {
   public:
     KPimPrefs( const QString &name = QString() );

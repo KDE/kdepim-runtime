@@ -21,13 +21,13 @@
 #ifndef ALARMCLIENT_H
 #define ALARMCLIENT_H
 
-#include <kdelibs_export.h>
+#include <kdepim_export.h>
 
 /**
   This class provides the interface for communicating with the alarm daemon. It
   can be subclassed for specific daemons.
 */
-class KDE_EXPORT AlarmClient
+class KDEPIM_EXPORT AlarmClient
 {
   public:
     AlarmClient();

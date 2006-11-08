@@ -28,7 +28,7 @@
 
 namespace KPIM {
 
-class KDE_EXPORT AddresseeEmailSelection : public Selection
+class KDEPIM_EXPORT AddresseeEmailSelection : public Selection
 {
   public:
     AddresseeEmailSelection();

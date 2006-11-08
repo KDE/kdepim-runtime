@@ -24,7 +24,7 @@
 #define KPIM_CATEGORYEDITDIALOG_H
 
 #include <kdialog.h>
-#include <kdepimmacros.h>
+#include <kdepim_export.h>
 #include <Q3ListViewItem>
 class KPimPrefs;
 namespace Ui {
@@ -34,7 +34,7 @@ namespace KPIM {
 
 class ImprovedListView;
 
-class KDE_EXPORT CategoryEditDialog : public KDialog
+class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
     Q_OBJECT
   public:
