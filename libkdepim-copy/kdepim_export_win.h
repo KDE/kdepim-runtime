@@ -25,3 +25,83 @@
 #  define KHOLIDAYS_EXPORT KDE_IMPORT
 # endif
 #endif
+
+#ifndef AKONADI_EXPORT
+# ifdef MAKE_AKONADI_LIB
+#  define AKONADI_EXPORT KDE_EXPORT
+# else
+#  define AKONADI_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef AKONADI_RESOURCES_EXPORT
+# ifdef MAKE_AKONADI_RESOURCES_LIB
+#  define AKONADI_RESOURCES_EXPORT KDE_EXPORT
+# else
+#  define AKONADI_RESOURCES_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef AKREGATOR_EXPORT
+# ifdef MAKE_AKREGATOR_LIB
+#  define AKREGATOR_EXPORT KDE_EXPORT
+# else
+#  define AKREGATOR_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KDEPIM_EXPORT
+# ifdef MAKE_KDEPIM_LIB
+#  define KDEPIM_EXPORT KDE_EXPORT
+# else
+#  define KDEPIM_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KLEO_EXPORT
+# ifdef MAKE_KLEO_LIB
+#  define KLEO_EXPORT KDE_EXPORT
+# else
+#  define KLEO_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KODE_SCHEMA_EXPORT
+# ifdef MAKE_KODE_SCHEMA_LIB
+#  define KODE_SCHEMA_EXPORT KDE_EXPORT
+# else
+#  define KODE_SCHEMA_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KSCHEMA_EXPORT
+# ifdef MAKE_KSCHEMA_LIB
+#  define KSCHEMA_EXPORT KDE_EXPORT
+# else
+#  define KSCHEMA_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KSIEVE_EXPORT
+# ifdef MAKE_KSIEVE_LIB
+#  define KSIEVE_EXPORT KDE_EXPORT
+# else
+#  define KSIEVE_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef KXMLCOMMON_EXPORT
+# ifdef MAKE_KXMLCOMMON_LIB
+#  define KXMLCOMMON_EXPORT KDE_EXPORT
+# else
+#  define KXMLCOMMON_EXPORT KDE_IMPORT
+# endif
+#endif
+
+#ifndef SYNDICATION_EXPORT
+# ifdef MAKE_SYNDICATION_LIB
+#  define SYNDICATION_EXPORT KDE_EXPORT
+# else
+#  define SYNDICATION_EXPORT KDE_IMPORT
+# endif
+#endif
