@@ -10,7 +10,7 @@ kde4_automoc(${komposer_defaulteditor_PART_SRCS})
 
 kde4_add_plugin(komposer_defaulteditor WITH_PREFIX ${komposer_defaulteditor_PART_SRCS})
 
-kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} komposer_defaulteditor )
+
 
 target_link_libraries(komposer_defaulteditor ${KDE4_KDECORE_LIBS} ${KDE4_KPARTS_LIBS} komposer)
 

@@ -6,7 +6,7 @@ kde4_automoc(${kio_akonadi_srcs})
 
 kde4_add_plugin(kio_akonadi ${kio_akonadi_srcs})
 
-kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kio_akonadi )
+
 
 target_link_libraries(kio_akonadi  ${KDE4_KIO_LIBS} akonadi )
 
