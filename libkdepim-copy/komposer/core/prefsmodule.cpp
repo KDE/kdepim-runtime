@@ -31,7 +31,7 @@
 #include <QLabel>
 #include <QButtonGroup>
 
-#include <kdepimmacros.h>
+#include <kdemacros.h>
 
 extern "C"
 {

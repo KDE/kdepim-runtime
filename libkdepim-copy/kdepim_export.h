@@ -22,7 +22,7 @@
 #define KDEPIM_EXPORT_H
 
 /* needed for KDE_EXPORT macros */
-#include <kdepimmacros.h>
+#include <kdemacros.h>
 
 #if defined Q_OS_WIN
 # include <kdepim_export_win.h>

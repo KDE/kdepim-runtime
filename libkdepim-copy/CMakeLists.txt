@@ -119,7 +119,7 @@ install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR}/plugins/designe
 ########### install files ###############
 
 install(FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
-install(FILES kdepimmacros.h kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR})
+install(FILES kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR})
 
 
 
@@ -176,7 +176,7 @@ install(FILES kdepimmacros.h kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DI
 #                       $(LIB_KDE3SUPPORT) $(LIB_KIO) $(LIB_KABC) $(LIB_KPARTS) $(LIB_KIMPROXY) $(LIB_POLL) $(LIB_QTDESIGNER) -lkspell2
 ##               $top_builddir)/libkdepim/resources/libkpimresources.la
 #
-#include_HEADERS = kdepimmacros.h kdepimprotocols.h
+#include_HEADERS = kdemacros.h kdepimprotocols.h
 #
 #AM_CXXFLAGS = -DQT_PLUGIN
 #kde_widget_LTLIBRARIES = kdepimwidgets.la
