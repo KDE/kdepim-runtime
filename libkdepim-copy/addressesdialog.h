@@ -32,6 +32,17 @@
 #include <q3ptrlist.h>
 #include <q3ptrdict.h>
 #include <kdepim_export.h>
+#include "ui_addresspicker.h"
+
+class AddressPickerUI : public QWidget, public Ui::AddressPickerUI
+{
+public:
+  AddressPickerUI( QWidget *parent ) : QWidget( parent ) {
+    setupUi( this );
+  }
+};
+
+
 
 namespace KPIM {
 

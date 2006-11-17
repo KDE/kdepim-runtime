@@ -23,7 +23,6 @@
  */
 
 #include "addressesdialog.h"
-#include "addresspicker.h"
 
 #include <config.h>
 
