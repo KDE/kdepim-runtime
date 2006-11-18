@@ -39,7 +39,7 @@
 
 #include <kabc/addressee.h>
 
-#include "kcompletion.h"
+#include "kmailcompletion.h"
 #include <kdepim_export.h>
 #include <klineedit.h>
 class QMenu;
@@ -108,6 +108,7 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
   private slots:
     void slotCompletion();
     void slotPopupCompletion( const QString& );
+    void slotReturnPressed( const QString& );
     void slotStartLDAPLookup();
     void slotLDAPSearchData( const KPIM::LdapResultList& );
     void slotEditCompletionOrder();
@@ -120,9 +121,10 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     void stopLDAPLookup();
 
     void setCompletedItems( const QStringList& items, bool autoSuggest );
-    void addCompletionItem( const QString& string, int weight, int source );
+    void addCompletionItem( const QString& string, int weight, int source, const QStringList * keyWords=0 );
     QString completionSearchText( QString& );
     const QStringList getAdjustedCompletionItems( bool fullSearch );
+    void updateSearchString();
 
     QString m_previousAddresses;
     QString m_searchString;
@@ -130,11 +132,13 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     bool m_completionInitialized;
     bool m_smartPaste;
     bool m_addressBookConnected;
+    bool m_lastSearchMode;
+    bool m_searchExtended; //has \" been added?
 
     //QMap<QString, KABC::Addressee> m_contactMap;
 
     static bool s_addressesDirty;
-    static KCompletion *s_completion;
+    static KMailCompletion *s_completion;
     static CompletionItemsMap* s_completionItemMap;
     static QTimer *s_LDAPTimer;
     static KPIM::LdapSearch *s_LDAPSearch;

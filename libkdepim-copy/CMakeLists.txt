@@ -80,6 +80,7 @@ set(kdepim_LIB_SRCS
    improvedlistview.cpp 
    messagestatus.cpp 
    kemailquotinghighter.cpp
+   kmailcompletion.cpp
    networkstatus.cpp)
 
 kde4_automoc(${kdepim_LIB_SRCS})
