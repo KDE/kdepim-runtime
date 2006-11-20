@@ -33,6 +33,7 @@
 #include <kglobal.h>
 #include <kconfig.h>
 #include <klocale.h>
+#include <ksystemtimezone.h>
 #include <kdebug.h>
 
 #include "kpimprefs.h"
