@@ -22,45 +22,49 @@
 #include "kvcarddrag.h"
 
 #include <kabc/vcardconverter.h>
+#include <QMimeData>
 
-static const char vcard_mime_string[] = "text/x-vcard";
-
-KVCardDrag::KVCardDrag( const QByteArray &content, QWidget *dragsource,
-                        const char *name )
-  : Q3StoredDrag( vcard_mime_string, dragsource, name )
+QString KVCardDrag::mimeType()
 {
-  setVCard( content );
+  return "text/x-vcard";
 }
 
-KVCardDrag::KVCardDrag( QWidget *dragsource, const char *name )
-  : Q3StoredDrag( vcard_mime_string, dragsource, name )
+bool KVCardDrag::populateMimeData( QMimeData *md, const QByteArray &content )
 {
-  setVCard( QByteArray() );
-}
-
-void KVCardDrag::setVCard( const QByteArray &content )
-{
-  setEncodedData( content );
-}
-
-bool KVCardDrag::canDecode( QMimeSource *e )
-{
-  return e->provides( vcard_mime_string );
-}
-
-bool KVCardDrag::decode( QMimeSource *e, QByteArray &content )
-{
-  content = e->encodedData( vcard_mime_string );
+  md->setData( mimeType(), content );
   return true;
 }
 
-bool KVCardDrag::decode( QMimeSource *e, KABC::Addressee::List& addressees )
+bool KVCardDrag::populateMimeData( QMimeData *md, const KABC::Addressee::List &adressees )
 {
-  addressees = KABC::VCardConverter().parseVCards( e->encodedData( vcard_mime_string ) );
+  KABC::VCardConverter converter;
+  QByteArray vcards = converter.createVCards( adressees );
+  if ( !vcards.isEmpty() ) {
+    return populateMimeData( md, vcards );
+  } else { 
+    return false;
+  }
+}
+
+bool KVCardDrag::canDecode( const QMimeData *md )
+{
+  return md->hasFormat( mimeType() );
+}
+
+
+bool KVCardDrag::fromMimeData( const QMimeData *md, QByteArray &content )
+{
+  if ( !canDecode(md) ) 
+    return false;
+  content = md->data( mimeType() );
   return true;
 }
 
-void KVCardDrag::virtual_hook( int, void* )
-{ /*BASE::virtual_hook( id, data );*/ }
+bool KVCardDrag::fromMimeData( const QMimeData *md, KABC::Addressee::List& addressees )
+{
+  if ( !canDecode(md) ) 
+    return false;
+  addressees = KABC::VCardConverter().parseVCards( md->data( mimeType() ) );
+  return true;
+}
 
-#include "kvcarddrag.moc"

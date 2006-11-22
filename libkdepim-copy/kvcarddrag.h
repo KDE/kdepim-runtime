@@ -22,13 +22,11 @@
 #ifndef KVCARDDRAG_H
 #define KVCARDDRAG_H
 
-#include <q3dragobject.h>
 #include <QByteArray>
 
 #include <kabc/addressee.h>
 #include <kdepim_export.h>
 
-class KVCardDragPrivate;
 
 /**
  * A drag-and-drop object for vcards. The according MIME type
@@ -36,47 +34,38 @@ class KVCardDragPrivate;
  *
  * See the Qt drag'n'drop documentation.
  */
-class KDEPIM_EXPORT KVCardDrag : public Q3StoredDrag
+class KDEPIM_EXPORT KVCardDrag
 {
-  Q_OBJECT
-
   public:
     /**
-     * Constructs an empty vcard drag.
-     */
-    KVCardDrag( QWidget *dragsource = 0, const char *name = 0 );
+      Mime-type of VCard
+    */
+    static QString mimeType();
 
     /**
-     * Constructs a vcard drag with the @p addressee.
-     */
-    KVCardDrag( const QByteArray &content, QWidget *dragsource = 0, const char *name = 0 );
-    virtual ~KVCardDrag() {};
-
+      Adds the VCard representation as data of the drag object
+    */
+    static bool populateMimeData( QMimeData *md, const QByteArray &content );
     /**
-     * Sets the vcard of the drag to @p content.
-     */
-    void setVCard( const QByteArray &content );
-
+      Adds the VCard representation as data of the drag object
+    */
+    static bool populateMimeData( QMimeData *md, const KABC::Addressee::List &adressees );
     /**
-     * Returns true if the MIME source @p e contains a vcard object.
-     */
-    static bool canDecode( QMimeSource *e );
-
+      Return, if drag&drop object can be decode to iCalendar.
+    */
+    static bool canDecode( const QMimeData * );
     /**
-     * Decodes the MIME source @p e and puts the resulting vcard into @p content.
-     */
-    static bool decode( QMimeSource *e, QByteArray &content );
-
+      Decode drag&drop object to VCard component \a content.
+    */
+    static bool fromMimeData( const QMimeData *md, QByteArray &content );
     /**
-     * Decodes the MIME source @p e and puts the resulting vcard into @p addresseess.
+     * Decodes the MIME data @p md and puts the resulting vcard into @p addresseess.
      */
-    static bool decode( QMimeSource *e, KABC::Addressee::List& addressees );
-
-  protected:
-     virtual void virtual_hook( int id, void* data );
+    static bool fromMimeData( const QMimeData *md, KABC::Addressee::List& addressees );
 
   private:
-     KVCardDragPrivate *d;
+     class Private;
+     Private *d;
 };
 
 #endif // KVCARDDRAG_H
