@@ -39,9 +39,8 @@ class KUrl;
  *
  * void SomeWidget::contentsDropEvent(QDropEvent *e)
  * {
- *    if (e->provides(MailListDrag::format())) {
- *	MailList mailList;
- *	MailListDrag::decode( e, mailList );
+ *    if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
+ *	MailList mailList = KPIM::MailList::fromMimeData( e->mimeData() );
  *      ...
  **/
 
@@ -85,9 +84,6 @@ private:
     time_t mDate;
 };
 
-// List of mail summaries
-typedef QList<MailSummary> MailList;
-
 // Object for the drag object to call-back for message fulltext
 class KDEPIM_EXPORT MailTextSource {
 public:
@@ -97,47 +93,16 @@ public:
     virtual QByteArray text(quint32 serialNumber) const = 0;
 };
 
-// Drag and drop object for mails
-
-class KDEPIM_EXPORT MailListDrag : public Q3DragObject
+// List of mail summaries
+class MailList : public QList<MailSummary>
 {
-public:
-    // Takes ownership of "src" and deletes it when done
-    MailListDrag( const MailList &, QWidget * parent = 0, MailTextSource *src = 0 );
-    ~MailListDrag();
-
-    const char *format(int i) const;
-
-    bool provides(const char *mimeType) const;
-
-    QByteArray encodedData(const char *) const;
-
-    /* Reset the list of mail summaries */
-    void setMailList( const MailList & );
-
-    /* The format for this drag - "x-kmail-drag/message-list" */
-    static const char* format();
-
-    /* Returns true if the information in e can be decoded into a QString;
-       otherwsie returns false */
-    static bool canDecode( QMimeSource* e );
-
-    /* Attempts to decode the dropped information;
-       Returns true if successful; otherwise return false */
-    static bool decode( QDropEvent* e, MailList& s );
-
-    /* Attempts to decode the serialNumbers of the dropped information;
-       Returns true if successful; otherwise return false */
-    static bool decode( QDropEvent* e, QByteArray& a );
-
-    /* Attempts to decode the encoded MailList;
-       Returns true if successful; otherwise return false */
-    static bool decode( QByteArray& a, MailList& s );
-
-private:
-    MailTextSource *_src;
-    MailList mMailList;
-    Q3DragObject *mUrlDrag;
+  public:
+    static QString mimeDataType();
+    static bool canDecode( const QMimeData*md );
+    static MailList fromMimeData( const QMimeData*md );
+    static QByteArray serialsFromMimeData( const QMimeData *md );
+    static MailList decode( const QByteArray& payload );
+    void populateMimeData( QMimeData*md, MailTextSource *src = 0 );
 };
 
 }
