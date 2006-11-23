@@ -51,7 +51,7 @@ class KDEPIM_EXPORT MailSummary
 {
 public:
     MailSummary( quint32 serialNumber, const QString &messageId, const QString &subject,
-		 const QString &from, const QString &to, time_t date );
+                 const QString &from, const QString &to, time_t date );
     MailSummary() {}
     ~MailSummary() {}
 

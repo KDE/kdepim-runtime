@@ -54,9 +54,7 @@
 #include <QObject>
 #include <QRegExp>
 #include <QEvent>
-#include <q3dragobject.h>
 #include <QClipboard>
-//Added by qt3to4:
 #include <QKeyEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
