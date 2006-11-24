@@ -51,7 +51,7 @@ class KDEPIM_EXPORT KVCardDrag
     */
     static bool populateMimeData( QMimeData *md, const KABC::Addressee::List &adressees );
     /**
-      Return, if drag&drop object can be decode to iCalendar.
+      Return, if drag&drop object can be decode to vCard.
     */
     static bool canDecode( const QMimeData * );
     /**

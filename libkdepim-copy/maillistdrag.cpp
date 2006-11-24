@@ -33,7 +33,6 @@
 #include <klocale.h>
 #include <kprogressdialog.h>
 #include <kurl.h>
-#include <k3urldrag.h>
 
 using namespace KPIM;
 

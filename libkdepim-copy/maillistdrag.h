@@ -23,14 +23,16 @@
 #ifndef maillistdrag_h
 #define maillistdrag_h
 
-#include "q3dragobject.h"
 #include "qglobal.h"
-#include <QDropEvent>
 #include "time.h"
+
+#include <QString>
+#include <QList>
 
 #include <kdepim_export.h>
 
 class KUrl;
+class QMimeData;
 
 /**
  * KDEPIM classes for drag and drop of mails
