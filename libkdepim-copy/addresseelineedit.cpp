@@ -578,6 +578,8 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 
     //for CompletionShell, CompletionPopup
     QStringList sl( addr.formattedName() );
+#warning idx will be uninitialized!!!!
+    int idx;
     addCompletionItem( addr.formattedName(), weight, idx, &sl );
 
     return;
