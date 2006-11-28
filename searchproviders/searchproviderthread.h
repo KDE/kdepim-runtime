@@ -21,7 +21,7 @@
 #define AKONADI_SEARCHPROVIDER_THREAD_H
 
 #include <QtCore/QThread>
-
+#include <kdepim_export.h>
 namespace Akonadi {
 
 class SearchProviderThreadPrivate;
@@ -29,7 +29,7 @@ class SearchProviderThreadPrivate;
 /**
   Base class of a search provider worker thread.
 */
-class SearchProviderThread : public QThread
+class AKONADISEARCHPROVIDER_EXPORT  SearchProviderThread : public QThread
 {
   Q_OBJECT
 

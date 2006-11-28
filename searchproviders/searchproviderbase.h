@@ -21,7 +21,7 @@
 #define AKONADI_SEARCHPROVIDER_BASE_H
 
 #include <searchprovider.h>
-
+#include <kdepim_export.h>
 namespace Akonadi {
 
 class SearchProviderThread;
@@ -34,7 +34,7 @@ class SearchProviderBasePrivate;
   @todo Where do we store active searches, in the control process or in
   every search provider itself?
 */
-class SearchProviderBase : public SearchProvider
+class AKONADISEARCHPROVIDER_EXPORT  SearchProviderBase : public SearchProvider
 {
   Q_OBJECT
 
