@@ -156,4 +156,13 @@
 # endif
 #endif
 
+#ifndef KORGANIZER_EXPORT
+# ifdef MAKE_KORGANIZER_LIB
+#  define KORGANIZER_EXPORT KDE_EXPORT
+# else
+#  define KORGANIZER_EXPORT KDE_IMPORT
+# endif
+#endif
+
+
 

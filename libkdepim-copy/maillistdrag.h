@@ -96,7 +96,7 @@ public:
 };
 
 // List of mail summaries
-class MailList : public QList<MailSummary>
+class KDEPIM_EXPORT MailList : public QList<MailSummary>
 {
   public:
     static QString mimeDataType();
