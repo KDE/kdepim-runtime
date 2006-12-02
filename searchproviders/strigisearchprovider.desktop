@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Fulltext Search Provider
+Comment=Strigi-based fulltext search
+Type=AkonadiSearchProvider
+Exec=akonadi_strigi_searchprovider
+
+X-Akonadi-MimeTypes=all/all
+X-Akonadi-Identifier=akonadi_strigi_searchprovider

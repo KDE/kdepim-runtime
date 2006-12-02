@@ -20,8 +20,8 @@ qt4_add_dbus_interfaces( akonadisearchprovider_LIB_SRC ../server/interfaces/org.
 qt4_wrap_cpp(akonadisearchprovider_LIB_SRC searchprovider.h)
 kde4_automoc(${akonadisearchprovider_LIB_SRC})
 kde4_add_library(
-        akonadisearchprovider SHARED 
-        ${akonadisearchprovider_LIB_SRC} 
+        akonadisearchprovider SHARED
+        ${akonadisearchprovider_LIB_SRC}
 )
 
 
@@ -46,15 +46,40 @@ target_link_libraries(akonadi_message_searchprovider akonadi akonadisearchprovid
 install(TARGETS akonadi_message_searchprovider DESTINATION ${BIN_INSTALL_DIR})
 
 
+########### next target ###############
+
+macro_optional_find_package(Strigi)
+
+if ( STRIGI_FOUND )
+
+include_directories( ${STRIGI_INCLUDE_DIR} )
+
+set( strigiprovider_SRCS
+	strigiprovider.cpp
+)
+
+kde4_automoc(${strigiprovider_SRCS})
+
+kde4_add_executable(akonadi_strigi_searchprovider RUN_UNINSTALLED ${strigiprovider_SRCS})
+
+target_link_libraries(akonadi_strigi_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${STRIGIQTDBUSCLIENT_LIBRARY})
+
+install(TARGETS akonadi_strigi_searchprovider DESTINATION ${BIN_INSTALL_DIR})
+
+endif ( STRIGI_FOUND )
+
 
 ########### install files ###############
 
-install( FILES 
+install( FILES
 	searchprovider.h
 	searchproviderbase.h
 DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi
 )
 
-install( FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders" )
+install( FILES
+  messagesearchprovider.desktop
+  strigisearchprovider.desktop
+DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders" )
 
 
