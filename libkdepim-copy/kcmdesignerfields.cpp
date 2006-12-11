@@ -47,7 +47,6 @@
 #include <kprocess.h>
 #include <krun.h>
 #include <kstandarddirs.h>
-#include <kactivelabel.h>
 #include <kdirwatch.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
