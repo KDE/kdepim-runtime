@@ -75,6 +75,7 @@ NetworkStatus::Status NetworkStatus::status() const
 
 void NetworkStatus::onlineStatusChanged()
 {
+#warning "kde4: verify it"	
   QDBusInterface call( "org.kde.kded", "/", "org.kde.kded" );
   QDBusMessage reply = call.call( "onlineStatus", true );
   if ( reply.type() == QDBusMessage::ReplyMessage ) {

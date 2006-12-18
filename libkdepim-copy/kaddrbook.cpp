@@ -37,6 +37,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   //QString email = KMMessage::getEmailAddr(addr);
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
+#warning "kde4: I don't know when newInstance is defined"  
   QDBusInterface abinterface( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
   if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor
@@ -46,7 +47,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   else
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 
-  QDBusInterface abinterface1( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
+  QDBusInterface abinterface1( "org.kde.kaddressbook", "/KAddressBook", "org.kde.KAddressbook.Core" );
   if( !addresseeList.isEmpty() ) {
     abinterface1.call( "showContactEditor", addresseeList.first().uid() );
   }
