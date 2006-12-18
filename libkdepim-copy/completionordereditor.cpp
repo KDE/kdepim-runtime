@@ -40,7 +40,7 @@
 
 #include <kdebug.h>
 #include <klocale.h>
-#include <kiconloader.h>
+#include <kicon.h>
 #include <k3listview.h>
 #include <kpushbutton.h>
 
@@ -236,13 +236,13 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   KVBox* upDownBox = new KVBox( page );
   mUpButton = new KPushButton( upDownBox );
   mUpButton->setObjectName( "mUpButton" );
-  mUpButton->setIcon( BarIconSet( "up", K3Icon::SizeSmall ) );
+  mUpButton->setIcon( KIcon("up") );
   mUpButton->setEnabled( false ); // b/c no item is selected yet
   mUpButton->setFocusPolicy( Qt::StrongFocus );
 
   mDownButton = new KPushButton( upDownBox );
   mDownButton->setObjectName( "mDownButton" );
-  mDownButton->setIcon( BarIconSet( "down", K3Icon::SizeSmall ) );
+  mDownButton->setIcon( KIcon("down") );
   mDownButton->setEnabled( false ); // b/c no item is selected yet
   mDownButton->setFocusPolicy( Qt::StrongFocus );
 
