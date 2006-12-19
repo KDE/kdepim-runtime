@@ -32,7 +32,7 @@
 #include <kconfig.h>
 #include <ktrader.h>
 #include <klibloader.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <klistbox.h>
 #include <kiconloader.h>
 #include <kstandarddirs.h>
@@ -244,7 +244,7 @@ Core::initConnections()
 void
 Core::createActions()
 {
-  KStdAction::close( this, SLOT(slotClose()), actionCollection() );
+  KStandardAction::close( this, SLOT(slotClose()), actionCollection() );
 
   (void) new KAction( i18n( "&Send" ), "mail_send", Qt::CTRL+Qt::Key_Return,
                       this, SLOT(slotSendNow()), actionCollection(),

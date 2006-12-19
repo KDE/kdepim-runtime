@@ -32,7 +32,7 @@
 #include <kfiledialog.h>
 #include <kinstance.h>
 #include <klocale.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <kprinter.h>
 #include <kfinddialog.h>
 #include <kfind.h>
@@ -98,48 +98,48 @@ DefaultEditor::createActions( KActionCollection *ac )
   //
   // File Actions
   //
-  (void) KStdAction::open( this, SLOT(open()), ac );
-  (void) KStdAction::openRecent( this, SLOT(openURL(const KUrl &)), ac );
-  (void) KStdAction::save( this, SLOT(save()), ac );
-  (void) KStdAction::saveAs( this, SLOT(saveAs()), ac );
+  (void) KStandardAction::open( this, SLOT(open()), ac );
+  (void) KStandardAction::openRecent( this, SLOT(openURL(const KUrl &)), ac );
+  (void) KStandardAction::save( this, SLOT(save()), ac );
+  (void) KStandardAction::saveAs( this, SLOT(saveAs()), ac );
 
   //
   // Edit Actions
   //
-  KAction *actionUndo = KStdAction::undo( m_textEdit, SLOT(undo()), ac );
+  KAction *actionUndo = KStandardAction::undo( m_textEdit, SLOT(undo()), ac );
   actionUndo->setEnabled( false );
   connect( m_textEdit, SIGNAL(undoAvailable(bool)),
            actionUndo, SLOT(setEnabled(bool)) );
 
-  KAction *actionRedo = KStdAction::redo( m_textEdit, SLOT(redo()), ac );
+  KAction *actionRedo = KStandardAction::redo( m_textEdit, SLOT(redo()), ac );
   actionRedo->setEnabled( false );
   connect( m_textEdit, SIGNAL(redoAvailable(bool)),
            actionRedo, SLOT(setEnabled(bool)) );
 
-  KAction *action_cut = KStdAction::cut( m_textEdit, SLOT(cut()), ac );
+  KAction *action_cut = KStandardAction::cut( m_textEdit, SLOT(cut()), ac );
   action_cut->setEnabled( false );
   connect( m_textEdit, SIGNAL(copyAvailable(bool)),
            action_cut, SLOT(setEnabled(bool)) );
 
-  KAction *action_copy = KStdAction::copy( m_textEdit, SLOT(copy()), ac );
+  KAction *action_copy = KStandardAction::copy( m_textEdit, SLOT(copy()), ac );
   action_copy->setEnabled( false );
   connect( m_textEdit, SIGNAL(copyAvailable(bool)),
            action_copy, SLOT(setEnabled(bool)) );
 
-  (void) KStdAction::print( this, SLOT(print()), ac );
+  (void) KStandardAction::print( this, SLOT(print()), ac );
 
-  (void) KStdAction::paste( m_textEdit, SLOT(paste()), ac );
+  (void) KStandardAction::paste( m_textEdit, SLOT(paste()), ac );
   (void) new KAction( i18n( "C&lear" ), 0,
                       m_textEdit, SLOT(removeSelectedText()),
                       ac, "edit_clear" );
 
-  (void) KStdAction::selectAll( m_textEdit, SLOT(selectAll()), ac );
+  (void) KStandardAction::selectAll( m_textEdit, SLOT(selectAll()), ac );
 
   //
   // View Actions
   //
-  (void) KStdAction::zoomIn( m_textEdit, SLOT(zoomIn()), ac );
-  (void) KStdAction::zoomOut( m_textEdit, SLOT(zoomOut()), ac );
+  (void) KStandardAction::zoomIn( m_textEdit, SLOT(zoomIn()), ac );
+  (void) KStandardAction::zoomOut( m_textEdit, SLOT(zoomOut()), ac );
 
   //
   // Character Formatting
@@ -210,7 +210,7 @@ DefaultEditor::createActions( KActionCollection *ac )
   //
   // Tools
   //
-  (void) KStdAction::spelling( this, SLOT(checkSpelling()), ac );
+  (void) KStandardAction::spelling( this, SLOT(checkSpelling()), ac );
 
   //
   // Setup enable/disable
