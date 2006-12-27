@@ -20,13 +20,14 @@
 #define AKONADILIST_H
 
 #include <handler.h>
+#include "akonadiprivate_export.h"
 
 namespace Akonadi {
 
 /**
   Handler for the list command.
  */
-class List : public Handler
+class AKONADIPRIVATE_EXPORT List : public Handler
 {
 public:
     List();
