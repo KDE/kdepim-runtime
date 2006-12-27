@@ -53,7 +53,7 @@
 
 #include <klocale.h>
 #include <kdialog.h>
-#include <kstdguiitem.h>
+#include <KStandardGuiItem>
 #include <kiconloader.h>
 #include <kdebug.h>
 

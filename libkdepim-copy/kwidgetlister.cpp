@@ -72,7 +72,7 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
   QWidget *spacer = new QWidget( mButtonBox );
   mButtonBox->setStretchFactor( spacer, 1 );
 
-  // FIXME: We need a KStdGuiItem::clear here and in other locations to be automagically RTL aware - Martijn
+  // FIXME: We need a KStandardGuiItem::clear here and in other locations to be automagically RTL aware - Martijn
   mBtnClear = new KPushButton( KGuiItem( i18nc( "clear widgets", "Clear" ), "locationbar_erase" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnClear, 0 );
 

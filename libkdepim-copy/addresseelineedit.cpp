@@ -46,7 +46,7 @@
 #include <kdebug.h>
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
-#include <kstdaccel.h>
+#include <kstandardshortcut.h>
 #include <kurl.h>
 #include <klocale.h>
 
@@ -182,12 +182,12 @@ void AddresseeLineEdit::keyPressEvent( QKeyEvent *e )
 {
   bool accept = false;
 
-  if ( KStdAccel::shortcut( KStdAccel::SubstringCompletion ).contains( Qt::Key_E ) ) {
+  if ( KStandardShortcut::shortcut( KStandardShortcut::SubstringCompletion ).contains( Qt::Key_E ) ) {
     //TODO: add LDAP substring lookup, when it becomes available in KPIM::LDAPSearch
     updateSearchString();
     doCompletion( true );
     accept = true;
-  } else if ( KStdAccel::shortcut( KStdAccel::TextCompletion ).contains( Qt::Key_E ) ) {
+  } else if ( KStandardShortcut::shortcut( KStandardShortcut::TextCompletion ).contains( Qt::Key_E ) ) {
     int len = text().length();
 
     if ( len == cursorPosition() ) { // at End?

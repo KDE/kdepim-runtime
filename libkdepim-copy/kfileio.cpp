@@ -14,7 +14,7 @@
 #include <QByteArray>
 
 #include <klocale.h>
-#include <kstdguiitem.h>
+#include <KStandardGuiItem>
 
 #include <QWidget>
 #include <QFile>
@@ -143,7 +143,7 @@ bool kByteArrayToFile( const QByteArray & aBuffer, const QString & aFileName,
 	const int rc = KMessageBox::warningContinueCancel(0,
 	     i18n("Failed to make a backup copy of %1.\nContinue anyway?",
 	      aFileName),
-             i18n("Save to File"), KStdGuiItem::save() );
+             i18n("Save to File"), KStandardGuiItem::save() );
 	if (rc != KMessageBox::Continue) return false;
       }
     }
