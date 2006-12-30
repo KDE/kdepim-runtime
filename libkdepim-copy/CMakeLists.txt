@@ -123,7 +123,7 @@ install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR}/plugins/designe
 install(FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
 install(FILES kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR})
 
-install(FILES interfaces/org.kde.adressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${DBUS_INTERFACES_DIR}) 
+install(FILES interfaces/org.kde.addressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${DBUS_INTERFACES_DIR}) 
 
 
 #original Makefile.am contents follow:
