@@ -27,7 +27,7 @@
 KUrl KPimURLRequesterDlg::getURL( const QString& dir, const QString &label,
                                   QWidget *parent, const QString& caption )
 {
-    KUrlRequesterDlg dlg(dir, label, parent);
+    KUrlRequesterDialog dlg(dir, label, parent);
 	dlg.setObjectName("filedialog");
     dlg.setCaption(caption.isNull() ? i18n("Open") : caption);
 
