@@ -20,7 +20,7 @@
 
 #include <kpimurlrequesterdlg.h>
 #include <krecentdocument.h>
-#include <kurlrequesterdlg.h>
+#include <kurlrequesterdialog.h>
 #include <klocale.h>
 
 // KDE3.4 or KDE4.0: FIXME: Move to kdelibs!
