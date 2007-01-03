@@ -234,7 +234,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
           i18n("Manage which mail folders you want to see in your folder view") + "</p>", page);
 
   QToolButton *clearButton = new QToolButton( page );
-  clearButton->setIcon( KGlobal::iconLoader()->loadIconSet(
+  clearButton->setIcon( kapp->iconLoader()->loadIconSet(
               KApplication::isRightToLeft() ? "clear_left":"locationbar_erase", K3Icon::Small, 0 ) );
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(i18n("S&earch:"), page);

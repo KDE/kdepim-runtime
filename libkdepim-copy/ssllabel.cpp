@@ -68,7 +68,7 @@ void SSLLabel::setState( State state )
   switch( state ) {
   case Encrypted:
     this->setToolTip( i18n("Connection is encrypted") );
-    setPixmap( SmallIcon( "encrypted", KGlobal::instance() ) );
+    setPixmap( SmallIcon( "encrypted" ) );
     show();
     break;
   case Unencrypted:
