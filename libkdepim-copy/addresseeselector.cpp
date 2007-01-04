@@ -298,8 +298,8 @@ void AddresseeSelector::initGUI()
 
   int row = 1;
 
-  QIcon moveSet = kapp->iconLoader()->loadIconSet( "next", K3Icon::Small );
-  QIcon removeSet = kapp->iconLoader()->loadIconSet( "previous", K3Icon::Small );
+  KIcon moveSet( "next", kapp->iconLoader() );
+  KIcon removeSet( "previous", kapp->iconLoader() );
 
   int count = mSelection->fieldCount();
   for ( int i = 0; i < count; ++i, ++row ) {

@@ -654,12 +654,12 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   topL->addItem(btnL);
 
   mRuleUp = new QPushButton( this );
-  mRuleUp->setIcon( BarIcon( "up", K3Icon::SizeSmall ) );
+  mRuleUp->setIcon( KIcon( "up" ) );
   mRuleUp->setToolTip( i18n("Move rule up") );
   btnL->addWidget( mRuleUp );
   connect( mRuleUp, SIGNAL( clicked() ), SLOT( slotRuleUp() ) );
   mRuleDown = new QPushButton( this );
-  mRuleDown->setIcon( BarIcon( "down", K3Icon::SizeSmall ) );
+  mRuleDown->setIcon( KIcon( "down" ) );
   mRuleDown->setToolTip( i18n("Move rule down") );
   btnL->addWidget( mRuleDown );
   connect( mRuleDown, SIGNAL( clicked() ), SLOT( slotRuleDown() ) );
@@ -671,25 +671,25 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
 
   editRule=0L;
   newRule = new QPushButton(this);
-  newRule->setIcon( BarIcon( "filenew", K3Icon::SizeSmall ) );
+  newRule->setIcon( KIcon( "filenew" ) );
   newRule->setToolTip(i18n("New rule")),
   btnL->addWidget(newRule);
   connect(newRule, SIGNAL(clicked()), this, SLOT(slotNewRule()));
   // if we're standalone, we need an additional edit button
   if (standalone) {
     editRule = new QPushButton(this);
-    editRule->setIcon( BarIconSet("edit", K3Icon::SizeSmall) );
+    editRule->setIcon( KIcon("edit") );
     editRule->setToolTip(i18n("Edit rule"));
     btnL->addWidget(editRule);
     connect(editRule,SIGNAL(clicked()),this,SLOT(slotEditRule()));
   }
   delRule = new QPushButton(this);
-  delRule->setIcon( BarIconSet( "editdelete", K3Icon::SizeSmall ) );
+  delRule->setIcon( KIcon( "editdelete" ) );
   delRule->setToolTip(i18n("Remove rule"));
   btnL->addWidget(delRule);
   connect(delRule, SIGNAL(clicked()), this, SLOT(slotDelRule()));
   copyRule = new QPushButton(this);
-  copyRule->setIcon(BarIconSet("editcopy", K3Icon::SizeSmall));
+  copyRule->setIcon(KIcon("editcopy"));
   copyRule->setToolTip(i18n("Copy rule"));
   btnL->addWidget(copyRule);
   connect(copyRule, SIGNAL(clicked()), this, SLOT(slotCopyRule()));
