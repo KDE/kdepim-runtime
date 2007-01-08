@@ -19,7 +19,6 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <kapplication.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
@@ -136,7 +135,7 @@ QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int
   if ( !addressee.photo().data().isNull() )
     return QPixmap::fromImage( addressee.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
   else
-    return kapp->iconLoader()->loadIcon( "personal", K3Icon::Small );
+    return KIconLoader::global()->loadIcon( "personal", K3Icon::Small );
 }
 
 bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int ) const
@@ -163,7 +162,7 @@ QString AddresseeEmailSelection::distributionListText( const KABC::DistributionL
 
 QPixmap AddresseeEmailSelection::distributionListIcon( const KABC::DistributionList* ) const
 {
-  return kapp->iconLoader()->loadIcon( "kdmconfig", K3Icon::Small );
+  return KIconLoader::global()->loadIcon( "kdmconfig", K3Icon::Small );
 }
 
 bool AddresseeEmailSelection::distributionListEnabled( const KABC::DistributionList* ) const

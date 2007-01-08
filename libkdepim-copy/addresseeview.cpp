@@ -30,7 +30,6 @@
 #include <kabc/address.h>
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
-#include <kapplication.h>
 #include <kconfig.h>
 #include <kglobal.h>
 #include <kglobalsettings.h>
@@ -213,7 +212,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) || pic.url().startsWith( "https://" ) ? pic.url() : "http://" + pic.url());
     } else {
-      image = "file:" + kapp->iconLoader()->iconPath( "personal", K3Icon::Desktop );
+      image = "file:" + KIconLoader::global()->iconPath( "personal", K3Icon::Desktop );
     }
   }
 
@@ -545,7 +544,7 @@ void AddresseeView::updateView()
       }
     } else {
       Q3MimeSourceFactory::defaultFactory()->setPixmap( imageURL,
-        kapp->iconLoader()->loadIcon( "personal", K3Icon::Desktop, 128 ) );
+        KIconLoader::global()->loadIcon( "personal", K3Icon::Desktop, 128 ) );
     }
   }
 

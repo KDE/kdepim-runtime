@@ -25,7 +25,6 @@
 #include <QVBoxLayout>
 
 #include <kseparator.h>
-#include <kapplication.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kdebug.h>
@@ -234,7 +233,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
           i18n("Manage which mail folders you want to see in your folder view") + "</p>", page);
 
   QToolButton *clearButton = new QToolButton( page );
-  clearButton->setIcon( kapp->iconLoader()->loadIconSet(
+  clearButton->setIcon( KIconLoader::global()->loadIconSet(
               KApplication::isRightToLeft() ? "clear_left":"locationbar_erase", K3Icon::Small, 0 ) );
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(i18n("S&earch:"), page);

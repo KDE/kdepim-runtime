@@ -29,7 +29,6 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 
-#include <kapplication.h>
 #include <kabc/stdaddressbook.h>
 #include <kcombobox.h>
 #include <kdialog.h>
@@ -298,8 +297,8 @@ void AddresseeSelector::initGUI()
 
   int row = 1;
 
-  KIcon moveSet( "next", kapp->iconLoader() );
-  KIcon removeSet( "previous", kapp->iconLoader() );
+  KIcon moveSet( "next", KIconLoader::global() );
+  KIcon removeSet( "previous", KIconLoader::global() );
 
   int count = mSelection->fieldCount();
   for ( int i = 0; i < count; ++i, ++row ) {
