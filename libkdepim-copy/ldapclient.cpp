@@ -163,7 +163,7 @@ void LdapClient::finishCurrentObject()
       // No explicit mail address found so far?
       // Fine, then we use the address stored in the DN.
       QString sMail;
-      QStringList lMail = mCurrentObject.dn().split(",dc=", QString::SkipEmptyParts);
+      QStringList lMail = mCurrentObject.dn().toString().split(",dc=", QString::SkipEmptyParts);
       const int n = lMail.count();
       if( n ){
         if( lMail.first().toLower().startsWith("cn=") ){
