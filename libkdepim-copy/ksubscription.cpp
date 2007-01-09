@@ -24,6 +24,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+#include <kapplication.h>
 #include <kseparator.h>
 #include <kiconloader.h>
 #include <klocale.h>
@@ -292,7 +293,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
 
   QVBoxLayout *arrL = new QVBoxLayout();
   arrL->setSpacing(KDialog::spacingHint());
-  
+
   listL = new QGridLayout();
   listL->setSpacing(KDialog::spacingHint());
 
