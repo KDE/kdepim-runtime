@@ -24,6 +24,7 @@
 // class. Application specific code should go to a subclass provided by the
 // application using this dialog.
 
+#include "kimportdialog.h"
 #include <q3buttongroup.h>
 #include <QFile>
 #include <QLabel>
@@ -33,14 +34,15 @@
 #include <q3listview.h>
 #include <qradiobutton.h>
 #include <QRegExp>
+#include <QApplication>
 #include <q3table.h>
 #include <qtextstream.h>
 #include <kvbox.h>
 
-#include <kapplication.h>
 #include <kdebug.h>
 #include <kcombobox.h>
 #include <kinputdialog.h>
+#include <kinstance.h>
 #include <klineedit.h>
 #include <klocale.h>
 #include <ksimpleconfig.h>
@@ -49,7 +51,6 @@
 #include <kfiledialog.h>
 #include <kprogressdialog.h>
 
-#include "kimportdialog.h"
 #include "kimportdialog.moc"
 
 KImportColumn::KImportColumn(KImportDialog *dlg,const QString &header, int count)
@@ -346,7 +347,7 @@ void KImportDialog::readFile( int rows )
     {
       progress->setValue(progressValue++);
       if (progressValue % 15 == 0) // try not to constantly repaint
-        kapp->processEvents();
+        qApp->processEvents();
     }
 
     if (x == '\r') inputStream >> x; // eat '\r', to handle DOS/LOSEDOWS files correctly
@@ -580,10 +581,10 @@ void KImportDialog::assignTemplate()
   QStringList templates;
 
   // load all template files
-  QStringList list = KGlobal::dirs()->findAllResources( "data" , QString( kapp->applicationName() ) +
+  const QStringList list = KGlobal::dirs()->findAllResources( "data" , KGlobal::instance()->instanceName() +
       "/csv-templates/*.desktop", true, true );
 
-  for ( QStringList::iterator it = list.begin(); it != list.end(); ++it )
+  for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
   {
     KSimpleConfig config( *it, true );
 
@@ -674,7 +675,7 @@ void KImportDialog::applyConverter()
     mCurrentRow = i;
     progress->setValue(i);
     if (i % 5 == 0)  // try to avoid constantly processing events
-      kapp->processEvents();
+      qApp->processEvents();
 
     convertRow();
   }
@@ -736,7 +737,7 @@ QString KImportDialog::data( int row, int col )
 void KImportDialog::saveTemplate()
 {
   QString fileName = KFileDialog::getSaveFileName(
-                      KStandardDirs::locateLocal( "data", QString( kapp->applicationName() ) + "/csv-templates/" ),
+                      KStandardDirs::locateLocal( "data", KGlobal::instance()->instanceName() + "/csv-templates/" ),
                       "*.desktop", this );
 
   if ( fileName.isEmpty() )

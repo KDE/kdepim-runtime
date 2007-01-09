@@ -36,11 +36,11 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <kurl.h>
-#include <kapplication.h>
 #include <kio/scheduler.h>
 #include <kio/slave.h>
 #include <kio/job.h>
 #include <kio/global.h>
+#include <QApplication>
 
 using namespace KPIM;
 
@@ -166,7 +166,7 @@ void ServerTest::slotSlaveResult(KIO::Slave *aSlave, int error,
   if ( error )
   {
     mJob = 0;
-    KMessageBox::error( kapp->activeWindow(),
+    KMessageBox::error( qApp->activeWindow(),
         KIO::buildErrorString( error, errorText ),
         i18n("Error") );
     emit capabilities( mListNormal, mListSSL );

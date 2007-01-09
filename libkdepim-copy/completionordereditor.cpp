@@ -48,7 +48,6 @@
 #include <kvbox.h>
 #include <q3header.h>
 #include <QToolButton>
-#include <kapplication.h>
 
 /*
 

@@ -29,7 +29,6 @@
 #include <QProgressBar>
 #include <QTextStream>
 #include <QDropEvent>
-#include <kapplication.h>
 #include <klocale.h>
 #include <kprogressdialog.h>
 #include <kurl.h>

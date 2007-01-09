@@ -24,11 +24,9 @@
     without including the source code for Qt in the source distribution.
 */
 
-#include <qnamespace.h>
-#include <QComboBox>
+#include "ktimeedit.h"
 #include <QDateTime>
 #include <QLineEdit>
-//Added by qt3to4:
 #include <QKeyEvent>
 #include <QDebug>
 
@@ -37,7 +35,6 @@
 #include <kdebug.h>
 #include <klocale.h>
 
-#include "ktimeedit.h"
 #include <QValidator>
 #include "ktimeedit.moc"
 

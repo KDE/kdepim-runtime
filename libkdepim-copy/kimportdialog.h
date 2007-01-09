@@ -33,6 +33,7 @@
 
 class Q3Table;
 class Q3ListView;
+class Q3ListViewItem;
 
 class KImportDialog;
 class KComboBox;

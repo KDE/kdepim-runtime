@@ -13,7 +13,6 @@
 #include <kabc/distributionlist.h>
 #endif
 
-#include <kapplication.h>
 #include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
@@ -25,6 +24,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
 
+#include <QApplication>
 #include <QEventLoop>
 #include <QRegExp>
 #include <QList>

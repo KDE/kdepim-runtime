@@ -22,7 +22,6 @@
 
 #include "alarmclient.h"
 
-#include <kapplication.h>
 #include <kdebug.h>
 #include <kstandarddirs.h>
 

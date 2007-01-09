@@ -25,10 +25,10 @@
 #include <kdebug.h>
 #include <kconfigskeleton.h>
 #include <kmessagebox.h>
-#include <kapplication.h>
 #include <kpagedialog.h>
 
 #include <q3listview.h>
+#include <QApplication>
 #include <QLayout>
 #include <QTimer>
 //Added by qt3to4:
@@ -185,7 +185,7 @@ void KConfigWizard::readConfig()
            "configured by the wizard do not run in parallel to the wizard; "
            "otherwise, changes done by the wizard could be lost."),
       i18n("Warning"), KGuiItem(i18n("Run Wizard Now")), "warning_running_instances" );
-  if ( result != KMessageBox::Continue ) kapp->quit();
+  if ( result != KMessageBox::Continue ) qApp->quit();
 
   usrReadConfig();
 }
