@@ -61,8 +61,6 @@ void KDatePickerPopup::buildMenu()
   if ( mItems & Words ) {
     addAction( i18n("&Today"), this, SLOT( slotToday() ) );
     addAction( i18n("To&morrow"), this, SLOT( slotTomorrow() ) );
-    addAction( i18n("&Friday"), this, SLOT( slotFriday() ) );
-    addAction( i18n("&Sunday"), this, SLOT( slotSunday() ) );
     addAction( i18n("Next &Week"), this, SLOT( slotNextWeek() ) );
     addAction( i18n("Next M&onth"), this, SLOT( slotNextMonth() ) );
 
@@ -106,24 +104,6 @@ void KDatePickerPopup::slotToday()
 void KDatePickerPopup::slotTomorrow()
 {
   emit dateChanged( QDate::currentDate().addDays( 1 ) );
-}
-
-void KDatePickerPopup::slotFriday()
-{
-  QDate date = QDate::currentDate();
-  int day = date.dayOfWeek();
-  if ( day < 6 )
-    date = date.addDays( 5 - day );
-  else
-    date = date.addDays( 5 - day + 7 );
-
-  emit dateChanged( date );
-}
-
-void KDatePickerPopup::slotSunday()
-{
-  QDate date = QDate::currentDate();
-  emit dateChanged( date.addDays( 7 - date.dayOfWeek() ) );
 }
 
 void KDatePickerPopup::slotNoDate()

@@ -56,7 +56,7 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
        @param parent The object's parent.
        @param name The object's name.
     */
-    KDatePickerPopup( int items = 2, const QDate &date = QDate::currentDate(),
+    KDatePickerPopup( int items = DatePicker, const QDate &date = QDate::currentDate(),
                       QWidget *parent = 0 );
 
     /**
@@ -89,8 +89,6 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
 
     void slotToday();
     void slotTomorrow();
-    void slotFriday();
-    void slotSunday();
     void slotNextWeek();
     void slotNextMonth();
     void slotNoDate();
