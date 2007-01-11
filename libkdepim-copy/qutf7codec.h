@@ -62,9 +62,13 @@ public:
     bool canEncode( QChar ) const;
     bool canEncode( const QString& ) const;
 
+#ifdef __GNUC__
 #warning Implement convertFromUnicode
+#endif
     QByteArray convertFromUnicode( const QChar * input, int number, ConverterState * state ) const { return QByteArray(); }
+#ifdef __GNUC__
 #warning Implement convertToUnicode
+#endif
     QString convertToUnicode( const char * chars, int len, ConverterState * state ) const { return QString(); }
 
     int heuristicContentMatch( const char* chars, int len ) const;

@@ -77,7 +77,9 @@ void TestLDAPClient::testIntevation()
   kDebug() << k_funcinfo << endl;
   mClient = new LdapClient( 0, this );
 
+#ifdef __GNUC__
 #warning TODO!
+#endif
 #if 0
   mClient->setHost( "ca.intevation.de" );
   mClient->setPort( "389" );

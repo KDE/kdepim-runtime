@@ -37,7 +37,9 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   //QString email = KMMessage::getEmailAddr(addr);
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
+#ifdef __GNUC__
 #warning "kde4: I don't know when newInstance is defined"  
+#endif
   QDBusInterface abinterface( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
   if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor

@@ -49,7 +49,9 @@ void KDatePickerPopup::buildMenu()
   clear();
 
   if ( mItems & DatePicker ) {
+#ifdef __GNUC__
     #warning Port me!
+#endif
     //addAction( mDatePicker );
 
     if ( ( mItems & NoDate ) || ( mItems & Words ) )

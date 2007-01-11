@@ -135,7 +135,9 @@ void MailList::populateMimeData( QMimeData*md, MailTextSource *src )
         break;
       }
       dlg->progressBar()->setValue(++i);
+#ifdef __GNUC__
       #warning Port me!
+#endif
       //kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
     }
     delete dlg;
@@ -167,7 +169,9 @@ QDataStream& operator<< ( QDataStream &s, const MailSummary &d )
     s << d.subject();
     s << d.from();
     s << d.to();
+#ifdef __GNUC__
     #warning Port me!
+#endif
 //     s << d.date();
     return s;
 }
@@ -182,7 +186,9 @@ QDataStream& operator>> ( QDataStream &s, MailSummary &d )
     s >> subject;
     s >> from;
     s >> to;
+#ifdef __GNUC__
     #warning Port me!
+#endif
 //     s >> date;
     d.set( serialNumber, messageId, subject, from, to, date );
     return s;

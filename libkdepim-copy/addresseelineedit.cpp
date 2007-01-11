@@ -898,7 +898,9 @@ int KPIM::AddresseeLineEdit::addCompletionSource( const QString &source )
 
 bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
 {
+#ifdef __GNUC__
 #warning Port me!
+#endif
   // FIXME Temporary avoid the constructor in the IF because of endless loops!
   //if ( obj == completionBox() ) {
   if (  0 && obj == completionBox() ) {

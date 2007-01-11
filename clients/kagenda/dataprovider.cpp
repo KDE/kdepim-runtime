@@ -69,7 +69,9 @@ void DataProvider::addEvent( int year, int month, int day,
 
   Event e;
   
+#ifdef __GNUC__
 #warning What time zone should be used? Default to local time zone.
+#endif
   e.start = KDateTime( QDate( year, month, day ), QTime( startHour, 0 ) );
   e.end = KDateTime( QDate( year, month, day ), QTime( endHour, 0 ) );
   e.title = title;

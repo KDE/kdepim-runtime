@@ -344,7 +344,9 @@ void KFolderTree::drawContentsOffset( QPainter * p, int ox, int oy,
 //  bool oldUpdatesEnabled = updatesEnabled();
 //  setUpdatesEnabled(false);
   K3ListView::drawContentsOffset( p, ox, oy, cx, cy, cw, ch );
+#ifdef __GNUC__
 #warning This will trigger a repaint and thus an infinite loop!
+#endif
 //  setUpdatesEnabled(oldUpdatesEnabled);
 }
 

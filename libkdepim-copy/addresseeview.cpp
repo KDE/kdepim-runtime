@@ -58,12 +58,16 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
     mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
   setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
+#ifdef __GNUC__
 #warning "kde4: porting !!!!!!!!!!! setLinkUnderline( false );\n";
+#endif
   //setLinkUnderline( false );
   setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
   setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
+#ifdef __GNUC__
 #warning "kde4: porting stylesheet\n";
+#endif
 #if 0
   Q3StyleSheet *sheet = styleSheet();
   Q3StyleSheetItem *link = sheet->item( "a" );
@@ -387,7 +391,9 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   QString role( addr.role() );
   QString organization( addr.organization() );
 
+#ifdef __GNUC__
 #warning port me!
+#endif
 #if NOT_PORTED
   if ( proxy && (fieldMask & IMFields) ) {
     if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
@@ -638,7 +644,9 @@ void AddresseeView::faxNumberClicked( const QString &number )
 
 void AddresseeView::imAddressClicked()
 {
+#ifdef __GNUC__
 #warning port me!
+#endif
 //   mKIMProxy->chatWithContact( mAddressee.uid() );
 }
 
