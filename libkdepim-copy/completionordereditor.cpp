@@ -252,6 +252,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
            SLOT( slotSelectionChanged( Q3ListViewItem* ) ) );
   connect( mUpButton, SIGNAL( clicked() ), this, SLOT( slotMoveUp() ) );
   connect( mDownButton, SIGNAL( clicked() ), this, SLOT( slotMoveDown() ) );
+  connect( this, SIGNAL(okClicked()), this, SLOT(slotOk()));
 }
 
 CompletionOrderEditor::~CompletionOrderEditor()
