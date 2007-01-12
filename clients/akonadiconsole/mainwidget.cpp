@@ -23,7 +23,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "agentwidget.h"
-#include "collectionwidget.h"
+#include "browserwidget.h"
 #include "debugwidget.h"
 #include "profilewidget.h"
 
@@ -39,6 +39,6 @@ MainWidget::MainWidget( QWidget *parent )
 
   tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
   tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
-  tabWidget->addTab( new CollectionWidget( tabWidget ), "Collections" );
+  tabWidget->addTab( new BrowserWidget( tabWidget ), "Browser" );
   tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
 }
