@@ -23,8 +23,11 @@
 
 #include "mainwindow.h"
 
+#include <libakonadi/control.h>
+
 MainWindow::MainWindow( QWidget *parent )
   : QMainWindow( parent )
 {
+  Akonadi::Control::start();
   setCentralWidget( new MainWidget( this ) );
 }
