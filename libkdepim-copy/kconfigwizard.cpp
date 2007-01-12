@@ -66,7 +66,8 @@ void KConfigWizard::init()
 {
   connect( this, SIGNAL( currentPageChanged( QWidget * ) ),
            SLOT( slotAboutToShowPage( QWidget * ) ) );
-
+  connect( this, SIGNAL(okClicked()),
+	   SLOT( slotOk()));
   QTimer::singleShot( 0, this, SLOT( readConfig() ) );
 }
 

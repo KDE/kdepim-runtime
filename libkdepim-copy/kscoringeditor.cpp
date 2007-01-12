@@ -936,6 +936,9 @@ KScoringEditor::KScoringEditor(KScoringManager* m, QWidget *parent)
           ruleEditor, SLOT(updateRule()));
   connect(ruleEditor, SIGNAL(shrink()), SLOT(slotShrink()));
   connect(this,SIGNAL(finished()),SLOT(slotFinished()));
+  connect(this,SIGNAL(okClicked()),SLOT(slotOk()));
+  connect(this,SIGNAL(cancelClicked()),SLOT(slotCancel()));
+  connect(this,SIGNAL(applyClicked()),SLOT(slotApply()));
   ruleLister->slotRuleSelected(0);
   resize(550, sizeHint().height());
 }
@@ -1025,6 +1028,7 @@ KScoringEditorWidgetDialog::KScoringEditorWidgetDialog(KScoringManager *m, const
   QBoxLayout *topL = new QVBoxLayout(f);
   ruleEditor = new RuleEditWidget(manager,f);
   connect(ruleEditor, SIGNAL(shrink()), SLOT(slotShrink()));
+  connect(this,SIGNAL(okClicked()),SLOT(slotOk()));
   topL->addWidget(ruleEditor);
   ruleEditor->slotEditRule(ruleName);
   resize(0,0);
