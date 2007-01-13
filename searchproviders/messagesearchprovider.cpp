@@ -20,9 +20,11 @@
 #include "messagesearchprovider.h"
 #include "messagesearchproviderthread.h"
 
-#include <libakonadi/itemfetchjob.h>
+#include <libakonadi/messagefetchjob.h>
 #include <libakonadi/job.h>
 #include <libakonadi/monitor.h>
+
+#include <kmime/kmime_message.h>
 
 #include <kmetadata/kmetadata.h>
 
@@ -57,7 +59,7 @@ SearchProviderThread* Akonadi::MessageSearchProvider::workerThread()
 
 void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)
 {
-  ItemFetchJob *job = new ItemFetchJob( ref, this );
+  MessageFetchJob *job = new MessageFetchJob( ref, this );
   connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemReceived(Akonadi::Job*)) );
   job->start();
 }
@@ -70,15 +72,27 @@ void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
 
 void MessageSearchProvider::itemReceived(Akonadi::Job * job)
 {
-  if ( job->error() || static_cast<ItemFetchJob*>( job )->items().count() == 0 ) {
+  if ( job->error() || static_cast<MessageFetchJob*>( job )->items().count() == 0 ) {
     // TODO: erro handling
     qDebug() << "Job error:" << job->errorMessage();
   } else {
-    Item *item = static_cast<ItemFetchJob*>( job )->items().first();
-    Q_ASSERT( item );
-    Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( item->reference().persistanceID() ) );
-    // TODO
-    r.setProperty( "Subject", "Test" );
+    Message *msg = static_cast<MessageFetchJob*>( job )->messages().first();
+    Q_ASSERT( msg && msg->mime() );
+    Nepomuk::KMetaData::EMail r( QLatin1String("akonadi://") + QString::number( msg->reference().persistanceID() ) );
+    if ( msg->mime()->subject( false ) )
+      r.setProperty( "Subject", msg->mime()->subject()->asUnicodeString() );
+    if ( msg->mime()->date( false ) )
+      r.setProperty( "Date", msg->mime()->date()->dateTime().dateTime() );
+    if ( msg->mime()->from( false ) )
+      r.setProperty( "From", msg->mime()->from()->prettyAddresses() );
+    if ( msg->mime()->to( false ) )
+      r.setProperty( "To", msg->mime()->to()->prettyAddresses() );
+    if ( msg->mime()->cc( false ) )
+      r.setProperty( "Cc", msg->mime()->cc()->prettyAddresses() );
+    if ( msg->mime()->bcc( false ) )
+      r.setProperty( "Bcc", msg->mime()->bcc()->prettyAddresses() );
+    if ( msg->mime()->messageID( false ) )
+      r.setProperty( "Message-Id", msg->mime()->messageID()->asUnicodeString() );
   }
   job->deleteLater();
 }
