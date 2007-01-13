@@ -24,14 +24,22 @@
 
 namespace Akonadi {
 
+class DataReference;
+class Job;
+
 class MessageSearchProvider : public SearchProviderBase
 {
+  Q_OBJECT
   public:
     MessageSearchProvider( const QString &id );
     virtual ~MessageSearchProvider() {};
     virtual QList<QByteArray> supportedMimeTypes() const;
     virtual SearchProviderThread* workerThread();
 
+  protected slots:
+    void itemChanged(const Akonadi::DataReference &ref);
+    void itemRemoved(const Akonadi::DataReference &ref);
+    void itemReceived( Akonadi::Job *job );
 };
 
 }

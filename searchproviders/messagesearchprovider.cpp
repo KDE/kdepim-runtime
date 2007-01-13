@@ -19,6 +19,13 @@
 
 #include "messagesearchprovider.h"
 #include "messagesearchproviderthread.h"
+
+#include <libakonadi/itemfetchjob.h>
+#include <libakonadi/job.h>
+#include <libakonadi/monitor.h>
+
+#include <kmetadata/kmetadata.h>
+
 #include <QtCore/QCoreApplication>
 
 using namespace Akonadi;
@@ -26,6 +33,14 @@ using namespace Akonadi;
 Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   SearchProviderBase( id )
 {
+  Monitor* monitor = new Monitor( this );
+  monitor->monitorMimeType( "message/rfc822" );
+  monitor->monitorMimeType( "message/news" );
+  connect( monitor, SIGNAL(itemAdded(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
+  connect( monitor, SIGNAL(itemChanged(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
+  connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
+
+  Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
 }
 
 QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
@@ -40,6 +55,33 @@ SearchProviderThread* Akonadi::MessageSearchProvider::workerThread()
   return new MessageSearchProviderThread( this );
 }
 
+void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)
+{
+  ItemFetchJob *job = new ItemFetchJob( ref, this );
+  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemReceived(Akonadi::Job*)) );
+  job->start();
+}
+
+void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
+{
+  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( ref.persistanceID() ) );
+  r.remove();
+}
+
+void MessageSearchProvider::itemReceived(Akonadi::Job * job)
+{
+  if ( job->error() || static_cast<ItemFetchJob*>( job )->items().count() == 0 ) {
+    // TODO: erro handling
+    qDebug() << "Job error:" << job->errorMessage();
+  } else {
+    Item *item = static_cast<ItemFetchJob*>( job )->items().first();
+    Q_ASSERT( item );
+    Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( item->reference().persistanceID() ) );
+    // TODO
+    r.setProperty( "Subject", "Test" );
+  }
+  job->deleteLater();
+}
 
 int main( int argc, char **argv )
 {
@@ -47,3 +89,5 @@ int main( int argc, char **argv )
   Akonadi::SearchProviderBase::init<Akonadi::MessageSearchProvider>( argc, argv, QLatin1String("akonadi_message_searchprovider") );
   return app.exec();
 }
+
+#include "messagesearchprovider.moc"
