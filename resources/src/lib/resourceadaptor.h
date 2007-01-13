@@ -102,7 +102,7 @@ public Q_SLOTS: // METHODS
     uint progress();
     QString progressMessage();
     void quit();
-    bool requestItemDelivery(const QString &uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg);
+    bool requestItemDelivery(int uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg);
     bool setConfiguration(const QString &data);
     Q_NOREPLY void setName(const QString &name);
     int status();

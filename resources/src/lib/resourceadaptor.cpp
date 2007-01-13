@@ -74,7 +74,7 @@ void ResourceAdaptor::quit()
     parent()->quit();
 }
 
-bool ResourceAdaptor::requestItemDelivery(const QString &uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg)
+bool ResourceAdaptor::requestItemDelivery(int uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg)
 {
     // handle method call org.kde.Akonadi.Resource.requestItemDelivery
     return parent()->requestItemDelivery(uid, remotedId, collection, type, msg);

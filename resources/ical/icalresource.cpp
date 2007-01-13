@@ -56,8 +56,9 @@ void ICalResource::setParameters(const QByteArray &path, const QByteArray &filen
 {
 }
 
-bool ICalResource::requestItemDelivery( const QString & uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg )
+bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg )
 {
+  qDebug() << "ICalResource::requestItemDelivery()";
   Incidence *incidence = mCalendar->incidence( remoteId );
   if ( !incidence ) {
     error( QString("Incidence with uid '%1' not found!").arg( remoteId ) );
@@ -66,7 +67,7 @@ bool ICalResource::requestItemDelivery( const QString & uid, const QString &remo
     ICalFormat format;
     QByteArray data = format.toString( incidence ).toUtf8();
 
-    ItemStoreJob *job = new ItemStoreJob( DataReference( uid.toUInt(), remoteId ), queue() );
+    ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
     job->setData( data );
     return deliverItem( job, msg );
   }
