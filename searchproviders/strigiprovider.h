@@ -38,7 +38,6 @@ class StrigiProvider : public SearchProviderBase
   public:
     StrigiProvider( const QString &id );
     ~StrigiProvider();
-    virtual SearchProviderThread* workerThread() { Q_ASSERT( false ); return 0; }
     virtual QList<QByteArray> supportedMimeTypes() const { QList<QByteArray> l; l << "all/all"; return l; }
 
   protected slots:

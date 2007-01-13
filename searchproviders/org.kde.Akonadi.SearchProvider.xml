@@ -1,23 +1,6 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.kde.Akonadi.SearchProvider">
-    <method name="addSearch">
-      <arg type="b" direction="out"/>
-      <arg name="targetCollection" type="s" direction="in"/>
-      <arg name="searchQuery" type="s" direction="in"/>
-    </method>
-    <method name="removeSearch">
-      <arg type="b" direction="out"/>
-      <arg name="collection" type="s" direction="in"/>
-    </method>
-    <method name="fetchResponse">
-      <arg type="as" direction="out"/>
-      <arg name="uids" type="as" direction="in"/>
-<!--       FIXME type ai doesn't work with qdbus binding -->
-<!--       <arg name="uids" type="ai" direction="in"/> -->
-<!--       <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/> -->
-      <arg name="field" type="s" direction="in"/>
-    </method>
     <method name="quit"/>
   </interface>
 </node>

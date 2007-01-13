@@ -44,36 +44,6 @@ class SearchProvider : public QObject
     virtual QList<QByteArray> supportedMimeTypes() const = 0;
 
     /**
-     * Searches for all items that match the search query and
-     * stores them in the target collection.
-     *
-     * The search results are kept up-to-date until the search is removed
-     * with removeSearch() again.
-     *
-     * @param targetCollection The collection the search results are stored in.
-     * @param searchQuery The search query.
-     * @param msg DBus message needed for delayed replys.
-     */
-    virtual bool addSearch( const QString &targetCollection, const QString &searchQuery, const QDBusMessage &msg ) = 0;
-
-    /**
-     * Stop updating a persistent search specified by the given collection.
-     *
-     * @param collection The collection representing the corresponding persistent search.
-     */
-    virtual bool removeSearch( const QString &collection ) = 0;
-
-    /**
-     * Generates a fetch response for the given list of item ids.
-     *
-     * @param uids List of item ids
-     * @param field Fetch response field.
-     * @param msg DBus message needed for delayed replys.
-     */
-    // ### FIXME: QList<int> not yet supported by the qdbus bindings!
-    virtual QStringList fetchResponse( const QList<QString> uids, const QString &field, const QDBusMessage &msg ) = 0;
-
-    /**
      * Terminate the search provider.
     */
     virtual void quit() = 0;

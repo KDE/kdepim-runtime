@@ -18,7 +18,6 @@
 */
 
 #include "messagesearchprovider.h"
-#include "messagesearchproviderthread.h"
 
 #include <libakonadi/messagefetchjob.h>
 #include <libakonadi/job.h>
@@ -50,11 +49,6 @@ QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
   QList<QByteArray> mimeTypes;
   mimeTypes << "message/rfc822" << "message/news";
   return mimeTypes;
-}
-
-SearchProviderThread* Akonadi::MessageSearchProvider::workerThread()
-{
-  return new MessageSearchProviderThread( this );
 }
 
 void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)

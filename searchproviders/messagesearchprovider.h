@@ -34,7 +34,6 @@ class MessageSearchProvider : public SearchProviderBase
     MessageSearchProvider( const QString &id );
     virtual ~MessageSearchProvider() {};
     virtual QList<QByteArray> supportedMimeTypes() const;
-    virtual SearchProviderThread* workerThread();
 
   protected slots:
     void itemChanged(const Akonadi::DataReference &ref);

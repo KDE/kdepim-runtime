@@ -9,12 +9,10 @@ include_directories(
 ########### next target ###############
 
 set( akonadisearchprovider_LIB_SRC
-	searchprovideradaptor.cpp
 	searchproviderbase.cpp
-	searchproviderthread.cpp
 )
 
-#qt4_add_dbus_adaptor( akonadisearchprovider_LIB_SRC org.kde.Akonadi.SearchProvider.xml searchproviderbase.h Akonadi::SearchProvider )
+qt4_add_dbus_adaptor( akonadisearchprovider_LIB_SRC org.kde.Akonadi.SearchProvider.xml searchproviderbase.h Akonadi::SearchProvider )
 qt4_add_dbus_interfaces( akonadisearchprovider_LIB_SRC ../server/interfaces/org.kde.Akonadi.Tracer.xml )
 
 qt4_wrap_cpp(akonadisearchprovider_LIB_SRC searchprovider.h)
@@ -38,7 +36,6 @@ if ( KMetaData_FOUND )
 
 set( messagesearchprovider_SRCS
 	messagesearchprovider.cpp
-	messagesearchproviderthread.cpp
 )
 
 kde4_automoc(${messagesearchprovider_SRCS})
