@@ -33,6 +33,7 @@
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <klocale.h>
+#include <kdebug.h>
 
 #include "kdateedit.h"
 
@@ -132,7 +133,7 @@ bool KDateEdit::isReadOnly() const
   return mReadOnly;
 }
 
-void KDateEdit::popup()
+void KDateEdit::showPopup()
 {
   if ( mReadOnly )
     return;

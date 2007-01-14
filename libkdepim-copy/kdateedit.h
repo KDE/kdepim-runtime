@@ -79,7 +79,7 @@ class KDEPIM_EXPORT KDateEdit : public QComboBox
      */
     bool isReadOnly() const;
 
-    virtual void popup();
+    virtual void showPopup();
 
   signals:
     /**
