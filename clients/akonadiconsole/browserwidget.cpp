@@ -68,7 +68,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
 {
-  QString path = mCollectionModel->pathForIndex( mCollectionView->sourceIndex( index ) );
+  QString path = mCollectionView->model()->data( index, CollectionModel::PathRole ).toString();
   if ( path.isNull() )
     return;
   mItemModel->setPath( path );
