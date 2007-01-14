@@ -45,6 +45,7 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
 
   mQueue = new JobQueue( this );
+  monitor->ignoreSession( mQueue );
 }
 
 QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const

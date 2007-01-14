@@ -40,6 +40,7 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
   mQueue = new JobQueue( this );
+  mMonitor->ignoreSession( mQueue );
 }
 
 Akonadi::StrigiProvider::~ StrigiProvider()
