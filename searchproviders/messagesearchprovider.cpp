@@ -21,6 +21,7 @@
 
 #include <libakonadi/messagefetchjob.h>
 #include <libakonadi/job.h>
+#include <libakonadi/jobqueue.h>
 #include <libakonadi/monitor.h>
 
 #include <kmime/kmime_message.h>
@@ -42,6 +43,8 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
   Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
+
+  mQueue = new JobQueue( this );
 }
 
 QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
@@ -53,9 +56,8 @@ QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
 
 void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)
 {
-  MessageFetchJob *job = new MessageFetchJob( ref, this );
+  MessageFetchJob *job = new MessageFetchJob( ref, mQueue );
   connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemReceived(Akonadi::Job*)) );
-  job->start();
 }
 
 void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)

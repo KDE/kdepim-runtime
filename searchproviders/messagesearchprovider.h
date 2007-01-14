@@ -26,6 +26,7 @@ namespace Akonadi {
 
 class DataReference;
 class Job;
+class JobQueue;
 
 class MessageSearchProvider : public SearchProviderBase
 {
@@ -39,6 +40,9 @@ class MessageSearchProvider : public SearchProviderBase
     void itemChanged(const Akonadi::DataReference &ref);
     void itemRemoved(const Akonadi::DataReference &ref);
     void itemReceived( Akonadi::Job *job );
+
+  private:
+    JobQueue *mQueue;
 };
 
 }

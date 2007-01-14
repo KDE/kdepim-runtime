@@ -26,6 +26,7 @@
 
 namespace Akonadi {
 
+class JobQueue;
 class Monitor;
 
 /**
@@ -47,6 +48,7 @@ class StrigiProvider : public SearchProviderBase
 
   private:
     Monitor *mMonitor;
+    JobQueue *mQueue;
     StrigiClient mStrigi;
 };
 
