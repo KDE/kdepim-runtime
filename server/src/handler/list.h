@@ -24,6 +24,8 @@
 
 namespace Akonadi {
 
+class CollectionList;
+
 /**
   Handler for the list command.
  */
@@ -35,6 +37,10 @@ public:
     ~List();
 
     bool handleLine(const QByteArray& line);
+
+private:
+    virtual CollectionList listCollections( const QString& prefix,
+                                            const QString& mailboxPattern );
 
 };
 
