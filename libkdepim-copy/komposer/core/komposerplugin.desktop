@@ -3,6 +3,7 @@ Type=ServiceType
 X-KDE-ServiceType=Komposer/Plugin
 X-KDE-Derived=KPluginInfo
 Name=Komposer Plugin
+Name[el]=Πρόσθετο του Komposer
 Name[fr]=Module de Komposer
 Name[x-test]=xxKomposer Pluginxx
 
