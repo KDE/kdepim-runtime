@@ -2,6 +2,7 @@
 include_directories(
 	${CMAKE_SOURCE_DIR}/
 	${CMAKE_SOURCE_DIR}/akonadi
+	${CMAKE_BINARY_DIR}/akonadi
 	${CMAKE_SOURCE_DIR}/akonadi/libakonadi
 	${CMAKE_SOURCE_DIR}/akonadi/resources/include
 )
