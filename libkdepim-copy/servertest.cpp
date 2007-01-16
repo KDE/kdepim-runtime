@@ -28,8 +28,6 @@
     your version.
 */
 
-#include <config.h>
-
 #include "servertest.h"
 
 #include <klocale.h>

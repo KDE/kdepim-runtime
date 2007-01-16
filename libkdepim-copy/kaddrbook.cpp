@@ -3,7 +3,7 @@
 // Author: Stefan Taferner <taferner@kde.org>
 // This code is under GPL
 
-#include <config.h>
+#include <config.h> // KDEPIM_NEW_DISTRLISTS
 
 #include "kaddrbook.h"
 
@@ -30,6 +30,7 @@
 #include <QList>
 
 #include <unistd.h>
+#include <kdefakes.h> // usleep
 #include <ktoolinvocation.h>
 
 //-----------------------------------------------------------------------------
@@ -40,6 +41,8 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
 #ifdef __GNUC__
 #warning "kde4: I don't know when newInstance is defined"  
 #endif
+  // DF: it comes from KUniqueApplication
+
   QDBusInterface abinterface( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
   if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor

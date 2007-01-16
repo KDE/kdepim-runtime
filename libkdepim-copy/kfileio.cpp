@@ -2,9 +2,7 @@
 // Author: Stefan Taferner <taferner@kde.org>
 // License: GPL
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "kfileio.h"
 
 #include <kmessagebox.h>
 #include <kdebug.h>

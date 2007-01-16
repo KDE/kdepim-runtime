@@ -29,7 +29,7 @@
 #include "completionordereditor.h"
 #include "ldapclient.h"
 
-#include <config.h>
+#include <config.h> // KDEPIM_NEW_DISTRLISTS
 
 #ifdef KDEPIM_NEW_DISTRLISTS
 #include "distributionlist.h"
