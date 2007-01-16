@@ -1,4 +1,6 @@
-configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix.h )
+configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix.h)
+check_include_files(execinfo.h HAVE_EXECINFO_H)
+configure_file(config-akonadi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-akonadi.h)
 
 if (XSLTPROC_EXECUTABLE)
 add_subdirectory(server)
