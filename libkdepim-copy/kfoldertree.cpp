@@ -69,14 +69,16 @@ int KFolderTreeItem::typeSortingKey() const
     return 4;
   case Drafts:
     return 5;
-  case Calendar:
+  case Templates:
     return 6;
-  case Contacts:
+  case Calendar:
     return 7;
-  case Notes:
+  case Contacts:
     return 8;
-  case Tasks:
+  case Notes:
     return 9;
+  case Tasks:
+    return 10;
   default:
     return 42;
   }
