@@ -34,20 +34,28 @@
 class KUrl;
 class QMimeData;
 
+namespace KPIM {
+
 /**
+ * @defgroup maildnd Mail drag and drop
+ *
  * KDEPIM classes for drag and drop of mails
  *
+ * \code
  * // Code example for drag and drop enabled widget
  *
  * void SomeWidget::contentsDropEvent(QDropEvent *e)
  * {
  *    if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
- *	MailList mailList = KPIM::MailList::fromMimeData( e->mimeData() );
+ *      MailList mailList = KPIM::MailList::fromMimeData( e->mimeData() );
  *      ...
+ * \endcode
+ * @{
  **/
 
-namespace KPIM {
-
+/**
+  Represents a single dragged mail.
+*/
 class KDEPIM_EXPORT MailSummary
 {
 public:
@@ -56,25 +64,25 @@ public:
     MailSummary() {}
     ~MailSummary() {}
 
-    /*** Set fields for this mail summary  ***/
+    /** Set fields for this mail summary  */
     void set( quint32, const QString&, const QString&, const QString&, const QString&, time_t );
 
-    /*** KMail unique identification number ***/
+    /** KMail unique identification number */
     quint32 serialNumber() const;
 
-    /*** MD5 checksum of message identification string ***/
+    /** MD5 checksum of message identification string */
     QString messageId() const;
 
-    /*** Subject of the message including prefixes ***/
+    /** Subject of the message including prefixes */
     QString subject() const;
 
-    /*** Simplified from address ***/
+    /** Simplified from address */
     QString from() const;
 
-    /** Simplified to address ***/
+    /** Simplified to address */
     QString to() const;
 
-    /*** Date the message was sent ***/
+    /** Date the message was sent */
     time_t date() const;
 
     /** returns kmail:&lt;serial number&gt;/&lt;message id&gt; style uri */
@@ -86,7 +94,9 @@ private:
     time_t mDate;
 };
 
-// Object for the drag object to call-back for message fulltext
+/**
+  Object for the drag object to call-back for message fulltext.
+*/
 class KDEPIM_EXPORT MailTextSource {
 public:
     MailTextSource() {}
@@ -95,7 +105,9 @@ public:
     virtual QByteArray text(quint32 serialNumber) const = 0;
 };
 
-// List of mail summaries
+/**
+   List of mail summaries.
+*/
 class KDEPIM_EXPORT MailList : public QList<MailSummary>
 {
   public:
@@ -106,6 +118,8 @@ class KDEPIM_EXPORT MailList : public QList<MailSummary>
     static MailList decode( const QByteArray& payload );
     void populateMimeData( QMimeData*md, MailTextSource *src = 0 );
 };
+
+/** @} */
 
 }
 #endif /*maillistdrag_h*/
