@@ -50,7 +50,6 @@ set(kdepim_LIB_SRCS
    htmldiffalgodisplay.cpp 
    broadcaststatus.cpp 
    kresourceprefs.cpp 
-   kabcresourcecached.cpp 
    kxface.cpp 
    kaccount.cpp 
    kaddrbook.cpp 
