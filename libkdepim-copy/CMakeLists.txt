@@ -69,7 +69,6 @@ set(kdepim_LIB_SRCS
    embeddedurlpage.cpp 
    kincidencechooser.cpp 
    groupwarejob.cpp 
-   krsqueezedtextlabel.cpp 
    csshelper.cpp 
    distributionlist.cpp 
    kpimurlrequesterdlg.cpp 
