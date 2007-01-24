@@ -42,7 +42,7 @@ kde4_automoc(${messagesearchprovider_SRCS})
 
 kde4_add_executable(akonadi_message_searchprovider RUN_UNINSTALLED ${messagesearchprovider_SRCS})
 
-target_link_libraries(akonadi_message_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} kmime ${KMETADATA_LIBRARIES})
+target_link_libraries(akonadi_message_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${KDE4_KMIME_LIBS} ${KMETADATA_LIBRARIES})
 
 install(TARGETS akonadi_message_searchprovider DESTINATION ${BIN_INSTALL_DIR})
 install(FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders")
