@@ -255,19 +255,15 @@ void AddresseeLineEdit::insert( const QString &t )
   }
 
   QString contents = text();
+  int start_sel = 0;
   int pos = cursorPosition( );
-  int start_sel=selectionStart();
-  if ( start_sel>=0 ) {
-    QString selection = selectedText();
-    int end_sel = start_sel + selection.length();
-//   if ( getSelection( &start_sel, &end_sel ) ) {
 
+  if ( hasSelectedText() ) {
     // Cut away the selection.
-    if ( pos >= end_sel )
-      pos -= selection.length();
-    else if ( pos > start_sel )
-      pos = start_sel;
-    contents = contents.left( start_sel ) + contents.right( end_sel );
+    start_sel = selectionStart();
+    pos = start_sel;
+    contents = contents.left( start_sel ) +
+               contents.mid( start_sel + selectedText().length() );
   }
 
   int eot = contents.length();
@@ -431,7 +427,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
       setCompletionMode( completionMode() );
 
       if ( !m_searchString.isEmpty() ) {
-        
+
         //if only our \" is left, remove it since user has not typed it either
         if ( m_searchExtended && m_searchString == "\"" ){
           m_searchExtended = false;
@@ -446,7 +442,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
           if ( match != m_searchString ) {
             QString adds = m_previousAddresses + match;
             setCompletedText( adds );
-          } 
+          }
         } else {
           if ( !m_searchString.startsWith( "\"" ) ) {
             //try with quoted text, if user has not type one already
@@ -572,7 +568,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 #ifdef KDEPIM_NEW_DISTRLISTS
   if ( KPIM::DistributionList::isDistributionList( addr ) ) {
     //kDebug(5300) << "AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() << "\" weight=" << weight << endl;
- 
+
     //for CompletionAuto
     addCompletionItem( addr.formattedName(), weight, source );
 
@@ -587,7 +583,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
   for ( it = emails.begin(); it != emails.end(); ++it ) {
-    //TODO: highlight preferredEmail 
+    //TODO: highlight preferredEmail
     const QString email( (*it) );
     const QString givenName = addr.givenName();
     const QString familyName= addr.familyName();
@@ -617,7 +613,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
       const QString byDomain   =  "\"" + domain + " " + familyName + " " + givenName + "\" <" + email + ">";
       addCompletionItem( byDomain, weight, source );
     }
-    
+
     //for CompletionShell, CompletionPopup
     QStringList keyWords;
     const QString realName  = addr.realName();
@@ -761,7 +757,7 @@ void AddresseeLineEdit::slotLDAPSearchData( const KPIM::LdapResultList& adrs )
   }
 
   if ( (hasFocus() || completionBox()->hasFocus() )
-       && completionMode() != KGlobalSettings::CompletionNone 
+       && completionMode() != KGlobalSettings::CompletionNone
        && completionMode() != KGlobalSettings::CompletionShell) {
     setText( m_previousAddresses + m_searchString );
     doCompletion( m_lastSearchMode );
@@ -1001,7 +997,7 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
   QStringList items = fullSearch ?
     s_completion->allMatches( m_searchString )
     : s_completion->substringCompletion( m_searchString );
- 
+
   int lastSourceIndex = -1;
   unsigned int i = 0;
   QMap<int, QStringList> sections;
