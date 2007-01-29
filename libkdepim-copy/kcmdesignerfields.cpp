@@ -133,7 +133,7 @@ class PageItem : public Q3CheckListItem
 }
 
 
-KCMDesignerFields::KCMDesignerFields( KInstance *instance, QWidget *parent, const QStringList &args )
+KCMDesignerFields::KCMDesignerFields( const KComponentData &instance, QWidget *parent, const QStringList &args )
   : KCModule( instance, parent, args )
 {
   QTimer::singleShot( 0, this, SLOT( delayedInit() ) );

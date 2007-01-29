@@ -41,6 +41,7 @@
 #include <QLayout>
 //Added by qt3to4:
 #include <QVBoxLayout>
+#include <kconfiggroup.h>
 
 using namespace KRecentAddress;
 
@@ -58,7 +59,7 @@ RecentAddresses * RecentAddresses::self( KConfig *config)
 RecentAddresses::RecentAddresses(KConfig * config)
 {
   if ( !config )
-    load( KGlobal::config() );
+    load( KGlobal::config().data() );
   else
     load( config );
 }

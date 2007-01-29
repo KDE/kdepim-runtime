@@ -42,7 +42,7 @@
 #include <kdebug.h>
 #include <kcombobox.h>
 #include <kinputdialog.h>
-#include <kinstance.h>
+#include <kcomponentdata.h>
 #include <klineedit.h>
 #include <klocale.h>
 #include <ksimpleconfig.h>
@@ -581,7 +581,7 @@ void KImportDialog::assignTemplate()
   QStringList templates;
 
   // load all template files
-  const QStringList list = KGlobal::dirs()->findAllResources( "data" , KGlobal::instance()->instanceName() +
+  const QStringList list = KGlobal::dirs()->findAllResources( "data" , KGlobal::mainComponent().componentName() +
       "/csv-templates/*.desktop", true, true );
 
   for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
@@ -737,7 +737,7 @@ QString KImportDialog::data( int row, int col )
 void KImportDialog::saveTemplate()
 {
   QString fileName = KFileDialog::getSaveFileName(
-                      KStandardDirs::locateLocal( "data", KGlobal::instance()->instanceName() + "/csv-templates/" ),
+                      KStandardDirs::locateLocal( "data", KGlobal::mainComponent().componentName() + "/csv-templates/" ),
                       "*.desktop", this );
 
   if ( fileName.isEmpty() )

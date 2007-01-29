@@ -41,7 +41,7 @@ class QLabel;
 class QSpinBox;
 class QStringList;
 class Q3ButtonGroup;
-class KInstance;
+class KComponentData;
 class KTimeEdit;
 class KDateEdit;
 class KUrlRequester;
@@ -727,7 +727,7 @@ class KDEPIM_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
 {
     Q_OBJECT
   public:
-    KPrefsModule( KConfigSkeleton *, KInstance *instance, QWidget *parent=0, const QStringList &args=QStringList() );
+    KPrefsModule( KConfigSkeleton *, const KComponentData &instance, QWidget *parent=0, const QStringList &args=QStringList() );
 
     virtual void addWid( KPrefsWid * );
 

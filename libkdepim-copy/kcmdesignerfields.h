@@ -27,7 +27,7 @@
 //Added by qt3to4:
 #include <QLabel>
 
-class KInstance;
+class KComponentData;
 class K3ListView;
 
 class QLabel;
@@ -42,7 +42,7 @@ class KDEPIM_EXPORT KCMDesignerFields : public KCModule
   Q_OBJECT
 
   public:
-    KCMDesignerFields( KInstance *instance, QWidget *parent=0, const QStringList &args=QStringList() );
+    KCMDesignerFields( const KComponentData &instance, QWidget *parent=0, const QStringList &args=QStringList() );
 
     virtual void load();
     virtual void save();

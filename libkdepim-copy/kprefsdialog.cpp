@@ -815,7 +815,7 @@ void KPrefsDialog::slotDefault()
 }
 
 
-KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, KInstance *instance, QWidget *parent, const QStringList &args)
+KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, const KComponentData &instance, QWidget *parent, const QStringList &args)
   : KCModule( instance, parent, args ),
     KPrefsWidManager( prefs )
 {

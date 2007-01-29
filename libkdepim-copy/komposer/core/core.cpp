@@ -58,7 +58,7 @@ Core::Core( QWidget *parent, const char *name )
   initWidgets();
   initCore();
   initConnections();
-  setInstance( new KInstance( "komposer" ) );
+  setComponentData( KComponentData( "komposer" ) );
 
   createActions();
   setXMLFile( "komposerui.rc" );

@@ -78,7 +78,7 @@ PluginManager::PluginManager( QObject *parent )
   kapp->ref();
   d->shutdownMode = Private::StartingUp;
 
-  KSettings::Dispatcher::self()->registerInstance( KGlobal::instance(),
+  KSettings::Dispatcher::self()->registerInstance( KGlobal::mainComponent(),
                                                    this, SLOT( loadAllPlugins() ) );
 
   d->plugins = KPluginInfo::fromServices(

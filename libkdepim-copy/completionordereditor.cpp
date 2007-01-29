@@ -43,6 +43,7 @@
 #include <kicon.h>
 #include <k3listview.h>
 #include <kpushbutton.h>
+#include <kconfiggroup.h>
 
 #include <khbox.h>
 #include <kvbox.h>

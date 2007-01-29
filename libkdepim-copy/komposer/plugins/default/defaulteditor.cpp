@@ -30,7 +30,7 @@
 #include <kaction.h>
 #include <kcolordialog.h>
 #include <kfiledialog.h>
-#include <kinstance.h>
+#include <kcomponentdata.h>
 #include <klocale.h>
 #include <kstandardaction.h>
 #include <kprinter.h>
@@ -49,7 +49,7 @@ K_EXPORT_COMPONENT_FACTORY( libkomposer_defaulteditor,
 DefaultEditor::DefaultEditor( QObject *parent, const char *name, const QStringList &args )
   : Editor( parent, name, args ), m_textEdit( 0 )
 {
-  setInstance( DefaultEditorFactory::instance() );
+  setComponentData( DefaultEditorFactory::componentData() );
 
   m_textEdit = new QTextEdit( 0 );
 

@@ -22,6 +22,7 @@
 #include <kconfig.h>
 #include <kglobal.h>
 #include <kstaticdeleter.h>
+#include <kconfiggroup.h>
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
