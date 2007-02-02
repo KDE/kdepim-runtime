@@ -109,7 +109,7 @@ Keep these considerations in mind when you read the following design concept.
 In the diagram below you can see a rough concept of structure of Akonadi:
 
 \image latex doc/pics/concept.eps "Akonadi Design Schema" height=5cm
-\image html doc/pics/concept.eps "Akonadi Design Schema"
+\image html doc/pics/concept.png "Akonadi Design Schema"
 
 The main components are:
 \li \ref akonadi_design_storage
@@ -183,7 +183,7 @@ libakonadi, and do the data conversion from the storage format to a Qt/KDE one.
 
 The sequence diagrams below show how general communication is done:
 
-\image html doc/pics/akonadi_client_search.eps "Akonadi Communication Schema"
+\image html doc/pics/akonadi_client_search.png "Akonadi Communication Schema"
 \image latex doc/pics/akonadi_client_search.eps "Akonadi Communication Schema" height=5cm
 
 The item search request is probably the call which is used most often
@@ -196,10 +196,10 @@ the mime type to retrieve the list of matching uids. The SearchProvider already 
 a list of all available items of this mime type in its memory, so it
 can search fast and use indices for optimization.
 
-\image html doc/pics/akonadi_profile_handling.eps "Akonadi Profile Handling"
+\image html doc/pics/akonadi_profile_handling.png "Akonadi Profile Handling"
 \image latex doc/pics/akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
 
-\image html doc/pics/akonadi_agent_handling.eps "Akonadi Agent Handling"
+\image html doc/pics/akonadi_agent_handling.png "Akonadi Agent Handling"
 \image latex doc/pics/akonadi_agent_handling.eps "Akonadi Agent Handling" height=4cm
 
 
