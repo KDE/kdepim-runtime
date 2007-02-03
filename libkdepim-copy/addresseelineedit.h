@@ -93,7 +93,18 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     /** Reimplemented for smart insertion of dragged email addresses. */
     virtual void dropEvent( QDropEvent *e );
     void doCompletion( bool ctrlT );
-    virtual QMenu *createStandardContextMenu();
+
+    /**
+     * Reimplemented for subclass access to menu
+     */
+    QMenu *createStandardContextMenu();
+
+    /**
+     * Re-implemented for internal reasons.  API not affected.
+     *
+     * See QLineEdit::contextMenuEvent().
+     */
+    virtual void contextMenuEvent( QContextMenuEvent * );
 
     /**
      * Adds the name of a completion source to the internal list of 

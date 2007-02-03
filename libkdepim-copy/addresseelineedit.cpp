@@ -809,8 +809,18 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
   }
 }
 
+void AddresseeLineEdit::contextMenuEvent( QContextMenuEvent * )
+{
+  QMenu* menu = createStandardContextMenu();
+  menu->exec();
+  delete menu;
+}
+
 QMenu* AddresseeLineEdit::createStandardContextMenu()
 {
+  //disable modes not supported by KMailCompletion
+  setCompletionModeDisabled( KGlobalSettings::CompletionMan );
+  setCompletionModeDisabled( KGlobalSettings::CompletionPopupAuto );
   QMenu *menu = KLineEdit::createStandardContextMenu();
   if ( !menu )
     return 0;
