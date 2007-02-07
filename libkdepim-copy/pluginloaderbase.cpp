@@ -58,7 +58,7 @@ namespace KPIM {
   }
 
   const PluginMetaData * PluginLoaderBase::infoForName( const QString & type ) const {
-    return mPluginMap.contains( type ) ? &(mPluginMap[type]) : 0 ;
+    return mPluginMap.contains( type ) ? &(const_cast<PluginLoaderBase*>(this)->mPluginMap[type]) : 0 ;
   }
 
 
