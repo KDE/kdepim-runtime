@@ -32,13 +32,13 @@ FetchCommand::FetchCommand(const QString & uid) :
 void FetchCommand::exec()
 {
   DataReference ref( mUid.toUInt(), QString() );
-  ItemFetchJob fetchJob( ref );
-  if ( !fetchJob.exec() ) {
+  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
+  if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
-        << fetchJob.errorText()
+        << fetchJob->errorString()
         << endl;
   } else {
-    foreach( Item *item, fetchJob.items() ) {
+    foreach( Item *item, fetchJob->items() ) {
       out() << item->data() << endl;
     }
   }

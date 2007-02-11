@@ -67,8 +67,7 @@ void AkonadiSlave::get(const KUrl & url)
   kDebug() << k_funcinfo << url << endl;
   ItemFetchJob *job = new ItemFetchJob( DataReference( url.fileName().toInt(), QString() ) );
   if ( !job->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorMessage() );
-    job->deleteLater();
+    error( KIO::ERR_INTERNAL, job->errorString() );
     return;
   }
   if ( job->items().count() != 1 ) {
@@ -79,7 +78,6 @@ void AkonadiSlave::get(const KUrl & url)
     data( QByteArray() );
     finished();
   }
-  job->deleteLater();
 
   finished();
 }
@@ -89,8 +87,7 @@ void AkonadiSlave::stat(const KUrl & url)
   kDebug() << k_funcinfo << url << endl;
   ItemFetchJob *job = new ItemFetchJob( DataReference( url.fileName().toInt(), QString() ) );
   if ( !job->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorMessage() );
-    job->deleteLater();
+    error( KIO::ERR_INTERNAL, job->errorString() );
     return;
   }
   if ( job->items().count() != 1 ) {
@@ -103,6 +100,5 @@ void AkonadiSlave::stat(const KUrl & url)
     statEntry( entry );
     finished();
   }
-  job->deleteLater();
 }
 

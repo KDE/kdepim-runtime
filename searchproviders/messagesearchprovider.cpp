@@ -21,7 +21,7 @@
 
 #include <libakonadi/messagefetchjob.h>
 #include <libakonadi/job.h>
-#include <libakonadi/jobqueue.h>
+#include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
 #include <kmime/kmime_message.h>
@@ -44,8 +44,8 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
 
   Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
 
-  mQueue = new JobQueue( this );
-  monitor->ignoreSession( mQueue );
+  mSession = new Session( id.toLatin1(), this );
+  monitor->ignoreSession( mSession );
 }
 
 QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
@@ -57,8 +57,8 @@ QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
 
 void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)
 {
-  MessageFetchJob *job = new MessageFetchJob( ref, mQueue );
-  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemReceived(Akonadi::Job*)) );
+  MessageFetchJob *job = new MessageFetchJob( ref, mSession );
+  connect( job, SIGNAL(result(KJob*)), SLOT(itemReceived(KJob*)) );
 }
 
 void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
@@ -71,7 +71,7 @@ void MessageSearchProvider::itemReceived(Akonadi::Job * job)
 {
   if ( job->error() || static_cast<MessageFetchJob*>( job )->items().count() == 0 ) {
     // TODO: erro handling
-    qDebug() << "Job error:" << job->errorMessage();
+    qDebug() << "Job error:" << job->errorString();
   } else {
     Message *msg = static_cast<MessageFetchJob*>( job )->messages().first();
     Q_ASSERT( msg && msg->mime() );
@@ -91,7 +91,6 @@ void MessageSearchProvider::itemReceived(Akonadi::Job * job)
     if ( msg->mime()->messageID( false ) )
       r.setProperty( "Message-Id", msg->mime()->messageID()->asUnicodeString() );
   }
-  job->deleteLater();
 }
 
 int main( int argc, char **argv )

@@ -37,7 +37,7 @@ class MaildirResource : public Akonadi::ResourceBase
     virtual bool requestItemDelivery( const QString & uid, const QString & collection, int type );
 
   private Q_SLOTS:
-    void done(Akonadi::Job* job);
+    void done(KJob* job);
 };
 
 #endif

@@ -31,7 +31,7 @@
 #include "kcrash.h"
 #include "resourcebase.h"
 #include "resourceadaptor.h"
-#include "jobqueue.h"
+#include "session.h"
 
 #include "tracerinterface.h"
 
@@ -76,7 +76,7 @@ class ResourceBase::Private
 
     QSettings *mSettings;
 
-    JobQueue *queue;
+    Session *session;
     QHash<Akonadi::Job*, QDBusMessage> pendingReplys;
 };
 
@@ -119,7 +119,7 @@ ResourceBase::ResourceBase( const QString & id )
   if ( !name.isEmpty() )
     d->mName = name;
 
-  d->queue = new JobQueue( this );
+  d->session = new Session( d->mId.toLatin1(), this );
 }
 
 ResourceBase::~ResourceBase()
@@ -319,29 +319,28 @@ QSettings* ResourceBase::settings()
   return d->mSettings;
 }
 
-JobQueue* ResourceBase::queue()
+Session* ResourceBase::session()
 {
-  return d->queue;
+  return d->session;
 }
 
 bool ResourceBase::deliverItem(Akonadi::Job * job, const QDBusMessage & msg)
 {
   msg.setDelayedReply( true );
   d->pendingReplys.insert( job, msg.createReply() );
-  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(slotDeliveryDone(Akonadi::Job*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(slotDeliveryDone(KJob*)) );
   return false;
 }
 
-void ResourceBase::slotDeliveryDone(Akonadi::Job * job)
+void ResourceBase::slotDeliveryDone(KJob * job)
 {
-  Q_ASSERT( d->pendingReplys.contains( job ) );
-  QDBusMessage reply = d->pendingReplys.take( job );
+  Q_ASSERT( d->pendingReplys.contains( static_cast<Akonadi::Job*>( job ) ) );
+  QDBusMessage reply = d->pendingReplys.take( static_cast<Akonadi::Job*>( job ) );
   if ( job->error() ) {
-    error( "Error while creating item: " + job->errorText() );
+    error( "Error while creating item: " + job->errorString() );
     reply << false;
   } else {
     reply << true;
   }
   QDBusConnection::sessionBus().send( reply );
-  job->deleteLater();
 }

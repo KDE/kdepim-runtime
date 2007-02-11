@@ -36,18 +36,17 @@ MaildirResource::MaildirResource( const QByteArray &path, const QByteArray &file
   QByteArray data = f.readAll();
   f.close();
   ItemAppendJob *job = new ItemAppendJob( path, data, mimetype, this );
-  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(done(Akonadi::Job*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(result(KJob*)) );
   job->start();
 }
 
-void MaildirResource::done( Job * job )
+void MaildirResource::done( KJob * job )
 {
   if ( job->error() ) {
-    qWarning() << "Error while creating item: " << job->errorText();
+    qWarning() << "Error while creating item: " << job->errorString();
   } else {
     qDebug() << "Done!";
   }
-  job->deleteLater();
   qApp->quit();
 }
 

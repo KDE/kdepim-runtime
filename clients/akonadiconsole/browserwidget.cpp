@@ -80,22 +80,21 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
   if ( ref.isNull() )
     return;
   ItemFetchJob *job = new ItemFetchJob( ref, this );
-  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemFetchDone(Akonadi::Job*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
 }
 
-void BrowserWidget::itemFetchDone(Akonadi::Job * job)
+void BrowserWidget::itemFetchDone(KJob * job)
 {
   ItemFetchJob *fetch = static_cast<ItemFetchJob*>( job );
   if ( job->error() ) {
-    qWarning() << "Item fetch failed: " << job->errorText();
+    qWarning() << "Item fetch failed: " << job->errorString();
   } else if ( fetch->items().isEmpty() ) {
     qWarning() << "No item found!";
   } else {
     Item *item = fetch->items().first();
     mDataView->setPlainText( item->data() );
   }
-  job->deleteLater();
 }
 
 #include "browserwidget.moc"

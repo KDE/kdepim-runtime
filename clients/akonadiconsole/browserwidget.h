@@ -26,6 +26,8 @@ class QModelIndex;
 class QTextEdit;
 class QTreeView;
 
+class KJob;
+
 namespace Akonadi {
 class CollectionView;
 class CollectionModel;
@@ -44,7 +46,7 @@ class BrowserWidget: public QWidget
   private slots:
     void collectionActivated( const QModelIndex &index );
     void itemActivated( const QModelIndex &index );
-    void itemFetchDone( Akonadi::Job* job );
+    void itemFetchDone( KJob *job );
 
   private:
     Akonadi::CollectionModel *mCollectionModel;

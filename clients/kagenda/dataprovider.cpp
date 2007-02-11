@@ -25,7 +25,7 @@
 #include "contactmodel.h"
 #include "dummymodel.h"
 
-#include <libakonadi/jobqueue.h>
+#include <libakonadi/session.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/messagefetchjob.h>
 
@@ -184,7 +184,7 @@ void DataProvider::loadAkonadi()
 void DataProvider::saveAkonadi()
 {
   if ( mAgendaModel ) {
-//    Akonadi::JobQueue jobQueue( this );
+//    Akonadi::Session jobQueue( this );
     KCal::ICalFormat format;
     foreach( Event e, mAgendaModel->events() ) {
       KCal::Event *event = new KCal::Event();

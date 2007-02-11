@@ -20,7 +20,7 @@
 #include "strigiprovider.h"
 
 #include <libakonadi/itemfetchjob.h>
-#include <libakonadi/jobqueue.h>
+#include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
 #include <QCoreApplication>
@@ -39,7 +39,7 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
   connect( mMonitor, SIGNAL(itemChanged(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
-  mQueue = new JobQueue( this );
+  mQueue = new Session( id.toLatin1(), this );
   mMonitor->ignoreSession( mQueue );
 }
 
@@ -51,7 +51,7 @@ Akonadi::StrigiProvider::~ StrigiProvider()
 void Akonadi::StrigiProvider::itemChanged(const Akonadi::DataReference & ref)
 {
   ItemFetchJob *job = new ItemFetchJob( ref, mQueue );
-  connect( job, SIGNAL(done(Akonadi::Job*)), SLOT(itemReceived(Akonadi::Job*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(itemReceived(KJob*)) );
 }
 
 void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
@@ -63,13 +63,12 @@ void Akonadi::StrigiProvider::itemReceived(Akonadi::Job * job)
 {
   if ( job->error() || static_cast<ItemFetchJob*>( job )->items().count() == 0 ) {
     // TODO: erro handling
-    qDebug() << "Job error:" << job->errorMessage();
+    qDebug() << "Job error:" << job->errorString();
   } else {
     Item *item = static_cast<ItemFetchJob*>( job )->items().first();
     Q_ASSERT( item );
     mStrigi.indexFile( "akonadi:/" + QString::number( item->reference().persistanceID() ), QDateTime::currentDateTime().toTime_t(), item->data() );
   }
-  job->deleteLater();
 }
 
 int main( int argc, char **argv )

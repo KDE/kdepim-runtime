@@ -23,7 +23,7 @@
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
-#include <libakonadi/jobqueue.h>
+#include <libakonadi/session.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -67,7 +67,7 @@ bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, const 
     ICalFormat format;
     QByteArray data = format.toString( incidence ).toUtf8();
 
-    ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), queue() );
+    ItemStoreJob *job = new ItemStoreJob( DataReference( uid, remoteId ), session() );
     job->setData( data );
     return deliverItem( job, msg );
   }
@@ -77,7 +77,7 @@ void ICalResource::synchronize()
 {
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 
-  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false, queue() );
+  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false, session() );
   ljob->setResource( identifier() );
   ljob->exec();
 
@@ -88,18 +88,18 @@ void ICalResource::synchronize()
   QString col = ljob->collections().first()->name();
   delete ljob;
 
-  CollectionModifyJob *modify = new CollectionModifyJob( col, queue() );
+  CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
   QList<QByteArray> mimeTypes;
   mimeTypes << "text/calendar";
   modify->setContentTypes( mimeTypes );
   if ( !modify->exec() ) {
-    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col, modify->errorText()) );
+    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col, modify->errorString()) );
     return;
   }
 
-  ItemFetchJob *fetch = new ItemFetchJob( col, queue() );
+  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
   if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col, fetch->errorText()) );
+    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col, fetch->errorString()) );
     return;
   }
 
@@ -121,11 +121,11 @@ void ICalResource::synchronize()
     }
     if ( found )
       continue;
-    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", queue() );
+    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", session() );
     append->setRemoteId( uid );
     if ( !append->exec() ) {
       changeProgress( 0 );
-      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorText()) );
+      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );
       return;
     }
     delete append;

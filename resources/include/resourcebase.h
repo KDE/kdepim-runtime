@@ -30,10 +30,12 @@
 
 #include "resource.h"
 
+class KJob;
+
 namespace Akonadi {
 
 class Job;
-class JobQueue;
+class Session;
 
 /**
  * This class should be used as subclass by all resource agents
@@ -234,11 +236,10 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     QSettings* settings();
 
     /**
-     * Returns a job queue which can be used for all jobs created by the
-     * resource. It's recommended to use it to avoid creating too many connections
-     * to the backend.
+     * Returns a session for communicating with the storage backend. It should
+     * be used for all jobs.
      */
-    JobQueue* queue();
+    Session* session();
 
     /**
       Call this method from in requestItemDelivery(). It will generate an appropriate
@@ -252,7 +253,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     static QString parseArguments( int, char** );
 
   private Q_SLOTS:
-    void slotDeliveryDone( Akonadi::Job* job );
+    void slotDeliveryDone( KJob* job );
 
   private:
     class Private;

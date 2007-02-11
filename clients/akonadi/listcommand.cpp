@@ -28,6 +28,8 @@
 #include <libakonadi/itemfetchjob.h>
 #include <kmime/kmime_message.h>
 
+using namespace Akonadi;
+
 ListCommand::ListCommand( const QString &path )
   : mPath( path )
 {
@@ -36,55 +38,53 @@ ListCommand::ListCommand( const QString &path )
 
 void ListCommand::exec()
 {
-  Akonadi::CollectionListJob collectionJob( mPath.toUtf8() );
-  if ( !collectionJob.exec() ) {
+  CollectionListJob* collectionJob = new CollectionListJob( mPath.toUtf8() );
+  if ( !collectionJob->exec() ) {
     err() << "Error listing collection '" << mPath << "': "
-      << collectionJob.errorText()
+      << collectionJob->errorString()
       << endl;
     return;
   } else {
-    foreach( Akonadi::Collection *collection, collectionJob.collections() ) {
+    foreach( Akonadi::Collection *collection, collectionJob->collections() ) {
       out() << collection->name() << endl;
     }
   }
 
-  if ( mPath.indexOf( "/", 1 ) > 0 ) {
-    Akonadi::ItemFetchJob itemFetchJob( mPath.toUtf8() );
-    if ( !itemFetchJob.exec() ) {
-      err() << "Error listing items at '" << mPath << "': "
-        << itemFetchJob.errorText()
-        << endl;
-    } else {
-      foreach( Akonadi::Item *item, itemFetchJob.items() ) {
-        QString str;
-        str = QLatin1String("Item: ") + QString::number( item->reference().persistanceID() );
-        if ( !item->reference().externalUrl().isEmpty() ) {
-          str += QLatin1String(" [") + item->reference().externalUrl().toString() + QLatin1Char(']');
-        }
-        if ( !item->flags().isEmpty() ) {
-          str += QLatin1String(" ( ");
-          foreach( QByteArray flag, item->flags() ) {
-            str += flag + QLatin1Char(' ');
-          }
-          str += QLatin1Char(')');
-        }
-        str += QLatin1String(" [") + item->mimeType() + QLatin1Char(']');
-        out() << str << endl;
+  ItemFetchJob* itemFetchJob = new ItemFetchJob( mPath.toUtf8() );
+  if ( !itemFetchJob->exec() ) {
+    err() << "Error listing items at '" << mPath << "': "
+      << itemFetchJob->errorString()
+      << endl;
+  } else {
+    foreach( Akonadi::Item *item, itemFetchJob->items() ) {
+      QString str;
+      str = QLatin1String("Item: ") + QString::number( item->reference().persistanceID() );
+      if ( !item->reference().externalUrl().isEmpty() ) {
+        str += QLatin1String(" [") + item->reference().externalUrl().toString() + QLatin1Char(']');
       }
+      if ( !item->flags().isEmpty() ) {
+        str += QLatin1String(" ( ");
+        foreach( QByteArray flag, item->flags() ) {
+          str += flag + QLatin1Char(' ');
+        }
+        str += QLatin1Char(')');
+      }
+      str += QLatin1String(" [") + item->mimeType() + QLatin1Char(']');
+      out() << str << endl;
     }
+  }
 
 #if 0
-    Akonadi::MessageFetchJob messageJob( mPath.toUtf8() );
-    if ( !messageJob.exec() ) {
-      err() << "Error listing messages at '" << mPath << "': "
-        << messageJob.errorText()
-        << endl;
-    } else {
-      foreach( Akonadi::Message *m, messageJob.messages() ) {
-        KMime::Message *message = m->mime();
-        out() << "Subject: " << message->subject()->asUnicodeString() << endl;
-      }
+  Akonadi::MessageFetchJob messageJob( mPath.toUtf8() );
+  if ( !messageJob.exec() ) {
+    err() << "Error listing messages at '" << mPath << "': "
+      << messageJob.errorString()
+      << endl;
+  } else {
+    foreach( Akonadi::Message *m, messageJob.messages() ) {
+      KMime::Message *message = m->mime();
+      out() << "Subject: " << message->subject()->asUnicodeString() << endl;
     }
-#endif
   }
+#endif
 }
