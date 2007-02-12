@@ -35,6 +35,7 @@
 #include <QString>
 #include <kdepim_export.h>
 
+class KConfigGroup;
 class KConfig;
 
 /** Base class for mail and news accounts. */
@@ -53,41 +54,39 @@ class KDEPIM_EXPORT KAccount
 
     KAccount( const uint id = 0, const QString &name = QString(),
        const Type type = Other );
-    
+
     /**
      * Get/Set name
-     */ 
+     */
     QString name() const { return mName; }
     void setName( const QString& name ) { mName = name; }
-    
+
     /**
      * Get/Set id
-     */ 
+     */
     uint id() const { return mId; }
     void setId( const uint id ) { mId = id; }
 
     /**
      * Get/Set type
-     */ 
+     */
     Type type() const { return mType; }
     void setType( const Type type ) { mType = type; }
 
     /**
      * Save the settings
-     * If the group is empty it must be preset in the KConfig
      */
-    void writeConfig( KConfig &config, const QString &group = QString() ); 
+    void writeConfig( KConfigGroup &config ) const;
 
     /**
      * Read the settings
-     * If the group is empty it must be preset in the KConfig
      */
-    void readConfig( KConfig &config, const QString &group = QString() ); 
+    void readConfig( const KConfigGroup &config );
 
   protected:
     uint mId;
     QString mName;
-    Type mType; 
+    Type mType;
 };
 
 #endif
