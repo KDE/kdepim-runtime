@@ -66,7 +66,9 @@ namespace KPIM {
     mPluginMap.clear();
 
     const QStringList list =
-      KGlobal::dirs()->findAllResources( "data", path, true, true );
+      KGlobal::dirs()->findAllResources( "data", path,
+                                         KStandardDirs::Recursive |
+                                         KStandardDirs::NoDuplicates );
     for ( QStringList::const_iterator it = list.begin() ;
 	  it != list.end() ; ++it ) {
       KSimpleConfig config( *it, true );

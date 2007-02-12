@@ -202,7 +202,9 @@ void KCMDesignerFields::importFile()
 
 void KCMDesignerFields::loadUiFiles()
 {
-  QStringList list = KGlobal::dirs()->findAllResources( "data", uiPath() + "/*.ui", true, true );
+  QStringList list = KGlobal::dirs()->findAllResources( "data", uiPath() + "/*.ui",
+                                                        KStandardDirs::Recursive |
+                                                        KStandardDirs::NoDuplicates );
   for ( QStringList::iterator it = list.begin(); it != list.end(); ++it ) {
     new PageItem( mPageView, *it );
   }

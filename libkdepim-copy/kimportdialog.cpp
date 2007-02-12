@@ -582,7 +582,9 @@ void KImportDialog::assignTemplate()
 
   // load all template files
   const QStringList list = KGlobal::dirs()->findAllResources( "data" , KGlobal::mainComponent().componentName() +
-      "/csv-templates/*.desktop", true, true );
+                                                              "/csv-templates/*.desktop",
+                                                              KStandardDirs::Recursive |
+                                                              KStandardDirs::NoDuplicates );
 
   for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
   {
