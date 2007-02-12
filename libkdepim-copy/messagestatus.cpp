@@ -392,7 +392,7 @@ void MessageStatus::setHasAttachment( bool withAttachment )
 
 
 
-const qint32 MessageStatus::toQInt32() const
+qint32 MessageStatus::toQInt32() const
 {
   return mStatus;
 }

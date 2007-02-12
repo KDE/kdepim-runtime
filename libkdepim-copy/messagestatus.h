@@ -266,7 +266,7 @@ class KDEPIM_EXPORT MessageStatus
         all integrity checks in the setter methods.
         @return The status encoded in bits.
     */
-    const qint32 toQInt32() const;
+    qint32 toQInt32() const;
 
     /** Set the status as a whole e.g. for reading from an index.
         Don't manipulte the index via this value, this bypasses
