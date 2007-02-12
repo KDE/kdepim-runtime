@@ -69,22 +69,22 @@ void BroadcastStatus::setStatusMsgTransmissionCompleted( int numMessages,
   if( numMessages > 0 ) {
     if( numBytes != -1 ) {
       if( ( numBytesToRead != numBytes ) && mLeaveOnServer )
-        statusMsg = i18np( "Transmission complete. %n new message in %1 KB "
-                          "(%2 KB remaining on the server).",
-                          "Transmission complete. %n new messages in %1 KB "
-                          "(%2 KB remaining on the server).",
+        statusMsg = i18np( "Transmission complete. %1 new message in %2 KB "
+                          "(%3 KB remaining on the server).",
+                          "Transmission complete. %1 new messages in %2 KB "
+                          "(%3 KB remaining on the server).",
                           numMessages ,
                       numBytesRead / 1024 ,
                       numBytes / 1024 );
       else
-        statusMsg = i18np( "Transmission complete. %n message in %1 KB.",
-                         "Transmission complete. %n messages in %1 KB.",
+        statusMsg = i18np( "Transmission complete. %1 message in %2 KB.",
+                         "Transmission complete. %1 messages in %2 KB.",
                           numMessages ,
                       numBytesRead / 1024 );
     }
     else
-      statusMsg = i18np( "Transmission complete. %n new message.",
-                        "Transmission complete. %n new messages.",
+      statusMsg = i18np( "Transmission complete. %1 new message.",
+                        "Transmission complete. %1 new messages.",
                         numMessages );
   }
   else
@@ -107,30 +107,30 @@ void BroadcastStatus::setStatusMsgTransmissionCompleted( const QString& account,
   if( numMessages > 0 ) {
     if( numBytes != -1 ) {
       if( ( numBytesToRead != numBytes ) && mLeaveOnServer )
-        statusMsg = i18np( "Transmission for account %3 complete. "
-                          "%n new message in %1 KB "
-                          "(%2 KB remaining on the server).",
-                          "Transmission for account %3 complete. "
-                          "%n new messages in %1 KB "
-                          "(%2 KB remaining on the server).",
+        statusMsg = i18np( "Transmission for account %4 complete. "
+                          "%1 new message in %2 KB "
+                          "(%3 KB remaining on the server).",
+                          "Transmission for account %4 complete. "
+                          "%1 new messages in %2 KB "
+                          "(%3 KB remaining on the server).",
                           numMessages ,
                       numBytesRead / 1024 ,
                       numBytes / 1024 ,
                       account );
       else
-        statusMsg = i18np( "Transmission for account %2 complete. "
-                          "%n message in %1 KB.",
-                          "Transmission for account %2 complete. "
-                          "%n messages in %1 KB.",
+        statusMsg = i18np( "Transmission for account %3 complete. "
+                          "%1 message in %2 KB.",
+                          "Transmission for account %3 complete. "
+                          "%1 messages in %2 KB.",
                           numMessages ,
                       numBytesRead / 1024 ,
                       account );
     }
     else
-      statusMsg = i18np( "Transmission for account %1 complete. "
-                        "%n new message.",
-                        "Transmission for account %1 complete. "
-                        "%n new messages.",
+      statusMsg = i18np( "Transmission for account %2 complete. "
+                        "%1 new message.",
+                        "Transmission for account %2 complete. "
+                        "%1 new messages.",
                         numMessages ,
                     account );
   }

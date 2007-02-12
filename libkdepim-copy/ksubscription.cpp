@@ -792,10 +792,10 @@ void KSubscription::slotUpdateStatusLabel()
 {
   QString text;
   if (mLoading)
-    text = i18np("Loading... (1 matching)", "Loading... (%n matching)",
+    text = i18np("Loading... (1 matching)", "Loading... (%1 matching)",
                 activeItemCount());
   else
-    text = i18np("%1: (1 matching)", "%1: (%n matching)", activeItemCount(),
+    text = i18np("%2: (1 matching)", "%2: (%1 matching)", activeItemCount(),
             account()->name());
 
   leftLabel->setText(text);
