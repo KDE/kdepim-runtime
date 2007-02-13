@@ -25,7 +25,7 @@
 #include <q3table.h>
 #include <QFrame>
 #include <QStackedWidget>
-#include <klistbox.h>
+#include <k3listbox.h>
 #include "kwidgetlister.h"
 
 #include <kdepim_export.h>
@@ -230,7 +230,7 @@ protected slots:
 
 private:
   /** the list of rules */
-  KListBox *ruleList;
+  K3ListBox *ruleList;
   /** the current group */
   QString group;
   /** marks if we're alone or together with the edit widget */

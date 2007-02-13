@@ -486,9 +486,8 @@ void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
 void AddresseeLineEdit::slotReturnPressed( const QString& item )
 {
   Q_UNUSED( item );
-  Q3ListBoxItem* i = completionBox()->selectedItem();
-  if ( i != 0 )
-    slotPopupCompletion( i->text() );
+  if ( !completionBox()->selectedItems().isEmpty() )
+    slotPopupCompletion( completionBox()->selectedItems().first()->text() );
 }
 
 void AddresseeLineEdit::loadContacts()
@@ -784,11 +783,11 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
         qApp->installEventFilter( this );
     }
 
-    Q3ListBoxItem* item = completionBox->item( 1 );
+    QListWidgetItem* item = completionBox->item( 1 );
     if ( item )
     {
       completionBox->blockSignals( true );
-      completionBox->setSelected( item, true );
+      item->setSelected(true);
       completionBox->blockSignals( false );
     }
 
@@ -915,7 +914,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       || e->type() == QEvent::MouseButtonRelease ) {
       QMouseEvent* me = static_cast<QMouseEvent*>( e );
       // find list box item at the event position
-      Q3ListBoxItem *item = completionBox()->itemAt( me->pos() );
+      QListWidgetItem *item = completionBox()->itemAt( me->pos() );
       if ( !item ) {
         // In the case of a mouse move outside of the box we don't want
         // the parent to fuzzy select a header by mistake.
@@ -935,7 +934,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
           // below or above is selected, not the heading, inadvertedly, due
           // to fuzzy auto-selection from QListBox
           completionBox()->setCurrentItem( item );
-          completionBox()->setSelected( completionBox()->index( item ), true );
+          item->setSelected( true );
           if ( e->type() == QEvent::MouseMove )
             return true; // avoid fuzzy selection behavior
         }
@@ -954,48 +953,53 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       ( e->type() == QEvent::KeyPress ) &&
       completionBox()->isVisible() ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
-    unsigned int currentIndex = completionBox()->currentItem();
+    unsigned int currentIndex = completionBox()->currentRow();
     if ( ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Backtab ) {
       //kDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
-      Q3ListBoxItem *itemAbove = completionBox()->item( currentIndex - 1 );
+      QListWidgetItem *itemAbove = completionBox()->item( currentIndex - 1 );
       if ( itemAbove && !itemAbove->text().startsWith( s_completionItemIndentString ) ) {
         // there is a header above is, check if there is even further up
         // and if so go one up, so it'll be selected
         if ( currentIndex > 1 && completionBox()->item( currentIndex - 2 ) ) {
           //kDebug() << "EVENTFILTER: Key_Up -> skipping " << currentIndex - 1 << endl;
-          completionBox()->setCurrentItem( itemAbove->prev() );
-          completionBox()->setSelected( currentIndex - 2, true );
+          completionBox()->setCurrentRow( currentIndex -2 );
+          completionBox()->item( currentIndex - 2 )->setSelected( true );
         } else if ( currentIndex == 1 ) {
             // nothing to skip to, let's stay where we are, but make sure the
             // first header becomes visible, if we are the first real entry
-            completionBox()->ensureVisible( 0, 0 );
-            completionBox()->setSelected( currentIndex, true );
+#warning Port me!
+//            completionBox()->ensureVisible( 0, 0 );
+            QListWidgetItem *i = completionBox()->item( currentIndex );
+            if ( i )
+              i->setSelected( true );
         }
         return true;
       }
     } else if ( ke->key() == Qt::Key_Down || ke->key() == Qt::Key_Tab ) {
       // same strategy for downwards
       //kDebug() << "EVENTFILTER: Key_Down. currentIndex=" << currentIndex << endl;
-      Q3ListBoxItem *itemBelow = completionBox()->item( currentIndex + 1 );
+      QListWidgetItem *itemBelow = completionBox()->item( currentIndex + 1 );
       if ( itemBelow && !itemBelow->text().startsWith( s_completionItemIndentString ) ) {
         if ( completionBox()->item( currentIndex + 2 ) ) {
           //kDebug() << "EVENTFILTER: Key_Down -> skipping " << currentIndex+1 << endl;
-          completionBox()->setCurrentItem( itemBelow->next() );
-          completionBox()->setSelected( currentIndex + 2, true );
+          completionBox()->setCurrentRow( currentIndex + 2  );
+          completionBox()->item( currentIndex + 2 )->setSelected( true );
         } else {
           // nothing to skip to, let's stay where we are
-          completionBox()->setSelected( currentIndex, true );
+          QListWidgetItem *i = completionBox()->item( currentIndex );
+          if ( i )
+            i->setSelected( true );
         }
         return true;
       }
       // special case of the initial selection, which is unfortunately a header.
       // Setting it to selected tricks KCompletionBox into not treating is special
       // and selecting making it current, instead of the one below.
-      Q3ListBoxItem *item = completionBox()->item( currentIndex );
+      QListWidgetItem *item = completionBox()->item( currentIndex );
       if ( item && !item->text().startsWith( s_completionItemIndentString )  ) {
-        completionBox()->setSelected( currentIndex, true );
+        item->setSelected( true );
       }
     }
   }

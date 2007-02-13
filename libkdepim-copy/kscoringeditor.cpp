@@ -47,7 +47,7 @@
 #include <QBoxLayout>
 #include <QVBoxLayout>
 
-static int setCurrentItem(KListBox* box, const QString& s)
+static int setCurrentItem(K3ListBox* box, const QString& s)
 {
   int cnt = box->count();
   for (int i=0;i<cnt;++i) {
@@ -637,7 +637,7 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   topL->setMargin(standalone? 0:5);
   topL->setSpacing(KDialog::spacingHint());
 
-  ruleList = new KListBox(this);
+  ruleList = new K3ListBox(this);
   if (standalone) {
     connect(ruleList,SIGNAL(doubleClicked(Q3ListBoxItem*)),
             this,SLOT(slotEditRule(Q3ListBoxItem*)));
