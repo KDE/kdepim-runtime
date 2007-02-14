@@ -145,8 +145,8 @@ void AddresseeLineEdit::init()
           this, SLOT( slotReturnPressed( const QString& ) ) );
 
       KCompletionBox *box = completionBox();
-      connect( box, SIGNAL( highlighted( const QString& ) ),
-          this, SLOT( slotPopupCompletion( const QString& ) ) );
+      connect( box, SIGNAL(activated(const QString&)),
+          this, SLOT(slotPopupCompletion(const QString&)) );
       connect( box, SIGNAL( userCancelled( const QString& ) ),
           SLOT( slotUserCancelled( const QString& ) ) );
 
