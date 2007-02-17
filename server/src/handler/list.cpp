@@ -58,37 +58,39 @@ bool List::handleLine(const QByteArray& line )
         response.setString( "LIST (\\Noselect) \"/\" \"\"" );
         emit responseAvailable( response );
     } else {
-        CollectionList collections = listCollections( reference, mailbox );
-        if ( !collections.isValid() ) {
+        QList<Location> collections;
+        if ( !listCollections( reference, mailbox, collections ) ) {
           return failureResponse( "Unable to find collection" );
         }
 
-        // TODO: Create a response with the mime types for the listed folder:
-        // * FLAGS (\MimeTypes[text/calendar/inode/directory])
-
-        CollectionListIterator it(collections);
-        while ( it.hasNext() ) {
-            Collection c = it.next();
+        foreach ( Location loc, collections ) {
             QByteArray list( "LIST ");
             list += '(';
             bool first = true;
-            if ( c.isNoSelect() ) {
+            QList<MimeType> supportedMimeTypes = loc.mimeTypes();
+            if ( supportedMimeTypes.isEmpty() ) {
                 list += "\\Noselect";
                 first = false;
             }
-            if ( c.isNoInferiors() ) {
+            bool canContainFolders = false;
+            foreach ( MimeType mt, supportedMimeTypes ) {
+              if ( mt.name() == QLatin1String("inode/directory") ) {
+                canContainFolders = true;
+                break;
+              }
+            }
+            if ( canContainFolders ) {
                 if ( !first ) list += ' ';
                 list += "\\Noinferiors";
                 first = false;
             }
-            const QByteArray supportedMimeTypes = c.getMimeTypes();
             if ( !supportedMimeTypes.isEmpty() ) {
                 if ( !first ) list += ' ';
-                list += "\\MimeTypes[" + c.getMimeTypes() + ']';
+                list += "\\MimeTypes[" + MimeType::joinByName( supportedMimeTypes, QLatin1String(",") ).toLatin1() + ']';
             }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
-            list += c.identifier().toUtf8();
+            list += loc.name().toUtf8();
             list += "\"";
             response.setString( list );
             emit responseAvailable( response );
@@ -103,13 +105,15 @@ bool List::handleLine(const QByteArray& line )
     return true;
 }
 
-CollectionList List::listCollections( const QString & prefix,
-                                      const QString & mailboxPattern )
+bool List::listCollections( const QString & prefix,
+                                      const QString & mailboxPattern,
+                                      QList<Location> &result )
 {
-  CollectionList result;
+  bool rv = true;
+  result.clear();
 
   if ( mailboxPattern.isEmpty() )
-    return result;
+    return true;
 
   DataStore *db = connection()->storageBackend();
   const QString locationDelimiter = db->locationDelimiter();
@@ -137,8 +141,7 @@ CollectionList List::listCollections( const QString & prefix,
     resource = Resource::retrieveByName( resourceName );
     qDebug() << "resource.isValid()" << resource.isValid();
     if ( !resource.isValid() ) {
-      result.setValid( false );
-      return result;
+      return false;
     }
   }
 
@@ -156,7 +159,7 @@ CollectionList List::listCollections( const QString & prefix,
   qDebug() << "Resource: " << resource.name() << " fullPrefix: " << fullPrefix << " pattern: " << sanitizedPattern;
 
   if ( !fullPrefix.isEmpty() ) {
-    result.setValid( false );
+    rv = false;
   }
 
   const QList<Location> locations = db->listLocations( resource );
@@ -170,30 +173,31 @@ CollectionList List::listCollections( const QString & prefix,
     if ( location.startsWith( fullPrefix ) ) {
       if ( hasStar || ( hasPercent && atFirstLevel ) ||
            location == fullPrefix + sanitizedPattern ) {
-        Collection c( location.right( location.size() -1 ) );
-        c.setMimeTypes( MimeType::joinByName<MimeType>( l.mimeTypes(), QLatin1String(",") ).toLatin1() );
-        result.append( c );
+        result.append( l );
       }
     }
     // Check, if requested folder has been found to distinguish between
     // non-existant folder and empty folder.
     if ( location + locationDelimiter == fullPrefix || fullPrefix == locationDelimiter )
-      result.setValid( true );
+      rv = true;
   }
 
   // list queries (only in global namespace)
   if ( !resource.isValid() ) {
     if ( fullPrefix == locationDelimiter ) {
-      CollectionList persistenSearches = db->listPersistentSearches();
-      if ( !persistenSearches.isEmpty() )
-        result.append( Collection( QLatin1String("Search") ) );
-      result.setValid( true );
+      QList<Location> persistenSearches = db->listPersistentSearches();
+      if ( !persistenSearches.isEmpty() ) {
+        Location l;
+        l.setName( QLatin1String( "Search" ) );
+        result << l;
+      }
+      rv = true;
     }
     if ( fullPrefix == QLatin1String("/Search/")  || (fullPrefix == locationDelimiter && hasStar) ) {
       result += db->listPersistentSearches();
-      result.setValid( true );
+      rv = true;
     }
   }
 
-  return result;
+  return rv;
 }
