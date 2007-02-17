@@ -44,7 +44,7 @@ class StrigiProvider : public SearchProviderBase
   protected slots:
     void itemChanged(const Akonadi::DataReference &ref);
     void itemRemoved(const Akonadi::DataReference &ref);
-    void itemReceived( Akonadi::Job *job );
+    void itemReceived( KJob *job );
 
   private:
     Monitor *mMonitor;

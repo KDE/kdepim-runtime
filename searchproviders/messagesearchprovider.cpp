@@ -67,7 +67,7 @@ void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
   r.remove();
 }
 
-void MessageSearchProvider::itemReceived(Akonadi::Job * job)
+void MessageSearchProvider::itemReceived(KJob * job)
 {
   if ( job->error() || static_cast<MessageFetchJob*>( job )->items().count() == 0 ) {
     // TODO: erro handling

@@ -22,10 +22,11 @@
 
 #include <searchproviderbase.h>
 
+class KJob;
+
 namespace Akonadi {
 
 class DataReference;
-class Job;
 class Session;
 
 class MessageSearchProvider : public SearchProviderBase
@@ -39,7 +40,7 @@ class MessageSearchProvider : public SearchProviderBase
   protected slots:
     void itemChanged(const Akonadi::DataReference &ref);
     void itemRemoved(const Akonadi::DataReference &ref);
-    void itemReceived( Akonadi::Job *job );
+    void itemReceived( KJob *job );
 
   private:
     Session *mSession;

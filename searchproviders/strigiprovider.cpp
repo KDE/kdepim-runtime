@@ -59,7 +59,7 @@ void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
   mStrigi.indexFile( "akonadi:/" + QString::number( ref.persistanceID() ), QDateTime::currentDateTime().toTime_t(), QByteArray() );
 }
 
-void Akonadi::StrigiProvider::itemReceived(Akonadi::Job * job)
+void Akonadi::StrigiProvider::itemReceived(KJob * job)
 {
   if ( job->error() || static_cast<ItemFetchJob*>( job )->items().count() == 0 ) {
     // TODO: erro handling
