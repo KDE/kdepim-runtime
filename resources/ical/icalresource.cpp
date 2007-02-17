@@ -92,6 +92,7 @@ void ICalResource::synchronize()
   QList<QByteArray> mimeTypes;
   mimeTypes << "text/calendar";
   modify->setContentTypes( mimeTypes );
+  modify->setCachePolicy( 1 ); // ### just for testing
   if ( !modify->exec() ) {
     changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col, modify->errorString()) );
     return;
