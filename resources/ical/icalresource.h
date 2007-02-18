@@ -39,14 +39,16 @@ class ICalResource : public Akonadi::ResourceBase
     ICalResource( const QString &id );
     ~ICalResource();
 
-    void setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype );
-
   public Q_SLOTS:
     virtual bool requestItemDelivery( int uid,const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg );
     virtual void synchronize();
+    virtual void configure();
 
   protected:
     virtual void aboutToQuit();
+
+  private:
+    void loadFile();
 
   private:
     KCal::CalendarLocal *mCalendar;

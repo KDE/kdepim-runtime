@@ -38,12 +38,6 @@ void ResourceAdaptor::cleanup()
     parent()->cleanup();
 }
 
-QString ResourceAdaptor::configuration()
-{
-    // handle method call org.kde.Akonadi.Resource.configuration
-    return parent()->configuration();
-}
-
 void ResourceAdaptor::configure()
 {
     // handle method call org.kde.Akonadi.Resource.configure
@@ -78,12 +72,6 @@ bool ResourceAdaptor::requestItemDelivery(int uid, const QString &remotedId, con
 {
     // handle method call org.kde.Akonadi.Resource.requestItemDelivery
     return parent()->requestItemDelivery(uid, remotedId, collection, type, msg);
-}
-
-bool ResourceAdaptor::setConfiguration(const QString &data)
-{
-    // handle method call org.kde.Akonadi.Resource.setConfiguration
-    return parent()->setConfiguration(data);
 }
 
 void ResourceAdaptor::setName(const QString &name)

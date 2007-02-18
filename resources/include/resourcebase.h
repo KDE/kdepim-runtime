@@ -84,7 +84,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * \endcode
      */
     template <typename T>
-    static void init( int argc, char **argv )
+    static void init( int argc = 0, char **argv = 0 )
     {
       QString id = parseArguments( argc, argv );
       new T( id );
@@ -118,23 +118,10 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 
     /**
      * This method is called whenever the resource shall show its configuration dialog
-     * to the user.
+     * to the user. It will be automatically called when the resource is started for
+     * the first time.
      */
     virtual void configure();
-
-    /**
-     * This method is used to set the configuration of the resource explicitely.
-     *
-     * @param data The configuration in xml format.
-     * @returns true if the configuration was accepted and applyed, false otherwise.
-     */
-    virtual bool setConfiguration( const QString &data );
-
-    /**
-     * This method returns the current configuration of the resource in xml format.
-     * If the resource has no configuration, an empty string is returned.
-     */
-    virtual QString configuration() const;
 
     /**
      * This method is called whenever the resource should start synchronization.

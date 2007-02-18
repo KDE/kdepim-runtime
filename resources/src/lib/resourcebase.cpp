@@ -19,6 +19,9 @@
     02110-1301, USA.
 */
 
+#include <kcmdlineargs.h>
+
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QHash>
 #include <QtCore/QTimer>
@@ -119,6 +122,13 @@ ResourceBase::ResourceBase( const QString & id )
   if ( !name.isEmpty() )
     d->mName = name;
 
+  // initial configuration
+  bool initialized = settings()->value( "Resource/Initialized", false ).toBool();
+  if ( !initialized ) {
+    QTimer::singleShot( 0, this, SLOT(configure()) ); // finish construction first
+    settings()->value( "Resource/Initialized", true );
+  }
+
   d->session = new Session( d->mId.toLatin1(), this );
 }
 
@@ -200,20 +210,6 @@ void ResourceBase::changeProgress( uint progress, const QString &message )
 
 void ResourceBase::configure()
 {
-  emit configurationChanged( QString() );
-}
-
-bool ResourceBase::setConfiguration( const QString &data )
-{
-  // TODO: add template method
-  emit configurationChanged( data );
-
-  return true;
-}
-
-QString ResourceBase::configuration() const
-{
-  return QString();
 }
 
 void ResourceBase::synchronize()
@@ -248,15 +244,21 @@ QString ResourceBase::name() const
 
 QString ResourceBase::parseArguments( int argc, char **argv )
 {
-  if ( argc < 3 ) {
-    qDebug( "ResourceBase::parseArguments: Not enough arguments passed..." );
-    exit( 1 );
-  }
-
   QString identifier;
-  for ( int i = 1; i < argc - 1; ++i ) {
-    if ( QString( argv[ i ] ) == "--identifier" )
-      identifier = QString( argv[ i + 1 ] );
+  if ( argc && argv ) {
+    if ( argc < 3 ) {
+      qDebug( "ResourceBase::parseArguments: Not enough arguments passed..." );
+      exit( 1 );
+    }
+
+    for ( int i = 1; i < argc - 1; ++i ) {
+      if ( QString( argv[ i ] ) == "--identifier" )
+        identifier = QString( argv[ i + 1 ] );
+    }
+  } else {
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    if ( args && args->isSet( "identifier" ) )
+      identifier = QString::fromLatin1( args->getOption( "identifier" ) );
   }
 
   if ( identifier.isEmpty() ) {

@@ -29,6 +29,7 @@
 #include <kcal/incidence.h>
 #include <kcal/icalformat.h>
 
+#include <kfiledialog.h>
 #include <klocale.h>
 
 #include <QtCore/QDebug>
@@ -40,20 +41,13 @@ using namespace KCal;
 ICalResource::ICalResource( const QString &id )
     :ResourceBase( id ), mCalendar( 0 )
 {
-  // ### just for testing
-  mCalendar = new KCal::CalendarLocal( "UTC" );
-  mCalendar->load( "akonadi_ical_test.ics" );
-
+  loadFile();
   synchronize();
 }
 
 ICalResource::~ ICalResource()
 {
   delete mCalendar;
-}
-
-void ICalResource::setParameters(const QByteArray &path, const QByteArray &filename, const QByteArray &mimetype )
-{
 }
 
 bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg )
@@ -75,6 +69,9 @@ bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, const 
 
 void ICalResource::synchronize()
 {
+  if ( !mCalendar )
+    return;
+
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 
   CollectionListJob *ljob = new CollectionListJob( Collection::root(), false, session() );
@@ -142,6 +139,39 @@ void ICalResource::synchronize()
 void ICalResource::aboutToQuit()
 {
   mCalendar->save();
+}
+
+void ICalResource::configure()
+{
+  QString oldFile = settings()->value( "General/Path" ).toString();
+  KUrl url;
+  if ( !oldFile.isEmpty() )
+    url = KUrl::fromPath( oldFile );
+  else
+    url = KUrl::fromPath( QDir::homePath() );
+  QString newFile = KFileDialog::getOpenFileName( url, "*.ics *.ical|iCal Calendar File", 0, i18n("Select Calendar") );
+  if ( newFile.isEmpty() )
+    return;
+  if ( oldFile == newFile )
+    return;
+  // TODO: delete existing items
+  settings()->setValue( "General/Path", newFile );
+  loadFile();
+  synchronize();
+}
+
+void ICalResource::loadFile()
+{
+  delete mCalendar;
+  mCalendar = 0;
+  QString file = settings()->value( "General/Path" ).toString();
+  if ( file.isEmpty() ) {
+    changeStatus( Error, i18n( "No iCal file specified." ) );
+    return;
+  }
+
+  mCalendar = new KCal::CalendarLocal( "UTC" );
+  mCalendar->load( file );
 }
 
 #include "icalresource.moc"

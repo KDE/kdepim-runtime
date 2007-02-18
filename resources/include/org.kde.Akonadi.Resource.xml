@@ -9,9 +9,6 @@
       <arg name="progress" type="u" direction="out"/>
       <arg name="message" type="s" direction="out"/>
     </signal>
-    <signal name="configurationChanged">
-      <arg name="data" type="s" direction="out"/>
-    </signal>
     <signal name="nameChanged">
       <arg name="name" type="s" direction="out"/>
     </signal>
@@ -38,13 +35,6 @@
     </method>
     <method name="configure">
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
-    </method>
-    <method name="setConfiguration">
-      <arg type="b" direction="out"/>
-      <arg name="data" type="s" direction="in"/>
-    </method>
-    <method name="configuration">
-      <arg type="s" direction="out"/>
     </method>
     <method name="synchronize">
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>

@@ -37,9 +37,6 @@ class ResourceAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"u\" name=\"progress\" />\n"
 "      <arg direction=\"out\" type=\"s\" name=\"message\" />\n"
 "    </signal>\n"
-"    <signal name=\"configurationChanged\" >\n"
-"      <arg direction=\"out\" type=\"s\" name=\"data\" />\n"
-"    </signal>\n"
 "    <signal name=\"nameChanged\" >\n"
 "      <arg direction=\"out\" type=\"s\" name=\"name\" />\n"
 "    </signal>\n"
@@ -66,13 +63,6 @@ class ResourceAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"configure\" >\n"
 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\" />\n"
 "    </method>\n"
-"    <method name=\"setConfiguration\" >\n"
-"      <arg direction=\"out\" type=\"b\" />\n"
-"      <arg direction=\"in\" type=\"s\" name=\"data\" />\n"
-"    </method>\n"
-"    <method name=\"configuration\" >\n"
-"      <arg direction=\"out\" type=\"s\" />\n"
-"    </method>\n"
 "    <method name=\"synchronize\" >\n"
 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\" />\n"
 "    </method>\n"
@@ -96,20 +86,17 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void cleanup();
-    QString configuration();
     Q_NOREPLY void configure();
     QString name();
     uint progress();
     QString progressMessage();
     void quit();
     bool requestItemDelivery(int uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg);
-    bool setConfiguration(const QString &data);
     Q_NOREPLY void setName(const QString &name);
     int status();
     QString statusMessage();
     Q_NOREPLY void synchronize();
 Q_SIGNALS: // SIGNALS
-    void configurationChanged(const QString &data);
     void nameChanged(const QString &name);
     void progressChanged(uint progress, const QString &message);
     void statusChanged(int status, const QString &message);

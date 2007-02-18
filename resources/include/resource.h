@@ -100,20 +100,6 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
     virtual void configure() = 0;
 
     /**
-     * This method is used to set the configuration of the resource explicitely.
-     *
-     * @param data The configuration in xml format.
-     * @returns true if the configuration was accepted and applyed, false otherwise.
-     */
-    virtual bool setConfiguration( const QString &data ) = 0;
-
-    /**
-     * This method returns the current configuration of the resource in xml format.
-     * If the resource has no configuration, an empty string is returned.
-     */
-    virtual QString configuration() const = 0;
-
-    /**
      * This method is called whenever the resource should start synchronization.
      */
     virtual void synchronize() = 0;
@@ -151,14 +137,6 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * @param message An i18n'ed message which describes the progress in detail.
      */
     void progressChanged( uint progress, const QString &message );
-
-    /**
-     * This signal is emitted whenever the configuration of the resource has changed.
-     * That happens when either @p configure() or @p setConfiguration() was called.
-     *
-     * @param data The new configuration data in xml format.
-     */
-    void configurationChanged( const QString &data );
 
     /**
      * This signal is emitted whenever the name of the resource has changed.
