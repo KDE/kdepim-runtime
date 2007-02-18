@@ -168,6 +168,13 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     void quit();
 
+    /**
+      Enables change recording. When change recording is enabled all changes are
+      stored internally and replayed as soon as change recording is disabled.
+      @param enable True to enable change recoding, false to disable change recording.
+    */
+    void enableChangeRecording( bool enable );
+
   protected:
     /**
      * Creates a base resource.

@@ -60,7 +60,8 @@ class ResourceBase::Private
     Private()
       : mStatusCode( Ready ),
         mProgress( 0 ),
-        mSettings( 0 )
+        mSettings( 0 ),
+        changeRecording( false )
     {
       mStatusMessage = defaultReadyMessage();
     }
@@ -84,6 +85,78 @@ class ResourceBase::Private
     Session *session;
     Monitor *monitor;
     QHash<Akonadi::Job*, QDBusMessage> pendingReplys;
+
+    // change recording
+    enum ChangeType {
+      ItemAdded, ItemChanged, ItemRemoved, CollectionAdded, CollectionChanged, CollectionRemoved
+    };
+    struct ChangeItem {
+      ChangeType type;
+      DataReference item;
+      QString collection;
+    };
+    bool changeRecording;
+    QList<ChangeItem> changes;
+
+    void addChange( ChangeItem &c )
+    {
+      bool skipCurrent = false;
+      // compress changes
+      for ( QList<ChangeItem>::Iterator it = changes.begin(); it != changes.end(); ) {
+        if ( !(*it).item.isNull() && (*it).item == c.item ) {
+          if ( (*it).type == ItemAdded && c.type == ItemRemoved )
+            skipCurrent = true; // add + remove -> noop
+          else if ( (*it).type == ItemAdded && c.type == ItemChanged )
+            c.type = ItemAdded; // add + change -> add
+          it = changes.erase( it );
+        } else if ( !(*it).collection.isEmpty() && (*it).collection == c.collection ) {
+          if ( (*it).type == CollectionAdded && c.type == CollectionRemoved )
+            skipCurrent = true; // add + remove -> noop
+          else if ( (*it).type == CollectionAdded && c.type == CollectionChanged )
+            c.type = ItemAdded; // add + change -> add
+          it = changes.erase( it );
+        } else
+          ++it;
+      }
+
+      if ( !skipCurrent )
+        changes << c;
+    }
+
+    void loadChanges()
+    {
+      changes.clear();
+      mSettings->beginGroup( "Changes" );
+      int size = mSettings->beginReadArray( "change" );
+      for ( int i = 0; i < size; ++i ) {
+        mSettings->setArrayIndex( i );
+        ChangeItem c;
+        c.type = (ChangeType)mSettings->value( "type" ).toInt();
+        c.item = DataReference( mSettings->value( "item_uid" ).toInt(), mSettings->value( "item_rid" ).toString() );
+        c.collection =  mSettings->value( "collection" ).toString();
+        changes << c;
+      }
+      mSettings->endArray();
+      mSettings->endGroup();
+      changeRecording = mSettings->value( "Resource/ChangeRecording", false ).toBool();
+    }
+
+    void saveChanges()
+    {
+      mSettings->beginGroup( "Changes" );
+      mSettings->beginWriteArray( "change", changes.count() );
+      for ( int i = 0; i < changes.count(); ++i ) {
+        mSettings->setArrayIndex( i );
+        ChangeItem c = changes.at( i );
+        mSettings->setValue( "type", c.type );
+        mSettings->setValue( "item_uid", c.item.persistanceID() );
+        mSettings->setValue( "item_rid", c.item.externalUrl() );
+        mSettings->setValue( "collection", c.collection );
+      }
+      mSettings->endArray();
+      mSettings->endGroup();
+      mSettings->setValue( "Resource/ChangeRecording", changeRecording );
+    }
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -132,6 +205,8 @@ ResourceBase::ResourceBase( const QString & id )
   connect( d->monitor, SIGNAL(itemRemoved(Akonadi::DataReference)), SLOT(slotItemRemoved(Akonadi::DataReference)) );
   d->monitor->ignoreSession( session() );
   d->monitor->monitorResource( d->mId.toLatin1() );
+
+  d->loadChanges();
 
   // initial configuration
   bool initialized = settings()->value( "Resource/Initialized", false ).toBool();
@@ -282,6 +357,7 @@ QString ResourceBase::parseArguments( int argc, char **argv )
 
 void ResourceBase::quit()
 {
+  d->saveChanges();
   aboutToQuit();
 
   d->mSettings->sync();
@@ -356,21 +432,68 @@ void ResourceBase::slotDeliveryDone(KJob * job)
   QDBusConnection::sessionBus().send( reply );
 }
 
+void ResourceBase::enableChangeRecording(bool enable)
+{
+  if ( d->changeRecording == enable )
+    return;
+  d->changeRecording = enable;
+  if ( !d->changeRecording ) {
+    // replay changes
+    foreach ( const Private::ChangeItem c, d->changes ) {
+      switch ( c.type ) {
+        case Private::ItemAdded:
+          itemAdded( c.item );
+          break;
+        case Private::ItemChanged:
+          itemChanged( c.item );
+          break;
+        case Private::ItemRemoved:
+          itemRemoved( c.item );
+          break;
+        case Private::CollectionAdded:
+        case Private::CollectionChanged:
+        case Private::CollectionRemoved:
+          // TODO
+          break;
+      }
+    }
+    d->changes.clear();
+  }
+}
+
 void ResourceBase::slotItemAdded(const Akonadi::DataReference & ref)
 {
-  // TODO: offline change tracking
-  itemAdded( ref );
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::ItemAdded;
+    c.item = ref;
+    d->addChange( c );
+  } else {
+    itemAdded( ref );
+  }
 }
 
 void ResourceBase::slotItemChanged(const Akonadi::DataReference & ref)
 {
-  // TODO: offline change tracking
-  itemChanged( ref );
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::ItemChanged;
+    c.item = ref;
+    d->addChange( c );
+  } else {
+    itemChanged( ref );
+  }
 }
 
 void ResourceBase::slotItemRemoved(const Akonadi::DataReference & ref)
 {
-  // TODO: offline change tracking
-  itemRemoved( ref );
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::ItemRemoved;
+    c.item = ref;
+    d->addChange( c );
+  } else {
+    itemRemoved( ref );
+  }
 }
 

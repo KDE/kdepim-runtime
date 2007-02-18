@@ -48,5 +48,8 @@
     </method>
     <method name="cleanup">
     </method>
+    <method name="enableChangeRecording">
+      <arg type="b" direction="in"/>
+    </method>
   </interface>
 </node>
