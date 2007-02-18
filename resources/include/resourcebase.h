@@ -2,6 +2,7 @@
     This file is part of akonadiresources.
 
     Copyright (c) 2006 Till Adam <adam@kde.org>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -27,6 +28,8 @@
 #include <QtCore/QString>
 
 #include <kdepim_export.h>
+
+#include <libakonadi/job.h>
 
 #include "resource.h"
 
@@ -236,11 +239,33 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     */
     bool deliverItem( Akonadi::Job* job, const QDBusMessage &msg );
 
+    /**
+      Reimplement to handle adding of new items.
+      @param ref DataReference to the newly added item.
+    */
+    virtual void itemAdded( const DataReference &ref ) { Q_UNUSED( ref ); }
+
+    /**
+      Reimplement to handle changes to existing items.
+      @param ref DataReference to the changed item.
+    */
+    virtual void itemChanged( const DataReference &ref ) { Q_UNUSED( ref ); }
+
+    /**
+      Reimplement to handle deletion of items.
+      @param ref DataReference to the deleted item.
+    */
+    virtual void itemRemoved( const DataReference &ref ) { Q_UNUSED( ref ); }
+
   private:
     static QString parseArguments( int, char** );
 
   private Q_SLOTS:
     void slotDeliveryDone( KJob* job );
+
+    void slotItemAdded( const Akonadi::DataReference &ref );
+    void slotItemChanged( const Akonadi::DataReference &ref );
+    void slotItemRemoved( const Akonadi::DataReference &ref );
 
   private:
     class Private;

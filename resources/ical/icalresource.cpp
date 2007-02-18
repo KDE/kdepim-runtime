@@ -174,4 +174,29 @@ void ICalResource::loadFile()
   mCalendar->load( file );
 }
 
+void ICalResource::itemAdded(const DataReference & ref)
+{
+  ItemFetchJob* fetch = new ItemFetchJob( ref, session() );
+  // TODO: error handling
+  if ( fetch->exec() && !fetch->items().isEmpty() ) {
+    ICalFormat format;
+    Item *item = fetch->items().first();
+    Incidence* i = format.fromString( QString::fromUtf8( item->data() ) );
+    if ( i )
+      mCalendar->addIncidence( i );
+  }
+}
+
+void ICalResource::itemChanged(const DataReference & ref)
+{
+  qWarning() << "Implement me!";
+}
+
+void ICalResource::itemRemoved(const DataReference & ref)
+{
+  Incidence *i = mCalendar->incidence( ref.externalUrl().toString() );
+  if ( i )
+    mCalendar->deleteIncidence( i );
+}
+
 #include "icalresource.moc"

@@ -2,6 +2,7 @@
     This file is part of libakonadi.
 
     Copyright (c) 2006 Till Adam <adam@kde.org>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -39,6 +40,7 @@
 #include "tracerinterface.h"
 
 #include <libakonadi/job.h>
+#include <libakonadi/monitor.h>
 
 using namespace Akonadi;
 
@@ -80,6 +82,7 @@ class ResourceBase::Private
     QSettings *mSettings;
 
     Session *session;
+    Monitor *monitor;
     QHash<Akonadi::Job*, QDBusMessage> pendingReplys;
 };
 
@@ -122,14 +125,20 @@ ResourceBase::ResourceBase( const QString & id )
   if ( !name.isEmpty() )
     d->mName = name;
 
+  d->session = new Session( d->mId.toLatin1(), this );
+  d->monitor = new Monitor( this );
+  connect( d->monitor, SIGNAL(itemAdded(Akonadi::DataReference)), SLOT(slotItemAdded(Akonadi::DataReference)) );
+  connect( d->monitor, SIGNAL(itemChanged(Akonadi::DataReference)), SLOT(slotItemChanged(Akonadi::DataReference)) );
+  connect( d->monitor, SIGNAL(itemRemoved(Akonadi::DataReference)), SLOT(slotItemRemoved(Akonadi::DataReference)) );
+  d->monitor->ignoreSession( session() );
+  d->monitor->monitorResource( d->mId.toLatin1() );
+
   // initial configuration
   bool initialized = settings()->value( "Resource/Initialized", false ).toBool();
   if ( !initialized ) {
     QTimer::singleShot( 0, this, SLOT(configure()) ); // finish construction first
-    settings()->value( "Resource/Initialized", true );
+    settings()->setValue( "Resource/Initialized", true );
   }
-
-  d->session = new Session( d->mId.toLatin1(), this );
 }
 
 ResourceBase::~ResourceBase()
@@ -346,3 +355,22 @@ void ResourceBase::slotDeliveryDone(KJob * job)
   }
   QDBusConnection::sessionBus().send( reply );
 }
+
+void ResourceBase::slotItemAdded(const Akonadi::DataReference & ref)
+{
+  // TODO: offline change tracking
+  itemAdded( ref );
+}
+
+void ResourceBase::slotItemChanged(const Akonadi::DataReference & ref)
+{
+  // TODO: offline change tracking
+  itemChanged( ref );
+}
+
+void ResourceBase::slotItemRemoved(const Akonadi::DataReference & ref)
+{
+  // TODO: offline change tracking
+  itemRemoved( ref );
+}
+
