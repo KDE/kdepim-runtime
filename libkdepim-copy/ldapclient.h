@@ -37,6 +37,7 @@
 #include <kdepim_export.h>
 
 class KConfig;
+class KConfigGroup;
 
 namespace KPIM {
 
@@ -157,8 +158,8 @@ class KDEPIM_EXPORT LdapSearch : public QObject
     LdapSearch();
 
     static KConfig *config();
-    static void readConfig( KLDAP::LdapServer &server, KConfig *config, int num, bool active );
-    static void writeConfig( const KLDAP::LdapServer &server, KConfig *config, int j, bool active );
+    static void readConfig( KLDAP::LdapServer &server, const KConfigGroup &config, int num, bool active );
+    static void writeConfig( const KLDAP::LdapServer &server, KConfigGroup &config, int j, bool active );
 
     void startSearch( const QString& txt );
     void cancelSearch();

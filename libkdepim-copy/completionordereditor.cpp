@@ -105,8 +105,8 @@ private:
 
 void LDAPCompletionItem::save( CompletionOrderEditor* )
 {
-  KConfig config( "kabldaprc" );
-  config.setGroup( "LDAP" );
+  KConfig _config( "kabldaprc" );
+  KConfigGroup config(&_config, "LDAP" );
   config.writeEntry( QString( "SelectedCompletionWeight%1" ).arg( mLdapClient->clientNumber() ),
                      mWeight );
   config.sync();

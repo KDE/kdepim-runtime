@@ -45,7 +45,7 @@
 #include <kcomponentdata.h>
 #include <klineedit.h>
 #include <klocale.h>
-#include <ksimpleconfig.h>
+#include <kconfig.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
 #include <kfiledialog.h>
@@ -588,7 +588,7 @@ void KImportDialog::assignTemplate()
 
   for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
   {
-    KSimpleConfig config( *it, true );
+    KConfig config( *it, KConfig::OnlyLocal);
 
     if ( !config.hasGroup( "csv column map" ) )
 	    continue;
@@ -608,13 +608,13 @@ void KImportDialog::assignTemplate()
   if ( !ok )
     return;
 
-  KSimpleConfig config( fileMap[ tmp ], true );
-  config.setGroup( "General" );
+  KConfig _config( fileMap[ tmp ], KConfig::OnlyLocal );
+  KConfigGroup config(&_config, "General" );
   int numColumns = config.readEntry( "Columns", 0 );
   int format = config.readEntry( "Format", 0 );
 
   // create the column map
-  config.setGroup( "csv column map" );
+  config.changeGroup( "csv column map" );
   for ( int i = 0; i < numColumns; ++i ) {
     int col = config.readEntry( QString::number( i ), 0 );
     columnMap.insert( i, col );
@@ -753,15 +753,15 @@ void KImportDialog::saveTemplate()
   if ( name.isEmpty() )
     return;
 
-  KConfig config( fileName );
-  config.setGroup( "General" );
+  KConfig _config( fileName  );
+  KConfigGroup config(&_config, "General" );
   config.writeEntry( "Columns", mColumns.count() );
   config.writeEntry( "Format", mFormatCombo->currentIndex() + 1 );
 
-  config.setGroup( "Misc" );
+  config.changeGroup( "Misc" );
   config.writeEntry( "Name", name );
 
-  config.setGroup( "csv column map" );
+  config.changeGroup( "csv column map" );
 
   KImportColumn *column;
   int counter = 0;

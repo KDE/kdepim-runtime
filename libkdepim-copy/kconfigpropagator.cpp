@@ -54,8 +54,8 @@ QString KConfigPropagator::ChangeConfig::arg2() const
 
 void KConfigPropagator::ChangeConfig::apply()
 {
-  KConfig cfg( file );
-  cfg.setGroup( group );
+  KConfig _cfg( file  );
+  KConfigGroup cfg(&_cfg, group );
   cfg.writeEntry( name, value );
 
   cfg.sync();
@@ -259,8 +259,8 @@ void KConfigPropagator::updateChanges()
     }
     QString value = itemValueAsString( item );
 
-    KConfig target( r.targetFile );
-    target.setGroup( r.targetGroup );
+    KConfig _target( r.targetFile  );
+    KConfigGroup target(&_target, r.targetGroup );
     QString targetValue = target.readEntry( r.targetEntry, QString() );
     if ( r.hideValue ) targetValue = KStringHandler::obscure( targetValue );
     if ( targetValue != value ) {

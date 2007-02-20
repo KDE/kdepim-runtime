@@ -21,7 +21,7 @@
 
 #include <pluginloaderbase.h>
 
-#include <ksimpleconfig.h>
+#include <kconfig.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <klibloader.h>
@@ -71,7 +71,7 @@ namespace KPIM {
                                          KStandardDirs::NoDuplicates );
     for ( QStringList::const_iterator it = list.begin() ;
 	  it != list.end() ; ++it ) {
-      KSimpleConfig config( *it, true );
+      KConfig config( *it, KConfig::OnlyLocal);
       if ( config.hasGroup( "Misc" ) && config.hasGroup( "Plugin" ) ) {
 	config.setGroup( "Plugin" );
 

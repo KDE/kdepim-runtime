@@ -499,8 +499,8 @@ void AddresseeLineEdit::loadContacts()
 
   QApplication::setOverrideCursor( KCursor::waitCursor() ); // loading might take a while
 
-  KConfig config( "kpimcompletionorder" ); // The weights for non-imap kabc resources is there.
-  config.setGroup( "CompletionWeights" );
+  KConfig _config( "kpimcompletionorder" );
+  KConfigGroup config(&_config, "CompletionWeights" );
 
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   // Can't just use the addressbook's iterator, we need to know which subresource
@@ -885,8 +885,8 @@ void KPIM::AddresseeLineEdit::slotCompletion()
 // not cached, to make sure we get an up-to-date value when it changes
 KCompletion::CompOrder KPIM::AddresseeLineEdit::completionOrder()
 {
-  KConfig config( "kpimcompletionorder" );
-  config.setGroup( "General" );
+  KConfig _config( "kpimcompletionorder" );
+  KConfigGroup config(&_config, "General" );
   const QString order = config.readEntry( "CompletionOrder", "Weighted" );
 
   if ( order == "Weighted" )

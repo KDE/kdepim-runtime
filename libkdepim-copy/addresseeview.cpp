@@ -578,8 +578,8 @@ void AddresseeView::emailClicked( const QString &email )
 
 void AddresseeView::phoneNumberClicked( const QString &number )
 {
-  KConfig config( "kaddressbookrc" );
-  config.setGroup( "General" );
+  KConfig _config( "kaddressbookrc" );
+  KConfigGroup config(&_config, "General" );
   QString commandLine = config.readEntry( "PhoneHookApplication" );
 
   if ( commandLine.isEmpty() ) {
@@ -593,8 +593,8 @@ void AddresseeView::phoneNumberClicked( const QString &number )
 
 void AddresseeView::smsTextClicked( const QString &number )
 {
-  KConfig config( "kaddressbookrc" );
-  config.setGroup( "General" );
+  KConfig _config( "kaddressbookrc" );
+  KConfigGroup config(&_config, "General" );
   QString commandLine = config.readEntry( "SMSHookApplication" );
 
   if ( commandLine.isEmpty() ) {
@@ -610,8 +610,8 @@ void AddresseeView::smsTextClicked( const QString &number )
 
 void AddresseeView::sendSMS( const QString &number, const QString &text )
 {
-  KConfig config( "kaddressbookrc" );
-  config.setGroup( "General" );
+  KConfig _config( "kaddressbookrc" );
+  KConfigGroup config(&_config, "General" );
   QString commandLine = config.readEntry( "SMSHookApplication" );
 
   KTemporaryFile file;
@@ -629,8 +629,8 @@ void AddresseeView::sendSMS( const QString &number, const QString &text )
 
 void AddresseeView::faxNumberClicked( const QString &number )
 {
-  KConfig config( "kaddressbookrc" );
-  config.setGroup( "General" );
+  KConfig _config( "kaddressbookrc" );
+  KConfigGroup config(&_config, "General" );
   QString commandLine = config.readEntry( "FaxHookApplication", "kdeprintfax --phone %N" );
 
   if ( commandLine.isEmpty() ) {
