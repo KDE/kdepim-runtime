@@ -39,6 +39,7 @@
 
 #include "tracerinterface.h"
 
+#include <libakonadi/itemstorejob.h>
 #include <libakonadi/job.h>
 #include <libakonadi/monitor.h>
 
@@ -495,5 +496,11 @@ void ResourceBase::slotItemRemoved(const Akonadi::DataReference & ref)
   } else {
     itemRemoved( ref );
   }
+}
+
+void ResourceBase::changesCommitted(const DataReference & ref)
+{
+  ItemStoreJob *job = new ItemStoreJob( ref, session() );
+  job->setClean();
 }
 
