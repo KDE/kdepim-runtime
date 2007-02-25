@@ -138,7 +138,11 @@ void ICalResource::synchronize()
 
 void ICalResource::aboutToQuit()
 {
-  mCalendar->save();
+  QString fileName = settings()->value( "General/Path" ).toString();
+  if ( fileName.isEmpty() )
+    error( i18n("No filename specified.") );
+  else if ( !mCalendar->save( fileName ) )
+    error( i18n("Failed to save calendar file to %1", fileName ) );
 }
 
 void ICalResource::configure()
@@ -182,8 +186,11 @@ void ICalResource::itemAdded(const DataReference & ref)
     ICalFormat format;
     Item *item = fetch->items().first();
     Incidence* i = format.fromString( QString::fromUtf8( item->data() ) );
-    if ( i )
+    if ( i ) {
       mCalendar->addIncidence( i );
+      DataReference r( ref.persistanceID(), i->uid() );
+      changesCommitted( r );
+    }
   }
 }
 

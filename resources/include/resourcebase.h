@@ -265,8 +265,8 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     virtual void itemRemoved( const DataReference &ref ) { Q_UNUSED( ref ); }
 
     /**
-      Resets the dirty flag of the given item. Call whenever you
-      have successfully written changes back to the server.
+      Resets the dirty flag of the given item and updates the remote id.
+      Call whenever you have successfully written changes back to the server.
       @param ref DataReference of the item.
     */
     void changesCommitted( const DataReference &ref );

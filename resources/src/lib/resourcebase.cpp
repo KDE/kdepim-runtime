@@ -501,6 +501,7 @@ void ResourceBase::slotItemRemoved(const Akonadi::DataReference & ref)
 void ResourceBase::changesCommitted(const DataReference & ref)
 {
   ItemStoreJob *job = new ItemStoreJob( ref, session() );
+  job->setRemoteId();
   job->setClean();
 }
 
