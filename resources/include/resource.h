@@ -91,7 +91,7 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * @param type The type of the data that shall be put, either a full object or
      *             just a lightweight version.
      */
-    virtual bool requestItemDelivery( int uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage& msg ) = 0;
+    virtual bool requestItemDelivery( int uid, const QString &remoteId, int type, const QDBusMessage& msg ) = 0;
 
     /**
      * This method is called whenever the resource shall show its configuration dialog

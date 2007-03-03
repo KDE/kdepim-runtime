@@ -50,7 +50,7 @@ ICalResource::~ ICalResource()
   delete mCalendar;
 }
 
-bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg )
+bool ICalResource::requestItemDelivery( int uid, const QString &remoteId, int type, const QDBusMessage &msg )
 {
   qDebug() << "ICalResource::requestItemDelivery()";
   Incidence *incidence = mCalendar->incidence( remoteId );

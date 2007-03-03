@@ -40,7 +40,7 @@ class ICalResource : public Akonadi::ResourceBase
     ~ICalResource();
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( int uid,const QString &remoteId, const QString & collection, int type, const QDBusMessage &msg );
+    virtual bool requestItemDelivery( int uid,const QString &remoteId, int type, const QDBusMessage &msg );
     virtual void synchronize();
     virtual void configure();
 

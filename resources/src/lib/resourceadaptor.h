@@ -59,7 +59,6 @@ class ResourceAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"b\" />\n"
 "      <arg direction=\"in\" type=\"i\" name=\"uid\" />\n"
 "      <arg direction=\"in\" type=\"s\" name=\"remotedId\" />\n"
-"      <arg direction=\"in\" type=\"s\" name=\"collection\" />\n"
 "      <arg direction=\"in\" type=\"i\" name=\"type\" />\n"
 "    </method>\n"
 "    <method name=\"configure\" >\n"
@@ -97,7 +96,7 @@ public Q_SLOTS: // METHODS
     uint progress();
     QString progressMessage();
     void quit();
-    bool requestItemDelivery(int uid, const QString &remotedId, const QString &collection, int type, const QDBusMessage &msg);
+    bool requestItemDelivery(int uid, const QString &remotedId, int type, const QDBusMessage &msg);
     Q_NOREPLY void setName(const QString &name);
     int status();
     QString statusMessage();
