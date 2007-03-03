@@ -158,6 +158,10 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     void crashHandler( int signal );
 
+    virtual bool requestItemDelivery( int uid, const QString &remoteId, int type, const QDBusMessage &msg );
+    virtual bool isOnline() const;
+    virtual void setOnline( bool state );
+
   public Q_SLOTS:
     /**
      * This method is called to quit the resource.
@@ -237,6 +241,18 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      * be used for all jobs.
      */
     Session* session();
+
+    /**
+     * This method is called whenever an external query for putting data in the
+     * storage is received. Must be reimplemented in any resource.
+     *
+     * @param ref The DataReference of this item.
+     * @param remoteId The remote identifier of the item that is requested.
+     * @param type The type of the data that shall be put, either a full object or
+     *             just a lightweight version.
+     * @param msg QDBusMessage to pass along for delayed reply.
+     */
+    virtual bool requestItemDelivery( const DataReference &ref, int type, const QDBusMessage &msg ) = 0;
 
     /**
       Call this method from in requestItemDelivery(). It will generate an appropriate

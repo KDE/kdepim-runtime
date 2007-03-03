@@ -26,6 +26,10 @@
 
 #include <kdepim_export.h>
 
+#ifndef Q_NOREPLY
+#define Q_NOREPLY
+#endif
+
 class QDBusMessage;
 
 namespace Akonadi {
@@ -39,6 +43,7 @@ namespace Akonadi {
 class AKONADI_RESOURCES_EXPORT Resource : public QObject
 {
   Q_OBJECT
+  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Resource" )
 
   public:
     typedef QList<Resource*> List;
@@ -87,7 +92,6 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      *
      * @param uid The Akonadi uid of the item that is requested.
      * @param remoteId The remote identifier of the item that is requested.
-     * @param collection The id of the collection where the data should be put.
      * @param type The type of the data that shall be put, either a full object or
      *             just a lightweight version.
      */
@@ -97,12 +101,12 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * This method is called whenever the resource shall show its configuration dialog
      * to the user.
      */
-    virtual void configure() = 0;
+    virtual Q_NOREPLY void configure() = 0;
 
     /**
      * This method is called whenever the resource should start synchronization.
      */
-    virtual void synchronize() = 0;
+    virtual Q_NOREPLY void synchronize() = 0;
 
     /**
      * This method is used to set the name of the resource.
@@ -119,6 +123,19 @@ class AKONADI_RESOURCES_EXPORT Resource : public QObject
      * the system, so it can do some cleanup stuff.
      */
     virtual void cleanup() const = 0;
+
+    /**
+     * Returns true if the resource is in online mode.
+     */
+    virtual bool isOnline() const = 0;
+
+    /**
+     * Sets the online/offline mode. In offline mode, the resource
+     * should not do any network operations and instead record all changes
+     * locally until switched back into online mode.
+     * @param state Switch to online mode if true, to offline mode otherwise.
+     */
+    virtual void setOnline( bool state ) = 0;
 
   Q_SIGNALS:
     /**

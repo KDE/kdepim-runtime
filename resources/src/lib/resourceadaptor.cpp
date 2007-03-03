@@ -4,7 +4,7 @@
  *
  * dbusxml2cpp is Copyright (C) 2006 Trolltech ASA. All rights reserved.
  *
- * This is an auto-generated file and manually modified file.
+ * This is an auto-generated file.
  * Do not edit! All changes made to it will be lost.
  */
 
@@ -45,10 +45,10 @@ void ResourceAdaptor::configure()
     parent()->configure();
 }
 
-void ResourceAdaptor::enableChangeRecording(bool in0)
+bool ResourceAdaptor::isOnline()
 {
-    // handle method call org.kde.Akonadi.Resource.enableChangeRecording
-    parent()->enableChangeRecording(in0);
+    // handle method call org.kde.Akonadi.Resource.isOnline
+    return parent()->isOnline();
 }
 
 QString ResourceAdaptor::name()
@@ -75,16 +75,22 @@ void ResourceAdaptor::quit()
     parent()->quit();
 }
 
-bool ResourceAdaptor::requestItemDelivery(int uid, const QString &remotedId, int type, const QDBusMessage &msg)
+bool ResourceAdaptor::requestItemDelivery(int uid, const QString &remoteId, int type, const QDBusMessage &msg)
 {
     // handle method call org.kde.Akonadi.Resource.requestItemDelivery
-    return parent()->requestItemDelivery(uid, remotedId, type, msg);
+    return parent()->requestItemDelivery(uid, remoteId, type, msg);
 }
 
 void ResourceAdaptor::setName(const QString &name)
 {
     // handle method call org.kde.Akonadi.Resource.setName
     parent()->setName(name);
+}
+
+void ResourceAdaptor::setOnline(bool state)
+{
+    // handle method call org.kde.Akonadi.Resource.setOnline
+    parent()->setOnline(state);
 }
 
 int ResourceAdaptor::status()

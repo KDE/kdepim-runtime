@@ -21,6 +21,7 @@
 */
 
 #include <kcmdlineargs.h>
+#include <klocale.h>
 
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
@@ -62,6 +63,7 @@ class ResourceBase::Private
       : mStatusCode( Ready ),
         mProgress( 0 ),
         mSettings( 0 ),
+        online( true ),
         changeRecording( false )
     {
       mStatusMessage = defaultReadyMessage();
@@ -86,6 +88,8 @@ class ResourceBase::Private
     Session *session;
     Monitor *monitor;
     QHash<Akonadi::Job*, QDBusMessage> pendingReplys;
+
+    bool online;
 
     // change recording
     enum ChangeType {
@@ -162,7 +166,9 @@ class ResourceBase::Private
 
 QString ResourceBase::Private::defaultReadyMessage() const
 {
-  return tr( "Ready" );
+  if ( online )
+    return i18n( "Ready" );
+  return i18n( "Offline" );
 }
 
 QString ResourceBase::Private::defaultSyncingMessage() const
@@ -198,6 +204,8 @@ ResourceBase::ResourceBase( const QString & id )
   const QString name = d->mSettings->value( "Resource/Name" ).toString();
   if ( !name.isEmpty() )
     d->mName = name;
+
+  d->online = settings()->value( "Resource/Online", true ).toBool();
 
   d->session = new Session( d->mId.toLatin1(), this );
   d->monitor = new Monitor( this );
@@ -505,3 +513,23 @@ void ResourceBase::changesCommitted(const DataReference & ref)
   job->setClean();
 }
 
+bool ResourceBase::requestItemDelivery(int uid, const QString & remoteId, int type, const QDBusMessage & msg)
+{
+  if ( !isOnline() ) {
+    error( i18n( "Cannot fetch item in offline mode." ) );
+    return false;
+  }
+  return requestItemDelivery( DataReference( uid, remoteId ), type, msg );
+}
+
+bool ResourceBase::isOnline() const
+{
+  return d->online;
+}
+
+void ResourceBase::setOnline(bool state)
+{
+  d->online = state;
+  settings()->setValue( "Resource/Online", state );
+  enableChangeRecording( !state );
+}

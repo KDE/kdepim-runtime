@@ -41,6 +41,7 @@ class AgentWidget : public QWidget
     void removeAgent();
     void configureAgent();
     void synchronizeAgent();
+    void toggleOnline();
 
   private:
     Akonadi::AgentInstanceView *mView;

@@ -29,7 +29,7 @@
     <method name="requestItemDelivery">
       <arg type="b" direction="out"/>
       <arg name="uid" type="i" direction="in"/>
-      <arg name="remotedId" type="s" direction="in"/>
+      <arg name="remoteId" type="s" direction="in"/>
       <arg name="type" type="i" direction="in"/>
     </method>
     <method name="configure">
@@ -39,7 +39,6 @@
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
     </method>
     <method name="setName">
-      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
       <arg name="name" type="s" direction="in"/>
     </method>
     <method name="name">
@@ -47,8 +46,11 @@
     </method>
     <method name="cleanup">
     </method>
-    <method name="enableChangeRecording">
-      <arg type="b" direction="in"/>
+    <method name="isOnline">
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setOnline">
+      <arg name="state" type="b" direction="in"/>
     </method>
   </interface>
 </node>
