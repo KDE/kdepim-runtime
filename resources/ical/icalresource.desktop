@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Akonadi ICal Resource
 Name[x-test]=xxAkonadi ICal Resourcexx
 Comment=An agent to load data from a local iCal file
+Comment[x-test]=xxAn agent to load data from a local iCal filexx
 Type=AkonadiResource
 Exec=akonadi_ical_resource
 Icon=ical
