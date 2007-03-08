@@ -654,12 +654,12 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
   topL->addItem(btnL);
 
   mRuleUp = new QPushButton( this );
-  mRuleUp->setIcon( KIcon( "up" ) );
+  mRuleUp->setIcon( KIcon( "go-up" ) );
   mRuleUp->setToolTip( i18n("Move rule up") );
   btnL->addWidget( mRuleUp );
   connect( mRuleUp, SIGNAL( clicked() ), SLOT( slotRuleUp() ) );
   mRuleDown = new QPushButton( this );
-  mRuleDown->setIcon( KIcon( "down" ) );
+  mRuleDown->setIcon( KIcon( "go-down" ) );
   mRuleDown->setToolTip( i18n("Move rule down") );
   btnL->addWidget( mRuleDown );
   connect( mRuleDown, SIGNAL( clicked() ), SLOT( slotRuleDown() ) );
@@ -671,7 +671,7 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
 
   editRule=0L;
   newRule = new QPushButton(this);
-  newRule->setIcon( KIcon( "filenew" ) );
+  newRule->setIcon( KIcon( "document-new" ) );
   newRule->setToolTip(i18n("New rule")),
   btnL->addWidget(newRule);
   connect(newRule, SIGNAL(clicked()), this, SLOT(slotNewRule()));
@@ -684,12 +684,12 @@ RuleListWidget::RuleListWidget(KScoringManager *m, bool standalone, QWidget *p, 
     connect(editRule,SIGNAL(clicked()),this,SLOT(slotEditRule()));
   }
   delRule = new QPushButton(this);
-  delRule->setIcon( KIcon( "editdelete" ) );
+  delRule->setIcon( KIcon( "edit-delete" ) );
   delRule->setToolTip(i18n("Remove rule"));
   btnL->addWidget(delRule);
   connect(delRule, SIGNAL(clicked()), this, SLOT(slotDelRule()));
   copyRule = new QPushButton(this);
-  copyRule->setIcon(KIcon("editcopy"));
+  copyRule->setIcon(KIcon("edit-copy"));
   copyRule->setToolTip(i18n("Copy rule"));
   btnL->addWidget(copyRule);
   connect(copyRule, SIGNAL(clicked()), this, SLOT(slotCopyRule()));

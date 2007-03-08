@@ -144,24 +144,24 @@ DefaultEditor::createActions( KActionCollection *ac )
   //
   // Character Formatting
   //
-  m_actionBold = new KToggleAction( i18n("&Bold"), "text_bold", Qt::CTRL+Qt::Key_B,
+  m_actionBold = new KToggleAction( i18n("&Bold"), "format-text-bold", Qt::CTRL+Qt::Key_B,
                                     ac, "format_bold" );
   connect( m_actionBold, SIGNAL(toggled(bool)),
            m_textEdit, SLOT(setBold(bool)) );
 
-  m_actionItalic = new KToggleAction( i18n("&Italic"), "text_italic", Qt::CTRL+Qt::Key_I,
+  m_actionItalic = new KToggleAction( i18n("&Italic"), "format-text-italic", Qt::CTRL+Qt::Key_I,
                                       ac, "format_italic" );
 
   connect( m_actionItalic, SIGNAL(toggled(bool)),
            m_textEdit, SLOT(setItalic(bool) ));
 
-  m_actionUnderline = new KToggleAction( i18n("&Underline"), "text_under", Qt::CTRL+Qt::Key_U,
+  m_actionUnderline = new KToggleAction( i18n("&Underline"), "format-text-underline", Qt::CTRL+Qt::Key_U,
                                          ac, "format_underline" );
 
   connect( m_actionUnderline, SIGNAL(toggled(bool)),
            m_textEdit, SLOT(setUnderline(bool)) );
 
-  (void) new KAction( i18n("Text &Color..."), "colorpicker", 0,
+  (void) new KAction( i18n("Text &Color..."), "color-picker", 0,
                       this, SLOT(formatColor()),
                       ac, "format_color" );
 
@@ -197,7 +197,7 @@ DefaultEditor::createActions( KActionCollection *ac )
   connect( m_actionAlignRight, SIGNAL(toggled(bool)),
            this, SLOT(setAlignRight(bool)) );
 
-  m_actionAlignJustify = new KToggleAction( i18n("&Justify"), "text_block", 0,
+  m_actionAlignJustify = new KToggleAction( i18n("&Justify"), "format-justify-fill", 0,
                                             ac, "format_align_justify" );
   connect( m_actionAlignJustify, SIGNAL(toggled(bool)),
            this, SLOT(setAlignJustify(bool)) );

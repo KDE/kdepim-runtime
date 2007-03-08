@@ -236,13 +236,13 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   KVBox* upDownBox = new KVBox( page );
   mUpButton = new KPushButton( upDownBox );
   mUpButton->setObjectName( "mUpButton" );
-  mUpButton->setIcon( KIcon("up") );
+  mUpButton->setIcon( KIcon("go-up") );
   mUpButton->setEnabled( false ); // b/c no item is selected yet
   mUpButton->setFocusPolicy( Qt::StrongFocus );
 
   mDownButton = new KPushButton( upDownBox );
   mDownButton->setObjectName( "mDownButton" );
-  mDownButton->setIcon( KIcon("down") );
+  mDownButton->setIcon( KIcon("go-down") );
   mDownButton->setEnabled( false ); // b/c no item is selected yet
   mDownButton->setFocusPolicy( Qt::StrongFocus );
 

@@ -260,8 +260,8 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   rightLabel->setFont(fnt);
 
   // icons
-  pmRight = KIcon("forward");
-  pmLeft = KIcon("back");
+  pmRight = KIcon("go-next");
+  pmLeft = KIcon("go-previous");
 
   arrowBtn1 = new QPushButton(page);
   arrowBtn1->setEnabled(false);

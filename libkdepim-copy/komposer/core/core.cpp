@@ -246,7 +246,7 @@ Core::createActions()
 {
   KStandardAction::close( this, SLOT(slotClose()), actionCollection() );
 
-  (void) new KAction( i18n( "&Send" ), "mail_send", Qt::CTRL+Qt::Key_Return,
+  (void) new KAction( i18n( "&Send" ), "mail-send", Qt::CTRL+Qt::Key_Return,
                       this, SLOT(slotSendNow()), actionCollection(),
                       "send_default" );
 
@@ -254,13 +254,13 @@ Core::createActions()
                       this, SLOT(slotSendLater()),
                       actionCollection(), "send_alternative" );
 
-  (void) new KAction( i18n( "Save in &Drafts Folder" ), "filesave", 0,
+  (void) new KAction( i18n( "Save in &Drafts Folder" ), "document-save", 0,
                       this, SLOT(slotSaveDraft()),
                       actionCollection(), "save_in_drafts" );
-  (void) new KAction( i18n( "&Insert File..." ), "fileopen", 0,
+  (void) new KAction( i18n( "&Insert File..." ), "document-open", 0,
                       this,  SLOT(slotInsertFile()),
                       actionCollection(), "insert_file" );
-  (void) new KAction( i18n( "&Address Book" ), "contents",0,
+  (void) new KAction( i18n( "&Address Book" ), "help-contents",0,
                       this, SLOT(slotAddrBook()),
                       actionCollection(), "addressbook" );
   (void) new KAction( i18n( "&New Composer" ), "mail_new",

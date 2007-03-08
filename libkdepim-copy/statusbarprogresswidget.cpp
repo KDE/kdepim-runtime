@@ -77,7 +77,7 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   m_pButton = new QPushButton( this );
   m_pButton->setSizePolicy( QSizePolicy( QSizePolicy::Minimum,
                                          QSizePolicy::Minimum ) );
-  m_pButton->setIcon( SmallIcon( "up" ) );
+  m_pButton->setIcon( SmallIcon( "go-up" ) );
   box->addWidget( m_pButton  );
   stack = new QStackedWidget( this );
   stack->setMaximumHeight( fontMetrics().height() );
@@ -286,11 +286,11 @@ void StatusbarProgressWidget::slotProgressDialogVisible( bool b )
 {
   // Update the hide/show button when the detailed one is shown/hidden
   if ( b ) {
-    m_pButton->setIcon( SmallIcon( "down" ) );
+    m_pButton->setIcon( SmallIcon( "go-down" ) );
     m_pButton->setToolTip( i18n("Hide detailed progress window") );
     setMode();
   } else {
-    m_pButton->setIcon( SmallIcon( "up" ) );
+    m_pButton->setIcon( SmallIcon( "go-up" ) );
     m_pButton->setToolTip( i18n("Show detailed progress window") );
   }
 }
