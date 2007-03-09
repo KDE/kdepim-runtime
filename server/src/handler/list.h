@@ -27,6 +27,8 @@ namespace Akonadi {
 class Location;
 
 /**
+  @ingroup akoandi_server_handler
+
   Handler for the list command.
  */
 class AKONADIPRIVATE_EXPORT List : public Handler

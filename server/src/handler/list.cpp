@@ -23,6 +23,7 @@
 #include "storage/datastore.h"
 #include "storage/entity.h"
 #include "imapparser.h"
+#include "handlerhelper.h"
 
 #include "list.h"
 #include "response.h"
@@ -90,7 +91,10 @@ bool List::handleLine(const QByteArray& line )
             }
             list += ") ";
             list += "\"/\" \""; // FIXME delimiter
-            list += loc.name().toUtf8();
+            if ( loc.isValid() )
+              list += HandlerHelper::pathForCollection( loc ).toUtf8();
+            else
+              list += loc.name().toUtf8(); // search folder
             list += "\"";
             response.setString( list );
             emit responseAvailable( response );
@@ -164,7 +168,7 @@ bool List::listCollections( const QString & prefix,
 
   const QList<Location> locations = db->listLocations( resource );
   foreach( Location l, locations ) {
-    const QString location = locationDelimiter + l.name();
+    const QString location = locationDelimiter + HandlerHelper::pathForCollection( l );
 #if 0
     qDebug() << "Location: " << location << " l: " << l << " prefix: " << fullPrefix;
 #endif
