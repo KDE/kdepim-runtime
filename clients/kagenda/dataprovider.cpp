@@ -25,9 +25,10 @@
 #include "contactmodel.h"
 #include "dummymodel.h"
 
+#include <libakonadi/collection.h>
 #include <libakonadi/session.h>
 #include <libakonadi/itemappendjob.h>
-#include <libakonadi/messagefetchjob.h>
+#include <libakonadi/itemfetchjob.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/icalformat.h>
@@ -171,23 +172,20 @@ void DataProvider::saveFile()
 
 void DataProvider::loadAkonadi()
 {
-#warning Port me!
-#if 0
   if ( mAgendaModel ) {
-    Akonadi::MessageFetchJob job( "res2/foo2" );
+    // FIXME: get rid of the hardcoded collection
+    Akonadi::ItemFetchJob job( Akonadi::Collection( 1 ) );
     if ( !job.exec() ) {
       KMessageBox::error( 0, "Error fetching messages" );
     } else {
 
     }
   }
-#endif
 }
 
 void DataProvider::saveAkonadi()
 {
   if ( mAgendaModel ) {
-//    Akonadi::Session jobQueue( this );
     KCal::ICalFormat format;
     foreach( Event e, mAgendaModel->events() ) {
       KCal::Event *event = new KCal::Event();
@@ -196,21 +194,14 @@ void DataProvider::saveAkonadi()
       event->setDtEnd( e.end );
       event->setFloats( false );
       QString ical = format.toICalString( event );
-#warning Port me!
-#if 0
-      Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( "res2/foo2", ical.toUtf8(),
-        "text/calendar", this );
+      // FIXME: get rid of the hardcoded collection
+      Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( Akonadi::Collection( 1 ),
+          "text/calendar", this );
+      job->setData( ical.toUtf8() );
       if ( !job->exec() ) {
         KMessageBox::error( 0, i18n("Error") );
       }
-//      jobQueue.addJob( job );
-#endif
     }
-#if 0
-    if ( !jobQueue.exec() ) {
-      KMessageBox::error( 0, i18n("Error saving to Akonadi") );
-    }
-#endif
   }
 }
 
