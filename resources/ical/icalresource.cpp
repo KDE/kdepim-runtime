@@ -82,7 +82,7 @@ void ICalResource::synchronize()
     changeStatus( Error, i18n("No or more than one collection found!") );
     return;
   }
-  QString col = ljob->collections().first().name();
+  Collection col = ljob->collections().first();
 
   CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
   QList<QByteArray> mimeTypes;
@@ -90,13 +90,13 @@ void ICalResource::synchronize()
   modify->setContentTypes( mimeTypes );
   modify->setCachePolicy( 1 ); // ### just for testing
   if ( !modify->exec() ) {
-    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col, modify->errorString()) );
+    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col.name(), modify->errorString()) );
     return;
   }
 
-  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
+  ItemFetchJob *fetch = new ItemFetchJob( col.path(), session() );
   if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col, fetch->errorString()) );
+    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
     return;
   }
 
@@ -118,7 +118,7 @@ void ICalResource::synchronize()
     }
     if ( found )
       continue;
-    ItemAppendJob *append = new ItemAppendJob( col, QByteArray(), "text/calendar", session() );
+    ItemAppendJob *append = new ItemAppendJob( col.path(), QByteArray(), "text/calendar", session() );
     append->setRemoteId( uid );
     if ( !append->exec() ) {
       changeProgress( 0 );
