@@ -68,14 +68,14 @@ void DataProvider::addEvent( int year, int month, int day,
   if ( !mAgendaModel ) return;
 
   Event e;
-  
+
 #ifdef __GNUC__
 #warning What time zone should be used? Default to local time zone.
 #endif
   e.start = KDateTime( QDate( year, month, day ), QTime( startHour, 0 ) );
   e.end = KDateTime( QDate( year, month, day ), QTime( endHour, 0 ) );
   e.title = title;
-  
+
   mAgendaModel->addEvent( e );
 }
 
@@ -117,11 +117,11 @@ void DataProvider::addContact( const QString &name, const QString &email,
   if ( !mContactModel ) return;
 
   Contact c;
-  
+
   c.name = name;
   c.email = email;
   c.phone = phone;
-  
+
   mContactModel->addContact( c );
 }
 
@@ -134,17 +134,17 @@ void DataProvider::loadFile()
 {
   if ( mAgendaModel ) {
     mAgendaModel->clear();
-    
+
     KCal::CalendarLocal cal( "UTC" );
     cal.load( "kagenda.ics" );
-    
+
     KCal::Event::List events = cal.events();
     foreach( KCal::Event *event, events ) {
       Event e;
       e.title = event->summary();
       e.start = event->dtStart();
       e.end = event->dtEnd();
-      
+
       mAgendaModel->addEvent( e );
     }
   }
@@ -164,21 +164,24 @@ void DataProvider::saveFile()
     }
     cal.save( "kagenda.ics" );
   }
-  
+
   if ( mContactModel ) {
   }
 }
 
 void DataProvider::loadAkonadi()
 {
+#warning Port me!
+#if 0
   if ( mAgendaModel ) {
     Akonadi::MessageFetchJob job( "res2/foo2" );
     if ( !job.exec() ) {
       KMessageBox::error( 0, "Error fetching messages" );
     } else {
-      
+
     }
   }
+#endif
 }
 
 void DataProvider::saveAkonadi()
@@ -193,12 +196,15 @@ void DataProvider::saveAkonadi()
       event->setDtEnd( e.end );
       event->setFloats( false );
       QString ical = format.toICalString( event );
+#warning Port me!
+#if 0
       Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( "res2/foo2", ical.toUtf8(),
         "text/calendar", this );
       if ( !job->exec() ) {
         KMessageBox::error( 0, i18n("Error") );
       }
 //      jobQueue.addJob( job );
+#endif
     }
 #if 0
     if ( !jobQueue.exec() ) {

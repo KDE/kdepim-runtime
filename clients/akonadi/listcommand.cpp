@@ -51,7 +51,6 @@ void ListCommand::exec()
       out() << collection->name() << endl;
     }
   }
-#endif
 
   ItemFetchJob* itemFetchJob = new ItemFetchJob( mPath.toUtf8() );
   if ( !itemFetchJob->exec() ) {
@@ -76,6 +75,7 @@ void ListCommand::exec()
       out() << str << endl;
     }
   }
+#endif
 
 #if 0
   Akonadi::MessageFetchJob messageJob( mPath.toUtf8() );

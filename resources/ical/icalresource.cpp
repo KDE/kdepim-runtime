@@ -94,7 +94,7 @@ void ICalResource::synchronize()
     return;
   }
 
-  ItemFetchJob *fetch = new ItemFetchJob( col.path(), session() );
+  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
   if ( !fetch->exec() ) {
     changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
     return;
