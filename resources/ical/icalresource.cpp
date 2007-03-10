@@ -118,7 +118,7 @@ void ICalResource::synchronize()
     }
     if ( found )
       continue;
-    ItemAppendJob *append = new ItemAppendJob( col.path(), QByteArray(), "text/calendar", session() );
+    ItemAppendJob *append = new ItemAppendJob( col, "text/calendar", session() );
     append->setRemoteId( uid );
     if ( !append->exec() ) {
       changeProgress( 0 );
