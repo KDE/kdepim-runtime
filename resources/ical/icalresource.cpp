@@ -74,7 +74,7 @@ void ICalResource::synchronize()
 
   changeStatus( Syncing, i18n("Syncing with ICal file.") );
 
-  CollectionListJob *ljob = new CollectionListJob( Collection::root(), false, session() );
+  CollectionListJob *ljob = new CollectionListJob( Collection::root(), CollectionListJob::Flat, session() );
   ljob->setResource( identifier() );
   ljob->exec();
 
@@ -82,8 +82,7 @@ void ICalResource::synchronize()
     changeStatus( Error, i18n("No or more than one collection found!") );
     return;
   }
-  QString col = ljob->collections().first()->name();
-  delete ljob;
+  QString col = ljob->collections().first().name();
 
   CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
   QList<QByteArray> mimeTypes;

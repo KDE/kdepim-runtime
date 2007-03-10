@@ -38,6 +38,8 @@ ListCommand::ListCommand( const QString &path )
 
 void ListCommand::exec()
 {
+#warning Port me!
+#if 0
   CollectionListJob* collectionJob = new CollectionListJob( mPath.toUtf8() );
   if ( !collectionJob->exec() ) {
     err() << "Error listing collection '" << mPath << "': "
@@ -49,6 +51,7 @@ void ListCommand::exec()
       out() << collection->name() << endl;
     }
   }
+#endif
 
   ItemFetchJob* itemFetchJob = new ItemFetchJob( mPath.toUtf8() );
   if ( !itemFetchJob->exec() ) {

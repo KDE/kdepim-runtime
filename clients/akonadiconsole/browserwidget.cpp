@@ -68,10 +68,13 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
 {
+#warning Port me!
+#if 0
   QString path = mCollectionView->model()->data( index, CollectionModel::PathRole ).toString();
   if ( path.isNull() )
     return;
   mItemModel->setPath( path );
+#endif
 }
 
 void BrowserWidget::itemActivated(const QModelIndex & index)
