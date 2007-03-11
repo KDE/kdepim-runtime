@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Fulltext Search Provider
+Name[es]=Proveedor de búsqueda de texto Akonadi
 Name[x-test]=xxAkonadi Fulltext Search Providerxx
 Comment=Strigi-based fulltext search
+Comment[es]=Búsqueda de texto basada en Strigi
 Comment[x-test]=xxStrigi-based fulltext searchxx
 Type=AkonadiSearchProvider
 Exec=akonadi_strigi_searchprovider

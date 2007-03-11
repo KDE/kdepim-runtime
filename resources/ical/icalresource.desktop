@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi ICal Resource
+Name[es]=Recurso Ical Akonadi
 Name[x-test]=xxAkonadi ICal Resourcexx
 Comment=An agent to load data from a local iCal file
+Comment[es]=Un agente para cargar datos de un archivo iCal local
 Comment[x-test]=xxAn agent to load data from a local iCal filexx
 Type=AkonadiResource
 Exec=akonadi_ical_resource
