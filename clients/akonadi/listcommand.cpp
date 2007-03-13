@@ -24,9 +24,8 @@
 #include "out.h"
 
 #include <libakonadi/collectionlistjob.h>
-#include <libakonadi/messagefetchjob.h>
+#include <libakonadi/collectionpathresolver.h>
 #include <libakonadi/itemfetchjob.h>
-#include <kmime/kmime_message.h>
 
 using namespace Akonadi;
 
@@ -38,21 +37,26 @@ ListCommand::ListCommand( const QString &path )
 
 void ListCommand::exec()
 {
-#warning Port me!
-#if 0
-  CollectionListJob* collectionJob = new CollectionListJob( mPath.toUtf8() );
+  CollectionPathResolver *resolver = new CollectionPathResolver( mPath );
+  if ( !resolver->exec() ) {
+    err() << "Error resolving path '" << mPath << "': " << resolver->errorString() << endl;
+    return;
+  }
+  int currentColId = resolver->collection();
+
+  CollectionListJob* collectionJob = new CollectionListJob( Collection( currentColId ) );
   if ( !collectionJob->exec() ) {
     err() << "Error listing collection '" << mPath << "': "
       << collectionJob->errorString()
       << endl;
     return;
   } else {
-    foreach( Akonadi::Collection *collection, collectionJob->collections() ) {
-      out() << collection->name() << endl;
+    foreach( const Akonadi::Collection collection, collectionJob->collections() ) {
+      out() << collection.name() << endl;
     }
   }
 
-  ItemFetchJob* itemFetchJob = new ItemFetchJob( mPath.toUtf8() );
+  ItemFetchJob* itemFetchJob = new ItemFetchJob( Collection( currentColId ) );
   if ( !itemFetchJob->exec() ) {
     err() << "Error listing items at '" << mPath << "': "
       << itemFetchJob->errorString()
@@ -75,19 +79,4 @@ void ListCommand::exec()
       out() << str << endl;
     }
   }
-#endif
-
-#if 0
-  Akonadi::MessageFetchJob messageJob( mPath.toUtf8() );
-  if ( !messageJob.exec() ) {
-    err() << "Error listing messages at '" << mPath << "': "
-      << messageJob.errorString()
-      << endl;
-  } else {
-    foreach( Akonadi::Message *m, messageJob.messages() ) {
-      KMime::Message *message = m->mime();
-      out() << "Subject: " << message->subject()->asUnicodeString() << endl;
-    }
-  }
-#endif
 }
