@@ -186,22 +186,5 @@ bool List::listCollections( const QString & prefix,
       rv = true;
   }
 
-  // list queries (only in global namespace)
-  if ( !resource.isValid() ) {
-    if ( fullPrefix == locationDelimiter ) {
-      QList<Location> persistenSearches = db->listPersistentSearches();
-      if ( !persistenSearches.isEmpty() ) {
-        Location l;
-        l.setName( QLatin1String( "Search" ) );
-        result << l;
-      }
-      rv = true;
-    }
-    if ( fullPrefix == QLatin1String("/Search/")  || (fullPrefix == locationDelimiter && hasStar) ) {
-      result += db->listPersistentSearches();
-      rv = true;
-    }
-  }
-
   return rv;
 }
