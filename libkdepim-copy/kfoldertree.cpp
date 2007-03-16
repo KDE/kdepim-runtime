@@ -4,7 +4,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kdebug.h>
-#include <kstringhandler.h>
+
 #include <QPainter>
 #include <QApplication>
 #include <q3header.h>
@@ -286,7 +286,7 @@ QString KFolderTreeItem::squeezeFolderName( const QString &text,
                                             const QFontMetrics &fm,
                                             uint width ) const
 {
-  return KStringHandler::rPixelSqueeze( text, fm, width );
+  return fm.elidedText( text, Qt::ElideRight, width  );
 }
 
 
