@@ -29,6 +29,7 @@
 
 #include <kdepim_export.h>
 
+#include <libakonadi/collection.h>
 #include <libakonadi/job.h>
 
 #include "resource.h"
@@ -47,6 +48,22 @@ class Session;
  *
  * It provides many convenience methods to make implementing a
  * new akonadi resource agent as simple as possible.
+ *
+ * <h4>Synchronizing Scheme</h4>
+ *
+ * The following process is started by calling synchronize().
+ *
+ * 1) Synchronize collection tree:
+ *   - retrieveCollections() is called, retrieve collection tree from
+ *     backend if necessary.
+ *   - convert collection tree from backend specific format into
+ *     Collection objects. Make sure to add a remote id to identify
+ *     collection on the backend as well as the remote identifier of
+ *     the parent collection.
+ *   - call collectionsRetrieved() and provide the list of collections
+ *
+ * 2) Synchronize a single collection
+ *   - TODO
  */
 class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 {
@@ -129,7 +146,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     /**
      * This method is called whenever the resource should start synchronization.
      */
-    virtual void synchronize() = 0;
+    virtual void synchronize();
 
     /**
      * This method is used to set the name of the resource.
@@ -180,6 +197,18 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     void enableChangeRecording( bool enable );
 
   protected:
+    /**
+      Retrieve the collection tree from the remote server and supply it via
+      collectionsRetrieved().
+    */
+    virtual void retrieveCollections() = 0;
+
+    /**
+      Synchronize the given collection with the backend.
+      @param collection The collection to sync.
+    */
+    virtual void synchronizeCollection( const Collection &collection ) = 0;
+
     /**
      * Creates a base resource.
      *
@@ -286,6 +315,12 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
       @param ref DataReference of the item.
     */
     void changesCommitted( const DataReference &ref );
+
+    /**
+      Call this to supply the folder tree retrieved from the remote server.
+      @param collections A list of collections.
+    */
+    void collectionsRetrieved( const Collection::List &collections );
 
   private:
     static QString parseArguments( int, char** );

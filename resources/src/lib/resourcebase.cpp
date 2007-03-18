@@ -36,12 +36,13 @@
 #include "kcrash.h"
 #include "resourcebase.h"
 #include "resourceadaptor.h"
-#include "session.h"
+#include "collectionsync.h"
 
 #include "tracerinterface.h"
 
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/job.h>
+#include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
 using namespace Akonadi;
@@ -64,7 +65,8 @@ class ResourceBase::Private
         mProgress( 0 ),
         mSettings( 0 ),
         online( true ),
-        changeRecording( false )
+        changeRecording( false ),
+        syncState( Idle )
     {
       mStatusMessage = defaultReadyMessage();
     }
@@ -162,6 +164,14 @@ class ResourceBase::Private
       mSettings->endGroup();
       mSettings->setValue( "Resource/ChangeRecording", changeRecording );
     }
+
+    // synchronize states
+    enum SyncState {
+      Idle,
+      SyncingCollections,
+      SyncingSingleCollection
+    };
+    SyncState syncState;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -307,6 +317,10 @@ void ResourceBase::configure()
 
 void ResourceBase::synchronize()
 {
+  if ( d->syncState != Private::Idle )
+    return;
+
+  retrieveCollections();
 }
 
 void ResourceBase::setName( const QString &name )
@@ -532,4 +546,12 @@ void ResourceBase::setOnline(bool state)
   d->online = state;
   settings()->setValue( "Resource/Online", state );
   enableChangeRecording( !state );
+}
+
+void ResourceBase::collectionsRetrieved(const Collection::List & collections)
+{
+  CollectionSync *syncer = new CollectionSync( d->mId, session() );
+  syncer->setRemoteCollections( collections );
+  // TODO finish this
+  d->syncState = Private::Idle;
 }

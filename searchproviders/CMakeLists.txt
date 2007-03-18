@@ -74,8 +74,8 @@ endif ( STRIGI_FOUND )
 
 ########### install files ###############
 
-install( FILES
-	searchprovider.h
-	searchproviderbase.h
-DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi
-)
+# install( FILES
+# 	searchprovider.h
+# 	searchproviderbase.h
+# DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi
+# )

@@ -47,6 +47,9 @@ class ICalResource : public Akonadi::ResourceBase
     virtual void itemChanged( const Akonadi::DataReference &ref );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 
+    void retrieveCollections() {}
+    void synchronizeCollection( const Akonadi::Collection &collection ) {}
+
   private:
     void loadFile();
 

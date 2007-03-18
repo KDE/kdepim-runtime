@@ -17,6 +17,7 @@ set( akonadiresources_LIB_SRC
 
 set( akonadiresources_automoc_LIB_SRC
 	resourceadaptor.cpp
+	collectionsync.cpp
 )
 
 set( akonadiresources_manualmoc_LIB_SRC
@@ -28,9 +29,9 @@ qt4_add_dbus_interfaces( akonadiresources_automoc_LIB_SRC ../../../server/interf
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
 kde4_automoc(${akonadiresources_manualmoc_LIB_SRC} ${akonadiresources_automoc_LIB_SRC})
 kde4_add_library(
-        akonadiresources SHARED 
-        ${akonadiresources_LIB_SRC} 
-        ${akonadiresources_automoc_LIB_SRC} 
+        akonadiresources SHARED
+        ${akonadiresources_LIB_SRC}
+        ${akonadiresources_automoc_LIB_SRC}
 )
 
 
@@ -43,7 +44,7 @@ install(TARGETS akonadiresources  DESTINATION ${LIB_INSTALL_DIR})
 install( FILES ../../include/resource.h
                ../../include/resourcebase.h
                ../../include/org.kde.Akonadi.Resource.xml
-DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources 
+DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources
 )
 
 
