@@ -32,7 +32,7 @@ class ResourceNull : public Resource
 {
   public:
     ResourceNull( const KConfig *cfg ) : Resource( cfg ) {}
-    ResourceNull() : Resource( 0 ) {}
+    ResourceNull() : Resource() {}
     virtual ~ResourceNull() {}
   
     Ticket *requestSaveTicket() { return 0; }

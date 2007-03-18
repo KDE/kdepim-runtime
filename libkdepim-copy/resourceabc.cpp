@@ -26,8 +26,13 @@
 
 using namespace KPIM;
 
-ResourceABC::ResourceABC( const KConfig* config )
-  : KABC::Resource( config )
+ResourceABC::ResourceABC()
+  : KABC::Resource()
+{
+}
+
+ResourceABC::ResourceABC( const KConfigGroup &group )
+  : KABC::Resource( group )
 {
 }
 

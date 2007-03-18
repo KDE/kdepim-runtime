@@ -46,7 +46,8 @@ class KDEPIM_EXPORT ResourceABC : public KABC::Resource
   Q_OBJECT
 
 public:
-  ResourceABC( const KConfig* );
+  ResourceABC();
+  ResourceABC( const KConfigGroup &group );
   virtual ~ResourceABC();
 
   /**
