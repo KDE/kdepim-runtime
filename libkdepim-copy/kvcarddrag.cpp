@@ -26,7 +26,7 @@
 
 QString KVCardDrag::mimeType()
 {
-  return "text/x-vcard";
+  return "text/directory";
 }
 
 bool KVCardDrag::populateMimeData( QMimeData *md, const QByteArray &content )
