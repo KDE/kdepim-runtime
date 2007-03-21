@@ -30,7 +30,7 @@ namespace Akonadi {
 
   Syncs remote and local collections.
 */
-class CollectionSync : Job
+class CollectionSync : public Job
 {
   Q_OBJECT
 

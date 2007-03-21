@@ -332,6 +332,10 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     void slotItemChanged( const Akonadi::DataReference &ref );
     void slotItemRemoved( const Akonadi::DataReference &ref );
 
+    void slotCollectionSyncDone( KJob *job );
+    void slotLocalListDone( KJob *job );
+    void slotSyncNextCollection();
+
   private:
     class Private;
     Private* const d;

@@ -37,7 +37,6 @@ class ICalResource : public Akonadi::ResourceBase
 
   public Q_SLOTS:
     virtual bool requestItemDelivery( const Akonadi::DataReference &ref, int type, const QDBusMessage &msg );
-    virtual void synchronize();
     virtual void configure();
 
   protected:
@@ -47,8 +46,8 @@ class ICalResource : public Akonadi::ResourceBase
     virtual void itemChanged( const Akonadi::DataReference &ref );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 
-    void retrieveCollections() {}
-    void synchronizeCollection( const Akonadi::Collection &collection ) {}
+    void retrieveCollections();
+    void synchronizeCollection( const Akonadi::Collection &col );
 
   private:
     void loadFile();

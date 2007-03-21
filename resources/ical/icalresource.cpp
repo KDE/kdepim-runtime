@@ -42,7 +42,7 @@ ICalResource::ICalResource( const QString &id )
     :ResourceBase( id ), mCalendar( 0 )
 {
   loadFile();
-  synchronize();
+//   synchronize();
 }
 
 ICalResource::~ ICalResource()
@@ -65,74 +65,6 @@ bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, int t
     job->setData( data );
     return deliverItem( job, msg );
   }
-}
-
-void ICalResource::synchronize()
-{
-  if ( !mCalendar )
-    return;
-
-  changeStatus( Syncing, i18n("Syncing with ICal file.") );
-
-  CollectionListJob *ljob = new CollectionListJob( Collection::root(), CollectionListJob::Flat, session() );
-  ljob->setResource( identifier() );
-  ljob->exec();
-
-  if ( ljob->collections().count() != 1 ) {
-    changeStatus( Error, i18n("No or more than one collection found!") );
-    return;
-  }
-  Collection col = ljob->collections().first();
-
-  CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
-  QList<QByteArray> mimeTypes;
-  mimeTypes << "text/calendar";
-  modify->setContentTypes( mimeTypes );
-  modify->setCachePolicy( 1 ); // ### just for testing
-  if ( !modify->exec() ) {
-    changeStatus( Error, i18n("Unable to set properties of collection '%1': %2", col.name(), modify->errorString()) );
-    return;
-  }
-
-  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
-  if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
-    return;
-  }
-
-  changeProgress( 0 );
-
-  Item::List items = fetch->items();
-  delete fetch;
-  Incidence::List incidences = mCalendar->incidences();
-
-  int counter = 0;
-  foreach ( Incidence *incidence, incidences ) {
-    QString uid = incidence->uid();
-    bool found = false;
-    foreach ( Item* item, items ) {
-      if ( item->reference().externalUrl().toString() == uid ) {
-        found = true;
-        break;
-      }
-    }
-    if ( found )
-      continue;
-    ItemAppendJob *append = new ItemAppendJob( col, "text/calendar", session() );
-    append->setRemoteId( uid );
-    if ( !append->exec() ) {
-      changeProgress( 0 );
-      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );
-      return;
-    }
-    delete append;
-
-    counter++;
-    int percentage = (counter * 100) / incidences.count();
-    changeProgress( percentage );
-  }
-
-  changeStatus( Ready, QString() );
 }
 
 void ICalResource::aboutToQuit()
@@ -203,6 +135,66 @@ void ICalResource::itemRemoved(const Akonadi::DataReference & ref)
   Incidence *i = mCalendar->incidence( ref.externalUrl().toString() );
   if ( i )
     mCalendar->deleteIncidence( i );
+}
+
+void ICalResource::retrieveCollections()
+{
+  Collection c;
+  c.setParent( Collection::root() );
+  c.setRemoteId( settings()->value( "General/Path" ).toString() );
+  c.setName( name() );
+  QList<QByteArray> mimeTypes;
+  mimeTypes << "text/calendar";
+  c.setContentTypes( mimeTypes );
+//   c.setCachePolicy( 1 ); // ### just for testing
+  Collection::List list;
+  list << c;
+  collectionsRetrieved( list );
+}
+
+void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
+{
+  if ( !mCalendar )
+    return;
+
+  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
+  if ( !fetch->exec() ) {
+    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
+    return;
+  }
+
+  changeProgress( 0 );
+
+  Item::List items = fetch->items();
+  Incidence::List incidences = mCalendar->incidences();
+
+  int counter = 0;
+  foreach ( Incidence *incidence, incidences ) {
+    QString uid = incidence->uid();
+    bool found = false;
+    foreach ( Item* item, items ) {
+      if ( item->reference().externalUrl().toString() == uid ) {
+        found = true;
+        break;
+      }
+    }
+    if ( found )
+      continue;
+    ItemAppendJob *append = new ItemAppendJob( col, "text/calendar", session() );
+    append->setRemoteId( uid );
+    if ( !append->exec() ) {
+      changeProgress( 0 );
+      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );
+      return;
+    }
+
+    counter++;
+    int percentage = (counter * 100) / incidences.count();
+    changeProgress( percentage );
+  }
+
+  changeStatus( Ready, QString() );
+
 }
 
 #include "icalresource.moc"

@@ -40,6 +40,7 @@
 
 #include "tracerinterface.h"
 
+#include <libakonadi/collectionlistjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/job.h>
 #include <libakonadi/session.h>
@@ -168,10 +169,14 @@ class ResourceBase::Private
     // synchronize states
     enum SyncState {
       Idle,
+      RetrievingRemoteCollections,
       SyncingCollections,
+      RetrievingLocalCollections,
       SyncingSingleCollection
     };
     SyncState syncState;
+
+    Collection::List localCollections;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -320,6 +325,7 @@ void ResourceBase::synchronize()
   if ( d->syncState != Private::Idle )
     return;
 
+  d->syncState = Private::RetrievingRemoteCollections;
   retrieveCollections();
 }
 
@@ -552,6 +558,55 @@ void ResourceBase::collectionsRetrieved(const Collection::List & collections)
 {
   CollectionSync *syncer = new CollectionSync( d->mId, session() );
   syncer->setRemoteCollections( collections );
-  // TODO finish this
-  d->syncState = Private::Idle;
+  d->syncState = Private::SyncingCollections;
+  connect( syncer, SIGNAL(result(KJob*)), SLOT(slotCollectionSyncDone(KJob*)) );
+}
+
+void ResourceBase::slotCollectionSyncDone(KJob * job)
+{
+  if ( job->error() ) {
+    error( job->errorString() );
+    d->syncState = Private::Idle;
+    return;
+  }
+
+  d->syncState = Private::RetrievingLocalCollections;
+  CollectionListJob *list = new CollectionListJob( Collection::root(), CollectionListJob::Recursive, session() );
+  list->setResource( d->mId );
+  connect( list, SIGNAL(result(KJob*)), SLOT(slotLocalListDone(KJob*)) );
+}
+
+void ResourceBase::slotLocalListDone(KJob * job)
+{
+  if ( job->error() ) {
+    error( job->errorString() );
+    d->syncState = Private::Idle;
+    return;
+  }
+
+  d->localCollections = static_cast<CollectionListJob*>( job )->collections();
+  if ( d->localCollections.isEmpty() ) {
+    d->syncState = Private::Idle;
+    return;
+  }
+
+  // make sure all signals are emitted before we enter syncCollection()
+  // which might use exec() and block signals to Session which causes a deadlock
+  QTimer::singleShot( 0, this, SLOT(slotSyncNextCollection()) );
+  d->syncState = Private::SyncingSingleCollection;
+}
+
+void ResourceBase::slotSyncNextCollection()
+{
+  Collection c = d->localCollections.takeFirst();
+  changeStatus( Syncing, i18n( "Syncing collection '%1'", c.name() ) );
+  synchronizeCollection( c );
+  // TODO finish me
+  changeStatus( Ready );
+
+  if ( d->localCollections.isEmpty() ) {
+    d->syncState = Private::Idle;
+    return;
+  }
+  QTimer::singleShot( 0, this, SLOT(slotSyncNextCollection()) );
 }
