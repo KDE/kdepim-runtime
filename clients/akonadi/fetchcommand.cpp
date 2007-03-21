@@ -38,8 +38,8 @@ void FetchCommand::exec()
         << fetchJob->errorString()
         << endl;
   } else {
-    foreach( Item *item, fetchJob->items() ) {
-      out() << item->data() << endl;
+    foreach( Item item, fetchJob->items() ) {
+      out() << item.data() << endl;
     }
   }
 }

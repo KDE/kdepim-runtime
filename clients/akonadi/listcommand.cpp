@@ -62,20 +62,20 @@ void ListCommand::exec()
       << itemFetchJob->errorString()
       << endl;
   } else {
-    foreach( Akonadi::Item *item, itemFetchJob->items() ) {
+    foreach( Akonadi::Item item, itemFetchJob->items() ) {
       QString str;
-      str = QLatin1String("Item: ") + QString::number( item->reference().persistanceID() );
-      if ( !item->reference().externalUrl().isEmpty() ) {
-        str += QLatin1String(" [") + item->reference().externalUrl().toString() + QLatin1Char(']');
+      str = QLatin1String("Item: ") + QString::number( item.reference().persistanceID() );
+      if ( !item.reference().externalUrl().isEmpty() ) {
+        str += QLatin1String(" [") + item.reference().externalUrl().toString() + QLatin1Char(']');
       }
-      if ( !item->flags().isEmpty() ) {
+      if ( !item.flags().isEmpty() ) {
         str += QLatin1String(" ( ");
-        foreach( QByteArray flag, item->flags() ) {
+        foreach( QByteArray flag, item.flags() ) {
           str += flag + QLatin1Char(' ');
         }
         str += QLatin1Char(')');
       }
-      str += QLatin1String(" [") + item->mimeType() + QLatin1Char(']');
+      str += QLatin1String(" [") + item.mimeType() + QLatin1Char(']');
       out() << str << endl;
     }
   }

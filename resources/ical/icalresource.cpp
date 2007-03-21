@@ -115,8 +115,8 @@ void ICalResource::itemAdded(const Akonadi::DataReference & ref)
   // TODO: error handling
   if ( fetch->exec() && !fetch->items().isEmpty() ) {
     ICalFormat format;
-    Item *item = fetch->items().first();
-    Incidence* i = format.fromString( QString::fromUtf8( item->data() ) );
+    const Item item = fetch->items().first();
+    Incidence* i = format.fromString( QString::fromUtf8( item.data() ) );
     if ( i ) {
       mCalendar->addIncidence( i );
       DataReference r( ref.persistanceID(), i->uid() );
@@ -172,8 +172,8 @@ void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
   foreach ( Incidence *incidence, incidences ) {
     QString uid = incidence->uid();
     bool found = false;
-    foreach ( Item* item, items ) {
-      if ( item->reference().externalUrl().toString() == uid ) {
+    foreach ( Item item, items ) {
+      if ( item.reference().externalUrl().toString() == uid ) {
         found = true;
         break;
       }

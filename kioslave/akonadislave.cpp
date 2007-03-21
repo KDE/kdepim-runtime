@@ -73,8 +73,8 @@ void AkonadiSlave::get(const KUrl & url)
   if ( job->items().count() != 1 ) {
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
-    Item *item = job->items().first();
-    data( item->data() );
+    const Item item = job->items().first();
+    data( item.data() );
     data( QByteArray() );
     finished();
   }
@@ -93,10 +93,10 @@ void AkonadiSlave::stat(const KUrl & url)
   if ( job->items().count() != 1 ) {
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
-    Item *item = job->items().first();
+    const Item item = job->items().first();
     KIO::UDSEntry entry;
-    entry.insert( KIO::UDS_NAME, QString::number( item->reference().persistanceID() ) );
-    entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1( item->mimeType() ) );
+    entry.insert( KIO::UDS_NAME, QString::number( item.reference().persistanceID() ) );
+    entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1( item.mimeType() ) );
     statEntry( entry );
     finished();
   }

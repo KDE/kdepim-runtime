@@ -92,8 +92,8 @@ void BrowserWidget::itemFetchDone(KJob * job)
   } else if ( fetch->items().isEmpty() ) {
     qWarning() << "No item found!";
   } else {
-    Item *item = fetch->items().first();
-    mDataView->setPlainText( item->data() );
+    const Item item = fetch->items().first();
+    mDataView->setPlainText( item.data() );
   }
 }
 
