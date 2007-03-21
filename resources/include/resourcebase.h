@@ -38,6 +38,7 @@ class KJob;
 
 namespace Akonadi {
 
+class Item;
 class Job;
 class Session;
 
@@ -293,15 +294,15 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 
     /**
       Reimplement to handle adding of new items.
-      @param ref DataReference to the newly added item.
+      @param item The newly added item.
     */
-    virtual void itemAdded( const DataReference &ref ) { Q_UNUSED( ref ); }
+    virtual void itemAdded( const Item &item ) { Q_UNUSED( item ); }
 
     /**
       Reimplement to handle changes to existing items.
-      @param ref DataReference to the changed item.
+      @param item The changed item.
     */
-    virtual void itemChanged( const DataReference &ref ) { Q_UNUSED( ref ); }
+    virtual void itemChanged( const Item &item ) { Q_UNUSED( item ); }
 
     /**
       Reimplement to handle deletion of items.
@@ -328,9 +329,13 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
   private Q_SLOTS:
     void slotDeliveryDone( KJob* job );
 
-    void slotItemAdded( const Akonadi::DataReference &ref );
-    void slotItemChanged( const Akonadi::DataReference &ref );
-    void slotItemRemoved( const Akonadi::DataReference &ref );
+    void slotItemAdded( const Akonadi::Item &item );
+    void slotItemChanged( const Akonadi::Item &item );
+    void slotItemRemoved( const Akonadi::DataReference &reference );
+
+    void slotReplayNextItem();
+    void slotReplayItemAdded( KJob *job );
+    void slotReplayItemChanged( KJob *job );
 
     void slotCollectionSyncDone( KJob *job );
     void slotLocalListDone( KJob *job );

@@ -50,7 +50,7 @@ ICalResource::~ ICalResource()
   delete mCalendar;
 }
 
-bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, int type, const QDBusMessage &msg )
+bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
 {
   qDebug() << "ICalResource::requestItemDelivery()";
   Incidence *incidence = mCalendar->incidence( ref.externalUrl().toString() );
@@ -109,23 +109,18 @@ void ICalResource::loadFile()
   mCalendar->load( file );
 }
 
-void ICalResource::itemAdded(const Akonadi::DataReference & ref)
+void ICalResource::itemAdded( const Akonadi::Item & item )
 {
-  ItemFetchJob* fetch = new ItemFetchJob( ref, session() );
-  // TODO: error handling
-  if ( fetch->exec() && !fetch->items().isEmpty() ) {
-    ICalFormat format;
-    const Item item = fetch->items().first();
-    Incidence* i = format.fromString( QString::fromUtf8( item.data() ) );
-    if ( i ) {
-      mCalendar->addIncidence( i );
-      DataReference r( ref.persistanceID(), i->uid() );
-      changesCommitted( r );
-    }
+  ICalFormat format;
+  Incidence* i = format.fromString( QString::fromUtf8( item.data() ) );
+  if ( i ) {
+    mCalendar->addIncidence( i );
+    DataReference r( item.reference().persistanceID(), i->uid() );
+    changesCommitted( r );
   }
 }
 
-void ICalResource::itemChanged(const Akonadi::DataReference & ref)
+void ICalResource::itemChanged( const Akonadi::Item& )
 {
   qWarning() << "Implement me!";
 }

@@ -38,8 +38,8 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   Monitor* monitor = new Monitor( this );
   monitor->monitorMimeType( "message/rfc822" );
   monitor->monitorMimeType( "message/news" );
-  connect( monitor, SIGNAL(itemAdded(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
-  connect( monitor, SIGNAL(itemChanged(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
+  connect( monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
+  connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
   Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
@@ -55,9 +55,9 @@ QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
   return mimeTypes;
 }
 
-void MessageSearchProvider::itemChanged(const Akonadi::DataReference & ref)
+void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
 {
-  MessageFetchJob *job = new MessageFetchJob( ref, mSession );
+  MessageFetchJob *job = new MessageFetchJob( item.reference(), mSession );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemReceived(KJob*)) );
 }
 

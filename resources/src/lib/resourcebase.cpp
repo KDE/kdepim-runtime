@@ -41,6 +41,7 @@
 #include "tracerinterface.h"
 
 #include <libakonadi/collectionlistjob.h>
+#include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/job.h>
 #include <libakonadi/session.h>
@@ -224,9 +225,9 @@ ResourceBase::ResourceBase( const QString & id )
 
   d->session = new Session( d->mId.toLatin1(), this );
   d->monitor = new Monitor( this );
-  connect( d->monitor, SIGNAL(itemAdded(Akonadi::DataReference)), SLOT(slotItemAdded(Akonadi::DataReference)) );
-  connect( d->monitor, SIGNAL(itemChanged(Akonadi::DataReference)), SLOT(slotItemChanged(Akonadi::DataReference)) );
-  connect( d->monitor, SIGNAL(itemRemoved(Akonadi::DataReference)), SLOT(slotItemRemoved(Akonadi::DataReference)) );
+  connect( d->monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(slotItemAdded(const Akonadi::Item&)) );
+  connect( d->monitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(slotItemChanged(const Akonadi::Item&)) );
+  connect( d->monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(slotItemRemoved(const Akonadi::DataReference&)) );
   d->monitor->ignoreSession( session() );
   d->monitor->monitorResource( d->mId.toLatin1() );
 
@@ -467,50 +468,92 @@ void ResourceBase::enableChangeRecording(bool enable)
     return;
   d->changeRecording = enable;
   if ( !d->changeRecording ) {
-    // replay changes
-    foreach ( const Private::ChangeItem c, d->changes ) {
-      switch ( c.type ) {
-        case Private::ItemAdded:
-          itemAdded( c.item );
-          break;
-        case Private::ItemChanged:
-          itemChanged( c.item );
-          break;
-        case Private::ItemRemoved:
-          itemRemoved( c.item );
-          break;
-        case Private::CollectionAdded:
-        case Private::CollectionChanged:
-        case Private::CollectionRemoved:
-          // TODO
-          break;
-      }
-    }
-    d->changes.clear();
+    slotReplayNextItem();
   }
 }
 
-void ResourceBase::slotItemAdded(const Akonadi::DataReference & ref)
+void ResourceBase::slotReplayNextItem()
+{
+  if ( d->changes.count() > 0 ) {
+    const Private::ChangeItem c = d->changes.takeFirst();
+    switch ( c.type ) {
+      case Private::ItemAdded:
+        {
+          ItemFetchJob *job = new ItemFetchJob( c.item, this );
+          connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayItemAdded( KJob* ) ) );
+          job->start();
+        }
+        break;
+      case Private::ItemChanged:
+        {
+          ItemFetchJob *job = new ItemFetchJob( c.item, this );
+          connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayItemChanged( KJob* ) ) );
+          job->start();
+        }
+        break;
+      case Private::ItemRemoved:
+        itemRemoved( c.item );
+        break;
+      case Private::CollectionAdded:
+      case Private::CollectionChanged:
+      case Private::CollectionRemoved:
+        // TODO
+        break;
+    }
+  }
+}
+
+void ResourceBase::slotReplayItemAdded( KJob *job )
+{
+  if ( job->error() ) {
+    error( i18n( "Unable to fetch item in replay mode." ) );
+  } else {
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+
+    const Item item = fetchJob->items().first();
+    if ( item.isValid() )
+      itemAdded( item );
+  }
+
+  QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
+}
+
+void ResourceBase::slotReplayItemChanged( KJob *job )
+{
+  if ( job->error() ) {
+    error( i18n( "Unable to fetch item in replay mode." ) );
+  } else {
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+
+    const Item item = fetchJob->items().first();
+    if ( item.isValid() )
+      itemChanged( item );
+  }
+
+  QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
+}
+
+void ResourceBase::slotItemAdded( const Akonadi::Item &item )
 {
   if ( d->changeRecording ) {
     Private::ChangeItem c;
     c.type = Private::ItemAdded;
-    c.item = ref;
+    c.item = item.reference();
     d->addChange( c );
   } else {
-    itemAdded( ref );
+    itemAdded( item );
   }
 }
 
-void ResourceBase::slotItemChanged(const Akonadi::DataReference & ref)
+void ResourceBase::slotItemChanged( const Akonadi::Item &item )
 {
   if ( d->changeRecording ) {
     Private::ChangeItem c;
     c.type = Private::ItemChanged;
-    c.item = ref;
+    c.item = item.reference();
     d->addChange( c );
   } else {
-    itemChanged( ref );
+    itemChanged( item );
   }
 }
 

@@ -42,7 +42,7 @@ class StrigiProvider : public SearchProviderBase
     virtual QList<QByteArray> supportedMimeTypes() const { QList<QByteArray> l; l << "all/all"; return l; }
 
   protected slots:
-    void itemChanged(const Akonadi::DataReference &ref);
+    void itemChanged(const Akonadi::Item &item);
     void itemRemoved(const Akonadi::DataReference &ref);
     void itemReceived( KJob *job );
 

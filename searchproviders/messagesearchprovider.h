@@ -38,7 +38,7 @@ class MessageSearchProvider : public SearchProviderBase
     virtual QList<QByteArray> supportedMimeTypes() const;
 
   protected slots:
-    void itemChanged(const Akonadi::DataReference &ref);
+    void itemChanged(const Akonadi::Item &item);
     void itemRemoved(const Akonadi::DataReference &ref);
     void itemReceived( KJob *job );
 

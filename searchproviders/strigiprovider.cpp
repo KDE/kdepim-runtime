@@ -35,12 +35,9 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
 {
   mMonitor = new Monitor( this );
   mMonitor->monitorAll();
-  connect( mMonitor, SIGNAL(itemAdded(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
-  connect( mMonitor, SIGNAL(itemChanged(const Akonadi::DataReference&)), SLOT(itemChanged(const Akonadi::DataReference&)) );
+  connect( mMonitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
+  connect( mMonitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
-
-  mQueue = new Session( id.toLatin1(), this );
-  mMonitor->ignoreSession( mQueue );
 }
 
 Akonadi::StrigiProvider::~ StrigiProvider()
@@ -48,27 +45,15 @@ Akonadi::StrigiProvider::~ StrigiProvider()
   delete mMonitor;
 }
 
-void Akonadi::StrigiProvider::itemChanged(const Akonadi::DataReference & ref)
+void Akonadi::StrigiProvider::itemChanged(const Akonadi::Item & item)
 {
-  ItemFetchJob *job = new ItemFetchJob( ref, mQueue );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemReceived(KJob*)) );
+  mStrigi.indexFile( "akonadi:/" + QString::number( item.reference().persistanceID() ),
+                     QDateTime::currentDateTime().toTime_t(), item.data() );
 }
 
 void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
   mStrigi.indexFile( "akonadi:/" + QString::number( ref.persistanceID() ), QDateTime::currentDateTime().toTime_t(), QByteArray() );
-}
-
-void Akonadi::StrigiProvider::itemReceived(KJob * job)
-{
-  if ( job->error() || static_cast<ItemFetchJob*>( job )->items().count() == 0 ) {
-    // TODO: erro handling
-    qDebug() << "Job error:" << job->errorString();
-  } else {
-    Item *item = static_cast<ItemFetchJob*>( job )->items().first();
-    Q_ASSERT( item );
-    mStrigi.indexFile( "akonadi:/" + QString::number( item->reference().persistanceID() ), QDateTime::currentDateTime().toTime_t(), item->data() );
-  }
 }
 
 int main( int argc, char **argv )
