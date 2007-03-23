@@ -642,9 +642,15 @@ void ResourceBase::slotLocalListDone(KJob * job)
 void ResourceBase::slotSyncNextCollection()
 {
   Collection c = d->localCollections.takeFirst();
-  changeStatus( Syncing, i18n( "Syncing collection '%1'", c.name() ) );
-  synchronizeCollection( c );
-  // TODO finish me
+
+  // check if this collection actually can contain anything
+  QList<QByteArray> contentTypes = c.contentTypes();
+  contentTypes.removeAll( Collection::collectionMimeType() );
+  if ( !contentTypes.isEmpty() ) {
+    changeStatus( Syncing, i18n( "Syncing collection '%1'", c.name() ) );
+    synchronizeCollection( c );
+  }
+  // TODO finish me: serialize syncs
   changeStatus( Ready );
 
   if ( d->localCollections.isEmpty() ) {

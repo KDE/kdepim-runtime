@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi NNTP Resource
+Comment=An agent to load data from a news server
+Type=AkonadiResource
+Exec=akonadi_nntp_resource
+Icon=news
+
+X-Akonadi-MimeTypes=message/news
+X-Akonadi-Capabilitites=message/news
+X-Akonadi-Identifier=akonadi_nntp_resource

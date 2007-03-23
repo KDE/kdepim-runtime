@@ -89,7 +89,6 @@ void ICalResource::configure()
     return;
   if ( oldFile == newFile )
     return;
-  // TODO: delete existing items
   settings()->setValue( "General/Path", newFile );
   loadFile();
   synchronize();

@@ -154,7 +154,7 @@ void CollectionSync::slotLocalCreateDone(KJob * job)
   // search for children we can create now
   Collection::List stillOrphans;
   foreach ( Collection orphan, d->orphanRemoteCollections ) {
-    if ( orphan.remoteId() == newLocal.parentRemoteId() ) {
+    if ( orphan.parentRemoteId() == newLocal.remoteId() ) {
       createLocalCollection( orphan, newLocal );
     } else {
       stillOrphans << orphan;
