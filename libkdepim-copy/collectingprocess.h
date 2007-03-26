@@ -39,9 +39,9 @@
 namespace KPIM {
 
 /**
- * @short An output collecting KProcess class.
+ * @short An output collecting K3Process class.
  *
- * This class simplifies the usage of KProcess by collecting all output
+ * This class simplifies the usage of K3Process by collecting all output
  * (stdout/stderr) of the process.
  *
  * @author Ingo Kloecker <kloecker@kde.org>
