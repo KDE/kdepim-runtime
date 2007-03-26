@@ -44,7 +44,7 @@
 #include <kglobal.h>
 #include <k3listview.h>
 #include <klocale.h>
-#include <kprocess.h>
+#include <k3process.h>
 #include <krun.h>
 #include <kstandarddirs.h>
 #include <kdirwatch.h>
@@ -437,7 +437,7 @@ void KCMDesignerFields::startDesigner()
   Q3ListViewItem *item = mPageView->selectedItem();
   if ( item ) {
     PageItem *pageItem = static_cast<PageItem*>( item->parent() ? item->parent() : item );
-    cmdLine += ' ' + KProcess::quote( pageItem->path() );
+    cmdLine += ' ' + K3Process::quote( pageItem->path() );
   }
 
   KRun::runCommand( cmdLine );

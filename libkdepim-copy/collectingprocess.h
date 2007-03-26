@@ -33,20 +33,20 @@
 #ifndef __KPIM_COLLECTINGPROCESS_H__
 #define __KPIM_COLLECTINGPROCESS_H__
 
-#include <kprocess.h>
+#include <k3process.h>
 #include <kdepim_export.h>
 
 namespace KPIM {
 
 /**
- * @short An output collecting KProcess class.
+ * @short An output collecting K3Process class.
  *
- * This class simplifies the usage of KProcess by collecting all output
+ * This class simplifies the usage of K3Process by collecting all output
  * (stdout/stderr) of the process.
  *
  * @author Ingo Kloecker <kloecker@kde.org>
  */
-class KDEPIM_EXPORT CollectingProcess : public KProcess {
+class KDEPIM_EXPORT CollectingProcess : public K3Process {
   Q_OBJECT
 public:
   CollectingProcess( QObject * parent = 0, const char * name = 0 );
@@ -63,8 +63,8 @@ public:
   QByteArray collectedStderr();
 
 private slots:
-  void slotReceivedStdout( KProcess *, char *, int );
-  void slotReceivedStderr( KProcess *, char *, int );
+  void slotReceivedStdout( K3Process *, char *, int );
+  void slotReceivedStderr( K3Process *, char *, int );
 
 private:
   class Private;
