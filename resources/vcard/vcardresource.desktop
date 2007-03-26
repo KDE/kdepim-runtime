@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi VCard Resource
+Name[es]=Recurso VCard Akonadi
 Comment=An agent to load data from a VCard file
+Comment[es]=Un agente para cargar datos de un archivo VCard local
 Type=AkonadiResource
 Exec=akonadi_vcard_resource
 Icon=vcard
