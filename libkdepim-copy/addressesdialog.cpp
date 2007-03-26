@@ -42,7 +42,6 @@
 #include <klineedit.h>
 #include <klocale.h>
 #include <kmessagebox.h>
-#include <k3process.h>
 #include <kpushbutton.h>
 #include <krun.h>
 #include <kstandarddirs.h>

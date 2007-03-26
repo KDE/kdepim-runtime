@@ -38,7 +38,6 @@
 #include <klocale.h>
 #include <kcodecs.h>
 #include <kmessagebox.h>
-#include <k3process.h>
 #include <krun.h>
 #include <kstringhandler.h>
 #include <ktemporaryfile.h>

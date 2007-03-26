@@ -50,7 +50,7 @@ struct CollectingProcess::Private {
 
 
 CollectingProcess::CollectingProcess( QObject * parent, const char * name )
-  : K3Process( parent )
+  : KProcess( parent )
 {
   setObjectName(name);
   d = new Private();
@@ -62,30 +62,30 @@ CollectingProcess::~CollectingProcess() {
 
 bool CollectingProcess::start( RunMode runmode, Communication comm ) {
   // prevent duplicate connection
-  disconnect( this, SIGNAL( receivedStdout( K3Process *, char *, int ) ),
-              this, SLOT( slotReceivedStdout( K3Process *, char *, int ) ) );
+  disconnect( this, SIGNAL( receivedStdout( KProcess *, char *, int ) ),
+              this, SLOT( slotReceivedStdout( KProcess *, char *, int ) ) );
   if ( comm & Stdout ) {
-    connect( this, SIGNAL( receivedStdout( K3Process *, char *, int ) ),
-             this, SLOT( slotReceivedStdout( K3Process *, char *, int ) ) );
+    connect( this, SIGNAL( receivedStdout( KProcess *, char *, int ) ),
+             this, SLOT( slotReceivedStdout( KProcess *, char *, int ) ) );
   }
   // prevent duplicate connection
-  disconnect( this, SIGNAL( receivedStderr( K3Process *, char *, int ) ),
-              this, SLOT( slotReceivedStderr( K3Process *, char *, int ) ) );
+  disconnect( this, SIGNAL( receivedStderr( KProcess *, char *, int ) ),
+              this, SLOT( slotReceivedStderr( KProcess *, char *, int ) ) );
   if ( comm & Stderr ) {
-    connect( this, SIGNAL( receivedStderr( K3Process *, char *, int ) ),
-             this, SLOT( slotReceivedStderr( K3Process *, char *, int ) ) );
+    connect( this, SIGNAL( receivedStderr( KProcess *, char *, int ) ),
+             this, SLOT( slotReceivedStderr( KProcess *, char *, int ) ) );
   }
-  return K3Process::start( runmode, comm );
+  return KProcess::start( runmode, comm );
 }
 
-void CollectingProcess::slotReceivedStdout( K3Process *, char *buf, int len )
+void CollectingProcess::slotReceivedStdout( KProcess *, char *buf, int len )
 {
   QByteArray b( buf, len );
   d->stdoutBuffer.append( b );
   d->stdoutSize += len;
 }
 
-void CollectingProcess::slotReceivedStderr( K3Process *, char *buf, int len )
+void CollectingProcess::slotReceivedStderr( KProcess *, char *buf, int len )
 {
   QByteArray b( buf, len );
   d->stderrBuffer.append( b );
