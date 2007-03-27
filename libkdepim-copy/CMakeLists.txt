@@ -60,7 +60,6 @@ set(kdepim_LIB_SRCS
    kwidgetlister.cpp 
    qutf7codec.cpp 
    recentaddresses.cpp 
-   spellingfilter.cpp 
    addresseeselector.cpp 
    addresseeemailselection.cpp 
    designerfields.cpp 
