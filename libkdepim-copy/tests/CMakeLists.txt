@@ -76,16 +76,6 @@ target_link_libraries(testdateedit  kdepim ${KDE4_KDECORE_LIBS} )
 
 ########### next target ###############
 
-set(testlinklocator_SRCS testlinklocator.cpp )
-
-kde4_automoc(${testlinklocator_SRCS})
-
-kde4_add_executable(testlinklocator ${testlinklocator_SRCS})
-
-target_link_libraries(testlinklocator  kdepim ${KDE4_KDECORE_LIBS} )
-
-########### next target ###############
-
 set(testdistrlist_SRCS testdistrlist.cpp )
 
 kde4_automoc(${testdistrlist_SRCS})
