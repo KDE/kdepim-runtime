@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <volker.krause@rwth-aachen.de>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,38 +17,18 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_MODIFY_H
-#define AKONADI_MODIFY_H
+#ifndef COLLECTIONATTRIBUTETEST_H
+#define COLLECTIONATTRIBUTETEST_H
 
-#include <handler.h>
+#include <QtCore/QObject>
 
-namespace Akonadi {
-
-/**
-  @ingroup akoandi_server_handler
-
-  Handler for the MODIFY command (not in RFC 3501).
-
-  This command is used to modify collections. Its syntax is similar to the STORE
-  command.
-
-  <h4>Syntax</h4>
-
-  Request:
-  @verbatim
-  request = tag " MODIFY " collection-id " " attribute-list
-  attribute-list = *(attribute-name " " attribute-value)
-  attribute-name = "NAME" | "MIMETYPE" | "REMOTEID" | "CACHEPOLICY" | "PARENT" | [-]custom-attr-name
-  @endverbatim
-*/
-class Modify : public Handler
+class CollectionAttributeTest : public QObject
 {
-  public:
-    Modify();
-    ~Modify();
-    bool handleLine( const QByteArray &line );
+  Q_OBJECT
+  private slots:
+    void initTestCase();
+    void testAttributes();
 };
 
-}
 
 #endif
