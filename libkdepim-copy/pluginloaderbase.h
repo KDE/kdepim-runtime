@@ -24,6 +24,7 @@
 
 #include <QString>
 #include <QMap>
+#include <KLibrary>
 
 #include <kdepim_export.h>
 
@@ -71,7 +72,7 @@ namespace KPIM {
 
     /** Returns a pointer to symbol @p main_func in the library that
         implements the plugin of type @p type */
-    void * mainFunc( const QString & type, const char * main_func ) const;
+    KLibrary::void_function_ptr mainFunc( const QString & type, const char * main_func ) const;
 
   private:
     const KLibrary * openLibrary( const QString & libName ) const;

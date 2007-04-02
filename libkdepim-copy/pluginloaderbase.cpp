@@ -114,7 +114,7 @@ namespace KPIM {
     }
   }
 
-  void * PluginLoaderBase::mainFunc( const QString & type,
+  KLibrary::void_function_ptr PluginLoaderBase::mainFunc( const QString & type,
 				     const char * mf_name ) const {
     if ( type.isEmpty() || !mPluginMap.contains( type ) )
       return 0;
@@ -130,14 +130,15 @@ namespace KPIM {
     mPluginMap[ type ].loaded = true;
 
     const QString factory_name = libName + '_' + mf_name;
-    if ( !lib->hasSymbol( factory_name.toLatin1() ) ) {
+    KLibrary::void_function_ptr sym = lib->resolveFunction( factory_name.toLatin1() );
+    if ( !sym ) {
       warning() << "No symbol named \"" << factory_name.toLatin1() << "\" ("
 		<< factory_name << ") was found in library \"" << libName
 		<< "\"" << endl;
       return 0;
     }
 
-    return lib->symbol( factory_name.toLatin1() );
+    return sym;
   }
 
   const KLibrary * PluginLoaderBase::openLibrary( const QString & libName ) const {

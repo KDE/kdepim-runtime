@@ -23,6 +23,7 @@
 #define __KPIM_SHARED_PLUGINLOADER_H__
 
 #include <pluginloaderbase.h>
+#include <KLibrary>
 
 namespace KPIM {
 
@@ -106,7 +107,7 @@ namespace KPIM {
         pointer if the type wasn't found. You can extend this method
         for when you want to handle builtin types */
     virtual T * createForName( const QString & type ) const {
-      void * main_func = mainFunc( type, T_config::mainfunc );
+      KLibrary::void_function_ptr main_func = mainFunc( type, T_config::mainfunc );
       if ( !main_func ) return 0;
 
       // cast to a pointer to a function returning T*, call it and
