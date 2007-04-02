@@ -101,6 +101,7 @@ AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion )
   m_completionInitialized = false;
   m_smartPaste = false;
   m_addressBookConnected = false;
+  m_searchExtended = false;
 
   init();
 
@@ -529,8 +530,9 @@ void AddresseeLineEdit::loadContacts()
       int weight = config.readEntry( resource->identifier(), 60 );
       s_completionSources->append( resource->resourceName() );
       KABC::Resource::Iterator it;
-      for ( it = resource->begin(); it != resource->end(); ++it )
-        addContact( *it, weight, s_completionSources->size()-1 );
+      if ( resource->type() != "ldapkio" )
+        for ( it = resource->begin(); it != resource->end(); ++it )
+          addContact( *it, weight, s_completionSources->size()-1 );
     }
   }
 
@@ -749,7 +751,7 @@ void AddresseeLineEdit::startLoadingLDAPEntries()
   if ( s.isEmpty() )
     return;
 
-  loadContacts(); // TODO reuse these?
+  //loadContacts(); // TODO reuse these?
   s_LDAPSearch->startSearch( s );
 }
 
