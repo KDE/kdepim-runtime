@@ -39,7 +39,7 @@ class StrigiProvider : public SearchProviderBase
   public:
     StrigiProvider( const QString &id );
     ~StrigiProvider();
-    virtual QList<QByteArray> supportedMimeTypes() const { QList<QByteArray> l; l << "all/all"; return l; }
+    virtual QStringList supportedMimeTypes() const { QStringList l; l << "all/all"; return l; }
 
   protected slots:
     void itemChanged(const Akonadi::Item &item);

@@ -22,6 +22,8 @@
 
 #include <searchproviderbase.h>
 
+class QStringList;
+
 class KJob;
 
 namespace Akonadi {
@@ -35,7 +37,7 @@ class MessageSearchProvider : public SearchProviderBase
   public:
     MessageSearchProvider( const QString &id );
     virtual ~MessageSearchProvider() {};
-    virtual QList<QByteArray> supportedMimeTypes() const;
+    virtual QStringList supportedMimeTypes() const;
 
   protected slots:
     void itemChanged(const Akonadi::Item &item);

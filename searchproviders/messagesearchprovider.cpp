@@ -48,10 +48,10 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   monitor->ignoreSession( mSession );
 }
 
-QList< QByteArray > Akonadi::MessageSearchProvider::supportedMimeTypes() const
+QStringList Akonadi::MessageSearchProvider::supportedMimeTypes() const
 {
-  QList<QByteArray> mimeTypes;
-  mimeTypes << "message/rfc822" << "message/news";
+  QStringList mimeTypes;
+  mimeTypes << QString::fromLatin1( "message/rfc822" ) << QString::fromLatin1( "message/news" );
   return mimeTypes;
 }
 

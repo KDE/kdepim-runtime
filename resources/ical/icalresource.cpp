@@ -137,7 +137,7 @@ void ICalResource::retrieveCollections()
   c.setParent( Collection::root() );
   c.setRemoteId( settings()->value( "General/Path" ).toString() );
   c.setName( name() );
-  QList<QByteArray> mimeTypes;
+  QStringList mimeTypes;
   mimeTypes << "text/calendar";
   c.setContentTypes( mimeTypes );
 //   c.setCachePolicy( 1 ); // ### just for testing

@@ -644,7 +644,7 @@ void ResourceBase::slotSyncNextCollection()
   Collection c = d->localCollections.takeFirst();
 
   // check if this collection actually can contain anything
-  QList<QByteArray> contentTypes = c.contentTypes();
+  QStringList contentTypes = c.contentTypes();
   contentTypes.removeAll( Collection::collectionMimeType() );
   if ( !contentTypes.isEmpty() ) {
     changeStatus( Syncing, i18n( "Syncing collection '%1'", c.name() ) );

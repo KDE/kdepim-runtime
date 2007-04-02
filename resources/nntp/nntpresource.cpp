@@ -56,7 +56,7 @@ void NntpResource::retrieveCollections()
   rootCollection.setParent( Collection::root() );
   rootCollection.setRemoteId( baseUrl() );
   rootCollection.setName( name() );
-  QList<QByteArray> contentTypes;
+  QStringList contentTypes;
   contentTypes << Collection::collectionMimeType();
   rootCollection.setContentTypes( contentTypes );
   remoteCollections << rootCollection;
@@ -85,7 +85,7 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
 {
   Q_UNUSED( job );
   QString name;
-  QList<QByteArray> contentTypes;
+  QStringList contentTypes;
   contentTypes << "message/news";
   for( KIO::UDSEntryList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it ) {
     name = (*it).stringValue( KIO::UDS_NAME );

@@ -96,7 +96,7 @@ void AkonadiSlave::stat(const KUrl & url)
     const Item item = job->items().first();
     KIO::UDSEntry entry;
     entry.insert( KIO::UDS_NAME, QString::number( item.reference().persistanceID() ) );
-    entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1( item.mimeType() ) );
+    entry.insert( KIO::UDS_MIME_TYPE,  item.mimeType() );
     statEntry( entry );
     finished();
   }

@@ -41,7 +41,7 @@ class SearchProvider : public QObject
     /**
      * Returns a list of supported mimetypes.
      */
-    virtual QList<QByteArray> supportedMimeTypes() const = 0;
+    virtual QStringList supportedMimeTypes() const = 0;
 
     /**
      * Terminate the search provider.
