@@ -580,36 +580,38 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
   //m_contactMap.insert( addr.realName(), addr );
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
+  const int prefEmailWeight = 1;     //increment weight by prefEmailWeight
+  int isPrefEmail = prefEmailWeight; //first in list is preferredEmail
   for ( it = emails.begin(); it != emails.end(); ++it ) {
     //TODO: highlight preferredEmail
     const QString email( (*it) );
     const QString givenName = addr.givenName();
     const QString familyName= addr.familyName();
     const QString nickName  = addr.nickName();
-    const QString fullEmail = addr.fullEmail( email );
     const QString domain    = email.mid( email.indexOf( '@' ) + 1 );
+    QString fullEmail       = addr.fullEmail( email );
     //TODO: let user decide what fields to use in lookup, e.g. company, city, ...
 
     //for CompletionAuto
     if ( givenName.isEmpty() && familyName.isEmpty() ) {
-      addCompletionItem( fullEmail, weight, source ); // use whatever is there
+      addCompletionItem( fullEmail, weight + isPrefEmail, source ); // use whatever is there
     } else {
       const QString byFirstName=  "\"" + givenName + " " + familyName + "\" <" + email + ">";
       const QString byLastName =  "\"" + familyName + ", " + givenName + "\" <" + email + ">";
-      addCompletionItem( byFirstName, weight, source );
-      addCompletionItem( byLastName, weight, source );
+      addCompletionItem( byFirstName, weight + isPrefEmail, source );
+      addCompletionItem( byLastName, weight + isPrefEmail, source );
     }
 
-    addCompletionItem( email, weight, source );
+    addCompletionItem( email, weight + isPrefEmail, source );
 
     if ( !nickName.isEmpty() ){
       const QString byNick     =  "\"" + nickName + "\" <" + email + ">";
-      addCompletionItem( byNick, weight, source );
+      addCompletionItem( byNick, weight + isPrefEmail, source );
     }
 
     if ( !domain.isEmpty() ){
       const QString byDomain   =  "\"" + domain + " " + familyName + " " + givenName + "\" <" + email + ">";
-      addCompletionItem( byDomain, weight, source );
+      addCompletionItem( byDomain, weight + isPrefEmail, source );
     }
 
     //for CompletionShell, CompletionPopup
@@ -636,7 +638,17 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 
     keyWords.append( email );
 
-    addCompletionItem( fullEmail, weight, source, &keyWords );
+    /* KMailCompletion does not have knowledge about identities, it stores emails and
+     * keywords for each email. KMailCompletion::allMatches does a lookup on the
+     * keywords and returns an ordered list of emails. In order to get the preferred
+     * email before others for each identity we use this little trick.
+     * We remove the <blank> in getAdjustedCompletionItems.
+     */
+    if ( isPrefEmail == prefEmailWeight )
+      fullEmail.replace( " <", "  <" );
+
+    addCompletionItem( fullEmail, weight + isPrefEmail, source, &keyWords );
+    isPrefEmail = 0;
 
 #if 0
     int len = (*it).length();
@@ -1011,6 +1023,9 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
     s_completion->allMatches( m_searchString )
     : s_completion->substringCompletion( m_searchString );
 
+  //force items to be sorted by email
+  items.sort();
+
   int lastSourceIndex = -1;
   unsigned int i = 0;
   QMap<int, QStringList> sections;
@@ -1029,6 +1044,8 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
         lastSourceIndex = idx;
       }
       (*it) = (*it).prepend( s_completionItemIndentString );
+      // remove preferred email sort <blank> added in  addContact()
+      (*it).replace( "  <", " <" );
     }
     sections[idx].append( *it );
 
