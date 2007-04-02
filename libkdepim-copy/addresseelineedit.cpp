@@ -41,7 +41,6 @@
 #include <kabc/resource.h>
 
 #include <kcompletionbox.h>
-#include <kcursor.h>
 #include <kdebug.h>
 #include <kstandarddirs.h>
 #include <kstaticdeleter.h>
@@ -50,6 +49,7 @@
 #include <klocale.h>
 
 #include <QApplication>
+#include <QCursor>
 #include <QObject>
 #include <QRegExp>
 #include <QEvent>
@@ -497,7 +497,7 @@ void AddresseeLineEdit::loadContacts()
   s_addressesDirty = false;
   //m_contactMap.clear();
 
-  QApplication::setOverrideCursor( KCursor::waitCursor() ); // loading might take a while
+  QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) ); // loading might take a while
 
   KConfig _config( "kpimcompletionorder" );
   KConfigGroup config(&_config, "CompletionWeights" );
