@@ -102,7 +102,7 @@ void AddresseeDiffAlgo::run()
     conflictField( KABC::Addressee::sortStringLabel(), mLeftAddressee.sortString(), mRightAddressee.sortString() );
 
   if ( mLeftAddressee.secrecy() != mRightAddressee.secrecy() ) {
-    conflictField( KABC::Addressee::secrecyLabel(), mLeftAddressee.secrecy().asString(), mRightAddressee.secrecy().asString() );
+    conflictField( KABC::Addressee::secrecyLabel(), mLeftAddressee.secrecy().toString(), mRightAddressee.secrecy().toString() );
   }
   if ( mLeftAddressee.url()!= mRightAddressee.url() )
     conflictField( KABC::Addressee::urlLabel(), mLeftAddressee.url().prettyUrl(),
