@@ -25,6 +25,7 @@
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/messagemodel.h>
 #include <libakonadi/messagecollectionmodel.h>
+#include <libakonadi/collectionfilterproxymodel.h>
 
 #include <kdebug.h>
 
@@ -47,6 +48,10 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   splitter->addWidget( mCollectionView );
 
   mCollectionModel = new Akonadi::CollectionModel( this );
+
+//   CollectionFilterProxyModel *colProxy = new CollectionFilterProxyModel( this );
+//   colProxy->setSourceModel( mCollectionModel );
+//   colProxy->addMimeType( "text/calendar" );
   mCollectionView->setModel( mCollectionModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
