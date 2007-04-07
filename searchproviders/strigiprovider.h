@@ -22,6 +22,7 @@
 
 #include <searchproviderbase.h>
 #include <libakonadi/job.h>
+#include <libakonadi/item.h>
 #include <strigi/qtdbus/strigiclient.h>
 
 namespace Akonadi {
@@ -44,7 +45,8 @@ class StrigiProvider : public SearchProviderBase
   protected slots:
     void itemChanged(const Akonadi::Item &item);
     void itemRemoved(const Akonadi::DataReference &ref);
-    void itemReceived( KJob *job );
+    //FIXME not implemented, and so it fails to compile
+    //void itemReceived( KJob *job );
 
   private:
     Monitor *mMonitor;
