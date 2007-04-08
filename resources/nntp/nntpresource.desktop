@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi NNTP Resource
+Name[es]=Recurso Akonadi NNTP
 Comment=An agent to load data from a news server
+Comment[es]=Un agente para cargar datos de un servidor de noticias
 Type=AkonadiResource
 Exec=akonadi_nntp_resource
 Icon=news
