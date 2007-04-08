@@ -70,7 +70,6 @@ void NntpResource::retrieveCollections()
 
 void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
 {
-  mCurrentCollection = col;
   KUrl url = KUrl( baseUrl() );
   url.setPath( col.remoteId() );
   url.addQueryItem( "max", "100" );
@@ -78,7 +77,6 @@ void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroup(KIO::Job*, const KIO::UDSEntryList&)) );
   connect( job, SIGNAL( result(KJob*) ), SLOT( listGroupResult(KJob*) ) );
-
 }
 
 void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
@@ -115,8 +113,8 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
 {
   Q_UNUSED( job );
   foreach ( const KIO::UDSEntry &entry, list ) {
-    ItemAppendJob *append = new ItemAppendJob( mCurrentCollection, "message/news", session() );
-    append->setRemoteId( baseUrl() + mCurrentCollection.remoteId() + QDir::separator() + entry.stringValue( KIO::UDS_NAME ) );
+    ItemAppendJob *append = new ItemAppendJob( currentCollection(), "message/news", session() );
+    append->setRemoteId( baseUrl() + currentCollection().remoteId() + QDir::separator() + entry.stringValue( KIO::UDS_NAME ) );
   }
 }
 
@@ -124,8 +122,9 @@ void NntpResource::listGroupResult(KJob * job)
 {
   if ( job->error() ) {
     error( job->errorString() );
-    return;
   }
+
+  collectionSynchronized();
 }
 
 QString NntpResource::baseUrl() const

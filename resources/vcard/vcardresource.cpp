@@ -172,7 +172,7 @@ void VCardResource::synchronizeCollection( const Akonadi::Collection & col )
     changeProgress( percentage );
   }
 
-  changeStatus( Ready, QString() );
+  collectionSynchronized();
 }
 
 bool VCardResource::loadAddressees()

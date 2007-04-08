@@ -59,7 +59,6 @@ class NntpResource : public Akonadi::ResourceBase
 
   private:
     Akonadi::Collection::List remoteCollections;
-    Akonadi::Collection mCurrentCollection;
 
     // FIXME: this breaks with multiple concurrent requests
     Akonadi::DataReference mCurrentRef;

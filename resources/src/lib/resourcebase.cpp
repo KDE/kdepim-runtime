@@ -178,6 +178,7 @@ class ResourceBase::Private
     SyncState syncState;
 
     Collection::List localCollections;
+    Collection currentCollection;
 };
 
 QString ResourceBase::Private::defaultReadyMessage() const
@@ -628,10 +629,6 @@ void ResourceBase::slotLocalListDone(KJob * job)
   }
 
   d->localCollections = static_cast<CollectionListJob*>( job )->collections();
-  if ( d->localCollections.isEmpty() ) {
-    d->syncState = Private::Idle;
-    return;
-  }
 
   // make sure all signals are emitted before we enter syncCollection()
   // which might use exec() and block signals to Session which causes a deadlock
@@ -641,21 +638,28 @@ void ResourceBase::slotLocalListDone(KJob * job)
 
 void ResourceBase::slotSyncNextCollection()
 {
-  Collection c = d->localCollections.takeFirst();
-
-  // check if this collection actually can contain anything
-  QStringList contentTypes = c.contentTypes();
-  contentTypes.removeAll( Collection::collectionMimeType() );
-  if ( !contentTypes.isEmpty() ) {
-    changeStatus( Syncing, i18n( "Syncing collection '%1'", c.name() ) );
-    synchronizeCollection( c );
+  while ( !d->localCollections.isEmpty() ) {
+    d->currentCollection = d->localCollections.takeFirst();
+    // check if this collection actually can contain anything
+    QStringList contentTypes = d->currentCollection.contentTypes();
+    contentTypes.removeAll( Collection::collectionMimeType() );
+    if ( !contentTypes.isEmpty() ) {
+      changeStatus( Syncing, i18n( "Syncing collection '%1'", d->currentCollection.name() ) );
+      synchronizeCollection( d->currentCollection );
+      return;
+    }
   }
-  // TODO finish me: serialize syncs
+
+  d->syncState = Private::Idle;
   changeStatus( Ready );
+}
 
-  if ( d->localCollections.isEmpty() ) {
-    d->syncState = Private::Idle;
-    return;
-  }
+void ResourceBase::collectionSynchronized()
+{
   QTimer::singleShot( 0, this, SLOT(slotSyncNextCollection()) );
+}
+
+Collection ResourceBase::currentCollection() const
+{
+  return d->currentCollection;
 }

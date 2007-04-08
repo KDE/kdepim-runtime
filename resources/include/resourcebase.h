@@ -206,7 +206,9 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
 
     /**
       Synchronize the given collection with the backend.
+      Call collectionSynchronized() once you are finished.
       @param collection The collection to sync.
+      @see collectionSynchronized(), currentCollection()
     */
     virtual void synchronizeCollection( const Collection &collection ) = 0;
 
@@ -322,6 +324,18 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
       @param collections A list of collections.
     */
     void collectionsRetrieved( const Collection::List &collections );
+
+    /**
+      Call this method to indicate you finished synchronizing the current
+      collection.
+      @see synchronizeCollection()
+    */
+    void collectionSynchronized();
+
+    /**
+      Returns the collection that is currently synchronized.
+    */
+    Collection currentCollection() const;
 
   private:
     static QString parseArguments( int, char** );

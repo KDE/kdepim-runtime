@@ -187,8 +187,7 @@ void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
     changeProgress( percentage );
   }
 
-  changeStatus( Ready, QString() );
-
+  collectionSynchronized();
 }
 
 #include "icalresource.moc"
