@@ -606,6 +606,14 @@ void ResourceBase::collectionsRetrieved(const Collection::List & collections)
   connect( syncer, SIGNAL(result(KJob*)), SLOT(slotCollectionSyncDone(KJob*)) );
 }
 
+void ResourceBase::collectionsRetrievedIncremental(const Collection::List & changedCollections, const Collection::List & removedCollections)
+{
+  CollectionSync *syncer = new CollectionSync( d->mId, session() );
+  syncer->setRemoteCollections( changedCollections, removedCollections );
+  d->syncState = Private::SyncingCollections;
+  connect( syncer, SIGNAL(result(KJob*)), SLOT(slotCollectionSyncDone(KJob*)) );
+}
+
 void ResourceBase::slotCollectionSyncDone(KJob * job)
 {
   if ( job->error() ) {

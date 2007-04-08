@@ -320,10 +320,21 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
     void changesCommitted( const DataReference &ref );
 
     /**
-      Call this to supply the folder tree retrieved from the remote server.
+      Call this to supply the full folder tree retrieved from the remote server.
       @param collections A list of collections.
+      @see collectionsRetrievedIncremental()
     */
     void collectionsRetrieved( const Collection::List &collections );
+
+    /**
+      Call this to supply incrementally retrieved collections from the remote
+      server.
+      @param changedCollections Collections that have been added or changed.
+      @param removedCollections Collections that have been deleted.
+      @see collectionsRetrieved()
+    */
+    void collectionsRetrievedIncremental( const Collection::List &changedCollections,
+                                          const Collection::List &removedCollections );
 
     /**
       Call this method to indicate you finished synchronizing the current

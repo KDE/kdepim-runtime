@@ -33,9 +33,10 @@ using namespace Akonadi;
 class CollectionSync::Private
 {
   public:
-    Private()
+    Private() :
+      pendingJobs( 0 ),
+      incremental( false )
     {
-      pendingJobs = 0;
     }
 
     QString resourceId;
@@ -50,8 +51,13 @@ class CollectionSync::Private
     // remote collections waiting for a parent
     QList<Collection> orphanRemoteCollections;
 
+    // removed remote collections
+    Collection::List removedRemoteCollections;
+
     // create counter
     int pendingJobs;
+
+    bool incremental;
 };
 
 CollectionSync::CollectionSync( const QString &resourceId, QObject *parent ) :
@@ -71,6 +77,15 @@ void CollectionSync::setRemoteCollections(const Collection::List & remoteCollect
   foreach ( const Collection c, remoteCollections ) {
     d->remoteCollections.insert( c.id(), c );
   }
+}
+
+void CollectionSync::setRemoteCollections(const Collection::List & changedCollections, const Collection::List & removedCollections)
+{
+  d->incremental = true;
+  foreach ( const Collection c, changedCollections ) {
+    d->remoteCollections.insert( c.id(), c );
+  }
+  d->removedRemoteCollections = removedCollections;
 }
 
 void CollectionSync::doStart()
@@ -132,7 +147,9 @@ void CollectionSync::slotLocalListDone(KJob * job)
   }
 
   // removed
-  foreach ( const Collection c, d->unprocessedLocalCollections ) {
+  if ( !d->incremental )
+    d->removedRemoteCollections = d->unprocessedLocalCollections.toList();
+  foreach ( const Collection c, d->removedRemoteCollections ) {
     d->pendingJobs++;
     CollectionDeleteJob *job = new CollectionDeleteJob( c, this );
     connect( job, SIGNAL(result(KJob*)), SLOT(slotLocalChangeDone(KJob*)) );

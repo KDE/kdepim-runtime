@@ -55,6 +55,14 @@ class CollectionSync : public Job
     */
     void setRemoteCollections( const Collection::List &remoteCollections );
 
+    /**
+      Sets the result of an incremental remote collection listing.
+      @param changedCollections A list of remotely added or changed collections.
+      @param removedCollections A lost of remotely deleted collections.
+    */
+    void setRemoteCollections( const Collection::List &changedCollections,
+                               const Collection::List &removedCollections );
+
   protected:
     void doStart();
 

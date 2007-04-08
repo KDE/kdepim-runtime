@@ -64,6 +64,8 @@ class NntpResource : public Akonadi::ResourceBase
     Akonadi::DataReference mCurrentRef;
     QDBusMessage mCurrentMessage;
 
+    bool mIncremental;
+
     QString mConfig;
 };
 

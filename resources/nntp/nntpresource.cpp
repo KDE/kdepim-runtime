@@ -26,7 +26,7 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
-#include <QDebug>
+#include <QDate>
 #include <QDir>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -68,6 +68,17 @@ void NntpResource::retrieveCollections()
   remoteCollections << rootCollection;
 
   KUrl url = KUrl( baseUrl() );
+  QDate lastList = settings()->value( "General/LastGroupList" ).toDate();
+  if ( lastList.isValid() ) {
+    mIncremental = true;
+    url.addQueryItem( "since",  QString("%1%2%3 000000")
+        .arg( lastList.year() % 100, 2, 10, QChar( '0' ) )
+        .arg( lastList.month(), 2, 10, QChar( '0' ) )
+        .arg( lastList.day(), 2, 10, QChar( '0' ) ) );
+  } else {
+    mIncremental = false;
+  }
+
   KIO::Job* job = KIO::listDir( url, false, true );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroups(KIO::Job*, const KIO::UDSEntryList&)) );
@@ -84,8 +95,6 @@ void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
     url.addQueryItem( "first", QString::number( attr->lastArticle() + 1 ) );
   else
     url.addQueryItem( "max", "5" );
-
-  qDebug() << attr << (attr? attr->lastArticle() : -1 );
 
   KIO::Job* job = KIO::listDir( url, false, true );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
@@ -119,8 +128,13 @@ void NntpResource::listGroupsResult(KJob * job)
   if ( job->error() ) {
     error( job->errorString() );
     return;
+  } else {
+    settings()->setValue( "General/LastGroupList", QDate::currentDate() );
   }
-  collectionsRetrieved( remoteCollections );
+  if ( mIncremental )
+    collectionsRetrievedIncremental( remoteCollections, Collection::List() );
+  else
+    collectionsRetrieved( remoteCollections );
 }
 
 void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
