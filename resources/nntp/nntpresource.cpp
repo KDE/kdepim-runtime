@@ -18,11 +18,15 @@
 */
 
 #include "nntpresource.h"
+#include "nntpcollectionattribute.h"
 
+#include <libakonadi/collectionattributefactory.h>
+#include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
+#include <QDebug>
 #include <QDir>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -32,6 +36,8 @@ using namespace Akonadi;
 NntpResource::NntpResource(const QString & id)
   : ResourceBase( id )
 {
+  CollectionAttributeFactory::registerAttribute<NntpCollectionAttribute>();
+
   mConfig = settings()->value( "General/Url", QString("nntp://localhost/") ).toString();
 }
 
@@ -72,7 +78,15 @@ void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
 {
   KUrl url = KUrl( baseUrl() );
   url.setPath( col.remoteId() );
-  url.addQueryItem( "max", "100" );
+
+  NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>();
+  if ( attr && attr->lastArticle() > 0 )
+    url.addQueryItem( "first", QString::number( attr->lastArticle() + 1 ) );
+  else
+    url.addQueryItem( "max", "5" );
+
+  qDebug() << attr << (attr? attr->lastArticle() : -1 );
+
   KIO::Job* job = KIO::listDir( url, false, true );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroup(KIO::Job*, const KIO::UDSEntryList&)) );
@@ -122,6 +136,16 @@ void NntpResource::listGroupResult(KJob * job)
 {
   if ( job->error() ) {
     error( job->errorString() );
+  } else {
+    // store last serial number
+    Collection col = currentCollection();
+    NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>( true );
+    KIO::Job *j = static_cast<KIO::Job*>( job );
+    if ( j->metaData().contains( "LastSerialNumber" ) )
+      attr->setLastArticle( j->metaData().value("LastSerialNumber").toInt() );
+    CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
+    modify->setAttribute( attr );
+    // TODO: check result signal
   }
 
   collectionSynchronized();

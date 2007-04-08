@@ -5,6 +5,7 @@ include_directories(
 )
 
 set( nntpresource_SRCS
+  nntpcollectionattribute.cpp
   nntpresource.cpp
   main.cpp
 )
