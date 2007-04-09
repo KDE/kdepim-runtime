@@ -78,7 +78,7 @@ KDateEdit::KDateEdit( QWidget *parent, const char* name )
   setEditable( true );
 
   mDate = QDate::currentDate();
-  QString today = KGlobal::locale()->formatDate( mDate, true );
+  QString today = KGlobal::locale()->formatDate( mDate, KLocale::ShortDate );
 
   addItem( today );
   setCurrentIndex( 0 );
@@ -359,7 +359,7 @@ void KDateEdit::updateView()
 {
   QString dateString;
   if ( mDate.isValid() )
-    dateString = KGlobal::locale()->formatDate( mDate, true );
+    dateString = KGlobal::locale()->formatDate( mDate, KLocale::ShortDate );
 
   // We do not want to generate a signal here,
   // since we explicitly setting the date

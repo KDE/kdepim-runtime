@@ -225,7 +225,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
     if ( date.isValid() )
       dynamicPart += rowFmtStr
         .arg( KABC::Addressee::birthdayLabel() )
-        .arg( KGlobal::locale()->formatDate( date, true ) );
+        .arg( KGlobal::locale()->formatDate( date, KLocale::ShortDate ) );
   }
 
   if ( fieldMask & PhoneFields ) {
