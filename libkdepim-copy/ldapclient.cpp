@@ -241,7 +241,7 @@ void LdapSearch::readConfig( KLDAP::LdapServer &server, const KConfigGroup &conf
 
   QString base = config.readEntry( prefix + QString( "Base%1" ).arg( j ), QString() ).trimmed();
   if ( !base.isEmpty() )
-    server.setBaseDn( base );
+    server.setBaseDn( KLDAP::LdapDN( base ) );
 
   QString user = config.readEntry( prefix + QString( "User%1" ).arg( j ), QString() ).trimmed();
   if ( !user.isEmpty() )
@@ -280,7 +280,7 @@ void LdapSearch::writeConfig( const KLDAP::LdapServer &server, KConfigGroup &con
   if ( active ) prefix = "Selected";
   config.writeEntry( prefix + QString( "Host%1" ).arg( j ), server.host() );
   config.writeEntry( prefix + QString( "Port%1" ).arg( j ), server.port() );
-  config.writeEntry( prefix + QString( "Base%1" ).arg( j ), server.baseDn() );
+  config.writeEntry( prefix + QString( "Base%1" ).arg( j ), server.baseDn().toString() );
   config.writeEntry( prefix + QString( "User%1" ).arg( j ), server.user() );
   config.writeEntry( prefix + QString( "Bind%1" ).arg( j ), server.bindDn() );
   config.writeEntry( prefix + QString( "PwdBind%1" ).arg( j ), server.password() );
