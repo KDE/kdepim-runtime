@@ -28,7 +28,6 @@
 #include <kdebug.h>
 
 #include <QBuffer>
-#include <q3cstring.h>
 #include <QImage>
 #include <QRegExp>
 #include <QString>
