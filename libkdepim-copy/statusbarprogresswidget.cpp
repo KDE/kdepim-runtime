@@ -56,7 +56,7 @@ using KPIM::ProgressManager;
 #include <klocale.h>
 #include <QLayout>
 #include <QStackedWidget>
-#include <q3frame.h>
+#include <QFrame>
 
 #include "progressdialog.h"
 #include "statusbarprogresswidget.h"
