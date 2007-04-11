@@ -686,8 +686,7 @@ void KPrefsWidManager::writeWidConfig()
 }
 
 
-KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, char *name,
-                            bool modal )
+KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, bool modal )
   : KPageDialog( parent ),
     KPrefsWidManager( prefs )
 {

@@ -35,7 +35,7 @@ DateEdit::DateEdit( QWidget *parent )
   : QWidget( parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
-  
+
   KDateEdit *edit = new KDateEdit( this );
   layout->addWidget( edit );
 

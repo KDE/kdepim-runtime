@@ -1,7 +1,7 @@
 #include "qutf7codec.h"
 #include "qutf7codec.cpp"
-#include <iostream.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 
 void main( int argc, char * argv[] ) {
   if ( argc == 2 ) {

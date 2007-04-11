@@ -77,8 +77,8 @@ class PageItem : public Q3CheckListItem
         QImage img = pm.toImage().scaled( 300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation );
         mPreview = QPixmap::fromImage(img);
 
-        QObjectList list = wdg->queryList( "QWidget" );
-        QObject *it;
+        QList<QWidget*> list = wdg->findChildren<QWidget*>();
+        QWidget *it;
 
         QMap<QString, QString> allowedTypes;
         allowedTypes.insert( "QLineEdit", i18n( "Text" ) );
@@ -98,7 +98,7 @@ class PageItem : public Q3CheckListItem
               new Q3ListViewItem( this, name,
                                  allowedTypes[ it->metaObject()->className() ],
                                  it->metaObject()->className(),
-                                 static_cast<QWidget*>( it )->whatsThis() );
+                                 it->whatsThis() );
             }
           }
         }

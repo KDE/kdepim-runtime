@@ -29,11 +29,9 @@
 #include <klocale.h>
 #include <kcmdlineargs.h>
 
-#include <QLayout>
 #include <QCheckBox>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 #include <QFrame>
+#include <QLayout>
 
 class TestConfigWizard : public KConfigWizard
 {
@@ -43,22 +41,22 @@ class TestConfigWizard : public KConfigWizard
                                             "propagator_test.kcfg" ) )
     {
       QWidget *page = createWizardPage( "My Wizard Page" );
-      Q3BoxLayout *topLayout = new Q3VBoxLayout( page );
-      
-      mFixKMailCheckBox = new QCheckBox( i18n("Fix KMail"), page );      
+      QVBoxLayout *topLayout = new QVBoxLayout( page );
+
+      mFixKMailCheckBox = new QCheckBox( i18n("Fix KMail"), page );
       topLayout->addWidget( mFixKMailCheckBox );
 
       mFixKMailCheckBox->setChecked( MyConfig::fixKMail() );
-    
+
       mBreakKMailCheckBox = new QCheckBox( i18n("Break KMail"), page );      
       topLayout->addWidget( mBreakKMailCheckBox );
 
       mBreakKMailCheckBox->setChecked( MyConfig::breakKMail() );
-    
+
       setupRulesPage();
       setupChangesPage();
     }
-    
+
     ~TestConfigWizard()
     {
     }
@@ -98,6 +96,6 @@ int main(int argc,char **argv)
   if ( args->isSet( "verbose" ) ) verbose = true;
 
   TestConfigWizard wizard;
-  
+
   wizard.exec();
 }

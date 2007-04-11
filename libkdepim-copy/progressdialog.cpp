@@ -130,8 +130,7 @@ void TransactionItemView::slotLayoutFirstItem()
      be the first item very shortly. That's the one we want to remove the
      hline for.
   */
-  QObject *o = mBigBox->child( "TransactionItem", "KPIM::TransactionItem" );
-  TransactionItem *ti = dynamic_cast<TransactionItem*>( o );
+  TransactionItem *ti = mBigBox->findChild<KPIM::TransactionItem*>( "TransactionItem" );
   if ( ti ) {
     ti->hideHLine();
   }

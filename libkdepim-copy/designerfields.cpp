@@ -69,8 +69,8 @@ void DesignerFields::initGUI( const QString &uiFile )
 
   layout->addWidget( wdg );
 
-  QObjectList list = wdg->queryList( "QWidget" );
-  QObject *it;
+  QList<QWidget*> list = wdg->findChildren<QWidget*>();
+  QWidget *it;
 
   QStringList allowedTypes;
   allowedTypes << "QLineEdit"
@@ -89,7 +89,7 @@ void DesignerFields::initGUI( const QString &uiFile )
       if ( name.startsWith( "X_" ) ) {
         name = name.mid( 2 );
 
-        QWidget *widget = static_cast<QWidget*>( it );
+        QWidget *widget = it;
         if ( !name.isEmpty() )
           mWidgets.insert( name, widget );
 

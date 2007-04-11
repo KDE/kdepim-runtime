@@ -682,8 +682,8 @@ class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
       @param name   Widget name.
       @param modal  true, if dialog has to be modal, false for non-modal.
     */
-    KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent = 0, char *name = 0,
-                  bool modal = false );
+    KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent = 0, bool modal = false );
+
     /**
       Destructor.
     */

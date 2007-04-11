@@ -57,21 +57,9 @@ AddresseeView::AddresseeView( QWidget *parent, const char *name,
     mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
   setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
-#ifdef __GNUC__
-#warning "kde4: porting !!!!!!!!!!! setLinkUnderline( false );\n";
-#endif
-  //setLinkUnderline( false );
   setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
   setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-#ifdef __GNUC__
-#warning "kde4: porting stylesheet\n";
-#endif
-#if 0
-  Q3StyleSheet *sheet = styleSheet();
-  Q3StyleSheetItem *link = sheet->item( "a" );
-  link->setColor( KGlobalSettings::linkColor() );
-#endif
   connect( this, SIGNAL( mailClick( const QString&, const QString& ) ),
            this, SLOT( slotMailClicked( const QString&, const QString& ) ) );
   connect( this, SIGNAL( urlClick( const QString& ) ),
@@ -156,7 +144,7 @@ void AddresseeView::enableLinks( int linkMask )
   mLinkMask = linkMask;
 }
 
-QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, LinkMask linkMask,
+QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, LinkMask linkMask,
                                     bool internalLoading, FieldMask fieldMask )
 {
   QString image = QString( "contact_%1_image" ).arg( addr.uid() );
@@ -389,20 +377,11 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
   QString name( addr.realName() );
   QString role( addr.role() );
   QString organization( addr.organization() );
-
-#ifdef __GNUC__
-#warning port me!
-#endif
-#if NOT_PORTED
+/*
   if ( proxy && (fieldMask & IMFields) ) {
     if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
       // set image source to either a QMimeSourceFactory key or a data:/ URL
-      QString imgSrc;
-      if ( internalLoading ) {
-        imgSrc = QString::fromLatin1( "im_status_%1_image").arg( addr.uid() );
-        Q3MimeSourceFactory::defaultFactory()->setPixmap( imgSrc, proxy->presenceIcon( addr.uid() ) );
-      } else
-        imgSrc = pixmapAsDataUrl( proxy->presenceIcon( addr.uid() ) );
+      QString imgSrc = pixmapAsDataUrl( proxy->presenceIcon( addr.uid() ) );
 
       // make the status a link, if required
       QString imStatus;
@@ -420,8 +399,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *pro
                   );
     }
   }
-#endif
-
+*/
   // @STYLE@ - construct the string by parts, substituting in
   // the styles first. There are lots of appends, but we need to
   // do it this way to avoid cases where the substituted string
@@ -643,10 +621,7 @@ void AddresseeView::faxNumberClicked( const QString &number )
 
 void AddresseeView::imAddressClicked()
 {
-#ifdef __GNUC__
-#warning port me!
-#endif
-//   mKIMProxy->chatWithContact( mAddressee.uid() );
+  // mKIMProxy->chatWithContact( mAddressee.uid() );
 }
 
 void AddresseeView::contextMenuEvent(QContextMenuEvent *e)
@@ -753,26 +728,26 @@ void AddresseeView::result( KJob *job )
 
 void AddresseeView::load()
 {
-  mConfig->setGroup( "AddresseeViewSettings" );
-  mActionShowBirthday->setChecked( mConfig->readEntry( "ShowBirthday", false ) );
-  mActionShowAddresses->setChecked( mConfig->readEntry( "ShowAddresses", true ) );
-  mActionShowEmails->setChecked( mConfig->readEntry( "ShowEmails", true ) );
-  mActionShowPhones->setChecked( mConfig->readEntry( "ShowPhones", true ) );
-  mActionShowURLs->setChecked( mConfig->readEntry( "ShowURLs", true ) );
-  mActionShowIMAddresses->setChecked( mConfig->readEntry( "ShowIMAddresses", false ) );
-  mActionShowCustomFields->setChecked( mConfig->readEntry( "ShowCustomFields", false ) );
+  KConfigGroup group( mConfig, "AddresseeViewSettings" );
+  mActionShowBirthday->setChecked( group.readEntry( "ShowBirthday", false ) );
+  mActionShowAddresses->setChecked( group.readEntry( "ShowAddresses", true ) );
+  mActionShowEmails->setChecked( group.readEntry( "ShowEmails", true ) );
+  mActionShowPhones->setChecked( group.readEntry( "ShowPhones", true ) );
+  mActionShowURLs->setChecked( group.readEntry( "ShowURLs", true ) );
+  mActionShowIMAddresses->setChecked( group.readEntry( "ShowIMAddresses", false ) );
+  mActionShowCustomFields->setChecked( group.readEntry( "ShowCustomFields", false ) );
 }
 
 void AddresseeView::save()
 {
-  mConfig->setGroup( "AddresseeViewSettings" );
-  mConfig->writeEntry( "ShowBirthday", mActionShowBirthday->isChecked() );
-  mConfig->writeEntry( "ShowAddresses", mActionShowAddresses->isChecked() );
-  mConfig->writeEntry( "ShowEmails", mActionShowEmails->isChecked() );
-  mConfig->writeEntry( "ShowPhones", mActionShowPhones->isChecked() );
-  mConfig->writeEntry( "ShowURLs", mActionShowURLs->isChecked() );
-  mConfig->writeEntry( "ShowIMAddresses", mActionShowIMAddresses->isChecked() );
-  mConfig->writeEntry( "ShowCustomFields", mActionShowCustomFields->isChecked() );
+  KConfigGroup group( mConfig, "AddresseeViewSettings" );
+  group.writeEntry( "ShowBirthday", mActionShowBirthday->isChecked() );
+  group.writeEntry( "ShowAddresses", mActionShowAddresses->isChecked() );
+  group.writeEntry( "ShowEmails", mActionShowEmails->isChecked() );
+  group.writeEntry( "ShowPhones", mActionShowPhones->isChecked() );
+  group.writeEntry( "ShowURLs", mActionShowURLs->isChecked() );
+  group.writeEntry( "ShowIMAddresses", mActionShowIMAddresses->isChecked() );
+  group.writeEntry( "ShowCustomFields", mActionShowCustomFields->isChecked() );
   mConfig->sync();
 }
 

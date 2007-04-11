@@ -44,12 +44,8 @@ int main( int argc, char **argv )
   ExamplePrefsBase *prefs = ExamplePrefsBase::self();
 
   KPrefsDialog *dialog = new KPrefsDialog( prefs );
-  
   dialog->autoCreate();
-  
-  app.setMainWidget( dialog );
-
   dialog->show();
-    
+
   return app.exec();
 }

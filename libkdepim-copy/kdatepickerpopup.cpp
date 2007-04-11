@@ -19,13 +19,43 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include <QDateTime>
+#include <QtCore/QDateTime>
+#include <QtGui/QWidgetAction>
 
 #include <klocale.h>
 
 #include "kdatepickerpopup.h"
 
-KDatePickerPopup::KDatePickerPopup( int items, const QDate &date, QWidget *parent )
+class KDatePickerAction : public QWidgetAction
+{
+  public:
+    KDatePickerAction( KDatePicker *widget, QObject *parent )
+      : QWidgetAction( parent ),
+        mDatePicker( widget ), mOriginalParent( widget->parentWidget() )
+    {
+    }
+
+  protected:
+    QWidget* createWidget( QWidget *parent )
+    {
+      mDatePicker->setParent( parent );
+      return mDatePicker;
+    }
+
+    void deleteWidget( QWidget *widget )
+    {
+      if ( widget != mDatePicker )
+        return;
+
+      mDatePicker->setParent( mOriginalParent );
+    }
+
+  private:
+    KDatePicker *mDatePicker;
+    QWidget *mOriginalParent;
+};
+
+KDatePickerPopup::KDatePickerPopup( Items items, const QDate &date, QWidget *parent )
   : QMenu( parent )
 {
   mItems = items;
@@ -49,10 +79,7 @@ void KDatePickerPopup::buildMenu()
   clear();
 
   if ( mItems & DatePicker ) {
-#ifdef __GNUC__
-    #warning Port me!
-#endif
-    //addAction( mDatePicker );
+    addAction( new KDatePickerAction( mDatePicker, this ) );
 
     if ( ( mItems & NoDate ) || ( mItems & Words ) )
       addSeparator();

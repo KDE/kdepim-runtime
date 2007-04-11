@@ -54,8 +54,8 @@ void KPimPrefs::usrReadConfig()
 {
   kDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
 
-  config()->setGroup("General");
-  mCustomCategories = config()->readEntry( "Custom Categories" , QStringList() );
+  KConfigGroup group( config(), "General" );
+  mCustomCategories = group.readEntry( "Custom Categories" , QStringList() );
   if ( mCustomCategories.isEmpty() ) setCategoryDefaults();
   mCustomCategories.sort();
 }
@@ -67,8 +67,8 @@ KDateTime::Spec KPimPrefs::timeSpec()
 
   // Read TimeZoneId from korganizerrc.
   KConfig korgcfg( KStandardDirs::locate( "config", "korganizerrc" ) );
-  korgcfg.setGroup( "Time & Date" );
-  QString tz( korgcfg.readEntry( "TimeZoneId" ) );
+  KConfigGroup group( &korgcfg, "Time & Date" );
+  QString tz( group.readEntry( "TimeZoneId" ) );
   if ( !tz.isEmpty() ) {
     zone = KSystemTimeZones::zone( tz );
     if ( zone )
@@ -87,8 +87,8 @@ KDateTime::Spec KPimPrefs::timeSpec()
 
 void KPimPrefs::usrWriteConfig()
 {
-  config()->setGroup( "General" );
-  config()->writeEntry( "Custom Categories", mCustomCategories );
+  KConfigGroup group( config(), "General" );
+  group.writeEntry( "Custom Categories", mCustomCategories );
 }
 
 const QString KPimPrefs::categorySeparator = ":";

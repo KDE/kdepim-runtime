@@ -44,9 +44,12 @@
 */
 class KDEPIM_EXPORT KDatePickerPopup: public QMenu
 {
-    Q_OBJECT
+  Q_OBJECT
+
   public:
-    enum { NoDate = 1, DatePicker = 2, Words = 4 };
+    enum ItemFlag { NoDate = 1, DatePicker = 2, Words = 4 };
+
+    Q_DECLARE_FLAGS( Items, ItemFlag )
 
     /**
        A constructor for the KDatePickerPopup.
@@ -56,7 +59,7 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
        @param parent The object's parent.
        @param name The object's name.
     */
-    KDatePickerPopup( int items = DatePicker, const QDate &date = QDate::currentDate(),
+    KDatePickerPopup( Items items = DatePicker, const QDate &date = QDate::currentDate(),
                       QWidget *parent = 0 );
 
     /**
@@ -97,7 +100,9 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
     void buildMenu();
 
     KDatePicker *mDatePicker;
-    int mItems;
+    Items mItems;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( KDatePickerPopup::Items )
 
 #endif

@@ -89,11 +89,6 @@ StatusbarProgressWidget::StatusbarProgressWidget( ProgressDialog* progressDialog
   m_pButton->setToolTip( i18n("Open detailed progress dialog") );
 
   m_pProgressBar = new QProgressBar( this );
-#ifdef __GNUC__
-#warning "kde4 porting\n";  
-#endif
-  //m_pProgressBar->setLineWidth( 1 );
-  //m_pProgressBar->setFrameStyle( Q3Frame::Box );
   m_pProgressBar->installEventFilter( this );
   m_pProgressBar->setMinimumWidth( w );
   stack->insertWidget( 1,m_pProgressBar );
