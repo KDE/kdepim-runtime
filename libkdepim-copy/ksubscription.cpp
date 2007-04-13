@@ -233,12 +233,10 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   QLabel *comment = new QLabel("<p>"+
           i18n("Manage which mail folders you want to see in your folder view") + "</p>", page);
 
-  QToolButton *clearButton = new QToolButton( page );
-  clearButton->setIcon( KIcon( QApplication::isRightToLeft() ? "clear_left":"locationbar_erase" ) );
   filterEdit = new KLineEdit(page);
   QLabel *l = new QLabel(i18n("S&earch:"), page);
   l->setBuddy(filterEdit);
-  connect( clearButton, SIGNAL( clicked() ), filterEdit, SLOT( clear() ) );
+  filterEdit->setClearButtonShown(true);
 
   // checkboxes
   noTreeCB = new QCheckBox(i18n("Disable &tree view"), page);
@@ -301,7 +299,6 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   topL->addWidget(sep,2,0);
   topL->addLayout(listL, 3,0);
 
-  filterL->addWidget(clearButton);
   filterL->addWidget(l);
   filterL->addWidget(filterEdit, 1);
   filterL->addWidget(noTreeCB);
