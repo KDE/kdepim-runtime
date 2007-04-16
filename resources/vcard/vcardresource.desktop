@@ -2,8 +2,10 @@
 Encoding=UTF-8
 Name=Akonadi VCard Resource
 Name[es]=Recurso VCard Akonadi
+Name[sv]=Akonadi VCard-resurs
 Comment=An agent to load data from a VCard file
 Comment[es]=Un agente para cargar datos de un archivo VCard local
+Comment[sv]=En modul för att ladda data från en VCard-fil
 Type=AkonadiResource
 Exec=akonadi_vcard_resource
 Icon=vcard

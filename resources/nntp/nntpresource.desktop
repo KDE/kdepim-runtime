@@ -2,8 +2,10 @@
 Encoding=UTF-8
 Name=Akonadi NNTP Resource
 Name[es]=Recurso Akonadi NNTP
+Name[sv]=Akonadi NNTP-resurs
 Comment=An agent to load data from a news server
 Comment[es]=Un agente para cargar datos de un servidor de noticias
+Comment[sv]=En modul för att ladda data från en nyhetsserver
 Type=AkonadiResource
 Exec=akonadi_nntp_resource
 Icon=news
