@@ -131,7 +131,7 @@ DefaultEditor::createActions( KActionCollection *ac )
   (void) KStandardAction::paste( m_textEdit, SLOT(paste()), ac );
   (void) new KAction( i18n( "C&lear" ), 0,
                       m_textEdit, SLOT(removeSelectedText()),
-                      ac, "edit_clear" );
+                      ac, "edit-clear" );
 
   (void) KStandardAction::selectAll( m_textEdit, SLOT(selectAll()), ac );
 
