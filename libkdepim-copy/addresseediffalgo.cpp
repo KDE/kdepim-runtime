@@ -78,10 +78,10 @@ void AddresseeDiffAlgo::run()
     conflictField( KABC::Addressee::mailerLabel(), mLeftAddressee.mailer(), mRightAddressee.mailer() );
 
   if ( mLeftAddressee.timeZone() != mRightAddressee.timeZone() )
-    conflictField( KABC::Addressee::timeZoneLabel(), mLeftAddressee.timeZone().asString(), mRightAddressee.timeZone().asString() );
+    conflictField( KABC::Addressee::timeZoneLabel(), mLeftAddressee.timeZone().toString(), mRightAddressee.timeZone().toString() );
 
   if ( mLeftAddressee.geo() != mRightAddressee.geo() )
-    conflictField( KABC::Addressee::geoLabel(), mLeftAddressee.geo().asString(), mRightAddressee.geo().asString() );
+    conflictField( KABC::Addressee::geoLabel(), mLeftAddressee.geo().toString(), mRightAddressee.geo().toString() );
 
   if ( !compareString( mLeftAddressee.title(), mRightAddressee.title() ) )
     conflictField( KABC::Addressee::titleLabel(), mLeftAddressee.title(), mRightAddressee.title() );
