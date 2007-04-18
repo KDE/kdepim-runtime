@@ -20,6 +20,7 @@
 #include <kabc/resource.h>
 #include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
+#include <kabc/errorhandler.h>
 #include <kresources/selectdialog.h>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
@@ -39,7 +40,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
 #ifdef __GNUC__
-#warning "kde4: I don't know when newInstance is defined"  
+#warning "kde4: I don't know when newInstance is defined"
 #endif
   // DF: it comes from KUniqueApplication
 
@@ -62,13 +63,16 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
 }
 
 //-----------------------------------------------------------------------------
-void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
+void KAddrBookExternal::addEmail( const QString &addr, QWidget *parent)
+{
   QString email;
   QString name;
 
   KABC::Addressee::parseEmailAddress( addr, name, email );
 
   KABC::AddressBook *ab = KABC::StdAddressBook::self( true );
+
+  ab->setErrorHandler( new KABC::GuiErrorHandler( parent ) );
 
   // force a reload of the address book file so that changes that were made
   // by other programs are loaded
@@ -81,9 +85,7 @@ void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
     a.setNameFromString( name );
     a.insertEmail( email, true );
 
-    if ( !KAddrBookExternal::addAddressee( a ) ) {
-      KMessageBox::error( parent, i18n("Cannot save to addressbook.") );
-    } else {
+    if ( KAddrBookExternal::addAddressee( a ) ) {
       QString text = i18n("<qt>The email address <b>%1</b> was added to your "
                           "addressbook; you can add more information to this "
                           "entry by opening the addressbook.</qt>", addr );
@@ -95,32 +97,32 @@ void KAddrBookExternal::addEmail( const QString& addr, QWidget *parent) {
     KMessageBox::information( parent, text, QString(),
                               "alreadyInAddressBook" );
   }
+  ab->setErrorHandler( 0 );
 }
 
-void KAddrBookExternal::openAddressBook(QWidget *) {
+void KAddrBookExternal::openAddressBook( QWidget * ) {
   KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 }
 
-void KAddrBookExternal::addNewAddressee( QWidget* )
+void KAddrBookExternal::addNewAddressee( QWidget * )
 {
   KToolInvocation::startServiceByDesktopName("kaddressbook");
   QDBusInterface call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
   call.call("newContact");
 }
 
-bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *parent )
+bool KAddrBookExternal::addVCard( const KABC::Addressee &addressee, QWidget *parent )
 {
   KABC::AddressBook *ab = KABC::StdAddressBook::self( true );
   bool inserted = false;
 
-  KABC::Addressee::List addressees =
+   ab->setErrorHandler( new KABC::GuiErrorHandler( parent ) );
+
+   KABC::Addressee::List addressees =
       ab->findByEmail( addressee.preferredEmail() );
 
   if ( addressees.isEmpty() ) {
-    if ( !KAddrBookExternal::addAddressee( addressee ) ) {
-      KMessageBox::error( parent, i18n("Cannot save to addressbook.") );
-      inserted = false;
-    } else {
+    if ( KAddrBookExternal::addAddressee( addressee ) ) {
       QString text = i18n("The VCard was added to your addressbook; "
                           "you can add more information to this "
                           "entry by opening the addressbook.");
@@ -136,10 +138,11 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee& addressee, QWidget *par
     inserted = true;
   }
 
+  ab->setErrorHandler( 0 );
   return inserted;
 }
 
-bool KAddrBookExternal::addAddressee( const KABC::Addressee& addr )
+bool KAddrBookExternal::addAddressee( const KABC::Addressee &addr )
 {
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
 
