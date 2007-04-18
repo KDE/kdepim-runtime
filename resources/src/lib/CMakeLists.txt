@@ -23,8 +23,9 @@ set( akonadiresources_manualmoc_LIB_SRC
         ../../include/resource.h
         ../../include/resourcebase.h
 )
+qt4_generate_dbus_interface( ../../include/resource.h org.kde.Akonadi.Resource.xml )
 qt4_add_dbus_interfaces( akonadiresources_automoc_LIB_SRC ../../../server/interfaces/org.kde.Akonadi.Tracer.xml )
-qt4_add_dbus_adaptor( akonadiresources_automoc_LIB_SRC ../../include/org.kde.Akonadi.Resource.xml resourcebase.h Akonadi::ResourceBase )
+qt4_add_dbus_adaptor( akonadiresources_automoc_LIB_SRC ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Resource.xml resourcebase.h Akonadi::ResourceBase )
 
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
 kde4_automoc(${akonadiresources_manualmoc_LIB_SRC} ${akonadiresources_automoc_LIB_SRC})
@@ -43,8 +44,8 @@ install(TARGETS akonadiresources  DESTINATION ${LIB_INSTALL_DIR})
 
 install( FILES ../../include/resource.h
                ../../include/resourcebase.h
-               ../../include/org.kde.Akonadi.Resource.xml
-DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources
-)
+DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadiresources)
 
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Resource.xml 
+        DESTINATION ${DBUS_INTERFACES_DIR})
 
