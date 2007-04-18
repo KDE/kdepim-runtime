@@ -223,11 +223,6 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     K3ListViewItem::paintCell( p, cg, column, width, align );
   } else {
     Q3ListView *lv = listView();
-    QString oldText = text(column);
-
-    // set an empty text so that we can have our own implementation (see further down)
-    // but still benefit from K3ListView::paintCell
-    setText( column, "" );
 
     K3ListViewItem::paintCell( p, cg, column, width, align );
 
@@ -235,9 +230,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     int marg = lv ? lv->itemMargin() : 1;
     int r = marg;
 
-    QString t;
     QRect br;
-    setText( column, oldText );
     if ( isSelected() )
       p->setPen( cg.color( QPalette::HighlightedText ) );
     else
@@ -246,7 +239,15 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     if ( icon ) {
       r += icon->width() + marg;
     }
-    t = text( column );
+
+    //Remove any text that K3ListViewItem::paintCell() has drawn. We will
+    //draw that ourselves below.
+    if (isSelected())
+      p->fillRect( r, 0, width-marg-r, height(), cg.brush( QPalette::Highlight ) );
+    else
+      p->fillRect( r, 0, width-marg-r, height(), cg.brush( QPalette::Base ) );
+
+    QString t = text( column );
     if ( !t.isEmpty() )
     {
       // draw the unread-count if the unread-column is not active
