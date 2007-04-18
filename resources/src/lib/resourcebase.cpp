@@ -577,13 +577,13 @@ void ResourceBase::changesCommitted(const DataReference & ref)
   job->setClean();
 }
 
-bool ResourceBase::requestItemDelivery(int uid, const QString & remoteId, int type, const QDBusMessage & msg)
+bool ResourceBase::requestItemDelivery(int uid, const QString & remoteId, int type )
 {
   if ( !isOnline() ) {
     error( i18n( "Cannot fetch item in offline mode." ) );
     return false;
   }
-  return requestItemDelivery( DataReference( uid, remoteId ), type, msg );
+  return requestItemDelivery( DataReference( uid, remoteId ), type, message() );
 }
 
 bool ResourceBase::isOnline() const

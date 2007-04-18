@@ -26,6 +26,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
 #include <QtCore/QString>
+#include <QDBusContext>
 
 #include <kdepim_export.h>
 
@@ -66,7 +67,7 @@ class Session;
  * 2) Synchronize a single collection
  *   - TODO
  */
-class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
+class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusContext
 {
   Q_OBJECT
 
@@ -176,7 +177,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource
      */
     void crashHandler( int signal );
 
-    virtual bool requestItemDelivery( int uid, const QString &remoteId, int type, const QDBusMessage &msg );
+    virtual bool requestItemDelivery( int uid, const QString &remoteId, int type );
     virtual bool isOnline() const;
     virtual void setOnline( bool state );
 

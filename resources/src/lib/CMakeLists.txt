@@ -16,7 +16,6 @@ set( akonadiresources_LIB_SRC
 )
 
 set( akonadiresources_automoc_LIB_SRC
-	resourceadaptor.cpp
 	collectionsync.cpp
 )
 
@@ -25,6 +24,7 @@ set( akonadiresources_manualmoc_LIB_SRC
         ../../include/resourcebase.h
 )
 qt4_add_dbus_interfaces( akonadiresources_automoc_LIB_SRC ../../../server/interfaces/org.kde.Akonadi.Tracer.xml )
+qt4_add_dbus_adaptor( akonadiresources_automoc_LIB_SRC ../../include/org.kde.Akonadi.Resource.xml resourcebase.h Akonadi::ResourceBase )
 
 qt4_wrap_cpp(akonadiresources_LIB_SRC ${akonadiresources_manualmoc_LIB_SRC})
 kde4_automoc(${akonadiresources_manualmoc_LIB_SRC} ${akonadiresources_automoc_LIB_SRC})
