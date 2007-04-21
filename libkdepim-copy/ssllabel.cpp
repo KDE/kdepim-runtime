@@ -34,7 +34,7 @@
 #include <kiconloader.h>
 #include <klocale.h>
 
-#include <QToolTip>
+
 //Added by qt3to4:
 #include <QLabel>
 #include <QPixmap>

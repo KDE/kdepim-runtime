@@ -52,7 +52,7 @@ using KPIM::ProgressManager;
 #include <QTimer>
 #include <QLabel>
 #include <QPushButton>
-#include <QToolTip>
+
 #include <klocale.h>
 #include <QLayout>
 #include <QStackedWidget>

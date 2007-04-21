@@ -40,7 +40,7 @@
 #include <QPushButton>
 #include <khbox.h>
 #include <kvbox.h>
-#include <QToolTip>
+
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>

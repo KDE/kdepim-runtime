@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QLayout>
-#include <QToolTip>
+
 #include <QCheckBox>
 #include <QRadioButton>
 #include <QApplication>
