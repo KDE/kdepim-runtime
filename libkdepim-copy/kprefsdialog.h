@@ -97,7 +97,7 @@ class KDEPIM_EXPORT KPrefsWidBool : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent );
+    KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent = 0 );
 
     /**
       Return the QCheckbox used by this control element.
@@ -132,7 +132,7 @@ class KDEPIM_EXPORT KPrefsWidInt : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent );
+    KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this control element.
@@ -172,7 +172,7 @@ class KDEPIM_EXPORT KPrefsWidTime : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
+    KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -210,7 +210,8 @@ class KDEPIM_EXPORT KPrefsWidDuration : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
+    KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
+      QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -247,7 +248,7 @@ class KDEPIM_EXPORT KPrefsWidDate : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent );
+    KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -286,7 +287,7 @@ class KDEPIM_EXPORT KPrefsWidColor : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent );
+    KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent = 0 );
     /**
       Destruct color setting widget.
     */
@@ -330,7 +331,7 @@ class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
       @param sampleText Sample text for previewing the selected font.
     */
     KPrefsWidFont( KConfigSkeleton::ItemFont *item,
-                   QWidget *parent, const QString &sampleText );
+                   QWidget *parent = 0, const QString &sampleText = QString() );
     /**
       Destruct font setting widget.
     */
@@ -384,7 +385,7 @@ class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent );
+    KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent = 0 );
     virtual ~KPrefsWidRadios();
 
     /**
@@ -431,7 +432,7 @@ class KDEPIM_EXPORT KPrefsWidString : public KPrefsWid
       @param parent  Parent widget.
       @param echomode  Describes how a line edit should display its contents.
     */
-    KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent,
+    KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent = 0,
                      QLineEdit::EchoMode echomode=QLineEdit::Normal );
     /**
       Destructor.
@@ -479,7 +480,7 @@ class KDEPIM_EXPORT KPrefsWidPath : public KPrefsWid
       @param filter URLRequester filter
       @param mode  Describes how a line edit should display its contents.
     */
-    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
+    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent = 0,
                    const QString &filter = QString(), KFile::Modes = KFile::File );
     /**
       Destructor.
@@ -544,7 +545,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidBool *addWidBool( KConfigSkeleton::ItemBool *item,
-                               QWidget *parent );
+                               QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidInt object.
@@ -553,7 +554,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidInt *addWidInt( KConfigSkeleton::ItemInt *item,
-                             QWidget *parent );
+                             QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidDate object.
@@ -562,7 +563,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidDate *addWidDate( KConfigSkeleton::ItemDateTime *item,
-                               QWidget *parent );
+                               QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidTime object.
@@ -571,7 +572,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidTime *addWidTime( KConfigSkeleton::ItemDateTime *item,
-                               QWidget *parent );
+                               QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidDuration object.
@@ -580,7 +581,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidDuration *addWidDuration( KConfigSkeleton::ItemDateTime *item,
-                                       QWidget *parent );
+                                       QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidColor object.
@@ -589,7 +590,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidColor *addWidColor( KConfigSkeleton::ItemColor *item,
-                                 QWidget *parent );
+                                 QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidRadios object. The choices represented by the
@@ -599,7 +600,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidRadios *addWidRadios( KConfigSkeleton::ItemEnum *item,
-                                   QWidget *parent );
+                                   QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidString object.
@@ -608,7 +609,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidString *addWidString( KConfigSkeleton::ItemString *item,
-                                   QWidget *parent );
+                                   QWidget *parent = 0 );
 
     /**
       Register a path @ref KPrefsWidPath object.
@@ -618,7 +619,8 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param filter URLRequester filter
       @param mode URLRequester mode
     */
-    KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item, QWidget *parent,
+    KPrefsWidPath *addWidPath ( KConfigSkeleton::ItemPath *item,
+                                QWidget *parent = 0,
                                 const QString &filter = QString(),
                                 KFile::Modes mode = KFile::File );
 
@@ -629,7 +631,7 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param parent  Parent widget.
     */
     KPrefsWidString *addWidPassword ( KConfigSkeleton::ItemString *item,
-                                      QWidget *parent );
+                                      QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidFont object.
@@ -640,7 +642,8 @@ class KDEPIM_EXPORT KPrefsWidManager
       @param sampleText Sample text for previewing the selected font.
     */
     KPrefsWidFont *addWidFont( KConfigSkeleton::ItemFont *item,
-                               QWidget *parent, const QString &sampleText );
+                               QWidget *parent = 0,
+                               const QString &sampleText = QString() );
 
     /** Set all widgets to default values. */
     void setWidDefaults();
