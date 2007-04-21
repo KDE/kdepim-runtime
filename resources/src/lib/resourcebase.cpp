@@ -37,6 +37,7 @@
 #include "resourcebase.h"
 #include "resourceadaptor.h"
 #include "collectionsync.h"
+#include "monitor_p.h"
 
 #include "tracerinterface.h"
 
@@ -102,7 +103,8 @@ class ResourceBase::Private
     struct ChangeItem {
       ChangeType type;
       DataReference item;
-      QString collection;
+      int collectionId;
+      QString collectionRemoteId;
     };
     bool changeRecording;
     QList<ChangeItem> changes;
@@ -118,7 +120,7 @@ class ResourceBase::Private
           else if ( (*it).type == ItemAdded && c.type == ItemChanged )
             c.type = ItemAdded; // add + change -> add
           it = changes.erase( it );
-        } else if ( !(*it).collection.isEmpty() && (*it).collection == c.collection ) {
+        } else if ( (*it).collectionId >= 0 && (*it).collectionId == c.collectionId ) {
           if ( (*it).type == CollectionAdded && c.type == CollectionRemoved )
             skipCurrent = true; // add + remove -> noop
           else if ( (*it).type == CollectionAdded && c.type == CollectionChanged )
@@ -142,7 +144,8 @@ class ResourceBase::Private
         ChangeItem c;
         c.type = (ChangeType)mSettings->value( "type" ).toInt();
         c.item = DataReference( mSettings->value( "item_uid" ).toInt(), mSettings->value( "item_rid" ).toString() );
-        c.collection =  mSettings->value( "collection" ).toString();
+        c.collectionId = mSettings->value( "collectionId" ).toInt();
+        c.collectionRemoteId = mSettings->value( "collectionRemoteId" ).toString();
         changes << c;
       }
       mSettings->endArray();
@@ -160,7 +163,8 @@ class ResourceBase::Private
         mSettings->setValue( "type", c.type );
         mSettings->setValue( "item_uid", c.item.persistanceID() );
         mSettings->setValue( "item_rid", c.item.externalUrl() );
-        mSettings->setValue( "collection", c.collection );
+        mSettings->setValue( "collectionId", c.collectionId );
+        mSettings->setValue( "collectionRemoteId", c.collectionRemoteId );
       }
       mSettings->endArray();
       mSettings->endGroup();
@@ -226,9 +230,19 @@ ResourceBase::ResourceBase( const QString & id )
 
   d->session = new Session( d->mId.toLatin1(), this );
   d->monitor = new Monitor( this );
-  connect( d->monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(slotItemAdded(const Akonadi::Item&)) );
-  connect( d->monitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(slotItemChanged(const Akonadi::Item&)) );
-  connect( d->monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(slotItemRemoved(const Akonadi::DataReference&)) );
+  connect( d->monitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
+           this, SLOT( slotItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
+  connect( d->monitor, SIGNAL( itemChanged( const Akonadi::Item& ) ),
+           this, SLOT( slotItemChanged( const Akonadi::Item& ) ) );
+  connect( d->monitor, SIGNAL( itemRemoved( const Akonadi::DataReference& ) ),
+           this, SLOT( slotItemRemoved( const Akonadi::DataReference& ) ) );
+  connect( d->monitor, SIGNAL( collectionAdded( const Akonadi::Collection& ) ),
+           this, SLOT( slotCollectionAdded( const Akonadi::Collection& ) ) );
+  connect( d->monitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
+           this, SLOT( slotCollectionChanged( const Akonadi::Collection& ) ) );
+  connect( d->monitor, SIGNAL( collectionRemoved( int, const QString& ) ),
+           this, SLOT( slotCollectionRemoved( int, const QString& ) ) );
+
   d->monitor->ignoreSession( session() );
   d->monitor->monitorResource( d->mId.toLatin1() );
 
@@ -480,7 +494,7 @@ void ResourceBase::slotReplayNextItem()
     switch ( c.type ) {
       case Private::ItemAdded:
         {
-          ItemFetchJob *job = new ItemFetchJob( c.item, this );
+          ItemCollectionFetchJob *job = new ItemCollectionFetchJob( c.item, c.collectionId, this );
           connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayItemAdded( KJob* ) ) );
           job->start();
         }
@@ -496,9 +510,21 @@ void ResourceBase::slotReplayNextItem()
         itemRemoved( c.item );
         break;
       case Private::CollectionAdded:
+        {
+          CollectionListJob *job = new CollectionListJob( Collection( c.collectionId), CollectionListJob::Flat, this );
+          connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayCollectionAdded( KJob* ) ) );
+          job->start();
+        }
+        break;
       case Private::CollectionChanged:
+        {
+          CollectionListJob *job = new CollectionListJob( Collection( c.collectionId), CollectionListJob::Flat, this );
+          connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayCollectionChanged( KJob* ) ) );
+          job->start();
+        }
+        break;
       case Private::CollectionRemoved:
-        // TODO
+        collectionRemoved( c.collectionId, c.collectionRemoteId );
         break;
     }
   }
@@ -509,11 +535,12 @@ void ResourceBase::slotReplayItemAdded( KJob *job )
   if ( job->error() ) {
     error( i18n( "Unable to fetch item in replay mode." ) );
   } else {
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+    ItemCollectionFetchJob *fetchJob = qobject_cast<ItemCollectionFetchJob*>( job );
 
-    const Item item = fetchJob->items().first();
+    const Item item = fetchJob->item();
+    const Collection collection = fetchJob->collection();
     if ( item.isValid() )
-      itemAdded( item );
+      itemAdded( item, collection );
   }
 
   QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
@@ -534,15 +561,48 @@ void ResourceBase::slotReplayItemChanged( KJob *job )
   QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
 }
 
-void ResourceBase::slotItemAdded( const Akonadi::Item &item )
+void ResourceBase::slotReplayCollectionAdded( KJob *job )
+{
+  if ( job->error() ) {
+    error( i18n( "Unable to fetch collection in replay mode." ) );
+  } else {
+    CollectionListJob *listJob = qobject_cast<CollectionListJob*>( job );
+
+    if ( listJob->collections().count() == 0 )
+      error( i18n( "Unable to fetch collection in replay mode." ) );
+    else
+      collectionAdded( listJob->collections().first() );
+  }
+
+  QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
+}
+
+void ResourceBase::slotReplayCollectionChanged( KJob *job )
+{
+  if ( job->error() ) {
+    error( i18n( "Unable to fetch collection in replay mode." ) );
+  } else {
+    CollectionListJob *listJob = qobject_cast<CollectionListJob*>( job );
+
+    if ( listJob->collections().count() == 0 )
+      error( i18n( "Unable to fetch collection in replay mode." ) );
+    else
+      collectionChanged( listJob->collections().first() );
+  }
+
+  QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
+}
+
+void ResourceBase::slotItemAdded( const Akonadi::Item &item, const Collection &collection )
 {
   if ( d->changeRecording ) {
     Private::ChangeItem c;
     c.type = Private::ItemAdded;
     c.item = item.reference();
+    c.collectionId = collection.id();
     d->addChange( c );
   } else {
-    itemAdded( item );
+    itemAdded( item, collection );
   }
 }
 
@@ -552,6 +612,7 @@ void ResourceBase::slotItemChanged( const Akonadi::Item &item )
     Private::ChangeItem c;
     c.type = Private::ItemChanged;
     c.item = item.reference();
+    c.collectionId = -1;
     d->addChange( c );
   } else {
     itemChanged( item );
@@ -564,9 +625,47 @@ void ResourceBase::slotItemRemoved(const Akonadi::DataReference & ref)
     Private::ChangeItem c;
     c.type = Private::ItemRemoved;
     c.item = ref;
+    c.collectionId = -1;
     d->addChange( c );
   } else {
     itemRemoved( ref );
+  }
+}
+
+void ResourceBase::slotCollectionAdded( const Akonadi::Collection &collection )
+{
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::CollectionAdded;
+    c.collectionId = collection.id();
+    d->addChange( c );
+  } else {
+    collectionAdded( collection );
+  }
+}
+
+void ResourceBase::slotCollectionChanged( const Akonadi::Collection &collection )
+{
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::CollectionChanged;
+    c.collectionId = collection.id();
+    d->addChange( c );
+  } else {
+    collectionChanged( collection );
+  }
+}
+
+void ResourceBase::slotCollectionRemoved( int id, const QString &remoteId )
+{
+  if ( d->changeRecording ) {
+    Private::ChangeItem c;
+    c.type = Private::CollectionRemoved;
+    c.collectionId = id;
+    c.collectionRemoteId = remoteId;
+    d->addChange( c );
+  } else {
+    collectionRemoved( id, remoteId );
   }
 }
 

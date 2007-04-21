@@ -42,7 +42,7 @@ class ICalResource : public Akonadi::ResourceBase
   protected:
     virtual void aboutToQuit();
 
-    virtual void itemAdded( const Akonadi::Item &item );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 

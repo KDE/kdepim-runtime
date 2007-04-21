@@ -90,7 +90,7 @@ void VCardResource::configure()
   synchronize();
 }
 
-void VCardResource::itemAdded( const Akonadi::Item &item )
+void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
   KABC::Addressee addressee = mConverter.parseVCard( item.data() );
   if ( !addressee.isEmpty() ) {

@@ -299,7 +299,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusCo
       Reimplement to handle adding of new items.
       @param item The newly added item.
     */
-    virtual void itemAdded( const Item &item ) { Q_UNUSED( item ); }
+    virtual void itemAdded( const Item &item, const Collection &collection ) { Q_UNUSED( item ); Q_UNUSED( collection ); }
 
     /**
       Reimplement to handle changes to existing items.
@@ -312,6 +312,25 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusCo
       @param ref DataReference to the deleted item.
     */
     virtual void itemRemoved( const DataReference &ref ) { Q_UNUSED( ref ); }
+
+    /**
+      Reimplement to handle adding of new collections.
+      @param collection The newly added collection.
+    */
+    virtual void collectionAdded( const Collection &collection ) { Q_UNUSED( collection ); }
+
+    /**
+      Reimplement to handle changes to existing collections.
+      @param collection The changed collection.
+    */
+    virtual void collectionChanged( const Collection &collection ) { Q_UNUSED( collection ); }
+
+    /**
+      Reimplement to handle deletion of collections.
+      @param id The id of the deleted collection.
+      @param remoteId The remote id of the deleted collection.
+    */
+    virtual void collectionRemoved( int id, const QString &remoteId ) { Q_UNUSED( id ); Q_UNUSED( remoteId ); }
 
     /**
       Resets the dirty flag of the given item and updates the remote id.
@@ -355,13 +374,18 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusCo
   private Q_SLOTS:
     void slotDeliveryDone( KJob* job );
 
-    void slotItemAdded( const Akonadi::Item &item );
+    void slotItemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void slotItemChanged( const Akonadi::Item &item );
     void slotItemRemoved( const Akonadi::DataReference &reference );
+    void slotCollectionAdded( const Akonadi::Collection &collection );
+    void slotCollectionChanged( const Akonadi::Collection &collection );
+    void slotCollectionRemoved( int id, const QString &remoteId );
 
     void slotReplayNextItem();
     void slotReplayItemAdded( KJob *job );
     void slotReplayItemChanged( KJob *job );
+    void slotReplayCollectionAdded( KJob *job );
+    void slotReplayCollectionChanged( KJob *job );
 
     void slotCollectionSyncDone( KJob *job );
     void slotLocalListDone( KJob *job );
