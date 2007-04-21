@@ -41,16 +41,13 @@ NntpCollectionAttribute * NntpCollectionAttribute::clone() const
 
 QByteArray NntpCollectionAttribute::toByteArray() const
 {
-  QByteArray data;
-  QDataStream s( &data, QIODevice::Append );
-  s << mLastArticleId;
+  QByteArray data = QByteArray::number( mLastArticleId );
   return data;
 }
 
 void NntpCollectionAttribute::setData(const QByteArray & data)
 {
-  QDataStream s( data );
-  s >> mLastArticleId;
+  mLastArticleId = data.toInt();
 }
 
 int NntpCollectionAttribute::lastArticle() const
