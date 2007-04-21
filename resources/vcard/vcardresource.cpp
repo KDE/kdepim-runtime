@@ -46,11 +46,11 @@ VCardResource::~VCardResource()
 
 bool VCardResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
 {
-  if ( !mAddressees.contains( ref.externalUrl().toString() ) ) {
-    error( QString( "Contact with uid '%1' not found!" ).arg( ref.externalUrl().toString() ) );
+  if ( !mAddressees.contains( ref.remoteId() ) ) {
+    error( QString( "Contact with uid '%1' not found!" ).arg( ref.remoteId() ) );
     return false;
   } else {
-    const QByteArray data = mConverter.createVCard( mAddressees.value( ref.externalUrl().toString() ) );
+    const QByteArray data = mConverter.createVCard( mAddressees.value( ref.remoteId() ) );
 
     ItemStoreJob *job = new ItemStoreJob( ref, session() );
     job->setData( data );
@@ -96,7 +96,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
-    DataReference r( item.reference().persistanceID(), addressee.uid() );
+    DataReference r( item.reference().id(), addressee.uid() );
     changesCommitted( r );
   }
 }
@@ -107,15 +107,15 @@ void VCardResource::itemChanged( const Akonadi::Item &item )
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
-    DataReference r( item.reference().persistanceID(), addressee.uid() );
+    DataReference r( item.reference().id(), addressee.uid() );
     changesCommitted( r );
   }
 }
 
 void VCardResource::itemRemoved(const Akonadi::DataReference & ref)
 {
-  if ( mAddressees.contains( ref.externalUrl().toString() ) )
-    mAddressees.remove( ref.externalUrl().toString() );
+  if ( mAddressees.contains( ref.remoteId() ) )
+    mAddressees.remove( ref.remoteId() );
 }
 
 void VCardResource::retrieveCollections()
@@ -150,7 +150,7 @@ void VCardResource::synchronizeCollection( const Akonadi::Collection & col )
 
     bool found = false;
     foreach ( Item item, items ) {
-      if ( item.reference().externalUrl().toString() == uid ) {
+      if ( item.reference().remoteId() == uid ) {
         found = true;
         break;
       }

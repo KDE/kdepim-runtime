@@ -64,9 +64,9 @@ void ListCommand::exec()
   } else {
     foreach( Akonadi::Item item, itemFetchJob->items() ) {
       QString str;
-      str = QLatin1String("Item: ") + QString::number( item.reference().persistanceID() );
-      if ( !item.reference().externalUrl().isEmpty() ) {
-        str += QLatin1String(" [") + item.reference().externalUrl().toString() + QLatin1Char(']');
+      str = QLatin1String("Item: ") + QString::number( item.reference().id() );
+      if ( !item.reference().remoteId().isEmpty() ) {
+        str += QLatin1String(" [") + item.reference().remoteId() + QLatin1Char(']');
       }
       if ( !item.flags().isEmpty() ) {
         str += QLatin1String(" ( ");

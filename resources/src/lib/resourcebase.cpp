@@ -161,8 +161,8 @@ class ResourceBase::Private
         mSettings->setArrayIndex( i );
         ChangeItem c = changes.at( i );
         mSettings->setValue( "type", c.type );
-        mSettings->setValue( "item_uid", c.item.persistanceID() );
-        mSettings->setValue( "item_rid", c.item.externalUrl() );
+        mSettings->setValue( "item_uid", c.item.id() );
+        mSettings->setValue( "item_rid", c.item.remoteId() );
         mSettings->setValue( "collectionId", c.collectionId );
         mSettings->setValue( "collectionRemoteId", c.collectionRemoteId );
       }

@@ -50,7 +50,7 @@ bool NntpResource::requestItemDelivery(const Akonadi::DataReference & ref, int t
   Q_UNUSED( type );
   mCurrentRef = ref;
   mCurrentMessage = msg;
-  KIO::Job* job = KIO::storedGet( KUrl( ref.externalUrl().toString() ), false, false );
+  KIO::Job* job = KIO::storedGet( KUrl( ref.remoteId() ), false, false );
   connect( job, SIGNAL( result(KJob*) ), SLOT( fetchArticleResult(KJob*) ) );
   return true;
 }

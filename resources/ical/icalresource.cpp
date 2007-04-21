@@ -53,9 +53,9 @@ ICalResource::~ ICalResource()
 bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
 {
   qDebug() << "ICalResource::requestItemDelivery()";
-  Incidence *incidence = mCalendar->incidence( ref.externalUrl().toString() );
+  Incidence *incidence = mCalendar->incidence( ref.remoteId() );
   if ( !incidence ) {
-    error( QString("Incidence with uid '%1' not found!").arg( ref.externalUrl().toString() ) );
+    error( QString("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
     return false;
   } else {
     ICalFormat format;
@@ -114,7 +114,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   Incidence* i = format.fromString( QString::fromUtf8( item.data() ) );
   if ( i ) {
     mCalendar->addIncidence( i );
-    DataReference r( item.reference().persistanceID(), i->uid() );
+    DataReference r( item.reference().id(), i->uid() );
     changesCommitted( r );
   }
 }
@@ -126,7 +126,7 @@ void ICalResource::itemChanged( const Akonadi::Item& )
 
 void ICalResource::itemRemoved(const Akonadi::DataReference & ref)
 {
-  Incidence *i = mCalendar->incidence( ref.externalUrl().toString() );
+  Incidence *i = mCalendar->incidence( ref.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
 }
@@ -167,7 +167,7 @@ void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
     QString uid = incidence->uid();
     bool found = false;
     foreach ( Item item, items ) {
-      if ( item.reference().externalUrl().toString() == uid ) {
+      if ( item.reference().remoteId() == uid ) {
         found = true;
         break;
       }
