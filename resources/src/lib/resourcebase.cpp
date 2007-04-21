@@ -230,6 +230,8 @@ ResourceBase::ResourceBase( const QString & id )
 
   d->session = new Session( d->mId.toLatin1(), this );
   d->monitor = new Monitor( this );
+  d->monitor->fetchCollection( d->online );
+  d->monitor->fetchItemData( d->online );
   connect( d->monitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
            this, SLOT( slotItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
   connect( d->monitor, SIGNAL( itemChanged( const Akonadi::Item& ) ),
@@ -695,6 +697,8 @@ void ResourceBase::setOnline(bool state)
   d->online = state;
   settings()->setValue( "Resource/Online", state );
   enableChangeRecording( !state );
+  d->monitor->fetchCollection( state );
+  d->monitor->fetchItemData( state );
 }
 
 void ResourceBase::collectionsRetrieved(const Collection::List & collections)

@@ -47,7 +47,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
   splitter->addWidget( mCollectionView );
 
-  mCollectionModel = new Akonadi::CollectionModel( this );
+  mCollectionModel = new Akonadi::MessageCollectionModel( this );
 
 //   CollectionFilterProxyModel *colProxy = new CollectionFilterProxyModel( this );
 //   colProxy->setSourceModel( mCollectionModel );

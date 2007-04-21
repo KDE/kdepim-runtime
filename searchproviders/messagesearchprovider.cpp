@@ -36,6 +36,7 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   SearchProviderBase( id )
 {
   Monitor* monitor = new Monitor( this );
+  monitor->fetchItemData( true );
   monitor->monitorMimeType( "message/rfc822" );
   monitor->monitorMimeType( "message/news" );
   connect( monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );

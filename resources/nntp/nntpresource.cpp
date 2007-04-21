@@ -62,6 +62,7 @@ void NntpResource::retrieveCollections()
   rootCollection.setParent( Collection::root() );
   rootCollection.setRemoteId( baseUrl() );
   rootCollection.setName( name() );
+  rootCollection.setCachePolicyId( 1 );
   QStringList contentTypes;
   contentTypes << Collection::collectionMimeType();
   rootCollection.setContentTypes( contentTypes );

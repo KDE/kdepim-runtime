@@ -188,6 +188,9 @@ void CollectionSync::createLocalCollection(const Collection & c, const Collectio
   CollectionCreateJob *create = new CollectionCreateJob( parent, c.name(), this );
   create->setRemoteId( c.remoteId() );
   create->setContentTypes( c.contentTypes() );
+  create->setCachePolicyId( c.cachePolicyId() );
+  foreach ( CollectionAttribute *attr, c.attributes() )
+    create->setAttribute( attr );
   connect( create, SIGNAL(result(KJob*)), SLOT(slotLocalCreateDone(KJob*)) );
 }
 
