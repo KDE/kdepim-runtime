@@ -70,7 +70,7 @@ bool List::handleLine(const QByteArray& line )
             bool first = true;
             QList<MimeType> supportedMimeTypes = loc.mimeTypes();
             if ( supportedMimeTypes.isEmpty() ) {
-                list += "\\Noselect";
+                list += "\\Noinferiors";
                 first = false;
             }
             bool canContainFolders = false;
@@ -82,7 +82,7 @@ bool List::handleLine(const QByteArray& line )
             }
             if ( canContainFolders ) {
                 if ( !first ) list += ' ';
-                list += "\\Noinferiors";
+                list += "\\Noselect";
                 first = false;
             }
             if ( !supportedMimeTypes.isEmpty() ) {
