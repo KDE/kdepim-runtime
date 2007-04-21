@@ -65,26 +65,33 @@ class TransactionItem;
 TransactionItemView::TransactionItemView( QWidget * parent,
                                           const char * name,
                                           Qt::WFlags f )
-    : Q3ScrollView( parent, name, f ) {
+    : QScrollArea( parent ) {
   setFrameStyle( NoFrame );
-  mBigBox = new KVBox( viewport() );
-  mBigBox->setSpacing( 5 );
-  addChild( mBigBox );
-  setResizePolicy( Q3ScrollView::AutoOneFit ); // Fit so that the box expands horizontally
+  mBigBox = new KVBox( this );
+  //mBigBox->setSpacing( 5 );
+  setWidget( mBigBox );
+  setWidgetResizable( true );
+  //resize( 300, 200 );
+  //setResizePolicy( Q3ScrollView::AutoOneFit ); // Fit so that the box expands horizontally
 }
 
 TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bool first )
 {
    TransactionItem *ti = new TransactionItem( mBigBox, item, first );
-   ti->hide();
-   QTimer::singleShot( 1000, ti, SLOT( show() ) );
+   mBigBox->layout()->addWidget( ti );
+   //ti->hide();
+   //QTimer::singleShot( 1000, ti, SLOT( show() ) );
+   
+   resize( mBigBox->width(), mBigBox->height() );
+   
    return ti;
 }
 
+// TODO
 void TransactionItemView::resizeContents( int w, int h )
 {
   //kDebug(5300) << k_funcinfo << w << "," << h << endl;
-  Q3ScrollView::resizeContents( w, h );
+  //Q3ScrollView::resizeContents( w, h );
   // Tell the layout in the parent (progressdialog) that our size changed
   updateGeometry();
   // Resize the parent (progressdialog) - this works but resize horizontally too often
@@ -153,30 +160,38 @@ TransactionItem::TransactionItem( QWidget* parent,
   mFrame->setFrameShadow( QFrame::Raised );
   mFrame->show();
   setStretchFactor( mFrame, 3 );
+  layout()->addWidget( mFrame );
 
   KHBox *h = new KHBox( this );
   h->setSpacing( 5 );
+  layout()->addWidget( h );
 
   mItemLabel = new QLabel( item->label(), h );
+  h->layout()->addWidget( mItemLabel );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
-  mProgress = new QProgressBar(h );
+  mProgress = new QProgressBar( h );
   mProgress->setMaximum(100);
   mProgress->setValue( item->progress() );
+  h->layout()->addWidget( mProgress );
 
   if ( item->canBeCanceled() ) {
     mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString(), h );
     mCancelButton->setToolTip( i18n("Cancel this operation.") );
     connect ( mCancelButton, SIGNAL( clicked() ),
               this, SLOT( slotItemCanceled() ));
+    h->layout()->addWidget( mCancelButton );
   }
   
   h = new KHBox( this );
   h->setSpacing( 5 );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
+  layout()->addWidget( h );
   mSSLLabel = new SSLLabel( h );
   mSSLLabel->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
+  h->layout()->addWidget( mSSLLabel );
   mItemStatus =  new QLabel( item->status(), h );
+  h->layout()->addWidget( mItemStatus );
   setCrypto( item->usesCrypto() );
   if( first ) hideHLine();
 }
@@ -234,10 +249,9 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
     : OverlayWidget( alignWidget, parent, name ), mWasLastShown( false )
 {
     setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
-    setSpacing( 0 ); // QHBox
-    setMargin( 1 );
 
     mScrollView = new TransactionItemView( this, "ProgressScrollView" );
+    layout()->addWidget( mScrollView );
 
     // No more close button for now, since there is no more autoshow
     /*

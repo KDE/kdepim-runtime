@@ -42,6 +42,8 @@
 #include "overlaywidget.h"
 #include <kdepim_export.h>
 
+#include <QScrollArea>
+
 class QProgressBar;
 class Q3ScrollView;
 class QFrame;
@@ -52,7 +54,7 @@ class TransactionItemListView;
 class TransactionItem;
 class SSLLabel;
 
-class TransactionItemView : public Q3ScrollView {
+class TransactionItemView : public QScrollArea {
   Q_OBJECT
 public:
   TransactionItemView( QWidget * parent = 0,
