@@ -164,9 +164,21 @@ void ServerTest::slotSlaveResult(KIO::Slave *aSlave, int error,
   if ( error )
   {
     mJob = 0;
-    KMessageBox::error( qApp->activeWindow(),
-        KIO::buildErrorString( error, errorText ),
-        i18n("Error") );
+    QString errorMessage;
+    if ( error == 1 )
+    {
+      // handle the special case that the slave could not be started
+      errorMessage = i18n( "Starting the ioslave for protocol %1 failed.",
+                           mSSL ? mProtocol + 's' : mProtocol );
+    }
+    else
+    {
+      errorMessage = KIO::buildErrorString( error, errorText );
+      if ( errorMessage.isEmpty() ) {
+        errorMessage = i18n( "Unknown error %1.", error );
+      }
+    }
+    KMessageBox::error( qApp->activeWindow(), errorMessage, i18n("Error") );
     emit capabilities( mListNormal, mListSSL );
     emit capabilities( mListNormal, mListSSL, mAuthNone, mAuthSSL, mAuthTLS );
     return;
