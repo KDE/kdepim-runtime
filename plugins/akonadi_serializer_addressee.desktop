@@ -1,0 +1,8 @@
+[Misc]
+Encoding=UTF-8
+Name=Addressee Serializer
+Comment=An Akonadi serializer plugin for addressee objects
+
+[Plugin]
+Type=text/directory
+X-KDE-Library=libakonadi_serializer_addressee
