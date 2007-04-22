@@ -203,7 +203,7 @@ void CollectionSync::checkDone()
   // still orphan collections
   if ( !d->orphanRemoteCollections.isEmpty() ) {
     setError( Unknown );
-    setErrorText( "Found unresolved orphan collections" );
+    setErrorText( QLatin1String( "Found unresolved orphan collections" ) );
   }
 
   emitResult();

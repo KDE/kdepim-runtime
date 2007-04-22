@@ -67,7 +67,7 @@ class Session;
  * 2) Synchronize a single collection
  *   - TODO
  */
-class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusContext
+class AKONADI_EXPORT ResourceBase : public Resource, protected QDBusContext
 {
   Q_OBJECT
 
@@ -304,8 +304,9 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusCo
     /**
       Reimplement to handle changes to existing items.
       @param item The changed item.
+      @param partIdentifiers The identifiers of the item parts that has been changed.
     */
-    virtual void itemChanged( const Item &item ) { Q_UNUSED( item ); }
+    virtual void itemChanged( const Item &item, const QStringList &partIdentifiers ) { Q_UNUSED( item ); Q_UNUSED( partIdentifiers ); }
 
     /**
       Reimplement to handle deletion of items.
@@ -375,7 +376,7 @@ class AKONADI_RESOURCES_EXPORT ResourceBase : public Resource, protected QDBusCo
     void slotDeliveryDone( KJob* job );
 
     void slotItemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void slotItemChanged( const Akonadi::Item &item );
+    void slotItemChanged( const Akonadi::Item &item, const QStringList& );
     void slotItemRemoved( const Akonadi::DataReference &reference );
     void slotCollectionAdded( const Akonadi::Collection &collection );
     void slotCollectionChanged( const Akonadi::Collection &collection );

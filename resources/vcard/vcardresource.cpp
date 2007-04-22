@@ -101,7 +101,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   }
 }
 
-void VCardResource::itemChanged( const Akonadi::Item &item )
+void VCardResource::itemChanged( const Akonadi::Item &item, const QStringList& )
 {
   KABC::Addressee addressee = mConverter.parseVCard( item.data() );
   if ( !addressee.isEmpty() ) {

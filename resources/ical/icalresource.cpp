@@ -119,7 +119,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   }
 }
 
-void ICalResource::itemChanged( const Akonadi::Item& )
+void ICalResource::itemChanged( const Akonadi::Item&, const QStringList& )
 {
   qWarning() << "Implement me!";
 }

@@ -40,7 +40,7 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   monitor->monitorMimeType( "message/rfc822" );
   monitor->monitorMimeType( "message/news" );
   connect( monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
-  connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
+  connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
   Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );

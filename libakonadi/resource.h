@@ -40,7 +40,7 @@ namespace Akonadi {
  * provides a lot of convenience methods and abstracts parts
  * of the protocol.
  */
-class AKONADI_RESOURCES_EXPORT Resource : public QObject
+class AKONADI_EXPORT Resource : public QObject
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Resource" )

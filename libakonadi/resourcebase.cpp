@@ -105,6 +105,7 @@ class ResourceBase::Private
       DataReference item;
       int collectionId;
       QString collectionRemoteId;
+      QStringList partIdentifiers;
     };
     bool changeRecording;
     QList<ChangeItem> changes;
@@ -137,38 +138,41 @@ class ResourceBase::Private
     void loadChanges()
     {
       changes.clear();
-      mSettings->beginGroup( "Changes" );
-      int size = mSettings->beginReadArray( "change" );
+      mSettings->beginGroup( QLatin1String( "Changes" ) );
+      int size = mSettings->beginReadArray( QLatin1String( "change" ) );
       for ( int i = 0; i < size; ++i ) {
         mSettings->setArrayIndex( i );
         ChangeItem c;
-        c.type = (ChangeType)mSettings->value( "type" ).toInt();
-        c.item = DataReference( mSettings->value( "item_uid" ).toInt(), mSettings->value( "item_rid" ).toString() );
-        c.collectionId = mSettings->value( "collectionId" ).toInt();
-        c.collectionRemoteId = mSettings->value( "collectionRemoteId" ).toString();
+        c.type = (ChangeType)mSettings->value( QLatin1String( "type" ) ).toInt();
+        c.item = DataReference( mSettings->value( QLatin1String( "item_uid" ) ).toInt(),
+                                mSettings->value( QLatin1String( "item_rid" ) ).toString() );
+        c.collectionId = mSettings->value( QLatin1String( "collectionId" ) ).toInt();
+        c.collectionRemoteId = mSettings->value( QLatin1String( "collectionRemoteId" ) ).toString();
+        c.partIdentifiers = mSettings->value( QLatin1String( "partIdentifiers" ) ).toStringList();
         changes << c;
       }
       mSettings->endArray();
       mSettings->endGroup();
-      changeRecording = mSettings->value( "Resource/ChangeRecording", false ).toBool();
+      changeRecording = mSettings->value( QLatin1String( "Resource/ChangeRecording" ), false ).toBool();
     }
 
     void saveChanges()
     {
-      mSettings->beginGroup( "Changes" );
-      mSettings->beginWriteArray( "change", changes.count() );
+      mSettings->beginGroup( QLatin1String( "Changes" ) );
+      mSettings->beginWriteArray( QLatin1String( "change" ), changes.count() );
       for ( int i = 0; i < changes.count(); ++i ) {
         mSettings->setArrayIndex( i );
         ChangeItem c = changes.at( i );
-        mSettings->setValue( "type", c.type );
-        mSettings->setValue( "item_uid", c.item.id() );
-        mSettings->setValue( "item_rid", c.item.remoteId() );
-        mSettings->setValue( "collectionId", c.collectionId );
-        mSettings->setValue( "collectionRemoteId", c.collectionRemoteId );
+        mSettings->setValue( QLatin1String( "type" ), c.type );
+        mSettings->setValue( QLatin1String( "item_uid" ), c.item.id() );
+        mSettings->setValue( QLatin1String( "item_rid" ), c.item.remoteId() );
+        mSettings->setValue( QLatin1String( "collectionId" ), c.collectionId );
+        mSettings->setValue( QLatin1String( "collectionRemoteId" ), c.collectionRemoteId );
+        mSettings->setValue( QLatin1String( "partIdentifiers" ), c.partIdentifiers );
       }
       mSettings->endArray();
       mSettings->endGroup();
-      mSettings->setValue( "Resource/ChangeRecording", changeRecording );
+      mSettings->setValue( QLatin1String( "Resource/ChangeRecording" ), changeRecording );
     }
 
     // synchronize states
@@ -209,33 +213,36 @@ ResourceBase::ResourceBase( const QString & id )
   KCrash::setEmergencyMethod( ::crashHandler );
   sResourceBase = this;
 
-  d->mTracer = new org::kde::Akonadi::Tracer( "org.kde.Akonadi", "/tracing", QDBusConnection::sessionBus(), this );
+  d->mTracer = new org::kde::Akonadi::Tracer( QLatin1String( "org.kde.Akonadi" ), QLatin1String( "/tracing" ),
+                                              QDBusConnection::sessionBus(), this );
 
-  if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.Resource." + id ) )
-    error( QString( "Unable to register service at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
+  if ( !QDBusConnection::sessionBus().registerService( QLatin1String( "org.kde.Akonadi.Resource." ) + id ) )
+    error( QString::fromLatin1( "Unable to register service at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
 
   new ResourceAdaptor( this );
-  if ( !QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) )
-    error( QString( "Unable to register object at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
+  if ( !QDBusConnection::sessionBus().registerObject( QLatin1String( "/" ), this, QDBusConnection::ExportAdaptors ) )
+    error( QString::fromLatin1( "Unable to register object at dbus: %1" ).arg( QDBusConnection::sessionBus().lastError().message() ) );
 
   d->mId = id;
 
-  d->mSettings = new QSettings( QString( "%1/.akonadi/resource_config_%2" ).arg( QDir::homePath(), id ), QSettings::IniFormat );
+  d->mSettings = new QSettings( QString::fromLatin1( "%1/.akonadi/resource_config_%2" ).arg( QDir::homePath(), id ), QSettings::IniFormat );
 
-  const QString name = d->mSettings->value( "Resource/Name" ).toString();
+  const QString name = d->mSettings->value( QLatin1String( "Resource/Name" ) ).toString();
   if ( !name.isEmpty() )
     d->mName = name;
 
-  d->online = settings()->value( "Resource/Online", true ).toBool();
+  d->online = settings()->value( QLatin1String( "Resource/Online" ), true ).toBool();
 
   d->session = new Session( d->mId.toLatin1(), this );
   d->monitor = new Monitor( this );
   d->monitor->fetchCollection( d->online );
-  d->monitor->fetchItemData( d->online );
+  if ( d->online )
+    d->monitor->addFetchPart( ItemFetchJob::PartAll );
+
   connect( d->monitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
            this, SLOT( slotItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
-  connect( d->monitor, SIGNAL( itemChanged( const Akonadi::Item& ) ),
-           this, SLOT( slotItemChanged( const Akonadi::Item& ) ) );
+  connect( d->monitor, SIGNAL( itemChanged( const Akonadi::Item&, const QStringList& ) ),
+           this, SLOT( slotItemChanged( const Akonadi::Item&, const QStringList& ) ) );
   connect( d->monitor, SIGNAL( itemRemoved( const Akonadi::DataReference& ) ),
            this, SLOT( slotItemRemoved( const Akonadi::DataReference& ) ) );
   connect( d->monitor, SIGNAL( collectionAdded( const Akonadi::Collection& ) ),
@@ -251,10 +258,10 @@ ResourceBase::ResourceBase( const QString & id )
   d->loadChanges();
 
   // initial configuration
-  bool initialized = settings()->value( "Resource/Initialized", false ).toBool();
+  bool initialized = settings()->value( QLatin1String( "Resource/Initialized" ), false ).toBool();
   if ( !initialized ) {
     QTimer::singleShot( 0, this, SLOT(configure()) ); // finish construction first
-    settings()->setValue( "Resource/Initialized", true );
+    settings()->setValue( QLatin1String( "Resource/Initialized" ), true );
   }
 }
 
@@ -286,12 +293,12 @@ QString ResourceBase::progressMessage() const
 
 void ResourceBase::warning( const QString& message )
 {
-  d->mTracer->warning( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+  d->mTracer->warning( QString::fromLatin1( "ResourceBase(%1)" ).arg( d->mId ), message );
 }
 
 void ResourceBase::error( const QString& message )
 {
-  d->mTracer->error( QString( "ResourceBase(%1)" ).arg( d->mId ), message );
+  d->mTracer->error( QString::fromLatin1( "ResourceBase(%1)" ).arg( d->mId ), message );
 }
 
 void ResourceBase::changeStatus( Status status, const QString &message )
@@ -356,9 +363,9 @@ void ResourceBase::setName( const QString &name )
   d->mName = name;
 
   if ( d->mName.isEmpty() || d->mName == d->mId )
-    d->mSettings->remove( "Resource/Name" );
+    d->mSettings->remove( QLatin1String( "Resource/Name" ) );
   else
-    d->mSettings->setValue( "Resource/Name", d->mName );
+    d->mSettings->setValue( QLatin1String( "Resource/Name" ), d->mName );
 
   d->mSettings->sync();
 
@@ -383,8 +390,8 @@ QString ResourceBase::parseArguments( int argc, char **argv )
     }
 
     for ( int i = 1; i < argc - 1; ++i ) {
-      if ( QString( argv[ i ] ) == "--identifier" )
-        identifier = QString( argv[ i + 1 ] );
+      if ( QLatin1String( argv[ i ] ) == QLatin1String( "--identifier" ) )
+        identifier = QLatin1String( argv[ i + 1 ] );
     }
   } else {
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
@@ -471,7 +478,7 @@ void ResourceBase::slotDeliveryDone(KJob * job)
   Q_ASSERT( d->pendingReplys.contains( static_cast<Akonadi::Job*>( job ) ) );
   QDBusMessage reply = d->pendingReplys.take( static_cast<Akonadi::Job*>( job ) );
   if ( job->error() ) {
-    error( "Error while creating item: " + job->errorString() );
+    error( QLatin1String( "Error while creating item: " ) + job->errorString() );
     reply << false;
   } else {
     reply << true;
@@ -504,6 +511,9 @@ void ResourceBase::slotReplayNextItem()
       case Private::ItemChanged:
         {
           ItemFetchJob *job = new ItemFetchJob( c.item, this );
+          foreach( QString part, c.partIdentifiers )
+            job->addFetchPart( part );
+          job->setProperty( "parts", QVariant( c.partIdentifiers ) );
           connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotReplayItemChanged( KJob* ) ) );
           job->start();
         }
@@ -556,8 +566,10 @@ void ResourceBase::slotReplayItemChanged( KJob *job )
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
 
     const Item item = fetchJob->items().first();
-    if ( item.isValid() )
-      itemChanged( item );
+    if ( item.isValid() ) {
+      const QStringList parts = job->property( "parts" ).toStringList();
+      itemChanged( item, parts );
+    }
   }
 
   QTimer::singleShot( 0, this, SLOT( slotReplayNextItem() ) );
@@ -608,16 +620,17 @@ void ResourceBase::slotItemAdded( const Akonadi::Item &item, const Collection &c
   }
 }
 
-void ResourceBase::slotItemChanged( const Akonadi::Item &item )
+void ResourceBase::slotItemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers )
 {
   if ( d->changeRecording ) {
     Private::ChangeItem c;
     c.type = Private::ItemChanged;
     c.item = item.reference();
     c.collectionId = -1;
+    c.partIdentifiers = partIdentifiers;
     d->addChange( c );
   } else {
-    itemChanged( item );
+    itemChanged( item, partIdentifiers );
   }
 }
 
@@ -695,10 +708,10 @@ bool ResourceBase::isOnline() const
 void ResourceBase::setOnline(bool state)
 {
   d->online = state;
-  settings()->setValue( "Resource/Online", state );
+  settings()->setValue( QLatin1String( "Resource/Online" ), state );
   enableChangeRecording( !state );
   d->monitor->fetchCollection( state );
-  d->monitor->fetchItemData( state );
+  // TODO: d->monitor->fetchItemData( state );
 }
 
 void ResourceBase::collectionsRetrieved(const Collection::List & collections)
@@ -774,3 +787,6 @@ Collection ResourceBase::currentCollection() const
 {
   return d->currentCollection;
 }
+
+#include "resource.moc"
+#include "resourcebase.moc"

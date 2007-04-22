@@ -37,7 +37,7 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
   mMonitor->monitorAll();
   mMonitor->fetchItemData( true );
   connect( mMonitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
-  connect( mMonitor, SIGNAL(itemChanged(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
+  connect( mMonitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 }
 
