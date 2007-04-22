@@ -1,2 +1,4 @@
-add_subdirectory( test ) 
-add_subdirectory( src ) 
+add_subdirectory( ical )
+add_subdirectory( knut )
+add_subdirectory( vcard )
+add_subdirectory( nntp )
