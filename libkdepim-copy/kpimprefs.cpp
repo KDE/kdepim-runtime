@@ -89,6 +89,8 @@ void KPimPrefs::usrWriteConfig()
 {
   KConfigGroup group( config(), "General" );
   group.writeEntry( "Custom Categories", mCustomCategories );
+
+  KConfigSkeleton::usrWriteConfig();
 }
 
 const QString KPimPrefs::categorySeparator = ":";
