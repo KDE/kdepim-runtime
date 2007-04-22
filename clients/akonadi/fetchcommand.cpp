@@ -31,7 +31,7 @@ FetchCommand::FetchCommand(const QString & uid) :
 
 void FetchCommand::exec()
 {
-  DataReference ref( mUid.toUInt(), QString() );
+  DataReference ref( mUid.toInt(), QString() );
   ItemFetchJob* fetchJob = new ItemFetchJob( ref );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
