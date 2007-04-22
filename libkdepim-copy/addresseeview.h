@@ -22,8 +22,7 @@
 #ifndef KPIM_ADDRESSEEVIEW_H
 #define KPIM_ADDRESSEEVIEW_H
 
-//Added by qt3to4:
-#include <QPixmap>
+#include <QtGui/QPixmap>
 
 #include <kabc/addressee.h>
 #include <ktextbrowser.h>
@@ -35,6 +34,7 @@ class Job;
 }
 class KToggleAction;
 
+class KConfig;
 class KJob;
 
 namespace KPIM {

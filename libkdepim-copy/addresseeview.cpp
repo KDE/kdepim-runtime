@@ -22,8 +22,7 @@
 #include <QBuffer>
 #include <QImage>
 #include <QMenu>
-#include <q3url.h>
-//Added by qt3to4:
+#include <QUrl>
 #include <QPixmap>
 #include <QTextStream>
 
@@ -249,8 +248,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
-      QString fullEmail = addr.fullEmail( *emailIt );
-      Q3Url::encode( fullEmail );
+      QByteArray fullEmail = QUrl::toPercentEncoding( addr.fullEmail( *emailIt ) );
 
       if ( linkMask & EmailLinks ) {
         dynamicPart += rowFmtStr.arg( type )
@@ -414,7 +412,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     "<td align=\"right\" valign=\"top\" width=\"30%\" rowspan=\"3\" %2>")
     .arg( cellStyle ) );
   strAddr.append( QString::fromLatin1(
-    "<img src=\"%1\" width=\"50\" vspace=\"1\">" // image
+    "<img src=\"%1\" width=\"75\" height=\"105\" vspace=\"1\">" // image
     "</td>")
     .arg( image ) );
   strAddr.append( QString::fromLatin1(
