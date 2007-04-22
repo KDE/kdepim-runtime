@@ -23,10 +23,15 @@
 #include <QtGui/QWidget>
 
 class QModelIndex;
+class QStackedWidget;
 class QTextEdit;
 class QTreeView;
 
 class KJob;
+
+namespace KPIM {
+class AddresseeView;
+}
 
 namespace Akonadi {
 class CollectionView;
@@ -53,7 +58,9 @@ class BrowserWidget: public QWidget
     Akonadi::CollectionView *mCollectionView;
     Akonadi::ItemModel *mItemModel;
     QTreeView *mItemView;
+    QStackedWidget *mStack;
     QTextEdit *mDataView;
+    KPIM::AddresseeView *mAddresseeView;
 };
 
 #endif

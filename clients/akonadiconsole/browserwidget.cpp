@@ -27,11 +27,15 @@
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 
+#include <libkdepim/addresseeview.h>
+
 #include <kdebug.h>
+#include <kconfig.h>
 
 #include <QSplitter>
 #include <QTextEdit>
 #include <QVBoxLayout>
+#include <QStackedWidget>
 
 using namespace Akonadi;
 
@@ -66,9 +70,13 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   connect( mItemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   splitter2->addWidget( mItemView );
 
-  mDataView = new QTextEdit( this );
+  mStack = new QStackedWidget( this );
+  mDataView = new QTextEdit( mStack );
   mDataView->setReadOnly( true );
-  splitter2->addWidget( mDataView );
+  mAddresseeView = new KPIM::AddresseeView( mStack );
+  mStack->addWidget( mDataView );
+  mStack->addWidget( mAddresseeView );
+  splitter2->addWidget( mStack );
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
@@ -98,7 +106,15 @@ void BrowserWidget::itemFetchDone(KJob * job)
     qWarning() << "No item found!";
   } else {
     const Item item = fetch->items().first();
-    mDataView->setPlainText( item.data() );
+    if ( item.mimeType() == QLatin1String( "text/vcard" ) ) {
+      const KABC::Addressee addr = item.payload<KABC::Addressee>();
+
+      mAddresseeView->setAddressee( addr );
+      mStack->setCurrentWidget( mAddresseeView );
+    } else {
+      mDataView->setPlainText( item.data() );
+      mStack->setCurrentWidget( mDataView );
+    }
   }
 }
 
