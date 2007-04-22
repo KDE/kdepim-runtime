@@ -3,6 +3,8 @@
 
 #include <kabc/addressee.h>
 
+#include <QDebug>
+
 #include "../libakonadi/item.h"
 
 using namespace Akonadi;
@@ -11,12 +13,16 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
 {
     if ( item.mimeType() != QString::fromLatin1("text/vcard") ) {
         //throw ItemSerializerException();
+        return;
     }
 
     KABC::Addressee a = const_cast<KABC::VCardConverter*>(&m_converter)->parseVCard( data );
     if ( !a.isEmpty() ) {
         item.setPayload<KABC::Addressee>( a );
+    } else {
+        qDebug( ) << "SerializerPluginAddresee: Empty addressee object!";
     }
+
 
 }
 
