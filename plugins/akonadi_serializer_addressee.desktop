@@ -4,5 +4,5 @@ Name=Addressee Serializer
 Comment=An Akonadi serializer plugin for addressee objects
 
 [Plugin]
-Type=text/directory
+Type=text/vcard
 X-KDE-Library=libakonadi_serializer_addressee

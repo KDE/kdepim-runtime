@@ -1,10 +1,23 @@
 
 #include "akonadi_serializer_addressee.h"
 
+#include <kabc/addressee.h>
+
+#include "../libakonadi/item.h"
+
 using namespace Akonadi;
 
 void SerializerPluginAddresee::deserialize( Item& item, const QString& label, const QByteArray& data ) const
 {
+    if ( item.mimeType() != QString::fromLatin1("text/vcard") ) {
+        //throw ItemSerializerException();
+    }
+
+    KABC::Addressee a = const_cast<KABC::VCardConverter*>(&m_converter)->parseVCard( data );
+    if ( !a.isEmpty() ) {
+        item.setPayload<KABC::Addressee>( a );
+    }
+
 }
 
 
@@ -15,6 +28,8 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QByteArray& data ) const
 {
+    const KABC::Addressee a = item.payload<KABC::Addressee>();
+    data = m_converter.createVCard( a );
 }
 
 
