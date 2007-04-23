@@ -20,6 +20,7 @@
 #include "akonadislave.h"
 
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemserializer.h>
 
 #include <kapplication.h>
 #include <kcmdlineargs.h>
@@ -74,7 +75,9 @@ void AkonadiSlave::get(const KUrl & url)
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
     const Item item = job->items().first();
-    data( item.data() );
+    QByteArray tmp;
+    ItemSerializer::serialize( item, "RFC822", tmp );
+    data( tmp );
     data( QByteArray() );
     finished();
   }

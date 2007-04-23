@@ -23,6 +23,7 @@
 #include <libakonadi/collectionview.h>
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemserializer.h>
 #include <libakonadi/messagemodel.h>
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
@@ -112,7 +113,9 @@ void BrowserWidget::itemFetchDone(KJob * job)
       mAddresseeView->setAddressee( addr );
       mStack->setCurrentWidget( mAddresseeView );
     } else {
-      mDataView->setPlainText( item.data() );
+      QByteArray data;
+      ItemSerializer::serialize( item, "RFC822", data );
+      mDataView->setPlainText( data );
       mStack->setCurrentWidget( mDataView );
     }
   }

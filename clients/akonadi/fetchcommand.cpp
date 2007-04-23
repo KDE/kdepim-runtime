@@ -21,6 +21,7 @@
 #include "out.h"
 
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemserializer.h>
 
 using namespace Akonadi;
 
@@ -39,7 +40,9 @@ void FetchCommand::exec()
         << endl;
   } else {
     foreach( Item item, fetchJob->items() ) {
-      out() << item.data() << endl;
+      QByteArray data;
+      ItemSerializer::serialize( item, "RFC822", data );
+      out() << data << endl;
     }
   }
 }

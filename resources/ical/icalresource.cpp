@@ -111,7 +111,7 @@ void ICalResource::loadFile()
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
   ICalFormat format;
-  Incidence* i = format.fromString( QString::fromUtf8( item.data() ) );
+  Incidence* i = format.fromString( QString::fromUtf8( item.payload<QByteArray>() ) );
   if ( i ) {
     mCalendar->addIncidence( i );
     DataReference r( item.reference().id(), i->uid() );
