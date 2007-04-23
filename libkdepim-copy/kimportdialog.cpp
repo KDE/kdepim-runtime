@@ -326,7 +326,8 @@ void KImportDialog::readFile( int rows )
   inputStream.setCodec("ISO 8859-1");
 
   KProgressDialog pDialog(this, i18n("Loading Progress"),
-                    i18n("Please wait while the file is loaded."), true);
+                    i18n("Please wait while the file is loaded."));
+  pDialog.setWindowModality(Qt::WindowModal);
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);
@@ -661,7 +662,8 @@ void KImportDialog::applyConverter()
   kDebug(5300) << "KImportDialog::applyConverter" << endl;
 
   KProgressDialog pDialog(this, i18n("Importing Progress"),
-                    i18n("Please wait while the data is imported."), true);
+                    i18n("Please wait while the data is imported."));
+  pDialog.setWindowModality(Qt::WindowModal);
   pDialog.setAllowCancel(true);
   pDialog.showCancelButton(true);
   pDialog.setAutoClose(true);

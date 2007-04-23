@@ -120,7 +120,8 @@ void MailList::populateMimeData( QMimeData*md, MailTextSource *src )
      possible if we are given a MailTextSource */
   if ( src && count() ) {
     QByteArray rc;
-    KProgressDialog *dlg = new KProgressDialog( 0, QString(), i18n("Retrieving and storing messages..."), true);
+    KProgressDialog *dlg = new KProgressDialog( 0, QString(), i18n("Retrieving and storing messages..."));
+    dlg->setWindowModality(Qt::WindowModal);
     dlg->setAllowCancel(true);
     dlg->progressBar()->setMaximum( count());
     int i = 0;
