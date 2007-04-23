@@ -1,5 +1,10 @@
 
 
+include_directories(
+        ${CMAKE_SOURCE_DIR}/akonadi
+)
+
+
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 
 kde4_automoc(${akonadi_serializer_addressee_PART_SRCS})
