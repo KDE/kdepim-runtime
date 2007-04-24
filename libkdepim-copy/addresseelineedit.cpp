@@ -92,6 +92,12 @@ static QByteArray newLineEditObjectName()
 
 static const QString s_completionItemIndentString = "     ";
 
+static bool itemIsHeader( const QListWidgetItem* item )
+{
+  return item && !item->text().startsWith( s_completionItemIndentString );
+}
+
+
 AddresseeLineEdit::AddresseeLineEdit( QWidget* parent, bool useCompletion )
   : KLineEdit( parent )
 {
@@ -940,7 +946,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       if ( e->type() == QEvent::MouseButtonPress
           || btns & Qt::LeftButton || btns & Qt::MidButton
           || btns & Qt::RightButton ) {
-        if ( !item->text().startsWith( s_completionItemIndentString ) ) {
+        if ( itemIsHeader(item) ) {
           return true; // eat the event, we don't want anything to happen
         } else {
           // if we are not on one of the group heading, make sure the item
@@ -967,12 +973,12 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       completionBox()->isVisible() ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
     unsigned int currentIndex = completionBox()->currentRow();
-    if ( ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Backtab ) {
-      //kDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
+    if ( ke->key() == Qt::Key_Up ) {
+      //kdDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
       QListWidgetItem *itemAbove = completionBox()->item( currentIndex - 1 );
-      if ( itemAbove && !itemAbove->text().startsWith( s_completionItemIndentString ) ) {
+      if ( itemAbove && itemIsHeader(itemAbove) ) {
         // there is a header above is, check if there is even further up
         // and if so go one up, so it'll be selected
         if ( currentIndex > 1 && completionBox()->item( currentIndex - 2 ) ) {
@@ -990,11 +996,11 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
         }
         return true;
       }
-    } else if ( ke->key() == Qt::Key_Down || ke->key() == Qt::Key_Tab ) {
+    } else if ( ke->key() == Qt::Key_Down  ) {
       // same strategy for downwards
       //kDebug() << "EVENTFILTER: Key_Down. currentIndex=" << currentIndex << endl;
       QListWidgetItem *itemBelow = completionBox()->item( currentIndex + 1 );
-      if ( itemBelow && !itemBelow->text().startsWith( s_completionItemIndentString ) ) {
+      if ( itemBelow && itemIsHeader( itemBelow ) ) {
         if ( completionBox()->item( currentIndex + 2 ) ) {
           //kDebug() << "EVENTFILTER: Key_Down -> skipping " << currentIndex+1 << endl;
           completionBox()->setCurrentRow( currentIndex + 2  );
@@ -1011,9 +1017,41 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       // Setting it to selected tricks KCompletionBox into not treating is special
       // and selecting making it current, instead of the one below.
       QListWidgetItem *item = completionBox()->item( currentIndex );
-      if ( item && !item->text().startsWith( s_completionItemIndentString )  ) {
+      if ( item && itemIsHeader(item) ) {
         item->setSelected( true );
       }
+    } else if ( ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab ) {
+      /// first, find the header of teh current section
+      QListWidgetItem *myHeader = 0;
+      int i = currentIndex;
+      while ( i>=0 ) {
+        if ( itemIsHeader( completionBox()->item(i) ) ) {
+          myHeader = completionBox()->item( i );
+          break;
+        }
+        i--;
+      }
+      Q_ASSERT( myHeader ); // we should always be able to find a header
+
+      // find the next header (searching backwards, for Key_Backtab
+      QListWidgetItem *nextHeader = 0;
+      const int iterationstep = ke->key() == Qt::Key_Tab ?  1 : -1;
+      // when iterating forward, start at the currentindex, when backwards, 
+      // one up from our header, or at the end
+      uint j = ke->key() == Qt::Key_Tab ? currentIndex : i==0 ? completionBox()->count()-1 : (i-1) % completionBox()->count();
+      while ( ( nextHeader = completionBox()->item( j ) ) && nextHeader != myHeader ) {
+          if ( itemIsHeader(nextHeader) ) {
+              break;
+          }
+          j = (j + iterationstep) % completionBox()->count();
+      }
+      if ( nextHeader && nextHeader != myHeader ) {
+        QListWidgetItem *item = completionBox()->item( j + 1 );
+        if ( item && !itemIsHeader(item) ) {
+          item->setSelected(true);
+        }
+      }
+      return true;
     }
   }
   return KLineEdit::eventFilter( obj, e );
