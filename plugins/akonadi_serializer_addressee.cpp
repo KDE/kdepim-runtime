@@ -11,6 +11,10 @@ using namespace Akonadi;
 
 void SerializerPluginAddresee::deserialize( Item& item, const QString& label, const QByteArray& data ) const
 {
+    if ( label != "RFC822" ) {
+      item.addPart( label, data );
+      return;
+    }
     if ( item.mimeType() != QString::fromLatin1("text/vcard") ) {
         //throw ItemSerializerException();
         return;
@@ -29,11 +33,16 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
 
 void SerializerPluginAddresee::deserialize( Item& item, const QString& label, const QIODevice& data ) const
 {
+  Q_UNUSED( item );
+  Q_UNUSED( label );
+  Q_UNUSED( data );
 }
 
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QByteArray& data ) const
 {
+    if ( label != "RFC822" )
+      return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();
     data = m_converter.createVCard( a );
 }
@@ -41,6 +50,9 @@ void SerializerPluginAddresee::serialize( const Item& item, const QString& label
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QIODevice& data ) const
 {
+  Q_UNUSED( item );
+  Q_UNUSED( label );
+  Q_UNUSED( data );
 }
 
 extern "C"
