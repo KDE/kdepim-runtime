@@ -1,0 +1,8 @@
+[Misc]
+Encoding=UTF-8
+Name=Mail Serializer
+Comment=An Akonadi serializer plugin for mail objects
+
+[Plugin]
+Type=message/rfc822
+X-KDE-Library=libakonadi_serializer_mail
