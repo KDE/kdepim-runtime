@@ -4,6 +4,8 @@ include_directories(
         ${CMAKE_SOURCE_DIR}/akonadi
 )
 
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+
 
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 kde4_automoc(${akonadi_serializer_addressee_PART_SRCS})

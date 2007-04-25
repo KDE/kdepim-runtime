@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <kmime/kmime_message.h>
+#include <boost/shared_ptr.hpp>
 
 #include "../libakonadi/item.h"
 
@@ -21,7 +22,9 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, const 
     }
 
     Message *m = new  Message();
-
+    m->setContent( data );
+    m->parse();
+    item.setPayload( boost::shared_ptr<Message>(m) );
 }
 
 
@@ -37,6 +40,10 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QB
 {
     if ( label != "RFC822" )
       return;
+
+    boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
+    m->assemble();
+    data = m->encodedContent();
 }
 
 
