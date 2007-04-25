@@ -28,6 +28,8 @@
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 
+#include <models/kabcmodel.h>
+
 #include <libkdepim/addresseeview.h>
 
 #include <kdebug.h>
@@ -53,17 +55,12 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   splitter->addWidget( mCollectionView );
 
   mCollectionModel = new Akonadi::MessageCollectionModel( this );
-
-//   CollectionFilterProxyModel *colProxy = new CollectionFilterProxyModel( this );
-//   colProxy->setSourceModel( mCollectionModel );
-//   colProxy->addMimeType( "text/calendar" );
   mCollectionView->setModel( mCollectionModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
   splitter->addWidget( splitter2 );
 
-  mItemModel = new Akonadi::ItemModel( this );
-//   mItemModel = new Akonadi::MessageModel( this );
+  mItemModel = new KABCModel( this );
 
   mItemView = new QTreeView( this );
   mItemView->setRootIsDecorated( false );
