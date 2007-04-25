@@ -97,8 +97,10 @@ void TransactionItemView::resizeContents( int w, int h )
   // Resize the parent (progressdialog) - this works but resize horizontally too often
   //parentWidget()->adjustSize();
 
+#ifdef QT3_SUPPORT
   QApplication::sendPostedEvents( 0, QEvent::ChildInserted );
   QApplication::sendPostedEvents( 0, QEvent::LayoutHint );
+#endif
   QSize sz = parentWidget()->sizeHint();
   int currentWidth = parentWidget()->width();
   // Don't resize to sz.width() every time when it only reduces a little bit

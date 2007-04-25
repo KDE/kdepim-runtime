@@ -25,6 +25,7 @@
 #include <QUrl>
 #include <QPixmap>
 #include <QTextStream>
+#include <QContextMenuEvent>
 
 #include <kabc/address.h>
 #include <kabc/addressee.h>
