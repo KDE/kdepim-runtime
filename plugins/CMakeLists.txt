@@ -13,7 +13,7 @@ kde4_add_plugin(akonadi_serializer_addressee WITH_PREFIX ${akonadi_serializer_ad
 
 
 
-target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} kabc akonadi )
+target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} akonadi )
 
 install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
