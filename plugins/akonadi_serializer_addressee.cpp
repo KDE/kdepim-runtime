@@ -41,7 +41,7 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QByteArray& data ) const
 {
-    if ( label != "RFC822" )
+    if ( label != "RFC822" || !item.hasPayload() )
       return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();
     data = m_converter.createVCard( a );

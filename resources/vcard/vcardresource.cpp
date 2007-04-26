@@ -159,8 +159,9 @@ void VCardResource::synchronizeCollection( const Akonadi::Collection & col )
     if ( found )
       continue;
 
-    ItemAppendJob *append = new ItemAppendJob( col, "text/vcard", session() );
-    append->setRemoteId( uid );
+    Item item( DataReference( -1, uid ) );
+    item.setMimeType( "text/vcard" );
+    ItemAppendJob *append = new ItemAppendJob( item, col, session() );
     if ( !append->exec() ) {
       changeProgress( 0 );
       changeStatus( Error, i18n( "Appending new contact failed: %1", append->errorString() ) );

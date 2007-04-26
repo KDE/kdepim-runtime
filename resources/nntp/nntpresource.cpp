@@ -142,8 +142,10 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
 {
   Q_UNUSED( job );
   foreach ( const KIO::UDSEntry &entry, list ) {
-    ItemAppendJob *append = new ItemAppendJob( currentCollection(), "message/news", session() );
-    append->setRemoteId( baseUrl() + currentCollection().remoteId() + QDir::separator() + entry.stringValue( KIO::UDS_NAME ) );
+    DataReference ref( -1, baseUrl() + currentCollection().remoteId() + QDir::separator() + entry.stringValue( KIO::UDS_NAME ) );
+    Item item( ref );
+    item.setMimeType( "message/news" );
+    ItemAppendJob *append = new ItemAppendJob( item, currentCollection(), session() );
   }
 }
 

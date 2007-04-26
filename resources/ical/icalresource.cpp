@@ -174,8 +174,9 @@ void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
     }
     if ( found )
       continue;
-    ItemAppendJob *append = new ItemAppendJob( col, "text/calendar", session() );
-    append->setRemoteId( uid );
+    Item item( DataReference( -1, uid ) );
+    item.setMimeType( "text/calendar" );
+    ItemAppendJob *append = new ItemAppendJob( item, col, session() );
     if ( !append->exec() ) {
       changeProgress( 0 );
       changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );

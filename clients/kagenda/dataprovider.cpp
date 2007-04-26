@@ -195,9 +195,10 @@ void DataProvider::saveAkonadi()
       event->setFloats( false );
       QString ical = format.toICalString( event );
       // FIXME: get rid of the hardcoded collection
-      Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( Akonadi::Collection( 1 ),
-          "text/calendar", this );
-      job->setData( ical.toUtf8() );
+      Akonadi::Item item;
+      item.setMimeType( "text/calendar" );
+      item.setPayload( ical.toUtf8() );
+      Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( item, Akonadi::Collection( 1 ), this );
       if ( !job->exec() ) {
         KMessageBox::error( 0, i18n("Error") );
       }
