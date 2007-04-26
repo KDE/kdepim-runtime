@@ -22,7 +22,6 @@
 #include <QBuffer>
 #include <QImage>
 #include <QMenu>
-#include <QUrl>
 #include <QPixmap>
 #include <QTextStream>
 #include <QContextMenuEvent>
@@ -39,6 +38,7 @@
 #include <kcodecs.h>
 #include <kmessagebox.h>
 #include <krun.h>
+#include <kurl.h>
 #include <kstringhandler.h>
 #include <ktemporaryfile.h>
 
@@ -249,7 +249,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
     for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
-      QByteArray fullEmail = QUrl::toPercentEncoding( addr.fullEmail( *emailIt ) );
+      QByteArray fullEmail = KUrl::toPercentEncoding( addr.fullEmail( *emailIt ) );
 
       if ( linkMask & EmailLinks ) {
         dynamicPart += rowFmtStr.arg( type )
