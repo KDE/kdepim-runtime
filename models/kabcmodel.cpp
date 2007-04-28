@@ -45,6 +45,9 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   const Akonadi::Item item = itemForIndex( index );
 
+  if ( !item.hasPayload<KABC::Addressee>() )
+    return QVariant();
+
   const KABC::Addressee addr = item.payload<KABC::Addressee>();
   switch ( index.column() ) {
     case 0:

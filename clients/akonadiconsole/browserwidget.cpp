@@ -60,7 +60,8 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
   splitter->addWidget( splitter2 );
 
-  mItemModel = new KABCModel( this );
+  mItemModel = new ItemModel( this );
+//   mItemModel = new KABCModel( this );
 
   mItemView = new QTreeView( this );
   mItemView->setRootIsDecorated( false );
