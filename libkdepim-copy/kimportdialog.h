@@ -95,7 +95,7 @@ class KImportDialog : public KDialog
     void registerColumns();
     int findFormat(int column);
 
-    virtual void convertRow() {};
+    virtual void convertRow() {}
 
   protected slots:
     void separatorClicked(int id);

@@ -82,7 +82,7 @@ class KDEPIM_EXPORT DiffAlgo
     /**
       Destructor.
      */
-    virtual ~DiffAlgo() {};
+    virtual ~DiffAlgo() {}
 
     /**
       Starts the diffing algorithm.
