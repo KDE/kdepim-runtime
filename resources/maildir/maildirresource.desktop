@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Maildir Resource
+Type=AkonadiResource
+Exec=akonadi_maildir_resource
+Icon=
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilitites=message/rfc822
+X-Akonadi-Identifier=akonadi_maildir_resource
