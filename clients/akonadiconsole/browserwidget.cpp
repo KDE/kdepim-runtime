@@ -62,6 +62,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
 
   mItemModel = new ItemModel( this );
 //   mItemModel = new KABCModel( this );
+//   mItemModel = new MessageModel( this );
 
   mItemView = new QTreeView( this );
   mItemView->setRootIsDecorated( false );

@@ -54,7 +54,7 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, const 
       item.addPart( label, data );
       return;
     }
-    if ( item.mimeType() != QString::fromLatin1("message/rfc822") ) {
+    if ( item.mimeType() != QString::fromLatin1("message/rfc822") && item.mimeType() != QLatin1String("message/news") ) {
         //throw ItemSerializerException();
         return;
     }

@@ -6,5 +6,5 @@ Comment=An Akonadi serializer plugin for mail objects
 Comment[x-test]=xxAn Akonadi serializer plugin for mail objectsxx
 
 [Plugin]
-Type=message/rfc822
+Type=message/rfc822,message/news
 X-KDE-Library=libakonadi_serializer_mail
