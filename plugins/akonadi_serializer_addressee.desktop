@@ -1,7 +1,9 @@
 [Misc]
 Encoding=UTF-8
 Name=Addressee Serializer
+Name[x-test]=xxAddressee Serializerxx
 Comment=An Akonadi serializer plugin for addressee objects
+Comment[x-test]=xxAn Akonadi serializer plugin for addressee objectsxx
 
 [Plugin]
 Type=text/vcard
