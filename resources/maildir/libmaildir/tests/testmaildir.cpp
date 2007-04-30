@@ -31,7 +31,7 @@
 
 QTEST_KDEMAIN_CORE( MaildirTest )
 
-#include "libmaildir/maildir.h"
+#include "maildir/maildir.h"
 using namespace KPIM;
 
 static const char * testDir = "libmaildir-unit-test";
