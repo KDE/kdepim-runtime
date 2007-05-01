@@ -21,6 +21,7 @@
 #define AKONADI_MESSAGE_SEARCHPROVIDER_H
 
 #include <searchproviderbase.h>
+#include <libakonadi/item.h>
 
 class QStringList;
 
@@ -42,7 +43,6 @@ class MessageSearchProvider : public SearchProviderBase
   protected slots:
     void itemChanged(const Akonadi::Item &item);
     void itemRemoved(const Akonadi::DataReference &ref);
-    void itemReceived( KJob *job );
 
   private:
     Session *mSession;

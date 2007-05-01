@@ -19,24 +19,26 @@
 
 #include "messagesearchprovider.h"
 
-#include <libakonadi/messagefetchjob.h>
+#include <libakonadi/itemfetchjob.h>
 #include <libakonadi/job.h>
 #include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
 #include <kmime/kmime_message.h>
+#include <boost/shared_ptr.hpp>
 
 #include <kmetadata/kmetadata.h>
 
 #include <QtCore/QCoreApplication>
 
 using namespace Akonadi;
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   SearchProviderBase( id )
 {
   Monitor* monitor = new Monitor( this );
-  monitor->fetchItemData( true );
+  monitor->addFetchPart( ItemFetchJob::PartAll );
   monitor->monitorMimeType( "message/rfc822" );
   monitor->monitorMimeType( "message/news" );
   connect( monitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
@@ -56,42 +58,32 @@ QStringList Akonadi::MessageSearchProvider::supportedMimeTypes() const
   return mimeTypes;
 }
 
-void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
-{
-  MessageFetchJob *job = new MessageFetchJob( item.reference(), mSession );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemReceived(KJob*)) );
-}
-
 void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
-  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( ref.persistanceID() ) );
+  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( ref.id() ) );
   r.remove();
 }
 
-void MessageSearchProvider::itemReceived(KJob * job)
+void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
 {
-  if ( job->error() || static_cast<MessageFetchJob*>( job )->items().count() == 0 ) {
-    // TODO: erro handling
-    qDebug() << "Job error:" << job->errorString();
-  } else {
-    Message *msg = static_cast<MessageFetchJob*>( job )->messages().first();
-    Q_ASSERT( msg && msg->mime() );
-    Nepomuk::KMetaData::EMail r( QLatin1String("akonadi://") + QString::number( msg->reference().persistanceID() ) );
-    if ( msg->mime()->subject( false ) )
-      r.setProperty( "Subject", msg->mime()->subject()->asUnicodeString() );
-    if ( msg->mime()->date( false ) )
-      r.setProperty( "Date", msg->mime()->date()->dateTime().dateTime() );
-    if ( msg->mime()->from( false ) )
-      r.setProperty( "From", msg->mime()->from()->prettyAddresses() );
-    if ( msg->mime()->to( false ) )
-      r.setProperty( "To", msg->mime()->to()->prettyAddresses() );
-    if ( msg->mime()->cc( false ) )
-      r.setProperty( "Cc", msg->mime()->cc()->prettyAddresses() );
-    if ( msg->mime()->bcc( false ) )
-      r.setProperty( "Bcc", msg->mime()->bcc()->prettyAddresses() );
-    if ( msg->mime()->messageID( false ) )
-      r.setProperty( "Message-Id", msg->mime()->messageID()->asUnicodeString() );
-  }
+  if ( !item.hasPayload<MessagePtr>() )
+    return;
+  MessagePtr msg = item.payload<MessagePtr>();
+  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( item.reference().id() ) );
+  if ( msg->subject( false ) )
+    r.setProperty( "Subject", msg->subject()->asUnicodeString() );
+  if ( msg->date( false ) )
+    r.setProperty( "Date", msg->date()->dateTime().dateTime() );
+  if ( msg->from( false ) )
+    r.setProperty( "From", msg->from()->prettyAddresses() );
+  if ( msg->to( false ) )
+    r.setProperty( "To", msg->to()->prettyAddresses() );
+  if ( msg->cc( false ) )
+    r.setProperty( "Cc", msg->cc()->prettyAddresses() );
+  if ( msg->bcc( false ) )
+    r.setProperty( "Bcc", msg->bcc()->prettyAddresses() );
+  if ( msg->messageID( false ) )
+    r.setProperty( "Message-Id", msg->messageID()->asUnicodeString() );
 }
 
 int main( int argc, char **argv )
