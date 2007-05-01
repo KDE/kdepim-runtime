@@ -84,9 +84,9 @@ void Maildir::swap( const Maildir &rhs )
 
 
 Maildir::Maildir(const Maildir & rhs)
-  :d(0)
+  :d( new Private(*rhs.d) )
+
 {
-    swap(rhs);
 }
 
 
