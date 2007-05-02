@@ -65,6 +65,7 @@ bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, in
     return deliverItem( job, msg );
   }
    */
+  return false;
 }
 
 void MaildirResource::aboutToQuit()
