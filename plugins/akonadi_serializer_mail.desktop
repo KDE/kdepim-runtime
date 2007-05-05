@@ -1,8 +1,10 @@
 [Misc]
 Encoding=UTF-8
 Name=Mail Serializer
+Name[es]=Serializador de correo
 Name[x-test]=xxMail Serializerxx
 Comment=An Akonadi serializer plugin for mail objects
+Comment[es]=Un plugin serializador de Akonadi para objetos de correo
 Comment[x-test]=xxAn Akonadi serializer plugin for mail objectsxx
 
 [Plugin]

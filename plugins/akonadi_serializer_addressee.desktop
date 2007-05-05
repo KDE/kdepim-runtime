@@ -1,8 +1,10 @@
 [Misc]
 Encoding=UTF-8
 Name=Addressee Serializer
+Name[es]=Serializador de direcciones
 Name[x-test]=xxAddressee Serializerxx
 Comment=An Akonadi serializer plugin for addressee objects
+Comment[es]=Un plugin serializador de Akonadi para direccionar objetos
 Comment[x-test]=xxAn Akonadi serializer plugin for addressee objectsxx
 
 [Plugin]

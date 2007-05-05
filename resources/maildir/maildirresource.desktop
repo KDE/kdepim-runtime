@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Maildir Resource
+Name[es]=Recurso Maildir de Akonadi
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
 Icon=
