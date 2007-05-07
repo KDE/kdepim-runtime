@@ -34,8 +34,10 @@ Akonadi::SearchProviderBase::SearchProviderBase( const QString &id ) :
     d( new SearchProviderBasePrivate )
 {
   new SearchProviderAdaptor( this );
-  Q_ASSERT( QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.SearchProvider." + id ) );
-  Q_ASSERT( QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors ) );
+  bool ok = QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.SearchProvider." + id );
+  Q_ASSERT( ok );
+  ok = QDBusConnection::sessionBus().registerObject( "/", this, QDBusConnection::ExportAdaptors );
+  Q_ASSERT( ok );
 }
 
 Akonadi::SearchProviderBase::~ SearchProviderBase()
