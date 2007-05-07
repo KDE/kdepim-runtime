@@ -91,8 +91,6 @@ kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialo
 #	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
 #	addresseelineedit.h)
 
-kde4_add_kcfg_files(kdepim_LIB_SRCS pimemoticons.kcfgc)
-
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
 target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy kpimutils ${KDE4_KLDAP_LIBS})
@@ -117,7 +115,6 @@ install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR}/plugins/designe
 
 ########### install files ###############
 
-install(FILES pimemoticons.kcfg  DESTINATION ${KCFG_INSTALL_DIR})
 install(FILES kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR})
 
 install(FILES interfaces/org.kde.addressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${DBUS_INTERFACES_DIR}) 
