@@ -51,14 +51,19 @@ endif ( KMetaData_FOUND )
 
 ########### next target ###############
 
-macro_optional_find_package(Strigi)
+FIND_LIBRARY(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
+    PATHS
+    /usr/lib
+    /usr/local/lib
+    ${LIB_INSTALL_DIR}
+)
 
-if ( STRIGI_FOUND )
+if ( STRIGIQTDBUSCLIENT_LIBRARY )
 
 include_directories( ${STRIGI_INCLUDE_DIR} )
 
 set( strigiprovider_SRCS
-	strigiprovider.cpp
+  strigiprovider.cpp
 )
 
 kde4_automoc(${strigiprovider_SRCS})
@@ -70,7 +75,7 @@ target_link_libraries(akonadi_strigi_searchprovider akonadi akonadisearchprovide
 install(TARGETS akonadi_strigi_searchprovider DESTINATION ${BIN_INSTALL_DIR})
 install(FILES strigisearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders")
 
-endif ( STRIGI_FOUND )
+endif ( STRIGIQTDBUSCLIENT_LIBRARY )
 
 ########### install files ###############
 
