@@ -126,12 +126,12 @@ bool Maildir::Private::accessIsPossible( QString& error ) const
   Q_FOREACH( QString p, paths )
   {
     if ( !QFile::exists(p) ) {
-      error = i18n("Error opening %1; this folder is missing.");
+      error = i18n("Error opening %1; this folder is missing.",p);
       return false;
     }
     if ( !canAccess( p ) ) {
       error = i18n("Error opening %1; either this is not a valid "
-                "maildir folder, or you do not have sufficient access permissions." );
+                "maildir folder, or you do not have sufficient access permissions." ,p);
       return false;
     }
   }
@@ -162,3 +162,4 @@ QStringList Maildir::entryList() const
 //  kDebug() << "Maildir::entryList()" << result;
   return result;
 }
+
