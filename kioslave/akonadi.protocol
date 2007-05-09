@@ -6,4 +6,4 @@ output=filesystem
 listing=Name,Type
 reading=true
 writing=false
-deleting=false
+deleting=true

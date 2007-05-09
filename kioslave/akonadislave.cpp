@@ -20,7 +20,11 @@
 #include "akonadislave.h"
 
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemdeletejob.h>
 #include <libakonadi/itemserializer.h>
+#include <libakonadi/collection.h>
+#include <libakonadi/collectionlistjob.h>
+#include <libakonadi/collectiondeletejob.h>
 
 #include <kapplication.h>
 #include <kcmdlineargs.h>
@@ -66,7 +70,9 @@ AkonadiSlave::~ AkonadiSlave()
 void AkonadiSlave::get(const KUrl & url)
 {
   kDebug() << k_funcinfo << url << endl;
-  ItemFetchJob *job = new ItemFetchJob( DataReference( url.fileName().toInt(), QString() ) );
+  QMap<QString, QString> query = url.queryItems();
+
+  ItemFetchJob *job = new ItemFetchJob( DataReference( query[ QString::fromLatin1("item") ].toInt(), QString() ) );
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );
     return;
@@ -88,20 +94,143 @@ void AkonadiSlave::get(const KUrl & url)
 void AkonadiSlave::stat(const KUrl & url)
 {
   kDebug() << k_funcinfo << url << endl;
-  ItemFetchJob *job = new ItemFetchJob( DataReference( url.fileName().toInt(), QString() ) );
-  if ( !job->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorString() );
-    return;
+
+  QMap<QString, QString> query = url.queryItems();
+
+  // Stats for a collection
+  if ( query.contains( QString::fromLatin1("collection") ) ) 
+  {
+      Collection collection( query[ QString::fromLatin1("collection") ].toInt() );
+      // Check that the collection exists.
+      CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Local );
+      if ( !job->exec() ) {
+        error( KIO::ERR_INTERNAL, job->errorString() );
+        return;
+      }
+
+      if ( job->collections().count() != 1 ) {
+        error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+        return;
+      }
+
+      collection = job->collections().first();
+
+      KIO::UDSEntry entry;
+      entry.insert( KIO::UDS_NAME, collection.name()  );
+      entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1("inode/directory") );
+      entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
+      entry.insert( KIO::UDS_URL, QString::fromLatin1("akonadi:?collection=") + query[ QString::fromLatin1("collection") ] );
+      statEntry( entry );
+      finished();
   }
-  if ( job->items().count() != 1 ) {
-    error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
-  } else {
+  // Stats for an item
+  else if ( query.contains( QString::fromLatin1("item") ) ) 
+  {
+    ItemFetchJob *job = new ItemFetchJob( DataReference( query[ QString::fromLatin1("item") ].toInt(), QString() ) );
+    job->addFetchPart( ItemFetchJob::PartEnvelope );
+
+    if ( !job->exec() ) {
+      error( KIO::ERR_INTERNAL, job->errorString() );
+      return;
+    }
+
+    if ( job->items().count() != 1 ) {
+      error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+      return;
+    }
+
     const Item item = job->items().first();
     KIO::UDSEntry entry;
     entry.insert( KIO::UDS_NAME, QString::number( item.reference().id() ) );
     entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
+    entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
+
     statEntry( entry );
     finished();
   }
+}
+
+void AkonadiSlave::del( const KUrl &url, bool isFile )
+{
+  kDebug() << k_funcinfo << url << endl;
+
+  QMap<QString, QString> query = url.queryItems();
+
+  if ( !isFile ) // It's a directory
+  {
+    Collection collection( query[ QString::fromLatin1("collection") ].toInt() );
+    CollectionDeleteJob *job = new CollectionDeleteJob( collection );
+    if ( !job->exec() ) {
+      error( KIO::ERR_INTERNAL, job->errorString() );
+      return;
+    } 
+    finished();
+  } else // It's a file
+  {
+    ItemDeleteJob* job = new ItemDeleteJob( DataReference(  query[ QString::fromLatin1("item") ].toInt(), QString() ) );
+    if ( !job->exec() ) {
+      error( KIO::ERR_INTERNAL, job->errorString() );
+      return;
+    }
+    finished();
+  }
+}
+
+void AkonadiSlave::listDir( const KUrl &url )
+{
+  kDebug() << k_funcinfo << url << endl;
+
+  QMap<QString, QString> query = url.queryItems();
+
+  if ( !query.contains( QString::fromLatin1("collection") ) )
+  {
+    error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
+    return;
+  }
+
+  // Fetching collections
+  Collection collection( query[ QString::fromLatin1("collection") ].toInt() );
+  CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Flat );
+  if ( !job->exec() ) {
+    error( KIO::ERR_INTERNAL, job->errorString() );
+    return;
+  }
+
+  Collection::List collections = job->collections();
+
+  KIO::UDSEntry entry;
+  foreach( Collection col, collections )
+  {
+    kDebug() << "Collection (" << col.id() << ", " << col.name() << ")" << endl;
+    entry.clear();
+    entry.insert( KIO::UDS_NAME, col.name() );
+    entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1("inode/directory") );
+    entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
+    entry.insert( KIO::UDS_URL, QString::fromLatin1("akonadi:?collection=") + QString::number( col.id() ) );
+    listEntry( entry, false );
+  }
+
+  listEntry( entry, true );
+
+  // Fetching items
+  ItemFetchJob* fjob = new ItemFetchJob( collection );
+
+  if ( !fjob->exec() ) {
+    error( KIO::ERR_INTERNAL, job->errorString() );
+    return;
+  }
+  Item::List items = fjob->items();
+
+  totalSize( collections.count() + items.count() );
+  foreach( Item item, items )
+  {
+    kDebug() << "Item (" << item.reference().id()  << ")" << endl; 
+    entry.clear();
+    entry.insert( KIO::UDS_NAME, item.reference().id() );
+    entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
+    entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
+  }
+
+  finished();
 }
 

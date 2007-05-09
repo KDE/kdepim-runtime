@@ -28,9 +28,25 @@ class AkonadiSlave : public KIO::SlaveBase
     AkonadiSlave( const QByteArray &pool_socket, const QByteArray &app_socket );
     virtual ~AkonadiSlave();
 
+    /**
+     * Reimplemented from SlaveBase
+     */
     virtual void get( const KUrl &url );
+
+    /**
+     * Reimplemented from SlaveBase
+     */
     virtual void stat( const KUrl &url );
 
+    /**
+     * Reimplemented from SlaveBase
+     */
+    virtual void listDir( const KUrl &url );
+
+    /**
+     * Reimplemented from SlaveBase
+     */
+    virtual void del( const KUrl &url, bool isFile );
 };
 
 #endif
