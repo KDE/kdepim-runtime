@@ -127,7 +127,6 @@ void AkonadiSlave::stat(const KUrl & url)
   else if ( query.contains( QString::fromLatin1("item") ) ) 
   {
     ItemFetchJob *job = new ItemFetchJob( DataReference( query[ QString::fromLatin1("item") ].toInt(), QString() ) );
-    job->addFetchPart( ItemFetchJob::PartEnvelope );
 
     if ( !job->exec() ) {
       error( KIO::ERR_INTERNAL, job->errorString() );
