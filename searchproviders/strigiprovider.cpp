@@ -20,6 +20,7 @@
 #include "strigiprovider.h"
 
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemserializer.h>
 #include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
@@ -35,7 +36,7 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
 {
   mMonitor = new Monitor( this );
   mMonitor->monitorAll();
-  mMonitor->fetchItemData( true );
+  mMonitor->addFetchPart( ItemFetchJob::PartAll );
   connect( mMonitor, SIGNAL(itemAdded(const Akonadi::Item&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( mMonitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
@@ -48,13 +49,15 @@ Akonadi::StrigiProvider::~ StrigiProvider()
 
 void Akonadi::StrigiProvider::itemChanged(const Akonadi::Item & item)
 {
-  mStrigi.indexFile( "akonadi:/" + QString::number( item.reference().persistanceID() ),
-                     QDateTime::currentDateTime().toTime_t(), item.data() );
+  QByteArray data;
+  ItemSerializer::serialize( item, "RFC822", data );
+  mStrigi.indexFile( "akonadi:/" + QString::number( item.reference().id() ),
+                     QDateTime::currentDateTime().toTime_t(), data );
 }
 
 void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
-  mStrigi.indexFile( "akonadi:/" + QString::number( ref.persistanceID() ), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+  mStrigi.indexFile( "akonadi:/" + QString::number( ref.id() ), QDateTime::currentDateTime().toTime_t(), QByteArray() );
 }
 
 int main( int argc, char **argv )

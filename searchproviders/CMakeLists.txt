@@ -60,7 +60,7 @@ FIND_LIBRARY(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 
 if ( STRIGIQTDBUSCLIENT_LIBRARY )
 
-include_directories( ${STRIGI_INCLUDE_DIR} )
+include_directories( ${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi )
 
 set( strigiprovider_SRCS
   strigiprovider.cpp
