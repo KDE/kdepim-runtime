@@ -185,7 +185,7 @@ void AkonadiSlave::listDir( const KUrl &url )
   Collection collection = Collection::fromUrl( url );
   CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Flat );
   if ( !job->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorString() );
+    error( KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString() );
     return;
   }
 
