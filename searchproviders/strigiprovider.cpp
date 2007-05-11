@@ -28,6 +28,8 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include <kurl.h>
+
 using namespace Akonadi;
 
 Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
@@ -51,13 +53,12 @@ void Akonadi::StrigiProvider::itemChanged(const Akonadi::Item & item)
 {
   QByteArray data;
   ItemSerializer::serialize( item, "RFC822", data );
-  mStrigi.indexFile( "akonadi:/" + QString::number( item.reference().id() ),
-                     QDateTime::currentDateTime().toTime_t(), data );
+  mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 
 void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
-  mStrigi.indexFile( "akonadi:/" + QString::number( ref.id() ), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+  mStrigi.indexFile( Item( ref ).url().url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
 }
 
 int main( int argc, char **argv )

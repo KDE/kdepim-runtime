@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <kmetadata/kmetadata.h>
+#include <kurl.h>
 
 #include <QtCore/QCoreApplication>
 
@@ -60,7 +61,7 @@ QStringList Akonadi::MessageSearchProvider::supportedMimeTypes() const
 
 void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
-  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( ref.id() ) );
+  Nepomuk::KMetaData::Resource r( Item( ref ).url().url() );
   r.remove();
 }
 
@@ -69,7 +70,7 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
   if ( !item.hasPayload<MessagePtr>() )
     return;
   MessagePtr msg = item.payload<MessagePtr>();
-  Nepomuk::KMetaData::Resource r( QLatin1String("akonadi://") + QString::number( item.reference().id() ) );
+  Nepomuk::KMetaData::Resource r( item.url().url() );
   if ( msg->subject( false ) )
     r.setProperty( "Subject", msg->subject()->asUnicodeString() );
   if ( msg->date( false ) )
