@@ -67,6 +67,18 @@ void MaildirTest::fillDirectory(const QString& name, int limit )
    }
 }
 
+void MaildirTest::createSubFolders()
+{
+  QDir d( m_temp->name() );
+  const QString subFolderPath(QString::fromLatin1(".%1.directory" ).arg( d.dirName() ));
+  d.cdUp();
+  d.mkdir( subFolderPath );
+  d.cd( subFolderPath );
+  d.mkdir( "foo" );
+  d.mkdir( "barbar" );
+  d.mkdir( "bazbaz" );
+}
+
 void MaildirTest::fillNewDirectory()
 {
   fillDirectory("new", 140);
@@ -150,7 +162,6 @@ void MaildirTest::testMaildirAppend()
   QByteArray data = "newentry\n";
   QString key = d.addEntry( data );
   QVERIFY( !key.isEmpty() );
-  qWarning() << d.readEntry( key ) ;
   QCOMPARE( data, d.readEntry( key ) );
 }
 
@@ -166,11 +177,25 @@ void MaildirTest::testMaildirCreation()
 
 void MaildirTest::testMaildirListSubfolders()
 {
+  initTestCase();
+  fillNewDirectory();
+
+  Maildir d( m_temp->name() );
+  QStringList entries = d.subFolderList();
+
+  QVERIFY( entries.isEmpty() );
+
+  createSubFolders();
+
+  entries = d.subFolderList();
+  QVERIFY( !entries.isEmpty() );
+  QCOMPARE( entries.count(), 3 );
+
+  cleanupTestCase();
 }
 
 void MaildirTest::cleanupTestCase()
 {
   m_temp->unlink();
-  delete m_temp;
 }
 

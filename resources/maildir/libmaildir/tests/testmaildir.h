@@ -43,6 +43,7 @@ private:
     void fillDirectory(const QString &name, int limit );
     void fillNewDirectory();
     void fillCurrentDirectory();
+    void createSubFolders();
     KTempDir *m_temp;
 };
 

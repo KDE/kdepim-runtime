@@ -179,8 +179,13 @@ QStringList Maildir::entryList() const
 
 QStringList Maildir::subFolderList() const
 {
-  QStringList result;
-  return result;
+  QDir dir( d->path );
+  QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
+  dir.cdUp();
+  if (!dir.exists( subDirPath ) ) return QStringList();
+  dir.cd( subDirPath );
+  dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
+  return dir.entryList();
 }
 
 QString Maildir::findRealKey( const QString& key ) const
