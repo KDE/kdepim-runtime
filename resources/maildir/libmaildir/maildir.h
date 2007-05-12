@@ -31,27 +31,26 @@ namespace KPIM {
 class KDE_EXPORT Maildir
 {
 public:
-  Maildir( const QString& path = QString() );
-  /* Copy constructor */
-  Maildir(const Maildir & rhs);
-  /* Copy operator */
-  Maildir& operator=(const Maildir & rhs);
-  /** Equality comparison */
-  bool operator==(const Maildir & rhs) const;
-  /* Destructor */
-  ~Maildir();
+    Maildir( const QString& path = QString() );
+    /* Copy constructor */
+    Maildir(const Maildir & rhs);
+    /* Copy operator */
+    Maildir& operator=(const Maildir & rhs);
+    /** Equality comparison */
+    bool operator==(const Maildir & rhs) const;
+    /* Destructor */
+    ~Maildir();
 
-  bool isValid() const;
-  bool isValid( QString &error ) const;
-  bool create();
-  QStringList entryList() const;
-  QStringList subFolderList() const;
-  QByteArray readEntry( const QString& key ) const;
-  void writeEntry( const QString& key, const QByteArray& data );
-  QString addEntry( const QByteArray& data );
+    bool isValid() const;
+    bool isValid( QString &error ) const;
+    bool create();
+    QStringList entryList() const;
+    QStringList subFolderList() const;
+    QByteArray readEntry( const QString& key ) const;
+    void writeEntry( const QString& key, const QByteArray& data );
+    QString addEntry( const QByteArray& data );
 private:
     void swap( const Maildir& ); 
-    QString findRealKey( const QString& ) const;
     class Private;
     Private *d;
 };

@@ -66,6 +66,17 @@ struct Maildir::Private
       return d.entryList(QDir::Files);
     }
 
+    QString findRealKey( const QString& key ) const
+    {
+      QString realKey = path + QString::fromLatin1("/new/") + key;
+      QFile f( realKey );
+      if ( !f.exists() )
+        realKey = path + QString::fromLatin1("/cur/") + key;
+      QFile f2( realKey );
+      if ( !f2.exists() )
+        realKey = QString();
+      return realKey;
+    }
 
     QString path;
 };
@@ -188,23 +199,11 @@ QStringList Maildir::subFolderList() const
   return dir.entryList();
 }
 
-QString Maildir::findRealKey( const QString& key ) const
-{
-  QString realKey = d->path + QString::fromLatin1("/new/") + key;
-  QFile f( realKey );
-  if ( !f.exists() )
-    realKey = d->path + QString::fromLatin1("/cur/") + key;
-  QFile f2( realKey );
-  if ( !f2.exists() )
-      realKey = QString();
-  return realKey;
-}
-
 QByteArray Maildir::readEntry( const QString& key ) const
 {
   QByteArray result;
 
-  QString realKey( findRealKey( key ) );
+  QString realKey( d->findRealKey( key ) );
   if ( realKey.isEmpty() ) {
       // FIXME error handling?
       qWarning() << "Maildir::readEntry unable to find: " << key;
@@ -227,7 +226,7 @@ static QString createUniqueFileName()
 
 void Maildir::writeEntry( const QString& key, const QByteArray& data )
 {
-  QString realKey( findRealKey( key ) );
+  QString realKey( d->findRealKey( key ) );
   if ( realKey.isEmpty() ) {
       // FIXME error handling?
       qWarning() << "Maildir::writeEntry unable to find: " << key;
