@@ -152,6 +152,19 @@ bool Maildir::isValid( QString &error ) const
   return false;
 }
 
+
+bool Maildir::create()
+{
+  Q_FOREACH( QString p, d->subPaths() ) {
+    QDir dir( p );
+    if ( !dir.exists( p ) ) {
+      if ( !dir.mkpath( p ) )
+        return false;
+    }
+  }
+  return true;
+}
+
 QStringList Maildir::entryList() const
 {
   QStringList result;
@@ -162,4 +175,78 @@ QStringList Maildir::entryList() const
 //  kDebug() << "Maildir::entryList()" << result;
   return result;
 }
+
+
+QStringList Maildir::subFolderList() const
+{
+  QStringList result;
+  return result;
+}
+
+QString Maildir::findRealKey( const QString& key ) const
+{
+  QString realKey = d->path + QString::fromLatin1("/new/") + key;
+  QFile f( realKey );
+  if ( !f.exists() )
+    realKey = d->path + QString::fromLatin1("/cur/") + key;
+  QFile f2( realKey );
+  if ( !f2.exists() )
+      realKey = QString();
+  return realKey;
+}
+
+QByteArray Maildir::readEntry( const QString& key ) const
+{
+  QByteArray result;
+
+  QString realKey( findRealKey( key ) );
+  if ( realKey.isEmpty() ) {
+      // FIXME error handling?
+      qWarning() << "Maildir::readEntry unable to find: " << key;
+      return result;
+  }
+
+  QFile f( realKey );
+  f.open( QIODevice::ReadOnly );
+
+  // FIXME be safer than this
+  result = f.readAll();
+
+  return result;
+}
+
+static QString createUniqueFileName()
+{
+  return "fasel";
+}
+
+void Maildir::writeEntry( const QString& key, const QByteArray& data )
+{
+  QString realKey( findRealKey( key ) );
+  if ( realKey.isEmpty() ) {
+      // FIXME error handling?
+      qWarning() << "Maildir::writeEntry unable to find: " << key;
+      return;
+  }
+  QFile f( realKey );
+  f.open( QIODevice::WriteOnly );
+  f.write( data );
+  f.close();
+}
+
+QString Maildir::addEntry( const QByteArray& data )
+{
+  QString uniqueKey( createUniqueFileName() );
+  QString key( d->path + "/tmp/" + uniqueKey );
+  QString finalKey( d->path + "/new/" + uniqueKey );
+  QFile f( key );
+  f.open( QIODevice::WriteOnly );
+  f.write( data );
+  f.close();
+  if (!f.rename( finalKey )) {
+    qWarning() << "Maildir: Failed to add entry!";
+  }
+  return uniqueKey;
+}
+
 

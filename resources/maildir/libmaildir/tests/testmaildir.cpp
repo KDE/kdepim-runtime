@@ -22,6 +22,8 @@
 #include "testmaildir.h"
 #include "testmaildir.moc"
 
+#include <memory>
+
 #include <QDir>
 #include <QFile>
 
@@ -35,6 +37,7 @@ QTEST_KDEMAIN_CORE( MaildirTest )
 using namespace KPIM;
 
 static const char * testDir = "libmaildir-unit-test";
+static const char * testString = "test\n";
 
 void MaildirTest::initTestCase()
 {
@@ -58,7 +61,8 @@ void MaildirTest::fillDirectory(const QString& name, int limit )
    for ( int i=0; i<limit ; i++) {
      file.setFileName("testmail-" + QString::number(i) );
      file.open( QIODevice::WriteOnly );
-     file.write("test\n");
+     file.write( testString );
+     file.flush();
      file.close();
    }
 }
@@ -96,6 +100,7 @@ void MaildirTest::testMaildirInstantiation()
   QVERIFY(!error.isEmpty());
 
   // FIXME test insufficient permissions?
+  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirListing()
@@ -114,13 +119,58 @@ void MaildirTest::testMaildirListing()
   cleanupTestCase();
 }
 
+void MaildirTest::testMaildirAccess()
+{
+  initTestCase();
+  fillCurrentDirectory();
+  Maildir d( m_temp->name() );
+  QStringList entries = d.entryList();
+  QCOMPARE( entries.count(), 20 );
+
+  QByteArray data = d.readEntry( entries[0] );
+  QVERIFY(!data.isEmpty());
+  QCOMPARE( data, QByteArray( testString) );
+}
+
+void MaildirTest::testMaildirWrite()
+{
+  Maildir d( m_temp->name() );
+  QStringList entries = d.entryList();
+  QCOMPARE( entries.count(), 20 );
+
+  QByteArray data = d.readEntry( entries[0] );
+  QByteArray data2 = "changed\n";
+  d.writeEntry( entries[0], data2 );
+  QCOMPARE( data2, d.readEntry( entries[0] ) );
+}
+
+void MaildirTest::testMaildirAppend()
+{
+  Maildir d( m_temp->name() );
+  QByteArray data = "newentry\n";
+  QString key = d.addEntry( data );
+  QVERIFY( !key.isEmpty() );
+  qWarning() << d.readEntry( key ) ;
+  QCOMPARE( data, d.readEntry( key ) );
+}
 
 void MaildirTest::testMaildirCreation()
+{
+  QString p("CREATETEST");
+  std::auto_ptr<KTempDir> temp ( new KTempDir( KStandardDirs::locateLocal("tmp", p ) ) );
+  Maildir d( temp->name() + p );
+  QVERIFY(!d.isValid());
+  d.create();
+  QVERIFY(d.isValid());
+}
+
+void MaildirTest::testMaildirListSubfolders()
 {
 }
 
 void MaildirTest::cleanupTestCase()
 {
   m_temp->unlink();
+  delete m_temp;
 }
 

@@ -43,9 +43,15 @@ public:
 
   bool isValid() const;
   bool isValid( QString &error ) const;
+  bool create();
   QStringList entryList() const;
+  QStringList subFolderList() const;
+  QByteArray readEntry( const QString& key ) const;
+  void writeEntry( const QString& key, const QByteArray& data );
+  QString addEntry( const QByteArray& data );
 private:
     void swap( const Maildir& ); 
+    QString findRealKey( const QString& ) const;
     class Private;
     Private *d;
 };

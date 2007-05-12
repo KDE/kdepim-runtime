@@ -34,8 +34,12 @@ class MaildirTest : public QObject
     void testMaildirInstantiation();
     void testMaildirCreation();
     void testMaildirListing();
+    void testMaildirAccess();
+    void testMaildirWrite();
+    void testMaildirAppend();
+    void testMaildirListSubfolders();
     void cleanupTestCase();
-  private:
+private:
     void fillDirectory(const QString &name, int limit );
     void fillNewDirectory();
     void fillCurrentDirectory();
