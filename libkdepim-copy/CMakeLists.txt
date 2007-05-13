@@ -93,7 +93,7 @@ kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialo
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
-target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy kpimutils ${KDE4_KLDAP_LIBS})
+target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy ${KDE4_KPIMUTILS_LIBS} ${KDE4_KLDAP_LIBS})
 
 set_target_properties(kdepim PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
