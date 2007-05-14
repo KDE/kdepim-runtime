@@ -61,8 +61,8 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
   splitter->addWidget( splitter2 );
 
-//  mItemModel = new ItemModel( this );
-  mItemModel = new KABCModel( this );
+  mItemModel = new ItemModel( this );
+//  mItemModel = new KABCModel( this );
 //   mItemModel = new MessageModel( this );
 
   mItemView = new QTreeView( this );
