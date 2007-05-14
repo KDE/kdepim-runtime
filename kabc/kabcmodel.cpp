@@ -19,12 +19,14 @@
 
 #include <kabc/addressee.h>
 #include <libakonadi/item.h>
+#include <libakonadi/itemfetchjob.h>
 
 #include "kabcmodel.h"
 
 KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent )
 {
+  addFetchPart( Akonadi::ItemFetchJob::PartAll );
 }
 
 int KABCModel::columnCount( const QModelIndex& ) const
