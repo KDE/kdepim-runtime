@@ -60,7 +60,7 @@ void Dialog::loadUid( int uid )
 
 static const KCmdLineOptions options[] =
 {
-  { "+uid <uid>", I18N_NOOP( "Uid of the Akonadi contact" ), 0 },
+  { "uid <uid>", I18N_NOOP( "Uid of the Akonadi contact" ), 0 },
   KCmdLineLastOption
 };
 
@@ -73,9 +73,12 @@ int main( int argc, char **argv )
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   Dialog dlg;
-  if ( args->isSet( "uid" ) )
-    dlg.loadUid( QString::fromLatin1( args->getOption( "uid" ) ).toInt() );
+  if ( !args->isSet( "uid" ) ) {
+    KCmdLineArgs::usage();
+    return 1;
+  }
 
+  dlg.loadUid( QString::fromLatin1( args->getOption( "uid" ) ).toInt() );
   dlg.exec();
 
   return 0;
