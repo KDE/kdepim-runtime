@@ -24,12 +24,12 @@
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemserializer.h>
-#include <libakonadi/messagemodel.h>
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 
 #include <kabc/kabcmodel.h>
 #include <kabc/kabcitembrowser.h>
+#include <kmime/messagemodel.h>
 
 #include <libkdepim/addresseeview.h>
 

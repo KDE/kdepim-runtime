@@ -13,9 +13,9 @@
 
 - <a href="../libakonadi/html/index.html">Core library</a>
 - <a href="../server/html/index.html">Server</a>
-- <a href="../resources/html/index.html">Resources</a>
-- <a href="../searchproviders/html/index.html">Search provider</a>
-- <a href="../clients/html/index.html">Clients</a>
+- Domain-specifc libraries:
+  - <a href="../kabc/html/index.html">Contacts</a>
+  - <a href="../kmime/html/index.html">MIME Messages</a>
 
 \authors Tobias König <tokoe@kde.org>, Volker Krause <vkrause@kde.org>
 
@@ -115,7 +115,6 @@ The main components are:
 \li \ref akonadi_design_storage
 \li \ref akonadi_design_control
 \li \ref akonadi_design_agents (resources)
-\li \ref akonadi_design_searchprovider
 \li \ref akonadi_design_libakonadi (libakonadi)
 
 \subsection akonadi_design_storage The Storage
@@ -162,14 +161,6 @@ Furthermore it provides a D-Bus API with the following functionality:
 \li Notifications when the state of Resources or Profiles have changed
 
 The Control should be started in the startkde script and terminated at the end of the session.
-
-\subsection akonadi_design_searchprovider The SearchProviders
-As mentioned before the \ref akonadi_design_storage "Storage" provides only a basic support for search queries.
-It's limited to mime types and email-specific fields. However to query for contacts or events which match
-a specific criterion a more advanced query language is needed. Since this language will contain
-domain specific information (like telephone number or start date) but the Storage has no knowledge
-about the data it stores, it can't handle the queries itself.
-For more robustness the handling of these queries is put into a separated process called a SearchProvider.
 
 \subsection akonadi_design_libakonadi The client library
 Every client application can access the Akonadi service directly via D-Bus and IMAP API; however
@@ -224,15 +215,15 @@ The concept is comparable to KMail's (search-)folders or to some extent
 
 \subsection akonadi_concepts_collections_akonadi Akonadi Collections
 
-In Akonadi, collections are uniquely identified by their path (comparable with
-usual filesystem paths).
+In Akonadi, collections are uniquely identified by their identifier in
+contrast to their path, which is more robust wrt. to renaming.
 
 Collections can contain an arbitrary set of attributes (inherited from
 the CollectionAttribute class) to represent various collection properties
-(such as statistics, ACLs, quotas, etc.).
+such as ACLs, quotas or backend-specific data used for incremental synchronization.
 
-Every collection has an attribute containing the list of supported content
-types. These are the mimetypes of items the collection can contain.
+Every collection has a set of supported content types.
+These are the mimetypes of items the collection can contain.
 Example: A collection of a folder-less iCal file resource would only support
 "text/calendar" items, a folder on an IMAP server "message/rfc822" but also
 "inode/directory" if it can contain sub-folders.
@@ -299,8 +290,9 @@ It is a management tool which provides user interfaces for the following tasks:
     <li>Creation</li>
     <li>Deletion</li>
   </ul></li>
-  <li>Collection Management<ul>
-    <li>Viewing</li>
+  <li>Content Browsing<ul>
+    <li>Viewing and manipulation of collections</li>
+    <li>Viewing of PIM items</li>
   </ul></li>
   <li>Error Management<ul>
     <li>Signal and Data monitoring</li>
@@ -309,4 +301,4 @@ It is a management tool which provides user interfaces for the following tasks:
 
 */
 
-// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients kioslave
+// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients kioslave kabc kmime plugins
