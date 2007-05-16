@@ -96,33 +96,36 @@ void AkonadiSlave::stat(const KUrl & url)
   kDebug() << k_funcinfo << url << endl;
 
   // Stats for a collection
-  if ( Collection::urlIsValid( url ) ) 
+  if ( Collection::urlIsValid( url ) )
   {
       Collection collection = Collection::fromUrl( url );
-      // Check that the collection exists.
-      CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Local );
-      if ( !job->exec() ) {
-        error( KIO::ERR_INTERNAL, job->errorString() );
-        return;
-      }
 
-      if ( job->collections().count() != 1 ) {
-        error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
-        return;
-      }
+      if ( collection != Collection::root() ) {
+        // Check that the collection exists.
+        CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Local );
+        if ( !job->exec() ) {
+          error( KIO::ERR_INTERNAL, job->errorString() );
+          return;
+        }
 
-      collection = job->collections().first();
+        if ( job->collections().count() != 1 ) {
+          error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+          return;
+        }
+
+        collection = job->collections().first();
+      }
 
       KIO::UDSEntry entry;
       entry.insert( KIO::UDS_NAME, collection.name()  );
-      entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1("inode/directory") );
+      entry.insert( KIO::UDS_MIME_TYPE, Collection::collectionMimeType() );
       entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
       entry.insert( KIO::UDS_URL, url.url() );
       statEntry( entry );
       finished();
   }
   // Stats for an item
-  else if ( Item::urlIsValid( url ) ) 
+  else if ( Item::urlIsValid( url ) )
   {
     ItemFetchJob *job = new ItemFetchJob( Item::fromUrl( url ) );
 
@@ -158,7 +161,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
     if ( !job->exec() ) {
       error( KIO::ERR_INTERNAL, job->errorString() );
       return;
-    } 
+    }
     finished();
   } else // It's a file
   {
@@ -183,6 +186,10 @@ void AkonadiSlave::listDir( const KUrl &url )
 
   // Fetching collections
   Collection collection = Collection::fromUrl( url );
+  if ( !collection.isValid() ) {
+    error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
+    return;
+  }
   CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Flat );
   if ( !job->exec() ) {
     error( KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString() );
@@ -197,33 +204,35 @@ void AkonadiSlave::listDir( const KUrl &url )
     kDebug() << "Collection (" << col.id() << ", " << col.name() << ")" << endl;
     entry.clear();
     entry.insert( KIO::UDS_NAME, col.name() );
-    entry.insert( KIO::UDS_MIME_TYPE, QString::fromLatin1("inode/directory") );
+    entry.insert( KIO::UDS_MIME_TYPE, Collection::collectionMimeType() );
     entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
     entry.insert( KIO::UDS_URL, col.url().url() );
     listEntry( entry, false );
   }
 
-  listEntry( entry, true );
-
   // Fetching items
-  ItemFetchJob* fjob = new ItemFetchJob( collection );
+  if ( collection != Collection::root() ) {
+    ItemFetchJob* fjob = new ItemFetchJob( collection );
 
-  if ( !fjob->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorString() );
-    return;
+    if ( !fjob->exec() ) {
+      error( KIO::ERR_INTERNAL, job->errorString() );
+      return;
+    }
+    Item::List items = fjob->items();
+
+    totalSize( collections.count() + items.count() );
+    foreach( Item item, items )
+    {
+      kDebug() << "Item (" << item.reference().id()  << ")" << endl;
+      entry.clear();
+      entry.insert( KIO::UDS_NAME, QString::number( item.reference().id() ) );
+      entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
+      entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
+      listEntry( entry, false );
+    }
   }
-  Item::List items = fjob->items();
 
-  totalSize( collections.count() + items.count() );
-  foreach( Item item, items )
-  {
-    kDebug() << "Item (" << item.reference().id()  << ")" << endl; 
-    entry.clear();
-    entry.insert( KIO::UDS_NAME, item.reference().id() );
-    entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
-    entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
-  }
-
+  listEntry( entry, true );
   finished();
 }
 

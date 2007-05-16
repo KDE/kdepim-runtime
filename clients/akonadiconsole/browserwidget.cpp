@@ -107,7 +107,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
     qWarning() << "No item found!";
   } else {
     const Item item = fetch->items().first();
-    if ( item.mimeType() == QLatin1String( "text/vcard" ) ) {
+    if ( item.hasPayload<KABC::Addressee>() ) {
       const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
       mAddresseeView->setAddressee( addr );
