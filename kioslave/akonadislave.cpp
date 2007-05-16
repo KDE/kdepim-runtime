@@ -228,6 +228,7 @@ void AkonadiSlave::listDir( const KUrl &url )
       entry.insert( KIO::UDS_NAME, QString::number( item.reference().id() ) );
       entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
       entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
+      entry.insert( KIO::UDS_URL, item.url().url() );
       listEntry( entry, false );
     }
   }
