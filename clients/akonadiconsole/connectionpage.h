@@ -31,7 +31,7 @@ class ConnectionPage : public QWidget
   Q_OBJECT
 
   public:
-    ConnectionPage( const QString &identifier, QWidget *parent = 0 );
+    explicit ConnectionPage( const QString &identifier, QWidget *parent = 0 );
 
     void showAllConnections( bool );
 
