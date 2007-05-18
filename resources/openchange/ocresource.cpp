@@ -22,6 +22,7 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
+#include <QDir>
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -182,7 +183,7 @@ OCResource::OCResource( const QString &id )
   m_mapiMemoryContext = talloc_init("openchangeclient");
 
   // Make this a setting somehow
-  m_profileDatabase = QString( "/home/bradh/.openchange/profiles.ldb" );
+  m_profileDatabase = QDir::homePath() + QString( "/.openchange/profiles.ldb" );
 
   int retval = MAPIInitialize( m_profileDatabase.toAscii().data() );
   if (retval != MAPI_E_SUCCESS) {
