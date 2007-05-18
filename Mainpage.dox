@@ -198,6 +198,14 @@ can search fast and use indices for optimization.
 
 \page akonadi_concepts Concepts
 
+This page describes the basic concepts of Akonadi.
+
+- \ref akonadi_concepts_collections
+- \ref akonadi_concepts_items
+- \ref akonadi_concepts_identification
+
+@todo complete this page: eg. cache policies/management, search
+
 \section akonadi_concepts_collections Collections
 
 \subsection akonadi_conectps_collections_concept Concept
@@ -232,7 +240,7 @@ Example: A collection of a folder-less iCal file resource would only support
 
 There is a single collection tree in Akonadi, consisting of several parts:
 
-- A root node, named '/'.
+- A root node, id 0
 - A top-level collection for every resource. Think of these as mount-points
   for the resource. They are automatically created and removed by the storage
   server whenever a resource is created or removed. The resources must put
@@ -262,6 +270,46 @@ Example:
   ...
 \endverbatim
 
+
+\section akonadi_concepts_items PIM Items
+
+A PIM item is a generic container for whatever you want to store in Akonadi (eg. mails,
+events, contacts, etc.). A PIM item consists of some generic information (such as identifier,
+mimetype, change date, flags, etc.) and a set of data fields, the item parts. PIM items
+are independent of the type of stored data, the semantics of the actual content is only
+known on the client side.
+
+\subsection akonadi_concepts_items_parts Item Parts
+
+PIM items can have one or more parts, e.g. an email message consists of the
+envelope, the body and possible one or more attachments. Item parts are identified
+by a identifier string. There are a few special pre-definied part identifiers (ALL, ENVELOPE, etc.),
+but in general the part identifiers are definied by the type-specific extensions (ie. resource, serializer plugin,
+type specifc client library).
+
+\subsection akonadi_concepts_items_serializer Serializer Plugins
+
+Serializer plugins are used by libakonadi to convert between the binary representation stored in the
+server and type-specific objects used by client applications (eg. iCal and KCal::Event).
+
+
+\section akonadi_concepts_identification Object Identification
+
+\subsection akonadi_concepts_identification_uid Unique Identifier
+
+Every object stored in Akonadi (collections and PIM items) has a unique
+identifier in form of an interger value. This identifier cannot be changed in
+any way and will stay the same independent of any modifications to the referred
+object. An unique identifier will never be used twice.
+
+\subsection akonadi_concepts_identification_rid Remote Identifier
+
+Every object also can have an optional so-called remote identifier. This is an
+identifier used by the corresponding resource to identify the object on its
+backend (eg. a groupware server).
+
+The remote identifier can be changed arbitrarily, but should only be changed by
+the corresponding resource.
 
 
 
