@@ -1,9 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi OpenChange Resource
-Name[x-test]=xxAkonadi OpenChange Resourcexx
 Comment=An agent to work with an OpenChange / Exchange server
-Comment[x-test]=xxAn agent to work with an OpenChange / Exchange serverxx
 Type=AkonadiResource
 Exec=akonadi_oc_resource
 Icon=ocresource
