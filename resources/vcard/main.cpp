@@ -17,26 +17,9 @@
     02110-1301, USA.
 */
 
-#include <kapplication.h>
-#include <kcmdlineargs.h>
-#include <klocale.h>
-
 #include "vcardresource.h"
-
-static KCmdLineOptions options[] =
-{
-  { "identifier <argument>", "Resource identifier", 0 },
-  KCmdLineLastOption
-};
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, argv[0], I18N_NOOP("VCard Resource"),
-                      I18N_NOOP("VCard Resource for Akonadi") ,"0.1" );
-  KCmdLineArgs::addCmdLineOptions( options );
-  KApplication app;
-
-  Akonadi::ResourceBase::init<VCardResource>();
-
-  return app.exec();
+  return Akonadi::ResourceBase::init<VCardResource>( argc, argv );
 }

@@ -17,27 +17,9 @@
     02110-1301, USA.
 */
 
-
-#include <kapplication.h>
-#include <kcmdlineargs.h>
-#include <klocale.h>
-
 #include "nntpresource.h"
-
-static KCmdLineOptions options[] =
-{
-  { "identifier <argument>", "Resource identifier", 0 },
-  KCmdLineLastOption
-};
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, argv[0], I18N_NOOP("NNTP Resource"),
-                      I18N_NOOP("NNTP Resource for Akonadi") ,"0.1" );
-  KCmdLineArgs::addCmdLineOptions( options );
-  KApplication app;
-
-  Akonadi::ResourceBase::init<NntpResource>();
-
-  return app.exec();
+  return Akonadi::ResourceBase::init<NntpResource>( argc, argv );
 }
