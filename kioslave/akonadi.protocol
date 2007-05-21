@@ -7,3 +7,4 @@ listing=Name,Type
 reading=true
 writing=false
 deleting=true
+fileNameUsedForCopying=Name
