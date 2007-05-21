@@ -79,6 +79,7 @@ set(kdepim_LIB_SRCS
    kemailquotinghighter.cpp
    kmailcompletion.cpp
    networkstatus.cpp
+   servertest.cpp
 )
 
 kde4_automoc(${kdepim_LIB_SRCS})
