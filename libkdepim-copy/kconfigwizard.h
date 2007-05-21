@@ -27,7 +27,7 @@
 #include <kvbox.h>
 
 class Q3ListView;
-
+class KPageWidgetItem;
 /**
   @short Configuration wizard base class
 */
@@ -88,7 +88,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
 
     void slotOk();
 
-    void slotAboutToShowPage( QWidget *page );
+    void slotAboutToShowPage(KPageWidgetItem *, KPageWidgetItem *);
 
   protected:
     void init();
@@ -104,7 +104,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
     Q3ListView *mRuleView;
     Q3ListView *mChangeView;
 
-    QWidget *mChangesPage;
+    KPageWidgetItem *mChangesPage;
 };
 
 #endif

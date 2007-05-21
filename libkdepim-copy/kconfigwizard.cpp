@@ -64,8 +64,8 @@ KConfigWizard::~KConfigWizard()
 
 void KConfigWizard::init()
 {
-  connect( this, SIGNAL( currentPageChanged( QWidget * ) ),
-           SLOT( slotAboutToShowPage( QWidget * ) ) );
+  connect( this, SIGNAL( currentPageChanged(KPageWidgetItem *, KPageWidgetItem * )),
+           SLOT( slotAboutToShowPage(KPageWidgetItem *, KPageWidgetItem *) ) );
   connect( this, SIGNAL(okClicked()),
 	   SLOT( slotOk()));
   QTimer::singleShot( 0, this, SLOT( readConfig() ) );
@@ -76,7 +76,7 @@ void KConfigWizard::setPropagator( KConfigPropagator *p )
   mPropagator = p;
 }
 
-void KConfigWizard::slotAboutToShowPage( QWidget *page )
+void KConfigWizard::slotAboutToShowPage(KPageWidgetItem *page, KPageWidgetItem * )
 {
   if ( page == mChangesPage ) {
     updateChanges();
@@ -97,9 +97,9 @@ void KConfigWizard::setupRulesPage()
   item->setHeader( i18n( "Setup Rules" ) );
   //TODO: set item icon
   QFrame *topFrame = new QFrame( this );
-  QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
-
-  mRuleView = new Q3ListView( topFrame );
+  QVBoxLayout *topLayout = new QVBoxLayout;
+  topFrame->setLayout(topLayout);
+  mRuleView = new Q3ListView;
   topLayout->addWidget( mRuleView );
 
   mRuleView->addColumn( i18n("Source") );
@@ -142,9 +142,9 @@ void KConfigWizard::setupChangesPage()
   item->setHeader( i18n( "Setup Changes" ) );
   //TODO: set item icon
   QFrame *topFrame = new QFrame( this );
-  QVBoxLayout *topLayout = new QVBoxLayout( topFrame );
-
-  mChangeView = new Q3ListView( topFrame );
+  QVBoxLayout *topLayout = new QVBoxLayout;
+  topFrame->setLayout(topLayout);
+  mChangeView = new Q3ListView;
   topLayout->addWidget( mChangeView );
 
   mChangeView->addColumn( i18n("Action") );
@@ -152,7 +152,7 @@ void KConfigWizard::setupChangesPage()
   mChangeView->addColumn( i18n("Value") );
   mChangeView->setSorting( -1 );
 
-  mChangesPage = topFrame;
+  mChangesPage = item;
 }
 
 void KConfigWizard::updateChanges()
