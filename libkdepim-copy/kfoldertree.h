@@ -231,7 +231,7 @@ class KDEPIM_EXPORT KFolderTree : public K3ListView
       @param mimeType the name of the MIMEType
       @param outsideOk accept drops of this type even if
       the mouse cursor is not on top of an item */
-    virtual void addAcceptableDropMimetype( const char *mimeType, bool outsideOk );
+    virtual void addAcceptableDropMimetype( QString mimeType, bool outsideOk );
 
     /** checks if the drag is acceptable */
     virtual bool acceptDrag( QDropEvent* event ) const;
@@ -272,7 +272,7 @@ class KDEPIM_EXPORT KFolderTree : public K3ListView
     virtual void contentsMouseReleaseEvent( QMouseEvent *e );
 
     /** for mimetypes */
-    QVector<const char*> mAcceptableDropMimetypes;
+    QVector<QString> mAcceptableDropMimetypes;
     QVector<bool> mAcceptOutside;
 
     /** shared information */ // ### why isn't it then static? ;-)
