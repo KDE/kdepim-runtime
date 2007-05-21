@@ -381,7 +381,7 @@ bool KFolderTree::acceptDrag( QDropEvent* event ) const
 
   for ( int i = 0; i < mAcceptableDropMimetypes.size(); i++ )
   {
-    if (event->provides( qPrintable(mAcceptableDropMimetypes[i]) ))
+    if ( event->provides( mAcceptableDropMimetypes[i].toLatin1().constData() ) )
     {
       if (item)
         return (static_cast<KFolderTreeItem*>(item))->acceptDrag(event);
