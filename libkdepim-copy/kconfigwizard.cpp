@@ -85,20 +85,20 @@ void KConfigWizard::slotAboutToShowPage(KPageWidgetItem *page, KPageWidgetItem *
 
 QWidget *KConfigWizard::createWizardPage( const QString &title )
 {
-  KVBox *page = new KVBox();
+  QFrame *page = new QFrame(this);
   addPage( page, title );
   return page;
 }
 
 void KConfigWizard::setupRulesPage()
 {
-  KVBox *page = new KVBox();
+  QFrame *page = new QFrame(this);
   KPageWidgetItem *item = addPage( page, i18n("Rules") );
   item->setHeader( i18n( "Setup Rules" ) );
   //TODO: set item icon
-  QFrame *topFrame = new QFrame( this );
+  //rame *topFrame = new QFrame( this );
   QVBoxLayout *topLayout = new QVBoxLayout;
-  topFrame->setLayout(topLayout);
+  page->setLayout(topLayout);
   mRuleView = new Q3ListView;
   topLayout->addWidget( mRuleView );
 
@@ -137,13 +137,12 @@ void KConfigWizard::updateRules()
 
 void KConfigWizard::setupChangesPage()
 {
-  KVBox *page = new KVBox();
+  QFrame *page = new QFrame(this);
   KPageWidgetItem *item = addPage( page, i18n("Changes") );
   item->setHeader( i18n( "Setup Changes" ) );
   //TODO: set item icon
-  QFrame *topFrame = new QFrame( this );
   QVBoxLayout *topLayout = new QVBoxLayout;
-  topFrame->setLayout(topLayout);
+  page->setLayout(topLayout);
   mChangeView = new Q3ListView;
   topLayout->addWidget( mChangeView );
 
