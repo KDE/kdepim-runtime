@@ -27,7 +27,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QCheckBox>
-#include <q3textview.h>
+#include <QTextEdit>
 //Added by qt3to4:
 #include <QTextStream>
 #include <Q3PtrList>
@@ -404,7 +404,8 @@ void NotifyCollection::displayCollection(QWidget *p) const
   dlg->setButtons( KDialog::Close );
   dlg->setDefaultButton( KDialog::Close );
   dlg->setModal( false );
-  Q3TextView *text = new Q3TextView(dlg);
+  QTextEdit *text = new QTextEdit(dlg);
+  text->setReadOnly(true);
   text->setText(collection());
   dlg->setMainWidget(text);
   dlg->setMinimumWidth(300);
