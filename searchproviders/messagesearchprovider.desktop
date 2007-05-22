@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Akonadi Message Search Provider
 Name[es]=Proveedor de búsqueda de mensajes Akonadi
+Name[ja]=Akonadi メッセージ検索プロバイダ
 Name[sv]=Akonadi brevsöktjänst
 Name[x-test]=xxAkonadi Message Search Providerxx
 Name[zh_TW]=Akonadi 信件搜尋提供者

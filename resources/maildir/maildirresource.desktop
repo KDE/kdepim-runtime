@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Akonadi Maildir Resource
 Name[es]=Recurso Maildir de Akonadi
+Name[ja]=Akonadi Maildir リソース
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
 Icon=
