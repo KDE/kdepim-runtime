@@ -51,6 +51,8 @@ KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
                                                                 SyntaxMode mode )
     : Highlighter( textEdit ),d(new KEmailQuotingHighlighterPrivate())
 {
+    setAutomatic(false); //disable automatic de-enable highlighting
+    setActive(true);
     d->col1 = depth0;
     d->col2 = depth1;
     d->col3 = depth2;
@@ -65,11 +67,24 @@ KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
     delete d;
 }
 
+void KEMailQuotingHighlighter::setSyntaxMode( SyntaxMode mode)
+{
+  d->mode = mode;
+}
+
+void KEMailQuotingHighlighter::setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3)
+{
+    d->col1 = QuoteColor0;
+    d->col2 = QuoteColor1;
+    d->col3 = QuoteColor2;
+    d->col4 = QuoteColor3;
+    d->col5 = QuoteColor0;
+}
+
 void KEMailQuotingHighlighter::highlightBlock ( const QString & text )
 {
     if ( !isActive() )
-        return;
-
+        return;	
     QString simplified = text;
     simplified = simplified.replace( QRegExp( "\\s" ), QString() ).replace( '|', QLatin1String(">") );
     while ( simplified.startsWith( QLatin1String(">>>>") ) )

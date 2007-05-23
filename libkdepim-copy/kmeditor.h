@@ -52,6 +52,10 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void keyPressEvent ( QKeyEvent * e );
 
     virtual void dropEvent( QDropEvent *e );
+
+  protected:
+    void init();
+
   private:
     class Private;
     Private *const d;

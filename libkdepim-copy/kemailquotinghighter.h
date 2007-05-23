@@ -43,7 +43,11 @@ namespace KSpell2
                                       const QColor& QuoteColor3 = QColor( 0x00, 0x80, 0x00 ),
                                       SyntaxMode mode = PlainTextMode );
       ~KEMailQuotingHighlighter();
-	    
+      
+      void setSyntaxMode( SyntaxMode mode);
+
+      void setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3);
+            
       virtual void highlightBlock ( const QString & text );
 	    
     private:

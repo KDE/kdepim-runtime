@@ -78,16 +78,24 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
 KMeditor::KMeditor( const QString& text, QWidget *parent)
  : KTextEdit(text, parent), d( new Private() )
 {
+   init();
 }
 
 KMeditor::KMeditor( QWidget *parent)
  : KTextEdit(parent), d( new Private() )
 {
+  init();
 }
 
 KMeditor::~KMeditor()
 {
   delete d;
+}
+
+void KMeditor::init()
+{
+   //enable spell checking by default
+   setCheckSpellingEnabled(true);
 }
 
 void KMeditor::createHighlighter()
