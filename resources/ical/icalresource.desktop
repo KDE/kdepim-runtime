@@ -1,12 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi ICal Resource
+Name[el]=Πόρος ICal του Akonadi
 Name[es]=Recurso Ical Akonadi
 Name[ja]=Akonadi iCal リソース
 Name[sv]=Akonadi ICal-resurs
 Name[x-test]=xxAkonadi ICal Resourcexx
 Name[zh_TW]=Akonadi ICal 資源
 Comment=An agent to load data from a local iCal file
+Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από τοπικά αρχεία iCal
 Comment[es]=Un agente para cargar datos de un archivo iCal local
 Comment[ja]=ローカルの iCal ファイルからデータを読み込むエージェント
 Comment[sv]=En modul för att ladda data från en lokal iCal-fil
