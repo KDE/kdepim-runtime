@@ -40,11 +40,18 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     explicit KMeditor( QWidget *parent = 0 );
 
+    ~KMeditor();
+
     virtual void createHighlighter();
 
     void setUseExternalEditor( bool use ); 
     void setExternalEditorPath( const QString & path );
 
+    void dragEnterEvent( QDragEnterEvent *e );
+    void dragMoveEvent( QDragMoveEvent *e );
+    void keyPressEvent ( QKeyEvent * e );
+
+    virtual void dropEvent( QDropEvent *e );
   private:
     class Private;
     Private *const d;

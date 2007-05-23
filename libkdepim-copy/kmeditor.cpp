@@ -22,6 +22,8 @@
 #include "kmeditor.h"
 #include "kmeditor.moc"
 #include "kemailquotinghighter.h"
+#include <maillistdrag.h>
+
 
 class KMeditor::Private
 {
@@ -39,6 +41,40 @@ class KMeditor::Private
     bool useExtEditor;
 };
 
+
+void KMeditor::dragEnterEvent( QDragEnterEvent *e )
+{
+  if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
+    e->setAccepted( true );
+  } else if ( e->mimeData()->hasFormat( "image/png" ) ) {
+    e->accept();
+  } else {
+    return KTextEdit::dragEnterEvent( e );
+  }
+}
+
+void KMeditor::dragMoveEvent( QDragMoveEvent *e )
+{
+  if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
+    e->accept();
+  } else if  ( e->mimeData()->hasFormat( "image/png" ) ) {
+    e->accept();
+  } else {
+    return KTextEdit::dragMoveEvent( e );
+  }
+}
+
+void KMeditor::dropEvent( QDropEvent *e )
+{
+  //Need to reimplement it by each apps
+  KTextEdit::dropEvent(e);
+}
+
+void KMeditor::keyPressEvent ( QKeyEvent * e )
+{
+  KTextEdit::keyPressEvent(e);
+}
+
 KMeditor::KMeditor( const QString& text, QWidget *parent)
  : KTextEdit(text, parent), d( new Private() )
 {
@@ -52,7 +88,6 @@ KMeditor::KMeditor( QWidget *parent)
 KMeditor::~KMeditor()
 {
   delete d;
-  d = 0;
 }
 
 void KMeditor::createHighlighter()

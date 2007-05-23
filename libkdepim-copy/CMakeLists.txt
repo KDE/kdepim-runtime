@@ -80,6 +80,7 @@ set(kdepim_LIB_SRCS
    kmailcompletion.cpp
    networkstatus.cpp
    servertest.cpp
+   kmeditor.cpp
 )
 
 kde4_automoc(${kdepim_LIB_SRCS})
