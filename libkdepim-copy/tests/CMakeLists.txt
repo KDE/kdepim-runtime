@@ -94,5 +94,16 @@ kde4_add_executable(testldapclient ${testldapclient_SRCS})
 
 target_link_libraries(testldapclient  kdepim ${KDE4_KDECORE_LIBS} )
 
+########### next target ###############
+
+set(testkmeditor_SRCS testkmeditor.cpp )
+
+kde4_automoc(${testkmeditor_SRCS})
+
+kde4_add_executable(testkmeditor ${testkmeditor_SRCS})
+
+target_link_libraries(testkmeditor  kdepim ${KDE4_KDEUI_LIBS} )
+
+
 endif(KDE4_BUILD_TESTS)
 
