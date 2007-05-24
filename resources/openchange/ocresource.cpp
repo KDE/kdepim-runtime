@@ -1,19 +1,22 @@
 /*
     Copyright (c) 2007 Brad Hards <bradh@frogmouth.net>
 
-    This library is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Library General Public License as published by
+    Significant amounts of this code adapted from the openchange client utility,
+    which is Copyright (C) Julien Kerihuel 2007.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    This library is distributed in the hope that it will be useful, but WITHOUT
+    This program is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
     License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to the
-    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
 
@@ -27,10 +30,18 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include <boost/shared_ptr.hpp>
+
+#include <kmime/kmime_message.h>
+#include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemappendjob.h>
+
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
 using namespace Akonadi;
 
-ProfileDialog::ProfileDialog( QWidget *parent )
-  : QDialog( parent )
+ProfileDialog::ProfileDialog( OCResource *resource, QWidget *parent )
+  : QDialog( parent ), m_resource( resource )
 {
   setWindowTitle( "Profile Configuration" );
 
@@ -180,6 +191,8 @@ void ProfileDialog::setAsDefaultProfile()
 OCResource::OCResource( const QString &id )
   :ResourceBase( id )
 {
+  setName( "OC Resource" );
+
   m_mapiMemoryContext = talloc_init("openchangeclient");
 
   // Make this a setting somehow
@@ -191,7 +204,25 @@ OCResource::OCResource( const QString &id )
     exit (1);
   }
 
+  const char *profileName;
+  retval = GetDefaultProfile(&profileName, 0);
+  if (retval != MAPI_E_SUCCESS) {
+    mapi_errstr("GetDefaultProfile", GetLastError());
+    exit (1);
+  }
+
+  retval = MapiLogonEx(&m_session, profileName );
+  if (retval != MAPI_E_SUCCESS) {
+    mapi_errstr("MapiLogonEx", GetLastError());
+    exit (1);
+  }
+
   mapi_object_init(&m_mapiStore);
+  retval = OpenMsgStore(&m_mapiStore);
+  if (retval != MAPI_E_SUCCESS) {
+    mapi_errstr("OpenMsgStore", GetLastError());
+    exit (1);
+  }
 }
 
 OCResource::~ OCResource()
@@ -205,38 +236,291 @@ OCResource::~ OCResource()
 
 bool OCResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
 {
+  qDebug() << "currently ignoring requestItemDelivery";
   return true;
 }
 
 
 void OCResource::aboutToQuit()
 {
+  qDebug() << "currently ignoring aboutToQuit()";
 }
 
 void OCResource::configure()
 {
-  ProfileDialog configDialog;
+  ProfileDialog configDialog( this );
   configDialog.exec();
 }
 
 void OCResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
+  qDebug() << "currently ignoring itemAdded()";
 }
 
 void OCResource::itemChanged( const Akonadi::Item&, const QStringList& )
 {
+  qDebug() << "currently ignoring itemChanged()";
 }
 
 void OCResource::itemRemoved(const Akonadi::DataReference & ref)
 {
+  qDebug() << "currently ignoring itemRemoved()";
+}
+
+void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
+                                  const Akonadi::Collection &parentCollection,
+                                  Akonadi::Collection::List &collections)
+{
+  mapi_object_t objFolder;
+  mapi_object_init( &objFolder );
+  enum MAPISTATUS retval = OpenFolder( parentFolder, id, &objFolder );
+  if ( retval != MAPI_E_SUCCESS ) {
+    qDebug() << "Failed to open folder in quest for child folders: " << retval;
+    return;
+  }
+
+  mapi_object_t objHierarchyTable;
+  mapi_object_init( &objHierarchyTable );
+  retval = GetHierarchyTable( &objFolder, &objHierarchyTable );
+  if ( retval != MAPI_E_SUCCESS ) {
+    qDebug() << "Failed to get hierachy table in quest for child folders: " << retval;
+    return;
+  }
+
+
+  struct SPropTagArray* sPropTagArray;
+  // TODO: PR_CONTAINER_CLASS
+  sPropTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x4,
+                                    PR_DISPLAY_NAME,
+                                    PR_FID,
+                                    PR_COMMENT,
+                                    PR_FOLDER_CHILD_COUNT);
+
+  retval = SetColumns( &objHierarchyTable, sPropTagArray );
+  MAPIFreeBuffer( sPropTagArray );
+  if ( retval != MAPI_E_SUCCESS ) {
+    qDebug() << "Failed to set columns in quest for child folders: " << retval;
+    return;
+  }
+
+  struct SRowSet rowset;
+  while ( ( QueryRows(&objHierarchyTable, 0x32, TBL_ADVANCE, &rowset ) != MAPI_E_NOT_FOUND) && rowset.cRows ) {
+    qDebug() << "num rows: " << rowset.cRows;
+    for (unsigned int index = 0; index < rowset.cRows; index++) {
+      Collection thisFolder;
+      thisFolder.setParent( parentCollection );
+      qDebug() << "Folder id: " << *(uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
+      thisFolder.setRemoteId( QString::number( *(uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID ) ) );
+      thisFolder.setName( ( const char * ) find_SPropValue_data(&rowset.aRow[index], PR_DISPLAY_NAME) );
+      thisFolder.setCachePolicyId( 1 );
+      thisFolder.setType( Collection::Folder );
+      QStringList folderMimeType;
+      if (*( (uint32_t *)find_SPropValue_data(&rowset.aRow[index], PR_FOLDER_CHILD_COUNT) ) > 0 ) {
+        // if it has children, needs this mimetype:
+        folderMimeType << "inode/directory";
+        uint64_t *fid = (uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
+        getChildFolders(&objFolder, *fid, thisFolder, collections);
+      } else {
+        // no children - must have real contents
+        // // TODO: add mime conversion from PR_CONTAINER_CLASS in here.
+        folderMimeType << "message/rfc822";
+      }
+      thisFolder.setContentTypes( folderMimeType );
+      collections.append( thisFolder );
+    }
+  }
 }
 
 void OCResource::retrieveCollections()
 {
+  qDebug() << "retrieving collections";
+
+  struct SPropTagArray *sPropTagArray;
+  struct SPropValue *lpProps;
+  uint32_t cValues;
+
+  // for now we only work on the default profile
+  enum MAPISTATUS retval;
+  const char      *profname;
+  if ((retval = GetDefaultProfile(&profname, 0)) != MAPI_E_SUCCESS) {
+    mapi_errstr("GetDefaultProfile", GetLastError());
+    exit( 1 );
+  }
+
+  QString profileName( profname );
+
+  Collection::List collections;
+
+  /* Retrieve the mailbox folder name */
+  sPropTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x1,
+                                    PR_DISPLAY_NAME);
+  retval = GetProps(&m_mapiStore, sPropTagArray, &lpProps, &cValues);
+  MAPIFreeBuffer(sPropTagArray);
+  if (retval != MAPI_E_SUCCESS) {
+    qDebug() << "failed to get properties:" << retval;
+    exit( 1 );
+  }
+
+  if ( ! lpProps[0].value.lpszA ) {
+    qDebug() << "null mailbox name";
+    exit( 1 );
+  } else {
+    // qDebug() << "mailbox name: " << QString( lpProps[0].value.lpszA );
+  }
+
+  Collection account;
+  account.setParent( Collection::root() );
+  account.setRemoteId( profileName );
+  account.setName( QString( lpProps[0].value.lpszA ) + QString( " (OpenChange)" ) );
+  account.setType( Collection::Resource );
+  QStringList mimeTypes;
+  mimeTypes << "inode/directory";
+  account.setContentTypes( mimeTypes );
+  account.setCachePolicyId( 1 ); // ### just for testing
+  collections.append( account );
+
+  mapi_id_t id_mailbox;
+  /* Prepare the directory listing */
+  retval = GetDefaultFolder(&m_mapiStore, &id_mailbox, olFolderTopInformationStore);
+  if (retval != MAPI_E_SUCCESS) {
+    qDebug() << "failed to get default folder:" << retval;
+    exit( 1 );
+  }
+
+  getChildFolders( &m_mapiStore, id_mailbox, account, collections );
+
+  qDebug() << "about to announce collections";
+  collectionsRetrieved( collections );
 }
 
-void OCResource::synchronizeCollection(const Akonadi::Collection & col)
+
+enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
 {
+  enum MAPISTATUS retval;
+  mapi_object_t objFolder;
+  mapi_object_t obj_message;
+  mapi_object_t obj_table;
+  struct SPropTagArray *sPropTagArray;
+  struct SRowSet rowset;
+  uint32_t messagesCount;
+  struct mapi_SPropValue_array properties_array;
+
+  mapi_object_init(&objFolder);
+  mapi_object_init(&obj_table);
+
+  if ( ( retval = OpenFolder(&m_mapiStore, collection.remoteId().toULongLong(), &objFolder) ) != MAPI_E_SUCCESS )
+  {
+    mapi_errstr( "OpenFolder",  GetLastError() );
+    return retval;
+  }
+
+  if ( ( retval = GetContentsTable(&objFolder, &obj_table) ) != MAPI_E_SUCCESS )
+  {
+    mapi_errstr( "GetContentsTable", GetLastError() );
+    return retval;
+  }
+
+  sPropTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x5,
+                                    PR_FID,
+                                    PR_MID,
+                                    PR_INST_ID,
+                                    PR_INSTANCE_NUM,
+                                    PR_SUBJECT);
+
+  if ( ( retval = SetColumns(&obj_table, sPropTagArray ) ) != MAPI_E_SUCCESS )
+  {
+    mapi_errstr( "SetColumns",  GetLastError() );
+    return retval;
+  }
+  MAPIFreeBuffer(sPropTagArray);
+
+  if ( ( retval = GetRowCount(&obj_table, &messagesCount) ) != MAPI_E_SUCCESS )
+  {
+    mapi_errstr( "GetRowCount", GetLastError() );
+    return retval;
+  }
+
+  qDebug() << "Message count:" << messagesCount;
+
+  while ( ( (retval = QueryRows(&obj_table, 0xa, TBL_ADVANCE, &rowset)) != MAPI_E_NOT_FOUND ) && rowset.cRows) {
+    for (unsigned int i = 0; i < rowset.cRows; i++) {
+      mapi_object_init(&obj_message);
+      retval = OpenMessage(&m_mapiStore,
+                           rowset.aRow[i].lpProps[0].value.d,
+                           rowset.aRow[i].lpProps[1].value.d,
+                           &obj_message);
+      if (retval == MAPI_E_SUCCESS) {
+        qDebug() << "building message";
+        retval = GetPropsAll(&obj_message, &properties_array);
+        if (retval != MAPI_E_SUCCESS) return retval;
+        uint8_t *has_attach = (uint8_t *) find_mapi_SPropValue_data(&properties_array, PR_HASATTACH);
+
+        // mapidump_message(&properties_array);
+        MessagePtr msg_ptr ( new KMime::Message );
+        msg_ptr->subject()->from7BitString( (char*)find_mapi_SPropValue_data(&properties_array, PR_CONVERSATION_TOPIC) );
+        msg_ptr->from()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_SENT_REPRESENTING_NAME) );
+        msg_ptr->to()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_TO) );
+        msg_ptr->cc()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_TO) );
+        msg_ptr->bcc()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_BCC) );
+        msg_ptr->date()->setDateTime( KDateTime( QDate( 2007,3,11 ) ) );
+        QByteArray body( (char *) find_mapi_SPropValue_data(&properties_array, PR_BODY) );
+        if ( body.isEmpty() ) {
+          body = QByteArray( (char *) find_mapi_SPropValue_data(&properties_array, PR_BODY_UNICODE) );
+          if ( body.isEmpty() ) {
+            struct SBinary_short *html = (struct SBinary_short *) find_mapi_SPropValue_data(&properties_array, PR_HTML );
+            QString htmlString;
+            body = QByteArray( ( char* ) html->lpb, html->cb );
+            // qDebug() << "body: " << body;
+            body.append( "\n" );
+          }
+        }
+        msg_ptr->setBody( body );
+
+        Item item( DataReference( -1, "itemnumber" ) );
+        item.setMimeType( "message/rfc822" );
+        item.setPayload<MessagePtr>( msg_ptr );
+        ItemAppendJob *append = new ItemAppendJob( item, collection, session() );
+        if ( !append->exec() ) {
+          changeProgress( 0 );
+          changeStatus( Error, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+          return MAPI_E_CALL_FAILED;
+        }
+
+        /* If we have attachments, retrieve them */
+        if (has_attach && *has_attach) {
+          // TODO
+        }
+      }
+      mapi_object_release(&obj_message);
+    }
+  }
+
+  mapi_object_release(&obj_table);
+  mapi_object_release(&objFolder);
+
+  return MAPI_E_SUCCESS;
+
+}
+
+void OCResource::synchronizeCollection(const Akonadi::Collection & collection)
+{
+  qDebug() << "currently ignoring synchronizeCollections()";
+
+  ItemFetchJob *fetch = new ItemFetchJob( collection, session() );
+  if ( !fetch->exec() ) {
+    changeStatus( Error,
+                  QString( "Unable to fetch listing of collection '%1': %2" ).arg( collection.name() ).arg( fetch->errorString() ) );
+    return;
+  }
+
+  changeProgress( 0 );
+
+  Item::List items = fetch->items();
+
+  fetchFolder( collection );
+
+  changeProgress( 100 );
+  collectionSynchronized();
 }
 
 #include "ocresource.moc"
