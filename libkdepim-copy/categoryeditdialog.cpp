@@ -42,7 +42,7 @@
 using namespace KPIM;
 
 CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
-  : KDialog::KDialog( parent ), mPrefs( prefs )
+  : KDialog( parent ), mPrefs( prefs )
 {
   setCaption( i18n( "Edit Categories" ) );
   setButtons( Ok|Apply|Cancel|Help );
