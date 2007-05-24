@@ -146,7 +146,7 @@ void SingleConditionWidget::showRegExpDialog()
   QDialog *editorDialog =
       KParts::ComponentFactory::createPartInstanceFromQuery<QDialog>( "KRegExpEditor/KRegExpEditor", QString() );
   if ( editorDialog ) {
-    KRegExpEditorInterface *editor = dynamic_cast<KRegExpEditorInterface *>( editorDialog );
+    KRegExpEditorInterface *editor = qobject_cast<KRegExpEditorInterface *>( editorDialog );
     Q_ASSERT( editor ); // This should not fail!
     editor->setRegExp( expr->text() );
     editorDialog->exec();
