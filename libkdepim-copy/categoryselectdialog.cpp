@@ -82,13 +82,11 @@ CategorySelectDialog::~CategorySelectDialog()
 void CategorySelectDialog::setSelected(const QStringList &selList)
 {
   clear();
-
   QStringList::ConstIterator it;
   for ( it = selList.begin(); it != selList.end(); ++it ) {
     QStringList path = CategoryHierarchyReader::path( *it );
     Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
     while (item) {
-     item = (Q3CheckListItem *)item->nextSibling();
       if (item->text() == path.first()) {
         if ( path.count() == 1 ) {
           item->setOn(true);
