@@ -92,7 +92,7 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
           item->setOn(true);
           break;
         } else {
-          item = (Q3CheckListItem *)item->nextSibling();
+          item = (Q3CheckListItem *)item->firstChild();
           path.pop_front();
         }
       } else
@@ -120,7 +120,7 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
       categories.append( _path.join( KPimPrefs::categorySeparator ) );
     }
     if ( item->firstChild() ) {
-      item = (Q3CheckListItem *)item->nextSibling();
+      item = (Q3CheckListItem *)item->firstChild();
     } else {
       Q3CheckListItem *next_item = 0;
       while ( !next_item && item ) {
