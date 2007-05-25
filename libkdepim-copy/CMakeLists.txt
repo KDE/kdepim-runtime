@@ -87,6 +87,8 @@ kde4_automoc(${kdepim_LIB_SRCS})
 
 QT4_ADD_DBUS_INTERFACE(kdepim_LIB_SRCS ${CMAKE_SOURCE_DIR}/kaddressbook/org.kde.KAddressbook.Core.xml kaddressbookcore_interface )
 
+QT4_ADD_DBUS_INTERFACE(kdepim_LIB_SRCS ${CMAKE_SOURCE_DIR}/korganizer/korgac/org.kde.korganizer.KOrgac.xml korganizer_korgac_interface )
+
 kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui addresspicker.ui)
 
 #kde4_add_dcop_skels(kdepim_LIB_SRCS 

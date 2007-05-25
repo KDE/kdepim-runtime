@@ -28,6 +28,7 @@
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
 #include <ktoolinvocation.h>
+#include "korganizer_korgac_interface.h"
 
 AlarmClient::AlarmClient()
 {
@@ -36,7 +37,7 @@ AlarmClient::AlarmClient()
 
 void AlarmClient::startDaemon()
 {
-  QDBusInterface iface( "org.kde.pim.korgac", "/" );
+  QDBusInterface iface( "org.kde.korgac", "/" );
   if ( iface.isValid() ){
     // Alarm daemon already runs
     return;
@@ -56,6 +57,7 @@ void AlarmClient::startDaemon()
 
 void AlarmClient::stopDaemon()
 {
-  QDBusInterface korgac( "org.kde.pim.korgac", "/", "org.kde.pim.AlarmClient" );
-  korgac.call("quit", QByteArray());
+  OrgKdeKorganizerKOrgacInterface interface("org.kde.korgac", "/ac", QDBusConnection::sessionBus()); 
+  interface.quit();
 }
+
