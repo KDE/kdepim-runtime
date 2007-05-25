@@ -305,11 +305,11 @@ void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
 
   struct SRowSet rowset;
   while ( ( QueryRows(&objHierarchyTable, 0x32, TBL_ADVANCE, &rowset ) != MAPI_E_NOT_FOUND) && rowset.cRows ) {
-    qDebug() << "num rows: " << rowset.cRows;
+    // qDebug() << "num rows: " << rowset.cRows;
     for (unsigned int index = 0; index < rowset.cRows; index++) {
       Collection thisFolder;
       thisFolder.setParent( parentCollection );
-      qDebug() << "Folder id: " << *(uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
+      // qDebug() << "Folder id: " << *(uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
       thisFolder.setRemoteId( QString::number( *(uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID ) ) );
       thisFolder.setName( ( const char * ) find_SPropValue_data(&rowset.aRow[index], PR_DISPLAY_NAME) );
       thisFolder.setCachePolicyId( 1 );
@@ -389,10 +389,21 @@ void OCResource::retrieveCollections()
 
   getChildFolders( &m_mapiStore, id_mailbox, account, collections );
 
-  qDebug() << "about to announce collections";
+  // qDebug() << "about to announce collections";
   collectionsRetrieved( collections );
 }
 
+static KDateTime convertSysTime(const struct mapi_SPropValue &lpProp)
+{
+  struct FILETIME filetime = lpProp.value.ft;
+  NTTIME nt_time = filetime.dwHighDateTime;
+  nt_time = nt_time << 32;
+  nt_time |= filetime.dwLowDateTime;
+  KDateTime kdeTime;
+  kdeTime.setTime_t( nt_time_to_unix( nt_time ) );
+  // qDebug() << "time: " << kdeTime.toString();
+  return kdeTime;
+}
 
 enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
 {
@@ -440,7 +451,7 @@ enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
     return retval;
   }
 
-  qDebug() << "Message count:" << messagesCount;
+  // qDebug() << "Message count:" << messagesCount;
 
   while ( ( (retval = QueryRows(&obj_table, 0xa, TBL_ADVANCE, &rowset)) != MAPI_E_NOT_FOUND ) && rowset.cRows) {
     for (unsigned int i = 0; i < rowset.cRows; i++) {
@@ -450,31 +461,329 @@ enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
                            rowset.aRow[i].lpProps[1].value.d,
                            &obj_message);
       if (retval == MAPI_E_SUCCESS) {
-        qDebug() << "building message";
+        // qDebug() << "building message";
         retval = GetPropsAll(&obj_message, &properties_array);
         if (retval != MAPI_E_SUCCESS) return retval;
         uint8_t *has_attach = (uint8_t *) find_mapi_SPropValue_data(&properties_array, PR_HASATTACH);
 
         // mapidump_message(&properties_array);
         MessagePtr msg_ptr ( new KMime::Message );
-        msg_ptr->subject()->from7BitString( (char*)find_mapi_SPropValue_data(&properties_array, PR_CONVERSATION_TOPIC) );
-        msg_ptr->from()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_SENT_REPRESENTING_NAME) );
-        msg_ptr->to()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_TO) );
-        msg_ptr->cc()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_TO) );
-        msg_ptr->bcc()->from7BitString( (char*) find_mapi_SPropValue_data(&properties_array, PR_DISPLAY_BCC) );
-        msg_ptr->date()->setDateTime( KDateTime( QDate( 2007,3,11 ) ) );
-        QByteArray body( (char *) find_mapi_SPropValue_data(&properties_array, PR_BODY) );
-        if ( body.isEmpty() ) {
-          body = QByteArray( (char *) find_mapi_SPropValue_data(&properties_array, PR_BODY_UNICODE) );
-          if ( body.isEmpty() ) {
-            struct SBinary_short *html = (struct SBinary_short *) find_mapi_SPropValue_data(&properties_array, PR_HTML );
-            QString htmlString;
-            body = QByteArray( ( char* ) html->lpb, html->cb );
-            // qDebug() << "body: " << body;
-            body.append( "\n" );
+        for ( uint32_t i = 0; i < properties_array.cValues; ++i ) {
+          switch( properties_array.lpProps[i].ulPropTag ) {
+          case PR_ALTERNATE_RECIPIENT_ALLOWED:
+            // PT_BOOLEAN
+            break;
+          case PR_IMPORTANCE:
+            // PT_LONG
+            break;
+          case PR_MESSAGE_CLASS:
+            // PT_STRING8
+            break;
+          case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
+            // PT_BOOLEAN
+            break;
+          case PR_PRIORITY:
+            // PT_LONG
+            break;
+          case PR_READ_RECEIPT_REQUESTED:
+            // PT_BOOLEAN
+            break;
+          case PR_SENSITIVITY:
+            // PT_LONG
+            break;
+          case PR_CLIENT_SUBMIT_TIME:
+            // PT_SYSTIME
+            msg_ptr->date()->setDateTime( convertSysTime( properties_array.lpProps[i] ) );
+            break;
+          case PR_SENT_REPRESENTING_SEARCH_KEY:
+            // PT_BINARY
+            break;
+          case PR_RECEIVED_BY_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_RECEIVED_BY_NAME:
+            // PT_STRING8
+            break;
+          case PR_SENT_REPRESENTING_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_SENT_REPRESENTING_NAME:
+            // PT_STRING8
+            if ( msg_ptr->from()->isEmpty() ) {
+              // we'll use PR_SENT_NAME for preference
+              msg_ptr->from()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            }
+            break;
+          case PR_RCVD_REPRESENTING_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_RCVD_REPRESENTING_NAME:
+            // PT_STRING8
+            break;
+          case PR_MESSAGE_SUBMISSION_ID:
+            // PR_BINARY
+            break;
+          case PR_RECEIVED_BY_SEARCH_KEY:
+            // PT_BINARY
+            break;
+          case PR_RCVD_REPRESENTING_SEARCH_KEY:
+            // PT_BINARY
+            break;
+          case PR_MESSAGE_TO_ME:
+            // PT_BOOLEAN
+            break;
+          case PR_MESSAGE_CC_ME:
+            // PT_BOOLEAN
+            break;
+          case PR_MESSAGE_RECIP_ME:
+            // PT_BOOLEAN
+            break;
+          case PR_SENT_REPRESENTING_ADDRTYPE:
+            // PT_STRING8
+            break;
+          case PR_SENT_REPRESENTING_EMAIL_ADDRESS:
+            // PT_STRING8
+            break;
+          case PR_CONVERSATION_INDEX:
+            // PT_BINARY
+            break;
+          case PR_RECEIVED_BY_ADDRTYPE:
+            // PT_STRING8
+            break;
+          case PR_RECEIVED_BY_EMAIL_ADDRESS:
+            // PT_STRING8
+            break;
+          case PR_RCVD_REPRESENTING_ADDRTYPE:
+            // PT_STRING8
+            break;
+          case PR_RCVD_REPRESENTING_EMAIL_ADDRESS:
+            // PT_STRING8
+            break;
+          case PR_TRANSPORT_MESSAGE_HEADERS:
+            // PT_STRING8
+            break;
+          case PR_SENDER_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_SENDER_NAME:
+            // PT_STRING8
+            msg_ptr->from()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            break;
+          case PR_SENDER_SEARCH_KEY:
+            // PT_BINARY
+            break;
+          case PR_SENDER_ADDRTYPE:
+            // PT_STRING8
+            break;
+          case PR_SENDER_EMAIL_ADDRESS:
+            // PT_STRING8
+            break;
+          case PR_DELETE_AFTER_SUBMIT:
+            // PT_BOOLEAN
+            break;
+          case PR_DISPLAY_BCC:
+            // PT_STRING8
+            msg_ptr->bcc()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            break;
+          case PR_DISPLAY_CC:
+            // PT_STRING8
+            msg_ptr->cc()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            break;
+          case PR_DISPLAY_TO:
+            // PT_STRING8
+            // This (and BCC+CC) need to be split on semicolons, and combined with
+            // the email address
+            msg_ptr->to()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            break;
+          case PR_MESSAGE_DELIVERY_TIME:
+            // PT_SYSTIME
+            break;
+          case PR_MESSAGE_FLAGS:
+            // PT_LONG
+            break;
+          case PR_MESSAGE_SIZE:
+            // PT_LONG
+            break;
+          case PR_HASATTACH:
+            // PT_BOOLEAN
+            break;
+          case PR_RTF_IN_SYNC:
+            // PT_BOOLEAN
+            break;
+          case PR_INTERNET_ARTICLE_NUMBER:
+            // PT_LONG
+            break;
+          case PR_NT_SECURITY_DESCRIPTOR:
+            // PT_BINARY
+            break;
+          case PR_URL_COMP_NAME_POSTFIX:
+            // PT_LONG
+            break;
+          case PR_URL_COMP_NAME_SET:
+            // PT_BOOLEAN
+            break;
+          case PR_TRUST_SENDER:
+            // PT_LONG
+            break;
+          case PR_ACCESS:
+            // PT_LONG
+            break;
+          case PR_ACCESS_LEVEL:
+            // PT_LONG
+            break;
+          case PR_BODY:
+            // PT_STRING8
+            // This probably needs to construct some kind of multipart MIME body
+            if ( msg_ptr->body().isEmpty() ) {
+              msg_ptr->setBody( properties_array.lpProps[i].value.lpszA );
+            }
+            break;
+          case PR_BODY_UNICODE:
+            // PT_UNICODE
+            break;
+          case PR_BODY_ERROR:
+            // PT_ERROR
+            break;
+          case PR_RTF_COMPRESSED_ERROR:
+            // PT_ERROR
+            break;
+          case PR_HTML:
+            // PT_BINARY
+            // This probably needs to construct some kind of multipart MIME body
+            if ( msg_ptr->body().isEmpty() ) {
+              struct SBinary_short *html = (struct SBinary_short *) find_mapi_SPropValue_data(&properties_array, PR_HTML );
+              QByteArray body = QByteArray( ( char* ) html->lpb, html->cb );
+              body.append( "\n" );
+              msg_ptr->setBody( body );
+            }
+            break;
+          case PR_INTERNET_MESSAGE_ID:
+            // PT_STRING8
+            break;
+          case PR_ACTION:
+            // PT_LONG
+            break;
+          case PR_DISABLE_FULL_FIDELITY:
+            // PT_BOOLEAN
+            break;
+          case PR_URL_COMP_NAME:
+            // PT_STRING8
+            break;
+          case PR_ATTR_HIDDEN:
+            // PT_BOOLEAN
+            break;
+          case PR_ATTR_SYSTEM:
+            // PT_BOOLEAN
+            break;
+          case PR_ATTR_READONLY:
+            // PT_BOOLEAN
+            break;
+          case PR_CREATION_TIME:
+            // PT_SYSTIME
+            if ( msg_ptr->date()->isEmpty() ) {
+              // we want to use PR_CLIENT_SUBMIT_TIME, but this will do instead
+              msg_ptr->date()->setDateTime( convertSysTime( properties_array.lpProps[i] ) );
+            }
+            break;
+          case PR_LAST_MODIFICATION_TIME:
+            // PT_SYSTIME
+            break;
+          case PR_SEARCH_KEY:
+            // PT_BINARY
+            break;
+          case PR_INTERNET_CPID:
+            // PT_LONG
+            break;
+          case PR_MESSAGE_LOCALE_ID:
+            // PT_LONG
+            break;
+          case PR_CREATOR_NAME:
+            // PT_STRING8
+            break;
+          case PR_CREATOR_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_LAST_MODIFIER_NAME:
+            // PT_STRING8
+            break;
+          case PR_LAST_MODIFIER_ENTRYID:
+            // PT_BINARY
+            break;
+          case PR_MESSAGE_CODEPAGE:
+            // PT_LONG
+            break;
+          case  PR_SENDER_FLAGS:
+            // PT_LONG
+            break;
+          case PR_SENT_REPRESENTING_FLAGS:
+            // PT_LONG
+            break;
+          case PR_RCVD_BY_FLAGS:
+            // PT_LONG
+            break;
+          case PR_RCVD_REPRESENTING_FLAGS:
+            // PT_LONG
+            break;
+          case PR_CREATOR_FLAGS_ERROR:
+            // PT_ERROR
+            break;
+          case PR_MODIFIER_FLAGS_ERROR:
+            // PT_ERROR
+            break;
+          case PR_INET_MAIL_OVERRIDE_FORMAT:
+            // PT_LONG
+            break;
+          case PR_MSG_EDITOR_FORMAT:
+            // PT_LONG
+            break;
+          case PR_DOTSTUFF_STATE:
+            // PT_LONG
+            break;
+          case PR_SOURCE_KEY:
+            // PT_BINARY
+            break;
+          case PR_CHANGE_KEY:
+            // PT_BINARY
+            break;
+          case PR_PREDECESSOR_CHANGE_LIST:
+            // PT_BINARY
+            break;
+          case PR_HAS_NAMED_PROPERTIES:
+            // PT_BOOLEAN
+            break;
+          case PR_ICS_CHANGE_KEY:
+            // PT_BINARY
+            break;
+          case PR_INTERNET_CONTENT_ERROR:
+            // PT_ERROR
+            break;
+          case PR_LOCALE_ID:
+            // PT_LONG
+            break;
+          case PR_INTERNET_PARSE_STATE:
+            // PT_BINARY
+            break;
+          case PR_INTERNET_MESSAGE_INFO:
+            // PT_BINARY
+            break;
+          case PR_URL_NAME:
+            // PR_STRING8
+            break;
+          case PR_LOCAL_COMMIT_TIME:
+            // PT_SYSTIME
+            break;
+          case PR_INTERNET_FREE_DOC_INFO:
+            // PT_BINARY
+            break;
+          case PR_CONVERSATION_TOPIC:
+            msg_ptr->subject()->from7BitString( properties_array.lpProps[i].value.lpszA );
+            break;
+          default:
+            qDebug() << "Unhandled: " << QString::number( properties_array.lpProps[i].ulPropTag, 16 );
           }
         }
-        msg_ptr->setBody( body );
+
+
 
         Item item( DataReference( -1, "itemnumber" ) );
         item.setMimeType( "message/rfc822" );
@@ -504,7 +813,7 @@ enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
 
 void OCResource::synchronizeCollection(const Akonadi::Collection & collection)
 {
-  qDebug() << "currently ignoring synchronizeCollections()";
+  qDebug() << "currently synchronizeCollections() is incomplete";
 
   ItemFetchJob *fetch = new ItemFetchJob( collection, session() );
   if ( !fetch->exec() ) {
