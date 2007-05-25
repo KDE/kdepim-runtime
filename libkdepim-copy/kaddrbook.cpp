@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <kdefakes.h> // usleep
 #include <ktoolinvocation.h>
+#include "kaddressbookcore_interface.h"
 
 //-----------------------------------------------------------------------------
 void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QWidget *) {
@@ -44,7 +45,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
 #endif
   // DF: it comes from KUniqueApplication
 
-  QDBusInterface abinterface( "org.kde.pim.kaddressbook", "/", "org.kde.pim.Addressbook" );
+  QDBusInterface abinterface( "org.kde.KAddressbook", "/MainApplication", "org.kde.KUniqueApplication" );
   if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor
     //won't work as desired, see bug #87233
@@ -53,12 +54,12 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   else
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
 
-  QDBusInterface abinterface1( "org.kde.kaddressbook", "/KAddressBook", "org.kde.KAddressbook.Core" );
+  OrgKdeKAddressbookCoreInterface interface("org.kde.KAddressbook", "/KAddressbook", QDBusConnection::sessionBus());
   if( !addresseeList.isEmpty() ) {
-    abinterface1.call( "showContactEditor", addresseeList.first().uid() );
+    interface.showContactEditor(addresseeList.first().uid() );
   }
   else {
-    abinterface1.call( "addEmail", addr );
+    interface.addEmail(addr);
   }
 }
 
@@ -107,8 +108,8 @@ void KAddrBookExternal::openAddressBook( QWidget * ) {
 void KAddrBookExternal::addNewAddressee( QWidget * )
 {
   KToolInvocation::startServiceByDesktopName("kaddressbook");
-  QDBusInterface call("org.kde.pim.kaddressboook", "/", "org.kde.pim.Addressbook" );
-  call.call("newContact");
+  OrgKdeKAddressbookCoreInterface interface("org.kde.KAddressbook", "/KAddressbook", QDBusConnection::sessionBus());
+  interface.newContact();
 }
 
 bool KAddrBookExternal::addVCard( const KABC::Addressee &addressee, QWidget *parent )
