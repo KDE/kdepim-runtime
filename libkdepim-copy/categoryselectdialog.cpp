@@ -22,9 +22,9 @@
 
 #include <q3listview.h>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <q3header.h>
 
-#include "ui_categoryselectdialog_base.h"
 #include <klocale.h>
 #include "categoryselectdialog.h"
 #include "categoryhierarchyreader.h"
@@ -34,32 +34,33 @@
 
 using namespace KPIM;
 
-CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
-                                            const char* name, bool modal )
-  : KDialog( parent ), mPrefs( prefs )
+
+CategorySelectWidget::CategorySelectWidget(QWidget *parent, KPimPrefs *prefs)
+  : QWidget(parent), mPrefs( prefs )
 {
-  setCaption( i18n( "Select Categories" ) );
-  setModal( modal );
-  setButtons( Ok|Apply|Cancel|Help );
-  setObjectName( name );
-  mWidgets = new Ui::CategorySelectDialog_base();
-  QWidget *widget = new QWidget( this );
-  mWidgets->setupUi( widget );
-  widget->setObjectName( "CategorySelection" );
-  mWidgets->mCategories->header()->hide();
-  setMainWidget( widget );
-
-  setCategories();
-
+  mWidgets = new CategorySelectWidgetBase(this);
   connect( mWidgets->mButtonEdit, SIGNAL(clicked()),
            SIGNAL(editCategories()) );
   connect( mWidgets->mButtonClear, SIGNAL(clicked()),
            SLOT(clear()) );
-  connect( this, SIGNAL( okClicked() ), this, SLOT( slotOk() ) );
-  connect( this, SIGNAL( applyClicked() ), this, SLOT( slotApply() ) );
 }
 
-void CategorySelectDialog::setCategories( const QStringList &categoryList )
+CategorySelectWidget::~CategorySelectWidget()
+{
+}
+
+Q3ListView *CategorySelectWidget::listView() const
+{
+   return mWidgets->mCategories;
+}
+
+void CategorySelectWidget::hideButton()
+{
+  mWidgets->mButtonEdit->hide();
+  mWidgets->mButtonClear->hide();
+}
+
+void CategorySelectWidget::setCategories( const QStringList &categoryList )
 {
   mWidgets->mCategories->clear();
   mCategoryList.clear();
@@ -74,12 +75,7 @@ void CategorySelectDialog::setCategories( const QStringList &categoryList )
       read( mPrefs->mCustomCategories );
 }
 
-CategorySelectDialog::~CategorySelectDialog()
-{
-  delete mWidgets;
-}
-
-void CategorySelectDialog::setSelected(const QStringList &selList)
+void CategorySelectWidget::setSelected(const QStringList &selList)
 {
   clear();
   QStringList::ConstIterator it;
@@ -99,11 +95,6 @@ void CategorySelectDialog::setSelected(const QStringList &selList)
         item = (Q3CheckListItem *)item->nextSibling();
     }
   }
-}
-
-QStringList CategorySelectDialog::selectedCategories() const
-{
-  return mCategoryList;
 }
 
 static QStringList getSelectedCategories( const Q3ListView *categoriesView )
@@ -134,25 +125,7 @@ static QStringList getSelectedCategories( const Q3ListView *categoriesView )
   return categories;
 }
 
-void CategorySelectDialog::slotApply()
-{
-  QStringList categories = getSelectedCategories( mWidgets->mCategories );
-
-  QString categoriesStr = categories.join(", ");
-
-  mCategoryList = categories;
-
-  emit categoriesSelected(categories);
-  emit categoriesSelected(categoriesStr);
-}
-
-void CategorySelectDialog::slotOk()
-{
-  slotApply();
-  accept();
-}
-
-void CategorySelectDialog::clear()
+void CategorySelectWidget::clear()
 {
   Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
   while (item) {
@@ -170,20 +143,106 @@ void CategorySelectDialog::clear()
   }
 }
 
-void CategorySelectDialog::updateCategoryConfig()
-{
-  QStringList selected = getSelectedCategories( mWidgets->mCategories );
-
-  setCategories();
-
-  setSelected(selected);
-}
-
-void CategorySelectDialog::setAutoselectChildren( bool autoselectChildren )
+void CategorySelectWidget::setAutoselectChildren( bool autoselectChildren )
 {
   for ( Q3ListViewItemIterator it( mWidgets->mCategories ); it.current(); ++it)
     ( ( AutoselectingCheckListItem *) it.current() )->
             setAutoselectChildren( autoselectChildren );
 }
+
+void CategorySelectWidget::hideHeader()
+{
+  mWidgets->mCategories->header()->hide();
+}
+
+QStringList CategorySelectWidget::selectedCategories() const
+{
+  return mCategoryList;
+}
+
+void CategorySelectWidget::setCategoryList(const QStringList &categories)
+{
+   mCategoryList = categories;
+}
+
+CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
+                                            const char* name, bool modal )
+  : KDialog( parent )
+{
+  setCaption( i18n( "Select Categories" ) );
+  setModal( modal );
+  setButtons( Ok|Apply|Cancel|Help );
+  setObjectName( name );
+  QWidget *page = new QWidget;
+  setMainWidget( page );
+  QVBoxLayout *lay = new QVBoxLayout( page );
+
+  mWidgets = new CategorySelectWidget(this,prefs);
+  mWidgets->setObjectName( "CategorySelection" );
+  mWidgets->hideHeader();
+  lay->addWidget(mWidgets);
+
+  mWidgets->setCategories();
+
+  connect( mWidgets, SIGNAL(editCategories()),
+           SIGNAL(editCategories()) );
+
+
+  connect( this, SIGNAL( okClicked() ), this, SLOT( slotOk() ) );
+  connect( this, SIGNAL( applyClicked() ), this, SLOT( slotApply() ) );
+}
+
+CategorySelectDialog::~CategorySelectDialog()
+{
+  delete mWidgets;
+}
+
+QStringList CategorySelectDialog::selectedCategories() const
+{
+  return mWidgets->selectedCategories();
+}
+
+void CategorySelectDialog::slotApply()
+{
+  QStringList categories = getSelectedCategories(mWidgets->listView());
+
+  QString categoriesStr = categories.join(", ");
+
+  mWidgets->setCategoryList(categories);
+
+  emit categoriesSelected(categories);
+  emit categoriesSelected(categoriesStr);
+}
+
+void CategorySelectDialog::slotOk()
+{
+  slotApply();
+  accept();
+}
+
+void CategorySelectDialog::updateCategoryConfig()
+{
+  QStringList selected = getSelectedCategories( mWidgets->listView() );
+
+  mWidgets->setCategories();
+
+  mWidgets->setSelected(selected);
+}
+
+void CategorySelectDialog::setAutoselectChildren( bool autoselectChildren )
+{
+  mWidgets->setAutoselectChildren(autoselectChildren);
+}
+
+void CategorySelectDialog::setCategoryList(const QStringList &categories)
+{
+  mWidgets->setCategoryList(categories);
+}
+
+void CategorySelectDialog::setSelected( const QStringList &selList )
+{
+  mWidgets->setSelected(selList);
+}
+
 
 #include "categoryselectdialog.moc"

@@ -24,13 +24,51 @@
 
 #include <kdialog.h>
 #include <kdepim_export.h>
+#include "ui_categoryselectdialog_base.h"
 
 class KPimPrefs;
-namespace Ui {
-class CategorySelectDialog_base;
-}
+class Q3ListView;
 
 namespace KPIM {
+
+class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog_base
+{
+public:
+  CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
+    setupUi( this );
+  }
+};
+
+
+class KDEPIM_EXPORT CategorySelectWidget : public QWidget
+{
+    Q_OBJECT
+  public:
+    CategorySelectWidget(QWidget *parent, KPimPrefs *prefs);
+    ~CategorySelectWidget();
+    
+    void setCategories( const QStringList &categoryList = QStringList() );
+    void setSelected( const QStringList &selList );
+    QStringList selectedCategories() const;    
+    void setAutoselectChildren( bool autoselectChildren );
+    void setCategoryList(const QStringList &categories);
+
+    void hideButton();
+    void hideHeader();
+
+    Q3ListView *listView() const;
+
+  public slots:
+    void clear();
+
+  signals:
+    void editCategories();
+
+  private:
+    QStringList mCategoryList;
+    CategorySelectWidgetBase *mWidgets;
+    KPimPrefs *mPrefs;
+};
 
 class KDEPIM_EXPORT CategorySelectDialog : public KDialog
 { 
@@ -40,20 +78,15 @@ class KDEPIM_EXPORT CategorySelectDialog : public KDialog
                           const char *name = 0, bool modal = false );
     ~CategorySelectDialog();
 
-    /**
-      Adds this categories to the default categories.
-     */
-    void setCategories( const QStringList &categoryList = QStringList() );
+    QStringList selectedCategories() const;
+    void setCategoryList(const QStringList &categories);
+
+    void setAutoselectChildren( bool autoselectChildren );
     void setSelected( const QStringList &selList );
 
-    QStringList selectedCategories() const;
-    
-    void setAutoselectChildren( bool autoselectChildren );
-    
   public slots:
     void slotOk();
     void slotApply();
-    void clear();
     void updateCategoryConfig();
     
   signals:
@@ -62,9 +95,7 @@ class KDEPIM_EXPORT CategorySelectDialog : public KDialog
     void editCategories();
 
   private:
-    KPimPrefs *mPrefs;
-    Ui::CategorySelectDialog_base *mWidgets;
-    QStringList mCategoryList;
+    CategorySelectWidget *mWidgets;
 
     class CategorySelectDialogPrivate;
     CategorySelectDialogPrivate *d;
