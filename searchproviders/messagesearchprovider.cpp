@@ -46,7 +46,7 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
-  Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
+  //Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
 
   mSession = new Session( id.toLatin1(), this );
   monitor->ignoreSession( mSession );
