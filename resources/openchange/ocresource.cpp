@@ -234,7 +234,7 @@ OCResource::~ OCResource()
   talloc_free(m_mapiMemoryContext);
 }
 
-bool OCResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
+bool OCResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
   qDebug() << "currently ignoring requestItemDelivery";
   return true;

@@ -44,8 +44,9 @@ VCardResource::~VCardResource()
   mAddressees.clear();
 }
 
-bool VCardResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
+bool VCardResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
+  Q_UNUSED( parts );
   if ( !mAddressees.contains( ref.remoteId() ) ) {
     error( QString( "Contact with uid '%1' not found!" ).arg( ref.remoteId() ) );
     return false;

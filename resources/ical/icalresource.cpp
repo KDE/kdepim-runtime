@@ -50,8 +50,9 @@ ICalResource::~ ICalResource()
   delete mCalendar;
 }
 
-bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
+bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
+  Q_UNUSED( parts );
   qDebug() << "ICalResource::requestItemDelivery()";
   Incidence *incidence = mCalendar->incidence( ref.remoteId() );
   if ( !incidence ) {

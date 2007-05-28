@@ -45,9 +45,9 @@ NntpResource::~ NntpResource()
 {
 }
 
-bool NntpResource::requestItemDelivery(const Akonadi::DataReference & ref, int type, const QDBusMessage & msg)
+bool NntpResource::requestItemDelivery(const Akonadi::DataReference & ref, const QStringList &parts, const QDBusMessage & msg)
 {
-  Q_UNUSED( type );
+  Q_UNUSED( parts );
   mCurrentRef = ref;
   mCurrentMessage = msg;
   KIO::Job* job = KIO::storedGet( KUrl( ref.remoteId() ), false, false );

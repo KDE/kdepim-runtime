@@ -48,7 +48,7 @@ MaildirResource::~ MaildirResource()
 {
 }
 
-bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, int, const QDBusMessage &msg )
+bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
   qDebug() << "MaildirResource::requestItemDelivery()";
   /*
