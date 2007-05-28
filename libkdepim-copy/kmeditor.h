@@ -59,6 +59,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
   private:
     class Private;
     Private *const d;
+    Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
 };
 
 #endif 
