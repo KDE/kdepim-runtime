@@ -3,9 +3,11 @@ Encoding=UTF-8
 Name=Mail Serializer
 Name[es]=Serializador de correo
 Name[x-test]=xxMail Serializerxx
+Name[zh_TW]=信件序列器
 Comment=An Akonadi serializer plugin for mail objects
 Comment[es]=Un plugin serializador de Akonadi para objetos de correo
 Comment[x-test]=xxAn Akonadi serializer plugin for mail objectsxx
+Comment[zh_TW]=信件物件的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=message/rfc822,message/news
