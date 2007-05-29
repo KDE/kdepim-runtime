@@ -13,7 +13,7 @@
 
 - <a href="../libakonadi/html/index.html">Core library</a>
 - <a href="../server/html/index.html">Server</a>
-- Domain-specifc libraries:
+- Domain-specific libraries:
   - <a href="../kabc/html/index.html">Contacts</a>
   - <a href="../kmime/html/index.html">MIME Messages</a>
 
@@ -26,32 +26,32 @@
 
 \page akonadi_history Historical background
 
-\section akonadi_history_genral General
+\section akonadi_history_general General
 
 During the last 5 years, after the release of KDE 3.0, the requirements of our users
 have constantly increased. While it was sufficient that our PIM solution was able to handle 100 contacts,
 300 events and maybe 1000 mails in 2001, nowadays users expect the software to be able to
-handle a multiple of that. Over the years the KDE PIM developers tried to catch up with the new
-requirements; however since KDE 3.x had to stay binary compatible they were limited in their
+handle a multiple of that. Over the years, the KDE PIM developers tried to catch up with the new
+requirements; however, since KDE 3.x had to stay binary compatible, they were limited in their
 efforts.
 
 With the new major release KDE 4.0 it's possible to completely redesign the PIM libraries from
-the ground up, and using new concepts to face the requirements of 2006 and beyond.
+the ground up and use new concepts to face the requirements of 2006 and beyond.
 
-After some discussion at the annual KDE PIM meeting in Osnabrück in January 2006 the PIM developers
+After some discussion at the annual KDE PIM meeting in Osnabrück in January 2006, the PIM developers
 came to the conclusion that a service is needed which acts as a local cache on the user's desktop
 and provides search facilities. The name Akonadi comes from a divinity from Ghana and was chosen since
 all other nice names were already used by other projects on the Internet ;)
 
-\section akonadi_history_probles Problems with the implementation of KDE 3.x
+\section akonadi_history_problems Problems with the implementation of KDE 3.x
 
-Before digging into the internals of Akonadi we want to take a look at the implementation of the
+Before digging into the internals of Akonadi, we want to take a look at the implementation of the
 old KDE PIM libraries to understand the problems and conceptual shortcomings.
 
 The main PIM libraries libkabc (contacts) and libkcal (events) where designed at a time when the
 address book and calendar were files on the local file system, so there was no reason to think
 about access time and mode. The libraries accessed the files synchronously and loaded all data of the
-file into memory to be able to perform search queries on the data set. It worked well for local files
+file into memory to be able to perform search queries on the data set. It worked well for local files,
 but over time plug-ins for loading data from groupware servers were written, so the synchronous access blocked
 applications which used libkabc/libkcal, and loading all 2000 contacts from a server is not only
 time consuming but also needs a lot of memory to store them locally. The KDE PIM developers tried to
@@ -97,10 +97,10 @@ cycle, some considerations had been made which had a deep influence on the desig
         of any type. In this case, the storage is a kind of service, which is available for
         other components of the system. The logic is located in separated components and so
         3rd-party developers can extend the system by providing their own components.
-\li <em>Keep communication asynchronous</em><br/>
-        To allow a non-blocking GUI all the communication with the back-end and within the
-        back-end itself must be asynchronous. For the application developer you can easily
-        provide a synchronous convenience API; however the back-end must communicate asynchronously.
+\li <em>Keep communication asynchronous.</em><br/>
+        To allow a non-blocking GUI, all the communication with the back-end and within the
+        back-end itself must be asynchronous. You can easily provide a synchronous convenience
+        for the application developer; the back-end, however, must communicate asynchronously.
 
 Keep these considerations in mind when you read the following design concept.
 
