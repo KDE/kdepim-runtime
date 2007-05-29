@@ -25,6 +25,8 @@
 #include <ktextedit.h>
 #include <kdepim_export.h>
 
+class KFindDialog;
+
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
     Q_OBJECT
@@ -55,21 +57,26 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void paste();
 
-    void find();
-    void replace();
+    void findText();
+
+    void replaceText();
 
   protected:
     void init();
-
+    void findTextNext();
+    void findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog );
   signals:
     void pasteImage();
+
+  protected slots: 
+    void slotFindNext();
 
   private:
     class Private;
     Private *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
     Q_PRIVATE_SLOT( d, void slotHighlight( const QString &, int, int ) )
-    Q_PRIVATE_SLOT( d, void slotFindNext() )
+    Q_PRIVATE_SLOT( d, void slotFindDialogDestroyed() )
 };
 
 #endif 
