@@ -38,7 +38,9 @@ using namespace KPIM;
 CategorySelectWidget::CategorySelectWidget(QWidget *parent, KPimPrefs *prefs)
   : QWidget(parent), mPrefs( prefs )
 {
+  QHBoxLayout *topL = new QHBoxLayout(this);
   mWidgets = new CategorySelectWidgetBase(this);
+  topL->addWidget(mWidgets);
   connect( mWidgets->mButtonEdit, SIGNAL(clicked()),
            SIGNAL(editCategories()) );
   connect( mWidgets->mButtonClear, SIGNAL(clicked()),
