@@ -230,7 +230,7 @@ void KMeditor::findText()
 #ifdef Q_WS_X11
     KWindowSystem::activateWindow( d->findDialog->winId() );
 #else
-    d->findDialog.activateWindow();
+    d->findDialog->activateWindow();
 #endif
     return;
   }
