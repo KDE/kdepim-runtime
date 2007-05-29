@@ -64,7 +64,7 @@ class KMeditor::Private
 void KMeditor::Private::slotHighlight( const QString &word, int start, int end)
 {
   kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<< " pos start :"<<start<<" pos end :"<<end<<endl;
-  parent->highlightWord( end-start, start );
+  parent->highlightWord( end, start );
 }
 
 void KMeditor::Private::slotFindDialogDestroyed()
