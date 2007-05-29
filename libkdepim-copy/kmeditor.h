@@ -76,7 +76,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     Private *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
     Q_PRIVATE_SLOT( d, void slotHighlight( const QString &, int, int ) )
-    Q_PRIVATE_SLOT( d, void slotFindDialogDestroyed() )
 };
 
 #endif 

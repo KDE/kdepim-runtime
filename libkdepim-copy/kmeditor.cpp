@@ -28,11 +28,13 @@
 #include <kfind.h>
 #include <kfinddialog.h>
 #include <KWindowSystem>
+#include <KFindDialog>
 
 //qt includes
 #include <QApplication>
 #include <QClipboard>
 #include <QShortcut>
+#include <QPointer>
 
 class KMeditor::Private
 {
@@ -50,14 +52,13 @@ class KMeditor::Private
     void addSuggestion(const QString&,const QStringList&);
     
     void slotHighlight( const QString &, int, int );
-    void slotFindDialogDestroyed();
 
     QMap<QString,QStringList> replacements;   
     
     QString extEditorPath;
     KTextEdit *parent;
     bool useExtEditor;
-    KFindDialog *findDialog;
+    QPointer<KFindDialog> findDialog;
     KFind *find;
 };
 
@@ -65,13 +66,6 @@ void KMeditor::Private::slotHighlight( const QString &word, int start, int end)
 {
   kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<< " pos start :"<<start<<" pos end :"<<end<<endl;
   parent->highlightWord( end, start );
-}
-
-void KMeditor::Private::slotFindDialogDestroyed()
-{
-  //Be sure to delete it later.
-  findDialog->deleteLater();
-  findDialog = 0L;
 }
 
 void KMeditor::Private::addSuggestion(const QString& originalWord,const QStringList& lst)
@@ -236,16 +230,16 @@ void KMeditor::findText()
 #ifdef Q_WS_X11
     KWindowSystem::activateWindow( d->findDialog->winId() );
 #else
-    d->findDialog->activateWindow();
+    d->findDialog.activateWindow();
 #endif
     return;
   }
   d->findDialog = new KFindDialog( this );
+  d->findDialog->setAttribute(Qt::WA_DeleteOnClose);
   d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() ); 
   //Display dialogbox
   d->findDialog->show();
   connect( d->findDialog, SIGNAL(okClicked()), this, SLOT(slotFindNext()) );
-  connect( d->findDialog, SIGNAL(finished()), this, SLOT(slotFindDialogDestroyed()) );
 
   findText( d->findDialog->pattern(), 0 /*options*/, this, d->findDialog );
 }
