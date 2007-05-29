@@ -53,6 +53,8 @@ class KDEPIM_EXPORT CategorySelectWidget : public QWidget
     void setAutoselectChildren( bool autoselectChildren );
     void setCategoryList(const QStringList &categories);
 
+    QStringList selectedCategories(QString & categoriesStr);
+
     void hideButton();
     void hideHeader();
 

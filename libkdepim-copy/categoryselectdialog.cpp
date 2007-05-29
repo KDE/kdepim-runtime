@@ -155,6 +155,14 @@ void CategorySelectWidget::hideHeader()
   mWidgets->mCategories->header()->hide();
 }
 
+
+QStringList CategorySelectWidget::selectedCategories(QString & categoriesStr)
+{
+  mCategoryList = getSelectedCategories(listView());
+  categoriesStr = mCategoryList.join(", ");
+  return mCategoryList;
+}
+
 QStringList CategorySelectWidget::selectedCategories() const
 {
   return mCategoryList;
@@ -204,12 +212,8 @@ QStringList CategorySelectDialog::selectedCategories() const
 
 void CategorySelectDialog::slotApply()
 {
-  QStringList categories = getSelectedCategories(mWidgets->listView());
-
-  QString categoriesStr = categories.join(", ");
-
-  mWidgets->setCategoryList(categories);
-
+  QString categoriesStr;
+  QStringList categories = mWidgets->selectedCategories(categoriesStr);
   emit categoriesSelected(categories);
   emit categoriesSelected(categoriesStr);
 }
@@ -222,10 +226,9 @@ void CategorySelectDialog::slotOk()
 
 void CategorySelectDialog::updateCategoryConfig()
 {
-  QStringList selected = getSelectedCategories( mWidgets->listView() );
-
+  QString tmp;
+  QStringList selected = mWidgets->selectedCategories(tmp);
   mWidgets->setCategories();
-
   mWidgets->setSelected(selected);
 }
 
