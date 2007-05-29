@@ -21,28 +21,51 @@
 
 #include "kmeditor.h"
 #include "kemailquotinghighter.h"
+
 #include <maillistdrag.h>
 
+//kdelibs includes
+#include <kfind.h>
+
+//qt includes
+#include <QApplication>
+#include <QClipboard>
 
 class KMeditor::Private
 {
   public:
     Private()
-     : useExtEditor(false)
+     : useExtEditor(false),find(0L)
     {
     }
 
     ~Private()
     {
+      delete find;
     }
 
     void addSuggestion(const QString&,const QStringList&);
+    
+    void slotHighlight( const QString &, int, int );
+    void slotFindNext();
 
     QMap<QString,QStringList> replacements;   
     
     QString extEditorPath;
     bool useExtEditor;
+    KFind *find;
 };
+
+void KMeditor::Private::slotHighlight( const QString &word, int start, int end)
+{
+  kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<< " pos start :"<<start<<" pos end :"<<end<<endl;
+}
+
+void KMeditor::Private::slotFindNext()
+{
+  kDebug()<<" KMeditor::Private::slotFindNext()\n";
+}
+
 
 void KMeditor::Private::addSuggestion(const QString& originalWord,const QStringList& lst)
 {
@@ -75,6 +98,15 @@ void KMeditor::dropEvent( QDropEvent *e )
 {
   //Need to reimplement it by each apps
   KTextEdit::dropEvent(e);
+}
+
+void KMeditor::paste()
+{
+  if ( ! QApplication::clipboard()->image().isNull() )  {
+    emit pasteImage();
+  }
+  else
+    KTextEdit::paste();
 }
 
 void KMeditor::keyPressEvent ( QKeyEvent * e )
@@ -187,5 +219,21 @@ void KMeditor::setExternalEditorPath( const QString & path )
   d->extEditorPath = path;   
 }
 
+
+void KMeditor::find()
+{
+  delete d->find;
+  //configure it
+  d->find = new KFind(QString(), KFind::FindIncremental,this);
+  connect(d->find,SIGNAL( highlight( const QString &, int, int ) ),
+          this, SLOT( slotHighlight( const QString &, int, int ) ) );
+  connect(d->find,SIGNAL(findNext() ), 
+          this, SLOT( slotFindNext() ) ); 
+}
+
+void KMeditor::replace()
+{
+  //TODO
+}
 
 #include "kmeditor.moc"

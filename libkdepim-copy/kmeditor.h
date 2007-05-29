@@ -53,13 +53,23 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     virtual void dropEvent( QDropEvent *e );
 
+    void paste();
+
+    void find();
+    void replace();
+
   protected:
     void init();
+
+  signals:
+    void pasteImage();
 
   private:
     class Private;
     Private *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
+    Q_PRIVATE_SLOT( d, void slotHighlight( const QString &, int, int ) )
+    Q_PRIVATE_SLOT( d, void slotFindNext() )
 };
 
 #endif 
