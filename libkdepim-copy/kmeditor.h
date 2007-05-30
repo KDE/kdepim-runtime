@@ -24,6 +24,7 @@
 
 #include <ktextedit.h>
 #include <kdepim_export.h>
+#include <qtextformat.h>
 
 class KFindDialog;
 
@@ -61,6 +62,15 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void replaceText();
 
+  public slots: 
+    void slotChangeParagStyle(QTextListFormat::Style _style);
+    void slotAlignLeft();
+    void slotAlignCenter();
+    void slotAlignRight();
+    void slotTextBold(bool _b);
+    void slotTextItalic(bool _b);
+    void slotTextUnder(bool _b);
+
   protected:
     void init();
     void findTextNext();
@@ -70,8 +80,9 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   protected slots: 
     void slotFindNext();
-
+    
   private:
+    void mergeFormat(const QTextCharFormat &format);
     class Private;
     Private *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )

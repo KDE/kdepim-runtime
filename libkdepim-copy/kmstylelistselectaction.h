@@ -42,7 +42,7 @@ class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
     //emit style will be applyed.
     void applyStyle(QTextListFormat::Style);
   protected slots:
-    void slotStyleChanged(const QString&);
+    void slotStyleChanged(int);
   protected:
     void init();
   private:

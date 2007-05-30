@@ -35,6 +35,7 @@
 #include <QClipboard>
 #include <QShortcut>
 #include <QPointer>
+#include <QTextList>
 
 class KMeditor::Private
 {
@@ -313,5 +314,75 @@ void KMeditor::replaceText()
 {
   //TODO
 }
+
+void KMeditor::slotChangeParagStyle(QTextListFormat::Style _style)
+{
+  QTextCursor cursor = textCursor();
+  cursor.beginEditBlock();
+
+  QTextBlockFormat blockFmt = cursor.blockFormat();
+
+  QTextListFormat listFmt;
+
+  if (cursor.currentList()) {
+     listFmt = cursor.currentList()->format();
+  } else {
+     listFmt.setIndent(blockFmt.indent() + 1);
+     blockFmt.setIndent(0);
+     cursor.setBlockFormat(blockFmt);
+  }
+
+  listFmt.setStyle(_style);
+
+  cursor.createList(listFmt);
+
+  cursor.endEditBlock();
+}
+
+void KMeditor::slotAlignLeft()
+{
+  setAlignment(Qt::AlignLeft);
+}
+
+void KMeditor::slotAlignCenter()
+{
+  setAlignment(Qt::AlignHCenter);
+}
+
+void KMeditor::slotAlignRight()
+{
+  setAlignment(Qt::AlignRight);
+}
+
+void KMeditor::slotTextBold( bool _b )
+{
+  QTextCharFormat fmt;
+  fmt.setFontWeight(_b ? QFont::Bold : QFont::Normal);
+  mergeFormat(fmt);
+}
+
+void KMeditor::slotTextItalic( bool _b)
+{
+  QTextCharFormat fmt;
+  fmt.setFontItalic(_b);
+  mergeFormat(fmt);
+}
+
+void KMeditor::slotTextUnder( bool _b)
+{
+  QTextCharFormat fmt;
+  fmt.setFontUnderline(_b);
+  mergeFormat(fmt);
+}
+
+void KMeditor::mergeFormat(const QTextCharFormat &format)
+{
+    QTextCursor cursor = textCursor();
+    if (!cursor.hasSelection())
+        cursor.select(QTextCursor::WordUnderCursor);
+    cursor.mergeCharFormat(format);
+    mergeCurrentCharFormat(format);
+}
+
 
 #include "kmeditor.moc"

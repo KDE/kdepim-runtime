@@ -27,7 +27,7 @@ KMStyleListSelectAction::KMStyleListSelectAction( const QString& text, QWidget *
  : KSelectAction(text, parent), d( 0 )
 {
    init();
-   connect(this,SIGNAL(triggered( const QString&)),this,SLOT(slotStyleChanged(const QString&)));
+   connect(this,SIGNAL(triggered(int)),this,SLOT(slotStyleChanged(int)));
 }
 
 KMStyleListSelectAction::~KMStyleListSelectAction()
@@ -36,26 +36,33 @@ KMStyleListSelectAction::~KMStyleListSelectAction()
   //delete d;
 }
 
-void KMStyleListSelectAction::slotStyleChanged(const QString& style)
+void KMStyleListSelectAction::slotStyleChanged(int styleIndex)
 {
   QTextListFormat::Style paragStyle = QTextListFormat::ListStyleUndefined;
-  //I don't like it. I prefere to use a static string and not duplicate i18n string. TODO change it
- 
-  if ( style == i18n( "Standard" ) ) {
-    paragStyle = QTextListFormat::ListStyleUndefined; 
-  } else if ( style == i18n( "Bulleted List (Disc)" ) ) {
-    paragStyle = QTextListFormat::ListDisc;
-  } else if ( style == i18n( "Bulleted List (Circle)" ) ) {
-    paragStyle = QTextListFormat::ListCircle;
-  } else if ( style == i18n( "Bulleted List (Square)" ) ) {
-    paragStyle = QTextListFormat::ListSquare;
-  } else if ( style == i18n( "Ordered List (Decimal)" )) {
-    paragStyle = QTextListFormat::ListDecimal;
-  } else if ( style == i18n( "Ordered List (Alpha lower)" ) ) {
-    paragStyle = QTextListFormat::ListLowerAlpha;
-  } else if ( style == i18n( "Ordered List (Alpha upper)" ) ) {
-    paragStyle = QTextListFormat::ListUpperAlpha;
+  switch (styleIndex) {
+  	default:
+        case 0:
+           paragStyle = QTextListFormat::ListStyleUndefined;
+        case 1:
+           paragStyle = QTextListFormat::ListDisc;
+           break;
+        case 2:
+           paragStyle = QTextListFormat::ListCircle;
+           break;
+        case 3:
+           paragStyle = QTextListFormat::ListSquare;
+           break;
+        case 4:
+           paragStyle = QTextListFormat::ListDecimal;
+           break;
+        case 5:
+           paragStyle = QTextListFormat::ListLowerAlpha;
+           break;
+        case 6:
+           paragStyle = QTextListFormat::ListUpperAlpha;
+           break;
   }
+ 
   emit applyStyle(paragStyle); 
 }
 
