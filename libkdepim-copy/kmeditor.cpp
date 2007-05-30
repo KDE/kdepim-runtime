@@ -248,7 +248,6 @@ void KMeditor::findText()
 
 void KMeditor::slotFindNext()
 {
-  kDebug()<<" KMeditor::slotFindNext()\n";
   findTextNext();
 }
 
@@ -277,9 +276,10 @@ void KMeditor::findTextNext()
         d->find->setData(toPlainText());
         res = d->find->find();	
       }
-    }
-    if ( res == KFind::NoMatch ) // i.e. we're done
-    {
+      res = d->find->find();
+  }
+  if ( res == KFind::NoMatch ) // i.e. we're done
+  {
       if ( d->find->shouldRestart() )
       {
         findTextNext();
@@ -289,8 +289,9 @@ void KMeditor::findTextNext()
        //initFindNode( false, options & KFind::FindBackwards, false );
         d->find->resetCounts();
         //slotClearSelection();
+	d->find->closeFindNextDialog();
       }
-    }
+  }
 }
 
 void KMeditor::findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog )
@@ -302,6 +303,7 @@ void KMeditor::findText( const QString &str, long options, QWidget *parent, KFin
   kDebug()<<" str :"<<str<<endl;
   //configure it
   d->find = new KFind(str, options,parent,findDialog);
+  d->find->closeFindNextDialog();
   connect(d->find,SIGNAL( highlight( const QString &, int, int ) ),
           this, SLOT( slotHighlight( const QString &, int, int ) ) );
 
