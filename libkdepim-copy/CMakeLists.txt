@@ -81,6 +81,7 @@ set(kdepim_LIB_SRCS
    networkstatus.cpp
    servertest.cpp
    kmeditor.cpp
+   kmstylelistselectaction.cpp
 )
 
 kde4_automoc(${kdepim_LIB_SRCS})

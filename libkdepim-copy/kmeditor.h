@@ -33,7 +33,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   public:
     /**
-     * Constructs a KTextEdit 
+     * Constructs a KMeditor object 
      */
     explicit KMeditor( const QString& text, QWidget *parent = 0 );
 

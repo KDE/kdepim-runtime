@@ -1,5 +1,5 @@
 /**
- * kemeditor.cpp
+ * kmeditor.cpp
  *
  * Copyright (C)  2007 Laurent Montel <montel@kde.org>
  *
