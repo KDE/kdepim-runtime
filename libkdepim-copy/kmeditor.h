@@ -62,6 +62,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void replaceText();
 
+    void switchTextMode(bool useHtml);
+
   public slots: 
     //Text style format.
     void slotChangeParagStyle(QTextListFormat::Style _style);

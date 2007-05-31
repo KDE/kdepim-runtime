@@ -408,5 +408,25 @@ void KMeditor::slotFontSizeChanged(int size)
   mergeFormat(fmt);
 }
 
+void KMeditor::switchTextMode(bool useHtml)
+{
+  //TODO: need to look at what change which highlighter.
+
+  if(useHtml && acceptRichText()) //Already in HTML mode
+     return;
+  if(!useHtml && !acceptRichText()) //Already in text mode
+     return;
+
+  if(useHtml)
+  {
+    setAcceptRichText(true);
+  }
+  else
+  {
+    setAcceptRichText(false);
+    setText(toPlainText()); //reformat text (which can be html text) as text
+  }
+}
+
 
 #include "kmeditor.moc"
