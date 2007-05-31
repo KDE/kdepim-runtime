@@ -30,6 +30,12 @@
 #include <KWindowSystem>
 #include <KFindDialog>
 #include <KColorDialog>
+#include <KFileDialog>
+#include <KComboBox>
+#include <KToolBar>
+#include <KCharsets>
+#include <KPushButton>
+#include <klocale.h>
 
 //qt includes
 #include <QApplication>
@@ -420,11 +426,51 @@ void KMeditor::switchTextMode(bool useHtml)
   if(useHtml)
   {
     setAcceptRichText(true);
+    document()->setModified( true );
   }
   else
   {
     setAcceptRichText(false);
     setText(toPlainText()); //reformat text (which can be html text) as text
+    document()->setModified(true );
+  }
+}
+
+KUrl KMeditor::insertFile(const QStringList & encodingLst)
+{
+  KUrl url;
+  KFileDialog fdlg( url, QString(), this );
+  fdlg.setOperationMode( KFileDialog::Opening );
+  fdlg.okButton()->setText(i18n("&Insert"));
+  fdlg.setCaption(i18n("Insert File"));
+  if(!encodingLst.isEmpty())
+  {
+    KComboBox *combo = new KComboBox( this );
+    combo->addItems( encodingLst );
+    fdlg.toolBar()->addWidget( combo );
+    for (int i = 0; i < combo->count(); i++)
+      if (KGlobal::charsets()->codecForName(KGlobal::charsets()->
+                                          encodingForName(combo->itemText(i)))
+        == QTextCodec::codecForLocale()) combo->setCurrentIndex(i);
+  }
+  if (!fdlg.exec()) return KUrl();
+
+  KUrl u = fdlg.selectedUrl();
+  return u;
+}
+
+void KMeditor::wordWrapToggled( bool on, bool wrapWidth )
+{
+  if ( on ) {
+    if(wrapWidth)
+    {
+	//FIXME
+    	//setLineWrapMode(QTextEdit::FixedColumnWidth & QTextEdit::WidgetWidth);
+    }
+    else
+	setLineWrapMode(QTextEdit::FixedColumnWidth);
+  } else {
+    setLineWrapMode (QTextEdit::NoWrap );
   }
 }
 

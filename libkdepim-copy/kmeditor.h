@@ -27,6 +27,7 @@
 #include <qtextformat.h>
 
 class KFindDialog;
+class KUrl;
 
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
@@ -63,6 +64,10 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void replaceText();
 
     void switchTextMode(bool useHtml);
+
+    KUrl insertFile(const QStringList & encodingLst);
+
+    void wordWrapToggled( bool on, bool wrapWidth );
 
   public slots: 
     //Text style format.
