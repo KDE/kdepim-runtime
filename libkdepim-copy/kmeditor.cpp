@@ -29,6 +29,7 @@
 #include <kfinddialog.h>
 #include <KWindowSystem>
 #include <KFindDialog>
+#include <KColorDialog>
 
 //qt includes
 #include <QApplication>
@@ -382,6 +383,17 @@ void KMeditor::mergeFormat(const QTextCharFormat &format)
         cursor.select(QTextCursor::WordUnderCursor);
     cursor.mergeCharFormat(format);
     mergeCurrentCharFormat(format);
+}
+
+void KMeditor::slotTextColor()
+{
+  QColor color = textColor();
+
+  if ( KColorDialog::getColor( color, this ) ) {
+    QTextCharFormat fmt;
+    fmt.setForeground(color);
+    mergeFormat(fmt);
+  }
 }
 
 

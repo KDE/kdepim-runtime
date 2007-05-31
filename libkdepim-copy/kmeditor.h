@@ -63,6 +63,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void replaceText();
 
   public slots: 
+    //Text style format.
     void slotChangeParagStyle(QTextListFormat::Style _style);
     void slotAlignLeft();
     void slotAlignCenter();
@@ -70,6 +71,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotTextBold(bool _b);
     void slotTextItalic(bool _b);
     void slotTextUnder(bool _b);
+    void slotTextColor();
 
   protected:
     void init();
