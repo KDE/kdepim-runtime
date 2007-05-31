@@ -379,8 +379,6 @@ void KMeditor::slotTextUnder( bool _b)
 void KMeditor::mergeFormat(const QTextCharFormat &format)
 {
     QTextCursor cursor = textCursor();
-    if (!cursor.hasSelection())
-        cursor.select(QTextCursor::WordUnderCursor);
     cursor.mergeCharFormat(format);
     mergeCurrentCharFormat(format);
 }
@@ -394,6 +392,20 @@ void KMeditor::slotTextColor()
     fmt.setForeground(color);
     mergeFormat(fmt);
   }
+}
+
+void KMeditor::slotFontFamilyChanged(const QString &f)
+{
+   QTextCharFormat fmt;
+   fmt.setFontFamily(f);
+   mergeFormat(fmt);
+}
+
+void KMeditor::slotFontSizeChanged(int size)
+{
+  QTextCharFormat fmt;
+  fmt.setFontPointSize(size);
+  mergeFormat(fmt);
 }
 
 

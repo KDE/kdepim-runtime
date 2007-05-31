@@ -72,6 +72,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotTextItalic(bool _b);
     void slotTextUnder(bool _b);
     void slotTextColor();
+    void slotFontFamilyChanged(const QString &f);
+    void slotFontSizeChanged(int size);
 
   protected:
     void init();
