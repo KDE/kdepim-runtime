@@ -139,7 +139,6 @@
 # endif
 #endif
 
-
 #ifndef KGROUPWAREBASE_EXPORT
 # ifdef MAKE_KGROUPWAREBASE_LIB
 #  define KGROUPWAREBASE_EXPORT KDE_EXPORT
@@ -147,14 +146,3 @@
 #  define KGROUPWAREBASE_EXPORT KDE_IMPORT
 # endif
 #endif
-
-#ifndef KORGANIZER_EXPORT
-# ifdef MAKE_KORGANIZER_LIB
-#  define KORGANIZER_EXPORT KDE_EXPORT
-# else
-#  define KORGANIZER_EXPORT KDE_IMPORT
-# endif
-#endif
-
-
-
