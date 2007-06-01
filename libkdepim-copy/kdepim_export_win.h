@@ -58,15 +58,6 @@
 # endif
 #endif
 
-
-#ifndef AKREGATOR_EXPORT
-# ifdef MAKE_AKREGATOR_LIB
-#  define AKREGATOR_EXPORT KDE_EXPORT
-# else
-#  define AKREGATOR_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KDEPIM_EXPORT
 # ifdef MAKE_KDEPIM_LIB
 #  define KDEPIM_EXPORT KDE_EXPORT
