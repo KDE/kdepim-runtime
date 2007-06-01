@@ -35,18 +35,18 @@ testKMeditorWindow::testKMeditorWindow()
   
   QMenu *editMenu = menuBar()->addMenu(tr("Edit"));
   QAction *act = new QAction(tr("bold"), this);
-  act->setChecked(true);
-  connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextBold(bool)));
+  act->setCheckable(true);
+  connect(act, SIGNAL(triggered(bool)), editor, SLOT(slotTextBold(bool)));
   editMenu->addAction(act);
 
   act = new QAction(tr("italic"), this);
-  act->setChecked(true);
-  connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextItalic(bool)));
+  act->setCheckable(true);
+  connect(act, SIGNAL(triggered (bool)), editor, SLOT(slotTextItalic(bool)));
   editMenu->addAction(act);
 
   act = new QAction(tr("underline"), this);
-  act->setChecked(true);
-  connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextUnder(bool)));
+  act->setCheckable(true);
+  connect(act, SIGNAL(triggered (bool)), editor, SLOT(slotTextUnder(bool)));
   editMenu->addAction(act);
 
   act = new QAction(tr("text color"), this);
