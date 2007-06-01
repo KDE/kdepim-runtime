@@ -105,5 +105,17 @@ kde4_add_executable(testkmeditor ${testkmeditor_SRCS})
 target_link_libraries(testkmeditor  kdepim ${KDE4_KDEUI_LIBS} )
 
 
+
+########### next target ###############
+
+set(testkmeditorwin_SRCS testkmeditorwin.cpp )
+
+kde4_automoc(${testkmeditorwin_SRCS})
+
+kde4_add_executable(testkmeditorwin ${testkmeditorwin_SRCS})
+
+target_link_libraries(testkmeditorwin  kdepim ${KDE4_KDEUI_LIBS} )
+
+
 endif(KDE4_BUILD_TESTS)
 
