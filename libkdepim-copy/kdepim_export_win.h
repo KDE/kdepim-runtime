@@ -91,14 +91,6 @@
 # endif
 #endif
 
-#ifndef KSIEVE_EXPORT
-# ifdef MAKE_KSIEVE_LIB
-#  define KSIEVE_EXPORT KDE_EXPORT
-# else
-#  define KSIEVE_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KXMLCOMMON_EXPORT
 # ifdef MAKE_KXMLCOMMON_LIB
 #  define KXMLCOMMON_EXPORT KDE_EXPORT
