@@ -115,14 +115,6 @@
 # endif
 #endif
 
-#ifndef KPGP_EXPORT
-# ifdef MAKE_KPGP_LIB
-#  define KPGP_EXPORT KDE_EXPORT
-# else
-#  define KPGP_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef QGPGME_EXPORT
 # ifdef MAKE_QGPGME_LIB
 #  define QGPGME_EXPORT KDE_EXPORT
