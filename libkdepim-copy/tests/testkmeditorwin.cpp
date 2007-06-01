@@ -37,8 +37,34 @@ testKMeditorWindow::testKMeditorWindow()
   QAction *act = new QAction(tr("bold"), this);
   act->setChecked(true);
   connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextBold(bool)));
-
   editMenu->addAction(act);
+
+  act = new QAction(tr("italic"), this);
+  act->setChecked(true);
+  connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextItalic(bool)));
+  editMenu->addAction(act);
+
+  act = new QAction(tr("underline"), this);
+  act->setChecked(true);
+  connect(act, SIGNAL(toggled(bool)), editor, SLOT(slotTextUnder(bool)));
+  editMenu->addAction(act);
+
+  act = new QAction(tr("text color"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotTextColor()));
+  editMenu->addAction(act);
+
+  act = new QAction(tr("Align left"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotAlignLeft()));
+  editMenu->addAction(act);
+
+  act = new QAction(tr("Align right"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotAlignRight()));
+  editMenu->addAction(act);
+
+  act = new QAction(tr("Align center"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotAlignCenter()));
+  editMenu->addAction(act);
+
 }
 
 testKMeditorWindow::~testKMeditorWindow()
