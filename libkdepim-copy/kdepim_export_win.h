@@ -75,14 +75,6 @@
 # endif
 #endif
 
-#ifndef KLEO_EXPORT
-# ifdef MAKE_KLEO_LIB
-#  define KLEO_EXPORT KDE_EXPORT
-# else
-#  define KLEO_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KODE_SCHEMA_EXPORT
 # ifdef MAKE_KODE_SCHEMA_LIB
 #  define KODE_SCHEMA_EXPORT KDE_EXPORT
