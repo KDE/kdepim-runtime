@@ -115,14 +115,6 @@
 # endif
 #endif
 
-#ifndef SYNDICATION_EXPORT
-# ifdef MAKE_SYNDICATION_LIB
-#  define SYNDICATION_EXPORT KDE_EXPORT
-# else
-#  define SYNDICATION_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KPGP_EXPORT
 # ifdef MAKE_KPGP_LIB
 #  define KPGP_EXPORT KDE_EXPORT
