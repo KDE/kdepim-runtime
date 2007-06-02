@@ -20,7 +20,7 @@
 #define AKONADILIST_H
 
 #include <handler.h>
-#include "akonadiprivate_export.h"
+#include "akonadi_export.h"
 
 namespace Akonadi {
 
@@ -31,7 +31,7 @@ class Location;
 
   Handler for the list command.
  */
-class AKONADIPRIVATE_EXPORT List : public Handler
+class AKONADI_SERVER_EXPORT List : public Handler
 {
 public:
     List();

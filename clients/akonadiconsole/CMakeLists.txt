@@ -1,4 +1,5 @@
 include_directories(${CMAKE_SOURCE_DIR}/akonadi)
+include_directories(${CMAKE_SOURCE_DIR}/akonadi/libakonadi)
 include_directories(${CMAKE_SOURCE_DIR}/libkdepim)
 
 set(akonadiconsole_bin_SRCS

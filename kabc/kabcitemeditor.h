@@ -20,16 +20,15 @@
 #ifndef KABCITEMEDITOR_H
 #define KABCITEMEDITOR_H
 
+#include "akonadi_export.h"
 #include <QtGui/QWidget>
-
-#include <kdepim_export.h>
 
 namespace Akonadi {
 class DataReference;
 class Item;
 }
 
-class AKONADI_EXPORT KABCItemEditor : public QWidget
+class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 {
   Q_OBJECT
 

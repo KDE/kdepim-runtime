@@ -20,15 +20,14 @@
 #ifndef KABCITEMBROWSER_H
 #define KABCITEMBROWSER_H
 
-#include <kdepim_export.h>
-
+#include "akonadi_export.h"
 #include <libakonadi/itembrowser.h>
 
 namespace Akonadi {
 class Item;
 }
 
-class AKONADI_EXPORT KABCItemBrowser : public Akonadi::ItemBrowser
+class AKONADI_KABC_EXPORT KABCItemBrowser : public Akonadi::ItemBrowser
 {
   public:
     KABCItemBrowser( QWidget *parent = 0 );

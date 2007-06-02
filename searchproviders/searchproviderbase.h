@@ -20,8 +20,9 @@
 #ifndef AKONADI_SEARCHPROVIDER_BASE_H
 #define AKONADI_SEARCHPROVIDER_BASE_H
 
-#include <searchprovider.h>
-#include <kdepim_export.h>
+#include "akonadi_export.h"
+#include "searchprovider.h"
+
 namespace Akonadi {
 
 class SearchProviderThread;

@@ -20,11 +20,10 @@
 #ifndef KABCMODEL_H
 #define KABCMODEL_H
 
+#include "akonadi_export.h"
 #include <libakonadi/itemmodel.h>
 
-#include <kdepim_export.h>
-
-class AKONADI_EXPORT KABCModel : public Akonadi::ItemModel
+class AKONADI_KABC_EXPORT KABCModel : public Akonadi::ItemModel
 {
   public:
     KABCModel( QObject *parent = 0 );
