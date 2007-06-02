@@ -18,14 +18,6 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KHOLIDAYS_EXPORT
-# ifdef MAKE_KHOLIDAYS_LIB
-#  define KHOLIDAYS_EXPORT KDE_EXPORT
-# else
-#  define KHOLIDAYS_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KDEPIM_EXPORT
 # ifdef MAKE_KDEPIM_LIB
 #  define KDEPIM_EXPORT KDE_EXPORT

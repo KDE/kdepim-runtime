@@ -30,7 +30,6 @@
 
 /* export statements for unix */
 #define KDEPIM_EXPORT KDE_EXPORT
-#define KHOLIDAYS_EXPORT KDE_EXPORT
 
 #endif
 
