@@ -24,7 +24,7 @@ kde4_add_library(
 
 
 target_link_libraries( akonadisearchprovider ${KDE4_KDECORE_LIBS})
-set_target_properties( akonadisearchprovider PROPERTIES VERSION 1.0.0 SOVERSION 1 )
+set_target_properties( akonadisearchprovider PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS akonadisearchprovider  DESTINATION ${LIB_INSTALL_DIR})
 
 

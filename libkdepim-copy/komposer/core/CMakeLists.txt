@@ -22,7 +22,7 @@ kde4_add_library(komposer SHARED ${komposer_LIB_SRCS})
 
 target_link_libraries(komposer  ${KDE4_KPARTS_LIBS} kdepim ${KDE4_KUTILS_LIBS} )
 
-set_target_properties(komposer PROPERTIES VERSION 1.0.0 SOVERSION 1 )
+set_target_properties(komposer PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS komposer  DESTINATION ${LIB_INSTALL_DIR})
 
 

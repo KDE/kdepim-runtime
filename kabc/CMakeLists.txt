@@ -18,7 +18,7 @@ kde4_automoc(${kabcakonadi_LIB_SRC})
 kde4_add_library( kabcakonadi SHARED ${kabcakonadi_LIB_SRC} )
 
 target_link_libraries( kabcakonadi akonadi ${KDE4_KABC_LIBS} )
-set_target_properties( kabcakonadi PROPERTIES VERSION 1.0.0 SOVERSION 1 )
+set_target_properties( kabcakonadi PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS kabcakonadi DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
