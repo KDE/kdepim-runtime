@@ -66,14 +66,6 @@
 # endif
 #endif
 
-#ifndef KXMLCOMMON_EXPORT
-# ifdef MAKE_KXMLCOMMON_LIB
-#  define KXMLCOMMON_EXPORT KDE_EXPORT
-# else
-#  define KXMLCOMMON_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef QGPGME_EXPORT
 # ifdef MAKE_QGPGME_LIB
 #  define QGPGME_EXPORT KDE_EXPORT
