@@ -66,22 +66,6 @@
 # endif
 #endif
 
-#ifndef KODE_SCHEMA_EXPORT
-# ifdef MAKE_KODE_SCHEMA_LIB
-#  define KODE_SCHEMA_EXPORT KDE_EXPORT
-# else
-#  define KODE_SCHEMA_EXPORT KDE_IMPORT
-# endif
-#endif
-
-#ifndef KSCHEMA_EXPORT
-# ifdef MAKE_KSCHEMA_LIB
-#  define KSCHEMA_EXPORT KDE_EXPORT
-# else
-#  define KSCHEMA_EXPORT KDE_IMPORT
-# endif
-#endif
-
 #ifndef KXMLCOMMON_EXPORT
 # ifdef MAKE_KXMLCOMMON_LIB
 #  define KXMLCOMMON_EXPORT KDE_EXPORT
