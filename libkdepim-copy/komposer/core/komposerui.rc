@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui >
-<kpartgui version="2" name="komposer" >
+<kpartgui version="390" name="komposer" >
 <MenuBar>
   <Menu name="file" noMerge="1">
       <text>&amp;Message</text>
