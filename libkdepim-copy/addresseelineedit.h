@@ -44,7 +44,6 @@
 #include <klineedit.h>
 class QMenu;
 
-class KConfig;
 
 namespace KPIM {
 class LdapSearch;

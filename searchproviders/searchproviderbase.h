@@ -25,7 +25,6 @@
 
 namespace Akonadi {
 
-class SearchProviderThread;
 class SearchProviderBasePrivate;
 
 /**

@@ -25,7 +25,6 @@
 
 class QStringList;
 
-class KJob;
 
 namespace Akonadi {
 

@@ -31,8 +31,7 @@ namespace KParts {
 
 namespace Komposer {
 
-  class Core;
-
+  
   class Editor : public Plugin
   {
     Q_OBJECT

@@ -25,8 +25,6 @@
 
 class StripeView;
 class QwtWheel;
-class AgendaModel;
-class ContactModel;
 class DataProvider;
 
 class AgendaView : public QWidget

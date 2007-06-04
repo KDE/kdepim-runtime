@@ -23,7 +23,6 @@
 #include <kservice.h>
 #include <QMap>
 class QGroupBox;
-class QListViewItem;
 
 class KAboutData;
 class KComboBox;

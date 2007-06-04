@@ -35,7 +35,6 @@
 
 
 class KColorButton;
-class KPageWidget;
 class QCheckBox;
 class QLabel;
 class QSpinBox;

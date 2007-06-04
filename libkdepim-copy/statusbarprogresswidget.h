@@ -43,7 +43,6 @@
 #include <QEvent>
 #include <QBoxLayout>
 
-class KMMainWidget;
 class QProgressBar;
 class QPushButton;
 class QStackedWidget;

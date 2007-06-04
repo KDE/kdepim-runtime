@@ -37,10 +37,7 @@
 #include "calendardiffalgo.h"
 
 
-class QRadioButton;
 class Q3ButtonGroup;
-class QStringList;
-class QTextBrowser;
 class KDialog;
 
 /** Dialog to change the korganizer configuration.

@@ -38,7 +38,6 @@
 class KSubscription;
 
 class KLineEdit;
-class QLayout;
 class QLabel;
 class QGridLayout;
 class KAccount;

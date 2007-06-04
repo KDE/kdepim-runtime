@@ -36,7 +36,6 @@ class AddresseeView;
 namespace Akonadi {
 class CollectionView;
 class CollectionModel;
-class DataReference;
 class ItemModel;
 class Job;
 }

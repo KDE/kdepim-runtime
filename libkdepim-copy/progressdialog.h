@@ -45,12 +45,10 @@
 #include <QScrollArea>
 
 class QProgressBar;
-class Q3ScrollView;
 class QFrame;
 
 namespace KPIM {
 class ProgressItem;
-class TransactionItemListView;
 class TransactionItem;
 class SSLLabel;
 
