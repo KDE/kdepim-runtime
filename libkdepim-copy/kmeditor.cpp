@@ -36,6 +36,7 @@
 #include <KCharsets>
 #include <KPushButton>
 #include <klocale.h>
+#include <kmenu.h>
 
 //qt includes
 #include <QApplication>
@@ -43,6 +44,7 @@
 #include <QShortcut>
 #include <QPointer>
 #include <QTextList>
+#include <QAction>
 
 class KMeditor::Private
 {
@@ -476,7 +478,60 @@ void KMeditor::wordWrapToggled( bool on, bool wrapWidth )
 
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
-  //TODO
+  QTextCursor cursor = textCursor();
+  if(cursor.hasSelection())
+  {
+    //if we have selection so use standard menu
+    KTextEdit::contextMenuEvent( event );
+    return;
+  }
+  else
+  {
+    //select word under current cursor
+    cursor.select(QTextCursor::WordUnderCursor);
+    setTextCursor(cursor);
+    QString word = selectedText();
+    if(word.isEmpty() || !d->replacements.contains( word ) )
+       KTextEdit::contextMenuEvent( event );
+    else //try to create spell check menu
+    {
+        KMenu p;
+        p.addTitle( i18n("Suggestions") );
+
+        //Add the suggestions to the popup menu
+        QStringList reps = d->replacements[word];
+        if ( reps.count() > 0 ) {
+          for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
+            p.addAction( *it );
+          }
+        }
+        else {
+          p.addAction( i18n("No Suggestions") );
+        }
+
+        //Execute the popup inline
+        const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
+
+        if ( selectedAction && ( reps.count() > 0 ) ) {
+#if 0
+          //Save the cursor position
+          int parIdx = 1, txtIdx = 1;
+          getCursorPosition(&parIdx, &txtIdx);
+          setSelection(para, firstSpace, para, lastSpace);
+#endif
+          const QString replacement = selectedAction->text();
+	  cursor.insertText(replacement);
+#if 0
+          // Restore the cursor position; if the cursor was behind the
+          // misspelled word then adjust the cursor position
+          if ( para == parIdx && txtIdx >= lastSpace )
+            txtIdx += replacement.length() - word.length();
+          setCursorPosition(parIdx, txtIdx);
+#endif
+        }
+        return; 
+    }
+  }
 }
 
 #include "kmeditor.moc"
