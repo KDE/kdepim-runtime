@@ -86,6 +86,11 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void init();
     void findTextNext();
     void findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog );
+
+    /*
+     * Redefine it to allow to create context menu for spell word list
+     */
+    virtual void contextMenuEvent( QContextMenuEvent* );
   signals:
     void pasteImage();
 

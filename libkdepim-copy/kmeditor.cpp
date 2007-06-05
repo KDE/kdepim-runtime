@@ -474,5 +474,9 @@ void KMeditor::wordWrapToggled( bool on, bool wrapWidth )
   }
 }
 
+void KMeditor::contextMenuEvent( QContextMenuEvent *event )
+{
+  //TODO
+}
 
 #include "kmeditor.moc"
