@@ -28,6 +28,7 @@
  *  your version.
  */
 #include "recentaddresses.h"
+#include "kpimutils/email.h"
 
 #include <kstaticdeleter.h>
 #include <kconfig.h>
@@ -101,24 +102,33 @@ void RecentAddresses::save( KConfig *config )
 
 void RecentAddresses::add( const QString& entry )
 {
-    if ( !entry.isEmpty() && m_maxCount > 0 ) {
-        QString email;
-        QString fullName;
-        KABC::Addressee addr;
+  if ( !entry.isEmpty() && m_maxCount > 0 ) {
+    QStringList list = KPIMUtils::splitAddressList( entry );
+    for( QStringList::const_iterator e_it = list.begin(); e_it != list.end(); ++e_it ) {
+      KPIMUtils::EmailParseResult errorCode = KPIMUtils::isValidAddress( *e_it );
+      if ( errorCode != KPIMUtils::AddressOk ) 
+        continue;
+      QString email;
+      QString fullName;
+      KABC::Addressee addr;
 
-        KABC::Addressee::parseEmailAddress( entry, fullName, email );
+      KABC::Addressee::parseEmailAddress( *e_it, fullName, email );
 
-        for ( KABC::Addressee::List::Iterator it = m_addresseeList.begin();
-              it != m_addresseeList.end(); ++it )
-        {
-            if ( email == (*it).preferredEmail() )
-                return;//already inside
+      for ( KABC::Addressee::List::Iterator it = m_addresseeList.begin();
+          it != m_addresseeList.end(); ++it )
+      {
+        if ( email == (*it).preferredEmail() ) {
+          //already inside, remove it here and add it later at pos==1
+          m_addresseeList.erase( it );
+          break;
         }
-        addr.setNameFromString( fullName );
-        addr.insertEmail( email, true );
-        m_addresseeList.prepend( addr );
-        adjustSize();
+      }
+      addr.setNameFromString( fullName );
+      addr.insertEmail( email, true );
+      m_addresseeList.prepend( addr );
+      adjustSize();
     }
+  }
 }
 
 void RecentAddresses::setMaxCount( int count )
