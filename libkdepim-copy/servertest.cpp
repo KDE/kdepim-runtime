@@ -179,8 +179,8 @@ void ServerTest::slotSlaveResult(KIO::Slave *aSlave, int error,
       }
     }
     KMessageBox::error( qApp->activeWindow(), errorMessage, i18n("Error") );
-    emit capabilities( mListNormal, mListSSL );
     emit capabilities( mListNormal, mListSSL, mAuthNone, mAuthSSL, mAuthTLS );
+    emit capabilities( mListNormal, mListSSL );
     return;
   }
   if (!mSSL) {
@@ -190,8 +190,8 @@ void ServerTest::slotSlaveResult(KIO::Slave *aSlave, int error,
   } else {
     mJob = 0;
 
-    emit capabilities( mListNormal, mListSSL );
     emit capabilities( mListNormal, mListSSL, mAuthNone, mAuthSSL, mAuthTLS );
+    emit capabilities( mListNormal, mListSSL );
   }
 }
 
