@@ -101,6 +101,8 @@ void StripeView::paintEvent( QPaintEvent * )
 
   QPainter painter( this );
 
+  painter.setRenderHint(QPainter::Antialiasing);
+
   QPen linePen;
 
   QRect r = contentsRect();
