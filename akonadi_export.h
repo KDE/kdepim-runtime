@@ -24,7 +24,7 @@
 #include <kdemacros.h>
 
 #ifndef AKONADI_SERVER_EXPORT
-# if defined(MAKE_AKONADI_SERVER_LIB)
+# if defined(MAKE_AKONADIPRIVATE_LIB)
    /* We are building this library */
 #  define AKONADI_SERVER_EXPORT KDE_EXPORT
 # else
