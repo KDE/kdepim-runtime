@@ -513,14 +513,10 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
         const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
 
         if ( selectedAction && ( reps.count() > 0 ) ) {
-#if 0
-          //Save the cursor position
-          int parIdx = 1, txtIdx = 1;
-          getCursorPosition(&parIdx, &txtIdx);
-          setSelection(para, firstSpace, para, lastSpace);
-#endif
+	  int oldPos=cursor.position();
           const QString replacement = selectedAction->text();
 	  cursor.insertText(replacement);
+
 #if 0
           // Restore the cursor position; if the cursor was behind the
           // misspelled word then adjust the cursor position
@@ -528,6 +524,8 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
             txtIdx += replacement.length() - word.length();
           setCursorPosition(parIdx, txtIdx);
 #endif
+	  cursor.setPosition(oldPos);
+	   setTextCursor(cursor);
         }
         return; 
     }
