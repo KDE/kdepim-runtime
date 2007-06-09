@@ -50,8 +50,7 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
       @param config The config object where the settings are stored
                     which fields will be shown.
      */
-    AddresseeView( QWidget *parent = 0, const char *name = 0,
-                   KConfig *config = 0 );
+    AddresseeView( QWidget *parent = 0, KConfig *config = 0 );
 
     ~AddresseeView();
 

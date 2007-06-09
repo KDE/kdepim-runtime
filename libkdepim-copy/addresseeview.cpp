@@ -51,9 +51,8 @@
 #include <ktoggleaction.h>
 using namespace KPIM;
 
-AddresseeView::AddresseeView( QWidget *parent, const char *name,
-                              KConfig *config )
-  : KTextBrowser( parent, name ), mDefaultConfig( false ), mImageJob( 0 ),
+AddresseeView::AddresseeView( QWidget *parent, KConfig *config )
+  : KTextBrowser( parent ), mDefaultConfig( false ), mImageJob( 0 ),
     mLinkMask( AddressLinks | EmailLinks | PhoneLinks | URLLinks | IMLinks | CustomFields )
 {
   setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
