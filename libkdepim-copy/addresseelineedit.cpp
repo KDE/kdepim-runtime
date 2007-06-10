@@ -988,7 +988,9 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
         } else if ( currentIndex == 1 ) {
             // nothing to skip to, let's stay where we are, but make sure the
             // first header becomes visible, if we are the first real entry
+#ifdef __GNUC__
 #warning Port me!
+#endif
 //            completionBox()->ensureVisible( 0, 0 );
             QListWidgetItem *i = completionBox()->item( currentIndex );
             if ( i )
