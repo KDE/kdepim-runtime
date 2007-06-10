@@ -34,7 +34,7 @@
 #endif
 
 #ifndef AKONADI_KABC_EXPORT
-# if defined(MAKE_AKONADI_KABC_LIB)
+# if defined(MAKE_KABCAKONADI_LIB)
    /* We are building this library */
 #  define AKONADI_KABC_EXPORT KDE_EXPORT
 # else
@@ -44,7 +44,7 @@
 #endif
 
 #ifndef AKONADI_KMIME_EXPORT
-# if defined(MAKE_AKONADI_KMIME_LIB)
+# if defined(MAKE_KMIMEAKONADI_LIB)
    /* We are building this library */
 #  define AKONADI_KMIME_EXPORT KDE_EXPORT
 # else
