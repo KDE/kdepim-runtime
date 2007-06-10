@@ -24,11 +24,13 @@
 #include "fetchcommand.h"
 #include "deletecommand.h"
 
+#include <kcomponentdata.h>
 #include <qapplication.h>
 
 int main( int argc, char **argv )
 {
   QApplication app( argc, argv );
+  KComponentData kcd( "akonadi" );
 
   out() << "Akonadi Command Line Client (Version 0.1)" << endl;
 
