@@ -119,7 +119,7 @@ The main components are:
 
 \subsection akonadi_design_storage The Storage
 The Storage is a process which provides an API to store arbitrary data over
-an IMAP interface. The advantage of IMAP is the mature state of the protocol
+an IMAP interface into a relational database. The advantage of IMAP is the mature state of the protocol
 and its capability to handle a huge amount of data.
 Whenever items are added to or removed from the Storage, the Storage will
 emit a signal over its D-Bus interface to inform other components.
