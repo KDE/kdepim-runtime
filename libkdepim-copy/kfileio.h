@@ -28,9 +28,9 @@ namespace KPIM {
  *
  * @return The contents of the file or an empty QByteArray if loading failed.
  */
-QByteArray kFileToByteArray( const QString & fileName,
+KDEPIM_EXPORT QByteArray kFileToByteArray( const QString & fileName,
                              bool ensureNewline = true, 
-                             bool withDialogs = true ) KDEPIM_EXPORT;
+                             bool withDialogs = true );
 
 /**
  * Writes the contents of @p buffer to the file with the given filename.
@@ -48,9 +48,9 @@ QByteArray kFileToByteArray( const QString & fileName,
  * @return True if writing the data to the file succeeded.
  * @return False if writing the data to the file failed.
  */
-bool kByteArrayToFile( const QByteArray & buffer, const QString & fileName,
+KDEPIM_EXPORT bool kByteArrayToFile( const QByteArray & buffer, const QString & fileName,
                        bool askIfExists = false, bool createBackup = true,
-                       bool withDialogs = true ) KDEPIM_EXPORT;
+                       bool withDialogs = true );
 
   /**
    * Checks and corrects the permissions of a file or folder, and if requested 
