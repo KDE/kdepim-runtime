@@ -1,0 +1,8 @@
+[Misc]
+Encoding=UTF-8
+Name=Incidence Serializer
+Comment=An Akonadi serializer plugin for events, tasks and journal entries
+
+[Plugin]
+Type=text/calendar
+X-KDE-Library=libakonadi_serializer_kcal

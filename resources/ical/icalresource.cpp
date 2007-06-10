@@ -22,12 +22,12 @@
 #include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/itemserializer.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
-#include <kcal/icalformat.h>
 
 #include <kfiledialog.h>
 #include <klocale.h>
@@ -35,8 +35,12 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
+#include <boost/shared_ptr.hpp>
+
 using namespace Akonadi;
 using namespace KCal;
+
+typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 ICalResource::ICalResource( const QString &id )
     :ResourceBase( id ), mCalendar( 0 )
@@ -54,16 +58,17 @@ bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const
 {
   Q_UNUSED( parts );
   qDebug() << "ICalResource::requestItemDelivery()";
-  Incidence *incidence = mCalendar->incidence( ref.remoteId() );
+  IncidencePtr incidence( mCalendar->incidence( ref.remoteId() ) );
   if ( !incidence ) {
     error( QString("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
     return false;
   } else {
-    ICalFormat format;
-    QByteArray data = format.toString( incidence ).toUtf8();
+    Item item( ref );
+    item.setMimeType( "text/calendar" );
+    item.setPayload<IncidencePtr>( incidence );
 
-    ItemStoreJob *job = new ItemStoreJob( ref, session() );
-    job->setData( data );
+    ItemStoreJob *job = new ItemStoreJob( item, session() );
+    job->storePayload();
     return deliverItem( job, msg );
   }
 }
@@ -111,13 +116,11 @@ void ICalResource::loadFile()
 
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
-  ICalFormat format;
-  Incidence* i = format.fromString( QString::fromUtf8( item.payload<QByteArray>() ) );
-  if ( i ) {
-    mCalendar->addIncidence( i );
-    DataReference r( item.reference().id(), i->uid() );
-    changesCommitted( r );
-  }
+  Q_ASSERT( item.hasPayload<IncidencePtr>() );
+  IncidencePtr i = item.payload<IncidencePtr>();
+  mCalendar->addIncidence( i.get() );
+  DataReference r( item.reference().id(), i->uid() );
+  changesCommitted( r );
 }
 
 void ICalResource::itemChanged( const Akonadi::Item&, const QStringList& )
