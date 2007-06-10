@@ -88,11 +88,15 @@ public:
     /** returns kmail:&lt;serial number&gt;/&lt;message id&gt; style uri */
     operator KUrl() const;
 
+    KDE_DUMMY_COMPARISON_OPERATOR(MailSummary)
 private:
     quint32 mSerialNumber;
     QString mMessageId, mSubject, mFrom, mTo;
     time_t mDate;
 };
+#ifdef MAKE_KDEPIM_LIBS
+KDE_DUMMY_QHASH_FUNCTION(MailSummary)
+#endif
 
 /**
   Object for the drag object to call-back for message fulltext.
