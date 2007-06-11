@@ -440,7 +440,7 @@ void KCMDesignerFields::startDesigner()
     cmdLine += ' ' + K3Process::quote( pageItem->path() );
   }
 
-  KRun::runCommand( cmdLine );
+  KRun::runCommand( cmdLine, topLevelWidget());
 }
 
 #include "kcmdesignerfields.moc"

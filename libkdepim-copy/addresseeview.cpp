@@ -563,7 +563,7 @@ void AddresseeView::phoneNumberClicked( const QString &number )
   }
 
   commandLine.replace( "%N", number );
-  KRun::runCommand( commandLine );
+  KRun::runCommand( commandLine, topLevelWidget());
 }
 
 void AddresseeView::smsTextClicked( const QString &number )
@@ -599,7 +599,7 @@ void AddresseeView::sendSMS( const QString &number, const QString &text )
   commandLine.replace( "%N", number );
   commandLine.replace( "%F", file.fileName() );
 
-  KRun::runCommand( commandLine );
+  KRun::runCommand( commandLine, topLevelWidget());
 }
 
 void AddresseeView::faxNumberClicked( const QString &number )
@@ -614,7 +614,7 @@ void AddresseeView::faxNumberClicked( const QString &number )
   }
 
   commandLine.replace( "%N", number );
-  KRun::runCommand( commandLine );
+  KRun::runCommand( commandLine, topLevelWidget());
 }
 
 void AddresseeView::imAddressClicked()
