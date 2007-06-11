@@ -27,7 +27,7 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <kmetadata/kmetadata.h>
+#include <nepomuk/resource.h>
 #include <kurl.h>
 
 #include <QtCore/QCoreApplication>
@@ -46,8 +46,6 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
 
-  //Nepomuk::KMetaData::ResourceManager::instance()->setAutoSync( true );
-
   mSession = new Session( id.toLatin1(), this );
   monitor->ignoreSession( mSession );
 }
@@ -61,7 +59,7 @@ QStringList Akonadi::MessageSearchProvider::supportedMimeTypes() const
 
 void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
 {
-  Nepomuk::KMetaData::Resource r( Item( ref ).url().url() );
+  Nepomuk::Resource r( Item( ref ).url().url() );
   r.remove();
 }
 
@@ -70,7 +68,7 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
   if ( !item.hasPayload<MessagePtr>() )
     return;
   MessagePtr msg = item.payload<MessagePtr>();
-  Nepomuk::KMetaData::Resource r( item.url().url() );
+  Nepomuk::Resource r( item.url().url() );
   if ( msg->subject( false ) )
     r.setProperty( "Subject", msg->subject()->asUnicodeString() );
   if ( msg->date( false ) )
