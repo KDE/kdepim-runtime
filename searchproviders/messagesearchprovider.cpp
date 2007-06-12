@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <nepomuk/resource.h>
+#include <nepomuk/variant.h>
 #include <kurl.h>
 
 #include <QtCore/QCoreApplication>
@@ -70,19 +71,19 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
   MessagePtr msg = item.payload<MessagePtr>();
   Nepomuk::Resource r( item.url().url() );
   if ( msg->subject( false ) )
-    r.setProperty( "Subject", msg->subject()->asUnicodeString() );
+    r.setProperty( "Subject", Nepomuk::Variant(msg->subject()->asUnicodeString()) );
   if ( msg->date( false ) )
-    r.setProperty( "Date", msg->date()->dateTime().dateTime() );
+    r.setProperty( "Date", Nepomuk::Variant(msg->date()->dateTime().dateTime()) );
   if ( msg->from( false ) )
-    r.setProperty( "From", msg->from()->prettyAddresses() );
+    r.setProperty( "From", Nepomuk::Variant(msg->from()->prettyAddresses()) );
   if ( msg->to( false ) )
-    r.setProperty( "To", msg->to()->prettyAddresses() );
+    r.setProperty( "To", Nepomuk::Variant( msg->to()->prettyAddresses()) );
   if ( msg->cc( false ) )
-    r.setProperty( "Cc", msg->cc()->prettyAddresses() );
+    r.setProperty( "Cc", Nepomuk::Variant(msg->cc()->prettyAddresses()) );
   if ( msg->bcc( false ) )
-    r.setProperty( "Bcc", msg->bcc()->prettyAddresses() );
+    r.setProperty( "Bcc", Nepomuk::Variant(msg->bcc()->prettyAddresses()) );
   if ( msg->messageID( false ) )
-    r.setProperty( "Message-Id", msg->messageID()->asUnicodeString() );
+    r.setProperty( "Message-Id", Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
 }
 
 int main( int argc, char **argv )
