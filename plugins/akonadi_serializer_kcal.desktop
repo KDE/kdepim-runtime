@@ -1,7 +1,9 @@
 [Misc]
 Encoding=UTF-8
 Name=Incidence Serializer
+Name[zh_TW]=頻率序列器
 Comment=An Akonadi serializer plugin for events, tasks and journal entries
+Comment[zh_TW]=事件、工作與日誌項目物件的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=text/calendar
