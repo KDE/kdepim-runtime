@@ -118,7 +118,9 @@ namespace KPIM {
     if ( !lib )
       return 0;
 
-    mPluginMap[ type ].loaded = true;
+    PluginMetaData pmd = mPluginMap.value( type );
+    pmd.loaded = true;
+    mPluginMap[ type ] = pmd;
 
     const QString factory_name = libName + '_' + mf_name;
     KLibrary::void_function_ptr sym = lib->resolveFunction( factory_name.toLatin1() );

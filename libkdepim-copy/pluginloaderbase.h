@@ -43,7 +43,7 @@ namespace KPIM {
     QString library;
     QString nameLabel;
     QString descriptionLabel;
-    mutable bool loaded;
+    bool loaded;
   };
 
   class KDEPIM_EXPORT PluginLoaderBase {
@@ -76,7 +76,7 @@ namespace KPIM {
 
   private:
     const KLibrary * openLibrary( const QString & libName ) const;
-    QMap< QString, PluginMetaData > mPluginMap;
+    mutable QMap< QString, PluginMetaData > mPluginMap;
 
     class Private;
     Private * d;
