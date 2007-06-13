@@ -27,6 +27,7 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
+#include <kcomponentdata.h>
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>
 #include <kurl.h>
@@ -89,6 +90,7 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
 int main( int argc, char **argv )
 {
   QCoreApplication app( argc, argv );
+  KComponentData kcd( "nepomukfeeder" );
   Akonadi::SearchProviderBase::init<Akonadi::MessageSearchProvider>( argc, argv, QLatin1String("akonadi_message_searchprovider") );
   return app.exec();
 }

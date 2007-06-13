@@ -28,6 +28,7 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include <kcomponentdata.h>
 #include <kurl.h>
 
 using namespace Akonadi;
@@ -64,6 +65,7 @@ void Akonadi::StrigiProvider::itemRemoved(const Akonadi::DataReference & ref)
 int main( int argc, char **argv )
 {
   QCoreApplication app( argc, argv );
+  KComponentData kcd( "strigifeeder" );
   Akonadi::SearchProviderBase::init<Akonadi::StrigiProvider>( argc, argv, QLatin1String("akonadi_strigi_searchprovider") );
   return app.exec();
 }
