@@ -25,7 +25,8 @@
 
 #include <kdialog.h>
 #include <kdepim_export.h>
-#include <Q3ListViewItem>
+
+class Q3ListViewItem;
 class KPimPrefs;
 namespace Ui {
 class CategoryEditDialog_base;

@@ -26,7 +26,6 @@
 
 
 #include <kdialog.h>
-#include <q3ptrlist.h>
 #include <QMutex>
 //Added by qt3to4:
 #include <QLabel>

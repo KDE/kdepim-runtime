@@ -34,7 +34,6 @@
 #define __KPIM_PROGRESSDIALOG_H__
 
 #include <QDialog>
-#include <q3listview.h>
 #include <QLabel>
 #include <kvbox.h>
 //Added by qt3to4:

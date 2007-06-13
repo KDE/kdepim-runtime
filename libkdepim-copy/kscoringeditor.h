@@ -22,7 +22,6 @@
 //Added by qt3to4:
 #include <QLabel>
 #include <kdialog.h>
-#include <q3table.h>
 #include <QFrame>
 #include <QStackedWidget>
 #include <k3listbox.h>

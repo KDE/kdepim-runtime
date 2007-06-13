@@ -27,7 +27,6 @@
 #define ADDRESSEELINEEDIT_H
 
 #include <QObject>
-#include <q3ptrlist.h>
 #include <QTimer>
 #include <QPair>
 
