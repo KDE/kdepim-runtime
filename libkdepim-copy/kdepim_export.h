@@ -23,15 +23,21 @@
 /* needed for KDE_EXPORT and KDE_IMPORT macros */
 #include <kdemacros.h>
 
+#ifdef Q_WS_WIN
+
 #ifndef KDEPIM_EXPORT
-# if defined(MAKE_KDEPIM_LIB)
-   /* We are building this library */ 
+# ifdef MAKE_KDEPIM_LIB
 #  define KDEPIM_EXPORT KDE_EXPORT
 # else
-   /* We are using this library */ 
 #  define KDEPIM_EXPORT KDE_IMPORT
 # endif
 #endif
+
+#else // not windows
+
+#define KDEPIM_EXPORT KDE_EXPORT
+#endif /* not windows */
+
 
 # ifndef KDEPIM_EXPORT_DEPRECATED
 #  define KDEPIM_EXPORT_DEPRECATED KDE_DEPRECATED KDEPIM_EXPORT
