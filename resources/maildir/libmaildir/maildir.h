@@ -21,14 +21,14 @@
 #define __MAILDIR_H__
 
 
-#include <kdemacros.h>
+#include <maildir_export.h>
 
 #include <QString>
 #include <QStringList>
 
 namespace KPIM {
 
-class KDE_EXPORT Maildir
+class MAILDIR_EXPORT Maildir
 {
 public:
     Maildir( const QString& path = QString() );
