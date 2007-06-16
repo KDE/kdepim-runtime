@@ -2,10 +2,12 @@
 Encoding=UTF-8
 Name=Akonadi OpenChange Resource
 Name[el]=Πόρος OpenChange του Akonadi
+Name[es]=Recurso OpenChange de Akonadi
 Name[ja]=Akonadi OpenChange リソース
 Name[zh_TW]=Akonadi OpenChange 資源
 Comment=An agent to work with an OpenChange / Exchange server
 Comment[el]=Ένας πελάτης για εργασία με διακομιστές OpenChange / Exchange
+Comment[es]=Un agente para trabajar con un servidor OpenChange / Exchange
 Comment[ja]=OpenChange/Exchange サーバとやりとりするエージェント
 Comment[zh_TW]=與 OpenChange / Exchagne 伺服器運作的代理程式
 Type=AkonadiResource
