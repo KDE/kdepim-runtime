@@ -10,5 +10,5 @@ Comment[x-test]=xxAn Akonadi serializer plugin for addressee objectsxx
 Comment[zh_TW]=地址物件的 Akonadi 序列器外掛程式
 
 [Plugin]
-Type=text/vcard
+Type=text/vcard,text/directory
 X-KDE-Library=libakonadi_serializer_addressee

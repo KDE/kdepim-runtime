@@ -33,7 +33,7 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
       item.addPart( label, data );
       return;
     }
-    if ( item.mimeType() != QString::fromLatin1("text/vcard") ) {
+    if ( item.mimeType() != QString::fromLatin1("text/vcard") && item.mimeType() != QString::fromLatin1("text/directory") ) {
         //throw ItemSerializerException();
         return;
     }
@@ -59,7 +59,7 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, co
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QByteArray& data ) const
 {
-    if ( label != "RFC822" || !item.hasPayload() )
+    if ( label != "RFC822" || !item.hasPayload<KABC::Addressee>() )
       return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();
     data = m_converter.createVCard( a );
