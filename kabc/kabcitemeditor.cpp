@@ -26,6 +26,7 @@
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/monitor.h>
+#include <libakonadi/session.h>
 
 #include "kabcitemeditor.h"
 
