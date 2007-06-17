@@ -51,10 +51,12 @@ bool VCardResource::requestItemDelivery( const Akonadi::DataReference &ref, cons
     error( QString( "Contact with uid '%1' not found!" ).arg( ref.remoteId() ) );
     return false;
   } else {
-    const QByteArray data = mConverter.createVCard( mAddressees.value( ref.remoteId() ) );
+    Item item( ref );
+    item.setMimeType( "text/directory" );
+    item.setPayload( mAddressees.value( ref.remoteId() ) );
 
     ItemStoreJob *job = new ItemStoreJob( ref, session() );
-    job->setData( data );
+    job->storePayload();
 
     return deliverItem( job, msg );
   }
