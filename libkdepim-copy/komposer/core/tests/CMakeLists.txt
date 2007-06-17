@@ -8,13 +8,13 @@ set(testfactory_SRCS main.cpp managertest.cpp )
 
 kde4_automoc(${testfactory_SRCS})
 
-if(KDE4_BUILD_TESTS)
 
-kde4_add_executable(testfactory ${testfactory_SRCS})
+
+kde4_add_test_executable(testfactory ${testfactory_SRCS})
 
 target_link_libraries(testfactory  ${KDE4_KDECORE_LIBS} komposer )
 
-endif(KDE4_BUILD_TESTS)
+
 
 ########### next target ###############
 
@@ -22,13 +22,13 @@ set(testmanager_SRCS testmanager.cpp )
 
 kde4_automoc(${testmanager_SRCS})
 
-if(KDE4_BUILD_TESTS)
 
-kde4_add_executable(testmanager ${testmanager_SRCS})
+
+kde4_add_test_executable(testmanager ${testmanager_SRCS})
 
 target_link_libraries(testmanager  ${KDE4_KDECORE_LIBS} komposer )
 
-endif(KDE4_BUILD_TESTS)
+
 
 ########### next target ###############
 
@@ -36,13 +36,7 @@ set(testkomposer_SRCS testkomposer.cpp )
 
 kde4_automoc(${testkomposer_SRCS})
 
-if(KDE4_BUILD_TESTS)
 
-kde4_add_executable(testkomposer ${testkomposer_SRCS})
-
-target_link_libraries(testkomposer  ${KDE4_KDECORE_LIBS} komposer )
-
-endif(KDE4_BUILD_TESTS)
 
 ########### install files ###############
 
