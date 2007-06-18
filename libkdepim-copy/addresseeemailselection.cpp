@@ -179,8 +179,8 @@ bool AddresseeEmailSelection::distributionListMatches( const KABC::DistributionL
   KABC::DistributionList::Entry::List entries = distributionList->entries();
   KABC::DistributionList::Entry::List::ConstIterator it;
   for ( it = entries.begin(); it != entries.end(); ++it ) {
-    ok = ok || (*it).addressee.formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
-               (*it).email.startsWith( pattern, Qt::CaseInsensitive );
+    ok = ok || (*it).addressee().formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
+               (*it).email().startsWith( pattern, Qt::CaseInsensitive );
   }
 
   return ok;
