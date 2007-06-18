@@ -409,7 +409,7 @@ AddressesDialog::allToAddressesNoDuplicates()  const
     const QList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
     QList<KABC::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
-      KABC::Addressee a = (*eit).addressee();
+      KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && !aList.contains( a ) ) {
           aList.append( a ) ;
       }
@@ -1080,7 +1080,7 @@ AddressesDialog::addDistributionLists()
     KABC::DistributionList::Entry::List::Iterator itemIt;
 #endif
     for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
-      addAddresseeToAvailable( (*itemIt).addressee(), item, false );
+      addAddresseeToAvailable( (*itemIt).addressee, item, false );
   }
 }
 
