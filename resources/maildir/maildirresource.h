@@ -45,9 +45,6 @@ class MaildirResource : public Akonadi::ResourceBase
 
     void retrieveCollections();
     void synchronizeCollection( const Akonadi::Collection &col );
-
-  private:
-    void loadDirectory();
 };
 
 #endif

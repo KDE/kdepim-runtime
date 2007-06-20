@@ -35,13 +35,19 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
+#include <maildir/maildir.h>
+
+#include <kmime/kmime_message.h>
+
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
+using KPIM::Maildir;
 
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id )
 {
-  loadDirectory();
 }
 
 MaildirResource::~ MaildirResource()
@@ -50,22 +56,25 @@ MaildirResource::~ MaildirResource()
 
 bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
-  qDebug() << "MaildirResource::requestItemDelivery()";
-  /*
-  Incidence *incidence = mCalendar->incidence( ref.remoteId() );
-  if ( !incidence ) {
-    error( QString("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
-    return false;
-  } else {
-    MaildirFormat format;
-    QByteArray data = format.toString( incidence ).toUtf8();
+  const QString rid = ref.remoteId();
+  const QString dir = rid.left( rid.lastIndexOf( QDir::separator() ) );
+  const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
 
-    ItemStoreJob *job = new ItemStoreJob( ref, session() );
-    job->setData( data );
-    return deliverItem( job, msg );
-  }
-   */
-  return false;
+  Maildir md( dir );
+  if ( !md.isValid() )
+    return false;
+
+  const QByteArray data = md.readEntry( entry );
+  KMime::Message *mail = new KMime::Message();
+  mail->setContent( data );
+
+  Item item( ref );
+  item.setMimeType( "message/rfc822" );
+  item.setPayload( MessagePtr( mail ) );
+  ItemStoreJob *job = new ItemStoreJob( item, session() );
+  job->storePayload();
+
+  return deliverItem( job, msg );
 }
 
 void MaildirResource::aboutToQuit()
@@ -87,13 +96,7 @@ void MaildirResource::configure()
   if ( oldDir == newDir )
     return;
   settings()->setValue( "General/Path", newDir );
-  loadDirectory();
   synchronize();
-}
-
-void MaildirResource::loadDirectory()
-{
-  kDebug() << "Implement me: " << k_funcinfo << endl;
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
@@ -113,61 +116,78 @@ void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
 
 void MaildirResource::retrieveCollections()
 {
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( settings()->value( "General/Path" ).toString() );
-  c.setName( name() );
+  Maildir dir( settings()->value( "General/Path" ).toString() );
+  QString errMsg;
+  if ( !dir.isValid( errMsg ) ) {
+    error( errMsg );
+    collectionsRetrieved( Collection::List() );
+  }
+
+  Collection root;
+  root.setParent( Collection::root() );
+  root.setRemoteId( settings()->value( "General/Path" ).toString() );
+  root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "message/rfc822";
-  c.setContentTypes( mimeTypes );
-  c.setCachePolicyId( 1 ); // ### just for testing
+  mimeTypes << "message/rfc822" << Collection::collectionMimeType();
+  root.setContentTypes( mimeTypes );
+  root.setCachePolicyId( 1 ); // ### just for testing
+
   Collection::List list;
-  list << c;
+  list << root;
+  foreach ( const QString sub, dir.subFolderList() ) {
+    Collection c;
+    c.setRemoteId( sub );
+    c.setParent( root );
+    c.setContentTypes( mimeTypes );
+    list << c;
+  }
   collectionsRetrieved( list );
 }
 
 void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
 {
-/*
   ItemFetchJob *fetch = new ItemFetchJob( col, session() );
   if ( !fetch->exec() ) {
     changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
     return;
   }
+  Item::List items = fetch->items();
 
   changeProgress( 0 );
 
-  Item::List items = fetch->items();
-  Incidence::List incidences = mCalendar->incidences();
+  Maildir md( col.remoteId() );
+  if ( !md.isValid() ) {
+    error( i18n("Invalid maildir" ) );
+    return;
+  }
+  QStringList entryList = md.entryList();
 
   int counter = 0;
-  foreach ( Incidence *incidence, incidences ) {
-    QString uid = incidence->uid();
+  foreach ( const QString entry, entryList ) {
+    const QString rid = col.remoteId() + QDir::separator() + entry;
     bool found = false;
     foreach ( Item item, items ) {
-      if ( item.reference().remoteId() == uid ) {
+      if ( item.reference().remoteId() == rid ) {
         found = true;
         break;
       }
     }
     if ( found )
       continue;
-    Item item( DataReference( -1, uid ) );
-    item.setMimeType( "text/calendar" );
+    Item item( DataReference( -1, rid ) );
+    item.setMimeType( "message/rfc822" );
     ItemAppendJob *append = new ItemAppendJob( item, col, session() );
     if ( !append->exec() ) {
       changeProgress( 0 );
-      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );
+      changeStatus( Error, i18n("Appending new message failed: %1", append->errorString()) );
       return;
     }
 
     counter++;
-    int percentage = (counter * 100) / incidences.count();
+    int percentage = (counter * 100) / entryList.count();
     changeProgress( percentage );
   }
-
   collectionSynchronized();
- */
 }
 
 #include "maildirresource.moc"
