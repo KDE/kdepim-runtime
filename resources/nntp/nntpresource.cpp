@@ -26,10 +26,15 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
+#include <kmime/kmime_message.h>
+
 #include <QDate>
 #include <QDir>
 #include <QInputDialog>
 #include <QLineEdit>
+
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
@@ -182,8 +187,13 @@ void NntpResource::fetchArticleResult(KJob * job)
     return;
   }
   KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob*>( job );
-  ItemStoreJob *store = new ItemStoreJob( mCurrentRef, session() );
-  store->setData( j->data() );
+  KMime::Message *msg = new KMime::Message();
+  msg->setContent( j->data() );
+  Item item( mCurrentRef );
+  item.setMimeType( "message/news" );
+  item.setPayload( MessagePtr( msg ) );
+  ItemStoreJob *store = new ItemStoreJob( item, session() );
+  store->storePayload();
   deliverItem( store, mCurrentMessage );
 }
 
