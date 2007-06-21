@@ -1,29 +1,40 @@
 /**
 \mainpage Akonadi, the KDE PIM storage framework
 
+These pages are a combination of design and api documentation.
+If your are looking for general information go to the Overview section.
+For detailed information and/or api-dox on any of the packages go to the
+package main page, either from the menu on the left or from the Building
+blocks section below.
+  
+
 \section akonadi_overview Overview
 
 - \ref akonadi_history
-- \ref akonadi_design
-- \ref akonadi_concepts
+- Design and Concepts
+  - \ref akonadi_design_basic 
+  - \ref akonadi_concepts
+  - \ref akonadi_design
+  - \ref akonadi_design_communication
 - \ref akonadi_usage
 - <a href="http://pim.kde.org/akonadi">Website</a>
 
 \section akonadi_building_blocks Building blocks
 
-- <a href="../libakonadi/html/index.html">Core library</a>
-- <a href="../server/html/index.html">Server</a>
+- <a href="../clients/html/index.html">Clients</a>
 - Domain-specific libraries:
-  - <a href="../kabc/html/index.html">Contacts</a>
-  - <a href="../kmime/html/index.html">MIME Messages</a>
+  - <a href="../kabc/html/index.html">Contacts (kabc)</a>
+  - <a href="../kmime/html/index.html">MIME Messages (kmime)</a>
+- <a href="../libakonadi/html/index.html">Core library (libakonadi)</a>
+- <a href="../server/html/index.html">Server</a>
 
 \authors Tobias König <tokoe@kde.org>, Volker Krause <vkrause@kde.org>
 
 \licenses \lgpl
+*/
 
 
-
-
+/**
 \page akonadi_history Historical background
 
 \section akonadi_history_general General
@@ -70,58 +81,75 @@ lead to deadlocks sometimes, so the following problems appeared as well:
 \li Missing Locking
 
 The main aim of Akonadi is to solve these issues and make use of the goodies which the new design brings.
+*/
 
 
 
 
-\page akonadi_design Akonadi Design
+/**
 
-\section akonadi_design_basic Basic Thoughts
+\page akonadi_design_basic Basic Thoughts
 
 To solve the \ref akonadi_history "problems of KDE 3" and make Akonadi ready for the requirements of the KDE 4 release
 cycle, some considerations had been made which had a deep influence on the design:
 
-\li <em>Functionality is spread over different processes.</em><br/>
+\li <em>Functionality is spread over different processes.</em><br>
         This separation has the big advantage that if one process crashes because of
         a programming error it doesn't affect the other components. That results in
         robustness of the whole system. A disadvantage might be that there is an additional
         overhead due to inter-process communication.
-\li <em>Communication protocol is split into data and control channel.</em></br>
+\li <em>Communication protocol is split into data and control channel.</em><br>
         When doing communication between processes you have to differentiate between the type of data
         that is being transferred. For a large amount of data a high-performance
         protocol should be used and for control data a low-latency protocol.
         Matching both requirements in one protocol is mostly impossible and hard to
         achieve with currently available software.
-\li <em>Separate logic from storage.</em><br/>
+\li <em>Separate logic from storage.</em><br>
         By separating the logic from the storage, the storage can be used to store data
         of any type. In this case, the storage is a kind of service, which is available for
         other components of the system. The logic is located in separated components and so
         3rd-party developers can extend the system by providing their own components.
-\li <em>Keep communication asynchronous.</em><br/>
+\li <em>Keep communication asynchronous.</em><br>
         To allow a non-blocking GUI, all the communication with the back-end and within the
         back-end itself must be asynchronous. You can easily provide a synchronous convenience
         for the application developer; the back-end, however, must communicate asynchronously.
 
-Keep these considerations in mind when you read the following design concept.
+Keep these considerations in mind when you read \ref akonadi_design
+*/
 
-\section akonadi_design_schema Schema
-
-In the diagram below you can see a rough concept of structure of Akonadi:
-
-\image latex concept.eps "Akonadi Design Schema" height=5cm
-\image html concept.png "Akonadi Design Schema"
+/**
+\page akonadi_design Akonadi Design
 
 The main components are:
-\li \ref akonadi_design_storage
-\li \ref akonadi_design_control
-\li \ref akonadi_design_agents (resources)
-\li \ref akonadi_design_libakonadi (libakonadi)
+- \ref akonadi_design_libakonadi (libakonadi)
+- \ref akonadi_design_server
+  - \ref akonadi_design_control
+  - \ref akonadi_design_agents (resources)
+  - \ref akonadi_design_storage
 
-\subsection akonadi_design_storage The Storage
-The Storage is a process which provides an API to store arbitrary data over
+In the diagram below you can see a rough schematic view of Akonadi:
+
+\image latex concept.eps "Akonadi Components" height=5cm
+\image html concept.png "Akonadi Components"
+
+For a more technical view go to \ref akonadi_overview_uml
+
+
+
+\section akonadi_design_libakonadi The client library
+Every client application can access the Akonadi service directly via D-Bus and IMAP API; however
+for easier implementation and a better abstraction the library libakonadi is provided which does
+all the low level stuff and provides a Qt based API for all the functionality Akonadi provides.
+libakonadi works on any type of data and knows nothing about the domain the data are part of.
+For the domain specific tasks libkabc and likcal should be used, which are located above
+libakonadi, and do the data conversion from the storage format to a Qt/KDE one.
+
+
+\section akonadi_design_server Server
+The Server is a process which provides an API to store arbitrary data over
 an IMAP interface into a relational database. The advantage of IMAP is the mature state of the protocol
 and its capability to handle a huge amount of data.
-Whenever items are added to or removed from the Storage, the Storage will
+Whenever items are added to or removed from the Storage, the Server will
 emit a signal over its D-Bus interface to inform other components.
 Also, as defined in the IMAP standard, a simple type of search is supported,
 so you can query for all items of a special mime type or for email-specific fields.
@@ -162,19 +190,23 @@ Furthermore it provides a D-Bus API with the following functionality:
 
 The Control should be started in the startkde script and terminated at the end of the session.
 
-\subsection akonadi_design_libakonadi The client library
-Every client application can access the Akonadi service directly via D-Bus and IMAP API; however
-for easier implementation and a better abstraction the library libakonadi is provided which does
-all the low level stuff and provides a Qt based API for all the functionality Akonadi provides.
-libakonadi works on any type of data and knows nothing about the domain the data are part of.
-For the domain specific tasks libkabc and likcal should be used, which are located above
-libakonadi, and do the data conversion from the storage format to a Qt/KDE one.
+\subsection akonadi_design_storage Storage
+The Storage is part of the Akonadi Server and is responsible for managing the cache of \ref akonadi_concepts_items.
+In other words, create the database schema and performe read/write operations on the database.
+*/
 
-\section akonadi_design_communication Communication Schemas
+/**
+\page akonadi_design_communication Communication Schemas
 
 The sequence diagrams below show how general communication is done:
 
-\image html akonadi_client_search.png "Akonadi Communication Schema"
+<div id='akonadi_client_search_small.png' onClick="document.getElementById('akonadi_client_search_small.png').style.display='none';document.getElementById(' akonadi_client_search.png').style.display='inline';" title="Click to enlarge" > 
+  \image html akonadi_client_search_small.png  "Akonadi Communication Schema"  
+ </div> 
+ <div id=' akonadi_client_search.png' onClick="document.getElementById(' akonadi_client_search.png').style.display='none';document.getElementById('akonadi_client_search_small.png').style.display='inline';" style="display:none" > 
+  \image html  akonadi_client_search.png  "Akonadi Communication Schema"  
+ </div> 
+
 \image latex akonadi_client_search.eps "Akonadi Communication Schema" height=5cm
 
 The item search request is probably the call which is used most often
@@ -187,15 +219,42 @@ the mime type to retrieve the list of matching uids. The SearchProvider already 
 a list of all available items of this mime type in its memory, so it
 can search fast and use indices for optimization.
 
-\image html akonadi_profile_handling.png "Akonadi Profile Handling"
+<div id=' akonadi_profile_handling_small.png' onClick="document.getElementById(' akonadi_profile_handling_small.png').style.display='none';document.getElementById(' akonadi_profile_handling.png').style.display='inline';" title="Click to enlarge" > 
+  \image html  akonadi_profile_handling_small.png  "Akonadi Profile Handling"  
+ </div> 
+ <div id=' akonadi_profile_handling.png' onClick="document.getElementById(' akonadi_profile_handling.png').style.display='none';document.getElementById(' akonadi_profile_handling_small.png').style.display='inline';" style="display:none" > 
+  \image html  akonadi_profile_handling.png  "Akonadi Profile Handling"  
+ </div> 
+
 \image latex akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
 
-\image html akonadi_agent_handling.png "Akonadi Agent Handling"
+<div id=' akonadi_agent_handling_small.png' onClick="document.getElementById(' akonadi_agent_handling_small.png').style.display='none';document.getElementById(' akonadi_agent_handling.png').style.display='inline';" title="Click to enlarge" > 
+  \image html  akonadi_agent_handling_small.png  "Akonadi Agent Handling"  
+ </div> 
+ <div id=' akonadi_agent_handling.png' onClick="document.getElementById(' akonadi_agent_handling.png').style.display='none';document.getElementById(' akonadi_agent_handling_small.png').style.display='inline';" style="display:none" > 
+  \image html  akonadi_agent_handling.png  "Akonadi Agent Handling"  
+ </div> 
+
 \image latex akonadi_agent_handling.eps "Akonadi Agent Handling" height=4cm
+*/
+
+/**
+\page akonadi_overview_uml Akonadi Overview
+
+This overview does not show a complete class or collaboration diagram, it is rather ment to show the 
+big picture.
+
+<div id=' akonadi_overview_uml_small.png' onClick="document.getElementById(' akonadi_overview_uml_small.png').style.display='none';document.getElementById(' akonadi_overview_uml.png').style.display='inline';" title="Click to enlarge" > 
+  \image html  akonadi_overview_uml_small.png  "Akonadi Overview"  
+ </div> 
+ <div id=' akonadi_overview_uml.png' onClick="document.getElementById(' akonadi_overview_uml.png').style.display='none';document.getElementById(' akonadi_overview_uml_small.png').style.display='inline';" style="display:none" > 
+  \image html  akonadi_overview_uml.png  "Akonadi Overview"  
+ </div> 
 
 
+*/
 
-
+/**
 \page akonadi_concepts Concepts
 
 This page describes the basic concepts of Akonadi.
@@ -310,9 +369,11 @@ backend (eg. a groupware server).
 
 The remote identifier can be changed arbitrarily, but should only be changed by
 the corresponding resource.
+*/
 
 
 
+/**
 \page akonadi_usage Usage
 
 \section akonadi_usage_start How to get started
