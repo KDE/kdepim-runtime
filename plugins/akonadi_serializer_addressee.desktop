@@ -1,6 +1,7 @@
 [Misc]
 Encoding=UTF-8
 Name=Addressee Serializer
+Name[de]=Adressverwaltung
 Name[es]=Serializador de direcciones
 Name[x-test]=xxAddressee Serializerxx
 Name[zh_TW]=地址序列器
