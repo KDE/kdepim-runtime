@@ -198,6 +198,8 @@ In other words, create the database schema and performe read/write operations on
 /**
 \page akonadi_design_communication Communication Schemas
 
+\section akonadi_design_communication_search Search
+
 The sequence diagrams below show how general communication is done:
 
 <div id='akonadi_client_search_small.png' onClick="document.getElementById('akonadi_client_search_small.png').style.display='none';document.getElementById(' akonadi_client_search.png').style.display='inline';" title="Click to enlarge" > 
@@ -219,6 +221,23 @@ the mime type to retrieve the list of matching uids. The SearchProvider already 
 a list of all available items of this mime type in its memory, so it
 can search fast and use indices for optimization.
 
+To communicate mimetype constraints in fetch and list and their responses the
+IMAP flags mechanism is used. Unknown flags should be ignored by non-Akonadi
+IMAP clients, which keeps compatibility with mutt and regular KMail. 
+
+Examples:
+- List
+\verbatim
+0x8053c68 8 LIST "" "res1/foo/%"
+0x8053c68 * LIST (\MimeTypes[text/calendar,directory/inode]) "/" "res1/foo/bar"
+\endverbatim
+- Fetch
+\verbatim
+0x8056310 7 UID FETCH 22 (UID RFC822.SIZE FLAGS BODY.PEEK[])
+0x8056310 * 1 FETCH (FLAGS (\Seen \MimeTypes[message/rfc822]) RFC822 {2450} From: Till Adam To: ...
+\endverbatim
+
+\section akonadi_design_communication_profile Profile Handling
 <div id=' akonadi_profile_handling_small.png' onClick="document.getElementById(' akonadi_profile_handling_small.png').style.display='none';document.getElementById(' akonadi_profile_handling.png').style.display='inline';" title="Click to enlarge" > 
   \image html  akonadi_profile_handling_small.png  "Akonadi Profile Handling"  
  </div> 
@@ -228,6 +247,7 @@ can search fast and use indices for optimization.
 
 \image latex akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
 
+\section akonadi_design_communication_agent Agent Handling
 <div id=' akonadi_agent_handling_small.png' onClick="document.getElementById(' akonadi_agent_handling_small.png').style.display='none';document.getElementById(' akonadi_agent_handling.png').style.display='inline';" title="Click to enlarge" > 
   \image html  akonadi_agent_handling_small.png  "Akonadi Agent Handling"  
  </div> 
@@ -359,7 +379,10 @@ server and type-specific objects used by client applications (eg. iCal and KCal:
 Every object stored in Akonadi (collections and PIM items) has a unique
 identifier in form of an interger value. This identifier cannot be changed in
 any way and will stay the same independent of any modifications to the referred
-object. An unique identifier will never be used twice.
+object. An unique identifier will never be used twice and is
+globally unique, it's thus possible to retrieve an item without knowing the
+folder it is in.
+
 
 \subsection akonadi_concepts_identification_rid Remote Identifier
 
