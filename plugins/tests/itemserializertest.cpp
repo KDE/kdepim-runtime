@@ -17,24 +17,39 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SERIALIZER_KCAL_H
-#define AKONADI_SERIALIZER_KCAL_H
+#include "itemserializertest.h"
 
+#include <libakonadi/item.h>
 #include <libakonadi/itemserializer.h>
-#include <kcal/icalformat.h>
 
-namespace Akonadi {
+#include <qtest_kde.h>
 
-class SerializerPluginKCal : public ItemSerializerPlugin
+using namespace Akonadi;
+
+QTEST_KDEMAIN( ItemSerializerTest, NoGUI )
+
+void ItemSerializerTest::testEmptyPayload()
 {
-  public:
-    void deserialize( Item& item, const QString& label, QIODevice& data );
-    void serialize( const Item& item, const QString& label, QIODevice& data );
-  private:
-    KCal::ICalFormat mFormat;
-
-};
-
+  // should not crash
+  QByteArray data;
+  Item item;
+  ItemSerializer::deserialize( item, "RFC822", data );
+  QVERIFY( data.isEmpty() );
 }
 
-#endif
+void ItemSerializerTest::testDefaultSerializer()
+{
+  QByteArray serialized = "\0\r\n\0bla";
+  Item item;
+  item.setMimeType( "application/octet-stream" );
+  ItemSerializer::deserialize( item, "RFC822", serialized );
+
+  QVERIFY( item.hasPayload<QByteArray>() );
+  QCOMPARE( item.payload<QByteArray>(), serialized );
+
+  QByteArray data;
+  ItemSerializer::serialize( item, "RFC822", data );
+  QCOMPARE( serialized, data );
+}
+
+#include "itemserializertest.moc"

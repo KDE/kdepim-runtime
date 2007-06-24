@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2007 Till Adam <adam@kde.org>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,24 +17,18 @@
     02110-1301, USA.
 */
 
-#ifndef __AKONADI_SERIALIZER_ADDRESSEE_H__
-#define __AKONADI_SERIALIZER_ADDRESSEE_H__
+#ifndef ITEMSERIALIZERTEST_H
+#define ITEMSERIALIZERTEST_H
 
-#include <libakonadi/itemserializer.h>
-#include <kabc/vcardconverter.h>
+#include <QtCore/QObject>
 
-namespace Akonadi {
-
-class SerializerPluginAddresee : public ItemSerializerPlugin
+class ItemSerializerTest : public QObject
 {
-public:
-    void deserialize( Item& item, const QString& label, QIODevice& data );
-    void serialize( const Item& item, const QString& label, QIODevice& data );
-private:
-    KABC::VCardConverter m_converter;
+  Q_OBJECT
+  private slots:
+    void testEmptyPayload();
+    void testDefaultSerializer();
 };
 
-
-}
 
 #endif

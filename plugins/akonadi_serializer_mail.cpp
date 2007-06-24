@@ -48,10 +48,10 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 }
 
 
-void SerializerPluginMail::deserialize( Item& item, const QString& label, const QByteArray& data ) const
+void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
     if ( label != "RFC822" && label != "ENVELOPE" ) {
-      item.addPart( label, data );
+      item.addPart( label, data.readAll() );
       return;
     }
     if ( item.mimeType() != QString::fromLatin1("message/rfc822") && item.mimeType() != QLatin1String("message/news") ) {
@@ -69,11 +69,11 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, const 
     }
 
     if ( label == "RFC822" ) {
-        msg->setContent( data );
+        msg->setContent( data.readAll() );
         msg->parse();
     } else if ( label == "ENVELOPE" ) {
         QList<QByteArray> env;
-        ImapParser::parseParenthesizedList( data, env );
+        ImapParser::parseParenthesizedList( data.readAll(), env );
         Q_ASSERT( env.count() >= 10 );
         // date
         msg->date()->from7BitString( env[0] );
@@ -109,31 +109,14 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, const 
     }
 }
 
-
-void SerializerPluginMail::deserialize( Item& item, const QString& label, const QIODevice& data ) const
-{
-  Q_UNUSED( item );
-  Q_UNUSED( label );
-  Q_UNUSED( data );
-}
-
-
-void SerializerPluginMail::serialize( const Item& item, const QString& label, QByteArray& data ) const
+void SerializerPluginMail::serialize( const Item& item, const QString& label, QIODevice& data )
 {
     if ( label != "RFC822" )
       return;
 
     boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
     m->assemble();
-    data = m->encodedContent();
-}
-
-
-void SerializerPluginMail::serialize( const Item& item, const QString& label, QIODevice& data ) const
-{
-  Q_UNUSED( item );
-  Q_UNUSED( label );
-  Q_UNUSED( data );
+    data.write( m->encodedContent() );
 }
 
 extern "C"
@@ -141,5 +124,3 @@ KDE_EXPORT Akonadi::ItemSerializerPlugin *
 libakonadi_serializer_mail_create_item_serializer_plugin() {
   return new SerializerPluginMail();
 }
-
-

@@ -26,10 +26,10 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 
-void SerializerPluginKCal::deserialize(Item & item, const QString & label, const QByteArray & data) const
+void SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODevice & data)
 {
   if ( label != "RFC822" ) {
-    item.addPart( label, data );
+    item.addPart( label, data.readAll() );
     return;
   }
   if ( item.mimeType() != QString::fromLatin1("text/calendar") ) {
@@ -37,38 +37,25 @@ void SerializerPluginKCal::deserialize(Item & item, const QString & label, const
     return;
   }
 
-  KCal::Incidence* i = const_cast<KCal::ICalFormat*>( &mFormat )->fromString( QString::fromUtf8( data ) );
+  KCal::Incidence* i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
     qWarning() << "Failed to parse incidence!";
-    qWarning() << QString::fromUtf8( data );
+    data.seek( 0 );
+    qWarning() << QString::fromUtf8( data.readAll() );
     return;
   }
   item.setPayload<IncidencePtr>( IncidencePtr( i ) );
 }
 
-void SerializerPluginKCal::deserialize(Item & item, const QString & label, const QIODevice & data) const
-{
-  Q_UNUSED( item );
-  Q_UNUSED( label );
-  Q_UNUSED( data );
-}
-
-void SerializerPluginKCal::serialize(const Item & item, const QString & label, QByteArray & data) const
+void SerializerPluginKCal::serialize(const Item & item, const QString & label, QIODevice & data)
 {
   if ( label != "RFC822" || !item.hasPayload<IncidencePtr>() )
     return;
   IncidencePtr i = item.payload<IncidencePtr>();
-  // ### I guess this can be done without hardcoding stuff?
-  data = "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n";
-  data += const_cast<KCal::ICalFormat*>( &mFormat )->toString( i.get() ).toUtf8();
-  data += "\nEND:VCALENDAR";
-}
-
-void SerializerPluginKCal::serialize(const Item & item, const QString & label, QIODevice & data) const
-{
-  Q_UNUSED( item );
-  Q_UNUSED( label );
-  Q_UNUSED( data );
+  // ### I guess this can be done without hardcoding stuff
+  data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n" );
+  data.write( mFormat.toString( i.get() ).toUtf8() );
+  data.write( "\nEND:VCALENDAR" );
 }
 
 extern "C"

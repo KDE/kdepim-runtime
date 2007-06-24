@@ -19,4 +19,5 @@ endmacro(add_akonadiplugin_test)
 
 # qtestlib unit tests
 add_akonadiplugin_test(mailserializertest.cpp ${KDE4_KMIME_LIBS})
-
+add_akonadiplugin_test(mailserializerplugintest.cpp ${KDE4_KMIME_LIBS})
+add_akonadiplugin_test(itemserializertest.cpp "")

@@ -37,7 +37,11 @@ void MailSerializerTest::testEnvelopeDeserialize()
 
   // envelope
   QByteArray env( "(\"Wed, 1 Feb 2006 13:37:19 UT\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL <{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>)" );
-  serializer->deserialize( i, "ENVELOPE", env );
+  QBuffer buffer;
+  buffer.setData( env );
+  buffer.open( QIODevice::ReadOnly );
+  buffer.seek( 0 );
+  serializer->deserialize( i, "ENVELOPE", buffer );
   QVERIFY( i.hasPayload<MessagePtr>() );
 
   MessagePtr msg = i.payload<MessagePtr>();
