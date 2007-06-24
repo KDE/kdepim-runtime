@@ -20,6 +20,8 @@
 #ifndef BROWSERWIDGET_H
 #define BROWSERWIDGET_H
 
+#include <ui_browserwidget_itemview.h>
+
 #include <QtGui/QWidget>
 
 class QModelIndex;
@@ -51,15 +53,17 @@ class BrowserWidget: public QWidget
     void collectionActivated( const QModelIndex &index );
     void itemActivated( const QModelIndex &index );
     void itemFetchDone( KJob *job );
+    void modelChanged();
 
   private:
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionView *mCollectionView;
     Akonadi::ItemModel *mItemModel;
-    QTreeView *mItemView;
     QStackedWidget *mStack;
     QTextEdit *mDataView;
     KPIM::AddresseeView *mAddresseeView;
+    Ui::ItemViewWidget itemUi;
+    int mCurrentCollection;
 };
 
 #endif

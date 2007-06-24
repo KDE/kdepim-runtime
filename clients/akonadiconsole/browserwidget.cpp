@@ -44,7 +44,9 @@
 using namespace Akonadi;
 
 BrowserWidget::BrowserWidget(QWidget * parent) :
-    QWidget( parent )
+    QWidget( parent ),
+    mItemModel( 0 ),
+    mCurrentCollection( 0 )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
 
@@ -61,15 +63,19 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
   splitter->addWidget( splitter2 );
 
-  mItemModel = new ItemModel( this );
-//  mItemModel = new KABCModel( this );
-//   mItemModel = new MessageModel( this );
+  QWidget *itemViewParent = new QWidget( this );
+  itemUi.setupUi( itemViewParent );
 
-  mItemView = new QTreeView( this );
-  mItemView->setRootIsDecorated( false );
-  mItemView->setModel( mItemModel );
-  connect( mItemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
-  splitter2->addWidget( mItemView );
+  itemUi.modelBox->addItem( "Generic" );
+  itemUi.modelBox->addItem( "Mail" );
+  itemUi.modelBox->addItem( "Contacts" );
+  connect( itemUi.modelBox, SIGNAL(activated(int)), SLOT(modelChanged()) );
+  modelChanged();
+
+  itemUi.itemView->setModel( mItemModel );
+  connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
+  splitter2->addWidget( itemViewParent );
+  itemViewParent->layout()->setMargin( 0 );
 
   mStack = new QStackedWidget( this );
   mDataView = new QTextEdit( mStack );
@@ -82,10 +88,10 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
 {
-  int colId = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
-  if ( colId <= 0 )
+  mCurrentCollection = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
+  if ( mCurrentCollection <= 0 )
     return;
-  mItemModel->setCollection( Collection( colId ) );
+  mItemModel->setCollection( Collection( mCurrentCollection ) );
 }
 
 void BrowserWidget::itemActivated(const QModelIndex & index)
@@ -119,6 +125,24 @@ void BrowserWidget::itemFetchDone(KJob * job)
       mStack->setCurrentWidget( mDataView );
     }
   }
+}
+
+void BrowserWidget::modelChanged()
+{
+  delete mItemModel;
+  switch ( itemUi.modelBox->currentIndex() ) {
+    case 1:
+      mItemModel = new MessageModel( this );
+      break;
+    case 2:
+      mItemModel = new KABCModel( this );
+      break;
+    default:
+      mItemModel = new ItemModel( this );
+  }
+  itemUi.itemView->setModel( mItemModel );
+  if ( mCurrentCollection > 0 )
+    mItemModel->setCollection( Collection( mCurrentCollection ) );
 }
 
 #include "browserwidget.moc"
