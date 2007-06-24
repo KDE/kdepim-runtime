@@ -3,10 +3,12 @@ Encoding=UTF-8
 Name=Addressee Serializer
 Name[de]=Adressverwaltung
 Name[es]=Serializador de direcciones
+Name[sv]=Adressatserialisering
 Name[x-test]=xxAddressee Serializerxx
 Name[zh_TW]=地址序列器
 Comment=An Akonadi serializer plugin for addressee objects
 Comment[es]=Un plugin serializador de Akonadi para direccionar objetos
+Comment[sv]=Ett insticksprogram till Akonadi för serialisering av adressatobjekt
 Comment[x-test]=xxAn Akonadi serializer plugin for addressee objectsxx
 Comment[zh_TW]=地址物件的 Akonadi 序列器外掛程式
 

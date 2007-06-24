@@ -4,6 +4,7 @@ Name=Akonadi Maildir Resource
 Name[el]=Πόρος Maildir του Akonadi
 Name[es]=Recurso Maildir de Akonadi
 Name[ja]=Akonadi Maildir リソース
+Name[sv]=Akonadi Maildir-resurs
 Name[zh_TW]=Akonadi Maildir 資源
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
