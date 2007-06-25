@@ -20,9 +20,7 @@
  */
 
 #include "kemailquotinghighter.h"
-#include <sonnet/loader.h>
 #include <sonnet/speller.h>
-#include <sonnet/settings.h>
 
 #include <kconfig.h>
 #include <kdebug.h>

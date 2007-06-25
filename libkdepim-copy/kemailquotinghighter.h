@@ -21,7 +21,6 @@
 #ifndef KEMAILQUOTINGHIGHLIGHTER_H
 #define KEMAILQUOTINGHIGHLIGHTER_H
 
-#include <sonnet/filter.h>
 #include <sonnet/highlighter.h>
 #include <QSyntaxHighlighter>
 #include <QStringList>
