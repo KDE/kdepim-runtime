@@ -69,14 +69,14 @@ AkonadiSlave::~ AkonadiSlave()
 
 void AkonadiSlave::get(const KUrl & url)
 {
-  kDebug() << k_funcinfo << url << endl;
-  QMap<QString, QString> query = url.queryItems();
+  DataReference d = Item::fromUrl( url );
+  ItemFetchJob *job = new ItemFetchJob( d );
 
-  ItemFetchJob *job = new ItemFetchJob( DataReference( query[ QString::fromLatin1("item") ].toInt(), QString() ) );
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );
     return;
   }
+
   if ( job->items().count() != 1 ) {
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
@@ -213,13 +213,11 @@ void AkonadiSlave::listDir( const KUrl &url )
   // Fetching items
   if ( collection != Collection::root() ) {
     ItemFetchJob* fjob = new ItemFetchJob( collection );
-
     if ( !fjob->exec() ) {
       error( KIO::ERR_INTERNAL, job->errorString() );
       return;
     }
     Item::List items = fjob->items();
-
     totalSize( collections.count() + items.count() );
     foreach( Item item, items )
     {
