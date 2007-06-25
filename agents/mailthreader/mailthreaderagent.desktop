@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Mail Threader Agent
+Comment=An agent to thread mails from a collection
+Type=AkonadiAgent
+Exec=akonadi_mailthreader_agent
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilitites=text/directory
+X-Akonadi-Identifier=akonadi_mailthreader_agent
