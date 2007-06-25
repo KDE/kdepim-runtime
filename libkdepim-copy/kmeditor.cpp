@@ -214,7 +214,7 @@ void KMeditor::init()
 
 void KMeditor::createHighlighter()
 {
-   KSpell2::KEMailQuotingHighlighter *emailHighLighter = new KSpell2::KEMailQuotingHighlighter(this);
+   Sonnet::KEMailQuotingHighlighter *emailHighLighter = new Sonnet::KEMailQuotingHighlighter(this);
    connect(emailHighLighter,SIGNAL(newSuggestions(const QString&,const QStringList&)),this, SLOT(addSuggestion(const QString&,const QStringList&)) );
 
    //TODO change config

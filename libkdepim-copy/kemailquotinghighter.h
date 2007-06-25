@@ -27,7 +27,7 @@
 #include <QStringList>
 
 class QTextEdit;
-namespace KSpell2
+namespace Sonnet
 {
   class KEMailQuotingHighlighter : public Highlighter
     {

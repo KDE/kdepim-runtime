@@ -34,7 +34,7 @@
 #include <QHash>
 #include <QTextCursor>
 
-namespace KSpell2 {
+namespace Sonnet {
 class KEMailQuotingHighlighter::KEmailQuotingHighlighterPrivate
 {
 public:
