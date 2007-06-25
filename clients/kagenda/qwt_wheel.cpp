@@ -29,7 +29,7 @@ public:
         intBorder = 2;
         borderWidth = 2;
         wheelWidth = 20;
-    };
+    }
 
     QRect sliderRect;
     double viewAngle;

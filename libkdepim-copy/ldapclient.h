@@ -184,12 +184,12 @@ class KDEPIM_EXPORT LdapSearch : public QObject
     void slotFileChanged( const QString& );
 
   private:
-    
-    typedef struct ResultObject {
+
+    struct ResultObject {
       const LdapClient *client;
       KLDAP::LdapObject object;
     };
-    
+
     void readConfig();
     void finish();
     void makeSearchData( QStringList& ret, LdapResultList& resList );

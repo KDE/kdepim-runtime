@@ -36,7 +36,7 @@ class SearchProvider : public QObject
   Q_OBJECT
 
   public:
-    virtual ~SearchProvider() {};
+    virtual ~SearchProvider() {}
 
     /**
      * Returns a list of supported mimetypes.
