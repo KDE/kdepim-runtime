@@ -189,6 +189,7 @@ void NntpResource::fetchArticleResult(KJob * job)
   KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob*>( job );
   KMime::Message *msg = new KMime::Message();
   msg->setContent( j->data() );
+  msg->parse();
   Item item( mCurrentRef );
   item.setMimeType( "message/news" );
   item.setPayload( MessagePtr( msg ) );

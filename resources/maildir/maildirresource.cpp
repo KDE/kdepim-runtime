@@ -67,6 +67,7 @@ bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, co
   const QByteArray data = md.readEntry( entry );
   KMime::Message *mail = new KMime::Message();
   mail->setContent( data );
+  mail->parse();
 
   Item item( ref );
   item.setMimeType( "message/rfc822" );
