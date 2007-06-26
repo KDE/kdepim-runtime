@@ -117,9 +117,27 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     dir.addEntry( mail->encodedContent() );
 }
 
-void MaildirResource::itemChanged( const Akonadi::Item&, const QStringList& )
+void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-  kDebug() << "Implement me: " << k_funcinfo << endl;
+    if ( !parts.contains( Item::PartBody ) ) return;
+
+    const QString rid = item.reference().remoteId();
+    const QString path = rid.left( rid.lastIndexOf( QDir::separator() ) );
+    const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
+
+    Maildir dir( path );
+    QString errMsg;
+    if ( !dir.isValid( errMsg ) ) {
+        error( errMsg );
+        return;
+    }
+    // we can only deal with mail
+    if ( item.mimeType() != "message/rfc822" ) {
+        error( i18n("Only email messages can be added to the Maildir resource!") );
+        return;
+    }
+    const MessagePtr mail = item.payload<MessagePtr>();
+    dir.writeEntry( entry, mail->encodedContent() );
 }
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
