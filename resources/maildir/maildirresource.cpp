@@ -114,7 +114,10 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    dir.addEntry( mail->encodedContent() );
+    const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
+    DataReference ref = item.reference();
+    ref.setRemoteId( rid );
+    changesCommitted( ref );
 }
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
@@ -138,6 +141,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
     }
     const MessagePtr mail = item.payload<MessagePtr>();
     dir.writeEntry( entry, mail->encodedContent() );
+    changesCommitted( item.reference() );
 }
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
