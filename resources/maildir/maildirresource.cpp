@@ -100,9 +100,21 @@ void MaildirResource::configure()
   synchronize();
 }
 
-void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
+void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
-  kDebug() << "Implement me: " << k_funcinfo << endl;
+    Maildir dir( collection.remoteId() );
+    QString errMsg;
+    if ( !dir.isValid( errMsg ) ) {
+      error( errMsg );
+      return;
+    }
+    // we can only deal with mail
+    if ( item.mimeType() != "message/rfc822" ) {
+      error( i18n("Only email messages can be added to the Maildir resource!") );
+      return;
+    }
+    const MessagePtr mail = item.payload<MessagePtr>();
+    dir.addEntry( mail->encodedContent() );
 }
 
 void MaildirResource::itemChanged( const Akonadi::Item&, const QStringList& )
