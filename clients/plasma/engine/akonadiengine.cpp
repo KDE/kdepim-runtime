@@ -22,6 +22,12 @@
 
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/monitor.h>
+
+#include <kmime/kmime_message.h>
+
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
 using namespace Akonadi;
 
 AkonadiEngine::AkonadiEngine(QObject* parent, const QStringList& args)
@@ -32,11 +38,15 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QStringList& args)
 
   Monitor *monitor = new Monitor( this );
   monitor->monitorMimeType( "message/rfc822" );
+  // HACK remove once ENVELOPE works
+  monitor->addFetchPart( "RFC822" );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
 
   // FIXME: hardcoded collection id
   ItemFetchJob *fetch = new ItemFetchJob( Collection( 421 ), this );
+  // HACK remove once ENVELOPE works
+  fetch->addFetchPart( "RFC822" );
   connect( fetch, SIGNAL(result(KJob*)), SLOT(fetchDone(KJob*)) );
 }
 
@@ -46,7 +56,12 @@ AkonadiEngine::~AkonadiEngine()
 
 void AkonadiEngine::itemAdded(const Akonadi::Item & item)
 {
-  setData( QString::number( item.reference().id() ), "Subject", "FOO" );
+  if ( !item.hasPayload<MessagePtr>() )
+    return;
+  MessagePtr msg = item.payload<MessagePtr>();
+  QString source = QString::number( item.reference().id() );
+  setData( source, "Subject", msg->subject()->asUnicodeString() );
+  setData( source, "From", msg->from()->asUnicodeString() );
 }
 
 void AkonadiEngine::fetchDone(KJob * job)
@@ -54,9 +69,8 @@ void AkonadiEngine::fetchDone(KJob * job)
   if ( job->error() )
     return;
   Item::List items = static_cast<ItemFetchJob*>( job )->items();
-  foreach ( const Item item, items ) {
-    setData( QString::number( item.reference().id() ), "Subject", "BAR" );
-  }
+  foreach ( const Item item, items )
+    itemAdded( item );
 }
 
 #include "akonadiengine.moc"
