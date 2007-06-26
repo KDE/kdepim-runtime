@@ -31,9 +31,9 @@
 #define OVERLAYWIDGET_H
 
 #include <khbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QEvent>
+
+class QResizeEvent;
+class QEvent;
 
 namespace KPIM {
 
@@ -42,7 +42,7 @@ namespace KPIM {
  * so that it can actually be on top of other widgets.
  * Currently the only supported type of alignment is "right aligned, on top of the other widget".
  *
- * OverlayWidget inherits QHBox for convenience purposes (layout, and frame)
+ * OverlayWidget inherits KHBox for convenience purposes (layout, and frame)
  */
 class OverlayWidget : public KHBox
 {

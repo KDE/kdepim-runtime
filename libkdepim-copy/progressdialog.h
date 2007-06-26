@@ -33,18 +33,15 @@
 #ifndef __KPIM_PROGRESSDIALOG_H__
 #define __KPIM_PROGRESSDIALOG_H__
 
-#include <QDialog>
-#include <QLabel>
-#include <kvbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <QScrollArea>
+#include <KVBox>
+
 #include "overlaywidget.h"
 #include <kdepim_export.h>
 
-#include <QScrollArea>
-
 class QProgressBar;
 class QFrame;
+class QLabel;
 
 namespace KPIM {
 class ProgressItem;
@@ -72,7 +69,7 @@ protected:
   virtual void resizeContents ( int w, int h );
 
 private:
-  KVBox *                  mBigBox;
+  KVBox *mBigBox;
 };
 
 class TransactionItem : public KVBox {

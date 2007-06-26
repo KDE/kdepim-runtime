@@ -29,9 +29,9 @@
  */
 
 #include "overlaywidget.h"
-//Added by qt3to4:
 #include <QResizeEvent>
 #include <QEvent>
+
 using namespace KPIM;
 
 OverlayWidget::OverlayWidget( QWidget* alignWidget, QWidget* parent, const char* name )

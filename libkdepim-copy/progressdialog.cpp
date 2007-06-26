@@ -29,31 +29,29 @@
  *  your version.
  */
 
+#include "progressdialog.h"
+
 #include <QApplication>
 #include <QLayout>
 #include <QProgressBar>
+#include <QScrollBar>
 #include <QTimer>
-#include <q3header.h>
 #include <QObject>
-#include <q3scrollview.h>
 #include <QToolButton>
 #include <QPushButton>
-#include <khbox.h>
-#include <kvbox.h>
-
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
 #include <QFrame>
 #include <QLabel>
 
+#include <khbox.h>
+#include <kvbox.h>
 #include <klocale.h>
 #include <kdialog.h>
 #include <KStandardGuiItem>
 #include <kiconloader.h>
 #include <kdebug.h>
 
-#include "progressdialog.h"
 #include "progressmanager.h"
 #include "ssllabel.h"
 
@@ -77,14 +75,14 @@ TransactionItemView::TransactionItemView( QWidget * parent,
 
 TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bool first )
 {
-   TransactionItem *ti = new TransactionItem( mBigBox, item, first );
-   mBigBox->layout()->addWidget( ti );
-   //ti->hide();
-   //QTimer::singleShot( 1000, ti, SLOT( show() ) );
-   
-   resize( mBigBox->width(), mBigBox->height() );
-   
-   return ti;
+ TransactionItem *ti = new TransactionItem( mBigBox, item, first );
+ mBigBox->layout()->addWidget( ti );
+ //ti->hide();
+ //QTimer::singleShot( 1000, ti, SLOT( show() ) );
+
+ resize( mBigBox->width(), mBigBox->height() );
+
+ return ti;
 }
 
 // TODO
@@ -184,7 +182,7 @@ TransactionItem::TransactionItem( QWidget* parent,
               this, SLOT( slotItemCanceled() ));
     h->layout()->addWidget( mCancelButton );
   }
-  
+
   h = new KHBox( this );
   h->setSpacing( 5 );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
@@ -204,7 +202,7 @@ TransactionItem::~TransactionItem()
 
 void TransactionItem::hideHLine()
 {
-    mFrame->hide();
+  mFrame->hide();
 }
 
 void TransactionItem::setProgress( int progress )
@@ -250,13 +248,13 @@ void TransactionItem::addSubTransaction( ProgressItem* /*item*/ )
 ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const char* name )
     : OverlayWidget( alignWidget, parent, name ), mWasLastShown( false )
 {
-    setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
+  setFrameStyle( QFrame::Panel | QFrame::Sunken ); // QFrame
 
-    mScrollView = new TransactionItemView( this, "ProgressScrollView" );
-    layout()->addWidget( mScrollView );
+  mScrollView = new TransactionItemView( this, "ProgressScrollView" );
+  layout()->addWidget( mScrollView );
 
-    // No more close button for now, since there is no more autoshow
-    /*
+  // No more close button for now, since there is no more autoshow
+  /*
     QVBox* rightBox = new QVBox( this );
     QToolButton* pbClose = new QToolButton( rightBox );
     pbClose->setAutoRaise(true);
@@ -267,27 +265,27 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
     connect(pbClose, SIGNAL(clicked()), this, SLOT(slotClose()));
     QWidget* spacer = new QWidget( rightBox ); // don't let the close button take up all the height
     rightBox->setStretchFactor( spacer, 100 );
-    */
+  */
 
-    /*
-     * Get the singleton ProgressManager item which will inform us of
-     * appearing and vanishing items.
-     */
-    ProgressManager *pm = ProgressManager::instance();
-    connect ( pm, SIGNAL( progressItemAdded( KPIM::ProgressItem* ) ),
-              this, SLOT( slotTransactionAdded( KPIM::ProgressItem* ) ) );
-    connect ( pm, SIGNAL( progressItemCompleted( KPIM::ProgressItem* ) ),
-              this, SLOT( slotTransactionCompleted( KPIM::ProgressItem* ) ) );
-    connect ( pm, SIGNAL( progressItemProgress( KPIM::ProgressItem*, unsigned int ) ),
-              this, SLOT( slotTransactionProgress( KPIM::ProgressItem*, unsigned int ) ) );
-    connect ( pm, SIGNAL( progressItemStatus( KPIM::ProgressItem*, const QString& ) ),
-              this, SLOT( slotTransactionStatus( KPIM::ProgressItem*, const QString& ) ) );
-    connect ( pm, SIGNAL( progressItemLabel( KPIM::ProgressItem*, const QString& ) ),
-              this, SLOT( slotTransactionLabel( KPIM::ProgressItem*, const QString& ) ) );
-    connect ( pm, SIGNAL( progressItemUsesCrypto(KPIM::ProgressItem*, bool) ),
-              this, SLOT( slotTransactionUsesCrypto( KPIM::ProgressItem*, bool ) ) );
-    connect ( pm, SIGNAL( showProgressDialog() ),
-              this, SLOT( slotShow() ) );
+  /*
+   * Get the singleton ProgressManager item which will inform us of
+   * appearing and vanishing items.
+   */
+  ProgressManager *pm = ProgressManager::instance();
+  connect ( pm, SIGNAL( progressItemAdded( KPIM::ProgressItem* ) ),
+            this, SLOT( slotTransactionAdded( KPIM::ProgressItem* ) ) );
+  connect ( pm, SIGNAL( progressItemCompleted( KPIM::ProgressItem* ) ),
+            this, SLOT( slotTransactionCompleted( KPIM::ProgressItem* ) ) );
+  connect ( pm, SIGNAL( progressItemProgress( KPIM::ProgressItem*, unsigned int ) ),
+            this, SLOT( slotTransactionProgress( KPIM::ProgressItem*, unsigned int ) ) );
+  connect ( pm, SIGNAL( progressItemStatus( KPIM::ProgressItem*, const QString& ) ),
+            this, SLOT( slotTransactionStatus( KPIM::ProgressItem*, const QString& ) ) );
+  connect ( pm, SIGNAL( progressItemLabel( KPIM::ProgressItem*, const QString& ) ),
+            this, SLOT( slotTransactionLabel( KPIM::ProgressItem*, const QString& ) ) );
+  connect ( pm, SIGNAL( progressItemUsesCrypto(KPIM::ProgressItem*, bool) ),
+            this, SLOT( slotTransactionUsesCrypto( KPIM::ProgressItem*, bool ) ) );
+  connect ( pm, SIGNAL( showProgressDialog() ),
+            this, SLOT( slotShow() ) );
 }
 
 void ProgressDialog::closeEvent( QCloseEvent* e )
@@ -307,37 +305,37 @@ ProgressDialog::~ProgressDialog()
 
 void ProgressDialog::slotTransactionAdded( ProgressItem *item )
 {
-   TransactionItem *parent = 0;
-   if ( item->parent() ) {
-     if ( mTransactionsToListviewItems.contains( item->parent() ) ) {
-       parent = mTransactionsToListviewItems[ item->parent() ];
-       parent->addSubTransaction( item );
-     }
-   } else {
-     const bool first = mTransactionsToListviewItems.empty();
-     TransactionItem *ti = mScrollView->addTransactionItem( item, first );
-     if ( ti )
-       mTransactionsToListviewItems.insert( item, ti );
-     if ( first && mWasLastShown )
-       QTimer::singleShot( 1000, this, SLOT( slotShow() ) );
+  TransactionItem *parent = 0;
+  if ( item->parent() ) {
+    if ( mTransactionsToListviewItems.contains( item->parent() ) ) {
+      parent = mTransactionsToListviewItems[ item->parent() ];
+      parent->addSubTransaction( item );
+    }
+  } else {
+    const bool first = mTransactionsToListviewItems.empty();
+    TransactionItem *ti = mScrollView->addTransactionItem( item, first );
+    if ( ti )
+      mTransactionsToListviewItems.insert( item, ti );
+    if ( first && mWasLastShown )
+      QTimer::singleShot( 1000, this, SLOT( slotShow() ) );
 
-   }
+  }
 }
 
 void ProgressDialog::slotTransactionCompleted( ProgressItem *item )
 {
-   if ( mTransactionsToListviewItems.contains( item ) ) {
-     TransactionItem *ti = mTransactionsToListviewItems[ item ];
-     mTransactionsToListviewItems.remove( item );
-     ti->setItemComplete();
-     QTimer::singleShot( 3000, ti, SLOT( deleteLater() ) );
-     // see the slot for comments as to why that works
-     connect ( ti, SIGNAL( destroyed() ),
-               mScrollView, SLOT( slotLayoutFirstItem() ) );
-   }
-   // This was the last item, hide.
-   if ( mTransactionsToListviewItems.empty() )
-     QTimer::singleShot( 3000, this, SLOT( slotHide() ) );
+  if ( mTransactionsToListviewItems.contains( item ) ) {
+    TransactionItem *ti = mTransactionsToListviewItems[ item ];
+    mTransactionsToListviewItems.remove( item );
+    ti->setItemComplete();
+    QTimer::singleShot( 3000, ti, SLOT( deleteLater() ) );
+    // see the slot for comments as to why that works
+    connect ( ti, SIGNAL( destroyed() ),
+              mScrollView, SLOT( slotLayoutFirstItem() ) );
+  }
+  // This was the last item, hide.
+  if ( mTransactionsToListviewItems.empty() )
+    QTimer::singleShot( 3000, this, SLOT( slotHide() ) );
 }
 
 void ProgressDialog::slotTransactionCanceled( ProgressItem* )
@@ -347,43 +345,43 @@ void ProgressDialog::slotTransactionCanceled( ProgressItem* )
 void ProgressDialog::slotTransactionProgress( ProgressItem *item,
                                               unsigned int progress )
 {
-   if ( mTransactionsToListviewItems.contains( item ) ) {
-     TransactionItem *ti = mTransactionsToListviewItems[ item ];
-     ti->setProgress( progress );
-   }
+  if ( mTransactionsToListviewItems.contains( item ) ) {
+    TransactionItem *ti = mTransactionsToListviewItems[ item ];
+    ti->setProgress( progress );
+  }
 }
 
 void ProgressDialog::slotTransactionStatus( ProgressItem *item,
                                             const QString& status )
 {
-   if ( mTransactionsToListviewItems.contains( item ) ) {
-     TransactionItem *ti = mTransactionsToListviewItems[ item ];
-     ti->setStatus( status );
-   }
+  if ( mTransactionsToListviewItems.contains( item ) ) {
+    TransactionItem *ti = mTransactionsToListviewItems[ item ];
+    ti->setStatus( status );
+  }
 }
 
 void ProgressDialog::slotTransactionLabel( ProgressItem *item,
                                            const QString& label )
 {
-   if ( mTransactionsToListviewItems.contains( item ) ) {
-     TransactionItem *ti = mTransactionsToListviewItems[ item ];
-     ti->setLabel( label );
-   }
+  if ( mTransactionsToListviewItems.contains( item ) ) {
+    TransactionItem *ti = mTransactionsToListviewItems[ item ];
+    ti->setLabel( label );
+  }
 }
 
 
 void ProgressDialog::slotTransactionUsesCrypto( ProgressItem *item,
                                                 bool value )
 {
-   if ( mTransactionsToListviewItems.contains( item ) ) {
-     TransactionItem *ti = mTransactionsToListviewItems[ item ];
-     ti->setCrypto( value );
-   }
+  if ( mTransactionsToListviewItems.contains( item ) ) {
+    TransactionItem *ti = mTransactionsToListviewItems[ item ];
+    ti->setCrypto( value );
+  }
 }
 
 void ProgressDialog::slotShow()
 {
-   setVisible( true );
+  setVisible( true );
 }
 
 void ProgressDialog::slotHide()
