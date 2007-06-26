@@ -142,8 +142,21 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
 {
-  kDebug() << "Implement me: " << k_funcinfo << endl;
- }
+    const QString rid = ref.remoteId();
+    const QString path = rid.left( rid.lastIndexOf( QDir::separator() ) );
+    const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
+
+    Maildir dir( path );
+    QString errMsg;
+    if ( !dir.isValid( errMsg ) ) {
+        error( errMsg );
+        return;
+    }
+    if ( !dir.removeEntry( entry ) ) {
+        error( i18n("Failed to delete item: %1", rid) );
+    }
+
+}
 
 void MaildirResource::retrieveCollections()
 {
