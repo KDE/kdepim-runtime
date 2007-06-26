@@ -46,6 +46,7 @@ class PlasmoBiff : public Plasma::Applet
 
     void constraintsUpdated();
     void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    QRectF boundingRect() const;
 
   public slots:
     void configureDialog(){}

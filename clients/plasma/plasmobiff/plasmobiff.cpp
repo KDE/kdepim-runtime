@@ -66,4 +66,9 @@ void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsIt
 {
 }
 
+QRectF PlasmoBiff::boundingRect() const
+{
+  return m_bounds;
+}
+
 #include "plasmobiff.moc"
