@@ -54,8 +54,7 @@ class TransactionItemView : public QScrollArea {
   Q_OBJECT
 public:
   TransactionItemView( QWidget * parent = 0,
-                       const char * name = 0,
-                       Qt::WFlags f = 0 );
+                       const char * name = 0 );
 
   virtual ~TransactionItemView()
   {}
@@ -68,7 +67,7 @@ public slots:
   void slotLayoutFirstItem();
 
 protected:
-  virtual void resizeContents ( int w, int h );
+  virtual void resizeEvent ( QResizeEvent *event );
 
 private:
   KVBox *mBigBox;

@@ -61,50 +61,40 @@ namespace KPIM {
 class TransactionItem;
 
 TransactionItemView::TransactionItemView( QWidget * parent,
-                                          const char * name,
-                                          Qt::WFlags f )
+                                          const char * name )
     : QScrollArea( parent ) {
+  setObjectName( name );
   setFrameStyle( NoFrame );
   mBigBox = new KVBox( this );
-  //mBigBox->setSpacing( 5 );
   setWidget( mBigBox );
   setWidgetResizable( true );
-  //resize( 300, 200 );
-  //setResizePolicy( Q3ScrollView::AutoOneFit ); // Fit so that the box expands horizontally
+  setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
 }
 
 TransactionItem* TransactionItemView::addTransactionItem( ProgressItem* item, bool first )
 {
  TransactionItem *ti = new TransactionItem( mBigBox, item, first );
  mBigBox->layout()->addWidget( ti );
- //ti->hide();
- //QTimer::singleShot( 1000, ti, SLOT( show() ) );
 
  resize( mBigBox->width(), mBigBox->height() );
 
  return ti;
 }
 
-// TODO
-void TransactionItemView::resizeContents( int w, int h )
+void TransactionItemView::resizeEvent ( QResizeEvent *event )
 {
-  //kDebug(5300) << k_funcinfo << w << "," << h << endl;
-  //Q3ScrollView::resizeContents( w, h );
   // Tell the layout in the parent (progressdialog) that our size changed
   updateGeometry();
-  // Resize the parent (progressdialog) - this works but resize horizontally too often
-  //parentWidget()->adjustSize();
 
-#ifdef QT3_SUPPORT
-  QApplication::sendPostedEvents( 0, QEvent::ChildInserted );
-  QApplication::sendPostedEvents( 0, QEvent::LayoutHint );
-#endif
   QSize sz = parentWidget()->sizeHint();
   int currentWidth = parentWidget()->width();
+
   // Don't resize to sz.width() every time when it only reduces a little bit
   if ( currentWidth < sz.width() || currentWidth > sz.width() + 100 )
     currentWidth = sz.width();
   parentWidget()->resize( currentWidth, sz.height() );
+
+  QScrollArea::resizeEvent( event );
 }
 
 QSize TransactionItemView::sizeHint() const
@@ -128,6 +118,11 @@ QSize TransactionItemView::minimumSizeHint() const
 
 void TransactionItemView::slotLayoutFirstItem()
 {
+  //This slot is called whenever a TransactionItem is deleted, so this is a
+  //good place to call updateGeometry(), so our parent takes the new size
+  //into account and resizes.
+  updateGeometry();
+
   /*
      The below relies on some details in Qt's behaviour regarding deleting
      objects. This slot is called from the destroyed signal of an item just
@@ -176,7 +171,7 @@ TransactionItem::TransactionItem( QWidget* parent,
   h->layout()->addWidget( mProgress );
 
   if ( item->canBeCanceled() ) {
-    mCancelButton = new QPushButton( SmallIcon( "cancel" ), QString(), h );
+    mCancelButton = new QPushButton( SmallIcon( "list-remove" ), QString(), h );
     mCancelButton->setToolTip( i18n("Cancel this operation.") );
     connect ( mCancelButton, SIGNAL( clicked() ),
               this, SLOT( slotItemCanceled() ));
