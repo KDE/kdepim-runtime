@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Engine
+Comment=Akonadi PIM data engine
+ServiceTypes=Plasma/DataEngine
+Type=Service
+Icon=mail
+X-KDE-Library=plasma_engine_akonadi
+X-EngineName=akonadi

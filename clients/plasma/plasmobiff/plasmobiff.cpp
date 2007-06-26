@@ -20,6 +20,7 @@
 
 #include "plasmobiff.h"
 
+#include <QApplication>
 #include <QImage>
 #include <QPaintDevice>
 #include <QLabel>
@@ -31,14 +32,10 @@
 #include <QGraphicsItem>
 #include <QColor>
 
-#include <plasma/applet.h>
-#include <plasma/dataengine.h>
-
-PlasmoBiff::PlasmoBiff()
-  : Plasma::Applet(parent, args),
-    m_dialog(0)
+PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
+  : Plasma::Applet(parent, args)
 {
-  setFlags(QGraphicsItem::ItemIsMoveable);
+  setFlags(QGraphicsItem::ItemIsMovable);
 
   // DataEngine
 
@@ -46,9 +43,13 @@ PlasmoBiff::PlasmoBiff()
 
 }
 
-PlasmoBiff::constraintsUpdated()
+PlasmoBiff::~ PlasmoBiff()
 {
-  prepareGeometryUpdated();
+}
+
+void PlasmoBiff::constraintsUpdated()
+{
+  prepareGeometryChange();
 
   if (formFactor() == Plasma::Planar ||
       formFactor() == Plasma::MediaCenter) {
@@ -61,9 +62,8 @@ PlasmoBiff::constraintsUpdated()
 
 }
 
-PlasmoBiff::paintInterface()
+void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-
 }
 
 #include "plasmobiff.moc"

@@ -34,6 +34,7 @@
 
 #include <plasma/applet.h>
 #include <plasma/dataengine.h>
+#include <plasma/svg.h>
 
 class PlasmoBiff : public Plasma::Applet
 {
