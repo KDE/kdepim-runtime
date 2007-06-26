@@ -34,6 +34,7 @@
 #define __KPIM_PROGRESSDIALOG_H__
 
 #include <QScrollArea>
+#include <QMap>
 #include <KVBox>
 
 #include "overlaywidget.h"
@@ -42,6 +43,7 @@
 class QProgressBar;
 class QFrame;
 class QLabel;
+class QPushButton;
 
 namespace KPIM {
 class ProgressItem;
