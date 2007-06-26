@@ -175,6 +175,17 @@ void MaildirTest::testMaildirCreation()
   QVERIFY(d.isValid());
 }
 
+void MaildirTest::testMaildirRemoveEntry()
+{
+  Maildir d( m_temp->name() );
+  QByteArray data = "newentry\n";
+  QString key = d.addEntry( data );
+  QVERIFY( !key.isEmpty() );
+  QCOMPARE( data, d.readEntry( key ) );
+  QVERIFY( d.removeEntry( key ) );
+  QVERIFY( d.readEntry(key).isEmpty() );
+}
+
 void MaildirTest::testMaildirListSubfolders()
 {
   initTestCase();

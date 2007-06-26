@@ -21,6 +21,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QUuid>
 
 #include <klocale.h>
 
@@ -221,7 +222,7 @@ QByteArray Maildir::readEntry( const QString& key ) const
 
 static QString createUniqueFileName()
 {
-  return "fasel";
+  return QUuid::createUuid().toString();
 }
 
 void Maildir::writeEntry( const QString& key, const QByteArray& data )
@@ -248,9 +249,19 @@ QString Maildir::addEntry( const QByteArray& data )
   f.write( data );
   f.close();
   if (!f.rename( finalKey )) {
-    qWarning() << "Maildir: Failed to add entry!";
+    qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
   }
   return uniqueKey;
 }
 
+bool Maildir::removeEntry( const QString& key )
+{
+  QString realKey( d->findRealKey( key ) );
+  if ( realKey.isEmpty() ) {
+      // FIXME error handling?
+      qWarning() << "Maildir::removeEntry unable to find: " << key;
+      return false;
+  }
+  return QFile::remove(realKey);
+}
 

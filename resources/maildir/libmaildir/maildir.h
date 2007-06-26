@@ -49,6 +49,7 @@ public:
     QByteArray readEntry( const QString& key ) const;
     void writeEntry( const QString& key, const QByteArray& data );
     QString addEntry( const QByteArray& data );
+    bool removeEntry( const QString& key );
 private:
     void swap( const Maildir& ); 
     class Private;
