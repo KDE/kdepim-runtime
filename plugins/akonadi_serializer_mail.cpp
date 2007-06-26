@@ -50,7 +50,7 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 
 void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != "RFC822" && label != "ENVELOPE" ) {
+    if ( label != Item::PartBody && label != "ENVELOPE" ) {
       item.addPart( label, data.readAll() );
       return;
     }
@@ -68,7 +68,7 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
         msg = item.payload<MessagePtr>();
     }
 
-    if ( label == "RFC822" ) {
+    if ( label == Item::PartBody ) {
         msg->setContent( data.readAll() );
         msg->parse();
     } else if ( label == "ENVELOPE" ) {
@@ -111,7 +111,7 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
 
 void SerializerPluginMail::serialize( const Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != "RFC822" )
+    if ( label != Item::PartBody )
       return;
 
     boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();

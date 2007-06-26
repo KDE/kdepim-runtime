@@ -29,7 +29,7 @@ using namespace Akonadi;
 
 void SerializerPluginAddresee::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != "RFC822" ) {
+    if ( label != Item::PartBody ) {
       item.addPart( label, data.readAll() );
       return;
     }
@@ -48,7 +48,7 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, QI
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != "RFC822" || !item.hasPayload<KABC::Addressee>() )
+    if ( label != Item::PartBody || !item.hasPayload<KABC::Addressee>() )
       return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();
     data.write( m_converter.createVCard( a ) );

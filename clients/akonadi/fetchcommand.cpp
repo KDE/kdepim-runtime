@@ -41,7 +41,7 @@ void FetchCommand::exec()
   } else {
     foreach( Item item, fetchJob->items() ) {
       QByteArray data;
-      ItemSerializer::serialize( item, "RFC822", data );
+      ItemSerializer::serialize( item, Item::PartBody, data );
       out() << data << endl;
     }
   }

@@ -82,7 +82,7 @@ void AkonadiSlave::get(const KUrl & url)
   } else {
     const Item item = job->items().first();
     QByteArray tmp;
-    ItemSerializer::serialize( item, "RFC822", tmp );
+    ItemSerializer::serialize( item, Item::PartBody, tmp );
     data( tmp );
     data( QByteArray() );
     finished();

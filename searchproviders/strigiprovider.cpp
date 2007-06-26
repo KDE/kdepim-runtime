@@ -39,7 +39,7 @@ Akonadi::StrigiProvider::StrigiProvider(const QString & id) :
 {
   mMonitor = new Monitor( this );
   mMonitor->monitorAll();
-  mMonitor->addFetchPart( ItemFetchJob::PartAll );
+  mMonitor->addFetchPart( Item::PartAll );
   connect( mMonitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), SLOT(itemChanged(Akonadi::Item)) );
   connect( mMonitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
   connect( mMonitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
@@ -53,7 +53,7 @@ Akonadi::StrigiProvider::~ StrigiProvider()
 void Akonadi::StrigiProvider::itemChanged(const Akonadi::Item & item)
 {
   QByteArray data;
-  ItemSerializer::serialize( item, "RFC822", data );
+  ItemSerializer::serialize( item, Item::PartBody, data );
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 

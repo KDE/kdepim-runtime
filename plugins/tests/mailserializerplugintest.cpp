@@ -47,7 +47,7 @@ void MailSerializerPluginTest::testMailPlugin()
   // deserializing
   Item item;
   item.setMimeType( "message/rfc822" );
-  ItemSerializer::deserialize( item, "RFC822", serialized );
+  ItemSerializer::deserialize( item, Item::PartBody, serialized );
 
   QVERIFY( item.hasPayload<MessagePtr>() );
   MessagePtr msg = item.payload<MessagePtr>();
@@ -58,7 +58,7 @@ void MailSerializerPluginTest::testMailPlugin()
 
   // serializing
   QByteArray data;
-  ItemSerializer::serialize( item, "RFC822", data );
+  ItemSerializer::serialize( item, Item::PartBody, data );
   QCOMPARE( data, serialized );
 }
 

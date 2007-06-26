@@ -26,7 +26,7 @@
 KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent )
 {
-  addFetchPart( Akonadi::ItemFetchJob::PartAll );
+  addFetchPart( Akonadi::Item::PartAll );
 }
 
 int KABCModel::columnCount( const QModelIndex& ) const

@@ -120,7 +120,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
       mStack->setCurrentWidget( mAddresseeView );
     } else {
       QByteArray data;
-      ItemSerializer::serialize( item, "RFC822", data );
+      ItemSerializer::serialize( item, Item::PartBody, data );
       mDataView->setPlainText( data );
       mStack->setCurrentWidget( mDataView );
     }

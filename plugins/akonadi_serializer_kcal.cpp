@@ -28,7 +28,7 @@ using namespace Akonadi;
 
 void SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODevice & data)
 {
-  if ( label != "RFC822" ) {
+  if ( label != Item::PartBody ) {
     item.addPart( label, data.readAll() );
     return;
   }
@@ -49,7 +49,7 @@ void SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODe
 
 void SerializerPluginKCal::serialize(const Item & item, const QString & label, QIODevice & data)
 {
-  if ( label != "RFC822" || !item.hasPayload<IncidencePtr>() )
+  if ( label != Item::PartBody || !item.hasPayload<IncidencePtr>() )
     return;
   IncidencePtr i = item.payload<IncidencePtr>();
   // ### I guess this can be done without hardcoding stuff
