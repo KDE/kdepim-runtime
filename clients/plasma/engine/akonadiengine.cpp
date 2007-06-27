@@ -39,14 +39,14 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QStringList& args)
   Monitor *monitor = new Monitor( this );
   monitor->monitorMimeType( "message/rfc822" );
   // HACK remove once ENVELOPE works
-  monitor->addFetchPart( "RFC822" );
+  monitor->addFetchPart( Item::PartBody );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
 
   // FIXME: hardcoded collection id
   ItemFetchJob *fetch = new ItemFetchJob( Collection( 421 ), this );
   // HACK remove once ENVELOPE works
-  fetch->addFetchPart( "RFC822" );
+  fetch->addFetchPart( Item::PartBody );
   connect( fetch, SIGNAL(result(KJob*)), SLOT(fetchDone(KJob*)) );
 }
 

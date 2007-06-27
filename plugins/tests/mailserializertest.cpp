@@ -41,7 +41,7 @@ void MailSerializerTest::testEnvelopeDeserialize()
   buffer.setData( env );
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
-  serializer->deserialize( i, "ENVELOPE", buffer );
+  serializer->deserialize( i, Item::PartEnvelope, buffer );
   QVERIFY( i.hasPayload<MessagePtr>() );
 
   MessagePtr msg = i.payload<MessagePtr>();

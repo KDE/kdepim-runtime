@@ -50,7 +50,7 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 
 void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody && label != "ENVELOPE" ) {
+    if ( label != Item::PartBody && label != Item::PartEnvelope ) {
       item.addPart( label, data.readAll() );
       return;
     }
@@ -71,7 +71,7 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
     if ( label == Item::PartBody ) {
         msg->setContent( data.readAll() );
         msg->parse();
-    } else if ( label == "ENVELOPE" ) {
+    } else if ( label == Item::PartEnvelope ) {
         QList<QByteArray> env;
         ImapParser::parseParenthesizedList( data.readAll(), env );
         Q_ASSERT( env.count() >= 10 );
