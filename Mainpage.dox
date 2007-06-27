@@ -18,6 +18,7 @@ blocks section below.
   - \ref akonadi_design_communication
 - \ref akonadi_usage
 - <a href="http://pim.kde.org/akonadi">Website</a>
+- \ref akonadi_todos
 
 \section akonadi_building_blocks Building blocks
 
@@ -433,4 +434,5 @@ It is a management tool which provides user interfaces for the following tasks:
 
 */
 
+// DOXYGEN_SET_INPUT += @topdir@/akonadi/doc
 // DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients kioslave kabc kmime plugins
