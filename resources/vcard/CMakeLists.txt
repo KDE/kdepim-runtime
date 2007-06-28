@@ -14,7 +14,7 @@ set( vcardresource_SRCS
   main.cpp
 )
 
-install( FILES vcardresource.desktop vcard.svg DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
+install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
 
 kde4_automoc(${vcardresource_SRCS})
 

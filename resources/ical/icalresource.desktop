@@ -16,7 +16,7 @@ Comment[x-test]=xxAn agent to load data from a local iCal filexx
 Comment[zh_TW]=從本地 iCal 檔載入資料的代理程式
 Type=AkonadiResource
 Exec=akonadi_ical_resource
-Icon=ical
+Icon=text-calendar
 
 X-Akonadi-MimeTypes=text/calendar
 X-Akonadi-Capabilitites=text/calendar

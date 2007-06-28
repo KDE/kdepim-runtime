@@ -8,7 +8,7 @@ Name[sv]=Akonadi Maildir-resurs
 Name[zh_TW]=Akonadi Maildir 資源
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
-Icon=
+Icon=mail
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilitites=message/rfc822

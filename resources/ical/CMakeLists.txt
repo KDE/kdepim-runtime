@@ -15,7 +15,7 @@ set( icalresource_SRCS
   main.cpp
 )
 
-install( FILES icalresource.desktop ical.svg DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
+install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
 
 kde4_automoc(${icalresource_SRCS})
 
