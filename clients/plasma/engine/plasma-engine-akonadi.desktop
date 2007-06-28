@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Engine
+Name[sv]=Akonadi-gränssnitt
 Comment=Akonadi PIM data engine
+Comment[sv]=Akonadi-gränssnitt för personlig informationshantering
 ServiceTypes=Plasma/DataEngine
 Type=Service
 Icon=mail
