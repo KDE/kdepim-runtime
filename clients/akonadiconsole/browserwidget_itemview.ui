@@ -15,6 +15,19 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1" >
     <widget class="QLabel" name="label" >
      <property name="text" >
       <string>Model:</string>
@@ -24,11 +37,17 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1" >
+   <item row="0" column="2" >
     <widget class="QComboBox" name="modelBox" />
    </item>
-   <item row="1" column="0" colspan="2" >
+   <item row="1" column="0" colspan="3" >
     <widget class="QTreeView" name="itemView" >
+     <property name="dragEnabled" >
+      <bool>true</bool>
+     </property>
+     <property name="alternatingRowColors" >
+      <bool>true</bool>
+     </property>
      <property name="rootIsDecorated" >
       <bool>false</bool>
      </property>
@@ -36,7 +55,6 @@
    </item>
   </layout>
  </widget>
- <includes/>
  <resources/>
  <connections/>
 </ui>
