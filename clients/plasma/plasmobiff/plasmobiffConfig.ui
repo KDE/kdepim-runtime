@@ -1,0 +1,19 @@
+<ui version="4.0" >
+ <class>plasmobiffConfig</class>
+ <widget class="QWidget" name="plasmobiffConfig" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>398</width>
+    <height>392</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" />
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
