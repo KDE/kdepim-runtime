@@ -37,6 +37,7 @@ class AkonadiEngine : public Plasma::DataEngine
 
   private slots:
     void itemAdded( const Akonadi::Item &item );
+    void itemChanged( const Akonadi::Item &item );
     void fetchDone( KJob* job );
 };
 

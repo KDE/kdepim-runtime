@@ -42,6 +42,8 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QStringList& args)
   monitor->addFetchPart( Item::PartBody );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
+  connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QStringList)),
+           SLOT(itemChanged(Akonadi::Item)) );
 
   // FIXME: hardcoded collection id
   ItemFetchJob *fetch = new ItemFetchJob( Collection( 421 ), this );
@@ -59,7 +61,7 @@ void AkonadiEngine::itemAdded(const Akonadi::Item & item)
   if ( !item.hasPayload<MessagePtr>() )
     return;
   MessagePtr msg = item.payload<MessagePtr>();
-  QString source = QString::number( item.reference().id() );
+  const QString source = QString::number( item.reference().id() );
   setData( source, "Subject", msg->subject()->asUnicodeString() );
   setData( source, "From", msg->from()->asUnicodeString() );
 }
@@ -71,6 +73,16 @@ void AkonadiEngine::fetchDone(KJob * job)
   Item::List items = static_cast<ItemFetchJob*>( job )->items();
   foreach ( const Item item, items )
     itemAdded( item );
+}
+
+void AkonadiEngine::itemChanged(const Akonadi::Item & item)
+{
+  const QString source = QString::number( item.reference().id() );
+  if ( !sources().contains( source ) )
+    return;
+  MessagePtr msg = item.payload<MessagePtr>();
+  setData( source, "Subject", msg->subject()->asUnicodeString() );
+  setData( source, "From", msg->from()->asUnicodeString() );
 }
 
 #include "akonadiengine.moc"
