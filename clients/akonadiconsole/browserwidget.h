@@ -21,6 +21,9 @@
 #define BROWSERWIDGET_H
 
 #include <ui_browserwidget_itemview.h>
+#include <ui_browserwidget_contentview.h>
+
+#include <libakonadi/item.h>
 
 #include <QtGui/QWidget>
 
@@ -54,16 +57,16 @@ class BrowserWidget: public QWidget
     void itemActivated( const QModelIndex &index );
     void itemFetchDone( KJob *job );
     void modelChanged();
+    void save();
 
   private:
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionView *mCollectionView;
     Akonadi::ItemModel *mItemModel;
-    QStackedWidget *mStack;
-    QTextEdit *mDataView;
-    KPIM::AddresseeView *mAddresseeView;
     Ui::ItemViewWidget itemUi;
+    Ui::ContentViewWidget contentUi;
     int mCurrentCollection;
+    Akonadi::Item mCurrentItem;
 };
 
 #endif

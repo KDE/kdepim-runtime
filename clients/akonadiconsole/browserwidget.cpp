@@ -24,6 +24,7 @@
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemserializer.h>
+#include <libakonadi/itemstorejob.h>
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 
@@ -57,7 +58,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
   splitter->addWidget( mCollectionView );
 
-  mCollectionModel = new Akonadi::MessageCollectionModel( this );
+  mCollectionModel = new Akonadi::CollectionModel( this );
   mCollectionView->setModel( mCollectionModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
@@ -77,13 +78,10 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   splitter2->addWidget( itemViewParent );
   itemViewParent->layout()->setMargin( 0 );
 
-  mStack = new QStackedWidget( this );
-  mDataView = new QTextEdit( mStack );
-  mDataView->setReadOnly( true );
-  mAddresseeView = new KPIM::AddresseeView( mStack );
-  mStack->addWidget( mDataView );
-  mStack->addWidget( mAddresseeView );
-  splitter2->addWidget( mStack );
+  QWidget *contentViewParent = new QWidget( this );
+  contentUi.setupUi( contentViewParent );
+  connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
+  splitter2->addWidget( contentViewParent );
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
@@ -113,16 +111,17 @@ void BrowserWidget::itemFetchDone(KJob * job)
     qWarning() << "No item found!";
   } else {
     const Item item = fetch->items().first();
+    mCurrentItem = item;
     if ( item.hasPayload<KABC::Addressee>() ) {
       const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
-      mAddresseeView->setAddressee( addr );
-      mStack->setCurrentWidget( mAddresseeView );
+      contentUi.addresseeView->setAddressee( addr );
+      contentUi.stack->setCurrentWidget( contentUi.addresseeView );
     } else {
       QByteArray data;
       ItemSerializer::serialize( item, Item::PartBody, data );
-      mDataView->setPlainText( data );
-      mStack->setCurrentWidget( mDataView );
+      contentUi.dataView->setPlainText( data );
+      contentUi.stack->setCurrentWidget( contentUi.dataViewPage );
     }
   }
 }
@@ -143,6 +142,15 @@ void BrowserWidget::modelChanged()
   itemUi.itemView->setModel( mItemModel );
   if ( mCurrentCollection > 0 )
     mItemModel->setCollection( Collection( mCurrentCollection ) );
+}
+
+void BrowserWidget::save()
+{
+  const QByteArray data = contentUi.dataView->toPlainText().toUtf8();
+  Item item = mCurrentItem;
+  ItemSerializer::deserialize( item, Item::PartBody, data );
+  ItemStoreJob *store = new ItemStoreJob( item, this );
+  store->storePayload();
 }
 
 #include "browserwidget.moc"

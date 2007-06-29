@@ -18,7 +18,7 @@ qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
 )
 
 kde4_automoc(${akonadiconsole_bin_SRCS})
-kde4_add_ui_files(akonadiconsole_bin_SRCS browserwidget_itemview.ui)
+kde4_add_ui_files(akonadiconsole_bin_SRCS browserwidget_itemview.ui browserwidget_contentview.ui)
 
 kde4_add_executable(akonadiconsole_bin ${akonadiconsole_bin_SRCS})
 set_target_properties(akonadiconsole_bin PROPERTIES OUTPUT_NAME akonadiconsole)
