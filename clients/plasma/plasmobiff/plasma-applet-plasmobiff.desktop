@@ -1,0 +1,16 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=PlasmoBiff
+Type=Service
+ServiceTypes=Plasma/Applet
+
+X-KDE-Library=plasma_applet_plasmobiff
+X-KDE-PluginInfo-Author=The Akonadi Team
+X-KDE-PluginInfo-Email=thomas.moenicke@kdemail.net
+X-KDE-PluginInfo-Name=plasmobiff
+X-KDE-PluginInfo-Version=pre0.1
+X-KDE-PluginInfo-Website=http://akonadi.kde.org/
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
