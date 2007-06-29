@@ -140,7 +140,7 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
   painter->setPen(Qt::white);
 
   QString from = m_fromList[index];
-  if(from.size() > 33) // cut if too long
+  if(from.size() > 25) // cut if too long
     {
       from.resize(30);
       from.append("...");
@@ -152,7 +152,7 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 		    from);
 
   QString subject = m_subjectList[index];
-  if(subject.size() > 33) // cut
+  if(subject.size() > 25) // cut
     {
       subject.resize(30);
       subject.append("...");
@@ -180,10 +180,8 @@ void PlasmoBiff::updated(const QString &source, const Plasma::DataEngine::Data &
   m_fromList[1] = m_fromList[0];
   m_subjectList[1] = m_subjectList[0];
 
-  if(source == "From")
-    m_fromList[0] = data["From"].toString();
-  else
-    m_subjectList[0] = data["Subject"].toString();
+  m_fromList[0] = data["From"].toString();
+  m_subjectList[0] = data["Subject"].toString();
 
   update();
 }
