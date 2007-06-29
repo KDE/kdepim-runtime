@@ -36,7 +36,9 @@
 
 PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
   : Plasma::Applet(parent, args),
-    m_dialog(0)
+    m_dialog(0),
+    m_fmFrom(QApplication::font()),
+    m_fmSubject(QApplication::font())
 {
   setFlags(QGraphicsItem::ItemIsMovable);
 
@@ -50,10 +52,27 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
 
   // DataEngine
   Plasma::DataEngine* akonadiEngine = dataEngine("akonadi");
-  akonadiEngine->connectSource(m_email, this);
-
+  //  akonadiEngine->connectSource(m_fromList[0], this);
+  akonadiEngine->connectAllSources(this);
+  
   constraintsUpdated();
 
+  QFontMetrics fmFrom(QApplication::font());
+  QFontMetrics fmSubject(QApplication::font());
+
+  //  m_fontFrom.
+  m_fontSubject.setBold(true);
+  /*
+  m_fromList[0] = QString("mail1 longtextlongtextlongtext");
+  m_fromList[1] = QString("mail2 longtextlongtextlongtext");
+  m_fromList[2] = QString("mail3 longtext");
+  m_fromList[3] = QString("mail4 longtextlongtextlongtext");
+
+  m_subjectList[0] = QString("subject1 longtextlongtextlongtext");
+  m_subjectList[1] = QString("subject2 longtextlongtextlongtext");
+  m_subjectList[2] = QString("subject3 longtext");
+  m_subjectList[3] = QString("subject4 longtextlongtextlongtext");
+  */
 }
 
 PlasmoBiff::~ PlasmoBiff()
@@ -94,14 +113,73 @@ void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsIt
 {
 
   painter->setRenderHint(QPainter::SmoothPixmapTransform);
-
+  // draw the main background stuff
   m_theme->paint(painter, boundingRect(), "email_frame");
+
+  QRectF bRect = boundingRect();
+  bRect.setX(bRect.x()+228);
+
+  // draw the 4 channels
+  bRect.setY(bRect.y()+102);
+  drawEmail(0, bRect, painter);
+
+  bRect.setY(bRect.y()-88);
+  drawEmail(1, bRect, painter);
+
+  bRect.setY(bRect.y()-88);
+  drawEmail(2, bRect, painter);
+
+  bRect.setY(bRect.y()-88);
+  drawEmail(3, bRect, painter);
 
 }
 
 QRectF PlasmoBiff::boundingRect() const
 {
   return m_bounds;
+}
+
+void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
+{
+
+  QPen _pen = painter->pen();
+  QFont _font = painter->font();
+
+  painter->setPen(Qt::white);
+
+  painter->setFont(m_fontFrom);
+  painter->drawText((int)(rect.width()/2 - m_fmFrom.width(m_fromList[index]) / 2),
+		    (int)((rect.height()/2) - m_fmFrom.xHeight()*3), 
+		    m_fromList[index]);
+
+  painter->setFont(m_fontSubject);
+  painter->drawText((int)(rect.width()/2 - m_fmSubject.width(m_subjectList[index]) / 2),
+		    (int)((rect.height()/2) - m_fmSubject.xHeight()*3 + 15), 
+		    m_subjectList[index]);
+
+  // restore
+  painter->setFont(_font);
+  painter->setPen(_pen);
+
+}
+
+void PlasmoBiff::updated(const QString &source, Plasma::DataEngine::Data &data)
+{
+
+  m_fromList[3] = m_fromList[2];
+  m_subjectList[3] = m_subjectList[2];
+
+  m_fromList[2] = m_fromList[1];
+  m_subjectList[2] = m_subjectList[1];
+
+  m_fromList[1] = m_fromList[0];
+  m_subjectList[1] = m_subjectList[0];
+
+  m_fromList[0] = data["From"].toString();
+  m_subjectList[0] = data["Subject"].toString();
+
+  update();
+
 }
 
 #include "plasmobiff.moc"
