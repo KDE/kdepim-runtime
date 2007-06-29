@@ -51,10 +51,10 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
   m_theme->resize(m_xPixelSize,m_yPixelSize);
 
   // DataEngine
-  Plasma::DataEngine* akonadiEngine = dataEngine("akonadi");
-  //  akonadiEngine->connectSource(m_fromList[0], this);
-  akonadiEngine->connectAllSources(this);
-  
+  engine = dataEngine("akonadi");
+  engine->connectAllSources(this);
+  connect( engine, SIGNAL(newSource(QString)), SLOT(newSource(QString)) );
+
   constraintsUpdated();
 
   QFontMetrics fmFrom(QApplication::font());
@@ -148,7 +148,7 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 
   painter->setFont(m_fontFrom);
   painter->drawText((int)(rect.width()/2 - m_fmFrom.width(from) / 2),
-		    (int)((rect.height()/2) - m_fmFrom.xHeight()*3), 
+		    (int)((rect.height()/2) - m_fmFrom.xHeight()*3),
 		    from);
 
   QString subject = m_subjectList[index];
@@ -160,7 +160,7 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 
   painter->setFont(m_fontSubject);
   painter->drawText((int)(rect.width()/2 - m_fmSubject.width(subject) / 2),
-		    (int)((rect.height()/2) - m_fmSubject.xHeight()*3 + 15), 
+		    (int)((rect.height()/2) - m_fmSubject.xHeight()*3 + 15),
 		    subject);
 
   // restore
@@ -169,9 +169,8 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 
 }
 
-void PlasmoBiff::updated(const QString &source, Plasma::DataEngine::Data &data)
+void PlasmoBiff::updated(const QString &source, const Plasma::DataEngine::Data &data)
 {
-
   m_fromList[3] = m_fromList[2];
   m_subjectList[3] = m_subjectList[2];
 
@@ -183,11 +182,15 @@ void PlasmoBiff::updated(const QString &source, Plasma::DataEngine::Data &data)
 
   if(source == "From")
     m_fromList[0] = data["From"].toString();
-  else 
+  else
     m_subjectList[0] = data["Subject"].toString();
 
   update();
+}
 
+void PlasmoBiff::newSource(const QString & source)
+{
+  engine->connectSource( source, this );
 }
 
 #include "plasmobiff.moc"

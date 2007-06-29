@@ -57,28 +57,32 @@ class PlasmoBiff : public Plasma::Applet
 
   public slots:
     void configureDialog();
-  void updated(const QString &source, Plasma::DataEngine::Data &data);
+    void updated(const QString &source, const Plasma::DataEngine::Data &data);
 
- private:
-  void drawEmail(int index, const QRectF& rect, QPainter* painter) ;
+  private:
+    void drawEmail(int index, const QRectF& rect, QPainter* painter) ;
 
-  Plasma::Svg* m_theme;
-  QRectF m_bounds;
-  int m_xPixelSize;
-  int m_yPixelSize;
+  private slots:
+    void newSource( const QString &source );
 
-  KDialog *m_dialog;
-  Ui::plasmobiffConfig ui;
+  private:
+    Plasma::Svg* m_theme;
+    Plasma::DataEngine *engine;
+    QRectF m_bounds;
+    int m_xPixelSize;
+    int m_yPixelSize;
 
-  QFontMetrics m_fmFrom;
-  QFontMetrics m_fmSubject;
+    KDialog *m_dialog;
+    Ui::plasmobiffConfig ui;
 
-  QFont m_fontFrom;
-  QFont m_fontSubject;
+    QFontMetrics m_fmFrom;
+    QFontMetrics m_fmSubject;
 
-  QMap<int,QString> m_fromList;
-  QMap<int,QString> m_subjectList;
+    QFont m_fontFrom;
+    QFont m_fontSubject;
 
+    QMap<int,QString> m_fromList;
+    QMap<int,QString> m_subjectList;
 };
 
 K_EXPORT_PLASMA_APPLET(plasmobiff, PlasmoBiff)
