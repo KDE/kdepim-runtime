@@ -62,17 +62,9 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
 
   //  m_fontFrom.
   m_fontSubject.setBold(true);
-  /*
-  m_fromList[0] = QString("mail1 longtextlongtextlongtext");
-  m_fromList[1] = QString("mail2 longtextlongtextlongtext");
-  m_fromList[2] = QString("mail3 longtext");
-  m_fromList[3] = QString("mail4 longtextlongtextlongtext");
 
-  m_subjectList[0] = QString("subject1 longtextlongtextlongtext");
-  m_subjectList[1] = QString("subject2 longtextlongtextlongtext");
-  m_subjectList[2] = QString("subject3 longtext");
-  m_subjectList[3] = QString("subject4 longtextlongtextlongtext");
-  */
+  m_subjectList[0] = QString("hello aKademy");
+
 }
 
 PlasmoBiff::~ PlasmoBiff()
@@ -117,7 +109,7 @@ void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsIt
   m_theme->paint(painter, boundingRect(), "email_frame");
 
   QRectF bRect = boundingRect();
-  bRect.setX(bRect.x()+228);
+  bRect.setX(bRect.x()+93);
 
   // draw the 4 channels
   bRect.setY(bRect.y()+102);
@@ -147,15 +139,29 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 
   painter->setPen(Qt::white);
 
+  QString from = m_fromList[index];
+  if(from.size() > 33) // cut if too long
+    {
+      from.resize(30);
+      from.append("...");
+    }
+
   painter->setFont(m_fontFrom);
-  painter->drawText((int)(rect.width()/2 - m_fmFrom.width(m_fromList[index]) / 2),
+  painter->drawText((int)(rect.width()/2 - m_fmFrom.width(from) / 2),
 		    (int)((rect.height()/2) - m_fmFrom.xHeight()*3), 
-		    m_fromList[index]);
+		    from);
+
+  QString subject = m_subjectList[index];
+  if(subject.size() > 33) // cut
+    {
+      subject.resize(30);
+      subject.append("...");
+    }
 
   painter->setFont(m_fontSubject);
-  painter->drawText((int)(rect.width()/2 - m_fmSubject.width(m_subjectList[index]) / 2),
+  painter->drawText((int)(rect.width()/2 - m_fmSubject.width(subject) / 2),
 		    (int)((rect.height()/2) - m_fmSubject.xHeight()*3 + 15), 
-		    m_subjectList[index]);
+		    subject);
 
   // restore
   painter->setFont(_font);
@@ -175,8 +181,10 @@ void PlasmoBiff::updated(const QString &source, Plasma::DataEngine::Data &data)
   m_fromList[1] = m_fromList[0];
   m_subjectList[1] = m_subjectList[0];
 
-  m_fromList[0] = data["From"].toString();
-  m_subjectList[0] = data["Subject"].toString();
+  if(source == "From")
+    m_fromList[0] = data["From"].toString();
+  else 
+    m_subjectList[0] = data["Subject"].toString();
 
   update();
 
