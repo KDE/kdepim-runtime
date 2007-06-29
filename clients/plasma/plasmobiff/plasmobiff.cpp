@@ -32,12 +32,25 @@
 #include <QGraphicsItem>
 #include <QColor>
 
+#include <plasma/svg.h>
+
 PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
-  : Plasma::Applet(parent, args)
+  : Plasma::Applet(parent, args),
+    m_dialog(0)
 {
   setFlags(QGraphicsItem::ItemIsMovable);
 
+  KConfigGroup cg = appletConfig();
+  m_xPixelSize = cg.readEntry("xsize", 413);
+  m_yPixelSize = cg.readEntry("ysize", 307);
+
+  m_theme = new Plasma::Svg("widgets/akonadi", this);
+  m_theme->setContentType(Plasma::Svg::SingleImage);
+  m_theme->resize(m_xPixelSize,m_yPixelSize);
+
   // DataEngine
+  Plasma::DataEngine* akonadiEngine = dataEngine("akonadi");
+  akonadiEngine->connectSource(m_email, this);
 
   constraintsUpdated();
 
@@ -62,8 +75,28 @@ void PlasmoBiff::constraintsUpdated()
 
 }
 
+void PlasmoBiff::configureDialog()
+{
+  if (m_dialog == 0) {
+    m_dialog = new KDialog;
+    m_dialog->setCaption( "Configure PlasmoBiff" );
+
+    ui.setupUi(m_dialog->mainWidget());
+    m_dialog->setButtons( KDialog::Ok | KDialog::Cancel | KDialog::Apply );
+    connect( m_dialog, SIGNAL(applyClicked()), this, SLOT(configAccepted()) );
+    connect( m_dialog, SIGNAL(okClicked()), this, SLOT(configAccepted()) );
+
+  }
+  m_dialog->show();
+}
+
 void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
+
+  painter->setRenderHint(QPainter::SmoothPixmapTransform);
+
+  m_theme->paint(painter, boundingRect(), "email_frame");
+
 }
 
 QRectF PlasmoBiff::boundingRect() const

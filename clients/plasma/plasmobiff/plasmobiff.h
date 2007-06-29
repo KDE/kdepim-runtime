@@ -34,7 +34,14 @@
 
 #include <plasma/applet.h>
 #include <plasma/dataengine.h>
-#include <plasma/svg.h>
+#include "ui_plasmobiffConfig.h"
+
+class KDialog;
+
+namespace Plasma
+{
+  class Svg;
+}
 
 class PlasmoBiff : public Plasma::Applet
 {
@@ -49,11 +56,18 @@ class PlasmoBiff : public Plasma::Applet
     QRectF boundingRect() const;
 
   public slots:
-    void configureDialog(){}
+    void configureDialog();
 
  private:
   Plasma::Svg* m_theme;
   QRectF m_bounds;
+  int m_xPixelSize;
+  int m_yPixelSize;
+
+  KDialog *m_dialog;
+  Ui::plasmobiffConfig ui;
+
+  QString m_email;
 
 };
 
