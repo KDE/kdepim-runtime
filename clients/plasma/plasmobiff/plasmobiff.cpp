@@ -60,8 +60,12 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
   QFontMetrics fmFrom(QApplication::font());
   QFontMetrics fmSubject(QApplication::font());
 
-  //  m_fontFrom.
+  m_fontFrom.setPointSize(9);
+  m_fontFrom.setFamily("Sans Serif");
+
   m_fontSubject.setBold(true);
+  m_fontSubject.setPointSize(9);
+  m_fontSubject.setFamily("Sans Serif");
 
   m_subjectList[0] = QString("hello aKademy");
 
@@ -140,19 +144,19 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
   painter->setPen(Qt::white);
 
   QString from = m_fromList[index];
-  if(from.size() > 25) // cut if too long
+  if(from.size() > 33) // cut if too long
     {
       from.resize(30);
       from.append("...");
     }
-
+  //  qDebug() << m_fontFrom.family() << m_fontFrom.pixelSize() << m_fontFrom.pointSize();
   painter->setFont(m_fontFrom);
   painter->drawText((int)(rect.width()/2 - m_fmFrom.width(from) / 2),
 		    (int)((rect.height()/2) - m_fmFrom.xHeight()*3),
 		    from);
 
   QString subject = m_subjectList[index];
-  if(subject.size() > 25) // cut
+  if(subject.size() > 33) // cut
     {
       subject.resize(30);
       subject.append("...");
