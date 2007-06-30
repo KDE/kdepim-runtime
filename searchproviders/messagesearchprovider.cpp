@@ -85,6 +85,10 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
     r.setProperty( "Bcc", Nepomuk::Variant(msg->bcc()->prettyAddresses()) );
   if ( msg->messageID( false ) )
     r.setProperty( "Message-Id", Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
+  if ( msg->references( false ) )
+    r.setProperty( "References", Nepomuk::Variant(msg->references()->asUnicodeString() );
+  if ( msg->inReplyTo( false ) )
+    r.setProperty( "In-Reply-to", Nepomuk::Variant(msg->inReplyTo()->asUnicodeString() );
 }
 
 int main( int argc, char **argv )
