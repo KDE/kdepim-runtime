@@ -205,6 +205,24 @@ void MaildirTest::testMaildirListSubfolders()
   cleanupTestCase();
 }
 
+
+void MaildirTest::testMaildirCreateSubfolders()
+{
+  initTestCase();
+  Maildir d( m_temp->name() );
+  QStringList entries = d.subFolderList();
+  QVERIFY( entries.isEmpty() );
+
+  d.addSubFolder( "subFolderTest" );
+  entries = d.subFolderList();
+  QVERIFY( !entries.isEmpty() );
+  QCOMPARE( entries.count(), 1 );
+  Maildir child = d.subFolder( entries.first() );
+  QVERIFY( child.isValid() );
+
+  cleanupTestCase();
+}
+
 void MaildirTest::cleanupTestCase()
 {
   m_temp->unlink();

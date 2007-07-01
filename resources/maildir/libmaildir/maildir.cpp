@@ -167,6 +167,8 @@ bool Maildir::isValid( QString &error ) const
 
 bool Maildir::create()
 {
+    // FIXME: in a failure case, this will leave partially created dirs around
+    // we should clean them up, but only if they didn't previously existed...
   Q_FOREACH( QString p, d->subPaths() ) {
     QDir dir( p );
     if ( !dir.exists( p ) ) {
@@ -175,6 +177,41 @@ bool Maildir::create()
     }
   }
   return true;
+}
+
+bool Maildir::addSubFolder( const QString& path )
+{
+    if ( isValid() ) {
+        // make the subdir dir
+        QDir dir( d->path );
+        QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
+        dir.cdUp();
+        if (!dir.exists( subDirPath ) )
+            dir.mkdir( subDirPath );
+        dir.cd( subDirPath );
+
+        const QString fullPath = dir.path() + "/" + path;
+        Maildir subdir( fullPath );
+        if ( subdir.create() )
+            return true;
+    }
+    return false;
+}
+
+
+Maildir Maildir::subFolder( const QString& subFolder )
+{
+    if ( isValid() ) {
+        // make the subdir dir
+        QDir dir( d->path );
+        QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
+        dir.cdUp();
+        if ( dir.exists( subDirPath ) ) {
+            dir.cd( subDirPath );
+            return Maildir( dir.path() + "/" + subFolder );
+        }
+    }
+    return Maildir();
 }
 
 QStringList Maildir::entryList() const

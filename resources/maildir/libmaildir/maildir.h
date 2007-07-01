@@ -41,17 +41,72 @@ public:
     /* Destructor */
     ~Maildir();
 
+    /** Returns whether the maildir has all the necessary subdirectories,
+     * that they are readable, etc.  */
     bool isValid() const;
+
+    /**
+     * Returns whether the maildir is valid, and sets the error out-parameter
+     * so it can be used to signal the kind of error to the user.
+     * @see isValid
+     */
     bool isValid( QString &error ) const;
+
+    /**
+     * Make a valid maildir at the path of this Maildir object. This involves 
+     * creating the necessary subdirs, etc. Note that an empty Maildir is
+     * not valid, unless it is given  valid path, or until create( ) is
+     * called on it.
+     */
     bool create();
+
+    /**
+     * Returns the list of items (mails) in the maildir. These are keys, which
+     * map to filenames, internally, but that's an implementation detail, which
+     * should not be relied on.
+     */
     QStringList entryList() const;
+
+    /**
+     * Returns the list of subfolders, as names (relative paths). Use the 
+     * subFolder method to get Maildir objects representing them.
+     */
     QStringList subFolderList() const;
+
+    /**
+     * Adds subfolder with the given @param folderName. Returns success or failure.
+     */
+    bool addSubFolder( const QString& folderName );
+
+    /**
+     * Returns a Maildir object for the given @param folderName. If such a folder
+     * exists, the Maildir object will be valid, otherwise you can call create()
+     * on it, to make a subfolder with that name.
+     */
+    Maildir subFolder( const QString& folderName );
+
+    /**
+     * Return the contents of the file in the maildir with the given @param key.
+     */
     QByteArray readEntry( const QString& key ) const;
+
+    /**
+     * Write the given @param data to a file in the maildir with the given
+     * @param key.
+     */
     void writeEntry( const QString& key, const QByteArray& data );
+
+    /**
+     * Adds the given @param to the maildir. Returns the key of the entry.
+     */
     QString addEntry( const QByteArray& data );
+
+    /**
+     * Removes the entry with the given @key. Returns success or failure.
+     */
     bool removeEntry( const QString& key );
 private:
-    void swap( const Maildir& ); 
+    void swap( const Maildir& );
     class Private;
     Private *d;
 };
