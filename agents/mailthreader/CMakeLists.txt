@@ -19,7 +19,7 @@ install( FILES mailthreaderagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sh
 kde4_automoc(${mailthreaderagent_SRCS})
 
 kde4_add_executable(akonadi_mailthreader_agent RUN_UNINSTALLED ${mailthreaderagent_SRCS})
-
-target_link_libraries(akonadi_mailthreader_agent akonadi ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBRARY})
+include_directories( ${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi )
+target_link_libraries(akonadi_mailthreader_agent akonadi ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS} )
 
 install(TARGETS akonadi_mailthreader_agent DESTINATION ${BIN_INSTALL_DIR})

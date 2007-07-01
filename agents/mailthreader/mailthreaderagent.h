@@ -52,6 +52,8 @@ class MailThreaderAgent : public Akonadi::AgentBase
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 
   private:
+    class Private;
+    Private* const d;
 };
 
 #endif
