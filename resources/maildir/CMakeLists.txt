@@ -22,7 +22,7 @@ kde4_automoc(${maildirresource_SRCS})
 
 kde4_add_executable(akonadi_maildir_resource RUN_UNINSTALLED ${maildirresource_SRCS})
 
-target_link_libraries(akonadi_maildir_resource akonadi maildir ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS})
+target_link_libraries(akonadi_maildir_resource akonadi maildir ${QT_QTDBUS_LIBRARIES} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS})
 
 install(TARGETS akonadi_maildir_resource DESTINATION ${BIN_INSTALL_DIR})
 

@@ -21,7 +21,7 @@ kde4_automoc(${ocresource_SRCS})
 
 kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})
 
-target_link_libraries(akonadi_oc_resource akonadi ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${KDE4_KDECORE_LIBS} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBRARY} kmimeakonadi)
+target_link_libraries(akonadi_oc_resource akonadi ${QT_QTDBUS_LIBRARIES} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBRARY} kmimeakonadi)
 
 install(TARGETS akonadi_oc_resource DESTINATION ${BIN_INSTALL_DIR})
 
