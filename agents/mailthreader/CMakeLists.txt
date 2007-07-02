@@ -16,6 +16,13 @@ set( mailthreaderagent_SRCS
 
 install( FILES mailthreaderagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
 
+FIND_LIBRARY(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
+    PATHS
+    /usr/lib
+    /usr/local/lib
+    ${LIB_INSTALL_DIR}
+)
+
 kde4_automoc(${mailthreaderagent_SRCS})
 
 kde4_add_executable(akonadi_mailthreader_agent RUN_UNINSTALLED ${mailthreaderagent_SRCS})

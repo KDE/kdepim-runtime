@@ -103,25 +103,18 @@ class MailThreaderAgent::Private
       return DataReference();
   }
 
-  DataReference findParent( DataReference ref )
+  DataReference findParent( const Item& item )
   {
     DataReference parent;
+    DataReference ref = item.reference();
     if ( ref.isNull() ) return parent;
 
-    ItemFetchJob *job = new ItemFetchJob( ref, mParent->session() );
-    job->addFetchPart( Item::PartEnvelope );
-    if ( !job->exec() )
-      return parent;
-
-    Item item = job->items()[0];
     MessagePtr msg = item.payload<MessagePtr>();
 
     // Try to fetch his perfect parent using Strigi
     parent = findUsingStrigi( QString::fromLatin1("content.ID"), msg->inReplyTo()->asUnicodeString() );
-
     if ( !parent.isNull() )
       return parent;
-
 
     // A perfect parent was not found: try to find one using the References field
     QString secondReplyId = msg->references()->asUnicodeString();
@@ -137,8 +130,7 @@ class MailThreaderAgent::Private
       return parent;
 
     // An imperfect parent was not found using References. Try using the Subject field.
-    parent = findParentBySubject( ref );
-
+    parent = findParentBySubject( item );
     if (!parent.isNull() )
       return parent;
 
@@ -146,17 +138,10 @@ class MailThreaderAgent::Private
     return DataReference();
   }
 
-  DataReference findParentBySubject( DataReference ref )
+  DataReference findParentBySubject( const Item& item )
   {
+    DataReference ref = item.reference();
     DataReference parent;
-    if ( ref.isNull() ) return parent;
-
-    // Retrieve item and associated message
-    ItemFetchJob *job = new ItemFetchJob( ref, mParent->session() );
-    job->addFetchPart( Item::PartEnvelope );
-    if ( !job->exec() )
-      return parent;
-    Item item = job->items()[0];
     MessagePtr msg = item.payload<MessagePtr>();
 
     QString strippedSubject = stripOffPrefixes( msg->subject()->asUnicodeString() );
@@ -231,7 +216,7 @@ void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Col
 void MailThreaderAgent::itemChanged( const Akonadi::Item &item, const QStringList& )
 {
   qDebug() << "mailthreaderagent: looking for parent for " << item.url();
-  DataReference ref = d->findParent( item.reference() );
+  DataReference ref = d->findParent( item );
   if ( !ref.isNull() )
   {
     ItemFetchJob *job = new ItemFetchJob( ref, session() );
