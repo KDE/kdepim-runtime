@@ -29,6 +29,7 @@
 #include <QProgressBar>
 #include <QTextStream>
 #include <QDropEvent>
+#include <KDateTime>
 #include <klocale.h>
 #include <kprogressdialog.h>
 #include <kurl.h>
@@ -44,10 +45,9 @@ QDataStream& operator<< ( QDataStream &s, const MailSummary &d )
   s << d.subject();
   s << d.from();
   s << d.to();
-#ifdef __GNUC__
-#warning Port me!
-#endif
-  //s << d.date();
+  KDateTime tempTime;
+  tempTime.setTime_t( d.date() );
+  s << tempTime.dateTime();
   return s;
 }
 
@@ -55,16 +55,15 @@ QDataStream& operator>> ( QDataStream &s, MailSummary &d )
 {
   quint32 serialNumber;
   QString messageId, subject, from, to;
-  time_t date = 0;
+  time_t date;
   s >> serialNumber;
   s >> messageId;
   s >> subject;
   s >> from;
   s >> to;
-#ifdef __GNUC__
-#warning Port me!
-#endif
-  //s >> date;
+  QDateTime tempTime;
+  s >> tempTime;
+  date = KDateTime( tempTime ).toTime_t();
   d.set( serialNumber, messageId, subject, from, to, date );
   return s;
 }
