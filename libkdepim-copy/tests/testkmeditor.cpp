@@ -25,7 +25,7 @@
 
 int main( int argc, char **argv )
 {
-    KCmdLineArgs::init( argc, argv, "testkmeditor", "KMeditorTest", "kmeditor test app", "1.0" );
+    KCmdLineArgs::init( argc, argv, "testkmeditor", 0, ki18n("KMeditorTest"), "1.0" , ki18n("kmeditor test app"));
     KApplication app;
     KMeditor *edit = new KMeditor();
     edit->setAcceptRichText(false);

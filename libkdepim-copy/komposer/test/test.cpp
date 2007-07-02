@@ -36,9 +36,9 @@ static const char version[] = "0.0.1 (SVN)";
 
 int main(int argc, char **argv)
 {
-  KAboutData about( "komposertest", I18N_NOOP( "KomposerTest" ), version, description,
-                    KAboutData::License_GPL, "(C) 2001-2003 The Kontact developers", 0, "http://kontact.kde.org", "zack@kde.org" );
-  about.addAuthor( "Zack Rusin", 0, "zack@kde.org" );
+  KAboutData about( "komposertest", 0, ki18n( "KomposerTest" ), version, ki18n(description),
+                    KAboutData::License_GPL, ki18n("(C) 2001-2003 The Kontact developers"), KLocalizedString(), "http://kontact.kde.org", "zack@kde.org" );
+  about.addAuthor( ki18n("Zack Rusin"), KLocalizedString(), "zack@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &about );
   KUniqueApplication app;

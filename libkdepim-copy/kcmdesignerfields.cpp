@@ -138,13 +138,13 @@ KCMDesignerFields::KCMDesignerFields( const KComponentData &instance, QWidget *p
 {
   QTimer::singleShot( 0, this, SLOT( delayedInit() ) );
 
-  KAboutData *about = new KAboutData( I18N_NOOP( "KCMDesignerfields" ),
-                                      I18N_NOOP( "Qt Designer Fields Dialog" ),
-                                      0, 0, KAboutData::License_LGPL,
-                                      I18N_NOOP( "(c), 2004 Tobias Koenig" ) );
+  KAboutData *about = new KAboutData( I18N_NOOP( "KCMDesignerfields" ), 0,
+                                      ki18n( "Qt Designer Fields Dialog" ),
+                                      0, KLocalizedString(), KAboutData::License_LGPL,
+                                      ki18n( "(c), 2004 Tobias Koenig" ) );
 
-  about->addAuthor( "Tobias Koenig", 0, "tokoe@kde.org" );
-  about->addAuthor( "Cornelius Schumacher", 0, "schumacher@kde.org" );
+  about->addAuthor( ki18n("Tobias Koenig"), KLocalizedString(), "tokoe@kde.org" );
+  about->addAuthor( ki18n("Cornelius Schumacher"), KLocalizedString(), "schumacher@kde.org" );
   setAboutData( about );
 }
 

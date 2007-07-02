@@ -26,15 +26,13 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 
-static KCmdLineOptions options[] = {
-  { "+[init_type]", "Specifies which model to initialize: \"dummy\", \"contact\" or default if left blank" , 0 },
-  KCmdLineLastOption
-};
-
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "kagenda", "KAgenda", "0.1" );
+  KAboutData aboutData( "kagenda", 0, ki18n("KAgenda"), "0.1" );
   KCmdLineArgs::init( argc, argv , &aboutData );
+
+  KCmdLineOptions options;
+  options.add("+[init_type]", ki18n("Specifies which model to initialize: \"dummy\", \"contact\" or default if left blank"));
   KCmdLineArgs::addCmdLineOptions( options );
 
   KApplication app;

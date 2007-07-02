@@ -82,7 +82,7 @@ void Dialog::save()
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "kabceditor", "KABC Editor", "A contact editor for Akonadi", "1.0" );
+  KCmdLineArgs::init( argc, argv, "kabceditor", 0, ki18n("KABC Editor"), "1.0" , ki18n("A contact editor for Akonadi"));
   KApplication app;
 
   Dialog dlg;

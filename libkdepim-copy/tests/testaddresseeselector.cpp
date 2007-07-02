@@ -30,7 +30,7 @@
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "testaddresseeseletor", "Test AddresseeSelector", "0.1" );
+  KAboutData aboutData( "testaddresseeseletor", 0, ki18n("Test AddresseeSelector"), "0.1" );
   KCmdLineArgs::init( argc, argv, &aboutData );
 
   KApplication app;

@@ -53,7 +53,7 @@ void DateEdit::dateChanged( const QDate &date )
 
 int main(int argc,char **argv)
 {
-  KAboutData aboutData( "testdateedit", "Test KDateEdit", "0.1" );
+  KAboutData aboutData( "testdateedit", 0, ki18n("Test KDateEdit"), "0.1" );
   KCmdLineArgs::init( argc, argv, &aboutData );
 
   KApplication app;

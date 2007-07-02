@@ -30,16 +30,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
-static const KCmdLineOptions options[] =
-{
-  {"verbose", "Verbose output", 0},
-  KCmdLineLastOption
-};
 int main( int argc, char** argv )
 {
-    KAboutData aboutData( "tests","Test","0.1" );
+    KAboutData aboutData( "tests", 0,ki18n("Test"),"0.1" );
     KCmdLineArgs::init( argc, argv, &aboutData );
+
+    KCmdLineOptions options;
+    options.add("verbose", ki18n("Verbose output"));
     KCmdLineArgs::addCmdLineOptions( options );
 
     KApplication app;

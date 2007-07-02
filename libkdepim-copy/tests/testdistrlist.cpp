@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     setenv( "KDE_FORK_SLAVES", "yes", true ); // simpler, for the final cleanup
 
     // KApplication::disableAutoDcopRegistration();
-    KCmdLineArgs::init(argc,argv,"testdistrlist", 0, 0, 0, 0);
+    KCmdLineArgs::init(argc,argv,"testdistrlist", 0, KLocalizedString(), 0, KLocalizedString());
     KApplication app;
 
     TestDistrList test;

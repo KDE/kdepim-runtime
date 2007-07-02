@@ -29,7 +29,7 @@
 
 int main(int argc, char* argv[])
 {
-  KAboutData aboutData("testaddresseelineedit","Test AddresseeLineEdit","0.1");
+  KAboutData aboutData("testaddresseelineedit", 0,ki18n("Test AddresseeLineEdit"),"0.1");
   KCmdLineArgs::init(argc,argv,&aboutData);
 
   KApplication app;

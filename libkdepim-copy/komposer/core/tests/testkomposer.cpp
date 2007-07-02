@@ -7,7 +7,7 @@
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "test", "test", "test", "0.1" );
+  KCmdLineArgs::init( argc, argv, "test", 0, ki18n("test"), "0.1" , ki18n("test"));
   KApplication app;
 
   Komposer::Core *core = new Komposer::Core();

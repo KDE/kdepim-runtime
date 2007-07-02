@@ -30,7 +30,7 @@
 int main(int argc, char *argv[])
 {
   // KApplication::disableAutoDcopRegistration();
-  KCmdLineArgs::init(argc,argv,"testldapclient", 0, 0, 0, 0);
+  KCmdLineArgs::init(argc,argv,"testldapclient", 0, KLocalizedString(), 0, KLocalizedString());
   KApplication app;
 
   TestLDAPClient test;

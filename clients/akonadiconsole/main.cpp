@@ -26,7 +26,7 @@
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "akonadiconsole", "AkonadiConsole", "The Management Console for Akonadi", "1.0" );
+  KCmdLineArgs::init( argc, argv, "akonadiconsole", 0, ki18n("AkonadiConsole"), "1.0" , ki18n("The Management Console for Akonadi"));
   KApplication app;
 
   MainWindow window;

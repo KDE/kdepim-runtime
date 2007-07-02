@@ -58,15 +58,12 @@ void Dialog::loadUid( int uid )
   mBrowser->setUid( Akonadi::DataReference( uid, QString() ) );
 }
 
-static const KCmdLineOptions options[] =
-{
-  { "uid <uid>", I18N_NOOP( "Uid of the Akonadi contact" ), 0 },
-  KCmdLineLastOption
-};
-
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "kabcviewer", "KABC Viewer", "A contact viewer for Akonadi", "1.0" );
+  KCmdLineArgs::init( argc, argv, "kabcviewer", 0, ki18n("KABC Viewer"), "1.0" , ki18n("A contact viewer for Akonadi"));
+
+  KCmdLineOptions options;
+  options.add("uid <uid>", ki18n( "Uid of the Akonadi contact" ));
   KCmdLineArgs::addCmdLineOptions( options );
   KApplication app;
 
@@ -78,7 +75,7 @@ int main( int argc, char **argv )
     return 1;
   }
 
-  dlg.loadUid( QString::fromLatin1( args->getOption( "uid" ) ).toInt() );
+  dlg.loadUid( args->getOption( "uid" ).toInt() );
   dlg.exec();
 
   return 0;

@@ -31,24 +31,21 @@
 #include <kdebug.h>
 #include <klocale.h>
 
-static const KCmdLineOptions options[] =
-{
-  { "+protocol", I18N_NOOP( "Protocol name" ), 0 },
-  { "+pool", I18N_NOOP( "Socket name" ), 0 },
-  { "+app", I18N_NOOP( "Socket name" ), 0 },
-  KCmdLineLastOption
-};
-
 extern "C" { int KDE_EXPORT kdemain(int argc, char **argv); }
 
 int kdemain(int argc, char **argv) {
 
-  KCmdLineArgs::init(argc, argv, "kio_akonadi", 0, 0, 0);
+  KCmdLineArgs::init(argc, argv, "kio_akonadi", 0, KLocalizedString(), 0);
+
+  KCmdLineOptions options;
+  options.add("+protocol", ki18n( "Protocol name" ));
+  options.add("+pool", ki18n( "Socket name" ));
+  options.add("+app", ki18n( "Socket name" ));
   KCmdLineArgs::addCmdLineOptions( options );
   KApplication app( false );
 
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-  AkonadiSlave slave( args->arg(1), args->arg(2) );
+  AkonadiSlave slave( args->arg(1).toLocal8Bit(), args->arg(2).toLocal8Bit() );
   slave.dispatchLoop();
 
   return 0;

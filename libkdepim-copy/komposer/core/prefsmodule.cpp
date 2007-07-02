@@ -59,12 +59,12 @@ PrefsModule::PrefsModule( QWidget *parent, const char *name )
 const KAboutData*
 PrefsModule::aboutData() const
 {
-  KAboutData *about = new KAboutData( I18N_NOOP( "komposerconfig" ),
-                                      I18N_NOOP( "KDE Komposer" ),
-                                      0, 0, KAboutData::License_LGPL,
-                                      I18N_NOOP( "(c), 2003-2004 Zack Rusin" ) );
+  KAboutData *about = new KAboutData( I18N_NOOP( "komposerconfig" ), 0,
+                                      ki18n( "KDE Komposer" ),
+                                      0, KLocalizedString(), KAboutData::License_LGPL,
+                                      ki18n( "(c), 2003-2004 Zack Rusin" ) );
 
-  about->addAuthor( "Zack Rusin", 0, "zack@kde.org" );;
+  about->addAuthor( ki18n("Zack Rusin"), KLocalizedString(), "zack@kde.org" );;
 
   return about;
 }

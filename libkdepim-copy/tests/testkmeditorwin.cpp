@@ -74,7 +74,7 @@ testKMeditorWindow::~testKMeditorWindow()
 
 int main( int argc, char **argv )
 {
-    KCmdLineArgs::init( argc, argv, "testkmeditorwin", "KMeditorTestWin", "kmeditor test win app", "1.0" );
+    KCmdLineArgs::init( argc, argv, "testkmeditorwin", 0, ki18n("KMeditorTestWin"), "1.0" , ki18n("kmeditor test win app"));
     KApplication app;
     testKMeditorWindow *edit = new testKMeditorWindow();
     edit->show();
