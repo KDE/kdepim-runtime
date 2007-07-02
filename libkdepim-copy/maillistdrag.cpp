@@ -35,6 +35,61 @@
 
 using namespace KPIM;
 
+
+// Have to define before use
+QDataStream& operator<< ( QDataStream &s, const MailSummary &d )
+{
+  s << d.serialNumber();
+  s << d.messageId();
+  s << d.subject();
+  s << d.from();
+  s << d.to();
+#ifdef __GNUC__
+#warning Port me!
+#endif
+  //s << d.date();
+  return s;
+}
+
+QDataStream& operator>> ( QDataStream &s, MailSummary &d )
+{
+  quint32 serialNumber;
+  QString messageId, subject, from, to;
+  time_t date = 0;
+  s >> serialNumber;
+  s >> messageId;
+  s >> subject;
+  s >> from;
+  s >> to;
+#ifdef __GNUC__
+#warning Port me!
+#endif
+  //s >> date;
+  d.set( serialNumber, messageId, subject, from, to, date );
+  return s;
+}
+
+QDataStream& operator<< ( QDataStream &s, const MailList &mailList )
+{
+  MailList::const_iterator it;
+  for (it = mailList.begin(); it != mailList.end(); ++it) {
+    MailSummary mailDrag = *it;
+    s << mailDrag;
+  }
+  return s;
+}
+
+QDataStream& operator>> ( QDataStream &s, MailList &mailList )
+{
+  mailList.clear();
+  MailSummary mailDrag;
+  while (!s.atEnd()) {
+    s >> mailDrag;
+    mailList.append( mailDrag );
+  }
+  return s;
+}
+
 MailSummary::MailSummary( quint32 serialNumber, const QString &messageId,
 			  const QString &subject, const QString &from, const QString &to,
 			  time_t date )
@@ -110,7 +165,7 @@ void MailList::populateMimeData( QMimeData*md, MailTextSource *src )
     QBuffer buffer( &array, 0 );
     buffer.open( QIODevice::WriteOnly);
     QDataStream stream( &array, QIODevice::WriteOnly );
-    stream << this;
+    stream << (*this);
     buffer.close();
     md->setData( MailList::mimeDataType(), array );
   }
@@ -159,61 +214,6 @@ void MailList::populateMimeData( QMimeData*md, MailTextSource *src )
   metadata["labels"] = labels.join( ":" );
   urllist.populateMimeData( md, metadata );
 
-}
-
-
-// Have to define before use
-QDataStream& operator<< ( QDataStream &s, const MailSummary &d )
-{
-    s << d.serialNumber();
-    s << d.messageId();
-    s << d.subject();
-    s << d.from();
-    s << d.to();
-#ifdef __GNUC__
-    #warning Port me!
-#endif
-//     s << d.date();
-    return s;
-}
-
-QDataStream& operator>> ( QDataStream &s, MailSummary &d )
-{
-    quint32 serialNumber;
-    QString messageId, subject, from, to;
-    time_t date = 0;
-    s >> serialNumber;
-    s >> messageId;
-    s >> subject;
-    s >> from;
-    s >> to;
-#ifdef __GNUC__
-    #warning Port me!
-#endif
-//     s >> date;
-    d.set( serialNumber, messageId, subject, from, to, date );
-    return s;
-}
-
-QDataStream& operator<< ( QDataStream &s, MailList &mailList )
-{
-    MailList::iterator it;
-    for (it = mailList.begin(); it != mailList.end(); ++it) {
-	MailSummary mailDrag = *it;
-	s << mailDrag;
-    }
-    return s;
-}
-
-QDataStream& operator>> ( QDataStream &s, MailList &mailList )
-{
-    mailList.clear();
-    MailSummary mailDrag;
-    while (!s.atEnd()) {
-	s >> mailDrag;
-	mailList.append( mailDrag );
-    }
-    return s;
 }
 
 MailList MailList::fromMimeData( const QMimeData *md )
