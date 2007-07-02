@@ -45,6 +45,30 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 using KPIM::Maildir;
 
+static QString maildirPath( const QString &remoteId )
+{
+  const int pos = remoteId.lastIndexOf( QDir::separator() );
+  if ( pos >= 0 )
+    return remoteId.left( pos );
+  return QString();
+}
+
+static QString maildirId( const QString &remoteId )
+{
+  const int pos = remoteId.lastIndexOf( QDir::separator() );
+  if ( pos >= 0 )
+    return remoteId.mid( pos + 1 );
+  return QString();
+}
+
+static QString maildirSubdirPath( const QString &parentPath, const QString &subName )
+{
+  const int pos = parentPath.lastIndexOf( QDir::separator() );
+  QString basePath = maildirPath( parentPath );
+  QString name = maildirId( parentPath );
+  return basePath + QDir::separator() + '.' + name + ".directory" + QDir::separator() + subName;
+}
+
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id )
 {
@@ -56,9 +80,8 @@ MaildirResource::~ MaildirResource()
 
 bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
 {
-  const QString rid = ref.remoteId();
-  const QString dir = rid.left( rid.lastIndexOf( QDir::separator() ) );
-  const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
+  const QString dir = maildirPath( ref.remoteId() );
+  const QString entry = maildirId( ref.remoteId() );
 
   Maildir md( dir );
   if ( !md.isValid() )
@@ -124,9 +147,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
 {
     if ( !parts.contains( Item::PartBody ) ) return;
 
-    const QString rid = item.reference().remoteId();
-    const QString path = rid.left( rid.lastIndexOf( QDir::separator() ) );
-    const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
+    const QString path = maildirPath( item.reference().remoteId() );
+    const QString entry = maildirId( item.reference().remoteId() );
 
     Maildir dir( path );
     QString errMsg;
@@ -146,9 +168,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
 {
-    const QString rid = ref.remoteId();
-    const QString path = rid.left( rid.lastIndexOf( QDir::separator() ) );
-    const QString entry = rid.mid( rid.lastIndexOf( QDir::separator() ) + 1 );
+    const QString path = maildirPath( ref.remoteId() );
+    const QString entry = maildirId( ref.remoteId() );
 
     Maildir dir( path );
     QString errMsg;
@@ -157,9 +178,28 @@ void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
         return;
     }
     if ( !dir.removeEntry( entry ) ) {
-        error( i18n("Failed to delete item: %1", rid) );
+        error( i18n("Failed to delete item: %1", ref.remoteId()) );
     }
+}
 
+Collection::List listRecursive( const Collection &root, const Maildir &dir )
+{
+  Collection::List list;
+  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::collectionMimeType();
+  foreach ( const QString sub, dir.subFolderList() ) {
+    const QString path = maildirSubdirPath( root.remoteId(), sub );
+    Maildir md( path );
+    if ( !md.isValid() )
+      continue;
+    Collection c;
+    c.setName( sub );
+    c.setRemoteId( path );
+    c.setParent( root );
+    c.setContentTypes( mimeTypes );
+    list << c;
+    list += listRecursive( c, md );
+  }
+  return list;
 }
 
 void MaildirResource::retrieveCollections()
@@ -182,13 +222,7 @@ void MaildirResource::retrieveCollections()
 
   Collection::List list;
   list << root;
-  foreach ( const QString sub, dir.subFolderList() ) {
-    Collection c;
-    c.setRemoteId( sub );
-    c.setParent( root );
-    c.setContentTypes( mimeTypes );
-    list << c;
-  }
+  list += listRecursive( root, dir );
   collectionsRetrieved( list );
 }
 
@@ -205,7 +239,7 @@ void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
 
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {
-    error( i18n("Invalid maildir" ) );
+    error( i18n("Invalid maildir: %1", col.remoteId() ) );
     return;
   }
   QStringList entryList = md.entryList();
@@ -236,6 +270,37 @@ void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
     changeProgress( percentage );
   }
   collectionSynchronized();
+}
+
+void MaildirResource::collectionAdded(const Collection & collection)
+{
+  CollectionListJob* ljob = new CollectionListJob( Collection( collection.parent() ), CollectionListJob::Local, session() );
+  // FIXME: no sync job execution, provide parent collection in monitor signal
+  if ( !ljob->exec() )
+    return;
+  const Collection parent = ljob->collections().first();
+
+  Maildir md( parent.remoteId() );
+  qDebug() << md.subFolderList() << md.entryList();
+  if ( !md.isValid() )
+    return;
+  if ( !md.addSubFolder( collection.name() ) )
+    return;
+  qDebug() << md.subFolderList() << md.entryList();
+
+  Collection col = collection;
+  col.setRemoteId( parent.remoteId() + QDir::separator() + collection.name() );
+  CollectionModifyJob *mjob = new CollectionModifyJob( col );
+}
+
+void MaildirResource::collectionChanged(const Collection & collection)
+{
+  qDebug() << "Implement me!";
+}
+
+void MaildirResource::collectionRemoved(int id, const QString & remoteId)
+{
+  qDebug() << "Implement me!";
 }
 
 #include "maildirresource.moc"

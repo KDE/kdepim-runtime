@@ -43,6 +43,10 @@ class MaildirResource : public Akonadi::ResourceBase
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 
+    virtual void collectionAdded( const Akonadi::Collection &collection );
+    virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionRemoved( int id, const QString &remoteId );
+
     void retrieveCollections();
     void synchronizeCollection( const Akonadi::Collection &col );
 };
