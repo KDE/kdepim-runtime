@@ -5,6 +5,15 @@ configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix
 check_include_files(execinfo.h HAVE_EXECINFO_H)
 configure_file(config-akonadi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-akonadi.h)
 
+find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
+  PATHS
+  /usr/lib
+  /usr/local/lib
+  ${LIB_INSTALL_DIR}
+)
+
+macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the mailthreaderagent and the message searchprovider")
+
 if (XSLTPROC_EXECUTABLE)
 add_subdirectory(server)
 endif (XSLTPROC_EXECUTABLE)

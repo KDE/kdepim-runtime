@@ -52,13 +52,6 @@ endif ( Nepomuk_FOUND )
 
 ########### next target ###############
 
-FIND_LIBRARY(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
-    PATHS
-    /usr/lib
-    /usr/local/lib
-    ${LIB_INSTALL_DIR}
-)
-
 if ( STRIGIQTDBUSCLIENT_LIBRARY )
 
 include_directories( ${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi )
