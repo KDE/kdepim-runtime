@@ -47,7 +47,7 @@ namespace Komposer
     Core( QWidget *parentWidget = 0, const char *name = 0 );
     virtual ~Core();
 
-  public slots:
+  public Q_SLOTS:
     virtual void send( int how );
     virtual void addAttachment( const KUrl &url, const QString &comment );
     virtual void setBody( const QString &body );
@@ -62,7 +62,7 @@ namespace Komposer
 
 
 
-  protected slots:
+  protected Q_SLOTS:
     //void slotActivePartChanged( KParts::Part *part );
     void slotPluginLoaded( Plugin* );
     void slotAllPluginsLoaded();

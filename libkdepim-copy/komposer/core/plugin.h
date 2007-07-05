@@ -34,11 +34,11 @@ namespace Komposer
   public:
     virtual ~Plugin();
 
-  signals:
+  Q_SIGNALS:
     void statusMessage( const QString & );
     void readyForUnload();
 
-  protected slots:
+  protected Q_SLOTS:
     /**
      * Called when a new message is created.
      */

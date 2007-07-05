@@ -58,7 +58,7 @@ public:
   ServerTest( const QString & protocol, const QString & host, int port );
   virtual ~ServerTest();
 
-signals:
+Q_SIGNALS:
   void capabilities( const QStringList & capaNormal,
                      const QStringList & capaSSL );
   void capabilities( const QStringList & capaNormal,
@@ -66,7 +66,7 @@ signals:
                      const QString & authNone, const QString & authSSL,
                      const QString & authTLS );
 
-protected slots:
+protected Q_SLOTS:
   void slotData(KJob *job, const QString &data, const QString &);
   void slotResult(KJob *job);
   void slotMetaData( const KIO::MetaData & );

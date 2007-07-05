@@ -71,7 +71,7 @@ public:
   KWidgetLister( int minWidgets=1, int maxWidgets=8, QWidget* parent=0, const char* name=0 );
   virtual ~KWidgetLister();
 
-protected slots:
+protected Q_SLOTS:
   /** Called whenever the user clicks on the 'more' button.
       Reimplementations should call this method, because this
       implementation does all the dirty work with adding the widgets
@@ -132,7 +132,7 @@ protected:
   /** The maximum number of widgets that are to be shown on screen. */
   int mMaxWidgets;
 
-signals:
+Q_SIGNALS:
   /** This signal is emitted whenever a widget was added */
   void widgetAdded();
   /** This signal is emitted whenever a widget was added */

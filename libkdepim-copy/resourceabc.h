@@ -80,7 +80,7 @@ public:
    */
   virtual QString subresourceLabel( const QString& ) const = 0;
 
-public slots:
+public Q_SLOTS:
   /**
    * (De-)activate a subresource.
    */
@@ -91,7 +91,7 @@ public slots:
    */
   virtual void setSubresourceCompletionWeight( const QString&, int weight ) = 0;
 
-signals:
+Q_SIGNALS:
   /**
    * This signal is emitted when a subresource is added.
    */

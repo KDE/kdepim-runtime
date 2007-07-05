@@ -74,7 +74,7 @@ class KDEPIM_EXPORT KPrefsWid : public QObject
     */
     virtual QList<QWidget *> widgets() const;
 
-  signals:
+  Q_SIGNALS:
     /**
       Emitted when widget value has changed.
     */
@@ -352,7 +352,7 @@ class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
     void readConfig();
     void writeConfig();
 
-  protected slots:
+  protected Q_SLOTS:
     void selectFont();
 
   private:
@@ -693,7 +693,7 @@ class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
 
     void autoCreate();
 
-  public slots:
+  public Q_SLOTS:
     /** Set all widgets to default values. */
     void setDefaults();
 
@@ -703,11 +703,11 @@ class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
     /** Write preferences to config file. */
     void writeConfig();
 
-  signals:
+  Q_SIGNALS:
     /** Emitted when the a changed configuration has been stored. */
     void configChanged();
 
-  protected slots:
+  protected Q_SLOTS:
     /** Apply changes to preferences */
     void slotApply();
 
@@ -737,7 +737,7 @@ class KDEPIM_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
     void save();
     void defaults();
 
-  protected slots:
+  protected Q_SLOTS:
     void slotWidChanged();
 
   protected:

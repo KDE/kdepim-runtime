@@ -145,7 +145,7 @@ namespace Komposer
      */
     enum PluginLoadMode { LoadSync, LoadAsync };
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief Load a single plugin by plugin name. Returns an existing plugin
      * if one is already loaded in memory.
@@ -164,7 +164,7 @@ namespace Komposer
      */
     void loadAllPlugins();
 
-  signals:
+  Q_SIGNALS:
     /**
      * @brief Signals a new plugin has just been loaded.
      */
@@ -191,7 +191,7 @@ namespace Komposer
      */
     void allPluginsLoaded();
 
-  private slots:
+  private Q_SLOTS:
     /**
      * @brief Cleans up some references if the plugin is destroyed
      */

@@ -38,7 +38,7 @@ class SendSMSDialog : public KDialog
 
     QString text() const;
 
-  private slots:
+  private Q_SLOTS:
     void updateMessageLength();
     void updateButtons();
 

@@ -59,7 +59,7 @@ class KDEPIM_EXPORT KCMDesignerFields : public KCModule
     virtual QStringList readActivePages() = 0;
     virtual QString applicationName() = 0;
 
-  private slots:
+  private Q_SLOTS:
     void updatePreview( Q3ListViewItem* );
     void itemClicked( Q3ListViewItem* );
     void startDesigner();

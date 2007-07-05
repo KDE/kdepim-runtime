@@ -60,10 +60,10 @@ class KDEPIM_EXPORT CategorySelectWidget : public QWidget
 
     Q3ListView *listView() const;
 
-  public slots:
+  public Q_SLOTS:
     void clear();
 
-  signals:
+  Q_SIGNALS:
     void editCategories();
 
   private:
@@ -86,12 +86,12 @@ class KDEPIM_EXPORT CategorySelectDialog : public KDialog
     void setAutoselectChildren( bool autoselectChildren );
     void setSelected( const QStringList &selList );
 
-  public slots:
+  public Q_SLOTS:
     void slotOk();
     void slotApply();
     void updateCategoryConfig();
     
-  signals:
+  Q_SIGNALS:
     void categoriesSelected( const QString & );
     void categoriesSelected( const QStringList & );
     void editCategories();

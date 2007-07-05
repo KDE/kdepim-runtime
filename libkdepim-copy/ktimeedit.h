@@ -61,18 +61,18 @@ class KDEPIM_EXPORT KTimeEdit : public QComboBox
     /** return true if input is a valid time and false if not */
     bool inputIsValid() const;
 
-  signals:
+  Q_SIGNALS:
     /**
       Emitted every time the time displayed changes. "newt" is the new
       time.
     */
     void timeChanged(QTime newt);
 
-  public slots:
+  public Q_SLOTS:
     /** used to set the time which is displayed to a specific value. */
     void setTime(QTime qt);
 
-  protected slots:
+  protected Q_SLOTS:
     void active(int);
     void hilit(int);
     void changedText();

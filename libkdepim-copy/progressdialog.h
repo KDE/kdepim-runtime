@@ -63,7 +63,7 @@ public:
 
   QSize sizeHint() const;
   QSize minimumSizeHint() const;
-public slots:
+public Q_SLOTS:
   void slotLayoutFirstItem();
 
 protected:
@@ -98,7 +98,7 @@ public:
   // so better not use mItem during this time.
   void setItemComplete() { mItem = 0; }
 
-public slots:
+public Q_SLOTS:
   void slotItemCanceled();
 
 protected:
@@ -120,10 +120,10 @@ public:
   ~ProgressDialog();
   void setVisible( bool b );
 
-public slots:
+public Q_SLOTS:
   void slotToggleVisibility();
 
-protected slots:
+protected Q_SLOTS:
 void slotTransactionAdded( KPIM::ProgressItem *item );
   void slotTransactionCompleted( KPIM::ProgressItem *item );
   void slotTransactionCanceled( KPIM::ProgressItem *item );
@@ -136,7 +136,7 @@ void slotTransactionAdded( KPIM::ProgressItem *item );
   void slotShow();
   void slotHide();
 
-signals:
+Q_SIGNALS:
   void visibilityChanged( bool );
 
 protected:

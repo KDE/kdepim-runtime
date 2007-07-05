@@ -15,7 +15,7 @@ class TestManager : public QObject
 public:
   TestManager( QObject *parent );
 
-public slots:
+public Q_SLOTS:
   void slotPluginLoaded( Plugin *plugin );
   void slotAllPluginsLoaded();
 private:

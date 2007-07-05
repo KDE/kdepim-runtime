@@ -40,7 +40,7 @@ public:
 
   virtual QWidget *widget();
   virtual QString  text() const;
-public slots:
+public Q_SLOTS:
   virtual void setText( const QString &txt );
   virtual void changeSignature( const QString &txt );
 
@@ -86,7 +86,7 @@ public slots:
    */
   void setAlignJustify( bool yes );
 
-protected slots:
+protected Q_SLOTS:
   /**
    * Creates the part's actions in the part's action collection.
    */

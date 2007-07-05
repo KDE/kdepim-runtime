@@ -139,7 +139,7 @@ class KDEPIM_EXPORT ProgressItem : public QObject
 
     bool canceled() const { return mCanceled; }
 
-signals:
+Q_SIGNALS:
     /**
      * Emitted when a new ProgressItem is added.
      * @param The ProgressItem that was added.
@@ -340,7 +340,7 @@ class KDEPIM_EXPORT ProgressManager : public QObject
        instance()->emitShowProgressDialogImpl();
     }
 
-  signals:
+  Q_SIGNALS:
     /** @see ProgressItem::progressItemAdded() */
     void progressItemAdded( KPIM::ProgressItem* );
     /** @see ProgressItem::progressItemProgress() */
@@ -361,7 +361,7 @@ class KDEPIM_EXPORT ProgressManager : public QObject
      * Use emitShowProgressDialog() to trigger it.
      */
     void showProgressDialog();
-  public slots:
+  public Q_SLOTS:
 
     /**
      * Calls setCompleted() on the item, to make sure it goes away.
@@ -375,7 +375,7 @@ class KDEPIM_EXPORT ProgressManager : public QObject
      */
     void slotAbortAll();
 
-  private slots:
+  private Q_SLOTS:
     void slotTransactionCompleted( KPIM::ProgressItem *item );
 
   private:

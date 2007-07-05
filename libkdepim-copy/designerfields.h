@@ -58,7 +58,7 @@ class KDEPIM_EXPORT DesignerFields : public QWidget
     QString identifier() const;
     QString title() const;
 
-  signals:
+  Q_SIGNALS:
     void modified();
 
   private:

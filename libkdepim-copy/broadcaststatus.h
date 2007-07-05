@@ -59,7 +59,7 @@ public:
                                           bool mLeaveOnServer = false,
                                           KPIM::ProgressItem* progressItem = 0 ); // set the same status in this progress item
 
-public slots:
+public Q_SLOTS:
   /** Emit an update status bar signal. It's a slot so it can be hooked up
       to other signals. */
   void setStatusMsg( const QString& message );
@@ -75,7 +75,7 @@ public slots:
    */
   void reset();
 
-signals:
+Q_SIGNALS:
 
   /** Emitted when setStatusMsg is called. */
   void statusMsg( const QString& );

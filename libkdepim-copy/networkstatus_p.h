@@ -32,7 +32,7 @@ class NetworkStatusAdaptor : public QDBusAbstractAdaptor
    Q_CLASSINFO("D-Bus Interface", "org.kde.pim.NetworkStatus" )
 public:
    NetworkStatusAdaptor( QObject *parent );
-signals:
+Q_SIGNALS:
    void onlineStatusChanged();
 };
 

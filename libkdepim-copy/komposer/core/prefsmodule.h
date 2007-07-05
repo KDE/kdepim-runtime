@@ -50,7 +50,7 @@ namespace Komposer {
 
     QGroupBox *groupBox() const;
 
-  private slots:
+  private Q_SLOTS:
     void slotActivated( const QString & );
 
   private:

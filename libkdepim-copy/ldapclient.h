@@ -71,7 +71,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
      */
     QStringList attrs() const { return mAttrs; }
 
-  signals:
+  Q_SIGNALS:
     /*! Emitted when the query is done */
     void done();
 
@@ -83,7 +83,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
      */
     void result( const LdapClient &client, const KLDAP::LdapObject& );
 
-  public slots: // why are those slots?
+  public Q_SLOTS: // why are those slots?
     /*! Set the attributes that should be
      * returned, or an empty list if
      * all attributes are wanted
@@ -102,7 +102,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
      */
     void cancelQuery();
 
-  protected slots:
+  protected Q_SLOTS:
     void slotData( KIO::Job*, const QByteArray &data );
     void slotInfoMessage( KJob*, const QString &info, const QString& );
     void slotDone();
@@ -167,7 +167,7 @@ class KDEPIM_EXPORT LdapSearch : public QObject
 
     QList< LdapClient* > clients() const { return mClients; }
 
-  signals:
+  Q_SIGNALS:
     /// Results, assembled as "Full Name <email>"
     /// (This signal can be emitted many times)
     void searchData( const QStringList& );
@@ -176,7 +176,7 @@ class KDEPIM_EXPORT LdapSearch : public QObject
     void searchData( const KPIM::LdapResultList& );
     void searchDone();
 
-  private slots:
+  private Q_SLOTS:
     void slotLDAPResult( const LdapClient& client, const KLDAP::LdapObject& );
     void slotLDAPError( const QString& );
     void slotLDAPDone();

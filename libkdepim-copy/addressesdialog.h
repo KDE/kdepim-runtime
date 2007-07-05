@@ -78,7 +78,7 @@ namespace KPIM {
     virtual int compare( Q3ListViewItem * i, int col, bool ascending ) const;
     virtual void setSelected( bool );
 
-  signals:
+  Q_SIGNALS:
     void addressSelected( AddresseeViewItem*, bool );
 
   private:
@@ -144,7 +144,7 @@ namespace KPIM {
      */
     QStringList bccDistributionLists() const;
 
-  public slots:
+  public Q_SLOTS:
     /**
      * Displays the CC field if @p b is true, else
      * hides it. By default displays it.
@@ -173,7 +173,7 @@ namespace KPIM {
      */
     void setSelectedBCC( const QStringList& l );
 
-  protected slots:
+  protected Q_SLOTS:
     void addSelectedTo();
     void addSelectedCC();
     void addSelectedBCC();

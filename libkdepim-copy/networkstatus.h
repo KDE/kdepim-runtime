@@ -66,13 +66,13 @@ class NetworkStatus : public QObject
      */
     Status status() const;
 
-protected slots:
+protected Q_SLOTS:
     /**
      * Called by the network interface watcher in KDED.
      */
     void onlineStatusChanged();
 
-  signals:
+  Q_SIGNALS:
     /**
      * Emitted whenever the status has changed.
      *

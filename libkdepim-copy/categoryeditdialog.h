@@ -42,11 +42,11 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     CategoryEditDialog( KPimPrefs *prefs, QWidget* parent = 0 );
     ~CategoryEditDialog();
 
-  public slots:
+  public Q_SLOTS:
     void reload();
     virtual void show();
 
-  protected slots:
+  protected Q_SLOTS:
     void slotOk();
     void slotApply();
     void slotCancel();
@@ -58,7 +58,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void editItem( Q3ListViewItem *item );
     void expandIfToplevel( Q3ListViewItem *item );
 
-  signals:
+  Q_SIGNALS:
     void categoryConfigChanged();
     
   protected:

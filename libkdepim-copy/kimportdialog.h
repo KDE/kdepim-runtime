@@ -81,7 +81,7 @@ class KImportDialog : public KDialog
   public:
     KImportDialog(QWidget* parent);
 
-  public slots:
+  public Q_SLOTS:
     bool setFile(const QString& file);
     bool setFile(const KUrl& file);
     QString cell(int row);
@@ -97,7 +97,7 @@ class KImportDialog : public KDialog
 
     virtual void convertRow() {}
 
-  protected slots:
+  protected Q_SLOTS:
     void separatorClicked(int id);
     void formatSelected(Q3ListViewItem* item);
     void headerSelected(Q3ListViewItem* item);

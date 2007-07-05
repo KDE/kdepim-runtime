@@ -63,7 +63,7 @@ public:
 
   StatusbarProgressWidget( ProgressDialog* progressDialog, QWidget* parent, bool button = true );
 
-public slots:
+public Q_SLOTS:
 
   void slotClean();
   void slotSetSSL( bool );
@@ -72,7 +72,7 @@ public slots:
   void slotProgressItemCompleted( KPIM::ProgressItem *i );
   void slotProgressItemProgress( KPIM::ProgressItem *i, unsigned int value );
 
-protected slots:
+protected Q_SLOTS:
   void slotProgressDialogVisible( bool );
   void slotShowItemDelayed();
   void slotBusyIndicator();

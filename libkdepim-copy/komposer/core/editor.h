@@ -74,7 +74,7 @@ namespace Komposer {
     virtual QStringList configModules() const { return QStringList(); }
 
 
-  public slots:
+  public Q_SLOTS:
     /**
      * Sets the text of the opened editor.
      * Most commonly used on replaying.

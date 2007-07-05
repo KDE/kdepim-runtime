@@ -31,7 +31,7 @@ class DateEdit : public QWidget
   public:
     DateEdit( QWidget *parent = 0 );
 
-  public slots:
+  public Q_SLOTS:
     void dateChanged( const QDate& );
 };
 

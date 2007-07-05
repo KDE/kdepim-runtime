@@ -83,7 +83,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
     */
     virtual QString validate() { return QString(); }
 
-  protected slots:
+  protected Q_SLOTS:
     void readConfig();
 
     void slotOk();

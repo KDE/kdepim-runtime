@@ -38,10 +38,10 @@ class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
 
     ~KMStyleListSelectAction();
   
-  signals:  
+  Q_SIGNALS:  
     //emit style will be applyed.
     void applyStyle(QTextListFormat::Style);
-  protected slots:
+  protected Q_SLOTS:
     void slotStyleChanged(int);
   protected:
     void init();

@@ -35,7 +35,7 @@ class ManagerTest : public QObject,
 public:
     ManagerTest( QObject* parent = 0 );
 
-public slots:
+public Q_SLOTS:
     void allTests();
 private:
     Komposer::PluginManager* m_manager;

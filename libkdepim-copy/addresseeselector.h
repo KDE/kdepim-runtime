@@ -181,7 +181,7 @@ class KDEPIM_EXPORT AddresseeSelector : public QWidget
     void setItemSelected( int fieldIndex, const KABC::Addressee&,
                           int itemIndex, const QString& );
 
-  private slots:
+  private Q_SLOTS:
     void move( int index );
     void remove( int index );
 
@@ -219,7 +219,7 @@ class KDEPIM_EXPORT AddresseeSelectorDialog : public KDialog
   public:
     AddresseeSelectorDialog( Selection *selection, QWidget *parent = 0 );
 
-  protected slots:
+  protected Q_SLOTS:
     void accept();
 
   private:

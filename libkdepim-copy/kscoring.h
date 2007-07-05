@@ -375,7 +375,7 @@ class KDEPIM_EXPORT KScoringManager : public QObject
   virtual bool canMarkAsRead() const { return false; }
   virtual bool hasFeature(int);
 
- signals:
+ Q_SIGNALS:
   void changedRules();
   void changedRuleName(const QString& oldName, const QString& newName);
   void finishedEditing();
@@ -413,7 +413,7 @@ class KDEPIM_EXPORT NotifyDialog : public KDialog
   Q_OBJECT
 public:
   static void display(ScorableArticle&,const QString&);
-protected slots:
+protected Q_SLOTS:
   void slotShowAgainToggled(bool);
 private:
   NotifyDialog(QWidget* p =0);

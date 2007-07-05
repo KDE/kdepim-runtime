@@ -81,14 +81,14 @@ class KDEPIM_EXPORT KDateEdit : public QComboBox
 
     virtual void showPopup();
 
-  signals:
+  Q_SIGNALS:
     /**
       This signal is emitted whenever the user modifies the date.
       The passed date can be invalid.
      */
     void dateChanged( const QDate &date );
 
-  public slots:
+  public Q_SLOTS:
     /**
       Sets the date.
 
@@ -97,7 +97,7 @@ class KDEPIM_EXPORT KDateEdit : public QComboBox
      */
     void setDate( const QDate &date );
 
-  protected slots:
+  protected Q_SLOTS:
     void lineEnterPressed();
     void slotTextChanged( const QString& );
     void dateEntered( const QDate& );

@@ -60,7 +60,7 @@ public:
   KScoringExpression *createCondition() const;
   void clear();
 
-protected slots:
+protected Q_SLOTS:
   void toggleRegExpButton( int );
   void showRegExpDialog();
 
@@ -90,7 +90,7 @@ public:
   QWidget* createWidget(QWidget*);
   void updateRule(KScoringRule*);
   void clearWidget(QWidget*);
-public slots:
+public Q_SLOTS:
   void slotEditRule(KScoringRule*);
 private:
   KScoringManager *manager;
@@ -137,7 +137,7 @@ public:
   QWidget* createWidget(QWidget *parent);
   void updateRule(KScoringRule*);
   void clearWidget(QWidget *);
-public slots:
+public Q_SLOTS:
   void slotEditRule(KScoringRule *);
 private:
   KScoringManager *manager;
@@ -151,17 +151,17 @@ class RuleEditWidget : public QWidget
 public:
   RuleEditWidget(KScoringManager *m,QWidget *p =0, const char *n =0);
   ~RuleEditWidget();
-public slots:
+public Q_SLOTS:
   void setDirty();
   void slotEditRule(const QString&);
   void updateRule(KScoringRule*);
   void updateRule();
-signals:
+Q_SIGNALS:
   void shrink();
-protected slots:
+protected Q_SLOTS:
   void slotAddGroup();
   void slotShrink();
-private slots:
+private Q_SLOTS:
   void slotExpireEditChanged(int value);
 private:
   void clearContents();
@@ -205,18 +205,18 @@ public:
 protected:
   void updateButton();
 
-signals:
+Q_SIGNALS:
   void ruleSelected(const QString&);
   void ruleEdited(const QString&);
   void leavingRule();
-public slots:
+public Q_SLOTS:
   void slotRuleSelected(const QString&);
   void slotRuleSelected(Q3ListBoxItem *);
   void slotRuleSelected(int);
   void updateRuleList();
   void updateRuleList(const KScoringRule*);
   void slotRuleNameChanged(const QString&,const QString&);
-protected slots:
+protected Q_SLOTS:
   void slotGroupFilter(const QString&);
   void slotEditRule(Q3ListBoxItem*);
   void slotEditRule(const QString&);
@@ -261,7 +261,7 @@ private:
   RuleEditWidget* ruleEditor;
   /** the list of known rules */
   RuleListWidget *ruleLister;
-protected slots:
+protected Q_SLOTS:
   void slotShrink();
   void slotDoShrink();
   void slotApply();
@@ -280,7 +280,7 @@ class KScoringEditorWidgetDialog : public KDialog
   Q_OBJECT
 public:
   KScoringEditorWidgetDialog(KScoringManager *m, const QString& rName, QWidget *parent=0);
-protected slots:
+protected Q_SLOTS:
   void slotApply();
   void slotOk();
   void slotShrink();
@@ -297,7 +297,7 @@ class KDEPIM_EXPORT KScoringEditorWidget : public QWidget
 public:
   KScoringEditorWidget(KScoringManager *m,QWidget *p =0, const char *n =0);
   ~KScoringEditorWidget();
-protected slots:
+protected Q_SLOTS:
   void slotRuleEdited(const QString&);
 private:
   RuleListWidget *ruleLister;

@@ -63,13 +63,13 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
 
     virtual void setFont( const QFont& );
 
-  public slots:
+  public Q_SLOTS:
     void cursorAtEnd();
     void enableCompletion( bool enable );
     /** Reimplemented for stripping whitespace after completion */
     virtual void setText( const QString& txt );
 
-  protected slots:
+  protected Q_SLOTS:
     virtual void loadContacts();
     void slotIMAPCompletionOrderChanged();
   protected:
@@ -114,7 +114,7 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     /** return whether we are using sorted or weighted display */
     static KCompletion::CompOrder completionOrder();
 
-  private slots:
+  private Q_SLOTS:
     void slotCompletion();
     void slotPopupCompletion( const QString& );
     void slotReturnPressed( const QString& );

@@ -305,7 +305,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     void restoreOpenStates();
 
 
-  public slots:
+  public Q_SLOTS:
     /**
      * Call this slot when you have created all items
      */
@@ -332,7 +332,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      */
     void slotLoadFolders();
 
-  protected slots:
+  protected Q_SLOTS:
     /**
      * Slot for the checkboxes
      */
@@ -343,7 +343,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      */
     void slotFilterTextChanged( const QString & text );
 
-  signals:
+  Q_SIGNALS:
     /**
      * Emitted when the amount of items in the
      * groupView changes (e.g. on filtering)

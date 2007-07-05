@@ -283,7 +283,7 @@ class KDEPIM_EXPORT KFolderTree : public K3ListView
     int mUnreadIndex;
     int mTotalIndex;
 
-  private slots:
+  private Q_SLOTS:
     /** repaints the complete column (instead of only parts of it as done in
         QListView) if the size has changed */
     void slotSizeChanged( int section, int oldSize, int newSize );

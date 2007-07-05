@@ -69,7 +69,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void wordWrapToggled( bool on, bool wrapWidth );
 
-  public slots: 
+  public Q_SLOTS: 
     //Text style format.
     void slotChangeParagStyle(QTextListFormat::Style _style);
     void slotAlignLeft();
@@ -91,10 +91,10 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * Redefine it to allow to create context menu for spell word list
      */
     virtual void contextMenuEvent( QContextMenuEvent* );
-  signals:
+  Q_SIGNALS:
     void pasteImage();
 
-  protected slots: 
+  protected Q_SLOTS: 
     void slotFindNext();
     
   private:

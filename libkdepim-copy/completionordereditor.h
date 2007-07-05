@@ -74,10 +74,10 @@ public:
 
   KConfig* configFile() { return &mConfig; }
 
-signals:
+Q_SIGNALS:
   void completionOrderChanged();
 
-private slots:
+private Q_SLOTS:
   void slotSelectionChanged( Q3ListViewItem* );
   void slotMoveUp();
   void slotMoveDown();

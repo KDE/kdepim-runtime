@@ -136,7 +136,7 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
      */
     static QString pixmapAsDataUrl( const QPixmap& pixmap );
 
-  signals:
+  Q_SIGNALS:
     void urlHighlighted( const QString &url );
     void emailHighlighted( const QString &email );
     void phoneNumberHighlighted( const QString &number );
@@ -157,7 +157,7 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
     virtual void contextMenuEvent( QContextMenuEvent *e );
 
 
-  private slots:
+  private Q_SLOTS:
     void slotMailClicked( const QString&, const QString& );
     void slotUrlClicked( const QString& );
     void slotHighlighted( const QString& );

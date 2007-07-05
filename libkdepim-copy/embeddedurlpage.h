@@ -36,9 +36,9 @@ class KDEPIM_EXPORT EmbeddedURLPage : public QWidget
     EmbeddedURLPage( const QString &url, const QString &mimetype,
                      QWidget *parent);
 
-  public slots:
+  public Q_SLOTS:
     void loadContents();
-  signals:
+  Q_SIGNALS:
     void openURL( const KUrl &url );
   private:
     void initGUI( const QString &url, const QString &mimetype );

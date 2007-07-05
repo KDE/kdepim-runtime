@@ -55,10 +55,10 @@ public:
     KCal::Incidence* getIncidence();
     static int chooseMode;
 
-public slots:
+public Q_SLOTS:
     void useGlobalMode();
 
-protected slots:
+protected Q_SLOTS:
     void showIncidence1();
     void showIncidence2();
     void showDiff();
