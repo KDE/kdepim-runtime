@@ -295,7 +295,7 @@ collection (the server calls these "Locations" internally). An item might also
 be visible in several other collections - so called "virtual collections" -
 which are defined as the result set of a query.
 
-Collections are organized hierachically, i.e. every collection can have child
+Collections are organized hierarchically, i.e. every collection can have child
 collections, thus defining a collection tree.
 
 The concept is comparable to KMail's (search-)folders or to some extent
