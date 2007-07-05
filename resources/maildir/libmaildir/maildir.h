@@ -79,6 +79,11 @@ public:
     bool addSubFolder( const QString& folderName );
 
     /**
+     * Removes subfolder with the given @param folderName. Returns success or failure.
+     */
+    bool removeSubFolder( const QString& folderName );
+
+    /**
      * Returns a Maildir object for the given @param folderName. If such a folder
      * exists, the Maildir object will be valid, otherwise you can call create()
      * on it, to make a subfolder with that name.

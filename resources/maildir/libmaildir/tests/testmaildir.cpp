@@ -206,7 +206,7 @@ void MaildirTest::testMaildirListSubfolders()
 }
 
 
-void MaildirTest::testMaildirCreateSubfolders()
+void MaildirTest::testMaildirCreateSubfolder()
 {
   initTestCase();
   Maildir d( m_temp->name() );
@@ -219,6 +219,20 @@ void MaildirTest::testMaildirCreateSubfolders()
   QCOMPARE( entries.count(), 1 );
   Maildir child = d.subFolder( entries.first() );
   QVERIFY( child.isValid() );
+
+  cleanupTestCase();
+}
+
+void MaildirTest::testMaildirRemoveSubfolder()
+{
+  initTestCase();
+  Maildir d( m_temp->name() );
+  QVERIFY( d.isValid() );
+
+  bool addingWorked = d.addSubFolder( "subFolderTest" );
+  QVERIFY( addingWorked );
+  bool removingWorked = d.removeSubFolder( "subFolderTest" );
+  QVERIFY( removingWorked );
 
   cleanupTestCase();
 }

@@ -79,6 +79,12 @@ struct Maildir::Private
       return realKey;
     }
 
+    QString subDirPath() const
+    {
+        QDir dir( path );
+        return QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
+    }
+
     QString path;
 };
 
@@ -181,33 +187,40 @@ bool Maildir::create()
 
 bool Maildir::addSubFolder( const QString& path )
 {
-    if ( isValid() ) {
-        // make the subdir dir
-        QDir dir( d->path );
-        QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
-        dir.cdUp();
-        if (!dir.exists( subDirPath ) )
-            dir.mkdir( subDirPath );
-        dir.cd( subDirPath );
+    if ( !isValid() ) return false;
+    // make the subdir dir
+    QDir dir( d->path );
+    dir.cdUp();
+    if (!dir.exists( d->subDirPath() ) )
+        dir.mkdir( d->subDirPath() );
+    dir.cd( d->subDirPath() );
 
-        const QString fullPath = dir.path() + "/" + path;
-        Maildir subdir( fullPath );
-        if ( subdir.create() )
-            return true;
-    }
+    const QString fullPath = dir.path() + "/" + path;
+    Maildir subdir( fullPath );
+    if ( subdir.create() )
+        return true;
     return false;
 }
 
+bool Maildir::removeSubFolder( const QString& folderName )
+{
+    if ( !isValid() ) return false;
+    QDir dir( d->subDirPath() + "/" + folderName );
+    if ( dir.exists() ) {
+        // remove it recursively
+    }
+
+    return false;
+}
 
 Maildir Maildir::subFolder( const QString& subFolder )
 {
     if ( isValid() ) {
         // make the subdir dir
         QDir dir( d->path );
-        QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
         dir.cdUp();
-        if ( dir.exists( subDirPath ) ) {
-            dir.cd( subDirPath );
+        if ( dir.exists( d->subDirPath() ) ) {
+            dir.cd( d->subDirPath() );
             return Maildir( dir.path() + "/" + subFolder );
         }
     }
@@ -229,10 +242,9 @@ QStringList Maildir::entryList() const
 QStringList Maildir::subFolderList() const
 {
   QDir dir( d->path );
-  QString subDirPath = QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
   dir.cdUp();
-  if (!dir.exists( subDirPath ) ) return QStringList();
-  dir.cd( subDirPath );
+  if (!dir.exists( d->subDirPath() ) ) return QStringList();
+  dir.cd( d->subDirPath() );
   dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
   return dir.entryList();
 }
@@ -308,4 +320,5 @@ bool Maildir::removeEntry( const QString& key )
   }
   return QFile::remove(realKey);
 }
+
 
