@@ -272,14 +272,8 @@ void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
   collectionSynchronized();
 }
 
-void MaildirResource::collectionAdded(const Collection & collection)
+void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
-  CollectionListJob* ljob = new CollectionListJob( Collection( collection.parent() ), CollectionListJob::Local, session() );
-  // FIXME: no sync job execution, provide parent collection in monitor signal
-  if ( !ljob->exec() )
-    return;
-  const Collection parent = ljob->collections().first();
-
   Maildir md( parent.remoteId() );
   qDebug() << md.subFolderList() << md.entryList();
   if ( !md.isValid() )
