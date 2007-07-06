@@ -503,8 +503,9 @@ MessageStatus MessageStatus::statusUnread()
 MessageStatus MessageStatus::statusNewAndUnread()
 {
   MessageStatus st;
-  st.setUnread();
-  st.setNew();
+  // set the "new and unread" pseudo status; we have to set the internal
+  // representation directly because new and unread are mutually exclusive
+  st.fromQInt32( statusNew().toQInt32() | statusUnread().toQInt32() );
   return st;
 }
 
