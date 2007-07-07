@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <volker.krause@rwth-aachen.de>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,30 +17,17 @@
     02110-1301, USA.
 */
 
-#include "fetchcommand.h"
-#include "out.h"
+#ifndef AKONADI_ITEMTEST_H
+#define AKONADI_ITEMTEST_H
 
-#include <libakonadi/itemfetchjob.h>
+#include <QtCore/QObject>
 
-using namespace Akonadi;
-
-FetchCommand::FetchCommand(const QString & uid) :
-    mUid( uid )
+class ItemTest : public QObject
 {
-}
+  Q_OBJECT
+  private slots:
+    void testMultipart();
+};
 
-void FetchCommand::exec()
-{
-  DataReference ref( mUid.toInt(), QString() );
-  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
-  if ( !fetchJob->exec() ) {
-    err() << "Error fetching item '" << mUid << "': "
-        << fetchJob->errorString()
-        << endl;
-  } else {
-    foreach( Item item, fetchJob->items() ) {
-      QByteArray data = item.part( Item::PartBody );
-      out() << data << endl;
-    }
-  }
-}
+
+#endif

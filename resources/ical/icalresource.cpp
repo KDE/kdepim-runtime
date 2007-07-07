@@ -22,7 +22,6 @@
 #include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemserializer.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 

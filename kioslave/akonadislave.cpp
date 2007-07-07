@@ -21,7 +21,6 @@
 
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemdeletejob.h>
-#include <libakonadi/itemserializer.h>
 #include <libakonadi/collection.h>
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/collectiondeletejob.h>
@@ -78,8 +77,7 @@ void AkonadiSlave::get(const KUrl & url)
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
     const Item item = job->items().first();
-    QByteArray tmp;
-    ItemSerializer::serialize( item, Item::PartBody, tmp );
+    QByteArray tmp = item.part( Item::PartBody );
     data( tmp );
     data( QByteArray() );
     finished();

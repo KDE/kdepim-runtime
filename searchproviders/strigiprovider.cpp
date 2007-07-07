@@ -20,7 +20,6 @@
 #include "strigiprovider.h"
 
 #include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemserializer.h>
 #include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
 
@@ -52,8 +51,7 @@ Akonadi::StrigiProvider::~ StrigiProvider()
 
 void Akonadi::StrigiProvider::itemChanged(const Akonadi::Item & item)
 {
-  QByteArray data;
-  ItemSerializer::serialize( item, Item::PartBody, data );
+  QByteArray data = item.part( Item::PartBody );
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 

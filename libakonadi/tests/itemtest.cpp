@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <volker.krause@rwth-aachen.de>
+    Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,30 +17,36 @@
     02110-1301, USA.
 */
 
-#include "fetchcommand.h"
-#include "out.h"
+#include "itemtest.h"
+#include "itemtest.moc"
 
-#include <libakonadi/itemfetchjob.h>
+#include <libakonadi/item.h>
+
+#include <qtest_kde.h>
+
+QTEST_KDEMAIN( ItemTest, NoGUI )
 
 using namespace Akonadi;
 
-FetchCommand::FetchCommand(const QString & uid) :
-    mUid( uid )
+void ItemTest::testMultipart()
 {
+  Item item;
+  item.setMimeType( "application/octet-stream" );
+
+  QStringList parts;
+  parts << Item::PartBody;
+  QCOMPARE( item.availableParts(), parts );
+
+  QByteArray bodyData = "bodydata";
+  item.addPart( Item::PartBody, bodyData );
+  QCOMPARE( item.availableParts(), parts );
+  QCOMPARE( item.part( Item::PartBody ), bodyData );
+
+  QByteArray myData = "mypartdata";
+  parts << "MYPART";
+
+  item.addPart( "MYPART", myData );
+  QCOMPARE( item.availableParts(), parts );
+  QCOMPARE( item.part( "MYPART" ), myData );
 }
 
-void FetchCommand::exec()
-{
-  DataReference ref( mUid.toInt(), QString() );
-  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
-  if ( !fetchJob->exec() ) {
-    err() << "Error fetching item '" << mUid << "': "
-        << fetchJob->errorString()
-        << endl;
-  } else {
-    foreach( Item item, fetchJob->items() ) {
-      QByteArray data = item.part( Item::PartBody );
-      out() << data << endl;
-    }
-  }
-}

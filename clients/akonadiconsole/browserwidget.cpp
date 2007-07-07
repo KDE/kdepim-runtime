@@ -23,7 +23,6 @@
 #include <libakonadi/collectionview.h>
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemserializer.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
@@ -118,8 +117,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
       contentUi.addresseeView->setAddressee( addr );
       contentUi.stack->setCurrentWidget( contentUi.addresseeView );
     } else {
-      QByteArray data;
-      ItemSerializer::serialize( item, Item::PartBody, data );
+      QByteArray data = item.part( Item::PartBody );
       contentUi.dataView->setPlainText( data );
       contentUi.stack->setCurrentWidget( contentUi.dataViewPage );
     }
@@ -148,7 +146,7 @@ void BrowserWidget::save()
 {
   const QByteArray data = contentUi.dataView->toPlainText().toUtf8();
   Item item = mCurrentItem;
-  ItemSerializer::deserialize( item, Item::PartBody, data );
+  item.addPart( Item::PartBody, data );
   ItemStoreJob *store = new ItemStoreJob( item, this );
   store->storePayload();
 }
