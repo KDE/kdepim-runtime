@@ -50,10 +50,8 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 
 void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody && label != Item::PartEnvelope ) {
-      item.addPart( label, data.readAll() );
+    if ( label != Item::PartBody && label != Item::PartEnvelope )
       return;
-    }
     if ( item.mimeType() != QString::fromLatin1("message/rfc822") && item.mimeType() != QLatin1String("message/news") ) {
         //throw ItemSerializerException();
         return;
@@ -117,6 +115,13 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
     boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
     m->assemble();
     data.write( m->encodedContent() );
+}
+
+QStringList SerializerPluginMail::parts(const Item & item) const
+{
+  QStringList list;
+  list << Item::PartBody << Item::PartEnvelope;
+  return list;
 }
 
 extern "C"

@@ -29,10 +29,8 @@ using namespace Akonadi;
 
 void SerializerPluginAddresee::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody ) {
-      item.addPart( label, data.readAll() );
+    if ( label != Item::PartBody )
       return;
-    }
     if ( item.mimeType() != QString::fromLatin1("text/vcard") && item.mimeType() != QString::fromLatin1("text/directory") ) {
         //throw ItemSerializerException();
         return;

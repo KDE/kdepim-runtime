@@ -52,4 +52,21 @@ void ItemSerializerTest::testDefaultSerializer()
   QCOMPARE( serialized, data );
 }
 
+void ItemSerializerTest::testExtraPart()
+{
+  QByteArray data = "foo";
+  Item item;
+  item.setMimeType( "application/octet-stream" );
+  ItemSerializer::deserialize( item, "MYPART", data );
+
+  QVERIFY( !item.hasPayload() );
+  QCOMPARE( item.availableParts(), QStringList( "MYPART" ) );
+  QCOMPARE( item.part( "MYPART" ), data );
+
+  QByteArray ser;
+  ItemSerializer::serialize( item, "MYPART", ser );
+  qDebug() << ser << data;
+  QCOMPARE( ser, data );
+}
+
 #include "itemserializertest.moc"
