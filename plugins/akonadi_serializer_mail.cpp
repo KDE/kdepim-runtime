@@ -119,6 +119,7 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
 
 QStringList SerializerPluginMail::parts(const Item & item) const
 {
+  Q_UNUSED( item );
   QStringList list;
   list << Item::PartBody << Item::PartEnvelope;
   return list;

@@ -21,7 +21,7 @@
 #ifndef __AKONADI_SERIALIZER_MAIL_H__
 #define __AKONADI_SERIALIZER_MAIL_H__
 
-#include <libakonadi/itemserializer.h>
+#include <libakonadi/itemserializerplugin.h>
 
 namespace Akonadi {
 

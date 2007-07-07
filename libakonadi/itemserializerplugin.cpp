@@ -1,4 +1,5 @@
 /*
+    Copyright (c) 2007 Till Adam <adam@kde.org>
     Copyright (c) 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -17,24 +18,22 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SERIALIZER_KCAL_H
-#define AKONADI_SERIALIZER_KCAL_H
+#include "itemserializerplugin.h"
+#include "item.h"
 
-#include <libakonadi/itemserializerplugin.h>
-#include <kcal/icalformat.h>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
-namespace Akonadi {
+using namespace Akonadi;
 
-class SerializerPluginKCal : public ItemSerializerPlugin
+ItemSerializerPlugin::~ItemSerializerPlugin()
 {
-  public:
-    void deserialize( Item& item, const QString& label, QIODevice& data );
-    void serialize( const Item& item, const QString& label, QIODevice& data );
-  private:
-    KCal::ICalFormat mFormat;
-
-};
-
 }
 
-#endif
+QStringList ItemSerializerPlugin::parts(const Item & item) const
+{
+  Q_UNUSED( item );
+  QStringList list;
+  list << Item::PartBody;
+  return list;
+}

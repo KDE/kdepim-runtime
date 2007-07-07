@@ -20,7 +20,7 @@
 #ifndef __AKONADI_SERIALIZER_ADDRESSEE_H__
 #define __AKONADI_SERIALIZER_ADDRESSEE_H__
 
-#include <libakonadi/itemserializer.h>
+#include <libakonadi/itemserializerplugin.h>
 #include <kabc/vcardconverter.h>
 
 namespace Akonadi {
