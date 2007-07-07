@@ -166,7 +166,12 @@ bool List::listCollections( const QString & prefix,
     rv = false;
   }
 
-  const QList<Location> locations = db->listLocations( resource );
+  QList<Location> locations;
+  if ( resource.isValid() )
+    locations = Location::retrieveFiltered( Location::resourceIdColumn(), resource.id() );
+  else
+    locations = Location::retrieveAll();
+
   foreach( Location l, locations ) {
     const QString location = locationDelimiter + HandlerHelper::pathForCollection( l );
 #if 0
