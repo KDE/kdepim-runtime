@@ -41,6 +41,8 @@ class MailThreaderAgent : public Akonadi::AgentBase
     MailThreaderAgent( const QString &id );
     ~MailThreaderAgent();
 
+    static const QLatin1String PartParent;
+
   public Q_SLOTS:
     virtual void configure();
 

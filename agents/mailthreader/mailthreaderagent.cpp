@@ -103,6 +103,13 @@ class MailThreaderAgent::Private
       return DataReference();
   }
 
+  DataReference findParentInCache( const Item& item )
+  {
+    QByteArray partParent = item.part( PartParent );
+    if ( !partParent.isEmpty() )
+      return DataReference( item.part( partParent ).toInt(), QString() );
+  }
+
   DataReference findParent( const Item& item )
   {
     DataReference parent;
@@ -188,10 +195,13 @@ class MailThreaderAgent::Private
 
 };
 
+const QLatin1String MailThreaderAgent::PartParent = QLatin1String( "AkonadiMailThreaderAgentParent" );
+
 MailThreaderAgent::MailThreaderAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
+  qDebug() << "mailtheaderagent: at your order, sir!" ;
   // Fetch the whole list, thread it.
 }
 
@@ -211,26 +221,32 @@ void MailThreaderAgent::configure()
 
 void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
+  qDebug() << "mailthreaderagent: looking for parent for new item " << item.url();
+  DataReference ref = d->findParent( item );
+  if ( !ref.isNull() )
+  {
+    qDebug() << "mailthreaderagent: parent found with id " << ref.id();
+    Item modifiedItem = item;
+    modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
+  }
 }
 
 void MailThreaderAgent::itemChanged( const Akonadi::Item &item, const QStringList& )
 {
-  qDebug() << "mailthreaderagent: looking for parent for " << item.url();
+  // TODO We only have something to do here if the collection has changed for the item
+  // Be careful, "recursive" loop risk
+  /*qDebug() << "mailthreaderagent: looking for parent for changed item " << item.url();
   DataReference ref = d->findParent( item );
   if ( !ref.isNull() )
   {
-    ItemFetchJob *job = new ItemFetchJob( ref, session() );
-    job->addFetchPart( Item::PartEnvelope );
-    if ( job->exec() )
-    {
-      Item item = job->items()[0];
-      qDebug() << "mailthreaderagent: parent found:" << item.url();
-    }
-  }
+    qDebug() << "mailthreaderagent: parent found with id " << ref.id();
+    item.addPart( PartParent, QByteArray::number( ref.id() ) );
+  }*/
 }
 
 void MailThreaderAgent::itemRemoved(const Akonadi::DataReference & ref)
 {
+  // TODO Find all item who have the removed one as parent and remove their PartParent
 }
 
 #include "mailthreaderagent.moc"
