@@ -28,7 +28,7 @@
 
 testKMeditorWindow::testKMeditorWindow()
 {
-  setCaption("test kmeditor window");
+  setWindowTitle("test kmeditor window");
   editor = new KMeditor;
   editor->setAcceptRichText(false);
   setCentralWidget(editor);

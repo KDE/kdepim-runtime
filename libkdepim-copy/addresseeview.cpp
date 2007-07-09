@@ -30,6 +30,7 @@
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
 #include <kconfig.h>
+#include <kcolorscheme.h>
 #include <kglobal.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
@@ -155,13 +156,13 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   // placeholder where we fill in something else (in this case,
   // the global background color).
   //
-  QString backgroundColor = KGlobalSettings::alternateBackgroundColor().name();
+  const QString backgroundColor = KColorScheme( KColorScheme::View ).background( KColorScheme::AlternateBackground ).color().name();
   QString cellStyle = QString::fromLatin1(
         "style=\""
         "padding-right: 2px; "
         "border-right: #000 dashed 1px; "
         "background: %1;\"").arg(backgroundColor);
-  QString backgroundColor2 = KGlobalSettings::baseColor().name();
+  const QString backgroundColor2 = KColorScheme( KColorScheme::View ).background().color().name();
   QString cellStyle2 = QString::fromLatin1(
         "style=\""
         "padding-left: 2px; "
@@ -503,8 +504,8 @@ void AddresseeView::updateView()
     "%3" // dynamic part
     "</body>"
     "</html>" )
-     .arg( KGlobalSettings::textColor().name() )
-     .arg( KGlobalSettings::baseColor().name() )
+     .arg( KColorScheme( KColorScheme::View ).foreground().color().name() )
+     .arg( KColorScheme( KColorScheme::View ).background().color().name() )
      .arg( strAddr );
 
   QString imageURL = QString( "contact_%1_image" ).arg( mAddressee.uid() );

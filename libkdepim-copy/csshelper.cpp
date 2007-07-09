@@ -31,6 +31,7 @@
 
 #include "csshelper.h"
 
+#include <kcolorscheme.h>
 #include <kconfig.h>
 #include <kglobalsettings.h>
 #include <kdebug.h>
@@ -75,8 +76,8 @@ namespace KPIM {
   {
     // initialize with defaults - should match the corresponding application defaults
     mForegroundColor = QApplication::palette().color( QPalette::Text );
-    mLinkColor = KGlobalSettings::linkColor();
-    mVisitedLinkColor = KGlobalSettings::visitedLinkColor();
+    mLinkColor = KColorScheme( KColorScheme::View ).foreground( KColorScheme::LinkText ).color();
+    mVisitedLinkColor = KColorScheme( KColorScheme::View ).foreground( KColorScheme::VisitedText ).color();
     mBackgroundColor = QApplication::palette().color( QPalette::Base );
     cHtmlWarning = QColor( 0xFF, 0x40, 0x40 ); // warning frame color: light red
 

@@ -490,7 +490,7 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
     //select word under current cursor
     cursor.select(QTextCursor::WordUnderCursor);
     setTextCursor(cursor);
-    QString word = selectedText();
+    QString word = textCursor().selectedText();
     if(word.isEmpty() || !d->replacements.contains( word ) )
        KTextEdit::contextMenuEvent( event );
     else //try to create spell check menu

@@ -50,6 +50,7 @@
 #include <kdirwatch.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
+#include <kio/job.h>
 #include <kio/netaccess.h>
 
 #include "kcmdesignerfields.h"
@@ -195,7 +196,9 @@ void KCMDesignerFields::importFile()
                                               this, i18n("Import Page") );
   KUrl dest = localUiDir();
   dest.setFileName(src.fileName());
-  KIO::NetAccess::file_copy( src, dest, -1, true, false, this );
+  KIO::Job *job = KIO::file_copy( src, dest, -1, true, false );
+  KIO::NetAccess::synchronousRun( job, this );
+
   // The actual view refresh will be done automagically by the slots connected to kdirwatch
 }
 
