@@ -26,6 +26,8 @@
 
 //kdelibs includes
 #include <kfind.h>
+#include <kreplace.h>
+#include <kreplacedialog.h>
 #include <kfinddialog.h>
 #include <KWindowSystem>
 #include <KFindDialog>
@@ -57,6 +59,7 @@ class KMeditor::Private
     ~Private()
     {
       delete find;
+      delete replace;
     }
 
     void addSuggestion(const QString&,const QStringList&);
@@ -69,7 +72,9 @@ class KMeditor::Private
     KTextEdit *parent;
     bool useExtEditor;
     QPointer<KFindDialog> findDialog;
+    QPointer<KReplaceDialog> replaceDialog;
     KFind *find;
+    KReplace *replace;
 };
 
 void KMeditor::Private::slotHighlight( const QString &word, int start, int end)
@@ -188,7 +193,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
 }
 
 KMeditor::KMeditor( const QString& text, QWidget *parent)
- : KTextEdit(text, parent), d( new Private(this) )
+ : KTextEdit(text, parent), d( new Private(this) ) 
 {
    init();
 }
@@ -208,6 +213,9 @@ void KMeditor::init()
 {
    //TODO change it.
    new QShortcut( Qt::CTRL+Qt::Key_F, this, SLOT(slotFindNext()) );
+   
+   //TODO change it.
+   new QShortcut( Qt::CTRL+Qt::Key_R, this, SLOT(slotReplaceNext()) );
    //enable spell checking by default
    setCheckSpellingEnabled(true);
 }
@@ -254,6 +262,11 @@ void KMeditor::findText()
   findText( d->findDialog->pattern(), 0 /*options*/, this, d->findDialog );
 }
 
+
+void KMeditor::slotReplaceNext()
+{
+  //TODO
+}
 
 
 void KMeditor::slotFindNext()
@@ -530,6 +543,72 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
         return; 
     }
   }
+}
+
+void KMeditor::slotPasteAsQuotation()
+{
+  QString s = QApplication::clipboard()->text();
+  if ( !s.isEmpty() ) {
+    insert( addQuotesToText( s ) );
+  }
+}
+
+void KMeditor::slotRemoveQuotes()
+{
+    // TODO: I think this is backwards.
+    // i.e, if no region is marked then remove quotes from every line
+    // else remove quotes only on the lines that are marked.
+/*
+    if ( mEditor->hasMarkedText() ) {
+      QString s = mEditor->markedText();
+      mEditor->insert( removeQuotesFromText( s ) );
+    } else {
+      int l = mEditor->currentLine();
+      int c = mEditor->currentColumn();
+      QString s = mEditor->textLine( l );
+      mEditor->insertLine( removeQuotesFromText( s ), l );
+      mEditor->removeLine( l + 1 );
+      mEditor->setCursorPosition( l, c - 2 );
+    }
+*/
+}
+
+QString KMeditor::removeQuotesFromText( const QString &inputText ) const
+{
+  QString s = inputText;
+
+  // remove first leading quote
+  QString quotePrefix = '^' + quotePrefixName();
+  QRegExp rx( quotePrefix );
+  s.remove( rx );
+
+  // now remove all remaining leading quotes
+  quotePrefix = '\n' + quotePrefixName();
+  QRegExp srx( quotePrefix );
+  s.replace( srx, "\n" );
+
+  return s;
+}
+
+QString KMeditor::addQuotesToText( const QString &inputText )
+{
+  QString answer = QString( inputText );
+  QString indentStr = quotePrefixName();
+  answer.replace( '\n', '\n' + indentStr );
+  answer.prepend( indentStr );
+  answer += '\n';
+  return smartQuote( answer );
+}
+
+QString KMeditor::smartQuote( const QString & msg )
+{
+  return msg;
+}
+
+QString KMeditor::quotePrefixName() const
+{
+   //Need to redefine into each apps
+   return "> ";
 }
 
 #include "kmeditor.moc"

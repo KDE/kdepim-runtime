@@ -65,6 +65,11 @@ testKMeditorWindow::testKMeditorWindow()
   connect(act, SIGNAL(triggered()), editor, SLOT(slotAlignCenter()));
   editMenu->addAction(act);
 
+  act = new QAction(tr("Paste as quote"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotPasteAsQuotation()));
+  editMenu->addAction(act);
+
+
 }
 
 testKMeditorWindow::~testKMeditorWindow()

@@ -48,6 +48,10 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     virtual void createHighlighter();
 
+    //Redefine it for each apps
+    virtual QString quotePrefixName() const; //define by kmail
+    virtual QString smartQuote( const QString & msg ); //need by kmail
+
     void setUseExternalEditor( bool use ); 
     void setExternalEditorPath( const QString & path );
 
@@ -62,6 +66,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void findText();
 
     void replaceText();
+
 
     void switchTextMode(bool useHtml);
 
@@ -81,6 +86,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotTextColor();
     void slotFontFamilyChanged(const QString &f);
     void slotFontSizeChanged(int size);
+    void slotPasteAsQuotation();
+    void slotRemoveQuotes();
 
   protected:
     void init();
@@ -96,9 +103,13 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   protected Q_SLOTS: 
     void slotFindNext();
-    
+    void slotReplaceNext();
+
   private:
     void mergeFormat(const QTextCharFormat &format);
+    QString addQuotesToText( const QString &inputText );
+    QString removeQuotesFromText( const QString &inputText ) const;
+
     class Private;
     Private *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
