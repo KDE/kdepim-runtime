@@ -11,7 +11,7 @@ kde4_add_plugin(komposer_defaulteditor WITH_PREFIX ${komposer_defaulteditor_PART
 
 
 
-target_link_libraries(komposer_defaulteditor ${KDE4_KDECORE_LIBS} ${KDE4_KPARTS_LIBS} komposer)
+target_link_libraries(komposer_defaulteditor ${KDE4_KPARTS_LIBS} komposer)
 
 install(TARGETS komposer_defaulteditor  DESTINATION ${PLUGIN_INSTALL_DIR})
 
