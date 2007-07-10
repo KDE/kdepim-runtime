@@ -6,7 +6,6 @@ set(kagenda_SRCS
   dummymodel.cpp contactmodel.cpp dataprovider.cpp
 )
 
-kde4_automoc(${kagenda_SRCS})
 
 kde4_add_executable(kagenda ${kagenda_SRCS})
 

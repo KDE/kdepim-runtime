@@ -2,7 +2,6 @@ include_directories(${CMAKE_SOURCE_DIR}/akonadi)
 
 set(kio_akonadi_srcs akonadislave.cpp )
 
-kde4_automoc(${kio_akonadi_srcs})
 
 kde4_add_plugin(kio_akonadi ${kio_akonadi_srcs})
 

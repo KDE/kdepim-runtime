@@ -5,7 +5,6 @@ set(kabcviewer_bin_SRCS
   kabcviewer.cpp
 )
 
-kde4_automoc(${kabcviewer_bin_SRCS})
 
 kde4_add_executable(kabcviewer_bin ${kabcviewer_bin_SRCS})
 set_target_properties(kabcviewer_bin PROPERTIES OUTPUT_NAME kabcviewer)
@@ -20,7 +19,6 @@ set(kabceditor_bin_SRCS
   kabceditor.cpp
 )
 
-kde4_automoc(${kabceditor_bin_SRCS})
 
 kde4_add_executable(kabceditor_bin ${kabceditor_bin_SRCS})
 set_target_properties(kabceditor_bin PROPERTIES OUTPUT_NAME kabceditor)

@@ -6,7 +6,6 @@
 
 set(test_SRCS test.cpp )
 
-kde4_automoc(${test_SRCS})
 
 kde4_add_test_executable(test ${test_SRCS})
 

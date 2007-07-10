@@ -6,7 +6,6 @@
 
 set(testfactory_SRCS main.cpp managertest.cpp )
 
-kde4_automoc(${testfactory_SRCS})
 
 
 
@@ -20,7 +19,6 @@ target_link_libraries(testfactory  ${KDE4_KDECORE_LIBS} komposer )
 
 set(testmanager_SRCS testmanager.cpp )
 
-kde4_automoc(${testmanager_SRCS})
 
 
 
@@ -34,7 +32,6 @@ target_link_libraries(testmanager  ${KDE4_KDECORE_LIBS} komposer )
 
 set(testkomposer_SRCS testkomposer.cpp )
 
-kde4_automoc(${testkomposer_SRCS})
 
 
 

@@ -18,7 +18,6 @@ set( maildirresource_SRCS
 
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
 
-kde4_automoc(${maildirresource_SRCS})
 
 kde4_add_executable(akonadi_maildir_resource RUN_UNINSTALLED ${maildirresource_SRCS})
 

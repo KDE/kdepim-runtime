@@ -6,7 +6,6 @@
 
 set(komposer_defaulteditor_PART_SRCS defaulteditor.cpp )
 
-kde4_automoc(${komposer_defaulteditor_PART_SRCS})
 
 kde4_add_plugin(komposer_defaulteditor WITH_PREFIX ${komposer_defaulteditor_PART_SRCS})
 

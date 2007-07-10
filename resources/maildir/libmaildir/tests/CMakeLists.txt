@@ -5,7 +5,6 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/..   )
 
 set(testmaildir_SRCS testmaildir.cpp )
 
-kde4_automoc(${testmaildir_SRCS})
 
 kde4_add_unit_test(testmaildir TESTNAME maildir-testmaildir ${testmaildir_SRCS})
 

@@ -17,7 +17,6 @@ set( ocresource_SRCS
 
 install( FILES ocresource.desktop ocresource.svg DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
 
-kde4_automoc(${ocresource_SRCS})
 
 kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})
 

@@ -4,7 +4,6 @@ add_subdirectory( tests )
 
 set(maildir_LIB_SRCS maildir.cpp)
 
-kde4_automoc(${maildir_LIB_SRCS})
 
 kde4_add_library(maildir SHARED ${maildir_LIB_SRCS})
 

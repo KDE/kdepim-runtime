@@ -19,7 +19,6 @@ set( mailthreaderagent_SRCS
   main.cpp
 )
 
-kde4_automoc(${mailthreaderagent_SRCS})
 
 kde4_add_executable(akonadi_mailthreader_agent RUN_UNINSTALLED ${mailthreaderagent_SRCS})
 
