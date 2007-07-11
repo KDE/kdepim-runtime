@@ -163,7 +163,8 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
         // The cursor position might have changed unpredictably if there was selected
         // text which got replaced by a new line, so we query it again:
         int newPos = cursor.position();
-        cursor.select(QTextCursor::LineUnderCursor);
+        cursor.movePosition(QTextCursor::StartOfBlock);
+        cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
         QString newLine = cursor.selectedText();
 
         // remove leading white space from the new line and instead
