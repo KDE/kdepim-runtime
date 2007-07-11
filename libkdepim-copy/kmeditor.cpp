@@ -131,7 +131,10 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
        QTextCursor cursor = textCursor();
        int oldPos = cursor.position();
        int blockPos = cursor.block().position();
-       cursor.select(QTextCursor::LineUnderCursor);
+
+       //selection all the line.
+       cursor.movePosition(QTextCursor::StartOfBlock);
+       cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
        QString lineText = cursor.selectedText();
        if ( ( ( oldPos -blockPos )  > 0 ) && ( ( oldPos-blockPos ) < int( lineText.length() ) ) ) {
        bool isQuotedLine = false;
