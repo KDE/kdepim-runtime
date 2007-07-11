@@ -572,6 +572,30 @@ void KMeditor::slotRemoveQuotes()
    }
 }
 
+void KMeditor::slotAddQuotes()
+{
+  // TODO: I think this is backwards.
+  // i.e, if no region is marked then add quotes to every line
+  // else add quotes only on the lines that are marked.
+  QTextCursor cursor = textCursor();
+  if(cursor.hasSelection())
+  {
+    QString s = cursor.selectedText();
+    if ( !s.isEmpty() ) {
+        cursor.insertText( addQuotesToText( s ) );
+        setTextCursor( cursor );
+    } else {
+     int oldPos = cursor.position();
+     cursor.movePosition(QTextCursor::StartOfBlock);
+     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+     QString s = cursor.selectedText();
+     cursor.insertText(addQuotesToText( s ));
+     cursor.setPosition( oldPos  +2 );
+     setTextCursor(cursor);
+    }
+  }
+}
+
 QString KMeditor::removeQuotesFromText( const QString &inputText ) const
 {
   QString s = inputText;

@@ -88,6 +88,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotFontSizeChanged(int size);
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
+    void slotAddQuotes();
 
   protected:
     void init();
