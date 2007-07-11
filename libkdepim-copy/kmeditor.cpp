@@ -558,19 +558,21 @@ void KMeditor::slotRemoveQuotes()
     // TODO: I think this is backwards.
     // i.e, if no region is marked then remove quotes from every line
     // else remove quotes only on the lines that are marked.
-/*
-    if ( mEditor->hasMarkedText() ) {
-      QString s = mEditor->markedText();
-      mEditor->insert( removeQuotesFromText( s ) );
-    } else {
-      int l = mEditor->currentLine();
-      int c = mEditor->currentColumn();
-      QString s = mEditor->textLine( l );
-      mEditor->insertLine( removeQuotesFromText( s ), l );
-      mEditor->removeLine( l + 1 );
-      mEditor->setCursorPosition( l, c - 2 );
-    }
-*/
+   QTextCursor cursor = textCursor();
+   if(cursor.hasSelection())
+   {
+     QString s = selectedText();
+     insert( removeQuotesFromText( s ) );
+   }
+   else
+   {
+     int oldPos = cursor.position();
+     cursor.select(QTextCursor::LineUnderCursor);
+     QString s = cursor.selectedText();
+     cursor.insertText(removeQuotesFromText( s ));
+     cursor.setPosition( oldPos -2 );
+     setTextCursor(cursor);
+   }
 }
 
 QString KMeditor::removeQuotesFromText( const QString &inputText ) const

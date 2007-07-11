@@ -69,6 +69,10 @@ testKMeditorWindow::testKMeditorWindow()
   connect(act, SIGNAL(triggered()), editor, SLOT(slotPasteAsQuotation()));
   editMenu->addAction(act);
 
+  act = new QAction(tr("Remove  quote"), this);
+  connect(act, SIGNAL(triggered()), editor, SLOT(slotRemoveQuotes()));
+  editMenu->addAction(act);
+
 
 }
 
