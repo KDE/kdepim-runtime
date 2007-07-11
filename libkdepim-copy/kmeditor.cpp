@@ -63,11 +63,11 @@ class KMeditor::Private
     }
 
     void addSuggestion(const QString&,const QStringList&);
-    
+
     void slotHighlight( const QString &, int, int );
 
-    QMap<QString,QStringList> replacements;   
-    
+    QMap<QString,QStringList> replacements;
+
     QString extEditorPath;
     KTextEdit *parent;
     bool useExtEditor;
@@ -127,44 +127,42 @@ void KMeditor::paste()
 
 void KMeditor::keyPressEvent ( QKeyEvent * e )
 {
-#if 0
- if( e->key() == Qt::Key_Return ) {
-    int line, col;
-    getCursorPosition( &line, &col );
-    QString lineText = text( line );
-    // returns line with additional trailing space (bug in Qt?), cut it off
-    lineText.truncate( lineText.length() - 1 );
-    // special treatment of quoted lines only if the cursor is neither at
-    // the begin nor at the end of the line
-    if( ( col > 0 ) && ( col < int( lineText.length() ) ) ) {
-      bool isQuotedLine = false;
-      int bot = 0; // bot = begin of text after quote indicators
-      while( bot < lineText.length() ) {
-        if( ( lineText[bot] == '>' ) || ( lineText[bot] == '|' ) ) {
-          isQuotedLine = true;
-          ++bot;
-        }
-        else if( lineText[bot].isSpace() ) {
-          ++bot;
-        }
-        else {
-          break;
-        }
-      }
-
-      KEdit::keyPressEvent( e );
-
+  if ( e->key() ==  Qt::Key_Return ) {
+       QTextCursor cursor = textCursor();
+       int oldPos = cursor.position();
+       int blockPos = cursor.block().position();
+       cursor.select(QTextCursor::LineUnderCursor);
+       QString lineText = cursor.selectedText();
+       if ( ( ( oldPos -blockPos )  > 0 ) && ( ( oldPos-blockPos ) < int( lineText.length() ) ) ) {
+       bool isQuotedLine = false;
+       int bot = 0; // bot = begin of text after quote indicators
+       while( bot < lineText.length() ) {
+         if( ( lineText[bot] == '>' ) || ( lineText[bot] == '|' ) ) {
+           isQuotedLine = true;
+           ++bot;
+         }
+         else if( lineText[bot].isSpace() ) {
+           ++bot;
+         }
+         else {
+           break;
+         }
+       }
+       KTextEdit::keyPressEvent( e );
       // duplicate quote indicators of the previous line before the new
       // line if the line actually contained text (apart from the quote
       // indicators) and the cursor is behind the quote indicators
-      if( isQuotedLine
+       if( isQuotedLine
           && ( bot != lineText.length() )
-          && ( col >= int( bot ) ) ) {
+          && ( ( oldPos-blockPos ) >= int( bot ) ) ) {
+
 
         // The cursor position might have changed unpredictably if there was selected
         // text which got replaced by a new line, so we query it again:
-        getCursorPosition( &line, &col );
-        QString newLine = text( line );
+        int newPos = cursor.position();
+        cursor.select(QTextCursor::LineUnderCursor);
+        QString newLine = cursor.selectedText();
+
         // remove leading white space from the new line and instead
         // add the quote indicators of the previous line
         int leadingWhiteSpaceCount = 0;
@@ -174,12 +172,9 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
         }
         newLine = newLine.replace( 0, leadingWhiteSpaceCount,
                                    lineText.left( bot ) );
-        removeParagraph( line );
-        insertParagraph( newLine, line );
-        // place the cursor at the begin of the new line since
-        // we assume that the user split the quoted line in order
-        // to add a comment to the first part of the quoted line
-        setCursorPosition( line, 0 );
+        cursor.insertText(newLine);
+        //cursor.setPosition( cursor.position() + 2);
+        setTextCursor(cursor);
       }
     }
     else
@@ -187,13 +182,10 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
   }
   else
     KTextEdit::keyPressEvent( e );
-#endif
-
-  KTextEdit::keyPressEvent(e);
 }
 
 KMeditor::KMeditor( const QString& text, QWidget *parent)
- : KTextEdit(text, parent), d( new Private(this) ) 
+ : KTextEdit(text, parent), d( new Private(this) )
 {
    init();
 }
@@ -213,7 +205,7 @@ void KMeditor::init()
 {
    //TODO change it.
    new QShortcut( Qt::CTRL+Qt::Key_F, this, SLOT(slotFindNext()) );
-   
+
    //TODO change it.
    new QShortcut( Qt::CTRL+Qt::Key_R, this, SLOT(slotReplaceNext()) );
    //enable spell checking by default
@@ -237,7 +229,7 @@ void KMeditor::setUseExternalEditor( bool use )
 
 void KMeditor::setExternalEditorPath( const QString & path )
 {
-  d->extEditorPath = path;   
+  d->extEditorPath = path;
 }
 
 void KMeditor::findText()
@@ -254,7 +246,7 @@ void KMeditor::findText()
   }
   d->findDialog = new KFindDialog( this );
   d->findDialog->setAttribute(Qt::WA_DeleteOnClose);
-  d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() ); 
+  d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
   //Display dialogbox
   d->findDialog->show();
   connect( d->findDialog, SIGNAL(okClicked()), this, SLOT(slotFindNext()) );
@@ -284,7 +276,7 @@ void KMeditor::findTextNext()
   long options = 0;
   if(d->findDialog)
   {
-    if ( d->find->pattern() != d->findDialog->pattern() ) 
+    if ( d->find->pattern() != d->findDialog->pattern() )
     {
       d->find->setPattern( d->findDialog->pattern() );
       d->find->resetCounts();
@@ -297,7 +289,7 @@ void KMeditor::findTextNext()
       if ( d->find->needData() )
       {
         d->find->setData(toPlainText());
-        res = d->find->find();	
+        res = d->find->find();
       }
       res = d->find->find();
   }
@@ -540,7 +532,7 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 	  cursor.setPosition(oldPos);
 	   setTextCursor(cursor);
         }
-        return; 
+        return;
     }
   }
 }
