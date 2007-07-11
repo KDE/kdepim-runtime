@@ -557,13 +557,14 @@ void KMeditor::slotRemoveQuotes()
    QTextCursor cursor = textCursor();
    if(cursor.hasSelection())
    {
-     QString s = selectedText();
+     QString s = cursor.selectedText();
      insert( removeQuotesFromText( s ) );
    }
    else
    {
      int oldPos = cursor.position();
-     cursor.select(QTextCursor::LineUnderCursor);
+     cursor.movePosition(QTextCursor::StartOfBlock);
+     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
      QString s = cursor.selectedText();
      cursor.insertText(removeQuotesFromText( s ));
      cursor.setPosition( oldPos -2 );
