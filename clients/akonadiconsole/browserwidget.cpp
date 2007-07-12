@@ -73,6 +73,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   modelChanged();
 
   itemUi.itemView->setModel( mItemModel );
+  itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   splitter2->addWidget( itemViewParent );
   itemViewParent->layout()->setMargin( 0 );
