@@ -19,6 +19,7 @@
 
 
 #include <libakonadi/session.h>
+#include <libakonadi/monitor.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/item.h>
 
@@ -34,12 +35,24 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
+class SortCacheItem
+{
+public:
+  DataReference ref;
+  int mark; // 0, perfect sort; -1, to sort; -2, don't even try to sort it
+  int parentId;
+  QList<SortCacheItem*> perfectChildren;
+  QMap<int,SortCacheItem*> unperfectChildren;
+};
+
 class MailThreaderAgent::Private
 {
   public:
   MailThreaderAgent* mParent;
   StrigiClient strigi;
-
+  QList<SortCacheItem*> mRootChildren;
+  QMap<int, SortCacheItem*> mItemMap;
+  QMap<int, SortCacheItem*> mImperfectlyThreadedItems;
   Private( MailThreaderAgent *parent )
       : mParent( parent )
   {
@@ -110,18 +123,25 @@ class MailThreaderAgent::Private
       return DataReference( item.part( partParent ).toInt(), QString() );
   }
 
-  DataReference findParent( const Item& item )
+  bool subjectIsPrefixed( const Item& item )
+  {
+    // ### Implement me
+  }
+
+  DataReference findParent( const Item& item, int *mark )
   {
     DataReference parent;
     DataReference ref = item.reference();
-    if ( ref.isNull() ) return parent;
 
     MessagePtr msg = item.payload<MessagePtr>();
 
     // Try to fetch his perfect parent using Strigi
     parent = findUsingStrigi( QString::fromLatin1("content.ID"), msg->inReplyTo()->asUnicodeString() );
     if ( !parent.isNull() )
+    {
+      *mark = 0;
       return parent;
+    }
 
     // A perfect parent was not found: try to find one using the References field
     QString secondReplyId = msg->references()->asUnicodeString();
@@ -134,14 +154,26 @@ class MailThreaderAgent::Private
     // Try to fetch his imperfect parent using Strigi
     parent = findUsingStrigi( QString::fromLatin1("content.ID"), secondReplyId );
     if ( !parent.isNull() )
+    {
+      *mark = -1;
       return parent;
-
+    }
     // An imperfect parent was not found using References. Try using the Subject field.
     parent = findParentBySubject( item );
     if (!parent.isNull() )
+    {
+      *mark = -1;
       return parent;
+    }
 
+    if ( subjectIsPrefixed( item ) )
+    { // There is still a hope for you
+      *mark = -1;
+      return DataReference();
+    }
+    
     qDebug() << "There is nothing to see here, move along !" ;
+    *mark = -2;
     return DataReference();
   }
 
@@ -196,12 +228,14 @@ class MailThreaderAgent::Private
 };
 
 const QLatin1String MailThreaderAgent::PartParent = QLatin1String( "AkonadiMailThreaderAgentParent" );
+const QLatin1String MailThreaderAgent::PartSort = QLatin1String( "AkonadiMailThreaderAgentSort" );
 
 MailThreaderAgent::MailThreaderAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
   qDebug() << "mailtheaderagent: at your order, sir!" ;
+
   // Fetch the whole list, thread it.
 }
 
@@ -221,6 +255,8 @@ void MailThreaderAgent::configure()
 
 void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
+  // TODO Mark differently when perfect parenting or unperfect parenting
+  /*
   qDebug() << "mailthreaderagent: looking for parent for new item " << item.url();
   DataReference ref = d->findParent( item );
   if ( !ref.isNull() )
@@ -228,25 +264,115 @@ void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Col
     qDebug() << "mailthreaderagent: parent found with id " << ref.id();
     Item modifiedItem = item;
     modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
-  }
+  }*/
 }
 
 void MailThreaderAgent::itemChanged( const Akonadi::Item &item, const QStringList& )
 {
   // TODO We only have something to do here if the collection has changed for the item
-  // Be careful, "recursive" loop risk
-  /*qDebug() << "mailthreaderagent: looking for parent for changed item " << item.url();
-  DataReference ref = d->findParent( item );
-  if ( !ref.isNull() )
-  {
-    qDebug() << "mailthreaderagent: parent found with id " << ref.id();
-    item.addPart( PartParent, QByteArray::number( ref.id() ) );
-  }*/
+//   qDebug() << "mailthreaderagent: looking for parent for changed item " << item.url();
+//   DataReference ref = d->findParent( item );
+//   if ( !ref.isNull() )
+//   {
+//     qDebug() << "mailthreaderagent: parent found with id " << ref.id();
+//     Item modifiedItem = item;
+//     modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
+//   }
 }
 
 void MailThreaderAgent::itemRemoved(const Akonadi::DataReference & ref)
 {
   // TODO Find all item who have the removed one as parent and remove their PartParent
+
+}
+
+QList<DataReference> MailThreaderAgent::childrenOf( const Item& item )
+{
+  QList<DataReference> items; //preallocate
+  foreach( SortCacheItem* sItem, d->mItemMap[ item.reference().id() ]->perfectChildren ) {
+    items << sItem->ref;
+  }
+  foreach( SortCacheItem* sItem, d->mItemMap[ item.reference().id() ]->unperfectChildren ) {
+    items << sItem->ref;
+  }
+
+  return items;
+}
+
+void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )
+{
+  ItemFetchJob *fjob = new ItemFetchJob( col, session() );
+  fjob->addFetchPart( PartSort );
+  fjob->addFetchPart( PartParent );
+  if ( !fjob->exec() )
+    return;
+
+  d->mItemMap.clear();
+  Item::List items = fjob->items();
+  foreach( Item it, items ) {
+    SortCacheItem *sItem = new SortCacheItem();
+    d->mItemMap[ it.reference().id() ] = sItem; // ### Avoid copying the item using pointers?
+  }
+
+  /*
+    First reading the "cache" stored in the item parts
+  */
+  foreach( Item it, items ) {
+    bool ok;
+    int parentId = it.part( PartParent ).toInt( &ok );
+    int sortState = it.part( PartSort ).toInt();
+    if ( ok )
+    {
+      if ( d->mItemMap[ parentId ]->ref.isNull() ) // has a parent part but parent not in collection anymore
+      {
+        d->mItemMap[ it.reference().id() ]->mark = -1;
+      }
+      else
+      {
+        d->mItemMap[ it.reference().id() ]->mark = sortState; // 0  or -1
+        d->mItemMap[ it.reference().id() ]->parentId = parentId;
+        if ( sortState == 0 )
+          d->mItemMap[ parentId ]->perfectChildren << d->mItemMap[ it.reference().id() ];
+        else if ( sortState == -1 )
+          d->mItemMap[ parentId ]->unperfectChildren[ it.reference().id() ] = d->mItemMap[ it.reference().id()];
+      }
+    }
+    else // no parent part
+      if ( sortState == -2 ) // keep this mark if already set
+        d->mItemMap[ it.reference().id() ]->mark = -2;
+      else
+        d->mItemMap[ it.reference().id() ]->mark = -1;
+  }
+
+  /*
+    Find the parent for items whose part is -1
+  */
+  foreach( Item item, items ) {
+    if ( d->mItemMap[ item.reference().id() ]->mark == 0 )
+      continue; // has already his perfect parent !
+    int mark;
+    DataReference parentRef = d->findParent( item, &mark );
+    if ( mark == 0 )
+    {
+      d->mItemMap[ item.reference().id() ]->mark = 0;
+      d->mItemMap[ item.reference().id() ]->parentId = parentRef.id();
+      d->mItemMap[ parentRef.id() ]->perfectChildren << d->mItemMap[ item.reference().id() ];
+      d->mItemMap[ parentRef.id() ]->unperfectChildren.remove( item.reference().id() );
+    }
+    else if ( mark == -1 )
+    {
+      d->mItemMap[ item.reference().id() ]->mark = -1;
+      d->mItemMap[ item.reference().id() ]->parentId = parentRef.id();
+      d->mItemMap[ parentRef.id() ]->unperfectChildren[ item.reference().id() ] = d->mItemMap[ item.reference().id()];
+      d->mImperfectlyThreadedItems[ item.reference().id() ] = d->mItemMap[ item.reference().id() ];
+    }
+    else
+    {
+      d->mItemMap[ item.reference().id() ]->mark = -2;
+      d->mRootChildren << d->mItemMap[ item.reference().id()];
+    }
+  }
+  
 }
 
 #include "mailthreaderagent.moc"

@@ -22,6 +22,10 @@
 
 #include <agentbase.h>
 
+#include <QList>
+
+using namespace Akonadi;
+
 /**
  * This agent works on a mail collection an tries to thread
  * mails related to the same discussion :
@@ -42,9 +46,12 @@ class MailThreaderAgent : public Akonadi::AgentBase
     ~MailThreaderAgent();
 
     static const QLatin1String PartParent;
+    static const QLatin1String PartSort;
 
   public Q_SLOTS:
     virtual void configure();
+    void threadCollection( const Akonadi::Collection &col );
+    QList<DataReference> childrenOf( const Item& item );
 
   protected:
     virtual void aboutToQuit();
