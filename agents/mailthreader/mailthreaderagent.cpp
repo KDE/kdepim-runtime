@@ -126,6 +126,7 @@ class MailThreaderAgent::Private
   bool subjectIsPrefixed( const Item& item )
   {
     // ### Implement me
+    return false;
   }
 
   DataReference findParent( const Item& item, int *mark )
