@@ -42,7 +42,7 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
 {
   setFlags(QGraphicsItem::ItemIsMovable);
 
-  KConfigGroup cg = appletConfig();
+  KConfigGroup cg = config();
   m_xPixelSize = cg.readEntry("xsize", 413);
   m_yPixelSize = cg.readEntry("ysize", 307);
 
