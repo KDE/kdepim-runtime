@@ -62,7 +62,7 @@ void KPimPrefs::usrReadConfig()
 
 KDateTime::Spec KPimPrefs::timeSpec()
 {
-  const KTimeZone *zone = 0;
+  KTimeZone zone;
 	// FIXME: In KDE 4, use KSystemTimeZones::local instead of system and file system calls!
 
   // Read TimeZoneId from korganizerrc.
@@ -71,18 +71,18 @@ KDateTime::Spec KPimPrefs::timeSpec()
   QString tz( group.readEntry( "TimeZoneId" ) );
   if ( !tz.isEmpty() ) {
     zone = KSystemTimeZones::zone( tz );
-    if ( zone )
+    if ( zone.isValid() )
       kDebug(5300) << "timezone from korganizerrc is " << tz << endl;
   }
 
   // If timezone not found in KOrg, use the system's default timezone.
-  if ( !zone ) {
+  if ( !zone.isValid() ) {
     zone = KSystemTimeZones::local();
-    if ( zone )
-      kDebug(5300) << "system timezone is " << zone->name() << endl;
+    if ( zone.isValid() )
+      kDebug(5300) << "system timezone is " << zone.name() << endl;
   }
 
-  return zone ? KDateTime::Spec( zone ) : KDateTime::ClockTime;
+  return zone.isValid() ? KDateTime::Spec( zone ) : KDateTime::ClockTime;
 }
 
 void KPimPrefs::usrWriteConfig()
