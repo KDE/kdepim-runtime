@@ -127,7 +127,7 @@ void CalendarDiffAlgo::diffIncidenceBase( KCal::IncidenceBase *left, KCal::Incid
     conflictField( i18n( "Has duration" ), toString( left->hasDuration() ), toString( right->hasDuration() ) );
 
   if ( left->duration() != right->duration() )
-    conflictField( i18n( "Duration" ), QString::number( left->duration() ), QString::number( right->duration() ) );
+    conflictField( i18n( "Duration" ), QString::number( left->duration().asSeconds() ), QString::number( right->duration().asSeconds() ) );
 }
 
 void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *right )
