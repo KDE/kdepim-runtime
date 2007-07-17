@@ -20,7 +20,7 @@
 #ifndef MAILTHREADERAGENT_H
 #define MAILTHREADERAGENT_H
 
-#include <agentbase.h>
+#include <libakonadi/agentbase.h>
 
 #include <QList>
 
@@ -48,9 +48,11 @@ class MailThreaderAgent : public Akonadi::AgentBase
     static const QLatin1String PartParent;
     static const QLatin1String PartSort;
 
+    void setCollection( const Akonadi::Collection &col );
+
   public Q_SLOTS:
     virtual void configure();
-    void threadCollection( const Akonadi::Collection &col );
+    void threadCollection();
     QList<DataReference> childrenOf( const Item& item );
 
   protected:
@@ -60,6 +62,7 @@ class MailThreaderAgent : public Akonadi::AgentBase
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
 
+    void findParentAndMark( const Akonadi::Item &item );
   private:
     class Private;
     Private* const d;
