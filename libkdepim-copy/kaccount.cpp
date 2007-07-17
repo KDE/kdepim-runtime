@@ -33,6 +33,7 @@
 #include "kaccount.h"
 
 #include <kconfiggroup.h>
+#include <klocale.h>
 
 KAccount::KAccount( const uint id, const QString &name, const Type type )
   : mId( id ), mName( name ), mType( type )
@@ -49,4 +50,21 @@ void KAccount::readConfig( const KConfigGroup &config )
 {
   mId = config.readEntry("Id", 0);
   mName = config.readEntry("Name");
+}
+
+QString KAccount::typeName() const
+{
+  switch ( type() )
+  {
+    case Imap: return i18n("IMAP"); break;
+    case MBox: return i18n("MBOX"); break;
+    case Maildir: return i18n("Maildir"); break;
+    case News: return i18n("News"); break;
+    case DImap: return i18n("Disconnected IMAP"); break;
+    case Local: return i18n("Local"); break;
+    case Pop: return i18n("POP"); break;
+    case Other:
+    default:
+      return i18n("Unknown");
+  }
 }

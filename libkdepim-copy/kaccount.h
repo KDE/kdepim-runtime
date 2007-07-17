@@ -44,13 +44,15 @@ class KDEPIM_EXPORT KAccount
   public:
     /** Type information */
     enum Type {
-      Imap,
-      MBox,
-      Maildir,
-      News,
-      DImap,
-      Other
-    };
+      Imap = 0,
+      MBox = 1,
+      Maildir = 2,
+      News = 3,
+      DImap = 4,
+      Local = 5,
+      Pop = 6,
+      Other = 7
+    }; //If you add a value here, remember to add it to typeName() also!
 
     KAccount( const uint id = 0, const QString &name = QString(),
        const Type type = Other );
@@ -72,6 +74,11 @@ class KDEPIM_EXPORT KAccount
      */
     Type type() const { return mType; }
     void setType( const Type type ) { mType = type; }
+
+    /**
+     * Returns the translated name for the type().
+     */
+    QString typeName() const;
 
     /**
      * Save the settings
