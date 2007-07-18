@@ -52,17 +52,17 @@ void KAccount::readConfig( const KConfigGroup &config )
   mName = config.readEntry("Name");
 }
 
-QString KAccount::typeName() const
+QString KAccount::displayNameForType( const Type aType )
 {
-  switch ( type() )
+  switch ( aType )
   {
     case Imap: return i18n("IMAP"); break;
     case MBox: return i18n("MBOX"); break;
-    case Maildir: return i18n("Maildir"); break;
+    case Maildir: return i18n("Maildir mailbox"); break;
     case News: return i18n("News"); break;
     case DImap: return i18n("Disconnected IMAP"); break;
-    case Local: return i18n("Local"); break;
-    case Pop: return i18n("POP"); break;
+    case Local: return i18n("Local mailbox"); break;
+    case Pop: return i18n("POP3"); break;
     case Other:
     default:
       return i18n("Unknown");

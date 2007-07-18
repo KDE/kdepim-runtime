@@ -52,7 +52,7 @@ class KDEPIM_EXPORT KAccount
       Local = 5,
       Pop = 6,
       Other = 7
-    }; //If you add a value here, remember to add it to typeName() also!
+    }; //If you add a value here, remember to add it to displayNameForType() also!
 
     KAccount( const uint id = 0, const QString &name = QString(),
        const Type type = Other );
@@ -76,11 +76,6 @@ class KDEPIM_EXPORT KAccount
     void setType( const Type type ) { mType = type; }
 
     /**
-     * Returns the translated name for the type().
-     */
-    QString typeName() const;
-
-    /**
      * Save the settings
      */
     void writeConfig( KConfigGroup &config ) const;
@@ -89,6 +84,11 @@ class KDEPIM_EXPORT KAccount
      * Read the settings
      */
     void readConfig( const KConfigGroup &config );
+
+    /**
+     * Returns the translated name for the given aType.
+     */
+    static QString displayNameForType( const Type aType );
 
   protected:
     uint mId;
