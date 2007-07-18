@@ -3,6 +3,7 @@
 
     This file is part of KMail, the KDE mail client.
     Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
+    Copyright (C) 2007 Thomas McGuire <thomas.mcguire@gmx.net>
 
     KMail is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License, version 2, as
@@ -33,25 +34,28 @@
 #define __KACCOUNT
 
 #include <QString>
+#include <QObject>
 #include <kdepim_export.h>
 
 class KConfigGroup;
-class KConfig;
 
 /** Base class for mail and news accounts. */
 class KDEPIM_EXPORT KAccount
 {
+  Q_GADGET
+  Q_ENUMS( Type )
+
   public:
     /** Type information */
     enum Type {
-      Imap = 0,
-      MBox = 1,
-      Maildir = 2,
-      News = 3,
-      DImap = 4,
-      Local = 5,
-      Pop = 6,
-      Other = 7
+      Imap,
+      MBox,
+      Maildir,
+      News,
+      DImap,
+      Local,
+      Pop,
+      Other
     }; //If you add a value here, remember to add it to displayNameForType() also!
 
     KAccount( const uint id = 0, const QString &name = QString(),
@@ -84,6 +88,19 @@ class KDEPIM_EXPORT KAccount
      * Read the settings
      */
     void readConfig( const KConfigGroup &config );
+
+    /**
+     * Convert a Type to a string representation.
+     * This should not be used for a user-visible string, as the
+     * returned string is the same as the enum name.
+     */
+    static QString nameForType( Type type );
+
+    /**
+     * Convert a string representation of a Type back to Type.
+     * The string should only come from calling nameForType().
+     */
+    static KAccount::Type typeForName( const QString& name );
 
     /**
      * Returns the translated name for the given aType.

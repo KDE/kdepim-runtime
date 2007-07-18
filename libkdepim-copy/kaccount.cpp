@@ -4,6 +4,7 @@
     This file is part of KMail, the KDE mail client.
 
     Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
+    Copyright (C) 2007 Thomas McGuire <thomas.mcguire@gmx.net>
 
     KMail is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License, version 2, as
@@ -32,6 +33,8 @@
 
 #include "kaccount.h"
 
+#include <QMetaEnum>
+
 #include <kconfiggroup.h>
 #include <klocale.h>
 
@@ -52,6 +55,19 @@ void KAccount::readConfig( const KConfigGroup &config )
   mName = config.readEntry("Name");
 }
 
+QString KAccount::nameForType( Type type )
+{
+  int index = staticMetaObject.indexOfEnumerator( "Type" );
+  return staticMetaObject.enumerator( index ).valueToKey( type );
+}
+
+KAccount::Type KAccount::typeForName( const QString& name )
+{
+  int index = staticMetaObject.indexOfEnumerator( "Type" );
+  return static_cast<Type>( staticMetaObject.enumerator( index ).keyToValue(
+                              name.toLatin1().constData() ) );
+}
+
 QString KAccount::displayNameForType( const Type aType )
 {
   switch ( aType )
@@ -68,3 +84,5 @@ QString KAccount::displayNameForType( const Type aType )
       return i18n("Unknown");
   }
 }
+
+#include "kaccount.moc"
