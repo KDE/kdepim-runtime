@@ -28,15 +28,9 @@
 #include <QtGui/QWidget>
 
 class QModelIndex;
-class QStackedWidget;
-class QTextEdit;
-class QTreeView;
 
 class KJob;
 
-namespace KPIM {
-class AddresseeView;
-}
 
 namespace Akonadi {
 class CollectionView;
