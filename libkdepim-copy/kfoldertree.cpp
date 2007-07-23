@@ -4,15 +4,16 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kdebug.h>
+#include <kio/global.h>
 
 #include <QPainter>
 #include <QApplication>
 #include <q3header.h>
 #include <QStyle>
-//Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QDropEvent>
+#include <QFontMetrics>
 
 //-----------------------------------------------------------------------------
 KFolderTreeItem::KFolderTreeItem( KFolderTree *parent, const QString & label,
@@ -216,7 +217,7 @@ size_t KFolderTreeItem::recursiveFolderSize() const
 {
   int size = mSize;
 
-  for ( QListViewItem *item = firstChild() ;
+  for ( Q3ListViewItem *item = firstChild() ;
       item ; item = item->nextSibling() )
   {
     size += static_cast<KFolderTreeItem*>(item)->recursiveFolderSize();
@@ -278,7 +279,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
   if ( ft->isUnreadActive() || column != 0 ) {
     K3ListViewItem::paintCell( p, mycg, column, width, align );
   } else {
-    QListView *lv = listView();
+    Q3ListView *lv = listView();
     QString oldText = text(column);
 
     // set an empty text so that we can have our own implementation (see further down)
@@ -332,13 +333,13 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
 
     QRect br;
     p->drawText( r, 0, width-marg-r, height(),
-        align | AlignVCenter, t, -1, &br );
+        align | Qt::AlignVCenter, t, -1, &br );
 
     if ( !unread.isEmpty() ) {
       if (!isSelected())
         p->setPen( ft->paintInfo().colUnread );
       p->drawText( br.right(), 0, width-marg-br.right(), height(),
-          align | AlignVCenter, unread );
+          align | Qt::AlignVCenter, unread );
     }
   }
 }
@@ -348,7 +349,7 @@ QString KFolderTreeItem::squeezeFolderName( const QString &text,
                                             const QFontMetrics &fm,
                                             uint width ) const
 {
-  return KStringHandler::rPixelSqueeze( text, fm, width );
+  return fm.elidedText( text, Qt::ElideRight ,width );
 }
 
 bool KFolderTreeItem::folderIsCloseToQuota() const
