@@ -613,4 +613,15 @@ namespace KPIM {
       ;
   }
 
+
+  void CSSHelper::setBodyFont( const QFont& font )
+  {
+    mBodyFont = font;
+  }
+ 
+  void CSSHelper::setPrintFont( const QFont& font )
+  {
+    mPrintFont = font;
+  }
+
 } // namespace KPIM
