@@ -23,7 +23,7 @@
 #include "listcommand.h"
 #include "fetchcommand.h"
 #include "deletecommand.h"
-
+#include "storecommand.h"
 #include <kcomponentdata.h>
 #include <qapplication.h>
 
@@ -36,19 +36,25 @@ int main( int argc, char **argv )
 
   QString cmdarg;
   QString patharg;
+  QString part;
+  QString content;
   if ( argc >= 2 ) cmdarg = argv[ 1 ];
   if ( argc >= 3 ) patharg = argv[ 2 ];
-
+  if ( argc >= 4 ) part = argv[ 3 ];
+  if ( argc >= 5 ) content = argv[ 4 ];
   Command *cmd = 0;
 
   if ( cmdarg == "ls" ) {
     cmd = new ListCommand( patharg );
   }
   else if ( cmdarg == "fetch" ) {
-    cmd = new FetchCommand( patharg );
+    cmd = new FetchCommand( patharg, part );
   }
   else if ( cmdarg == "rm" ) {
     cmd = new DeleteCommand( patharg );
+  }
+  else if ( cmdarg == "store" ) {
+    cmd = new StoreCommand( patharg, part, content );
   }
 
   if ( !cmd ) {

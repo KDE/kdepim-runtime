@@ -1,7 +1,7 @@
 include_directories( ${CMAKE_SOURCE_DIR}/akonadi)
 
 set(akonadi_bin_SRCS
-  main.cpp listcommand.cpp fetchcommand.cpp deletecommand.cpp
+  main.cpp listcommand.cpp fetchcommand.cpp deletecommand.cpp storecommand.cpp
 )
 
 

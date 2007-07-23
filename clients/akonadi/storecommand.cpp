@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <volker.krause@rwth-aachen.de>
+    Copyright (c) 2007 Bruno Virlet <bruno.virlet@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,33 +17,39 @@
     02110-1301, USA.
 */
 
-#include "fetchcommand.h"
+#include "storecommand.h"
 #include "out.h"
 
+#include <libakonadi/itemstorejob.h>
 #include <libakonadi/itemfetchjob.h>
 
 using namespace Akonadi;
 
-FetchCommand::FetchCommand(const QString & uid, const QString & part ) :
-    mUid( uid ),  mPart( part )
+StoreCommand::StoreCommand(const QString & uid,  const QString & part, const QString & content) :
+  mUid( uid ), mPart( part ), mContent( content )
 {
-  if ( mPart.isEmpty() )
-    mPart = Item::PartBody;
 }
 
-void FetchCommand::exec()
+void StoreCommand::exec()
 {
   DataReference ref( mUid.toInt(), QString() );
   ItemFetchJob* fetchJob = new ItemFetchJob( ref );
-  fetchJob->addFetchPart( mPart );
+  fetchJob->addFetchPart( Item::PartAll );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()
         << endl;
   } else {
-    foreach( Item item, fetchJob->items() ) {
-      QByteArray data = item.part( mPart );
-      out() << data << endl;
+    Item item = fetchJob->items()[0];
+    item.addPart( QString::fromLatin1("AkonadiMailThreaderAgentParent" ), mContent.toLatin1() );
+    ItemStoreJob* sJob = new ItemStoreJob( item );
+    sJob->storePayload();
+    if ( !sJob->exec() ) {
+      err() << "Unable to store part " << mPart << " = " << mContent << " for item " << mUid <<":"
+            << sJob->errorString()
+            << endl;
     }
+    else
+      out() << "Part " << mPart << "=" << mContent << " stored for item " << mUid << endl;
   }
 }

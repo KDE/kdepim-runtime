@@ -26,12 +26,13 @@
 class FetchCommand : public Command
 {
   public:
-    FetchCommand( const QString &uid );
+    FetchCommand( const QString &uid, const QString &part );
 
     virtual void exec();
 
   private:
     QString mUid;
+    QString mPart;
 };
 
 #endif

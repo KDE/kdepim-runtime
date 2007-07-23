@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <volker.krause@rwth-aachen.de>
+    Copyright (c) 2007 Bruno Virlet <bruno.virlet@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,33 +17,23 @@
     02110-1301, USA.
 */
 
-#include "fetchcommand.h"
-#include "out.h"
+#ifndef STORECOMMAND_H
+#define STORECOMMAND_H
 
-#include <libakonadi/itemfetchjob.h>
+#include "command.h"
+#include <QtCore/QString>
 
-using namespace Akonadi;
-
-FetchCommand::FetchCommand(const QString & uid, const QString & part ) :
-    mUid( uid ),  mPart( part )
+class StoreCommand : public Command
 {
-  if ( mPart.isEmpty() )
-    mPart = Item::PartBody;
-}
+  public:
+    StoreCommand( const QString &uid, const QString &part, const QString& content );
 
-void FetchCommand::exec()
-{
-  DataReference ref( mUid.toInt(), QString() );
-  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
-  fetchJob->addFetchPart( mPart );
-  if ( !fetchJob->exec() ) {
-    err() << "Error fetching item '" << mUid << "': "
-        << fetchJob->errorString()
-        << endl;
-  } else {
-    foreach( Item item, fetchJob->items() ) {
-      QByteArray data = item.part( mPart );
-      out() << data << endl;
-    }
-  }
-}
+    virtual void exec();
+
+  private:
+    QString mUid;
+    QString mPart;
+    QString mContent;
+};
+
+#endif
