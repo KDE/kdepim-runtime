@@ -189,14 +189,19 @@ class MailThreaderAgent::Private
   DataReference findUsingStrigi( QString property, QString value )
   {
     QString query = property + QString::fromLatin1(":") + value;
+    qDebug() << "findUsingStrigi, query = " << query;
     QList<StrigiHit> hits = strigi.getHits( query, 1, 0 );
     if ( hits.count() )
     {
+      qDebug() << "hits !";
       StrigiHit hit = hits[0];
       return Item::fromUrl( hit.uri );
     }
     else
+    {
+      qDebug() << "no result  :(";
       return DataReference();
+    }
   }
 
   DataReference findParentInCache( const Item& item )
@@ -221,11 +226,14 @@ class MailThreaderAgent::Private
 
     // Try to fetch his perfect parent using Strigi
     QString inReplyTo = msg->inReplyTo()->asUnicodeString();
-    parent = findUsingStrigi( QString::fromLatin1("content.ID"), inReplyTo );
-    if ( !parent.isNull() )
-    {
-      *mark = 0;
-      return parent;
+    if ( !inReplyTo.isEmpty() ) {
+      parent = findUsingStrigi( QString::fromLatin1("content.ID"), inReplyTo );
+
+      if ( !parent.isNull() )
+      {
+        *mark = 0;
+        return parent;
+      }
     }
 
     // From now on you can't be perfectly threaded
@@ -239,11 +247,13 @@ class MailThreaderAgent::Private
     if( rightAngle != -1 )
       secondReplyId.truncate( rightAngle + 1 );
 
-    // Try to fetch his imperfect parent using Strigi
-    parent = findUsingStrigi( QString::fromLatin1("content.ID"), secondReplyId );
-    if ( !parent.isNull() )
-    {
-      return parent;
+    if ( !secondReplyId.isEmpty() ) {
+      // Try to fetch his imperfect parent using Strigi
+      parent = findUsingStrigi( QString::fromLatin1("content.ID"), secondReplyId );
+      if ( !parent.isNull() )
+      {
+        return parent;
+      }
     }
 
     if ( subjectIsPrefixed( item ) )
@@ -362,7 +372,6 @@ void MailThreaderAgent::itemRemoved(const Akonadi::DataReference & ref)
 
 void MailThreaderAgent::findParentAndMark( const Akonadi::Item &item )
 {
-  Item modifiedItem = item;
   int mark;
 
   qDebug() << "mailthreaderagent: looking for parent for new item " << item.url();
@@ -371,15 +380,16 @@ void MailThreaderAgent::findParentAndMark( const Akonadi::Item &item )
   if ( !ref.isNull() )
   {
     qDebug() << "mailthreaderagent: parent found with id " << ref.id();
+
+    // Modify the item and add his PartParent
     Item modifiedItem = item;
     modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
     modifiedItem.addPart( PartSort, QByteArray::number( mark ) );
+
     ItemStoreJob *sJob = new ItemStoreJob( modifiedItem, session() );
     sJob->storePayload();
-    if (sJob->exec())
-      qDebug() << "... and this has been notified to the storage !";
-    else
-      qDebug() << "Unable to store the parent of this item in the storage !";
+    if (!sJob->exec())
+      qDebug() << "Unable to store the PartParent in the storage !";
   }
 }
 
