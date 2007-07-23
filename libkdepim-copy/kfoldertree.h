@@ -95,6 +95,7 @@ struct KPaintInfo {
   QColor colUnread;
   QColor colFlag;
   QColor colTodo;
+  QColor colCloseToQuota;
 
   bool showSize;
   bool showAttachment;
@@ -182,6 +183,10 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     int totalCount() { return mTotal; }
     virtual void setTotalCount( int aTotal );
 
+    /** set/get the total-count */
+    int folderSize() { return mSize; }
+    virtual void setFolderSize( int aSize );
+
     /** set/get the protocol of the item */
     Protocol protocol() const { return mProtocol; }
     virtual void setProtocol( Protocol aProtocol ) { mProtocol = aProtocol; }
@@ -193,12 +198,17 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     /** recursive unread count */
     virtual int countUnreadRecursive();
 
+    virtual size_t recursiveFolderSize() const;
+
     /** paints the cell */
     virtual void paintCell( QPainter * p, const QColorGroup & cg,
         int column, int width, int align );
 
     /** dnd */
     virtual bool acceptDrag(QDropEvent* ) const { return true; }
+
+    void setFolderIsCloseToQuota( bool );
+    bool folderIsCloseToQuota() const;
 
   private:
     /** returns a sorting key based on the folder's protocol */
@@ -216,6 +226,8 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     Type mType;
     int mUnread;
     int mTotal;
+    int mSize;
+    bool mFolderIsCloseToQuota;
 };
 
 //==========================================================================
@@ -244,14 +256,19 @@ class KDEPIM_EXPORT KFolderTree : public K3ListView
     virtual void removeUnreadColumn();
     virtual void addTotalColumn( const QString & name, int width=70 );
     virtual void removeTotalColumn();
+    virtual void addSizeColumn( const QString & name, int width=70 );
+    virtual void removeSizeColumn();
+
 
     /** the current index of the unread/total column */
     int unreadIndex() const { return mUnreadIndex; }
     int totalIndex() const { return mTotalIndex;  }
+    int sizeIndex() const { return mSizeIndex;  }
 
     /** is the unread/total-column active? */
     bool isUnreadActive() const { return mUnreadIndex >= 0; }
     bool isTotalActive() const { return mTotalIndex >=  0; }
+    bool isSizeActive() const { return mSizeIndex >=  0; }
 
     /** reimp to set full width of the _first_ column */
     virtual void setFullWidth( bool fullWidth );
@@ -282,6 +299,7 @@ class KDEPIM_EXPORT KFolderTree : public K3ListView
      * -1 is deactivated */
     int mUnreadIndex;
     int mTotalIndex;
+    int mSizeIndex;
 
   private Q_SLOTS:
     /** repaints the complete column (instead of only parts of it as done in
