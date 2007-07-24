@@ -280,37 +280,31 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
     K3ListViewItem::paintCell( p, mycg, column, width, align );
   } else {
     Q3ListView *lv = listView();
-    QString oldText = text(column);
-
-    // set an empty text so that we can have our own implementation (see further down)
-    // but still benefit from KListView::paintCell
-    setText( column, "" );
-
     K3ListViewItem::paintCell( p, mycg, column, width, align );
 
     const QPixmap *icon = pixmap( column );
     int marg = lv ? lv->itemMargin() : 1;
     int r = marg;
 
-    setText( column, oldText );
     if ( isSelected() )
-      p->setPen( mycg.highlightedText() );
+      p->setPen( mycg.color( QPalette::HighlightedText ) );
     else
-      p->setPen( mycg.color( QColorGroup::Text ) );
+      p->setPen( mycg.color( QPalette::Text ) );
 
     if ( icon ) {
       r += icon->width() + marg;
     }
+    //Remove any text that K3ListViewItem::paintCell() has drawn. We will
+    //draw that ourselves below.
+    if (isSelected())
+      p->fillRect( r, 0, width-marg-r, height(), mycg.brush( QPalette::Highlight ) );
+    else
+      p->fillRect( r, 0, width-marg-r, height(), mycg.brush( QPalette::Base ) );
+
     QString t = text( column );
     if (t.isEmpty())
       return;
 
-    //Remove any text that K3ListViewItem::paintCell() has drawn. We will
-    //draw that ourselves below.
-    if (isSelected())
-      p->fillRect( r, 0, width-marg-r, height(), cg.brush( QPalette::Highlight ) );
-    else
-      p->fillRect( r, 0, width-marg-r, height(), cg.brush( QPalette::Base ) );
 
     // draw the unread-count if the unread-column is not active
     QString unread;
@@ -332,8 +326,7 @@ void KFolderTreeItem::paintCell( QPainter * p, const QColorGroup & cg,
       t = squeezeFolderName( t, fm, width - marg - r - unreadWidth );
 
     QRect br;
-    p->drawText( r, 0, width-marg-r, height(),
-        align | Qt::AlignVCenter, t, -1, &br );
+    p->drawText( r, 0, width-marg-r, height(), align | Qt::AlignVCenter, t, &br );
 
     if ( !unread.isEmpty() ) {
       if (!isSelected())
@@ -514,7 +507,7 @@ void KFolderTree::removeTotalColumn()
 void KFolderTree::addSizeColumn( const QString & name, int width )
 {
   mSizeIndex = addColumn( name, width );
-  setColumnAlignment( mSizeIndex, qApp->reverseLayout() ? Qt::AlignLeft : Qt::AlignRight );
+  setColumnAlignment( mSizeIndex, ( qApp->layoutDirection() == Qt::RightToLeft ) ? Qt::AlignLeft : Qt::AlignRight );
   header()->adjustHeaderSize();
 }
 
