@@ -112,10 +112,10 @@ void AkonadiSlave::stat(const KUrl & url)
       }
 
       KIO::UDSEntry entry;
-      entry.insert( KIO::UDS_NAME, collection.name()  );
-      entry.insert( KIO::UDS_MIME_TYPE, Collection::collectionMimeType() );
-      entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
-      entry.insert( KIO::UDS_URL, url.url() );
+      entry.insert( KIO::UDSEntry::UDS_NAME, collection.name()  );
+      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::collectionMimeType() );
+      entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
+      entry.insert( KIO::UDSEntry::UDS_URL, url.url() );
       statEntry( entry );
       finished();
   }
@@ -136,9 +136,9 @@ void AkonadiSlave::stat(const KUrl & url)
 
     const Item item = job->items().first();
     KIO::UDSEntry entry;
-    entry.insert( KIO::UDS_NAME, QString::number( item.reference().id() ) );
-    entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
-    entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
+    entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.reference().id() ) );
+    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
+    entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
 
     statEntry( entry );
     finished();
@@ -198,10 +198,10 @@ void AkonadiSlave::listDir( const KUrl &url )
   {
     kDebug() << "Collection (" << col.id() << ", " << col.name() << ")" << endl;
     entry.clear();
-    entry.insert( KIO::UDS_NAME, col.name() );
-    entry.insert( KIO::UDS_MIME_TYPE, Collection::collectionMimeType() );
-    entry.insert( KIO::UDS_FILE_TYPE, S_IFDIR );
-    entry.insert( KIO::UDS_URL, col.url().url() );
+    entry.insert( KIO::UDSEntry::UDS_NAME, col.name() );
+    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::collectionMimeType() );
+    entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
+    entry.insert( KIO::UDSEntry::UDS_URL, col.url().url() );
     listEntry( entry, false );
   }
 
@@ -218,10 +218,10 @@ void AkonadiSlave::listDir( const KUrl &url )
     {
       kDebug() << "Item (" << item.reference().id()  << ")" << endl;
       entry.clear();
-      entry.insert( KIO::UDS_NAME, QString::number( item.reference().id() ) );
-      entry.insert( KIO::UDS_MIME_TYPE, item.mimeType() );
-      entry.insert( KIO::UDS_FILE_TYPE, S_IFREG );
-      entry.insert( KIO::UDS_URL, item.url().url() );
+      entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.reference().id() ) );
+      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
+      entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
+      entry.insert( KIO::UDSEntry::UDS_URL, item.url().url() );
       listEntry( entry, false );
     }
   }

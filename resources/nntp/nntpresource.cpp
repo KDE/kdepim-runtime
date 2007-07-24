@@ -115,7 +115,7 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
   QStringList contentTypes;
   contentTypes << "message/news";
   for( KIO::UDSEntryList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it ) {
-    name = (*it).stringValue( KIO::UDS_NAME );
+    name = (*it).stringValue( KIO::UDSEntry::UDS_NAME );
     if ( name.isEmpty() )
       continue;
 
@@ -147,7 +147,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
 {
   Q_UNUSED( job );
   foreach ( const KIO::UDSEntry &entry, list ) {
-    DataReference ref( -1, baseUrl() + currentCollection().remoteId() + QDir::separator() + entry.stringValue( KIO::UDS_NAME ) );
+    DataReference ref( -1, baseUrl() + currentCollection().remoteId() + QDir::separator() + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
     Item item( ref );
     item.setMimeType( "message/news" );
     ItemAppendJob *append = new ItemAppendJob( item, currentCollection(), session() );
