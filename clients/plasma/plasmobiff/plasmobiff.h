@@ -52,7 +52,7 @@ class PlasmoBiff : public Plasma::Applet
     ~PlasmoBiff();
 
     void constraintsUpdated();
-    void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect &contentsRect );
     QRectF boundingRect() const;
 
   public slots:

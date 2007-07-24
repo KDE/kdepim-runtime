@@ -105,8 +105,10 @@ void PlasmoBiff::configureDialog()
   m_dialog->show();
 }
 
-void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void PlasmoBiff::paintInterface(QPainter * painter, const QStyleOptionGraphicsItem * option, const QRect &contentsRect)
 {
+  Q_UNUSED( option )
+  Q_UNUSED( contentsRect )
 
   painter->setRenderHint(QPainter::SmoothPixmapTransform);
   // draw the main background stuff
