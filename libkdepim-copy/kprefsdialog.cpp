@@ -24,6 +24,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <q3buttongroup.h>
+#include <Q3HBox>
 #include <QLineEdit>
 #include <QFont>
 #include <QComboBox>
@@ -439,6 +440,41 @@ QList<QWidget *> KPrefsWidRadios::widgets() const
   return w;
 }
 
+KPrefsWidCombo::KPrefsWidCombo( KConfigSkeleton::ItemEnum *item,
+                                  QWidget *parent )
+  : mItem( item )
+{
+  Q3HBox *hbox = new Q3HBox(parent);
+  new QLabel( mItem->label(), hbox );
+  mCombo = new QComboBox( hbox );
+  connect( mCombo, SIGNAL( activated( int ) ), SIGNAL( changed() ) );
+}
+
+KPrefsWidCombo::~KPrefsWidCombo()
+{
+}
+
+void KPrefsWidCombo::readConfig()
+{
+  mCombo->setCurrentIndex( mItem->value() );
+}
+
+void KPrefsWidCombo::writeConfig()
+{
+  mItem->setValue( mCombo->currentIndex() );
+}
+
+QList<QWidget *> KPrefsWidCombo::widgets() const
+{
+  QList<QWidget *> w;
+  w.append( mCombo );
+  return w;
+}
+
+QComboBox* KPrefsWidCombo::comboBox()
+{
+  return mCombo;
+}
 
 KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
                                   QWidget *parent,
@@ -605,6 +641,20 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
   QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
   for( it = choices.begin(); it != choices.end(); ++it ) {
     w->addRadio( (*it).label, (*it).whatsThis );
+  }
+  addWid( w );
+  return w;
+}
+
+KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item,
+                                               QWidget* parent )
+{
+  KPrefsWidCombo *w = new KPrefsWidCombo( item, parent );
+  QList<KConfigSkeleton::ItemEnum::Choice> choices;
+  choices = item->choices();
+  QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
+  for( it = choices.begin(); it != choices.end(); ++it ) {
+    w->comboBox()->addItem( (*it).label );
   }
   addWid( w );
   return w;

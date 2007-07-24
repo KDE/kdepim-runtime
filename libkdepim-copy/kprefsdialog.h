@@ -36,6 +36,7 @@
 
 class KColorButton;
 class QCheckBox;
+class QComboBox;
 class QLabel;
 class QSpinBox;
 class QStringList;
@@ -412,6 +413,41 @@ class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
     Q3ButtonGroup *mBox;
 };
 
+/**
+  @short Widgets for settings represented by a combo box in
+  @ref KPrefsDialog.
+
+  This class provides a control element for configuring selections. It is meant
+  to be used by KPrefsDialog. The user is responsible for the layout management.
+
+  The setting is interpreted as an int value, corresponding to the index in 
+  the combo box.
+*/
+class KDE_EXPORT KPrefsWidCombo : public KPrefsWid
+{
+  public:
+    /**
+      Create a control element for selection of an option. It consists of a
+      combo box.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent );
+    virtual ~KPrefsWidCombo();
+
+    void readConfig();
+    void writeConfig();
+
+    QComboBox *comboBox();
+    QList<QWidget *> widgets() const;
+
+  private:
+    KConfigSkeleton::ItemEnum *mItem;
+    QComboBox *mCombo;
+};
+
+
 
 /**
   @short Widgets for string settings in @ref KPrefsDialog.
@@ -600,6 +636,16 @@ class KDEPIM_EXPORT KPrefsWidManager
     */
     KPrefsWidRadios *addWidRadios( KConfigSkeleton::ItemEnum *item,
                                    QWidget *parent = 0 );
+
+    /**
+      Register a @ref KPrefsWidCombo object. The choices represented by the
+      given item object are automatically added to the combo box.
+
+      @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param parent  Parent widget.
+    */
+    KPrefsWidCombo *addWidCombo( KConfigSkeleton::ItemEnum *item,
+                                 QWidget *parent = 0 );
 
     /**
       Register a @ref KPrefsWidString object.
