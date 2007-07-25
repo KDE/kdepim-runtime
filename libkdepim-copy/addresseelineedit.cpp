@@ -974,7 +974,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
     unsigned int currentIndex = completionBox()->currentRow();
     if ( ke->key() == Qt::Key_Up ) {
-      //kdDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
+      //kDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
       QListWidgetItem *itemAbove = completionBox()->item( currentIndex - 1 );
