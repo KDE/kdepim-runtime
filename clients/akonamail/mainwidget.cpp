@@ -61,7 +61,6 @@ MainWidget::MainWidget(QWidget * parent) :
   rightSplitter->addWidget( mMessageList );
 
   mCollectionView->setModel( mCollectionProxyModel );
-
   mMessageModel = new Akonadi::MessageModel( this );
   mMessageProxyModel = new Akonadi::MessageThreaderProxyModel( this );
   mMessageProxyModel->setSourceModel( mMessageModel );
@@ -87,7 +86,7 @@ void MainWidget::collectionActivated(const QModelIndex & index)
 
 void MainWidget::itemActivated(const QModelIndex & index)
 {
-  DataReference ref = mMessageModel->referenceForIndex( index );
+  DataReference ref = mMessageModel->referenceForIndex( mMessageProxyModel->mapToSource( index ) );
 
   if ( ref.isNull() )
     return;
