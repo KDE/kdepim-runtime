@@ -191,17 +191,20 @@ class MailThreaderAgent::Private
     QString query = property + QString::fromLatin1(":") + value;
     qDebug() << "findUsingStrigi, query = " << query;
     QList<StrigiHit> hits = strigi.getHits( query, 1, 0 );
-    if ( hits.count() )
-    {
-      qDebug() << "hits !";
-      StrigiHit hit = hits[0];
-      return Item::fromUrl( hit.uri );
+
+    foreach( StrigiHit hit, hits ) {
+      if ( Item::urlIsValid( hit.uri ) ) {
+        DataReference ref = Item::fromUrl( hit.uri );
+        if ( !ref.isNull() )
+        {
+          qDebug() << "mailthreaderagent: " << hit.uri;
+          return ref;
+        }
+      }
     }
-    else
-    {
-      qDebug() << "no result  :(";
-      return DataReference();
-    }
+
+    qDebug() << "no result  :(";
+    return DataReference();
   }
 
   DataReference findParentInCache( const Item& item )
@@ -214,19 +217,29 @@ class MailThreaderAgent::Private
   bool subjectIsPrefixed( const Item& item )
   {
     // ### Implement me
-    return false;
+    return true;
   }
 
   DataReference findParent( const Item& item, int *mark )
   {
+    qDebug() << "-------------------------- FIND PARENT -------------------";
     DataReference parent;
     DataReference ref = item.reference();
 
-    MessagePtr msg = item.payload<MessagePtr>();
+    if ( ref.isNull() )
+      qDebug()<<"Invalid reference !!!!!";
 
+    MessagePtr msg = item.payload<MessagePtr>();
+    qDebug() << "mailthreaderagent: item information -------------------------------------------------------";
+    qDebug() << msg->body();
+    qDebug() << msg->messageID()->asUnicodeString();
+    qDebug() << msg->subject()->asUnicodeString();
+    qDebug() << msg->inReplyTo()->asUnicodeString();
     // Try to fetch his perfect parent using Strigi
+
     QString inReplyTo = msg->inReplyTo()->asUnicodeString();
     if ( !inReplyTo.isEmpty() ) {
+      qDebug() << "mailthreaderagent: trying to find a perfect parent : inReplyTo";
       parent = findUsingStrigi( QString::fromLatin1("content.ID"), inReplyTo );
 
       if ( !parent.isNull() )
@@ -297,7 +310,10 @@ class MailThreaderAgent::Private
          * subject, and take the closest one by date. */
         foreach ( StrigiHit hit, hits ) {
             // make sure it's not ourselves
+            if ( !Item::urlIsValid( hit.uri ) ) continue;
             DataReference parentRef = Item::fromUrl( hit.uri );
+
+            if ( parentRef.isNull() ) continue;
             if ( parentRef == ref ) continue;
 
             ItemFetchJob *job = new ItemFetchJob( parentRef, mParent->session() );
@@ -382,10 +398,11 @@ void MailThreaderAgent::findParentAndMark( const Akonadi::Item &item )
     qDebug() << "mailthreaderagent: parent found with id " << ref.id();
 
     // Modify the item and add his PartParent
-    Item modifiedItem = item;
+    Item modifiedItem( item );
     modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
     modifiedItem.addPart( PartSort, QByteArray::number( mark ) );
-
+    qDebug() << "mailthreaderagent: adding part parent " << ref.id();
+    qDebug() << "mailthreaderagent: adding part sort " << mark;
     ItemStoreJob *sJob = new ItemStoreJob( modifiedItem, session() );
     sJob->storePayload();
     if (!sJob->exec())
