@@ -66,14 +66,12 @@ MainWidget::MainWidget(QWidget * parent) :
   mMessageProxyModel->setSourceModel( mMessageModel );
   mMessageList->setModel( mMessageProxyModel );
 
-  mMessageModel->setCollection( Collection( 1 ) ); // test
-
   mMessageView = new QTextEdit( this );
   rightSplitter->addWidget( mMessageView );
 
 
   splitter->setSizes( QList<int>() << 200 << 400 );
-  rightSplitter->setSizes( QList<int>() << 200 << 100 );
+  rightSplitter->setSizes( QList<int>() << 200 << 200 );
 }
 
 void MainWidget::collectionActivated(const QModelIndex & index)
