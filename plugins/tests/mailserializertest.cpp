@@ -51,3 +51,34 @@ void MailSerializerTest::testEnvelopeDeserialize()
 
   delete serializer;
 }
+
+void MailSerializerTest::testEnvelopeSerialize()
+{
+  Item i;
+  i.setMimeType( "message/rfc822" );
+  Message* msg = new Message();
+  msg->date()->from7BitString( "Wed, 1 Feb 2006 13:37:19 UT" );
+  msg->subject()->from7BitString( "IMPORTANT: Akonadi Test" );
+  msg->from()->from7BitString( "Tobias Koenig <tokoe@kde.org>" );
+  msg->sender()->from7BitString( "Tobias Koenig <tokoe@kde.org>" );
+  msg->to()->from7BitString( "Ingo Kloecker <kloecker@kde.org>" );
+  msg->messageID()->from7BitString( "<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>" );
+  i.setPayload( MessagePtr( msg ) );
+
+  SerializerPluginMail *serializer = new SerializerPluginMail();
+
+  // envelope
+  QByteArray expEnv( "(\"Wed, 01 Feb 2006 13:37:19 +0000\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL \"<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>\")" );
+  QByteArray env;
+  QBuffer buffer;
+  buffer.setBuffer( &env );
+  buffer.open( QIODevice::ReadWrite );
+  buffer.seek( 0 );
+  serializer->serialize( i, Item::PartEnvelope, buffer );
+  QCOMPARE( env, expEnv );
+
+  delete serializer;
+
+}
+
+

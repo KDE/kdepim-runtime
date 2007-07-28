@@ -72,6 +72,10 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
     } else if ( label == Item::PartEnvelope ) {
         QList<QByteArray> env;
         ImapParser::parseParenthesizedList( data.readAll(), env );
+        if ( env.count() < 10 ) {
+          qWarning() << "Akonaid KMime Deserializer: Got invalid envelope: " << env;
+          return;
+        }
         Q_ASSERT( env.count() >= 10 );
         // date
         msg->date()->from7BitString( env[0] );
@@ -83,7 +87,9 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->from() );
         // sender
-        // not supported by kmime, skip it
+        ImapParser::parseParenthesizedList( env[2], addrList );
+        if ( !addrList.isEmpty() )
+          parseAddrList( addrList, msg->sender() );
         // reply-to
         ImapParser::parseParenthesizedList( env[4], addrList );
         if ( !addrList.isEmpty() )
@@ -107,14 +113,54 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
     }
 }
 
+static QByteArray quoteImapListEntry( const QByteArray &b )
+{
+  if ( b.isEmpty() )
+    return "NIL";
+  return ImapParser::quote( b );
+}
+
+static QByteArray buildImapList( const QList<QByteArray> &list )
+{
+  if ( list.isEmpty() )
+    return "NIL";
+  return QByteArray( "(" ) + ImapParser::join( list, " " ) + QByteArray( ")" );
+}
+
+template <typename T> static QByteArray buildAddrStruct( T const *hdr )
+{
+  QList<QByteArray> addrList;
+  foreach ( const KMime::Types::Mailbox mbox, hdr->mailboxes() ) {
+    QList<QByteArray> addrStruct;
+    addrStruct << quoteImapListEntry( KMime::encodeRFC2047String( mbox.name(), "utf-8" ) );
+    addrStruct << quoteImapListEntry( QByteArray() );
+    addrStruct << quoteImapListEntry( mbox.addrSpec().localPart.toUtf8() );
+    addrStruct << quoteImapListEntry( mbox.addrSpec().domain.toUtf8() );
+    addrList << buildImapList( addrStruct );
+  }
+  return buildImapList( addrList );
+}
+
 void SerializerPluginMail::serialize( const Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody )
-      return;
-
-    boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
-    m->assemble();
+  boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
+  m->assemble();
+  if ( label == Item::PartBody ) {
     data.write( m->encodedContent() );
+  } else if ( label == Item::PartEnvelope ) {
+    QList<QByteArray> env;
+    env << quoteImapListEntry( m->date()->as7BitString( false ) );
+    env << quoteImapListEntry( m->subject()->as7BitString( false ) );
+    env << buildAddrStruct( m->from() );
+    env << buildAddrStruct( m->sender() );
+    env << buildAddrStruct( m->replyTo() );
+    env << buildAddrStruct( m->to() );
+    env << buildAddrStruct( m->cc() );
+    env << buildAddrStruct( m->bcc() );
+    env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
+    env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
+    data.write( buildImapList( env ) );
+  }
 }
 
 QStringList SerializerPluginMail::parts(const Item & item) const
