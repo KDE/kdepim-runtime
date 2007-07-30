@@ -171,7 +171,7 @@ void KCMDesignerFields::delayedInit()
 
   // Install a dirwatcher that will detect newly created or removed designer files
   KDirWatch *dw = new KDirWatch( this );
-  dw->addDir( localUiDir(), true );
+  dw->addDir( localUiDir(), KDirWatch::WatchFiles );
   connect( dw, SIGNAL( created(const QString&) ), SLOT( rebuildList() ) );
   connect( dw, SIGNAL( deleted(const QString&) ), SLOT( rebuildList() ) );
   connect( dw, SIGNAL( dirty(const QString&) ),   SLOT( rebuildList() ) );
