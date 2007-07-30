@@ -41,7 +41,7 @@ void StoreCommand::exec()
         << endl;
   } else {
     Item item = fetchJob->items()[0];
-    item.addPart( QString::fromLatin1("AkonadiMailThreaderAgentParent" ), mContent.toLatin1() );
+    item.addPart( mPart, mContent.toLatin1() );
     ItemStoreJob* sJob = new ItemStoreJob( item );
     sJob->storePayload();
     if ( !sJob->exec() ) {

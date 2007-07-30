@@ -20,14 +20,19 @@
 */
 
 #include "mainwidget.h"
-
 #include "mainwindow.h"
+
+#include <QtGui/QToolBar>
 
 #include <libakonadi/control.h>
 
 MainWindow::MainWindow( QWidget *parent )
   : QMainWindow( parent )
 {
+  QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
+  toolBar->addAction( "Rethread", this, SIGNAL( threadCollection() ) );
+  addToolBar( toolBar );
+
   Akonadi::Control::start();
   setCentralWidget( new MainWidget( this ) );
   resize( 700, 500 );

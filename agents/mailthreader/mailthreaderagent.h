@@ -26,6 +26,25 @@
 
 using namespace Akonadi;
 
+class MailThreaderAttribute : public CollectionAttribute
+{
+  public:
+    MailThreaderAttribute() : CollectionAttribute() {}
+    MailThreaderAttribute* clone() const { 
+      MailThreaderAttribute *a =  new MailThreaderAttribute(); 
+      a->mData = mData;
+    }
+
+    QByteArray type() const { return "MailThreaderSort"; }
+    QByteArray toByteArray() const { return mData; }
+
+    void setData( const QByteArray &data ) { mData = data; }
+  private:
+    QByteArray mData;
+};
+
+
+
 /**
  * This agent works on a mail collection an tries to thread
  * mails related to the same discussion :
@@ -45,23 +64,21 @@ class MailThreaderAgent : public Akonadi::AgentBase
     MailThreaderAgent( const QString &id );
     ~MailThreaderAgent();
 
-    static const QLatin1String PartParent;
-    static const QLatin1String PartSort;
+    static const QLatin1String PartPerfectParents;
+    static const QLatin1String PartUnperfectParents;
+    static const QLatin1String PartSubjectParents;
 
-    void setCollection( const Akonadi::Collection &col );
+    void threadCollection( const Akonadi::Collection &col );
 
   public Q_SLOTS:
     virtual void configure();
-    void threadCollection();
-    QList<DataReference> childrenOf( const Item& item );
 
   protected:
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
-
+    virtual void collectionChanged( const Akonadi::Collection &collection );
     void findParentAndMark( const Akonadi::Item &item );
   private:
     class Private;

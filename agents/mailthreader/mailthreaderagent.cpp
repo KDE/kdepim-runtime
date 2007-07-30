@@ -22,6 +22,7 @@
 #include <libakonadi/monitor.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
+#include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/item.h>
 
 #include <strigi/qtdbus/strigiclient.h>
@@ -32,24 +33,10 @@
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
+
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
-
-class SortCacheItem
-{
-public:
-  explicit SortCacheItem( DataReference r )
-  {
-    ref = r;
-  }
-
-  DataReference ref;
-  int mark; // 0, perfect sort; -1, to sort; -2, don't even try to sort it
-  int parentId;
-  QList<SortCacheItem*> perfectChildren;
-  QMap<int,SortCacheItem*> unperfectChildren;
-};
 
 class MailThreaderAgent::Private
 {
@@ -59,12 +46,6 @@ class MailThreaderAgent::Private
 
   StrigiClient strigi;
 
-  Item::List mItems;
-
-  QList<SortCacheItem*> mRootChildren;
-  QMap<int, SortCacheItem*> mItemMap;
-  QMap<int, SortCacheItem*> mImperfectlyThreadedItems;
-
   Private( MailThreaderAgent *parent )
       : mParent( parent )
   {
@@ -72,74 +53,7 @@ class MailThreaderAgent::Private
 
   ~Private()
   {
-    clearCache();
   }
-
-  void clearCache()
-  {
-    mRootChildren.clear();
-    mImperfectlyThreadedItems.clear();
-
-    foreach(SortCacheItem *item, mItemMap)
-      delete item;
-    mItemMap.clear();
-  }
-
-  /*
-    Reads the elements in the current collection. Loads in the cache structures
-    the information which is in PartSort and PartParent.
-  */
-  void readCache()
-  {
-    if ( !mCollection.isValid() )
-      return;
-
-    ItemFetchJob *fjob = new ItemFetchJob( mCollection, mParent->session() );
-    fjob->addFetchPart( PartSort );
-    fjob->addFetchPart( PartParent );
-    fjob->addFetchPart( Item::PartAll ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
-    if ( !fjob->exec() )
-      return;
-
-    mItemMap.clear();
-    mItems = fjob->items();
-    foreach( Item it, mItems ) {
-      SortCacheItem *sItem = new SortCacheItem( it.reference() );
-      mItemMap[ it.reference().id() ] = sItem; // ### Avoid copying the item using pointers?
-    }
-
-    /*
-      First reading the "cache" stored in the item parts
-    */
-    foreach( Item it, mItems ) {
-      bool ok;
-      int parentId = it.part( PartParent ).toInt( &ok );
-      int sortState = it.part( PartSort ).toInt();
-      if ( ok )
-      {
-        if ( mItemMap[ parentId ]->ref.isNull() ) // has a parent part but parent not in collection anymore
-        {
-          mItemMap[ it.reference().id() ]->mark = -1;
-        }
-        else
-        {
-          mItemMap[ it.reference().id() ]->mark = sortState; // 0  or -1
-          mItemMap[ it.reference().id() ]->parentId = parentId;
-          if ( sortState == 0 )
-            mItemMap[ parentId ]->perfectChildren << mItemMap[ it.reference().id() ];
-          else if ( sortState == -1 )
-            mItemMap[ parentId ]->unperfectChildren[ it.reference().id() ] = mItemMap[ it.reference().id()];
-        }
-      }
-      else // no parent part
-        if ( sortState == -2 ) // keep this mark if already set
-          mItemMap[ it.reference().id() ]->mark = -2;
-        else
-          mItemMap[ it.reference().id() ]->mark = -1;
-    }
-
-  }
-
 
   // From kmmsgbase.cpp
   QString stripOffPrefixes( const QString& str )
@@ -186,33 +100,59 @@ class MailThreaderAgent::Private
       return str;
   }
 
-  DataReference findUsingStrigi( QString property, QString value )
+  QList<int> findUsingStrigi( QString property, QString value )
   {
     QString query = property + QString::fromLatin1(":") + value;
-    qDebug() << "findUsingStrigi, query = " << query;
-    QList<StrigiHit> hits = strigi.getHits( query, 1, 0 );
+    QList<StrigiHit> hits = strigi.getHits( query, 50, 0 );
+    QList<int> result;
 
     foreach( StrigiHit hit, hits ) {
       if ( Item::urlIsValid( hit.uri ) ) {
         DataReference ref = Item::fromUrl( hit.uri );
         if ( !ref.isNull() )
         {
-          qDebug() << "mailthreaderagent: " << hit.uri;
-          return ref;
+          result << ref.id();
         }
       }
     }
-
-    qDebug() << "no result  :(";
-    return DataReference();
+    return result;
   }
 
-  DataReference findParentInCache( const Item& item )
+  QList<int> findParentBySubject( const Item& item )
   {
-    QByteArray partParent = item.part( PartParent );
-    if ( !partParent.isEmpty() )
-      return DataReference( item.part( partParent ).toInt(), QString() );
+    QList<int> result;
+    DataReference ref = item.reference();
+    DataReference parent;
+    MessagePtr msg = item.payload<MessagePtr>();
+
+    QString strippedSubject = stripOffPrefixes( msg->subject()->asUnicodeString() );
+    if ( strippedSubject.isEmpty() ) // Not worth trying !
+      return result;
+
+    // Let's try by subject, but only if the  subject is prefixed.
+    // This is necessary to make for example cvs commit mailing lists
+    // work as expected without having to turn threading off alltogether.
+    if ( msg->subject()->asUnicodeString() == strippedSubject ) // true if not prefixed
+        return result;
+
+    QString query = QString::fromLatin1("email.subject:") + strippedSubject; // ###
+    QList<StrigiHit> hits = strigi.getHits( query, 50, 0 ); // max = 50. A way to change that to unlimited ? Ask Strigi developer
+    /* Iterate over the list of potential parents with the same
+     * subject, and take the closest one by date. */
+    foreach ( StrigiHit hit, hits ) {
+      // make sure it's not ourselves
+      if ( !Item::urlIsValid( hit.uri ) ) continue;
+      DataReference parentRef = Item::fromUrl( hit.uri );
+
+      if ( parentRef.isNull() ) continue;
+      if ( parentRef == ref ) continue;
+
+      result << parentRef.id();
+    }
+
+    return result;
   }
+
 
   bool subjectIsPrefixed( const Item& item )
   {
@@ -220,39 +160,111 @@ class MailThreaderAgent::Private
     return true;
   }
 
-  DataReference findParent( const Item& item, int *mark )
+  /*
+   * Joint the integers in the list in a comma-separated string, and add it to item part
+   * @param item The method uses this item to not add already existing parents
+   * @param part The part the list will be added to
+   * @param list the parent list
+   * @return true if the part was changed: this to avoid unnecessary store jobs.
+   */
+  bool buildPartFromList( Item& item, const QLatin1String part, QList<int> list )
   {
-    qDebug() << "-------------------------- FIND PARENT -------------------";
-    DataReference parent;
-    DataReference ref = item.reference();
+    bool change = false;
+    // Convert the current parent list to integer list
+    QList<int> currentParents;
+    QList<QByteArray> currentParentsStringList = item.part( part ).split( ',' );
+    foreach( QByteArray s, currentParentsStringList )
+      currentParents << s.toInt();
 
-    if ( ref.isNull() )
-      qDebug()<<"Invalid reference !!!!!";
-
-    MessagePtr msg = item.payload<MessagePtr>();
-    qDebug() << "mailthreaderagent: item information -------------------------------------------------------";
-    qDebug() << msg->body();
-    qDebug() << msg->messageID()->asUnicodeString();
-    qDebug() << msg->subject()->asUnicodeString();
-    qDebug() << msg->inReplyTo()->asUnicodeString();
-    // Try to fetch his perfect parent using Strigi
-
-    QString inReplyTo = msg->inReplyTo()->asUnicodeString();
-    if ( !inReplyTo.isEmpty() ) {
-      qDebug() << "mailthreaderagent: trying to find a perfect parent : inReplyTo";
-      parent = findUsingStrigi( QString::fromLatin1("content.ID"), inReplyTo );
-
-      if ( !parent.isNull() )
+    QString result;
+    foreach( int i, list ) {
+      if ( currentParents.indexOf( i ) == -1 ) // Only add it if it's not already in
       {
-        *mark = 0;
-        return parent;
+        change = true;
+        result += QString::number( i ) + QLatin1String( "," );
       }
     }
 
-    // From now on you can't be perfectly threaded
-    *mark = -1;
+    item.addPart( part, result.toLatin1() );
 
-    // A perfect parent was not found: try to find one using the References field
+    return change;
+  }
+
+  /*
+   * - Fetches the item before
+   * - One integer instead of one integer list
+   */
+  bool saveThreadingInfo( int id, QLatin1String part, int partValue )
+  {
+    ItemFetchJob *job = new ItemFetchJob( DataReference( id, QString() ), mParent->session() );
+    job->addFetchPart( part );
+
+    if ( job->exec() ) {
+      Item item = job->items()[0];
+      bool change = buildPartFromList( item, part, QList<int>() << partValue );
+
+      // Store the new parents of this item if there was a change
+      if ( change )
+      {
+        ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
+        job->storePayload();
+        if (!job->exec()) {
+          qDebug() << "Unable to store threading parts !";
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /*
+   * Save the threading information in an item.
+   */
+  bool saveThreadingInfo( Item& item, QList<int> perfectParents,
+                                  QList<int> unperfectParents,
+                                  QList<int> subjectParents )
+  {
+    bool pC = buildPartFromList( item, PartPerfectParents, perfectParents );
+    bool uC = buildPartFromList( item, PartUnperfectParents, unperfectParents );
+    bool fC = buildPartFromList( item, PartSubjectParents, subjectParents );
+
+    // If there was a change, store it
+    if ( pC || uC || fC )
+    {
+      ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
+      job->storePayload();
+      if (!job->exec()) {
+        qDebug() << "Unable to store the threading parts !";
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /*
+    Main algorithm to find the parent
+    Returns a SortCacheItem structure with the parentId if found,
+    but in each case with a mark.
+   */
+  void findParent( Item& item )
+  {
+    DataReference parent;
+    DataReference ref = item.reference();
+    int mark = 0;
+
+    if ( ref.isNull() )
+      return;
+
+    /*
+     * Extract useful info
+     */
+    MessagePtr msg = item.payload<MessagePtr>();
+    QString messageID = msg->messageID()->asUnicodeString();
+    QString inReplyTo = msg->inReplyTo()->asUnicodeString();
     QString secondReplyId = msg->references()->asUnicodeString();
     // references contains two items, use the first one
     // (the second to last reference)
@@ -260,95 +272,82 @@ class MailThreaderAgent::Private
     if( rightAngle != -1 )
       secondReplyId.truncate( rightAngle + 1 );
 
+    bool subjectPrefixed = subjectIsPrefixed( item );
+    QString strippedSubject;
+    if ( subjectPrefixed )
+      strippedSubject = stripOffPrefixes( msg->subject()->asUnicodeString() );
+
+    /*
+     * Search parent using Strigi
+     */
+    // List which will receive the parent ids
+    QList<int> perfectParents;
+    QList<int> unperfectParents;
+    QList<int> subjectParents;
+
+    // Try to fetch his perfect parent using Strigi
+    if ( !inReplyTo.isEmpty() ) {
+      perfectParents << findUsingStrigi( QString::fromLatin1("content.ID"), inReplyTo );
+    }
+
+    // Find unperfect parents using the References field
     if ( !secondReplyId.isEmpty() ) {
       // Try to fetch his imperfect parent using Strigi
-      parent = findUsingStrigi( QString::fromLatin1("content.ID"), secondReplyId );
-      if ( !parent.isNull() )
-      {
-        return parent;
-      }
+      unperfectParents << findUsingStrigi( QString::fromLatin1("content.ID"), secondReplyId );
     }
 
     if ( subjectIsPrefixed( item ) )
     {
       // An imperfect parent was not found using References. Try using the Subject field.
-      parent = findParentBySubject( item );
-      if (!parent.isNull() )
-        return parent;
-      else
-        return DataReference();
+      subjectParents << findParentBySubject( item );
     }
 
-    if ( !inReplyTo.isEmpty() || !secondReplyId.isEmpty() )
-      return DataReference(); // Still a hope, *mark = -1
+    /*
+     * Store the retrieved info in the item parts.
+     */
+    saveThreadingInfo( item, perfectParents, unperfectParents, subjectParents );
 
-    // Desperate case
-    *mark = -2;
-    return DataReference();
-  }
 
-  DataReference findParentBySubject( const Item& item )
-  {
-    DataReference ref = item.reference();
-    DataReference parent;
-    MessagePtr msg = item.payload<MessagePtr>();
+    /*
+     * Search children using Strigi
+     * TODO: Strigi seems to lack a way to distinguish perfect
+     * and unperfect parents in the links field. That's why parts of the code
+     * below are commented out.
+     */
+    if ( !messageID.isEmpty() )
+    {
+      // QList<int> perfectChildren = findUsingStrigi( QString::fromLatin1( "content.links" ), messageId );
+      QList<int> unperfectChildren = findUsingStrigi( QString::fromLatin1( "content.links" ), messageID );
+      // This one will be more complex because we need to check the subject returned by strigi to have
+      // no prefix and to be *exactly* strippedSubject
+      // QList<int> subjectChildren = findUsingStrigi( QString::fromLatin1( "content.subject" ), strippedSubject );
 
-    QString strippedSubject = stripOffPrefixes( msg->subject()->asUnicodeString() );
-    if ( strippedSubject.isEmpty() ) // Not worth trying !
-      return parent;
-
-    // Let's try by subject, but only if the  subject is prefixed.
-    // This is necessary to make for example cvs commit mailing lists
-    // work as expected without having to turn threading off alltogether.
-    if ( msg->subject()->asUnicodeString() == strippedSubject ) // true if not prefixed
-        return parent;
-
-    QString query = QString::fromLatin1("email.subject:") + strippedSubject; // ###
-    QList<StrigiHit> hits = strigi.getHits( query, 50, 0 ); // max = 50. A way to change that to unlimited ? Ask Strigi developer
-    if ( hits.count() ) {
-        /* Iterate over the list of potential parents with the same
-         * subject, and take the closest one by date. */
-        foreach ( StrigiHit hit, hits ) {
-            // make sure it's not ourselves
-            if ( !Item::urlIsValid( hit.uri ) ) continue;
-            DataReference parentRef = Item::fromUrl( hit.uri );
-
-            if ( parentRef.isNull() ) continue;
-            if ( parentRef == ref ) continue;
-
-            ItemFetchJob *job = new ItemFetchJob( parentRef, mParent->session() );
-            job->addFetchPart( Item::PartEnvelope );
-            if ( !job->exec() ) continue;
-
-            Item potentialParentItem = job->items()[0];
-            MessagePtr mb = potentialParentItem.payload<MessagePtr>();
-
-            int delta = mb->date()->dateTime().secsTo( msg->date()->dateTime() );
-            // delta == 0 is not allowed, to avoid circular threading
-            // with duplicates.
-            if (delta > 0 ) {
-                // Don't use parents more than 6 weeks older than us.
-                if (delta < 3628899)
-                    parent = parentRef;
-                break;
-            }
-        }
+      // foreach( int childId, perfectChildren ) {
+      //   saveThreadingInfo( childId, PartPerfectParents, ref.id() );
+      // }
+      foreach( int childId, unperfectChildren ) {
+        saveThreadingInfo( childId, PartUnperfectParents, ref.id() );
+      }
+      //foreach( int childId, subjectChildren ) {
+      //  saveThreadingInfo( childId, PartSubjectParents, ref.id() );
+      //}
     }
-    return parent;
   }
+
+
 
 
 };
 
-const QLatin1String MailThreaderAgent::PartParent = QLatin1String( "AkonadiMailThreaderAgentParent" );
-const QLatin1String MailThreaderAgent::PartSort = QLatin1String( "AkonadiMailThreaderAgentSort" );
+const QLatin1String MailThreaderAgent::PartPerfectParents = QLatin1String( "AkonadiMailThreaderAgentPerfectParents" );
+const QLatin1String MailThreaderAgent::PartUnperfectParents = QLatin1String( "AkonadiMailThreaderAgentUnperfectParents" );
+const QLatin1String MailThreaderAgent::PartSubjectParents = QLatin1String( "AkonadiMailThreaderAgentSubjectParents" );
 
 MailThreaderAgent::MailThreaderAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
   qDebug() << "mailtheaderagent: at your order, sir!" ;
-
 
   // Fetch the whole list, thread it.
 }
@@ -369,104 +368,53 @@ void MailThreaderAgent::configure()
 
 void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
-  qDebug() << "youhouuuuuu" ;
-  findParentAndMark( item );
-}
+  Item modifiedItem = Item( item );
 
-void MailThreaderAgent::itemChanged( const Akonadi::Item &item, const QStringList& )
-{
-  // TODO We only have something to do here if the collection has changed for the item
-  qDebug() << "youhouuuuu2";
-  findParentAndMark( item );
+  d->findParent( modifiedItem );
 }
 
 void MailThreaderAgent::itemRemoved(const Akonadi::DataReference & ref)
 {
-  // TODO Find all item who have the removed one as parent and remove their PartParent
-
+  // TODO Find all item who have the removed one as parent _in the parts_ and remove this parent
+  // from their threading parts
+  // It requires Strigi to index the different parts
 }
 
-void MailThreaderAgent::findParentAndMark( const Akonadi::Item &item )
+void MailThreaderAgent::collectionChanged( const Akonadi::Collection &col )
 {
-  int mark;
+  // FIXME This doesn't seem to work: attribute empty
+  if ( !col.hasAttribute( "MailThreaderSort" ) )
+    return;
 
-  qDebug() << "mailthreaderagent: looking for parent for new item " << item.url();
+  if ( col.attribute( "MailThreaderSort" ) != QByteArray( "sort" ) )
+    return;
 
-  DataReference ref = d->findParent( item, &mark );
-  if ( !ref.isNull() )
-  {
-    qDebug() << "mailthreaderagent: parent found with id " << ref.id();
+  threadCollection( col );
 
-    // Modify the item and add his PartParent
-    Item modifiedItem( item );
-    modifiedItem.addPart( PartParent, QByteArray::number( ref.id() ) );
-    modifiedItem.addPart( PartSort, QByteArray::number( mark ) );
-    qDebug() << "mailthreaderagent: adding part parent " << ref.id();
-    qDebug() << "mailthreaderagent: adding part sort " << mark;
-    ItemStoreJob *sJob = new ItemStoreJob( modifiedItem, session() );
-    sJob->storePayload();
-    if (!sJob->exec())
-      qDebug() << "Unable to store the PartParent in the storage !";
-  }
+  CollectionModifyJob *job = new CollectionModifyJob( col );
+  MailThreaderAttribute *a = new MailThreaderAttribute();
+  a->setData( QByteArray() );
+  job->setAttribute( a );
+  if ( !job->exec() )
+    qDebug() << "Unable to modify collection";
 }
 
-QList<DataReference> MailThreaderAgent::childrenOf( const Item& item )
+void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )
 {
-  QList<DataReference> items; //preallocate
-  foreach( SortCacheItem* sItem, d->mItemMap[ item.reference().id() ]->perfectChildren ) {
-    items << sItem->ref;
+  // List collection content
+  ItemFetchJob *fjob = new ItemFetchJob( col, session() );
+  fjob->addFetchPart( PartPerfectParents );
+  fjob->addFetchPart( PartUnperfectParents );
+  fjob->addFetchPart( PartSubjectParents );
+  fjob->addFetchPart( Item::PartAll ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
+  if ( !fjob->exec() )
+    return;
+
+  Item::List items = fjob->items();
+
+  foreach( Item item, items ) {
+    d->findParent( item );
   }
-  foreach( SortCacheItem* sItem, d->mItemMap[ item.reference().id() ]->unperfectChildren ) {
-    items << sItem->ref;
-  }
-
-  return items;
-}
-
-void MailThreaderAgent::setCollection( const Akonadi::Collection &col )
-{
-  d->clearCache();
-
-  d->mCollection = col;
-  d->readCache();
-
-  threadCollection();
-}
-
-// TODO Emit a signal if a parent is eventually found for an item
-void MailThreaderAgent::threadCollection()
-{
-  /*
-    Find the parent for items whose part is -1
-  */
-  foreach( Item item, d->mItems ) {
-    if ( d->mItemMap[ item.reference().id() ]->mark == 0 )
-      continue; // has already his perfect parent !
-    int mark;
-    qDebug() << item.url();
-    DataReference parentRef = d->findParent( item, &mark );
-    if ( mark == 0 )
-    {
-      d->mItemMap[ item.reference().id() ]->mark = 0;
-      d->mItemMap[ item.reference().id() ]->parentId = parentRef.id();
-      d->mItemMap[ parentRef.id() ]->perfectChildren << d->mItemMap[ item.reference().id() ];
-      d->mItemMap[ parentRef.id() ]->unperfectChildren.remove( item.reference().id() );
-    }
-    else if ( mark == -1 )
-    {
-      d->mItemMap[ item.reference().id() ]->mark = -1;
-      d->mItemMap[ item.reference().id() ]->parentId = parentRef.id();
-      d->mItemMap[ parentRef.id() ]->unperfectChildren[ item.reference().id() ] = d->mItemMap[ item.reference().id()];
-      d->mImperfectlyThreadedItems[ item.reference().id() ] = d->mItemMap[ item.reference().id() ];
-    }
-    else
-    {
-      d->mItemMap[ item.reference().id() ]->mark = -2;
-      d->mRootChildren << d->mItemMap[ item.reference().id()];
-    }
-  }
-
-  // TODO Write the cache
 }
 
 #include "mailthreaderagent.moc"

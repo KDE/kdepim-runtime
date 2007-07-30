@@ -18,14 +18,17 @@
 */
 
 #include "mainwidget.h"
+#include "mainwindow.h"
 
 #include <libakonadi/collection.h>
 #include <libakonadi/collectionview.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 #include <libakonadi/collectionmodel.h>
 #include <libakonadi/itemfetchjob.h>
+#include <libakonadi/collectionmodifyjob.h>
 #include <kmime/messagemodel.h>
 #include <kmime/messagethreaderproxymodel.h>
+#include <agents/mailthreader/mailthreaderagent.h>
 
 #include <QVBoxLayout>
 #include <QSplitter>
@@ -33,18 +36,21 @@
 
 using namespace Akonadi;
 
-MainWidget::MainWidget(QWidget * parent) :
-    QWidget( parent )
+MainWidget::MainWidget( MainWindow * parent) :
+  QWidget( parent ), mMainWindow( parent )
 {
+  connect( mMainWindow, SIGNAL( threadCollection() ),
+           this, SLOT( threadCollection() ) );
+
   QHBoxLayout *layout = new QHBoxLayout( this );
 
   QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
   layout->addWidget( splitter );
 
   // Left part, collection view
-  mCollectionView = new Akonadi::CollectionView();
-  connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
-  splitter->addWidget( mCollectionView );
+  mCollectionList = new Akonadi::CollectionView();
+  connect( mCollectionList, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
+  splitter->addWidget( mCollectionList );
   // Filter the collection to only show the emails
   mCollectionModel = new Akonadi::CollectionModel( this );
   mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
@@ -60,7 +66,7 @@ MainWidget::MainWidget(QWidget * parent) :
   connect( mMessageList, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   rightSplitter->addWidget( mMessageList );
 
-  mCollectionView->setModel( mCollectionProxyModel );
+  mCollectionList->setModel( mCollectionProxyModel );
   mMessageModel = new Akonadi::MessageModel( this );
   mMessageProxyModel = new Akonadi::MessageThreaderProxyModel( this );
   mMessageProxyModel->setSourceModel( mMessageModel );
@@ -70,13 +76,13 @@ MainWidget::MainWidget(QWidget * parent) :
   rightSplitter->addWidget( mMessageView );
 
 
-  splitter->setSizes( QList<int>() << 200 << 400 );
-  rightSplitter->setSizes( QList<int>() << 200 << 200 );
+  splitter->setSizes( QList<int>() << 200 << 500 );
+  rightSplitter->setSizes( QList<int>() << 300 << 200 );
 }
 
 void MainWidget::collectionActivated(const QModelIndex & index)
 {
-  mCurrentCollectionId = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
+  mCurrentCollectionId = mCollectionList->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
   if ( mCurrentCollectionId <= 0 )
     return;
   mMessageModel->setCollection( Collection( mCurrentCollectionId ) );
@@ -84,7 +90,7 @@ void MainWidget::collectionActivated(const QModelIndex & index)
 
 void MainWidget::itemActivated(const QModelIndex & index)
 {
-  DataReference ref = mMessageModel->referenceForIndex( mMessageProxyModel->mapToSource( index ) );
+  DataReference ref = mMessageModel->referenceForIndex(  mMessageProxyModel->mapToSource( index ) );
 
   if ( ref.isNull() )
     return;
@@ -106,4 +112,16 @@ void MainWidget::itemFetchDone(KJob * job)
     mMessageView->setPlainText( item.part( Item::PartBody ) );
   }
 }
+
+void MainWidget::threadCollection()
+{
+  Collection col( mCurrentCollectionId );
+  CollectionModifyJob *job = new CollectionModifyJob( col );
+  MailThreaderAttribute *a = new MailThreaderAttribute();
+  a->setData( QByteArray( "sort" ) );
+  job->setAttribute( a );
+  if ( !job->exec() )
+    qDebug() << "Unable to modify collection";
+}
+
 

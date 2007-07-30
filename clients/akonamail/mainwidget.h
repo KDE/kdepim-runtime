@@ -25,6 +25,7 @@
 class QModelIndex;
 class QTreeView;
 class QTextEdit;
+class QSortFilterProxyModel;
 
 class KJob;
 
@@ -36,27 +37,32 @@ class MessageThreaderProxyModel;
 class MessageModel;
 }
 
+class MainWindow;
+
 class MainWidget: public QWidget
 {
   Q_OBJECT
 
   public:
-    MainWidget( QWidget *parent = 0 );
+    MainWidget( MainWindow *parent = 0 );
 
   private slots:
     void collectionActivated(const QModelIndex & index);
     void itemActivated(const QModelIndex & index);
     void itemFetchDone(KJob * job);
+    void threadCollection();
 
   private:
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
-    Akonadi::CollectionView *mCollectionView;
+    Akonadi::CollectionView *mCollectionList;
     Akonadi::MessageModel *mMessageModel;
     Akonadi::MessageThreaderProxyModel *mMessageProxyModel;
     QTreeView *mMessageList;
     QTextEdit *mMessageView;
     int mCurrentCollectionId;
+
+    MainWindow *mMainWindow;
 };
 
 #endif
