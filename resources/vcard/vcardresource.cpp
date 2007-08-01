@@ -80,7 +80,7 @@ void VCardResource::configure()
   else
     url = KUrl::fromPath( QDir::homePath() );
 
-  QString newFile = KFileDialog::getOpenFileName( url, "*.vcf |vCard Contact File", 0, i18n( "Select Address Book" ) );
+  QString newFile = KFileDialog::getOpenFileName( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), 0, i18n( "Select Address Book" ) );
 
   if ( newFile.isEmpty() )
     return;

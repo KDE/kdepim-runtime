@@ -59,7 +59,7 @@ bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const
   qDebug() << "ICalResource::requestItemDelivery()";
   IncidencePtr incidence( mCalendar->incidence( ref.remoteId() )->clone() );
   if ( !incidence ) {
-    error( QString("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
+    error( i18n("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
     return false;
   } else {
     Item item( ref );
@@ -89,7 +89,7 @@ void ICalResource::configure()
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  QString newFile = KFileDialog::getOpenFileName( url, "*.ics *.ical|iCal Calendar File", 0, i18n("Select Calendar") );
+  QString newFile = KFileDialog::getOpenFileName( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), 0, i18n("Select Calendar") );
   if ( newFile.isEmpty() )
     return;
   if ( oldFile == newFile )
