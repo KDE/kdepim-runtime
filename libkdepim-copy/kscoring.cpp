@@ -202,7 +202,7 @@ int ActionBase::getTypeForName(const QString& name)
   else if (name == "MARKASREAD") return MARKASREAD;
   else {
     kWarning(5100) <<"unknown type string" << name
-                    << " in ActionBase::getTypeForName()" << endl;
+                    << "in ActionBase::getTypeForName()";
     return -1;
   }
 }
@@ -215,7 +215,7 @@ int ActionBase::getTypeForUserName(const QString& name)
   else if ( name == userName(MARKASREAD) ) return MARKASREAD;
   else {
     kWarning(5100) <<"unknown type string" << name
-                    << " in ActionBase::getTypeForUserName()" << endl;
+                    << "in ActionBase::getTypeForUserName()";
     return -1;
   }
 }
@@ -444,8 +444,8 @@ KScoringExpression::KScoringExpression(const QString& h, const QString& t, const
   neg = ng.toInt();
   c_header = header.toLatin1();
 
-  kDebug(5100) <<"new expr:" << c_header <<"" << t <<""
-                << expr_str << "  " << neg << endl;
+  kDebug(5100) <<"new expr:" << c_header << t 
+                << expr_str << neg;
 }
 
 // static
@@ -459,7 +459,7 @@ int KScoringExpression::getConditionForName(const QString& s)
   else if (s == getNameForCondition(GREATER)) return GREATER;
   else {
     kWarning(5100) <<"unknown condition name" << s
-                    << " in KScoringExpression::getConditionForName()" << endl;
+                    << "in KScoringExpression::getConditionForName()";
     return -1;
   }
 }
@@ -476,7 +476,7 @@ QString KScoringExpression::getNameForCondition(int cond)
   case GREATER: return i18n("Greater Than");
   default:
     kWarning(5100) <<"unknown condition" << cond
-                    << " in KScoringExpression::getNameForCondition()" << endl;
+                    << "in KScoringExpression::getNameForCondition()";
     return "";
   }
 }
@@ -713,8 +713,7 @@ void KScoringRule::applyRule(ScorableArticle& a) const
 {
   // kDebug(5100) <<"checking rule" << name;
   // kDebug(5100)  <<" for article from"
-  //              << a->from()->asUnicodeString()
-  //              << endl;
+  //              << a->from()->asUnicodeString();
   bool oper_and = (link == AND);
   bool res = true;
   Q3PtrListIterator<KScoringExpression> it(expressions);
@@ -887,7 +886,7 @@ void KScoringManager::createInternalFromXML(QDomNode n)
   // the XML file was parsed and now we simply traverse the resulting tree
   if ( !n.isNull() ) {
     kDebug(5100) <<"inspecting node of type" << n.nodeType()
-                  << " named " << n.toElement().tagName() << endl;
+                  << "named" << n.toElement().tagName();
 
     switch (n.nodeType()) {
     case QDomNode::DocumentNode: {
@@ -898,7 +897,7 @@ void KScoringManager::createInternalFromXML(QDomNode n)
       // Server, Newsgroup, Rule, Expression, Action
       QDomElement e = n.toElement();
       //kDebug(5100) <<"The name of the element is"
-      //<< e.tagName().toLatin1() << endl;
+      //<< e.tagName().toLatin1();
       QString s = e.tagName();
       if (s == "Rule") {
         cR = new KScoringRule(e.attribute("name"));
@@ -1103,7 +1102,7 @@ void KScoringManager::initCache(const QString& g)
     }
   }
   kDebug(5100) <<"created cache for group" << group
-                << " with " << ruleList.count() << " rules" << endl;
+                << "with" << ruleList.count() << "rules";
   setCacheValid(true);
 }
 

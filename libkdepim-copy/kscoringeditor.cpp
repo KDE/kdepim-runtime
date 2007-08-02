@@ -206,7 +206,7 @@ void ConditionEditWidget::updateRule(KScoringRule *rule)
   for(QWidget *w = mWidgetList.first(); w; w = mWidgetList.next()) {
       if (QString(w->metaObject()->className()) != "SingleConditionWidget") {
       kWarning(5100) <<"there is a widget in ConditionEditWidget"
-                      << "which isn't a SingleConditionWidget" << endl;
+                      << "which isn't a SingleConditionWidget";
     } else {
       SingleConditionWidget *saw = dynamic_cast<SingleConditionWidget*>(w);
 	  if (saw)
@@ -380,7 +380,7 @@ void ActionEditWidget::updateRule(KScoringRule *rule)
   for(QWidget *w = mWidgetList.first(); w; w = mWidgetList.next()) {
       if (QString(w->metaObject()->className()) != "SingleActionWidget") {
       kWarning(5100) <<"there is a widget in ActionEditWidget"
-                      << "which isn't a SingleActionWidget" << endl;
+                      << "which isn't a SingleActionWidget";
     } else {
       SingleActionWidget *saw = dynamic_cast<SingleActionWidget*>(w);
 	  if (saw)

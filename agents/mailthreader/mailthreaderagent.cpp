@@ -82,8 +82,8 @@ class MailThreaderAgent::Private
     QRegExp rx( bigRegExp, Qt::CaseInsensitive );
     if ( !rx.isValid() ) {
       kWarning(5006) <<"KMMessage::replacePrefixes(): bigRegExp = \""
-                      << bigRegExp << "\"\n"
-                      << "prefix regexp is invalid!" << endl;
+                      << bigRegExp << "\"" << endl
+                      << "prefix regexp is invalid!";
       // try good ole Re/Fwd:
       recognized = str.startsWith( newPrefix );
     } else { // valid rx

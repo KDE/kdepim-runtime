@@ -230,7 +230,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
 
   for( Q3PtrListIterator<CompletionItem> compit( mItems ); *compit; ++compit ) {
     new CompletionViewItem( mListView, *compit );
-    kDebug(5300) <<"" << (*compit)->label() <<"" << (*compit)->completionWeight();
+    kDebug(5300) << (*compit)->label() << (*compit)->completionWeight();
   }
 
   KVBox* upDownBox = new KVBox( page );
@@ -305,7 +305,7 @@ void CompletionOrderEditor::slotOk()
       CompletionViewItem *item = static_cast<CompletionViewItem *>( it );
       item->item()->setCompletionWeight( w );
       item->item()->save( this );
-      kDebug(5300) <<"slotOk:" << item->item()->label() <<"" << w;
+      kDebug(5300) <<"slotOk:" << item->item()->label() << w;
       --w;
     }
     emit completionOrderChanged();

@@ -26,7 +26,7 @@ TestManager::TestManager( QObject *parent )
   for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
     KPluginInfo *i = ( *it );
     kDebug()<<"\tAvailable plugin"<< i->name()
-             <<", comment = "<< i->comment() <<endl;
+             <<", comment ="<< i->comment();
   }
 }
 

@@ -121,7 +121,7 @@ Core::slotAllPluginsLoaded()
   for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
     KPluginInfo *i = ( *it );
     kDebug()<<"\tAvailable plugin"<< i->pluginName()
-             <<", comment = "<< i->comment() <<endl;
+             <<", comment ="<< i->comment();
   }
 
   if ( !m_stack->visibleWidget() ) {
@@ -138,8 +138,8 @@ Core::slotActivePartChanged( KParts::Part *part )
     return;
   }
 
-  kDebug() <<"Part activated:" << part <<" with stack id."
-            << m_stack->id( part->widget() )<< endl;
+  kDebug() <<"Part activated:" << part <<"with stack id."
+            << m_stack->id( part->widget() );
 
   createGUI( part );
 }

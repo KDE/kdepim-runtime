@@ -207,8 +207,8 @@ KConfigSkeletonItem *KConfigPropagator::findItem( const QString &group,
   KConfigSkeletonItem::List items = mSkeleton->items();
   KConfigSkeletonItem::List::ConstIterator it;
   for( it = items.begin(); it != items.end(); ++it ) {
-//    kDebug() <<"  Item:" << (*it)->name() <<"  Type:"
-//              << (*it)->property().typeName() << endl;
+//    kDebug() <<"Item:" << (*it)->name() <<"Type:"
+//              << (*it)->property().typeName();
     if ( (*it)->group() == group && (*it)->name() == name ) {
       break;
     }
@@ -254,7 +254,7 @@ void KConfigPropagator::updateChanges()
     KConfigSkeletonItem *item = findItem( r.sourceGroup, r.sourceEntry );
     if ( !item ) {
       kError() <<"Item" << r.sourceGroup <<"/" << r.sourceEntry
-                << " not found." << endl;
+                << "not found.";
       continue;
     }
     QString value = itemValueAsString( item );

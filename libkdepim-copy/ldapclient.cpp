@@ -544,7 +544,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     if( mails.isEmpty()) {
       if ( !mail.isEmpty() ) mails.append( mail );
       if( isDistributionList ) {
-        kDebug(5300) <<"\n\nLdapSearch::makeSearchData() found a list:" << name <<"";
+        kDebug(5300) <<"\n\nLdapSearch::makeSearchData() found a list:" << name;
         ret.append( name );
         // following lines commented out for bugfixing kolab issue #177:
         //

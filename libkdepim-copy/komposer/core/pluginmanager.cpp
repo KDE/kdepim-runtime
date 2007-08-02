@@ -92,10 +92,10 @@ PluginManager::~PluginManager()
     slotShutdownTimeout();
 #if 0
     kWarning() << k_funcinfo
-                << "Destructing plugin manager without going through "
+                << "Destructing plugin manager without going through"
                 << "the shutdown process!"
                 << endl
-                << kBacktrace(10) << endl;
+                << kBacktrace(10);
 #endif
   }
 
@@ -107,7 +107,7 @@ PluginManager::~PluginManager()
     QMap<KPluginInfo*, Plugin*>::ConstIterator nextIt( it );
     ++nextIt;
     kWarning() << k_funcinfo <<"Deleting stale plugin '"
-                       << it.value()->name() << "'" << endl;
+                       << it.value()->name() << "'";
     delete it.value();
     it = nextIt;
   }
@@ -204,9 +204,9 @@ PluginManager::slotShutdownTimeout()
     remaining.append( it.key()->pluginName() );
 
   kWarning() << k_funcinfo <<"Some plugins didn't shutdown in time!" << endl
-              << "Remaining plugins: "
+              << "Remaining plugins:"
               << remaining.join( QString::fromLatin1( ", " ) ) << endl
-              << "Forcing Komposer shutdown now." << endl;
+              << "Forcing Komposer shutdown now.";
 #endif
 
   slotShutdownDone();
@@ -301,7 +301,7 @@ PluginManager::loadPluginInternal( const QString &pluginId )
   KPluginInfo* info = infoForPluginId( pluginId );
   if ( !info ) {
     kWarning() << k_funcinfo <<"Unable to find a plugin named '"
-                << pluginId << "'!" << endl;
+                << pluginId << "'!";
     return 0;
   }
 
@@ -324,15 +324,14 @@ PluginManager::loadPluginInternal( const QString &pluginId )
              this, SLOT(slotPluginReadyForUnload()) );
 
     kDebug() << k_funcinfo <<"Successfully loaded plugin '"
-              << pluginId << "'" << endl;
+              << pluginId << "'";
 
     emit pluginLoaded( plugin );
   } else {
     switch ( error ) {
     case KParts::ComponentFactory::ErrNoServiceFound:
       kDebug() << k_funcinfo <<"No service implementing the given mimetype"
-                << "and fullfilling the given constraint expression can be found."
-                << endl;
+                << "and fullfilling the given constraint expression can be found.";
       break;
 
     case KParts::ComponentFactory::ErrServiceProvidesNoLibrary:
@@ -344,21 +343,19 @@ PluginManager::loadPluginInternal( const QString &pluginId )
       break;
 
     case KParts::ComponentFactory::ErrNoFactory:
-      kDebug() <<"the library does not export a factory for creating components."
-                << endl;
+      kDebug() <<"the library does not export a factory for creating components.";
       break;
 
     case KParts::ComponentFactory::ErrNoComponent:
       kDebug() <<"the factory does not support creating components"
-                << "of the specified type."
-                << endl;
+                << "of the specified type.";
       break;
     }
 
     kDebug() << k_funcinfo <<"Loading plugin '" << pluginId
               << "' failed, KLibLoader reported error: '"
               << KLibLoader::self()->lastErrorMessage()
-              << "'" << endl;
+              << "'";
   }
 
   return plugin;

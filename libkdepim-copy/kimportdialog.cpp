@@ -548,8 +548,7 @@ void KImportDialog::assignColumn(Q3ListViewItem *item)
 {
   if (!item) return;
 
-//  kDebug(5300) <<"KImportDialog::assignColumn(): current Col:" << mTable->currentColumn()
-//            << endl;
+//  kDebug(5300) <<"KImportDialog::assignColumn(): current Col:" << mTable->currentColumn();
 
   ColumnItem *colItem = (ColumnItem *)item;
 
