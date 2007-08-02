@@ -40,13 +40,13 @@ int main( int argc, char **argv )
   KPIM::AddresseeSelectorDialog dlg( &selection );
   dlg.exec();
 
-  kDebug() << "to: " << selection.to() << endl;
-  kDebug() << "cc: " << selection.cc() << endl;
-  kDebug() << "bcc: " << selection.bcc() << endl;
+  kDebug() <<"to:" << selection.to();
+  kDebug() <<"cc:" << selection.cc();
+  kDebug() <<"bcc:" << selection.bcc();
 
-  kDebug() << "toDistlists: " << selection.toDistributionLists() << endl;
-  kDebug() << "ccDistlists: " << selection.ccDistributionLists() << endl;
-  kDebug() << "bccDistlists: " << selection.bccDistributionLists() << endl;
+  kDebug() <<"toDistlists:" << selection.toDistributionLists();
+  kDebug() <<"ccDistlists:" << selection.ccDistributionLists();
+  kDebug() <<"bccDistlists:" << selection.bccDistributionLists();
 
   return 0;
 }

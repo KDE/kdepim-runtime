@@ -22,24 +22,24 @@ TestManager::TestManager( QObject *parent )
   m_manager->loadAllPlugins();
 
   QValueList<KPluginInfo*> plugins = m_manager->availablePlugins();
-  kDebug()<<"Number of available plugins is "<< plugins.count() <<endl;
+  kDebug()<<"Number of available plugins is"<< plugins.count();
   for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
     KPluginInfo *i = ( *it );
-    kDebug()<<"\tAvailable plugin "<< i->name()
+    kDebug()<<"\tAvailable plugin"<< i->name()
              <<", comment = "<< i->comment() <<endl;
   }
 }
 
 void TestManager::slotAllPluginsLoaded()
 {
-  kDebug()<<"Done"<<endl;
+  kDebug()<<"Done";
   m_manager->shutdown();
   qApp->exit();
 }
 
 void TestManager::slotPluginLoaded( Plugin *plugin )
 {
-  kDebug()<<"A plugin "<< m_manager->pluginName( plugin ) << " has been loaded"<<endl;
+  kDebug()<<"A plugin"<< m_manager->pluginName( plugin ) <<" has been loaded";
 }
 
 int main( int argc, char **argv )

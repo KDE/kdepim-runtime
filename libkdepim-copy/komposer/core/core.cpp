@@ -103,7 +103,7 @@ Core::addPlugin( Komposer::Plugin *plugin )
 void
 Core::slotPluginLoaded( Plugin *plugin )
 {
-  kDebug() << "Plugin loaded "<<endl;
+  kDebug() <<"Plugin loaded";
 
   Editor *editor = dynamic_cast<Editor*>( plugin );
   if ( editor ) {
@@ -117,10 +117,10 @@ void
 Core::slotAllPluginsLoaded()
 {
   QValueList<KPluginInfo*> plugins = m_pluginManager->availablePlugins();
-  kDebug()<<"Number of available plugins is "<< plugins.count() <<endl;
+  kDebug()<<"Number of available plugins is"<< plugins.count();
   for ( QValueList<KPluginInfo*>::iterator it = plugins.begin(); it != plugins.end(); ++it ) {
     KPluginInfo *i = ( *it );
-    kDebug()<<"\tAvailable plugin "<< i->pluginName()
+    kDebug()<<"\tAvailable plugin"<< i->pluginName()
              <<", comment = "<< i->comment() <<endl;
   }
 
@@ -138,7 +138,7 @@ Core::slotActivePartChanged( KParts::Part *part )
     return;
   }
 
-  kDebug() << "Part activated: " << part << " with stack id. "
+  kDebug() <<"Part activated:" << part <<" with stack id."
             << m_stack->id( part->widget() )<< endl;
 
   createGUI( part );
@@ -163,7 +163,7 @@ Core::selectEditor( Komposer::Editor *editor )
   QWidget *view = part->widget();
   Q_ASSERT( view );
 
-  kDebug()<<"Raising view "<<view<<endl;
+  kDebug()<<"Raising view"<<view;
   if ( view )
   {
     m_stack->raiseWidget( view );
@@ -183,7 +183,7 @@ Core::selectEditor( const QString &editorName )
 void
 Core::loadSettings()
 {
-  //kDebug()<<"Trying to select "<< Prefs::self()->m_activeEditor <<endl;
+  //kDebug()<<"Trying to select"<< Prefs::self()->m_activeEditor;
   //selectEditor( Prefs::self()->m_activeEditor );
 
   //m_activeEditors = Prefs::self()->m_activeEditors;
@@ -199,7 +199,7 @@ Core::saveSettings()
 void
 Core::slotQuit()
 {
-  kDebug()<<"exit"<<endl;
+  kDebug()<<"exit";
   m_pluginManager->shutdown();
 }
 
@@ -231,7 +231,7 @@ Core::initCore()
 
 
   m_pluginManager->loadAllPlugins();
-  kDebug()<<"Loading"<<endl;
+  kDebug()<<"Loading";
 }
 
 void

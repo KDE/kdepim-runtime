@@ -234,7 +234,7 @@ QStringList Maildir::entryList() const
     result += d->listNew();
     result += d->listCurrent();
   }
-//  kDebug() << "Maildir::entryList()" << result;
+//  kDebug() <<"Maildir::entryList()" << result;
   return result;
 }
 

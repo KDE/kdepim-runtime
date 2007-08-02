@@ -57,7 +57,7 @@ public:
         /*QTime time =*/ KGlobal::locale()->readTime(str, KLocale::WithoutSeconds, &ok);
         if ( ok )
             return Acceptable;
-//         kDebug(5300)<<"Time "<<str<<" not directly acceptable, trying military format "<<endl;
+//         kDebug(5300)<<"Time"<<str<<" not directly acceptable, trying military format";
         // Also try to accept times in "military format", i.e. no delimiter, like 1200
         int tm = str.toInt( &ok );
         if ( ok && ( 0 <= tm ) ) {
@@ -66,7 +66,7 @@ public:
           else
             return Intermediate;
         }
-//         kDebug(5300)<<str<<" not acceptable or intermediate for military format, either "<<str<<endl;
+//         kDebug(5300)<<str<<" not acceptable or intermediate for military format, either"<<str;
 
         // readTime doesn't help knowing when the string is "Intermediate".
         // HACK. Not fully locale aware etc. (esp. the separator is '.' in sv_SE...)
@@ -151,7 +151,7 @@ bool KTimeEdit::hasTime() const
 
 QTime KTimeEdit::getTime() const
 {
-  //kDebug(5300) << "KTimeEdit::getTime(), currentText() = " << currentText() << endl;
+  //kDebug(5300) <<"KTimeEdit::getTime(), currentText() =" << currentText();
   // TODO use KLocale::WithoutSeconds in HEAD
   bool ok = false;
   QTime time = KGlobal::locale()->readTime( currentText(), KLocale::WithoutSeconds, &ok );
@@ -164,7 +164,7 @@ QTime KTimeEdit::getTime() const
       ok = false;
     }
   }
-  kDebug(5300) << "KTimeEdit::getTime(): " << time.toString() << endl;
+  kDebug(5300) <<"KTimeEdit::getTime():" << time.toString();
   return time;
 }
 
@@ -181,7 +181,7 @@ void KTimeEdit::setTime(QTime newTime)
 {
   if ( mTime != newTime )
   {
-    kDebug(5300) << "KTimeEdit::setTime(): " << newTime.toString() << endl;
+    kDebug(5300) <<"KTimeEdit::setTime():" << newTime.toString();
 
     mTime = newTime;
     updateText();
@@ -259,7 +259,7 @@ void KTimeEdit::keyPressEvent(QKeyEvent *qke)
 
 void KTimeEdit::updateText()
 {
-//  kDebug(5300) << "KTimeEdit::updateText() " << endl;
+//  kDebug(5300) <<"KTimeEdit::updateText()";
   QString s = KGlobal::locale()->formatTime(mTime);
   // Set the text but without emitting signals, nor losing the cursor position
   QLineEdit *line = lineEdit();
@@ -274,7 +274,7 @@ void KTimeEdit::updateText()
   line->setCursorPosition(pos);
   line->blockSignals(false);
 
-//  kDebug(5300) << "KTimeEdit::updateText(): " << s << endl;
+//  kDebug(5300) <<"KTimeEdit::updateText():" << s;
 }
 
 bool KTimeEdit::inputIsValid() const
@@ -286,7 +286,7 @@ bool KTimeEdit::inputIsValid() const
 
 void KTimeEdit::changedText()
 {
-  //kDebug(5300) << "KTimeEdit::changedText()" << endl;
+  //kDebug(5300) <<"KTimeEdit::changedText()";
   if ( inputIsValid() )
   {
     mTime = getTime();

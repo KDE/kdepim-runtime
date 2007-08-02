@@ -160,7 +160,7 @@ void AddresseeLineEdit::init()
      if ( !QDBusConnection::sessionBus().connect( "kde.org.pim.completionorder", "/",
                  "kde.org.pim.CompletionOrder", "completionOrderChanged",
                  this, SLOT( slotIMAPCompletionOrderChanged() ) ) )
-         kError() << "AddresseeLineEdit: connection to orderChanged() failed" << endl;
+         kError() <<"AddresseeLineEdit: connection to orderChanged() failed";
 
       connect( s_LDAPTimer, SIGNAL( timeout() ), SLOT( slotStartLDAPLookup() ) );
       connect( s_LDAPSearch, SIGNAL( searchData( const KPIM::LdapResultList& ) ),
@@ -232,7 +232,7 @@ void AddresseeLineEdit::insert( const QString &t )
     return;
   }
 
-  //kDebug(5300) << "     AddresseeLineEdit::insert( \"" << t << "\" )" << endl;
+  //kDebug(5300) <<"     AddresseeLineEdit::insert( \"" << t <<"\" )";
 
   QString newText = t.trimmed();
   if ( newText.isEmpty() )
@@ -529,7 +529,7 @@ void AddresseeLineEdit::loadContacts()
           idx = s_completionSources->size() -1;
         }
         int weight = ( wit != uidToResourceMap.end() ) ? resabc->subresourceCompletionWeight( *wit ) : 80;
-        //kDebug(5300) << (*it).fullEmail() << " subres=" << *wit << " weight=" << weight << endl;
+        //kDebug(5300) << (*it).fullEmail() <<" subres=" << *wit <<" weight=" << weight;
         addContact( *it, weight, idx );
       }
     } else { // KABC non-imap resource
@@ -573,7 +573,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 {
 #ifdef KDEPIM_NEW_DISTRLISTS
   if ( KPIM::DistributionList::isDistributionList( addr ) ) {
-    //kDebug(5300) << "AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() << "\" weight=" << weight << endl;
+    //kDebug(5300) <<"AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() <<"\" weight=" << weight;
 
     //for CompletionAuto
     addCompletionItem( addr.formattedName(), weight, source );
@@ -665,7 +665,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
       --len;
     const QString tmp = (*it).left( len );
     const QString fullEmail = addr.fullEmail( tmp );
-    //kDebug(5300) << "AddresseeLineEdit::addContact() \"" << fullEmail << "\" weight=" << weight << endl;
+    //kDebug(5300) <<"AddresseeLineEdit::addContact() \"" << fullEmail <<"\" weight=" << weight;
     addCompletionItem( fullEmail.simplified(), weight, source );
     // Try to guess the last name: if found, we add an extra
     // entry to the list to make sure completion works even
@@ -695,7 +695,7 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
         QString sExtraEntry( sLastName );
         sExtraEntry.append( tmp.isEmpty() ? addr.preferredEmail() : tmp );
         sExtraEntry.append( ">" );
-        //kDebug(5300) << "AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplified() << "\" weight=" << weight << endl;
+        //kDebug(5300) <<"AddresseeLineEdit::addContact() added extra \"" << sExtraEntry.simplified() <<"\" weight=" << weight;
         addCompletionItem( sExtraEntry.simplified(), weight, source );
         bDone = true;
       }
@@ -974,7 +974,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
     unsigned int currentIndex = completionBox()->currentRow();
     if ( ke->key() == Qt::Key_Up ) {
-      //kDebug() << "EVENTFILTER: Key_Up currentIndex=" << currentIndex << endl;
+      //kDebug() <<"EVENTFILTER: Key_Up currentIndex=" << currentIndex;
       // figure out if the item we would be moving to is one we want
       // to ignore. If so, go one further
       QListWidgetItem *itemAbove = completionBox()->item( currentIndex - 1 );
@@ -982,7 +982,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
         // there is a header above is, check if there is even further up
         // and if so go one up, so it'll be selected
         if ( currentIndex > 1 && completionBox()->item( currentIndex - 2 ) ) {
-          //kDebug() << "EVENTFILTER: Key_Up -> skipping " << currentIndex - 1 << endl;
+          //kDebug() <<"EVENTFILTER: Key_Up -> skipping" << currentIndex - 1;
           completionBox()->setCurrentRow( currentIndex -2 );
           completionBox()->item( currentIndex - 2 )->setSelected( true );
         } else if ( currentIndex == 1 ) {
@@ -1000,11 +1000,11 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       }
     } else if ( ke->key() == Qt::Key_Down  ) {
       // same strategy for downwards
-      //kDebug() << "EVENTFILTER: Key_Down. currentIndex=" << currentIndex << endl;
+      //kDebug() <<"EVENTFILTER: Key_Down. currentIndex=" << currentIndex;
       QListWidgetItem *itemBelow = completionBox()->item( currentIndex + 1 );
       if ( itemBelow && itemIsHeader( itemBelow ) ) {
         if ( completionBox()->item( currentIndex + 2 ) ) {
-          //kDebug() << "EVENTFILTER: Key_Down -> skipping " << currentIndex+1 << endl;
+          //kDebug() <<"EVENTFILTER: Key_Down -> skipping" << currentIndex+1;
           completionBox()->setCurrentRow( currentIndex + 2  );
           completionBox()->item( currentIndex + 2 )->setSelected( true );
         } else {

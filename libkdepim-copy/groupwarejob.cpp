@@ -31,7 +31,7 @@ KIO::TransferJob *GroupwareJob::getCalendar( const KUrl &u )
   KUrl url = u;
   url.setPath( "/calendar/" );
 
-  kDebug() << "GroupwareJob::getCalendar(): URL: " << url << endl;
+  kDebug() <<"GroupwareJob::getCalendar(): URL:" << url;
 
   return KIO::get( url, false, false );
 }
@@ -41,7 +41,7 @@ KIO::TransferJob *GroupwareJob::getAddressBook( const KUrl &u )
   KUrl url = u;
   url.setPath( "/addressbook/" );
 
-  kDebug() << "GroupwareJob::getAddressBook(): URL: " << url << endl;
+  kDebug() <<"GroupwareJob::getAddressBook(): URL:" << url;
 
   return KIO::get( url, false, false );
 }

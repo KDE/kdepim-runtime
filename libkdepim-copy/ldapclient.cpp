@@ -74,7 +74,7 @@ void LdapClient::startQuery( const QString& filter )
   url.setScope( mScope == "one" ? KLDAP::LdapUrl::One : KLDAP::LdapUrl::Sub );
   url.setFilter( '('+filter+')' );
 
-  kDebug(5300) << "LdapClient: Doing query: " << url.prettyUrl() << endl;
+  kDebug(5300) <<"LdapClient: Doing query:" << url.prettyUrl();
 
   startParseLDIF();
   mActive = true;
@@ -185,7 +185,7 @@ void LdapClient::finishCurrentObject()
 
 void LdapClient::parseLDIF( const QByteArray& data )
 {
-  //kDebug(5300) << "LdapClient::parseLDIF( " << QCString(data.data(), data.size()+1) << " )" << endl;
+  //kDebug(5300) <<"LdapClient::parseLDIF(" << QCString(data.data(), data.size()+1) <<" )";
   if ( data.size() ) {
     mLdif.setLdif( data );
   } else {
@@ -201,7 +201,7 @@ void LdapClient::parseLDIF( const QByteArray& data )
           name = mLdif.attr();
           QByteArray value = mLdif.value();
           mCurrentObject.addValue( name, value );
-          //kDebug(5300) << "LdapClient::parseLDIF(): name=" << name << " value=" << QCString(value.data(), value.size()+1) << endl;
+          //kDebug(5300) <<"LdapClient::parseLDIF(): name=" << name <<" value=" << QCString(value.data(), value.size()+1);
         }
         break;
      case KLDAP::Ldif::EndEntry:
@@ -419,7 +419,7 @@ void LdapSearch::startSearch( const QString& txt )
   QList< LdapClient* >::Iterator it;
   for ( it = mClients.begin(); it != mClients.end(); ++it ) {
     (*it)->startQuery( filter );
-    kDebug(5300) << "LdapSearch::startSearch() " << filter << endl;
+    kDebug(5300) <<"LdapSearch::startSearch()" << filter;
     ++mActiveClients;
   }
 }
@@ -492,7 +492,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     bool wasCN = false;
     bool wasDC = false;
 
-    kDebug(5300) << "\n\nLdapSearch::makeSearchData()\n\n" << endl;
+    kDebug(5300) <<"\n\nLdapSearch::makeSearchData()";
 
     KLDAP::LdapAttrMap::ConstIterator it2;
     for ( it2 = (*it1).object.attributes().begin(); it2 != (*it1).object.attributes().end(); ++it2 ) {
@@ -501,7 +501,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
       if( len > 0 && '\0' == val[len-1] )
         --len;
       const QString tmp = QString::fromUtf8( val, len );
-      kDebug(5300) << "      key: \"" << it2.key() << "\" value: \"" << tmp << "\"" << endl;
+      kDebug(5300) <<"      key: \"" << it2.key() <<"\" value: \"" << tmp <<"\"";
       if ( it2.key() == "cn" ) {
         name = tmp;
         if( mail.isEmpty() )
@@ -544,7 +544,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     if( mails.isEmpty()) {
       if ( !mail.isEmpty() ) mails.append( mail );
       if( isDistributionList ) {
-        kDebug(5300) << "\n\nLdapSearch::makeSearchData() found a list: " << name << "\n\n" << endl;
+        kDebug(5300) <<"\n\nLdapSearch::makeSearchData() found a list:" << name <<"";
         ret.append( name );
         // following lines commented out for bugfixing kolab issue #177:
         //
@@ -561,14 +561,14 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         //mail.prepend( name );
         //mail = name;
       } else {
-        kDebug(5300) << "LdapSearch::makeSearchData() found BAD ENTRY: \"" << name << "\"" << endl;
+        kDebug(5300) <<"LdapSearch::makeSearchData() found BAD ENTRY: \"" << name <<"\"";
         continue; // nothing, bad entry
       }
     } else if ( name.isEmpty() ) {
-      kDebug(5300) << "LdapSearch::makeSearchData() mail: \"" << mail << "\"" << endl;
+      kDebug(5300) <<"LdapSearch::makeSearchData() mail: \"" << mail <<"\"";
       ret.append( mail );
     } else {
-      kDebug(5300) << "LdapSearch::makeSearchData() name: \"" << name << "\"  mail: \"" << mail << "\"" << endl;
+      kDebug(5300) <<"LdapSearch::makeSearchData() name: \"" << name <<"\"  mail: \"" << mail <<"\"";
       ret.append( QString( "%1 <%2>" ).arg( name ).arg( mail ) );
     }
 

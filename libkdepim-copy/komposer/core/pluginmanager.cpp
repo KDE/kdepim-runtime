@@ -106,7 +106,7 @@ PluginManager::~PluginManager()
     // Remove causes the iterator to become invalid, so pre-increment first
     QMap<KPluginInfo*, Plugin*>::ConstIterator nextIt( it );
     ++nextIt;
-    kWarning() << k_funcinfo << "Deleting stale plugin '"
+    kWarning() << k_funcinfo <<"Deleting stale plugin '"
                        << it.value()->name() << "'" << endl;
     delete it.value();
     it = nextIt;
@@ -181,11 +181,11 @@ PluginManager::slotPluginReadyForUnload()
   Plugin* plugin = dynamic_cast<Plugin*>( const_cast<QObject*>( sender() ) );
   if ( !plugin )
   {
-    kWarning() << k_funcinfo << "Calling object is not a plugin!" << endl;
+    kWarning() << k_funcinfo <<"Calling object is not a plugin!";
     return;
 
   }
-  kDebug()<<"manager unloading"<<endl;
+  kDebug()<<"manager unloading";
   plugin->deleteLater();
 }
 
@@ -203,7 +203,7 @@ PluginManager::slotShutdownTimeout()
         it != d->loadedPlugins.end(); ++it )
     remaining.append( it.key()->pluginName() );
 
-  kWarning() << k_funcinfo << "Some plugins didn't shutdown in time!" << endl
+  kWarning() << k_funcinfo <<"Some plugins didn't shutdown in time!" << endl
               << "Remaining plugins: "
               << remaining.join( QString::fromLatin1( ", " ) ) << endl
               << "Forcing Komposer shutdown now." << endl;
@@ -238,7 +238,7 @@ PluginManager::loadAllPlugins()
     if ( key.endsWith( QString::fromLatin1( "Enabled" ) ) )
     {
       key.setLength( key.length() - 7 );
-      //kDebug() << k_funcinfo << "Set " << key << " to " << it.value() << endl;
+      //kDebug() << k_funcinfo <<"Set" << key <<" to" << it.value();
 
       if ( it.value() == QString::fromLatin1( "true" ) )
       {
@@ -300,7 +300,7 @@ PluginManager::loadPluginInternal( const QString &pluginId )
 {
   KPluginInfo* info = infoForPluginId( pluginId );
   if ( !info ) {
-    kWarning() << k_funcinfo << "Unable to find a plugin named '"
+    kWarning() << k_funcinfo <<"Unable to find a plugin named '"
                 << pluginId << "'!" << endl;
     return 0;
   }
@@ -323,39 +323,39 @@ PluginManager::loadPluginInternal( const QString &pluginId )
     connect( plugin, SIGNAL(readyForUnload()),
              this, SLOT(slotPluginReadyForUnload()) );
 
-    kDebug() << k_funcinfo << "Successfully loaded plugin '"
+    kDebug() << k_funcinfo <<"Successfully loaded plugin '"
               << pluginId << "'" << endl;
 
     emit pluginLoaded( plugin );
   } else {
     switch ( error ) {
     case KParts::ComponentFactory::ErrNoServiceFound:
-      kDebug() << k_funcinfo << "No service implementing the given mimetype "
+      kDebug() << k_funcinfo <<"No service implementing the given mimetype"
                 << "and fullfilling the given constraint expression can be found."
                 << endl;
       break;
 
     case KParts::ComponentFactory::ErrServiceProvidesNoLibrary:
-      kDebug() << "the specified service provides no shared library." << endl;
+      kDebug() <<"the specified service provides no shared library.";
       break;
 
     case KParts::ComponentFactory::ErrNoLibrary:
-      kDebug() << "the specified library could not be loaded." << endl;
+      kDebug() <<"the specified library could not be loaded.";
       break;
 
     case KParts::ComponentFactory::ErrNoFactory:
-      kDebug() << "the library does not export a factory for creating components."
+      kDebug() <<"the library does not export a factory for creating components."
                 << endl;
       break;
 
     case KParts::ComponentFactory::ErrNoComponent:
-      kDebug() << "the factory does not support creating components "
+      kDebug() <<"the factory does not support creating components"
                 << "of the specified type."
                 << endl;
       break;
     }
 
-    kDebug() << k_funcinfo << "Loading plugin '" << pluginId
+    kDebug() << k_funcinfo <<"Loading plugin '" << pluginId
               << "' failed, KLibLoader reported error: '"
               << KLibLoader::self()->lastErrorMessage()
               << "'" << endl;

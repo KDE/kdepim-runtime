@@ -151,7 +151,7 @@ KCMDesignerFields::KCMDesignerFields( const KComponentData &instance, QWidget *p
 
 void KCMDesignerFields::delayedInit()
 {
-  kDebug() << "KCMDesignerFields::delayedInit()" << endl;
+  kDebug() <<"KCMDesignerFields::delayedInit()";
 
   initGUI();
 

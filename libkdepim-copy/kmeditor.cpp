@@ -79,7 +79,7 @@ class KMeditor::Private
 
 void KMeditor::Private::slotHighlight( const QString &word, int start, int end)
 {
-  kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<< " pos start :"<<start<<" pos end :"<<end<<endl;
+  kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos start :"<<start<<" pos end :"<<end;
   parent->highlightWord( end, start );
 }
 
@@ -319,7 +319,7 @@ void KMeditor::findText( const QString &str, long options, QWidget *parent, KFin
     return;
 
   delete d->find;
-  kDebug()<<" str :"<<str<<endl;
+  kDebug()<<" str :"<<str;
   //configure it
   d->find = new KFind(str, options,parent,findDialog);
   d->find->closeFindNextDialog();

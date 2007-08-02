@@ -113,17 +113,17 @@ void ServerTest::slotMetaData( const KIO::MetaData & md ) {
   KIO::MetaData::const_iterator it = md.find( "PLAIN AUTH METHODS" );
   if ( it != md.end() ) {
     mAuthNone = it.value();
-    kDebug(5006) << "mAuthNone: " << mAuthNone << endl;
+    kDebug(5006) <<"mAuthNone:" << mAuthNone;
   }
   it = md.find( "TLS AUTH METHODS" );
   if ( it != md.end() ) {
     mAuthTLS = it.value();
-    kDebug(5006) << "mAuthTLS: " << mAuthTLS << endl;
+    kDebug(5006) <<"mAuthTLS:" << mAuthTLS;
   }
   it = md.find( "SSL AUTH METHODS" );
   if ( it != md.end() ) {
     mAuthSSL = it.value();
-    kDebug(5006) << "mAuthSSL: " << mAuthSSL << endl;
+    kDebug(5006) <<"mAuthSSL:" << mAuthSSL;
   }
 }
 

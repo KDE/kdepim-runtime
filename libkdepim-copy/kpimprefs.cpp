@@ -52,7 +52,7 @@ void KPimPrefs::usrSetDefaults()
 
 void KPimPrefs::usrReadConfig()
 {
-  kDebug(5300) << "KPimPrefs::usrReadConfig()" << endl;
+  kDebug(5300) <<"KPimPrefs::usrReadConfig()";
 
   KConfigGroup group( config(), "General" );
   mCustomCategories = group.readEntry( "Custom Categories" , QStringList() );
@@ -72,14 +72,14 @@ KDateTime::Spec KPimPrefs::timeSpec()
   if ( !tz.isEmpty() ) {
     zone = KSystemTimeZones::zone( tz );
     if ( zone.isValid() )
-      kDebug(5300) << "timezone from korganizerrc is " << tz << endl;
+      kDebug(5300) <<"timezone from korganizerrc is" << tz;
   }
 
   // If timezone not found in KOrg, use the system's default timezone.
   if ( !zone.isValid() ) {
     zone = KSystemTimeZones::local();
     if ( zone.isValid() )
-      kDebug(5300) << "system timezone is " << zone.name() << endl;
+      kDebug(5300) <<"system timezone is" << zone.name();
   }
 
   return zone.isValid() ? KDateTime::Spec( zone ) : KDateTime::ClockTime;

@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     test.setup();
     test.runAll();
     test.cleanup();
-    kDebug() << "All tests OK." << endl;
+    kDebug() <<"All tests OK.";
     return 0;
 }
 
@@ -101,10 +101,10 @@ bool TestDistrList::check(const QString& txt, QString a, QString b)
     if (b.isEmpty())
         b.clear();
     if (a == b) {
-        kDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "ok" << endl;
+        kDebug() << txt <<" : checking '" << a <<"' against expected value '" << b <<"'..." <<"ok";
     }
     else {
-        kDebug() << txt << " : checking '" << a << "' against expected value '" << b << "'... " << "KO !" << endl;
+        kDebug() << txt <<" : checking '" << a <<"' against expected value '" << b <<"'..." <<"KO !";
         cleanup();
         exit(1);
     }
@@ -113,7 +113,7 @@ bool TestDistrList::check(const QString& txt, QString a, QString b)
 
 void TestDistrList::cleanup()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     ab->clear();
     KABC::StdAddressBook::close();
@@ -125,14 +125,14 @@ void TestDistrList::cleanup()
 
 void TestDistrList::testEmpty()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     DistributionList dl;
     assert( dl.isEmpty() );
 }
 
 void TestDistrList::testNewList()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     DistributionList dl;
     dl.setName( "foo" );
     assert( !dl.isEmpty() );
@@ -166,7 +166,7 @@ void TestDistrList::testNewList()
 
 void TestDistrList::testInsertEntry()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );
     assert( !dl.isEmpty() );
@@ -201,7 +201,7 @@ void TestDistrList::testInsertEntry()
 
     // Test emails()
     QStringList emails = dl.emails( ab );
-    kDebug() << emails << endl;
+    kDebug() << emails;
     assert( emails.count() == 3 );
     check( "first email", emails[0], "addr1 <addr1@kde.org>" );
     check( "second email", emails[1], "addr2 <addr2-alternate@kde.org>" );
@@ -213,7 +213,7 @@ void TestDistrList::testInsertEntry()
 
 void TestDistrList::testRemoveEntry()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );
     assert( !dl.isEmpty() );
@@ -257,7 +257,7 @@ void TestDistrList::testRemoveEntry()
 
 void TestDistrList::testDuplicate()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
     // This is a special test for the case where we have a contact and a distr list with the same name
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     KABC::Addressee addr;
@@ -285,7 +285,7 @@ void TestDistrList::testDuplicate()
 
 void TestDistrList::testDeleteList()
 {
-    kDebug() << k_funcinfo << endl;
+    kDebug() << k_funcinfo;
 
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );

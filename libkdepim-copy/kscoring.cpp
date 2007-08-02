@@ -103,12 +103,12 @@ void NotifyDialog::slotShowAgainToggled(bool flag)
 {
   dict.remove(msg);
   dict.insert(msg,!flag);
-  kDebug(5100) << "note \"" << note << "\" will popup again: " << flag << endl;
+  kDebug(5100) <<"note \"" << note <<"\" will popup again:" << flag;
 }
 
 void NotifyDialog::display(ScorableArticle& a, const QString& s)
 {
-  kDebug(5100) << "displaying message" << endl;
+  kDebug(5100) <<"displaying message";
   if (!me) me = new NotifyDialog();
   me->msg = s;
 
@@ -149,12 +149,12 @@ ScorableGroup::~ScorableGroup()
 // the base class for all actions
 ActionBase::ActionBase()
 {
-  kDebug(5100) << "new Action " << this << endl;
+  kDebug(5100) <<"new Action" << this;
 }
 
 ActionBase::~ActionBase()
 {
-  kDebug(5100) << "delete Action " << this << endl;
+  kDebug(5100) <<"delete Action" << this;
 }
 
 
@@ -176,7 +176,7 @@ ActionBase* ActionBase::factory(int type, const QString &value)
     case COLOR:    return new ActionColor(value);
     case MARKASREAD: return new ActionMarkAsRead();
   default:
-    kWarning(5100) << "unknown type " << type << " in ActionBase::factory()" << endl;
+    kWarning(5100) <<"unknown type" << type <<" in ActionBase::factory()";
     return 0;
   }
 }
@@ -189,7 +189,7 @@ QString ActionBase::userName(int type)
     case COLOR:    return i18n("Colorize Header");
     case MARKASREAD: return i18n("Mark As Read");
   default:
-    kWarning(5100) << "unknown type " << type << " in ActionBase::userName()" << endl;
+    kWarning(5100) <<"unknown type" << type <<" in ActionBase::userName()";
     return 0;
   }
 }
@@ -201,7 +201,7 @@ int ActionBase::getTypeForName(const QString& name)
   else if (name == "COLOR") return COLOR;
   else if (name == "MARKASREAD") return MARKASREAD;
   else {
-    kWarning(5100) << "unknown type string " << name
+    kWarning(5100) <<"unknown type string" << name
                     << " in ActionBase::getTypeForName()" << endl;
     return -1;
   }
@@ -214,7 +214,7 @@ int ActionBase::getTypeForUserName(const QString& name)
   else if (name == userName(COLOR)) return COLOR;
   else if ( name == userName(MARKASREAD) ) return MARKASREAD;
   else {
-    kWarning(5100) << "unknown type string " << name
+    kWarning(5100) <<"unknown type string" << name
                     << " in ActionBase::getTypeForUserName()" << endl;
     return -1;
   }
@@ -438,13 +438,13 @@ KScoringExpression::KScoringExpression(const QString& h, const QString& t, const
     expr_int = expr_str.toInt();
   }
   else {
-    kDebug(5100) << "unknown match type in new expression" << endl;
+    kDebug(5100) <<"unknown match type in new expression";
   }
 
   neg = ng.toInt();
   c_header = header.toLatin1();
 
-  kDebug(5100) << "new expr: " << c_header << "  " << t << "  "
+  kDebug(5100) <<"new expr:" << c_header <<"" << t <<""
                 << expr_str << "  " << neg << endl;
 }
 
@@ -458,7 +458,7 @@ int KScoringExpression::getConditionForName(const QString& s)
   else if (s == getNameForCondition(SMALLER)) return SMALLER;
   else if (s == getNameForCondition(GREATER)) return GREATER;
   else {
-    kWarning(5100) << "unknown condition name " << s
+    kWarning(5100) <<"unknown condition name" << s
                     << " in KScoringExpression::getConditionForName()" << endl;
     return -1;
   }
@@ -475,7 +475,7 @@ QString KScoringExpression::getNameForCondition(int cond)
   case SMALLER: return i18n("Less Than");
   case GREATER: return i18n("Greater Than");
   default:
-    kWarning(5100) << "unknown condition " << cond
+    kWarning(5100) <<"unknown condition" << cond
                     << " in KScoringExpression::getNameForCondition()" << endl;
     return "";
   }
@@ -516,7 +516,7 @@ KScoringExpression::~KScoringExpression()
 
 bool KScoringExpression::match(ScorableArticle& a) const
 {
-  //kDebug(5100) << "matching against header " << c_header << endl;
+  //kDebug(5100) <<"matching against header" << c_header;
   bool res = true;
   QString head;
 
@@ -546,12 +546,12 @@ bool KScoringExpression::match(ScorableArticle& a) const
       res = (head.toInt() < expr_int);
       break;
     default:
-      kDebug(5100) << "unknown match" << endl;
+      kDebug(5100) <<"unknown match";
       res = false;
     }
   }
   else res = false;
-//  kDebug(5100) << "matching returns " << res << endl;
+//  kDebug(5100) <<"matching returns" << res;
   return (neg)?!res:res;
 }
 
@@ -562,18 +562,18 @@ void KScoringExpression::write(QTextStream& st) const
 
 QString KScoringExpression::toString() const
 {
-//   kDebug(5100) << "KScoringExpression::toString() starts" << endl;
-//   kDebug(5100) << "header is " << header << endl;
-//   kDebug(5100) << "expr is " << expr_str << endl;
-//   kDebug(5100) << "neg is " << neg << endl;
-//   kDebug(5100) << "type is " << getType() << endl;
+//   kDebug(5100) <<"KScoringExpression::toString() starts";
+//   kDebug(5100) <<"header is" << header;
+//   kDebug(5100) <<"expr is" << expr_str;
+//   kDebug(5100) <<"neg is" << neg;
+//   kDebug(5100) <<"type is" << getType();
   QString e;
   e += "<Expression neg=\"" + QString::number(neg?1:0)
     + "\" header=\"" + header
     + "\" type=\"" + getTypeString()
     + "\" expr=\"" + toXml(expr_str)
     + "\" />";
-//   kDebug(5100) << "KScoringExpression::toString() finished" << endl;
+//   kDebug(5100) <<"KScoringExpression::toString() finished";
   return e;
 }
 
@@ -592,7 +592,7 @@ QString KScoringExpression::getTypeString(int cond)
   case SMALLER: return "SMALLER";
   case GREATER: return "GREATER";
   default:
-    kWarning(5100) << "unknown cond " << cond << " in KScoringExpression::getTypeString()" << endl;
+    kWarning(5100) <<"unknown cond" << cond <<" in KScoringExpression::getTypeString()";
     return "";
   }
 }
@@ -612,7 +612,7 @@ KScoringRule::KScoringRule(const QString& n )
 
 KScoringRule::KScoringRule(const KScoringRule& r)
 {
-  kDebug(5100) << "copying rule " << r.getName() << endl;
+  kDebug(5100) <<"copying rule" << r.getName();
   name = r.getName();
   expressions.setAutoDelete(true);
   actions.setAutoDelete(true);
@@ -658,7 +658,7 @@ void KScoringRule::cleanActions()
 
 void KScoringRule::addExpression( KScoringExpression* expr)
 {
-  kDebug(5100) << "KScoringRule::addExpression" << endl;
+  kDebug(5100) <<"KScoringRule::addExpression";
   expressions.append(expr);
 }
 
@@ -670,7 +670,7 @@ void KScoringRule::addAction(int type, const QString& val)
 
 void KScoringRule::addAction(ActionBase* a)
 {
-  kDebug(5100) << "KScoringRule::addAction() " << a->toString() << endl;
+  kDebug(5100) <<"KScoringRule::addAction()" << a->toString();
   actions.append(a);
 }
 
@@ -687,7 +687,7 @@ void KScoringRule::setExpire(const QString& e)
     Q_ASSERT( l.count() == 3 );
     expires.setYMD( l.at(0).toInt(), l.at(1).toInt(), l.at(2).toInt() );
   }
-  kDebug(5100) << "Rule " << getName() << " expires at " << getExpireDateString() << endl;
+  kDebug(5100) <<"Rule" << getName() <<" expires at" << getExpireDateString();
 }
 
 bool KScoringRule::matchGroup(const QString& group) const
@@ -711,14 +711,14 @@ void KScoringRule::applyAction(ScorableArticle& a) const
 
 void KScoringRule::applyRule(ScorableArticle& a) const
 {
-  // kDebug(5100) << "checking rule " << name << endl;
-  // kDebug(5100)  << " for article from "
+  // kDebug(5100) <<"checking rule" << name;
+  // kDebug(5100)  <<" for article from"
   //              << a->from()->asUnicodeString()
   //              << endl;
   bool oper_and = (link == AND);
   bool res = true;
   Q3PtrListIterator<KScoringExpression> it(expressions);
-  //kDebug(5100) << "checking " << expressions.count() << " expressions" << endl;
+  //kDebug(5100) <<"checking" << expressions.count() <<" expressions";
   for (; it.current(); ++it) {
     Q_ASSERT( it.current() );
     res = it.current()->match(a);
@@ -746,26 +746,26 @@ void KScoringRule::write(QTextStream& s) const
 
 QString KScoringRule::toString() const
 {
-  //kDebug(5100) << "KScoringRule::toString() starts" << endl;
+  //kDebug(5100) <<"KScoringRule::toString() starts";
   QString r;
   r += "<Rule name=\"" + toXml(name) + "\" linkmode=\"" + getLinkModeName();
   r += "\" expires=\"" + getExpireDateString() + "\">";
-  //kDebug(5100) << "building grouplist..." << endl;
+  //kDebug(5100) <<"building grouplist...";
   for(GroupList::ConstIterator i=groups.begin();i!=groups.end();++i) {
     r += "<Group name=\"" + toXml(*i) + "\" />";
   }
-  //kDebug(5100) << "building expressionlist..." << endl;
+  //kDebug(5100) <<"building expressionlist...";
   Q3PtrListIterator<KScoringExpression> eit(expressions);
   for (; eit.current(); ++eit) {
     r += eit.current()->toString();
   }
-  //kDebug(5100) << "building actionlist..." << endl;
+  //kDebug(5100) <<"building actionlist...";
   Q3PtrListIterator<ActionBase> ait(actions);
   for (; ait.current(); ++ait) {
     r += ait.current()->toString();
   }
   r += "</Rule>";
-  //kDebug(5100) << "KScoringRule::toString() finished" << endl;
+  //kDebug(5100) <<"KScoringRule::toString() finished";
   return r;
 }
 
@@ -822,28 +822,28 @@ void KScoringManager::load()
     return;
   if ( !sdoc.setContent( &f ) ) {
     f.close();
-    kDebug(5100) << "loading the scorefile failed" << endl;
+    kDebug(5100) <<"loading the scorefile failed";
     return;
   }
   f.close();
-  kDebug(5100) << "loaded the scorefile, creating internal representation" << endl;
+  kDebug(5100) <<"loaded the scorefile, creating internal representation";
   allRules.clear();
   createInternalFromXML(sdoc);
   expireRules();
-  kDebug(5100) << "ready, got " << allRules.count() << " rules" << endl;
+  kDebug(5100) <<"ready, got" << allRules.count() <<" rules";
 }
 
 void KScoringManager::save()
 {
-  kDebug(5100) << "KScoringManager::save() starts" << endl;
+  kDebug(5100) <<"KScoringManager::save() starts";
   QFile f( mFilename );
   if ( !f.open( QIODevice::WriteOnly ) )
     return;
   QTextStream stream(&f);
   stream.setCodec("UTF-8");
-  kDebug(5100) << "KScoringManager::save() creating xml" << endl;
+  kDebug(5100) <<"KScoringManager::save() creating xml";
   createXMLfromInternal().save(stream,2);
-  kDebug(5100) << "KScoringManager::save() finished" << endl;
+  kDebug(5100) <<"KScoringManager::save() finished";
 }
 
 QDomDocument KScoringManager::createXMLfromInternal()
@@ -855,7 +855,7 @@ QDomDocument KScoringManager::createXMLfromInternal()
   ss += "<?xml version = '1.0'?><!DOCTYPE Scorefile >";
   ss += toString();
   ss += "</Scorefile>\n";
-  kDebug(5100) << "KScoringManager::createXMLfromInternal():" << endl << ss << endl;
+  kDebug(5100) <<"KScoringManager::createXMLfromInternal():" << endl << ss;
   sdoc.setContent(ss);
   return sdoc;
 }
@@ -875,7 +875,7 @@ void KScoringManager::expireRules()
 {
   for ( KScoringRule *cR = allRules.first(); cR; cR=allRules.next()) {
     if (cR->isExpired()) {
-      kDebug(5100) << "Rule " << cR->getName() << " is expired, deleting it" << endl;
+      kDebug(5100) <<"Rule" << cR->getName() <<" is expired, deleting it";
       allRules.remove();
     }
   }
@@ -886,7 +886,7 @@ void KScoringManager::createInternalFromXML(QDomNode n)
   static KScoringRule *cR = 0; // the currentRule
   // the XML file was parsed and now we simply traverse the resulting tree
   if ( !n.isNull() ) {
-    kDebug(5100) << "inspecting node of type " << n.nodeType()
+    kDebug(5100) <<"inspecting node of type" << n.nodeType()
                   << " named " << n.toElement().tagName() << endl;
 
     switch (n.nodeType()) {
@@ -897,7 +897,7 @@ void KScoringManager::createInternalFromXML(QDomNode n)
     case QDomNode::ElementNode: {
       // Server, Newsgroup, Rule, Expression, Action
       QDomElement e = n.toElement();
-      //kDebug(5100) << "The name of the element is "
+      //kDebug(5100) <<"The name of the element is"
       //<< e.tagName().toLatin1() << endl;
       QString s = e.tagName();
       if (s == "Rule") {
@@ -923,12 +923,12 @@ void KScoringManager::createInternalFromXML(QDomNode n)
       }
       break;
     }
-    default: // kDebug(5100) << "unknown DomNode::type" << endl;
+    default: // kDebug(5100) <<"unknown DomNode::type";
       ;
     }
     QDomNodeList nodelist = n.childNodes();
     int cnt = nodelist.count();
-    //kDebug(5100) << "recursive checking " << cnt << " nodes" << endl;
+    //kDebug(5100) <<"recursive checking" << cnt <<" nodes";
     for (int i=0;i<cnt;++i)
       createInternalFromXML(nodelist.item(i));
   }
@@ -976,7 +976,7 @@ void KScoringManager::addRuleInternal(KScoringRule *e)
   allRules.append(e);
   setCacheValid(false);
   emit changedRules();
-  kDebug(5100) << "KScoringManager::addRuleInternal " << e->getName() << endl;
+  kDebug(5100) <<"KScoringManager::addRuleInternal" << e->getName();
 }
 
 void KScoringManager::cancelNewRule(KScoringRule *r)
@@ -984,11 +984,11 @@ void KScoringManager::cancelNewRule(KScoringRule *r)
   // if e was'nt previously added to the list of rules, we delete it
   int i = allRules.findRef(r);
   if (i == -1) {
-    kDebug(5100) << "deleting rule " << r->getName() << endl;
+    kDebug(5100) <<"deleting rule" << r->getName();
     deleteRule(r);
   }
   else {
-    kDebug(5100) << "rule " << r->getName() << " not deleted" << endl;
+    kDebug(5100) <<"rule" << r->getName() <<" not deleted";
   }
 }
 
@@ -1002,7 +1002,7 @@ void KScoringManager::setRuleName(KScoringRule *r, const QString& s)
     Q3PtrListIterator<KScoringRule> it(allRules);
     for (; it.current(); ++it) {
       if ( it.current() != r && it.current()->getName() == text ) {
-        kDebug(5100) << "rule name " << text << " is not unique" << endl;
+        kDebug(5100) <<"rule name" << text <<" is not unique";
 	text = KInputDialog::getText(i18n("Choose Another Rule Name"),
 			i18n("The rule name is already assigned, please choose another name:"),
 			text);
@@ -1060,7 +1060,7 @@ void KScoringManager::moveRuleBelow( KScoringRule *below, KScoringRule *above )
 
 void KScoringManager::editorReady()
 {
-  kDebug(5100) << "emitting signal finishedEditing" << endl;
+  kDebug(5100) <<"emitting signal finishedEditing";
   save();
   emit finishedEditing();
 }
@@ -1075,7 +1075,7 @@ KScoringRule* KScoringManager::copyRule(KScoringRule *r)
 
 void KScoringManager::applyRules(ScorableGroup* )
 {
-  kWarning(5100) << "KScoringManager::applyRules(ScorableGroup* ) isn't implemented" << endl;
+  kWarning(5100) <<"KScoringManager::applyRules(ScorableGroup* ) isn't implemented";
 }
 
 void KScoringManager::applyRules(ScorableArticle& article, const QString& group)
@@ -1102,7 +1102,7 @@ void KScoringManager::initCache(const QString& g)
       ruleList.append(it.current());
     }
   }
-  kDebug(5100) << "created cache for group " << group
+  kDebug(5100) <<"created cache for group" << group
                 << " with " << ruleList.count() << " rules" << endl;
   setCacheValid(true);
 }
@@ -1217,21 +1217,21 @@ RuleStack::~RuleStack()
 
 void RuleStack::push(Q3PtrList<KScoringRule>& l)
 {
-  kDebug(5100) << "RuleStack::push pushing list with " << l.count() << " rules" << endl;
+  kDebug(5100) <<"RuleStack::push pushing list with" << l.count() <<" rules";
   KScoringManager::ScoringRuleList *l1 = new KScoringManager::ScoringRuleList;
   for ( KScoringRule *r=l.first(); r != 0; r=l.next() ) {
     l1->append(new KScoringRule(*r));
   }
   stack.push(l1);
-  kDebug(5100) << "now there are " << stack.count() << " lists on the stack" << endl;
+  kDebug(5100) <<"now there are" << stack.count() <<" lists on the stack";
 }
 
 void RuleStack::pop(Q3PtrList<KScoringRule>& l)
 {
   top(l);
   drop();
-  kDebug(5100) << "RuleStack::pop pops list with " << l.count() << " rules" << endl;
-  kDebug(5100) << "now there are " << stack.count() << " lists on the stack" << endl;
+  kDebug(5100) <<"RuleStack::pop pops list with" << l.count() <<" rules";
+  kDebug(5100) <<"now there are" << stack.count() <<" lists on the stack";
 }
 
 void RuleStack::top(Q3PtrList<KScoringRule>& l)
@@ -1243,7 +1243,7 @@ void RuleStack::top(Q3PtrList<KScoringRule>& l)
 
 void RuleStack::drop()
 {
-  kDebug(5100) << "drop: now there are " << stack.count() << " lists on the stack" << endl;
+  kDebug(5100) <<"drop: now there are" << stack.count() <<" lists on the stack";
   stack.remove();
 }
 

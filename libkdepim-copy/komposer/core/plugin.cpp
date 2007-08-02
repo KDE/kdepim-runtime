@@ -64,7 +64,7 @@ Plugin::quitClicked()
 void
 Plugin::aboutToUnload()
 {
-  kDebug()<<"plugin unloading"<<endl;
+  kDebug()<<"plugin unloading";
   emit readyForUnload();
 }
 

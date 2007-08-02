@@ -81,7 +81,7 @@ class MailThreaderAgent::Private
                         .arg( prefixRegExps.join(")|(?:") );
     QRegExp rx( bigRegExp, Qt::CaseInsensitive );
     if ( !rx.isValid() ) {
-      kWarning(5006) << "KMMessage::replacePrefixes(): bigRegExp = \""
+      kWarning(5006) <<"KMMessage::replacePrefixes(): bigRegExp = \""
                       << bigRegExp << "\"\n"
                       << "prefix regexp is invalid!" << endl;
       // try good ole Re/Fwd:

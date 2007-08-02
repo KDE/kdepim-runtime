@@ -50,7 +50,7 @@ ProgressItem::~ProgressItem()
 
 void ProgressItem::setComplete()
 {
-//   kDebug(5300) << "ProgressItem::setComplete - " << label() << endl;
+//   kDebug(5300) <<"ProgressItem::setComplete -" << label();
 
    if ( mChildren.isEmpty() ) {
      if ( !mCanceled )
@@ -82,7 +82,7 @@ void ProgressItem::removeChild( ProgressItem *kiddo )
 void ProgressItem::cancel()
 {
    if ( mCanceled || !mCanBeCanceled ) return;
-   kDebug(5300) << "ProgressItem::cancel() - " << label() << endl;
+   kDebug(5300) <<"ProgressItem::cancel() -" << label();
    mCanceled = true;
    // Cancel all children.
    QList<ProgressItem*> kids = mChildren.keys();
@@ -101,7 +101,7 @@ void ProgressItem::cancel()
 void ProgressItem::setProgress( unsigned int v )
 {
    mProgress = v;
-   // kDebug(5300) << "ProgressItem::setProgress(): " << label() << " : " << v << endl;
+   // kDebug(5300) <<"ProgressItem::setProgress():" << label() <<" :" << v;
    emit progressItemProgress( this, mProgress );
 }
 
