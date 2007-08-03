@@ -33,6 +33,7 @@ class MailThreaderAttribute : public CollectionAttribute
     MailThreaderAttribute* clone() const { 
       MailThreaderAttribute *a =  new MailThreaderAttribute(); 
       a->mData = mData;
+      return a;
     }
 
     QByteArray type() const { return "MailThreaderSort"; }
