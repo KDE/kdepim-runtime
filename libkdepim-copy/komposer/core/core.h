@@ -23,7 +23,7 @@
 #include "komposerIface.h"
 
 #include <kmainwindow.h>
-#include <Q3PtrList>
+#include <Qt3Support/Q3PtrList>
 
 namespace KSettings {
   class Dialog;
