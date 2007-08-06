@@ -192,21 +192,25 @@ void KFolderTreeItem::setFolderSize( int aSize )
   mSize = aSize;
 
   QString size;
+  int recursiveSize = 0;
+
+  if ( childCount() > 0 && !isOpen() )
+    recursiveSize = recursiveFolderSize();
+
   if (mType != Root) {
-      if (mSize == 0 && (childCount() == 0 || isOpen() ) )
+      if ( mSize == 0 && (childCount() == 0 || isOpen() || recursiveSize == 0) )
           size = "- ";
       else
           size = KIO::convertSize(mSize);
   }
-  if ( childCount() > 0 && !isOpen() ) {
-      int recursiveSize = recursiveFolderSize();
-      if ( recursiveSize != mSize ) {
-            if ( mType != Root )
-                size += QString::fromLatin1(" + %1").arg( KIO::convertSize( recursiveSize - mSize ) );
-            else 
-                size = KIO::convertSize( recursiveSize );
-      }
+
+  if ( childCount() > 0 && !isOpen() && recursiveSize != mSize ) {
+    if ( mType != Root )
+      size += QString::fromLatin1(" + %1").arg( KIO::convertSize( recursiveSize - mSize ) );
+    else
+      size = KIO::convertSize( recursiveSize );
   }
+
   size += " ";
 
   setText( static_cast<KFolderTree*>(listView())->sizeIndex(), size );
