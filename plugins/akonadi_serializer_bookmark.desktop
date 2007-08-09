@@ -1,0 +1,8 @@
+[Misc]
+Encoding=UTF-8
+Name=Bookmark serializer
+Comment=An Akonadi serializer plugin for bookmark objects
+
+[Plugin]
+Type=application/x-xbel
+X-KDE-Library=libakonadi_serializer_bookmark

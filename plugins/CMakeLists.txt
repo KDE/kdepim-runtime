@@ -23,11 +23,17 @@ kde4_add_plugin(akonadi_serializer_kcal WITH_PREFIX ${akonadi_serializer_kcal_SR
 target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDE4_KCAL_LIBS} akonadi)
 install(TARGETS akonadi_serializer_kcal DESTINATION ${PLUGIN_INSTALL_DIR})
 
+set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
+kde4_add_plugin(akonadi_serializer_bookmark WITH_PREFIX ${akonadi_serializer_bookmark_SRCS})
+target_link_libraries(akonadi_serializer_bookmark ${KDE4_KDECORE_LIBS} ${KDE4_BOOKMARK_LIBS} akonadi)
+install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
+
 ########### install files ###############
 
 install( FILES
   akonadi_serializer_addressee.desktop
   akonadi_serializer_mail.desktop
   akonadi_serializer_kcal.desktop
+  akonadi_serializer_bookmark.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 

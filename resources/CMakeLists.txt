@@ -3,7 +3,7 @@ add_subdirectory( knut )
 add_subdirectory( vcard )
 add_subdirectory( nntp )
 add_subdirectory( maildir )
-
+add_subdirectory( localbookmarks )
 if(UNIX)
    macro_optional_find_package(OpenChange)
    macro_log_feature(LIBMAPI_FOUND "libmapi" "OpenChange MAPI Client Library" "http://www.openchange.org" FALSE "" "Needed to support OpenChange / Exchange servers")

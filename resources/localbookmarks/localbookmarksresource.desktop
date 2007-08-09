@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Localbookmark Resource
+Comment=An agent to load data from a local bookmarks file
+Type=AkonadiResource
+Exec=akonadi_localbookmarks_resource
+Icon=bookmark
+
+X-Akonadi-MimeTypes=text/bookmark
+X-Akonadi-Capabilitites=text/bookmark
+X-Akonadi-Identifier=akonadi_localbookmarks_resource
