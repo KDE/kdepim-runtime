@@ -1,7 +1,9 @@
 [Misc]
 Encoding=UTF-8
 Name=Bookmark serializer
+Name[sv]=Bokmärkesserialisering
 Comment=An Akonadi serializer plugin for bookmark objects
+Comment[sv]=Ett insticksprogram till Akonadi för serialisering av bokmärkesobjekt
 
 [Plugin]
 Type=application/x-xbel

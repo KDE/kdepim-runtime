@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Localbookmark Resource
+Name[sv]=Akonadi lokal bokmärkesresurs
 Comment=An agent to load data from a local bookmarks file
+Comment[sv]=En modul för att ladda data från en lokal bokmärkesfil
 Type=AkonadiResource
 Exec=akonadi_localbookmarks_resource
 Icon=bookmark
