@@ -65,7 +65,7 @@ class KMailCompletion : public KCompletion
     void addItemWithKeys( const QString& email, int weight, const QStringList * keyWords);
 
     /**
-     * use internal map to replace all keywords in pMatches whith corrsesponding email addresses.
+     * use internal map to replace all keywords in pMatches with corresponding email addresses.
      */
     virtual void postProcessMatches( QStringList * pMatches )const;
 
