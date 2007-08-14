@@ -195,7 +195,7 @@ bool Maildir::addSubFolder( const QString& path )
         dir.mkdir( d->subDirPath() );
     dir.cd( d->subDirPath() );
 
-    const QString fullPath = dir.path() + "/" + path;
+    const QString fullPath = dir.path() + '/' + path;
     Maildir subdir( fullPath );
     if ( subdir.create() )
         return true;
@@ -205,7 +205,7 @@ bool Maildir::addSubFolder( const QString& path )
 bool Maildir::removeSubFolder( const QString& folderName )
 {
     if ( !isValid() ) return false;
-    QDir dir( d->subDirPath() + "/" + folderName );
+    QDir dir( d->subDirPath() + '/' + folderName );
     if ( dir.exists() ) {
         // remove it recursively
     }
@@ -221,7 +221,7 @@ Maildir Maildir::subFolder( const QString& subFolder )
         dir.cdUp();
         if ( dir.exists( d->subDirPath() ) ) {
             dir.cd( d->subDirPath() );
-            return Maildir( dir.path() + "/" + subFolder );
+            return Maildir( dir.path() + '/' + subFolder );
         }
     }
     return Maildir();
