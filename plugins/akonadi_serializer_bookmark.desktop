@@ -1,8 +1,12 @@
 [Misc]
 Encoding=UTF-8
 Name=Bookmark serializer
+Name[pt]=Serializador do favorito
+Name[pt_BR]=Serializador do favorito
 Name[sv]=Bokmärkesserialisering
 Comment=An Akonadi serializer plugin for bookmark objects
+Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
+Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av bokmärkesobjekt
 
 [Plugin]
