@@ -62,7 +62,7 @@ QString KMailCompletion::makeCompletion( const QString &string )
         // match is a keyword, skip it and try to find match <email@domain>
         match = nextMatch();
         if ( firstMatch == match ){
-          match = QString::null;
+          match = QString();
           break;
         }
       } else

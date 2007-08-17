@@ -437,7 +437,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
         //if only our \" is left, remove it since user has not typed it either
         if ( m_searchExtended && m_searchString == "\"" ){
           m_searchExtended = false;
-          m_searchString = QString::null;
+          m_searchString = QString();
           setText( m_previousAddresses );
           break;
         }
