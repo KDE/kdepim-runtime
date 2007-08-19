@@ -28,6 +28,7 @@ class MailSerializerTest : public QObject
   private slots:
     void testEnvelopeDeserialize();
     void testEnvelopeSerialize();
+    void testParts();
 };
 
 

@@ -28,10 +28,10 @@
 
 using namespace Akonadi;
 
-void SerializerPluginBookmark::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginBookmark::deserialize( Item& item, const QString& label, QIODevice& data )
 {
   if ( label != Item::PartBody )
-    return;
+    return false;
 
   KBookmark bk;
   QMimeData *mimeData = new QMimeData();
@@ -40,6 +40,7 @@ void SerializerPluginBookmark::deserialize( Item& item, const QString& label, QI
 
   if ( !bkl.isEmpty() )
     item.setPayload<KBookmark>( bkl[0] );
+  return true;
 }
 
 void SerializerPluginBookmark::serialize( const Item& item, const QString& label, QIODevice& data )

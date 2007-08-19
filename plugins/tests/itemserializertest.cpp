@@ -61,7 +61,7 @@ void ItemSerializerTest::testExtraPart()
 
   QVERIFY( !item.hasPayload() );
   QStringList parts;
-  parts << Item::PartBody << "MYPART";
+  parts << "MYPART";
   QCOMPARE( item.availableParts(), parts );
   QCOMPARE( item.part( "MYPART" ), data );
 

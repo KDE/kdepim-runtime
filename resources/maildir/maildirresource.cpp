@@ -258,6 +258,10 @@ void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
       continue;
     Item item( DataReference( -1, rid ) );
     item.setMimeType( "message/rfc822" );
+    KMime::Message *msg = new KMime::Message;
+    msg->setHead( readHeader( rid ) );
+    msg->parse();
+    item.setPayload( MessagePtr( msg ) );
     ItemAppendJob *append = new ItemAppendJob( item, col, session() );
     if ( !append->exec() ) {
       changeProgress( 0 );
@@ -295,6 +299,25 @@ void MaildirResource::collectionChanged(const Collection & collection)
 void MaildirResource::collectionRemoved(int id, const QString & remoteId)
 {
   qDebug() << "Implement me!";
+}
+
+QByteArray MaildirResource::readHeader(const QString & fileName)
+{
+  const QString dir = maildirPath( fileName );
+  const QString entry = maildirId( fileName );
+  // ### FIXME Maildir can only read complete entries, we should avoid that
+  // but "cur" is not the only place to look for mails
+  QFile f( dir + QDir::separator() + "cur" + QDir::separator() + entry );
+  if ( !f.open( QFile::ReadOnly ) )
+    return QByteArray();
+  QByteArray rv;
+  forever {
+    QByteArray line = f.readLine();
+    if ( line.trimmed().isEmpty() )
+      break;
+    rv.append( line );
+  }
+  return rv;
 }
 
 #include "maildirresource.moc"

@@ -49,6 +49,9 @@ class MaildirResource : public Akonadi::ResourceBase
 
     void retrieveCollections();
     void synchronizeCollection( const Akonadi::Collection &col );
+
+  private:
+    static QByteArray readHeader( const QString &fileName );
 };
 
 #endif

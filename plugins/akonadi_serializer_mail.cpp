@@ -48,14 +48,10 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 }
 
 
-void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody && label != Item::PartEnvelope )
-      return;
-    if ( item.mimeType() != QString::fromLatin1("message/rfc822") && item.mimeType() != QLatin1String("message/news") ) {
-        //throw ItemSerializerException();
-        return;
-    }
+    if ( label != Item::PartBody && label != Item::PartEnvelope && label != Item::PartHeader )
+      return false;
 
     MessagePtr msg;
     if ( !item.hasPayload() ) {
@@ -66,15 +62,23 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
         msg = item.payload<MessagePtr>();
     }
 
+    QByteArray buffer = data.readAll();
+    if ( buffer.isEmpty() )
+      return true;
     if ( label == Item::PartBody ) {
-        msg->setContent( data.readAll() );
+      msg->setContent( buffer );
+      msg->parse();
+    } else if ( label == Item::PartHeader ) {
+      if ( !msg->body().isEmpty() && !msg->contents().isEmpty() ) {
+        msg->setHead( buffer );
         msg->parse();
+      }
     } else if ( label == Item::PartEnvelope ) {
         QList<QByteArray> env;
-        ImapParser::parseParenthesizedList( data.readAll(), env );
+        ImapParser::parseParenthesizedList( buffer, env );
         if ( env.count() < 10 ) {
           qWarning() << "Akonaid KMime Deserializer: Got invalid envelope: " << env;
-          return;
+          return false;
         }
         Q_ASSERT( env.count() >= 10 );
         // date
@@ -111,6 +115,8 @@ void SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
         // message id
         msg->messageID()->from7BitString( env[9] );
     }
+
+    return true;
 }
 
 static QByteArray quoteImapListEntry( const QByteArray &b )
@@ -160,14 +166,22 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
     env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
     env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
     data.write( buildImapList( env ) );
+  } else if ( label == Item::PartHeader ) {
+    data.write( m->head() );
   }
 }
 
 QStringList SerializerPluginMail::parts(const Item & item) const
 {
-  Q_UNUSED( item );
+  if ( !item.hasPayload<MessagePtr>() )
+    return QStringList();
+  MessagePtr msg = item.payload<MessagePtr>();
   QStringList list;
-  list << Item::PartBody << Item::PartEnvelope;
+  if ( msg->hasContent() ) {
+    list << Item::PartEnvelope << Item::PartHeader;
+    if ( !msg->body().isEmpty() || !msg->contents().isEmpty() )
+      list << Item::PartBody;
+  }
   return list;
 }
 

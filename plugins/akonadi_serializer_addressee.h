@@ -28,7 +28,7 @@ namespace Akonadi {
 class SerializerPluginAddresee : public ItemSerializerPlugin
 {
 public:
-    void deserialize( Item& item, const QString& label, QIODevice& data );
+    bool deserialize( Item& item, const QString& label, QIODevice& data );
     void serialize( const Item& item, const QString& label, QIODevice& data );
 private:
     KABC::VCardConverter m_converter;

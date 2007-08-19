@@ -26,23 +26,20 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 
-void SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODevice & data)
+bool SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODevice & data)
 {
   if ( label != Item::PartBody )
-    return;
-  if ( item.mimeType() != QString::fromLatin1("text/calendar") ) {
-    //throw ItemSerializerException();
-    return;
-  }
+    return false;
 
   KCal::Incidence* i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
     qWarning() << "Failed to parse incidence!";
     data.seek( 0 );
     qWarning() << QString::fromUtf8( data.readAll() );
-    return;
+    return false;
   }
   item.setPayload<IncidencePtr>( IncidencePtr( i ) );
+  return true;
 }
 
 void SerializerPluginKCal::serialize(const Item & item, const QString & label, QIODevice & data)

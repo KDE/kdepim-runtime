@@ -81,4 +81,31 @@ void MailSerializerTest::testEnvelopeSerialize()
 
 }
 
+void MailSerializerTest::testParts()
+{
+  Item item;
+  item.setMimeType( "message/rfc822" );
+  KMime::Message *m = new Message;
+  MessagePtr msg( m );
+  item.setPayload( msg );
+
+  SerializerPluginMail *serializer = new SerializerPluginMail();
+  QVERIFY( serializer->parts( item ).isEmpty() );
+
+  msg->setHead( "foo" );
+  QStringList parts = serializer->parts( item );
+  QCOMPARE( parts.count(), 2 );
+  QVERIFY( parts.contains( Item::PartEnvelope ) );
+  QVERIFY( parts.contains( Item::PartHeader ) );
+
+  msg->setBody( "bar" );
+  parts = serializer->parts( item );
+  QCOMPARE( parts.count(), 3 );
+  QVERIFY( parts.contains( Item::PartEnvelope ) );
+  QVERIFY( parts.contains( Item::PartHeader ) );
+  QVERIFY( parts.contains( Item::PartBody ) );
+
+  delete serializer;
+}
+
 

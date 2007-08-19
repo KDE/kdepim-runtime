@@ -27,14 +27,10 @@
 
 using namespace Akonadi;
 
-void SerializerPluginAddresee::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginAddresee::deserialize( Item& item, const QString& label, QIODevice& data )
 {
     if ( label != Item::PartBody )
-      return;
-    if ( item.mimeType() != QString::fromLatin1("text/vcard") && item.mimeType() != QString::fromLatin1("text/directory") ) {
-        //throw ItemSerializerException();
-        return;
-    }
+      return false;
 
     KABC::Addressee a = m_converter.parseVCard( data.readAll() );
     if ( !a.isEmpty() ) {
@@ -42,6 +38,7 @@ void SerializerPluginAddresee::deserialize( Item& item, const QString& label, QI
     } else {
         qDebug( ) << "SerializerPluginAddresee: Empty addressee object!";
     }
+    return true;
 }
 
 void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QIODevice& data )

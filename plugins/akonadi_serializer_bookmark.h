@@ -32,7 +32,7 @@ using namespace Akonadi;
 class SerializerPluginBookmark : public ItemSerializerPlugin
 {
 public:
-  void deserialize( Item& item, const QString& label, QIODevice& data );
+  bool deserialize( Item& item, const QString& label, QIODevice& data );
   void serialize( const Item& item, const QString& label, QIODevice& data );
 };
 
