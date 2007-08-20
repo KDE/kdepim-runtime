@@ -113,7 +113,7 @@ bool TestDistrList::check(const QString& txt, QString a, QString b)
 
 void TestDistrList::cleanup()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     ab->clear();
     KABC::StdAddressBook::close();
@@ -125,14 +125,14 @@ void TestDistrList::cleanup()
 
 void TestDistrList::testEmpty()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     DistributionList dl;
     assert( dl.isEmpty() );
 }
 
 void TestDistrList::testNewList()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     DistributionList dl;
     dl.setName( "foo" );
     assert( !dl.isEmpty() );
@@ -166,7 +166,7 @@ void TestDistrList::testNewList()
 
 void TestDistrList::testInsertEntry()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );
     assert( !dl.isEmpty() );
@@ -213,7 +213,7 @@ void TestDistrList::testInsertEntry()
 
 void TestDistrList::testRemoveEntry()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );
     assert( !dl.isEmpty() );
@@ -257,7 +257,7 @@ void TestDistrList::testRemoveEntry()
 
 void TestDistrList::testDuplicate()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
     // This is a special test for the case where we have a contact and a distr list with the same name
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     KABC::Addressee addr;
@@ -285,7 +285,7 @@ void TestDistrList::testDuplicate()
 
 void TestDistrList::testDeleteList()
 {
-    kDebug() << k_funcinfo;
+    kDebug() ;
 
     KABC::AddressBook *ab = KABC::StdAddressBook::self();
     DistributionList dl = DistributionList::findByName( ab, "foo" );

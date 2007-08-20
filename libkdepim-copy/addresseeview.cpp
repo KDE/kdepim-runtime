@@ -691,7 +691,7 @@ void AddresseeView::slotHighlighted( const QString &link )
 
 void AddresseeView::slotPresenceChanged( const QString &uid )
 {
-  kDebug() << k_funcinfo <<" uid is:" << uid <<" mAddressee is:" << mAddressee.uid();
+  kDebug() <<" uid is:" << uid <<" mAddressee is:" << mAddressee.uid();
   if ( uid == mAddressee.uid() )
     updateView();
 }

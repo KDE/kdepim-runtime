@@ -55,12 +55,12 @@ using namespace Akonadi;
 AkonadiSlave::AkonadiSlave(const QByteArray & pool_socket, const QByteArray & app_socket) :
     KIO::SlaveBase( "akonadi", pool_socket, app_socket )
 {
-  kDebug() << k_funcinfo;
+  kDebug() ;
 }
 
 AkonadiSlave::~ AkonadiSlave()
 {
-  kDebug() << k_funcinfo;
+  kDebug() ;
 }
 
 void AkonadiSlave::get(const KUrl & url)
@@ -88,7 +88,7 @@ void AkonadiSlave::get(const KUrl & url)
 
 void AkonadiSlave::stat(const KUrl & url)
 {
-  kDebug() << k_funcinfo << url;
+  kDebug() << url;
 
   // Stats for a collection
   if ( Collection::urlIsValid( url ) )
@@ -147,7 +147,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
 void AkonadiSlave::del( const KUrl &url, bool isFile )
 {
-  kDebug() << k_funcinfo << url;
+  kDebug() << url;
 
   if ( !isFile ) // It's a directory
   {
@@ -171,7 +171,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
 
 void AkonadiSlave::listDir( const KUrl &url )
 {
-  kDebug() << k_funcinfo << url;
+  kDebug() << url;
 
   if ( !Collection::urlIsValid( url ) )
   {

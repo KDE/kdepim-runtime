@@ -91,7 +91,7 @@ PluginManager::~PluginManager()
   if ( d->shutdownMode != Private::DoneShutdown ) {
     slotShutdownTimeout();
 #if 0
-    kWarning() << k_funcinfo
+    kWarning() 
                 << "Destructing plugin manager without going through"
                 << "the shutdown process!"
                 << endl
@@ -106,7 +106,7 @@ PluginManager::~PluginManager()
     // Remove causes the iterator to become invalid, so pre-increment first
     QMap<KPluginInfo*, Plugin*>::ConstIterator nextIt( it );
     ++nextIt;
-    kWarning() << k_funcinfo <<"Deleting stale plugin '"
+    kWarning() <<"Deleting stale plugin '"
                        << it.value()->name() << "'";
     delete it.value();
     it = nextIt;
@@ -181,7 +181,7 @@ PluginManager::slotPluginReadyForUnload()
   Plugin* plugin = dynamic_cast<Plugin*>( const_cast<QObject*>( sender() ) );
   if ( !plugin )
   {
-    kWarning() << k_funcinfo <<"Calling object is not a plugin!";
+    kWarning() <<"Calling object is not a plugin!";
     return;
 
   }
@@ -203,7 +203,7 @@ PluginManager::slotShutdownTimeout()
         it != d->loadedPlugins.end(); ++it )
     remaining.append( it.key()->pluginName() );
 
-  kWarning() << k_funcinfo <<"Some plugins didn't shutdown in time!" << endl
+  kWarning() <<"Some plugins didn't shutdown in time!" << endl
               << "Remaining plugins:"
               << remaining.join( QString::fromLatin1( ", " ) ) << endl
               << "Forcing Komposer shutdown now.";
@@ -238,7 +238,7 @@ PluginManager::loadAllPlugins()
     if ( key.endsWith( QString::fromLatin1( "Enabled" ) ) )
     {
       key.setLength( key.length() - 7 );
-      //kDebug() << k_funcinfo <<"Set" << key <<" to" << it.value();
+      //kDebug() <<"Set" << key <<" to" << it.value();
 
       if ( it.value() == QString::fromLatin1( "true" ) )
       {
@@ -300,7 +300,7 @@ PluginManager::loadPluginInternal( const QString &pluginId )
 {
   KPluginInfo* info = infoForPluginId( pluginId );
   if ( !info ) {
-    kWarning() << k_funcinfo <<"Unable to find a plugin named '"
+    kWarning() <<"Unable to find a plugin named '"
                 << pluginId << "'!";
     return 0;
   }
@@ -323,14 +323,14 @@ PluginManager::loadPluginInternal( const QString &pluginId )
     connect( plugin, SIGNAL(readyForUnload()),
              this, SLOT(slotPluginReadyForUnload()) );
 
-    kDebug() << k_funcinfo <<"Successfully loaded plugin '"
+    kDebug() <<"Successfully loaded plugin '"
               << pluginId << "'";
 
     emit pluginLoaded( plugin );
   } else {
     switch ( error ) {
     case KParts::ComponentFactory::ErrNoServiceFound:
-      kDebug() << k_funcinfo <<"No service implementing the given mimetype"
+      kDebug() <<"No service implementing the given mimetype"
                 << "and fullfilling the given constraint expression can be found.";
       break;
 
@@ -352,7 +352,7 @@ PluginManager::loadPluginInternal( const QString &pluginId )
       break;
     }
 
-    kDebug() << k_funcinfo <<"Loading plugin '" << pluginId
+    kDebug() <<"Loading plugin '" << pluginId
               << "' failed, KLibLoader reported error: '"
               << KLibLoader::self()->lastErrorMessage()
               << "'";

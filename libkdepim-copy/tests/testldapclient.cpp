@@ -74,7 +74,7 @@ void TestLDAPClient::cleanup()
 
 void TestLDAPClient::testIntevation()
 {
-  kDebug() << k_funcinfo;
+  kDebug() ;
   mClient = new LdapClient( 0, this );
 
 #ifdef __GNUC__
@@ -158,13 +158,13 @@ void TestLDAPClient::slotLDAPResult( const LdapClient&, const KLDAP::LdapObject&
 
 void TestLDAPClient::slotLDAPError( const QString& err )
 {
-  kDebug() << k_funcinfo << err;
+  kDebug() << err;
   ::exit( 1 );
 }
 
 void TestLDAPClient::slotLDAPDone()
 {
-  kDebug() << k_funcinfo;
+  kDebug() ;
   emit leaveModality();
 }
 

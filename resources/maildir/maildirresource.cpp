@@ -103,7 +103,7 @@ bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, co
 
 void MaildirResource::aboutToQuit()
 {
-  kDebug() <<"Implement me:" << k_funcinfo;
+  kDebug() <<"Implement me:" ;
 }
 
 void MaildirResource::configure()
