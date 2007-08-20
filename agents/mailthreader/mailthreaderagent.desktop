@@ -2,12 +2,14 @@
 Encoding=UTF-8
 Name=Akonadi Mail Threader Agent
 Name[es]=Agente Mail Theader de Anokadi
+Name[ne]=एकोनाडी मेल थ्रेडर अभिकर्ता
 Name[pt]=Agente de Tarefas de Correio do Akonadi
 Name[pt_BR]=Agente de Tarefas de Correio do Akonadi
 Name[sv]=Akonadi e-posttrådningsmodul
 Name[zh_TW]=Akonadi 信件串列代理程式
 Comment=An agent to thread mails from a collection
 Comment[es]=Un agente para poner mensajes en hilos de una colección
+Comment[ne]=संकलनबाट मेलहरू थ्रेड गर्नका लागि एउटा अभिकर्ता
 Comment[pt]=Um agente para agendar as tarefas de uma colecção
 Comment[pt_BR]=Um agente para agendar as tarefas de uma colecção
 Comment[sv]=En modul för att tråda e-post från en samling
