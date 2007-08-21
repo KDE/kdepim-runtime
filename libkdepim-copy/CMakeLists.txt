@@ -34,6 +34,7 @@ set(kdepim_LIB_SRCS
    pluginloaderbase.cpp 
    addresseelineedit.cpp 
    kdatepickerpopup.cpp 
+   ktimezonecombobox.cpp
    ldapclient.cpp 
    overlaywidget.cpp 
    progressmanager.cpp 
