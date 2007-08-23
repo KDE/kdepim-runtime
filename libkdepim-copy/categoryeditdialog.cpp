@@ -52,6 +52,8 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
   mWidgets->setupUi( widget );
 
   QBoxLayout *layout = new QVBoxLayout( mWidgets->mCategoriesFrame );
+  layout->setMargin( 0 );
+  layout->setSpacing( KDialog::spacingHint() );
   mCategories = new ImprovedListView( mWidgets->mCategoriesFrame );
   mCategories->setObjectName( "mCategories" );
   mCategories->addColumn( i18n( "Category" ) );
