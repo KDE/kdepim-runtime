@@ -24,6 +24,14 @@
    </property>
    <item>
     <widget class="KPIM::AutoCheckTreeWidget" name="mCategories" >
+     <property name="columnCount" >
+      <number>1</number>
+     </property>
+     <column>
+      <property name="text" >
+       <string>Test</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>
@@ -35,30 +43,30 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="mButtonClear" >
+       <spacer>
+         <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+           <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+           <size>
+             <width>20</width>
+             <height>20</height>
+           </size>
+         </property>
+       </spacer>
+     </item>
+     <item>
+      <widget class="KPushButton" name="mButtonClear" >
        <property name="text" >
         <string>&amp;Clear Selection</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mButtonEdit" >
+      <widget class="KPushButton" name="mButtonEdit" >
        <property name="text" >
         <string>&amp;Edit Categories...</string>
        </property>
@@ -68,15 +76,22 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutfunction spacing="KDialog::spacingHint()" margin="KDialog::marginHint()" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>KPIM::AutoCheckTreeWidget</class>
-   <extends></extends>
+   <extends>QTreeWidget</extends>
    <header>autochecktreewidget.h</header>
    <container>0</container>
    <pixmap></pixmap>
+  </customwidget>
+  <customwidget>
+    <class>KPushButton</class>
+    <extends>QPushButton</extends>
+    <header>KPushButton</header>
+    <container>0</container>
+    <pixmap></pixmap>
   </customwidget>
  </customwidgets>
  <tabstops>

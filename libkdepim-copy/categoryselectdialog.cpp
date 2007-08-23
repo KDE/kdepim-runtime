@@ -39,6 +39,8 @@ CategorySelectWidget::CategorySelectWidget(QWidget *parent, KPimPrefs *prefs)
   : QWidget(parent), mPrefs( prefs )
 {
   QHBoxLayout *topL = new QHBoxLayout(this);
+  topL->setMargin( 0 );
+  topL->setSpacing( KDialog::spacingHint() );
   mWidgets = new CategorySelectWidgetBase(this);
   topL->addWidget(mWidgets);
   connect( mWidgets->mButtonEdit, SIGNAL(clicked()),
@@ -163,6 +165,8 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
   QWidget *page = new QWidget;
   setMainWidget( page );
   QVBoxLayout *lay = new QVBoxLayout( page );
+  lay->setMargin( 0 );
+  lay->setSpacing( KDialog::spacingHint() );
 
   mWidgets = new CategorySelectWidget(this,prefs);
   mWidgets->setObjectName( "CategorySelection" );

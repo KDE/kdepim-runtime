@@ -42,8 +42,8 @@ public:
   CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
     setupUi( this );
 
-    // FIXME this seems not to work
-    mCategories->setHeaderLabel( i18n( "Categories" ) );
+    mButtonClear->setIcon( KIcon( "clear-left" ) );
+    mButtonEdit->setIcon( KIcon( "edit" ) );
   }
 };
 
