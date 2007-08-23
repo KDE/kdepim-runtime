@@ -33,8 +33,6 @@ class CategoryEditDialog_base;
 }
 namespace KPIM {
 
-class AutoCheckTreeWidget;
-
 class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
     Q_OBJECT
@@ -65,7 +63,6 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void fillList();
 
   private:
-    AutoCheckTreeWidget* mCategories;
     KPimPrefs *mPrefs;
     Ui::CategoryEditDialog_base *mWidgets;
 };

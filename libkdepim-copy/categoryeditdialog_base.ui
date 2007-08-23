@@ -34,21 +34,21 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="mButtonAdd" >
+      <widget class="KPushButton" name="mButtonAdd" >
        <property name="text" >
         <string>A&amp;dd</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mButtonAddSubcategory" >
+      <widget class="KPushButton" name="mButtonAddSubcategory" >
        <property name="text" >
         <string>Add &amp;subcategory</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mButtonRemove" >
+      <widget class="KPushButton" name="mButtonRemove" >
        <property name="text" >
         <string>&amp;Remove</string>
        </property>
@@ -73,13 +73,51 @@
     </layout>
    </item>
    <item row="0" column="0" >
-    <widget class="QFrame" name="mCategoriesFrame" />
+    <widget class="KPIM::AutoCheckTreeWidget" name="mCategories" >
+     <property name="autoCheck" >
+      <bool>false</bool>
+     </property>
+     <property name="dragDropMode" >
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="allColumnsShowFocus" >
+      <bool>true</bool>
+     </property>
+     <property name="columnCount" >
+      <number>1</number>
+     </property>
+     <column>
+      <property name="text" >
+       <string>Test</string>
+      </property>
+     </column>
+    </widget>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="KDialog::spacingHint()" margin="KDialog::marginHint()" />
  <pixmapfunction></pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>KPIM::AutoCheckTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>autochecktreewidget.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+  <customwidget>
+    <class>KPushButton</class>
+    <extends>QPushButton</extends>
+    <header>KPushButton</header>
+    <container>0</container>
+    <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
  <tabstops>
+  <tabstop>mCategories</tabstop>
   <tabstop>mEdit</tabstop>
   <tabstop>mButtonAdd</tabstop>
   <tabstop>mButtonAddSubcategory</tabstop>

@@ -51,36 +51,21 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
   widget->setObjectName( "CategoryEdit" );
   mWidgets->setupUi( widget );
 
-  QBoxLayout *layout = new QVBoxLayout( mWidgets->mCategoriesFrame );
-  layout->setMargin( 0 );
-  layout->setSpacing( KDialog::spacingHint() );
-  mCategories = new AutoCheckTreeWidget( mWidgets->mCategoriesFrame );
-  mCategories->setObjectName( "mCategories" );
-  mCategories->setAutoCheck( false );
-  mCategories->setHeaderLabel( i18n( "Category" ) );
-  mCategories->setDragDropMode( QAbstractItemView::InternalMove );
-  mCategories->setSelectionMode( QAbstractItemView::ExtendedSelection );
-  mCategories->setAllColumnsShowFocus( true );
-  mCategories->header()->hide();
-  layout->addWidget( mCategories );
-
-  // fix the tab order
-  widget->setTabOrder( mCategories, mWidgets->mEdit );
-  widget->setTabOrder( mWidgets->mEdit, mWidgets->mButtonAdd );
-  widget->setTabOrder( mWidgets->mButtonAdd, mWidgets->mButtonAddSubcategory );
-  widget->setTabOrder( mWidgets->mButtonAddSubcategory,
-                        mWidgets->mButtonRemove );
+  mWidgets->mCategories->header()->hide();
+  mWidgets->mButtonAdd->setIcon( KIcon( "list-add" ) );
+  mWidgets->mButtonAddSubcategory->setIcon( KIcon( "list-add" ) );
+  mWidgets->mButtonRemove->setIcon( KIcon( "list-remove" ) );
 
   setMainWidget( widget );
 
   fillList();
 
-  connect( mCategories, 
+  connect( mWidgets->mCategories, 
            SIGNAL( currentItemChanged( QTreeWidgetItem *, QTreeWidgetItem * )),
            SLOT( editItem( QTreeWidgetItem * )) );
-  connect( mCategories, SIGNAL( itemSelectionChanged() ),
+  connect( mWidgets->mCategories, SIGNAL( itemSelectionChanged() ),
            SLOT( slotSelectionChanged() ) );
-  connect( mCategories, SIGNAL( itemCollapsed( QTreeWidgetItem * ) ),
+  connect( mWidgets->mCategories, SIGNAL( itemCollapsed( QTreeWidgetItem * ) ),
            SLOT( expandIfToplevel( QTreeWidgetItem * ) ) );
   connect( mWidgets->mEdit, SIGNAL( textChanged( const QString & )),
            this, SLOT( slotTextChanged( const QString & )));
@@ -105,17 +90,17 @@ CategoryEditDialog::~CategoryEditDialog()
 
 void CategoryEditDialog::fillList()
 {
-  CategoryHierarchyReaderQTreeWidget( mCategories ).
+  CategoryHierarchyReaderQTreeWidget( mWidgets->mCategories ).
       read( mPrefs->mCustomCategories );
 
-  mWidgets->mButtonRemove->setEnabled( mCategories->topLevelItemCount() > 0 );
-  mWidgets->mButtonAddSubcategory->setEnabled( mCategories->topLevelItemCount()
+  mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
+  mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount()
                                                > 0 );
 }
 
 void CategoryEditDialog::slotTextChanged(const QString &text)
 {
-  QTreeWidgetItem *item = mCategories->currentItem();
+  QTreeWidgetItem *item = mWidgets->mCategories->currentItem();
   if ( item ) {
     item->setText( 0, text );
   }
@@ -123,7 +108,7 @@ void CategoryEditDialog::slotTextChanged(const QString &text)
 
 void CategoryEditDialog::slotSelectionChanged()
 {
-  QTreeWidgetItemIterator it( mCategories, QTreeWidgetItemIterator::Selected );
+  QTreeWidgetItemIterator it( mWidgets->mCategories, QTreeWidgetItemIterator::Selected );
   mWidgets->mButtonRemove->setEnabled( *it );
 }
 
@@ -131,16 +116,16 @@ void CategoryEditDialog::add()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
     QTreeWidgetItem *newItem = 
-      new QTreeWidgetItem( mCategories, QStringList( "" ) );
+      new QTreeWidgetItem( mWidgets->mCategories, QStringList( "" ) );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
     newItem->setExpanded( true );
-    mCategories->setCurrentItem( newItem );
-    mCategories->clearSelection();
+    mWidgets->mCategories->setCurrentItem( newItem );
+    mWidgets->mCategories->clearSelection();
     newItem->setSelected( true );
-    mCategories->scrollToItem( newItem );
-    mWidgets->mButtonRemove->setEnabled( mCategories->topLevelItemCount() > 0 );
-    mWidgets->mButtonAddSubcategory->setEnabled( mCategories->topLevelItemCount() > 0 );
+    mWidgets->mCategories->scrollToItem( newItem );
+    mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
+    mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
     mWidgets->mEdit->setFocus();
   }
 }
@@ -149,14 +134,14 @@ void CategoryEditDialog::addSubcategory()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
     QTreeWidgetItem *newItem = 
-      new QTreeWidgetItem( mCategories->currentItem(), QStringList( "" ) );
+      new QTreeWidgetItem( mWidgets->mCategories->currentItem(), QStringList( "" ) );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
     newItem->setExpanded( true );
-    mCategories->setCurrentItem( newItem );
-    mCategories->clearSelection();
+    mWidgets->mCategories->setCurrentItem( newItem );
+    mWidgets->mCategories->clearSelection();
     newItem->setSelected( true );
-    mCategories->scrollToItem( newItem );
+    mWidgets->mCategories->scrollToItem( newItem );
     mWidgets->mEdit->setFocus();
   }
 }
@@ -164,7 +149,7 @@ void CategoryEditDialog::addSubcategory()
 void CategoryEditDialog::remove()
 {
   QList<QTreeWidgetItem*> to_remove;
-  QTreeWidgetItemIterator it( mCategories, QTreeWidgetItemIterator::Selected );
+  QTreeWidgetItemIterator it( mWidgets->mCategories, QTreeWidgetItemIterator::Selected );
   while ( *it ) {
     to_remove.append( *it++ );
   }
@@ -174,10 +159,10 @@ void CategoryEditDialog::remove()
     delete items.next();
   }
 
-  mWidgets->mButtonRemove->setEnabled( mCategories->topLevelItemCount() > 0 );
-  mWidgets->mButtonAddSubcategory->setEnabled( mCategories->topLevelItemCount() > 0 );
-  if ( mCategories->currentItem() )
-    mCategories->currentItem()->setSelected( true );
+  mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
+  mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
+  if ( mWidgets->mCategories->currentItem() )
+    mWidgets->mCategories->currentItem()->setSelected( true );
 }
 
 void CategoryEditDialog::slotOk()
@@ -191,9 +176,9 @@ void CategoryEditDialog::slotApply()
   mPrefs->mCustomCategories.clear();
 
   QStringList path;
-  QTreeWidgetItemIterator it( mCategories );
+  QTreeWidgetItemIterator it( mWidgets->mCategories );
   while ( *it ) {
-    path = mCategories->pathByItem( *it++ );
+    path = mWidgets->mCategories->pathByItem( *it++ );
     path.replaceInStrings( KPimPrefs::categorySeparator, QString("\\") +
                            KPimPrefs::categorySeparator );
     mPrefs->mCustomCategories.append( path.join( KPimPrefs::categorySeparator ) );
@@ -223,11 +208,11 @@ void CategoryEditDialog::reload()
 void CategoryEditDialog::show()
 {
   QTreeWidgetItem *first = 0;
-  if ( mCategories->topLevelItemCount() ) {
-    first = mCategories->topLevelItem( 0 );
-    mCategories->setCurrentItem( first );
+  if ( mWidgets->mCategories->topLevelItemCount() ) {
+    first = mWidgets->mCategories->topLevelItem( 0 );
+    mWidgets->mCategories->setCurrentItem( first );
   }
-  mCategories->clearSelection();
+  mWidgets->mCategories->clearSelection();
   if ( first ) {
     first->setSelected( true );
     editItem( first );
