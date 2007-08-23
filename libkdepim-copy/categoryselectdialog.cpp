@@ -159,7 +159,8 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget* parent,
 {
   setCaption( i18n( "Select Categories" ) );
   setModal( modal );
-  setButtons( Ok|Apply|Cancel|Help );
+  setButtons( Ok | Apply | Cancel | Help );
+  showButtonSeparator( true );
   setObjectName( name );
   QWidget *page = new QWidget;
   setMainWidget( page );
