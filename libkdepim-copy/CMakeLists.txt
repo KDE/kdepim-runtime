@@ -80,6 +80,7 @@ set(kdepim_LIB_SRCS
    servertest.cpp
    kmeditor.cpp
    kmstylelistselectaction.cpp
+   autochecktreewidget.cpp
 )
 
 

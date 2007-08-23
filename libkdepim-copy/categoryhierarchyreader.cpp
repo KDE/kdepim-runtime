@@ -18,14 +18,15 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
     Boston, MA 02110-1301, USA.
 */
+#include "categoryhierarchyreader.h"
 
 #include <QComboBox>
 #include <QStringList>
 #include <q3listview.h>
 
 #include "autoselectingchecklistitem.h"
-#include "categoryhierarchyreader.h"
 #include "kpimprefs.h"
+#include "autochecktreewidget.h"
 
 using namespace KPIM;
 
@@ -148,6 +149,35 @@ void CategoryHierarchyReaderQComboBox::addChild( const QString &label )
 }
 
 int CategoryHierarchyReaderQComboBox::depth() const
+{
+  return mCurrentDepth;
+}
+
+void CategoryHierarchyReaderAutoCheckTreeWidget::clear()
+{
+  mTree->clear();
+}
+
+void CategoryHierarchyReaderAutoCheckTreeWidget::goUp()
+{
+  Q_ASSERT( mItem );
+  mItem = mItem->parent();
+  --mCurrentDepth;
+}
+
+void CategoryHierarchyReaderAutoCheckTreeWidget::addChild( const QString &label )
+{
+  if ( mItem ) {
+    mItem = new QTreeWidgetItem( mItem, QStringList() << label );
+  } else {
+    mItem = new QTreeWidgetItem( mTree, QStringList() << label );
+  }
+
+  mItem->setExpanded( true );
+  ++mCurrentDepth;
+}
+
+int CategoryHierarchyReaderAutoCheckTreeWidget::depth() const
 {
   return mCurrentDepth;
 }

@@ -20,15 +20,15 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <q3listview.h>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <q3header.h>
+#include <QHeaderView>
 
-#include <klocale.h>
+#include <KLocale>
 #include "categoryselectdialog.h"
 #include "categoryhierarchyreader.h"
 #include "autoselectingchecklistitem.h"
+#include "autochecktreewidget.h"
 
 #include "kpimprefs.h"
 
@@ -51,7 +51,7 @@ CategorySelectWidget::~CategorySelectWidget()
 {
 }
 
-Q3ListView *CategorySelectWidget::listView() const
+KPIM::AutoCheckTreeWidget *CategorySelectWidget::listView() const
 {
    return mWidgets->mCategories;
 }
@@ -73,7 +73,7 @@ void CategorySelectWidget::setCategories( const QStringList &categoryList )
     if ( !mPrefs->mCustomCategories.contains( *it )  )
       mPrefs->mCustomCategories.append( *it );
 
-  CategoryHierarchyReaderQListView( mWidgets->mCategories, false, true ).
+  CategoryHierarchyReaderAutoCheckTreeWidget( mWidgets->mCategories ).
       read( mPrefs->mCustomCategories );
 }
 
@@ -81,75 +81,52 @@ void CategorySelectWidget::setSelected(const QStringList &selList)
 {
   clear();
   QStringList::ConstIterator it;
+
+  bool remAutoCheckChildren = mWidgets->mCategories->autoCheckChildren();
+  mWidgets->mCategories->setAutoCheckChildren( false );
   for ( it = selList.begin(); it != selList.end(); ++it ) {
     QStringList path = CategoryHierarchyReader::path( *it );
-    Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
-    while (item) {
-      if (item->text() == path.first()) {
-        if ( path.count() == 1 ) {
-          item->setOn(true);
-          break;
-        } else {
-          item = (Q3CheckListItem *)item->firstChild();
-          path.pop_front();
-        }
-      } else
-        item = (Q3CheckListItem *)item->nextSibling();
+    QTreeWidgetItem *item = mWidgets->mCategories->itemByPath( path );
+    if ( item ) {
+      item->setCheckState( 0, Qt::Checked );
     }
   }
+  mWidgets->mCategories->setAutoCheckChildren( remAutoCheckChildren );
 }
 
-static QStringList getSelectedCategories( const Q3ListView *categoriesView )
+static QStringList getSelectedCategories( AutoCheckTreeWidget *categoriesView )
 {
   QStringList categories;
-  Q3CheckListItem *item = (Q3CheckListItem *)categoriesView->firstChild();
-  QStringList path;
-  while (item) {
-    path.append( item->text() );
-    if (item->isOn()) {
-      QStringList _path = path;
-      _path.replaceInStrings( KPimPrefs::categorySeparator, QString( "\\" ) +
-                              KPimPrefs::categorySeparator );
-      categories.append( _path.join( KPimPrefs::categorySeparator ) );
-    }
-    if ( item->firstChild() ) {
-      item = (Q3CheckListItem *)item->firstChild();
-    } else {
-      Q3CheckListItem *next_item = 0;
-      while ( !next_item && item ) {
-        path.pop_back();
-        next_item = (Q3CheckListItem *)item->nextSibling();
-        item = (Q3CheckListItem *)item->parent();
-      }
-      item = next_item;
+
+  QTreeWidgetItemIterator it( categoriesView, QTreeWidgetItemIterator::Checked );
+  while ( *it ) {
+    QStringList path = categoriesView->pathByItem( *it++ );
+    if ( path.count() ) {
+      path.replaceInStrings( KPimPrefs::categorySeparator, QString( "\\" ) +
+                             KPimPrefs::categorySeparator );
+      categories.append( path.join( KPimPrefs::categorySeparator ) );
     }
   }
+
   return categories;
 }
 
 void CategorySelectWidget::clear()
 {
-  Q3CheckListItem *item = (Q3CheckListItem *)mWidgets->mCategories->firstChild();
-  while (item) {
-    item->setOn( false );
-    if ( item->firstChild() ) {
-      item = (Q3CheckListItem *)item->firstChild();
-    } else {
-      Q3CheckListItem *next_item = 0;
-      while ( !next_item && item ) {
-        next_item = (Q3CheckListItem *)item->nextSibling();
-        item = (Q3CheckListItem *)item->parent();
-      }
-      item = next_item;
-    }
+  bool remAutoCheckChildren = mWidgets->mCategories->autoCheckChildren();
+  mWidgets->mCategories->setAutoCheckChildren( false );
+
+  QTreeWidgetItemIterator it( mWidgets->mCategories );
+  while ( *it ) {
+    ( *it++ )->setCheckState( 0, Qt::Unchecked );
   }
+
+  mWidgets->mCategories->setAutoCheckChildren( remAutoCheckChildren );
 }
 
 void CategorySelectWidget::setAutoselectChildren( bool autoselectChildren )
 {
-  for ( Q3ListViewItemIterator it( mWidgets->mCategories ); it.current(); ++it)
-    ( ( AutoselectingCheckListItem *) it.current() )->
-            setAutoselectChildren( autoselectChildren );
+  mWidgets->mCategories->setAutoCheckChildren( autoselectChildren );
 }
 
 void CategorySelectWidget::hideHeader()

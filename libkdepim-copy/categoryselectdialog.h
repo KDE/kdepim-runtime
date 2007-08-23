@@ -22,12 +22,17 @@
 #ifndef KPIM_CATEGORYSELECTDIALOG_H
 #define KPIM_CATEGORYSELECTDIALOG_H
 
+#include <KLocale>
+
 #include <kdialog.h>
 #include <kdepim_export.h>
 #include "ui_categoryselectdialog_base.h"
 
 class KPimPrefs;
-class Q3ListView;
+
+namespace KPIM {
+  class AutoCheckTreeWidget;
+}
 
 namespace KPIM {
 
@@ -36,6 +41,9 @@ class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog
 public:
   CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
     setupUi( this );
+
+    // FIXME this seems not to work
+    mCategories->setHeaderLabel( i18n( "Categories" ) );
   }
 };
 
@@ -58,7 +66,7 @@ class KDEPIM_EXPORT CategorySelectWidget : public QWidget
     void hideButton();
     void hideHeader();
 
-    Q3ListView *listView() const;
+    KPIM::AutoCheckTreeWidget *listView() const;
 
   public Q_SLOTS:
     void clear();
