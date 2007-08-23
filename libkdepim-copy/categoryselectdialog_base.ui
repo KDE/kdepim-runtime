@@ -29,7 +29,7 @@
      </property>
      <column>
       <property name="text" >
-       <string>Test</string>
+       <string>Category</string>
       </property>
      </column>
     </widget>
