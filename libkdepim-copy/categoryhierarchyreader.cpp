@@ -153,19 +153,19 @@ int CategoryHierarchyReaderQComboBox::depth() const
   return mCurrentDepth;
 }
 
-void CategoryHierarchyReaderAutoCheckTreeWidget::clear()
+void CategoryHierarchyReaderQTreeWidget::clear()
 {
   mTree->clear();
 }
 
-void CategoryHierarchyReaderAutoCheckTreeWidget::goUp()
+void CategoryHierarchyReaderQTreeWidget::goUp()
 {
   Q_ASSERT( mItem );
   mItem = mItem->parent();
   --mCurrentDepth;
 }
 
-void CategoryHierarchyReaderAutoCheckTreeWidget::addChild( const QString &label )
+void CategoryHierarchyReaderQTreeWidget::addChild( const QString &label )
 {
   if ( mItem ) {
     mItem = new QTreeWidgetItem( mItem, QStringList() << label );
@@ -177,7 +177,7 @@ void CategoryHierarchyReaderAutoCheckTreeWidget::addChild( const QString &label 
   ++mCurrentDepth;
 }
 
-int CategoryHierarchyReaderAutoCheckTreeWidget::depth() const
+int CategoryHierarchyReaderQTreeWidget::depth() const
 {
   return mCurrentDepth;
 }

@@ -27,9 +27,12 @@ namespace KPIM {
 //@cond PRIVATE
 class AutoCheckTreeWidget::Private {
   public:
-    Private() : mAutoCheckChildren( false ) {}
+    Private() 
+      : mAutoCheckChildren( false ),
+        mAutoCheck( true ) {}
 
     bool mAutoCheckChildren;
+    bool mAutoCheck;
 };
 //@endcond
 
@@ -80,6 +83,16 @@ void AutoCheckTreeWidget::setAutoCheckChildren( bool autoCheckChildren )
   d->mAutoCheckChildren = autoCheckChildren;
 }
 
+bool AutoCheckTreeWidget::autoCheck() const
+{
+  return d->mAutoCheck;
+}
+
+void AutoCheckTreeWidget::setAutoCheck( bool autoCheck )
+{
+  d->mAutoCheck = autoCheck;
+}
+
 QTreeWidgetItem* AutoCheckTreeWidget::findItem( QTreeWidgetItem *parent, const QString &text ) const
 {
   if ( parent ) {
@@ -102,19 +115,21 @@ QTreeWidgetItem* AutoCheckTreeWidget::findItem( QTreeWidgetItem *parent, const Q
 void AutoCheckTreeWidget::slotRowsInserted( const QModelIndex &parent,
                                             int start, int end )
 {
-  QTreeWidgetItem *item = itemFromIndex( parent );
-  QTreeWidgetItem *child;
-  if ( item ) {
-    for ( int i = start; i < qMax( end, item->childCount() ); ++i ) {
-      child = item->child( i );
-      child->setFlags( child->flags() | Qt::ItemIsUserCheckable );
-      child->setCheckState( 0, Qt::Unchecked );
-    }
-  } else { /* top level item has been inserted */
-    for ( int i = start; i < qMax( end, topLevelItemCount() ); ++i ) {
-      child = topLevelItem( i );
-      child->setFlags( child->flags() | Qt::ItemIsUserCheckable );
-      child->setCheckState( 0, Qt::Unchecked );
+  if ( d->mAutoCheck ) {
+    QTreeWidgetItem *item = itemFromIndex( parent );
+    QTreeWidgetItem *child;
+    if ( item ) {
+      for ( int i = start; i < qMax( end, item->childCount() ); ++i ) {
+        child = item->child( i );
+        child->setFlags( child->flags() | Qt::ItemIsUserCheckable );
+        child->setCheckState( 0, Qt::Unchecked );
+      }
+    } else { /* top level item has been inserted */
+      for ( int i = start; i < qMax( end, topLevelItemCount() ); ++i ) {
+        child = topLevelItem( i );
+        child->setFlags( child->flags() | Qt::ItemIsUserCheckable );
+        child->setCheckState( 0, Qt::Unchecked );
+      }
     }
   }
 }

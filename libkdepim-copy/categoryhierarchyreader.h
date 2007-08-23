@@ -28,11 +28,8 @@ class QStringList;
 class QString;
 class Q3ListView;
 class Q3ListViewItem;
+class QTreeWidget;
 class QTreeWidgetItem;
-
-namespace KPIM {
-  class AutoCheckTreeWidget;
-}
 
 namespace KPIM {
 
@@ -88,12 +85,12 @@ class KDEPIM_EXPORT CategoryHierarchyReaderQComboBox : public CategoryHierarchyR
     int mCurrentDepth;
 };
 
-class CategoryHierarchyReaderAutoCheckTreeWidget : public CategoryHierarchyReader
+class CategoryHierarchyReaderQTreeWidget : public CategoryHierarchyReader
 {
   public:
-    CategoryHierarchyReaderAutoCheckTreeWidget( AutoCheckTreeWidget *tree )
+    CategoryHierarchyReaderQTreeWidget( QTreeWidget *tree )
   : mTree( tree ), mItem( 0 ), mCurrentDepth( 0 ) {}
-    virtual ~CategoryHierarchyReaderAutoCheckTreeWidget() {}
+    virtual ~CategoryHierarchyReaderQTreeWidget() {}
 
   protected:
     virtual void clear();
@@ -102,7 +99,7 @@ class CategoryHierarchyReaderAutoCheckTreeWidget : public CategoryHierarchyReade
     virtual int depth() const;
 
   private:
-    AutoCheckTreeWidget *mTree;
+    QTreeWidget *mTree;
     QTreeWidgetItem *mItem;
     int mCurrentDepth;
 };

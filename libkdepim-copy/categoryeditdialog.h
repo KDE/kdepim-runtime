@@ -26,14 +26,14 @@
 #include <kdialog.h>
 #include <kdepim_export.h>
 
-class Q3ListViewItem;
+class QTreeWidgetItem;
 class KPimPrefs;
 namespace Ui {
 class CategoryEditDialog_base;
 }
 namespace KPIM {
 
-class ImprovedListView;
+class AutoCheckTreeWidget;
 
 class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
@@ -55,8 +55,8 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void add();
     void addSubcategory();
     void remove();
-    void editItem( Q3ListViewItem *item );
-    void expandIfToplevel( Q3ListViewItem *item );
+    void editItem( QTreeWidgetItem *item );
+    void expandIfToplevel( QTreeWidgetItem *item );
 
   Q_SIGNALS:
     void categoryConfigChanged();
@@ -65,7 +65,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void fillList();
 
   private:
-    ImprovedListView* mCategories;
+    AutoCheckTreeWidget* mCategories;
     KPimPrefs *mPrefs;
     Ui::CategoryEditDialog_base *mWidgets;
 };

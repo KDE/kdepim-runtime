@@ -43,6 +43,10 @@ class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
               READ autoCheckChildren 
               WRITE setAutoCheckChildren )
 
+  Q_PROPERTY( bool autoCheck
+              READ autoCheck
+              WRITE setAutoCheck )
+
   public:
     /**
       Default constructor. The default behavior is like a QTreeWidget, so you
@@ -68,6 +72,7 @@ class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
 
     /**
       @returns whether autoCheckChildren is enabled or not.
+               Default value is false.
      */
     bool autoCheckChildren() const;
 
@@ -75,9 +80,23 @@ class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
       enables or disables autoCheckChildren behavior.
 
       @param autoCheckChildren if true, children of items are auto checked or
-                               not, otherwise.
+                               not, otherwise. Default value is false.
      */
     void setAutoCheckChildren( bool autoCheckChildren );
+
+    /**
+      @returns whether newly added items have checkboxes by default.
+               Default value is true.
+     */
+    bool autoCheck() const;
+
+    /**
+      Sets whether newly added items have checkboxes by default.
+
+      @param autoCheck if true, newly added items have unchecked checkboxes 
+                       by default, otherwise not. Default value is true.
+     */
+    void setAutoCheck( bool autoCheck );
 
   protected:
     QTreeWidgetItem *findItem( QTreeWidgetItem *parent, const QString &text ) const;

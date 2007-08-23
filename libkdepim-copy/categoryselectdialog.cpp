@@ -75,7 +75,7 @@ void CategorySelectWidget::setCategories( const QStringList &categoryList )
     if ( !mPrefs->mCustomCategories.contains( *it )  )
       mPrefs->mCustomCategories.append( *it );
 
-  CategoryHierarchyReaderAutoCheckTreeWidget( mWidgets->mCategories ).
+  CategoryHierarchyReaderQTreeWidget( mWidgets->mCategories ).
       read( mPrefs->mCustomCategories );
 }
 
