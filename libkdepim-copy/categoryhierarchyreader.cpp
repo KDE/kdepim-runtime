@@ -24,7 +24,6 @@
 #include <QStringList>
 #include <q3listview.h>
 
-#include "autoselectingchecklistitem.h"
 #include "kpimprefs.h"
 #include "autochecktreewidget.h"
 
@@ -90,44 +89,6 @@ void CategoryHierarchyReader::read( QStringList categories )
       _path.pop_front();
     }
   }
-}
-
-void CategoryHierarchyReaderQListView::clear()
-{
-  mView->clear();
-}
-
-void CategoryHierarchyReaderQListView::goUp()
-{
-  Q_ASSERT( mItem );
-  mItem = mItem->parent();
-}
-
-void CategoryHierarchyReaderQListView::addChild( const QString &label )
-{
-  if ( mCheckList ) {
-    if ( mItem )
-      mItem = (Q3ListViewItem *)new AutoselectingCheckListItem( mItem, label, 
-                                                   Q3CheckListItem::CheckBox );
-    else
-      mItem = (Q3ListViewItem *)new AutoselectingCheckListItem( mView, label, 
-                                                   Q3CheckListItem::CheckBox );
-  } else {
-    if ( mItem )
-      mItem = new Q3ListViewItem( mItem, label );
-    else
-      mItem = new Q3ListViewItem( mView, label );
-  }
-  mItem->setExpandable( mExpandable );
-  mItem->setOpen( true );
-}
-
-int CategoryHierarchyReaderQListView::depth() const
-{
-  if ( mItem )
-    return mItem->depth() + 1;
-  else
-    return 0;
 }
 
 void CategoryHierarchyReaderQComboBox::clear()

@@ -47,27 +47,6 @@ class KDEPIM_EXPORT CategoryHierarchyReader
     virtual int depth() const = 0;
 };
 
-class CategoryHierarchyReaderQListView : public CategoryHierarchyReader
-{
-  public:
-    CategoryHierarchyReaderQListView( Q3ListView *view, bool expandable = true,
-                                      bool checkList = false )
-        : mView( view ), mItem( 0 ), mExpandable( expandable ), 
-          mCheckList( checkList ) { }
-    virtual ~CategoryHierarchyReaderQListView() { }
-
-  protected:
-    virtual void clear();
-    virtual void goUp();
-    virtual void addChild( const QString &label );
-    virtual int depth() const;
-  private:
-    Q3ListView *mView;
-    Q3ListViewItem *mItem;
-    const bool mExpandable;
-    const bool mCheckList;
-};
-
 class KDEPIM_EXPORT CategoryHierarchyReaderQComboBox : public CategoryHierarchyReader
 {
   public:

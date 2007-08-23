@@ -27,7 +27,6 @@
 #include <KLocale>
 #include "categoryselectdialog.h"
 #include "categoryhierarchyreader.h"
-#include "autoselectingchecklistitem.h"
 #include "autochecktreewidget.h"
 
 #include "kpimprefs.h"

@@ -71,8 +71,6 @@ set(kdepim_LIB_SRCS
    kpimurlrequesterdlg.cpp 
    sendsmsdialog.cpp 
    categoryhierarchyreader.cpp 
-   autoselectingchecklistitem.cpp 
-   improvedlistview.cpp 
    messagestatus.cpp 
    kemailquotinghighter.cpp
    kmailcompletion.cpp
