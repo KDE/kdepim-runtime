@@ -17,6 +17,8 @@
     02110-1301, USA.
 */
 
+#include "kabcitemeditor.h"
+
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -27,8 +29,6 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/monitor.h>
 #include <libakonadi/session.h>
-
-#include "kabcitemeditor.h"
 
 class KABCItemEditor::Private
 {

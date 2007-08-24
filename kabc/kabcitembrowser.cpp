@@ -17,14 +17,14 @@
     02110-1301, USA.
 */
 
+#include "kabcitembrowser.h"
+
 #include <kabc/addressee.h>
 #include <kglobal.h>
 #include <klocale.h>
 #include <kstringhandler.h>
 
 #include <libakonadi/item.h>
-
-#include "kabcitembrowser.h"
 
 static QString addresseeToHtml( const KABC::Addressee& );
 

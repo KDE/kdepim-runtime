@@ -17,6 +17,7 @@
     02110-1301, USA.
 */
 
+#include "mailthreaderagent.h"
 
 #include <libakonadi/session.h>
 #include <libakonadi/monitor.h>
@@ -28,8 +29,6 @@
 #include <strigi/qtdbus/strigiclient.h>
 
 #include <QDebug>
-
-#include "mailthreaderagent.h"
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>

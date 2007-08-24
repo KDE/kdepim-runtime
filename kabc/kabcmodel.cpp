@@ -17,11 +17,11 @@
     02110-1301, USA.
 */
 
+#include "kabcmodel.h"
+
 #include <kabc/addressee.h>
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
-
-#include "kabcmodel.h"
 
 KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent )

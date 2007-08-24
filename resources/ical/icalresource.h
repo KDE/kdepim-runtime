@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef MAILDIR_H
-#define MAILDIR_H
+#ifndef ICALRESOURCE_H
+#define ICALRESOURCE_H
 
 #include <resourcebase.h>
 #include <QtDBus/QDBusMessage>

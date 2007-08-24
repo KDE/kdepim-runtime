@@ -17,6 +17,8 @@
     02110-1301, USA.
 */
 
+#include "vcardresource.h"
+
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
@@ -28,8 +30,6 @@
 #include <klocale.h>
 
 #include <QtDBus/QDBusConnection>
-
-#include "vcardresource.h"
 
 using namespace Akonadi;
 
