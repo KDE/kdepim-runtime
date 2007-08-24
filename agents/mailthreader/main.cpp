@@ -19,7 +19,7 @@
 
 #include "mailthreaderagent.h"
 
-int main( int argc, char **argv ) 
+int main( int argc, char **argv )
 {
-  return Akonadi::AgentBase::init<MailThreaderAgent>( argc, argv ); 
+  return Akonadi::AgentBase::init<MailThreaderAgent>( argc, argv );
 }

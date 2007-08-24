@@ -40,7 +40,7 @@ class ProfileDialog : public QDialog
   Q_OBJECT
 
   public:
-    ProfileDialog( OCResource *resource, QWidget *parent = 0 );
+    explicit ProfileDialog( OCResource *resource, QWidget *parent = 0 );
 
   private Q_SLOTS:
     void addNewProfile();
