@@ -2,7 +2,7 @@
     Copyright (c) 2007 Brad Hards <bradh@frogmouth.net>
 
     Significant amounts of this code adapted from the openchange client utility,
-    which is Copyright (C) Julien Kerihuel 2007.
+    which is Copyright (C) Julien Kerihuel 2007 <j.kerihuel@openchange.org>.
 
     This program is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
