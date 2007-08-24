@@ -175,7 +175,7 @@ void NntpResource::listGroupResult(KJob * job)
 
 QString NntpResource::baseUrl() const
 {
-  if ( !mConfig.endsWith( "/" ) )
+  if ( !mConfig.endsWith( QLatin1Char( '/' ) ) )
     return mConfig + '/';
   return mConfig;
 }
