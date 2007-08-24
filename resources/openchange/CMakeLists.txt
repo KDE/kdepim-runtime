@@ -15,7 +15,7 @@ set( ocresource_SRCS
      main.cpp
 )
 
-install( FILES ocresource.desktop ocresource.svg DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
+install( FILES ocresource.desktop ocresource.svg DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
 kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})

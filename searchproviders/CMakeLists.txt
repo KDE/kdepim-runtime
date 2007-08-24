@@ -44,7 +44,7 @@ kde4_add_executable(akonadi_message_searchprovider RUN_UNINSTALLED ${messagesear
 target_link_libraries(akonadi_message_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${KDE4_KMIME_LIBS} ${NEPOMUK_LIBRARIES})
 
 install(TARGETS akonadi_message_searchprovider DESTINATION ${BIN_INSTALL_DIR})
-install(FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders")
+install(FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/searchproviders")
 
 endif ( Nepomuk_FOUND )
 
@@ -64,7 +64,7 @@ kde4_add_executable(akonadi_strigi_searchprovider RUN_UNINSTALLED ${strigiprovid
 target_link_libraries(akonadi_strigi_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${STRIGIQTDBUSCLIENT_LIBRARY})
 
 install(TARGETS akonadi_strigi_searchprovider DESTINATION ${BIN_INSTALL_DIR})
-install(FILES strigisearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/searchproviders")
+install(FILES strigisearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/searchproviders")
 
 endif ( STRIGIQTDBUSCLIENT_LIBRARY )
 

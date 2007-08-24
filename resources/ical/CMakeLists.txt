@@ -15,7 +15,7 @@ set( icalresource_SRCS
   main.cpp
 )
 
-install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
+install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
 kde4_add_executable(akonadi_ical_resource RUN_UNINSTALLED ${icalresource_SRCS})

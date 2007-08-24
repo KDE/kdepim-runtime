@@ -14,7 +14,7 @@ set( vcardresource_SRCS
   main.cpp
 )
 
-install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/apps/akonadi/agents" )
+install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
 kde4_add_executable(akonadi_vcard_resource RUN_UNINSTALLED ${vcardresource_SRCS})
