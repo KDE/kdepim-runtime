@@ -19,9 +19,9 @@
     USA.
 */
 
-#include "mainwidget.h"
-
 #include "mainwindow.h"
+
+#include "mainwidget.h"
 
 #include <libakonadi/control.h>
 

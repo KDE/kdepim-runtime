@@ -18,8 +18,8 @@
 */
 
 
-#ifndef AKONADI_DATAENGINE_H
-#define AKONADI_DATAENGINE_H
+#ifndef AKONADIENGINE_H
+#define AKONADIENGINE_H
 
 #include <plasma/dataengine.h>
 

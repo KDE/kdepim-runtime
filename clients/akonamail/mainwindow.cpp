@@ -19,8 +19,8 @@
     USA.
 */
 
-#include "mainwidget.h"
 #include "mainwindow.h"
+#include "mainwidget.h"
 
 #include <QtGui/QToolBar>
 

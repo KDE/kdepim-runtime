@@ -19,6 +19,8 @@
     USA.
 */
 
+#include "profilewidget.h"
+
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
@@ -28,8 +30,6 @@
 #include "libakonadi/components/agentinstanceview.h"
 #include "libakonadi/components/profileview.h"
 #include "libakonadi/profilemanager.h"
-
-#include "profilewidget.h"
 
 class Dialog : public QDialog
 {

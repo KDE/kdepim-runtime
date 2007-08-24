@@ -19,6 +19,8 @@
     USA.
 */
 
+#include "mainwidget.h"
+
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 
@@ -26,8 +28,6 @@
 #include "browserwidget.h"
 #include "debugwidget.h"
 #include "profilewidget.h"
-
-#include "mainwidget.h"
 
 MainWidget::MainWidget( QWidget *parent )
   : QWidget( parent )

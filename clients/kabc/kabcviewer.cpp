@@ -19,6 +19,8 @@
     USA.
 */
 
+#include "kabcviewer.h"
+
 #include <QtGui/QVBoxLayout>
 
 #include <kapplication.h>
@@ -28,8 +30,6 @@
 #include <libakonadi/datareference.h>
 
 #include "kabc/kabcitembrowser.h"
-
-#include "kabcviewer.h"
 
 Dialog::Dialog( QWidget *parent )
   : KDialog( parent )

@@ -19,8 +19,8 @@
     USA.
 */
 
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef KABCEDITOR_H
+#define KABCEDITOR_H
 
 #include "kdialog.h"
 

@@ -19,12 +19,12 @@
     USA.
 */
 
+#include "debugwidget.h"
+
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
-
-#include "debugwidget.h"
 
 #include "tracernotificationinterface.h"
 #include "connectionpage.h"

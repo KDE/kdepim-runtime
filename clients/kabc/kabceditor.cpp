@@ -19,6 +19,8 @@
     USA.
 */
 
+#include "kabceditor.h"
+
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -30,8 +32,6 @@
 #include <libakonadi/datareference.h>
 
 #include "kabc/kabcitemeditor.h"
-
-#include "kabceditor.h"
 
 Dialog::Dialog( QWidget *parent )
   : KDialog( parent )

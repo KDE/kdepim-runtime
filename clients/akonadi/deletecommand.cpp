@@ -17,8 +17,9 @@
     02110-1301, USA.
 */
 
-#include "out.h"
 #include "deletecommand.h"
+#include "out.h"
+
 #include <libakonadi/itemdeletejob.h>
 
 using namespace Akonadi;

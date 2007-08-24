@@ -19,6 +19,8 @@
     USA.
 */
 
+#include "agentwidget.h"
+
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
@@ -28,8 +30,6 @@
 #include "libakonadi/components/agenttypeview.h"
 #include "libakonadi/components/agentinstanceview.h"
 #include "libakonadi/agentmanager.h"
-
-#include "agentwidget.h"
 
 class Dialog : public QDialog
 {

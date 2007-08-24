@@ -19,8 +19,8 @@
     USA.
 */
 
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef KABCVIEWER_H
+#define KABCVIEWER_H
 
 #include "kdialog.h"
 
@@ -28,6 +28,8 @@ class KABCItemBrowser;
 
 class Dialog : public KDialog
 {
+  Q_OBJECT
+
   public:
     Dialog( QWidget *parent = 0 );
     ~Dialog();

@@ -19,10 +19,10 @@
     USA.
 */
 
+#include "connectionpage.h"
+
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
-
-#include "connectionpage.h"
 
 #include "tracernotificationinterface.h"
 
