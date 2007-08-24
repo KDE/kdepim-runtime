@@ -100,7 +100,7 @@ class MailThreaderAgent::Private
       return str;
   }
 
-  QList<int> findUsingStrigi( QString property, QString value )
+  QList<int> findUsingStrigi( const QString& property, const QString& value )
   {
     QString query = property + QString::fromLatin1(":") + value;
     QList<StrigiHit> hits = strigi.getHits( query, 50, 0 );
