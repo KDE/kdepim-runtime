@@ -384,6 +384,7 @@ KFolderTree::KFolderTree( QWidget *parent, const char* name )
   setShadeSortColumn ( false );
   setFullWidth(true);
   disableAutoSelection();
+  setColumnWidth( 0, 120 ); //reasonable default size
 
   disconnect( header(), SIGNAL( sizeChange( int, int, int ) ) );
   connect( header(), SIGNAL( sizeChange( int, int, int ) ),
