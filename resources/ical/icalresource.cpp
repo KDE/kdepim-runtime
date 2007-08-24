@@ -59,7 +59,7 @@ bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const
   qDebug() << "ICalResource::requestItemDelivery()";
   IncidencePtr incidence( mCalendar->incidence( ref.remoteId() )->clone() );
   if ( !incidence ) {
-    error( i18n("Incidence with uid '%1' not found!").arg( ref.remoteId() ) );
+    error( i18n("Incidence with uid '%1' not found!", ref.remoteId() ) );
     return false;
   } else {
     Item item( ref );
