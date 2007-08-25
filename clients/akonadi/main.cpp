@@ -20,6 +20,7 @@
 */
 
 #include "out.h"
+#include "appendcommand.h"
 #include "listcommand.h"
 #include "fetchcommand.h"
 #include "deletecommand.h"
@@ -57,6 +58,9 @@ int main( int argc, char **argv )
   }
   else if ( cmdarg == "store" ) {
     cmd = new StoreCommand( patharg, part, content );
+  }
+  else if ( cmdarg == "append" ) {
+    cmd = new AppendCommand( patharg, part, content );
   }
 
   if ( !cmd ) {
