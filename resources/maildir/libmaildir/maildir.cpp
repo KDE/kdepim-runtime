@@ -24,6 +24,7 @@
 #include <QUuid>
 
 #include <klocale.h>
+#include <kpimutils/kfileio.h>
 
 using namespace KPIM;
 
@@ -205,12 +206,14 @@ bool Maildir::addSubFolder( const QString& path )
 bool Maildir::removeSubFolder( const QString& folderName )
 {
     if ( !isValid() ) return false;
-    QDir dir( d->subDirPath() + '/' + folderName );
-    if ( dir.exists() ) {
-        // remove it recursively
-    }
+    QDir dir( d->path );
+    dir.cdUp();
+    if ( !dir.exists( d->subDirPath() ) ) return false;
+    dir.cd( d->subDirPath() );
+    if ( !dir.exists( folderName ) ) return false;
 
-    return false;
+    // remove it recursively
+    return KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + '/' + folderName );
 }
 
 Maildir Maildir::subFolder( const QString& subFolder )
