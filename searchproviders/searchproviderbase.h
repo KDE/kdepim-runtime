@@ -66,6 +66,8 @@ class AKONADISEARCHPROVIDER_EXPORT  SearchProviderBase : public SearchProvider
      */
     template <typename T> static void init( int argc, char **argv, const QString &id )
     {
+      Q_UNUSED( argc );
+      Q_UNUSED( argv );
       new T( id );
     }
 
