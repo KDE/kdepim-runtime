@@ -41,7 +41,7 @@ Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
   SearchProviderBase( id )
 {
   Monitor* monitor = new Monitor( this );
-  monitor->addFetchPart( Item::PartAll );
+  monitor->addFetchPart( Item::PartBody );
   monitor->monitorMimeType( "message/rfc822" );
   monitor->monitorMimeType( "message/news" );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), SLOT(itemChanged(Akonadi::Item)) );

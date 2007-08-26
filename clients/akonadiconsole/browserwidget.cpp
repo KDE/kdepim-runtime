@@ -117,7 +117,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
       const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
       contentUi.addresseeView->setAddressee( addr );
-      contentUi.stack->setCurrentWidget( contentUi.addresseeView );
+      contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
     } else {
       QByteArray data = item.part( Item::PartBody );
       contentUi.dataView->setPlainText( data );

@@ -84,7 +84,7 @@ void KABCItemEditor::Private::itemChanged( const Akonadi::Item &item, const QStr
 
   if ( dlg.exec() == QMessageBox::AcceptRole ) {
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItem.reference() );
-    job->addFetchPart( Akonadi::Item::PartAll );
+    job->addFetchPart( Akonadi::Item::PartBody );
 
     mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
   }
@@ -116,7 +116,7 @@ KABCItemEditor::~KABCItemEditor()
 void KABCItemEditor::setUid( const Akonadi::DataReference &uid )
 {
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( uid );
-  job->addFetchPart( Akonadi::Item::PartAll );
+  job->addFetchPart( Akonadi::Item::PartBody );
 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 

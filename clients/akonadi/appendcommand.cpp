@@ -41,7 +41,7 @@ void AppendCommand::exec()
 
   Item item;
   item.setMimeType( mMimeType );
-  item.addPart( Item::PartAll, mContent.toUtf8() );
+  item.addPart( Item::PartBody, mContent.toUtf8() );
 
   ItemAppendJob* appendJob = new ItemAppendJob( item, Collection( currentColId ) );
   if ( !appendJob->exec() ) {
