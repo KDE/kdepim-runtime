@@ -28,9 +28,15 @@ class AKONADI_KABC_EXPORT KABCModel : public Akonadi::ItemModel
   public:
     KABCModel( QObject *parent = 0 );
 
+    virtual ~KABCModel();
+
     virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
     virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
     virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+
+  private:
+    class Private;
+    Private* const d;
 };
 
 #endif

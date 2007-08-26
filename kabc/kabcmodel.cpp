@@ -23,10 +23,21 @@
 #include <libakonadi/item.h>
 #include <libakonadi/itemfetchjob.h>
 
+class KABCModel::Private
+{
+  public:
+};
+
 KABCModel::KABCModel( QObject *parent )
-  : Akonadi::ItemModel( parent )
+  : Akonadi::ItemModel( parent ),
+    d( new Private() )
 {
   addFetchPart( Akonadi::Item::PartBody );
+}
+
+KABCModel::~KABCModel()
+{
+  delete d;
 }
 
 int KABCModel::columnCount( const QModelIndex& ) const
