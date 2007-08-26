@@ -98,6 +98,7 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
   if ( ref.isNull() )
     return;
   ItemFetchJob *job = new ItemFetchJob( ref, this );
+  job->addFetchPart( Item::PartBody );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
 }
