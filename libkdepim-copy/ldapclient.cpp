@@ -36,12 +36,12 @@
 #include <kcodecs.h>
 #include <kprotocolinfo.h>
 #include <kstandarddirs.h>
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 
 using namespace KPIM;
 
 KConfig *KPIM::LdapSearch::s_config = 0L;
-static KStaticDeleter<KConfig> configDeleter;
+static K3StaticDeleter<KConfig> configDeleter;
 
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
   : QObject( parent ), mJob( 0 ), mActive( false )

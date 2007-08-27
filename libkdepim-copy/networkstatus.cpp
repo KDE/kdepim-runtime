@@ -21,7 +21,7 @@
 
 #include <ksharedconfig.h>
 #include <kglobal.h>
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 #include <kconfiggroup.h>
 
 #include <QtDBus/QDBusConnection>
@@ -32,7 +32,7 @@
 
 using namespace KPIM;
 
-static KStaticDeleter<NetworkStatus> networkStatusDeleter;
+static K3StaticDeleter<NetworkStatus> networkStatusDeleter;
 NetworkStatus *NetworkStatus::mSelf = 0;
 
 NetworkStatusAdaptor::NetworkStatusAdaptor(QObject *parent)

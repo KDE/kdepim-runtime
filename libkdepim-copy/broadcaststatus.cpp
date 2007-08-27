@@ -14,13 +14,13 @@
 
 #include <klocale.h>
 #include <kglobal.h>
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 
 #include "broadcaststatus.h"
 #include "progressmanager.h"
 
 KPIM::BroadcastStatus* KPIM::BroadcastStatus::instance_ = 0;
-static KStaticDeleter<KPIM::BroadcastStatus> broadcastStatusDeleter;
+static K3StaticDeleter<KPIM::BroadcastStatus> broadcastStatusDeleter;
 
 namespace KPIM {
 

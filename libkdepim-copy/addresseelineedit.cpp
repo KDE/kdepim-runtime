@@ -43,7 +43,7 @@
 #include <kcompletionbox.h>
 #include <kdebug.h>
 #include <kstandarddirs.h>
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 #include <kstandardshortcut.h>
 #include <kurl.h>
 #include <klocale.h>
@@ -71,12 +71,12 @@ KPIM::LdapSearch* AddresseeLineEdit::s_LDAPSearch = 0L;
 QString* AddresseeLineEdit::s_LDAPText = 0L;
 AddresseeLineEdit* AddresseeLineEdit::s_LDAPLineEdit = 0L;
 
-static KStaticDeleter<KMailCompletion> completionDeleter;
-static KStaticDeleter<KPIM::CompletionItemsMap> completionItemsDeleter;
-static KStaticDeleter<QTimer> ldapTimerDeleter;
-static KStaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
-static KStaticDeleter<QString> ldapTextDeleter;
-static KStaticDeleter<QStringList> completionSourcesDeleter;
+static K3StaticDeleter<KMailCompletion> completionDeleter;
+static K3StaticDeleter<KPIM::CompletionItemsMap> completionItemsDeleter;
+static K3StaticDeleter<QTimer> ldapTimerDeleter;
+static K3StaticDeleter<KPIM::LdapSearch> ldapSearchDeleter;
+static K3StaticDeleter<QString> ldapTextDeleter;
+static K3StaticDeleter<QStringList> completionSourcesDeleter;
 
 // needs to be unique, but the actual name doesn't matter much
 static QByteArray newLineEditObjectName()

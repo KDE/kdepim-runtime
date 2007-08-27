@@ -30,7 +30,7 @@
 #include "recentaddresses.h"
 #include "kpimutils/email.h"
 
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 #include <kconfig.h>
 #include <kglobal.h>
 
@@ -46,7 +46,7 @@
 
 using namespace KRecentAddress;
 
-static KStaticDeleter<RecentAddresses> sd;
+static K3StaticDeleter<RecentAddresses> sd;
 
 RecentAddresses * RecentAddresses::s_self = 0;
 
@@ -67,7 +67,7 @@ RecentAddresses::RecentAddresses(KConfig * config)
 
 RecentAddresses::~RecentAddresses()
 {
-    // if you want this destructor to get called, use a KStaticDeleter
+    // if you want this destructor to get called, use a K3StaticDeleter
     // on s_self
 }
 

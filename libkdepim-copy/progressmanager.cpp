@@ -25,7 +25,7 @@
 #include <kdebug.h>
 
 #include <klocale.h>
-#include <kstaticdeleter.h>
+#include <k3staticdeleter.h>
 
 #include "progressmanager.h"
 
@@ -130,7 +130,7 @@ ProgressManager::ProgressManager() :QObject() {
 }
 
 ProgressManager::~ProgressManager() { mInstance = 0; }
-static KStaticDeleter<ProgressManager> progressManagerDeleter;
+static K3StaticDeleter<ProgressManager> progressManagerDeleter;
 
 ProgressManager* ProgressManager::instance()
 {
