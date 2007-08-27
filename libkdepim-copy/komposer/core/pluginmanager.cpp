@@ -37,7 +37,6 @@
 #include <ksettings/dispatcher.h>
 #include <ksimpleconfig.h>
 #include <kstandarddirs.h>
-#include <kstaticdeleter.h>
 #include <kurl.h>
 
 
