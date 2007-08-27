@@ -28,7 +28,9 @@
 #include <QTimeEdit>
 
 #include <kpagedialog.h>
+#define KDE3_SUPPORT
 #include <kcmodule.h>
+#undef KDE3_SUPPORT
 #include <kconfigskeleton.h>
 #include <kfile.h>
 #include <kdepim_export.h>

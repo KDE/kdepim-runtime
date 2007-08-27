@@ -22,7 +22,9 @@
 #ifndef KPIM_KCMDESIGNERFIELDS_H
 #define KPIM_KCMDESIGNERFIELDS_H
 
+#define KDE3_SUPPORT
 #include <kcmodule.h>
+#undef KDE3_SUPPORT
 #include <kdepim_export.h>
 //Added by qt3to4:
 #include <QLabel>
