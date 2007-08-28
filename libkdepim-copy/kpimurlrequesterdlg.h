@@ -17,8 +17,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIMURLREQUESTDLG_H_INCLUDED
-#define KPIMURLREQUESTDLG_H_INCLUDED
+#ifndef LIBKDEPIM_KPIMURLREQUESTERDLG_H
+#define LIBKDEPIM_KPIMURLREQUESTERDLG_H
 
 #include <kdepim_export.h>
 #include <kurl.h>
@@ -43,5 +43,4 @@ class KDEPIM_EXPORT KPimURLRequesterDlg
 			                const QString &caption = QString() );
 };
 
-#endif // KPIMURLREQUESTDLG_H_INCLUDED
-
+#endif // LIBKDEPIM_KPIMURLREQUESTERDLG_H

@@ -18,8 +18,8 @@
 */
 
 
-#ifndef DESIGNER_PARTPLUGIN_H
-#define DESIGNER_PARTPLUGIN_H
+#ifndef LIBKDEPIM_KPARTSDESIGNERPLUGIN_H
+#define LIBKDEPIM_KPARTSDESIGNERPLUGIN_H
 
 #include <QtDesigner/QDesignerCustomWidgetInterface>
 #include <QWidget>
@@ -70,4 +70,4 @@ public:
   QString name() const;
 };
 
-#endif
+#endif // LIBKDEPIM_KPARTSDESIGNERPLUGIN_H

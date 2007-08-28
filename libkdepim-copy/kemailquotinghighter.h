@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
-#ifndef KEMAILQUOTINGHIGHLIGHTER_H
-#define KEMAILQUOTINGHIGHLIGHTER_H
+#ifndef LIBKDEPIM_KEMAILQUOTINGHIGHTER_H
+#define LIBKDEPIM_KEMAILQUOTINGHIGHTER_H
 
 #include <sonnet/highlighter.h>
 #include <QSyntaxHighlighter>
@@ -56,4 +56,4 @@ namespace Sonnet
     };
 }
 
-#endif
+#endif // LIBKDEPIM_KEMAILQUOTINGHIGHTER_H

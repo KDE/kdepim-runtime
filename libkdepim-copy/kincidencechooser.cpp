@@ -28,13 +28,11 @@
 #include <khbox.h>
 #include <QRadioButton>
 #include <QPushButton>
-#include <QLayout>
 #include <q3scrollview.h>
 #include <QTextBrowser>
 #include <QApplication>
 //Added by qt3to4:
 #include <QGridLayout>
-
 
 #include <klocale.h>
 #include <kglobal.h>

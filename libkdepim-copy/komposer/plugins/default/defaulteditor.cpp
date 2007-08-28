@@ -26,8 +26,6 @@
 #include <kaction.h>
 #include <kiconloader.h>
 #include <kdebug.h>
-
-#include <kaction.h>
 #include <kcolordialog.h>
 #include <kfiledialog.h>
 #include <kcomponentdata.h>

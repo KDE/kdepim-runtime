@@ -15,8 +15,8 @@
     Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, US
 */
 
-#ifndef SCOREEDITWIDGET_H
-#define SCOREEDITWIDGET_H
+#ifndef LIBKDEPIM_KSCORINGEDITOR_H
+#define LIBKDEPIM_KSCORINGEDITOR_H
 
 #include <QMap>
 //Added by qt3to4:
@@ -304,5 +304,4 @@ private:
   KScoringManager *manager;
 };
 
-
-#endif // SCOREEDITWIDGET_H
+#endif // LIBKDEPIM_KSCORINGEDITOR_H

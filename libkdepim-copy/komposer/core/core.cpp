@@ -41,7 +41,6 @@
 #include <kstatusbar.h>
 #include <kguiitem.h>
 #include <kmenu.h>
-#include <kshortcut.h>
 #include <kcmultidialog.h>
 #include <kaction.h>
 #include <kstdaccel.h>
