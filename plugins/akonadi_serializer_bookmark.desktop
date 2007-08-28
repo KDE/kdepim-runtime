@@ -1,12 +1,14 @@
 [Misc]
 Encoding=UTF-8
 Name=Bookmark serializer
+Name[el]=Διαχειριστής αλληλουχίας σελιδοδεικτών
 Name[ja]=ブックマークシリアライザ
 Name[pt]=Serializador do favorito
 Name[pt_BR]=Serializador do favorito
 Name[sv]=Bokmärkesserialisering
 Name[zh_TW]=書籤序列器
 Comment=An Akonadi serializer plugin for bookmark objects
+Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων αλληλογραφίας για το Akonadi
 Comment[ja]=ブックマークオブジェクトのための Akonadi シリアライザプラグイン
 Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
