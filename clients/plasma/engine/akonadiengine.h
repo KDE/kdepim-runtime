@@ -32,7 +32,7 @@ class AkonadiEngine : public Plasma::DataEngine
   Q_OBJECT
 
   public:
-    AkonadiEngine( QObject* parent, const QStringList& args );
+    AkonadiEngine( QObject* parent, const QVariantList& args );
     ~AkonadiEngine();
 
   private slots:

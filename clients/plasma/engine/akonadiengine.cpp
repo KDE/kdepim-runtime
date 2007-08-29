@@ -30,7 +30,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
-AkonadiEngine::AkonadiEngine(QObject* parent, const QStringList& args)
+AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
     : Plasma::DataEngine(parent)
 {
   Q_UNUSED(args);

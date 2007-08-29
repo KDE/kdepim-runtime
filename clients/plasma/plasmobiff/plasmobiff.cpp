@@ -34,7 +34,7 @@
 
 #include <plasma/svg.h>
 
-PlasmoBiff::PlasmoBiff(QObject *parent, const QStringList &args)
+PlasmoBiff::PlasmoBiff(QObject *parent, const QVariantList &args)
   : Plasma::Applet(parent, args),
     m_dialog(0),
     m_fmFrom(QApplication::font()),

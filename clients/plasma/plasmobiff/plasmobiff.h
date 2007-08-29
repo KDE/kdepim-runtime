@@ -48,7 +48,7 @@ class PlasmoBiff : public Plasma::Applet
   Q_OBJECT
 
  public:
-    PlasmoBiff(QObject* parent, const QStringList &args);
+    PlasmoBiff(QObject* parent, const QVariantList &args);
     ~PlasmoBiff();
 
     void constraintsUpdated();
