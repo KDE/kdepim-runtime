@@ -925,9 +925,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
   if ( m_completionInitialized &&
        ( obj == completionBox() ||
          completionBox()->findChild<QWidget*>( obj->objectName() ) == obj ) ) {
-    if ( e->type() == QEvent::MouseButtonPress
-      || e->type() == QEvent::MouseMove
-      || e->type() == QEvent::MouseButtonRelease ) {
+    if ( e->type() == QEvent::MouseButtonPress ||
+         e->type() == QEvent::MouseMove ||
+         e->type() == QEvent::MouseButtonRelease ||
+         e->type() == QEvent::MouseButtonDblClick ) {
       QMouseEvent* me = static_cast<QMouseEvent*>( e );
       // find list box item at the event position
       QListWidgetItem *item = completionBox()->itemAt( me->pos() );
@@ -940,9 +941,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       // avoid selection of headers on button press, or move or release while
       // a button is pressed
       Qt::MouseButtons btns = me->buttons();
-      if ( e->type() == QEvent::MouseButtonPress
-          || btns & Qt::LeftButton || btns & Qt::MidButton
-          || btns & Qt::RightButton ) {
+      if ( e->type() == QEvent::MouseButtonPress ||
+           e->type() == QEvent::MouseButtonDblClick ||
+           btns & Qt::LeftButton || btns & Qt::MidButton ||
+           btns & Qt::RightButton ) {
         if ( itemIsHeader(item) ) {
           return true; // eat the event, we don't want anything to happen
         } else {
