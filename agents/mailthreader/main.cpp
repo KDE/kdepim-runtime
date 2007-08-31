@@ -21,5 +21,5 @@
 
 int main( int argc, char **argv )
 {
-  return Akonadi::AgentBase::init<MailThreaderAgent>( argc, argv );
+  return Akonadi::ResourceBase::init<MailThreaderAgent>( argc, argv );
 }
