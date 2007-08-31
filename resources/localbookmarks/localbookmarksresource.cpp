@@ -39,7 +39,6 @@ using namespace Akonadi;
 LocalBookmarksResource::LocalBookmarksResource( const QString &id )
     :ResourceBase( id )
 {
-      qDebug() << "MIMETYPES:" << KBookmark::List::mimeDataTypes();
 }
 
 LocalBookmarksResource::~ LocalBookmarksResource()
@@ -50,7 +49,6 @@ bool LocalBookmarksResource::requestItemDelivery( const Akonadi::DataReference &
 {
   Q_UNUSED( parts );
   // TODO use remote id to retrieve the item in the file
-  qDebug() << "request item delivery";
 }
 
 void LocalBookmarksResource::aboutToQuit()
@@ -78,25 +76,50 @@ void LocalBookmarksResource::configure()
   synchronize();
 }
 
-void LocalBookmarksResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
+void LocalBookmarksResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& col )
 {
-  // todo save the bookmark in the xml file
+  if ( item.mimeType() != QLatin1String( "application/x-xbel" ) )
+    return;
+
+  KBookmark bk = item.payload<KBookmark>();
+  KBookmark bkg = mBookmarkManager->findByAddress( col.remoteId() );
+  if ( !bkg.isGroup() )
+    return;
+
+  KBookmarkGroup group = bkg.toGroup();
+  group.addBookmark( bk );
+
+  // saves the file
+  mBookmarkManager->emitChanged( group );
 }
 
-void LocalBookmarksResource::itemChanged( const Akonadi::Item&, const QStringList& )
+void LocalBookmarksResource::itemChanged( const Akonadi::Item& item, const QStringList& )
 {
-  qWarning() << "Implement me!";
+  KBookmark bk = item.payload<KBookmark>();
+
+  // saves the file
+  mBookmarkManager->emitChanged( bk.parentGroup() );
 }
 
 void LocalBookmarksResource::itemRemoved(const Akonadi::DataReference & ref)
 {
-  // remove the bookmark
+  KBookmark bk = mBookmarkManager->findByAddress( ref.remoteId() );
+  KBookmarkGroup bkg = bk.parentGroup();
+
+  if ( !bk.isNull() )
+    return;
+
+  bkg.deleteBookmark( bk );
+
+  // saves the file
+  mBookmarkManager->emitChanged( bkg );
 }
 
 Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& parentCol )
 {
   Collection::List list;
   const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::collectionMimeType();
+
   for ( KBookmark it = parent.first(); !it.isNull(); it = parent.next( it ) ) {
     if ( !it.isGroup() )
       continue;
@@ -116,7 +139,6 @@ Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& 
 
 void LocalBookmarksResource::retrieveCollections()
 {
-  qDebug() << "retrieve collections";
   Collection root;
   root.setParent( Collection::root() );
   root.setRemoteId( settings()->value( "General/Path" ).toString() );
@@ -128,38 +150,49 @@ void LocalBookmarksResource::retrieveCollections()
   Collection::List list;
   list << root;
   list << listRecursive( mBookmarkManager->root(), root );
+
   collectionsRetrieved( list );
 }
 
 void LocalBookmarksResource::synchronizeCollection(const Akonadi::Collection & col)
 {
-  qDebug() << "synchronize collection";
   if ( !col.isValid() )
   {
     qDebug() << "Collection not valid";
     return;
   }
 
-  KBookmark bk = mBookmarkManager->findByAddress( col.remoteId() );
+  changeProgress( 0 );
 
-  if ( bk.isNull() || !bk.isGroup() )
-  {
-    qDebug() << "bk null or bk not group";
-    return;
+  KBookmarkGroup bkg;
+  if ( col.remoteId() == settings()->value( "General/Path" ).toString() ) {
+    bkg = mBookmarkManager->root();
+  } else {
+
+    KBookmark bk = mBookmarkManager->findByAddress( col.remoteId() );
+    if ( bk.isNull() || !bk.isGroup() )
+      return;
+
+    bkg = bk.toGroup();
   }
 
-  KBookmarkGroup bkg = bk.toGroup();
-
   for ( KBookmark it = bkg.first(); !it.isNull(); it = bkg.next( it ) ) {
+
+    if ( it.isGroup() || it.isSeparator() || it.isNull() )
+      continue;
+
     Item item( DataReference( -1, it.address() ) );
     item.setMimeType( "application/x-xbel" );
     item.setPayload<KBookmark>( it );
     ItemAppendJob *job = new ItemAppendJob( item, col, this );
-    if ( !job->exec() )
-      return;
-    qDebug() << "item !!!";
+
+    if ( !job->exec() ) {
+      qDebug() << "Error while appending bookmark to storage: " << job->errorString();
+      continue;
+    }
   }
 
+  changeProgress( 100 );
   collectionSynchronized();
 }
 
