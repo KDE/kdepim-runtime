@@ -22,6 +22,7 @@
 #include <QtGui/QListView>
 #include <QtGui/QSplitter>
 
+#include <libakonadi/collectionfilterproxymodel.h>
 #include <libakonadi/collectionmodel.h>
 #include <libakonadi/collectionview.h>
 #include <libakonadi/itemview.h>
@@ -38,13 +39,13 @@ MainWidget::MainWidget( QWidget *parent )
 
   mCollectionModel = new Akonadi::CollectionModel( this );
 
-  QStringList mimeTypes;
-  mimeTypes << QLatin1String( "text/x-vcard" )
-            << QLatin1String( "text/directory" )
-            << QLatin1String( "text/vcard" );
-  mCollectionModel->filterByMimeTypes( mimeTypes );
+  Akonadi::CollectionFilterProxyModel *filter = new Akonadi::CollectionFilterProxyModel();
+  filter->addMimeType( "text/x-vcard" );
+  filter->addMimeType( "text/directory" );
+  filter->addMimeType( "text/vcard" );
+  filter->setSourceModel( mCollectionModel );
 
-  mCollectionView->setModel( mCollectionModel );
+  mCollectionView->setModel( filter );
 
   mContactModel = new KABCModel( this );
   mContactView->setModel( mContactModel );
