@@ -28,8 +28,9 @@
 
 using namespace KPIM;
 
-struct Maildir::Private
+class Maildir::Private
 {
+public:
     Private( const QString& p )
     :path(p)
     {

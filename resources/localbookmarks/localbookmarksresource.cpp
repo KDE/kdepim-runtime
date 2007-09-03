@@ -49,6 +49,7 @@ bool LocalBookmarksResource::requestItemDelivery( const Akonadi::DataReference &
 {
   Q_UNUSED( parts );
   // TODO use remote id to retrieve the item in the file
+  return true;
 }
 
 void LocalBookmarksResource::aboutToQuit()
