@@ -47,6 +47,9 @@ int KABCModel::columnCount( const QModelIndex& ) const
 
 QVariant KABCModel::data( const QModelIndex &index, int role ) const
 {
+  if ( role == Akonadi::ItemModel::IdRole )
+    return Akonadi::ItemModel::data( index, role );
+
   if ( role != Qt::DisplayRole )
     return QVariant();
 
