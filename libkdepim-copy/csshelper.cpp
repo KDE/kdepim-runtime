@@ -76,8 +76,8 @@ namespace KPIM {
   {
     // initialize with defaults - should match the corresponding application defaults
     mForegroundColor = QApplication::palette().color( QPalette::Text );
-    mLinkColor = KColorScheme( KColorScheme::View ).foreground( KColorScheme::LinkText ).color();
-    mVisitedLinkColor = KColorScheme( KColorScheme::View ).foreground( KColorScheme::VisitedText ).color();
+    mLinkColor = KColorScheme( QPalette::Active, KColorScheme::View ).foreground( KColorScheme::LinkText ).color();
+    mVisitedLinkColor = KColorScheme( QPalette::Active, KColorScheme::View ).foreground( KColorScheme::VisitedText ).color();
     mBackgroundColor = QApplication::palette().color( QPalette::Base );
     cHtmlWarning = QColor( 0xFF, 0x40, 0x40 ); // warning frame color: light red
 

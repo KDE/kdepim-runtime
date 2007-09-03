@@ -156,13 +156,13 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   // placeholder where we fill in something else (in this case,
   // the global background color).
   //
-  const QString backgroundColor = KColorScheme( KColorScheme::View ).background( KColorScheme::AlternateBackground ).color().name();
+  const QString backgroundColor = KColorScheme( QPalette::Active, KColorScheme::View ).background( KColorScheme::AlternateBackground ).color().name();
   QString cellStyle = QString::fromLatin1(
         "style=\""
         "padding-right: 2px; "
         "border-right: #000 dashed 1px; "
         "background: %1;\"").arg(backgroundColor);
-  const QString backgroundColor2 = KColorScheme( KColorScheme::View ).background().color().name();
+  const QString backgroundColor2 = KColorScheme( QPalette::Active, KColorScheme::View ).background().color().name();
   QString cellStyle2 = QString::fromLatin1(
         "style=\""
         "padding-left: 2px; "
@@ -504,8 +504,8 @@ void AddresseeView::updateView()
     "%3" // dynamic part
     "</body>"
     "</html>" )
-     .arg( KColorScheme( KColorScheme::View ).foreground().color().name() )
-     .arg( KColorScheme( KColorScheme::View ).background().color().name() )
+     .arg( KColorScheme( QPalette::Active, KColorScheme::View ).foreground().color().name() )
+     .arg( KColorScheme( QPalette::Active, KColorScheme::View ).background().color().name() )
      .arg( strAddr );
 
   QString imageURL = QString( "contact_%1_image" ).arg( mAddressee.uid() );

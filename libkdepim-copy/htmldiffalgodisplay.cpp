@@ -46,8 +46,8 @@ void HTMLDiffAlgoDisplay::begin()
 
   mText.append( "<html>" );
   mText.append( QString( "<body text=\"%1\" bgcolor=\"%2\">" )
-               .arg( KColorScheme( KColorScheme::View ).foreground().color().name() )
-               .arg( KColorScheme( KColorScheme::View ).background().color().name() ) );
+               .arg( KColorScheme( QPalette::Active, KColorScheme::View ).foreground().color().name() )
+               .arg( KColorScheme( QPalette::Active, KColorScheme::View ).background().color().name() ) );
 
   mText.append( "<center><table>" );
   mText.append( QString( "<tr><th></th><th align=\"center\">%1</th><td>         </td><th align=\"center\">%2</th></tr>" )
