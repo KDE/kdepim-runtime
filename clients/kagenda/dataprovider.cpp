@@ -160,7 +160,7 @@ void DataProvider::saveFile()
       event->setSummary( e.title );
       event->setDtStart( e.start );
       event->setDtEnd( e.end );
-      event->setFloats( false );
+      event->setAllDay( false );
       cal.addEvent( event );
     }
     cal.save( "kagenda.ics" );
@@ -192,7 +192,7 @@ void DataProvider::saveAkonadi()
       event->setSummary( e.title );
       event->setDtStart( e.start );
       event->setDtEnd( e.end );
-      event->setFloats( false );
+      event->setAllDay( false );
       QString ical = format.toICalString( event );
       // FIXME: get rid of the hardcoded collection
       Akonadi::Item item;
