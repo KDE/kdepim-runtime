@@ -120,7 +120,7 @@ void MaildirResource::configure()
   if ( oldDir == newDir )
     return;
   settings()->setValue( "General/Path", newDir );
-  synchronize();
+//   synchronize();
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )

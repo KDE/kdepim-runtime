@@ -41,6 +41,7 @@ void MailSerializerPluginTest::testMailPlugin()
       "To: receiver@test.org\n"
       "Date: Fri, 22 Jun 2007 17:24:24 +0000\n"
       "MIME-Version: 1.0\n"
+      "Content-Type: text/plain\n"
       "\n"
       "Body data.";
 
