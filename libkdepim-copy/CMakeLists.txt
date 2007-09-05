@@ -79,6 +79,7 @@ set(kdepim_LIB_SRCS
    kmeditor.cpp
    kmstylelistselectaction.cpp
    autochecktreewidget.cpp
+   colorlistbox.cpp
 )
 
 
