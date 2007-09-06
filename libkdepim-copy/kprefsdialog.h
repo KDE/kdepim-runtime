@@ -1,32 +1,29 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2001-2003 Cornelius Schumacher <schumacher@kde.org>
-    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
-    Copyright (C) 2005 Allen Winter <winter@kde.org>
+  Copyright (c) 2001-2003 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+  Copyright (C) 2005 Allen Winter <winter@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 #ifndef KPREFSDIALOG_H
 #define KPREFSDIALOG_H
 
-#include <QLabel>
-#include <QLineEdit>
-#include <QTimeEdit>
-
+#include <klineedit.h>
 #include <kpagedialog.h>
 #define KDE3_SUPPORT
 #include <kcmodule.h>
@@ -35,18 +32,22 @@
 #include <kfile.h>
 #include <kdepim_export.h>
 
+#include <QLabel>
+#include <QTimeEdit>
+#include <QVariantList>
 
 class KColorButton;
+class KComboBox;
 class QCheckBox;
-class QComboBox;
 class QLabel;
 class QSpinBox;
-class QStringList;
 class Q3ButtonGroup;
 class KComponentData;
 class KTimeEdit;
 class KDateEdit;
 class KUrlRequester;
+
+namespace KPIM {
 
 /**
   @short Base class for GUI control elements used by @ref KPrefsDialog.
@@ -59,7 +60,7 @@ class KUrlRequester;
 */
 class KDEPIM_EXPORT KPrefsWid : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /**
       This function is called to read value of the setting from the
@@ -99,7 +100,7 @@ class KDEPIM_EXPORT KPrefsWidBool : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent = 0 );
+    explicit KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent = 0 );
 
     /**
       Return the QCheckbox used by this control element.
@@ -134,7 +135,7 @@ class KDEPIM_EXPORT KPrefsWidInt : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent = 0 );
+    explicit KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this control element.
@@ -174,7 +175,7 @@ class KDEPIM_EXPORT KPrefsWidTime : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
+    explicit KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -212,8 +213,7 @@ class KDEPIM_EXPORT KPrefsWidDuration : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
-      QWidget *parent = 0 );
+    explicit KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -250,7 +250,7 @@ class KDEPIM_EXPORT KPrefsWidDate : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
+    explicit KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -280,7 +280,7 @@ class KDEPIM_EXPORT KPrefsWidDate : public KPrefsWid
 */
 class KDEPIM_EXPORT KPrefsWidColor : public KPrefsWid
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /**
       Create a color value control element consisting of a test field and a
@@ -289,7 +289,8 @@ class KDEPIM_EXPORT KPrefsWidColor : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent = 0 );
+    explicit KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent = 0 );
+
     /**
       Destruct color setting widget.
     */
@@ -322,7 +323,7 @@ class KDEPIM_EXPORT KPrefsWidColor : public KPrefsWid
 */
 class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /**
       Create a font value control element consisting of a test field and a
@@ -332,8 +333,8 @@ class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
       @param parent  Parent widget.
       @param sampleText Sample text for previewing the selected font.
     */
-    KPrefsWidFont( KConfigSkeleton::ItemFont *item,
-                   QWidget *parent = 0, const QString &sampleText = QString() );
+    explicit KPrefsWidFont( KConfigSkeleton::ItemFont *item,
+                            QWidget *parent = 0, const QString &sampleText = QString() );
     /**
       Destruct font setting widget.
     */
@@ -343,10 +344,12 @@ class KDEPIM_EXPORT KPrefsWidFont : public KPrefsWid
       Return QLabel.
     */
     QLabel *label();
+
     /**
       Return QFrame used as preview field.
     */
     QFrame *preview();
+
     /**
       Return button opening the font dialog.
     */
@@ -387,7 +390,7 @@ class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent = 0 );
+    explicit KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent = 0 );
     virtual ~KPrefsWidRadios();
 
     /**
@@ -422,7 +425,7 @@ class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
   This class provides a control element for configuring selections. It is meant
   to be used by KPrefsDialog. The user is responsible for the layout management.
 
-  The setting is interpreted as an int value, corresponding to the index in 
+  The setting is interpreted as an int value, corresponding to the index in
   the combo box.
 */
 class KDE_EXPORT KPrefsWidCombo : public KPrefsWid
@@ -435,21 +438,19 @@ class KDE_EXPORT KPrefsWidCombo : public KPrefsWid
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
     */
-    KPrefsWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent );
+    explicit KPrefsWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent );
     virtual ~KPrefsWidCombo();
 
     void readConfig();
     void writeConfig();
 
-    QComboBox *comboBox();
+    KComboBox *comboBox();
     QList<QWidget *> widgets() const;
 
   private:
     KConfigSkeleton::ItemEnum *mItem;
-    QComboBox *mCombo;
+    KComboBox *mCombo;
 };
-
-
 
 /**
   @short Widgets for string settings in @ref KPrefsDialog.
@@ -469,8 +470,9 @@ class KDEPIM_EXPORT KPrefsWidString : public KPrefsWid
       @param parent  Parent widget.
       @param echomode  Describes how a line edit should display its contents.
     */
-    KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent = 0,
-                     QLineEdit::EchoMode echomode=QLineEdit::Normal );
+    explicit KPrefsWidString( KConfigSkeleton::ItemString *item,
+                              QWidget *parent = 0,
+                              KLineEdit::EchoMode echomode=KLineEdit::Normal );
     /**
       Destructor.
     */
@@ -481,9 +483,9 @@ class KDEPIM_EXPORT KPrefsWidString : public KPrefsWid
     */
     QLabel *label();
     /**
-      Return QLineEdit used by this widget.
+      Return KLineEdit used by this widget.
     */
-    QLineEdit *lineEdit();
+    KLineEdit *lineEdit();
 
     void readConfig();
     void writeConfig();
@@ -494,9 +496,8 @@ class KDEPIM_EXPORT KPrefsWidString : public KPrefsWid
     KConfigSkeleton::ItemString *mItem;
 
     QLabel *mLabel;
-    QLineEdit *mEdit;
+    KLineEdit *mEdit;
 };
-
 
 /**
   @short Widgets for string settings in @ref KPrefsDialog.
@@ -517,8 +518,11 @@ class KDEPIM_EXPORT KPrefsWidPath : public KPrefsWid
       @param filter URLRequester filter
       @param mode  Describes how a line edit should display its contents.
     */
-    KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent = 0,
-                   const QString &filter = QString(), KFile::Modes = KFile::File );
+    explicit KPrefsWidPath( KConfigSkeleton::ItemPath *item,
+                            QWidget *parent = 0,
+                            const QString &filter = QString(),
+                            KFile::Modes = KFile::File );
+
     /**
       Destructor.
     */
@@ -528,8 +532,9 @@ class KDEPIM_EXPORT KPrefsWidPath : public KPrefsWid
       Return QLabel used by this widget.
     */
     QLabel *label();
+
     /**
-      Return QLineEdit used by this widget.
+      Return KUrlRequester used by this widget.
     */
     KUrlRequester *urlRequester();
 
@@ -544,7 +549,6 @@ class KDEPIM_EXPORT KPrefsWidPath : public KPrefsWid
     QLabel *mLabel;
     KUrlRequester *mURLRequester;
 };
-
 
 /**
   @short Class for managing KPrefsWid objects.
@@ -562,7 +566,8 @@ class KDEPIM_EXPORT KPrefsWidManager
 
       @param prefs  KPrefs object used to access te configuration.
     */
-    KPrefsWidManager( KConfigSkeleton *prefs );
+    explicit KPrefsWidManager( KConfigSkeleton *prefs );
+
     /**
       Destructor.
     */
@@ -672,7 +677,7 @@ class KDEPIM_EXPORT KPrefsWidManager
                                 KFile::Modes mode = KFile::File );
 
     /**
-      Register a password @ref KPrefsWidString object, with echomode set to QLineEdit::Password.
+      Register a password @ref KPrefsWidString object, with echomode set to KLineEdit::Password.
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
       @param parent  Parent widget.
@@ -707,7 +712,6 @@ class KDEPIM_EXPORT KPrefsWidManager
     QList<KPrefsWid*> mPrefsWids;
 };
 
-
 /**
   @short Base class for a preferences dialog.
 
@@ -722,7 +726,7 @@ class KDEPIM_EXPORT KPrefsWidManager
 */
 class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /**
       Create a KPrefsDialog for a KPrefs object.
@@ -732,7 +736,8 @@ class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
       @param name   Widget name.
       @param modal  true, if dialog has to be modal, false for non-modal.
     */
-    KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent = 0, bool modal = false );
+    explicit KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent = 0,
+                           bool modal = false );
 
     /**
       Destructor.
@@ -772,12 +777,12 @@ class KDEPIM_EXPORT KPrefsDialog : public KPageDialog, public KPrefsWidManager
     virtual void usrWriteConfig() {}
 };
 
-
 class KDEPIM_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
-    KPrefsModule( KConfigSkeleton *, const KComponentData &instance, QWidget *parent=0, const QStringList &args=QStringList() );
+    KPrefsModule( KConfigSkeleton *, const KComponentData &instance,
+                  QWidget *parent=0, const QVariantList &args=QVariantList() );
 
     virtual void addWid( KPrefsWid * );
 
@@ -794,5 +799,7 @@ class KDEPIM_EXPORT KPrefsModule : public KCModule, public KPrefsWidManager
     /** Implement this to write custom configuration widgets. */
     virtual void usrWriteConfig() {}
 };
+
+}
 
 #endif

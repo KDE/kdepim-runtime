@@ -1,42 +1,33 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2001,2003 Cornelius Schumacher <schumacher@kde.org>
-    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
-    Copyright (C) 2005 Allen Winter <winter@kde.org>
+  Copyright (c) 2001,2003 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+  Copyright (C) 2005 Allen Winter <winter@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
-#include <QLayout>
-#include <QLabel>
-#include <q3buttongroup.h>
-#include <Q3HBox>
-#include <QLineEdit>
-#include <QFont>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QRadioButton>
-#include <QPushButton>
-
-#include <QFrame>
-#include <QGridLayout>
-#include <QSpinBox>
+#include "kprefsdialog.h"
+#include "ktimeedit.h"
+#include "kdateedit.h"
 
 #include <kcolorbutton.h>
+#include <kcombobox.h>
+#include <klineedit.h>
 #include <kdebug.h>
 #include <klocale.h>
 #include <kfontdialog.h>
@@ -44,30 +35,40 @@
 #include <kconfigskeleton.h>
 #include <kpagewidget.h>
 #include <kurlrequester.h>
-#include "ktimeedit.h"
-#include "kdateedit.h"
 
-#include "kprefsdialog.h"
+#include <QLayout>
+#include <QLabel>
+#include <q3buttongroup.h>
+#include <Q3HBox>
+#include <QFont>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QPushButton>
+#include <QFrame>
+#include <QGridLayout>
+#include <QSpinBox>
+
 #include "kprefsdialog.moc"
 
-namespace KPrefsWidFactory {
+using namespace KPIM;
 
+namespace KPrefsWidFactory {
 KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
 {
   KConfigSkeleton::ItemBool *boolItem =
-      dynamic_cast<KConfigSkeleton::ItemBool *>( item );
+    dynamic_cast<KConfigSkeleton::ItemBool *>( item );
   if ( boolItem ) {
     return new KPrefsWidBool( boolItem, parent );
   }
 
   KConfigSkeleton::ItemString *stringItem =
-      dynamic_cast<KConfigSkeleton::ItemString *>( item );
+    dynamic_cast<KConfigSkeleton::ItemString *>( item );
   if ( stringItem ) {
     return new KPrefsWidString( stringItem, parent );
   }
 
   KConfigSkeleton::ItemEnum *enumItem =
-      dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
+    dynamic_cast<KConfigSkeleton::ItemEnum *>( item );
   if ( enumItem ) {
     QList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
@@ -76,15 +77,14 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
       QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-      for( it = choices.begin(); it != choices.end(); ++it ) {
+      for ( it = choices.begin(); it != choices.end(); ++it ) {
         radios->addRadio( (*it).label );
       }
       return radios;
     }
   }
 
-  KConfigSkeleton::ItemInt *intItem =
-      dynamic_cast<KConfigSkeleton::ItemInt *>( item );
+  KConfigSkeleton::ItemInt *intItem = dynamic_cast<KConfigSkeleton::ItemInt *>( item );
   if ( intItem ) {
     return new KPrefsWidInt( intItem, parent );
   }
@@ -92,19 +92,17 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   return 0;
 }
 
-}
-
+} // namespace KPrefsWidFactory
 
 QList<QWidget *> KPrefsWid::widgets() const
 {
   return QList<QWidget *>();
 }
 
-
 KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
   : mItem( item )
 {
-  mCheck = new QCheckBox( item->label(), parent);
+  mCheck = new QCheckBox( item->label(), parent );
   connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
   if ( !item->whatsThis().isNull() ) {
     mCheck->setWhatsThis( item->whatsThis() );
@@ -133,12 +131,11 @@ QList<QWidget *> KPrefsWidBool::widgets() const
   return widgets;
 }
 
-
 KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
                             QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mSpin = new QSpinBox( parent );
   if ( !item->minValue().isNull() ) {
     mSpin->setMinimum( item->minValue().toInt() );
@@ -183,18 +180,17 @@ QList<QWidget *> KPrefsWidInt::widgets() const
   return widgets;
 }
 
-
 KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
                                 QWidget *parent )
   : mItem( item )
 {
   mButton = new KColorButton( parent );
   connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
-  if (!whatsThis.isNull()) {
-    mButton->setWhatsThis( whatsThis);
+  if ( !whatsThis.isNull() ) {
+    mButton->setWhatsThis( whatsThis );
   }
 }
 
@@ -223,22 +219,21 @@ KColorButton *KPrefsWidColor::button()
   return mButton;
 }
 
-
 KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
                               QWidget *parent, const QString &sampleText )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
 
   mPreview = new QLabel( sampleText, parent );
   mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 
-  mButton = new QPushButton( i18n("Choose..."), parent );
+  mButton = new QPushButton( i18n( "Choose..." ), parent );
   connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
   QString whatsThis = mItem->whatsThis();
-  if (!whatsThis.isNull()) {
-    mPreview->setWhatsThis( whatsThis);
-    mButton->setWhatsThis( whatsThis);
+  if ( !whatsThis.isNull() ) {
+    mPreview->setWhatsThis( whatsThis );
+    mButton->setWhatsThis( whatsThis );
   }
 }
 
@@ -273,20 +268,18 @@ QPushButton *KPrefsWidFont::button()
 
 void KPrefsWidFont::selectFont()
 {
-  QFont myFont(mPreview->font());
-  int result = KFontDialog::getFont(myFont);
-  if (result == KFontDialog::Accepted) {
-    mPreview->setFont(myFont);
+  QFont myFont( mPreview->font() );
+  int result = KFontDialog::getFont( myFont );
+  if ( result == KFontDialog::Accepted ) {
+    mPreview->setFont( myFont );
     emit changed();
   }
 }
 
-
-KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item,
-                              QWidget *parent )
+KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mTimeEdit = new KTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
   connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
@@ -320,12 +313,10 @@ KTimeEdit *KPrefsWidTime::timeEdit()
   return mTimeEdit;
 }
 
-
-KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
-                                      QWidget *parent )
+KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mTimeEdit = new QTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
   mTimeEdit->setDisplayFormat( "hh:mm:ss" );
@@ -360,12 +351,10 @@ QTimeEdit *KPrefsWidDuration::timeEdit()
   return mTimeEdit;
 }
 
-
-KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item,
-                              QWidget *parent )
+KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *parent )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mDateEdit = new KDateEdit( parent );
   mLabel->setBuddy( mDateEdit );
   connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
@@ -397,7 +386,6 @@ KDateEdit *KPrefsWidDate::dateEdit()
   return mDateEdit;
 }
 
-
 KPrefsWidRadios::KPrefsWidRadios( KConfigSkeleton::ItemEnum *item,
                                   QWidget *parent )
   : mItem( item )
@@ -410,11 +398,11 @@ KPrefsWidRadios::~KPrefsWidRadios()
 {
 }
 
-void KPrefsWidRadios::addRadio(const QString &text, const QString &whatsThis)
+void KPrefsWidRadios::addRadio( const QString &text, const QString &whatsThis )
 {
-  QRadioButton *r = new QRadioButton(text,mBox);
-  if (!whatsThis.isNull()) {
-    r->setWhatsThis( whatsThis);
+  QRadioButton *r = new QRadioButton( text, mBox );
+  if ( !whatsThis.isNull() ) {
+    r->setWhatsThis( whatsThis );
   }
 }
 
@@ -440,13 +428,12 @@ QList<QWidget *> KPrefsWidRadios::widgets() const
   return w;
 }
 
-KPrefsWidCombo::KPrefsWidCombo( KConfigSkeleton::ItemEnum *item,
-                                  QWidget *parent )
+KPrefsWidCombo::KPrefsWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent )
   : mItem( item )
 {
-  Q3HBox *hbox = new Q3HBox(parent);
+  Q3HBox *hbox = new Q3HBox( parent );
   new QLabel( mItem->label(), hbox );
-  mCombo = new QComboBox( hbox );
+  mCombo = new KComboBox( hbox );
   connect( mCombo, SIGNAL( activated( int ) ), SIGNAL( changed() ) );
 }
 
@@ -471,18 +458,18 @@ QList<QWidget *> KPrefsWidCombo::widgets() const
   return w;
 }
 
-QComboBox* KPrefsWidCombo::comboBox()
+KComboBox *KPrefsWidCombo::comboBox()
 {
   return mCombo;
 }
 
 KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
                                   QWidget *parent,
-                                  QLineEdit::EchoMode echomode )
+                                  KLineEdit::EchoMode echomode )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
-  mEdit = new QLineEdit( parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
+  mEdit = new KLineEdit( parent );
   mLabel->setBuddy( mEdit );
   connect( mEdit, SIGNAL( textChanged( const QString & ) ),
            SIGNAL( changed() ) );
@@ -512,7 +499,7 @@ QLabel *KPrefsWidString::label()
   return mLabel;
 }
 
-QLineEdit *KPrefsWidString::lineEdit()
+KLineEdit *KPrefsWidString::lineEdit()
 {
   return mEdit;
 }
@@ -525,12 +512,11 @@ QList<QWidget *> KPrefsWidString::widgets() const
   return widgets;
 }
 
-
 KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
                               const QString &filter, KFile::Modes mode )
   : mItem( item )
 {
-  mLabel = new QLabel( mItem->label()+':', parent );
+  mLabel = new QLabel( mItem->label() + ':', parent );
   mURLRequester = new KUrlRequester( parent );
   mLabel->setBuddy( mURLRequester );
   mURLRequester->setMode( mode );
@@ -574,7 +560,6 @@ QList<QWidget *> KPrefsWidPath::widgets() const
   widgets.append( mURLRequester );
   return widgets;
 }
-
 
 KPrefsWidManager::KPrefsWidManager( KConfigSkeleton *prefs )
   : mPrefs( prefs )
@@ -639,21 +624,20 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
   QList<KConfigSkeleton::ItemEnum::Choice> choices;
   choices = item->choices();
   QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-  for( it = choices.begin(); it != choices.end(); ++it ) {
+  for ( it = choices.begin(); it != choices.end(); ++it ) {
     w->addRadio( (*it).label, (*it).whatsThis );
   }
   addWid( w );
   return w;
 }
 
-KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item,
-                                               QWidget* parent )
+KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent )
 {
   KPrefsWidCombo *w = new KPrefsWidCombo( item, parent );
   QList<KConfigSkeleton::ItemEnum::Choice> choices;
   choices = item->choices();
   QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-  for( it = choices.begin(); it != choices.end(); ++it ) {
+  for ( it = choices.begin(); it != choices.end(); ++it ) {
     w->comboBox()->addItem( (*it).label );
   }
   addWid( w );
@@ -663,14 +647,15 @@ KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item,
 KPrefsWidString *KPrefsWidManager::addWidString( KConfigSkeleton::ItemString *item,
                                                  QWidget *parent )
 {
-  KPrefsWidString *w = new KPrefsWidString( item, parent,
-                                            QLineEdit::Normal );
+  KPrefsWidString *w = new KPrefsWidString( item, parent, KLineEdit::Normal );
   addWid( w );
   return w;
 }
 
 KPrefsWidPath *KPrefsWidManager::addWidPath( KConfigSkeleton::ItemPath *item,
-                                             QWidget *parent, const QString &filter, KFile::Modes mode )
+                                             QWidget *parent,
+                                             const QString &filter,
+                                             KFile::Modes mode )
 {
   KPrefsWidPath *w = new KPrefsWidPath( item, parent, filter, mode );
   addWid( w );
@@ -680,7 +665,7 @@ KPrefsWidPath *KPrefsWidManager::addWidPath( KConfigSkeleton::ItemPath *item,
 KPrefsWidString *KPrefsWidManager::addWidPassword( KConfigSkeleton::ItemString *item,
                                                    QWidget *parent )
 {
-  KPrefsWidString *w = new KPrefsWidString( item, parent, QLineEdit::Password );
+  KPrefsWidString *w = new KPrefsWidString( item, parent, KLineEdit::Password );
   addWid( w );
   return w;
 }
@@ -735,21 +720,20 @@ void KPrefsWidManager::writeWidConfig()
   mPrefs->writeConfig();
 }
 
-
 KPrefsDialog::KPrefsDialog( KConfigSkeleton *prefs, QWidget *parent, bool modal )
   : KPageDialog( parent ),
     KPrefsWidManager( prefs )
 {
   setFaceType( List );
-  setCaption( i18n("Preferences") );
+  setCaption( i18n( "Preferences" ) );
   setButtons( Ok|Apply|Cancel|Default );
   setDefaultButton( Ok );
   setModal( modal );
   showButtonSeparator( true );
-  connect(this,SIGNAL(okClicked()),SLOT(slotOk()));
-  connect(this,SIGNAL(applyClicked()),SLOT(slotApply()));
-  connect(this,SIGNAL(defaultClicked()),SLOT(slotDefault()));
-  connect(this,SIGNAL(cancelClicked()),SLOT(reject()));
+  connect( this, SIGNAL(okClicked()), SLOT(slotOk()) );
+  connect( this, SIGNAL(applyClicked()), SLOT(slotApply()) );
+  connect( this, SIGNAL(defaultClicked()), SLOT(slotDefault()) );
+  connect( this, SIGNAL(cancelClicked()), SLOT(reject()) );
 }
 
 KPrefsDialog::~KPrefsDialog()
@@ -766,7 +750,7 @@ void KPrefsDialog::autoCreate()
   QMap<QString,int> mCurrentRows;
 
   KConfigSkeletonItem::List::ConstIterator it;
-  for( it = items.begin(); it != items.end(); ++it ) {
+  for ( it = items.begin(); it != items.end(); ++it ) {
     QString group = (*it)->group();
     QString name = (*it)->name();
 
@@ -804,7 +788,7 @@ void KPrefsDialog::autoCreate()
 
       if ( (*it)->isImmutable() ) {
         QList<QWidget *>::Iterator it2;
-        for( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
+        for ( it2 = widgets.begin(); it2 != widgets.end(); ++it2 ) {
           (*it2)->setEnabled( false );
         }
       }
@@ -839,7 +823,6 @@ void KPrefsDialog::writeConfig()
   readConfig();
 }
 
-
 void KPrefsDialog::slotApply()
 {
   writeConfig();
@@ -856,15 +839,19 @@ void KPrefsDialog::slotDefault()
 {
   kDebug() <<"KPrefsDialog::slotDefault()";
 
-  if (KMessageBox::warningContinueCancel(this,
-      i18n("You are about to set all preferences to default values. All "
-      "custom modifications will be lost."),i18n("Setting Default Preferences"),
-      KGuiItem(i18n("Reset to Defaults")))
-    == KMessageBox::Continue) setDefaults();
+  if ( KMessageBox::warningContinueCancel(
+         this,
+         i18n( "You are about to set all preferences to default values. "
+               "All custom modifications will be lost." ),
+         i18n( "Setting Default Preferences" ),
+         KGuiItem( i18n( "Reset to Defaults" ) ) ) == KMessageBox::Continue ) {
+    setDefaults();
+  }
 }
 
-
-KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, const KComponentData &instance, QWidget *parent, const QStringList &args)
+KPrefsModule::KPrefsModule( KConfigSkeleton *prefs,
+                            const KComponentData &instance, QWidget *parent,
+                            const QVariantList &args )
   : KCModule( instance, parent, args ),
     KPrefsWidManager( prefs )
 {
