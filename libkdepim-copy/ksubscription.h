@@ -1,46 +1,48 @@
 /*
-   This file is part of libkdepim.
+  This file is part of libkdepim.
 
-   Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
+  Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License version 2 as published by the Free Software Foundation.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License version 2 as published by the Free Software Foundation.
 
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
-/** @file
-* This file defines a generic subscription widget and some support classes.
+/**
+  @file
+  This file defines a generic subscription widget and some support classes.
 */
 
 #ifndef __KSUBSCRIPTION
 #define __KSUBSCRIPTION
 
-#include <q3listview.h>
-#include <QCheckBox>
-//Added by qt3to4:
-#include <QGridLayout>
-#include <QLabel>
-
+#include "kfoldertree.h"
 #include <kdialog.h>
 #include <kdepim_export.h>
-#include "kfoldertree.h"
 
-class KSubscription;
+#include <q3listview.h>
+#include <QCheckBox>
+#include <QGridLayout>
+#include <QLabel>
 
 class KLineEdit;
 class QLabel;
 class QGridLayout;
+
+namespace KPIM {
+
 class KAccount;
+class KSubscription;
 
 //==========================================================================
 
@@ -54,17 +56,19 @@ class KDEPIM_EXPORT KGroupInfo
       moderated
     };
 
-    KGroupInfo( const QString &name, const QString &description = QString(),
-        bool newGroup = false, bool subscribed = false,
-        Status status = unknown, QString path = QString() );
+    explicit KGroupInfo( const QString &name,
+                         const QString &description = QString(),
+                         bool newGroup = false, bool subscribed = false,
+                         Status status = unknown,
+                         const QString &path = QString() );
 
     QString name, description;
     bool newGroup, subscribed;
     Status status;
     QString path;
 
-    bool operator== (const KGroupInfo &gi2);
-    bool operator< (const KGroupInfo &gi2);
+    bool operator== ( const KGroupInfo &gi2 );
+    bool operator< ( const KGroupInfo &gi2 );
 
 };
 
@@ -74,10 +78,10 @@ class KDEPIM_EXPORT KGroupInfo
 class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
 {
   public:
-    GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription* browser,
-        bool isCheckItem = false );
-    GroupItem( Q3ListViewItem *i, const KGroupInfo &gi, KSubscription* browser,
-        bool isCheckItem = false );
+    GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription *browser,
+               bool isCheckItem = false );
+    GroupItem( Q3ListViewItem *i, const KGroupInfo &gi, KSubscription *browser,
+               bool isCheckItem = false );
 
     /**
      * Get/Set the KGroupInfo
@@ -88,8 +92,8 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
     /**
      * Get/Set the original parent
      */
-    Q3ListViewItem* originalParent() { return mOriginalParent; }
-    void setOriginalParent( Q3ListViewItem* parent ) { mOriginalParent = parent; }
+    Q3ListViewItem *originalParent() { return mOriginalParent; }
+    void setOriginalParent( Q3ListViewItem *parent ) { mOriginalParent = parent; }
 
     /**
      * Get/Set the last open state
@@ -136,21 +140,21 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
      * Reimplemented
      * Calls QListViewItem or QCheckListItem
      */
-    virtual void paintCell( QPainter * p, const QColorGroup & cg,
+    virtual void paintCell( QPainter *p, const QColorGroup &cg,
         int column, int width, int align );
 
     /**
      * Reimplemented
      * Calls QListViewItem or QCheckListItem
      */
-    virtual void paintFocus( QPainter *, const QColorGroup & cg,
-                 const QRect & r );
+    virtual void paintFocus( QPainter *p, const QColorGroup &cg,
+                 const QRect &r );
 
     /**
      * Reimplemented
      * Calls QListViewItem or QCheckListItem
      */
-    virtual int width( const QFontMetrics&, const Q3ListView*, int column) const;
+    virtual int width( const QFontMetrics &, const Q3ListView *, int column ) const;
 
     /**
      * Reimplemented
@@ -163,8 +167,8 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
 
   protected:
     KGroupInfo mInfo;
-    KSubscription* mBrowser;
-    Q3ListViewItem* mOriginalParent;
+    KSubscription *mBrowser;
+    Q3ListViewItem *mOriginalParent;
     // remember last open state
     bool mLastOpenState;
     // is this a checkable item
@@ -200,27 +204,28 @@ class KDEPIM_EXPORT KSubscription : public KDialog
       Right
     };
 
-    KSubscription( QWidget *parent, const QString &caption, KAccount* acct,
-        KDialog::ButtonCodes buttons = 0, const QString &user1 = QString(),
-        bool descriptionColumn = true );
+    KSubscription( QWidget *parent, const QString &caption, KAccount *acct,
+                   KDialog::ButtonCodes buttons = 0,
+                   const QString &user1 = QString(),
+                   bool descriptionColumn = true );
 
     ~KSubscription();
 
     /**
      * Get/Set the account
      */
-    KAccount* account() { return mAcct; }
-    void setAccount( KAccount * acct ) { mAcct = acct; }
+    KAccount *account() { return mAcct; }
+    void setAccount( KAccount *acct ) { mAcct = acct; }
 
     /**
      * Access to the treewidget that holds the GroupItems
      */
-    Q3ListView* folderTree() { return groupView; }
+    Q3ListView *folderTree() { return groupView; }
 
     /**
      * Access to the searchfield
      */
-    KLineEdit* searchField() { return filterEdit; }
+    KLineEdit *searchField() { return filterEdit; }
 
     /**
      * The item that should be selected on startup
@@ -236,7 +241,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      * Gets the item from the listview
      * Returns 0 if the item can't be found
      */
-    Q3ListViewItem* getListItem( Q3ListView *view, const KGroupInfo &gi );
+    Q3ListViewItem *getListItem( Q3ListView *view, const KGroupInfo &gi );
 
     /**
      * Is the item in the given listview
@@ -247,7 +252,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      * Makes all changes after an item is toggled
      * called by the item's stateChange-method
      */
-    void changeItemState( GroupItem* item, bool on );
+    void changeItemState( GroupItem *item, bool on );
 
     /**
      * Get/Set the direction of button1
@@ -281,8 +286,8 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      * Update the item-states (visible, enabled) when a filter
      * criteria changed
      */
-    void filterChanged( Q3ListViewItem* item = 0,
-        const QString & text = QString() );
+    void filterChanged( Q3ListViewItem *item = 0,
+                        const QString &text = QString() );
 
     /**
      * The amount of items that are visible and enabled
@@ -304,7 +309,6 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      */
     void restoreOpenStates();
 
-
   public Q_SLOTS:
     /**
      * Call this slot when you have created all items
@@ -314,7 +318,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     /**
      * Changes the current state of the buttons
      */
-    void slotChangeButtonState( Q3ListViewItem* );
+    void slotChangeButtonState( Q3ListViewItem * );
 
     /**
      * Buttons are clicked
@@ -341,7 +345,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     /**
      * Filter text changed
      */
-    void slotFilterTextChanged( const QString & text );
+    void slotFilterTextChanged( const QString &text );
 
   Q_SIGNALS:
     /**
@@ -350,10 +354,9 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      */
     void listChanged();
 
-
   protected:
     // current account
-    KAccount* mAcct;
+    KAccount *mAcct;
 
     // widgets
     QWidget *page;
@@ -379,5 +382,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     // remember description column
     int mDescrColumn;
 };
+
+}
 
 #endif
