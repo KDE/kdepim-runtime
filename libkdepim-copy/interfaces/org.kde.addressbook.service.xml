@@ -2,7 +2,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.kde.adressbook.service">
-    <method name="importVCard">
+    <method name="importVCardFromData">
       <arg name="vCard" type="s" direction="in"/>
     </method>
   </interface>
