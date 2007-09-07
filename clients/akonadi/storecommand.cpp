@@ -34,7 +34,7 @@ void StoreCommand::exec()
 {
   DataReference ref( mUid.toInt(), QString() );
   ItemFetchJob* fetchJob = new ItemFetchJob( ref );
-  fetchJob->addFetchPart( Item::PartAll );
+  fetchJob->fetchAllParts();
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()

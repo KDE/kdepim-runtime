@@ -410,7 +410,7 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )
   fjob->addFetchPart( PartPerfectParents );
   fjob->addFetchPart( PartUnperfectParents );
   fjob->addFetchPart( PartSubjectParents );
-  fjob->addFetchPart( Item::PartAll ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
+  fjob->fetchAllParts(); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
   if ( !fjob->exec() )
     return;
 
