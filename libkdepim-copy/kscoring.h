@@ -1,30 +1,33 @@
 /*
-    kscoring.h
+  kscoring.h
 
-    Copyright (c) 2001 Mathias Waack
-    Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
+  Copyright (c) 2001 Mathias Waack <mathias@atoll-net.de>
+  Copyright (C) 2005 by Volker Krause <volker.krause@rwth-aachen.de>
 
-    Author: Mathias Waack <mathias@atoll-net.de>
+  Author: Mathias Waack <mathias@atoll-net.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, US
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, US
 */
 
 #ifndef KSCORING_H
 #define KSCORING_H
 
-#include <unistd.h>
+#include "kdepim_export.h"
+
+#include <kdialog.h>
+#include <klineedit.h>
+#include <knuminput.h>
 
 #include <qglobal.h>
 #include <q3ptrlist.h>
 #include <q3ptrstack.h>
 #include <QRegExp>
-
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -33,21 +36,18 @@
 #include <q3table.h>
 #include <QMap>
 #include <q3dict.h>
-//Added by qt3to4:
 #include <QTextStream>
 #include <QLabel>
 
-#include <kdialog.h>
-#include <klineedit.h>
-#include <knuminput.h>
-
-#include <kdepim_export.h>
+#include <unistd.h>
 
 class QDomNode;
 class QDomDocument;
 class QDomElement;
 class QTextStream;
 class QLabel;
+
+namespace KPIM {
 
 /**
   The following classes ScorableArticle, ScorableGroup define
@@ -65,217 +65,234 @@ public:
 
 class KDEPIM_EXPORT ScorableArticle
 {
-public:
-  virtual ~ScorableArticle();
+  public:
+    virtual ~ScorableArticle();
 
-  virtual void addScore(short) {}
-  virtual void displayMessage(const QString&);
-  virtual void changeColor(const QColor&) {}
-  virtual void markAsRead() {}
-  virtual QString from() const = 0;
-  virtual QString subject() const = 0;
-  virtual QString getHeaderByType(const QString&) const = 0;
-  //virtual ScorableGroup group() const =0;
+    virtual void addScore( short ) {}
+    virtual void displayMessage( const QString & );
+    virtual void changeColor( const QColor & ) {}
+    virtual void markAsRead() {}
+    virtual QString from() const = 0;
+    virtual QString subject() const = 0;
+    virtual QString getHeaderByType( const QString & ) const = 0;
 };
-
 
 //----------------------------------------------------------------------------
 /**
   Base class for other Action classes.
  */
 class KDEPIM_EXPORT ActionBase {
- public:
-  ActionBase();
-  virtual ~ActionBase();
-  virtual QString toString() const =0;
-  virtual void apply(ScorableArticle&) const =0;
-  virtual ActionBase* clone() const =0;
-  virtual int getType() const =0;
-  virtual QString getValueString() const { return QString(); }
-  virtual void setValue(const QString&) {}
-  static ActionBase* factory(int type, const QString &value);
-  static QStringList userNames();
-  static QString userName(int type);
-  static int getTypeForName(const QString& name);
-  static int getTypeForUserName(const QString& name);
-  QString userName() { return userName(getType()); }
-  enum ActionTypes { SETSCORE, NOTIFY, COLOR, MARKASREAD };
+  public:
+    ActionBase();
+    virtual ~ActionBase();
+    virtual QString toString() const = 0;
+    virtual void apply( ScorableArticle & ) const = 0;
+    virtual ActionBase *clone() const = 0;
+    virtual int getType() const = 0;
+    virtual QString getValueString() const { return QString(); }
+    virtual void setValue( const QString & ) {}
+    static ActionBase *factory( int type, const QString &value );
+    static QStringList userNames();
+    static QString userName( int type );
+    static int getTypeForName( const QString &name );
+    static int getTypeForUserName( const QString &name );
+    QString userName() { return userName( getType() ); }
+    enum ActionTypes {
+      SETSCORE,
+      NOTIFY,
+      COLOR,
+      MARKASREAD
+    };
 };
 
 class KDEPIM_EXPORT ActionColor : public ActionBase {
-public:
-  ActionColor(const QColor&);
-  ActionColor(const QString&);
-  ActionColor(const ActionColor&);
-  virtual ~ActionColor();
-  virtual QString toString() const;
-  virtual int getType() const { return COLOR; }
-  virtual QString getValueString() const { return color.name(); }
-  virtual void setValue(const QString& s) { color.setNamedColor(s); }
-  void setValue(const QColor& c) { color = c; }
-  QColor value() const { return color; }
-  virtual void apply(ScorableArticle&) const;
-  virtual ActionColor* clone() const;
-private:
-  QColor color;
+  public:
+    ActionColor( const QColor & );
+    ActionColor( const QString & );
+    ActionColor( const ActionColor & );
+    virtual ~ActionColor();
+    virtual QString toString() const;
+    virtual int getType() const { return COLOR; }
+    virtual QString getValueString() const { return color.name(); }
+    virtual void setValue( const QString &s ) { color.setNamedColor(s); }
+    void setValue( const QColor &c ) { color = c; }
+    QColor value() const { return color; }
+    virtual void apply( ScorableArticle & ) const;
+    virtual ActionColor *clone() const;
+
+  private:
+    QColor color;
 };
 
 class KDEPIM_EXPORT ActionSetScore : public ActionBase {
- public:
-  ActionSetScore(short);
-  ActionSetScore(const ActionSetScore&);
-  ActionSetScore(const QString&);
-  virtual ~ActionSetScore();
-  virtual QString toString() const;
-  virtual int getType() const { return SETSCORE; }
-  virtual QString getValueString() const { return QString::number(val); }
-  virtual void setValue(const QString& s) { val = s.toShort(); }
-  void setValue(short v) { val = v; }
-  short value() const { return val; }
-  virtual void apply(ScorableArticle&) const;
-  virtual ActionSetScore* clone() const;
- private:
-  short val;
+  public:
+    ActionSetScore( short );
+    ActionSetScore( const ActionSetScore & );
+    ActionSetScore( const QString & );
+    virtual ~ActionSetScore();
+    virtual QString toString() const;
+    virtual int getType() const { return SETSCORE; }
+    virtual QString getValueString() const { return QString::number(val); }
+    virtual void setValue( const QString &s ) { val = s.toShort(); }
+    void setValue( short v ) { val = v; }
+    short value() const { return val; }
+    virtual void apply( ScorableArticle & ) const;
+    virtual ActionSetScore *clone() const;
+
+  private:
+    short val;
 };
 
 class KDEPIM_EXPORT ActionNotify : public ActionBase {
- public:
-  ActionNotify(const QString&);
-  ActionNotify(const ActionNotify&);
-  virtual ~ActionNotify() {}
-  virtual QString toString() const;
-  virtual int getType() const { return NOTIFY; }
-  virtual QString getValueString() const { return note; }
-  virtual void setValue(const QString& s) { note = s; }
-  virtual void apply(ScorableArticle&) const;
-  virtual ActionNotify* clone() const;
- private:
-  QString note;
+  public:
+    ActionNotify( const QString & );
+    ActionNotify( const ActionNotify & );
+    virtual ~ActionNotify() {}
+    virtual QString toString() const;
+    virtual int getType() const { return NOTIFY; }
+    virtual QString getValueString() const { return note; }
+    virtual void setValue( const QString &s ) { note = s; }
+    virtual void apply( ScorableArticle & ) const;
+    virtual ActionNotify *clone() const;
+
+  private:
+    QString note;
 };
 
 class KDEPIM_EXPORT ActionMarkAsRead : public ActionBase {
-  public:
+    public:
     ActionMarkAsRead();
-    ActionMarkAsRead( const ActionMarkAsRead& );
+    ActionMarkAsRead( const ActionMarkAsRead & );
     virtual ~ActionMarkAsRead() {}
     virtual QString toString() const;
     virtual int getType() const { return MARKASREAD; }
     virtual void apply( ScorableArticle &article ) const;
-    virtual ActionMarkAsRead* clone() const;
+    virtual ActionMarkAsRead *clone() const;
 };
 
 class KDEPIM_EXPORT NotifyCollection
 {
-public:
-  NotifyCollection();
-  ~NotifyCollection();
-  void addNote(const ScorableArticle&, const QString&);
-  QString collection() const;
-  void displayCollection(QWidget *p=0) const;
-private:
-  struct article_info {
-    QString from;
-    QString subject;
-  };
-  typedef QList<article_info> article_list;
-  typedef Q3Dict<article_list> note_list;
-  note_list notifyList;
+  public:
+    NotifyCollection();
+    ~NotifyCollection();
+    void addNote( const ScorableArticle &, const QString & );
+    QString collection() const;
+    void displayCollection( QWidget *p=0 ) const;
+  private:
+    struct article_info {
+      QString from;
+      QString subject;
+    };
+    typedef QList<article_info> article_list;
+    typedef Q3Dict<article_list> note_list;
+    note_list notifyList;
 };
-
 
 //----------------------------------------------------------------------------
 class KDEPIM_EXPORT KScoringExpression
 {
   friend class KScoringRule;
- public:
-  enum Condition { CONTAINS, MATCH, EQUALS, SMALLER, GREATER, MATCHCS };
+  public:
+    enum Condition {
+      CONTAINS,
+      MATCH,
+      EQUALS,
+      SMALLER,
+      GREATER,
+      MATCHCS
+    };
 
-  KScoringExpression(const QString&,const QString&,const QString&, const QString&);
-  ~KScoringExpression();
+    KScoringExpression( const QString &, const QString &, const QString &, const QString & );
+    ~KScoringExpression();
 
-  bool match(ScorableArticle& a) const ;
-  QString getTypeString() const;
-  static QString getTypeString(int);
-  int getType() const;
-  QString toString() const;
-  void write(QTextStream& ) const;
+    bool match( ScorableArticle &a ) const ;
+    QString getTypeString() const;
+    static QString getTypeString( int );
+    int getType() const;
+    QString toString() const;
+    void write( QTextStream & ) const;
 
-  bool isNeg() const { return neg; }
-  Condition getCondition() const { return cond; }
-  QString getExpression() const { return expr_str; }
-  QString getHeader() const { return header; }
-  static QStringList conditionNames();
-  static QStringList headerNames();
-  static int getConditionForName(const QString&);
-  static QString getNameForCondition(int);
- private:
-  bool neg;
-  QString header;
-  const char* c_header;
-  Condition cond;
-  QRegExp expr;
-  QString expr_str;
-  int expr_int;
+    bool isNeg() const { return neg; }
+    Condition getCondition() const { return cond; }
+    QString getExpression() const { return expr_str; }
+    QString getHeader() const { return header; }
+    static QStringList conditionNames();
+    static QStringList headerNames();
+    static int getConditionForName( const QString & );
+    static QString getNameForCondition( int );
+
+  private:
+    bool neg;
+    QString header;
+    const char *c_header;
+    Condition cond;
+    QRegExp expr;
+    QString expr_str;
+    int expr_int;
 };
 
 //----------------------------------------------------------------------------
 class KDEPIM_EXPORT KScoringRule
 {
   friend class KScoringManager;
- public:
-  KScoringRule(const QString& name);
-  KScoringRule(const KScoringRule& r);
-  ~KScoringRule();
+  public:
+    KScoringRule( const QString &name );
+    KScoringRule( const KScoringRule &r );
+    ~KScoringRule();
 
-  typedef Q3PtrList<KScoringExpression> ScoreExprList;
-  typedef Q3PtrList<ActionBase> ActionList;
-  typedef QStringList GroupList;
-  enum LinkMode { AND, OR };
+    typedef Q3PtrList<KScoringExpression> ScoreExprList;
+    typedef Q3PtrList<ActionBase> ActionList;
+    typedef QStringList GroupList;
+    enum LinkMode {
+      AND,
+      OR
+    };
 
-  QString getName() const { return name; }
-  QStringList getGroups() const { return groups; }
-  void setGroups(const QStringList &l) { groups = l; }
-  LinkMode getLinkMode() const { return link; }
-  QString getLinkModeName() const;
-  QString getExpireDateString() const;
-  QDate getExpireDate() const { return expires; }
-  void setExpireDate(const QDate &d) { expires = d; }
-  bool isExpired() const;
-  ScoreExprList getExpressions() const { return expressions; }
-  ActionList getActions() const { return actions; }
-  void cleanExpressions();
-  void cleanActions();
+    QString getName() const { return name; }
+    QStringList getGroups() const { return groups; }
+    void setGroups( const QStringList &l ) { groups = l; }
+    LinkMode getLinkMode() const { return link; }
+    QString getLinkModeName() const;
+    QString getExpireDateString() const;
+    QDate getExpireDate() const { return expires; }
+    void setExpireDate( const QDate &d ) { expires = d; }
+    bool isExpired() const;
+    ScoreExprList getExpressions() const { return expressions; }
+    ActionList getActions() const { return actions; }
+    void cleanExpressions();
+    void cleanActions();
 
-  bool matchGroup(const QString& group) const ;
-  void applyRule(ScorableArticle& a) const;
-  void applyRule(ScorableArticle& a, const QString& group) const;
-  void applyAction(ScorableArticle& a) const;
+    bool matchGroup( const QString &group ) const ;
+    void applyRule( ScorableArticle &a ) const;
+    void applyRule( ScorableArticle &a, const QString &group ) const;
+    void applyAction( ScorableArticle &a ) const;
 
-  void setLinkMode(const QString& link);
-  void setLinkMode(LinkMode m) { link = m; }
-  void setExpire(const QString& exp);
-  void addExpression( KScoringExpression* );
-  void addGroup( const QString& group) { groups.append(group); }
-  //void addServer(const QString& server) { servers.append(server); }
-  void addAction(int, const QString& );
-  void addAction(ActionBase*);
+    void setLinkMode( const QString &link );
+    void setLinkMode( LinkMode m ) { link = m; }
+    void setExpire( const QString &exp );
+    void addExpression( KScoringExpression * );
+    void addGroup( const QString &group ) { groups.append(group); }
+    void addAction( int, const QString & );
+    void addAction(ActionBase*);
 
-  void updateXML(QDomElement& e, QDomDocument& d);
-  QString toString() const;
+    void updateXML( QDomElement &e, QDomDocument &d );
+    QString toString() const;
 
-  // writes the rule in XML format into the textstream
-  void write(QTextStream& ) const;
-protected:
-  //! assert that the name is unique
-  void setName(const QString &n) { name = n; }
-private:
-  QString name;
-  GroupList groups;
-  //ServerList servers;
-  LinkMode link;
-  ScoreExprList expressions;
-  ActionList actions;
-  QDate expires;
+    // writes the rule in XML format into the textstream
+    void write( QTextStream & ) const;
+
+  protected:
+    //! assert that the name is unique
+    void setName( const QString &n ) { name = n; }
+
+  private:
+    QString name;
+    GroupList groups;
+    //ServerList servers;
+    LinkMode link;
+    ScoreExprList expressions;
+    ActionList actions;
+    QDate expires;
 };
 
 /** this helper class implements a stack for lists of lists of rules.
@@ -284,20 +301,21 @@ private:
 */
 class KDEPIM_EXPORT RuleStack
 {
-public:
-  RuleStack();
-  ~RuleStack();
-  //! puts the list on the stack, doesn't change the list
-  void push(Q3PtrList<KScoringRule>&);
-  //! clears the argument list and copy the content of the TOS into it
-  //! after that the TOS gets dropped
-  void pop(Q3PtrList<KScoringRule>&);
-  //! like pop but without dropping the TOS
-  void top(Q3PtrList<KScoringRule>&);
-  //! drops the TOS
-  void drop();
-private:
-  Q3PtrStack< Q3PtrList<KScoringRule> > stack;
+  public:
+    RuleStack();
+    ~RuleStack();
+    //! puts the list on the stack, doesn't change the list
+    void push( Q3PtrList<KScoringRule>& );
+    //! clears the argument list and copy the content of the TOS into it
+    //! after that the TOS gets dropped
+    void pop( Q3PtrList<KScoringRule>& );
+    //! like pop but without dropping the TOS
+    void top( Q3PtrList<KScoringRule>& );
+    //! drops the TOS
+    void drop();
+
+  private:
+    Q3PtrStack< Q3PtrList<KScoringRule> > stack;
 };
 
 //----------------------------------------------------------------------------
@@ -305,125 +323,126 @@ private:
 class KDEPIM_EXPORT KScoringManager : public QObject
 {
   Q_OBJECT
+  public:
+    // this is the container for all rules
+    typedef Q3PtrList<KScoringRule> ScoringRuleList;
 
- public:
-  //* this is the container for all rules
-  typedef Q3PtrList<KScoringRule> ScoringRuleList;
+    KScoringManager( const QString &appName = QString() );
+    virtual ~KScoringManager();
 
-  KScoringManager(const QString& appName = QString());
-  virtual ~KScoringManager();
+    // returns a list of all available groups, must be overridden
+    virtual QStringList getGroups() const = 0;
 
-  //* returns a list of all available groups, must be overridden
-  virtual QStringList getGroups() const =0;
+    //! returns a list of common (or available) headers
+    //! defaults to returning { Subject, From, Message-ID, Date }
+    virtual QStringList getDefaultHeaders() const;
 
-  //! returns a list of common (or available) headers
-  //! defaults to returning { Subject, From, Message-ID, Date }
-  virtual QStringList getDefaultHeaders() const;
+    // setting current server and group and calling applyRules(ScorableArticle&)
+    void applyRules( ScorableArticle &article, const QString &group );
+    // assuming a properly set group
+    void applyRules( ScorableArticle & );
+    // same as above
+    void applyRules( ScorableGroup *group );
 
-  //* setting current server and group and calling applyRules(ScorableArticle&)
-  void applyRules(ScorableArticle& article, const QString& group/*, const QString& server*/);
-  //* assuming a properly set group
-  void applyRules(ScorableArticle&);
-  //* same as above
-  void applyRules(ScorableGroup* group);
+    // pushes the current rule list onto a stack
+    void pushRuleList();
+    // restores the current rule list from list stored on a stack
+    // by a previous call to pushRuleList (this implicitly deletes the
+    // current rule list)
+    void popRuleList();
+    // removes the TOS from the stack of rule lists
+    void removeTOS();
 
-  //* pushes the current rule list onto a stack
-  void pushRuleList();
-  //* restores the current rule list from list stored on a stack
-  //* by a previous call to pushRuleList (this implicitly deletes the
-  //* current rule list)
-  void popRuleList();
-  //* removes the TOS from the stack of rule lists
-  void removeTOS();
+    KScoringRule *addRule( KScoringRule * );
+    KScoringRule *addRule( const ScorableArticle &a, const QString &group, short score=0 );
+    KScoringRule *addRule();
+    void cancelNewRule( KScoringRule * );
+    void deleteRule( KScoringRule * );
+    void editRule( KScoringRule *e, QWidget *w=0 );
+    KScoringRule *copyRule( KScoringRule * );
+    void moveRuleAbove( KScoringRule *above, KScoringRule *below );
+    void moveRuleBelow( KScoringRule *below, KScoringRule *above );
+    void setGroup( const QString &g );
+    // has to be called after setGroup() or initCache()
+    bool hasRulesForCurrentGroup();
+    QString findUniqueName() const;
 
-  KScoringRule* addRule(KScoringRule *);
-  KScoringRule* addRule(const ScorableArticle&, QString group, short =0);
-  KScoringRule* addRule();
-  void cancelNewRule(KScoringRule *);
-  void deleteRule(KScoringRule *);
-  void editRule(KScoringRule *e, QWidget *w=0);
-  KScoringRule* copyRule(KScoringRule *);
-  void moveRuleAbove( KScoringRule *above, KScoringRule *below );
-  void moveRuleBelow( KScoringRule *below, KScoringRule *above );
-  void setGroup(const QString& g);
-  // has to be called after setGroup() or initCache()
-  bool hasRulesForCurrentGroup();
-  QString findUniqueName() const;
+    /** called from an editor whenever it finishes editing the rule base,
+        causes the finishedEditing signal to be emitted */
+    void editorReady();
 
-  /** called from an editor whenever it finishes editing the rule base,
-      causes the finishedEditing signal to be emitted */
-  void editorReady();
+    ScoringRuleList getAllRules() const { return allRules; }
+    KScoringRule *findRule( const QString & );
+    QStringList getRuleNames();
+    void setRuleName( KScoringRule *, const QString & );
+    int getRuleCount() const { return allRules.count(); }
+    QString toString() const;
 
-  ScoringRuleList getAllRules() const { return allRules; }
-  KScoringRule *findRule(const QString&);
-  QStringList getRuleNames();
-  void setRuleName(KScoringRule *, const QString&);
-  int getRuleCount() const { return allRules.count(); }
-  QString toString() const;
+    bool setCacheValid( bool v );
+    bool isCacheValid() { return cacheValid; }
+    void initCache( const QString &group );
 
-  bool setCacheValid(bool v);
-  bool isCacheValid() { return cacheValid; }
-  void initCache(const QString& group/*, const QString& server*/);
+    void load();
+    void save();
 
-  void load();
-  void save();
+    //--------------- Properties
+    virtual bool canScores() const { return true; }
+    virtual bool canNotes() const { return true; }
+    virtual bool canColors() const { return false; }
+    virtual bool canMarkAsRead() const { return false; }
+    virtual bool hasFeature( int );
 
-  //--------------- Properties
-  virtual bool canScores() const { return true; }
-  virtual bool canNotes() const { return true; }
-  virtual bool canColors() const { return false; }
-  virtual bool canMarkAsRead() const { return false; }
-  virtual bool hasFeature(int);
+  Q_SIGNALS:
+    void changedRules();
+    void changedRuleName( const QString &oldName, const QString &newName );
+    void finishedEditing();
 
- Q_SIGNALS:
-  void changedRules();
-  void changedRuleName(const QString& oldName, const QString& newName);
-  void finishedEditing();
+  private:
+    void addRuleInternal( KScoringRule *e );
+    void expireRules();
 
- private:
-  void addRuleInternal(KScoringRule *e);
-  void expireRules();
+    QDomDocument createXMLfromInternal();
+    void createInternalFromXML(QDomNode);
 
-  QDomDocument createXMLfromInternal();
-  void createInternalFromXML(QDomNode);
+    // list of all Rules
+    ScoringRuleList allRules;
 
-  // list of all Rules
-  ScoringRuleList allRules;
+    // the stack for temporary storing rule lists
+    RuleStack stack;
 
-  // the stack for temporary storing rule lists
-  RuleStack stack;
+    // for the cache
+    bool cacheValid;
+    // current rule set, ie the cache
+    ScoringRuleList ruleList;
+    //QString server;
+    QString group;
 
-  // for the cache
-  bool cacheValid;
-  // current rule set, ie the cache
-  ScoringRuleList ruleList;
-  //QString server;
-  QString group;
+    //ScorableServer* _s;
 
-  //ScorableServer* _s;
-
-  // filename of the scorefile
-  QString mFilename;
+    // filename of the scorefile
+    QString mFilename;
 };
-
 
 //----------------------------------------------------------------------------
 class KDEPIM_EXPORT NotifyDialog : public KDialog
 {
   Q_OBJECT
-public:
-  static void display(ScorableArticle&,const QString&);
-protected Q_SLOTS:
-  void slotShowAgainToggled(bool);
-private:
-  NotifyDialog(QWidget* p =0);
-  static NotifyDialog *me;
+  public:
+    static void display( ScorableArticle &, const QString & );
 
-  QLabel *note;
-  QString msg;
-  typedef QMap<QString,bool> NotesMap;
-  static NotesMap dict;
+  protected Q_SLOTS:
+    void slotShowAgainToggled( bool );
+
+  private:
+    NotifyDialog( QWidget *p=0 );
+    static NotifyDialog *me;
+
+    QLabel *note;
+    QString msg;
+    typedef QMap<QString,bool> NotesMap;
+    static NotesMap dict;
 };
 
+}
 
 #endif
