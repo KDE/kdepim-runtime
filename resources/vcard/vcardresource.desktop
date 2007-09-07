@@ -26,5 +26,5 @@ Exec=akonadi_vcard_resource
 Icon=vcard
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilitites=text/directory
+X-Akonadi-Capabilities=text/directory
 X-Akonadi-Identifier=akonadi_vcard_resource

@@ -38,8 +38,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
 
   Monitor *monitor = new Monitor( this );
   monitor->monitorMimeType( "message/rfc822" );
-  // HACK remove once ENVELOPE works
-  monitor->addFetchPart( Item::PartBody );
+  monitor->addFetchPart( Item::PartEnvelope );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
   connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QStringList)),
@@ -47,8 +46,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
 
   // FIXME: hardcoded collection id
   ItemFetchJob *fetch = new ItemFetchJob( Collection( 421 ), this );
-  // HACK remove once ENVELOPE works
-  fetch->addFetchPart( Item::PartBody );
+  fetch->addFetchPart( Item::PartEnvelope );
   connect( fetch, SIGNAL(result(KJob*)), SLOT(fetchDone(KJob*)) );
 }
 

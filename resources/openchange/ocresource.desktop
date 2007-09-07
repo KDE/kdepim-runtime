@@ -23,5 +23,5 @@ Exec=akonadi_oc_resource
 Icon=ocresource
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilitites=message/rf822
+X-Akonadi-Capabilities=message/rfc822
 X-Akonadi-Identifier=akonadi_oc_resource

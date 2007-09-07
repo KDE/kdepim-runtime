@@ -14,5 +14,5 @@ Exec=akonadi_maildir_resource
 Icon=mail
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilitites=message/rfc822
+X-Akonadi-Capabilities=message/rfc822
 X-Akonadi-Identifier=akonadi_maildir_resource
