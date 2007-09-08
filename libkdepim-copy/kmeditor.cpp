@@ -672,9 +672,11 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 
 void KMeditor::slotPasteAsQuotation()
 {
-  QString s = QApplication::clipboard()->text();
-  if ( !s.isEmpty() ) {
-    insert( addQuotesToText( s ) );
+  if(hasFocus()) {
+    QString s = QApplication::clipboard()->text();
+    if ( !s.isEmpty() ) {
+      insert( addQuotesToText( s ) );
+    }
   }
 }
 
