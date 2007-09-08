@@ -25,10 +25,12 @@
 #include <QSyntaxHighlighter>
 #include <QStringList>
 
+#include <kdepim_export.h>
+
 class QTextEdit;
 namespace Sonnet
 {
-  class KEMailQuotingHighlighter : public Highlighter
+  class KDEPIM_EXPORT KEMailQuotingHighlighter : public Highlighter
     {
     public:
       enum SyntaxMode {

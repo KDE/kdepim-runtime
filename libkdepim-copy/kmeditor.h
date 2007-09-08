@@ -72,8 +72,21 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     KUrl insertFile(const QStringList & encodingLst);
 
-    void wordWrapToggled( bool on, bool wrapWidth );
+    void wordWrapToggled( bool on);
+    void setWrapColumnOrWidth( int w );
+ 
+    void setColor(const QColor&);
+    void setFont(const QFont &);
 
+    bool checkExternalEditorFinished();
+    void killExternalEditor();
+    void setCursorPositionFromStart( unsigned int pos );
+   
+    int linePosition();
+    int columnNumber ();
+    void setCursorPosition( int linePos, int columnPos);
+    bool appendSignature(const QString &sig, bool preserveUserCursorPos = false);
+  
   public Q_SLOTS: 
     //Text style format.
     void slotChangeParagStyle(QTextListFormat::Style _style);
@@ -89,8 +102,11 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
     void slotAddQuotes();
+    void slotAddBox();
+    void slotRot13();
 
   protected:
+    bool eventFilter(QObject*o, QEvent* e);
     void init();
     void findTextNext();
     void findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog );
@@ -101,10 +117,13 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     virtual void contextMenuEvent( QContextMenuEvent* );
   Q_SIGNALS:
     void pasteImage();
+    void focusUp();
 
-  protected Q_SLOTS: 
+  public Q_SLOTS: 
     void slotFindNext();
     void slotReplaceNext();
+    void slotDoReplace();
+    void slotReplaceText(const QString &text, int replacementIndex, int /*replacedLength*/, int matchedLength);
 
   private:
     void mergeFormat(const QTextCharFormat &format);
