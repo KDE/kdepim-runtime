@@ -1,35 +1,36 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 1999 Preston Brown <pbrown@kde.org>
-    Copyright (c) 1999 Ian Dawes <iadawes@globalserve.net>
+  Copyright (c) 1999 Preston Brown <pbrown@kde.org>
+  Copyright (c) 1999 Ian Dawes <iadawes@globalserve.net>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-    As a special exception, permission is given to link this program
-    with any edition of Qt, and distribute the resulting executable,
-    without including the source code for Qt in the source distribution.
+  As a special exception, permission is given to link this program
+  with any edition of Qt, and distribute the resulting executable,
+  without including the source code for Qt in the source distribution.
 */
 #ifndef _KTIMEEDIT_H
 #define _KTIMEEDIT_H
 
+#include "kdepim_export.h"
+
 #include <QComboBox>
 #include <QTime>
-class QKeyEvent;
 
-#include <kdepim_export.h>
+class QKeyEvent;
 
 /**
   This is a class that provides an easy, user friendly way to edit times.
@@ -43,7 +44,7 @@ class KDEPIM_EXPORT KTimeEdit : public QComboBox
     Q_OBJECT
   public:
     /** constructs a new time edit. */
-    KTimeEdit(QWidget *parent=0, QTime qt=QTime(12,0), const char *name=0);
+    explicit KTimeEdit( QWidget *parent=0, QTime qt=QTime( 12, 0 ), const char *name=0 );
 
     virtual ~KTimeEdit();
 
@@ -66,21 +67,21 @@ class KDEPIM_EXPORT KTimeEdit : public QComboBox
       Emitted every time the time displayed changes. "newt" is the new
       time.
     */
-    void timeChanged(QTime newt);
+    void timeChanged( QTime newt );
 
   public Q_SLOTS:
     /** used to set the time which is displayed to a specific value. */
-    void setTime(QTime qt);
+    void setTime( QTime qt );
 
   protected Q_SLOTS:
-    void active(int);
-    void hilit(int);
+    void active( int );
+    void hilit( int );
     void changedText();
 
   protected:
-    virtual void keyPressEvent(QKeyEvent *qke);
-    void addTime(QTime qt);
-    void subTime(QTime qt);
+    virtual void keyPressEvent( QKeyEvent *qke );
+    void addTime( QTime qt );
+    void subTime( QTime qt );
     // Update the lineedit text from mTime
     void updateText();
 
