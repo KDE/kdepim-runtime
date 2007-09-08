@@ -270,7 +270,7 @@ void KMeditor::setExternalEditorPath( const QString & path )
   d->extEditorPath = path;
 }
 
-void KMeditor::findText()
+void KMeditor::slotFindText()
 {
   // Raise if already opened
   if ( d->findDialog )
@@ -293,7 +293,7 @@ void KMeditor::findText()
 }
 
 
-void KMeditor::replaceText()
+void KMeditor::slotReplaceText()
 {
     if ( d->replaceDialog ) {
 #ifdef Q_WS_X11
@@ -391,7 +391,7 @@ void KMeditor::findTextNext()
 {
   if (!d->find)
   {
-    findText();
+    slotFindText();
     return;
   }
   long options = 0;

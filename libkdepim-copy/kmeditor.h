@@ -63,11 +63,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void paste();
 
-    void findText();
-
-    void replaceText();
-
-
     void switchTextMode(bool useHtml);
 
     KUrl insertFile(const QStringList & encodingLst);
@@ -104,7 +99,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAddQuotes();
     void slotAddBox();
     void slotRot13();
-
+    void slotReplaceText();
+    void slotFindText();
   protected:
     bool eventFilter(QObject*o, QEvent* e);
     void init();
