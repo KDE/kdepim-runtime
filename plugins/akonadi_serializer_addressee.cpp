@@ -36,7 +36,7 @@ bool SerializerPluginAddresee::deserialize( Item& item, const QString& label, QI
     if ( !a.isEmpty() ) {
         item.setPayload<KABC::Addressee>( a );
     } else {
-        qDebug( ) << "SerializerPluginAddresee: Empty addressee object!";
+        qDebug( ) << "SerializerPluginAddressee: Empty addressee object!";
     }
     return true;
 }

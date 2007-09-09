@@ -77,7 +77,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
         QList<QByteArray> env;
         ImapParser::parseParenthesizedList( buffer, env );
         if ( env.count() < 10 ) {
-          qWarning() << "Akonaid KMime Deserializer: Got invalid envelope: " << env;
+          qWarning() << "Akonadi KMime Deserializer: Got invalid envelope: " << env;
           return false;
         }
         Q_ASSERT( env.count() >= 10 );
