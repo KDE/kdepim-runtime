@@ -366,8 +366,8 @@ void LdapSearch::readConfig()
       attrs << "cn" << "mail" << "givenname" << "sn" << "objectClass";
       ldapClient->setAttrs( attrs );
 
-      connect( ldapClient, SIGNAL( result( const LdapClient&, const KLDAP::LdapObject& ) ),
-               this, SLOT( slotLDAPResult( const LdapClient&, const KLDAP::LdapObject& ) ) );
+      connect( ldapClient, SIGNAL( result( const KPIM::LdapClient&, const KLDAP::LdapObject& ) ),
+               this, SLOT( slotLDAPResult( const KPIM::LdapClient&, const KLDAP::LdapObject& ) ) );
       connect( ldapClient, SIGNAL( done() ),
                this, SLOT( slotLDAPDone() ) );
       connect( ldapClient, SIGNAL( error( const QString& ) ),

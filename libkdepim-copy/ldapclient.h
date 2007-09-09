@@ -81,7 +81,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
     /*! Emitted once for each object returned
      * from the query
      */
-    void result( const LdapClient &client, const KLDAP::LdapObject& );
+    void result( const KPIM::LdapClient &client, const KLDAP::LdapObject& );
 
   public Q_SLOTS: // why are those slots?
     /*! Set the attributes that should be
@@ -177,7 +177,7 @@ class KDEPIM_EXPORT LdapSearch : public QObject
     void searchDone();
 
   private Q_SLOTS:
-    void slotLDAPResult( const LdapClient& client, const KLDAP::LdapObject& );
+    void slotLDAPResult( const KPIM::LdapClient& client, const KLDAP::LdapObject& );
     void slotLDAPError( const QString& );
     void slotLDAPDone();
     void slotDataTimer();
