@@ -57,7 +57,6 @@ set(kdepim_LIB_SRCS
    kscoringeditor.cpp 
    ksubscription.cpp 
    kwidgetlister.cpp 
-   qutf7codec.cpp 
    recentaddresses.cpp 
    addresseeselector.cpp 
    addresseeemailselection.cpp 

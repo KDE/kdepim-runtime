@@ -36,28 +36,6 @@ target_link_libraries(testaddresseeselector  kdepim ${KDE4_KDECORE_LIBS} )
 
 ########### next target ###############
 
-set(testutf7decoder_SRCS testutf7decoder.cpp )
-
-
-
-kde4_add_test_executable(testutf7decoder ${testutf7decoder_SRCS})
-
-target_link_libraries(testutf7decoder  kdepim ${KDE4_KDECORE_LIBS} )
-
-
-########### next target ###############
-
-set(testutf7encoder_SRCS testutf7encoder2.cpp )
-
-
-
-kde4_add_test_executable(testutf7encoder ${testutf7encoder_SRCS})
-
-target_link_libraries(testutf7encoder  kdepim ${KDE4_KDECORE_LIBS} )
-
-
-########### next target ###############
-
 set(testdateedit_SRCS testdateedit.cpp )
 
 
