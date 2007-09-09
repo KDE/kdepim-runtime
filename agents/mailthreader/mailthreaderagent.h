@@ -47,9 +47,9 @@ class MailThreaderAttribute : public CollectionAttribute
 
 
 /**
- * This agent works on a mail collection an tries to thread
+ * This agent works on a mail collection and tries to thread
  * mails related to the same discussion :
- * 
+ *
  * Mail
  * + Reply1
  *   + Reply11
