@@ -474,14 +474,18 @@ void KMeditor::slotChangeParagStyle(QTextListFormat::Style _style)
   setFocus();
 }
 
-void KMeditor::setColor(const QColor&)
+void KMeditor::setColor(const QColor& col)
 {
-  //TODO
+   QTextCharFormat fmt;
+   fmt.setForeground(col);
+   mergeFormat(fmt);
 }
 
-void KMeditor::setFont(const QFont &)
+void KMeditor::setFont(const QFont &fonts)
 {
-  //TODO
+  QTextCharFormat fmt;
+  fmt.setFont(fonts);
+  mergeFormat(fmt);
 }
 
 
