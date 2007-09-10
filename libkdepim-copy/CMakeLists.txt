@@ -42,7 +42,6 @@ set(kdepim_LIB_SRCS
    statusbarprogresswidget.cpp 
    ssllabel.cpp 
    completionordereditor.cpp 
-   resourceabc.cpp 
    diffalgo.cpp 
    addresseediffalgo.cpp 
    calendardiffalgo.cpp 

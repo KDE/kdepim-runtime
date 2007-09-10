@@ -31,12 +31,12 @@
 #include "completionordereditor.h"
 #include "completionordereditor_p.h"
 #include "ldapclient.h"
-#include "resourceabc.h"
 
 #include <QtDBus/QDBusConnection>
 
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
+#include <kabc/resourceabc.h>
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -143,7 +143,7 @@ void SimpleCompletionItem::save( CompletionOrderEditor* editor )
 class KABCImapSubResCompletionItem : public CompletionItem
 {
 public:
-  KABCImapSubResCompletionItem( ResourceABC* resource, const QString& subResource )
+  KABCImapSubResCompletionItem( KABC::ResourceABC* resource, const QString& subResource )
     : mResource( resource ), mSubResource( subResource ), mWeight( completionWeight() ) {}
   virtual QString label() const {
     return QString( "%1 %2" ).arg( mResource->resourceName() ).arg( mResource->subresourceLabel( mSubResource ) );
@@ -158,7 +158,7 @@ public:
     mResource->setSubresourceCompletionWeight( mSubResource, mWeight );
   }
 private:
-  ResourceABC* mResource;
+  KABC::ResourceABC* mResource;
   QString mSubResource;
   int mWeight;
 };
@@ -201,7 +201,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   while ( resit.hasNext() ) {
     KABC::Resource *resource = resit.next();
     //kDebug(5300) <<"KABC Resource:" << (*resit)->className();
-    ResourceABC* res = dynamic_cast<ResourceABC *>( resource  );
+    KABC::ResourceABC* res = dynamic_cast<KABC::ResourceABC *>( resource  );
     if ( res ) { // IMAP KABC resource
       const QStringList subresources = res->subresources();
       for( QStringList::const_iterator it = subresources.begin(); it != subresources.end(); ++it ) {
