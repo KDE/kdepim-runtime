@@ -94,7 +94,7 @@ class KMeditor::Private
 
 void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex, int matchedLength)
 {
-  kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos :"<<matchingIndex<<" matchedLength :"<<matchedLength;
+  //kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos :"<<matchingIndex<<" matchedLength :"<<matchedLength;
   parent->highlightWord( matchedLength, matchingIndex );
 }
 
@@ -581,7 +581,7 @@ void KMeditor::switchTextMode(bool useHtml)
   }
 }
 
-KUrl KMeditor::insertFile(const QStringList & encodingLst)
+KUrl KMeditor::insertFile(const QStringList & encodingLst, QString &encodingStr)
 {
   KUrl url;
   KFileDialog fdlg( url, QString(), this );
@@ -597,6 +597,7 @@ KUrl KMeditor::insertFile(const QStringList & encodingLst)
       if (KGlobal::charsets()->codecForName(KGlobal::charsets()->
                                           encodingForName(combo->itemText(i)))
         == QTextCodec::codecForLocale()) combo->setCurrentIndex(i);
+    encodingStr = combo->currentText();
   }
   if (!fdlg.exec()) return KUrl();
 

@@ -65,7 +65,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void switchTextMode(bool useHtml);
 
-    KUrl insertFile(const QStringList & encodingLst);
+    KUrl insertFile(const QStringList & encodingLst, QString &encodingStr);
 
     void wordWrapToggled( bool on);
     void setWrapColumnOrWidth( int w );
