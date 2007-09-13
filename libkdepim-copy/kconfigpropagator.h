@@ -1,22 +1,22 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 #ifndef KCONFIGPROPAGATOR_H
 #define KCONFIGPROPAGATOR_H
@@ -31,6 +31,8 @@
 class KConfigSkeleton;
 class KConfigSkeletonItem;
 
+namespace KPIM {
+
 class KDEPIM_EXPORT KConfigPropagator
 {
   public:
@@ -41,7 +43,7 @@ class KDEPIM_EXPORT KConfigPropagator
     KConfigPropagator();
     /**
       Create KConfigPropagator object.
-      
+
       @param skeleton KConfigSkeleton object used as source for the propagation
       @param kcfgFile file name of kcfg file containing the propagation rules
     */
@@ -59,12 +61,12 @@ class KDEPIM_EXPORT KConfigPropagator
     {
       public:
         Condition() : isValid( false ) {}
-      
+
         QString file;
         QString group;
         QString key;
         QString value;
-        
+
         bool isValid;
     };
 
@@ -72,9 +74,9 @@ class KDEPIM_EXPORT KConfigPropagator
     {
       public:
         typedef QList<Rule> List;
-        
+
         Rule() : hideValue( false ) {}
-        
+
         QString sourceFile;
         QString sourceGroup;
         QString sourceEntry;
@@ -95,7 +97,7 @@ class KDEPIM_EXPORT KConfigPropagator
 
         Change( const QString &title ) : mTitle( title ) {}
         virtual ~Change();
-      
+
         void setTitle( const QString &title ) { mTitle = title; }
         QString title() const { return mTitle; }
 
@@ -128,7 +130,7 @@ class KDEPIM_EXPORT KConfigPropagator
     };
 
     void updateChanges();
-    
+
     Change::List changes();
 
     Rule::List rules();
@@ -159,7 +161,9 @@ class KDEPIM_EXPORT KConfigPropagator
     QString mKcfgFile;
 
     Rule::List mRules;
-    Change::List mChanges;    
+    Change::List mChanges;
 };
+
+}
 
 #endif

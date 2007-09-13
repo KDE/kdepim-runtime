@@ -1,50 +1,56 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 #ifndef KCONFIGWIZARD_H
 #define KCONFIGWIZARD_H
 
-#include <kconfigpropagator.h>
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 #include <kpagedialog.h>
 #include <kvbox.h>
 
 class Q3ListView;
 class KPageWidgetItem;
+
+namespace KPIM {
+
+class KConfigPropagator;
+
 /**
   @short Configuration wizard base class
 */
 class KDEPIM_EXPORT KConfigWizard : public KPageDialog
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /**
       Create wizard. You have to set a propgator with setPropagator() later.
     */
-    KConfigWizard( QWidget *parent = 0, bool modal = false );
+    explicit KConfigWizard( QWidget *parent = 0, bool modal = false );
+
     /**
       Create wizard for given KConfigPropagator. The wizard takes ownership of
       the propagator.
     */
-    KConfigWizard( KConfigPropagator *propagator, QWidget *parent = 0,
-                   bool modal = false );
+    explicit KConfigWizard( KConfigPropagator *propagator, QWidget *parent = 0,
+                            bool modal = false );
+
     /**
       Destructor.
     */
@@ -54,6 +60,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
       Set propagator the wizard operates on.
     */
     void setPropagator( KConfigPropagator * );
+
     /**
       Return propagator the wizard operates on.
     */
@@ -88,7 +95,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
 
     void slotOk();
 
-    void slotAboutToShowPage(KPageWidgetItem *, KPageWidgetItem *);
+    void slotAboutToShowPage( KPageWidgetItem *, KPageWidgetItem *);
 
   protected:
     void init();
@@ -106,5 +113,7 @@ class KDEPIM_EXPORT KConfigWizard : public KPageDialog
 
     KPageWidgetItem *mChangesPage;
 };
+
+}
 
 #endif

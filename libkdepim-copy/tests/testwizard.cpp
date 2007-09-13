@@ -21,7 +21,8 @@
 
 #include "myconfig.h"
 
-#include <kconfigwizard.h>
+#include "../kconfigwizard.h"
+#include "../kconfigpropagator.h"
 
 #include <kaboutdata.h>
 #include <kapplication.h>
@@ -32,6 +33,8 @@
 #include <QCheckBox>
 #include <QFrame>
 #include <QLayout>
+
+using namespace KPIM;
 
 class TestConfigWizard : public KConfigWizard
 {
@@ -48,7 +51,7 @@ class TestConfigWizard : public KConfigWizard
 
       mFixKMailCheckBox->setChecked( MyConfig::fixKMail() );
 
-      mBreakKMailCheckBox = new QCheckBox( i18n("Break KMail"), page );      
+      mBreakKMailCheckBox = new QCheckBox( i18n("Break KMail"), page );
       topLayout->addWidget( mBreakKMailCheckBox );
 
       mBreakKMailCheckBox->setChecked( MyConfig::breakKMail() );
