@@ -50,7 +50,7 @@ set(kdepim_LIB_SRCS
    kresourceprefs.cpp 
    kxface.cpp 
    kaccount.cpp 
-   kaddrbook.cpp 
+   kaddrbookexternal.cpp 
    kfoldertree.cpp 
    kscoring.cpp 
    kscoringeditor.cpp 
