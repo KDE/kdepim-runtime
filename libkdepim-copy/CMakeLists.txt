@@ -66,7 +66,6 @@ set(kdepim_LIB_SRCS
    groupwarejob.cpp 
    csshelper.cpp 
    distributionlist.cpp 
-   kpimurlrequesterdlg.cpp 
    sendsmsdialog.cpp 
    categoryhierarchyreader.cpp 
    messagestatus.cpp 
