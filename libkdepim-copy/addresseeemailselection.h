@@ -1,29 +1,28 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2004 Tobias Koenig <tokoe@kde.org>
+  Copyright (c) 2004 Tobias Koenig <tokoe@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
 #ifndef KPIM_ADDRESSEE_EMAILSELECTION_H
 #define KPIM_ADDRESSEE_EMAILSELECTION_H
 
-#include <addresseeselector.h>
-//Added by qt3to4:
+#include "addresseeselector.h"
 #include <QPixmap>
 
 namespace KPIM {
@@ -66,12 +65,14 @@ class KDEPIM_EXPORT AddresseeEmailSelection : public Selection
     /**
       Returns whether the item specified by index matches the passed pattern.
      */
-    virtual bool itemMatches( const KABC::Addressee &addresse, int index, const QString &pattern ) const;
+    virtual bool itemMatches( const KABC::Addressee &addresse, int index,
+                              const QString &pattern ) const;
 
     /**
       Returns whether the item specified by index equals the passed pattern.
      */
-    virtual bool itemEquals( const KABC::Addressee &addresse, int index, const QString &pattern ) const;
+    virtual bool itemEquals( const KABC::Addressee &addresse, int index,
+                             const QString &pattern ) const;
 
     /**
       Returns the text that's used for the given distribution list.
@@ -91,8 +92,8 @@ class KDEPIM_EXPORT AddresseeEmailSelection : public Selection
     /**
       Returns whether the given distribution list matches the passed pattern.
      */
-    virtual bool distributionListMatches(  const KABC::DistributionList *distributionList,
-                                           const QString &pattern ) const;
+    virtual bool distributionListMatches( const KABC::DistributionList *distributionList,
+                                          const QString &pattern ) const;
 
     /**
       Returns the number of additional address books.
@@ -126,11 +127,14 @@ class KDEPIM_EXPORT AddresseeEmailSelection : public Selection
     void setSelectedBCC( const QStringList &emails );
 
   private:
-    virtual void addSelectedAddressees( int fieldIndex, const KABC::Addressee&, int itemIndex );
-    virtual void addSelectedDistributionList( int fieldIndex, const KABC::DistributionList* );
+    virtual void addSelectedAddressees( int fieldIndex,
+                                        const KABC::Addressee &addressee,
+                                        int itemIndex );
+    virtual void addSelectedDistributionList( int fieldIndex,
+                                              const KABC::DistributionList *list );
 
-    QString email( const KABC::Addressee&, int ) const;
-    void setSelectedItem( int fieldIndex, const QStringList& );
+    QString email( const KABC::Addressee &addressee, int ) const;
+    void setSelectedItem( int fieldIndex, const QStringList &emails );
 
     KABC::Addressee::List mToAddresseeList;
     KABC::Addressee::List mCcAddresseeList;

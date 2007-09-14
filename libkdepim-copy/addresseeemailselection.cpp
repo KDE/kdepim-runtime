@@ -1,36 +1,34 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2004 Tobias Koenig <tokoe@kde.org>
+  Copyright (c) 2004 Tobias Koenig <tokoe@kde.org>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
+
+#include "addresseeemailselection.h"
+#include "recentaddresses.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
-#include "recentaddresses.h"
-
-#include "addresseeemailselection.h"
-//Added by qt3to4:
 #include <QPixmap>
 
 using namespace KPIM;
-using KRecentAddress::RecentAddresses;
 
 AddresseeEmailSelection::AddresseeEmailSelection()
   : Selection()
@@ -119,7 +117,6 @@ void AddresseeEmailSelection::setSelectedBCC( const QStringList &emails )
   setSelectedItem( 2, emails );
 }
 
-
 int AddresseeEmailSelection::itemCount( const KABC::Addressee &addressee ) const
 {
   return addressee.emails().count();
@@ -132,10 +129,13 @@ QString AddresseeEmailSelection::itemText( const KABC::Addressee &addressee, int
 
 QPixmap AddresseeEmailSelection::itemIcon( const KABC::Addressee &addressee, int ) const
 {
-  if ( !addressee.photo().data().isNull() )
-    return QPixmap::fromImage( addressee.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-  else
+  if ( !addressee.photo().data().isNull() ) {
+    return QPixmap::fromImage(
+      addressee.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio,
+                                       Qt::SmoothTransformation ) );
+  } else {
     return KIconLoader::global()->loadIcon( "personal", K3Icon::Small );
+  }
 }
 
 bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int ) const
@@ -143,40 +143,45 @@ bool AddresseeEmailSelection::itemEnabled( const KABC::Addressee &addressee, int
   return addressee.emails().count() != 0;
 }
 
-bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee, int index, const QString &pattern ) const
+bool AddresseeEmailSelection::itemMatches( const KABC::Addressee &addressee,
+                                           int index, const QString &pattern ) const
 {
   return addressee.formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
          email( addressee, index ).startsWith( pattern, Qt::CaseInsensitive );
 }
 
-bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee, int index, const QString &pattern ) const
+bool AddresseeEmailSelection::itemEquals( const KABC::Addressee &addressee,
+                                          int index, const QString &pattern ) const
 {
-  return (pattern == addressee.formattedName() + ' ' + email( addressee, index )) ||
-         (addressee.emails().contains( pattern ));
+  return
+    pattern == ( addressee.formattedName() + ' ' + email( addressee, index ) ) ||
+    addressee.emails().contains( pattern );
 }
 
-QString AddresseeEmailSelection::distributionListText( const KABC::DistributionList *distributionList ) const
+QString AddresseeEmailSelection::distributionListText( const KABC::DistributionList *list ) const
 {
-  return distributionList->name();
+  return list->name();
 }
 
-QPixmap AddresseeEmailSelection::distributionListIcon( const KABC::DistributionList* ) const
+QPixmap AddresseeEmailSelection::distributionListIcon( const KABC::DistributionList *list ) const
 {
+  Q_UNUSED( list );
   return KIconLoader::global()->loadIcon( "kdmconfig", K3Icon::Small );
 }
 
-bool AddresseeEmailSelection::distributionListEnabled( const KABC::DistributionList* ) const
+bool AddresseeEmailSelection::distributionListEnabled( const KABC::DistributionList *list ) const
 {
+  Q_UNUSED( list );
   return true;
 }
 
-bool AddresseeEmailSelection::distributionListMatches( const KABC::DistributionList *distributionList,
+bool AddresseeEmailSelection::distributionListMatches( const KABC::DistributionList *list,
                                                        const QString &pattern ) const
 {
   // check whether the name of the distribution list matches the pattern or one of its entries.
-  bool ok = distributionList->name().startsWith( pattern, Qt::CaseInsensitive );
+  bool ok = list->name().startsWith( pattern, Qt::CaseInsensitive );
 
-  KABC::DistributionList::Entry::List entries = distributionList->entries();
+  KABC::DistributionList::Entry::List entries = list->entries();
   KABC::DistributionList::Entry::List::ConstIterator it;
   for ( it = entries.begin(); it != entries.end(); ++it ) {
     ok = ok || (*it).addressee().formattedName().startsWith( pattern, Qt::CaseInsensitive ) ||
@@ -194,10 +199,11 @@ int AddresseeEmailSelection::addressBookCount() const
 
 QString AddresseeEmailSelection::addressBookTitle( int index ) const
 {
-  if ( index == 0 )
+  if ( index == 0 ) {
     return i18n( "Recent Addresses" );
-  else
+  } else {
     return QString();
+  }
 }
 
 KABC::Addressee::List AddresseeEmailSelection::addressBookContent( int index ) const
@@ -226,7 +232,9 @@ void AddresseeEmailSelection::setSelectedItem( int fieldIndex, const QStringList
   }
 }
 
-void AddresseeEmailSelection::addSelectedAddressees( int fieldIndex, const KABC::Addressee &addressee, int itemIndex )
+void AddresseeEmailSelection::addSelectedAddressees( int fieldIndex,
+                                                     const KABC::Addressee &addressee,
+                                                     int itemIndex )
 {
   switch ( fieldIndex ) {
     case 0:
@@ -247,7 +255,8 @@ void AddresseeEmailSelection::addSelectedAddressees( int fieldIndex, const KABC:
   }
 }
 
-void AddresseeEmailSelection::addSelectedDistributionList( int fieldIndex, const KABC::DistributionList *list )
+void AddresseeEmailSelection::addSelectedDistributionList( int fieldIndex,
+                                                           const KABC::DistributionList *list )
 {
   switch ( fieldIndex ) {
     case 0:
