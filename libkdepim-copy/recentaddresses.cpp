@@ -28,86 +28,86 @@
  *  your version.
  */
 #include "recentaddresses.h"
-#include "kpimutils/email.h"
+#include <kpimutils/email.h>
 
 #include <k3staticdeleter.h>
 #include <kconfig.h>
 #include <kglobal.h>
-
+#include <kconfiggroup.h>
 #include <kdebug.h>
 #include <klocale.h>
 #include <keditlistbox.h>
 
-
 #include <QLayout>
-//Added by qt3to4:
 #include <QVBoxLayout>
-#include <kconfiggroup.h>
 
-using namespace KRecentAddress;
+using namespace KPIM;
 
 static K3StaticDeleter<RecentAddresses> sd;
 
-RecentAddresses * RecentAddresses::s_self = 0;
+RecentAddresses *RecentAddresses::s_self = 0;
 
-RecentAddresses * RecentAddresses::self( KConfig *config)
+RecentAddresses *RecentAddresses::self( KConfig *config )
 {
-    if ( !s_self )
-        sd.setObject( s_self, new RecentAddresses(config) );
-    return s_self;
+  if ( !s_self ) {
+    sd.setObject( s_self, new RecentAddresses( config ) );
+  }
+  return s_self;
 }
 
-RecentAddresses::RecentAddresses(KConfig * config)
+RecentAddresses::RecentAddresses( KConfig *config )
 {
-  if ( !config )
+  if ( !config ) {
     load( KGlobal::config().data() );
-  else
+  } else {
     load( config );
+  }
 }
 
 RecentAddresses::~RecentAddresses()
 {
-    // if you want this destructor to get called, use a K3StaticDeleter
-    // on s_self
+  // if you want this destructor to get called, use a K3StaticDeleter
+  // on s_self
 }
 
 void RecentAddresses::load( KConfig *config )
 {
-    QStringList addresses;
-    QString name;
-    QString email;
+  QStringList addresses;
+  QString name;
+  QString email;
 
-    m_addresseeList.clear();
-    KConfigGroup cg( config, "General" );
-    m_maxCount = cg.readEntry( "Maximum Recent Addresses", 40 );
-    addresses = cg.readEntry( "Recent Addresses" , QStringList() );
-    for ( QStringList::Iterator it = addresses.begin(); it != addresses.end(); ++it ) {
-        KABC::Addressee::parseEmailAddress( *it, name, email );
-        if ( !email.isEmpty() ) {
-            KABC::Addressee addr;
-            addr.setNameFromString( name );
-            addr.insertEmail( email, true );
-            m_addresseeList.append( addr );
-        }
+  m_addresseeList.clear();
+  KConfigGroup cg( config, "General" );
+  m_maxCount = cg.readEntry( "Maximum Recent Addresses", 40 );
+  addresses = cg.readEntry( "Recent Addresses", QStringList() );
+  for ( QStringList::Iterator it = addresses.begin(); it != addresses.end(); ++it ) {
+    KABC::Addressee::parseEmailAddress( *it, name, email );
+    if ( !email.isEmpty() ) {
+      KABC::Addressee addr;
+      addr.setNameFromString( name );
+      addr.insertEmail( email, true );
+      m_addresseeList.append( addr );
     }
+  }
 
-    adjustSize();
+  adjustSize();
 }
 
 void RecentAddresses::save( KConfig *config )
 {
-    KConfigGroup cg( config, "General" );
-    cg.writeEntry( "Recent Addresses", addresses() );
+  KConfigGroup cg( config, "General" );
+  cg.writeEntry( "Recent Addresses", addresses() );
 }
 
-void RecentAddresses::add( const QString& entry )
+void RecentAddresses::add( const QString &entry )
 {
   if ( !entry.isEmpty() && m_maxCount > 0 ) {
     QStringList list = KPIMUtils::splitAddressList( entry );
-    for( QStringList::const_iterator e_it = list.begin(); e_it != list.end(); ++e_it ) {
+    for ( QStringList::const_iterator e_it = list.begin(); e_it != list.end(); ++e_it ) {
       KPIMUtils::EmailParseResult errorCode = KPIMUtils::isValidAddress( *e_it );
-      if ( errorCode != KPIMUtils::AddressOk ) 
+      if ( errorCode != KPIMUtils::AddressOk ) {
         continue;
+      }
       QString email;
       QString fullName;
       KABC::Addressee addr;
@@ -115,8 +115,7 @@ void RecentAddresses::add( const QString& entry )
       KABC::Addressee::parseEmailAddress( *e_it, fullName, email );
 
       for ( KABC::Addressee::List::Iterator it = m_addresseeList.begin();
-          it != m_addresseeList.end(); ++it )
-      {
+          it != m_addresseeList.end(); ++it ) {
         if ( email == (*it).preferredEmail() ) {
           //already inside, remove it here and add it later at pos==1
           m_addresseeList.erase( it );
@@ -139,25 +138,25 @@ void RecentAddresses::setMaxCount( int count )
 
 void RecentAddresses::adjustSize()
 {
-    while ( m_addresseeList.count() > m_maxCount )
-        m_addresseeList.takeLast();
+  while ( m_addresseeList.count() > m_maxCount ) {
+    m_addresseeList.takeLast();
+  }
 }
 
 void RecentAddresses::clear()
 {
-    m_addresseeList.clear();
-    adjustSize();
+  m_addresseeList.clear();
+  adjustSize();
 }
 
 QStringList RecentAddresses::addresses() const
 {
-    QStringList addresses;
-    for ( KABC::Addressee::List::ConstIterator it = m_addresseeList.begin();
-          it != m_addresseeList.end(); ++it )
-    {
-        addresses.append( (*it).fullEmail() );
-    }
-    return addresses;
+  QStringList addresses;
+  for ( KABC::Addressee::List::ConstIterator it = m_addresseeList.begin();
+        it != m_addresseeList.end(); ++it ) {
+    addresses.append( (*it).fullEmail() );
+  }
+  return addresses;
 }
 
 RecentAddressDialog::RecentAddressDialog( QWidget *parent )

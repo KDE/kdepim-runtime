@@ -30,24 +30,24 @@
 #ifndef RECENTADDRESSES_H
 #define RECENTADDRESSES_H
 
-#include <QStringList>
+#include "kdepim_export.h"
 #include <kabc/addressee.h>
-
 #include <kdialog.h>
-
-#include <kdepim_export.h>
+#include <QStringList>
 
 class KConfig;
 class KEditListBox;
-namespace KRecentAddress {
+
+namespace KPIM {
 
 class KDEPIM_EXPORT RecentAddressDialog : public KDialog
 {
- public:
-  RecentAddressDialog( QWidget *parent );
-  void setAddresses( const QStringList &addrs );
-  QStringList addresses() const;
- private:
+  public:
+    RecentAddressDialog( QWidget *parent );
+    void setAddresses( const QStringList &addrs );
+    QStringList addresses() const;
+
+  private:
     KEditListBox *mEditor;
 };
 
@@ -60,12 +60,12 @@ class KDEPIM_EXPORT RecentAddressDialog : public KDialog
 
 class KDEPIM_EXPORT RecentAddresses
 {
-public:
+  public:
     ~RecentAddresses();
     /**
      * @returns the only possible instance of this class.
      */
-    static RecentAddresses * self(KConfig *config = 0L);
+    static RecentAddresses *self( KConfig *config = 0 );
 
     /*
      * @return true if self() was called, i.e. a RecentAddresses instance exists
@@ -78,14 +78,15 @@ public:
      * like "Foo <foo@bar.org>, Bar Baz <bar@baz.org>".
      */
     QStringList     addresses() const;
-    const KABC::Addressee::List& kabcAddresses() const { return m_addresseeList; }
+    const KABC::Addressee::List &kabcAddresses() const
+    { return m_addresseeList; }
 
     /**
      * Adds an entry to the list.
      * Note: an entry doesn't have to be one email address, it can be multiple,
      * like "Foo <foo@bar.org>, Bar Baz <bar@baz.org>".
      */
-    void add( const QString& entry );
+    void add( const QString &entry );
 
     /**
      * Sets the maximum number, the list can hold. The list adjusts to this
@@ -115,8 +116,8 @@ public:
      */
     void clear();
 
-private:
-    RecentAddresses(KConfig *config = 0L);
+  private:
+    RecentAddresses( KConfig *config = 0 );
 
     KABC::Addressee::List m_addresseeList;
 
@@ -129,4 +130,4 @@ private:
 
 }
 
-#endif // KMRECENTADDR_H
+#endif
