@@ -1,72 +1,76 @@
 /*  -*- c++ -*-
-    kwidgetlister.cpp
 
-    This file is part of libkdenetwork.
-    Copyright (c) 2001 Marc Mutz <mutz@kde.org>
+  kwidgetlister.cpp
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License,
-    version 2, as published by the Free Software Foundation.
+  This file is part of libkdepim.
+  Copyright (c) 2001 Marc Mutz <mutz@kde.org>
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License,
+  version 2, as published by the Free Software Foundation.
 
-    You should have received a copy of the GNU General Public License
-    along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
 
-    In addition, as a special exception, the copyright holders give
-    permission to link the code of this library with any edition of
-    the Qt library by Trolltech AS, Norway (or with modified versions
-    of Qt that use the same license as Qt), and distribute linked
-    combinations including the two.  You must obey the GNU General
-    Public License in all respects for all of the code used other than
-    Qt.  If you modify this file, you may extend this exception to
-    your version of the file, but you are not obligated to do so.  If
-    you do not wish to do so, delete this exception statement from
-    your version.
+  You should have received a copy of the GNU General Public License
+  along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  In addition, as a special exception, the copyright holders give
+  permission to link the code of this library with any edition of
+  the Qt library by Trolltech AS, Norway (or with modified versions
+  of Qt that use the same license as Qt), and distribute linked
+  combinations including the two.  You must obey the GNU General
+  Public License in all respects for all of the code used other than
+  Qt.  If you modify this file, you may extend this exception to
+  your version of the file, but you are not obligated to do so.  If
+  you do not wish to do so, delete this exception statement from
+  your version.
 */
 
 #include "kwidgetlister.h"
 
 #include <klocale.h>
 #include <kdebug.h>
-
-#include <QPushButton>
-#include <QLayout>
-#include <khbox.h>
-//Added by qt3to4:
-#include <QVBoxLayout>
-
-#include <assert.h>
 #include <kguiitem.h>
 #include <kpushbutton.h>
 #include <kdialog.h>
 
-KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, const char* name )
+#include <QPushButton>
+#include <QLayout>
+#include <khbox.h>
+#include <QVBoxLayout>
+
+#include <assert.h>
+
+using namespace KPIM;
+
+KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, const char *name )
   : QWidget( parent )
 {
-  setObjectName(name);
-  mWidgetList.setAutoDelete(true);
+  setObjectName( name );
+  mWidgetList.setAutoDelete( true );
 
   mMinWidgets = qMax( minWidgets, 1 );
   mMaxWidgets = qMax( maxWidgets, mMinWidgets + 1 );
 
   //--------- the button box
-  mLayout = new QVBoxLayout(this);
-  mLayout->setMargin(0);
-  mLayout->setSpacing(4);
+  mLayout = new QVBoxLayout( this );
+  mLayout->setMargin( 0 );
+  mLayout->setSpacing( 4 );
 
-  mButtonBox = new KHBox(this);
+  mButtonBox = new KHBox( this );
   mButtonBox->setSpacing( KDialog::spacingHint() );
   mLayout->addWidget( mButtonBox );
 
-  mBtnMore = new KPushButton( KGuiItem( i18nc( "more widgets", "More" ), "button_more" ), mButtonBox );
+  mBtnMore = new KPushButton( KGuiItem( i18nc( "more widgets", "More" ),
+                                        "button_more" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnMore, 0 );
 
-  mBtnFewer = new KPushButton( KGuiItem( i18nc( "fewer widgets", "Fewer" ), "button_fewer" ), mButtonBox );
+  mBtnFewer = new KPushButton( KGuiItem( i18nc( "fewer widgets", "Fewer" ),
+                                         "button_fewer" ), mButtonBox );
   mButtonBox->setStretchFactor( mBtnFewer, 0 );
 
   QWidget *spacer = new QWidget( mButtonBox );
@@ -79,11 +83,11 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
 
   //---------- connect everything
   connect( mBtnMore, SIGNAL(clicked()),
-	   this, SLOT(slotMore()) );
+           this, SLOT(slotMore()) );
   connect( mBtnFewer, SIGNAL(clicked()),
-	   this, SLOT(slotFewer()) );
+           this, SLOT(slotFewer()) );
   connect( mBtnClear, SIGNAL(clicked()),
-	   this, SLOT(slotClear()) );
+           this, SLOT(slotClear()) );
 
   enableControls();
 }
@@ -120,24 +124,27 @@ void KWidgetLister::slotClear()
 
   // clear remaining widgets
   Q3PtrListIterator<QWidget> it( mWidgetList );
-  for ( it.toFirst() ; it.current() ; ++it )
+  for ( it.toFirst(); it.current(); ++it ) {
     clearWidget( (*it) );
+  }
 
   //  adjustSize();
   enableControls();
   emit clearWidgets();
 }
 
-void KWidgetLister::addWidgetAtEnd(QWidget *w)
+void KWidgetLister::addWidgetAtEnd( QWidget *w )
 {
-  if (!w) w = this->createWidget(this);
+  if ( !w ) {
+    w = this->createWidget( this );
+  }
 
   mLayout->insertWidget( mLayout->indexOf( mButtonBox ), w );
   mWidgetList.append( w );
   w->show();
   enableControls();
   emit widgetAdded();
-  emit widgetAdded(w);
+  emit widgetAdded( w );
 }
 
 void KWidgetLister::removeLastWidget()
@@ -149,11 +156,12 @@ void KWidgetLister::removeLastWidget()
   emit widgetRemoved();
 }
 
-void KWidgetLister::clearWidget( QWidget* /*aWidget*/ )
+void KWidgetLister::clearWidget( QWidget *w )
 {
+  Q_UNUSED( w );
 }
 
-QWidget* KWidgetLister::createWidget( QWidget* parent )
+QWidget *KWidgetLister::createWidget( QWidget *parent )
 {
   return new QWidget( parent );
 }
@@ -164,12 +172,14 @@ void KWidgetLister::setNumberOfShownWidgetsTo( int aNum )
   int missingWidgets     = qMax( aNum - (int)mWidgetList.count(), 0 );
 
   // remove superfluous widgets
-  for ( ; superfluousWidgets ; superfluousWidgets-- )
+  for ( ; superfluousWidgets ; superfluousWidgets-- ) {
     removeLastWidget();
+  }
 
   // add missing widgets
-  for ( ; missingWidgets ; missingWidgets-- )
+  for ( ; missingWidgets ; missingWidgets-- ) {
     addWidgetAtEnd();
+  }
 }
 
 void KWidgetLister::enableControls()
