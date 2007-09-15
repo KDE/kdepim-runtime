@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Message Search Provider
+Name[de]=Akonadi-Suchdienst für E-Mail-Nachrichten
 Name[el]=Πάροχος αναζήτησης μηνυμάτων του Akonadi
 Name[es]=Proveedor de búsqueda de mensajes Akonadi
+Name[it]=Provider ricerca messaggi di Akonadi
 Name[ja]=Akonadi メッセージ検索プロバイダ
 Name[ne]=एकोनाडी सन्देश खोजी प्रदायक
 Name[pt]=Fornecedor de Pesquisa de Mensagens do Akonadi
@@ -11,8 +13,10 @@ Name[sv]=Akonadi brevsöktjänst
 Name[x-test]=xxAkonadi Message Search Providerxx
 Name[zh_TW]=Akonadi 信件搜尋提供者
 Comment=Email specific extension to Akonadi
+Comment[de]=Eine besondere E-Mail-Erweiterung für Akonadi
 Comment[el]=Επέκταση σχετική με Email για το Akonadi
 Comment[es]=Extensión específica de correo para Akonadi
+Comment[it]=Estensione specifica di Akonadi per la posta elettronica
 Comment[ja]=Akonadi のメール専用エクステンション
 Comment[ne]=एकोनाडीलाई इमेल विशिष्ट विस्तार
 Comment[pt]=Uma extensão específica do e-mail para o Akonadi

@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi VCard Resource
+Name[de]=Akonadi-Ressource für VCard
 Name[el]=Πόρος VCard του Akonadi
 Name[es]=Recurso VCard Akonadi
+Name[it]=Risorsa VCard per Akonadi
 Name[ja]=Akonadi VCard リソース
 Name[ne]=एकोनाडी भीकार्ड संसाधान
 Name[nl]=Akonadi VCard-hulpbron
@@ -12,8 +14,10 @@ Name[sv]=Akonadi VCard-resurs
 Name[x-test]=xxAkonadi VCard Resourcexx
 Name[zh_TW]=Akonadi VCard 資源
 Comment=An agent to load data from a VCard file
+Comment[de]=Agent zum Laden von Daten aus einer Visitenkarten-Datei
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από αρχεία VCard
 Comment[es]=Un agente para cargar datos de un archivo VCard local
+Comment[it]=Un agente per caricare dati da un file VCard
 Comment[ja]=VCard ファイルからデータを読み込むエージェント
 Comment[ne]=भीकार्ड फाइलबाट डेटा लोड गर्न एउटा अभिकर्ता
 Comment[pt]=Um agente para carregar dados de um ficheiro VCard

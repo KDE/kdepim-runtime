@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi OpenChange Resource
+Name[de]=Akonadi-Ressource für OpenChange
 Name[el]=Πόρος OpenChange του Akonadi
 Name[es]=Recurso OpenChange de Akonadi
+Name[it]=Risorsa OpenChange di Akonadi
 Name[ja]=Akonadi OpenChange リソース
 Name[ne]=एकोनाडी खुला परिवर्तन संसाधान
 Name[pt]=Recurso do OpenChange do Akonadi
@@ -10,8 +12,10 @@ Name[pt_BR]=Recurso do OpenChange do Akonadi
 Name[sv]=Akonadi Openchange-resurs
 Name[zh_TW]=Akonadi OpenChange 資源
 Comment=An agent to work with an OpenChange / Exchange server
+Comment[de]=Agent zur Verwendung mit Openchange- und Exchange-Servern
 Comment[el]=Ένας πελάτης για εργασία με διακομιστές OpenChange / Exchange
 Comment[es]=Un agente para trabajar con un servidor OpenChange / Exchange
+Comment[it]=Un agente per lavorare con un server OpenChange / Exchange
 Comment[ja]=OpenChange/Exchange サーバとやりとりするエージェント
 Comment[ne]=एउटा खुला परिवर्तन/साटासाट सर्भरसँग कार्य गर्न एउटा अभिकर्ता
 Comment[pt]=Um agente para trabalhar com um servidor de OpenChange / Exchange

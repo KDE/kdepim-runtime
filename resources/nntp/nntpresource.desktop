@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi NNTP Resource
+Name[de]=Akonadi-Ressource für NNTP
 Name[el]=Πόρος NNTP του Akonadi
 Name[es]=Recurso Akonadi NNTP
+Name[it]=Risorsa NNTP per Akonadi
 Name[ja]=Akonadi NNTP リソース
 Name[ne]=एकोनाडी एनएनटीपी संसाधान
 Name[nl]=Akonadi NNTP-hulpbron
@@ -12,8 +14,10 @@ Name[sv]=Akonadi NNTP-resurs
 Name[x-test]=xxAkonadi NNTP Resourcexx
 Name[zh_TW]=Akonadi NNTP 資源
 Comment=An agent to load data from a news server
+Comment[de]=Agent zum Laden von Daten von einem News-Server
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από διακομιστές νέων
 Comment[es]=Un agente para cargar datos de un servidor de noticias
+Comment[it]=Un agente per caricare dati da un server di news
 Comment[ja]=ニュースサーバからデータを読み込むエージェント
 Comment[ne]=समाचार सर्भरबाट डेटा लोड गर्न एउटा अभिकर्ता
 Comment[pt]=Um agente para carregar dados de um servidor de notícias

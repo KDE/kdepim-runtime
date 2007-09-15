@@ -1,14 +1,18 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Localbookmark Resource
+Name[de]=Akonadi-Ressource für lokale Lesezeichen
 Name[el]=Πόρος τοπικού σελιδοδείκτη του Akonadi
+Name[it]=Risorsa segnalibri locali per Akonadi
 Name[ja]=Akonadi ローカルブックマークリソース
 Name[pt]=Recurso de Favoritos Locais do Akonadi
 Name[pt_BR]=Recurso de Favoritos Locais do Akonadi
 Name[sv]=Akonadi lokal bokmärkesresurs
 Name[zh_TW]=Akonadi 本地書籤資源
 Comment=An agent to load data from a local bookmarks file
+Comment[de]=Agent zum Laden von Daten aus einer lokalen Lesezeichen-Datei
 Comment[el]=Ένας πράκτορας φόρτωσης δεδομένων από ένα τοπικό αρχείο σελιδοδεικτών
+Comment[it]=Un agente per caricare dati da un file locale di segnalibri
 Comment[ja]=ローカルのブックマークファイルからデータを読み込むエージェント
 Comment[pt]=Um agente para carregar dados a partir de um ficheiro de favoritos local
 Comment[pt_BR]=Um agente para carregar dados a partir de um ficheiro de favoritos local
