@@ -39,6 +39,8 @@
 #include <QMouseEvent>
 #include <QValidator>
 
+using namespace KPIM;
+
 class DateValidator : public QValidator
 {
   public:

@@ -41,6 +41,8 @@
 
 #include "ktimeedit.moc"
 
+using namespace KPIM;
+
 // Validator for a time value with only hours and minutes (no seconds)
 // Mostly locale aware. Author: David Faure <faure@kde.org>
 class KOTimeValidator : public QValidator

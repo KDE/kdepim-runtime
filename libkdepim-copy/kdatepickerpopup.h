@@ -21,20 +21,25 @@
 #ifndef KDATEPICKERPOPUP_H
 #define KDATEPICKERPOPUP_H
 
+#include "kdepim_export.h"
+
+#include <kdatepicker.h>
+
 #include <QDateTime>
 #include <QMenu>
 
-#include <kdepim_export.h>
-#include <kdatepicker.h>
+namespace KPIM {
 
 /**
    @short This menu helps the user to select a date quickly.
 
-   This menu helps the user to select a date quicly. It offers various ways of selecting, e.g. with a KDatePicker or with words like "Tomorrow".
+   This menu helps the user to select a date quicly. It offers various
+   ways of selecting, e.g. with a KDatePicker or with words like "Tomorrow".
 
    The available items are:
 
-   @li NoDate: A menu-item with "No Date". If chosen, the datepicker will emit a null QDate.
+   @li NoDate: A menu-item with "No Date". If chosen, the datepicker will emit
+       a null QDate.
    @li DatePicker: Show a KDatePicker-widget.
    @li Words: Show items like "Today", "Tomorrow" or "Next Week".
 
@@ -47,7 +52,11 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
   Q_OBJECT
 
   public:
-    enum ItemFlag { NoDate = 1, DatePicker = 2, Words = 4 };
+    enum ItemFlag {
+      NoDate = 1,
+      DatePicker = 2,
+      Words = 4
+    };
 
     Q_DECLARE_FLAGS( Items, ItemFlag )
 
@@ -59,7 +68,8 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
        @param parent The object's parent.
        @param name The object's name.
     */
-    KDatePickerPopup( Items items = DatePicker, const QDate &date = QDate::currentDate(),
+    KDatePickerPopup( Items items = DatePicker,
+                      const QDate &date = QDate::currentDate(),
                       QWidget *parent = 0 );
 
     /**
@@ -71,8 +81,9 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
     void setDate( const QDate &date );
 
 #if 0
-    /** Set items which should be shown and rebuilds the menu afterwards. Only if the menu is not visible.
-    @param items List of all desirable items, separated with a bitwise OR.
+    /** Set items which should be shown and rebuilds the menu afterwards.
+        Only if the menu is not visible.
+        @param items List of all desirable items, separated with a bitwise OR.
     */
     void setItems( int items = 1 );
 #endif
@@ -85,10 +96,10 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
       This signal emits the new date (selected with datepicker or other
       menu-items).
     */
-    void dateChanged ( const QDate& );
+    void dateChanged ( const QDate &date );
 
   protected Q_SLOTS:
-    void slotDateChanged ( const QDate& );
+    void slotDateChanged ( const QDate &date );
 
     void slotToday();
     void slotTomorrow();
@@ -104,5 +115,7 @@ class KDEPIM_EXPORT KDatePickerPopup: public QMenu
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( KDatePickerPopup::Items )
+
+}
 
 #endif

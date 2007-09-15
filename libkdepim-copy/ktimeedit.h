@@ -32,6 +32,8 @@
 
 class QKeyEvent;
 
+namespace KPIM {
+
 /**
   This is a class that provides an easy, user friendly way to edit times.
   up/down/ increase or decrease time, respectively.
@@ -41,7 +43,7 @@ class QKeyEvent;
 */
 class KDEPIM_EXPORT KTimeEdit : public QComboBox
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     /** constructs a new time edit. */
     explicit KTimeEdit( QWidget *parent=0, QTime qt=QTime( 12, 0 ), const char *name=0 );
@@ -85,9 +87,11 @@ class KDEPIM_EXPORT KTimeEdit : public QComboBox
     // Update the lineedit text from mTime
     void updateText();
 
-private:
+  private:
     QTime mTime;                   // the widget's displayed time.
     //QString mNoTimeString;
 };
+
+}
 
 #endif

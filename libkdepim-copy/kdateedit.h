@@ -34,6 +34,8 @@
 
 class QEvent;
 
+namespace KPIM {
+
 /**
   A date editing widget that consists of an editable combo box.
   The combo box contains the date in text form, and clicking the combo
@@ -137,5 +139,7 @@ class KDEPIM_EXPORT KDateEdit : public QComboBox
 
     QMap<QString, int> mKeywordMap;
 };
+
+}
 
 #endif

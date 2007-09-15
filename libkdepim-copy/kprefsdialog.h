@@ -38,16 +38,17 @@
 
 class KColorButton;
 class KComboBox;
+class KComponentData;
+class KUrlRequester;
 class QCheckBox;
 class QLabel;
 class QSpinBox;
 class Q3ButtonGroup;
-class KComponentData;
-class KTimeEdit;
-class KDateEdit;
-class KUrlRequester;
 
 namespace KPIM {
+
+class KDateEdit;
+class KTimeEdit;
 
 /**
   @short Base class for GUI control elements used by @ref KPrefsDialog.

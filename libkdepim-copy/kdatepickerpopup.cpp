@@ -19,12 +19,14 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include <QtCore/QDateTime>
-#include <QtGui/QWidgetAction>
+#include "kdatepickerpopup.h"
 
 #include <klocale.h>
 
-#include "kdatepickerpopup.h"
+#include <QtCore/QDateTime>
+#include <QtGui/QWidgetAction>
+
+using namespace KPIM;
 
 class KDatePickerAction : public QWidgetAction
 {
@@ -36,7 +38,7 @@ class KDatePickerAction : public QWidgetAction
     }
 
   protected:
-    QWidget* createWidget( QWidget *parent )
+    QWidget *createWidget( QWidget *parent )
     {
       mDatePicker->setParent( parent );
       return mDatePicker;
@@ -44,8 +46,9 @@ class KDatePickerAction : public QWidgetAction
 
     void deleteWidget( QWidget *widget )
     {
-      if ( widget != mDatePicker )
+      if ( widget != mDatePicker ) {
         return;
+      }
 
       mDatePicker->setParent( mOriginalParent );
     }
@@ -75,28 +78,33 @@ KDatePickerPopup::KDatePickerPopup( Items items, const QDate &date, QWidget *par
 
 void KDatePickerPopup::buildMenu()
 {
-  if ( isVisible() ) return;
+  if ( isVisible() ) {
+    return;
+  }
   clear();
 
   if ( mItems & DatePicker ) {
     addAction( new KDatePickerAction( mDatePicker, this ) );
 
-    if ( ( mItems & NoDate ) || ( mItems & Words ) )
+    if ( ( mItems & NoDate ) || ( mItems & Words ) ) {
       addSeparator();
+    }
   }
 
   if ( mItems & Words ) {
-    addAction( i18n("&Today"), this, SLOT( slotToday() ) );
-    addAction( i18n("To&morrow"), this, SLOT( slotTomorrow() ) );
-    addAction( i18n("Next &Week"), this, SLOT( slotNextWeek() ) );
-    addAction( i18n("Next M&onth"), this, SLOT( slotNextMonth() ) );
+    addAction( i18nc( "@option today", "&Today" ), this, SLOT( slotToday() ) );
+    addAction( i18nc( "@option tomorrow", "To&morrow" ), this, SLOT( slotTomorrow() ) );
+    addAction( i18nc( "@option next week", "Next &Week" ), this, SLOT( slotNextWeek() ) );
+    addAction( i18nc( "@option next month", "Next M&onth" ), this, SLOT( slotNextMonth() ) );
 
-    if ( mItems & NoDate )
+    if ( mItems & NoDate ) {
       addSeparator();
+    }
   }
 
-  if ( mItems & NoDate )
-    addAction( i18n("No Date"), this, SLOT( slotNoDate() ) );
+  if ( mItems & NoDate ) {
+    addAction( i18nc( "@option do not specify a date", "No Date" ), this, SLOT( slotNoDate() ) );
+  }
 }
 
 KDatePicker *KDatePickerPopup::datePicker() const

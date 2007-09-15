@@ -31,6 +31,8 @@
 
 #include "testdateedit.h"
 
+using namespace KPIM;
+
 DateEdit::DateEdit( QWidget *parent )
   : QWidget( parent )
 {
