@@ -27,11 +27,14 @@
 #include <kdepim_export.h>
 
 class QTreeWidgetItem;
-class KPimPrefs;
+
 namespace Ui {
 class CategoryEditDialog_base;
 }
+
 namespace KPIM {
+
+class KPimPrefs;
 
 class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
@@ -58,7 +61,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 
   Q_SIGNALS:
     void categoryConfigChanged();
-    
+
   protected:
     void fillList();
 

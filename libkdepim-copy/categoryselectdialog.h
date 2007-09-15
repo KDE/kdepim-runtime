@@ -29,10 +29,9 @@
 
 #include "ui_categoryselectdialog_base.h"
 
-class KPimPrefs;
-
 namespace KPIM {
 
+class KPimPrefs;
 class AutoCheckTreeWidget;
 
 class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog_base
