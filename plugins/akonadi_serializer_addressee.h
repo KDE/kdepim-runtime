@@ -25,7 +25,7 @@
 
 namespace Akonadi {
 
-class SerializerPluginAddresee : public ItemSerializerPlugin
+class SerializerPluginAddressee : public ItemSerializerPlugin
 {
 public:
     bool deserialize( Item& item, const QString& label, QIODevice& data );

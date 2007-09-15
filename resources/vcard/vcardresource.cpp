@@ -30,7 +30,6 @@
 #include <klocale.h>
 
 #include <QtDBus/QDBusConnection>
-
 using namespace Akonadi;
 
 VCardResource::VCardResource( const QString &id )
@@ -199,8 +198,9 @@ bool VCardResource::loadAddressees()
   file.close();
 
   KABC::Addressee::List list = mConverter.parseVCards( data );
-  for ( int i = 0; i < list.count(); ++i )
+  for ( int i = 0; i < list.count(); ++i ) {
     mAddressees.insert( list[ i ].uid(), list[ i ] );
+  }
 
   return true;
 }

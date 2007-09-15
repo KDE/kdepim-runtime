@@ -27,7 +27,7 @@
 
 using namespace Akonadi;
 
-bool SerializerPluginAddresee::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginAddressee::deserialize( Item& item, const QString& label, QIODevice& data )
 {
     if ( label != Item::PartBody )
       return false;
@@ -41,7 +41,7 @@ bool SerializerPluginAddresee::deserialize( Item& item, const QString& label, QI
     return true;
 }
 
-void SerializerPluginAddresee::serialize( const Item& item, const QString& label, QIODevice& data )
+void SerializerPluginAddressee::serialize( const Item& item, const QString& label, QIODevice& data )
 {
     if ( label != Item::PartBody || !item.hasPayload<KABC::Addressee>() )
       return;
@@ -52,5 +52,5 @@ void SerializerPluginAddresee::serialize( const Item& item, const QString& label
 extern "C"
 KDE_EXPORT Akonadi::ItemSerializerPlugin *
 libakonadi_serializer_addressee_create_item_serializer_plugin() {
-  return new SerializerPluginAddresee();
+  return new SerializerPluginAddressee();
 }
