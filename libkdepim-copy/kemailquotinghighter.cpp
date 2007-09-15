@@ -32,7 +32,7 @@
 #include <QHash>
 #include <QTextCursor>
 
-namespace Sonnet {
+namespace KPIM {
 class KEMailQuotingHighlighter::KEmailQuotingHighlighterPrivate
 {
 public:

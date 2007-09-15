@@ -28,9 +28,9 @@
 #include <kdepim_export.h>
 
 class QTextEdit;
-namespace Sonnet
+namespace KPIM
 {
-  class KDEPIM_EXPORT KEMailQuotingHighlighter : public Highlighter
+  class KDEPIM_EXPORT KEMailQuotingHighlighter : public Sonnet::Highlighter
     {
     public:
       enum SyntaxMode {
