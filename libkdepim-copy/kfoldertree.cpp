@@ -299,7 +299,7 @@ void KFolderTreeItem::paintCell( QPainter *p, const QColorGroup &cg,
    * be configurable in color. That means that paintCell needs to do
    * two painting passes which flickers. Since that flicker is not
    * needed when there is the unread column, special case that. */
-  if ( ft->isUnreadActive() || column != 0 ) {
+  if ( /*ft->isUnreadActive() ||*/ column != 0 ) {
     K3ListViewItem::paintCell( p, mycg, column, width, align );
   } else {
     Q3ListView *lv = listView();
@@ -334,7 +334,7 @@ void KFolderTreeItem::paintCell( QPainter *p, const QColorGroup &cg,
     // draw the unread-count if the unread-column is not active
     QString unread;
 
-    if ( unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) {
+    if ( !ft->isUnreadActive() && (unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) ) {
       if ( isOpen() ) {
         unread = " (" + QString::number( unreadCount ) + ')';
       } else if ( unreadRecursiveCount == unreadCount || mType == Root ) {
