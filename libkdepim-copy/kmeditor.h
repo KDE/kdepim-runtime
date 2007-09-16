@@ -22,12 +22,14 @@
 #ifndef KMEDITOR_H
 #define KMEDITOR_H
 
+#include "kdepim_export.h"
 #include <ktextedit.h>
-#include <kdepim_export.h>
 #include <qtextformat.h>
 
 class KFindDialog;
 class KUrl;
+
+namespace KPIM {
 
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
@@ -35,7 +37,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   public:
     /**
-     * Constructs a KMeditor object 
+     * Constructs a KMeditor object
      */
     explicit KMeditor( const QString& text, QWidget *parent = 0 );
 
@@ -52,7 +54,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     virtual QString quotePrefixName() const; //define by kmail
     virtual QString smartQuote( const QString & msg ); //need by kmail
 
-    void setUseExternalEditor( bool use ); 
+    void setUseExternalEditor( bool use );
     void setExternalEditorPath( const QString & path );
 
     void dragEnterEvent( QDragEnterEvent *e );
@@ -69,20 +71,20 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void wordWrapToggled( bool on);
     void setWrapColumnOrWidth( int w );
- 
+
     void setColor(const QColor&);
     void setFont(const QFont &);
 
     bool checkExternalEditorFinished();
     void killExternalEditor();
     void setCursorPositionFromStart( unsigned int pos );
-   
+
     int linePosition();
     int columnNumber ();
     void setCursorPosition( int linePos, int columnPos);
     bool appendSignature(const QString &sig, bool preserveUserCursorPos = false);
-  
-  public Q_SLOTS: 
+
+  public Q_SLOTS:
     //Text style format.
     void slotChangeParagStyle(QTextListFormat::Style _style);
     void slotAlignLeft();
@@ -115,7 +117,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void pasteImage();
     void focusUp();
 
-  public Q_SLOTS: 
+  public Q_SLOTS:
     void slotFindNext();
     void slotReplaceNext();
     void slotDoReplace();
@@ -132,5 +134,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     Q_PRIVATE_SLOT( d, void slotHighlight( const QString &, int, int ) )
 };
 
-#endif 
+}
 
+#endif

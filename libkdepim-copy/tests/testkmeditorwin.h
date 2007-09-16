@@ -22,6 +22,8 @@
 #include <QMainWindow>
 #include <kmeditor.h>
 
+using namespace KPIM;
+
 class testKMeditorWindow  : public QMainWindow
 {
     Q_OBJECT

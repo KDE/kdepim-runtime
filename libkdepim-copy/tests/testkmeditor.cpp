@@ -23,6 +23,8 @@
 
 #include <QtCore/QFile>
 
+using namespace KPIM;
+
 int main( int argc, char **argv )
 {
     KCmdLineArgs::init( argc, argv, "testkmeditor", 0, ki18n("KMeditorTest"), "1.0" , ki18n("kmeditor test app"));

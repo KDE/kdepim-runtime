@@ -22,6 +22,7 @@
 #include "kmstylelistselectaction.h"
 #include <klocale.h>
 
+using namespace KPIM;
 
 KMStyleListSelectAction::KMStyleListSelectAction( const QString& text, QWidget *parent)
  : KSelectAction(text, parent), d( 0 )
@@ -62,8 +63,8 @@ void KMStyleListSelectAction::slotStyleChanged(int styleIndex)
            paragStyle = QTextListFormat::ListUpperAlpha;
            break;
   }
- 
-  emit applyStyle(paragStyle); 
+
+  emit applyStyle(paragStyle);
 }
 
 void KMStyleListSelectAction::init()

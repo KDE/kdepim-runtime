@@ -55,6 +55,8 @@
 #include <QProcess>
 #include <QTextLayout>
 
+using namespace KPIM;
+
 class KMeditor::Private
 {
   public:
@@ -199,7 +201,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
     else
       KTextEdit::keyPressEvent( e );
   }
-  else if (e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier 
+  else if (e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier
       && textCursor().blockNumber()== 0 /*First block*/
       && textCursor().block().position() == 0)
   {
@@ -794,7 +796,7 @@ void KMeditor::killExternalEditor() {
   d->mExtEditorProcess=0;
   delete d->mExtEditorTempFileWatcher;
   d->mExtEditorTempFileWatcher=0;
-  delete d->mExtEditorTempFile; 
+  delete d->mExtEditorTempFile;
   d->mExtEditorTempFile = 0;
 }
 

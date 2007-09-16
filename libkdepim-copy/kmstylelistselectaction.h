@@ -22,9 +22,11 @@
 #ifndef KMSTYLELISTSELECTACTION_H
 #define KMSTYLELISTSELECTACTION_H
 
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 #include <KSelectAction>
 #include <qtextformat.h>
+
+namespace KPIM {
 
 class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
 {
@@ -32,13 +34,13 @@ class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
 
   public:
     /**
-     * Constructs a KMStyleListSelectAction 
+     * Constructs a KMStyleListSelectAction
      */
     explicit KMStyleListSelectAction( const QString& text, QWidget *parent = 0 );
 
     ~KMStyleListSelectAction();
-  
-  Q_SIGNALS:  
+
+  Q_SIGNALS:
     //emit style will be applyed.
     void applyStyle(QTextListFormat::Style);
   protected Q_SLOTS:
@@ -50,5 +52,7 @@ class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
     Private *const d;
 };
 
-#endif 
+}
+
+#endif
 

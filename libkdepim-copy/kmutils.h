@@ -22,13 +22,17 @@
 #ifndef KMUTILS_H
 #define KMUTILS_H
 
+#include "kdepim_export.h"
 #include <QString>
-#include <kdepim_export.h>
+
+namespace KPIM {
 
 class KDEPIM_EXPORT KMUtils {
- public:
+  public:
    static QString rot13(const QString &s);
 };
 
-#endif 
+}
+
+#endif
 

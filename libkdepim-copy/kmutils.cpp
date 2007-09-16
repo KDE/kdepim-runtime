@@ -21,6 +21,8 @@
 
 #include "kmutils.h"
 
+using namespace KPIM;
+
 QString KMUtils::rot13(const QString &s)
 {
   QString r(s);
