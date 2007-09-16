@@ -27,6 +27,7 @@
 #include <libakonadi/session.h>
 
 #include <kmime/kmime_message.h>
+#include <kmime/kmime_util.h>
 
 #include <QDate>
 #include <QDir>
@@ -188,7 +189,7 @@ void NntpResource::fetchArticleResult(KJob * job)
   }
   KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob*>( job );
   KMime::Message *msg = new KMime::Message();
-  msg->setContent( j->data() );
+  msg->setContent( KMime::CRLFtoLF( j->data() ) );
   msg->parse();
   Item item( mCurrentRef );
   item.setMimeType( "message/news" );
