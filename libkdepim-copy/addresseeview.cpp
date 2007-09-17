@@ -460,7 +460,7 @@ QString AddresseeView::pixmapAsDataUrl( const QPixmap& pixmap )
   buffer.open( QIODevice::WriteOnly );
   pixmap.save( &buffer, "PNG" );
   QString encoded( "data:image/png;base64," );
-  encoded.append( KCodecs::base64Encode( ba ) );
+  encoded.append( ba.toBase64() );
   return encoded;
 }
 
