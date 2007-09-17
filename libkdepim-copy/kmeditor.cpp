@@ -258,7 +258,7 @@ void KMeditor::createHighlighter()
    connect(emailHighLighter,SIGNAL(newSuggestions(const QString&,const QStringList&)),this, SLOT(addSuggestion(const QString&,const QStringList&)) );
 
    //TODO change config
-   setHightighter(emailHighLighter);
+   setHighlighter(emailHighLighter);
 }
 
 
