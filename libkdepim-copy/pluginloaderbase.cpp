@@ -123,7 +123,7 @@ namespace KPIM {
     mPluginMap[ type ] = pmd;
 
     const QString factory_name = libName + '_' + mf_name;
-    KLibrary::void_function_ptr sym = lib->resolveFunction( factory_name.toLatin1() );
+    KLibrary::void_function_ptr sym = const_cast<KLibrary*>( lib )->resolveFunction( factory_name.toLatin1() );
     if ( !sym ) {
       warning() << "No symbol named \"" << factory_name.toLatin1() << "\" (" << factory_name << ") was found in library \"" << libName << "\"" << endl;
       return 0;
