@@ -1076,11 +1076,13 @@ AddressesDialog::addDistributionLists()
 
 #ifdef KDEPIM_NEW_DISTRLISTS
     KPIM::DistributionList::Entry::List::Iterator itemIt;
+    for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
+      addAddresseeToAvailable( (*itemIt).addressee, item, false );
 #else
     KABC::DistributionList::Entry::List::Iterator itemIt;
-#endif
     for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
       addAddresseeToAvailable( (*itemIt).addressee(), item, false );
+#endif
   }
 }
 
