@@ -28,7 +28,7 @@ Comment[zh_CN]=能和 OpenChange/Exchange 服务器协同工作的代理器
 Comment[zh_TW]=與 OpenChange / Exchagne 伺服器運作的代理程式
 Type=AkonadiResource
 Exec=akonadi_oc_resource
-Icon=ocresource
+Icon=mail
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=message/rfc822

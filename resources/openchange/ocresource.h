@@ -31,31 +31,6 @@ extern "C" {
 #include <talloc.h>
 }
 
-#include <QDialog>
-#include <QListWidget>
-class OCResource;
-
-class ProfileDialog : public QDialog
-{
-  Q_OBJECT
-
-  public:
-    explicit ProfileDialog( OCResource *resource, QWidget *parent = 0 );
-
-  private Q_SLOTS:
-    void addNewProfile();
-    void deleteSelectedProfile();
-    void editExistingProfile();
-    void setAsDefaultProfile();
-
-  private:
-    void fillProfileList();
-
-    OCResource *m_resource;
-    QListWidget *m_listOfProfiles;
-};
-
-
 class OCResource : public Akonadi::ResourceBase
 {
     Q_OBJECT
@@ -79,13 +54,19 @@ protected:
     void synchronizeCollection( const Akonadi::Collection &col );
 
 private:
+    void login();
+    void appendMessageToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection );
+    void appendContactToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection,
+				    mapi_object_t *collection_object);
     enum MAPISTATUS fetchFolder( const Akonadi::Collection &collection );
+    QString mimeTypeForFolderType( const char *folderTypeValue ) const;
 
     // this method may recurse into itself.
     void getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
                           const Akonadi::Collection &parentCollection,
                           Akonadi::Collection::List &collections);
 
+    QString m_profileName;
     mapi_object_t m_mapiStore;
     struct mapi_session *m_session;
     TALLOC_CTX *m_mapiMemoryContext;
