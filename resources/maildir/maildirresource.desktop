@@ -11,6 +11,7 @@ Name[ne]=एकोनाडी पत्र डाइरेक्टरी स�
 Name[pt]=Recurso do Maildir do Akonadi
 Name[pt_BR]=Recurso do Maildir do Akonadi
 Name[sv]=Akonadi Maildir-resurs
+Name[zh_CN]=Akonadi Maildir 资源
 Name[zh_TW]=Akonadi Maildir 資源
 Type=AkonadiResource
 Exec=akonadi_maildir_resource

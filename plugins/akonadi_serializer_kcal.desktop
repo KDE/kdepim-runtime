@@ -9,6 +9,7 @@ Name[ne]=घटना मिलानकर्ता
 Name[pt]=Serializador de Incidências
 Name[pt_BR]=Serializador de Incidências
 Name[sv]=Förekomstserialisering
+Name[zh_CN]=事件序列转换器
 Name[zh_TW]=頻率序列器
 Comment=An Akonadi serializer plugin for events, tasks and journal entries
 Comment[el]=Ένα πρόσθετο διαχείρισης γεγονότων, εργασιών και καταχωρήσεων χρονικού για το Akonadi
@@ -19,6 +20,7 @@ Comment[ne]=घटना, कार्य र जर्नल भौचरका
 Comment[pt]=Um 'plugin' de serialização do Akonadi para os eventos, tarefas e itens do diário
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os eventos, tarefas e itens do diário
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av händelser, uppgifter och journalanteckningar
+Comment[zh_CN]=对事项、任务和日记项进行序列转换的 Akonadi 插件
 Comment[zh_TW]=事件、工作與日誌項目物件的 Akonadi 序列器外掛程式
 
 [Plugin]

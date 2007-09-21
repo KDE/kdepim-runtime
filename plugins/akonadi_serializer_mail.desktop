@@ -10,6 +10,7 @@ Name[pt]=Serializador de Correio
 Name[pt_BR]=Serializador de Correio
 Name[sv]=E-postserialisering
 Name[x-test]=xxMail Serializerxx
+Name[zh_CN]=邮件序列转换器
 Name[zh_TW]=信件序列器
 Comment=An Akonadi serializer plugin for mail objects
 Comment[el]=Ένα πρόσθετο διαχείρισης αντικειμένων αλληλογραφίας για το Akonadi
@@ -21,6 +22,7 @@ Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos de correio
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os objectos de correio
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av e-postobjekt
 Comment[x-test]=xxAn Akonadi serializer plugin for mail objectsxx
+Comment[zh_CN]=对邮件对象进行序列转换的 Akonadi 插件
 Comment[zh_TW]=信件物件的 Akonadi 序列器外掛程式
 
 [Plugin]
