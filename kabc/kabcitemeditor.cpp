@@ -25,10 +25,13 @@
 #include <QtGui/QMessageBox>
 
 #include <kabc/addressee.h>
+#include <kabc/phonenumber.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/monitor.h>
 #include <libakonadi/session.h>
+
+#include "ui_kabcitemeditor.h"
 
 class KABCItemEditor::Private
 {
@@ -47,11 +50,13 @@ class KABCItemEditor::Private
     void storeDone( KJob* );
     void itemChanged( const Akonadi::Item &item, const QStringList& );
 
+    void loadContact( const KABC::Addressee &addr );
+    void storeContact( KABC::Addressee &addr );
+
     KABCItemEditor *mParent;
-    QLineEdit *mGivenName;
-    QLineEdit *mFamilyName;
     Akonadi::Item mItem;
     Akonadi::Monitor *mMonitor;
+    Ui::KABCItemEditor gui;
 };
 
 void KABCItemEditor::Private::fetchDone( KJob *job )
@@ -63,11 +68,13 @@ void KABCItemEditor::Private::fetchDone( KJob *job )
   if ( !fetchJob )
     return;
 
+  if ( fetchJob->items().isEmpty() )
+    return;
+
   mItem = fetchJob->items().first();
 
   const KABC::Addressee addr = mItem.payload<KABC::Addressee>();
-  mGivenName->setText( addr.givenName() );
-  mFamilyName->setText( addr.familyName() );
+  loadContact( addr );
 }
 
 void KABCItemEditor::Private::storeDone( KJob *job )
@@ -90,22 +97,155 @@ void KABCItemEditor::Private::itemChanged( const Akonadi::Item &item, const QStr
   }
 }
 
+void KABCItemEditor::Private::loadContact( const KABC::Addressee &addr )
+{
+  // Names
+  gui.mGivenName->setText( addr.givenName() );
+  gui.mFamilyName->setText( addr.familyName() );
+  gui.mFormattedName->setText( addr.formattedName() );
+  gui.mNickName->setText( addr.nickName() );
+
+  // Internet
+  const QStringList emails = addr.emails();
+  if ( emails.count() > 0 )
+    gui.mEMail->setText( emails.at( 0 ) );
+  else
+    gui.mEMail->setText( QString() );
+
+  if ( emails.count() > 1 )
+    gui.mAdditionalEMail->setText( emails.at( 1 ) );
+  else
+    gui.mAdditionalEMail->setText( QString() );
+
+  gui.mHomepage->setText( addr.url().url() );
+
+  // Phones
+  gui.mWorkPhone->setText( addr.phoneNumber( KABC::PhoneNumber::Work ).number() );
+  gui.mHomePhone->setText( addr.phoneNumber( KABC::PhoneNumber::Home ).number() );
+  gui.mMobilePhone->setText( addr.phoneNumber( KABC::PhoneNumber::Cell ).number() );
+  gui.mFaxPhone->setText( addr.phoneNumber( KABC::PhoneNumber::Fax ).number() );
+  gui.mPagerPhone->setText( addr.phoneNumber( KABC::PhoneNumber::Pager ).number() );
+
+  // Address Home
+  KABC::Address homeAddress = addr.address( KABC::Address::Home );
+  gui.mHomeStreet->setText( homeAddress.street() );
+  gui.mHomeCity->setText( homeAddress.locality() );
+  gui.mHomeState->setText( homeAddress.region() );
+  gui.mHomePostalCode->setText( homeAddress.postalCode() );
+  gui.mHomeCountry->setText( homeAddress.country() );
+
+  // Address Work
+  gui.mTitle->setText( addr.title() );
+  gui.mDepartment->setText( addr.department() );
+  gui.mOrganization->setText( addr.organization() );
+
+  KABC::Address workAddress = addr.address( KABC::Address::Work );
+  gui.mWorkStreet->setText( workAddress.street() );
+  gui.mWorkCity->setText( workAddress.locality() );
+  gui.mWorkState->setText( workAddress.region() );
+  gui.mWorkPostalCode->setText( workAddress.postalCode() );
+  gui.mWorkCountry->setText( workAddress.country() );
+
+  // Customs
+
+  // Notes
+  gui.mNote->setPlainText( addr.note() );
+}
+
+void KABCItemEditor::Private::storeContact( KABC::Addressee &addr )
+{
+  // Names
+  addr.setGivenName( gui.mGivenName->text() );
+  addr.setFamilyName( gui.mFamilyName->text() );
+  if ( !gui.mFormattedName->text().isEmpty() )
+    addr.setFormattedName( gui.mFormattedName->text() );
+  else
+    addr.setFormattedName( QString::fromLatin1( "%1 %2" ).arg( addr.givenName() ).arg( addr.familyName() ) );
+  addr.setNickName( gui.mNickName->text() );
+
+  // Internet
+  QStringList emails;
+  if ( !gui.mEMail->text().isEmpty() )
+    emails.append( gui.mEMail->text() );
+  if ( !gui.mAdditionalEMail->text().isEmpty() )
+    emails.append( gui.mAdditionalEMail->text() );
+  addr.setEmails( emails );
+  addr.setUrl( gui.mHomepage->text() );
+
+  // Phones
+  if ( gui.mWorkPhone->text().isEmpty() )
+    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Work ) );
+  else
+    addr.insertPhoneNumber( KABC::PhoneNumber( gui.mWorkPhone->text(), KABC::PhoneNumber::Work ) );
+  if ( gui.mHomePhone->text().isEmpty() )
+    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Home ) );
+  else
+    addr.insertPhoneNumber( KABC::PhoneNumber( gui.mHomePhone->text(), KABC::PhoneNumber::Home ) );
+  if ( gui.mMobilePhone->text().isEmpty() )
+    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Cell ) );
+  else
+    addr.insertPhoneNumber( KABC::PhoneNumber( gui.mMobilePhone->text(), KABC::PhoneNumber::Cell ) );
+  if ( gui.mFaxPhone->text().isEmpty() )
+    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Fax ) );
+  else
+    addr.insertPhoneNumber( KABC::PhoneNumber( gui.mFaxPhone->text(), KABC::PhoneNumber::Fax ) );
+  if ( gui.mPagerPhone->text().isEmpty() )
+    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Pager ) );
+  else
+    addr.insertPhoneNumber( KABC::PhoneNumber( gui.mPagerPhone->text(), KABC::PhoneNumber::Pager ) );
+
+  // Address Home
+  if ( gui.mHomeStreet->text().isEmpty() &&
+       gui.mHomeCity->text().isEmpty() &&
+       gui.mHomeState->text().isEmpty() &&
+       gui.mHomePostalCode->text().isEmpty() &&
+       gui.mHomeCountry->text().isEmpty() ) {
+    addr.removeAddress( addr.address( KABC::Address::Home ) );
+  } else {
+    KABC::Address homeAddress( KABC::Address::Home );
+    homeAddress.setStreet( gui.mHomeStreet->text() );
+    homeAddress.setLocality( gui.mHomeCity->text() );
+    homeAddress.setRegion( gui.mHomeState->text() );
+    homeAddress.setPostalCode( gui.mHomePostalCode->text() );
+    homeAddress.setCountry( gui.mHomeCountry->text() );
+
+    addr.insertAddress( homeAddress );
+  }
+
+  // Address Work
+  addr.setTitle( gui.mTitle->text() );
+  addr.setDepartment( gui.mDepartment->text() );
+  addr.setOrganization( gui.mOrganization->text() );
+
+  if ( gui.mWorkStreet->text().isEmpty() &&
+       gui.mWorkCity->text().isEmpty() &&
+       gui.mWorkState->text().isEmpty() &&
+       gui.mWorkPostalCode->text().isEmpty() &&
+       gui.mWorkCountry->text().isEmpty() ) {
+    addr.removeAddress( addr.address( KABC::Address::Work ) );
+  } else {
+    KABC::Address workAddress( KABC::Address::Work );
+    workAddress.setStreet( gui.mWorkStreet->text() );
+    workAddress.setLocality( gui.mWorkCity->text() );
+    workAddress.setRegion( gui.mWorkState->text() );
+    workAddress.setPostalCode( gui.mWorkPostalCode->text() );
+    workAddress.setCountry( gui.mWorkCountry->text() );
+
+    addr.insertAddress( workAddress );
+  }
+
+  // Customs
+
+  // Notes
+  addr.setNote( gui.mNote->toPlainText() );
+}
+
+
+
 KABCItemEditor::KABCItemEditor( QWidget *parent )
   : QWidget( parent ), d( new Private( this ) )
 {
-  QGridLayout *layout = new QGridLayout( this );
-
-  QLabel *label = new QLabel( QLatin1String( "Given Name:" ), this );
-  layout->addWidget( label, 0, 0 );
-
-  d->mGivenName = new QLineEdit( this );
-  layout->addWidget( d->mGivenName, 0, 1 );
-
-  label = new QLabel( QLatin1String( "Family Name:" ), this );
-  layout->addWidget( label, 1, 0 );
-
-  d->mFamilyName = new QLineEdit( this );
-  layout->addWidget( d->mFamilyName, 1, 1 );
+  d->gui.setupUi( this );
 }
 
 
@@ -137,9 +277,7 @@ void KABCItemEditor::save()
 
   KABC::Addressee addr = d->mItem.payload<KABC::Addressee>();
 
-  addr.setGivenName( d->mGivenName->text() );
-  addr.setFamilyName( d->mFamilyName->text() );
-  addr.setFormattedName( QString::fromLatin1( "%1 %2" ).arg( addr.givenName() ).arg( addr.familyName() ) );
+  d->storeContact( addr );
 
   d->mItem.setPayload<KABC::Addressee>( addr );
 

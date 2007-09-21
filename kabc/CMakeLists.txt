@@ -16,6 +16,7 @@ set( kabcakonadi_LIB_SRC
   kabcmodel.cpp
 )
 
+qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
 kde4_add_library( kabcakonadi SHARED ${kabcakonadi_LIB_SRC} )
 
 target_link_libraries( kabcakonadi akonadi ${KDE4_KABC_LIBS} )
