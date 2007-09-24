@@ -1,3 +1,4 @@
+set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 ########### next target ###############
 
@@ -7,7 +8,7 @@ set(testwizard_SRCS testwizard.cpp )
 kde4_add_kcfg_files(testwizard_SRCS myconfig.kcfgc )
 
 
-kde4_add_test_executable(testwizard ${testwizard_SRCS})
+kde4_add_executable(testwizard TEST ${testwizard_SRCS})
 
 target_link_libraries(testwizard  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -18,7 +19,7 @@ set(testaddresseelineedit_SRCS testaddresseelineedit.cpp )
 
 
 
-kde4_add_test_executable(testaddresseelineedit ${testaddresseelineedit_SRCS})
+kde4_add_executable(testaddresseelineedit TEST ${testaddresseelineedit_SRCS})
 
 target_link_libraries(testaddresseelineedit  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -29,7 +30,7 @@ set(testaddresseeselector_SRCS testaddresseeselector.cpp )
 
 
 
-kde4_add_test_executable(testaddresseeselector ${testaddresseeselector_SRCS})
+kde4_add_executable(testaddresseeselector TEST ${testaddresseeselector_SRCS})
 
 target_link_libraries(testaddresseeselector  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -39,7 +40,7 @@ target_link_libraries(testaddresseeselector  kdepim ${KDE4_KDECORE_LIBS} )
 set(testdateedit_SRCS testdateedit.cpp )
 
 
-kde4_add_test_executable(testdateedit ${testdateedit_SRCS})
+kde4_add_executable(testdateedit TEST ${testdateedit_SRCS})
 
 target_link_libraries(testdateedit  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -48,7 +49,7 @@ target_link_libraries(testdateedit  kdepim ${KDE4_KDECORE_LIBS} )
 set(testdistrlist_SRCS testdistrlist.cpp )
 
 
-kde4_add_test_executable(testdistrlist ${testdistrlist_SRCS})
+kde4_add_executable(testdistrlist TEST ${testdistrlist_SRCS})
 
 target_link_libraries(testdistrlist  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -57,7 +58,7 @@ target_link_libraries(testdistrlist  kdepim ${KDE4_KDECORE_LIBS} )
 set(testldapclient_SRCS testldapclient.cpp )
 
 
-kde4_add_test_executable(testldapclient ${testldapclient_SRCS})
+kde4_add_executable(testldapclient TEST ${testldapclient_SRCS})
 
 target_link_libraries(testldapclient  kdepim ${KDE4_KDECORE_LIBS} )
 
@@ -66,7 +67,7 @@ target_link_libraries(testldapclient  kdepim ${KDE4_KDECORE_LIBS} )
 set(testkmeditor_SRCS testkmeditor.cpp )
 
 
-kde4_add_test_executable(testkmeditor ${testkmeditor_SRCS})
+kde4_add_executable(testkmeditor TEST ${testkmeditor_SRCS})
 
 target_link_libraries(testkmeditor  kdepim ${KDE4_KDEUI_LIBS} )
 
@@ -77,7 +78,7 @@ target_link_libraries(testkmeditor  kdepim ${KDE4_KDEUI_LIBS} )
 set(testkmeditorwin_SRCS testkmeditorwin.cpp )
 
 
-kde4_add_test_executable(testkmeditorwin ${testkmeditorwin_SRCS})
+kde4_add_executable(testkmeditorwin TEST ${testkmeditorwin_SRCS})
 
 target_link_libraries(testkmeditorwin  kdepim ${KDE4_KDEUI_LIBS} )
 

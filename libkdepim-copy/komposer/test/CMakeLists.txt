@@ -1,3 +1,4 @@
+set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 
 
@@ -7,7 +8,7 @@
 set(test_SRCS test.cpp )
 
 
-kde4_add_test_executable(test ${test_SRCS})
+kde4_add_executable(test TEST ${test_SRCS})
 
 target_link_libraries(test  ${KDE4_KDECORE_LIBS} )
 

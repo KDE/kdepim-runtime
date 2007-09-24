@@ -1,3 +1,4 @@
+set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 
 
@@ -9,7 +10,7 @@ set(testfactory_SRCS main.cpp managertest.cpp )
 
 
 
-kde4_add_test_executable(testfactory ${testfactory_SRCS})
+kde4_add_executable(testfactory TEST ${testfactory_SRCS})
 
 target_link_libraries(testfactory  ${KDE4_KDECORE_LIBS} komposer )
 
@@ -22,7 +23,7 @@ set(testmanager_SRCS testmanager.cpp )
 
 
 
-kde4_add_test_executable(testmanager ${testmanager_SRCS})
+kde4_add_executable(testmanager TEST ${testmanager_SRCS})
 
 target_link_libraries(testmanager  ${KDE4_KDECORE_LIBS} komposer )
 
