@@ -1,0 +1,32 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="kcontactmanager" version="1">
+
+  <MenuBar>
+    <Menu name="file" noMerge="1"><text>&amp;File</text>
+      <Action name="file_new_contact"/>
+      <Action name="file_new_group"/>
+      <Separator/>
+      <Action name="file_print"/>
+      <Separator/>
+      <Action name="file_quit"/>
+    </Menu>
+
+    <Menu name="edit" noMerge="1"><text>&amp;Edit</text>
+      <Action name="edit_cut"/>
+      <Action name="edit_copy"/>
+    </Menu>
+
+    <Menu name="settings" noMerge="1"><text>&amp;Settings</text>
+      <Action name="options_configure_keybinding"/>
+      <Action name="options_configure_toolbars"/>
+      <Action name="options_configure"/>
+    </Menu>
+
+  </MenuBar>
+
+  <ToolBar name="mainToolBar" noMerge="1"><text>Main Toolbar</text>
+    <Action name="file_new_contact"/>
+    <Action name="file_new_group"/>
+  </ToolBar>
+
+</kpartgui>

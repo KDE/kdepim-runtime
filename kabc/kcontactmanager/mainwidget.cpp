@@ -18,6 +18,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include <QtGui/QAction>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListView>
 #include <QtGui/QSplitter>
@@ -27,15 +28,21 @@
 #include <libakonadi/collectionview.h>
 #include <libakonadi/itemview.h>
 
+#include <kactioncollection.h>
 #include <kabc/kabcmodel.h>
 #include <kabc/kabcitembrowser.h>
+#include <kicon.h>
+#include <klocale.h>
+#include <kxmlguiclient.h>
 
 #include "mainwidget.h"
 
-MainWidget::MainWidget( QWidget *parent )
-  : QWidget( parent )
+MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
+  : QWidget( parent ),
+    mGuiClient( guiClient )
 {
   setupGui();
+  setupActions();
 
   mCollectionModel = new Akonadi::CollectionModel( this );
 
@@ -76,3 +83,33 @@ void MainWidget::setupGui()
   mContactDetails = new KABCItemBrowser;
   splitter->addWidget( mContactDetails );
 }
+
+void MainWidget::setupActions()
+{
+  QAction *action = 0;
+  KActionCollection *collection = mGuiClient->actionCollection();
+
+  action = collection->addAction( "file_new_contact" );
+  action->setIcon( KIcon( "add-user" ) );
+  action->setText( i18n( "&New Contact..." ) );
+  connect( action, SIGNAL( triggered(bool) ), SLOT( newContact() ));
+  action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_N ) );
+  action->setWhatsThis( i18n( "Create a new contact<p>You will be presented with a dialog where you can add all data about a person, including addresses and phone numbers.</p>" ) );
+
+  action = collection->addAction( "file_new_group" );
+  action->setIcon( KIcon( "add-user" ) ); //TODO: new icon
+  action->setText( i18n( "&New Group..." ) );
+  connect( action, SIGNAL( triggered(bool) ), SLOT( newGroup() ));
+  action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_G ) );
+  action->setWhatsThis( i18n( "Create a new group<p>You will be presented with a dialog where you can add a new group of contacts.</p>" ) );
+}
+
+void MainWidget::newContact()
+{
+}
+
+void MainWidget::newGroup()
+{
+}
+
+#include "mainwidget.moc"

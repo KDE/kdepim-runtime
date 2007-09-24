@@ -18,18 +18,37 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include <kactioncollection.h>
+#include <kstandardaction.h>
+#include <ktoolbar.h>
+
 #include "mainwidget.h"
 
 #include "mainwindow.h"
 
 MainWindow::MainWindow()
-  : KMainWindow( 0 )
+  : KXmlGuiWindow( 0 )
 {
-  mMainWidget = new MainWidget( this );
+  mMainWidget = new MainWidget( this, this );
 
   setCentralWidget( mMainWidget );
+
+  initActions();
+
+  setStandardToolBarMenuEnabled( true );
+
+  createGUI( "kcontactmanagerui.rc" );
+
+  toolBar()->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+
+  setAutoSaveSettings();
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::initActions()
+{
+  KStandardAction::quit( this, SLOT( close() ), actionCollection() );
 }

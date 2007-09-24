@@ -31,17 +31,23 @@ class ItemView;
 
 class KABCModel;
 class KABCItemBrowser;
+class KXMLGUIClient;
 
 class MainWidget : public QWidget
 {
   Q_OBJECT
 
   public:
-    MainWidget( QWidget *parent = 0 );
+    MainWidget( KXMLGUIClient *guiClient, QWidget *parent = 0 );
     ~MainWidget();
+
+  private Q_SLOTS:
+    void newContact();
+    void newGroup();
 
   private:
     void setupGui();
+    void setupActions();
 
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::ItemView *mContactView;
@@ -49,6 +55,8 @@ class MainWidget : public QWidget
 
     Akonadi::CollectionView *mCollectionView;
     KABCModel *mContactModel;
+
+    KXMLGUIClient *mGuiClient;
 };
 
 #endif

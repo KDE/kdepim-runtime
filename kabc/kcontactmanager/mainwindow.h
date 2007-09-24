@@ -21,17 +21,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <kmainwindow.h>
+#include <kxmlguiwindow.h>
 
 class MainWidget;
 
-class MainWindow : public KMainWindow
+class MainWindow : public KXmlGuiWindow
 {
   public:
     MainWindow();
     ~MainWindow();
 
   private:
+    void initActions();
+
     MainWidget *mMainWidget;
 };
 
