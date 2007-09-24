@@ -24,8 +24,10 @@
 #include <QtGui/QWidget>
 
 namespace Akonadi {
+class CollectionFilterProxyModel;
 class CollectionModel;
 class CollectionView;
+class DataReference;
 class ItemView;
 }
 
@@ -45,11 +47,17 @@ class MainWidget : public QWidget
     void newContact();
     void newGroup();
 
+    void editItem( const Akonadi::DataReference &item );
+
   private:
     void setupGui();
     void setupActions();
 
+    void editContact( const Akonadi::DataReference &contact );
+    void editGroup( const Akonadi::DataReference &group );
+
     Akonadi::CollectionModel *mCollectionModel;
+    Akonadi::CollectionFilterProxyModel *mCollectionFilterModel;
     Akonadi::ItemView *mContactView;
     KABCItemBrowser *mContactDetails;
 

@@ -35,6 +35,8 @@
 #include <klocale.h>
 #include <kxmlguiclient.h>
 
+#include "contacteditordialog.h"
+
 #include "mainwidget.h"
 
 MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
@@ -46,13 +48,13 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
 
   mCollectionModel = new Akonadi::CollectionModel( this );
 
-  Akonadi::CollectionFilterProxyModel *filter = new Akonadi::CollectionFilterProxyModel();
-  filter->addMimeType( "text/x-vcard" );
-  filter->addMimeType( "text/directory" );
-  filter->addMimeType( "text/vcard" );
-  filter->setSourceModel( mCollectionModel );
+  mCollectionFilterModel = new Akonadi::CollectionFilterProxyModel();
+  mCollectionFilterModel->addMimeType( "text/x-vcard" );
+  mCollectionFilterModel->addMimeType( "text/directory" );
+  mCollectionFilterModel->addMimeType( "text/vcard" );
+  mCollectionFilterModel->setSourceModel( mCollectionModel );
 
-  mCollectionView->setModel( filter );
+  mCollectionView->setModel( mCollectionFilterModel );
 
   mContactModel = new KABCModel( this );
   mContactView->setModel( mContactModel );
@@ -61,6 +63,8 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
            mContactModel, SLOT( setCollection( const Akonadi::Collection& ) ) );
   connect( mContactView, SIGNAL( currentChanged( const Akonadi::DataReference& ) ),
            mContactDetails, SLOT( setUid( const Akonadi::DataReference& ) ) );
+  connect( mContactView, SIGNAL( activated( const Akonadi::DataReference& ) ),
+           this, SLOT( editItem( const Akonadi::DataReference& ) ) );
 }
 
 MainWidget::~MainWidget()
@@ -106,9 +110,34 @@ void MainWidget::setupActions()
 
 void MainWidget::newContact()
 {
+  ContactEditorDialog dlg( ContactEditorDialog::CreateMode, mCollectionFilterModel, this );
+  dlg.exec();
 }
 
 void MainWidget::newGroup()
+{
+}
+
+void MainWidget::editItem( const Akonadi::DataReference &reference )
+{
+  const QModelIndex index = mContactModel->indexForItem( reference, 0 );
+  const Akonadi::Item item = mContactModel->itemForIndex( index );
+
+  if ( item.mimeType() == "text/directory" || item.mimeType() == "text/vcard" ) {
+    editContact( reference );
+  } else if ( item.mimeType() == "text/distributionlist" ) {
+    editGroup( reference );
+  }
+}
+
+void MainWidget::editContact( const Akonadi::DataReference &contact )
+{
+  ContactEditorDialog dlg( ContactEditorDialog::EditMode, mCollectionFilterModel, this );
+  dlg.setContact( contact );
+  dlg.exec();
+}
+
+void MainWidget::editGroup( const Akonadi::DataReference &group )
 {
 }
 
