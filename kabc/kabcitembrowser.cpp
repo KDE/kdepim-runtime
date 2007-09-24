@@ -21,6 +21,7 @@
 
 #include <kabc/addressee.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <klocale.h>
 #include <kstringhandler.h>
 
@@ -39,6 +40,8 @@ KABCItemBrowser::~KABCItemBrowser()
 
 QString KABCItemBrowser::itemToRichText( const Akonadi::Item &item )
 {
+  static QPixmap defaultPixmap = KIcon( QLatin1String( "personal" ) ).pixmap( QSize( 100, 140 ) );
+
   const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
   setWindowTitle( i18n( "Contact %1", addr.assembledName() ) );
@@ -47,6 +50,10 @@ QString KABCItemBrowser::itemToRichText( const Akonadi::Item &item )
     document()->addResource( QTextDocument::ImageResource,
                              QUrl( QLatin1String( "contact_photo" ) ),
                              addr.photo().data() );
+  } else {
+    document()->addResource( QTextDocument::ImageResource,
+                             QUrl( QLatin1String( "contact_photo" ) ),
+                             defaultPixmap );
   }
 
   return addresseeToHtml( addr );
