@@ -26,6 +26,7 @@
 
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
+#include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/monitor.h>
@@ -52,10 +53,13 @@ class KABCItemEditor::Private
 
     void loadContact( const KABC::Addressee &addr );
     void storeContact( KABC::Addressee &addr );
+    void setupMonitor();
 
     KABCItemEditor *mParent;
+    KABCItemEditor::Mode mMode;
     Akonadi::Item mItem;
     Akonadi::Monitor *mMonitor;
+    Akonadi::Collection mDefaultCollection;
     Ui::KABCItemEditor gui;
 };
 
@@ -79,9 +83,18 @@ void KABCItemEditor::Private::fetchDone( KJob *job )
 
 void KABCItemEditor::Private::storeDone( KJob *job )
 {
+  if ( job->error() ) {
+    emit mParent->error( job->errorString() );
+    return;
+  }
+
+  if ( mMode == EditMode )
+    emit mParent->contactStored( mItem.reference() );
+  else if ( mMode == CreateMode )
+    emit mParent->contactStored( static_cast<Akonadi::ItemAppendJob*>( job )->reference() );
 }
 
-void KABCItemEditor::Private::itemChanged( const Akonadi::Item &item, const QStringList& )
+void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringList& )
 {
   QMessageBox dlg( mParent );
 
@@ -240,11 +253,21 @@ void KABCItemEditor::Private::storeContact( KABC::Addressee &addr )
   addr.setNote( gui.mNote->toPlainText() );
 }
 
+void KABCItemEditor::Private::setupMonitor()
+{
+  delete mMonitor;
+  mMonitor = new Akonadi::Monitor;
+  mMonitor->ignoreSession( Akonadi::Session::defaultSession() );
+
+  connect( mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QStringList& ) ),
+           mParent, SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
+}
 
 
-KABCItemEditor::KABCItemEditor( QWidget *parent )
+KABCItemEditor::KABCItemEditor( Mode mode, QWidget *parent )
   : QWidget( parent ), d( new Private( this ) )
 {
+  d->mMode = mode;
   d->gui.setupUi( this );
 }
 
@@ -253,37 +276,53 @@ KABCItemEditor::~KABCItemEditor()
 {
 }
 
-void KABCItemEditor::setUid( const Akonadi::DataReference &uid )
+void KABCItemEditor::loadContact( const Akonadi::DataReference &uid )
 {
+  if ( d->mMode == CreateMode )
+    Q_ASSERT_X( false, "KABCItemEditor::loadContact", "You are calling loadContact in CreateMode!" );
+
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( uid );
   job->addFetchPart( Akonadi::Item::PartBody );
 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 
-  delete d->mMonitor;
-  d->mMonitor = new Akonadi::Monitor;
-  d->mMonitor->ignoreSession( Akonadi::Session::defaultSession() );
-
-  connect( d->mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QStringList& ) ),
-           this, SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
-
+  d->setupMonitor();
   d->mMonitor->monitorItem( uid );
 }
 
-void KABCItemEditor::save()
+void KABCItemEditor::saveContact()
 {
-  if ( !d->mItem.isValid() )
-    return;
+  if ( d->mMode == EditMode ) {
+    if ( !d->mItem.isValid() )
+      return;
 
-  KABC::Addressee addr = d->mItem.payload<KABC::Addressee>();
+    KABC::Addressee addr = d->mItem.payload<KABC::Addressee>();
 
-  d->storeContact( addr );
+    d->storeContact( addr );
 
-  d->mItem.setPayload<KABC::Addressee>( addr );
+    d->mItem.setPayload<KABC::Addressee>( addr );
 
-  Akonadi::ItemStoreJob *job = new Akonadi::ItemStoreJob( d->mItem );
-  job->storePayload();
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
+    Akonadi::ItemStoreJob *job = new Akonadi::ItemStoreJob( d->mItem );
+    job->storePayload();
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
+  } else if ( d->mMode == CreateMode ) {
+    Q_ASSERT_X( d->mDefaultCollection.isValid(), "KABCItemEditor::saveContact", "Using invalid default collection for saving!" );
+
+    KABC::Addressee addr;
+    d->storeContact( addr );
+
+    Akonadi::Item item;
+    item.setPayload<KABC::Addressee>( addr );
+    item.setMimeType( QLatin1String( "text/vcard" ) );
+
+    Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( item, d->mDefaultCollection );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
+  }
+}
+
+void KABCItemEditor::setDefaultCollection( const Akonadi::Collection &collection )
+{
+  d->mDefaultCollection = collection;
 }
 
 #include "kabcitemeditor.moc"

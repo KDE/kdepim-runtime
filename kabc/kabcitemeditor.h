@@ -24,6 +24,7 @@
 #include <QtGui/QWidget>
 
 namespace Akonadi {
+class Collection;
 class DataReference;
 class Item;
 }
@@ -33,13 +34,55 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
   Q_OBJECT
 
   public:
-    KABCItemEditor( QWidget *parent = 0 );
+    enum Mode
+    {
+      CreateMode, ///< Creates a new contact
+      EditMode    ///< Edits an existing contact
+    };
+
+    /**
+     * Creates a new contact editor.
+     *
+     * @param mode The mode of the editor.
+     * @param parent The parent widget of the editor.
+     */
+    KABCItemEditor( Mode mode, QWidget *parent = 0 );
+
+    /**
+     * Destroys the contact editor.
+     */
     virtual ~KABCItemEditor();
 
-    void setUid( const Akonadi::DataReference &uid );
-
   public Q_SLOTS:
-    void save();
+    /**
+     * Loads the contact with the given @p uid into the editor.
+     */
+    void loadContact( const Akonadi::DataReference &uid );
+
+    /**
+     * Saves the contact from the editor back to the storage.
+     */
+    void saveContact();
+
+    /**
+     * Sets the @p collection which shall be used to store new
+     * contacts.
+     */
+    void setDefaultCollection( const Akonadi::Collection &collection );
+
+  Q_SIGNALS:
+    /**
+     * This signal is emitted when the contact has been saved back
+     * to the storage.
+     */
+    void contactStored( const Akonadi::DataReference &uid );
+
+    /**
+     * This signal is emitted when an error occured during the save.
+     *
+     * @p errorMsg The error message.
+     */
+    void error( const QString &errorMsg );
 
   private:
     class Private;

@@ -44,7 +44,7 @@ Dialog::Dialog( QWidget *parent )
   QWidget *wdg = new QWidget( this );
   QGridLayout *layout = new QGridLayout( wdg );
 
-  mEditor = new KABCItemEditor( wdg );
+  mEditor = new KABCItemEditor( KABCItemEditor::EditMode, wdg );
   layout->addWidget( mEditor, 0, 0, 1, 3 );
 
   QLabel *label = new QLabel( "Item Id:", wdg );
@@ -72,12 +72,12 @@ Dialog::~Dialog()
 
 void Dialog::load()
 {
-  mEditor->setUid( Akonadi::DataReference( mId->text().toInt(), QString() ) );
+  mEditor->loadContact( Akonadi::DataReference( mId->text().toInt(), QString() ) );
 }
 
 void Dialog::save()
 {
-  mEditor->save();
+  mEditor->saveContact();
 }
 
 int main( int argc, char **argv )
