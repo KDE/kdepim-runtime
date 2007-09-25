@@ -1,9 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=KContactManager
-Name[x-test]=xxKContactManagerxx
 GenericName=Contact Manager
-GenericName[x-test]=xxContact Managerxx
 Exec=kcontactmanager %u
 Icon=kaddressbook
 Type=Application
