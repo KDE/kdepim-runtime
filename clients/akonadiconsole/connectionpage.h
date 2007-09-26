@@ -35,6 +35,9 @@ class ConnectionPage : public QWidget
 
     void showAllConnections( bool );
 
+  public Q_SLOTS:
+    void clear();
+
   private Q_SLOTS:
     void connectionDataInput( const QString&, const QString& );
     void connectionDataOutput( const QString&, const QString& );

@@ -73,4 +73,9 @@ void ConnectionPage::showAllConnections( bool show )
   mShowAllConnections = show;
 }
 
+void ConnectionPage::clear()
+{
+  mDataView->clear();
+}
+
 #include "connectionpage.moc"

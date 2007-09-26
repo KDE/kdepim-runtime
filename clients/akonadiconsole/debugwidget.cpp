@@ -21,6 +21,7 @@
 
 #include "debugwidget.h"
 
+#include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
@@ -58,6 +59,18 @@ DebugWidget::DebugWidget( QWidget *parent )
            this, SLOT( warningEmitted( const QString&, const QString& ) ) );
   connect( iface, SIGNAL( errorEmitted( const QString&, const QString& ) ),
            this, SLOT( errorEmitted( const QString&, const QString& ) ) );
+
+  QHBoxLayout *buttonLayout = new QHBoxLayout;
+  layout->addLayout( buttonLayout );
+
+  QPushButton *clearAllButton = new QPushButton( "Clear All", this );
+  QPushButton *clearGeneralButton = new QPushButton( "Clear General", this );
+
+  buttonLayout->addWidget( clearAllButton );
+  buttonLayout->addWidget( clearGeneralButton );
+
+  connect( clearAllButton, SIGNAL( clicked() ), page, SLOT( clear() ) );
+  connect( clearGeneralButton, SIGNAL( clicked() ), mGeneralView, SLOT( clear() ) );
 }
 
 void DebugWidget::connectionStarted( const QString &identifier, const QString &msg )
