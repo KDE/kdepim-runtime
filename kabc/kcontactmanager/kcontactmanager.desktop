@@ -1,7 +1,12 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=KContactManager
+Name[sv]=Kcontactmanager
 GenericName=Contact Manager
+GenericName[ga]=Bainisteoir Teagmhálacha
+GenericName[pt]=Gestor de Contactos
+GenericName[pt_BR]=Gestor de Contactos
+GenericName[sv]=Kontakthantering
 Exec=kcontactmanager %u
 Icon=kaddressbook
 Type=Application
