@@ -162,7 +162,7 @@ void VCardResource::synchronizeCollection( const Akonadi::Collection & col )
       continue;
 
     Item item( DataReference( -1, uid ) );
-    item.setMimeType( "text/vcard" );
+    item.setMimeType( "text/directory" );
     ItemAppendJob *append = new ItemAppendJob( item, col, session() );
     if ( !append->exec() ) {
       changeProgress( 0 );
