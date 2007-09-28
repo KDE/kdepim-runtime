@@ -7,6 +7,7 @@ Name[ja]=ブックマークシリアライザ
 Name[pt]=Serializador do favorito
 Name[pt_BR]=Serializador do favorito
 Name[sv]=Bokmärkesserialisering
+Name[x-test]=xxBookmark serializerxx
 Name[zh_CN]=书签序列转换器
 Name[zh_TW]=書籤序列器
 Comment=An Akonadi serializer plugin for bookmark objects
@@ -16,6 +17,7 @@ Comment[ja]=ブックマークオブジェクトのための Akonadi シリア�
 Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os objectos de favoritos
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av bokmärkesobjekt
+Comment[x-test]=xxAn Akonadi serializer plugin for bookmark objectsxx
 Comment[zh_CN]=对书签对象进行序列转换的 Akonadi 插件
 Comment[zh_TW]=書籤物件的 Akonadi 序列器外掛程式
 

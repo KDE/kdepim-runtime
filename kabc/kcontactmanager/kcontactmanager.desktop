@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=KContactManager
 Name[sv]=Kcontactmanager
+Name[x-test]=xxKContactManagerxx
 GenericName=Contact Manager
 GenericName[el]=Διαχειριστής επαφών
 GenericName[ga]=Bainisteoir Teagmhálacha
@@ -9,6 +10,7 @@ GenericName[ja]=連絡先マネージャ
 GenericName[pt]=Gestor de Contactos
 GenericName[pt_BR]=Gestor de Contactos
 GenericName[sv]=Kontakthantering
+GenericName[x-test]=xxContact Managerxx
 Exec=kcontactmanager %u
 Icon=kaddressbook
 Type=Application
