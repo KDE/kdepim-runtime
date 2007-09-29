@@ -228,15 +228,6 @@ void MaildirResource::retrieveCollections()
 
 void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
 {
-  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
-  if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
-    return;
-  }
-  Item::List items = fetch->items();
-
-  changeProgress( 0 );
-
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {
     error( i18n("Invalid maildir: %1", col.remoteId() ) );
@@ -245,35 +236,18 @@ void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
   QStringList entryList = md.entryList();
 
   int counter = 0;
+  Item::List items;
   foreach ( const QString entry, entryList ) {
     const QString rid = col.remoteId() + QDir::separator() + entry;
-    bool found = false;
-    foreach ( Item item, items ) {
-      if ( item.reference().remoteId() == rid ) {
-        found = true;
-        break;
-      }
-    }
-    if ( found )
-      continue;
     Item item( DataReference( -1, rid ) );
     item.setMimeType( "message/rfc822" );
     KMime::Message *msg = new KMime::Message;
     msg->setHead( readHeader( rid ) );
     msg->parse();
     item.setPayload( MessagePtr( msg ) );
-    ItemAppendJob *append = new ItemAppendJob( item, col, session() );
-    if ( !append->exec() ) {
-      changeProgress( 0 );
-      changeStatus( Error, i18n("Appending new message failed: %1", append->errorString()) );
-      return;
-    }
-
-    counter++;
-    int percentage = (counter * 100) / entryList.count();
-    changeProgress( percentage );
+    items << item;
   }
-  collectionSynchronized();
+  itemsRetrieved( items );
 }
 
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)

@@ -154,44 +154,14 @@ void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
   if ( !mCalendar )
     return;
 
-  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
-  if ( !fetch->exec() ) {
-    changeStatus( Error, i18n("Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString()) );
-    return;
-  }
-
-  changeProgress( 0 );
-
-  Item::List items = fetch->items();
   Incidence::List incidences = mCalendar->incidences();
-
-  int counter = 0;
+  Item::List items;
   foreach ( Incidence *incidence, incidences ) {
-    QString uid = incidence->uid();
-    bool found = false;
-    foreach ( Item item, items ) {
-      if ( item.reference().remoteId() == uid ) {
-        found = true;
-        break;
-      }
-    }
-    if ( found )
-      continue;
-    Item item( DataReference( -1, uid ) );
+    Item item( DataReference( -1, incidence->uid() ) );
     item.setMimeType( "text/calendar" );
-    ItemAppendJob *append = new ItemAppendJob( item, col, session() );
-    if ( !append->exec() ) {
-      changeProgress( 0 );
-      changeStatus( Error, i18n("Appending new incidence failed: %1", append->errorString()) );
-      return;
-    }
-
-    counter++;
-    int percentage = (counter * 100) / incidences.count();
-    changeProgress( percentage );
+    items << item;
   }
-
-  collectionSynchronized();
+  itemsRetrieved( items );
 }
 
 #include "icalresource.moc"
