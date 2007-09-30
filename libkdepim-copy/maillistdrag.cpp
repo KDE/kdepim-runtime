@@ -148,12 +148,12 @@ QString MailList::mimeDataType()
     return "x-kmail-drag/message-list";
 }
 
-bool MailList::canDecode( const QMimeData*md )
+bool MailList::canDecode( const QMimeData *md )
 {
   return md->hasFormat( mimeDataType() );
 }
 
-void MailList::populateMimeData( QMimeData*md, MailTextSource *src )
+void MailList::populateMimeData( QMimeData *md, MailTextSource *src )
 {
   /* We have three different possible mime types: x-kmail-drag/message-list, message/rfc822, and URL
      Add them in this order */
