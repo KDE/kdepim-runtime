@@ -255,7 +255,7 @@ ProgressDialog::ProgressDialog( QWidget* alignWidget, QWidget* parent, const cha
     pbClose->setAutoRaise(true);
     pbClose->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
     pbClose->setFixedSize( 16, 16 );
-    pbClose->setIcon( KIconLoader::global()->loadIconSet( "window-close", K3Icon::Small, 14 ) );
+    pbClose->setIcon( KIconLoader::global()->loadIconSet( "window-close", KIconLoader::Small, 14 ) );
     pbClose->setToolTip( i18n( "Hide detailed progress window" ) );
     connect(pbClose, SIGNAL(clicked()), this, SLOT(slotClose()));
     QWidget* spacer = new QWidget( rightBox ); // don't let the close button take up all the height
