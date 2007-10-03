@@ -588,11 +588,6 @@ AddressesDialog::initConnections()
   connect( d->ui->mSelectedView, SIGNAL(doubleClicked(Q3ListViewItem*)),
            SLOT(removeEntry()) );
 
-#ifndef KDEPIM_NEW_DISTRLISTS
-  connect( KABC::DistributionListWatcher::self(), SIGNAL( changed() ),
-           this, SLOT( updateAvailableAddressees() ) );
-#endif
-
   connect( KABC::StdAddressBook::self( true ), SIGNAL( addressBookChanged(AddressBook*) ),
            this, SLOT( updateAvailableAddressees() ) );
 }
