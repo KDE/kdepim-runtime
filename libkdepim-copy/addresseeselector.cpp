@@ -229,7 +229,7 @@ class SelectionViewItem : public Q3ListViewItem
 };
 
 AddresseeSelector::AddresseeSelector( Selection *selection, QWidget *parent, const char *name )
-  : QWidget( parent ), mSelection( selection ), mManager( 0 )
+  : QWidget( parent ), mSelection( selection )
 {
   setObjectName(name);
   mMoveMapper = new QSignalMapper( this );
@@ -246,9 +246,6 @@ AddresseeSelector::AddresseeSelector( Selection *selection, QWidget *parent, con
 
 AddresseeSelector::~AddresseeSelector()
 {
-  delete mManager;
-  mManager = 0;
-
   delete mAddressBookManager;
   mAddressBookManager = 0;
 }
@@ -474,8 +471,10 @@ void AddresseeSelector::updateSelectionViews()
 
 void AddresseeSelector::reloadAddressBook()
 {
+  KABC::AddressBook* addressBook = KABC::StdAddressBook::self( true );
+
   // load contacts
-  KABC::Addressee::List list = KABC::StdAddressBook::self( true )->allAddressees();
+  KABC::Addressee::List list = addressBook->allAddressees();
   KABC::Addressee::List::Iterator it;
 
   SelectionItem::List selectedItems;
@@ -518,16 +517,8 @@ void AddresseeSelector::reloadAddressBook()
   }
 
   // load distribution lists
-  delete mManager;
-  mManager = new KABC::DistributionListManager( KABC::StdAddressBook::self( true ) );
-
-  mManager->load();
-
-  QStringList lists = mManager->listNames();
-
-  QStringList::Iterator listIt;
-  for ( listIt = lists.begin(); listIt != lists.end(); ++listIt ) {
-    KABC::DistributionList *list = mManager->list( *listIt );
+  QList<KABC::DistributionList*> lists = addressBook->allDistributionLists();
+  foreach ( KABC::DistributionList *list, lists ) {
     SelectionItem item( list, 0 );
     mSelectionItems.append( item );
   }
@@ -537,7 +528,7 @@ void AddresseeSelector::reloadAddressBook()
   // update address book combo
   mAddressBookCombo->clear();
 
-  QList<KABC::Resource*> resources = KABC::StdAddressBook::self( true )->resources();
+  QList<KABC::Resource*> resources = addressBook->resources();
   QListIterator<KABC::Resource*> resIt( resources );
   while ( resIt.hasNext() ) {
     KABC::Resource *res = resIt.next();

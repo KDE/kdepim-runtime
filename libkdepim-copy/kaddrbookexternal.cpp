@@ -221,15 +221,10 @@ QString KAddrBookExternal::expandDistributionList( const QString &listName )
     return distrList.emails( addressBook ).join( ", " );
   }
 #else
-  KABC::DistributionListManager manager( addressBook );
-  manager.load();
-  const QStringList listNames = manager.listNames();
+  KABC::DistributionList* list = addressBook->findDistributionListByName( listName, Qt::CaseInsensitive );
 
-  for ( QStringList::ConstIterator it = listNames.begin(); it != listNames.end(); ++it ) {
-    if ( (*it).toLower() == lowerListName ) {
-      const QStringList addressList = manager.list( *it )->emails();
-      return addressList.join( ", " );
-    }
+  if ( list ) {
+    return list->emails().join( ", " );
   }
 #endif
   return QString();

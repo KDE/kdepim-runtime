@@ -206,8 +206,6 @@ class KDEPIM_EXPORT AddresseeSelector : public QWidget
     QSignalMapper *mMoveMapper;
     QSignalMapper *mRemoveMapper;
 
-    KABC::DistributionListManager *mManager;
-
     class AddressBookManager;
     AddressBookManager *mAddressBookManager;
 };

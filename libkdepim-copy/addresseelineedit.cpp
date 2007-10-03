@@ -34,7 +34,6 @@
 #ifdef KDEPIM_NEW_DISTRLISTS
 #include "distributionlist.h"
 #else
-#include <kabc/distributionlist.h>
 #endif
 
 #include <kabc/stdaddressbook.h>
@@ -544,9 +543,9 @@ void AddresseeLineEdit::loadContacts()
 
 #ifndef KDEPIM_NEW_DISTRLISTS // new distr lists are normal contact, already done above
   int weight = config.readEntry( "DistributionLists", 60 );
-  KABC::DistributionListManager manager( addressBook );
-  manager.load();
-  const QStringList distLists = manager.listNames();
+
+  const QStringList distLists = addressBook->allDistributionListNames();
+
   QStringList::const_iterator listIt;
   int idx = addCompletionSource( i18n( "Distribution Lists" ) );
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {

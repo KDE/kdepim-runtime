@@ -32,6 +32,8 @@
 #include <kabc/resource.h>
 #else
 #include <kabc/distributionlist.h>
+#include <kabc/resource.h>
+#include <kresources/selectdialog.h>
 #endif
 
 #include <kabc/stdaddressbook.h>
@@ -403,10 +405,12 @@ AddressesDialog::allToAddressesNoDuplicates()  const
     }
   }
 #else
-  KABC::DistributionListManager manager( abook );
-  manager.load();
   for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
-    const QList<KABC::DistributionList::Entry> eList = manager.list( *it )->entries();
+    KABC::DistributionList *list = abook->findDistributionListByName( *it );
+    if ( !list )
+      continue;
+
+    const QList<KABC::DistributionList::Entry> eList = list->entries();
     QList<KABC::DistributionList::Entry>::ConstIterator eit;
     for( eit = eList.begin(); eit != eList.end(); ++eit ) {
       KABC::Addressee a = (*eit).addressee();
@@ -844,7 +848,9 @@ AddressesDialog::removeEntry()
   d->ui->mSaveAs->setEnabled(d->ui->mSelectedView->firstChild() != 0);
 }
 
-#ifdef KDEPIM_NEW_DISTRLISTS
+// FIXME new distribution list handling
+// should probably be moved as suggested in the comment below
+//#ifdef KDEPIM_NEW_DISTRLISTS
 
 // copied from kabcore.cpp :(
 // KDE4: should be in libkabc I think
@@ -865,16 +871,11 @@ static KABC::Resource *requestResource( KABC::AddressBook* abook, QWidget *paren
   KRES::Resource *res = KRES::SelectDialog::getResource( kresResources, parent );
   return static_cast<KABC::Resource*>( res );
 }
-#endif
+//#endif
 
 void
 AddressesDialog::saveAs()
 {
-#ifndef KDEPIM_NEW_DISTRLISTS
-  KABC::DistributionListManager manager( KABC::StdAddressBook::self( true ) );
-  manager.load();
-#endif
-
   if ( !d->ui->mSelectedView->firstChild() ) {
     KMessageBox::information( 0,
                               i18n("There are no addresses in your list. "
@@ -897,7 +898,8 @@ AddressesDialog::saveAs()
   KPIM::DistributionList dlist = KPIM::DistributionList::findByName( abook, name );
   alreadyExists = !dlist.isEmpty();
 #else
-  alreadyExists = manager.list( name );
+  KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
+  alreadyExists = abook->findDistributionListByName( name ) != 0;
 #endif
 
   if ( alreadyExists ) {
@@ -922,14 +924,16 @@ AddressesDialog::saveAs()
   }
   abook->insertAddressee( dlist );
 #else
-  KABC::DistributionList *dlist = new KABC::DistributionList( &manager, name );
+  KABC::Resource *resource = requestResource( abook, this );
+  if ( !resource )
+    return;
+
+  KABC::DistributionList *dlist = abook->createDistributionList( name, resource );
   KABC::Addressee::List addrl = allAddressee( d->ui->mSelectedView, false );
   for ( KABC::Addressee::List::iterator itr = addrl.begin();
         itr != addrl.end(); ++itr ) {
     dlist->insertEntry( *itr );
   }
-
-  manager.save();
 #endif
 }
 
@@ -1044,10 +1048,7 @@ AddressesDialog::addDistributionLists()
   const QList<KPIM::DistributionList> distLists =
     KPIM::DistributionList::allDistributionLists( abook );
 #else
-  KABC::DistributionListManager manager( abook );
-  manager.load();
-
-  QStringList distLists = manager.listNames();
+  const QList<KABC::DistributionList*> distLists = abook->allDistributionLists();
 #endif
 
   if ( distLists.isEmpty() )
@@ -1059,14 +1060,14 @@ AddressesDialog::addDistributionLists()
 #ifdef KDEPIM_NEW_DISTRLISTS
   QList<KPIM::DistributionList>::ConstIterator listIt;
 #else
-  QStringList::Iterator listIt;
+  QList<KABC::DistributionList*>::ConstIterator listIt;
 #endif
   for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
 #ifdef KDEPIM_NEW_DISTRLISTS
     KPIM::DistributionList dlist = *listIt;
     KPIM::DistributionList::Entry::List entries = dlist.entries(abook);
 #else
-    KABC::DistributionList& dlist = *manager.list( *listIt );
+    KABC::DistributionList& dlist = *( *listIt );
     KABC::DistributionList::Entry::List entries = dlist.entries();
 #endif
 
