@@ -91,7 +91,7 @@ void ServerTest::startOffSlave( int port ) {
 
   stream << (int) 'c';
 
-  mJob = KIO::special( url, packedArgs, false );
+  mJob = KIO::special( url, packedArgs, KIO::HideProgressInfo );
   KIO::Scheduler::assignJobToSlave( mSlave, mJob );
   connect( mJob, SIGNAL(result(KJob*)), SLOT(slotResult(KJob*)) );
   connect( mJob, SIGNAL(infoMessage(KJob*,const QString&,const QString&)),

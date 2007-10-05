@@ -518,7 +518,7 @@ void AddresseeView::updateView()
       if ( mImageData.count() > 0 )
         Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, QImage::fromData( mImageData ) );
       else {
-        mImageJob = KIO::get( KUrl( picture.url() ), false, false );
+        mImageJob = KIO::get( KUrl( picture.url() ), KIO::NoReload, KIO::HideProgressInfo );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
                  this, SLOT( data( KIO::Job*, const QByteArray& ) ) );
         connect( mImageJob, SIGNAL( result( KJob* ) ),

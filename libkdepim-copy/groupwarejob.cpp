@@ -33,7 +33,7 @@ KIO::TransferJob *GroupwareJob::getCalendar( const KUrl &u )
 
   kDebug() <<"GroupwareJob::getCalendar(): URL:" << url;
 
-  return KIO::get( url, false, false );
+  return KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
 }
 
 KIO::TransferJob *GroupwareJob::getAddressBook( const KUrl &u )
@@ -43,5 +43,5 @@ KIO::TransferJob *GroupwareJob::getAddressBook( const KUrl &u )
 
   kDebug() <<"GroupwareJob::getAddressBook(): URL:" << url;
 
-  return KIO::get( url, false, false );
+  return KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
 }

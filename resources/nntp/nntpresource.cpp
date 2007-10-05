@@ -56,7 +56,7 @@ bool NntpResource::requestItemDelivery(const Akonadi::DataReference & ref, const
   Q_UNUSED( parts );
   mCurrentRef = ref;
   mCurrentMessage = msg;
-  KIO::Job* job = KIO::storedGet( KUrl( ref.remoteId() ), false, false );
+  KIO::Job* job = KIO::storedGet( KUrl( ref.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
   connect( job, SIGNAL( result(KJob*) ), SLOT( fetchArticleResult(KJob*) ) );
   return true;
 }
@@ -86,7 +86,7 @@ void NntpResource::retrieveCollections()
     mIncremental = false;
   }
 
-  KIO::Job* job = KIO::listDir( url, false, true );
+  KIO::Job* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroups(KIO::Job*, const KIO::UDSEntryList&)) );
   connect( job, SIGNAL( result(KJob*) ), SLOT( listGroupsResult(KJob*) ) );
@@ -103,7 +103,7 @@ void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
   else
     url.addQueryItem( "max", "5" );
 
-  KIO::Job* job = KIO::listDir( url, false, true );
+  KIO::Job* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroup(KIO::Job*, const KIO::UDSEntryList&)) );
   connect( job, SIGNAL( result(KJob*) ), SLOT( listGroupResult(KJob*) ) );
