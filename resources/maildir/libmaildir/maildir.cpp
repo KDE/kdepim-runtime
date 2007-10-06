@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QUuid>
+#include <QDebug>
 
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
