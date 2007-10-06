@@ -21,7 +21,7 @@
 
 #include <pluginloaderbase.h>
 
-#include <kconfig.h>
+#include <kconfiggroup.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <klibloader.h>

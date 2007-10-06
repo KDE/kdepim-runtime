@@ -31,6 +31,7 @@
 #include <kldap/ldapurl.h>
 #include <kldap/ldif.h>
 #include <kconfig.h>
+#include <kconfiggroup.h>
 #include <kdebug.h>
 #include <kdirwatch.h>
 #include <kcodecs.h>
