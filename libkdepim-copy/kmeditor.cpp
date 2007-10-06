@@ -50,6 +50,7 @@
 #include <QClipboard>
 #include <QShortcut>
 #include <QPointer>
+#include <QTextCodec>
 #include <QTextList>
 #include <QAction>
 #include <QProcess>
