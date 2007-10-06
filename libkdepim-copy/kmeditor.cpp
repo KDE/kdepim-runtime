@@ -55,7 +55,7 @@
 #include <QAction>
 #include <QProcess>
 #include <QTextLayout>
-#include <QTextCodec>
+
 using namespace KPIM;
 
 class KMeditor::Private

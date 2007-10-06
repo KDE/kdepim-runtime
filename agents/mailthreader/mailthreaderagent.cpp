@@ -30,6 +30,9 @@
 
 #include <QDebug>
 
+#include <kdebug.h>
+#include <kurl.h>
+
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
