@@ -186,35 +186,33 @@ void KABCItemEditor::Private::storeContact( KABC::Addressee &addr )
   addr.setUrl( gui.mHomepage->text() );
 
   // Phones
-  if ( gui.mWorkPhone->text().isEmpty() )
-    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Work ) );
-  else
+  addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Work ) );
+  if ( !gui.mWorkPhone->text().isEmpty() )
     addr.insertPhoneNumber( KABC::PhoneNumber( gui.mWorkPhone->text(), KABC::PhoneNumber::Work ) );
-  if ( gui.mHomePhone->text().isEmpty() )
-    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Home ) );
-  else
+
+  addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Home ) );
+  if ( !gui.mHomePhone->text().isEmpty() )
     addr.insertPhoneNumber( KABC::PhoneNumber( gui.mHomePhone->text(), KABC::PhoneNumber::Home ) );
-  if ( gui.mMobilePhone->text().isEmpty() )
-    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Cell ) );
-  else
+
+  addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Cell ) );
+  if ( !gui.mMobilePhone->text().isEmpty() )
     addr.insertPhoneNumber( KABC::PhoneNumber( gui.mMobilePhone->text(), KABC::PhoneNumber::Cell ) );
-  if ( gui.mFaxPhone->text().isEmpty() )
-    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Fax ) );
-  else
+
+  addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Fax ) );
+  if ( !gui.mFaxPhone->text().isEmpty() )
     addr.insertPhoneNumber( KABC::PhoneNumber( gui.mFaxPhone->text(), KABC::PhoneNumber::Fax ) );
-  if ( gui.mPagerPhone->text().isEmpty() )
-    addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Pager ) );
-  else
+
+  addr.removePhoneNumber( addr.phoneNumber( KABC::PhoneNumber::Pager ) );
+  if ( !gui.mPagerPhone->text().isEmpty() )
     addr.insertPhoneNumber( KABC::PhoneNumber( gui.mPagerPhone->text(), KABC::PhoneNumber::Pager ) );
 
   // Address Home
-  if ( gui.mHomeStreet->text().isEmpty() &&
-       gui.mHomeCity->text().isEmpty() &&
-       gui.mHomeState->text().isEmpty() &&
-       gui.mHomePostalCode->text().isEmpty() &&
-       gui.mHomeCountry->text().isEmpty() ) {
-    addr.removeAddress( addr.address( KABC::Address::Home ) );
-  } else {
+  addr.removeAddress( addr.address( KABC::Address::Home ) );
+  if ( !(gui.mHomeStreet->text().isEmpty() &&
+         gui.mHomeCity->text().isEmpty() &&
+         gui.mHomeState->text().isEmpty() &&
+         gui.mHomePostalCode->text().isEmpty() &&
+         gui.mHomeCountry->text().isEmpty()) ) {
     KABC::Address homeAddress( KABC::Address::Home );
     homeAddress.setStreet( gui.mHomeStreet->text() );
     homeAddress.setLocality( gui.mHomeCity->text() );
@@ -230,13 +228,12 @@ void KABCItemEditor::Private::storeContact( KABC::Addressee &addr )
   addr.setDepartment( gui.mDepartment->text() );
   addr.setOrganization( gui.mOrganization->text() );
 
-  if ( gui.mWorkStreet->text().isEmpty() &&
-       gui.mWorkCity->text().isEmpty() &&
-       gui.mWorkState->text().isEmpty() &&
-       gui.mWorkPostalCode->text().isEmpty() &&
-       gui.mWorkCountry->text().isEmpty() ) {
-    addr.removeAddress( addr.address( KABC::Address::Work ) );
-  } else {
+  addr.removeAddress( addr.address( KABC::Address::Work ) );
+  if ( !(gui.mWorkStreet->text().isEmpty() &&
+         gui.mWorkCity->text().isEmpty() &&
+         gui.mWorkState->text().isEmpty() &&
+         gui.mWorkPostalCode->text().isEmpty() &&
+         gui.mWorkCountry->text().isEmpty()) ) {
     KABC::Address workAddress( KABC::Address::Work );
     workAddress.setStreet( gui.mWorkStreet->text() );
     workAddress.setLocality( gui.mWorkCity->text() );
