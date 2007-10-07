@@ -136,46 +136,15 @@ void VCardResource::retrieveCollections()
 
 void VCardResource::synchronizeCollection( const Akonadi::Collection & col )
 {
-  ItemFetchJob *fetch = new ItemFetchJob( col, session() );
-  if ( !fetch->exec() ) {
-    changeStatus( Error, i18n( "Unable to fetch listing of collection '%1': %2", col.name(), fetch->errorString() ) );
-    return;
-  }
+  Item::List items;
 
-  changeProgress( 0 );
-
-  Item::List items = fetch->items();
-
-  int counter = 0;
   foreach ( KABC::Addressee addressee, mAddressees ) {
-    QString uid = addressee.uid();
-
-    bool found = false;
-    foreach ( Item item, items ) {
-      if ( item.reference().remoteId() == uid ) {
-        found = true;
-        break;
-      }
-    }
-
-    if ( found )
-      continue;
-
-    Item item( DataReference( -1, uid ) );
+    Item item( DataReference( -1, addressee.uid() ) );
     item.setMimeType( "text/directory" );
-    ItemAppendJob *append = new ItemAppendJob( item, col, session() );
-    if ( !append->exec() ) {
-      changeProgress( 0 );
-      changeStatus( Error, i18n( "Appending new contact failed: %1", append->errorString() ) );
-      return;
-    }
-
-    counter++;
-    int percentage = (counter * 100) / mAddressees.count();
-    changeProgress( percentage );
+    items.append( item );
   }
 
-  collectionSynchronized();
+  itemsRetrieved( items );
 }
 
 bool VCardResource::loadAddressees()
