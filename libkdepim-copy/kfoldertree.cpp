@@ -388,7 +388,7 @@ void KFolderTreeItem::setFolderIsCloseToQuota( bool v )
 //=============================================================================
 
 KFolderTree::KFolderTree( QWidget *parent, const char *name )
-  : K3ListView( parent ), mUnreadIndex( -1 ), mTotalIndex( -1 )
+  : K3ListView( parent ), mUnreadIndex( -1 ), mTotalIndex( -1 ), mSizeIndex( -1 )
 {
   setObjectName( name );
   // GUI-options
