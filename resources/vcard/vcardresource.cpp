@@ -55,6 +55,7 @@ bool VCardResource::requestItemDelivery( const Akonadi::DataReference &ref, cons
     item.setPayload<KABC::Addressee>( mAddressees.value( ref.remoteId() ) );
 
     ItemStoreJob *job = new ItemStoreJob( item, session() );
+    job->noRevCheck();
     job->storePayload();
 
     return deliverItem( job, msg );

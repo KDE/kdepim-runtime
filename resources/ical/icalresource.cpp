@@ -67,6 +67,7 @@ bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const
     item.setPayload<IncidencePtr>( incidence );
 
     ItemStoreJob *job = new ItemStoreJob( item, session() );
+    job->noRevCheck();
     job->storePayload();
     return deliverItem( job, msg );
   }

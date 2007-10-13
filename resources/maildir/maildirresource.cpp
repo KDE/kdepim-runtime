@@ -96,6 +96,7 @@ bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, co
   item.setMimeType( "message/rfc822" );
   item.setPayload( MessagePtr( mail ) );
   ItemStoreJob *job = new ItemStoreJob( item, session() );
+  job->noRevCheck();
   job->storePayload();
 
   return deliverItem( job, msg );
