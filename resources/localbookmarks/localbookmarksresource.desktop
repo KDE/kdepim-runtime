@@ -29,5 +29,5 @@ Exec=akonadi_localbookmarks_resource
 Icon=bookmark
 
 X-Akonadi-MimeTypes=text/bookmark
-X-Akonadi-Capabilitites=text/bookmark
+X-Akonadi-Capabilities=text/bookmark
 X-Akonadi-Identifier=akonadi_localbookmarks_resource
