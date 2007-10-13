@@ -1,18 +1,18 @@
 /**
 \mainpage Akonadi, the KDE PIM storage framework
 
-These pages are a combination of design and api documentation.
-If your are looking for general information go to the Overview section.
+These pages are a combination of design and api documentation. If you are
+looking for general information go to the Overview section.
 For detailed information and/or api-dox on any of the packages go to the
 package main page, either from the menu on the left or from the Building
 blocks section below.
-  
+
 
 \section akonadi_overview Overview
 
 - \ref akonadi_history
 - Design and Concepts
-  - \ref akonadi_design_basic 
+  - \ref akonadi_design_basic
   - \ref akonadi_concepts
   - \ref akonadi_design
   - \ref akonadi_design_communication
@@ -20,7 +20,7 @@ blocks section below.
 - <a href="http://pim.kde.org/akonadi">Website</a>
 - \ref akonadi_todos
 
-\section akonadi_building_blocks Building blocks
+\section akonadi_building_blocks Building Blocks
 
 - <a href="../clients/html/index.html">Clients</a>
 - Domain-specific libraries:
@@ -36,7 +36,7 @@ blocks section below.
 
 
 /**
-\page akonadi_history Historical background
+\page akonadi_history Historical Background
 
 \section akonadi_history_general General
 
@@ -137,19 +137,20 @@ For a more technical view go to \ref akonadi_overview_uml
 
 
 
-\section akonadi_design_libakonadi The client library
-Every client application can access the Akonadi service directly via D-Bus and IMAP API; however
-for easier implementation and a better abstraction the library libakonadi is provided which does
-all the low level stuff and provides a Qt based API for all the functionality Akonadi provides.
-libakonadi works on any type of data and knows nothing about the domain the data are part of.
-For the domain specific tasks libkabc and likcal should be used, which are located above
-libakonadi, and do the data conversion from the storage format to a Qt/KDE one.
+\section akonadi_design_libakonadi The Client Library
+Every client application can access the Akonadi service directly via the D-Bus and an IMAP-alike
+protocol; however, for easier implementation and a better abstraction the library libakonadi is
+provided, which handles all the low level stuff and provides a Qt based API for all the
+functionality Akonadi provides.
+libakonadi works on all kinds of data and knows nothing about the type of the data.
+For the type specific tasks libkabc and libkcal should be used, which are positioned above
+libakonadi, and perform the conversion from the raw storage format to convenient Qt/KDE objects.
 
 
 \section akonadi_design_server Server
 The Server is a process which provides an API to store arbitrary data over
 an IMAP interface into a relational database. The advantage of IMAP is the mature state of the protocol
-and its capability to handle a huge amount of data.
+and its capability to handle large quantities of data.
 Whenever items are added to or removed from the Storage, the Server will
 emit a signal over its D-Bus interface to inform other components.
 Also, as defined in the IMAP standard, a simple type of search is supported,
@@ -165,7 +166,7 @@ types of Agents:
 \li Resources
 
 Autonomous Agents are processes which only work on the cache of the Storage
-and the user will seldom or never see them during work.
+and the user will (probably) never see them at work.
 
 Resources are processes which load data from an external data source, store them
 in the cache of the Storage and keep track of changes on both sides to keep
@@ -175,8 +176,8 @@ profiles. Profiles are useful in use cases like this:
 You have configured a local Resource and a groupware server Resource. You want both
 to be shown in the address book application but for synchronization with your mobile
 phone only the data from the local Resource is of interest. So the easy solution
-is to create a profile 'VIEW' which both the local Resource and the groupware server
-Resource belong to, and a profile 'SYNCHRONIZE' to which only the local Resource is
+is to create a profile 'view' which both the local Resource and the groupware server
+Resource belong to, and a profile 'synchronize' to which only the local Resource is
 assigned. Now you just have to tell the application which profile it should use to
 access the data.
 
@@ -193,7 +194,7 @@ The Control should be started in the startkde script and terminated at the end o
 
 \subsection akonadi_design_storage Storage
 The Storage is part of the Akonadi Server and is responsible for managing the cache of \ref akonadi_concepts_items.
-In other words, create the database schema and performe read/write operations on the database.
+In other words, create the database schema and perform read/write operations on the database.
 */
 
 /**
@@ -203,12 +204,12 @@ In other words, create the database schema and performe read/write operations on
 
 The sequence diagrams below show how general communication is done:
 
-<div id='akonadi_client_search_small.png' onClick="document.getElementById('akonadi_client_search_small.png').style.display='none';document.getElementById(' akonadi_client_search.png').style.display='inline';" title="Click to enlarge" > 
-  \image html akonadi_client_search_small.png  "Akonadi Communication Schema"  
- </div> 
- <div id=' akonadi_client_search.png' onClick="document.getElementById(' akonadi_client_search.png').style.display='none';document.getElementById('akonadi_client_search_small.png').style.display='inline';" style="display:none" > 
-  \image html  akonadi_client_search.png  "Akonadi Communication Schema"  
- </div> 
+<div id='akonadi_client_search_small.png' onClick="document.getElementById('akonadi_client_search_small.png').style.display='none';document.getElementById(' akonadi_client_search.png').style.display='inline';" title="Click to enlarge" >
+  \image html akonadi_client_search_small.png  "Akonadi Communication Schema"
+ </div>
+ <div id=' akonadi_client_search.png' onClick="document.getElementById(' akonadi_client_search.png').style.display='none';document.getElementById('akonadi_client_search_small.png').style.display='inline';" style="display:none" >
+  \image html  akonadi_client_search.png  "Akonadi Communication Schema"
+ </div>
 
 \image latex akonadi_client_search.eps "Akonadi Communication Schema" height=5cm
 
@@ -217,14 +218,14 @@ by the clients (components or applications). This call enables the client
 to search for a list of items of a given mime type which match a
 given search criterion.
 
-In this case the client will contact the SearchProvider which is responsible for
-the mime type to retrieve the list of matching uids. The SearchProvider already has
-a list of all available items of this mime type in its memory, so it
+In this case the client will contact the SearchProvider responsible for
+the mime type, in order to retrieve the list of matching UIDs. The SearchProvider
+already has a list of all available items of this mime type in its memory, so it
 can search fast and use indices for optimization.
 
-To communicate mimetype constraints in fetch and list and their responses the
+To communicate mime type constraints in FETCH and LIST and their responses the
 IMAP flags mechanism is used. Unknown flags should be ignored by non-Akonadi
-IMAP clients, which keeps compatibility with mutt and regular KMail. 
+IMAP clients, which keeps compatibility with mutt and regular KMail.
 
 Examples:
 - List
@@ -239,22 +240,22 @@ Examples:
 \endverbatim
 
 \section akonadi_design_communication_profile Profile Handling
-<div id=' akonadi_profile_handling_small.png' onClick="document.getElementById(' akonadi_profile_handling_small.png').style.display='none';document.getElementById(' akonadi_profile_handling.png').style.display='inline';" title="Click to enlarge" > 
-  \image html  akonadi_profile_handling_small.png  "Akonadi Profile Handling"  
- </div> 
- <div id=' akonadi_profile_handling.png' onClick="document.getElementById(' akonadi_profile_handling.png').style.display='none';document.getElementById(' akonadi_profile_handling_small.png').style.display='inline';" style="display:none" > 
-  \image html  akonadi_profile_handling.png  "Akonadi Profile Handling"  
- </div> 
+<div id=' akonadi_profile_handling_small.png' onClick="document.getElementById(' akonadi_profile_handling_small.png').style.display='none';document.getElementById(' akonadi_profile_handling.png').style.display='inline';" title="Click to enlarge" >
+  \image html  akonadi_profile_handling_small.png  "Akonadi Profile Handling"
+ </div>
+ <div id=' akonadi_profile_handling.png' onClick="document.getElementById(' akonadi_profile_handling.png').style.display='none';document.getElementById(' akonadi_profile_handling_small.png').style.display='inline';" style="display:none" >
+  \image html  akonadi_profile_handling.png  "Akonadi Profile Handling"
+ </div>
 
 \image latex akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
 
 \section akonadi_design_communication_agent Agent Handling
-<div id=' akonadi_agent_handling_small.png' onClick="document.getElementById(' akonadi_agent_handling_small.png').style.display='none';document.getElementById(' akonadi_agent_handling.png').style.display='inline';" title="Click to enlarge" > 
-  \image html  akonadi_agent_handling_small.png  "Akonadi Agent Handling"  
- </div> 
- <div id=' akonadi_agent_handling.png' onClick="document.getElementById(' akonadi_agent_handling.png').style.display='none';document.getElementById(' akonadi_agent_handling_small.png').style.display='inline';" style="display:none" > 
-  \image html  akonadi_agent_handling.png  "Akonadi Agent Handling"  
- </div> 
+<div id=' akonadi_agent_handling_small.png' onClick="document.getElementById(' akonadi_agent_handling_small.png').style.display='none';document.getElementById(' akonadi_agent_handling.png').style.display='inline';" title="Click to enlarge" >
+  \image html  akonadi_agent_handling_small.png  "Akonadi Agent Handling"
+ </div>
+ <div id=' akonadi_agent_handling.png' onClick="document.getElementById(' akonadi_agent_handling.png').style.display='none';document.getElementById(' akonadi_agent_handling_small.png').style.display='inline';" style="display:none" >
+  \image html  akonadi_agent_handling.png  "Akonadi Agent Handling"
+ </div>
 
 \image latex akonadi_agent_handling.eps "Akonadi Agent Handling" height=4cm
 */
@@ -262,15 +263,15 @@ Examples:
 /**
 \page akonadi_overview_uml Akonadi Overview
 
-This overview does not show a complete class or collaboration diagram, it is rather ment to show the 
+This overview does not show a complete class or collaboration diagram, it is rather meant to show the
 big picture.
 
-<div id=' akonadi_overview_uml_small.png' onClick="document.getElementById(' akonadi_overview_uml_small.png').style.display='none';document.getElementById(' akonadi_overview_uml.png').style.display='inline';" title="Click to enlarge" > 
-  \image html  akonadi_overview_uml_small.png  "Akonadi Overview"  
- </div> 
- <div id=' akonadi_overview_uml.png' onClick="document.getElementById(' akonadi_overview_uml.png').style.display='none';document.getElementById(' akonadi_overview_uml_small.png').style.display='inline';" style="display:none" > 
-  \image html  akonadi_overview_uml.png  "Akonadi Overview"  
- </div> 
+<div id=' akonadi_overview_uml_small.png' onClick="document.getElementById(' akonadi_overview_uml_small.png').style.display='none';document.getElementById(' akonadi_overview_uml.png').style.display='inline';" title="Click to enlarge" >
+  \image html  akonadi_overview_uml_small.png  "Akonadi Overview"
+ </div>
+ <div id=' akonadi_overview_uml.png' onClick="document.getElementById(' akonadi_overview_uml.png').style.display='none';document.getElementById(' akonadi_overview_uml_small.png').style.display='inline';" style="display:none" >
+  \image html  akonadi_overview_uml.png  "Akonadi Overview"
+ </div>
 
 
 */
@@ -363,9 +364,9 @@ known on the client side.
 
 PIM items can have one or more parts, e.g. an email message consists of the
 envelope, the body and possible one or more attachments. Item parts are identified
-by a identifier string. There are a few special pre-definied part identifiers (ALL, ENVELOPE, etc.),
-but in general the part identifiers are definied by the type-specific extensions (ie. resource, serializer plugin,
-type specifc client library).
+by an identifier string. There are a few special pre-defined part identifiers (ALL,
+ENVELOPE, etc.), but in general the part identifiers are definied by the type specific
+extensions (ie. resource, serializer plugin, type specific client library).
 
 \subsection akonadi_concepts_items_serializer Serializer Plugins
 
@@ -378,18 +379,17 @@ server and type-specific objects used by client applications (eg. iCal and KCal:
 \subsection akonadi_concepts_identification_uid Unique Identifier
 
 Every object stored in Akonadi (collections and PIM items) has a unique
-identifier in form of an interger value. This identifier cannot be changed in
-any way and will stay the same independent of any modifications to the referred
-object. An unique identifier will never be used twice and is
-globally unique, it's thus possible to retrieve an item without knowing the
-folder it is in.
+identifier in the form of an integer value. This identifier cannot be changed in
+any way and will stay the same, regardless of any modifications to the referred
+object. A unique identifier will never be used twice and is globally unique,
+therefore it is possible to retrieve an item without knowing the folder it belongs to.
 
 
 \subsection akonadi_concepts_identification_rid Remote Identifier
 
-Every object also can have an optional so-called remote identifier. This is an
+Every object can also have an optional so-called remote identifier. This is an
 identifier used by the corresponding resource to identify the object on its
-backend (eg. a groupware server).
+backend (e.g., a groupware server).
 
 The remote identifier can be changed arbitrarily, but should only be changed by
 the corresponding resource.
@@ -402,7 +402,7 @@ the corresponding resource.
 
 \section akonadi_usage_start How to get started
 
-To start the Akonadi, you need to start the \ref akonadi_design_control "Control" process.
+To start Akonadi, you need to start the \ref akonadi_design_control "Control" process.
 This can be done by calling \c akonadi_control, on the command line.
 
 \section akonadi_usage_debugging Debugging Tools
