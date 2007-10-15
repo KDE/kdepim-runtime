@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Exec=kcmshell komposerconfig
+Exec=kcmshell4 komposerconfig
 Icon=komposer
 Type=Application
 Terminal=false
