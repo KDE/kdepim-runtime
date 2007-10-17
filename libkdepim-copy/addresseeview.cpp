@@ -156,17 +156,13 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   // placeholder where we fill in something else (in this case,
   // the global background color).
   //
-  const QString backgroundColor = KColorScheme( QPalette::Active, KColorScheme::View ).background( KColorScheme::AlternateBackground ).color().name();
   QString cellStyle = QString::fromLatin1(
         "style=\""
         "padding-right: 2px; "
-        "border-right: #000 dashed 1px; "
-        "background: %1;\"").arg(backgroundColor);
-  const QString backgroundColor2 = KColorScheme( QPalette::Active, KColorScheme::View ).background().color().name();
+        "border-right: #000 dashed 1px;\"" );
   QString cellStyle2 = QString::fromLatin1(
         "style=\""
-        "padding-left: 2px; "
-        "background: %1;\"").arg(backgroundColor2);
+        "padding-left: 2px;\"" );
   QString tableStyle = QString::fromLatin1(
         "style=\""
         "border: solid 1px; "
