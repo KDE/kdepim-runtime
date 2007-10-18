@@ -475,6 +475,7 @@ RuleEditWidget::RuleEditWidget( KScoringManager *m, QWidget *p, const char *n )
   expireEdit = new KIntSpinBox( groupB );
   expireEdit->setRange( 1, 9999 );
   expireEdit->setValue( 30 );
+  slotExpireEditChanged(30 );
   connect( expireEdit, SIGNAL(valueChanged(int)), SLOT(slotExpireEditChanged(int)) );
   groupL->addWidget( expireEdit, 5, 1 );
   expireLabel = new QLabel( i18n( "&Rule is valid for:" ), groupB );
