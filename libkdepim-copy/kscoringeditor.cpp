@@ -176,7 +176,7 @@ QWidget *ConditionEditWidget::createWidget( QWidget *parent )
 
 void ConditionEditWidget::clearWidget( QWidget *w )
 {
-  Q_ASSERT( QString( w->metaObject()->className() ) == "SingleConditionWidget" );
+  Q_ASSERT( QString( w->metaObject()->className() ) != "SingleConditionWidget" );
   SingleConditionWidget *sw = dynamic_cast<SingleConditionWidget*>( w );
   if ( sw ) {
     sw->clear();
@@ -411,7 +411,7 @@ void ActionEditWidget::updateRule( KScoringRule *rule )
 
 void ActionEditWidget::clearWidget( QWidget *w )
 {
-  Q_ASSERT( QString( w->metaObject()->className() ) == "SingleActionWidget" );
+  Q_ASSERT( QString( w->metaObject()->className() ) != "SingleActionWidget" );
   SingleActionWidget *sw = dynamic_cast<SingleActionWidget*>( w );
   if ( sw ) {
     sw->clear();
