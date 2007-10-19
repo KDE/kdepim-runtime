@@ -28,5 +28,5 @@ Type=AkonadiAgent
 Exec=akonadi_mailthreader_agent
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilities=text/directory
+X-Akonadi-Capabilities=Unique,Autostart
 X-Akonadi-Identifier=akonadi_mailthreader_agent

@@ -34,5 +34,5 @@ Exec=akonadi_nntp_resource
 Icon=news
 
 X-Akonadi-MimeTypes=message/news
-X-Akonadi-Capabilities=message/news
+X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_nntp_resource
