@@ -40,7 +40,7 @@ class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog
     CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
       setupUi( this );
 
-      mButtonClear->setIcon( KIcon( "clear-left" ) );
+      mButtonClear->setIcon( KIcon( "edit-clear-locationbar-rtl" ) );
       mButtonEdit->setIcon( KIcon( "edit" ) );
     }
 };
