@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Akonadi Fulltext Search Provider
+Name=Akonadi Strigi Feeder
 Name[de]=Akonadi-Volltextsuchdienst
 Name[el]=Πάροχος αναζήτησης κειμένου του Akonadi
 Name[es]=Proveedor de búsqueda de texto Akonadi
@@ -28,8 +28,9 @@ Comment[sv]=Fulltextsökning baserad på Strigi
 Comment[x-test]=xxStrigi-based fulltext searchxx
 Comment[zh_CN]=基于 Strigi 的全文搜索
 Comment[zh_TW]=使用 Strigi 的全文檢索
-Type=AkonadiSearchProvider
-Exec=akonadi_strigi_searchprovider
+Type=AkonadiAgent
+Exec=akonadi_strigi_feeder
 
 X-Akonadi-MimeTypes=all/all
-X-Akonadi-Identifier=akonadi_strigi_searchprovider
+X-Akonadi-Capabilities=Autostart
+X-Akonadi-Identifier=akonadi_strigi_feeder

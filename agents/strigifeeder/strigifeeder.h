@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2006 - 2007 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -20,37 +20,27 @@
 #ifndef AKONADI_STRIGIPROVIDER_H
 #define AKONADI_STRIGIPROVIDER_H
 
-#include <searchproviderbase.h>
-#include <libakonadi/job.h>
-#include <libakonadi/item.h>
+#include <libakonadi/agentbase.h>
 #include <strigi/qtdbus/strigiclient.h>
 
 namespace Akonadi {
 
-class Session;
-class Monitor;
-
 /**
   Full text search provider using strigi.
 */
-class StrigiProvider : public SearchProviderBase
+class StrigiFeeder : public AgentBase
 {
   Q_OBJECT
 
   public:
-    StrigiProvider( const QString &id );
-    ~StrigiProvider();
-    virtual QStringList supportedMimeTypes() const { QStringList l; l << "all/all"; return l; }
+    StrigiFeeder( const QString &id );
 
   protected slots:
-    void itemChanged(const Akonadi::Item &item);
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved(const Akonadi::DataReference &ref);
-    //FIXME not implemented, and so it fails to compile
-    //void itemReceived( KJob *job );
 
   private:
-    Monitor *mMonitor;
-    Session *mQueue;
     StrigiClient mStrigi;
 };
 

@@ -48,26 +48,6 @@ install(FILES messagesearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}
 
 endif ( Nepomuk_FOUND )
 
-########### next target ###############
-
-if ( STRIGIQTDBUSCLIENT_LIBRARY )
-
-include_directories( ${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi )
-
-set( strigiprovider_SRCS
-  strigiprovider.cpp
-)
-
-
-kde4_add_executable(akonadi_strigi_searchprovider RUN_UNINSTALLED ${strigiprovider_SRCS})
-
-target_link_libraries(akonadi_strigi_searchprovider akonadi akonadisearchprovider ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES} ${STRIGIQTDBUSCLIENT_LIBRARY})
-
-install(TARGETS akonadi_strigi_searchprovider DESTINATION ${BIN_INSTALL_DIR})
-install(FILES strigisearchprovider.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/searchproviders")
-
-endif ( STRIGIQTDBUSCLIENT_LIBRARY )
-
 ########### install files ###############
 
 # install( FILES
