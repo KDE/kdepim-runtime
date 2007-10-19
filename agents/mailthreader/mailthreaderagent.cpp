@@ -346,7 +346,7 @@ const QLatin1String MailThreaderAgent::PartUnperfectParents = QLatin1String( "Ak
 const QLatin1String MailThreaderAgent::PartSubjectParents = QLatin1String( "AkonadiMailThreaderAgentSubjectParents" );
 
 MailThreaderAgent::MailThreaderAgent( const QString &id )
-  : ResourceBase( id ),
+  : AgentBase( id ),
     d( new Private( this ) )
 {
   qDebug() << "mailtheaderagent: at your order, sir!" ;
@@ -362,11 +362,6 @@ MailThreaderAgent::~MailThreaderAgent()
 void MailThreaderAgent::aboutToQuit()
 {
 
-}
-
-bool MailThreaderAgent::requestItemDelivery( const Akonadi::DataReference&, const QStringList&, const QDBusMessage& )
-{
-  return false;
 }
 
 void MailThreaderAgent::configure()
@@ -422,14 +417,6 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )
   foreach( Item item, items ) {
     d->findParent( item );
   }
-}
-
-void MailThreaderAgent::retrieveCollections()
-{
-}
-
-void MailThreaderAgent::synchronizeCollection( const Akonadi::Collection& )
-{
 }
 
 #include "mailthreaderagent.moc"

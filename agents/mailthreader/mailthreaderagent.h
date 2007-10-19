@@ -20,7 +20,7 @@
 #ifndef MAILTHREADERAGENT_H
 #define MAILTHREADERAGENT_H
 
-#include <libakonadi/resourcebase.h>
+#include <libakonadi/agentbase.h>
 
 #include <QList>
 
@@ -57,7 +57,7 @@ class MailThreaderAttribute : public CollectionAttribute
  * + Reply2
  * ...
  */
-class MailThreaderAgent : public Akonadi::ResourceBase
+class MailThreaderAgent : public Akonadi::AgentBase
 {
   Q_OBJECT
 
@@ -72,7 +72,6 @@ class MailThreaderAgent : public Akonadi::ResourceBase
     void threadCollection( const Akonadi::Collection &col );
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg );
     virtual void configure();
 
   protected:
@@ -82,9 +81,6 @@ class MailThreaderAgent : public Akonadi::ResourceBase
     virtual void itemRemoved( const Akonadi::DataReference &ref );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     void findParentAndMark( const Akonadi::Item &item );
-
-    void retrieveCollections();
-    void synchronizeCollection( const Akonadi::Collection &col );
   private:
     class Private;
     Private* const d;
