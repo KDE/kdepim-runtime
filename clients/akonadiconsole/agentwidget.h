@@ -35,6 +35,7 @@ class AgentWidget : public QWidget
 
   public:
     AgentWidget( QWidget *parent = 0 );
+    Akonadi::AgentInstanceView *view() const { return mView; }
 
   private Q_SLOTS:
     void addAgent();

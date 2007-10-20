@@ -29,6 +29,9 @@
 #include "debugwidget.h"
 #include "profilewidget.h"
 
+#include <libakonadi/components/agentinstanceview.h>
+#include <libakonadi/agentfilterproxymodel.h>
+
 MainWidget::MainWidget( QWidget *parent )
   : QWidget( parent )
 {
@@ -38,7 +41,10 @@ MainWidget::MainWidget( QWidget *parent )
   layout->addWidget( tabWidget );
 
   tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
-  tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
+  AgentWidget *resView = new AgentWidget( tabWidget );
+  resView->view()->agentFilterProxyModel()->addCapability( "Resource" );
+  tabWidget->addTab( resView, "Resources" );
+//   tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
   tabWidget->addTab( new BrowserWidget( tabWidget ), "Browser" );
   tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
 }
