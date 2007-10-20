@@ -435,4 +435,4 @@ It is a management tool which provides user interfaces for the following tasks:
 */
 
 // DOXYGEN_SET_INPUT += @topdir@/akonadi/doc
-// DOXYGEN_EXCLUDE = server libakonadi resources searchproviders clients kioslave kabc kmime plugins
+// DOXYGEN_EXCLUDE = server libakonadi resources clients kioslave kabc kmime plugins
