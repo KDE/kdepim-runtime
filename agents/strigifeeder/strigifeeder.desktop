@@ -1,19 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Strigi Feeder
-Name[de]=Akonadi-Volltextsuchdienst
-Name[el]=Πάροχος αναζήτησης κειμένου του Akonadi
-Name[es]=Proveedor de búsqueda de texto Akonadi
-Name[it]=Provider di ricerca testuale di Akonadi
-Name[ja]=Akonadi 全文検索プロバイダ
-Name[ko]=Akonadi 전체 텍스트 검색 공급자
-Name[ne]=एकोनाडी पूरा पाठ खोजी प्रदायक
-Name[pt]=Fornecedor de Pesquisa por Texto Completo do Akonadi
-Name[pt_BR]=Fornecedor de Pesquisa por Texto Completo do Akonadi
-Name[sv]=Akonadi fulltextsöktjänst
-Name[x-test]=xxAkonadi Fulltext Search Providerxx
-Name[zh_CN]=Akonadi 全文搜索挂件
-Name[zh_TW]=Akonadi 全文檢索提供者
 Comment=Strigi-based fulltext search
 Comment[de]=Strigi-Basierte Volltextsuche
 Comment[el]=Αναζήτηση κειμένου βασισμένη στο Strigi
