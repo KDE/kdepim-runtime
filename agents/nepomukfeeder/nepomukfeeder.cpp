@@ -17,56 +17,38 @@
     02110-1301, USA.
 */
 
-#include "messagesearchprovider.h"
+#include "nepomukfeeder.h"
 
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/job.h>
-#include <libakonadi/session.h>
-#include <libakonadi/monitor.h>
+#include <libakonadi/changerecorder.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <kcomponentdata.h>
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>
 #include <kurl.h>
 
-#include <QtCore/QCoreApplication>
-
 using namespace Akonadi;
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-Akonadi::MessageSearchProvider::MessageSearchProvider( const QString &id ) :
-  SearchProviderBase( id )
+Akonadi::NepomukFeeder::NepomukFeeder( const QString &id ) :
+  AgentBase( id )
 {
-  Monitor* monitor = new Monitor( this );
-  monitor->addFetchPart( Item::PartBody );
-  monitor->monitorMimeType( "message/rfc822" );
-  monitor->monitorMimeType( "message/news" );
-  connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), SLOT(itemChanged(Akonadi::Item)) );
-  connect( monitor, SIGNAL(itemChanged(const Akonadi::Item&, const QStringList&)), SLOT(itemChanged(const Akonadi::Item&)) );
-  connect( monitor, SIGNAL(itemRemoved(const Akonadi::DataReference&)), SLOT(itemRemoved(const Akonadi::DataReference&)) );
-
-  mSession = new Session( id.toLatin1(), this );
-  monitor->ignoreSession( mSession );
+  monitor()->addFetchPart( Item::PartEnvelope );
+  monitor()->monitorMimeType( "message/rfc822" );
+  monitor()->monitorMimeType( "message/news" );
+  monitor()->setChangeRecordingEnabled( false );
 }
 
-QStringList Akonadi::MessageSearchProvider::supportedMimeTypes() const
+void NepomukFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
-  QStringList mimeTypes;
-  mimeTypes << QString::fromLatin1( "message/rfc822" ) << QString::fromLatin1( "message/news" );
-  return mimeTypes;
+  Q_UNUSED( collection );
+  itemChanged( item, QStringList() );
 }
 
-void MessageSearchProvider::itemRemoved(const Akonadi::DataReference & ref)
+void NepomukFeeder::itemChanged(const Akonadi::Item & item, const QStringList & partIdentifiers)
 {
-  Nepomuk::Resource r( Item( ref ).url().url() );
-  r.remove();
-}
-
-void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
-{
+  Q_UNUSED( partIdentifiers );
   if ( !item.hasPayload<MessagePtr>() )
     return;
   MessagePtr msg = item.payload<MessagePtr>();
@@ -87,12 +69,15 @@ void MessageSearchProvider::itemChanged(const Akonadi::Item & item)
     r.setProperty( "Message-Id", Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
 }
 
-int main( int argc, char **argv )
+void NepomukFeeder::itemRemoved(const Akonadi::DataReference & ref)
 {
-  QCoreApplication app( argc, argv );
-  KComponentData kcd( "nepomukfeeder" );
-  Akonadi::SearchProviderBase::init<Akonadi::MessageSearchProvider>( argc, argv, QLatin1String("akonadi_message_searchprovider") );
-  return app.exec();
+  Nepomuk::Resource r( Item( ref ).url().url() );
+  r.remove();
 }
 
-#include "messagesearchprovider.moc"
+int main( int argc, char **argv )
+{
+  return AgentBase::init<NepomukFeeder>( argc, argv );
+}
+
+#include "nepomukfeeder.moc"

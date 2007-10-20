@@ -20,31 +20,21 @@
 #ifndef AKONADI_MESSAGE_SEARCHPROVIDER_H
 #define AKONADI_MESSAGE_SEARCHPROVIDER_H
 
-#include <searchproviderbase.h>
-#include <libakonadi/item.h>
-
-class QStringList;
+#include <libakonadi/agentbase.h>
 
 
 namespace Akonadi {
 
-class DataReference;
-class Session;
-
-class MessageSearchProvider : public SearchProviderBase
+class NepomukFeeder : public AgentBase
 {
   Q_OBJECT
   public:
-    MessageSearchProvider( const QString &id );
-    virtual ~MessageSearchProvider() {};
-    virtual QStringList supportedMimeTypes() const;
+    NepomukFeeder( const QString &id );
 
   protected slots:
-    void itemChanged(const Akonadi::Item &item);
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved(const Akonadi::DataReference &ref);
-
-  private:
-    Session *mSession;
 };
 
 }
