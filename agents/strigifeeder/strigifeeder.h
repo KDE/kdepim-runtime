@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_STRIGIPROVIDER_H
-#define AKONADI_STRIGIPROVIDER_H
+#ifndef AKONADI_STRIGI_FEEDER_H
+#define AKONADI_STRIGI_FEEDER_H
 
 #include <libakonadi/agentbase.h>
 #include <strigi/qtdbus/strigiclient.h>

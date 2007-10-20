@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_MESSAGE_SEARCHPROVIDER_H
-#define AKONADI_MESSAGE_SEARCHPROVIDER_H
+#ifndef AKONADI_NEPOMUK_FEEDER_H
+#define AKONADI_NEPOMUK_FEEDER_H
 
 #include <libakonadi/agentbase.h>
 
