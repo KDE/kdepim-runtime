@@ -294,8 +294,8 @@ void AddresseeSelector::initGUI()
 
   int row = 1;
 
-  KIcon moveSet( "find-next", KIconLoader::global() );
-  KIcon removeSet( "find-previous", KIconLoader::global() );
+  KIcon moveSet( "edit-find-next", KIconLoader::global() );
+  KIcon removeSet( "edit-find-previous", KIconLoader::global() );
 
   int count = mSelection->fieldCount();
   for ( int i = 0; i < count; ++i, ++row ) {
