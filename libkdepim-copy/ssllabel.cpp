@@ -65,12 +65,12 @@ void SSLLabel::setState( State state )
   switch( state ) {
   case Encrypted:
     this->setToolTip( i18n("Connection is encrypted") );
-    setPixmap( SmallIcon( "encrypted" ) );
+    setPixmap( SmallIcon( "security-high" ) );
     show();
     break;
   case Unencrypted:
     this->setToolTip( i18n("Connection is unencrypted") );
-    setPixmap( SmallIcon( "decrypted" ) );
+    setPixmap( SmallIcon( "security-low" ) );
     show();
     break;
   case Done:
