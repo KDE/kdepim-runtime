@@ -51,12 +51,10 @@ NntpResource::~ NntpResource()
 {
 }
 
-bool NntpResource::requestItemDelivery(const Akonadi::DataReference & ref, const QStringList &parts, const QDBusMessage & msg)
+bool NntpResource::retrieveItem(const Akonadi::Item& item, const QStringList &parts)
 {
   Q_UNUSED( parts );
-  mCurrentRef = ref;
-  mCurrentMessage = msg;
-  KIO::Job* job = KIO::storedGet( KUrl( ref.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
+  KIO::Job* job = KIO::storedGet( KUrl( item.reference().remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
   connect( job, SIGNAL( result(KJob*) ), SLOT( fetchArticleResult(KJob*) ) );
   return true;
 }
@@ -92,8 +90,9 @@ void NntpResource::retrieveCollections()
   connect( job, SIGNAL( result(KJob*) ), SLOT( listGroupsResult(KJob*) ) );
 }
 
-void NntpResource::synchronizeCollection(const Akonadi::Collection & col)
+void NntpResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
+  Q_UNUSED( parts );
   KUrl url = KUrl( baseUrl() );
   url.setPath( col.remoteId() );
 
@@ -171,7 +170,7 @@ void NntpResource::listGroupResult(KJob * job)
     // TODO: check result signal
   }
 
-  collectionSynchronized();
+  itemsRetrieved();
 }
 
 QString NntpResource::baseUrl() const
@@ -191,12 +190,10 @@ void NntpResource::fetchArticleResult(KJob * job)
   KMime::Message *msg = new KMime::Message();
   msg->setContent( KMime::CRLFtoLF( j->data() ) );
   msg->parse();
-  Item item( mCurrentRef );
+  Item item = currentItem();
   item.setMimeType( "message/news" );
   item.setPayload( MessagePtr( msg ) );
-  ItemStoreJob *store = new ItemStoreJob( item, session() );
-  store->storePayload();
-  deliverItem( store, mCurrentMessage );
+  itemRetrieved( item );
 }
 
 void NntpResource::configure()

@@ -21,7 +21,6 @@
 #define ICALRESOURCE_H
 
 #include <resourcebase.h>
-#include <QtDBus/QDBusMessage>
 
 namespace KCal {
   class CalendarLocal;
@@ -36,8 +35,12 @@ class ICalResource : public Akonadi::ResourceBase
     ~ICalResource();
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg );
     virtual void configure();
+
+  protected Q_SLOTS:
+    void retrieveCollections();
+    void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
+    bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
   protected:
     virtual void aboutToQuit();
@@ -45,9 +48,6 @@ class ICalResource : public Akonadi::ResourceBase
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
-
-    void retrieveCollections();
-    void synchronizeCollection( const Akonadi::Collection &col );
 
   private:
     void loadFile();

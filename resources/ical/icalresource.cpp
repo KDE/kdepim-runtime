@@ -32,7 +32,6 @@
 #include <klocale.h>
 
 #include <QtCore/QDebug>
-#include <QtDBus/QDBusConnection>
 
 #include <boost/shared_ptr.hpp>
 
@@ -53,24 +52,21 @@ ICalResource::~ ICalResource()
   delete mCalendar;
 }
 
-bool ICalResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
+bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
   Q_UNUSED( parts );
   qDebug() << "ICalResource::requestItemDelivery()";
-  IncidencePtr incidence( mCalendar->incidence( ref.remoteId() )->clone() );
+  const QString rid = item.reference().remoteId();
+  IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {
-    error( i18n("Incidence with uid '%1' not found!", ref.remoteId() ) );
+    error( i18n("Incidence with uid '%1' not found!", rid ) );
     return false;
-  } else {
-    Item item( ref );
-    item.setMimeType( "text/calendar" );
-    item.setPayload<IncidencePtr>( incidence );
-
-    ItemStoreJob *job = new ItemStoreJob( item, session() );
-    job->noRevCheck();
-    job->storePayload();
-    return deliverItem( job, msg );
   }
+  Item i = item;
+  i.setMimeType( "text/calendar" );
+  i.setPayload<IncidencePtr>( incidence );
+  itemRetrieved( i );
+  return true;
 }
 
 void ICalResource::aboutToQuit()
@@ -150,8 +146,10 @@ void ICalResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void ICalResource::synchronizeCollection(const Akonadi::Collection & col)
+void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
+  Q_UNUSED( col );
+  Q_UNUSED( parts );
   if ( !mCalendar )
     return;
 

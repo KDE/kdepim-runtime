@@ -78,10 +78,10 @@ MaildirResource::~ MaildirResource()
 {
 }
 
-bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
+bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-  const QString dir = maildirPath( ref.remoteId() );
-  const QString entry = maildirId( ref.remoteId() );
+  const QString dir = maildirPath( item.reference().remoteId() );
+  const QString entry = maildirId( item.reference().remoteId() );
 
   Maildir md( dir );
   if ( !md.isValid() )
@@ -92,14 +92,11 @@ bool MaildirResource::requestItemDelivery( const Akonadi::DataReference &ref, co
   mail->setContent( data );
   mail->parse();
 
-  Item item( ref );
-  item.setMimeType( "message/rfc822" );
-  item.setPayload( MessagePtr( mail ) );
-  ItemStoreJob *job = new ItemStoreJob( item, session() );
-  job->noRevCheck();
-  job->storePayload();
-
-  return deliverItem( job, msg );
+  Item i( item );
+  i.setMimeType( "message/rfc822" );
+  i.setPayload( MessagePtr( mail ) );
+  itemRetrieved( i );
+  return true;
 }
 
 void MaildirResource::aboutToQuit()
@@ -227,7 +224,7 @@ void MaildirResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void MaildirResource::synchronizeCollection(const Akonadi::Collection & col)
+void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {

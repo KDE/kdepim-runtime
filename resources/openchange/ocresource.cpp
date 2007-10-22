@@ -103,7 +103,7 @@ OCResource::~ OCResource()
   talloc_free(m_mapiMemoryContext);
 }
 
-bool OCResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
+bool OCResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
   qDebug() << "currently ignoring requestItemDelivery";
   return true;
@@ -233,7 +233,7 @@ QString OCResource::mimeTypeForFolderType( const char* folderTypeValue ) const
   } else if ( folderType == IPF_TASK ) {
     // TODO: find a better mime type for this
     return QString( "message/directory" );
-  } 
+  }
 
   qDebug() << "Unexpected result for container class: " << folderTypeValue;
   return QString( "message/x-unknown" );
@@ -865,7 +865,7 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
       }
 
       qDebug() << "Num attachments:" << rowset_attach.cRows;
-      
+
       for ( uint32_t j = 0; j < rowset_attach.cRows; ++j ) {
 	const uint32_t *attach_num = (const uint32_t *)find_SPropValue_data( &(rowset_attach.aRow[j]), PR_ATTACH_NUM );
 	mapi_object_t obj_attach;
@@ -1126,23 +1126,23 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
     case PR_HOME_ADDRESS_CITY:
       // PT_STRING8
       homeAddress.setLocality( properties_array.lpProps[i].value.lpszA );
-      break;      
+      break;
     case PR_HOME_ADDRESS_COUNTRY:
       // PT_STRING8
       homeAddress.setCountry( properties_array.lpProps[i].value.lpszA );
-      break;      
+      break;
     case PR_HOME_ADDRESS_POSTAL_CODE:
       // PT_STRING8
       homeAddress.setPostalCode( properties_array.lpProps[i].value.lpszA );
-      break;      
+      break;
     case PR_HOME_ADDRESS_STATE_OR_PROVINCE:
       // PT_STRING8
       homeAddress.setRegion( properties_array.lpProps[i].value.lpszA );
-      break;      
+      break;
     case PR_HOME_ADDRESS_STREET:
       // PT_STRING8
       homeAddress.setStreet( properties_array.lpProps[i].value.lpszA );
-      break;      
+      break;
     case PR_CREATOR_NAME:
       // PT_STRING8
       qDebug() << "PR_CREATOR_NAME:" << properties_array.lpProps[i].value.lpszA;
@@ -1410,7 +1410,7 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   }
 }
 
-void OCResource::synchronizeCollection(const Akonadi::Collection & collection)
+void OCResource::retrieveItems(const Akonadi::Collection & collection, const QStringList &parts)
 {
   qDebug() << "currently synchronizeCollections() is incomplete";
 
@@ -1428,7 +1428,7 @@ void OCResource::synchronizeCollection(const Akonadi::Collection & collection)
   fetchFolder( collection );
 
   changeProgress( 100 );
-  collectionSynchronized();
+  itemsRetrieved();
 }
 
 #include "ocresource.moc"

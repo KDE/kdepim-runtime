@@ -24,8 +24,6 @@
 
 #include <kio/job.h>
 
-#include <QtDBus/QDBusMessage>
-
 class NntpResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
@@ -35,13 +33,14 @@ class NntpResource : public Akonadi::ResourceBase
     ~NntpResource();
 
   public Q_SLOTS:
-    virtual bool requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg );
     virtual void configure();
 
-  protected:
+  protected Q_SLOTS:
     void retrieveCollections();
-    void synchronizeCollection( const Akonadi::Collection &col );
+    void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
+    bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
+  protected:
     /**
       Returns the base url used for all KIO operations, containing
       protocol, hostname and port.
@@ -59,10 +58,6 @@ class NntpResource : public Akonadi::ResourceBase
 
   private:
     Akonadi::Collection::List remoteCollections;
-
-    // FIXME: this breaks with multiple concurrent requests
-    Akonadi::DataReference mCurrentRef;
-    QDBusMessage mCurrentMessage;
 
     bool mIncremental;
 

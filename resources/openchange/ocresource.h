@@ -24,7 +24,6 @@
 #define OCRESOURCE_H
 
 #include <resourcebase.h>
-#include <QtDBus/QDBusMessage>
 
 extern "C" {
 #include <libmapi/libmapi.h>
@@ -40,8 +39,12 @@ public:
     ~OCResource();
 
 public Q_SLOTS:
-    virtual bool requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg );
     virtual void configure();
+
+protected Q_SLOTS:
+    void retrieveCollections();
+    void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
+    bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
 protected:
     virtual void aboutToQuit();
@@ -49,9 +52,6 @@ protected:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
-
-    void retrieveCollections();
-    void synchronizeCollection( const Akonadi::Collection &col );
 
 private:
     void login();

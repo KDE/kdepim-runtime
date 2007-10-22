@@ -45,7 +45,7 @@ LocalBookmarksResource::~ LocalBookmarksResource()
 {
 }
 
-bool LocalBookmarksResource::requestItemDelivery( const Akonadi::DataReference &ref, const QStringList &parts, const QDBusMessage &msg )
+bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
   Q_UNUSED( parts );
   // TODO use remote id to retrieve the item in the file
@@ -155,8 +155,9 @@ void LocalBookmarksResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void LocalBookmarksResource::synchronizeCollection(const Akonadi::Collection & col)
+void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
+  Q_UNUSED( parts );
   if ( !col.isValid() )
   {
     qDebug() << "Collection not valid";
@@ -194,7 +195,7 @@ void LocalBookmarksResource::synchronizeCollection(const Akonadi::Collection & c
   }
 
   changeProgress( 100 );
-  collectionSynchronized();
+  itemsRetrieved();
 }
 
 #include "localbookmarksresource.moc"
