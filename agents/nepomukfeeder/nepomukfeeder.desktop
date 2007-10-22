@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Akonadi Nepomuk Feeder
 Name[pt]=Alimentação do Nepomuk para o Akonadi
 Name[pt_BR]=Alimentação do Nepomuk para o Akonadi
+Name[sv]=Akonadi inmatning till Nepomuk
 Comment=Email specific extension to Akonadi
 Comment[de]=Eine besondere E-Mail-Erweiterung für Akonadi
 Comment[el]=Επέκταση σχετική με Email για το Akonadi
