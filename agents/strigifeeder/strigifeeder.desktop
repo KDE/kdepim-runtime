@@ -4,6 +4,7 @@ Name=Akonadi Strigi Feeder
 Name[pt]=Motor do Strigi para o Akonadi
 Name[pt_BR]=Motor do Strigi para o Akonadi
 Name[sv]=Akonadi inmatning till Strigi
+Name[x-test]=xxAkonadi Strigi Feederxx
 Comment=Strigi-based fulltext search
 Comment[de]=Strigi-Basierte Volltextsuche
 Comment[el]=Αναζήτηση κειμένου βασισμένη στο Strigi
