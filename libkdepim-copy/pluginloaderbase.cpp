@@ -69,7 +69,7 @@ namespace KPIM {
                                          KStandardDirs::Recursive |
                                          KStandardDirs::NoDuplicates );
     for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it ) {
-      KConfig config( *it, KConfig::OnlyLocal);
+      KConfig config( *it, KConfig::SimpleConfig);
       if ( config.hasGroup( "Misc" ) && config.hasGroup( "Plugin" ) ) {
         KConfigGroup group( &config, "Plugin" );
 

@@ -588,7 +588,7 @@ void KImportDialog::assignTemplate()
 
   for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
   {
-    KConfig config( *it, KConfig::OnlyLocal);
+    KConfig config( *it, KConfig::SimpleConfig);
 
     if ( !config.hasGroup( "csv column map" ) )
       continue;
@@ -608,7 +608,7 @@ void KImportDialog::assignTemplate()
   if ( !ok )
     return;
 
-  KConfig _config( fileMap[ tmp ], KConfig::OnlyLocal );
+  KConfig _config( fileMap[ tmp ], KConfig::SimpleConfig );
   KConfigGroup config(&_config, "General" );
   int numColumns = config.readEntry( "Columns", 0 );
   int format = config.readEntry( "Format", 0 );
