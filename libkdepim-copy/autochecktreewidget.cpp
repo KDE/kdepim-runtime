@@ -47,6 +47,11 @@ AutoCheckTreeWidget::AutoCheckTreeWidget( QWidget *parent )
            SLOT( slotDataChanged( const QModelIndex &, const QModelIndex & ) ) );
 }
 
+AutoCheckTreeWidget::~AutoCheckTreeWidget()
+{
+  delete d;
+}
+
 QTreeWidgetItem* AutoCheckTreeWidget::itemByPath( const QStringList &path ) const
 {
   QStringList newPath = path;

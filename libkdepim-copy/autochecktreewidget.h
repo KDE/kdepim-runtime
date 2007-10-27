@@ -54,6 +54,9 @@ class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
      */
     AutoCheckTreeWidget( QWidget *parent = 0 );
 
+
+    ~AutoCheckTreeWidget();
+
     /**
       Returns QTreeWidgetItem which matches the path, if available.
 
