@@ -690,7 +690,7 @@ void KMeditor::slotPasteAsQuotation()
   if (hasFocus() ) {
     QString s = QApplication::clipboard()->text();
     if ( !s.isEmpty() ) {
-      insert( addQuotesToText( s ) );
+      insertPlainText( addQuotesToText( s ) );
     }
   }
 }
@@ -704,7 +704,7 @@ void KMeditor::slotRemoveQuotes()
   if(cursor.hasSelection())
   {
     QString s = cursor.selectedText();
-    insert( removeQuotesFromText( s ) );
+    insertPlainText( removeQuotesFromText( s ) );
   }
   else
   {
@@ -830,7 +830,7 @@ void KMeditor::slotAddBox()
     s.prepend( ",----[  ]\n" );
     s.replace( QRegExp("\n"),"\n| " );
     s.append( "\n`----" );
-    insert( s );
+    insertPlainText( s );
   } else {
 /*
     int l = currentLine();
@@ -859,7 +859,7 @@ void KMeditor::slotRot13()
 {
   QTextCursor cursor = textCursor();
   if ( cursor.hasSelection() )
-    insert( KMUtils::rot13( cursor.selectedText() ) );
+    insertPlainText( KMUtils::rot13( cursor.selectedText() ) );
 }
 
 void KMeditor::setCursorPosition( int linePos, int columnPos )
@@ -869,10 +869,10 @@ void KMeditor::setCursorPosition( int linePos, int columnPos )
 
 bool KMeditor::appendSignature( const QString &sig, bool preserveUserCursorPos )
 {
-  bool mod = isModified();
+  bool mod = document()->isModified();
   if ( !sig.isEmpty() )  {
-    insert( '\n' + sig );
-    setModified( mod );
+    insertPlainText( '\n' + sig );
+    document()->setModified( mod );
     if ( preserveUserCursorPos ) {
 //Laurent fixme
 #if 0
@@ -884,7 +884,6 @@ bool KMeditor::appendSignature( const QString &sig, bool preserveUserCursorPos )
       preserveUserCursorPos = false;
 #endif
     }
-    sync();
   }
   return preserveUserCursorPos;
 }
