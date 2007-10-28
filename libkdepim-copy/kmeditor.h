@@ -33,7 +33,7 @@ namespace KPIM {
 
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
     /**
@@ -67,7 +67,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void switchTextMode(bool useHtml);
 
-    KUrl insertFile(const QStringList & encodingLst, QString &encodingStr);
+    KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
 
     void wordWrapToggled( bool on);
     void setWrapColumnOrWidth( int w );
@@ -80,22 +80,22 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void setCursorPositionFromStart( unsigned int pos );
 
     int linePosition();
-    int columnNumber ();
-    void setCursorPosition( int linePos, int columnPos);
-    bool appendSignature(const QString &sig, bool preserveUserCursorPos = false);
+    int columnNumber();
+    void setCursorPosition( int linePos, int columnPos );
+    bool appendSignature( const QString &sig, bool preserveUserCursorPos = false );
 
   public Q_SLOTS:
     //Text style format.
-    void slotChangeParagStyle(QTextListFormat::Style _style);
+    void slotChangeParagStyle( QTextListFormat::Style _style );
     void slotAlignLeft();
     void slotAlignCenter();
     void slotAlignRight();
-    void slotTextBold(bool _b);
-    void slotTextItalic(bool _b);
-    void slotTextUnder(bool _b);
+    void slotTextBold( bool _b );
+    void slotTextItalic( bool _b );
+    void slotTextUnder( bool _b );
     void slotTextColor();
-    void slotFontFamilyChanged(const QString &f);
-    void slotFontSizeChanged(int size);
+    void slotFontFamilyChanged( const QString &f );
+    void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
     void slotAddQuotes();
@@ -104,10 +104,11 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotReplaceText();
     void slotFindText();
   protected:
-    bool eventFilter(QObject*o, QEvent* e);
+    bool eventFilter( QObject* o, QEvent* e );
     void init();
     void findTextNext();
-    void findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog );
+    void findText( const QString &str, long options, QWidget *parent,
+                   KFindDialog *findDialog );
 
     /*
      * Redefine it to allow to create context menu for spell word list
@@ -121,16 +122,17 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotFindNext();
     void slotReplaceNext();
     void slotDoReplace();
-    void slotReplaceText(const QString &text, int replacementIndex, int /*replacedLength*/, int matchedLength);
+    void slotReplaceText( const QString &text, int replacementIndex,
+                          int /*replacedLength*/, int matchedLength );
 
   private:
-    void mergeFormat(const QTextCharFormat &format);
+    void mergeFormat( const QTextCharFormat &format );
     QString addQuotesToText( const QString &inputText );
     QString removeQuotesFromText( const QString &inputText ) const;
 
     class Private;
     Private *const d;
-    Q_PRIVATE_SLOT( d, void addSuggestion(const QString&,const QStringList&) )
+    Q_PRIVATE_SLOT( d, void addSuggestion( const QString&,const QStringList& ) )
     Q_PRIVATE_SLOT( d, void slotHighlight( const QString &, int, int ) )
 };
 

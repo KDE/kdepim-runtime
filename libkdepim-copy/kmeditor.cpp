@@ -75,7 +75,7 @@ class KMeditor::Private
       delete replace;
     }
 
-    void addSuggestion(const QString&,const QStringList&);
+    void addSuggestion( const QString&,const QStringList& );
 
     void slotHighlight( const QString &, int, int );
 
@@ -95,15 +95,17 @@ class KMeditor::Private
     int mFindIndex;
 };
 
-void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex, int matchedLength)
+void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex,
+                                       int matchedLength )
 {
   //kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos :"<<matchingIndex<<" matchedLength :"<<matchedLength;
   parent->highlightWord( matchedLength, matchingIndex );
 }
 
-void KMeditor::Private::addSuggestion(const QString& originalWord,const QStringList& lst)
+void KMeditor::Private::addSuggestion( const QString& originalWord,
+                                       const QStringList& lst )
 {
-   replacements[originalWord] = lst;
+  replacements[originalWord] = lst;
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -131,7 +133,7 @@ void KMeditor::dragMoveEvent( QDragMoveEvent *e )
 void KMeditor::dropEvent( QDropEvent *e )
 {
   //Need to reimplement it by each apps
-  KTextEdit::dropEvent(e);
+  KTextEdit::dropEvent( e );
 }
 
 void KMeditor::paste()
@@ -146,74 +148,72 @@ void KMeditor::paste()
 void KMeditor::keyPressEvent ( QKeyEvent * e )
 {
   if ( e->key() ==  Qt::Key_Return ) {
-       QTextCursor cursor = textCursor();
-       int oldPos = cursor.position();
-       int blockPos = cursor.block().position();
+    QTextCursor cursor = textCursor();
+    int oldPos = cursor.position();
+    int blockPos = cursor.block().position();
 
-       //selection all the line.
-       cursor.movePosition(QTextCursor::StartOfBlock);
-       cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-       QString lineText = cursor.selectedText();
-       if ( ( ( oldPos -blockPos )  > 0 ) && ( ( oldPos-blockPos ) < int( lineText.length() ) ) ) {
-       bool isQuotedLine = false;
-       int bot = 0; // bot = begin of text after quote indicators
-       while( bot < lineText.length() ) {
-         if( ( lineText[bot] == '>' ) || ( lineText[bot] == '|' ) ) {
-           isQuotedLine = true;
-           ++bot;
-         }
-         else if( lineText[bot].isSpace() ) {
-           ++bot;
-         }
-         else {
-           break;
-         }
-       }
-       KTextEdit::keyPressEvent( e );
+    //selection all the line.
+    cursor.movePosition( QTextCursor::StartOfBlock );
+    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+    QString lineText = cursor.selectedText();
+    if ( ( ( oldPos -blockPos )  > 0 ) &&
+          ( ( oldPos-blockPos ) < int( lineText.length() ) ) ) {
+      bool isQuotedLine = false;
+      int bot = 0; // bot = begin of text after quote indicators
+      while ( bot < lineText.length() ) {
+        if( ( lineText[bot] == '>' ) || ( lineText[bot] == '|' ) ) {
+          isQuotedLine = true;
+          ++bot;
+        }
+        else if ( lineText[bot].isSpace() ) {
+          ++bot;
+        }
+        else {
+          break;
+        }
+      }
+      KTextEdit::keyPressEvent( e );
       // duplicate quote indicators of the previous line before the new
       // line if the line actually contained text (apart from the quote
       // indicators) and the cursor is behind the quote indicators
-       if( isQuotedLine
-          && ( bot != lineText.length() )
-          && ( ( oldPos-blockPos ) >= int( bot ) ) ) {
-
-
+      if ( isQuotedLine
+         && ( bot != lineText.length() )
+         && ( ( oldPos-blockPos ) >= int( bot ) ) ) {
         // The cursor position might have changed unpredictably if there was selected
         // text which got replaced by a new line, so we query it again:
         int newPos = cursor.position();
-        cursor.movePosition(QTextCursor::StartOfBlock);
-        cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+        cursor.movePosition( QTextCursor::StartOfBlock );
+        cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
         QString newLine = cursor.selectedText();
 
         // remove leading white space from the new line and instead
         // add the quote indicators of the previous line
         int leadingWhiteSpaceCount = 0;
-        while( ( leadingWhiteSpaceCount < newLine.length() )
+        while ( ( leadingWhiteSpaceCount < newLine.length() )
                && newLine[leadingWhiteSpaceCount].isSpace() ) {
           ++leadingWhiteSpaceCount;
         }
         newLine = newLine.replace( 0, leadingWhiteSpaceCount,
                                    lineText.left( bot ) );
-        cursor.insertText(newLine);
+        cursor.insertText( newLine );
         //cursor.setPosition( cursor.position() + 2);
-        setTextCursor(cursor);
+        setTextCursor( cursor );
       }
     }
     else
       KTextEdit::keyPressEvent( e );
   }
-  else if (e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier
-      && textCursor().blockNumber()== 0 /*First block*/
-      && textCursor().block().position() == 0)
+  else if ( e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier
+            && textCursor().blockNumber()== 0 /*First block*/
+            && textCursor().block().position() == 0 )
   {
-      textCursor().clearSelection();
-      emit focusUp();
+    textCursor().clearSelection();
+    emit focusUp();
   }
-    // ---sven's Arrow key navigation end ---
-  else if (e->key() == Qt::Key_Backtab && e->modifiers() == Qt::ShiftModifier)
+  else if ( e->key() == Qt::Key_Backtab && e->modifiers() == Qt::ShiftModifier )
   {
-      textCursor().clearSelection();
-      emit focusUp();
+    textCursor().clearSelection();
+    emit focusUp();
   }
   else
   {
@@ -221,14 +221,14 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
   }
 }
 
-KMeditor::KMeditor( const QString& text, QWidget *parent)
- : KTextEdit(text, parent), d( new Private(this) )
+KMeditor::KMeditor( const QString& text, QWidget *parent )
+ : KTextEdit( text, parent ), d( new Private(this) )
 {
-   init();
+  init();
 }
 
-KMeditor::KMeditor( QWidget *parent)
- : KTextEdit(parent), d( new Private(this) )
+KMeditor::KMeditor( QWidget *parent )
+ : KTextEdit( parent ), d( new Private(this ) )
 {
   init();
 }
@@ -238,34 +238,35 @@ KMeditor::~KMeditor()
   delete d;
 }
 
-bool KMeditor::eventFilter(QObject*o, QEvent* e)
+bool KMeditor::eventFilter( QObject*o, QEvent* e )
 {
   if (o == this)
-    KCursor::autoHideEventFilter(o, e);
-  return KTextEdit::eventFilter(o, e);
+    KCursor::autoHideEventFilter( o, e );
+  return KTextEdit::eventFilter( o, e );
 }
 
 void KMeditor::init()
 {
-   KCursor::setAutoHideCursor( this, true, true );
-   installEventFilter(this);
-   //enable spell checking by default
-   setCheckSpellingEnabled(true);
+  KCursor::setAutoHideCursor( this, true, true );
+  installEventFilter( this );
+  //enable spell checking by default
+  setCheckSpellingEnabled( true );
 }
 
 void KMeditor::createHighlighter()
 {
-   KPIM::KEMailQuotingHighlighter *emailHighLighter = new KPIM::KEMailQuotingHighlighter(this);
-   connect(emailHighLighter,SIGNAL(newSuggestions(const QString&,const QStringList&)),this, SLOT(addSuggestion(const QString&,const QStringList&)) );
+  KPIM::KEMailQuotingHighlighter *emailHighLighter =
+      new KPIM::KEMailQuotingHighlighter( this );
+  connect( emailHighLighter, SIGNAL( newSuggestions(const QString&,const QStringList&) ),
+           this, SLOT( addSuggestion(const QString&,const QStringList&) ) );
 
-   //TODO change config
-   setHighlighter(emailHighLighter);
+  //TODO change config
+  setHighlighter( emailHighLighter );
 }
-
 
 void KMeditor::setUseExternalEditor( bool use )
 {
-   d->useExtEditor = use;
+  d->useExtEditor = use;
 }
 
 void KMeditor::setExternalEditorPath( const QString & path )
@@ -290,7 +291,7 @@ void KMeditor::slotFindText()
   d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
   //Display dialogbox
   d->findDialog->show();
-  connect( d->findDialog, SIGNAL(okClicked()), this, SLOT(slotFindNext()) );
+  connect( d->findDialog, SIGNAL( okClicked() ), this, SLOT( slotFindNext() ) );
 
   findText( d->findDialog->pattern(), 0 /*options*/, this, d->findDialog );
 }
@@ -298,92 +299,95 @@ void KMeditor::slotFindText()
 
 void KMeditor::slotReplaceText()
 {
-    if ( d->replaceDialog ) {
+  if ( d->replaceDialog ) {
 #ifdef Q_WS_X11
-      KWindowSystem::activateWindow( d->replaceDialog->winId() );
+    KWindowSystem::activateWindow( d->replaceDialog->winId() );
 #else
-      d->replaceDialog->activateWindow();
+    d->replaceDialog->activateWindow();
 #endif
-    } else {
-      d->replaceDialog = new KReplaceDialog(this, 0,
-                                    QStringList(), QStringList(), false);
-      connect( d->replaceDialog, SIGNAL(okClicked()), this, SLOT(slotDoReplace()) );
-    }
-    d->replaceDialog->show();
+  } else {
+    d->replaceDialog = new KReplaceDialog( this, 0, QStringList(),
+                                           QStringList(), false );
+    connect( d->replaceDialog, SIGNAL( okClicked() ),
+             this, SLOT( slotDoReplace() ) );
+  }
+  d->replaceDialog->show();
 }
 
 void KMeditor::slotDoReplace()
 {
-    if (!d->replaceDialog) {
-        // Should really assert()
-        return;
-    }
+  if ( !d->replaceDialog ) {
+    // Should really assert()
+    return;
+  }
 
-    delete d->replace;
-    d->replace = new KReplace(d->replaceDialog->pattern(), d->replaceDialog->replacement(), d->replaceDialog->options(), this);
-    d->mReplaceIndex = 0;
-    if (d->replaceDialog->options() & KFind::FromCursor || d->replace->options() & KFind::FindBackwards) {
-        d->mReplaceIndex = textCursor().anchor();
-    }
+  delete d->replace;
+  d->replace = new KReplace( d->replaceDialog->pattern(),
+                             d->replaceDialog->replacement(),
+                             d->replaceDialog->options(), this );
+  d->mReplaceIndex = 0;
+  if ( d->replaceDialog->options() & KFind::FromCursor ||
+       d->replace->options() & KFind::FindBackwards ) {
+    d->mReplaceIndex = textCursor().anchor();
+  }
 
-    // Connect highlight signal to code which handles highlighting
-    // of found text.
-    connect(d->replace, SIGNAL(highlight(const QString &, int, int)),
-            this, SLOT(slotHighlight(const QString &, int, int)));
-    connect(d->replace, SIGNAL(findNext()), this, SLOT(slotReplaceNext()));
-    connect(d->replace, SIGNAL(replace(const QString &, int, int, int)),
-            this, SLOT(slotReplaceText(const QString &, int, int, int)));
+  // Connect highlight signal to code which handles highlighting
+  // of found text.
+  connect( d->replace, SIGNAL( highlight(const QString &, int, int) ),
+           this, SLOT( slotHighlight(const QString &, int, int) ) );
+  connect( d->replace, SIGNAL( findNext()), this, SLOT( slotReplaceNext() ) );
+  connect( d->replace, SIGNAL( replace(const QString &, int, int, int) ),
+           this, SLOT( slotReplaceText(const QString &, int, int, int) ) );
 
-    d->replaceDialog->close();
-    slotReplaceNext();
-
+  d->replaceDialog->close();
+  slotReplaceNext();
 }
 
 void KMeditor::slotReplaceNext()
 {
-    if (!d->replace)
-        return;
+  if ( !d->replace )
+    return;
 
-    if (!(d->replace->options() & KReplaceDialog::PromptOnReplace))
-        viewport()->setUpdatesEnabled(false);
+  if ( !( d->replace->options() & KReplaceDialog::PromptOnReplace ) )
+    viewport()->setUpdatesEnabled( false );
 
-    KFind::Result res = KFind::NoMatch;
+  KFind::Result res = KFind::NoMatch;
 
-    if (d->replace->needData())
-        d->replace->setData(toPlainText(), d->mReplaceIndex);
-    res = d->replace->replace();
-    if (!(d->replace->options() & KReplaceDialog::PromptOnReplace)) {
-        viewport()->setUpdatesEnabled(true);
-        viewport()->update();
-    }
+  if ( d->replace->needData() )
+    d->replace->setData( toPlainText(), d->mReplaceIndex );
+  res = d->replace->replace();
+  if ( !( d->replace->options() & KReplaceDialog::PromptOnReplace ) ) {
+    viewport()->setUpdatesEnabled( true );
+    viewport()->update();
+  }
 
-    if (res == KFind::NoMatch) {
-        d->replace->displayFinalDialog();
-        delete d->replace;
-        d->replace = 0;
-        ensureCursorVisible();
-        //or           if ( m_replace->shouldRestart() ) { reinit (w/o FromCursor) and call slotReplaceNext(); }
-    } else {
-        //m_replace->closeReplaceNextDialog();
-    }
-
+  if ( res == KFind::NoMatch ) {
+    d->replace->displayFinalDialog();
+    delete d->replace;
+    d->replace = 0;
+    ensureCursorVisible();
+    //or           if ( m_replace->shouldRestart() ) { reinit (w/o FromCursor) and call slotReplaceNext(); }
+  } else {
+    //m_replace->closeReplaceNextDialog();
+  }
 }
 
-void KMeditor::slotReplaceText(const QString &text, int replacementIndex, int /*replacedLength*/, int matchedLength) {
-    Q_UNUSED(text)
-    //kDebug() << "Replace: [" << text << "] ri:" << replacementIndex << " rl:" << replacedLength << " ml:" << matchedLength;
-    QTextCursor tc = textCursor();
-    tc.setPosition(replacementIndex);
-    tc.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, matchedLength);
-    tc.removeSelectedText();
-    tc.insertText(d->replaceDialog->replacement());
-    setTextCursor(tc);
-    if (d->replace->options() & KReplaceDialog::PromptOnReplace) {
-        ensureCursorVisible();
-    }
+void KMeditor::slotReplaceText( const QString &text, int replacementIndex,
+                                int /*replacedLength*/, int matchedLength )
+{
+  Q_UNUSED( text )
+  //kDebug() << "Replace: [" << text << "] ri:" << replacementIndex << " rl:" << replacedLength << " ml:" << matchedLength;
+  QTextCursor tc = textCursor();
+  tc.setPosition( replacementIndex );
+  tc.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor,
+                   matchedLength );
+  tc.removeSelectedText();
+  tc.insertText( d->replaceDialog->replacement() );
+  setTextCursor( tc );
+  if ( d->replace->options() & KReplaceDialog::PromptOnReplace ) {
+    ensureCursorVisible();
+  }
 }
-
-
 
 void KMeditor::slotFindNext()
 {
@@ -392,13 +396,13 @@ void KMeditor::slotFindNext()
 
 void KMeditor::findTextNext()
 {
-  if (!d->find)
+  if ( !d->find )
   {
     slotFindText();
     return;
   }
   long options = 0;
-  if(d->findDialog)
+  if ( d->findDialog )
   {
     if ( d->find->pattern() != d->findDialog->pattern() )
     {
@@ -410,49 +414,50 @@ void KMeditor::findTextNext()
   KFind::Result res = KFind::NoMatch;
   while( res == KFind::NoMatch )
   {
-      if ( d->find->needData() )
-      {
-        d->find->setData(toPlainText(), d->mFindIndex);
-        res = d->find->find();
-      }
+    if ( d->find->needData() )
+    {
+      d->find->setData( toPlainText(), d->mFindIndex );
       res = d->find->find();
+    }
+    res = d->find->find();
   }
   if ( res == KFind::NoMatch ) // i.e. we're done
   {
-      if ( d->find->shouldRestart() )
-      {
-        findTextNext();
-      }
-      else // really done
-      {
-       //initFindNode( false, options & KFind::FindBackwards, false );
-        d->find->resetCounts();
-        //slotClearSelection();
-	d->find->closeFindNextDialog();
-      }
+    if ( d->find->shouldRestart() )
+    {
+      findTextNext();
+    }
+    else // really done
+    {
+      //initFindNode( false, options & KFind::FindBackwards, false );
+      d->find->resetCounts();
+      //slotClearSelection();
+      d->find->closeFindNextDialog();
+    }
   }
 }
 
-void KMeditor::findText( const QString &str, long options, QWidget *parent, KFindDialog *findDialog )
+void KMeditor::findText( const QString &str, long options, QWidget *parent,
+                         KFindDialog *findDialog )
 {
-  if(toPlainText().isEmpty())
+  if ( toPlainText().isEmpty() )
     return;
 
   delete d->find;
   //kDebug()<<" str :"<<str;
   //configure it
-  d->find = new KFind(str, options,parent,findDialog);
+  d->find = new KFind( str, options,parent,findDialog );
   d->mFindIndex = 0;
-  if (d->find->options() & KFind::FromCursor || d->find->options() & KFind::FindBackwards) {
-        d->mFindIndex = textCursor().anchor();
+  if ( d->find->options() & KFind::FromCursor ||
+       d->find->options() & KFind::FindBackwards ) {
+    d->mFindIndex = textCursor().anchor();
   }
   d->find->closeFindNextDialog();
-  connect(d->find,SIGNAL( highlight( const QString &, int, int ) ),
-          this, SLOT( slotHighlight( const QString &, int, int ) ) );
-
+  connect( d->find,SIGNAL( highlight( const QString &, int, int ) ),
+           this, SLOT( slotHighlight( const QString &, int, int ) ) );
 }
 
-void KMeditor::slotChangeParagStyle(QTextListFormat::Style _style)
+void KMeditor::slotChangeParagStyle( QTextListFormat::Style _style )
 {
   QTextCursor cursor = textCursor();
   cursor.beginEditBlock();
@@ -461,78 +466,78 @@ void KMeditor::slotChangeParagStyle(QTextListFormat::Style _style)
 
   QTextListFormat listFmt;
 
-  if (cursor.currentList()) {
-     listFmt = cursor.currentList()->format();
+  if ( cursor.currentList() ) {
+    listFmt = cursor.currentList()->format();
   } else {
-     listFmt.setIndent(blockFmt.indent() + 1);
-     blockFmt.setIndent(0);
-     cursor.setBlockFormat(blockFmt);
+    listFmt.setIndent( blockFmt.indent() + 1 );
+    blockFmt.setIndent( 0 );
+    cursor.setBlockFormat( blockFmt );
   }
 
-  listFmt.setStyle(_style);
+  listFmt.setStyle( _style );
 
-  cursor.createList(listFmt);
+  cursor.createList( listFmt );
 
   cursor.endEditBlock();
   setFocus();
 }
 
-void KMeditor::setColor(const QColor& col)
-{
-   QTextCharFormat fmt;
-   fmt.setForeground(col);
-   mergeFormat(fmt);
-}
-
-void KMeditor::setFont(const QFont &fonts)
+void KMeditor::setColor( const QColor& col )
 {
   QTextCharFormat fmt;
-  fmt.setFont(fonts);
-  mergeFormat(fmt);
+  fmt.setForeground( col );
+  mergeFormat( fmt );
+}
+
+void KMeditor::setFont( const QFont &fonts )
+{
+  QTextCharFormat fmt;
+  fmt.setFont( fonts );
+  mergeFormat( fmt );
 }
 
 
 void KMeditor::slotAlignLeft()
 {
-  setAlignment(Qt::AlignLeft);
+  setAlignment( Qt::AlignLeft );
 }
 
 void KMeditor::slotAlignCenter()
 {
-  setAlignment(Qt::AlignHCenter);
+  setAlignment( Qt::AlignHCenter );
 }
 
 void KMeditor::slotAlignRight()
 {
-  setAlignment(Qt::AlignRight);
+  setAlignment( Qt::AlignRight );
 }
 
 void KMeditor::slotTextBold( bool _b )
 {
   QTextCharFormat fmt;
-  fmt.setFontWeight(_b ? QFont::Bold : QFont::Normal);
-  mergeFormat(fmt);
+  fmt.setFontWeight( _b ? QFont::Bold : QFont::Normal );
+  mergeFormat( fmt );
 }
 
 void KMeditor::slotTextItalic( bool _b)
 {
   QTextCharFormat fmt;
-  fmt.setFontItalic(_b);
+  fmt.setFontItalic( _b );
   mergeFormat(fmt);
 }
 
-void KMeditor::slotTextUnder( bool _b)
+void KMeditor::slotTextUnder( bool _b )
 {
   QTextCharFormat fmt;
-  fmt.setFontUnderline(_b);
-  mergeFormat(fmt);
+  fmt.setFontUnderline( _b );
+  mergeFormat( fmt );
 }
 
-void KMeditor::mergeFormat(const QTextCharFormat &format)
+void KMeditor::mergeFormat( const QTextCharFormat &format )
 {
-    QTextCursor cursor = textCursor();
-    cursor.mergeCharFormat(format);
-    mergeCurrentCharFormat(format);
+  QTextCursor cursor = textCursor();
+  cursor.mergeCharFormat( format );
+  mergeCurrentCharFormat( format );
 }
 
 void KMeditor::slotTextColor()
@@ -541,68 +546,70 @@ void KMeditor::slotTextColor()
 
   if ( KColorDialog::getColor( color, this ) ) {
     QTextCharFormat fmt;
-    fmt.setForeground(color);
-    mergeFormat(fmt);
+    fmt.setForeground( color );
+    mergeFormat( fmt );
   }
 }
 
-void KMeditor::slotFontFamilyChanged(const QString &f)
-{
-   QTextCharFormat fmt;
-   fmt.setFontFamily(f);
-   mergeFormat(fmt);
-   setFocus();
-}
-
-void KMeditor::slotFontSizeChanged(int size)
+void KMeditor::slotFontFamilyChanged( const QString &f )
 {
   QTextCharFormat fmt;
-  fmt.setFontPointSize(size);
-  mergeFormat(fmt);
+  fmt.setFontFamily( f );
+  mergeFormat( fmt );
   setFocus();
 }
 
-void KMeditor::switchTextMode(bool useHtml)
+void KMeditor::slotFontSizeChanged( int size )
+{
+  QTextCharFormat fmt;
+  fmt.setFontPointSize( size );
+  mergeFormat( fmt );
+  setFocus();
+}
+
+void KMeditor::switchTextMode( bool useHtml )
 {
   //TODO: need to look at what change which highlighter.
 
-  if(useHtml && acceptRichText()) //Already in HTML mode
-     return;
-  if(!useHtml && !acceptRichText()) //Already in text mode
-     return;
+  if ( useHtml && acceptRichText() ) //Already in HTML mode
+    return;
+  if ( !useHtml && !acceptRichText() ) //Already in text mode
+    return;
 
-  if(useHtml)
+  if ( useHtml )
   {
-    setAcceptRichText(true);
+    setAcceptRichText( true );
     document()->setModified( true );
   }
   else
   {
-    setAcceptRichText(false);
+    setAcceptRichText( false );
     setText(toPlainText()); //reformat text (which can be html text) as text
-    document()->setModified(true );
+    document()->setModified( true );
   }
 }
 
-KUrl KMeditor::insertFile(const QStringList & encodingLst, QString &encodingStr)
+KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
 {
   KUrl url;
   KFileDialog fdlg( url, QString(), this );
   fdlg.setOperationMode( KFileDialog::Opening );
-  fdlg.okButton()->setText(i18n("&Insert"));
-  fdlg.setCaption(i18n("Insert File"));
-  if(!encodingLst.isEmpty())
+  fdlg.okButton()->setText( i18n( "&Insert" ) );
+  fdlg.setCaption( i18n( "Insert File" ) );
+  if ( !encodingLst.isEmpty() )
   {
     KComboBox *combo = new KComboBox( this );
     combo->addItems( encodingLst );
     fdlg.toolBar()->addWidget( combo );
-    for (int i = 0; i < combo->count(); i++)
-      if (KGlobal::charsets()->codecForName(KGlobal::charsets()->
-                                          encodingForName(combo->itemText(i)))
-        == QTextCodec::codecForLocale()) combo->setCurrentIndex(i);
+    for ( int i = 0; i < combo->count(); i++ )
+      if ( KGlobal::charsets()->codecForName( KGlobal::charsets()->
+                                       encodingForName( combo->itemText( i ) ) )
+           == QTextCodec::codecForLocale() )
+        combo->setCurrentIndex(i);
     encodingStr = combo->currentText();
   }
-  if (!fdlg.exec()) return KUrl();
+  if ( !fdlg.exec() )
+    return KUrl();
 
   KUrl u = fdlg.selectedUrl();
   return u;
@@ -611,21 +618,21 @@ KUrl KMeditor::insertFile(const QStringList & encodingLst, QString &encodingStr)
 void KMeditor::wordWrapToggled( bool on )
 {
   if ( on ) {
-	setLineWrapMode(QTextEdit::FixedColumnWidth);
+    setLineWrapMode( QTextEdit::FixedColumnWidth );
   } else {
     setLineWrapMode (QTextEdit::NoWrap );
   }
 }
 
-void KMeditor::setWrapColumnOrWidth( int w)
+void KMeditor::setWrapColumnOrWidth( int w )
 {
-   setLineWrapColumnOrWidth(w);
+  setLineWrapColumnOrWidth( w );
 }
 
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
   QTextCursor cursor = textCursor();
-  if(cursor.hasSelection())
+  if ( cursor.hasSelection() )
   {
     //if we have selection so use standard menu
     KTextEdit::contextMenuEvent( event );
@@ -634,53 +641,53 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
   else
   {
     //select word under current cursor
-    cursor.select(QTextCursor::WordUnderCursor);
-    setTextCursor(cursor);
+    cursor.select( QTextCursor::WordUnderCursor );
+    setTextCursor( cursor );
     QString word = textCursor().selectedText();
-    if(word.isEmpty() || !d->replacements.contains( word ) )
-       KTextEdit::contextMenuEvent( event );
+    if ( word.isEmpty() || !d->replacements.contains( word ) )
+      KTextEdit::contextMenuEvent( event );
     else //try to create spell check menu
     {
-        KMenu p;
-        p.addTitle( i18n("Suggestions") );
+      KMenu p;
+      p.addTitle( i18n( "Suggestions" ) );
 
-        //Add the suggestions to the popup menu
-        QStringList reps = d->replacements[word];
-        if ( reps.count() > 0 ) {
-          for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
-            p.addAction( *it );
-          }
+      //Add the suggestions to the popup menu
+      QStringList reps = d->replacements[word];
+      if ( reps.count() > 0 ) {
+        for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
+          p.addAction( *it );
         }
-        else {
-          p.addAction( i18n("No Suggestions") );
-        }
+      }
+      else {
+        p.addAction( i18n( "No Suggestions" ) );
+      }
 
-        //Execute the popup inline
-        const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
+      //Execute the popup inline
+      const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
 
-        if ( selectedAction && ( reps.count() > 0 ) ) {
-	  int oldPos=cursor.position();
-          const QString replacement = selectedAction->text();
-	  cursor.insertText(replacement);
+      if ( selectedAction && ( reps.count() > 0 ) ) {
+        int oldPos = cursor.position();
+        const QString replacement = selectedAction->text();
+        cursor.insertText( replacement );
 
 #if 0
-          // Restore the cursor position; if the cursor was behind the
-          // misspelled word then adjust the cursor position
-          if ( para == parIdx && txtIdx >= lastSpace )
-            txtIdx += replacement.length() - word.length();
-          setCursorPosition(parIdx, txtIdx);
+        // Restore the cursor position; if the cursor was behind the
+        // misspelled word then adjust the cursor position
+        if ( para == parIdx && txtIdx >= lastSpace )
+          txtIdx += replacement.length() - word.length();
+          setCursorPosition( parIdx, txtIdx );
 #endif
-	  cursor.setPosition(oldPos);
-	   setTextCursor(cursor);
-        }
-        return;
+        cursor.setPosition(oldPos);
+        setTextCursor(cursor);
+      }
+      return;
     }
   }
 }
 
 void KMeditor::slotPasteAsQuotation()
 {
-  if(hasFocus()) {
+  if (hasFocus() ) {
     QString s = QApplication::clipboard()->text();
     if ( !s.isEmpty() ) {
       insert( addQuotesToText( s ) );
@@ -690,25 +697,25 @@ void KMeditor::slotPasteAsQuotation()
 
 void KMeditor::slotRemoveQuotes()
 {
-    // TODO: I think this is backwards.
-    // i.e, if no region is marked then remove quotes from every line
-    // else remove quotes only on the lines that are marked.
-   QTextCursor cursor = textCursor();
-   if(cursor.hasSelection())
-   {
-     QString s = cursor.selectedText();
-     insert( removeQuotesFromText( s ) );
-   }
-   else
-   {
-     int oldPos = cursor.position();
-     cursor.movePosition(QTextCursor::StartOfBlock);
-     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-     QString s = cursor.selectedText();
-     cursor.insertText(removeQuotesFromText( s ));
-     cursor.setPosition( oldPos -2 );
-     setTextCursor(cursor);
-   }
+  // TODO: I think this is backwards.
+  // i.e, if no region is marked then remove quotes from every line
+  // else remove quotes only on the lines that are marked.
+  QTextCursor cursor = textCursor();
+  if(cursor.hasSelection())
+  {
+    QString s = cursor.selectedText();
+    insert( removeQuotesFromText( s ) );
+  }
+  else
+  {
+    int oldPos = cursor.position();
+    cursor.movePosition( QTextCursor::StartOfBlock );
+    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+    QString s = cursor.selectedText();
+    cursor.insertText( removeQuotesFromText( s ) );
+    cursor.setPosition( oldPos -2 );
+    setTextCursor( cursor );
+  }
 }
 
 void KMeditor::slotAddQuotes()
@@ -717,20 +724,20 @@ void KMeditor::slotAddQuotes()
   // i.e, if no region is marked then add quotes to every line
   // else add quotes only on the lines that are marked.
   QTextCursor cursor = textCursor();
-  if(cursor.hasSelection())
+  if ( cursor.hasSelection() )
   {
     QString s = cursor.selectedText();
     if ( !s.isEmpty() ) {
-        cursor.insertText( addQuotesToText( s ) );
-        setTextCursor( cursor );
+      cursor.insertText( addQuotesToText( s ) );
+      setTextCursor( cursor );
     } else {
-     int oldPos = cursor.position();
-     cursor.movePosition(QTextCursor::StartOfBlock);
-     cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-     QString s = cursor.selectedText();
-     cursor.insertText(addQuotesToText( s ));
-     cursor.setPosition( oldPos  +2 );
-     setTextCursor(cursor);
+      int oldPos = cursor.position();
+      cursor.movePosition( QTextCursor::StartOfBlock );
+      cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+      QString s = cursor.selectedText();
+      cursor.insertText( addQuotesToText( s ) );
+      cursor.setPosition( oldPos + 2 );
+      setTextCursor( cursor );
     }
   }
 }
@@ -769,18 +776,20 @@ QString KMeditor::smartQuote( const QString & msg )
 
 QString KMeditor::quotePrefixName() const
 {
-   //Need to redefine into each apps
-   return "> ";
+  //Need to redefine into each apps
+  return "> ";
 }
 
-bool KMeditor::checkExternalEditorFinished() {
+bool KMeditor::checkExternalEditorFinished()
+{
   if ( !d->mExtEditorProcess )
     return true;
   switch ( KMessageBox::warningYesNoCancel( topLevelWidget(),
            i18n("The external editor is still running.\n"
                 "Abort the external editor or leave it open?"),
            i18n("External Editor"),
-           KGuiItem(i18n("Abort Editor")), KGuiItem(i18n("Leave Editor Open")) ) ) {
+           KGuiItem( i18n("Abort Editor") ),
+           KGuiItem( i18n("Leave Editor Open") ) ) ) {
   case KMessageBox::Yes:
     killExternalEditor();
     return true;
@@ -791,12 +800,11 @@ bool KMeditor::checkExternalEditorFinished() {
   }
 }
 
-
 void KMeditor::killExternalEditor() {
   delete d->mExtEditorProcess;
-  d->mExtEditorProcess=0;
+  d->mExtEditorProcess = 0;
   delete d->mExtEditorTempFileWatcher;
-  d->mExtEditorTempFileWatcher=0;
+  d->mExtEditorTempFileWatcher = 0;
   delete d->mExtEditorTempFile;
   d->mExtEditorTempFile = 0;
 }
@@ -816,13 +824,13 @@ void KMeditor::slotAddBox()
 {
   //Laurent fixme
   QTextCursor cursor = textCursor();
-  if(cursor.hasSelection())
+  if ( cursor.hasSelection() )
   {
     QString s = cursor.selectedText();
-    s.prepend(",----[  ]\n");
-    s.replace(QRegExp("\n"),"\n| ");
-    s.append("\n`----");
-    insert(s);
+    s.prepend( ",----[  ]\n" );
+    s.replace( QRegExp("\n"),"\n| " );
+    s.append( "\n`----" );
+    insert( s );
   } else {
 /*
     int l = currentLine();
@@ -838,28 +846,28 @@ void KMeditor::slotAddBox()
 int KMeditor::linePosition()
 {
   QTextCursor cursor = textCursor();
-  return cursor.blockNumber ();
+  return cursor.blockNumber();
 }
 
-int KMeditor::columnNumber ()
+int KMeditor::columnNumber()
 {
   QTextCursor cursor = textCursor();
-  return cursor.columnNumber ();
+  return cursor.columnNumber();
 }
 
 void KMeditor::slotRot13()
 {
   QTextCursor cursor = textCursor();
-  if (cursor.hasSelection())
-    insert(KMUtils::rot13(cursor.selectedText()));
+  if ( cursor.hasSelection() )
+    insert( KMUtils::rot13( cursor.selectedText() ) );
 }
 
-void KMeditor::setCursorPosition( int linePos, int columnPos)
+void KMeditor::setCursorPosition( int linePos, int columnPos )
 {
   //TODO
 }
 
-bool KMeditor::appendSignature(const QString &sig, bool preserveUserCursorPos)
+bool KMeditor::appendSignature( const QString &sig, bool preserveUserCursorPos )
 {
   bool mod = isModified();
   if ( !sig.isEmpty() )  {
