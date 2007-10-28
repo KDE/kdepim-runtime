@@ -90,7 +90,7 @@ PluginManager::~PluginManager()
   if ( d->shutdownMode != Private::DoneShutdown ) {
     slotShutdownTimeout();
 #if 0
-    kWarning() 
+    kWarning()
                 << "Destructing plugin manager without going through"
                 << "the shutdown process!"
                 << endl
@@ -227,19 +227,20 @@ PluginManager::loadAllPlugins()
   if ( !d->config )
     d->config = KSharedConfig::openConfig( "komposerrc" );
 
-  QMap<QString, QString> entries = d->config->entryMap(
-    QString::fromLatin1( "Plugins" ) );
+  KConfigGroup pluginGroup = d->config->group( "Plugins" );
+  const QStringList entries = pluginGroup.keyList();
 
-  QMap<QString, QString>::Iterator it;
+  QStringList::ConstIterator it;
   for ( it = entries.begin(); it != entries.end(); ++it )
   {
-    QString key = it.key();
+    QString key = *it;
     if ( key.endsWith( QString::fromLatin1( "Enabled" ) ) )
     {
       key.setLength( key.length() - 7 );
-      //kDebug() <<"Set" << key <<" to" << it.value();
+      bool value = pluginGroup.readEntry( *it, true );
+      //kDebug() <<"Set" << key <<" to" << value;
 
-      if ( it.value() == QString::fromLatin1( "true" ) )
+      if ( value )
       {
         if ( !plugin( key ) )
           d->pluginsToLoad.push( key );
@@ -468,14 +469,13 @@ PluginManager::setPluginEnabled( const QString &pluginId, bool enabled /* = true
   if ( !d->config )
     d->config = KSharedConfig::openConfig( "komposerrc" );
 
-  d->config->setGroup( "Plugins" );
-
+  KConfigGroup pluginGroup = d->config( "Plugins" );
 
   if ( !infoForPluginId( pluginId ) )
     return false;
 
-  d->config->writeEntry( pluginId + QString::fromLatin1( "Enabled" ), enabled );
-  d->config->sync();
+  pluginGroup.writeEntry( pluginId + QString::fromLatin1( "Enabled" ), enabled );
+  pluginGroup.sync();
 
   return true;
 }
