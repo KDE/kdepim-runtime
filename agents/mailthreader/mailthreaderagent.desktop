@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Mail Threader Agent
+Name[ca]=Agent de fils de correu de l'Akonadi
 Name[el]=Πράκτορας νηματοποίησης αλληλογραφίας του Akonadi
 Name[es]=Agente Mail Theader de Anokadi
 Name[it]=Agente Mail Threader Akonadi
@@ -13,6 +14,7 @@ Name[x-test]=xxAkonadi Mail Threader Agentxx
 Name[zh_CN]=Akonadi 邮件线索化代理
 Name[zh_TW]=Akonadi 信件串列代理程式
 Comment=An agent to thread mails from a collection
+Comment[ca]=Un agent per a seguir el fil dels correus des d'una col·lecció
 Comment[el]=Ένας πράκτορας νηματοποίησης αλληλογραφίας από μια συλλογή
 Comment[es]=Un agente para poner mensajes en hilos de una colección
 Comment[it]=Un agente per leggere le email da una collezione

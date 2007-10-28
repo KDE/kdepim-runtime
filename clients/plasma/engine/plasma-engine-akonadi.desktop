@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Engine
+Name[ca]=Motor de l'Akonadi
 Name[de]=Akonadi-Treiber
 Name[el]=Μηχανή Akonadi
 Name[it]=Motore Akonadi
@@ -16,6 +17,7 @@ Name[x-test]=xxAkonadi Enginexx
 Name[zh_CN]=Akonadi 引擎
 Name[zh_TW]=Akonadi 引擎
 Comment=Akonadi PIM data engine
+Comment[ca]=Motor de dades PIM de l'Akonadi
 Comment[de]=Akonadi-PIM-Treiber
 Comment[el]=Μηχανή δεδομένων PIM του Akonadi
 Comment[it]=Motore dati PIM Akonadi

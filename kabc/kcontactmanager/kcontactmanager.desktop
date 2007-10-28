@@ -1,11 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=KContactManager
+Name[de]=Kontaktverwaltung
 Name[sv]=Kcontactmanager
 Name[x-test]=xxKContactManagerxx
 Name[zh_TW]=Kontact 管理員
 GenericName=Contact Manager
 GenericName[br]=Merour an darempredoù
+GenericName[ca]=Gestor de contactes
+GenericName[de]=Kontaktverwaltung
 GenericName[el]=Διαχειριστής επαφών
 GenericName[ga]=Bainisteoir Teagmhálacha
 GenericName[ja]=連絡先マネージャ

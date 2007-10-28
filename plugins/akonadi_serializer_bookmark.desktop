@@ -1,6 +1,7 @@
 [Misc]
 Encoding=UTF-8
 Name=Bookmark serializer
+Name[ca]=Serialitzador de punts
 Name[el]=Διαχειριστής αλληλουχίας σελιδοδεικτών
 Name[it]=Serializzatore dei segnalibri
 Name[ja]=ブックマークシリアライザ
@@ -11,6 +12,7 @@ Name[x-test]=xxBookmark serializerxx
 Name[zh_CN]=书签序列转换器
 Name[zh_TW]=書籤序列器
 Comment=An Akonadi serializer plugin for bookmark objects
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes punts
 Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων αλληλογραφίας για το Akonadi
 Comment[it]=Un plugin serializzatore dei segnalibri per Akonadi
 Comment[ja]=ブックマークオブジェクトのための Akonadi シリアライザプラグイン

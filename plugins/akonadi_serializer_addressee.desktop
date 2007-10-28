@@ -1,6 +1,7 @@
 [Misc]
 Encoding=UTF-8
 Name=Addressee Serializer
+Name[ca]=Serialitzador de destinataris
 Name[el]=Διαχειριστής διευθύνσεων
 Name[es]=Serializador de direcciones
 Name[it]=Serializzatore degli indirizzi
@@ -13,6 +14,7 @@ Name[x-test]=xxAddressee Serializerxx
 Name[zh_CN]=收信人序列转换器
 Name[zh_TW]=地址序列器
 Comment=An Akonadi serializer plugin for addressee objects
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes destinataris
 Comment[el]=Ένα πρόσθετο διαχείρισης διευθύνσεων του Akonadi
 Comment[es]=Un plugin serializador de Akonadi para direccionar objetos
 Comment[it]=Un plugin serializzatore degli indirizzi per Akonadi

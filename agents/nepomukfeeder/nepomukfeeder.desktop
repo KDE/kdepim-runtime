@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi Nepomuk Feeder
+Name[ca]=Alimentador del Nepomuk per a l'Akonadi
 Name[el]=Τροφοδότης Nepomuk του Akonadi
 Name[ja]=Akonadi Nepomuk フィーダー
 Name[pt]=Alimentação do Nepomuk para o Akonadi
@@ -8,6 +9,7 @@ Name[pt_BR]=Alimentação do Nepomuk para o Akonadi
 Name[sv]=Akonadi inmatning till Nepomuk
 Name[x-test]=xxAkonadi Nepomuk Feederxx
 Comment=Email specific extension to Akonadi
+Comment[ca]=Extensió específica de correu per a l'Akonadi
 Comment[de]=Eine besondere E-Mail-Erweiterung für Akonadi
 Comment[el]=Επέκταση σχετική με Email για το Akonadi
 Comment[es]=Extensión específica de correo para Akonadi

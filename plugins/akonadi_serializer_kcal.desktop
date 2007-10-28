@@ -1,6 +1,7 @@
 [Misc]
 Encoding=UTF-8
 Name=Incidence Serializer
+Name[ca]=Serialitzador d'incidències
 Name[el]=Διαχειριστής περιστατικών
 Name[es]=Serializador de incidencias
 Name[it]=Serializzatore eventi e diari
@@ -13,6 +14,7 @@ Name[x-test]=xxIncidence Serializerxx
 Name[zh_CN]=事件序列转换器
 Name[zh_TW]=頻率序列器
 Comment=An Akonadi serializer plugin for events, tasks and journal entries
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes incidències
 Comment[el]=Ένα πρόσθετο διαχείρισης γεγονότων, εργασιών και καταχωρήσεων χρονικού για το Akonadi
 Comment[es]=Un plugin del serializador de Akonadi para eventos, tareas y entradas del diario
 Comment[it]=Un plugin serializzatore degli eventi, compiti e diari per Akonadi

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Akonadi ICal Resource
+Name[ca]=Recurs ICal de l'Akonadi
 Name[de]=Akonadi-Ressource für ICal-Kalender
 Name[el]=Πόρος ICal του Akonadi
 Name[es]=Recurso Ical Akonadi
@@ -16,6 +17,7 @@ Name[x-test]=xxAkonadi ICal Resourcexx
 Name[zh_CN]=Akonadi iCal 资源
 Name[zh_TW]=Akonadi ICal 資源
 Comment=An agent to load data from a local iCal file
+Comment[ca]=Un agent per carregar dades des d'un fitxer iCal local
 Comment[de]=Agent zum Laden von Daten aus einer lokalen iCal-Datei
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από τοπικά αρχεία iCal
 Comment[es]=Un agente para cargar datos de un archivo iCal local

@@ -1,6 +1,7 @@
 [Misc]
 Encoding=UTF-8
 Name=Mail Serializer
+Name[ca]=Serialitzador de correu
 Name[el]=Διαχειριστής αλληλογραφίας
 Name[es]=Serializador de correo
 Name[it]=Serializzatore posta elettronica
@@ -13,6 +14,7 @@ Name[x-test]=xxMail Serializerxx
 Name[zh_CN]=邮件序列转换器
 Name[zh_TW]=信件序列器
 Comment=An Akonadi serializer plugin for mail objects
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes correu
 Comment[el]=Ένα πρόσθετο διαχείρισης αντικειμένων αλληλογραφίας για το Akonadi
 Comment[es]=Un plugin serializador de Akonadi para objetos de correo
 Comment[it]=Un plugin serializzatore della posta elettronica per Akonadi
