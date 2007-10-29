@@ -34,6 +34,7 @@
 #include <kicon.h>
 #include <klocale.h>
 #include <kxmlguiclient.h>
+#include <kaction.h>
 
 #include "contacteditordialog.h"
 
