@@ -98,6 +98,7 @@ class KMeditor::Private
 void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex,
                                        int matchedLength )
 {
+  Q_UNUSED(word)
   //kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos :"<<matchingIndex<<" matchedLength :"<<matchedLength;
   parent->highlightWord( matchedLength, matchingIndex );
 }
@@ -181,7 +182,6 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
          && ( ( oldPos-blockPos ) >= int( bot ) ) ) {
         // The cursor position might have changed unpredictably if there was selected
         // text which got replaced by a new line, so we query it again:
-        int newPos = cursor.position();
         cursor.movePosition( QTextCursor::StartOfBlock );
         cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
         QString newLine = cursor.selectedText();
@@ -713,7 +713,7 @@ void KMeditor::slotRemoveQuotes()
     cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
     QString s = cursor.selectedText();
     cursor.insertText( removeQuotesFromText( s ) );
-    cursor.setPosition( oldPos -2 );
+    cursor.setPosition( oldPos - 2 );
     setTextCursor( cursor );
   }
 }
@@ -800,7 +800,8 @@ bool KMeditor::checkExternalEditorFinished()
   }
 }
 
-void KMeditor::killExternalEditor() {
+void KMeditor::killExternalEditor()
+{
   delete d->mExtEditorProcess;
   d->mExtEditorProcess = 0;
   delete d->mExtEditorTempFileWatcher;
@@ -810,14 +811,15 @@ void KMeditor::killExternalEditor() {
 }
 
 
-void KMeditor::setCursorPositionFromStart( unsigned int pos ) {
-/*
-  unsigned int l = 0;
-  unsigned int c = 0;
-  posToRowCol( pos, l, c );
-  setCursorPosition( l, c );
-  ensureCursorVisible();
-*/
+void KMeditor::setCursorPositionFromStart( unsigned int pos )
+{
+  if ( pos > 0 )
+  {
+    QTextCursor cursor = textCursor();
+    cursor.setPosition( pos );
+    setTextCursor( cursor );
+    ensureCursorVisible();
+  }
 }
 
 void KMeditor::slotAddBox()
@@ -869,21 +871,27 @@ void KMeditor::setCursorPosition( int linePos, int columnPos )
 
 bool KMeditor::appendSignature( const QString &sig, bool preserveUserCursorPos )
 {
-  bool mod = document()->isModified();
-  if ( !sig.isEmpty() )  {
+  if ( !sig.isEmpty() )
+  {
+    bool mod = document()->isModified();
+    QTextCursor cursor = textCursor();
+
+    int position = cursor.position();
+    cursor.movePosition( QTextCursor::End );
+    setTextCursor( cursor );
+    if ( !preserveUserCursorPos ) position = cursor.position();
     insertPlainText( '\n' + sig );
+
+    cursor.setPosition( position );
+    setTextCursor( cursor );
+    ensureCursorVisible();
     document()->setModified( mod );
-    if ( preserveUserCursorPos ) {
-//Laurent fixme
-#if 0
-      setContentsPos( mMsg->getCursorPos(), 0 );
-      // Only keep the cursor from the mMsg *once* based on the
-      // preserve-cursor-position setting; this handles the case where
-      // the message comes from a template with a specific cursor
-      // position set and the signature is appended automatically.
-      preserveUserCursorPos = false;
-#endif
-    }
+
+    // Only keep the cursor from the mMsg *once* based on the
+    // preserve-cursor-position setting; this handles the case where
+    // the message comes from a template with a specific cursor
+    // position set and the signature is appended automatically.
+    preserveUserCursorPos = false;
   }
   return preserveUserCursorPos;
 }
