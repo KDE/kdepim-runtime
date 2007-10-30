@@ -8,6 +8,7 @@ Name[pt]=Motor do Strigi para o Akonadi
 Name[pt_BR]=Motor do Strigi para o Akonadi
 Name[sv]=Akonadi inmatning till Strigi
 Name[x-test]=xxAkonadi Strigi Feederxx
+Name[zh_CN]=Akonadi Strigi 采集器
 Comment=Strigi-based fulltext search
 Comment[ca]=Motor de cerca per text sencer basat en el Strigi
 Comment[de]=Strigi-Basierte Volltextsuche

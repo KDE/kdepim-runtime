@@ -16,6 +16,7 @@ GenericName[pt]=Gestor de Contactos
 GenericName[pt_BR]=Gestor de Contactos
 GenericName[sv]=Kontakthantering
 GenericName[x-test]=xxContact Managerxx
+GenericName[zh_CN]=联系人管理器
 GenericName[zh_TW]=聯絡人管理員
 Exec=kcontactmanager %u
 Icon=kaddressbook
