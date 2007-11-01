@@ -67,7 +67,7 @@ KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
 
 void KEMailQuotingHighlighter::setSyntaxMode( SyntaxMode mode)
 {
-  d->mode = mode;
+    d->mode = mode;
 }
 
 void KEMailQuotingHighlighter::setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3)
@@ -86,20 +86,19 @@ void KEMailQuotingHighlighter::highlightBlock ( const QString & text )
     QString simplified = text;
     simplified = simplified.replace( QRegExp( "\\s" ), QString() ).replace( '|', QLatin1String(">") );
     while ( simplified.startsWith( QLatin1String(">>>>") ) )
-	simplified = simplified.mid(3);
-    if	( simplified.startsWith( QLatin1String(">>>") ) || simplified.startsWith( QString::fromLatin1("> >	>") ) )
-	setFormat( 0, text.length(), d->col2 );
-    else if	( simplified.startsWith( QLatin1String(">>") ) || simplified.startsWith( QString::fromLatin1("> >") ) )
-	setFormat( 0, text.length(), d->col3 );
-    else if	( simplified.startsWith( QLatin1String(">") ) )
-	setFormat( 0, text.length(), d->col4 );
+        simplified = simplified.mid(3);
+    if ( simplified.startsWith( QLatin1String(">>>") ) || simplified.startsWith( QString::fromLatin1("> > >") ) )
+        setFormat( 0, text.length(), d->col2 );
+    else if ( simplified.startsWith( QLatin1String(">>") ) || simplified.startsWith( QString::fromLatin1("> >") ) )
+        setFormat( 0, text.length(), d->col3 );
+    else if ( simplified.startsWith( QLatin1String(">") ) )
+        setFormat( 0, text.length(), d->col4 );
     else
     {
-	setFormat( 0, text.length(), d->col5 );
+        setFormat( 0, text.length(), d->col5 );
         Highlighter::highlightBlock ( text );
     }
     setCurrentBlockState ( 0 );
-
 }
 
 }
