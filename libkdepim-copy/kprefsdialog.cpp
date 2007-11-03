@@ -196,7 +196,6 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
 
 KPrefsWidColor::~KPrefsWidColor()
 {
-//  kDebug(5300) <<"KPrefsWidColor::~KPrefsWidColor()";
 }
 
 void KPrefsWidColor::readConfig()
@@ -689,19 +688,13 @@ KPrefsWidInt *KPrefsWidManager::addWidInt( KConfigSkeleton::ItemInt *item,
 
 void KPrefsWidManager::setWidDefaults()
 {
-  kDebug() <<"KPrefsWidManager::setWidDefaults()";
-
   bool tmp = mPrefs->useDefaults( true );
-
   readWidConfig();
-
   mPrefs->useDefaults( tmp );
 }
 
 void KPrefsWidManager::readWidConfig()
 {
-  kDebug(5310) <<"KPrefsWidManager::readWidConfig()";
-
   QList<KPrefsWid*>::Iterator it;
   for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
     (*it)->readConfig();
@@ -710,8 +703,6 @@ void KPrefsWidManager::readWidConfig()
 
 void KPrefsWidManager::writeWidConfig()
 {
-  kDebug(5310) <<"KPrefsWidManager::writeWidConfig()";
-
   QList<KPrefsWid*>::Iterator it;
   for ( it = mPrefsWids.begin(); it != mPrefsWids.end(); ++it ) {
     (*it)->writeConfig();
@@ -754,8 +745,6 @@ void KPrefsDialog::autoCreate()
     QString group = (*it)->group();
     QString name = (*it)->name();
 
-    kDebug() <<"ITEMS:" << (*it)->name();
-
     QWidget *page;
     QGridLayout *layout;
     int currentRow;
@@ -792,9 +781,7 @@ void KPrefsDialog::autoCreate()
           (*it2)->setEnabled( false );
         }
       }
-
       addWid( wid );
-
       mCurrentRows.insert( group, ++currentRow );
     }
   }
@@ -810,22 +797,20 @@ void KPrefsDialog::setDefaults()
 void KPrefsDialog::readConfig()
 {
   readWidConfig();
-
   usrReadConfig();
 }
 
 void KPrefsDialog::writeConfig()
 {
   writeWidConfig();
-
   usrWriteConfig();
-
   readConfig();
 }
 
 void KPrefsDialog::slotApply()
 {
   writeConfig();
+
   emit configChanged();
 }
 
@@ -837,8 +822,6 @@ void KPrefsDialog::slotOk()
 
 void KPrefsDialog::slotDefault()
 {
-  kDebug() <<"KPrefsDialog::slotDefault()";
-
   if ( KMessageBox::warningContinueCancel(
          this,
          i18n( "You are about to set all preferences to default values. "
@@ -861,23 +844,17 @@ KPrefsModule::KPrefsModule( KConfigSkeleton *prefs,
 void KPrefsModule::addWid( KPrefsWid *wid )
 {
   KPrefsWidManager::addWid( wid );
-
   connect( wid, SIGNAL( changed() ), SLOT( slotWidChanged() ) );
 }
 
 void KPrefsModule::slotWidChanged()
 {
-  kDebug(5310) <<"KPrefsModule::slotWidChanged()";
-
   emit changed( true );
 }
 
 void KPrefsModule::load()
 {
-  kDebug(5310) <<"KPrefsModule::load()";
-
   readWidConfig();
-
   usrReadConfig();
 
   emit changed( false );
@@ -885,10 +862,7 @@ void KPrefsModule::load()
 
 void KPrefsModule::save()
 {
-  kDebug(5310) <<"KPrefsModule::save()";
-
   writeWidConfig();
-
   usrWriteConfig();
 }
 
