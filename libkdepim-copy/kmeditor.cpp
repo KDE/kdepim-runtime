@@ -26,6 +26,7 @@
 #include <maillistdrag.h>
 
 //kdelibs includes
+#include <kdebug.h>
 #include <kfind.h>
 #include <kreplace.h>
 #include <kreplacedialog.h>
@@ -56,6 +57,9 @@
 #include <QProcess>
 #include <QTextLayout>
 
+//system includes
+#include <assert.h>
+
 using namespace KPIM;
 
 class KMeditor::Private
@@ -65,7 +69,7 @@ class KMeditor::Private
      : parent(_parent),useExtEditor(false),
        findDialog(0L),replaceDialog(0L),find(0L),mExtEditorProcess(0L),
        replace(0L), mExtEditorTempFileWatcher(0L),
-       mExtEditorTempFile(0L)
+       mExtEditorTempFile(0L), firstSearch(true)
     {
     }
 
@@ -73,11 +77,14 @@ class KMeditor::Private
     {
       delete find;
       delete replace;
+      delete findDialog;
+      delete replaceDialog;
     }
 
     void addSuggestion( const QString&,const QStringList& );
 
     void slotHighlight( const QString &, int, int );
+    void slotTextChanged();
 
     QMap<QString,QStringList> replacements;
 
@@ -92,14 +99,13 @@ class KMeditor::Private
     KDirWatch *mExtEditorTempFileWatcher;
     KTemporaryFile *mExtEditorTempFile;
     int mReplaceIndex;
-    int mFindIndex;
+    bool firstSearch;
 };
 
 void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex,
                                        int matchedLength )
 {
-  Q_UNUSED(word)
-  //kDebug()<<" KMeditor::Private::slotHighlight( const QString &, int, int ) :"<<word<<" pos :"<<matchingIndex<<" matchedLength :"<<matchedLength;
+  Q_UNUSED( word )
   parent->highlightWord( matchedLength, matchingIndex );
 }
 
@@ -107,6 +113,14 @@ void KMeditor::Private::addSuggestion( const QString& originalWord,
                                        const QStringList& lst )
 {
   replacements[originalWord] = lst;
+}
+
+void KMeditor::Private::slotTextChanged()
+{
+  // If the text changed, we need to tell the find object, otherwise words
+  // at the wrong position will be highlighted.
+  if ( find )
+    find->setData( parent->toPlainText(), find->index() );
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -274,29 +288,6 @@ void KMeditor::setExternalEditorPath( const QString & path )
   d->extEditorPath = path;
 }
 
-void KMeditor::slotFindText()
-{
-  // Raise if already opened
-  if ( d->findDialog )
-  {
-#ifdef Q_WS_X11
-    KWindowSystem::activateWindow( d->findDialog->winId() );
-#else
-    d->findDialog->activateWindow();
-#endif
-    return;
-  }
-  d->findDialog = new KFindDialog( this );
-  d->findDialog->setAttribute(Qt::WA_DeleteOnClose);
-  d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
-  //Display dialogbox
-  d->findDialog->show();
-  connect( d->findDialog, SIGNAL( okClicked() ), this, SLOT( slotFindNext() ) );
-
-  findText( d->findDialog->pattern(), 0 /*options*/, this, d->findDialog );
-}
-
-
 void KMeditor::slotReplaceText()
 {
   if ( d->replaceDialog ) {
@@ -389,72 +380,74 @@ void KMeditor::slotReplaceText( const QString &text, int replacementIndex,
   }
 }
 
+
+void KMeditor::slotFindText()
+{
+  // Raise if already opened
+  if ( d->findDialog ) {
+    d->findDialog->show();
+    KWindowSystem::activateWindow( d->findDialog->winId() );
+    return;
+  }
+
+  // We're doing a new search, so delete the old one
+  delete d->find;
+  d->find = 0;
+  d->firstSearch = false;
+
+  d->findDialog = new KFindDialog( this );
+  d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
+  d->findDialog->show();
+  connect( d->findDialog, SIGNAL( okClicked() ), this, SLOT( slotFindNext() ) );
+}
+
 void KMeditor::slotFindNext()
 {
-  findTextNext();
+  if ( d->firstSearch )
+    slotFindText();
+  else
+    findTextNext();
 }
 
 void KMeditor::findTextNext()
 {
-  if ( !d->find )
-  {
-    slotFindText();
-    return;
+  // If this is the first search, no find object has been created, so initalize
+  // it now
+  if ( !d->find ) {
+    assert( d->findDialog );
+    d->find = new KFind( d->findDialog->pattern(), d->findDialog->options(),
+                         this, d->findDialog );
+
+    int findStartPosition = 0;
+    if ( d->find->options() & KFind::FromCursor ||
+         d->find->options() & KFind::FindBackwards )
+      findStartPosition = textCursor().anchor();
+
+    d->find->setData( toPlainText(), findStartPosition );
+    d->find->closeFindNextDialog();
+
+    connect( d->find, SIGNAL( highlight( const QString &, int, int ) ),
+             this, SLOT( slotHighlight( const QString &, int, int ) ) );
+    connect( this, SIGNAL( textChanged() ), this, SLOT( slotTextChanged() ) );
   }
-  long options = 0;
-  if ( d->findDialog )
-  {
-    if ( d->find->pattern() != d->findDialog->pattern() )
-    {
-      d->find->setPattern( d->findDialog->pattern() );
-      d->find->resetCounts();
-    }
-    options = d->findDialog->options();
-  }
-  KFind::Result res = KFind::NoMatch;
-  while( res == KFind::NoMatch )
-  {
-    if ( d->find->needData() )
-    {
-      d->find->setData( toPlainText(), d->mFindIndex );
-      res = d->find->find();
-    }
-    res = d->find->find();
-  }
-  if ( res == KFind::NoMatch ) // i.e. we're done
-  {
-    if ( d->find->shouldRestart() )
-    {
+
+  // Do the actual search. slotHighlight() will be called in case of a match
+  KFind::Result res = d->find->find();
+
+  // If there is no match and the find object has reached the end of its data,
+  // we are at the end of our text.
+  if ( res == KFind::NoMatch && d->find->needData() ) {
+
+    int nextPosition = 0;
+    if ( d->find->options() & KFind::FindBackwards )
+      nextPosition = toPlainText().length();
+    d->find->setData( toPlainText(), nextPosition );
+
+    bool wantsRestart = d->find->shouldRestart(true, true);
+    d->find->resetCounts();
+    if ( wantsRestart )
       findTextNext();
-    }
-    else // really done
-    {
-      //initFindNode( false, options & KFind::FindBackwards, false );
-      d->find->resetCounts();
-      //slotClearSelection();
-      d->find->closeFindNextDialog();
-    }
   }
-}
-
-void KMeditor::findText( const QString &str, long options, QWidget *parent,
-                         KFindDialog *findDialog )
-{
-  if ( toPlainText().isEmpty() )
-    return;
-
-  delete d->find;
-  //kDebug()<<" str :"<<str;
-  //configure it
-  d->find = new KFind( str, options,parent,findDialog );
-  d->mFindIndex = 0;
-  if ( d->find->options() & KFind::FromCursor ||
-       d->find->options() & KFind::FindBackwards ) {
-    d->mFindIndex = textCursor().anchor();
-  }
-  d->find->closeFindNextDialog();
-  connect( d->find,SIGNAL( highlight( const QString &, int, int ) ),
-           this, SLOT( slotHighlight( const QString &, int, int ) ) );
 }
 
 void KMeditor::slotChangeParagStyle( QTextListFormat::Style _style )
