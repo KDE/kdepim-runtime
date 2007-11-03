@@ -36,7 +36,7 @@ class MaildirResource : public Akonadi::ResourceBase
   protected Q_SLOTS:
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
-    bool retrieveItem( const Akonadi::Item &items, const QStringList &parts );
+    bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
   protected:
     virtual void aboutToQuit();
