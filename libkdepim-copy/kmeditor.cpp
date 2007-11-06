@@ -100,6 +100,7 @@ class KMeditor::Private
     KTemporaryFile *mExtEditorTempFile;
     int mReplaceIndex;
     bool firstSearch;
+    bool findDataOutdated;
 };
 
 void KMeditor::Private::slotHighlight( const QString &word, int matchingIndex,
@@ -117,10 +118,7 @@ void KMeditor::Private::addSuggestion( const QString& originalWord,
 
 void KMeditor::Private::slotTextChanged()
 {
-  // If the text changed, we need to tell the find object, otherwise words
-  // at the wrong position will be highlighted.
-  if ( find )
-    find->setData( parent->toPlainText(), find->index() );
+  findDataOutdated = true;
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -383,17 +381,18 @@ void KMeditor::slotReplaceText( const QString &text, int replacementIndex,
 
 void KMeditor::slotFindText()
 {
+  // We're doing a new search, so delete the old one
+  delete d->find;
+  d->find = 0;
+  d->firstSearch = false;
+  d->findDataOutdated = true;
+
   // Raise if already opened
   if ( d->findDialog ) {
     d->findDialog->show();
     KWindowSystem::activateWindow( d->findDialog->winId() );
     return;
   }
-
-  // We're doing a new search, so delete the old one
-  delete d->find;
-  d->find = 0;
-  d->firstSearch = false;
 
   d->findDialog = new KFindDialog( this );
   d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
@@ -425,10 +424,16 @@ void KMeditor::findTextNext()
 
     d->find->setData( toPlainText(), findStartPosition );
     d->find->closeFindNextDialog();
+    d->findDataOutdated = false;
 
     connect( d->find, SIGNAL( highlight( const QString &, int, int ) ),
              this, SLOT( slotHighlight( const QString &, int, int ) ) );
     connect( this, SIGNAL( textChanged() ), this, SLOT( slotTextChanged() ) );
+  }
+
+  if ( d->findDataOutdated ) {
+    d->find->setData( toPlainText(), d->find->index() );
+    d->findDataOutdated = false;
   }
 
   // Do the actual search. slotHighlight() will be called in case of a match
