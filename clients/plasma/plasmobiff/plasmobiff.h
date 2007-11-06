@@ -57,7 +57,7 @@ class PlasmoBiff : public Plasma::Applet
 
   public slots:
     void configureDialog();
-    void updated(const QString &source, const Plasma::DataEngine::Data &data);
+    void dataUpdated(const QString &source, const Plasma::DataEngine::Data &data);
 
   private:
     void drawEmail(int index, const QRectF& rect, QPainter* painter) ;

@@ -175,7 +175,7 @@ void PlasmoBiff::drawEmail(int index, const QRectF& rect, QPainter* painter)
 
 }
 
-void PlasmoBiff::updated(const QString &source, const Plasma::DataEngine::Data &data)
+void PlasmoBiff::dataUpdated(const QString &source, const Plasma::DataEngine::Data &data)
 {
   m_fromList[3] = m_fromList[2];
   m_subjectList[3] = m_subjectList[2];
