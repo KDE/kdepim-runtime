@@ -31,6 +31,8 @@ class KUrl;
 
 namespace KPIM {
 
+class KMeditorPrivate;
+
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
   Q_OBJECT
@@ -93,22 +95,35 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAlignCenter();
     void slotAlignRight();
     void slotChangeParagStyle( QTextListFormat::Style _style );
-    void slotDoReplace();
-    void slotFindText();
+
+    /**
+     * Shows the standard, non-modal KDE find dialog. It lets the user search
+     * for words in the textedit and highlights matches.
+     */
+    void slotFind();
+
+    /**
+     * If slotFind() was not called before, this will act like slotFind().
+     * Otherwise, the next matching word is highlighted, without displaying
+     * any dialog.
+     */
     void slotFindNext();
+
     void slotFontFamilyChanged( const QString &f );
     void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
-    void slotReplaceNext();
-    void slotReplaceText( const QString &text, int replacementIndex,
-                          int replacedLength, int matchedLength );
     void slotRot13();
     void slotTextBold( bool _b );
     void slotTextItalic( bool _b );
     void slotTextUnder( bool _b );
     void slotTextColor();
-    void slotReplaceText();
+
+    /**
+     * This will open the standard, non-modal KDE replace dialog and let the
+     * user replace words in the textedit with other words.
+     */
+    void slotReplace();
 
   Q_SIGNALS:
     void pasteImage();
@@ -118,7 +133,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     bool eventFilter( QObject* o, QEvent* e );
     void init();
-    void findTextNext();
 
     /*
      * Redefine it to allow to create context menu for spell word list
@@ -127,15 +141,12 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   private:
 
-    void mergeFormat( const QTextCharFormat &format );
-    QString addQuotesToText( const QString &inputText );
-    QString removeQuotesFromText( const QString &inputText ) const;
-
-    class Private;
-    Private *const d;
+    KMeditorPrivate *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion( const QString&, const QStringList& ) )
     Q_PRIVATE_SLOT( d, void slotHighlight( const QString&, int, int ) )
     Q_PRIVATE_SLOT( d, void slotTextChanged() )
+    Q_PRIVATE_SLOT( d, void slotReplaceTextNext() )
+    Q_PRIVATE_SLOT( d, void slotDoReplace( const QString &, int, int, int ) )
 };
 
 }
