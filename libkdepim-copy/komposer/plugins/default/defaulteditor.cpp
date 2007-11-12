@@ -41,7 +41,7 @@
 #include <QWidget>
 
 typedef KGenericFactory<DefaultEditor> DefaultEditorFactory;
-K_EXPORT_COMPONENT_FACTORY( libkomposer_defaulteditor,
+K_EXPORT_COMPONENT_FACTORY( komposer_defaulteditor,
                             DefaultEditorFactory( "komposer_defaulteditor" ) )
 
 DefaultEditor::DefaultEditor( QObject *parent, const char *name, const QStringList &args )

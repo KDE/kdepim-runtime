@@ -4,7 +4,7 @@ Type=Service
 Icon=editor
 ServiceTypes=Komposer/Editor
 
-X-KDE-Library=libkomposer_defaulteditor
+X-KDE-Library=komposer_defaulteditor
 X-Komposer-Version=1
 X-Komposer-Weight=10
 
