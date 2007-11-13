@@ -29,4 +29,4 @@ Comment[zh_TW]=信件物件的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=message/rfc822,message/news
-X-KDE-Library=libakonadi_serializer_mail
+X-KDE-Library=akonadi_serializer_mail

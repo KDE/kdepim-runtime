@@ -51,6 +51,6 @@ void SerializerPluginAddressee::serialize( const Item& item, const QString& labe
 
 extern "C"
 KDE_EXPORT Akonadi::ItemSerializerPlugin *
-libakonadi_serializer_addressee_create_item_serializer_plugin() {
+akonadi_serializer_addressee_create_item_serializer_plugin() {
   return new SerializerPluginAddressee();
 }

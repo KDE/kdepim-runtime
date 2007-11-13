@@ -55,7 +55,7 @@ void SerializerPluginKCal::serialize(const Item & item, const QString & label, Q
 
 extern "C"
 KDE_EXPORT Akonadi::ItemSerializerPlugin *
-libakonadi_serializer_kcal_create_item_serializer_plugin() {
+akonadi_serializer_kcal_create_item_serializer_plugin() {
   return new SerializerPluginKCal();
 }
 

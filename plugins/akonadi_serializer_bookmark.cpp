@@ -64,6 +64,6 @@ void SerializerPluginBookmark::serialize( const Item& item, const QString& label
 
 extern "C"
 KDE_EXPORT Akonadi::ItemSerializerPlugin *
-libakonadi_serializer_bookmark_create_item_serializer_plugin() {
+akonadi_serializer_bookmark_create_item_serializer_plugin() {
   return new SerializerPluginBookmark();
 }

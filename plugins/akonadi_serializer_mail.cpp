@@ -187,6 +187,6 @@ QStringList SerializerPluginMail::parts(const Item & item) const
 
 extern "C"
 KDE_EXPORT Akonadi::ItemSerializerPlugin *
-libakonadi_serializer_mail_create_item_serializer_plugin() {
+akonadi_serializer_mail_create_item_serializer_plugin() {
   return new SerializerPluginMail();
 }
