@@ -25,6 +25,7 @@ Comment[it]=Un agente per caricare dati da un server di news
 Comment[ja]=ニュースサーバからデータを読み込むエージェント
 Comment[ko]=뉴스 서버에서 데이터를 불러오는 에이전트
 Comment[ne]=समाचार सर्भरबाट डेटा लोड गर्ने एउटा अभिकर्ता
+Comment[nl]=Een agent om gegevens van een nieuwsserver te halen
 Comment[pt]=Um agente para carregar dados de um servidor de notícias
 Comment[pt_BR]=Um agente para carregar dados de um servidor de notícias
 Comment[sv]=En modul för att ladda data från en nyhetsserver
