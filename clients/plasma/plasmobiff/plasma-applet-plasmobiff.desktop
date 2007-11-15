@@ -1,10 +1,9 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=PlasmoBiff
 Name[sv]=Plasmobiff
 Name[x-test]=xxPlasmoBiffxx
 Type=Service
-ServiceTypes=Plasma/Applet
+X-KDE-ServiceTypes=Plasma/Applet
 
 X-KDE-Library=plasma_applet_plasmobiff
 X-KDE-PluginInfo-Author=The Akonadi Team

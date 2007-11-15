@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Akonadi Engine
 Name[ca]=Motor de l'Akonadi
 Name[de]=Akonadi-Treiber
@@ -34,7 +33,7 @@ Comment[sv]=Akonadi-gränssnitt för personlig informationshantering
 Comment[x-test]=xxAkonadi PIM data enginexx
 Comment[zh_CN]=Akonadi PIM 数据引擎
 Comment[zh_TW]=Akonadi PIM 資料引擎
-ServiceTypes=Plasma/DataEngine
+X-KDE-ServiceTypes=Plasma/DataEngine
 Type=Service
 Icon=mail
 X-KDE-Library=plasma_engine_akonadi
