@@ -37,6 +37,11 @@ public:
     {
     }
 
+    Private( const QString& p, bool isRoot )
+    :path(p), isRoot(isRoot)
+    {
+    }
+
     Private( const Private& rhs )
     {
       path = rhs.path;
@@ -49,7 +54,7 @@ public:
     bool accessIsPossible( QString& error ) const;
     bool canAccess( const QString& path ) const;
 
-    QStringList subPaths() const 
+    QStringList subPaths() const
     {
       QStringList paths;
       paths << path + QString::fromLatin1("/cur");
@@ -85,14 +90,15 @@ public:
     QString subDirPath() const
     {
         QDir dir( path );
-        return QString::fromLatin1(".%1.directory").arg( dir.dirName() ); 
+        return QString::fromLatin1(".%1.directory").arg( dir.dirName() );
     }
 
     QString path;
+    bool isRoot;
 };
 
-Maildir::Maildir( const QString& path )
-:d( new Private(path) )
+Maildir::Maildir( const QString& path, bool isRoot )
+:d( new Private(path, isRoot) )
 {
 }
 
@@ -193,10 +199,12 @@ bool Maildir::addSubFolder( const QString& path )
     if ( !isValid() ) return false;
     // make the subdir dir
     QDir dir( d->path );
-    dir.cdUp();
-    if (!dir.exists( d->subDirPath() ) )
-        dir.mkdir( d->subDirPath() );
-    dir.cd( d->subDirPath() );
+    if ( !d->isRoot ) {
+      dir.cdUp();
+      if (!dir.exists( d->subDirPath() ) )
+          dir.mkdir( d->subDirPath() );
+      dir.cd( d->subDirPath() );
+    }
 
     const QString fullPath = dir.path() + '/' + path;
     Maildir subdir( fullPath );
@@ -209,9 +217,11 @@ bool Maildir::removeSubFolder( const QString& folderName )
 {
     if ( !isValid() ) return false;
     QDir dir( d->path );
-    dir.cdUp();
-    if ( !dir.exists( d->subDirPath() ) ) return false;
-    dir.cd( d->subDirPath() );
+    if ( !d->isRoot ) {
+      dir.cdUp();
+      if ( !dir.exists( d->subDirPath() ) ) return false;
+      dir.cd( d->subDirPath() );
+    }
     if ( !dir.exists( folderName ) ) return false;
 
     // remove it recursively
@@ -223,11 +233,13 @@ Maildir Maildir::subFolder( const QString& subFolder )
     if ( isValid() ) {
         // make the subdir dir
         QDir dir( d->path );
-        dir.cdUp();
-        if ( dir.exists( d->subDirPath() ) ) {
-            dir.cd( d->subDirPath() );
-            return Maildir( dir.path() + '/' + subFolder );
+        if ( !d->isRoot ) {
+          dir.cdUp();
+          if ( dir.exists( d->subDirPath() ) ) {
+              dir.cd( d->subDirPath() );
+          }
         }
+        return Maildir( dir.path() + '/' + subFolder );
     }
     return Maildir();
 }
@@ -247,9 +259,13 @@ QStringList Maildir::entryList() const
 QStringList Maildir::subFolderList() const
 {
   QDir dir( d->path );
-  dir.cdUp();
-  if (!dir.exists( d->subDirPath() ) ) return QStringList();
-  dir.cd( d->subDirPath() );
+
+  // the root maildir has its subfolders directly beneath it
+  if ( !d->isRoot ) {
+    dir.cdUp();
+    if (!dir.exists( d->subDirPath() ) ) return QStringList();
+    dir.cd( d->subDirPath() );
+  }
   dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
   return dir.entryList();
 }

@@ -31,7 +31,7 @@ namespace KPIM {
 class MAILDIR_EXPORT Maildir
 {
 public:
-    Maildir( const QString& path = QString() );
+    Maildir( const QString& path = QString(), bool isRoot = false );
     /* Copy constructor */
     Maildir(const Maildir & rhs);
     /* Copy operator */
@@ -53,7 +53,7 @@ public:
     bool isValid( QString &error ) const;
 
     /**
-     * Make a valid maildir at the path of this Maildir object. This involves 
+     * Make a valid maildir at the path of this Maildir object. This involves
      * creating the necessary subdirs, etc. Note that an empty Maildir is
      * not valid, unless it is given  valid path, or until create( ) is
      * called on it.
@@ -68,7 +68,7 @@ public:
     QStringList entryList() const;
 
     /**
-     * Returns the list of subfolders, as names (relative paths). Use the 
+     * Returns the list of subfolders, as names (relative paths). Use the
      * subFolder method to get Maildir objects representing them.
      */
     QStringList subFolderList() const;
