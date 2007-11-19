@@ -26,17 +26,6 @@ target_link_libraries(testaddresseelineedit  kdepim ${KDE4_KDECORE_LIBS} )
 
 ########### next target ###############
 
-set(testaddresseeselector_SRCS testaddresseeselector.cpp )
-
-
-
-kde4_add_executable(testaddresseeselector TEST ${testaddresseeselector_SRCS})
-
-target_link_libraries(testaddresseeselector  kdepim ${KDE4_KDECORE_LIBS} )
-
-
-########### next target ###############
-
 set(testdateedit_SRCS testdateedit.cpp )
 
 

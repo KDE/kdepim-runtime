@@ -57,8 +57,6 @@ set(kdepim_LIB_SRCS
    ksubscription.cpp 
    kwidgetlister.cpp 
    recentaddresses.cpp 
-   addresseeselector.cpp 
-   addresseeemailselection.cpp 
    designerfields.cpp 
    kcmdesignerfields.cpp 
    embeddedurlpage.cpp 
