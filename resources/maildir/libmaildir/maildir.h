@@ -61,6 +61,11 @@ public:
     bool create();
 
     /**
+     * Returns the path of this maildir.
+     */
+    QString path() const;
+
+    /**
      * Returns the list of items (mails) in the maildir. These are keys, which
      * map to filenames, internally, but that's an implementation detail, which
      * should not be relied on.

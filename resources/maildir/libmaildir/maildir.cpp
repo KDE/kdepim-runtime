@@ -194,6 +194,11 @@ bool Maildir::create()
   return true;
 }
 
+QString Maildir::path() const
+{
+  return d->path;
+}
+
 bool Maildir::addSubFolder( const QString& path )
 {
     if ( !isValid() ) return false;
@@ -267,7 +272,11 @@ QStringList Maildir::subFolderList() const
     dir.cd( d->subDirPath() );
   }
   dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
-  return dir.entryList();
+  QStringList entries = dir.entryList();
+  entries.removeAll( "cur" );
+  entries.removeAll( "new" );
+  entries.removeAll( "tmp" );
+  return entries;
 }
 
 QByteArray Maildir::readEntry( const QString& key ) const
