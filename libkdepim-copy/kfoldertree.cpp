@@ -492,6 +492,7 @@ void KFolderTree::addUnreadColumn( const QString &name, int width )
 {
   mUnreadIndex = addColumn( name, width );
   setColumnAlignment( mUnreadIndex, qApp->isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight );
+  header()->setStretchEnabled( true, mUnreadIndex );
   header()->adjustHeaderSize();
 }
 
@@ -500,6 +501,7 @@ void KFolderTree::addTotalColumn( const QString &name, int width )
 {
   mTotalIndex = addColumn( name, width );
   setColumnAlignment( mTotalIndex, qApp->isRightToLeft() ? Qt::AlignLeft : Qt::AlignRight );
+  header()->setStretchEnabled( true, mTotalIndex );
   header()->adjustHeaderSize();
 }
 
@@ -545,6 +547,7 @@ void KFolderTree::addSizeColumn( const QString &name, int width )
   setColumnAlignment( mSizeIndex,
                       ( qApp->layoutDirection() == Qt::RightToLeft ) ?
                       Qt::AlignLeft : Qt::AlignRight );
+  header()->setStretchEnabled( true, mSizeIndex );
   header()->adjustHeaderSize();
 }
 
