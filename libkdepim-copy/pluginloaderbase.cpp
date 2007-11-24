@@ -31,14 +31,11 @@
 #include <QFile>
 #include <QStringList>
 
-static kdbgstream warning() {
+static QDebug warning() {
   return kWarning( 5300 ) <<"PluginLoaderBase:";
 }
-#ifndef NDEBUG
-static kdbgstream debug( bool cond )
-#else
-static kndbgstream debug( bool cond )
-#endif
+
+static QDebug debug( bool cond)
 {
   return kDebug( cond, 5300 ) <<"PluginLoaderBase:";
 }
