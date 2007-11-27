@@ -805,7 +805,8 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
     if ( item )
     {
       completionBox->blockSignals( true );
-      item->setSelected(true);
+      completionBox->setCurrentItem( item );
+      item->setSelected( true );
       completionBox->blockSignals( false );
     }
 
@@ -970,7 +971,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       ( e->type() == QEvent::KeyPress ) &&
       completionBox()->isVisible() ) {
     QKeyEvent *ke = static_cast<QKeyEvent*>( e );
-    unsigned int currentIndex = completionBox()->currentRow();
+    int currentIndex = completionBox()->currentRow();
     if ( ke->key() == Qt::Key_Up ) {
       //kDebug() <<"EVENTFILTER: Key_Up currentIndex=" << currentIndex;
       // figure out if the item we would be moving to is one we want
@@ -988,8 +989,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
           // first header becomes visible, if we are the first real entry
           completionBox()->scrollToItem( completionBox()->item( 0 ) );
           QListWidgetItem *i = completionBox()->item( currentIndex );
-          if ( i )
+          if ( i ) {
+            completionBox()->setCurrentItem( i );
             i->setSelected( true );
+          }
         }
         return true;
       }
@@ -1005,8 +1008,10 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
         } else {
           // nothing to skip to, let's stay where we are
           QListWidgetItem *i = completionBox()->item( currentIndex );
-          if ( i )
+          if ( i ) {
+            completionBox()->setCurrentItem( i );
             i->setSelected( true );
+          }
         }
         return true;
       }
@@ -1015,6 +1020,7 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       // and selecting making it current, instead of the one below.
       QListWidgetItem *item = completionBox()->item( currentIndex );
       if ( item && itemIsHeader(item) ) {
+        completionBox()->setCurrentItem( item );
         item->setSelected( true );
       }
     } else if ( ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab ) {
@@ -1045,7 +1051,8 @@ bool KPIM::AddresseeLineEdit::eventFilter(QObject *obj, QEvent *e)
       if ( nextHeader && nextHeader != myHeader ) {
         QListWidgetItem *item = completionBox()->item( j + 1 );
         if ( item && !itemIsHeader(item) ) {
-          item->setSelected(true);
+          completionBox()->setCurrentItem( item );
+          item->setSelected( true );
         }
       }
       return true;
