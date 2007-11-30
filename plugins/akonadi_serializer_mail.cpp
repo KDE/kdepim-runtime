@@ -136,7 +136,8 @@ static QByteArray buildImapList( const QList<QByteArray> &list )
 template <typename T> static QByteArray buildAddrStruct( T const *hdr )
 {
   QList<QByteArray> addrList;
-  foreach ( const KMime::Types::Mailbox mbox, hdr->mailboxes() ) {
+  KMime::Types::Mailbox::List mb = hdr->mailboxes();
+  foreach ( const KMime::Types::Mailbox mbox, mb ) {
     QList<QByteArray> addrStruct;
     addrStruct << quoteImapListEntry( KMime::encodeRFC2047String( mbox.name(), "utf-8" ) );
     addrStruct << quoteImapListEntry( QByteArray() );
