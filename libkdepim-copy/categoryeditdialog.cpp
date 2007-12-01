@@ -45,6 +45,7 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
   : KDialog( parent ), mPrefs( prefs )
 {
   setCaption( i18n( "Edit Categories" ) );
+  setModal( true );
   setButtons( Ok|Apply|Cancel|Help );
   mWidgets = new Ui::CategoryEditDialog_base();
   QWidget *widget = new QWidget( this );
@@ -60,7 +61,7 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
 
   fillList();
 
-  connect( mWidgets->mCategories, 
+  connect( mWidgets->mCategories,
            SIGNAL( currentItemChanged( QTreeWidgetItem *, QTreeWidgetItem * )),
            SLOT( editItem( QTreeWidgetItem * )) );
   connect( mWidgets->mCategories, SIGNAL( itemSelectionChanged() ),
@@ -115,7 +116,7 @@ void CategoryEditDialog::slotSelectionChanged()
 void CategoryEditDialog::add()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
-    QTreeWidgetItem *newItem = 
+    QTreeWidgetItem *newItem =
       new QTreeWidgetItem( mWidgets->mCategories, QStringList( "" ) );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
@@ -133,7 +134,7 @@ void CategoryEditDialog::add()
 void CategoryEditDialog::addSubcategory()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
-    QTreeWidgetItem *newItem = 
+    QTreeWidgetItem *newItem =
       new QTreeWidgetItem( mWidgets->mCategories->currentItem(), QStringList( "" ) );
     // FIXME: Use a better string once string changes are allowed again
 //                                                i18n("New category") );
