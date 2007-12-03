@@ -41,11 +41,12 @@
 
 using namespace KPIM;
 
-CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent )
+CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
+                                        bool modal )
   : KDialog( parent ), mPrefs( prefs )
 {
   setCaption( i18n( "Edit Categories" ) );
-  setModal( true );
+  setModal( modal );
   setButtons( Ok|Apply|Cancel|Help );
   mWidgets = new Ui::CategoryEditDialog_base();
   QWidget *widget = new QWidget( this );
