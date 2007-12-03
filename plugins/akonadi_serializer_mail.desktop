@@ -1,6 +1,7 @@
 [Misc]
 Name=Mail Serializer
 Name[ca]=Serialitzador de correu
+Name[de]=E-Mail-Serialisierung
 Name[el]=Διαχειριστής αλληλογραφίας
 Name[es]=Serializador de correo
 Name[et]=Kirjade jadasti
@@ -20,6 +21,7 @@ Name[zh_CN]=邮件序列转换器
 Name[zh_TW]=信件序列器
 Comment=An Akonadi serializer plugin for mail objects
 Comment[ca]=Un connector de serialització de l'Akonadi pels objectes correu
+Comment[de]=Akonadi-Modul zur Serialisierung von E-Mail-Objekten
 Comment[el]=Ένα πρόσθετο διαχείρισης αντικειμένων αλληλογραφίας για το Akonadi
 Comment[es]=Un complemento serializador de Akonadi para objetos correo
 Comment[et]=Akonadi kirjaobjektide jadastamisplugin
