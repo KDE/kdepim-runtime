@@ -25,6 +25,9 @@
 #include "kmutils.h"
 #include <maillistdrag.h>
 
+//kdepimlibs includes
+#include <kpimidentities/signature.h>
+
 //kdelibs includes
 #include <kdebug.h>
 #include <kfind.h>
@@ -916,31 +919,53 @@ void KMeditor::setCursorPosition( int linePos, int columnPos )
   //TODO
 }
 
-bool KMeditor::appendSignature( const QString &sig, bool preserveUserCursorPos )
+void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
+                                Placement placement, bool addSeparator )
 {
-  if ( !sig.isEmpty() )
-  {
-    bool mod = document()->isModified();
+  QString signature;
+  if ( addSeparator )
+    signature = sig.withSeparator();
+  else
+    signature = sig.rawText();
+
+  insertSignature( signature, placement );
+}
+
+void KMeditor::insertSignature( QString signature, Placement placement )
+{
+  if ( !signature.isEmpty() ) {
+
+    // Save the modified state of the document, as inserting a signature
+    // shouldn't change this. Restore it at the end of this function.
+    bool isModified = document()->isModified();
+
+    // Move to the desired position, where the signature should be inserted
     QTextCursor cursor = textCursor();
 
-    int position = cursor.position();
-    cursor.movePosition( QTextCursor::End );
+    int oldPosition = cursor.position();
+    if ( placement == End )
+      cursor.movePosition( QTextCursor::End );
+    else if ( placement == Start )
+      cursor.movePosition( QTextCursor::Start );
     setTextCursor( cursor );
-    if ( !preserveUserCursorPos ) position = cursor.position();
-    insertPlainText( '\n' + sig );
 
-    cursor.setPosition( position );
+    // Insert the signature and newlines depending on where it was inserted.
+    if ( placement == End )
+      insertPlainText( '\n' + signature );
+    else if ( placement == Start || placement == AtCursor )
+      insertPlainText( '\n' + signature + '\n' );
+
+    // Adjust the cursor position if the signature was inserted before the
+    // cursor
+    if ( placement == Start )
+      oldPosition += signature.length() + 1;
+
+    cursor.setPosition( oldPosition );
     setTextCursor( cursor );
     ensureCursorVisible();
-    document()->setModified( mod );
 
-    // Only keep the cursor from the mMsg *once* based on the
-    // preserve-cursor-position setting; this handles the case where
-    // the message comes from a template with a specific cursor
-    // position set and the signature is appended automatically.
-    preserveUserCursorPos = false;
+    document()->setModified( isModified );
   }
-  return preserveUserCursorPos;
 }
 
 #include "kmeditor.moc"

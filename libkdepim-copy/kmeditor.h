@@ -29,6 +29,10 @@
 class KFindDialog;
 class KUrl;
 
+namespace KPIMIdentities {
+  class Signature;
+}
+
 namespace KPIM {
 
 class KMeditorPrivate;
@@ -38,6 +42,15 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
   Q_OBJECT
 
   public:
+
+    /**
+     * Describes the placement of a text which is to be inserted into this
+     * textedit
+     */
+    enum Placement { Start,    ///< The text is placed at the start of the textedit
+                     End,      ///< The text is placed at the end of the textedit
+                     AtCursor  ///< The text is placed at the current cursor position
+                   };
 
     /**
      * Constructs a KMeditor object
@@ -85,7 +98,30 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     int linePosition();
     int columnNumber();
     void setCursorPosition( int linePos, int columnPos );
-    bool appendSignature( const QString &sig, bool preserveUserCursorPos = false );
+
+    /**
+     * Inserts the signature @p sig into the textedit.
+     * The cursor position is preserved.
+     * A leading or trailing newline is also added automatically, depending on
+     * the placement.
+     * @param placement defines where in the textedit the signature should be
+     *                  inserted.
+     * @param addSeparator if true, the separator '-- \n' will be added in front
+     *                     of the signature
+     */
+    void insertSignature( const KPIMIdentities::Signature &sig,
+                          Placement placement = End, bool addSeparator = true );
+
+    /**
+     * Inserts the signature @p sig into the textedit.
+     * The cursor position is preserved.
+     * A leading or trailing newline is also added automatically, depending on
+     * the placement.
+     * A separator is not added.
+     * @param placement defines where in the textedit the signature should be
+     *                  inserted.
+     */
+    void insertSignature( QString signature, Placement placement = End );
 
   public Q_SLOTS:
 
