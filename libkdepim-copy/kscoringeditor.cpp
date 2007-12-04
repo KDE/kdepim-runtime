@@ -695,7 +695,7 @@ RuleListWidget::RuleListWidget( KScoringManager *m, bool standalone, QWidget *p,
   // if we're standalone, we need an additional edit button
   if ( standalone ) {
     editRule = new QPushButton( this );
-    editRule->setIcon( KIcon( "edit" ) );
+    editRule->setIcon( KIcon( "document-properties" ) );
     editRule->setToolTip( i18n( "Edit rule" ) );
     btnL->addWidget( editRule );
     connect( editRule, SIGNAL(clicked()), this, SLOT(slotEditRule()) );

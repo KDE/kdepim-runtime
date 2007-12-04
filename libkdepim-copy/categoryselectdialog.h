@@ -41,7 +41,7 @@ class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog
       setupUi( this );
 
       mButtonClear->setIcon( KIcon( "edit-clear-locationbar-rtl" ) );
-      mButtonEdit->setIcon( KIcon( "edit" ) );
+      mButtonEdit->setIcon( KIcon( "document-properties" ) );
     }
 };
 
