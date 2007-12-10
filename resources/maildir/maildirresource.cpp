@@ -19,7 +19,6 @@
 
 #include "maildirresource.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
@@ -101,7 +100,7 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QStringList
 
 void MaildirResource::aboutToQuit()
 {
-  kDebug() <<"Implement me:" ;
+  kDebug( 5254 ) << "Implement me!" ;
 }
 
 void MaildirResource::configure()
@@ -251,12 +250,12 @@ void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStri
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
   Maildir md( parent.remoteId() );
-  qDebug() << md.subFolderList() << md.entryList();
+  kDebug( 5254 ) << md.subFolderList() << md.entryList();
   if ( !md.isValid() )
     return;
   if ( !md.addSubFolder( collection.name() ) )
     return;
-  qDebug() << md.subFolderList() << md.entryList();
+  kDebug( 5254 ) << md.subFolderList() << md.entryList();
 
   Collection col = collection;
   col.setRemoteId( parent.remoteId() + QDir::separator() + collection.name() );
@@ -265,12 +264,12 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
 void MaildirResource::collectionChanged(const Collection & collection)
 {
-  qDebug() << "Implement me!";
+  kDebug( 5254 ) << "Implement me!";
 }
 
 void MaildirResource::collectionRemoved(int id, const QString & remoteId)
 {
-  qDebug() << "Implement me!";
+  kDebug( 5254 ) << "Implement me!";
 }
 
 QByteArray MaildirResource::readHeader(const QString & fileName)

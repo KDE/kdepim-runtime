@@ -28,10 +28,9 @@
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 
+#include <kdebug.h>
 #include <kfiledialog.h>
 #include <klocale.h>
-
-#include <QtCore/QDebug>
 
 #include <boost/shared_ptr.hpp>
 
@@ -55,7 +54,7 @@ ICalResource::~ ICalResource()
 bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
   Q_UNUSED( parts );
-  qDebug() << "ICalResource::requestItemDelivery()";
+  kDebug( 5251 ) << "Item:" << item.url();
   const QString rid = item.reference().remoteId();
   IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {

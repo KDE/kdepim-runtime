@@ -25,12 +25,12 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
+#include <kdebug.h>
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <kbookmarkmanager.h>
 #include <kbookmark.h>
 
-#include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
@@ -160,7 +160,7 @@ void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, cons
   Q_UNUSED( parts );
   if ( !col.isValid() )
   {
-    qDebug() << "Collection not valid";
+    kDebug( 5253 ) << "Collection not valid";
     return;
   }
 
@@ -189,7 +189,7 @@ void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, cons
     ItemAppendJob *job = new ItemAppendJob( item, col, this );
 
     if ( !job->exec() ) {
-      qDebug() << "Error while appending bookmark to storage: " << job->errorString();
+      kDebug( 5253 ) << "Error while appending bookmark to storage: " << job->errorString();
       continue;
     }
   }
