@@ -55,12 +55,12 @@ using namespace Akonadi;
 AkonadiSlave::AkonadiSlave(const QByteArray & pool_socket, const QByteArray & app_socket) :
     KIO::SlaveBase( "akonadi", pool_socket, app_socket )
 {
-  kDebug() ;
+  kDebug( 7129 ) << "kio_akonadi starting up";
 }
 
 AkonadiSlave::~ AkonadiSlave()
 {
-  kDebug() ;
+  kDebug( 7129 ) << "kio_akonadi shutting down";
 }
 
 void AkonadiSlave::get(const KUrl & url)
@@ -88,7 +88,7 @@ void AkonadiSlave::get(const KUrl & url)
 
 void AkonadiSlave::stat(const KUrl & url)
 {
-  kDebug() << url;
+  kDebug( 7129 ) << url;
 
   // Stats for a collection
   if ( Collection::urlIsValid( url ) )
@@ -147,7 +147,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
 void AkonadiSlave::del( const KUrl &url, bool isFile )
 {
-  kDebug() << url;
+  kDebug( 7129 ) << url;
 
   if ( !isFile ) // It's a directory
   {
@@ -171,7 +171,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
 
 void AkonadiSlave::listDir( const KUrl &url )
 {
-  kDebug() << url;
+  kDebug( 7129 ) << url;
 
   if ( !Collection::urlIsValid( url ) )
   {
@@ -196,7 +196,7 @@ void AkonadiSlave::listDir( const KUrl &url )
   KIO::UDSEntry entry;
   foreach( Collection col, collections )
   {
-    kDebug() <<"Collection (" << col.id() <<"," << col.name() <<")";
+    kDebug( 7129 ) <<"Collection (" << col.id() <<"," << col.name() <<")";
     entry.clear();
     entry.insert( KIO::UDSEntry::UDS_NAME, col.name() );
     entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::collectionMimeType() );
@@ -216,7 +216,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     totalSize( collections.count() + items.count() );
     foreach( Item item, items )
     {
-      kDebug() <<"Item (" << item.reference().id()  <<")";
+      kDebug( 7129 ) <<"Item (" << item.reference().id()  <<")";
       entry.clear();
       entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.reference().id() ) );
       entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
