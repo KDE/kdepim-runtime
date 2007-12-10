@@ -21,7 +21,7 @@
 
 #include <kabc/addressee.h>
 
-#include <QDebug>
+#include <kdebug.h>
 
 #include <libakonadi/item.h>
 
@@ -36,7 +36,7 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QString& label, Q
     if ( !a.isEmpty() ) {
         item.setPayload<KABC::Addressee>( a );
     } else {
-        qDebug( ) << "SerializerPluginAddressee: Empty addressee object!";
+        kWarning( 5261 ) << "Empty addressee object!";
     }
     return true;
 }
