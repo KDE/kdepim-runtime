@@ -22,7 +22,7 @@ set( mailthreaderagent_SRCS
 
 kde4_add_executable(akonadi_mailthreader_agent RUN_UNINSTALLED ${mailthreaderagent_SRCS})
 
-target_link_libraries(akonadi_mailthreader_agent akonadi ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS} )
+kdepim4_link_unique_libraries(akonadi_mailthreader_agent akonadi ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS} )
 
 install(TARGETS akonadi_mailthreader_agent DESTINATION ${BIN_INSTALL_DIR})
 install( FILES mailthreaderagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
