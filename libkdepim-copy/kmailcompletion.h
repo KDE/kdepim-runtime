@@ -69,6 +69,10 @@ class KMailCompletion : public KCompletion
      */
     virtual void postProcessMatches( QStringList * pMatches )const;
 
+    // We are not using allWeightedMatches() anywhere, therefore we don't need to
+    // override the other postProcessMatches() function
+    using KCompletion::postProcessMatches;
+
   private:
     QMap< QString, QStringList > m_keyMap;
 };
