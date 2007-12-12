@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KContactManager
 Name[de]=Kontaktverwaltung
+Name[pa]=ਕੇ-ਸੰਪਰਕ-ਮੈਨੇਜਰ
 Name[sv]=Kcontactmanager
 Name[x-test]=xxKContactManagerxx
 Name[zh_TW]=Kontact 管理員
@@ -20,6 +21,7 @@ GenericName[km]=កម្មវិធី​គ្រប់គ្រង​ទំ�
 GenericName[nb]=Kontaktbehandler
 GenericName[nds]=Kontaktenpleger
 GenericName[nl]=Contactpersoonbeheerder
+GenericName[pa]=ਸੰਪਰਕ ਮੈਨੇਜਰ
 GenericName[pl]=Zarządzanie kontaktami
 GenericName[pt]=Gestor de Contactos
 GenericName[pt_BR]=Gestor de Contactos
