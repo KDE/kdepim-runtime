@@ -28,8 +28,6 @@
 
 #include <strigi/qtdbus/strigiclient.h>
 
-#include <QDebug>
-
 #include <kdebug.h>
 #include <kurl.h>
 
@@ -83,9 +81,9 @@ class MailThreaderAgent::Private
                         .arg( prefixRegExps.join(")|(?:") );
     QRegExp rx( bigRegExp, Qt::CaseInsensitive );
     if ( !rx.isValid() ) {
-      kWarning(5006) <<"KMMessage::replacePrefixes(): bigRegExp = \""
-                      << bigRegExp << "\"" << endl
-                      << "prefix regexp is invalid!";
+      kWarning( 5258 ) << "bigRegExp = \""
+                       << bigRegExp << "\"" << endl
+                       << "prefix regexp is invalid!";
       // try good ole Re/Fwd:
       recognized = str.startsWith( newPrefix );
     } else { // valid rx
@@ -211,7 +209,7 @@ class MailThreaderAgent::Private
         ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
         job->storePayload();
         if (!job->exec()) {
-          qDebug() << "Unable to store threading parts !";
+          kDebug( 5258 ) << "Unable to store threading parts!";
           return false;
         }
       }
@@ -239,7 +237,7 @@ class MailThreaderAgent::Private
       ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
       job->storePayload();
       if (!job->exec()) {
-        qDebug() << "Unable to store the threading parts !";
+        kDebug( 5258 ) << "Unable to store the threading parts!";
         return false;
       }
     }
@@ -349,7 +347,7 @@ MailThreaderAgent::MailThreaderAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
-  qDebug() << "mailtheaderagent: at your order, sir!" ;
+  kDebug( 5258 ) << "mailtheaderagent: at your order, sir!" ;
 
   // Fetch the whole list, thread it.
 }
@@ -398,7 +396,7 @@ void MailThreaderAgent::collectionChanged( const Akonadi::Collection &col )
   a->setData( QByteArray() );
   job->setAttribute( a );
   if ( !job->exec() )
-    qDebug() << "Unable to modify collection";
+    kDebug( 5258 ) << "Unable to modify collection";
 }
 
 void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )

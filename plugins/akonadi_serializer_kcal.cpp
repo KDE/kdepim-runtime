@@ -20,6 +20,7 @@
 #include "akonadi_serializer_kcal.h"
 
 #include <libakonadi/item.h>
+#include <kdebug.h>
 #include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
@@ -33,9 +34,9 @@ bool SerializerPluginKCal::deserialize(Item & item, const QString & label, QIODe
 
   KCal::Incidence* i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
-    qWarning() << "Failed to parse incidence!";
+    kWarning( 5263 ) << "Failed to parse incidence!";
     data.seek( 0 );
-    qWarning() << QString::fromUtf8( data.readAll() );
+    kWarning( 5263 ) << QString::fromUtf8( data.readAll() );
     return false;
   }
   item.setPayload<IncidencePtr>( IncidencePtr( i ) );

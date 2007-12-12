@@ -107,9 +107,9 @@ void BrowserWidget::itemFetchDone(KJob * job)
 {
   ItemFetchJob *fetch = static_cast<ItemFetchJob*>( job );
   if ( job->error() ) {
-    qWarning() << "Item fetch failed: " << job->errorString();
+    kWarning( 5265 ) << "Item fetch failed: " << job->errorString();
   } else if ( fetch->items().isEmpty() ) {
-    qWarning() << "No item found!";
+    kWarning( 5265 ) << "No item found!";
   } else {
     const Item item = fetch->items().first();
     mCurrentItem = item;
