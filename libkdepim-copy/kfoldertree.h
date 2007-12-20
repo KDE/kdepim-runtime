@@ -186,8 +186,8 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     virtual void setTotalCount( int aTotal );
 
     /** set/get the total-count */
-    int folderSize() { return mSize; }
-    virtual void setFolderSize( int aSize );
+    qint64 folderSize() { return mSize; }
+    virtual void setFolderSize( qint64 aSize );
 
     /** set/get the protocol of the item */
     Protocol protocol() const { return mProtocol; }
@@ -200,7 +200,7 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     /** recursive unread count */
     virtual int countUnreadRecursive();
 
-    virtual size_t recursiveFolderSize() const;
+    virtual qint64 recursiveFolderSize() const;
 
     /** paints the cell */
     virtual void paintCell( QPainter *p, const QColorGroup &cg,
@@ -228,7 +228,7 @@ class KDEPIM_EXPORT KFolderTreeItem : public K3ListViewItem
     Type mType;
     int mUnread;
     int mTotal;
-    int mSize;
+    qint64 mSize;
     bool mFolderIsCloseToQuota;
 };
 
