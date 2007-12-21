@@ -148,7 +148,7 @@ int KFolderTreeItem::compare( Q3ListViewItem *i, int col, bool ) const
     return text( 0 ).localeAwareCompare( other->text( 0 ) );
   } else {
     // sort by unread or total-column
-    int a = 0, b = 0;
+    qint64 a = 0, b = 0;
     if ( col == static_cast<KFolderTree*>( listView() )->unreadIndex() ) {
       a = mUnread;
       b = other->unreadCount();
