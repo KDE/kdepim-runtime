@@ -150,21 +150,16 @@ void CategoryEditDialog::addSubcategory()
 
 void CategoryEditDialog::remove()
 {
-  QList<QTreeWidgetItem*> to_remove;
-  QTreeWidgetItemIterator it( mWidgets->mCategories, QTreeWidgetItemIterator::Selected );
-  while ( *it ) {
-    to_remove.append( *it++ );
-  }
-
-  QListIterator<QTreeWidgetItem*> items( to_remove );
-  while ( items.hasNext() ) {
-    delete items.next();
+  QList<QTreeWidgetItem*> to_remove = mWidgets->mCategories->selectedItems();
+  while ( !to_remove.isEmpty() ) {
+    delete to_remove.takeFirst();
   }
 
   mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
   mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
-  if ( mWidgets->mCategories->currentItem() )
+  if ( mWidgets->mCategories->currentItem() ) {
     mWidgets->mCategories->currentItem()->setSelected( true );
+  }
 }
 
 void CategoryEditDialog::slotOk()
