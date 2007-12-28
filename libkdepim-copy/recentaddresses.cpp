@@ -172,8 +172,8 @@ RecentAddressDialog::RecentAddressDialog( QWidget *parent )
   layout->setSpacing( spacingHint() );
   layout->setMargin( 0 );
 
-  mEditor = new KEditListBox( i18n( "Recent Addresses" ), page, "", false,
-                              KEditListBox::Add | KEditListBox::Remove );
+  mEditor = new KEditListBox( i18n( "Recent Addresses" ), page );
+  mEditor->setButtons( KEditListBox::Add | KEditListBox::Remove );
   layout->addWidget( mEditor );
 }
 
