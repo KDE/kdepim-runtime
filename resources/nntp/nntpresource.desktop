@@ -37,6 +37,7 @@ Comment[nb]=En agent som laster data fra en newstjener
 Comment[nds]=Hölper för't Daalladen vun Narichtkrinkdaten
 Comment[ne]=समाचार सर्भरबाट डेटा लोड गर्ने एउटा अभिकर्ता
 Comment[nl]=Een agent om gegevens van een nieuwsserver te halen
+Comment[pl]=Agent do wczytywania danych z serwera wiadomości
 Comment[pt]=Um agente para carregar dados de um servidor de notícias
 Comment[pt_BR]=Um agente para carregar dados de um servidor de notícias
 Comment[sv]=En modul för att ladda data från en nyhetsserver
