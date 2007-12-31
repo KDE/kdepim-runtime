@@ -14,7 +14,7 @@ set(akonadiconsole_bin_SRCS
 )
 
 qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
-  ${CMAKE_SOURCE_DIR}/akonadi/server/interfaces/org.kde.Akonadi.TracerNotification.xml
+  ../../server/interfaces/org.kde.Akonadi.TracerNotification.xml
 )
 
 kde4_add_ui_files(akonadiconsole_bin_SRCS browserwidget_itemview.ui browserwidget_contentview.ui)

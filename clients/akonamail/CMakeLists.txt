@@ -9,7 +9,7 @@ set(akonamail_bin_SRCS
 )
 
 qt4_add_dbus_interfaces( akonamail_bin_SRCS
-  ${CMAKE_SOURCE_DIR}/akonadi/server/interfaces/org.kde.Akonadi.TracerNotification.xml
+  ../../server/interfaces/org.kde.Akonadi.TracerNotification.xml
 )
 
 kde4_add_executable(akonamail_bin ${akonamail_bin_SRCS})
