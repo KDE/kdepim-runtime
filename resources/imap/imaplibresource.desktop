@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Akonadi Mailody Imaplib Resource
+Type=AkonadiResource
+Exec=akonadi_imaplib_resource
+Icon=mail
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_imaplib_resource
