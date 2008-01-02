@@ -96,6 +96,7 @@ void MainWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( ref, this );
+  job->addFetchPart( Item::PartBody );
   connect( job, SIGNAL( result(KJob*) ), SLOT( itemFetchDone(KJob*) ) );
   job->start();
 }
