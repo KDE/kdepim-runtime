@@ -28,7 +28,7 @@ install( FILES imaplibresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/shar
 
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
-target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES})
+target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} imap)
 
 install(TARGETS akonadi_imaplib_resource DESTINATION ${BIN_INSTALL_DIR})
 

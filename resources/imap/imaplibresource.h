@@ -21,6 +21,8 @@
 #ifndef __IMAPLIB_RESOURCE_H__
 #define __IMAPLIB_RESOURCE_H__
 
+class Imaplib;
+
 #include <resourcebase.h>
 
 class ImaplibResource : public Akonadi::ResourceBase
@@ -47,6 +49,17 @@ class ImaplibResource : public Akonadi::ResourceBase
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( int id, const QString &remoteId );
+
+  private Q_SLOTS:
+    void slotLogin( Imaplib* connection);
+    void slotLoginFailed(Imaplib* connection);
+    void slotAlert(Imaplib*, const QString& message);
+    void slotGetMailBoxList(const QStringList& list);
+
+  private:
+    Imaplib* m_imap;
+    void connections();
+    void manualAuth(Imaplib* connection, const QString& username);
 };
 
 #endif
