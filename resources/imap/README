@@ -1,0 +1,2 @@
+The socket is the main connection to the server. It can be replaced by a KSocket as soon as that is ready and can deal with ssl certificates. In that case the db files can go as well. Currently they store the certificates.
+

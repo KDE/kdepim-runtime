@@ -1,3 +1,12 @@
+set(imap_LIB_SRCS imaplib.cpp db.cpp socket.cpp)
+
+kde4_add_library(imap SHARED ${imap_LIB_SRCS})
+
+target_link_libraries(imap ${QT_AND_KDECORE_LIBS} ${QT_QTSQL_LIBRARY} ${KDE4_KDE3SUPPORT_LIBS} ${KDE4_KIMAP_LIBS})
+
+set_target_properties(imap PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+install(TARGETS imap DESTINATION ${LIB_INSTALL_DIR})
+
 include_directories(
 	${CMAKE_SOURCE_DIR}/akonadi
 	${CMAKE_SOURCE_DIR}/akonadi/libakonadi
