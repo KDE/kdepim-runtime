@@ -45,7 +45,7 @@ Comment[zh_CN]=从本地书签文件载入数据的代理器
 Comment[zh_TW]=從本地書籤檔載入資料的代理程式
 Type=AkonadiResource
 Exec=akonadi_localbookmarks_resource
-Icon=bookmark
+Icon=bookmarks
 
 X-Akonadi-MimeTypes=text/bookmark
 X-Akonadi-Capabilities=Resource
