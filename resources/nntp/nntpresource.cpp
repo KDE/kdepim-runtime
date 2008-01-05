@@ -27,6 +27,7 @@
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
+#include <libakonadi/changerecorder.h>
 
 #include <kmime/kmime_message.h>
 #include <kmime/kmime_newsarticle.h>
@@ -46,6 +47,7 @@ NntpResource::NntpResource(const QString & id)
   : ResourceBase( id )
 {
   CollectionAttributeFactory::registerAttribute<NntpCollectionAttribute>();
+  monitor()->fetchCollection( true );
 }
 
 NntpResource::~ NntpResource()
@@ -96,6 +98,12 @@ void NntpResource::retrieveCollections()
 void NntpResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
   Q_UNUSED( parts );
+  if ( !(col.contentTypes().count() == 1 && col.contentTypes().first() == "message/news" ) ) {
+    // not a newsgroup, skip it
+    itemsRetrieved();
+    return;
+  }
+
   KUrl url = baseUrl();
   url.setPath( col.remoteId() );
 
@@ -258,6 +266,8 @@ void NntpResource::configure()
 {
   ConfigDialog dlg;
   dlg.exec();
+  if ( !Settings::self()->name().isEmpty() )
+    setName( Settings::self()->name() );
 }
 
 void NntpResource::setupKioJob(KIO::Job * job) const
@@ -293,9 +303,10 @@ QString NntpResource::findParent(const QStringList & _path)
 
 void NntpResource::collectionChanged(const Akonadi::Collection & collection)
 {
-  kDebug() << collection.remoteId() << collection.name();
-  if ( collection.remoteId() == baseUrl().url() )
+  if ( collection.remoteId() == baseUrl().url() && !collection.name().isEmpty() ) {
     Settings::self()->setName( collection.name() );
+    setName( collection.name() );
+  }
 }
 
 #include "nntpresource.moc"
