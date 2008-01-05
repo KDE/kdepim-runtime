@@ -55,6 +55,9 @@ class ImaplibResource : public Akonadi::ResourceBase
     void slotLoginFailed(Imaplib* connection);
     void slotAlert(Imaplib*, const QString& message);
     void slotGetMailBoxList(const QStringList& list);
+    void slotGetMailBox( Imaplib*, const QString&, const QStringList& );
+    void slotMessagesInMailbox(Imaplib*, const QString&, int);
+    void slotMailBoxItems(Imaplib*,const QString&,const QStringList&);
 
   private:
     Imaplib* m_imap;

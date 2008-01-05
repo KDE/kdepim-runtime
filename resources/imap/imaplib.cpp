@@ -661,7 +661,7 @@ void Imaplib::slotParseNoop()
 
 void Imaplib::slotParseCheckMail()
 {
-    // kDebug(50002) << endl;
+    kDebug(50002) << endl;
 
     // kDebug(50002) << "checkmailresult: " << m_currentQueueItem.mailbox()
     //        << " : " << m_received << endl;
@@ -780,7 +780,7 @@ void Imaplib::slotParseRenameMailBox()
 
 void Imaplib::slotParseExists()
 {
-    // kDebug(50002) << " for " << m_received << endl;
+    kDebug(50002) << " for " << m_received << endl;
 
     m_currentMailbox=m_currentQueueItem.mailbox();
 

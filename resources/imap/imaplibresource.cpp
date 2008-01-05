@@ -30,8 +30,14 @@
 #include <kstandarddirs.h>
 #include <kpassworddialog.h>
 #include <kmessagebox.h>
+
 #include <kwallet.h>
 using KWallet::Wallet;
+
+#include <kmime/kmime_message.h>
+
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/collectionmodifyjob.h>
@@ -48,7 +54,7 @@ ImaplibResource::ImaplibResource( const QString &id )
    :ResourceBase( id )
 {
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc"));
+    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
     KConfigGroup config = tempConfig->group("General");
     const QString imapServer = config.readEntry("imapServer");
     int safe = config.readEntry("safeImap",3);
@@ -130,6 +136,9 @@ void ImaplibResource::slotGetMailBoxList(const QStringList& list)
         Collection c; 
         c.setName( *it );
         c.setRemoteId( *it );
+        c.setType( Collection::Folder );
+        c.setRights( Collection::AllRights );
+        c.setContentTypes( QStringList("message/rfc822") );
         kDebug(50002) << "ADDING: " << (*it) << endl;
         collections << c;
         ++it;
@@ -138,10 +147,85 @@ void ImaplibResource::slotGetMailBoxList(const QStringList& list)
     collectionsRetrieved( collections ); 
 }
 
+// ----------------------------------------------------------------------------------
+
 void ImaplibResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
-  kDebug(50002) << "Implement me!";
+    kDebug(50002);
+    m_imap->checkMail( col.remoteId() );
 }
+
+void ImaplibResource::slotMessagesInMailbox(Imaplib*, const QString& mb, int amount)
+{
+    static QHash<QString, int> cache;
+    kDebug(50002) << mb << amount;
+    if (cache.value( mb ) != amount)
+    {
+        cache[ mb ] = amount;
+        m_imap->getHeaderList(mb, 1, amount);
+    }
+}
+
+void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringList& values)
+{
+    kDebug(50002) << mb << values.count();
+
+    // results contain the uid and the flags for each item in this folder.
+    // we will ignore the flags for now and also ignore the fact that we already have items.
+
+    QStringList fetchlist;
+    QStringList::ConstIterator it = values.begin();
+    while (it != values.end())
+    {
+        const QString uid = (*it);
+        ++it;
+
+        const QString flags = (*it);
+        ++it;
+
+        //  if (all.indexOf(uid) == -1)
+        
+        fetchlist.append(uid);
+    }
+
+    m_imap->getHeaders(mb, fetchlist);
+}
+
+void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QStringList& list) 
+{
+    kDebug(50002) << mb << list.count();
+    
+    // this should hold the headers of the messages.
+
+    Item::List messages;
+
+    QStringList::ConstIterator it = list.begin();
+    while (it != list.end())
+    {
+        const QString uid = (*it);
+        ++it;
+
+        const QString mbox = (*it);
+        ++it;
+
+        const QString headers = (*it);
+        ++it;
+
+        KMime::Message* mail = new KMime::Message();
+        mail->setContent(headers.trimmed().toLatin1());
+        mail->parse();
+
+        Akonadi::Item i( DataReference(-1, mbox + "-+-" + uid) );
+        i.setMimeType( "message/rfc822" );
+        i.setPayload( MessagePtr( mail ) );
+
+        messages.append( i );
+    }
+
+    itemsRetrieved( messages ); 
+}
+
+// ----------------------------------------------------------------------------------
 
 void ImaplibResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
@@ -155,7 +239,7 @@ void ImaplibResource::collectionChanged(const Collection & collection)
 
 void ImaplibResource::collectionRemoved(int id, const QString & remoteId)
 {
-  qDebug() << "Implement me!";
+  kDebug(50002) << "Implement me!";
 }
 
 /******************* Slots  ***********************************************/
@@ -165,7 +249,7 @@ void ImaplibResource::slotLogin( Imaplib* connection)
     // kDebug(50002) << endl;
 
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc"));
+    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
     KConfigGroup config = tempConfig->group("General");
     QString login = config.readEntry("userName");
     QString pass;
@@ -202,7 +286,7 @@ void ImaplibResource::slotLoginFailed(Imaplib* connection)
     else if (i == KMessageBox::No)
     {
         // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-        KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc"));
+        KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
         KConfigGroup config = tempConfig->group("General");
         QString username = config.readEntry("userName");
         manualAuth(connection, username);
@@ -215,6 +299,7 @@ void ImaplibResource::slotAlert(Imaplib*, const QString& message)
 {
     KMessageBox::information(0, i18n("Server reported: %1",message));
 }
+
 
 /******************* Private ***********************************************/
 
