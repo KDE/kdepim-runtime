@@ -2,6 +2,8 @@
 Encoding=UTF-8
 Name=Akonadi Mailody Imaplib Resource
 Name[et]=Akonadi Mailody Imaplibi ressurss
+Name[pt]=Recurso da Imaplib do Mailody para o Akonadi
+Name[pt_BR]=Recurso da Imaplib do Mailody para o Akonadi
 Name[sv]=Akonadi Mailody Imaplib-resurs
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource
