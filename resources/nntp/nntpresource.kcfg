@@ -48,16 +48,16 @@
     <!-- TODO: precommand -->
   </group>
 
-  <!-- Cache settings -->
-  <group name="Cache">
+  <!-- Article specific settings -->
+  <group name="Articles">
     <entry name="MaxDownload" type="UInt">
       <label>Maximum number of articles to download.</label>
       <default>5</default>
     </entry>
   </group>
 
-  <!-- Akonadi specific settings -->
-  <group name="Akonadi">
+  <!-- Newsgroup specific settings -->
+  <group name="Newsgroups">
     <entry name="LocalHierarchy" type="Bool">
       <label>Allow local modifications of the news group hierarchy</label>
       <default>true</default>

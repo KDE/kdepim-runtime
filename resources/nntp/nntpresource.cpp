@@ -67,7 +67,7 @@ void NntpResource::retrieveCollections()
   Collection rootCollection;
   rootCollection.setParent( Collection::root() );
   rootCollection.setRemoteId( baseUrl().url() );
-  rootCollection.setName( name() );
+  rootCollection.setName( Settings::self()->name() );
   rootCollection.setCachePolicyId( 1 );
   QStringList contentTypes;
   contentTypes << Collection::collectionMimeType();
@@ -124,10 +124,18 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
       continue;
 
     Collection c;
-    c.setName( name );
     c.setRemoteId( name );
-    c.setParentRemoteId( baseUrl().url() );
     c.setContentTypes( contentTypes );
+
+    if ( Settings::self()->flatHierarchy() ) {
+      c.setName( name );
+      c.setParentRemoteId( baseUrl().url() );
+    } else {
+      const QStringList path = name.split( '.' );
+      Q_ASSERT( !path.isEmpty() );
+      c.setName( path.last() );
+      c.setParentRemoteId( findParent( path ) );
+    }
 
     remoteCollections << c;
   }
@@ -260,6 +268,34 @@ void NntpResource::setupKioJob(KIO::Job * job) const
   else
     job->addMetaData( "tls", "off" );
   // TODO connect percent and status message signals to something
+}
+
+QString NntpResource::findParent(const QStringList & _path)
+{
+  QStringList path = _path;
+  path.removeLast();
+  if ( path.isEmpty() )
+    return baseUrl().url();
+  QString rid = path.join( "." );
+  foreach ( const Collection col, remoteCollections )
+    if ( col.remoteId() == rid )
+      return col.remoteId();
+  Collection parent;
+  parent.setRemoteId( rid );
+  QStringList ct;
+  ct << Collection::collectionMimeType();
+  parent.setContentTypes( ct );
+  parent.setParentRemoteId( findParent( path ) );
+  parent.setName( path.last() );
+  remoteCollections << parent;
+  return parent.remoteId();
+}
+
+void NntpResource::collectionChanged(const Akonadi::Collection & collection)
+{
+  kDebug() << collection.remoteId() << collection.name();
+  if ( collection.remoteId() == baseUrl().url() )
+    Settings::self()->setName( collection.name() );
 }
 
 #include "nntpresource.moc"

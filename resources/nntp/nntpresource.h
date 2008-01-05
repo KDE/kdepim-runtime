@@ -40,6 +40,7 @@ class NntpResource : public Akonadi::ResourceBase
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
+    void collectionChanged( const Akonadi::Collection &collection );
 
   private:
     /**
@@ -49,6 +50,8 @@ class NntpResource : public Akonadi::ResourceBase
     KUrl baseUrl() const;
 
     void setupKioJob( KIO::Job *job ) const;
+
+    QString findParent( const QStringList &_path );
 
   private slots:
     void listGroups( KIO::Job* job, const KIO::UDSEntryList &list );
