@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <!-- Account settings -->
+  <group name="Account">
+    <entry name="Server" type="String">
+      <label>Server hostname</label>
+      <default></default>
+    </entry>
+    <entry name="Port" type="UInt">
+      <label>Server port number</label>
+      <default>119</default>
+      <!-- TODO add maximum value -->
+    </entry>
+    <entry name="Encryption" type="Enum">
+      <label>Encryption method</label>
+      <default>None</default>
+      <choices>
+        <choice name="None">
+          <label>No encryption</label>
+        </choice>
+        <choice name="SSL">
+          <label>SSL encryption</label>
+        </choice>
+        <choice name="TLS">
+          <label>TLS encryption</label>
+        </choice>
+      </choices>
+    </entry>
+    <entry name="Name" type="String">
+      <label>Account name</label>
+      <default></default>
+    </entry>
+    <entry name="RequiresAuthentication" type="Bool">
+      <label>Server requires login</label>
+      <default>false</default>
+    </entry>
+    <entry name="UserName" type="String">
+      <label>User name for login</label>
+      <default></default>
+    </entry>
+    <entry name="StorePassword" type="Bool">
+      <label>Store login password in KWallet</label>
+      <default>false</default>
+    </entry>
+    <!-- TODO: precommand -->
+  </group>
+
+  <!-- Cache settings -->
+  <group name="Cache">
+    <entry name="MaxDownload" type="UInt">
+      <label>Maximum number of articles to download.</label>
+      <default>5</default>
+    </entry>
+  </group>
+
+  <!-- Akonadi specific settings -->
+  <group name="Akonadi">
+    <entry name="LocalHierarchy" type="Bool">
+      <label>Allow local modifications of the news group hierarchy</label>
+      <default>true</default>
+    </entry>
+    <entry name="FlatHierarchy" type="Bool">
+      <label>Create newsgroups in a flat hierarchy by default</label>
+      <default>true</default>
+    </entry>
+    <entry name="LocalNames" type="Bool">
+      <label>Allow local renaming of newsgroups</label>
+      <default>true</default>
+    </entry>
+  </group>
+</kcfg>

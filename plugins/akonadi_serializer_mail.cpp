@@ -178,7 +178,8 @@ QStringList SerializerPluginMail::parts(const Item & item) const
     return QStringList();
   MessagePtr msg = item.payload<MessagePtr>();
   QStringList list;
-  if ( msg->hasContent() ) {
+  // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
+  if ( msg->hasContent() || msg->hasHeader( "Message-ID" ) ) {
     list << Item::PartEnvelope << Item::PartHeader;
     if ( !msg->body().isEmpty() || !msg->contents().isEmpty() )
       list << Item::PartBody;
