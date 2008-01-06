@@ -126,6 +126,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
   public Q_SLOTS:
 
     void slotAddQuotes();
+    void slotRemoveBox();
     void slotAddBox();
     void slotAlignLeft();
     void slotAlignCenter();
@@ -161,9 +162,11 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     void slotReplace();
 
+    void slotChangeInsertMode();
   Q_SIGNALS:
     void pasteImage();
     void focusUp();
+    void overwriteModeText();
 
   protected:
 

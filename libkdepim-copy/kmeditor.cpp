@@ -302,6 +302,14 @@ void KMeditor::init()
   installEventFilter( this );
   //enable spell checking by default
   setCheckSpellingEnabled( true );
+  QShortcut * insertMode = new QShortcut( QKeySequence(Qt::Key_Insert),this );
+  connect( insertMode, SIGNAL( activated () ), this, SLOT( slotChangeInsertMode() ) );
+}
+
+void KMeditor::slotChangeInsertMode()
+{
+  setOverwriteMode( !overwriteMode () );
+  emit overwriteModeText();
 }
 
 void KMeditor::createHighlighter()
@@ -870,6 +878,69 @@ void KMeditor::setCursorPositionFromStart( unsigned int pos )
     setTextCursor( cursor );
     ensureCursorVisible();
   }
+}
+
+void KMeditor::slotRemoveBox()
+{
+  //Laurent: fix me
+#if 0
+    if (hasMarkedText()) {
+    QString s = QString::fromLatin1("\n") + markedText() + QString::fromLatin1("\n");
+    s.replace(QRegExp("\n,----[^\n]*\n"),"\n");
+    s.replace(QRegExp("\n| "),"\n");
+    s.replace(QRegExp("\n`----[^\n]*\n"),"\n");
+    s.remove(0,1);
+    s.truncate(s.length()-1);
+    insert(s);
+  } else {
+    int l = currentLine();
+    int c = currentColumn();
+
+    QString s = textLine(l);   // test if we are in a box
+    if (!((s.left(2) == "| ")||(s.left(5)==",----")||(s.left(5)=="`----")))
+      return;
+
+    setAutoUpdate(false);
+
+    // find & remove box begin
+    int x = l;
+    while ((x>=0)&&(textLine(x).left(5)!=",----"))
+      x--;
+    if ((x>=0)&&(textLine(x).left(5)==",----")) {
+      removeLine(x);
+      l--;
+      for (int i=x;i<=l;i++) {     // remove quotation
+        s = textLine(i);
+        if (s.left(2) == "| ") {
+          s.remove(0,2);
+          insertLine(s,i);
+          removeLine(i+1);
+        }
+      }
+    }
+
+    // find & remove box end
+    x = l;
+    while ((x<numLines())&&(textLine(x).left(5)!="`----"))
+      x++;
+    if ((x<numLines())&&(textLine(x).left(5)=="`----")) {
+      removeLine(x);
+      for (int i=l+1;i<x;i++) {     // remove quotation
+        s = textLine(i);
+        if (s.left(2) == "| ") {
+          s.remove(0,2);
+          insertLine(s,i);
+          removeLine(i+1);
+        }
+      }
+    }
+
+    setCursorPosition(l,c-2);
+
+    setAutoUpdate(true);
+    repaint();
+  }
+#endif
 }
 
 void KMeditor::slotAddBox()
