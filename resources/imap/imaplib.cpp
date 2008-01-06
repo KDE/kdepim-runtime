@@ -888,7 +888,7 @@ void Imaplib::slotParseGetHeaderList()
 
 void Imaplib::slotParseGetMessage()
 {
-    // kDebug(50002) << endl;
+    kDebug(50002) << endl;
 
     // Courier:
     //|* 1 FETCH (UID 1 RFC822.SIZE 8609 BODY[HEADER.FIELDS ("FROM" "SUBJECT" "DATE")] {148}|

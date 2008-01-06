@@ -85,20 +85,30 @@ ImaplibResource::~ImaplibResource()
 
 bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-  kDebug(50002) << "Implement me!";
-  return false;
+    const QString reference = item.reference().remoteId();
+    kDebug(50002) << "Fetch request for" << reference;
+    const QStringList temp = reference.split("-+-");
+    m_imap->getMessage(temp[0], temp[1].toInt());
+    m_itemCache[reference] = item;
+    return true;
+}
 
-  /*
-  KMime::Message *mail = new KMime::Message();
-  mail->setContent( data );
-  mail->parse();
+void ImaplibResource::slotGetMessage(Imaplib*, const QString& mb, int uid,
+                                     const QString& body)
+{
+    const QString reference =  mb + "-+-" + QString::number(uid);
 
-  Item i( item );
-  i.setMimeType( "message/rfc822" );
-  i.setPayload( MessagePtr( mail ) );
-  itemRetrieved( i );
-  return true;
-  */
+    kDebug(50002) << "MESSAGE from Imap server" << reference << endl;
+    kDebug(50002) << "Cache is valid:" << m_itemCache.value( reference ).isValid() << endl;
+
+    KMime::Message *mail = new KMime::Message();
+    mail->setContent( KMime::CRLFtoLF(body.toLatin1() ));
+    mail->parse();
+
+    Item i( m_itemCache.value( reference ) );
+    i.setMimeType( "message/rfc822" );
+    i.setPayload( MessagePtr( mail ) );
+    itemRetrieved( i );
 }
 
 void ImaplibResource::configure()
@@ -171,7 +181,7 @@ void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringL
     kDebug(50002) << mb << values.count();
 
     // results contain the uid and the flags for each item in this folder.
-    // we will ignore the flags for now and also ignore the fact that we already have items.
+    // we will ignore the fact that we already have items.
 
     QStringList fetchlist;
     QStringList::ConstIterator it = values.begin();
@@ -180,7 +190,7 @@ void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringL
         const QString uid = (*it);
         ++it;
 
-        const QString flags = (*it);
+        m_flagsCache[mb + "-+-" + uid] = *it;
         ++it;
 
         //  if (all.indexOf(uid) == -1)
@@ -212,12 +222,15 @@ void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QString
         ++it;
 
         KMime::Message* mail = new KMime::Message();
-        mail->setContent(headers.trimmed().toLatin1());
+        mail->setContent( KMime::CRLFtoLF( headers.trimmed().toLatin1() ) );
         mail->parse();
 
         Akonadi::Item i( DataReference(-1, mbox + "-+-" + uid) );
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
+
+        foreach(QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split(" ") )
+            i.setFlag( flag.toLatin1() /* ok? */ );
 
         messages.append( i );
     }

@@ -58,9 +58,12 @@ class ImaplibResource : public Akonadi::ResourceBase
     void slotGetMailBox( Imaplib*, const QString&, const QStringList& );
     void slotMessagesInMailbox(Imaplib*, const QString&, int);
     void slotMailBoxItems(Imaplib*,const QString&,const QStringList&);
+    void slotGetMessage(Imaplib*, const QString& mb, int uid, const QString& body);
 
   private:
     Imaplib* m_imap;
+    QHash<QString, QString> m_flagsCache;
+    QHash<QString, Akonadi::Item> m_itemCache;
     void connections();
     void manualAuth(Imaplib* connection, const QString& username);
 };
