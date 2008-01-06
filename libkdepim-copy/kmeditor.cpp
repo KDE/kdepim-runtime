@@ -687,6 +687,11 @@ void KMeditor::setWrapColumnOrWidth( int w )
   setLineWrapColumnOrWidth( w );
 }
 
+int KMeditor::wrapColumnOrWidth() const
+{
+  return lineWrapColumnOrWidth();
+}
+
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
   QTextCursor cursor = textCursor();

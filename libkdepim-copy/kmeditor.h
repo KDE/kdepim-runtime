@@ -87,6 +87,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void wordWrapToggled( bool on );
     void setWrapColumnOrWidth( int w );
+    int wrapColumnOrWidth() const;
 
     void setColor( const QColor& );
     void setFont( const QFont& );
