@@ -18,6 +18,7 @@
 */
 
 #include "browserwidget.h"
+#include "collectionattributespage.h"
 
 #include <libakonadi/job.h>
 #include <libakonadi/collectionview.h>
@@ -26,6 +27,7 @@
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/messagecollectionmodel.h>
 #include <libakonadi/collectionfilterproxymodel.h>
+#include <libakonadi/collectionpropertiesdialog.h>
 
 #include <kabc/kabcmodel.h>
 #include <kabc/kabcitembrowser.h>
@@ -82,6 +84,8 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   contentUi.setupUi( contentViewParent );
   connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
   splitter2->addWidget( contentViewParent );
+
+  CollectionPropertiesDialog::registerPage<CollectionAttributePage>();
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)

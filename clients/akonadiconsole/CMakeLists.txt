@@ -5,6 +5,7 @@ include_directories(${CMAKE_SOURCE_DIR}/libkdepim)
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp
   browserwidget.cpp
+  collectionattributespage.cpp
   connectionpage.cpp
   debugwidget.cpp
   main.cpp
@@ -17,7 +18,11 @@ qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
   ../../server/interfaces/org.kde.Akonadi.TracerNotification.xml
 )
 
-kde4_add_ui_files(akonadiconsole_bin_SRCS browserwidget_itemview.ui browserwidget_contentview.ui)
+kde4_add_ui_files(akonadiconsole_bin_SRCS
+  browserwidget_itemview.ui
+  browserwidget_contentview.ui
+  collectionattributespage.ui
+)
 
 kde4_add_executable(akonadiconsole_bin ${akonadiconsole_bin_SRCS})
 set_target_properties(akonadiconsole_bin PROPERTIES OUTPUT_NAME akonadiconsole)
