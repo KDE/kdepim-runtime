@@ -38,6 +38,8 @@ class KDEPIM_EXPORT KPimPrefs : public KConfigSkeleton
   public:
     KPimPrefs( const QString &name = QString() );
 
+    KPimPrefs(KPimPrefs const & other);
+
     virtual ~KPimPrefs();
 
     /** Set preferences to default values */

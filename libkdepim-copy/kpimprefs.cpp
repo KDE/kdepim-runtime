@@ -43,6 +43,12 @@ KPimPrefs::KPimPrefs( const QString &name )
 {
 }
 
+KPimPrefs::KPimPrefs(KPimPrefs const & other)
+  : KConfigSkeleton( other.objectName() )
+  , mCustomCategories( other.mCustomCategories )
+{
+}
+
 KPimPrefs::~KPimPrefs()
 {
 }

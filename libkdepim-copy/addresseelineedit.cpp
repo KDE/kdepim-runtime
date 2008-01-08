@@ -27,17 +27,11 @@
 #include "completionordereditor.h"
 #include "ldapclient.h"
 
-#include <kabc/resourceabc.h>
-
-#include <config.h> // KDEPIM_NEW_DISTRLISTS
-
-#ifdef KDEPIM_NEW_DISTRLISTS
 #include "distributionlist.h"
-#else
-#endif
 
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
+#include <kabc/resourceabc.h>
 
 #include <kcompletionbox.h>
 #include <kdebug.h>
@@ -541,25 +535,6 @@ void AddresseeLineEdit::loadContacts()
     }
   }
 
-#ifndef KDEPIM_NEW_DISTRLISTS // new distr lists are normal contact, already done above
-  int weight = config.readEntry( "DistributionLists", 60 );
-
-  const QStringList distLists = addressBook->allDistributionListNames();
-
-  QStringList::const_iterator listIt;
-  int idx = addCompletionSource( i18n( "Distribution Lists" ) );
-  for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
-
-    //for KGlobalSettings::CompletionAuto
-    addCompletionItem( (*listIt).trimmed(), weight, idx );
-
-    //for CompletionShell, CompletionPopup
-    QStringList sl( (*listIt).trimmed() );
-    addCompletionItem( (*listIt).trimmed(), weight, idx, &sl );
-
-  }
-#endif
-
   QApplication::restoreOverrideCursor();
 
   if ( !m_addressBookConnected ) {
@@ -570,7 +545,6 @@ void AddresseeLineEdit::loadContacts()
 
 void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int source )
 {
-#ifdef KDEPIM_NEW_DISTRLISTS
   if ( KPIM::DistributionList::isDistributionList( addr ) ) {
     //kDebug(5300) <<"AddresseeLineEdit::addContact() distribution list \"" << addr.formattedName() <<"\" weight=" << weight;
 
@@ -583,7 +557,6 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
 
     return;
   }
-#endif
   //m_contactMap.insert( addr.realName(), addr );
   const QStringList emails = addr.emails();
   QStringList::ConstIterator it;
@@ -872,7 +845,20 @@ void KPIM::AddresseeLineEdit::slotUserCancelled( const QString& cancelText )
 void AddresseeLineEdit::updateSearchString()
 {
   m_searchString = text();
-  int n = m_searchString.lastIndexOf(',');
+
+  int n = -1;
+  bool inQuote = false;
+  for ( uint i = 0; i < m_searchString.length(); ++i ) {
+    if ( m_searchString[ i ] == '"' )
+      inQuote = !inQuote;
+    if ( m_searchString[ i ] == '\\' && (i + 1) < m_searchString.length() && m_searchString[ i + 1 ] == '"' )
+      ++i;
+    if ( inQuote )
+      continue;
+    if ( m_searchString[ i ] == ',' )
+      n = i;
+  }
+
   if ( n >= 0 ) {
     ++n; // Go past the ","
 

@@ -29,6 +29,9 @@
 #include <kabc/address.h>
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
+#include <kabc/resource.h>
+
+#include <kapplication.h>
 #include <kconfig.h>
 #include <kcolorscheme.h>
 #include <kglobal.h>
@@ -216,7 +219,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     KABC::PhoneNumber::List phones = addr.phoneNumbers();
     KABC::PhoneNumber::List::ConstIterator phoneIt;
     for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
-      QString number = (*phoneIt).number();
+      QString number = Qt::escape( (*phoneIt).number() );
 
       QString url;
       if ( (*phoneIt).type() & KABC::PhoneNumber::Fax )
@@ -250,7 +253,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
       if ( linkMask & EmailLinks ) {
         dynamicPart += rowFmtStr.arg( type )
           .arg( QString::fromLatin1( "<a href=\"mailto:%1\">%2</a>" )
-          .arg( fullEmail, *emailIt ) );
+          .arg( fullEmail, Qt::escape( *emailIt ) ) );
       } else {
         dynamicPart += rowFmtStr.arg( type ).arg( *emailIt );
       }
@@ -286,7 +289,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
       if ( (*addrIt).label().isEmpty() ) {
         QString formattedAddress;
 
-        formattedAddress = (*addrIt).formattedAddress().trimmed();
+        formattedAddress = Qt::escape( (*addrIt).formattedAddress().trimmed() );
 
         formattedAddress = formattedAddress.replace( '\n', "<br>" );
 
@@ -324,7 +327,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     // @STYLE@ - substitute the cell style in first, and append
     // the data afterwards (keeps us safe from possible % signs
     // in either one).
-    notes = rowFmtStr.arg( i18n( "Notes" ) ).arg( addr.note().replace( '\n', "<br>" ) ) ;
+    notes = Qt::escape( addr.note() );
+    notes = rowFmtStr.arg( i18n( "Notes" ) ).arg( notes.replace( '\n', "<br>" ) ) ;
   }
 
   QString customData;
@@ -363,15 +367,15 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
           if ( keyIt != titleMap.end() )
             key = keyIt.value();
 
-          customData += rowFmtStr.arg( key ).arg( value ) ;
+          customData += rowFmtStr.arg( key ).arg( Qt::escape( value ) ) ;
         }
       }
     }
   }
 
-  QString name( addr.realName() );
-  QString role( addr.role() );
-  QString organization( addr.organization() );
+  QString name( Qt::escape( addr.realName() ) );
+  QString role( Qt::escape( addr.role() ) );
+  QString organization( Qt::escape( addr.organization() ) );
 /*
   if ( proxy && (fieldMask & IMFields) ) {
     if ( proxy->isPresent( addr.uid() ) && proxy->presenceNumeric( addr.uid() ) > 0 ) {
@@ -446,6 +450,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   strAddr.append( customData );
   strAddr.append( QString::fromLatin1( "</table></div>\n" ) );
 
+  if ( addr.resource() )
+      strAddr.append( i18n( "<p><b>Address book</b>: %1</p>", addr.resource()->resourceName() ) );
   return strAddr;
 }
 

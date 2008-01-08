@@ -213,11 +213,6 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
     }
   }
 
-#ifndef KDEPIM_NEW_DISTRLISTS // new distr lists are normal contact, so no separate item if using them
-  // Add an item for distribution lists
-  mItems.append( new SimpleCompletionItem( this, i18n( "Distribution Lists" ), "DistributionLists" ) );
-#endif
-
   // Now sort the items, then create the GUI
   mItems.sort();
 
