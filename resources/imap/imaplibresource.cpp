@@ -136,25 +136,58 @@ void ImaplibResource::retrieveCollections()
     m_imap->getMailBoxList();
 }
 
+static QString findParent( QHash<QString, Collection> &collections, const Collection &root, const QStringList &_path )
+{
+  QStringList path = _path;
+  path.removeLast();
+  if ( path.isEmpty() )
+    return root.remoteId();
+  const QString id = path.join( "." ); // ### is this always the correct path separator?
+  if ( collections.contains( id ) )
+    return collections.value( id ).remoteId();
+  Collection c;
+  c.setName( path.last() );
+  c.setRemoteId( id );
+  c.setParentRemoteId( findParent( collections, root, path ) );
+  c.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+  collections.insert( id, c );
+  return c.remoteId();
+}
+
 void ImaplibResource::slotGetMailBoxList(const QStringList& list)
 {
-    Collection::List collections;
+    QHash<QString, Collection> collections;
+    QStringList contentTypes;
+    contentTypes << "message/rfc822" << Collection::collectionMimeType();
+
+    Collection root;
+    root.setName( name() );
+    root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
+    root.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+    collections.insert( root.remoteId(), root );
     
     QStringList::ConstIterator it = list.begin();
     while (it != list.end())
     {
-        Collection c; 
-        c.setName( *it );
+        QStringList path = (*it).split( '.' ); // ### is . always the path separator?
+        Q_ASSERT( !path.isEmpty() );
+        Collection c;
+        if ( collections.contains( *it ) ) {
+            c = collections.value( *it );
+        } else {
+            c.setName( path.last() );
+        }
         c.setRemoteId( *it );
-        c.setType( Collection::Folder );
         c.setRights( Collection::AllRights );
-        c.setContentTypes( QStringList("message/rfc822") );
+        c.setContentTypes( contentTypes );
+        c.setParentRemoteId( findParent( collections, root, path ) );
+
         kDebug(50002) << "ADDING: " << (*it) << endl;
-        collections << c;
+        collections[ *it ] = c;
         ++it;
     }
 
-    collectionsRetrieved( collections ); 
+    collectionsRetrieved( collections.values() ); 
 }
 
 // ----------------------------------------------------------------------------------
