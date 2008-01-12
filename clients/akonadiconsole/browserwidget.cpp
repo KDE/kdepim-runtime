@@ -19,6 +19,7 @@
 
 #include "browserwidget.h"
 #include "collectionattributespage.h"
+#include "collectioninternalspage.h"
 
 #include <libakonadi/job.h>
 #include <libakonadi/collectionview.h>
@@ -86,6 +87,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   splitter2->addWidget( contentViewParent );
 
   CollectionPropertiesDialog::registerPage<CollectionAttributePage>();
+  CollectionPropertiesDialog::registerPage<CollectionInternalsPage>();
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
