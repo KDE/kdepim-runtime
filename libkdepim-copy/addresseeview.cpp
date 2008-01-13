@@ -233,11 +233,11 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
           smsURL = QString(" (<a href=\"sms:%1\">%2</a>)" ).arg( number ).arg( i18n( "SMS") );
 
         dynamicPart += rowFmtStr
-          .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
+          .arg( (*phoneIt).typeLabel().replace( " ", "&nbsp;" ) )
           .arg( QString::fromLatin1( "<a href=\"%1\">%2</a>%3" ).arg( url ).arg( number ).arg( smsURL ) );
       } else {
         dynamicPart += rowFmtStr
-          .arg( KABC::PhoneNumber::typeLabel( (*phoneIt).type() ).replace( " ", "&nbsp;" ) )
+          .arg( (*phoneIt).typeLabel().replace( " ", "&nbsp;" ) )
           .arg( number );
       }
     }
