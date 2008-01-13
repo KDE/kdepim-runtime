@@ -39,26 +39,26 @@ Socket::Socket( QObject* parent )
         :QObject( parent ), m_socket( 0 ), m_port( 0 ), m_aboutToClose( false ),
         m_interactive( true ), m_secure( false ), m_tls( false )
 {
-    kDebug( 50002 ) << endl;
+    kDebug(  ) << endl;
 }
 
 Socket::~Socket()
 {
-    kDebug( 50002 ) << objectName() << " " << endl;
+    kDebug(  ) << objectName() << " " << endl;
     m_aboutToClose=true;
 }
 
 void Socket::reconnect()
 {
-    kDebug( 50002 ) << endl;
+    kDebug(  ) << endl;
     if ( m_aboutToClose )
         return;
 
-    kDebug( 50002 ) << objectName() << " " << "Connecting to: " << m_server << ":"
+    kDebug(  ) << objectName() << " " << "Connecting to: " << m_server << ":"
     <<  m_port << endl;
 
 #ifdef comm_debug
-    // kDebug(50002) << objectName() << m_proto << endl;
+    // kDebug() << objectName() << m_proto << endl;
 #endif
 
     if ( m_socket )
@@ -83,13 +83,13 @@ void Socket::reconnect()
 
 void Socket::slotConnected()
 {
-    kDebug( 50002 ) << endl;
+    kDebug(  ) << endl;
 
     if ( !m_secure || m_tls ) {
-        kDebug( 50002 ) << "normal connect" << endl;
+        kDebug(  ) << "normal connect" << endl;
         emit connected();
     } else {
-        kDebug( 50002 ) << "encrypted connect" << endl;
+        kDebug(  ) << "encrypted connect" << endl;
         startShake();
     }
 }
@@ -97,7 +97,7 @@ void Socket::slotConnected()
 void Socket::slotStateChanged( QAbstractSocket::SocketState state )
 {
 #ifdef comm_debug
-    kDebug( 50002 ) << objectName() << " "
+    kDebug(  ) << objectName() << " "
     << "State is now: " << ( int )state << endl;
 #else
     Q_UNUSED( state );
@@ -107,7 +107,7 @@ void Socket::slotStateChanged( QAbstractSocket::SocketState state )
 void Socket::slotModeChanged( QSslSocket::SslMode  state )
 {
 #ifdef comm_debug
-    kDebug( 50002 ) << objectName() << " "
+    kDebug(  ) << objectName() << " "
     << "Mode is now: " << state << endl;
 #else
     Q_UNUSED( state );
@@ -126,7 +126,7 @@ void Socket::slotSocketRead()
         return;
 
 #ifdef comm_debug
-    kDebug( 50002 ) << objectName() << " " << m_socket->isEncrypted()
+    kDebug(  ) << objectName() << " " << m_socket->isEncrypted()
     << msg.trimmed() << endl;
 #endif
 
@@ -139,7 +139,7 @@ void Socket::slotSocketRead()
             if ( msg.indexOf( "a02 OK" ) != -1 ||
                     msg.indexOf( "220 " ) < msg.indexOf( "TLS" ) && msg.indexOf( "220 " ) != -1 ) {
                 // Request accepted.
-                kDebug( 50002 ) << objectName() << " "
+                kDebug(  ) << objectName() << " "
                 << "Accepted, starting TLS handshake..."
                 << m_socket->mode() << endl;
                 startShake();
@@ -148,7 +148,7 @@ void Socket::slotSocketRead()
                 KMessageBox::information( 0,i18n( "TLS was refused:\n\n" )+msg );
             } else {
                 // request tls.
-                kDebug( 50002 ) << objectName() << " "
+                kDebug(  ) << objectName() << " "
                 << "Connected, deal with TLS please"
                 << endl;
 
@@ -167,13 +167,13 @@ void Socket::slotSocketRead()
 
 void Socket::startShake()
 {
-    kDebug( 50002 ) << objectName() << " " << endl;
+    kDebug(  ) << objectName() << " " << endl;
     m_socket->startClientEncryption();
 }
 
 void Socket::slotSslErrors( const QList<QSslError> & errors )
 {
-    kDebug( 50002 ) << objectName() << " " << "\n"
+    kDebug(  ) << objectName() << " " << "\n"
     << QString( m_socket->peerCertificate().toPem() ) << "\n"  << endl;
 
     if ( !m_interactive ) {
@@ -220,7 +220,7 @@ void Socket::slotSslErrors( const QList<QSslError> & errors )
             emit disconnected();
         }
     } else {
-        kDebug( 50002 ) << objectName() << " "
+        kDebug(  ) << objectName() << " "
         << "Certificate invalid  but that is known and accepted: \n"
         << errorList.trimmed() << endl;
         acceptSslErrors();
@@ -235,7 +235,7 @@ void Socket::acceptSslErrors()
 
 void Socket::write( const QString& text )
 {
-    // kDebug(50002) << objectName() << " " << endl;
+    // kDebug() << objectName() << " " << endl;
     // Eat things in the queue when there is no connection. We need
     // to get a connection first don't we...
     if ( !m_socket || !available() )
@@ -246,7 +246,7 @@ void Socket::write( const QString& text )
     QByteArray cs = ( text+"\r\n" ).toLatin1();
 
 #ifdef comm_debug
-    kDebug( 50002 ) << objectName() << " " << "C   : "
+    kDebug(  ) << objectName() << " " << "C   : "
     << QString( cs ).trimmed() << endl;
 #endif
 
@@ -255,14 +255,14 @@ void Socket::write( const QString& text )
 
 bool Socket::available()
 {
-    // kDebug(50002) << objectName() << " " << endl;
+    // kDebug() << objectName() << " " << endl;
     bool ok = m_socket && m_socket->state() == QAbstractSocket::ConnectedState;
     return ok;
 }
 
 void Socket::slotDisconnected()
 {
-    // kDebug(50002) << objectName() << " " << endl;
+    // kDebug() << objectName() << " " << endl;
     if ( m_aboutToClose )
         return;
 

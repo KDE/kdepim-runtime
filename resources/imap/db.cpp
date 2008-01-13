@@ -67,10 +67,10 @@ void DB::setDBPath( const QString& path )
     m_db.setDatabaseName( path );
     bool open = m_db.open();
     if ( !open )
-        kFatal( 50002 ) << "Cannot open database " << path
+        kFatal(  ) << "Cannot open database " << path
         << m_db.lastError().text();
     else {
-        kDebug( 50002 ) << "Database is opened: " << path;
+        kDebug(  ) << "Database is opened: " << path;
         initDB();
     }
 }
@@ -93,7 +93,7 @@ void DB::initDB()
 
 QSqlQuery DB::execSql( const QString& sql )
 {
-    kDebug( 50002 ) << "SQL-query: " << sql << endl;
+    kDebug(  ) << "SQL-query: " << sql << endl;
 
     if ( !m_db.isOpen() ) {
         kFatal() << "Database is not open";
@@ -102,7 +102,7 @@ QSqlQuery DB::execSql( const QString& sql )
 
     QSqlQuery query( sql, m_db );
     if ( query.lastError().isValid() )
-        kWarning( 50002 ) << "Error in the query:" << query.lastError().text() << sql;
+        kWarning(  ) << "Error in the query:" << query.lastError().text() << sql;
 
     return( query );
 }

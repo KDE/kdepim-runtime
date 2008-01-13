@@ -41,7 +41,7 @@ protected Q_SLOTS:
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
-protected:
+protected Q_SLOTS:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
