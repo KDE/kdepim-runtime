@@ -64,6 +64,7 @@ class ImaplibResource : public Akonadi::ResourceBase
     Imaplib* m_imap;
     QHash<QString, QString> m_flagsCache;
     QHash<QString, Akonadi::Item> m_itemCache;
+    QHash<QString, int> m_amountMessagesCache;
     void connections();
     void manualAuth(Imaplib* connection, const QString& username);
 };

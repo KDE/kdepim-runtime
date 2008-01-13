@@ -194,17 +194,22 @@ void ImaplibResource::slotGetMailBoxList(const QStringList& list)
 
 void ImaplibResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
-    kDebug(50002);
+    kDebug(50002) << col.remoteId();
     m_imap->checkMail( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInMailbox(Imaplib*, const QString& mb, int amount)
 {
-    static QHash<QString, int> cache;
-    kDebug(50002) << mb << amount;
-    if (cache.value( mb ) != amount)
+    kDebug(50002) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
+
+    // We need to remember the amount of messages in a mailbox, so we can emit 
+    // itemsRetrieved() at the right time when all the messages are received.
+
+    if ( amount == 0 )
+        itemsRetrieved();
+    else if (m_amountMessagesCache.value( mb ) != amount)
     {
-        cache[ mb ] = amount;
+        m_amountMessagesCache[ mb ] = amount;
         m_imap->getHeaderList(mb, 1, amount);
     }
 }
@@ -227,7 +232,7 @@ void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringL
         ++it;
 
         //  if (all.indexOf(uid) == -1)
-        
+      
         fetchlist.append(uid);
     }
 
@@ -237,8 +242,11 @@ void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringL
 void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QStringList& list) 
 {
     kDebug(50002) << mb << list.count();
-    
+
     // this should hold the headers of the messages.
+
+    static QHash<QString, int> s_amountCache;
+    s_amountCache[mb] += ( list.count() / 3 );
 
     Item::List messages;
 
@@ -268,7 +276,13 @@ void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QString
         messages.append( i );
     }
 
-    itemsRetrieved( messages ); 
+    // we should only emit this when we have received all messages, remember the messages arrive in 
+    // blocks of 250.
+    kDebug(50002) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
+    if ( s_amountCache[mb] >= m_amountMessagesCache[mb] )
+    {
+        itemsRetrieved( messages ); 
+    }
 }
 
 // ----------------------------------------------------------------------------------
