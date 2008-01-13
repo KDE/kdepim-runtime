@@ -27,21 +27,21 @@ class Imaplib;
 
 class ImaplibResource : public Akonadi::ResourceBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     ImaplibResource( const QString &id );
     ~ImaplibResource();
 
-  public Q_SLOTS:
+public Q_SLOTS:
     virtual void configure();
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
-  protected:
+protected:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::DataReference &ref );
@@ -50,23 +50,23 @@ class ImaplibResource : public Akonadi::ResourceBase
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( int id, const QString &remoteId );
 
-  private Q_SLOTS:
-    void slotLogin( Imaplib* connection);
-    void slotLoginFailed(Imaplib* connection);
-    void slotAlert(Imaplib*, const QString& message);
-    void slotGetMailBoxList(const QStringList& list);
+private Q_SLOTS:
+    void slotLogin( Imaplib* connection );
+    void slotLoginFailed( Imaplib* connection );
+    void slotAlert( Imaplib*, const QString& message );
+    void slotGetMailBoxList( const QStringList& list );
     void slotGetMailBox( Imaplib*, const QString&, const QStringList& );
-    void slotMessagesInMailbox(Imaplib*, const QString&, int);
-    void slotMailBoxItems(Imaplib*,const QString&,const QStringList&);
-    void slotGetMessage(Imaplib*, const QString& mb, int uid, const QString& body);
+    void slotMessagesInMailbox( Imaplib*, const QString&, int );
+    void slotMailBoxItems( Imaplib*,const QString&,const QStringList& );
+    void slotGetMessage( Imaplib*, const QString& mb, int uid, const QString& body );
 
-  private:
+private:
     Imaplib* m_imap;
     QHash<QString, QString> m_flagsCache;
     QHash<QString, Akonadi::Item> m_itemCache;
     QHash<QString, int> m_amountMessagesCache;
     void connections();
-    void manualAuth(Imaplib* connection, const QString& username);
+    void manualAuth( Imaplib* connection, const QString& username );
 };
 
 #endif

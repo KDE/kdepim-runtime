@@ -51,20 +51,20 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
-   :ResourceBase( id )
+        :ResourceBase( id )
 {
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
-    KConfigGroup config = tempConfig->group("General");
-    const QString imapServer = config.readEntry("imapServer");
-    int safe = config.readEntry("safeImap",3);
+    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
+    KConfigGroup config = tempConfig->group( "General" );
+    const QString imapServer = config.readEntry( "imapServer" );
+    int safe = config.readEntry( "safeImap",3 );
 
-    QString server = imapServer.section(":",0,0);
-    int port = imapServer.section(":",1,1).toInt();
+    QString server = imapServer.section( ":",0,0 );
+    int port = imapServer.section( ":",1,1 ).toInt();
 
-    m_imap = new Imaplib(0,"serverconnection");
+    m_imap = new Imaplib( 0,"serverconnection" );
 
-    /* TODO: copy cryptoConnectionSupport or do this somewhere else ? 
+    /* TODO: copy cryptoConnectionSupport or do this somewhere else ?
     if ((safe == 1 || safe == 2) && !Global::cryptoConnectionSupported())
     {
         kDebug(50002) << "Crypto not supported!" << endl;
@@ -74,7 +74,7 @@ ImaplibResource::ImaplibResource( const QString &id )
     }
     */
 
-    m_imap->startConnection(server, port, safe);
+    m_imap->startConnection( server, port, safe );
     connections();
 }
 
@@ -86,23 +86,23 @@ ImaplibResource::~ImaplibResource()
 bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
     const QString reference = item.reference().remoteId();
-    kDebug(50002) << "Fetch request for" << reference;
-    const QStringList temp = reference.split("-+-");
-    m_imap->getMessage(temp[0], temp[1].toInt());
+    kDebug( 50002 ) << "Fetch request for" << reference;
+    const QStringList temp = reference.split( "-+-" );
+    m_imap->getMessage( temp[0], temp[1].toInt() );
     m_itemCache[reference] = item;
     return true;
 }
 
-void ImaplibResource::slotGetMessage(Imaplib*, const QString& mb, int uid,
-                                     const QString& body)
+void ImaplibResource::slotGetMessage( Imaplib*, const QString& mb, int uid,
+                                      const QString& body )
 {
-    const QString reference =  mb + "-+-" + QString::number(uid);
+    const QString reference =  mb + "-+-" + QString::number( uid );
 
-    kDebug(50002) << "MESSAGE from Imap server" << reference << endl;
-    kDebug(50002) << "Cache is valid:" << m_itemCache.value( reference ).isValid() << endl;
+    kDebug( 50002 ) << "MESSAGE from Imap server" << reference << endl;
+    kDebug( 50002 ) << "Cache is valid:" << m_itemCache.value( reference ).isValid() << endl;
 
     KMime::Message *mail = new KMime::Message();
-    mail->setContent( KMime::CRLFtoLF(body.toLatin1() ));
+    mail->setContent( KMime::CRLFtoLF( body.toLatin1() ) );
     mail->parse();
 
     Item i( m_itemCache.value( reference ) );
@@ -113,22 +113,22 @@ void ImaplibResource::slotGetMessage(Imaplib*, const QString& mb, int uid,
 
 void ImaplibResource::configure()
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
-void ImaplibResource::itemRemoved(const Akonadi::DataReference & ref)
+void ImaplibResource::itemRemoved( const Akonadi::DataReference & ref )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
 void ImaplibResource::retrieveCollections()
@@ -138,23 +138,23 @@ void ImaplibResource::retrieveCollections()
 
 static QString findParent( QHash<QString, Collection> &collections, const Collection &root, const QStringList &_path )
 {
-  QStringList path = _path;
-  path.removeLast();
-  if ( path.isEmpty() )
-    return root.remoteId();
-  const QString id = path.join( "." ); // ### is this always the correct path separator?
-  if ( collections.contains( id ) )
-    return collections.value( id ).remoteId();
-  Collection c;
-  c.setName( path.last() );
-  c.setRemoteId( id );
-  c.setParentRemoteId( findParent( collections, root, path ) );
-  c.setContentTypes( QStringList( Collection::collectionMimeType() ) );
-  collections.insert( id, c );
-  return c.remoteId();
+    QStringList path = _path;
+    path.removeLast();
+    if ( path.isEmpty() )
+        return root.remoteId();
+    const QString id = path.join( "." ); // ### is this always the correct path separator?
+    if ( collections.contains( id ) )
+        return collections.value( id ).remoteId();
+    Collection c;
+    c.setName( path.last() );
+    c.setRemoteId( id );
+    c.setParentRemoteId( findParent( collections, root, path ) );
+    c.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+    collections.insert( id, c );
+    return c.remoteId();
 }
 
-void ImaplibResource::slotGetMailBoxList(const QStringList& list)
+void ImaplibResource::slotGetMailBoxList( const QStringList& list )
 {
     QHash<QString, Collection> collections;
     QStringList contentTypes;
@@ -165,11 +165,10 @@ void ImaplibResource::slotGetMailBoxList(const QStringList& list)
     root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
     root.setContentTypes( QStringList( Collection::collectionMimeType() ) );
     collections.insert( root.remoteId(), root );
-    
+
     QStringList::ConstIterator it = list.begin();
-    while (it != list.end())
-    {
-        QStringList path = (*it).split( '.' ); // ### is . always the path separator?
+    while ( it != list.end() ) {
+        QStringList path = ( *it ).split( '.' ); // ### is . always the path separator?
         Q_ASSERT( !path.isEmpty() );
         Collection c;
         if ( collections.contains( *it ) ) {
@@ -182,66 +181,64 @@ void ImaplibResource::slotGetMailBoxList(const QStringList& list)
         c.setContentTypes( contentTypes );
         c.setParentRemoteId( findParent( collections, root, path ) );
 
-        kDebug(50002) << "ADDING: " << (*it) << endl;
+        kDebug( 50002 ) << "ADDING: " << ( *it ) << endl;
         collections[ *it ] = c;
         ++it;
     }
 
-    collectionsRetrieved( collections.values() ); 
+    collectionsRetrieved( collections.values() );
 }
 
 // ----------------------------------------------------------------------------------
 
-void ImaplibResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
+void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
 {
-    kDebug(50002) << col.remoteId();
+    kDebug( 50002 ) << col.remoteId();
     m_imap->checkMail( col.remoteId() );
 }
 
-void ImaplibResource::slotMessagesInMailbox(Imaplib*, const QString& mb, int amount)
+void ImaplibResource::slotMessagesInMailbox( Imaplib*, const QString& mb, int amount )
 {
-    kDebug(50002) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
+    kDebug( 50002 ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
 
-    // We need to remember the amount of messages in a mailbox, so we can emit 
+    // We need to remember the amount of messages in a mailbox, so we can emit
     // itemsRetrieved() at the right time when all the messages are received.
 
     if ( amount == 0 )
         itemsRetrieved();
-    else if (m_amountMessagesCache.value( mb ) != amount)
-    {
+    else if ( m_amountMessagesCache.value( mb ) != amount ) {
         m_amountMessagesCache[ mb ] = amount;
-        m_imap->getHeaderList(mb, 1, amount);
+        m_imap->getHeaderList( mb, 1, amount );
     }
 }
 
-void ImaplibResource::slotMailBoxItems(Imaplib*,const QString& mb,const QStringList& values)
+void ImaplibResource::slotMailBoxItems( Imaplib*,const QString& mb,const QStringList& values )
 {
-    kDebug(50002) << mb << values.count();
+    kDebug( 50002 ) << mb << values.count();
 
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
 
     QStringList fetchlist;
     QStringList::ConstIterator it = values.begin();
-    while (it != values.end())
-    {
-        const QString uid = (*it);
+    while ( it != values.end() ) {
+        const QString uid = ( *it );
         ++it;
 
         m_flagsCache[mb + "-+-" + uid] = *it;
         ++it;
 
         //  if (all.indexOf(uid) == -1)
-      
-        fetchlist.append(uid);
+
+        fetchlist.append( uid );
     }
 
-    m_imap->getHeaders(mb, fetchlist);
+    m_imap->getHeaders( mb, fetchlist );
 }
 
-void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QStringList& list) 
+void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QStringList& list )
 {
-    kDebug(50002) << mb << list.count();
+    kDebug( 50002 ) << mb << list.count();
 
     // this should hold the headers of the messages.
 
@@ -251,113 +248,105 @@ void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QString
     Item::List messages;
 
     QStringList::ConstIterator it = list.begin();
-    while (it != list.end())
-    {
-        const QString uid = (*it);
+    while ( it != list.end() ) {
+        const QString uid = ( *it );
         ++it;
 
-        const QString mbox = (*it);
+        const QString mbox = ( *it );
         ++it;
 
-        const QString headers = (*it);
+        const QString headers = ( *it );
         ++it;
 
         KMime::Message* mail = new KMime::Message();
         mail->setContent( KMime::CRLFtoLF( headers.trimmed().toLatin1() ) );
         mail->parse();
 
-        Akonadi::Item i( DataReference(-1, mbox + "-+-" + uid) );
+        Akonadi::Item i( DataReference( -1, mbox + "-+-" + uid ) );
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
 
-        foreach(QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split(" ") )
-            i.setFlag( flag.toLatin1() /* ok? */ );
+        foreach( QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
+        i.setFlag( flag.toLatin1() /* ok? */ );
 
         messages.append( i );
     }
 
-    // we should only emit this when we have received all messages, remember the messages arrive in 
+    // we should only emit this when we have received all messages, remember the messages arrive in
     // blocks of 250.
-    kDebug(50002) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
-    if ( s_amountCache[mb] >= m_amountMessagesCache[mb] )
-    {
-        itemsRetrieved( messages ); 
+    kDebug( 50002 ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
+    if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
+        itemsRetrieved( messages );
     }
 }
 
 // ----------------------------------------------------------------------------------
 
-void ImaplibResource::collectionAdded(const Collection & collection, const Collection &parent)
+void ImaplibResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
-void ImaplibResource::collectionChanged(const Collection & collection)
+void ImaplibResource::collectionChanged( const Collection & collection )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
-void ImaplibResource::collectionRemoved(int id, const QString & remoteId)
+void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
 {
-  kDebug(50002) << "Implement me!";
+    kDebug( 50002 ) << "Implement me!";
 }
 
 /******************* Slots  ***********************************************/
 
-void ImaplibResource::slotLogin( Imaplib* connection)
+void ImaplibResource::slotLogin( Imaplib* connection )
 {
     // kDebug(50002) << endl;
 
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
-    KConfigGroup config = tempConfig->group("General");
-    QString login = config.readEntry("userName");
+    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
+    KConfigGroup config = tempConfig->group( "General" );
+    QString login = config.readEntry( "userName" );
     QString pass;
 
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/);
-    if (wallet && wallet->isOpen() && wallet->hasFolder("mailody"))
-    {
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
+    if ( wallet && wallet->isOpen() && wallet->hasFolder( "mailody" ) ) {
         wallet->setFolder( "mailody" );
-        wallet->readPassword("account1", pass);
+        wallet->readPassword( "account1", pass );
     }
     delete wallet;
 
-    if (pass.isEmpty())
-    {
-        manualAuth( connection, login);
-    }
-    else
-    {
-        connection->login(login, pass);
+    if ( pass.isEmpty() ) {
+        manualAuth( connection, login );
+    } else {
+        connection->login( login, pass );
     }
 }
 
-void ImaplibResource::slotLoginFailed(Imaplib* connection)
+void ImaplibResource::slotLoginFailed( Imaplib* connection )
 {
     // the credentials where not ok....
-    int i = KMessageBox::questionYesNoCancel(0,
-                i18n("The server refused the supplied username and password. "
-                     "Do you want to go to the settings, re-enter it for one "
-                     "time or do nothing?"),
-                i18n("Could Not Log In"),
-                   KGuiItem(i18n("Settings")), KGuiItem(i18n("Single Input")));
-    if (i == KMessageBox::Yes)
+    int i = KMessageBox::questionYesNoCancel( 0,
+            i18n( "The server refused the supplied username and password. "
+                  "Do you want to go to the settings, re-enter it for one "
+                  "time or do nothing?" ),
+            i18n( "Could Not Log In" ),
+            KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
+    if ( i == KMessageBox::Yes )
         configure();
-    else if (i == KMessageBox::No)
-    {
+    else if ( i == KMessageBox::No ) {
         // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-        KConfig* tempConfig = new KConfig(KStandardDirs::locate("config", "mailodyrc4"));
-        KConfigGroup config = tempConfig->group("General");
-        QString username = config.readEntry("userName");
-        manualAuth(connection, username);
-    }
-    else
+        KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
+        KConfigGroup config = tempConfig->group( "General" );
+        QString username = config.readEntry( "userName" );
+        manualAuth( connection, username );
+    } else
         connection->logout();
 }
 
-void ImaplibResource::slotAlert(Imaplib*, const QString& message)
+void ImaplibResource::slotAlert( Imaplib*, const QString& message )
 {
-    KMessageBox::information(0, i18n("Server reported: %1",message));
+    KMessageBox::information( 0, i18n( "Server reported: %1",message ) );
 }
 
 
@@ -365,84 +354,84 @@ void ImaplibResource::slotAlert(Imaplib*, const QString& message)
 
 void ImaplibResource::connections()
 {
-    connect(m_imap,
-            SIGNAL(login( Imaplib* )),
-            SLOT( slotLogin( Imaplib* ) ));
-    connect(m_imap,
-            SIGNAL(loginOk( Imaplib* )),
-            SIGNAL( loginOk() ));
-    connect(m_imap,
-            SIGNAL(status( const QString& )),
-            SIGNAL(status( const QString& )));
-    connect(m_imap,
-            SIGNAL(statusReady()),
-            SIGNAL(statusReady()));
-    connect(m_imap,
-            SIGNAL(statusError( const QString& )),
-            SIGNAL(statusError( const QString& )));
-    connect(m_imap,
-            SIGNAL(saveDone()),
-            SIGNAL(saveDone()));
-    connect(m_imap,
-            SIGNAL(error(const QString&)),
-            SLOT(slotError(const QString&)));
-    connect(m_imap,
-            SIGNAL(unexpectedDisconnect()),
-            SLOT(slotDisconnected()));
-    connect(m_imap,
-            SIGNAL(disconnected()),
-            SIGNAL(disconnected()));
-    connect(m_imap,
-            SIGNAL(loginFailed( Imaplib* )),
-            SLOT( slotLoginFailed( Imaplib* ) ));
-    connect(m_imap,
-            SIGNAL(alert( Imaplib*, const QString& )),
-            SLOT( slotAlert( Imaplib*, const QString& ) ));
-    connect(m_imap,
-            SIGNAL(mailBoxList(const QStringList&)),
-            SLOT( slotGetMailBoxList(const QStringList& ) ));
-    connect(m_imap,
-            SIGNAL(mailBox( Imaplib*, const QString&, const QStringList& )),
-            SLOT( slotGetMailBox( Imaplib*, const QString&, const QStringList& ) ));
-    connect(m_imap,
-            SIGNAL(message( Imaplib*, const QString&, int, const QString& )),
-            SLOT( slotGetMessage( Imaplib*, const QString&, int, const QString& ) ));
-    connect(m_imap,
-            SIGNAL(messageCount(Imaplib*, const QString&, int)),
-            SLOT(slotMessagesInMailbox(Imaplib*, const QString&, int) ));
-    connect(m_imap,
-            SIGNAL(unseenCount(Imaplib*, const QString&, int)),
-            SLOT(slotUnseenMessagesInMailbox(Imaplib*, const QString& , int ) ));
-    connect(m_imap,
-            SIGNAL(mailBoxAdded(const QString&)),
-            SLOT(slotMailBoxAdded(const QString&)));
-    connect(m_imap,
-            SIGNAL(mailBoxDeleted(const QString&)),
-            SLOT(slotMailBoxRemoved(const QString&)));
-    connect(m_imap,
-            SIGNAL(mailBoxRenamed(const QString&, const QString&)),
-            SLOT(slotMailBoxRenamed(const QString&, const QString&)));
-    connect(m_imap,
-            SIGNAL(expungeCompleted(Imaplib*, const QString&)),
-            SLOT(slotMailBoxExpunged(Imaplib*, const QString&)));
-    connect(m_imap,
-            SIGNAL(itemsInMailBox(Imaplib*,const QString&,const QStringList&)),
-            SLOT(slotMailBoxItems(Imaplib*,const QString&,const QStringList&)));
-    connect(m_imap,
-            SIGNAL(integrity(const QString&, int, const QString&,
-                   const QString&)),
-            SLOT(slotIntegrity(const QString&, int, const QString&,
-                 const QString&)));
+    connect( m_imap,
+             SIGNAL( login( Imaplib* ) ),
+             SLOT( slotLogin( Imaplib* ) ) );
+    connect( m_imap,
+             SIGNAL( loginOk( Imaplib* ) ),
+             SIGNAL( loginOk() ) );
+    connect( m_imap,
+             SIGNAL( status( const QString& ) ),
+             SIGNAL( status( const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( statusReady() ),
+             SIGNAL( statusReady() ) );
+    connect( m_imap,
+             SIGNAL( statusError( const QString& ) ),
+             SIGNAL( statusError( const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( saveDone() ),
+             SIGNAL( saveDone() ) );
+    connect( m_imap,
+             SIGNAL( error( const QString& ) ),
+             SLOT( slotError( const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( unexpectedDisconnect() ),
+             SLOT( slotDisconnected() ) );
+    connect( m_imap,
+             SIGNAL( disconnected() ),
+             SIGNAL( disconnected() ) );
+    connect( m_imap,
+             SIGNAL( loginFailed( Imaplib* ) ),
+             SLOT( slotLoginFailed( Imaplib* ) ) );
+    connect( m_imap,
+             SIGNAL( alert( Imaplib*, const QString& ) ),
+             SLOT( slotAlert( Imaplib*, const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( mailBoxList( const QStringList& ) ),
+             SLOT( slotGetMailBoxList( const QStringList& ) ) );
+    connect( m_imap,
+             SIGNAL( mailBox( Imaplib*, const QString&, const QStringList& ) ),
+             SLOT( slotGetMailBox( Imaplib*, const QString&, const QStringList& ) ) );
+    connect( m_imap,
+             SIGNAL( message( Imaplib*, const QString&, int, const QString& ) ),
+             SLOT( slotGetMessage( Imaplib*, const QString&, int, const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( messageCount( Imaplib*, const QString&, int ) ),
+             SLOT( slotMessagesInMailbox( Imaplib*, const QString&, int ) ) );
+    connect( m_imap,
+             SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
+             SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
+    connect( m_imap,
+             SIGNAL( mailBoxAdded( const QString& ) ),
+             SLOT( slotMailBoxAdded( const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( mailBoxDeleted( const QString& ) ),
+             SLOT( slotMailBoxRemoved( const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( mailBoxRenamed( const QString&, const QString& ) ),
+             SLOT( slotMailBoxRenamed( const QString&, const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( expungeCompleted( Imaplib*, const QString& ) ),
+             SLOT( slotMailBoxExpunged( Imaplib*, const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( itemsInMailBox( Imaplib*,const QString&,const QStringList& ) ),
+             SLOT( slotMailBoxItems( Imaplib*,const QString&,const QStringList& ) ) );
+    connect( m_imap,
+             SIGNAL( integrity( const QString&, int, const QString&,
+                                const QString& ) ),
+             SLOT( slotIntegrity( const QString&, int, const QString&,
+                                  const QString& ) ) );
 }
 
-void ImaplibResource::manualAuth(Imaplib* connection, const QString& username)
+void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
 {
     // kDebug(50002) << endl;
 
-    KPasswordDialog dlg( 0 /* todo: sane? */);
-    dlg.setPrompt( i18n("Could not find a valid password, please enter it here") );
-    if (dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty())
-            connection->login(username, QString(dlg.password()));
+    KPasswordDialog dlg( 0 /* todo: sane? */ );
+    dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
+    if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )
+        connection->login( username, QString( dlg.password() ) );
     else
         connection->logout();
 }

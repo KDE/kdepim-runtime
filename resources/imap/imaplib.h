@@ -32,47 +32,54 @@ class QTimerEvent;
 
 class Queue
 {
-    public:
-        enum Commands{
-            None=0,
-            NoResponse,
-            Connecting,
-            Auth,
-            GetMailBoxList,
-            CheckMail,
-            SelectMailBox,
-            SyncMailBox,
-            GetHeaderList,
-            GetHeaders,
-            GetMessage,
-            GetRecent,
-            Copy,
-            Expunge,
-            SaveMessage,
-            SaveMessageData,
-            CreateMailBox,
-            DeleteMailBox,
-            RenameMailBox,
-            Capability,
-            IdleStart,
-            IdleStop,
-            Noop,
-            Logout
-        };
+public:
+    enum Commands {
+        None=0,
+        NoResponse,
+        Connecting,
+        Auth,
+        GetMailBoxList,
+        CheckMail,
+        SelectMailBox,
+        SyncMailBox,
+        GetHeaderList,
+        GetHeaders,
+        GetMessage,
+        GetRecent,
+        Copy,
+        Expunge,
+        SaveMessage,
+        SaveMessageData,
+        CreateMailBox,
+        DeleteMailBox,
+        RenameMailBox,
+        Capability,
+        IdleStart,
+        IdleStop,
+        Noop,
+        Logout
+    };
 
-        Queue(): st(0) {}
-        explicit Queue( Commands state, const QString& mailbox,
-               const QString& command, const QString& comment=QString() )
-            : st(state), mb(mailbox), com(command), comm(comment)
-        { }
-        int state() const {return st; }
-        QString mailbox() const {return mb; }
-        QString command() const {return com; }
-        QString comment() const {return comm; }
+    Queue(): st( 0 ) {}
+    explicit Queue( Commands state, const QString& mailbox,
+                    const QString& command, const QString& comment=QString() )
+            : st( state ), mb( mailbox ), com( command ), comm( comment ) { }
+    int state() const {
+        return st;
+    }
+    QString mailbox() const {
+        return mb;
+    }
+    QString command() const {
+        return com;
+    }
+    QString comment() const {
+        return comm;
+    }
 
-    private:
-        int st;
-        QString mb, com, comm;
+private:
+    int st;
+    QString mb, com, comm;
 };
 
 
@@ -83,9 +90,9 @@ class Queue
  */
 class IMAP_EXPORT Imaplib : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Contructor
      */
@@ -103,7 +110,7 @@ class IMAP_EXPORT Imaplib : public QWidget
      * @param port the port to connect to.
      * @param protocol what protocol
      */
-    void startConnection(const QString&, int port, int sec);
+    void startConnection( const QString&, int port, int sec );
 
     /**
      * login to the Imapserver. There is no need to escape things, this
@@ -111,7 +118,7 @@ class IMAP_EXPORT Imaplib : public QWidget
      * @param username the username
      * @param password the password
      */
-    void login( const QString& username, const QString& password);
+    void login( const QString& username, const QString& password );
 
     /**
      * disconnects to the server.
@@ -127,31 +134,31 @@ class IMAP_EXPORT Imaplib : public QWidget
     /**
      * Will fetch the headers of mailbox.
      */
-    void getHeaders(const QString& mb, const QStringList& uids);
+    void getHeaders( const QString& mb, const QStringList& uids );
 
     /**
      * Convenience function to get the headers from a mailbox.
      */
-    void getHeaderList(const QString& mb, int start, int end);
+    void getHeaderList( const QString& mb, int start, int end );
 
     /**
      * Use this to get the messages of a mailbox, all headers will be fetched.
      * The call will emit a mailBox() call when ready.
      * @param box the mailbox
      */
-    void getMailBox(const QString& box);
+    void getMailBox( const QString& box );
 
     /**
      * Get the body of @p uid from the @p mb mailbox
      */
-    void getMessage(const QString& mb, int uid);
+    void getMessage( const QString& mb, int uid );
 
     /**
      * This will not select the mailbox, but will update message count
      * and fetch new mail
      * @param box the mailbox
      */
-    void checkMail(const QString& box);
+    void checkMail( const QString& box );
 
     /**
      * add a flag to a message or messages. Keep uidmin and uidmax the same
@@ -161,8 +168,8 @@ class IMAP_EXPORT Imaplib : public QWidget
      * @param uidmax maxuid of the message
      * @param flag flag to add
      */
-    void addFlag(const QString& box, int uidmin, int uidmax,
-                 const QString& flag);
+    void addFlag( const QString& box, int uidmin, int uidmax,
+                  const QString& flag );
 
     /**
      * remove a flag from a message or messages. Keep uidmin and uidmax the same
@@ -172,48 +179,48 @@ class IMAP_EXPORT Imaplib : public QWidget
      * @param uidmax maxuid of the message
      * @param flag flag to add
      */
-    void removeFlag(const QString& box, int uidmin, int uidmax,
-                    const QString& flag);
+    void removeFlag( const QString& box, int uidmin, int uidmax,
+                     const QString& flag );
 
     /**
      * removes deleted messages
      * @param box the mailbox
      */
-    void expungeMailBox(const QString& box);
+    void expungeMailBox( const QString& box );
 
     /**
      * create a folder
      */
-    void createMailBox(const QString& box);
+    void createMailBox( const QString& box );
 
     /**
      * delete a folder
      */
-    void deleteMailBox(const QString& box);
+    void deleteMailBox( const QString& box );
 
     /**
      * rename folder @p oldfolder to @p newfolder
      */
-    void renameMailBox(const QString& oldfolder, const QString& newfolder);
+    void renameMailBox( const QString& oldfolder, const QString& newfolder );
 
     /**
      * This will copy the message with @p uid from @p origbox to the
      * @p destbox mailbox. If you are searching for a move mailbox, then
      * use this function and add a add the deleted flag after it.
      */
-    void copyMessage(const QString& origbox, int uid, const QString& destbox);
+    void copyMessage( const QString& origbox, int uid, const QString& destbox );
 
     /**
      * Store message with the content @p message in the @p mb mailbox, @p flags
      * can be used to set extra flags. \\Seen is default and set always.
      */
-    void saveMessage(const QString& mb, const QString& message,
-                     const QString& flags = QString());
+    void saveMessage( const QString& mb, const QString& message,
+                      const QString& flags = QString() );
 
     /**
      * Start monitoring the @p mb mailbox
      */
-    void idleStart(const QString& mb);
+    void idleStart( const QString& mb );
 
     /**
      * Stop monitoring
@@ -223,19 +230,18 @@ class IMAP_EXPORT Imaplib : public QWidget
     /**
      * returns if a server is capabile of @p something
      */
-    bool capable(const QString& something);
+    bool capable( const QString& something );
 
- private:
+private:
 
-    enum State
-        {
-            NotConnected = 0,
-            Connected,
-            NotAuthenticated,
-            Authenticated,
-            Selected,
-            LoggedOut
-        };
+    enum State {
+        NotConnected = 0,
+        Connected,
+        NotAuthenticated,
+        Authenticated,
+        Selected,
+        LoggedOut
+    };
 
     State               m_currentState;
     Queue               m_currentQueueItem;
@@ -255,11 +261,11 @@ class IMAP_EXPORT Imaplib : public QWidget
     QString             m_server;
     int                 m_port;
 
-    void write(const QString& text);
-    void selectMailBox(const QString& box);
+    void write( const QString& text );
+    void selectMailBox( const QString& box );
     void timerEvent( QTimerEvent * );
 
-  signals:
+signals:
     /**
      * This signal is emitted when the connection is up and running, and
      * is available to log in.
@@ -281,7 +287,7 @@ class IMAP_EXPORT Imaplib : public QWidget
     /**
      * Reports about the network status
      */
-    void status(const QString&);
+    void status( const QString& );
 
     /**
      * Reports about the network status done
@@ -292,12 +298,12 @@ class IMAP_EXPORT Imaplib : public QWidget
      * Reports about the network status, there has been an error, but
      * this class is done with it, so restore the cursor and do something
      */
-    void statusError(const QString&);
+    void statusError( const QString& );
 
     /**
      * Reports about the network status, there has been an error, fatal.
      */
-    void error(const QString&);
+    void error( const QString& );
 
     /**
      * disconnected.
@@ -319,22 +325,22 @@ class IMAP_EXPORT Imaplib : public QWidget
      * This signal is emitted when the server has returned the mailboxlist.
      * this can be requested with getMailBoxList();
      */
-    void mailBoxList(const QStringList&);
+    void mailBoxList( const QStringList& );
 
     /**
      * This signal is emitted when a mailbox is added
      */
-    void mailBoxAdded(const QString&);
+    void mailBoxAdded( const QString& );
 
     /**
      * This signal is emitted when a mailbox is deleted
      */
-    void mailBoxDeleted(const QString&);
+    void mailBoxDeleted( const QString& );
 
     /**
      * This signal is emitted when a mailbox is renamed
      */
-    void mailBoxRenamed(const QString&, const QString&);
+    void mailBoxRenamed( const QString&, const QString& );
 
     /**
      * This signal is emitted when a message is saved
@@ -346,43 +352,43 @@ class IMAP_EXPORT Imaplib : public QWidget
      * the mailbox after a getMailBox(); @p values is a triplet in the form
      * of uid, mailbox, headers.
      */
-    void mailBox(Imaplib*, const QString&, const QStringList& values);
+    void mailBox( Imaplib*, const QString&, const QStringList& values );
 
     /**
      * The body is fetched and available for retrieval
      */
-    void message(Imaplib*, const QString& mb, int uid, const QString&);
+    void message( Imaplib*, const QString& mb, int uid, const QString& );
 
     /**
      * We know the amount of messages(@p amount) in the @p mb
      */
-    void messageCount(Imaplib*, const QString& mb, int amount);
+    void messageCount( Imaplib*, const QString& mb, int amount );
 
     /**
      * We know the amount of unseen messages(@p amount) in the @p mb
      */
-    void unseenCount(Imaplib*, const QString& mb, int amount);
+    void unseenCount( Imaplib*, const QString& mb, int amount );
 
     /**
      * expunge is completed.
      */
-    void expungeCompleted(Imaplib*, const QString& mb);
+    void expungeCompleted( Imaplib*, const QString& mb );
 
     /**
      * This will be emitted when we know which items are in the @p mb mailbox,
      * @p values will be in the form of "uid\nflags\n".
      */
-    void itemsInMailBox(Imaplib*, const QString& mb, const QStringList& values);
+    void itemsInMailBox( Imaplib*, const QString& mb, const QStringList& values );
 
     /**
      * This function will be emitted and can be used to verify if a cache
      * still contains up-to-date info.
      */
-    void integrity(const QString&, int, const QString&, const QString&);
+    void integrity( const QString&, int, const QString&, const QString& );
 
-  private slots:
+private slots:
     void slotConnected();
-    void slotRead(const QString&);
+    void slotRead( const QString& );
     void slotProcessQueue();
     void slotTLS();
     void slotSendNoop();

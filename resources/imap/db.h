@@ -56,8 +56,10 @@ public:
      * are available.
      * @param path The database to open
      */
-    void setDBPath(const QString& path);
-    QSqlDatabase db() { return m_db; } ;
+    void setDBPath( const QString& path );
+    QSqlDatabase db() {
+        return m_db;
+    } ;
 
     /**
      * This will execute a given SQL statement to the database.
@@ -66,10 +68,10 @@ public:
      * @param debug If true, it will output the SQL statement
      * @return It will return if the execution of the statement was succesfull
      */
-    QSqlQuery execSql(const QString& sql);
+    QSqlQuery execSql( const QString& sql );
 
-    bool hasCert( const QString&, const QString&);
-    void addCert( const QString&, const QString&);
+    bool hasCert( const QString&, const QString& );
+    void addCert( const QString&, const QString& );
 
 private:
 
@@ -86,7 +88,7 @@ private:
      * @param str String to escape
      * @return The escaped string
      */
-    QString escapeString(const QString& str) const;
+    QString escapeString( const QString& str ) const;
 
     QSqlDatabase m_db;
 };

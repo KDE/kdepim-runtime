@@ -32,147 +32,161 @@ class Socket : public QObject
 {
     Q_OBJECT
 
-    public:
+public:
 
-        /**
-         * Contructor, it will not auto connect. Call reconnect() to connect to
-         * the parameters given.
-         * @param parent the parent
-         * @param name the name, will be printed  on debug.
-         * @param server the server to connect to
-         * @param port the port to connect to
-         * @param safe the safety level
-         */
-        explicit Socket(QObject* parent);
+    /**
+     * Contructor, it will not auto connect. Call reconnect() to connect to
+     * the parameters given.
+     * @param parent the parent
+     * @param name the name, will be printed  on debug.
+     * @param server the server to connect to
+     * @param port the port to connect to
+     * @param safe the safety level
+     */
+    explicit Socket( QObject* parent );
 
-        /**
-        * Destructor
-        */
-        ~Socket();
+    /**
+    * Destructor
+    */
+    ~Socket();
 
-        /**
-         * Call this when you will terminate the connection, it will
-         * prevent a popup to the user 'do you want to reconnect'
-         */
-        void aboutToClose() { m_aboutToClose = true; };
+    /**
+     * Call this when you will terminate the connection, it will
+     * prevent a popup to the user 'do you want to reconnect'
+     */
+    void aboutToClose() {
+        m_aboutToClose = true;
+    };
 
-        /**
-         * Existing connection will be closed and a new connection will be
-         * made
-         */
-        virtual void reconnect();
+    /**
+     * Existing connection will be closed and a new connection will be
+     * made
+     */
+    virtual void reconnect();
 
-        /**
-         * Write @p text to the socket
-         */
-        virtual void write(const QString& text);
+    /**
+     * Write @p text to the socket
+     */
+    virtual void write( const QString& text );
 
-        /**
-         * @return true when the connection is live and kicking
-         */
-        virtual bool available();
+    /**
+     * @return true when the connection is live and kicking
+     */
+    virtual bool available();
 
-        /**
-         * call this when there are ssl errors and you agree to those
-         * and want to connect anyhow.
-         */
-        void acceptSslErrors();
+    /**
+     * call this when there are ssl errors and you agree to those
+     * and want to connect anyhow.
+     */
+    void acceptSslErrors();
 
-        /**
-         * call this when there are ssl errors and you agree to those
-         * and want to connect anyhow.
-         */
-        void setInteractive( bool ia ) { m_interactive = ia; };
+    /**
+     * call this when there are ssl errors and you agree to those
+     * and want to connect anyhow.
+     */
+    void setInteractive( bool ia ) {
+        m_interactive = ia;
+    };
 
-        /**
-         * set the protocol to use
-         */
-        void setProtocol( const QString& proto ) { m_proto = proto; };
+    /**
+     * set the protocol to use
+     */
+    void setProtocol( const QString& proto ) {
+        m_proto = proto;
+    };
 
-        /**
-         * set the server to use
-         */
-        void setServer( const QString& server ) { m_server = server; };
+    /**
+     * set the server to use
+     */
+    void setServer( const QString& server ) {
+        m_server = server;
+    };
 
-        /**
-         * set the port to use. If not specified, it will use the default
-         * belonging to the protocol.
-         */
-        void setPort( int port ) { m_port = port; };
+    /**
+     * set the port to use. If not specified, it will use the default
+     * belonging to the protocol.
+     */
+    void setPort( int port ) {
+        m_port = port;
+    };
 
-        /**
-         * this will be an tls connection
-         */
-        void setTls( bool what ) { m_tls = what; };
+    /**
+     * this will be an tls connection
+     */
+    void setTls( bool what ) {
+        m_tls = what;
+    };
 
-        /**
-         * this will be a secure connection
-         */
-        void setSecure( bool what ) { m_secure = what; };
+    /**
+     * this will be a secure connection
+     */
+    void setSecure( bool what ) {
+        m_secure = what;
+    };
 
-    private:
-        QSslSocket*         m_socket;
-        QString             m_server;
-        QString             m_proto;
-        int                 m_port;
+private:
+    QSslSocket*         m_socket;
+    QString             m_server;
+    QString             m_proto;
+    int                 m_port;
 
-        bool                m_aboutToClose;
-        bool                m_interactive;
-        bool                m_secure;
-        bool                m_tls;
+    bool                m_aboutToClose;
+    bool                m_interactive;
+    bool                m_secure;
+    bool                m_tls;
 
-        void login();
-        void startShake();
-
-
-    signals:
-        /**
-         * emits the incoming data
-         */
-        void data(const QString&);
-
-        /**
-         * emitted when there is a connection (ready to send something)
-         */
-        void connected();
-
-        /**
-         * emitted when the dns request is ok (pretty useless, but still).
-         */
-        void hostFound();
-
-        /**
-         * emitted when there is something wrong, please issue a self
-         * dustruct on me or accept the error by calling accept Errors();
-         */
-        void sslError(const QString&);
-
-        /**
-         * emitted when ssl errors are not accepted.
-         * Please delete this class when this signal is emitted.
-         */
-        void disconnected();
-
-        /**
-         * emitted when disconnected, but only when the aboutToClose() is
-         * not called before. Please delete this class when this signal
-         * is emitted.
-         */
-        void unexpectedDisconnect();
-
-        /**
-         * this is the signal when tls succeeded
-         */
-        void tlscomplete();
+    void login();
+    void startShake();
 
 
-    private slots:
-        void slotConnected();
-        void slotStateChanged( QAbstractSocket::SocketState state);
-        void slotModeChanged(  QSslSocket::SslMode  state);
-        void slotSocketRead();
-        void slotSslErrors(const QList<QSslError> & errors);
-        void slotDisconnected();
+signals:
+    /**
+     * emits the incoming data
+     */
+    void data( const QString& );
+
+    /**
+     * emitted when there is a connection (ready to send something)
+     */
+    void connected();
+
+    /**
+     * emitted when the dns request is ok (pretty useless, but still).
+     */
+    void hostFound();
+
+    /**
+     * emitted when there is something wrong, please issue a self
+     * dustruct on me or accept the error by calling accept Errors();
+     */
+    void sslError( const QString& );
+
+    /**
+     * emitted when ssl errors are not accepted.
+     * Please delete this class when this signal is emitted.
+     */
+    void disconnected();
+
+    /**
+     * emitted when disconnected, but only when the aboutToClose() is
+     * not called before. Please delete this class when this signal
+     * is emitted.
+     */
+    void unexpectedDisconnect();
+
+    /**
+     * this is the signal when tls succeeded
+     */
+    void tlscomplete();
+
+
+private slots:
+    void slotConnected();
+    void slotStateChanged( QAbstractSocket::SocketState state );
+    void slotModeChanged( QSslSocket::SslMode  state );
+    void slotSocketRead();
+    void slotSslErrors( const QList<QSslError> & errors );
+    void slotDisconnected();
 
 };
 

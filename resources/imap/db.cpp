@@ -48,30 +48,29 @@ extern "C"
 
 DB::DB()
 {
-    m_db = QSqlDatabase::addDatabase("QSQLITE","mailodycerts");
-    setDBPath(KStandardDirs::locateLocal("appdata","mailody4-certs.db"));
+    m_db = QSqlDatabase::addDatabase( "QSQLITE","mailodycerts" );
+    setDBPath( KStandardDirs::locateLocal( "appdata","mailody4-certs.db" ) );
 }
 
 DB::~DB()
 {
-    if (m_db.isOpen())
+    if ( m_db.isOpen() )
         m_db.close();
 }
 
-void DB::setDBPath(const QString& path)
+void DB::setDBPath( const QString& path )
 {
-    if (m_db.isOpen())
+    if ( m_db.isOpen() )
         m_db.close();
 
 
-    m_db.setDatabaseName(path);
+    m_db.setDatabaseName( path );
     bool open = m_db.open();
-    if (!open)
-        kFatal(50002) << "Cannot open database " << path 
-                    << m_db.lastError().text();
-    else
-    {
-    	kDebug(50002) << "Database is opened: " << path;
+    if ( !open )
+        kFatal( 50002 ) << "Cannot open database " << path
+        << m_db.lastError().text();
+    else {
+        kDebug( 50002 ) << "Database is opened: " << path;
         initDB();
     }
 }
@@ -81,52 +80,51 @@ void DB::initDB()
     // Check if we have the required tables
 
     QSqlQuery res = execSql( "SELECT name FROM sqlite_master"
-                          " WHERE type='table'"
-                          " ORDER BY name;");
+                             " WHERE type='table'"
+                             " ORDER BY name;" );
     QStringList values;
-    while (res.next())
-        values.append(res.value(0).toString());
+    while ( res.next() )
+        values.append( res.value( 0 ).toString() );
 
-    if (!values.contains("certificates"))
-        execSql( QString("CREATE TABLE certificates"
-             " (cert BLOB, error BLOB, UNIQUE( cert, error ) );") );
+    if ( !values.contains( "certificates" ) )
+        execSql( QString( "CREATE TABLE certificates"
+                          " (cert BLOB, error BLOB, UNIQUE( cert, error ) );" ) );
 }
 
-QSqlQuery DB::execSql(const QString& sql)
+QSqlQuery DB::execSql( const QString& sql )
 {
-    kDebug(50002) << "SQL-query: " << sql << endl;
+    kDebug( 50002 ) << "SQL-query: " << sql << endl;
 
-    if ( !m_db.isOpen() )
-    {
+    if ( !m_db.isOpen() ) {
         kFatal() << "Database is not open";
         return false;
     }
 
-    QSqlQuery query(sql, m_db);
-    if (query.lastError().isValid())
-        kWarning(50002) << "Error in the query:" << query.lastError().text() << sql;
+    QSqlQuery query( sql, m_db );
+    if ( query.lastError().isValid() )
+        kWarning( 50002 ) << "Error in the query:" << query.lastError().text() << sql;
 
-    return(query);
+    return( query );
 }
 
-QString DB::escapeString(const QString& str) const
+QString DB::escapeString( const QString& str ) const
 {
     QString sting = str;
     sting.replace( "'", "''" );
     return sting;
 }
 
-bool DB::hasCert( const QString& cert, const QString& error)
+bool DB::hasCert( const QString& cert, const QString& error )
 {
-    QSqlQuery res = execSql( QString("SELECT cert FROM certificates where cert='%1'"
-            " and error='%2'")
-            .arg(escapeString(cert)).arg(error));
+    QSqlQuery res = execSql( QString( "SELECT cert FROM certificates where cert='%1'"
+                                      " and error='%2'" )
+                             .arg( escapeString( cert ) ).arg( error ) );
     return res.next();
 }
 
-void DB::addCert( const QString& cert, const QString& error)
+void DB::addCert( const QString& cert, const QString& error )
 {
-    execSql( QString("REPLACE into certificates VALUES('%1', '%2')")
-            .arg( escapeString(cert)).arg(error));
+    execSql( QString( "REPLACE into certificates VALUES('%1', '%2')" )
+             .arg( escapeString( cert ) ).arg( error ) );
 }
 

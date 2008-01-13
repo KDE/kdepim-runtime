@@ -22,5 +22,5 @@
 
 int main( int argc, char **argv )
 {
-  return Akonadi::ResourceBase::init<ImaplibResource>( argc, argv );
+    return Akonadi::ResourceBase::init<ImaplibResource>( argc, argv );
 }
