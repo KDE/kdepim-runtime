@@ -545,7 +545,7 @@ void Imaplib::slotParseGetMailBoxList()
     }
 
     all_data.clear();
-    emit mailBoxList( result );
+    emit currentFolders( result );
     emit statusReady();
     m_currentQueueItem = Queue();
     QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
@@ -571,7 +571,7 @@ void Imaplib::slotParseGetRecent()
             ++it;
         }
 
-        emit itemsInMailBox( this, m_currentQueueItem.mailbox(), results );
+        emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
     } else
         emit unseenCount( this, m_currentQueueItem.mailbox(), 0 );
 
@@ -842,7 +842,7 @@ void Imaplib::slotParseGetHeaderList()
         ++start2;
         ++start;
     }
-    emit itemsInMailBox( this, m_currentQueueItem.mailbox(), results );
+    emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
 
     all_data = QString::null;
     emit statusReady();
@@ -920,7 +920,7 @@ void Imaplib::slotParseGetMessage()
     }
 
     if ( m_currentQueueItem.state() == Queue::GetHeaders )
-        emit mailBox( this, m_currentQueueItem.mailbox(), headersToSend );
+        emit headersInFolder( this, m_currentQueueItem.mailbox(), headersToSend );
 
     // kDebug(50002) << "done" << endl;
     all_data = QString::null;

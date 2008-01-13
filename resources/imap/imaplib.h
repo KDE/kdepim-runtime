@@ -325,7 +325,7 @@ signals:
      * This signal is emitted when the server has returned the mailboxlist.
      * this can be requested with getMailBoxList();
      */
-    void mailBoxList( const QStringList& );
+    void currentFolders( const QStringList& );
 
     /**
      * This signal is emitted when a mailbox is added
@@ -352,7 +352,7 @@ signals:
      * the mailbox after a getMailBox(); @p values is a triplet in the form
      * of uid, mailbox, headers.
      */
-    void mailBox( Imaplib*, const QString&, const QStringList& values );
+    void headersInFolder( Imaplib*, const QString&, const QStringList& values );
 
     /**
      * The body is fetched and available for retrieval
@@ -378,7 +378,7 @@ signals:
      * This will be emitted when we know which items are in the @p mb mailbox,
      * @p values will be in the form of "uid\nflags\n".
      */
-    void itemsInMailBox( Imaplib*, const QString& mb, const QStringList& values );
+    void uidsAndFlagsInFolder( Imaplib*, const QString& mb, const QStringList& values );
 
     /**
      * This function will be emitted and can be used to verify if a cache

@@ -93,7 +93,7 @@ bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList
     return true;
 }
 
-void ImaplibResource::slotGetMessage( Imaplib*, const QString& mb, int uid,
+void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
                                       const QString& body )
 {
     const QString reference =  mb + "-+-" + QString::number( uid );
@@ -154,7 +154,7 @@ static QString findParent( QHash<QString, Collection> &collections, const Collec
     return c.remoteId();
 }
 
-void ImaplibResource::slotGetMailBoxList( const QStringList& list )
+void ImaplibResource::slotFolderListReceived( const QStringList& list )
 {
     QHash<QString, Collection> collections;
     QStringList contentTypes;
@@ -197,7 +197,7 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStr
     m_imap->checkMail( col.remoteId() );
 }
 
-void ImaplibResource::slotMessagesInMailbox( Imaplib*, const QString& mb, int amount )
+void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
     kDebug( 50002 ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
 
@@ -212,7 +212,7 @@ void ImaplibResource::slotMessagesInMailbox( Imaplib*, const QString& mb, int am
     }
 }
 
-void ImaplibResource::slotMailBoxItems( Imaplib*,const QString& mb,const QStringList& values )
+void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
     kDebug( 50002 ) << mb << values.count();
 
@@ -236,7 +236,7 @@ void ImaplibResource::slotMailBoxItems( Imaplib*,const QString& mb,const QString
     m_imap->getHeaders( mb, fetchlist );
 }
 
-void ImaplibResource::slotGetMailBox( Imaplib*, const QString& mb, const QStringList& list )
+void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
 {
     kDebug( 50002 ) << mb << list.count();
 
@@ -358,6 +358,34 @@ void ImaplibResource::connections()
              SIGNAL( login( Imaplib* ) ),
              SLOT( slotLogin( Imaplib* ) ) );
     connect( m_imap,
+             SIGNAL( loginFailed( Imaplib* ) ),
+             SLOT( slotLoginFailed( Imaplib* ) ) );
+
+    connect( m_imap,
+             SIGNAL( alert( Imaplib*, const QString& ) ),
+             SLOT( slotAlert( Imaplib*, const QString& ) ) );
+
+    connect( m_imap,
+             SIGNAL( currentFolders( const QStringList& ) ),
+             SLOT( slotFolderListReceived( const QStringList& ) ) );
+
+    connect( m_imap,
+             SIGNAL( messageCount( Imaplib*, const QString&, int ) ),
+             SLOT( slotMessagesInFolder( Imaplib*, const QString&, int ) ) );
+
+    connect( m_imap,
+             SIGNAL( uidsAndFlagsInFolder( Imaplib*,const QString&,const QStringList& ) ),
+             SLOT( slotUidsAndFlagsReceived( Imaplib*,const QString&,const QStringList& ) ) );
+    connect( m_imap,
+             SIGNAL( headersInFolder( Imaplib*, const QString&, const QStringList& ) ),
+             SLOT( slotHeadersReceived( Imaplib*, const QString&, const QStringList& ) ) );
+
+    connect( m_imap,
+             SIGNAL( message( Imaplib*, const QString&, int, const QString& ) ),
+             SLOT( slotMessageReceived( Imaplib*, const QString&, int, const QString& ) ) );
+
+    /*
+    connect( m_imap,
              SIGNAL( loginOk( Imaplib* ) ),
              SIGNAL( loginOk() ) );
     connect( m_imap,
@@ -382,24 +410,6 @@ void ImaplibResource::connections()
              SIGNAL( disconnected() ),
              SIGNAL( disconnected() ) );
     connect( m_imap,
-             SIGNAL( loginFailed( Imaplib* ) ),
-             SLOT( slotLoginFailed( Imaplib* ) ) );
-    connect( m_imap,
-             SIGNAL( alert( Imaplib*, const QString& ) ),
-             SLOT( slotAlert( Imaplib*, const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( mailBoxList( const QStringList& ) ),
-             SLOT( slotGetMailBoxList( const QStringList& ) ) );
-    connect( m_imap,
-             SIGNAL( mailBox( Imaplib*, const QString&, const QStringList& ) ),
-             SLOT( slotGetMailBox( Imaplib*, const QString&, const QStringList& ) ) );
-    connect( m_imap,
-             SIGNAL( message( Imaplib*, const QString&, int, const QString& ) ),
-             SLOT( slotGetMessage( Imaplib*, const QString&, int, const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( messageCount( Imaplib*, const QString&, int ) ),
-             SLOT( slotMessagesInMailbox( Imaplib*, const QString&, int ) ) );
-    connect( m_imap,
              SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
              SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
     connect( m_imap,
@@ -415,13 +425,11 @@ void ImaplibResource::connections()
              SIGNAL( expungeCompleted( Imaplib*, const QString& ) ),
              SLOT( slotMailBoxExpunged( Imaplib*, const QString& ) ) );
     connect( m_imap,
-             SIGNAL( itemsInMailBox( Imaplib*,const QString&,const QStringList& ) ),
-             SLOT( slotMailBoxItems( Imaplib*,const QString&,const QStringList& ) ) );
-    connect( m_imap,
              SIGNAL( integrity( const QString&, int, const QString&,
                                 const QString& ) ),
              SLOT( slotIntegrity( const QString&, int, const QString&,
                                   const QString& ) ) );
+    */
 }
 
 void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )

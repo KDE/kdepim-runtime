@@ -54,11 +54,11 @@ private Q_SLOTS:
     void slotLogin( Imaplib* connection );
     void slotLoginFailed( Imaplib* connection );
     void slotAlert( Imaplib*, const QString& message );
-    void slotGetMailBoxList( const QStringList& list );
-    void slotGetMailBox( Imaplib*, const QString&, const QStringList& );
-    void slotMessagesInMailbox( Imaplib*, const QString&, int );
-    void slotMailBoxItems( Imaplib*,const QString&,const QStringList& );
-    void slotGetMessage( Imaplib*, const QString& mb, int uid, const QString& body );
+    void slotMessagesInFolder( Imaplib*, const QString&, int );
+    void slotFolderListReceived( const QStringList& list );
+    void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
+    void slotHeadersReceived( Imaplib*,const QString&,const QStringList& );
+    void slotMessageReceived( Imaplib*, const QString& mb, int uid, const QString& body );
 
 private:
     Imaplib* m_imap;
