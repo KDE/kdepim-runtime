@@ -800,10 +800,10 @@ void AddresseeLineEdit::setCompletedItems( const QStringList& items, bool autoSu
   }
 }
 
-void AddresseeLineEdit::contextMenuEvent( QContextMenuEvent * )
+void AddresseeLineEdit::contextMenuEvent( QContextMenuEvent *e )
 {
   QMenu* menu = createStandardContextMenu();
-  menu->exec();
+  menu->exec(e->globalPos());
   delete menu;
 }
 
