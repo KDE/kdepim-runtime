@@ -21,7 +21,6 @@
 
 // Own
 #include "socket.h"
-#include "db.h"
 
 // Qt
 #include <QRegExp>
@@ -33,6 +32,8 @@
 #include <KDebug>
 #include <KLocale>
 #include <KMessageBox>
+#include <KConfigGroup>
+#include <KStandardDirs>
 #include <ksocketfactory.h>
 
 Socket::Socket( QObject* parent )
@@ -66,7 +67,6 @@ void Socket::reconnect()
 
     m_socket = static_cast<QSslSocket*>
                ( KSocketFactory::connectToHost( m_proto, m_server, m_port, this ) );
-
     m_socket->setProtocol( QSsl::AnyProtocol );
 
     connect( m_socket, SIGNAL( stateChanged( QAbstractSocket::SocketState ) ),
@@ -192,8 +192,12 @@ void Socket::slotSslErrors( const QList<QSslError> & errors )
     }
 
     m_aboutToClose = true;
-    DB* db = new DB;
-    if ( !db->hasCert( m_socket->peerCertificate().toPem(), key ) ) {
+
+    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
+    kDebug() << tempConfig->name();
+    KConfigGroup cg = tempConfig->group("certs");
+    if ( cg.readEntry( m_socket->peerName() )  != m_socket->peerCertificate().toPem() ||
+         cg.readEntry( m_socket->peerName() + "*error" ) != key ) {
         int i = KMessageBox::warningYesNoCancel( 0,
                 i18n( "<Qt>There were problems connecting to the server:"
                       "<br><br><b>%1</b><br><Br>"
@@ -210,7 +214,9 @@ void Socket::slotSslErrors( const QList<QSslError> & errors )
                 KGuiItem( i18n( "Cancel connection" ) ) );
 
         if ( i == KMessageBox::Yes ) {
-            db->addCert( m_socket->peerCertificate().toPem(), key );
+            cg.writeEntry(  m_socket->peerName(), m_socket->peerCertificate().toPem() );
+            cg.writeEntry(  m_socket->peerName() + "*error", key );
+            cg.sync();
         }
 
         if ( i == KMessageBox::Yes || i == KMessageBox::No )
@@ -225,7 +231,7 @@ void Socket::slotSslErrors( const QList<QSslError> & errors )
         << errorList.trimmed() << endl;
         acceptSslErrors();
     }
-    delete db;
+    delete tempConfig;
 }
 
 void Socket::acceptSslErrors()

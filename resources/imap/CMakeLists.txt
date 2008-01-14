@@ -1,4 +1,4 @@
-set(imap_LIB_SRCS imaplib.cpp db.cpp socket.cpp)
+set(imap_LIB_SRCS imaplib.cpp socket.cpp)
 
 kde4_add_library(imap SHARED ${imap_LIB_SRCS})
 
