@@ -58,6 +58,7 @@ ImaplibResource::ImaplibResource( const QString &id )
     KConfigGroup config = tempConfig->group( "General" );
     const QString imapServer = config.readEntry( "imapServer" );
     int safe = config.readEntry( "safeImap",3 );
+    delete tempConfig;
 
     QString server = imapServer.section( ":",0,0 );
     int port = imapServer.section( ":",1,1 ).toInt();
@@ -307,6 +308,7 @@ void ImaplibResource::slotLogin( Imaplib* connection )
     KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
     KConfigGroup config = tempConfig->group( "General" );
     QString login = config.readEntry( "userName" );
+    delete tempConfig;
     QString pass;
 
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
@@ -339,6 +341,7 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
         KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
         KConfigGroup config = tempConfig->group( "General" );
         QString username = config.readEntry( "userName" );
+        delete tempConfig;
         manualAuth( connection, username );
     } else
         connection->logout();
