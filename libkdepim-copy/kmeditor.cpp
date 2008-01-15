@@ -966,14 +966,14 @@ void KMeditor::slotAddBox()
     s.append( "\n`----" );
     insertPlainText( s );
   } else {
-/*
-    int l = currentLine();
-    int c = currentColumn();
-    QString s = QString::fromLatin1(",----[  ]\n| %1\n`----").arg(textLine(l));
-    insertLine(s,l);
-    removeLine(l+3);
-    setCursorPosition(l+1,c+2);
-*/
+    int oldPos = cursor.position();
+    cursor.movePosition( QTextCursor::StartOfBlock );
+    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+    QString s = cursor.selectedText();
+    QString str = QString::fromLatin1(",----[  ]\n| %1\n`----").arg(s);
+    cursor.insertText( str );
+    //cursor.setPosition( qMax( 0, oldPos - 2 ) );
+    setTextCursor( cursor );
   }
 }
 
