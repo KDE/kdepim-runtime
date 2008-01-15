@@ -793,15 +793,16 @@ void KMeditor::slotAddQuotes()
     if ( !s.isEmpty() ) {
       cursor.insertText( d->addQuotesToText( s ) );
       setTextCursor( cursor );
-    } else {
-      int oldPos = cursor.position();
-      cursor.movePosition( QTextCursor::StartOfBlock );
-      cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-      QString s = cursor.selectedText();
-      cursor.insertText( d->addQuotesToText( s ) );
-      cursor.setPosition( oldPos + 2 );
-      setTextCursor( cursor );
     }
+  }
+  else {
+    int oldPos = cursor.position();
+    cursor.movePosition( QTextCursor::StartOfBlock );
+    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+    QString s = cursor.selectedText();
+    cursor.insertText( d->addQuotesToText( s ) );
+    cursor.setPosition( oldPos + 2 );
+    setTextCursor( cursor );
   }
 }
 
@@ -827,6 +828,8 @@ QString KMeditorPrivate::addQuotesToText( const QString &inputText )
   QString answer = QString( inputText );
   QString indentStr = parent->quotePrefixName();
   answer.replace( '\n', '\n' + indentStr );
+  //cursor.selectText() as QChar::ParagraphSeparator as paragraph separator.
+  answer.replace( QChar::ParagraphSeparator, '\n' + indentStr );
   answer.prepend( indentStr );
   answer += '\n';
   return parent->smartQuote( answer );
