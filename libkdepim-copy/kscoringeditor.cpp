@@ -97,6 +97,8 @@ SingleConditionWidget::SingleConditionWidget( KScoringManager *m, QWidget *p, co
   secondRow->addWidget( regExpButton );
   connect( regExpButton, SIGNAL( clicked() ), SLOT( showRegExpDialog() ) );
 
+  regExpButton->setEnabled(!KServiceTypeTrader::self()->query( "KRegExpEditor/KRegExpEditor" ).isEmpty());
+
   // occupy at much width as possible
   setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
   setFrameStyle( Box | Sunken );
