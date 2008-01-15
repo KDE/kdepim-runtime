@@ -307,6 +307,7 @@ void NntpResource::collectionChanged(const Akonadi::Collection & collection)
     Settings::self()->setName( collection.name() );
     setName( collection.name() );
   }
+  changesCommitted( collection );
 }
 
 #include "nntpresource.moc"
