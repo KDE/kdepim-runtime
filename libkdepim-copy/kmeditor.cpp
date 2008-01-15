@@ -775,9 +775,12 @@ void KMeditor::slotRemoveQuotes()
     cursor.movePosition( QTextCursor::StartOfBlock );
     cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
     QString s = cursor.selectedText();
-    cursor.insertText( d->removeQuotesFromText( s ) );
-    cursor.setPosition( oldPos - 2 );
-    setTextCursor( cursor );
+    if ( !s.isEmpty() )
+    {
+      cursor.insertText( d->removeQuotesFromText( s ) );
+      cursor.setPosition( qMax( 0, oldPos - 2 ) );
+      setTextCursor( cursor );
+    }
   }
 }
 
