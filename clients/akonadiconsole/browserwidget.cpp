@@ -46,6 +46,9 @@
 
 using namespace Akonadi;
 
+AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAttributePageFactory, CollectionAttributePage)
+AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionInternalsPageFactory, CollectionInternalsPage)
+
 BrowserWidget::BrowserWidget(QWidget * parent) :
     QWidget( parent ),
     mItemModel( 0 ),
@@ -86,8 +89,8 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
   splitter2->addWidget( contentViewParent );
 
-  CollectionPropertiesDialog::registerPage<CollectionAttributePage>();
-  CollectionPropertiesDialog::registerPage<CollectionInternalsPage>();
+  CollectionPropertiesDialog::registerPage( new CollectionAttributePageFactory() );
+  CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
