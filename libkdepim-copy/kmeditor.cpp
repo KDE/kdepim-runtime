@@ -316,11 +316,18 @@ void KMeditor::createHighlighter()
 {
   KPIM::KEMailQuotingHighlighter *emailHighLighter =
       new KPIM::KEMailQuotingHighlighter( this );
+
+  changeHighlighterColors(emailHighLighter);
+
   connect( emailHighLighter, SIGNAL( newSuggestions(const QString&,const QStringList&) ),
            this, SLOT( addSuggestion(const QString&,const QStringList&) ) );
 
   //TODO change config
   setHighlighter( emailHighLighter );
+}
+
+void KMeditor::changeHighlighterColors(KPIM::KEMailQuotingHighlighter *)
+{
 }
 
 void KMeditor::setUseExternalEditor( bool use )

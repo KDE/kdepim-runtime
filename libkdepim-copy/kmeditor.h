@@ -36,7 +36,7 @@ namespace KPIMIdentities {
 namespace KPIM {
 
 class KMeditorPrivate;
-
+class KEMailQuotingHighlighter;
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
   Q_OBJECT
@@ -65,6 +65,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     ~KMeditor();
 
     virtual void createHighlighter();
+
+    virtual void changeHighlighterColors(KEMailQuotingHighlighter*);
 
     //Redefine it for each apps
     virtual QString quotePrefixName() const; //define by kmail
