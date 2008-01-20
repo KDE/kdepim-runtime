@@ -170,6 +170,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void pasteImage();
     void focusUp();
     void overwriteModeText();
+    void highlighterCreated();
 
   protected:
 

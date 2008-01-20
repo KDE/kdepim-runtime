@@ -324,6 +324,7 @@ void KMeditor::createHighlighter()
 
   //TODO change config
   setHighlighter( emailHighLighter );
+  emit highlighterCreated();
 }
 
 void KMeditor::changeHighlighterColors(KPIM::KEMailQuotingHighlighter *)

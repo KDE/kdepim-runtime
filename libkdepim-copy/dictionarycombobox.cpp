@@ -68,6 +68,11 @@ namespace KPIM {
       return dict;
   }
 
+  QString DictionaryComboBox::realDictionaryName() const
+  {
+    return mspeller->availableLanguages()[currentIndex()];
+  }
+
   void DictionaryComboBox::setCurrentByDictionaryName( const QString & name )
   {
     if ( name.isEmpty() )

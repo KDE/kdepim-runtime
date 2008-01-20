@@ -56,6 +56,9 @@ namespace KPIM {
 
     QString currentDictionaryName() const;
     QString currentDictionary() const;
+
+    QString realDictionaryName() const;
+
     void setCurrentByDictionaryName( const QString & dictionaryName );
     void setCurrentByDictionary( const QString & dictionary );
 
