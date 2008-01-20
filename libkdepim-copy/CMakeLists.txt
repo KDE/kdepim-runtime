@@ -75,6 +75,7 @@ set(kdepim_LIB_SRCS
    autochecktreewidget.cpp
    kmutils.cpp
    colorlistbox.cpp
+   dictionarycombobox.cpp
 )
 
 
