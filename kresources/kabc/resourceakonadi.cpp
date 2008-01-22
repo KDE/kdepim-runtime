@@ -166,6 +166,7 @@ bool ResourceAkonadi::load()
   foreach ( const Item& item, items ) {
     if ( item.hasPayload<Addressee>() ) {
       Addressee addressee = item.payload<Addressee>();
+      addressee.setResource( this );
 
       mAddrMap.insert( addressee.uid(), addressee );
       d->mItems.insert( addressee.uid(), item );
@@ -195,22 +196,28 @@ bool ResourceAkonadi::save( Ticket *ticket )
   kDebug(5700);
 
   // first delete items scheduled for removal
-  Addressee::Map::const_iterator addrIt    = d->mAddrToRemove.begin();
-  Addressee::Map::const_iterator addrEndIt = d->mAddrToRemove.end();
+  const Addressee::Map removals = d->mAddrToRemove;
+  d->mAddrToRemove.clear();
+
+  Addressee::Map::const_iterator addrIt    = removals.begin();
+  Addressee::Map::const_iterator addrEndIt = removals.end();
   for ( ; addrIt != addrEndIt; ++addrIt ) {
     ItemHash::iterator itemIt = d->mItems.find( addrIt.key() );
 
     if ( itemIt != d->mItems.end() ) {
-      ItemDeleteJob *job = new ItemDeleteJob( itemIt.value().reference() );
+      Item item = itemIt.value();
+      d->mItems.erase( itemIt );
+
+      ItemDeleteJob *job = new ItemDeleteJob( item.reference() );
 
       if ( !job->exec() ) {
         // TODO error handling
+        kWarning(5700) << "Deleting item failed:" << job->errorString();
+      } else {
+        kDebug(5700) << "Deleting item succeeded";
       }
-
-      d->mItems.erase( itemIt );
     }
   }
-  d->mAddrToRemove.clear();
 
   // then append new ones and store all modified ones
   addrIt    = mAddrMap.begin();
@@ -311,6 +318,7 @@ void ResourceAkonadi::loadResult( KJob *job )
   foreach ( const Item& item, items ) {
     if ( item.hasPayload<Addressee>() ) {
       Addressee addressee = item.payload<Addressee>();
+      addressee.setResource( this );
 
       mAddrMap.insert( addressee.uid(), addressee );
       d->mItems.insert( addressee.uid(), item );
