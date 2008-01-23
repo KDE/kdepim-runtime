@@ -28,6 +28,7 @@
 #include <libakonadi/itemdeletejob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
+#include <libakonadi/transactionjobs.h>
 
 #include <kdebug.h>
 #include <kconfiggroup.h>
@@ -38,6 +39,17 @@ using namespace Akonadi;
 using namespace KABC;
 
 typedef QHash<QString, Item> ItemHash;
+
+class SaveSequence : public TransactionSequence
+{
+  public:
+    SaveSequence() : TransactionSequence( 0 ) {}
+
+    virtual bool addSubjob( KJob *job ) { return TransactionSequence::addSubjob( job ); }
+
+  protected:
+    virtual void doStart() {}
+};
 
 class ResourceAkonadi::Private
 {
@@ -62,6 +74,8 @@ class ResourceAkonadi::Private
     void itemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection );
     void itemChanged( const Akonadi::Item& item, const QStringList& partIdentifiers );
     void itemRemoved( const Akonadi::DataReference& reference );
+
+    SaveSequence *createSaveSequence() const;
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -190,11 +204,16 @@ bool ResourceAkonadi::asyncLoad()
   return true;
 }
 
+// SaveSequence doesn't work yet, keep old code available for
+// testing other functionality
+//#define SAVE_SEQUENCE
+
 bool ResourceAkonadi::save( Ticket *ticket )
 {
   Q_UNUSED( ticket );
   kDebug(5700);
 
+#ifndef SAVE_SEQUENCE
   // first delete items scheduled for removal
   const Addressee::Map removals = d->mAddrToRemove;
   d->mAddrToRemove.clear();
@@ -253,6 +272,19 @@ bool ResourceAkonadi::save( Ticket *ticket )
       }
     }
   }
+#else
+  KJob *job = d->createSaveSequence();
+  if ( job == 0 )
+    return false;
+
+  if ( !job->exec() ) {
+    // TODO error handling
+    kError(5700) << "Save Sequence failed:" << job->errorString();
+    return false;
+  }
+
+  d->mAddrToRemove.clear();
+#endif
 
   return true;
 }
@@ -262,14 +294,22 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
   Q_UNUSED( ticket );
   kDebug(5700);
 
-  // TODO do real async implementation
-
+#ifndef SAVE_SEQUENCE
   if ( !save( ticket ) ) {
     emit savingError( this, QString() );
     return false;
   }
 
   emit savingFinished( this );
+#else
+  KJob *job = d->createSaveSequence();
+  if ( job == 0 )
+    return false;
+
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
+
+  job->start();
+#endif
 
   return true;
 }
@@ -330,7 +370,11 @@ void ResourceAkonadi::loadResult( KJob *job )
 
 void ResourceAkonadi::saveResult( KJob *job )
 {
-  Q_UNUSED( job );
+  if ( job->error() != 0 ) {
+    emit savingError( this, job->errorString() );
+  } else {
+    emit savingFinished( this );
+  }
 }
 
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
@@ -355,6 +399,75 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference& refere
   // TODO: can we assume that remoteId == Addressee.uid()?
   mAddrToRemove.remove( reference.remoteId() );
   mItems.remove( reference.remoteId() );
+}
+
+SaveSequence *ResourceAkonadi::Private::createSaveSequence() const
+{
+  SaveSequence *sequence = new SaveSequence();
+
+  // first delete items scheduled for removal
+  const Addressee::Map removals = mAddrToRemove;
+
+  Addressee::Map::const_iterator addrIt    = removals.begin();
+  Addressee::Map::const_iterator addrEndIt = removals.end();
+  for ( ; addrIt != addrEndIt; ++addrIt ) {
+    ItemHash::const_iterator itemIt = mItems.find( addrIt.key() );
+
+    if ( itemIt != mItems.end() ) {
+      Item item = itemIt.value();
+
+      ItemDeleteJob *job = new ItemDeleteJob( item.reference() );
+
+      if ( !sequence->addSubjob( job ) ) {
+        // TODO error handling
+        kWarning(5700) << "Failed to add Delete job for"
+                       << addrIt.value().formattedName();
+      } else {
+        kDebug(5700) << "Successfully adding Delete job for"
+                     << addrIt.value().formattedName();
+      }
+    }
+  }
+
+  // then append new ones and store all modified ones
+  addrIt    = mParent->mAddrMap.begin();
+  addrEndIt = mParent->mAddrMap.end();
+  for ( ; addrIt != addrEndIt; ++addrIt ) {
+    ItemHash::const_iterator itemIt = mItems.find( addrIt.key() );
+
+    if ( itemIt != mItems.end() ) {
+      Item item = itemIt.value();
+      item.setPayload<Addressee>( addrIt.value() );
+
+      ItemStoreJob *job = new ItemStoreJob( item );
+      job->storePayload();
+
+      if ( !sequence->addSubjob( job ) ) {
+        // TODO error handling
+        kWarning(5700) << "Failed to add Store job for"
+                       << addrIt.value().formattedName();
+      } else {
+        kDebug(5700) << "Successfully adding Store job for"
+                     << addrIt.value().formattedName();
+      }
+    } else {
+      Item item( "text/directory" );
+      item.setPayload<Addressee>( addrIt.value() );
+
+      ItemAppendJob *job = new ItemAppendJob( item, mCollection );
+
+      if ( !sequence->addSubjob( job ) ) {
+        // TODO error handling
+        kWarning(5700) << "Failed to add Append job for"
+                       << addrIt.value().formattedName();
+      } else {
+        kDebug(5700) << "Successfully adding Append job for"
+                     << addrIt.value().formattedName();
+      }
+    }
+  }
+
+  return sequence;
 }
 
 #include "resourceakonadi.moc"
