@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Akonadi
+X-KDE-Library=kcal_akonadi
+Type=Service
+X-KDE-ServiceTypes=KResources/Plugin
+X-KDE-ResourceFamily=calendar
+X-KDE-ResourceType=akonadi

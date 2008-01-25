@@ -24,5 +24,6 @@ include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${
 # configure_file (config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 add_subdirectory(kabc)
+add_subdirectory(kcal)
 
 macro_display_feature_log()
