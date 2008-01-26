@@ -65,8 +65,7 @@ class ResourceAkonadi::Private
     Monitor *mMonitor;
 
     Collection mCollection;
-
-    ItemHash mItems;
+    ItemHash   mItems;
 
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -151,6 +150,10 @@ void ResourceAkonadi::doClose()
 {
   // deactivate reacting to changes
   d->mMonitor->blockSignals( true );
+
+  // clear local caches
+  mAddrMap.clear();
+  d->mItems.clear();
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
@@ -264,7 +267,14 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
 
 void ResourceAkonadi::setCollection( const Collection& collection )
 {
-  // TODO: what to do when loaded?
+  if ( collection == d->mCollection )
+    return;
+
+  if ( isOpen() ) {
+    kError(5700) << "Trying to change collection while resource is open";
+    return;
+  }
+
   d->mCollection = collection;
 }
 
