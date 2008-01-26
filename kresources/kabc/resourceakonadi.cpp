@@ -68,8 +68,6 @@ class ResourceAkonadi::Private
 
     ItemHash mItems;
 
-    Addressee::Map mAddrToRemove;
-
   public:
     void itemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection );
     void itemChanged( const Akonadi::Item& item, const QStringList& partIdentifiers );
@@ -105,6 +103,12 @@ ResourceAkonadi::~ResourceAkonadi()
 
 void ResourceAkonadi::init()
 {
+  // deactivate reacting to changes, will be enabled in doOpen()
+  d->mMonitor->blockSignals( true );
+
+  d->mMonitor->monitorMimeType( "text/directory" );
+  d->mMonitor->fetchAllParts();
+
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
            this,
@@ -137,11 +141,16 @@ bool ResourceAkonadi::doOpen()
 
   d->mMonitor->monitorCollection( d->mCollection );
 
+  // activate reacting to changes
+  d->mMonitor->blockSignals( false );
+
   return true;
 }
 
 void ResourceAkonadi::doClose()
 {
+  // deactivate reacting to changes
+  d->mMonitor->blockSignals( true );
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
@@ -219,8 +228,6 @@ bool ResourceAkonadi::save( Ticket *ticket )
     return false;
   }
 
-  d->mAddrToRemove.clear();
-
   return true;
 }
 
@@ -250,8 +257,6 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
   Addressee::Map::const_iterator findIt = mAddrMap.find( addr.uid() );
   if ( findIt == mAddrMap.end() )
     return;
-
-  d->mAddrToRemove.insert( addr.uid(), addr );
 
   Resource::removeAddressee( addr );
 }
@@ -309,22 +314,82 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
   if ( collection != mCollection )
     return;
 
-  // TODO: can we assume that remoteId == Addressee.uid()?
-  mItems.insert( item.reference().remoteId(), item );
+  if ( !item.hasPayload<Addressee>() ) {
+    kError(5700) << "Item does not have addressee payload";
+    return;
+  }
+
+  Addressee addressee = item.payload<Addressee>();
+
+  kDebug(5700) << "Addressee" << addressee.uid() << "("
+               << addressee.formattedName() << ")";
+
+  mParent->mAddrMap.insert( addressee.uid(), addressee );
+  mItems.insert( addressee.uid(), item );
+
+  mParent->addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
                                             const QStringList& partIdentifiers )
 {
-  Q_UNUSED( item );
   Q_UNUSED( partIdentifiers );
+
+  if ( !item.hasPayload<Addressee>() ) {
+    kError(5700) << "Item does not have addressee payload";
+    return;
+  }
+
+  Addressee addressee = item.payload<Addressee>();
+
+  kDebug(5700) << "Addressee" << addressee.uid() << "("
+               << addressee.formattedName() << ")";
+
+  ItemHash::iterator itemIt = mItems.find( addressee.uid() );
+  if ( itemIt == mItems.end() ) {
+    kError(5700) << "Item for addressee " << addressee.uid() << "("
+                 << addressee.formattedName() << ") not in local list";
+    return;
+  }
+
+  itemIt.value() = item;
+
+  Addressee::Map::iterator addrIt = mParent->mAddrMap.find( addressee.uid() );
+  if ( addrIt == mParent->mAddrMap.end() ) {
+    kWarning(5700) << "Addressee  " << addressee.uid() << "("
+                 << addressee.formattedName()
+                 << ") changed but no longer in local list";
+    return;
+  }
+
+  addrIt.value() = addressee;
+
+  mParent->addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference& reference )
 {
-  // TODO: can we assume that remoteId == Addressee.uid()?
-  mAddrToRemove.remove( reference.remoteId() );
-  mItems.remove( reference.remoteId() );
+  ItemHash::iterator itemIt = mItems.find( reference.remoteId() );
+  if ( itemIt == mItems.end() )
+    return;
+
+  if ( itemIt.value().reference().id() != reference.id() )
+    return;
+
+  mItems.erase( itemIt );
+
+  Addressee::Map::iterator addrIt = mParent->mAddrMap.find( reference.remoteId() );
+
+  // if it does not exist as an addresse we already removed it locally
+  if ( addrIt == mParent->mAddrMap.end() )
+    return;
+
+  kDebug(5700) << "Addressee" << addrIt.value().uid() << "("
+               << addrIt.value().formattedName() << ")";
+
+  mParent->mAddrMap.erase( addrIt );
+
+  mParent->addressBook()->emitAddressBookChanged();
 }
 
 KJob *ResourceAkonadi::Private::createSaveSequence() const
