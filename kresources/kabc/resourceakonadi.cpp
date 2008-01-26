@@ -69,9 +69,9 @@ class ResourceAkonadi::Private
     ItemHash mItems;
 
   public:
-    void itemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection );
-    void itemChanged( const Akonadi::Item& item, const QStringList& partIdentifiers );
-    void itemRemoved( const Akonadi::DataReference& reference );
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
+    void itemRemoved( const Akonadi::DataReference &reference );
 
     KJob *createSaveSequence() const;
 };
@@ -120,7 +120,7 @@ void ResourceAkonadi::init()
            SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
 
   connect( d->mMonitor,
-           SIGNAL( itemRemoved( const Akonadi::DataReference&) ),
+           SIGNAL( itemRemoved( const Akonadi::DataReference& ) ),
            this,
            SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
 }
@@ -254,6 +254,7 @@ void ResourceAkonadi::insertAddressee( const Addressee &addr )
 
 void ResourceAkonadi::removeAddressee( const Addressee &addr )
 {
+  kDebug(5700);
   Addressee::Map::const_iterator findIt = mAddrMap.find( addr.uid() );
   if ( findIt == mAddrMap.end() )
     return;
@@ -311,6 +312,7 @@ void ResourceAkonadi::saveResult( KJob *job )
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
                                           const Akonadi::Collection& collection )
 {
+  kDebug(5700);
   if ( collection != mCollection )
     return;
 
@@ -333,7 +335,24 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
 void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
                                             const QStringList& partIdentifiers )
 {
-  Q_UNUSED( partIdentifiers );
+  kDebug(5700) << partIdentifiers;
+
+  // check if this is one of ours (should be, we are just monitoring our collection)
+  ItemHash::iterator itemIt = mItems.find( item.reference().remoteId() );
+  if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
+    kWarning(5700) << "No matching local item for item: id="
+                   << item.reference().id() << ", remoteId="
+                   << item.reference().remoteId();
+    return;
+  }
+
+  itemIt.value() = item;
+
+  if ( !partIdentifiers.contains( Akonadi::Item::PartBody ) ) {
+    kDebug(5700) << "No update to the item body";
+    // FIXME find out why payload updates do not contain PartBody?
+    //return;
+  }
 
   if ( !item.hasPayload<Addressee>() ) {
     kError(5700) << "Item does not have addressee payload";
@@ -345,20 +364,16 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
   kDebug(5700) << "Addressee" << addressee.uid() << "("
                << addressee.formattedName() << ")";
 
-  ItemHash::iterator itemIt = mItems.find( addressee.uid() );
-  if ( itemIt == mItems.end() ) {
-    kError(5700) << "Item for addressee " << addressee.uid() << "("
-                 << addressee.formattedName() << ") not in local list";
-    return;
-  }
-
-  itemIt.value() = item;
-
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( addressee.uid() );
   if ( addrIt == mParent->mAddrMap.end() ) {
     kWarning(5700) << "Addressee  " << addressee.uid() << "("
                  << addressee.formattedName()
                  << ") changed but no longer in local list";
+    return;
+  }
+
+  if ( addrIt.value() == addressee ) {
+    kDebug(5700) << "Local addressee object already up-to-date";
     return;
   }
 
@@ -369,18 +384,20 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
 
 void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference& reference )
 {
+  kDebug(5700);
+
   ItemHash::iterator itemIt = mItems.find( reference.remoteId() );
   if ( itemIt == mItems.end() )
     return;
 
-  if ( itemIt.value().reference().id() != reference.id() )
+  if ( itemIt.value().reference() != reference )
     return;
 
   mItems.erase( itemIt );
 
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( reference.remoteId() );
 
-  // if it does not exist as an addresse we already removed it locally
+  // if it does not exist as an addressee we already removed it locally
   if ( addrIt == mParent->mAddrMap.end() )
     return;
 
