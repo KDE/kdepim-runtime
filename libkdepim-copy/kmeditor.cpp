@@ -70,52 +70,25 @@ class KMeditorPrivate
   public:
     KMeditorPrivate( KMeditor *_parent )
      : parent(_parent),useExtEditor(false),
-       findDialog(0L),replaceDialog(0L),find(0L),mExtEditorProcess(0L),
-       replace(0L), mExtEditorTempFileWatcher(0L),
+       mExtEditorProcess(0L),
+       mExtEditorTempFileWatcher(0L),
        mExtEditorTempFile(0L), firstSearch(true)
     {
     }
 
     ~KMeditorPrivate()
     {
-      delete find;
-      delete replace;
-      delete findDialog;
-      delete replaceDialog;
     }
 
     //
     // Slots
     //
-
     void addSuggestion( const QString&,const QStringList& );
 
-    // This slot is called when the user choses to replace a word. It does the
-    // actual replace operation in the textedit.
-    void slotDoReplace( const QString &text, int replacementIndex,
-                        int replacedLength, int matchedLength );
-
-    // This is called when the replace or find operations want to highlight
-    // a word.
-    void slotHighlight( const QString &, int, int );
-
-    // Does an actual replace step. Initalizes the replace object if not already
-    // done before.
-    void slotReplaceTextNext();
-
-    // This is called when the text of the textedit changes. It simply tells
-    // the find and replace objects to update their internal copys of the text
-    // next time a find or replace operation is performed.
-    void slotTextChanged();
 
     //
     // Normal functions
     //
-
-    // Does an actual find step. Initalizes the find object if not already
-    // done before.
-    void findTextNext();
-
     void mergeFormat( const QTextCharFormat &format );
     QString addQuotesToText( const QString &inputText );
     QString removeQuotesFromText( const QString &inputText ) const;
@@ -125,39 +98,21 @@ class KMeditorPrivate
     QString extEditorPath;
     KMeditor *parent;
     bool useExtEditor;
-    QPointer<KFindDialog> findDialog;
-    QPointer<KReplaceDialog> replaceDialog;
-    KFind *find;
     QProcess *mExtEditorProcess;
-    KReplace *replace;
     KDirWatch *mExtEditorTempFileWatcher;
     KTemporaryFile *mExtEditorTempFile;
     bool firstSearch;
-    bool findDataOutdated;
-    bool replaceDataOutdated;
 };
 
 }
 
 using namespace KPIM;
 
-void KMeditorPrivate::slotHighlight( const QString &word, int matchingIndex,
-                                     int matchedLength )
-{
-  Q_UNUSED( word )
-  parent->highlightWord( matchedLength, matchingIndex );
-}
 
 void KMeditorPrivate::addSuggestion( const QString& originalWord,
                                      const QStringList& lst )
 {
   replacements[originalWord] = lst;
-}
-
-void KMeditorPrivate::slotTextChanged()
-{
-  findDataOutdated = true;
-  replaceDataOutdated = true;
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -341,187 +296,6 @@ void KMeditor::setExternalEditorPath( const QString & path )
   d->extEditorPath = path;
 }
 
-void KMeditor::slotReplace()
-{
-  // We're doing a new replace, so delete the old one
-  delete d->replace;
-  d->replace = 0;
-  d->replaceDataOutdated = true;
-
-  if ( d->replaceDialog )
-    KWindowSystem::activateWindow( d->replaceDialog->winId() );
-  else {
-    d->replaceDialog = new KReplaceDialog( this, 0, QStringList(),
-                                           QStringList(), false );
-    connect( d->replaceDialog, SIGNAL( okClicked() ),
-             this, SLOT( slotReplaceTextNext() ) );
-  }
-
-  d->replaceDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
-  d->replaceDialog->show();
-}
-
-void KMeditorPrivate::slotReplaceTextNext()
-{
-  // If this is the first search, no replace object has been created, so initalize
-  // it now
-  if ( !replace ) {
-    assert( replaceDialog );
-    replace = new KReplace( replaceDialog->pattern(),
-                            replaceDialog->replacement(),
-                            replaceDialog->options(), parent,
-                            replaceDialog );
-
-    int replaceStartPosition = 0;
-    if ( replace->options() & KFind::FromCursor ||
-         replace->options() & KFind::FindBackwards )
-      replaceStartPosition = parent->textCursor().anchor();
-
-    replace->setData( parent->toPlainText(), replaceStartPosition );
-    replaceDataOutdated = false;
-    replaceDialog->close();
-
-    QObject::connect( replace, SIGNAL( highlight(const QString &, int, int) ),
-                      parent, SLOT( slotHighlight(const QString &, int, int) ) );
-    QObject::connect( replace, SIGNAL( findNext() ),
-                      parent, SLOT( slotReplaceTextNext() ) );
-    QObject::connect( replace, SIGNAL( replace( const QString &, int, int, int ) ),
-                      parent, SLOT( slotDoReplace( const QString &, int, int, int ) ) );
-    QObject::connect( parent, SIGNAL( textChanged() ), parent, SLOT( slotTextChanged() ) );
-  }
-
-  if ( replaceDataOutdated ) {
-    replace->setData( parent->toPlainText(), replace->index() );
-    replaceDataOutdated = false;
-  }
-
-  // Try to speed up the replace when no prompt is there and the user replaces
-  // many occurences at once. This doesn't help, though, because QTextCursor
-  // actually inserting the text is bloody slow.
-  if ( !( replace->options() & KReplaceDialog::PromptOnReplace ) )
-    parent->viewport()->setUpdatesEnabled( false );
-
-  // Do the actual replace. slotHighlight() and maybe slotDoReplace()
-  // will be called in case of a match
-  KFind::Result res = replace->replace();
-
-  if ( !( replace->options() & KReplaceDialog::PromptOnReplace ) )
-    parent->viewport()->setUpdatesEnabled( true );
-
-  // If there is no match and the replace object has reached the end of its data,
-  // we are at the end of our text.
-  if ( res == KFind::NoMatch && replace->needData() ) {
-
-    int nextPosition = 0;
-    if ( replace->options() & KFind::FindBackwards )
-      nextPosition = parent->toPlainText().length();
-    replace->setData( parent->toPlainText(), nextPosition );
-
-    bool wantsRestart = replace->shouldRestart( true, true );
-    replace->resetCounts();
-    if ( wantsRestart )
-      slotReplaceTextNext();
-    else {
-      // replace->closeReplaceNextDialog() should be called here according to the
-      // API docs of KReplace, but this crashes.
-      //replace->closeReplaceNextDialog();
-      replace->deleteLater();
-      replace = 0;
-      parent->ensureCursorVisible();
-    }
-  }
-}
-
-void KMeditorPrivate::slotDoReplace( const QString &text, int replacementIndex,
-                                     int replacedLength, int matchedLength )
-{
-  Q_UNUSED( text );
-  Q_UNUSED( replacedLength );
-
-  QTextCursor tc = parent->textCursor();
-  tc.setPosition( replacementIndex );
-  tc.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor,
-                   matchedLength );
-  tc.removeSelectedText();
-  tc.insertText( replaceDialog->replacement() );
-  parent->setTextCursor( tc );
-}
-
-void KMeditor::slotFind()
-{
-  // We're doing a new search, so delete the old one
-  delete d->find;
-  d->find = 0;
-  d->firstSearch = false;
-  d->findDataOutdated = true;
-
-  // Raise if already opened
-  if ( d->findDialog )
-    KWindowSystem::activateWindow( d->findDialog->winId() );
-  else {
-    d->findDialog = new KFindDialog( this );
-    connect( d->findDialog, SIGNAL( okClicked() ), this, SLOT( slotFindNext() ) );
-  }
-
-  d->findDialog->setHasSelection( !textCursor().selectedText().isEmpty() );
-  d->findDialog->show();
-}
-
-void KMeditor::slotFindNext()
-{
-  if ( d->firstSearch )
-    slotFind();
-  else
-    d->findTextNext();
-}
-
-void KMeditorPrivate::findTextNext()
-{
-  // If this is the first search, no find object has been created, so initalize
-  // it now
-  if ( !find ) {
-    assert( findDialog );
-    find = new KFind( findDialog->pattern(), findDialog->options(),
-                      parent, findDialog );
-
-    int findStartPosition = 0;
-    if ( find->options() & KFind::FromCursor ||
-         find->options() & KFind::FindBackwards )
-      findStartPosition = parent->textCursor().anchor();
-
-    find->setData( parent->toPlainText(), findStartPosition );
-    find->closeFindNextDialog();
-    findDataOutdated = false;
-
-    QObject::connect( find, SIGNAL( highlight( const QString &, int, int ) ),
-                      parent, SLOT( slotHighlight( const QString &, int, int ) ) );
-    QObject::connect( parent, SIGNAL( textChanged() ),
-                      parent, SLOT( slotTextChanged() ) );
-  }
-
-  if ( findDataOutdated ) {
-    find->setData( parent->toPlainText(), find->index() );
-    findDataOutdated = false;
-  }
-
-  // Do the actual search. slotHighlight() will be called in case of a match
-  KFind::Result res = find->find();
-
-  // If there is no match and the find object has reached the end of its data,
-  // we are at the end of our text.
-  if ( res == KFind::NoMatch && find->needData() ) {
-
-    int nextPosition = 0;
-    if ( find->options() & KFind::FindBackwards )
-      nextPosition = parent->toPlainText().length();
-    find->setData( parent->toPlainText(), nextPosition );
-
-    bool wantsRestart = find->shouldRestart( true, true );
-    find->resetCounts();
-    if ( wantsRestart )
-      findTextNext();
-  }
-}
 
 void KMeditor::slotChangeParagStyle( QTextListFormat::Style _style )
 {

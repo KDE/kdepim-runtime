@@ -136,19 +136,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAlignRight();
     void slotChangeParagStyle( QTextListFormat::Style _style );
 
-    /**
-     * Shows the standard, non-modal KDE find dialog. It lets the user search
-     * for words in the textedit and highlights matches.
-     */
-    void slotFind();
-
-    /**
-     * If slotFind() was not called before, this will act like slotFind().
-     * Otherwise, the next matching word is highlighted, without displaying
-     * any dialog.
-     */
-    void slotFindNext();
-
     void slotFontFamilyChanged( const QString &f );
     void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
@@ -159,11 +146,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotTextUnder( bool _b );
     void slotTextColor();
 
-    /**
-     * This will open the standard, non-modal KDE replace dialog and let the
-     * user replace words in the textedit with other words.
-     */
-    void slotReplace();
 
     void slotChangeInsertMode();
   Q_SIGNALS:
@@ -186,10 +168,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     KMeditorPrivate *const d;
     Q_PRIVATE_SLOT( d, void addSuggestion( const QString&, const QStringList& ) )
-    Q_PRIVATE_SLOT( d, void slotHighlight( const QString&, int, int ) )
-    Q_PRIVATE_SLOT( d, void slotTextChanged() )
-    Q_PRIVATE_SLOT( d, void slotReplaceTextNext() )
-    Q_PRIVATE_SLOT( d, void slotDoReplace( const QString &, int, int, int ) )
 };
 
 }
