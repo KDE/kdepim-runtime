@@ -416,17 +416,12 @@ void KMeditor::switchTextMode( bool useHtml )
   if ( !useHtml && !acceptRichText() ) //Already in text mode
     return;
 
-  if ( useHtml )
+  if ( ! useHtml )
   {
-    setAcceptRichText( true );
-    document()->setModified( true );
-  }
-  else
-  {
-    setAcceptRichText( false );
     setText(toPlainText()); //reformat text (which can be html text) as text
-    document()->setModified( true );
   }
+  setAcceptRichText( useHtml );
+  document()->setModified( true );
 }
 
 KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
@@ -792,10 +787,10 @@ void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
   else
     signature = sig.rawText();
 
-  insertSignature( signature, placement );
+    insertSignature( signature, placement, sig.isInlinedHtml() );
 }
 
-void KMeditor::insertSignature( QString signature, Placement placement )
+void KMeditor::insertSignature( QString signature, Placement placement, bool isHtml )
 {
   if ( !signature.isEmpty() ) {
 
@@ -815,9 +810,15 @@ void KMeditor::insertSignature( QString signature, Placement placement )
 
     // Insert the signature and newlines depending on where it was inserted.
     if ( placement == End )
-      insertPlainText( '\n' + signature );
+      if ( isHtml )
+        insertHtml( '\n' + signature );
+      else
+        insertPlainText( '\n' + signature );
     else if ( placement == Start || placement == AtCursor )
-      insertPlainText( '\n' + signature + '\n' );
+      if ( isHtml )
+        insertHtml( '\n' + signature + '\n' );
+      else
+        insertPlainText( '\n' + signature + '\n' );
 
     // Adjust the cursor position if the signature was inserted before the
     // cursor

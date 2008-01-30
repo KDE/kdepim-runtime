@@ -123,8 +123,9 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * A separator is not added.
      * @param placement defines where in the textedit the signature should be
      *                  inserted.
+     * @param isHtml defines whether the signature should be inserted as text or html
      */
-    void insertSignature( QString signature, Placement placement = End );
+    void insertSignature( QString signature, Placement placement = End, bool isHtml = false );
 
   public Q_SLOTS:
 
