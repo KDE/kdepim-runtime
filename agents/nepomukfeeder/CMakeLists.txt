@@ -10,10 +10,10 @@ kde4_add_executable(akonadi_nepomuk_feeder RUN_UNINSTALLED nepomukfeeder.cpp)
 
 target_link_libraries(akonadi_nepomuk_feeder
   akonadi
-  ${QT_QTCORE_LIBRARIES}
-  ${QT_QTDBUS_LIBRARIES}
+  ${QT_QTCORE_LIBRARY}
+  ${QT_QTDBUS_LIBRARY}
   ${KDE4_KMIME_LIBS}
-  ${NEPOMUK_LIBRARIES}
+  ${NEPOMUK_LIBRARY}
 )
 
 install(TARGETS akonadi_nepomuk_feeder DESTINATION ${BIN_INSTALL_DIR})

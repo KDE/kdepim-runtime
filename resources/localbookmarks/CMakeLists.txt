@@ -20,7 +20,7 @@ install( FILES localbookmarksresource.desktop DESTINATION "${CMAKE_INSTALL_PREFI
 
 kde4_add_executable(akonadi_localbookmarks_resource RUN_UNINSTALLED ${localbookmarksresource_SRCS})
 
-target_link_libraries(akonadi_localbookmarks_resource akonadi ${QT_QTDBUS_LIBRARIES}  ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBRARY})
+target_link_libraries(akonadi_localbookmarks_resource akonadi ${QT_QTDBUS_LIBRARY}  ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBRARY})
 
 install(TARGETS akonadi_localbookmarks_resource DESTINATION ${BIN_INSTALL_DIR})
 

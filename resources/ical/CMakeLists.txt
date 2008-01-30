@@ -20,7 +20,7 @@ install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/a
 
 kde4_add_executable(akonadi_ical_resource RUN_UNINSTALLED ${icalresource_SRCS})
 
-target_link_libraries(akonadi_ical_resource akonadi ${QT_QTDBUS_LIBRARIES}  ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBRARY})
+target_link_libraries(akonadi_ical_resource akonadi ${QT_QTDBUS_LIBRARY}  ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBRARY})
 
 install(TARGETS akonadi_ical_resource DESTINATION ${BIN_INSTALL_DIR})
 
