@@ -30,17 +30,35 @@
 #include <libakonadi/itemdeletejob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
-#include <libakonadi/transactionjobs.h>
+#include <libakonadi/itemsync.h>
 
 #include <kdebug.h>
 #include <kconfiggroup.h>
 
 #include <QHash>
 
+#include <boost/shared_ptr.hpp>
+
 using namespace Akonadi;
 using namespace KCal;
 
+using namespace Akonadi;
+using namespace KCal;
+
+typedef boost::shared_ptr<Incidence> IncidencePtr;
+
 typedef QHash<QString, Item> ItemHash;
+
+// Will probably have to implement it ourselves, ItemSync is
+// currently not exported by libakonadi and we use a local copy
+// in ../libakonadi
+class SaveSequence : public ItemSync
+{
+  public:
+    SaveSequence( const Collection& collection ) : ItemSync( collection )
+    {
+    }
+};
 
 class ResourceAkonadi::Private
 {
@@ -64,9 +82,11 @@ class ResourceAkonadi::Private
     ItemHash mItems;
 
   public:
-    void itemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection );
-    void itemChanged( const Akonadi::Item& item, const QStringList& partIdentifiers );
-    void itemRemoved( const Akonadi::DataReference& reference );
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
+    void itemRemoved( const Akonadi::DataReference &reference );
+
+    KJob *createSaveSequence();
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -103,7 +123,14 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
 
 void ResourceAkonadi::setCollection( const Collection& collection )
 {
-  // TODO: reset?
+  if ( collection == d->mCollection )
+    return;
+
+  if ( isOpen() ) {
+    kError(5800) << "Trying to change collection while resource is open";
+    return;
+  }
+
   d->mCollection = collection;
 }
 
@@ -265,23 +292,99 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 {
   kDebug(5800) << "syncCache=" << syncCache;
 
-  return false;
+  // clear local caches
+  d->mCalendar.close();
+  d->mItems.clear();
+
+  ItemFetchJob *job = new ItemFetchJob( d->mCollection );
+  job->fetchAllParts();
+
+  if ( !job->exec() ) {
+    emit resourceLoadError( this, job->errorString() );
+    return false;
+  }
+
+  Item::List items = job->items();
+
+  kDebug(5800) << "Item fetch produced" << items.count() << "items";
+
+  foreach ( const Item& item, items ) {
+    if ( item.hasPayload<IncidencePtr>() ) {
+      IncidencePtr incidence = item.payload<IncidencePtr>();
+
+      d->mCalendar.addIncidence( incidence->clone() );
+      d->mItems.insert( incidence->uid(), item );
+    }
+  }
+
+  emit resourceLoaded( this );
+#if 0
+  // TODO probably can do this async, but the API docs of ResourceCalendar::load()
+  // says the contents need to be available when it returns
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
+
+  job->start();
+#endif
+
+  return true;
 }
 
 bool ResourceAkonadi::doSave( bool syncCache )
 {
   kDebug(5800) << "syncCache=" << syncCache;
 
-  return false;
+  KJob *job = d->createSaveSequence();
+  if ( job == 0 )
+    return false;
+
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
+
+  job->start();
+
+  return true;
 }
 
 bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
 {
-  Q_UNUSED( incidence );
+  kDebug(5800) << "syncCache=" << syncCache
+               << ", incidence" << incidence->uid();
 
-  kDebug(5800) << "syncCache=" << syncCache;
+  KJob *job = 0;
 
-  return false;
+  ItemHash::const_iterator itemIt = d->mItems.find( incidence->uid() );
+  if ( itemIt == d->mItems.end() ) {
+    kDebug(5800) << "No item yet, creating append job";
+
+    Item item( "text/calendar" );
+    item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+
+    DataReference reference = item.reference();
+    reference.setRemoteId( incidence->uid() );
+    item.setReference( reference );
+
+    job = new ItemAppendJob( item, d->mCollection );
+  } else {
+    kDebug(5800) << "Item already exists, creating store job";
+    Item item = itemIt.value();
+
+    item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+    item.setRev( itemIt.value().rev() );
+    item.setReference( DataReference( itemIt.value().reference().id(),
+                                      itemIt.value().reference().remoteId() ) );
+    item.setRev( itemIt.value().rev() );
+
+    ItemStoreJob *storeJob = new ItemStoreJob( item );
+    storeJob->storePayload();
+    storeJob->setCollection( d->mCollection );
+
+    job = storeJob;
+  }
+
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
+
+  job->start();
+
+  return true;
 }
 
 bool ResourceAkonadi::doOpen()
@@ -293,26 +396,69 @@ bool ResourceAkonadi::doOpen()
 
   d->mMonitor->monitorCollection( d->mCollection );
 
+  // activate reacting to changes
+  d->mMonitor->blockSignals( false );
+
   return true;
 }
 
 void ResourceAkonadi::doClose()
 {
+  // deactivate reacting to changes
+  d->mMonitor->blockSignals( true );
+
+  // clear local caches
   d->mCalendar.close();
+  d->mItems.clear();
 }
 
 void ResourceAkonadi::loadResult( KJob *job )
 {
-  Q_UNUSED( job );
+  kDebug(5800) << job->errorString();
+
+  if ( job->error() != 0 ) {
+    emit resourceLoadError( this, job->errorString() );
+    return;
+  }
+
+  ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob != 0 );
+
+  Item::List items = fetchJob->items();
+
+  kDebug(5800) << "Item fetch produced" << items.count() << "items";
+
+  foreach ( const Item& item, items ) {
+    if ( item.hasPayload<IncidencePtr>() ) {
+      IncidencePtr incidence = item.payload<IncidencePtr>();
+
+      d->mCalendar.addIncidence( incidence->clone() );
+      d->mItems.insert( incidence->uid(), item );
+    }
+  }
+
+  emit resourceLoaded( this );
 }
 
 void ResourceAkonadi::saveResult( KJob *job )
 {
-  Q_UNUSED( job );
+  kDebug(5800) << job->errorString();
+
+  if ( job->error() != 0 ) {
+    emit resourceSaveError( this, job->errorString() );
+  } else {
+    emit resourceSaved( this );
+  }
 }
 
 void ResourceAkonadi::init()
 {
+  // deactivate reacting to changes, will be enabled in doOpen()
+  d->mMonitor->blockSignals( true );
+
+  d->mMonitor->monitorMimeType( "text/calendar" );
+  d->mMonitor->fetchAllParts();
+
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
            this,
@@ -329,23 +475,137 @@ void ResourceAkonadi::init()
            SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
 }
 
-void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
-                                          const Akonadi::Collection& collection )
+void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
+                                          const Akonadi::Collection &collection )
 {
-  Q_UNUSED( item );
-  Q_UNUSED( collection );
+  kDebug(5800);
+  if ( collection != mCollection )
+    return;
+
+  if ( !item.hasPayload<IncidencePtr>() ) {
+    kError(5800) << "Item does not have IncidencePtr payload";
+    return;
+  }
+
+  IncidencePtr incidence = item.payload<IncidencePtr>();
+
+  kDebug(5800) << "Incidence" << incidence->uid();
+
+  mItems.insert( incidence->uid(), item );
+
+  // might be the result of our own saving
+  if ( mCalendar.incidence( incidence->uid() ) == 0 ) {
+    mCalendar.addIncidence( incidence->clone() );
+
+    emit mParent->resourceChanged( mParent );
+  }
 }
 
-void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
-                                            const QStringList& partIdentifiers )
+void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
+                                            const QStringList &partIdentifiers )
 {
-  Q_UNUSED( item );
-  Q_UNUSED( partIdentifiers );
+  kDebug(5800) << partIdentifiers;
+
+  // check if this is one of ours (should be, we are just monitoring our collection)
+  ItemHash::iterator itemIt = mItems.find( item.reference().remoteId() );
+  if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
+    kWarning(5800) << "No matching local item for item: id="
+                   << item.reference().id() << ", remoteId="
+                   << item.reference().remoteId();
+    return;
+  }
+
+  itemIt.value() = item;
+
+  if ( !partIdentifiers.contains( Akonadi::Item::PartBody ) ) {
+    kDebug(5800) << "No update to the item body";
+    // FIXME find out why payload updates do not contain PartBody?
+    //return;
+  }
+
+  if ( !item.hasPayload<IncidencePtr>() ) {
+    kError(5800) << "Item does not have IncidencePtr payload";
+    return;
+  }
+
+  IncidencePtr incidence = item.payload<IncidencePtr>();
+
+  kDebug(5800) << "Incidence" << incidence->uid();
+
+  Incidence *cachedIncidence = mCalendar.incidence( incidence->uid() );
+  if ( cachedIncidence == 0 ) {
+    kWarning(5800) << "Incidence" << incidence->uid()
+                   << "changed but no longer in local list";
+    return;
+  }
+
+  mCalendar.deleteIncidence( cachedIncidence );
+  delete cachedIncidence;
+  mCalendar.addIncidence( incidence.get()->clone() );
+
+  emit mParent->resourceChanged( mParent );
 }
 
-void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference& reference )
+void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &reference )
 {
-  Q_UNUSED( reference );
+  kDebug(5800);
+
+  ItemHash::iterator itemIt = mItems.find( reference.remoteId() );
+  if ( itemIt == mItems.end() )
+    return;
+
+  if ( itemIt.value().reference() != reference )
+    return;
+
+  mItems.erase( itemIt );
+
+  Incidence *cachedIncidence = mCalendar.incidence( reference.remoteId() );
+
+  // if it does not exist as an addressee we already removed it locally
+  if ( cachedIncidence == 0 )
+    return;
+
+  kDebug(5800) << "Incidence" << cachedIncidence->uid();
+
+  mCalendar.deleteIncidence( cachedIncidence );
+  delete cachedIncidence;
+
+  emit mParent->resourceChanged( mParent );
+}
+
+KJob *ResourceAkonadi::Private::createSaveSequence()
+{
+  Item::List items;
+
+  Incidence::List incidences = mCalendar.rawIncidences();
+
+  Incidence::List::const_iterator incidenceIt    = incidences.begin();
+  Incidence::List::const_iterator incidenceEndIt = incidences.end();
+  for ( ; incidenceIt != incidenceEndIt; ++incidenceIt ) {
+    Incidence *incidence = *incidenceIt;
+    ItemHash::const_iterator itemIt = mItems.find( incidence->uid() );
+
+    if ( itemIt == mItems.end() ) {
+      Item item( "text/calendar" );
+      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+
+      DataReference reference = item.reference();
+      reference.setRemoteId( incidence->uid() );
+      item.setReference( reference );
+
+      items << item;
+    } else {
+      Item item = itemIt.value();
+      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+
+      items << item;
+    }
+  }
+
+  SaveSequence *job = new SaveSequence( mCollection );
+  job->setRemoteItems( items );
+
+  return job;
 }
 
 #include "resourceakonadi.moc"
