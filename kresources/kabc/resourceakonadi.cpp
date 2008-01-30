@@ -336,10 +336,14 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
   kDebug(5700) << "Addressee" << addressee.uid() << "("
                << addressee.formattedName() << ")";
 
-  mParent->mAddrMap.insert( addressee.uid(), addressee );
   mItems.insert( addressee.uid(), item );
 
-  mParent->addressBook()->emitAddressBookChanged();
+  // might be the result of our own saving
+  if ( mParent->mAddrMap.find( addressee.uid() ) == mParent->mAddrMap.end() ) {
+    mParent->mAddrMap.insert( addressee.uid(), addressee );
+
+    mParent->addressBook()->emitAddressBookChanged();
+  }
 }
 
 void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
