@@ -36,6 +36,7 @@
 #include <kconfiggroup.h>
 
 #include <QHash>
+#include <QTimer>
 
 #include <boost/shared_ptr.hpp>
 
@@ -55,18 +56,20 @@ typedef QHash<QString, Item> ItemHash;
 class SaveSequence : public ItemSync
 {
   public:
-    SaveSequence( const Collection& collection ) : ItemSync( collection )
+    SaveSequence( const Collection& collection, QObject *parent )
+      : ItemSync( collection, parent )
     {
     }
 };
 
-class ResourceAkonadi::Private
+class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 {
   public:
     Private( ResourceAkonadi *parent )
       : mParent( parent ), mMonitor( new Monitor( parent ) ), mCalendar( "UTC" ),
-        mLock( true )
+        mLock( true ), mInternalDelete( false )
     {
+        mCalendar.registerObserver( this );
     }
 
   public:
@@ -81,12 +84,21 @@ class ResourceAkonadi::Private
     Collection mCollection;
     ItemHash mItems;
 
+    bool mInternalDelete;
+
+    QTimer mAutoSaveOnDeleteTimer;
+
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved( const Akonadi::DataReference &reference );
 
+    void delayedAutoSaveOnDelete();
+
     KJob *createSaveSequence();
+
+    // from the CalendarObserver interface
+    virtual void calendarIncidenceDeleted( Incidence *incidence );
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -293,10 +305,12 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   kDebug(5800) << "syncCache=" << syncCache;
 
   // clear local caches
+  d->mInternalDelete = true;
   d->mCalendar.close();
   d->mItems.clear();
+  d->mInternalDelete = false;
 
-  ItemFetchJob *job = new ItemFetchJob( d->mCollection );
+  ItemFetchJob *job = new ItemFetchJob( d->mCollection, this );
   job->fetchAllParts();
 
   if ( !job->exec() ) {
@@ -362,7 +376,7 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     reference.setRemoteId( incidence->uid() );
     item.setReference( reference );
 
-    job = new ItemAppendJob( item, d->mCollection );
+    job = new ItemAppendJob( item, d->mCollection, this );
   } else {
     kDebug(5800) << "Item already exists, creating store job";
     Item item = itemIt.value();
@@ -373,7 +387,7 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
                                       itemIt.value().reference().remoteId() ) );
     item.setRev( itemIt.value().rev() );
 
-    ItemStoreJob *storeJob = new ItemStoreJob( item );
+    ItemStoreJob *storeJob = new ItemStoreJob( item, this );
     storeJob->storePayload();
     storeJob->setCollection( d->mCollection );
 
@@ -408,8 +422,10 @@ void ResourceAkonadi::doClose()
   d->mMonitor->blockSignals( true );
 
   // clear local caches
+  d->mInternalDelete = true;
   d->mCalendar.close();
   d->mItems.clear();
+  d->mInternalDelete = false;
 }
 
 void ResourceAkonadi::loadResult( KJob *job )
@@ -473,6 +489,14 @@ void ResourceAkonadi::init()
            SIGNAL( itemRemoved( const Akonadi::DataReference&) ),
            this,
            SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
+
+  connect( d->mMonitor,
+           SIGNAL( itemRemoved( const Akonadi::DataReference&) ),
+           this,
+           SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
+
+  connect( &d->mAutoSaveOnDeleteTimer, SIGNAL( timeout() ),
+           this, SLOT( delayedAutoSaveOnDelete() ) );
 }
 
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
@@ -539,8 +563,11 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
     return;
   }
 
+  mInternalDelete = true;
   mCalendar.deleteIncidence( cachedIncidence );
   delete cachedIncidence;
+  mInternalDelete = false;
+
   mCalendar.addIncidence( incidence.get()->clone() );
 
   emit mParent->resourceChanged( mParent );
@@ -567,14 +594,26 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &refere
 
   kDebug(5800) << "Incidence" << cachedIncidence->uid();
 
+  mInternalDelete = true;
   mCalendar.deleteIncidence( cachedIncidence );
   delete cachedIncidence;
+  mInternalDelete = false;
 
   emit mParent->resourceChanged( mParent );
 }
 
+void ResourceAkonadi::Private::delayedAutoSaveOnDelete()
+{
+  kDebug(5800);
+
+  mParent->doSave( false );
+}
+
 KJob *ResourceAkonadi::Private::createSaveSequence()
 {
+  kDebug(5800);
+  mAutoSaveOnDeleteTimer.stop();
+
   Item::List items;
 
   Incidence::List incidences = mCalendar.rawIncidences();
@@ -602,10 +641,22 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
     }
   }
 
-  SaveSequence *job = new SaveSequence( mCollection );
+  SaveSequence *job = new SaveSequence( mCollection, mParent );
   job->setRemoteItems( items );
 
   return job;
+}
+
+void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
+{
+  if ( mInternalDelete )
+    return;
+
+  kDebug(5800) << incidence->uid();
+
+  mItems.remove( incidence->uid() );
+
+  mAutoSaveOnDeleteTimer.start( 5000 ); // FIXME: configurable if needed at all
 }
 
 #include "resourceakonadi.moc"
