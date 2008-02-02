@@ -42,6 +42,7 @@ class AgentWidget : public QWidget
     void removeAgent();
     void configureAgent();
     void synchronizeAgent();
+    void synchronizeTree();
     void toggleOnline();
 
   private:

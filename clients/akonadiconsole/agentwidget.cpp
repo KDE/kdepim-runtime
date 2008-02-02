@@ -21,15 +21,18 @@
 
 #include "agentwidget.h"
 
-#include <QtGui/QDialog>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-
 #include "libakonadi/components/agenttypeview.h"
 #include "libakonadi/components/agentinstanceview.h"
 #include "libakonadi/agentmanager.h"
+
+#include <KLocale>
+
+#include <QtGui/QDialog>
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QMenu>
+#include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
 
 class Dialog : public QDialog
 {
@@ -98,7 +101,11 @@ AgentWidget::AgentWidget( QWidget *parent )
   connect( button, SIGNAL( clicked() ), this, SLOT( configureAgent() ) );
   layout->addWidget( button, 1, 3 );
 
+  QMenu *syncMenu = new QMenu( this );
+  syncMenu->addAction( i18n("Synchronize All"), this, SLOT(synchronizeAgent()) );
+  syncMenu->addAction( i18n("Synchronize Collection Tree"), this, SLOT(synchronizeTree()) );
   button = new QPushButton( "Synchronize", this );
+  button->setMenu( syncMenu );
   connect( button, SIGNAL( clicked() ), this, SLOT( synchronizeAgent() ) );
   layout->addWidget( button, 1, 4 );
 
@@ -144,6 +151,13 @@ void AgentWidget::toggleOnline()
   const QString agent = mView->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->setAgentInstanceOnline( agent, !mManager->agentInstanceOnline( agent ) );
+}
+
+void AgentWidget::synchronizeTree()
+{
+  const QString agent = mView->currentAgentInstance();
+  if ( !agent.isEmpty() )
+    mManager->agentInstanceSynchronizeCollectionTree( agent );
 }
 
 #include "agentwidget.moc"
