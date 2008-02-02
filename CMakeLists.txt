@@ -44,3 +44,7 @@ add_subdirectory(kioslave)
 add_subdirectory(plugins)
 add_subdirectory(kabc)
 add_subdirectory(kmime)
+
+if( Nepomuk_FOUND )
+  add_subdirectory(nepomuk)
+endif( Nepomuk_FOUND )
