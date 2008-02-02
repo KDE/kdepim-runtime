@@ -385,7 +385,6 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     item.setRev( itemIt.value().rev() );
     item.setReference( DataReference( itemIt.value().reference().id(),
                                       itemIt.value().reference().remoteId() ) );
-    item.setRev( itemIt.value().rev() );
 
     ItemStoreJob *storeJob = new ItemStoreJob( item, this );
     storeJob->storePayload();
