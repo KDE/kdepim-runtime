@@ -380,15 +380,11 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   } else {
     kDebug(5800) << "Item already exists, creating store job";
     Item item = itemIt.value();
-
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
-    item.setRev( itemIt.value().rev() );
-    item.setReference( DataReference( itemIt.value().reference().id(),
-                                      itemIt.value().reference().remoteId() ) );
 
-    ItemStoreJob *storeJob = new ItemStoreJob( item, this );
+    // FIXME const cast needed to "select" correct version of constructor
+    ItemStoreJob *storeJob = new ItemStoreJob( (const Item) item, this );
     storeJob->storePayload();
-    storeJob->setCollection( d->mCollection );
 
     job = storeJob;
   }
