@@ -8,22 +8,22 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 targetdir out_headers 
   FILE(TO_NATIVE_PATH ${RCGEN} RCGEN)
 
   execute_process(
-    COMMAND ${RCGEN} --quiet --listheaders --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
+    COMMAND ${RCGEN} --listheaders --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
     OUTPUT_VARIABLE ${out_headers}
     )
   
   execute_process(
-    COMMAND ${RCGEN} --quiet --listsources --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
+    COMMAND ${RCGEN} --listsources --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
     OUTPUT_VARIABLE ${out_sources}
     )
   
   execute_process(
-    COMMAND ${RCGEN} --quiet --listincludes --ontologies ${ontofile1} ${ontofile2}
+    COMMAND ${RCGEN} --listincludes --ontologies ${ontofile1} ${ontofile2}
     OUTPUT_VARIABLE ${out_includes}
     )
 
   execute_process(
-    COMMAND ${RCGEN} --quiet --writeall --templates ${ARGN} --target ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
+    COMMAND ${RCGEN} --writeall --templates ${ARGN} --target ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
     )
   
 endmacro(NEPOMUK_GENERATE_FROM_ONTOLOGY2)
