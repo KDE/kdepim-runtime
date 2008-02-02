@@ -203,6 +203,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
                                    lineText.left( bot ) );
         cursor.insertText( newLine );
         //cursor.setPosition( cursor.position() + 2);
+        cursor.movePosition( QTextCursor::StartOfBlock );
         setTextCursor( cursor );
       }
     }
