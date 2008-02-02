@@ -47,6 +47,8 @@ class KABC_EXPORT ResourceAkonadi : public Resource
      */
     virtual void init();
 
+    virtual void clear();
+
     virtual void writeConfig( KConfigGroup &group );
 
     virtual bool doOpen();

@@ -66,8 +66,8 @@ class ResourceAkonadi::Private
     Monitor *mMonitor;
 
     Collection mCollection;
-    ItemMap   mItems;
-    IdHash    mIdMapping;
+    ItemMap    mItems;
+    IdHash     mIdMapping;
 
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -126,6 +126,15 @@ void ResourceAkonadi::init()
            SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
 }
 
+void ResourceAkonadi::clear()
+{
+  // clear local caches
+  d->mItems.clear();
+  d->mIdMapping.clear();
+
+  Resource::clear();
+}
+
 void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
   group.writeEntry( "CollectionUrl", d->mCollection.url() );
@@ -156,6 +165,7 @@ void ResourceAkonadi::doClose()
   // clear local caches
   mAddrMap.clear();
   d->mItems.clear();
+  d->mIdMapping.clear();
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
