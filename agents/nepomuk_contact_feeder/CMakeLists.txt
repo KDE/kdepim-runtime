@@ -32,7 +32,8 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/akonadi
 	${CMAKE_SOURCE_DIR}/akonadi/libakonadi
 	${Boost_INCLUDE_DIR}
-  ${NEPOMUK_INCLUDES}
+   ${CMAKE_CURRENT_BINARY_DIR}
+   ${NEPOMUK_INCLUDES}
 )
 
 NEPOMUK_GENERATE_FROM_ONTOLOGY2(
