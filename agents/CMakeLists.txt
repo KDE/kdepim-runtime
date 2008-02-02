@@ -1,5 +1,4 @@
 add_subdirectory( mailthreader )
-add_subdirectory( strigifeeder )
 if( Nepomuk_FOUND )
-  add_subdirectory( nepomukfeeder )
+  add_subdirectory( nepomuk_contact_feeder )
 endif( Nepomuk_FOUND )

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Akonadi Nepomuk Contact Feeder
+Comment=Extension for Akonadi to push contacts into Nepomuk
+Type=AkonadiAgent
+Exec=akonadi_nepomuk_contact_feeder
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Autostart
+X-Akonadi-Identifier=akonadi_nepomuk_contact_feeder

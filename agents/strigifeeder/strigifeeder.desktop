@@ -47,5 +47,5 @@ Type=AkonadiAgent
 Exec=akonadi_strigi_feeder
 
 X-Akonadi-MimeTypes=all/all
-X-Akonadi-Capabilities=Autostart
+X-Akonadi-Capabilities=
 X-Akonadi-Identifier=akonadi_strigi_feeder

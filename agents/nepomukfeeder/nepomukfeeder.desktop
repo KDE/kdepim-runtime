@@ -47,5 +47,5 @@ Type=AkonadiAgent
 Exec=akonadi_nepomuk_feeder
 
 X-Akonadi-MimeTypes=message/rfc822,message/news
-X-Akonadi-Capabilities=Autostart
+X-Akonadi-Capabilities=
 X-Akonadi-Identifier=akonadi_nepomuk_feeder
