@@ -38,7 +38,8 @@
 using namespace Akonadi;
 using namespace KABC;
 
-typedef QHash<QString, Item> ItemHash;
+typedef QMap<int, Item> ItemMap;
+typedef QHash<QString, int> IdHash;
 
 // Will probably have to implement it ourselves, ItemSync is
 // currently not exported by libakonadi and we use a local copy
@@ -46,7 +47,7 @@ typedef QHash<QString, Item> ItemHash;
 class SaveSequence : public ItemSync
 {
   public:
-    SaveSequence( const Collection& collection ) : ItemSync( collection )
+    SaveSequence( const Collection &collection ) : ItemSync( collection )
     {
     }
 };
@@ -65,7 +66,8 @@ class ResourceAkonadi::Private
     Monitor *mMonitor;
 
     Collection mCollection;
-    ItemHash   mItems;
+    ItemMap   mItems;
+    IdHash    mIdMapping;
 
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -194,8 +196,11 @@ bool ResourceAkonadi::load()
       Addressee addressee = item.payload<Addressee>();
       addressee.setResource( this );
 
+      const int id = item.reference().id();
+      d->mIdMapping.insert( addressee.uid(), id );
+
       mAddrMap.insert( addressee.uid(), addressee );
-      d->mItems.insert( addressee.uid(), item );
+      d->mItems.insert( id, item );
     }
   }
 
@@ -265,7 +270,7 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
   Resource::removeAddressee( addr );
 }
 
-void ResourceAkonadi::setCollection( const Collection& collection )
+void ResourceAkonadi::setCollection( const Collection &collection )
 {
   if ( collection == d->mCollection )
     return;
@@ -302,8 +307,11 @@ void ResourceAkonadi::loadResult( KJob *job )
       Addressee addressee = item.payload<Addressee>();
       addressee.setResource( this );
 
+      const int id = item.reference().id();
+      d->mIdMapping.insert( addressee.uid(), id );
+
       mAddrMap.insert( addressee.uid(), addressee );
-      d->mItems.insert( addressee.uid(), item );
+      d->mItems.insert( id, item );
     }
   }
 
@@ -319,8 +327,8 @@ void ResourceAkonadi::saveResult( KJob *job )
   }
 }
 
-void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
-                                          const Akonadi::Collection& collection )
+void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
+                                          const Akonadi::Collection &collection )
 {
   kDebug(5700);
   if ( collection != mCollection )
@@ -336,7 +344,10 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
   kDebug(5700) << "Addressee" << addressee.uid() << "("
                << addressee.formattedName() << ")";
 
-  mItems.insert( addressee.uid(), item );
+  const int id = item.reference().id();
+  mIdMapping.insert( addressee.uid(), id );
+
+  mItems.insert( id, item );
 
   // might be the result of our own saving
   if ( mParent->mAddrMap.find( addressee.uid() ) == mParent->mAddrMap.end() ) {
@@ -346,13 +357,12 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item& item,
   }
 }
 
-void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
-                                            const QStringList& partIdentifiers )
+void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
+                                            const QStringList &partIdentifiers )
 {
   kDebug(5700) << partIdentifiers;
 
-  // check if this is one of ours (should be, we are just monitoring our collection)
-  ItemHash::iterator itemIt = mItems.find( item.reference().remoteId() );
+  ItemMap::iterator itemIt = mItems.find( item.reference().id() );
   if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
     kWarning(5700) << "No matching local item for item: id="
                    << item.reference().id() << ", remoteId="
@@ -396,26 +406,52 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item& item,
   mParent->addressBook()->emitAddressBookChanged();
 }
 
-void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference& reference )
+void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &reference )
 {
   kDebug(5700);
 
-  ItemHash::iterator itemIt = mItems.find( reference.remoteId() );
+  const int id = reference.id();
+
+  ItemMap::iterator itemIt = mItems.find( reference.id() );
   if ( itemIt == mItems.end() )
     return;
 
-  if ( itemIt.value().reference() != reference )
+  const Item item = itemIt.value();
+  if ( item.reference() != reference )
     return;
+
+  QString uid;
+  if ( item.hasPayload<Addressee>() ) {
+    uid = item.payload<Addressee>().uid();
+  } else {
+    // since we always fetch the payload this should not happen
+    // but we really do not want stale entries
+    kWarning(5700) << "No Addressee in local item: id=" << id
+                   << ", remoteId=" << item.reference().remoteId();
+
+    IdHash::const_iterator idIt    = mIdMapping.begin();
+    IdHash::const_iterator idEndIt = mIdMapping.end();
+    for ( ; idIt != idEndIt; ++idIt ) {
+      if ( idIt.value() == id ) {
+        uid = idIt.key();
+        break;
+      }
+    }
+
+    // if there is no mapping we already removed it locally
+    if ( uid.isEmpty() )
+      return;
+  }
 
   mItems.erase( itemIt );
 
-  Addressee::Map::iterator addrIt = mParent->mAddrMap.find( reference.remoteId() );
+  Addressee::Map::iterator addrIt = mParent->mAddrMap.find( uid );
 
   // if it does not exist as an addressee we already removed it locally
   if ( addrIt == mParent->mAddrMap.end() )
     return;
 
-  kDebug(5700) << "Addressee" << addrIt.value().uid() << "("
+  kDebug(5700) << "Addressee" << uid << "("
                << addrIt.value().formattedName() << ")";
 
   mParent->mAddrMap.erase( addrIt );
@@ -431,12 +467,20 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
   Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.end();
   for ( ; addrIt != addrEndIt; ++addrIt ) {
     Addressee addressee = addrIt.value();
-    ItemHash::const_iterator itemIt = mItems.find( addressee.uid() );
+
+    ItemMap::const_iterator itemIt = mItems.end();
+
+    IdHash::const_iterator idIt = mIdMapping.find( addressee.uid() );
+    if ( idIt != mIdMapping.end() ) {
+      itemIt = mItems.find( idIt.value() );
+    }
 
     if ( itemIt == mItems.end() ) {
       Item item( "text/directory" );
       item.setPayload<Addressee>( addressee );
 
+      // TODO: should not be necessary, just like when using ItemAppendJob
+      // directly
       DataReference reference = item.reference();
       reference.setRemoteId( addressee.uid() );
       item.setReference( reference );
