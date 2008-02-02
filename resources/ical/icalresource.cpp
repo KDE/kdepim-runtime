@@ -139,7 +139,6 @@ void ICalResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
   c.setContentTypes( mimeTypes );
-  c.setCachePolicyId( 1 ); // ### just for testing
   Collection::List list;
   list << c;
   collectionsRetrieved( list );

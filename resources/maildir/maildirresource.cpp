@@ -215,7 +215,6 @@ void MaildirResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "message/rfc822" << Collection::collectionMimeType();
   root.setContentTypes( mimeTypes );
-  root.setCachePolicyId( 1 ); // ### just for testing
 
   Collection::List list;
   list << root;
