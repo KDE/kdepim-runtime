@@ -48,7 +48,8 @@ using namespace KCal;
 
 typedef boost::shared_ptr<Incidence> IncidencePtr;
 
-typedef QHash<QString, Item> ItemHash;
+typedef QMap<int, Item> ItemMap;
+typedef QHash<QString, int> IdHash;
 
 // Will probably have to implement it ourselves, ItemSync is
 // currently not exported by libakonadi and we use a local copy
@@ -56,7 +57,7 @@ typedef QHash<QString, Item> ItemHash;
 class SaveSequence : public ItemSync
 {
   public:
-    SaveSequence( const Collection& collection, QObject *parent )
+    SaveSequence( const Collection &collection, QObject *parent )
       : ItemSync( collection, parent )
     {
     }
@@ -82,7 +83,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
     KABC::LockNull mLock;
 
     Collection mCollection;
-    ItemHash mItems;
+    ItemMap    mItems;
+    IdHash     mIdMapping;
 
     bool mInternalDelete;
 
@@ -133,7 +135,7 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
   group.writeEntry( "CollectionUrl", d->mCollection.url() );
 }
 
-void ResourceAkonadi::setCollection( const Collection& collection )
+void ResourceAkonadi::setCollection( const Collection &collection )
 {
   if ( collection == d->mCollection )
     return;
@@ -326,8 +328,11 @@ bool ResourceAkonadi::doLoad( bool syncCache )
     if ( item.hasPayload<IncidencePtr>() ) {
       IncidencePtr incidence = item.payload<IncidencePtr>();
 
+      const int id = item.reference().id();
+      d->mIdMapping.insert( incidence->uid(), id );
+
       d->mCalendar.addIncidence( incidence->clone() );
-      d->mItems.insert( incidence->uid(), item );
+      d->mItems.insert( id, item );
     }
   }
 
@@ -365,13 +370,21 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
 
   KJob *job = 0;
 
-  ItemHash::const_iterator itemIt = d->mItems.find( incidence->uid() );
+  ItemMap::const_iterator itemIt = d->mItems.end();
+
+  IdHash::const_iterator idIt = d->mIdMapping.find( incidence->uid() );
+  if ( idIt != d->mIdMapping.end() ) {
+    itemIt = d->mItems.find( idIt.value() );
+  }
+
   if ( itemIt == d->mItems.end() ) {
     kDebug(5800) << "No item yet, creating append job";
 
     Item item( "text/calendar" );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
+    // TODO: should not be necessary, just like when using ItemAppendJob
+    // directly
     DataReference reference = item.reference();
     reference.setRemoteId( incidence->uid() );
     item.setReference( reference );
@@ -443,8 +456,11 @@ void ResourceAkonadi::loadResult( KJob *job )
     if ( item.hasPayload<IncidencePtr>() ) {
       IncidencePtr incidence = item.payload<IncidencePtr>();
 
+      const int id = item.reference().id();
+      d->mIdMapping.insert( incidence->uid(), id );
+
       d->mCalendar.addIncidence( incidence->clone() );
-      d->mItems.insert( incidence->uid(), item );
+      d->mItems.insert( id, item );
     }
   }
 
@@ -510,7 +526,10 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   kDebug(5800) << "Incidence" << incidence->uid();
 
-  mItems.insert( incidence->uid(), item );
+  const int id = item.reference().id();
+  mIdMapping.insert( incidence->uid(), id );
+
+  mItems.insert( id, item );
 
   // might be the result of our own saving
   if ( mCalendar.incidence( incidence->uid() ) == 0 ) {
@@ -526,7 +545,7 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   kDebug(5800) << partIdentifiers;
 
   // check if this is one of ours (should be, we are just monitoring our collection)
-  ItemHash::iterator itemIt = mItems.find( item.reference().remoteId() );
+  ItemMap::iterator itemIt = mItems.find( item.reference().id() );
   if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
     kWarning(5800) << "No matching local item for item: id="
                    << item.reference().id() << ", remoteId="
@@ -572,16 +591,42 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &refere
 {
   kDebug(5800);
 
-  ItemHash::iterator itemIt = mItems.find( reference.remoteId() );
+  const int id = reference.id();
+
+  ItemMap::iterator itemIt = mItems.find( id );
   if ( itemIt == mItems.end() )
     return;
 
-  if ( itemIt.value().reference() != reference )
+  const Item item = itemIt.value();
+  if ( item.reference() != reference )
     return;
+
+  QString uid;
+  if ( item.hasPayload<IncidencePtr>() ) {
+    uid = item.payload<IncidencePtr>()->uid();
+  } else {
+    // since we always fetch the payload this should not happen
+    // but we really do not want stale entries
+    kWarning(5700) << "No IncidencePtr in local item: id=" << id
+                   << ", remoteId=" << item.reference().remoteId();
+
+    IdHash::const_iterator idIt    = mIdMapping.begin();
+    IdHash::const_iterator idEndIt = mIdMapping.end();
+    for ( ; idIt != idEndIt; ++idIt ) {
+      if ( idIt.value() == id ) {
+        uid = idIt.key();
+        break;
+      }
+    }
+
+    // if there is no mapping we already removed it locally
+    if ( uid.isEmpty() )
+      return;
+  }
 
   mItems.erase( itemIt );
 
-  Incidence *cachedIncidence = mCalendar.incidence( reference.remoteId() );
+  Incidence *cachedIncidence = mCalendar.incidence( uid );
 
   // if it does not exist as an addressee we already removed it locally
   if ( cachedIncidence == 0 )
@@ -617,12 +662,19 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
   Incidence::List::const_iterator incidenceEndIt = incidences.end();
   for ( ; incidenceIt != incidenceEndIt; ++incidenceIt ) {
     Incidence *incidence = *incidenceIt;
-    ItemHash::const_iterator itemIt = mItems.find( incidence->uid() );
+    ItemMap::const_iterator itemIt = mItems.end();
+
+    IdHash::const_iterator idIt = mIdMapping.find( incidence->uid() );
+    if ( idIt != mIdMapping.end() ){
+      itemIt = mItems.find( idIt.value() );
+    }
 
     if ( itemIt == mItems.end() ) {
       Item item( "text/calendar" );
       item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
+      // TODO: should not be necessary, just like when using ItemAppendJob
+      // directly
       DataReference reference = item.reference();
       reference.setRemoteId( incidence->uid() );
       item.setReference( reference );
@@ -649,7 +701,11 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
 
   kDebug(5800) << incidence->uid();
 
-  mItems.remove( incidence->uid() );
+  IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
+  Q_ASSERT( idIt != mIdMapping.end() );
+
+  mIdMapping.erase( idIt );
+  mItems.remove( idIt.value() );
 
   mAutoSaveOnDeleteTimer.start( 5000 ); // FIXME: configurable if needed at all
 }
