@@ -21,6 +21,7 @@
 #define MAINWIDGET_H
 
 #include<QWidget>
+#include <libakonadi/collection.h>
 
 class QModelIndex;
 class QTreeView;
@@ -47,12 +48,13 @@ class MainWidget: public QWidget
     MainWidget( MainWindow *parent = 0 );
 
   private slots:
-    void collectionActivated(const QModelIndex & index);
+    void collectionClicked(const Akonadi::Collection & collection);
     void itemActivated(const QModelIndex & index);
     void itemFetchDone(KJob * job);
     void threadCollection();
 
   private:
+    Akonadi::Collection mCurrentCollection;
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
     Akonadi::CollectionView *mCollectionList;
@@ -60,7 +62,6 @@ class MainWidget: public QWidget
     Akonadi::MessageThreaderProxyModel *mMessageProxyModel;
     QTreeView *mMessageList;
     QTextEdit *mMessageView;
-    int mCurrentCollectionId;
 
     MainWindow *mMainWindow;
 };

@@ -49,7 +49,8 @@ MainWidget::MainWidget( MainWindow * parent) :
 
   // Left part, collection view
   mCollectionList = new Akonadi::CollectionView();
-  connect( mCollectionList, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
+  connect( mCollectionList, SIGNAL(clicked(const Akonadi::Collection &)), 
+           SLOT(collectionClicked(const Akonadi::Collection &)) );
   splitter->addWidget( mCollectionList );
   // Filter the collection to only show the emails
   mCollectionModel = new Akonadi::CollectionModel( this );
@@ -80,12 +81,10 @@ MainWidget::MainWidget( MainWindow * parent) :
   rightSplitter->setSizes( QList<int>() << 300 << 200 );
 }
 
-void MainWidget::collectionActivated(const QModelIndex & index)
+void MainWidget::collectionClicked(const Akonadi::Collection & collection)
 {
-  mCurrentCollectionId = mCollectionList->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
-  if ( mCurrentCollectionId <= 0 )
-    return;
-  mMessageModel->setCollection( Collection( mCurrentCollectionId ) );
+  mCurrentCollection = collection;
+  mMessageModel->setCollection( Collection( mCurrentCollection ) );
 }
 
 void MainWidget::itemActivated(const QModelIndex & index)
@@ -116,8 +115,7 @@ void MainWidget::itemFetchDone(KJob * job)
 
 void MainWidget::threadCollection()
 {
-  Collection col( mCurrentCollectionId );
-  CollectionModifyJob *job = new CollectionModifyJob( col );
+  CollectionModifyJob *job = new CollectionModifyJob( mCurrentCollection );
   MailThreaderAttribute *a = new MailThreaderAttribute();
   a->setData( QByteArray( "sort" ) );
   job->setAttribute( a );
