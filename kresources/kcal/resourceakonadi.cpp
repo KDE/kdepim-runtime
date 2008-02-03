@@ -24,6 +24,7 @@
 #include "kabc/locknull.h"
 
 #include <libakonadi/collection.h>
+#include <libakonadi/control.h>
 #include <libakonadi/monitor.h>
 #include <libakonadi/item.h>
 #include <libakonadi/itemappendjob.h>
@@ -67,7 +68,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 {
   public:
     Private( ResourceAkonadi *parent )
-      : mParent( parent ), mMonitor( new Monitor( parent ) ), mCalendar( "UTC" ),
+      : mParent( parent ), mMonitor( 0 ), mCalendar( "UTC" ),
         mLock( true ), mInternalDelete( false )
     {
         mCalendar.registerObserver( this );
@@ -480,6 +481,11 @@ void ResourceAkonadi::saveResult( KJob *job )
 
 void ResourceAkonadi::init()
 {
+  // TODO: might be better to do this already in the resource factory
+  Akonadi::Control::start();
+
+  d->mMonitor = new Monitor( this );
+
   // deactivate reacting to changes, will be enabled in doOpen()
   d->mMonitor->blockSignals( true );
 

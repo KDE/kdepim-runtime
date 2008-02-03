@@ -22,6 +22,7 @@
 #include "resourceakonadiconfig.h"
 
 #include <libakonadi/collection.h>
+#include <libakonadi/control.h>
 #include <libakonadi/monitor.h>
 #include <libakonadi/item.h>
 #include <libakonadi/itemappendjob.h>
@@ -56,7 +57,7 @@ class ResourceAkonadi::Private
 {
   public:
     Private( ResourceAkonadi *parent )
-      : mParent( parent ), mMonitor( new Monitor( mParent ) )
+      : mParent( parent ), mMonitor( 0 )
     {
     }
 
@@ -104,6 +105,11 @@ ResourceAkonadi::~ResourceAkonadi()
 
 void ResourceAkonadi::init()
 {
+  // TODO: might be better to do this already in the resource factory
+  Akonadi::Control::start();
+
+  d->mMonitor = new Monitor( this );
+
   // deactivate reacting to changes, will be enabled in doOpen()
   d->mMonitor->blockSignals( true );
 
