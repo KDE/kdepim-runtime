@@ -99,8 +99,8 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 {
     const QString reference =  mb + "-+-" + QString::number( uid );
 
-    kDebug(  ) << "MESSAGE from Imap server" << reference << endl;
-    kDebug(  ) << "Cache is valid:" << m_itemCache.value( reference ).isValid() << endl;
+    kDebug() << "MESSAGE from Imap server" << reference << body << endl;
+    Q_ASSERT( m_itemCache.value( reference ).isValid() );
 
     KMime::Message *mail = new KMime::Message();
     mail->setContent( KMime::CRLFtoLF( body.toLatin1() ) );
@@ -284,7 +284,10 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
     kDebug(  ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
     if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
         itemsRetrieved( messages );
+	kDebug() << "Flushed all messages to akonadi";
     }
+    else
+        kDebug() << "Messages not yet complete... waiting for more...";
 }
 
 // ----------------------------------------------------------------------------------
