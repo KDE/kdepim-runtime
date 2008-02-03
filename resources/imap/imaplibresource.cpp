@@ -56,12 +56,12 @@ ImaplibResource::ImaplibResource( const QString &id )
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
     KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
     KConfigGroup config = tempConfig->group( "General" );
-    const QString imapServer = config.readEntry( "imapServer" );
+    m_server = config.readEntry( "imapServer" );
     int safe = config.readEntry( "safeImap",3 );
     delete tempConfig;
 
-    QString server = imapServer.section( ":",0,0 );
-    int port = imapServer.section( ":",1,1 ).toInt();
+    QString server = m_server.section( ":",0,0 );
+    int port = m_server.section( ":",1,1 ).toInt();
 
     m_imap = new Imaplib( 0,"serverconnection" );
 
@@ -162,9 +162,15 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
     contentTypes << "message/rfc822" << Collection::collectionMimeType();
 
     Collection root;
-    root.setName( name() );
+    root.setName( m_server + "/" + m_username );
     root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
     root.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+
+    CachePolicy policy;
+    policy.setInheritFromParent( false );
+    policy.enableSyncOnDemand( true );
+    root.setCachePolicy( policy );
+
     collections.insert( root.remoteId(), root );
 
     QStringList::ConstIterator it = list.begin();
@@ -307,7 +313,7 @@ void ImaplibResource::slotLogin( Imaplib* connection )
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
     KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
     KConfigGroup config = tempConfig->group( "General" );
-    QString login = config.readEntry( "userName" );
+    m_username = config.readEntry( "userName" );
     delete tempConfig;
     QString pass;
 
@@ -319,9 +325,9 @@ void ImaplibResource::slotLogin( Imaplib* connection )
     delete wallet;
 
     if ( pass.isEmpty() ) {
-        manualAuth( connection, login );
+        manualAuth( connection, m_username );
     } else {
-        connection->login( login, pass );
+        connection->login( m_username, pass );
     }
 }
 
@@ -335,14 +341,9 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
             i18n( "Could Not Log In" ),
             KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
     if ( i == KMessageBox::Yes )
-        configure();
+        configure(); /* reconnect after that I guess...*/
     else if ( i == KMessageBox::No ) {
-        // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-        KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
-        KConfigGroup config = tempConfig->group( "General" );
-        QString username = config.readEntry( "userName" );
-        delete tempConfig;
-        manualAuth( connection, username );
+        manualAuth( connection, m_username );
     } else
         connection->logout();
 }

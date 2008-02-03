@@ -65,6 +65,8 @@ private:
     QHash<QString, QString> m_flagsCache;
     QHash<QString, Akonadi::Item> m_itemCache;
     QHash<QString, int> m_amountMessagesCache;
+    QString m_server;
+    QString m_username;
     void connections();
     void manualAuth( Imaplib* connection, const QString& username );
 };
