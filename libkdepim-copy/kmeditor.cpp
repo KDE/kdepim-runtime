@@ -783,7 +783,7 @@ void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
                                 Placement placement, bool addSeparator )
 {
   QString signature;
-  if ( addSeparator )
+  if ( addSeparator && ! sig.isInlinedHtml() )
     signature = sig.withSeparator();
   else
     signature = sig.rawText();
