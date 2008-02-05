@@ -2,8 +2,10 @@
 Name=Akonadi Nepomuk Contact Feeder
 Name[ga]=Fothaire Teagmhálacha Akonadi Nepomuk
 Name[km]=កម្មវិធី​មតិព័ត៌មាន​របស់ Akonadi Nepomuk
+Name[nds]=Akonadi-Kontaktingaav för Nepomuk
 Comment=Extension for Akonadi to push contacts into Nepomuk
 Comment[km]=ផ្នែក​បន្ថែម​សម្រាប់ Akonadi ដើម្បី​ដាក់ទំនាក់ទំនង​ទៅ​ក្នុង Nepomuk
+Comment[nds]=Akonadi-Verwieern, mit de sik Kontakten na Nepomuk överdregen laat
 Comment[zh_CN]=将联系人推入 Nepomuk的 Akonadi 扩展
 Comment[zh_TW]=Akonadi 的延伸，將聯絡人送進 Nepomuk
 Type=AkonadiAgent
