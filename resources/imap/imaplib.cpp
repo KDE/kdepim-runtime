@@ -40,7 +40,7 @@ Imaplib::Imaplib( QWidget* parent,  const char* name )
         m_tls( false ), m_readyToSend( false )
 {
     setObjectName( name );
-    // kDebug() << endl;
+    // kDebug();
 
     // This will process the queue with requests that should go to
     // the server
@@ -58,28 +58,28 @@ Imaplib::Imaplib( QWidget* parent,  const char* name )
     /*
         // testcases for the regex.
 
-    kDebug() << "These should be true:" << endl;
-    kDebug() << endSimpleCommand("bla\na02 OK bla\n\r") << endl;   // true
-    kDebug() << endSimpleCommand("a02 OK bla\n")<< endl;          // true
-    kDebug() << endSimpleCommand("bla\na02 OK bla\n\r")<< endl;   // true
-    kDebug() << endSimpleCommand("bla\n\ra02 OK bla\n")<< endl;   // true
+    kDebug() << "These should be true:";
+    kDebug() << endSimpleCommand("bla\na02 OK bla\n\r");   // true
+    kDebug() << endSimpleCommand("a02 OK bla\n");          // true
+    kDebug() << endSimpleCommand("bla\na02 OK bla\n\r");   // true
+    kDebug() << endSimpleCommand("bla\n\ra02 OK bla\n");   // true
 
-    kDebug() << "These should be false:" << endl;
-    kDebug() << endSimpleCommand("bla a02 OK bla")<< endl;        // false
-    kDebug() << endSimpleCommand("a02 OK bla")<< endl;            // false
-    kDebug() << endSimpleCommand("\n\ra02 OK bla")<< endl;        // false
-    kDebug() << endSimpleCommand("\na02 OK bla")<< endl;          // false
-    kDebug() << endSimpleCommand("bla\na02 OK bla")<< endl;       // false
-    kDebug() << endSimpleCommand("bla\na02 OK bla\n\rbla\n\r")<< endl; // false
-    kDebug() << endSimpleCommand("a02 OK bla\n\rbla\n") << endl;   // false
-    kDebug() << endSimpleCommand("bla\na02 OK bla\r") << endl;   // false
+    kDebug() << "These should be false:";
+    kDebug() << endSimpleCommand("bla a02 OK bla");        // false
+    kDebug() << endSimpleCommand("a02 OK bla");            // false
+    kDebug() << endSimpleCommand("\n\ra02 OK bla");        // false
+    kDebug() << endSimpleCommand("\na02 OK bla");          // false
+    kDebug() << endSimpleCommand("bla\na02 OK bla");       // false
+    kDebug() << endSimpleCommand("bla\na02 OK bla\n\rbla\n\r"); // false
+    kDebug() << endSimpleCommand("a02 OK bla\n\rbla\n");   // false
+    kDebug() << endSimpleCommand("bla\na02 OK bla\r");   // false
 
     */
 }
 
 Imaplib::~Imaplib()
 {
-    // kDebug() << endl;
+    // kDebug();
     // queued jobs can be removed...
     m_queue.clear();
     m_currentQueueItem=Queue();
@@ -87,8 +87,7 @@ Imaplib::~Imaplib()
 
 void Imaplib::slotRead( const QString& received )
 {
-    // kDebug() << received <<
-    //         " for " << m_currentQueueItem.state() << endl;
+    // kDebug() << received << " for " << m_currentQueueItem.state();
 
     // ignore empty, but not when we do tls, just after the handshake
     // it will return an empty string.
@@ -137,8 +136,7 @@ void Imaplib::slotRead( const QString& received )
         // Now, we should have the capabilities, carry on...
         if ( m_capabilities.count() > 1 ) {
             m_currentState = NotAuthenticated;
-            kDebug(  ) << "Log in, we can do: " << m_capabilities <<
-            m_capabilities.count() << endl;
+            kDebug( ) << "Log in, we can do:" << m_capabilities << m_capabilities.count();
             emit login( this );
             return;
         } else {
@@ -236,7 +234,7 @@ void Imaplib::startConnection( const QString& server, int port,
     m_queue.clear();
 
     if ( m_socket ) {
-        kDebug(  ) << "Delete connection" << endl;
+        kDebug( ) << "Delete connection";
         m_socket->aboutToClose();
         m_socket->deleteLater();
         m_socket = 0;
@@ -283,7 +281,7 @@ void Imaplib::startConnection( const QString& server, int port,
 
 void Imaplib::login( const QString& username, const QString& password )
 {
-    // kDebug() << endl;
+    // kDebug();
     m_queue.prepend( Queue( Queue::Auth, "",
                             "login \"" + KIMAP::quoteIMAP( username )
                             + "\" \"" + KIMAP::quoteIMAP( password ) + "\"" ) );
@@ -292,28 +290,28 @@ void Imaplib::login( const QString& username, const QString& password )
 
 void Imaplib::logout()
 {
-    // kDebug() << endl;
+    // kDebug();
     m_socket->aboutToClose();
     m_queue.prepend( Queue( Queue::Logout, "", "logout" ) );
 }
 
 void Imaplib::getMailBoxList()
 {
-    // kDebug() << endl;
+    // kDebug();
     m_queue.append( Queue( Queue::GetMailBoxList,"", "LIST \"\" \"*\"",
                            i18n( "Retrieving mailbox list" ) ) );
 }
 
 void Imaplib::getMailBox( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.prepend( Queue( Queue::SyncMailBox, box, "SELECT \""+box2+"\"" ) );
 }
 
 void Imaplib::getHeaders( const QString& mb, const QStringList& uids )
 {
-    // kDebug() << << uids << mb << endl;
+    // kDebug() << << uids << mb;
     if ( uids.count() == 0 || mb.isEmpty() )
         return;
 
@@ -342,8 +340,7 @@ void Imaplib::getHeaders( const QString& mb, const QStringList& uids )
 
 void Imaplib::getHeaderList( const QString& mb, int start, int end )
 {
-    // kDebug() << start << "-" << end
-    //        << "for" << mb << endl;
+    // kDebug() << start << "-" << end << "for" << mb;
     if ( ! end>=1 || end < start || !start>=1 )
         return;
 
@@ -356,7 +353,7 @@ void Imaplib::getHeaderList( const QString& mb, int start, int end )
 
 void Imaplib::getMessage( const QString& mb, int uid )
 {
-    kDebug(  ) << endl;
+    kDebug( );
     m_queue.prepend( Queue( Queue::GetMessage, mb,
                             "UID FETCH " + QString::number( uid )
                             + ':' + QString::number( uid ) + " BODY[]",
@@ -365,7 +362,7 @@ void Imaplib::getMessage( const QString& mb, int uid )
 
 void Imaplib::checkMail( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.append( Queue( Queue::CheckMail, box,
                            "STATUS \""+box2+"\" (MESSAGES UNSEEN UIDVALIDITY UIDNEXT)",
@@ -375,8 +372,7 @@ void Imaplib::checkMail( const QString& box )
 void Imaplib::addFlag( const QString& box, int min, int max,
                        const QString& flag )
 {
-    // kDebug()
-    //        << box << " - " << min << " - " << max << " - " << flag << endl;
+    // kDebug() << box << " - " << min << " - " << max << " - " << flag;
     m_queue.append( Queue( Queue::NoResponse, box,
                            "UID STORE "
                            + QString::number( min ) + ':' + QString::number( max )
@@ -386,7 +382,7 @@ void Imaplib::addFlag( const QString& box, int min, int max,
 void Imaplib::removeFlag( const QString& box, int min, int max,
                           const QString& flag )
 {
-    // kDebug() << box << " - " << uid << " - " << flag << endl;
+    // kDebug() << box << " - " << uid << " - " << flag;
     m_queue.append( Queue( Queue::NoResponse, box,
                            "UID STORE "
                            + QString::number( min ) + ':' + QString::number( max )
@@ -395,28 +391,28 @@ void Imaplib::removeFlag( const QString& box, int min, int max,
 
 void Imaplib::expungeMailBox( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.append( Queue( Queue::Expunge, box, "EXPUNGE" ) );
 }
 
 void Imaplib::createMailBox( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.append( Queue( Queue::CreateMailBox, box, "CREATE \"" + box2 + "\"" ) );
 }
 
 void Imaplib::deleteMailBox( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.append( Queue( Queue::DeleteMailBox, box, "DELETE \"" + box2 + "\"" ) );
 }
 
 void Imaplib::renameMailBox( const QString& oldbox, const QString& newbox )
 {
-    // kDebug() << oldbox << "->" << newbox << endl;
+    // kDebug() << oldbox << "->" << newbox;
     const QString oldbox2 = KIMAP::encodeImapFolderName( oldbox );
     const QString newbox2 = KIMAP::encodeImapFolderName( newbox );
     m_queue.append( Queue( Queue::RenameMailBox, oldbox + '~' + newbox,
@@ -427,8 +423,7 @@ void Imaplib::renameMailBox( const QString& oldbox, const QString& newbox )
 void Imaplib::copyMessage( const QString& origbox, int uid,
                            const QString& destbox )
 {
-    // kDebug() << origbox
-    //    << " - " << uid << " -> " << destbox << endl;
+    // kDebug() << origbox << " - " << uid << " -> " << destbox;
     const QString destbox2 = KIMAP::encodeImapFolderName( destbox );
     m_queue.append( Queue( Queue::Copy, origbox,
                            "UID COPY " + QString::number( uid ) + " \"" + destbox2+ "\"",
@@ -438,7 +433,7 @@ void Imaplib::copyMessage( const QString& origbox, int uid,
 void Imaplib::saveMessage( const QString& mb, const QString& message,
                            const QString& flags )
 {
-    // kDebug() << message << endl;
+    // kDebug() << message;
     const QString mb2 = KIMAP::encodeImapFolderName( mb );
     QString flagsformatted = "\\seen";
     if ( !flags.isEmpty() )
@@ -452,19 +447,19 @@ void Imaplib::saveMessage( const QString& mb, const QString& message,
 
 void Imaplib::idleStart( const QString& mb )
 {
-    // kDebug() << endl;
+    // kDebug();
     m_queue.append( Queue( Queue::IdleStart, mb, "IDLE" ) );
 }
 
 void Imaplib::idleStop()
 {
-    // kDebug() << endl;
+    // kDebug();
     m_queue.prepend( Queue( Queue::IdleStop, QString(), "DONE" ) );
 }
 
 bool Imaplib::capable( const QString& something )
 {
-    // kDebug() << something << endl;
+    // kDebug() << something;
     return m_capabilities.indexOf( something ) > -1;
 }
 
@@ -475,14 +470,14 @@ bool Imaplib::capable( const QString& something )
 
 void Imaplib::write( const QString& text )
 {
-    // kDebug() << text << endl;
+    // kDebug() << text;
     if ( m_socket )
         m_socket->write( "a02 "+text );
 }
 
 void Imaplib::selectMailBox( const QString& box )
 {
-    // kDebug() << box << endl;
+    // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.prepend( Queue( Queue::SelectMailBox, box, "SELECT \""+box2+"\"" ) );
 }
@@ -493,14 +488,14 @@ void Imaplib::selectMailBox( const QString& box )
 void Imaplib::slotConnected()
 {
     // connection estabilished.
-    kDebug(  ) << endl;
+    kDebug( );
     m_currentState = Connected;
     m_currentQueueItem = Queue();
 }
 
 void Imaplib::slotSendNoop()
 {
-//    kDebug() << endl;
+//    kDebug();
     m_queue.append( Queue( Queue::Noop, "","NOOP" ) );
 }
 
@@ -508,7 +503,7 @@ void Imaplib::slotSendNoop()
 
 void Imaplib::slotParseGetMailBoxList()
 {
-    // kDebug() << endl;
+    // kDebug();
 
     static QString all_data;
     all_data.append( m_received );
@@ -553,7 +548,7 @@ void Imaplib::slotParseGetMailBoxList()
 
 void Imaplib::slotParseGetRecent()
 {
-    // kDebug() << endl;
+    // kDebug();
 
     QRegExp rx( "SEARCH (.*)a02" );
     if ( rx.indexIn( m_received.trimmed() ) != -1 ) {
@@ -582,11 +577,11 @@ void Imaplib::slotParseGetRecent()
 
 void Imaplib::slotParseCopy()
 {
-    // kDebug() << endl;
+    // kDebug();
 
     QRegExp rx( "a02 OK" );
     if ( rx.indexIn( m_received.trimmed() ) == -1 ) {
-        kDebug(  ) << "Store failed, removing the delete command" << endl;
+        kDebug( ) << "Store failed, removing the delete command";
         // TODO: emit something for the move people...
         // m_queue.pop_front();
     }
@@ -605,7 +600,7 @@ void Imaplib::slotParseNoop()
         return;
 
     // process things....
-    // kDebug() << "NOOP: " << all_data << "ENDNOOP" << endl;
+    // kDebug() << "NOOP: " << all_data << "ENDNOOP";
 
     // we will receive something like, we need to fetch it again, because we
     // need the uid ;-(
@@ -620,7 +615,7 @@ void Imaplib::slotParseNoop()
 
         int i = rx.cap( 1 ).toInt();
         getHeaderList( m_currentMailbox, i, i );
-        kDebug(  ) << "Flag changed, regetting it." << endl;
+        kDebug( ) << "Flag changed, regetting it.";
 
         ++start;
     }
@@ -634,10 +629,9 @@ void Imaplib::slotParseNoop()
 
 void Imaplib::slotParseCheckMail()
 {
-    kDebug(  ) << endl;
+    kDebug( );
 
-    // kDebug() << "checkmailresult: " << m_currentQueueItem.mailbox()
-    //        << " : " << m_received << endl;
+    // kDebug() << "checkmailresult: " << m_currentQueueItem.mailbox() << ":" << m_received;
     QRegExp rx1( "STATUS (.+) \\(" );
     rx1.setMinimal( true );
 
@@ -672,7 +666,7 @@ void Imaplib::slotParseCheckMail()
         // we appereantly m_received garbage, should not happen, but
         // there are more things in life, requeue and get on with it.
         // possible loop of course...
-        // kDebug() << "unexpected response received" << m_received << endl;
+        // kDebug() << "unexpected response received" << m_received;
         m_queue.append( m_currentQueueItem );
         m_currentQueueItem = Queue();
         QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
@@ -694,7 +688,7 @@ void Imaplib::slotParseExpunge()
 
 void Imaplib::slotParseSaveMessage()
 {
-    // kDebug() << " : " << m_received << endl;
+    // kDebug() << " : " << m_received;
     m_currentQueueItem = m_queue.first();
     if ( m_socket )
         m_socket->write( m_currentQueueItem.command() );
@@ -703,10 +697,10 @@ void Imaplib::slotParseSaveMessage()
 
 void Imaplib::slotParseCreateMailBox()
 {
-    // kDebug() << " : " << m_received << endl;
+    // kDebug() << " : " << m_received;
 
     if ( m_received.indexOf( "a02 OK" ) == -1 )
-        kDebug(  ) << "Failed to create folder" << endl;
+        kDebug( ) << "Failed to create folder";
     else
         emit mailBoxAdded( m_currentQueueItem.mailbox() );
 
@@ -717,10 +711,10 @@ void Imaplib::slotParseCreateMailBox()
 
 void Imaplib::slotParseDeleteMailBox()
 {
-    // kDebug() << " : " << m_received << endl;
+    // kDebug() << " : " << m_received;
 
     if ( m_received.indexOf( "a02 OK" ) == -1 )
-        kDebug(  ) << "Failed to delete folder" << endl;
+        kDebug( ) << "Failed to delete folder";
     else
         emit mailBoxDeleted( m_currentQueueItem.mailbox() );
 
@@ -731,10 +725,10 @@ void Imaplib::slotParseDeleteMailBox()
 
 void Imaplib::slotParseRenameMailBox()
 {
-    // kDebug() << " : " << m_received << endl;
+    // kDebug() << " : " << m_received;
 
     if ( m_received.indexOf( "a02 OK" ) == -1 )
-        kDebug(  ) << "Failed to rename folder" << endl;
+        kDebug( ) << "Failed to rename folder";
     else {
         QString boxes = m_currentQueueItem.mailbox();
         QStringList i = boxes.split( "~" );
@@ -748,7 +742,7 @@ void Imaplib::slotParseRenameMailBox()
 
 void Imaplib::slotParseExists()
 {
-    kDebug(  ) << " for " << m_received << endl;
+    kDebug( ) << " for " << m_received;
 
     m_currentMailbox=m_currentQueueItem.mailbox();
 
@@ -758,7 +752,7 @@ void Imaplib::slotParseExists()
         // need to remove it from the queue to prevent a loop.
         Queue nextQueueItem = m_queue.first();
         if ( m_currentQueueItem.mailbox() == nextQueueItem.mailbox() ) {
-            kDebug(  ) << "Removing this and next command" << endl;
+            kDebug( ) << "Removing this and next command";
             m_queue.pop_front();
         }
 
@@ -807,7 +801,7 @@ void Imaplib::slotParseExists()
 
 void Imaplib::slotParseGetHeaderList()
 {
-    // kDebug() << endl;
+    // kDebug();
 
     static QString all_data;
     all_data.append( m_received );
@@ -852,7 +846,7 @@ void Imaplib::slotParseGetHeaderList()
 
 void Imaplib::slotParseGetMessage()
 {
-    kDebug(  ) << endl;
+    kDebug( );
 
     // Courier:
     //|* 1 FETCH (UID 1 RFC822.SIZE 8609 BODY[HEADER.FIELDS ("FROM" "SUBJECT" "DATE")] {148}|
@@ -922,7 +916,7 @@ void Imaplib::slotParseGetMessage()
     if ( m_currentQueueItem.state() == Queue::GetHeaders )
         emit headersInFolder( this, m_currentQueueItem.mailbox(), headersToSend );
 
-    // kDebug() << "done" << endl;
+    // kDebug() << "done";
     all_data = QString::null;
     emit statusReady();
     m_currentQueueItem = Queue();
@@ -936,17 +930,14 @@ void Imaplib::slotParseGetMessage()
 void Imaplib::slotProcessQueue()
 {
 
-    /*        kDebug() << m_queue.count()
-                 << " - " << m_socket->available()
-                 << " - " << m_currentQueueItem.state()  << endl;
-    */
+    // kDebug() << m_queue.count() << m_socket->available() << m_currentQueueItem.state();
     if ( !m_socket || !m_queue.count() ||
             m_currentQueueItem.state() != Queue::None ||
             !m_socket->available() )
         return;
 
     m_currentQueueItem = m_queue.first();
-    kDebug(  ) << m_currentQueueItem.command() << endl;
+    kDebug( ) << m_currentQueueItem.command();
 
     if ( m_currentMailbox == m_currentQueueItem.mailbox() ||
             m_currentQueueItem.mailbox().isEmpty() ||
@@ -972,7 +963,7 @@ void Imaplib::slotProcessQueue()
         // We need to switch to that mb first
         /*kDebug() << "Delayed, first selecting "<< m_currentQueueItem.mailbox()
                 << " instead of " << m_currentMailbox << " -> for: "
-        << m_currentQueueItem.state() << endl; */
+        << m_currentQueueItem.state() */
         selectMailBox( m_currentQueueItem.mailbox() );
         m_currentQueueItem=Queue();
     }
@@ -986,7 +977,7 @@ void Imaplib::timerEvent( QTimerEvent * )
 
 void Imaplib::slotTLS()
 {
-    // kDebug() << endl;
+    // kDebug();
     m_socket->write( "a02 starttls" );
 }
 

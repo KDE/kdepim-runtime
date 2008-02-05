@@ -68,7 +68,7 @@ ImaplibResource::ImaplibResource( const QString &id )
     /* TODO: copy cryptoConnectionSupport or do this somewhere else ?
     if ((safe == 1 || safe == 2) && !Global::cryptoConnectionSupported())
     {
-        kDebug() << "Crypto not supported!" << endl;
+        kDebug() << "Crypto not supported!";
         slotError(i18n("You requested TLS/SSL, but your "
                        "system does not seem to be set up for that."));
         return;
@@ -87,7 +87,7 @@ ImaplibResource::~ImaplibResource()
 bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
     const QString reference = item.reference().remoteId();
-    kDebug(  ) << "Fetch request for" << reference;
+    kDebug( ) << "Fetch request for" << reference;
     const QStringList temp = reference.split( "-+-" );
     m_imap->getMessage( temp[0], temp[1].toInt() );
     m_itemCache[reference] = item;
@@ -95,11 +95,11 @@ bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList
 }
 
 void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
-                                      const QString& body )
+        const QString& body )
 {
     const QString reference =  mb + "-+-" + QString::number( uid );
 
-    kDebug() << "MESSAGE from Imap server" << reference << body << endl;
+    kDebug() << "MESSAGE from Imap server" << reference << body;
     Q_ASSERT( m_itemCache.value( reference ).isValid() );
 
     KMime::Message *mail = new KMime::Message();
@@ -114,22 +114,22 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 
 void ImaplibResource::configure()
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::itemRemoved( const Akonadi::DataReference & ref )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::retrieveCollections()
@@ -188,7 +188,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
         c.setContentTypes( contentTypes );
         c.setParentRemoteId( findParent( collections, root, path ) );
 
-        kDebug(  ) << "ADDING: " << ( *it ) << endl;
+        kDebug( ) << "ADDING: " << ( *it );
         collections[ *it ] = c;
         ++it;
     }
@@ -200,13 +200,13 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 
 void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
 {
-    kDebug(  ) << col.remoteId();
+    kDebug( ) << col.remoteId();
     m_imap->getMailBox( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
-    kDebug(  ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
+    kDebug( ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
 
     // We need to remember the amount of messages in a mailbox, so we can emit
     // itemsRetrieved() at the right time when all the messages are received.
@@ -221,7 +221,7 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 
 void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
-    kDebug(  ) << mb << values.count();
+    kDebug( ) << mb << values.count();
 
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
@@ -245,7 +245,7 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
 
 void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
 {
-    kDebug(  ) << mb << list.count();
+    kDebug( ) << mb << list.count();
 
     // this should hold the headers of the messages.
 
@@ -281,12 +281,11 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
     // we should only emit this when we have received all messages, remember the messages arrive in
     // blocks of 250.
-    kDebug(  ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
+    kDebug( ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
     if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
         itemsRetrieved( messages );
-	kDebug() << "Flushed all messages to akonadi";
-    }
-    else
+        kDebug() << "Flushed all messages to akonadi";
+    } else
         kDebug() << "Messages not yet complete... waiting for more...";
 }
 
@@ -294,24 +293,24 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
 void ImaplibResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::collectionChanged( const Collection & collection )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
 {
-    kDebug(  ) << "Implement me!";
+    kDebug( ) << "Implement me!";
 }
 
 /******************* Slots  ***********************************************/
 
 void ImaplibResource::slotLogin( Imaplib* connection )
 {
-    // kDebug() << endl;
+    // kDebug();
 
     // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
     KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
@@ -441,7 +440,7 @@ void ImaplibResource::connections()
 
 void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
 {
-    // kDebug() << endl;
+    // kDebug();
 
     KPasswordDialog dlg( 0 /* todo: sane? */ );
     dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
