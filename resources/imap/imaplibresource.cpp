@@ -201,7 +201,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
 {
     kDebug(  ) << col.remoteId();
-    m_imap->checkMail( col.remoteId() );
+    m_imap->getMailBox( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
