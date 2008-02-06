@@ -480,6 +480,7 @@ void AddresseeLineEdit::slotPopupCompletion( const QString& completion )
   setText( m_previousAddresses + completion.trimmed() );
   cursorAtEnd();
 //  slotMatched( m_previousAddresses + completion );
+  updateSearchString();
 }
 
 void AddresseeLineEdit::slotReturnPressed( const QString& item )
