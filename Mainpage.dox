@@ -18,14 +18,16 @@ blocks section below.
   - \ref akonadi_design_communication
 - \ref akonadi_usage
 - <a href="http://pim.kde.org/akonadi">Website</a>
+- <a href="http://techbase.kde.org/index.php?title=Projects/PIM/Akonadi">Wiki</a>
 - \ref akonadi_todos
 
 \section akonadi_building_blocks Building Blocks
 
 - <a href="../clients/html/index.html">Clients</a>
 - Domain-specific libraries:
-  - <a href="../kabc/html/index.html">Contacts (kabc)</a>
-  - <a href="../kmime/html/index.html">MIME Messages (kmime)</a>
+  - <a href="../kabc/html/index.html">Contacts (KABC)</a>
+  - <a href="../kmime/html/index.html">MIME Messages (KMime)</a>
+  - <a href="../kcal/html/index.html">Events, todo items and journal entries (KCal)</a>
 - <a href="../libakonadi/html/index.html">Core library (libakonadi)</a>
 - <a href="../server/html/index.html">Server</a>
 
@@ -317,6 +319,9 @@ Example: A collection of a folder-less iCal file resource would only support
 "text/calendar" items, a folder on an IMAP server "message/rfc822" but also
 "inode/directory" if it can contain sub-folders.
 
+There is a cache policy associated with every collection which defines how much
+of its content should be kept in the local cache and for how long.
+
 \subsection akonadi_concepts_collections_tree Akonadi Collection Tree
 
 There is a single collection tree in Akonadi, consisting of several parts:
@@ -435,4 +440,4 @@ It is a management tool which provides user interfaces for the following tasks:
 */
 
 // DOXYGEN_SET_INPUT += @topdir@/akonadi/doc
-// DOXYGEN_EXCLUDE = server libakonadi resources clients kioslave kabc kmime plugins
+// DOXYGEN_EXCLUDE = server libakonadi resources clients kioslave kabc kmime plugins kcal
