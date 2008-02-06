@@ -30,6 +30,7 @@
 #include <libakonadi/collectionfilterproxymodel.h>
 #include <libakonadi/collectionpropertiesdialog.h>
 
+#include <kcal/kcalmodel.h>
 #include <kabc/kabcmodel.h>
 #include <kabc/kabcitembrowser.h>
 #include <kmime/messagemodel.h>
@@ -75,6 +76,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   itemUi.modelBox->addItem( "Generic" );
   itemUi.modelBox->addItem( "Mail" );
   itemUi.modelBox->addItem( "Contacts" );
+  itemUi.modelBox->addItem( "Calendar" );
   connect( itemUi.modelBox, SIGNAL(activated(int)), SLOT(modelChanged()) );
   modelChanged();
 
@@ -144,6 +146,9 @@ void BrowserWidget::modelChanged()
       break;
     case 2:
       mItemModel = new KABCModel( this );
+      break;
+    case 3:
+      mItemModel = new KCalModel( this );
       break;
     default:
       mItemModel = new ItemModel( this );
