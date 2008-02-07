@@ -30,6 +30,7 @@
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
 #include <kabc/resource.h>
+#include <kabc/resourceabc.h>
 
 #include <kapplication.h>
 #include <kconfig.h>
@@ -53,6 +54,7 @@
 #include "sendsmsdialog.h"
 #include <Q3MimeSourceFactory>
 #include <ktoggleaction.h>
+
 using namespace KPIM;
 
 AddresseeView::AddresseeView( QWidget *parent, KConfig *config )
@@ -450,8 +452,17 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   strAddr.append( customData );
   strAddr.append( QString::fromLatin1( "</table></div>\n" ) );
 
-  if ( addr.resource() )
-      strAddr.append( i18n( "<p><b>Address book</b>: %1</p>", addr.resource()->resourceName() ) );
+  if ( addr.resource() ) {
+    QString addrBookName = addr.resource()->resourceName();
+    KABC::ResourceABC *r = dynamic_cast<KABC::ResourceABC*>( addr.resource() );
+    if ( r && !r->subresources().isEmpty() ) {
+      const QString subRes = r->uidToResourceMap()[ addr.uid() ];
+      const QString label = r->subresourceLabel( subRes );
+      if ( !label.isEmpty() )
+        addrBookName = label;
+    }
+    strAddr.append( i18n( "<p><b>Address book</b>: %1</p>", addrBookName ) );
+  }
   return strAddr;
 }
 
