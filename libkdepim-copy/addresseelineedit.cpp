@@ -849,10 +849,10 @@ void AddresseeLineEdit::updateSearchString()
 
   int n = -1;
   bool inQuote = false;
-  for ( uint i = 0; i < m_searchString.length(); ++i ) {
+  for ( uint i = 0, searchStringLength = m_searchString.length(); i < searchStringLength; ++i ) {
     if ( m_searchString[ i ] == '"' )
       inQuote = !inQuote;
-    if ( m_searchString[ i ] == '\\' && (i + 1) < m_searchString.length() && m_searchString[ i + 1 ] == '"' )
+    if ( m_searchString[ i ] == '\\' && (i + 1) < searchStringLength && m_searchString[ i + 1 ] == '"' )
       ++i;
     if ( inQuote )
       continue;
