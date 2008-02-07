@@ -103,7 +103,7 @@ void MaildirResource::aboutToQuit()
   kDebug( 5254 ) << "Implement me!" ;
 }
 
-void MaildirResource::configure()
+void MaildirResource::configure( WId windowId )
 {
   QString oldDir = settings()->value( "General/Path" ).toString();
   KUrl url;

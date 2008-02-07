@@ -67,7 +67,7 @@ void VCardResource::aboutToQuit()
     error( i18n( "Failed to save address book file to %1", fileName ) );
 }
 
-void VCardResource::configure()
+void VCardResource::configure( WId windowId )
 {
   QString oldFile = settings()->value( "General/Path" ).toString();
   KUrl url;
@@ -76,7 +76,7 @@ void VCardResource::configure()
   else
     url = KUrl::fromPath( QDir::homePath() );
 
-  QString newFile = KFileDialog::getOpenFileName( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), 0, i18n( "Select Address Book" ) );
+  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), windowId, i18n( "Select Address Book" ) );
 
   if ( newFile.isEmpty() )
     return;

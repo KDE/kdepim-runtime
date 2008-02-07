@@ -31,6 +31,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include <KWindowSystem>
+
 #include <boost/shared_ptr.hpp>
 
 #include <kmime/kmime_message.h>
@@ -115,9 +117,11 @@ void OCResource::aboutToQuit()
   qDebug() << "currently ignoring aboutToQuit()";
 }
 
-void OCResource::configure()
+void OCResource::configure( WId windowId )
 {
   ProfileDialog configDialog( this );
+  if ( windowId )
+    KWindowSystem::setMainWindow( &configDialog, windowId );
   configDialog.exec();
 }
 

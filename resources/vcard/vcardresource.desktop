@@ -49,7 +49,7 @@ Comment[zh_CN]=从 VCard 文件载入数据的代理器
 Comment[zh_TW]=從 VCard 檔載入資料用的代理程式
 Type=AkonadiResource
 Exec=akonadi_vcard_resource
-Icon=vcard
+Icon=text-directory
 
 X-Akonadi-MimeTypes=text/directory
 X-Akonadi-Capabilities=Resource

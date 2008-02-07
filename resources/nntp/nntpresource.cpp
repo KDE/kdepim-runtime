@@ -33,6 +33,8 @@
 #include <kmime/kmime_newsarticle.h>
 #include <kmime/kmime_util.h>
 
+#include <KWindowSystem>
+
 #include <QDate>
 #include <QDir>
 #include <QInputDialog>
@@ -266,9 +268,11 @@ void NntpResource::fetchArticleResult(KJob * job)
   itemRetrieved( item );
 }
 
-void NntpResource::configure()
+void NntpResource::configure( WId windowId )
 {
   ConfigDialog dlg;
+  if ( windowId )
+    KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.exec();
   if ( !Settings::self()->name().isEmpty() )
     setName( Settings::self()->name() );

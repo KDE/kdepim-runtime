@@ -77,7 +77,7 @@ void ICalResource::aboutToQuit()
     error( i18n("Failed to save calendar file to %1", fileName ) );
 }
 
-void ICalResource::configure()
+void ICalResource::configure( WId windowId )
 {
   QString oldFile = settings()->value( "General/Path" ).toString();
   KUrl url;
@@ -85,7 +85,7 @@ void ICalResource::configure()
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  QString newFile = KFileDialog::getOpenFileName( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), 0, i18n("Select Calendar") );
+  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), windowId, i18n("Select Calendar") );
   if ( newFile.isEmpty() )
     return;
   if ( oldFile == newFile )

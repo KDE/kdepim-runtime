@@ -57,7 +57,7 @@ void LocalBookmarksResource::aboutToQuit()
   // TODO save to the backend
 }
 
-void LocalBookmarksResource::configure()
+void LocalBookmarksResource::configure( WId windowId )
 {
   QString oldFile = settings()->value( "General/Path" ).toString();
   KUrl url;
@@ -65,7 +65,7 @@ void LocalBookmarksResource::configure()
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  QString newFile = KFileDialog::getOpenFileName( url, "*.xml |" + i18nc("Filedialog filter for *.xml", "XML Bookmark file"), 0, i18n("Select Bookmarks File") );
+  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc("Filedialog filter for *.xml", "XML Bookmark file"), windowId, i18n("Select Bookmarks File") );
   if ( newFile.isEmpty() )
     return;
   if ( oldFile == newFile )

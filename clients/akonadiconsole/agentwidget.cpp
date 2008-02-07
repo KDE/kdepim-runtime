@@ -24,6 +24,7 @@
 #include "libakonadi/components/agenttypeview.h"
 #include "libakonadi/components/agentinstanceview.h"
 #include "libakonadi/agentmanager.h"
+#include <libakonadi/agentinstancecreatejob.h>
 
 #include <KLocale>
 
@@ -33,6 +34,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
+
+using namespace Akonadi;
 
 class Dialog : public QDialog
 {
@@ -120,8 +123,11 @@ void AgentWidget::addAgent()
   if ( dlg.exec() ) {
     const QString agentType = dlg.agentType();
 
-    if ( !agentType.isEmpty() )
-      mManager->createAgentInstance( agentType );
+    if ( !agentType.isEmpty() ) {
+      AgentInstanceCreateJob *job = new AgentInstanceCreateJob( agentType, this );
+      job->configure( winId() );
+      job->start(); // TODO: check result
+    }
   }
 }
 
@@ -136,7 +142,7 @@ void AgentWidget::configureAgent()
 {
   const QString agent = mView->currentAgentInstance();
   if ( !agent.isEmpty() )
-    mManager->agentInstanceConfigure( agent );
+    mManager->agentInstanceConfigure( agent, winId() );
 }
 
 void AgentWidget::synchronizeAgent()
