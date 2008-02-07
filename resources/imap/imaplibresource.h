@@ -34,7 +34,7 @@ public:
     ~ImaplibResource();
 
 public Q_SLOTS:
-    virtual void configure();
+    virtual void configure( WId windowId );
 
 protected Q_SLOTS:
     void retrieveCollections();

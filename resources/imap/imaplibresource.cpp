@@ -112,7 +112,7 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
     itemRetrieved( i );
 }
 
-void ImaplibResource::configure()
+void ImaplibResource::configure( WId windowId )
 {
     kDebug( ) << "Implement me!";
 }
@@ -343,7 +343,7 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
             i18n( "Could Not Log In" ),
             KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
     if ( i == KMessageBox::Yes )
-        configure(); /* reconnect after that I guess...*/
+        configure( 0 ); /* reconnect after that I guess...*/
     else if ( i == KMessageBox::No ) {
         manualAuth( connection, m_username );
     } else
