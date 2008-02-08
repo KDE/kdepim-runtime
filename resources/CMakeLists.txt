@@ -1,7 +1,22 @@
+# generates a D-Bus interface description from a KConfigXT file
+macro( kcfg_generate_dbus_interface _kcfg _name )
+  add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+    COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
+            ${CMAKE_SOURCE_DIR}/akonadi/libakonadi/kcfg2dbus.xsl
+            ${_kcfg}
+            > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+    DEPENDS ${CMAKE_SOURCE_DIR}/akonadi/libakonadi/kcfg2dbus.xsl
+            ${_kcfg}
+  )
+endmacro( kcfg_generate_dbus_interface )
+
 add_subdirectory( ical )
 add_subdirectory( knut )
 add_subdirectory( vcard )
-add_subdirectory( nntp )
+if ( XSLTPROC_EXECUTABLE )
+  add_subdirectory( nntp )
+endif ( XSLTPROC_EXECUTABLE )
 add_subdirectory( maildir )
 add_subdirectory( localbookmarks )
 

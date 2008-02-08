@@ -21,6 +21,7 @@
 #include "nntpcollectionattribute.h"
 #include "configdialog.h"
 #include "settings.h"
+#include "settingsadaptor.h"
 
 #include <libakonadi/collectionattributefactory.h>
 #include <libakonadi/collectionmodifyjob.h>
@@ -50,6 +51,9 @@ NntpResource::NntpResource(const QString & id)
 {
   CollectionAttributeFactory::registerAttribute<NntpCollectionAttribute>();
   monitor()->fetchCollection( true );
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                              Settings::self(), QDBusConnection::ExportAdaptors );
 }
 
 NntpResource::~ NntpResource()
