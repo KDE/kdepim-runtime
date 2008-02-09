@@ -1,6 +1,6 @@
 /* This file is part of the KDE project
 
-   Copyright (C) 2006-2007 KovoKs <info@kovoks.nl>
+   Copyright (C) 2006-2007 Omat Holding B.V. <info@omat.nl>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
