@@ -18,6 +18,8 @@
 */
 
 #include "maildirresource.h"
+#include "settings.h"
+#include "settingsadaptor.h"
 
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
@@ -26,13 +28,6 @@
 #include <kurl.h>
 #include <kfiledialog.h>
 #include <klocale.h>
-
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
 
 #include <maildir/maildir.h>
 
@@ -71,6 +66,9 @@ static QString maildirSubdirPath( const QString &parentPath, const QString &subN
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id )
 {
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                              Settings::self(), QDBusConnection::ExportAdaptors );
 }
 
 MaildirResource::~ MaildirResource()
@@ -105,7 +103,7 @@ void MaildirResource::aboutToQuit()
 
 void MaildirResource::configure( WId windowId )
 {
-  QString oldDir = settings()->value( "General/Path" ).toString();
+  QString oldDir = Settings::self()->path();
   KUrl url;
   if ( !oldDir.isEmpty() )
     url = KUrl::fromPath( oldDir );
@@ -116,7 +114,7 @@ void MaildirResource::configure( WId windowId )
     return;
   if ( oldDir == newDir )
     return;
-  settings()->setValue( "General/Path", newDir );
+  Settings::self()->setPath( newDir );
 //   synchronize();
 }
 
@@ -201,7 +199,7 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
 
 void MaildirResource::retrieveCollections()
 {
-  Maildir dir( settings()->value( "General/Path" ).toString() );
+  Maildir dir( Settings::self()->path() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
     error( errMsg );
@@ -210,7 +208,7 @@ void MaildirResource::retrieveCollections()
 
   Collection root;
   root.setParent( Collection::root() );
-  root.setRemoteId( settings()->value( "General/Path" ).toString() );
+  root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "message/rfc822" << Collection::collectionMimeType();
@@ -258,17 +256,19 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
   Collection col = collection;
   col.setRemoteId( parent.remoteId() + QDir::separator() + collection.name() );
-  CollectionModifyJob *mjob = new CollectionModifyJob( col );
+  changesCommitted( col );
 }
 
 void MaildirResource::collectionChanged(const Collection & collection)
 {
   kDebug( 5254 ) << "Implement me!";
+  ResourceBase::collectionChanged( collection );
 }
 
 void MaildirResource::collectionRemoved(int id, const QString & remoteId)
 {
   kDebug( 5254 ) << "Implement me!";
+  ResourceBase::collectionRemoved( id, remoteId );
 }
 
 QByteArray MaildirResource::readHeader(const QString & fileName)

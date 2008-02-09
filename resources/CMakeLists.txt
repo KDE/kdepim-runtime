@@ -15,9 +15,9 @@ add_subdirectory( ical )
 add_subdirectory( knut )
 add_subdirectory( vcard )
 if ( XSLTPROC_EXECUTABLE )
+  add_subdirectory( maildir )
   add_subdirectory( nntp )
 endif ( XSLTPROC_EXECUTABLE )
-add_subdirectory( maildir )
 add_subdirectory( localbookmarks )
 
 #This is experimental and probably experiencing bit-rot.
