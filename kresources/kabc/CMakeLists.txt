@@ -3,7 +3,7 @@
 
 ########### next target ###############
 
-set(kabc_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadiconfig.cpp ../libakonadi/itemsync.cpp)
+set(kabc_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadiconfig.cpp)
 
 
 kde4_add_plugin(kabc_akonadi ${kabc_akonadi_SRCS})
