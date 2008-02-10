@@ -9,5 +9,9 @@
       <label>Path to maildir</label>
       <default></default>
     </entry>
+    <entry name="ReadOnly" type="Bool">
+      <label>Do not change the actual backend data.</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>

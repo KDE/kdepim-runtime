@@ -115,14 +115,13 @@ void MaildirResource::configure( WId windowId )
   if ( oldDir == newDir )
     return;
   Settings::self()->setPath( newDir );
-//   synchronize();
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
     Maildir dir( collection.remoteId() );
     QString errMsg;
-    if ( !dir.isValid( errMsg ) ) {
+    if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
       error( errMsg );
       return;
     }
@@ -140,7 +139,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-    if ( !parts.contains( Item::PartBody ) ) {
+    if ( Settings::self()->readOnly() || !parts.contains( Item::PartBody ) ) {
       changeProcessed();
       return;
     }
@@ -166,18 +165,21 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
 {
+  if ( !Settings::self()->readOnly() ) {
     const QString path = maildirPath( ref.remoteId() );
     const QString entry = maildirId( ref.remoteId() );
 
     Maildir dir( path );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
-        error( errMsg );
-        return;
+      error( errMsg );
+      return;
     }
     if ( !dir.removeEntry( entry ) ) {
-        error( i18n("Failed to delete item: %1", ref.remoteId()) );
+      error( i18n("Failed to delete item: %1", ref.remoteId()) );
     }
+  }
+  changeProcessed();
 }
 
 Collection::List listRecursive( const Collection &root, const Maildir &dir )
@@ -250,10 +252,10 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 {
   Maildir md( parent.remoteId() );
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
-  if ( !md.isValid() )
+  if ( Settings::self()->readOnly() || !md.isValid() || !md.addSubFolder( collection.name() ) ) {
+    changeProcessed();
     return;
-  if ( !md.addSubFolder( collection.name() ) )
-    return;
+  }
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
 
   Collection col = collection;
