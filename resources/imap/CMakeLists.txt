@@ -16,7 +16,6 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
-
 ########### next target ###############
 
 set( imaplibresource_SRCS
@@ -26,6 +25,8 @@ set( imaplibresource_SRCS
 
 install( FILES imaplibresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.Akonadi.ImapLib.Settings )
+kde4_add_kcfg_files(imaplib_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
 target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} imap kmime)
