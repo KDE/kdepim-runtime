@@ -180,6 +180,7 @@ void KABCResource::configure( WId windowId )
   if ( !dlg.exec() ) {
     delete mResource;
     mResource = 0;
+    return;
   }
 
   manager->writeConfig( KGlobal::config().data() );
@@ -270,6 +271,18 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col, const QStringL
       kError() << "Starting Load failed:" << mErrorHandler->mLastError;
       return;
     }
+  } else {
+    Item::List items;
+
+    AddressBook::const_iterator it    = mAddressBook->begin();
+    AddressBook::const_iterator endIt = mAddressBook->end();
+    for ( ; it != endIt; ++it ) {
+      Item item( DataReference( -1, it->uid() ) );
+      item.setMimeType( "text/directory" );
+      items.append( item );
+    }
+
+    itemsRetrieved( items );
   }
 }
 
