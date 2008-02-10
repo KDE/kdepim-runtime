@@ -20,6 +20,7 @@ if ( XSLTPROC_EXECUTABLE )
 endif ( XSLTPROC_EXECUTABLE )
 add_subdirectory( localbookmarks )
 add_subdirectory( kabc )
+add_subdirectory( kcal )
 
 #This is experimental and probably experiencing bit-rot.
 #So, comment out for now -- talk to Brad Hards <bradh@frogmouth.net> for more info.

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi KCal Compatability Resource
+Comment=An agent to load data from a KCal resource plugin
+Type=AkonadiResource
+Exec=akonadi_kcal_resource
+Icon=text-calendar
+
+X-Akonadi-MimeTypes=text/calendar
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_kcal_resource
