@@ -202,8 +202,11 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   if ( !addressee.isEmpty() ) {
     mAddressBook->insertAddressee( addressee );
 
-    DataReference r( item.reference().id(), addressee.uid() );
-    changesCommitted( r );
+    Item i( item );
+    i.setRemoteId( addressee.uid() );
+    changesCommitted( i );
+  } else {
+    changeProcessed();
   }
 }
 
@@ -215,8 +218,11 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QStringList& pa
   if ( !addressee.isEmpty() ) {
     mAddressBook->insertAddressee( addressee );
 
-    DataReference r( item.reference().id(), addressee.uid() );
-    changesCommitted( r );
+    Item i( item );
+    i.setRemoteId( addressee.uid() );
+    changesCommitted( i );
+  } else {
+    changeProcessed();
   }
 }
 
@@ -225,6 +231,7 @@ void KABCResource::itemRemoved( const Akonadi::DataReference &ref )
   KABC::Addressee addressee = mAddressBook->findByUid( ref.remoteId() );
   if ( !addressee.isEmpty() )
     mAddressBook->removeAddressee( addressee );
+  changeProcessed();
 }
 
 void KABCResource::retrieveCollections()

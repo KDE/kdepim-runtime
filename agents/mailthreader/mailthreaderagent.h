@@ -30,8 +30,8 @@ class MailThreaderAttribute : public CollectionAttribute
 {
   public:
     MailThreaderAttribute() : CollectionAttribute() {}
-    MailThreaderAttribute* clone() const { 
-      MailThreaderAttribute *a =  new MailThreaderAttribute(); 
+    MailThreaderAttribute* clone() const {
+      MailThreaderAttribute *a =  new MailThreaderAttribute();
       a->mData = mData;
       return a;
     }
@@ -72,7 +72,7 @@ class MailThreaderAgent : public Akonadi::AgentBase
     void threadCollection( const Akonadi::Collection &col );
 
   public Q_SLOTS:
-    virtual void configure();
+    virtual void configure( WId windowId );
 
   protected:
     virtual void aboutToQuit();

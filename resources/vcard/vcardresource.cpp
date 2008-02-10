@@ -95,8 +95,11 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
-    DataReference r( item.reference().id(), addressee.uid() );
-    changesCommitted( r );
+    Item i( item );
+    i.setRemoteId( addressee.uid() );
+    changesCommitted( i );
+  } else {
+    changeProcessed();
   }
 }
 
@@ -106,8 +109,11 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QStringList& )
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
-    DataReference r( item.reference().id(), addressee.uid() );
-    changesCommitted( r );
+    Item i( item );
+    i.setRemoteId( addressee.uid() );
+    changesCommitted( i );
+  } else {
+    changeProcessed();
   }
 }
 
@@ -115,6 +121,7 @@ void VCardResource::itemRemoved(const Akonadi::DataReference & ref)
 {
   if ( mAddressees.contains( ref.remoteId() ) )
     mAddressees.remove( ref.remoteId() );
+  changeProcessed();
 }
 
 void VCardResource::retrieveCollections()

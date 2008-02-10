@@ -362,7 +362,7 @@ void MailThreaderAgent::aboutToQuit()
 
 }
 
-void MailThreaderAgent::configure()
+void MailThreaderAgent::configure( WId windowId )
 {
 }
 

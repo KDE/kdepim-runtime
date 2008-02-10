@@ -133,14 +133,17 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     }
     const MessagePtr mail = item.payload<MessagePtr>();
     const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
-    DataReference ref = item.reference();
-    ref.setRemoteId( rid );
-    changesCommitted( ref );
+    Item i( item );
+    i.setRemoteId( rid );
+    changesCommitted( i );
 }
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-    if ( !parts.contains( Item::PartBody ) ) return;
+    if ( !parts.contains( Item::PartBody ) ) {
+      changeProcessed();
+      return;
+    }
 
     const QString path = maildirPath( item.reference().remoteId() );
     const QString entry = maildirId( item.reference().remoteId() );
@@ -158,7 +161,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
     }
     const MessagePtr mail = item.payload<MessagePtr>();
     dir.writeEntry( entry, mail->encodedContent() );
-    changesCommitted( item.reference() );
+    changesCommitted( item );
 }
 
 void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
@@ -229,7 +232,6 @@ void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStri
   }
   QStringList entryList = md.entryList();
 
-  int counter = 0;
   Item::List items;
   foreach ( const QString entry, entryList ) {
     const QString rid = col.remoteId() + QDir::separator() + entry;

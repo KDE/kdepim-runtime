@@ -114,13 +114,15 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   Q_ASSERT( item.hasPayload<IncidencePtr>() );
   IncidencePtr i = item.payload<IncidencePtr>();
   mCalendar->addIncidence( i.get() );
-  DataReference r( item.reference().id(), i->uid() );
-  changesCommitted( r );
+  Item it( item );
+  it.setRemoteId( i->uid() );
+  changesCommitted( it );
 }
 
-void ICalResource::itemChanged( const Akonadi::Item&, const QStringList& )
+void ICalResource::itemChanged( const Akonadi::Item &item, const QStringList &parts )
 {
   kWarning( 5251 ) << "Implement me!";
+  ResourceBase::itemChanged( item, parts );
 }
 
 void ICalResource::itemRemoved(const Akonadi::DataReference & ref)
@@ -128,6 +130,7 @@ void ICalResource::itemRemoved(const Akonadi::DataReference & ref)
   Incidence *i = mCalendar->incidence( ref.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
+  changeProcessed();
 }
 
 void ICalResource::retrieveCollections()
