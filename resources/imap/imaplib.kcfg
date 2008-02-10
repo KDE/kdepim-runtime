@@ -7,10 +7,7 @@
       <label>IMAP server</label>
     </entry>
     <entry name="Username" type="String">
-      <label>IMAP server</label>
-    </entry>
-    <entry name="Password" type="String">
-      <label>IMAP server</label>
+      <label>Username</label>
     </entry>
     <entry name="Safety" type="Int">
       <label>Defines the encryption type to use</label>

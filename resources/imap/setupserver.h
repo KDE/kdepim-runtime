@@ -50,6 +50,7 @@ public:
      */
     ~SetupServer();
 
+private slots:
     /**
      * Call this if you want the settings saved from this page.
      */

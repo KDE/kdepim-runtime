@@ -20,6 +20,7 @@
 
 #include "imaplibresource.h"
 #include "setupserver.h"
+//#include "settingsadaptor.h"
 #include "imaplib.h"
 
 #include <QtCore/QDebug>
@@ -55,30 +56,11 @@ using namespace Akonadi;
 ImaplibResource::ImaplibResource( const QString &id )
         :ResourceBase( id )
 {
-    // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
-    KConfigGroup config = tempConfig->group( "General" );
-    m_server = config.readEntry( "imapServer" );
-    int safe = config.readEntry( "safeImap",3 );
-    delete tempConfig;
-
-    QString server = m_server.section( ":",0,0 );
-    int port = m_server.section( ":",1,1 ).toInt();
-
-    m_imap = new Imaplib( 0,"serverconnection" );
-
-    /* TODO: copy cryptoConnectionSupport or do this somewhere else ?
-    if ((safe == 1 || safe == 2) && !Global::cryptoConnectionSupported())
-    {
-        kDebug() << "Crypto not supported!";
-        slotError(i18n("You requested TLS/SSL, but your "
-                       "system does not seem to be set up for that."));
-        return;
-    }
-    */
-
-    m_imap->startConnection( server, port, safe );
-    connections();
+ /*   new SettingsAdaptor( Settings::self() );
+    QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                Settings::self(), QDBusConnection::ExportAdaptors );
+                */
+    startConnect();
 }
 
 ImaplibResource::~ImaplibResource()
@@ -120,12 +102,45 @@ void ImaplibResource::configure( WId windowId )
     if ( windowId ) {
        KWindowSystem::setMainWindow( &dlg, windowId );
        dlg.exec();
+       startConnect();
        /*
        if ( !Settings::self()->name().isEmpty() ) {
          setName( Settings::self()->name() );
        } 
        */
     }
+}
+
+void ImaplibResource::startConnect()
+{
+    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
+    KConfigGroup config = tempConfig->group( "General" );
+    //m_server = Settings::self()->imapServer();
+    m_server = config.readEntry( "imapServer" );
+    int safe = config.readEntry( "safeImap",3 );
+    delete tempConfig;
+
+    if (m_server.isEmpty()) {
+        return;
+    }
+
+    QString server = m_server.section( ":",0,0 );
+    int port = m_server.section( ":",1,1 ).toInt();
+
+    m_imap = new Imaplib( 0,"serverconnection" );
+
+    /* TODO: copy cryptoConnectionSupport or do this somewhere else ?
+    if ((safe == 1 || safe == 2) && !Global::cryptoConnectionSupported())
+    {
+        kDebug() << "Crypto not supported!";
+        slotError(i18n("You requested TLS/SSL, but your "
+                       "system does not seem to be set up for that."));
+        return;
+    }
+    */
+
+    connections(); // todo: double connections on reconnect?
+    m_imap->startConnection( server, port, safe );
 }
 
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )

@@ -69,6 +69,7 @@ private:
     QString m_username;
     void connections();
     void manualAuth( Imaplib* connection, const QString& username );
+    void startConnect();
 };
 
 #endif
