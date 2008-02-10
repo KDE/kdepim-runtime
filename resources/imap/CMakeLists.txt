@@ -19,6 +19,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( imaplibresource_SRCS
+  setupserver.cpp
   imaplibresource.cpp
   main.cpp
 )
@@ -29,7 +30,7 @@ kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.A
 kde4_add_kcfg_files(imaplib_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
-target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} imap kmime)
+target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} imap kmime  ${KDE4_MAILTRANSPORT_LIBS})
 
 install(TARGETS akonadi_imaplib_resource DESTINATION ${BIN_INSTALL_DIR})
 

@@ -19,6 +19,7 @@
 */
 
 #include "imaplibresource.h"
+#include "setupserver.h"
 #include "imaplib.h"
 
 #include <QtCore/QDebug>
@@ -30,6 +31,7 @@
 #include <kstandarddirs.h>
 #include <kpassworddialog.h>
 #include <kmessagebox.h>
+#include <KWindowSystem>
 
 #include <kwallet.h>
 using KWallet::Wallet;
@@ -114,7 +116,16 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 
 void ImaplibResource::configure( WId windowId )
 {
-    kDebug( ) << "Implement me!";
+    SetupServer dlg;
+    if ( windowId ) {
+       KWindowSystem::setMainWindow( &dlg, windowId );
+       dlg.exec();
+       /*
+       if ( !Settings::self()->name().isEmpty() ) {
+         setName( Settings::self()->name() );
+       } 
+       */
+    }
 }
 
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
