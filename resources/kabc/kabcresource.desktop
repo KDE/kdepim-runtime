@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi KABC Compatability Resource
+Comment=An agent to load data from a KABC resource plugin
+Type=AkonadiResource
+Exec=akonadi_kabc_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_kabc_resource
