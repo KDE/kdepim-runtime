@@ -17,6 +17,11 @@ set( icalresource_SRCS
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
+qt4_add_dbus_adaptor(icalresource_SRCS
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Settings
+)
 
 kde4_add_executable(akonadi_ical_resource RUN_UNINSTALLED ${icalresource_SRCS})
 

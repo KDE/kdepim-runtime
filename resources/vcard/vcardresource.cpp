@@ -18,13 +18,8 @@
 */
 
 #include "vcardresource.h"
-
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
+#include "settings.h"
+#include "settingsadaptor.h"
 
 #include <kfiledialog.h>
 #include <klocale.h>
@@ -35,6 +30,9 @@ using namespace Akonadi;
 VCardResource::VCardResource( const QString &id )
   : ResourceBase( id )
 {
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                            Settings::self(), QDBusConnection::ExportAdaptors );
   loadAddressees();
 }
 
@@ -60,7 +58,7 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QStringList &
 
 void VCardResource::aboutToQuit()
 {
-  QString fileName = settings()->value( "General/Path" ).toString();
+  const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() )
     error( i18n( "No filename specified." ) );
   else if ( storeAddressees() )
@@ -69,14 +67,14 @@ void VCardResource::aboutToQuit()
 
 void VCardResource::configure( WId windowId )
 {
-  QString oldFile = settings()->value( "General/Path" ).toString();
+  const QString oldFile = Settings::self()->path();
   KUrl url;
   if ( !oldFile.isEmpty() )
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
 
-  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), windowId, i18n( "Select Address Book" ) );
+  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), windowId, i18n( "Select Address Book" ) );
 
   if ( newFile.isEmpty() )
     return;
@@ -84,7 +82,7 @@ void VCardResource::configure( WId windowId )
   if ( oldFile == newFile )
     return;
 
-  settings()->setValue( "General/Path", newFile );
+  Settings::self()->setPath( newFile );
   loadAddressees();
   synchronize();
 }
@@ -128,7 +126,7 @@ void VCardResource::retrieveCollections()
 {
   Collection c;
   c.setParent( Collection::root() );
-  c.setRemoteId( settings()->value( "General/Path" ).toString() );
+  c.setRemoteId( Settings::self()->path() );
   c.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "text/directory";
@@ -156,7 +154,7 @@ bool VCardResource::loadAddressees()
 {
   mAddressees.clear();
 
-  QString fileName = settings()->value( "General/Path" ).toString();
+  const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() ) {
     changeStatus( Error, i18n( "No vCard file specified." ) );
     return false;
@@ -181,7 +179,10 @@ bool VCardResource::loadAddressees()
 
 bool VCardResource::storeAddressees()
 {
-  QString fileName = settings()->value( "General/Path" ).toString();
+  if ( Settings::self()->readOnly() )
+    return true;
+
+  const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() ) {
     changeStatus( Error, i18n( "No vCard file specified." ) );
     return false;

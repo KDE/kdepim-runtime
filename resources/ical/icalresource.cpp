@@ -18,12 +18,8 @@
 */
 
 #include "icalresource.h"
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
+#include "settings.h"
+#include "settingsadaptor.h"
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -42,8 +38,10 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 ICalResource::ICalResource( const QString &id )
     :ResourceBase( id ), mCalendar( 0 )
 {
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                            Settings::self(), QDBusConnection::ExportAdaptors );
   loadFile();
-//   synchronize();
 }
 
 ICalResource::~ ICalResource()
@@ -70,7 +68,9 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
 
 void ICalResource::aboutToQuit()
 {
-  QString fileName = settings()->value( "General/Path" ).toString();
+  if ( Settings::self()->readOnly() )
+    return;
+  const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() )
     error( i18n("No filename specified.") );
   else if ( !mCalendar->save( fileName ) )
@@ -79,18 +79,18 @@ void ICalResource::aboutToQuit()
 
 void ICalResource::configure( WId windowId )
 {
-  QString oldFile = settings()->value( "General/Path" ).toString();
+  const QString oldFile = Settings::self()->path();
   KUrl url;
   if ( !oldFile.isEmpty() )
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), windowId, i18n("Select Calendar") );
+  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), windowId, i18n("Select Calendar") );
   if ( newFile.isEmpty() )
     return;
   if ( oldFile == newFile )
     return;
-  settings()->setValue( "General/Path", newFile );
+  Settings::self()->setPath( newFile );
   loadFile();
   synchronize();
 }
@@ -99,7 +99,7 @@ void ICalResource::loadFile()
 {
   delete mCalendar;
   mCalendar = 0;
-  QString file = settings()->value( "General/Path" ).toString();
+  const QString file = Settings::self()->path();
   if ( file.isEmpty() ) {
     changeStatus( Error, i18n( "No iCal file specified." ) );
     return;
@@ -137,7 +137,7 @@ void ICalResource::retrieveCollections()
 {
   Collection c;
   c.setParent( Collection::root() );
-  c.setRemoteId( settings()->value( "General/Path" ).toString() );
+  c.setRemoteId( Settings::self()->path() );
   c.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
