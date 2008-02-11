@@ -144,9 +144,9 @@ SetupServer::SetupServer( QWidget* parent )
              SIGNAL( statusChanged( Solid::Networking::Status ) ),
              SLOT( slotTestChanged() ) );
     connect( this, SIGNAL( applyClicked() ),
-            SLOT ( applySettings() ) );
+             SLOT( applySettings() ) );
     connect( this, SIGNAL( okClicked() ),
-            SLOT ( applySettings() ) );
+             SLOT( applySettings() ) );
 }
 
 SetupServer::~SetupServer()
@@ -158,7 +158,7 @@ void SetupServer::applySettings()
     Settings::self()->setImapServer( m_imapServer->text() );
     Settings::self()->setUsername( m_userName->text() );
     Settings::self()->setSafety( m_safeImap_group->checkedId() );
-    Settings::self()->setPassword(  m_password->text() );
+    Settings::self()->setPassword( m_password->text() );
     Settings::self()->writeConfig();
     kDebug() << "wrote" << m_imapServer->text() << m_userName->text() << m_safeImap_group->checkedId();
 }
@@ -168,14 +168,14 @@ void SetupServer::readSettings()
     KUser* currentUser = new KUser();
     KEMailSettings esetting;
 
-    m_imapServer->setText( 
-            !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
-                           esetting.getSetting( KEMailSettings::InServer ) );
-    m_userName->setText( 
-            !Settings::self()->username().isEmpty() ? Settings::self()->username() :
-                            currentUser->loginName() );
+    m_imapServer->setText(
+        !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
+        esetting.getSetting( KEMailSettings::InServer ) );
+    m_userName->setText(
+        !Settings::self()->username().isEmpty() ? Settings::self()->username() :
+        currentUser->loginName() );
     int i = Settings::self()->safety();
-    if ( i == 0 ) 
+    if ( i == 0 )
         i = 1; // it crashes when 0, shouldn't happen, but you never know.
     m_safeImap_group->button( i )->setChecked( true );
 
@@ -186,8 +186,8 @@ void SetupServer::readSettings()
                                           "activate it. If you do not "
                                           "want to use KWallet, check the box below and enjoy the dialogs." ),
                                   i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
-    } else 
-      m_password->insert( Settings::self()->password() );
+    } else
+        m_password->insert( Settings::self()->password() );
 }
 
 void SetupServer::slotTest()

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2008 Omat Holding B.V. <info@omat.nl>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -24,7 +25,7 @@
 
 class Settings : public SettingsBase
 {
-  public:
+public:
     Settings();
     static Settings *self();
 

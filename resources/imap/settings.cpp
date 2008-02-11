@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2008 Omat Holding B.V. <info@omat.nl>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -27,40 +28,42 @@ using KWallet::Wallet;
 
 class SettingsHelper
 {
-  public:
-    SettingsHelper() : q(0) {}
-    ~SettingsHelper() { delete q; }
+public:
+    SettingsHelper() : q( 0 ) {}
+    ~SettingsHelper() {
+        delete q;
+    }
     Settings *q;
 };
 
-K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
+K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings *Settings::self()
 {
-  if (!s_globalSettings->q) {
-    new Settings;
-    s_globalSettings->q->readConfig();
-  }
+    if ( !s_globalSettings->q ) {
+        new Settings;
+        s_globalSettings->q->readConfig();
+    }
 
-  return s_globalSettings->q;
+    return s_globalSettings->q;
 }
 
 Settings::Settings() : SettingsBase()
 {
-  Q_ASSERT(!s_globalSettings->q);
-  s_globalSettings->q = this;
+    Q_ASSERT( !s_globalSettings->q );
+    s_globalSettings->q = this;
 }
 
 QString Settings::password() const
 {
-  QString password;
-  Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
-  if ( wallet && wallet->isOpen() && wallet->hasFolder( "imaplib" ) ) {
-    wallet->setFolder( "imaplib" );
-    wallet->readPassword( config()->name(), password );
-  }
-  delete wallet;
-  return password;
+    QString password;
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
+    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imaplib" ) ) {
+        wallet->setFolder( "imaplib" );
+        wallet->readPassword( config()->name(), password );
+    }
+    delete wallet;
+    return password;
 }
 
 bool Settings::passwordPossible() const
@@ -68,21 +71,21 @@ bool Settings::passwordPossible() const
     bool possible = true;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
     if ( !wallet ) {
-      possible = false;
+        possible = false;
     }
     delete wallet;
     return possible;
 }
 
-void Settings::setPassword(const QString & password)
+void Settings::setPassword( const QString & password )
 {
-   Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
-   if ( wallet && wallet->isOpen() ) {
-     if ( !wallet->hasFolder( "imaplib" ) )
-       wallet->createFolder( "imaplib" );
-     wallet->setFolder( "imaplib" );
-     wallet->writePassword( config()->name(), password );
-     kDebug() << "Wallet save: " << wallet->sync() << endl;
-   }
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+    if ( wallet && wallet->isOpen() ) {
+        if ( !wallet->hasFolder( "imaplib" ) )
+            wallet->createFolder( "imaplib" );
+        wallet->setFolder( "imaplib" );
+        wallet->writePassword( config()->name(), password );
+        kDebug() << "Wallet save: " << wallet->sync() << endl;
+    }
 }
 

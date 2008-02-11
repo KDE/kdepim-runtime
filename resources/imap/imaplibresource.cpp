@@ -53,7 +53,7 @@ ImaplibResource::ImaplibResource( const QString &id )
 {
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                Settings::self(), QDBusConnection::ExportAdaptors );
+            Settings::self(), QDBusConnection::ExportAdaptors );
     startConnect();
 }
 
@@ -97,11 +97,11 @@ void ImaplibResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     startConnect();
-       /*
-       if ( !Settings::self()->name().isEmpty() ) {
-         setName( Settings::self()->name() );
-       } 
-       */
+    /*
+    if ( !Settings::self()->name().isEmpty() ) {
+      setName( Settings::self()->name() );
+    }
+    */
 }
 
 void ImaplibResource::startConnect()
@@ -109,7 +109,7 @@ void ImaplibResource::startConnect()
     m_server = Settings::self()->imapServer();
     int safe = Settings::self()->safety();
 
-    if (m_server.isEmpty()) {
+    if ( m_server.isEmpty() ) {
         return;
     }
 
@@ -325,13 +325,13 @@ void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
 
 void ImaplibResource::slotLogin( Imaplib* connection )
 {
-   kDebug();
+    kDebug();
 
-   m_username =  Settings::self()->username();
-   QString pass = Settings::self()->password();
+    m_username =  Settings::self()->username();
+    QString pass = Settings::self()->password();
 
-   pass.isEmpty() ? manualAuth( connection, m_username )
-        : connection->login( m_username, pass );
+    pass.isEmpty() ? manualAuth( connection, m_username )
+    : connection->login( m_username, pass );
 }
 
 void ImaplibResource::slotLoginFailed( Imaplib* connection )
