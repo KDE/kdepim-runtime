@@ -21,6 +21,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( imaplibresource_SRCS
   setupserver.cpp
   imaplibresource.cpp
+  settings.cpp
   main.cpp
 )
 
@@ -41,10 +42,10 @@ macro( kcfg_generate_dbus_interface _kcfg _name )
             )
 endmacro( kcfg_generate_dbus_interface )
 
-#kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.Akonadi.Imaplib.Settings )
-#qt4_add_dbus_adaptor( imaplibresource_SRCS
-#     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Settings.xml settings.h Settings
-#     )
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.Akonadi.Imaplib.Settings )
+qt4_add_dbus_adaptor( imaplibresource_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Settings.xml settings.h Settings
+     )
 kde4_add_kcfg_files(imaplibresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 

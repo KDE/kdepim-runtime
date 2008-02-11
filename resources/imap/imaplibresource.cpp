@@ -20,7 +20,7 @@
 
 #include "imaplibresource.h"
 #include "setupserver.h"
-//#include "settingsadaptor.h"
+#include "settingsadaptor.h"
 #include "imaplib.h"
 
 #include <QtCore/QDebug>
@@ -28,14 +28,9 @@
 
 #include <kdebug.h>
 #include <klocale.h>
-#include <kconfiggroup.h>
-#include <kstandarddirs.h>
 #include <kpassworddialog.h>
 #include <kmessagebox.h>
 #include <KWindowSystem>
-
-#include <kwallet.h>
-using KWallet::Wallet;
 
 #include <kmime/kmime_message.h>
 
@@ -56,10 +51,9 @@ using namespace Akonadi;
 ImaplibResource::ImaplibResource( const QString &id )
         :ResourceBase( id )
 {
- /*   new SettingsAdaptor( Settings::self() );
+    new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                 Settings::self(), QDBusConnection::ExportAdaptors );
-                */
     startConnect();
 }
 
@@ -98,27 +92,22 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 
 void ImaplibResource::configure( WId windowId )
 {
+    kDebug();
     SetupServer dlg;
-    if ( windowId ) {
-       KWindowSystem::setMainWindow( &dlg, windowId );
-       dlg.exec();
-       startConnect();
+    KWindowSystem::setMainWindow( &dlg, windowId );
+    dlg.exec();
+    startConnect();
        /*
        if ( !Settings::self()->name().isEmpty() ) {
          setName( Settings::self()->name() );
        } 
        */
-    }
 }
 
 void ImaplibResource::startConnect()
 {
-    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
-    KConfigGroup config = tempConfig->group( "General" );
-    //m_server = Settings::self()->imapServer();
-    m_server = config.readEntry( "imapServer" );
-    int safe = config.readEntry( "safeImap",3 );
-    delete tempConfig;
+    m_server = Settings::self()->imapServer();
+    int safe = Settings::self()->safety();
 
     if (m_server.isEmpty()) {
         return;
@@ -336,27 +325,13 @@ void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
 
 void ImaplibResource::slotLogin( Imaplib* connection )
 {
-    // kDebug();
+   kDebug();
 
-    // For now, read the mailody settings. Need to figure out how to set mailody up for settings().
-    KConfig* tempConfig = new KConfig( KStandardDirs::locate( "config", "mailodyrc4" ) );
-    KConfigGroup config = tempConfig->group( "General" );
-    m_username = config.readEntry( "userName" );
-    delete tempConfig;
-    QString pass;
+   m_username =  Settings::self()->username();
+   QString pass = Settings::self()->password();
 
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
-    if ( wallet && wallet->isOpen() && wallet->hasFolder( "mailody" ) ) {
-        wallet->setFolder( "mailody" );
-        wallet->readPassword( "account1", pass );
-    }
-    delete wallet;
-
-    if ( pass.isEmpty() ) {
-        manualAuth( connection, m_username );
-    } else {
-        connection->login( m_username, pass );
-    }
+   pass.isEmpty() ? manualAuth( connection, m_username )
+        : connection->login( m_username, pass );
 }
 
 void ImaplibResource::slotLoginFailed( Imaplib* connection )
@@ -369,7 +344,7 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
             i18n( "Could Not Log In" ),
             KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
     if ( i == KMessageBox::Yes )
-        configure( 0 ); /* reconnect after that I guess...*/
+        configure( 0 );
     else if ( i == KMessageBox::No ) {
         manualAuth( connection, m_username );
     } else

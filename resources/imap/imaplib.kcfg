@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
 <kcfg> 
-  <kcfgfile name="imaplibconfigrc"/>
   <group name="network">
     <entry name="ImapServer" type="String">
       <label>IMAP server</label>

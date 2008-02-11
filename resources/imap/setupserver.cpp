@@ -22,7 +22,7 @@
 
 // Own
 #include "setupserver.h"
-#include "settingsbase.h"
+#include "settings.h"
 
 // Qt
 #include <QLabel>
@@ -155,23 +155,12 @@ SetupServer::~SetupServer()
 
 void SetupServer::applySettings()
 {
-    SettingsBase* base = new SettingsBase();
-    base->setImapServer( m_imapServer->text() );
-    base->setUsername( m_userName->text() );
-    base->setSafety( m_safeImap_group->checkedId() );
-    base->writeConfig();
+    Settings::self()->setImapServer( m_imapServer->text() );
+    Settings::self()->setUsername( m_userName->text() );
+    Settings::self()->setSafety( m_safeImap_group->checkedId() );
+    Settings::self()->setPassword(  m_password->text() );
+    Settings::self()->writeConfig();
     kDebug() << "wrote" << m_imapServer->text() << m_userName->text() << m_safeImap_group->checkedId();
-
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), this->winId() );
-    if ( wallet && wallet->isOpen() ) {
-        if ( !wallet->hasFolder( "mailody" ) )
-            wallet->createFolder( "mailody" );
-
-        wallet->setFolder( "mailody" );
-        wallet->writePassword( "account1", m_password->text() );
-    }
-    kDebug() << "Wallet save: " << wallet->sync() << endl;
-    delete wallet;
 }
 
 void SetupServer::readSettings()
@@ -179,31 +168,26 @@ void SetupServer::readSettings()
     KUser* currentUser = new KUser();
     KEMailSettings esetting;
 
-    SettingsBase* base = new SettingsBase();
     m_imapServer->setText( 
-            !base->imapServer().isEmpty() ? base->imapServer() :
+            !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
                            esetting.getSetting( KEMailSettings::InServer ) );
     m_userName->setText( 
-            !base->username().isEmpty() ? base->username() :
+            !Settings::self()->username().isEmpty() ? Settings::self()->username() :
                             currentUser->loginName() );
-    int i = base->safety();
-    if ( i == 0 ) i = 1; // it crashes when 0, shouldn't happen, but you never know.
+    int i = Settings::self()->safety();
+    if ( i == 0 ) 
+        i = 1; // it crashes when 0, shouldn't happen, but you never know.
     m_safeImap_group->button( i )->setChecked( true );
 
-    QString pass;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), this->winId() );
-    if ( !wallet ) {
+    if ( !Settings::self()->passwordPossible() ) {
         m_password->setEnabled( false );
-        KMessageBox::information( 0,i18n( "Ccould not access KWallet, "
+        KMessageBox::information( 0,i18n( "Could not access KWallet, "
                                           "if you want to store the password permanently then you have to "
                                           "activate it. If you do not "
                                           "want to use KWallet, check the box below and enjoy the dialogs." ),
                                   i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
-    } else if ( wallet->isOpen() && wallet->hasFolder( "mailody" ) ) {
-        wallet->setFolder( "imaplibresource" );
-        wallet->readPassword( "account1", pass );
-    }
-    m_password->insert( pass );
+    } else 
+      m_password->insert( Settings::self()->password() );
 }
 
 void SetupServer::slotTest()
