@@ -1,14 +1,3 @@
-project(akonadi_kres)
-
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-
-# search packages used by KDE
-find_package (KDE4 REQUIRED)
-find_package (KdepimLibs REQUIRED)
-include(KDE4Defaults)
-include(MacroLibrary)
-include(MacroOptionalAddSubdirectory)
-
 if(WIN32)
     set(LIB_INSTALL_DIR ${LIB_INSTALL_DIR}
                         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
@@ -25,5 +14,3 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${K
 
 add_subdirectory(kabc)
 add_subdirectory(kcal)
-
-macro_display_feature_log()
