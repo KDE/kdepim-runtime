@@ -33,7 +33,7 @@ namespace Akonadi {
 
 namespace KCal {
 
-class KCAL_EXPORT ResourceAkonadi : public ResourceCalendar
+class ResourceAkonadi : public ResourceCalendar
 {
   Q_OBJECT
 

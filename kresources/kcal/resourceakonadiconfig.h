@@ -21,7 +21,6 @@
 #ifndef KCAL_RESOURCEAKONADICONFIG_H
 #define KCAL_RESOURCEAKONADICONFIG_H
 
-#include "kcal/kcal_export.h"
 #include "kresources/configwidget.h"
 
 namespace Akonadi{
@@ -33,7 +32,7 @@ class QModelIndex;
 
 namespace KCal {
 
-class KCAL_EXPORT ResourceAkonadiConfig : public KRES::ConfigWidget
+class ResourceAkonadiConfig : public KRES::ConfigWidget
 {
   Q_OBJECT
 

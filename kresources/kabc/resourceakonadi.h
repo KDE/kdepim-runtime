@@ -33,7 +33,7 @@ namespace Akonadi {
 
 namespace KABC {
 
-class KABC_EXPORT ResourceAkonadi : public Resource
+class ResourceAkonadi : public Resource
 {
   Q_OBJECT
 

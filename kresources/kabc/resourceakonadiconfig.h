@@ -21,7 +21,6 @@
 #ifndef KABC_RESOURCEAKONADICONFIG_H
 #define KABC_RESOURCEAKONADICONFIG_H
 
-#include "kabc/kabc_export.h"
 #include "kresources/configwidget.h"
 
 namespace Akonadi{
@@ -33,7 +32,7 @@ class QModelIndex;
 
 namespace KABC {
 
-class KABC_EXPORT ResourceAkonadiConfig : public KRES::ConfigWidget
+class ResourceAkonadiConfig : public KRES::ConfigWidget
 {
   Q_OBJECT
 
