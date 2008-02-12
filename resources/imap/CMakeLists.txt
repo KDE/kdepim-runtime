@@ -53,3 +53,16 @@ target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} im
 
 install(TARGETS akonadi_imaplib_resource DESTINATION ${BIN_INSTALL_DIR})
 
+
+################# Next target
+
+set(imaplib_kcm_srcs configmodule.cpp imaplibmanagementwidget.cpp)
+kde4_add_ui_files(imaplib_kcm_srcs imaplibmanagementwidget.ui )
+kde4_add_plugin(kcm_imaplib ${imaplib_kcm_srcs})
+target_link_libraries(kcm_imaplib  ${KDE4_KDEUI_LIBS})
+
+install(TARGETS kcm_imaplib  DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES kcm_imaplib.desktop  DESTINATION ${SERVICES_INSTALL_DIR})
+
+install(FILES imaplib_export.h imaplibmanagementwidget.h
+         DESTINATION ${INCLUDE_INSTALL_DIR} )
