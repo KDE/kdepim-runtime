@@ -1,6 +1,9 @@
 [Desktop Entry]
 Name=Akonadi KABC Compatability Resource
+Name[km]=ធនធាន​ឆបគ្នា​របស់ Akonadi KABC
 Comment=An agent to load data from a KABC resource plugin
+Comment[ga]=Gníomhaire a luchtaíonn sonraí ó bhreiseán acmhainne KABC
+Comment[km]=ភ្នាក់ងារ​ត្រូវ​ផ្ទុក​ទិន្នន័យ​ពី​កម្មវិធី​ជំនួយ​ធនធាន KABC
 Type=AkonadiResource
 Exec=akonadi_kabc_resource
 Icon=text-directory
