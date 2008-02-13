@@ -24,10 +24,16 @@
 #include "imaplibmanagementwidget.h"
 #include "ui_imaplibmanagementwidget.h"
 
+#include <libakonadi/agentmanager.h>
+#include <libakonadi/agentinstancecreatejob.h>
+
+#include <kdebug.h>
+
 class ImaplibManagementWidget::Private
 {
   public:
     Ui::ImaplibManagementWidget ui;
+    Akonadi::AgentManager* manager;
 };
 
 ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
@@ -36,20 +42,23 @@ ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
 {
   d->ui.setupUi( this );
 
-  d->ui.transportList->setHeaderLabels(
-                           QStringList() << i18n("Name") << i18n("Type") );
-  connect( d->ui.transportList, SIGNAL(currentItemChanged(QTreeWidgetItem*,
+  d->ui.imaplibList->setHeaderLabels( QStringList() << i18n("Name") );
+  connect( d->ui.imaplibList, SIGNAL(currentItemChanged(QTreeWidgetItem*,
            QTreeWidgetItem*)), SLOT(updateButtonState()) );
-  connect( d->ui.transportList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+  connect( d->ui.imaplibList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
            SLOT(editClicked()) );
   connect( d->ui.addButton, SIGNAL(clicked()), SLOT(addClicked()) );
   connect( d->ui.editButton, SIGNAL(clicked()), SLOT(editClicked()) );
   connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
-  connect( d->ui.defaultButton, SIGNAL(clicked()), SLOT(defaultClicked()) );
 
-  /*fillImaplibList();
-  connect( TransportManager::self(), SIGNAL(transportsChanged()),
-           SLOT(fillTransportList()) ); */
+  d->manager = new Akonadi::AgentManager( this );
+  connect( d->manager, SIGNAL(  agentInstanceAdded (const QString&) ),
+           SLOT(fillImaplibList()) ); 
+  connect( d->manager, SIGNAL(  agentInstanceRemoved (const QString&) ),
+           SLOT(fillImaplibList()) ); 
+  connect( d->manager, SIGNAL( agentInstanceNameChanged( const QString&, const QString& ) ),
+           SLOT(fillImaplibList()) ); 
+  fillImaplibList();
 }
 
 ImaplibManagementWidget::~ImaplibManagementWidget()
@@ -59,39 +68,50 @@ ImaplibManagementWidget::~ImaplibManagementWidget()
 
 void ImaplibManagementWidget::fillImaplibList()
 {
+    kDebug();
+    QStringList instances = d->manager->agentInstances();
+    d->ui.imaplibList->clear();
+    foreach (const QString& instance, instances) {
+        QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.imaplibList );
+        QString name = d->manager->agentName( instance );
+        if (name.isEmpty()) {
+            name = instance;
+        }
+        item->setData( 0, Qt::UserRole, instance ); 
+        item->setText( 0, name ); 
+    }
 }
 
 void ImaplibManagementWidget::updateButtonState()
 {
-  if ( !d->ui.transportList->currentItem() ) {
+  if ( !d->ui.imaplibList->currentItem() ) {
     d->ui.editButton->setEnabled( false );
     d->ui.removeButton->setEnabled( false );
-    d->ui.defaultButton->setEnabled( false );
   } else {
     d->ui.editButton->setEnabled( true );
     d->ui.removeButton->setEnabled( true );
-//    if ( d->ui.transportList->currentItem()->data( 0, Qt::UserRole ) ==
-//         TransportManager::self()->defaultTransportId() )
-//      d->ui.defaultButton->setEnabled( false );
-//    else
-      d->ui.defaultButton->setEnabled( true );
   }
 }
 
 void ImaplibManagementWidget::addClicked()
 {
+    Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( "akonadi_imaplib_resource", this );
+    job->configure( winId() );
+    job->start();
 }
 
 void ImaplibManagementWidget::editClicked()
 {
+   Q_ASSERT( d->ui.imaplibList->currentItem() );
+   QString current = d->ui.imaplibList->currentItem()->data( 0, Qt::UserRole ).toString();
+   d->manager->agentInstanceConfigure( current, winId() );
 }
 
 void ImaplibManagementWidget::removeClicked()
 {
-}
-
-void ImaplibManagementWidget::defaultClicked()
-{
+   Q_ASSERT( d->ui.imaplibList->currentItem() );
+   QString current = d->ui.imaplibList->currentItem()->data( 0, Qt::UserRole ).toString();
+   d->manager->removeAgentInstance( current );
 }
 
 #include "imaplibmanagementwidget.moc"

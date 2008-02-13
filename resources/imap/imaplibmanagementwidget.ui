@@ -29,13 +29,6 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="1" >
-    <widget class="KPushButton" name="defaultButton" >
-     <property name="text" >
-      <string>Set Default</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1" >
     <widget class="KPushButton" name="removeButton" >
      <property name="text" >
@@ -58,7 +51,7 @@
     </widget>
    </item>
    <item rowspan="5" row="0" column="0" >
-    <widget class="QTreeWidget" name="transportList" >
+    <widget class="QTreeWidget" name="imaplibList" >
      <property name="alternatingRowColors" >
       <bool>true</bool>
      </property>
@@ -75,13 +68,8 @@
       <bool>true</bool>
      </property>
      <property name="columnCount" >
-      <number>2</number>
+      <number>1</number>
      </property>
-     <column>
-      <property name="text" >
-       <string>1</string>
-      </property>
-     </column>
      <column>
       <property name="text" >
        <string>1</string>

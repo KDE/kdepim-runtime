@@ -96,6 +96,7 @@ void ImaplibResource::configure( WId windowId )
     SetupServer dlg;
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
+    setName(  Settings::self()->imapServer() + "/" + Settings::self()->username() );
     startConnect();
     /*
     if ( !Settings::self()->name().isEmpty() ) {

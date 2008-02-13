@@ -59,7 +59,7 @@ install(TARGETS akonadi_imaplib_resource DESTINATION ${BIN_INSTALL_DIR})
 set(imaplib_kcm_srcs configmodule.cpp imaplibmanagementwidget.cpp)
 kde4_add_ui_files(imaplib_kcm_srcs imaplibmanagementwidget.ui )
 kde4_add_plugin(kcm_imaplib ${imaplib_kcm_srcs})
-target_link_libraries(kcm_imaplib  ${KDE4_KDEUI_LIBS})
+target_link_libraries(kcm_imaplib  ${KDE4_KDEUI_LIBS} akonadi)
 
 install(TARGETS kcm_imaplib  DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES kcm_imaplib.desktop  DESTINATION ${SERVICES_INSTALL_DIR})

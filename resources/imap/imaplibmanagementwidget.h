@@ -52,7 +52,6 @@ class IMAPLIB_EXPORT ImaplibManagementWidget : public QWidget
     void addClicked();
     void editClicked();
     void removeClicked();
-    void defaultClicked();
 
   private:
     class Private;
