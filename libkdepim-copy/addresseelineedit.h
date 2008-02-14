@@ -46,7 +46,7 @@ class QMenu;
 
 namespace KPIM {
 class LdapSearch;
-class LdapResult;
+struct LdapResult;
 typedef QList<LdapResult> LdapResultList;
 typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 }
