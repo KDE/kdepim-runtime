@@ -4,6 +4,7 @@
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
     Copyright (c) 2005 George Staikos <staikos@kde.org.
     Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
+    Copyright (c) 2008 Thomas McGuire <thomas.mcguire@gmx.net>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -26,8 +27,9 @@
 #include "qglobal.h"
 #include "time.h"
 
-#include <QString>
 #include <QList>
+#include <QMimeData>
+#include <QString>
 
 #include <kdepim_export.h>
 
@@ -120,10 +122,59 @@ class KDEPIM_EXPORT MailList : public QList<MailSummary>
     static MailList fromMimeData( const QMimeData*md );
     static QByteArray serialsFromMimeData( const QMimeData *md );
     static MailList decode( const QByteArray& payload );
-    void populateMimeData( QMimeData*md, MailTextSource *src = 0 );
+    void populateMimeData( QMimeData*md );
 };
 
-/** @} */
+/**
+ * This special QMimeData has the ability to be associated with a MailTextSource.
+ * This automatically adds another mimetype, "message/rfc822", which has the
+ * text of all mails as data.
+ * The class is needed because the new mimetype is only read on-demand when
+ * dropped, so no unnecessary mail copying is done when doing drag & drop
+ * inside of KMail.
+ *
+ * For this to work, MailList::populateMimeData() needs to be called for the
+ * drag object so the mimedata for the MailSummarys is available, which is needed
+ * to read the serial numbers of the mails.
+ *
+ * You only need to use this class when starting a drag with mails.
+ */
+class KDEPIM_EXPORT MailListMimeData : public QMimeData
+{
+  public:
 
-}
+    /**
+     * @param src The callback class for getting the full text of the mail.
+     *            If not set, the message/rfc822 mimetype is not available.
+     *            This object takes ownership of src and deletes it in the
+     *            destructor.
+     */
+    MailListMimeData( MailTextSource *src = 0 );
+
+    ~MailListMimeData();
+
+  protected:
+
+    /**
+     * Reimplemented so that the message/rfc822 mimetype data can be retrieved
+     * from mMailTextSource.
+     */
+    virtual QVariant retrieveData( const QString & mimeType,
+                                   QVariant::Type type ) const;
+
+    virtual bool hasFormat ( const QString & mimeType ) const;
+
+    virtual QStringList formats () const;
+
+  private:
+
+    MailTextSource *mMailTextSource;
+
+    // Acts as a cache for the mail text because retrieveData() can be called
+    // multiple times.
+    mutable QByteArray mMails;
+};
+
+} // namespace KPIM
+
 #endif /*maillistdrag_h*/

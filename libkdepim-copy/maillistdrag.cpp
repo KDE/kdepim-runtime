@@ -4,6 +4,7 @@
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
     Copyright (c) 2005 George Staikos <staikos@kde.org>
     Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
+    Copyright (c) 2008 Thomas McGuire <thomas.mcguire@gmx.net>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -137,15 +138,9 @@ void MailSummary::set( quint32 serialNumber, const QString &messageId,
     mDate = date;
 }
 
-MailSummary::operator KUrl() const
-{
-  return KUrl( KDEPIMPROTOCOL_EMAIL + QString::number( serialNumber() ) + '/' + messageId() );
-}
-
-
 QString MailList::mimeDataType()
 {
-    return "x-kmail-drag/message-list";
+  return "x-kmail-drag/message-list";
 }
 
 bool MailList::canDecode( const QMimeData *md )
@@ -153,7 +148,7 @@ bool MailList::canDecode( const QMimeData *md )
   return md->hasFormat( mimeDataType() );
 }
 
-void MailList::populateMimeData( QMimeData *md, MailTextSource *src )
+void MailList::populateMimeData( QMimeData *md )
 {
   /* We have three different possible mime types: x-kmail-drag/message-list, message/rfc822, and URL
      Add them in this order */
@@ -168,51 +163,6 @@ void MailList::populateMimeData( QMimeData *md, MailTextSource *src )
     buffer.close();
     md->setData( MailList::mimeDataType(), array );
   }
-
-
-  /* Popuplate the MimeData with the standard message/rfc822 mime type, only
-     possible if we are given a MailTextSource */
-  if ( src && count() ) {
-    QByteArray rc;
-    KProgressDialog *dlg = new KProgressDialog( 0, QString(), i18n("Retrieving and storing messages..."));
-    dlg->setWindowModality(Qt::WindowModal);
-    dlg->setAllowCancel(true);
-    dlg->progressBar()->setMaximum( count());
-    int i = 0;
-    dlg->progressBar()->setValue(i);
-    dlg->show();
-
-    QTextStream *ts = new QTextStream(rc, QIODevice::WriteOnly);
-    for ( MailList::ConstIterator it = begin(); it != end(); ++it ) {
-      MailSummary mailDrag = *it;
-      *ts << src->text(mailDrag.serialNumber());
-      if (dlg->wasCancelled()) {
-        break;
-      }
-      dlg->progressBar()->setValue(++i);
-#ifdef __GNUC__
-      #warning Port me!
-#endif
-      //kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
-    }
-    delete dlg;
-    delete ts;
-
-    md->setData( "message/rfc822", rc );
-  }
-
-
-  /* Popuplate the MimeData with the URLs of the messages */
-  KUrl::List urllist;
-  QStringList labels;
-  for ( MailList::ConstIterator it = begin(); it != end(); ++it ) {
-    urllist.append( (*it) );
-    labels.append( KUrl::toPercentEncoding( ( *it ).subject() ) );
-  }
-  QMap<QString,QString> metadata;
-  metadata["labels"] = labels.join( ":" );
-  urllist.populateMimeData( md, metadata );
-
 }
 
 MailList MailList::fromMimeData( const QMimeData *md )
@@ -255,3 +205,68 @@ QByteArray MailList::serialsFromMimeData( const QMimeData *md )
   }
 }
 
+MailListMimeData::MailListMimeData( MailTextSource *src )
+  : mMailTextSource( src )
+{
+}
+
+MailListMimeData::~MailListMimeData()
+{
+  delete mMailTextSource;
+  mMailTextSource = 0;
+}
+
+bool MailListMimeData::hasFormat ( const QString & mimeType ) const
+{
+  if ( mimeType == "message/rfc822" && mMailTextSource )
+    return true;
+  else
+    return QMimeData::hasFormat( mimeType );
+}
+
+QStringList MailListMimeData::formats () const
+{
+  QStringList theFormats = QMimeData::formats();
+  if ( mMailTextSource )
+    theFormats.prepend( QByteArray( "message/rfc822" ) );
+  return theFormats;
+}
+
+QVariant MailListMimeData::retrieveData( const QString & mimeType,
+                                         QVariant::Type type ) const
+{
+  if ( ( mimeType == "message/rfc822" ) && mMailTextSource ) {
+
+    if ( mMails.isEmpty() ) {
+      MailList list = MailList::fromMimeData( this );
+      KProgressDialog *dlg = new KProgressDialog( 0, QString(),
+                                   i18n("Retrieving and storing messages...") );
+      dlg->setWindowModality( Qt::WindowModal );
+      dlg->setAllowCancel( true );
+      dlg->progressBar()->setMaximum( list.size() );
+      int i = 0;
+      dlg->progressBar()->setValue( i );
+      dlg->show();
+
+      for ( MailList::ConstIterator it = list.begin(); it != list.end(); ++it ) {
+
+        // Get the serial number from the mail summary and use the mail text source
+        // to get the actual text of the mail.
+        MailSummary mailSummary = *it;
+        mMails.append( mMailTextSource->text( mailSummary.serialNumber() ) );
+        if ( dlg->wasCancelled() ) {
+          break;
+        }
+        dlg->progressBar()->setValue(++i);
+#ifdef __GNUC__
+#warning Port me!
+#endif
+        //kapp->eventLoop()->processEvents(QEventLoop::ExcludeSocketNotifiers);
+      }
+      delete dlg;
+    }
+    return mMails;
+  }
+  else
+    return QMimeData::retrieveData( mimeType, type );
+}
