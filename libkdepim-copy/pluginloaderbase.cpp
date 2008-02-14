@@ -122,14 +122,14 @@ namespace KPIM {
 
   const KLibrary * PluginLoaderBase::openLibrary( const QString & libName ) const {
 
-    const QString path = KLibLoader::findLibrary( QFile::encodeName( libName ) );
+    const QString path = KLibLoader::findLibrary( libName );
 
     if ( path.isEmpty() ) {
       kWarning( 5300 ) << "No plugin library named \"" << libName << "\" was found!" << endl;
       return 0;
     }
 
-    const KLibrary * library = KLibLoader::self()->library( QFile::encodeName( path ) );
+    const KLibrary * library = KLibLoader::self()->library( path );
 
     kDebug( !library, 5300 ) << "Could not load library '" << libName << "'" << endl;
 
