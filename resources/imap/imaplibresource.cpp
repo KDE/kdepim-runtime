@@ -31,6 +31,7 @@
 #include <kpassworddialog.h>
 #include <kmessagebox.h>
 #include <KWindowSystem>
+#include <KAboutData>
 
 #include <kmime/kmime_message.h>
 
@@ -96,7 +97,10 @@ void ImaplibResource::configure( WId windowId )
     SetupServer dlg;
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
-    setName(  Settings::self()->imapServer() + "/" + Settings::self()->username() );
+    if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->username().isEmpty() )
+        setName(  Settings::self()->imapServer() + "/" + Settings::self()->username() );
+    else 
+        setName( KGlobal::mainComponent().aboutData()->appName() );
     startConnect();
     /*
     if ( !Settings::self()->name().isEmpty() ) {
