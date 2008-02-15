@@ -73,7 +73,7 @@ void ImaplibManagementWidget::fillImaplibList()
     d->ui.imaplibList->clear();
     foreach (const QString& instance, instances) {
         QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.imaplibList );
-        QString name = d->manager->agentName( instance );
+        QString name = d->manager->agentInstanceName( instance );
         if (name.isEmpty()) {
             name = instance;
         }
