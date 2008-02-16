@@ -8,7 +8,7 @@ Name[pt_BR]=Recurso da Imaplib do Mailody para o Akonadi
 Name[sv]=Akonadi Mailody Imaplib-resurs
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource
-Icon=mail
+Icon=message-rfc822
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Resource

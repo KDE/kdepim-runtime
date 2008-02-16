@@ -53,6 +53,7 @@ ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
             continue;
 
         QAction* action = addMenu->addAction( d->manager->agentName( type ) );
+        action->setIcon( d->manager->agentIcon( type ) );
         d->menuOptions.insert( action, type );
   }
   d->ui.addButton->setMenu(addMenu);
