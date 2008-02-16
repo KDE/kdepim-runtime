@@ -1,0 +1,15 @@
+[Desktop Entry]
+Encoding=UTF-8
+Icon=network
+Type=Service
+ServiceTypes=KCModule
+
+X-KDE-ModuleType=Library
+X-KDE-Library=kcm_rfc822
+X-KDE-FactoryName=kcm_rfc822
+X-KDE-HasReadOnlyMode=false
+X-KDE-ParentApp=
+X-KDE-ParentComponents=
+X-KDE-CfgDlgHierarchy=
+
+Name=RFC822 Akonadi Resources Configuration
