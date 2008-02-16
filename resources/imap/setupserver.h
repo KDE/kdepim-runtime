@@ -76,6 +76,7 @@ private slots:
     void slotTest();
     void slotFinished( QList<int> testResult );
     void slotTestChanged();
+    void slotComplete();
 };
 
 #endif

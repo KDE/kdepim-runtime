@@ -20,40 +20,25 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-// Own
 #include "setupserver.h"
 #include "settings.h"
 
-// Qt
+#include <QButtonGroup>
+#include <QGridLayout>
+#include <QGroupBox>
 #include <QLabel>
 #include <QProgressBar>
-#include <QPushButton>
-#include <QButtonGroup>
-#include <QGroupBox>
 #include <QRadioButton>
-#include <QGridLayout>
 
-// KDEPIMLIBS
-#include <mailtransport/servertest.h>
 #include <mailtransport/transport.h>
+#include <mailtransport/servertest.h>
 
-// KDE
-#include <kconfig.h>
-#include <kconfigdialogmanager.h>
-#include <KCModuleLoader>
-#include <kdebug.h>
-#include <kdialog.h>
-#include <kuser.h>
-#include <kapplication.h>
-#include <klocale.h>
-#include <klineedit.h>
-#include <kmessagebox.h>
 #include <kemailsettings.h>
-#include <kwallet.h>
-#include <knuminput.h>
+#include <klocale.h>
+#include <kpushbutton.h>
+#include <kmessagebox.h>
+#include <kuser.h>
 #include <solid/networking.h>
-
-using KWallet::Wallet;
 
 SetupServer::SetupServer( QWidget* parent )
         : KDialog( parent )
@@ -72,6 +57,8 @@ SetupServer::SetupServer( QWidget* parent )
     l4->setBuddy( m_imapServer );
     connect( m_imapServer, SIGNAL( textChanged( const QString & ) ),
              SLOT( slotTestChanged() ) );
+    connect( m_imapServer, SIGNAL( textChanged( const QString & ) ),
+             SLOT( slotComplete() ) );
 
     QLabel *l5 = new QLabel( i18n( "Safety:" ) + ' ', mainWidget() );
     mainGrid->addWidget( l5, 2, 0 );
@@ -86,7 +73,7 @@ SetupServer::SetupServer( QWidget* parent )
     QHBoxLayout* safePartLay = new QHBoxLayout( m_safeImap );
     safePartLay->setMargin( 0 );
     safePartLay->setSpacing( KDialog::spacingHint() );
-    m_testButton = new QPushButton( i18n( "Auto detect" ), m_safeImap );
+    m_testButton = new KPushButton( i18n( "Auto detect" ), m_safeImap );
     safePartLay->addWidget( m_testButton );
     m_noRadio = new QRadioButton( i18n( "None" ), m_safeImap );
     safePartLay->addWidget( m_noRadio );
@@ -111,6 +98,8 @@ SetupServer::SetupServer( QWidget* parent )
     m_userName = new KLineEdit( mainWidget() );
     mainGrid->addWidget( m_userName,3,1 );
     l6->setBuddy( m_userName );
+    connect( m_userName, SIGNAL( textChanged( const QString & ) ),
+             SLOT( slotComplete() ) );
 
     QLabel *l7 = new QLabel( i18n( "Password:" ) + ' ', mainWidget() );
     mainGrid->addWidget( l7,4,0 );
@@ -140,6 +129,7 @@ SetupServer::SetupServer( QWidget* parent )
 
     readSettings();
     slotTestChanged();
+    slotComplete();
     connect( Solid::Networking::notifier(),
              SIGNAL( statusChanged( Solid::Networking::Status ) ),
              SLOT( slotTestChanged() ) );
@@ -248,6 +238,12 @@ void SetupServer::slotTestChanged()
     // dont use imapConnectionPossible, as the data is not yet saved.
     m_testButton->setEnabled( true /* TODO Global::connectionPossible() ||
                               m_imapServer->text() == "localhost"*/ );
+}
+
+void SetupServer::slotComplete()
+{
+   bool ok =  !m_imapServer->text().isEmpty() && !m_userName->text().isEmpty();
+   button( KDialog::Ok )->setEnabled( ok );
 }
 
 #include "setupserver.moc"
