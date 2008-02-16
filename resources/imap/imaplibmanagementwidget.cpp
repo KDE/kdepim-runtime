@@ -27,13 +27,15 @@
 #include <libakonadi/agentmanager.h>
 #include <libakonadi/agentinstancecreatejob.h>
 
-#include <kdebug.h>
+#include <KDebug>
+#include <KMenu>
 
 class ImaplibManagementWidget::Private
 {
   public:
     Ui::ImaplibManagementWidget ui;
     Akonadi::AgentManager* manager;
+    QHash<QAction*, QString> menuOptions;
 };
 
 ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
@@ -41,17 +43,29 @@ ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
     d( new Private )
 {
   d->ui.setupUi( this );
+  d->manager = new Akonadi::AgentManager( this );
+
+  KMenu *addMenu = new KMenu( this );
+  QStringList types = d->manager->agentTypes();
+  foreach (const QString& type, types) {
+        QStringList mimeTypes = d->manager->agentMimeTypes( type );
+        if ( !mimeTypes.contains("message/rfc822") )
+            continue;
+
+        QAction* action = addMenu->addAction( d->manager->agentName( type ) );
+        d->menuOptions.insert( action, type );
+  }
+  d->ui.addButton->setMenu(addMenu);
+  connect( addMenu, SIGNAL( triggered( QAction*) ), SLOT(addClicked(QAction*)));
 
   d->ui.imaplibList->setHeaderLabels( QStringList() << i18n("Name") );
   connect( d->ui.imaplibList, SIGNAL(currentItemChanged(QTreeWidgetItem*,
            QTreeWidgetItem*)), SLOT(updateButtonState()) );
   connect( d->ui.imaplibList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
            SLOT(editClicked()) );
-  connect( d->ui.addButton, SIGNAL(clicked()), SLOT(addClicked()) );
   connect( d->ui.editButton, SIGNAL(clicked()), SLOT(editClicked()) );
   connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
 
-  d->manager = new Akonadi::AgentManager( this );
   connect( d->manager, SIGNAL(  agentInstanceAdded (const QString&) ),
            SLOT(fillImaplibList()) ); 
   connect( d->manager, SIGNAL(  agentInstanceRemoved (const QString&) ),
@@ -59,6 +73,7 @@ ImaplibManagementWidget::ImaplibManagementWidget(QWidget * parent) :
   connect( d->manager, SIGNAL( agentInstanceNameChanged( const QString&, const QString& ) ),
            SLOT(fillImaplibList()) ); 
   fillImaplibList();
+  updateButtonState();
 }
 
 ImaplibManagementWidget::~ImaplibManagementWidget()
@@ -68,10 +83,13 @@ ImaplibManagementWidget::~ImaplibManagementWidget()
 
 void ImaplibManagementWidget::fillImaplibList()
 {
-    kDebug();
     QStringList instances = d->manager->agentInstances();
     d->ui.imaplibList->clear();
     foreach (const QString& instance, instances) {
+        QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
+        if ( !mimeTypes.contains("message/rfc822") )
+            continue;
+
         QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.imaplibList );
         QString name = d->manager->agentInstanceName( instance );
         if (name.isEmpty()) {
@@ -93,9 +111,10 @@ void ImaplibManagementWidget::updateButtonState()
   }
 }
 
-void ImaplibManagementWidget::addClicked()
+void ImaplibManagementWidget::addClicked( QAction* action)
 {
-    Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( "akonadi_imaplib_resource", this );
+    Q_ASSERT( d->menuOptions.contains( action ) );
+    Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( d->menuOptions.value( action) , this );
     job->configure( winId() );
     job->start();
 }

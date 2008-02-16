@@ -49,7 +49,7 @@ class IMAPLIB_EXPORT ImaplibManagementWidget : public QWidget
   private Q_SLOTS:
     void fillImaplibList();
     void updateButtonState();
-    void addClicked();
+    void addClicked( QAction* );
     void editClicked();
     void removeClicked();
 
