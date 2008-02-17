@@ -1,3 +1,5 @@
+include_directories(${CMAKE_SOURCE_DIR}/ ${CMAKE_SOURCE_DIR}/akonadi)
+
 set(rfc822_kcm_srcs configmodule.cpp rfc822managementwidget.cpp)
 kde4_add_ui_files(rfc822_kcm_srcs rfc822managementwidget.ui )
 kde4_add_plugin(kcm_rfc822 ${rfc822_kcm_srcs})
