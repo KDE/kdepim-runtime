@@ -11,6 +11,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 
 set( kcalakonadi_LIB_SRC
      kcalmodel.cpp
+     kcalitembrowser.cpp
 )
 
 
@@ -24,5 +25,6 @@ install(TARGETS kcalakonadi DESTINATION ${LIB_INSTALL_DIR})
 
 install( FILES
          kcalmodel.h
+	 kcalitembrowser.h
          DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadi/kcal
 )
