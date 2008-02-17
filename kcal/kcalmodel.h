@@ -26,6 +26,13 @@
 class AKONADI_KCAL_EXPORT KCalModel : public Akonadi::ItemModel
 {
   public:
+    enum Column {
+      Summary,
+      DateTimeStart,
+      DateTimeEnd,
+      Type 
+    };
+
     KCalModel( QObject *parent = 0 );
     
     virtual ~KCalModel();
