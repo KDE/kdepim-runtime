@@ -58,6 +58,8 @@
 
 namespace KPIM {
 
+static const int MAX_LABEL_WIDTH = 650;
+
 class TransactionItem;
 
 TransactionItemView::TransactionItemView( QWidget * parent,
@@ -161,7 +163,7 @@ TransactionItem::TransactionItem( QWidget* parent,
   h->setSpacing( 5 );
   layout()->addWidget( h );
 
-  mItemLabel = new QLabel( item->label(), h );
+  mItemLabel = new QLabel( fontMetrics().elidedText( item->label(), Qt::ElideRight, MAX_LABEL_WIDTH ), h );
   h->layout()->addWidget( mItemLabel );
   h->setSizePolicy( QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed ) );
 
@@ -185,7 +187,7 @@ TransactionItem::TransactionItem( QWidget* parent,
   mSSLLabel = new SSLLabel( h );
   mSSLLabel->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ) );
   h->layout()->addWidget( mSSLLabel );
-  mItemStatus =  new QLabel( item->status(), h );
+  mItemStatus = new QLabel( fontMetrics().elidedText( item->status(), Qt::ElideRight, MAX_LABEL_WIDTH ), h );
   h->layout()->addWidget( mItemStatus );
   setCrypto( item->usesCrypto() );
   if( first ) hideHLine();
@@ -207,12 +209,12 @@ void TransactionItem::setProgress( int progress )
 
 void TransactionItem::setLabel( const QString& label )
 {
-  mItemLabel->setText( label );
+  mItemLabel->setText( fontMetrics().elidedText( label, Qt::ElideRight, MAX_LABEL_WIDTH ) );
 }
 
 void TransactionItem::setStatus( const QString& status )
 {
-  mItemStatus->setText( status );
+  mItemStatus->setText( fontMetrics().elidedText( status, Qt::ElideRight, MAX_LABEL_WIDTH ) );
 }
 
 void TransactionItem::setCrypto( bool on )
