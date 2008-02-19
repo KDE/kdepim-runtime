@@ -25,6 +25,8 @@ namespace KABC {
   class Resource;
 }
 
+class QTimer;
+
 class KABCResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
@@ -53,6 +55,9 @@ class KABCResource : public Akonadi::ResourceBase
     AddressBook *mAddressBook;
     KABC::Resource *mResource;
     bool mLoaded;
+    bool mExplicitLoading;
+
+    QTimer *mDelayedUpdateTimer;
 
     class ErrorHandler;
     ErrorHandler *mErrorHandler;
@@ -61,6 +66,8 @@ class KABCResource : public Akonadi::ResourceBase
   private Q_SLOTS:
     void loadingFinished( Resource *resource );
     void loadingError( Resource *resource, const QString &message );
+    void addressBookChanged();
+    void delayedUpdate();
 };
 
 #endif

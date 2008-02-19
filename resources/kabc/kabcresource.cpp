@@ -29,6 +29,8 @@
 #include <kconfig.h>
 #include <kinputdialog.h>
 
+#include <QTimer>
+
 using namespace Akonadi;
 
 using KABC::Resource;
@@ -66,9 +68,14 @@ KABCResource::KABCResource( const QString &id )
     mAddressBook( new AddressBook() ),
     mResource( 0 ),
     mLoaded( false ),
+    mExplicitLoading( false ),
+    mDelayedUpdateTimer( new QTimer( this ) ),
     mErrorHandler( new ErrorHandler( this ) )
 {
   mAddressBook->setErrorHandler( mErrorHandler );
+
+  mDelayedUpdateTimer->setInterval( 10 );
+  mDelayedUpdateTimer->setSingleShot( true );
 
   KSharedConfig::Ptr config = KGlobal::config();
   Q_ASSERT( !config.isNull() );
@@ -78,17 +85,34 @@ KABCResource::KABCResource( const QString &id )
 
   mResource = manager->standardResource();
   if ( mResource != 0 ) {
-    connect( mResource, SIGNAL( loadingFinished( Resource* ) ),
-             this, SLOT(loadingFinished( Resource* ) ) );
     connect( mResource, SIGNAL( loadingError( Resource*, const QString& ) ),
              this, SLOT(loadingError( Resource*, const QString& ) ) );
+
+    if ( !mResource->isOpen() ) {
+      if ( !mResource->open() ) {
+        kError() << "Opening resource" << mResource->identifier() << "failed";
+      }
+
+    }
+
+    // perform initial load without connected loadingFinished, since it triggers
+    // sending items to Akonadi server
+    mLoaded = mAddressBook->load();
+
+    connect( mResource, SIGNAL( loadingFinished( Resource* ) ),
+             this, SLOT(loadingFinished( Resource* ) ) );
   }
+
+  connect( mAddressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
+           this, SLOT( addressBookChanged() ) );
+
+  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
+           this, SLOT( delayedUpdate() ) );
 }
 
 KABCResource::~KABCResource()
 {
   delete mAddressBook;
-  delete mErrorHandler;
 }
 
 bool KABCResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
@@ -99,9 +123,11 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
   const QString rid = item.reference().remoteId();
   KABC::Addressee addressee = mAddressBook->findByUid( item.reference().remoteId() );
   if ( addressee.isEmpty() ) {
+    kError() << "Contact with uid" << rid << "not found";
     error( i18n( "Contact with uid '%1' not found!", rid ) );
     return false;
   }
+
   Item i( item );
   i.setMimeType( "text/directory" );
   i.setPayload<KABC::Addressee>( addressee );
@@ -167,7 +193,8 @@ void KABCResource::configure( WId windowId )
 
   // Create new resource
   mResource = manager->createResource( type );
-  if ( !mResource ) {
+  if ( mResource == 0 ) {
+    kError() << "Unable to create a KABC resource of type" << type;
     error( i18n("Unable to create a KABC resource of type %1", type ) );
     return;
   }
@@ -191,6 +218,12 @@ void KABCResource::configure( WId windowId )
            this, SLOT(loadingFinished( Resource* ) ) );
   connect( mResource, SIGNAL( loadingError( Resource*, const QString& ) ),
            this, SLOT(loadingError( Resource*, const QString& ) ) );
+
+  if ( !mResource->isOpen() ) {
+    if ( !mResource->open() ) {
+      kError() << "Opening resource" << mResource->identifier() << "failed";
+    }
+  }
 
   synchronize();
 }
@@ -237,6 +270,7 @@ void KABCResource::itemRemoved( const Akonadi::DataReference &ref )
 
 void KABCResource::retrieveCollections()
 {
+  kDebug();
   if ( mResource == 0 ) {
     kError() << "No KABC resource";
 
@@ -267,11 +301,13 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col, const QStringL
   if ( !mLoaded ) {
     mErrorHandler->mLastError.clear();
 
+    mExplicitLoading = true;
     if ( !mAddressBook->asyncLoad() ) {
+      mExplicitLoading = false;
       kError() << "Starting Load failed:" << mErrorHandler->mLastError;
       return;
     }
-  } else {
+  } else if ( !mDelayedUpdateTimer->isActive() ) {
     Item::List items;
 
     AddressBook::const_iterator it    = mAddressBook->begin();
@@ -292,6 +328,41 @@ void KABCResource::loadingFinished( KABC::Resource *resource )
 
   mLoaded = true;
 
+  if ( mDelayedUpdateTimer->isActive() ) {
+    mExplicitLoading = false;
+    return;
+  }
+
+  if ( mExplicitLoading ) {
+    mDelayedUpdateTimer->start();
+    mExplicitLoading = false;
+  } else
+    synchronize();
+}
+
+void KABCResource::loadingError( KABC::Resource *resource, const QString &message )
+{
+  Q_UNUSED( resource );
+
+  kError() << "Loading error: " << message;
+  error( message );
+  changeStatus( Error, message );
+}
+
+void KABCResource::addressBookChanged()
+{
+  if ( mExplicitLoading )
+    return;
+
+  if ( mDelayedUpdateTimer->isActive() )
+    return;
+
+  synchronize();
+}
+
+void KABCResource::delayedUpdate()
+{
+  kDebug();
   Item::List items;
 
   AddressBook::const_iterator it    = mAddressBook->begin();
@@ -303,15 +374,6 @@ void KABCResource::loadingFinished( KABC::Resource *resource )
   }
 
   itemsRetrieved( items );
-}
-
-void KABCResource::loadingError( KABC::Resource *resource, const QString &message )
-{
-  Q_UNUSED( resource );
-
-  kError() << "Loading error: " << message;
-  error( message );
-  changeStatus( Error, message );
 }
 
 #include "kabcresource.moc"
