@@ -585,7 +585,6 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 
   mInternalDelete = true;
   mCalendar.deleteIncidence( cachedIncidence );
-  delete cachedIncidence;
   mInternalDelete = false;
 
   mCalendar.addIncidence( incidence.get()->clone() );
@@ -642,7 +641,6 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &refere
 
   mInternalDelete = true;
   mCalendar.deleteIncidence( cachedIncidence );
-  delete cachedIncidence;
   mInternalDelete = false;
 
   emit mParent->resourceChanged( mParent );
