@@ -130,7 +130,7 @@ void KCalResource::configure( WId windowId )
 
   // Create new resource
   resource = manager->createResource( type );
-  if ( !resource ) {
+  if ( resource == 0 ) {
     error( i18n("Unable to create a KCal resource of type %1", type ) );
     return;
   }
@@ -234,7 +234,8 @@ void KCalResource::retrieveItems( const Akonadi::Collection &col, const QStringL
   Q_UNUSED( col );
   Q_UNUSED( parts );
 
-  if ( mDelayedUpdateTimer->isActive() ) return;
+  if ( mDelayedUpdateTimer->isActive() )
+    return;
 
   mDelayedUpdateTimer->start();
 }
@@ -249,7 +250,7 @@ bool KCalResource::loadCalendar()
     if ( resource != 0 && !resource->isOpen() ) {
       if ( !resource->open() ) {
         kError() << "Opening resource" << resource->identifier() << "failed";
-        return false;;
+        return false;
       }
     }
 
@@ -272,7 +273,8 @@ void KCalResource::calendarError( const QString& message )
 
 void KCalResource::calendarChanged()
 {
-  if ( mDelayedUpdateTimer->isActive() ) return;
+  if ( mDelayedUpdateTimer->isActive() )
+    return;
 
   synchronize();
 }
