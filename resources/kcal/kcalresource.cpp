@@ -27,6 +27,8 @@
 #include <kconfig.h>
 #include <kinputdialog.h>
 
+#include <QTimer>
+
 #include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
@@ -36,16 +38,26 @@ using namespace Akonadi;
 KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
     mCalendar( new KCal::CalendarResources( "UTC" ) ),
-    mLoaded( false )
+    mLoaded( false ),
+    mDelayedUpdateTimer( new QTimer( this ) )
 {
+  mDelayedUpdateTimer->setInterval( 10 );
+  mDelayedUpdateTimer->setSingleShot( true );
+
   connect( mCalendar, SIGNAL( signalErrorMessage( const QString& ) ),
            this, SLOT( calendarError( const QString& ) ) );
+
+  connect( mCalendar, SIGNAL( calendarChanged() ),
+           this, SLOT( calendarChanged() ) );
+
+  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
+           this, SLOT( delayedUpdate() ) );
 
   KSharedConfig::Ptr config = KGlobal::config();
   Q_ASSERT( !config.isNull() );
 
-  KCal::CalendarResourceManager *manager = mCalendar->resourceManager();
-  manager->readConfig( config.data() );
+  mCalendar->readConfig( config.data() );
+  mLoaded = loadCalendar();
 }
 
 KCalResource::~KCalResource()
@@ -141,6 +153,7 @@ void KCalResource::configure( WId windowId )
   connect( resource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
            this, SLOT(loadingError( ResourceCalendar*, const QString& ) ) );
 
+  mLoaded = loadCalendar();
   synchronize();
 }
 
@@ -191,6 +204,7 @@ void KCalResource::itemRemoved( const Akonadi::DataReference &ref )
 
 void KCalResource::retrieveCollections()
 {
+  kDebug();
   KCal::ResourceCalendar *resource = mCalendar->resourceManager()->standardResource();
   if ( resource == 0 ) {
     kError() << "No KCal resource";
@@ -219,18 +233,52 @@ void KCalResource::retrieveItems( const Akonadi::Collection &col, const QStringL
 {
   Q_UNUSED( col );
   Q_UNUSED( parts );
+
+  if ( mDelayedUpdateTimer->isActive() ) return;
+
+  mDelayedUpdateTimer->start();
+}
+
+bool KCalResource::loadCalendar()
+{
   if ( !mLoaded ) {
     mLastError.clear();
+
+    KCal::CalendarResourceManager *manager = mCalendar->resourceManager();
+    KCal::ResourceCalendar *resource = manager->standardResource();
+    if ( resource != 0 && !resource->isOpen() ) {
+      if ( !resource->open() ) {
+        kError() << "Opening resource" << resource->identifier() << "failed";
+        return false;;
+      }
+    }
 
     mCalendar->load();
     if ( !mLastError.isEmpty() ) {
       kError() << "Loading failed:" << mLastError;
-      return;
+      return false;
     }
-
-    kDebug() << "Loading successful";
   }
 
+  return true;
+}
+
+void KCalResource::calendarError( const QString& message )
+{
+  kDebug() << message;
+
+  mLastError = message;
+}
+
+void KCalResource::calendarChanged()
+{
+  if ( mDelayedUpdateTimer->isActive() ) return;
+
+  synchronize();
+}
+
+void KCalResource::delayedUpdate()
+{
   Item::List items;
 
   KCal::Incidence::List incidences = mCalendar->rawIncidences();
@@ -244,13 +292,6 @@ void KCalResource::retrieveItems( const Akonadi::Collection &col, const QStringL
   }
 
   itemsRetrieved( items );
-}
-
-void KCalResource::calendarError( const QString& message )
-{
-  kDebug() << message;
-
-  mLastError = message;
 }
 
 #include "kcalresource.moc"

@@ -30,6 +30,8 @@ namespace KCal {
   class ResourceCalendar;
 }
 
+class QTimer;
+
 class KCalResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
@@ -59,8 +61,15 @@ class KCalResource : public Akonadi::ResourceBase
 
     QString mLastError;
 
+    QTimer *mDelayedUpdateTimer;
+
+  private:
+    bool loadCalendar();
+
   private Q_SLOTS:
     void calendarError( const QString& message );
+    void calendarChanged();
+    void delayedUpdate();
 };
 
 #endif
