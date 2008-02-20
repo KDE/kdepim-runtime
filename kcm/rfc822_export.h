@@ -24,7 +24,7 @@
 #include <kdemacros.h>
 
 #ifndef RFC822_EXPORT
-# if defined(MAKE_RFC822_LIB)
+# if defined(MAKE_KCM_RFC822_LIB)
 /* We are building this library */
 #  define RFC822_EXPORT KDE_EXPORT
 # else
