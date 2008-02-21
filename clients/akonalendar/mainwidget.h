@@ -27,8 +27,8 @@
 #include <libakonadi/collectionview.h>
 #include <libakonadi/collectionfilterproxymodel.h>
 #include <libakonadi/collectionmodel.h>
-#include <libakonadi/kcal/kcalmodel.h>
-#include <libakonadi/kcal/kcalitembrowser.h>
+#include "kcal/kcalmodel.h"
+#include "kcal/kcalitembrowser.h"
 
 class MainWindow;
 
