@@ -1,12 +1,12 @@
 [Desktop Entry]
-Name=Akonadi KABC Compatability Resource
+Name=KDE Addressbook Compatibility Resource
 Name[ca]=Recurs de compatibilitat KABC de l'Akonadi
 Name[ja]=Akonadi KABC 互換リソース
 Name[km]=ធនធាន​ឆបគ្នា​របស់ Akonadi KABC
 Name[pt]=Recurso de Compatibilidade do KABC com o Akonadi
 Name[pt_BR]=Recurso de Compatibilidade do KABC com o Akonadi
 Name[zh_TW]=Akonadi KABC 相容性資源
-Comment=An agent to load data from a KABC resource plugin
+Comment=An agent to load data from a traditional KDE addressbook resource
 Comment[ca]=Un agent per a carregar dades des d'un connector de recurs del KABC
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó bhreiseán acmhainne KABC
 Comment[ja]=KABC リソースプラグインらデータを読み込むエージェント

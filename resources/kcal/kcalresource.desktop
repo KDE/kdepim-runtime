@@ -1,12 +1,12 @@
 [Desktop Entry]
-Name=Akonadi KCal Compatability Resource
+Name=KDE Calendar Compatibility Resource
 Name[ca]=Recurs de compatibilitat KCal de l'Akonadi
 Name[ja]=Akonadi KCal 互換リソース
 Name[km]=ធនធាន​ឆបគ្នា​របស់ Akonadi KCal
 Name[pt]=Recurso de Compatibilidade do KCal com o Akonadi
 Name[pt_BR]=Recurso de Compatibilidade do KCal com o Akonadi
 Name[zh_TW]=Akonadi KCal 相容性資源
-Comment=An agent to load data from a KCal resource plugin
+Comment=An agent to load data from a traditional KDE calendar resource
 Comment[ca]=Un agent per carregar dades des d'un connector de recurs del KCal
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó bhreiseán acmhainne KCal
 Comment[ja]=KCal リソースプラグインからデータを読み込むエージェント
