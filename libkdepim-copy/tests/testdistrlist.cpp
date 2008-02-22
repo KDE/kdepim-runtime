@@ -21,8 +21,6 @@
 #include <distributionlist.h>
 using KPIM::DistributionList;
 
-#include <config.h>
-
 #include <kabc/stdaddressbook.h>
 #include <kurl.h>
 #include <kapplication.h>

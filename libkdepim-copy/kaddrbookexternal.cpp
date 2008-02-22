@@ -20,7 +20,6 @@
 #include "kaddrbookexternal.h"
 #include "kaddressbookcore_interface.h"
 
-#include <config.h> // KDEPIM_NEW_DISTRLISTS
 #ifdef KDEPIM_NEW_DISTRLISTS
 #include "distributionlist.h"
 #else
