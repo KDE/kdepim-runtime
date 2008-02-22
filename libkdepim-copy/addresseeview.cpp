@@ -341,7 +341,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
       titleMap.insert( "Profession", i18n( "Profession" ) );
       titleMap.insert( "AssistantsName", i18n( "Assistant's Name" ) );
       titleMap.insert( "ManagersName", i18n( "Manager's Name" ) );
-      titleMap.insert( "SpousesName", i18n( "Partner's Name" ) );
+      titleMap.insert( "SpousesName", i18nc( "Wife/Husband/...", "Partner's Name" ) );
       titleMap.insert( "Office", i18n( "Office" ) );
       titleMap.insert( "IMAddress", i18n( "IM Address" ) );
       titleMap.insert( "Anniversary", i18n( "Anniversary" ) );

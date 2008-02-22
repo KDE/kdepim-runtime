@@ -152,7 +152,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
     titleMap.insert( QLatin1String( "Profession" ), i18n( "Profession" ) );
     titleMap.insert( QLatin1String( "AssistantsName" ), i18n( "Assistant's Name" ) );
     titleMap.insert( QLatin1String( "ManagersName" ), i18n( "Manager's Name" ) );
-    titleMap.insert( QLatin1String( "SpousesName" ), i18n( "Partner's Name" ) );
+    titleMap.insert( QLatin1String( "SpousesName" ), i18nc( "Wife/Husband/...", "Partner's Name" ) );
     titleMap.insert( QLatin1String( "Office" ), i18n( "Office" ) );
     titleMap.insert( QLatin1String( "IMAddress" ), i18n( "IM Address" ) );
     titleMap.insert( QLatin1String( "Anniversary" ), i18n( "Anniversary" ) );
