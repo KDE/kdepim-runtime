@@ -1,6 +1,11 @@
 [Desktop Entry]
 Name=KDE Calendar Compatibility Resource
+Name[pt]=Recurso de Compatibilidade do Calendário do KDE
+Name[pt_BR]=Recurso de Compatibilidade do Calendário do KDE
 Comment=An agent to load data from a traditional KDE calendar resource
+Comment[ga]=Gníomhaire a luchtaíonn sonraí ó acmhainn thraidisiúnta fhéilire KDE
+Comment[pt]=Um agente para carregar dados de um recurso de calendário tradicional do KDE
+Comment[pt_BR]=Um agente para carregar dados de um recurso de calendário tradicional do KDE
 Type=AkonadiResource
 Exec=akonadi_kcal_resource
 Icon=text-calendar
