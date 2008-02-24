@@ -19,6 +19,7 @@
     USA.
 */
 
+#include <kaboutdata.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 
@@ -26,11 +27,22 @@
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "akonadiconsole", 0, ki18n("AkonadiConsole"), "1.0" , ki18n("The Management Console for Akonadi"));
+  KAboutData aboutData( "akonadiconsole", 0,
+                        ki18n( "Akonadi Console" ),
+                        "0.99",
+                        ki18n( "The Management and Debugging Console for Akonadi" ),
+                        KAboutData::License_GPL,
+                        ki18n( "(c) 2006-2008 the Akonadi developer" ),
+                        KLocalizedString(),
+                        "http://pim.kde.org/akonadi/" );
+  aboutData.addAuthor( ki18n( "Tobias König" ), ki18n( "Author" ), "tokoe@kde.org" );
+  aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
+
+  KCmdLineArgs::init( argc, argv, &aboutData );
   KApplication app;
 
-  MainWindow window;
-  window.show();
+  MainWindow *window = new MainWindow;
+  window->show();
 
   return app.exec();
 }

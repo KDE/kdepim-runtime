@@ -22,12 +22,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <KXmlGuiWindow>
 
-class MainWindow : public QMainWindow
+class MainWindow : public KXmlGuiWindow
 {
+  Q_OBJECT
+
   public:
     MainWindow( QWidget *parent = 0 );
+
+  private slots:
+    void localSubscriptions();
 };
 
 #endif

@@ -1,0 +1,10 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui version="1" name="akonadiconsole" >
+
+ <MenuBar>
+  <Menu name="collection"><text>&amp;Collection</text>
+    <Action name="local_subscription" />
+  </Menu>
+ </MenuBar>
+</kpartgui>
+

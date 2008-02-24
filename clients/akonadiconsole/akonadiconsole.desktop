@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Akonadi Console
+Exec=akonadiconsole
+Icon=konsole
+Type=Application
+Comment=Akonadi Management and Debugging Console
+Terminal=false
+Categories=Qt;KDE;
