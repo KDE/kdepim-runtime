@@ -598,7 +598,7 @@ QString KMeditorPrivate::removeQuotesFromText( const QString &inputText ) const
   s.remove( rx );
 
   // now remove all remaining leading quotes
-  quotePrefix = QChar::ParagraphSeparator+ " " + parent->quotePrefixName();
+  quotePrefix = QChar::ParagraphSeparator + ' ' + parent->quotePrefixName();
   QRegExp srx( quotePrefix );
   s.remove( srx );
 

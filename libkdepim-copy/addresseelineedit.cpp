@@ -443,7 +443,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
             setCompletedText( adds );
           }
         } else {
-          if ( !m_searchString.startsWith( "\"" ) ) {
+          if ( !m_searchString.startsWith( '\"' ) ) {
             //try with quoted text, if user has not type one already
             match = s_completion->makeCompletion( "\"" + m_searchString );
             if ( !match.isEmpty() && match != m_searchString ) {
@@ -600,8 +600,8 @@ void AddresseeLineEdit::addContact( const KABC::Addressee& addr, int weight, int
     const QString realName  = addr.realName();
 
     if ( !givenName.isEmpty() && !familyName.isEmpty() ) {
-      keyWords.append( givenName  + " "  + familyName );
-      keyWords.append( familyName + " "  + givenName );
+      keyWords.append( givenName  + ' '  + familyName );
+      keyWords.append( familyName + ' '  + givenName );
       keyWords.append( familyName + ", " + givenName);
     }else if ( !givenName.isEmpty() )
       keyWords.append( givenName );

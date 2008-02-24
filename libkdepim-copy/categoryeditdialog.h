@@ -40,7 +40,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
     Q_OBJECT
   public:
-    CategoryEditDialog( KPimPrefs *prefs, QWidget *parent = 0, bool modal = false );
+    explicit CategoryEditDialog( KPimPrefs *prefs, QWidget *parent = 0, bool modal = false );
     ~CategoryEditDialog();
 
   public Q_SLOTS:

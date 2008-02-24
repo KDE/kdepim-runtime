@@ -31,7 +31,7 @@ namespace Komposer
   {
     Q_OBJECT
   public:
-    CoreWidget( QWidget *parent, const char *name=0 );
+    explicit CoreWidget( QWidget *parent, const char *name=0 );
 
     virtual QString subject() const =0;
     virtual QStringList to()  const =0;

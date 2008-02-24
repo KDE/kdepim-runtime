@@ -53,11 +53,9 @@ class SSLLabel;
 class TransactionItemView : public QScrollArea {
   Q_OBJECT
 public:
-  TransactionItemView( QWidget * parent = 0,
-                       const char * name = 0 );
+  explicit TransactionItemView( QWidget * parent = 0, const char * name = 0 );
 
-  virtual ~TransactionItemView()
-  {}
+  virtual ~TransactionItemView() {}
   TransactionItem* addTransactionItem( ProgressItem *item, bool first );
 
 

@@ -33,7 +33,7 @@ namespace Komposer {
   {
     Q_OBJECT
   public:
-    PrefsModule( QWidget *parent=0, const char *name=0 );
+    explicit PrefsModule( QWidget *parent=0, const char *name=0 );
     virtual const KAboutData *aboutData() const;
   };
 

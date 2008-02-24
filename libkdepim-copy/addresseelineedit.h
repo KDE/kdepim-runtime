@@ -26,29 +26,28 @@
 #ifndef ADDRESSEELINEEDIT_H
 #define ADDRESSEELINEEDIT_H
 
+#include "kmailcompletion.h"
+#include <kdepim_export.h>
+
+#include <kabc/addressee.h>
+
+#include <klineedit.h>
+
 #include <QObject>
 #include <QTimer>
 #include <QPair>
-
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QDropEvent>
 
-#include <kabc/addressee.h>
-
-#include "kmailcompletion.h"
-#include <kdepim_export.h>
-#include <klineedit.h>
 class QMenu;
 
-
 namespace KPIM {
-class LdapSearch;
-struct LdapResult;
-typedef QList<LdapResult> LdapResultList;
-typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
+  class LdapSearch;
+  struct LdapResult;
+  typedef QList<LdapResult> LdapResultList;
+  typedef QMap< QString, QPair<int,int> > CompletionItemsMap;
 }
 
 namespace KPIM {
@@ -58,7 +57,7 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
   Q_OBJECT
 
   public:
-    AddresseeLineEdit( QWidget* parent, bool useCompletion = true );
+    explicit AddresseeLineEdit( QWidget* parent, bool useCompletion = true );
     virtual ~AddresseeLineEdit();
 
     virtual void setFont( const QFont& );
@@ -105,12 +104,12 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     virtual void contextMenuEvent( QContextMenuEvent * );
 
     /**
-     * Adds the name of a completion source to the internal list of 
+     * Adds the name of a completion source to the internal list of
      * such sources and returns its index, such that that can be used
      * for insertion of items associated with that source.
      */
     int addCompletionSource( const QString& );
-    
+
     /** return whether we are using sorted or weighted display */
     static KCompletion::CompOrder completionOrder();
 

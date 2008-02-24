@@ -34,7 +34,7 @@ class KPartsGenericPart : public QWidget {
     Q_PROPERTY( QString url READ url WRITE setURL )
     Q_PROPERTY( QString mimetype READ mimetype WRITE setMimetype )
 public:
-    KPartsGenericPart( QWidget* parentWidget, const char* name = 0);
+    explicit KPartsGenericPart( QWidget* parentWidget, const char* name = 0);
 
     QString url() const { return m_url; }
     void setURL( const QString& url ) { m_url = url; load(); }

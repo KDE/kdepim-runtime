@@ -46,11 +46,11 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
   public:
     /**
       Constructor.
- 
+
       @param config The config object where the settings are stored
                     which fields will be shown.
-     */
-    AddresseeView( QWidget *parent = 0, KConfig *config = 0 );
+    */
+    explicit AddresseeView( QWidget *parent = 0, KConfig *config = 0 );
 
     ~AddresseeView();
 
@@ -58,19 +58,19 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
       Sets the addressee object. The addressee is displayed immediately.
 
       @param addr The addressee object.
-     */
+    */
     void setAddressee( const KABC::Addressee& addr );
 
     /**
       Returns the current addressee object.
-     */
+    */
     KABC::Addressee addressee() const;
 
 
     /**
       This enums are used by enableLinks to set which kind of links shall
       be enabled.
-     */
+    */
     enum LinkMask {
       NoLinks = 0,
       AddressLinks = 1,
@@ -84,13 +84,13 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
     /**
       Sets which parts of the contact shall be presented as links.
       The mask can be OR'ed LinkMask. By default all links are enabled.
-     */
+    */
     void enableLinks( int linkMask );
 
     /**
       This enums are used by vCardAsHTML to decide which fields shall be
       shown.
-     */
+    */
     enum FieldMask {
       NoFields = 0,
       BirthdayFields = 1,
@@ -125,7 +125,7 @@ class KDEPIM_EXPORT AddresseeView : public KTextBrowser
       @param internalLoading If true, the loading of internal pictures is done automatically.
       @param fieldMask The mask for which fields of the contact will
                        be displayed.
-     */
+    */
     static QString vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy *proxy, LinkMask linkMask = DefaultLinks,
                                 bool internalLoading = true, FieldMask fieldMask = DefaultFields );
 

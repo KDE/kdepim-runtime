@@ -44,7 +44,7 @@ namespace Komposer
   {
     Q_OBJECT
   public:
-    Core( QWidget *parentWidget = 0, const char *name = 0 );
+    explicit Core( QWidget *parentWidget = 0, const char *name = 0 );
     virtual ~Core();
 
   public Q_SLOTS:

@@ -53,7 +53,7 @@ QString KMailCompletion::makeCompletion( const QString &string )
       const QStringList &mailAddr = m_keyMap[ match ]; //get all mailAddr for this keyword
       bool isEmail = false;
       for ( QStringList::ConstIterator sit ( mailAddr.begin() ), sEnd( mailAddr.end() ); sit != sEnd; ++sit )
-        if ( (*sit).indexOf( "<" + match + ">" ) != -1 || (*sit) == match ) {
+        if ( (*sit).indexOf( '<' + match + '>' ) != -1 || (*sit) == match ) {
           isEmail = true;
           break;
         }

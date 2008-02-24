@@ -37,24 +37,24 @@ namespace KPIM
         PlainTextMode,
         RichTextMode
       };
-      KEMailQuotingHighlighter( QTextEdit *textEdit,
-                                      const QColor& QuoteColor0 = Qt::black,
-                                      const QColor& QuoteColor1 = QColor( 0x00, 0x80, 0x00 ),
-                                      const QColor& QuoteColor2 = QColor( 0x00, 0x80, 0x00 ),
-                                      const QColor& QuoteColor3 = QColor( 0x00, 0x80, 0x00 ),
-                                      SyntaxMode mode = PlainTextMode );
+      explicit KEMailQuotingHighlighter( QTextEdit *textEdit,
+                                         const QColor& QuoteColor0 = Qt::black,
+                                         const QColor& QuoteColor1 = QColor( 0x00, 0x80, 0x00 ),
+                                         const QColor& QuoteColor2 = QColor( 0x00, 0x80, 0x00 ),
+                                         const QColor& QuoteColor3 = QColor( 0x00, 0x80, 0x00 ),
+                                         SyntaxMode mode = PlainTextMode );
       ~KEMailQuotingHighlighter();
-      
+
       void setSyntaxMode( SyntaxMode mode);
 
       void setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3);
-            
+
       virtual void highlightBlock ( const QString & text );
-	    
+
     private:
       class KEmailQuotingHighlighterPrivate;
       KEmailQuotingHighlighterPrivate *const d;
-  
+
     };
 }
 

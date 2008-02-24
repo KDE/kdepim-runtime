@@ -53,7 +53,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
   Q_OBJECT
 
   public:
-    LdapClient( int clientNumber, QObject* parent = 0, const char* name = 0 );
+    explicit LdapClient( int clientNumber, QObject* parent = 0, const char* name = 0 );
     virtual ~LdapClient();
 
     /*! returns true if there is a query running */

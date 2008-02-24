@@ -44,7 +44,7 @@ class KDEPIM_EXPORT KCMDesignerFields : public KCModule
   Q_OBJECT
 
   public:
-    KCMDesignerFields( const KComponentData &instance, QWidget *parent=0, const QStringList &args=QStringList() );
+    explicit KCMDesignerFields( const KComponentData &instance, QWidget *parent=0, const QStringList &args=QStringList() );
 
     virtual void load();
     virtual void save();
@@ -76,7 +76,7 @@ class KDEPIM_EXPORT KCMDesignerFields : public KCModule
     K3ListView *mPageView;
     QLabel *mPagePreview;
     QLabel *mPageDetails;
-    QPushButton *mDeleteButton;    
+    QPushButton *mDeleteButton;
     QPushButton *mImportButton;
     QPushButton *mDesignerButton;
 };
