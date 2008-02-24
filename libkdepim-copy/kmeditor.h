@@ -125,10 +125,9 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      *                  inserted.
      * @param isHtml defines whether the signature should be inserted as text or html
      */
-    void insertSignature( QString signature, Placement placement = End, bool isHtml = false );
+    void insertSignature( const QString &signature, Placement placement = End, bool isHtml = false );
 
   public Q_SLOTS:
-
     void slotAddQuotes();
     void slotRemoveBox();
     void slotAddBox();

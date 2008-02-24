@@ -419,7 +419,7 @@ void KMeditor::switchTextMode( bool useHtml )
 
   if ( !useHtml ) {
     //reformat text (which can be html text) as text
-    setText( toPlainText() ); 
+    setText( toPlainText() );
   }
 
   setAcceptRichText( useHtml );
@@ -598,7 +598,7 @@ QString KMeditorPrivate::removeQuotesFromText( const QString &inputText ) const
   s.remove( rx );
 
   // now remove all remaining leading quotes
-  quotePrefix = QChar::ParagraphSeparator + ' ' + parent->quotePrefixName();
+  quotePrefix = QString( QChar::ParagraphSeparator ) + ' ' + parent->quotePrefixName();
   QRegExp srx( quotePrefix );
   s.remove( srx );
 
@@ -745,7 +745,7 @@ void KMeditor::slotAddBox()
     s.append( "\n`----" );
     insertPlainText( s );
   } else {
-    int oldPos = cursor.position();
+    //int oldPos = cursor.position();
     cursor.movePosition( QTextCursor::StartOfBlock );
     cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
     QString s = cursor.selectedText();
@@ -778,6 +778,8 @@ void KMeditor::slotRot13()
 void KMeditor::setCursorPosition( int linePos, int columnPos )
 {
   //TODO
+  Q_UNUSED( linePos );
+  Q_UNUSED( columnPos );
 }
 
 void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
@@ -792,7 +794,7 @@ void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
   insertSignature( signature, placement, sig.isInlinedHtml() );
 }
 
-void KMeditor::insertSignature( QString signature, Placement placement, bool isHtml )
+void KMeditor::insertSignature( const QString &signature, Placement placement, bool isHtml )
 {
   if ( !signature.isEmpty() ) {
 
