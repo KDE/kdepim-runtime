@@ -786,7 +786,7 @@ void KMeditor::insertSignature( const KPIMIdentities::Signature &sig,
                                 Placement placement, bool addSeparator )
 {
   QString signature;
-  if ( addSeparator && ! sig.isInlinedHtml() )
+  if ( addSeparator && !sig.isInlinedHtml() )
     signature = sig.withSeparator();
   else
     signature = sig.rawText();
@@ -815,13 +815,13 @@ void KMeditor::insertSignature( const QString &signature, Placement placement, b
     // Insert the signature and newlines depending on where it was inserted.
     if ( placement == End ) {
       if ( isHtml ) {
-        insertHtml( '\n' + signature );
+        insertHtml( "<br>" + signature );
       } else {
         insertPlainText( '\n' + signature );
       }
     } else if ( placement == Start || placement == AtCursor ) {
       if ( isHtml ) {
-        insertHtml( '\n' + signature + '\n' );
+        insertHtml( "<br>" + signature + '\n' );
       } else {
         insertPlainText( '\n' + signature + '\n' );
       }
