@@ -28,9 +28,10 @@
 #include <QtGui/QWidget>
 
 class QModelIndex;
+class QItemSelectionModel;
 
 class KJob;
-
+class KXmlGuiWindow;
 
 namespace Akonadi {
 class CollectionView;
@@ -44,7 +45,9 @@ class BrowserWidget: public QWidget
   Q_OBJECT
 
   public:
-    BrowserWidget( QWidget *parent = 0 );
+    explicit BrowserWidget( KXmlGuiWindow *xmlGuiWindow = 0, QWidget *parent = 0 );
+
+    QItemSelectionModel *collectionSelectionModel() const;
 
   private slots:
     void collectionActivated( const QModelIndex &index );

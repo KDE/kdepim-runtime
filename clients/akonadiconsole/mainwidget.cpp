@@ -21,9 +21,6 @@
 
 #include "mainwidget.h"
 
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
-
 #include "agentwidget.h"
 #include "browserwidget.h"
 #include "debugwidget.h"
@@ -31,8 +28,14 @@
 
 #include <libakonadi/components/agentinstanceview.h>
 #include <libakonadi/agentfilterproxymodel.h>
+#include <libakonadi/standardactionmanager.h>
 
-MainWidget::MainWidget( QWidget *parent )
+#include <KXmlGuiWindow>
+
+#include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
+
+MainWidget::MainWidget( KXmlGuiWindow *parent )
   : QWidget( parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
@@ -45,6 +48,11 @@ MainWidget::MainWidget( QWidget *parent )
   resView->view()->agentFilterProxyModel()->addCapability( "Resource" );
   tabWidget->addTab( resView, "Resources" );
 //   tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
-  tabWidget->addTab( new BrowserWidget( tabWidget ), "Browser" );
+  BrowserWidget *browser = new BrowserWidget( parent, tabWidget );
+  tabWidget->addTab( browser, "Browser" );
   tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
+
+  Akonadi::StandardActionManager *actMgr = new Akonadi::StandardActionManager( parent->actionCollection(), this );
+  actMgr->setCollectionSelectionModel( browser->collectionSelectionModel() );
+  actMgr->createAllActions();
 }

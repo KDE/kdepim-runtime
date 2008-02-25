@@ -3,8 +3,29 @@
 
  <MenuBar>
   <Menu name="collection"><text>&amp;Collection</text>
+    <Action name="akonadi_collection_create"/>
+    <Separator/>
+    <Action name="akonadi_collection_copy"/>
+    <Separator/>
+    <Action name="akonadi_collection_sync"/>
     <Action name="local_subscription" />
+    <Separator/>
+    <Action name="akonadi_collection_delete"/>
+    <Separator/>
+    <Action name="akonadi_collection_properties"/>
   </Menu>
  </MenuBar>
+
+ <Menu name="akonadi_collectionview_contextmenu">
+  <Action name="akonadi_collection_create"/>
+  <Separator/>
+  <Action name="akonadi_collection_copy"/>
+  <Separator/>
+  <Action name="akonadi_collection_delete"/>
+  <Separator/>
+  <Action name="akonadi_collection_sync"/>
+  <Separator/>
+  <Action name="akonadi_collection_properties"/>
+ </Menu>
 </kpartgui>
 

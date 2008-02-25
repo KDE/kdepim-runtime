@@ -24,10 +24,12 @@
 
 #include <QtGui/QWidget>
 
+class KXmlGuiWindow;
+
 class MainWidget : public QWidget
 {
   public:
-    MainWidget( QWidget *parent = 0 );
+    explicit MainWidget( KXmlGuiWindow *parent = 0 );
 };
 
 #endif

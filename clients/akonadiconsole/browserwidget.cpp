@@ -39,6 +39,7 @@
 
 #include <kdebug.h>
 #include <kconfig.h>
+#include <kxmlguiwindow.h>
 
 #include <QSplitter>
 #include <QTextEdit>
@@ -50,7 +51,7 @@ using namespace Akonadi;
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAttributePageFactory, CollectionAttributePage)
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionInternalsPageFactory, CollectionInternalsPage)
 
-BrowserWidget::BrowserWidget(QWidget * parent) :
+BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
     mItemModel( 0 ),
     mCurrentCollection( 0 )
@@ -60,7 +61,7 @@ BrowserWidget::BrowserWidget(QWidget * parent) :
   QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
   layout->addWidget( splitter );
 
-  mCollectionView = new Akonadi::CollectionView();
+  mCollectionView = new Akonadi::CollectionView( xmlGuiWindow );
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
   splitter->addWidget( mCollectionView );
 
@@ -165,6 +166,11 @@ void BrowserWidget::save()
   item.addPart( Item::PartBody, data );
   ItemStoreJob *store = new ItemStoreJob( item, this );
   store->storePayload();
+}
+
+QItemSelectionModel * BrowserWidget::collectionSelectionModel() const
+{
+  return mCollectionView->selectionModel();
 }
 
 #include "browserwidget.moc"
