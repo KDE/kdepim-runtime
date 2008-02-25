@@ -36,25 +36,33 @@ class ResourcesManagementWidget::Private
     Ui::ResourcesManagementWidget ui;
     Akonadi::AgentManager* manager;
     QHash<QAction*, QString> menuOptions;
+    QStringList wantedMimeTypes;
 };
 
-ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent) :
+ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QStringList & args) :
     QWidget( parent ),
     d( new Private )
 {
+  d->wantedMimeTypes = args;
   d->ui.setupUi( this );
   d->manager = new Akonadi::AgentManager( this );
 
   KMenu *addMenu = new KMenu( this );
   QStringList types = d->manager->agentTypes();
   foreach (const QString& type, types) {
-        QStringList mimeTypes = d->manager->agentMimeTypes( type );
-        if ( !mimeTypes.contains("message/rfc822") )
-            continue;
+    QStringList mimeTypes = d->manager->agentMimeTypes( type );
 
-        QAction* action = addMenu->addAction( d->manager->agentName( type ) );
-        action->setIcon( d->manager->agentIcon( type ) );
-        d->menuOptions.insert( action, type );
+    bool wanted = false;
+    foreach( const QString& request, d->wantedMimeTypes )
+      if ( mimeTypes.contains( request ) )
+        wanted = true;
+
+    if ( !wanted && !d->wantedMimeTypes.isEmpty())
+      continue;
+
+    QAction* action = addMenu->addAction( d->manager->agentName( type ) );
+    action->setIcon( d->manager->agentIcon( type ) );
+    d->menuOptions.insert( action, type );
   }
   d->ui.addButton->setMenu(addMenu);
   connect( addMenu, SIGNAL( triggered( QAction*) ), SLOT(addClicked(QAction*)));
@@ -88,8 +96,14 @@ void ResourcesManagementWidget::fillResourcesList()
     d->ui.resourcesList->clear();
     foreach (const QString& instance, instances) {
         QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
-        if ( !mimeTypes.contains("message/rfc822") )
-            continue;
+
+        bool wanted = false;
+        foreach(  const QString& request, d->wantedMimeTypes ) 
+          if (  mimeTypes.contains(  request ) ) 
+            wanted = true;
+
+        if (  !wanted && !d->wantedMimeTypes.isEmpty() )
+          continue;
 
         QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.resourcesList );
         QString name = d->manager->agentInstanceName( instance );

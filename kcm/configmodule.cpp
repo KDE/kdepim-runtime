@@ -34,6 +34,11 @@ ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
   setButtons( 0 );
   QVBoxLayout *l = new QVBoxLayout( this );
   l->setMargin( 0 );
-  ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this );
+
+  QStringList args2;
+  foreach( const QVariant& item, args )
+    args2 << item.toString();
+
+  ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
   l->addWidget( tmw );
 }

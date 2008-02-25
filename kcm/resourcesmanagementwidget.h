@@ -26,9 +26,26 @@
 
 #include <kcmresources_export.h>
 #include <QtGui/QWidget>
+#include <QStringList>
 
 /**
-  A widget to manage imaplib
+  @short A widget to manage imaplib
+
+  This widget gives a complete widget which the user can use to configure
+  Akonadi resources. It can add, modify or delete resources. With the @p filter
+  parameter, you can set which mimetypes should be shown. It also limits the resources
+  which can be added by the user.
+
+  Example:
+
+  \code
+          tabWidget->addTab(  KCModuleLoader::loadModule(  "kcm_akonadi_resources",
+                              KCModuleLoader::Inline, this, QStringList( "message/rfc822" ) ),
+                              i18n(  "Mail Servers" ) );
+  \endcode
+
+  @author Tom Albers <tomalbers@kde.nl>
+
 */
 class RESOURCES_KCM_EXPORT ResourcesManagementWidget : public QWidget
 {
@@ -36,10 +53,12 @@ class RESOURCES_KCM_EXPORT ResourcesManagementWidget : public QWidget
 
   public:
     /**
-      Creates a new ResourcesManagementWidget.
+      @short Creates a new ResourcesManagementWidget.
       @param parent The parent widget.
+      @param filter The mimetypes which you want shown in the widget. Leave
+                    it empty to see them all.
     */
-    ResourcesManagementWidget( QWidget *parent = 0 );
+    ResourcesManagementWidget( QWidget *parent = 0, const QStringList &filter=QStringList() );
 
     /**
       Destroys the widget.
