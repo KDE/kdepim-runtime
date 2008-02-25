@@ -8,11 +8,14 @@
     <Action name="akonadi_collection_copy"/>
     <Separator/>
     <Action name="akonadi_collection_sync"/>
-    <Action name="local_subscription" />
+    <Action name="akonadi_manage_local_subscriptions" />
     <Separator/>
     <Action name="akonadi_collection_delete"/>
     <Separator/>
     <Action name="akonadi_collection_properties"/>
+  </Menu>
+  <Menu name="item"><text>&amp;Item</text>
+    <Action name="akonadi_item_copy"/>
   </Menu>
  </MenuBar>
 
@@ -26,6 +29,10 @@
   <Action name="akonadi_collection_sync"/>
   <Separator/>
   <Action name="akonadi_collection_properties"/>
+ </Menu>
+
+ <Menu name="akonadi_itemview_contextmenu">
+   <Action name="akonadi_item_copy"/>
  </Menu>
 </kpartgui>
 

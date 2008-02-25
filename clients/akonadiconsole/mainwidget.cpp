@@ -54,5 +54,6 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
 
   Akonadi::StandardActionManager *actMgr = new Akonadi::StandardActionManager( parent->actionCollection(), this );
   actMgr->setCollectionSelectionModel( browser->collectionSelectionModel() );
+  actMgr->setItemSelectionModel( browser->itemSelectionModel() );
   actMgr->createAllActions();
 }

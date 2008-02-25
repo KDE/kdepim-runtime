@@ -30,9 +30,6 @@ class MainWindow : public KXmlGuiWindow
 
   public:
     explicit MainWindow( QWidget *parent = 0 );
-
-  private slots:
-    void localSubscriptions();
 };
 
 #endif

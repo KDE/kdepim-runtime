@@ -24,7 +24,6 @@
 #include "mainwidget.h"
 
 #include <libakonadi/control.h>
-#include <libakonadi/subscriptiondialog.h>
 
 #include <KAction>
 #include <KActionCollection>
@@ -39,15 +38,6 @@ MainWindow::MainWindow( QWidget *parent )
   setCentralWidget( new MainWidget( this ) );
 
   KStandardAction::quit( qApp, SLOT(quit()), actionCollection() );
-  KAction* a = new KAction( i18n("Manage Local &Subscriptions..."), this );
-  connect( a, SIGNAL(triggered()), SLOT(localSubscriptions()) );
-  actionCollection()->addAction( "local_subscription", a );
 
   setupGUI( Keys /*| ToolBar | StatusBar*/ | Save | Create, "akonadiconsoleui.rc" );
-}
-
-void MainWindow::localSubscriptions()
-{
-  Akonadi::SubscriptionDialog* dlg = new Akonadi::SubscriptionDialog();
-  dlg->show();
 }

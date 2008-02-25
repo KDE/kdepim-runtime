@@ -67,6 +67,7 @@ void AkonadiSlave::get(const KUrl & url)
 {
   DataReference d = Item::fromUrl( url );
   ItemFetchJob *job = new ItemFetchJob( d );
+  job->addFetchPart( Item::PartBody );
 
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );

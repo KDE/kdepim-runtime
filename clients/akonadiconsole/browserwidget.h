@@ -48,6 +48,7 @@ class BrowserWidget: public QWidget
     explicit BrowserWidget( KXmlGuiWindow *xmlGuiWindow = 0, QWidget *parent = 0 );
 
     QItemSelectionModel *collectionSelectionModel() const;
+    QItemSelectionModel *itemSelectionModel() const;
 
   private slots:
     void collectionActivated( const QModelIndex &index );

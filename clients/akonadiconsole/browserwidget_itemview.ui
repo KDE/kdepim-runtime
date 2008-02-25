@@ -16,7 +16,7 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>40</width>
        <height>20</height>
@@ -38,7 +38,7 @@
     <widget class="QComboBox" name="modelBox" />
    </item>
    <item row="1" column="0" colspan="3" >
-    <widget class="QTreeView" name="itemView" >
+    <widget class="Akonadi::ItemView" name="itemView" >
      <property name="dragEnabled" >
       <bool>true</bool>
      </property>
@@ -52,6 +52,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Akonadi::ItemView</class>
+   <extends>QTreeView</extends>
+   <header location="global" >libakonadi/itemview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
