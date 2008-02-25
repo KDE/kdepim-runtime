@@ -18,8 +18,8 @@
     02110-1301, USA.
 */
 
-#ifndef RFC822_CONFIGMODULE_H
-#define RFC822_CONFIGMODULE_H
+#ifndef RESOURCES_CONFIGMODULE_H
+#define RESOURCES_CONFIGMODULE_H
 
 #define KDE3_SUPPORT
 #include <kcmodule.h>

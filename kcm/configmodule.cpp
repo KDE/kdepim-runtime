@@ -19,21 +19,21 @@
 */
 
 #include "configmodule.h"
-#include "rfc822managementwidget.h"
+#include "resourcesmanagementwidget.h"
 
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
 
-K_PLUGIN_FACTORY( RFC822ConfigFactory, registerPlugin<ConfigModule>(); )
-K_EXPORT_PLUGIN( RFC822ConfigFactory( "imaplib" ) )
+K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
+K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
-    KCModule( RFC822ConfigFactory::componentData(), parent, args )
+    KCModule( ResourcesConfigFactory::componentData(), parent, args )
 {
   setButtons( 0 );
   QVBoxLayout *l = new QVBoxLayout( this );
   l->setMargin( 0 );
-  RFC822ManagementWidget *tmw = new RFC822ManagementWidget( this );
+  ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this );
   l->addWidget( tmw );
 }

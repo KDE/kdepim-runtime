@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>RFC822ManagementWidget</class>
- <widget class="QWidget" name="RFC822ManagementWidget" >
+ <class>ResourcesManagementWidget</class>
+ <widget class="QWidget" name="ResourcesManagementWidget" >
   <property name="geometry" >
    <rect>
     <x>0</x>

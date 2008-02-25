@@ -17,24 +17,24 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef RFC822_EXPORT_H
-#define RFC822_EXPORT_H
+#ifndef RESOURCES_KCM_EXPORT_H
+#define RESOURCES_KCM_EXPORT_H
 
 /* needed for KDE_EXPORT and KDE_IMPORT macros */
 #include <kdemacros.h>
 
-#ifndef RFC822_EXPORT
-# if defined(MAKE_KCM_RFC822_LIB)
+#ifndef RESOURCES_KCM_EXPORT
+# if defined(MAKE_KCM_RESOURCES_LIB)
 /* We are building this library */
-#  define RFC822_EXPORT KDE_EXPORT
+#  define RESOURCES_KCM_EXPORT KDE_EXPORT
 # else
 /* We are using this library */
-#  define RFC822_EXPORT KDE_IMPORT
+#  define RESOURCES_KCM_EXPORT KDE_IMPORT
 # endif
 #endif
 
-# ifndef RFC822_EXPORT_DEPRECATED
-#  define RFC822_EXPORT_DEPRECATED KDE_DEPRECATED IMAP_EXPORT
+# ifndef RESOURCES_KCM_EXPORT_DEPRECATED
+#  define RESOURCES_KCM_EXPORT_DEPRECATED KDE_DEPRECATED IMAP_EXPORT
 # endif
 
 #endif

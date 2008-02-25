@@ -21,8 +21,8 @@
     02110-1301, USA.
 */
 
-#include "rfc822managementwidget.h"
-#include "ui_rfc822managementwidget.h"
+#include "resourcesmanagementwidget.h"
+#include "ui_resourcesmanagementwidget.h"
 
 #include <libakonadi/agentmanager.h>
 #include <libakonadi/agentinstancecreatejob.h>
@@ -30,15 +30,15 @@
 #include <KDebug>
 #include <KMenu>
 
-class RFC822ManagementWidget::Private
+class ResourcesManagementWidget::Private
 {
   public:
-    Ui::RFC822ManagementWidget ui;
+    Ui::ResourcesManagementWidget ui;
     Akonadi::AgentManager* manager;
     QHash<QAction*, QString> menuOptions;
 };
 
-RFC822ManagementWidget::RFC822ManagementWidget(QWidget * parent) :
+ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent) :
     QWidget( parent ),
     d( new Private )
 {
@@ -77,12 +77,12 @@ RFC822ManagementWidget::RFC822ManagementWidget(QWidget * parent) :
   updateButtonState();
 }
 
-RFC822ManagementWidget::~RFC822ManagementWidget()
+ResourcesManagementWidget::~ResourcesManagementWidget()
 {
   delete d;
 }
 
-void RFC822ManagementWidget::fillResourcesList()
+void ResourcesManagementWidget::fillResourcesList()
 {
     QStringList instances = d->manager->agentInstances();
     d->ui.resourcesList->clear();
@@ -101,7 +101,7 @@ void RFC822ManagementWidget::fillResourcesList()
     }
 }
 
-void RFC822ManagementWidget::updateButtonState()
+void ResourcesManagementWidget::updateButtonState()
 {
   if ( !d->ui.resourcesList->currentItem() ) {
     d->ui.editButton->setEnabled( false );
@@ -112,7 +112,7 @@ void RFC822ManagementWidget::updateButtonState()
   }
 }
 
-void RFC822ManagementWidget::addClicked( QAction* action)
+void ResourcesManagementWidget::addClicked( QAction* action)
 {
     Q_ASSERT( d->menuOptions.contains( action ) );
     Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( d->menuOptions.value( action) , this );
@@ -120,18 +120,18 @@ void RFC822ManagementWidget::addClicked( QAction* action)
     job->start();
 }
 
-void RFC822ManagementWidget::editClicked()
+void ResourcesManagementWidget::editClicked()
 {
    Q_ASSERT( d->ui.resourcesList->currentItem() );
    QString current = d->ui.resourcesList->currentItem()->data( 0, Qt::UserRole ).toString();
    d->manager->agentInstanceConfigure( current, winId() );
 }
 
-void RFC822ManagementWidget::removeClicked()
+void ResourcesManagementWidget::removeClicked()
 {
    Q_ASSERT( d->ui.resourcesList->currentItem() );
    QString current = d->ui.resourcesList->currentItem()->data( 0, Qt::UserRole ).toString();
    d->manager->removeAgentInstance( current );
 }
 
-#include "rfc822managementwidget.moc"
+#include "resourcesmanagementwidget.moc"

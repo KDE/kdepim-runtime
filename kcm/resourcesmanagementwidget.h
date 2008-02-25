@@ -21,30 +21,30 @@
     02110-1301, USA.
 */
 
-#ifndef RFC822_MANAGEMENTWIDGET_H
-#define RFC822_MANAGEMENTWIDGET_H
+#ifndef RESOURCES_MANAGEMENTWIDGET_H
+#define RESOURCES_MANAGEMENTWIDGET_H
 
-#include <rfc822_export.h>
+#include <kcmresources_export.h>
 #include <QtGui/QWidget>
 
 /**
   A widget to manage imaplib
 */
-class RFC822_EXPORT RFC822ManagementWidget : public QWidget
+class RESOURCES_KCM_EXPORT ResourcesManagementWidget : public QWidget
 {
   Q_OBJECT
 
   public:
     /**
-      Creates a new RFC822ManagementWidget.
+      Creates a new ResourcesManagementWidget.
       @param parent The parent widget.
     */
-    RFC822ManagementWidget( QWidget *parent = 0 );
+    ResourcesManagementWidget( QWidget *parent = 0 );
 
     /**
       Destroys the widget.
     */
-    virtual ~RFC822ManagementWidget();
+    virtual ~ResourcesManagementWidget();
 
   private Q_SLOTS:
     void fillResourcesList();
