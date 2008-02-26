@@ -7,6 +7,3 @@ target_link_libraries(kcm_akonadi_resources  ${KDE4_KDEUI_LIBS} akonadi)
 
 install(TARGETS kcm_akonadi_resources DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES kcm_akonadi_resources.desktop  DESTINATION ${SERVICES_INSTALL_DIR})
-
-install(FILES kcmresources_export.h resourcesmanagementwidget.h
-         DESTINATION ${INCLUDE_INSTALL_DIR} )
