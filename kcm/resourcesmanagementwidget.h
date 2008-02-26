@@ -47,7 +47,7 @@
   @author Tom Albers <tomalbers@kde.nl>
 
 */
-class RESOURCES_KCM_EXPORT ResourcesManagementWidget : public QWidget
+class ResourcesManagementWidget : public QWidget
 {
   Q_OBJECT
 
