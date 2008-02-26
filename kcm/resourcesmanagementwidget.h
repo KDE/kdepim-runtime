@@ -24,7 +24,6 @@
 #ifndef RESOURCES_MANAGEMENTWIDGET_H
 #define RESOURCES_MANAGEMENTWIDGET_H
 
-#include <kcmresources_export.h>
 #include <QtGui/QWidget>
 #include <QStringList>
 
