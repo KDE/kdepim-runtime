@@ -138,6 +138,10 @@ void MailSummary::set( quint32 serialNumber, const QString &messageId,
     mDate = date;
 }
 
+#ifdef Q_CC_MSVC
+MailSummary::operator KUrl() const { return KUrl(); }
+#endif
+
 QString MailList::mimeDataType()
 {
   return "x-kmail-drag/message-list";
