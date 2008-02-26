@@ -42,7 +42,7 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   mainLayout->setMargin( 0 );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
-  mView = new CollectionView( this );
+  mView = new CollectionView( 0, this );
   mView->setSelectionMode( QAbstractItemView::SingleSelection );
 
   mainLayout->addWidget( mView );
