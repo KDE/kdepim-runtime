@@ -1,10 +1,12 @@
 [Desktop Entry]
 Name=KDE Addressbook Compatibility Resource
+Name[km]=ធនធាន​ឆបគ្នា​របស់​សៀវភៅ​អាសយដ្ឋាន​របស់ KDE
 Name[pt]=Recurso de Compatibilidade do Livro de Endereços do KDE
 Name[pt_BR]=Recurso de Compatibilidade do Livro de Endereços do KDE
 Name[zh_TW]=KDE 通訊錄相容性資源
 Comment=An agent to load data from a traditional KDE addressbook resource
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó acmhainn thraidisiúnta leabhair seoltaí KDE
+Comment[km]=ភ្នាក់​ងារ​ត្រូវ​ផ្ទុក​ទិន្នន័យ​ពី​ធនធាន​សៀវភៅ​អាសយដ្ឋាន​ KDE ធម្មតា
 Comment[pt]=Um agente para carregar dados de um recurso de livro de endereços tradicional do KDE
 Comment[pt_BR]=Um agente para carregar dados de um recurso de livro de endereços tradicional do KDE
 Comment[zh_TW]=從傳統 KDE 通訊錄資源載入資料用的代理程式
