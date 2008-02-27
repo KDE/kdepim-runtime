@@ -1,12 +1,16 @@
 [Desktop Entry]
 Name=Akonadi Console
 Name[km]=កុងសូល​របស់ Akonadi
+Name[pt]=Consola do Akonadi
+Name[pt_BR]=Consola do Akonadi
 Name[zh_TW]=Akonadi 主控台
 Exec=akonadiconsole
 Icon=konsole
 Type=Application
 Comment=Akonadi Management and Debugging Console
 Comment[km]=ការ​គ្រប់គ្រង Akonadi និង​កុងសូល​បំបាត់​កំហុស
+Comment[pt]=Consola de Gestão e Depuração do Akonadi
+Comment[pt_BR]=Consola de Gestão e Depuração do Akonadi
 Comment[zh_TW]=Akonadi 管理與除錯主控台
 Terminal=false
 Categories=Qt;KDE;
