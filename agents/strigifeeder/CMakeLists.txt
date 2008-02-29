@@ -15,7 +15,7 @@ include_directories(${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi)
 
 kde4_add_executable(akonadi_strigi_feeder RUN_UNINSTALLED strigifeeder.cpp)
 target_link_libraries(akonadi_strigi_feeder
-  akonadi
+  akonadicore
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${STRIGIQTDBUSCLIENT_LIBRARY}

@@ -75,7 +75,7 @@ if(NEPOMUK_RESOURCES_GENERATED)
   kde4_add_executable(akonadi_nepomuk_contact_feeder RUN_UNINSTALLED nepomukcontactfeeder.cpp ${NCO_SOURCES} ${NIE_SOURCES})
 
   target_link_libraries(akonadi_nepomuk_contact_feeder
-    akonadi
+    akonadicore
     ${QT_QTCORE_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
     ${KDE4_KABC_LIBS}

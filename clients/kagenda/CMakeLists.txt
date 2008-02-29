@@ -9,6 +9,6 @@ set(kagenda_SRCS
 
 kde4_add_executable(kagenda ${kagenda_SRCS})
 
-target_link_libraries(kagenda ${KDE4_KDEUI_LIBS} ${KDE4_KCAL_LIBS} akonadi ${QT_QTGUI_LIBRARY})
+target_link_libraries(kagenda ${KDE4_KDEUI_LIBS} ${KDE4_KCAL_LIBS} akonadicore ${QT_QTGUI_LIBRARY})
 
 install(TARGETS kagenda DESTINATION ${BIN_INSTALL_DIR})
