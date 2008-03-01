@@ -56,10 +56,10 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   filterModel->addMimeType( "text/calendar" );
   filterModel->setSourceModel( sourceModel );
 
-  connect( filterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-           this, SLOT( rowsInserted( const QModelIndex&, int, int ) ) );
-
   mView->setModel( filterModel );
+
+  connect( mView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+           this, SLOT( rowsInserted( const QModelIndex&, int, int ) ) );
 }
 
 void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
