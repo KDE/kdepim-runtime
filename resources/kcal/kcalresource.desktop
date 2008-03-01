@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=KDE Calendar Compatibility Resource
+Name[ja]=KDE カレンダー互換リソース
 Name[km]=ធនធាន​ឆបគ្នា​​នៃ​ប្រតិទិន​របស់ KDE
 Name[pt]=Recurso de Compatibilidade do Calendário do KDE
 Name[pt_BR]=Recurso de Compatibilidade do Calendário do KDE
 Name[zh_TW]=KDE 行事曆相容性資源
 Comment=An agent to load data from a traditional KDE calendar resource
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó acmhainn thraidisiúnta fhéilire KDE
+Comment[ja]=従来の KDE カレンダーリソースからデータを読み込むエージェント
 Comment[km]=ភ្នាក់ងារ​ត្រូវ​ផ្ទុក​ទិន្នន័យ​ពី​ធនធាន​ប្រតិទិន​ KDE បុរាណ
 Comment[pt]=Um agente para carregar dados de um recurso de calendário tradicional do KDE
 Comment[pt_BR]=Um agente para carregar dados de um recurso de calendário tradicional do KDE
