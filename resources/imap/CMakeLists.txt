@@ -49,7 +49,7 @@ qt4_add_dbus_adaptor( imaplibresource_SRCS
 kde4_add_kcfg_files(imaplibresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
-target_link_libraries(akonadi_imaplib_resource akonadi ${QT_QTDBUS_LIBRARIES} imap kmime  ${KDE4_MAILTRANSPORT_LIBS})
+target_link_libraries(akonadi_imaplib_resource akonadicore ${QT_QTDBUS_LIBRARIES} imap kmime  ${KDE4_MAILTRANSPORT_LIBS})
 
 install(TARGETS akonadi_imaplib_resource DESTINATION ${BIN_INSTALL_DIR})
 
