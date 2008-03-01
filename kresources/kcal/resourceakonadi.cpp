@@ -52,18 +52,6 @@ typedef boost::shared_ptr<Incidence> IncidencePtr;
 typedef QMap<int, Item> ItemMap;
 typedef QHash<QString, int> IdHash;
 
-// Will probably have to implement it ourselves, ItemSync is
-// currently not exported by libakonadi and we use a local copy
-// in ../libakonadi
-class SaveSequence : public ItemSync
-{
-  public:
-    SaveSequence( const Collection &collection, QObject *parent )
-      : ItemSync( collection, parent )
-    {
-    }
-};
-
 class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 {
   public:
@@ -677,12 +665,6 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
       Item item( "text/calendar" );
       item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-      // TODO: should not be necessary, just like when using ItemAppendJob
-      // directly
-      DataReference reference = item.reference();
-      reference.setRemoteId( incidence->uid() );
-      item.setReference( reference );
-
       items << item;
     } else {
       Item item = itemIt.value();
@@ -692,7 +674,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
     }
   }
 
-  SaveSequence *job = new SaveSequence( mCollection, mParent );
+  ItemSync *job = new ItemSync( mCollection, mParent );
   job->setRemoteItems( items );
 
   return job;

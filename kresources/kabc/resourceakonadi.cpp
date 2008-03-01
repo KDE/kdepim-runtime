@@ -42,17 +42,6 @@ using namespace KABC;
 typedef QMap<int, Item> ItemMap;
 typedef QHash<QString, int> IdHash;
 
-// Will probably have to implement it ourselves, ItemSync is
-// currently not exported by libakonadi and we use a local copy
-// in ../libakonadi
-class SaveSequence : public ItemSync
-{
-  public:
-    SaveSequence( const Collection &collection ) : ItemSync( collection )
-    {
-    }
-};
-
 class ResourceAkonadi::Private
 {
   public:
@@ -495,12 +484,6 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
       Item item( "text/directory" );
       item.setPayload<Addressee>( addressee );
 
-      // TODO: should not be necessary, just like when using ItemAppendJob
-      // directly
-      DataReference reference = item.reference();
-      reference.setRemoteId( addressee.uid() );
-      item.setReference( reference );
-
       items << item;
     } else {
       Item item = itemIt.value();
@@ -510,7 +493,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
     }
   }
 
-  SaveSequence *job = new SaveSequence( mCollection );
+  ItemSync *job = new ItemSync( mCollection );
   job->setRemoteItems( items );
 
   return job;
