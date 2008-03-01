@@ -2,6 +2,9 @@
 <kpartgui version="1" name="akonadiconsole" >
 
  <MenuBar>
+  <Menu name="edit">
+    <Action name="akonadi_paste" append="edit_paste_merge"/>
+  </Menu>
   <Menu name="collection"><text>&amp;Collection</text>
     <Action name="akonadi_collection_create"/>
     <Separator/>
@@ -23,6 +26,7 @@
   <Action name="akonadi_collection_create"/>
   <Separator/>
   <Action name="akonadi_collection_copy"/>
+  <Action name="akonadi_paste"/>
   <Separator/>
   <Action name="akonadi_collection_delete"/>
   <Separator/>
@@ -33,6 +37,7 @@
 
  <Menu name="akonadi_itemview_contextmenu">
    <Action name="akonadi_item_copy"/>
+   <Action name="akonadi_paste"/>
  </Menu>
 </kpartgui>
 
