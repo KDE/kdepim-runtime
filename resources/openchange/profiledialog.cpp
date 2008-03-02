@@ -98,7 +98,7 @@ void ProfileDialog::fillProfileList()
   uint32_t        count = 0;
 
   memset(&proftable, 0, sizeof (struct SRowSet));
-  if ((retval = GetProfileTable(&proftable, 0)) != MAPI_E_SUCCESS) {
+  if ((retval = GetProfileTable(&proftable)) != MAPI_E_SUCCESS) {
     mapi_errstr("GetProfileTable", GetLastError());
     exit (1);
   }
@@ -153,7 +153,7 @@ void ProfileDialog::deleteSelectedProfile()
 {
   enum MAPISTATUS retval;
   QString profileName = selectedProfileName();
-  if ((retval = DeleteProfile(profileName.toUtf8().constData(), 0 ) ) != MAPI_E_SUCCESS) {
+  if ((retval = DeleteProfile(profileName.toUtf8().constData()) ) != MAPI_E_SUCCESS) {
     mapi_errstr("DeleteProfile", GetLastError());
     exit (1);
   }
@@ -213,7 +213,7 @@ void ProfileDialog::setAsDefaultProfile()
   if ( selectedProfileName.endsWith ( " [default]" ) )
     return; // since this is already the default profile
 
-  if ( SetDefaultProfile(selectedProfileName.toUtf8().constData(), 0) != MAPI_E_SUCCESS) {
+  if ( SetDefaultProfile(selectedProfileName.toUtf8().constData()) != MAPI_E_SUCCESS) {
     mapi_errstr("SetDefaultProfile", GetLastError());
   }
   m_listOfProfiles->clear();

@@ -183,7 +183,6 @@ void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
       uint64_t *fid = (uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
       thisFolder.setRemoteId( QString::number( *fid ) );
       thisFolder.setName( ( const char * ) find_SPropValue_data(&rowset.aRow[index], PR_DISPLAY_NAME) );
-      thisFolder.setCachePolicyId( 1 );
       thisFolder.setType( Collection::Folder );
       QStringList folderMimeType;
       if (*( (uint32_t *)find_SPropValue_data(&rowset.aRow[index], PR_FOLDER_CHILD_COUNT) ) > 0 ) {
@@ -247,7 +246,7 @@ void OCResource::login()
 {
   const char *profName;
   enum MAPISTATUS retval;
-  retval = GetDefaultProfile(&profName, 0);
+  retval = GetDefaultProfile(&profName);
   if (retval != MAPI_E_SUCCESS) {
     mapi_errstr("GetDefaultProfile", GetLastError());
     exit (1);
@@ -306,7 +305,6 @@ void OCResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
   account.setContentTypes( mimeTypes );
-  account.setCachePolicyId( 1 ); // ### just for testing
   collections.append( account );
 
   mapi_id_t id_mailbox;
@@ -379,7 +377,7 @@ enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
       mapi_object_init(&obj_message);
       mapi_id_t *fid = (mapi_id_t *)find_SPropValue_data(&(rowset.aRow[i]), PR_FID);
       mapi_id_t *mid = (mapi_id_t *)find_SPropValue_data(&(rowset.aRow[i]), PR_MID);
-      retval = OpenMessage(&m_mapiStore, *fid, *mid, &obj_message);
+      retval = OpenMessage(&m_mapiStore, *fid, *mid, &obj_message, 0);
       if (retval == MAPI_E_SUCCESS) {
         qDebug() << "building message";
         retval = GetPropsAll(&obj_message, &properties_array);
@@ -600,9 +598,6 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_INTERNET_MESSAGE_ID:
       // PT_STRING8
-      break;
-    case PR_ACTION:
-      // PT_LONG
       break;
     case PR_DISABLE_FULL_FIDELITY:
       // PT_BOOLEAN

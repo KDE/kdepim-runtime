@@ -144,7 +144,7 @@ void ProfileEditDialog::commitProfile()
   qDebug() << "openprofile result: " << retval;
   if ( GetLastError() != MAPI_E_NOT_FOUND ) {
     // then this one exists, and we should kill it
-    if ((retval = DeleteProfile(m_profileNameEdit->text().toUtf8().constData(), 0 ) ) != MAPI_E_SUCCESS) {
+    if ((retval = DeleteProfile(m_profileNameEdit->text().toUtf8().constData()) ) != MAPI_E_SUCCESS) {
       mapi_errstr("DeleteProfile", GetLastError());
       exit (1);
     }
