@@ -79,8 +79,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void dragMoveEvent( QDragMoveEvent *e );
     void keyPressEvent( QKeyEvent * e );
 
-    virtual void dropEvent( QDropEvent *e );
-
     void paste();
 
     void switchTextMode(bool useHtml);
@@ -88,8 +86,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
 
     void wordWrapToggled( bool on );
-    void setWrapColumnOrWidth( int w );
-    int wrapColumnOrWidth() const;
 
     void setColor( const QColor& );
     void setFont( const QFont& );
@@ -107,6 +103,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * The cursor position is preserved.
      * A leading or trailing newline is also added automatically, depending on
      * the placement.
+     * For undo/redo, this is treated as one operation.
      * @param placement defines where in the textedit the signature should be
      *                  inserted.
      * @param addSeparator if true, the separator '-- \n' will be added in front
@@ -120,12 +117,40 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * The cursor position is preserved.
      * A leading or trailing newline is also added automatically, depending on
      * the placement.
+     * For undo/redo, this is treated as one operation.
      * A separator is not added.
      * @param placement defines where in the textedit the signature should be
      *                  inserted.
      * @param isHtml defines whether the signature should be inserted as text or html
      */
     void insertSignature( const QString &signature, Placement placement = End, bool isHtml = false );
+
+    /**
+     * Replaces all occurences of the old signature with the new signature.
+     * Text in quotes will be ignored.
+     * For undo/redo, this is treated as one operation.
+     * If the old signature is empty, nothing is done.
+     * If the new signature is empty, the old signature including the
+     * separator is removed.
+     *
+     * @param oldSig the old signature, which will be replaced
+     * @param newSig the new signature
+     */
+    void replaceSignature( const KPIMIdentities::Signature &oldSig,
+                           const KPIMIdentities::Signature &newSig );
+
+    /**
+     * Cleans the whitespace of the edit's text.
+     * Adjacent tabs and spaces will be converted to a single space.
+     * Trailing whitespace will be removed.
+     * More than 2 newlines in a row will be changed to 2 newlines.
+     * Text in quotes or text inside of the given signature will not be
+     * cleaned.
+     * For undo/redo, this is treated as one operation.
+     *
+     * @param sig text inside this signature will not be cleaned
+     */
+    void cleanWhitespace( const KPIMIdentities::Signature &sig );
 
   public Q_SLOTS:
     void slotAddQuotes();
@@ -135,7 +160,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAlignCenter();
     void slotAlignRight();
     void slotChangeParagStyle( QTextListFormat::Style _style );
-
     void slotFontFamilyChanged( const QString &f );
     void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
