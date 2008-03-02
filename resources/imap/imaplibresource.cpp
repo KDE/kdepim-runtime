@@ -304,6 +304,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
     kDebug( ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
     if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
         itemsRetrieved( messages );
+        s_amountCache[mb] = 0;
         kDebug() << "Flushed all messages to akonadi";
     } else
         kDebug() << "Messages not yet complete... waiting for more...";
