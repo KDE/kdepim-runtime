@@ -129,7 +129,7 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
   }
 
   Item i( item );
-  i.setMimeType( "text/directory" );
+  i.setMimeType( QLatin1String( "text/directory" ) );
   i.setPayload<KABC::Addressee>( addressee );
   itemRetrieved( i );
   return true;
@@ -176,7 +176,7 @@ void KABCResource::configure( WId windowId )
   QStringList types = manager->resourceTypeNames();
   QStringList descs = manager->resourceTypeDescriptions();
 
-  int index = types.indexOf( "akonadi" );
+  int index = types.indexOf( QLatin1String( "akonadi" ) );
   if ( index != -1 ) {
     types.removeAt( index );
     descs.removeAt( index );
@@ -195,14 +195,14 @@ void KABCResource::configure( WId windowId )
   mResource = manager->createResource( type );
   if ( mResource == 0 ) {
     kError() << "Unable to create a KABC resource of type" << type;
-    error( i18n("Unable to create a KABC resource of type %1", type ) );
+    error( i18n( "Unable to create a KABC resource of type %1", type ) );
     return;
   }
 
   mResource->setResourceName( i18n( "%1 address book", type ) );
   mResource->setAddressBook( mAddressBook );
 
-  KRES::ConfigDialog dlg( window, QString( "contact" ), mResource );
+  KRES::ConfigDialog dlg( window, QLatin1String( "contact" ), mResource );
 
   if ( !dlg.exec() ) {
     delete mResource;
@@ -286,7 +286,7 @@ void KABCResource::retrieveCollections()
   c.setName( name() );
 
   QStringList mimeTypes;
-  mimeTypes << "text/directory";
+  mimeTypes << QLatin1String( "text/directory" );
   c.setContentTypes( mimeTypes );
 
   Collection::List list;
@@ -314,7 +314,7 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col, const QStringL
     AddressBook::const_iterator endIt = mAddressBook->end();
     for ( ; it != endIt; ++it ) {
       Item item( DataReference( -1, it->uid() ) );
-      item.setMimeType( "text/directory" );
+      item.setMimeType( QLatin1String( "text/directory" ) );
       items.append( item );
     }
 
@@ -369,7 +369,7 @@ void KABCResource::delayedUpdate()
   AddressBook::const_iterator endIt = mAddressBook->end();
   for ( ; it != endIt; ++it ) {
     Item item( DataReference( -1, it->uid() ) );
-    item.setMimeType( "text/directory" );
+    item.setMimeType( QLatin1String( "text/directory" ) );
     items.append( item );
   }
 

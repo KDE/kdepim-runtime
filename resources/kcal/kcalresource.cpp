@@ -37,7 +37,7 @@ using namespace Akonadi;
 
 KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
-    mCalendar( new KCal::CalendarResources( "UTC" ) ),
+    mCalendar( new KCal::CalendarResources( QLatin1String( "UTC" ) ) ),
     mLoaded( false ),
     mDelayedUpdateTimer( new QTimer( this ) )
 {
@@ -77,7 +77,7 @@ bool KCalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
     return false;
   }
   Item i( item );
-  i.setMimeType( "text/calendar" );
+  i.setMimeType( QLatin1String( "text/calendar" ) );
   i.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
   itemRetrieved( i );
   return true;
@@ -113,7 +113,7 @@ void KCalResource::configure( WId windowId )
   QStringList types = manager->resourceTypeNames();
   QStringList descs = manager->resourceTypeDescriptions();
 
-  int index = types.indexOf( "akonadi" );
+  int index = types.indexOf( QLatin1String( "akonadi" ) );
   if ( index != -1 ) {
     types.removeAt( index );
     descs.removeAt( index );
@@ -131,13 +131,13 @@ void KCalResource::configure( WId windowId )
   // Create new resource
   resource = manager->createResource( type );
   if ( resource == 0 ) {
-    error( i18n("Unable to create a KCal resource of type %1", type ) );
+    error( i18n( "Unable to create a KCal resource of type %1", type ) );
     return;
   }
 
   resource->setResourceName( i18n( "%1 calendar", type ) );
 
-  KRES::ConfigDialog dlg( window, QString( "calendar" ), resource );
+  KRES::ConfigDialog dlg( window, QLatin1String( "calendar" ), resource );
 
   if ( !dlg.exec() ) {
     delete resource;
@@ -221,7 +221,7 @@ void KCalResource::retrieveCollections()
   c.setName( name() );
 
   QStringList mimeTypes;
-  mimeTypes << "text/calendar";
+  mimeTypes << QLatin1String( "text/calendar" );
   c.setContentTypes( mimeTypes );
 
   Collection::List list;
@@ -289,7 +289,7 @@ void KCalResource::delayedUpdate()
   KCal::Incidence::List::const_iterator endIt = incidences.end();
   for ( ; it != endIt; ++it ) {
     Item item( DataReference( -1, (*it)->uid() ) );
-    item.setMimeType( "text/calendar" );
+    item.setMimeType( QLatin1String( "text/calendar" ) );
     items.append( item );
   }
 
