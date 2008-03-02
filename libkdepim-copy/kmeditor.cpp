@@ -914,9 +914,9 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
 
     // Move to the desired position, where the signature should be inserted
     QTextCursor cursor = textCursor();
+    QTextCursor oldCursor = cursor;
     cursor.beginEditBlock();
 
-    int oldPosition = cursor.position();
     if ( placement == End )
       cursor.movePosition( QTextCursor::End );
     else if ( placement == Start )
@@ -940,14 +940,8 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
 
     //TODO: Enable HTML mode for inlinded html sigs
 
-    // Adjust the cursor position if the signature was inserted before the
-    // cursor
-    if ( placement == Start )
-      oldPosition += signature.length() + 1;
-
-    cursor.setPosition( oldPosition );
     cursor.endEditBlock();
-    setTextCursor( cursor );
+    setTextCursor( oldCursor );
     ensureCursorVisible();
 
     document()->setModified( isModified );
@@ -962,11 +956,6 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
 
   QString oldSigText = d->plainSignatureText( oldSig );
 
-  // If the new signature is completely empty, we also want to remove the
-  // signature separator, so include it in the serach
-  if ( newSig.rawText().isEmpty() )
-    oldSigText = "-- \n" + oldSigText;
-
   int currentSearchPosition = 0;
   forever {
 
@@ -980,8 +969,19 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
     // Select the signature
     QTextCursor cursor( document() );
     cursor.setPosition( currentMatch );
+
+    // If the new signature is completely empty, we also want to remove the
+    // signature separator, so include it in the selection
+    int additionalMove = 0;
+    if ( newSig.rawText().isEmpty() &&
+         text.mid( currentMatch - 4, 4) == "-- \n" ) {
+      cursor.movePosition( QTextCursor::PreviousCharacter,
+                           QTextCursor::MoveAnchor, 4 );
+      additionalMove = 4;
+    }
     cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor,
-                         oldSigText.length() );
+                         oldSigText.length() + additionalMove );
+
 
     // Skip quoted signatures
     if ( cursor.block().text().startsWith( quotePrefixName() ) ) {
