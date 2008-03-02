@@ -32,7 +32,7 @@ class ResourceAkonadiFactory : public KRES::PluginFactory<ResourceAkonadi, Resou
     ResourceAkonadiFactory()
       : KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>()
     {
-      KGlobal::locale()->insertCatalog( "kcal_akonadi" );
+      KGlobal::locale()->insertCatalog( QLatin1String( "kcal_akonadi" ) );
     }
 };
 

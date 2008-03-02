@@ -56,7 +56,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 {
   public:
     Private( ResourceAkonadi *parent )
-      : mParent( parent ), mMonitor( 0 ), mCalendar( "UTC" ),
+      : mParent( parent ), mMonitor( 0 ), mCalendar( QLatin1String( "UTC" ) ),
         mLock( true ), mInternalDelete( false )
     {
         mCalendar.registerObserver( this );
@@ -101,7 +101,7 @@ ResourceAkonadi::ResourceAkonadi()
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
   : ResourceCalendar( group ), d( new Private( this ) )
 {
-  KUrl url = group.readEntry( "CollectionUrl", KUrl() );
+  KUrl url = group.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
 
   if ( !url.isValid() ) {
     // TODO error handling
@@ -121,7 +121,7 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
   ResourceCalendar::writeConfig( group );
 
-  group.writeEntry( "CollectionUrl", d->mCollection.url() );
+  group.writeEntry( QLatin1String( "CollectionUrl" ), d->mCollection.url() );
 }
 
 void ResourceAkonadi::setCollection( const Collection &collection )
@@ -369,7 +369,7 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   if ( itemIt == d->mItems.end() ) {
     kDebug(5800) << "No item yet, creating append job";
 
-    Item item( "text/calendar" );
+    Item item( QLatin1String( "text/calendar" ) );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     // TODO: should not be necessary, just like when using ItemAppendJob
@@ -477,7 +477,7 @@ void ResourceAkonadi::init()
   // deactivate reacting to changes, will be enabled in doOpen()
   d->mMonitor->blockSignals( true );
 
-  d->mMonitor->monitorMimeType( "text/calendar" );
+  d->mMonitor->monitorMimeType( QLatin1String( "text/calendar" ) );
   d->mMonitor->fetchAllParts();
 
   connect( d->mMonitor,
@@ -662,7 +662,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
     }
 
     if ( itemIt == mItems.end() ) {
-      Item item( "text/calendar" );
+      Item item( QLatin1String( "text/calendar" ) );
       item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
       items << item;

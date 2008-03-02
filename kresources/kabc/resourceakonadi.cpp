@@ -76,7 +76,7 @@ ResourceAkonadi::ResourceAkonadi()
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
   : Resource( group ), d( new Private( this ) )
 {
-  KUrl url = group.readEntry( "CollectionUrl", KUrl() );
+  KUrl url = group.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
 
   if ( !url.isValid() ) {
     // TODO error handling
@@ -102,7 +102,7 @@ void ResourceAkonadi::init()
   // deactivate reacting to changes, will be enabled in doOpen()
   d->mMonitor->blockSignals( true );
 
-  d->mMonitor->monitorMimeType( "text/directory" );
+  d->mMonitor->monitorMimeType( QLatin1String( "text/directory" ) );
   d->mMonitor->fetchAllParts();
 
   connect( d->mMonitor,
@@ -132,7 +132,7 @@ void ResourceAkonadi::clear()
 
 void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
-  group.writeEntry( "CollectionUrl", d->mCollection.url() );
+  group.writeEntry( QLatin1String( "CollectionUrl" ), d->mCollection.url() );
 
   Resource::writeConfig( group );
 }
@@ -481,7 +481,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
     }
 
     if ( itemIt == mItems.end() ) {
-      Item item( "text/directory" );
+      Item item( QLatin1String( "text/directory" ) );
       item.setPayload<Addressee>( addressee );
 
       items << item;
