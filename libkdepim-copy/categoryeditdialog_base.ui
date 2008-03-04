@@ -43,7 +43,7 @@
      <item>
       <widget class="KPushButton" name="mButtonAddSubcategory" >
        <property name="text" >
-        <string>Add &amp;subcategory</string>
+        <string>Add &amp;Subcategory</string>
        </property>
       </widget>
      </item>
