@@ -123,15 +123,15 @@ void ImaplibResource::startConnect()
 
     m_imap = new Imaplib( 0,"serverconnection" );
 
-    /* TODO: copy cryptoConnectionSupport or do this somewhere else ?
-    if ((safe == 1 || safe == 2) && !Global::cryptoConnectionSupported())
+    if ((safe == 1 || safe == 2) && !QSslSocket::supportsSsl())
     {
-        kDebug() << "Crypto not supported!";
-        slotError(i18n("You requested TLS/SSL, but your "
-                       "system does not seem to be set up for that."));
+        kWarning() << "Crypto not supported!";
+        // TODO: find out how to communicate a critical failure.
+
+        //slotError(i18n("You requested TLS/SSL, but your "
+        //               "system does not seem to be set up for that."));
         return;
     }
-    */
 
     connections(); // todo: double connections on reconnect?
     m_imap->startConnection( server, port, safe );
