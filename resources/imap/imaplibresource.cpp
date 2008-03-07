@@ -269,10 +269,10 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
     // this should hold the headers of the messages.
 
+    static Item::List s_messages;
     static QHash<QString, int> s_amountCache;
     s_amountCache[mb] += ( list.count() / 3 );
 
-    Item::List messages;
 
     QStringList::ConstIterator it = list.begin();
     while ( it != list.end() ) {
@@ -296,15 +296,16 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         foreach( QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
         i.setFlag( flag.toLatin1() /* ok? */ );
 
-        messages.append( i );
+        s_messages.append( i );
     }
 
     // we should only emit this when we have received all messages, remember the messages arrive in
     // blocks of 250.
     kDebug( ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
     if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
-        itemsRetrieved( messages );
+        itemsRetrieved( s_messages );
         s_amountCache[mb] = 0;
+        s_messages.clear();
         kDebug() << "Flushed all messages to akonadi";
     } else
         kDebug() << "Messages not yet complete... waiting for more...";
