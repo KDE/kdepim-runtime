@@ -19,6 +19,8 @@
   </Menu>
   <Menu name="item"><text>&amp;Item</text>
     <Action name="akonadi_item_copy"/>
+    <Separator/>
+    <Action name="akonadi_item_delete"/>
   </Menu>
  </MenuBar>
 
@@ -38,6 +40,7 @@
  <Menu name="akonadi_itemview_contextmenu">
    <Action name="akonadi_item_copy"/>
    <Action name="akonadi_paste"/>
+   <Action name="akonadi_item_delete"/>
  </Menu>
 </kpartgui>
 
