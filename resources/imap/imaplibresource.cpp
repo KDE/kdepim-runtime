@@ -142,11 +142,13 @@ void ImaplibResource::startConnect()
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
     kDebug( ) << "Implement me!";
+    changesCommitted( item );
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
     kDebug( ) << "Implement me!" << item.reference().remoteId() << parts;
+    changesCommitted( item );
 }
 
 void ImaplibResource::itemRemoved( const Akonadi::DataReference & ref )
