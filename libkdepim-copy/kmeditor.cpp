@@ -2,6 +2,7 @@
  * kmeditor.cpp
  *
  * Copyright (C)  2007 Laurent Montel <montel@kde.org>
+ * Copyright (C)  2008 Thomas McGuire <thomas.mcguire@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -73,7 +74,8 @@ class KMeditorPrivate
        useExtEditor( false ),
        mExtEditorProcess( 0 ),
        mExtEditorTempFileWatcher( 0 ),
-       mExtEditorTempFile( 0 )
+       mExtEditorTempFile( 0 ),
+       mMode( KMeditor::Plain )
     {
     }
 
@@ -90,9 +92,13 @@ class KMeditorPrivate
     //
     // Normal functions
     //
-    void mergeFormat( const QTextCharFormat &format );
     QString addQuotesToText( const QString &inputText );
     QString removeQuotesFromText( const QString &inputText ) const;
+    void init();
+
+    // Switches to rich text mode and emits the mode changed signal if the
+    // mode really changed.
+    void activateRichText();
 
     // Returns the text of the signature. If the signature is HTML, the HTML
     // tags will be stripped.
@@ -115,11 +121,21 @@ class KMeditorPrivate
     QProcess *mExtEditorProcess;
     KDirWatch *mExtEditorTempFileWatcher;
     KTemporaryFile *mExtEditorTempFile;
+    KMeditor::Mode mMode;
 };
 
 }
 
 using namespace KPIM;
+
+void KMeditorPrivate::activateRichText()
+{
+  if ( mMode == KMeditor::Plain ) {
+    q->setAcceptRichText( true );
+    mMode = KMeditor::Rich;
+    emit q->textModeChanged( mMode );
+  }
+}
 
 QList< QPair<int,int> > KMeditorPrivate::signaturePositions( const KPIMIdentities::Signature &sig ) const
 {
@@ -325,13 +341,13 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
 KMeditor::KMeditor( const QString& text, QWidget *parent )
  : KTextEdit( text, parent ), d( new KMeditorPrivate( this ) )
 {
-  init();
+  d->init();
 }
 
 KMeditor::KMeditor( QWidget *parent )
  : KTextEdit( parent ), d( new KMeditorPrivate( this ) )
 {
-  init();
+  d->init();
 }
 
 KMeditor::~KMeditor()
@@ -346,15 +362,15 @@ bool KMeditor::eventFilter( QObject*o, QEvent* e )
   return KTextEdit::eventFilter( o, e );
 }
 
-void KMeditor::init()
+void KMeditorPrivate::init()
 {
-  KCursor::setAutoHideCursor( this, true, true );
-  installEventFilter( this );
+  KCursor::setAutoHideCursor( q, true, true );
+  q->installEventFilter( q );
   //enable spell checking by default
-  setCheckSpellingEnabled( true );
-  QShortcut * insertMode = new QShortcut( QKeySequence( Qt::Key_Insert ), this );
-  connect( insertMode, SIGNAL( activated() ),
-           this, SLOT( slotChangeInsertMode() ) );
+  q->setCheckSpellingEnabled( true );
+  QShortcut * insertMode = new QShortcut( QKeySequence( Qt::Key_Insert ), q );
+  q->connect( insertMode, SIGNAL( activated() ),
+              q, SLOT( slotChangeInsertMode() ) );
 }
 
 void KMeditor::slotChangeInsertMode()
@@ -398,21 +414,42 @@ void KMeditor::slotChangeParagStyle( QTextListFormat::Style _style )
   QTextCursor cursor = textCursor();
   cursor.beginEditBlock();
 
-  QTextBlockFormat blockFmt = cursor.blockFormat();
+  // Create a list with the specified format
+  if ( _style != QTextListFormat::ListStyleUndefined ) {
 
-  QTextListFormat listFmt;
+    QTextBlockFormat blockFmt = cursor.blockFormat();
+    QTextListFormat listFmt;
 
-  if ( cursor.currentList() ) {
-    listFmt = cursor.currentList()->format();
-  } else {
-    listFmt.setIndent( blockFmt.indent() + 1 );
-    blockFmt.setIndent( 0 );
-    cursor.setBlockFormat( blockFmt );
+    if ( cursor.currentList() ) {
+      listFmt = cursor.currentList()->format();
+    } else {
+      listFmt.setIndent( blockFmt.indent() + 1 );
+      blockFmt.setIndent( 0 );
+      cursor.setBlockFormat( blockFmt );
+    }
+
+    listFmt.setStyle( _style );
+
+    cursor.createList( listFmt );
+    d->activateRichText();
   }
 
-  listFmt.setStyle( _style );
+  // Remove the list formatting again
+  else {
+    QTextList *list = cursor.currentList();
+    if ( list ) {
 
-  cursor.createList( listFmt );
+      QTextListFormat listFormat = list->format();
+      listFormat.setIndent( 0 );
+      list->setFormat( listFormat );
+
+      int count = list->count();
+      while ( count > 0 ) {
+        list->removeItem( 0 );
+        count--;
+      }
+    }
+  }
 
   cursor.endEditBlock();
   setFocus();
@@ -422,58 +459,67 @@ void KMeditor::setColor( const QColor& col )
 {
   QTextCharFormat fmt;
   fmt.setForeground( col );
-  d->mergeFormat( fmt );
+  textCursor().mergeCharFormat( fmt );
+  d->activateRichText();
 }
 
-void KMeditor::setFont( const QFont &fonts )
+void KMeditor::setFont( const QFont &font )
 {
   QTextCharFormat fmt;
-  fmt.setFont( fonts );
-  d->mergeFormat( fmt );
+  fmt.setFont( font );
+  textCursor().mergeCharFormat( fmt );
 }
 
+void KMeditor::setFontForWholeText( const QFont &font )
+{
+  QTextCharFormat fmt;
+  fmt.setFont( font );
+  QTextCursor cursor( document() );
+  cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
+  cursor.mergeCharFormat( fmt );
+  document()->setDefaultFont( font );
+}
 
 void KMeditor::slotAlignLeft()
 {
   setAlignment( Qt::AlignLeft );
+  d->activateRichText();
 }
 
 void KMeditor::slotAlignCenter()
 {
   setAlignment( Qt::AlignHCenter );
+  d->activateRichText();
 }
 
 void KMeditor::slotAlignRight()
 {
   setAlignment( Qt::AlignRight );
+  d->activateRichText();
 }
 
 void KMeditor::slotTextBold( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontWeight( _b ? QFont::Bold : QFont::Normal );
-  d->mergeFormat( fmt );
+  textCursor().mergeCharFormat( fmt );
+  d->activateRichText();
 }
 
 void KMeditor::slotTextItalic( bool _b)
 {
   QTextCharFormat fmt;
   fmt.setFontItalic( _b );
-  d->mergeFormat(fmt);
+  textCursor().mergeCharFormat( fmt );
+  d->activateRichText();
 }
 
 void KMeditor::slotTextUnder( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontUnderline( _b );
-  d->mergeFormat( fmt );
-}
-
-void KMeditorPrivate::mergeFormat( const QTextCharFormat &format )
-{
-  QTextCursor cursor = q->textCursor();
-  cursor.mergeCharFormat( format );
-  q->mergeCurrentCharFormat( format );
+  textCursor().mergeCharFormat( fmt );
+  d->activateRichText();
 }
 
 void KMeditor::slotTextColor()
@@ -483,7 +529,8 @@ void KMeditor::slotTextColor()
   if ( KColorDialog::getColor( color, this ) ) {
     QTextCharFormat fmt;
     fmt.setForeground( color );
-    d->mergeFormat( fmt );
+    textCursor().mergeCharFormat( fmt );
+    d->activateRichText();
   }
 }
 
@@ -491,34 +538,18 @@ void KMeditor::slotFontFamilyChanged( const QString &f )
 {
   QTextCharFormat fmt;
   fmt.setFontFamily( f );
-  d->mergeFormat( fmt );
+  textCursor().mergeCharFormat( fmt );
   setFocus();
+  d->activateRichText();
 }
 
 void KMeditor::slotFontSizeChanged( int size )
 {
   QTextCharFormat fmt;
   fmt.setFontPointSize( size );
-  d->mergeFormat( fmt );
+  textCursor().mergeCharFormat( fmt );
   setFocus();
-}
-
-void KMeditor::switchTextMode( bool useHtml )
-{
-  //TODO: need to look at what change which highlighter.
-
-  if ( useHtml && acceptRichText() ) //Already in HTML mode
-    return;
-  if ( !useHtml && !acceptRichText() ) //Already in text mode
-    return;
-
-  if ( !useHtml ) {
-    //reformat text (which can be html text) as text
-    setText( toPlainText() );
-  }
-
-  setAcceptRichText( useHtml );
-  document()->setModified( true );
+  d->activateRichText();
 }
 
 KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
@@ -938,13 +969,14 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
       }
     }
 
-    //TODO: Enable HTML mode for inlinded html sigs
-
     cursor.endEditBlock();
     setTextCursor( oldCursor );
     ensureCursorVisible();
 
     document()->setModified( isModified );
+
+    if ( isHtml )
+      d->activateRichText();
   }
 }
 
@@ -992,8 +1024,10 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
     // Remove the old and instert the new signature
     cursor.removeSelectedText();
     if ( newSig.isInlinedHtml() &&
-         newSig.type() == KPIMIdentities::Signature::Inlined )
-      cursor.insertHtml( newSig.rawText() );     //TODO: Turn HTML mode on
+         newSig.type() == KPIMIdentities::Signature::Inlined ) {
+      cursor.insertHtml( newSig.rawText() );
+      d->activateRichText();
+    }
     else
       cursor.insertText( newSig.rawText() );
 
@@ -1003,5 +1037,40 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
   cursor.endEditBlock();
 }
 
+void KMeditor::switchToPlainText()
+{
+  if ( d->mMode == Rich ) {
+    d->mMode = Plain;
+    // TODO: Warn the user about this?
+    document()->setPlainText( document()->toPlainText() );
+    setAcceptRichText( false );
+    emit textModeChanged( d->mMode );
+  }
+}
+
+KMeditor::Mode KMeditor::textMode() const
+{
+  return d->mMode;
+}
+
+QString KMeditor::textOrHTML() const
+{
+  if ( textMode() == Rich )
+    return toHtml();
+  else
+    return toPlainText();
+}
+
+void KMeditor::focusOutEvent( QFocusEvent *e )
+{
+  KTextEdit::focusOutEvent( e );
+  emit focusChanged( false );
+}
+
+void KMeditor::focusInEvent( QFocusEvent *e )
+{
+  KTextEdit::focusInEvent( e );
+  emit focusChanged( true );
+}
 
 #include "kmeditor.moc"

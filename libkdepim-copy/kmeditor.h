@@ -2,6 +2,7 @@
  * kmeditor.h
  *
  * Copyright (C)  2007  Laurent Montel <montel@kde.org>
+ * Copyright (C)  2008  Thomas McGuire <thomas.mcguire@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +38,28 @@ namespace KPIM {
 
 class KMeditorPrivate;
 class KEMailQuotingHighlighter;
+
+/**
+ * The KMeditor class provides a widget to edit and display text,
+ * specially geared towards writing e-mails.
+ *
+ * It offers sevaral additional functions of a KTextEdit:
+ *
+ * @li Quote highlighting
+ * @li The ability to us an external editor
+ * @li Signature handling
+ * @li Better spellcheck support
+ * @li Utility functions like removing whitespace, inserting a file,
+ *     adding quotes or rot13'ing the text
+ * @li Easier access to many common rich text editing tasks, like changing
+ *     the font.
+ *
+ * The editor can be in two modes: Rich text mode and plain text mode.
+ * Calling functions which modify he format/style of the text will automatically
+ * enable the rich text mode. Rich text mode is sometimes also referred to as
+ * HTML mode.
+ * Do not call setAcceptRichText() or acceptRichText() yourself.
+ */
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
   Q_OBJECT
@@ -53,6 +76,13 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
                    };
 
     /**
+     * The mode the edit widget is in.
+     */
+    enum Mode { Plain,    ///< Plain text mode
+                Rich      ///< Rich text mode
+              };
+
+    /**
      * Constructs a KMeditor object
      */
     explicit KMeditor( const QString& text, QWidget *parent = 0 );
@@ -62,7 +92,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     explicit KMeditor( QWidget *parent = 0 );
 
-    ~KMeditor();
+    virtual ~KMeditor();
 
     virtual void createHighlighter();
 
@@ -75,20 +105,28 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void setUseExternalEditor( bool use );
     void setExternalEditorPath( const QString & path );
 
-    void dragEnterEvent( QDragEnterEvent *e );
-    void dragMoveEvent( QDragMoveEvent *e );
-    void keyPressEvent( QKeyEvent * e );
-
     void paste();
-
-    void switchTextMode(bool useHtml);
 
     KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
 
     void wordWrapToggled( bool on );
 
     void setColor( const QColor& );
-    void setFont( const QFont& );
+
+    /**
+     * Sets the font of the currently selected text.
+     *
+     * @param font the font that the selection will get
+     */
+    void setFont( const QFont &font );
+
+    /**
+     * Changes the font of the whole text.
+     * Also sets the default font for the document.
+     *
+     * @param font the font that the whole text will get
+     */
+    void setFontForWholeText( const QFont &font );
 
     bool checkExternalEditorFinished();
     void killExternalEditor();
@@ -104,6 +142,9 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * A leading or trailing newline is also added automatically, depending on
      * the placement.
      * For undo/redo, this is treated as one operation.
+     *
+     * Rich text mode will be enabled if the signature is in inlined HTML format.
+     *
      * @param placement defines where in the textedit the signature should be
      *                  inserted.
      * @param addSeparator if true, the separator '-- \n' will be added in front
@@ -119,11 +160,18 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * the placement.
      * For undo/redo, this is treated as one operation.
      * A separator is not added.
+     *
+     * Use the other insertSignature() function if possible, as it has support
+     * for separators and does HTML detection automatically.
+     *
+     * Rich text mode will be enabled if @p isHtml is true.
+     *
      * @param placement defines where in the textedit the signature should be
      *                  inserted.
      * @param isHtml defines whether the signature should be inserted as text or html
      */
-    void insertSignature( const QString &signature, Placement placement = End, bool isHtml = false );
+    void insertSignature( const QString &signature, Placement placement = End,
+                          bool isHtml = false );
 
     /**
      * Replaces all occurences of the old signature with the new signature.
@@ -152,7 +200,25 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     void cleanWhitespace( const KPIMIdentities::Signature &sig );
 
+    /**
+     * This will switch the editor to plain text mode.
+     * All rich text formatting will be destroyed.
+     */
+    void switchToPlainText();
+
+    /**
+     * @return the current text mode
+     */
+    Mode textMode() const;
+
+    /**
+     * @return the plain text string if in plain text mode or the HTML code
+     *         if in rich text mode.
+     */
+    QString textOrHTML() const;
+
   public Q_SLOTS:
+
     void slotAddQuotes();
     void slotRemoveBox();
     void slotAddBox();
@@ -164,15 +230,35 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
+
+    /**
+     * Warning: This function switches back to plain text mode.
+     */
     void slotRot13();
+
     void slotTextBold( bool _b );
     void slotTextItalic( bool _b );
     void slotTextUnder( bool _b );
     void slotTextColor();
 
-
     void slotChangeInsertMode();
+
   Q_SIGNALS:
+
+    /**
+     * Emitted whenever the text mode is changed.
+     *
+     * @param mode the new text mode
+     */
+    void textModeChanged( KPIM::KMeditor::Mode mode );
+
+    /**
+     * Emitted whenever the foucs is lost or gained
+     *
+     * @param focusGained true if the focus was gained, false when it was lost
+     */
+    void focusChanged( bool focusGained );
+
     void pasteImage();
     void focusUp();
     void overwriteModeText();
@@ -180,8 +266,20 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
   protected:
 
-    bool eventFilter( QObject* o, QEvent* e );
-    void init();
+    virtual void dragEnterEvent( QDragEnterEvent *e );
+    virtual void dragMoveEvent( QDragMoveEvent *e );
+    virtual bool eventFilter( QObject *o, QEvent *e );
+    virtual void keyPressEvent( QKeyEvent *e );
+
+    /**
+     * Reimplemented to be able to emit focusChanged().
+     */
+    virtual void focusOutEvent( QFocusEvent *e );
+
+    /**
+     * Reimplemented to be able to emit focusChanged().
+     */
+    virtual void focusInEvent( QFocusEvent *e );
 
     /*
      * Redefine it to allow to create context menu for spell word list
@@ -191,6 +289,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
   private:
 
     KMeditorPrivate *const d;
+    friend class KMeditorPrivate;
     Q_PRIVATE_SLOT( d, void addSuggestion( const QString&, const QStringList& ) )
 };
 

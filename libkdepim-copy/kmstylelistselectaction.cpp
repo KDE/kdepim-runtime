@@ -25,46 +25,70 @@
 using namespace KPIM;
 
 KMStyleListSelectAction::KMStyleListSelectAction( const QString& text, QWidget *parent)
- : KSelectAction(text, parent), d( 0 )
+ : KSelectAction(text, parent)
 {
-   init();
-   connect(this,SIGNAL(triggered(int)),this,SLOT(slotStyleChanged(int)));
+  init();
+  connect( this, SIGNAL( triggered(int) ),
+           this, SLOT( slotChangeStyle(int) ) );
 }
 
-KMStyleListSelectAction::~KMStyleListSelectAction()
+void KMStyleListSelectAction::setCurrentStyle( QTextListFormat::Style style )
 {
-  //for the future
-  //delete d;
+  switch ( style ) {
+    default:
+    case QTextListFormat::ListStyleUndefined:
+      setCurrentItem( 0 );
+      break;
+    case QTextListFormat::ListDisc:
+      setCurrentItem( 1 );
+      break;
+    case QTextListFormat::ListCircle:
+      setCurrentItem( 2 );
+      break;
+    case QTextListFormat::ListSquare:
+      setCurrentItem( 3 );
+      break;
+    case QTextListFormat::ListDecimal:
+      setCurrentItem( 4 );
+      break;
+    case QTextListFormat::ListLowerAlpha:
+      setCurrentItem( 5 );
+      break;
+    case QTextListFormat::ListUpperAlpha:
+      setCurrentItem( 6 );
+      break;
+  }
 }
 
-void KMStyleListSelectAction::slotStyleChanged(int styleIndex)
+void KMStyleListSelectAction::slotChangeStyle( int styleIndex )
 {
   QTextListFormat::Style paragStyle = QTextListFormat::ListStyleUndefined;
-  switch (styleIndex) {
-  	default:
-        case 0:
-           paragStyle = QTextListFormat::ListStyleUndefined;
-        case 1:
-           paragStyle = QTextListFormat::ListDisc;
-           break;
-        case 2:
-           paragStyle = QTextListFormat::ListCircle;
-           break;
-        case 3:
-           paragStyle = QTextListFormat::ListSquare;
-           break;
-        case 4:
-           paragStyle = QTextListFormat::ListDecimal;
-           break;
-        case 5:
-           paragStyle = QTextListFormat::ListLowerAlpha;
-           break;
-        case 6:
-           paragStyle = QTextListFormat::ListUpperAlpha;
-           break;
+  switch ( styleIndex ) {
+    default:
+    case 0:
+      paragStyle = QTextListFormat::ListStyleUndefined;
+      break;
+    case 1:
+      paragStyle = QTextListFormat::ListDisc;
+      break;
+    case 2:
+      paragStyle = QTextListFormat::ListCircle;
+      break;
+    case 3:
+      paragStyle = QTextListFormat::ListSquare;
+      break;
+    case 4:
+      paragStyle = QTextListFormat::ListDecimal;
+      break;
+    case 5:
+      paragStyle = QTextListFormat::ListLowerAlpha;
+      break;
+    case 6:
+      paragStyle = QTextListFormat::ListUpperAlpha;
+      break;
   }
 
-  emit applyStyle(paragStyle);
+  emit applyStyle( paragStyle );
 }
 
 void KMStyleListSelectAction::init()
@@ -77,7 +101,8 @@ void KMStyleListSelectAction::init()
   styleItems << i18n( "Ordered List (Decimal)" );
   styleItems << i18n( "Ordered List (Alpha lower)" );
   styleItems << i18n( "Ordered List (Alpha upper)" );
-  setItems(styleItems);
+  setItems( styleItems );
+  setCurrentItem( 0 );
 }
 
 #include "kmstylelistselectaction.moc"

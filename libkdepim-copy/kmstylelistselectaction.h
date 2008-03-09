@@ -38,18 +38,22 @@ class KDEPIM_EXPORT KMStyleListSelectAction : public KSelectAction
      */
     explicit KMStyleListSelectAction( const QString& text, QWidget *parent = 0 );
 
-    ~KMStyleListSelectAction();
+    /**
+     * Sets the current item of the action the the specified style.
+     * Call this whenever the cursor position of the editor changes and therefore
+     * the list style might have changed.
+     *
+     * @param style the new current style of the action
+     */
+    void setCurrentStyle( QTextListFormat::Style style );
 
   Q_SIGNALS:
     //emit style will be applyed.
-    void applyStyle(QTextListFormat::Style);
+    void applyStyle( QTextListFormat::Style );
   protected Q_SLOTS:
-    void slotStyleChanged(int);
+    void slotChangeStyle( int );
   protected:
     void init();
-  private:
-    class Private;
-    Private *const d;
 };
 
 }
