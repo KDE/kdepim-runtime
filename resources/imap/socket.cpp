@@ -17,7 +17,7 @@
 */
 
 // Uncomment the next line for full comm debug
-// #define comm_debug
+//#define comm_debug
 
 // Own
 #include "socket.h"

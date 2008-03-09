@@ -405,6 +405,7 @@ private slots:
     void slotParseCreateMailBox();
     void slotParseDeleteMailBox();
     void slotParseRenameMailBox();
+    void slotSelectMailBox();
 };
 
 #endif // Imaplib_H

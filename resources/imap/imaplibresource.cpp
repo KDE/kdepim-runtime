@@ -50,7 +50,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
-        :ResourceBase( id )
+        :ResourceBase( id ), m_retrieveItemsRequested( false )
 {
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -78,7 +78,7 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 {
     const QString reference =  mb + "-+-" + QString::number( uid );
 
-    kDebug() << "MESSAGE from Imap server" << reference << body;
+    kDebug() << "MESSAGE from Imap server" << reference;
     Q_ASSERT( m_itemCache.value( reference ).isValid() );
 
     KMime::Message *mail = new KMime::Message();
@@ -88,12 +88,14 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
     Item i( m_itemCache.value( reference ) );
     i.setMimeType( "message/rfc822" );
     i.setPayload( MessagePtr( mail ) );
+
+    kDebug() << "Has Payload: " << i.hasPayload();
+
     itemRetrieved( i );
 }
 
 void ImaplibResource::configure( WId windowId )
 {
-    kDebug();
     SetupServer dlg;
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
@@ -221,19 +223,24 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
 {
     kDebug( ) << col.remoteId();
+    m_retrieveItemsRequested = true;
     m_imap->getMailBox( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
     kDebug( ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
+    if ( !m_retrieveItemsRequested ) {
+        return;
+    }
 
     // We need to remember the amount of messages in a mailbox, so we can emit
     // itemsRetrieved() at the right time when all the messages are received.
 
-    if ( amount == 0 )
+    if ( amount == 0 ) {
+        m_retrieveItemsRequested = false;
         itemsRetrieved();
-    else if ( m_amountMessagesCache.value( mb ) != amount ) {
+    } else {
         m_amountMessagesCache[ mb ] = amount;
         m_imap->getHeaderList( mb, 1, amount );
     }
@@ -242,6 +249,9 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
     kDebug( ) << mb << values.count();
+    if ( !m_retrieveItemsRequested ) {
+        return;
+    }
 
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
@@ -266,6 +276,9 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
 void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
 {
     kDebug( ) << mb << list.count();
+    if ( !m_retrieveItemsRequested ) {
+        return;
+    }
 
     // this should hold the headers of the messages.
 
@@ -307,6 +320,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         s_amountCache[mb] = 0;
         s_messages.clear();
         kDebug() << "Flushed all messages to akonadi";
+        m_retrieveItemsRequested = false;
     } else
         kDebug() << "Messages not yet complete... waiting for more...";
 }
@@ -448,8 +462,6 @@ void ImaplibResource::connections()
 
 void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
 {
-    // kDebug();
-
     KPasswordDialog dlg( 0 /* todo: sane? */ );
     dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
     if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )

@@ -189,10 +189,13 @@ void Imaplib::slotRead( const QString& received )
                                 SLOT( slotParseExpunge() ) );
 
         else if ( m_currentQueueItem.state() == Queue::SyncMailBox ||
-                  m_currentQueueItem.state() == Queue::SelectMailBox ||
                   m_currentQueueItem.state() == Queue::SaveMessageData )
             QTimer::singleShot( 0, this,
                                 SLOT( slotParseExists() ) );
+
+        else if ( m_currentQueueItem.state() == Queue::SelectMailBox )
+            QTimer::singleShot( 0,this,
+                                SLOT( slotSelectMailBox() ) );
 
         else if ( m_currentQueueItem.state() == Queue::SaveMessage )
             QTimer::singleShot( 0,this,
@@ -590,8 +593,21 @@ void Imaplib::slotParseCopy()
     QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
 }
 
+void Imaplib::slotSelectMailBox()
+{
+    // this is where the box is selected, don't emit anything.
+    kDebug();
+    m_currentMailbox=m_currentQueueItem.mailbox();
+    m_currentQueueItem = Queue();
+    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+}
+
 void Imaplib::slotParseNoop()
 {
+    m_currentQueueItem = Queue();
+    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    return;
+
     // Make sure we have all data....
     static QString all_data;
     all_data.append( m_received );
@@ -648,6 +664,7 @@ void Imaplib::slotParseCheckMail()
         rx1.setPattern( "[ (]MESSAGES (\\d+)[ )]" );
         if ( rx1.indexIn( m_received.trimmed() ) != -1 ) {
             totalShouldBe = rx1.cap( 1 ).toInt();
+            kDebug() << "Emitting messagecount";
             emit messageCount( this, mb, totalShouldBe );
         }
 
@@ -779,17 +796,20 @@ void Imaplib::slotParseExists()
     if ( rx1.indexIn( m_received.trimmed() ) != -1 ) {
 
         int amount = rx1.cap( 1 ).toInt();
+        kDebug() << "Emitting messagecount";
         emit messageCount( this, m_currentQueueItem.mailbox(), amount );
 
+        /* the resource will request the headers...
         if ( m_currentQueueItem.state() == Queue::SyncMailBox )
             getHeaderList( m_currentMailbox, 1, amount );
         else
             emit integrity( m_currentMailbox, amount, uidvalidity, uidnext );
+            */
     }
 
     // Sync will not emit the unseen count, so do a checkmail after that.
-    if ( m_currentQueueItem.state() == Queue::SyncMailBox )
-        checkMail( m_currentMailbox );
+    //if ( m_currentQueueItem.state() == Queue::SyncMailBox )
+    //    checkMail( m_currentMailbox );
 
     if ( m_currentQueueItem.state() == Queue::SaveMessageData )
         emit saveDone();

@@ -70,6 +70,7 @@ private:
     void connections();
     void manualAuth( Imaplib* connection, const QString& username );
     void startConnect();
+    bool m_retrieveItemsRequested;
 };
 
 #endif
