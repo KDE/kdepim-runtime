@@ -410,6 +410,10 @@ void Imaplib::deleteMailBox( const QString& box )
 {
     // kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
+
+    // We can not delete the mailbox if it is open..
+    if ( m_currentMailbox == box )
+        m_queue.append( Queue( Queue::SelectMailBox, "INBOX", "SELECT \"INBOX\"" ) );
     m_queue.append( Queue( Queue::DeleteMailBox, box, "DELETE \"" + box2 + "\"" ) );
 }
 
@@ -717,9 +721,9 @@ void Imaplib::slotParseCreateMailBox()
     // kDebug() << " : " << m_received;
 
     if ( m_received.indexOf( "a02 OK" ) == -1 )
-        kDebug( ) << "Failed to create folder";
+        emit mailBoxAdded( false );
     else
-        emit mailBoxAdded( m_currentQueueItem.mailbox() );
+        emit mailBoxAdded( true );
 
     emit statusReady();
     m_currentQueueItem = Queue();
@@ -731,9 +735,9 @@ void Imaplib::slotParseDeleteMailBox()
     // kDebug() << " : " << m_received;
 
     if ( m_received.indexOf( "a02 OK" ) == -1 )
-        kDebug( ) << "Failed to delete folder";
+        emit mailBoxDeleted( false, m_currentQueueItem.mailbox() );
     else
-        emit mailBoxDeleted( m_currentQueueItem.mailbox() );
+        emit mailBoxDeleted( true, m_currentQueueItem.mailbox() );
 
     emit statusReady();
     m_currentQueueItem = Queue();

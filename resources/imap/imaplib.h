@@ -330,12 +330,12 @@ signals:
     /**
      * This signal is emitted when a mailbox is added
      */
-    void mailBoxAdded( const QString& );
+    void mailBoxAdded( bool success );
 
     /**
      * This signal is emitted when a mailbox is deleted
      */
-    void mailBoxDeleted( const QString& );
+    void mailBoxDeleted( bool success, const QString& currentFolder );
 
     /**
      * This signal is emitted when a mailbox is renamed

@@ -40,6 +40,9 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/collectionmodifyjob.h>
+#include <libakonadi/monitor.h>
+#include <libakonadi/changerecorder.h>
+#include <libakonadi/collectiondeletejob.h>
 #include <libakonadi/itemappendjob.h>
 #include <libakonadi/itemfetchjob.h>
 #include <libakonadi/itemstorejob.h>
@@ -52,6 +55,7 @@ using namespace Akonadi;
 ImaplibResource::ImaplibResource( const QString &id )
         :ResourceBase( id ), m_retrieveItemsRequested( false )
 {
+    monitor()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
             Settings::self(), QDBusConnection::ExportAdaptors );
@@ -100,8 +104,8 @@ void ImaplibResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->username().isEmpty() )
-        setName(  Settings::self()->imapServer() + "/" + Settings::self()->username() );
-    else 
+        setName( Settings::self()->imapServer() + "/" + Settings::self()->username() );
+    else
         setName( KGlobal::mainComponent().aboutData()->appName() );
     startConnect();
     /*
@@ -125,8 +129,7 @@ void ImaplibResource::startConnect()
 
     m_imap = new Imaplib( 0,"serverconnection" );
 
-    if ((safe == 1 || safe == 2) && !QSslSocket::supportsSsl())
-    {
+    if (( safe == 1 || safe == 2 ) && !QSslSocket::supportsSsl() ) {
         kWarning() << "Crypto not supported!";
         // TODO: find out how to communicate a critical failure.
 
@@ -146,7 +149,7 @@ void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
     // save message to the server.
     MessagePtr msg = item.payload<MessagePtr>();
-    m_imap->saveMessage( mailbox, msg->encodedContent(true) + "\r\n" );
+    m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
 }
 
 void ImaplibResource::slotSaveDone()
@@ -344,17 +347,48 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
 void ImaplibResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-    kDebug( ) << "Implement me!";
+    const QString remoteName = parent.remoteId() + "." + collection.name();
+    kDebug( ) << "New folder: " << remoteName;
+
+    m_colAdded = collection;
+    m_imap->createMailBox( remoteName );
+    m_colAdded.setRemoteId( remoteName );
+}
+
+void ImaplibResource::slotCollectionAdded( bool success )
+{
+    // finish the task.
+    changesCommitted( m_colAdded );
+
+    if ( !success ) {
+        // remove the collection again.
+        // TODO: this will trigger collectionRemoved again ;-)
+        kDebug() << "Failed to create the folder, deleting it in akonadi again";
+        new CollectionDeleteJob( m_colAdded, this );
+    }
 }
 
 void ImaplibResource::collectionChanged( const Collection & collection )
 {
     kDebug( ) << "Implement me!";
+    changeProcessed();
 }
 
 void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
 {
-    kDebug( ) << "Implement me!";
+    kDebug( ) << "Del folder: " << id << remoteId;
+    m_imap->deleteMailBox( remoteId );
+}
+
+void ImaplibResource::slotCollectionRemoved( bool success )
+{
+    // finish the task.
+    changeProcessed();
+
+    if ( !success ) {
+        kDebug() << "Failed to delete the folder, resync the folder tree";
+        synchronizeCollectionTree();
+    }
 }
 
 /******************* Slots  ***********************************************/
@@ -429,7 +463,14 @@ void ImaplibResource::connections()
 
     connect( m_imap,
              SIGNAL( saveDone() ),
-             SIGNAL( slotSaveDone() ) );
+             SLOT( slotSaveDone() ) );
+
+    connect( m_imap,
+             SIGNAL( mailBoxAdded( bool ) ),
+             SLOT( slotCollectionAdded( bool ) ) );
+    connect( m_imap,
+             SIGNAL( mailBoxDeleted( bool, const QString& ) ),
+             SLOT( slotCollectionRemoved( bool ) ) );
 
     /*
     connect( m_imap,
@@ -456,12 +497,6 @@ void ImaplibResource::connections()
     connect( m_imap,
              SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
              SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
-    connect( m_imap,
-             SIGNAL( mailBoxAdded( const QString& ) ),
-             SLOT( slotMailBoxAdded( const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( mailBoxDeleted( const QString& ) ),
-             SLOT( slotMailBoxRemoved( const QString& ) ) );
     connect( m_imap,
              SIGNAL( mailBoxRenamed( const QString&, const QString& ) ),
              SLOT( slotMailBoxRenamed( const QString&, const QString& ) ) );

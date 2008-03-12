@@ -242,8 +242,8 @@ void SetupServer::slotTestChanged()
 
 void SetupServer::slotComplete()
 {
-   bool ok =  !m_imapServer->text().isEmpty() && !m_userName->text().isEmpty();
-   button( KDialog::Ok )->setEnabled( ok );
+    bool ok =  !m_imapServer->text().isEmpty() && !m_userName->text().isEmpty();
+    button( KDialog::Ok )->setEnabled( ok );
 }
 
 #include "setupserver.moc"
