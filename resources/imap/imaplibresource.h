@@ -59,6 +59,7 @@ private Q_SLOTS:
     void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
     void slotHeadersReceived( Imaplib*,const QString&,const QStringList& );
     void slotMessageReceived( Imaplib*, const QString& mb, int uid, const QString& body );
+    void slotSaveDone();
 
 private:
     Imaplib* m_imap;
