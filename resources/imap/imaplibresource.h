@@ -59,13 +59,14 @@ private Q_SLOTS:
     void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
     void slotHeadersReceived( Imaplib*,const QString&,const QStringList& );
     void slotMessageReceived( Imaplib*, const QString& mb, int uid, const QString& body );
-    void slotSaveDone();
+    void slotSaveDone( int );
     void slotCollectionAdded( bool success );
     void slotCollectionRemoved( bool );
 
 private:
     Imaplib* m_imap;
     Akonadi::Collection m_colAdded;
+    Akonadi::Item m_itemAdded;
     QHash<QString, QString> m_flagsCache;
     QHash<QString, Akonadi::Item> m_itemCache;
     QHash<QString, int> m_amountMessagesCache;

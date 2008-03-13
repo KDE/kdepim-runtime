@@ -343,9 +343,10 @@ signals:
     void mailBoxRenamed( const QString&, const QString& );
 
     /**
-     * This signal is emitted when a message is saved
+     * This signal is emitted when a message is saved, uid is the uid
+     * assigned by the server, or -1 when the server did not report it.
      */
-    void saveDone();
+    void saveDone( int uid );
 
     /**
      * this signal is emitted when the server has returned the headers of
@@ -402,6 +403,7 @@ private slots:
     void slotParseGetHeaderList();
     void slotParseGetMessage();
     void slotParseSaveMessage();
+    void slotParseSaveMessageData();
     void slotParseCreateMailBox();
     void slotParseDeleteMailBox();
     void slotParseRenameMailBox();

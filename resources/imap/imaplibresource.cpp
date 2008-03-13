@@ -144,6 +144,8 @@ void ImaplibResource::startConnect()
 
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
+    m_itemAdded = item;
+    m_colAdded = collection;
     const QString mailbox = collection.remoteId();
     kDebug() << "mailbox:" << mailbox;
 
@@ -152,12 +154,16 @@ void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
 }
 
-void ImaplibResource::slotSaveDone()
+void ImaplibResource::slotSaveDone( int uid)
 {
-    changeProcessed();
-    // now there exists in akonadi an item with a wrong uid, and on the server a new item.
-    // the imap protocol does not give back the uid of the new message, maybe this will work for
-    // now.
+    if ( uid > -1 ) {
+        const QString reference =  m_colAdded.remoteId() + "-+-" + QString::number( uid );
+        kDebug() << "Setting reference to " << reference;
+        Akonadi::DataReference ref = m_itemAdded.reference();
+        ref.setRemoteId( reference );
+        m_itemAdded.setReference( ref );
+    }
+    changesCommitted( m_itemAdded );
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
@@ -462,8 +468,8 @@ void ImaplibResource::connections()
              SLOT( slotMessageReceived( Imaplib*, const QString&, int, const QString& ) ) );
 
     connect( m_imap,
-             SIGNAL( saveDone() ),
-             SLOT( slotSaveDone() ) );
+             SIGNAL( saveDone( int ) ),
+             SLOT( slotSaveDone( int ) ) );
 
     connect( m_imap,
              SIGNAL( mailBoxAdded( bool ) ),

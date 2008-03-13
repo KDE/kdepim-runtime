@@ -188,8 +188,7 @@ void Imaplib::slotRead( const QString& received )
             QTimer::singleShot( 0, this,
                                 SLOT( slotParseExpunge() ) );
 
-        else if ( m_currentQueueItem.state() == Queue::SyncMailBox ||
-                  m_currentQueueItem.state() == Queue::SaveMessageData )
+        else if ( m_currentQueueItem.state() == Queue::SyncMailBox )
             QTimer::singleShot( 0, this,
                                 SLOT( slotParseExists() ) );
 
@@ -200,6 +199,10 @@ void Imaplib::slotRead( const QString& received )
         else if ( m_currentQueueItem.state() == Queue::SaveMessage )
             QTimer::singleShot( 0,this,
                                 SLOT( slotParseSaveMessage() ) );
+
+        else if ( m_currentQueueItem.state() == Queue::SaveMessageData )
+            QTimer::singleShot( 0, this,
+                                SLOT( slotParseSaveMessageData() ) );
 
         else if ( m_currentQueueItem.state() == Queue::GetHeaderList )
             QTimer::singleShot( 0, this,
@@ -716,6 +719,22 @@ void Imaplib::slotParseSaveMessage()
     m_queue.pop_front();
 }
 
+void Imaplib::slotParseSaveMessageData()
+{
+    if ( m_received.indexOf( "a02 OK" ) == -1 )
+        emit saveDone( -1 );
+
+    QRegExp rx1( "\\[APPENDUID \\d+ (\\d+)\\]" );
+    if ( rx1.indexIn( m_received.trimmed() ) != -1 ) 
+        emit saveDone( rx1.cap( 1 ).toInt() );
+    else
+        emit saveDone( -1 );
+
+    emit statusReady();
+    m_currentQueueItem = Queue();
+    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+}
+
 void Imaplib::slotParseCreateMailBox()
 {
     // kDebug() << " : " << m_received;
@@ -815,8 +834,6 @@ void Imaplib::slotParseExists()
     //if ( m_currentQueueItem.state() == Queue::SyncMailBox )
     //    checkMail( m_currentMailbox );
 
-    if ( m_currentQueueItem.state() == Queue::SaveMessageData )
-        emit saveDone();
 
     emit statusReady();
     m_currentQueueItem = Queue();
