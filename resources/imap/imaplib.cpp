@@ -721,11 +721,13 @@ void Imaplib::slotParseSaveMessage()
 
 void Imaplib::slotParseSaveMessageData()
 {
-    if ( m_received.indexOf( "a02 OK" ) == -1 )
+    if ( !capable( "uidplus" ) ) {
         emit saveDone( -1 );
+        return;
+    }
 
     QRegExp rx1( "\\[APPENDUID \\d+ (\\d+)\\]" );
-    if ( rx1.indexIn( m_received.trimmed() ) != -1 ) 
+    if ( rx1.indexIn( m_received.trimmed() ) != -1 )
         emit saveDone( rx1.cap( 1 ).toInt() );
     else
         emit saveDone( -1 );

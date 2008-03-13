@@ -154,7 +154,7 @@ void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
 }
 
-void ImaplibResource::slotSaveDone( int uid)
+void ImaplibResource::slotSaveDone( int uid )
 {
     if ( uid > -1 ) {
         const QString reference =  m_colAdded.remoteId() + "-+-" + QString::number( uid );
