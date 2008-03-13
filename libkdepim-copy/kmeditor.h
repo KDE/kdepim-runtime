@@ -208,6 +208,12 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void switchToPlainText();
 
     /**
+     * This enables rich text mode. Nothing is done except changing the internal
+     * mode and allowing rich text pastes.
+     */
+    void enableRichTextMode();
+
+    /**
      * @return the current text mode
      */
     Mode textMode() const;

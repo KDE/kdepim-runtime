@@ -1067,6 +1067,11 @@ void KMeditor::switchToPlainText()
   }
 }
 
+void KMeditor::enableRichTextMode()
+{
+  d->activateRichText();
+}
+
 KMeditor::Mode KMeditor::textMode() const
 {
   return d->mMode;
