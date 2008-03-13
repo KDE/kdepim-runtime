@@ -164,70 +164,58 @@ void Imaplib::slotRead( const QString& received )
         }
     } else if ( m_currentState == Authenticated ) {
         m_received = received;
-        if ( m_currentQueueItem.state() == Queue::GetMailBoxList )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseGetMailBoxList() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::GetRecent )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseGetRecent() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::Noop )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseNoop() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::Copy )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseCopy() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::CheckMail )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseCheckMail() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::Expunge )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseExpunge() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::SyncMailBox )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseExists() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::SelectMailBox )
-            QTimer::singleShot( 0,this,
-                                SLOT( slotSelectMailBox() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::SaveMessage )
-            QTimer::singleShot( 0,this,
-                                SLOT( slotParseSaveMessage() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::SaveMessageData )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseSaveMessageData() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::GetHeaderList )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseGetHeaderList() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::GetHeaders ||
-                  m_currentQueueItem.state() == Queue::GetMessage )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseGetMessage() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::CreateMailBox )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseCreateMailBox() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::DeleteMailBox )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseDeleteMailBox() ) );
-
-        else if ( m_currentQueueItem.state() == Queue::RenameMailBox )
-            QTimer::singleShot( 0, this,
-                                SLOT( slotParseRenameMailBox() ) );
-
-        else {
+        switch ( m_currentQueueItem.state() ) {
+        case Queue::GetMailBoxList:
+            slotParseGetMailBoxList();
+            break;
+        case Queue::GetRecent:
+            slotParseGetRecent();
+            break;
+        case Queue::Noop:
+            slotParseNoop();
+            break;
+        case Queue::Copy:
+            slotParseCopy();
+            break;
+        case Queue::CheckMail:
+            slotParseCheckMail();
+            break;
+        case Queue::Expunge:
+            slotParseExpunge();
+            break;
+        case Queue::SyncMailBox:
+            slotParseExists();
+            break;
+        case Queue::SelectMailBox:
+            slotSelectMailBox();
+            break;
+        case Queue::SaveMessage:
+            slotParseSaveMessage();
+            break;
+        case Queue::SaveMessageData:
+            slotParseSaveMessageData();
+            break;
+        case Queue::GetHeaderList:
+            slotParseGetHeaderList();
+            break;
+        case Queue::GetHeaders:
+            slotParseGetMessage();
+            break;
+        case Queue::GetMessage:
+            slotParseGetMessage();
+            break;
+        case Queue::CreateMailBox:
+            slotParseCreateMailBox();
+            break;
+        case Queue::DeleteMailBox:
+            slotParseDeleteMailBox();
+            break;
+        case Queue::RenameMailBox:
+            slotParseRenameMailBox();
+            break;
+        default:
             m_currentQueueItem = Queue();
-            QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+            slotProcessQueue();
         }
     }
 }
@@ -553,7 +541,7 @@ void Imaplib::slotParseGetMailBoxList()
     emit currentFolders( result );
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseGetRecent()
@@ -582,7 +570,7 @@ void Imaplib::slotParseGetRecent()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseCopy()
@@ -597,7 +585,7 @@ void Imaplib::slotParseCopy()
     }
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotSelectMailBox()
@@ -606,13 +594,13 @@ void Imaplib::slotSelectMailBox()
     kDebug();
     m_currentMailbox=m_currentQueueItem.mailbox();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseNoop()
 {
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
     return;
 
     // Make sure we have all data....
@@ -647,7 +635,7 @@ void Imaplib::slotParseNoop()
     all_data = QString::null;
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseCheckMail()
@@ -693,7 +681,7 @@ void Imaplib::slotParseCheckMail()
         // kDebug() << "unexpected response received" << m_received;
         m_queue.append( m_currentQueueItem );
         m_currentQueueItem = Queue();
-        QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+        slotProcessQueue();
         emit statusError( i18n( "Something is wrong..." ) );
         return;
     }
@@ -701,13 +689,13 @@ void Imaplib::slotParseCheckMail()
     emit integrity( mb, totalShouldBe, uidvalidity, uidnext );
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseExpunge()
 {
     emit expungeCompleted( this, m_currentQueueItem.mailbox() );
-    QTimer::singleShot( 0, this, SLOT( slotParseExists() ) );
+    slotParseExists();
 }
 
 void Imaplib::slotParseSaveMessage()
@@ -734,7 +722,7 @@ void Imaplib::slotParseSaveMessageData()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseCreateMailBox()
@@ -748,7 +736,7 @@ void Imaplib::slotParseCreateMailBox()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseDeleteMailBox()
@@ -762,7 +750,7 @@ void Imaplib::slotParseDeleteMailBox()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseRenameMailBox()
@@ -779,7 +767,7 @@ void Imaplib::slotParseRenameMailBox()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseExists()
@@ -802,7 +790,7 @@ void Imaplib::slotParseExists()
 
         emit statusError( i18n( "Failed to select the mailbox" ) );
         m_currentQueueItem = Queue();
-        QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+        slotProcessQueue();
         return;
     }
 
@@ -839,7 +827,7 @@ void Imaplib::slotParseExists()
 
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseGetHeaderList()
@@ -884,7 +872,7 @@ void Imaplib::slotParseGetHeaderList()
     all_data = QString::null;
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 void Imaplib::slotParseGetMessage()
@@ -963,7 +951,7 @@ void Imaplib::slotParseGetMessage()
     all_data = QString::null;
     emit statusReady();
     m_currentQueueItem = Queue();
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 
@@ -1014,7 +1002,7 @@ void Imaplib::slotProcessQueue()
 
 void Imaplib::timerEvent( QTimerEvent * )
 {
-    QTimer::singleShot( 0, this, SLOT( slotProcessQueue() ) );
+    slotProcessQueue();
 }
 
 
