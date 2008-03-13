@@ -58,7 +58,10 @@ class KEMailQuotingHighlighter;
  * Calling functions which modify he format/style of the text will automatically
  * enable the rich text mode. Rich text mode is sometimes also referred to as
  * HTML mode.
+ *
  * Do not call setAcceptRichText() or acceptRichText() yourself.
+ * Do not call any spellchecking related function of KTextEdit, use the function
+ * of this class instead.
  */
 class KDEPIM_EXPORT KMeditor : public KTextEdit
 {
@@ -93,8 +96,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     explicit KMeditor( QWidget *parent = 0 );
 
     virtual ~KMeditor();
-
-    virtual void createHighlighter();
 
     virtual void changeHighlighterColors(KEMailQuotingHighlighter*);
 
@@ -217,7 +218,42 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     QString textOrHTML() const;
 
+    /**
+     * @return true if highlighting of missspelled words is enabled
+     * @ref slotToggleSpellChecking
+     */
+    bool isSpellCheckingEnabled() const;
+
+    /**
+     * Toggle spellcheck highlighting on or off.
+     * Spellchecking is disabled by default.
+     *
+     * @ref spellCheckingEnabled
+     */
+    void toggleSpellChecking( bool on );
+
+    /**
+     * This shows the standard spellcheck config dialog of Sonnet and saves
+     * the settings in the given config file.
+     * The language is automatically changed when the user changes the
+     * language in the config dialog.
+     *
+     * @param configFileName the name of the config file where the settings will
+     *                       be loaded from and saved to.
+     */
+    void showSpellConfigDialog( const QString &configFileName );
+
   public Q_SLOTS:
+
+    /**
+     * Sets the spell checking language, as used by the highlighter and the
+     * spellcheck dialog.
+     *
+     * @param language the language to use for spelling. This has to be one of
+     *                 the values returned by Sonnet::Speller::availableLanguages(),
+     *                 which are also available in KPIM::DictionaryCombBox.
+     */
+    void setSpellCheckLanguage( const QString &language );
 
     void slotAddQuotes();
     void slotRemoveBox();
@@ -226,6 +262,15 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAlignCenter();
     void slotAlignRight();
     void slotChangeParagStyle( QTextListFormat::Style _style );
+
+    /**
+     * Shows the spell checkdialog, where the user can perform spell checking
+     * on the whole document.
+     * The language is automatically changed when the user changes the
+     * language in the spellcheck dialog.
+     */
+    void slotCheckSpelling();
+
     void slotFontFamilyChanged( const QString &f );
     void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
@@ -253,6 +298,15 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void textModeChanged( KPIM::KMeditor::Mode mode );
 
     /**
+     * Emitted when the user chooses a different spellcheck language,
+     * either in the config dialog or in the checking dialog.
+     * Also emitted after setSpellCheckLanguage().
+     *
+     * @param language the language which the user selected
+     */
+    void spellcheckLanguageChanged( const QString &language );
+
+    /**
      * Emitted whenever the foucs is lost or gained
      *
      * @param focusGained true if the focus was gained, false when it was lost
@@ -262,9 +316,31 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void pasteImage();
     void focusUp();
     void overwriteModeText();
-    void highlighterCreated();
 
   protected:
+
+    // HACK: (KDE5: fix this properly in KTextEdit by cleaning up the API and
+    //              making functions virtual)
+    // Make all spellcheck-related functions of KTextEdit protected. They should
+    // not be called from the outside. The problem is that qoute highlighting only
+    // works when spell checking is enabled (as this is done in one hightlighter,
+    // KEMailQuotingHighlighter), so we have to pretend to KTextEdit that spell
+    // checking is enabled the whole time.
+    // These functions are not virtual, so we can't simply reimplement them.
+    // And no, having two separate QSyntaxHighlighters does not work either,
+    // one of them disables the highlighting of the other.
+    void setCheckSpellingEnabled( bool );
+    bool checkSpellingEnabled() const;
+    void setSpellCheckingLanguage( const QString & );
+    void setHighlighter( Sonnet::Highlighter * );
+    Sonnet::Highlighter* highlighter() const;
+    void setSpellCheckingConfigFileName( const QString & );
+
+    /**
+     * Reimplemented to create our own highlighter which does quote and
+     * spellcheck highlighting
+     */
+    virtual void createHighlighter();
 
     virtual void dragEnterEvent( QDragEnterEvent *e );
     virtual void dragMoveEvent( QDragMoveEvent *e );

@@ -61,6 +61,7 @@ namespace KPIM {
 
     void setCurrentByDictionaryName( const QString & dictionaryName );
     void setCurrentByDictionary( const QString & dictionary );
+    void setCurrentByDictionaryCode( const QString &dictionaryCode );
 
   signals:
     /** @em Emitted whenever the current dictionary changes. Either

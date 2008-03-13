@@ -2,6 +2,7 @@
  * kemailquotinghighter.cpp
  *
  * Copyright (C)  2006  Laurent Montel <montel@kde.org>
+ * Copyright (C)  2008  Thomas McGuire <thomas.mcguire@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,28 +37,29 @@ namespace KPIM {
 class KEMailQuotingHighlighter::KEmailQuotingHighlighterPrivate
 {
 public:
-    QColor col1, col2, col3, col4, col5;
-    SyntaxMode mode;
-    bool enabled;
+    QColor col1, col2, col3;
+    QColor normalColor;
+    bool spellCheckingEnabled;
 };
 
 KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
-                                                                const QColor& depth0,
-                                                                const QColor& depth1,
-                                                                const QColor& depth2,
-                                                                const QColor& depth3,
-                                                                SyntaxMode mode )
-    : Highlighter( textEdit ),d(new KEmailQuotingHighlighterPrivate())
+                                                    const QColor &normalColor,
+                                                    const QColor &quoteDepth1,
+                                                    const QColor &quoteDepth2,
+                                                    const QColor &quoteDepth3 )
+    : Highlighter( textEdit ),
+      d( new KEmailQuotingHighlighterPrivate() )
 {
-    setAutomatic(false); //disable automatic de-enable highlighting
-    setActive(true);
-    d->col1 = depth0;
-    d->col2 = depth1;
-    d->col3 = depth2;
-    d->col4 = depth3;
-    d->col5 = depth0;
+    // Don't automatically disable the spell checker, for example because there
+    // are too many misspelled words. That would also disable quote highlighting.
+    setAutomatic( false );
 
-    d->mode = mode;
+    setActive( true );
+    d->col1 = quoteDepth1;
+    d->col2 = quoteDepth2;
+    d->col3 = quoteDepth3;
+    d->normalColor = normalColor;
+    d->spellCheckingEnabled = false;
 }
 
 KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
@@ -65,40 +67,52 @@ KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
     delete d;
 }
 
-void KEMailQuotingHighlighter::setSyntaxMode( SyntaxMode mode)
+void KEMailQuotingHighlighter::setQuoteColor( const QColor &normalColor,
+                                              const QColor &quoteDepth1,
+                                              const QColor &quoteDepth2,
+                                              const QColor &quoteDepth3 )
 {
-    d->mode = mode;
+    d->col1 = quoteDepth1;
+    d->col2 = quoteDepth2;
+    d->col3 = quoteDepth3;
+    d->normalColor = normalColor;
 }
 
-void KEMailQuotingHighlighter::setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3)
+void KEMailQuotingHighlighter::toggleSpellHighlighting( bool on )
 {
-    d->col1 = QuoteColor0;
-    d->col2 = QuoteColor1;
-    d->col3 = QuoteColor2;
-    d->col4 = QuoteColor3;
-    d->col5 = QuoteColor0;
+    if ( on != d->spellCheckingEnabled ) {
+        d->spellCheckingEnabled = on;
+        rehighlight();
+    }
 }
 
-void KEMailQuotingHighlighter::highlightBlock ( const QString & text )
+void KEMailQuotingHighlighter::highlightBlock( const QString & text )
 {
-    if ( !isActive() )
-        return;	
     QString simplified = text;
-    simplified = simplified.replace( QRegExp( "\\s" ), QString() ).replace( '|', QLatin1String(">") );
+    simplified = simplified.replace( QRegExp( "\\s" ), QString() )
+                           .replace( '|', QLatin1String(">") );
     while ( simplified.startsWith( QLatin1String(">>>>") ) )
-        simplified = simplified.mid(3);
-    if ( simplified.startsWith( QLatin1String(">>>") ) || simplified.startsWith( QString::fromLatin1("> > >") ) )
+        simplified = simplified.mid( 3 );
+    if ( simplified.startsWith( QLatin1String(">>>") ) ||
+         simplified.startsWith( QLatin1String("> > >") ) )
+        setFormat( 0, text.length(), d->col1 );
+    else if ( simplified.startsWith( QLatin1String(">>") ) ||
+              simplified.startsWith( QLatin1String("> >") ) )
         setFormat( 0, text.length(), d->col2 );
-    else if ( simplified.startsWith( QLatin1String(">>") ) || simplified.startsWith( QString::fromLatin1("> >") ) )
-        setFormat( 0, text.length(), d->col3 );
     else if ( simplified.startsWith( QLatin1String(">") ) )
-        setFormat( 0, text.length(), d->col4 );
+        setFormat( 0, text.length(), d->col3 );
     else
     {
-        setFormat( 0, text.length(), d->col5 );
-        Highlighter::highlightBlock ( text );
+        if ( d->spellCheckingEnabled )
+            Highlighter::highlightBlock( text );
     }
-    setCurrentBlockState ( 0 );
+    setCurrentBlockState( 0 );
+}
+
+void KEMailQuotingHighlighter::unsetMisspelled( int start,  int count )
+{
+  Q_UNUSED( start )
+  Q_UNUSED( count )
 }
 
 }

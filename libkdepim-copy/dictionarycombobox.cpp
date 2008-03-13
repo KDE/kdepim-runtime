@@ -122,6 +122,15 @@ namespace KPIM {
     }
   }
 
+  void DictionaryComboBox::setCurrentByDictionaryCode( const QString &dictionaryCode )
+  {
+    int index = mspeller->availableLanguages().indexOf( dictionaryCode );
+    if ( index != -1 && index != currentIndex() ) {
+      setCurrentIndex( index );
+      slotDictionaryChanged( index );
+    }
+  }
+
   void DictionaryComboBox::reloadCombo()
   {
     mspeller = new Sonnet::Speller();
@@ -132,7 +141,7 @@ namespace KPIM {
 
   void DictionaryComboBox::slotDictionaryChanged( int idx )
   {
-    kDebug( 5006 ) <<"DictionaryComboBox::slotDictionaryChanged(" << idx << ")";
+    kDebug( 5006 ) << idx;
     if( !mDictionaries.isEmpty())
       {
         emit dictionaryChanged( mspeller->availableLanguages()[idx] );

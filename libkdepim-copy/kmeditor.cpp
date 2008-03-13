@@ -31,6 +31,7 @@
 
 //kdelibs includes
 #include <kdebug.h>
+#include <kdeversion.h>
 #include <kfind.h>
 #include <kreplace.h>
 #include <kreplacedialog.h>
@@ -49,6 +50,7 @@
 #include <KDirWatch>
 #include <KTemporaryFile>
 #include <KCursor>
+#include <sonnet/configdialog.h><n
 
 //qt includes
 #include <QApplication>
@@ -116,8 +118,10 @@ class KMeditorPrivate
     // Data members
     QMap<QString,QStringList> replacements;
     QString extEditorPath;
+    QString language;
     KMeditor *q;
     bool useExtEditor;
+    bool spellCheckingEnabled;
     QProcess *mExtEditorProcess;
     KDirWatch *mExtEditorTempFileWatcher;
     KTemporaryFile *mExtEditorTempFile;
@@ -364,13 +368,25 @@ bool KMeditor::eventFilter( QObject*o, QEvent* e )
 
 void KMeditorPrivate::init()
 {
+  // We tell the KTextEdit to enable spell checking, because only then it will
+  // call createHighlighter() which will create our own highlighter which also
+  // does quote highlighting.
+  // However, *our* spellchecking is still disabled. Our own highlighter only
+  // cares about our spellcheck status, it will not highlight missspellt words
+  // if our spellchecking is disabled.
+  // See also KEMailQuotingHighlighter::highlightBlock().
+  spellCheckingEnabled = false;
+  static_cast<KTextEdit*>( q )->setCheckSpellingEnabled( true );
+
   KCursor::setAutoHideCursor( q, true, true );
   q->installEventFilter( q );
-  //enable spell checking by default
-  q->setCheckSpellingEnabled( true );
   QShortcut * insertMode = new QShortcut( QKeySequence( Qt::Key_Insert ), q );
   q->connect( insertMode, SIGNAL( activated() ),
               q, SLOT( slotChangeInsertMode() ) );
+#if KDE_IS_VERSION(4,0,67)
+  q->connect( q, SIGNAL( languageChanged(const QString &) ),
+              q, SLOT( setSpellCheckLanguage(const QString &) ) );
+#endif
 }
 
 void KMeditor::slotChangeInsertMode()
@@ -390,8 +406,11 @@ void KMeditor::createHighlighter()
            this, SLOT( addSuggestion(const QString&,const QStringList&) ) );
 
   //TODO change config
-  setHighlighter( emailHighLighter );
-  emit highlighterCreated();
+  KTextEdit::setHighlighter( emailHighLighter );
+
+  if ( !d->language.isEmpty() )
+    setSpellCheckLanguage( d->language );
+  toggleSpellChecking( d->spellCheckingEnabled );
 }
 
 void KMeditor::changeHighlighterColors(KPIM::KEMailQuotingHighlighter *)
@@ -1071,6 +1090,57 @@ void KMeditor::focusInEvent( QFocusEvent *e )
 {
   KTextEdit::focusInEvent( e );
   emit focusChanged( true );
+}
+
+void KMeditor::setSpellCheckLanguage( const QString &language )
+{
+  if ( KTextEdit::highlighter() ) {
+    d->replacements.clear();
+    KTextEdit::highlighter()->setCurrentLanguage( language );
+    KTextEdit::highlighter()->rehighlight();
+  }
+#if KDE_IS_VERSION(4,0,60)
+  KTextEdit::setSpellCheckingLanguage( language );
+#endif
+
+  if ( language != d->language )
+    emit spellcheckLanguageChanged( language );
+  d->language = language;
+}
+
+void KMeditor::slotCheckSpelling()
+{
+  KTextEdit::checkSpelling();
+}
+
+bool KMeditor::isSpellCheckingEnabled() const
+{
+  return d->spellCheckingEnabled;
+}
+
+void KMeditor::toggleSpellChecking( bool on )
+{
+  KEMailQuotingHighlighter *hlighter =
+            dynamic_cast<KEMailQuotingHighlighter*>( KTextEdit::highlighter() );
+  if ( hlighter )
+    hlighter->toggleSpellHighlighting( on );
+  if ( !on )
+    d->replacements.clear();
+  d->spellCheckingEnabled = on;
+}
+
+void KMeditor::showSpellConfigDialog( const QString &configFileName )
+{
+  KConfig config( configFileName );
+  Sonnet::ConfigDialog dialog( &config, this );
+#if KDE_IS_VERSION(4,0,67)
+  if ( !d->language.isEmpty() )
+    dialog.setLanguage( d->language );
+  connect( &dialog, SIGNAL( languageChanged(const QString &) ),
+           this, SLOT( setSpellCheckLanguage(const QString &) ) );
+#endif
+  dialog.setWindowIcon( KIcon( "internet-mail" ) );
+  dialog.exec();
 }
 
 #include "kmeditor.moc"

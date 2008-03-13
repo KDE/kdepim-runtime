@@ -2,6 +2,7 @@
  * kemailquotinghighter.h
  *
  * Copyright (C)  2006  Laurent Montel <montel@kde.org>
+ * Copyright (C)  2008  Thomas McGuire <thomas.mcguire@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,26 +31,51 @@
 class QTextEdit;
 namespace KPIM
 {
+  /**
+   * This highlighter highlights spelling mistakes and also highlightes
+   * quotes.
+   *
+   * Spelling mistakes inside quotes will not be highlighted.
+   * The quote highlighting color is configurable.
+   *
+   * Spell highlighting is disabled by default but can be toggled.
+   */
   class KDEPIM_EXPORT KEMailQuotingHighlighter : public Sonnet::Highlighter
     {
     public:
-      enum SyntaxMode {
-        PlainTextMode,
-        RichTextMode
-      };
+
+      // FIXME: Default colors don't obey color scheme
       explicit KEMailQuotingHighlighter( QTextEdit *textEdit,
-                                         const QColor& QuoteColor0 = Qt::black,
-                                         const QColor& QuoteColor1 = QColor( 0x00, 0x80, 0x00 ),
-                                         const QColor& QuoteColor2 = QColor( 0x00, 0x80, 0x00 ),
-                                         const QColor& QuoteColor3 = QColor( 0x00, 0x80, 0x00 ),
-                                         SyntaxMode mode = PlainTextMode );
+                                         const QColor &normalColor = Qt::black,
+                                         const QColor &quoteDepth1 = QColor( 0x00, 0x80, 0x00 ),
+                                         const QColor &quoteDepth2 = QColor( 0x00, 0x80, 0x00 ),
+                                         const QColor &quoteDepth3 = QColor( 0x00, 0x80, 0x00 ) );
+
       ~KEMailQuotingHighlighter();
 
-      void setSyntaxMode( SyntaxMode mode);
+      void setQuoteColor( const QColor &normalColor,
+                          const QColor &quoteDepth1,
+                          const QColor &quoteDepth2,
+                          const QColor &quoteDepth3 );
 
-      void setQuoteColor( const QColor& QuoteColor0, const QColor& QuoteColor1, const QColor& QuoteColor2, const QColor& QuoteColor3);
+      /**
+       * Turns spellcheck highlighting on or off.
+       *
+       * @param on if true, spelling mistakes will be highlighted
+       */
+      void toggleSpellHighlighting( bool on );
 
       virtual void highlightBlock ( const QString & text );
+
+    protected:
+
+      // Reimplemented, the base version sets the text color to black, which
+      // is not what we want. We do nothing, the format is already reset by
+      // Qt.
+      virtual void unsetMisspelled( int start,  int count );
+
+      //TODO: also reimplement setMisspelled and use the configured color for
+      //      that
 
     private:
       class KEmailQuotingHighlighterPrivate;
