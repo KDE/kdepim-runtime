@@ -21,7 +21,6 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 targetdir out_headers 
       COMMAND ${RCGEN} --listheaders --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
       OUTPUT_VARIABLE ${out_headers}
       RESULT_VARIABLE rcgen_result
-      OUTPUT_QUIET
       ERROR_QUIET
       )
 
@@ -31,20 +30,17 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 targetdir out_headers 
       execute_process(
         COMMAND ${RCGEN} --listsources --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
         OUTPUT_VARIABLE ${out_sources}
-        OUTPUT_QUIET
         ERROR_QUIET
         )
       
       execute_process(
         COMMAND ${RCGEN} --listincludes --ontologies ${ontofile1} ${ontofile2}
         OUTPUT_VARIABLE ${out_includes}
-        OUTPUT_QUIET
         ERROR_QUIET
         )
 
       execute_process(
         COMMAND ${RCGEN} --writeall --templates ${ARGN} --target ${targetdir}/ --ontologies ${ontofile1} ${ontofile2}
-        OUTPUT_QUIET
         ERROR_QUIET
         )
 
