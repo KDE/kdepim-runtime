@@ -292,6 +292,7 @@
     <rdfs:label>emailAddress</rdfs:label>
     <rdfs:domain rdf:resource="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <nrl:maxCardinality>1</nrl:maxCardinality>
   </rdf:Property>
   <rdf:Property rdf:about="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#nameGiven">
     <rdfs:label>nameGiven</rdfs:label>
