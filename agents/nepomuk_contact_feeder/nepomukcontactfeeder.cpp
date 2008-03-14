@@ -28,16 +28,18 @@
 #include <kurl.h>
 
 // ontology includes
-#include "personcontact.h"
 #include "bbsnumber.h"
 #include "carphonenumber.h"
 #include "cellphonenumber.h"
+#include "emailaddress.h"
 #include "faxnumber.h"
 #include "isdnnumber.h"
 #include "messagingnumber.h"
 #include "modemnumber.h"
 #include "pagernumber.h"
+#include "personcontact.h"
 #include "pcsnumber.h"
+#include "postaladdress.h"
 #include "videotelephonenumber.h"
 #include "voicephonenumber.h"
 
@@ -139,6 +141,35 @@ void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QString
       contact.addPhoneNumber( number );
     }
   }
+
+  // im accounts
+
+  // email addresses
+  contact.setEmailAddresss( QList<Nepomuk::EmailAddress>() );
+
+  const QStringList emails = addressee.emails();
+  for ( int i = 0; i < emails.count(); ++i ) {
+    Nepomuk::EmailAddress email;
+    email.setEmailAddress( emails[ i ] );
+    contact.addEmailAddress( email );
+  }
+
+  // addresses
+  contact.setPostalAddresss( QList<Nepomuk::PostalAddress>() );
+
+  const KABC::Address::List addresses = addressee.addresses();
+  for ( int i = 0; i < addresses.count(); ++i ) {
+    Nepomuk::PostalAddress address;
+    address.addStreetAddress( addresses[ i ].street() );
+    address.setPostalcode( addresses[ i ].postalCode() );
+    address.setLocality( addresses[ i ].locality() );
+    address.setRegion( addresses[ i ].region() );
+    address.addPobox( addresses[ i ].postOfficeBox() );
+    address.setCountry( addresses[ i ].country() );
+    address.addExtendedAddress(  addresses[ i ].extended() );
+
+    contact.addPostalAddress( address );
+  }
 }
 
 void NepomukContactFeeder::itemRemoved( const Akonadi::DataReference &ref )
@@ -150,6 +181,16 @@ void NepomukContactFeeder::itemRemoved( const Akonadi::DataReference &ref )
   QList<Nepomuk::PhoneNumber> numbers = contact.phoneNumbers();
   Q_FOREACH( Nepomuk::PhoneNumber number, numbers ) {
     number.remove();
+  }
+
+  QList<Nepomuk::EmailAddress> emails = contact.emailAddresss();
+  Q_FOREACH( Nepomuk::EmailAddress email, emails ) {
+    email.remove();
+  }
+
+  QList<Nepomuk::PostalAddress> addresses = contact.postalAddresss();
+  Q_FOREACH( Nepomuk::PostalAddress address, addresses ) {
+    address.remove();
   }
 
   contact.remove();
