@@ -529,7 +529,7 @@ void Imaplib::slotParseGetMailBoxList()
         QString y = rx1.cap( 1 ).trimmed();
 
         // Remove them if they are there.... Think MS.
-        if ( y.startsWith( "\"" ) && y.endsWith( "\"" ) )
+        if ( y.startsWith( '\"' ) && y.endsWith( '\"' ) )
             y=y.mid( 1, y.length()-2 );
 
         result.append( KIMAP::decodeImapFolderName( y ) );
@@ -869,7 +869,7 @@ void Imaplib::slotParseGetHeaderList()
     }
     emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
 
-    all_data = QString::null;
+    all_data.clear();
     emit statusReady();
     m_currentQueueItem = Queue();
     slotProcessQueue();
@@ -948,7 +948,7 @@ void Imaplib::slotParseGetMessage()
         emit headersInFolder( this, m_currentQueueItem.mailbox(), headersToSend );
 
     // kDebug() << "done";
-    all_data = QString::null;
+    all_data.clear();
     emit statusReady();
     m_currentQueueItem = Queue();
     slotProcessQueue();

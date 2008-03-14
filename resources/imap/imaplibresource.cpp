@@ -48,8 +48,6 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <libakonadi/itemstorejob.h>
 #include <libakonadi/session.h>
 
-#include <kmime/kmime_message.h>
-
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
@@ -104,7 +102,7 @@ void ImaplibResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->username().isEmpty() )
-        setName( Settings::self()->imapServer() + "/" + Settings::self()->username() );
+        setName( Settings::self()->imapServer() + '/' + Settings::self()->username() );
     else
         setName( KGlobal::mainComponent().aboutData()->appName() );
     startConnect();
@@ -208,7 +206,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
     contentTypes << "message/rfc822" << Collection::collectionMimeType();
 
     Collection root;
-    root.setName( m_server + "/" + m_username );
+    root.setName( m_server + '/' + m_username );
     root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
     root.setContentTypes( QStringList( Collection::collectionMimeType() ) );
 
@@ -353,7 +351,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
 void ImaplibResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-    const QString remoteName = parent.remoteId() + "." + collection.name();
+    const QString remoteName = parent.remoteId() + '.' + collection.name();
     kDebug( ) << "New folder: " << remoteName;
 
     m_colAdded = collection;

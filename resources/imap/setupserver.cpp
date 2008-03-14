@@ -235,7 +235,7 @@ void SetupServer::slotFinished( QList<int> testResult )
 
 void SetupServer::slotTestChanged()
 {
-    // dont use imapConnectionPossible, as the data is not yet saved.
+    // do not use imapConnectionPossible, as the data is not yet saved.
     m_testButton->setEnabled( true /* TODO Global::connectionPossible() ||
                               m_imapServer->text() == "localhost"*/ );
 }
