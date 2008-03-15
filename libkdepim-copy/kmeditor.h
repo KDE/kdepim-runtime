@@ -110,7 +110,19 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
 
-    void wordWrapToggled( bool on );
+    /**
+     * Enables word wrap. Words will be wrapped at the specified column.
+     *
+     * @param wrapColumn the column where words will be wrapped
+     */
+    void enableWordWrap( int wrapColumn );
+
+    /**
+     * Disables word wrap.
+     * Note that words are still wrapped at the end of the editor; no scrollbar
+     * will appear.
+     */
+    void disableWordWrap();
 
     void setColor( const QColor& );
 
@@ -220,7 +232,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     /**
      * @return the plain text string if in plain text mode or the HTML code
-     *         if in rich text mode.
+     *         if in rich text mode. The text is not word-wrapped.
      */
     QString textOrHTML() const;
 
@@ -248,6 +260,12 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      *                       be loaded from and saved to.
      */
     void showSpellConfigDialog( const QString &configFileName );
+
+    /**
+     * Returns the text of the editor as plain text, with linebreaks inserted
+     * where word-wrapping occured.
+     */
+    QString toWrappedPlainText() const;
 
   public Q_SLOTS:
 
