@@ -103,6 +103,9 @@ class KMeditorPrivate
     // mode really changed.
     void activateRichText();
 
+    // Applies formatting to the current word if there is no selection.
+    void mergeFormatOnWordOrSelection( const QTextCharFormat &format );
+
     // Returns the text of the signature. If the signature is HTML, the HTML
     // tags will be stripped.
     QString plainSignatureText( const KPIMIdentities::Signature &signature ) const;
@@ -234,6 +237,15 @@ void KMeditorPrivate::addSuggestion( const QString& originalWord,
                                      const QStringList& lst )
 {
   replacements[originalWord] = lst;
+}
+
+void KMeditorPrivate::mergeFormatOnWordOrSelection( const QTextCharFormat &format )
+{
+  QTextCursor cursor = q->textCursor();
+  if ( !cursor.hasSelection() )
+    cursor.select( QTextCursor::WordUnderCursor );
+  cursor.mergeCharFormat( format );
+  q->mergeCurrentCharFormat( format );
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -479,7 +491,7 @@ void KMeditor::setColor( const QColor& col )
 {
   QTextCharFormat fmt;
   fmt.setForeground( col );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -487,7 +499,7 @@ void KMeditor::setFont( const QFont &font )
 {
   QTextCharFormat fmt;
   fmt.setFont( font );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
 }
 
 void KMeditor::setFontForWholeText( const QFont &font )
@@ -522,7 +534,7 @@ void KMeditor::slotTextBold( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontWeight( _b ? QFont::Bold : QFont::Normal );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -530,7 +542,7 @@ void KMeditor::slotTextItalic( bool _b)
 {
   QTextCharFormat fmt;
   fmt.setFontItalic( _b );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -538,7 +550,7 @@ void KMeditor::slotTextUnder( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontUnderline( _b );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -549,7 +561,7 @@ void KMeditor::slotTextColor()
   if ( KColorDialog::getColor( color, this ) ) {
     QTextCharFormat fmt;
     fmt.setForeground( color );
-    mergeFormatOnWordOrSelection( fmt );
+    d->mergeFormatOnWordOrSelection( fmt );
     d->activateRichText();
   }
 }
@@ -558,7 +570,7 @@ void KMeditor::slotFontFamilyChanged( const QString &f )
 {
   QTextCharFormat fmt;
   fmt.setFontFamily( f );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   setFocus();
   d->activateRichText();
 }
@@ -567,18 +579,9 @@ void KMeditor::slotFontSizeChanged( int size )
 {
   QTextCharFormat fmt;
   fmt.setFontPointSize( size );
-  mergeFormatOnWordOrSelection( fmt );
+  d->mergeFormatOnWordOrSelection( fmt );
   setFocus();
   d->activateRichText();
-}
-
-void KMeditor::mergeFormatOnWordOrSelection( const QTextCharFormat &format )
-{
-    QTextCursor cursor = this->textCursor();
-    if ( !cursor.hasSelection() )
-        cursor.select( QTextCursor::WordUnderCursor );
-    cursor.mergeCharFormat( format );
-    this->mergeCurrentCharFormat( format );
 }
 
 KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
