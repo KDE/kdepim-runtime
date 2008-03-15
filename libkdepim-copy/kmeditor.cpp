@@ -3,6 +3,7 @@
  *
  * Copyright (C)  2007 Laurent Montel <montel@kde.org>
  * Copyright (C)  2008 Thomas McGuire <thomas.mcguire@gmx.net>
+ * Copyright 2008 Stephen Kelly  <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -478,7 +479,7 @@ void KMeditor::setColor( const QColor& col )
 {
   QTextCharFormat fmt;
   fmt.setForeground( col );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -486,7 +487,7 @@ void KMeditor::setFont( const QFont &font )
 {
   QTextCharFormat fmt;
   fmt.setFont( font );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
 }
 
 void KMeditor::setFontForWholeText( const QFont &font )
@@ -521,7 +522,7 @@ void KMeditor::slotTextBold( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontWeight( _b ? QFont::Bold : QFont::Normal );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -529,7 +530,7 @@ void KMeditor::slotTextItalic( bool _b)
 {
   QTextCharFormat fmt;
   fmt.setFontItalic( _b );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -537,7 +538,7 @@ void KMeditor::slotTextUnder( bool _b )
 {
   QTextCharFormat fmt;
   fmt.setFontUnderline( _b );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   d->activateRichText();
 }
 
@@ -548,7 +549,7 @@ void KMeditor::slotTextColor()
   if ( KColorDialog::getColor( color, this ) ) {
     QTextCharFormat fmt;
     fmt.setForeground( color );
-    textCursor().mergeCharFormat( fmt );
+    mergeFormatOnWordOrSelection( fmt );
     d->activateRichText();
   }
 }
@@ -557,7 +558,7 @@ void KMeditor::slotFontFamilyChanged( const QString &f )
 {
   QTextCharFormat fmt;
   fmt.setFontFamily( f );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   setFocus();
   d->activateRichText();
 }
@@ -566,9 +567,18 @@ void KMeditor::slotFontSizeChanged( int size )
 {
   QTextCharFormat fmt;
   fmt.setFontPointSize( size );
-  textCursor().mergeCharFormat( fmt );
+  mergeFormatOnWordOrSelection( fmt );
   setFocus();
   d->activateRichText();
+}
+
+void KMeditor::mergeFormatOnWordOrSelection( const QTextCharFormat &format )
+{
+    QTextCursor cursor = this->textCursor();
+    if ( !cursor.hasSelection() )
+        cursor.select( QTextCursor::WordUnderCursor );
+    cursor.mergeCharFormat( format );
+    this->mergeCurrentCharFormat( format );
 }
 
 KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )

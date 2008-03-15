@@ -387,7 +387,7 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     virtual void contextMenuEvent( QContextMenuEvent* );
 
   private:
-
+    void mergeFormatOnWordOrSelection( const QTextCharFormat &format );
     KMeditorPrivate *const d;
     friend class KMeditorPrivate;
     Q_PRIVATE_SLOT( d, void addSuggestion( const QString&, const QStringList& ) )
