@@ -337,9 +337,10 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
     else
       KTextEdit::keyPressEvent( e );
   }
-  else if ( e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier
-            && textCursor().blockNumber()== 0 /*First block*/
-            && textCursor().block().position() == 0 )
+  else if ( e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier &&
+            textCursor().block().position() == 0 &&
+            textCursor().position() <
+                        textCursor().block().layout()->lineAt( 0 ).textLength() )
   {
     textCursor().clearSelection();
     emit focusUp();
