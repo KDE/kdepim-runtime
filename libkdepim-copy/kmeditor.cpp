@@ -1102,18 +1102,6 @@ QString KMeditor::textOrHTML() const
     return toPlainText();
 }
 
-void KMeditor::focusOutEvent( QFocusEvent *e )
-{
-  KTextEdit::focusOutEvent( e );
-  emit focusChanged( false );
-}
-
-void KMeditor::focusInEvent( QFocusEvent *e )
-{
-  KTextEdit::focusInEvent( e );
-  emit focusChanged( true );
-}
-
 void KMeditor::setSpellCheckLanguage( const QString &language )
 {
   if ( KTextEdit::highlighter() ) {

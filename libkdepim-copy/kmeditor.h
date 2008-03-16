@@ -371,16 +371,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     virtual bool eventFilter( QObject *o, QEvent *e );
     virtual void keyPressEvent( QKeyEvent *e );
 
-    /**
-     * Reimplemented to be able to emit focusChanged().
-     */
-    virtual void focusOutEvent( QFocusEvent *e );
-
-    /**
-     * Reimplemented to be able to emit focusChanged().
-     */
-    virtual void focusInEvent( QFocusEvent *e );
-
     /*
      * Redefine it to allow to create context menu for spell word list
      */
