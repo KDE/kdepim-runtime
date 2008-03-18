@@ -97,7 +97,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
 
   // EMails
   foreach ( const QString email, addr.emails() ) {
-    QString type = i18n( "Email" );
+    QString type = i18nc( "a contact's email address", "Email" );
 
     const QString fullEmail = QString::fromLatin1( KUrl::toPercentEncoding( addr.fullEmail( email ) ) );
 

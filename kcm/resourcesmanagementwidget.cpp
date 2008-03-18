@@ -67,7 +67,7 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QS
   d->ui.addButton->setMenu(addMenu);
   connect( addMenu, SIGNAL( triggered( QAction*) ), SLOT(addClicked(QAction*)));
 
-  d->ui.resourcesList->setHeaderLabels( QStringList() << i18n("Name") );
+  d->ui.resourcesList->setHeaderLabels( QStringList() << i18nc("@title:column", "Name") );
   connect( d->ui.resourcesList, SIGNAL(currentItemChanged(QTreeWidgetItem*,
            QTreeWidgetItem*)), SLOT(updateButtonState()) );
   connect( d->ui.resourcesList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
@@ -76,11 +76,11 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QS
   connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
 
   connect( d->manager, SIGNAL(  agentInstanceAdded (const QString&) ),
-           SLOT(fillResourcesList()) ); 
+           SLOT(fillResourcesList()) );
   connect( d->manager, SIGNAL(  agentInstanceRemoved (const QString&) ),
-           SLOT(fillResourcesList()) ); 
+           SLOT(fillResourcesList()) );
   connect( d->manager, SIGNAL( agentInstanceNameChanged( const QString&, const QString& ) ),
-           SLOT(fillResourcesList()) ); 
+           SLOT(fillResourcesList()) );
   fillResourcesList();
   updateButtonState();
 }
@@ -98,8 +98,8 @@ void ResourcesManagementWidget::fillResourcesList()
         QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
 
         bool wanted = false;
-        foreach(  const QString& request, d->wantedMimeTypes ) 
-          if (  mimeTypes.contains(  request ) ) 
+        foreach(  const QString& request, d->wantedMimeTypes )
+          if (  mimeTypes.contains(  request ) )
             wanted = true;
 
         if (  !wanted && !d->wantedMimeTypes.isEmpty() )
@@ -110,8 +110,8 @@ void ResourcesManagementWidget::fillResourcesList()
         if (name.isEmpty()) {
             name = instance;
         }
-        item->setData( 0, Qt::UserRole, instance ); 
-        item->setText( 0, name ); 
+        item->setData( 0, Qt::UserRole, instance );
+        item->setText( 0, name );
     }
 }
 
