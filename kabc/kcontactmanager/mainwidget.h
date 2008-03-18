@@ -40,7 +40,7 @@ class MainWidget : public QWidget
   Q_OBJECT
 
   public:
-    MainWidget( KXMLGUIClient *guiClient, QWidget *parent = 0 );
+    explicit MainWidget( KXMLGUIClient *guiClient, QWidget *parent = 0 );
     ~MainWidget();
 
   private Q_SLOTS:

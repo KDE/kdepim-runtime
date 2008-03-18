@@ -46,7 +46,7 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
      * @param mode The mode of the editor.
      * @param parent The parent widget of the editor.
      */
-    KABCItemEditor( Mode mode, QWidget *parent = 0 );
+    explicit KABCItemEditor( Mode mode, QWidget *parent = 0 );
 
     /**
      * Destroys the contact editor.

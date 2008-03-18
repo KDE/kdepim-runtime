@@ -32,14 +32,13 @@ class ProfileEditDialog : public QDialog
   Q_OBJECT
 
   public:
-    ProfileEditDialog( QWidget *parent = 0,
-                       const QString &profileName = QString(),
-                       const QString &userName = QString(),
-                       const QString &password = QString(),
-                       const QString &serverAddress = QString(),
-                       const QString &workstation = QString(),
-                       const QString &domain = QString() );
-
+    explicit ProfileEditDialog( QWidget *parent = 0,
+                                const QString &profileName = QString(),
+                                const QString &userName = QString(),
+                                const QString &password = QString(),
+                                const QString &serverAddress = QString(),
+                                const QString &workstation = QString(),
+                                const QString &domain = QString() );
 
   private Q_SLOTS:
     void commitProfile();
