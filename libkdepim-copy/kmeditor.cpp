@@ -51,7 +51,7 @@
 #include <KDirWatch>
 #include <KTemporaryFile>
 #include <KCursor>
-#include <sonnet/configdialog.h><n
+#include <sonnet/configdialog.h>
 
 //qt includes
 #include <QApplication>
