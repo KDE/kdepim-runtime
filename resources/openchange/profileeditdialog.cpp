@@ -94,7 +94,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
   m_domainEdit->setText( domain );
   connect( m_domainEdit, SIGNAL( textEdited(QString) ),
            this, SLOT( checkIfComplete() ) );
-  m_domainEdit->setToolTip( "The authentication domain (also known as realm) to use for this account. Ask your exchange server administrator if you don't know this." );
+  m_domainEdit->setToolTip( "The authentication domain (also known as realm) to use for this account. Ask your exchange server administrator if you are do not know about this." );
   mainLayout->addWidget( m_domainEdit );
 
   mainLayout->addStretch();
