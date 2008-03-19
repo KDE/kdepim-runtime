@@ -18,6 +18,9 @@
 */
 
 #include "localbookmarksresource.h"
+#include "settings.h"
+#include "settingsadaptor.h"
+
 #include <libakonadi/collectionlistjob.h>
 #include <libakonadi/collectionmodifyjob.h>
 #include <libakonadi/itemappendjob.h>
@@ -39,6 +42,7 @@ using namespace Akonadi;
 LocalBookmarksResource::LocalBookmarksResource( const QString &id )
     :ResourceBase( id )
 {
+  new SettingsAdaptor( Settings::self() );
 }
 
 LocalBookmarksResource::~ LocalBookmarksResource()
@@ -59,7 +63,7 @@ void LocalBookmarksResource::aboutToQuit()
 
 void LocalBookmarksResource::configure( WId windowId )
 {
-  QString oldFile = settings()->value( "General/Path" ).toString();
+  QString oldFile = Settings::self()->path();
   KUrl url;
   if ( !oldFile.isEmpty() )
     url = KUrl::fromPath( oldFile );
@@ -70,7 +74,7 @@ void LocalBookmarksResource::configure( WId windowId )
     return;
   if ( oldFile == newFile )
     return;
-  settings()->setValue( "General/Path", newFile );
+  Settings::self()->setPath( newFile );
 
   mBookmarkManager = KBookmarkManager::managerForFile( newFile, name() );
 
@@ -142,7 +146,7 @@ void LocalBookmarksResource::retrieveCollections()
 {
   Collection root;
   root.setParent( Collection::root() );
-  root.setRemoteId( settings()->value( "General/Path" ).toString() );
+  root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "application/x-xbel" << Collection::collectionMimeType(); // ###
@@ -165,7 +169,7 @@ void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, cons
   }
 
   KBookmarkGroup bkg;
-  if ( col.remoteId() == settings()->value( "General/Path" ).toString() ) {
+  if ( col.remoteId() == Settings::self()->path() ) {
     bkg = mBookmarkManager->root();
   } else {
 

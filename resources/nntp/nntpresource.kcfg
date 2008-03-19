@@ -72,4 +72,11 @@
       <default>true</default>
     </entry>
   </group>
+
+  <!-- Internal data -->
+  <group name="Internal">
+    <entry name="LastGroupList" type="DateTime">
+      <label>Last update of the newsgroup list</label>
+    </entry>
+  </group>
 </kcfg>

@@ -36,7 +36,7 @@
 
 #include <KWindowSystem>
 
-#include <QDate>
+#include <QDateTime>
 #include <QDir>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -87,7 +87,7 @@ void NntpResource::retrieveCollections()
   remoteCollections << rootCollection;
 
   KUrl url = baseUrl();
-  QDate lastList = settings()->value( "General/LastGroupList" ).toDate();
+  QDate lastList = Settings::self()->lastGroupList().date();
   if ( lastList.isValid() ) {
     mIncremental = true;
     url.addQueryItem( "since",  QString("%1%2%3 000000")
@@ -165,7 +165,7 @@ void NntpResource::listGroupsResult(KJob * job)
     error( job->errorString() );
     return;
   } else {
-    settings()->setValue( "General/LastGroupList", QDate::currentDate() );
+    Settings::self()->setLastGroupList( QDateTime::currentDateTime() );
   }
   if ( mIncremental )
     collectionsRetrievedIncremental( remoteCollections, Collection::List() );
