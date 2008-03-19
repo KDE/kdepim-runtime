@@ -78,7 +78,7 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
     void contactStored( const Akonadi::DataReference &uid );
 
     /**
-     * This signal is emitted when an error occured during the save.
+     * This signal is emitted when an error occurred during the save.
      *
      * @p errorMsg The error message.
      */

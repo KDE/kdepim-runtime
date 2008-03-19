@@ -133,7 +133,7 @@ void ProfileEditDialog::checkIfComplete()
 
 void ProfileEditDialog::commitProfile()
 {
-  qDebug() << "commiting profile: " << m_profileNameEdit->text();
+  qDebug() << "committing profile: " << m_profileNameEdit->text();
 
   enum MAPISTATUS         retval;
   struct mapi_profile     testProfile;
