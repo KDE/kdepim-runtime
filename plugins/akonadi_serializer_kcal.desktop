@@ -1,3 +1,4 @@
+#krazy:excludeall=validate not a true desktop file that follows the spec
 [Misc]
 Name=Incidence Serializer
 Name[ca]=Serialitzador d'incidències
