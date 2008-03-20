@@ -27,6 +27,8 @@
 #include <kconfigskeleton.h>
 #include <kmessagebox.h>
 #include <kpagedialog.h>
+#include <kcomponentdata.h>
+#include <kaboutdata.h>
 
 #include <q3listview.h>
 #include <QApplication>
@@ -39,10 +41,6 @@ using namespace KPIM;
 KConfigWizard::KConfigWizard( QWidget *parent, bool modal )
   : KPageDialog( parent ), mPropagator( 0 ), mChangesPage( 0 )
 {
-  setFaceType( KPageDialog::Tree );
-  setCaption( i18nc( "@title:window", "Configuration Wizard" ) );
-  setButtons( Ok|Cancel );
-  setDefaultButton( Ok );
   setModal( modal );
   init();
 }
@@ -51,10 +49,6 @@ KConfigWizard::KConfigWizard( KConfigPropagator *propagator, QWidget *parent,
                               bool modal )
   : KPageDialog( parent ), mPropagator( propagator ), mChangesPage( 0 )
 {
-  setFaceType( KPageDialog::Tree );
-  setCaption( i18nc( "@title:window", "Configuration Wizard" ) );
-  setButtons( Ok|Cancel );
-  setDefaultButton( Ok );
   setModal( modal );
   init();
 }
@@ -66,6 +60,15 @@ KConfigWizard::~KConfigWizard()
 
 void KConfigWizard::init()
 {
+  setFaceType( KPageDialog::Tree );
+  setWindowTitle( 
+    KGlobal::mainComponent().aboutData()->programName().isEmpty()
+    ? i18nc( "@title:window", "Configuration Wizard" )
+    : KGlobal::mainComponent().aboutData()->programName() );
+  setWindowIcon( KIcon("tools-wizard") );
+  setButtons( Ok|Cancel );
+  setDefaultButton( Ok );
+
   connect( this, SIGNAL( currentPageChanged(KPageWidgetItem *, KPageWidgetItem * )),
            SLOT( slotAboutToShowPage(KPageWidgetItem *, KPageWidgetItem *) ) );
   connect( this, SIGNAL(okClicked()),
@@ -182,8 +185,9 @@ void KConfigWizard::readConfig()
 {
   kDebug() << "KConfigWizard::readConfig()";
 
+  setEnabled( false );
   int result = KMessageBox::warningContinueCancel(
-    this,
+    0,
     i18nc( "@info", "Please make sure that the programs which are "
           "configured by the wizard do not run in parallel to the wizard; "
           "otherwise, changes done by the wizard could be lost." ),
@@ -193,6 +197,7 @@ void KConfigWizard::readConfig()
   if ( result != KMessageBox::Continue ) {
     qApp->quit();
   }
+  setEnabled( true );
 
   usrReadConfig();
 }
