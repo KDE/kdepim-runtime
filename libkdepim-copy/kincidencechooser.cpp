@@ -49,7 +49,7 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
   : KDialog( parent )
 {
     setModal( true );
-    KDialog *topFrame = this;
+    QWidget *topFrame = mainWidget();
     QGridLayout *topLayout = new QGridLayout( topFrame );
     topLayout->setMargin( 5 );
     topLayout->setSpacing( 3 );
@@ -62,6 +62,7 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
             "the same entry on the server while you changed it locally."
             "<br/>NOTE: You have to check mail again to apply your changes "
             "to the server.</qt>" ), topFrame );
+    lab->setWordWrap( true );
     topLayout->addWidget( lab, iii, 0, 1, 3 );
     ++iii;
     KHBox *b_box = new KHBox( topFrame );
