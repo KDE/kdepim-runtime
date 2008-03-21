@@ -21,9 +21,11 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-#include <qsystemtrayicon.h>
+#include <ksystemtrayicon.h>
 
-class Dock : public QSystemTrayIcon
+class QLabel;
+
+class Dock : public KSystemTrayIcon
 {
     Q_OBJECT
 
@@ -46,6 +48,9 @@ private slots:
     void slotStopAkonadi();
     void slotStartAkonadi();
     void slotQuit();
+
+private:
+    QLabel* m_title;
 };
 
 #endif // DOCK_H

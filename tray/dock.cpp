@@ -23,6 +23,8 @@
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>
 #include <QMouseEvent>
+#include <QLabel>
+#include <QWidgetAction>
 
 #include <KComponentData>
 #include <KDebug>
@@ -36,9 +38,23 @@
 #include <akonadi/control.h>
 
 Dock::Dock()
-        : QSystemTrayIcon( KIcon("dummy"), 0 )
+        : KSystemTrayIcon( KIcon("dummy"), 0 )
 {
     QMenu *menu = new QMenu();
+
+    /* This should be solved in kdelibs ---- */
+    QWidgetAction* action = new QWidgetAction(this);
+    action->setEnabled(false);
+    m_title = new QLabel(0);
+    action->setDefaultWidget(m_title);
+    m_title->setFrameShape(QFrame::Box);
+    m_title->setText(i18n("Akonadi"));
+    QFont f = m_title->font();
+    f.setBold(true);
+    m_title->setFont(f);
+    menu->addAction(action);
+    /* End */
+
     menu->addAction( i18n( "&Stop Akonadi" ),
                      this, SLOT( slotStopAkonadi() ) );
     menu->addAction( i18n( "&Start Akonadi" ),
@@ -48,7 +64,7 @@ Dock::Dock()
                      this, SLOT( slotConfigureNotifications() ) );
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
-    menu->setTitle("Akonadi");
+
     setContextMenu( menu );
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
@@ -79,8 +95,8 @@ void Dock::slotActivated()
 {
     kDebug();
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
-    registered ? contextMenu()->setTitle( i18n( "Akonadi is running" ) ) 
-	        : contextMenu()->setTitle( i18n( "Akonadi is not running" ) );
+    registered ? m_title->setText( i18n( "Akonadi is running" ) ) 
+	        : m_title->setText( i18n( "Akonadi is not running" ) );
 }
 
 void Dock::slotQuit()
