@@ -50,8 +50,10 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QS
   KMenu *addMenu = new KMenu( this );
   QStringList types = d->manager->agentTypes();
   foreach (const QString& type, types) {
-    QStringList mimeTypes = d->manager->agentMimeTypes( type );
+    if ( !d->manager->agentCapabilities( type ).contains("Resource") )
+       continue;
 
+    QStringList mimeTypes = d->manager->agentMimeTypes( type );
     bool wanted = false;
     foreach( const QString& request, d->wantedMimeTypes )
       if ( mimeTypes.contains( request ) )
@@ -95,14 +97,16 @@ void ResourcesManagementWidget::fillResourcesList()
     QStringList instances = d->manager->agentInstances();
     d->ui.resourcesList->clear();
     foreach (const QString& instance, instances) {
-        QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
+        if ( !d->manager->agentCapabilities( instance ).contains("Resource") )
+          continue;
 
+        QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
         bool wanted = false;
-        foreach(  const QString& request, d->wantedMimeTypes )
-          if (  mimeTypes.contains(  request ) )
+        foreach( const QString& request, d->wantedMimeTypes )
+          if ( mimeTypes.contains(  request ) )
             wanted = true;
 
-        if (  !wanted && !d->wantedMimeTypes.isEmpty() )
+        if ( !wanted && !d->wantedMimeTypes.isEmpty() )
           continue;
 
         QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.resourcesList );
