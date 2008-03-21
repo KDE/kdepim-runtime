@@ -15,6 +15,6 @@ qt4_add_dbus_interfaces( akonamail_bin_SRCS
 kde4_add_executable(akonamail_bin ${akonamail_bin_SRCS})
 set_target_properties(akonamail_bin PROPERTIES OUTPUT_NAME akonamail)
 
-target_link_libraries( akonamail_bin akonadicore kmimeakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( akonamail_bin ${AKONADI_LIBS} ${AKONADI_KMIME_LIBS} kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS akonamail_bin DESTINATION ${BIN_INSTALL_DIR} )

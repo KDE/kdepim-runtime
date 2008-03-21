@@ -28,7 +28,7 @@ kde4_add_ui_files(akonadiconsole_bin_SRCS
 kde4_add_executable(akonadiconsole_bin ${akonadiconsole_bin_SRCS})
 set_target_properties(akonadiconsole_bin PROPERTIES OUTPUT_NAME akonadiconsole)
 
-target_link_libraries( akonadiconsole_bin akonadicore kabcakonadi kmimeakonadi kcalakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( akonadiconsole_bin ${AKONADI_LIBS} kabcakonadi ${AKONADI_KMIME_LIBS} kcalakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install( TARGETS akonadiconsole_bin DESTINATION ${BIN_INSTALL_DIR} )
 install( FILES akonadiconsole.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )

@@ -9,7 +9,7 @@ set(kabcviewer_bin_SRCS
 kde4_add_executable(kabcviewer_bin ${kabcviewer_bin_SRCS})
 set_target_properties(kabcviewer_bin PROPERTIES OUTPUT_NAME kabcviewer)
 
-target_link_libraries( kabcviewer_bin akonadicore kabcakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( kabcviewer_bin ${AKONADI_LIBS} kabcakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS kabcviewer_bin DESTINATION ${BIN_INSTALL_DIR} )
 
@@ -23,6 +23,6 @@ set(kabceditor_bin_SRCS
 kde4_add_executable(kabceditor_bin ${kabceditor_bin_SRCS})
 set_target_properties(kabceditor_bin PROPERTIES OUTPUT_NAME kabceditor)
 
-target_link_libraries( kabceditor_bin akonadicore kabcakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( kabceditor_bin ${AKONADI_LIBS} kabcakonadi kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS kabceditor_bin DESTINATION ${BIN_INSTALL_DIR} )
