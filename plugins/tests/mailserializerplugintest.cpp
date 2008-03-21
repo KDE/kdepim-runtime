@@ -20,7 +20,6 @@
 #include "mailserializerplugintest.h"
 
 #include <akonadi/item.h>
-#include <akonadi/itemserializer.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
@@ -48,7 +47,7 @@ void MailSerializerPluginTest::testMailPlugin()
   // deserializing
   Item item;
   item.setMimeType( "message/rfc822" );
-  ItemSerializer::deserialize( item, Item::PartBody, serialized );
+  item.addPart( Item::PartBody, serialized );
 
   QVERIFY( item.hasPayload<MessagePtr>() );
   MessagePtr msg = item.payload<MessagePtr>();
@@ -58,8 +57,7 @@ void MailSerializerPluginTest::testMailPlugin()
   QCOMPARE( msg->body(), QByteArray( "Body data." ) );
 
   // serializing
-  QByteArray data;
-  ItemSerializer::serialize( item, Item::PartBody, data );
+  QByteArray data = item.part( Item::PartBody );
   QCOMPARE( data, serialized );
 }
 
