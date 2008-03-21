@@ -23,7 +23,7 @@
 #include <QMimeData>
 #include <kbookmark.h>
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 
 
 using namespace Akonadi;

@@ -23,8 +23,8 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include "../libakonadi/item.h"
-#include "../libakonadi/imapparser.h"
+#include <akonadi/item.h>
+#include <akonadi/private/imapparser.h>
 
 using namespace Akonadi;
 using namespace KMime;

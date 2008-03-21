@@ -20,7 +20,7 @@
 #ifndef AKONADI_SERIALIZER_KCAL_H
 #define AKONADI_SERIALIZER_KCAL_H
 
-#include <libakonadi/itemserializerplugin.h>
+#include <akonadi/itemserializerplugin.h>
 #include <kcal/icalformat.h>
 
 namespace Akonadi {

@@ -20,7 +20,7 @@
 #ifndef __AKONADI_SERIALIZER_BOOKMARK_H__
 #define __AKONADI_SERIALIZER_BOOKMARK_H__
 
-#include <libakonadi/itemserializerplugin.h>
+#include <akonadi/itemserializerplugin.h>
 
 class QIODevice;
 class QString;

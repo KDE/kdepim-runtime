@@ -19,8 +19,8 @@
 
 #include "mailserializerplugintest.h"
 
-#include <libakonadi/item.h>
-#include <libakonadi/itemserializer.h>
+#include <akonadi/item.h>
+#include <akonadi/itemserializer.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 

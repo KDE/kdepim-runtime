@@ -19,7 +19,7 @@
 
 #include "akonadi_serializer_kcal.h"
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 #include <kdebug.h>
 #include <boost/shared_ptr.hpp>
 
