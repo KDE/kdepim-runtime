@@ -14,10 +14,12 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( maildirresource_SRCS
   maildirresource.cpp
   main.cpp
+  configdialog.cpp
 )
 
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kde4_add_ui_files(maildirresource_SRCS settings.ui)
 kde4_add_kcfg_files(maildirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 qt4_add_dbus_adaptor(maildirresource_SRCS

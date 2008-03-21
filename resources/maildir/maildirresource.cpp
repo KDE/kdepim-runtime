@@ -20,6 +20,7 @@
 #include "maildirresource.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "configdialog.h"
 
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
@@ -28,6 +29,8 @@
 #include <kurl.h>
 #include <kfiledialog.h>
 #include <klocale.h>
+
+#include <KWindowSystem>
 
 #include <maildir/maildir.h>
 
@@ -103,6 +106,11 @@ void MaildirResource::aboutToQuit()
 
 void MaildirResource::configure( WId windowId )
 {
+  ConfigDialog dlg;
+  if ( windowId )
+    KWindowSystem::setMainWindow( &dlg, windowId );
+  dlg.exec();
+  /*
   QString oldDir = Settings::self()->path();
   KUrl url;
   if ( !oldDir.isEmpty() )
@@ -115,6 +123,7 @@ void MaildirResource::configure( WId windowId )
   if ( oldDir == newDir )
     return;
   Settings::self()->setPath( newDir );
+  */
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
