@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "nepomukfeeder.h"
+#include "nepomukemailfeeder.h"
 
 #include <libakonadi/changerecorder.h>
 
@@ -31,7 +31,7 @@
 using namespace Akonadi;
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-Akonadi::NepomukFeeder::NepomukFeeder( const QString &id ) :
+Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   AgentBase( id )
 {
   monitor()->addFetchPart( Item::PartEnvelope );
@@ -40,13 +40,13 @@ Akonadi::NepomukFeeder::NepomukFeeder( const QString &id ) :
   monitor()->setChangeRecordingEnabled( false );
 }
 
-void NepomukFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
+void NepomukEMailFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
   Q_UNUSED( collection );
   itemChanged( item, QStringList() );
 }
 
-void NepomukFeeder::itemChanged(const Akonadi::Item & item, const QStringList & partIdentifiers)
+void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QStringList & partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
   if ( !item.hasPayload<MessagePtr>() )
@@ -69,7 +69,7 @@ void NepomukFeeder::itemChanged(const Akonadi::Item & item, const QStringList & 
     r.setProperty( "Message-Id", Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
 }
 
-void NepomukFeeder::itemRemoved(const Akonadi::DataReference & ref)
+void NepomukEMailFeeder::itemRemoved(const Akonadi::DataReference & ref)
 {
   Nepomuk::Resource r( Item( ref ).url().url() );
   r.remove();
@@ -77,7 +77,7 @@ void NepomukFeeder::itemRemoved(const Akonadi::DataReference & ref)
 
 int main( int argc, char **argv )
 {
-  return AgentBase::init<NepomukFeeder>( argc, argv );
+  return AgentBase::init<NepomukEMailFeeder>( argc, argv );
 }
 
-#include "nepomukfeeder.moc"
+#include "nepomukemailfeeder.moc"

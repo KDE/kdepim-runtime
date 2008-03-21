@@ -17,19 +17,19 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_NEPOMUK_FEEDER_H
-#define AKONADI_NEPOMUK_FEEDER_H
+#ifndef AKONADI_NEPOMUK_EMAIL_FEEDER_H
+#define AKONADI_NEPOMUK_EMAIL_FEEDER_H
 
 #include <libakonadi/agentbase.h>
 
 
 namespace Akonadi {
 
-class NepomukFeeder : public AgentBase
+class NepomukEMailFeeder : public AgentBase
 {
   Q_OBJECT
   public:
-    NepomukFeeder( const QString &id );
+    NepomukEMailFeeder( const QString &id );
 
   protected slots:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
