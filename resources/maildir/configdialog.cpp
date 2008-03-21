@@ -38,7 +38,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
 void ConfigDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->setPath( ui.kcfg_Path->url().url() );
+  Settings::self()->setPath( ui.kcfg_Path->url().path() );
 }
 
 #include "configdialog.moc"
