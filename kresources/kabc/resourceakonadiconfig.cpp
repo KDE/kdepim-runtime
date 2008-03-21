@@ -21,10 +21,10 @@
 #include "resourceakonadiconfig.h"
 #include "resourceakonadi.h"
 
-#include <libakonadi/collection.h>
-#include <libakonadi/collectionfilterproxymodel.h>
-#include <libakonadi/collectionmodel.h>
-#include <libakonadi/collectionview.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionmodel.h>
+#include <akonadi/collectionview.h>
 
 #include <kdebug.h>
 #include <kdialog.h>

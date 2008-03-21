@@ -8,7 +8,7 @@ set(kabc_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakon
 
 kde4_add_plugin(kabc_akonadi ${kabc_akonadi_SRCS})
 
-target_link_libraries(kabc_akonadi ${KDE4_KABC_LIBS} akonadicore)
+target_link_libraries(kabc_akonadi ${KDE4_KABC_LIBS} ${AKONADI_LIBS})
 
 
 install(TARGETS kabc_akonadi  DESTINATION ${PLUGIN_INSTALL_DIR} )

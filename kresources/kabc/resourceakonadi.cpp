@@ -21,15 +21,15 @@
 #include "resourceakonadi.h"
 #include "resourceakonadiconfig.h"
 
-#include <libakonadi/collection.h>
-#include <libakonadi/control.h>
-#include <libakonadi/monitor.h>
-#include <libakonadi/item.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemdeletejob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/itemsync.h>
+#include <akonadi/collection.h>
+#include <akonadi/control.h>
+#include <akonadi/monitor.h>
+#include <akonadi/item.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/itemsync.h>
 
 #include <kdebug.h>
 #include <kconfiggroup.h>
