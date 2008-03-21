@@ -38,8 +38,7 @@
 Dock::Dock()
         : QSystemTrayIcon( KIcon("dummy"), 0 )
 {
-    QMenu *menu = new QMenu("text");
-    menu->setTitle("Akonadi");
+    QMenu *menu = new QMenu();
     menu->addAction( i18n( "&Stop Akonadi" ),
                      this, SLOT( slotStopAkonadi() ) );
     menu->addAction( i18n( "&Start Akonadi" ),
@@ -49,12 +48,10 @@ Dock::Dock()
                      this, SLOT( slotConfigureNotifications() ) );
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
-    menu->exec();
+    menu->setTitle("Akonadi");
     setContextMenu( menu );
+    connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
-
-    connect( this, SIGNAL( activated ( QSystemTrayIcon::ActivationReason ) ),
-		    SLOT( slotActivated()));
 }
 
 Dock::~Dock()
@@ -80,10 +77,10 @@ void Dock::slotStartAkonadi()
 
 void Dock::slotActivated()
 {
+    kDebug();
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
     registered ? contextMenu()->setTitle( i18n( "Akonadi is running" ) ) 
 	        : contextMenu()->setTitle( i18n( "Akonadi is not running" ) );
-    contextMenu()->exec( QCursor::pos() );
 }
 
 void Dock::slotQuit()
