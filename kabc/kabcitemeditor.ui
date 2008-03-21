@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>574</width>
-    <height>698</height>
+    <height>714</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -34,6 +34,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mGivenName</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" >
@@ -46,6 +49,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mFamilyName</cstring>
             </property>
            </widget>
           </item>
@@ -60,6 +66,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mFormattedName</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1" >
@@ -72,6 +81,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mNickName</cstring>
             </property>
            </widget>
           </item>
@@ -108,6 +120,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mEMail</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" >
@@ -121,6 +136,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mAdditionalEMail</cstring>
+            </property>
            </widget>
           </item>
           <item row="1" column="1" >
@@ -133,6 +151,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mHomepage</cstring>
             </property>
            </widget>
           </item>
@@ -169,6 +190,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mWorkPhone</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" >
@@ -181,6 +205,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mHomePhone</cstring>
             </property>
            </widget>
           </item>
@@ -195,6 +222,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mMobilePhone</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1" >
@@ -208,6 +238,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mFaxPhone</cstring>
+            </property>
            </widget>
           </item>
           <item row="3" column="1" >
@@ -220,6 +253,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mPagerPhone</cstring>
             </property>
            </widget>
           </item>
@@ -263,6 +299,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mHomeStreet</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" colspan="3" >
@@ -275,6 +314,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mHomeCity</cstring>
             </property>
            </widget>
           </item>
@@ -289,6 +331,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mHomeState</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1" >
@@ -302,6 +347,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mHomePostalCode</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="3" >
@@ -314,6 +362,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mHomeCountry</cstring>
             </property>
            </widget>
           </item>
@@ -350,6 +401,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mTitle</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" colspan="3" >
@@ -362,6 +416,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mDepartment</cstring>
             </property>
            </widget>
           </item>
@@ -376,6 +433,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mOrganization</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1" colspan="3" >
@@ -388,6 +448,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mWorkStreet</cstring>
             </property>
            </widget>
           </item>
@@ -402,6 +465,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mWorkCity</cstring>
+            </property>
            </widget>
           </item>
           <item row="4" column="1" colspan="3" >
@@ -414,6 +480,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mWorkState</cstring>
             </property>
            </widget>
           </item>
@@ -428,6 +497,9 @@
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy" >
+             <cstring>mWorkPostalCode</cstring>
+            </property>
            </widget>
           </item>
           <item row="5" column="3" >
@@ -440,6 +512,9 @@
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy" >
+             <cstring>mWorkCountry</cstring>
             </property>
            </widget>
           </item>
@@ -474,6 +549,9 @@
          <property name="text" >
           <string>Custom 1:</string>
          </property>
+         <property name="buddy" >
+          <cstring>mCustom1</cstring>
+         </property>
         </widget>
        </item>
        <item row="0" column="1" >
@@ -483,6 +561,9 @@
         <widget class="QLabel" name="label_27" >
          <property name="text" >
           <string>Custom 2:</string>
+         </property>
+         <property name="buddy" >
+          <cstring>mCustom2</cstring>
          </property>
         </widget>
        </item>
@@ -494,6 +575,9 @@
          <property name="text" >
           <string>Custom 3:</string>
          </property>
+         <property name="buddy" >
+          <cstring>mCustom3</cstring>
+         </property>
         </widget>
        </item>
        <item row="2" column="1" >
@@ -503,6 +587,9 @@
         <widget class="QLabel" name="label_29" >
          <property name="text" >
           <string>Custom 4:</string>
+         </property>
+         <property name="buddy" >
+          <cstring>mCustom4</cstring>
          </property>
         </widget>
        </item>
