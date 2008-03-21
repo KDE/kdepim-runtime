@@ -1,27 +1,14 @@
-# generates a D-Bus interface description from a KConfigXT file
-macro( kcfg_generate_dbus_interface _kcfg _name )
-  add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-    COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../libakonadi/kcfg2dbus.xsl
-            ${_kcfg}
-            > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../../libakonadi/kcfg2dbus.xsl
-            ${_kcfg}
-  )
-endmacro( kcfg_generate_dbus_interface )
-
 add_subdirectory( knut )
 if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( ical )
   add_subdirectory( maildir )
   add_subdirectory( nntp )
   add_subdirectory( vcard )
-endif ( XSLTPROC_EXECUTABLE )
-add_subdirectory( localbookmarks )
-add_subdirectory( kabc )
-add_subdirectory( kcal )
-add_subdirectory( imap )
+  add_subdirectory( localbookmarks )
+  add_subdirectory( kabc )
+  add_subdirectory( kcal )
+  add_subdirectory( imap )
+endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.
 #So, comment out for now -- talk to Brad Hards <bradh@frogmouth.net> for more info.
