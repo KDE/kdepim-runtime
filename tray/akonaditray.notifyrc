@@ -1,0 +1,18 @@
+[Global]
+IconName=akonadi
+Comment=AkonadiTray
+
+[Context/Server]
+Name=Server
+
+[Event/serveronline]
+Contexts=Server
+Action=Popup
+Name=The Akonadi server is now online 
+Comment=The Akonadi server is running now
+
+[Event/serveroffline]
+Contexts=Server
+Action=Popup
+Name=The Akonadi server is now offline 
+Comment=The Akonadi server is no longer running

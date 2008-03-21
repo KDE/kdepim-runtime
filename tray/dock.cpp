@@ -31,6 +31,7 @@
 #include <KIcon>
 #include <KIconLoader>
 #include <KLocale>
+#include <KNotification>
 #include <KNotifyConfigWidget>
 #include <KStandardShortcut>
 #include <KSystemTrayIcon>
@@ -55,10 +56,8 @@ Dock::Dock()
     menu->addAction(action);
     /* End */
 
-    menu->addAction( i18n( "&Stop Akonadi" ),
-                     this, SLOT( slotStopAkonadi() ) );
-    menu->addAction( i18n( "&Start Akonadi" ),
-                     this, SLOT( slotStartAkonadi() ) );
+    m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
+    m_startAction = menu->addAction( i18n( "&Start Akonadi" ), this, SLOT( slotStartAkonadi() ) );
     menu->addSeparator();
     menu->addAction( /*SmallIcon( "knotify" ),*/ i18n( "Configure &Notifications..." ),
                      this, SLOT( slotConfigureNotifications() ) );
@@ -68,6 +67,10 @@ Dock::Dock()
     setContextMenu( menu );
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
+
+    connect(QDBusConnection::sessionBus().interface(), 
+        SIGNAL( serviceOwnerChanged( const QString&, const QString&, const QString& ) ),
+        SLOT( slotServiceChanged( const QString&, const QString&, const QString& ) ) );
 }
 
 Dock::~Dock()
@@ -78,6 +81,20 @@ Dock::~Dock()
 void Dock::slotConfigureNotifications()
 {
     KNotifyConfigWidget::configure( 0 );
+}
+
+void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
+{
+    if ( service != "org.kde.Akonadi.Control") 
+        return;
+
+    if (oldOwner.isEmpty() ) {
+	updateMenu( true );
+	KNotification::event( "serveronline", i18n( "Akonadi server is now available" ) );
+    } else if (newOwner.isEmpty() ) {
+	updateMenu( false );
+	KNotification::event( "serveroffline", i18n( "Akonadi server is no longer available" ) );
+    }
 }
 
 void Dock::slotStopAkonadi()
@@ -93,10 +110,15 @@ void Dock::slotStartAkonadi()
 
 void Dock::slotActivated()
 {
-    kDebug();
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
-    registered ? m_title->setText( i18n( "Akonadi is running" ) ) 
-	        : m_title->setText( i18n( "Akonadi is not running" ) );
+    updateMenu( registered );
+}
+
+void Dock::updateMenu( bool registered )
+{
+    registered ? m_title->setText( i18n( "Akonadi is running" ) ) : m_title->setText( i18n( "Akonadi is not running" ) );
+    m_stopAction->setVisible( registered );
+    m_startAction->setVisible( !registered );
 }
 
 void Dock::slotQuit()

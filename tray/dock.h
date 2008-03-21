@@ -24,6 +24,7 @@
 #include <ksystemtrayicon.h>
 
 class QLabel;
+class QAction;
 
 class Dock : public KSystemTrayIcon
 {
@@ -43,6 +44,7 @@ public:
     ~Dock();
 
 private slots:
+    void slotServiceChanged( const QString&, const QString&, const QString&);
     void slotActivated();
     void slotConfigureNotifications();
     void slotStopAkonadi();
@@ -50,7 +52,10 @@ private slots:
     void slotQuit();
 
 private:
-    QLabel* m_title;
+    void updateMenu( bool );
+    QLabel *m_title;
+    QAction *m_stopAction;
+    QAction *m_startAction;
 };
 
 #endif // DOCK_H
