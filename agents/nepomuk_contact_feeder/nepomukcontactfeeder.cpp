@@ -21,7 +21,7 @@
 
 #include <kabc/addressee.h>
 
-#include <libakonadi/changerecorder.h>
+#include <akonadi/changerecorder.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>

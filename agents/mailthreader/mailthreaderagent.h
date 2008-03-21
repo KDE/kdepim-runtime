@@ -20,7 +20,7 @@
 #ifndef MAILTHREADERAGENT_H
 #define MAILTHREADERAGENT_H
 
-#include <libakonadi/agentbase.h>
+#include <akonadi/agentbase.h>
 
 #include <QList>
 

@@ -19,7 +19,7 @@
 
 #include "nepomukemailfeeder.h"
 
-#include <libakonadi/changerecorder.h>
+#include <akonadi/changerecorder.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>

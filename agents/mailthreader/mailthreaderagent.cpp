@@ -19,12 +19,12 @@
 
 #include "mailthreaderagent.h"
 
-#include <libakonadi/session.h>
-#include <libakonadi/monitor.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/item.h>
+#include <akonadi/session.h>
+#include <akonadi/monitor.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/item.h>
 
 #include <strigi/qtdbus/strigiclient.h>
 

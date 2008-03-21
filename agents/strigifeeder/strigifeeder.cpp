@@ -19,7 +19,7 @@
 
 #include "strigifeeder.h"
 
-#include <libakonadi/changerecorder.h>
+#include <akonadi/changerecorder.h>
 
 #include <kdebug.h>
 #include <kurl.h>

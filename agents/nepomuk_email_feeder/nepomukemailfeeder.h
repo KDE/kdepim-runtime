@@ -20,7 +20,7 @@
 #ifndef AKONADI_NEPOMUK_EMAIL_FEEDER_H
 #define AKONADI_NEPOMUK_EMAIL_FEEDER_H
 
-#include <libakonadi/agentbase.h>
+#include <akonadi/agentbase.h>
 
 
 namespace Akonadi {

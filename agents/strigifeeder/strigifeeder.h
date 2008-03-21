@@ -20,7 +20,7 @@
 #ifndef AKONADI_STRIGI_FEEDER_H
 #define AKONADI_STRIGI_FEEDER_H
 
-#include <libakonadi/agentbase.h>
+#include <akonadi/agentbase.h>
 #include <strigi/qtdbus/strigiclient.h>
 
 namespace Akonadi {
