@@ -19,11 +19,11 @@
 
 #include "akonadislave.h"
 
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemdeletejob.h>
-#include <libakonadi/collection.h>
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectiondeletejob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectiondeletejob.h>
 
 #include <kapplication.h>
 #include <kcmdlineargs.h>

@@ -24,8 +24,8 @@
 #include "resourcesmanagementwidget.h"
 #include "ui_resourcesmanagementwidget.h"
 
-#include <libakonadi/agentmanager.h>
-#include <libakonadi/agentinstancecreatejob.h>
+#include <akonadi/agentmanager.h>
+#include <akonadi/agentinstancecreatejob.h>
 
 #include <KDebug>
 #include <KMenu>
