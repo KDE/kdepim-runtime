@@ -125,7 +125,7 @@ void AgentWidget::addAgent()
 
     if ( !agentType.isEmpty() ) {
       AgentInstanceCreateJob *job = new AgentInstanceCreateJob( agentType, this );
-      job->configure( winId() );
+      job->configure( this );
       job->start(); // TODO: check result
     }
   }
@@ -142,7 +142,7 @@ void AgentWidget::configureAgent()
 {
   const QString agent = mView->currentAgentInstance();
   if ( !agent.isEmpty() )
-    mManager->agentInstanceConfigure( agent, winId() );
+    mManager->agentInstanceConfigure( agent, this );
 }
 
 void AgentWidget::synchronizeAgent()

@@ -130,7 +130,7 @@ void ResourcesManagementWidget::addClicked( QAction* action)
 {
     Q_ASSERT( d->menuOptions.contains( action ) );
     Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( d->menuOptions.value( action) , this );
-    job->configure( winId() );
+    job->configure( this );
     job->start();
 }
 
@@ -138,7 +138,7 @@ void ResourcesManagementWidget::editClicked()
 {
    Q_ASSERT( d->ui.resourcesList->currentItem() );
    QString current = d->ui.resourcesList->currentItem()->data( 0, Qt::UserRole ).toString();
-   d->manager->agentInstanceConfigure( current, winId() );
+   d->manager->agentInstanceConfigure( current, this );
 }
 
 void ResourcesManagementWidget::removeClicked()
