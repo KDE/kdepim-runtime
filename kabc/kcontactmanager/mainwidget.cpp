@@ -21,6 +21,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListView>
+#include <QtGui/QSortFilterProxyModel>
 #include <QtGui/QSplitter>
 
 #include <libakonadi/collectionfilterproxymodel.h>
@@ -55,7 +56,13 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
   mCollectionFilterModel->addMimeType( "text/vcard" );
   mCollectionFilterModel->setSourceModel( mCollectionModel );
 
-  mCollectionView->setModel( mCollectionFilterModel );
+  // display collections sorted
+  QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
+  sortModel->setDynamicSortFilter( true );
+  sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
+  sortModel->setSourceModel( mCollectionFilterModel );
+
+  mCollectionView->setModel( sortModel );
 
   mContactModel = new KABCModel( this );
   mContactView->setModel( mContactModel );

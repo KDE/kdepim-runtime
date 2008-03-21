@@ -22,6 +22,8 @@
 #include "mainwidget.h"
 #include "mainwindow.h"
 
+#include <QtGui/QSortFilterProxyModel>
+
 MainWidget::MainWidget( MainWindow* parent )
     : QWidget( parent ), mMainWindow( parent )
 {
@@ -59,6 +61,12 @@ MainWidget::MainWidget( MainWindow* parent )
     mCollectionProxyModel->setSourceModel( mCollectionModel );
     mCollectionProxyModel->addMimeType( QString::fromLatin1( "text/calendar" ) );
 
+    // display collections sorted
+    QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
+    sortModel->setDynamicSortFilter( true );
+    sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
+    sortModel->setSourceModel( mCollectionProxyModel );
+
     // Calendar view (list of incidences)
     mIncidenceModel = new KCalModel( this );
 
@@ -66,7 +74,7 @@ MainWidget::MainWidget( MainWindow* parent )
      * Connexion between views and models
      */
     mIncidenceList->setModel( mIncidenceModel );
-    mCollectionList->setModel( mCollectionProxyModel );
+    mCollectionList->setModel( sortModel );
 
     /*
      * React to user orders

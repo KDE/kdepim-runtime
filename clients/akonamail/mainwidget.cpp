@@ -33,6 +33,7 @@
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QTextEdit>
+#include <QtGui/QSortFilterProxyModel>
 
 using namespace Akonadi;
 
@@ -49,7 +50,7 @@ MainWidget::MainWidget( MainWindow * parent) :
 
   // Left part, collection view
   mCollectionList = new Akonadi::CollectionView();
-  connect( mCollectionList, SIGNAL(clicked(const Akonadi::Collection &)), 
+  connect( mCollectionList, SIGNAL(clicked(const Akonadi::Collection &)),
            SLOT(collectionClicked(const Akonadi::Collection &)) );
   splitter->addWidget( mCollectionList );
   // Filter the collection to only show the emails
@@ -57,6 +58,12 @@ MainWidget::MainWidget( MainWindow * parent) :
   mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
   mCollectionProxyModel->setSourceModel( mCollectionModel );
   mCollectionProxyModel->addMimeType( QString::fromLatin1( "message/rfc822" ) );
+
+  // display collections sorted
+  QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
+  sortModel->setDynamicSortFilter( true );
+  sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
+  sortModel->setSourceModel( mCollectionProxyModel );
 
   // Right part, message list + message viewer
   QSplitter *rightSplitter = new QSplitter( Qt::Vertical, this );
@@ -67,7 +74,7 @@ MainWidget::MainWidget( MainWindow * parent) :
   connect( mMessageList, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   rightSplitter->addWidget( mMessageList );
 
-  mCollectionList->setModel( mCollectionProxyModel );
+  mCollectionList->setModel( sortModel );
   mMessageModel = new Akonadi::MessageModel( this );
   mMessageProxyModel = new Akonadi::MessageThreaderProxyModel( this );
   mMessageProxyModel->setSourceModel( mMessageModel );

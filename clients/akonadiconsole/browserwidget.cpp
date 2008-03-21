@@ -45,6 +45,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QtGui/QSortFilterProxyModel>
 
 using namespace Akonadi;
 
@@ -66,7 +67,11 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter->addWidget( mCollectionView );
 
   mCollectionModel = new Akonadi::CollectionModel( this );
-  mCollectionView->setModel( mCollectionModel );
+  QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
+  sortModel->setDynamicSortFilter( true );
+  sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
+  sortModel->setSourceModel( mCollectionModel );
+  mCollectionView->setModel( sortModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
   splitter->addWidget( splitter2 );
