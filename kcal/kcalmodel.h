@@ -20,8 +20,8 @@
 #ifndef KCALMODEL_H
 #define KCALMODEL_H
 
-#include <libakonadi/akonadi_export.h>
-#include <libakonadi/itemmodel.h>
+#include "akonadi-kcal_export.h"
+#include <akonadi/itemmodel.h>
 
 class AKONADI_KCAL_EXPORT KCalModel : public Akonadi::ItemModel
 {

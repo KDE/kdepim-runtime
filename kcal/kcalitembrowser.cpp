@@ -19,7 +19,7 @@
 
 #include "kcalitembrowser.h"
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 
 #include <kcal/incidence.h>
 #include <kcal/incidenceformatter.h>

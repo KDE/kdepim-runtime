@@ -19,8 +19,8 @@
 
 #include "kcalmodel.h"
 
-#include <libakonadi/item.h>
-#include <libakonadi/itemfetchjob.h>
+#include <akonadi/item.h>
+#include <akonadi/itemfetchjob.h>
 
 #include <kcal/incidence.h>
 #include <kcal/event.h>
