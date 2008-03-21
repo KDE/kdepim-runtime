@@ -21,8 +21,8 @@
 
 #include "agentwidget.h"
 
-#include "libakonadi/components/agenttypeview.h"
-#include "libakonadi/components/agentinstanceview.h"
+#include "libakonadi/agenttypeview.h"
+#include "libakonadi/agentinstanceview.h"
 #include "libakonadi/agentmanager.h"
 #include <libakonadi/agentinstancecreatejob.h>
 

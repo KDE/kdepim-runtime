@@ -11,4 +11,4 @@ set_target_properties(akonadi_bin PROPERTIES OUTPUT_NAME akonadi)
 target_link_libraries( akonadi_bin akonadicore
   ${QT_QTCORE_LIBRARY} )
 
-install(TARGETS akonadi_bin DESTINATION ${BIN_INSTALL_DIR} )
+#install(TARGETS akonadi_bin DESTINATION ${BIN_INSTALL_DIR} )

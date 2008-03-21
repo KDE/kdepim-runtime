@@ -24,9 +24,8 @@
 #include "agentwidget.h"
 #include "browserwidget.h"
 #include "debugwidget.h"
-#include "profilewidget.h"
 
-#include <libakonadi/components/agentinstanceview.h>
+#include <libakonadi/agentinstanceview.h>
 #include <libakonadi/agentfilterproxymodel.h>
 #include <libakonadi/standardactionmanager.h>
 
@@ -47,7 +46,6 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
   AgentWidget *resView = new AgentWidget( tabWidget );
   resView->view()->agentFilterProxyModel()->addCapability( "Resource" );
   tabWidget->addTab( resView, "Resources" );
-//   tabWidget->addTab( new ProfileWidget( tabWidget ), "Profiles" );
   BrowserWidget *browser = new BrowserWidget( parent, tabWidget );
   tabWidget->addTab( browser, "Browser" );
   tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
