@@ -24,7 +24,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <akonadi/item.h>
-#include <akonadi/private/imapparser.h>
+#include <akonadi/private/imapparser_p.h>
 
 using namespace Akonadi;
 using namespace KMime;
