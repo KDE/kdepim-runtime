@@ -20,7 +20,7 @@
 #ifndef KABCITEMEDITOR_H
 #define KABCITEMEDITOR_H
 
-#include <libakonadi/akonadi_export.h>
+#include "akonadi-kabc_export.h"
 #include <QtGui/QWidget>
 
 namespace Akonadi {

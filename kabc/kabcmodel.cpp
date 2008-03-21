@@ -20,8 +20,8 @@
 #include "kabcmodel.h"
 
 #include <kabc/addressee.h>
-#include <libakonadi/item.h>
-#include <libakonadi/itemfetchjob.h>
+#include <akonadi/item.h>
+#include <akonadi/itemfetchjob.h>
 
 class KABCModel::Private
 {

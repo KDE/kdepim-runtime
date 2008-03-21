@@ -20,8 +20,8 @@
 #ifndef KABCITEMBROWSER_H
 #define KABCITEMBROWSER_H
 
-#include <libakonadi/akonadi_export.h>
-#include <libakonadi/itembrowser.h>
+#include "akonadi-kabc_export.h"
+#include <akonadi/itembrowser.h>
 
 namespace Akonadi {
 class Item;

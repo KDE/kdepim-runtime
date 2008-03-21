@@ -25,7 +25,7 @@
 #include <klocale.h>
 #include <kstringhandler.h>
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 
 static QString addresseeToHtml( const KABC::Addressee& );
 

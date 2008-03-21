@@ -22,7 +22,7 @@
 #include <QtGui/QLabel>
 
 #include <klocale.h>
-#include <libakonadi/components/collectioncombobox.h>
+#include <akonadi/collectioncombobox.h>
 
 #include "kabc/kabcitemeditor.h"
 

@@ -19,13 +19,14 @@ set( kabcakonadi_LIB_SRC
 qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
 kde4_add_library( kabcakonadi SHARED ${kabcakonadi_LIB_SRC} )
 
-target_link_libraries( kabcakonadi akonadicore ${KDE4_KABC_LIBS} )
+target_link_libraries( kabcakonadi ${AKONADI_LIBS} ${KDE4_KABC_LIBS} )
 set_target_properties( kabcakonadi PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS kabcakonadi DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
 
 install( FILES
+  akonadi-kabc_export.h
   kabcitembrowser.h
   kabcitemeditor.h
   kabcmodel.h

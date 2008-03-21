@@ -20,8 +20,8 @@
 #ifndef KABCMODEL_H
 #define KABCMODEL_H
 
-#include <libakonadi/akonadi_export.h>
-#include <libakonadi/itemmodel.h>
+#include "akonadi-kabc_export.h"
+#include <akonadi/itemmodel.h>
 
 class AKONADI_KABC_EXPORT KABCModel : public Akonadi::ItemModel
 {

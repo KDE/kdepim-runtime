@@ -26,11 +26,11 @@
 
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/monitor.h>
-#include <libakonadi/session.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/monitor.h>
+#include <akonadi/session.h>
 
 #include "ui_kabcitemeditor.h"
 

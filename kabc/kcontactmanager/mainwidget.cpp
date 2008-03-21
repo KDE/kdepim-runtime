@@ -24,10 +24,10 @@
 #include <QtGui/QSortFilterProxyModel>
 #include <QtGui/QSplitter>
 
-#include <libakonadi/collectionfilterproxymodel.h>
-#include <libakonadi/collectionmodel.h>
-#include <libakonadi/collectionview.h>
-#include <libakonadi/itemview.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionmodel.h>
+#include <akonadi/collectionview.h>
+#include <akonadi/itemview.h>
 
 #include <kactioncollection.h>
 #include <kabc/kabcmodel.h>
