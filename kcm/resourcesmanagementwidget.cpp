@@ -109,7 +109,8 @@ void ResourcesManagementWidget::fillResourcesList()
     QStringList instances = d->manager->agentInstances();
     d->ui.resourcesList->clear();
     foreach (const QString& instance, instances) {
-        if ( !d->manager->agentCapabilities( instance ).contains("Resource") )
+        const QStringList capas = d->manager->agentCapabilities( d->manager->agentInstanceType( instance ) );
+        if ( !capas.contains("Resource") )
           continue;
 
         QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
