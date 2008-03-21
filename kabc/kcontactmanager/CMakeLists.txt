@@ -19,7 +19,7 @@ set( kcontactmanager_SRCS
 
 kde4_add_executable(kcontactmanager RUN_UNINSTALLED ${kcontactmanager_SRCS})
 
-target_link_libraries(kcontactmanager akonadicore kabcakonadi akonadicomponents ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries(kcontactmanager akonadicore kabcakonadi ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS kcontactmanager DESTINATION ${BIN_INSTALL_DIR})
 install( FILES kcontactmanager.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
