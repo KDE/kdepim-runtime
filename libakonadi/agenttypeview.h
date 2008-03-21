@@ -17,52 +17,60 @@
     02110-1301, USA.
 */
 
-#ifndef PROFILEVIEW_H
-#define PROFILEVIEW_H
+#ifndef AGENTTYPEVIEW_H
+#define AGENTTYPEVIEW_H
 
 #include <libakonadi/libakonadi_export.h>
 #include <QtGui/QWidget>
 
 namespace Akonadi {
 
+class AgentFilterProxyModel;
+
 /**
- * This class provides a view of all available profiles.
+ * This class provides a view of all available agent types.
  *
  * Since the view is listening to the dbus for changes, the
- * view is updated automatically as soon as a new profile
- * is created or removed to/from the profile manager.
+ * view is updated automatically as soon as a new agent type
+ * is installed or removed to/from the system.
  *
  * @author Tobias Koenig <tokoe@kde.org>
  */
-class AKONADI_COMPONENTS_EXPORT ProfileView : public QWidget
+class AKONADI_EXPORT AgentTypeView : public QWidget
 {
   Q_OBJECT
 
   public:
     /**
-     * Creates a new profile view.
+     * Creates a new agent type view.
      *
      * @param parent The parent widget.
      */
-    ProfileView( QWidget *parent = 0 );
+    AgentTypeView( QWidget *parent = 0 );
 
     /**
-     * Destroys the profile view.
+     * Destroys the agent type view.
      */
-    ~ProfileView();
+    ~AgentTypeView();
 
     /**
-     * Returns the identifier of the current profile or an
-     * empty string if no profile is selected.
+     * Returns the identifier of the current agent type or an
+     * empty string if no agent type is selected.
      */
-    QString currentProfile() const;
+    QString currentAgentType() const;
+
+    /**
+      Returns the agent filter proxy model, use this to filter by
+      agent mimetype or capabilities.
+    */
+    AgentFilterProxyModel* agentFilterProxyModel() const;
 
   Q_SIGNALS:
     /**
-     * This signal is emitted whenever the current profile changes.
+     * This signal is emitted whenever the current agent type changes.
      *
-     * @param current The identifier of the current profile.
-     * @param previous The identifier of the previous profile.
+     * @param current The identifier of the current agent type.
+     * @param previous The identifier of the previous agent type.
      */
     void currentChanged( const QString &current, const QString &previous );
 
@@ -70,7 +78,7 @@ class AKONADI_COMPONENTS_EXPORT ProfileView : public QWidget
     class Private;
     Private* const d;
 
-    Q_PRIVATE_SLOT( d, void currentProfileChanged( const QModelIndex&, const QModelIndex& ) )
+    Q_PRIVATE_SLOT( d, void currentAgentTypeChanged( const QModelIndex&, const QModelIndex& ) )
 };
 
 }

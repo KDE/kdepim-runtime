@@ -1,6 +1,5 @@
 
 add_subdirectory( tests )
-add_subdirectory( components )
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/
@@ -29,29 +28,32 @@ install(TARGETS akonadiprotocol  DESTINATION ${LIB_INSTALL_DIR})
 # libakonadi
 
 set( akonadi_LIB_SRC
-	agentinstancemodel.cpp
 	agentbase.cpp
+	agentfilterproxymodel.cpp
 	agentinstancecreatejob.cpp
+	agentinstancemodel.cpp
+	agentinstanceview.cpp
 	agentmanager.cpp
 	agenttypemodel.cpp
-	agentfilterproxymodel.cpp
+	agenttypeview.cpp
 	cachepolicy.cpp
 	cachepolicypage.cpp
 	changerecorder.cpp
 	collection.cpp
 	collectionattribute.cpp
 	collectionattributefactory.cpp
-	collectioncreatejob.cpp
+  collectioncombobox.cpp
 	collectioncopyjob.cpp
+	collectioncreatejob.cpp
 	collectiondeletejob.cpp
+	collectionfilterproxymodel.cpp
+	collectiongeneralpropertiespage.cpp
 	collectionlistjob.cpp
 	collectionmodel.cpp
-	collectionfilterproxymodel.cpp
 	collectionmodifyjob.cpp
 	collectionpathresolver.cpp
 	collectionpropertiesdialog.cpp
 	collectionpropertiespage.cpp
-	collectiongeneralpropertiespage.cpp
 	collectionrightsattribute.cpp
 	collectionselectjob.cpp
 	collectionstatus.cpp
@@ -90,9 +92,9 @@ set( akonadi_LIB_SRC
 	session.cpp
 	standardactionmanager.cpp
 	subscriptionjob.cpp
-	subscriptionmodel.cpp
-	subscriptiondialog.cpp
 	subscriptionchangeproxymodel.cpp
+	subscriptiondialog.cpp
+	subscriptionmodel.cpp
 	transactionjobs.cpp
 	xdgbasedirs.cpp
 )

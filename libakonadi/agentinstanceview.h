@@ -36,7 +36,7 @@ class AgentFilterProxyModel;
  *
  * @author Tobias Koenig <tokoe@kde.org>
  */
-class AKONADI_COMPONENTS_EXPORT AgentInstanceView : public QWidget
+class AKONADI_EXPORT AgentInstanceView : public QWidget
 {
   Q_OBJECT
 
