@@ -5,22 +5,118 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>507</width>
+    <height>438</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
-   <item>
-    <widget class="QStackedWidget" name="stack" >
-     <property name="frameShadow" >
-      <enum>QFrame::Sunken</enum>
-     </property>
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item row="0" column="0" colspan="2" >
+    <widget class="KTabWidget" name="ktabwidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
-     <widget class="QWidget" name="dataViewPage" >
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="2" >
+     <widget class="QWidget" name="tab" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>352</height>
+       </rect>
+      </property>
+      <attribute name="title" >
+       <string>Payload</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <item>
+        <widget class="QStackedWidget" name="stack" >
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="unsupportedTypePage" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>479</width>
+            <height>344</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2" >
+           <item>
+            <widget class="QLabel" name="unsupportedType" >
+             <property name="text" >
+              <string>Unsupported Type</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="addresseeViewPage" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>479</width>
+            <height>344</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="KPIM::AddresseeView" name="addresseeView" />
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>352</height>
+       </rect>
+      </property>
+      <attribute name="title" >
+       <string>Parts</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout" >
+       <item row="0" column="0" >
+        <spacer name="horizontalSpacer" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>345</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>&amp;Part:</string>
+         </property>
+         <property name="buddy" >
+          <cstring>partCombo</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" >
+        <widget class="KComboBox" name="partCombo" />
+       </item>
+       <item row="1" column="0" colspan="3" >
         <widget class="QTextEdit" name="dataView" >
          <property name="lineWrapMode" >
           <enum>QTextEdit::NoWrap</enum>
@@ -30,35 +126,108 @@
          </property>
         </widget>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>352</height>
+       </rect>
+      </property>
+      <attribute name="title" >
+       <string>Internals</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3" >
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Unique ID:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QLabel" name="id" >
+         <property name="text" >
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Remote ID:</string>
          </property>
-         <property name="sizeHint" >
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
+         <property name="buddy" >
+          <cstring>remoteId</cstring>
          </property>
-        </spacer>
+        </widget>
        </item>
        <item row="1" column="1" >
-        <widget class="KPushButton" name="saveButton" >
+        <widget class="KLineEdit" name="remoteId" />
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_3" >
          <property name="text" >
-          <string>&amp;Save</string>
+          <string>Revision:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QLabel" name="revision" >
+         <property name="text" >
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_6" >
+         <property name="text" >
+          <string>Mimetype:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QLabel" name="mimeType" >
+         <property name="text" >
+          <string>invalid/invalid</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2" >
+        <widget class="KEditListBox" name="flags" >
+         <property name="title" >
+          <string>Flags</string>
+         </property>
+         <property name="buttons" >
+          <set>KEditListBox::Add|KEditListBox::Remove</set>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="addresseeViewPage" >
-      <layout class="QVBoxLayout" >
-       <item>
-        <widget class="KPIM::AddresseeView" name="addresseeView" />
-       </item>
-      </layout>
-     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1" >
+    <widget class="KPushButton" name="saveButton" >
+     <property name="text" >
+      <string>&amp;Save</string>
+     </property>
     </widget>
    </item>
   </layout>
@@ -66,9 +235,30 @@
  <layoutdefault spacing="6" margin="0" />
  <customwidgets>
   <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KEditListBox</class>
+   <extends>QGroupBox</extends>
+   <header>keditlistbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ktabwidget.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>KPIM::AddresseeView</class>

@@ -56,6 +56,7 @@ class BrowserWidget: public QWidget
     void itemFetchDone( KJob *job );
     void modelChanged();
     void save();
+    void saveResult( KJob* job );
 
   private:
     Akonadi::CollectionModel *mCollectionModel;

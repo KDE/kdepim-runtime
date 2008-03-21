@@ -39,6 +39,7 @@
 
 #include <kdebug.h>
 #include <kconfig.h>
+#include <kmessagebox.h>
 #include <kxmlguiwindow.h>
 
 #include <QSplitter>
@@ -97,6 +98,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   contentUi.setupUi( contentViewParent );
   connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
   splitter2->addWidget( contentViewParent );
+  contentUi.partCombo->addItem( "Body" );
 
   CollectionPropertiesDialog::registerPage( new CollectionAttributePageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
@@ -137,10 +139,20 @@ void BrowserWidget::itemFetchDone(KJob * job)
       contentUi.addresseeView->setAddressee( addr );
       contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
     } else {
-      QByteArray data = item.part( Item::PartBody );
-      contentUi.dataView->setPlainText( data );
-      contentUi.stack->setCurrentWidget( contentUi.dataViewPage );
+      contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
     }
+
+    QByteArray data = item.part( Item::PartBody );
+    contentUi.dataView->setPlainText( data );
+
+    contentUi.id->setText( QString::number( item.reference().id() ) );
+    contentUi.remoteId->setText( item.reference().remoteId() );
+    contentUi.mimeType->setText( item.mimeType() );
+    contentUi.revision->setText( QString::number( item.rev() ) );
+    QStringList flags;
+    foreach ( const Item::Flag &f, item.flags() )
+      flags << QString::fromUtf8( f );
+    contentUi.flags->setItems( flags );
   }
 }
 
@@ -169,9 +181,15 @@ void BrowserWidget::save()
 {
   const QByteArray data = contentUi.dataView->toPlainText().toUtf8();
   Item item = mCurrentItem;
+  item.setRemoteId( contentUi.remoteId->text() );
+  foreach ( const Item::Flag f, mCurrentItem.flags() )
+    item.unsetFlag( f );
+  foreach ( const QString s, contentUi.flags->items() )
+    item.setFlag( s.toUtf8() );
   item.addPart( Item::PartBody, data );
   ItemStoreJob *store = new ItemStoreJob( item, this );
   store->storePayload();
+  connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
 }
 
 QItemSelectionModel * BrowserWidget::collectionSelectionModel() const
@@ -182,6 +200,13 @@ QItemSelectionModel * BrowserWidget::collectionSelectionModel() const
 QItemSelectionModel * BrowserWidget::itemSelectionModel() const
 {
   return itemUi.itemView->selectionModel();
+}
+
+void BrowserWidget::saveResult(KJob * job)
+{
+  if ( job->error() ) {
+    KMessageBox::error( this, i18n( "Failed to save changes: %1", job->errorString() ) );
+  }
 }
 
 #include "browserwidget.moc"
