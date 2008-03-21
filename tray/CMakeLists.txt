@@ -8,7 +8,7 @@ dock.cpp
 # QT4_ADD_DBUS_ADAPTOR( tray_sources org.kde.Akonadi.tray.xml tray.h Tray:Tray)
 
 KDE4_ADD_EXECUTABLE(akonaditray ${tray_sources})
-TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBS})
+TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBS} akonadicomponents)
 
 INSTALL(TARGETS akonaditray DESTINATION ${BIN_INSTALL_DIR})
 #INSTALL(FILES  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )

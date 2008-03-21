@@ -31,6 +31,8 @@
 #include <KStandardShortcut>
 #include <KSystemTrayIcon>
 
+#include <libakonadi/control.h>
+
 Dock::Dock()
         : QSystemTrayIcon( KIcon("dummy"), 0 )
 {
@@ -60,12 +62,13 @@ void Dock::slotConfigureNotifications()
 
 void Dock::slotStopAkonadi()
 {
-     QDBusInterface dbus( "org.kde.Akonadi", "/Server", "org.kde.Akoandi.Server" );
-     dbus.call( "quit" );
+     QDBusInterface dbus( "org.kde.Akonadi.Control", "/ControlManager", "org.kde.Akonadi.ControlManager" );
+     dbus.call( "shutdown" );
 }
 
 void Dock::slotStartAkonadi()
 {
+     Akonadi::Control::start();
 }
 
 void Dock::mousePressEvent( QMouseEvent *e )
