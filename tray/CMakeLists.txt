@@ -1,0 +1,16 @@
+INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR} )
+
+SET(tray_sources
+main.cpp
+dock.cpp
+)
+
+# QT4_ADD_DBUS_ADAPTOR( tray_sources org.kde.Akonadi.tray.xml tray.h Tray:Tray)
+
+KDE4_ADD_EXECUTABLE(akonaditray ${tray_sources})
+TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBS})
+
+INSTALL(TARGETS akonaditray DESTINATION ${BIN_INSTALL_DIR})
+#INSTALL(FILES  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
+#INSTALL( FILES akonaditray.notifyrc DESTINATION ${DATA_INSTALL_DIR}/rsibreak  )
+#INSTALL( FILES org.kde.Akonadi.tray.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )

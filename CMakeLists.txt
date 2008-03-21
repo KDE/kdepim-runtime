@@ -47,6 +47,7 @@ add_subdirectory(plugins)
 add_subdirectory(kabc)
 add_subdirectory(kcal)
 add_subdirectory(kcm)
+add_subdirectory(tray)
 
 if( Nepomuk_FOUND )
   add_subdirectory(nepomuk)
