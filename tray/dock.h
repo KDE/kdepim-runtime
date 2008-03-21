@@ -40,10 +40,8 @@ public:
      */
     ~Dock();
 
-protected:
-    void mousePressEvent( QMouseEvent *e );
-
 private slots:
+    void slotActivated();
     void slotConfigureNotifications();
     void slotStopAkonadi();
     void slotStartAkonadi();

@@ -21,9 +21,11 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QDBusInterface>
+#include <QDBusConnectionInterface>
 #include <QMouseEvent>
 
 #include <KComponentData>
+#include <KDebug>
 #include <KIcon>
 #include <KIconLoader>
 #include <KLocale>
@@ -36,7 +38,8 @@
 Dock::Dock()
         : QSystemTrayIcon( KIcon("dummy"), 0 )
 {
-    QMenu* menu = new QMenu( 0 );
+    QMenu *menu = new QMenu("text");
+    menu->setTitle("Akonadi");
     menu->addAction( i18n( "&Stop Akonadi" ),
                      this, SLOT( slotStopAkonadi() ) );
     menu->addAction( i18n( "&Start Akonadi" ),
@@ -46,14 +49,18 @@ Dock::Dock()
                      this, SLOT( slotConfigureNotifications() ) );
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
+    menu->exec();
     setContextMenu( menu );
-
     show();
+
+    connect( this, SIGNAL( activated ( QSystemTrayIcon::ActivationReason ) ),
+		    SLOT( slotActivated()));
 }
 
 Dock::~Dock()
 {
 }
+
 
 void Dock::slotConfigureNotifications()
 {
@@ -71,9 +78,12 @@ void Dock::slotStartAkonadi()
      Akonadi::Control::start();
 }
 
-void Dock::mousePressEvent( QMouseEvent *e )
+void Dock::slotActivated()
 {
-    contextMenu()->exec( e->globalPos() );
+    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
+    registered ? contextMenu()->setTitle( i18n( "Akonadi is running" ) ) 
+	        : contextMenu()->setTitle( i18n( "Akonadi is not running" ) );
+    contextMenu()->exec( QCursor::pos() );
 }
 
 void Dock::slotQuit()
