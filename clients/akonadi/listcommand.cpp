@@ -23,9 +23,9 @@
 
 #include "out.h"
 
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionpathresolver.h>
-#include <libakonadi/itemfetchjob.h>
+#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionpathresolver.h>
+#include <akonadi/itemfetchjob.h>
 
 using namespace Akonadi;
 

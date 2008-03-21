@@ -23,7 +23,7 @@
 #include <ui_browserwidget_itemview.h>
 #include <ui_browserwidget_contentview.h>
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 
 #include <QtGui/QWidget>
 

@@ -20,8 +20,8 @@
 
 #include "akonadiengine.h"
 
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/monitor.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/monitor.h>
 
 #include <kmime/kmime_message.h>
 

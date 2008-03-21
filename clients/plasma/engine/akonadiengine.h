@@ -23,7 +23,7 @@
 
 #include <plasma/dataengine.h>
 
-#include <libakonadi/item.h>
+#include <akonadi/item.h>
 
 class KJob;
 

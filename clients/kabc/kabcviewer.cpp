@@ -27,7 +27,7 @@
 #include <kcmdlineargs.h>
 #include <klocale.h>
 
-#include <libakonadi/datareference.h>
+#include <akonadi/datareference.h>
 
 #include "kabc/kabcitembrowser.h"
 

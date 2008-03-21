@@ -21,19 +21,19 @@
 #include "collectionattributespage.h"
 #include "collectioninternalspage.h"
 
-#include <libakonadi/job.h>
-#include <libakonadi/collectionview.h>
-#include <libakonadi/item.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/messagecollectionmodel.h>
-#include <libakonadi/collectionfilterproxymodel.h>
-#include <libakonadi/collectionpropertiesdialog.h>
+#include <akonadi/job.h>
+#include <akonadi/collectionview.h>
+#include <akonadi/item.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/messagecollectionmodel.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionpropertiesdialog.h>
 
 #include <kcal/kcalmodel.h>
 #include <kabc/kabcmodel.h>
 #include <kabc/kabcitembrowser.h>
-#include <kmime/messagemodel.h>
+#include <akonadi/kmime/messagemodel.h>
 
 #include <libkdepim/addresseeview.h>
 

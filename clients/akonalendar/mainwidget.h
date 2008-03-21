@@ -23,10 +23,10 @@
 #include <QSplitter>
 #include <QHBoxLayout>
 
-#include <libakonadi/collection.h>
-#include <libakonadi/collectionview.h>
-#include <libakonadi/collectionfilterproxymodel.h>
-#include <libakonadi/collectionmodel.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionview.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionmodel.h>
 #include "kcal/kcalmodel.h"
 #include "kcal/kcalitembrowser.h"
 

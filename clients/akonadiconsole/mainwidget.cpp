@@ -25,9 +25,9 @@
 #include "browserwidget.h"
 #include "debugwidget.h"
 
-#include <libakonadi/agentinstanceview.h>
-#include <libakonadi/agentfilterproxymodel.h>
-#include <libakonadi/standardactionmanager.h>
+#include <akonadi/agentinstanceview.h>
+#include <akonadi/agentfilterproxymodel.h>
+#include <akonadi/standardactionmanager.h>
 
 #include <KXmlGuiWindow>
 

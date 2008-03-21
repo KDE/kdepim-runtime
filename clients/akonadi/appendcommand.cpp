@@ -20,8 +20,8 @@
 #include "appendcommand.h"
 #include "out.h"
 
-#include <libakonadi/collectionpathresolver.h>
-#include <libakonadi/itemappendjob.h>
+#include <akonadi/collectionpathresolver.h>
+#include <akonadi/itemappendjob.h>
 
 using namespace Akonadi;
 

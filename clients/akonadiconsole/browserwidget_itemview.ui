@@ -56,7 +56,7 @@
   <customwidget>
    <class>Akonadi::ItemView</class>
    <extends>QTreeView</extends>
-   <header location="global" >libakonadi/itemview.h</header>
+   <header location="global" >akonadi/itemview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

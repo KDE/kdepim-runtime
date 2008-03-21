@@ -23,7 +23,7 @@
 
 #include "mainwidget.h"
 
-#include <libakonadi/control.h>
+#include <akonadi/control.h>
 
 #include <KAction>
 #include <KActionCollection>

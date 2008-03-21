@@ -21,7 +21,7 @@
 #define APPENDCOMMAND_H
 
 #include "command.h"
-#include <libakonadi/collection.h>
+#include <akonadi/collection.h>
 #include <QtCore/QString>
 
 class AppendCommand : public Command

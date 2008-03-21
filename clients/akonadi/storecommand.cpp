@@ -20,8 +20,8 @@
 #include "storecommand.h"
 #include "out.h"
 
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/itemfetchjob.h>
 
 using namespace Akonadi;
 

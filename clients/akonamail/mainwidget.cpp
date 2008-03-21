@@ -20,14 +20,14 @@
 #include "mainwidget.h"
 #include "mainwindow.h"
 
-#include <libakonadi/collection.h>
-#include <libakonadi/collectionview.h>
-#include <libakonadi/collectionfilterproxymodel.h>
-#include <libakonadi/collectionmodel.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <kmime/messagemodel.h>
-#include <kmime/messagethreaderproxymodel.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionview.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionmodel.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/kmime/messagemodel.h>
+#include <akonadi/kmime/messagethreaderproxymodel.h>
 #include <agents/mailthreader/mailthreaderagent.h>
 
 #include <QVBoxLayout>

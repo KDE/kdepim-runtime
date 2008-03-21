@@ -29,7 +29,7 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 
-#include <libakonadi/datareference.h>
+#include <akonadi/datareference.h>
 
 #include "kabc/kabcitemeditor.h"
 

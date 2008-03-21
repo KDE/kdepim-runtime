@@ -20,7 +20,7 @@
 #include "deletecommand.h"
 #include "out.h"
 
-#include <libakonadi/itemdeletejob.h>
+#include <akonadi/itemdeletejob.h>
 
 using namespace Akonadi;
 

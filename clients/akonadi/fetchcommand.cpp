@@ -20,7 +20,7 @@
 #include "fetchcommand.h"
 #include "out.h"
 
-#include <libakonadi/itemfetchjob.h>
+#include <akonadi/itemfetchjob.h>
 
 using namespace Akonadi;
 

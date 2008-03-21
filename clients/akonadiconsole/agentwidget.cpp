@@ -21,10 +21,10 @@
 
 #include "agentwidget.h"
 
-#include "libakonadi/agenttypeview.h"
-#include "libakonadi/agentinstanceview.h"
-#include "libakonadi/agentmanager.h"
-#include <libakonadi/agentinstancecreatejob.h>
+#include <akonadi/agenttypeview.h>
+#include <akonadi/agentinstanceview.h>
+#include <akonadi/agentmanager.h>
+#include <akonadi/agentinstancecreatejob.h>
 
 #include <KLocale>
 

@@ -21,7 +21,7 @@
 #define MAINWIDGET_H
 
 #include<QWidget>
-#include <libakonadi/collection.h>
+#include <akonadi/collection.h>
 
 class QModelIndex;
 class QTreeView;
