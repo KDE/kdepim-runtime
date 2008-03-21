@@ -31,7 +31,7 @@
 #include <KStandardShortcut>
 #include <KSystemTrayIcon>
 
-#include <libakonadi/control.h>
+#include <akonadi/control.h>
 
 Dock::Dock()
         : QSystemTrayIcon( KIcon("dummy"), 0 )
