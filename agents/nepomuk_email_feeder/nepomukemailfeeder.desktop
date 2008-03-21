@@ -1,8 +1,6 @@
 [Desktop Entry]
 Name=Akonadi Nepomuk EMail Feeder
-Name[x-test]=xxAkonadi Nepomuk EMail Feederxx
 Comment=Extension for Akonadi to push emails into Nepomuk
-Comment[x-test]=xxExtension for Akonadi to push emails into Nepomukxx
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_email_feeder
 
