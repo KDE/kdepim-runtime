@@ -20,8 +20,8 @@
 #ifndef LOCALBOOKMARKS_H
 #define LOCALBOOKMARKS_H
 
-#include <libakonadi/collection.h>
-#include <resourcebase.h>
+#include <akonadi/collection.h>
+#include <akonadi/resourcebase.h>
 #include <QtDBus/QDBusMessage>
 
 class KBookmarkManager;

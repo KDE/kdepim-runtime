@@ -20,7 +20,7 @@
 #ifndef AKONADI_NNTPCOLLECTIONATTRIBUTE_H
 #define AKONADI_NNTPCOLLECTIONATTRIBUTE_H
 
-#include <libakonadi/collectionattribute.h>
+#include <akonadi/collectionattribute.h>
 
 /**
   Collection attribute to store information needed for incremental

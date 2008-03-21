@@ -19,7 +19,7 @@
 #ifndef KCALRESOURCE
 #define KCALRESOURCE
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 namespace KRES {
   template <class T> class Manager;

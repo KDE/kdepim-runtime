@@ -38,9 +38,9 @@
 #include <kmime/kmime_message.h>
 #include <kabc/vcardconverter.h>
 
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/session.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/session.h>
 
 #include "profiledialog.h"
 

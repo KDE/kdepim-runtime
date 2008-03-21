@@ -20,7 +20,7 @@
 #ifndef __MAILDIR_RESOURCE_H__
 #define __MAILDIR_RESOURCE_H__
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 class MaildirResource : public Akonadi::ResourceBase
 {

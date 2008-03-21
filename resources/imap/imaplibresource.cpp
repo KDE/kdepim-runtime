@@ -38,15 +38,15 @@
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/monitor.h>
-#include <libakonadi/changerecorder.h>
-#include <libakonadi/collectiondeletejob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
+#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/monitor.h>
+#include <akonadi/changerecorder.h>
+#include <akonadi/collectiondeletejob.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/session.h>
 
 using namespace Akonadi;
 

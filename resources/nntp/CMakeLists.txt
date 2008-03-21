@@ -26,6 +26,6 @@ kde4_add_ui_files(nntpresource_SRCS configdialog.ui)
 kde4_add_kcfg_files(nntpresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_nntp_resource RUN_UNINSTALLED ${nntpresource_SRCS})
 
-target_link_libraries(akonadi_nntp_resource akonadicore ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS})
+target_link_libraries(akonadi_nntp_resource ${AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBRARY} ${KDE4_KMIME_LIBS})
 
 install(TARGETS akonadi_nntp_resource DESTINATION ${BIN_INSTALL_DIR})

@@ -19,7 +19,7 @@
 #ifndef KABCRESOURCE
 #define KABCRESOURCE
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 namespace KABC {
   class Resource;

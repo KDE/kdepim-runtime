@@ -23,7 +23,7 @@
 #ifndef OCRESOURCE_H
 #define OCRESOURCE_H
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 extern "C" {
 #include <libmapi/libmapi.h>

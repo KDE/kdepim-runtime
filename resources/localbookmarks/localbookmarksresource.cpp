@@ -21,12 +21,12 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <libakonadi/collectionlistjob.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemfetchjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
+#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/session.h>
 
 #include <kdebug.h>
 #include <kfiledialog.h>

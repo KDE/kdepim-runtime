@@ -23,12 +23,12 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <libakonadi/collectionattributefactory.h>
-#include <libakonadi/collectionmodifyjob.h>
-#include <libakonadi/itemappendjob.h>
-#include <libakonadi/itemstorejob.h>
-#include <libakonadi/session.h>
-#include <libakonadi/changerecorder.h>
+#include <akonadi/collectionattributefactory.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/itemappendjob.h>
+#include <akonadi/itemstorejob.h>
+#include <akonadi/session.h>
+#include <akonadi/changerecorder.h>
 
 #include <kmime/kmime_message.h>
 #include <kmime/kmime_newsarticle.h>

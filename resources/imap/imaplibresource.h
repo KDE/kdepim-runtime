@@ -23,7 +23,7 @@
 
 class Imaplib;
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 class ImaplibResource : public Akonadi::ResourceBase
 {

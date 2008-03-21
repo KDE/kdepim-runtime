@@ -20,7 +20,7 @@
 #ifndef ICALRESOURCE_H
 #define ICALRESOURCE_H
 
-#include <resourcebase.h>
+#include <akonadi/resourcebase.h>
 
 namespace KCal {
   class CalendarLocal;
