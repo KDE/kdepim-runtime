@@ -1,3 +1,4 @@
+if (AKONADI_FOUND)
 configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix.h)
 
 INCLUDE(CheckIncludeFiles)
@@ -52,3 +53,5 @@ add_subdirectory(kcm)
 if( Nepomuk_FOUND )
   add_subdirectory(nepomuk)
 endif( Nepomuk_FOUND )
+
+endif (AKONADI_FOUND)
