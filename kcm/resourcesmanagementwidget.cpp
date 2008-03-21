@@ -29,6 +29,7 @@
 
 #include <KDebug>
 #include <KMenu>
+#include <KMessageBox>
 
 class ResourcesManagementWidget::Private
 {
@@ -48,6 +49,7 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QS
   d->manager = new Akonadi::AgentManager( this );
 
   KMenu *addMenu = new KMenu( this );
+  bool atleastone = false;
   QStringList types = d->manager->agentTypes();
   foreach (const QString& type, types) {
     if ( !d->manager->agentCapabilities( type ).contains("Resource") )
@@ -65,7 +67,17 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget * parent,  const QS
     QAction* action = addMenu->addAction( d->manager->agentName( type ) );
     action->setIcon( d->manager->agentIcon( type ) );
     d->menuOptions.insert( action, type );
+    atleastone = true;
   }
+
+  if ( !atleastone ) {
+     QAction *action = addMenu->addAction( i18n( "Akonadi server is not running or "
+          "the server could not find any resources." ) );
+     action->setEnabled( false );
+     KMessageBox::information( this, i18n( "Akonadi server is not running or "
+          "the server could not find any resources." ), i18n("No resources found") );
+  }
+
   d->ui.addButton->setMenu(addMenu);
   connect( addMenu, SIGNAL( triggered( QAction*) ), SLOT(addClicked(QAction*)));
 
