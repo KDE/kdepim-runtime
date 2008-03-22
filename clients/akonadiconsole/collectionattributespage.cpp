@@ -61,6 +61,7 @@ void CollectionAttributePage::load(const Collection & col)
 
 void CollectionAttributePage::save(Collection & col)
 {
+  col.clearAttributes();
   for ( int i = 0; i < mModel->rowCount(); ++i ) {
     const QModelIndex typeIndex = mModel->index( i, 0 );
     Q_ASSERT( typeIndex.isValid() );
