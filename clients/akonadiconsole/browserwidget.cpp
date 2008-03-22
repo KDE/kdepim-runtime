@@ -25,7 +25,7 @@
 #include <akonadi/collectionview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemstorejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/messagecollectionmodel.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
@@ -188,7 +188,7 @@ void BrowserWidget::save()
   foreach ( const QString s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
   item.addPart( Item::PartBody, data );
-  ItemStoreJob *store = new ItemStoreJob( item, this );
+  ItemModifyJob *store = new ItemModifyJob( item, this );
   store->storePayload();
   connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
 }

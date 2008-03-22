@@ -28,7 +28,7 @@
 #include <kabc/phonenumber.h>
 #include <akonadi/itemappendjob.h>
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemstorejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
@@ -299,7 +299,7 @@ void KABCItemEditor::saveContact()
 
     d->mItem.setPayload<KABC::Addressee>( addr );
 
-    Akonadi::ItemStoreJob *job = new Akonadi::ItemStoreJob( d->mItem );
+    Akonadi::ItemModifyJob *job = new Akonadi::ItemModifyJob( d->mItem );
     job->storePayload();
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   } else if ( d->mMode == CreateMode ) {

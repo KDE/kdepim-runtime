@@ -22,7 +22,7 @@
 #include <akonadi/session.h>
 #include <akonadi/monitor.h>
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemstorejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/item.h>
 
@@ -206,7 +206,7 @@ class MailThreaderAgent::Private
       // Store the new parents of this item if there was a change
       if ( change )
       {
-        ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
+        ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
         job->storePayload();
         if (!job->exec()) {
           kDebug( 5258 ) << "Unable to store threading parts!";
@@ -234,7 +234,7 @@ class MailThreaderAgent::Private
     // If there was a change, store it
     if ( pC || uC || fC )
     {
-      ItemStoreJob *job = new ItemStoreJob( item, mParent->session() );
+      ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
       job->storePayload();
       if (!job->exec()) {
         kDebug( 5258 ) << "Unable to store the threading parts!";

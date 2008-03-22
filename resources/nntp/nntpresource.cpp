@@ -26,7 +26,6 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemappendjob.h>
-#include <akonadi/itemstorejob.h>
 #include <akonadi/session.h>
 #include <akonadi/changerecorder.h>
 

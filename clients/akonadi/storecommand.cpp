@@ -20,7 +20,7 @@
 #include "storecommand.h"
 #include "out.h"
 
-#include <akonadi/itemstorejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemfetchjob.h>
 
 using namespace Akonadi;
@@ -42,7 +42,7 @@ void StoreCommand::exec()
   } else {
     Item item = fetchJob->items()[0];
     item.addPart( mPart, mContent.toLatin1() );
-    ItemStoreJob* sJob = new ItemStoreJob( item );
+    ItemModifyJob* sJob = new ItemModifyJob( item );
     sJob->storePayload();
     if ( !sJob->exec() ) {
       err() << "Unable to store part " << mPart << " = " << mContent << " for item " << mUid <<":"
