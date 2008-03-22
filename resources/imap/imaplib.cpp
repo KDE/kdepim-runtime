@@ -364,7 +364,7 @@ void Imaplib::checkMail( const QString& box )
 }
 
 void Imaplib::addFlag( const QString& box, int min, int max,
-                       const QString& flag )
+                       const QByteArray& flag )
 {
     // kDebug() << box << " - " << min << " - " << max << " - " << flag;
     m_queue.append( Queue( Queue::NoResponse, box,
@@ -373,8 +373,18 @@ void Imaplib::addFlag( const QString& box, int min, int max,
                            + " +FLAGS (" + flag + ')' ) );
 }
 
+void Imaplib::setFlags( const QString& box, int min, int max,
+                       const QByteArray& flag )
+{
+    // kDebug() << box << " - " << min << " - " << max << " - " << flag;
+    m_queue.append( Queue( Queue::NoResponse, box,
+                           "UID STORE "
+                           + QString::number( min ) + ':' + QString::number( max )
+                           + " FLAGS (" + flag + ')' ) );
+}
+
 void Imaplib::removeFlag( const QString& box, int min, int max,
-                          const QString& flag )
+                          const QByteArray& flag )
 {
     // kDebug() << box << " - " << uid << " - " << flag;
     m_queue.append( Queue( Queue::NoResponse, box,

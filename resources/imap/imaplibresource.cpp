@@ -106,11 +106,6 @@ void ImaplibResource::configure( WId windowId )
     else
         setName( KGlobal::mainComponent().aboutData()->appName() );
     startConnect();
-    /*
-    if ( !Settings::self()->name().isEmpty() ) {
-      setName( Settings::self()->name() );
-    }
-    */
 }
 
 void ImaplibResource::startConnect()
@@ -164,13 +159,27 @@ void ImaplibResource::slotSaveDone( int uid )
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-    kDebug( ) << "Implement me!" << item.remoteId() << parts;
+    // We can just assume that we only get here if the flags have changed. So get them and
+    // store those on the server.
+    QSet<QByteArray> flags = item.flags();
+    QByteArray newFlags;
+    foreach( QByteArray flag, flags )
+	    newFlags += flag + " ";
+
+    kDebug( ) << "Flags going to be set" << newFlags;
+    const QString reference = item.remoteId();
+    const QStringList temp = reference.split( "-+-" );
+    m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags ); 
+
     changesCommitted( item );
 }
 
-void ImaplibResource::itemRemoved( const Akonadi::Item & item )
+void ImaplibResource::itemRemoved( const Akonadi::Item &item )
 {
-    kDebug( ) << "Implement me!";
+    //itemRemoved actually can not be implemented. The imap specs do not allow for a single
+    //message to be deleted. Users of this resource should make sure they set the the flag
+    //to Deleted and call the DBus purge method when you want to get rid of the items
+    //from the server.
     changeProcessed();
 }
 

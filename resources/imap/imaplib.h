@@ -169,7 +169,18 @@ public:
      * @param flag flag to add
      */
     void addFlag( const QString& box, int uidmin, int uidmax,
-                  const QString& flag );
+                  const QByteArray& flag );
+    
+    /**
+     * sets the flags to a message or messages. Keep uidmin and uidmax the same
+     * if you want it for one message.
+     * @param box the mailbox
+     * @param uidmin minuid of the message
+     * @param uidmax maxuid of the message
+     * @param flag flags to set, make it a space separated list 
+     */
+    void setFlags( const QString& box, int uidmin, int uidmax,
+                  const QByteArray& flag );
 
     /**
      * remove a flag from a message or messages. Keep uidmin and uidmax the same
@@ -180,7 +191,7 @@ public:
      * @param flag flag to add
      */
     void removeFlag( const QString& box, int uidmin, int uidmax,
-                     const QString& flag );
+                     const QByteArray& flag );
 
     /**
      * removes deleted messages
