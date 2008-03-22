@@ -39,8 +39,8 @@
 using namespace Akonadi;
 using namespace KABC;
 
-typedef QMap<int, Item> ItemMap;
-typedef QHash<QString, int> IdHash;
+typedef QMap<Item::Id, Item> ItemMap;
+typedef QHash<QString, Item::Id> IdHash;
 
 class ResourceAkonadi::Private
 {
@@ -62,7 +62,7 @@ class ResourceAkonadi::Private
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
-    void itemRemoved( const Akonadi::DataReference &reference );
+    void itemRemoved( const Akonadi::Item &item );
 
     KJob *createSaveSequence() const;
 };
@@ -116,9 +116,9 @@ void ResourceAkonadi::init()
            SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
 
   connect( d->mMonitor,
-           SIGNAL( itemRemoved( const Akonadi::DataReference& ) ),
+           SIGNAL( itemRemoved( const Akonadi::Item& ) ),
            this,
-           SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
+           SLOT( itemRemoved( const Akonadi::Item& ) ) );
 }
 
 void ResourceAkonadi::clear()
@@ -201,7 +201,7 @@ bool ResourceAkonadi::load()
       Addressee addressee = item.payload<Addressee>();
       addressee.setResource( this );
 
-      const int id = item.reference().id();
+      const Item::Id id = item.id();
       d->mIdMapping.insert( addressee.uid(), id );
 
       mAddrMap.insert( addressee.uid(), addressee );
@@ -312,7 +312,7 @@ void ResourceAkonadi::loadResult( KJob *job )
       Addressee addressee = item.payload<Addressee>();
       addressee.setResource( this );
 
-      const int id = item.reference().id();
+      const Item::Id id = item.id();
       d->mIdMapping.insert( addressee.uid(), id );
 
       mAddrMap.insert( addressee.uid(), addressee );
@@ -349,7 +349,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
   kDebug(5700) << "Addressee" << addressee.uid() << "("
                << addressee.formattedName() << ")";
 
-  const int id = item.reference().id();
+  const Item::Id id = item.id();
   mIdMapping.insert( addressee.uid(), id );
 
   mItems.insert( id, item );
@@ -367,11 +367,11 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 {
   kDebug(5700) << partIdentifiers;
 
-  ItemMap::iterator itemIt = mItems.find( item.reference().id() );
+  ItemMap::iterator itemIt = mItems.find( item.id() );
   if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
     kWarning(5700) << "No matching local item for item: id="
-                   << item.reference().id() << ", remoteId="
-                   << item.reference().remoteId();
+                   << item.id() << ", remoteId="
+                   << item.remoteId();
     return;
   }
 
@@ -411,18 +411,18 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   mParent->addressBook()->emitAddressBookChanged();
 }
 
-void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &reference )
+void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &_item )
 {
   kDebug(5700);
 
-  const int id = reference.id();
+  const Item::Id id = _item.id();
 
-  ItemMap::iterator itemIt = mItems.find( reference.id() );
+  ItemMap::iterator itemIt = mItems.find( id );
   if ( itemIt == mItems.end() )
     return;
 
   const Item item = itemIt.value();
-  if ( item.reference() != reference )
+  if ( item != _item )
     return;
 
   QString uid;
@@ -432,7 +432,7 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &refere
     // since we always fetch the payload this should not happen
     // but we really do not want stale entries
     kWarning(5700) << "No Addressee in local item: id=" << id
-                   << ", remoteId=" << item.reference().remoteId();
+                   << ", remoteId=" << item.remoteId();
 
     IdHash::const_iterator idIt    = mIdMapping.begin();
     IdHash::const_iterator idEndIt = mIdMapping.end();

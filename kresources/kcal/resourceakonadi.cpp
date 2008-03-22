@@ -49,8 +49,8 @@ using namespace KCal;
 
 typedef boost::shared_ptr<Incidence> IncidencePtr;
 
-typedef QMap<int, Item> ItemMap;
-typedef QHash<QString, int> IdHash;
+typedef QMap<Item::Id, Item> ItemMap;
+typedef QHash<QString, Item::Id> IdHash;
 
 class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 {
@@ -82,7 +82,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
-    void itemRemoved( const Akonadi::DataReference &reference );
+    void itemRemoved( const Akonadi::Item &item );
 
     void delayedAutoSaveOnDelete();
 
@@ -317,7 +317,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
     if ( item.hasPayload<IncidencePtr>() ) {
       IncidencePtr incidence = item.payload<IncidencePtr>();
 
-      const int id = item.reference().id();
+      const Item::Id id = item.id();
       d->mIdMapping.insert( incidence->uid(), id );
 
       d->mCalendar.addIncidence( incidence->clone() );
@@ -374,9 +374,7 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
 
     // TODO: should not be necessary, just like when using ItemAppendJob
     // directly
-    DataReference reference = item.reference();
-    reference.setRemoteId( incidence->uid() );
-    item.setReference( reference );
+    item.setRemoteId( incidence->uid() );
 
     job = new ItemAppendJob( item, d->mCollection, this );
   } else {
@@ -445,7 +443,7 @@ void ResourceAkonadi::loadResult( KJob *job )
     if ( item.hasPayload<IncidencePtr>() ) {
       IncidencePtr incidence = item.payload<IncidencePtr>();
 
-      const int id = item.reference().id();
+      const Item::Id id = item.id();
       d->mIdMapping.insert( incidence->uid(), id );
 
       d->mCalendar.addIncidence( incidence->clone() );
@@ -491,14 +489,9 @@ void ResourceAkonadi::init()
            SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
 
   connect( d->mMonitor,
-           SIGNAL( itemRemoved( const Akonadi::DataReference&) ),
+           SIGNAL( itemRemoved( const Akonadi::Item&) ),
            this,
-           SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
-
-  connect( d->mMonitor,
-           SIGNAL( itemRemoved( const Akonadi::DataReference&) ),
-           this,
-           SLOT( itemRemoved( const Akonadi::DataReference& ) ) );
+           SLOT( itemRemoved( const Akonadi::Item& ) ) );
 
   connect( &d->mAutoSaveOnDeleteTimer, SIGNAL( timeout() ),
            this, SLOT( delayedAutoSaveOnDelete() ) );
@@ -520,7 +513,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   kDebug(5800) << "Incidence" << incidence->uid();
 
-  const int id = item.reference().id();
+  const Item::Id id = item.id();
   mIdMapping.insert( incidence->uid(), id );
 
   mItems.insert( id, item );
@@ -539,11 +532,11 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   kDebug(5800) << partIdentifiers;
 
   // check if this is one of ours (should be, we are just monitoring our collection)
-  ItemMap::iterator itemIt = mItems.find( item.reference().id() );
+  ItemMap::iterator itemIt = mItems.find( item.id() );
   if ( itemIt == mItems.end() || !( itemIt.value() == item ) ) {
     kWarning(5800) << "No matching local item for item: id="
-                   << item.reference().id() << ", remoteId="
-                   << item.reference().remoteId();
+                   << item.id() << ", remoteId="
+                   << item.remoteId();
     return;
   }
 
@@ -580,18 +573,18 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   emit mParent->resourceChanged( mParent );
 }
 
-void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &reference )
+void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &reference )
 {
   kDebug(5800);
 
-  const int id = reference.id();
+  const Item::Id id = reference.id();
 
   ItemMap::iterator itemIt = mItems.find( id );
   if ( itemIt == mItems.end() )
     return;
 
   const Item item = itemIt.value();
-  if ( item.reference() != reference )
+  if ( item != reference )
     return;
 
   QString uid;
@@ -601,7 +594,7 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::DataReference &refere
     // since we always fetch the payload this should not happen
     // but we really do not want stale entries
     kWarning(5700) << "No IncidencePtr in local item: id=" << id
-                   << ", remoteId=" << item.reference().remoteId();
+                   << ", remoteId=" << item.remoteId();
 
     IdHash::const_iterator idIt    = mIdMapping.begin();
     IdHash::const_iterator idEndIt = mIdMapping.end();

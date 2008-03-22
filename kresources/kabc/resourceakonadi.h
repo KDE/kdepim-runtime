@@ -27,7 +27,6 @@ class KJob;
 
 namespace Akonadi {
   class Collection;
-  class DataReference;
   class Item;
 }
 
@@ -78,7 +77,7 @@ class ResourceAkonadi : public Resource
 
     Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QStringList& ) )
-    Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::DataReference& ) )
+    Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
 };
 
 }

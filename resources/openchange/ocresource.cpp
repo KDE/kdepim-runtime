@@ -135,7 +135,7 @@ void OCResource::itemChanged( const Akonadi::Item&, const QStringList& )
   qDebug() << "currently ignoring itemChanged()";
 }
 
-void OCResource::itemRemoved(const Akonadi::DataReference & ref)
+void OCResource::itemRemoved(const Akonadi::Item & item)
 {
   qDebug() << "currently ignoring itemRemoved()";
 }
@@ -741,7 +741,8 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
     // TODO
   }
 
-  Item item( DataReference( -1, "itemnumber" ) );
+  Item item;
+  item.setRemoteId( "itemnumber" );
   item.setMimeType( "message/rfc822" );
   msg_ptr->from()->from7BitString( "from@someone.local" );
   item.setPayload<MessagePtr>( msg_ptr );
@@ -759,7 +760,8 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   KABC::Addressee *contact = new KABC::Addressee;
   struct mapi_SPropValue_array attachPropertiesArray;
 
-  Item item( DataReference( -1, "itemnumber" ) );
+  Item item;
+  item.setRemoteId( "itemnumber" );
   item.setMimeType( "text/vcard" );
 
   KABC::Address workAddress;

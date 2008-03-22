@@ -58,8 +58,8 @@ ContactEditorDialog::ContactEditorDialog( Mode mode, QAbstractItemModel *collect
   layout->addWidget( mEditor, 1, 0, 1, 2 );
   layout->setColumnStretch( 1, 1 );
 
-  connect( mEditor, SIGNAL( contactStored( const Akonadi::DataReference& ) ),
-           this, SIGNAL( contactStored( const Akonadi::DataReference& ) ) );
+  connect( mEditor, SIGNAL( contactStored( const Akonadi::Item& ) ),
+           this, SIGNAL( contactStored( const Akonadi::Item& ) ) );
 
   connect( this, SIGNAL( okClicked() ), this, SLOT( slotOkClicked() ) );
   connect( this, SIGNAL( cancelClicked() ), this, SLOT( slotCancelClicked() ) );
