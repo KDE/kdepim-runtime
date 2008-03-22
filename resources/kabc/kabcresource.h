@@ -48,7 +48,7 @@ class KABCResource : public Akonadi::ResourceBase
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
-    virtual void itemRemoved( const Akonadi::DataReference &ref );
+    virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
     class AddressBook;

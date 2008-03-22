@@ -69,9 +69,9 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QStringLi
     r.setProperty( "Message-Id", Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
 }
 
-void NepomukEMailFeeder::itemRemoved(const Akonadi::DataReference & ref)
+void NepomukEMailFeeder::itemRemoved(const Akonadi::Item & item)
 {
-  Nepomuk::Resource r( Item( ref ).url().url() );
+  Nepomuk::Resource r( item.url().url() );
   r.remove();
 }
 

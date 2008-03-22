@@ -53,7 +53,7 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
 {
   Q_UNUSED( parts );
   kDebug( 5251 ) << "Item:" << item.url();
-  const QString rid = item.reference().remoteId();
+  const QString rid = item.remoteId();
   IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {
     error( i18n("Incidence with uid '%1' not found!", rid ) );
@@ -125,9 +125,9 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QStringList &pa
   ResourceBase::itemChanged( item, parts );
 }
 
-void ICalResource::itemRemoved(const Akonadi::DataReference & ref)
+void ICalResource::itemRemoved(const Akonadi::Item & item)
 {
-  Incidence *i = mCalendar->incidence( ref.remoteId() );
+  Incidence *i = mCalendar->incidence( item.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
   changeProcessed();
@@ -157,7 +157,8 @@ void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringL
   Incidence::List incidences = mCalendar->incidences();
   Item::List items;
   foreach ( Incidence *incidence, incidences ) {
-    Item item( DataReference( -1, incidence->uid() ) );
+    Item item;
+    item.setRemoteId( incidence->uid() );
     item.setMimeType( "text/calendar" );
     items << item;
   }

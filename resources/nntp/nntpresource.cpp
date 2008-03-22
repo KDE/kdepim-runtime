@@ -63,7 +63,7 @@ NntpResource::~ NntpResource()
 bool NntpResource::retrieveItem(const Akonadi::Item& item, const QStringList &parts)
 {
   Q_UNUSED( parts );
-  KIO::Job* job = KIO::storedGet( KUrl( item.reference().remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
+  KIO::Job* job = KIO::storedGet( KUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
   setupKioJob( job );
   connect( job, SIGNAL( result(KJob*) ), SLOT( fetchArticleResult(KJob*) ) );
   return true;
@@ -179,8 +179,8 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
   foreach ( const KIO::UDSEntry &entry, list ) {
     KUrl url = baseUrl();
     url.setPath( currentCollection().remoteId() + '/' + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
-    DataReference ref( -1, url.url() );
-    Item item( ref );
+    Item item;
+    item.setRemoteId( url.url() );
     item.setMimeType( "message/news" );
 
     KMime::NewsArticle *art = new KMime::NewsArticle();

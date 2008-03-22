@@ -49,9 +49,9 @@ void StrigiFeeder::itemChanged(const Akonadi::Item & item, const QStringList & p
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 
-void StrigiFeeder::itemRemoved(const Akonadi::DataReference & ref)
+void StrigiFeeder::itemRemoved(const Akonadi::Item & item)
 {
-  mStrigi.indexFile( Item( ref ).url().url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+  mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
 }
 
 int main( int argc, char **argv )

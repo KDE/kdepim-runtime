@@ -172,10 +172,8 @@ void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QString
   }
 }
 
-void NepomukContactFeeder::itemRemoved( const Akonadi::DataReference &ref )
+void NepomukContactFeeder::itemRemoved( const Akonadi::Item &item )
 {
-  Item item( ref );
-
   Nepomuk::PersonContact contact( item.url() );
 
   QList<Nepomuk::PhoneNumber> numbers = contact.phoneNumbers();

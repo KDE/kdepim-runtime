@@ -65,8 +65,8 @@ AkonadiSlave::~ AkonadiSlave()
 
 void AkonadiSlave::get(const KUrl & url)
 {
-  DataReference d = Item::fromUrl( url );
-  ItemFetchJob *job = new ItemFetchJob( d );
+  const Item item = Item::fromUrl( url );
+  ItemFetchJob *job = new ItemFetchJob( item );
   job->addFetchPart( Item::PartBody );
 
   if ( !job->exec() ) {
@@ -137,7 +137,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
     const Item item = job->items().first();
     KIO::UDSEntry entry;
-    entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.reference().id() ) );
+    entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
     entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
     entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
 
@@ -217,9 +217,9 @@ void AkonadiSlave::listDir( const KUrl &url )
     totalSize( collections.count() + items.count() );
     foreach( Item item, items )
     {
-      kDebug( 7129 ) <<"Item (" << item.reference().id()  <<")";
+      kDebug( 7129 ) <<"Item (" << item.id()  <<")";
       entry.clear();
-      entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.reference().id() ) );
+      entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
       entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
       entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
       entry.insert( KIO::UDSEntry::UDS_URL, item.url().url() );

@@ -256,7 +256,7 @@ class MailThreaderAgent::Private
     Item ref = item;
     int mark = 0;
 
-    if ( ref.isNull() )
+    if ( !ref.isValid() )
       return;
 
     /*

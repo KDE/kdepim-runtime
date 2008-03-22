@@ -117,11 +117,11 @@ KABCResource::~KABCResource()
 
 bool KABCResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-  kDebug() << "item(" << item.reference().id() << "," << item.reference().remoteId() << "),"
+  kDebug() << "item(" << item.id() << "," << item.remoteId() << "),"
            << parts;
   Q_UNUSED( parts );
-  const QString rid = item.reference().remoteId();
-  KABC::Addressee addressee = mAddressBook->findByUid( item.reference().remoteId() );
+  const QString rid = item.remoteId();
+  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( addressee.isEmpty() ) {
     kError() << "Contact with uid" << rid << "not found";
     error( i18n( "Contact with uid '%1' not found!", rid ) );
@@ -260,9 +260,9 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QStringList& pa
   }
 }
 
-void KABCResource::itemRemoved( const Akonadi::DataReference &ref )
+void KABCResource::itemRemoved( const Akonadi::Item &item )
 {
-  KABC::Addressee addressee = mAddressBook->findByUid( ref.remoteId() );
+  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( !addressee.isEmpty() )
     mAddressBook->removeAddressee( addressee );
   changeProcessed();
@@ -313,7 +313,8 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col, const QStringL
     AddressBook::const_iterator it    = mAddressBook->begin();
     AddressBook::const_iterator endIt = mAddressBook->end();
     for ( ; it != endIt; ++it ) {
-      Item item( DataReference( -1, it->uid() ) );
+      Item item;
+      item.setRemoteId( it->uid() );
       item.setMimeType( QLatin1String( "text/directory" ) );
       items.append( item );
     }
@@ -368,7 +369,8 @@ void KABCResource::delayedUpdate()
   AddressBook::const_iterator it    = mAddressBook->begin();
   AddressBook::const_iterator endIt = mAddressBook->end();
   for ( ; it != endIt; ++it ) {
-    Item item( DataReference( -1, it->uid() ) );
+    Item item;
+    item.setRemoteId( it->uid() );
     item.setMimeType( QLatin1String( "text/directory" ) );
     items.append( item );
   }

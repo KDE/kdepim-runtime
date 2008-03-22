@@ -44,7 +44,7 @@ VCardResource::~VCardResource()
 bool VCardResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
   Q_UNUSED( parts );
-  const QString rid = item.reference().remoteId();
+  const QString rid = item.remoteId();
   if ( !mAddressees.contains( rid ) ) {
     error( QString( "Contact with uid '%1' not found!" ).arg( rid ) );
     return false;
@@ -115,10 +115,10 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QStringList& )
   }
 }
 
-void VCardResource::itemRemoved(const Akonadi::DataReference & ref)
+void VCardResource::itemRemoved(const Akonadi::Item & item)
 {
-  if ( mAddressees.contains( ref.remoteId() ) )
-    mAddressees.remove( ref.remoteId() );
+  if ( mAddressees.contains( item.remoteId() ) )
+    mAddressees.remove( item.remoteId() );
   changeProcessed();
 }
 
@@ -142,7 +142,8 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col, const QStrin
   Item::List items;
 
   foreach ( KABC::Addressee addressee, mAddressees ) {
-    Item item( DataReference( -1, addressee.uid() ) );
+    Item item;
+    item.setRemoteId( addressee.uid() );
     item.setMimeType( "text/directory" );
     items.append( item );
   }

@@ -80,8 +80,8 @@ MaildirResource::~ MaildirResource()
 
 bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-  const QString dir = maildirPath( item.reference().remoteId() );
-  const QString entry = maildirId( item.reference().remoteId() );
+  const QString dir = maildirPath( item.remoteId() );
+  const QString entry = maildirId( item.remoteId() );
 
   Maildir md( dir );
   if ( !md.isValid() )
@@ -153,8 +153,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
       return;
     }
 
-    const QString path = maildirPath( item.reference().remoteId() );
-    const QString entry = maildirId( item.reference().remoteId() );
+    const QString path = maildirPath( item.remoteId() );
+    const QString entry = maildirId( item.remoteId() );
 
     Maildir dir( path );
     QString errMsg;
@@ -172,11 +172,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList&
     changesCommitted( item );
 }
 
-void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
+void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !Settings::self()->readOnly() ) {
-    const QString path = maildirPath( ref.remoteId() );
-    const QString entry = maildirId( ref.remoteId() );
+    const QString path = maildirPath( item.remoteId() );
+    const QString entry = maildirId( item.remoteId() );
 
     Maildir dir( path );
     QString errMsg;
@@ -185,7 +185,7 @@ void MaildirResource::itemRemoved(const Akonadi::DataReference & ref)
       return;
     }
     if ( !dir.removeEntry( entry ) ) {
-      error( i18n("Failed to delete item: %1", ref.remoteId()) );
+      error( i18n("Failed to delete item: %1", item.remoteId()) );
     }
   }
   changeProcessed();
@@ -246,7 +246,8 @@ void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStri
   Item::List items;
   foreach ( const QString entry, entryList ) {
     const QString rid = col.remoteId() + QDir::separator() + entry;
-    Item item( DataReference( -1, rid ) );
+    Item item;
+    item.setRemoteId( rid );
     item.setMimeType( "message/rfc822" );
     KMime::Message *msg = new KMime::Message;
     msg->setHead( readHeader( rid ) );

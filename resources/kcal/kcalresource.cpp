@@ -66,12 +66,12 @@ KCalResource::~KCalResource()
 
 bool KCalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-  kDebug() << "item(" << item.reference().id() << "," << item.reference().remoteId() << "),"
+  kDebug() << "item(" << item.id() << "," << item.remoteId() << "),"
            << parts;
   Q_UNUSED( parts );
-  const QString rid = item.reference().remoteId();
+  const QString rid = item.remoteId();
 
-  KCal::Incidence *incidence = mCalendar->incidence( item.reference().remoteId() );
+  KCal::Incidence *incidence = mCalendar->incidence( item.remoteId() );
   if ( incidence == 0 ) {
     error( i18n( "Incidence with uid '%1' not found!", rid ) );
     return false;
@@ -193,9 +193,9 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QStringList& pa
   }
 }
 
-void KCalResource::itemRemoved( const Akonadi::DataReference &ref )
+void KCalResource::itemRemoved( const Akonadi::Item &item )
 {
-  KCal::Incidence *incidence = mCalendar->incidence( ref.remoteId() );
+  KCal::Incidence *incidence = mCalendar->incidence( item.remoteId() );
   if ( incidence != 0 )
     mCalendar->deleteIncidence( incidence );
 
@@ -288,7 +288,8 @@ void KCalResource::delayedUpdate()
   KCal::Incidence::List::const_iterator it    = incidences.begin();
   KCal::Incidence::List::const_iterator endIt = incidences.end();
   for ( ; it != endIt; ++it ) {
-    Item item( DataReference( -1, (*it)->uid() ) );
+    Item item;
+    item.setRemoteId( (*it)->uid() );
     item.setMimeType( QLatin1String( "text/calendar" ) );
     items.append( item );
   }

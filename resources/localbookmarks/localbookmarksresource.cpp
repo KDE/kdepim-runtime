@@ -106,9 +106,9 @@ void LocalBookmarksResource::itemChanged( const Akonadi::Item& item, const QStri
   mBookmarkManager->emitChanged( bk.parentGroup() );
 }
 
-void LocalBookmarksResource::itemRemoved(const Akonadi::DataReference & ref)
+void LocalBookmarksResource::itemRemoved(const Akonadi::Item & item)
 {
-  KBookmark bk = mBookmarkManager->findByAddress( ref.remoteId() );
+  KBookmark bk = mBookmarkManager->findByAddress( item.remoteId() );
   KBookmarkGroup bkg = bk.parentGroup();
 
   if ( !bk.isNull() )
@@ -186,7 +186,8 @@ void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, cons
     if ( it.isGroup() || it.isSeparator() || it.isNull() )
       continue;
 
-    Item item( DataReference( -1, it.address() ) );
+    Item item;
+    item.setRemoteId( it.address() );
     item.setMimeType( "application/x-xbel" );
     item.setPayload<KBookmark>( it );
     itemList.append( item );

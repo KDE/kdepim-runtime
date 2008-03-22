@@ -34,7 +34,7 @@ class NepomukEMailFeeder : public AgentBase
   protected slots:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
-    void itemRemoved(const Akonadi::DataReference &ref);
+    void itemRemoved(const Akonadi::Item &item);
 };
 
 }

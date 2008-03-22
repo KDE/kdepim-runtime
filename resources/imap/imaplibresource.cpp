@@ -67,7 +67,7 @@ ImaplibResource::~ImaplibResource()
 
 bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
 {
-    const QString reference = item.reference().remoteId();
+    const QString reference = item.remoteId();
     kDebug( ) << "Fetch request for" << reference;
     const QStringList temp = reference.split( "-+-" );
     m_imap->getMessage( temp[0], temp[1].toInt() );
@@ -157,20 +157,18 @@ void ImaplibResource::slotSaveDone( int uid )
     if ( uid > -1 ) {
         const QString reference =  m_colAdded.remoteId() + "-+-" + QString::number( uid );
         kDebug() << "Setting reference to " << reference;
-        Akonadi::DataReference ref = m_itemAdded.reference();
-        ref.setRemoteId( reference );
-        m_itemAdded.setReference( ref );
+        m_itemAdded.setRemoteId( reference );
     }
     changesCommitted( m_itemAdded );
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
 {
-    kDebug( ) << "Implement me!" << item.reference().remoteId() << parts;
+    kDebug( ) << "Implement me!" << item.remoteId() << parts;
     changesCommitted( item );
 }
 
-void ImaplibResource::itemRemoved( const Akonadi::DataReference & ref )
+void ImaplibResource::itemRemoved( const Akonadi::Item & item )
 {
     kDebug( ) << "Implement me!";
     changeProcessed();
@@ -324,7 +322,8 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         mail->setContent( KMime::CRLFtoLF( headers.trimmed().toLatin1() ) );
         mail->parse();
 
-        Akonadi::Item i( DataReference( -1, mbox + "-+-" + uid ) );
+        Akonadi::Item i( -1 );
+        i.setRemoteId( mbox + "-+-" + uid );
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
 
