@@ -25,10 +25,8 @@
 #include <akonadi/control.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
-#include <akonadi/itemappendjob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemstorejob.h>
 #include <akonadi/itemsync.h>
 
 #include <kdebug.h>

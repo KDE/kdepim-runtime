@@ -27,10 +27,10 @@
 #include <akonadi/control.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
-#include <akonadi/itemappendjob.h>
+#include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemstorejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemsync.h>
 
 #include <kdebug.h>
@@ -372,18 +372,18 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     Item item( QLatin1String( "text/calendar" ) );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-    // TODO: should not be necessary, just like when using ItemAppendJob
+    // TODO: should not be necessary, just like when using ItemCreateJob
     // directly
     item.setRemoteId( incidence->uid() );
 
-    job = new ItemAppendJob( item, d->mCollection, this );
+    job = new ItemCreateJob( item, d->mCollection, this );
   } else {
     kDebug(5800) << "Item already exists, creating store job";
     Item item = itemIt.value();
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     // FIXME const cast needed to "select" correct version of constructor
-    ItemStoreJob *storeJob = new ItemStoreJob( (const Item) item, this );
+    ItemModifyJob *storeJob = new ItemModifyJob( (const Item) item, this );
     storeJob->storePayload();
 
     job = storeJob;
