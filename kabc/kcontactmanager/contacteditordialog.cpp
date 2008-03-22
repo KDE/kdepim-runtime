@@ -69,7 +69,7 @@ ContactEditorDialog::~ContactEditorDialog()
 {
 }
 
-void ContactEditorDialog::setContact( const Akonadi::DataReference &contact )
+void ContactEditorDialog::setContact( const Akonadi::Item &contact )
 {
   mEditor->loadContact( contact );
 }

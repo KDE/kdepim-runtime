@@ -69,10 +69,10 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
 
   connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
            mContactModel, SLOT( setCollection( const Akonadi::Collection& ) ) );
-  connect( mContactView, SIGNAL( currentChanged( const Akonadi::DataReference& ) ),
-           mContactDetails, SLOT( setUid( const Akonadi::DataReference& ) ) );
-  connect( mContactView, SIGNAL( activated( const Akonadi::DataReference& ) ),
-           this, SLOT( editItem( const Akonadi::DataReference& ) ) );
+  connect( mContactView, SIGNAL( currentChanged( const Akonadi::Item& ) ),
+           mContactDetails, SLOT( setUid( const Akonadi::Item& ) ) );
+  connect( mContactView, SIGNAL( activated( const Akonadi::Item& ) ),
+           this, SLOT( editItem( const Akonadi::Item& ) ) );
 }
 
 MainWidget::~MainWidget()
@@ -126,7 +126,7 @@ void MainWidget::newGroup()
 {
 }
 
-void MainWidget::editItem( const Akonadi::DataReference &reference )
+void MainWidget::editItem( const Akonadi::Item &reference )
 {
   const QModelIndex index = mContactModel->indexForItem( reference, 0 );
   const Akonadi::Item item = mContactModel->itemForIndex( index );
@@ -138,14 +138,14 @@ void MainWidget::editItem( const Akonadi::DataReference &reference )
   }
 }
 
-void MainWidget::editContact( const Akonadi::DataReference &contact )
+void MainWidget::editContact( const Akonadi::Item &contact )
 {
   ContactEditorDialog dlg( ContactEditorDialog::EditMode, mCollectionFilterModel, this );
   dlg.setContact( contact );
   dlg.exec();
 }
 
-void MainWidget::editGroup( const Akonadi::DataReference &group )
+void MainWidget::editGroup( const Akonadi::Item &group )
 {
 }
 

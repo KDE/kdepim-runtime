@@ -23,6 +23,8 @@
 
 #include <kdialog.h>
 
+#include <akonadi/item.h>
+
 class KABCItemEditor;
 
 class ContactEditorDialog : public KDialog
@@ -53,7 +55,7 @@ class ContactEditorDialog : public KDialog
     /**
      * Sets the @p contact to edit when in EditMode.
      */
-    void setContact( const Akonadi::DataReference &contact );
+    void setContact( const Akonadi::Item &contact );
 
   Q_SIGNALS:
     /**
@@ -61,7 +63,7 @@ class ContactEditorDialog : public KDialog
      *
      * @param contact The data reference of the contact.
      */
-    void contactStored( const Akonadi::DataReference &contact );
+    void contactStored( const Akonadi::Item &contact );
 
   private Q_SLOTS:
     void slotOkClicked();

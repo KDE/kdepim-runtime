@@ -27,7 +27,7 @@ namespace Akonadi {
 class CollectionFilterProxyModel;
 class CollectionModel;
 class CollectionView;
-class DataReference;
+class Item;
 class ItemView;
 }
 
@@ -47,14 +47,14 @@ class MainWidget : public QWidget
     void newContact();
     void newGroup();
 
-    void editItem( const Akonadi::DataReference &item );
+    void editItem( const Akonadi::Item &item );
 
   private:
     void setupGui();
     void setupActions();
 
-    void editContact( const Akonadi::DataReference &contact );
-    void editGroup( const Akonadi::DataReference &group );
+    void editContact( const Akonadi::Item &contact );
+    void editGroup( const Akonadi::Item &group );
 
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionFilterModel;
