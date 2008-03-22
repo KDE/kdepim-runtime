@@ -390,10 +390,10 @@ void ImaplibResource::collectionChanged( const Collection & collection )
     changeProcessed();
 }
 
-void ImaplibResource::collectionRemoved( int id, const QString & remoteId )
+void ImaplibResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-    kDebug( ) << "Del folder: " << id << remoteId;
-    m_imap->deleteMailBox( remoteId );
+    kDebug( ) << "Del folder: " << collection.id() << collection.remoteId();
+    m_imap->deleteMailBox( collection.remoteId() );
 }
 
 void ImaplibResource::slotCollectionRemoved( bool success )

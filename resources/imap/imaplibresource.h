@@ -50,7 +50,7 @@ protected Q_SLOTS:
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( int id, const QString &remoteId );
+    virtual void collectionRemoved( const Akonadi::Collection &collection );
 
 private Q_SLOTS:
     void slotLogin( Imaplib* connection );

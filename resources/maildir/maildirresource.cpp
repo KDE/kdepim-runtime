@@ -279,10 +279,10 @@ void MaildirResource::collectionChanged(const Collection & collection)
   ResourceBase::collectionChanged( collection );
 }
 
-void MaildirResource::collectionRemoved(int id, const QString & remoteId)
+void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 {
   kDebug( 5254 ) << "Implement me!";
-  ResourceBase::collectionRemoved( id, remoteId );
+  ResourceBase::collectionRemoved( collection );
 }
 
 QByteArray MaildirResource::readHeader(const QString & fileName)
