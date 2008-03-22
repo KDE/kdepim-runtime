@@ -19,6 +19,7 @@
 */
 
 #include "imaplibresource.h"
+#include "resourceadaptor.h"
 #include "setupserver.h"
 #include "settingsadaptor.h"
 #include "imaplib.h"
@@ -57,6 +58,10 @@ ImaplibResource::ImaplibResource( const QString &id )
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
             Settings::self(), QDBusConnection::ExportAdaptors );
+    new ResourceAdaptor( this );
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+            dbus.registerObject( "/Actions", this );
+
     startConnect();
 }
 
@@ -437,6 +442,13 @@ void ImaplibResource::slotAlert( Imaplib*, const QString& message )
 {
     KMessageBox::information( 0, i18n( "Server reported: %1",message ) );
 }
+
+void ImaplibResource::slotPurge()
+{
+  // FIXME: to be implemented.
+    KMessageBox::information( 0, "I'm slotPurge, FIXME!" );
+}
+
 
 
 /******************* Private ***********************************************/

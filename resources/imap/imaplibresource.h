@@ -28,6 +28,7 @@ class Imaplib;
 class ImaplibResource : public Akonadi::ResourceBase
 {
     Q_OBJECT
+    Q_CLASSINFO(  "D-Bus Interface", "org.kde.Akonadi.Imaplib.Resource" )
 
 public:
     ImaplibResource( const QString &id );
@@ -35,6 +36,7 @@ public:
 
 public Q_SLOTS:
     virtual void configure( WId windowId );
+    void slotPurge();
 
 protected Q_SLOTS:
     void retrieveCollections();

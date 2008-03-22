@@ -32,6 +32,10 @@ kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.A
 qt4_add_dbus_adaptor( imaplibresource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Settings.xml settings.h Settings
      )
+qt4_add_dbus_adaptor( imaplibresource_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Resource.xml
+        imaplibresource.h ImaplibResource::ImaplibResource
+     )
 kde4_add_kcfg_files(imaplibresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
