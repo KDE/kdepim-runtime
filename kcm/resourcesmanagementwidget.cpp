@@ -30,6 +30,7 @@
 #include <KDebug>
 #include <KMenu>
 #include <KMessageBox>
+#include <KMimeType>
 
 class ResourcesManagementWidget::Private
 {
@@ -57,9 +58,27 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
 
         QStringList mimeTypes = d->manager->agentMimeTypes( type );
         bool wanted = false;
-        foreach( const QString& request, d->wantedMimeTypes )
-        if ( mimeTypes.contains( request ) )
+        foreach ( const QString resourceMimeType, mimeTypes ) {
+          KMimeType::Ptr mimeType = KMimeType::mimeType( resourceMimeType, KMimeType::ResolveAliases );
+          if ( mimeType.isNull() )
+            continue;
+
+          // check if the resource MIME type is or inherits from the
+          // wanted one, e.g.
+          // if the resource offers message/news and wanted types includes
+          // message/rfc822 this will be true, because message/news is a
+          // "subclass" of message/rfc822
+          foreach ( const QString wantedMimeType, d->wantedMimeTypes ) {
+            if ( !mimeType->is( wantedMimeType ) )
+              continue;
+
             wanted = true;
+            break;
+          }
+
+          if ( wanted )
+            break;
+        }
 
         if ( !wanted && !d->wantedMimeTypes.isEmpty() )
             continue;
