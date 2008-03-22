@@ -29,16 +29,16 @@ K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
-    KCModule( ResourcesConfigFactory::componentData(), parent, args )
+        KCModule( ResourcesConfigFactory::componentData(), parent, args )
 {
-  setButtons( 0 );
-  QVBoxLayout *l = new QVBoxLayout( this );
-  l->setMargin( 0 );
+    setButtons( 0 );
+    QVBoxLayout *l = new QVBoxLayout( this );
+    l->setMargin( 0 );
 
-  QStringList args2;
-  foreach( const QVariant& item, args )
+    QStringList args2;
+    foreach( const QVariant& item, args )
     args2 << item.toString();
 
-  ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
-  l->addWidget( tmw );
+    ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
+    l->addWidget( tmw );
 }

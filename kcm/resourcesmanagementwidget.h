@@ -33,9 +33,9 @@
 */
 class ResourcesManagementWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
       @short Creates a new ResourcesManagementWidget.
       @param parent The parent widget.
@@ -50,14 +50,14 @@ class ResourcesManagementWidget : public QWidget
     */
     virtual ~ResourcesManagementWidget();
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void fillResourcesList();
     void updateButtonState();
     void addClicked( QAction* );
     void editClicked();
     void removeClicked();
 
-  private:
+private:
     class Private;
     Private * const d;
 };
