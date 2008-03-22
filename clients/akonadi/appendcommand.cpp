@@ -21,7 +21,7 @@
 #include "out.h"
 
 #include <akonadi/collectionpathresolver.h>
-#include <akonadi/itemappendjob.h>
+#include <akonadi/itemcreatejob.h>
 
 using namespace Akonadi;
 
@@ -43,7 +43,7 @@ void AppendCommand::exec()
   item.setMimeType( mMimeType );
   item.addPart( Item::PartBody, mContent.toUtf8() );
 
-  ItemAppendJob* appendJob = new ItemAppendJob( item, Collection( currentColId ) );
+  ItemCreateJob* appendJob = new ItemCreateJob( item, Collection( currentColId ) );
   if ( !appendJob->exec() ) {
     err() << "Error appending item '" << endl;
   }

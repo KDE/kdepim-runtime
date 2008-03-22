@@ -25,7 +25,7 @@
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionmodifyjob.h>
-#include <akonadi/itemappendjob.h>
+#include <akonadi/itemcreatejob.h>
 #include <akonadi/session.h>
 #include <akonadi/changerecorder.h>
 
@@ -215,7 +215,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
     }
 
     item.setPayload( MessagePtr( art ) );
-    ItemAppendJob *append = new ItemAppendJob( item, currentCollection(), session() );
+    ItemCreateJob *append = new ItemCreateJob( item, currentCollection(), session() );
     // TODO: check error
   }
 }

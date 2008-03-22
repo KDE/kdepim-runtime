@@ -43,7 +43,6 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectiondeletejob.h>
-#include <akonadi/itemappendjob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/session.h>
 

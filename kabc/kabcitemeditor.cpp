@@ -26,7 +26,7 @@
 
 #include <kabc/addressee.h>
 #include <kabc/phonenumber.h>
-#include <akonadi/itemappendjob.h>
+#include <akonadi/itemcreatejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
@@ -91,7 +91,7 @@ void KABCItemEditor::Private::storeDone( KJob *job )
   if ( mMode == EditMode )
     emit mParent->contactStored( mItem );
   else if ( mMode == CreateMode )
-    emit mParent->contactStored( static_cast<Akonadi::ItemAppendJob*>( job )->item() );
+    emit mParent->contactStored( static_cast<Akonadi::ItemCreateJob*>( job )->item() );
 }
 
 void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringList& )
@@ -312,7 +312,7 @@ void KABCItemEditor::saveContact()
     item.setPayload<KABC::Addressee>( addr );
     item.setMimeType( QLatin1String( "text/vcard" ) );
 
-    Akonadi::ItemAppendJob *job = new Akonadi::ItemAppendJob( item, d->mDefaultCollection );
+    Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, d->mDefaultCollection );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   }
 }
