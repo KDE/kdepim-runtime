@@ -391,17 +391,18 @@ void MailThreaderAgent::collectionChanged( const Akonadi::Collection &col )
 
   threadCollection( col );
 
-  CollectionModifyJob *job = new CollectionModifyJob( col );
-  MailThreaderAttribute *a = new MailThreaderAttribute();
+  Collection c( col );
+  MailThreaderAttribute *a = c.attribute<MailThreaderAttribute>( true );
   a->setData( QByteArray() );
-  job->setAttribute( a );
+  CollectionModifyJob *job = new CollectionModifyJob( c );
   if ( !job->exec() )
     kDebug( 5258 ) << "Unable to modify collection";
 }
 
-void MailThreaderAgent::threadCollection( const Akonadi::Collection &col )
+void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
 {
   // List collection content
+  Collection col( _col );
   ItemFetchJob *fjob = new ItemFetchJob( col, session() );
   fjob->addFetchPart( PartPerfectParents );
   fjob->addFetchPart( PartUnperfectParents );

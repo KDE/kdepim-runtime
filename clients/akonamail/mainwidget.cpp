@@ -123,10 +123,9 @@ void MainWidget::itemFetchDone(KJob * job)
 
 void MainWidget::threadCollection()
 {
-  CollectionModifyJob *job = new CollectionModifyJob( mCurrentCollection );
-  MailThreaderAttribute *a = new MailThreaderAttribute();
+  MailThreaderAttribute *a = mCurrentCollection.attribute<MailThreaderAttribute>( true );
   a->setData( QByteArray( "sort" ) );
-  job->setAttribute( a );
+  CollectionModifyJob *job = new CollectionModifyJob( mCurrentCollection );
   if ( !job->exec() )
     qDebug() << "Unable to modify collection";
 }

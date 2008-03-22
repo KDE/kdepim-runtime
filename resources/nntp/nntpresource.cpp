@@ -233,7 +233,6 @@ void NntpResource::listGroupResult(KJob * job)
     if ( j->metaData().contains( "LastSerialNumber" ) )
       attr->setLastArticle( j->metaData().value("LastSerialNumber").toInt() );
     CollectionModifyJob *modify = new CollectionModifyJob( col, session() );
-    modify->setAttribute( attr );
     // TODO: check result signal
   }
 
