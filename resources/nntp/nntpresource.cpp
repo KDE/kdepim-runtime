@@ -23,7 +23,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/collectionattributefactory.h>
+#include <akonadi/attributefactory.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemappendjob.h>
 #include <akonadi/itemstorejob.h>
@@ -49,7 +49,7 @@ using namespace Akonadi;
 NntpResource::NntpResource(const QString & id)
   : ResourceBase( id )
 {
-  CollectionAttributeFactory::registerAttribute<NntpCollectionAttribute>();
+  AttributeFactory::registerAttribute<NntpCollectionAttribute>();
   monitor()->fetchCollection( true );
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),

@@ -20,13 +20,13 @@
 #ifndef AKONADI_NNTPCOLLECTIONATTRIBUTE_H
 #define AKONADI_NNTPCOLLECTIONATTRIBUTE_H
 
-#include <akonadi/collectionattribute.h>
+#include <akonadi/attribute.h>
 
 /**
   Collection attribute to store information needed for incremental
   collection updates.
 */
-class NntpCollectionAttribute : public Akonadi::CollectionAttribute
+class NntpCollectionAttribute : public Akonadi::Attribute
 {
   public:
     NntpCollectionAttribute();

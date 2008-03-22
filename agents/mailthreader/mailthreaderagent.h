@@ -26,10 +26,10 @@
 
 using namespace Akonadi;
 
-class MailThreaderAttribute : public CollectionAttribute
+class MailThreaderAttribute : public Attribute
 {
   public:
-    MailThreaderAttribute() : CollectionAttribute() {}
+    MailThreaderAttribute() : Attribute() {}
     MailThreaderAttribute* clone() const {
       MailThreaderAttribute *a =  new MailThreaderAttribute();
       a->mData = mData;

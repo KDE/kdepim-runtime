@@ -22,7 +22,7 @@
 #include <QDataStream>
 
 NntpCollectionAttribute::NntpCollectionAttribute()
-  : CollectionAttribute(),
+  : Attribute(),
   mLastArticleId( 0 )
 {
 }
