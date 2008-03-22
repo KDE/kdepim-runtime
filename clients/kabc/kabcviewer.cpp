@@ -27,8 +27,6 @@
 #include <kcmdlineargs.h>
 #include <klocale.h>
 
-#include <akonadi/datareference.h>
-
 #include "kabc/kabcitembrowser.h"
 
 Dialog::Dialog( QWidget *parent )
@@ -53,9 +51,9 @@ Dialog::~Dialog()
 {
 }
 
-void Dialog::loadUid( int uid )
+void Dialog::loadUid( Akonadi::Item::Id uid )
 {
-  mBrowser->setUid( Akonadi::DataReference( uid, QString() ) );
+  mBrowser->setItem( Akonadi::Item( uid ) );
 }
 
 int main( int argc, char **argv )

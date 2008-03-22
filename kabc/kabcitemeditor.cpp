@@ -89,9 +89,9 @@ void KABCItemEditor::Private::storeDone( KJob *job )
   }
 
   if ( mMode == EditMode )
-    emit mParent->contactStored( mItem.reference() );
+    emit mParent->contactStored( mItem );
   else if ( mMode == CreateMode )
-    emit mParent->contactStored( static_cast<Akonadi::ItemAppendJob*>( job )->reference() );
+    emit mParent->contactStored( static_cast<Akonadi::ItemAppendJob*>( job )->item() );
 }
 
 void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringList& )
@@ -103,7 +103,7 @@ void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringLi
   dlg.addButton( QLatin1String( "Ignore and Overwrite changes" ), QMessageBox::RejectRole );
 
   if ( dlg.exec() == QMessageBox::AcceptRole ) {
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItem.reference() );
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItem );
     job->addFetchPart( Akonadi::Item::PartBody );
 
     mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
@@ -273,18 +273,18 @@ KABCItemEditor::~KABCItemEditor()
 {
 }
 
-void KABCItemEditor::loadContact( const Akonadi::DataReference &uid )
+void KABCItemEditor::loadContact( const Akonadi::Item &item )
 {
   if ( d->mMode == CreateMode )
     Q_ASSERT_X( false, "KABCItemEditor::loadContact", "You are calling loadContact in CreateMode!" );
 
-  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( uid );
+  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
   job->addFetchPart( Akonadi::Item::PartBody );
 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 
   d->setupMonitor();
-  d->mMonitor->monitorItem( uid );
+  d->mMonitor->monitorItem( item );
 }
 
 void KABCItemEditor::saveContact()

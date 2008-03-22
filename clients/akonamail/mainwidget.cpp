@@ -30,6 +30,7 @@
 #include <akonadi/kmime/messagethreaderproxymodel.h>
 #include <agents/mailthreader/mailthreaderagent.h>
 
+#include <QtCore/QDebug>
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QTextEdit>
@@ -96,12 +97,12 @@ void MainWidget::collectionClicked(const Akonadi::Collection & collection)
 
 void MainWidget::itemActivated(const QModelIndex & index)
 {
-  DataReference ref = mMessageModel->referenceForIndex(  mMessageProxyModel->mapToSource( index ) );
+  const Item item = mMessageModel->itemForIndex(  mMessageProxyModel->mapToSource( index ) );
 
-  if ( ref.isNull() )
+  if ( !item.isValid() )
     return;
 
-  ItemFetchJob *job = new ItemFetchJob( ref, this );
+  ItemFetchJob *job = new ItemFetchJob( item, this );
   job->addFetchPart( Item::PartBody );
   connect( job, SIGNAL( result(KJob*) ), SLOT( itemFetchDone(KJob*) ) );
   job->start();

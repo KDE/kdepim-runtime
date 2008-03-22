@@ -20,6 +20,7 @@
 #include "deletecommand.h"
 #include "out.h"
 
+#include <akonadi/item.h>
 #include <akonadi/itemdeletejob.h>
 
 using namespace Akonadi;
@@ -31,8 +32,8 @@ DeleteCommand::DeleteCommand(const QString & uid) :
 
 void DeleteCommand::exec()
 {
-  DataReference ref( mUid.toInt(), QString() );
-  ItemDeleteJob* delJob = new ItemDeleteJob( ref );
+  const Item item( mUid.toLongLong() );
+  ItemDeleteJob* delJob = new ItemDeleteJob( item );
   if ( !delJob->exec() ) {
     err() << "Error deleting item '" << mUid << "': "
         << delJob->errorString()

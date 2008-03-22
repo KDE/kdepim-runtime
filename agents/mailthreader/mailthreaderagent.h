@@ -78,7 +78,7 @@ class MailThreaderAgent : public Akonadi::AgentBase
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemRemoved( const Akonadi::DataReference &ref );
+    virtual void itemRemoved( const Akonadi::Item &item );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     void findParentAndMark( const Akonadi::Item &item );
   private:

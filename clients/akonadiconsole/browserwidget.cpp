@@ -114,10 +114,11 @@ void BrowserWidget::collectionActivated(const QModelIndex & index)
 
 void BrowserWidget::itemActivated(const QModelIndex & index)
 {
-  DataReference ref = mItemModel->referenceForIndex( index );
-  if ( ref.isNull() )
+  const Item item = mItemModel->itemForIndex( index );
+  if ( !item.isValid() )
     return;
-  ItemFetchJob *job = new ItemFetchJob( ref, this );
+
+  ItemFetchJob *job = new ItemFetchJob( item, this );
   job->addFetchPart( Item::PartBody );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
@@ -145,8 +146,8 @@ void BrowserWidget::itemFetchDone(KJob * job)
     QByteArray data = item.part( Item::PartBody );
     contentUi.dataView->setPlainText( data );
 
-    contentUi.id->setText( QString::number( item.reference().id() ) );
-    contentUi.remoteId->setText( item.reference().remoteId() );
+    contentUi.id->setText( QString::number( item.id() ) );
+    contentUi.remoteId->setText( item.remoteId() );
     contentUi.mimeType->setText( item.mimeType() );
     contentUi.revision->setText( QString::number( item.rev() ) );
     QStringList flags;

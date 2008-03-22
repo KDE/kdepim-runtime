@@ -108,10 +108,10 @@ class MailThreaderAgent::Private
 
     foreach( StrigiHit hit, hits ) {
       if ( Item::urlIsValid( hit.uri ) ) {
-        DataReference ref = Item::fromUrl( hit.uri );
-        if ( !ref.isNull() )
+        const Item item = Item::fromUrl( hit.uri );
+        if ( item.isValid() )
         {
-          result << ref.id();
+          result << item.id();
         }
       }
     }
@@ -121,8 +121,8 @@ class MailThreaderAgent::Private
   QList<int> findParentBySubject( const Item& item )
   {
     QList<int> result;
-    DataReference ref = item.reference();
-    DataReference parent;
+    Item ref = item;
+    Item parent;
     MessagePtr msg = item.payload<MessagePtr>();
 
     QString strippedSubject = stripOffPrefixes( msg->subject()->asUnicodeString() );
@@ -142,9 +142,9 @@ class MailThreaderAgent::Private
     foreach ( StrigiHit hit, hits ) {
       // make sure it's not ourselves
       if ( !Item::urlIsValid( hit.uri ) ) continue;
-      DataReference parentRef = Item::fromUrl( hit.uri );
+      Item parentRef = Item::fromUrl( hit.uri );
 
-      if ( parentRef.isNull() ) continue;
+      if ( !parentRef.isValid() ) continue;
       if ( parentRef == ref ) continue;
 
       result << parentRef.id();
@@ -196,7 +196,7 @@ class MailThreaderAgent::Private
    */
   bool saveThreadingInfo( int id, QLatin1String part, int partValue )
   {
-    ItemFetchJob *job = new ItemFetchJob( DataReference( id, QString() ), mParent->session() );
+    ItemFetchJob *job = new ItemFetchJob( Item( id ), mParent->session() );
     job->addFetchPart( part );
 
     if ( job->exec() ) {
@@ -252,8 +252,8 @@ class MailThreaderAgent::Private
    */
   void findParent( Item& item )
   {
-    DataReference parent;
-    DataReference ref = item.reference();
+    Item parent;
+    Item ref = item;
     int mark = 0;
 
     if ( ref.isNull() )
@@ -373,7 +373,7 @@ void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Col
   d->findParent( modifiedItem );
 }
 
-void MailThreaderAgent::itemRemoved(const Akonadi::DataReference & ref)
+void MailThreaderAgent::itemRemoved(const Akonadi::Item & ref)
 {
   // TODO Find all item who have the removed one as parent _in the parts_ and remove this parent
   // from their threading parts

@@ -59,7 +59,7 @@ void AkonadiEngine::itemAdded(const Akonadi::Item & item)
   if ( !item.hasPayload<MessagePtr>() )
     return;
   MessagePtr msg = item.payload<MessagePtr>();
-  const QString source = QString::number( item.reference().id() );
+  const QString source = QString::number( item.id() );
   setData( source, "Subject", msg->subject()->asUnicodeString() );
   setData( source, "From", msg->from()->asUnicodeString() );
 }
@@ -75,7 +75,7 @@ void AkonadiEngine::fetchDone(KJob * job)
 
 void AkonadiEngine::itemChanged(const Akonadi::Item & item)
 {
-  const QString source = QString::number( item.reference().id() );
+  const QString source = QString::number( item.id() );
   if ( !sources().contains( source ) )
     return;
   MessagePtr msg = item.payload<MessagePtr>();

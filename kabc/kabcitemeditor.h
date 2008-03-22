@@ -25,7 +25,6 @@
 
 namespace Akonadi {
 class Collection;
-class DataReference;
 class Item;
 }
 
@@ -55,9 +54,9 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 
   public Q_SLOTS:
     /**
-     * Loads the contact with the given @p uid into the editor.
+     * Loads the @p contact into the editor.
      */
-    void loadContact( const Akonadi::DataReference &uid );
+    void loadContact( const Akonadi::Item &contact );
 
     /**
      * Saves the contact from the editor back to the storage.
@@ -72,10 +71,10 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 
   Q_SIGNALS:
     /**
-     * This signal is emitted when the contact has been saved back
+     * This signal is emitted when the @p contact has been saved back
      * to the storage.
      */
-    void contactStored( const Akonadi::DataReference &uid );
+    void contactStored( const Akonadi::Item &contact );
 
     /**
      * This signal is emitted when an error occurred during the save.

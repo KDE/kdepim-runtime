@@ -33,8 +33,8 @@ FetchCommand::FetchCommand(const QString & uid, const QString & part ) :
 
 void FetchCommand::exec()
 {
-  DataReference ref( mUid.toInt(), QString() );
-  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
+  const Item item( mUid.toLongLong() );
+  ItemFetchJob* fetchJob = new ItemFetchJob( item );
   fetchJob->addFetchPart( mPart );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "

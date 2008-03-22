@@ -22,6 +22,8 @@
 #ifndef KABCVIEWER_H
 #define KABCVIEWER_H
 
+#include <akonadi/item.h>
+
 #include "kdialog.h"
 
 class KABCItemBrowser;
@@ -34,7 +36,7 @@ class Dialog : public KDialog
     Dialog( QWidget *parent = 0 );
     ~Dialog();
 
-    void loadUid( int uid );
+    void loadUid( Akonadi::Item::Id uid );
 
   private:
     KABCItemBrowser *mBrowser;

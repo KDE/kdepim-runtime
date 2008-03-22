@@ -26,10 +26,9 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include <akonadi/item.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
-
-#include <akonadi/datareference.h>
 
 #include "kabc/kabcitemeditor.h"
 
@@ -72,7 +71,7 @@ Dialog::~Dialog()
 
 void Dialog::load()
 {
-  mEditor->loadContact( Akonadi::DataReference( mId->text().toInt(), QString() ) );
+  mEditor->loadContact( Akonadi::Item( mId->text().toLongLong() ) );
 }
 
 void Dialog::save()

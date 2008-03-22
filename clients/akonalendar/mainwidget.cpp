@@ -91,7 +91,7 @@ void MainWidget::collectionClicked( const Akonadi::Collection& collection )
 
 void MainWidget::itemActivated( const QModelIndex& index )
 {
-    Akonadi::DataReference ref = mIncidenceModel->referenceForIndex( index );
-    mIncidenceViewer->setUid( ref );
+    const Akonadi::Item item = mIncidenceModel->itemForIndex( index );
+    mIncidenceViewer->setItem( item );
 }
 

@@ -32,8 +32,8 @@ StoreCommand::StoreCommand(const QString & uid,  const QString & part, const QSt
 
 void StoreCommand::exec()
 {
-  DataReference ref( mUid.toInt(), QString() );
-  ItemFetchJob* fetchJob = new ItemFetchJob( ref );
+  const Item item( mUid.toLongLong() );
+  ItemFetchJob* fetchJob = new ItemFetchJob( item );
   fetchJob->fetchAllParts();
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
