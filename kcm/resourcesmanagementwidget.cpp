@@ -32,6 +32,27 @@
 #include <KMessageBox>
 #include <KMimeType>
 
+static bool isWantedResource( const QStringList &wantedMimeTypes, const QStringList &resourceMimeTypes )
+{
+  foreach ( const QString resourceMimeType, resourceMimeTypes ) {
+    KMimeType::Ptr mimeType = KMimeType::mimeType( resourceMimeType, KMimeType::ResolveAliases );
+    if ( mimeType.isNull() )
+      continue;
+
+    // check if the resource MIME type is or inherits from the
+    // wanted one, e.g.
+    // if the resource offers message/news and wanted types includes
+    // message/rfc822 this will be true, because message/news is a
+    // "subclass" of message/rfc822
+    foreach ( const QString wantedMimeType, wantedMimeTypes ) {
+      if ( mimeType->is( wantedMimeType ) )
+        return true;
+    }
+  }
+
+  return false;
+}
+
 class ResourcesManagementWidget::Private
 {
 public:
@@ -57,28 +78,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
             continue;
 
         QStringList mimeTypes = d->manager->agentMimeTypes( type );
-        bool wanted = false;
-        foreach ( const QString resourceMimeType, mimeTypes ) {
-          KMimeType::Ptr mimeType = KMimeType::mimeType( resourceMimeType, KMimeType::ResolveAliases );
-          if ( mimeType.isNull() )
-            continue;
-
-          // check if the resource MIME type is or inherits from the
-          // wanted one, e.g.
-          // if the resource offers message/news and wanted types includes
-          // message/rfc822 this will be true, because message/news is a
-          // "subclass" of message/rfc822
-          foreach ( const QString wantedMimeType, d->wantedMimeTypes ) {
-            if ( !mimeType->is( wantedMimeType ) )
-              continue;
-
-            wanted = true;
-            break;
-          }
-
-          if ( wanted )
-            break;
-        }
+        bool wanted = isWantedResource( d->wantedMimeTypes, mimeTypes );
 
         if ( !wanted && !d->wantedMimeTypes.isEmpty() )
             continue;
@@ -133,11 +133,7 @@ void ResourcesManagementWidget::fillResourcesList()
             continue;
 
         QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
-        bool wanted = false;
-        foreach( const QString &request, d->wantedMimeTypes )
-        if ( mimeTypes.contains( request ) )
-            wanted = true;
-
+        bool wanted = isWantedResource( d->wantedMimeTypes, mimeTypes );
         if ( !wanted && !d->wantedMimeTypes.isEmpty() )
             continue;
 
