@@ -443,13 +443,10 @@ void ImaplibResource::slotAlert( Imaplib*, const QString& message )
     KMessageBox::information( 0, i18n( "Server reported: %1",message ) );
 }
 
-void ImaplibResource::slotPurge()
+void ImaplibResource::slotPurge( const QString &folder )
 {
-  // FIXME: to be implemented.
-    KMessageBox::information( 0, "I'm slotPurge, FIXME!" );
+    m_imap->expungeMailBox( folder );
 }
-
-
 
 /******************* Private ***********************************************/
 
