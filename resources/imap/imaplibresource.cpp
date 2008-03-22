@@ -39,7 +39,6 @@
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-#include <akonadi/collectionlistjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>

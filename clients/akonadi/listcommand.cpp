@@ -23,7 +23,7 @@
 
 #include "out.h"
 
-#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionpathresolver.h>
 #include <akonadi/itemfetchjob.h>
 
@@ -44,7 +44,7 @@ void ListCommand::exec()
   }
   int currentColId = resolver->collection();
 
-  CollectionListJob* collectionJob = new CollectionListJob( Collection( currentColId ) );
+  CollectionFetchJob* collectionJob = new CollectionFetchJob( Collection( currentColId ) );
   if ( !collectionJob->exec() ) {
     err() << "Error listing collection '" << mPath << "': "
       << collectionJob->errorString()

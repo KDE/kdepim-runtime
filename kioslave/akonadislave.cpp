@@ -22,7 +22,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/collection.h>
-#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectiondeletejob.h>
 
 #include <kapplication.h>
@@ -98,7 +98,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
       if ( collection != Collection::root() ) {
         // Check that the collection exists.
-        CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Local );
+        CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Local );
         if ( !job->exec() ) {
           error( KIO::ERR_INTERNAL, job->errorString() );
           return;
@@ -186,7 +186,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
     return;
   }
-  CollectionListJob *job = new CollectionListJob( collection, CollectionListJob::Flat );
+  CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Flat );
   if ( !job->exec() ) {
     error( KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString() );
     return;

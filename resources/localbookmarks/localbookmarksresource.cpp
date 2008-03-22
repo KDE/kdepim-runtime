@@ -21,7 +21,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/collectionlistjob.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemappendjob.h>
 #include <akonadi/itemfetchjob.h>
