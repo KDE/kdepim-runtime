@@ -149,7 +149,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
     contentUi.id->setText( QString::number( item.id() ) );
     contentUi.remoteId->setText( item.remoteId() );
     contentUi.mimeType->setText( item.mimeType() );
-    contentUi.revision->setText( QString::number( item.rev() ) );
+    contentUi.revision->setText( QString::number( item.revision() ) );
     QStringList flags;
     foreach ( const Item::Flag &f, item.flags() )
       flags << QString::fromUtf8( f );
