@@ -23,6 +23,7 @@
 #include <ui_browserwidget_itemview.h>
 #include <ui_browserwidget_contentview.h>
 
+#include <akonadi/collection.h>
 #include <akonadi/item.h>
 
 #include <QtGui/QWidget>
@@ -64,7 +65,7 @@ class BrowserWidget: public QWidget
     Akonadi::ItemModel *mItemModel;
     Ui::ItemViewWidget itemUi;
     Ui::ContentViewWidget contentUi;
-    int mCurrentCollection;
+    Akonadi::Collection::Id mCurrentCollection;
     Akonadi::Item mCurrentItem;
 };
 

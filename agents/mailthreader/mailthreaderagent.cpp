@@ -100,11 +100,11 @@ class MailThreaderAgent::Private
       return str;
   }
 
-  QList<int> findUsingStrigi( const QString& property, const QString& value )
+  QList<Item::Id> findUsingStrigi( const QString& property, const QString& value )
   {
     QString query = property + QString::fromLatin1(":") + value;
     QList<StrigiHit> hits = strigi.getHits( query, 50, 0 );
-    QList<int> result;
+    QList<Item::Id> result;
 
     foreach( StrigiHit hit, hits ) {
       if ( Item::urlIsValid( hit.uri ) ) {
@@ -118,9 +118,9 @@ class MailThreaderAgent::Private
     return result;
   }
 
-  QList<int> findParentBySubject( const Item& item )
+  QList<Item::Id> findParentBySubject( const Item& item )
   {
-    QList<int> result;
+    QList<Item::Id> result;
     Item ref = item;
     Item parent;
     MessagePtr msg = item.payload<MessagePtr>();
@@ -167,17 +167,17 @@ class MailThreaderAgent::Private
    * @param list the parent list
    * @return true if the part was changed: this to avoid unnecessary store jobs.
    */
-  bool buildPartFromList( Item& item, const QLatin1String part, QList<int> list )
+  bool buildPartFromList( Item& item, const QLatin1String part, QList<Item::Id> list )
   {
     bool change = false;
     // Convert the current parent list to integer list
-    QList<int> currentParents;
+    QList<Item::Id> currentParents;
     QList<QByteArray> currentParentsStringList = item.part( part ).split( ',' );
     foreach( QByteArray s, currentParentsStringList )
-      currentParents << s.toInt();
+      currentParents << s.toLongLong();
 
     QString result;
-    foreach( int i, list ) {
+    foreach( Item::Id i, list ) {
       if ( currentParents.indexOf( i ) == -1 ) // Only add it if it's not already in
       {
         change = true;
@@ -194,14 +194,14 @@ class MailThreaderAgent::Private
    * - Fetches the item before
    * - One integer instead of one integer list
    */
-  bool saveThreadingInfo( int id, QLatin1String part, int partValue )
+  bool saveThreadingInfo( Item::Id id, QLatin1String part, Item::Id partValue )
   {
     ItemFetchJob *job = new ItemFetchJob( Item( id ), mParent->session() );
     job->addFetchPart( part );
 
     if ( job->exec() ) {
       Item item = job->items()[0];
-      bool change = buildPartFromList( item, part, QList<int>() << partValue );
+      bool change = buildPartFromList( item, part, QList<Item::Id>() << partValue );
 
       // Store the new parents of this item if there was a change
       if ( change )
@@ -223,9 +223,9 @@ class MailThreaderAgent::Private
   /*
    * Save the threading information in an item.
    */
-  bool saveThreadingInfo( Item& item, QList<int> perfectParents,
-                                  QList<int> unperfectParents,
-                                  QList<int> subjectParents )
+  bool saveThreadingInfo( Item& item, QList<Item::Id> perfectParents,
+                                  QList<Item::Id> unperfectParents,
+                                  QList<Item::Id> subjectParents )
   {
     bool pC = buildPartFromList( item, PartPerfectParents, perfectParents );
     bool uC = buildPartFromList( item, PartUnperfectParents, unperfectParents );
@@ -281,9 +281,9 @@ class MailThreaderAgent::Private
      * Search parent using Strigi
      */
     // List which will receive the parent ids
-    QList<int> perfectParents;
-    QList<int> unperfectParents;
-    QList<int> subjectParents;
+    QList<Item::Id> perfectParents;
+    QList<Item::Id> unperfectParents;
+    QList<Item::Id> subjectParents;
 
     // Try to fetch his perfect parent using Strigi
     if ( !inReplyTo.isEmpty() ) {
@@ -317,7 +317,7 @@ class MailThreaderAgent::Private
     if ( !messageID.isEmpty() )
     {
       // QList<int> perfectChildren = findUsingStrigi( QString::fromLatin1( "content.links" ), messageId );
-      QList<int> unperfectChildren = findUsingStrigi( QString::fromLatin1( "content.links" ), messageID );
+      QList<Item::Id> unperfectChildren = findUsingStrigi( QString::fromLatin1( "content.links" ), messageID );
       // This one will be more complex because we need to check the subject returned by strigi to have
       // no prefix and to be *exactly* strippedSubject
       // QList<int> subjectChildren = findUsingStrigi( QString::fromLatin1( "content.subject" ), strippedSubject );
@@ -325,7 +325,7 @@ class MailThreaderAgent::Private
       // foreach( int childId, perfectChildren ) {
       //   saveThreadingInfo( childId, PartPerfectParents, ref.id() );
       // }
-      foreach( int childId, unperfectChildren ) {
+      foreach( Item::Id childId, unperfectChildren ) {
         saveThreadingInfo( childId, PartUnperfectParents, ref.id() );
       }
       //foreach( int childId, subjectChildren ) {

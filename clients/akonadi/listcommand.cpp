@@ -42,7 +42,7 @@ void ListCommand::exec()
     err() << "Error resolving path '" << mPath << "': " << resolver->errorString() << endl;
     return;
   }
-  int currentColId = resolver->collection();
+  Collection::Id currentColId = resolver->collection();
 
   CollectionFetchJob* collectionJob = new CollectionFetchJob( Collection( currentColId ) );
   if ( !collectionJob->exec() ) {

@@ -37,7 +37,7 @@ void AppendCommand::exec()
     return;
   }
 
-  int currentColId = resolver->collection();
+  Collection::Id currentColId = resolver->collection();
 
   Item item;
   item.setMimeType( mMimeType );

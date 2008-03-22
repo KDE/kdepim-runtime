@@ -73,7 +73,7 @@ int main( int argc, char **argv )
     return 1;
   }
 
-  dlg.loadUid( args->getOption( "uid" ).toInt() );
+  dlg.loadUid( args->getOption( "uid" ).toLongLong() );
   dlg.exec();
 
   return 0;

@@ -106,7 +106,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
 {
-  mCurrentCollection = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toInt();
+  mCurrentCollection = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toLongLong();
   if ( mCurrentCollection <= 0 )
     return;
   mItemModel->setCollection( Collection( mCurrentCollection ) );
