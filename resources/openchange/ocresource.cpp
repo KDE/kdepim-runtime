@@ -39,7 +39,7 @@
 #include <kabc/vcardconverter.h>
 
 #include <akonadi/itemfetchjob.h>
-#include <akonadi/itemappendjob.h>
+#include <akonadi/itemcreatejob.h>
 #include <akonadi/session.h>
 
 #include "profiledialog.h"
@@ -746,7 +746,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
   item.setMimeType( "message/rfc822" );
   msg_ptr->from()->from7BitString( "from@someone.local" );
   item.setPayload<MessagePtr>( msg_ptr );
-  ItemAppendJob *append = new ItemAppendJob( item, collection, session() );
+  ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
   if ( !append->exec() ) {
     changeProgress( 0 );
     changeStatus( Error, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
@@ -1404,7 +1404,7 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   contact->insertAddress( workAddress );
   contact->insertAddress( homeAddress );
   item.setPayload<KABC::Addressee>( *contact );
-  ItemAppendJob *append = new ItemAppendJob( item, collection, session() );
+  ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
   if ( !append->exec() ) {
     changeProgress( 0 );
     changeStatus( Error, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
