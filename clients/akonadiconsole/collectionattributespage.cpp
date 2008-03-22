@@ -19,6 +19,8 @@
 
 #include "collectionattributespage.h"
 
+#include <akonadi/attributefactory.h>
+
 #include <kdebug.h>
 #include <klocale.h>
 
@@ -64,8 +66,10 @@ void CollectionAttributePage::save(Collection & col)
     Q_ASSERT( typeIndex.isValid() );
     const QModelIndex valueIndex = mModel->index( i, 1 );
     Q_ASSERT( valueIndex.isValid() );
-    col.addRawAttribute( mModel->data( typeIndex ).toString().toLatin1(),
-                         mModel->data( valueIndex ).toString().toLatin1() );
+    Attribute* attr = AttributeFactory::createAttribute( mModel->data( typeIndex ).toString().toLatin1() );
+    Q_ASSERT( attr );
+    attr->setData( mModel->data( valueIndex ).toString().toLatin1() );
+    col.addAttribute( attr );
   }
 }
 
