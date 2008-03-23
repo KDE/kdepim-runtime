@@ -1,6 +1,11 @@
 [Desktop Entry]
 Name=Akonadi Nepomuk EMail Feeder
+Name[ga]=Fothaire Ríomhphoist Nepomuk le haghaidh Akonadi
+Name[pt]=Alimentação de E-Mail do Nepomuk para o Akonadi
+Name[pt_BR]=Alimentador de E-Mail do Nepomuk para o Akonadi
 Comment=Extension for Akonadi to push emails into Nepomuk
+Comment[pt]=Extensão para o Akonadi enviar mensagens de e-mail para o Nepomuk
+Comment[pt_BR]=Extensão para o Akonadi enviar a-mails para o Nepomuk
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_email_feeder
 
