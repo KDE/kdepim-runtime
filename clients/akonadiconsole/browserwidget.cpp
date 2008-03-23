@@ -21,6 +21,7 @@
 #include "collectionattributespage.h"
 #include "collectioninternalspage.h"
 
+#include <akonadi/attributefactory.h>
 #include <akonadi/job.h>
 #include <akonadi/collectionview.h>
 #include <akonadi/item.h>
@@ -47,6 +48,7 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QtGui/QSortFilterProxyModel>
+#include <QStandardItemModel>
 
 using namespace Akonadi;
 
@@ -100,6 +102,9 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter2->addWidget( contentViewParent );
   contentUi.partCombo->addItem( "Body" );
 
+  connect( contentUi.attrAddButton, SIGNAL(clicked()), SLOT(addAttribute()) );
+  connect( contentUi.attrDeleteButton, SIGNAL(clicked()), SLOT(delAttribute()) );
+
   CollectionPropertiesDialog::registerPage( new CollectionAttributePageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
 }
@@ -120,6 +125,7 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
   job->addFetchPart( Item::PartBody );
+  job->fetchAllParts();
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
 }
@@ -154,6 +160,22 @@ void BrowserWidget::itemFetchDone(KJob * job)
     foreach ( const Item::Flag &f, item.flags() )
       flags << QString::fromUtf8( f );
     contentUi.flags->setItems( flags );
+
+    Attribute::List list = item.attributes();
+    mAttrModel = new QStandardItemModel( list.count(), 2 );
+    QStringList labels;
+    labels << i18n( "Attribute" ) << i18n( "Value" );
+    mAttrModel->setHorizontalHeaderLabels( labels );
+    for ( int i = 0; i < list.count(); ++i ) {
+      QModelIndex index = mAttrModel->index( i, 0 );
+      Q_ASSERT( index.isValid() );
+      mAttrModel->setData( index, QString::fromLatin1( list[i]->type() ) );
+      index = mAttrModel->index( i, 1 );
+      Q_ASSERT( index.isValid() );
+      mAttrModel->setData( index, QString::fromLatin1( list[i]->toByteArray() ) );
+      mAttrModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mAttrModel->flags( index ) );
+    }
+    contentUi.attrView->setModel( mAttrModel );
   }
 }
 
@@ -188,6 +210,19 @@ void BrowserWidget::save()
   foreach ( const QString s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
   item.addPart( Item::PartBody, data );
+
+  item.clearAttributes();
+  for ( int i = 0; i < mAttrModel->rowCount(); ++i ) {
+    const QModelIndex typeIndex = mAttrModel->index( i, 0 );
+    Q_ASSERT( typeIndex.isValid() );
+    const QModelIndex valueIndex = mAttrModel->index( i, 1 );
+    Q_ASSERT( valueIndex.isValid() );
+    Attribute* attr = AttributeFactory::createAttribute( mAttrModel->data( typeIndex ).toString().toLatin1() );
+    Q_ASSERT( attr );
+    attr->setData( mAttrModel->data( valueIndex ).toString().toLatin1() );
+    item.addAttribute( attr );
+  }
+
   ItemModifyJob *store = new ItemModifyJob( item, this );
   store->storePayload();
   connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
@@ -208,6 +243,26 @@ void BrowserWidget::saveResult(KJob * job)
   if ( job->error() ) {
     KMessageBox::error( this, i18n( "Failed to save changes: %1", job->errorString() ) );
   }
+}
+
+void BrowserWidget::addAttribute()
+{
+  if ( contentUi.attrName->text().isEmpty() )
+    return;
+  const int row = mAttrModel->rowCount();
+  mAttrModel->insertRow( row );
+  QModelIndex index = mAttrModel->index( row, 0 );
+  Q_ASSERT( index.isValid() );
+  mAttrModel->setData( index, contentUi.attrName->text() );
+  contentUi.attrName->clear();
+}
+
+void BrowserWidget::delAttribute()
+{
+  QModelIndexList selection = contentUi.attrView->selectionModel()->selectedRows();
+  if ( selection.count() != 1 )
+    return;
+  mAttrModel->removeRow( selection.first().row() );
 }
 
 #include "browserwidget.moc"

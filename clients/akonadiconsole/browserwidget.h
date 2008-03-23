@@ -30,6 +30,7 @@
 
 class QModelIndex;
 class QItemSelectionModel;
+class QStandardItemModel;
 
 class KJob;
 class KXmlGuiWindow;
@@ -58,6 +59,8 @@ class BrowserWidget: public QWidget
     void modelChanged();
     void save();
     void saveResult( KJob* job );
+    void addAttribute();
+    void delAttribute();
 
   private:
     Akonadi::CollectionModel *mCollectionModel;
@@ -67,6 +70,7 @@ class BrowserWidget: public QWidget
     Ui::ContentViewWidget contentUi;
     Akonadi::Collection::Id mCurrentCollection;
     Akonadi::Item mCurrentItem;
+    QStandardItemModel *mAttrModel;
 };
 
 #endif
