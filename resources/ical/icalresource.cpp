@@ -24,6 +24,8 @@
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 
+#include <libakonadi/kcal/kcalmimetypevisitor.h>
+
 #include <kdebug.h>
 #include <kfiledialog.h>
 #include <klocale.h>
@@ -35,62 +37,8 @@ using namespace KCal;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
-class MimeTypeVisitor : public IncidenceBase::Visitor
-{
-  public:
-    MimeTypeVisitor() {
-      QString baseType( QLatin1String( "application/x-vnd.akonadi.calendar." ) );
-
-      mEventType    = baseType + QLatin1String( "event" );
-      mTodoType     = baseType + QLatin1String( "todo" );
-      mJournalType  = baseType + QLatin1String( "journal" );
-      mFreeBusyType = baseType + QLatin1String( "freebusy" );
-    }
-
-    virtual ~MimeTypeVisitor () {}
-
-    virtual bool visit( Event *event ) {
-      Q_UNUSED( event );
-      mType = mEventType;
-      return true;
-    }
-
-    virtual bool visit( Todo *todo ) {
-      Q_UNUSED( todo );
-      mType = mTodoType;
-      return true;
-    }
-
-    virtual bool visit( Journal *journal ) {
-      Q_UNUSED( journal );
-      mType = mJournalType;
-      return true;
-    }
-
-    virtual bool visit( FreeBusy *freebusy ) {
-      Q_UNUSED( freebusy );
-      mType = mFreeBusyType;
-      return true;
-    }
-
-    QString mimeType() const {
-      return mType;
-    }
-
-    QStringList allMimeTypes() const {
-      return QStringList() << mEventType << mTodoType << mJournalType << mFreeBusyType;
-    }
-
-  private:
-    QString mType;
-    QString mEventType;
-    QString mTodoType;
-    QString mJournalType;
-    QString mFreeBusyType;
-};
-
 ICalResource::ICalResource( const QString &id )
-    :ResourceBase( id ), mCalendar( 0 ), mMimeVisitor( new MimeTypeVisitor() )
+    :ResourceBase( id ), mCalendar( 0 ), mMimeVisitor( new KCalMimeTypeVisitor() )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),

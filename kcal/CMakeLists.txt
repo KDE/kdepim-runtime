@@ -10,10 +10,10 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 ########### next target ###############
 
 set( kcalakonadi_LIB_SRC
+     kcalmimetypevisitor.cpp
      kcalmodel.cpp
      kcalitembrowser.cpp
 )
-
 
 kde4_add_library( kcalakonadi SHARED ${kcalakonadi_LIB_SRC} )
 
@@ -25,7 +25,8 @@ install(TARGETS kcalakonadi DESTINATION ${LIB_INSTALL_DIR})
 
 install( FILES
          akonadi-kcal_export.h
+         kcalmimetypevisitor.h
          kcalmodel.h
-	 kcalitembrowser.h
+         kcalitembrowser.h
          DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadi/kcal
 )
