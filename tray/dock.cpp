@@ -20,7 +20,6 @@
 #include "trayadaptor.h"
 
 #include <QMenu>
-#include <QSystemTrayIcon>
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>
 #include <QMouseEvent>
@@ -33,6 +32,7 @@
 #include <KIconLoader>
 #include <KLocale>
 #include <KMessageBox>
+#include <KPassivePopup>
 #include <KStandardShortcut>
 #include <KSystemTrayIcon>
 
@@ -89,12 +89,12 @@ void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, 
 
     if (oldOwner.isEmpty() ) {
 	updateMenu( true );
-	showMessage( i18n( "Akonadi available" ), 
-                     i18n( "The Akonadi server has been started and can be used now." ) );
+	KPassivePopup::message( i18n( "Akonadi available" ), 
+                     i18n( "The Akonadi server has been started and can be used now." ), this );
     } else if (newOwner.isEmpty() ) {
 	updateMenu( false );
-	showMessage( i18n( "Akonadi not available" ), 
-                     i18n( "The Akonadi server has been stopped, Akonadi related application can no longer be used." ) );
+	KPassivePopup::message( i18n( "Akonadi not available" ), 
+                     i18n( "The Akonadi server has been stopped, Akonadi related application can no longer be used." ),this );
     }
 }
 
@@ -124,7 +124,7 @@ void Dock::updateMenu( bool registered )
 
 void Dock::slotInfoMessage( const QString &message )
 {
-    showMessage( i18n("Akonadi message"), message );
+    KPassivePopup::message( i18n("Akonadi message"), message, this );
 }
 
 void Dock::slotErrorMessage( const QString &message )
