@@ -1,0 +1,11 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.kde.Akonadi.Tray">
+    <method name="slotInfoMessage">
+      <arg type="s" direction="in"/>
+    </method>
+    <method name="slotNotifyMessage">
+      <arg type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

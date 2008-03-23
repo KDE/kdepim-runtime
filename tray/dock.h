@@ -29,6 +29,7 @@ class QAction;
 class Dock : public KSystemTrayIcon
 {
     Q_OBJECT
+    Q_CLASSINFO(   "D-Bus Interface", "org.kde.Akonadi.Tray" )
 
 public:
     /**
@@ -42,6 +43,10 @@ public:
      * Destructor
      */
     ~Dock();
+
+public Q_SLOTS:
+    void slotInfoMessage( const QString& );
+    void slotNotifyMessage( const QString& );
 
 private slots:
     void slotServiceChanged( const QString&, const QString&, const QString&);

@@ -17,6 +17,7 @@
 */
 
 #include "dock.h"
+#include "trayadaptor.h"
 
 #include <QMenu>
 #include <QSystemTrayIcon>
@@ -55,6 +56,11 @@ Dock::Dock()
     m_title->setFont(f);
     menu->addAction(action);
     /* End */
+
+//X    D-Bus
+    new TrayAdaptor(  this );
+        QDBusConnection dbus = QDBusConnection::sessionBus();
+                        dbus.registerObject(  "/Actions", this );
 
     m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
     m_startAction = menu->addAction( i18n( "&Start Akonadi" ), this, SLOT( slotStartAkonadi() ) );
@@ -119,6 +125,16 @@ void Dock::updateMenu( bool registered )
     registered ? m_title->setText( i18n( "Akonadi is running" ) ) : m_title->setText( i18n( "Akonadi is not running" ) );
     m_stopAction->setVisible( registered );
     m_startAction->setVisible( !registered );
+}
+
+void Dock::slotInfoMessage( const QString &message )
+{
+  // TODO: implement me.
+}
+
+void Dock::slotNotifyMessage( const QString &message )
+{
+  // TODO: implement me.
 }
 
 void Dock::slotQuit()
