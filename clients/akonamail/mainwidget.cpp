@@ -23,7 +23,8 @@
 #include <akonadi/collection.h>
 #include <akonadi/collectionview.h>
 #include <akonadi/collectionfilterproxymodel.h>
-#include <akonadi/collectionmodel.h>
+#include <akonadi/collectionstatisticsmodel.h>
+#include <akonadi/collectionstatisticsdelegate.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/kmime/messagemodel.h>
@@ -53,9 +54,13 @@ MainWidget::MainWidget( MainWindow * parent) :
   mCollectionList = new Akonadi::CollectionView();
   connect( mCollectionList, SIGNAL(clicked(const Akonadi::Collection &)),
            SLOT(collectionClicked(const Akonadi::Collection &)) );
+  CollectionStatisticsDelegate *collectionDelegate =
+                           new CollectionStatisticsDelegate( mCollectionList );
+  collectionDelegate->toggleUnreadAfterFolderName( true ); //For testing, should be toggleable columns eventually
+  mCollectionList->setItemDelegate( collectionDelegate );
   splitter->addWidget( mCollectionList );
   // Filter the collection to only show the emails
-  mCollectionModel = new Akonadi::CollectionModel( this );
+  mCollectionModel = new Akonadi::CollectionStatisticsModel( this );
   mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
   mCollectionProxyModel->setSourceModel( mCollectionModel );
   mCollectionProxyModel->addMimeType( QString::fromLatin1( "message/rfc822" ) );

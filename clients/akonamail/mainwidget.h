@@ -32,7 +32,7 @@ class KJob;
 
 namespace Akonadi {
 class CollectionView;
-class CollectionModel;
+class CollectionStatisticsModel;
 class CollectionFilterProxyModel;
 class MessageThreaderProxyModel;
 class MessageModel;
@@ -55,7 +55,7 @@ class MainWidget: public QWidget
 
   private:
     Akonadi::Collection mCurrentCollection;
-    Akonadi::CollectionModel *mCollectionModel;
+    Akonadi::CollectionStatisticsModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
     Akonadi::CollectionView *mCollectionList;
     Akonadi::MessageModel *mMessageModel;
