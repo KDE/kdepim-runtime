@@ -26,6 +26,8 @@ namespace KCal {
   class CalendarLocal;
 }
 
+class MimeTypeVisitor;
+
 class ICalResource : public Akonadi::ResourceBase
 {
   Q_OBJECT
@@ -54,7 +56,7 @@ class ICalResource : public Akonadi::ResourceBase
 
   private:
     KCal::CalendarLocal *mCalendar;
-
+    MimeTypeVisitor *mMimeVisitor;
 };
 
 #endif

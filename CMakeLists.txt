@@ -33,4 +33,13 @@ if( Nepomuk_FOUND )
   add_subdirectory(nepomuk)
 endif( Nepomuk_FOUND )
 
+#### MIME type spezializations
+
+set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
+find_package(SharedMimeInfo REQUIRED)
+
+########### install files ###############
+install(FILES akonadi-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+
 endif (AKONADI_FOUND)

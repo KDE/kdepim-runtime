@@ -35,8 +35,62 @@ using namespace KCal;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
+class MimeTypeVisitor : public IncidenceBase::Visitor
+{
+  public:
+    MimeTypeVisitor() {
+      QString baseType( QLatin1String( "application/x-vnd.akonadi.calendar." ) );
+
+      mEventType    = baseType + QLatin1String( "event" );
+      mTodoType     = baseType + QLatin1String( "todo" );
+      mJournalType  = baseType + QLatin1String( "journal" );
+      mFreeBusyType = baseType + QLatin1String( "freebusy" );
+    }
+
+    virtual ~MimeTypeVisitor () {}
+
+    virtual bool visit( Event *event ) {
+      Q_UNUSED( event );
+      mType = mEventType;
+      return true;
+    }
+
+    virtual bool visit( Todo *todo ) {
+      Q_UNUSED( todo );
+      mType = mTodoType;
+      return true;
+    }
+
+    virtual bool visit( Journal *journal ) {
+      Q_UNUSED( journal );
+      mType = mJournalType;
+      return true;
+    }
+
+    virtual bool visit( FreeBusy *freebusy ) {
+      Q_UNUSED( freebusy );
+      mType = mFreeBusyType;
+      return true;
+    }
+
+    QString mimeType() const {
+      return mType;
+    }
+
+    QStringList allMimeTypes() const {
+      return QStringList() << mEventType << mTodoType << mJournalType << mFreeBusyType;
+    }
+
+  private:
+    QString mType;
+    QString mEventType;
+    QString mTodoType;
+    QString mJournalType;
+    QString mFreeBusyType;
+};
+
 ICalResource::ICalResource( const QString &id )
-    :ResourceBase( id ), mCalendar( 0 )
+    :ResourceBase( id ), mCalendar( 0 ), mMimeVisitor( new MimeTypeVisitor() )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -47,6 +101,7 @@ ICalResource::ICalResource( const QString &id )
 ICalResource::~ ICalResource()
 {
   delete mCalendar;
+  delete mMimeVisitor;
 }
 
 bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
@@ -59,10 +114,13 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
     error( i18n("Incidence with uid '%1' not found!", rid ) );
     return false;
   }
+  incidence->accept( *mMimeVisitor );
+
   Item i = item;
-  i.setMimeType( "text/calendar" );
+  i.setMimeType( mMimeVisitor->mimeType() );
   i.setPayload<IncidencePtr>( incidence );
   itemRetrieved( i );
+  QByteArray data = i.part( Item::PartBody );
   return true;
 }
 
@@ -141,6 +199,7 @@ void ICalResource::retrieveCollections()
   c.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
+  mimeTypes += mMimeVisitor->allMimeTypes();
   c.setContentTypes( mimeTypes );
   Collection::List list;
   list << c;
@@ -157,9 +216,10 @@ void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringL
   Incidence::List incidences = mCalendar->incidences();
   Item::List items;
   foreach ( Incidence *incidence, incidences ) {
+    incidence->accept( *mMimeVisitor );
     Item item;
     item.setRemoteId( incidence->uid() );
-    item.setMimeType( "text/calendar" );
+    item.setMimeType( mMimeVisitor->mimeType() );
     items << item;
   }
   itemsRetrieved( items );
