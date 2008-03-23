@@ -23,11 +23,11 @@
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/job.h>
+#include <akonadi/collectionmodel.h>
 #include <akonadi/collectionview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemmodifyjob.h>
-#include <akonadi/messagecollectionmodel.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
 
