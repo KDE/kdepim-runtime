@@ -70,7 +70,7 @@ int main( int argc, char *argv[] )
     AkonadiTrayApplication a;
     a.setQuitOnLastWindowClosed( false );
 
-    new Dock();
+    Tray tray;
 
     return a.exec();
 }

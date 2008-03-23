@@ -21,10 +21,20 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-#include <ksystemtrayicon.h>
+#include <KSystemTrayIcon>
+#include <QWidget>
 
 class QLabel;
 class QAction;
+
+class Tray : public QWidget
+{
+public:
+    Tray();
+
+protected:
+    void setVisible( bool );
+};
 
 class Dock : public KSystemTrayIcon
 {
@@ -35,9 +45,8 @@ public:
     /**
      * Contructor
      * @param parent Parent Widget
-     * @param name Name
      */
-    Dock();
+    Dock( QWidget *parent );
 
     /**
      * Destructor
@@ -45,8 +54,9 @@ public:
     ~Dock();
 
 public Q_SLOTS:
-    void slotInfoMessage( const QString& );
-    void slotErrorMessage( const QString& );
+    void infoMessage( const QString& );
+    void errorMessage( const QString& );
+    WId getWinId();
 
 private slots:
     void slotServiceChanged( const QString&, const QString&, const QString&);

@@ -38,8 +38,22 @@
 
 #include <akonadi/control.h>
 
-Dock::Dock()
-        : KSystemTrayIcon( KIcon("dummy"), 0 )
+Tray::Tray() : QWidget()
+{
+    hide();
+    Dock* docker = new Dock( this );
+    docker->show();
+}
+
+void Tray::setVisible( bool )
+{
+    // We don't want this Widget to get visible because of a click on the tray icon.
+    QWidget::setVisible( false );
+}
+
+
+Dock::Dock( QWidget *parent )
+        : KSystemTrayIcon( KIcon("dummy"), parent )
 {
     QMenu *menu = new QMenu();
 
@@ -56,7 +70,6 @@ Dock::Dock()
     menu->addAction(action);
     /* End */
 
-//X    D-Bus
     new TrayAdaptor(  this );
         QDBusConnection dbus = QDBusConnection::sessionBus();
                         dbus.registerObject(  "/Actions", this );
@@ -64,8 +77,6 @@ Dock::Dock()
     m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
     m_startAction = menu->addAction( i18n( "&Start Akonadi" ), this, SLOT( slotStartAkonadi() ) );
     menu->addSeparator();
-    menu->addAction( /*SmallIcon( "knotify" ),*/ i18n( "Configure &Notifications..." ),
-                     this, SLOT( slotConfigureNotifications() ) );
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
 
@@ -81,6 +92,7 @@ Dock::Dock()
 Dock::~Dock()
 {
 }
+
 
 void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
 {
@@ -122,14 +134,19 @@ void Dock::updateMenu( bool registered )
     m_startAction->setVisible( !registered );
 }
 
-void Dock::slotInfoMessage( const QString &message )
+void Dock::infoMessage( const QString &message )
 {
     KPassivePopup::message( i18n("Akonadi message"), message, this );
 }
 
-void Dock::slotErrorMessage( const QString &message )
+void Dock::errorMessage( const QString &message )
 {
     KMessageBox::error( 0, message, i18n("Akonadi error") );
+}
+
+WId Dock::getWinId()
+{
+    return parentWidget()->winId();
 }
 
 void Dock::slotQuit()
