@@ -4,7 +4,7 @@
     <method name="slotInfoMessage">
       <arg type="s" direction="in"/>
     </method>
-    <method name="slotNotifyMessage">
+    <method name="slotErrorMessage">
       <arg type="s" direction="in"/>
     </method>
   </interface>

@@ -32,8 +32,7 @@
 #include <KIcon>
 #include <KIconLoader>
 #include <KLocale>
-#include <KNotification>
-#include <KNotifyConfigWidget>
+#include <KMessageBox>
 #include <KStandardShortcut>
 #include <KSystemTrayIcon>
 
@@ -83,12 +82,6 @@ Dock::~Dock()
 {
 }
 
-
-void Dock::slotConfigureNotifications()
-{
-    KNotifyConfigWidget::configure( 0 );
-}
-
 void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
 {
     if ( service != "org.kde.Akonadi.Control") 
@@ -96,10 +89,12 @@ void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, 
 
     if (oldOwner.isEmpty() ) {
 	updateMenu( true );
-	KNotification::event( "serveronline", i18n( "Akonadi server is now available" ) );
+	showMessage( i18n( "Akonadi available" ), 
+                     i18n( "The Akonadi server has been started and can be used now." ) );
     } else if (newOwner.isEmpty() ) {
 	updateMenu( false );
-	KNotification::event( "serveroffline", i18n( "Akonadi server is no longer available" ) );
+	showMessage( i18n( "Akonadi not available" ), 
+                     i18n( "The Akonadi server has been stopped, Akonadi related application can no longer be used." ) );
     }
 }
 
@@ -129,12 +124,12 @@ void Dock::updateMenu( bool registered )
 
 void Dock::slotInfoMessage( const QString &message )
 {
-  // TODO: implement me.
+    showMessage( i18n("Akonadi message"), message );
 }
 
-void Dock::slotNotifyMessage( const QString &message )
+void Dock::slotErrorMessage( const QString &message )
 {
-  // TODO: implement me.
+    KMessageBox::error( 0, message, i18n("Akonadi error") );
 }
 
 void Dock::slotQuit()

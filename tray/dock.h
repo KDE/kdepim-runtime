@@ -46,12 +46,11 @@ public:
 
 public Q_SLOTS:
     void slotInfoMessage( const QString& );
-    void slotNotifyMessage( const QString& );
+    void slotErrorMessage( const QString& );
 
 private slots:
     void slotServiceChanged( const QString&, const QString&, const QString&);
     void slotActivated();
-    void slotConfigureNotifications();
     void slotStopAkonadi();
     void slotStartAkonadi();
     void slotQuit();
