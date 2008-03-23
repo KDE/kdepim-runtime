@@ -15,11 +15,11 @@ set( kcalakonadi_LIB_SRC
      kcalitembrowser.cpp
 )
 
-kde4_add_library( kcalakonadi SHARED ${kcalakonadi_LIB_SRC} )
+kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
 
-target_link_libraries( kcalakonadi ${AKONADI_LIBS} ${KDE4_KCAL_LIBS} )
-set_target_properties( kcalakonadi PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
-install(TARGETS kcalakonadi DESTINATION ${LIB_INSTALL_DIR})
+target_link_libraries( akonadi-kcal ${AKONADI_LIBS} ${KDE4_KCAL_LIBS} )
+set_target_properties( akonadi-kcal PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+install(TARGETS akonadi-kcal DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
 
@@ -28,5 +28,5 @@ install( FILES
          kcalmimetypevisitor.h
          kcalmodel.h
          kcalitembrowser.h
-         DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadi/kcal
+         DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi/kcal
 )

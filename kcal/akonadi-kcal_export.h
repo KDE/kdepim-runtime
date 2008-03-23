@@ -24,7 +24,7 @@
 #include <kdemacros.h>
 
 #ifndef AKONADI_KCAL_EXPORT
-# if defined(MAKE_KCALAKONADI_LIB)
+# if defined(MAKE_AKONADI_KCAL_LIB)
    /* We are building this library */
 #  define AKONADI_KCAL_EXPORT KDE_EXPORT
 # else

@@ -32,7 +32,7 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 targetdir out_headers 
         OUTPUT_VARIABLE ${out_sources}
         ERROR_QUIET
         )
-      
+
       execute_process(
         COMMAND ${RCGEN} --listincludes --ontologies ${ontofile1} ${ontofile2}
         OUTPUT_VARIABLE ${out_includes}
@@ -53,12 +53,11 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 targetdir out_headers 
     endif(${rcgen_result} EQUAL 0)
 
   endif(NOT RCGEN)
-  
+
 endmacro(NEPOMUK_GENERATE_FROM_ONTOLOGY2)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/akonadi
-  ${CMAKE_SOURCE_DIR}/akonadi/libakonadi
   ${Boost_INCLUDE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${NEPOMUK_INCLUDES}

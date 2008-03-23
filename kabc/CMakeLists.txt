@@ -17,11 +17,11 @@ set( kabcakonadi_LIB_SRC
 )
 
 qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
-kde4_add_library( kabcakonadi SHARED ${kabcakonadi_LIB_SRC} )
+kde4_add_library( akonadi-kabc SHARED ${kabcakonadi_LIB_SRC} )
 
-target_link_libraries( kabcakonadi ${AKONADI_LIBS} ${KDE4_KABC_LIBS} )
-set_target_properties( kabcakonadi PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
-install(TARGETS kabcakonadi DESTINATION ${LIB_INSTALL_DIR})
+target_link_libraries( akonadi-kabc ${AKONADI_LIBS} ${KDE4_KABC_LIBS} )
+set_target_properties( akonadi-kabc PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+install(TARGETS akonadi-kabc DESTINATION ${LIB_INSTALL_DIR})
 
 ########### install files ###############
 
@@ -30,5 +30,5 @@ install( FILES
   kabcitembrowser.h
   kabcitemeditor.h
   kabcmodel.h
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libakonadi/kabc
+  DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi/kabc
 )

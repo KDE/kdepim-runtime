@@ -24,7 +24,7 @@
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 
-#include <libakonadi/kcal/kcalmimetypevisitor.h>
+#include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kdebug.h>
 #include <kfiledialog.h>
