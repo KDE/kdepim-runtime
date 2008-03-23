@@ -12,6 +12,7 @@ set(akonadiconsole_bin_SRCS
   main.cpp
   mainwidget.cpp
   mainwindow.cpp
+  searchdialog.cpp
 )
 
 qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS

@@ -1,7 +1,7 @@
 /*
     This file is part of Akonadi.
 
-    Copyright (c) 2006 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,23 +18,26 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
+#ifndef SEARCHDIALOG_H
+#define SEARCHDIALOG_H
 
-#ifndef MAINWIDGET_H
-#define MAINWIDGET_H
+#include <kdialog.h>
 
-#include <QtGui/QWidget>
+class QLineEdit;
+class QTextEdit;
 
-class KXmlGuiWindow;
-
-class MainWidget : public QWidget
+class SearchDialog : public KDialog
 {
-  Q_OBJECT
-
   public:
-    explicit MainWidget( KXmlGuiWindow *parent = 0 );
+    SearchDialog( QWidget *parent = 0 );
+    ~SearchDialog();
 
-  private Q_SLOTS:
-    void createSearch();
+    QString searchName() const;
+    QString searchQuery() const;
+
+  private:
+    QLineEdit* mName;
+    QTextEdit* mEdit;
 };
 
 #endif

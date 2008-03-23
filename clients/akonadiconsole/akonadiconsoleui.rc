@@ -4,6 +4,7 @@
  <MenuBar>
   <Menu name="edit">
     <Action name="akonadi_paste" append="edit_paste_merge"/>
+    <Action name="akonadiconsole_search"/>
   </Menu>
   <Menu name="collection"><text>&amp;Collection</text>
     <Action name="akonadi_collection_create"/>

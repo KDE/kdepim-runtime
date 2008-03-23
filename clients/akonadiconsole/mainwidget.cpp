@@ -24,11 +24,15 @@
 #include "agentwidget.h"
 #include "browserwidget.h"
 #include "debugwidget.h"
+#include "searchdialog.h"
 
 #include <akonadi/agentinstanceview.h>
 #include <akonadi/agentfilterproxymodel.h>
 #include <akonadi/standardactionmanager.h>
+#include <akonadi/searchcreatejob.h>
 
+#include <KAction>
+#include <KActionCollection>
 #include <KXmlGuiWindow>
 
 #include <QtGui/QTabWidget>
@@ -54,4 +58,27 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
   actMgr->setCollectionSelectionModel( browser->collectionSelectionModel() );
   actMgr->setItemSelectionModel( browser->itemSelectionModel() );
   actMgr->createAllActions();
+
+  KAction *action = parent->actionCollection()->addAction( "akonadiconsole_search" );
+  action->setText( "Create Search" );
+  connect( action, SIGNAL( triggered() ), this, SLOT( createSearch() ) );
 }
+
+void MainWidget::createSearch()
+{
+  SearchDialog dlg;
+  if ( !dlg.exec() )
+    return;
+
+  const QString query = dlg.searchQuery();
+  if ( query.isEmpty() )
+    return;
+
+  QString name = dlg.searchName();
+  if ( name.isEmpty() )
+    name = "My Search";
+
+  new Akonadi::SearchCreateJob( name, query );
+}
+
+#include "mainwidget.moc"
