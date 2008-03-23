@@ -26,6 +26,7 @@
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
+#include <akonadi/agentfilterproxymodel.h>
 
 #include <KDebug>
 #include <KMenu>
@@ -100,11 +101,14 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->ui.addButton->setMenu( addMenu );
     connect( addMenu, SIGNAL( triggered( QAction* ) ), SLOT( addClicked( QAction* ) ) );
 
-    d->ui.resourcesList->setHeaderLabels( QStringList() << i18nc( "@title:column", "Name" ) );
-    connect( d->ui.resourcesList, SIGNAL( currentItemChanged( QTreeWidgetItem*,
-                                          QTreeWidgetItem* ) ), SLOT( updateButtonState() ) );
+    foreach( const QString& type, d->wantedMimeTypes )
+        d->ui.resourcesList->agentFilterProxyModel()->addMimeType( type );
+    connect( d->ui.resourcesList, SIGNAL( currentChanged( const QString&, const QString& ) ),
+             SLOT( updateButtonState( const QString& ) ) );
+/*  TODO: Fix 
     connect( d->ui.resourcesList, SIGNAL( itemDoubleClicked( QTreeWidgetItem*, int ) ),
              SLOT( editClicked() ) );
+*/
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
@@ -114,7 +118,6 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
              SLOT( fillResourcesList() ) );
     connect( d->manager, SIGNAL( agentInstanceNameChanged( const QString&, const QString& ) ),
              SLOT( fillResourcesList() ) );
-    fillResourcesList();
     updateButtonState();
 }
 
@@ -123,33 +126,9 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
     delete d;
 }
 
-void ResourcesManagementWidget::fillResourcesList()
+void ResourcesManagementWidget::updateButtonState( const QString& current)
 {
-    QStringList instances = d->manager->agentInstances();
-    d->ui.resourcesList->clear();
-    foreach( const QString &instance, instances ) {
-        const QStringList capas = d->manager->agentCapabilities( d->manager->agentInstanceType( instance ) );
-        if ( !capas.contains( "Resource" ) )
-            continue;
-
-        QStringList mimeTypes = d->manager->agentMimeTypes( d->manager->agentInstanceType( instance ) );
-        bool wanted = isWantedResource( d->wantedMimeTypes, mimeTypes );
-        if ( !wanted && !d->wantedMimeTypes.isEmpty() )
-            continue;
-
-        QTreeWidgetItem *item = new QTreeWidgetItem( d->ui.resourcesList );
-        QString name = d->manager->agentInstanceName( instance );
-        if ( name.isEmpty() ) {
-            name = instance;
-        }
-        item->setData( 0, Qt::UserRole, instance );
-        item->setText( 0, name );
-    }
-}
-
-void ResourcesManagementWidget::updateButtonState()
-{
-    if ( !d->ui.resourcesList->currentItem() ) {
+    if ( current.isEmpty() ) {
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
     } else {
@@ -168,16 +147,17 @@ void ResourcesManagementWidget::addClicked( QAction *action )
 
 void ResourcesManagementWidget::editClicked()
 {
-    Q_ASSERT( d->ui.resourcesList->currentItem() );
-    QString current = d->ui.resourcesList->currentItem()->data( 0, Qt::UserRole ).toString();
-    d->manager->agentInstanceConfigure( current, this );
+    QString current = d->ui.resourcesList->currentAgentInstance();
+    if ( !current.isEmpty() )
+        d->manager->agentInstanceConfigure( current, this );
 }
 
 void ResourcesManagementWidget::removeClicked()
 {
-    Q_ASSERT( d->ui.resourcesList->currentItem() );
-    QString current = d->ui.resourcesList->currentItem()->data( 0, Qt::UserRole ).toString();
-    d->manager->removeAgentInstance( current );
+    QString current = d->ui.resourcesList->currentAgentInstance();
+    if ( !current.isEmpty() )
+        d->manager->removeAgentInstance( current );
+    updateButtonState();
 }
 
 #include "resourcesmanagementwidget.moc"

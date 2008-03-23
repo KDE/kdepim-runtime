@@ -51,8 +51,7 @@ public:
     virtual ~ResourcesManagementWidget();
 
 private Q_SLOTS:
-    void fillResourcesList();
-    void updateButtonState();
+    void updateButtonState( const QString& = QString() );
     void addClicked( QAction* );
     void editClicked();
     void removeClicked();

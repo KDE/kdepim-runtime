@@ -51,30 +51,7 @@
     </widget>
    </item>
    <item rowspan="5" row="0" column="0" >
-    <widget class="QTreeWidget" name="resourcesList" >
-     <property name="alternatingRowColors" >
-      <bool>true</bool>
-     </property>
-     <property name="rootIsDecorated" >
-      <bool>false</bool>
-     </property>
-     <property name="itemsExpandable" >
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled" >
-      <bool>true</bool>
-     </property>
-     <property name="allColumnsShowFocus" >
-      <bool>true</bool>
-     </property>
-     <property name="columnCount" >
-      <number>1</number>
-     </property>
-     <column>
-      <property name="text" >
-       <string>1</string>
-      </property>
-     </column>
+    <widget class="Akonadi::AgentInstanceView" name="resourcesList" >
     </widget>
    </item>
   </layout>
@@ -84,6 +61,12 @@
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
+  </customwidget>
+   <customwidget>
+   <class>Akonadi::AgentInstanceView</class>
+   <extends>QWidget</extends>
+   <header location="global" >akonadi/agentinstanceview.h</header>
+                              akonadi/agentinstanceview.h
   </customwidget>
  </customwidgets>
  <resources/>
