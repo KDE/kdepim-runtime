@@ -35,7 +35,7 @@ ItemBrowser::~ItemBrowser()
 
 void ItemBrowser::setItem( const Akonadi::Item &item )
 {
-  ItemDetailsView::setItem( item );
+  ItemMonitor::setItem( item );
 }
 
 void ItemBrowser::itemAdded( const Item &item )

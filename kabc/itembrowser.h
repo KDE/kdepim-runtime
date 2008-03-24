@@ -21,7 +21,7 @@
 #define AKONADI_ITEMBROWSER_H
 
 #include "akonadi-kabc_export.h"
-#include <akonadi/itemdetailsview.h>
+#include <akonadi/itemmonitor.h>
 #include <ktextbrowser.h>
 
 namespace Akonadi {
@@ -37,7 +37,7 @@ class Item;
  * @see KABCItemBrowser
  * @see KCalItemBrowser
  */
-class AKONADI_KABC_EXPORT ItemBrowser : public KTextBrowser, public ItemDetailsView
+class AKONADI_KABC_EXPORT ItemBrowser : public KTextBrowser, public ItemMonitor
 {
   Q_OBJECT
 

@@ -25,7 +25,7 @@
 #include <QtGui/QWidget>
 
 namespace Akonadi {
-class AgentInstanceView;
+class AgentInstanceWidget;
 class AgentManager;
 }
 
@@ -35,7 +35,7 @@ class AgentWidget : public QWidget
 
   public:
     AgentWidget( QWidget *parent = 0 );
-    Akonadi::AgentInstanceView *view() const { return mView; }
+    Akonadi::AgentInstanceWidget *widget() const { return mWidget; }
 
   private Q_SLOTS:
     void addAgent();
@@ -46,7 +46,7 @@ class AgentWidget : public QWidget
     void toggleOnline();
 
   private:
-    Akonadi::AgentInstanceView *mView;
+    Akonadi::AgentInstanceWidget *mWidget;
     Akonadi::AgentManager *mManager;
 };
 

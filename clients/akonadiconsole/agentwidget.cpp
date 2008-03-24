@@ -21,8 +21,8 @@
 
 #include "agentwidget.h"
 
-#include <akonadi/agenttypeview.h>
-#include <akonadi/agentinstanceview.h>
+#include <akonadi/agenttypewidget.h>
+#include <akonadi/agentinstancewidget.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
 
@@ -45,11 +45,11 @@ class Dialog : public QDialog
     {
       QVBoxLayout *layout = new QVBoxLayout( this );
 
-      mView = new Akonadi::AgentTypeView( this );
+      mWidget = new Akonadi::AgentTypeWidget( this );
 
       QDialogButtonBox *box = new QDialogButtonBox( this );
 
-      layout->addWidget( mView );
+      layout->addWidget( mWidget );
       layout->addWidget( box );
 
       QPushButton *ok = box->addButton( QDialogButtonBox::Ok );
@@ -64,7 +64,7 @@ class Dialog : public QDialog
     virtual void done( int result )
     {
       if ( result == Accepted )
-        mAgentType = mView->currentAgentType();
+        mAgentType = mWidget->currentAgentType();
       else
         mAgentType = QString();
 
@@ -77,7 +77,7 @@ class Dialog : public QDialog
     }
 
   private:
-    Akonadi::AgentTypeView *mView;
+    Akonadi::AgentTypeWidget *mWidget;
     QString mAgentType;
 };
 
@@ -88,10 +88,10 @@ AgentWidget::AgentWidget( QWidget *parent )
 
   QGridLayout *layout = new QGridLayout( this );
 
-  mView = new Akonadi::AgentInstanceView( this );
-  connect( mView, SIGNAL( doubleClicked( const QString& ) ), SLOT( configureAgent() ) );
+  mWidget = new Akonadi::AgentInstanceWidget( this );
+  connect( mWidget, SIGNAL( doubleClicked( const QString& ) ), SLOT( configureAgent() ) );
 
-  layout->addWidget( mView, 0, 0, 1, 6 );
+  layout->addWidget( mWidget, 0, 0, 1, 6 );
 
   QPushButton *button = new QPushButton( "Add...", this );
   connect( button, SIGNAL( clicked() ), this, SLOT( addAgent() ) );
@@ -134,35 +134,35 @@ void AgentWidget::addAgent()
 
 void AgentWidget::removeAgent()
 {
-  const QString agent = mView->currentAgentInstance();
+  const QString agent = mWidget->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->removeAgentInstance( agent );
 }
 
 void AgentWidget::configureAgent()
 {
-  const QString agent = mView->currentAgentInstance();
+  const QString agent = mWidget->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->agentInstanceConfigure( agent, this );
 }
 
 void AgentWidget::synchronizeAgent()
 {
-  const QString agent = mView->currentAgentInstance();
+  const QString agent = mWidget->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->agentInstanceSynchronize( agent );
 }
 
 void AgentWidget::toggleOnline()
 {
-  const QString agent = mView->currentAgentInstance();
+  const QString agent = mWidget->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->setAgentInstanceOnline( agent, !mManager->agentInstanceOnline( agent ) );
 }
 
 void AgentWidget::synchronizeTree()
 {
-  const QString agent = mView->currentAgentInstance();
+  const QString agent = mWidget->currentAgentInstance();
   if ( !agent.isEmpty() )
     mManager->agentInstanceSynchronizeCollectionTree( agent );
 }

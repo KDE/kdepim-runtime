@@ -51,7 +51,7 @@
     </widget>
    </item>
    <item rowspan="5" row="0" column="0" >
-    <widget class="Akonadi::AgentInstanceView" name="resourcesList" >
+    <widget class="Akonadi::AgentInstanceWidget" name="resourcesList" >
     </widget>
    </item>
   </layout>
@@ -63,10 +63,10 @@
    <header>kpushbutton.h</header>
   </customwidget>
    <customwidget>
-   <class>Akonadi::AgentInstanceView</class>
+   <class>Akonadi::AgentInstanceWidget</class>
    <extends>QWidget</extends>
-   <header location="global" >akonadi/agentinstanceview.h</header>
-                              akonadi/agentinstanceview.h
+   <header location="global" >akonadi/agentinstancewidget.h</header>
+                              akonadi/agentinstancewidget.h
   </customwidget>
  </customwidgets>
  <resources/>

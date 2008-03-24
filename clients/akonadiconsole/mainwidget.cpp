@@ -26,7 +26,7 @@
 #include "debugwidget.h"
 #include "searchdialog.h"
 
-#include <akonadi/agentinstanceview.h>
+#include <akonadi/agentinstancewidget.h>
 #include <akonadi/agentfilterproxymodel.h>
 #include <akonadi/standardactionmanager.h>
 #include <akonadi/searchcreatejob.h>
@@ -48,7 +48,7 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
 
   tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );
   AgentWidget *resView = new AgentWidget( tabWidget );
-  resView->view()->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
+  resView->widget()->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
   tabWidget->addTab( resView, "Resources" );
   BrowserWidget *browser = new BrowserWidget( parent, tabWidget );
   tabWidget->addTab( browser, "Browser" );
