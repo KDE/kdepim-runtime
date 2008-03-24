@@ -17,30 +17,45 @@
     02110-1301, USA.
 */
 
-#ifndef KABCITEMBROWSER_H
-#define KABCITEMBROWSER_H
-
-#include "akonadi-kabc_export.h"
 #include "itembrowser.h"
 
-namespace Akonadi {
-class Item;
+using namespace Akonadi;
+
+#include <akonadi/item.h>
+
+ItemBrowser::ItemBrowser( QWidget *parent )
+  : KTextBrowser( parent ), d( 0 )
+{
 }
 
-class AKONADI_KABC_EXPORT KABCItemBrowser : public Akonadi::ItemBrowser
+ItemBrowser::~ItemBrowser()
 {
-  public:
-    KABCItemBrowser( QWidget *parent = 0 );
-    virtual ~KABCItemBrowser();
+  // delete d;
+}
 
-  protected:
-    virtual QString itemToRichText( const Akonadi::Item &item );
+void ItemBrowser::setItem( const Akonadi::Item &item )
+{
+  ItemDetailsView::setItem( item );
+}
 
-  private:
-    class Private;
-    Private* const d;
+void ItemBrowser::itemAdded( const Item &item )
+{
+  setHtml( itemToRichText( item ) );
+}
 
-    Q_DISABLE_COPY( KABCItemBrowser )
-};
+void ItemBrowser::itemChanged( const Item &item )
+{
+  setHtml( itemToRichText( item ) );
+}
 
-#endif
+void ItemBrowser::itemRemoved()
+{
+  setHtml( QLatin1String( "<html><body><center>The watched item has been deleted</center></body></html>" ) );
+}
+
+QString ItemBrowser::itemToRichText( const Item &item )
+{
+  return QString::fromUtf8( item.part( Item::PartBody ) );
+}
+
+#include "itembrowser.moc"
