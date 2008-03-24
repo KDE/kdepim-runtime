@@ -121,7 +121,7 @@ void LocalBookmarksResource::itemRemoved(const Akonadi::Item & item)
 Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& parentCol )
 {
   Collection::List list;
-  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::collectionMimeType();
+  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
 
   for ( KBookmark it = parent.first(); !it.isNull(); it = parent.next( it ) ) {
     if ( !it.isGroup() )
@@ -132,7 +132,7 @@ Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& 
     col.setName( bkg.fullText() + '(' + bkg.address() + ')' ); // has to be unique
     col.setRemoteId( bkg.address() );
     col.setParent( parentCol );
-    col.setContentTypes( mimeTypes ); // ###
+    col.setContentMimeTypes( mimeTypes ); // ###
     list << col;
     list << listRecursive( bkg, col );
   }
@@ -147,8 +147,8 @@ void LocalBookmarksResource::retrieveCollections()
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "application/x-xbel" << Collection::collectionMimeType(); // ###
-  root.setContentTypes( mimeTypes );
+  mimeTypes << "application/x-xbel" << Collection::mimeType(); // ###
+  root.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
   list << root;

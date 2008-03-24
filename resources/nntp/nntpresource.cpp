@@ -83,8 +83,8 @@ void NntpResource::retrieveCollections()
   policy.setLocalParts( QStringList( Item::PartEnvelope ) );
   rootCollection.setCachePolicy( policy );
   QStringList contentTypes;
-  contentTypes << Collection::collectionMimeType();
-  rootCollection.setContentTypes( contentTypes );
+  contentTypes << Collection::mimeType();
+  rootCollection.setContentMimeTypes( contentTypes );
   remoteCollections << rootCollection;
 
   KUrl url = baseUrl();
@@ -109,7 +109,7 @@ void NntpResource::retrieveCollections()
 void NntpResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
 {
   Q_UNUSED( parts );
-  if ( !(col.contentTypes().count() == 1 && col.contentTypes().first() == "message/news" ) ) {
+  if ( !(col.contentMimeTypes().count() == 1 && col.contentMimeTypes().first() == "message/news" ) ) {
     // not a newsgroup, skip it
     itemsRetrieved();
     return;
@@ -144,7 +144,7 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
 
     Collection c;
     c.setRemoteId( name );
-    c.setContentTypes( contentTypes );
+    c.setContentMimeTypes( contentTypes );
 
     if ( Settings::self()->flatHierarchy() ) {
       c.setName( name );
@@ -305,8 +305,8 @@ QString NntpResource::findParent(const QStringList & _path)
   Collection parent;
   parent.setRemoteId( rid );
   QStringList ct;
-  ct << Collection::collectionMimeType();
-  parent.setContentTypes( ct );
+  ct << Collection::mimeType();
+  parent.setContentMimeTypes( ct );
   parent.setParentRemoteId( findParent( path ) );
   parent.setName( path.last() );
   remoteCollections << parent;

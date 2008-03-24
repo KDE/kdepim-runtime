@@ -114,7 +114,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
       KIO::UDSEntry entry;
       entry.insert( KIO::UDSEntry::UDS_NAME, collection.name()  );
-      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::collectionMimeType() );
+      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
       entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
       entry.insert( KIO::UDSEntry::UDS_URL, url.url() );
       statEntry( entry );
@@ -200,7 +200,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     kDebug( 7129 ) <<"Collection (" << col.id() <<"," << col.name() <<")";
     entry.clear();
     entry.insert( KIO::UDSEntry::UDS_NAME, col.name() );
-    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::collectionMimeType() );
+    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
     entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
     entry.insert( KIO::UDSEntry::UDS_URL, col.url().url() );
     listEntry( entry, false );

@@ -194,7 +194,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
 Collection::List listRecursive( const Collection &root, const Maildir &dir )
 {
   Collection::List list;
-  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::collectionMimeType();
+  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
   foreach ( const QString sub, dir.subFolderList() ) {
     const QString path = maildirSubdirPath( root.remoteId(), sub );
     Maildir md( path );
@@ -204,7 +204,7 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
     c.setName( sub );
     c.setRemoteId( path );
     c.setParent( root );
-    c.setContentTypes( mimeTypes );
+    c.setContentMimeTypes( mimeTypes );
     list << c;
     list += listRecursive( c, md );
   }
@@ -225,8 +225,8 @@ void MaildirResource::retrieveCollections()
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "message/rfc822" << Collection::collectionMimeType();
-  root.setContentTypes( mimeTypes );
+  mimeTypes << "message/rfc822" << Collection::mimeType();
+  root.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
   list << root;

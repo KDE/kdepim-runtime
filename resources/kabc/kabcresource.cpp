@@ -287,7 +287,7 @@ void KABCResource::retrieveCollections()
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/directory" );
-  c.setContentTypes( mimeTypes );
+  c.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
   list << c;

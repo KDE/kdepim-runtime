@@ -130,7 +130,7 @@ void VCardResource::retrieveCollections()
   c.setName( name() );
   QStringList mimeTypes;
   mimeTypes << "text/directory";
-  c.setContentTypes( mimeTypes );
+  c.setContentMimeTypes( mimeTypes );
   Collection::List list;
   list << c;
   collectionsRetrieved( list );

@@ -35,13 +35,13 @@ void CollectionInternalsPage::load(const Akonadi::Collection & col)
   ui.idLabel->setText( QString::number( col.id() ) );
   ui.ridEdit->setText( col.remoteId() );
   ui.resourceLabel->setText( col.resource() );
-  ui.contentTypes->setItems( col.contentTypes() );
+  ui.contentTypes->setItems( col.contentMimeTypes() );
 }
 
 void CollectionInternalsPage::save(Akonadi::Collection & col)
 {
   col.setRemoteId( ui.ridEdit->text() );
-  col.setContentTypes( ui.contentTypes->items() );
+  col.setContentMimeTypes( ui.contentTypes->items() );
 }
 
 #include "collectioninternalspage.moc"

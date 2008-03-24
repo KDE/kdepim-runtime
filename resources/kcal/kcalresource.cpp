@@ -222,7 +222,7 @@ void KCalResource::retrieveCollections()
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
-  c.setContentTypes( mimeTypes );
+  c.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
   list << c;

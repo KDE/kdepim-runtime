@@ -148,7 +148,7 @@ void ICalResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
   mimeTypes += mMimeVisitor->allMimeTypes();
-  c.setContentTypes( mimeTypes );
+  c.setContentMimeTypes( mimeTypes );
   Collection::List list;
   list << c;
   collectionsRetrieved( list );

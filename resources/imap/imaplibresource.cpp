@@ -204,7 +204,7 @@ static QString findParent( QHash<QString, Collection> &collections, const Collec
     c.setName( path.last() );
     c.setRemoteId( id );
     c.setParentRemoteId( findParent( collections, root, path ) );
-    c.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+    c.setContentMimeTypes( QStringList( Collection::mimeType() ) );
     collections.insert( id, c );
     return c.remoteId();
 }
@@ -213,12 +213,12 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 {
     QHash<QString, Collection> collections;
     QStringList contentTypes;
-    contentTypes << "message/rfc822" << Collection::collectionMimeType();
+    contentTypes << "message/rfc822" << Collection::mimeType();
 
     Collection root;
     root.setName( m_server + '/' + m_username );
     root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
-    root.setContentTypes( QStringList( Collection::collectionMimeType() ) );
+    root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
 
     CachePolicy policy;
     policy.setInheritFromParent( false );
@@ -239,7 +239,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
         }
         c.setRemoteId( *it );
         c.setRights( Collection::AllRights );
-        c.setContentTypes( contentTypes );
+        c.setContentMimeTypes( contentTypes );
         c.setParentRemoteId( findParent( collections, root, path ) );
 
         kDebug( ) << "ADDING: " << ( *it );
