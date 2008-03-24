@@ -79,7 +79,7 @@ void NntpResource::retrieveCollections()
   rootCollection.setName( Settings::self()->name() );
   CachePolicy policy;
   policy.setInheritFromParent( false );
-  policy.enableSyncOnDemand( true );
+  policy.setSyncOnDemand( true );
   policy.setLocalParts( QStringList( Item::PartEnvelope ) );
   rootCollection.setCachePolicy( policy );
   QStringList contentTypes;

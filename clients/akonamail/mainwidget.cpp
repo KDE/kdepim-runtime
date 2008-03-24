@@ -56,7 +56,7 @@ MainWidget::MainWidget( MainWindow * parent) :
            SLOT(collectionClicked(const Akonadi::Collection &)) );
   CollectionStatisticsDelegate *collectionDelegate =
                            new CollectionStatisticsDelegate( mCollectionList );
-  collectionDelegate->toggleUnreadAfterFolderName( true ); //For testing, should be toggleable columns eventually
+  collectionDelegate->setUnreadCountShown( true ); //For testing, should be toggleable columns eventually
   mCollectionList->setItemDelegate( collectionDelegate );
   splitter->addWidget( mCollectionList );
   // Filter the collection to only show the emails

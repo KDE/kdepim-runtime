@@ -222,7 +222,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 
     CachePolicy policy;
     policy.setInheritFromParent( false );
-    policy.enableSyncOnDemand( true );
+    policy.setSyncOnDemand( true );
     root.setCachePolicy( policy );
 
     collections.insert( root.remoteId(), root );
