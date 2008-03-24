@@ -102,7 +102,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( addMenu, SIGNAL( triggered( QAction* ) ), SLOT( addClicked( QAction* ) ) );
 
     foreach( const QString& type, d->wantedMimeTypes )
-        d->ui.resourcesList->agentFilterProxyModel()->addMimeType( type );
+        d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList, SIGNAL( currentChanged( const QString&, const QString& ) ),
              SLOT( updateButtonState( const QString& ) ) );
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const QString& ) ),

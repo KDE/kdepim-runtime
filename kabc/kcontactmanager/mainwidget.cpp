@@ -51,9 +51,9 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
   mCollectionModel = new Akonadi::CollectionModel( this );
 
   mCollectionFilterModel = new Akonadi::CollectionFilterProxyModel();
-  mCollectionFilterModel->addMimeType( "text/x-vcard" );
-  mCollectionFilterModel->addMimeType( "text/directory" );
-  mCollectionFilterModel->addMimeType( "text/vcard" );
+  mCollectionFilterModel->addMimeTypeFilter( "text/x-vcard" );
+  mCollectionFilterModel->addMimeTypeFilter( "text/directory" );
+  mCollectionFilterModel->addMimeTypeFilter( "text/vcard" );
   mCollectionFilterModel->setSourceModel( mCollectionModel );
 
   // display collections sorted

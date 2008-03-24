@@ -89,7 +89,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   connect( itemUi.modelBox, SIGNAL(activated(int)), SLOT(modelChanged()) );
   modelChanged();
 
-  itemUi.itemView->setKXmlGuiWindow( xmlGuiWindow );
+  itemUi.itemView->setXmlGuiWindow( xmlGuiWindow );
   itemUi.itemView->setModel( mItemModel );
   itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );

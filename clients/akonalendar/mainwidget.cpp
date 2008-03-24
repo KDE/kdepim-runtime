@@ -59,7 +59,7 @@ MainWidget::MainWidget( MainWindow* parent )
     mCollectionModel = new Akonadi::CollectionModel( this );
     mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
     mCollectionProxyModel->setSourceModel( mCollectionModel );
-    mCollectionProxyModel->addMimeType( QString::fromLatin1( "text/calendar" ) );
+    mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "text/calendar" ) );
 
     // display collections sorted
     QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );

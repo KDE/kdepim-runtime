@@ -22,7 +22,7 @@
 
 #include "kabc/kabcitemeditor.h"
 
-#include <akonadi/collectioncombobox.h>
+#include "collectioncombobox.h"
 #include <akonadi/item.h>
 
 #include <klocale.h>
@@ -45,7 +45,7 @@ ContactEditorDialog::ContactEditorDialog( Mode mode, QAbstractItemModel *collect
 
   if ( mode == CreateMode ) {
      QLabel *label = new QLabel( i18n( "Add to:" ), mainWidget );
-     Akonadi::CollectionComboBox *box = new Akonadi::CollectionComboBox( mainWidget );
+     KABC::CollectionComboBox *box = new KABC::CollectionComboBox( mainWidget );
      if ( collectionModel )
        box->setModel( collectionModel );
 

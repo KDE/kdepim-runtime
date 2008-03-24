@@ -63,7 +63,7 @@ MainWidget::MainWidget( MainWindow * parent) :
   mCollectionModel = new Akonadi::CollectionStatisticsModel( this );
   mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
   mCollectionProxyModel->setSourceModel( mCollectionModel );
-  mCollectionProxyModel->addMimeType( QString::fromLatin1( "message/rfc822" ) );
+  mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "message/rfc822" ) );
 
   // display collections sorted
   QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
