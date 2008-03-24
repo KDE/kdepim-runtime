@@ -110,20 +110,6 @@ void MaildirResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.exec();
-  /*
-  QString oldDir = Settings::self()->path();
-  KUrl url;
-  if ( !oldDir.isEmpty() )
-    url = KUrl::fromPath( oldDir );
-  else
-    url = KUrl::fromPath( QDir::homePath() );
-  QString newDir = KFileDialog::getExistingDirectory( url, 0, i18n("Select Mail Directory") );
-  if ( newDir.isEmpty() )
-    return;
-  if ( oldDir == newDir )
-    return;
-  Settings::self()->setPath( newDir );
-  */
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
@@ -239,6 +225,7 @@ void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStri
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {
     error( i18n("Invalid maildir: %1", col.remoteId() ) );
+    itemsRetrieved( Item::List() );
     return;
   }
   QStringList entryList = md.entryList();
