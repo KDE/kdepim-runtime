@@ -1,5 +1,5 @@
-add_subdirectory( knut )
 if ( XSLTPROC_EXECUTABLE )
+  add_subdirectory( knut )
   add_subdirectory( ical )
   add_subdirectory( maildir )
   add_subdirectory( nntp )
