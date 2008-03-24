@@ -393,7 +393,7 @@ void MailThreaderAgent::collectionChanged( const Akonadi::Collection &col )
 
   Collection c( col );
   MailThreaderAttribute *a = c.attribute<MailThreaderAttribute>( Collection::AddIfMissing );
-  a->setData( QByteArray() );
+  a->deserialize( QByteArray() );
   CollectionModifyJob *job = new CollectionModifyJob( c );
   if ( !job->exec() )
     kDebug( 5258 ) << "Unable to modify collection";

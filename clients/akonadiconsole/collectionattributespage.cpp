@@ -54,7 +54,7 @@ void CollectionAttributePage::load(const Collection & col)
     mModel->setData( index, QString::fromLatin1( list[i]->type() ) );
     index = mModel->index( i, 1 );
     Q_ASSERT( index.isValid() );
-    mModel->setData( index, QString::fromLatin1( list[i]->toByteArray() ) );
+    mModel->setData( index, QString::fromLatin1( list[i]->serialized() ) );
     mModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mModel->flags( index ) );
   }
   ui.attrView->setModel( mModel );
@@ -70,7 +70,7 @@ void CollectionAttributePage::save(Collection & col)
     Q_ASSERT( valueIndex.isValid() );
     Attribute* attr = AttributeFactory::createAttribute( mModel->data( typeIndex ).toString().toLatin1() );
     Q_ASSERT( attr );
-    attr->setData( mModel->data( valueIndex ).toString().toLatin1() );
+    attr->deserialize( mModel->data( valueIndex ).toString().toLatin1() );
     col.addAttribute( attr );
   }
 }

@@ -172,7 +172,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
       mAttrModel->setData( index, QString::fromLatin1( list[i]->type() ) );
       index = mAttrModel->index( i, 1 );
       Q_ASSERT( index.isValid() );
-      mAttrModel->setData( index, QString::fromLatin1( list[i]->toByteArray() ) );
+      mAttrModel->setData( index, QString::fromLatin1( list[i]->serialized() ) );
       mAttrModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mAttrModel->flags( index ) );
     }
     contentUi.attrView->setModel( mAttrModel );
@@ -219,7 +219,7 @@ void BrowserWidget::save()
     Q_ASSERT( valueIndex.isValid() );
     Attribute* attr = AttributeFactory::createAttribute( mAttrModel->data( typeIndex ).toString().toLatin1() );
     Q_ASSERT( attr );
-    attr->setData( mAttrModel->data( valueIndex ).toString().toLatin1() );
+    attr->deserialize( mAttrModel->data( valueIndex ).toString().toLatin1() );
     item.addAttribute( attr );
   }
 

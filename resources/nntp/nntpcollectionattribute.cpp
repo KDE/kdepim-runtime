@@ -39,13 +39,13 @@ NntpCollectionAttribute * NntpCollectionAttribute::clone() const
   return attr;
 }
 
-QByteArray NntpCollectionAttribute::toByteArray() const
+QByteArray NntpCollectionAttribute::serialized() const
 {
   QByteArray data = QByteArray::number( mLastArticleId );
   return data;
 }
 
-void NntpCollectionAttribute::setData(const QByteArray & data)
+void NntpCollectionAttribute::deserialize(const QByteArray & data)
 {
   mLastArticleId = data.toInt();
 }

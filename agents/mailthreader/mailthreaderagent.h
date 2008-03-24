@@ -38,9 +38,9 @@ class MailThreaderAttribute : public Attribute
     }
 
     QByteArray type() const { return "MailThreaderSort"; }
-    QByteArray toByteArray() const { return mData; }
+    QByteArray serialized() const { return mData; }
 
-    void setData( const QByteArray &data ) { mData = data; }
+    void deserialize( const QByteArray &data ) { mData = data; }
   private:
     QByteArray mData;
 };
