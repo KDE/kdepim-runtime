@@ -13,6 +13,7 @@ set( kcalakonadi_LIB_SRC
      kcalmimetypevisitor.cpp
      kcalmodel.cpp
      kcalitembrowser.cpp
+     itembrowser.cpp
 )
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
