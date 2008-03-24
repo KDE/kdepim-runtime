@@ -95,7 +95,7 @@ bool List::handleLine(const QByteArray& line )
             if ( loc.isValid() )
               list += HandlerHelper::pathForCollection( loc ).toUtf8();
             else
-              list += loc.name().toUtf8(); // search folder
+              list += loc.name(); // search folder
             list += "\"";
             response.setString( list );
             emit responseAvailable( response );
