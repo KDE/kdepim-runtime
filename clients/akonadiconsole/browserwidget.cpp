@@ -206,7 +206,7 @@ void BrowserWidget::save()
   Item item = mCurrentItem;
   item.setRemoteId( contentUi.remoteId->text() );
   foreach ( const Item::Flag f, mCurrentItem.flags() )
-    item.unsetFlag( f );
+    item.clearFlag( f );
   foreach ( const QString s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
   item.addPart( Item::PartBody, data );
