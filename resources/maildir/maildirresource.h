@@ -49,8 +49,6 @@ class MaildirResource : public Akonadi::ResourceBase
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
-  private:
-    static QByteArray readHeader( const QString &fileName );
 };
 
 #endif
