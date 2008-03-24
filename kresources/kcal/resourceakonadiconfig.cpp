@@ -53,7 +53,7 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   CollectionModel *sourceModel = new CollectionModel( this );
 
   CollectionFilterProxyModel *filterModel = new CollectionFilterProxyModel( this );
-  filterModel->addMimeType( QLatin1String( "text/calendar" ) );
+  filterModel->addMimeTypeFilter( QLatin1String( "text/calendar" ) );
   filterModel->setSourceModel( sourceModel );
 
   mView->setModel( filterModel );
