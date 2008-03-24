@@ -19,6 +19,8 @@
 
 #include "collectioninternalspage.h"
 
+#include <akonadi/collection.h>
+
 using namespace Akonadi;
 
 CollectionInternalsPage::CollectionInternalsPage(QWidget * parent) :

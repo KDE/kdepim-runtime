@@ -392,7 +392,7 @@ void MailThreaderAgent::collectionChanged( const Akonadi::Collection &col )
   threadCollection( col );
 
   Collection c( col );
-  MailThreaderAttribute *a = c.attribute<MailThreaderAttribute>( true );
+  MailThreaderAttribute *a = c.attribute<MailThreaderAttribute>( Collection::AddIfMissing );
   a->setData( QByteArray() );
   CollectionModifyJob *job = new CollectionModifyJob( c );
   if ( !job->exec() )

@@ -21,6 +21,7 @@
 #include "out.h"
 
 #include <akonadi/collectionpathresolver.h>
+#include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
 
 using namespace Akonadi;

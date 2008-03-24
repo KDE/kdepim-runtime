@@ -20,6 +20,7 @@
 #include "collectionattributespage.h"
 
 #include <akonadi/attributefactory.h>
+#include <akonadi/collection.h>
 
 #include <kdebug.h>
 #include <klocale.h>

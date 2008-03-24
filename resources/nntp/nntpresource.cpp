@@ -24,8 +24,10 @@
 #include "settingsadaptor.h"
 
 #include <akonadi/attributefactory.h>
+#include <akonadi/cachepolicy.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemcreatejob.h>
+#include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <akonadi/changerecorder.h>
 
@@ -49,7 +51,7 @@ NntpResource::NntpResource(const QString & id)
   : ResourceBase( id )
 {
   AttributeFactory::registerAttribute<NntpCollectionAttribute>();
-  monitor()->fetchCollection( true );
+  changeRecorder()->fetchCollection( true );
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
@@ -227,7 +229,7 @@ void NntpResource::listGroupResult(KJob * job)
   } else {
     // store last serial number
     Collection col = currentCollection();
-    NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>( true );
+    NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>( Collection::AddIfMissing );
     KIO::Job *j = static_cast<KIO::Job*>( job );
     if ( j->metaData().contains( "LastSerialNumber" ) )
       attr->setLastArticle( j->metaData().value("LastSerialNumber").toInt() );

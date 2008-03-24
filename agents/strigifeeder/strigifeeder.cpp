@@ -20,6 +20,7 @@
 #include "strigifeeder.h"
 
 #include <akonadi/changerecorder.h>
+#include <akonadi/item.h>
 
 #include <kdebug.h>
 #include <kurl.h>
@@ -31,9 +32,9 @@ using namespace Akonadi;
 StrigiFeeder::StrigiFeeder(const QString & id) :
     AgentBase( id )
 {
-  monitor()->monitorAll();
-  monitor()->addFetchPart( Item::PartBody );
-  monitor()->setChangeRecordingEnabled( false );
+  changeRecorder()->monitorAll();
+  changeRecorder()->addFetchPart( Item::PartBody );
+  changeRecorder()->setChangeRecordingEnabled( false );
 }
 
 void StrigiFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)

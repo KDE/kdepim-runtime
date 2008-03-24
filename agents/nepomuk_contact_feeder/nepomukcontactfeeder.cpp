@@ -22,6 +22,7 @@
 #include <kabc/addressee.h>
 
 #include <akonadi/changerecorder.h>
+#include <akonadi/item.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>
@@ -48,9 +49,9 @@ using namespace Akonadi;
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : AgentBase( id )
 {
-  monitor()->fetchAllParts();
-  monitor()->monitorMimeType( "text/directory" );
-  monitor()->setChangeRecordingEnabled( false );
+  changeRecorder()->fetchAllParts();
+  changeRecorder()->monitorMimeType( "text/directory" );
+  changeRecorder()->setChangeRecordingEnabled( false );
 }
 
 void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )

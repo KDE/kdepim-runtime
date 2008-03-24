@@ -39,6 +39,7 @@
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+#include <akonadi/cachepolicy.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
@@ -51,7 +52,7 @@ using namespace Akonadi;
 ImaplibResource::ImaplibResource( const QString &id )
         :ResourceBase( id ), m_retrieveItemsRequested( false )
 {
-    monitor()->fetchCollection( true );
+    changeRecorder()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
             Settings::self(), QDBusConnection::ExportAdaptors );

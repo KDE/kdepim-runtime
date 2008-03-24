@@ -21,6 +21,7 @@
 #define MAILTHREADERAGENT_H
 
 #include <akonadi/agentbase.h>
+#include <akonadi/attribute.h>
 
 #include <QList>
 

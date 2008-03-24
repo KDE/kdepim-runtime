@@ -128,7 +128,7 @@ void MainWidget::itemFetchDone(KJob * job)
 
 void MainWidget::threadCollection()
 {
-  MailThreaderAttribute *a = mCurrentCollection.attribute<MailThreaderAttribute>( true );
+  MailThreaderAttribute *a = mCurrentCollection.attribute<MailThreaderAttribute>( Collection::AddIfMissing );
   a->setData( QByteArray( "sort" ) );
   CollectionModifyJob *job = new CollectionModifyJob( mCurrentCollection );
   if ( !job->exec() )
