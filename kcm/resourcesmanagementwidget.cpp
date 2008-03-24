@@ -105,10 +105,9 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
         d->ui.resourcesList->agentFilterProxyModel()->addMimeType( type );
     connect( d->ui.resourcesList, SIGNAL( currentChanged( const QString&, const QString& ) ),
              SLOT( updateButtonState( const QString& ) ) );
-/*  TODO: Fix 
-    connect( d->ui.resourcesList, SIGNAL( itemDoubleClicked( QTreeWidgetItem*, int ) ),
+    connect( d->ui.resourcesList, SIGNAL( doubleClicked( const QString& ) ),
              SLOT( editClicked() ) );
-*/
+
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
