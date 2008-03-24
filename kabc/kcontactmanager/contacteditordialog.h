@@ -23,9 +23,12 @@
 
 #include <kdialog.h>
 
-#include <akonadi/item.h>
+namespace Akonadi {
+  class Item;
+  class KABCItemEditor;
+}
 
-class KABCItemEditor;
+class QAbstractItemModel;
 
 class ContactEditorDialog : public KDialog
 {
@@ -70,7 +73,7 @@ class ContactEditorDialog : public KDialog
     void slotCancelClicked();
 
   private:
-    KABCItemEditor *mEditor;    
+    Akonadi::KABCItemEditor *mEditor;
 };
 
 #endif

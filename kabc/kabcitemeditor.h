@@ -24,9 +24,9 @@
 #include <QtGui/QWidget>
 
 namespace Akonadi {
+
 class Collection;
 class Item;
-}
 
 class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 {
@@ -56,7 +56,7 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
     /**
      * Loads the @p contact into the editor.
      */
-    void loadContact( const Akonadi::Item &contact );
+    void loadContact( const Item &contact );
 
     /**
      * Saves the contact from the editor back to the storage.
@@ -67,14 +67,14 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
      * Sets the @p collection which shall be used to store new
      * contacts.
      */
-    void setDefaultCollection( const Akonadi::Collection &collection );
+    void setDefaultCollection( const Collection &collection );
 
   Q_SIGNALS:
     /**
      * This signal is emitted when the @p contact has been saved back
      * to the storage.
      */
-    void contactStored( const Akonadi::Item &contact );
+    void contactStored( const Item &contact );
 
     /**
      * This signal is emitted when an error occurred during the save.
@@ -91,7 +91,9 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 
     Q_PRIVATE_SLOT( d, void fetchDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void storeDone( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QStringList& ) )
+    Q_PRIVATE_SLOT( d, void itemChanged( const Item&, const QStringList& ) )
 };
+
+}
 
 #endif

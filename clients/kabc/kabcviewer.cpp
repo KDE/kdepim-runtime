@@ -39,7 +39,7 @@ Dialog::Dialog( QWidget *parent )
   QWidget *wdg = new QWidget( this );
   QVBoxLayout *layout = new QVBoxLayout( wdg );
 
-  mBrowser = new KABCItemBrowser( wdg );
+  mBrowser = new Akonadi::KABCItemBrowser( wdg );
   layout->addWidget( mBrowser );
 
   setMainWidget( wdg );

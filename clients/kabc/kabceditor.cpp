@@ -43,7 +43,7 @@ Dialog::Dialog( QWidget *parent )
   QWidget *wdg = new QWidget( this );
   QGridLayout *layout = new QGridLayout( wdg );
 
-  mEditor = new KABCItemEditor( KABCItemEditor::EditMode, wdg );
+  mEditor = new Akonadi::KABCItemEditor( Akonadi::KABCItemEditor::EditMode, wdg );
   layout->addWidget( mEditor, 0, 0, 1, 3 );
 
   QLabel *label = new QLabel( "Item Id:", wdg );

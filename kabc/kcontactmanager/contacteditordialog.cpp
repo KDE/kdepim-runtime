@@ -18,15 +18,17 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
-
-#include <klocale.h>
-#include <akonadi/collectioncombobox.h>
+#include "contacteditordialog.h"
 
 #include "kabc/kabcitemeditor.h"
 
-#include "contacteditordialog.h"
+#include <akonadi/collectioncombobox.h>
+#include <akonadi/item.h>
+
+#include <klocale.h>
+
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
 
 ContactEditorDialog::ContactEditorDialog( Mode mode, QAbstractItemModel *collectionModel, QWidget *parent )
   : KDialog( parent )
@@ -39,8 +41,7 @@ ContactEditorDialog::ContactEditorDialog( Mode mode, QAbstractItemModel *collect
 
   QGridLayout *layout = new QGridLayout( mainWidget );
 
-  mEditor = new KABCItemEditor( mode == CreateMode ? KABCItemEditor::CreateMode : KABCItemEditor::EditMode,
-                                this );
+  mEditor = new Akonadi::KABCItemEditor( mode == CreateMode ? Akonadi::KABCItemEditor::CreateMode : Akonadi::KABCItemEditor::EditMode, this );
 
   if ( mode == CreateMode ) {
      QLabel *label = new QLabel( i18n( "Add to:" ), mainWidget );

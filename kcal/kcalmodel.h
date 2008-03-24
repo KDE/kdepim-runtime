@@ -23,18 +23,20 @@
 #include "akonadi-kcal_export.h"
 #include <akonadi/itemmodel.h>
 
-class AKONADI_KCAL_EXPORT KCalModel : public Akonadi::ItemModel
+namespace Akonadi {
+
+class AKONADI_KCAL_EXPORT KCalModel : public ItemModel
 {
   public:
     enum Column {
       Summary,
       DateTimeStart,
       DateTimeEnd,
-      Type 
+      Type
     };
 
     KCalModel( QObject *parent = 0 );
-    
+
     virtual ~KCalModel();
 
     virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -45,6 +47,8 @@ class AKONADI_KCAL_EXPORT KCalModel : public Akonadi::ItemModel
     class Private;
     Private* const d;
 };
+
+}
 
 #endif
 

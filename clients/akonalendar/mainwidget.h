@@ -45,16 +45,16 @@ class MainWidget : public QWidget
 
     private:
       MainWindow *mMainWindow;
-      
+
       // Views
       Akonadi::CollectionView *mCollectionList;
       QTreeView *mIncidenceList;
-      KCalItemBrowser *mIncidenceViewer;
+      Akonadi::KCalItemBrowser *mIncidenceViewer;
 
       // Models
       Akonadi::CollectionModel *mCollectionModel;
       Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
-      KCalModel *mIncidenceModel;
+      Akonadi::KCalModel *mIncidenceModel;
 
 };
 

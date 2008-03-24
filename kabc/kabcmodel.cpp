@@ -23,6 +23,8 @@
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 
+using namespace Akonadi;
+
 class KABCModel::Private
 {
   public:
@@ -32,7 +34,7 @@ KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent ),
     d( new Private() )
 {
-  addFetchPart( Akonadi::Item::PartBody );
+  addFetchPart( Item::PartBody );
 }
 
 KABCModel::~KABCModel()
@@ -47,8 +49,8 @@ int KABCModel::columnCount( const QModelIndex& ) const
 
 QVariant KABCModel::data( const QModelIndex &index, int role ) const
 {
-  if ( role == Akonadi::ItemModel::IdRole )
-    return Akonadi::ItemModel::data( index, role );
+  if ( role == ItemModel::IdRole )
+    return ItemModel::data( index, role );
 
   if ( role != Qt::DisplayRole )
     return QVariant();
@@ -59,7 +61,7 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
   if ( index.row() >= rowCount() )
     return QVariant();
 
-  const Akonadi::Item item = itemForIndex( index );
+  const Item item = itemForIndex( index );
 
   if ( !item.hasPayload<KABC::Addressee>() )
     return QVariant();

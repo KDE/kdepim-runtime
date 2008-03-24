@@ -29,6 +29,8 @@
 
 static QString addresseeToHtml( const KABC::Addressee& );
 
+using namespace Akonadi;
+
 KABCItemBrowser::KABCItemBrowser( QWidget *parent )
   : ItemBrowser( parent ), d( 0 )
 {
@@ -38,7 +40,7 @@ KABCItemBrowser::~KABCItemBrowser()
 {
 }
 
-QString KABCItemBrowser::itemToRichText( const Akonadi::Item &item )
+QString KABCItemBrowser::itemToRichText( const Item &item )
 {
   static QPixmap defaultPixmap = KIcon( QLatin1String( "personal" ) ).pixmap( QSize( 100, 140 ) );
 

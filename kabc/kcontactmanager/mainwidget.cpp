@@ -64,7 +64,7 @@ MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
 
   mCollectionView->setModel( sortModel );
 
-  mContactModel = new KABCModel( this );
+  mContactModel = new Akonadi::KABCModel( this );
   mContactView->setModel( mContactModel );
 
   connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
@@ -92,7 +92,7 @@ void MainWidget::setupGui()
   mContactView = new Akonadi::ItemView;
   splitter->addWidget( mContactView );
 
-  mContactDetails = new KABCItemBrowser;
+  mContactDetails = new Akonadi::KABCItemBrowser;
   splitter->addWidget( mContactDetails );
 }
 

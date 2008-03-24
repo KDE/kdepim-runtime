@@ -25,16 +25,15 @@
 
 namespace Akonadi {
 class Item;
-}
 
-class AKONADI_KABC_EXPORT KABCItemBrowser : public Akonadi::ItemBrowser
+class AKONADI_KABC_EXPORT KABCItemBrowser : public ItemBrowser
 {
   public:
     KABCItemBrowser( QWidget *parent = 0 );
     virtual ~KABCItemBrowser();
 
   protected:
-    virtual QString itemToRichText( const Akonadi::Item &item );
+    virtual QString itemToRichText( const Item &item );
 
   private:
     class Private;
@@ -42,5 +41,7 @@ class AKONADI_KABC_EXPORT KABCItemBrowser : public Akonadi::ItemBrowser
 
     Q_DISABLE_COPY( KABCItemBrowser )
 };
+
+}
 
 #endif

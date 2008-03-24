@@ -25,16 +25,15 @@
 
 namespace Akonadi {
 class Item;
-}
 
-class AKONADI_KCAL_EXPORT KCalItemBrowser : public Akonadi::ItemBrowser
+class AKONADI_KCAL_EXPORT KCalItemBrowser : public ItemBrowser
 {
   public:
     KCalItemBrowser( QWidget *parent = 0 );
     virtual ~KCalItemBrowser();
 
   protected:
-    virtual QString itemToRichText( const Akonadi::Item &item );
+    virtual QString itemToRichText( const Item &item );
 
   private:
     class Private;
@@ -42,6 +41,8 @@ class AKONADI_KCAL_EXPORT KCalItemBrowser : public Akonadi::ItemBrowser
 
     Q_DISABLE_COPY( KCalItemBrowser )
 };
+
+}
 
 #endif
 

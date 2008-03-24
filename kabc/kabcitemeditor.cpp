@@ -34,6 +34,8 @@
 
 #include "ui_kabcitemeditor.h"
 
+using namespace Akonadi;
+
 class KABCItemEditor::Private
 {
   public:
@@ -49,7 +51,7 @@ class KABCItemEditor::Private
 
     void fetchDone( KJob* );
     void storeDone( KJob* );
-    void itemChanged( const Akonadi::Item &item, const QStringList& );
+    void itemChanged( const Item &item, const QStringList& );
 
     void loadContact( const KABC::Addressee &addr );
     void storeContact( KABC::Addressee &addr );
@@ -57,9 +59,9 @@ class KABCItemEditor::Private
 
     KABCItemEditor *mParent;
     KABCItemEditor::Mode mMode;
-    Akonadi::Item mItem;
-    Akonadi::Monitor *mMonitor;
-    Akonadi::Collection mDefaultCollection;
+    Item mItem;
+    Monitor *mMonitor;
+    Collection mDefaultCollection;
     Ui::KABCItemEditor gui;
 };
 
@@ -68,7 +70,7 @@ void KABCItemEditor::Private::fetchDone( KJob *job )
   if ( job->error() )
     return;
 
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
   if ( !fetchJob )
     return;
 
@@ -91,10 +93,10 @@ void KABCItemEditor::Private::storeDone( KJob *job )
   if ( mMode == EditMode )
     emit mParent->contactStored( mItem );
   else if ( mMode == CreateMode )
-    emit mParent->contactStored( static_cast<Akonadi::ItemCreateJob*>( job )->item() );
+    emit mParent->contactStored( static_cast<ItemCreateJob*>( job )->item() );
 }
 
-void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringList& )
+void KABCItemEditor::Private::itemChanged( const Item&, const QStringList& )
 {
   QMessageBox dlg( mParent );
 
@@ -103,8 +105,8 @@ void KABCItemEditor::Private::itemChanged( const Akonadi::Item&, const QStringLi
   dlg.addButton( QLatin1String( "Ignore and Overwrite changes" ), QMessageBox::RejectRole );
 
   if ( dlg.exec() == QMessageBox::AcceptRole ) {
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItem );
-    job->addFetchPart( Akonadi::Item::PartBody );
+    ItemFetchJob *job = new ItemFetchJob( mItem );
+    job->addFetchPart( Item::PartBody );
 
     mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
   }
@@ -253,11 +255,11 @@ void KABCItemEditor::Private::storeContact( KABC::Addressee &addr )
 void KABCItemEditor::Private::setupMonitor()
 {
   delete mMonitor;
-  mMonitor = new Akonadi::Monitor;
-  mMonitor->ignoreSession( Akonadi::Session::defaultSession() );
+  mMonitor = new Monitor;
+  mMonitor->ignoreSession( Session::defaultSession() );
 
-  connect( mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QStringList& ) ),
-           mParent, SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
+  connect( mMonitor, SIGNAL( itemChanged( const Item&, const QStringList& ) ),
+           mParent, SLOT( itemChanged( const Item&, const QStringList& ) ) );
 }
 
 
@@ -273,13 +275,13 @@ KABCItemEditor::~KABCItemEditor()
 {
 }
 
-void KABCItemEditor::loadContact( const Akonadi::Item &item )
+void KABCItemEditor::loadContact( const Item &item )
 {
   if ( d->mMode == CreateMode )
     Q_ASSERT_X( false, "KABCItemEditor::loadContact", "You are calling loadContact in CreateMode!" );
 
-  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-  job->addFetchPart( Akonadi::Item::PartBody );
+  ItemFetchJob *job = new ItemFetchJob( item );
+  job->addFetchPart( Item::PartBody );
 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 
@@ -299,7 +301,7 @@ void KABCItemEditor::saveContact()
 
     d->mItem.setPayload<KABC::Addressee>( addr );
 
-    Akonadi::ItemModifyJob *job = new Akonadi::ItemModifyJob( d->mItem );
+    ItemModifyJob *job = new ItemModifyJob( d->mItem );
     job->storePayload();
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   } else if ( d->mMode == CreateMode ) {
@@ -308,16 +310,16 @@ void KABCItemEditor::saveContact()
     KABC::Addressee addr;
     d->storeContact( addr );
 
-    Akonadi::Item item;
+    Item item;
     item.setPayload<KABC::Addressee>( addr );
     item.setMimeType( QLatin1String( "text/vcard" ) );
 
-    Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, d->mDefaultCollection );
+    ItemCreateJob *job = new ItemCreateJob( item, d->mDefaultCollection );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   }
 }
 
-void KABCItemEditor::setDefaultCollection( const Akonadi::Collection &collection )
+void KABCItemEditor::setDefaultCollection( const Collection &collection )
 {
   d->mDefaultCollection = collection;
 }

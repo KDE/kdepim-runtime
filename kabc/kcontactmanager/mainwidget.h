@@ -29,10 +29,10 @@ class CollectionModel;
 class CollectionView;
 class Item;
 class ItemView;
+class KABCItemBrowser;
+class KABCModel;
 }
 
-class KABCModel;
-class KABCItemBrowser;
 class KXMLGUIClient;
 
 class MainWidget : public QWidget
@@ -59,10 +59,10 @@ class MainWidget : public QWidget
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionFilterModel;
     Akonadi::ItemView *mContactView;
-    KABCItemBrowser *mContactDetails;
+    Akonadi::KABCItemBrowser *mContactDetails;
 
     Akonadi::CollectionView *mCollectionView;
-    KABCModel *mContactModel;
+    Akonadi::KABCModel *mContactModel;
 
     KXMLGUIClient *mGuiClient;
 };

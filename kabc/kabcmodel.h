@@ -23,7 +23,9 @@
 #include "akonadi-kabc_export.h"
 #include <akonadi/itemmodel.h>
 
-class AKONADI_KABC_EXPORT KABCModel : public Akonadi::ItemModel
+namespace Akonadi {
+
+class AKONADI_KABC_EXPORT KABCModel : public ItemModel
 {
   public:
     KABCModel( QObject *parent = 0 );
@@ -38,5 +40,7 @@ class AKONADI_KABC_EXPORT KABCModel : public Akonadi::ItemModel
     class Private;
     Private* const d;
 };
+
+}
 
 #endif

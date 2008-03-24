@@ -25,7 +25,10 @@
 #include "kdialog.h"
 
 class QLineEdit;
-class KABCItemEditor;
+
+namespace Akonadi {
+  class KABCItemEditor;
+}
 
 class Dialog : public KDialog
 {
@@ -40,7 +43,7 @@ class Dialog : public KDialog
     void save();
 
   private:
-    KABCItemEditor *mEditor;
+    Akonadi::KABCItemEditor *mEditor;
     QLineEdit *mId;
 };
 

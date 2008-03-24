@@ -33,16 +33,18 @@
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
+using namespace Akonadi;
+
 class KCalModel::Private
 {
   public:
 };
 
 KCalModel::KCalModel( QObject *parent )
-  : Akonadi::ItemModel( parent ),
+  : ItemModel( parent ),
     d( new Private() )
 {
-  addFetchPart( Akonadi::Item::PartBody );
+  addFetchPart( Item::PartBody );
 }
 
 KCalModel::~KCalModel()
@@ -57,13 +59,13 @@ int KCalModel::columnCount( const QModelIndex& ) const
 
 QVariant KCalModel::data( const QModelIndex &index,  int role ) const
 {
-  if ( role == Akonadi::ItemModel::IdRole )
-    return Akonadi::ItemModel::data( index, role );
+  if ( role == ItemModel::IdRole )
+    return ItemModel::data( index, role );
 
   if ( !index.isValid() || index.row() >= rowCount() )
     return QVariant();
 
-  const Akonadi::Item item = itemForIndex( index );
+  const Item item = itemForIndex( index );
 
   if ( !item.hasPayload<IncidencePtr>() )
     return QVariant();
