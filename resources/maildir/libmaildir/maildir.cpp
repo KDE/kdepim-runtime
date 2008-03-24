@@ -38,53 +38,53 @@ public:
     }
 
     Private( const QString& p, bool isRoot )
-    :path(p), isRoot(isRoot)
+        :path(p), isRoot(isRoot)
     {
     }
 
     Private( const Private& rhs )
     {
-      path = rhs.path;
+        path = rhs.path;
     }
 
     bool operator==( const Private& rhs ) const
     {
-      return path == rhs.path;
+        return path == rhs.path;
     }
     bool accessIsPossible( QString& error ) const;
     bool canAccess( const QString& path ) const;
 
     QStringList subPaths() const
     {
-      QStringList paths;
-      paths << path + QString::fromLatin1("/cur");
-      paths << path + QString::fromLatin1("/new");
-      paths << path + QString::fromLatin1("/tmp");
-      return paths;
+        QStringList paths;
+        paths << path + QString::fromLatin1("/cur");
+        paths << path + QString::fromLatin1("/new");
+        paths << path + QString::fromLatin1("/tmp");
+        return paths;
     }
 
     QStringList listNew() const
     {
-      QDir d( path + QString::fromLatin1("/new") );
-      return d.entryList(QDir::Files);
+        QDir d( path + QString::fromLatin1("/new") );
+        return d.entryList(QDir::Files);
     }
 
     QStringList listCurrent() const
     {
-      QDir d( path + QString::fromLatin1("/cur") );
-      return d.entryList(QDir::Files);
+        QDir d( path + QString::fromLatin1("/cur") );
+        return d.entryList(QDir::Files);
     }
 
     QString findRealKey( const QString& key ) const
     {
-      QString realKey = path + QString::fromLatin1("/new/") + key;
-      QFile f( realKey );
-      if ( !f.exists() )
-        realKey = path + QString::fromLatin1("/cur/") + key;
-      QFile f2( realKey );
-      if ( !f2.exists() )
-        realKey = QString();
-      return realKey;
+        QString realKey = path + QString::fromLatin1("/new/") + key;
+        QFile f( realKey );
+        if ( !f.exists() )
+            realKey = path + QString::fromLatin1("/cur/") + key;
+        QFile f2( realKey );
+        if ( !f2.exists() )
+            realKey = QString();
+        return realKey;
     }
 
     QString subDirPath() const
@@ -128,7 +128,7 @@ Maildir& Maildir::operator= (const Maildir & rhs)
 
 bool Maildir::operator== (const Maildir & rhs) const
 {
-  return *d == *rhs.d;
+    return *d == *rhs.d;
 }
 
 
@@ -139,44 +139,44 @@ Maildir::~Maildir()
 
 bool Maildir::Private::canAccess( const QString& path ) const
 {
-  //return access(QFile::encodeName( path ), R_OK | W_OK | X_OK ) != 0;
-  // FIXME X_OK?
-  QFileInfo d(path);
-  return d.isReadable() && d.isWritable();
+    //return access(QFile::encodeName( path ), R_OK | W_OK | X_OK ) != 0;
+    // FIXME X_OK?
+    QFileInfo d(path);
+    return d.isReadable() && d.isWritable();
 }
 
 bool Maildir::Private::accessIsPossible( QString& error ) const
 {
-  QStringList paths = subPaths();
-  paths.prepend( path );
+    QStringList paths = subPaths();
+    paths.prepend( path );
 
-  Q_FOREACH( QString p, paths )
-  {
-    if ( !QFile::exists(p) ) {
-      error = i18n("Error opening %1; this folder is missing.",p);
-      return false;
+    Q_FOREACH( QString p, paths )
+    {
+        if ( !QFile::exists(p) ) {
+            error = i18n("Error opening %1; this folder is missing.",p);
+            return false;
+        }
+        if ( !canAccess( p ) ) {
+            error = i18n("Error opening %1; either this is not a valid "
+                    "maildir folder, or you do not have sufficient access permissions." ,p);
+            return false;
+        }
     }
-    if ( !canAccess( p ) ) {
-      error = i18n("Error opening %1; either this is not a valid "
-                "maildir folder, or you do not have sufficient access permissions." ,p);
-      return false;
-    }
-  }
-  return true;
+    return true;
 }
 
 bool Maildir::isValid() const
 {
-  QString error;
-  return isValid( error );
+    QString error;
+    return isValid( error );
 }
 
 bool Maildir::isValid( QString &error ) const
 {
-  if ( d->accessIsPossible( error ) ) {
-    return true;
-  }
-  return false;
+    if ( d->accessIsPossible( error ) ) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -184,19 +184,19 @@ bool Maildir::create()
 {
     // FIXME: in a failure case, this will leave partially created dirs around
     // we should clean them up, but only if they didn't previously existed...
-  Q_FOREACH( QString p, d->subPaths() ) {
-    QDir dir( p );
-    if ( !dir.exists( p ) ) {
-      if ( !dir.mkpath( p ) )
-        return false;
+    Q_FOREACH( QString p, d->subPaths() ) {
+        QDir dir( p );
+        if ( !dir.exists( p ) ) {
+            if ( !dir.mkpath( p ) )
+                return false;
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 QString Maildir::path() const
 {
-  return d->path;
+    return d->path;
 }
 
 bool Maildir::addSubFolder( const QString& path )
@@ -205,10 +205,10 @@ bool Maildir::addSubFolder( const QString& path )
     // make the subdir dir
     QDir dir( d->path );
     if ( !d->isRoot ) {
-      dir.cdUp();
-      if (!dir.exists( d->subDirPath() ) )
-          dir.mkdir( d->subDirPath() );
-      dir.cd( d->subDirPath() );
+        dir.cdUp();
+        if (!dir.exists( d->subDirPath() ) )
+            dir.mkdir( d->subDirPath() );
+        dir.cd( d->subDirPath() );
     }
 
     const QString fullPath = dir.path() + '/' + path;
@@ -223,9 +223,9 @@ bool Maildir::removeSubFolder( const QString& folderName )
     if ( !isValid() ) return false;
     QDir dir( d->path );
     if ( !d->isRoot ) {
-      dir.cdUp();
-      if ( !dir.exists( d->subDirPath() ) ) return false;
-      dir.cd( d->subDirPath() );
+        dir.cdUp();
+        if ( !dir.exists( d->subDirPath() ) ) return false;
+        dir.cd( d->subDirPath() );
     }
     if ( !dir.exists( folderName ) ) return false;
 
@@ -239,10 +239,10 @@ Maildir Maildir::subFolder( const QString& subFolder )
         // make the subdir dir
         QDir dir( d->path );
         if ( !d->isRoot ) {
-          dir.cdUp();
-          if ( dir.exists( d->subDirPath() ) ) {
-              dir.cd( d->subDirPath() );
-          }
+            dir.cdUp();
+            if ( dir.exists( d->subDirPath() ) ) {
+                dir.cd( d->subDirPath() );
+            }
         }
         return Maildir( dir.path() + '/' + subFolder );
     }
@@ -251,131 +251,131 @@ Maildir Maildir::subFolder( const QString& subFolder )
 
 QStringList Maildir::entryList() const
 {
-  QStringList result;
-  if ( isValid() ) {
-    result += d->listNew();
-    result += d->listCurrent();
-  }
-//  kDebug() <<"Maildir::entryList()" << result;
-  return result;
+    QStringList result;
+    if ( isValid() ) {
+        result += d->listNew();
+        result += d->listCurrent();
+    }
+    //  kDebug() <<"Maildir::entryList()" << result;
+    return result;
 }
 
 
 QStringList Maildir::subFolderList() const
 {
-  QDir dir( d->path );
+    QDir dir( d->path );
 
-  // the root maildir has its subfolders directly beneath it
-  if ( !d->isRoot ) {
-    dir.cdUp();
-    if (!dir.exists( d->subDirPath() ) ) return QStringList();
-    dir.cd( d->subDirPath() );
-  }
-  dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
-  QStringList entries = dir.entryList();
-  entries.removeAll( "cur" );
-  entries.removeAll( "new" );
-  entries.removeAll( "tmp" );
-  return entries;
+    // the root maildir has its subfolders directly beneath it
+    if ( !d->isRoot ) {
+        dir.cdUp();
+        if (!dir.exists( d->subDirPath() ) ) return QStringList();
+        dir.cd( d->subDirPath() );
+    }
+    dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
+    QStringList entries = dir.entryList();
+    entries.removeAll( "cur" );
+    entries.removeAll( "new" );
+    entries.removeAll( "tmp" );
+    return entries;
 }
 
 QByteArray Maildir::readEntry( const QString& key ) const
 {
-  QByteArray result;
+    QByteArray result;
 
-  QString realKey( d->findRealKey( key ) );
-  if ( realKey.isEmpty() ) {
-      // FIXME error handling?
-      qWarning() << "Maildir::readEntry unable to find: " << key;
-      return result;
-  }
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::readEntry unable to find: " << key;
+        return result;
+    }
 
-  QFile f( realKey );
-  f.open( QIODevice::ReadOnly );
+    QFile f( realKey );
+    f.open( QIODevice::ReadOnly );
 
-  // FIXME be safer than this
-  result = f.readAll();
+    // FIXME be safer than this
+    result = f.readAll();
 
-  return result;
+    return result;
 }
 
 QByteArray Maildir::readEntryHeaders( const QString& key ) const
 {
-  QByteArray result;
+    QByteArray result;
 
-  QString realKey( d->findRealKey( key ) );
-  if ( realKey.isEmpty() ) {
-      // FIXME error handling?
-      qWarning() << "Maildir::readEntry unable to find: " << key;
-      return result;
-  }
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::readEntry unable to find: " << key;
+        return result;
+    }
 
-  QFile f( realKey );
-  if ( !f.open( QIODevice::ReadOnly ) ) {
-      // FIXME error handling?
-      qWarning() << "Maildir::readEntry unable to find: " << key;
-      return result;
-  }
-  forever {
-      QByteArray line = f.readLine();
-      if ( line.trimmed().isEmpty() )
-          break;
-      result.append( line );
-  }
-  return result;
+    QFile f( realKey );
+    if ( !f.open( QIODevice::ReadOnly ) ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::readEntry unable to find: " << key;
+        return result;
+    }
+    forever {
+        QByteArray line = f.readLine();
+        if ( line.trimmed().isEmpty() )
+            break;
+        result.append( line );
+    }
+    return result;
 }
 
 
 static QString createUniqueFileName()
 {
-  return QUuid::createUuid().toString();
+    return QUuid::createUuid().toString();
 }
 
 void Maildir::writeEntry( const QString& key, const QByteArray& data )
 {
-  QString realKey( d->findRealKey( key ) );
-  if ( realKey.isEmpty() ) {
-      // FIXME error handling?
-      qWarning() << "Maildir::writeEntry unable to find: " << key;
-      return;
-  }
-  QFile f( realKey );
-  f.open( QIODevice::WriteOnly );
-  f.write( data );
-  f.close();
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::writeEntry unable to find: " << key;
+        return;
+    }
+    QFile f( realKey );
+    f.open( QIODevice::WriteOnly );
+    f.write( data );
+    f.close();
 }
 
 QString Maildir::addEntry( const QByteArray& data )
 {
-  QString uniqueKey( createUniqueFileName() );
-  QString key( d->path + "/tmp/" + uniqueKey );
-  QString finalKey( d->path + "/new/" + uniqueKey );
-  QFile f( key );
-  f.open( QIODevice::WriteOnly );
-  f.write( data );
-  f.close();
-  /*
-   * FIXME:
-   *
-   * THe whole point of the locking free maildir idea is that the moves between
-   * the internal directories are atomic. Afaik QFile::rename does not guarantee
-   * that, so this will need to be done properly. - ta
-   */
-  if (!f.rename( finalKey )) {
-    qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
-  }
-  return uniqueKey;
+    QString uniqueKey( createUniqueFileName() );
+    QString key( d->path + "/tmp/" + uniqueKey );
+    QString finalKey( d->path + "/new/" + uniqueKey );
+    QFile f( key );
+    f.open( QIODevice::WriteOnly );
+    f.write( data );
+    f.close();
+    /*
+     * FIXME:
+     *
+     * THe whole point of the locking free maildir idea is that the moves between
+     * the internal directories are atomic. Afaik QFile::rename does not guarantee
+     * that, so this will need to be done properly. - ta
+     */
+    if (!f.rename( finalKey )) {
+        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
+    }
+    return uniqueKey;
 }
 
 bool Maildir::removeEntry( const QString& key )
 {
-  QString realKey( d->findRealKey( key ) );
-  if ( realKey.isEmpty() ) {
-      // FIXME error handling?
-      qWarning() << "Maildir::removeEntry unable to find: " << key;
-      return false;
-  }
-  return QFile::remove(realKey);
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::removeEntry unable to find: " << key;
+        return false;
+    }
+    return QFile::remove(realKey);
 }
 
 
