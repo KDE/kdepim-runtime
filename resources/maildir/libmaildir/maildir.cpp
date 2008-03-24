@@ -299,6 +299,33 @@ QByteArray Maildir::readEntry( const QString& key ) const
   return result;
 }
 
+QByteArray Maildir::readEntryHeaders( const QString& key ) const
+{
+  QByteArray result;
+
+  QString realKey( d->findRealKey( key ) );
+  if ( realKey.isEmpty() ) {
+      // FIXME error handling?
+      qWarning() << "Maildir::readEntry unable to find: " << key;
+      return result;
+  }
+
+  QFile f( realKey );
+  if ( !f.open( QIODevice::ReadOnly ) ) {
+      // FIXME error handling?
+      qWarning() << "Maildir::readEntry unable to find: " << key;
+      return result;
+  }
+  forever {
+      QByteArray line = f.readLine();
+      if ( line.trimmed().isEmpty() )
+          break;
+      result.append( line );
+  }
+  return result;
+}
+
+
 static QString createUniqueFileName()
 {
   return QUuid::createUuid().toString();

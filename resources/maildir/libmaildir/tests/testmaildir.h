@@ -35,6 +35,7 @@ class MaildirTest : public QObject
     void testMaildirCreation();
     void testMaildirListing();
     void testMaildirAccess();
+    void testMaildirReadHeaders();
     void testMaildirWrite();
     void testMaildirAppend();
     void testMaildirRemoveEntry();

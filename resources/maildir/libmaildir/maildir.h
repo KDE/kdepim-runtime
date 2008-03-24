@@ -101,6 +101,11 @@ public:
     QByteArray readEntry( const QString& key ) const;
 
     /**
+     * Return the contents of the headers section of the file the maildir with the given @param key.
+     */
+    QByteArray readEntryHeaders( const QString& key ) const;
+
+    /**
      * Write the given @param data to a file in the maildir with the given
      * @param key.
      */

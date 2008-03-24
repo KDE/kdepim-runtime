@@ -37,7 +37,8 @@ QTEST_KDEMAIN_CORE( MaildirTest )
 using namespace KPIM;
 
 static const char * testDir = "libmaildir-unit-test";
-static const char * testString = "test\n";
+static const char * testString = "From: theDukeOfMonmouth@uk.gov\n\ntest\n";
+static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n";
 
 void MaildirTest::initTestCase()
 {
@@ -143,6 +144,19 @@ void MaildirTest::testMaildirAccess()
   QVERIFY(!data.isEmpty());
   QCOMPARE( data, QByteArray( testString) );
 }
+
+void MaildirTest::testMaildirReadHeaders()
+{
+  Maildir d( m_temp->name() );
+  QStringList entries = d.entryList();
+  QCOMPARE( entries.count(), 20 );
+
+  QByteArray data = d.readEntryHeaders( entries[0] );
+  QVERIFY(!data.isEmpty());
+  QCOMPARE( data, QByteArray( testStringHeaders ) );
+}
+
+
 
 void MaildirTest::testMaildirWrite()
 {
