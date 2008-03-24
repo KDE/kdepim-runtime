@@ -8,6 +8,7 @@
       <arg type="s" direction="in"/>
     </method>
     <method name="getWinId">
+      <arg type="x" direction="out"/>
     </method>
   </interface>
 </node>

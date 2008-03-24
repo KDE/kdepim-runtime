@@ -56,7 +56,7 @@ public:
 public Q_SLOTS:
     void infoMessage( const QString& );
     void errorMessage( const QString& );
-    WId getWinId();
+    qlonglong getWinId();
 
 private slots:
     void slotServiceChanged( const QString&, const QString&, const QString&);

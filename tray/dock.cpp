@@ -144,9 +144,9 @@ void Dock::errorMessage( const QString &message )
     KMessageBox::error( 0, message, i18n("Akonadi error") );
 }
 
-WId Dock::getWinId()
+qlonglong Dock::getWinId()
 {
-    return parentWidget()->winId();
+    return (qlonglong)parentWidget()->winId();
 }
 
 void Dock::slotQuit()
