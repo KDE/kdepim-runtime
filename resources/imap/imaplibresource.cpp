@@ -101,7 +101,7 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
 
 void ImaplibResource::configure( WId windowId )
 {
-    SetupServer dlg;
+    SetupServer dlg( windowId );
     KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->username().isEmpty() )
@@ -422,14 +422,14 @@ void ImaplibResource::slotLogin( Imaplib* connection )
 void ImaplibResource::slotLoginFailed( Imaplib* connection )
 {
     // the credentials where not ok....
-    int i = KMessageBox::questionYesNoCancel( 0,
+    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
             i18n( "The server refused the supplied username and password. "
                   "Do you want to go to the settings, re-enter it for one "
                   "time or do nothing?" ),
             i18n( "Could Not Log In" ),
             KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
     if ( i == KMessageBox::Yes )
-        configure( 0 );
+        configure( winIdForDialogs() );
     else if ( i == KMessageBox::No ) {
         manualAuth( connection, m_username );
     } else
@@ -438,7 +438,7 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
 
 void ImaplibResource::slotAlert( Imaplib*, const QString& message )
 {
-    KMessageBox::information( 0, i18n( "Server reported: %1",message ) );
+    KMessageBox::informationWId( winIdForDialogs(), i18n( "Server reported: %1",message ) );
 }
 
 void ImaplibResource::slotPurge( const QString &folder )
@@ -532,7 +532,7 @@ void ImaplibResource::connections()
 
 void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
 {
-    KPasswordDialog dlg( 0 /* todo: sane? */ );
+    KPasswordDialog dlg( 0 /* no winId constructor available */ );
     dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
     if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )
         connection->login( username, QString( dlg.password() ) );

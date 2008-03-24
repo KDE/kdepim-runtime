@@ -40,9 +40,10 @@
 #include <kuser.h>
 #include <solid/networking.h>
 
-SetupServer::SetupServer( QWidget* parent )
-        : KDialog( parent )
+SetupServer::SetupServer( WId parent )
+        : KDialog()
 {
+    Settings::self()->setWinId( parent );
     QGridLayout *mainGrid = new QGridLayout( mainWidget() );
 
     QLabel *l4 = new QLabel( i18n( "IMAP server:" ) + ' ', mainWidget() );
@@ -171,7 +172,7 @@ void SetupServer::readSettings()
 
     if ( !Settings::self()->passwordPossible() ) {
         m_password->setEnabled( false );
-        KMessageBox::information( 0,i18n( "Could not access KWallet, "
+        KMessageBox::information( mainWidget(), i18n( "Could not access KWallet, "
                                           "if you want to store the password permanently then you have to "
                                           "activate it. If you do not "
                                           "want to use KWallet, check the box below and enjoy the dialogs." ),

@@ -48,16 +48,21 @@ Settings *Settings::self()
     return s_globalSettings->q;
 }
 
-Settings::Settings() : SettingsBase()
+Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 {
     Q_ASSERT( !s_globalSettings->q );
     s_globalSettings->q = this;
 }
 
+void Settings::setWinId( WId winId )
+{
+    m_winId = winId;
+}
+
 QString Settings::password() const
 {
     QString password;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 /* TODO: anything more intelligent possible?*/ );
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() && wallet->hasFolder( "imaplib" ) ) {
         wallet->setFolder( "imaplib" );
         wallet->readPassword( config()->name(), password );
@@ -69,7 +74,7 @@ QString Settings::password() const
 bool Settings::passwordPossible() const
 {
     bool possible = true;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( !wallet ) {
         possible = false;
     }
@@ -79,7 +84,7 @@ bool Settings::passwordPossible() const
 
 void Settings::setPassword( const QString & password )
 {
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
         if ( !wallet->hasFolder( "imaplib" ) )
             wallet->createFolder( "imaplib" );

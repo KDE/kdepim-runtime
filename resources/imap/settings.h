@@ -26,12 +26,16 @@
 class Settings : public SettingsBase
 {
 public:
-    Settings();
+    Settings( WId = 0 );
     static Settings *self();
 
     QString password() const;
     void setPassword( const QString &password );
     bool passwordPossible() const;
+    void setWinId( WId );
+
+private:
+    WId m_winId;
 };
 
 #endif

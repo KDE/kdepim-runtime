@@ -41,9 +41,9 @@ class SetupServer : public KDialog
 public:
     /**
      * Constructor
-     * @param parent Parent Widget
+     * @param parent Parent WId
      */
-    SetupServer( QWidget* parent = 0 );
+    SetupServer( WId parent );
 
     /**
      * Destructor
@@ -71,6 +71,8 @@ private:
     QRadioButton*       m_noRadio;
     QRadioButton*       m_sslRadio;
     QRadioButton*       m_tlsRadio;
+
+    WId m_winId;
 
 private slots:
     void slotTest();
