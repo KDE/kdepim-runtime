@@ -98,7 +98,7 @@ void AkonadiSlave::stat(const KUrl & url)
 
       if ( collection != Collection::root() ) {
         // Check that the collection exists.
-        CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Local );
+        CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Base );
         if ( !job->exec() ) {
           error( KIO::ERR_INTERNAL, job->errorString() );
           return;
@@ -186,7 +186,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
     return;
   }
-  CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Flat );
+  CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::FirstLevel );
   if ( !job->exec() ) {
     error( KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString() );
     return;
