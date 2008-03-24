@@ -92,7 +92,7 @@ void AkonadiSlave::stat(const KUrl & url)
   kDebug( 7129 ) << url;
 
   // Stats for a collection
-  if ( Collection::urlIsValid( url ) )
+  if ( Collection::fromUrl( url ).isValid() )
   {
       Collection collection = Collection::fromUrl( url );
 
@@ -121,7 +121,7 @@ void AkonadiSlave::stat(const KUrl & url)
       finished();
   }
   // Stats for an item
-  else if ( Item::urlIsValid( url ) )
+  else if ( Item::fromUrl( url ).isValid() )
   {
     ItemFetchJob *job = new ItemFetchJob( Item::fromUrl( url ) );
 
@@ -174,7 +174,7 @@ void AkonadiSlave::listDir( const KUrl &url )
 {
   kDebug( 7129 ) << url;
 
-  if ( !Collection::urlIsValid( url ) )
+  if ( !Collection::fromUrl( url ).isValid() )
   {
     error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
     return;

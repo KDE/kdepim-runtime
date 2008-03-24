@@ -107,12 +107,9 @@ class MailThreaderAgent::Private
     QList<Item::Id> result;
 
     foreach( StrigiHit hit, hits ) {
-      if ( Item::urlIsValid( hit.uri ) ) {
-        const Item item = Item::fromUrl( hit.uri );
-        if ( item.isValid() )
-        {
-          result << item.id();
-        }
+      const Item item = Item::fromUrl( hit.uri );
+      if ( item.isValid() ) {
+        result << item.id();
       }
     }
     return result;
@@ -141,11 +138,13 @@ class MailThreaderAgent::Private
      * subject, and take the closest one by date. */
     foreach ( StrigiHit hit, hits ) {
       // make sure it's not ourselves
-      if ( !Item::urlIsValid( hit.uri ) ) continue;
-      Item parentRef = Item::fromUrl( hit.uri );
+      const Item parentRef = Item::fromUrl( hit.uri );
 
-      if ( !parentRef.isValid() ) continue;
-      if ( parentRef == ref ) continue;
+      if ( !parentRef.isValid() )
+        continue;
+
+      if ( parentRef == ref )
+        continue;
 
       result << parentRef.id();
     }
