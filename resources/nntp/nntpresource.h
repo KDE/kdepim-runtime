@@ -25,7 +25,7 @@
 #include <kurl.h>
 #include <kio/job.h>
 
-class NntpResource : public Akonadi::ResourceBase
+class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
@@ -40,6 +40,8 @@ class NntpResource : public Akonadi::ResourceBase
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
+
+  protected:
     void collectionChanged( const Akonadi::Collection &collection );
 
   private:

@@ -28,14 +28,14 @@ namespace Akonadi {
 /**
   Full text search provider using strigi.
 */
-class StrigiFeeder : public AgentBase
+class StrigiFeeder : public AgentBase, public AgentBase::Observer
 {
   Q_OBJECT
 
   public:
     StrigiFeeder( const QString &id );
 
-  protected slots:
+  protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);

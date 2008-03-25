@@ -25,7 +25,7 @@
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 
-class VCardResource : public Akonadi::ResourceBase
+class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

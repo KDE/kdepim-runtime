@@ -24,14 +24,14 @@
 
 namespace Akonadi {
 
-class NepomukContactFeeder : public AgentBase
+class NepomukContactFeeder : public AgentBase, public AgentBase::Observer
 {
   Q_OBJECT
 
   public:
     NepomukContactFeeder( const QString &id );
 
-  protected slots:
+  protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);

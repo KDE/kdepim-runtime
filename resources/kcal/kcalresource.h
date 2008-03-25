@@ -32,7 +32,7 @@ namespace KCal {
 
 class QTimer;
 
-class KCalResource : public Akonadi::ResourceBase
+class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

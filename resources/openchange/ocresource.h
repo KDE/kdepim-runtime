@@ -30,7 +30,7 @@ extern "C" {
 #include <talloc.h>
 }
 
-class OCResource : public Akonadi::ResourceBase
+class OCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 

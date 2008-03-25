@@ -22,7 +22,7 @@
 
 #include <akonadi/resourcebase.h>
 
-class MaildirResource : public Akonadi::ResourceBase
+class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

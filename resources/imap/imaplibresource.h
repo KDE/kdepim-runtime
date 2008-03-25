@@ -25,7 +25,7 @@ class Imaplib;
 
 #include <akonadi/resourcebase.h>
 
-class ImaplibResource : public Akonadi::ResourceBase
+class ImaplibResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
     Q_CLASSINFO(  "D-Bus Interface", "org.kde.Akonadi.Imaplib.Resource" )
@@ -43,7 +43,7 @@ protected Q_SLOTS:
     void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
-protected Q_SLOTS:
+protected:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
     virtual void itemRemoved( const Akonadi::Item &item );

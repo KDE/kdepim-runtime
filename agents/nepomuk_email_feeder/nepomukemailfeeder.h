@@ -25,13 +25,13 @@
 
 namespace Akonadi {
 
-class NepomukEMailFeeder : public AgentBase
+class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
 {
   Q_OBJECT
   public:
     NepomukEMailFeeder( const QString &id );
 
-  protected slots:
+  protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);

@@ -26,7 +26,7 @@
 
 class KBookmarkManager;
 
-class LocalBookmarksResource : public Akonadi::ResourceBase
+class LocalBookmarksResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

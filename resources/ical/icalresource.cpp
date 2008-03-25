@@ -128,7 +128,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
 void ICalResource::itemChanged( const Akonadi::Item &item, const QStringList &parts )
 {
   kWarning( 5251 ) << "Implement me!";
-  ResourceBase::itemChanged( item, parts );
+  AgentBase::Observer::itemChanged( item, parts );
 }
 
 void ICalResource::itemRemoved(const Akonadi::Item & item)

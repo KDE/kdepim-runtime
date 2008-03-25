@@ -263,13 +263,13 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 void MaildirResource::collectionChanged(const Collection & collection)
 {
   kDebug( 5254 ) << "Implement me!";
-  ResourceBase::collectionChanged( collection );
+  AgentBase::Observer::collectionChanged( collection );
 }
 
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 {
   kDebug( 5254 ) << "Implement me!";
-  ResourceBase::collectionRemoved( collection );
+  AgentBase::Observer::collectionRemoved( collection );
 }
 
 #include "maildirresource.moc"

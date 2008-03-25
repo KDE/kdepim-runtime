@@ -58,7 +58,7 @@ class MailThreaderAttribute : public Attribute
  * + Reply2
  * ...
  */
-class MailThreaderAgent : public Akonadi::AgentBase
+class MailThreaderAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

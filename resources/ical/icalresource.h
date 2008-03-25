@@ -28,7 +28,7 @@ namespace KCal {
 
 class KCalMimeTypeVisitor;
 
-class ICalResource : public Akonadi::ResourceBase
+class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 

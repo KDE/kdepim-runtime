@@ -27,7 +27,7 @@ namespace KABC {
 
 class QTimer;
 
-class KABCResource : public Akonadi::ResourceBase
+class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
