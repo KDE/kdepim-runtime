@@ -203,4 +203,6 @@ bool VCardResource::storeAddressees()
   return true;
 }
 
+AKONADI_RESOURCE_MAIN( VCardResource )
+
 #include "vcardresource.moc"

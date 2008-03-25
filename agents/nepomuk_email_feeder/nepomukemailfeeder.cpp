@@ -76,9 +76,6 @@ void NepomukEMailFeeder::itemRemoved(const Akonadi::Item & item)
   r.remove();
 }
 
-int main( int argc, char **argv )
-{
-  return AgentBase::init<NepomukEMailFeeder>( argc, argv );
-}
+AKONADI_AGENT_MAIN( NepomukEMailFeeder )
 
 #include "nepomukemailfeeder.moc"

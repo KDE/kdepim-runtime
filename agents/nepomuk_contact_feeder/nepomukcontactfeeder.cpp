@@ -195,9 +195,6 @@ void NepomukContactFeeder::itemRemoved( const Akonadi::Item &item )
   contact.remove();
 }
 
-int main( int argc, char **argv )
-{
-  return AgentBase::init<NepomukContactFeeder>( argc, argv );
-}
+AKONADI_AGENT_MAIN( NepomukContactFeeder )
 
 #include "nepomukcontactfeeder.moc"

@@ -322,4 +322,6 @@ void NntpResource::collectionChanged(const Akonadi::Collection & collection)
   changesCommitted( collection );
 }
 
+AKONADI_RESOURCE_MAIN( NntpResource )
+
 #include "nntpresource.moc"

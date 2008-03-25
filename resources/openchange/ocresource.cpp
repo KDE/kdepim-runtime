@@ -1432,4 +1432,6 @@ void OCResource::retrieveItems(const Akonadi::Collection & collection, const QSt
   itemsRetrieved();
 }
 
+AKONADI_RESOURCE_MAIN( OCResource )
+
 #include "ocresource.moc"

@@ -272,4 +272,6 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   AgentBase::Observer::collectionRemoved( collection );
 }
 
+AKONADI_RESOURCE_MAIN( MaildirResource )
+
 #include "maildirresource.moc"

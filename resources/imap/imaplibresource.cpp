@@ -172,7 +172,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList&
     kDebug( ) << "Flags going to be set" << newFlags;
     const QString reference = item.remoteId();
     const QStringList temp = reference.split( "-+-" );
-    m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags ); 
+    m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags );
 
     changesCommitted( item );
 }
@@ -539,5 +539,7 @@ void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
     else
         connection->logout();
 }
+
+AKONADI_RESOURCE_MAIN( ImaplibResource )
 
 #include "imaplibresource.moc"

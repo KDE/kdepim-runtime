@@ -10,7 +10,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( kabcresource_SRCS
   kabcresource.cpp
-  main.cpp
 )
 
 install( FILES kabcresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

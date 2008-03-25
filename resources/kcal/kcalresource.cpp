@@ -297,4 +297,6 @@ void KCalResource::delayedUpdate()
   itemsRetrieved( items );
 }
 
+AKONADI_RESOURCE_MAIN( KCalResource )
+
 #include "kcalresource.moc"

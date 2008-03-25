@@ -417,4 +417,6 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
   }
 }
 
+AKONADI_AGENT_MAIN( MailThreaderAgent )
+
 #include "mailthreaderagent.moc"

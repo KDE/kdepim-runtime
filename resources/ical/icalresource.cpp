@@ -173,4 +173,6 @@ void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringL
   itemsRetrieved( items );
 }
 
+AKONADI_RESOURCE_MAIN( ICalResource )
+
 #include "icalresource.moc"

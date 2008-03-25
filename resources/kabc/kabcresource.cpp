@@ -378,4 +378,6 @@ void KABCResource::delayedUpdate()
   itemsRetrieved( items );
 }
 
+AKONADI_RESOURCE_MAIN( KABCResource )
+
 #include "kabcresource.moc"

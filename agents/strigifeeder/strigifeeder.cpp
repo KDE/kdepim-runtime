@@ -55,9 +55,6 @@ void StrigiFeeder::itemRemoved(const Akonadi::Item & item)
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
 }
 
-int main( int argc, char **argv )
-{
-  return AgentBase::init<StrigiFeeder>( argc, argv );
-}
+AKONADI_AGENT_MAIN( StrigiFeeder )
 
 #include "strigifeeder.moc"

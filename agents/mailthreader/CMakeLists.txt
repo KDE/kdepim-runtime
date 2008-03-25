@@ -15,7 +15,6 @@ include_directories( ${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi )
 
 set( mailthreaderagent_SRCS
   mailthreaderagent.cpp
-  main.cpp
 )
 
 

@@ -194,4 +194,6 @@ void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, cons
   itemsRetrieved( itemList );
 }
 
+AKONADI_RESOURCE_MAIN( LocalBookmarksResource )
+
 #include "localbookmarksresource.moc"

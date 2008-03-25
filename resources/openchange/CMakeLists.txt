@@ -14,7 +14,6 @@ set( ocresource_SRCS
      profileeditdialog.cpp
      profiledialog.cpp
      ocresource.cpp
-     main.cpp
      lzfu.cpp
 )
 
