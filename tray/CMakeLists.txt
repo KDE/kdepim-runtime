@@ -4,7 +4,7 @@ ${QT_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR} )
 SET(tray_sources main.cpp dock.cpp)
 
 qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/dock.h org.kde.Akonadi.Tray.xml )
-qt4_add_dbus_adaptor( tray_sources org.kde.Akonadi.Tray.xml dock.h Dock::Dock )
+qt4_add_dbus_adaptor( tray_sources org.kde.Akonadi.Tray.xml dock.h Dock )
 
 KDE4_ADD_EXECUTABLE(akonaditray ${tray_sources})
 TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBS} ${AKONADI_LIBS})
