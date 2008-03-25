@@ -5,6 +5,7 @@ Name[ga]=Acmhainn Imaplib Mailody Akonadi
 Name[km]=ធនធាន​របស់ Akonadi Mailody Imaplib
 Name[pt]=Recurso da Imaplib do Mailody para o Akonadi
 Name[pt_BR]=Recurso da Imaplib do Mailody para o Akonadi
+Name[x-test]=xxAkonadi Mailody Imaplib Resourcexx
 Name[zh_TW]=Akonadi Maildir Imaplib 資源
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource

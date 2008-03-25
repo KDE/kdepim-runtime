@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi
+Name[x-test]=xxAkonadixx
 X-KDE-Library=kcal_akonadi
 Type=Service
 X-KDE-ServiceTypes=KResources/Plugin
