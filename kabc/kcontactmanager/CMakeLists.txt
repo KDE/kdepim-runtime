@@ -17,6 +17,10 @@ set( kcontactmanager_SRCS
   mainwindow.cpp
 )
 
+
+# todo: more appropriate icon?
+kde4_add_app_icon(kcontactmanager_SRCS "${KDE4_ICON_DIR}/oxygen/*/actions/view-pim-contacts.png")
+
 kde4_add_executable(kcontactmanager RUN_UNINSTALLED ${kcontactmanager_SRCS})
 
 target_link_libraries(kcontactmanager ${AKONADI_LIBS} akonadi-kabc ${KDE4_KDEUI_LIBRARY} )

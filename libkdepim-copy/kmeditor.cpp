@@ -63,6 +63,7 @@
 #include <QAction>
 #include <QProcess>
 #include <QTextLayout>
+#include <QTimer>
 
 //system includes
 #include <assert.h>
@@ -91,6 +92,7 @@ class KMeditorPrivate
     //
     void addSuggestion( const QString&,const QStringList& );
 
+    void ensureCursorVisibleDelayed();
 
     //
     // Normal functions
@@ -237,6 +239,11 @@ void KMeditorPrivate::addSuggestion( const QString& originalWord,
                                      const QStringList& lst )
 {
   replacements[originalWord] = lst;
+}
+
+void KMeditorPrivate::ensureCursorVisibleDelayed()
+{
+  static_cast<KTextEdit*>( q )->ensureCursorVisible();
 }
 
 void KMeditorPrivate::mergeFormatOnWordOrSelection( const QTextCharFormat &format )
@@ -1167,6 +1174,13 @@ QString KMeditor::toWrappedPlainText() const
     block = block.next();
   }
   return temp;
+}
+
+void KMeditor::ensureCursorVisible()
+{
+  QCoreApplication::processEvents();
+  // ugly hack because the layout changes afterwards, making the cursor hidden...
+  QTimer::singleShot(500, this, SLOT(ensureCursorVisibleDelayed()));
 }
 
 #include "kmeditor.moc"

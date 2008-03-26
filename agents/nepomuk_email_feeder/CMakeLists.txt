@@ -5,7 +5,11 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
-kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED nepomukemailfeeder.cpp)
+set(akonadi_nepomuk_email_feeder_SRCS nepomukemailfeeder.cpp)
+
+kde4_add_app_icon(akonadi_nepomuk_email_feeder_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/nepomuk.png")
+
+kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED ${akonadi_nepomuk_email_feeder_SRCS})
 
 target_link_libraries(akonadi_nepomuk_email_feeder
   ${AKONADI_LIBS}
