@@ -27,6 +27,8 @@
 #include <QtGui/QWidget>
 #include <QStringList>
 
+#include <akonadi/agentinstance.h>
+
 /**
   @short A widget to manage imaplib
   @author Tom Albers <tomalbers@kde.nl>
@@ -51,7 +53,7 @@ public:
     virtual ~ResourcesManagementWidget();
 
 private Q_SLOTS:
-    void updateButtonState( const QString& = QString() );
+    void updateButtonState( const Akonadi::AgentInstance& = Akonadi::AgentInstance() );
     void addClicked( QAction* );
     void editClicked();
     void removeClicked();

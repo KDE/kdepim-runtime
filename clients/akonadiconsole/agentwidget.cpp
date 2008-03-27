@@ -66,26 +66,24 @@ class Dialog : public QDialog
       if ( result == Accepted )
         mAgentType = mWidget->currentAgentType();
       else
-        mAgentType = QString();
+        mAgentType = AgentType();
 
       QDialog::done( result );
     }
 
-    QString agentType() const
+    AgentType agentType() const
     {
       return mAgentType;
     }
 
   private:
     Akonadi::AgentTypeWidget *mWidget;
-    QString mAgentType;
+    AgentType mAgentType;
 };
 
 AgentWidget::AgentWidget( QWidget *parent )
   : QWidget( parent )
 {
-  mManager = new Akonadi::AgentManager( this );
-
   QGridLayout *layout = new QGridLayout( this );
 
   mWidget = new Akonadi::AgentInstanceWidget( this );
@@ -122,9 +120,9 @@ void AgentWidget::addAgent()
 {
   Dialog dlg( this );
   if ( dlg.exec() ) {
-    const QString agentType = dlg.agentType();
+    const AgentType agentType = dlg.agentType();
 
-    if ( !agentType.isEmpty() ) {
+    if ( agentType.isValid() ) {
       AgentInstanceCreateJob *job = new AgentInstanceCreateJob( agentType, this );
       job->configure( this );
       job->start(); // TODO: check result
@@ -134,37 +132,37 @@ void AgentWidget::addAgent()
 
 void AgentWidget::removeAgent()
 {
-  const QString agent = mWidget->currentAgentInstance();
-  if ( !agent.isEmpty() )
-    mManager->removeAgentInstance( agent );
+  const AgentInstance agent = mWidget->currentAgentInstance();
+  if ( agent.isValid() )
+    AgentManager::self()->removeInstance( agent );
 }
 
 void AgentWidget::configureAgent()
 {
-  const QString agent = mWidget->currentAgentInstance();
-  if ( !agent.isEmpty() )
-    mManager->agentInstanceConfigure( agent, this );
+  AgentInstance agent = mWidget->currentAgentInstance();
+  if ( agent.isValid() )
+    agent.configure( this );
 }
 
 void AgentWidget::synchronizeAgent()
 {
-  const QString agent = mWidget->currentAgentInstance();
-  if ( !agent.isEmpty() )
-    mManager->agentInstanceSynchronize( agent );
+  AgentInstance agent = mWidget->currentAgentInstance();
+  if ( agent.isValid() )
+    agent.synchronize();
 }
 
 void AgentWidget::toggleOnline()
 {
-  const QString agent = mWidget->currentAgentInstance();
-  if ( !agent.isEmpty() )
-    mManager->setAgentInstanceOnline( agent, !mManager->agentInstanceOnline( agent ) );
+  AgentInstance agent = mWidget->currentAgentInstance();
+  if ( agent.isValid() )
+    agent.setIsOnline( !agent.isOnline() );
 }
 
 void AgentWidget::synchronizeTree()
 {
-  const QString agent = mWidget->currentAgentInstance();
-  if ( !agent.isEmpty() )
-    mManager->agentInstanceSynchronizeCollectionTree( agent );
+  AgentInstance agent = mWidget->currentAgentInstance();
+  if ( agent.isValid() )
+    agent.synchronizeCollectionTree();
 }
 
 #include "agentwidget.moc"

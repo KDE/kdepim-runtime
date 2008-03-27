@@ -58,8 +58,7 @@ class ResourcesManagementWidget::Private
 {
 public:
     Ui::ResourcesManagementWidget   ui;
-    Akonadi::AgentManager           *manager;
-    QHash<QAction*, QString>        menuOptions;
+    QHash<QAction*, Akonadi::AgentType>        menuOptions;
     QStringList                     wantedMimeTypes;
 };
 
@@ -69,24 +68,25 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
 {
     d->wantedMimeTypes = args;
     d->ui.setupUi( this );
-    d->manager = new Akonadi::AgentManager( this );
 
     KMenu *addMenu = new KMenu( this );
     bool atleastone = false;
-    QStringList types = d->manager->agentTypes();
-    foreach( const QString& type, types ) {
-        if ( !d->manager->agentCapabilities( type ).contains( "Resource" ) )
+
+    Akonadi::AgentType::List agentTypes = Akonadi::AgentManager::self()->types();
+    foreach( const Akonadi::AgentType &agentType, agentTypes ) {
+
+        if ( !agentType.capabilities().contains( "Resource" ) )
             continue;
 
-        QStringList mimeTypes = d->manager->agentMimeTypes( type );
+        const QStringList mimeTypes = agentType.mimeTypes();
         bool wanted = isWantedResource( d->wantedMimeTypes, mimeTypes );
 
         if ( !wanted && !d->wantedMimeTypes.isEmpty() )
             continue;
 
-        QAction *action = addMenu->addAction( d->manager->agentName( type ) );
-        action->setIcon( d->manager->agentIcon( type ) );
-        d->menuOptions.insert( action, type );
+        QAction *action = addMenu->addAction( agentType.name() );
+        action->setIcon( agentType.icon() );
+        d->menuOptions.insert( action, agentType );
         atleastone = true;
     }
 
@@ -103,20 +103,14 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
 
     foreach( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
-    connect( d->ui.resourcesList, SIGNAL( currentChanged( const QString&, const QString& ) ),
-             SLOT( updateButtonState( const QString& ) ) );
+    connect( d->ui.resourcesList, SIGNAL( currentChanged( const Akonadi::AgentInstance&, const Akonadi::AgentInstance& ) ),
+             SLOT( updateButtonState( const Akonadi::AgentInstance& ) ) );
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const QString& ) ),
              SLOT( editClicked() ) );
 
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
-    connect( d->manager, SIGNAL( agentInstanceAdded( const QString& ) ),
-             SLOT( fillResourcesList() ) );
-    connect( d->manager, SIGNAL( agentInstanceRemoved( const QString& ) ),
-             SLOT( fillResourcesList() ) );
-    connect( d->manager, SIGNAL( agentInstanceNameChanged( const QString&, const QString& ) ),
-             SLOT( fillResourcesList() ) );
     updateButtonState();
 }
 
@@ -125,9 +119,9 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
     delete d;
 }
 
-void ResourcesManagementWidget::updateButtonState( const QString& current)
+void ResourcesManagementWidget::updateButtonState( const Akonadi::AgentInstance& current)
 {
-    if ( current.isEmpty() ) {
+    if ( !current.isValid() ) {
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
     } else {
@@ -146,16 +140,17 @@ void ResourcesManagementWidget::addClicked( QAction *action )
 
 void ResourcesManagementWidget::editClicked()
 {
-    QString current = d->ui.resourcesList->currentAgentInstance();
-    if ( !current.isEmpty() )
-        d->manager->agentInstanceConfigure( current, this );
+    Akonadi::AgentInstance instance = d->ui.resourcesList->currentAgentInstance();
+    if ( instance.isValid() )
+        instance.configure( this );
 }
 
 void ResourcesManagementWidget::removeClicked()
 {
-    QString current = d->ui.resourcesList->currentAgentInstance();
-    if ( !current.isEmpty() )
-        d->manager->removeAgentInstance( current );
+    const Akonadi::AgentInstance instance = d->ui.resourcesList->currentAgentInstance();
+    if ( instance.isValid() )
+        Akonadi::AgentManager::self()->removeInstance( instance );
+
     updateButtonState();
 }
 
