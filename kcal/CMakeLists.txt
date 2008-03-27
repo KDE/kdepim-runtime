@@ -26,6 +26,7 @@ install(TARGETS akonadi-kcal DESTINATION ${LIB_INSTALL_DIR})
 
 install( FILES
          akonadi-kcal_export.h
+         itembrowser.h
          kcalmimetypevisitor.h
          kcalmodel.h
          kcalitembrowser.h

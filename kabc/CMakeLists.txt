@@ -28,6 +28,7 @@ install(TARGETS akonadi-kabc DESTINATION ${LIB_INSTALL_DIR})
 
 install( FILES
   akonadi-kabc_export.h
+  itembrowser.h
   kabcitembrowser.h
   kabcitemeditor.h
   kabcmodel.h
