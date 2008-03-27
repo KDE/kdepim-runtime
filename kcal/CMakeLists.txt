@@ -21,14 +21,3 @@ kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
 target_link_libraries( akonadi-kcal ${AKONADI_LIBS} ${KDE4_KCAL_LIBS} )
 set_target_properties( akonadi-kcal PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS akonadi-kcal DESTINATION ${LIB_INSTALL_DIR})
-
-########### install files ###############
-
-install( FILES
-         akonadi-kcal_export.h
-         itembrowser.h
-         kcalmimetypevisitor.h
-         kcalmodel.h
-         kcalitembrowser.h
-         DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi/kcal
-)
