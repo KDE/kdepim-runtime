@@ -54,6 +54,8 @@ ContactEditorDialog::ContactEditorDialog( Mode mode, QAbstractItemModel *collect
 
      connect( box, SIGNAL( selectionChanged( const Akonadi::Collection& ) ),
               mEditor, SLOT( setDefaultCollection( const Akonadi::Collection& ) ) );
+
+     mEditor->setDefaultCollection( box->selectedCollection() );
   }
 
   layout->addWidget( mEditor, 1, 0, 1, 2 );
