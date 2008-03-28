@@ -87,7 +87,7 @@ AgentWidget::AgentWidget( QWidget *parent )
   QGridLayout *layout = new QGridLayout( this );
 
   mWidget = new Akonadi::AgentInstanceWidget( this );
-  connect( mWidget, SIGNAL( doubleClicked( const QString& ) ), SLOT( configureAgent() ) );
+  connect( mWidget, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ), SLOT( configureAgent() ) );
 
   layout->addWidget( mWidget, 0, 0, 1, 6 );
 
