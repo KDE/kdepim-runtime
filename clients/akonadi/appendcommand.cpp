@@ -20,7 +20,7 @@
 #include "appendcommand.h"
 #include "out.h"
 
-#include <akonadi/collectionpathresolver.h>
+#include <akonadi/private/collectionpathresolver_p.h>
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
 
