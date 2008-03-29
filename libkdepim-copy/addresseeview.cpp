@@ -52,7 +52,6 @@
 
 #include "addresseeview.h"
 #include "sendsmsdialog.h"
-#include <Q3MimeSourceFactory>
 #include <ktoggleaction.h>
 
 using namespace KPIM;
@@ -525,11 +524,11 @@ void AddresseeView::updateView()
 
   KABC::Picture picture = mAddressee.photo();
   if ( picture.isIntern() && !picture.data().isNull() )
-    Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, picture.data() );
+    document()->addResource( QTextDocument::ImageResource, imageURL, picture.data() );
   else {
     if ( !picture.url().isEmpty() ) {
       if ( mImageData.count() > 0 )
-        Q3MimeSourceFactory::defaultFactory()->setImage( imageURL, QImage::fromData( mImageData ) );
+        document()->addResource( QTextDocument::ImageResource, imageURL, QImage::fromData( mImageData ) );
       else {
         mImageJob = KIO::get( KUrl( picture.url() ), KIO::NoReload, KIO::HideProgressInfo );
         connect( mImageJob, SIGNAL( data( KIO::Job*, const QByteArray& ) ),
@@ -538,8 +537,7 @@ void AddresseeView::updateView()
                  this, SLOT( result( KJob* ) ) );
       }
     } else {
-      Q3MimeSourceFactory::defaultFactory()->setPixmap( imageURL,
-        KIconLoader::global()->loadIcon( "personal", KIconLoader::Desktop, 128 ) );
+      document()->addResource( QTextDocument::ImageResource, imageURL, KIcon( "personal" ).pixmap( 128, 128 ) );
     }
   }
 
