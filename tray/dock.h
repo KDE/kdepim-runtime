@@ -67,7 +67,7 @@ private slots:
 
 private:
     void updateMenu( bool );
-    QLabel *m_title;
+    QAction *m_title;
     QAction *m_stopAction;
     QAction *m_startAction;
 };

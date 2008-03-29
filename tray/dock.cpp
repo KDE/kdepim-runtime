@@ -19,11 +19,11 @@
 #include "dock.h"
 #include "trayadaptor.h"
 
-#include <QMenu>
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>
 #include <QMouseEvent>
 #include <QLabel>
+#include <QToolButton>
 #include <QWidgetAction>
 
 #include <KComponentData>
@@ -31,6 +31,7 @@
 #include <KIcon>
 #include <KIconLoader>
 #include <KLocale>
+#include <KMenu>
 #include <KMessageBox>
 #include <KPassivePopup>
 #include <KStandardShortcut>
@@ -55,20 +56,8 @@ void Tray::setVisible( bool )
 Dock::Dock( QWidget *parent )
         : KSystemTrayIcon( KIcon("dummy"), parent )
 {
-    QMenu *menu = new QMenu();
-
-    /* This should be solved in kdelibs ---- */
-    QWidgetAction* action = new QWidgetAction(this);
-    action->setEnabled(false);
-    m_title = new QLabel(0);
-    action->setDefaultWidget(m_title);
-    m_title->setFrameShape(QFrame::Box);
-    m_title->setText(i18n("Akonadi"));
-    QFont f = m_title->font();
-    f.setBold(true);
-    m_title->setFont(f);
-    menu->addAction(action);
-    /* End */
+    KMenu *menu = new KMenu();
+    m_title = menu->addTitle( i18n( "Akonadi" ) );
 
     new TrayAdaptor(  this );
         QDBusConnection dbus = QDBusConnection::sessionBus();
@@ -129,7 +118,12 @@ void Dock::slotActivated()
 
 void Dock::updateMenu( bool registered )
 {
-    registered ? m_title->setText( i18n( "Akonadi is running" ) ) : m_title->setText( i18n( "Akonadi is not running" ) );
+    /* kdelibs... */
+    QToolButton *button = static_cast<QToolButton*>( ( static_cast<QWidgetAction*>( m_title ) )->defaultWidget() );
+    QAction* action = button->defaultAction();
+    action->setText( registered ? i18n( "Akonadi is running" ) :  i18n( "Akonadi is not running" ) );
+    button->setDefaultAction( action );
+
     m_stopAction->setVisible( registered );
     m_startAction->setVisible( !registered );
 }
