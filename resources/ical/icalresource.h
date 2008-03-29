@@ -27,7 +27,9 @@ namespace KCal {
   class IncidenceBase;
 }
 
-class KCalMimeTypeVisitor;
+namespace Akonadi {
+  class KCalMimeTypeVisitor;
+}
 
 class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
@@ -57,7 +59,7 @@ class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 
   private:
     KCal::CalendarLocal *mCalendar;
-    KCalMimeTypeVisitor *mMimeVisitor;
+    Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
 };
 
 #endif

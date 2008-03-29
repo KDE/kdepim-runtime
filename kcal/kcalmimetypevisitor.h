@@ -24,6 +24,8 @@
 
 #include <kcal/incidencebase.h>
 
+namespace Akonadi {
+
 /**
   Helper for getting the Akonadi specific sub MIME type of a KCal::IncidenceBase
   item, e.g. getting "application/x-vnd.akonadi.calendar.event" for a
@@ -133,5 +135,7 @@ public:
 
     Q_DISABLE_COPY( KCalMimeTypeVisitor )
 };
+
+}
 
 #endif

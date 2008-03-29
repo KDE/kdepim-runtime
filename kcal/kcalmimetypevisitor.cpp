@@ -24,6 +24,7 @@ static QLatin1String sTodoType( "application/x-vnd.akonadi.calendar.todo" );
 static QLatin1String sJournalType( "application/x-vnd.akonadi.calendar.journal" );
 static QLatin1String sFreeBusyType( "application/x-vnd.akonadi.calendar.freebusy" );
 
+using namespace Akonadi;
 using namespace KCal;
 
 class KCalMimeTypeVisitor::Private
