@@ -101,7 +101,7 @@ public:
     virtual bool visit( KCal::FreeBusy *freebusy );
 
     /**
-      Returns the Akonadi specific @c text/calendar MIME type if the last
+      Returns the Akonadi specific @c text/calendar sub MIME type of the last
       incidence visited by this instance.
 
       @return One of the Akonadi sub MIME types for calendar components or
@@ -113,6 +113,17 @@ public:
       Returns a list of all calendar component sub MIME types.
      */
     QStringList allMimeTypes() const;
+
+    /**
+      Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
+
+      This is a convenience method, equivalent to
+      @code
+      incidence->accept( visitor );
+      return visitor.mimeType();
+      @endcode
+    */
+    QString mimeType( KCal::IncidenceBase *incidence );
 
   private:
     //@cond PRIVATE

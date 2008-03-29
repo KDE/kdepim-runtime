@@ -79,3 +79,10 @@ QStringList KCalMimeTypeVisitor::allMimeTypes() const
     return QStringList() << sEventType << sTodoType << sJournalType << sFreeBusyType;
 }
 
+QString KCalMimeTypeVisitor::mimeType( IncidenceBase *incidence )
+{
+  Q_ASSERT( incidence != 0 );
+
+  incidence->accept( *this );
+  return mimeType();
+}
