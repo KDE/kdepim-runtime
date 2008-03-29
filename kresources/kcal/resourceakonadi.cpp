@@ -367,26 +367,22 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   }
 
   if ( itemIt == d->mItems.end() ) {
-    kDebug(5800) << "No item yet, creating append job";
+    kDebug(5800) << "No item yet, using ItemCreateJob";
 
+    // FIXME: set component MIME type
     Item item( QLatin1String( "text/calendar" ) );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-    // TODO: should not be necessary, just like when using ItemCreateJob
-    // directly
-    item.setRemoteId( incidence->uid() );
-
     job = new ItemCreateJob( item, d->mCollection, this );
   } else {
-    kDebug(5800) << "Item already exists, creating store job";
+    kDebug(5800) << "Item already exists, using ItemModifyJob";
     Item item = itemIt.value();
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-    // FIXME const cast needed to "select" correct version of constructor
-    ItemModifyJob *storeJob = new ItemModifyJob( (const Item) item, this );
-    storeJob->storePayload();
+    ItemModifyJob *modifyJob = new ItemModifyJob( item, this );
+    modifyJob->storePayload();
 
-    job = storeJob;
+    job = modifyJob;
   }
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
@@ -655,6 +651,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
     }
 
     if ( itemIt == mItems.end() ) {
+      // FIXME: set component MIME type
       Item item( QLatin1String( "text/calendar" ) );
       item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
@@ -668,7 +665,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
   }
 
   ItemSync *job = new ItemSync( mCollection, mParent );
-  job->setRemoteItems( items );
+  job->setFullSyncItems( items );
 
   return job;
 }

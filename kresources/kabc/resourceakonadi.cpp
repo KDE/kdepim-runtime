@@ -492,7 +492,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
   }
 
   ItemSync *job = new ItemSync( mCollection );
-  job->setRemoteItems( items );
+  job->setFullSyncItems( items );
 
   return job;
 }
