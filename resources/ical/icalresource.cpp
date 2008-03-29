@@ -62,10 +62,9 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
     error( i18n("Incidence with uid '%1' not found!", rid ) );
     return false;
   }
-  incidence->accept( *mMimeVisitor );
 
   Item i = item;
-  i.setMimeType( mMimeVisitor->mimeType() );
+  i.setMimeType( mMimeVisitor->mimeType( incidence.get() ) );
   i.setPayload<IncidencePtr>( incidence );
   itemRetrieved( i );
   QByteArray data = i.part( Item::PartBody );
@@ -111,7 +110,7 @@ void ICalResource::loadFile()
     return;
   }
 
-  mCalendar = new KCal::CalendarLocal( "UTC" );
+  mCalendar = new KCal::CalendarLocal( QLatin1String( "UTC" ) );
   mCalendar->load( file );
 }
 
@@ -146,7 +145,7 @@ void ICalResource::retrieveCollections()
   c.setRemoteId( Settings::self()->path() );
   c.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "text/calendar";
+  mimeTypes << QLatin1String( "text/calendar" );
   mimeTypes += mMimeVisitor->allMimeTypes();
   c.setContentMimeTypes( mimeTypes );
   Collection::List list;
@@ -164,10 +163,8 @@ void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringL
   Incidence::List incidences = mCalendar->incidences();
   Item::List items;
   foreach ( Incidence *incidence, incidences ) {
-    incidence->accept( *mMimeVisitor );
-    Item item;
+    Item item ( mMimeVisitor->mimeType( incidence ) );
     item.setRemoteId( incidence->uid() );
-    item.setMimeType( mMimeVisitor->mimeType() );
     items << item;
   }
   itemsRetrieved( items );

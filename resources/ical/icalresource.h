@@ -24,6 +24,7 @@
 
 namespace KCal {
   class CalendarLocal;
+  class IncidenceBase;
 }
 
 class KCalMimeTypeVisitor;

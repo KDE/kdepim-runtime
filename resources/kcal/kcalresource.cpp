@@ -24,6 +24,8 @@
 #include <kresources/factory.h>
 #include <kresources/configdialog.h>
 
+#include <akonadi/kcal/kcalmimetypevisitor.h>
+
 #include <kconfig.h>
 #include <kinputdialog.h>
 
@@ -39,7 +41,8 @@ KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
     mCalendar( new KCal::CalendarResources( QLatin1String( "UTC" ) ) ),
     mLoaded( false ),
-    mDelayedUpdateTimer( new QTimer( this ) )
+    mDelayedUpdateTimer( new QTimer( this ) ),
+    mMimeVisitor( new KCalMimeTypeVisitor() )
 {
   mDelayedUpdateTimer->setInterval( 10 );
   mDelayedUpdateTimer->setSingleShot( true );
@@ -62,6 +65,7 @@ KCalResource::KCalResource( const QString &id )
 
 KCalResource::~KCalResource()
 {
+  delete mMimeVisitor;
 }
 
 bool KCalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
@@ -77,7 +81,7 @@ bool KCalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
     return false;
   }
   Item i( item );
-  i.setMimeType( QLatin1String( "text/calendar" ) );
+  i.setMimeType( mMimeVisitor->mimeType( incidence ) );
   i.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
   itemRetrieved( i );
   return true;
@@ -222,6 +226,7 @@ void KCalResource::retrieveCollections()
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
+  mimeTypes += mMimeVisitor->allMimeTypes();
   c.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
@@ -288,9 +293,8 @@ void KCalResource::delayedUpdate()
   KCal::Incidence::List::const_iterator it    = incidences.begin();
   KCal::Incidence::List::const_iterator endIt = incidences.end();
   for ( ; it != endIt; ++it ) {
-    Item item;
+    Item item( mMimeVisitor->mimeType( *it ) );
     item.setRemoteId( (*it)->uid() );
-    item.setMimeType( QLatin1String( "text/calendar" ) );
     items.append( item );
   }
 

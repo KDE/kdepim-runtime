@@ -30,6 +30,7 @@ namespace KCal {
   class ResourceCalendar;
 }
 
+class KCalMimeTypeVisitor;
 class QTimer;
 
 class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -62,6 +63,8 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     QString mLastError;
 
     QTimer *mDelayedUpdateTimer;
+
+    KCalMimeTypeVisitor *mMimeVisitor;
 
   private:
     bool loadCalendar();
