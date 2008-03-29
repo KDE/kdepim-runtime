@@ -32,6 +32,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemsync.h>
+#include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kdebug.h>
 #include <kconfiggroup.h>
@@ -57,9 +58,15 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
   public:
     Private( ResourceAkonadi *parent )
       : mParent( parent ), mMonitor( 0 ), mCalendar( QLatin1String( "UTC" ) ),
-        mLock( true ), mInternalDelete( false )
+        mLock( true ), mInternalDelete( false ),
+        mMimeVisitor( new KCalMimeTypeVisitor() )
     {
-        mCalendar.registerObserver( this );
+      mCalendar.registerObserver( this );
+    }
+
+    ~Private()
+    {
+      delete mMimeVisitor;
     }
 
   public:
@@ -78,6 +85,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
     bool mInternalDelete;
 
     QTimer mAutoSaveOnDeleteTimer;
+
+    KCalMimeTypeVisitor *mMimeVisitor;
 
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -301,6 +310,10 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   d->mItems.clear();
   d->mInternalDelete = false;
 
+  // TODO since Akonadi resources can set a MIME type depending on incidence type
+  // it should be enough to just "list" the items and fetch the payloads
+  // when the class' getter methods are called or do a full fetch in the
+  // unfortunate case where all items only have text/calendar as their MIME type
   ItemFetchJob *job = new ItemFetchJob( d->mCollection, this );
   job->fetchAllParts();
 
@@ -369,8 +382,8 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   if ( itemIt == d->mItems.end() ) {
     kDebug(5800) << "No item yet, using ItemCreateJob";
 
-    // FIXME: set component MIME type
-    Item item( QLatin1String( "text/calendar" ) );
+    incidence->accept( *(d->mMimeVisitor) );
+    Item item( d->mMimeVisitor->mimeType() );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     job = new ItemCreateJob( item, d->mCollection, this );
@@ -651,8 +664,8 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
     }
 
     if ( itemIt == mItems.end() ) {
-      // FIXME: set component MIME type
-      Item item( QLatin1String( "text/calendar" ) );
+      incidence->accept( *mMimeVisitor );
+      Item item( mMimeVisitor->mimeType() );
       item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
       items << item;
