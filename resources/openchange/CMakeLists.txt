@@ -21,7 +21,7 @@ install( FILES ocresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ako
 
 kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})
 
-target_link_libraries(akonadi_oc_resource ${AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBRARY} ${AKONADI_KMIME_LIBS})
+target_link_libraries(akonadi_oc_resource ${AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBRARY} ${AKONADI_KMIME_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS})
 
 install(TARGETS akonadi_oc_resource DESTINATION ${BIN_INSTALL_DIR})
 

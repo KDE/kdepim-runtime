@@ -212,7 +212,7 @@ void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
 	  qDebug() << "Folder " << thisFolder.name() << ", as mimetype " << folderMimeType << endl;
         }
       }
-      thisFolder.setContentTypes( folderMimeType );
+      thisFolder.setContentMimeTypes( folderMimeType );
       collections.append( thisFolder );
     }
   }
@@ -304,7 +304,7 @@ void OCResource::retrieveCollections()
   account.setType( Collection::Resource );
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
-  account.setContentTypes( mimeTypes );
+  account.setContentMimeTypes( mimeTypes );
   collections.append( account );
 
   mapi_id_t id_mailbox;
@@ -383,7 +383,7 @@ enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
         retval = GetPropsAll(&obj_message, &properties_array);
         if (retval != MAPI_E_SUCCESS) return retval;
 
-	if ( collection.contentTypes().contains( "text/vcard" ) ) {
+	if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
 	  qDebug() << "Ooh, a contact!";
 	  appendContactToCollection( properties_array, collection, &obj_message );
 	} else {
