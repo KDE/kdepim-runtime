@@ -22,6 +22,7 @@
 #include <kabc/addressee.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 using namespace Akonadi;
 
@@ -34,7 +35,7 @@ KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent ),
     d( new Private() )
 {
-  addFetchPart( Item::PartBody );
+  fetchScope().addFetchPart( Item::PartBody );
 }
 
 KABCModel::~KABCModel()

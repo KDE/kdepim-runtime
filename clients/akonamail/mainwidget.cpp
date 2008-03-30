@@ -26,6 +26,7 @@
 #include <akonadi/collectionstatisticsmodel.h>
 #include <akonadi/collectionstatisticsdelegate.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/kmime/messagemodel.h>
 #include <akonadi/kmime/messagethreaderproxymodel.h>
@@ -108,7 +109,7 @@ void MainWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->addFetchPart( Item::PartBody );
+  job->fetchScope().addFetchPart( Item::PartBody );
   connect( job, SIGNAL( result(KJob*) ), SLOT( itemFetchDone(KJob*) ) );
   job->start();
 }

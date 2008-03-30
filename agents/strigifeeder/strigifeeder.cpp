@@ -21,6 +21,7 @@
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <kdebug.h>
 #include <kurl.h>
@@ -33,7 +34,7 @@ StrigiFeeder::StrigiFeeder(const QString & id) :
     AgentBase( id )
 {
   changeRecorder()->monitorAll();
-  changeRecorder()->addFetchPart( Item::PartBody );
+  changeRecorder()->itemFetchScope().addFetchPart( Item::PartBody );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
 

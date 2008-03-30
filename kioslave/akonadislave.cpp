@@ -20,6 +20,7 @@
 #include "akonadislave.h"
 
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
@@ -67,7 +68,7 @@ void AkonadiSlave::get(const KUrl & url)
 {
   const Item item = Item::fromUrl( url );
   ItemFetchJob *job = new ItemFetchJob( item );
-  job->addFetchPart( Item::PartBody );
+  job->fetchScope().addFetchPart( Item::PartBody );
 
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );

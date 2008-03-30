@@ -21,6 +21,7 @@
 #include "akonadiengine.h"
 
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 
 #include <kmime/kmime_message.h>
@@ -38,7 +39,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
 
   Monitor *monitor = new Monitor( this );
   monitor->monitorMimeType( "message/rfc822" );
-  monitor->addFetchPart( Item::PartEnvelope );
+  monitor->itemFetchScope().addFetchPart( Item::PartEnvelope );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
   connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QStringList)),
@@ -46,7 +47,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
 
   // FIXME: hardcoded collection id
   ItemFetchJob *fetch = new ItemFetchJob( Collection( 421 ), this );
-  fetch->addFetchPart( Item::PartEnvelope );
+  fetch->fetchScope().addFetchPart( Item::PartEnvelope );
   connect( fetch, SIGNAL(result(KJob*)), SLOT(fetchDone(KJob*)) );
 }
 

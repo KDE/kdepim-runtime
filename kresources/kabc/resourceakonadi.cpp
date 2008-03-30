@@ -27,6 +27,7 @@
 #include <akonadi/item.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/itemsync.h>
 
 #include <kdebug.h>
@@ -101,7 +102,7 @@ void ResourceAkonadi::init()
   d->mMonitor->blockSignals( true );
 
   d->mMonitor->monitorMimeType( QLatin1String( "text/directory" ) );
-  d->mMonitor->fetchAllParts();
+  d->mMonitor->itemFetchScope().fetchAllParts();
 
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
@@ -183,7 +184,7 @@ bool ResourceAkonadi::load()
   clear();
 
   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchAllParts();
+  job->fetchScope().fetchAllParts();
 
   if ( !job->exec() ) {
     // TODO: error handling
@@ -215,7 +216,7 @@ bool ResourceAkonadi::asyncLoad()
   clear();
 
   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchAllParts();
+  job->fetchScope().fetchAllParts();
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
 

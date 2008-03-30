@@ -21,6 +21,7 @@
 
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <kcal/incidence.h>
 #include <kcal/event.h>
@@ -44,7 +45,7 @@ KCalModel::KCalModel( QObject *parent )
   : ItemModel( parent ),
     d( new Private() )
 {
-  addFetchPart( Item::PartBody );
+  fetchScope().addFetchPart( Item::PartBody );
 }
 
 KCalModel::~KCalModel()

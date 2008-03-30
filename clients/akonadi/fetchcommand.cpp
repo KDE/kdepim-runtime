@@ -21,6 +21,7 @@
 #include "out.h"
 
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 using namespace Akonadi;
 
@@ -35,7 +36,7 @@ void FetchCommand::exec()
 {
   const Item item( mUid.toLongLong() );
   ItemFetchJob* fetchJob = new ItemFetchJob( item );
-  fetchJob->addFetchPart( mPart );
+  fetchJob->fetchScope().addFetchPart( mPart );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()

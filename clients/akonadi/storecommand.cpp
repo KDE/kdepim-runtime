@@ -22,6 +22,7 @@
 
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 using namespace Akonadi;
 
@@ -34,7 +35,7 @@ void StoreCommand::exec()
 {
   const Item item( mUid.toLongLong() );
   ItemFetchJob* fetchJob = new ItemFetchJob( item );
-  fetchJob->fetchAllParts();
+  fetchJob->fetchScope().setFetchAllParts( true );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()

@@ -27,6 +27,7 @@
 #include <akonadi/collectionview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
@@ -124,8 +125,8 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->addFetchPart( Item::PartBody );
-  job->fetchAllParts();
+  job->fetchScope().addFetchPart( Item::PartBody ); // FIXME isn't thus redundant?
+  job->fetchScope().setFetchAllParts( true );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
 }

@@ -22,6 +22,7 @@
 #include <akonadi/session.h>
 #include <akonadi/monitor.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/item.h>
@@ -196,7 +197,7 @@ class MailThreaderAgent::Private
   bool saveThreadingInfo( Item::Id id, QLatin1String part, Item::Id partValue )
   {
     ItemFetchJob *job = new ItemFetchJob( Item( id ), mParent->session() );
-    job->addFetchPart( part );
+    job->fetchScope().addFetchPart( part );
 
     if ( job->exec() ) {
       Item item = job->items()[0];
@@ -403,10 +404,12 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
   // List collection content
   Collection col( _col );
   ItemFetchJob *fjob = new ItemFetchJob( col, session() );
-  fjob->addFetchPart( PartPerfectParents );
-  fjob->addFetchPart( PartUnperfectParents );
-  fjob->addFetchPart( PartSubjectParents );
-  fjob->fetchAllParts(); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
+  ItemFetchScope fetchScope = fjob->fetchScope();
+  fetchScope.addFetchPart( PartPerfectParents );
+  fetchScope.addFetchPart( PartUnperfectParents );
+  fetchScope.addFetchPart( PartSubjectParents );
+  fetchScope.setFetchAllParts( true ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
+  fjob->setFetchScope( fetchScope );
   if ( !fjob->exec() )
     return;
 

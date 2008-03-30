@@ -30,6 +30,7 @@
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemsync.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
@@ -315,7 +316,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   // when the class' getter methods are called or do a full fetch in the
   // unfortunate case where all items only have text/calendar as their MIME type
   ItemFetchJob *job = new ItemFetchJob( d->mCollection, this );
-  job->fetchAllParts();
+  job->fetchScope().fetchAllParts();
 
   if ( !job->exec() ) {
     emit resourceLoadError( this, job->errorString() );
@@ -485,7 +486,7 @@ void ResourceAkonadi::init()
   d->mMonitor->blockSignals( true );
 
   d->mMonitor->monitorMimeType( QLatin1String( "text/calendar" ) );
-  d->mMonitor->fetchAllParts();
+  d->mMonitor->itemFetchScope().fetchAllParts();
 
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),

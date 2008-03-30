@@ -23,6 +23,7 @@
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>
@@ -49,7 +50,7 @@ using namespace Akonadi;
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : AgentBase( id )
 {
-  changeRecorder()->fetchAllParts();
+  changeRecorder()->itemFetchScope().fetchAllParts();
   changeRecorder()->monitorMimeType( "text/directory" );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
