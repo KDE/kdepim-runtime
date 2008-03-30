@@ -267,7 +267,7 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 
     if ( amount == 0 ) {
         m_retrieveItemsRequested = false;
-        itemsRetrieved();
+        itemsRetrievalDone();
     } else {
         m_amountMessagesCache[ mb ] = amount;
         m_imap->getHeaderList( mb, 1, amount );

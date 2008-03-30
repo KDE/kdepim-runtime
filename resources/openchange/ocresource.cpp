@@ -1429,7 +1429,7 @@ void OCResource::retrieveItems(const Akonadi::Collection & collection, const QSt
   fetchFolder( collection );
 
   emit percent( 100 );
-  itemsRetrieved();
+  itemsRetrievalDone();
 }
 
 AKONADI_RESOURCE_MAIN( OCResource )

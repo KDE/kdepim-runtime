@@ -111,7 +111,7 @@ void NntpResource::retrieveItems(const Akonadi::Collection & col, const QStringL
   Q_UNUSED( parts );
   if ( !(col.contentMimeTypes().count() == 1 && col.contentMimeTypes().first() == "message/news" ) ) {
     // not a newsgroup, skip it
-    itemsRetrieved();
+    itemsRetrievalDone();
     return;
   }
 
@@ -237,7 +237,7 @@ void NntpResource::listGroupResult(KJob * job)
     // TODO: check result signal
   }
 
-  itemsRetrieved();
+  itemsRetrievalDone();
 }
 
 KUrl NntpResource::baseUrl() const
