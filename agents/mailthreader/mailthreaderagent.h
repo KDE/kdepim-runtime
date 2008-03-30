@@ -66,18 +66,9 @@ class MailThreaderAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::
     MailThreaderAgent( const QString &id );
     ~MailThreaderAgent();
 
-    static const QLatin1String PartPerfectParents;
-    static const QLatin1String PartUnperfectParents;
-    static const QLatin1String PartSubjectParents;
-
     void threadCollection( const Akonadi::Collection &col );
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
   protected:
-    virtual void aboutToQuit();
-
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void collectionChanged( const Akonadi::Collection &collection );

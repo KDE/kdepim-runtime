@@ -19,6 +19,7 @@
 
 #include "mailthreaderagent.h"
 
+#include <akonadi/attributefactory.h>
 #include <akonadi/session.h>
 #include <akonadi/monitor.h>
 #include <akonadi/itemfetchjob.h>
@@ -26,6 +27,7 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/item.h>
+#include <akonadi/kmime/messagethreadingattribute.h>
 
 #include <strigi/qtdbus/strigiclient.h>
 
@@ -161,51 +163,40 @@ class MailThreaderAgent::Private
   }
 
   /*
-   * Joint the integers in the list in a comma-separated string, and add it to item part
-   * @param item The method uses this item to not add already existing parents
-   * @param part The part the list will be added to
-   * @param list the parent list
-   * @return true if the part was changed: this to avoid unnecessary store jobs.
-   */
-  bool buildPartFromList( Item& item, const QLatin1String part, QList<Item::Id> list )
+    Merges @p newIds into @p list and returns if there has been any change.
+  */
+  bool mergeIdLists( QList<Item::Id> &list, const QList<Item::Id> &newIds )
   {
-    bool change = false;
-    // Convert the current parent list to integer list
-    QList<Item::Id> currentParents;
-    QList<QByteArray> currentParentsStringList = item.part( part ).split( ',' );
-    foreach( QByteArray s, currentParentsStringList )
-      currentParents << s.toLongLong();
-
-    QString result;
-    foreach( Item::Id i, list ) {
-      if ( currentParents.indexOf( i ) == -1 ) // Only add it if it's not already in
-      {
-        change = true;
-        result += QString::number( i ) + QLatin1String( "," );
+    bool changed = false;
+    foreach ( const Item::Id id, newIds ) {
+      if ( !list.contains( id ) ) {
+        list << id;
+        changed = true;
       }
     }
-
-    item.addPart( part, result.toLatin1() );
-
-    return change;
+    return changed;
   }
 
   /*
    * - Fetches the item before
    * - One integer instead of one integer list
    */
-  bool saveThreadingInfo( Item::Id id, QLatin1String part, Item::Id partValue )
+  bool saveUnperfectThreadingInfo( Item::Id id, Item::Id partValue )
   {
     ItemFetchJob *job = new ItemFetchJob( Item( id ), mParent->session() );
-    job->fetchScope().addFetchPart( part );
+    MessageThreadingAttribute attr;
+    job->fetchScope().addFetchPart( attr.type() );
 
     if ( job->exec() ) {
       Item item = job->items()[0];
-      bool change = buildPartFromList( item, part, QList<Item::Id>() << partValue );
+      MessageThreadingAttribute *attr = item.attribute<MessageThreadingAttribute>( Item::AddIfMissing );
+      QList<Item::Id> merged = attr->unperfectParents();
+      bool change = mergeIdLists( merged, QList<Item::Id>() << partValue );
 
       // Store the new parents of this item if there was a change
       if ( change )
       {
+        attr->setUnperfectParents( merged );
         ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
         job->storePayload();
         if (!job->exec()) {
@@ -227,21 +218,27 @@ class MailThreaderAgent::Private
                                   QList<Item::Id> unperfectParents,
                                   QList<Item::Id> subjectParents )
   {
-    bool pC = buildPartFromList( item, PartPerfectParents, perfectParents );
-    bool uC = buildPartFromList( item, PartUnperfectParents, unperfectParents );
-    bool fC = buildPartFromList( item, PartSubjectParents, subjectParents );
+    MessageThreadingAttribute *attr = item.attribute<MessageThreadingAttribute>( Item::AddIfMissing );
+    bool changed = false;
 
-    // If there was a change, store it
-    if ( pC || uC || fC )
-    {
-      ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
-      job->storePayload();
-      if (!job->exec()) {
-        kDebug( 5258 ) << "Unable to store the threading parts!";
-        return false;
-      }
+    QList<Item::Id> merged = attr->perfectParents();
+    changed = mergeIdLists( merged, perfectParents );
+    attr->setPerfectParents( merged );
+
+    merged = attr->unperfectParents();
+    changed = mergeIdLists( merged, unperfectParents ) || changed;
+    attr->setUnperfectParents( merged );
+
+    merged = attr->subjectParents();
+    changed = mergeIdLists( merged, subjectParents ) || changed;
+    attr->setSubjectParents( merged );
+
+    ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
+    job->storePayload();
+    if (!job->exec()) {
+      kDebug( 5258 ) << "Unable to store the threading parts!";
+      return false;
     }
-
     return true;
   }
 
@@ -326,7 +323,7 @@ class MailThreaderAgent::Private
       //   saveThreadingInfo( childId, PartPerfectParents, ref.id() );
       // }
       foreach( Item::Id childId, unperfectChildren ) {
-        saveThreadingInfo( childId, PartUnperfectParents, ref.id() );
+        saveUnperfectThreadingInfo( childId, ref.id() );
       }
       //foreach( int childId, subjectChildren ) {
       //  saveThreadingInfo( childId, PartSubjectParents, ref.id() );
@@ -339,14 +336,11 @@ class MailThreaderAgent::Private
 
 };
 
-const QLatin1String MailThreaderAgent::PartPerfectParents = QLatin1String( "AkonadiMailThreaderAgentPerfectParents" );
-const QLatin1String MailThreaderAgent::PartUnperfectParents = QLatin1String( "AkonadiMailThreaderAgentUnperfectParents" );
-const QLatin1String MailThreaderAgent::PartSubjectParents = QLatin1String( "AkonadiMailThreaderAgentSubjectParents" );
-
 MailThreaderAgent::MailThreaderAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
+  AttributeFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug( 5258 ) << "mailtheaderagent: at your order, sir!" ;
 
   // Fetch the whole list, thread it.
@@ -355,15 +349,6 @@ MailThreaderAgent::MailThreaderAgent( const QString &id )
 MailThreaderAgent::~MailThreaderAgent()
 {
   delete d;
-}
-
-void MailThreaderAgent::aboutToQuit()
-{
-
-}
-
-void MailThreaderAgent::configure( WId windowId )
-{
 }
 
 void MailThreaderAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
@@ -404,12 +389,9 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
   // List collection content
   Collection col( _col );
   ItemFetchJob *fjob = new ItemFetchJob( col, session() );
-  ItemFetchScope fetchScope = fjob->fetchScope();
-  fetchScope.addFetchPart( PartPerfectParents );
-  fetchScope.addFetchPart( PartUnperfectParents );
-  fetchScope.addFetchPart( PartSubjectParents );
-  fetchScope.setFetchAllParts( true ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
-  fjob->setFetchScope( fetchScope );
+  MessageThreadingAttribute attr;
+  fjob->fetchScope().addFetchPart( attr.type() );
+  fjob->fetchScope().setFetchAllParts( true ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
   if ( !fjob->exec() )
     return;
 
