@@ -215,7 +215,7 @@ void KCalResource::retrieveCollections()
 
     error( i18n( "No KCal resource plugin configured" ) );
 
-    changeStatus( Error, i18n( "No KCal resource plugin configured" ) );
+    emit status( Broken, i18n( "No KCal resource plugin configured" ) );
     return;
   }
 

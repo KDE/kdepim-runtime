@@ -287,7 +287,7 @@ void KABCItemEditor::loadContact( const Item &item )
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 
   d->setupMonitor();
-  d->mMonitor->monitorItem( item );
+  d->mMonitor->setItemMonitored( item );
 }
 
 void KABCItemEditor::saveContact()

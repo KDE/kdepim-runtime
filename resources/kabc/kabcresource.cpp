@@ -276,7 +276,7 @@ void KABCResource::retrieveCollections()
 
     error( i18n( "No KABC resource plugin configured" ) );
 
-    changeStatus( Error, i18n( "No KABC resource plugin configured" ) );
+    emit status( Broken, i18n( "No KABC resource plugin configured" ) );
     return;
   }
 
@@ -347,7 +347,7 @@ void KABCResource::loadingError( KABC::Resource *resource, const QString &messag
 
   kError() << "Loading error: " << message;
   error( message );
-  changeStatus( Error, message );
+  emit status( Broken, message );
 }
 
 void KABCResource::addressBookChanged()

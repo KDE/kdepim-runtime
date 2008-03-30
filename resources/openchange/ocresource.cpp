@@ -748,8 +748,8 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
   item.setPayload<MessagePtr>( msg_ptr );
   ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
   if ( !append->exec() ) {
-    changeProgress( 0 );
-    changeStatus( Error, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+    emit percent( 0 );
+    emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
   }
 }
 
@@ -1406,8 +1406,8 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   item.setPayload<KABC::Addressee>( *contact );
   ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
   if ( !append->exec() ) {
-    changeProgress( 0 );
-    changeStatus( Error, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+    emit percent( 0 );
+    emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
   }
 }
 
@@ -1417,18 +1417,18 @@ void OCResource::retrieveItems(const Akonadi::Collection & collection, const QSt
 
   ItemFetchJob *fetch = new ItemFetchJob( collection, session() );
   if ( !fetch->exec() ) {
-    changeStatus( Error,
-                  QString( "Unable to fetch listing of collection '%1': %2" ).arg( collection.name() ).arg( fetch->errorString() ) );
+    emit status( Broken,
+                 QString( "Unable to fetch listing of collection '%1': %2" ).arg( collection.name() ).arg( fetch->errorString() ) );
     return;
   }
 
-  changeProgress( 0 );
+  emit percent( 0 );
 
   Item::List items = fetch->items();
 
   fetchFolder( collection );
 
-  changeProgress( 100 );
+  emit percent( 100 );
   itemsRetrieved();
 }
 

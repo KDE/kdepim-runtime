@@ -33,7 +33,7 @@ using namespace Akonadi;
 StrigiFeeder::StrigiFeeder(const QString & id) :
     AgentBase( id )
 {
-  changeRecorder()->monitorAll();
+  changeRecorder()->setAllMonitored();
   changeRecorder()->itemFetchScope().addFetchPart( Item::PartBody );
   changeRecorder()->setChangeRecordingEnabled( false );
 }

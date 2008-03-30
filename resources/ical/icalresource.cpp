@@ -106,7 +106,7 @@ void ICalResource::loadFile()
   mCalendar = 0;
   const QString file = Settings::self()->path();
   if ( file.isEmpty() ) {
-    changeStatus( Error, i18n( "No iCal file specified." ) );
+    emit status( Broken, i18n( "No iCal file specified." ) );
     return;
   }
 

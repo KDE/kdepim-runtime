@@ -12,12 +12,12 @@ endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.
 #So, comment out for now -- talk to Brad Hards <bradh@frogmouth.net> for more info.
-#if(UNIX)
-#   macro_optional_find_package(OpenChange)
-#   macro_log_feature(LIBMAPI_FOUND "libmapi" "OpenChange MAPI Client Library" "http://www.openchange.org" FALSE "" "Needed to support OpenChange / Exchange servers")
+if(UNIX)
+   macro_optional_find_package(OpenChange)
+   macro_log_feature(LIBMAPI_FOUND "libmapi" "OpenChange MAPI Client Library" "http://www.openchange.org" FALSE "" "Needed to support OpenChange / Exchange servers")
 
-#   if(LIBMAPI_FOUND)
-#      add_subdirectory(openchange)
-#   endif(LIBMAPI_FOUND)
+if(LIBMAPI_FOUND)
+  add_subdirectory(openchange)
+endif(LIBMAPI_FOUND)
 
-#endif(UNIX)
+endif(UNIX)

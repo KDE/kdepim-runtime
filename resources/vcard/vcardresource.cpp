@@ -157,13 +157,13 @@ bool VCardResource::loadAddressees()
 
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() ) {
-    changeStatus( Error, i18n( "No vCard file specified." ) );
+    emit status( Broken, i18n( "No vCard file specified." ) );
     return false;
   }
 
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    changeStatus( Error, i18n( "Unable to open vCard file '%1'.", fileName ) );
+    emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
     return false;
   }
 
@@ -185,13 +185,13 @@ bool VCardResource::storeAddressees()
 
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() ) {
-    changeStatus( Error, i18n( "No vCard file specified." ) );
+    emit status( Broken, i18n( "No vCard file specified." ) );
     return false;
   }
 
   QFile file( fileName );
   if ( !file.open( QIODevice::WriteOnly ) ) {
-    changeStatus( Error, i18n( "Unable to open vCard file '%1'.", fileName ) );
+    emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
     return false;
   }
 

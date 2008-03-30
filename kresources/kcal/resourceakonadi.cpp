@@ -413,7 +413,7 @@ bool ResourceAkonadi::doOpen()
 
   // TODO: probably check here if collection exists
 
-  d->mMonitor->monitorCollection( d->mCollection );
+  d->mMonitor->setCollectionMonitored( d->mCollection );
 
   // activate reacting to changes
   d->mMonitor->blockSignals( false );
@@ -485,7 +485,7 @@ void ResourceAkonadi::init()
   // deactivate reacting to changes, will be enabled in doOpen()
   d->mMonitor->blockSignals( true );
 
-  d->mMonitor->monitorMimeType( QLatin1String( "text/calendar" ) );
+  d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/calendar" ) );
   d->mMonitor->itemFetchScope().fetchAllParts();
 
   connect( d->mMonitor,

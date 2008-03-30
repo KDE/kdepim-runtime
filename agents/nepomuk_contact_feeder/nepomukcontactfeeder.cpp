@@ -51,7 +51,7 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : AgentBase( id )
 {
   changeRecorder()->itemFetchScope().fetchAllParts();
-  changeRecorder()->monitorMimeType( "text/directory" );
+  changeRecorder()->setMimeTypeMonitored( "text/directory" );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
 

@@ -37,8 +37,8 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   AgentBase( id )
 {
   changeRecorder()->itemFetchScope().addFetchPart( Item::PartEnvelope );
-  changeRecorder()->monitorMimeType( "message/rfc822" );
-  changeRecorder()->monitorMimeType( "message/news" );
+  changeRecorder()->setMimeTypeMonitored( "message/rfc822" );
+  changeRecorder()->setMimeTypeMonitored( "message/news" );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
 

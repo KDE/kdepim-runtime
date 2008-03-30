@@ -38,7 +38,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
   setSourceLimit( 4 );
 
   Monitor *monitor = new Monitor( this );
-  monitor->monitorMimeType( "message/rfc822" );
+  monitor->setMimeTypeMonitored( "message/rfc822" );
   monitor->itemFetchScope().addFetchPart( Item::PartEnvelope );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
