@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KDE Addressbook Compatibility Resource
+Name[ca]=Recurs de compatibilitat de la llibreta d'adreces de l'Akonadi
 Name[de]=Kompatibilitäts-Ressource für das KDE-Adressbuch
 Name[el]=Πόρος συμβατότητας βιβλίου διευθύνσεων του KDE
 Name[ja]=KDE アドレス帳互換リソース
@@ -10,6 +11,7 @@ Name[tr]=KDE Adres Defterine Uyumlu Kaynak
 Name[x-test]=xxKDE Addressbook Compatibility Resourcexx
 Name[zh_TW]=KDE 通訊錄相容性資源
 Comment=An agent to load data from a traditional KDE addressbook resource
+Comment[ca]=Un agent per a carregar dades des d'un recurs de la llibreta d'adreces tradicional del KDE
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από έναν παραδοσιακό πόρο βιβλίου διευθύνσεων του KDE
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó acmhainn thraidisiúnta leabhair seoltaí KDE
 Comment[ja]=従来の KDE アドレス帳からデータを読み込むエージェント

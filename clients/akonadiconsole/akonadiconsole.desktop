@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi Console
+Name[ca]=Consola de l'Akonadi
 Name[de]=Akonadi-Konsole
 Name[el]=Κονσόλα Akonadi
 Name[ga]=Consól Akonadi
@@ -14,6 +15,7 @@ Exec=akonadiconsole
 Icon=utilities-terminal
 Type=Application
 Comment=Akonadi Management and Debugging Console
+Comment[ca]=Consola de gestió i depuració per a l'Akonadi
 Comment[de]=Akonadi-Konsole zur Verwaltung und Fehlersuche
 Comment[el]=Κονσόλα διαχείρισης και αποσφαλμάτωσης του Akonadi
 Comment[ga]=Consól Bainisteoireachta agus Dífhabhtaithe Akonadi

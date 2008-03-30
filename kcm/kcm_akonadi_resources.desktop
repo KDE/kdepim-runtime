@@ -13,6 +13,7 @@ X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
 
 Name=Akonadi Resources Configuration
+Name[ca]=Configuració de recursos de l'Akonadi
 Name[de]=Einrichtung der Akonadi-Ressourcen
 Name[el]=Ρυθμίσεις πόρων του Akonadi
 Name[ga]=Cumraíocht Acmhainní Akonadi
