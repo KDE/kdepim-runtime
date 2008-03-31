@@ -12,7 +12,7 @@ kde4_add_app_icon(kabcviewer_bin_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/office-add
 kde4_add_executable(kabcviewer_bin ${kabcviewer_bin_SRCS})
 set_target_properties(kabcviewer_bin PROPERTIES OUTPUT_NAME kabcviewer)
 
-target_link_libraries( kabcviewer_bin ${AKONADI_LIBS} akonadi-kabc kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( kabcviewer_bin ${KDE4_AKONADI_LIBS} akonadi-kabc kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS kabcviewer_bin DESTINATION ${BIN_INSTALL_DIR} )
 
@@ -28,6 +28,6 @@ kde4_add_app_icon(kabceditor_bin_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/office-add
 kde4_add_executable(kabceditor_bin ${kabceditor_bin_SRCS})
 set_target_properties(kabceditor_bin PROPERTIES OUTPUT_NAME kabceditor)
 
-target_link_libraries( kabceditor_bin ${AKONADI_LIBS} akonadi-kabc kdepim ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( kabceditor_bin ${KDE4_AKONADI_LIBS} akonadi-kabc kdepim ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS kabceditor_bin DESTINATION ${BIN_INSTALL_DIR} )

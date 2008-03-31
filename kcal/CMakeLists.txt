@@ -18,6 +18,6 @@ set( kcalakonadi_LIB_SRC
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
 
-target_link_libraries( akonadi-kcal ${AKONADI_LIBS} ${KDE4_KCAL_LIBS} )
+target_link_libraries( akonadi-kcal ${KDE4_AKONADI_LIBS} ${KDE4_KCAL_LIBS} )
 set_target_properties( akonadi-kcal PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 install(TARGETS akonadi-kcal DESTINATION ${LIB_INSTALL_DIR})

@@ -12,7 +12,7 @@ kde4_add_app_icon(akonadi_nepomuk_email_feeder_SRCS "${KDE4_ICON_DIR}/oxygen/*/a
 kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED ${akonadi_nepomuk_email_feeder_SRCS})
 
 target_link_libraries(akonadi_nepomuk_email_feeder
-  ${AKONADI_LIBS}
+  ${KDE4_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KMIME_LIBS}

@@ -1,4 +1,3 @@
-if (AKONADI_FOUND)
 configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix.h)
 
 INCLUDE(CheckIncludeFiles)
@@ -16,7 +15,19 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the mailthreaderagent and the message searchprovider")
 
 if (XSLTPROC_EXECUTABLE)
-add_subdirectory(server)
+  # generates a D-Bus interface description from a KConfigXT file
+  macro( kcfg_generate_dbus_interface _kcfg _name )
+    add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+      COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
+              ${CMAKE_INSTALL_PREFIX}/share/apps/akonadi-kde/kcfg2dbus.xsl
+              ${_kcfg}
+              > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+      DEPENDS ${CMAKE_INSTALL_PREFIX}/share/apps/akonadi-kde/kcfg2dbus.xsl
+              ${_kcfg}
+    )
+  endmacro( kcfg_generate_dbus_interface )
+  add_subdirectory(server)
 endif (XSLTPROC_EXECUTABLE)
 
 add_subdirectory(clients)
@@ -41,5 +52,3 @@ find_package(SharedMimeInfo REQUIRED)
 ########### install files ###############
 install(FILES akonadi-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
-
-endif (AKONADI_FOUND)

@@ -15,6 +15,6 @@ set(calendar_bin_SRCS
 kde4_add_executable(akonalendar_bin ${calendar_bin_SRCS})
 set_target_properties(akonalendar_bin PROPERTIES OUTPUT_NAME akonalendar)
 
-target_link_libraries( akonalendar_bin ${AKONADI_LIBS} kdepim akonadi-kcal ${KDE4_KDEUI_LIBRARY} )
+target_link_libraries( akonalendar_bin ${KDE4_AKONADI_LIBS} kdepim akonadi-kcal ${KDE4_KDEUI_LIBRARY} )
 
 install(TARGETS akonalendar_bin DESTINATION ${BIN_INSTALL_DIR} )
