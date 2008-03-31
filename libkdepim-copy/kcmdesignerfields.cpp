@@ -136,9 +136,13 @@ class PageItem : public Q3CheckListItem
 
 KCMDesignerFields::KCMDesignerFields( const KComponentData &instance, QWidget *parent, const QStringList &args )
   : KCModule( instance, parent, args )
+   ,mPageView(NULL)
+   ,mPagePreview(NULL)
+   ,mPageDetails(NULL)
+   ,mDeleteButton(NULL)
+   ,mImportButton(NULL)
+   ,mDesignerButton(NULL)
 {
-  QTimer::singleShot( 0, this, SLOT( delayedInit() ) );
-
   KAboutData *about = new KAboutData( I18N_NOOP( "KCMDesignerfields" ), 0,
                                       ki18n( "Qt Designer Fields Dialog" ),
                                       0, KLocalizedString(), KAboutData::License_LGPL,
@@ -215,11 +219,14 @@ void KCMDesignerFields::loadUiFiles()
 
 void KCMDesignerFields::rebuildList()
 {
-  QStringList ai = saveActivePages();
-  updatePreview( 0 );
-  mPageView->clear();
-  loadUiFiles();
-  loadActivePages(ai);
+  // If nothing is initialized there is no need to do something
+  if (mPageView) {
+    QStringList ai = saveActivePages();
+    updatePreview( 0 );
+    mPageView->clear();
+    loadUiFiles();
+    loadActivePages(ai);
+  }
 }
 
 void KCMDesignerFields::loadActivePages(const QStringList& ai)
@@ -240,6 +247,10 @@ void KCMDesignerFields::loadActivePages(const QStringList& ai)
 
 void KCMDesignerFields::load()
 {
+  // see KCModule::showEvent()
+  if (!mPageView) {
+    delayedInit();
+  }
   loadActivePages( readActivePages() );
 }
 
