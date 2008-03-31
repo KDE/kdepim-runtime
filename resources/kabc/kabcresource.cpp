@@ -244,7 +244,7 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   }
 }
 
-void KABCResource::itemChanged( const Akonadi::Item &item, const QStringList& parts )
+void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
 {
   Q_UNUSED( parts );
 

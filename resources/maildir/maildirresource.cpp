@@ -132,9 +132,9 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     changesCommitted( i );
 }
 
-void MaildirResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
+void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
-    if ( Settings::self()->readOnly() || !parts.contains( Item::PartBody ) ) {
+    if ( Settings::self()->readOnly() || !parts.contains( Item::PartBody.latin1() ) ) {
       changeProcessed();
       return;
     }

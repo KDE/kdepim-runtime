@@ -91,7 +91,7 @@ class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
 
     Q_PRIVATE_SLOT( d, void fetchDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void storeDone( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Item&, const QStringList& ) )
+    Q_PRIVATE_SLOT( d, void itemChanged( const Item&, const QSet<QByteArray>& ) )
 };
 
 }

@@ -42,7 +42,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QStringList &parts );
+    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );

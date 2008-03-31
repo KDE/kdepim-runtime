@@ -57,10 +57,10 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 
 void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
-  itemChanged( item, QStringList() );
+  itemChanged( item, QSet<QByteArray>() );
 }
 
-void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QStringList& )
+void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   if ( !item.hasPayload<KABC::Addressee>() )
     return;

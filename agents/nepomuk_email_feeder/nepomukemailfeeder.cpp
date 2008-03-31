@@ -45,10 +45,10 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
 void NepomukEMailFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
   Q_UNUSED( collection );
-  itemChanged( item, QStringList() );
+  itemChanged( item, QSet<QByteArray>() );
 }
 
-void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QStringList & partIdentifiers)
+void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByteArray> & partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
   if ( !item.hasPayload<MessagePtr>() )

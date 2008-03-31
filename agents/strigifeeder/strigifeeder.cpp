@@ -41,10 +41,10 @@ StrigiFeeder::StrigiFeeder(const QString & id) :
 void StrigiFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
   Q_UNUSED( collection );
-  itemChanged( item, QStringList() );
+  itemChanged( item, QSet<QByteArray>() );
 }
 
-void StrigiFeeder::itemChanged(const Akonadi::Item & item, const QStringList & partIdentifiers)
+void StrigiFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByteArray> & partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
   QByteArray data = item.part( Item::PartBody );

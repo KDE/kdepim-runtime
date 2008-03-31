@@ -37,7 +37,7 @@ class StrigiFeeder : public AgentBase, public AgentBase::Observer
 
   protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);
 
   private:

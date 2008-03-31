@@ -96,7 +96,7 @@ void LocalBookmarksResource::itemAdded( const Akonadi::Item & item, const Akonad
   mBookmarkManager->emitChanged( group );
 }
 
-void LocalBookmarksResource::itemChanged( const Akonadi::Item& item, const QStringList& )
+void LocalBookmarksResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& )
 {
   KBookmark bk = item.payload<KBookmark>();
 

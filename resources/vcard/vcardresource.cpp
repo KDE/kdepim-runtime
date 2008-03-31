@@ -101,7 +101,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   }
 }
 
-void VCardResource::itemChanged( const Akonadi::Item &item, const QStringList& )
+void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   KABC::Addressee addressee = item.payload<KABC::Addressee>();
   if ( !addressee.isEmpty() ) {

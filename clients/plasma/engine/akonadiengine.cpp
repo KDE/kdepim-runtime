@@ -42,7 +42,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
   monitor->itemFetchScope().addFetchPart( Item::PartEnvelope );
   connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
            SLOT(itemAdded(Akonadi::Item)) );
-  connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QStringList)),
+  connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
            SLOT(itemChanged(Akonadi::Item)) );
 
   // FIXME: hardcoded collection id

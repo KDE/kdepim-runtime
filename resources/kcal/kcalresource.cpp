@@ -177,7 +177,7 @@ void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   }
 }
 
-void KCalResource::itemChanged( const Akonadi::Item &item, const QStringList& parts )
+void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
 {
   Q_UNUSED( parts );
 

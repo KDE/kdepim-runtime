@@ -52,7 +52,7 @@ class KABCItemEditor::Private
 
     void fetchDone( KJob* );
     void storeDone( KJob* );
-    void itemChanged( const Item &item, const QStringList& );
+    void itemChanged( const Item &item, const QSet<QByteArray>& );
 
     void loadContact( const KABC::Addressee &addr );
     void storeContact( KABC::Addressee &addr );
@@ -97,7 +97,7 @@ void KABCItemEditor::Private::storeDone( KJob *job )
     emit mParent->contactStored( static_cast<ItemCreateJob*>( job )->item() );
 }
 
-void KABCItemEditor::Private::itemChanged( const Item&, const QStringList& )
+void KABCItemEditor::Private::itemChanged( const Item&, const QSet<QByteArray>& )
 {
   QMessageBox dlg( mParent );
 
@@ -259,8 +259,8 @@ void KABCItemEditor::Private::setupMonitor()
   mMonitor = new Monitor;
   mMonitor->ignoreSession( Session::defaultSession() );
 
-  connect( mMonitor, SIGNAL( itemChanged( const Item&, const QStringList& ) ),
-           mParent, SLOT( itemChanged( const Item&, const QStringList& ) ) );
+  connect( mMonitor, SIGNAL( itemChanged( const Item&, const QSet<QByteArray>& ) ),
+           mParent, SLOT( itemChanged( const Item&, const QSet<QByteArray>& ) ) );
 }
 
 

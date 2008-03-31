@@ -76,7 +76,7 @@ class ResourceAkonadi : public Resource
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QStringList& ) )
+    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
     Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
 };
 

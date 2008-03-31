@@ -156,7 +156,7 @@ void ImaplibResource::slotSaveDone( int uid )
     changesCommitted( m_itemAdded );
 }
 
-void ImaplibResource::itemChanged( const Akonadi::Item& item, const QStringList& parts )
+void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
     // We can just assume that we only get here if the flags have changed. So get them and
     // store those on the server.

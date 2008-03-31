@@ -130,7 +130,7 @@ void OCResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collectio
   qDebug() << "currently ignoring itemAdded()";
 }
 
-void OCResource::itemChanged( const Akonadi::Item&, const QStringList& )
+void OCResource::itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )
 {
   qDebug() << "currently ignoring itemChanged()";
 }

@@ -91,7 +91,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 
   public:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QStringList &partIdentifiers );
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved( const Akonadi::Item &item );
 
     void delayedAutoSaveOnDelete();
@@ -494,9 +494,9 @@ void ResourceAkonadi::init()
            SLOT( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
 
   connect( d->mMonitor,
-           SIGNAL( itemChanged( const Akonadi::Item&, const QStringList& ) ),
+           SIGNAL( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ),
            this,
-           SLOT( itemChanged( const Akonadi::Item&, const QStringList& ) ) );
+           SLOT( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
 
   connect( d->mMonitor,
            SIGNAL( itemRemoved( const Akonadi::Item&) ),
@@ -537,7 +537,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 }
 
 void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
-                                            const QStringList &partIdentifiers )
+                                            const QSet<QByteArray> &partIdentifiers )
 {
   kDebug(5800) << partIdentifiers;
 
@@ -552,7 +552,7 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 
   itemIt.value() = item;
 
-  if ( !partIdentifiers.contains( Akonadi::Item::PartBody ) ) {
+  if ( !partIdentifiers.contains( Akonadi::Item::PartBody.latin1() ) ) {
     kDebug(5800) << "No update to the item body";
     // FIXME find out why payload updates do not contain PartBody?
     //return;
