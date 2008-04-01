@@ -34,6 +34,9 @@ class QString;
 
     This class provides a dialog to ask the user for a link target url and
     text.
+
+    The size of the dialog is automatically saved to and restored from the
+    global KDE config file.
  */
 class KLinkDialog : public KDialog
 {

@@ -1,8 +1,9 @@
 /**
  * kmeditor.h
  *
- * Copyright (C)  2007  Laurent Montel <montel@kde.org>
- * Copyright (C)  2008  Thomas McGuire <thomas.mcguire@gmx.net>
+ * Copyright 2007 Laurent Montel <montel@kde.org>
+ * Copyright 2008 Thomas McGuire <thomas.mcguire@gmx.net>
+ * Copyright 2008 Stephen Kelly  <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

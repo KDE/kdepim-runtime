@@ -1,8 +1,8 @@
 /**
  * kmeditor.cpp
  *
- * Copyright (C)  2007 Laurent Montel <montel@kde.org>
- * Copyright (C)  2008 Thomas McGuire <thomas.mcguire@gmx.net>
+ * Copyright 2007 Laurent Montel <montel@kde.org>
+ * Copyright 2008 Thomas McGuire <thomas.mcguire@gmx.net>
  * Copyright 2008 Stephen Kelly  <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -1209,7 +1209,7 @@ void KMeditorPrivate::selectLinkText(QTextCursor *cursor) const
                 break;
             cursor->setPosition(cursor->position() - 1);
         }
-        if (!cursor->atStart())
+        if (cursor->charFormat().anchorHref() != aHref)
             cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
 
         // Move selection to the end of the link
@@ -1218,7 +1218,7 @@ void KMeditorPrivate::selectLinkText(QTextCursor *cursor) const
                 break;
             cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
         }
-        if (!cursor->atEnd())
+        if (cursor->charFormat().anchorHref() != aHref)
             cursor->setPosition(cursor->position() - 1, QTextCursor::KeepAnchor);
     }
 }
