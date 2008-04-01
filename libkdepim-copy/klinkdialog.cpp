@@ -81,13 +81,5 @@ QString KLinkDialog::linkText() const
 
 QString KLinkDialog::linkUrl() const
 {
-    if ( linkUrlLineEdit->text().contains( "://" ) ) {
-        return linkUrlLineEdit->text();
-    }
-    else if ( !linkUrlLineEdit->text().trimmed().isEmpty() ) {
-        return "http://" + linkUrlLineEdit->text();
-    }
-    else {
-        return QString();
-    }
+    return linkUrlLineEdit->text();
 }
