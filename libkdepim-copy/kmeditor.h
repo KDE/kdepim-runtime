@@ -53,6 +53,7 @@ class KEMailQuotingHighlighter;
  *     adding quotes or rot13'ing the text
  * @li Easier access to many common rich text editing tasks, like changing
  *     the font.
+ * @li Ability to edit and remove hyperlinks
  *
  * The editor can be in two modes: Rich text mode and plain text mode.
  * Calling functions which modify he format/style of the text will automatically
@@ -269,6 +270,24 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
 
     void ensureCursorVisible();
 
+    /**
+     * Returns the text of the link at the current position or an empty string
+     * if the cursor is not on a link.
+     *
+     * @sa currentLinkHref
+     * @return The link text
+     */
+    QString currentLinkText() const;
+
+    /**
+     * Returns the href of the link at the current position or an empty string
+     * if the cursor is not on a link.
+     *
+     * @sa currentLinkText
+     * @return The link target href
+     */
+    QString currentLinkHref() const;
+
   public Q_SLOTS:
 
     /**
@@ -311,6 +330,14 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotTextItalic( bool _b );
     void slotTextUnder( bool _b );
     void slotTextColor();
+
+    /**
+     * Opens a dialog which lets the user turn the currently selected text into
+     * a link.
+     * If no text is selected, the word under the cursor will be taken.
+     * If the cursor is already over a link, the user can edit that link.
+     */
+    void slotConfigureLink();
 
     void slotChangeInsertMode();
 

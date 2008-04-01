@@ -75,6 +75,7 @@ set(kdepim_LIB_SRCS
    kmutils.cpp
    colorlistbox.cpp
    dictionarycombobox.cpp
+   klinkdialog.cpp
 )
 
 
