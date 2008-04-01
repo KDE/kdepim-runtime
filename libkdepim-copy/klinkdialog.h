@@ -45,7 +45,7 @@ class KLinkDialog : public KDialog
          * Create a link dialog.
          * @param parent  Parent widget.
          */
-        KLinkDialog( QWidget *parent = 0 );
+        KLinkDialog(QWidget *parent = 0);
 
         /**
          * Destructor
@@ -57,14 +57,14 @@ class KLinkDialog : public KDialog
          * Returns the link text shown in the dialog
          * @param linkText The initial text
          */
-        void setLinkText( const QString &linkText );
+        void setLinkText(const QString &linkText);
 
         /**
          * Sets the target link url shown in the dialog
          * @param linkUrl The initial link target url
          */
-        void setLinkUrl( const QString &linkUrl );
-        
+        void setLinkUrl(const QString &linkUrl);
+
         /**
          * Returns the link text entered by the user.
          * @return The link text

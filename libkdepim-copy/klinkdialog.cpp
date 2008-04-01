@@ -21,56 +21,54 @@
 
 #include "klinkdialog.h"
 
-#include <QLabel>
-#include <QGridLayout>
-
 #include <KLocale>
 #include <KLineEdit>
 #include <KUrl>
 
-KLinkDialog::KLinkDialog( QWidget *parent ) :
-        KDialog(parent)
+#include <QLabel>
+#include <QGridLayout>
+
+KLinkDialog::KLinkDialog(QWidget *parent)
+  : KDialog(parent)
 {
     setMinimumWidth(450);
-    setCaption( i18n( "Manage Link" ) );
-    setButtons( Ok | Cancel );
-    setDefaultButton( Ok );
-    setModal( true );
+    setCaption(i18n("Manage Link"));
+    setButtons(Ok|Cancel);
+    setDefaultButton(Ok);
+    setModal(true);
 
-    QWidget *entries = new QWidget;
+    QWidget *entries = new QWidget();
 
-    QGridLayout *layout = new QGridLayout( entries );
+    QGridLayout *layout = new QGridLayout(entries);
 
-    textLabel = new QLabel( i18n( "Link Text" ), this );
-    textLineEdit = new KLineEdit( this );
-    linkUrlLabel = new QLabel( i18n( "Link URL" ), this );
-    linkUrlLineEdit = new KLineEdit( this );
+    textLabel = new QLabel(i18n("Link Text"), this);
+    textLineEdit = new KLineEdit(this);
+    linkUrlLabel = new QLabel(i18n("Link URL"), this);
+    linkUrlLineEdit = new KLineEdit(this);
 
+    layout->addWidget(textLabel, 0, 0);
+    layout->addWidget(textLineEdit, 0, 1);
+    layout->addWidget(linkUrlLabel, 1, 0);
+    layout->addWidget(linkUrlLineEdit, 1, 1);
 
-    layout->addWidget( textLabel, 0, 0 );
-    layout->addWidget( textLineEdit, 0, 1 );
-    layout->addWidget( linkUrlLabel, 1, 0 );
-    layout->addWidget( linkUrlLineEdit, 1, 1 );
-
-    setMainWidget( entries );
+    setMainWidget(entries);
 
     textLineEdit->setFocus();
-
 }
 
 KLinkDialog::~KLinkDialog()
 {}
 
-void KLinkDialog::setLinkText( const QString &linkText )
+void KLinkDialog::setLinkText(const QString &linkText)
 {
-    textLineEdit->setText( linkText );
-    if ( !linkText.trimmed().isEmpty() )
+    textLineEdit->setText(linkText);
+    if (!linkText.trimmed().isEmpty())
         linkUrlLineEdit->setFocus();
 }
 
-void KLinkDialog::setLinkUrl( const QString &linkUrl )
+void KLinkDialog::setLinkUrl(const QString &linkUrl)
 {
-    linkUrlLineEdit->setText( linkUrl );
+    linkUrlLineEdit->setText(linkUrl);
 }
 
 
