@@ -109,7 +109,7 @@ void MainWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->fetchScope().addFetchPart( Item::PartBody );
+  job->fetchScope().addFetchPart( Item::FullPayload );
   connect( job, SIGNAL( result(KJob*) ), SLOT( itemFetchDone(KJob*) ) );
   job->start();
 }
@@ -123,7 +123,7 @@ void MainWidget::itemFetchDone(KJob * job)
     qWarning() << "No mail found!";
   } else {
     const Item item = fetch->items().first();
-    mMessageView->setPlainText( item.part( Item::PartBody ) );
+    mMessageView->setPlainText( item.part( Item::FullPayload ) );
   }
 }
 

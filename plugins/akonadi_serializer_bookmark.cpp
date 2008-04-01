@@ -30,7 +30,7 @@ using namespace Akonadi;
 
 bool SerializerPluginBookmark::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-  if ( label != Item::PartBody )
+  if ( label != Item::FullPayload )
     return false;
 
   KBookmark bk;
@@ -45,7 +45,7 @@ bool SerializerPluginBookmark::deserialize( Item& item, const QString& label, QI
 
 void SerializerPluginBookmark::serialize( const Item& item, const QString& label, QIODevice& data )
 {
-  if ( label != Item::PartBody )
+  if ( label != Item::FullPayload )
     return;
 
   if ( item.mimeType() != QString::fromLatin1( "application/x-xbel" ) )

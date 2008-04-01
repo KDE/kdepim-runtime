@@ -34,7 +34,7 @@ StrigiFeeder::StrigiFeeder(const QString & id) :
     AgentBase( id )
 {
   changeRecorder()->setAllMonitored();
-  changeRecorder()->itemFetchScope().addFetchPart( Item::PartBody );
+  changeRecorder()->itemFetchScope().addFetchPart( Item::FullPayload );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
 
@@ -47,7 +47,7 @@ void StrigiFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collecti
 void StrigiFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByteArray> & partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
-  QByteArray data = item.part( Item::PartBody );
+  QByteArray data = item.part( Item::FullPayload );
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 

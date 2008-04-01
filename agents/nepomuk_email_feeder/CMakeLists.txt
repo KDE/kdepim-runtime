@@ -13,6 +13,7 @@ kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED ${akonadi_nepom
 
 target_link_libraries(akonadi_nepomuk_email_feeder
   ${KDE4_AKONADI_LIBS}
+  akonadi-kmime
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KMIME_LIBS}

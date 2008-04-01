@@ -35,7 +35,7 @@ KABCModel::KABCModel( QObject *parent )
   : Akonadi::ItemModel( parent ),
     d( new Private() )
 {
-  fetchScope().addFetchPart( Item::PartBody );
+  fetchScope().addFetchPart( Item::FullPayload );
 }
 
 KABCModel::~KABCModel()

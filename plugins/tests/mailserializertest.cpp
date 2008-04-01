@@ -22,6 +22,8 @@
 
 #include "akonadi_serializer_mail.cpp"
 
+#include <akonadi/kmime/messageparts.h>
+
 #include <qtest_kde.h>
 
 QTEST_KDEMAIN( MailSerializerTest, NoGUI )
@@ -41,7 +43,7 @@ void MailSerializerTest::testEnvelopeDeserialize()
   buffer.setData( env );
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
-  serializer->deserialize( i, Item::PartEnvelope, buffer );
+  serializer->deserialize( i, MessagePart::Envelope, buffer );
   QVERIFY( i.hasPayload<MessagePtr>() );
 
   MessagePtr msg = i.payload<MessagePtr>();
@@ -74,7 +76,7 @@ void MailSerializerTest::testEnvelopeSerialize()
   buffer.setBuffer( &env );
   buffer.open( QIODevice::ReadWrite );
   buffer.seek( 0 );
-  serializer->serialize( i, Item::PartEnvelope, buffer );
+  serializer->serialize( i, MessagePart::Envelope, buffer );
   QCOMPARE( env, expEnv );
 
   delete serializer;
@@ -95,15 +97,15 @@ void MailSerializerTest::testParts()
   msg->setHead( "foo" );
   QStringList parts = serializer->parts( item );
   QCOMPARE( parts.count(), 2 );
-  QVERIFY( parts.contains( Item::PartEnvelope ) );
-  QVERIFY( parts.contains( Item::PartHeader ) );
+  QVERIFY( parts.contains( MessagePart::Envelope ) );
+  QVERIFY( parts.contains( MessagePart::Header ) );
 
   msg->setBody( "bar" );
   parts = serializer->parts( item );
   QCOMPARE( parts.count(), 3 );
-  QVERIFY( parts.contains( Item::PartEnvelope ) );
-  QVERIFY( parts.contains( Item::PartHeader ) );
-  QVERIFY( parts.contains( Item::PartBody ) );
+  QVERIFY( parts.contains( MessagePart::Envelope ) );
+  QVERIFY( parts.contains( MessagePart::Header ) );
+  QVERIFY( parts.contains( MessagePart::Body ) );
 
   delete serializer;
 }

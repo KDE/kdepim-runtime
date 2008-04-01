@@ -376,7 +376,7 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 
   itemIt.value() = item;
 
-  if ( !partIdentifiers.contains( Akonadi::Item::PartBody.latin1() ) ) {
+  if ( !partIdentifiers.contains( Akonadi::Item::FullPayload.latin1() ) ) {
     kDebug(5700) << "No update to the item body";
     // FIXME find out why payload updates do not contain PartBody?
     //return;

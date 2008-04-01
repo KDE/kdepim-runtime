@@ -45,7 +45,7 @@ KCalModel::KCalModel( QObject *parent )
   : ItemModel( parent ),
     d( new Private() )
 {
-  fetchScope().addFetchPart( Item::PartBody );
+  fetchScope().addFetchPart( Item::FullPayload );
 }
 
 KCalModel::~KCalModel()

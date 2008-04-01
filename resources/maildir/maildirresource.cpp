@@ -25,6 +25,7 @@
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
+#include <akonadi/kmime/messageparts.h>
 #include <kdebug.h>
 #include <kurl.h>
 #include <kfiledialog.h>
@@ -134,7 +135,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
-    if ( Settings::self()->readOnly() || !parts.contains( Item::PartBody.latin1() ) ) {
+    if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body.latin1() ) ) {
       changeProcessed();
       return;
     }

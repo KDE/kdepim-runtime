@@ -29,7 +29,7 @@ using namespace Akonadi;
 
 bool SerializerPluginAddressee::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody )
+    if ( label != Item::FullPayload )
       return false;
 
     KABC::Addressee a = m_converter.parseVCard( data.readAll() );
@@ -43,7 +43,7 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QString& label, Q
 
 void SerializerPluginAddressee::serialize( const Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody || !item.hasPayload<KABC::Addressee>() )
+    if ( label != Item::FullPayload || !item.hasPayload<KABC::Addressee>() )
       return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();
     data.write( m_converter.createVCard( a ) );

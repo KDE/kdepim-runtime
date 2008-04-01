@@ -24,6 +24,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <akonadi/item.h>
+#include <akonadi/kmime/messageparts.h>
 #include <akonadi/private/imapparser_p.h>
 
 using namespace Akonadi;
@@ -50,7 +51,7 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 
 bool SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
 {
-    if ( label != Item::PartBody && label != Item::PartEnvelope && label != Item::PartHeader )
+    if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
       return false;
 
     MessagePtr msg;
@@ -65,15 +66,15 @@ bool SerializerPluginMail::deserialize( Item& item, const QString& label, QIODev
     QByteArray buffer = data.readAll();
     if ( buffer.isEmpty() )
       return true;
-    if ( label == Item::PartBody ) {
+    if ( label == MessagePart::Body ) {
       msg->setContent( buffer );
       msg->parse();
-    } else if ( label == Item::PartHeader ) {
+    } else if ( label == MessagePart::Header ) {
       if ( !msg->body().isEmpty() && !msg->contents().isEmpty() ) {
         msg->setHead( buffer );
         msg->parse();
       }
-    } else if ( label == Item::PartEnvelope ) {
+    } else if ( label == MessagePart::Envelope ) {
         QList<QByteArray> env;
         ImapParser::parseParenthesizedList( buffer, env );
         if ( env.count() < 10 ) {
@@ -152,9 +153,9 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
 {
   boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
   m->assemble();
-  if ( label == Item::PartBody ) {
+  if ( label == MessagePart::Body ) {
     data.write( m->encodedContent() );
-  } else if ( label == Item::PartEnvelope ) {
+  } else if ( label == MessagePart::Envelope ) {
     QList<QByteArray> env;
     env << quoteImapListEntry( m->date()->as7BitString( false ) );
     env << quoteImapListEntry( m->subject()->as7BitString( false ) );
@@ -167,7 +168,7 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
     env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
     env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
     data.write( buildImapList( env ) );
-  } else if ( label == Item::PartHeader ) {
+  } else if ( label == MessagePart::Header ) {
     data.write( m->head() );
   }
 }
@@ -180,9 +181,9 @@ QStringList SerializerPluginMail::parts(const Item & item) const
   QStringList list;
   // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
   if ( msg->hasContent() || msg->hasHeader( "Message-ID" ) ) {
-    list << Item::PartEnvelope << Item::PartHeader;
+    list << MessagePart::Envelope << MessagePart::Header;
     if ( !msg->body().isEmpty() || !msg->contents().isEmpty() )
-      list << Item::PartBody;
+      list << MessagePart::Body;
   }
   return list;
 }

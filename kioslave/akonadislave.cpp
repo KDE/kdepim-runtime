@@ -68,7 +68,7 @@ void AkonadiSlave::get(const KUrl & url)
 {
   const Item item = Item::fromUrl( url );
   ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().addFetchPart( Item::PartBody );
+  job->fetchScope().addFetchPart( Item::FullPayload );
 
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );
@@ -79,7 +79,7 @@ void AkonadiSlave::get(const KUrl & url)
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
     const Item item = job->items().first();
-    QByteArray tmp = item.part( Item::PartBody );
+    QByteArray tmp = item.part( Item::FullPayload );
     data( tmp );
     data( QByteArray() );
     finished();

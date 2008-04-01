@@ -22,6 +22,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
@@ -36,7 +37,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   AgentBase( id )
 {
-  changeRecorder()->itemFetchScope().addFetchPart( Item::PartEnvelope );
+  changeRecorder()->itemFetchScope().addFetchPart( MessagePart::Envelope );
   changeRecorder()->setMimeTypeMonitored( "message/rfc822" );
   changeRecorder()->setMimeTypeMonitored( "message/news" );
   changeRecorder()->setChangeRecordingEnabled( false );

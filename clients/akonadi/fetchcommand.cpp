@@ -29,7 +29,7 @@ FetchCommand::FetchCommand(const QString & uid, const QString & part ) :
     mUid( uid ),  mPart( part )
 {
   if ( mPart.isEmpty() )
-    mPart = Item::PartBody;
+    mPart = Item::FullPayload;
 }
 
 void FetchCommand::exec()

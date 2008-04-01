@@ -125,7 +125,7 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->fetchScope().addFetchPart( Item::PartBody ); // FIXME isn't thus redundant?
+  job->fetchScope().addFetchPart( Item::FullPayload ); // FIXME isn't thus redundant?
   job->fetchScope().setFetchAllParts( true );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
   job->start();
@@ -150,7 +150,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
       contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
     }
 
-    QByteArray data = item.part( Item::PartBody );
+    QByteArray data = item.part( Item::FullPayload );
     contentUi.dataView->setPlainText( data );
 
     contentUi.id->setText( QString::number( item.id() ) );
@@ -210,7 +210,7 @@ void BrowserWidget::save()
     item.clearFlag( f );
   foreach ( const QString s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
-  item.addPart( Item::PartBody, data );
+  item.addPart( Item::FullPayload, data );
 
   item.clearAttributes();
   for ( int i = 0; i < mAttrModel->rowCount(); ++i ) {

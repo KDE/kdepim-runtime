@@ -27,6 +27,7 @@
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemcreatejob.h>
+#include <akonadi/kmime/messageparts.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <akonadi/changerecorder.h>
@@ -80,7 +81,7 @@ void NntpResource::retrieveCollections()
   CachePolicy policy;
   policy.setInheritFromParent( false );
   policy.setSyncOnDemand( true );
-  policy.setLocalParts( QStringList( Item::PartEnvelope ) );
+  policy.setLocalParts( QStringList( MessagePart::Envelope ) );
   rootCollection.setCachePolicy( policy );
   QStringList contentTypes;
   contentTypes << Collection::mimeType();
