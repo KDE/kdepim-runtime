@@ -43,7 +43,7 @@ class KABCResource::ErrorHandler : public KABC::ErrorHandler
 
     virtual void error( const QString &message ) {
       mLastError = message;
-      mParent->error( message );
+      emit mParent->error( message );
     }
 
   public:
@@ -124,7 +124,7 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
   KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( addressee.isEmpty() ) {
     kError() << "Contact with uid" << rid << "not found";
-    error( i18n( "Contact with uid '%1' not found!", rid ) );
+    emit error( i18n( "Contact with uid '%1' not found!", rid ) );
     return false;
   }
 
@@ -142,7 +142,7 @@ void KABCResource::aboutToQuit()
   KABC::Ticket *ticket = mAddressBook->requestSaveTicket();
   if ( ticket == 0 ) {
     kError() << "Could not get save ticket";
-    error( i18n( "Saving of addressbook failed: could not get Saveticket" ) );
+    emit error( i18n( "Saving of addressbook failed: could not get Saveticket" ) );
     return;
   }
 
@@ -195,7 +195,7 @@ void KABCResource::configure( WId windowId )
   mResource = manager->createResource( type );
   if ( mResource == 0 ) {
     kError() << "Unable to create a KABC resource of type" << type;
-    error( i18n( "Unable to create a KABC resource of type %1", type ) );
+    emit error( i18n( "Unable to create a KABC resource of type %1", type ) );
     return;
   }
 
@@ -274,7 +274,7 @@ void KABCResource::retrieveCollections()
   if ( mResource == 0 ) {
     kError() << "No KABC resource";
 
-    error( i18n( "No KABC resource plugin configured" ) );
+    emit error( i18n( "No KABC resource plugin configured" ) );
 
     emit status( Broken, i18n( "No KABC resource plugin configured" ) );
     return;
@@ -346,7 +346,7 @@ void KABCResource::loadingError( KABC::Resource *resource, const QString &messag
   Q_UNUSED( resource );
 
   kError() << "Loading error: " << message;
-  error( message );
+  emit error( message );
   emit status( Broken, message );
 }
 

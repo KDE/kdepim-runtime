@@ -59,7 +59,7 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
   const QString rid = item.remoteId();
   IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {
-    error( i18n("Incidence with uid '%1' not found!", rid ) );
+    emit error( i18n("Incidence with uid '%1' not found!", rid ) );
     return false;
   }
 
@@ -77,9 +77,9 @@ void ICalResource::aboutToQuit()
     return;
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() )
-    error( i18n("No filename specified.") );
+    emit error( i18n("No filename specified.") );
   else if ( !mCalendar->save( fileName ) )
-    error( i18n("Failed to save calendar file to %1", fileName ) );
+    emit error( i18n("Failed to save calendar file to %1", fileName ) );
 }
 
 void ICalResource::configure( WId windowId )

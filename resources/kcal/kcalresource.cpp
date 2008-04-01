@@ -77,7 +77,7 @@ bool KCalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
 
   KCal::Incidence *incidence = mCalendar->incidence( item.remoteId() );
   if ( incidence == 0 ) {
-    error( i18n( "Incidence with uid '%1' not found!", rid ) );
+    emit error( i18n( "Incidence with uid '%1' not found!", rid ) );
     return false;
   }
   Item i( item );
@@ -135,7 +135,7 @@ void KCalResource::configure( WId windowId )
   // Create new resource
   resource = manager->createResource( type );
   if ( resource == 0 ) {
-    error( i18n( "Unable to create a KCal resource of type %1", type ) );
+    emit error( i18n( "Unable to create a KCal resource of type %1", type ) );
     return;
   }
 
@@ -213,7 +213,7 @@ void KCalResource::retrieveCollections()
   if ( resource == 0 ) {
     kError() << "No KCal resource";
 
-    error( i18n( "No KCal resource plugin configured" ) );
+    emit error( i18n( "No KCal resource plugin configured" ) );
 
     emit status( Broken, i18n( "No KCal resource plugin configured" ) );
     return;

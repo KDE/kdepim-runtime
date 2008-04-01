@@ -117,12 +117,12 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     Maildir dir( collection.remoteId() );
     QString errMsg;
     if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
-      error( errMsg );
+      emit error( errMsg );
       return;
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-      error( i18n("Only email messages can be added to the Maildir resource!") );
+      emit error( i18n("Only email messages can be added to the Maildir resource!") );
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
@@ -145,12 +145,12 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     Maildir dir( path );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
-        error( errMsg );
+        emit error( errMsg );
         return;
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-        error( i18n("Only email messages can be added to the Maildir resource!") );
+        emit error( i18n("Only email messages can be added to the Maildir resource!") );
         return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
@@ -167,11 +167,11 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     Maildir dir( path );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
-      error( errMsg );
+      emit error( errMsg );
       return;
     }
     if ( !dir.removeEntry( entry ) ) {
-      error( i18n("Failed to delete item: %1", item.remoteId()) );
+      emit error( i18n("Failed to delete item: %1", item.remoteId()) );
     }
   }
   changeProcessed();
@@ -202,7 +202,7 @@ void MaildirResource::retrieveCollections()
   Maildir dir( Settings::self()->path() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
-    error( errMsg );
+    emit error( errMsg );
     collectionsRetrieved( Collection::List() );
   }
 
@@ -224,7 +224,7 @@ void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStri
 {
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {
-    error( i18n("Invalid maildir: %1", col.remoteId() ) );
+    emit error( i18n("Invalid maildir: %1", col.remoteId() ) );
     itemsRetrieved( Item::List() );
     return;
   }

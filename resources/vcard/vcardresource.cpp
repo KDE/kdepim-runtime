@@ -46,7 +46,7 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QStringList &
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
   if ( !mAddressees.contains( rid ) ) {
-    error( QString( "Contact with uid '%1' not found!" ).arg( rid ) );
+    emit error( QString( "Contact with uid '%1' not found!" ).arg( rid ) );
     return false;
   }
   Item i( item );
@@ -60,9 +60,9 @@ void VCardResource::aboutToQuit()
 {
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() )
-    error( i18n( "No filename specified." ) );
+    emit error( i18n( "No filename specified." ) );
   else if ( storeAddressees() )
-    error( i18n( "Failed to save address book file to %1", fileName ) );
+    emit error( i18n( "Failed to save address book file to %1", fileName ) );
 }
 
 void VCardResource::configure( WId windowId )

@@ -163,7 +163,7 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
 void NntpResource::listGroupsResult(KJob * job)
 {
   if ( job->error() ) {
-    error( job->errorString() );
+    emit error( job->errorString() );
     return;
   } else {
     Settings::self()->setLastGroupList( QDateTime::currentDateTime() );
@@ -225,7 +225,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
 void NntpResource::listGroupResult(KJob * job)
 {
   if ( job->error() ) {
-    error( job->errorString() );
+    emit error( job->errorString() );
   } else {
     // store last serial number
     Collection col = currentCollection();
@@ -259,7 +259,7 @@ KUrl NntpResource::baseUrl() const
 void NntpResource::fetchArticleResult(KJob * job)
 {
   if ( job->error() ) {
-    error( job->errorString() );
+    emit error( job->errorString() );
     return;
   }
   KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob*>( job );
