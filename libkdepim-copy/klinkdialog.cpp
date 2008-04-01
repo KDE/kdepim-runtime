@@ -40,7 +40,6 @@ class KLinkDialogPrivate
 KLinkDialog::KLinkDialog(QWidget *parent)
   : KDialog(parent), d(new KLinkDialogPrivate)
 {
-    setMinimumWidth(450);
     setCaption(i18n("Manage Link"));
     setButtons(Ok|Cancel);
     setDefaultButton(Ok);
@@ -62,11 +61,16 @@ KLinkDialog::KLinkDialog(QWidget *parent)
 
     setMainWidget(entries);
 
+    KConfigGroup group(KGlobal::config(), "KLinkDialog");
+    restoreDialogSize(group);
+
     d->textLineEdit->setFocus();
 }
 
 KLinkDialog::~KLinkDialog()
 {
+    KConfigGroup group(KGlobal::config(), "KLinkDialog");
+    saveDialogSize(group);
     delete d;
     d = 0;
 }

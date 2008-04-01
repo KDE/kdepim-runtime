@@ -1282,8 +1282,6 @@ void KMeditor::slotConfigureLink()
         }
         cursor.insertText( linkText, format );
 
-        
-
         // Workaround for qt bug:
         // Link formatting does not get applied immediately. Removing and reinserting
         // the marked up html does format the text correctly.
@@ -1304,6 +1302,7 @@ void KMeditor::slotConfigureLink()
         d->activateRichText();
     }
     cursor.endEditBlock();
+    delete linkDialog;
 }
 
 #include "kmeditor.moc"
