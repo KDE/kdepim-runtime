@@ -28,8 +28,17 @@
 #include <QLabel>
 #include <QGridLayout>
 
+class KLinkDialogPrivate
+{
+    public:
+        QLabel *textLabel;
+        KLineEdit *textLineEdit;
+        QLabel *linkUrlLabel;
+        KLineEdit *linkUrlLineEdit;
+};
+
 KLinkDialog::KLinkDialog(QWidget *parent)
-  : KDialog(parent)
+  : KDialog(parent), d(new KLinkDialogPrivate)
 {
     setMinimumWidth(450);
     setCaption(i18n("Manage Link"));
@@ -41,43 +50,46 @@ KLinkDialog::KLinkDialog(QWidget *parent)
 
     QGridLayout *layout = new QGridLayout(entries);
 
-    textLabel = new QLabel(i18n("Link Text"), this);
-    textLineEdit = new KLineEdit(this);
-    linkUrlLabel = new QLabel(i18n("Link URL"), this);
-    linkUrlLineEdit = new KLineEdit(this);
+    d->textLabel = new QLabel(i18n("Link Text"), this);
+    d->textLineEdit = new KLineEdit(this);
+    d->linkUrlLabel = new QLabel(i18n("Link URL"), this);
+    d->linkUrlLineEdit = new KLineEdit(this);
 
-    layout->addWidget(textLabel, 0, 0);
-    layout->addWidget(textLineEdit, 0, 1);
-    layout->addWidget(linkUrlLabel, 1, 0);
-    layout->addWidget(linkUrlLineEdit, 1, 1);
+    layout->addWidget(d->textLabel, 0, 0);
+    layout->addWidget(d->textLineEdit, 0, 1);
+    layout->addWidget(d->linkUrlLabel, 1, 0);
+    layout->addWidget(d->linkUrlLineEdit, 1, 1);
 
     setMainWidget(entries);
 
-    textLineEdit->setFocus();
+    d->textLineEdit->setFocus();
 }
 
 KLinkDialog::~KLinkDialog()
-{}
+{
+    delete d;
+    d = 0;
+}
 
 void KLinkDialog::setLinkText(const QString &linkText)
 {
-    textLineEdit->setText(linkText);
+    d->textLineEdit->setText(linkText);
     if (!linkText.trimmed().isEmpty())
-        linkUrlLineEdit->setFocus();
+        d->linkUrlLineEdit->setFocus();
 }
 
 void KLinkDialog::setLinkUrl(const QString &linkUrl)
 {
-    linkUrlLineEdit->setText(linkUrl);
+    d->linkUrlLineEdit->setText(linkUrl);
 }
 
 
 QString KLinkDialog::linkText() const
 {
-    return textLineEdit->text().trimmed();
+    return d->textLineEdit->text().trimmed();
 }
 
 QString KLinkDialog::linkUrl() const
 {
-    return linkUrlLineEdit->text();
+    return d->linkUrlLineEdit->text();
 }

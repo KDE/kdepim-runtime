@@ -24,10 +24,8 @@
 
 #include <KDialog>
 
-class QLabel;
+class KLinkDialogPrivate;
 class QString;
-
-class KLineEdit;
 
 /**
     @short Dialog to allow user to configure a hyperlink.
@@ -78,10 +76,7 @@ class KLinkDialog : public KDialog
         QString linkUrl() const;
 
     private:
-        QLabel *textLabel;
-        KLineEdit *textLineEdit;
-        QLabel *linkUrlLabel;
-        KLineEdit *linkUrlLineEdit;
+        KLinkDialogPrivate *d;
 };
 
 #endif
