@@ -274,19 +274,21 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * Returns the text of the link at the current position or an empty string
      * if the cursor is not on a link.
      *
-     * @sa currentLinkHref
+     * @sa currentLinkUrl
      * @return The link text
+     * @since 4.1
      */
     QString currentLinkText() const;
 
     /**
-     * Returns the href of the link at the current position or an empty string
-     * if the cursor is not on a link.
+     * Returns the URL target (href) of the link at the current position or an
+     * empty string if the cursor is not on a link.
      *
      * @sa currentLinkText
-     * @return The link target href
+     * @return The link target URL
+     * @since 4.1
      */
-    QString currentLinkHref() const;
+    QString currentLinkUrl() const;
 
   public Q_SLOTS:
 
@@ -336,6 +338,8 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * a link.
      * If no text is selected, the word under the cursor will be taken.
      * If the cursor is already over a link, the user can edit that link.
+     *
+     * @since 4.1
      */
     void slotConfigureLink();
 

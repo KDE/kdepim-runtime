@@ -1214,7 +1214,7 @@ QString KMeditor::currentLinkText() const
 }
 
 
-QString KMeditor::currentLinkHref() const
+QString KMeditor::currentLinkUrl() const
 {
     return textCursor().charFormat().anchorHref();
 }
