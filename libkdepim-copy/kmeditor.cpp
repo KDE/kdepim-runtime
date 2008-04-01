@@ -94,6 +94,7 @@ class KMeditorPrivate
     //
     void addSuggestion( const QString&,const QStringList& );
 
+    // Just calls KTextEdit::ensureCursorVisible(), workaround for some bug.
     void ensureCursorVisibleDelayed();
 
     //
@@ -1186,8 +1187,15 @@ QString KMeditor::toWrappedPlainText() const
 void KMeditor::ensureCursorVisible()
 {
   QCoreApplication::processEvents();
-  // ugly hack because the layout changes afterwards, making the cursor hidden...
-  QTimer::singleShot(500, this, SLOT(ensureCursorVisibleDelayed()));
+
+  // Hack: In KMail, the layout of the composer changes again after
+  //       creating the editor (the toolbar/menubar creation is delayed), so
+  //       the size of the editor changes as well, possibly hiding the cursor
+  //       even though we called ensureCursorVisible() before the layout phase.
+  //
+  //       Delay the actual call to ensureCursorVisible() a bit to work around
+  //       the problem.
+  QTimer::singleShot( 500, this, SLOT( ensureCursorVisibleDelayed() ) );
 }
 
 QString KMeditor::currentLinkText() const

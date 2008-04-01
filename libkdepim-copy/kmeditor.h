@@ -269,6 +269,10 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     QString toWrappedPlainText() const;
 
+    /**
+     * Reimplemented again to work around a bug (see comment in implementation).
+     * FIXME: This is _not_ virtual in the base class
+     */
     void ensureCursorVisible();
 
     /**
