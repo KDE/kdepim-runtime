@@ -157,9 +157,8 @@ void LocalBookmarksResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void LocalBookmarksResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
+void LocalBookmarksResource::retrieveItems( const Akonadi::Collection & col )
 {
-  Q_UNUSED( parts );
   if ( !col.isValid() )
   {
     kDebug( 5253 ) << "Collection not valid";

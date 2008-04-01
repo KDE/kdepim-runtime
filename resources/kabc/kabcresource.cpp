@@ -294,10 +294,10 @@ void KABCResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void KABCResource::retrieveItems( const Akonadi::Collection &col, const QStringList &parts )
+void KABCResource::retrieveItems( const Akonadi::Collection &col )
 {
   Q_UNUSED( col );
-  Q_UNUSED( parts );
+
   if ( !mLoaded ) {
     mErrorHandler->mLastError.clear();
 

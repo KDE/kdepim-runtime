@@ -153,10 +153,9 @@ void ICalResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void ICalResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
+void ICalResource::retrieveItems( const Akonadi::Collection & col )
 {
   Q_UNUSED( col );
-  Q_UNUSED( parts );
   if ( !mCalendar )
     return;
 

@@ -248,7 +248,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 
 // ----------------------------------------------------------------------------------
 
-void ImaplibResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
+void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug( ) << col.remoteId();
     m_retrieveItemsRequested = true;

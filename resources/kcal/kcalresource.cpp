@@ -234,10 +234,9 @@ void KCalResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void KCalResource::retrieveItems( const Akonadi::Collection &col, const QStringList &parts )
+void KCalResource::retrieveItems( const Akonadi::Collection &col )
 {
   Q_UNUSED( col );
-  Q_UNUSED( parts );
 
   if ( mDelayedUpdateTimer->isActive() )
     return;

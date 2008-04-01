@@ -136,9 +136,8 @@ void VCardResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void VCardResource::retrieveItems( const Akonadi::Collection & col, const QStringList &parts )
+void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
-  Q_UNUSED( parts );
   Item::List items;
 
   foreach ( KABC::Addressee addressee, mAddressees ) {

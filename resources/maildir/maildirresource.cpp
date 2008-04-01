@@ -220,7 +220,7 @@ void MaildirResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void MaildirResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
+void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 {
   Maildir md( col.remoteId() );
   if ( !md.isValid() ) {

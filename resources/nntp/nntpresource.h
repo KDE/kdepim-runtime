@@ -38,7 +38,7 @@ class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 
   protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col, const QStringList &parts );
+    void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
 
   protected:

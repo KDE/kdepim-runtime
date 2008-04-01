@@ -106,9 +106,8 @@ void NntpResource::retrieveCollections()
   connect( job, SIGNAL( result(KJob*) ), SLOT( listGroupsResult(KJob*) ) );
 }
 
-void NntpResource::retrieveItems(const Akonadi::Collection & col, const QStringList &parts)
+void NntpResource::retrieveItems( const Akonadi::Collection & col )
 {
-  Q_UNUSED( parts );
   if ( !(col.contentMimeTypes().count() == 1 && col.contentMimeTypes().first() == "message/news" ) ) {
     // not a newsgroup, skip it
     itemsRetrievalDone();

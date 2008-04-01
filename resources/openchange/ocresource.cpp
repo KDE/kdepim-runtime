@@ -1411,7 +1411,7 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   }
 }
 
-void OCResource::retrieveItems(const Akonadi::Collection & collection, const QStringList &parts)
+void OCResource::retrieveItems( const Akonadi::Collection & collection )
 {
   qDebug() << "currently synchronizeCollections() is incomplete";
 
