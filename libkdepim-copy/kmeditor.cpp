@@ -1193,32 +1193,32 @@ void KMeditor::ensureCursorVisible()
 QString KMeditor::currentLinkText() const
 {
     QTextCursor cursor = textCursor();
-    d->selectLinkText( &cursor );
+    d->selectLinkText(&cursor);
     return cursor.selectedText();
 }
 
-void KMeditorPrivate::selectLinkText( QTextCursor *cursor ) const
+void KMeditorPrivate::selectLinkText(QTextCursor *cursor) const
 {
      // If the cursor is on a link, select the text of the link.
-    if ( cursor->charFormat().isAnchor() ) {
+    if (cursor->charFormat().isAnchor()) {
         QString aHref = cursor->charFormat().anchorHref();
 
         // Move cursor to start of link
-        while ( cursor->charFormat().anchorHref() == aHref ) {
-            if ( cursor->atStart() )
+        while (cursor->charFormat().anchorHref() == aHref) {
+            if (cursor->atStart())
                 break;
-            cursor->setPosition( cursor->position() - 1 );
+            cursor->setPosition(cursor->position() - 1);
         }
-        if ( !cursor->atStart() )
-            cursor->setPosition( cursor->position() + 1, QTextCursor::KeepAnchor );
+        if (!cursor->atStart())
+            cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
 
         // Move selection to the end of the link
-        while ( cursor->charFormat().anchorHref() == aHref ) {
-            if ( cursor->atEnd() )
+        while (cursor->charFormat().anchorHref() == aHref) {
+            if (cursor->atEnd())
                 break;
-            cursor->setPosition( cursor->position() + 1, QTextCursor::KeepAnchor );
+            cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
         }
-        if ( !cursor->atEnd() )
+        if (!cursor->atEnd())
             cursor->setPosition(cursor->position() - 1, QTextCursor::KeepAnchor);
     }
 }
@@ -1234,56 +1234,54 @@ void KMeditor::slotConfigureLink()
     cursor.beginEditBlock();
     QTextCharFormat format = cursor.charFormat();
 
-    d->selectLinkText( &cursor );
-    if ( !cursor.hasSelection() ) {
-        cursor.select( QTextCursor::WordUnderCursor );
+    d->selectLinkText(&cursor);
+    if (!cursor.hasSelection()) {
+        cursor.select(QTextCursor::WordUnderCursor);
     }
 
-    setTextCursor( cursor );
-    KLinkDialog *linkDialog = new KLinkDialog( this );
-    linkDialog->setLinkText( cursor.selectedText() );
-    linkDialog->setLinkUrl( format.anchorHref() );
+    setTextCursor(cursor);
+    KLinkDialog *linkDialog = new KLinkDialog(this);
+    linkDialog->setLinkText(cursor.selectedText());
+    linkDialog->setLinkUrl(format.anchorHref());
 
-    if ( linkDialog->exec() ) {
-        if ( !linkDialog->linkUrl().isEmpty() ) {
-            format.setAnchor( true );
-            format.setAnchorHref( linkDialog->linkUrl() );
+    if (linkDialog->exec()) {
+        if (!linkDialog->linkUrl().isEmpty()) {
+            format.setAnchor(true);
+            format.setAnchorHref(linkDialog->linkUrl());
         }
         else {
             format = cursor.block().charFormat();
-            kDebug() << "Remove";
-            format.setAnchor( false );
-            format.setAnchorHref( QString() );
+            format.setAnchor(false);
+            format.setAnchorHref(QString());
         }
 
         QString linkText;
 
-        int lowPos = qMin( cursor.selectionStart(), cursor.selectionEnd() );
-        if ( !linkDialog->linkText().isEmpty() ) {
+        int lowPos = qMin(cursor.selectionStart(), cursor.selectionEnd());
+        if (!linkDialog->linkText().isEmpty()) {
             linkText = linkDialog->linkText();
         }
         else {
             linkText = linkDialog->linkUrl();
         }
-        cursor.insertText( linkText, format );
+        cursor.insertText(linkText, format);
 
         // Workaround for qt bug:
         // Link formatting does not get applied immediately. Removing and reinserting
         // the marked up html does format the text correctly.
         // -- Stephen Kelly, 15th March 2008
-        cursor.setPosition( lowPos );
-        cursor.setPosition( lowPos + linkText.length(), QTextCursor::KeepAnchor );
+        cursor.setPosition(lowPos);
+        cursor.setPosition(lowPos + linkText.length(), QTextCursor::KeepAnchor);
 
-        cursor.insertHtml( cursor.selection().toHtml() );
-
+        cursor.insertHtml(cursor.selection().toHtml());
 
         // Insert a space after the link if at the end of the block so that
         // typing some text after the link does not carry link formatting
-        if ( cursor.position() == cursor.block().position() + cursor.block().length() - 1 ) {
-            cursor.setCharFormat( cursor.block().charFormat() );
-            cursor.insertText( QString( ' ' ) );
+        if (cursor.position() == cursor.block().position() + cursor.block().length() - 1) {
+            cursor.setCharFormat(cursor.block().charFormat());
+            cursor.insertText(QString(' '));
         }
-        
+
         d->activateRichText();
     }
     cursor.endEditBlock();
