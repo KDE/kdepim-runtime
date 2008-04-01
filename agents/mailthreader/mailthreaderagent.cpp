@@ -183,7 +183,7 @@ class MailThreaderAgent::Private
    */
   bool saveUnperfectThreadingInfo( Item::Id id, Item::Id partValue )
   {
-    ItemFetchJob *job = new ItemFetchJob( Item( id ), mParent->session() );
+    ItemFetchJob *job = new ItemFetchJob( Item( id ) );
     MessageThreadingAttribute attr;
     job->fetchScope().addFetchPart( attr.type() );
 
@@ -197,7 +197,7 @@ class MailThreaderAgent::Private
       if ( change )
       {
         attr->setUnperfectParents( merged );
-        ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
+        ItemModifyJob *job = new ItemModifyJob( item );
         job->storePayload();
         if (!job->exec()) {
           kDebug( 5258 ) << "Unable to store threading parts!";
@@ -233,7 +233,7 @@ class MailThreaderAgent::Private
     changed = mergeIdLists( merged, subjectParents ) || changed;
     attr->setSubjectParents( merged );
 
-    ItemModifyJob *job = new ItemModifyJob( item, mParent->session() );
+    ItemModifyJob *job = new ItemModifyJob( item );
     job->storePayload();
     if (!job->exec()) {
       kDebug( 5258 ) << "Unable to store the threading parts!";
@@ -388,7 +388,7 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
 {
   // List collection content
   Collection col( _col );
-  ItemFetchJob *fjob = new ItemFetchJob( col, session() );
+  ItemFetchJob *fjob = new ItemFetchJob( col );
   MessageThreadingAttribute attr;
   fjob->fetchScope().addFetchPart( attr.type() );
   fjob->fetchScope().setFetchAllParts( true ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)

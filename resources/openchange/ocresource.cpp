@@ -746,7 +746,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
   item.setMimeType( "message/rfc822" );
   msg_ptr->from()->from7BitString( "from@someone.local" );
   item.setPayload<MessagePtr>( msg_ptr );
-  ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
+  ItemCreateJob *append = new ItemCreateJob( item, collection );
   if ( !append->exec() ) {
     emit percent( 0 );
     emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
@@ -1404,7 +1404,7 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   contact->insertAddress( workAddress );
   contact->insertAddress( homeAddress );
   item.setPayload<KABC::Addressee>( *contact );
-  ItemCreateJob *append = new ItemCreateJob( item, collection, session() );
+  ItemCreateJob *append = new ItemCreateJob( item, collection );
   if ( !append->exec() ) {
     emit percent( 0 );
     emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
@@ -1415,7 +1415,7 @@ void OCResource::retrieveItems(const Akonadi::Collection & collection, const QSt
 {
   qDebug() << "currently synchronizeCollections() is incomplete";
 
-  ItemFetchJob *fetch = new ItemFetchJob( collection, session() );
+  ItemFetchJob *fetch = new ItemFetchJob( collection );
   if ( !fetch->exec() ) {
     emit status( Broken,
                  QString( "Unable to fetch listing of collection '%1': %2" ).arg( collection.name() ).arg( fetch->errorString() ) );
