@@ -99,6 +99,11 @@ class KMeditorPrivate
     //
     // Normal functions
     //
+
+    // If the text under the cursor is a link, the cursor's selection is set to
+    // the complete link text.
+    void selectLinkText( QTextCursor *cursor ) const;
+
     QString addQuotesToText( const QString &inputText );
     QString removeQuotesFromText( const QString &inputText ) const;
     void init();
@@ -1188,31 +1193,35 @@ void KMeditor::ensureCursorVisible()
 QString KMeditor::currentLinkText() const
 {
     QTextCursor cursor = textCursor();
-    // If the cursor is on a link, select the text of the link.
-    if ( cursor.charFormat().isAnchor() ) {
-        QString aHref = cursor.charFormat().anchorHref();
-
-        // Move cursor to start of link
-        while ( cursor.charFormat().anchorHref() == aHref ) {
-            if ( cursor.atStart() )
-                break;
-            cursor.setPosition( cursor.position() - 1 );
-        }
-        if ( !cursor.atStart() )
-            cursor.setPosition( cursor.position() + 1, QTextCursor::KeepAnchor );
-
-        // Move selection to the end of the link
-        while ( cursor.charFormat().anchorHref() == aHref ) {
-            if ( cursor.atEnd() )
-                break;
-            cursor.setPosition( cursor.position() + 1, QTextCursor::KeepAnchor );
-        }
-        if ( !cursor.atEnd() )
-            cursor.setPosition(cursor.position() - 1, QTextCursor::KeepAnchor);
-    }
+    d->selectLinkText( &cursor );
     return cursor.selectedText();
 }
 
+void KMeditorPrivate::selectLinkText( QTextCursor *cursor ) const
+{
+     // If the cursor is on a link, select the text of the link.
+    if ( cursor->charFormat().isAnchor() ) {
+        QString aHref = cursor->charFormat().anchorHref();
+
+        // Move cursor to start of link
+        while ( cursor->charFormat().anchorHref() == aHref ) {
+            if ( cursor->atStart() )
+                break;
+            cursor->setPosition( cursor->position() - 1 );
+        }
+        if ( !cursor->atStart() )
+            cursor->setPosition( cursor->position() + 1, QTextCursor::KeepAnchor );
+
+        // Move selection to the end of the link
+        while ( cursor->charFormat().anchorHref() == aHref ) {
+            if ( cursor->atEnd() )
+                break;
+            cursor->setPosition( cursor->position() + 1, QTextCursor::KeepAnchor );
+        }
+        if ( !cursor->atEnd() )
+            cursor->setPosition(cursor->position() - 1, QTextCursor::KeepAnchor);
+    }
+}
 
 QString KMeditor::currentLinkUrl() const
 {
@@ -1224,32 +1233,8 @@ void KMeditor::slotConfigureLink()
     QTextCursor cursor = textCursor();
     cursor.beginEditBlock();
     QTextCharFormat format = cursor.charFormat();
-    bool existingLink = false;
 
-    // If the cursor is on a link, select the text of the link.
-    if ( format.isAnchor() ) {
-        existingLink = true;
-        QString aHref = format.anchorHref();
-
-        // Move cursor to start of link
-        while ( cursor.charFormat().anchorHref() == aHref ) {
-            if ( cursor.atStart() )
-                break;
-            cursor.setPosition( cursor.position() - 1 );
-        }
-        if ( !cursor.atStart() )
-            cursor.setPosition( cursor.position() + 1, QTextCursor::KeepAnchor );
-
-        // Move selection to the end of the link
-        while ( cursor.charFormat().anchorHref() == aHref ) {
-            if ( cursor.atEnd() )
-                break;
-            cursor.setPosition( cursor.position() + 1, QTextCursor::KeepAnchor );
-        }
-        if ( !cursor.atEnd() )
-            cursor.setPosition(cursor.position() - 1, QTextCursor::KeepAnchor);
-    }
-
+    d->selectLinkText( &cursor );
     if ( !cursor.hasSelection() ) {
         cursor.select( QTextCursor::WordUnderCursor );
     }
