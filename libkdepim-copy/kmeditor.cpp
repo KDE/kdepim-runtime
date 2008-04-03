@@ -1274,7 +1274,7 @@ void KMeditor::slotConfigureLink()
         }
         cursor.insertText(linkText, format);
 
-        // Workaround for qt bug:
+        // Workaround for qt bug 203510:
         // Link formatting does not get applied immediately. Removing and reinserting
         // the marked up html does format the text correctly.
         // -- Stephen Kelly, 15th March 2008
