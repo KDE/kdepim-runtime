@@ -21,7 +21,7 @@ install( FILES ocresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ako
 
 kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})
 
-target_link_libraries(akonadi_oc_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBRARY} ${KDE4_AKONADI_KMIME_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS})
+target_link_libraries(akonadi_oc_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBS} ${KDE4_AKONADI_KMIME_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS})
 
 install(TARGETS akonadi_oc_resource DESTINATION ${BIN_INSTALL_DIR})
 
@@ -29,6 +29,6 @@ install(TARGETS akonadi_oc_resource DESTINATION ${BIN_INSTALL_DIR})
 
 # qtestlib unit tests
 kde4_add_unit_test( lzfutest lzfutest.cpp lzfu.cpp )
-target_link_libraries( lzfutest ${KDE4_KIO_LIBRARY} ${QT_QTTEST_LIBRARY} )
+target_link_libraries( lzfutest ${KDE4_KIO_LIBS} ${QT_QTTEST_LIBRARY} )
 
 

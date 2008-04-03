@@ -22,6 +22,6 @@ qt4_add_dbus_adaptor(vcardresource_SRCS
 
 kde4_add_executable(akonadi_vcard_resource RUN_UNINSTALLED ${vcardresource_SRCS})
 
-target_link_libraries(akonadi_vcard_resource ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBRARY})
+target_link_libraries(akonadi_vcard_resource ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_vcard_resource DESTINATION ${BIN_INSTALL_DIR})
