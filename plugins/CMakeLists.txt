@@ -14,7 +14,7 @@ install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
 kde4_add_plugin(akonadi_serializer_mail ${akonadi_serializer_mail_PART_SRCS})
-target_link_libraries(akonadi_serializer_mail ${KDE4_KDECORE_LIBS} ${KDE4_KMIME_LIBS} ${KDE4_AKONADI_LIBS} akonadiprotocolinternals akonadi-kmime)
+target_link_libraries(akonadi_serializer_mail ${KDE4_KDECORE_LIBS} ${KDE4_KMIME_LIBS} ${KDE4_AKONADI_LIBS} akonadiprotocolinternals ${KDE4_AKONADI_KMIME_LIBS})
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kcal_SRCS akonadi_serializer_kcal.cpp)
