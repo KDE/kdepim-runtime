@@ -18,31 +18,41 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef ALARMCLIENT_H
-#define ALARMCLIENT_H
+#ifndef REMINDERCLIENT_H
+#define REMINDERCLIENT_H
 
 #include <kdepim_export.h>
 
 namespace KPIM {
 
 /**
-  This class provides the interface for communicating with the alarm daemon. It
-  can be subclassed for specific daemons.
+  This class provides the interface for communicating with the reminder daemon.
+  It can be subclassed for specific daemons.
 */
-class KDEPIM_EXPORT AlarmClient
+class KDEPIM_EXPORT ReminderClient
 {
   public:
-    AlarmClient();
-    virtual ~AlarmClient() {}
+    ReminderClient();
+    virtual ~ReminderClient() {}
     /**
-      Start alarm daemon.
+      Start reminder daemon.
     */
     virtual void startDaemon();
 
     /**
-      Stop alarm daemon.
+      Stop reminder daemon.
     */
     virtual void stopDaemon();
+
+    /**
+      Hide the reminder daemon.
+    */
+    virtual void hideDaemon();
+
+    /**
+      Show the reminder daemon.
+    */
+    virtual void showDaemon();
 };
 
 }

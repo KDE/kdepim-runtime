@@ -20,7 +20,7 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include "alarmclient.h"
+#include "reminderclient.h"
 #include "korganizer_korgac_interface.h"
 
 #include <kdebug.h>
@@ -32,35 +32,49 @@
 
 using namespace KPIM;
 
-AlarmClient::AlarmClient()
+ReminderClient::ReminderClient()
 {
-  kDebug(5850) <<"AlarmClient::AlarmClient()";
+  kDebug(5850) << "ReminderClient::ReminderClient()";
 }
 
-void AlarmClient::startDaemon()
+void ReminderClient::startDaemon()
 {
   QDBusInterface iface( "org.kde.korgac", "/" );
   if ( iface.isValid() ){
-    // Alarm daemon already runs
+    // Reminder daemon already runs
     return;
   }
 
   KGlobal::dirs()->addResourceType( "autostart", 0, "share/autostart" );
   QString desktopFile = KStandardDirs::locate( "autostart", "korgac.desktop" );
   if ( desktopFile.isEmpty() ) {
-    kWarning() <<"Couldn't find autostart/korgac.desktop!";
+    kWarning() << "Couldn't find autostart/korgac.desktop!";
   } else {
     QString error;
     if ( KToolInvocation::startServiceByDesktopPath( desktopFile, QStringList(), &error ) != 0 ) {
-      kWarning() <<"Failure starting korgac:" << error;
+      kWarning() << "Failure starting korgac:" << error;
     }
   }
 }
 
-void AlarmClient::stopDaemon()
+void ReminderClient::stopDaemon()
 {
   OrgKdeKorganizerKOrgacInterface interface(
     "org.kde.korgac", "/ac", QDBusConnection::sessionBus() );
   interface.quit();
+}
+
+void ReminderClient::hideDaemon()
+{
+  OrgKdeKorganizerKOrgacInterface interface(
+    "org.kde.korgac", "/ac", QDBusConnection::sessionBus() );
+  interface.hide();
+}
+
+void ReminderClient::showDaemon()
+{
+  OrgKdeKorganizerKOrgacInterface interface(
+    "org.kde.korgac", "/ac", QDBusConnection::sessionBus() );
+  interface.show();
 }
 

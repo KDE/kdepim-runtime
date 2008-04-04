@@ -17,7 +17,7 @@ add_definitions(${QT_QTDBUS_DEFINITIONS})
 
 set(kdepim_LIB_SRCS
    ktimeedit.cpp 
-   alarmclient.cpp
+   reminderclient.cpp
    kprefsdialog.cpp 
    kpimprefs.cpp 
    categoryselectdialog.cpp 
