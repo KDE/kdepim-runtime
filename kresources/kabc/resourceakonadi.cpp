@@ -102,7 +102,7 @@ void ResourceAkonadi::init()
   d->mMonitor->blockSignals( true );
 
   d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
-  d->mMonitor->itemFetchScope().fetchAllParts();
+  d->mMonitor->itemFetchScope().setFetchAllParts( true );
 
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
@@ -184,7 +184,7 @@ bool ResourceAkonadi::load()
   clear();
 
   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchScope().fetchAllParts();
+  job->fetchScope().setFetchAllParts( true );
 
   if ( !job->exec() ) {
     // TODO: error handling
@@ -216,7 +216,7 @@ bool ResourceAkonadi::asyncLoad()
   clear();
 
   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchScope().fetchAllParts();
+  job->fetchScope().setFetchAllParts( true );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
 
