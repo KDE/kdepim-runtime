@@ -79,7 +79,7 @@ void AkonadiSlave::get(const KUrl & url)
     error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
   } else {
     const Item item = job->items().first();
-    QByteArray tmp = item.part( Item::FullPayload );
+    QByteArray tmp = item.payloadData();
     data( tmp );
     data( QByteArray() );
     finished();

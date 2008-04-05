@@ -26,13 +26,12 @@
 class StoreCommand : public Command
 {
   public:
-    StoreCommand( const QString &uid, const QString &part, const QString& content );
+    StoreCommand( const QString &uid, const QString& content );
 
     virtual void exec();
 
   private:
     QString mUid;
-    QString mPart;
     QString mContent;
 };
 

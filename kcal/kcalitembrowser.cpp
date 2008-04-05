@@ -20,6 +20,7 @@
 #include "kcalitembrowser.h"
 
 #include <akonadi/item.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <kcal/incidence.h>
 #include <kcal/incidenceformatter.h>
@@ -32,6 +33,7 @@ using namespace Akonadi;
 KCalItemBrowser::KCalItemBrowser( QWidget* parent )
     : ItemBrowser( parent ), d( 0 )
 {
+  fetchScope().addFetchPart( Item::FullPayload );
 }
 
 KCalItemBrowser::~KCalItemBrowser()

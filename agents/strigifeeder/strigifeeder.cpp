@@ -47,7 +47,7 @@ void StrigiFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collecti
 void StrigiFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByteArray> & partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
-  QByteArray data = item.part( Item::FullPayload );
+  QByteArray data = item.payloadData();
   mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
 }
 

@@ -57,7 +57,7 @@ int main( int argc, char **argv )
     cmd = new DeleteCommand( patharg );
   }
   else if ( cmdarg == "store" ) {
-    cmd = new StoreCommand( patharg, part, content );
+    cmd = new StoreCommand( patharg, content );
   }
   else if ( cmdarg == "append" ) {
     cmd = new AppendCommand( patharg, part, content );

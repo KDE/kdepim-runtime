@@ -26,8 +26,8 @@
 
 using namespace Akonadi;
 
-StoreCommand::StoreCommand(const QString & uid,  const QString & part, const QString & content) :
-  mUid( uid ), mPart( part ), mContent( content )
+StoreCommand::StoreCommand(const QString & uid, const QString & content) :
+  mUid( uid ), mContent( content )
 {
 }
 
@@ -42,15 +42,15 @@ void StoreCommand::exec()
         << endl;
   } else {
     Item item = fetchJob->items()[0];
-    item.addPart( mPart, mContent.toLatin1() );
+    item.setPayloadFromData( mContent.toUtf8() );
     ItemModifyJob* sJob = new ItemModifyJob( item );
     sJob->storePayload();
     if ( !sJob->exec() ) {
-      err() << "Unable to store part " << mPart << " = " << mContent << " for item " << mUid <<":"
+      err() << "Unable to store data " << mContent << " for item " << mUid <<":"
             << sJob->errorString()
             << endl;
     }
     else
-      out() << "Part " << mPart << "=" << mContent << " stored for item " << mUid << endl;
+      out() << "Data stored for item " << mUid << endl;
   }
 }

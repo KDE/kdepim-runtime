@@ -42,7 +42,7 @@ void AppendCommand::exec()
 
   Item item;
   item.setMimeType( mMimeType );
-  item.addPart( Item::FullPayload, mContent.toUtf8() );
+  item.setPayloadFromData( mContent.toUtf8() );
 
   ItemCreateJob* appendJob = new ItemCreateJob( item, Collection( currentColId ) );
   if ( !appendJob->exec() ) {

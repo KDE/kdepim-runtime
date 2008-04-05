@@ -55,7 +55,7 @@ void ItemBrowser::itemRemoved()
 
 QString ItemBrowser::itemToRichText( const Item &item )
 {
-  return QString::fromUtf8( item.part( Item::FullPayload ) );
+  return QString::fromUtf8( item.payloadData() );
 }
 
 #include "itembrowser.moc"

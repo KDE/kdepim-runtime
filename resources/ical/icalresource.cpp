@@ -67,7 +67,6 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &p
   i.setMimeType( mMimeVisitor->mimeType( incidence.get() ) );
   i.setPayload<IncidencePtr>( incidence );
   itemRetrieved( i );
-  QByteArray data = i.part( Item::FullPayload );
   return true;
 }
 

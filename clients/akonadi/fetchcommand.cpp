@@ -43,7 +43,7 @@ void FetchCommand::exec()
         << endl;
   } else {
     foreach( Item item, fetchJob->items() ) {
-      QByteArray data = item.part( mPart );
+      QByteArray data = item.payloadData();
       out() << data << endl;
     }
   }

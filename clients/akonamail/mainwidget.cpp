@@ -123,7 +123,7 @@ void MainWidget::itemFetchDone(KJob * job)
     qWarning() << "No mail found!";
   } else {
     const Item item = fetch->items().first();
-    mMessageView->setPlainText( item.part( Item::FullPayload ) );
+    mMessageView->setPlainText( item.payloadData() );
   }
 }
 

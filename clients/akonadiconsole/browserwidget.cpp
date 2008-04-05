@@ -101,7 +101,6 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   contentUi.setupUi( contentViewParent );
   connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
   splitter2->addWidget( contentViewParent );
-  contentUi.partCombo->addItem( "Body" );
 
   connect( contentUi.attrAddButton, SIGNAL(clicked()), SLOT(addAttribute()) );
   connect( contentUi.attrDeleteButton, SIGNAL(clicked()), SLOT(delAttribute()) );
@@ -146,11 +145,14 @@ void BrowserWidget::itemFetchDone(KJob * job)
 
       contentUi.addresseeView->setAddressee( addr );
       contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
+    } else if ( item.mimeType().startsWith( "application/x-vnd.akonadi.calendar" ) ) {
+      contentUi.incidenceView->setItem( item );
+      contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
     } else {
       contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
     }
 
-    QByteArray data = item.part( Item::FullPayload );
+    QByteArray data = item.payloadData();
     contentUi.dataView->setPlainText( data );
 
     contentUi.id->setText( QString::number( item.id() ) );
@@ -210,7 +212,7 @@ void BrowserWidget::save()
     item.clearFlag( f );
   foreach ( const QString s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
-  item.addPart( Item::FullPayload, data );
+  item.setPayloadFromData( data );
 
   item.clearAttributes();
   for ( int i = 0; i < mAttrModel->rowCount(); ++i ) {
