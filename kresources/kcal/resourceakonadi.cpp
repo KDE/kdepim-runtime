@@ -316,7 +316,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   // when the class' getter methods are called or do a full fetch in the
   // unfortunate case where all items only have text/calendar as their MIME type
   ItemFetchJob *job = new ItemFetchJob( d->mCollection, this );
-  job->fetchScope().setFetchAllParts( true );
+  job->fetchScope().fetchFullPayload();
 
   if ( !job->exec() ) {
     emit resourceLoadError( this, job->errorString() );
@@ -486,7 +486,7 @@ void ResourceAkonadi::init()
   d->mMonitor->blockSignals( true );
 
   d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/calendar" ) );
-  d->mMonitor->itemFetchScope().setFetchAllParts( true );
+  d->mMonitor->itemFetchScope().fetchFullPayload();
 
   connect( d->mMonitor,
            SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
