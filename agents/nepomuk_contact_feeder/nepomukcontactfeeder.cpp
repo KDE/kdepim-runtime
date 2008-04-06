@@ -50,7 +50,7 @@ using namespace Akonadi;
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : AgentBase( id )
 {
-  changeRecorder()->itemFetchScope().setFetchAllParts( true );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->setMimeTypeMonitored( "text/directory" );
   changeRecorder()->setChangeRecordingEnabled( false );
 }
