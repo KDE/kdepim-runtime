@@ -37,7 +37,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   AgentBase( id )
 {
-  changeRecorder()->itemFetchScope().addFetchPart( MessagePart::Envelope );
+  changeRecorder()->itemFetchScope().fetchPayloadPart( MessagePart::Envelope );
   changeRecorder()->setMimeTypeMonitored( "message/rfc822" );
   changeRecorder()->setMimeTypeMonitored( "message/news" );
   changeRecorder()->setChangeRecordingEnabled( false );

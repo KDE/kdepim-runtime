@@ -36,7 +36,7 @@ void FetchCommand::exec()
 {
   const Item item( mUid.toLongLong() );
   ItemFetchJob* fetchJob = new ItemFetchJob( item );
-  fetchJob->fetchScope().addFetchPart( mPart );
+  fetchJob->fetchScope().fetchPayloadPart( mPart );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()

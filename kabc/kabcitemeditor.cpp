@@ -107,7 +107,7 @@ void KABCItemEditor::Private::itemChanged( const Item&, const QSet<QByteArray>& 
 
   if ( dlg.exec() == QMessageBox::AcceptRole ) {
     ItemFetchJob *job = new ItemFetchJob( mItem );
-    job->fetchScope().addFetchPart( Item::FullPayload );
+    job->fetchScope().fetchFullPayload();
 
     mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
   }
@@ -282,7 +282,7 @@ void KABCItemEditor::loadContact( const Item &item )
     Q_ASSERT_X( false, "KABCItemEditor::loadContact", "You are calling loadContact in CreateMode!" );
 
   ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().addFetchPart( Item::FullPayload );
+  job->fetchScope().fetchFullPayload();
 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
 

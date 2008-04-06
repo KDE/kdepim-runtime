@@ -27,6 +27,7 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/item.h>
+#include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/messagethreadingattribute.h>
 
 #include <strigi/qtdbus/strigiclient.h>
@@ -184,8 +185,7 @@ class MailThreaderAgent::Private
   bool saveUnperfectThreadingInfo( Item::Id id, Item::Id partValue )
   {
     ItemFetchJob *job = new ItemFetchJob( Item( id ) );
-    MessageThreadingAttribute attr;
-    job->fetchScope().addFetchPart( attr.type() );
+    job->fetchScope().fetchAttribute<MessageThreadingAttribute>();
 
     if ( job->exec() ) {
       Item item = job->items()[0];
@@ -389,9 +389,8 @@ void MailThreaderAgent::threadCollection( const Akonadi::Collection &_col )
   // List collection content
   Collection col( _col );
   ItemFetchJob *fjob = new ItemFetchJob( col );
-  MessageThreadingAttribute attr;
-  fjob->fetchScope().addFetchPart( attr.type() );
-  fjob->fetchScope().setFetchAllParts( true ); // ### Why should I use this to have the message in-reply-to and so on (PartEnvelope doesn't work)
+  fjob->fetchScope().fetchAttribute<MessageThreadingAttribute>();
+  fjob->fetchScope().fetchPayloadPart( MessagePart::Header );
   if ( !fjob->exec() )
     return;
 

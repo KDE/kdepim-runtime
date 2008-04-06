@@ -35,7 +35,6 @@ void StoreCommand::exec()
 {
   const Item item( mUid.toLongLong() );
   ItemFetchJob* fetchJob = new ItemFetchJob( item );
-  fetchJob->fetchScope().setFetchAllParts( true );
   if ( !fetchJob->exec() ) {
     err() << "Error fetching item '" << mUid << "': "
         << fetchJob->errorString()

@@ -34,7 +34,7 @@ StrigiFeeder::StrigiFeeder(const QString & id) :
     AgentBase( id )
 {
   changeRecorder()->setAllMonitored();
-  changeRecorder()->itemFetchScope().addFetchPart( Item::FullPayload );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->setChangeRecordingEnabled( false );
 }
 

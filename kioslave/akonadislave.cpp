@@ -68,7 +68,7 @@ void AkonadiSlave::get(const KUrl & url)
 {
   const Item item = Item::fromUrl( url );
   ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().addFetchPart( Item::FullPayload );
+  job->fetchScope().fetchFullPayload();
 
   if ( !job->exec() ) {
     error( KIO::ERR_INTERNAL, job->errorString() );

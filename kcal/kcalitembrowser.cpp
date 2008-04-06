@@ -33,7 +33,7 @@ using namespace Akonadi;
 KCalItemBrowser::KCalItemBrowser( QWidget* parent )
     : ItemBrowser( parent ), d( 0 )
 {
-  fetchScope().addFetchPart( Item::FullPayload );
+  fetchScope().fetchFullPayload();
 }
 
 KCalItemBrowser::~KCalItemBrowser()

@@ -109,7 +109,7 @@ void MainWidget::itemActivated(const QModelIndex & index)
     return;
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->fetchScope().addFetchPart( Item::FullPayload );
+  job->fetchScope().fetchFullPayload();
   connect( job, SIGNAL( result(KJob*) ), SLOT( itemFetchDone(KJob*) ) );
   job->start();
 }
