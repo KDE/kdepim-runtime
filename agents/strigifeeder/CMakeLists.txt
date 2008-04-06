@@ -18,6 +18,7 @@ target_link_libraries(akonadi_strigi_feeder
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${STRIGIQTDBUSCLIENT_LIBRARY}
+  ${KDE4_KIO_LIBS}
 )
 
 install(TARGETS akonadi_strigi_feeder DESTINATION ${BIN_INSTALL_DIR})
