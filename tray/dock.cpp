@@ -156,6 +156,7 @@ void Dock::updateMenu( bool registered )
     button->setDefaultAction( action );
 
     m_stopAction->setVisible( registered );
+    m_backupAction->setEnabled( registered );
     m_startAction->setVisible( !registered );
 }
 
