@@ -30,7 +30,7 @@
  * @class AkonadiTrayApplication
  * @author Tom Albers <tomalbers@kde.nl>
  * This class is a simple inheritance from KUniqueApplication
- * the reason that it is reimplemented is that when AkonadiTray 
+ * the reason that it is reimplemented is that when AkonadiTray
  * is launched a second time it would in the orinal implementation
  * make the show(). which we do not want. This
  * class misses that call.
@@ -52,7 +52,7 @@ int main( int argc, char *argv[] )
     KAboutData aboutData( "akonaditray", 0,
                           ki18n( "AkonadiTray" ),
                           "0.1",
-                          ki18n( "Systemtray application to control basic Akonadi function"),
+                          ki18n( "Systemtray application to control basic Akonadi function" ),
                           KAboutData::License_GPL,
                           ki18n( "(c) 2008 Omat Holding B.V." ),
                           KLocalizedString() );

@@ -39,7 +39,7 @@ protected:
 class Dock : public KSystemTrayIcon
 {
     Q_OBJECT
-    Q_CLASSINFO(   "D-Bus Interface", "org.kde.Akonadi.Tray" )
+    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Tray" )
 
 public:
     /**
@@ -59,10 +59,12 @@ public Q_SLOTS:
     qlonglong getWinId();
 
 private slots:
-    void slotServiceChanged( const QString&, const QString&, const QString&);
+    void slotServiceChanged( const QString&, const QString&, const QString& );
     void slotActivated();
     void slotStopAkonadi();
     void slotStartAkonadi();
+    void slotStartBackup();
+    void slotBackupComplete( bool );
     void slotQuit();
 
 private:
@@ -70,6 +72,7 @@ private:
     QAction *m_title;
     QAction *m_stopAction;
     QAction *m_startAction;
+    QAction *m_backupAction;
 };
 
 #endif // DOCK_H
