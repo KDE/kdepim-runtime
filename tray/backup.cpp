@@ -61,6 +61,8 @@ void Backup::create( const KUrl& filename )
     /* first create the temp folder. */
     KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
     tempDir->setAutoRemove( false );
+    KIO::NetAccess::mkdir( tempDir->name() + "config", this );
+    KIO::NetAccess::mkdir( tempDir->name() + "db", this );
     kDebug() << "Temp dir: "<< tempDir->name();
 
     QStringList filesToBackup;
@@ -73,8 +75,8 @@ void Backup::create( const KUrl& filename )
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );
         if ( exists ) {
-            KIO::NetAccess::file_copy( configFileName, tempDir->name() + agentFileName, this );
-            filesToBackup << agentFileName;
+            KIO::NetAccess::file_copy( configFileName, tempDir->name() + "config/" + agentFileName, this );
+            filesToBackup << "config/" + agentFileName;
         }
     }
 
@@ -88,7 +90,7 @@ void Backup::create( const KUrl& filename )
     QStringList params;
     params << "--single-transaction" << "--master-data=2";
     params << "--flush-logs" << "--triggers";
-    params << "--result-file=" + tempDir->name() + "database.sql";
+    params << "--result-file=" + tempDir->name() + "db/database.sql";
     params << "--socket=" + socket << "akonadi";
     proc->setProgram( KStandardDirs::findExe( "mysqldump" ), params );
     kDebug() << "Executing: " << proc->program();
@@ -101,7 +103,7 @@ void Backup::create( const KUrl& filename )
         emit completed( false );
         return;
     }
-    filesToBackup << "database.sql";
+    filesToBackup << "db/database.sql";
 
     /* Make a nice tar file. */
     proc = new KProcess( 0 );
