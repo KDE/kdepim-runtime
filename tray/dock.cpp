@@ -18,6 +18,7 @@
 
 #include "dock.h"
 #include "backupassistant.h"
+#include "restoreassistant.h"
 #include "trayadaptor.h"
 
 #include <QDBusInterface>
@@ -65,6 +66,7 @@ Dock::Dock( QWidget *parent )
     m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
     m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT( slotStartAkonadi() ) );
     m_backupAction = menu->addAction( i18n( "Make &backup" ), this, SLOT( slotStartBackup() ) );
+    m_restoreAction = menu->addAction( i18n( "Restore &backup" ), this, SLOT( slotStartRestore() ) );
     menu->addSeparator();
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
@@ -81,7 +83,6 @@ Dock::Dock( QWidget *parent )
 Dock::~Dock()
 {
 }
-
 
 void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
 {
@@ -125,13 +126,13 @@ void Dock::slotStartBackup()
     backup->show();
 }
 
-void Dock::slotBackupComplete( bool success )
+void Dock::slotStartRestore()
 {
-    kDebug() << success;
-    if ( success )
-        KMessageBox::information( 0, "backup was a success" );
-    else
-        KMessageBox::information( 0, "backup failed" );
+    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
+    Q_ASSERT( registered );
+
+    RestoreAssistant* restore = new RestoreAssistant( 0 );
+    restore->show();
 }
 
 void Dock::updateMenu( bool registered )
@@ -144,6 +145,7 @@ void Dock::updateMenu( bool registered )
 
     m_stopAction->setVisible( registered );
     m_backupAction->setEnabled( registered );
+    m_restoreAction->setEnabled( registered );
     m_startAction->setVisible( !registered );
 }
 

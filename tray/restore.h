@@ -17,39 +17,37 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef BACKUPASSISTANT_H
-#define BACKUPASSISTANT_H
 
-#include <KAssistantDialog>
-class Backup;
-class QLabel;
-class QPushButton;
+#ifndef RESTORE_H
+#define RESTORE_H
 
-/**
- * Use this class to create a backup assistant.
- */
-class BackupAssistant : public KAssistantDialog
+#include <QWidget>
+
+class KUrl;
+
+class Restore : public QWidget
 {
     Q_OBJECT
 public:
     /**
      * Constructor
      */
-    BackupAssistant( QWidget* );
+    Restore( QWidget* );
 
-private Q_SLOTS:
-    void slotSelectFile( );
-    void slotPageChanged( KPageWidgetItem*, KPageWidgetItem* );
-    void slotBackupComplete( bool ok );
+    /**
+     * Checks if all the needed applications are available.
+     */
+    bool possible();
 
-private:
-    Backup *m_backup;
-    KPageWidgetItem *m_page1;
-    KPageWidgetItem *m_page2;
-    QLabel *m_backupProgressLabel;
-    QPushButton *m_selectFileButton;
-    QString m_filename;
+    /**
+     * Restores a backup and emits completed() when done.
+     * The filename should be the filename, with tgz extention.
+     */
+    void restore( const KUrl &filename );
+
+Q_SIGNALS:
+    void completed( bool );
 };
 
-#endif
+#endif // DOCK_H
 

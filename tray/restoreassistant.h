@@ -17,36 +17,36 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef BACKUPASSISTANT_H
-#define BACKUPASSISTANT_H
+#ifndef RESTOREASSISTANT_H
+#define RESTOREASSISTANT_H
 
 #include <KAssistantDialog>
-class Backup;
+class Restore;
 class QLabel;
 class QPushButton;
 
 /**
  * Use this class to create a backup assistant.
  */
-class BackupAssistant : public KAssistantDialog
+class RestoreAssistant : public KAssistantDialog
 {
     Q_OBJECT
 public:
     /**
      * Constructor
      */
-    BackupAssistant( QWidget* );
+    RestoreAssistant( QWidget* );
 
 private Q_SLOTS:
     void slotSelectFile( );
     void slotPageChanged( KPageWidgetItem*, KPageWidgetItem* );
-    void slotBackupComplete( bool ok );
+    void slotRestoreComplete( bool ok );
 
 private:
-    Backup *m_backup;
+    Restore *m_restore;
     KPageWidgetItem *m_page1;
     KPageWidgetItem *m_page2;
-    QLabel *m_backupProgressLabel;
+    QLabel *m_restoreProgressLabel;
     QPushButton *m_selectFileButton;
     QString m_filename;
 };

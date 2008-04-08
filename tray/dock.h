@@ -58,13 +58,13 @@ public Q_SLOTS:
     void errorMessage( const QString& );
     qlonglong getWinId();
 
-private slots:
+private Q_SLOTS:
     void slotServiceChanged( const QString&, const QString&, const QString& );
     void slotActivated();
     void slotStopAkonadi();
     void slotStartAkonadi();
     void slotStartBackup();
-    void slotBackupComplete( bool );
+    void slotStartRestore();
     void slotQuit();
 
 private:
@@ -73,6 +73,7 @@ private:
     QAction *m_stopAction;
     QAction *m_startAction;
     QAction *m_backupAction;
+    QAction *m_restoreAction;
 };
 
 #endif // DOCK_H
