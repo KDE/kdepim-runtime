@@ -97,7 +97,7 @@ void Backup::create( const KUrl& filename )
     int result = proc->execute();
     delete proc;
     kDebug() << result;
-    if ( result > 0 ) {
+    if ( result != 0 ) {
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -117,7 +117,7 @@ void Backup::create( const KUrl& filename )
     result = proc->execute();
     delete proc;
     kDebug() << result;
-    if ( result > 0 ) {
+    if ( result != 0 ) {
         tempDir->unlink();
         delete tempDir;
         emit completed( false );

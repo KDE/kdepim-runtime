@@ -17,19 +17,17 @@
 */
 
 #include "dock.h"
-#include "backup.h"
+#include "backupassistant.h"
 #include "trayadaptor.h"
 
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>
 #include <QMouseEvent>
-#include <QLabel>
 #include <QToolButton>
 #include <QWidgetAction>
 
 #include <KComponentData>
 #include <KDebug>
-#include <KFileDialog>
 #include <KIcon>
 #include <KIconLoader>
 #include <KLocale>
@@ -123,19 +121,8 @@ void Dock::slotStartBackup()
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
     Q_ASSERT( registered );
 
-    Backup* backup = new Backup( 0 );
-    connect( backup, SIGNAL( completed( bool ) ), SLOT( slotBackupComplete( bool ) ) );
-    bool possible = backup->possible();
-    if ( !possible ) {
-        KMessageBox::error( 0, i18n( "The backup can not be made. Either the mysqldump application "
-                                     "is not installed, or the bzip2 application is not found. Please install those and "
-                                     "make sure they can be found in the current path" ) );
-        return;
-    }
-
-    const QString filename = KFileDialog::getSaveFileName( KUrl( "~/akonadibackup.tgz" ) );
-    if ( !filename.isEmpty() )
-        backup->create( filename );
+    BackupAssistant* backup = new BackupAssistant( 0 );
+    backup->show();
 }
 
 void Dock::slotBackupComplete( bool success )
