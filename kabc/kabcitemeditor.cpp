@@ -303,7 +303,6 @@ void KABCItemEditor::saveContact()
     d->mItem.setPayload<KABC::Addressee>( addr );
 
     ItemModifyJob *job = new ItemModifyJob( d->mItem );
-    job->storePayload();
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   } else if ( d->mMode == CreateMode ) {
     Q_ASSERT_X( d->mDefaultCollection.isValid(), "KABCItemEditor::saveContact", "Using invalid default collection for saving!" );

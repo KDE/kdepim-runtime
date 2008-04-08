@@ -43,7 +43,6 @@ void StoreCommand::exec()
     Item item = fetchJob->items()[0];
     item.setPayloadFromData( mContent.toUtf8() );
     ItemModifyJob* sJob = new ItemModifyJob( item );
-    sJob->storePayload();
     if ( !sJob->exec() ) {
       err() << "Unable to store data " << mContent << " for item " << mUid <<":"
             << sJob->errorString()

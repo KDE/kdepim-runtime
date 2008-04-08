@@ -198,7 +198,6 @@ class MailThreaderAgent::Private
       {
         attr->setUnperfectParents( merged );
         ItemModifyJob *job = new ItemModifyJob( item );
-        job->storePayload();
         if (!job->exec()) {
           kDebug( 5258 ) << "Unable to store threading parts!";
           return false;
@@ -234,7 +233,6 @@ class MailThreaderAgent::Private
     attr->setSubjectParents( merged );
 
     ItemModifyJob *job = new ItemModifyJob( item );
-    job->storePayload();
     if (!job->exec()) {
       kDebug( 5258 ) << "Unable to store the threading parts!";
       return false;

@@ -394,7 +394,6 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     ItemModifyJob *modifyJob = new ItemModifyJob( item, this );
-    modifyJob->storePayload();
 
     job = modifyJob;
   }

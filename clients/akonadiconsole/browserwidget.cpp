@@ -227,7 +227,6 @@ void BrowserWidget::save()
   }
 
   ItemModifyJob *store = new ItemModifyJob( item, this );
-  store->storePayload();
   connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
 }
 
