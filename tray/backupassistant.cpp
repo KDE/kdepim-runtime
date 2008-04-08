@@ -20,6 +20,7 @@
 #include "backup.h"
 
 #include <QLabel>
+#include <QDateTime>
 #include <QPushButton>
 
 #include <KAssistantDialog>
@@ -70,8 +71,10 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 }
 
 void BackupAssistant::slotSelectFile()
-{
-    m_filename = KFileDialog::getSaveFileName( KUrl( "~/akonadibackup.tgz" ) );
+{   
+    QString file = QString( "~/akonadibackup-" + 
+        QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tgz" );
+    m_filename = KFileDialog::getSaveFileName( KUrl( file ) );
     if ( !m_filename.isEmpty() ) {
         m_selectFileButton->setText( m_filename );
         setValid( m_page1, true );
