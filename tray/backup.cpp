@@ -86,7 +86,7 @@ void Backup::create( const KUrl& filename )
     if ( socket.isEmpty() )
         kFatal() << "No socket found";
 
-    KProcess *proc = new KProcess( 0 );
+    KProcess *proc = new KProcess( this );
     QStringList params;
     params << "--single-transaction" << "--master-data=2";
     params << "--flush-logs" << "--triggers";
@@ -106,7 +106,7 @@ void Backup::create( const KUrl& filename )
     filesToBackup << "db/database.sql";
 
     /* Make a nice tar file. */
-    proc = new KProcess( 0 );
+    proc = new KProcess( this );
     params.clear();
     params << "-C" << tempDir->name();
     params << "-cjvf";

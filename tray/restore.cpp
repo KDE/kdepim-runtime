@@ -65,7 +65,7 @@ void Restore::restore( const KUrl& filename )
     kDebug() << "Temp dir: "<< tempDir->name();
 
     /* Extract the nice tar file. */
-    KProcess *proc = new KProcess( 0 );
+    KProcess *proc = new KProcess( this );
     QStringList params;
     params << "-C" << tempDir->name();
     params << "-xjvf";
@@ -102,7 +102,7 @@ void Restore::restore( const KUrl& filename )
     if ( socket.isEmpty() )
         kFatal() << "No socket found";
 
-    proc = new KProcess( 0 );
+    proc = new KProcess( this );
     params.clear();
     params << "--socket=" + socket << "akonadi";
     proc->setStandardInputFile( tempDir->name() + "db/database.sql" );
