@@ -73,7 +73,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
 
 void RestoreAssistant::slotSelectFile()
 {
-    m_filename = KFileDialog::getOpenFileName( KUrl( "~/akonadibackup.tgz" ) );
+    m_filename = KFileDialog::getOpenFileName( KUrl( "kfiledialog://BackupDir" ) );
     if ( !m_filename.isEmpty() ) {
         m_selectFileButton->setText( m_filename );
         setValid( m_page1, true );
