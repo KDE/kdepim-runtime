@@ -95,7 +95,7 @@ void MailSerializerTest::testParts()
   QVERIFY( serializer->parts( item ).isEmpty() );
 
   msg->setHead( "foo" );
-  QStringList parts = serializer->parts( item );
+  QList<QByteArray> parts = serializer->parts( item );
   QCOMPARE( parts.count(), 2 );
   QVERIFY( parts.contains( MessagePart::Envelope ) );
   QVERIFY( parts.contains( MessagePart::Header ) );
