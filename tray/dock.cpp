@@ -122,8 +122,9 @@ void Dock::slotStartBackup()
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
     Q_ASSERT( registered );
 
-    BackupAssistant backup( parentWidget() );
-    backup.exec();
+    QPointer<BackupAssistant> backup = new BackupAssistant( parentWidget() );
+    backup->exec();
+    delete backup;
 }
 
 void Dock::slotStartRestore()
@@ -131,8 +132,9 @@ void Dock::slotStartRestore()
     bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
     Q_ASSERT( registered );
 
-    RestoreAssistant restore( parentWidget() );
-    restore.exec();
+    QPointer<RestoreAssistant> restore = new RestoreAssistant( parentWidget() );
+    restore->exec();
+    delete restore;
 }
 
 void Dock::updateMenu( bool registered )
