@@ -69,6 +69,7 @@ class KDEPIM_EXPORT KCMDesignerFields : public KCModule
     void deleteFile();
     void importFile();
     void delayedInit();
+    void showWhatsThis(const QString &href);
 
   private:
     void initGUI();

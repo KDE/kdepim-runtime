@@ -37,6 +37,7 @@
 #include <QHBoxLayout>
 #include <QFrame>
 #include <QVBoxLayout>
+#include <QWhatsThis>
 
 #include <kaboutdata.h>
 #include <kdebug.h>
@@ -347,8 +348,9 @@ void KCMDesignerFields::initGUI()
 
   QLabel *activeLabel = new QLabel(
       i18n( "<a href=\"whatsthis:%1\">How does this work?</a>" , cwHowto), this );
-  activeLabel->setOpenExternalLinks( true );
   activeLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::LinksAccessibleByKeyboard);
+  connect( activeLabel, SIGNAL(linkActivated(QString)),
+           this, SLOT(showWhatsThis(QString)) );
   hbox->addWidget( activeLabel );
 
 
@@ -455,6 +457,14 @@ void KCMDesignerFields::startDesigner()
   }
 
   KRun::runCommand( cmdLine, topLevelWidget());
+}
+
+void KCMDesignerFields::showWhatsThis(const QString &href)
+{
+  if (href.startsWith("whatsthis:")) {
+    QPoint pos = QCursor::pos();
+    QWhatsThis::showText(pos, href.mid(10), this);
+  }
 }
 
 #include "kcmdesignerfields.moc"
