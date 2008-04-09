@@ -28,7 +28,7 @@
 
 using namespace Akonadi;
 
-bool SerializerPluginBookmark::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label, QIODevice& data )
 {
   if ( label != Item::FullPayload )
     return false;
@@ -43,7 +43,7 @@ bool SerializerPluginBookmark::deserialize( Item& item, const QString& label, QI
   return true;
 }
 
-void SerializerPluginBookmark::serialize( const Item& item, const QString& label, QIODevice& data )
+void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& label, QIODevice& data )
 {
   if ( label != Item::FullPayload )
     return;

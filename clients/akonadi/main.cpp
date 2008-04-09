@@ -39,7 +39,7 @@ int main( int argc, char **argv )
 
   QString cmdarg;
   QString patharg;
-  QString part;
+  QByteArray part;
   QString content;
   if ( argc >= 2 ) cmdarg = argv[ 1 ];
   if ( argc >= 3 ) patharg = argv[ 2 ];

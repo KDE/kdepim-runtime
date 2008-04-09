@@ -25,7 +25,7 @@
 
 using namespace Akonadi;
 
-FetchCommand::FetchCommand(const QString & uid, const QString & part ) :
+FetchCommand::FetchCommand(const QString & uid, const QByteArray & part ) :
     mUid( uid ),  mPart( part )
 {
   if ( mPart.isEmpty() )

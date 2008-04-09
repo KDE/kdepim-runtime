@@ -64,8 +64,10 @@ ImaplibResource::~ImaplibResource()
     delete m_imap;
 }
 
-bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
+bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
 {
+    Q_UNUSED( parts );
+
     const QString reference = item.remoteId();
     kDebug( ) << "Fetch request for" << reference;
     const QStringList temp = reference.split( "-+-" );

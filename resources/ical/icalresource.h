@@ -45,7 +45,7 @@ class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   protected Q_SLOTS:
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QStringList &parts );
+    bool retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts );
 
   protected:
     virtual void aboutToQuit();

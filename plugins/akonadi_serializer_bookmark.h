@@ -32,8 +32,8 @@ using namespace Akonadi;
 class SerializerPluginBookmark : public ItemSerializerPlugin
 {
 public:
-  bool deserialize( Item& item, const QString& label, QIODevice& data );
-  void serialize( const Item& item, const QString& label, QIODevice& data );
+  bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
+  void serialize( const Item& item, const QByteArray& label, QIODevice& data );
 };
 
 #endif

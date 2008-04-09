@@ -62,7 +62,7 @@ NntpResource::~ NntpResource()
 {
 }
 
-bool NntpResource::retrieveItem(const Akonadi::Item& item, const QStringList &parts)
+bool NntpResource::retrieveItem(const Akonadi::Item& item, const QList<QByteArray> &parts)
 {
   Q_UNUSED( parts );
   KIO::Job* job = KIO::storedGet( KUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );

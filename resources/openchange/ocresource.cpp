@@ -105,7 +105,7 @@ OCResource::~ OCResource()
   talloc_free(m_mapiMemoryContext);
 }
 
-bool OCResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
+bool OCResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
 {
   qDebug() << "currently ignoring requestItemDelivery";
   return true;

@@ -79,8 +79,10 @@ MaildirResource::~ MaildirResource()
 {
 }
 
-bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
+bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
 {
+  Q_UNUSED( parts );
+
   const QString dir = maildirPath( item.remoteId() );
   const QString entry = maildirId( item.remoteId() );
 
@@ -135,7 +137,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
-    if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body.latin1() ) ) {
+    if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body ) ) {
       changeProcessed();
       return;
     }

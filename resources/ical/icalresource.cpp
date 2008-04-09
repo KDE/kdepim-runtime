@@ -52,7 +52,7 @@ ICalResource::~ ICalResource()
   delete mMimeVisitor;
 }
 
-bool ICalResource::retrieveItem( const Akonadi::Item &item, const QStringList &parts )
+bool ICalResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   kDebug( 5251 ) << "Item:" << item.url();

@@ -28,9 +28,9 @@ namespace Akonadi {
 class SerializerPluginMail : public ItemSerializerPlugin
 {
 public:
-    bool deserialize( Item& item, const QString& label, QIODevice& data );
-    void serialize( const Item& item, const QString& label, QIODevice& data );
-    QStringList parts( const Item &item ) const;
+    bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
+    void serialize( const Item& item, const QByteArray& label, QIODevice& data );
+    QList<QByteArray> parts( const Item &item ) const;
 };
 
 

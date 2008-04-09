@@ -49,7 +49,7 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 }
 
 
-bool SerializerPluginMail::deserialize( Item& item, const QString& label, QIODevice& data )
+bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data )
 {
     if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
       return false;
@@ -149,7 +149,7 @@ template <typename T> static QByteArray buildAddrStruct( T const *hdr )
   return buildImapList( addrList );
 }
 
-void SerializerPluginMail::serialize( const Item& item, const QString& label, QIODevice& data )
+void SerializerPluginMail::serialize( const Item& item, const QByteArray& label, QIODevice& data )
 {
   boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
   m->assemble();
@@ -173,12 +173,12 @@ void SerializerPluginMail::serialize( const Item& item, const QString& label, QI
   }
 }
 
-QStringList SerializerPluginMail::parts(const Item & item) const
+QList<QByteArray> SerializerPluginMail::parts(const Item & item) const
 {
   if ( !item.hasPayload<MessagePtr>() )
-    return QStringList();
+    return QList<QByteArray>();
   MessagePtr msg = item.payload<MessagePtr>();
-  QStringList list;
+  QList<QByteArray> list;
   // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
   if ( msg->hasContent() || msg->hasHeader( "Message-ID" ) ) {
     list << MessagePart::Envelope << MessagePart::Header;
