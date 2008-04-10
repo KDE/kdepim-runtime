@@ -115,7 +115,7 @@ KABCResource::~KABCResource()
   delete mAddressBook;
 }
 
-bool KABCResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
+bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   kDebug() << "item(" << item.id() << "," << item.remoteId() << "),"
            << parts;

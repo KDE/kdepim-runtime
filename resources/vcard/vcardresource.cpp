@@ -41,7 +41,7 @@ VCardResource::~VCardResource()
   mAddressees.clear();
 }
 
-bool VCardResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
+bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   const QString rid = item.remoteId();

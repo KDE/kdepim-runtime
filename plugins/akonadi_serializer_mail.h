@@ -30,7 +30,7 @@ class SerializerPluginMail : public ItemSerializerPlugin
 public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data );
-    QList<QByteArray> parts( const Item &item ) const;
+    QSet<QByteArray> parts( const Item &item ) const;
 };
 
 

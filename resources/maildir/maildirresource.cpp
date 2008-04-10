@@ -79,7 +79,7 @@ MaildirResource::~ MaildirResource()
 {
 }
 
-bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
+bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
 

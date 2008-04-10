@@ -64,7 +64,7 @@ ImaplibResource::~ImaplibResource()
     delete m_imap;
 }
 
-bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
+bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
     Q_UNUSED( parts );
 

@@ -47,7 +47,7 @@ LocalBookmarksResource::~ LocalBookmarksResource()
 {
 }
 
-bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QList<QByteArray> &parts )
+bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   // TODO use remote id to retrieve the item in the file
