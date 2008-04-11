@@ -184,7 +184,6 @@ void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
       uint64_t *fid = (uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
       thisFolder.setRemoteId( QString::number( *fid ) );
       thisFolder.setName( ( const char * ) find_SPropValue_data(&rowset.aRow[index], PR_DISPLAY_NAME) );
-      thisFolder.setType( Collection::Folder );
       QStringList folderMimeType;
       if (*( (uint32_t *)find_SPropValue_data(&rowset.aRow[index], PR_FOLDER_CHILD_COUNT) ) > 0 ) {
         // if it has children, needs this mimetype:
@@ -302,7 +301,6 @@ void OCResource::retrieveCollections()
   account.setParent( Collection::root() );
   account.setRemoteId( m_profileName );
   account.setName( QString( lpProps[0].value.lpszA ) + QString( " (OpenChange)" ) );
-  account.setType( Collection::Resource );
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
   account.setContentMimeTypes( mimeTypes );
