@@ -66,7 +66,7 @@ Dock::Dock( QWidget *parent )
     m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
     m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT( slotStartAkonadi() ) );
     m_backupAction = menu->addAction( i18n( "Make &backup" ), this, SLOT( slotStartBackup() ) );
-    m_restoreAction = menu->addAction( i18n( "Restore &backup" ), this, SLOT( slotStartRestore() ) );
+    m_restoreAction = menu->addAction( i18n( "&Restore backup" ), this, SLOT( slotStartRestore() ) );
     menu->addSeparator();
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );

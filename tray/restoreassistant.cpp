@@ -38,7 +38,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
     QLabel *label1 = new QLabel( box1 );
     label1->setWordWrap( true );
     if ( !possible ) {
-        label1->setText( '\n' + i18n( "The backup can not be restored. Either the mysql application"
+        label1->setText( '\n' + i18n( "The backup can not be restored. Either the mysql application "
                                       "is not installed, or the bzip2 application is not found. "
                                       "Please install those and make sure they can be found in "
                                       "the current path. Restart this Assistant when this is fixed." ) );

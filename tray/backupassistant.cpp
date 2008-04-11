@@ -39,7 +39,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
     QLabel *label1 = new QLabel( box1 );
     label1->setWordWrap( true );
     if ( !possible ) {
-        label1->setText( '\n' + i18n( "The backup can not be made. Either the mysqldump application"
+        label1->setText( '\n' + i18n( "The backup can not be made. Either the mysqldump application "
                                       "is not installed, or the bzip2 application is not found. "
                                       "Please install those and make sure they can be found in "
                                       "the current path. Restart this Assistant when this is fixed." ) );
