@@ -125,10 +125,8 @@ void ImaplibResource::startConnect()
 
     if (( safe == 1 || safe == 2 ) && !QSslSocket::supportsSsl() ) {
         kWarning() << "Crypto not supported!";
-        // TODO: find out how to communicate a critical failure.
-
-        //slotError(i18n("You requested TLS/SSL, but your "
-        //               "system does not seem to be set up for that."));
+        emit error( i18n( "You requested TLS/SSL to connect to %1, but your "
+                          "system does not seem to be set up for that.", m_server ) );
         return;
     }
 
@@ -377,6 +375,7 @@ void ImaplibResource::slotCollectionAdded( bool success )
         // remove the collection again.
         // TODO: this will trigger collectionRemoved again ;-)
         kDebug() << "Failed to create the folder, deleting it in akonadi again";
+        emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
         new CollectionDeleteJob( m_colAdded, this );
     }
 }
@@ -400,6 +399,7 @@ void ImaplibResource::slotCollectionRemoved( bool success )
 
     if ( !success ) {
         kDebug() << "Failed to delete the folder, resync the folder tree";
+        emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
     }
 }
@@ -430,13 +430,15 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
         configure( winIdForDialogs() );
     else if ( i == KMessageBox::No ) {
         manualAuth( connection, m_username );
-    } else
+    } else {
         connection->logout();
+        emit warning( i18n( "Could not connect to the IMAP-server %1", m_server ) );
+    }
 }
 
 void ImaplibResource::slotAlert( Imaplib*, const QString& message )
 {
-    KMessageBox::informationWId( winIdForDialogs(), i18n( "Server reported: %1",message ) );
+    emit error( i18n( "Server reported: %1",message ) );
 }
 
 void ImaplibResource::slotPurge( const QString &folder )
