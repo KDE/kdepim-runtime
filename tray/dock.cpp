@@ -39,6 +39,10 @@
 #include <KSystemTrayIcon>
 
 #include <akonadi/control.h>
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
+
+using namespace Akonadi;
 
 Tray::Tray() : QWidget()
 {
@@ -78,6 +82,15 @@ Dock::Dock( QWidget *parent )
     connect( QDBusConnection::sessionBus().interface(),
              SIGNAL( serviceOwnerChanged( const QString&, const QString&, const QString& ) ),
              SLOT( slotServiceChanged( const QString&, const QString&, const QString& ) ) );
+
+
+    AgentManager *manager = AgentManager::self();
+    connect( manager,
+             SIGNAL( instanceWarning( const Akonadi::AgentInstance&, const QString& ) ),
+             SLOT( slotInstanceWarning(  const Akonadi::AgentInstance&, const QString& ) ) );
+    connect( manager,
+             SIGNAL( instanceError( const Akonadi::AgentInstance&, const QString& ) ),
+             SLOT( slotInstanceError(  const Akonadi::AgentInstance&, const QString& ) ) );
 }
 
 Dock::~Dock()
@@ -151,14 +164,26 @@ void Dock::updateMenu( bool registered )
     m_startAction->setVisible( !registered );
 }
 
-void Dock::infoMessage( const QString &message )
+void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QString& message )
 {
-    KPassivePopup::message( i18n( "Akonadi message" ), message, this );
+    infoMessage( message, agent.name() );
 }
 
-void Dock::errorMessage( const QString &message )
+void Dock::infoMessage( const QString &message, const QString &title )
 {
-    KMessageBox::error( parentWidget(), message, i18n( "Akonadi error" ) );
+    KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title, 
+                            message, this );
+}
+
+void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString& message )
+{
+    errorMessage( message, agent.name() );
+}
+
+void Dock::errorMessage( const QString &message, const QString &title )
+{
+    KMessageBox::error( parentWidget(), message, 
+                        title.isEmpty() ?i18n( "Akonadi error" ) : title );
 }
 
 qlonglong Dock::getWinId()

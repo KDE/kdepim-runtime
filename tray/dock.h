@@ -24,6 +24,8 @@
 #include <KSystemTrayIcon>
 #include <QWidget>
 
+#include <akonadi/agentinstance.h>
+
 class QLabel;
 class QAction;
 
@@ -54,11 +56,13 @@ public:
     ~Dock();
 
 public Q_SLOTS:
-    void infoMessage( const QString& );
-    void errorMessage( const QString& );
+    void infoMessage( const QString&, const QString& = QString() );
+    void errorMessage( const QString&, const QString& = QString() );
     qlonglong getWinId();
 
 private Q_SLOTS:
+    void slotInstanceWarning( const Akonadi::AgentInstance&, const QString& );
+    void slotInstanceError( const Akonadi::AgentInstance&, const QString& );
     void slotServiceChanged( const QString&, const QString&, const QString& );
     void slotActivated();
     void slotStopAkonadi();
