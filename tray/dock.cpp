@@ -19,7 +19,7 @@
 #include "dock.h"
 #include "backupassistant.h"
 #include "restoreassistant.h"
-#include "trayadaptor.h"
+#include "akonaditrayadaptor.h"
 
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>
@@ -63,7 +63,7 @@ Dock::Dock( QWidget *parent )
     KMenu *menu = new KMenu();
     m_title = menu->addTitle( i18n( "Akonadi" ) );
 
-    new TrayAdaptor( this );
+    new AkonaditrayAdaptor( this );
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject( "/Actions", this );
 

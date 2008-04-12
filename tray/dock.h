@@ -41,7 +41,7 @@ protected:
 class Dock : public KSystemTrayIcon
 {
     Q_OBJECT
-    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Tray" )
+    Q_CLASSINFO( "D-Bus Interface", "org.kde.akonaditray" )
 
 public:
     /**
