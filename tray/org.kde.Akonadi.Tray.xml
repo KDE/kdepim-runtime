@@ -3,6 +3,14 @@
   <interface name="org.kde.Akonadi.Tray">
     <method name="infoMessage">
       <arg type="s" direction="in"/>
+      <arg type="s" direction="in"/>
+    </method>
+    <method name="infoMessage">
+      <arg type="s" direction="in"/>
+    </method>
+    <method name="errorMessage">
+      <arg type="s" direction="in"/>
+      <arg type="s" direction="in"/>
     </method>
     <method name="errorMessage">
       <arg type="s" direction="in"/>
