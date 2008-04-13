@@ -4,3 +4,4 @@ Categories=Qt;KDE;Network;
 Exec=akonaditray
 Name=Akonaditray
 GenericName=Akonadi Tray Utility
+GenericName[ga]=Uirlis Tráidire Akonadi
