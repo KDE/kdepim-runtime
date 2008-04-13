@@ -105,7 +105,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList, SIGNAL( currentChanged( const Akonadi::AgentInstance&, const Akonadi::AgentInstance& ) ),
              SLOT( updateButtonState( const Akonadi::AgentInstance& ) ) );
-    connect( d->ui.resourcesList, SIGNAL( doubleClicked( const QString& ) ),
+    connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
              SLOT( editClicked() ) );
 
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
