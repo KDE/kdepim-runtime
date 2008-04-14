@@ -22,10 +22,12 @@
 using namespace Akonadi;
 
 #include <akonadi/item.h>
+#include <akonadi/itemfetchscope.h>
 
 ItemBrowser::ItemBrowser( QWidget *parent )
   : KTextBrowser( parent ), d( 0 )
 {
+  fetchScope().fetchFullPayload();
 }
 
 ItemBrowser::~ItemBrowser()
