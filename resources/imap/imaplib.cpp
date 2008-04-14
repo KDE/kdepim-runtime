@@ -335,7 +335,7 @@ void Imaplib::getHeaders( const QString& mb, const QStringList& uids )
 void Imaplib::getHeaderList( const QString& mb, int start, int end )
 {
     // kDebug() << start << "-" << end << "for" << mb;
-    if ( ! end>=1 || end < start || !start>=1 )
+    if ( !(end>=1) || end < start || !(start>=1) )
         return;
 
     // Put this in queue with priority above the checkmail things...
