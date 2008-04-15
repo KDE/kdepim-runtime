@@ -3,5 +3,7 @@ Type=Application
 Categories=Qt;KDE;Network;
 Exec=akonaditray
 Name=Akonaditray
+Name[de]=Akonadi-Miniprogramm
 GenericName=Akonadi Tray Utility
+GenericName[de]=Akonadi für die Kontrollleiste
 GenericName[ga]=Uirlis Tráidire Akonadi

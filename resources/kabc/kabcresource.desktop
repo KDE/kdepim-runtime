@@ -12,6 +12,7 @@ Name[x-test]=xxKDE Addressbook Compatibility Resourcexx
 Name[zh_TW]=KDE 通訊錄相容性資源
 Comment=An agent to load data from a traditional KDE addressbook resource
 Comment[ca]=Un agent per a carregar dades des d'un recurs de la llibreta d'adreces tradicional del KDE
+Comment[de]=Agent zum Laden von Daten aus einer herkömmlichen Adressbuch-Ressource
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από έναν παραδοσιακό πόρο βιβλίου διευθύνσεων του KDE
 Comment[ga]=Gníomhaire a luchtaíonn sonraí ó acmhainn thraidisiúnta leabhair seoltaí KDE
 Comment[ja]=従来の KDE アドレス帳からデータを読み込むエージェント
