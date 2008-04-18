@@ -49,7 +49,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
-        :ResourceBase( id ), m_retrieveItemsRequested( false )
+        :ResourceBase( id )
 {
     changeRecorder()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
@@ -251,25 +251,17 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug( ) << col.remoteId();
-    m_retrieveItemsRequested = true;
     m_imap->getMailBox( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
-    kDebug( ) << mb << amount << "Cache:" << m_amountMessagesCache.value( mb );
-    if ( !m_retrieveItemsRequested ) {
-        return;
-    }
-
-    // We need to remember the amount of messages in a mailbox, so we can emit
-    // itemsRetrieved() at the right time when all the messages are received.
+    kDebug( ) << mb << amount;
 
     if ( amount == 0 ) {
-        m_retrieveItemsRequested = false;
         itemsRetrievalDone();
     } else {
-        m_amountMessagesCache[ mb ] = amount;
+        setTotalItems( amount );
         m_imap->getHeaderList( mb, 1, amount );
     }
 }
@@ -277,9 +269,6 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
     kDebug( ) << mb << values.count();
-    if ( !m_retrieveItemsRequested ) {
-        return;
-    }
 
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
@@ -304,16 +293,8 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
 void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
 {
     kDebug( ) << mb << list.count();
-    if ( !m_retrieveItemsRequested ) {
-        return;
-    }
 
-    // this should hold the headers of the messages.
-
-    static Item::List s_messages;
-    static QHash<QString, int> s_amountCache;
-    s_amountCache[mb] += ( list.count() / 3 );
-
+    Item::List messages;
 
     QStringList::ConstIterator it = list.begin();
     while ( it != list.end() ) {
@@ -338,20 +319,11 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         foreach( QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
         i.setFlag( flag.toLatin1() /* ok? */ );
 
-        s_messages.append( i );
+        messages.append( i );
     }
 
-    // we should only emit this when we have received all messages, remember the messages arrive in
-    // blocks of 250.
-    kDebug( ) << mb << "Total received:" << s_amountCache[mb] << "Total should be:" << m_amountMessagesCache[mb];
-    if ( s_amountCache[mb] >= m_amountMessagesCache[mb] ) {
-        itemsRetrieved( s_messages );
-        s_amountCache[mb] = 0;
-        s_messages.clear();
-        kDebug() << "Flushed all messages to akonadi";
-        m_retrieveItemsRequested = false;
-    } else
-        kDebug() << "Messages not yet complete... waiting for more...";
+    kDebug() << "calling partlyretrieved with amount: " << messages.count ();
+    itemsPartlyRetrieved( messages );
 }
 
 // ----------------------------------------------------------------------------------
