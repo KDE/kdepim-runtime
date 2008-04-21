@@ -20,13 +20,18 @@
 #ifndef AKONADI_SERIALIZER_KCAL_H
 #define AKONADI_SERIALIZER_KCAL_H
 
+#include <QtCore/QObject>
+
 #include <akonadi/itemserializerplugin.h>
 #include <kcal/icalformat.h>
 
 namespace Akonadi {
 
-class SerializerPluginKCal : public ItemSerializerPlugin
+class SerializerPluginKCal : public QObject, public ItemSerializerPlugin
 {
+    Q_OBJECT
+    Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+
   public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data );

@@ -20,20 +20,27 @@
 #ifndef __AKONADI_SERIALIZER_BOOKMARK_H__
 #define __AKONADI_SERIALIZER_BOOKMARK_H__
 
+#include <QtCore/QObject>
+
 #include <akonadi/itemserializerplugin.h>
 
 class QIODevice;
 class QString;
 
-class Akonadi::Item;
+namespace Akonadi {
 
-using namespace Akonadi;
+class Item;
 
-class SerializerPluginBookmark : public ItemSerializerPlugin
+class SerializerPluginBookmark : public QObject, public ItemSerializerPlugin
 {
+    Q_OBJECT
+    Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+
 public:
   bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
   void serialize( const Item& item, const QByteArray& label, QIODevice& data );
 };
+
+}
 
 #endif

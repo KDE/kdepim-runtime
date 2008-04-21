@@ -19,6 +19,8 @@
 
 #include "akonadi_serializer_mail.h"
 
+#include <QtCore/qplugin.h>
+
 #include <kdebug.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
@@ -188,8 +190,6 @@ QSet<QByteArray> SerializerPluginMail::parts(const Item & item) const
   return set;
 }
 
-extern "C"
-KDE_EXPORT Akonadi::ItemSerializerPlugin *
-akonadi_serializer_mail_create_item_serializer_plugin() {
-  return new SerializerPluginMail();
-}
+Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail );
+
+#include "akonadi_serializer_mail.moc"

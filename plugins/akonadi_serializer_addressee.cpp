@@ -17,6 +17,8 @@
     02110-1301, USA.
 */
 
+#include <QtCore/qplugin.h>
+
 #include "akonadi_serializer_addressee.h"
 
 #include <kabc/addressee.h>
@@ -49,8 +51,6 @@ void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& l
     data.write( m_converter.createVCard( a ) );
 }
 
-extern "C"
-KDE_EXPORT Akonadi::ItemSerializerPlugin *
-akonadi_serializer_addressee_create_item_serializer_plugin() {
-  return new SerializerPluginAddressee();
-}
+Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, Akonadi::SerializerPluginAddressee )
+
+#include "akonadi_serializer_addressee.moc"

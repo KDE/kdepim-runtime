@@ -19,6 +19,7 @@
 
 #include "akonadi_serializer_bookmark.h"
 
+#include <QtCore/qplugin.h>
 #include <QDebug>
 #include <QMimeData>
 #include <kbookmark.h>
@@ -62,8 +63,6 @@ void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& la
 
 }
 
-extern "C"
-KDE_EXPORT Akonadi::ItemSerializerPlugin *
-akonadi_serializer_bookmark_create_item_serializer_plugin() {
-  return new SerializerPluginBookmark();
-}
+Q_EXPORT_PLUGIN2( akonadi_serializer_bookmark, SerializerPluginBookmark );
+
+#include "akonadi_serializer_bookmark.moc"

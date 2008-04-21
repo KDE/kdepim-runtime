@@ -21,12 +21,17 @@
 #ifndef __AKONADI_SERIALIZER_MAIL_H__
 #define __AKONADI_SERIALIZER_MAIL_H__
 
+#include <QtCore/QObject>
+
 #include <akonadi/itemserializerplugin.h>
 
 namespace Akonadi {
 
-class SerializerPluginMail : public ItemSerializerPlugin
+class SerializerPluginMail : public QObject, public ItemSerializerPlugin
 {
+    Q_OBJECT
+    Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+
 public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data );

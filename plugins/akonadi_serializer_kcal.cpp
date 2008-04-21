@@ -19,6 +19,8 @@
 
 #include "akonadi_serializer_kcal.h"
 
+#include <QtCore/qplugin.h>
+
 #include <akonadi/item.h>
 #include <kdebug.h>
 #include <boost/shared_ptr.hpp>
@@ -54,10 +56,6 @@ void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label
   data.write( "\nEND:VCALENDAR" );
 }
 
-extern "C"
-KDE_EXPORT Akonadi::ItemSerializerPlugin *
-akonadi_serializer_kcal_create_item_serializer_plugin() {
-  return new SerializerPluginKCal();
-}
+Q_EXPORT_PLUGIN2( akonadi_serializer_kcal, SerializerPluginKCal );
 
-
+#include "akonadi_serializer_kcal.moc"
