@@ -399,9 +399,11 @@ class KDEPIM_EXPORT KPrefsWidRadios : public KPrefsWid
 
       @param text Text of the button.
       @param whatsThis What's This help for the button.
+      @param toolTip Tooltip help for the button.
     */
     void addRadio( const QString &text,
-                   const QString &whatsThis = QString() );
+                   const QString &whatsThis = QString(),
+                   const QString &toolTip = QString() );
 
     /**
       Return the box widget used by this widget.
