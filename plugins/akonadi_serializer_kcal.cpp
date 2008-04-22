@@ -56,6 +56,6 @@ void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label
   data.write( "\nEND:VCALENDAR" );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_kcal, SerializerPluginKCal );
+Q_EXPORT_PLUGIN2( akonadi_serializer_kcal, SerializerPluginKCal )
 
 #include "akonadi_serializer_kcal.moc"
