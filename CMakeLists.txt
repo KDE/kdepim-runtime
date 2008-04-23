@@ -1,9 +1,3 @@
-configure_file(akonadi-prefix.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/akonadi-prefix.h)
-
-INCLUDE(CheckIncludeFiles)
-check_include_files(execinfo.h HAVE_EXECINFO_H)
-configure_file(config-akonadi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-akonadi.h)
-
 find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   PATHS
   /usr/lib
@@ -49,6 +43,3 @@ endif( Nepomuk_FOUND )
 set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
 find_package(SharedMimeInfo REQUIRED)
 
-########### install files ###############
-install(FILES akonadi-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
-update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
