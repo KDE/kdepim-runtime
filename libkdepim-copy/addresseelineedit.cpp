@@ -530,9 +530,8 @@ void AddresseeLineEdit::loadContacts()
       int weight = config.readEntry( resource->identifier(), 60 );
       s_completionSources->append( resource->resourceName() );
       KABC::Resource::Iterator it;
-      if ( resource->type() != "ldapkio" )
-        for ( it = resource->begin(); it != resource->end(); ++it )
-          addContact( *it, weight, s_completionSources->size()-1 );
+      for ( it = resource->begin(); it != resource->end(); ++it )
+        addContact( *it, weight, s_completionSources->size()-1 );
     }
   }
 
