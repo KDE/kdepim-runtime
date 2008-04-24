@@ -15,7 +15,7 @@ set(akonadiconsole_bin_SRCS
 )
 
 qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
-  ${CMAKE_INSTALL_PREFIX}/${DBUS_INTERFACES_INSTALL_DIR}/org.kde.Akonadi.TracerNotification.xml
+  ${AKONADI_DBUS_INTERFACES_INSTALL_DIR}/org.kde.Akonadi.TracerNotification.xml
 )
 
 kde4_add_ui_files(akonadiconsole_bin_SRCS
