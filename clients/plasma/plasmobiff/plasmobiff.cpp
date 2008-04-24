@@ -46,7 +46,8 @@ PlasmoBiff::PlasmoBiff(QObject *parent, const QVariantList &args)
   m_xPixelSize = cg.readEntry("xsize", 413);
   m_yPixelSize = cg.readEntry("ysize", 307);
 
-  m_theme = new Plasma::Svg("widgets/akonadi", this);
+  m_theme = new Plasma::Svg(this);
+  m_theme->setImagePath("widgets/akonadi");
   m_theme->setContainsMultipleImages(false);
   m_theme->resize(m_xPixelSize,m_yPixelSize);
 
