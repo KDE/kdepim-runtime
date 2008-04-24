@@ -21,7 +21,6 @@ if (XSLTPROC_EXECUTABLE)
               ${_kcfg}
     )
   endmacro( kcfg_generate_dbus_interface )
-  add_subdirectory(server)
 endif (XSLTPROC_EXECUTABLE)
 
 add_subdirectory(clients)
