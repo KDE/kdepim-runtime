@@ -36,7 +36,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
     : Plasma::DataEngine(parent)
 {
   Q_UNUSED(args);
-  setSourceLimit( 4 );
+  setMaxSourceCount( 4 );
 
   Monitor *monitor = new Monitor( this );
   monitor->setMimeTypeMonitored( "message/rfc822" );
