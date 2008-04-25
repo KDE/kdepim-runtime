@@ -85,7 +85,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
       .arg( KGlobal::locale()->formatDate( date, KLocale::ShortDate ) );
 
   // Phone Numbers
-  foreach( const KABC::PhoneNumber number, addr.phoneNumbers() ) {
+  foreach( const KABC::PhoneNumber &number, addr.phoneNumbers() ) {
       QString url;
       if ( number.type() & KABC::PhoneNumber::Fax )
         url = QString::fromLatin1( "fax:" ) + number.number();
@@ -98,7 +98,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
   }
 
   // EMails
-  foreach ( const QString email, addr.emails() ) {
+  foreach ( const QString &email, addr.emails() ) {
     QString type = i18nc( "a contact's email address", "Email" );
 
     const QString fullEmail = QString::fromLatin1( KUrl::toPercentEncoding( addr.fullEmail( email ) ) );
@@ -124,7 +124,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
     dynamicPart += rowFmtStr.arg( i18n( "Blog Feed" ) ).arg( KStringHandler::tagUrls( blog ) );
 
   // Addresses
-  foreach ( const KABC::Address address, addr.addresses() ) {
+  foreach ( const KABC::Address &address, addr.addresses() ) {
     if ( address.label().isEmpty() ) {
       QString formattedAddress;
 

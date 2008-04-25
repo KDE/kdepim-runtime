@@ -140,7 +140,7 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
   Item::List items;
 
-  foreach ( KABC::Addressee addressee, mAddressees ) {
+  foreach ( const KABC::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
     item.setMimeType( "text/directory" );

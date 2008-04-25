@@ -110,7 +110,7 @@ class MailThreaderAgent::Private
     QList<StrigiHit> hits = strigi.getHits( query, 50, 0 );
     QList<Item::Id> result;
 
-    foreach( StrigiHit hit, hits ) {
+    foreach( const StrigiHit &hit, hits ) {
       const Item item = Item::fromUrl( hit.uri );
       if ( item.isValid() ) {
         result << item.id();
@@ -140,7 +140,7 @@ class MailThreaderAgent::Private
     QList<StrigiHit> hits = strigi.getHits( query, 50, 0 ); // max = 50. A way to change that to unlimited ? Ask Strigi developer
     /* Iterate over the list of potential parents with the same
      * subject, and take the closest one by date. */
-    foreach ( StrigiHit hit, hits ) {
+    foreach ( const StrigiHit &hit, hits ) {
       // make sure it's not ourselves
       const Item parentRef = Item::fromUrl( hit.uri );
 

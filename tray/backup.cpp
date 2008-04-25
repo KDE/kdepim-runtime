@@ -70,7 +70,7 @@ void Backup::create( const KUrl& filename )
     /* Copy over the configuration files. */
     AgentManager *manager = AgentManager::self();
     AgentInstance::List list = manager->instances();
-    foreach( AgentInstance agent, list ) {
+    foreach( const AgentInstance &agent, list ) {
         const QString agentFileName = agent.identifier() + "rc";
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );

@@ -184,7 +184,7 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
 {
   Collection::List list;
   const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
-  foreach ( const QString sub, dir.subFolderList() ) {
+  foreach ( const QString &sub, dir.subFolderList() ) {
     const QString path = maildirSubdirPath( root.remoteId(), sub );
     Maildir md( path );
     if ( !md.isValid() )
@@ -234,7 +234,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
   QStringList entryList = md.entryList();
 
   Item::List items;
-  foreach ( const QString entry, entryList ) {
+  foreach ( const QString &entry, entryList ) {
     const QString rid = col.remoteId() + QDir::separator() + entry;
     Item item;
     item.setRemoteId( rid );

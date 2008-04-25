@@ -42,7 +42,7 @@ void FetchCommand::exec()
         << fetchJob->errorString()
         << endl;
   } else {
-    foreach( Item item, fetchJob->items() ) {
+    foreach( const Item &item, fetchJob->items() ) {
       QByteArray data = item.payloadData();
       out() << data << endl;
     }

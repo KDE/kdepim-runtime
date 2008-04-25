@@ -196,7 +196,7 @@ void AkonadiSlave::listDir( const KUrl &url )
   Collection::List collections = job->collections();
 
   KIO::UDSEntry entry;
-  foreach( Collection col, collections )
+  foreach( const Collection &col, collections )
   {
     kDebug( 7129 ) <<"Collection (" << col.id() <<"," << col.name() <<")";
     entry.clear();
@@ -216,7 +216,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     }
     Item::List items = fjob->items();
     totalSize( collections.count() + items.count() );
-    foreach( Item item, items )
+    foreach( const Item &item, items )
     {
       kDebug( 7129 ) <<"Item (" << item.id()  <<")";
       entry.clear();

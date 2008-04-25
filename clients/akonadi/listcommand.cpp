@@ -51,7 +51,7 @@ void ListCommand::exec()
       << endl;
     return;
   } else {
-    foreach( const Akonadi::Collection collection, collectionJob->collections() ) {
+    foreach( const Akonadi::Collection &collection, collectionJob->collections() ) {
       out() << collection.name() << endl;
     }
   }
@@ -62,7 +62,7 @@ void ListCommand::exec()
       << itemFetchJob->errorString()
       << endl;
   } else {
-    foreach( Akonadi::Item item, itemFetchJob->items() ) {
+    foreach( const Akonadi::Item &item, itemFetchJob->items() ) {
       QString str;
       str = QLatin1String("Item: ") + QString::number( item.id() );
       if ( !item.remoteId().isEmpty() ) {
@@ -70,7 +70,7 @@ void ListCommand::exec()
       }
       if ( !item.flags().isEmpty() ) {
         str += QLatin1String(" ( ");
-        foreach( QByteArray flag, item.flags() ) {
+        foreach( const QByteArray &flag, item.flags() ) {
           str += flag + QLatin1Char(' ');
         }
         str += QLatin1Char(')');

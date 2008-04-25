@@ -36,7 +36,7 @@ AkonadiEngine::AkonadiEngine(QObject* parent, const QVariantList& args)
     : Plasma::DataEngine(parent)
 {
   Q_UNUSED(args);
-  setMaxSourceCount( 4 );
+  //setMaxSourceCount( 4 );
 
   Monitor *monitor = new Monitor( this );
   monitor->setMimeTypeMonitored( "message/rfc822" );
@@ -71,7 +71,7 @@ void AkonadiEngine::fetchDone(KJob * job)
   if ( job->error() )
     return;
   Item::List items = static_cast<ItemFetchJob*>( job )->items();
-  foreach ( const Item item, items )
+  foreach ( const Item &item, items )
     itemAdded( item );
 }
 

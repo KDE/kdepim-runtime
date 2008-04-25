@@ -299,7 +299,7 @@ QString NntpResource::findParent(const QStringList & _path)
   if ( path.isEmpty() )
     return baseUrl().url();
   QString rid = path.join( "." );
-  foreach ( const Collection col, remoteCollections )
+  foreach ( const Collection &col, remoteCollections )
     if ( col.remoteId() == rid )
       return col.remoteId();
   Collection parent;

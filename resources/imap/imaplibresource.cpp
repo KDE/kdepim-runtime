@@ -162,7 +162,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     // store those on the server.
     QSet<QByteArray> flags = item.flags();
     QByteArray newFlags;
-    foreach( QByteArray flag, flags )
+    foreach( const QByteArray &flag, flags )
 	    newFlags += flag + " ";
 
     kDebug( ) << "Flags going to be set" << newFlags;
@@ -316,7 +316,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
 
-        foreach( QString flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
+        foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
         i.setFlag( flag.toLatin1() /* ok? */ );
 
         messages.append( i );

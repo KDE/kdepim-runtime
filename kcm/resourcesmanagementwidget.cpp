@@ -35,7 +35,7 @@
 
 static bool isWantedResource( const QStringList &wantedMimeTypes, const QStringList &resourceMimeTypes )
 {
-  foreach ( const QString resourceMimeType, resourceMimeTypes ) {
+  foreach ( const QString &resourceMimeType, resourceMimeTypes ) {
     KMimeType::Ptr mimeType = KMimeType::mimeType( resourceMimeType, KMimeType::ResolveAliases );
     if ( mimeType.isNull() )
       continue;
@@ -45,7 +45,7 @@ static bool isWantedResource( const QStringList &wantedMimeTypes, const QStringL
     // if the resource offers message/news and wanted types includes
     // message/rfc822 this will be true, because message/news is a
     // "subclass" of message/rfc822
-    foreach ( const QString wantedMimeType, wantedMimeTypes ) {
+    foreach ( const QString &wantedMimeType, wantedMimeTypes ) {
       if ( mimeType->is( wantedMimeType ) )
         return true;
     }

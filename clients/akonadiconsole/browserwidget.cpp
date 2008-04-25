@@ -208,9 +208,9 @@ void BrowserWidget::save()
   const QByteArray data = contentUi.dataView->toPlainText().toUtf8();
   Item item = mCurrentItem;
   item.setRemoteId( contentUi.remoteId->text() );
-  foreach ( const Item::Flag f, mCurrentItem.flags() )
+  foreach ( const Item::Flag &f, mCurrentItem.flags() )
     item.clearFlag( f );
-  foreach ( const QString s, contentUi.flags->items() )
+  foreach ( const QString &s, contentUi.flags->items() )
     item.setFlag( s.toUtf8() );
   item.setPayloadFromData( data );
 
