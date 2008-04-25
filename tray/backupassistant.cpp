@@ -45,7 +45,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
                                       "the current path. Restart this Assistant when this is fixed." ) );
     } else {
         label1->setText( '\n' + i18n( "Please select the file where to store "
-                                      "the backup, give it the extention .tgz." ) + "\n\n" );
+                                      "the backup, give it the extension .tgz." ) + "\n\n" );
 
         m_selectFileButton = new QPushButton( i18n( "&Click here to select the Backup Location..." ), box1 );
         connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );

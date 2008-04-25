@@ -36,7 +36,7 @@ using namespace Akonadi;
  * Use this class to create a backup. possible() will tell you if all
  * apps needed for the backup are available. Don't proceed without them.
  * After that call create() to get it running. Please make sure the parameter
- * has the tgz extention.
+ * has the tgz extension.
  */
 Backup::Backup( QWidget *parent ) : QWidget( parent )
 {

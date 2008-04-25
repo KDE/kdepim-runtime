@@ -41,7 +41,7 @@ public:
 
     /**
      * Restores a backup and emits completed() when done.
-     * The filename should be the filename, with tgz extention.
+     * The filename should be the filename, with tgz extension.
      */
     void restore( const KUrl &filename );
 
