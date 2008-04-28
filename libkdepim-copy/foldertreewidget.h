@@ -353,6 +353,6 @@ public:
 
 };
 
-}; // namespace KPIM
+} // namespace KPIM
 
 #endif //!__FOLDERTREEWIDGET_H__
