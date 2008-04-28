@@ -51,6 +51,7 @@ set(kdepim_LIB_SRCS
    kaccount.cpp 
    kaddrbookexternal.cpp 
    kfoldertree.cpp 
+   foldertreewidget.cpp
    kscoring.cpp 
    kscoringeditor.cpp 
    ksubscription.cpp 
