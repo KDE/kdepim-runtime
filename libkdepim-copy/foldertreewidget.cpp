@@ -294,4 +294,4 @@ bool FolderTreeWidgetItem::operator < ( const QTreeWidgetItem &other ) const
   return text(sortCol) < other.text(sortCol);
 }
 
-};
+}
