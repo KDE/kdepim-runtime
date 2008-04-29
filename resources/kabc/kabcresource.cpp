@@ -129,7 +129,6 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   Item i( item );
-  i.setMimeType( QLatin1String( "text/directory" ) );
   i.setPayload<KABC::Addressee>( addressee );
   itemRetrieved( i );
   return true;

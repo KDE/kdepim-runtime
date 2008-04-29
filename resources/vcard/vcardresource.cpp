@@ -50,7 +50,6 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
     return false;
   }
   Item i( item );
-  i.setMimeType( "text/directory" );
   i.setPayload<KABC::Addressee>( mAddressees.value( rid ) );
   itemRetrieved( i );
   return true;

@@ -96,7 +96,6 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
   mail->parse();
 
   Item i( item );
-  i.setMimeType( "message/rfc822" );
   i.setPayload( MessagePtr( mail ) );
   itemRetrieved( i );
   return true;
