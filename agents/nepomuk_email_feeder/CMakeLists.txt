@@ -17,7 +17,7 @@ target_link_libraries(akonadi_nepomuk_email_feeder
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KMIME_LIBS}
-  ${NEPOMUK_LIBRARY}
+  ${NEPOMUK_LIBRARIES}
 )
 
 install(TARGETS akonadi_nepomuk_email_feeder DESTINATION ${BIN_INSTALL_DIR})
