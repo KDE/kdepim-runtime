@@ -43,7 +43,7 @@ FolderTreeWidgetBase::FolderTreeWidgetBase( QWidget * parent, const char * name 
   setManualColumnHidingEnabled( true );
 }
 
-bool FolderTreeWidgetBase::saveLayout( KConfigGroup &group , const char * keyName )
+bool FolderTreeWidgetBase::saveLayout( KConfigGroup &group , const char * keyName ) const
 {
   if( !keyName )
     return false;
@@ -53,7 +53,7 @@ bool FolderTreeWidgetBase::saveLayout( KConfigGroup &group , const char * keyNam
   return true;
 }
 
-bool FolderTreeWidgetBase::saveLayout( KConfig * config , const char * groupName , const char * keyName )
+bool FolderTreeWidgetBase::saveLayout( KConfig * config , const char * groupName , const char * keyName ) const
 {
   if( !config || !groupName || !keyName )
     return false;

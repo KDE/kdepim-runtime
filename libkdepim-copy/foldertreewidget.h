@@ -63,7 +63,7 @@ public:
   explicit FolderTreeWidgetBase( QWidget *parent, const char *name = 0 );
 
 private:
-  bool mEnableManualColumnHiding; //< Is manual column hiding currently enabled ?
+  bool mEnableManualColumnHiding; ///< Is manual column hiding currently enabled ?
 
 public:
 
@@ -83,7 +83,7 @@ public:
   bool saveLayout(
       KConfigGroup &group,
       const char *keyName = FTWB_DEFAULT_CONFIG_KEY
-    );
+    ) const;
 
   /**
    * Stores the layout of this tree view to the specified key of 
@@ -100,7 +100,7 @@ public:
       KConfig *config,
       const char *groupName,
       const char *keyName = FTWB_DEFAULT_CONFIG_KEY
-    );
+    ) const;
 
   /**
    * Attempts to restore the layout of this tree from the specified
@@ -117,7 +117,7 @@ public:
    * @param group The KConfigGroup to read the layout data from.
    * @param keyName The key to use, "TreeWidgetLayout" by default
    *
-   * @returns true if the layout data has been succesfully read and
+   * @returns true if the layout data has been successfully read and
    *          restored. Returns false if the specified key of the config
    *          group is empty, or the data contained inside is not valid.
    */
@@ -141,7 +141,7 @@ public:
    * @param configGroup The name of the KConfig group to read the layout data from.
    * @param keyName The key to use, "TreeWidgetLayout" by default
    *
-   * @returns true if the layout data has been succesfully read and
+   * @returns true if the layout data has been successfully read and
    *          restored. Returns false if the specified key of the config
    *          group is empty, or the data contained inside is not valid.
    */
@@ -209,7 +209,7 @@ public:
 
   /**
    * Convenience function that changes the text of the specified column.
-   * Returns true if the text can be succesfully changed or false
+   * Returns true if the text can be successfully changed or false
    * if the specified column index is out of range.
    */
   bool setColumnText( int columnIndex , const QString &label );
@@ -296,8 +296,8 @@ public:
   };
 
 private:
-  Protocol mProtocol;         //< The protocol associated to the folder
-  FolderType mFolderType;     //< The type of the folder
+  Protocol mProtocol;         ///< The protocol associated to the folder
+  FolderType mFolderType;     ///< The type of the folder
 
 public:
   /**
