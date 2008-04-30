@@ -135,7 +135,7 @@ namespace KPIM {
   {
     mspeller = new Sonnet::Speller();
     mDictionaries = mspeller->availableLanguageNames();
-    insertStringList(mDictionaries);
+    insertItems( 0, mDictionaries );
     mDefaultDictionary = currentIndex();
   }
 
