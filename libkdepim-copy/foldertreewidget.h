@@ -9,7 +9,8 @@
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
- * License version 2 as published by the Free Software Foundation.
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,7 +25,7 @@
  *****************************************************************************/
 
 /**
- * @file kfoldertreewidget.h A basic implementation of an UI for a tree of folders
+ * @file foldertreewidget.h A basic implementation of an UI for a tree of folders
  */
 
 #include "kdepim_export.h"
@@ -90,7 +91,7 @@ public:
    * The stored data includes visible columns, column width and order.
    * 
    * @param configGroup The KConfig group to write the layout data to.
-   * @param keyName The key to use, "State" by default
+   * @param keyName The key to use, "TreeWidgetLayout" by default
    *
    * @returns true on success and false on failure (if you can't write
    * to the configGroup).
@@ -114,7 +115,7 @@ public:
    * The proper order is: add columns, restore layout, set header properties.
    *
    * @param group The KConfigGroup to read the layout data from.
-   * @param keyName The key to use, "State" by default
+   * @param keyName The key to use, "TreeWidgetLayout" by default
    *
    * @returns true if the layout data has been succesfully read and
    *          restored. Returns false if the specified key of the config
@@ -138,7 +139,7 @@ public:
    * The proper order is: add columns, restore layout, set header properties.
    *
    * @param configGroup The name of the KConfig group to read the layout data from.
-   * @param keyName The key to use, "State" by default
+   * @param keyName The key to use, "TreeWidgetLayout" by default
    *
    * @returns true if the layout data has been succesfully read and
    *          restored. Returns false if the specified key of the config
@@ -233,7 +234,7 @@ protected Q_SLOTS:
  * @brief A tree widget useful for displaying a tree of folders containing messages
  *
  *
- * WIP Warning:
+ * Work In Progress Warning:
  * 
  * This widget is meant to be a Native-Qt4 polished replacement for
  * KDEPIM::KFolderTreeWidget which is based on K3ListView.
