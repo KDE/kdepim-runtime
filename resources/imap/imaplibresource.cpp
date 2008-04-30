@@ -49,7 +49,8 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
-        :ResourceBase( id )
+        :ResourceBase( id ),
+         m_imap(0)
 {
     changeRecorder()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
