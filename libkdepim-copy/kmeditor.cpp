@@ -640,56 +640,63 @@ void KMeditor::disableWordWrap()
 
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
+  // Obtain the cursor at the mouse position and the current cursor
+  QTextCursor cursorAtMouse = cursorForPosition( event->pos() );
+  int mousePos = cursorAtMouse.position();
   QTextCursor cursor = textCursor();
-  if ( cursor.hasSelection() )
-  {
-    //if we have selection so use standard menu
-    KTextEdit::contextMenuEvent( event );
-    return;
+
+  // Check if the user clicked a selected word
+  bool selectedWordClicked = cursor.hasSelection() &&
+                             mousePos >= cursor.selectionStart() &&
+                             mousePos <= cursor.selectionEnd();
+
+  // Get the word under the (mouse-)cursor and see if it is misspellt
+  QTextCursor wordSelectCursor( cursorAtMouse );
+  wordSelectCursor.clearSelection();
+  wordSelectCursor.select( QTextCursor::WordUnderCursor );
+  QString selectedWord = wordSelectCursor.selectedText();
+  bool wordIsMisspellt = !selectedWord.isEmpty() &&
+                         d->replacements.contains ( selectedWord );
+
+  // If the user clicked a selected word, do nothing.
+  // If the user clicked somewhere else, move the cursor there.
+  // If the user clicked on a misspellt word, select that word.
+  // Same behavior as in OpenOffice Writer.
+  if ( !selectedWordClicked ) {
+    if ( wordIsMisspellt )
+      setTextCursor( wordSelectCursor );
+    else
+      setTextCursor( cursorAtMouse );
+    cursor = textCursor();
   }
-  else
-  {
-    //select word under current cursor
-    cursor.select( QTextCursor::WordUnderCursor );
-    setTextCursor( cursor );
-    QString word = textCursor().selectedText();
-    if ( word.isEmpty() || !d->replacements.contains( word ) )
-      KTextEdit::contextMenuEvent( event );
-    else //try to create spell check menu
-    {
-      KMenu p;
-      p.addTitle( i18n( "Suggestions" ) );
 
-      //Add the suggestions to the popup menu
-      QStringList reps = d->replacements[word];
-      if ( reps.count() > 0 ) {
-        for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
-          p.addAction( *it );
-        }
+  // Use standard context menu for normal words and our own for misspellt words
+  if ( !wordIsMisspellt || selectedWordClicked ) {
+    KTextEdit::contextMenuEvent( event );
+  }
+  else {
+    KMenu p;
+    p.addTitle( i18n( "Suggestions" ) );
+
+    //Add the suggestions to the popup menu
+    QStringList reps = d->replacements[selectedWord];
+    if ( reps.count() > 0 ) {
+      for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
+        p.addAction( *it );
       }
-      else {
-        p.addAction( i18n( "No Suggestions" ) );
-      }
+    }
+    else {
+      p.addAction( i18n( "No Suggestions" ) );
+    }
 
-      //Execute the popup inline
-      const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
+    //Execute the popup inline
+    const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
 
-      if ( selectedAction && ( reps.count() > 0 ) ) {
-        int oldPos = cursor.position();
-        const QString replacement = selectedAction->text();
-        cursor.insertText( replacement );
-
-#if 0
-        // Restore the cursor position; if the cursor was behind the
-        // misspelled word then adjust the cursor position
-        if ( para == parIdx && txtIdx >= lastSpace )
-          txtIdx += replacement.length() - word.length();
-          setCursorPosition( parIdx, txtIdx );
-#endif
-        cursor.setPosition(oldPos);
-        setTextCursor(cursor);
-      }
-      return;
+    if ( selectedAction && ( reps.count() > 0 ) ) {
+      const QString replacement = selectedAction->text();
+      Q_ASSERT( cursor.selectedText() == selectedWord );
+      cursor.insertText( replacement );
+      setTextCursor( cursor );
     }
   }
 }
