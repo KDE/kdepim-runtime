@@ -401,7 +401,7 @@ void KMeditorPrivate::init()
   // call createHighlighter() which will create our own highlighter which also
   // does quote highlighting.
   // However, *our* spellchecking is still disabled. Our own highlighter only
-  // cares about our spellcheck status, it will not highlight missspellt words
+  // cares about our spellcheck status, it will not highlight missspelled words
   // if our spellchecking is disabled.
   // See also KEMailQuotingHighlighter::highlightBlock().
   spellCheckingEnabled = false;
@@ -650,28 +650,28 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
                              mousePos >= cursor.selectionStart() &&
                              mousePos <= cursor.selectionEnd();
 
-  // Get the word under the (mouse-)cursor and see if it is misspellt
+  // Get the word under the (mouse-)cursor and see if it is misspelled
   QTextCursor wordSelectCursor( cursorAtMouse );
   wordSelectCursor.clearSelection();
   wordSelectCursor.select( QTextCursor::WordUnderCursor );
   QString selectedWord = wordSelectCursor.selectedText();
-  bool wordIsMisspellt = !selectedWord.isEmpty() &&
+  bool wordIsMisspelled = !selectedWord.isEmpty() &&
                          d->replacements.contains ( selectedWord );
 
   // If the user clicked a selected word, do nothing.
   // If the user clicked somewhere else, move the cursor there.
-  // If the user clicked on a misspellt word, select that word.
+  // If the user clicked on a misspelled word, select that word.
   // Same behavior as in OpenOffice Writer.
   if ( !selectedWordClicked ) {
-    if ( wordIsMisspellt )
+    if ( wordIsMisspelled )
       setTextCursor( wordSelectCursor );
     else
       setTextCursor( cursorAtMouse );
     cursor = textCursor();
   }
 
-  // Use standard context menu for normal words and our own for misspellt words
-  if ( !wordIsMisspellt || selectedWordClicked ) {
+  // Use standard context menu for normal words and our own for misspelled words
+  if ( !wordIsMisspelled || selectedWordClicked ) {
     KTextEdit::contextMenuEvent( event );
   }
   else {
