@@ -22,9 +22,30 @@
 #include "mainwindow.h"
 #include "mainwidget.h"
 
+#include <QtGui/QGridLayout>
+#include <QtGui/QToolBar>
+#include <QtGui/QDialog>
+
+#include <KCModuleLoader>
+
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow( parent )
 {
+    QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
+    toolBar->addAction( "Configure ...", this, SLOT( configure() ) );
+    addToolBar( toolBar );
+
     setCentralWidget( new MainWidget( this ) );
     resize( 700, 500 );
+}
+
+void MainWindow::configure()
+{
+    QDialog *configDialog = new QDialog( this );
+    QGridLayout *layout = new QGridLayout();
+    QWidget *kcmWidget = KCModuleLoader::loadModule(  "kcm_akonadi_resources",
+                                                    KCModuleLoader::Inline, configDialog, QStringList( "text/calendar" ) );
+    layout->addWidget( kcmWidget );
+    configDialog->setLayout( layout );
+    configDialog->show();
 }
