@@ -94,7 +94,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
 
     Item i( item );
     i.setRemoteId( addressee.uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }
@@ -108,7 +108,7 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArra
 
     Item i( item );
     i.setRemoteId( addressee.uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }

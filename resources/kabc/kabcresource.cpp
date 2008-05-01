@@ -237,7 +237,7 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
     Item i( item );
     i.setRemoteId( addressee.uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }
@@ -253,7 +253,7 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
     Item i( item );
     i.setRemoteId( addressee.uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }

@@ -120,7 +120,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   mCalendar->addIncidence( i.get() );
   Item it( item );
   it.setRemoteId( i->uid() );
-  changesCommitted( it );
+  changeCommitted( it );
 }
 
 void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )

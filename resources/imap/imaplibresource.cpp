@@ -154,7 +154,7 @@ void ImaplibResource::slotSaveDone( int uid )
         kDebug() << "Setting reference to " << reference;
         m_itemAdded.setRemoteId( reference );
     }
-    changesCommitted( m_itemAdded );
+    changeCommitted( m_itemAdded );
 }
 
 void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
@@ -171,7 +171,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     const QStringList temp = reference.split( "-+-" );
     m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags );
 
-    changesCommitted( item );
+    changeCommitted( item );
 }
 
 void ImaplibResource::itemRemoved( const Akonadi::Item &item )
@@ -342,7 +342,7 @@ void ImaplibResource::collectionAdded( const Collection & collection, const Coll
 void ImaplibResource::slotCollectionAdded( bool success )
 {
     // finish the task.
-    changesCommitted( m_colAdded );
+    changeCommitted( m_colAdded );
 
     if ( !success ) {
         // remove the collection again.

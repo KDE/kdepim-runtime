@@ -131,7 +131,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
     Item i( item );
     i.setRemoteId( rid );
-    changesCommitted( i );
+    changeCommitted( i );
 }
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
@@ -157,7 +157,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
     const MessagePtr mail = item.payload<MessagePtr>();
     dir.writeEntry( entry, mail->encodedContent() );
-    changesCommitted( item );
+    changeCommitted( item );
 }
 
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
@@ -259,7 +259,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
   Collection col = collection;
   col.setRemoteId( parent.remoteId() + QDir::separator() + collection.name() );
-  changesCommitted( col );
+  changeCommitted( col );
 }
 
 void MaildirResource::collectionChanged(const Collection & collection)

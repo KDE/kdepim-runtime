@@ -171,7 +171,7 @@ void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
     Item i( item );
     i.setRemoteId( incidence->uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }
@@ -191,7 +191,7 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
     Item i( item );
     i.setRemoteId( incidence->uid() );
-    changesCommitted( i );
+    changeCommitted( i );
   } else {
     changeProcessed();
   }

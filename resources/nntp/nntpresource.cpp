@@ -319,7 +319,7 @@ void NntpResource::collectionChanged(const Akonadi::Collection & collection)
     Settings::self()->setName( collection.name() );
     setName( collection.name() );
   }
-  changesCommitted( collection );
+  changeCommitted( collection );
 }
 
 AKONADI_RESOURCE_MAIN( NntpResource )
