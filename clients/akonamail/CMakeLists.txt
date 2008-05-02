@@ -8,7 +8,7 @@ set(akonamail_bin_SRCS
 )
 
 qt4_add_dbus_interfaces( akonamail_bin_SRCS
-  ${AKONADI_DBUS_INTERFACES_INSTALL_DIR}/org.kde.Akonadi.TracerNotification.xml
+  ${AKONADI_DBUS_INTERFACES_DIR}/org.kde.Akonadi.TracerNotification.xml
 )
 
 kde4_add_app_icon(akonamail_bin_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/email.png")
