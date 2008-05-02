@@ -151,7 +151,7 @@ void ResourcesManagementWidget::removeClicked()
     if ( instance.isValid() )
         Akonadi::AgentManager::self()->removeInstance( instance );
 
-    updateButtonState();
+    updateButtonState( d->ui.resourcesList->currentAgentInstance() );
 }
 
 #include "resourcesmanagementwidget.moc"
