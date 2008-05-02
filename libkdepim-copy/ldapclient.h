@@ -63,7 +63,7 @@ class KDEPIM_EXPORT LdapClient : public QObject
     int completionWeight() const;
     void setCompletionWeight( int );
 
-    const KLDAP::LdapServer& server() { return mServer; }
+    const KLDAP::LdapServer& server() const { return mServer; }
     void setServer( const KLDAP::LdapServer &server ) { mServer = server; }
     /*! Return the attributes that should be
      * returned, or an empty list if
