@@ -43,33 +43,33 @@ TreeWidget::TreeWidget( QWidget * parent, const char * name )
   setManualColumnHidingEnabled( true );
 }
 
-bool TreeWidget::saveLayout( KConfigGroup &group , const char * keyName ) const
+bool TreeWidget::saveLayout( KConfigGroup &group, const char * keyName ) const
 {
   if( !keyName )
     return false;
 
-  group.writeEntry( keyName , QVariant( header()->saveState() ) );
+  group.writeEntry( keyName, QVariant( header()->saveState() ) );
 
   return true;
 }
 
-bool TreeWidget::saveLayout( KConfig * config , const char * groupName , const char * keyName ) const
+bool TreeWidget::saveLayout( KConfig * config, const char * groupName, const char * keyName ) const
 {
   if( !config || !groupName || !keyName )
     return false;
 
-  KConfigGroup group( config , groupName );
-  return saveLayout( group , keyName );
+  KConfigGroup group( config, groupName );
+  return saveLayout( group, keyName );
 }
 
-bool TreeWidget::restoreLayout( KConfigGroup &group , const char * keyName )
+bool TreeWidget::restoreLayout( KConfigGroup &group, const char * keyName )
 {
   if( !keyName )
     return false;
 
   // Restore the view column order, width and visibility
   QByteArray state = group.readEntry(
-                             keyName , QVariant( QVariant::ByteArray )
+                             keyName, QVariant( QVariant::ByteArray )
                          ).toByteArray();
 
   if( state.isEmpty() )
@@ -109,7 +109,7 @@ bool TreeWidget::restoreLayout( KConfigGroup &group , const char * keyName )
   return true;
 }
 
-bool TreeWidget::restoreLayout( KConfig * config , const char * groupName , const char * keyName )
+bool TreeWidget::restoreLayout( KConfig * config, const char * groupName, const char * keyName )
 {
   if( !config || !groupName || !keyName )
     return false;
@@ -117,8 +117,8 @@ bool TreeWidget::restoreLayout( KConfig * config , const char * groupName , cons
   if ( !config->hasGroup( groupName ) )
     return false;
 
-  KConfigGroup group( config , groupName );
-  return restoreLayout( group , keyName );
+  KConfigGroup group( config, groupName );
+  return restoreLayout( group, keyName );
 }
 
 void TreeWidget::setManualColumnHidingEnabled( bool enable )
@@ -139,7 +139,7 @@ void TreeWidget::setManualColumnHidingEnabled( bool enable )
 
 void TreeWidget::setColumnHidden( int logicalIndex, bool hide )
 {
-  header()->setSectionHidden( logicalIndex , hide );
+  header()->setSectionHidden( logicalIndex, hide );
 }
 
 bool TreeWidget::isColumnHidden( int logicalIndex ) const
@@ -147,9 +147,9 @@ bool TreeWidget::isColumnHidden( int logicalIndex ) const
   return header()->isSectionHidden( logicalIndex );
 }
 
-#define KFOLDERTREEWIDGETBASE_COLUMN_ACTION_ID_BASE 0x10000
+static const int columnActionIDBase = 0x10000;
 
-bool TreeWidget::fillHeaderContextMenu( KMenu * menu , const QPoint & )
+bool TreeWidget::fillHeaderContextMenu( KMenu * menu, const QPoint & )
 {
   if ( !menu || !mEnableManualColumnHiding )
     return false;
@@ -171,7 +171,7 @@ bool TreeWidget::fillHeaderContextMenu( KMenu * menu , const QPoint & )
     act->setCheckable( true );
     if ( !header()->isSectionHidden( i ) )
         act->setChecked( true );
-    act->setData( QVariant( KFOLDERTREEWIDGETBASE_COLUMN_ACTION_ID_BASE + i ) );
+    act->setData( QVariant( columnActionIDBase + i ) );
   }
 
   return true;
@@ -189,39 +189,39 @@ void TreeWidget::slotToggleColumnActionTriggered( QAction *act )
   if ( !ok )
     return;
 
-  if ( id <= KFOLDERTREEWIDGETBASE_COLUMN_ACTION_ID_BASE )
+  if ( id <= columnActionIDBase )
     return;
 
-  id -= KFOLDERTREEWIDGETBASE_COLUMN_ACTION_ID_BASE;
+  id -= columnActionIDBase;
 
   if ( id > columnCount() )
     return;
 
-  header()->setSectionHidden( id , !act->isChecked() );
+  header()->setSectionHidden( id, !act->isChecked() );
 }
 
 void TreeWidget::slotHeaderContextMenuRequested( const QPoint &clickPoint )
 {
   KMenu menu( this );
 
-  if ( !fillHeaderContextMenu( &menu , clickPoint ) )
+  if ( !fillHeaderContextMenu( &menu, clickPoint ) )
     return;
 
-  connect( &menu , SIGNAL( triggered( QAction* ) ) ,
-           this , SLOT( slotToggleColumnActionTriggered( QAction* ) ) );
+  connect( &menu, SIGNAL( triggered( QAction* ) ),
+           this, SLOT( slotToggleColumnActionTriggered( QAction* ) ) );
 
   menu.exec( header()->mapToGlobal( clickPoint ) );
 }
 
-int TreeWidget::addColumn( const QString &label , int headerAlignment )
+int TreeWidget::addColumn( const QString &label, int headerAlignment )
 {
   QTreeWidgetItem * hitem = headerItem();
   if ( !hitem )
   {
     // In fact this seems to never happen
     hitem = new QTreeWidgetItem( this );
-    hitem->setText( 0 , label );
-    hitem->setTextAlignment( 0 , headerAlignment );
+    hitem->setText( 0, label );
+    hitem->setTextAlignment( 0, headerAlignment );
     setHeaderItem( hitem ); // will set column count to 1
     return 0;
   }
@@ -229,19 +229,19 @@ int TreeWidget::addColumn( const QString &label , int headerAlignment )
   int cc = columnCount();
 
   setColumnCount( cc + 1 );
-  hitem->setText( cc , label );
-  hitem->setTextAlignment( cc , headerAlignment );
+  hitem->setText( cc, label );
+  hitem->setTextAlignment( cc, headerAlignment );
   return cc;
 }
 
-bool TreeWidget::setColumnText( int columnIndex , const QString &label )
+bool TreeWidget::setColumnText( int columnIndex, const QString &label )
 {
   if ( columnIndex >= columnCount() )
     return false;
   QTreeWidgetItem * hitem = headerItem();
   if ( !hitem )
     return false;
-  hitem->setText( columnIndex , label );
+  hitem->setText( columnIndex, label );
   return true;
 }
 

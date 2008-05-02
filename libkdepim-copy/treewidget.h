@@ -67,9 +67,6 @@ public:
    */
   explicit TreeWidget( QWidget *parent, const char *name = 0 );
 
-private:
-  bool mEnableManualColumnHiding; ///< Is manual column hiding currently enabled ?
-
 public:
 
   //
@@ -200,7 +197,7 @@ public:
    * true unless you have no columns at all, column hiding is disabled
    * or you pass some weird parameter.
    */
-  virtual bool fillHeaderContextMenu( KMenu * menu , const QPoint &clickPoint );
+  virtual bool fillHeaderContextMenu( KMenu * menu, const QPoint &clickPoint );
 
   //
   // Facilities for adding and manipulating columns
@@ -219,7 +216,7 @@ public:
    * @param alignment The alignment of the header text for this column
    */
   int addColumn(
-      const QString &label ,
+      const QString &label,
       int headerAlignment = Qt::AlignLeft | Qt::AlignVCenter
     );
 
@@ -228,7 +225,7 @@ public:
    * Returns true if the text can be successfully changed or false
    * if the specified column index is out of range.
    */
-  bool setColumnText( int columnIndex , const QString &label );
+  bool setColumnText( int columnIndex, const QString &label );
 
 protected Q_SLOTS:
   /**
@@ -242,6 +239,9 @@ protected Q_SLOTS:
    * header contextual menu.
    */
   void slotToggleColumnActionTriggered( QAction *act );
+
+private:
+  bool mEnableManualColumnHiding; ///< Is manual column hiding currently enabled ?
 
 };
 
