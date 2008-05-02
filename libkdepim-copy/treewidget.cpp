@@ -21,7 +21,7 @@
  *
  *****************************************************************************/
 
-#include "foldertreewidget.h"
+#include "treewidget.h"
 
 #include <KMenu>
 #include <KConfig>
