@@ -33,8 +33,8 @@ class SerializerPluginMail : public QObject, public ItemSerializerPlugin
     Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
 public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data );
+    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
+    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
     QSet<QByteArray> parts( const Item &item ) const;
 };
 

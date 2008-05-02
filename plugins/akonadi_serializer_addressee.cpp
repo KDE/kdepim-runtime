@@ -29,8 +29,10 @@
 
 using namespace Akonadi;
 
-bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label, QIODevice& data )
+bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
+    Q_UNUSED( version );
+
     if ( label != Item::FullPayload )
       return false;
 
@@ -43,8 +45,10 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label
     return true;
 }
 
-void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& label, QIODevice& data )
+void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
 {
+    Q_UNUSED( version );
+
     if ( label != Item::FullPayload || !item.hasPayload<KABC::Addressee>() )
       return;
     const KABC::Addressee a = item.payload<KABC::Addressee>();

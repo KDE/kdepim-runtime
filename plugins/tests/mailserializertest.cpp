@@ -43,7 +43,7 @@ void MailSerializerTest::testEnvelopeDeserialize()
   buffer.setData( env );
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
-  serializer->deserialize( i, MessagePart::Envelope, buffer );
+  serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
   QVERIFY( i.hasPayload<MessagePtr>() );
 
   MessagePtr msg = i.payload<MessagePtr>();
@@ -76,7 +76,8 @@ void MailSerializerTest::testEnvelopeSerialize()
   buffer.setBuffer( &env );
   buffer.open( QIODevice::ReadWrite );
   buffer.seek( 0 );
-  serializer->serialize( i, MessagePart::Envelope, buffer );
+  int version = 0;
+  serializer->serialize( i, MessagePart::Envelope, buffer, version );
   QCOMPARE( env, expEnv );
 
   delete serializer;

@@ -51,8 +51,10 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
 }
 
 
-bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data )
+bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
+    Q_UNUSED( version );
+
     if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
       return false;
 
@@ -151,8 +153,10 @@ template <typename T> static QByteArray buildAddrStruct( T const *hdr )
   return buildImapList( addrList );
 }
 
-void SerializerPluginMail::serialize( const Item& item, const QByteArray& label, QIODevice& data )
+void SerializerPluginMail::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
 {
+  Q_UNUSED( version );
+
   boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
   m->assemble();
   if ( label == MessagePart::Body ) {

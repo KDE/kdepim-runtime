@@ -29,8 +29,10 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 
-bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QIODevice & data)
+bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QIODevice & data, int version)
 {
+  Q_UNUSED( version );
+
   if ( label != Item::FullPayload )
     return false;
 
@@ -45,8 +47,10 @@ bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QI
   return true;
 }
 
-void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label, QIODevice & data)
+void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label, QIODevice & data, int &version)
 {
+  Q_UNUSED( version );
+
   if ( label != Item::FullPayload || !item.hasPayload<IncidencePtr>() )
     return;
   IncidencePtr i = item.payload<IncidencePtr>();
