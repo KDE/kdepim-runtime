@@ -185,6 +185,10 @@ void ImaplibResource::itemRemoved( const Akonadi::Item &item )
 
 void ImaplibResource::retrieveCollections()
 {
+    if ( !m_imap ) {
+      kDebug() << "Ignoring this request. Probably there is no connection.";
+      return;
+    }
     m_imap->getMailBoxList();
 }
 
