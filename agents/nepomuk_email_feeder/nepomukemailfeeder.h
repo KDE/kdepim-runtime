@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2006 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2008 Sebastian Trueg <trueg@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -22,6 +23,9 @@
 
 #include <akonadi/agentbase.h>
 
+namespace Nepomuk {
+  class Contact;
+}
 
 namespace Akonadi {
 
@@ -35,6 +39,9 @@ class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);
+
+  private:
+    Nepomuk::Contact findContact( const QString& address );
 };
 
 }
