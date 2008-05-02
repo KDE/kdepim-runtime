@@ -5,7 +5,7 @@ include_directories(
   ${NEPOMUK_INCLUDES}
   )
 
-#if(HAVE_NIE)
+if(HAVE_NIE)
   set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
   kde4_add_executable(akonadi_nepomuk_contact_feeder RUN_UNINSTALLED nepomukcontactfeeder.cpp)
@@ -22,4 +22,4 @@ include_directories(
   install(TARGETS akonadi_nepomuk_contact_feeder DESTINATION ${BIN_INSTALL_DIR})
   install(FILES nepomukcontactfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-#endif(HAVE_NIE)
+endif(HAVE_NIE)

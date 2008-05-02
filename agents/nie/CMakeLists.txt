@@ -70,7 +70,7 @@ NEPOMUK_GENERATE_FROM_ONTOLOGY2(
 
 if(NEPOMUK_RESOURCES_GENERATED)
 
-  set(HAVE_NIE 1)
+  set(HAVE_NIE 1 CACHE INTERNAL "NIE classes successfully generated" FORCE)
 
   kde4_add_library(nie STATIC ${NCO_SOURCES} ${NIE_SOURCES})
 
