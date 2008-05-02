@@ -15,6 +15,7 @@ if(HAVE_NIE)
 
   target_link_libraries(akonadi_nepomuk_email_feeder
     nie
+    ${SOPRANO_LIBRARIES}
     ${KDE4_AKONADI_LIBS}
     akonadi-kmime
     ${QT_QTCORE_LIBRARY}
