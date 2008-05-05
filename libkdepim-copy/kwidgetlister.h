@@ -35,7 +35,6 @@
 
 #include "kdepim_export.h"
 #include <QWidget>
-#include <q3ptrlist.h>
 #include <QVBoxLayout>
 
 class QPushButton;
@@ -134,7 +133,7 @@ class KDEPIM_EXPORT KWidgetLister : public QWidget
     /** The list of widgets. Note that this list is set to auto-delete,
         meaning that widgets that are removed from the screen by either
         @ref slotFewer or @ref slotClear will be destroyed! */
-    Q3PtrList<QWidget> mWidgetList;
+    QList<QWidget*> mWidgetList;
 
     /** The minimum number of widgets that are to stay on screen. */
     int mMinWidgets;

@@ -196,11 +196,12 @@ void ConditionEditWidget::slotEditRule( KScoringRule *rule )
   } else {
     setNumberOfShownWidgetsTo( l.count() );
     KScoringExpression *e = l.first();
-    SingleConditionWidget *scw = static_cast<SingleConditionWidget*>( mWidgetList.first() );
-    while ( e && scw ) {
+    QList<QWidget*>::Iterator it = mWidgetList.begin();
+    while ( e && it != mWidgetList.end() ) {
+      SingleConditionWidget *scw = static_cast<SingleConditionWidget *>( *it );
       scw->setCondition( e );
       e = l.next();
-      scw = static_cast<SingleConditionWidget*>( mWidgetList.next() );
+      ++it;
     }
   }
 }
@@ -208,7 +209,7 @@ void ConditionEditWidget::slotEditRule( KScoringRule *rule )
 void ConditionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanExpressions();
-  for ( QWidget *w = mWidgetList.first(); w; w = mWidgetList.next() ) {
+  foreach ( QWidget* w, mWidgetList ) {
       if ( QString( w->metaObject()->className() ) != "SingleConditionWidget" ) {
       kWarning(5100) <<"there is a widget in ConditionEditWidget"
                      << "which isn't a SingleConditionWidget";
@@ -383,11 +384,12 @@ void ActionEditWidget::slotEditRule( KScoringRule *rule )
   } else {
     setNumberOfShownWidgetsTo( l.count() );
     ActionBase *act = l.first();
-    SingleActionWidget *saw = static_cast<SingleActionWidget*>( mWidgetList.first() );
-    while ( act && saw ) {
+    QList<QWidget*>::Iterator it = mWidgetList.begin();
+    while ( act && it != mWidgetList.end() ) {
+      SingleActionWidget *saw = static_cast<SingleActionWidget*>( *it );
       saw->setAction( act );
       act = l.next();
-      saw = static_cast<SingleActionWidget*>( mWidgetList.next() );
+      ++it;
     }
   }
 }
@@ -395,7 +397,7 @@ void ActionEditWidget::slotEditRule( KScoringRule *rule )
 void ActionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanActions();
-  for ( QWidget *w = mWidgetList.first(); w; w = mWidgetList.next() ) {
+  foreach ( QWidget *w, mWidgetList ) {
     if ( QString( w->metaObject()->className() ) != "SingleActionWidget" ) {
       kWarning(5100) <<"there is a widget in ActionEditWidget"
                      << "which isn't a SingleActionWidget";

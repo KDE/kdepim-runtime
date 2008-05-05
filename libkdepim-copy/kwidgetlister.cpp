@@ -51,7 +51,6 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
   : QWidget( parent )
 {
   setObjectName( name );
-  mWidgetList.setAutoDelete( true );
 
   mMinWidgets = qMax( minWidgets, 1 );
   mMaxWidgets = qMax( maxWidgets, mMinWidgets + 1 );
@@ -94,6 +93,8 @@ KWidgetLister::KWidgetLister( int minWidgets, int maxWidgets, QWidget *parent, c
 
 KWidgetLister::~KWidgetLister()
 {
+  qDeleteAll( mWidgetList );
+  mWidgetList.clear();
 }
 
 void KWidgetLister::slotMore()
@@ -123,9 +124,8 @@ void KWidgetLister::slotClear()
   setNumberOfShownWidgetsTo( mMinWidgets );
 
   // clear remaining widgets
-  Q3PtrListIterator<QWidget> it( mWidgetList );
-  for ( it.toFirst(); it.current(); ++it ) {
-    clearWidget( (*it) );
+  foreach ( QWidget *widget, mWidgetList ) {
+    clearWidget( widget );
   }
 
   //  adjustSize();
@@ -151,7 +151,7 @@ void KWidgetLister::removeLastWidget()
 {
   // The layout will take care that the
   // widget is removed from screen, too.
-  mWidgetList.removeLast();
+  delete mWidgetList.takeLast();
   enableControls();
   emit widgetRemoved();
 }
