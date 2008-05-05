@@ -147,7 +147,7 @@ void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QB
   // im accounts
 
   // email addresses
-  contact.setEmailAddresss( QList<Nepomuk::EmailAddress>() );
+  contact.setEmailAddresses( QList<Nepomuk::EmailAddress>() );
 
   const QStringList emails = addressee.emails();
   for ( int i = 0; i < emails.count(); ++i ) {
@@ -157,7 +157,7 @@ void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QB
   }
 
   // addresses
-  contact.setPostalAddresss( QList<Nepomuk::PostalAddress>() );
+  contact.setPostalAddresses( QList<Nepomuk::PostalAddress>() );
 
   const KABC::Address::List addresses = addressee.addresses();
   for ( int i = 0; i < addresses.count(); ++i ) {
@@ -183,12 +183,12 @@ void NepomukContactFeeder::itemRemoved( const Akonadi::Item &item )
     number.remove();
   }
 
-  QList<Nepomuk::EmailAddress> emails = contact.emailAddresss();
+  QList<Nepomuk::EmailAddress> emails = contact.emailAddresses();
   Q_FOREACH( Nepomuk::EmailAddress email, emails ) {
     email.remove();
   }
 
-  QList<Nepomuk::PostalAddress> addresses = contact.postalAddresss();
+  QList<Nepomuk::PostalAddress> addresses = contact.postalAddresses();
   Q_FOREACH( Nepomuk::PostalAddress address, addresses ) {
     address.remove();
   }
