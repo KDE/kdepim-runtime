@@ -99,7 +99,7 @@ Dock::~Dock()
 
 void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
 {
-    if ( service != "org.kde.Akonadi.Control" )
+    if ( service != "org.freedesktop.Akonadi.Control" )
         return;
 
     if ( oldOwner.isEmpty() ) {
@@ -115,7 +115,7 @@ void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, 
 
 void Dock::slotStopAkonadi()
 {
-    QDBusInterface dbus( "org.kde.Akonadi.Control", "/ControlManager", "org.kde.Akonadi.ControlManager" );
+    QDBusInterface dbus( "org.freedesktop.Akonadi.Control", "/ControlManager", "org.freedesktop.Akonadi.ControlManager" );
     dbus.call( "shutdown" );
 }
 
@@ -126,13 +126,13 @@ void Dock::slotStartAkonadi()
 
 void Dock::slotActivated()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
+    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
     updateMenu( registered );
 }
 
 void Dock::slotStartBackup()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
+    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
     Q_ASSERT( registered );
 
     QPointer<BackupAssistant> backup = new BackupAssistant( parentWidget() );
@@ -142,7 +142,7 @@ void Dock::slotStartBackup()
 
 void Dock::slotStartRestore()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.Akonadi.Control" );
+    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
     Q_ASSERT( registered );
 
     QPointer<RestoreAssistant> restore = new RestoreAssistant( parentWidget() );
@@ -171,7 +171,7 @@ void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QStri
 
 void Dock::infoMessage( const QString &message, const QString &title )
 {
-    KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title, 
+    KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title,
                             message, this );
 }
 
@@ -182,7 +182,7 @@ void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString
 
 void Dock::errorMessage( const QString &message, const QString &title )
 {
-    KMessageBox::error( parentWidget(), message, 
+    KMessageBox::error( parentWidget(), message,
                         title.isEmpty() ?i18n( "Akonadi error" ) : title );
 }
 

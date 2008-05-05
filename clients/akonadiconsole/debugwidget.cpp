@@ -47,7 +47,7 @@ DebugWidget::DebugWidget( QWidget *parent )
   page->showAllConnections( true );
   mConnectionPages->addTab( page, "All" );
 
-  org::kde::Akonadi::TracerNotification *iface = new org::kde::Akonadi::TracerNotification( QString(), "/tracing/notifications", QDBusConnection::sessionBus(), this );
+  org::freedesktop::Akonadi::TracerNotification *iface = new org::freedesktop::Akonadi::TracerNotification( QString(), "/tracing/notifications", QDBusConnection::sessionBus(), this );
 
   connect( iface, SIGNAL( connectionStarted( const QString&, const QString& ) ),
            this, SLOT( connectionStarted( const QString&, const QString& ) ) );
