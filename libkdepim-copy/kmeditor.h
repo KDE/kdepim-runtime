@@ -417,7 +417,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
   private:
     KMeditorPrivate *const d;
     friend class KMeditorPrivate;
-    Q_PRIVATE_SLOT( d, void addSuggestion( const QString&, const QStringList& ) )
     Q_PRIVATE_SLOT( d, void ensureCursorVisibleDelayed() )
 };
 

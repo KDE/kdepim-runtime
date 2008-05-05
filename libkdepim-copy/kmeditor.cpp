@@ -92,7 +92,6 @@ class KMeditorPrivate
     //
     // Slots
     //
-    void addSuggestion( const QString&,const QStringList& );
 
     // Just calls KTextEdit::ensureCursorVisible(), workaround for some bug.
     void ensureCursorVisibleDelayed();
@@ -130,7 +129,6 @@ class KMeditorPrivate
     QList< QPair<int,int> > signaturePositions( const KPIMIdentities::Signature &sig ) const;
 
     // Data members
-    QMap<QString,QStringList> replacements;
     QString extEditorPath;
     QString language;
     KMeditor *q;
@@ -241,12 +239,6 @@ QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &si
     sigText = helper.toPlainText();
   }
   return sigText;
-}
-
-void KMeditorPrivate::addSuggestion( const QString& originalWord,
-                                     const QStringList& lst )
-{
-  replacements[originalWord] = lst;
 }
 
 void KMeditorPrivate::ensureCursorVisibleDelayed()
@@ -430,9 +422,6 @@ void KMeditor::createHighlighter()
       new KPIM::KEMailQuotingHighlighter( this );
 
   changeHighlighterColors( emailHighLighter );
-
-  connect( emailHighLighter, SIGNAL( newSuggestions(const QString&,const QStringList&) ),
-           this, SLOT( addSuggestion(const QString&,const QStringList&) ) );
 
   //TODO change config
   KTextEdit::setHighlighter( emailHighLighter );
@@ -640,6 +629,7 @@ void KMeditor::disableWordWrap()
 
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
+#if KDE_IS_VERSION(4,0,73)
   // Obtain the cursor at the mouse position and the current cursor
   QTextCursor cursorAtMouse = cursorForPosition( event->pos() );
   int mousePos = cursorAtMouse.position();
@@ -650,55 +640,94 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
                              mousePos >= cursor.selectionStart() &&
                              mousePos <= cursor.selectionEnd();
 
-  // Get the word under the (mouse-)cursor and see if it is misspelled
+  // Get the word under the (mouse-)cursor and see if it is misspelled.
+  // Don't include apostrophes at the start/end of the word in the selection.
   QTextCursor wordSelectCursor( cursorAtMouse );
   wordSelectCursor.clearSelection();
   wordSelectCursor.select( QTextCursor::WordUnderCursor );
   QString selectedWord = wordSelectCursor.selectedText();
+
+  // Clear the selection again, we re-select it below (without the apostrophes).
+  wordSelectCursor.movePosition( QTextCursor::PreviousCharacter,
+                                 QTextCursor::MoveAnchor, selectedWord.size() );
+  if ( selectedWord.startsWith( '\'' ) || selectedWord.startsWith( '\"' ) ) {
+    selectedWord = selectedWord.right( selectedWord.size() - 1 );
+    wordSelectCursor.movePosition( QTextCursor::NextCharacter, QTextCursor::MoveAnchor );
+  }
+  if ( selectedWord.endsWith( '\'' ) || selectedWord.endsWith( '\"' ))
+    selectedWord.chop( 1 );
+  wordSelectCursor.movePosition( QTextCursor::NextCharacter,
+                                 QTextCursor::KeepAnchor, selectedWord.size() );
+
   bool wordIsMisspelled = !selectedWord.isEmpty() &&
-                         d->replacements.contains ( selectedWord );
+                          KTextEdit::highlighter()->isWordMisspelled( selectedWord );
 
   // If the user clicked a selected word, do nothing.
   // If the user clicked somewhere else, move the cursor there.
   // If the user clicked on a misspelled word, select that word.
   // Same behavior as in OpenOffice Writer.
+  bool inQuote = cursorAtMouse.block().text().startsWith( quotePrefixName() );
   if ( !selectedWordClicked ) {
-    if ( wordIsMisspelled )
+    if ( wordIsMisspelled && !inQuote )
       setTextCursor( wordSelectCursor );
     else
       setTextCursor( cursorAtMouse );
     cursor = textCursor();
   }
 
-  // Use standard context menu for normal words and our own for misspelled words
-  if ( !wordIsMisspelled || selectedWordClicked ) {
+  // Use standard context menu for already selected words, correctly spelled
+  // words and words inside quotes.
+  if ( !wordIsMisspelled || selectedWordClicked || inQuote ) {
     KTextEdit::contextMenuEvent( event );
   }
   else {
-    KMenu p;
-    p.addTitle( i18n( "Suggestions" ) );
+    KMenu suggestions;
+    KMenu menu;
 
     //Add the suggestions to the popup menu
-    QStringList reps = d->replacements[selectedWord];
+    QStringList reps = KTextEdit::highlighter()->suggestionsForWord( selectedWord );
     if ( reps.count() > 0 ) {
       for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
-        p.addAction( *it );
+        suggestions.addAction( *it );
       }
+
     }
-    else {
-      p.addAction( i18n( "No Suggestions" ) );
-    }
+    suggestions.setTitle( i18n( "Suggestions" ) );
+
+    QAction *ignoreAction = menu.addAction( i18n("Ignore") );
+    QAction *addToDictAction = menu.addAction( i18n("Add to Dictionary") );
+    QAction *suggestionsAction = menu.addMenu( &suggestions );
+    if ( reps.count() == 0 )
+      suggestionsAction->setEnabled( false );
 
     //Execute the popup inline
-    const QAction *selectedAction = p.exec( mapToGlobal( event->pos() ) );
+    const QAction *selectedAction = menu.exec( mapToGlobal( event->pos() ) );
 
-    if ( selectedAction && ( reps.count() > 0 ) ) {
-      const QString replacement = selectedAction->text();
+    if ( selectedAction ) {
       Q_ASSERT( cursor.selectedText() == selectedWord );
-      cursor.insertText( replacement );
-      setTextCursor( cursor );
+
+      if ( selectedAction == ignoreAction ) {
+        KTextEdit::highlighter()->ignoreWord( selectedWord );
+        KTextEdit::highlighter()->rehighlight();
+      }
+      else if ( selectedAction == addToDictAction ) {
+        KTextEdit::highlighter()->addWordToDictionary( selectedWord );
+        KTextEdit::highlighter()->rehighlight();
+      }
+
+      // Other actions can only be one of the suggested words
+      else {
+        const QString replacement = selectedAction->text();
+        Q_ASSERT( reps.contains( replacement ) );
+        cursor.insertText( replacement );
+        setTextCursor( cursor );
+      }
     }
   }
+#else
+  KTextEdit::contextMenuEvent( event );
+  kWarning() << "spell check menu not compiled in, kdelibs too old.";
+#endif
 }
 
 void KMeditor::slotPasteAsQuotation()
@@ -1127,7 +1156,6 @@ QString KMeditor::textOrHTML() const
 void KMeditor::setSpellCheckLanguage( const QString &language )
 {
   if ( KTextEdit::highlighter() ) {
-    d->replacements.clear();
     KTextEdit::highlighter()->setCurrentLanguage( language );
     KTextEdit::highlighter()->rehighlight();
   }
@@ -1156,8 +1184,7 @@ void KMeditor::toggleSpellChecking( bool on )
             dynamic_cast<KEMailQuotingHighlighter*>( KTextEdit::highlighter() );
   if ( hlighter )
     hlighter->toggleSpellHighlighting( on );
-  if ( !on )
-    d->replacements.clear();
+
   d->spellCheckingEnabled = on;
 }
 
