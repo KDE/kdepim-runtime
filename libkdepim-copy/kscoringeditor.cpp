@@ -196,8 +196,8 @@ void ConditionEditWidget::slotEditRule( KScoringRule *rule )
   } else {
     setNumberOfShownWidgetsTo( l.count() );
     KScoringExpression *e = l.first();
-    QList<QWidget*>::Iterator it = mWidgetList.begin();
-    while ( e && it != mWidgetList.end() ) {
+    QList<QWidget*>::ConstIterator it = mWidgetList.constBegin();
+    while ( e && it != mWidgetList.constEnd() ) {
       SingleConditionWidget *scw = static_cast<SingleConditionWidget *>( *it );
       scw->setCondition( e );
       e = l.next();
@@ -384,8 +384,8 @@ void ActionEditWidget::slotEditRule( KScoringRule *rule )
   } else {
     setNumberOfShownWidgetsTo( l.count() );
     ActionBase *act = l.first();
-    QList<QWidget*>::Iterator it = mWidgetList.begin();
-    while ( act && it != mWidgetList.end() ) {
+    QList<QWidget*>::ConstIterator it = mWidgetList.constBegin();
+    while ( act && it != mWidgetList.constEnd() ) {
       SingleActionWidget *saw = static_cast<SingleActionWidget*>( *it );
       saw->setAction( act );
       act = l.next();
