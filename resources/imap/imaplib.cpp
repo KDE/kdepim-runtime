@@ -978,7 +978,8 @@ void Imaplib::slotProcessQueue()
         return;
 
     m_currentQueueItem = m_queue.first();
-    kDebug( ) << m_currentQueueItem.command();
+    // Dont enable, as it exposes the password on login.
+    // kDebug( ) << m_currentQueueItem.command();
 
     if ( m_currentMailbox == m_currentQueueItem.mailbox() ||
             m_currentQueueItem.mailbox().isEmpty() ||
