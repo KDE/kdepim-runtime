@@ -23,9 +23,13 @@
 #ifndef PROFILEEDITDIALOG_H
 #define PROFILEEDITDIALOG_H
 
+#include <stdint.h>
+
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
+
+struct SRowSet; // forward declaration.
 
 class ProfileEditDialog : public QDialog
 {
@@ -39,6 +43,8 @@ class ProfileEditDialog : public QDialog
                                 const QString &serverAddress = QString(),
                                 const QString &workstation = QString(),
                                 const QString &domain = QString() );
+
+    static uint32_t callback(SRowSet *rowset, void *private_var);
 
   private Q_SLOTS:
     void commitProfile();

@@ -44,6 +44,18 @@
 
 #include "profiledialog.h"
 
+
+// - Boost.Exception will look for this function if BOOST_NO_EXCEPTIONS is defined.
+// - Because we compile with -fnoexception the function doesn't throw the exception.
+#ifdef BOOST_NO_EXCEPTIONS
+namespace boost 
+{
+void throw_exception(std::exception const & e)
+{
+}
+}
+#endif
+
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;

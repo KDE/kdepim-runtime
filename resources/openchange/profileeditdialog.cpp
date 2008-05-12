@@ -131,6 +131,15 @@ void ProfileEditDialog::checkIfComplete()
     m_okButton->setEnabled(true);
 }
 
+uint32_t ProfileEditDialog::callback(struct SRowSet *rowset, void *private_var)
+{
+  qDebug() << "ProfileEditDialog::callback() Found more than 1 match";
+
+  // TODO: Handle this. Need to find a way to produce this.
+  // Cancel user creation for now.
+  return rowset->cRows;
+}
+
 void ProfileEditDialog::commitProfile()
 {
   qDebug() << "committing profile: " << m_profileNameEdit->text();
@@ -146,16 +155,17 @@ void ProfileEditDialog::commitProfile()
     // then this one exists, and we should kill it
     if ((retval = DeleteProfile(m_profileNameEdit->text().toUtf8().constData()) ) != MAPI_E_SUCCESS) {
       mapi_errstr("DeleteProfile", GetLastError());
-      exit (1);
+      return;
     }
   }
 
   retval = CreateProfile(m_profileNameEdit->text().toUtf8().constData(),
                          m_usernameEdit->text().toUtf8().constData(),
-                         0, OC_PROFILE_NOPASSWORD);
+                         m_passwordEdit->text().toUtf8().constData(), 0);
+
   if (retval != MAPI_E_SUCCESS) {
     mapi_errstr("CreateProfile", GetLastError());
-    exit (1);
+    return;
   }
 
   mapi_profile_add_string_attr(m_profileNameEdit->text().toUtf8().constData(),
@@ -188,17 +198,19 @@ void ProfileEditDialog::commitProfile()
     // TODO - we need to do something more creative here
   }
 
-#if 0
-  retval = ProcessNetworkProfile(session, username, (mapi_profile_callback_t) callback, "Select a user id");
+
+  retval = ProcessNetworkProfile(session, m_usernameEdit->text().toUtf8().constData(), (mapi_profile_callback_t) ProfileEditDialog::callback, 
+                                 "Select a user id");
+
   if (retval != MAPI_E_SUCCESS && retval != 0x1) {
     mapi_errstr("ProcessNetworkProfile", GetLastError());
     printf("Deleting profile\n");
-    if ((retval = DeleteProfile(profname, 0)) != MAPI_E_SUCCESS) {
+    if ((retval = DeleteProfile(m_profileNameEdit->text().toUtf8().constData())) != MAPI_E_SUCCESS) {
       mapi_errstr("DeleteProfile", GetLastError());
     }
     exit (1);
   }
-#endif
+
 
   // TODO: add in KWallet support
   close(); // only if we added correctly.
