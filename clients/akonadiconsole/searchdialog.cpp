@@ -19,12 +19,12 @@
     USA.
 */
 
+#include "searchdialog.h"
+
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QTextEdit>
-
-#include "searchdialog.h"
 
 SearchDialog::SearchDialog( QWidget *parent )
   : KDialog( parent )

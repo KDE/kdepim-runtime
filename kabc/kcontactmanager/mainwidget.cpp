@@ -18,6 +18,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include "mainwidget.h"
+
 #include <QtGui/QAction>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListView>
@@ -38,8 +40,6 @@
 #include <kaction.h>
 
 #include "contacteditordialog.h"
-
-#include "mainwidget.h"
 
 MainWidget::MainWidget( KXMLGUIClient *guiClient, QWidget *parent )
   : QWidget( parent ),

@@ -19,6 +19,9 @@
     USA.
 */
 
+#ifndef MAINWIDGET_H
+#define MAINWIDGET_H
+
 #include <QtGui/QTreeView>
 #include <QSplitter>
 #include <QHBoxLayout>
@@ -57,4 +60,6 @@ class MainWidget : public QWidget
       Akonadi::KCalModel *mIncidenceModel;
 
 };
+
+#endif
 

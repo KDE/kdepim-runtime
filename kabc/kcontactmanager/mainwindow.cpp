@@ -18,13 +18,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include "mainwindow.h"
+
 #include <kactioncollection.h>
 #include <kstandardaction.h>
 #include <ktoolbar.h>
 
 #include "mainwidget.h"
-
-#include "mainwindow.h"
 
 MainWindow::MainWindow()
   : KXmlGuiWindow( 0 )

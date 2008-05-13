@@ -17,9 +17,9 @@
     02110-1301, USA.
 */
 
-#include <QtCore/qplugin.h>
-
 #include "akonadi_serializer_addressee.h"
+
+#include <QtCore/qplugin.h>
 
 #include <kabc/addressee.h>
 

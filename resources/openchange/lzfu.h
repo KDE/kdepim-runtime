@@ -11,6 +11,12 @@
      Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#ifndef LZFUDECOMPRESS_H
+#define LZFUDECOMPRESS_H
+
 #include <kdemacros.h>
 
 KDE_EXPORT QByteArray lzfuDecompress (const QByteArray &rtfcomp);
+
+#endif
+

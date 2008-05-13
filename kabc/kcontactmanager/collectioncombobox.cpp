@@ -17,13 +17,13 @@
     02110-1301, USA.
 */
 
+#include "collectioncombobox.h"
+
 #include <QtCore/QAbstractItemModel>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
 
 #include <akonadi/collectionmodel.h>
-
-#include "collectioncombobox.h"
 
 using namespace Akonadi;
 using namespace KABC;
