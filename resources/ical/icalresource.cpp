@@ -56,6 +56,12 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 {
   Q_UNUSED( parts );
   kDebug( 5251 ) << "Item:" << item.url();
+
+  if ( !mCalendar ) {
+    emit error( i18n("Calendar not loaded!") );
+    return false;
+  }
+
   const QString rid = item.remoteId();
   IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {
