@@ -25,10 +25,11 @@
 
 #include <kimap/rfccodecs.h>
 #include "socket.h"
-#include <QWidget>
+#include <QObject>
+#include <QStringList>
 
-//class QSocket;
 class QTimerEvent;
+class QTimer;
 
 class Queue
 {
@@ -88,7 +89,7 @@ private:
  * Responsible for communicating with the server and emitting the results back
  * @author Tom Albers <tomalbers@kde.nl>
  */
-class IMAP_EXPORT Imaplib : public QWidget
+class IMAP_EXPORT Imaplib : public QObject
 {
     Q_OBJECT
 
@@ -96,7 +97,7 @@ public:
     /**
      * Contructor
      */
-    Imaplib( QWidget* parent,  const char* name );
+    Imaplib( QObject* parent,  const char* name );
 
     /**
      * Destructor

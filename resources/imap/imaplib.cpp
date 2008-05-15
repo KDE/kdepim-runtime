@@ -22,6 +22,7 @@
 // Qt
 #include <QStringList>
 #include <QRegExp>
+#include <QStringList>
 #include <QTimer>
 #include <QTimerEvent>
 
@@ -35,8 +36,8 @@ static inline bool endSimpleCommand( const QString& text )
     return text.indexOf( rx ) > -1;
 }
 
-Imaplib::Imaplib( QWidget* parent,  const char* name )
-        : QWidget( parent ), m_currentState( NotConnected ), m_socket( 0 ),
+Imaplib::Imaplib( QObject* parent,  const char* name )
+        : QObject( parent ), m_currentState( NotConnected ), m_socket( 0 ),
         m_tls( false ), m_readyToSend( false )
 {
     setObjectName( name );
