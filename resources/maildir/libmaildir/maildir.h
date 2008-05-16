@@ -31,7 +31,7 @@ namespace KPIM {
 class MAILDIR_EXPORT Maildir
 {
 public:
-    Maildir( const QString& path = QString(), bool isRoot = false );
+    explicit Maildir( const QString& path = QString(), bool isRoot = false );
     /* Copy constructor */
     Maildir(const Maildir & rhs);
     /* Copy operator */
