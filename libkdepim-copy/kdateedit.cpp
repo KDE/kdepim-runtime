@@ -97,7 +97,7 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
   connect( this, SIGNAL( textChanged( const QString& ) ),
            SLOT( slotTextChanged( const QString& ) ) );
 
-  mPopup = new KDatePickerPopup( KDatePickerPopup::DatePicker | KDatePickerPopup::Words );
+  mPopup = new KDatePickerPopup( KDatePickerPopup::DatePicker | KDatePickerPopup::Words, QDate::currentDate(), this );
   mPopup->hide();
   mPopup->installEventFilter( this );
 
@@ -115,8 +115,6 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
 
 KDateEdit::~KDateEdit()
 {
-  delete mPopup;
-  mPopup = 0;
 }
 
 void KDateEdit::setDate( const QDate &date )
