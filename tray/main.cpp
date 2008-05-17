@@ -56,9 +56,9 @@ int main( int argc, char *argv[] )
                           KAboutData::License_GPL,
                           ki18n( "(c) 2008 Omat Holding B.V." ),
                           KLocalizedString() );
-
     aboutData.addAuthor( ki18n( "Tom Albers" ), ki18n( "Maintainer and Author" ),
                          "tomalbers@kde.nl", "http://www.omat.nl" );
+    aboutData.setProgramIconName( "akonadi" );
 
     KCmdLineArgs::init( argc, argv, &aboutData );
 
