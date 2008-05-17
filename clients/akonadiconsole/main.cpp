@@ -35,6 +35,7 @@ int main( int argc, char **argv )
                         ki18n( "(c) 2006-2008 the Akonadi developer" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
+  aboutData.setProgramIconName( "akonadi" );
   aboutData.addAuthor( ki18n( "Tobias König" ), ki18n( "Author" ), "tokoe@kde.org" );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
 
