@@ -58,7 +58,7 @@ void Tray::setVisible( bool )
 }
 
 Dock::Dock( QWidget *parent )
-        : KSystemTrayIcon( KIcon( "dummy" ), parent )
+        : KSystemTrayIcon( KIcon( "akonadi" ), parent )
 {
     KMenu *menu = new KMenu();
     m_title = menu->addTitle( i18n( "Akonadi" ) );
