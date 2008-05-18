@@ -60,6 +60,12 @@ DebugWidget::DebugWidget( QWidget *parent )
   connect( iface, SIGNAL( errorEmitted( const QString&, const QString& ) ),
            this, SLOT( errorEmitted( const QString&, const QString& ) ) );
 
+  // in case we started listening when the connection is already ongoing
+  connect( iface, SIGNAL( connectionDataInput( const QString&, const QString& ) ),
+           this, SLOT( connectionStarted( const QString&, const QString& ) ) );
+  connect( iface, SIGNAL( connectionDataOutput( const QString&, const QString& ) ),
+           this, SLOT( connectionStarted( const QString&, const QString& ) ) );
+
   QHBoxLayout *buttonLayout = new QHBoxLayout;
   layout->addLayout( buttonLayout );
 
@@ -75,8 +81,12 @@ DebugWidget::DebugWidget( QWidget *parent )
 
 void DebugWidget::connectionStarted( const QString &identifier, const QString &msg )
 {
+  Q_UNUSED( msg );
+  if ( mPageHash.contains( identifier ) )
+    return;
+
   ConnectionPage *page = new ConnectionPage( identifier );
-  mConnectionPages->addTab( page, msg );
+  mConnectionPages->addTab( page, identifier );
 
   mPageHash.insert( identifier, page );
 }
