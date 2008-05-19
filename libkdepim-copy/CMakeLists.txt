@@ -72,12 +72,10 @@ set(kdepim_LIB_SRCS
    kmailcompletion.cpp
    networkstatus.cpp
    kmeditor.cpp
-   kmstylelistselectaction.cpp
    autochecktreewidget.cpp
    kmutils.cpp
    colorlistbox.cpp
    dictionarycombobox.cpp
-   klinkdialog.cpp
 )
 
 

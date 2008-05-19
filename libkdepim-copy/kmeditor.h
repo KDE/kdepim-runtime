@@ -3,7 +3,6 @@
  *
  * Copyright 2007 Laurent Montel <montel@kde.org>
  * Copyright 2008 Thomas McGuire <thomas.mcguire@gmx.net>
- * Copyright 2008 Stephen Kelly  <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,15 +24,13 @@
 #define KMEDITOR_H
 
 #include "kdepim_export.h"
-#include <ktextedit.h>
-#include <qtextformat.h>
-
-class KFindDialog;
-class KUrl;
+#include <krichtextwidget.h>
 
 namespace KPIMIdentities {
   class Signature;
 }
+
+class KUrl;
 
 namespace KPIM {
 
@@ -44,7 +41,7 @@ class KEMailQuotingHighlighter;
  * The KMeditor class provides a widget to edit and display text,
  * specially geared towards writing e-mails.
  *
- * It offers sevaral additional functions of a KTextEdit:
+ * It offers sevaral additional functions of a KRichTextWidget:
  *
  * @li Quote highlighting
  * @li The ability to us an external editor
@@ -52,20 +49,11 @@ class KEMailQuotingHighlighter;
  * @li Better spellcheck support
  * @li Utility functions like removing whitespace, inserting a file,
  *     adding quotes or rot13'ing the text
- * @li Easier access to many common rich text editing tasks, like changing
- *     the font.
- * @li Ability to edit and remove hyperlinks
  *
- * The editor can be in two modes: Rich text mode and plain text mode.
- * Calling functions which modify he format/style of the text will automatically
- * enable the rich text mode. Rich text mode is sometimes also referred to as
- * HTML mode.
- *
- * Do not call setAcceptRichText() or acceptRichText() yourself.
  * Do not call any spellchecking related function of KTextEdit, use the function
  * of this class instead.
  */
-class KDEPIM_EXPORT KMeditor : public KTextEdit
+class KDEPIM_EXPORT KMeditor : public KRichTextWidget
 {
   Q_OBJECT
 
@@ -79,13 +67,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
                      End,      ///< The text is placed at the end of the textedit
                      AtCursor  ///< The text is placed at the current cursor position
                    };
-
-    /**
-     * The mode the edit widget is in.
-     */
-    enum Mode { Plain,    ///< Plain text mode
-                Rich      ///< Rich text mode
-              };
 
     /**
      * Constructs a KMeditor object
@@ -125,15 +106,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      * will appear.
      */
     void disableWordWrap();
-
-    void setColor( const QColor& );
-
-    /**
-     * Sets the font of the currently selected text.
-     *
-     * @param font the font that the selection will get
-     */
-    void setFont( const QFont &font );
 
     /**
      * Changes the font of the whole text.
@@ -216,29 +188,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void cleanWhitespace( const KPIMIdentities::Signature &sig );
 
     /**
-     * This will switch the editor to plain text mode.
-     * All rich text formatting will be destroyed.
-     */
-    void switchToPlainText();
-
-    /**
-     * This enables rich text mode. Nothing is done except changing the internal
-     * mode and allowing rich text pastes.
-     */
-    void enableRichTextMode();
-
-    /**
-     * @return the current text mode
-     */
-    Mode textMode() const;
-
-    /**
-     * @return the plain text string if in plain text mode or the HTML code
-     *         if in rich text mode. The text is not word-wrapped.
-     */
-    QString textOrHTML() const;
-
-    /**
      * @return true if highlighting of missspelled words is enabled
      * @ref slotToggleSpellChecking
      */
@@ -275,26 +224,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     void ensureCursorVisible();
 
-    /**
-     * Returns the text of the link at the current position or an empty string
-     * if the cursor is not on a link.
-     *
-     * @sa currentLinkUrl
-     * @return The link text
-     * @since 4.1
-     */
-    QString currentLinkText() const;
-
-    /**
-     * Returns the URL target (href) of the link at the current position or an
-     * empty string if the cursor is not on a link.
-     *
-     * @sa currentLinkText
-     * @return The link target URL
-     * @since 4.1
-     */
-    QString currentLinkUrl() const;
-
   public Q_SLOTS:
 
     /**
@@ -310,10 +239,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
     void slotAddQuotes();
     void slotRemoveBox();
     void slotAddBox();
-    void slotAlignLeft();
-    void slotAlignCenter();
-    void slotAlignRight();
-    void slotChangeParagStyle( QTextListFormat::Style _style );
 
     /**
      * Shows the spell checkdialog, where the user can perform spell checking
@@ -323,8 +248,6 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     void slotCheckSpelling();
 
-    void slotFontFamilyChanged( const QString &f );
-    void slotFontSizeChanged( int size );
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
 
@@ -333,31 +256,9 @@ class KDEPIM_EXPORT KMeditor : public KTextEdit
      */
     void slotRot13();
 
-    void slotTextBold( bool _b );
-    void slotTextItalic( bool _b );
-    void slotTextUnder( bool _b );
-    void slotTextColor();
-
-    /**
-     * Opens a dialog which lets the user turn the currently selected text into
-     * a link.
-     * If no text is selected, the word under the cursor will be taken.
-     * If the cursor is already over a link, the user can edit that link.
-     *
-     * @since 4.1
-     */
-    void slotConfigureLink();
-
     void slotChangeInsertMode();
 
   Q_SIGNALS:
-
-    /**
-     * Emitted whenever the text mode is changed.
-     *
-     * @param mode the new text mode
-     */
-    void textModeChanged( KPIM::KMeditor::Mode mode );
 
     /**
      * Emitted when the user chooses a different spellcheck language,

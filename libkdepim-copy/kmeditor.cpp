@@ -3,7 +3,6 @@
  *
  * Copyright 2007 Laurent Montel <montel@kde.org>
  * Copyright 2008 Thomas McGuire <thomas.mcguire@gmx.net>
- * Copyright 2008 Stephen Kelly  <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,22 +24,14 @@
 #include "kemailquotinghighter.h"
 
 #include "kmutils.h"
-#include "klinkdialog.h"
 #include <maillistdrag.h>
 
 //kdepimlibs includes
 #include <kpimidentities/signature.h>
 
 //kdelibs includes
-#include <kdebug.h>
 #include <kdeversion.h>
-#include <kfind.h>
-#include <kreplace.h>
-#include <kreplacedialog.h>
-#include <kfinddialog.h>
 #include <KWindowSystem>
-#include <KFindDialog>
-#include <KColorDialog>
 #include <KFileDialog>
 #include <KComboBox>
 #include <KToolBar>
@@ -58,13 +49,9 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QShortcut>
-#include <QPointer>
 #include <QTextCodec>
-#include <QTextList>
-#include <QTextDocumentFragment>
 #include <QAction>
 #include <QProcess>
-#include <QTextLayout>
 #include <QTimer>
 
 //system includes
@@ -80,9 +67,7 @@ class KMeditorPrivate
        useExtEditor( false ),
        mExtEditorProcess( 0 ),
        mExtEditorTempFileWatcher( 0 ),
-       mExtEditorTempFile( 0 ),
-       mMode( KMeditor::Plain )
-    {
+       mExtEditorTempFile( 0 )    {
     }
 
     ~KMeditorPrivate()
@@ -100,20 +85,9 @@ class KMeditorPrivate
     // Normal functions
     //
 
-    // If the text under the cursor is a link, the cursor's selection is set to
-    // the complete link text.
-    void selectLinkText( QTextCursor *cursor ) const;
-
     QString addQuotesToText( const QString &inputText );
     QString removeQuotesFromText( const QString &inputText ) const;
     void init();
-
-    // Switches to rich text mode and emits the mode changed signal if the
-    // mode really changed.
-    void activateRichText();
-
-    // Applies formatting to the current word if there is no selection.
-    void mergeFormatOnWordOrSelection( const QTextCharFormat &format );
 
     // Returns the text of the signature. If the signature is HTML, the HTML
     // tags will be stripped.
@@ -137,21 +111,11 @@ class KMeditorPrivate
     QProcess *mExtEditorProcess;
     KDirWatch *mExtEditorTempFileWatcher;
     KTemporaryFile *mExtEditorTempFile;
-    KMeditor::Mode mMode;
 };
 
 }
 
 using namespace KPIM;
-
-void KMeditorPrivate::activateRichText()
-{
-  if ( mMode == KMeditor::Plain ) {
-    q->setAcceptRichText( true );
-    mMode = KMeditor::Rich;
-    emit q->textModeChanged( mMode );
-  }
-}
 
 QList< QPair<int,int> > KMeditorPrivate::signaturePositions( const KPIMIdentities::Signature &sig ) const
 {
@@ -244,15 +208,6 @@ QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &si
 void KMeditorPrivate::ensureCursorVisibleDelayed()
 {
   static_cast<KTextEdit*>( q )->ensureCursorVisible();
-}
-
-void KMeditorPrivate::mergeFormatOnWordOrSelection( const QTextCharFormat &format )
-{
-  QTextCursor cursor = q->textCursor();
-  if ( !cursor.hasSelection() )
-    cursor.select( QTextCursor::WordUnderCursor );
-  cursor.mergeCharFormat( format );
-  q->mergeCurrentCharFormat( format );
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -364,13 +319,13 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
 }
 
 KMeditor::KMeditor( const QString& text, QWidget *parent )
- : KTextEdit( text, parent ), d( new KMeditorPrivate( this ) )
+ : KRichTextWidget( text, parent ), d( new KMeditorPrivate( this ) )
 {
   d->init();
 }
 
 KMeditor::KMeditor( QWidget *parent )
- : KTextEdit( parent ), d( new KMeditorPrivate( this ) )
+ : KRichTextWidget( parent ), d( new KMeditorPrivate( this ) )
 {
   d->init();
 }
@@ -445,68 +400,6 @@ void KMeditor::setExternalEditorPath( const QString & path )
   d->extEditorPath = path;
 }
 
-
-void KMeditor::slotChangeParagStyle( QTextListFormat::Style _style )
-{
-  QTextCursor cursor = textCursor();
-  cursor.beginEditBlock();
-
-  // Create a list with the specified format
-  if ( _style != QTextListFormat::ListStyleUndefined ) {
-
-    QTextBlockFormat blockFmt = cursor.blockFormat();
-    QTextListFormat listFmt;
-
-    if ( cursor.currentList() ) {
-      listFmt = cursor.currentList()->format();
-    } else {
-      listFmt.setIndent( blockFmt.indent() + 1 );
-      blockFmt.setIndent( 0 );
-      cursor.setBlockFormat( blockFmt );
-    }
-
-    listFmt.setStyle( _style );
-
-    cursor.createList( listFmt );
-    d->activateRichText();
-  }
-
-  // Remove the list formatting again
-  else {
-    QTextList *list = cursor.currentList();
-    if ( list ) {
-
-      QTextListFormat listFormat = list->format();
-      listFormat.setIndent( 0 );
-      list->setFormat( listFormat );
-
-      int count = list->count();
-      while ( count > 0 ) {
-        list->removeItem( 0 );
-        count--;
-      }
-    }
-  }
-
-  cursor.endEditBlock();
-  setFocus();
-}
-
-void KMeditor::setColor( const QColor& col )
-{
-  QTextCharFormat fmt;
-  fmt.setForeground( col );
-  d->mergeFormatOnWordOrSelection( fmt );
-  d->activateRichText();
-}
-
-void KMeditor::setFont( const QFont &font )
-{
-  QTextCharFormat fmt;
-  fmt.setFont( font );
-  d->mergeFormatOnWordOrSelection( fmt );
-}
-
 void KMeditor::setFontForWholeText( const QFont &font )
 {
   QTextCharFormat fmt;
@@ -515,78 +408,6 @@ void KMeditor::setFontForWholeText( const QFont &font )
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   cursor.mergeCharFormat( fmt );
   document()->setDefaultFont( font );
-}
-
-void KMeditor::slotAlignLeft()
-{
-  setAlignment( Qt::AlignLeft );
-  d->activateRichText();
-}
-
-void KMeditor::slotAlignCenter()
-{
-  setAlignment( Qt::AlignHCenter );
-  d->activateRichText();
-}
-
-void KMeditor::slotAlignRight()
-{
-  setAlignment( Qt::AlignRight );
-  d->activateRichText();
-}
-
-void KMeditor::slotTextBold( bool _b )
-{
-  QTextCharFormat fmt;
-  fmt.setFontWeight( _b ? QFont::Bold : QFont::Normal );
-  d->mergeFormatOnWordOrSelection( fmt );
-  d->activateRichText();
-}
-
-void KMeditor::slotTextItalic( bool _b)
-{
-  QTextCharFormat fmt;
-  fmt.setFontItalic( _b );
-  d->mergeFormatOnWordOrSelection( fmt );
-  d->activateRichText();
-}
-
-void KMeditor::slotTextUnder( bool _b )
-{
-  QTextCharFormat fmt;
-  fmt.setFontUnderline( _b );
-  d->mergeFormatOnWordOrSelection( fmt );
-  d->activateRichText();
-}
-
-void KMeditor::slotTextColor()
-{
-  QColor color = textColor();
-
-  if ( KColorDialog::getColor( color, this ) ) {
-    QTextCharFormat fmt;
-    fmt.setForeground( color );
-    d->mergeFormatOnWordOrSelection( fmt );
-    d->activateRichText();
-  }
-}
-
-void KMeditor::slotFontFamilyChanged( const QString &f )
-{
-  QTextCharFormat fmt;
-  fmt.setFontFamily( f );
-  d->mergeFormatOnWordOrSelection( fmt );
-  setFocus();
-  d->activateRichText();
-}
-
-void KMeditor::slotFontSizeChanged( int size )
-{
-  QTextCharFormat fmt;
-  fmt.setFontPointSize( size );
-  d->mergeFormatOnWordOrSelection( fmt );
-  setFocus();
-  d->activateRichText();
 }
 
 KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
@@ -861,7 +682,6 @@ void KMeditor::killExternalEditor()
   d->mExtEditorTempFile = 0;
 }
 
-
 void KMeditor::setCursorPositionFromStart( unsigned int pos )
 {
   if ( pos > 0 )
@@ -1063,7 +883,7 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
     document()->setModified( isModified );
 
     if ( isHtml )
-      d->activateRichText();
+      enableRichTextMode();
   }
 }
 
@@ -1113,7 +933,7 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
     if ( newSig.isInlinedHtml() &&
          newSig.type() == KPIMIdentities::Signature::Inlined ) {
       cursor.insertHtml( newSig.rawText() );
-      d->activateRichText();
+      enableRichTextMode();
     }
     else
       cursor.insertText( newSig.rawText() );
@@ -1122,35 +942,6 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
   }
 
   cursor.endEditBlock();
-}
-
-void KMeditor::switchToPlainText()
-{
-  if ( d->mMode == Rich ) {
-    d->mMode = Plain;
-    // TODO: Warn the user about this?
-    document()->setPlainText( document()->toPlainText() );
-    setAcceptRichText( false );
-    emit textModeChanged( d->mMode );
-  }
-}
-
-void KMeditor::enableRichTextMode()
-{
-  d->activateRichText();
-}
-
-KMeditor::Mode KMeditor::textMode() const
-{
-  return d->mMode;
-}
-
-QString KMeditor::textOrHTML() const
-{
-  if ( textMode() == Rich )
-    return toHtml();
-  else
-    return toPlainText();
 }
 
 void KMeditor::setSpellCheckLanguage( const QString &language )
@@ -1230,104 +1021,6 @@ void KMeditor::ensureCursorVisible()
   //       Delay the actual call to ensureCursorVisible() a bit to work around
   //       the problem.
   QTimer::singleShot( 500, this, SLOT( ensureCursorVisibleDelayed() ) );
-}
-
-QString KMeditor::currentLinkText() const
-{
-    QTextCursor cursor = textCursor();
-    d->selectLinkText(&cursor);
-    return cursor.selectedText();
-}
-
-void KMeditorPrivate::selectLinkText(QTextCursor *cursor) const
-{
-     // If the cursor is on a link, select the text of the link.
-    if (cursor->charFormat().isAnchor()) {
-        QString aHref = cursor->charFormat().anchorHref();
-
-        // Move cursor to start of link
-        while (cursor->charFormat().anchorHref() == aHref) {
-            if (cursor->atStart())
-                break;
-            cursor->setPosition(cursor->position() - 1);
-        }
-        if (cursor->charFormat().anchorHref() != aHref)
-            cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
-
-        // Move selection to the end of the link
-        while (cursor->charFormat().anchorHref() == aHref) {
-            if (cursor->atEnd())
-                break;
-            cursor->setPosition(cursor->position() + 1, QTextCursor::KeepAnchor);
-        }
-        if (cursor->charFormat().anchorHref() != aHref)
-            cursor->setPosition(cursor->position() - 1, QTextCursor::KeepAnchor);
-    }
-}
-
-QString KMeditor::currentLinkUrl() const
-{
-    return textCursor().charFormat().anchorHref();
-}
-
-void KMeditor::slotConfigureLink()
-{
-    QTextCursor cursor = textCursor();
-    cursor.beginEditBlock();
-    QTextCharFormat format = cursor.charFormat();
-
-    d->selectLinkText(&cursor);
-    if (!cursor.hasSelection()) {
-        cursor.select(QTextCursor::WordUnderCursor);
-    }
-
-    setTextCursor(cursor);
-    KLinkDialog *linkDialog = new KLinkDialog(this);
-    linkDialog->setLinkText(cursor.selectedText());
-    linkDialog->setLinkUrl(format.anchorHref());
-
-    if (linkDialog->exec()) {
-        if (!linkDialog->linkUrl().isEmpty()) {
-            format.setAnchor(true);
-            format.setAnchorHref(linkDialog->linkUrl());
-        }
-        else {
-            format = cursor.block().charFormat();
-            format.setAnchor(false);
-            format.setAnchorHref(QString());
-        }
-
-        QString linkText;
-
-        int lowPos = qMin(cursor.selectionStart(), cursor.selectionEnd());
-        if (!linkDialog->linkText().isEmpty()) {
-            linkText = linkDialog->linkText();
-        }
-        else {
-            linkText = linkDialog->linkUrl();
-        }
-        cursor.insertText(linkText, format);
-
-        // Workaround for qt bug 203510:
-        // Link formatting does not get applied immediately. Removing and reinserting
-        // the marked up html does format the text correctly.
-        // -- Stephen Kelly, 15th March 2008
-        cursor.setPosition(lowPos);
-        cursor.setPosition(lowPos + linkText.length(), QTextCursor::KeepAnchor);
-
-        cursor.insertHtml(cursor.selection().toHtml());
-
-        // Insert a space after the link if at the end of the block so that
-        // typing some text after the link does not carry link formatting
-        if (cursor.position() == cursor.block().position() + cursor.block().length() - 1) {
-            cursor.setCharFormat(cursor.block().charFormat());
-            cursor.insertText(QString(' '));
-        }
-
-        d->activateRichText();
-    }
-    cursor.endEditBlock();
-    delete linkDialog;
 }
 
 #include "kmeditor.moc"
