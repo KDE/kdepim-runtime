@@ -359,10 +359,8 @@ void KMeditorPrivate::init()
   QShortcut * insertMode = new QShortcut( QKeySequence( Qt::Key_Insert ), q );
   q->connect( insertMode, SIGNAL( activated() ),
               q, SLOT( slotChangeInsertMode() ) );
-#if KDE_IS_VERSION(4,0,67)
   q->connect( q, SIGNAL( languageChanged(const QString &) ),
               q, SLOT( setSpellCheckLanguage(const QString &) ) );
-#endif
 }
 
 void KMeditor::slotChangeInsertMode()
@@ -450,7 +448,6 @@ void KMeditor::disableWordWrap()
 
 void KMeditor::contextMenuEvent( QContextMenuEvent *event )
 {
-#if KDE_IS_VERSION(4,0,73)
   // Obtain the cursor at the mouse position and the current cursor
   QTextCursor cursorAtMouse = cursorForPosition( event->pos() );
   int mousePos = cursorAtMouse.position();
@@ -545,10 +542,6 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
       }
     }
   }
-#else
-  KTextEdit::contextMenuEvent( event );
-  kWarning() << "spell check menu not compiled in, kdelibs too old.";
-#endif
 }
 
 void KMeditor::slotPasteAsQuotation()
@@ -950,9 +943,7 @@ void KMeditor::setSpellCheckLanguage( const QString &language )
     KTextEdit::highlighter()->setCurrentLanguage( language );
     KTextEdit::highlighter()->rehighlight();
   }
-#if KDE_IS_VERSION(4,0,60)
   KTextEdit::setSpellCheckingLanguage( language );
-#endif
 
   if ( language != d->language )
     emit spellcheckLanguageChanged( language );
@@ -983,12 +974,10 @@ void KMeditor::showSpellConfigDialog( const QString &configFileName )
 {
   KConfig config( configFileName );
   Sonnet::ConfigDialog dialog( &config, this );
-#if KDE_IS_VERSION(4,0,67)
   if ( !d->language.isEmpty() )
     dialog.setLanguage( d->language );
   connect( &dialog, SIGNAL( languageChanged(const QString &) ),
            this, SLOT( setSpellCheckLanguage(const QString &) ) );
-#endif
   dialog.setWindowIcon( KIcon( "internet-mail" ) );
   dialog.exec();
 }
