@@ -1,5 +1,7 @@
 add_subdirectory(akonadi)
-add_subdirectory(akonadiconsole)
+if (XSLTPROC_EXECUTABLE)
+  add_subdirectory(akonadiconsole)
+endif (XSLTPROC_EXECUTABLE)
 add_subdirectory(kabc)
 add_subdirectory(akonamail)
 add_subdirectory(akonalendar)
