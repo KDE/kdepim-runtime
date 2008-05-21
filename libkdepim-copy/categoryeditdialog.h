@@ -1,24 +1,24 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
-    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
-    Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
+  Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+  Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 #ifndef KPIM_CATEGORYEDITDIALOG_H
 #define KPIM_CATEGORYEDITDIALOG_H
@@ -29,7 +29,7 @@
 class QTreeWidgetItem;
 
 namespace Ui {
-class CategoryEditDialog_base;
+  class CategoryEditDialog_base;
 }
 
 namespace KPIM {
@@ -38,7 +38,7 @@ class KPimPrefs;
 
 class KDEPIM_EXPORT CategoryEditDialog : public KDialog
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     explicit CategoryEditDialog( KPimPrefs *prefs, QWidget *parent = 0, bool modal = false );
     ~CategoryEditDialog();
@@ -51,7 +51,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void slotOk();
     void slotApply();
     void slotCancel();
-    void slotTextChanged(const QString &text);
+    void slotTextChanged( const QString &text );
     void slotSelectionChanged();
     void add();
     void addSubcategory();
@@ -66,6 +66,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void fillList();
 
   private:
+    void deleteItem( QTreeWidgetItem *item );
     KPimPrefs *mPrefs;
     Ui::CategoryEditDialog_base *mWidgets;
 };

@@ -1,25 +1,33 @@
 /*
-    This file is part of libkdepim.
+  This file is part of libkdepim.
 
-    Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
-    Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
-    Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
+  Copyright (c) 2000, 2001, 2002 Cornelius Schumacher <schumacher@kde.org>
+  Copyright (C) 2003-2004 Reinhold Kainhofer <reinhold@kainhofer.com>
+  Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
+
+#include "categoryeditdialog.h"
+#include "ui_categoryeditdialog_base.h"
+#include "categoryhierarchyreader.h"
+#include "autochecktreewidget.h"
+#include "kpimprefs.h"
+
+#include <KLocale>
 
 #include <QLayout>
 #include <QStringList>
@@ -30,19 +38,9 @@
 #include <QList>
 #include <QHeaderView>
 
-#include <KLocale>
-
-#include "autochecktreewidget.h"
-#include "kpimprefs.h"
-#include "categoryhierarchyreader.h"
-
-#include "ui_categoryeditdialog_base.h"
-#include "categoryeditdialog.h"
-
 using namespace KPIM;
 
-CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget* parent,
-                                        bool modal )
+CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent, bool modal )
   : KDialog( parent ), mPrefs( prefs )
 {
   setCaption( i18n( "Edit Categories" ) );
@@ -92,15 +90,13 @@ CategoryEditDialog::~CategoryEditDialog()
 
 void CategoryEditDialog::fillList()
 {
-  CategoryHierarchyReaderQTreeWidget( mWidgets->mCategories ).
-      read( mPrefs->mCustomCategories );
+  CategoryHierarchyReaderQTreeWidget( mWidgets->mCategories ).read( mPrefs->mCustomCategories );
 
   mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
-  mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount()
-                                               > 0 );
+  mWidgets->mButtonAddSubcategory->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
 }
 
-void CategoryEditDialog::slotTextChanged(const QString &text)
+void CategoryEditDialog::slotTextChanged( const QString &text )
 {
   QTreeWidgetItem *item = mWidgets->mCategories->currentItem();
   if ( item ) {
@@ -152,7 +148,7 @@ void CategoryEditDialog::remove()
 {
   QList<QTreeWidgetItem*> to_remove = mWidgets->mCategories->selectedItems();
   while ( !to_remove.isEmpty() ) {
-    delete to_remove.takeFirst();
+    deleteItem( to_remove.takeFirst() );
   }
 
   mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
@@ -160,6 +156,18 @@ void CategoryEditDialog::remove()
   if ( mWidgets->mCategories->currentItem() ) {
     mWidgets->mCategories->currentItem()->setSelected( true );
   }
+}
+
+void CategoryEditDialog::deleteItem( QTreeWidgetItem *item )
+{
+  if ( !item ) {
+    return;
+  }
+
+  for ( int i = item->childCount() - 1; i >= 0; i-- ) {
+    deleteItem( item->child( i ) );
+  }
+  delete item;
 }
 
 void CategoryEditDialog::slotOk()
@@ -176,8 +184,8 @@ void CategoryEditDialog::slotApply()
   QTreeWidgetItemIterator it( mWidgets->mCategories );
   while ( *it ) {
     path = mWidgets->mCategories->pathByItem( *it++ );
-    path.replaceInStrings( KPimPrefs::categorySeparator, QString("\\") +
-                           KPimPrefs::categorySeparator );
+    path.replaceInStrings(
+      KPimPrefs::categorySeparator, QString( "\\" ) + KPimPrefs::categorySeparator );
     mPrefs->mCustomCategories.append( path.join( KPimPrefs::categorySeparator ) );
   }
 
@@ -193,8 +201,9 @@ void CategoryEditDialog::slotCancel()
 
 void CategoryEditDialog::editItem( QTreeWidgetItem *item )
 {
-  if ( item )
+  if ( item ) {
     mWidgets->mEdit->setText( item->text( 0 ) );
+  }
 }
 
 void CategoryEditDialog::reload()
@@ -219,8 +228,9 @@ void CategoryEditDialog::show()
 
 void CategoryEditDialog::expandIfToplevel( QTreeWidgetItem *item )
 {
-  if ( !item->parent() )
+  if ( !item->parent() ) {
     item->setExpanded( true );
+  }
 }
 
 #include "categoryeditdialog.moc"
