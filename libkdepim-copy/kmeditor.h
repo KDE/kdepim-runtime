@@ -161,7 +161,7 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
                           bool isHtml = false );
 
     /**
-     * Replaces all occurences of the old signature with the new signature.
+     * Replaces all occurrences of the old signature with the new signature.
      * Text in quotes will be ignored.
      * For undo/redo, this is treated as one operation.
      * If the old signature is empty, nothing is done.
@@ -214,7 +214,7 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
 
     /**
      * Returns the text of the editor as plain text, with linebreaks inserted
-     * where word-wrapping occured.
+     * where word-wrapping occurred.
      */
     QString toWrappedPlainText() const;
 

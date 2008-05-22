@@ -98,7 +98,7 @@ class KMeditorPrivate
     void cleanWhitespaceHelper( const QRegExp &regExp, const QString &newText,
                                 const KPIMIdentities::Signature &sig );
 
-    // Returns a list of positions of occurences of the given signature.
+    // Returns a list of positions of occurrences of the given signature.
     // Each pair is the index of the start- and end position of the signature.
     QList< QPair<int,int> > signaturePositions( const KPIMIdentities::Signature &sig ) const;
 
@@ -127,7 +127,7 @@ QList< QPair<int,int> > KMeditorPrivate::signaturePositions( const KPIMIdentitie
     int currentSearchPosition = 0;
     forever {
 
-      // Find the next occurence of the signature text
+      // Find the next occurrence of the signature text
       QString text = q->document()->toPlainText();
       int currentMatch = text.indexOf( sigText, currentSearchPosition );
       currentSearchPosition = currentMatch + sigText.length();
@@ -891,7 +891,7 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
   int currentSearchPosition = 0;
   forever {
 
-    // Find the next occurence of the signature text
+    // Find the next occurrence of the signature text
     QString text = document()->toPlainText();
     int currentMatch = text.indexOf( oldSigText, currentSearchPosition );
     currentSearchPosition = currentMatch;
