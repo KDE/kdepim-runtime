@@ -1,21 +1,22 @@
 /*
-    This file is part of libkdepim.
-    Copyright (c) 2004-2005 David Faure <faure@kde.org>
+  This file is part of libkdepim.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  Copyright (c) 2004-2005 David Faure <faure@kde.org>
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
 #ifndef KDEPIM_DISTRIBUTIONLIST_H
@@ -73,7 +74,7 @@ class KDEPIM_EXPORT DistributionList : public KABC::Addressee
      * Create a distribution list from an addressee object
      * (this is a kind of down-cast)
      */
-    DistributionList( const KABC::Addressee& addr );
+    DistributionList( const KABC::Addressee &addr );
 
     /**
      * Destructor.
@@ -99,37 +100,37 @@ class KDEPIM_EXPORT DistributionList : public KABC::Addressee
     void removeEntry( const Addressee &, const QString &email=QString() );
 
     /// Overload, used by resources to avoid looking up the addressee
-    void insertEntry( const QString& uid, const QString& email=QString() );
-    /// Overload, used by resources to avoid looking up the addressee
-    void removeEntry( const QString& uid, const QString& email=QString() );
+    void insertEntry( const QString &uid, const QString &email=QString() );
 
+    /// Overload, used by resources to avoid looking up the addressee
+    void removeEntry( const QString &uid, const QString &email=QString() );
 
     /**
       Return list of email addresses, which belong to this distributon list.
       These addresses can be directly used by e.g. a mail client.
       @param book necessary to look up entries
     */
-    QStringList emails( KABC::AddressBook* book ) const;
+    QStringList emails( KABC::AddressBook *book ) const;
 
     /**
       Return list of entries belonging to this distribution list. This function
       is mainly useful for a distribution list editor.
       @param book necessary to look up entries
     */
-    Entry::List entries( KABC::AddressBook* book ) const;
+    Entry::List entries( KABC::AddressBook *book ) const;
 
     // KDE4: should be a method of Addressee
-    static bool isDistributionList( const KABC::Addressee& addr );
+    static bool isDistributionList( const KABC::Addressee &addr );
 
     // KDE4: should be a method of AddressBook
-    static DistributionList findByName( KABC::AddressBook* book,
-                                        const QString& name,
+    static DistributionList findByName( KABC::AddressBook *book,
+                                        const QString &name,
                                         bool caseSensitive = true );
+
     // KDE4: should be a method of AddressBook
     // A bit slow (but no more than findByName).
     // From KAddressbook, use Core::distributionLists() instead.
-    static QList<DistributionList> allDistributionLists( KABC::AddressBook* book );
-
+    static QList<DistributionList> allDistributionLists( KABC::AddressBook *book );
 
   private:
     // can't have any data here, use Addressee's methods instead
