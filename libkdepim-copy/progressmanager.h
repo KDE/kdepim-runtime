@@ -21,15 +21,15 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef __KPIM_PROGRESSMANAGER_H__
-#define __KPIM_PROGRESSMANAGER_H__
+#ifndef KDEPIM_PROGRESSMANAGER_H
+#define KDEPIM_PROGRESSMANAGER_H
+
+#include "kdepim_export.h"
 
 #include <QObject>
-#include <q3dict.h>
 #include <QString>
 #include <QMap>
-
-#include <kdepim_export.h>
+#include <Q3Dict>
 
 namespace KPIM {
 

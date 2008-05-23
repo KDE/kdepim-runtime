@@ -27,12 +27,12 @@
  *  you do not wish to do so, delete this exception statement from
  *  your version.
  */
-#ifndef OVERLAYWIDGET_H
-#define OVERLAYWIDGET_H
+#ifndef KDEPIM_OVERLAYWIDGET_H
+#define KDEPIM_OVERLAYWIDGET_H
 
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 
-#include <khbox.h>
+#include <KHBox>
 
 class QResizeEvent;
 class QEvent;

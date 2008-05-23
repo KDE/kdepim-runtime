@@ -31,19 +31,18 @@
 #include <kabc/errorhandler.h>
 #include <kresources/selectdialog.h>
 
-#include <kdeversion.h>
 #include <kdefakes.h> // usleep
-#include <kdebug.h>
-#include <klocale.h>
-#include <kmessagebox.h>
-#include <ktoolinvocation.h>
+#include <KDebug>
+#include <KLocale>
+#include <KMessageBox>
+#include <KToolInvocation>
 
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusConnection>
 #include <QApplication>
 #include <QEventLoop>
-#include <QRegExp>
 #include <QList>
+#include <QRegExp>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusConnection>
 
 #include <unistd.h>
 

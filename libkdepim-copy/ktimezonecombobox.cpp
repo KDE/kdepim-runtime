@@ -18,8 +18,8 @@
 
 #include "ktimezonecombobox.h"
 
-#include <ksystemtimezone.h>
-#include <klocale.h>
+#include <KLocale>
+#include <KSystemTimeZone>
 
 using namespace KPIM;
 

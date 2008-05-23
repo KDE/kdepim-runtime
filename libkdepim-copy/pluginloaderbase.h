@@ -19,16 +19,15 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef __LIBKDEPIM_PLUGINLOADERBASE_H__
-#define __LIBKDEPIM_PLUGINLOADERBASE_H__
+#ifndef KDEPIM_PLUGINLOADERBASE_H
+#define KDEPIM_PLUGINLOADERBASE_H
+
+#include "kdepim_export.h"
 
 #include <QString>
 #include <QMap>
 #include <KLibrary>
 
-#include <kdepim_export.h>
-
-class KLibrary;
 class QStringList;
 
 namespace KPIM {

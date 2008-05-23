@@ -32,15 +32,15 @@
 
 #include "kwidgetlister.h"
 
-#include <klocale.h>
-#include <kdebug.h>
-#include <kguiitem.h>
-#include <kpushbutton.h>
-#include <kdialog.h>
+#include <KDebug>
+#include <KDialog>
+#include <KLocale>
+#include <KGuiItem>
+#include <KHBox>
+#include <KPushButton>
 
 #include <QPushButton>
 #include <QLayout>
-#include <khbox.h>
 #include <QVBoxLayout>
 
 #include <assert.h>

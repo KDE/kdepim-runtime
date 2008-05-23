@@ -25,31 +25,28 @@
 // application using this dialog.
 
 #include "kimportdialog.h"
-#include <q3buttongroup.h>
+
+#include <KComboBox>
+#include <KComponentData>
+#include <KConfig>
+#include <KDebug>
+#include <KFileDialog>
+#include <KInputDialog>
+#include <KLineEdit>
+#include <KLocale>
+#include <KProgressDialog>
+#include <KStandardDirs>
+#include <KUrlRequester>
+#include <KVBox>
+
+#include <QApplication>
 #include <QFile>
 #include <QLabel>
-#include <QLayout>
 #include <QProgressBar>
-#include <QLineEdit>
-#include <q3listview.h>
-#include <qradiobutton.h>
-#include <QRegExp>
-#include <QApplication>
-#include <q3table.h>
-#include <qtextstream.h>
-#include <kvbox.h>
-
-#include <kdebug.h>
-#include <kcombobox.h>
-#include <kinputdialog.h>
-#include <kcomponentdata.h>
-#include <klineedit.h>
-#include <klocale.h>
-#include <kconfig.h>
-#include <kstandarddirs.h>
-#include <kurlrequester.h>
-#include <kfiledialog.h>
-#include <kprogressdialog.h>
+#include <QSpinBox>
+#include <QTextStream>
+#include <Q3ListView>
+#include <Q3Table>
 
 #include "kimportdialog.moc"
 

@@ -19,8 +19,8 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef KVCARDDRAG_H
-#define KVCARDDRAG_H
+#ifndef KDEPIM_KVCARDDRAG_H
+#define KDEPIM_KVCARDDRAG_H
 
 #include "kdepim_export.h"
 #include <kabc/addressee.h>

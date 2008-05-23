@@ -21,19 +21,20 @@
 */
 
 #include "kfoldertree.h"
-#include <klocale.h>
-#include <kiconloader.h>
-#include <kdebug.h>
+
+#include <KDebug>
+#include <KLocale>
+#include <KIconLoader>
 #include <kio/global.h>
 
-#include <QPainter>
 #include <QApplication>
-#include <q3header.h>
-#include <QStyle>
-#include <QPixmap>
-#include <QMouseEvent>
 #include <QDropEvent>
 #include <QFontMetrics>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPixmap>
+#include <QStyle>
+#include <Q3Header>
 
 using namespace KPIM;
 

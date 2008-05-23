@@ -28,18 +28,20 @@
  *  your version.
  */
 
-#ifndef COMPLETIONORDEREDITOR_H
-#define COMPLETIONORDEREDITOR_H
+#ifndef KDEPIM_COMPLETIONORDEREDITOR_H
+#define KDEPIM_COMPLETIONORDEREDITOR_H
 
-#include <kdialog.h>
-#include <kconfig.h>
-#include <kdepim_export.h>
-//Added by qt3to4:
+#include "kdepim_export.h"
+
+#include <KConfig>
+#include <KDialog>
+
 #include <Q3PtrList>
 
 class Q3ListViewItem;
 class KPushButton;
 class K3ListView;
+
 namespace KPIM {
 
 class LdapSearch;

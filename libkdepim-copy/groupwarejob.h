@@ -18,8 +18,8 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KIO_GROUPWAREJOB_H
-#define KIO_GROUPWAREJOB_H
+#ifndef KDEPIM_GROUPWAREJOB_H
+#define KDEPIM_GROUPWAREJOB_H
 
 #include <kio/jobclasses.h>
 

@@ -18,14 +18,14 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef DISTRIBUTIONLIST_H
-#define DISTRIBUTIONLIST_H
+#ifndef KDEPIM_DISTRIBUTIONLIST_H
+#define KDEPIM_DISTRIBUTIONLIST_H
 
+#include "kdepim_export.h"
 #include <kabc/addressee.h>
-#include <kdepim_export.h>
 
 namespace KABC {
-class AddressBook;
+  class AddressBook;
 }
 
 namespace KPIM {

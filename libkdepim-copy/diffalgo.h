@@ -19,11 +19,11 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef DIFFALGO_H
-#define DIFFALGO_H
+#ifndef KDEPIM_DIFFALGO_H
+#define KDEPIM_DIFFALGO_H
 
+#include "kdepim_export.h"
 #include <QList>
-#include <kdepim_export.h>
 
 namespace KPIM {
 

@@ -8,13 +8,11 @@
   License GPL
 */
 
-#ifndef __kpim_broadcast_status_h
-#define __kpim_broadcast_status_h
+#ifndef KDEPIM_BROADCASTSTATUS_H
+#define KDEPIM_BROADCASTSTATUS_H
 
+#include "kdepim_export.h"
 #include <QObject>
-#include <QMap>
-
-#include <kdepim_export.h>
 
 #undef None
 

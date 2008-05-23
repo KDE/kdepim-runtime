@@ -14,22 +14,22 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *   You should have received a copy of the GNU General Public License along
+ *   with this program; if not, write to the Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
 
-#ifndef KPIM_COLORLISTBOX_H
-#define KPIM_COLORLISTBOX_H
+#ifndef KDEPIM_COLORLISTBOX_H
+#define KDEPIM_COLORLISTBOX_H
+
+#include "kdepim_export.h"
 
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QTreeWidget>
-
-#include "kdepim_export.h"
 
 namespace KPIM {
 

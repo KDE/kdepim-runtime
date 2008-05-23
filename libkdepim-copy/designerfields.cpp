@@ -20,9 +20,17 @@
     Boston, MA 02110-1301, USA.
 */
 
+#include "designerfields.h"
+
+#include <KDatePicker>
+#include <KDateTimeWidget>
+#include <KDebug>
+#include <KDialog>
+#include <KLineEdit>
+#include <KStandardDirs>
+
 #include <QCheckBox>
 #include <QComboBox>
-#include <q3datetimeedit.h>
 #include <QLayout>
 #include <QObject>
 #include <QSpinBox>
@@ -30,17 +38,8 @@
 #include <QTextEdit>
 #include <QFile>
 #include <QtDesigner/QFormBuilder>
-//Added by qt3to4:
 #include <QVBoxLayout>
-
-#include <kdatepicker.h>
-#include <kdatetimewidget.h>
-#include <kdialog.h>
-#include <klineedit.h>
-#include <kstandarddirs.h>
-#include <kdebug.h>
-
-#include "designerfields.h"
+#include <Q3DateTimeEdit>
 
 using namespace KPIM;
 
@@ -138,9 +137,9 @@ QString DesignerFields::title() const
 void DesignerFields::load( DesignerFields::Storage *storage )
 {
   QStringList keys = storage->keys();
-    
-  // clear all custom page widgets 
-  // we can't do this in the following loop, as it works on the 
+
+  // clear all custom page widgets
+  // we can't do this in the following loop, as it works on the
   // custom fields of the vcard, which may not be set.
   QMap<QString, QWidget *>::ConstIterator widIt;
   for ( widIt = mWidgets.begin(); widIt != mWidgets.end(); ++widIt ) {

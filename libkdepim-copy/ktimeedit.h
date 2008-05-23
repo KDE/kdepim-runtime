@@ -22,8 +22,8 @@
   with any edition of Qt, and distribute the resulting executable,
   without including the source code for Qt in the source distribution.
 */
-#ifndef _KTIMEEDIT_H
-#define _KTIMEEDIT_H
+#ifndef KDEPIM_KTIMEEDIT_H
+#define KDEPIM_KTIMEEDIT_H
 
 #include "kdepim_export.h"
 

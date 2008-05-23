@@ -27,19 +27,19 @@
 #include <kcal/incidence.h>
 #include <kcal/incidenceformatter.h>
 
-#include <khbox.h>
-#include <klocale.h>
-#include <kglobal.h>
+#include <KGlobal>
+#include <KHBox>
+#include <KLocale>
 
-#include <QLayout>
-#include <QLabel>
-#include <q3buttongroup.h>
-#include <QRadioButton>
-#include <QPushButton>
-#include <q3scrollview.h>
-#include <QTextBrowser>
 #include <QApplication>
 #include <QGridLayout>
+#include <QLabel>
+#include <QLayout>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QTextBrowser>
+#include <Q3ButtonGroup>
+#include <Q3ScrollView>
 
 using namespace KPIM;
 

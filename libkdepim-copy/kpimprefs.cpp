@@ -22,12 +22,12 @@
 
 #include "kpimprefs.h"
 
-#include <kstandarddirs.h>
-#include <kglobal.h>
-#include <kconfig.h>
-#include <klocale.h>
-#include <ksystemtimezone.h>
-#include <kdebug.h>
+#include <KDebug>
+#include <KGlobal>
+#include <KConfig>
+#include <KLocale>
+#include <KStandardDirs>
+#include <KSystemTimeZone>
 
 #include <QString>
 

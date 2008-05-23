@@ -13,9 +13,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
     In addition, as a special exception, the copyright holders give
     permission to link the code of this program with any edition of
@@ -31,11 +31,11 @@
 
 #include "csshelper.h"
 
-#include <kcolorscheme.h>
-#include <kconfig.h>
-#include <kglobalsettings.h>
-#include <kdebug.h>
-#include <kglobal.h>
+#include <KColorScheme>
+#include <KConfig>
+#include <KDebug>
+#include <KGlobal>
+#include <KGlobalSettings>
 
 #include <QString>
 #include <QApplication>
@@ -618,7 +618,7 @@ namespace KPIM {
   {
     mBodyFont = font;
   }
- 
+
   void CSSHelper::setPrintFont( const QFont& font )
   {
     mPrintFont = font;

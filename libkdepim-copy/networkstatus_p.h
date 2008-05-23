@@ -19,8 +19,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef NETWORKSTATUS_P_H
-#define NETWORKSTATUS_P_H
+#ifndef KDEPIM_NETWORKSTATUS_P_H
+#define KDEPIM_NETWORKSTATUS_P_H
 
 #include <QtDBus/QDBusAbstractAdaptor>
 

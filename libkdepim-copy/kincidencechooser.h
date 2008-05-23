@@ -21,23 +21,20 @@
   with any edition of Qt, and distribute the resulting executable,
   without including the source code for Qt in the source distribution.
 */
-#ifndef _KINCIDENCECHOOSER_H
-#define _KINCIDENCECHOOSER_H
+#ifndef KDEPIM_KINCIDENCECHOOSER_H
+#define KDEPIM_KINCIDENCECHOOSER_H
 
 #include "kdepim_export.h"
 #include "htmldiffalgodisplay.h"
 #include "calendardiffalgo.h"
 
-#include <kdialog.h>
-
-#include <QMutex>
-#include <QLabel>
+#include <KDialog>
 
 namespace KCal {
   class Incidence;
 }
+class QLabel;
 class Q3ButtonGroup;
-class KDialog;
 
 namespace KPIM {
 

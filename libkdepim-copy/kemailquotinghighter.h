@@ -19,16 +19,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
-#ifndef LIBKDEPIM_KEMAILQUOTINGHIGHTER_H
-#define LIBKDEPIM_KEMAILQUOTINGHIGHTER_H
+#ifndef KDEPIM_KEMAILQUOTINGHIGHTER_H
+#define KDEPIM_KEMAILQUOTINGHIGHTER_H
+
+#include "kdepim_export.h"
 
 #include <sonnet/highlighter.h>
-#include <QSyntaxHighlighter>
-#include <QStringList>
-
-#include <kdepim_export.h>
 
 class QTextEdit;
+
 namespace KPIM
 {
   /**

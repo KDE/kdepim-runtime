@@ -20,7 +20,22 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <unistd.h>
+#include "kcmdesignerfields.h"
+
+#include <KAboutData>
+#include <KDebug>
+#include <KDialog>
+#include <KDirWatch>
+#include <KFileDialog>
+#include <KGlobal>
+#include <KLocale>
+#include <KMessageBox>
+#include <KRun>
+#include <KShell>
+#include <KStandardDirs>
+#include <K3ListView>
+#include <kio/job.h>
+#include <kio/netaccess.h>
 
 #include <QImage>
 #include <QLabel>
@@ -28,33 +43,16 @@
 #include <QObject>
 #include <QPixmap>
 #include <QPushButton>
-
-#include <q3groupbox.h>
 #include <QRegExp>
 #include <QTimer>
 #include <QtDesigner/QFormBuilder>
-//Added by qt3to4:
 #include <QHBoxLayout>
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QWhatsThis>
+#include <Q3GroupBox>
 
-#include <kaboutdata.h>
-#include <kdebug.h>
-#include <kdialog.h>
-#include <kglobal.h>
-#include <k3listview.h>
-#include <klocale.h>
-#include <kshell.h>
-#include <krun.h>
-#include <kstandarddirs.h>
-#include <kdirwatch.h>
-#include <kfiledialog.h>
-#include <kmessagebox.h>
-#include <kio/job.h>
-#include <kio/netaccess.h>
-
-#include "kcmdesignerfields.h"
+#include <unistd.h>
 
 using namespace KPIM;
 

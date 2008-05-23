@@ -23,28 +23,28 @@
 */
 
 
-#ifndef KTIMEZONECOMBOBOX_H
-#define KTIMEZONECOMBOBOX_H
+#ifndef KDEPIM_KTIMEZONECOMBOBOX_H
+#define KDEPIM_KTIMEZONECOMBOBOX_H
 
-#include <kcombobox.h>
-#include <kdatetime.h>
+#include "kdepim_export.h"
 
-#include <kdepim_export.h>
+#include <KComboBox>
+#include <KDateTime>
 
 namespace KPIM {
 
 /**
  * This combobox loads the system timezones available in KSystemTimeZones::zones()
- * and provides methods to easily select the item corresponding to a given 
+ * and provides methods to easily select the item corresponding to a given
  * KDateTime::Spec or to retrieve the KDateTime::Spec associated with the selected
  * item.
  */
-class KDEPIM_EXPORT KTimeZoneComboBox : public KComboBox 
+class KDEPIM_EXPORT KTimeZoneComboBox : public KComboBox
 {
 public:
   KTimeZoneComboBox( QWidget *parent = 0 );
   ~KTimeZoneComboBox();
-  
+
   /**
    * Select the item in the combo box corresponding to the given
    * @p spec
@@ -52,13 +52,13 @@ public:
   void selectTimeSpec( const KDateTime::Spec& spec );
 
   /**
-   * Convenience for the previous one. Select the user local timezone 
+   * Convenience for the previous one. Select the user local timezone
    * specified in his settings.
    */
   void selectLocalTimeSpec();
 
   /**
-   * If @p floating is true, selects floating timezone. 
+   * If @p floating is true, selects floating timezone.
    * Else if @spec is valid, selects @p spec timezone, if not selects local timezone.
    */
   void setFloating( bool floating, const KDateTime::Spec &spec = KDateTime::Spec() );

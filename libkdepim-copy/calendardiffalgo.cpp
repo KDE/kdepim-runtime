@@ -19,10 +19,10 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <klocale.h>
-#include <kdatetime.h>
-
 #include "calendardiffalgo.h"
+
+#include <KDateTime>
+#include <KLocale>
 
 using namespace KPIM;
 

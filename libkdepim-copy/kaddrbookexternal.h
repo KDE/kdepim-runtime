@@ -16,12 +16,11 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_KADDRBOOKEXTERNAL_H
-#define KPIM_KADDRBOOKEXTERNAL_H
+#ifndef KDEPIM_KADDRBOOKEXTERNAL_H
+#define KDEPIM_KADDRBOOKEXTERNAL_H
 
 #include "kdepim_export.h"
 #include <kabc/addressee.h>
-#include <kdeversion.h>
 #include <QStringList>
 
 class QWidget;

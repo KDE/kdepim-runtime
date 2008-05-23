@@ -29,8 +29,8 @@
     your version.
 */
 
-#ifndef _KPIM_DICTIONARYCOMBOBOX_H_
-#define _KPIM_DICTIONARYCOMBOBOX_H_
+#ifndef KDEPIM_DICTIONARYCOMBOBOX_H
+#define KDEPIM_DICTIONARYCOMBOBOX_H
 
 #include "kdepim_export.h"
 #include <QComboBox>

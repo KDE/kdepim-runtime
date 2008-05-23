@@ -19,8 +19,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KDEPIMPROTOCOLS_H
-#define KDEPIMPROTOCOLS_H
+#ifndef KDEPIM_KDEPIMPROTOCOLS_H
+#define KDEPIM_KDEPIMPROTOCOLS_H
 
 /* a central place to store protocol strings to avoid knowledge duplication */
 

@@ -13,11 +13,11 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIM_ADDRESSEEDIFFALGO_H
-#define KPIM_ADDRESSEEDIFFALGO_H
+#ifndef KDEPIM_ADDRESSEEDIFFALGO_H
+#define KDEPIM_ADDRESSEEDIFFALGO_H
 
+#include "diffalgo.h"
 #include <kabc/addressee.h>
-#include <libkdepim/diffalgo.h>
 #include <QList>
 
 namespace KPIM {

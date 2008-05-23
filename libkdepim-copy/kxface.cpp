@@ -25,7 +25,7 @@
 
 #include "kxface.h"
 
-#include <kdebug.h>
+#include <KDebug>
 
 #include <QBuffer>
 #include <QImage>
@@ -95,10 +95,10 @@ QString KXFace::fromImage( const QImage &image )
   QString xbm( ba );
   xbm.remove( 0, xbm.indexOf( "{" ) + 1 );
   xbm.truncate( xbm.indexOf( "}" ) );
-  xbm.remove( " " );
-  xbm.remove( "," );
+  xbm.remove( ' ' );
+  xbm.remove( ',' );
   xbm.remove( "0x" );
-  xbm.remove( "\n" );
+  xbm.remove( '\n' );
   xbm.truncate( 576 );
   QString tmp = xbm.toLatin1();
   int len = tmp.length();
@@ -180,7 +180,7 @@ void KXFace::RevPush(const Prob *p)
     longjmp(comp_env, ERR_INTERNAL);
   ProbBuf[NumProbs++] = (Prob *) p;
 }
- 
+
 void KXFace::BigPush(Prob *p)
 {
   static unsigned char tmp;

@@ -21,8 +21,8 @@
 
 #include "groupwarejob.h"
 
+#include <KDebug>
 #include <kio/job.h>
-#include <kdebug.h>
 
 using namespace KIO;
 

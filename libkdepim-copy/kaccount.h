@@ -30,12 +30,13 @@
   your version.
 */
 
-#ifndef __KACCOUNT
-#define __KACCOUNT
+#ifndef KDEPIM_KACCOUNT_H
+#define KDEPIM_KACCOUNT_H
 
-#include <kdepim_export.h>
-#include <QString>
+#include "kdepim_export.h"
+
 #include <QObject>
+#include <QString>
 
 class KConfigGroup;
 

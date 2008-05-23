@@ -18,15 +18,15 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KDATEPICKERPOPUP_H
-#define KDATEPICKERPOPUP_H
+#ifndef KDEPIM_KDATEPICKERPOPUP_H
+#define KDEPIM_KDATEPICKERPOPUP_H
 
 #include "kdepim_export.h"
 
-#include <kdatepicker.h>
-
 #include <QDateTime>
 #include <QMenu>
+
+class KDatePicker;
 
 namespace KPIM {
 

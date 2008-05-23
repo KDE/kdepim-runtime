@@ -20,7 +20,7 @@
 */
 
 #include "addresseediffalgo.h"
-//Added by qt3to4:
+
 #include <QList>
 
 using namespace KPIM;
@@ -107,7 +107,7 @@ void AddresseeDiffAlgo::run()
   if ( mLeftAddressee.url()!= mRightAddressee.url() )
     conflictField( KABC::Addressee::urlLabel(), mLeftAddressee.url().prettyUrl(),
       mRightAddressee.url().prettyUrl() );
-    
+
   if ( mLeftAddressee.logo() != mRightAddressee.logo() ) {
   }
 

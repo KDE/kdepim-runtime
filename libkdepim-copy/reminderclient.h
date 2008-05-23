@@ -18,10 +18,10 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef REMINDERCLIENT_H
-#define REMINDERCLIENT_H
+#ifndef KDEPIM_REMINDERCLIENT_H
+#define KDEPIM_REMINDERCLIENT_H
 
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 
 namespace KPIM {
 

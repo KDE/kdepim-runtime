@@ -18,12 +18,12 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_EMBEDDEDURLPAGE_H
-#define KPIM_EMBEDDEDURLPAGE_H
+#ifndef KDEPIM_EMBEDDEDURLPAGE_H
+#define KDEPIM_EMBEDDEDURLPAGE_H
 
+#include "kdepim_export.h"
+#include <KUrl>
 #include <QWidget>
-#include <kdepim_export.h>
-#include <kurl.h>
 
 namespace KParts { class ReadOnlyPart; }
 

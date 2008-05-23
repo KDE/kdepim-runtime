@@ -28,8 +28,8 @@
  *  your version.
  */
 
-#ifndef COMPLETIONORDEREDITOR_P_H
-#define COMPLETIONORDEREDITOR_P_H
+#ifndef KDEPIM_COMPLETIONORDEREDITOR_P_H
+#define KDEPIM_COMPLETIONORDEREDITOR_P_H
 
 #include <QtDBus/QDBusAbstractAdaptor>
 

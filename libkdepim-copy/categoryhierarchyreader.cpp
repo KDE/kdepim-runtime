@@ -15,25 +15,25 @@
 
     You should have received a copy of the GNU Library General Public License
     along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
+
 #include "categoryhierarchyreader.h"
+#include "autochecktreewidget.h"
+#include "kpimprefs.h"
 
 #include <QComboBox>
 #include <QStringList>
-#include <q3listview.h>
-
-#include "kpimprefs.h"
-#include "autochecktreewidget.h"
+#include <Q3ListView>
 
 using namespace KPIM;
 
 inline QString &quote( QString &string )
 {
   Q_ASSERT( KPimPrefs::categorySeparator != "@" );
-  return string.replace( "@", "@0" ).replace( QString("\\") + 
-                                              KPimPrefs::categorySeparator, 
+  return string.replace( "@", "@0" ).replace( QString("\\") +
+                                              KPimPrefs::categorySeparator,
                                               "@1" );
 }
 
@@ -56,7 +56,7 @@ void CategoryHierarchyReader::read( QStringList categories )
   QStringList last_path;
   for ( it = categories.begin(); it != categories.end(); ++it ) {
     QStringList _path = path( *it );
-    
+
     // we need to figure out where last item and the new one differ
     QStringList::Iterator jt, kt;
     int split_level = 0;
@@ -66,7 +66,7 @@ void CategoryHierarchyReader::read( QStringList categories )
         split_level++;
       } else
         break; // now we have first non_equal component in the iterators
-    
+
     // make a path relative to the shared ancestor
     if ( jt != _path.begin() )
       _path.erase( _path.begin(), jt );
@@ -76,13 +76,13 @@ void CategoryHierarchyReader::read( QStringList categories )
       // something is wrong, we already have this node
       continue;
     }
-    
+
     // find that ancestor
     while ( split_level < depth() ) {
       goUp();
     }
     Q_ASSERT( split_level == depth() );
-    
+
     // make the node and any non-existent ancestors
     while ( !_path.isEmpty() ) {
       addChild( _path.first() );

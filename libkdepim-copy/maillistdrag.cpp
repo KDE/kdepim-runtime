@@ -24,16 +24,18 @@
 
 #include "maillistdrag.h"
 #include "kdepimprotocols.h"
+
+#include <KDateTime>
+#include <KLocale>
+#include <KProgressDialog>
+#include <KUrl>
+
 #include <QBuffer>
 #include <QDataStream>
 #include <QEventLoop>
 #include <QProgressBar>
 #include <QTextStream>
 #include <QDropEvent>
-#include <KDateTime>
-#include <klocale.h>
-#include <kprogressdialog.h>
-#include <kurl.h>
 
 using namespace KPIM;
 

@@ -23,32 +23,31 @@
  */
 
 #include "addressesdialog.h"
-
 #include "distributionlist.h"
+
 #include <kresources/selectdialog.h>
+
 #include <kabc/resource.h>
-
 #include <kabc/stdaddressbook.h>
-#include <kdebug.h>
-#include <kglobal.h>
-#include <kiconloader.h>
-#include <kinputdialog.h>
-#include <klineedit.h>
-#include <klocale.h>
-#include <kmessagebox.h>
-#include <kpushbutton.h>
-#include <krun.h>
-#include <kstandarddirs.h>
 
-#include <q3dict.h>
+#include <KDebug>
+#include <KGlobal>
+#include <KIconLoader>
+#include <KInputDialog>
+#include <KLineEdit>
+#include <KLocale>
+#include <KMessageBox>
+#include <KPushButton>
+#include <KRun>
+#include <KStandardDirs>
+#include <KToolInvocation>
+#include <KVBox>
+
 #include <QLayout>
-#include <kvbox.h>
 #include <QWidget>
-//Added by qt3to4:
+#include <Q3Dict>
 #include <Q3PtrList>
-//Added by qt3to4:
 #include <QPixmap>
-#include <ktoolinvocation.h>
 
 namespace KPIM {
 

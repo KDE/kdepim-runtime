@@ -19,18 +19,18 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KIMPORTDIALOG_H
-#define KIMPORTDIALOG_H
+#ifndef KDEPIM_KIMPORTDIALOG_H
+#define KDEPIM_KIMPORTDIALOG_H
 
-#include <q3intdict.h>
-#include <QStringList>
-#include <QSpinBox>
-#include <q3ptrvector.h>
-#include <q3valuevector.h>
+#include <KDialog>
+
+#include <QString>
+#include <Q3IntDict>
 #include <Q3PtrList>
+#include <Q3PtrVector>
+#include <Q3ValueVector>
 
-#include <kdialog.h>
-
+class QSpinBox;
 class Q3Table;
 class Q3ListView;
 class Q3ListViewItem;

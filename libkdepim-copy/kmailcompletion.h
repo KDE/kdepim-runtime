@@ -19,19 +19,20 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIM_KMAILCOMPLETION_H
-#define KPIM_KMAILCOMPLETION_H
+#ifndef KDEPIM_KMAILCOMPLETION_H
+#define KDEPIM_KMAILCOMPLETION_H
 
-#include <QSet>
-#include <qstringlist.h>
-#include "kcompletion.h"
+#include <KCompletion>
 
+#include <QMap>
+#include <QString>
+#include <QStringList>
 
 namespace KPIM {
 
 /**
  * KMailCompletion allows lookup of email addresses by keyword.
- * Typically a keywods would be firstname, lastname, nickname or domain. 
+ * Typically a keywods would be firstname, lastname, nickname or domain.
  */
 class KMailCompletion : public KCompletion
 {
@@ -58,7 +59,7 @@ class KMailCompletion : public KCompletion
      *
      * Items may be added with KCompletion::addItem, those will only be returned as match if they
      * are in one of these formats:
-     * \li contains localpart@domain 
+     * \li contains localpart@domain
      * \li contains <email>
      * or if they have also been added with this function.
      */

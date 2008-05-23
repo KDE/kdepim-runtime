@@ -19,15 +19,14 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_KCMDESIGNERFIELDS_H
-#define KPIM_KCMDESIGNERFIELDS_H
+#ifndef KDEPIM_KCMDESIGNERFIELDS_H
+#define KDEPIM_KCMDESIGNERFIELDS_H
+
+#include "kdepim_export.h"
 
 #define KDE3_SUPPORT
-#include <kcmodule.h>
+#include <KCModule>
 #undef KDE3_SUPPORT
-#include <kdepim_export.h>
-//Added by qt3to4:
-#include <QLabel>
 
 class KComponentData;
 class K3ListView;

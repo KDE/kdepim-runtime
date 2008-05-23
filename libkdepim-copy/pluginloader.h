@@ -19,10 +19,10 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef __KPIM_SHARED_PLUGINLOADER_H__
-#define __KPIM_SHARED_PLUGINLOADER_H__
+#ifndef KDEPIM_PLUGINLOADER_H
+#define KDEPIM_PLUGINLOADER_H
 
-#include <pluginloaderbase.h>
+#include "pluginloaderbase.h"
 #include <KLibrary>
 
 namespace KPIM {

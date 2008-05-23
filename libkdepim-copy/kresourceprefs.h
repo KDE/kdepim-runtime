@@ -19,11 +19,11 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef KRESOURCEPREFS_H
-#define KRESOURCEPREFS_H
+#ifndef KDEPIM_KRESOURCEPREFS_H
+#define KDEPIM_KRESOURCEPREFS_H
 
 #include "kdepim_export.h"
-#include <kconfigskeleton.h>
+#include <KConfigSkeleton>
 
 class QString;
 

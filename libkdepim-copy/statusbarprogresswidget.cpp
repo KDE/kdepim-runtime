@@ -32,34 +32,26 @@
   your version.
 */
 
-
+#include "statusbarprogresswidget.h"
+#include "progressdialog.h"
 #include "ssllabel.h"
-
-
-#include <QMouseEvent>
-#include <QHBoxLayout>
-#include <QEvent>
-#include <QProgressBar>
-
 using KPIM::SSLLabel;
 #include "progressmanager.h"
 using KPIM::ProgressItem;
 using KPIM::ProgressManager;
 
-#include <kiconloader.h>
-#include <kdebug.h>
+#include <KLocale>
+#include <KIconLoader>
 
-#include <QTimer>
-#include <QLabel>
-#include <QPushButton>
-
-#include <klocale.h>
-#include <QLayout>
-#include <QStackedWidget>
+#include <QEvent>
 #include <QFrame>
-
-#include "progressdialog.h"
-#include "statusbarprogresswidget.h"
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QStackedWidget>
+#include <QTimer>
 
 using namespace KPIM;
 

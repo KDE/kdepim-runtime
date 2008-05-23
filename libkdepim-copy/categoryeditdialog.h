@@ -20,11 +20,11 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_CATEGORYEDITDIALOG_H
-#define KPIM_CATEGORYEDITDIALOG_H
+#ifndef KDEPIM_CATEGORYEDITDIALOG_H
+#define KDEPIM_CATEGORYEDITDIALOG_H
 
-#include <kdialog.h>
-#include <kdepim_export.h>
+#include "kdepim_export.h"
+#include <KDialog>
 
 class QTreeWidgetItem;
 

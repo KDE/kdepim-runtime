@@ -19,12 +19,10 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
  */
-#ifndef SENDSMSDIALOG_H
-#define SENDSMSDIALOG_H
+#ifndef KDEPIM_SENDSMSDIALOG_H
+#define KDEPIM_SENDSMSDIALOG_H
 
-#include <kdialog.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <KDialog>
 
 class QLabel;
 class QTextEdit;

@@ -30,13 +30,13 @@
 #include "recentaddresses.h"
 #include <kpimutils/email.h>
 
-#include <k3staticdeleter.h>
-#include <kconfig.h>
-#include <kglobal.h>
-#include <kconfiggroup.h>
-#include <kdebug.h>
-#include <klocale.h>
-#include <keditlistbox.h>
+#include <KConfig>
+#include <KConfigGroup>
+#include <KDebug>
+#include <KGlobal>
+#include <KLocale>
+#include <KEditListBox>
+#include <K3StaticDeleter>
 
 #include <QLayout>
 #include <QVBoxLayout>

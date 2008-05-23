@@ -20,11 +20,11 @@
  * 02110-1301  USA
  */
 
-#ifndef KMEDITOR_H
-#define KMEDITOR_H
+#ifndef KDEPIM_KMEDITOR_H
+#define KDEPIM_KMEDITOR_H
 
 #include "kdepim_export.h"
-#include <krichtextwidget.h>
+#include <KRichTextWidget>
 
 namespace KPIMIdentities {
   class Signature;

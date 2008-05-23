@@ -21,20 +21,18 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef maillistdrag_h
-#define maillistdrag_h
+#ifndef KDEPIM_MAILLISTDRAG_H
+#define KDEPIM_MAILLISTDRAG_H
 
-#include "qglobal.h"
-#include "time.h"
+#include "kdepim_export.h"
 
 #include <QList>
 #include <QMimeData>
 #include <QString>
 
-#include <kdepim_export.h>
+#include <time.h>
 
 class KUrl;
-class QMimeData;
 
 namespace KPIM {
 

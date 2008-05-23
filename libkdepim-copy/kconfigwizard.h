@@ -18,12 +18,11 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KCONFIGWIZARD_H
-#define KCONFIGWIZARD_H
+#ifndef KDEPIM_KCONFIGWIZARD_H
+#define KDEPIM_KCONFIGWIZARD_H
 
 #include "kdepim_export.h"
-#include <kpagedialog.h>
-#include <kvbox.h>
+#include <KPageDialog>
 
 class Q3ListView;
 class KPageWidgetItem;

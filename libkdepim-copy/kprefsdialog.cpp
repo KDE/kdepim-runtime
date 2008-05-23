@@ -25,28 +25,29 @@
 #include "ktimeedit.h"
 #include "kdateedit.h"
 
-#include <kcolorbutton.h>
-#include <kcombobox.h>
-#include <klineedit.h>
-#include <kdebug.h>
-#include <klocale.h>
-#include <kfontdialog.h>
-#include <kmessagebox.h>
-#include <kconfigskeleton.h>
-#include <kpagewidget.h>
-#include <kurlrequester.h>
+#include <KColorButton>
+#include <KComboBox>
+#include <KConfigSkeleton>
+#include <KDebug>
+#include <KFontDialog>
+#include <KLineEdit>
+#include <KLocale>
+#include <KMessageBox>
+#include <KPageWidget>
+#include <KUrlRequester>
 
-#include <QLayout>
-#include <QLabel>
-#include <q3buttongroup.h>
-#include <Q3HBox>
 #include <QFont>
-#include <QCheckBox>
-#include <QRadioButton>
-#include <QPushButton>
 #include <QFrame>
+#include <QCheckBox>
 #include <QGridLayout>
+#include <QLabel>
+#include <QLayout>
+#include <QPushButton>
+#include <QRadioButton>
 #include <QSpinBox>
+#include <QTimeEdit>
+#include <Q3ButtonGroup>
+#include <Q3HBox>
 
 #include "kprefsdialog.moc"
 

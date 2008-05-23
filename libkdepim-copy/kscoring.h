@@ -15,36 +15,29 @@
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, US
 */
 
-#ifndef KSCORING_H
-#define KSCORING_H
+#ifndef KDEPIM_KSCORING_H
+#define KDEPIM_KSCORING_H
 
 #include "kdepim_export.h"
 
-#include <kdialog.h>
-#include <klineedit.h>
-#include <knuminput.h>
+#include <KDialog>
 
-#include <qglobal.h>
-#include <q3ptrlist.h>
-#include <q3ptrstack.h>
-#include <QRegExp>
+#include <QColor>
+#include <QMap>
 #include <QObject>
+#include <QRegExp>
 #include <QString>
 #include <QStringList>
-#include <QDateTime>
-#include <QColor>
-#include <q3table.h>
-#include <QMap>
-#include <q3dict.h>
 #include <QTextStream>
-#include <QLabel>
+#include <Q3Dict>
+#include <Q3PtrList>
+#include <Q3PtrStack>
 
 #include <unistd.h>
 
 class QDomNode;
 class QDomDocument;
 class QDomElement;
-class QTextStream;
 class QLabel;
 
 namespace KPIM {

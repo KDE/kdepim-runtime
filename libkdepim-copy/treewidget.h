@@ -1,5 +1,5 @@
-#ifndef __TREEWIDGET_H__
-#define __TREEWIDGET_H__
+#ifndef KDEPIM_TREEWIDGET_H
+#define KDEPIM_TREEWIDGET_H
 
 /******************************************************************************
  *
@@ -29,7 +29,6 @@
  */
 
 #include "kdepim_export.h"
-
 #include <QTreeWidget>
 
 class KMenu;
@@ -38,7 +37,6 @@ class KConfigGroup;
 
 class QAction;
 
-
 namespace KPIM
 {
 
@@ -46,7 +44,7 @@ namespace KPIM
 
 /**
  * @brief A QTreeWidget with expanded capabilities
- * 
+ *
  * This class extends the functionality provided by the standard QTreeWidget
  * by adding toggleable columns and a layout save/restore facility.
  *
@@ -88,10 +86,10 @@ public:
     ) const;
 
   /**
-   * Stores the layout of this tree view to the specified key of 
+   * Stores the layout of this tree view to the specified key of
    * the specified config group.
    * The stored data includes visible columns, column width and order.
-   * 
+   *
    * @param configGroup The KConfig group to write the layout data to.
    * @param keyName The key to use, "TreeWidgetLayout" by default
    *
@@ -125,7 +123,7 @@ public:
    */
   bool restoreLayout(
       KConfigGroup &group,
-      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY            
+      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY
     );
 
   /**
@@ -163,7 +161,7 @@ public:
    * check on the popup menu that is displayed by right clicking the header
    * of this view.
    *
-   * By default column hiding is enabled. 
+   * By default column hiding is enabled.
    */
   void setManualColumnHidingEnabled( bool enable );
 

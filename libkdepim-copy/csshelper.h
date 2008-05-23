@@ -29,12 +29,12 @@
     your version.
 */
 
-#ifndef KPIM_CSSHELPER_H
-#define KPIM_CSSHELPER_H
+#ifndef KDEPIM_CSSHELPER_H
+#define KDEPIM_CSSHELPER_H
 
+#include "kdepim_export.h"
 #include <QColor>
 #include <QFont>
-#include <kdepim_export.h>
 
 class QString;
 class QPaintDevice;

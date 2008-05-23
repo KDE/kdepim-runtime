@@ -10,14 +10,14 @@
   License GPL
 */
 
-#include <QDateTime>
-
-#include <klocale.h>
-#include <kglobal.h>
-#include <k3staticdeleter.h>
-
 #include "broadcaststatus.h"
 #include "progressmanager.h"
+
+#include <KLocale>
+#include <KGlobal>
+#include <K3StaticDeleter>
+
+#include <QTime>
 
 KPIM::BroadcastStatus* KPIM::BroadcastStatus::instance_ = 0;
 static K3StaticDeleter<KPIM::BroadcastStatus> broadcastStatusDeleter;

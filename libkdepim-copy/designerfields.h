@@ -19,17 +19,15 @@
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_DESIGNERFIELDS_H
-#define KPIM_DESIGNERFIELDS_H
+#ifndef KDEPIM_DESIGNERFIELDS_H
+#define KDEPIM_DESIGNERFIELDS_H
 
-#include <klocale.h>
+#include "kdepim_export.h"
 
 #include <QMap>
 #include <QPair>
 #include <QStringList>
-//Added by qt3to4:
-
-#include <kdepim_export.h>
+#include <QWidget>
 
 namespace KPIM {
 
@@ -44,7 +42,7 @@ class KDEPIM_EXPORT DesignerFields : public QWidget
     {
       public:
         virtual ~Storage() {}
-      
+
         virtual QStringList keys() = 0;
         virtual QString read( const QString &key ) = 0;
         virtual void write( const QString &key, const QString &value ) = 0;

@@ -22,19 +22,19 @@
 #include "kconfigwizard.h"
 #include "kconfigpropagator.h"
 
-#include <klocale.h>
-#include <kdebug.h>
-#include <kconfigskeleton.h>
-#include <kmessagebox.h>
-#include <kpagedialog.h>
-#include <kcomponentdata.h>
-#include <kaboutdata.h>
+#include <KAboutData>
+#include <KComponentData>
+#include <KConfigSkeleton>
+#include <KDebug>
+#include <KLocale>
+#include <KMessageBox>
+#include <KPageDialog>
 
-#include <q3listview.h>
 #include <QApplication>
 #include <QLayout>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <Q3ListView>
 
 using namespace KPIM;
 
@@ -61,7 +61,7 @@ KConfigWizard::~KConfigWizard()
 void KConfigWizard::init()
 {
   setFaceType( KPageDialog::Tree );
-  setWindowTitle( 
+  setWindowTitle(
     KGlobal::mainComponent().aboutData()->programName().isEmpty()
     ? i18nc( "@title:window", "Configuration Wizard" )
     : KGlobal::mainComponent().aboutData()->programName() );

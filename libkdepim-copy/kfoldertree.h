@@ -19,12 +19,12 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef __KFOLDERTREE
-#define __KFOLDERTREE
+#ifndef KDEPIM_KFOLDERTREE_H
+#define KDEPIM_KFOLDERTREE_H
 
 #include "kdepim_export.h"
 
-#include <k3listview.h>
+#include <K3ListView>
 
 #include <QPixmap>
 #include <QMouseEvent>

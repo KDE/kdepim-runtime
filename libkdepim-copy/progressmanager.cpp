@@ -21,13 +21,11 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include <q3valuevector.h>
-#include <kdebug.h>
-
-#include <klocale.h>
-#include <k3staticdeleter.h>
-
 #include "progressmanager.h"
+
+#include <KDebug>
+#include <KLocale>
+#include <K3StaticDeleter>
 
 namespace KPIM {
 

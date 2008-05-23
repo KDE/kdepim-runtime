@@ -19,16 +19,16 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <ksharedconfig.h>
-#include <kglobal.h>
-#include <k3staticdeleter.h>
-#include <kconfiggroup.h>
+#include "networkstatus.h"
+#include "networkstatus_p.h"
+
+#include <KGlobal>
+#include <KConfig>
+#include <KConfigGroup>
+#include <K3StaticDeleter>
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
-
-#include "networkstatus_p.h"
-#include "networkstatus.h"
 
 using namespace KPIM;
 
@@ -77,7 +77,7 @@ NetworkStatus::Status NetworkStatus::status() const
 void NetworkStatus::onlineStatusChanged()
 {
 #ifdef __GNUC__
-#warning "kde4: verify it"	
+#warning "kde4: verify it"
 #endif
   QDBusInterface call( "org.kde.kded", "/", "org.kde.kded" );
   QDBusMessage reply = call.call( "onlineStatus", true );

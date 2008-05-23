@@ -26,11 +26,11 @@
     you do not wish to do so, delete this exception statement from
     your version.
 */
-#ifndef KMAIL_MESSAGESTATUS_H
-#define KMAIL_MESSAGESTATUS_H
+#ifndef KDEPIM_MESSAGESTATUS_H
+#define KDEPIM_MESSAGESTATUS_H
 
-#include <qglobal.h>
-#include <kdepim_export.h>
+#include "kdepim_export.h"
+
 class QString;
 
 namespace KPIM {

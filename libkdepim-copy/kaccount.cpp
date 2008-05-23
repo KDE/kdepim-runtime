@@ -33,10 +33,10 @@
 
 #include "kaccount.h"
 
-#include <QMetaEnum>
+#include <KConfigGroup>
+#include <KLocale>
 
-#include <kconfiggroup.h>
-#include <klocale.h>
+#include <QMetaEnum>
 
 using namespace KPIM;
 

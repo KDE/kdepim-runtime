@@ -19,13 +19,13 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KPIMPREFS_H
-#define KPIMPREFS_H
+#ifndef KDEPIM_KPIMPREFS_H
+#define KDEPIM_KPIMPREFS_H
 
 #include "kdepim_export.h"
 
-#include <kconfigskeleton.h>
-#include <kdatetime.h>
+#include <KConfigSkeleton>
+#include <KDateTime>
 
 #include <QStringList>
 

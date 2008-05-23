@@ -23,9 +23,9 @@
 #include "reminderclient.h"
 #include "korganizer_korgac_interface.h"
 
-#include <kdebug.h>
-#include <kstandarddirs.h>
-#include <ktoolinvocation.h>
+#include <KDebug>
+#include <KStandardDirs>
+#include <KToolInvocation>
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>

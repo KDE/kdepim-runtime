@@ -2,7 +2,7 @@
    This file is part of libkdepim.
 
    Copyright (C) 2005 Con Hennessy <cp.hennessy@iname.com>
-                      Tobias Koenig <tokoe@kde.org>
+   Copyright (C)      Tobias Koenig <tokoe@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -19,15 +19,15 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
  */
+
+#include "sendsmsdialog.h"
+
+#include <KLocale>
+
+#include <QGridLayout>
 #include <QLabel>
 #include <QLayout>
 #include <QTextEdit>
-//Added by qt3to4:
-#include <QGridLayout>
-
-#include <klocale.h>
-
-#include "sendsmsdialog.h"
 
 SendSMSDialog::SendSMSDialog( const QString &recipientName, QWidget *parent )
   : KDialog( parent )

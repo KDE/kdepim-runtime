@@ -19,8 +19,8 @@
  * 02110-1301  USA
  */
 
-#ifndef KMUTILS_H
-#define KMUTILS_H
+#ifndef KDEPIM_KMUTILS_H
+#define KDEPIM_KMUTILS_H
 
 #include "kdepim_export.h"
 #include <QString>

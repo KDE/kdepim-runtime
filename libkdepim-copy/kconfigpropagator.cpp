@@ -21,12 +21,12 @@
 
 #include "kconfigpropagator.h"
 
-#include <kdebug.h>
-#include <kconfig.h>
-#include <kconfigskeleton.h>
-#include <kstandarddirs.h>
-#include <kstringhandler.h>
-#include <klocale.h>
+#include <KConfig>
+#include <KConfigSkeleton>
+#include <KDebug>
+#include <KLocale>
+#include <KStandardDirs>
+#include <KStringHandler>
 
 #include <QFile>
 #include <QStringList>

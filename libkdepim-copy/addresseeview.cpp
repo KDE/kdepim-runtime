@@ -19,12 +19,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <QBuffer>
-#include <QImage>
-#include <QMenu>
-#include <QPixmap>
-#include <QTextStream>
-#include <QContextMenuEvent>
+#include "addresseeview.h"
+#include "sendsmsdialog.h"
 
 #include <kabc/address.h>
 #include <kabc/addressee.h>
@@ -32,27 +28,30 @@
 #include <kabc/resource.h>
 #include <kabc/resourceabc.h>
 
-#include <kapplication.h>
-#include <kconfig.h>
-#include <kcolorscheme.h>
-#include <kglobal.h>
-#include <kglobalsettings.h>
-#include <kiconloader.h>
+#include <KApplication>
+#include <KCodecs>
+#include <KColorScheme>
+#include <KConfig>
+#include <KDebug>
+#include <KGlobal>
+#include <KGlobalSettings>
+#include <KIconLoader>
+#include <KLocale>
+#include <KMessageBox>
+#include <KRun>
+#include <KStringHandler>
+#include <KTemporaryFile>
+#include <KToggleAction>
+#include <KToolInvocation>
+#include <KUrl>
 #include <kio/job.h>
-#include <klocale.h>
-#include <kcodecs.h>
-#include <kmessagebox.h>
-#include <krun.h>
-#include <kurl.h>
-#include <kstringhandler.h>
-#include <ktemporaryfile.h>
 
-#include <kdebug.h>
-#include <ktoolinvocation.h>
-
-#include "addresseeview.h"
-#include "sendsmsdialog.h"
-#include <ktoggleaction.h>
+#include <QBuffer>
+#include <QContextMenuEvent>
+#include <QImage>
+#include <QMenu>
+#include <QPixmap>
+#include <QTextStream>
 
 using namespace KPIM;
 

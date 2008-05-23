@@ -19,18 +19,20 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIM_ADDRESSEEVIEW_H
-#define KPIM_ADDRESSEEVIEW_H
+#ifndef KDEPIM_ADDRESSEEVIEW_H
+#define KDEPIM_ADDRESSEEVIEW_H
 
-#include <QtGui/QPixmap>
+#include "kdepim_export.h"
 
 #include <kabc/addressee.h>
-#include <ktextbrowser.h>
-#include <kimproxy.h>
-#include <kdepim_export.h>
+
+#include <KIMProxy>
+#include <KTextBrowser>
+
+class QPixmap;
 
 namespace KIO {
-class Job;
+  class Job;
 }
 class KToggleAction;
 

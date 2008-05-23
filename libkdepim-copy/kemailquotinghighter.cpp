@@ -21,11 +21,11 @@
  */
 
 #include "kemailquotinghighter.h"
-#include <sonnet/speller.h>
 
-#include <kconfig.h>
-#include <kdebug.h>
-#include <klocale.h>
+#include <KConfig>
+#include <KDebug>
+#include <KLocale>
+#include <sonnet/speller.h>
 
 #include <QTextEdit>
 #include <QTimer>

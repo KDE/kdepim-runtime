@@ -22,14 +22,15 @@
 */
 
 #include "embeddedurlpage.h"
+
+#include <KLocale>
+#include <KMimeType>
 #include <kparts/componentfactory.h>
 #include <kparts/browserextension.h>
 #include <kparts/part.h>
-#include <kmimetype.h>
-#include <klocale.h>
-#include <QLayout>
+
 #include <QLabel>
-//Added by qt3to4:
+#include <QLayout>
 #include <QVBoxLayout>
 
 using namespace KPIM;

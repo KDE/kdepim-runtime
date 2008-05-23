@@ -30,15 +30,15 @@
  *  your version.
  */
 
-#ifndef __KPIM_PROGRESSDIALOG_H__
-#define __KPIM_PROGRESSDIALOG_H__
+#ifndef KDEPIM_PROGRESSDIALOG_H
+#define KDEPIM_PROGRESSDIALOG_H
+
+#include "overlaywidget.h"
+#include "kdepim_export.h"
 
 #include <QScrollArea>
 #include <QMap>
 #include <KVBox>
-
-#include "overlaywidget.h"
-#include <kdepim_export.h>
 
 class QProgressBar;
 class QFrame;

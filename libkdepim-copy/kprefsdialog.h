@@ -20,29 +20,30 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KPREFSDIALOG_H
-#define KPREFSDIALOG_H
+#ifndef KDEPIM_KPREFSDIALOG_H
+#define KDEPIM_KPREFSDIALOG_H
 
-#include <klineedit.h>
-#include <kpagedialog.h>
+#include "kdepim_export.h"
+
 #define KDE3_SUPPORT
-#include <kcmodule.h>
+#include <KCModule>
 #undef KDE3_SUPPORT
-#include <kconfigskeleton.h>
-#include <kfile.h>
-#include <kdepim_export.h>
+#include <KConfigSkeleton>
+#include <KFile>
+#include <KLineEdit>
+#include <KPageDialog>
 
-#include <QLabel>
-#include <QTimeEdit>
 #include <QVariantList>
 
 class KColorButton;
 class KComboBox;
 class KComponentData;
 class KUrlRequester;
+
 class QCheckBox;
 class QLabel;
 class QSpinBox;
+class QTimeEdit;
 class Q3ButtonGroup;
 
 namespace KPIM {

@@ -29,8 +29,8 @@
  *  your version.
  */
 
-#ifndef SSLLABEL_H
-#define SSLLABEL_H
+#ifndef KDEPIM_SSLLABEL_H
+#define KDEPIM_SSLLABEL_H
 
 #include <QLabel>
 

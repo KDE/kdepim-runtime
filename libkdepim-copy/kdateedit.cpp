@@ -26,11 +26,11 @@
 
 #include "kdateedit.h"
 
-#include <kcalendarsystem.h>
-#include <kglobal.h>
-#include <kglobalsettings.h>
-#include <klocale.h>
-#include <kdebug.h>
+#include <KCalendarSystem>
+#include <KDebug>
+#include <KGlobal>
+#include <KGlobalSettings>
+#include <KLocale>
 
 #include <QAbstractItemView>
 #include <QApplication>

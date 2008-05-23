@@ -19,9 +19,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <kcolorscheme.h>
-
-#include <libkdepim/htmldiffalgodisplay.h>
+#include "htmldiffalgodisplay.h"
+#include <KColorScheme>
 #include <QTextDocument>
 
 using namespace KPIM;

@@ -15,15 +15,14 @@
 
     You should have received a copy of the GNU Library General Public License
     along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_AUTOCHECKTREEWIDGET_H
-#define KPIM_AUTOCHECKTREEWIDGET_H
+#ifndef KDEPIM_AUTOCHECKTREEWIDGET_H
+#define KDEPIM_AUTOCHECKTREEWIDGET_H
 
+#include "kdepim_export.h"
 #include <QTreeWidget>
-
-#include <kdepim_export.h>
 
 namespace KPIM {
 
@@ -39,8 +38,8 @@ namespace KPIM {
 class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
   Q_OBJECT
 
-  Q_PROPERTY( bool autoCheckChildren 
-              READ autoCheckChildren 
+  Q_PROPERTY( bool autoCheckChildren
+              READ autoCheckChildren
               WRITE setAutoCheckChildren )
 
   Q_PROPERTY( bool autoCheck
@@ -96,7 +95,7 @@ class KDEPIM_EXPORT AutoCheckTreeWidget : public QTreeWidget {
     /**
       Sets whether newly added items have checkboxes by default.
 
-      @param autoCheck if true, newly added items have unchecked checkboxes 
+      @param autoCheck if true, newly added items have unchecked checkboxes
                        by default, otherwise not. Default value is true.
      */
     void setAutoCheck( bool autoCheck );

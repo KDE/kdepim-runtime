@@ -19,12 +19,12 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIM_CALENDARDIFFALGO_H
-#define KPIM_CALENDARDIFFALGO_H
+#ifndef KDEPIM_CALENDARDIFFALGO_H
+#define KDEPIM_CALENDARDIFFALGO_H
 
+#include "diffalgo.h"
 #include <kcal/event.h>
 #include <kcal/todo.h>
-#include <libkdepim/diffalgo.h>
 #include <QList>
 
 namespace KPIM {

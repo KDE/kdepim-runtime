@@ -31,13 +31,12 @@
 
 #include "ssllabel.h"
 
-#include <kiconloader.h>
-#include <klocale.h>
+#include <KLocale>
+#include <KIconLoader>
 
-
-//Added by qt3to4:
 #include <QLabel>
 #include <QPixmap>
+
 namespace KPIM {
 
 SSLLabel::SSLLabel( QWidget* parent )

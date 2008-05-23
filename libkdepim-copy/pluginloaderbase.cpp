@@ -19,14 +19,14 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <pluginloaderbase.h>
+#include "pluginloaderbase.h"
 
-#include <kconfiggroup.h>
-#include <klocale.h>
-#include <kstandarddirs.h>
-#include <klibloader.h>
-#include <kglobal.h>
-#include <kdebug.h>
+#include <KConfigGroup>
+#include <KDebug>
+#include <KGlobal>
+#include <KLibLoader>
+#include <KLocale>
+#include <KStandardDirs>
 
 #include <QFile>
 #include <QStringList>

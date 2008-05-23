@@ -22,30 +22,26 @@
 
 #include "kmeditor.h"
 #include "kemailquotinghighter.h"
-
 #include "kmutils.h"
-#include <maillistdrag.h>
+#include "maillistdrag.h"
 
-//kdepimlibs includes
 #include <kpimidentities/signature.h>
 
-//kdelibs includes
 #include <kdeversion.h>
-#include <KWindowSystem>
-#include <KFileDialog>
-#include <KComboBox>
-#include <KToolBar>
 #include <KCharsets>
-#include <KPushButton>
-#include <klocale.h>
-#include <kmenu.h>
-#include <KMessageBox>
-#include <KDirWatch>
-#include <KTemporaryFile>
+#include <KComboBox>
 #include <KCursor>
+#include <KDirWatch>
+#include <KFileDialog>
+#include <KLocale>
+#include <KMenu>
+#include <KMessageBox>
+#include <KPushButton>
+#include <KTemporaryFile>
+#include <KToolBar>
+#include <KWindowSystem>
 #include <sonnet/configdialog.h>
 
-//qt includes
 #include <QApplication>
 #include <QClipboard>
 #include <QShortcut>
@@ -54,7 +50,6 @@
 #include <QProcess>
 #include <QTimer>
 
-//system includes
 #include <assert.h>
 
 namespace KPIM {

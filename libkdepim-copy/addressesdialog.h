@@ -22,17 +22,20 @@
  *
  */
 
-#ifndef ADDRESSESDIALOG_H
-#define ADDRESSESDIALOG_H
+#ifndef KDEPIM_ADDRESSESDIALOG_H
+#define KDEPIM_ADDRESSESDIALOG_H
+
+#include "kdepim_export.h"
+#include "ui_addresspicker.h"
 
 #include <kabc/addressee.h>
-#include <kdialog.h>
-#include <k3listview.h>
+
+#include <KDialog>
+#include <K3ListView>
+
 #include <QStringList>
-#include <q3ptrlist.h>
-#include <q3ptrdict.h>
-#include <kdepim_export.h>
-#include "ui_addresspicker.h"
+#include <Q3PtrList>
+#include <Q3PtrDict>
 
 class AddressPickerUI : public QWidget, public Ui::AddressPickerUI
 {

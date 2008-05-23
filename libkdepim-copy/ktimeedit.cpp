@@ -28,10 +28,10 @@
 
 #include "ktimeedit.h"
 
-#include <kmessagebox.h>
-#include <kglobal.h>
-#include <kdebug.h>
-#include <klocale.h>
+#include <KDebug>
+#include <KGlobal>
+#include <KLocale>
+#include <KMessageBox>
 
 #include <QDateTime>
 #include <QLineEdit>

@@ -18,23 +18,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef KDEPIM_LDAPCLIENT_H
+#define KDEPIM_LDAPCLIENT_H
 
-#ifndef KPIM_LDAPCLIENT_H
-#define KPIM_LDAPCLIENT_H
+#include "kdepim_export.h"
 
+#include <kldap/ldif.h>
+#include <kldap/ldapobject.h>
+#include <kldap/ldapserver.h>
+
+#include <kio/job.h>
 
 #include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QPointer>
 #include <QTimer>
-
-#include <kio/job.h>
-#include <kldap/ldif.h>
-#include <kldap/ldapobject.h>
-#include <kldap/ldapserver.h>
-
-#include <kdepim_export.h>
 
 class KConfig;
 class KConfigGroup;

@@ -27,12 +27,12 @@
  *  you do not wish to do so, delete this exception statement from
  *  your version.
  */
-#ifndef RECENTADDRESSES_H
-#define RECENTADDRESSES_H
+#ifndef KDEPIM_RECENTADDRESSES_H
+#define KDEPIM_RECENTADDRESSES_H
 
 #include "kdepim_export.h"
 #include <kabc/addressee.h>
-#include <kdialog.h>
+#include <KDialog>
 #include <QStringList>
 
 class KConfig;

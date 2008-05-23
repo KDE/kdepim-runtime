@@ -33,13 +33,13 @@
 #include <kabc/resource.h>
 #include <kabc/resourceabc.h>
 
-#include <kcompletionbox.h>
-#include <kdebug.h>
-#include <kstandarddirs.h>
-#include <k3staticdeleter.h>
-#include <kstandardshortcut.h>
-#include <kurl.h>
-#include <klocale.h>
+#include <KCompletionBox>
+#include <KDebug>
+#include <KLocale>
+#include <KStandardDirs>
+#include <KStandardShortcut>
+#include <KUrl>
+#include <K3StaticDeleter>
 
 #include <QApplication>
 #include <QCursor>

@@ -15,13 +15,13 @@
 
     You should have received a copy of the GNU Library General Public License
     along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_CATEGORYHIERARCHYREADER_H
-#define KPIM_CATEGORYHIERARCHYREADER_H
+#ifndef KDEPIM_CATEGORYHIERARCHYREADER_H
+#define KDEPIM_CATEGORYHIERARCHYREADER_H
 
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 
 class QComboBox;
 class QStringList;

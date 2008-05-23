@@ -1,5 +1,5 @@
-#ifndef __KPIM_STATUSBARPROGRESSWIDGET_H
-#define __KPIM_STATUSBARPROGRESSWIDGET_H
+#ifndef KDEPIM_STATUSBARPROGRESSWIDGET_H
+#define KDEPIM_STATUSBARPROGRESSWIDGET_H
 /*
   statusbarprogresswidget.h
 
@@ -36,13 +36,12 @@
   *  kio_littleprogress_dlg (it looks similar)
   */
 
-#include <kdepim_export.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QFrame>
-#include <QEvent>
-#include <QBoxLayout>
+#include "kdepim_export.h"
 
+#include <QFrame>
+
+class QBoxLayout;
+class QEvent;
 class QProgressBar;
 class QPushButton;
 class QStackedWidget;

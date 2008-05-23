@@ -1,5 +1,5 @@
-#ifndef __FOLDERTREEWIDGET_H__
-#define __FOLDERTREEWIDGET_H__
+#ifndef KDEPIM_FOLDERTREEWIDGET_H
+#define KDEPIM_FOLDERTREEWIDGET_H
 
 /******************************************************************************
  *
@@ -29,7 +29,6 @@
  */
 
 #include "kdepim_export.h"
-
 #include "treewidget.h"
 
 namespace KPIM
@@ -40,7 +39,7 @@ namespace KPIM
  *
  *
  * Work In Progress Warning:
- * 
+ *
  * This widget is meant to be a Native-Qt4 polished replacement for
  * KDEPIM::KFolderTreeWidget which is based on K3ListView.
  * Necessary features are being added as existing clients are ported.

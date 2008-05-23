@@ -25,7 +25,7 @@
 #include "autochecktreewidget.h"
 #include "kpimprefs.h"
 
-#include <klocale.h>
+#include <KLocale>
 
 #include <QPushButton>
 #include <QVBoxLayout>

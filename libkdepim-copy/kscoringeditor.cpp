@@ -20,15 +20,17 @@
 #include "kscoringeditor.h"
 #include "kscoring.h"
 
-#include <kdebug.h>
-#include <klocale.h>
-#include <kcombobox.h>
-#include <kcolorcombo.h>
-#include <kiconloader.h>
+#include <KDebug>
+#include <KColorCombo>
+#include <KComboBox>
+#include <KIconLoader>
+#include <KIntSpinBox>
+#include <KLineEdit>
+#include <KLocale>
 #include <kregexpeditorinterface.h>
-#include <kservicetypeprofile.h>
+#include <KServiceTypeTrader>
+#include <KPushButton>
 #include <kparts/componentfactory.h>
-#include <kpushbutton.h>
 
 #include <QLabel>
 #include <QPushButton>

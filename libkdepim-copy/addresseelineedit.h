@@ -23,25 +23,23 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef ADDRESSEELINEEDIT_H
-#define ADDRESSEELINEEDIT_H
+#ifndef KDEPIM_ADDRESSEELINEEDIT_H
+#define KDEPIM_ADDRESSEELINEEDIT_H
 
 #include "kmailcompletion.h"
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 
 #include <kabc/addressee.h>
 
-#include <klineedit.h>
+#include <KLineEdit>
 
-#include <QObject>
-#include <QTimer>
-#include <QPair>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QDropEvent>
-
+class QDropEvent;
+class QEvent;
+class QKeyEvent;
 class QMenu;
+class QMouseEvent;
+class QObject;
+class QTimer;
 
 namespace KPIM {
   class LdapSearch;

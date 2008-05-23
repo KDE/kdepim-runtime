@@ -22,22 +22,23 @@
 
 #include "ldapclient.h"
 
+#include <kldap/ldapurl.h>
+#include <kldap/ldif.h>
+
+#include <KCodecs>
+#include <KConfig>
+#include <KConfigGroup>
+#include <KDebug>
+#include <KDirWatch>
+#include <KProtocolInfo>
+#include <KStandardDirs>
+#include <K3StaticDeleter>
+
 #include <QFile>
 #include <QImage>
 #include <QLabel>
 #include <QPixmap>
 #include <QTextStream>
-
-#include <kldap/ldapurl.h>
-#include <kldap/ldif.h>
-#include <kconfig.h>
-#include <kconfiggroup.h>
-#include <kdebug.h>
-#include <kdirwatch.h>
-#include <kcodecs.h>
-#include <kprotocolinfo.h>
-#include <kstandarddirs.h>
-#include <k3staticdeleter.h>
 
 using namespace KPIM;
 

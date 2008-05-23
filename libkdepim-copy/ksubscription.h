@@ -23,21 +23,21 @@
   This file defines a generic subscription widget and some support classes.
 */
 
-#ifndef __KSUBSCRIPTION
-#define __KSUBSCRIPTION
+#ifndef KDEPIM_KSUBSCRIPTION_H
+#define KDEPIM_KSUBSCRIPTION_H
 
 #include "kfoldertree.h"
-#include <kdialog.h>
-#include <kdepim_export.h>
+#include "kdepim_export.h"
 
-#include <q3listview.h>
+#include <KDialog>
+
 #include <QCheckBox>
-#include <QGridLayout>
-#include <QLabel>
 
 class KLineEdit;
 class QLabel;
 class QGridLayout;
+class Q3ListView;
+class Q3ListViewItem;
 
 namespace KPIM {
 

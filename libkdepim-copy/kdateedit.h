@@ -21,8 +21,8 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef KDATEEDIT_H
-#define KDATEEDIT_H
+#ifndef KDEPIM_KDATEEDIT_H
+#define KDEPIM_KDATEEDIT_H
 
 #include "kdepim_export.h"
 #include "kdatepickerpopup.h"

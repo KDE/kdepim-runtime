@@ -21,22 +21,22 @@
 #include "ksubscription.h"
 #include "kaccount.h"
 
+#include <KDebug>
+#include <KIconLoader>
+#include <KLineEdit>
+#include <KLocale>
+#include <KSeparator>
+
 #include <QApplication>
 #include <QLayout>
 #include <QTimer>
 #include <QLabel>
 #include <QPushButton>
-#include <q3header.h>
 #include <QToolButton>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
-#include <kseparator.h>
-#include <kiconloader.h>
-#include <klocale.h>
-#include <kdebug.h>
-#include <klineedit.h>
+#include <Q3Header>
 
 using namespace KPIM;
 

@@ -23,20 +23,23 @@
 #include "kscoring.h"
 #include "kscoringeditor.h"
 
+#include <KDebug>
+#include <KLocale>
+#include <KInputDialog>
+#include <KStandardDirs>
+#include <KTextEdit>
+
+#include <QCheckBox>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QDomNode>
+#include <QDomNodeList>
 #include <QFile>
-#include <qdom.h>
 #include <QLayout>
 #include <QLabel>
-#include <QCheckBox>
 #include <QTextStream>
-#include <Q3PtrList>
 #include <QVBoxLayout>
-
-#include <ktextedit.h>
-#include <klocale.h>
-#include <kstandarddirs.h>
-#include <kdebug.h>
-#include <kinputdialog.h>
+#include <Q3PtrList>
 
 #include <iostream>
 

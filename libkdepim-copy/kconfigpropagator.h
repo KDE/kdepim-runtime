@@ -18,15 +18,15 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KCONFIGPROPAGATOR_H
-#define KCONFIGPROPAGATOR_H
+#ifndef KDEPIM_KCONFIGPROPAGATOR_H
+#define KDEPIM_KCONFIGPROPAGATOR_H
 
-#include <QString>
+#include "kdepim_export.h"
 
-#include <qdom.h>
-#include <q3ptrlist.h>
+#include <QDomElement>
 #include <QList>
-#include <kdepim_export.h>
+#include <QString>
+#include <Q3PtrList>
 
 class KConfigSkeleton;
 class KConfigSkeletonItem;

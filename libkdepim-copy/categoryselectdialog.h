@@ -19,15 +19,13 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef KPIM_CATEGORYSELECTDIALOG_H
-#define KPIM_CATEGORYSELECTDIALOG_H
+#ifndef KDEPIM_CATEGORYSELECTDIALOG_H
+#define KDEPIM_CATEGORYSELECTDIALOG_H
 
 #include "kdepim_export.h"
-
-#include <klocale.h>
-#include <kdialog.h>
-
 #include "ui_categoryselectdialog_base.h"
+
+#include <KDialog>
 
 namespace KPIM {
 

@@ -30,12 +30,11 @@
   your version.
 */
 
-#ifndef _KWIDGETLISTER_H_
-#define _KWIDGETLISTER_H_
+#ifndef KDEPIM_KWIDGETLISTER_H
+#define KDEPIM_KWIDGETLISTER_H
 
 #include "kdepim_export.h"
 #include <QWidget>
-#include <QVBoxLayout>
 
 class QPushButton;
 class QVBoxLayout;

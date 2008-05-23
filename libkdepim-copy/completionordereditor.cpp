@@ -32,23 +32,22 @@
 #include "completionordereditor_p.h"
 #include "ldapclient.h"
 
-#include <QtDBus/QDBusConnection>
-
 #include <kabc/stdaddressbook.h>
 #include <kabc/resource.h>
 #include <kabc/resourceabc.h>
 
-#include <kdebug.h>
-#include <klocale.h>
-#include <kicon.h>
-#include <k3listview.h>
-#include <kpushbutton.h>
-#include <kconfiggroup.h>
+#include <KConfigGroup>
+#include <KDebug>
+#include <KLocale>
+#include <KHBox>
+#include <KIcon>
+#include <KPushButton>
+#include <KVBox>
+#include <K3ListView>
 
-#include <khbox.h>
-#include <kvbox.h>
-#include <q3header.h>
 #include <QToolButton>
+#include <QtDBus/QDBusConnection>
+#include <Q3Header>
 
 /*
 

@@ -19,12 +19,13 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KPIM_HTMLDIFFALGODISPLAY_H
-#define KPIM_HTMLDIFFALGODISPLAY_H
+#ifndef KDEPIM_HTMLDIFFALGODISPLAY_H
+#define KDEPIM_HTMLDIFFALGODISPLAY_H
 
-#include <ktextbrowser.h>
-#include <libkdepim/diffalgo.h>
-#include <kdepim_export.h>
+#include "kdepim_export.h"
+#include "diffalgo.h"
+
+#include <KTextBrowser>
 
 namespace KPIM {
 

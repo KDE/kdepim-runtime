@@ -22,8 +22,8 @@
 #include "kscoring.h"
 #include "kwidgetlister.h"
 
-#include <k3listbox.h>
-#include <kdialog.h>
+#include <KDialog>
+#include <K3ListBox>
 
 #include <QMap>
 #include <QLabel>
