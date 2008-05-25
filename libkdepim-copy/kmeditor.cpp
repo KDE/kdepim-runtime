@@ -990,7 +990,20 @@ QString KMeditor::toWrappedPlainText() const
     }
     block = block.next();
   }
-  return temp;
+
+  // Remove embedded NUL characters. They shouldn't be there in the first place,
+  // but there seems to be a bug in Qt (qt-copy of 2008-05-05), already reported,
+  // but I've no bug ID yet.
+  // This causes problems when MessageComposer::plainTextFromMarkup() when calling
+  // the codec to convert the string.
+  // Only happens with HTML signatures, which have <br> HTML tags in them.
+  // And no, temp.remove( QChar( 0 ) ); does not work for some reason.
+  QString final;
+  for ( int i = 0; i < temp.length(); i++ )
+    if ( static_cast<int>( temp.at( i ).toAscii() ) != 0 )
+      final.append( temp.at( i ) );
+
+  return final;
 }
 
 void KMeditor::ensureCursorVisible()
