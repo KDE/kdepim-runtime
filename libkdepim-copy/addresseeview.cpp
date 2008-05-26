@@ -655,13 +655,13 @@ void AddresseeView::slotMailClicked( const QString&, const QString &email )
 void AddresseeView::slotUrlClicked( const QString &url )
 {
   if ( url.startsWith( "phone:" ) )
-    phoneNumberClicked( strippedNumber( url.mid( 8 ) ) );
+    phoneNumberClicked( strippedNumber( url.mid( 6 ) ) );
   else if ( url.startsWith( "sms:" ) )
-    smsTextClicked( strippedNumber( url.mid( 6 ) ) );
+    smsTextClicked( strippedNumber( url.mid( 4 ) ) );
   else if ( url.startsWith( "fax:" ) )
-    faxNumberClicked( strippedNumber( url.mid( 6 ) ) );
+    faxNumberClicked( strippedNumber( url.mid( 4 ) ) );
   else if ( url.startsWith( "addr:" ) )
-    emit addressClicked( url.mid( 7 ) );
+    emit addressClicked( url.mid( 5 ) );
   else if ( url.startsWith( "im:" ) )
     imAddressClicked();
   else
@@ -676,19 +676,19 @@ void AddresseeView::slotHighlighted( const QString &link )
     emit emailHighlighted( email );
     emit highlightedMessage( i18n( "Send mail to '%1'", email ) );
   } else if ( link.startsWith( "phone:" ) ) {
-    QString number = link.mid( 8 );
+    QString number = link.mid( 6 );
 
     emit phoneNumberHighlighted( strippedNumber( number ) );
     emit highlightedMessage( i18n( "Call number %1", number ) );
   } else if ( link.startsWith( "fax:" ) ) {
-    QString number = link.mid( 6 );
+    QString number = link.mid( 4 );
 
     emit faxNumberHighlighted( strippedNumber( number ) );
     emit highlightedMessage( i18n( "Send fax to %1", number ) );
   } else if ( link.startsWith( "addr:" ) ) {
     emit highlightedMessage( i18n( "Show address on map" ) );
   } else if ( link.startsWith( "sms:" ) ) {
-    QString number = link.mid( 6 );
+    QString number = link.mid( 4 );
     emit highlightedMessage( i18n( "Send SMS to %1", number ) );
   } else if ( link.startsWith( "http:" ) || link.startsWith( "https:" ) ) {
     emit urlHighlighted( link );
