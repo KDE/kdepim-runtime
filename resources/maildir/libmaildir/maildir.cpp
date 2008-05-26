@@ -306,14 +306,14 @@ QByteArray Maildir::readEntryHeaders( const QString& key ) const
     QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntry unable to find: " << key;
+        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
         return result;
     }
 
     QFile f( realKey );
     if ( !f.open( QIODevice::ReadOnly ) ) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntry unable to find: " << key;
+        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
         return result;
     }
     forever {

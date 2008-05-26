@@ -239,7 +239,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
     item.setRemoteId( rid );
     item.setMimeType( "message/rfc822" );
     KMime::Message *msg = new KMime::Message;
-    msg->setHead( md.readEntryHeaders( rid ) );
+    msg->setHead( md.readEntryHeaders( entry ) );
     msg->parse();
     item.setPayload( MessagePtr( msg ) );
     items << item;
