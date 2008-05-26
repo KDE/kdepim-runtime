@@ -76,9 +76,7 @@ class DateValidator : public QValidator
 };
 
 KDateEdit::KDateEdit( QWidget *parent, const char *name )
-  : QComboBox( parent ),
-    mReadOnly( false ),
-    mDiscardNextMousePress( false )
+  : QComboBox( parent ), mReadOnly( false ), mDiscardNextMousePress( false )
 {
   setObjectName( name );
   // need at least one entry for popup to work
@@ -90,14 +88,15 @@ KDateEdit::KDateEdit( QWidget *parent, const char *name )
 
   addItem( today );
   setCurrentIndex( 0 );
-  setMinimumSize( sizeHint() );
+  setSizeAdjustPolicy( AdjustToContents );
 
   connect( lineEdit(), SIGNAL( returnPressed() ),
            this, SLOT( lineEnterPressed() ) );
   connect( this, SIGNAL( textChanged( const QString& ) ),
            SLOT( slotTextChanged( const QString& ) ) );
 
-  mPopup = new KDatePickerPopup( KDatePickerPopup::DatePicker | KDatePickerPopup::Words, QDate::currentDate(), this );
+  mPopup = new KDatePickerPopup( KDatePickerPopup::DatePicker | KDatePickerPopup::Words,
+                                 QDate::currentDate(), this );
   mPopup->hide();
   mPopup->installEventFilter( this );
 
