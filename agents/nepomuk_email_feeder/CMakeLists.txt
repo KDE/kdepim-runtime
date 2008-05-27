@@ -24,6 +24,6 @@ if(HAVE_NIE)
     ${NEPOMUK_LIBRARIES}
     )
 
-  install(TARGETS akonadi_nepomuk_email_feeder DESTINATION ${BIN_INSTALL_DIR})
+  install(TARGETS akonadi_nepomuk_email_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
   install(FILES nepomukemailfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 endif(HAVE_NIE)

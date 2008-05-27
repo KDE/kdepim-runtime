@@ -21,7 +21,7 @@ target_link_libraries(akonadi_strigi_feeder
   ${KDE4_KIO_LIBS}
 )
 
-install(TARGETS akonadi_strigi_feeder DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS akonadi_strigi_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES strigifeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
 endif ( STRIGIQTDBUSCLIENT_LIBRARY )

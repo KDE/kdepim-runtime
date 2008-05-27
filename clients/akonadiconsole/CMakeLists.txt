@@ -30,6 +30,6 @@ set_target_properties(akonadiconsole_bin PROPERTIES OUTPUT_NAME akonadiconsole)
 
 target_link_libraries( akonadiconsole_bin ${KDE4_AKONADI_LIBS} akonadi-kabc ${KDE4_AKONADI_KMIME_LIBS} akonadi-kcal kdepim ${KDE4_KDEUI_LIBRARY} )
 
-install( TARGETS akonadiconsole_bin DESTINATION ${BIN_INSTALL_DIR} )
+install( TARGETS akonadiconsole_bin ${INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES akonadiconsole.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
 INSTALL( FILES akonadiconsoleui.rc DESTINATION ${DATA_INSTALL_DIR}/akonadiconsole )

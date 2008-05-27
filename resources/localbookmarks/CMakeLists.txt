@@ -26,5 +26,5 @@ kde4_add_executable(akonadi_localbookmarks_resource RUN_UNINSTALLED ${localbookm
 
 target_link_libraries(akonadi_localbookmarks_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBS})
 
-install(TARGETS akonadi_localbookmarks_resource DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

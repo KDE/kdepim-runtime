@@ -19,7 +19,7 @@ if(HAVE_NIE)
     ${NEPOMUK_LIBRARIES}
     )
 
-  install(TARGETS akonadi_nepomuk_contact_feeder DESTINATION ${BIN_INSTALL_DIR})
+  install(TARGETS akonadi_nepomuk_contact_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
   install(FILES nepomukcontactfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
 endif(HAVE_NIE)

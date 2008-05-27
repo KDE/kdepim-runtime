@@ -19,4 +19,4 @@ kde4_add_executable(akonadi_kabc_resource RUN_UNINSTALLED ${kabcresource_SRCS})
 
 target_link_libraries(akonadi_kabc_resource ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBS})
 
-install(TARGETS akonadi_kabc_resource DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS akonadi_kabc_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
