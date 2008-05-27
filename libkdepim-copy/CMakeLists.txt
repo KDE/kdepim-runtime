@@ -8,8 +8,6 @@ add_subdirectory(pics)
 add_subdirectory(kpartsdesignerplugin)
 add_subdirectory(about)
 
-#kde4_add_dcop_skels(libkdepim_SRCS ${CMAKE_SOURCE_DIR}/libkdepim/networkstatus.h )
-
 add_definitions(${QT_QTDBUS_DEFINITIONS})
 
 
@@ -77,6 +75,7 @@ set(kdepim_LIB_SRCS
    kmutils.cpp
    colorlistbox.cpp
    dictionarycombobox.cpp
+   pimapplication.cpp
 )
 
 
@@ -85,11 +84,6 @@ QT4_ADD_DBUS_INTERFACE(kdepim_LIB_SRCS ${CMAKE_SOURCE_DIR}/kaddressbook/org.kde.
 QT4_ADD_DBUS_INTERFACE(kdepim_LIB_SRCS ${CMAKE_SOURCE_DIR}/korganizer/korgac/org.kde.korganizer.KOrgac.xml korganizer_korgac_interface )
 
 kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialog_base.ui addresspicker.ui)
-
-#kde4_add_dcop_skels(kdepim_LIB_SRCS 
-#	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/MailTransportServiceIface.h 
-#	${CMAKE_SOURCE_DIR}/libkdepim/interfaces/AddressBookServiceIface.h
-#	addresseelineedit.h)
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 

@@ -52,18 +52,15 @@ using namespace KPIM;
 void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QWidget *) {
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
-#ifdef __GNUC__
-#warning "kde4: I don't know when newInstance is defined"
-#endif
-  // DF: it comes from KUniqueApplication
 
-  QDBusInterface abinterface( "org.kde.KAddressbook", "/MainApplication",
+  // If KAddressbook is running, talk to it, otherwise start it.
+  QDBusInterface abinterface( "org.kde.KAddressbook", "/kaddressbook_PimApplication",
                               "org.kde.KUniqueApplication" );
 
   if ( abinterface.isValid() ) {
     //make sure kaddressbook is loaded, otherwise showContactEditor
     //won't work as desired, see bug #87233
-    abinterface.call( "newInstance" );
+    abinterface.call("newInstance", QByteArray(), QByteArray());
   } else {
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
   }
