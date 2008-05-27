@@ -23,6 +23,8 @@ if (XSLTPROC_EXECUTABLE)
   endmacro( kcfg_generate_dbus_interface )
 endif (XSLTPROC_EXECUTABLE)
 
+include_directories(${AKONADI_INCLUDE_DIR})
+
 add_subdirectory(clients)
 add_subdirectory(resources)
 add_subdirectory(agents)
