@@ -298,7 +298,7 @@ void KCMDesignerFields::initGUI()
   }
 
   QHBoxLayout *hbox = new QHBoxLayout();
-  layout->addItem( hbox );
+  layout->addLayout( hbox );
   hbox->setSpacing( KDialog::spacingHint() );
 
   mPageView = new K3ListView( this );
@@ -307,6 +307,7 @@ void KCMDesignerFields::initGUI()
   mPageView->setAllColumnsShowFocus( true );
   mPageView->setFullWidth( true );
   hbox->addWidget( mPageView );
+  QTimer::singleShot( 0, mPageView, SLOT(triggerUpdate()) );
 
   Q3GroupBox *box = new Q3GroupBox(1, Qt::Horizontal, i18n("Preview of Selected Page"), this );
 
@@ -320,7 +321,7 @@ void KCMDesignerFields::initGUI()
   loadUiFiles();
 
   hbox = new QHBoxLayout();
-  layout->addItem( hbox );
+  layout->addLayout( hbox );
   hbox->setSpacing( KDialog::spacingHint() );
 
   QString cwHowto = i18n("<qt><p>This section allows you to add your own GUI"
@@ -367,15 +368,6 @@ void KCMDesignerFields::initGUI()
 
   if ( noDesigner )
     mDesignerButton->setEnabled( false );
-
-  // FIXME: Why do I have to call show() for all widgets? A this->show() doesn't
-  // seem to work.
-  mPageView->show();
-  box->show();
-  activeLabel->show();
-  mDeleteButton->show();
-  mImportButton->show();
-  mDesignerButton->show();
 }
 
 void KCMDesignerFields::updatePreview( Q3ListViewItem *item )
