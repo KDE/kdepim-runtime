@@ -1,4 +1,5 @@
 /* This file is part of the KDE project
+
    Copyright 2008 David Faure <faure@kde.org>
 
    This library is free software; you can redistribute it and/or modify
@@ -19,10 +20,12 @@
 */
 
 #include "pimapplication.h"
+
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <kdebug.h>
 #include <kstartupinfo.h>
+
 #include <qdbusconnectioninterface.h>
 #include <qdbusinterface.h>
 
@@ -32,11 +35,12 @@ PimApplication::PimApplication()
   : KUniqueApplication()
 {
   // This object name is used in start(), and also in kontact's UniqueAppHandler.
-  const QString objectName = QString('/') + applicationName() + "_PimApplication";
-  QDBusConnection::sessionBus().registerObject(objectName, this,
-                                               QDBusConnection::ExportScriptableSlots |
-                                               QDBusConnection::ExportScriptableProperties |
-                                               QDBusConnection::ExportAdaptors);
+  const QString objectName = QString( '/' ) + applicationName() + "_PimApplication";
+  QDBusConnection::sessionBus().registerObject(
+    objectName, this,
+    QDBusConnection::ExportScriptableSlots |
+    QDBusConnection::ExportScriptableProperties |
+    QDBusConnection::ExportAdaptors );
 }
 
 static const char _k_sessionBusName[] = "kdepimapplication_session_bus";
@@ -45,10 +49,10 @@ static QDBusConnection tryToInitDBusConnection()
 {
   // Check the D-Bus connection health, and connect - but not using QDBusConnection::sessionBus()
   // since we can't close that one before forking.
-  QDBusConnection connection = QDBusConnection::connectToBus(QDBusConnection::SessionBus, _k_sessionBusName);
-  if (!connection.isConnected())
-  {
-    kError() << "Cannot find the D-Bus session server" << endl;
+  QDBusConnection connection = QDBusConnection::connectToBus(
+    QDBusConnection::SessionBus, _k_sessionBusName );
+  if ( !connection.isConnected() ) {
+    kError() << "Cannot find the D-Bus session server" << endl; //krazy:exclude=kdebug
     ::exit(255);
   }
   return connection;
@@ -62,34 +66,36 @@ bool PimApplication::start()
   // otherwise fall back to standard KUniqueApplication behavior (start appName).
 
   const QString serviceName = "org.kde." + appName;
-  if (tryToInitDBusConnection().interface()->isServiceRegistered(serviceName))
-  {
+  if ( tryToInitDBusConnection().interface()->isServiceRegistered( serviceName ) ) {
     QByteArray saved_args;
-    QDataStream ds(&saved_args, QIODevice::WriteOnly);
-    KCmdLineArgs::saveAppArgs(ds);
+    QDataStream ds( &saved_args, QIODevice::WriteOnly );
+    KCmdLineArgs::saveAppArgs( ds );
 
     QByteArray new_asn_id;
 #if defined Q_WS_X11
     KStartupInfoId id;
-    if( kapp != NULL ) // KApplication constructor unsets the env. variable
-      id.initId( kapp->startupId());
-    else
+    if( kapp ) { // KApplication constructor unsets the env. variable
+      id.initId( kapp->startupId() );
+    } else {
       id = KStartupInfo::currentStartupIdEnv();
-    if( !id.none())
+    }
+    if( !id.none() ) {
       new_asn_id = id.id();
+    }
 #endif
 
-    const QString objectName = QString('/') + appName + "_PimApplication";
+    const QString objectName = QString( '/' ) + appName + "_PimApplication";
     //kDebug() << objectName;
-    QDBusInterface iface(serviceName, objectName, "org.kde.KUniqueApplication", QDBusConnection::sessionBus());
+    QDBusInterface iface(
+      serviceName, objectName, "org.kde.KUniqueApplication", QDBusConnection::sessionBus() );
     QDBusReply<int> reply;
-    if (iface.isValid() && (reply = iface.call("newInstance", new_asn_id, saved_args)).isValid())
-    {
+    if ( iface.isValid() &&
+         ( reply = iface.call( "newInstance", new_asn_id, saved_args ) ).isValid() ) {
       return false; // success means that main() can exit now.
     }
   }
 
-  QDBusConnection::disconnectFromBus(_k_sessionBusName);
+  QDBusConnection::disconnectFromBus( _k_sessionBusName );
 
   //kDebug() << "kontact not running -- start standalone application";
   // kontact not running -- start standalone application.

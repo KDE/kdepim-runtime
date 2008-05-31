@@ -1,4 +1,5 @@
 /* This file is part of the KDE project
+
    Copyright 2008 David Faure <faure@kde.org>
 
    This library is free software; you can redistribute it and/or modify
@@ -17,10 +18,11 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 */
-
-#include <kuniqueapplication.h>
+#ifndef KDEPIM_PIMAPPLICATION_H
+#define KDEPIM_PIMAPPLICATION_H
 
 #include "kdepim_export.h"
+#include <kuniqueapplication.h>
 
 namespace KPIM {
 
@@ -44,3 +46,5 @@ class KDEPIM_EXPORT PimApplication : public KUniqueApplication
 };
 
 }
+
+#endif
