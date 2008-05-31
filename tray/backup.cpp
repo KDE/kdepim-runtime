@@ -24,6 +24,7 @@
 #include <KTempDir>
 #include <KUrl>
 
+#include <QDir>
 #include <kio/netaccess.h>
 
 #include <akonadi/private/xdgbasedirs_p.h>
@@ -58,16 +59,17 @@ void Backup::create( const KUrl& filename )
         return;
     }
 
+    const QString sep( QDir::separator() );
     /* first create the temp folder. */
     KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
     tempDir->setAutoRemove( false );
-    KIO::NetAccess::mkdir( tempDir->name() + "config", this );
+    KIO::NetAccess::mkdir( tempDir->name() + "kdeconfig", this );
+    KIO::NetAccess::mkdir( tempDir->name() + "akonadiconfig", this );
     KIO::NetAccess::mkdir( tempDir->name() + "db", this );
-    kDebug() << "Temp dir: "<< tempDir->name();
 
     QStringList filesToBackup;
 
-    /* Copy over the configuration files. */
+    /* Copy over the KDE config files. */
     AgentManager *manager = AgentManager::self();
     AgentInstance::List list = manager->instances();
     foreach( const AgentInstance &agent, list ) {
@@ -75,14 +77,26 @@ void Backup::create( const KUrl& filename )
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );
         if ( exists ) {
-            KIO::NetAccess::file_copy( configFileName, tempDir->name() + "config/" + agentFileName, this );
-            filesToBackup << "config/" + agentFileName;
+            KIO::NetAccess::file_copy( configFileName, 
+			    tempDir->name() + "kdeconfig" + sep + agentFileName, this );
+            filesToBackup << "kdeconfig" + sep + agentFileName;
         }
     }
 
+    /* Copy over the Akonadi config files */
+    const QString config = XdgBaseDirs::findResourceDir( "config", "akonadi" );
+    QDir dir( config );
+    const QStringList configlist = dir.entryList( QDir::Files );
+    foreach( const QString& item, configlist ) {
+	KIO::NetAccess::file_copy( config + sep + item, 
+			tempDir->name() + "akonadiconfig" + sep + item, this );
+        filesToBackup << "akonadiconfig/" + item;
+    }
+	      
+
     /* Dump the database */
     const QString socket = XdgBaseDirs::findResourceDir( "data",
-                           "akonadi/db_misc/" ) + "mysql.socket";
+                           "akonadi" + sep + "db_misc" + sep) + "mysql.socket";
     if ( socket.isEmpty() )
         kFatal() << "No socket found";
 
@@ -93,31 +107,29 @@ void Backup::create( const KUrl& filename )
     params << "--result-file=" + tempDir->name() + "db/database.sql";
     params << "--socket=" + socket << "akonadi";
     proc->setProgram( KStandardDirs::findExe( "mysqldump" ), params );
-    kDebug() << "Executing: " << proc->program();
     int result = proc->execute();
     delete proc;
-    kDebug() << result;
     if ( result != 0 ) {
+    	kWarning() << "Executed: " << proc->program() << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
         return;
     }
-    filesToBackup << "db/database.sql";
+    filesToBackup << "db" + sep + "database.sql";
 
     /* Make a nice tar file. */
     proc = new KProcess( this );
     params.clear();
     params << "-C" << tempDir->name();
-    params << "-cjvf";
+    params << "-cjf";
     params << filename.path() << filesToBackup;
     proc->setWorkingDirectory( tempDir->name() );
     proc->setProgram( KStandardDirs::findExe( "tar" ), params );
-    kDebug() << "Executing: " << proc->program();
     result = proc->execute();
     delete proc;
-    kDebug() << result;
     if ( result != 0 ) {
+    	kWarning() << "Executed: " << proc->program() << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );

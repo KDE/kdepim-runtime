@@ -59,6 +59,8 @@ void Restore::restore( const KUrl& filename )
         return;
     }
 
+    const QString sep = QDir::separator();
+
     /* first create the temp folder. */
     KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
     tempDir->setAutoRemove( false );
@@ -68,23 +70,22 @@ void Restore::restore( const KUrl& filename )
     KProcess *proc = new KProcess( this );
     QStringList params;
     params << "-C" << tempDir->name();
-    params << "-xjvf";
+    params << "-xjf";
     params << filename.path();
     proc->setWorkingDirectory( tempDir->name() );
     proc->setProgram( KStandardDirs::findExe( "tar" ), params );
-    kDebug() << "Executing: " << proc->program();
     int result = proc->execute();
     delete proc;
-    kDebug() << result;
     if ( result != 0 ) {
+	kWarning() << "Executed:" << proc->program() << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
         return;
     }
 
-    /* Copy over the configuration files. */
-    QDir dir( tempDir->name() + "config/" );
+    /* Copy over the KDE configuration files. */
+    QDir dir( tempDir->name() + "kdeconfig" + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
     QFileInfoList list = dir.entryInfoList();
     for ( int i = 0; i < list.size(); ++i ) {
@@ -96,22 +97,35 @@ void Restore::restore( const KUrl& filename )
         KIO::NetAccess::file_copy( source, dest, this );
     }
 
+    /* Copy over the Akonadi configuration files. */
+    const QString akonadiconfigfolder = XdgBaseDirs::findResourceDir( "config", "akonadi" );
+    dir.setPath( tempDir->name() + "akonadiconfig" + sep );
+    dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
+    list = dir.entryInfoList();
+    for ( int i = 0; i < list.size(); ++i ) {
+        QFileInfo fileInfo = list.at( i );
+        const QString source = fileInfo.absoluteFilePath();
+        const QString dest = akonadiconfigfolder + sep + fileInfo.fileName();
+
+        kDebug() << "Restoring: " << source << "to:" << dest;
+        KIO::NetAccess::file_copy( source, dest, this );
+    }
+
     /* Restore the database */
     const QString socket = XdgBaseDirs::findResourceDir( "data",
-                           "akonadi/db_misc/" ) + "mysql.socket";
+                           "akonadi" + sep + "db_misc" + sep ) + "mysql.socket";
     if ( socket.isEmpty() )
         kFatal() << "No socket found";
 
     proc = new KProcess( this );
     params.clear();
     params << "--socket=" + socket << "akonadi";
-    proc->setStandardInputFile( tempDir->name() + "db/database.sql" );
+    proc->setStandardInputFile( tempDir->name() + "db" + sep + "database.sql" );
     proc->setProgram( KStandardDirs::findExe( "mysql" ), params );
-    kDebug() << "Executing: " << proc->program();
     result = proc->execute();
     delete proc;
-    kDebug() << result;
     if ( result != 0 ) {
+	kWarning() << "Executed:" << proc->program() << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
