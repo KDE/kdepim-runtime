@@ -273,6 +273,27 @@ void KDateEdit::focusOutEvent( QFocusEvent * )
   }
 }
 
+void KDateEdit::keyPressEvent(QKeyEvent* e)
+{
+      int step = 0;
+      if ( e->key() == Qt::Key_Up ) {
+        step = 1;
+      } else if ( e->key() == Qt::Key_Down ) {
+        step = -1;
+      }
+      if ( step && !mReadOnly ) {
+        QDate date = parseDate();
+        if ( date.isValid() ) {
+          date = date.addDays( step );
+          if ( assignDate( date ) ) {
+            updateView();
+            emit dateChanged( date );
+            emit dateEntered( date );
+          }
+        }
+      }
+}
+
 bool KDateEdit::eventFilter( QObject *object, QEvent *event )
 {
   if ( object == lineEdit() ) {
@@ -288,25 +309,6 @@ bool KDateEdit::eventFilter( QObject *object, QEvent *event )
       if ( keyEvent->key() == Qt::Key_Return ) {
         lineEnterPressed();
         return true;
-      }
-
-      int step = 0;
-      if ( keyEvent->key() == Qt::Key_Up ) {
-        step = 1;
-      } else if ( keyEvent->key() == Qt::Key_Down ) {
-        step = -1;
-      }
-      if ( step && !mReadOnly ) {
-        QDate date = parseDate();
-        if ( date.isValid() ) {
-          date = date.addDays( step );
-          if ( assignDate( date ) ) {
-            updateView();
-            emit dateChanged( date );
-            emit dateEntered( date );
-            return true;
-          }
-        }
       }
     }
   } else {

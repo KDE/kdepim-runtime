@@ -116,6 +116,7 @@ class KDEPIM_EXPORT KDateEdit : public QComboBox
     virtual bool eventFilter( QObject *, QEvent * );
     virtual void mousePressEvent( QMouseEvent * );
     virtual void focusOutEvent( QFocusEvent * );
+    virtual void keyPressEvent( QKeyEvent * );
 
     /**
       Sets the date, without altering the display.
