@@ -87,6 +87,15 @@ AddresseeView::AddresseeView( QWidget *parent, KConfig *config )
   mActionShowCustomFields = new KToggleAction( i18n( "Show Custom Fields" ), this );
   mActionShowCustomFields->setCheckedState( KGuiItem( i18n( "Hide Custom Fields" ) ) );
 
+  if ( !config ) {
+    mConfig = new KConfig( "kaddressbookrc" );
+    mDefaultConfig = true;
+  } else {
+    mConfig = config;
+  }
+
+  load();
+
   connect( mActionShowBirthday, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowEmails, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
@@ -94,14 +103,6 @@ AddresseeView::AddresseeView( QWidget *parent, KConfig *config )
   connect( mActionShowURLs, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowIMAddresses, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
   connect( mActionShowCustomFields, SIGNAL( toggled( bool ) ), SLOT( configChanged() ) );
-
-  if ( !config ) {
-    mConfig = new KConfig( "kaddressbookrc" );
-    mDefaultConfig = true;
-  } else
-    mConfig = config;
-
-  load();
 
   // set up IMProxy to display contacts' IM presence and make connections to keep the display live
   mKIMProxy = ::KIMProxy::instance();
