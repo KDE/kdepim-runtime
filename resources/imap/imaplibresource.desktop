@@ -15,6 +15,7 @@ Name[sv]=Akonadi Mailody Imaplib-resurs
 Name[tr]=Akonadi Mailody Imaplib Kaynağı
 Name[uk]=Ресурс Imaplib Mailody для Akonadi
 Name[x-test]=xxAkonadi Mailody Imaplib Resourcexx
+Name[zh_CN]=Akonadi Mailody IMAP 库资源
 Name[zh_TW]=Akonadi Maildir Imaplib 資源
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource

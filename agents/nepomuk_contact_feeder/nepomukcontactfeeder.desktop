@@ -14,6 +14,7 @@ Name[sv]=Akonadi kontaktinmatning till Nepomuk
 Name[tr]=Akonadi Nepomuk Kişi Besleyici
 Name[uk]=Отримувач контактів Nepomuk для Akonadi
 Name[x-test]=xxAkonadi Nepomuk Contact Feederxx
+Name[zh_CN]=Akonadi Nepomuk 联系人采集器
 Comment=Extension for Akonadi to push contacts into Nepomuk
 Comment[ca]=Extensió per a l'Akonadi per introduir contactes en el Nepomuk
 Comment[de]=Nepomuk-Erweiterung zur Übergabe von Kontakten an Nepomuk
