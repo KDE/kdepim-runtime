@@ -109,7 +109,7 @@ void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, 
     } else if ( newOwner.isEmpty() ) {
         updateMenu( false );
         KPassivePopup::message( i18n( "Akonadi not available" ),
-                                i18n( "The Akonadi server has been stopped, Akonadi related application can no longer be used." ),this );
+                                i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ),this );
     }
 }
 
