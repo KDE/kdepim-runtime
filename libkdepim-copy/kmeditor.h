@@ -50,7 +50,7 @@ class KEMailQuotingHighlighter;
  * @li Utility functions like removing whitespace, inserting a file,
  *     adding quotes or rot13'ing the text
  *
- * Do not call any spellchecking related function of KTextEdit, use the function
+ * Do not call any spellchecking related function of KRichTextWidget, use the function
  * of this class instead.
  */
 class KDEPIM_EXPORT KMeditor : public KRichTextWidget

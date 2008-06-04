@@ -202,7 +202,7 @@ QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &si
 
 void KMeditorPrivate::ensureCursorVisibleDelayed()
 {
-  static_cast<KTextEdit*>( q )->ensureCursorVisible();
+  static_cast<KRichTextWidget*>( q )->ensureCursorVisible();
 }
 
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
@@ -212,7 +212,7 @@ void KMeditor::dragEnterEvent( QDragEnterEvent *e )
   } else if ( e->mimeData()->hasFormat( "image/png" ) ) {
     e->accept();
   } else {
-    return KTextEdit::dragEnterEvent( e );
+    return KRichTextWidget::dragEnterEvent( e );
   }
 }
 
@@ -223,7 +223,7 @@ void KMeditor::dragMoveEvent( QDragMoveEvent *e )
   } else if  ( e->mimeData()->hasFormat( "image/png" ) ) {
     e->accept();
   } else {
-    return KTextEdit::dragMoveEvent( e );
+    return KRichTextWidget::dragMoveEvent( e );
   }
 }
 
@@ -233,7 +233,7 @@ void KMeditor::paste()
     emit pasteImage();
   }
   else
-    KTextEdit::paste();
+    KRichTextWidget::paste();
 }
 
 void KMeditor::keyPressEvent ( QKeyEvent * e )
@@ -263,7 +263,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
           break;
         }
       }
-      KTextEdit::keyPressEvent( e );
+      KRichTextWidget::keyPressEvent( e );
       // duplicate quote indicators of the previous line before the new
       // line if the line actually contained text (apart from the quote
       // indicators) and the cursor is behind the quote indicators
@@ -292,7 +292,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
       }
     }
     else
-      KTextEdit::keyPressEvent( e );
+      KRichTextWidget::keyPressEvent( e );
   }
   else if ( e->key() == Qt::Key_Up && e->modifiers() != Qt::ShiftModifier &&
             textCursor().block().position() == 0 &&
@@ -309,7 +309,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
   }
   else
   {
-    KTextEdit::keyPressEvent( e );
+    KRichTextWidget::keyPressEvent( e );
   }
 }
 
@@ -334,12 +334,12 @@ bool KMeditor::eventFilter( QObject*o, QEvent* e )
 {
   if (o == this)
     KCursor::autoHideEventFilter( o, e );
-  return KTextEdit::eventFilter( o, e );
+  return KRichTextWidget::eventFilter( o, e );
 }
 
 void KMeditorPrivate::init()
 {
-  // We tell the KTextEdit to enable spell checking, because only then it will
+  // We tell the KRichTextWidget to enable spell checking, because only then it will
   // call createHighlighter() which will create our own highlighter which also
   // does quote highlighting.
   // However, *our* spellchecking is still disabled. Our own highlighter only
@@ -347,7 +347,7 @@ void KMeditorPrivate::init()
   // if our spellchecking is disabled.
   // See also KEMailQuotingHighlighter::highlightBlock().
   spellCheckingEnabled = false;
-  static_cast<KTextEdit*>( q )->setCheckSpellingEnabled( true );
+  static_cast<KRichTextWidget*>( q )->setCheckSpellingEnabled( true );
 
   KCursor::setAutoHideCursor( q, true, true );
   q->installEventFilter( q );
@@ -372,7 +372,7 @@ void KMeditor::createHighlighter()
   changeHighlighterColors( emailHighLighter );
 
   //TODO change config
-  KTextEdit::setHighlighter( emailHighLighter );
+  KRichTextWidget::setHighlighter( emailHighLighter );
 
   if ( !d->language.isEmpty() )
     setSpellCheckLanguage( d->language );
@@ -473,7 +473,7 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
                                  QTextCursor::KeepAnchor, selectedWord.size() );
 
   bool wordIsMisspelled = !selectedWord.isEmpty() &&
-                          KTextEdit::highlighter()->isWordMisspelled( selectedWord );
+                          KRichTextWidget::highlighter()->isWordMisspelled( selectedWord );
 
   // If the user clicked a selected word, do nothing.
   // If the user clicked somewhere else, move the cursor there.
@@ -491,14 +491,14 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
   // Use standard context menu for already selected words, correctly spelled
   // words and words inside quotes.
   if ( !wordIsMisspelled || selectedWordClicked || inQuote ) {
-    KTextEdit::contextMenuEvent( event );
+    KRichTextWidget::contextMenuEvent( event );
   }
   else {
     KMenu suggestions;
     KMenu menu;
 
     //Add the suggestions to the popup menu
-    QStringList reps = KTextEdit::highlighter()->suggestionsForWord( selectedWord );
+    QStringList reps = KRichTextWidget::highlighter()->suggestionsForWord( selectedWord );
     if ( reps.count() > 0 ) {
       for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
         suggestions.addAction( *it );
@@ -520,12 +520,12 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
       Q_ASSERT( cursor.selectedText() == selectedWord );
 
       if ( selectedAction == ignoreAction ) {
-        KTextEdit::highlighter()->ignoreWord( selectedWord );
-        KTextEdit::highlighter()->rehighlight();
+        KRichTextWidget::highlighter()->ignoreWord( selectedWord );
+        KRichTextWidget::highlighter()->rehighlight();
       }
       else if ( selectedAction == addToDictAction ) {
-        KTextEdit::highlighter()->addWordToDictionary( selectedWord );
-        KTextEdit::highlighter()->rehighlight();
+        KRichTextWidget::highlighter()->addWordToDictionary( selectedWord );
+        KRichTextWidget::highlighter()->rehighlight();
       }
 
       // Other actions can only be one of the suggested words
@@ -934,11 +934,11 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
 
 void KMeditor::setSpellCheckLanguage( const QString &language )
 {
-  if ( KTextEdit::highlighter() ) {
-    KTextEdit::highlighter()->setCurrentLanguage( language );
-    KTextEdit::highlighter()->rehighlight();
+  if ( KRichTextWidget::highlighter() ) {
+    KRichTextWidget::highlighter()->setCurrentLanguage( language );
+    KRichTextWidget::highlighter()->rehighlight();
   }
-  KTextEdit::setSpellCheckingLanguage( language );
+  KRichTextWidget::setSpellCheckingLanguage( language );
 
   if ( language != d->language )
     emit spellcheckLanguageChanged( language );
@@ -947,7 +947,7 @@ void KMeditor::setSpellCheckLanguage( const QString &language )
 
 void KMeditor::slotCheckSpelling()
 {
-  KTextEdit::checkSpelling();
+  KRichTextWidget::checkSpelling();
 }
 
 bool KMeditor::isSpellCheckingEnabled() const
@@ -958,7 +958,7 @@ bool KMeditor::isSpellCheckingEnabled() const
 void KMeditor::toggleSpellChecking( bool on )
 {
   KEMailQuotingHighlighter *hlighter =
-            dynamic_cast<KEMailQuotingHighlighter*>( KTextEdit::highlighter() );
+            dynamic_cast<KEMailQuotingHighlighter*>( KRichTextWidget::highlighter() );
   if ( hlighter )
     hlighter->toggleSpellHighlighting( on );
 
