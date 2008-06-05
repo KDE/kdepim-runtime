@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi
+Name[de]=Akonadi-Ressource
 Name[x-test]=xxAkonadixx
 X-KDE-Library=kcal_akonadi
 Type=Service
