@@ -335,9 +335,10 @@ void Imaplib::getHeaders( const QString& mb, const QStringList& uids )
 
 void Imaplib::getHeaderList( const QString& mb, int start, int end )
 {
-    // kDebug() << start << "-" << end << "for" << mb;
     if ( !( end>=1 ) || end < start || !( start>=1 ) )
         return;
+
+    kDebug() << start << "-" << end << "for" << mb;
 
     // Put this in queue with priority above the checkmail things...
     m_queue.prepend( Queue( Queue::GetHeaderList, mb,
@@ -357,7 +358,7 @@ void Imaplib::getMessage( const QString& mb, int uid )
 
 void Imaplib::checkMail( const QString& box )
 {
-    // kDebug() << box;
+    kDebug() << box;
     const QString box2 = KIMAP::encodeImapFolderName( box );
     m_queue.append( Queue( Queue::CheckMail, box,
                            "STATUS \""+box2+"\" (MESSAGES UNSEEN UIDVALIDITY UIDNEXT)",
@@ -701,6 +702,7 @@ void Imaplib::slotParseCheckMail()
         return;
     }
 
+    kDebug() << "Emitting integrity";
     emit integrity( mb, totalShouldBe, uidvalidity, uidnext );
     emit statusReady();
     m_currentQueueItem = Queue();
@@ -831,7 +833,6 @@ void Imaplib::slotParseExists()
         int amount = rx1.cap( 1 ).toInt();
         kDebug() << "Emitting messagecount";
         emit messageCount( this, m_currentQueueItem.mailbox(), amount );
-
         if ( m_currentQueueItem.state() == Queue::SyncMailBox )
             getHeaderList( m_currentMailbox, 1, amount );
         else
@@ -849,13 +850,15 @@ void Imaplib::slotParseExists()
 
 void Imaplib::slotParseGetHeaderList()
 {
-    // kDebug();
+    kDebug();
 
     static QString all_data;
     all_data.append( m_received );
 
     if ( !endSimpleCommand( all_data ) )
         return;
+
+    kDebug() << "preparing results";
 
     QStringList results;
 
@@ -884,6 +887,8 @@ void Imaplib::slotParseGetHeaderList()
         ++start2;
         ++start;
     }
+
+    kDebug() << "emitting uidsAndFlagsInFolder for " <<  m_currentQueueItem.mailbox() << results.count();
     emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
 
     all_data.clear();

@@ -283,8 +283,7 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
         }
     }
 
-
-    m_imap->getMailBox( col.remoteId() );
+    m_imap->checkMail( col.remoteId() );
 }
 
 void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
@@ -503,6 +502,8 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
     }
 
     qint64 mailsReal = m_collection.statistics().count();
+    if ( mailsReal == -1 ) 
+        mailsReal = 0;
 
     kDebug() << "integrity: " << mb << " should be: "
     << totalShouldBe << " current: " << mailsReal;
@@ -512,11 +513,13 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         // that probably means that there is new mail. Fetch missing.
         kDebug() << "Fetch missing: " << totalShouldBe << " But: " << mailsReal;
         m_imap->getHeaderList( mb, mailsReal+1, totalShouldBe );
+        return;
     } else if ( totalShouldBe != mailsReal ) {
         // The amount on the server does not match the amount in the cache.
         // that means we need reget the catch completely.
-        kDebug() << "O OH: " << totalShouldBe << " BUt: " << mailsReal;
+        kDebug() << "O OH: " << totalShouldBe << " But: " << mailsReal;
         m_imap->getHeaderList( mb, 1, totalShouldBe );
+        return;
     } else if ( totalShouldBe == mailsReal && oldUidNext != uidnext.toInt()
                 && oldUidNext != 0 && !uidnext.isEmpty() && !firsttime ) {
         //buggy
@@ -527,6 +530,9 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         m_imap->getHeaderList( mb, 1, totalShouldBe );
         kDebug() << "UIDNEXT check failed, refetching mailbox" << endl;
     }
+
+    kDebug() << "All fine, nothing to do";
+    itemsRetrievalDone();
 }
 /******************* Private ***********************************************/
 
