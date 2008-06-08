@@ -21,6 +21,8 @@
 #include "imaplibresource.h"
 #include "setupserver.h"
 #include "settingsadaptor.h"
+#include "uidvalidityattribute.h"
+#include "uidnextattribute.h"
 #include "imaplib.h"
 
 #include <QtCore/QDebug>
@@ -40,6 +42,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectionstatistics.h>
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectiondeletejob.h>
@@ -50,7 +53,7 @@ using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
         :ResourceBase( id ),
-         m_imap(0)
+        m_imap( 0 )
 {
     changeRecorder()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
@@ -138,7 +141,7 @@ void ImaplibResource::startConnect()
 void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
     m_itemAdded = item;
-    m_colAdded = collection;
+    m_collection = collection;
     const QString mailbox = collection.remoteId();
     kDebug() << "mailbox:" << mailbox;
 
@@ -150,7 +153,7 @@ void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 void ImaplibResource::slotSaveDone( int uid )
 {
     if ( uid > -1 ) {
-        const QString reference =  m_colAdded.remoteId() + "-+-" + QString::number( uid );
+        const QString reference =  m_collection.remoteId() + "-+-" + QString::number( uid );
         kDebug() << "Setting reference to " << reference;
         m_itemAdded.setRemoteId( reference );
     }
@@ -164,7 +167,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     QSet<QByteArray> flags = item.flags();
     QByteArray newFlags;
     foreach( const QByteArray &flag, flags )
-	    newFlags += flag + " ";
+    newFlags += flag + " ";
 
     kDebug( ) << "Flags going to be set" << newFlags;
     const QString reference = item.remoteId();
@@ -186,9 +189,10 @@ void ImaplibResource::itemRemoved( const Akonadi::Item &item )
 void ImaplibResource::retrieveCollections()
 {
     if ( !m_imap ) {
-      kDebug() << "Ignoring this request. Probably there is no connection.";
-      return;
+        kDebug() << "Ignoring this request. Probably there is no connection.";
+        return;
     }
+    kDebug();
     m_imap->getMailBoxList();
 }
 
@@ -256,6 +260,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
 void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug( ) << col.remoteId();
+    m_collection = col;
     m_imap->getMailBox( col.remoteId() );
 }
 
@@ -267,7 +272,6 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
         itemsRetrievalDone();
     } else {
         setTotalItems( amount );
-        m_imap->getHeaderList( mb, 1, amount );
     }
 }
 
@@ -327,7 +331,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         messages.append( i );
     }
 
-    kDebug() << "calling partlyretrieved with amount: " << messages.count ();
+    kDebug() << "calling partlyretrieved with amount: " << messages.count();
     itemsPartlyRetrieved( messages );
 }
 
@@ -338,22 +342,22 @@ void ImaplibResource::collectionAdded( const Collection & collection, const Coll
     const QString remoteName = parent.remoteId() + '.' + collection.name();
     kDebug( ) << "New folder: " << remoteName;
 
-    m_colAdded = collection;
+    m_collection = collection;
     m_imap->createMailBox( remoteName );
-    m_colAdded.setRemoteId( remoteName );
+    m_collection.setRemoteId( remoteName );
 }
 
 void ImaplibResource::slotCollectionAdded( bool success )
 {
     // finish the task.
-    changeCommitted( m_colAdded );
+    changeCommitted( m_collection );
 
     if ( !success ) {
         // remove the collection again.
         // TODO: this will trigger collectionRemoved again ;-)
         kDebug() << "Failed to create the folder, deleting it in akonadi again";
         emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
-        new CollectionDeleteJob( m_colAdded, this );
+        new CollectionDeleteJob( m_collection, this );
     }
 }
 
@@ -423,6 +427,84 @@ void ImaplibResource::slotPurge( const QString &folder )
     m_imap->expungeMailBox( folder );
 }
 
+void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
+                                     const QString& uidvalidity, const QString& uidnext )
+{
+    // uidvalidity can change between sessions, we don't want to refetch
+    // folders in that case. Keep track of what is processed and what not.
+    static QStringList processed;
+    bool firsttime = false;
+    if ( processed.indexOf( mb ) == -1 ) {
+        firsttime = true;
+        processed.append( mb );
+    }
+
+    // Get the current uid next value and store it
+    int oldUidValidity = 0;
+    if ( !m_collection.hasAttribute( "uidvalidity" ) ) {
+        UidValidityAttribute* currentuidvalidity  = new UidValidityAttribute( uidvalidity.toInt() );
+        m_collection.addAttribute( currentuidvalidity );
+    } else {
+        UidValidityAttribute* currentuidvalidity =
+            static_cast<UidValidityAttribute*>( m_collection.attribute( "uidvalidity" ) );
+        oldUidValidity = currentuidvalidity->uidValidity();
+        if ( currentuidvalidity->uidValidity() != uidvalidity.toInt() ) {
+            currentuidvalidity->setUidValidity( uidvalidity.toInt() );
+        }
+    }
+
+    // Get the current uid next value and store it
+    int oldUidNext = 0;
+    if ( !m_collection.hasAttribute( "uidnext" ) ) {
+        UidNextAttribute* currentuidnext  = new UidNextAttribute( uidnext.toInt() );
+        m_collection.addAttribute( currentuidnext );
+    } else {
+        UidNextAttribute* currentuidnext =
+            static_cast<UidNextAttribute*>( m_collection.attribute( "uidnext" ) );
+        oldUidNext = currentuidnext->uidNext();
+        if ( currentuidnext->uidNext() != uidnext.toInt() ) {
+            currentuidnext->setUidNext( uidnext.toInt() );
+        }
+    }
+
+    // First check the uidvalidity, if this has changed, it means the folder
+    // has been deleted and recreated. So we wipe out the messages and
+    // retrieve all.
+    if ( oldUidValidity != uidvalidity.toInt() && !firsttime
+            && oldUidValidity != 0 && !uidvalidity.isEmpty() ) {
+        kDebug() << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+        << uidvalidity <<") refetching "<< mb << endl;
+
+        m_imap->getHeaderList( mb, 1, totalShouldBe );
+        return;
+    }
+
+    qint64 mailsReal = m_collection.statistics().count();
+
+    kDebug() << "integrity: " << mb << " should be: "
+    << totalShouldBe << " current: " << mailsReal;
+
+    if ( totalShouldBe > mailsReal ) {
+        // The amount on the server is bigger than that we have in the cache
+        // that probably means that there is new mail. Fetch missing.
+        kDebug() << "Fetch missing: " << totalShouldBe << " But: " << mailsReal;
+        m_imap->getHeaderList( mb, mailsReal+1, totalShouldBe );
+    } else if ( totalShouldBe != mailsReal ) {
+        // The amount on the server does not match the amount in the cache.
+        // that means we need reget the catch completely.
+        kDebug() << "O OH: " << totalShouldBe << " BUt: " << mailsReal;
+        m_imap->getHeaderList( mb, 1, totalShouldBe );
+    } else if ( totalShouldBe == mailsReal && oldUidNext != uidnext.toInt()
+                && oldUidNext != 0 && !uidnext.isEmpty() && !firsttime ) {
+        //buggy
+        return;
+
+        // amount is right but uidnext is different.... something happened
+        // behind our back...
+        m_imap->getHeaderList( mb, 1, totalShouldBe );
+        kDebug() << "UIDNEXT check failed, refetching mailbox" << endl;
+    }
+}
 /******************* Private ***********************************************/
 
 void ImaplibResource::connections()
@@ -468,6 +550,11 @@ void ImaplibResource::connections()
              SIGNAL( mailBoxDeleted( bool, const QString& ) ),
              SLOT( slotCollectionRemoved( bool ) ) );
 
+    connect( m_imap,
+             SIGNAL( integrity( const QString&, int, const QString&,
+                                const QString& ) ),
+             SLOT( slotIntegrity( const QString&, int, const QString&,
+                                  const QString& ) ) );
     /*
     connect( m_imap,
              SIGNAL( loginOk( Imaplib* ) ),
@@ -499,11 +586,6 @@ void ImaplibResource::connections()
     connect( m_imap,
              SIGNAL( expungeCompleted( Imaplib*, const QString& ) ),
              SLOT( slotMailBoxExpunged( Imaplib*, const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( integrity( const QString&, int, const QString&,
-                                const QString& ) ),
-             SLOT( slotIntegrity( const QString&, int, const QString&,
-                                  const QString& ) ) );
     */
 }
 
@@ -520,3 +602,5 @@ void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
 AKONADI_RESOURCE_MAIN( ImaplibResource )
 
 #include "imaplibresource.moc"
+
+

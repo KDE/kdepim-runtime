@@ -336,7 +336,7 @@ void Imaplib::getHeaders( const QString& mb, const QStringList& uids )
 void Imaplib::getHeaderList( const QString& mb, int start, int end )
 {
     // kDebug() << start << "-" << end << "for" << mb;
-    if ( !(end>=1) || end < start || !(start>=1) )
+    if ( !( end>=1 ) || end < start || !( start>=1 ) )
         return;
 
     // Put this in queue with priority above the checkmail things...
@@ -375,7 +375,7 @@ void Imaplib::addFlag( const QString& box, int min, int max,
 }
 
 void Imaplib::setFlags( const QString& box, int min, int max,
-                       const QByteArray& flag )
+                        const QByteArray& flag )
 {
     // kDebug() << box << " - " << min << " - " << max << " - " << flag;
     m_queue.append( Queue( Queue::NoResponse, box,
@@ -789,12 +789,15 @@ void Imaplib::slotParseExists()
 
     // Error handling
     if ( m_received.indexOf( "a02 NO" ) != -1 ) {
+        kDebug() << "OOPS, that's not good";
         // if we get here because the queue was delayed, then we
         // need to remove it from the queue to prevent a loop.
-        Queue nextQueueItem = m_queue.first();
-        if ( m_currentQueueItem.mailbox() == nextQueueItem.mailbox() ) {
-            kDebug( ) << "Removing this and next command";
-            m_queue.pop_front();
+        if ( m_queue.count() > 0 ) {
+            Queue nextQueueItem = m_queue.first();
+            if ( m_currentQueueItem.mailbox() == nextQueueItem.mailbox() ) {
+                kDebug( ) << "Removing this and next command";
+                m_queue.pop_front();
+            }
         }
 
         m_checkMailTimer->stop();
@@ -823,18 +826,15 @@ void Imaplib::slotParseExists()
         kDebug() << "Emitting messagecount";
         emit messageCount( this, m_currentQueueItem.mailbox(), amount );
 
-        /* the resource will request the headers...
         if ( m_currentQueueItem.state() == Queue::SyncMailBox )
             getHeaderList( m_currentMailbox, 1, amount );
         else
             emit integrity( m_currentMailbox, amount, uidvalidity, uidnext );
-            */
     }
 
     // Sync will not emit the unseen count, so do a checkmail after that.
     //if ( m_currentQueueItem.state() == Queue::SyncMailBox )
     //    checkMail( m_currentMailbox );
-
 
     emit statusReady();
     m_currentQueueItem = Queue();

@@ -28,7 +28,7 @@ class Imaplib;
 class ImaplibResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
-    Q_CLASSINFO(  "D-Bus Interface", "org.kde.Akonadi.Imaplib.Resource" )
+    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imaplib.Resource" )
 
 public:
     ImaplibResource( const QString &id );
@@ -64,10 +64,13 @@ private Q_SLOTS:
     void slotSaveDone( int );
     void slotCollectionAdded( bool success );
     void slotCollectionRemoved( bool );
+    void slotIntegrity( const QString& mb, int totalShouldBe,
+                        const QString& uidvalidity, const QString& uidnext );
+
 
 private:
     Imaplib* m_imap;
-    Akonadi::Collection m_colAdded;
+    Akonadi::Collection m_collection;
     Akonadi::Item m_itemAdded;
     QHash<QString, QString> m_flagsCache;
     QHash<QString, Akonadi::Item> m_itemCache;

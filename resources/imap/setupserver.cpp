@@ -173,9 +173,9 @@ void SetupServer::readSettings()
     if ( !Settings::self()->passwordPossible() ) {
         m_password->setEnabled( false );
         KMessageBox::information( 0, i18n( "Could not access KWallet, "
-                                          "if you want to store the password permanently then you have to "
-                                          "activate it. If you do not "
-                                          "want to use KWallet, check the box below and enjoy the dialogs." ),
+                                           "if you want to store the password permanently then you have to "
+                                           "activate it. If you do not "
+                                           "want to use KWallet, check the box below and enjoy the dialogs." ),
                                   i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
     } else
         m_password->insert( Settings::self()->password() );
