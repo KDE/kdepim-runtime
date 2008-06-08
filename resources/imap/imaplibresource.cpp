@@ -290,7 +290,6 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 {
     kDebug( ) << mb << amount;
 
-    setTotalItems( amount );
 }
 
 void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
@@ -318,6 +317,7 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
         fetchlist.append( uid );
     }
 
+    setTotalItems( fetchlist.count() );
     m_imap->getHeaders( mb, fetchlist );
 }
 
@@ -534,6 +534,14 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
     kDebug() << "All fine, nothing to do";
     itemsRetrievalDone();
 }
+
+void ImaplibResource::slotUnseenMessagesInMailbox( Imaplib*, const QString& , int unseen)
+{
+    kDebug();
+    if ( unseen == 0 )
+        itemsRetrievalDone();
+}
+
 /******************* Private ***********************************************/
 
 void ImaplibResource::connections()
@@ -584,6 +592,9 @@ void ImaplibResource::connections()
                                 const QString& ) ),
              SLOT( slotIntegrity( const QString&, int, const QString&,
                                   const QString& ) ) );
+    connect( m_imap,
+             SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
+             SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
     /*
     connect( m_imap,
              SIGNAL( loginOk( Imaplib* ) ),
@@ -606,9 +617,6 @@ void ImaplibResource::connections()
     connect( m_imap,
              SIGNAL( disconnected() ),
              SIGNAL( disconnected() ) );
-    connect( m_imap,
-             SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
-             SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
     connect( m_imap,
              SIGNAL( mailBoxRenamed( const QString&, const QString& ) ),
              SLOT( slotMailBoxRenamed( const QString&, const QString& ) ) );

@@ -562,7 +562,7 @@ void Imaplib::slotParseGetMailBoxList()
 
 void Imaplib::slotParseGetRecent()
 {
-    // kDebug();
+    kDebug() << m_received;
 
     QRegExp rx( "SEARCH (.*)a02" );
     if ( rx.indexIn( m_received.trimmed() ) != -1 ) {
@@ -580,6 +580,7 @@ void Imaplib::slotParseGetRecent()
             ++it;
         }
 
+        kDebug() << results;
         emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
     } else
         emit unseenCount( this, m_currentQueueItem.mailbox(), 0 );
