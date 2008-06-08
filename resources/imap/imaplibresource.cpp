@@ -268,20 +268,20 @@ void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amo
 {
     kDebug( ) << mb << amount;
 
-    if ( amount == 0 ) {
-        itemsRetrievalDone();
-    } else {
-        setTotalItems( amount );
-    }
+    setTotalItems( amount );
 }
 
 void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
     kDebug( ) << mb << values.count();
 
+    if ( values.count() == 0 ) {
+        itemsRetrievalDone();
+        return;
+    }
+    
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
-
     QStringList fetchlist;
     QStringList::ConstIterator it = values.begin();
     while ( it != values.end() ) {
