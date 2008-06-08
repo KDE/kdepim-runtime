@@ -336,8 +336,10 @@ signals:
     /**
      * This signal is emitted when the server has returned the mailboxlist.
      * this can be requested with getMailBoxList();
+     * @param folders all folders
+     * @param noselectfolders the folders which can not be selected.
      */
-    void currentFolders( const QStringList& );
+    void currentFolders( const QStringList& folders, const QStringList& noselectfolders );
 
     /**
      * This signal is emitted when a mailbox is added

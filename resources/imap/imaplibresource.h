@@ -57,7 +57,7 @@ private Q_SLOTS:
     void slotLoginFailed( Imaplib* connection );
     void slotAlert( Imaplib*, const QString& message );
     void slotMessagesInFolder( Imaplib*, const QString&, int );
-    void slotFolderListReceived( const QStringList& list );
+    void slotFolderListReceived( const QStringList& list, const QStringList& );
     void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
     void slotHeadersReceived( Imaplib*,const QString&,const QStringList& );
     void slotMessageReceived( Imaplib*, const QString& mb, int uid, const QString& body );

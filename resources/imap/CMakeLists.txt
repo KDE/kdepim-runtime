@@ -23,6 +23,7 @@ set( imaplibresource_SRCS
   settings.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
+  noselectattribute.cpp
 )
 
 install( FILES imaplibresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

@@ -521,15 +521,15 @@ void Imaplib::slotParseGetMailBoxList()
         return;
 
     QStringList result;
+    QStringList noselectfolders;
 
     // Microsoft Server returns quotes sometimes:
     // * LIST (\Marked \HasNoChildren) "/" bbullshit
     // * LIST (\Marked \HasNoChildren) "/" "Trash/Deleted Items"
 
-    QRegExp rx1( "LIST \\(.*\\) \".\" (.*)\n" );
+    QRegExp rx1( "LIST \\((.*)\\) \".\" (.*)\n" );
     rx1.setMinimal( true );
 
-    QMap<QString, bool> newList;
     int start = 0;
     while ( start != -1 ) {
         start = rx1.indexIn( all_data, start );
@@ -537,7 +537,8 @@ void Imaplib::slotParseGetMailBoxList()
         if ( start == -1 )
             break;
 
-        QString y = rx1.cap( 1 ).trimmed();
+        QString tags = rx1.cap( 1 ).trimmed();
+        QString y = rx1.cap( 2 ).trimmed();
 
         // Remove them if they are there.... Think MS.
         if ( y.startsWith( '\"' ) && y.endsWith( '\"' ) )
@@ -545,11 +546,14 @@ void Imaplib::slotParseGetMailBoxList()
 
         result.append( KIMAP::decodeImapFolderName( y ) );
 
+        if ( tags.contains( "\\Noselect" ) )
+            noselectfolders.append( KIMAP::decodeImapFolderName( y ) );
+
         ++start;
     }
 
     all_data.clear();
-    emit currentFolders( result );
+    emit currentFolders( result, noselectfolders );
     emit statusReady();
     m_currentQueueItem = Queue();
     slotProcessQueue();

@@ -23,6 +23,7 @@
 #include "settingsadaptor.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
+#include "noselectattribute.h"
 #include "imaplib.h"
 
 #include <QtCore/QDebug>
@@ -214,7 +215,7 @@ static QString findParent( QHash<QString, Collection> &collections, const Collec
     return c.remoteId();
 }
 
-void ImaplibResource::slotFolderListReceived( const QStringList& list )
+void ImaplibResource::slotFolderListReceived( const QStringList& list, const QStringList& noselectfolders )
 {
     QHash<QString, Collection> collections;
     QStringList contentTypes;
@@ -247,6 +248,16 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list )
         c.setContentMimeTypes( contentTypes );
         c.setParentRemoteId( findParent( collections, root, path ) );
 
+        if ( noselectfolders.contains( *it ) ) {
+            CachePolicy itemPolicy;
+            itemPolicy.setInheritFromParent( false );
+            itemPolicy.setIntervalCheckTime( -1 );
+            itemPolicy.setSyncOnDemand( false );
+            c.setCachePolicy( itemPolicy );
+            c.addAttribute( new NoSelectAttribute( true ) );
+            kDebug() << ( *it ) << " is a no select folder";
+        }
+
         kDebug( ) << "ADDING: " << ( *it );
         collections[ *it ] = c;
         ++it;
@@ -261,6 +272,18 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug( ) << col.remoteId();
     m_collection = col;
+
+    // Prevent fetching items from noselect folders.
+    if ( m_collection.hasAttribute( "noselect" ) ) {
+        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( m_collection.attribute( "noselect" ) );
+        if ( noselect->noSelect() ) {
+            kDebug() << "No Select folder";
+            itemsRetrievalDone();
+            return;
+        }
+    }
+
+
     m_imap->getMailBox( col.remoteId() );
 }
 
@@ -279,7 +302,7 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
         itemsRetrievalDone();
         return;
     }
-    
+
     // results contain the uid and the flags for each item in this folder.
     // we will ignore the fact that we already have items.
     QStringList fetchlist;
@@ -521,8 +544,8 @@ void ImaplibResource::connections()
              SLOT( slotAlert( Imaplib*, const QString& ) ) );
 
     connect( m_imap,
-             SIGNAL( currentFolders( const QStringList& ) ),
-             SLOT( slotFolderListReceived( const QStringList& ) ) );
+             SIGNAL( currentFolders( const QStringList&, const QStringList& ) ),
+             SLOT( slotFolderListReceived( const QStringList&, const QStringList& ) ) );
 
     connect( m_imap,
              SIGNAL( messageCount( Imaplib*, const QString&, int ) ),
