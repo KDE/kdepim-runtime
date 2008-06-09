@@ -3,9 +3,8 @@
 /*
   statusbarprogresswidget.h
 
-  This file is part of KMail, the KDE mail client.
-
   (C) 2004 KMail Authors
+  Copyright 2004 David Faure <faure@kde.org>
 
   KMail is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License, version 2, as
