@@ -88,7 +88,10 @@ void VCardResource::configure( WId windowId )
 
 void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
-  KABC::Addressee addressee = item.payload<KABC::Addressee>();
+  KABC::Addressee addressee;
+  if ( item.hasPayload<KABC::Addressee>() )
+    addressee  = item.payload<KABC::Addressee>();
+  
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
@@ -102,7 +105,10 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
 
 void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  KABC::Addressee addressee = item.payload<KABC::Addressee>();
+  KABC::Addressee addressee;
+  if ( item.hasPayload<KABC::Addressee>() )
+    addressee  = item.payload<KABC::Addressee>();
+  
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
