@@ -91,7 +91,7 @@ AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Add
 
   if ( addr.photo().url().isEmpty() ) {
     if ( addr.photo().data().isNull() )
-      setPixmap( 0, KIconLoader::global()->loadIcon( "list-add-user", KIconLoader::Small ) );
+      setPixmap( 0, KIconLoader::global()->loadIcon( "x-office-contact", KIconLoader::Small ) );
     else
       setPixmap( 0, QPixmap::fromImage( addr.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation
 ) ) );
@@ -116,13 +116,13 @@ AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString&
   d->addresses = lst;
 }
 
-AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name )
-  : QObject(0), K3ListViewItem( parent, name, i18n("<group>") )
+AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString &name )
+  : QObject( 0 ), K3ListViewItem( parent, name, i18n( "<group>" ) )
 {
   d = new AddresseeViewItemPrivate;
   d->category = DistList;
 
-  setPixmap( 0, KIconLoader::global()->loadIcon( "user-group-new.png", KIconLoader::Small ) );
+  setPixmap( 0, KIconLoader::global()->loadIcon( "x-mail-distribution-list", KIconLoader::Small ) );
 }
 
 AddresseeViewItem::~AddresseeViewItem()

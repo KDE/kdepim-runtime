@@ -203,7 +203,7 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
     } else if ( !pic.url().isEmpty() ) {
       image = (pic.url().startsWith( "http://" ) || pic.url().startsWith( "https://" ) ? pic.url() : "http://" + pic.url());
     } else {
-      image = "file:" + KIconLoader::global()->iconPath( "list-add-user", KIconLoader::Desktop );
+      image = "file:" + KIconLoader::global()->iconPath( "x-office-contact", KIconLoader::Desktop );
     }
   }
 
@@ -537,7 +537,7 @@ void AddresseeView::updateView()
                  this, SLOT( result( KJob* ) ) );
       }
     } else {
-      document()->addResource( QTextDocument::ImageResource, imageURL, KIcon( "list-add-user" ).pixmap( 128, 128 ) );
+      document()->addResource( QTextDocument::ImageResource, imageURL, KIcon( "x-office-contact" ).pixmap( 128, 128 ) );
     }
   }
 
