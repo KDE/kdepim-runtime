@@ -998,10 +998,16 @@ void Imaplib::slotProcessQueue()
             m_currentQueueItem.state() == Queue::Noop ||
             m_currentQueueItem.state() == Queue::Capability ||
             m_currentQueueItem.state() == Queue::CheckMail ) {
+        
+        // We are rfc-wise not allowed to do the regular checkmail when
+        // the folder is already selected, so intercept that and make it 
+        // a search for unseen in this folder.
         if ( m_currentQueueItem.state() == Queue::CheckMail &&
-                m_currentQueueItem.mailbox() == m_currentMailbox )
+                m_currentQueueItem.mailbox() == m_currentMailbox ) {
+            kDebug() << "Selected folder is currently: " << m_currentMailbox;
             m_currentQueueItem = Queue( Queue::GetRecent, m_currentMailbox,
                                         "UID SEARCH UNSEEN" );
+        }
 
         if ( !m_currentQueueItem.comment().isEmpty() )
             emit status( m_currentQueueItem.comment() );

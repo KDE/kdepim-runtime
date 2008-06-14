@@ -54,8 +54,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImaplibResource::ImaplibResource( const QString &id )
-        :ResourceBase( id ),
-        m_imap( 0 )
+        :ResourceBase( id ), m_imap( 0 ), m_incrementalFetch( false )
 {
     changeRecorder()->fetchCollection( true );
     new SettingsAdaptor( Settings::self() );
@@ -274,6 +273,9 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
     kDebug( ) << col.remoteId();
     m_collection = col;
 
+    // If there is new mail, we get it without giubg through integrity, so the default is true!
+    m_incrementalFetch = true; 
+
     // Prevent fetching items from noselect folders.
     if ( m_collection.hasAttribute( "noselect" ) ) {
         NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( m_collection.attribute( "noselect" ) );
@@ -317,8 +319,12 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
 
         fetchlist.append( uid );
     }
+    
+    // if we are not fetching the whole folder, we can not do it in batches, so don't set
+    // the totalItems, as that would put it in batch mode. 
+    if ( !m_incrementalFetch ) 
+        setTotalItems( fetchlist.count() );
 
-    setTotalItems( fetchlist.count() );
     m_imap->getHeaders( mb, fetchlist );
 }
 
@@ -354,8 +360,9 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         messages.append( i );
     }
 
-    kDebug() << "calling partlyretrieved with amount: " << messages.count();
-    itemsPartlyRetrieved( messages );
+    kDebug() << "calling partlyretrieved with amount: " << messages.count() << "Incremental?" << m_incrementalFetch;
+
+    m_incrementalFetch ? itemsRetrievedIncremental( messages, Item::List() ) :  itemsPartlyRetrieved( messages );
 }
 
 // ----------------------------------------------------------------------------------
@@ -518,17 +525,20 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         // The amount on the server is bigger than that we have in the cache
         // that probably means that there is new mail. Fetch missing.
         kDebug() << "Fetch missing: " << totalShouldBe << " But: " << mailsReal;
+        m_incrementalFetch = true;
         m_imap->getHeaderList( mb, mailsReal+1, totalShouldBe );
         return;
     } else if ( totalShouldBe != mailsReal ) {
         // The amount on the server does not match the amount in the cache.
         // that means we need reget the catch completely.
         kDebug() << "O OH: " << totalShouldBe << " But: " << mailsReal;
+        m_incrementalFetch = false; 
         m_imap->getHeaderList( mb, 1, totalShouldBe );
         return;
     } else if ( totalShouldBe == mailsReal && oldUidNext != uidnext.toInt()
                 && oldUidNext != 0 && !uidnext.isEmpty() && !firsttime ) {
         //buggy
+        itemsRetrievalDone();
         return;
 
         // amount is right but uidnext is different.... something happened
