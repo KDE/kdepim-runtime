@@ -380,11 +380,6 @@ signals:
     void messageCount( Imaplib*, const QString& mb, int amount );
 
     /**
-     * We know the amount of unseen messages(@p amount) in the @p mb
-     */
-    void unseenCount( Imaplib*, const QString& mb, int amount );
-
-    /**
      * expunge is completed.
      */
     void expungeCompleted( Imaplib*, const QString& mb );

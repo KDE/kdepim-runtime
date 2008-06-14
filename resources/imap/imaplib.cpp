@@ -570,8 +570,6 @@ void Imaplib::slotParseGetRecent()
         QStringList t =
             r.split( ' ' );
 
-        emit unseenCount( this, m_currentQueueItem.mailbox(), t.count() );
-
         QStringList results;
         QStringList::iterator it = t.begin();
         while ( it != t.end() ) {
@@ -583,7 +581,7 @@ void Imaplib::slotParseGetRecent()
         kDebug() << results;
         emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), results );
     } else
-        emit unseenCount( this, m_currentQueueItem.mailbox(), 0 );
+        emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), QStringList() );
 
     emit statusReady();
     m_currentQueueItem = Queue();
@@ -679,10 +677,6 @@ void Imaplib::slotParseCheckMail()
             kDebug() << "Emitting messagecount";
             emit messageCount( this, mb, totalShouldBe );
         }
-
-        rx1.setPattern( "[ (]UNSEEN (\\d+)[ )]" );
-        if ( rx1.indexIn( m_received.trimmed() ) != -1 )
-            emit unseenCount( this, mb, rx1.cap( 1 ).toInt() );
 
         rx1.setPattern( "[ (]UIDVALIDITY (\\d+)[ )]" );
         if ( rx1.indexIn( m_received.trimmed() ) != -1 )

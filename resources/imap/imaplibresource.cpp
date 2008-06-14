@@ -43,6 +43,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectionstatisticsjob.h>
 #include <akonadi/collectionstatistics.h>
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
@@ -501,12 +502,17 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         return;
     }
 
+    // See how many messages are in the folder currently 
     qint64 mailsReal = m_collection.statistics().count();
-    if ( mailsReal == -1 ) 
-        mailsReal = 0;
+    if ( mailsReal == -1 ) { 
+        Akonadi::CollectionStatisticsJob *job = new Akonadi::CollectionStatisticsJob( m_collection );
+        if ( job->exec() ) {
+            Akonadi::CollectionStatistics statistics = job->statistics();
+            mailsReal = statistics.count();
+        }
+    }
 
-    kDebug() << "integrity: " << mb << " should be: "
-    << totalShouldBe << " current: " << mailsReal;
+    kDebug() << "integrity: " << mb << " should be: " << totalShouldBe << " current: " << mailsReal;
 
     if ( totalShouldBe > mailsReal ) {
         // The amount on the server is bigger than that we have in the cache
@@ -533,13 +539,6 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
 
     kDebug() << "All fine, nothing to do";
     itemsRetrievalDone();
-}
-
-void ImaplibResource::slotUnseenMessagesInMailbox( Imaplib*, const QString& , int unseen)
-{
-    kDebug();
-    if ( unseen == 0 )
-        itemsRetrievalDone();
 }
 
 /******************* Private ***********************************************/
@@ -592,9 +591,6 @@ void ImaplibResource::connections()
                                 const QString& ) ),
              SLOT( slotIntegrity( const QString&, int, const QString&,
                                   const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( unseenCount( Imaplib*, const QString&, int ) ),
-             SLOT( slotUnseenMessagesInMailbox( Imaplib*, const QString& , int ) ) );
     /*
     connect( m_imap,
              SIGNAL( loginOk( Imaplib* ) ),
