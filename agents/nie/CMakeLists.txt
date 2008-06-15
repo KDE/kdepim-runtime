@@ -7,7 +7,7 @@ macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 ontofile3 ontofile4 ta
   # init
   set(NEPOMUK_RESOURCES_GENERATED false)
 
-  FIND_PROGRAM(RCGEN nepomuk-rcgen PATHS ${BIN_INSTALL_DIR})
+  FIND_PROGRAM(RCGEN nepomuk-rcgen PATHS ${BIN_INSTALL_DIR} NO_DEFAULT_PATH)
 
   if(NOT RCGEN)
 
