@@ -248,39 +248,24 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list, const QSt
         c.setContentMimeTypes( contentTypes );
         c.setParentRemoteId( findParent( collections, root, path ) );
 
+        CachePolicy itemPolicy;
+        itemPolicy.setInheritFromParent( false );
+        itemPolicy.setIntervalCheckTime( -1 );
+        itemPolicy.setSyncOnDemand( true );
+
         // If the folder is the Inbox, make some special settings.
         if ( (*it).compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-            CachePolicy itemPolicy;
-            itemPolicy.setInheritFromParent( false );
             itemPolicy.setIntervalCheckTime( 1 );
-            itemPolicy.setSyncOnDemand( true );
             c.setName( "Inbox" );
-            c.setCachePolicy( itemPolicy );
         }
 
-        // Because some mailserver put everything below the inbox, prevent a mail
-        // check for those folders every minute.
-        else if ( (*it).startsWith( QLatin1String("INBOX."), Qt::CaseInsensitive ) ) { 
-            CachePolicy itemPolicy;
-            itemPolicy.setInheritFromParent( false );
-            itemPolicy.setIntervalCheckTime( -1 );
-            itemPolicy.setSyncOnDemand( true );
-            c.setCachePolicy( itemPolicy );
-        }
-
-    
         // If this folder is a noselect folder, make some special settings.
         if ( noselectfolders.contains( *it ) ) {
-            CachePolicy itemPolicy;
-            itemPolicy.setInheritFromParent( false );
-            itemPolicy.setIntervalCheckTime( -1 );
             itemPolicy.setSyncOnDemand( false );
-            c.setCachePolicy( itemPolicy );
             c.addAttribute( new NoSelectAttribute( true ) );
-            kDebug() << ( *it ) << " is a no select folder";
         }
+        c.setCachePolicy( itemPolicy );
 
-        kDebug( ) << "ADDING: " << ( *it );
         collections[ *it ] = c;
         ++it;
     }
