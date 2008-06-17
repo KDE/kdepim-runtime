@@ -319,6 +319,7 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
     KMeditorPrivate *const d;
     friend class KMeditorPrivate;
     Q_PRIVATE_SLOT( d, void ensureCursorVisibleDelayed() )
+    Q_PRIVATE_SLOT( d, void slotEditorFinished( int, QProcess::ExitStatus ) )
 };
 
 }

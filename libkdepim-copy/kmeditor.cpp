@@ -37,6 +37,7 @@
 #include <KMenu>
 #include <KMessageBox>
 #include <KPushButton>
+#include <KProcess>
 #include <KTemporaryFile>
 #include <KToolBar>
 #include <KWindowSystem>
@@ -61,7 +62,6 @@ class KMeditorPrivate
      : q( parent ),
        useExtEditor( false ),
        mExtEditorProcess( 0 ),
-       mExtEditorTempFileWatcher( 0 ),
        mExtEditorTempFile( 0 )    {
     }
 
@@ -97,14 +97,16 @@ class KMeditorPrivate
     // Each pair is the index of the start- and end position of the signature.
     QList< QPair<int,int> > signaturePositions( const KPIMIdentities::Signature &sig ) const;
 
+    void startExternalEditor();
+    void slotEditorFinished( int, QProcess::ExitStatus exitStatus );
+    
     // Data members
     QString extEditorPath;
     QString language;
     KMeditor *q;
     bool useExtEditor;
     bool spellCheckingEnabled;
-    QProcess *mExtEditorProcess;
-    KDirWatch *mExtEditorTempFileWatcher;
+    KProcess *mExtEditorProcess;
     KTemporaryFile *mExtEditorTempFile;
 };
 
@@ -184,6 +186,52 @@ void KMeditorPrivate::cleanWhitespaceHelper( const QRegExp &regExp,
   }
 }
 
+void KMeditorPrivate::startExternalEditor()
+{
+  if ( extEditorPath.isEmpty() ) {
+    q->setUseExternalEditor( false ); 
+    //TODO: show messagebox
+    return;
+  }
+  
+  mExtEditorTempFile = new KTemporaryFile();
+  if ( !mExtEditorTempFile->open() ) {
+    delete mExtEditorTempFile;
+    mExtEditorTempFile = 0;
+    q->setUseExternalEditor( false );    
+    return;
+  }
+  
+  mExtEditorTempFile->write( q->textOrHtml().toUtf8() );
+  mExtEditorTempFile->flush();
+  
+  mExtEditorProcess = new KProcess();
+    // construct command line...
+  QStringList command = extEditorPath.split( ' ', QString::SkipEmptyParts );
+  bool filenameAdded = false;
+  for ( QStringList::Iterator it = command.begin(); it != command.end(); ++it ) {
+    if ( ( *it ).contains( "%f" ) ) {
+      ( *it ).replace( QRegExp( "%f" ), mExtEditorTempFile->fileName() );
+      filenameAdded=true;
+    }
+    ( *mExtEditorProcess ) << ( *it );
+  }
+  if ( !filenameAdded )    // no %f in the editor command
+    ( *mExtEditorProcess ) << mExtEditorTempFile->fileName();
+    
+  QObject::connect( mExtEditorProcess, SIGNAL( finished ( int, QProcess::ExitStatus ) ), 
+                    q, SLOT( slotEditorFinished( int, QProcess::ExitStatus ) ) );
+  mExtEditorProcess->start();
+  if ( !mExtEditorProcess->waitForStarted() ) {
+    //TODO: messagebox
+    mExtEditorProcess->deleteLater();
+    mExtEditorProcess = 0;
+    delete mExtEditorTempFile;
+    mExtEditorTempFile = 0;
+    q->setUseExternalEditor( false );
+  }
+}
+
 QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &signature ) const
 {
   QString sigText = signature.rawText();
@@ -199,6 +247,19 @@ QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &si
   }
   return sigText;
 }
+
+void KMeditorPrivate::slotEditorFinished(int, QProcess::ExitStatus exitStatus)
+{
+  if ( exitStatus == QProcess::NormalExit ) {
+    mExtEditorTempFile->flush();
+    mExtEditorTempFile->seek( 0 );
+    QByteArray f = mExtEditorTempFile->readAll();
+    q->setTextOrHtml( QString::fromUtf8( f.data(), f.size() ) );
+  }
+
+  q->killExternalEditor();   // cleanup...
+}
+
 
 void KMeditorPrivate::ensureCursorVisibleDelayed()
 {
@@ -238,6 +299,13 @@ void KMeditor::paste()
 
 void KMeditor::keyPressEvent ( QKeyEvent * e )
 {
+  if ( d->useExtEditor ) {
+    if ( !d->mExtEditorProcess ) {
+      d->startExternalEditor();
+    }
+    return;
+  }
+  
   if ( e->key() ==  Qt::Key_Return ) {
     QTextCursor cursor = textCursor();
     int oldPos = cursor.position();
@@ -662,10 +730,9 @@ bool KMeditor::checkExternalEditorFinished()
 
 void KMeditor::killExternalEditor()
 {
-  delete d->mExtEditorProcess;
+  if ( d->mExtEditorProcess ) 
+    d->mExtEditorProcess->deleteLater();
   d->mExtEditorProcess = 0;
-  delete d->mExtEditorTempFileWatcher;
-  d->mExtEditorTempFileWatcher = 0;
   delete d->mExtEditorTempFile;
   d->mExtEditorTempFile = 0;
 }
