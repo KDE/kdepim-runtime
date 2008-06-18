@@ -73,7 +73,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
   if ( enumItem ) {
     QList<KConfigSkeleton::ItemEnum::Choice> choices = enumItem->choices();
     if ( choices.isEmpty() ) {
-      kError() <<"KPrefsWidFactory::create(): Enum has no choices.";
+      kError() << "Enum has no choices.";
       return 0;
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
@@ -366,6 +366,9 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *pare
 
 void KPrefsWidDate::readConfig()
 {
+  if ( !mItem->value().date().isValid() ) {
+    mItem->setValue( QDateTime::currentDateTime() );
+  }
   mDateEdit->setDate( mItem->value().date() );
 }
 
@@ -374,6 +377,9 @@ void KPrefsWidDate::writeConfig()
   QDateTime dt( mItem->value() );
   dt.setDate( mDateEdit->date() );
   mItem->setValue( dt );
+  if ( !mItem->value().date().isValid() ) {
+    mItem->setValue( QDateTime::currentDateTime() );
+  }
 }
 
 QLabel *KPrefsWidDate::label()
