@@ -266,26 +266,35 @@ void KMeditorPrivate::ensureCursorVisibleDelayed()
   static_cast<KRichTextWidget*>( q )->ensureCursorVisible();
 }
 
+void KMeditor::handleDragEvent( QDragMoveEvent *e )
+{
+  if ( KPIM::MailList::canDecode( e->mimeData() )
+       || e->mimeData()->hasFormat( "image/png" ) )
+  {
+    e->accept();
+    return;
+  }
+
+  // last chance: the source can provide no mimetype but urls (e.g. non KDE apps)
+  KUrl::List urlList = KUrl::List::fromMimeData( e->mimeData() );
+  if ( !urlList.isEmpty() )
+    e->accept();
+}
+
 void KMeditor::dragEnterEvent( QDragEnterEvent *e )
 {
-  if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
-    e->setAccepted( true );
-  } else if ( e->mimeData()->hasFormat( "image/png" ) ) {
-    e->accept();
-  } else {
-    return KRichTextWidget::dragEnterEvent( e );
-  }
+  handleDragEvent( e );
+  if ( e->isAccepted() )
+    return;
+  KRichTextWidget::dragEnterEvent( e );
 }
 
 void KMeditor::dragMoveEvent( QDragMoveEvent *e )
 {
-  if ( KPIM::MailList::canDecode( e->mimeData() ) ) {
-    e->accept();
-  } else if  ( e->mimeData()->hasFormat( "image/png" ) ) {
-    e->accept();
-  } else {
-    return KRichTextWidget::dragMoveEvent( e );
-  }
+  handleDragEvent( e );
+  if ( e->isAccepted() )
+    return;
+  KRichTextWidget::dragMoveEvent( e );
 }
 
 void KMeditor::paste()

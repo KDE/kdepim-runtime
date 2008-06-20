@@ -315,6 +315,11 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
      */
     virtual void contextMenuEvent( QContextMenuEvent* );
 
+    /**
+     * Handles drag enter/move event for dragEnterEvent() and dragMoveEvent()
+     */
+    void handleDragEvent( QDragMoveEvent *e );
+
   private:
     KMeditorPrivate *const d;
     friend class KMeditorPrivate;
