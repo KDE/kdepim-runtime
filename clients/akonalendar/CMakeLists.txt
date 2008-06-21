@@ -14,4 +14,4 @@ set_target_properties(akonalendar_bin PROPERTIES OUTPUT_NAME akonalendar)
 
 target_link_libraries(akonalendar_bin ${KDE4_AKONADI_LIBS} kdepim akonadi-kcal ${KDE4_KDEUI_LIBRARY} ${KDE4_KUTILS_LIBS})
 
-install(TARGETS akonalendar_bin ${INSTALL_TARGETS_DEFAULT_ARGS})
+#install(TARGETS akonalendar_bin ${INSTALL_TARGETS_DEFAULT_ARGS})

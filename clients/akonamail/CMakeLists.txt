@@ -14,4 +14,4 @@ set_target_properties(akonamail_bin PROPERTIES OUTPUT_NAME akonamail)
 
 target_link_libraries( akonamail_bin ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} kdepim ${KDE4_KDEUI_LIBRARY} )
 
-install(TARGETS akonamail_bin ${INSTALL_TARGETS_DEFAULT_ARGS} )
+#install(TARGETS akonamail_bin ${INSTALL_TARGETS_DEFAULT_ARGS} )
