@@ -281,7 +281,7 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
     m_collection = col;
 
     // If there is new mail, we get it without giubg through integrity, so the default is true!
-    m_incrementalFetch = true; 
+    m_incrementalFetch = true;
 
     // Prevent fetching items from noselect folders.
     if ( m_collection.hasAttribute( "noselect" ) ) {
@@ -326,11 +326,10 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
 
         fetchlist.append( uid );
     }
-    
+
     // if we are not fetching the whole folder, we can not do it in batches, so don't set
-    // the totalItems, as that would put it in batch mode. 
-    if ( !m_incrementalFetch ) 
-        setTotalItems( fetchlist.count() );
+    // the totalItems, as that would put it in batch mode.
+    setTotalItems( fetchlist.count() );
 
     m_imap->getHeaders( mb, fetchlist );
 }
@@ -369,7 +368,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
     kDebug() << "calling partlyretrieved with amount: " << messages.count() << "Incremental?" << m_incrementalFetch;
 
-    m_incrementalFetch ? itemsRetrievedIncremental( messages, Item::List() ) :  itemsPartlyRetrieved( messages );
+    m_incrementalFetch ? itemsRetrievedIncremental( messages, Item::List() ) :  itemsRetrieved( messages );
 }
 
 // ----------------------------------------------------------------------------------
@@ -516,9 +515,9 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         return;
     }
 
-    // See how many messages are in the folder currently 
+    // See how many messages are in the folder currently
     qint64 mailsReal = m_collection.statistics().count();
-    if ( mailsReal == -1 ) { 
+    if ( mailsReal == -1 ) {
         Akonadi::CollectionStatisticsJob *job = new Akonadi::CollectionStatisticsJob( m_collection );
         if ( job->exec() ) {
             Akonadi::CollectionStatistics statistics = job->statistics();
@@ -539,7 +538,7 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
         // The amount on the server does not match the amount in the cache.
         // that means we need reget the catch completely.
         kDebug() << "O OH: " << totalShouldBe << " But: " << mailsReal;
-        m_incrementalFetch = false; 
+        m_incrementalFetch = false;
         m_imap->getHeaderList( mb, 1, totalShouldBe );
         return;
     } else if ( totalShouldBe == mailsReal && oldUidNext != uidnext.toInt()
