@@ -30,6 +30,9 @@ class MainWindow : public KXmlGuiWindow
 
   public:
     explicit MainWindow( QWidget *parent = 0 );
+
+  protected:
+    bool queryExit();
 };
 
 #endif

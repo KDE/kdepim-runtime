@@ -44,6 +44,7 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
   QVBoxLayout *layout = new QVBoxLayout( this );
 
   QTabWidget *tabWidget = new QTabWidget( this );
+  tabWidget->setObjectName( "mainTab" );
   layout->addWidget( tabWidget );
 
   tabWidget->addTab( new AgentWidget( tabWidget ), "Agents" );

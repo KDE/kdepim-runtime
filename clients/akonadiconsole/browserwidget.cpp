@@ -50,6 +50,7 @@
 #include <QStackedWidget>
 #include <QtGui/QSortFilterProxyModel>
 #include <QStandardItemModel>
+#include <QTimer>
 
 using namespace Akonadi;
 
@@ -64,6 +65,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   QVBoxLayout *layout = new QVBoxLayout( this );
 
   QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
+  splitter->setObjectName( "collectionSplitter" );
   layout->addWidget( splitter );
 
   mCollectionView = new Akonadi::CollectionView( xmlGuiWindow );
@@ -78,6 +80,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mCollectionView->setModel( sortModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
+  splitter2->setObjectName( "itemSplitter" );
   splitter->addWidget( splitter2 );
 
   QWidget *itemViewParent = new QWidget( this );
@@ -88,7 +91,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   itemUi.modelBox->addItem( "Contacts" );
   itemUi.modelBox->addItem( "Calendar" );
   connect( itemUi.modelBox, SIGNAL(activated(int)), SLOT(modelChanged()) );
-  modelChanged();
+  QTimer::singleShot( 0, this, SLOT(modelChanged()) );
 
   itemUi.itemView->setXmlGuiWindow( xmlGuiWindow );
   itemUi.itemView->setModel( mItemModel );

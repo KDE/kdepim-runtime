@@ -22,11 +22,13 @@
 #include "mainwindow.h"
 
 #include "mainwidget.h"
+#include "uistatesaver.h"
 
 #include <akonadi/control.h>
 
 #include <KAction>
 #include <KActionCollection>
+#include <KConfigGroup>
 #include <KLocale>
 #include <KStandardAction>
 #include <QApplication>
@@ -40,4 +42,13 @@ MainWindow::MainWindow( QWidget *parent )
   KStandardAction::quit( qApp, SLOT(quit()), actionCollection() );
 
   setupGUI( Keys /*| ToolBar | StatusBar*/ | Save | Create, "akonadiconsoleui.rc" );
+
+  UiStateSaver::restoreState( this, KConfigGroup( KGlobal::config(), "UiState" ) );
+}
+
+bool MainWindow::queryExit()
+{
+  KConfigGroup config( KGlobal::config(), "UiState" );
+  UiStateSaver::saveState( this, config );
+  return KXmlGuiWindow::queryExit();
 }
