@@ -40,11 +40,11 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
                                       const QString &domain )
   : QDialog( parent )
 {
-  setWindowTitle( "Add / Edit Profile" );
+  setWindowTitle( i18n( "Add / Edit Profile" ) );
 
   QVBoxLayout *mainLayout = new QVBoxLayout;
 
-  QLabel *nameLabel = new QLabel( "Profile name" );
+  QLabel *nameLabel = new QLabel( i18n( "Profile name" ) );
   mainLayout->addWidget( nameLabel );
   m_profileNameEdit = new QLineEdit();
   m_profileNameEdit->setText( profileName );
@@ -52,7 +52,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_profileNameEdit );
 
-  QLabel *usernameLabel = new QLabel( "User name" );
+  QLabel *usernameLabel = new QLabel( i18n( "User name" ) );
   mainLayout->addWidget( usernameLabel );
   m_usernameEdit = new QLineEdit();
   m_usernameEdit->setText( userName );
@@ -60,7 +60,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_usernameEdit );
 
-  QLabel *passwordLabel = new QLabel( "Password" );
+  QLabel *passwordLabel = new QLabel( i18n( "Password" ) );
   mainLayout->addWidget( passwordLabel );
   m_passwordEdit = new QLineEdit();
   m_passwordEdit->setEchoMode( QLineEdit::Password );
@@ -69,7 +69,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_passwordEdit );
 
-  QLabel *addressLabel = new QLabel( "Server name or address" );
+  QLabel *addressLabel = new QLabel( i18n( "Server name or address" ) );
   mainLayout->addWidget( addressLabel );
   m_addressEdit = new QLineEdit();
   m_addressEdit->setText( serverAddress );
@@ -77,7 +77,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_addressEdit );
 
-  QLabel *workstationLabel = new QLabel( "Local machine name or address" );
+  QLabel *workstationLabel = new QLabel( i18n( "Local machine name or address" ) );
   mainLayout->addWidget( workstationLabel );
   m_workstationEdit = new QLineEdit();
   if ( workstation.isEmpty() )
@@ -88,25 +88,25 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_workstationEdit );
 
-  QLabel *domainLabel = new QLabel( "Authentication domain" );
+  QLabel *domainLabel = new QLabel( i18n( "Authentication domain" ) );
   mainLayout->addWidget( domainLabel );
   m_domainEdit = new QLineEdit();
   m_domainEdit->setText( domain );
   connect( m_domainEdit, SIGNAL( textEdited(QString) ),
            this, SLOT( checkIfComplete() ) );
-  m_domainEdit->setToolTip( "The authentication domain (also known as realm) to use for this account. Ask your exchange server administrator if you are do not know about this." );
+  m_domainEdit->setToolTip( i18n( "The authentication domain (also known as realm) to use for this account. Ask your exchange server administrator if you are do not know about this." ) );
   mainLayout->addWidget( m_domainEdit );
 
   mainLayout->addStretch();
 
   QHBoxLayout *buttonLayout = new QHBoxLayout;
 
-  m_okButton = new QPushButton( "OK" );
+  m_okButton = new QPushButton( i18n( "OK" ) );
   connect( m_okButton, SIGNAL( clicked() ),
            this, SLOT( commitProfile() ) );
   buttonLayout->addWidget( m_okButton );
 
-  QPushButton *cancelButton = new QPushButton( "Cancel" );
+  QPushButton *cancelButton = new QPushButton( i18n( "Cancel" ) );
   connect( cancelButton, SIGNAL( clicked() ),
            this, SLOT( close() ) );
   buttonLayout->addWidget( cancelButton );
@@ -199,7 +199,7 @@ void ProfileEditDialog::commitProfile()
   }
 
 
-  retval = ProcessNetworkProfile(session, m_usernameEdit->text().toUtf8().constData(), (mapi_profile_callback_t) ProfileEditDialog::callback, 
+  retval = ProcessNetworkProfile(session, m_usernameEdit->text().toUtf8().constData(), (mapi_profile_callback_t) ProfileEditDialog::callback,
                                  "Select a user id");
 
   if (retval != MAPI_E_SUCCESS && retval != 0x1) {

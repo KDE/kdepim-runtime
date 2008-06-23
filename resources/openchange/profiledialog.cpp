@@ -36,11 +36,11 @@ extern "C" {
 ProfileDialog::ProfileDialog( OCResource *resource, QWidget *parent )
   : QDialog( parent ), m_resource( resource )
 {
-  setWindowTitle( "Profile Configuration" );
+  setWindowTitle( i18n( "Profile Configuration" ) );
 
   QVBoxLayout *mainLayout = new QVBoxLayout;
 
-  QLabel *label = new QLabel( "OpenChange Profiles" );
+  QLabel *label = new QLabel( i18n( "OpenChange Profiles" ) );
   mainLayout->addWidget( label );
 
 
@@ -55,27 +55,27 @@ ProfileDialog::ProfileDialog( OCResource *resource, QWidget *parent )
 
   QVBoxLayout *rightLayout = new QVBoxLayout;
 
-  QPushButton *addButton = new QPushButton( "Add Profile" );
+  QPushButton *addButton = new QPushButton( i18n( "Add Profile" ) );
   connect( addButton, SIGNAL( clicked() ),
            this, SLOT( addNewProfile() ) );
   rightLayout->addWidget( addButton );
 
-  m_editButton = new QPushButton( "Edit Profile" );
+  m_editButton = new QPushButton( i18n( "Edit Profile" ) );
   connect( m_editButton, SIGNAL( clicked() ),
            this, SLOT( editExistingProfile() ) );
   rightLayout->addWidget( m_editButton );
 
-  m_setAsDefaultButton = new QPushButton( "Make default" );
+  m_setAsDefaultButton = new QPushButton( i18n( "Make default" ) );
   connect( m_setAsDefaultButton, SIGNAL( clicked() ),
            this, SLOT( setAsDefaultProfile() ) );
   rightLayout->addWidget( m_setAsDefaultButton );
 
-  m_removeButton = new QPushButton( "Remove Profile" );
+  m_removeButton = new QPushButton( i18n( "Remove Profile" ) );
   connect( m_removeButton, SIGNAL( clicked() ),
            this, SLOT( deleteSelectedProfile() ) );
   rightLayout->addWidget( m_removeButton );
 
-  QPushButton *closeButton = new QPushButton( "Close" );
+  QPushButton *closeButton = new QPushButton( i18n( "Close" ) );
   connect( closeButton, SIGNAL( clicked() ),
            this, SLOT( close() ) );
   rightLayout->addWidget( closeButton );
