@@ -83,20 +83,20 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
     topLayout->addWidget( mInc1Sumlab, iii, 1, 1, 2 );
     ++iii;
     topLayout->addWidget( new QLabel ( i18n( "Last modified:" ), topFrame ), iii, 0 );
-    mMod1lab = new QLabel ( "Set Last modified", topFrame );
+    mMod1lab = new QLabel ( i18n("Set Last modified"), topFrame );
     topLayout->addWidget( mMod1lab, iii, 1 );
     showDetails1 = new QPushButton( i18n( "Show Details" ), topFrame );
     connect ( showDetails1, SIGNAL( clicked()), this, SLOT (showIncidence1() ) );
     topLayout->addWidget( showDetails1, iii, 2 );
     ++iii;
 
-    mInc2lab = new QLabel ( "Local incidence", topFrame );
+    mInc2lab = new QLabel ( i18n("Local incidence"), topFrame );
     topLayout->addWidget( mInc2lab, iii, 0 );
-    mInc2Sumlab = new QLabel ( "Local incidence summary", topFrame );
+    mInc2Sumlab = new QLabel ( i18n("Local incidence summary"), topFrame );
     topLayout->addWidget( mInc2Sumlab, iii, 1, 1, 2 );
     ++iii;
     topLayout->addWidget( new QLabel ( i18n( "Last modified:" ), topFrame ), iii, 0 );
-    mMod2lab = new QLabel ( "Set Last modified", topFrame );
+    mMod2lab = new QLabel ( i18n("Set Last modified"), topFrame );
     topLayout->addWidget( mMod2lab, iii, 1 );
     showDetails2 = new QPushButton( i18n( "Show Details" ), topFrame );
     connect ( showDetails2, SIGNAL( clicked()), this, SLOT (showIncidence2() ) );
