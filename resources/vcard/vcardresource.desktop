@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi VCard Resource
 Name[ca]=Recurs VCard de l'Akonadi
+Name[da]=Akonadi VCard-ressource
 Name[de]=Akonadi-Ressource für VCard
 Name[el]=Πόρος VCard του Akonadi
 Name[es]=Recurso VCard de Akonadi
@@ -27,6 +28,7 @@ Name[zh_CN]=Akonadi VCard 资源
 Name[zh_TW]=Akonadi VCard 資源
 Comment=An agent to load data from a VCard file
 Comment[ca]=Un agent per carregar dades des d'un fitxer VCard
+Comment[da]=En agent til indlæsning af data fra en VCard-fil
 Comment[de]=Agent zum Laden von Daten aus einer Visitenkarten-Datei
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από αρχεία VCard
 Comment[es]=Un agente para cargar datos de un archivo VCard

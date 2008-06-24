@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KDE Calendar Compatibility Resource
 Name[ca]=Recurs de compatibilitat de calendari del KDE
+Name[da]=KDE kalenderkompatibilitetsressource
 Name[de]=Kompatibilitäts-Ressource für KDE-Kalender
 Name[el]=Πόρος συμβατότητας ημερολογίου του KDE
 Name[et]=KDE kalendri ühilduvusressurss
@@ -20,6 +21,7 @@ Name[zh_CN]=KDE 日历兼容资源
 Name[zh_TW]=KDE 行事曆相容性資源
 Comment=An agent to load data from a traditional KDE calendar resource
 Comment[ca]=Un agent per a carregar dades des d'un recurs de calendari tradicional del KDE
+Comment[da]=En agent til indlæsning af data fra en traditionel KDE kalenderressource
 Comment[de]=Agent zum Laden von Daten aus einer herkömmlichen KDE-Kalender-Ressource
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από έναν παραδοσιακό πόρο ημερολογίου του KDE
 Comment[et]=Agent andmete laadimiseks traditsioonilisest KDE kalendri ressursist

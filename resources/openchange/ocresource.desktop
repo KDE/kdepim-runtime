@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi OpenChange Resource
 Name[ca]=Recurs OpenChange de l'Akonadi
+Name[da]=Akonadi OpenChange-ressource
 Name[de]=Akonadi-Ressource für OpenChange
 Name[el]=Πόρος OpenChange του Akonadi
 Name[es]=Recurso OpenChange de Akonadi
@@ -27,6 +28,7 @@ Name[zh_CN]=Akonadi OpenChange 资源
 Name[zh_TW]=Akonadi OpenChange 資源
 Comment=An agent to work with an OpenChange / Exchange server
 Comment[ca]=Un agent per a treballar amb un servidor OpenChange / Exchange
+Comment[da]=En agent til arbejde med en OpenChange-/Exchange-server
 Comment[de]=Agent zur Verwendung mit Openchange- und Exchange-Servern
 Comment[el]=Ένας πελάτης για εργασία με διακομιστές OpenChange / Exchange
 Comment[es]=Un agente para trabajar con un servidor OpenChange / Exchange

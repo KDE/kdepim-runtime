@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi NNTP Resource
 Name[ca]=Recurs NNTP de l'Akonadi
+Name[da]=Akonadi NNTP-ressource
 Name[de]=Akonadi-Ressource für NNTP
 Name[el]=Πόρος NNTP του Akonadi
 Name[es]=Recurso NNTP de Akonadi
@@ -27,6 +28,7 @@ Name[zh_CN]=Akonadi NNTP 资源
 Name[zh_TW]=Akonadi NNTP 資源
 Comment=An agent to load data from a news server
 Comment[ca]=Un agent per a carregar dades des d'un servidor de notícies
+Comment[da]=En agent til indlæsning af data fra en nyhedsserver
 Comment[de]=Agent zum Laden von Daten von einem News-Server
 Comment[el]=Ένας πελάτης φόρτωσης δεδομένων από διακομιστές νέων
 Comment[es]=Un agente para cargar datos de un servidor de noticias

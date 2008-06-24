@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi Strigi Feeder
 Name[ca]=Alimentador del Strigi per a l'Akonadi
+Name[da]=Akonadi Strigi-feeder
 Name[de]=Akonadi-Modul für Strigi
 Name[el]=Τροφοδότης Strigi του Akonadi
 Name[es]=Proveedor de datos de Strigi para Akonadi
@@ -24,6 +25,7 @@ Name[x-test]=xxAkonadi Strigi Feederxx
 Name[zh_CN]=Akonadi Strigi 采集器
 Comment=Strigi-based fulltext search
 Comment[ca]=Motor de cerca per text sencer basat en el Strigi
+Comment[da]=Strigi-baseret fuldtekst-søgning
 Comment[de]=Strigi-Basierte Volltextsuche
 Comment[el]=Αναζήτηση κειμένου βασισμένη στο Strigi
 Comment[es]=Búsqueda de texto completo basada en Strigi
