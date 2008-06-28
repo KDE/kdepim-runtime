@@ -5,8 +5,7 @@ include_directories(
     ${QT_QTDBUS_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LIBMAPI_DEFINITIONS}" )
-
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LIBMAPI_DEFINITIONS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 ########### next target ###############
 

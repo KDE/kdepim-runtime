@@ -34,6 +34,7 @@
 #include <KWindowSystem>
 
 #include <boost/shared_ptr.hpp>
+#include <libmapi++/libmapi++.h>
 
 #include <kmime/kmime_message.h>
 #include <kabc/vcardconverter.h>
@@ -59,62 +60,19 @@ void throw_exception(std::exception const & e)
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
+using namespace libmapipp;
 
-OCResource::OCResource( const QString &id )
-  :ResourceBase( id )
+OCResource::OCResource( const QString &id ) 
+  : ResourceBase( id )
 {
   // setName( "OC Resource" );
-
-  m_mapiMemoryContext = talloc_init("openchangeclient");
-
-  // Make this a setting somehow
-  m_profileDatabase = QDir::homePath() + QString( "/.openchange/profiles.ldb" );
-
-  int retval = MAPIInitialize( m_profileDatabase.toUtf8().data() );
-  qDebug() << "initialize result: " << retval;
-  if (retval != MAPI_E_SUCCESS) {
-    if (GetLastError() != MAPI_E_NOT_FOUND ) {
-      // It wasn't just a missing database....
-      qDebug() << "unhandled initialisation problem";
-      mapi_errstr("MAPIInitialize", GetLastError());
-      exit (1);
-    }
-
-    // we need to create the database
-    qDebug() << "trying to create database";
-    QFileInfo profileFileInfo( m_profileDatabase );
-    QDir parentDir = profileFileInfo.dir();
-    if (! parentDir.exists() ) {
-      // we have to create the parent
-      qDebug() << "trying to create parent for database";
-      bool success = parentDir.mkpath( profileFileInfo.path() );
-      if (! success) {
-	qDebug() << "Could not create parent path for profile file";
-	exit(1);
-      }
-    }
-    // we now have the parent directory
-    retval = CreateProfileStore( m_profileDatabase.toUtf8().data(), "/usr/local/share/setup" );
-    if (retval != MAPI_E_SUCCESS) {
-      mapi_errstr( "CreateProfileStore", GetLastError());
-      exit(1);
-    }
-    int retval = MAPIInitialize( m_profileDatabase.toUtf8().data() );
-    if (retval != MAPI_E_SUCCESS) {
-      // We've already tried to create the database, just bail here
-      mapi_errstr("MAPIInitialize", GetLastError());
-      exit (1);
-    }
-  }
+  // Initialize C mapi library so Profile functions work correctly.
+  MAPIInitialize(session::get_default_profile_path().c_str());
 }
 
 OCResource::~ OCResource()
 {
-  mapi_object_release(&m_mapiStore);
-
-  MAPIUninitialize();
-
-  talloc_free(m_mapiMemoryContext);
+  if (m_session) delete m_session;
 }
 
 bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -153,80 +111,37 @@ void OCResource::itemRemoved(const Akonadi::Item & item)
   qDebug() << "currently ignoring itemRemoved()";
 }
 
-void OCResource::getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
+void OCResource::getChildFolders( folder& mapi_folder,
                                   const Akonadi::Collection &parentCollection,
                                   Akonadi::Collection::List &collections)
 {
-  mapi_object_t objFolder;
-  mapi_object_init( &objFolder );
-  enum MAPISTATUS retval = OpenFolder( parentFolder, id, &objFolder );
-  if ( retval != MAPI_E_SUCCESS ) {
-    qDebug() << "Failed to open folder in quest for child folders: " << retval;
-    return;
-  }
+  folder::hierarchy_container_type hierarchy = mapi_folder.fetch_hierarchy();
 
-  mapi_object_t objHierarchyTable;
-  mapi_object_init( &objHierarchyTable );
-  retval = GetHierarchyTable( &objFolder, &objHierarchyTable );
-  if ( retval != MAPI_E_SUCCESS ) {
-    qDebug() << "Failed to get hierachy table in quest for child folders: " << retval;
-    return;
-  }
+  for (unsigned int i = 0; i < hierarchy.size(); ++i) {
+    property_container folderProperty = hierarchy[i]->get_property_container();
+    folderProperty << PR_DISPLAY_NAME << PR_FOLDER_CHILD_COUNT << PR_CONTAINER_CLASS;
+    folderProperty.fetch();
 
-  struct SPropTagArray* sPropTagArray;
-  sPropTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x4,
-                                    PR_DISPLAY_NAME,
-                                    PR_FID,
-                                    PR_COMMENT,
-                                    PR_FOLDER_CHILD_COUNT);
-
-  retval = SetColumns( &objHierarchyTable, sPropTagArray );
-  MAPIFreeBuffer( sPropTagArray );
-  if ( retval != MAPI_E_SUCCESS ) {
-    qDebug() << "Failed to set columns in quest for child folders: " << retval;
-    return;
-  }
-
-  struct SRowSet rowset;
-  while ( ( QueryRows(&objHierarchyTable, 0x32, TBL_ADVANCE, &rowset ) != MAPI_E_NOT_FOUND) && rowset.cRows ) {
-    // qDebug() << "num rows: " << rowset.cRows;
-    for (unsigned int index = 0; index < rowset.cRows; index++) {
-      Collection thisFolder;
-      thisFolder.setParent( parentCollection );
-      uint64_t *fid = (uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
-      thisFolder.setRemoteId( QString::number( *fid ) );
-      thisFolder.setName( ( const char * ) find_SPropValue_data(&rowset.aRow[index], PR_DISPLAY_NAME) );
-      QStringList folderMimeType;
-      if (*( (uint32_t *)find_SPropValue_data(&rowset.aRow[index], PR_FOLDER_CHILD_COUNT) ) > 0 ) {
-        // if it has children, needs this mimetype:
-        folderMimeType << "inode/directory";
-        uint64_t *fid = (uint64_t *)find_SPropValue_data(&rowset.aRow[index], PR_FID);
-        getChildFolders(&objFolder, *fid, thisFolder, collections);
+    Collection thisFolder;
+    thisFolder.setParent(parentCollection);
+    thisFolder.setRemoteId(QString::number( hierarchy[i]->get_id() ));
+    thisFolder.setName( (const char* ) folderProperty[PR_DISPLAY_NAME] );
+    QStringList folderMimeType;
+    if (*((uint32_t*) folderProperty[PR_FOLDER_CHILD_COUNT]) > 0) {
+      // if t has children, needs this mimetype:
+      folderMimeType << "inode/directory";
+      getChildFolders(*hierarchy[i], thisFolder, collections);
+    } else {
+      if (folderProperty[PR_CONTAINER_CLASS] == NULL) {
+        qDebug() << "failed query for container class for " << thisFolder.name() << ", assuming rfc822 mailbox" << endl;
+        folderMimeType << "message/rfc822";
       } else {
-        // no children - must have real contents
-        mapi_object_t obj_folder;
-        mapi_object_init(&obj_folder);
-        retval = OpenFolder(parentFolder, *fid, &obj_folder);
-        if ( retval != MAPI_E_SUCCESS ) {
-          qDebug() << "Failed to open folder in quest for child folders container class: " << retval;
-          return;
-        }
-        struct SPropTagArray* propertiesTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x1, PR_CONTAINER_CLASS);
-        uint32_t count;
-        struct SPropValue *containerProperties;
-        retval = GetProps(&obj_folder, propertiesTagArray, &containerProperties, &count);
-        MAPIFreeBuffer(propertiesTagArray);
-        if ( (retval != MAPI_E_SUCCESS) || (containerProperties[0].ulPropTag != PR_CONTAINER_CLASS) ) {
-          qDebug() << "failed query for container class for " << thisFolder.name() << ", assuming rfc822 mailbox" << endl;
-          folderMimeType << "message/rfc822";
-        } else {
-	  folderMimeType << mimeTypeForFolderType( containerProperties[0].value.lpszA );
-	  qDebug() << "Folder " << thisFolder.name() << ", as mimetype " << folderMimeType << endl;
-        }
+        folderMimeType << mimeTypeForFolderType( (const char*) folderProperty[PR_CONTAINER_CLASS]);
+        qDebug() << "Folder " << thisFolder.name() << ", as mimetype " << folderMimeType << endl;
       }
-      thisFolder.setContentMimeTypes( folderMimeType );
-      collections.append( thisFolder );
     }
+    thisFolder.setContentMimeTypes(folderMimeType);
+    collections.append(thisFolder);
   }
 }
 
@@ -263,22 +178,18 @@ void OCResource::login()
     mapi_errstr("GetDefaultProfile", GetLastError());
     exit (1);
   }
+  MAPIUninitialize();
 
+  m_profileName = profName;
+  try {
   // TODO: handle password (third argument)
-  retval = MapiLogonEx(&m_session, profName, 0 );
-  if (retval != MAPI_E_SUCCESS) {
-    mapi_errstr("MapiLogonEx", GetLastError());
-    exit (1);
+  m_session = new session(profName);
   }
-
-  mapi_object_init(&m_mapiStore);
-  retval = OpenMsgStore(&m_mapiStore);
-  if (retval != MAPI_E_SUCCESS) {
-    mapi_errstr("OpenMsgStore", GetLastError());
-    exit (1);
+  catch(mapi_exception e)
+  {
+    qDebug() << "MAPI EXception: " << e.what();
+    return 0;
   }
-
-  m_profileName = QString( profName );
 }
 
 void OCResource::retrieveCollections()
@@ -287,53 +198,41 @@ void OCResource::retrieveCollections()
 
   login();
 
-  struct SPropTagArray *sPropTagArray;
-  struct SPropValue *lpProps;
-  uint32_t cValues;
-
   Collection::List collections;
 
   /* Retrieve the mailbox folder name */
-  sPropTagArray = set_SPropTagArray( m_mapiMemoryContext, 0x1, PR_DISPLAY_NAME );
-  enum MAPISTATUS retval = GetProps(&m_mapiStore, sPropTagArray, &lpProps, &cValues);
-  MAPIFreeBuffer(sPropTagArray);
-  if (retval != MAPI_E_SUCCESS) {
-    qDebug() << "failed to get properties:" << retval;
-    exit( 1 );
-  }
+  property_container storeProperties = m_session->get_message_store().get_property_container();
+  storeProperties << PR_DISPLAY_NAME;
+  storeProperties.fetch();
 
-  if ( ! lpProps[0].value.lpszA ) {
+  if ( *(storeProperties.begin()) == NULL ) {
     qDebug() << "null mailbox name";
     exit( 1 );
   } else {
-    // qDebug() << "mailbox name: " << QString( lpProps[0].value.lpszA );
+    // qDebug() << "mailbox name: " << QString( (const char*) *(storeProperties.begin()) );
   }
 
   Collection account;
   account.setParent( Collection::root() );
   account.setRemoteId( m_profileName );
-  account.setName( QString( lpProps[0].value.lpszA ) + QString( " (OpenChange)" ) );
+  account.setName( QString( (const char*) *(storeProperties.begin()) ) + QString( " (OpenChange)" ) );
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
   account.setContentMimeTypes( mimeTypes );
   collections.append( account );
 
-  mapi_id_t id_mailbox;
   /* Prepare the directory listing */
-  retval = GetDefaultFolder(&m_mapiStore, &id_mailbox, olFolderTopInformationStore);
-  if (retval != MAPI_E_SUCCESS) {
-    qDebug() << "failed to get default folder:" << retval;
-    exit( 1 );
-  }
+  message_store& store = m_session->get_message_store();
+  mapi_id_t topFolderId = store.get_default_folder(olFolderTopInformationStore);
+  folder top_folder(store, topFolderId);
 
-  getChildFolders( &m_mapiStore, id_mailbox, account, collections );
+  getChildFolders( top_folder, account, collections );
 
   collectionsRetrieved( collections );
 }
 
-static KDateTime convertSysTime(const struct mapi_SPropValue &lpProp)
+static KDateTime convertSysTime(const FILETIME& filetime)
 {
-  struct FILETIME filetime = lpProp.value.ft;
   NTTIME nt_time = filetime.dwHighDateTime;
   nt_time = nt_time << 32;
   nt_time |= filetime.dwLowDateTime;
@@ -343,81 +242,15 @@ static KDateTime convertSysTime(const struct mapi_SPropValue &lpProp)
   return kdeTime;
 }
 
-enum MAPISTATUS OCResource::fetchFolder(const Akonadi::Collection & collection)
+void OCResource::appendMessageToCollection( libmapipp::message& mapi_message, const Akonadi::Collection & collection)
 {
-  enum MAPISTATUS retval;
-  mapi_object_t objFolder;
-  mapi_object_t obj_message;
-  mapi_object_t obj_table;
-  struct SPropTagArray *sPropTagArray;
-  struct SRowSet rowset;
-  struct mapi_SPropValue_array properties_array;
+  property_container message_properties = mapi_message.get_property_container();
 
-  mapi_object_init(&objFolder);
-  mapi_object_init(&obj_table);
+  message_properties.fetch_all();
 
-  if ( ( retval = OpenFolder(&m_mapiStore, collection.remoteId().toULongLong(), &objFolder) ) != MAPI_E_SUCCESS )
-  {
-    mapi_errstr( "OpenFolder",  GetLastError() );
-    return retval;
-  }
-
-  if ( ( retval = GetContentsTable(&objFolder, &obj_table) ) != MAPI_E_SUCCESS )
-  {
-    mapi_errstr( "GetContentsTable", GetLastError() );
-    return retval;
-  }
-
-  sPropTagArray = set_SPropTagArray(m_mapiMemoryContext, 0x5,
-                                    PR_FID,
-                                    PR_MID,
-                                    PR_INST_ID,
-                                    PR_INSTANCE_NUM,
-                                    PR_SUBJECT);
-
-  if ( ( retval = SetColumns(&obj_table, sPropTagArray ) ) != MAPI_E_SUCCESS )
-  {
-    mapi_errstr( "SetColumns",  GetLastError() );
-    return retval;
-  }
-  MAPIFreeBuffer(sPropTagArray);
-
-  while ( ( QueryRows(&obj_table, 0xa, TBL_ADVANCE, &rowset) == MAPI_E_SUCCESS ) && rowset.cRows ) {
-    qDebug() << "Message count, this round:" << rowset.cRows;
-    for (unsigned int i = 0; i < rowset.cRows; i++) {
-      mapi_object_init(&obj_message);
-      mapi_id_t *fid = (mapi_id_t *)find_SPropValue_data(&(rowset.aRow[i]), PR_FID);
-      mapi_id_t *mid = (mapi_id_t *)find_SPropValue_data(&(rowset.aRow[i]), PR_MID);
-      retval = OpenMessage(&m_mapiStore, *fid, *mid, &obj_message, 0);
-      if (retval == MAPI_E_SUCCESS) {
-        qDebug() << "building message";
-        retval = GetPropsAll(&obj_message, &properties_array);
-        if (retval != MAPI_E_SUCCESS) return retval;
-
-	if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
-	  qDebug() << "Ooh, a contact!";
-	  appendContactToCollection( properties_array, collection, &obj_message );
-	} else {
-	  appendMessageToCollection( properties_array, collection );
-	}
-      }
-      mapi_object_release(&obj_message);
-    }
-  }
-
-  mapi_object_release(&obj_table);
-  mapi_object_release(&objFolder);
-
-  return MAPI_E_SUCCESS;
-
-}
-
-void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection)
-{
-  // mapidump_message(&properties_array);
   MessagePtr msg_ptr ( new KMime::Message );
-  for ( uint32_t i = 0; i < properties_array.cValues; ++i ) {
-    switch( properties_array.lpProps[i].ulPropTag ) {
+  for ( property_container::iterator Iter = message_properties.begin(); Iter != message_properties.end(); ++Iter ) {
+    switch( Iter.get_tag() ) {
     case PR_ALTERNATE_RECIPIENT_ALLOWED:
       // PT_BOOLEAN
       break;
@@ -441,7 +274,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_CLIENT_SUBMIT_TIME:
       // PT_SYSTIME
-      msg_ptr->date()->setDateTime( convertSysTime( properties_array.lpProps[i] ) );
+      msg_ptr->date()->setDateTime( convertSysTime( *((const FILETIME*) *Iter) ) );
       break;
     case PR_SENT_REPRESENTING_SEARCH_KEY:
       // PT_BINARY
@@ -451,21 +284,21 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_RECEIVED_BY_NAME:
       // PT_STRING8
-      qDebug() << "Received by:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Received by:" << (const char*) *Iter;
       break;
     case PR_SENT_REPRESENTING_ENTRYID:
       // PT_BINARY
       break;
     case PR_SENT_REPRESENTING_NAME:
       // PT_STRING8
-      msg_ptr->from()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->from()->from7BitString( (const char*) *Iter );
       break;
     case PR_RCVD_REPRESENTING_ENTRYID:
       // PT_BINARY
       break;
     case PR_RCVD_REPRESENTING_NAME:
       // PT_STRING8
-      qDebug() << "Representing name:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Representing name:" << (const char*) *Iter;
       break;
     case PR_MESSAGE_SUBMISSION_ID:
       // PR_BINARY
@@ -490,7 +323,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_SENT_REPRESENTING_EMAIL_ADDRESS:
       // PT_STRING8
-      qDebug() << "Sent representing email addr:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Sent representing email addr:" << (const char*) *Iter;
       break;
     case PR_CONVERSATION_INDEX:
       // PT_BINARY
@@ -515,7 +348,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_SENDER_NAME:
       // PT_STRING8
-      msg_ptr->from()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->from()->from7BitString( (const char*) *Iter );
       break;
     case PR_SENDER_SEARCH_KEY:
       // PT_BINARY
@@ -525,24 +358,24 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_SENDER_EMAIL_ADDRESS:
       // PT_STRING8
-      qDebug() << "Sender email addr:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Sender email addr:" << (const char*) *Iter;
       break;
     case PR_DELETE_AFTER_SUBMIT:
       // PT_BOOLEAN
       break;
     case PR_DISPLAY_BCC:
       // PT_STRING8
-      msg_ptr->bcc()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->bcc()->from7BitString( (const char*) *Iter );
       break;
     case PR_DISPLAY_CC:
       // PT_STRING8
-      msg_ptr->cc()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->cc()->from7BitString( (const char*) *Iter );
       break;
     case PR_DISPLAY_TO:
       // PT_STRING8
       // This (and BCC+CC) need to be split on semicolons, and combined with
       // the email address
-      msg_ptr->to()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->to()->from7BitString( (const char*) *Iter );
       break;
     case PR_MESSAGE_DELIVERY_TIME:
       // PT_SYSTIME
@@ -585,7 +418,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       // PT_STRING8
       // This probably needs to construct some kind of multipart MIME body
       if ( msg_ptr->body().isEmpty() ) {
-	msg_ptr->setBody( properties_array.lpProps[i].value.lpszA );
+	msg_ptr->setBody( (const char*) *Iter );
       }
       break;
     case PR_BODY_UNICODE:
@@ -601,7 +434,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       // PT_BINARY
       // This probably needs to construct some kind of multipart MIME body
       if ( msg_ptr->body().isEmpty() ) {
-	struct SBinary_short *html = (struct SBinary_short *) find_mapi_SPropValue_data(&properties_array, PR_HTML );
+	struct SBinary_short *html = (struct SBinary_short *) *Iter;
 	QByteArray body = QByteArray( ( char* ) html->lpb, html->cb );
 	body.append( "\n" );
 	msg_ptr->setBody( body );
@@ -629,7 +462,7 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       // PT_SYSTIME
       if ( msg_ptr->date()->isEmpty() ) {
 	// we want to use PR_CLIENT_SUBMIT_TIME, but this will do instead
-	msg_ptr->date()->setDateTime( convertSysTime( properties_array.lpProps[i] ) );
+	msg_ptr->date()->setDateTime( convertSysTime( *((const FILETIME*) *Iter) ) );
       }
       break;
     case PR_LAST_MODIFICATION_TIME:
@@ -723,29 +556,29 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
       // PT_BINARY
       break;
     case PR_CONVERSATION_TOPIC:
-      msg_ptr->subject()->from7BitString( properties_array.lpProps[i].value.lpszA );
+      msg_ptr->subject()->from7BitString( (const char*) *Iter );
       break;
     case 0x82f1001e:
-      qDebug() << "82f1001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "82f1001e:" << (const char*) *Iter;
       break;
     case 0x82f2001e:
-      qDebug() << "82f2001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "82f2001e:" << (const char*) *Iter;
       break;
     case 0xe28001e:
-      qDebug() << "0xe28001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0xe28001e:" << (const char*) *Iter;
       break;
     case 0xe29001e:
-      qDebug() << "0xe29001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0xe29001e:" << (const char*) *Iter;
       break;
     case 0x8001001e:
-      qDebug() << "0x8001001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8001001e:" << (const char*) *Iter;
       break;
     default:
-      qDebug() << "Unhandled: " << QString::number( properties_array.lpProps[i].ulPropTag, 16 );
+      qDebug() << "Unhandled: " << QString::number( Iter.get_tag(), 16 );
     }
   }
 
-  uint8_t *has_attach = (uint8_t *) find_mapi_SPropValue_data(&properties_array, PR_HASATTACH);
+  uint8_t *has_attach = (uint8_t *) message_properties[PR_HASATTACH];
 
   /* If we have attachments, retrieve them */
   if (has_attach && *has_attach) {
@@ -764,12 +597,12 @@ void OCResource::appendMessageToCollection( struct mapi_SPropValue_array &proper
   }
 }
 
-void OCResource::appendContactToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection, mapi_object_t *collection_object)
+void OCResource::appendContactToCollection( libmapipp::message& mapi_message, const Akonadi::Collection & collection)
 {
-  enum MAPISTATUS retval;
-  struct SPropTagArray *attachmentPropertiesTagArray;
+  property_container message_properties = mapi_message.get_property_container();
+  message_properties.fetch_all();
+
   KABC::Addressee *contact = new KABC::Addressee;
-  struct mapi_SPropValue_array attachPropertiesArray;
 
   Item item;
   item.setRemoteId( "itemnumber" );
@@ -779,11 +612,11 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
   workAddress.setType( KABC::Address::Work );
   KABC::Address homeAddress;
   homeAddress.setType( KABC::Address::Home );
-  for ( uint32_t i = 0; i < properties_array.cValues; ++i ) {
-    switch( properties_array.lpProps[i].ulPropTag ) {
+  for (property_container::iterator Iter = message_properties.begin(); Iter != message_properties.end(); ++Iter ) {
+    switch( Iter.get_tag() ) {
     case PR_ALTERNATE_RECIPIENT_ALLOWED:
       // PT_BOOLEAN
-      if ( properties_array.lpProps[i].value.b ) {
+      if ( *((const uint8_t*) *Iter) ) {
 	contact->setSecrecy( KABC::Secrecy( KABC::Secrecy::Public) );
       } else {
 	contact->setSecrecy( KABC::Secrecy( KABC::Secrecy::Private) );
@@ -791,625 +624,608 @@ void OCResource::appendContactToCollection( struct mapi_SPropValue_array &proper
       break;
     case PR_IMPORTANCE:
       // PT_LONG
-      qDebug() << "PR_IMPORTANCE:" << properties_array.lpProps[i].value.l << QString("(0x%1)").arg((uint)properties_array.lpProps[i].value.l, (int)4, (int)16, QChar('0') );
+      qDebug() << "PR_IMPORTANCE:" << *((const uint32_t*) *Iter) << QString("(0x%1)").arg(*((const uint32_t*)*Iter), (int)4, (int)16, QChar('0') );
       break;
     case PR_MESSAGE_CLASS:
       // PT_STRING8
-      qDebug() << "PR_MESSAGE_CLASS:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_MESSAGE_CLASS:" << (const char*) *Iter;
       break;
     case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
       // PT_BOOLEAN
-      qDebug() << "PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_READ_RECEIPT_REQUESTED:
       // PT_BOOLEAN
-      qDebug() << "PR_READ_RECEIPT_REQUESTED:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_READ_RECEIPT_REQUESTED:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_SENT_REPRESENTING_NAME:
       // PT_STRING8
-      qDebug() << "PR_SENT_REPRESENTING_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENT_REPRESENTING_NAME:" << (const char*) *Iter;
       break;
     case PR_SENT_REPRESENTING_ADDRTYPE:
       // PT_STRING8
-      qDebug() << "PR_SENT_REPRESENTING_ADDRTYPE:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENT_REPRESENTING_ADDRTYPE:" << (const char*) *Iter;
       break;
     case PR_SENT_REPRESENTING_EMAIL_ADDRESS:
       // PT_STRING8
-      qDebug() << "PR_SENT_REPRESENTING_EMAIL_ADDRESS:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENT_REPRESENTING_EMAIL_ADDRESS:" << (const char*) *Iter;
       break;
     case PR_CONVERSATION_TOPIC:
       // PT_STRING8
-      qDebug() << "PR_CONVERSATION_TOPIC:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_CONVERSATION_TOPIC:" << (const char*) *Iter;
       break;
     case PR_SENDER_NAME:
       // PT_STRING8
-      qDebug() << "PR_SENDER_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENDER_NAME:" << (const char*) *Iter;
       break;
     case PR_SENDER_ADDRTYPE:
       // PT_STRING8
-      qDebug() << "PR_SENDER_ADDRTYPE:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENDER_ADDRTYPE:" << (const char*) *Iter;
       break;
     case PR_SENDER_EMAIL_ADDRESS:
       // PT_STRING8
-      qDebug() << "PR_SENDER_EMAIL_ADDRESS:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_SENDER_EMAIL_ADDRESS:" << (const char*) *Iter;
       break;
     case PR_DELETE_AFTER_SUBMIT:
       // PT_BOOLEAN
-      qDebug() << "PR_DELETE_AFTER_SUBMIT:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_DELETE_AFTER_SUBMIT:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_DISPLAY_BCC:
       // PT_STRING8
-      qDebug() << "PR_DISPLAY_BCC:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_DISPLAY_BCC:" << (const char*) *Iter;
       break;
     case PR_DISPLAY_CC:
       // PT_STRING8
-      qDebug() << "PR_DISPLAY_CC:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_DISPLAY_CC:" << (const char*) *Iter;
       break;
     case PR_DISPLAY_TO:
       // PT_STRING8
-      qDebug() << "PR_DISPLAY_TO:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_DISPLAY_TO:" << (const char*) *Iter;
       break;
     case PR_HASATTACH:
+    {
       // PT_BOOLEAN
-      qDebug() << "PR_HASATTACH:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
-      mapi_object_t obj_tb_attach;
-      mapi_object_init( &obj_tb_attach );
-      retval = GetAttachmentTable( collection_object, &obj_tb_attach );
+      qDebug() << "PR_HASATTACH:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
 
-      if (retval != MAPI_E_SUCCESS) {
-	qDebug() << "GetAttachmentTable failed";
-	break;
+      message::attachment_container_type attachments = mapi_message.fetch_attachments();
+
+      qDebug() << "Num attachments:" << attachments.size();
+
+      if (!attachments.size()) {
+        continue;
       }
 
-      attachmentPropertiesTagArray = set_SPropTagArray( m_mapiMemoryContext, 0x1, PR_ATTACH_NUM );
-      retval = SetColumns( &obj_tb_attach, attachmentPropertiesTagArray );
-      if (retval != MAPI_E_SUCCESS) {
-	qDebug() << "SetColumns failed";
-	break;
-      }
-      MAPIFreeBuffer( attachmentPropertiesTagArray);
+      // TODO: We always use the first attachment. Do we need to check for other attachments?
+      property_container attachment_properties = attachments[0]->get_property_container();
+      attachment_properties.fetch_all();
 
-      struct SRowSet rowset_attach;
-      retval = QueryRows( &obj_tb_attach, 0xa, TBL_ADVANCE, &rowset_attach );
-      if (retval != MAPI_E_SUCCESS) {
-	qDebug() << "QueryRows failed";
-	break;
+      QString attachFilename = QString( (const char*) attachment_properties[PR_ATTACH_FILENAME] );
+
+      if ( attachFilename.isEmpty() ) {
+        attachFilename = QString( (const char*) attachment_properties[PR_ATTACH_LONG_FILENAME] );
       }
 
-      qDebug() << "Num attachments:" << rowset_attach.cRows;
+      qDebug() << "attachment Filename:" << attachFilename;
 
-      for ( uint32_t j = 0; j < rowset_attach.cRows; ++j ) {
-	const uint32_t *attach_num = (const uint32_t *)find_SPropValue_data( &(rowset_attach.aRow[j]), PR_ATTACH_NUM );
-	mapi_object_t obj_attach;
-	mapi_object_init(&obj_attach);
-	retval = OpenAttach( collection_object, *attach_num, &obj_attach );
-	if (retval != MAPI_E_SUCCESS) {
-	  qDebug() << "OpenAttach failed";
-	  break;
-	}
+      const uint32_t *attachSize = (const uint32_t *) attachment_properties[PR_ATTACH_SIZE];
+      qDebug() << "file size: " << *attachSize;
 
-	retval = GetPropsAll(&obj_attach, &attachPropertiesArray);
-
-	QString attachFilename = QString( (const char*)find_mapi_SPropValue_data( &attachPropertiesArray, PR_ATTACH_FILENAME ) );
-
-	if ( attachFilename.isEmpty() ) {
-	  attachFilename = QString( (const char*)find_mapi_SPropValue_data( &attachPropertiesArray, PR_ATTACH_LONG_FILENAME ) );
-	}
-
-	qDebug() << "attachment Filename:" << attachFilename;
-
-	const uint32_t *attachSize = (const uint32_t *)find_mapi_SPropValue_data( &attachPropertiesArray, PR_ATTACH_SIZE );
-	qDebug() << "file size: " << *attachSize;
-
-	if ( attachFilename == "ContactPicture.jpg" ) {
-	  struct SBinary *attachData = (struct SBinary*)find_mapi_SPropValue_data( &attachPropertiesArray, PR_ATTACH_DATA_BIN );
-	  QImage photoData = QImage::fromData( (const uchar*)attachData->lpb, attachData->cb );
-	  if ( !photoData.isNull() ) {
-	    qDebug() << "Photo: " << photoData.size();
-	    contact->setPhoto( KABC::Picture( photoData) );
-	  }
-	}
-	mapi_object_release(&obj_attach);
-
+      if ( attachFilename == "ContactPicture.jpg" ) {
+        struct SBinary *attachData = (struct SBinary*) attachment_properties[PR_ATTACH_DATA_BIN];
+        QImage photoData = QImage::fromData( (const uchar*)attachData->lpb, attachData->cb );
+          if ( !photoData.isNull() ) {
+            qDebug() << "Photo: " << photoData.size();
+            contact->setPhoto( KABC::Picture( photoData) );
+          }
       }
+
       break;
+    }
     case PR_RTF_IN_SYNC:
       // PT_BOOLEAN
-      qDebug() << "PR_RTF_IN_SYNC:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_RTF_IN_SYNC:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_URL_COMP_NAME_SET:
       // PT_BOOLEAN
-      qDebug() << "PR_URL_COMP_NAME_SET:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_URL_COMP_NAME_SET:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_RTF_COMPRESSED:
       // PT_BINARY
-      qDebug() << "PR_RTF_COMPRESSED size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "PR_RTF_COMPRESSED data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "PR_RTF_COMPRESSED size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "PR_RTF_COMPRESSED data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case PR_URL_COMP_NAME:
       // PT_STRING8
-      qDebug() << "PR_URL_COMP_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_URL_COMP_NAME:" << (const char*) *Iter;
       break;
     case PR_ATTR_HIDDEN:
       // PT_BOOLEAN
-      qDebug() << "PR_ATTR_HIDDEN:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_ATTR_HIDDEN:" << ( *((uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_ATTR_SYSTEM:
       // PT_BOOLEAN
-      qDebug() << "PR_ATTR_SYSTEM:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_ATTR_SYSTEM:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_ATTR_READONLY:
       // PT_BOOLEAN
-      qDebug() << "PR_ATTR_READONLY:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_ATTR_READONLY:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_DISPLAY_NAME:
       // PT_STRING8
-      contact->setNameFromString( properties_array.lpProps[i].value.lpszA );
+      contact->setNameFromString( (const char*) *Iter );
       break;
     case PR_ACCOUNT:
       // PT_STRING8
-      qDebug() << "PR_ACCOUNT:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_ACCOUNT:" << (const char*) *Iter;
       break;
     case PR_OFFICE_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Work ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work ) );
       break;
     case PR_CALLBACK_TELEPHONE_NUMBER:
       // PT_STRING8
-      qDebug() << "PR_CALLBACK_TELEPHONE_NUMBER:" << properties_array.lpProps[i].value.lpszA;
-      // contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Work ) );
+      qDebug() << "PR_CALLBACK_TELEPHONE_NUMBER:" << (const char*) *Iter;
+      // contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work ) );
       break;
     case PR_HOME_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Home ) );
       break;
     case PR_INITIALS:
       // PT_STRING8
-      qDebug() << "PR_INITIALS:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_INITIALS:" << (const char*) *Iter;
       break;
     case PR_KEYWORD:
       // PT_STRING8
-      qDebug() << "PR_KEYWORD:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_KEYWORD:" << (const char*) *Iter;
       break;
     case PR_LANGUAGE:
       // PT_STRING8
-      qDebug() << "PR_LANGUAGE:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_LANGUAGE:" << (const char*) *Iter;
       break;
     case PR_LOCATION:
       // PT_STRING8
-      qDebug() << "PR_LOCATION:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_LOCATION:" << (const char*) *Iter;
       break;
     case PR_SURNAME:
       // PT_STRING8
-      contact->setFamilyName( properties_array.lpProps[i].value.lpszA );
+      contact->setFamilyName( (const char*) *Iter );
       break;
     case PR_GENERATION:
       // PT_STRING8
       // This is a bit of a stretch.
-      contact->setSuffix( properties_array.lpProps[i].value.lpszA );
+      contact->setSuffix( (const char*) *Iter );
       break;
     case PR_GIVEN_NAME:
       // PT_STRING8
-      contact->setGivenName( properties_array.lpProps[i].value.lpszA );
+      contact->setGivenName( (const char*) *Iter );
       break;
     case PR_POSTAL_ADDRESS:
       // PT_STRING8
-      qDebug() << "PR_POSTAL_ADDRESS:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_POSTAL_ADDRESS:" << (const char*) *Iter;
       break;
     case PR_COMPANY_NAME:
       // PT_STRING8
-      contact->setOrganization( properties_array.lpProps[i].value.lpszA );
+      contact->setOrganization( (const char*) *Iter );
       break;
     case PR_TITLE:
       // PT_STRING8
-      contact->setRole( properties_array.lpProps[i].value.lpszA );
+      contact->setRole( (const char*) *Iter );
       break;
     case PR_OFFICE_LOCATION:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Office", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "Office", (const char*) *Iter );
       break;
     case PR_PRIMARY_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Pref ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Pref ) );
       break;
     case PR_OFFICE2_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Work ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work ) );
       break;
     case PR_RADIO_TELEPHONE_NUMBER:
       // ignored
       break;
     case PR_PAGER_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Pager ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Pager ) );
       break;
     case PR_TELEX_NUMBER:
       // ignored
       break;
     case PR_HOME2_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Home ) );
       break;
     case PR_DEPARTMENT_NAME:
       // PT_STRING8
       // FIXME: this probably shouldn't be required. kdepimlibs needs to be cleaned up for KDE5.
-      contact->setDepartment( properties_array.lpProps[i].value.lpszA );
-      contact->insertCustom( "KADDRESSBOOK", "Department", properties_array.lpProps[i].value.lpszA );
+      contact->setDepartment( (const char*) *Iter );
+      contact->insertCustom( "KADDRESSBOOK", "Department", (const char*) *Iter );
       break;
     case PR_MOBILE_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Cell ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Cell ) );
       break;
     case PR_BUSINESS_FAX_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Work | KABC::PhoneNumber::Fax ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work | KABC::PhoneNumber::Fax ) );
       break;
     case PR_COUNTRY:
       // PT_STRING8
-      workAddress.setCountry( properties_array.lpProps[i].value.lpszA );
+      workAddress.setCountry( (const char*) *Iter );
       break;
     case PR_LOCALITY:
       // PT_STRING8
-      workAddress.setLocality( properties_array.lpProps[i].value.lpszA );
+      workAddress.setLocality( (const char*) *Iter );
       break;
     case PR_STREET_ADDRESS :
       // PT_STRING8
-      workAddress.setStreet( properties_array.lpProps[i].value.lpszA );
+      workAddress.setStreet( (const char*) *Iter );
       break;
     case PR_STATE_OR_PROVINCE:
       // PT_STRING8
-      workAddress.setRegion( properties_array.lpProps[i].value.lpszA );
+      workAddress.setRegion( (const char*) *Iter );
       break;
     case PR_POSTAL_CODE:
       // PT_STRING8
-      workAddress.setPostalCode( properties_array.lpProps[i].value.lpszA );
+      workAddress.setPostalCode( (const char*) *Iter );
       break;
     case PR_POST_OFFICE_BOX:
       // PT_STRING8
-      workAddress.setPostOfficeBox( properties_array.lpProps[i].value.lpszA );
+      workAddress.setPostOfficeBox( (const char*) *Iter );
       break;
     case PR_ISDN_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Isdn ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Isdn ) );
       break;
     case PR_CAR_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Car ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Car ) );
       break;
     case PR_OTHER_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Voice ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Voice ) );
       break;
     case PR_HOME_FAX_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( properties_array.lpProps[i].value.lpszA, KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ) );
       break;
     case PR_PRIMARY_FAX_NUMBER:
       // PT_STRING8
-      qDebug() << "PR_PRIMARY_FAX_NUMBER:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_PRIMARY_FAX_NUMBER:" << (const char*) *Iter;
       break;
     case PR_ASSISTANT:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "AssistantName", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "AssistantName", (const char*) *Iter );
       break;
     case PR_WEDDING_ANNIVERSARY:
       // PT_SYSTIME
-      contact->insertCustom( "KADDRESSBOOK", "Anniversary", convertSysTime( properties_array.lpProps[i] ).toString("%Y-%m-%d") );
+      contact->insertCustom( "KADDRESSBOOK", "Anniversary", convertSysTime( *((const FILETIME*) *Iter) ).toString("%Y-%m-%d") );
       break;
     case PR_BIRTHDAY:
       // PT_SYSTIME
-      contact->setBirthday( convertSysTime( properties_array.lpProps[i] ).toUtc().dateTime() );
+      contact->setBirthday( convertSysTime( *((const FILETIME*) *Iter) ).toUtc().dateTime() );
       break;
     case PR_MIDDLE_NAME:
       // PT_STRING8
-      contact->setAdditionalName( properties_array.lpProps[i].value.lpszA );
+      contact->setAdditionalName( (const char*) *Iter );
       break;
     case PR_DISPLAY_NAME_PREFIX:
       // PT_STRING8
-      contact->setPrefix( properties_array.lpProps[i].value.lpszA );
+      contact->setPrefix( (const char*) *Iter );
       break;
     case PR_PROFESSION:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Profession", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "Profession", (const char*) *Iter );
       break;
     case PR_SPOUSE_NAME:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "SpouseName", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "SpouseName", (const char*) *Iter );
       break;
     case PR_TTYTDD_PHONE_NUMBER:
       // ignored
       break;
     case PR_MANAGER_NAME:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Manager", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "Manager", (const char*) *Iter );
       break;
     case PR_NICKNAME:
       // PT_STRING8
-      contact->setNickName( properties_array.lpProps[i].value.lpszA );
+      contact->setNickName( (const char*) *Iter );
       break;
     case PR_BUSINESS_HOME_PAGE:
       // PT_STRING8
-      contact->setUrl( KUrl( properties_array.lpProps[i].value.lpszA ) );
+      contact->setUrl( KUrl( (const char*) *Iter ) );
       break;
     case PR_COMPANY_MAIN_PHONE_NUMBER:
       // PT_STRING8
-      qDebug() << "PR_COMPANY_MAIN_PHONE_NUMBER:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_COMPANY_MAIN_PHONE_NUMBER:" << (const char*) *Iter;
       break;
     case PR_HOME_ADDRESS_CITY:
       // PT_STRING8
-      homeAddress.setLocality( properties_array.lpProps[i].value.lpszA );
+      homeAddress.setLocality( (const char*) *Iter );
       break;
     case PR_HOME_ADDRESS_COUNTRY:
       // PT_STRING8
-      homeAddress.setCountry( properties_array.lpProps[i].value.lpszA );
+      homeAddress.setCountry( (const char*) *Iter );
       break;
     case PR_HOME_ADDRESS_POSTAL_CODE:
       // PT_STRING8
-      homeAddress.setPostalCode( properties_array.lpProps[i].value.lpszA );
+      homeAddress.setPostalCode( (const char*) *Iter );
       break;
     case PR_HOME_ADDRESS_STATE_OR_PROVINCE:
       // PT_STRING8
-      homeAddress.setRegion( properties_array.lpProps[i].value.lpszA );
+      homeAddress.setRegion( (const char*) *Iter );
       break;
     case PR_HOME_ADDRESS_STREET:
       // PT_STRING8
-      homeAddress.setStreet( properties_array.lpProps[i].value.lpszA );
+      homeAddress.setStreet( (const char*) *Iter );
       break;
     case PR_CREATOR_NAME:
       // PT_STRING8
-      qDebug() << "PR_CREATOR_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_CREATOR_NAME:" << (const char*) *Iter;
       break;
     case PR_LAST_MODIFIER_NAME:
       // PT_STRING8
-      qDebug() << "PR_LAST_MODIFIER_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_LAST_MODIFIER_NAME:" << (const char*) *Iter;
       break;
     case PR_CREATOR_ENTRYID:
       // PT_BINARY
-      qDebug() << "PR_CREATOR_ENTRYID size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "PR_CREATOR_ENTRYID data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "PR_CREATOR_ENTRYID size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "PR_CREATOR_ENTRYID data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case PR_HAS_NAMED_PROPERTIES:
       // PT_BOOLEAN
-      qDebug() << "PR_HAS_NAMED_PROPERTIES:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "PR_HAS_NAMED_PROPERTIES:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case PR_URL_NAME:
       // PT_STRING8
-      qDebug() << "PR_URL_NAME:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_URL_NAME:" << (const char*) *Iter;
       break;
     case PR_INTERNET_MESSAGE_ID:
       // PT_STRING8
-      qDebug() << "PR_INTERNET_MESSAGE_ID:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "PR_INTERNET_MESSAGE_ID:" << (const char*) *Iter;
       break;
 
     case 0x8001001e:
       // PT_STRING8
-      qDebug() << "0x8001001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8001001e:" << (const char*) *Iter;
       break;
     case 0x8004000b:
       // PT_BOOLEAN
-      qDebug() << "0x8004000b:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "0x8004000b:" << (  *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case 0x8008101e:
-      for (unsigned int j=0; j < properties_array.lpProps[i].value.MVszA.cValues; ++j) {
-	qDebug() << "0x8008101e:" << properties_array.lpProps[i].value.MVszA.strings[j].lppszA;
+    {
+      struct SLPSTRArray value = *((const SLPSTRArray*) *Iter);
+      for (unsigned int j=0; j < value.cValues; ++j) {
+        qDebug() << "0x8008101e:" << value.strings[j]->lppszA;
       }
       break;
+    }
     case 0x800d001e:
       // PT_STRING8
-      qDebug() << "0x800d001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x800d001e:" << (const char*) *Iter;
       break;
     case 0x800e001e:
       // PT_STRING8
-      qDebug() << "0x800e001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x800e001e:" << (const char*) *Iter;
       break;
     case 0x800f001e:
       // PT_STRING8
-      qDebug() << "0x800f001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x800f001e:" << (const char*) *Iter;
       break;
     case 0x8010001e:
       // PT_STRING8
-      contact->insertEmail( properties_array.lpProps[i].value.lpszA, true ); // preferred
+      contact->insertEmail( (const char*) *Iter, true ); // preferred
       break;
     case 0x8011001e:
       // PT_STRING8
-      contact->insertEmail( properties_array.lpProps[i].value.lpszA );
+      contact->insertEmail( (const char*) *Iter );
       break;
     case 0x8012001e:
       // PT_STRING8
-      contact->insertEmail( properties_array.lpProps[i].value.lpszA );
+      contact->insertEmail( (const char*) *Iter );
       break;
     case 0x8013001e:
       // PT_STRING8
-      qDebug() << "Display as (email):" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Display as (email):" << (const char*) *Iter;
       break;
     case 0x8014001e:
       // PT_STRING8
-      qDebug() << "Display as (email2):" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Display as (email2):" << (const char*) *Iter;
       break;
     case 0x8015001e:
       // PT_STRING8
-      qDebug() << "Display as (email3):" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Display as (email3):" << (const char*) *Iter;
       break;
     case 0x8016001e:
       // PT_STRING8
-      qDebug() << "0x8016001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8016001e:" << (const char*) *Iter;
       break;
     case 0x8019101e:
-      for (unsigned int j=0; j < properties_array.lpProps[i].value.MVszA.cValues; ++j) {
-	qDebug() << "0x8019101e:" << properties_array.lpProps[i].value.MVszA.strings[j].lppszA;
+    {
+      struct SLPSTRArray value = *((const SLPSTRArray*) *Iter); 
+      for (unsigned int j=0; j < value.cValues; ++j) {
+	qDebug() << "0x8019101e:" << value.strings[j]->lppszA;
       }
       break;
+    }
     case 0x801f001e:
       // PT_STRING8
-      qDebug() << "0x801f001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x801f001e:" << (const char*) *Iter;
       break;
     case 0x8020001e:
       // PT_STRING8
-      qDebug() << "0x8020001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8020001e:" << (const char*) *Iter;
       break;
     case 0x8021001e:
       // PT_STRING8
-      qDebug() << "0x8021001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8021001e:" << (const char*) *Iter;
       break;
     case 0x8022001e:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "IMAddress", properties_array.lpProps[i].value.lpszA );
+      contact->insertCustom( "KADDRESSBOOK", "IMAddress", (const char*) *Iter );
       break;
     case 0x8023001e:
       // PT_STRING8
-      qDebug() << "Web page address:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "Web page address:" << (const char*) *Iter;
       break;
     case 0x80b7001e:
       // PT_STRING8
-      qDebug() << "0x80b7001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80b7001e:" << (const char*) *Iter;
       break;
     case 0x80bf001e:
       // PT_STRING8
-      qDebug() << "0x80b7001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80b7001e:" << (const char*) *Iter;
       break;
     case 0x80c5001e:
       // PT_STRING8
-      qDebug() << "0x80c5001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80c5001e:" << (const char*) *Iter;
       break;
     case 0x80c9001e:
       // PT_STRING8
-      qDebug() << "0x80c9001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80c9001e:" << (const char*) *Iter;
       break;
     case 0x80cc001e:
       // PT_STRING8
-      qDebug() << "0x80cc001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80cc001e:" << (const char*) *Iter;
       break;
     case 0x80cd001e:
       // PT_STRING8
-      qDebug() << "0x80cd001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x80cd001e:" << (const char*) *Iter;
       break;
     case 0x81a7000b:
       // PT_BOOLEAN
-      qDebug() << "0x81a7000b:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "0x81a7000b:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case 0x81cd001e:
       // PT_STRING8
-      qDebug() << "0x81cd001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x81cd001e:" << (const char*) *Iter;
       break;
     case 0x81ce0102:
       // PT_BINARY
-      qDebug() << "0x81ce0102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x81ce0102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x81ce0102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x81ce0102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
+
       break;
     case 0x81cf001e:
       // PT_STRING8
-      qDebug() << "0x81cf001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x81cf001e:" << (const char*) *Iter;
       break;
     case 0x81d00102:
       // PT_BINARY
-      qDebug() << "0x81d00102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x81d00102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x81d00102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x81d00102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
+
       break;
     case 0x81d1001e:
       // PT_STRING8
-      qDebug() << "0x81d1001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x81d1001e:" << (const char*) *Iter;
       break;
     case 0x81d20102:
       // PT_BINARY
-      qDebug() << "0x81d20102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x81d20102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x81d20102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x81d20102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case 0x827c001e:
       // PT_STRING8
-      qDebug() << "0x827c001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x827c001e:" << (const char*) *Iter;
       break;
     case 0x827f000b:
       // PT_BOOLEAN
-      qDebug() << "0x827f000b:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "0x827f000b:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case 0x8281001e:
       // PT_STRING8
-      qDebug() << "0x8281001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8281001e:" << (const char*) *Iter;
       break;
     case 0x8282001e:
       // PT_STRING8
-      qDebug() << "0x8282001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8282001e:" << (const char*) *Iter;
       break;
     case 0x8284001e:
       // PT_STRING8
-      qDebug() << "0x8284001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8284001e:" << (const char*) *Iter;
       break;
     case 0x82b9000b:
       // PT_BOOLEAN
-      qDebug() << "0x82b9000b:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "0x82b9000b:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case 0x82ef000b:
       // PT_BOOLEAN
-      qDebug() << "0x82ef000b:" << ( properties_array.lpProps[i].value.b ? "true":"false" );
+      qDebug() << "0x82ef000b:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
       break;
     case 0x82f5001e:
       // PT_STRING8
-      qDebug() << "0x82f5001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x82f5001e:" << (const char*) *Iter;
       break;
     case 0x82f60102:
       // PT_BINARY
-      qDebug() << "0x82f60102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x82f60102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x82f60102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x82f60102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case 0x82f70102:
       // PT_BINARY
-      qDebug() << "0x82f70102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x82f70102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x82f70102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x82f70102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case 0x8386001e:
       // PT_STRING8
-      qDebug() << "0x8386001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8386001e:" << (const char*) *Iter;
       break;
     case 0x8387001e:
       // PT_STRING8
-      qDebug() << "0x8387001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8387001e:" << (const char*) *Iter;
       break;
     case 0x8388001e:
       // PT_STRING8
-      qDebug() << "0x8388001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8388001e:" << (const char*) *Iter;
       break;
     case 0x83890102:
       // PT_BINARY
-      qDebug() << "0x83890102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x83890102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x83890102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x83890102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case 0x838e001e:
       // PT_STRING8
-      qDebug() << "0x838e001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x838e001e:" << (const char*) *Iter;
       break;
     case 0x838f001e:
       // PT_STRING8
-      qDebug() << "0x838f001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x838f001e:" << (const char*) *Iter;
       break;
     case 0x8390001e:
       // PT_STRING8
-      qDebug() << "0x8390001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8390001e:" << (const char*) *Iter;
       break;
     case 0x83910102:
       // PT_BINARY
-      qDebug() << "0x83910102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x83910102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x83910102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x83910102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
     case 0x8396001e:
       // PT_STRING8
-      qDebug() << "0x8396001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8396001e:" << (const char*) *Iter;
       break;
     case 0x8397001e:
       // PT_STRING8
-      qDebug() << "0x8397001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8397001e:" << (const char*) *Iter;
       break;
     case 0x8398001e:
       // PT_STRING8
-      qDebug() << "0x8398001e:" << properties_array.lpProps[i].value.lpszA;
+      qDebug() << "0x8398001e:" << (const char*) *Iter;
       break;
     case 0x83990102:
       // PT_BINARY
-      qDebug() << "0x83990102 size:" << properties_array.lpProps[i].value.bin.cb;
-      qDebug() << "0x83990102 data:" << QByteArray( (char*)properties_array.lpProps[i].value.bin.lpb, properties_array.lpProps[i].value.bin.cb ).toHex();
+      qDebug() << "0x83990102 size:" << ((const SBinary*) *Iter)->cb;
+      qDebug() << "0x83990102 data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
       break;
 
     default:
-      qDebug() << "Unhandled in collection: " << QString::number( properties_array.lpProps[i].ulPropTag, 16 );
+      qDebug() << "Unhandled in collection: " << QString::number( Iter.get_tag(), 16 );
     }
   }
   contact->insertAddress( workAddress );
@@ -1437,7 +1253,19 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
 
   Item::List items = fetch->items();
 
-  fetchFolder( collection );
+  folder aFolder(m_session->get_message_store(), collection.remoteId().toULongLong());
+  folder::message_container_type messages = aFolder.fetch_messages();
+  
+  for (unsigned int i = 0; i < messages.size(); ++i) {
+
+    if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
+      appendContactToCollection( *messages[i], collection );
+    } else {
+      appendMessageToCollection( *messages[i], collection );
+    }
+  }
+
+  // fetchFolder( collection );
 
   emit percent( 100 );
   itemsRetrievalDone();

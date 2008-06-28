@@ -25,10 +25,7 @@
 
 #include <akonadi/resourcebase.h>
 
-extern "C" {
-#include <libmapi/libmapi.h>
-#include <talloc.h>
-}
+#include <libmapi++/libmapi++.h>
 
 class OCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
@@ -55,21 +52,18 @@ protected:
 
 private:
     void login();
-    void appendMessageToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection );
-    void appendContactToCollection( struct mapi_SPropValue_array &properties_array, const Akonadi::Collection & collection,
-				    mapi_object_t *collection_object);
+    void appendMessageToCollection( libmapipp::message & mapi_message, const Akonadi::Collection & collection );
+    void appendContactToCollection( libmapipp::message & mapi_message, const Akonadi::Collection & collection);
     enum MAPISTATUS fetchFolder( const Akonadi::Collection &collection );
     QString mimeTypeForFolderType( const char *folderTypeValue ) const;
 
     // this method may recurse into itself.
-    void getChildFolders( mapi_object_t *parentFolder, mapi_id_t id,
+    void getChildFolders( libmapipp::folder& parentFolder,
                           const Akonadi::Collection &parentCollection,
                           Akonadi::Collection::List &collections);
 
     QString m_profileName;
-    mapi_object_t m_mapiStore;
-    struct mapi_session *m_session;
-    TALLOC_CTX *m_mapiMemoryContext;
+    libmapipp::session *m_session;
     QString m_profileDatabase; // TODO: maybe this should be a constructor arg?
 
     friend class ProfileDialog;

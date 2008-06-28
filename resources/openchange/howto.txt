@@ -1,0 +1,4 @@
+- Get and install OpenChange's libmapi (http://www.openchange.org)
+- Get and install libmapi++ (svn co https://svn.openchange.org/openchange/branches/libmapi++ and sudo make install)
+
+
