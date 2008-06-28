@@ -188,7 +188,7 @@ void OCResource::login()
   catch(mapi_exception e)
   {
     qDebug() << "MAPI EXception: " << e.what();
-    return 0;
+    emit error(e.what());
   }
 }
 
