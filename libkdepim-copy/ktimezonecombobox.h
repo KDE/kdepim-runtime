@@ -1,7 +1,7 @@
 /*
   This file is part of KOrganizer.
 
-  Copyright (C) 2007  Bruno Virlet <bruno.virlet@gmail.com>
+  Copyright (C) 2007 Bruno Virlet <bruno.virlet@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
   without including the source code for Qt in the source distribution.
 */
 
-
 #ifndef KDEPIM_KTIMEZONECOMBOBOX_H
 #define KDEPIM_KTIMEZONECOMBOBOX_H
 
@@ -34,43 +33,43 @@
 namespace KPIM {
 
 /**
- * This combobox loads the system timezones available in KSystemTimeZones::zones()
+ * A combobox that shows the system timezones available in KSystemTimeZones::zones()
  * and provides methods to easily select the item corresponding to a given
- * KDateTime::Spec or to retrieve the KDateTime::Spec associated with the selected
- * item.
+ * KDateTime::Spec or to retrieve the KDateTime::Spec associated with the
+ * selected item.
  */
 class KDEPIM_EXPORT KTimeZoneComboBox : public KComboBox
 {
-public:
-  KTimeZoneComboBox( QWidget *parent = 0 );
-  ~KTimeZoneComboBox();
+  public:
+    KTimeZoneComboBox( QWidget *parent = 0 );
+    ~KTimeZoneComboBox();
 
-  /**
-   * Select the item in the combo box corresponding to the given
-   * @p spec
-   */
-  void selectTimeSpec( const KDateTime::Spec& spec );
+    /**
+     * Selects the item in the combobox corresponding to the given @p spec.
+     */
+    void selectTimeSpec( const KDateTime::Spec &spec );
 
-  /**
-   * Convenience for the previous one. Select the user local timezone
-   * specified in his settings.
-   */
-  void selectLocalTimeSpec();
+    /**
+     * Convenience version of selectTimeSpec(const KDateTime::Spec &).
+     * Selects the local timezone specified in the user settings.
+     */
+    void selectLocalTimeSpec();
 
-  /**
-   * If @p floating is true, selects floating timezone.
-   * Else if @spec is valid, selects @p spec timezone, if not selects local timezone.
-   */
-  void setFloating( bool floating, const KDateTime::Spec &spec = KDateTime::Spec() );
+    /**
+     * If @p floating is true, selects floating timezone.
+     * Else if @spec is valid, selects @p spec timezone, if not selects
+     * local timezone.
+     */
+    void setFloating( bool floating, const KDateTime::Spec &spec = KDateTime::Spec() );
 
-  /**
-   * @returns The timespec associated with the currently selected item
-   */
-  KDateTime::Spec selectedTimeSpec();
+    /**
+     * @returns The timespec associated with the currently selected item.
+     */
+    KDateTime::Spec selectedTimeSpec();
 
-private:
-  class Private;
-  Private const* d;
+  private:
+    class Private;
+    Private const *d;
 };
 
 }

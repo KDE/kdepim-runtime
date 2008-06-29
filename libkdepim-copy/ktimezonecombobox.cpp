@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007  Bruno Virlet <bruno.virlet@gmail.com>
+  Copyright (C) 2007 Bruno Virlet <bruno.virlet@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -25,16 +25,14 @@ using namespace KPIM;
 
 class KTimeZoneComboBox::Private
 {
-public:
-  Private( KTimeZoneComboBox *parent )
-    : mParent( parent )
+  public:
+    Private( KTimeZoneComboBox *parent )
+      : mParent( parent )
     {}
 
-  void fillComboBox() const;
-
-  KTimeZoneComboBox *mParent;
+    void fillComboBox() const;
+    KTimeZoneComboBox *mParent;
 };
-
 
 void KTimeZoneComboBox::Private::fillComboBox() const
 {
@@ -43,8 +41,8 @@ void KTimeZoneComboBox::Private::fillComboBox() const
 
   const KTimeZones::ZoneMap timezones = KSystemTimeZones::zones();
 
-  for (KTimeZones::ZoneMap::ConstIterator it = timezones.begin();  it != timezones.end();  ++it) {
-    list.append(i18n(it.key().toUtf8()));
+  for ( KTimeZones::ZoneMap::ConstIterator it = timezones.begin();  it != timezones.end();  ++it ) {
+    list.append( i18n( it.key().toUtf8() ) );
   }
 
   list.sort();
@@ -54,10 +52,8 @@ void KTimeZoneComboBox::Private::fillComboBox() const
   mParent->addItems( list );
 }
 
-
-KTimeZoneComboBox::KTimeZoneComboBox( QWidget* parent )
-  : KComboBox( parent ),
-    d( new Private( this ) )
+KTimeZoneComboBox::KTimeZoneComboBox( QWidget *parent )
+  : KComboBox( parent ), d( new Private( this ) )
 {
   d->fillComboBox();
 }
@@ -71,22 +67,21 @@ void KTimeZoneComboBox::selectTimeSpec( const KDateTime::Spec &spec )
 {
   int nCurrentlySet = -1;
 
-  for ( int i = 0; i < count(); ++i )
-  {
-    if ( itemText(i) ==  spec.timeZone().name() )
-    {
+  for ( int i = 0; i < count(); ++i ) {
+    if ( itemText(i) ==  spec.timeZone().name() ) {
       nCurrentlySet = i;
       break;
     }
   }
   if ( nCurrentlySet == -1 ) {
-    if ( spec.isUtc() )
+    if ( spec.isUtc() ) {
       setCurrentIndex( 1 ); // UTC
-    else
+    } else {
       setCurrentIndex( 0 ); // Floating event
-  }
-  else
+    }
+  } else {
     setCurrentIndex( nCurrentlySet );
+  }
 }
 
 void KTimeZoneComboBox::selectLocalTimeSpec()
@@ -98,24 +93,26 @@ KDateTime::Spec KTimeZoneComboBox::selectedTimeSpec()
 {
   KDateTime::Spec spec;
 
-  if ( currentText() == "UTC" )
+  if ( currentText() == "UTC" ) {
     spec.setType( KDateTime::UTC );
-  else if ( currentText() == i18n( "Floating" ) )
+  } else if ( currentText() == i18n( "Floating" ) ) {
     spec = KDateTime::Spec( KDateTime::ClockTime );
-  else
+  } else {
     spec.setType( KSystemTimeZones::zone( currentText() ) );
+  }
 
   return spec;
 }
 
 void KTimeZoneComboBox::setFloating( bool floating, const KDateTime::Spec &spec )
 {
-  if ( floating )
+  if ( floating ) {
     selectTimeSpec( KDateTime::ClockTime );
-  else {
-    if ( spec.isValid() )
+  } else {
+    if ( spec.isValid() ) {
       selectTimeSpec( spec );
-    else
+    } else {
       selectLocalTimeSpec();
+    }
   }
 }
