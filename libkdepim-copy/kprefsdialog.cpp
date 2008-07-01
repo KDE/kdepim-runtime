@@ -21,6 +21,8 @@
   Boston, MA 02110-1301, USA.
 */
 
+//KDE5: make kconfig_compiler support tooltips, then support tooltips here too.
+
 #include "kprefsdialog.h"
 #include "ktimeedit.h"
 #include "kdateedit.h"
