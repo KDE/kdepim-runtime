@@ -103,10 +103,11 @@ QList<QWidget *> KPrefsWid::widgets() const
 KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
   : mItem( item )
 {
-  mCheck = new QCheckBox( item->label(), parent );
-  connect( mCheck, SIGNAL( clicked() ), SIGNAL( changed() ) );
-  if ( !item->whatsThis().isNull() ) {
-    mCheck->setWhatsThis( item->whatsThis() );
+  mCheck = new QCheckBox( mItem->label(), parent );
+  connect( mCheck, SIGNAL(clicked()), SIGNAL(changed()) );
+  QString whatsThis = mItem->whatsThis();
+  if ( !whatsThis.isEmpty() ) {
+    mCheck->setWhatsThis( whatsThis );
   }
 }
 
@@ -132,19 +133,18 @@ QList<QWidget *> KPrefsWidBool::widgets() const
   return widgets;
 }
 
-KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item,
-                            QWidget *parent )
+KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent )
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label() + ':', parent );
   mSpin = new QSpinBox( parent );
-  if ( !item->minValue().isNull() ) {
-    mSpin->setMinimum( item->minValue().toInt() );
+  if ( !mItem->minValue().isNull() ) {
+    mSpin->setMinimum( mItem->minValue().toInt() );
   }
-  if ( !item->maxValue().isNull() ) {
-    mSpin->setMaximum( item->maxValue().toInt() );
+  if ( !mItem->maxValue().isNull() ) {
+    mSpin->setMaximum( mItem->maxValue().toInt() );
   }
-  connect( mSpin, SIGNAL( valueChanged( int ) ), SIGNAL( changed() ) );
+  connect( mSpin, SIGNAL(valueChanged(int)), SIGNAL(changed()) );
   mLabel->setBuddy( mSpin );
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
@@ -181,16 +181,15 @@ QList<QWidget *> KPrefsWidInt::widgets() const
   return widgets;
 }
 
-KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item,
-                                QWidget *parent )
+KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *parent )
   : mItem( item )
 {
   mButton = new KColorButton( parent );
-  connect( mButton, SIGNAL( changed( const QColor & ) ), SIGNAL( changed() ) );
+  connect( mButton, SIGNAL(changed(const QColor&)), SIGNAL(changed()) );
   mLabel = new QLabel( mItem->label() + ':', parent );
   mLabel->setBuddy( mButton );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mButton->setWhatsThis( whatsThis );
   }
 }
@@ -229,9 +228,9 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
   mPreview->setFrameStyle( QFrame::Panel | QFrame::Sunken );
 
   mButton = new QPushButton( i18n( "Choose..." ), parent );
-  connect( mButton, SIGNAL( clicked() ), SLOT( selectFont() ) );
+  connect( mButton, SIGNAL(clicked()), SLOT(selectFont()) );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mPreview->setWhatsThis( whatsThis );
     mButton->setWhatsThis( whatsThis );
   }
@@ -282,9 +281,9 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *pare
   mLabel = new QLabel( mItem->label() + ':', parent );
   mTimeEdit = new KTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
-  connect( mTimeEdit, SIGNAL( timeChanged( QTime ) ), SIGNAL( changed() ) );
+  connect( mTimeEdit, SIGNAL(timeChanged(QTime)), SIGNAL(changed()) );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mTimeEdit->setWhatsThis( whatsThis );
   }
 }
@@ -322,9 +321,9 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidg
   mTimeEdit->setDisplayFormat( "hh:mm:ss" );
   mTimeEdit->setMinimumTime( QTime( 0, 1 ) ); // [1 min]
   mTimeEdit->setMaximumTime( QTime( 24, 0 ) ); // [24 hr]
-  connect( mTimeEdit, SIGNAL( timeChanged( const QTime & ) ), SIGNAL( changed() ) );
+  connect( mTimeEdit, SIGNAL(timeChanged(const QTime&)), SIGNAL(changed()) );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mTimeEdit->setWhatsThis( whatsThis );
   }
 }
@@ -357,9 +356,9 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *pare
   mLabel = new QLabel( mItem->label() + ':', parent );
   mDateEdit = new KDateEdit( parent );
   mLabel->setBuddy( mDateEdit );
-  connect( mDateEdit, SIGNAL( dateChanged( const QDate& ) ), SIGNAL( changed() ) );
+  connect( mDateEdit, SIGNAL(dateChanged(const QDate&)), SIGNAL(changed()) );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mDateEdit->setWhatsThis( whatsThis );
   }
 }
@@ -392,12 +391,11 @@ KDateEdit *KPrefsWidDate::dateEdit()
   return mDateEdit;
 }
 
-KPrefsWidRadios::KPrefsWidRadios( KConfigSkeleton::ItemEnum *item,
-                                  QWidget *parent )
+KPrefsWidRadios::KPrefsWidRadios( KConfigSkeleton::ItemEnum *item, QWidget *parent )
   : mItem( item )
 {
   mBox = new Q3ButtonGroup( 1, Qt::Horizontal, mItem->label(), parent );
-  connect( mBox, SIGNAL( clicked( int ) ), SIGNAL( changed() ) );
+  connect( mBox, SIGNAL(clicked(int)), SIGNAL(changed()) );
 }
 
 KPrefsWidRadios::~KPrefsWidRadios()
@@ -407,7 +405,7 @@ KPrefsWidRadios::~KPrefsWidRadios()
 void KPrefsWidRadios::addRadio( const QString &text, const QString &whatsThis )
 {
   QRadioButton *r = new QRadioButton( text, mBox );
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     r->setWhatsThis( whatsThis );
   }
 }
@@ -440,7 +438,7 @@ KPrefsWidCombo::KPrefsWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent
   Q3HBox *hbox = new Q3HBox( parent );
   new QLabel( mItem->label(), hbox );
   mCombo = new KComboBox( hbox );
-  connect( mCombo, SIGNAL( activated( int ) ), SIGNAL( changed() ) );
+  connect( mCombo, SIGNAL(activated(int)), SIGNAL(changed()) );
 }
 
 KPrefsWidCombo::~KPrefsWidCombo()
@@ -469,19 +467,17 @@ KComboBox *KPrefsWidCombo::comboBox()
   return mCombo;
 }
 
-KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item,
-                                  QWidget *parent,
+KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *parent,
                                   KLineEdit::EchoMode echomode )
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label() + ':', parent );
   mEdit = new KLineEdit( parent );
   mLabel->setBuddy( mEdit );
-  connect( mEdit, SIGNAL( textChanged( const QString & ) ),
-           SIGNAL( changed() ) );
+  connect( mEdit, SIGNAL(textChanged(const QString&)), SIGNAL(changed()) );
   mEdit->setEchoMode( echomode );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mEdit->setWhatsThis( whatsThis );
   }
 }
@@ -527,10 +523,9 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
   mLabel->setBuddy( mURLRequester );
   mURLRequester->setMode( mode );
   mURLRequester->setFilter( filter );
-  connect( mURLRequester, SIGNAL( textChanged( const QString & ) ),
-           SIGNAL( changed() ) );
+  connect( mURLRequester, SIGNAL(textChanged(const QString&)), SIGNAL(changed()) );
   QString whatsThis = mItem->whatsThis();
-  if ( !whatsThis.isNull() ) {
+  if ( !whatsThis.isEmpty() ) {
     mURLRequester->setWhatsThis( whatsThis );
   }
 }
@@ -637,7 +632,8 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
   return w;
 }
 
-KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item, QWidget *parent )
+KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item,
+                                               QWidget *parent )
 {
   KPrefsWidCombo *w = new KPrefsWidCombo( item, parent );
   QList<KConfigSkeleton::ItemEnum::Choice> choices;
@@ -839,9 +835,8 @@ void KPrefsDialog::slotDefault()
   }
 }
 
-KPrefsModule::KPrefsModule( KConfigSkeleton *prefs,
-                            const KComponentData &instance, QWidget *parent,
-                            const QVariantList &args )
+KPrefsModule::KPrefsModule( KConfigSkeleton *prefs, const KComponentData &instance,
+                            QWidget *parent, const QVariantList &args )
   : KCModule( instance, parent, args ),
     KPrefsWidManager( prefs )
 {
@@ -851,7 +846,7 @@ KPrefsModule::KPrefsModule( KConfigSkeleton *prefs,
 void KPrefsModule::addWid( KPrefsWid *wid )
 {
   KPrefsWidManager::addWid( wid );
-  connect( wid, SIGNAL( changed() ), SLOT( slotWidChanged() ) );
+  connect( wid, SIGNAL(changed()), SLOT(slotWidChanged()) );
 }
 
 void KPrefsModule::slotWidChanged()
