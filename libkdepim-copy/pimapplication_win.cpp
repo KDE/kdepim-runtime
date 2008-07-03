@@ -50,13 +50,14 @@ static void cleanupDBusMessAndRestart()
 
   if ( !KPIM::Utils::otherProcessesExist( KCmdLineArgs::aboutData()->appName() ) ) {
     KPIM::Utils::killProcesses( "dbus-daemon" );
-/*    QProcess proc;
+//! @todo (js) is full restarting needed? I think so - without this QDBusConnection::sessionBus().connect() crashed
+    QProcess proc;
     QStringList args;
     for ( int i = 1; i < KCmdLineArgs::qtArgc(); i++ )
       args += QFile::decodeName( KCmdLineArgs::qtArgv()[i] );
     kWarning() << "Restarting process \"" << KCmdLineArgs::qtArgv()[0] << "\"..";
     proc.startDetached( QFile::decodeName( KCmdLineArgs::qtArgv()[0] ), 
-      args, KCmdLineArgs::cwd() );*/
+      args, KCmdLineArgs::cwd() );
   }
 }
 
@@ -81,9 +82,7 @@ PimApplication::PimApplication()
 bool PimApplication::start()
 {
   bool result = KUniqueApplication::start();
-  if ( ! result ) {
+  if ( ! result )
     cleanupDBusMessAndRestart();
-    result = KUniqueApplication::start();
-  }
   return result;
 }
