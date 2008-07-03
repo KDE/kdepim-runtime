@@ -82,7 +82,5 @@ PimApplication::PimApplication()
 bool PimApplication::start()
 {
   bool result = KUniqueApplication::start();
-  if ( ! result )
-    cleanupDBusMessAndRestart();
   return result;
 }
