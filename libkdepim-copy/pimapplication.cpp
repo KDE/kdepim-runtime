@@ -20,6 +20,7 @@
 */
 
 #include "pimapplication.h"
+#include "utils.h"
 
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
@@ -91,6 +92,9 @@ bool PimApplication::start()
     QDBusReply<int> reply;
     if ( iface.isValid() &&
          ( reply = iface.call( "newInstance", new_asn_id, saved_args ) ).isValid() ) {
+#ifdef Q_WS_WIN
+      KPIM::Utils::activateWindowForProcess( appName );
+#endif
       return false; // success means that main() can exit now.
     }
   }

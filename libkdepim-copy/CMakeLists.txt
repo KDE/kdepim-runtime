@@ -77,11 +77,11 @@ set(kdepim_LIB_SRCS
    dictionarycombobox.cpp
 )
 
-if(WIN32)
-  set(kdepim_LIB_SRCS ${kdepim_LIB_SRCS} pimapplication_win.cpp)
-else(WIN32)
+#if(WIN32)
+#  set(kdepim_LIB_SRCS ${kdepim_LIB_SRCS} pimapplication_win.cpp)
+#else(WIN32)
   set(kdepim_LIB_SRCS ${kdepim_LIB_SRCS} pimapplication.cpp)
-endif(WIN32)
+#endif(WIN32)
 
 QT4_ADD_DBUS_INTERFACE(kdepim_LIB_SRCS ${CMAKE_SOURCE_DIR}/kaddressbook/org.kde.KAddressbook.Core.xml kaddressbookcore_interface )
 
