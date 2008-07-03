@@ -72,7 +72,7 @@ set(kdepim_LIB_SRCS
    networkstatus.cpp
    kmeditor.cpp
    autochecktreewidget.cpp
-   kmutils.cpp
+   utils.cpp
    colorlistbox.cpp
    dictionarycombobox.cpp
 )

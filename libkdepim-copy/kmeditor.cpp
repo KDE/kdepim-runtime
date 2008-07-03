@@ -22,7 +22,7 @@
 
 #include "kmeditor.h"
 #include "kemailquotinghighter.h"
-#include "kmutils.h"
+#include "utils.h"
 #include "maillistdrag.h"
 
 #include <kpimidentities/signature.h>
@@ -859,7 +859,7 @@ void KMeditor::slotRot13()
 {
   QTextCursor cursor = textCursor();
   if ( cursor.hasSelection() )
-    insertPlainText( KMUtils::rot13( cursor.selectedText() ) );
+    insertPlainText( Utils::rot13( cursor.selectedText() ) );
   //FIXME: breaks HTML formatting
 }
 
