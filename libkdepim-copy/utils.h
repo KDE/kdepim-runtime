@@ -47,7 +47,7 @@ class KDEPIM_EXPORT Utils
     /**
      * Terminates or kills all processes with name @a processName.
      * First, SIGTERM is sent to a process, then if that fails, we try with SIGKILL.
-     * @return true on successfull termination of all processes or false if at least 
+     * @return true on successful termination of all processes or false if at least 
      *         one process failed to terminate.
      */
     static bool killProcesses( const QString& processName );

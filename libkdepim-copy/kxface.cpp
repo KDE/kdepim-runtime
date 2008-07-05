@@ -2,7 +2,7 @@
   This file is part of libkdepim.
 
   Original compface:
-  Copyright (c) James Ashton - Sydney University - June 1990.
+  Copyright (c) James Ashton - Sydney University - June 1990. //krazy:exclude=copyright
 
   Additions for KDE:
   Copyright (c) 2004 Jakob Schröter <js@camaya.net>

@@ -199,10 +199,10 @@ BOOL CALLBACK EnumWindowsProc( HWND hwnd, LPARAM lParam )
     GetWindowThreadProcessId(hwnd, &pidwin);
     if ( pidwin == ((EnumWindowsStruct*)lParam)->pid ) {
       ((EnumWindowsStruct*)lParam)->windowId = hwnd;
-      return FALSE;
+      return FALSE; //krazy:exclude=captruefalse
     }
   }
-  return TRUE;
+  return TRUE; //krazy:exclude=captruefalse
 }
 
 void Utils::activateWindowForProcess( const QString& executableName )
