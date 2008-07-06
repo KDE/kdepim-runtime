@@ -549,7 +549,8 @@ void KMeditor::contextMenuEvent( QContextMenuEvent *event )
   wordSelectCursor.movePosition( QTextCursor::NextCharacter,
                                  QTextCursor::KeepAnchor, selectedWord.size() );
 
-  bool wordIsMisspelled = !selectedWord.isEmpty() &&
+  bool wordIsMisspelled = isSpellCheckingEnabled() &&
+                          !selectedWord.isEmpty() &&
                           KRichTextWidget::highlighter()->isWordMisspelled( selectedWord );
 
   // If the user clicked a selected word, do nothing.
