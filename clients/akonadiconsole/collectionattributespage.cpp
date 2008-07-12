@@ -52,20 +52,25 @@ void CollectionAttributePage::load(const Collection & col)
     QModelIndex index = mModel->index( i, 0 );
     Q_ASSERT( index.isValid() );
     mModel->setData( index, QString::fromLatin1( list[i]->type() ) );
+    mModel->item( i, 0 )->setEditable( false );
     index = mModel->index( i, 1 );
     Q_ASSERT( index.isValid() );
     mModel->setData( index, QString::fromLatin1( list[i]->serialized() ) );
     mModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mModel->flags( index ) );
   }
   ui.attrView->setModel( mModel );
+  connect( mModel, SIGNAL(itemChanged(QStandardItem*)), SLOT(attributeChanged(QStandardItem*)) );
 }
 
 void CollectionAttributePage::save(Collection & col)
 {
-  col.clearAttributes();
+  foreach ( const QString &del, mDeleted )
+    col.removeAttribute( del.toLatin1() );
   for ( int i = 0; i < mModel->rowCount(); ++i ) {
     const QModelIndex typeIndex = mModel->index( i, 0 );
     Q_ASSERT( typeIndex.isValid() );
+    if ( !mChanged.contains( typeIndex.data().toString() ) )
+      continue;
     const QModelIndex valueIndex = mModel->index( i, 1 );
     Q_ASSERT( valueIndex.isValid() );
     Attribute* attr = AttributeFactory::createAttribute( mModel->data( typeIndex ).toString().toLatin1() );
@@ -79,11 +84,14 @@ void CollectionAttributePage::addAttribute()
 {
   if ( ui.attrName->text().isEmpty() )
     return;
+  const QString attr = ui.attrName->text();
+  mChanged.insert( attr );
+  mDeleted.remove( attr );
   const int row = mModel->rowCount();
   mModel->insertRow( row );
   QModelIndex index = mModel->index( row, 0 );
   Q_ASSERT( index.isValid() );
-  mModel->setData( index, ui.attrName->text() );
+  mModel->setData( index, attr );
   ui.attrName->clear();
 }
 
@@ -92,7 +100,17 @@ void CollectionAttributePage::delAttribute()
   QModelIndexList selection = ui.attrView->selectionModel()->selectedRows();
   if ( selection.count() != 1 )
     return;
+  const QString attr = selection.first().data().toString();
+  mChanged.remove( attr );
+  mDeleted.insert( attr );
   mModel->removeRow( selection.first().row() );
+}
+
+void CollectionAttributePage::attributeChanged( QStandardItem *item )
+{
+  const QString attr = mModel->data( mModel->index( item->row(), 0 ) ).toString();
+  mDeleted.remove( attr );
+  mChanged.insert( attr );
 }
 
 #include "collectionattributespage.moc"

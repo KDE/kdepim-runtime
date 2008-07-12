@@ -24,6 +24,7 @@
 
 #include <akonadi/collectionpropertiespage.h>
 
+class QStandardItem;
 class QStandardItemModel;
 
 class CollectionAttributePage : public Akonadi::CollectionPropertiesPage
@@ -38,10 +39,13 @@ class CollectionAttributePage : public Akonadi::CollectionPropertiesPage
   private slots:
     void addAttribute();
     void delAttribute();
+    void attributeChanged( QStandardItem *item );
 
   private:
     Ui::CollectionAttributesPage ui;
     QStandardItemModel *mModel;
+    QSet<QString> mDeleted;
+    QSet<QString> mChanged;
 };
 
 #endif
