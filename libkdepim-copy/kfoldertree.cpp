@@ -178,7 +178,7 @@ void KFolderTreeItem::setUnreadCount( int aUnread )
 
   mUnread = aUnread;
 
-  QString unread = QString();
+  QString unread;
   if ( mUnread == 0 ) {
     unread = "- ";
   } else {
@@ -198,7 +198,7 @@ void KFolderTreeItem::setTotalCount( int aTotal )
 
   mTotal = aTotal;
 
-  QString total = QString();
+  QString total;
   if ( mTotal == 0 ) {
     total = "- ";
   } else {
@@ -300,7 +300,7 @@ void KFolderTreeItem::paintCell( QPainter *p, const QColorGroup &cg,
    * be configurable in color. That means that paintCell needs to do
    * two painting passes which flickers. Since that flicker is not
    * needed when there is the unread column, special case that. */
-  if ( /*ft->isUnreadActive() ||*/ column != 0 ) {
+  if (/*ft->isUnreadActive() ||*/ column != 0 ) {
     K3ListViewItem::paintCell( p, mycg, column, width, align );
   } else {
     Q3ListView *lv = listView();
@@ -335,7 +335,8 @@ void KFolderTreeItem::paintCell( QPainter *p, const QColorGroup &cg,
     // draw the unread-count if the unread-column is not active
     QString unread;
 
-    if ( !ft->isUnreadActive() && (unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) ) {
+    if ( !ft->isUnreadActive() &&
+         ( unreadCount > 0 || ( !isOpen() && unreadRecursiveCount > 0 ) ) ) {
       if ( isOpen() ) {
         unread = " (" + QString::number( unreadCount ) + ')';
       } else if ( unreadRecursiveCount == unreadCount || mType == Root ) {
@@ -408,9 +409,9 @@ KFolderTree::KFolderTree( QWidget *parent, const char *name )
   disableAutoSelection();
   setColumnWidth( 0, 120 ); //reasonable default size
 
-  disconnect( header(), SIGNAL( sizeChange( int, int, int ) ) );
-  connect( header(), SIGNAL( sizeChange( int, int, int ) ),
-           SLOT( slotSizeChanged( int, int, int ) ) );
+  disconnect( header(), SIGNAL(sizeChange(int,int,int)) );
+  connect( header(), SIGNAL(sizeChange(int,int,int)),
+           SLOT(slotSizeChanged(int,int,int)) );
 }
 
 //-----------------------------------------------------------------------------

@@ -1,26 +1,27 @@
 /*
-    This file is part of libkdepim.
-    Copyright (c) 2002 Helge Deller <deller@gmx.de>
-                  2002 Lubos Lunak <llunak@suse.cz>
-                  2001,2003 Carsten Pfeiffer <pfeiffer@kde.org>
-                  2001 Waldo Bastian <bastian@kde.org>
-                  2004 Daniel Molkentin <danimo@klaralvdalens-datakonsult.se>
-                  2004 Karl-Heinz Zimmer <khz@klaralvdalens-datakonsult.se>
+  This file is part of libkdepim.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
+  Copyright (c) 2002 Helge Deller <deller@gmx.de>
+  Copyright (c) 2002 Lubos Lunak <llunak@suse.cz>
+  Copyright (c) 2001,2003 Carsten Pfeiffer <pfeiffer@kde.org>
+  Copyright (c) 2001 Waldo Bastian <bastian@kde.org>
+  Copyright (c) 2004 Daniel Molkentin <danimo@klaralvdalens-datakonsult.se>
+  Copyright (c) 2004 Karl-Heinz Zimmer <khz@klaralvdalens-datakonsult.se>
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
 #ifndef KDEPIM_ADDRESSEELINEEDIT_H
@@ -55,23 +56,23 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
   Q_OBJECT
 
   public:
-    explicit AddresseeLineEdit( QWidget* parent, bool useCompletion = true );
+    explicit AddresseeLineEdit( QWidget *parent, bool useCompletion = true );
     virtual ~AddresseeLineEdit();
 
-    virtual void setFont( const QFont& );
+    virtual void setFont( const QFont & );
 
   public Q_SLOTS:
     void cursorAtEnd();
     void enableCompletion( bool enable );
     /** Reimplemented for stripping whitespace after completion */
-    virtual void setText( const QString& txt );
+    virtual void setText( const QString & txt );
 
   protected Q_SLOTS:
     virtual void loadContacts();
     void slotIMAPCompletionOrderChanged();
   protected:
-    void addContact( const KABC::Addressee&, int weight, int source = -1 );
-    virtual void keyPressEvent( QKeyEvent* );
+    void addContact( const KABC::Addressee &, int weight, int source = -1 );
+    virtual void keyPressEvent( QKeyEvent * );
     /**
      * Reimplemented for smart insertion of email addresses.
      * Features:
@@ -106,29 +107,30 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
      * such sources and returns its index, such that that can be used
      * for insertion of items associated with that source.
      */
-    int addCompletionSource( const QString& );
+    int addCompletionSource( const QString & );
 
     /** return whether we are using sorted or weighted display */
     static KCompletion::CompOrder completionOrder();
 
   private Q_SLOTS:
     void slotCompletion();
-    void slotPopupCompletion( const QString& );
-    void slotReturnPressed( const QString& );
+    void slotPopupCompletion( const QString & );
+    void slotReturnPressed( const QString & );
     void slotStartLDAPLookup();
-    void slotLDAPSearchData( const KPIM::LdapResultList& );
+    void slotLDAPSearchData( const KPIM::LdapResultList & );
     void slotEditCompletionOrder();
-    void slotUserCancelled( const QString& );
+    void slotUserCancelled( const QString & );
 
   private:
-    virtual bool eventFilter(QObject *o, QEvent *e);
+    virtual bool eventFilter( QObject *o, QEvent *e );
     void init();
     void startLoadingLDAPEntries();
     void stopLDAPLookup();
 
-    void setCompletedItems( const QStringList& items, bool autoSuggest );
-    void addCompletionItem( const QString& string, int weight, int source, const QStringList * keyWords=0 );
-    QString completionSearchText( QString& );
+    void setCompletedItems( const QStringList &items, bool autoSuggest );
+    void addCompletionItem( const QString &string, int weight, int source,
+                            const QStringList *keyWords=0 );
+    QString completionSearchText( QString & );
     const QStringList getAdjustedCompletionItems( bool fullSearch );
     void updateSearchString();
 
@@ -145,7 +147,7 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
 
     static bool s_addressesDirty;
     static KMailCompletion *s_completion;
-    static CompletionItemsMap* s_completionItemMap;
+    static CompletionItemsMap *s_completionItemMap;
     static QTimer *s_LDAPTimer;
     static KPIM::LdapSearch *s_LDAPSearch;
     static QString *s_LDAPText;
