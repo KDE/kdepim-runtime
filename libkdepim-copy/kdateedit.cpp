@@ -265,12 +265,13 @@ QDate KDateEdit::parseDate( bool *replaced ) const
   return result;
 }
 
-void KDateEdit::focusOutEvent( QFocusEvent * )
+void KDateEdit::focusOutEvent( QFocusEvent *e )
 {
   if ( mTextChanged ) {
     lineEnterPressed();
     mTextChanged = false;
   }
+  QComboBox::focusOutEvent( e );
 }
 
 void KDateEdit::keyPressEvent(QKeyEvent* e)
