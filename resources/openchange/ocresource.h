@@ -52,7 +52,7 @@ protected:
 
 private:
     void login();
-    void appendMessageToCollection( libmapipp::message & mapi_message, const Akonadi::Collection & collection );
+    void appendMessageToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
     void appendContactToCollection( libmapipp::message & mapi_message, const Akonadi::Collection & collection);
     enum MAPISTATUS fetchFolder( const Akonadi::Collection &collection );
     QString mimeTypeForFolderType( const char *folderTypeValue ) const;

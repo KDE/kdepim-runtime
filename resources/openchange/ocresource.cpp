@@ -25,6 +25,10 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
+#include <QtCore/QChar>
+#include <QtCore/QLatin1Char>
+
+
 #include <QDir>
 #include <QLabel>
 #include <QLineEdit>
@@ -42,6 +46,11 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/session.h>
+
+#include <KMimeType>
+#include <QTextCodec>
+#include <KCodecs>
+#include <KLocale>
 
 #include "profiledialog.h"
 
@@ -61,6 +70,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 using namespace libmapipp;
+using KMime::Content;
 
 OCResource::OCResource( const QString &id ) 
   : ResourceBase( id )
@@ -78,7 +88,32 @@ OCResource::~ OCResource()
 bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED(parts);
-  qDebug() << "currently ignoring requestItemDelivery";
+  // TODO: This only works for messages, check for contacts.
+  if (item.mimeType() == "text/vcard") {
+    qDebug() << "Currently ignoring retrieveItem() for Contacts";
+    return true;
+  }
+
+  QStringList ids = item.remoteId().split('-');
+  mapi_id_t message_id = ids[0].toULongLong();
+  mapi_id_t folder_id = ids[1].toULongLong();
+
+  folder aFolder(m_session->get_message_store(), folder_id);
+  
+  libmapipp::message* messagePointer = NULL;
+  try {
+   messagePointer = new libmapipp::message(*m_session, folder_id, message_id);
+  }
+  catch (mapi_exception e) {
+    cancelTask(e.what());
+  }
+  
+  Item i;
+  i.setRemoteId( item.remoteId());
+  i.setMimeType("message/rfc822");
+  appendMessageToItem(*messagePointer, i);
+  itemRetrieved( i );
+
   return true;
 }
 
@@ -108,7 +143,16 @@ void OCResource::itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )
 
 void OCResource::itemRemoved(const Akonadi::Item & item)
 {
-  qDebug() << "currently ignoring itemRemoved()";
+  // Item id is composed of "messageID-folderID"
+  QStringList ids = item.remoteId().split('-');
+  mapi_id_t message_id = ids[0].toULongLong();
+  mapi_id_t folder_id = ids[1].toULongLong();
+
+  folder aFolder(m_session->get_message_store(), folder_id);
+
+  aFolder.delete_message(message_id);
+
+  changeProcessed();
 }
 
 void OCResource::getChildFolders( folder& mapi_folder,
@@ -176,16 +220,21 @@ void OCResource::login()
   retval = GetDefaultProfile(&profName);
   if (retval != MAPI_E_SUCCESS) {
     mapi_errstr("GetDefaultProfile", GetLastError());
-    exit (1);
+    emit error("There was an error getting the default profile. Perhaps you need to set a default profile?");
   }
   MAPIUninitialize();
 
   m_profileName = profName;
   try {
-  // TODO: handle password (third argument)
-  m_session = new session(profName);
+    // TODO: handle password (third argument)
+    m_session = new session(profName);
   }
   catch(mapi_exception e)
+  {
+    qDebug() << "MAPI EXception: " << e.what();
+    emit error(e.what());
+  }
+  catch(std::runtime_error e)
   {
     qDebug() << "MAPI EXception: " << e.what();
     emit error(e.what());
@@ -200,16 +249,16 @@ void OCResource::retrieveCollections()
 
   Collection::List collections;
 
-  /* Retrieve the mailbox folder name */
   property_container storeProperties = m_session->get_message_store().get_property_container();
-  storeProperties << PR_DISPLAY_NAME;
-  storeProperties.fetch();
-
-  if ( *(storeProperties.begin()) == NULL ) {
-    qDebug() << "null mailbox name";
-    exit( 1 );
-  } else {
-    // qDebug() << "mailbox name: " << QString( (const char*) *(storeProperties.begin()) );
+  try {
+    /* Retrieve the mailbox folder name */
+    storeProperties << PR_DISPLAY_NAME;
+    storeProperties.fetch();
+  }
+  catch(std::runtime_error e)
+  {
+    qDebug() << "MAPI EXception: " << e.what();
+    emit error(e.what());
   }
 
   Collection account;
@@ -221,12 +270,20 @@ void OCResource::retrieveCollections()
   account.setContentMimeTypes( mimeTypes );
   collections.append( account );
 
-  /* Prepare the directory listing */
-  message_store& store = m_session->get_message_store();
-  mapi_id_t topFolderId = store.get_default_folder(olFolderTopInformationStore);
-  folder top_folder(store, topFolderId);
+  folder* top_folder= NULL;
+  try {
+    /* Prepare the directory listing */
+    message_store& store = m_session->get_message_store();
+    mapi_id_t topFolderId = store.get_default_folder(olFolderTopInformationStore);
+    top_folder = new folder(store, topFolderId);
+  }
+  catch(std::runtime_error e)
+  {
+    qDebug() << "MAPI EXception: " << e.what();
+    emit error(e.what());
+  }
 
-  getChildFolders( top_folder, account, collections );
+  getChildFolders( *top_folder, account, collections );
 
   collectionsRetrieved( collections );
 }
@@ -242,359 +299,283 @@ static KDateTime convertSysTime(const FILETIME& filetime)
   return kdeTime;
 }
 
-void OCResource::appendMessageToCollection( libmapipp::message& mapi_message, const Akonadi::Collection & collection)
+const char * encoding( const QString& data )
 {
-  property_container message_properties = mapi_message.get_property_container();
+    static QTextCodec *local = KGlobal::locale()->codecForEncoding();
+    qDebug() << "user has: " << local->name();
 
-  message_properties.fetch_all();
+    if ( local->canEncode( data ) )
+        return local->name();
+    else
+        return "utf-8";
+}
 
-  MessagePtr msg_ptr ( new KMime::Message );
-  for ( property_container::iterator Iter = message_properties.begin(); Iter != message_properties.end(); ++Iter ) {
-    switch( Iter.get_tag() ) {
-    case PR_ALTERNATE_RECIPIENT_ALLOWED:
-      // PT_BOOLEAN
-      break;
-    case PR_IMPORTANCE:
-      // PT_LONG
-      break;
-    case PR_MESSAGE_CLASS:
-      // PT_STRING8
-      break;
-    case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
-      // PT_BOOLEAN
-      break;
-    case PR_PRIORITY:
-      // PT_LONG
-      break;
-    case PR_READ_RECEIPT_REQUESTED:
-      // PT_BOOLEAN
-      break;
-    case PR_SENSITIVITY:
-      // PT_LONG
-      break;
-    case PR_CLIENT_SUBMIT_TIME:
-      // PT_SYSTIME
-      msg_ptr->date()->setDateTime( convertSysTime( *((const FILETIME*) *Iter) ) );
-      break;
-    case PR_SENT_REPRESENTING_SEARCH_KEY:
-      // PT_BINARY
-      break;
-    case PR_RECEIVED_BY_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_RECEIVED_BY_NAME:
-      // PT_STRING8
-      qDebug() << "Received by:" << (const char*) *Iter;
-      break;
-    case PR_SENT_REPRESENTING_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_SENT_REPRESENTING_NAME:
-      // PT_STRING8
-      msg_ptr->from()->from7BitString( (const char*) *Iter );
-      break;
-    case PR_RCVD_REPRESENTING_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_RCVD_REPRESENTING_NAME:
-      // PT_STRING8
-      qDebug() << "Representing name:" << (const char*) *Iter;
-      break;
-    case PR_MESSAGE_SUBMISSION_ID:
-      // PR_BINARY
-      break;
-    case PR_RECEIVED_BY_SEARCH_KEY:
-      // PT_BINARY
-      break;
-    case PR_RCVD_REPRESENTING_SEARCH_KEY:
-      // PT_BINARY
-      break;
-    case PR_MESSAGE_TO_ME:
-      // PT_BOOLEAN
-      break;
-    case PR_MESSAGE_CC_ME:
-      // PT_BOOLEAN
-      break;
-    case PR_MESSAGE_RECIP_ME:
-      // PT_BOOLEAN
-      break;
-    case PR_SENT_REPRESENTING_ADDRTYPE:
-      // PT_STRING8
-      break;
-    case PR_SENT_REPRESENTING_EMAIL_ADDRESS:
-      // PT_STRING8
-      qDebug() << "Sent representing email addr:" << (const char*) *Iter;
-      break;
-    case PR_CONVERSATION_INDEX:
-      // PT_BINARY
-      break;
-    case PR_RECEIVED_BY_ADDRTYPE:
-      // PT_STRING8
-      break;
-    case PR_RECEIVED_BY_EMAIL_ADDRESS:
-      // PT_STRING8
-      break;
-    case PR_RCVD_REPRESENTING_ADDRTYPE:
-      // PT_STRING8
-      break;
-    case PR_RCVD_REPRESENTING_EMAIL_ADDRESS:
-      // PT_STRING8
-      break;
-    case PR_TRANSPORT_MESSAGE_HEADERS:
-      // PT_STRING8
-      break;
-    case PR_SENDER_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_SENDER_NAME:
-      // PT_STRING8
-      msg_ptr->from()->from7BitString( (const char*) *Iter );
-      break;
-    case PR_SENDER_SEARCH_KEY:
-      // PT_BINARY
-      break;
-    case PR_SENDER_ADDRTYPE:
-      // PT_STRING8
-      break;
-    case PR_SENDER_EMAIL_ADDRESS:
-      // PT_STRING8
-      qDebug() << "Sender email addr:" << (const char*) *Iter;
-      break;
-    case PR_DELETE_AFTER_SUBMIT:
-      // PT_BOOLEAN
-      break;
-    case PR_DISPLAY_BCC:
-      // PT_STRING8
-      msg_ptr->bcc()->from7BitString( (const char*) *Iter );
-      break;
-    case PR_DISPLAY_CC:
-      // PT_STRING8
-      msg_ptr->cc()->from7BitString( (const char*) *Iter );
-      break;
-    case PR_DISPLAY_TO:
-      // PT_STRING8
-      // This (and BCC+CC) need to be split on semicolons, and combined with
-      // the email address
-      msg_ptr->to()->from7BitString( (const char*) *Iter );
-      break;
-    case PR_MESSAGE_DELIVERY_TIME:
-      // PT_SYSTIME
-      break;
-    case PR_MESSAGE_FLAGS:
-      // PT_LONG
-      break;
-    case PR_MESSAGE_SIZE:
-      // PT_LONG
-      qDebug() << "Message size";
-      break;
-    case PR_HASATTACH:
-      // PT_BOOLEAN
-      break;
-    case PR_RTF_IN_SYNC:
-      // PT_BOOLEAN
-      break;
-    case PR_INTERNET_ARTICLE_NUMBER:
-      // PT_LONG
-      break;
-    case PR_NT_SECURITY_DESCRIPTOR:
-      // PT_BINARY
-      break;
-    case PR_URL_COMP_NAME_POSTFIX:
-      // PT_LONG
-      break;
-    case PR_URL_COMP_NAME_SET:
-      // PT_BOOLEAN
-      break;
-    case PR_TRUST_SENDER:
-      // PT_LONG
-      break;
-    case PR_ACCESS:
-      // PT_LONG
-      break;
-    case PR_ACCESS_LEVEL:
-      // PT_LONG
-      break;
-    case PR_BODY:
-      // PT_STRING8
-      // This probably needs to construct some kind of multipart MIME body
-      if ( msg_ptr->body().isEmpty() ) {
-	msg_ptr->setBody( (const char*) *Iter );
-      }
-      break;
-    case PR_BODY_UNICODE:
-      // PT_UNICODE
-      break;
-    case PR_BODY_ERROR:
-      // PT_ERROR
-      break;
-    case PR_RTF_COMPRESSED_ERROR:
-      // PT_ERROR
-      break;
-    case PR_HTML:
-      // PT_BINARY
-      // This probably needs to construct some kind of multipart MIME body
-      if ( msg_ptr->body().isEmpty() ) {
-	struct SBinary_short *html = (struct SBinary_short *) *Iter;
-	QByteArray body = QByteArray( ( char* ) html->lpb, html->cb );
-	body.append( "\n" );
-	msg_ptr->setBody( body );
-      }
-      break;
-    case PR_INTERNET_MESSAGE_ID:
-      // PT_STRING8
-      break;
-    case PR_DISABLE_FULL_FIDELITY:
-      // PT_BOOLEAN
-      break;
-    case PR_URL_COMP_NAME:
-      // PT_STRING8
-      break;
-    case PR_ATTR_HIDDEN:
-      // PT_BOOLEAN
-      break;
-    case PR_ATTR_SYSTEM:
-      // PT_BOOLEAN
-      break;
-    case PR_ATTR_READONLY:
-      // PT_BOOLEAN
-      break;
-    case PR_CREATION_TIME:
-      // PT_SYSTIME
-      if ( msg_ptr->date()->isEmpty() ) {
-	// we want to use PR_CLIENT_SUBMIT_TIME, but this will do instead
-	msg_ptr->date()->setDateTime( convertSysTime( *((const FILETIME*) *Iter) ) );
-      }
-      break;
-    case PR_LAST_MODIFICATION_TIME:
-      // PT_SYSTIME
-      break;
-    case PR_SEARCH_KEY:
-      // PT_BINARY
-      break;
-    case PR_INTERNET_CPID:
-      // PT_LONG
-      break;
-    case PR_MESSAGE_LOCALE_ID:
-      // PT_LONG
-      break;
-    case PR_CREATOR_NAME:
-      // PT_STRING8
-      break;
-    case PR_CREATOR_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_LAST_MODIFIER_NAME:
-      // PT_STRING8
-      break;
-    case PR_LAST_MODIFIER_ENTRYID:
-      // PT_BINARY
-      break;
-    case PR_MESSAGE_CODEPAGE:
-      // PT_LONG
-      break;
-    case  PR_SENDER_FLAGS:
-      // PT_LONG
-      break;
-    case PR_SENT_REPRESENTING_FLAGS:
-      // PT_LONG
-      break;
-    case PR_RCVD_BY_FLAGS:
-      // PT_LONG
-      break;
-    case PR_RCVD_REPRESENTING_FLAGS:
-      // PT_LONG
-      break;
-    case PR_CREATOR_FLAGS_ERROR:
-      // PT_ERROR
-      break;
-    case PR_MODIFIER_FLAGS_ERROR:
-      // PT_ERROR
-      break;
-    case PR_INET_MAIL_OVERRIDE_FORMAT:
-      // PT_LONG
-      break;
-    case PR_MSG_EDITOR_FORMAT:
-      // PT_LONG
-      break;
-    case PR_DOTSTUFF_STATE:
-      // PT_LONG
-      break;
-    case PR_SOURCE_KEY:
-      // PT_BINARY
-      break;
-    case PR_CHANGE_KEY:
-      // PT_BINARY
-      break;
-    case PR_PREDECESSOR_CHANGE_LIST:
-      // PT_BINARY
-      break;
-    case PR_HAS_NAMED_PROPERTIES:
-      // PT_BOOLEAN
-      break;
-    case PR_ICS_CHANGE_KEY:
-      // PT_BINARY
-      break;
-    case PR_INTERNET_CONTENT_ERROR:
-      // PT_ERROR
-      break;
-    case PR_LOCALE_ID:
-      // PT_LONG
-      break;
-    case PR_INTERNET_PARSE_STATE:
-      // PT_BINARY
-      break;
-    case PR_INTERNET_MESSAGE_INFO:
-      // PT_BINARY
-      break;
-    case PR_URL_NAME:
-      // PR_STRING8
-      break;
-    case PR_LOCAL_COMMIT_TIME:
-      // PT_SYSTIME
-      break;
-    case PR_INTERNET_FREE_DOC_INFO:
-      // PT_BINARY
-      break;
-    case PR_CONVERSATION_TOPIC:
-      msg_ptr->subject()->from7BitString( (const char*) *Iter );
-      break;
-    case 0x82f1001e:
-      qDebug() << "82f1001e:" << (const char*) *Iter;
-      break;
-    case 0x82f2001e:
-      qDebug() << "82f2001e:" << (const char*) *Iter;
-      break;
-    case 0xe28001e:
-      qDebug() << "0xe28001e:" << (const char*) *Iter;
-      break;
-    case 0xe29001e:
-      qDebug() << "0xe29001e:" << (const char*) *Iter;
-      break;
-    case 0x8001001e:
-      qDebug() << "0x8001001e:" << (const char*) *Iter;
-      break;
-    default:
-      qDebug() << "Unhandled: " << QString::number( Iter.get_tag(), 16 );
+/// \brief Returns a resolved MAPI name.
+/// \return QString.isNull() == true if name is not found.
+QString resolveMapiName(const char* username)
+{
+  TALLOC_CTX* mem_ctx = talloc_init("resolveMapiName_CTX");
+
+  SPropTagArray* tagArray = set_SPropTagArray(mem_ctx, 0x2, PR_SMTP_ADDRESS, PR_SMTP_ADDRESS_UNICODE);
+  FlagList* flagList = NULL;
+  SRowSet* rowSet = NULL;
+  const char* usernames[2] = { username, NULL };
+  if (ResolveNames(usernames, tagArray, &rowSet, &flagList, 0) != MAPI_E_SUCCESS) {
+    if (ResolveNames(usernames, tagArray, &rowSet, &flagList, MAPI_UNICODE) != MAPI_E_SUCCESS) {
+       qDebug() << "*** COULD NOT RESOLVE EXCHANGE EMAIL ADDRESS ***";
     }
   }
 
+  const char* smtpAddress = NULL;
+  if (rowSet && rowSet->cRows == 1) {
+    smtpAddress = (const char *) find_SPropValue_data(rowSet->aRow, PR_SMTP_ADDRESS);
+
+    if (!smtpAddress)
+      smtpAddress = (const char *) find_SPropValue_data(rowSet->aRow, PR_SMTP_ADDRESS_UNICODE);
+  }
+
+  talloc_free(mem_ctx);
+
+  return smtpAddress ? QString(smtpAddress) : QString();
+}
+
+#define MSG_MIMETYPE_MULTIPART	"multipart/mixed"
+#define MSG_MIMETYPE_PLAIN_TEXT	"text/plain"
+#define MSG_MIMETYPE_HTML_TEXT	"text/html"
+
+void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi::Item & item)
+{
+  TALLOC_CTX* mem_ctx = talloc_init("OCResource_appendMessageToItem_CTX");
+  property_container message_properties = mapi_message.get_property_container();
+  message_properties << PR_CLIENT_SUBMIT_TIME << PR_SENDER_NAME << PR_SENDER_EMAIL_ADDRESS << PR_DISPLAY_BCC << PR_DISPLAY_CC << PR_DISPLAY_TO
+                     << PR_MESSAGE_SIZE << PR_HASATTACH << PR_BODY << PR_BODY_UNICODE << PR_HTML << PR_CREATION_TIME << PR_CONVERSATION_TOPIC;
+
+  message_properties.fetch();
+
+  MessagePtr msg_ptr ( new KMime::Message );
+
+  const char* senderNameStr = (const char*) message_properties[PR_SENDER_NAME];
+  QString senderName;
+  if (senderNameStr) {
+    senderName = senderNameStr;
+    qDebug() << "senderName: " << senderName;
+  }
+
+  const char* senderEmailAddressStr = (const char*) message_properties[PR_SENDER_EMAIL_ADDRESS];
+  QString senderEmailAddress;
+  if (senderEmailAddressStr) {
+    if (!strchr(senderEmailAddressStr, '@')) {
+      senderEmailAddress = resolveMapiName(senderEmailAddressStr);
+    } else {
+      senderEmailAddress = senderEmailAddressStr;
+    }
+
+    qDebug() << "senderEmailAddress: " << senderEmailAddress;
+  }
+
+  KMime::Headers::From *fromAddress = new KMime::Headers::From();
+  if (senderNameStr && senderEmailAddressStr) {
+    fromAddress->addAddress( senderEmailAddress.toLatin1(), senderName.toLatin1() );
+    msg_ptr->setHeader( fromAddress );
+  } else  if (senderEmailAddressStr) {
+    fromAddress->addAddress(senderEmailAddress.toLatin1());
+    msg_ptr->setHeader( fromAddress );
+  } else {
+    delete fromAddress;
+    qDebug() << "*** DID NOT GET SENDER NAME AND EMAIL ADDRESS ***";
+  }
+
+  if (message_properties[PR_DISPLAY_BCC])
+    qDebug() << "PR_DISPLAY_BCC: " << (const char*) message_properties[PR_DISPLAY_BCC];
+
+  const char* displayTo = (const char*) message_properties[PR_DISPLAY_TO];
+  KMime::Headers::To *toAddress = new KMime::Headers::To();
+  if (displayTo && strlen(displayTo) > 0)
+  {
+    QStringList toUsernames = QString(displayTo).split(';');
+    foreach (QString username, toUsernames) {
+      username = username.simplified();
+      if ( (username.contains('@')) ) {
+        toAddress->addAddress(username.toLatin1());
+        continue;
+      } else {
+        QString resolvedName = resolveMapiName(username.toAscii().constData());
+        if (!resolvedName.isNull()) {
+          toAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+        }
+      }
+    }
+  }
+
+  if (toAddress->isEmpty()) {
+    delete toAddress;
+  } else {
+    msg_ptr->setHeader(toAddress);
+  }
+
+  const char* displayCC = (const char*) message_properties[PR_DISPLAY_CC];
+  KMime::Headers::Cc *CCAddress = new KMime::Headers::Cc();
+  if (displayCC && strlen(displayCC) > 0)
+  {
+    QStringList CCUsernames = QString(displayCC).split(';');
+    foreach (QString username, CCUsernames) {
+      username = username.simplified();
+      if ( (username.contains('@')) ) {
+        CCAddress->addAddress(username.toLatin1());
+        continue;
+      } else {
+        QString resolvedName = resolveMapiName(username.toAscii().constData());
+        if (!resolvedName.isNull()) {
+          CCAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+        }
+      }
+    }
+  }
+
+  if (CCAddress->isEmpty()) {
+    delete CCAddress;
+  } else {
+    msg_ptr->setHeader(CCAddress);
+  }
+
+  const char* displayBCC = (const char*) message_properties[PR_DISPLAY_BCC];
+  KMime::Headers::Bcc *bccAddress = new KMime::Headers::Bcc();
+  if (displayBCC && strlen(displayBCC) > 0)
+  {
+    QStringList bccUsernames = QString(displayBCC).split(';');
+    foreach (QString username, bccUsernames) {
+      username = username.simplified();
+      if ( (username.contains('@')) ) {
+        bccAddress->addAddress(username.toLatin1());
+        continue;
+      } else {
+        QString resolvedName = resolveMapiName(username.toAscii().constData());
+        if (!resolvedName.isNull()) {
+          bccAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+        }
+      }
+    }
+  }
+
+  if (bccAddress->isEmpty()) {
+    delete bccAddress;
+  } else {
+    msg_ptr->setHeader(bccAddress);
+  }
+
+  // Check if we have any attachments.
   uint8_t *has_attach = (uint8_t *) message_properties[PR_HASATTACH];
+
+  Content* plainContent = NULL;
+  const char* plain = (const char*) message_properties[PR_BODY];
+  if (!plain)
+    plain = (const char*) message_properties[PR_BODY_UNICODE];
+
+  if (plain) {
+    qDebug() << "BODY: " << plain;
+    plainContent = new Content();
+    plainContent->contentType(true)->setMimeType( MSG_MIMETYPE_PLAIN_TEXT );
+    plainContent->fromUnicodeString( plain );
+  }
+  else
+    qDebug() << "*** DID NOT GET PLAIN BODY ***";
+
+  Content* htmlContent = NULL;
+  SBinary_short *html = (SBinary_short *) message_properties[PR_HTML];
+  if ( html ) {
+    QByteArray body = QByteArray( ( char* ) html->lpb, html->cb );
+    body.append( "\n" );
+    htmlContent = new Content();
+    htmlContent->contentType(true)->setMimeType( MSG_MIMETYPE_HTML_TEXT );
+    htmlContent->setBody(body);
+  }
+
+
+  if (plain && html) {
+    qDebug() << "*** Got plain body AND html body ***";
+    
+    Content* mainContent = new Content();
+    mainContent->contentType(true)->setMimeType( "multipart/alternative" );
+    mainContent->contentType()->setBoundary( KMime::multiPartBoundary() );
+    mainContent->addContent(plainContent);
+    mainContent->addContent(htmlContent);
+    mainContent->assemble();
+
+     msg_ptr->addContent(mainContent, true);
+  } else if (plain) {
+    qDebug() << "*** GOT PLAIN BODY ONLY ***";
+
+    msg_ptr->addContent(plainContent, true);
+  } else if (html) {
+   qDebug() << "*** GOT HTML BODY ONLY ***";
+
+
+    msg_ptr->addContent(htmlContent, true);
+  } 
 
   /* If we have attachments, retrieve them */
   if (has_attach && *has_attach) {
-    // TODO
+    message::attachment_container_type attachments = mapi_message.fetch_attachments();
+    
+    qDebug() << "Num attachments:" << attachments.size();
+    for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
+      if (!(*Iterator)->get_data()) {
+        continue;
+        qDebug() << "*** DID NOT GET ATTACH DATA BIN ***";
+      }
+
+      qDebug() << "size of binary data is: " <<  (*Iterator)->get_data_size();
+      QByteArray data((const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size());
+
+      if (data.isEmpty() || data.isNull()) {
+        qDebug() << "*** ATTACH DATA BIN IS EMPTY OR NULL ***";
+        continue;
+      }
+
+      // encode attachment (base 64)
+      QByteArray final = KCodecs::base64Encode( data, true );
+      Content* c = new Content();
+      c->setBody( final+"\n\n" );
+
+      QString attachFilename = QString( (*Iterator)->get_filename().c_str() );
+
+      // Add a content type / find mime-type
+      KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
+      KMime::Headers::ContentType *ctt= new KMime::Headers::ContentType( c );
+      ctt->fromUnicodeString( type->name(),encoding( type->name() ) );
+      ctt->setName( attachFilename, "" );
+      c->setHeader( ctt );
+
+      // Set the encoding.
+      KMime::Headers::ContentTransferEncoding *cte= new KMime::Headers::ContentTransferEncoding( c );
+      cte->setEncoding( KMime::Headers::CEbase64 );
+      cte->setDecoded( false );
+      c->setHeader( cte );
+      c->assemble();
+
+ 
+      msg_ptr->addContent( c );
+    }
   }
 
-  Item item;
-  item.setRemoteId( "itemnumber" );
-  item.setMimeType( "message/rfc822" );
-  msg_ptr->from()->from7BitString( "from@someone.local" );
-  item.setPayload<MessagePtr>( msg_ptr );
-  ItemCreateJob *append = new ItemCreateJob( item, collection );
-  if ( !append->exec() ) {
-    emit percent( 0 );
-    emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+  const FILETIME* submitTime = (const FILETIME*) message_properties[PR_CLIENT_SUBMIT_TIME];
+  if (submitTime)
+    msg_ptr->date()->setDateTime(convertSysTime(*submitTime));
+
+  const FILETIME* clientSubmitTime = (const FILETIME*) message_properties[PR_CREATION_TIME];
+  if ( !submitTime && clientSubmitTime && msg_ptr->date()->isEmpty() ) {
+    // we want to use PR_CLIENT_SUBMIT_TIME, but this will do instead
+    msg_ptr->date()->setDateTime( convertSysTime(*clientSubmitTime) );
   }
+
+  const char* conversationTopicStr = (const char*) message_properties[PR_CONVERSATION_TOPIC];
+  if (conversationTopicStr) {
+    msg_ptr->subject()->from7BitString(conversationTopicStr);
+  }
+
+  item.setPayload( msg_ptr );
+
+  talloc_free(mem_ctx);
 }
 
 void OCResource::appendContactToCollection( libmapipp::message& mapi_message, const Akonadi::Collection & collection)
@@ -695,27 +676,17 @@ void OCResource::appendContactToCollection( libmapipp::message& mapi_message, co
         continue;
       }
 
-      // TODO: We always use the first attachment. Do we need to check for other attachments?
       property_container attachment_properties = attachments[0]->get_property_container();
       attachment_properties.fetch_all();
-
-      QString attachFilename = QString( (const char*) attachment_properties[PR_ATTACH_FILENAME] );
-
-      if ( attachFilename.isEmpty() ) {
-        attachFilename = QString( (const char*) attachment_properties[PR_ATTACH_LONG_FILENAME] );
-      }
-
-      qDebug() << "attachment Filename:" << attachFilename;
 
       const uint32_t *attachSize = (const uint32_t *) attachment_properties[PR_ATTACH_SIZE];
       qDebug() << "file size: " << *attachSize;
 
-      if ( attachFilename == "ContactPicture.jpg" ) {
-        struct SBinary *attachData = (struct SBinary*) attachment_properties[PR_ATTACH_DATA_BIN];
-        QImage photoData = QImage::fromData( (const uchar*)attachData->lpb, attachData->cb );
+      if ( attachments[0]->get_filename() == "ContactPicture.jpg" ) {
+        QImage photoData = QImage::fromData( (const uchar*)attachments[0]->get_data(), attachments[0]->get_data_size() );
           if ( !photoData.isNull() ) {
             qDebug() << "Photo: " << photoData.size();
-            contact->setPhoto( KABC::Picture( photoData) );
+            contact->setPhoto( KABC::Picture(photoData) );
           }
       }
 
@@ -971,11 +942,11 @@ void OCResource::appendContactToCollection( libmapipp::message& mapi_message, co
       // PT_STRING8
       qDebug() << "PR_LAST_MODIFIER_NAME:" << (const char*) *Iter;
       break;
-    case PR_CREATOR_ENTRYID:
+//    case PR_CREATOR_ENTRYID:
       // PT_BINARY
-      qDebug() << "PR_CREATOR_ENTRYID size:" << ((const SBinary*) *Iter)->cb;
-      qDebug() << "PR_CREATOR_ENTRYID data:" << QByteArray( (char*)((const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
-      break;
+//      qDebug() << "PR_CREATOR_ENTRYID size:" << ((const SBinary*) *Iter)->cb;
+//      qDebug() << "PR_CREATOR_ENTRYID data:" << QByteArray( (char*)( (const SBinary*) *Iter)->lpb, ((const SBinary*) *Iter)->cb ).toHex();
+//      break;
     case PR_HAS_NAMED_PROPERTIES:
       // PT_BOOLEAN
       qDebug() << "PR_HAS_NAMED_PROPERTIES:" << ( *((const uint8_t*) *Iter) ? "true":"false" );
@@ -1253,19 +1224,36 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
 
   Item::List items = fetch->items();
 
-  folder aFolder(m_session->get_message_store(), collection.remoteId().toULongLong());
-  folder::message_container_type messages = aFolder.fetch_messages();
-  
-  for (unsigned int i = 0; i < messages.size(); ++i) {
+  folder::message_container_type* messages = NULL;
+  try {
+    folder aFolder(m_session->get_message_store(), collection.remoteId().toULongLong());
+    messages = new folder::message_container_type(aFolder.fetch_messages());
+  }
+  catch(std::runtime_error e)
+  {
+    // TODO: call cancelTask()
+    qDebug() << "MAPI EXception: " << e.what();
+    emit error(e.what());
+  }  
+
+  for (unsigned int i = 0; i < messages->size(); ++i) {
 
     if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
-      appendContactToCollection( *messages[i], collection );
+      appendContactToCollection( *(*messages)[i], collection );
     } else {
-      appendMessageToCollection( *messages[i], collection );
+      Item item;
+      // NOTE: This is a workaround. Have to ask akonadi developers if they are willing to add
+      // a remoteParentID to Items like collections have. For now separate both ids with a  '-' character.
+      item.setRemoteId( QString::number( (*messages)[i]->get_id()) + '-' + QString::number( (*messages)[i]->get_folder_id()) );
+      item.setMimeType("message/rfc822");
+      appendMessageToItem(*(*messages)[i], item);
+      ItemCreateJob *append = new ItemCreateJob( item, collection );
+      if ( !append->exec() ) {
+        emit percent( 0 );
+        emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+      }
     }
   }
-
-  // fetchFolder( collection );
 
   emit percent( 100 );
   itemsRetrievalDone();

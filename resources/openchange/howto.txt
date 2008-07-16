@@ -1,4 +1,3 @@
 - Get and install OpenChange's libmapi (http://www.openchange.org)
-- Get and install libmapi++ (svn co https://svn.openchange.org/openchange/branches/libmapi++ and sudo make install)
-
-
+- Get and install libmapi++ (svn co https://svn.openchange.org/openchange/branches/libmapi++ && sudo mkdir /usr/local/samba/include/libmapi++ && sudo make install)
+  *** Note that right now libmapi++ make file assumes samba4 and OpenChange's libmapi are installed in /usr/local/samba ***

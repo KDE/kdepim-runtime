@@ -22,6 +22,8 @@
 
 #include "profileeditdialog.h"
 
+#include <klocale.h>
+
 #include <QHostInfo>
 #include <QLabel>
 #include <QVBoxLayout>
