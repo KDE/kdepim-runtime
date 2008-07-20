@@ -28,6 +28,8 @@
 #include <QTabWidget>
 #include <QTreeView>
 
+using namespace KPIM;
+
 struct Saver {
   static void process( QSplitter *splitter, KConfigGroup &config )
   {

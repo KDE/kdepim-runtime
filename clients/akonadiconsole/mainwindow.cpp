@@ -43,12 +43,12 @@ MainWindow::MainWindow( QWidget *parent )
 
   setupGUI( Keys /*| ToolBar | StatusBar*/ | Save | Create, "akonadiconsoleui.rc" );
 
-  UiStateSaver::restoreState( this, KConfigGroup( KGlobal::config(), "UiState" ) );
+  KPIM::UiStateSaver::restoreState( this, KConfigGroup( KGlobal::config(), "UiState" ) );
 }
 
 bool MainWindow::queryExit()
 {
   KConfigGroup config( KGlobal::config(), "UiState" );
-  UiStateSaver::saveState( this, config );
+  KPIM::UiStateSaver::saveState( this, config );
   return KXmlGuiWindow::queryExit();
 }

@@ -75,6 +75,7 @@ set(kdepim_LIB_SRCS
    utils.cpp
    colorlistbox.cpp
    dictionarycombobox.cpp
+   uistatesaver.cpp
 )
 
 #if(WIN32)

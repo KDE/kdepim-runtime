@@ -36,6 +36,7 @@ DebugWidget::DebugWidget( QWidget *parent )
   QVBoxLayout *layout = new QVBoxLayout( this );
 
   QSplitter *splitter = new QSplitter( Qt::Vertical, this );
+  splitter->setObjectName( "debugSplitter" );
   layout->addWidget( splitter );
 
   mConnectionPages = new QTabWidget( splitter );
