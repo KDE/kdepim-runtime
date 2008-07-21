@@ -88,17 +88,12 @@ OCResource::~ OCResource()
 bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED(parts);
-  // TODO: This only works for messages, check for contacts.
-  if (item.mimeType() == "text/vcard") {
-    qDebug() << "Currently ignoring retrieveItem() for Contacts";
-    return true;
-  }
 
   QStringList ids = item.remoteId().split('-');
   mapi_id_t message_id = ids[0].toULongLong();
   mapi_id_t folder_id = ids[1].toULongLong();
 
-  folder aFolder(m_session->get_message_store(), folder_id);
+  // folder aFolder(m_session->get_message_store(), folder_id);
   
   libmapipp::message* messagePointer = NULL;
   try {
@@ -110,8 +105,14 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
   
   Item i;
   i.setRemoteId( item.remoteId());
-  i.setMimeType("message/rfc822");
-  appendMessageToItem(*messagePointer, i);
+  if (item.mimeType() == "text/vcard") {
+    i.setMimeType( "text/vcard" );
+    appendMessageToItem( *messagePointer, i ); 
+  } else {
+    i.setMimeType( "message/rfc822" );
+    appendMessageToItem( *messagePointer, i );
+  }
+
   itemRetrieved( i );
 
   return true;
@@ -314,7 +315,7 @@ const char * encoding( const QString& data )
 /// \return QString.isNull() == true if name is not found.
 QString resolveMapiName(const char* username)
 {
-  TALLOC_CTX* mem_ctx = talloc_init("resolveMapiName_CTX");
+  TALLOC_CTX* mem_ctx = talloc_init("OCResource_resolveMapiName_CTX");
 
   SPropTagArray* tagArray = set_SPropTagArray(mem_ctx, 0x2, PR_SMTP_ADDRESS, PR_SMTP_ADDRESS_UNICODE);
   FlagList* flagList = NULL;
@@ -345,7 +346,6 @@ QString resolveMapiName(const char* username)
 
 void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi::Item & item)
 {
-  TALLOC_CTX* mem_ctx = talloc_init("OCResource_appendMessageToItem_CTX");
   property_container message_properties = mapi_message.get_property_container();
   message_properties << PR_CLIENT_SUBMIT_TIME << PR_SENDER_NAME << PR_SENDER_EMAIL_ADDRESS << PR_DISPLAY_BCC << PR_DISPLAY_CC << PR_DISPLAY_TO
                      << PR_MESSAGE_SIZE << PR_HASATTACH << PR_BODY << PR_BODY_UNICODE << PR_HTML << PR_CREATION_TIME << PR_CONVERSATION_TOPIC;
@@ -574,20 +574,14 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
   }
 
   item.setPayload( msg_ptr );
-
-  talloc_free(mem_ctx);
 }
 
-void OCResource::appendContactToCollection( libmapipp::message& mapi_message, const Akonadi::Collection & collection)
+void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi::Item & item)
 {
   property_container message_properties = mapi_message.get_property_container();
   message_properties.fetch_all();
 
   KABC::Addressee *contact = new KABC::Addressee;
-
-  Item item;
-  item.setRemoteId( "itemnumber" );
-  item.setMimeType( "text/vcard" );
 
   KABC::Address workAddress;
   workAddress.setType( KABC::Address::Work );
@@ -988,8 +982,13 @@ void OCResource::appendContactToCollection( libmapipp::message& mapi_message, co
       // PT_STRING8
       qDebug() << "0x800f001e:" << (const char*) *Iter;
       break;
+    case 0x8084001e:
+      // PT_STRING8
+      qDebug() << "Got preferred 1" << (const char*) *Iter;
+      contact->insertEmail( (const char*) *Iter, true );
     case 0x8010001e:
       // PT_STRING8
+      qDebug() << "Got preferred 2" << (const char*) *Iter;
       contact->insertEmail( (const char*) *Iter, true ); // preferred
       break;
     case 0x8011001e:
@@ -1202,11 +1201,6 @@ void OCResource::appendContactToCollection( libmapipp::message& mapi_message, co
   contact->insertAddress( workAddress );
   contact->insertAddress( homeAddress );
   item.setPayload<KABC::Addressee>( *contact );
-  ItemCreateJob *append = new ItemCreateJob( item, collection );
-  if ( !append->exec() ) {
-    emit percent( 0 );
-    emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
-  }
 }
 
 void OCResource::retrieveItems( const Akonadi::Collection & collection )
@@ -1238,20 +1232,24 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
 
   for (unsigned int i = 0; i < messages->size(); ++i) {
 
+    Item item;
+    // NOTE: This is a workaround. Have to ask akonadi developers if they are willing to add
+    // a remoteParentID to Items like collections have. For now separate both ids with a  '-' character.
+    item.setRemoteId( QString::number( (*messages)[i]->get_id()) + '-' + QString::number( (*messages)[i]->get_folder_id()) );
+
     if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
-      appendContactToCollection( *(*messages)[i], collection );
+      item.setMimeType( "text/vcard" );
+      appendContactToItem( *(*messages)[i], item );
     } else {
-      Item item;
-      // NOTE: This is a workaround. Have to ask akonadi developers if they are willing to add
-      // a remoteParentID to Items like collections have. For now separate both ids with a  '-' character.
-      item.setRemoteId( QString::number( (*messages)[i]->get_id()) + '-' + QString::number( (*messages)[i]->get_folder_id()) );
       item.setMimeType("message/rfc822");
-      appendMessageToItem(*(*messages)[i], item);
-      ItemCreateJob *append = new ItemCreateJob( item, collection );
-      if ( !append->exec() ) {
-        emit percent( 0 );
-        emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
-      }
+      appendMessageToItem( *(*messages)[i], item );
+    }
+    emit percent( 50 );
+
+    ItemCreateJob *append = new ItemCreateJob( item, collection );
+    if ( !append->exec() ) {
+      emit percent( 0 );
+      emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
     }
   }
 

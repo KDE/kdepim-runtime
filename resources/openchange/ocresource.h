@@ -53,8 +53,7 @@ protected:
 private:
     void login();
     void appendMessageToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
-    void appendContactToCollection( libmapipp::message & mapi_message, const Akonadi::Collection & collection);
-    enum MAPISTATUS fetchFolder( const Akonadi::Collection &collection );
+    void appendContactToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
     QString mimeTypeForFolderType( const char *folderTypeValue ) const;
 
     // this method may recurse into itself.
