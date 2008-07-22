@@ -54,6 +54,10 @@ private:
     void login();
     void appendMessageToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
     void appendContactToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
+    void appendJournalToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
+    void appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
+    void appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
+
     QString mimeTypeForFolderType( const char *folderTypeValue ) const;
 
     // this method may recurse into itself.

@@ -80,7 +80,7 @@ OCResource::OCResource( const QString &id )
   MAPIInitialize(session::get_default_profile_path().c_str());
 }
 
-OCResource::~ OCResource()
+OCResource::~OCResource()
 {
   if (m_session) delete m_session;
 }
@@ -108,11 +108,17 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
   if (item.mimeType() == "text/vcard") {
     i.setMimeType( "text/vcard" );
     appendMessageToItem( *messagePointer, i ); 
-  } else {
+  } else if ( item.mimeType() == "message/rfc822") {
     i.setMimeType( "message/rfc822" );
     appendMessageToItem( *messagePointer, i );
+  } else if ( item.mimeType() == "text/calendar" ) {
+    qDebug() << "retrieveItem() not implemented for calendars yet.";
+    return true;
+  } else {
+    cancelTask( "Unknown type of message" );
+    return false;
   }
-
+  
   itemRetrieved( i );
 
   return true;
@@ -121,7 +127,10 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
 
 void OCResource::aboutToQuit()
 {
-  qDebug() << "currently ignoring aboutToQuit()";
+  if (m_session) {
+    delete m_session;
+    m_session = NULL;
+  }
 }
 
 void OCResource::configure( WId windowId )
@@ -198,16 +207,14 @@ QString OCResource::mimeTypeForFolderType( const char* folderTypeValue ) const
   } else if ( folderType == IPF_CONTACT ) {
     return QString( "text/vcard" );
   } else if ( folderType == IPF_JOURNAL ) {
-    // TODO: find a better mime type for this
-    return QString( "message/directory" );
+    return QString( "text/calendar" );
   } else if ( folderType == IPF_NOTE ) {
     return QString( "message/rfc822" );
   } else if ( folderType == IPF_STICKYNOTE ) {
     // TODO: find a better mime type for this
     return QString( "message/directory" );
   } else if ( folderType == IPF_TASK ) {
-    // TODO: find a better mime type for this
-    return QString( "message/directory" );
+    return QString( "text/calendar" );
   }
 
   qDebug() << "Unexpected result for container class: " << folderTypeValue;
@@ -351,7 +358,6 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
                      << PR_MESSAGE_SIZE << PR_HASATTACH << PR_BODY << PR_BODY_UNICODE << PR_HTML << PR_CREATION_TIME << PR_CONVERSATION_TOPIC;
 
   message_properties.fetch();
-
   MessagePtr msg_ptr ( new KMime::Message );
 
   const char* senderNameStr = (const char*) message_properties[PR_SENDER_NAME];
@@ -982,7 +988,7 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       // PT_STRING8
       qDebug() << "0x800f001e:" << (const char*) *Iter;
       break;
-    case 0x8084001e:
+    case 0x8093:
       // PT_STRING8
       qDebug() << "Got preferred 1" << (const char*) *Iter;
       contact->insertEmail( (const char*) *Iter, true );
@@ -1203,6 +1209,18 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
   item.setPayload<KABC::Addressee>( *contact );
 }
 
+void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
+{
+}
+
+void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
+{
+}
+
+void OCResource::appendJournalToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
+{
+}
+
 void OCResource::retrieveItems( const Akonadi::Collection & collection )
 {
   qDebug() << "currently synchronizeCollections() is incomplete";
@@ -1218,17 +1236,34 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
 
   Item::List items = fetch->items();
 
+  folder* folderPtr = NULL;
   folder::message_container_type* messages = NULL;
+  QString contentType;
   try {
-    folder aFolder(m_session->get_message_store(), collection.remoteId().toULongLong());
-    messages = new folder::message_container_type(aFolder.fetch_messages());
+    folderPtr = new folder(m_session->get_message_store(), collection.remoteId().toULongLong());
+    messages = new folder::message_container_type(folderPtr->fetch_messages());
+    property_container folderProperties = folderPtr->get_property_container();
+    folderProperties << PR_CONTAINER_CLASS;
+    folderProperties.fetch();
+
+    if ( folderProperties.size() ) {
+      contentType = (const char*) *folderProperties.begin();
+    } else {
+      cancelTask( "Error: Did not get folder type for folder id " + QString::number( folderPtr->get_id() )  );
+      return;
+    }
   }
   catch(std::runtime_error e)
   {
-    // TODO: call cancelTask()
+    if (folderPtr)
+      delete folderPtr;
+
+    if (messages)
+      delete messages;
+
     qDebug() << "MAPI EXception: " << e.what();
-    emit error(e.what());
-  }  
+    cancelTask(e.what());
+  }
 
   for (unsigned int i = 0; i < messages->size(); ++i) {
 
@@ -1237,13 +1272,24 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
     // a remoteParentID to Items like collections have. For now separate both ids with a  '-' character.
     item.setRemoteId( QString::number( (*messages)[i]->get_id()) + '-' + QString::number( (*messages)[i]->get_folder_id()) );
 
-    if ( collection.contentMimeTypes().contains( "text/vcard" ) ) {
+    if ( contentType == IPF_CONTACT ) {
       item.setMimeType( "text/vcard" );
       appendContactToItem( *(*messages)[i], item );
+    }
+    else if ( collection.contentMimeTypes().contains( "text/calendar" ) ) {
+      item.setMimeType( "text/calendar" );
+
+      if ( contentType == IPF_APPOINTMENT )
+        appendEventToItem( *(*messages)[i], item );
+      else if ( contentType == IPF_TASK )
+        appendTodoToItem( *(*messages)[i], item  );
+      else if ( contentType == IPF_JOURNAL )
+        appendJournalToItem( *(*messages)[i], item );
     } else {
       item.setMimeType("message/rfc822");
       appendMessageToItem( *(*messages)[i], item );
     }
+
     emit percent( 50 );
 
     ItemCreateJob *append = new ItemCreateJob( item, collection );
@@ -1252,6 +1298,9 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
       emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
     }
   }
+
+  delete folderPtr;
+  delete messages;
 
   emit percent( 100 );
   itemsRetrievalDone();
