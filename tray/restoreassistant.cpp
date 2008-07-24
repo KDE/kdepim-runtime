@@ -46,7 +46,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
         label1->setText( '\n' + i18n( "Please select the file to restore. Note that restoring a "
                                       "backup will overwrite all existing data. You might want to "
                                       "make a backup first and please consider closing all Akonadi "
-                                      "applications (but do not stop the akonadi server." ) + "\n\n" );
+                                      "applications (but do not stop the akonadi server)." ) + "\n\n" );
 
         m_selectFileButton = new QPushButton( i18n( "&Click here to select the file to restore..." ), box1 );
         connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
