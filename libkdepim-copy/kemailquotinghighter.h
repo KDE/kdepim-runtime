@@ -61,7 +61,7 @@ namespace KPIM
                           const QColor &quoteDepth1,
                           const QColor &quoteDepth2,
                           const QColor &quoteDepth3,
-                          const QColor &misspelledColor );
+                          const QColor &misspelledColor = Qt::red );
 
       /**
        * Turns spellcheck highlighting on or off.
