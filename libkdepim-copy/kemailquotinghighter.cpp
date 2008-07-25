@@ -22,6 +22,7 @@
 
 #include "kemailquotinghighter.h"
 
+#include <KColorScheme>
 #include <KConfig>
 #include <KDebug>
 #include <KLocale>
@@ -37,8 +38,7 @@ namespace KPIM {
 class KEMailQuotingHighlighter::KEmailQuotingHighlighterPrivate
 {
 public:
-    QColor col1, col2, col3;
-    QColor normalColor;
+    QColor col1, col2, col3, misspelledColor;
     bool spellCheckingEnabled;
 };
 
@@ -46,10 +46,12 @@ KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
                                                     const QColor &normalColor,
                                                     const QColor &quoteDepth1,
                                                     const QColor &quoteDepth2,
-                                                    const QColor &quoteDepth3 )
+                                                    const QColor &quoteDepth3,
+                                                    const QColor &misspelledColor )
     : Highlighter( textEdit ),
       d( new KEmailQuotingHighlighterPrivate() )
 {
+    Q_UNUSED( normalColor );
     // Don't automatically disable the spell checker, for example because there
     // are too many misspelled words. That would also disable quote highlighting.
     setAutomatic( false );
@@ -58,7 +60,7 @@ KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
     d->col1 = quoteDepth1;
     d->col2 = quoteDepth2;
     d->col3 = quoteDepth3;
-    d->normalColor = normalColor;
+    d->misspelledColor = misspelledColor;
     d->spellCheckingEnabled = false;
 }
 
@@ -70,12 +72,14 @@ KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
 void KEMailQuotingHighlighter::setQuoteColor( const QColor &normalColor,
                                               const QColor &quoteDepth1,
                                               const QColor &quoteDepth2,
-                                              const QColor &quoteDepth3 )
+                                              const QColor &quoteDepth3,
+                                              const QColor &misspelledColor )
 {
+    Q_UNUSED( normalColor );
     d->col1 = quoteDepth1;
     d->col2 = quoteDepth2;
     d->col3 = quoteDepth3;
-    d->normalColor = normalColor;
+    d->misspelledColor = misspelledColor;
 }
 
 void KEMailQuotingHighlighter::toggleSpellHighlighting( bool on )
@@ -111,8 +115,13 @@ void KEMailQuotingHighlighter::highlightBlock( const QString & text )
 
 void KEMailQuotingHighlighter::unsetMisspelled( int start,  int count )
 {
-  Q_UNUSED( start )
-  Q_UNUSED( count )
+    Q_UNUSED( start )
+    Q_UNUSED( count )
+}
+
+void KEMailQuotingHighlighter::setMisspelled( int start, int count )
+{
+    setFormat( start, count, d->misspelledColor );
 }
 
 }

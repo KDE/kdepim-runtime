@@ -44,18 +44,24 @@ namespace KPIM
     public:
 
       // FIXME: Default colors don't obey color scheme
+      // The normalColor parameter will be ignored, only provided for KNode
+      // compatibility.
       explicit KEMailQuotingHighlighter( QTextEdit *textEdit,
                                          const QColor &normalColor = Qt::black,
                                          const QColor &quoteDepth1 = QColor( 0x00, 0x80, 0x00 ),
                                          const QColor &quoteDepth2 = QColor( 0x00, 0x80, 0x00 ),
-                                         const QColor &quoteDepth3 = QColor( 0x00, 0x80, 0x00 ) );
+                                         const QColor &quoteDepth3 = QColor( 0x00, 0x80, 0x00 ),
+                                         const QColor &misspelledColor = Qt::red );
 
       ~KEMailQuotingHighlighter();
 
+      // The normalColor parameter will be ignored, only provided for KNode
+      // compatibility.
       void setQuoteColor( const QColor &normalColor,
                           const QColor &quoteDepth1,
                           const QColor &quoteDepth2,
-                          const QColor &quoteDepth3 );
+                          const QColor &quoteDepth3,
+                          const QColor &misspelledColor );
 
       /**
        * Turns spellcheck highlighting on or off.
@@ -64,6 +70,7 @@ namespace KPIM
        */
       void toggleSpellHighlighting( bool on );
 
+      // Reimplemented to highlight quote blocks.
       virtual void highlightBlock ( const QString & text );
 
     protected:
@@ -73,8 +80,9 @@ namespace KPIM
       // Qt.
       virtual void unsetMisspelled( int start,  int count );
 
-      //TODO: also reimplement setMisspelled and use the configured color for
-      //      that
+      // Reimplemented to set the color of the misspelled word to a color
+      // defined by setQuoteColor().
+      virtual void setMisspelled( int start, int count );
 
     private:
       class KEmailQuotingHighlighterPrivate;
