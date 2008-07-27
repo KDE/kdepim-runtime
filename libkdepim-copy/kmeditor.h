@@ -89,6 +89,7 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
     void setUseExternalEditor( bool use );
     void setExternalEditorPath( const QString & path );
 
+    /// FIXME: Huh? This is not virtual in the base classes and thus never called
     void paste();
 
     KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
@@ -319,6 +320,11 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
      * Handles drag enter/move event for dragEnterEvent() and dragMoveEvent()
      */
     void handleDragEvent( QDragMoveEvent *e );
+
+    /**
+     * Reimplemented to block rich text pastes in plain text mode.
+     */
+    virtual void insertFromMimeData ( const QMimeData * source );
 
   private:
     KMeditorPrivate *const d;

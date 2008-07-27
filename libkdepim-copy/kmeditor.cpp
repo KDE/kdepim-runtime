@@ -306,6 +306,19 @@ void KMeditor::paste()
     KRichTextWidget::paste();
 }
 
+void KMeditor::insertFromMimeData( const QMimeData * source )
+{
+  // Attempt to paste HTML contents into the text edit in plain text mode,
+  // prevent this and prevent plain text instead.
+  if ( textMode() == KRichTextEdit::Plain && source->hasHtml() ) {
+    if ( source->hasText() ) {
+      insertPlainText( source->text() );
+    }
+  }
+  else
+    KRichTextWidget::insertFromMimeData( source );
+}
+
 void KMeditor::keyPressEvent ( QKeyEvent * e )
 {
   if ( d->useExtEditor ) {
