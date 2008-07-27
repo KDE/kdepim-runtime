@@ -83,7 +83,7 @@ public:
             realKey = path + QString::fromLatin1("/cur/") + key;
         QFile f2( realKey );
         if ( !f2.exists() )
-            realKey = QString();
+            realKey.clear();
         return realKey;
     }
 
@@ -150,7 +150,7 @@ bool Maildir::Private::accessIsPossible( QString& error ) const
     QStringList paths = subPaths();
     paths.prepend( path );
 
-    Q_FOREACH( QString p, paths )
+    Q_FOREACH( const QString &p, paths )
     {
         if ( !QFile::exists(p) ) {
             error = i18n("Error opening %1; this folder is missing.",p);
@@ -184,7 +184,7 @@ bool Maildir::create()
 {
     // FIXME: in a failure case, this will leave partially created dirs around
     // we should clean them up, but only if they didn't previously existed...
-    Q_FOREACH( QString p, d->subPaths() ) {
+    Q_FOREACH( const QString &p, d->subPaths() ) {
         QDir dir( p );
         if ( !dir.exists( p ) ) {
             if ( !dir.mkpath( p ) )
