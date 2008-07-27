@@ -68,9 +68,6 @@ void DesignerFields::initGUI( const QString &uiFile )
 
   layout->addWidget( wdg );
 
-  QList<QWidget*> list = wdg->findChildren<QWidget*>();
-  QWidget *it;
-
   QStringList allowedTypes;
   allowedTypes << "QLineEdit"
                << "QTextEdit"
@@ -82,6 +79,8 @@ void DesignerFields::initGUI( const QString &uiFile )
                << "KDateTimeWidget"
                << "KDatePicker";
 
+  QList<QWidget*> list = wdg->findChildren<QWidget*>();
+  QWidget *it;
   Q_FOREACH( it, list ) {
     if ( allowedTypes.contains( it->metaObject()->className() ) ) {
       QString name = it->objectName();

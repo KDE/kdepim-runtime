@@ -99,7 +99,7 @@ class KMeditorPrivate
 
     void startExternalEditor();
     void slotEditorFinished( int, QProcess::ExitStatus exitStatus );
-    
+
     // Data members
     QString extEditorPath;
     QString language;
@@ -169,7 +169,7 @@ void KMeditorPrivate::cleanWhitespaceHelper( const QRegExp &regExp,
     bool insideSignature = false;
     QList< QPair<int,int> > sigPositions = signaturePositions( sig );
     QPair<int,int> position;
-    foreach( position, sigPositions ) {
+    foreach( position, sigPositions ) { //krazy:exclude=foreach
       if ( cursor.position() >= position.first &&
            cursor.position() <= position.second )
         insideSignature = true;
@@ -189,22 +189,22 @@ void KMeditorPrivate::cleanWhitespaceHelper( const QRegExp &regExp,
 void KMeditorPrivate::startExternalEditor()
 {
   if ( extEditorPath.isEmpty() ) {
-    q->setUseExternalEditor( false ); 
+    q->setUseExternalEditor( false );
     //TODO: show messagebox
     return;
   }
-  
+
   mExtEditorTempFile = new KTemporaryFile();
   if ( !mExtEditorTempFile->open() ) {
     delete mExtEditorTempFile;
     mExtEditorTempFile = 0;
-    q->setUseExternalEditor( false );    
+    q->setUseExternalEditor( false );
     return;
   }
-  
+
   mExtEditorTempFile->write( q->textOrHtml().toUtf8() );
   mExtEditorTempFile->flush();
-  
+
   mExtEditorProcess = new KProcess();
     // construct command line...
   QStringList command = extEditorPath.split( ' ', QString::SkipEmptyParts );
@@ -218,8 +218,8 @@ void KMeditorPrivate::startExternalEditor()
   }
   if ( !filenameAdded )    // no %f in the editor command
     ( *mExtEditorProcess ) << mExtEditorTempFile->fileName();
-    
-  QObject::connect( mExtEditorProcess, SIGNAL( finished ( int, QProcess::ExitStatus ) ), 
+
+  QObject::connect( mExtEditorProcess, SIGNAL( finished ( int, QProcess::ExitStatus ) ),
                     q, SLOT( slotEditorFinished( int, QProcess::ExitStatus ) ) );
   mExtEditorProcess->start();
   if ( !mExtEditorProcess->waitForStarted() ) {
@@ -314,7 +314,7 @@ void KMeditor::keyPressEvent ( QKeyEvent * e )
     }
     return;
   }
-  
+
   if ( e->key() ==  Qt::Key_Return ) {
     QTextCursor cursor = textCursor();
     int oldPos = cursor.position();
@@ -740,7 +740,7 @@ bool KMeditor::checkExternalEditorFinished()
 
 void KMeditor::killExternalEditor()
 {
-  if ( d->mExtEditorProcess ) 
+  if ( d->mExtEditorProcess )
     d->mExtEditorProcess->deleteLater();
   d->mExtEditorProcess = 0;
   delete d->mExtEditorTempFile;

@@ -163,7 +163,7 @@ void KConfigPropagator::parseConfigEntryPath( const QString &path,
                                               QString &group,
                                               QString &entry )
 {
-  QStringList p = path.split( "/" );
+  QStringList p = path.split( '/' );
 
   if ( p.count() != 3 ) {
     kError() <<"Path has to be of form file/group/entry";

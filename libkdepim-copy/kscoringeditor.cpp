@@ -589,7 +589,7 @@ void RuleEditWidget::updateRule( KScoringRule *rule )
   if ( groups.isEmpty() ) {
     rule->setGroups( QStringList( ".*" ) );
   } else {
-    rule->setGroups( groups.split( ";", QString::SkipEmptyParts ) );
+    rule->setGroups( groups.split( ';', QString::SkipEmptyParts ) );
   }
   bool b = expireCheck->isChecked();
   if ( b ) {
