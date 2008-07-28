@@ -21,6 +21,9 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchscope.h>
+
 #include <kfiledialog.h>
 #include <klocale.h>
 
@@ -33,6 +36,7 @@ VCardResource::VCardResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
   loadAddressees();
 }
 
@@ -60,8 +64,10 @@ void VCardResource::aboutToQuit()
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() )
     emit error( i18n( "No filename specified." ) );
-  else if ( storeAddressees() )
+  else if ( !storeAddressees() )
     emit error( i18n( "Failed to save address book file to %1", fileName ) );
+
+  Settings::self()->writeConfig();
 }
 
 void VCardResource::configure( WId windowId )
@@ -91,7 +97,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   KABC::Addressee addressee;
   if ( item.hasPayload<KABC::Addressee>() )
     addressee  = item.payload<KABC::Addressee>();
-  
+
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
@@ -108,7 +114,7 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArra
   KABC::Addressee addressee;
   if ( item.hasPayload<KABC::Addressee>() )
     addressee  = item.payload<KABC::Addressee>();
-  
+
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
 
