@@ -1,82 +1,128 @@
+#
+# If any of the .rdfs files change or if Nepomuk changes extensively,
+# you'll need to regenerate the sources. You will also need to add/remove
+# to the ${nie_SRCS} variable below and to the SVN repository.
+#
+# run 'make nie-gen' to regenerate the sources.
+#
 
-include(NepomukMacros)
-
-# FIXME: Make this macro take a list of ontology files and then move it to NepomukMacros.cmake
-macro(NEPOMUK_GENERATE_FROM_ONTOLOGY2 ontofile1 ontofile2 ontofile3 ontofile4 targetdir out_headers out_sources out_includes)
-
-  # init
-  set(NEPOMUK_RESOURCES_GENERATED false)
-
-  FIND_PROGRAM(RCGEN nepomuk-rcgen PATHS ${BIN_INSTALL_DIR} NO_DEFAULT_PATH)
-
-  if(NOT RCGEN)
-
-    message(STATUS "Failed to find the Nepomuk source generator" )
-
-  else(NOT RCGEN)
-
-    FILE(TO_NATIVE_PATH ${RCGEN} RCGEN)
-
-    execute_process(
-      COMMAND ${RCGEN} --listheaders --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2} ${ontofile3} ${ontofile4}
-      OUTPUT_VARIABLE ${out_headers}
-      RESULT_VARIABLE rcgen_result
-      ERROR_QUIET
-      )
-
-    # If the first call succeeds it is very very likely that the rest will, too
-    if(${rcgen_result} EQUAL 0)
-
-      execute_process(
-        COMMAND ${RCGEN} --listsources --prefix ${targetdir}/ --ontologies ${ontofile1} ${ontofile2} ${ontofile3} ${ontofile4}
-        OUTPUT_VARIABLE ${out_sources}
-        ERROR_QUIET
-        )
-
-      execute_process(
-        COMMAND ${RCGEN} --listincludes --ontologies ${ontofile1} ${ontofile2} ${ontofile3} ${ontofile4}
-        OUTPUT_VARIABLE ${out_includes}
-        ERROR_QUIET
-        )
-
-      execute_process(
-        COMMAND ${RCGEN} --writeall --templates ${ARGN} --target ${targetdir}/ --ontologies ${ontofile1} ${ontofile2} ${ontofile3} ${ontofile4}
-        ERROR_QUIET
-        )
-
-      set(NEPOMUK_RESOURCES_GENERATED true)
-
-    else(${rcgen_result} EQUAL 0)
-
-      message(STATUS "Failed to generate Nepomuk resource classes.")
-
-    endif(${rcgen_result} EQUAL 0)
-
-  endif(NOT RCGEN)
-
-endmacro(NEPOMUK_GENERATE_FROM_ONTOLOGY2)
-
-
-NEPOMUK_GENERATE_FROM_ONTOLOGY2(
-  ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
-  ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
-  ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
-  ${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs
-  ${CMAKE_CURRENT_BINARY_DIR}
-  NCO_HEADERS
-  NCO_SOURCES
-  DUMMY
+add_custom_command(
+  OUTPUT 
+    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
+    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
+    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
+  COMMAND ${CMAKE_COMMAND}
+  ARGS 
+    -DBIN_INSTALL_DIR=${BIN_INSTALL_DIR}
+    -Dontofile1=${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+    -Dontofile2=${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
+    -Dontofile3=${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
+    -Dontofile4=${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs
+    -Dtargetdir=${CMAKE_CURRENT_SOURCE_DIR}
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/rcgen.cmake
+  MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+  DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+    ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
+    ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs 
+    ${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs 
   )
 
-if(NEPOMUK_RESOURCES_GENERATED)
+add_custom_target(
+  nie-gen
+  DEPENDS
+    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
+    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
+    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
+)
 
-  set(HAVE_NIE 1 CACHE INTERNAL "NIE classes successfully generated" FORCE)
+set(nie_SRCS
+  affiliation.cpp                                                             
+  application.cpp                                                             
+  archive.cpp                                                                 
+  archiveitem.cpp                                                             
+  attachment.cpp                                                              
+  audio.cpp                                                                   
+  audioimaccount.cpp                                                          
+  bbsnumber.cpp                                                               
+  carphonenumber.cpp                                                          
+  cellphonenumber.cpp                                                         
+  compressiontype.cpp                                                         
+  contact.cpp                                                                 
+  contactgroup.cpp                                                            
+  contactlist.cpp                                                             
+  contactlistdataobject.cpp                                                   
+  contactmedium.cpp                                                           
+  cursor.cpp                                                                  
+  datacontainer.cpp                                                           
+  dataobject.cpp                                                              
+  datasource.cpp                                                              
+  deletedresource.cpp                                                         
+  document.cpp                                                                
+  domesticdeliveryaddress.cpp                                                 
+  emailaddress.cpp                                                            
+  email.cpp                                                                   
+  embeddedfiledataobject.cpp                                                  
+  executable.cpp                                                              
+  faxnumber.cpp                                                               
+  filedataobject.cpp                                                          
+  filehash.cpp                                                                
+  filesystem.cpp                                                              
+  filesystemimage.cpp                                                         
+  folder.cpp                                                                  
+  font.cpp                                                                    
+  gender.cpp                                                                  
+  harddiskpartition.cpp                                                       
+  htmldocument.cpp                                                            
+  icon.cpp                                                                    
+  imaccount.cpp                                                               
+  image.cpp                                                                   
+  immessage.cpp                                                               
+  informationelement.cpp                                                      
+  internationaldeliveryaddress.cpp                                            
+  isdnnumber.cpp
+  mailbox.cpp
+  mailboxdataobject.cpp
+  media.cpp
+  mediafilelistentry.cpp
+  medialist.cpp
+  mediastream.cpp
+  message.cpp
+  messageheader.cpp
+  messagingnumber.cpp
+  mindmap.cpp
+  modemnumber.cpp
+  operatingsystem.cpp
+  organizationcontact.cpp
+  pagernumber.cpp
+  paginatedtextdocument.cpp
+  parceldeliveryaddress.cpp
+  pcsnumber.cpp
+  personcontact.cpp
+  phonenumber.cpp
+  plaintextdocument.cpp
+  postaladdress.cpp
+  presentation.cpp
+  rasterimage.cpp
+  remotedataobject.cpp
+  remoteportaddress.cpp
+  role.cpp
+  software.cpp
+  softwareitem.cpp
+  softwareservice.cpp
+  sourcecode.cpp
+  spreadsheet.cpp
+  textdocument.cpp
+  trash.cpp
+  vectorimage.cpp
+  video.cpp
+  videoimaccount.cpp
+  videotelephonenumber.cpp
+  visual.cpp
+  voicephonenumber.cpp
+  website.cpp
+)
 
-  kde4_add_library(nie STATIC ${NCO_SOURCES} ${NIE_SOURCES})
+kde4_add_library(nie STATIC ${nie_SRCS})
 
-  target_link_libraries(nie
-    ${QT_QTCORE_LIBRARY}
-    ${NEPOMUK_LIBRARIES}
-    )
-
-endif(NEPOMUK_RESOURCES_GENERATED)
+target_link_libraries(nie ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES})

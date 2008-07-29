@@ -1,7 +1,7 @@
 include_directories(
   ${CMAKE_SOURCE_DIR}/akonadi
   ${Boost_INCLUDE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}/../nie
+  ${CMAKE_CURRENT_SOURCE_DIR}/../nie
   ${NEPOMUK_INCLUDES}
   )
 
