@@ -20,8 +20,6 @@
     02110-1301, USA.
 */
 
-#include "ocresource.h"
-
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 
@@ -38,7 +36,6 @@
 #include <KWindowSystem>
 
 #include <boost/shared_ptr.hpp>
-#include <libmapi++/libmapi++.h>
 
 #include <kmime/kmime_message.h>
 #include <kabc/vcardconverter.h>
@@ -51,6 +48,12 @@
 #include <QTextCodec>
 #include <KCodecs>
 #include <KLocale>
+
+// Do not move this header include without compile testing.
+// It is here to avoid conflicts between Qt headers and 
+// the libmapi headers that get included from the libmapi++
+// headers
+#include "ocresource.h"
 
 #include "profiledialog.h"
 
