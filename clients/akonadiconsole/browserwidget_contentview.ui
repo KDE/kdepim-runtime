@@ -9,25 +9,17 @@
     <height>496</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" >
+  <layout class="QGridLayout" >
    <item row="0" column="0" colspan="2" >
     <widget class="KTabWidget" name="ktabwidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>410</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Payload</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout" >
+      <layout class="QVBoxLayout" >
        <item>
         <widget class="QStackedWidget" name="stack" >
          <property name="frameShadow" >
@@ -37,15 +29,7 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="unsupportedTypePage" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>479</width>
-            <height>402</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2" >
+          <layout class="QVBoxLayout" >
            <item>
             <widget class="QLabel" name="unsupportedType" >
              <property name="text" >
@@ -59,32 +43,16 @@
           </layout>
          </widget>
          <widget class="QWidget" name="addresseeViewPage" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>479</width>
-            <height>402</height>
-           </rect>
-          </property>
           <layout class="QVBoxLayout" >
            <item>
-            <widget class="KPIM::AddresseeView" name="addresseeView" />
+            <widget class="KPIM::AddresseeView" native="1" name="addresseeView" />
            </item>
           </layout>
          </widget>
          <widget class="QWidget" name="incidenceViewPage" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>479</width>
-            <height>402</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3" >
+          <layout class="QVBoxLayout" >
            <item>
-            <widget class="Akonadi::KCalItemBrowser" name="incidenceView" />
+            <widget class="Akonadi::KCalItemBrowser" native="1" name="incidenceView" />
            </item>
           </layout>
          </widget>
@@ -93,18 +61,10 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>410</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Attributes</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4" >
+      <layout class="QGridLayout" >
        <item row="0" column="0" colspan="3" >
         <widget class="QTreeView" name="attrView" >
          <property name="rootIsDecorated" >
@@ -114,7 +74,7 @@
        </item>
        <item row="1" column="0" >
         <widget class="KLineEdit" name="attrName" >
-         <property name="clickMessage" >
+         <property name="clickMessage" stdset="0" >
           <string>New Attribute</string>
          </property>
         </widget>
@@ -136,18 +96,10 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>410</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Raw Payload</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
+      <layout class="QGridLayout" >
        <item row="0" column="0" colspan="2" >
         <widget class="QTextEdit" name="dataView" >
          <property name="lineWrapMode" >
@@ -161,79 +113,129 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>410</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Internals</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3" >
+      <layout class="QGridLayout" >
        <item row="0" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>Unique ID:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="QLabel" name="id" >
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>Unique ID:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="id" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="0" >
-        <widget class="QLabel" name="label_4" >
-         <property name="text" >
-          <string>Remote ID:</string>
-         </property>
-         <property name="buddy" >
-          <cstring>remoteId</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="KLineEdit" name="remoteId" />
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_4" >
+           <property name="text" >
+            <string>Remote ID:</string>
+           </property>
+           <property name="buddy" >
+            <cstring>remoteId</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="KLineEdit" name="remoteId" />
+         </item>
+        </layout>
        </item>
        <item row="2" column="0" >
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
-          <string>Revision:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QLabel" name="revision" >
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_3" >
+           <property name="text" >
+            <string>Revision:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="revision" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="3" column="0" >
-        <widget class="QLabel" name="label_6" >
-         <property name="text" >
-          <string>Mimetype:</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_5" >
+           <property name="text" >
+            <string>Last Modification Time:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="modificationtime" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="3" column="1" >
-        <widget class="QLabel" name="mimeType" >
-         <property name="text" >
-          <string>invalid/invalid</string>
-         </property>
-        </widget>
+       <item row="4" column="0" >
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_6" >
+           <property name="text" >
+            <string>Mimetype:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="mimeType" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>invalid/invalid</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="4" column="0" colspan="2" >
+       <item row="5" column="0" >
         <widget class="KEditListBox" name="flags" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
            <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
+           <verstretch>1</verstretch>
           </sizepolicy>
          </property>
          <property name="title" >
@@ -253,7 +255,7 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" >
       <size>
        <width>40</width>
        <height>20</height>
@@ -276,6 +278,7 @@
    <class>KEditListBox</class>
    <extends>QGroupBox</extends>
    <header>keditlistbox.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>KLineEdit</class>

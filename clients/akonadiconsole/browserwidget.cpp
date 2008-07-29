@@ -162,6 +162,7 @@ void BrowserWidget::itemFetchDone(KJob * job)
     contentUi.remoteId->setText( item.remoteId() );
     contentUi.mimeType->setText( item.mimeType() );
     contentUi.revision->setText( QString::number( item.revision() ) );
+    contentUi.modificationtime->setText( item.modificationTime().toString() + ( " UTC" ) );
     QStringList flags;
     foreach ( const Item::Flag &f, item.flags() )
       flags << QString::fromUtf8( f );
