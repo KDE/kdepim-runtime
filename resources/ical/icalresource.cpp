@@ -24,6 +24,8 @@
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 
+#include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kdebug.h>
@@ -43,10 +45,11 @@ ICalResource::ICalResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
   loadFile();
 }
 
-ICalResource::~ ICalResource()
+ICalResource::~ICalResource()
 {
   delete mCalendar;
   delete mMimeVisitor;
@@ -85,6 +88,8 @@ void ICalResource::aboutToQuit()
     emit error( i18n("No filename specified.") );
   else if ( !mCalendar->save( fileName ) )
     emit error( i18n("Failed to save calendar file to %1", fileName ) );
+
+  Settings::self()->writeConfig();
 }
 
 void ICalResource::configure( WId windowId )
