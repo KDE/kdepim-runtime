@@ -11,9 +11,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
     In addition, as a special exception, the copyright holders give
     permission to link the code of this program with any edition of
@@ -33,15 +33,13 @@
 
 using namespace KPIM;
 
-
 /** The message status format. These can be or'd together.
     Note, that the KMMsgStatusIgnored implies the
     status to be Read even if the flags are set
     to Unread or New. This is done in isRead()
     and related getters. So we can preserve the state
     when switching a thread to Ignored and back. */
-enum MsgStatus
-{
+enum MsgStatus {
     KMMsgStatusUnknown =           0x00000000,
     KMMsgStatusNew =               0x00000001,
     KMMsgStatusUnread =            0x00000002,
@@ -55,38 +53,34 @@ enum MsgStatus
     KMMsgStatusFlag =              0x00000200, // flag means important
     KMMsgStatusWatched =           0x00000400,
     KMMsgStatusIgnored =           0x00000800, // forces isRead()
-    KMMsgStatusTodo =              0x00001000,
+    KMMsgStatusToAct =             0x00001000,
     KMMsgStatusSpam =              0x00002000,
     KMMsgStatusHam =               0x00004000,
-    KMMsgStatusHasAttach =         0x00008000,
-    KMMsgStatusHasNoAttach =       0x00010000  // TODO to be removed before KDE 4
+    KMMsgStatusHasAttach =         0x00008000
 };
-
-
 
 MessageStatus::MessageStatus()
 {
   mStatus = KMMsgStatusUnknown;
 }
 
-
-MessageStatus& MessageStatus::operator = ( const MessageStatus& other )
+MessageStatus &MessageStatus::operator = ( const MessageStatus &other )
 {
   mStatus = other.mStatus;
   return *this;
 }
 
-bool MessageStatus::operator == ( const MessageStatus& other ) const
+bool MessageStatus::operator == ( const MessageStatus &other ) const
 {
   return ( mStatus == other.mStatus );
 }
 
-bool MessageStatus::operator != ( const MessageStatus& other ) const
+bool MessageStatus::operator != ( const MessageStatus &other ) const
 {
   return ( mStatus != other.mStatus );
 }
 
-bool MessageStatus::operator & ( const MessageStatus& other ) const
+bool MessageStatus::operator & ( const MessageStatus &other ) const
 {
   return ( mStatus & other.mStatus );
 }
@@ -96,60 +90,103 @@ void MessageStatus::clear()
   mStatus = KMMsgStatusUnknown;
 }
 
-void MessageStatus::set( const MessageStatus& other )
+void MessageStatus::set( const MessageStatus &other )
 {
   // Those stati are exclusive, but we have to lock at the
   // internal representation because Ignored can manipulate
   // the result of the getter methods.
-  if ( other.mStatus & KMMsgStatusNew ) setNew();
-  if ( other.mStatus & KMMsgStatusUnread ) setUnread();
-  if ( other.mStatus & KMMsgStatusRead ) setRead();
-  if ( other.mStatus & KMMsgStatusOld ) setOld();
+  if ( other.mStatus & KMMsgStatusNew ) {
+    setNew();
+  }
+  if ( other.mStatus & KMMsgStatusUnread ) {
+    setUnread();
+  }
+  if ( other.mStatus & KMMsgStatusRead ) {
+    setRead();
+  }
+  if ( other.mStatus & KMMsgStatusOld ) {
+    setOld();
+  }
 
-  if ( other.isDeleted() ) setDeleted();
-  if ( other.isReplied() ) setReplied();
-  if ( other.isForwarded() ) setForwarded();
-  if ( other.isQueued() ) setQueued();
-  if ( other.isSent() ) setSent();
-  if ( other.isImportant() ) setImportant();
+  if ( other.isDeleted() ) {
+    setDeleted();
+  }
+  if ( other.isReplied() ) {
+    setReplied();
+  }
+  if ( other.isForwarded() ) {
+    setForwarded();
+  }
+  if ( other.isQueued() ) {
+    setQueued();
+  }
+  if ( other.isSent() ) {
+    setSent();
+  }
+  if ( other.isImportant() ) {
+    setImportant();
+  }
 
-  if ( other.isWatched() ) setWatched();
-  if ( other.isIgnored() ) setIgnored();
-  if ( other.isTodo() ) setTodo();
-  if ( other.isSpam() ) setSpam();
-  if ( other.isHam() ) setHam();
-  if ( other.hasAttachment() ) setHasAttachment();
+  if ( other.isWatched() ) {
+    setWatched();
+  }
+  if ( other.isIgnored() ) {
+    setIgnored();
+  }
+  if ( other.isToAct() ) {
+    setToAct();
+  }
+  if ( other.isSpam() ) {
+    setSpam();
+  }
+  if ( other.isHam() ) {
+    setHam();
+  }
+  if ( other.hasAttachment() ) {
+    setHasAttachment();
+  }
 }
 
-void MessageStatus::toggle( const MessageStatus& other )
+void MessageStatus::toggle( const MessageStatus &other )
 {
-  if ( other.isDeleted() )
+  if ( other.isDeleted() ) {
     setDeleted( !( mStatus & KMMsgStatusDeleted ) );
-  if ( other.isReplied() )
+  }
+  if ( other.isReplied() ) {
     setReplied( !( mStatus & KMMsgStatusReplied ) );
-  if ( other.isForwarded() )
+  }
+  if ( other.isForwarded() ) {
     setForwarded( !( mStatus & KMMsgStatusForwarded ) );
-  if ( other.isQueued() )
+  }
+  if ( other.isQueued() ) {
     setQueued( !( mStatus & KMMsgStatusQueued ) );
-  if ( other.isSent() )
+  }
+  if ( other.isSent() ) {
     setSent( !( mStatus & KMMsgStatusSent ) );
-  if ( other.isImportant() )
+  }
+  if ( other.isImportant() ) {
     setImportant( !( mStatus & KMMsgStatusFlag ) );
+  }
 
-  if ( other.isWatched() )
+  if ( other.isWatched() ) {
     setWatched( !( mStatus & KMMsgStatusWatched ) );
-  if ( other.isIgnored() )
+  }
+  if ( other.isIgnored() ) {
     setIgnored( !( mStatus & KMMsgStatusIgnored ) );
-  if ( other.isTodo() )
-    setTodo( !( mStatus & KMMsgStatusTodo ) );
-  if ( other.isSpam() )
+  }
+  if ( other.isToAct() ) {
+    setToAct( !( mStatus & KMMsgStatusToAct ) );
+  }
+  if ( other.isSpam() ) {
     setSpam( !( mStatus & KMMsgStatusSpam ) );
-  if ( other.isHam() )
+  }
+  if ( other.isHam() ) {
     setHam( !( mStatus & KMMsgStatusHam ) );
-  if ( other.hasAttachment() )
+  }
+  if ( other.hasAttachment() ) {
     setHasAttachment( !( mStatus & KMMsgStatusHasAttach ) );
+  }
 }
-
 
 bool MessageStatus::isOfUnknownStatus() const
 {
@@ -193,7 +230,7 @@ bool MessageStatus::isForwarded() const
 
 bool MessageStatus::isQueued() const
 {
-  return ( mStatus & KMMsgStatusQueued);
+  return ( mStatus & KMMsgStatusQueued );
 }
 
 bool MessageStatus::isSent() const
@@ -216,9 +253,9 @@ bool MessageStatus::isIgnored() const
   return ( mStatus & KMMsgStatusIgnored );
 }
 
-bool MessageStatus::isTodo() const
+bool MessageStatus::isToAct() const
 {
-  return ( mStatus & KMMsgStatusTodo );
+  return ( mStatus & KMMsgStatusToAct );
 }
 
 bool MessageStatus::isSpam() const
@@ -235,8 +272,6 @@ bool MessageStatus::hasAttachment() const
 {
   return ( mStatus & KMMsgStatusHasAttach );
 }
-
-
 
 void MessageStatus::setNew()
 {
@@ -274,34 +309,38 @@ void MessageStatus::setOld()
 
 void MessageStatus::setDeleted( bool deleted )
 {
-  if ( deleted )
+  if ( deleted ) {
     mStatus |= KMMsgStatusDeleted;
-  else
+  } else {
     mStatus &= ~KMMsgStatusDeleted;
+  }
 }
 
 void MessageStatus::setReplied( bool replied )
 {
-  if ( replied )
+  if ( replied ) {
     mStatus |= KMMsgStatusReplied;
-  else
+  } else {
     mStatus &= ~KMMsgStatusReplied;
+  }
 }
 
 void MessageStatus::setForwarded( bool forwarded )
 {
-  if ( forwarded )
+  if ( forwarded ) {
     mStatus |= KMMsgStatusForwarded;
-  else
+  } else {
     mStatus &= ~KMMsgStatusForwarded;
+  }
 }
 
 void MessageStatus::setQueued( bool queued )
 {
-  if ( queued )
+  if ( queued ) {
     mStatus |= KMMsgStatusQueued;
-  else
+  } else {
     mStatus &= ~KMMsgStatusQueued;
+  }
 }
 
 void MessageStatus::setSent( bool sent )
@@ -312,18 +351,18 @@ void MessageStatus::setSent( bool sent )
     mStatus &= ~KMMsgStatusUnread;
     mStatus &= ~KMMsgStatusNew;
     mStatus |= KMMsgStatusSent;
-  }
-  else {
+  } else {
     mStatus &= ~KMMsgStatusSent;
   }
 }
 
 void MessageStatus::setImportant( bool important )
 {
-  if ( important )
+  if ( important ) {
     mStatus |= KMMsgStatusFlag;
-  else
+  } else {
     mStatus &= ~KMMsgStatusFlag;
+  }
 }
 
 // Watched and ignored are mutually exclusive
@@ -347,12 +386,13 @@ void MessageStatus::setIgnored( bool ignored )
   }
 }
 
-void MessageStatus::setTodo( bool todo )
+void MessageStatus::setToAct( bool toAct )
 {
-  if ( todo )
-    mStatus |= KMMsgStatusTodo;
-  else
-    mStatus &= ~KMMsgStatusTodo;
+  if ( toAct ) {
+    mStatus |= KMMsgStatusToAct;
+  } else {
+    mStatus &= ~KMMsgStatusToAct;
+  }
 }
 
 // Ham and Spam are mutually exclusive
@@ -380,24 +420,17 @@ void MessageStatus::setHasAttachment( bool withAttachment )
 {
   if ( withAttachment ) {
     mStatus |= KMMsgStatusHasAttach;
-    // FIXME next line to be removed
-    mStatus &= ~KMMsgStatusHasNoAttach;
-  }
-  else {
+  } else {
     mStatus &= ~KMMsgStatusHasAttach;
-    // FIXME next line to be removed
-    mStatus |= KMMsgStatusHasNoAttach;
   }
 }
-
-
 
 qint32 MessageStatus::toQInt32() const
 {
   return mStatus;
 }
 
-void MessageStatus::fromQInt32( qint32 status)
+void MessageStatus::fromQInt32( qint32 status )
 {
   mStatus = status;
 }
@@ -405,23 +438,54 @@ void MessageStatus::fromQInt32( qint32 status)
 QString MessageStatus::getStatusStr() const
 {
   QString sstr;
-  if ( mStatus & KMMsgStatusNew ) sstr += 'N';
-  if ( mStatus & KMMsgStatusUnread ) sstr += 'U';
-  if ( mStatus & KMMsgStatusOld ) sstr += 'O';
-  if ( mStatus & KMMsgStatusRead ) sstr += 'R';
-  if ( mStatus & KMMsgStatusDeleted ) sstr += 'D';
-  if ( mStatus & KMMsgStatusReplied ) sstr += 'A';
-  if ( mStatus & KMMsgStatusForwarded ) sstr += 'F';
-  if ( mStatus & KMMsgStatusQueued ) sstr += 'Q';
-  if ( mStatus & KMMsgStatusTodo ) sstr += 'K';
-  if ( mStatus & KMMsgStatusSent ) sstr += 'S';
-  if ( mStatus & KMMsgStatusFlag ) sstr += 'G';
-  if ( mStatus & KMMsgStatusWatched ) sstr += 'W';
-  if ( mStatus & KMMsgStatusIgnored ) sstr += 'I';
-  if ( mStatus & KMMsgStatusSpam ) sstr += 'P';
-  if ( mStatus & KMMsgStatusHam ) sstr += 'H';
-  if ( mStatus & KMMsgStatusHasAttach ) sstr += 'T';
-  if ( mStatus & KMMsgStatusHasNoAttach ) sstr += 'C';
+  if ( mStatus & KMMsgStatusNew ) {
+    sstr += 'N';
+  }
+  if ( mStatus & KMMsgStatusUnread ) {
+    sstr += 'U';
+  }
+  if ( mStatus & KMMsgStatusOld ) {
+    sstr += 'O';
+  }
+  if ( mStatus & KMMsgStatusRead ) {
+    sstr += 'R';
+  }
+  if ( mStatus & KMMsgStatusDeleted ) {
+    sstr += 'D';
+  }
+  if ( mStatus & KMMsgStatusReplied ) {
+    sstr += 'A';
+  }
+  if ( mStatus & KMMsgStatusForwarded ) {
+    sstr += 'F';
+  }
+  if ( mStatus & KMMsgStatusQueued ) {
+    sstr += 'Q';
+  }
+  if ( mStatus & KMMsgStatusToAct ) {
+    sstr += 'K';
+  }
+  if ( mStatus & KMMsgStatusSent ) {
+    sstr += 'S';
+  }
+  if ( mStatus & KMMsgStatusFlag ) {
+    sstr += 'G';
+  }
+  if ( mStatus & KMMsgStatusWatched ) {
+    sstr += 'W';
+  }
+  if ( mStatus & KMMsgStatusIgnored ) {
+    sstr += 'I';
+  }
+  if ( mStatus & KMMsgStatusSpam ) {
+    sstr += 'P';
+  }
+  if ( mStatus & KMMsgStatusHam ) {
+    sstr += 'H';
+  }
+  if ( mStatus & KMMsgStatusHasAttach ) {
+    sstr += 'T';
+  }
 
   return sstr;
 }
@@ -430,23 +494,57 @@ void MessageStatus::setStatusFromStr( QString aStr )
 {
   mStatus = KMMsgStatusUnknown;
 
-  if ( aStr.contains( 'N' ) ) setNew();
-  if ( aStr.contains( 'U' ) ) setUnread();
-  if ( aStr.contains( 'O' ) ) setOld();
-  if ( aStr.contains( 'R' ) ) setRead();
-  if ( aStr.contains( 'D' ) ) setDeleted();
-  if ( aStr.contains( 'A' ) ) setReplied();
-  if ( aStr.contains( 'F' ) ) setForwarded();
-  if ( aStr.contains( 'Q' ) ) setQueued();
-  if ( aStr.contains( 'K' ) ) setTodo();
-  if ( aStr.contains( 'S' ) ) setSent();
-  if ( aStr.contains( 'G' ) ) setImportant();
-  if ( aStr.contains( 'W' ) ) setWatched();
-  if ( aStr.contains( 'I' ) ) setIgnored();
-  if ( aStr.contains( 'P' ) ) setSpam();
-  if ( aStr.contains( 'H' ) ) setHam();
-  if ( aStr.contains( 'T' ) ) setHasAttachment();
-  if ( aStr.contains( 'C' ) ) setHasAttachment( false );
+  if ( aStr.contains( 'N' ) ) {
+    setNew();
+  }
+  if ( aStr.contains( 'U' ) ) {
+    setUnread();
+  }
+  if ( aStr.contains( 'O' ) ) {
+    setOld();
+  }
+  if ( aStr.contains( 'R' ) ) {
+    setRead();
+  }
+  if ( aStr.contains( 'D' ) ) {
+    setDeleted();
+  }
+  if ( aStr.contains( 'A' ) ) {
+    setReplied();
+  }
+  if ( aStr.contains( 'F' ) ) {
+    setForwarded();
+  }
+  if ( aStr.contains( 'Q' ) ) {
+    setQueued();
+  }
+  if ( aStr.contains( 'K' ) ) {
+    setToAct();
+  }
+  if ( aStr.contains( 'S' ) ) {
+    setSent();
+  }
+  if ( aStr.contains( 'G' ) ) {
+    setImportant();
+  }
+  if ( aStr.contains( 'W' ) ) {
+    setWatched();
+  }
+  if ( aStr.contains( 'I' ) ) {
+    setIgnored();
+  }
+  if ( aStr.contains( 'P' ) ) {
+    setSpam();
+  }
+  if ( aStr.contains( 'H' ) ) {
+    setHam();
+  }
+  if ( aStr.contains( 'T' ) ) {
+    setHasAttachment();
+  }
+  if ( aStr.contains( 'C' ) ) {
+    setHasAttachment( false );
+  }
 }
 
 QString MessageStatus::getSortRank() const
@@ -454,30 +552,58 @@ QString MessageStatus::getSortRank() const
   QString sstr = "bcbbbbbbbb";
 
   // put watched ones first, then normal ones, ignored ones last
-  if ( mStatus & KMMsgStatusWatched ) sstr[0] = 'a';
-  if ( mStatus & KMMsgStatusIgnored ) sstr[0] = 'c';
+  if ( mStatus & KMMsgStatusWatched ) {
+    sstr[0] = 'a';
+  }
+  if ( mStatus & KMMsgStatusIgnored ) {
+    sstr[0] = 'c';
+  }
 
   // Second level. One of new, old, read, unread
-  if ( mStatus & KMMsgStatusNew ) sstr[1] = 'a';
-  if ( mStatus & KMMsgStatusUnread ) sstr[1] = 'b';
-  //if ( mStatus & KMMsgStatusOld ) sstr[1] = 'c';
-  //if ( mStatus & KMMsgStatusRead ) sstr[1] = 'c';
+  if ( mStatus & KMMsgStatusNew ) {
+    sstr[1] = 'a';
+  }
+  if ( mStatus & KMMsgStatusUnread ) {
+    sstr[1] = 'b';
+  }
+  //if ( mStatus & KMMsgStatusOld ) {
+  //  sstr[1] = 'c';
+  //}
+  //if ( mStatus & KMMsgStatusRead ) {
+  //  sstr[1] = 'c';
+  //}
 
   // Third level. In somewhat arbitrary order.
-  if ( mStatus & KMMsgStatusDeleted ) sstr[2] = 'a';
-  if ( mStatus & KMMsgStatusFlag ) sstr[3] = 'a';
-  if ( mStatus & KMMsgStatusReplied ) sstr[4] = 'a';
-  if ( mStatus & KMMsgStatusForwarded ) sstr[5] = 'a';
-  if ( mStatus & KMMsgStatusQueued ) sstr[6] = 'a';
-  if ( mStatus & KMMsgStatusSent ) sstr[7] = 'a';
-  if ( mStatus & KMMsgStatusHam ) sstr[8] = 'a';
-  if ( mStatus & KMMsgStatusSpam ) sstr[8] = 'c';
-  if ( mStatus & KMMsgStatusTodo ) sstr[9] = 'a';
+  if ( mStatus & KMMsgStatusDeleted ) {
+    sstr[2] = 'a';
+  }
+  if ( mStatus & KMMsgStatusFlag ) {
+    sstr[3] = 'a';
+  }
+  if ( mStatus & KMMsgStatusReplied ) {
+    sstr[4] = 'a';
+  }
+  if ( mStatus & KMMsgStatusForwarded ) {
+    sstr[5] = 'a';
+  }
+  if ( mStatus & KMMsgStatusQueued ) {
+    sstr[6] = 'a';
+  }
+  if ( mStatus & KMMsgStatusSent ) {
+    sstr[7] = 'a';
+  }
+  if ( mStatus & KMMsgStatusHam ) {
+    sstr[8] = 'a';
+  }
+  if ( mStatus & KMMsgStatusSpam ) {
+    sstr[8] = 'c';
+  }
+  if ( mStatus & KMMsgStatusToAct ) {
+    sstr[9] = 'a';
+  }
 
   return sstr;
 }
-
-
 
 MessageStatus MessageStatus::statusNew()
 {
@@ -572,10 +698,10 @@ MessageStatus MessageStatus::statusIgnored()
   return st;
 }
 
-MessageStatus MessageStatus::statusTodo()
+MessageStatus MessageStatus::statusToAct()
 {
   MessageStatus st;
-  st.setTodo();
+  st.setToAct();
   return st;
 }
 

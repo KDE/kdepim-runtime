@@ -11,9 +11,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
     In addition, as a special exception, the copyright holders give
     permission to link the code of this program with any edition of
@@ -60,23 +60,23 @@ class KDEPIM_EXPORT MessageStatus
         representation is identical afterwards, i.e. a comparison
         by operator == will return true.
     */
-    MessageStatus& operator = ( const MessageStatus& other );
+    MessageStatus &operator = ( const MessageStatus &other );
 
     /** Compare the status with that from another instance.
         @return true if the stati are equal, false if different.
     */
-    bool operator == ( const MessageStatus& other ) const;
+    bool operator == ( const MessageStatus &other ) const;
 
     /** Compare the status with that from another instance.
         @return true if the stati are equal, false if different.
     */
-    bool operator != ( const MessageStatus& other ) const;
+    bool operator != ( const MessageStatus &other ) const;
 
     /** Check, if some of the flags in the status match
         with those flags from another instance.
         @return true if at least one flag is set in both stati.
     */
-    bool operator & ( const MessageStatus& other ) const;
+    bool operator & ( const MessageStatus &other ) const;
 
     /** Clear all status flags, this resets to unknown. */
     void clear();
@@ -87,7 +87,7 @@ class KDEPIM_EXPORT MessageStatus
         However, internally the setters are used anyway to ensure the
         integrity of the resulting status.
     */
-    void set( const MessageStatus& other );
+    void set( const MessageStatus &other );
 
     /** Toggle one or more stati described by another MessageStatus object.
         Internally the setters are used to ensure the integrity of the
@@ -95,7 +95,7 @@ class KDEPIM_EXPORT MessageStatus
         Toggling of the stati New, Unread, Read and Old is not supported.
         These stati are completely ignored.
     */
-    void toggle( const MessageStatus& other );
+    void toggle( const MessageStatus &other );
 
     /* ----- getters ----------------------------------------------------- */
 
@@ -165,10 +165,10 @@ class KDEPIM_EXPORT MessageStatus
     */
     bool isIgnored() const;
 
-    /** Check for Todo status.
-        @return true if status is todo.
+    /** Check for ToAct status.
+        @return true if status is action item.
     */
-    bool isTodo() const;
+    bool isToAct() const;
 
     /** Check for Spam status.
         @return true if status is spam.
@@ -222,7 +222,7 @@ class KDEPIM_EXPORT MessageStatus
     /** Set the status for sent.
         @param sent Set (true) or unset (false) this status flag.
     */
-    void setSent(  bool sent = true );
+    void setSent( bool sent = true );
 
     /** Set the status for important.
         @param important Set (true) or unset (false) this status flag.
@@ -239,10 +239,10 @@ class KDEPIM_EXPORT MessageStatus
     */
     void setIgnored( bool ignored = true );
 
-    /** Set the status to todo.
-        @param todo Set (true) or unset (false) this status flag.
+    /** Set the status to action item.
+        @param toAct Set (true) or unset (false) this status flag.
     */
-    void setTodo( bool todo = true );
+    void setToAct( bool toAct = true );
 
     /** Set the status to spam.
         @param spam Set (true) or unset (false) this status flag.
@@ -374,11 +374,11 @@ class KDEPIM_EXPORT MessageStatus
     */
     static MessageStatus statusIgnored();
 
-    /** Return a predefined status initialized as Todo as is useful
+    /** Return a predefined status initialized as Action Item as is useful
         e.g. when providing a state for comparison.
-        @return A reference to a status instance initialized as Todo.
+        @return A reference to a status instance initialized as ToAct.
     */
-    static MessageStatus statusTodo();
+    static MessageStatus statusToAct();
 
     /** Return a predefined status initialized as Spam as is useful
         e.g. when providing a state for comparison.
