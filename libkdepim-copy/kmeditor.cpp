@@ -940,7 +940,15 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
     setTextCursor( cursor );
 
     // Insert the signature and newlines depending on where it was inserted.
+    bool hackForCursorsAtEnd = false;
+    int oldCursorPos = -1;
     if ( placement == End ) {
+
+      if ( oldCursor.position() == toPlainText().length() ) {
+        hackForCursorsAtEnd = true;
+        oldCursorPos = oldCursor.position();
+      }
+
       if ( isHtml ) {
         insertHtml( "<br>" + signature );
       } else {
@@ -955,6 +963,15 @@ void KMeditor::insertSignature( const QString &signature, Placement placement,
     }
 
     cursor.endEditBlock();
+
+    // There is one special case when re-setting the old cursor: The cursor
+    // was at the end. In this case, QTextEdit has no way to know
+    // if the signature was added before or after the cursor, and just decides
+    // that it was added before (and the cursor moves to the end, but it should
+    // not when appending a signature). See bug 167961
+    if ( hackForCursorsAtEnd )
+      oldCursor.setPosition( oldCursorPos );
+
     setTextCursor( oldCursor );
     ensureCursorVisible();
 
