@@ -65,8 +65,7 @@ private:
                           const Akonadi::Collection &parentCollection,
                           Akonadi::Collection::List &collections);
 
-    QString m_profileName;
-    libmapipp::session *m_session;
+    libmapipp::session m_session;
     QString m_profileDatabase; // TODO: maybe this should be a constructor arg?
 
     friend class ProfileDialog;
