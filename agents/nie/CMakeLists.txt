@@ -2,39 +2,6 @@
 # If any of the .rdfs files change or if Nepomuk changes extensively,
 # you may need to add/remove source files ${nie_SRCS} variable below.
 #
-# to simpy regenerate the sources, run 'make nie-gen'
-#
-
-add_custom_command(
-  OUTPUT 
-    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
-    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
-    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
-  COMMAND ${CMAKE_COMMAND}
-  ARGS 
-    -DBIN_INSTALL_DIR=${BIN_INSTALL_DIR}
-    -Dontofile1=${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
-    -Dontofile2=${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
-    -Dontofile3=${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
-    -Dontofile4=${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs
-    -Dtargetdir=${CMAKE_CURRENT_BINARY_DIR}
-    -P ${CMAKE_CURRENT_SOURCE_DIR}/rcgen.cmake
-  MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
-  DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
-    ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
-    ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs 
-    ${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs 
-  )
-
-add_custom_target(
-  nie-gen
-  ALL
-  DEPENDS
-    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
-    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
-    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
-)
 
 set(nie_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/affiliation.cpp
@@ -121,6 +88,38 @@ set(nie_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/visual.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/voicephonenumber.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/website.cpp
+)
+
+add_custom_command(
+  OUTPUT 
+    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
+    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
+    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
+    ${nie_SRCS}
+  COMMAND ${CMAKE_COMMAND}
+  ARGS 
+    -DBIN_INSTALL_DIR=${BIN_INSTALL_DIR}
+    -Dontofile1=${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+    -Dontofile2=${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
+    -Dontofile3=${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
+    -Dontofile4=${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs
+    -Dtargetdir=${CMAKE_CURRENT_BINARY_DIR}
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/rcgen.cmake
+  MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+  DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
+    ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
+    ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs 
+    ${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs 
+)
+
+add_custom_target(
+  nie-gen
+  ALL
+  DEPENDS
+    ${CMAKE_CURRENT_BINARY_DIR}/out_headers
+    ${CMAKE_CURRENT_BINARY_DIR}/out_sources
+    ${CMAKE_CURRENT_BINARY_DIR}/out_includes
 )
 
 kde4_add_library(nie STATIC ${nie_SRCS})
