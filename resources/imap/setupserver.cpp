@@ -179,6 +179,7 @@ void SetupServer::readSettings()
                                   i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
     } else
         m_password->insert( Settings::self()->password() );
+    delete currentUser;
 }
 
 void SetupServer::slotTest()
