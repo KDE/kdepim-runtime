@@ -842,7 +842,7 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
   item.setPayload<KABC::Addressee>( *contact );
 }
 
-// Declare these here temporarily.
+// Declare this here temporarily.
 typedef enum {
     olNormal = 0,
     olPersonal = 1,
@@ -866,13 +866,11 @@ KCal::Incidence::Secrecy getIncidentSecrecy (const uint32_t prop)
 	}
 }
 
-
-
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
 {
   property_container messageProperties = mapi_message.get_property_container();
-  messageProperties << PR_START_DATE << PR_END_DATE << PR_CONVERSATION_TOPIC << PR_CREATION_TIME << PR_BODY << PR_SENSITIVITY;
-  messageProperties.fetch();
+  // messageProperties << PR_START_DATE << PR_END_DATE << PR_CONVERSATION_TOPIC << PR_CREATION_TIME << PR_BODY << PR_SENSITIVITY << PR_HASATTACH << 0x80fa000b;
+  messageProperties.fetch_all();
 
   KCal::Event* event = new KCal::Event;
   const FILETIME* date = (const FILETIME*) messageProperties[PR_START_DATE];
@@ -892,6 +890,13 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     event->setCreated( convertSysTime( *date ) );
     date = NULL;
   }
+	
+	date = (const FILETIME*) messageProperties[PR_LAST_MODIFICATION_TIME];
+	if ( date ) {
+		qDebug() << "Got Last Modified Time";
+		event->setLastModified( convertSysTime( *date ) );
+		date = NULL;
+	}
 
   const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
   if ( charString && *charString) {
@@ -903,6 +908,12 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 	if ( ui32 ) {
 		event->setSecrecy( getIncidentSecrecy( *ui32 ) );
 		ui32 = NULL;
+	}
+	
+	const uint8_t* ui8 = (const uint8_t*) messageProperties[0x80fa000b];
+	if (ui8) {
+		event->setAllDay( *ui8 );
+		ui8 = NULL;
 	}
 	
   charString = (const char*) messageProperties[PR_BODY];
@@ -934,23 +945,16 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   }
 
 	// Get Attendees.
-	SPropTagArray propertyTagArray; // = set_SPropTagArray(m_session.get_memory_ctx(), 0x5, PR_DISPLAY_NAME,
-																										//	PR_SMTP_ADDRESS, PR_RECIPIENT_TRACKSTATUS, PR_RECIPIENTS_FLAGS, PR_RECIPIENT_TYPE);
+	SPropTagArray propertyTagArray;
+
 	SRowSet rowSet;
 	if ( GetRecipientTable( &mapi_message.data(), &rowSet, &propertyTagArray ) != MAPI_E_SUCCESS )
 		qDebug() << "Error opening GetRecipientTable()";
 	
 	for (unsigned int i = 0; i < rowSet.cRows; ++i) {
-		qDebug() << "Iterating i";
 		QString name, email;
 		uint32_t *trackStatus = NULL, *flags = NULL, *type = NULL;
 		for (unsigned int j = 0; j < rowSet.aRow[i].cValues; ++j) {
-			
-			if ( (rowSet.aRow[i].lpProps[j].ulPropTag & 0xffff) == PT_STRING8 )
-				qDebug() << "Property" << QString::number (rowSet.aRow[i].lpProps[j].ulPropTag, 16) << "with value: " << rowSet.aRow[i].lpProps[j].value.lpszA;
-			else if ( (rowSet.aRow[i].lpProps[j].ulPropTag & 0xffff) == PT_UNICODE )
-				qDebug() << "Property" << QString::number (rowSet.aRow[i].lpProps[j].ulPropTag, 16) << "with value: " << rowSet.aRow[i].lpProps[j].value.lpszW;
-				
 			switch ( rowSet.aRow[i].lpProps[j].ulPropTag ) {
 				case 0x5ff6001f: // Should be PR_DISPLAY_NAME
 				  name = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
@@ -960,15 +964,12 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 				    email = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
 					break;
 				case PR_RECIPIENT_TRACKSTATUS:
-				  qDebug() << "Got trackstatus";
 				  trackStatus = &rowSet.aRow[i].lpProps[j].value.l;
 					break;
 				case PR_RECIPIENTS_FLAGS:
-				  qDebug() << "Got flags";
 				  flags = &rowSet.aRow[i].lpProps[j].value.l;
 					break;
 				case PR_RECIPIENT_TYPE:
-				  qDebug() << "Got flags";
 					type = &rowSet.aRow[i].lpProps[j].value.l;
 					break;
 				default:
@@ -981,20 +982,65 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 		// Look at Microsoft's documentation for these values.
 		if ( flags && ( *flags & 0x0000002 ) )
 			attendee->setRole( KCal::Attendee::Chair );
-		else if ( type && *type == 0x1 )
-			attendee->setRole( KCal::Attendee::ReqParticipant );
-		else if ( type && *type == 0x2 )
-			attendee->setRole( KCal::Attendee::OptParticipant );
-		else if ( type && *type == 0x03 )
-			attendee->setRole( KCal::Attendee::NonParticipant );
-					
-			event->addAttendee( attendee );
+		else if ( type ) {
+		  if ( *type == 0x1 )
+			  attendee->setRole( KCal::Attendee::ReqParticipant );
+		  else if ( *type == 0x2 )
+			  attendee->setRole( KCal::Attendee::OptParticipant );
+		  else if ( *type == 0x03 )
+			  attendee->setRole( KCal::Attendee::NonParticipant );
+		}
+		
+		if ( trackStatus ) {
+			switch ( *trackStatus ) {
+				case 0x00000000:
+				  attendee->setStatus( KCal::Attendee::NeedsAction );
+					break;
+				case 0x00000001: // This object belongs to organizer (so assume he accepts)
+				  attendee->setStatus( KCal::Attendee::Accepted );
+					break;
+				case 0x00000002:
+				  attendee->setStatus( KCal::Attendee::Tentative );
+					break;
+				case 0x00000003:
+				  attendee->setStatus( KCal::Attendee::Accepted );
+					break;
+				case 0x00000004:
+				  attendee->setStatus( KCal::Attendee::Declined );
+					break;
+				case 0x00000005:
+				  attendee->setStatus( KCal::Attendee::NeedsAction );
+					break;
+				default:
+				break;
+			}
+		}
+		
+		event->addAttendee( attendee );
 	}
-										
+			
+	// Get attachments
+	ui8 = (const uint8_t*) messageProperties[PR_HASATTACH];
+	if ( ui8 && *ui8 ) {
+	  message::attachment_container_type attachments = mapi_message.fetch_attachments();
+
+    for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
+      QByteArray data( (const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size() );
+			QString attachFilename = (*Iterator)->get_filename().c_str();
+			KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
+			QByteArray final = KCodecs::base64Encode( data, true );
+			
+			KCal::Attachment *attachment = new KCal::Attachment( (const char*) final.data(), type->name() );
+			attachment->setLabel( attachFilename );
+			
+			event->addAttachment( attachment );
+		}
+	}
+	
 /*
   for (property_container::iterator Iter = messageProperties.begin(); Iter != messageProperties.end(); ++Iter) {
-    if ( Iter.get_type() == PT_STRING8 )
-      qDebug() << "Tag" << QString::number(Iter.get_tag(), 16) << "with value: " << (const char*) *Iter;
+    if ( Iter.get_type() == PT_BOOLEAN )
+      qDebug() << "Tag" << QString::number(Iter.get_tag(), 16) << "with value: " << *((const uint8_t*) *Iter);
   }
 */
 
