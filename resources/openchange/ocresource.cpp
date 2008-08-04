@@ -38,6 +38,8 @@
 
 #include <kmime/kmime_message.h>
 #include <kabc/vcardconverter.h>
+#include <kcal/incidence.h>
+#include <kcal/event.h>
 
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemcreatejob.h>
@@ -69,6 +71,8 @@ void throw_exception(std::exception const & e)
 #endif
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
+typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
+typedef boost::shared_ptr<KCal::Event> EventPtr;
 
 using namespace Akonadi;
 using namespace libmapipp;
@@ -108,8 +112,15 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
     i.setMimeType( "message/rfc822" );
     appendMessageToItem( *messagePointer, i );
   } else if ( item.mimeType() == "text/calendar" ) {
-    qDebug() << "retrieveItem() not implemented for calendars yet.";
-    return true;
+    property_container messageProperty = messagePointer->get_property_container();
+    messageProperty << PR_MESSAGE_CLASS;
+    messageProperty.fetch();
+    if ( *messageProperty.begin() && QString( (const char*) *messageProperty.begin() ) == "IPM.Appointment" ) {
+      appendEventToItem( *messagePointer, i );
+    } else {
+      qDebug() << "retrieveItem() not implemented for calendars yet.";
+      return true;
+    }
   } else {
     cancelTask( "Unknown type of message" );
     return false;
@@ -815,10 +826,15 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
 
     default:
+
+/*    
       if (Iter.get_type() == PT_STRING8 || Iter.get_type() == PT_UNICODE)
         qDebug() << "Unhandled in collection: (" << QString::number( Iter.get_tag(), 16 ) << ") with value: " << (const char*) *Iter;
       else
         qDebug() << "Unhandled in collection: " << QString::number( Iter.get_tag(), 16 );
+*/
+
+      break;
     }
   }
   contact->insertAddress( workAddress );
@@ -826,8 +842,165 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
   item.setPayload<KABC::Addressee>( *contact );
 }
 
+// Declare these here temporarily.
+typedef enum {
+    olNormal = 0,
+    olPersonal = 1,
+    olPrivate = 2,
+    olConfidential = 3
+} OlSensitivity;
+
+KCal::Incidence::Secrecy getIncidentSecrecy (const uint32_t prop)
+{
+	switch (prop) {
+	  case olPersonal:
+		case olPrivate: 
+			return KCal::Incidence::SecrecyPrivate;
+			
+		case olConfidential: 
+			return KCal::Incidence::SecrecyConfidential;
+			
+		case olNormal: 
+		default:
+			return KCal::Incidence::SecrecyPublic;
+	}
+}
+
+
+
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
 {
+  property_container messageProperties = mapi_message.get_property_container();
+  messageProperties << PR_START_DATE << PR_END_DATE << PR_CONVERSATION_TOPIC << PR_CREATION_TIME << PR_BODY << PR_SENSITIVITY;
+  messageProperties.fetch();
+
+  KCal::Event* event = new KCal::Event;
+  const FILETIME* date = (const FILETIME*) messageProperties[PR_START_DATE];
+  if ( date ) {
+    event->setDtStart( convertSysTime( *date ) );
+    date = NULL;
+  }
+
+  date = (const FILETIME*) messageProperties[PR_END_DATE];
+  if ( date ) {
+    event->setDtEnd( convertSysTime( *date ) );
+    date = NULL;
+  }
+
+  date = (const FILETIME*) messageProperties[PR_CREATION_TIME];
+  if ( date ) {
+    event->setCreated( convertSysTime( *date ) );
+    date = NULL;
+  }
+
+  const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
+  if ( charString && *charString) {
+    event->setSummary( charString );
+    charString = NULL;
+  }
+	
+	const uint32_t* ui32 = (const uint32_t*) messageProperties[PR_SENSITIVITY];
+	if ( ui32 ) {
+		event->setSecrecy( getIncidentSecrecy( *ui32 ) );
+		ui32 = NULL;
+	}
+	
+  charString = (const char*) messageProperties[PR_BODY];
+  if ( charString) {
+    event->setDescription( charString );
+    charString = NULL;
+  } else {
+    mapi_object_t objStream;
+    mapi_object_init(&objStream);
+    OpenStream(&mapi_message.data(), PR_BODY, 0, &objStream);
+
+    uint32_t dataSize;
+    GetStreamSize(&objStream, &dataSize);
+
+    uint8_t* binData = new uint8_t[dataSize];
+
+    uint32_t pos = 0;
+    uint16_t bytesRead = 0;
+    do {
+      ReadStream(&objStream, binData+pos, 1024, &bytesRead);
+
+      pos += bytesRead;
+
+    } while (bytesRead && pos < dataSize);
+		
+		event->setDescription( (const char*) binData );
+
+    mapi_object_release(&objStream);
+  }
+
+	// Get Attendees.
+	SPropTagArray propertyTagArray; // = set_SPropTagArray(m_session.get_memory_ctx(), 0x5, PR_DISPLAY_NAME,
+																										//	PR_SMTP_ADDRESS, PR_RECIPIENT_TRACKSTATUS, PR_RECIPIENTS_FLAGS, PR_RECIPIENT_TYPE);
+	SRowSet rowSet;
+	if ( GetRecipientTable( &mapi_message.data(), &rowSet, &propertyTagArray ) != MAPI_E_SUCCESS )
+		qDebug() << "Error opening GetRecipientTable()";
+	
+	for (unsigned int i = 0; i < rowSet.cRows; ++i) {
+		qDebug() << "Iterating i";
+		QString name, email;
+		uint32_t *trackStatus = NULL, *flags = NULL, *type = NULL;
+		for (unsigned int j = 0; j < rowSet.aRow[i].cValues; ++j) {
+			
+			if ( (rowSet.aRow[i].lpProps[j].ulPropTag & 0xffff) == PT_STRING8 )
+				qDebug() << "Property" << QString::number (rowSet.aRow[i].lpProps[j].ulPropTag, 16) << "with value: " << rowSet.aRow[i].lpProps[j].value.lpszA;
+			else if ( (rowSet.aRow[i].lpProps[j].ulPropTag & 0xffff) == PT_UNICODE )
+				qDebug() << "Property" << QString::number (rowSet.aRow[i].lpProps[j].ulPropTag, 16) << "with value: " << rowSet.aRow[i].lpProps[j].value.lpszW;
+				
+			switch ( rowSet.aRow[i].lpProps[j].ulPropTag ) {
+				case 0x5ff6001f: // Should be PR_DISPLAY_NAME
+				  name = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+					break;
+				case 0x39fe001f: // Should be PR_SMTP_ADDRESS
+				  if ( rowSet.aRow[i].lpProps[j].value.lpszA )
+				    email = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+					break;
+				case PR_RECIPIENT_TRACKSTATUS:
+				  qDebug() << "Got trackstatus";
+				  trackStatus = &rowSet.aRow[i].lpProps[j].value.l;
+					break;
+				case PR_RECIPIENTS_FLAGS:
+				  qDebug() << "Got flags";
+				  flags = &rowSet.aRow[i].lpProps[j].value.l;
+					break;
+				case PR_RECIPIENT_TYPE:
+				  qDebug() << "Got flags";
+					type = &rowSet.aRow[i].lpProps[j].value.l;
+					break;
+				default:
+				  break;
+			}
+		}
+			
+		KCal::Attendee* attendee = new KCal::Attendee(name, email);
+			
+		// Look at Microsoft's documentation for these values.
+		if ( flags && ( *flags & 0x0000002 ) )
+			attendee->setRole( KCal::Attendee::Chair );
+		else if ( type && *type == 0x1 )
+			attendee->setRole( KCal::Attendee::ReqParticipant );
+		else if ( type && *type == 0x2 )
+			attendee->setRole( KCal::Attendee::OptParticipant );
+		else if ( type && *type == 0x03 )
+			attendee->setRole( KCal::Attendee::NonParticipant );
+					
+			event->addAttendee( attendee );
+	}
+										
+/*
+  for (property_container::iterator Iter = messageProperties.begin(); Iter != messageProperties.end(); ++Iter) {
+    if ( Iter.get_type() == PT_STRING8 )
+      qDebug() << "Tag" << QString::number(Iter.get_tag(), 16) << "with value: " << (const char*) *Iter;
+  }
+*/
+
+  IncidencePtr incidence( dynamic_cast<KCal::Incidence*>(event) );
+  
+  item.setPayload<IncidencePtr>( incidence );
 }
 
 void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
