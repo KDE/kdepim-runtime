@@ -106,6 +106,7 @@ void ICalResource::configure( WId windowId )
   if ( oldFile == newFile )
     return;
   Settings::self()->setPath( newFile );
+  Settings::self()->writeConfig();
   loadFile();
   synchronize();
 }
@@ -114,6 +115,7 @@ void ICalResource::loadFile()
 {
   delete mCalendar;
   mCalendar = 0;
+  Settings::self()->readConfig();
   const QString file = Settings::self()->path();
   if ( file.isEmpty() ) {
     emit status( Broken, i18n( "No iCal file specified." ) );
