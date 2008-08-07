@@ -72,7 +72,6 @@ void throw_exception(std::exception const & e)
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
-typedef boost::shared_ptr<KCal::Event> EventPtr;
 
 using namespace Akonadi;
 using namespace libmapipp;
@@ -852,18 +851,18 @@ typedef enum {
 
 KCal::Incidence::Secrecy getIncidentSecrecy (const uint32_t prop)
 {
-	switch (prop) {
-	  case olPersonal:
-		case olPrivate: 
-			return KCal::Incidence::SecrecyPrivate;
+  switch (prop) {
+    case olPersonal:
+    case olPrivate: 
+      return KCal::Incidence::SecrecyPrivate;
 			
-		case olConfidential: 
-			return KCal::Incidence::SecrecyConfidential;
+    case olConfidential: 
+      return KCal::Incidence::SecrecyConfidential;
 			
-		case olNormal: 
-		default:
-			return KCal::Incidence::SecrecyPublic;
-	}
+    case olNormal: 
+    default:
+      return KCal::Incidence::SecrecyPublic;
+  }
 }
 
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
@@ -891,12 +890,25 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     date = NULL;
   }
 	
-	date = (const FILETIME*) messageProperties[PR_LAST_MODIFICATION_TIME];
-	if ( date ) {
-		qDebug() << "Got Last Modified Time";
-		event->setLastModified( convertSysTime( *date ) );
-		date = NULL;
-	}
+  date = (const FILETIME*) messageProperties[PR_LAST_MODIFICATION_TIME];
+  if ( date ) {
+    event->setLastModified( convertSysTime( *date ) );
+    date = NULL;
+  }
+
+  // Set Alarm
+  const uint8_t* ui8 = (const uint8_t*) messageProperties[0x81ee000b];
+  if ( ui8 && *ui8 ) {
+    date = (const FILETIME*) messageProperties[0x81eb0040];
+    if ( date ) {
+      KCal::Alarm* alarm = new KCal::Alarm( dynamic_cast<KCal::Incidence*>( event ) );
+      alarm->setTime( convertSysTime( *date ) );
+      alarm->setEnabled( true );
+      event->addAlarm( alarm );
+      date = NULL;
+    }
+  }
+  ui8 = NULL;
 
   const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
   if ( charString && *charString) {
@@ -904,17 +916,41 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     charString = NULL;
   }
 	
-	const uint32_t* ui32 = (const uint32_t*) messageProperties[PR_SENSITIVITY];
-	if ( ui32 ) {
-		event->setSecrecy( getIncidentSecrecy( *ui32 ) );
-		ui32 = NULL;
-	}
-	
-	const uint8_t* ui8 = (const uint8_t*) messageProperties[0x80fa000b];
-	if (ui8) {
-		event->setAllDay( *ui8 );
-		ui8 = NULL;
-	}
+  const uint32_t* ui32 = (const uint32_t*) messageProperties[PR_SENSITIVITY];
+  if ( ui32 ) {
+    event->setSecrecy( getIncidentSecrecy( *ui32 ) );
+    ui32 = NULL;
+  }
+ 
+  ui32 = (const uint32_t*) messageProperties[PR_PRIORITY];
+  if ( ui32 ) {
+    switch ( *ui32 ) {
+      case 0xffffffff: // Low Priority
+        event->setPriority( 9 );
+        break;
+      case 0x00000000: // Normal Priority
+        event->setPriority( 5 );
+        break;
+      case 0x00000001: // High Priority
+        event->setPriority( 1 );
+        break;
+      default:
+        event->setPriority( 0 ); // Unknown
+    }
+    ui32 = NULL;
+  }
+  
+  ui32 = (const uint32_t*) messageProperties[0x81870003];
+  if ( ui32 ) {
+    event->setDuration( KCal::Duration( (*ui32) * 60 ) ); // OpenChange stores duration in minutes, KCal::Duration stores them in seconds
+    ui32 = NULL;
+  }
+
+  ui8 = (const uint8_t*) messageProperties[0x80fa000b];
+  if (ui8) {
+    event->setAllDay( *ui8 );
+    ui8 = NULL;
+  }
 	
   charString = (const char*) messageProperties[PR_BODY];
   if ( charString) {
@@ -939,108 +975,121 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
     } while (bytesRead && pos < dataSize);
 		
-		event->setDescription( (const char*) binData );
+    event->setDescription( (const char*) binData );
 
     mapi_object_release(&objStream);
   }
 
-	// Get Attendees.
-	SPropTagArray propertyTagArray;
+  // Get Attendees.
+  SPropTagArray propertyTagArray;
 
-	SRowSet rowSet;
-	if ( GetRecipientTable( &mapi_message.data(), &rowSet, &propertyTagArray ) != MAPI_E_SUCCESS )
-		qDebug() << "Error opening GetRecipientTable()";
+  SRowSet rowSet;
+  if ( GetRecipientTable( &mapi_message.data(), &rowSet, &propertyTagArray ) != MAPI_E_SUCCESS )
+    qDebug() << "Error opening GetRecipientTable()";
 	
-	for (unsigned int i = 0; i < rowSet.cRows; ++i) {
-		QString name, email;
-		uint32_t *trackStatus = NULL, *flags = NULL, *type = NULL;
-		for (unsigned int j = 0; j < rowSet.aRow[i].cValues; ++j) {
-			switch ( rowSet.aRow[i].lpProps[j].ulPropTag ) {
-				case 0x5ff6001f: // Should be PR_DISPLAY_NAME
-				  name = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
-					break;
-				case 0x39fe001f: // Should be PR_SMTP_ADDRESS
-				  if ( rowSet.aRow[i].lpProps[j].value.lpszA )
-				    email = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
-					break;
-				case PR_RECIPIENT_TRACKSTATUS:
-				  trackStatus = &rowSet.aRow[i].lpProps[j].value.l;
-					break;
-				case PR_RECIPIENTS_FLAGS:
-				  flags = &rowSet.aRow[i].lpProps[j].value.l;
-					break;
-				case PR_RECIPIENT_TYPE:
-					type = &rowSet.aRow[i].lpProps[j].value.l;
-					break;
-				default:
-				  break;
-			}
-		}
+  for (unsigned int i = 0; i < rowSet.cRows; ++i) {
+    QString name, email;
+    uint32_t *trackStatus = NULL, *flags = NULL, *type = NULL;
+    for (unsigned int j = 0; j < rowSet.aRow[i].cValues; ++j) {
+      switch ( rowSet.aRow[i].lpProps[j].ulPropTag ) {
+        case 0x5ff6001f: // Should be PR_DISPLAY_NAME
+          name = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+          break;
+        case 0x39fe001f: // Should be PR_SMTP_ADDRESS
+	  email = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+	  break;
+        case PR_RECIPIENT_TRACKSTATUS:
+          trackStatus = &rowSet.aRow[i].lpProps[j].value.l;
+          break;
+        case PR_RECIPIENTS_FLAGS:
+          flags = &rowSet.aRow[i].lpProps[j].value.l;
+          break;
+        case PR_RECIPIENT_TYPE:
+          type = &rowSet.aRow[i].lpProps[j].value.l;
+          break;
+        default:
+          break;
+      }
+    }
 			
-		KCal::Attendee* attendee = new KCal::Attendee(name, email);
-			
-		// Look at Microsoft's documentation for these values.
-		if ( flags && ( *flags & 0x0000002 ) )
-			attendee->setRole( KCal::Attendee::Chair );
-		else if ( type ) {
-		  if ( *type == 0x1 )
-			  attendee->setRole( KCal::Attendee::ReqParticipant );
-		  else if ( *type == 0x2 )
-			  attendee->setRole( KCal::Attendee::OptParticipant );
-		  else if ( *type == 0x03 )
-			  attendee->setRole( KCal::Attendee::NonParticipant );
-		}
+    // Look at Microsoft's documentation for these values.
+
+    if ( flags && ( *flags & 0x0000002 ) ) {
+      event->setOrganizer( KCal::Person( name, email ) );
+      continue;
+    }
+
+    KCal::Attendee* attendee = new KCal::Attendee(name, email);
+
+    if ( type ) {
+      if ( *type == 0x1 )
+        attendee->setRole( KCal::Attendee::ReqParticipant );
+      else if ( *type == 0x2 )
+        attendee->setRole( KCal::Attendee::OptParticipant );
+      else if ( *type == 0x03 )
+        attendee->setRole( KCal::Attendee::NonParticipant );
+    }
 		
-		if ( trackStatus ) {
-			switch ( *trackStatus ) {
-				case 0x00000000:
-				  attendee->setStatus( KCal::Attendee::NeedsAction );
-					break;
-				case 0x00000001: // This object belongs to organizer (so assume he accepts)
-				  attendee->setStatus( KCal::Attendee::Accepted );
-					break;
-				case 0x00000002:
-				  attendee->setStatus( KCal::Attendee::Tentative );
-					break;
-				case 0x00000003:
-				  attendee->setStatus( KCal::Attendee::Accepted );
-					break;
-				case 0x00000004:
-				  attendee->setStatus( KCal::Attendee::Declined );
-					break;
-				case 0x00000005:
-				  attendee->setStatus( KCal::Attendee::NeedsAction );
-					break;
-				default:
-				break;
-			}
-		}
-		
-		event->addAttendee( attendee );
-	}
+    if ( trackStatus ) {
+      switch ( *trackStatus ) {
+        case 0x00000000:
+	  attendee->setStatus( KCal::Attendee::NeedsAction );
+          break;
+        case 0x00000001: // This object belongs to organizer (so assume he accepts)
+          attendee->setStatus( KCal::Attendee::Accepted );
+          break;
+        case 0x00000002:
+          attendee->setStatus( KCal::Attendee::Tentative );
+          break;
+        case 0x00000003:
+          attendee->setStatus( KCal::Attendee::Accepted );
+	  break;
+        case 0x00000004:
+          attendee->setStatus( KCal::Attendee::Declined );
+          break;
+        case 0x00000005:
+          attendee->setStatus( KCal::Attendee::NeedsAction );
+          break;
+        default:
+          break;
+      }  
+    }		
+    event->addAttendee( attendee );
+  }
 			
-	// Get attachments
-	ui8 = (const uint8_t*) messageProperties[PR_HASATTACH];
-	if ( ui8 && *ui8 ) {
-	  message::attachment_container_type attachments = mapi_message.fetch_attachments();
+  // Get attachments
+  ui8 = (const uint8_t*) messageProperties[PR_HASATTACH];
+  if ( ui8 && *ui8 ) {
+    message::attachment_container_type attachments = mapi_message.fetch_attachments();
 
     for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
       QByteArray data( (const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size() );
-			QString attachFilename = (*Iterator)->get_filename().c_str();
-			KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
-			QByteArray final = KCodecs::base64Encode( data, true );
+      QString attachFilename = (*Iterator)->get_filename().c_str();
+      KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
+      QByteArray final = KCodecs::base64Encode( data, true );
 			
-			KCal::Attachment *attachment = new KCal::Attachment( (const char*) final.data(), type->name() );
-			attachment->setLabel( attachFilename );
-			
-			event->addAttachment( attachment );
-		}
-	}
-	
-/*
-  for (property_container::iterator Iter = messageProperties.begin(); Iter != messageProperties.end(); ++Iter) {
-    if ( Iter.get_type() == PT_BOOLEAN )
-      qDebug() << "Tag" << QString::number(Iter.get_tag(), 16) << "with value: " << *((const uint8_t*) *Iter);
+      KCal::Attachment *attachment = new KCal::Attachment( (const char*) final.data(), type->name() );
+      attachment->setLabel( attachFilename );
+
+      event->addAttachment( attachment );
+    }
+  }
+  ui8 = NULL;
+
+/* Disable this for now. I get different results using outlook and libmapi (with PR_ACCESS 0x2 read) (with PR_ACCESS_LEVEL 0x0 read-only)
+  In outlook I get WRITE, READ & MODIFY and MAPI_MODIFY for PR_ACCESS_LEVEL
+  // Leave this at the end so we can write all information to it even if it's read-only
+  ui32 = (const uint32_t*) messageProperties[PR_ACCESS_LEVEL];
+  if ( ui32 ) {
+    qDebug() << "Access Level:" << QString::number( *ui32, 16 );
+    if ( (*ui32) == 0x00000001 ) {
+      qDebug() << "Event is not read-only";
+      event->setReadOnly( false );
+    } else {
+      qDebug() << "Event is read-only";
+      event->setReadOnly( true );
+    }
+    ui32 = NULL;
   }
 */
 
