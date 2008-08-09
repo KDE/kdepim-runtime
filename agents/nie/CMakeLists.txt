@@ -90,6 +90,13 @@ set(nie_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/website.cpp
 )
 
+# finds nepomuk-rcgen in BIN_INSTALL_DIR, then in the others
+find_program(_rcgen nepomuk-rcgen PATHS ${BIN_INSTALL_DIR} NO_DEFAULT_PATH)
+find_program(_rcgen nepomuk-rcgen)
+if(NOT _rcgen)
+  message(FATAL_ERROR "Failed to find the Nepomuk source generator. Did you install Soprano?" )
+endif(NOT _rcgen)
+
 add_custom_command(
   OUTPUT 
     ${CMAKE_CURRENT_BINARY_DIR}/out_headers
@@ -98,7 +105,7 @@ add_custom_command(
     ${nie_SRCS}
   COMMAND ${CMAKE_COMMAND}
   ARGS 
-    -DBIN_INSTALL_DIR=${BIN_INSTALL_DIR}
+    -D_rcgen=${_rcgen}
     -Dontofile1=${CMAKE_CURRENT_SOURCE_DIR}/nie.rdfs
     -Dontofile2=${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
     -Dontofile3=${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
