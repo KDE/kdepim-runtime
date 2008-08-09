@@ -40,6 +40,7 @@
 #include <kabc/vcardconverter.h>
 #include <kcal/incidence.h>
 #include <kcal/event.h>
+#include <kcal/todo.h>
 
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemcreatejob.h>
@@ -114,11 +115,17 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
     property_container messageProperty = messagePointer->get_property_container();
     messageProperty << PR_MESSAGE_CLASS;
     messageProperty.fetch();
-    if ( *messageProperty.begin() && QString( (const char*) *messageProperty.begin() ) == "IPM.Appointment" ) {
-      appendEventToItem( *messagePointer, i );
+    if ( *messageProperty.begin() ) {
+      if ( QString( (const char*) *messageProperty.begin() ) == "IPM.Appointment" ) {
+        appendEventToItem( *messagePointer, i );
+      } else if ( QString( (const char*) *messageProperty.begin() ) == "IPM.Task" ) {
+        appendTodoToItem( *messagePointer, i );
+      } else {
+        qDebug() << "retrieveItem() not implemented for Journals yet.";
+        return true;
+      }
     } else {
-      qDebug() << "retrieveItem() not implemented for calendars yet.";
-      return true;
+      return false;
     }
   } else {
     cancelTask( "Unknown type of message" );
@@ -849,7 +856,7 @@ typedef enum {
     olConfidential = 3
 } OlSensitivity;
 
-KCal::Incidence::Secrecy getIncidentSecrecy (const uint32_t prop)
+KCal::Incidence::Secrecy getIncidentSecrecy(const uint32_t prop)
 {
   switch (prop) {
     case olPersonal:
@@ -874,25 +881,33 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   KCal::Event* event = new KCal::Event;
   const FILETIME* date = (const FILETIME*) messageProperties[PR_START_DATE];
   if ( date ) {
-    event->setDtStart( convertSysTime( *date ) );
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    event->setDtStart( dateTime );
     date = NULL;
   }
 
   date = (const FILETIME*) messageProperties[PR_END_DATE];
   if ( date ) {
-    event->setDtEnd( convertSysTime( *date ) );
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    event->setDtEnd( dateTime );
     date = NULL;
   }
 
   date = (const FILETIME*) messageProperties[PR_CREATION_TIME];
   if ( date ) {
-    event->setCreated( convertSysTime( *date ) );
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    event->setCreated( dateTime );
     date = NULL;
   }
 	
   date = (const FILETIME*) messageProperties[PR_LAST_MODIFICATION_TIME];
   if ( date ) {
-    event->setLastModified( convertSysTime( *date ) );
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    event->setLastModified( dateTime );
     date = NULL;
   }
 
@@ -902,7 +917,9 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     date = (const FILETIME*) messageProperties[0x81eb0040];
     if ( date ) {
       KCal::Alarm* alarm = new KCal::Alarm( dynamic_cast<KCal::Incidence*>( event ) );
-      alarm->setTime( convertSysTime( *date ) );
+      KDateTime dateTime = convertSysTime( *date );
+      dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+      alarm->setTime( dateTime );
       alarm->setEnabled( true );
       event->addAlarm( alarm );
       date = NULL;
@@ -915,7 +932,13 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     event->setSummary( charString );
     charString = NULL;
   }
-	
+
+  charString = (const char*) messageProperties[0x810c001e];
+  if ( charString && *charString ) {
+    event->setLocation( charString);
+    charString = NULL;
+  }
+ 	
   const uint32_t* ui32 = (const uint32_t*) messageProperties[PR_SENSITIVITY];
   if ( ui32 ) {
     event->setSecrecy( getIncidentSecrecy( *ui32 ) );
@@ -1076,6 +1099,12 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   }
   ui8 = NULL;
 
+  for (property_container::iterator Iter = messageProperties.begin(); Iter != messageProperties.end(); ++Iter) {
+    if (Iter.get_type() == PT_STRING8) {
+      qDebug() << "String Property Tag" << QString::number( Iter.get_tag(), 16 ) << "with value: " << (const char*) *Iter;
+    }
+  }
+
 /* Disable this for now. I get different results using outlook and libmapi (with PR_ACCESS 0x2 read) (with PR_ACCESS_LEVEL 0x0 read-only)
   In outlook I get WRITE, READ & MODIFY and MAPI_MODIFY for PR_ACCESS_LEVEL
   // Leave this at the end so we can write all information to it even if it's read-only
@@ -1093,13 +1122,158 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   }
 */
 
-  IncidencePtr incidence( dynamic_cast<KCal::Incidence*>(event) );
-  
-  item.setPayload<IncidencePtr>( incidence );
+  item.setPayload( IncidencePtr( dynamic_cast<KCal::Incidence*>( event ) ) );
 }
 
 void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
 {
+  property_container messageProperties = mapi_message.get_property_container();
+  messageProperties.fetch_all();
+
+  KCal::Todo *todo = new KCal::Todo;
+  const FILETIME* date = (const FILETIME*) messageProperties[0x811e0040];
+  if ( date ) {
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    todo->setDtStart( dateTime );
+    todo->setHasStartDate( true );
+    date = NULL;
+  }
+
+  date = (const FILETIME*) messageProperties[PR_CREATION_TIME];
+  if ( date ) {
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    todo->setCreated( dateTime );
+    date = NULL;
+  }
+
+  date = (const FILETIME*) messageProperties[PR_LAST_MODIFICATION_TIME];
+  if ( date ) {
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    todo->setLastModified( dateTime );
+    date = NULL;
+  }
+
+ 
+  date = (const FILETIME*) messageProperties[0x811f0040];
+  if ( date ) {
+    KDateTime dateTime = convertSysTime( *date );
+    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    todo->setDtDue( dateTime );
+    todo->setHasDueDate( true );
+    date = NULL;
+  }
+
+  const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
+  if ( charString && *charString) {
+    todo->setSummary( charString );
+    charString = NULL;
+  }
+
+  const uint32_t* ui32 = (const uint32_t*) messageProperties[PR_SENSITIVITY];
+  if ( ui32 ) {
+    todo->setSecrecy( getIncidentSecrecy( *ui32 ) );
+    ui32 = NULL;
+  }
+
+  const double* dbl = (const double*) messageProperties[0x81210005];
+  if ( dbl ) {
+    const int percentComplete = (*dbl) * 100;
+    todo->setPercentComplete( percentComplete ); // Exchange saves percentage as decimals.
+  }
+
+  ui32 = (const uint32_t*) messageProperties[PR_PRIORITY];
+  if ( ui32 ) {
+    switch ( *ui32 ) {
+      case 0xffffffff: // Low Priority
+        todo->setPriority( 9 );
+        break;
+      case 0x00000000: // Normal Priority
+        todo->setPriority( 5 );
+        break;
+      case 0x00000001: // High Priority
+        todo->setPriority( 1 );
+        break;
+      default:
+        todo->setPriority( 0 ); // Unknown
+    }
+    ui32 = NULL;
+  }
+
+  ui32 = (const uint32_t*) messageProperties[0x81200003];
+  if ( ui32 ) {
+    switch ( *ui32 ) {
+      case 0x00000000:
+        todo->setStatus( KCal::Incidence::StatusNone );
+        break;
+      case 0x00000001:
+        todo->setStatus( KCal::Incidence::StatusInProcess );
+        break;
+      case 0x00000002:
+        todo->setStatus( KCal::Incidence::StatusCompleted );
+        todo->setCompleted( true );
+        break;
+      case 0x00000003:
+        todo->setCustomStatus( "Waiting on someone else" );
+        break;
+      case 0x00000004:
+        todo->setCustomStatus( "Deferred" );
+        break;
+    }
+
+    ui32 = NULL;
+  }
+
+  charString = (const char*) messageProperties[PR_BODY];
+  if ( charString) {
+    todo->setDescription( charString );
+    charString = NULL;
+  } else {
+    mapi_object_t objStream;
+    mapi_object_init(&objStream);
+    OpenStream(&mapi_message.data(), PR_BODY, 0, &objStream);
+
+    uint32_t dataSize;
+    GetStreamSize(&objStream, &dataSize);
+
+    uint8_t* binData = new uint8_t[dataSize];
+
+    uint32_t pos = 0;
+    uint16_t bytesRead = 0;
+    do {
+      ReadStream(&objStream, binData+pos, 1024, &bytesRead);
+
+      pos += bytesRead;
+
+    } while (bytesRead && pos < dataSize);
+
+    todo->setDescription( (const char*) binData );
+
+    mapi_object_release(&objStream);
+  }
+
+  // Get attachments
+  const uint8_t* ui8 = (const uint8_t*) messageProperties[PR_HASATTACH];
+  if ( ui8 && *ui8 ) {
+    message::attachment_container_type attachments = mapi_message.fetch_attachments();
+
+    for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
+      QByteArray data( (const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size() );
+      QString attachFilename = (*Iterator)->get_filename().c_str();
+      KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
+      QByteArray final = KCodecs::base64Encode( data, true );
+
+      KCal::Attachment *attachment = new KCal::Attachment( (const char*) final.data(), type->name() );
+      attachment->setLabel( attachFilename );
+
+      todo->addAttachment( attachment );
+    }
+  }
+  ui8 = NULL;
+
+  item.setPayload( IncidencePtr( dynamic_cast<KCal::Incidence*>( todo ) ) );
 }
 
 void OCResource::appendJournalToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
