@@ -33,6 +33,8 @@ using namespace KPIM;
 struct Saver {
   static void process( QSplitter *splitter, KConfigGroup &config )
   {
+    if ( splitter->sizes().count( 0 ) == splitter->sizes().count() )
+      return;
     config.writeEntry( splitter->objectName(), splitter->sizes() );
   }
 
@@ -56,7 +58,7 @@ struct Restorer {
   static void process( QSplitter *splitter, const KConfigGroup &config )
   {
     const QList<int> sizes = config.readEntry( splitter->objectName(), QList<int>() );
-    if ( !sizes.isEmpty() && splitter->count() == sizes.count() )
+    if ( !sizes.isEmpty() && splitter->count() == sizes.count() && splitter->count() != splitter->sizes().count( 0 ) )
       splitter->setSizes( sizes );
   }
 
