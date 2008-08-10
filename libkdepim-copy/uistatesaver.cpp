@@ -58,7 +58,7 @@ struct Restorer {
   static void process( QSplitter *splitter, const KConfigGroup &config )
   {
     const QList<int> sizes = config.readEntry( splitter->objectName(), QList<int>() );
-    if ( !sizes.isEmpty() && splitter->count() == sizes.count() && splitter->count() != splitter->sizes().count( 0 ) )
+    if ( !sizes.isEmpty() && splitter->count() == sizes.count() && sizes.count() != sizes.count( 0 ) )
       splitter->setSizes( sizes );
   }
 
