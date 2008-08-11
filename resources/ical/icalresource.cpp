@@ -31,6 +31,7 @@
 #include <kdebug.h>
 #include <kfiledialog.h>
 #include <klocale.h>
+#include <kurl.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -47,6 +48,7 @@ ICalResource::ICalResource( const QString &id )
                             Settings::self(), QDBusConnection::ExportAdaptors );
   changeRecorder()->itemFetchScope().fetchFullPayload();
   loadFile();
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(loadFile()) );
 }
 
 ICalResource::~ICalResource()
@@ -83,12 +85,7 @@ void ICalResource::aboutToQuit()
 {
   if ( Settings::self()->readOnly() )
     return;
-  const QString fileName = Settings::self()->path();
-  if ( fileName.isEmpty() )
-    emit error( i18n("No filename specified.") );
-  else if ( !mCalendar->save( fileName ) )
-    emit error( i18n("Failed to save calendar file to %1", fileName ) );
-
+  writeFile();
   Settings::self()->writeConfig();
 }
 
@@ -113,17 +110,19 @@ void ICalResource::configure( WId windowId )
 
 void ICalResource::loadFile()
 {
+  if ( mCalendar )
+    writeFile();
   delete mCalendar;
   mCalendar = 0;
-  Settings::self()->readConfig();
-  const QString file = Settings::self()->path();
+  const KUrl file = KUrl::fromPathOrUrl( Settings::self()->path() );
   if ( file.isEmpty() ) {
     emit status( Broken, i18n( "No iCal file specified." ) );
     return;
   }
 
   mCalendar = new KCal::CalendarLocal( QLatin1String( "UTC" ) );
-  mCalendar->load( file );
+  mCalendar->load( file.path() );
+  emit status( Idle );
 }
 
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
@@ -179,6 +178,15 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
     items << item;
   }
   itemsRetrieved( items );
+}
+
+void ICalResource::writeFile()
+{
+  const KUrl fileName = KUrl::fromPathOrUrl( Settings::self()->path() );
+  if ( fileName.isEmpty() )
+    emit error( i18n("No filename specified.") );
+  else if ( !mCalendar->save( fileName.path() ) )
+    emit error( i18n("Failed to save calendar file to %1", fileName.url() ) );
 }
 
 AKONADI_RESOURCE_MAIN( ICalResource )

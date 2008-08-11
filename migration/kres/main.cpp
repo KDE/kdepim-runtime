@@ -18,6 +18,7 @@
 */
 
 #include "kabcmigrator.h"
+#include "kcalmigrator.h"
 
 #include <akonadi/control.h>
 
@@ -48,7 +49,7 @@ int main( int argc, char **argv )
   Akonadi::Control::start();
 
   new KABCMigrator();
-  // new KCalMigrator();
+  new KCalMigrator();
 
   return app.exec();
 }

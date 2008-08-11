@@ -54,8 +54,11 @@ class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
-  private:
+  private Q_SLOTS:
     void loadFile();
+
+  private:
+    void writeFile();
 
   private:
     KCal::CalendarLocal *mCalendar;
