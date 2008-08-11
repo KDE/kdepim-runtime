@@ -20,6 +20,8 @@
     02110-1301, USA.
 */
 
+#include <iostream> // for debugging
+
 #include <QtDBus/QDBusConnection>
 
 #include <QtCore/QDebug>
@@ -872,6 +874,101 @@ KCal::Incidence::Secrecy getIncidentSecrecy(const uint32_t prop)
   }
 }
 
+struct RecurrencePattern
+{
+  // Look at Microsoft's MS-OXOCAL.pdf (2.2.1.44.1)
+  uint32_t* readerAndWriterVersion; // consolidate these two uint16_t since they are constant.
+  uint16_t* recurFrequency;
+  uint16_t* patternType;
+  uint16_t* calendarType;
+  uint16_t* firstDateTime;
+  // uint16_t ...
+  uint16_t* period;
+  // uint16_t ...
+  uint16_t* slidingFlag;
+  // uint16_t ...
+  uint16_t* patternTypeSpecific;
+  uint32_t* endType;
+  uint32_t* occurrenceCount;
+  uint32_t* firstDOW;
+  uint32_t* deletedInstanceCount;
+  uint32_t* deletedInstanceDates; // This is an array
+  uint32_t* modifiedInstanceCount; 
+  uint32_t* modifiedInstanceDates; // This is an array
+  uint32_t* startDate;
+  uint32_t* endDate;
+};
+
+RecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
+{
+  RecurrencePattern recurrence;
+
+  recurrence.readerAndWriterVersion = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+  
+  recurrence.recurFrequency = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+  
+  recurrence.patternType = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  recurrence.calendarType = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  recurrence.firstDateTime = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  dataBlob += sizeof(uint16_t); // ...
+
+  recurrence.period = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  dataBlob += sizeof(uint16_t); // ...
+
+  recurrence.slidingFlag = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  dataBlob += sizeof(uint16_t); // ...
+
+  recurrence.patternTypeSpecific = (uint16_t*) dataBlob;
+  dataBlob += sizeof(uint16_t);
+
+  recurrence.endType = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+
+  recurrence.occurrenceCount = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+ 
+  recurrence.firstDOW = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+
+  recurrence.deletedInstanceCount = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+
+  if ( *recurrence.deletedInstanceCount ) {
+    recurrence.deletedInstanceDates = (uint32_t*) dataBlob;
+    dataBlob += sizeof(uint32_t) * (*recurrence.deletedInstanceCount);
+  }
+
+  recurrence.modifiedInstanceCount = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+
+  if ( *recurrence.modifiedInstanceCount ) {
+    recurrence.modifiedInstanceDates = (uint32_t*) dataBlob;
+    dataBlob += sizeof(uint32_t) * (*recurrence.deletedInstanceCount);
+  }
+
+  // TODO: REMOVE THIS, this is a temporary hack for what seems to be an error in MS' documentation
+  dataBlob += sizeof(uint16_t);
+
+  recurrence.startDate = (uint32_t*) dataBlob;
+  dataBlob += sizeof(uint32_t);
+
+  recurrence.endDate = (uint32_t*) dataBlob;
+  
+  return recurrence;
+}
+
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
 {
   property_container messageProperties = mapi_message.get_property_container();
@@ -1099,10 +1196,24 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   }
   ui8 = NULL;
 
-  for (property_container::iterator Iter = messageProperties.begin(); Iter != messageProperties.end(); ++Iter) {
-    if (Iter.get_type() == PT_STRING8) {
-      qDebug() << "String Property Tag" << QString::number( Iter.get_tag(), 16 ) << "with value: " << (const char*) *Iter;
-    }
+  const SBinary_short *binData = (const SBinary_short*) messageProperties[0x818b0102];
+  if ( binData ) {
+    RecurrencePattern recurrence = readRecurrencePattern( binData->lpb );
+    qDebug() << "Versions:" << QString::number( *recurrence.readerAndWriterVersion, 16);
+    qDebug() << "RecurFrequency:" << QString::number( *recurrence.recurFrequency, 16);
+    qDebug() << "PatternType:" << QString::number( *recurrence.patternType, 16);
+    qDebug() << "CalendarType:" << QString::number( *recurrence.calendarType, 16);
+    qDebug() << "FirstDateTime:" << QString::number( *recurrence.firstDateTime, 16);
+    qDebug() << "Period:" << QString::number( *recurrence.period, 16);
+    qDebug() << "SlidingFlag:" << QString::number( *recurrence.slidingFlag, 16);
+    qDebug() << "PatternTypeSpecific(variable):" << QString::number( *recurrence.patternTypeSpecific, 16);
+    qDebug() << "EndType" << QString::number( *recurrence.endType, 16);
+    qDebug() << "OcurrenceCount" << QString::number( *recurrence.occurrenceCount, 16);
+    qDebug() << "FirstDOW" << QString::number( *recurrence.firstDOW, 16);
+    qDebug() << "DeletedInstanceCount" << QString::number( *recurrence.deletedInstanceCount, 16);
+    qDebug() << "ModifiedInstanceCount" << QString::number( *recurrence.modifiedInstanceCount, 16);
+    qDebug() << "StartDate:" << QString::number( *recurrence.startDate, 16);
+    qDebug() << "EndDate:" << QString::number( *recurrence.endDate, 16);
   }
 
 /* Disable this for now. I get different results using outlook and libmapi (with PR_ACCESS 0x2 read) (with PR_ACCESS_LEVEL 0x0 read-only)
