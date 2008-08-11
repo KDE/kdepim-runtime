@@ -37,6 +37,7 @@ VCardResource::VCardResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
   changeRecorder()->itemFetchScope().fetchFullPayload();
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(loadAddressees()) );
   loadAddressees();
 }
 
@@ -163,6 +164,9 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 
 bool VCardResource::loadAddressees()
 {
+  if ( !mAddressees.isEmpty() )
+    storeAddressees();
+
   mAddressees.clear();
 
   const QString fileName = Settings::self()->path();
@@ -185,6 +189,7 @@ bool VCardResource::loadAddressees()
     mAddressees.insert( list[ i ].uid(), list[ i ] );
   }
 
+  emit status( Idle );
   return true;
 }
 

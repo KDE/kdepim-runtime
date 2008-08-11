@@ -48,8 +48,10 @@ class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::O
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
-  private:
+  private Q_SLOTS:
     bool loadAddressees();
+
+  private:
     bool storeAddressees();
 
   private:
