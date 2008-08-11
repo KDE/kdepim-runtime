@@ -51,7 +51,6 @@ void KABCMigrator::migrateResource( KABC::Resource* res)
 
 void KABCMigrator::migrateFileResource(KABC::Resource * res)
 {
-  kDebug();
   const KConfigGroup kresCfg = kresConfig( res );
   if ( kresCfg.readEntry( "FileFormat", "" ) != "vcard" ) {
     kDebug() << "Unsupported file format found!";
@@ -70,7 +69,6 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
 
 void KABCMigrator::fileResourceCreated(KJob * job)
 {
-  kDebug();
   if ( job->error() ) {
     kDebug() << "Failed to create vcard resource!";
     return;
@@ -81,7 +79,6 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   const KConfigGroup kresCfg = kresConfig( res );
   instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Addressbook" ) );
 
-  kDebug() << "org.kde.Akonadi.Resource." + instance.identifier();
   OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
@@ -89,9 +86,9 @@ void KABCMigrator::fileResourceCreated(KJob * job)
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "FileName", "" ) );
-//   iface->setReadOnly( res->readOnly() );
-  iface->setReadOnly( true );
+  iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
+  resourceMigrated( res );
   migrateNext();
 }
 
