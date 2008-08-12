@@ -1043,6 +1043,101 @@ AppointmentRecurrencePattern readAppointmentRecurrencePattern( uint8_t* dataBlob
   return appointmentRecurrencePattern;
 }
 
+// Exchange and KCal use different ways of storing and representing days of the week.
+// This function sets Exchange days and sets a QBitArray(7) that KCal understands.
+QBitArray getRecurrenceDays( const uint32_t* exchangeDays )
+{
+  QBitArray bitArray(7);
+
+  if ( *exchangeDays & 0x00000001 ) // Sunday
+    bitArray.setBit(6, true);
+  if ( *exchangeDays & 0x00000002 ) // Monday
+    bitArray.setBit(0, true);
+  if ( *exchangeDays & 0x00000004 ) // Tuesday
+    bitArray.setBit(1, true);
+  if ( *exchangeDays & 0x00000008 ) // Wednesday
+    bitArray.setBit(2, true);
+  if ( *exchangeDays & 0x00000010 ) // Thursday
+    bitArray.setBit(3, true);
+  if ( *exchangeDays & 0x00000020 ) // Friday
+    bitArray.setBit(4, true);
+  if ( *exchangeDays & 0x00000040 ) // Saturday
+    bitArray.setBit(5, true);
+
+  return bitArray;
+}
+
+void appendRecurrenceToEvent( uint8_t* binData, KCal::Recurrence* recurrence, KDateTime startTime )
+{
+  RecurrencePattern recurrencePattern = readRecurrencePattern( binData );
+
+  recurrence->setStartDateTime( startTime );
+  if ( *recurrencePattern.recurFrequency == 0x200a ) { // daily event
+    if ( *recurrencePattern.patternType == 0x0001 ) { // Weekdays only
+      QBitArray bitArray(7, true);
+      bitArray.setBit(5, false);
+      bitArray.setBit(6, false);
+      int firstDOW = 7;
+      if ( recurrencePattern.firstDOW )
+        firstDOW = (int) *recurrencePattern.firstDOW;
+
+      recurrence->setWeekly( *recurrencePattern.period, bitArray, firstDOW );
+    } else {
+      recurrence->setDaily( (*recurrencePattern.period / 60) / 24 ); // This is stored in minutes in the Exchange server.
+    }
+  } else if ( *recurrencePattern.recurFrequency == 0x200b && *recurrencePattern.patternType == 0x0001 ) { // weekly event.
+    int firstDOW = 7; // Default first day of week is sunday in Exchange (Monday for KCal)
+    if ( *recurrencePattern.firstDOW )
+      firstDOW = (int) *recurrencePattern.firstDOW;
+
+    recurrence->setWeekly( *recurrencePattern.period, getRecurrenceDays( recurrencePattern.patternTypeSpecific ), firstDOW );
+  } else if ( *recurrencePattern.recurFrequency == 0x200c ) { // Monthly Event
+    recurrence->setMonthly( (int) *recurrencePattern.period );
+
+    if ( *recurrencePattern.patternType == 0x0002 ) {
+      recurrence->addMonthlyDate( (short) *recurrencePattern.patternTypeSpecific );
+    } else if ( *recurrencePattern.patternType == 0x0003 ) { // Nth day of the month
+      recurrence->addMonthlyPos( recurrencePattern.patternTypeSpecific[1], getRecurrenceDays( recurrencePattern.patternTypeSpecific ) );
+    }
+  } else if ( *recurrencePattern.recurFrequency == 0x200d ) { // Yearly Event
+    recurrence->setYearly( 1 ); // Outlook doesn't support every Nth year
+
+    if ( *recurrencePattern.patternType == 0x0002 ) {
+      recurrence->addYearlyDate( (int) *recurrencePattern.patternTypeSpecific );
+    } else if ( *recurrencePattern.patternType == 0x0003 ) {
+      recurrence->addYearlyMonth( recurrence->startDate().month() );
+      if ( recurrencePattern.patternTypeSpecific[0] == 0x7f )  { // First day of month (This is not in the documentation)
+        recurrence->addYearlyDate( 1 );
+      } else {
+        recurrence->addYearlyPos( recurrencePattern.patternTypeSpecific[1], getRecurrenceDays( recurrencePattern.patternTypeSpecific ) );
+      }
+    }
+
+  }
+
+  qDebug() << "Versions:" << QString::number( *recurrencePattern.readerAndWriterVersion, 16);
+  qDebug() << "RecurFrequency:" << QString::number( *recurrencePattern.recurFrequency, 16);
+  qDebug() << "PatternType:" << QString::number( *recurrencePattern.patternType, 16);
+  qDebug() << "CalendarType:" << QString::number( *recurrencePattern.calendarType, 16);
+  qDebug() << "FirstDateTime:" << QString::number( *recurrencePattern.firstDateTime, 16);
+  qDebug() << "Period:" << QString::number( *recurrencePattern.period, 16);
+  qDebug() << "SlidingFlag:" << QString::number( *recurrencePattern.slidingFlag, 16);
+  if ( *recurrencePattern.patternType == 3) {
+    qDebug() << "PatternTypeSpecific[0]:" << QString::number( *recurrencePattern.patternTypeSpecific, 16);
+    qDebug() << "PatternTypeSpecific[1]:" << QString::number( recurrencePattern.patternTypeSpecific[1], 16);
+  } else if ( *recurrencePattern.patternType == 0 ) { // patternTypeSpecific is empty, don't print.
+  } else {
+    qDebug() << "PatternTypeSpecific(variable):" << QString::number( *recurrencePattern.patternTypeSpecific, 16);
+  }
+  qDebug() << "EndType" << QString::number( *recurrencePattern.endType, 16);
+  qDebug() << "OcurrenceCount" << QString::number( *recurrencePattern.occurrenceCount, 16);
+  qDebug() << "FirstDOW" << QString::number( *recurrencePattern.firstDOW, 16);
+  qDebug() << "DeletedInstanceCount" << QString::number( *recurrencePattern.deletedInstanceCount, 16);
+  qDebug() << "ModifiedInstanceCount" << QString::number( *recurrencePattern.modifiedInstanceCount, 16);
+  qDebug() << "StartDate:" << QString::number( *recurrencePattern.startDate, 16);
+  qDebug() << "EndDate:" << QString::number( *recurrencePattern.endDate, 16);
+}
+
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
 {
   property_container messageProperties = mapi_message.get_property_container();
@@ -1051,10 +1146,11 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
   KCal::Event* event = new KCal::Event;
   const FILETIME* date = (const FILETIME*) messageProperties[PR_START_DATE];
+  KDateTime startTime;
   if ( date ) {
-    KDateTime dateTime = convertSysTime( *date );
-    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
-    event->setDtStart( dateTime );
+    startTime = convertSysTime( *date );
+    startTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    event->setDtStart( startTime );
     date = NULL;
   }
 
@@ -1272,73 +1368,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
   const SBinary_short *binData = (const SBinary_short*) messageProperties[0x818b0102];
   if ( binData ) {
-    RecurrencePattern recurrencePattern = readRecurrencePattern( binData->lpb );
-
-    KCal::Recurrence* recurrence = event->recurrence();
-
-    KDateTime kdeTime;
-    kdeTime.setTime_t( nt_time_to_unix( *recurrencePattern.startDate ) );
-
-    recurrence->setStartDateTime( kdeTime );
-    if ( *recurrencePattern.recurFrequency == 0x200a ) { // daily event 
-      if ( *recurrencePattern.patternType == 0x0001 ) { // Weekdays only
-        QBitArray bitArray(7, true);
-        bitArray.setBit(5, false);
-        bitArray.setBit(6, false);
-        int firstDOW = 7;
-        if ( recurrencePattern.firstDOW )
-          firstDOW = (int) *recurrencePattern.firstDOW;
-
-        recurrence->setWeekly( *recurrencePattern.period, bitArray, firstDOW );
-        qDebug() << "Setting weekday recurrence";
-      } else {
-        recurrence->setDaily( (*recurrencePattern.period / 60) / 24 ); // This is stored in minutes in the Exchange server.
-        qDebug() << "Setting daily recurrence";
-      }
-    } else if ( *recurrencePattern.recurFrequency == 0x200b && *recurrencePattern.patternType == 0x0001 ) { // weekly event.
-      QBitArray bitArray(7);
-      
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000001 ) // Sunday
-        bitArray.setBit(6, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000002 ) // Monday
-        bitArray.setBit(1, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000004 ) // Tuesday
-        bitArray.setBit(2, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000008 ) // Wednesday
-        bitArray.setBit(3, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000010 ) // Thursday
-        bitArray.setBit(4, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000020 ) // Friday
-        bitArray.setBit(5, true);
-      if ( *recurrencePattern.patternTypeSpecific & 0x00000040 ) // Saturday
-        bitArray.setBit(6, true);
-
-      int firstDOW = 7; // Default first day of week is sunday in Exchange (Monday for KCal)
-      if ( *recurrencePattern.firstDOW )
-        firstDOW = (int) *recurrencePattern.firstDOW;
-
-      recurrence->setWeekly( *recurrencePattern.period, bitArray, firstDOW );
-      qDebug() << "Setting weekly recurrence";
-    } else if ( *recurrencePattern.recurFrequency == 0x200c ) { // Monthly Event
-    } else if ( *recurrencePattern.recurFrequency == 0x200d ) { // Yearly Event
-    }
-
-    qDebug() << "Versions:" << QString::number( *recurrencePattern.readerAndWriterVersion, 16);
-    qDebug() << "RecurFrequency:" << QString::number( *recurrencePattern.recurFrequency, 16);
-    qDebug() << "PatternType:" << QString::number( *recurrencePattern.patternType, 16);
-    qDebug() << "CalendarType:" << QString::number( *recurrencePattern.calendarType, 16);
-    qDebug() << "FirstDateTime:" << QString::number( *recurrencePattern.firstDateTime, 16);
-    qDebug() << "Period:" << QString::number( *recurrencePattern.period, 16);
-    qDebug() << "SlidingFlag:" << QString::number( *recurrencePattern.slidingFlag, 16);
-    if ( *recurrencePattern.patternType )
-      qDebug() << "PatternTypeSpecific(variable):" << QString::number( *recurrencePattern.patternTypeSpecific, 16);
-    qDebug() << "EndType" << QString::number( *recurrencePattern.endType, 16);
-    qDebug() << "OcurrenceCount" << QString::number( *recurrencePattern.occurrenceCount, 16);
-    qDebug() << "FirstDOW" << QString::number( *recurrencePattern.firstDOW, 16);
-    qDebug() << "DeletedInstanceCount" << QString::number( *recurrencePattern.deletedInstanceCount, 16);
-    qDebug() << "ModifiedInstanceCount" << QString::number( *recurrencePattern.modifiedInstanceCount, 16);
-    qDebug() << "StartDate:" << QString::number( *recurrencePattern.startDate, 16);
-    qDebug() << "EndDate:" << QString::number( *recurrencePattern.endDate, 16);
+    appendRecurrenceToEvent( binData->lpb, event->recurrence(), startTime ); // TODO: Use message startTime for now.
   }
 
 /* Disable this for now. I get different results using outlook and libmapi (with PR_ACCESS 0x2 read) (with PR_ACCESS_LEVEL 0x0 read-only)
