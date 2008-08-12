@@ -887,7 +887,7 @@ struct RecurrencePattern
   // uint16_t ...
   uint16_t* slidingFlag;
   // uint16_t ...
-  uint16_t* patternTypeSpecific;
+  uint32_t* patternTypeSpecific; // This can either be empty, a single value, or a 2 element array.
   uint32_t* endType;
   uint32_t* occurrenceCount;
   uint32_t* firstDOW;
@@ -897,6 +897,66 @@ struct RecurrencePattern
   uint32_t* modifiedInstanceDates; // This is an array
   uint32_t* startDate;
   uint32_t* endDate;
+};
+
+struct ExceptionInfo
+{
+  uint32_t* startDateTime;
+  uint32_t* endDateTime;
+  uint32_t* originalStartDate;
+  uint16_t* overrideFlags;
+  uint16_t* subjectLength;
+  uint16_t* subjectLength2;
+  uint8_t*  subject;
+  uint32_t* meetingType;
+  uint32_t* reminderDelta;
+  uint32_t* reminderSet;
+  uint16_t* locationLength;
+  uint16_t* locationLength2;
+  uint8_t*  location;
+  uint32_t* busyStatus;
+  uint32_t* attachment;
+  uint32_t* subType;
+  uint32_t* appointmentColor; // reserved, don't read from or write to this.
+};
+
+struct ChangeHighLight
+{
+  uint32_t* changeHighlightSize;
+  uint32_t* changeHighlightValue;
+  uint32_t* reserved;
+};
+
+struct ExtendedException
+{
+  ChangeHighLight* changeHighligth;
+  uint32_t* reservedBlockEE1Size;    // This MUST be 0.
+  uint32_t* reservedBlockEE1;        // reserved
+  uint32_t* startDateTime;
+  uint32_t* endDateTime;
+  uint32_t* originalStartDate;
+  uint16_t* wideCharSubjectLength;
+  uint16_t* wideCharSubject;         // In windows wchar_t is 2 bytes long
+  uint16_t* wideCharLocationLength;
+  uint16_t* wideCharLocation;
+  uint32_t* reservedBlockEE2Size;    // This MUST be 0.
+  uint32_t* reservedBlockEE2;        // reserved
+};
+
+struct AppointmentRecurrencePattern
+{
+  RecurrencePattern recurrencePattern;
+  uint32_t* readerVersion2;
+  uint32_t* writerVersion2;
+  uint32_t* startTimeOffset;
+  uint32_t* endTimeOffset;
+  uint16_t* exceptionCount;
+  ExceptionInfo* exceptionInfo; // Array of ExceptionInfo of size (exceptionCount)
+  uint32_t* reservedBlock1Size; // MUST be 0
+  uint32_t* reservedBlock1; // reserved
+  ExtendedException* extendedException; // Array of ExtendedException of size (exceptionCount)  
+  uint32_t* reservedBlock2Size; // MUST be 0
+  uint32_t* reservedBlock2; // reserved
 };
 
 RecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
@@ -930,8 +990,15 @@ RecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
 
   dataBlob += sizeof(uint16_t); // ...
 
-  recurrence.patternTypeSpecific = (uint16_t*) dataBlob;
-  dataBlob += sizeof(uint16_t);
+  if ( *recurrence.patternType == 0x0 ) {
+    recurrence.patternTypeSpecific = NULL;
+  } else if ( (*recurrence.patternType & 0x0003) == 0x0003 ) {
+    recurrence.patternTypeSpecific = (uint32_t*) dataBlob;
+    dataBlob += sizeof(uint32_t) * 2; // 2 element array. One for day of the week, other one for Nth day.
+  } else {
+    recurrence.patternTypeSpecific = (uint32_t*) dataBlob;
+    dataBlob += sizeof(uint32_t);
+  }
 
   recurrence.endType = (uint32_t*) dataBlob;
   dataBlob += sizeof(uint32_t);
@@ -958,15 +1025,22 @@ RecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
     dataBlob += sizeof(uint32_t) * (*recurrence.deletedInstanceCount);
   }
 
-  // TODO: REMOVE THIS, this is a temporary hack for what seems to be an error in MS' documentation
-  dataBlob += sizeof(uint16_t);
-
   recurrence.startDate = (uint32_t*) dataBlob;
   dataBlob += sizeof(uint32_t);
 
   recurrence.endDate = (uint32_t*) dataBlob;
   
   return recurrence;
+}
+
+AppointmentRecurrencePattern readAppointmentRecurrencePattern( uint8_t* dataBlob )
+{
+  AppointmentRecurrencePattern appointmentRecurrencePattern;
+  appointmentRecurrencePattern.recurrencePattern = readRecurrencePattern( dataBlob );
+  dataBlob = (uint8_t*) appointmentRecurrencePattern.recurrencePattern.endDate + sizeof(uint32_t); // start at end of RecurrencePatter.  
+
+  // TODO: Finish this...
+  return appointmentRecurrencePattern;
 }
 
 void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
@@ -1198,22 +1272,73 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
   const SBinary_short *binData = (const SBinary_short*) messageProperties[0x818b0102];
   if ( binData ) {
-    RecurrencePattern recurrence = readRecurrencePattern( binData->lpb );
-    qDebug() << "Versions:" << QString::number( *recurrence.readerAndWriterVersion, 16);
-    qDebug() << "RecurFrequency:" << QString::number( *recurrence.recurFrequency, 16);
-    qDebug() << "PatternType:" << QString::number( *recurrence.patternType, 16);
-    qDebug() << "CalendarType:" << QString::number( *recurrence.calendarType, 16);
-    qDebug() << "FirstDateTime:" << QString::number( *recurrence.firstDateTime, 16);
-    qDebug() << "Period:" << QString::number( *recurrence.period, 16);
-    qDebug() << "SlidingFlag:" << QString::number( *recurrence.slidingFlag, 16);
-    qDebug() << "PatternTypeSpecific(variable):" << QString::number( *recurrence.patternTypeSpecific, 16);
-    qDebug() << "EndType" << QString::number( *recurrence.endType, 16);
-    qDebug() << "OcurrenceCount" << QString::number( *recurrence.occurrenceCount, 16);
-    qDebug() << "FirstDOW" << QString::number( *recurrence.firstDOW, 16);
-    qDebug() << "DeletedInstanceCount" << QString::number( *recurrence.deletedInstanceCount, 16);
-    qDebug() << "ModifiedInstanceCount" << QString::number( *recurrence.modifiedInstanceCount, 16);
-    qDebug() << "StartDate:" << QString::number( *recurrence.startDate, 16);
-    qDebug() << "EndDate:" << QString::number( *recurrence.endDate, 16);
+    RecurrencePattern recurrencePattern = readRecurrencePattern( binData->lpb );
+
+    KCal::Recurrence* recurrence = event->recurrence();
+
+    KDateTime kdeTime;
+    kdeTime.setTime_t( nt_time_to_unix( *recurrencePattern.startDate ) );
+
+    recurrence->setStartDateTime( kdeTime );
+    if ( *recurrencePattern.recurFrequency == 0x200a ) { // daily event 
+      if ( *recurrencePattern.patternType == 0x0001 ) { // Weekdays only
+        QBitArray bitArray(7, true);
+        bitArray.setBit(5, false);
+        bitArray.setBit(6, false);
+        int firstDOW = 7;
+        if ( recurrencePattern.firstDOW )
+          firstDOW = (int) *recurrencePattern.firstDOW;
+
+        recurrence->setWeekly( *recurrencePattern.period, bitArray, firstDOW );
+        qDebug() << "Setting weekday recurrence";
+      } else {
+        recurrence->setDaily( (*recurrencePattern.period / 60) / 24 ); // This is stored in minutes in the Exchange server.
+        qDebug() << "Setting daily recurrence";
+      }
+    } else if ( *recurrencePattern.recurFrequency == 0x200b && *recurrencePattern.patternType == 0x0001 ) { // weekly event.
+      QBitArray bitArray(7);
+      
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000001 ) // Sunday
+        bitArray.setBit(6, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000002 ) // Monday
+        bitArray.setBit(1, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000004 ) // Tuesday
+        bitArray.setBit(2, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000008 ) // Wednesday
+        bitArray.setBit(3, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000010 ) // Thursday
+        bitArray.setBit(4, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000020 ) // Friday
+        bitArray.setBit(5, true);
+      if ( *recurrencePattern.patternTypeSpecific & 0x00000040 ) // Saturday
+        bitArray.setBit(6, true);
+
+      int firstDOW = 7; // Default first day of week is sunday in Exchange (Monday for KCal)
+      if ( *recurrencePattern.firstDOW )
+        firstDOW = (int) *recurrencePattern.firstDOW;
+
+      recurrence->setWeekly( *recurrencePattern.period, bitArray, firstDOW );
+      qDebug() << "Setting weekly recurrence";
+    } else if ( *recurrencePattern.recurFrequency == 0x200c ) { // Monthly Event
+    } else if ( *recurrencePattern.recurFrequency == 0x200d ) { // Yearly Event
+    }
+
+    qDebug() << "Versions:" << QString::number( *recurrencePattern.readerAndWriterVersion, 16);
+    qDebug() << "RecurFrequency:" << QString::number( *recurrencePattern.recurFrequency, 16);
+    qDebug() << "PatternType:" << QString::number( *recurrencePattern.patternType, 16);
+    qDebug() << "CalendarType:" << QString::number( *recurrencePattern.calendarType, 16);
+    qDebug() << "FirstDateTime:" << QString::number( *recurrencePattern.firstDateTime, 16);
+    qDebug() << "Period:" << QString::number( *recurrencePattern.period, 16);
+    qDebug() << "SlidingFlag:" << QString::number( *recurrencePattern.slidingFlag, 16);
+    if ( *recurrencePattern.patternType )
+      qDebug() << "PatternTypeSpecific(variable):" << QString::number( *recurrencePattern.patternTypeSpecific, 16);
+    qDebug() << "EndType" << QString::number( *recurrencePattern.endType, 16);
+    qDebug() << "OcurrenceCount" << QString::number( *recurrencePattern.occurrenceCount, 16);
+    qDebug() << "FirstDOW" << QString::number( *recurrencePattern.firstDOW, 16);
+    qDebug() << "DeletedInstanceCount" << QString::number( *recurrencePattern.deletedInstanceCount, 16);
+    qDebug() << "ModifiedInstanceCount" << QString::number( *recurrencePattern.modifiedInstanceCount, 16);
+    qDebug() << "StartDate:" << QString::number( *recurrencePattern.startDate, 16);
+    qDebug() << "EndDate:" << QString::number( *recurrencePattern.endDate, 16);
   }
 
 /* Disable this for now. I get different results using outlook and libmapi (with PR_ACCESS 0x2 read) (with PR_ACCESS_LEVEL 0x0 read-only)
