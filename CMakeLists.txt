@@ -14,10 +14,10 @@ if (XSLTPROC_EXECUTABLE)
     add_custom_command(
       OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
       COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
-              ${DATA_INSTALL_DIR}/akonadi-kde/kcfg2dbus.xsl
+              ${KDE4_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
               ${_kcfg}
               > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-      DEPENDS ${DATA_INSTALL_DIR}/akonadi-kde/kcfg2dbus.xsl
+      DEPENDS ${KDE4_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
               ${_kcfg}
     )
   endmacro( kcfg_generate_dbus_interface )
