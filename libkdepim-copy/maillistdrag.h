@@ -4,7 +4,7 @@
     Copyright (c) 2003 Don Sanders <sanders@kde.org>
     Copyright (c) 2005 George Staikos <staikos@kde.org.
     Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
-    Copyright (c) 2008 Thomas McGuire <thomas.mcguire@gmx.net>
+    Copyright (c) 2008 Thomas McGuire <mcguire@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public

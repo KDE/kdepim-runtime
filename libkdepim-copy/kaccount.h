@@ -3,7 +3,7 @@
 
   This file is part of KMail, the KDE mail client.
   Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
-  Copyright (C) 2007 Thomas McGuire <thomas.mcguire@gmx.net>
+  Copyright (C) 2007 Thomas McGuire <mcguire@kde.org>
 
   KMail is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License, version 2, as
