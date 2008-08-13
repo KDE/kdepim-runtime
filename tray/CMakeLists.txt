@@ -8,7 +8,7 @@ org.freedesktop.akonaditray.xml )
 qt4_add_dbus_adaptor( tray_sources org.freedesktop.akonaditray.xml dock.h Dock )
 
 KDE4_ADD_EXECUTABLE(akonaditray ${tray_sources})
-TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBS} akonadiprotocolinternals ${KDE4_AKONADI_LIBS})
+TARGET_LINK_LIBRARIES(akonaditray ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_KNOTIFYCONFIG_LIBS} akonadiprotocolinternals ${KDE4_AKONADI_LIBS})
 
 INSTALL(TARGETS akonaditray ${INSTALL_TARGETS_DEFAULT_ARGS})
 INSTALL(FILES  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
