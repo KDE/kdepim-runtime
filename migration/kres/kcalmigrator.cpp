@@ -41,7 +41,7 @@ void KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
     migrateFileResource( res );
-  else if ( migrationState( res ) != None )
+  else if ( migrationState( res ) == None )
     migrateToBridge( res, "akonadi_kcal_resource" );
   else
     migrateNext();
