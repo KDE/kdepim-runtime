@@ -61,6 +61,8 @@ KCalResource::KCalResource( const QString &id )
 
   mCalendar->readConfig( config.data() );
   mLoaded = loadCalendar();
+
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reload()) );
 }
 
 KCalResource::~KCalResource()
@@ -109,9 +111,10 @@ void KCalResource::configure( WId windowId )
   KCal::ResourceCalendar *resource = manager->standardResource();
 
   if ( resource != 0 ) {
-    mCalendar->resourceManager()->remove( resource );
-    resource = 0;
-    mLoaded = false;
+    KRES::ConfigDialog dlg( window, QLatin1String( "calendar" ), resource );
+    if ( dlg.exec() )
+      manager->writeConfig( KGlobal::config().data() );
+    return;
   }
 
   QStringList types = manager->resourceTypeNames();
@@ -251,6 +254,15 @@ bool KCalResource::loadCalendar()
 
     KCal::CalendarResourceManager *manager = mCalendar->resourceManager();
     KCal::ResourceCalendar *resource = manager->standardResource();
+    if ( !resource ) {
+      if ( manager->begin() != manager->end() ) {
+        resource = *(manager->begin());
+        manager->setStandardResource( resource );
+      } else {
+        kWarning() << "No resource available";
+        return false;
+      }
+    }
     if ( resource != 0 && !resource->isOpen() ) {
       if ( !resource->open() ) {
         kError() << "Opening resource" << resource->identifier() << "failed";
@@ -298,6 +310,29 @@ void KCalResource::delayedUpdate()
   }
 
   itemsRetrieved( items );
+}
+
+void KCalResource::reload()
+{
+  KGlobal::config()->reparseConfiguration();
+
+  aboutToQuit();
+  delete mCalendar;
+
+  mCalendar = new KCal::CalendarResources( QLatin1String( "UTC" ) );
+  mLoaded = false;
+
+  connect( mCalendar, SIGNAL( signalErrorMessage( const QString& ) ),
+          this, SLOT( calendarError( const QString& ) ) );
+
+  connect( mCalendar, SIGNAL( calendarChanged() ),
+          this, SLOT( calendarChanged() ) );
+
+  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
+          this, SLOT( delayedUpdate() ) );
+
+  mCalendar->readConfig( KGlobal::config().data() );
+  mLoaded = loadCalendar();
 }
 
 AKONADI_RESOURCE_MAIN( KCalResource )

@@ -76,6 +76,7 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void calendarError( const QString& message );
     void calendarChanged();
     void delayedUpdate();
+    void reload();
 };
 
 #endif
