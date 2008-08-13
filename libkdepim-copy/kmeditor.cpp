@@ -41,7 +41,6 @@
 #include <KTemporaryFile>
 #include <KToolBar>
 #include <KWindowSystem>
-#include <sonnet/configdialog.h>
 
 #include <QApplication>
 #include <QClipboard>
@@ -102,10 +101,20 @@ class KMeditorPrivate
 
     // Data members
     QString extEditorPath;
-    QString language;
     KMeditor *q;
     bool useExtEditor;
+
+    // Although KTextEdit keeps track of the spell checking state, we override
+    // it here, because we have a highlighter which does quote highlighting.
+    // And since disabling spellchecking in KTextEdit simply would turn off our
+    // quote highlighter, we never actually deactivate spell checking in the
+    // base class, but only tell our own email highlighter to not highlight
+    // spelling mistakes.
+    // For this, we use the KTextEditSpellInterface, which is basically a hack
+    // that makes it possible to have our own enabled/disabled state in a binary
+    // compatible way.
     bool spellCheckingEnabled;
+
     KProcess *mExtEditorProcess;
     KTemporaryFile *mExtEditorTempFile;
 };
@@ -429,6 +438,7 @@ bool KMeditor::eventFilter( QObject*o, QEvent* e )
 
 void KMeditorPrivate::init()
 {
+  q->setSpellInterface(q);
   // We tell the KRichTextWidget to enable spell checking, because only then it will
   // call createHighlighter() which will create our own highlighter which also
   // does quote highlighting.
@@ -437,21 +447,40 @@ void KMeditorPrivate::init()
   // if our spellchecking is disabled.
   // See also KEMailQuotingHighlighter::highlightBlock().
   spellCheckingEnabled = false;
-  static_cast<KRichTextWidget*>( q )->setCheckSpellingEnabled( true );
+  q->setCheckSpellingEnabledInternal( true );
 
   KCursor::setAutoHideCursor( q, true, true );
   q->installEventFilter( q );
   QShortcut * insertMode = new QShortcut( QKeySequence( Qt::Key_Insert ), q );
   q->connect( insertMode, SIGNAL( activated() ),
               q, SLOT( slotChangeInsertMode() ) );
-  q->connect( q, SIGNAL( languageChanged(const QString &) ),
-              q, SLOT( setSpellCheckLanguage(const QString &) ) );
 }
 
 void KMeditor::slotChangeInsertMode()
 {
   setOverwriteMode( !overwriteMode() );
   emit overwriteModeText();
+}
+
+bool KMeditor::isSpellCheckingEnabled() const
+{
+  return d->spellCheckingEnabled;
+}
+
+void KMeditor::setSpellCheckingEnabled( bool enable )
+{
+  KEMailQuotingHighlighter *hlighter =
+      dynamic_cast<KEMailQuotingHighlighter*>( highlighter() );
+  if ( hlighter )
+    hlighter->toggleSpellHighlighting( enable );
+
+  d->spellCheckingEnabled = enable;
+  emit checkSpellingChanged( enable );
+}
+
+bool KMeditor::shouldBlockBeSpellChecked(const QString& block) const
+{
+  return !block.startsWith( quotePrefixName() );
 }
 
 void KMeditor::createHighlighter()
@@ -464,9 +493,9 @@ void KMeditor::createHighlighter()
   //TODO change config
   KRichTextWidget::setHighlighter( emailHighLighter );
 
-  if ( !d->language.isEmpty() )
-    setSpellCheckLanguage( d->language );
-  toggleSpellChecking( d->spellCheckingEnabled );
+  if ( !spellCheckingLanguage().isEmpty() )
+    setSpellCheckingLanguage( spellCheckingLanguage() );
+  setSpellCheckingEnabled( isSpellCheckingEnabled() );
 }
 
 void KMeditor::changeHighlighterColors(KPIM::KEMailQuotingHighlighter *)
@@ -529,106 +558,6 @@ void KMeditor::enableWordWrap( int wrapColumn )
 void KMeditor::disableWordWrap()
 {
   setLineWrapMode( QTextEdit::WidgetWidth );
-}
-
-void KMeditor::contextMenuEvent( QContextMenuEvent *event )
-{
-  // Obtain the cursor at the mouse position and the current cursor
-  QTextCursor cursorAtMouse = cursorForPosition( event->pos() );
-  int mousePos = cursorAtMouse.position();
-  QTextCursor cursor = textCursor();
-
-  // Check if the user clicked a selected word
-  bool selectedWordClicked = cursor.hasSelection() &&
-                             mousePos >= cursor.selectionStart() &&
-                             mousePos <= cursor.selectionEnd();
-
-  // Get the word under the (mouse-)cursor and see if it is misspelled.
-  // Don't include apostrophes at the start/end of the word in the selection.
-  QTextCursor wordSelectCursor( cursorAtMouse );
-  wordSelectCursor.clearSelection();
-  wordSelectCursor.select( QTextCursor::WordUnderCursor );
-  QString selectedWord = wordSelectCursor.selectedText();
-
-  // Clear the selection again, we re-select it below (without the apostrophes).
-  wordSelectCursor.movePosition( QTextCursor::PreviousCharacter,
-                                 QTextCursor::MoveAnchor, selectedWord.size() );
-  if ( selectedWord.startsWith( '\'' ) || selectedWord.startsWith( '\"' ) ) {
-    selectedWord = selectedWord.right( selectedWord.size() - 1 );
-    wordSelectCursor.movePosition( QTextCursor::NextCharacter, QTextCursor::MoveAnchor );
-  }
-  if ( selectedWord.endsWith( '\'' ) || selectedWord.endsWith( '\"' ))
-    selectedWord.chop( 1 );
-  wordSelectCursor.movePosition( QTextCursor::NextCharacter,
-                                 QTextCursor::KeepAnchor, selectedWord.size() );
-
-  bool wordIsMisspelled = isSpellCheckingEnabled() &&
-                          !selectedWord.isEmpty() &&
-                          KRichTextWidget::highlighter() &&
-                          KRichTextWidget::highlighter()->isWordMisspelled( selectedWord );
-
-  // If the user clicked a selected word, do nothing.
-  // If the user clicked somewhere else, move the cursor there.
-  // If the user clicked on a misspelled word, select that word.
-  // Same behavior as in OpenOffice Writer.
-  bool inQuote = cursorAtMouse.block().text().startsWith( quotePrefixName() );
-  if ( !selectedWordClicked ) {
-    if ( wordIsMisspelled && !inQuote )
-      setTextCursor( wordSelectCursor );
-    else
-      setTextCursor( cursorAtMouse );
-    cursor = textCursor();
-  }
-
-  // Use standard context menu for already selected words, correctly spelled
-  // words and words inside quotes.
-  if ( !wordIsMisspelled || selectedWordClicked || inQuote ) {
-    KRichTextWidget::contextMenuEvent( event );
-  }
-  else {
-    KMenu suggestions;
-    KMenu menu;
-
-    //Add the suggestions to the popup menu
-    QStringList reps = KRichTextWidget::highlighter()->suggestionsForWord( selectedWord );
-    if ( reps.count() > 0 ) {
-      for ( QStringList::Iterator it = reps.begin(); it != reps.end(); ++it ) {
-        suggestions.addAction( *it );
-      }
-
-    }
-    suggestions.setTitle( i18n( "Suggestions" ) );
-
-    QAction *ignoreAction = menu.addAction( i18n("Ignore") );
-    QAction *addToDictAction = menu.addAction( i18n("Add to Dictionary") );
-    QAction *suggestionsAction = menu.addMenu( &suggestions );
-    if ( reps.count() == 0 )
-      suggestionsAction->setEnabled( false );
-
-    //Execute the popup inline
-    const QAction *selectedAction = menu.exec( mapToGlobal( event->pos() ) );
-
-    if ( selectedAction ) {
-      Q_ASSERT( cursor.selectedText() == selectedWord );
-
-      if ( selectedAction == ignoreAction ) {
-        KRichTextWidget::highlighter()->ignoreWord( selectedWord );
-        KRichTextWidget::highlighter()->rehighlight();
-      }
-      else if ( selectedAction == addToDictAction ) {
-        KRichTextWidget::highlighter()->addWordToDictionary( selectedWord );
-        KRichTextWidget::highlighter()->rehighlight();
-      }
-
-      // Other actions can only be one of the suggested words
-      else {
-        const QString replacement = selectedAction->text();
-        Q_ASSERT( reps.contains( replacement ) );
-        cursor.insertText( replacement );
-        setTextCursor( cursor );
-      }
-    }
-  }
 }
 
 void KMeditor::slotPasteAsQuotation()
@@ -1038,51 +967,6 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
   }
 
   cursor.endEditBlock();
-}
-
-void KMeditor::setSpellCheckLanguage( const QString &language )
-{
-  if ( KRichTextWidget::highlighter() ) {
-    KRichTextWidget::highlighter()->setCurrentLanguage( language );
-    KRichTextWidget::highlighter()->rehighlight();
-  }
-  KRichTextWidget::setSpellCheckingLanguage( language );
-
-  if ( language != d->language )
-    emit spellcheckLanguageChanged( language );
-  d->language = language;
-}
-
-void KMeditor::slotCheckSpelling()
-{
-  KRichTextWidget::checkSpelling();
-}
-
-bool KMeditor::isSpellCheckingEnabled() const
-{
-  return d->spellCheckingEnabled;
-}
-
-void KMeditor::toggleSpellChecking( bool on )
-{
-  KEMailQuotingHighlighter *hlighter =
-            dynamic_cast<KEMailQuotingHighlighter*>( KRichTextWidget::highlighter() );
-  if ( hlighter )
-    hlighter->toggleSpellHighlighting( on );
-
-  d->spellCheckingEnabled = on;
-}
-
-void KMeditor::showSpellConfigDialog( const QString &configFileName )
-{
-  KConfig config( configFileName );
-  Sonnet::ConfigDialog dialog( &config, this );
-  if ( !d->language.isEmpty() )
-    dialog.setLanguage( d->language );
-  connect( &dialog, SIGNAL( languageChanged(const QString &) ),
-           this, SLOT( setSpellCheckLanguage(const QString &) ) );
-  dialog.setWindowIcon( KIcon( "internet-mail" ) );
-  dialog.exec();
 }
 
 QString KMeditor::toWrappedPlainText() const

@@ -46,15 +46,11 @@ class KEMailQuotingHighlighter;
  * @li Quote highlighting
  * @li The ability to us an external editor
  * @li Signature handling
- * @li Better spellcheck support
  * @li Utility functions like removing whitespace, inserting a file,
  *     adding quotes or rot13'ing the text
- *
- * Do not call any spellchecking related function of KRichTextWidget, use the function
- * of this class instead.
  */
-class KDEPIM_EXPORT KMeditor : public KRichTextWidget
-{
+class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellInterface
+{                             //TODO: KDE5: get rid of KTextEditSpellInterface
   Q_OBJECT
 
   public:
@@ -189,31 +185,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
     void cleanWhitespace( const KPIMIdentities::Signature &sig );
 
     /**
-     * @return true if highlighting of missspelled words is enabled
-     * @ref slotToggleSpellChecking
-     */
-    bool isSpellCheckingEnabled() const;
-
-    /**
-     * Toggle spellcheck highlighting on or off.
-     * Spellchecking is disabled by default.
-     *
-     * @ref spellCheckingEnabled
-     */
-    void toggleSpellChecking( bool on );
-
-    /**
-     * This shows the standard spellcheck config dialog of Sonnet and saves
-     * the settings in the given config file.
-     * The language is automatically changed when the user changes the
-     * language in the config dialog.
-     *
-     * @param configFileName the name of the config file where the settings will
-     *                       be loaded from and saved to.
-     */
-    void showSpellConfigDialog( const QString &configFileName );
-
-    /**
      * Returns the text of the editor as plain text, with linebreaks inserted
      * where word-wrapping occurred.
      */
@@ -227,28 +198,9 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
 
   public Q_SLOTS:
 
-    /**
-     * Sets the spell checking language, as used by the highlighter and the
-     * spellcheck dialog.
-     *
-     * @param language the language to use for spelling. This has to be one of
-     *                 the values returned by Sonnet::Speller::availableLanguages(),
-     *                 which are also available in KPIM::DictionaryCombBox.
-     */
-    void setSpellCheckLanguage( const QString &language );
-
     void slotAddQuotes();
     void slotRemoveBox();
     void slotAddBox();
-
-    /**
-     * Shows the spell checkdialog, where the user can perform spell checking
-     * on the whole document.
-     * The language is automatically changed when the user changes the
-     * language in the spellcheck dialog.
-     */
-    void slotCheckSpelling();
-
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
 
@@ -260,15 +212,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
     void slotChangeInsertMode();
 
   Q_SIGNALS:
-
-    /**
-     * Emitted when the user chooses a different spellcheck language,
-     * either in the config dialog or in the checking dialog.
-     * Also emitted after setSpellCheckLanguage().
-     *
-     * @param language the language which the user selected
-     */
-    void spellcheckLanguageChanged( const QString &language );
 
     /**
      * Emitted whenever the foucs is lost or gained
@@ -283,22 +226,24 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
 
   protected:
 
-    // HACK: (KDE5: fix this properly in KTextEdit by cleaning up the API and
-    //              making functions virtual)
-    // Make all spellcheck-related functions of KTextEdit protected. They should
-    // not be called from the outside. The problem is that qoute highlighting only
-    // works when spell checking is enabled (as this is done in one hightlighter,
-    // KEMailQuotingHighlighter), so we have to pretend to KTextEdit that spell
-    // checking is enabled the whole time.
-    // These functions are not virtual, so we can't simply reimplement them.
-    // And no, having two separate QSyntaxHighlighters does not work either,
-    // one of them disables the highlighting of the other.
-    void setCheckSpellingEnabled( bool );
-    bool checkSpellingEnabled() const;
-    void setSpellCheckingLanguage( const QString & );
-    void setHighlighter( Sonnet::Highlighter * );
-    Sonnet::Highlighter* highlighter() const;
-    void setSpellCheckingConfigFileName( const QString & );
+    // For the explaination for these three methods, see the comment at the
+    // spellCheckingEnabled variable of the private class.
+
+    /**
+     * Reimplemented from KTextEditSpellInterface
+     */
+    virtual bool isSpellCheckingEnabled() const;
+
+    /**
+     * Reimplemented from KTextEditSpellInterface
+     */
+    virtual void setSpellCheckingEnabled(bool enable);
+
+    /**
+     * Reimplemented from KTextEditSpellInterface, to avoid spellchecking
+     * quoted text.
+     */
+    virtual bool shouldBlockBeSpellChecked(const QString& block) const;
 
     /**
      * Reimplemented to create our own highlighter which does quote and
@@ -310,11 +255,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget
     virtual void dragMoveEvent( QDragMoveEvent *e );
     virtual bool eventFilter( QObject *o, QEvent *e );
     virtual void keyPressEvent( QKeyEvent *e );
-
-    /*
-     * Redefine it to allow to create context menu for spell word list
-     */
-    virtual void contextMenuEvent( QContextMenuEvent* );
 
     /**
      * Handles drag enter/move event for dragEnterEvent() and dragMoveEvent()
