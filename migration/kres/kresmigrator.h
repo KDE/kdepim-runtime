@@ -20,6 +20,8 @@
 #ifndef KRESMIGRATOR_H
 #define KRESMIGRATOR_H
 
+#include "kresmigratorbase.h"
+
 #include <kresources/manager.h>
 #include <kresources/resource.h>
 
@@ -28,26 +30,26 @@
 #include <KGlobal>
 #include <KStandardDirs>
 
-template <typename T> class KResMigrator : public QObject
+template <typename T> class KResMigrator : public KResMigratorBase
 {
   public:
-    KResMigrator() : mConfig( 0 )
+    KResMigrator( const QString &type ) :
+      KResMigratorBase( type ),
+      mConfig( 0 )
     {
-      KGlobal::ref();
     }
 
     virtual ~KResMigrator()
     {
       delete mConfig;
       delete mManager;
-      KGlobal::deref();
     }
 
-    void migrateType( const QString &type )
+    void migrate()
     {
-      mManager = new KRES::Manager<T>( type );
+      mManager = new KRES::Manager<T>( mType );
       mManager->readConfig();
-      const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString( "kresources/%1/stdrc" ).arg( type ) );
+      const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString( "kresources/%1/stdrc" ).arg( mType ) );
       mConfig = new KConfig( kresCfgFile );
       mIt = mManager->begin();
       migrateNext();
@@ -57,9 +59,10 @@ template <typename T> class KResMigrator : public QObject
     {
       while ( mIt != mManager->end() ) {
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
-        if ( !cfg.readEntry( "Migrated", false ) ) {
-          migrateResource( *mIt );
+        if ( migrationState( *mIt ) != Complete ) {
+          T* res = *mIt;
           ++mIt;
+          migrateResource( res );
           return;
         }
         ++mIt;
@@ -70,16 +73,17 @@ template <typename T> class KResMigrator : public QObject
 
     virtual void migrateResource( T *res ) = 0;
 
-    void resourceMigrated( T *res ) const
-    {
-      KConfigGroup cfg( KGlobal::config(), "Resource " + res->identifier() );
-      cfg.writeEntry( "Migrated", true );
-      cfg.sync();
-    }
-
-    KConfigGroup kresConfig( T* res ) const
+    KConfigGroup kresConfig( KRES::Resource* res ) const
     {
       return KConfigGroup( mConfig, "Resource_" + res->identifier() );
+    }
+
+    T* resourceForJob( KJob *job )
+    {
+      if ( mJobResMap.contains( job ) )
+        return static_cast<T*>( mJobResMap.value( job ) );
+      Q_ASSERT( false );
+      return 0;
     }
 
   private:

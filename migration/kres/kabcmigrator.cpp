@@ -31,12 +31,8 @@
 
 using namespace Akonadi;
 
-KABCMigrator::KABCMigrator()
-{
-  migrateType( "contact" );
-}
-
-KABCMigrator::~KABCMigrator()
+KABCMigrator::KABCMigrator() :
+    KResMigrator<KABC::Resource>( "contact" )
 {
 }
 
@@ -45,6 +41,8 @@ void KABCMigrator::migrateResource( KABC::Resource* res)
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
     migrateFileResource( res );
+  else if ( migrationState( res ) == None )
+    migrateToBridge( res, "akonadi_kabc_resource" );
   else
     migrateNext();
 }
@@ -63,7 +61,7 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   connect( job, SIGNAL(result(KJob*)), SLOT(fileResourceCreated(KJob*)) );
-  mJobMap.insert( job, res );
+  setResourceForJob( job, res );
   job->start();
 }
 
@@ -73,8 +71,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
     kDebug() << "Failed to create vcard resource!";
     return;
   }
-  Q_ASSERT( mJobMap.contains( job ) );
-  KABC::Resource *res = mJobMap.take( job );
+  KABC::Resource *res = resourceForJob( job );
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
   instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Addressbook" ) );
@@ -88,7 +85,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   iface->setPath( kresCfg.readPathEntry( "FileName", "" ) );
   iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
-  resourceMigrated( res );
+  setMigrationState( res, Complete );
   migrateNext();
 }
 

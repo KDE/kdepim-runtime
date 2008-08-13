@@ -31,12 +31,8 @@
 
 using namespace Akonadi;
 
-KCalMigrator::KCalMigrator()
-{
-  migrateType( "calendar" );
-}
-
-KCalMigrator::~KCalMigrator()
+KCalMigrator::KCalMigrator() :
+    KResMigrator<KCal::ResourceCalendar>( "calendar" )
 {
 }
 
@@ -45,6 +41,8 @@ void KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
     migrateFileResource( res );
+  else if ( migrationState( res ) != None )
+    migrateToBridge( res, "akonadi_kcal_resource" );
   else
     migrateNext();
 }
@@ -63,7 +61,7 @@ void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   connect( job, SIGNAL(result(KJob*)), SLOT(fileResourceCreated(KJob*)) );
-  mJobMap.insert( job, res );
+  setResourceForJob( job, res );
   job->start();
 }
 
@@ -73,8 +71,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
     kDebug() << "Failed to create ical resource!";
     return;
   }
-  Q_ASSERT( mJobMap.contains( job ) );
-  KCal::ResourceCalendar *res = mJobMap.take( job );
+  KCal::ResourceCalendar *res = resourceForJob( job );
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
   instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Calendar" ) );
@@ -89,7 +86,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
   iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
-  resourceMigrated( res );
+  setMigrationState( res, Complete );
   migrateNext();
 }
 

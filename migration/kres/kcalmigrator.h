@@ -36,7 +36,6 @@ class KCalMigrator : public KResMigrator<KCal::ResourceCalendar>
   Q_OBJECT
   public:
     KCalMigrator();
-    ~KCalMigrator();
 
     void migrateResource( KCal::ResourceCalendar *res );
 

@@ -36,7 +36,6 @@ class KABCMigrator : public KResMigrator<KABC::Resource>
   Q_OBJECT
   public:
     KABCMigrator();
-    ~KABCMigrator();
 
     void migrateResource( KABC::Resource *res );
 
@@ -45,9 +44,6 @@ class KABCMigrator : public KResMigrator<KABC::Resource>
 
   private:
     void migrateFileResource( KABC::Resource *res );
-
-  private:
-    QHash<KJob*, KABC::Resource*> mJobMap;
 };
 
 #endif
