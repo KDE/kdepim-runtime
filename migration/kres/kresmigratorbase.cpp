@@ -40,6 +40,10 @@ KResMigratorBase::KResMigratorBase(const QString & type) :
     mType( type )
 {
   KGlobal::ref();
+
+  KConfigGroup cfg( KGlobal::config(), "Bridged" );
+  mPendingBridgedResources = cfg.readEntry( mType + "Resources", QStringList() );
+
   // load the vtable before we continue
   QTimer::singleShot( 0, this, SLOT(migrate()) );
 }
@@ -73,6 +77,17 @@ void KResMigratorBase::setMigrationState( KRES::Resource * res, MigrationState s
   QString stateStr = e.valueToKey( state );
   cfg.writeEntry( "MigrationState", stateStr );
   cfg.writeEntry( "ResourceIdentifier", resId );
+  cfg.sync();
+
+  cfg = KConfigGroup( KGlobal::config(), "Bridged" );
+  QStringList bridgedResources = cfg.readEntry( mType + "Resources", QStringList() );
+  if ( state == Bridged ) {
+    if ( !bridgedResources.contains( res->identifier() ) )
+      bridgedResources << res->identifier();
+  } else {
+    bridgedResources.removeAll( res->identifier() );
+  }
+  cfg.writeEntry( mType + "Resources", bridgedResources );
   cfg.sync();
 }
 
@@ -133,6 +148,11 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
 
   setMigrationState( res, Bridged, instance.identifier() );
   migrateNext();
+}
+
+void KResMigratorBase::setBridgingOnly(bool b)
+{
+  mBridgeOnly = b;
 }
 
 #include "kresmigratorbase.moc"

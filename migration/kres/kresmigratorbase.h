@@ -60,12 +60,16 @@ class KResMigratorBase : public QObject
 
     virtual KConfigGroup kresConfig( KRES::Resource* res ) const = 0;
 
+    void setBridgingOnly( bool b );
+
   protected slots:
     virtual void migrate() = 0;
 
   protected:
     QString mType;
     QHash<KJob*, KRES::Resource*> mJobResMap;
+    QStringList mPendingBridgedResources;
+    bool mBridgeOnly;
 
   private slots:
     void resourceBridgeCreated( KJob *job );

@@ -41,6 +41,13 @@ int main( int argc, char **argv )
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
+  KCmdLineOptions options;
+  options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
+  options.add( "contacts-only", ki18n("Only migrate contact resources") );
+  options.add( "calendar-only", ki18n("Only migrate calendar resources") );
+  KCmdLineArgs::addCmdLineOptions( options );
+  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
   KApplication app;
   app.setQuitOnLastWindowClosed( false );
 
@@ -48,8 +55,14 @@ int main( int argc, char **argv )
 
   Akonadi::Control::start();
 
-  new KABCMigrator();
-  new KCalMigrator();
+  if ( !args->isSet( "calendar-only" ) ) {
+    KABCMigrator *m = new KABCMigrator();
+    m->setBridgingOnly( args->isSet( "bridge-only" ) );
+  }
+  if ( !args->isSet( "contacts-only" ) ) {
+    KCalMigrator *m = new KCalMigrator();
+    m->setBridgingOnly( args->isSet( "bridge-only" ) );
+  }
 
   return app.exec();
 }

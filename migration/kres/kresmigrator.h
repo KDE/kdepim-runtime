@@ -35,7 +35,9 @@ template <typename T> class KResMigrator : public KResMigratorBase
   public:
     KResMigrator( const QString &type ) :
       KResMigratorBase( type ),
-      mConfig( 0 )
+      mConfig( 0 ),
+      mManager( 0 ),
+      mBridgeManager( 0 )
     {
     }
 
@@ -59,16 +61,56 @@ template <typename T> class KResMigrator : public KResMigratorBase
     {
       while ( mIt != mManager->end() ) {
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
-        if ( migrationState( *mIt ) != Complete ) {
+        if ( migrationState( *mIt ) == None ) {
+          mPendingBridgedResources.removeAll( (*mIt)->identifier() );
           T* res = *mIt;
           ++mIt;
           migrateResource( res );
           return;
         }
+        if ( migrationState( *mIt ) == Bridged && !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
+          mPendingBridgedResources << (*mIt)->identifier();
         ++mIt;
       }
-      if ( mIt == mManager->end() )
+      if ( mIt == mManager->end() ) {
+        delete mConfig;
+        mConfig = 0;
+        migrateBridged();
+      }
+    }
+
+    void migrateBridged()
+    {
+      delete mBridgeManager;
+      mBridgeManager = 0;
+
+      if ( mPendingBridgedResources.isEmpty() ) {
         deleteLater();
+        return;
+      }
+      const QString resId = mPendingBridgedResources.takeFirst();
+      KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
+      const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
+      if ( akoResId.isEmpty() ) {
+        kWarning() << "No Akonadi agent identifier specified for previously bridged resource!";
+        migrateNext();
+        return;
+      }
+
+      const QString bridgedCfgFile = KStandardDirs::locateLocal( "config", QString( "%1rc" ).arg( akoResId ) );
+      kDebug() << bridgedCfgFile;
+      mConfig = new KConfig( bridgedCfgFile );
+
+      KRES::Manager<T> *mBridgeManager = new KRES::Manager<T>( mType );
+      mBridgeManager->readConfig( mConfig );
+      if ( !mBridgeManager->standardResource() ) {
+        kWarning() << "Bridged resource" << resId << "has no standard kresource!";
+        migrateNext();
+        return;
+      }
+
+      T *res = mBridgeManager->standardResource();
+      migrateResource( res );
     }
 
     virtual void migrateResource( T *res ) = 0;
@@ -88,7 +130,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
   private:
     KConfig *mConfig;
-    KRES::Manager<T> *mManager;
+    KRES::Manager<T> *mManager, *mBridgeManager;
     typedef typename KRES::Manager<T>::Iterator ResourceIterator;
     ResourceIterator mIt;
 };
