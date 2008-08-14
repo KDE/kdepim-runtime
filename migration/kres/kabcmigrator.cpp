@@ -85,7 +85,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   iface->setPath( kresCfg.readPathEntry( "FileName", "" ) );
   iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
-  setMigrationState( res, Complete );
+  setMigrationState( res, Complete, instance.identifier() );
   migrateNext();
 }
 

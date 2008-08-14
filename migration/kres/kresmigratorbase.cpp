@@ -54,15 +54,25 @@ KResMigratorBase::MigrationState KResMigratorBase::migrationState(KRES::Resource
   KConfigGroup cfg( KGlobal::config(), "Resource " + res->identifier() );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
   const QString s = cfg.readEntry( "MigrationState", e.valueToKey( None ) );
-  return (MigrationState)e.keyToValue( s.toLatin1() );
+  MigrationState state = (MigrationState)e.keyToValue( s.toLatin1() );
+
+  if ( state != None ) {
+    const QString resId = cfg.readEntry( "ResourceIdentifier", "" );
+    // previously migrated but removed again
+    if ( !AgentManager::self()->instance( resId ).isValid() )
+      state = None;
+  }
+
+  return state;
 }
 
-void KResMigratorBase::setMigrationState(KRES::Resource * res, MigrationState state)
+void KResMigratorBase::setMigrationState( KRES::Resource * res, MigrationState state, const QString &resId )
 {
   KConfigGroup cfg( KGlobal::config(), "Resource " + res->identifier() );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
   QString stateStr = e.valueToKey( state );
   cfg.writeEntry( "MigrationState", stateStr );
+  cfg.writeEntry( "ResourceIdentifier", resId );
   cfg.sync();
 }
 
@@ -121,7 +131,7 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
 
   instance.reconfigure();
 
-  setMigrationState( res, Bridged );
+  setMigrationState( res, Bridged, instance.identifier() );
   migrateNext();
 }
 

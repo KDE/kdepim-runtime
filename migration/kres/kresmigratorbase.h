@@ -51,7 +51,7 @@ class KResMigratorBase : public QObject
     ~KResMigratorBase();
 
     MigrationState migrationState( KRES::Resource *res ) const;
-    void setMigrationState( KRES::Resource *res, MigrationState state );
+    void setMigrationState( KRES::Resource *res, MigrationState state, const QString &resId );
 
     void setResourceForJob( KJob* job, KRES::Resource *res );
 
