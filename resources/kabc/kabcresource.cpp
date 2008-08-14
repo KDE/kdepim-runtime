@@ -52,6 +52,7 @@ class KABCResource::ErrorHandler : public KABC::ErrorHandler
     QString mLastError;
 };
 
+// workaround to access protected method
 class KABCResource::AddressBook : public KABC::AddressBook
 {
   public:
@@ -72,10 +73,16 @@ KABCResource::KABCResource( const QString &id )
     mDelayedUpdateTimer( new QTimer( this ) ),
     mErrorHandler( new ErrorHandler( this ) )
 {
-  mAddressBook->setErrorHandler( mErrorHandler );
-
   mDelayedUpdateTimer->setInterval( 10 );
   mDelayedUpdateTimer->setSingleShot( true );
+
+  load();
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reload()) );
+}
+
+void KABCResource::load()
+{
+  mAddressBook->setErrorHandler( mErrorHandler );
 
   KSharedConfig::Ptr config = KGlobal::config();
   Q_ASSERT( !config.isNull() );
@@ -136,6 +143,9 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void KABCResource::aboutToQuit()
 {
+  if ( !mResource )
+    return;
+
   mErrorHandler->mLastError.clear();
 
   KABC::Ticket *ticket = mAddressBook->requestSaveTicket();
@@ -159,18 +169,14 @@ void KABCResource::configure( WId windowId )
 
   QWidget *window = 0; // should use windowId somehow
 
-  if ( mResource != 0 ) {
-    disconnect( mResource, SIGNAL( loadingFinished( Resource* ) ),
-                this, SLOT(loadingFinished( Resource* ) ) );
-    disconnect( mResource, SIGNAL( loadingError( Resource*, const QString& ) ),
-                this, SLOT(loadingError( Resource*, const QString& ) ) );
-
-    mAddressBook->removeResource( mResource );
-    mResource = 0;
-    mLoaded = false;
-  }
-
   KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
+
+  if ( mResource != 0 ) {
+    KRES::ConfigDialog dlg( window, QLatin1String( "contact" ), mResource );
+    if ( dlg.exec() )
+      manager->writeConfig( KGlobal::config().data() );
+    return;
+  }
 
   QStringList types = manager->resourceTypeNames();
   QStringList descs = manager->resourceTypeDescriptions();
@@ -375,6 +381,21 @@ void KABCResource::delayedUpdate()
   }
 
   itemsRetrieved( items );
+}
+
+void KABCResource::reload()
+{
+  kDebug();
+  KGlobal::config()->reparseConfiguration();
+  aboutToQuit();
+  delete mAddressBook;
+
+  mAddressBook = new AddressBook();
+  mResource = 0;
+  mLoaded = false;
+  mExplicitLoading = false;
+
+  load();
 }
 
 AKONADI_RESOURCE_MAIN( KABCResource )

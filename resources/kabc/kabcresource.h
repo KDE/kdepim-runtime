@@ -51,6 +51,9 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
+    void load();
+
+  private:
     class AddressBook;
     AddressBook *mAddressBook;
     KABC::Resource *mResource;
@@ -68,6 +71,7 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void loadingError( Resource *resource, const QString &message );
     void addressBookChanged();
     void delayedUpdate();
+    void reload();
 };
 
 #endif
