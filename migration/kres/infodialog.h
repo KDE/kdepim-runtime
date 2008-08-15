@@ -17,33 +17,31 @@
     02110-1301, USA.
 */
 
-#ifndef KABCMIGRATOR_H
-#define KABCMIGRATOR_H
+#ifndef INFODIALOG_H
+#define INFODIALOG_H
 
-#include "kresmigrator.h"
+#include <KDialog>
 
-#include <kabc/resource.h>
+class QListWidget;
 
-#include <QHash>
-
-class KJob;
-
-/**
- * Migrate KABC resources to Akonadi
- */
-class KABCMigrator : public KResMigrator<KABC::Resource>
+class InfoDialog : public KDialog
 {
   Q_OBJECT
   public:
-    KABCMigrator();
+    InfoDialog();
+    ~InfoDialog();
 
-    bool migrateResource( KABC::Resource *res );
+  public slots:
+    void successMessage( const QString &msg );
+    void infoMessage( const QString &msg );
+    void errorMessage( const QString &msg );
 
-  private slots:
-    void fileResourceCreated( KJob* job );
+    void migratorAdded();
+    void migratorDone();
 
   private:
-    void migrateFileResource( KABC::Resource *res );
+    QListWidget *mList;
+    int mMigratorCount;
 };
 
 #endif

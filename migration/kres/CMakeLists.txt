@@ -3,6 +3,7 @@ set(kres-migrator_srcs
     kabcmigrator.cpp
     kcalmigrator.cpp
     kresmigratorbase.cpp
+    infodialog.cpp
 )
 
 kcfg_generate_dbus_interface(${CMAKE_SOURCE_DIR}/akonadi/resources/vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)

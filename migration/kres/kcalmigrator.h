@@ -37,7 +37,7 @@ class KCalMigrator : public KResMigrator<KCal::ResourceCalendar>
   public:
     KCalMigrator();
 
-    void migrateResource( KCal::ResourceCalendar *res );
+    bool migrateResource( KCal::ResourceCalendar *res );
 
   private slots:
     void fileResourceCreated( KJob* job );

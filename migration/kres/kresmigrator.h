@@ -33,8 +33,8 @@
 template <typename T> class KResMigrator : public KResMigratorBase
 {
   public:
-    KResMigrator( const QString &type ) :
-      KResMigratorBase( type ),
+    KResMigrator( const QString &type, const QString &bridgeType ) :
+      KResMigratorBase( type, bridgeType ),
       mConfig( 0 ),
       mManager( 0 ),
       mBridgeManager( 0 )
@@ -62,14 +62,22 @@ template <typename T> class KResMigrator : public KResMigratorBase
       while ( mIt != mManager->end() ) {
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
         if ( migrationState( *mIt ) == None ) {
+          emit infoMessage( i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
           mPendingBridgedResources.removeAll( (*mIt)->identifier() );
           T* res = *mIt;
+          mCurrentKResource = res;
           ++mIt;
-          migrateResource( res );
+          bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
+          if ( !nativeAvailable ) {
+            emit infoMessage( i18n( "No native backend for '%1' available.", res->resourceName() ) );
+            migrateToBridge( res, mBridgeType );
+          }
           return;
         }
         if ( migrationState( *mIt ) == Bridged && !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
           mPendingBridgedResources << (*mIt)->identifier();
+        if ( migrationState( *mIt ) == Complete )
+          emit successMessage( i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
         ++mIt;
       }
       if ( mIt == mManager->end() ) {
@@ -110,22 +118,27 @@ template <typename T> class KResMigrator : public KResMigratorBase
       }
 
       T *res = mBridgeManager->standardResource();
-      migrateResource( res );
+      emit infoMessage( i18n( "Trying to migrate '%1' from compatibility bridge to native backend...", res->resourceName() ) );
+      mCurrentKResource = res;
+      bool nativeAvailable = migrateResource( res );
+      if ( !nativeAvailable ) {
+        emit successMessage( i18n( "No native backend avaiable, keeping compatibility bridge for '%1'", res->resourceName() ) );
+        migrateNext();
+      }
     }
 
-    virtual void migrateResource( T *res ) = 0;
+    virtual bool migrateResource( T *res ) = 0;
 
     KConfigGroup kresConfig( KRES::Resource* res ) const
     {
       return KConfigGroup( mConfig, "Resource_" + res->identifier() );
     }
 
-    T* resourceForJob( KJob *job )
+    T* currentResource()
     {
-      if ( mJobResMap.contains( job ) )
-        return static_cast<T*>( mJobResMap.value( job ) );
-      Q_ASSERT( false );
-      return 0;
+      T* res = dynamic_cast<T*>( mCurrentKResource );
+      Q_ASSERT( res );
+      return res;
     }
 
   private:

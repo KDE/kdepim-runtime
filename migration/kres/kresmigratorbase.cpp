@@ -36,8 +36,10 @@
 
 using namespace Akonadi;
 
-KResMigratorBase::KResMigratorBase(const QString & type) :
-    mType( type )
+KResMigratorBase::KResMigratorBase(const QString & type, const QString &bridgeType) :
+    mType( type ),
+    mBridgeType( bridgeType ),
+    mCurrentKResource( 0 )
 {
   KGlobal::ref();
 
@@ -91,11 +93,6 @@ void KResMigratorBase::setMigrationState( KRES::Resource * res, MigrationState s
   cfg.sync();
 }
 
-void KResMigratorBase::setResourceForJob(KJob * job, KRES::Resource * res)
-{
-  mJobResMap.insert( job, res );
-}
-
 void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typeId)
 {
   kDebug() << res->type() << res->identifier() << typeId;
@@ -105,6 +102,7 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
     return;
   }
 
+  emit infoMessage( i18n( "Trying to migragte '%1' to compatibility bridge...", res->resourceName() ) );
   const AgentType type = AgentManager::self()->type( typeId );
   if ( !type.isValid() ) {
     kDebug() << "Unable to obtain kabc bridge resource type!" << typeId;
@@ -112,7 +110,6 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   connect( job, SIGNAL(result(KJob*)), SLOT(resourceBridgeCreated(KJob*)) );
-  setResourceForJob( job, res );
   job->start();
 }
 
@@ -124,7 +121,7 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
     migrateNext();
     return;
   }
-  KRES::Resource *res = mJobResMap.value( job );
+  KRES::Resource *res = mCurrentKResource;
   Q_ASSERT( res );
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
@@ -145,14 +142,46 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
   delete akoResConfig;
 
   instance.reconfigure();
-
-  setMigrationState( res, Bridged, instance.identifier() );
-  migrateNext();
+  migratedToBridge( instance );
 }
 
 void KResMigratorBase::setBridgingOnly(bool b)
 {
   mBridgeOnly = b;
+}
+
+void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instance )
+{
+  // check if this one was previously bridged and remove the bridge
+  KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
+  const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
+  if ( bridgeId != instance.identifier() ) {
+    const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
+    AgentManager::self()->removeInstance( bridge );
+  }
+
+  setMigrationState( mCurrentKResource, Complete, instance.identifier() );
+  emit successMessage( i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+  mCurrentKResource = 0;
+  migrateNext();
+}
+
+void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
+{
+  setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
+  emit successMessage( i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
+  mCurrentKResource = 0;
+  migrateNext();
+}
+
+void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::AgentInstance & instance)
+{
+  emit errorMessage( i18n( "Migration of '%1' failed: %2", mCurrentKResource->resourceName(), errorMsg ) );
+  if ( instance.isValid() ) {
+    AgentManager::self()->removeInstance( instance );
+  }
+  mCurrentKResource = 0;
+  migrateNext();
 }
 
 #include "kresmigratorbase.moc"

@@ -20,9 +20,10 @@
 #ifndef KRESMIGRATORBASE_H
 #define KRESMIGRATORBASE_H
 
+#include <akonadi/agentinstance.h>
+
 #include <KConfigGroup>
 
-#include <QHash>
 #include <QObject>
 
 namespace KRES {
@@ -47,13 +48,10 @@ class KResMigratorBase : public QObject
 
     Q_ENUMS( MigrationState )
 
-    KResMigratorBase( const QString &type );
+    KResMigratorBase( const QString &type, const QString &bridgeType );
     ~KResMigratorBase();
 
     MigrationState migrationState( KRES::Resource *res ) const;
-    void setMigrationState( KRES::Resource *res, MigrationState state, const QString &resId );
-
-    void setResourceForJob( KJob* job, KRES::Resource *res );
 
     virtual void migrateNext() = 0;
     void migrateToBridge( KRES::Resource* res, const QString &typeId );
@@ -62,14 +60,27 @@ class KResMigratorBase : public QObject
 
     void setBridgingOnly( bool b );
 
+    void migrationCompleted( const Akonadi::AgentInstance &instance );
+    void migratedToBridge( const Akonadi::AgentInstance &instance );
+    void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
+
+  signals:
+    void successMessage( const QString &msg );
+    void infoMessage( const QString &msg );
+    void errorMessage( const QString &msg );
+
   protected slots:
     virtual void migrate() = 0;
 
   protected:
     QString mType;
-    QHash<KJob*, KRES::Resource*> mJobResMap;
+    QString mBridgeType;
     QStringList mPendingBridgedResources;
     bool mBridgeOnly;
+    KRES::Resource *mCurrentKResource;
+
+  private:
+    void setMigrationState( KRES::Resource *res, MigrationState state, const QString &resId );
 
   private slots:
     void resourceBridgeCreated( KJob *job );

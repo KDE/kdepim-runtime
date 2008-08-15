@@ -19,6 +19,7 @@
 
 #include "kabcmigrator.h"
 #include "kcalmigrator.h"
+#include "infodialog.h"
 
 #include <akonadi/control.h>
 
@@ -26,6 +27,17 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kglobal.h>
+
+void connectMigrator( KResMigratorBase *m, InfoDialog *dlg )
+{
+  if ( !dlg || !m )
+    return;
+  dlg->migratorAdded();
+  QObject::connect( m, SIGNAL(successMessage(QString)), dlg, SLOT(successMessage(QString)) );
+  QObject::connect( m, SIGNAL(infoMessage(QString)), dlg, SLOT(infoMessage(QString)) );
+  QObject::connect( m, SIGNAL(errorMessage(QString)), dlg, SLOT(errorMessage(QString)) );
+  QObject::connect( m, SIGNAL(destroyed()), dlg, SLOT(migratorDone()) );
+}
 
 int main( int argc, char **argv )
 {
@@ -45,6 +57,7 @@ int main( int argc, char **argv )
   options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
   options.add( "contacts-only", ki18n("Only migrate contact resources") );
   options.add( "calendar-only", ki18n("Only migrate calendar resources") );
+  options.add( "interactive", ki18n( "Do not show reporting dialog") );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
@@ -55,13 +68,21 @@ int main( int argc, char **argv )
 
   Akonadi::Control::start();
 
+  InfoDialog *infoDialog = 0;
+  if ( args->isSet( "interactive" ) ) {
+    infoDialog = new InfoDialog();
+    infoDialog->show();
+  }
+
   if ( !args->isSet( "calendar-only" ) ) {
     KABCMigrator *m = new KABCMigrator();
     m->setBridgingOnly( args->isSet( "bridge-only" ) );
+    connectMigrator( m, infoDialog );
   }
   if ( !args->isSet( "contacts-only" ) ) {
     KCalMigrator *m = new KCalMigrator();
     m->setBridgingOnly( args->isSet( "bridge-only" ) );
+    connectMigrator( m, infoDialog );
   }
 
   return app.exec();
