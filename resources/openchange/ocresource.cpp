@@ -1398,10 +1398,11 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
 
   KCal::Todo *todo = new KCal::Todo;
   const FILETIME* date = (const FILETIME*) messageProperties[0x811e0040];
+  KDateTime startTime;
   if ( date ) {
-    KDateTime dateTime = convertSysTime( *date );
-    dateTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
-    todo->setDtStart( dateTime );
+    startTime = convertSysTime( *date );
+    startTime.setTimeSpec( KDateTime::Spec( KDateTime::UTC ) );
+    todo->setDtStart( startTime );
     todo->setHasStartDate( true );
     date = NULL;
   }
@@ -1538,6 +1539,11 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
     }
   }
   ui8 = NULL;
+
+  const SBinary_short* binData = (const SBinary_short*) messageProperties[0x81360102];
+  if ( binData ) {
+    appendRecurrenceToEvent( binData->lpb, todo->recurrence(), startTime ); // TODO: Use message startTime for now.
+  }
 
   item.setPayload( IncidencePtr( dynamic_cast<KCal::Incidence*>( todo ) ) );
 }
