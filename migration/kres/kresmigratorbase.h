@@ -85,6 +85,9 @@ class KResMigratorBase : public QObject
   private slots:
     void resourceBridgeCreated( KJob *job );
 
+  private:
+    bool mBridgingInProgress;
+
 };
 
 #endif

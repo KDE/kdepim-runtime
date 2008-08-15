@@ -50,12 +50,12 @@ void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
  if ( kresCfg.readEntry( "Format", "" ) != "ical" ) {
-    kDebug() << "Unsupported file format found!";
+    migrationFailed( "Unsupported file format found." );
     return;
   }
   const AgentType type = AgentManager::self()->type( "akonadi_ical_resource" );
   if ( !type.isValid() ) {
-    kDebug() << "Unable to obtain ical resource type!";
+    migrationFailed( "Unable to obtain ical resource type" );
     return;
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
@@ -66,7 +66,7 @@ void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 void KCalMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    kDebug() << "Failed to create ical resource!";
+    migrationFailed( "Failed to create resource: " + job->errorText() );
     return;
   }
   KCal::ResourceCalendar *res = currentResource();
@@ -77,7 +77,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiICalSettingsInterface *iface = new OrgKdeAkonadiICalSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    kDebug() << "Failed to obtain dbus interface for resource configuration!";
+    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
   // TODO: the akonadi ical resource doesn't support remote files yet...

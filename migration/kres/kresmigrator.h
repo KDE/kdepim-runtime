@@ -100,7 +100,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
-        kWarning() << "No Akonadi agent identifier specified for previously bridged resource!";
+        emit errorMessage( "No Akonadi agent identifier specified for previously bridged resource '" + resId + "'" );
         migrateNext();
         return;
       }
@@ -112,7 +112,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       KRES::Manager<T> *mBridgeManager = new KRES::Manager<T>( mType );
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
-        kWarning() << "Bridged resource" << resId << "has no standard kresource!";
+        emit errorMessage( "Bridged resource '" + resId + "' has no standard resource." );
         migrateNext();
         return;
       }

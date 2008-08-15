@@ -53,7 +53,7 @@ void InfoDialog::infoMessage(const QString & msg)
 
 void InfoDialog::errorMessage(const QString & msg)
 {
-  new QListWidgetItem( KIcon( "dialog-errror" ), msg, mList );
+  new QListWidgetItem( KIcon( "dialog-error" ), msg, mList );
 }
 
 void InfoDialog::migratorAdded()

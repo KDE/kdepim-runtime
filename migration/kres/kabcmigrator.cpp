@@ -50,12 +50,12 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
   if ( kresCfg.readEntry( "FileFormat", "" ) != "vcard" ) {
-    kDebug() << "Unsupported file format found!";
+    migrationFailed( "Unsupported file format found." );
     return;
   }
   const AgentType type = AgentManager::self()->type( "akonadi_vcard_resource" );
   if ( !type.isValid() ) {
-    kDebug() << "Unable to obtain vcard resource type!";
+    migrationFailed( "Unable to obtain vcard resource type." );
     return;
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
@@ -66,7 +66,7 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
 void KABCMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    kDebug() << "Failed to create vcard resource!";
+    migrationFailed( "Failed to create resource: " + job->errorText() );
     return;
   }
   KABC::Resource *res = currentResource();
@@ -77,7 +77,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    kDebug() << "Failed to obtain dbus interface for resource configuration!";
+    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "FileName", "" ) );

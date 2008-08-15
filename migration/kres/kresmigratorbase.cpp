@@ -39,7 +39,8 @@ using namespace Akonadi;
 KResMigratorBase::KResMigratorBase(const QString & type, const QString &bridgeType) :
     mType( type ),
     mBridgeType( bridgeType ),
-    mCurrentKResource( 0 )
+    mCurrentKResource( 0 ),
+    mBridgingInProgress( false )
 {
   KGlobal::ref();
 
@@ -103,9 +104,10 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
   }
 
   emit infoMessage( i18n( "Trying to migragte '%1' to compatibility bridge...", res->resourceName() ) );
+  mBridgingInProgress = true;
   const AgentType type = AgentManager::self()->type( typeId );
   if ( !type.isValid() ) {
-    kDebug() << "Unable to obtain kabc bridge resource type!" << typeId;
+    migrationFailed( i18n( "Unable to obtain bridge type '%1'.", mBridgeType ) );
     return;
   }
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
@@ -117,8 +119,8 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
 {
   kDebug();
   if ( job->error() ) {
-    kWarning() << "Unable to create KResource bridge resource!";
-    migrateNext();
+    migrationFailed( i18n( "Unable to create compatibility bridge: %1",
+                     mCurrentKResource->resourceName(), job->errorText() ) );
     return;
   }
   KRES::Resource *res = mCurrentKResource;
@@ -168,6 +170,7 @@ void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instanc
 
 void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
 {
+  mBridgingInProgress = false;
   setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
   emit successMessage( i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
   mCurrentKResource = 0;
@@ -176,10 +179,25 @@ void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
 
 void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::AgentInstance & instance)
 {
-  emit errorMessage( i18n( "Migration of '%1' failed: %2", mCurrentKResource->resourceName(), errorMsg ) );
+  if ( mBridgingInProgress ) {
+    emit errorMessage( i18n( "Migration of '%1' to compatibility bridge failed: %2",
+                       mCurrentKResource->resourceName(), errorMsg ) );
+  } else {
+    emit errorMessage( i18n( "Migration of '%1' to native backend failed: %2",
+                       mCurrentKResource->resourceName(), errorMsg ) );
+  }
+
   if ( instance.isValid() ) {
     AgentManager::self()->removeInstance( instance );
   }
+
+  // native backend failed, try the bridge instead
+  if ( !mBridgingInProgress && mCurrentKResource ) {
+    migrateToBridge( mCurrentKResource, mBridgeType );
+    return;
+  }
+
+  mBridgingInProgress = false;
   mCurrentKResource = 0;
   migrateNext();
 }
