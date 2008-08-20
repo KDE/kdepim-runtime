@@ -62,6 +62,6 @@ Comment[zh_TW]=將信件串列起來的代理程式
 Type=AkonadiAgent
 Exec=akonadi_mailthreader_agent
 
-X-Akonadi-MimeTypes=text/directory
+X-Akonadi-MimeTypes=message/rfc822,message/news
 X-Akonadi-Capabilities=Unique,Autostart
 X-Akonadi-Identifier=akonadi_mailthreader_agent
