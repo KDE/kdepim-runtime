@@ -22,6 +22,8 @@
 #include "resourceakonadiconfig.h"
 
 #include <akonadi/collection.h>
+#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collectionmodel.h>
 #include <akonadi/control.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
@@ -29,6 +31,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemsync.h>
+#include <akonadi/transactionsequence.h>
 
 #include <kdebug.h>
 #include <kconfiggroup.h>
@@ -41,11 +44,50 @@ using namespace KABC;
 typedef QMap<Item::Id, Item> ItemMap;
 typedef QHash<QString, Item::Id> IdHash;
 
+class SubResource
+{
+  public:
+    SubResource( const Collection &collection )
+        : mCollection( collection ), mLabel( collection.name() ),
+          mActive(true), mCompletionWeight(80)
+    {
+    }
+
+    // TODO: need to use KConfigGroup instead
+    // or probably a collection attribute?
+    void setActive( bool active )
+    {
+      mActive = active;
+    }
+
+    bool isActive() const { return mActive; }
+
+    bool isWritable() const { return mCollection.rights() != Collection::ReadOnly; }
+
+    void setCompletionWeight( int weight )
+    {
+      mCompletionWeight = weight;
+    }
+
+    int completionWeight() const { return mCompletionWeight; }
+
+  public:
+    Collection mCollection;
+    QString mLabel;
+
+    bool mActive;
+    int  mCompletionWeight;
+};
+
+typedef QHash<QString, SubResource*> SubResourceMap;
+
+typedef QMap<QString, QString> UidResourceMap;
+
 class ResourceAkonadi::Private
 {
   public:
     Private( ResourceAkonadi *parent )
-      : mParent( parent ), mMonitor( 0 )
+      : mParent( parent ), mMonitor( 0 ), mCollectionModel( 0 ), mCollectionFilterModel( 0 )
     {
     }
 
@@ -54,35 +96,40 @@ class ResourceAkonadi::Private
 
     Monitor *mMonitor;
 
-    Collection mCollection;
-    ItemMap    mItems;
-    IdHash     mIdMapping;
+    ItemMap mItems;
+    IdHash  mIdMapping;
+
+    CollectionModel *mCollectionModel;
+    CollectionFilterProxyModel *mCollectionFilterModel;
+
+    SubResourceMap mSubResources;
+
+    UidResourceMap mUidToResourceMap;
+
+    QHash<Akonadi::Job*, QString> mJobToResourceMap;
 
   public:
+    void subResourceLoadResult( KJob *job );
+
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved( const Akonadi::Item &item );
+
+    void collectionRowsInserted( const QModelIndex &parent, int start, int end );
+    void collectionRowsRemoved( const QModelIndex &parent, int start, int end );
 
     KJob *createSaveSequence() const;
 };
 
 ResourceAkonadi::ResourceAkonadi()
-  : Resource(), d( new Private( this ) )
+  : ResourceABC(), d( new Private( this ) )
 {
   init();
 }
 
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
-  : Resource( group ), d( new Private( this ) )
+  : ResourceABC( group ), d( new Private( this ) )
 {
-  KUrl url = group.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
-
-  if ( !url.isValid() ) {
-    // TODO error handling
-  } else {
-    d->mCollection = Collection::fromUrl( url );
-  }
-
   init();
 }
 
@@ -95,11 +142,46 @@ void ResourceAkonadi::init()
 {
   // TODO: might be better to do this already in the resource factory
   Akonadi::Control::start();
+}
+
+void ResourceAkonadi::clear()
+{
+  // clear local caches
+  d->mItems.clear();
+  d->mIdMapping.clear();
+
+  qDeleteAll( d->mSubResources );
+  d->mSubResources.clear();
+
+  ResourceABC::clear();
+}
+
+void ResourceAkonadi::writeConfig( KConfigGroup &group )
+{
+  ResourceABC::writeConfig( group );
+}
+
+bool ResourceAkonadi::doOpen()
+{
+  // if already connected, ignore
+  if ( d->mCollectionFilterModel != 0 )
+    return true;
+
+  // TODO: probably check if Akonadi is running
+
+  d->mCollectionModel = new CollectionModel( this );
+
+  d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
+  d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+
+  connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
+  connect( d->mCollectionFilterModel, SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionRowsRemoved( const QModelIndex&, int, int ) ) );
+
+  d->mCollectionFilterModel->setSourceModel( d->mCollectionModel );
 
   d->mMonitor = new Monitor( this );
-
-  // deactivate reacting to changes, will be enabled in doOpen()
-  d->mMonitor->blockSignals( true );
 
   d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
   d->mMonitor->itemFetchScope().fetchFullPayload();
@@ -118,48 +200,25 @@ void ResourceAkonadi::init()
            SIGNAL( itemRemoved( const Akonadi::Item& ) ),
            this,
            SLOT( itemRemoved( const Akonadi::Item& ) ) );
-}
-
-void ResourceAkonadi::clear()
-{
-  // clear local caches
-  d->mItems.clear();
-  d->mIdMapping.clear();
-
-  Resource::clear();
-}
-
-void ResourceAkonadi::writeConfig( KConfigGroup &group )
-{
-  group.writeEntry( QLatin1String( "CollectionUrl" ), d->mCollection.url() );
-
-  Resource::writeConfig( group );
-}
-
-bool ResourceAkonadi::doOpen()
-{
-  if ( !d->mCollection.isValid() )
-    return false;
-
-  // TODO: probably check here if collection exists
-
-  d->mMonitor->setCollectionMonitored( d->mCollection );
-
-  // activate reacting to changes
-  d->mMonitor->blockSignals( false );
 
   return true;
 }
 
 void ResourceAkonadi::doClose()
 {
-  // deactivate reacting to changes
-  d->mMonitor->blockSignals( true );
+  delete d->mMonitor;
+  d->mMonitor = 0;
+  delete d->mCollectionFilterModel;
+  d->mCollectionFilterModel = 0;
+  delete d->mCollectionModel;
+  d->mCollectionModel = 0;
 
   // clear local caches
   mAddrMap.clear();
   d->mItems.clear();
   d->mIdMapping.clear();
+  d->mUidToResourceMap.clear();
+  d->mJobToResourceMap.clear();
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
@@ -183,30 +242,32 @@ bool ResourceAkonadi::load()
 
   clear();
 
-  ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchScope().fetchFullPayload();
-
-  if ( !job->exec() ) {
-    // TODO: error handling
-    return false;
-  }
-
-  Item::List items = job->items();
-
-  kDebug(5700) << "Item fetch produced" << items.count() << "items";
-
-  foreach ( const Item& item, items ) {
-    if ( item.hasPayload<Addressee>() ) {
-      Addressee addressee = item.payload<Addressee>();
-      addressee.setResource( this );
-
-      const Item::Id id = item.id();
-      d->mIdMapping.insert( addressee.uid(), id );
-
-      mAddrMap.insert( addressee.uid(), addressee );
-      d->mItems.insert( id, item );
-    }
-  }
+  // TODO: synchronous loading needs a different approach than
+  // using the collection model
+//   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
+//   job->fetchScope().fetchFullPayload();
+//
+//   if ( !job->exec() ) {
+//     // TODO: error handling
+//     return false;
+//   }
+//
+//   Item::List items = job->items();
+//
+//   kDebug(5700) << "Item fetch produced" << items.count() << "items";
+//
+//   foreach ( const Item& item, items ) {
+//     if ( item.hasPayload<Addressee>() ) {
+//       Addressee addressee = item.payload<Addressee>();
+//       addressee.setResource( this );
+//
+//       const Item::Id id = item.id();
+//       d->mIdMapping.insert( addressee.uid(), id );
+//
+//       mAddrMap.insert( addressee.uid(), addressee );
+//       d->mItems.insert( id, item );
+//     }
+//   }
 
   return true;
 }
@@ -215,12 +276,13 @@ bool ResourceAkonadi::asyncLoad()
 {
   clear();
 
-  ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-  job->fetchScope().fetchFullPayload();
-
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
-
-  job->start();
+  // TODO: re-fetch items
+//   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
+//   job->fetchScope().fetchFullPayload();
+//
+//   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
+//
+//   job->start();
 
   return true;
 }
@@ -261,7 +323,8 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
-  Resource::insertAddressee( addr );
+  // TODO: need to ask which sub resource it should be put into
+  ResourceABC::insertAddressee( addr );
 }
 
 void ResourceAkonadi::removeAddressee( const Addressee &addr )
@@ -271,25 +334,84 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
   if ( findIt == mAddrMap.end() )
     return;
 
-  Resource::removeAddressee( addr );
+  d->mUidToResourceMap.remove( addr.uid() );
+
+  ResourceABC::removeAddressee( addr );
 }
 
-void ResourceAkonadi::setCollection( const Collection &collection )
+bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 {
-  if ( collection == d->mCollection )
-    return;
+  kDebug(5700) << "subResource" << subResource;
 
-  if ( isOpen() ) {
-    kError(5700) << "Trying to change collection while resource is open";
-    return;
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 )
+    return resource->isActive();
+
+  return false;
+}
+
+bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
+{
+  kDebug(5700) << "subResource" << subResource;
+
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 )
+    return resource->isWritable();
+
+  return false;
+}
+
+QString ResourceAkonadi::subresourceLabel( const QString &subResource ) const
+{
+  kDebug(5700) << "subResource" << subResource;
+
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 )
+    return resource->mLabel;
+
+  return false;
+}
+
+int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) const
+{
+  kDebug(5700) << "subResource" << subResource;
+
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 )
+    return resource->completionWeight();
+
+  return false;
+}
+
+QStringList ResourceAkonadi::subresources() const
+{
+  QSet<QString> uniqueValues = QSet<QString>::fromList( d->mUidToResourceMap.values() );
+  return uniqueValues.toList();
+}
+
+QMap<QString, QString> ResourceAkonadi::uidToResourceMap() const
+{
+  return d->mUidToResourceMap;
+}
+
+void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
+{
+  kDebug(5700) << "subResource" << subResource << ", active" << active;
+
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 ) {
+    resource->setActive( active );
+    // TODO: add/remove addressees?
   }
-
-  d->mCollection = collection;
 }
 
-Collection ResourceAkonadi::collection() const
+void ResourceAkonadi::setSubresourceCompletionWeight( const QString &subResource, int weight )
 {
-  return d->mCollection;
+  kDebug(5700) << "subResource" << subResource << ", weight" << weight;
+
+  SubResource *resource = d->mSubResources[ subResource ];
+  if ( resource != 0 )
+    resource->setCompletionWeight( weight );
 }
 
 void ResourceAkonadi::loadResult( KJob *job )
@@ -331,11 +453,48 @@ void ResourceAkonadi::saveResult( KJob *job )
   }
 }
 
+void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    emit mParent->loadingError( mParent, job->errorString() );
+    return;
+  }
+
+  ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob != 0 );
+
+  const QString collectionUrl = mJobToResourceMap.take( fetchJob );
+  Q_ASSERT( !collectionUrl.isEmpty() );
+
+  Item::List items = fetchJob->items();
+
+  kDebug(5700) << "Item fetch for sub resource " << collectionUrl
+               << "produced" << items.count() << "items";
+
+  foreach ( const Item& item, items ) {
+    if ( item.hasPayload<Addressee>() ) {
+      Addressee addressee = item.payload<Addressee>();
+      addressee.setResource( mParent );
+
+      const Item::Id id = item.id();
+      mIdMapping.insert( addressee.uid(), id );
+
+      mParent->mAddrMap.insert( addressee.uid(), addressee );
+      mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+      mItems.insert( id, item );
+    }
+  }
+
+  mParent->addressBook()->emitAddressBookChanged();
+  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "Contact" ), collectionUrl );
+}
+
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
                                           const Akonadi::Collection &collection )
 {
   kDebug(5700);
-  if ( collection != mCollection )
+  SubResource *subResource = mSubResources[ collection.url().url() ];
+  if ( subResource == 0 )
     return;
 
   if ( !item.hasPayload<Addressee>() ) {
@@ -350,6 +509,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   const Item::Id id = item.id();
   mIdMapping.insert( addressee.uid(), id );
+  mUidToResourceMap.insert( addressee.uid(), collection.url().url() );
 
   mItems.insert( id, item );
 
@@ -448,6 +608,8 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &_item )
   }
 
   mItems.erase( itemIt );
+  mIdMapping.remove( uid );
+  mUidToResourceMap.remove( uid );
 
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( uid );
 
@@ -463,9 +625,67 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &_item )
   mParent->addressBook()->emitAddressBookChanged();
 }
 
+void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent, int start, int end )
+{
+  kDebug(5700) << "start" << start << ", end" << end;
+
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
+    if ( index.isValid() ) {
+      QVariant data = mCollectionFilterModel->data( index , CollectionModel::CollectionRole );
+      if ( data.isValid() ) {
+        // TODO: ignore virtual collections, since they break Uid to Resource mapping
+        // and the application can't handle them anyway
+        Collection collection = data.value<Collection>();
+        if ( collection.isValid() ) {
+          SubResource *subResource = new SubResource( collection );
+          mSubResources.insert( collection.url().url(), subResource );
+          kDebug(5700) << "Adding subResource" << subResource->mLabel
+                       << "for collection" << collection.url();
+
+          ItemFetchJob *job = new ItemFetchJob( collection );
+          job->fetchScope().fetchFullPayload();
+
+          connect( job, SIGNAL( result( KJob* ) ),
+                   mParent, SLOT( subResourceLoadResult( KJob* ) ) );
+
+          mJobToResourceMap.insert( job, collection.url().url() );
+        }
+      }
+    }
+  }
+}
+
+void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent, int start, int end )
+{
+  kDebug(5700) << "start" << start << ", end" << end;
+
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
+    if ( index.isValid() ) {
+      QVariant data = mCollectionFilterModel->data( index , CollectionModel::CollectionRole );
+      if ( data.isValid() ) {
+        Collection collection = data.value<Collection>();
+        if ( collection.isValid() ) {
+          SubResource* subResource = mSubResources.take( collection.url().url() );
+          if ( subResource != 0 )
+          {
+            // TODO: remove addressees?
+            mParent->addressBook()->emitAddressBookChanged();
+
+            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "Contact" ), collection.url().url() );
+
+            delete subResource;
+          }
+        }
+      }
+    }
+  }
+}
+
 KJob *ResourceAkonadi::Private::createSaveSequence() const
 {
-  Item::List items;
+  QHash<QString, Item::List> itemLists;
 
   Addressee::Map::const_iterator addrIt    = mParent->mAddrMap.begin();
   Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.end();
@@ -479,23 +699,34 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
       itemIt = mItems.find( idIt.value() );
     }
 
+    const QString subResourceId = mUidToResourceMap[ addressee.uid() ];
+
     if ( itemIt == mItems.end() ) {
       Item item( QLatin1String( "text/directory" ) );
       item.setPayload<Addressee>( addressee );
 
-      items << item;
+      itemLists[ subResourceId ] << item;
     } else {
       Item item = itemIt.value();
       item.setPayload<Addressee>( addressee );
 
-      items << item;
+      itemLists[ subResourceId ] << item;
     }
   }
 
-  ItemSync *job = new ItemSync( mCollection );
-  job->setFullSyncItems( items );
+  TransactionSequence *sequence = new TransactionSequence();
 
-  return job;
+  QHash<QString, Item::List>::const_iterator listIt    = itemLists.begin();
+  QHash<QString, Item::List>::const_iterator listEndIt = itemLists.end();
+  for ( ; listIt != listEndIt; ++listIt ) {
+    SubResource *subResource = mSubResources[ listIt.key() ];
+    Q_ASSERT( subResource != 0 );
+
+    ItemSync *job = new ItemSync( subResource->mCollection, sequence );
+    job->setFullSyncItems( listIt.value() );
+  }
+
+  return sequence;
 }
 
 #include "resourceakonadi.moc"

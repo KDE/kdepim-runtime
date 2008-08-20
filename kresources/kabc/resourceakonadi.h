@@ -21,9 +21,10 @@
 #ifndef KABC_RESOURCEAKONADI_H
 #define KABC_RESOURCEAKONADI_H
 
-#include "kabc/resource.h"
+#include "kabc/resourceabc.h"
 
 class KJob;
+class QModelIndex;
 
 namespace Akonadi {
   class Collection;
@@ -32,7 +33,7 @@ namespace Akonadi {
 
 namespace KABC {
 
-class ResourceAkonadi : public Resource
+class ResourceAkonadi : public ResourceABC
 {
   Q_OBJECT
 
@@ -64,8 +65,19 @@ class ResourceAkonadi : public Resource
     virtual void insertAddressee( const Addressee &addr );
     virtual void removeAddressee( const Addressee &addr );
 
-    void setCollection( const Akonadi::Collection& collection );
-    Akonadi::Collection collection() const;
+    virtual bool subresourceActive( const QString &subResource ) const;
+    virtual bool subresourceWritable( const QString &subResource ) const;
+    virtual QString subresourceLabel( const QString &subResource ) const;
+    virtual int subresourceCompletionWeight( const QString &subResource ) const;
+    virtual QStringList subresources() const;
+    virtual QMap<QString, QString> uidToResourceMap() const;
+
+//     void setCollection( const Akonadi::Collection& collection );
+//     Akonadi::Collection collection() const;
+
+  public Q_SLOTS:
+    virtual void setSubresourceActive( const QString &subResource, bool active );
+    virtual void setSubresourceCompletionWeight( const QString &subResource, int weight );
 
   protected Q_SLOTS:
     void loadResult( KJob *job );
@@ -75,9 +87,14 @@ class ResourceAkonadi : public Resource
     class Private;
     Private *const d;
 
+    Q_PRIVATE_SLOT( d, void subResourceLoadResult( KJob* ) )
+
     Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
     Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
+
+    Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
+    Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
 };
 
 }

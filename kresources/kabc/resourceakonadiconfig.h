@@ -23,13 +23,6 @@
 
 #include "kresources/configwidget.h"
 
-namespace Akonadi{
-  class Collection;
-  class CollectionView;
-}
-
-class QModelIndex;
-
 namespace KABC {
 
 class ResourceAkonadiConfig : public KRES::ConfigWidget
@@ -42,15 +35,6 @@ class ResourceAkonadiConfig : public KRES::ConfigWidget
   public Q_SLOTS:
     void loadSettings( KRES::Resource *resource );
     void saveSettings( KRES::Resource *resource );
-
-  private:
-    int mCollectionId;
-
-    Akonadi::CollectionView *mView;
-
-  private Q_SLOTS:
-    void collectionChanged( const Akonadi::Collection& collection );
-    void rowsInserted( const QModelIndex &parent, int start, int end );
 };
 
 }

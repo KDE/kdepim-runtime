@@ -21,45 +21,30 @@
 #include "resourceakonadiconfig.h"
 #include "resourceakonadi.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionfilterproxymodel.h>
-#include <akonadi/collectionmodel.h>
-#include <akonadi/collectionview.h>
-
 #include <kdebug.h>
 #include <kdialog.h>
 #include <kconfig.h>
+#include <kcmoduleloader.h>
 
 #include <QLayout>
 
-using namespace Akonadi;
 using namespace KABC;
 
 ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
-  : KRES::ConfigWidget( parent ), mView( 0 )
+  : KRES::ConfigWidget( parent )
 {
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
   mainLayout->setMargin( 0 );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
-  mView = new CollectionView( 0, this );
-  mView->setSelectionMode( QAbstractItemView::SingleSelection );
+  // list of contact data MIME types
+  // TODO: check if we need to add text/x-vcard
+  QStringList list;
+  list << "text/directory";
 
-  mainLayout->addWidget( mView );
-
-  connect( mView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
-           this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
-
-  CollectionModel *sourceModel = new CollectionModel( this );
-
-  CollectionFilterProxyModel *filterModel = new CollectionFilterProxyModel( this );
-  filterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
-  filterModel->setSourceModel( sourceModel );
-
-  mView->setModel( filterModel );
-
-  connect( mView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-           this, SLOT( rowsInserted( const QModelIndex&, int, int ) ) );
+  QWidget *widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
+                                                KCModuleLoader::Inline, this, list );
+  mainLayout->addWidget( widget );
 }
 
 void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
@@ -70,29 +55,6 @@ void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
     kDebug(5700) << "cast failed";
     return;
   }
-
-  Collection collection = resource->collection();
-
-  mCollectionId = collection.id();
-
-  QAbstractItemModel *model = mView->model();
-
-  const int rowCount = model->rowCount();
-
-  for ( int row = 0; row < rowCount; ++row ) {
-    QModelIndex index = model->index( row, 0, mView->rootIndex() );
-    if ( !index.isValid() )
-      continue;
-
-    QVariant data = model->data( index, CollectionModel::CollectionIdRole );
-    if ( !data.isValid() )
-      continue;
-
-    if ( data.toInt() == mCollectionId ) {
-      mView->setCurrentIndex( index );
-      return;
-    }
-  }
 }
 
 void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
@@ -102,33 +64,6 @@ void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
   if ( !resource ) {
     kDebug(5700) << "cast failed";
     return;
-  }
-
-  resource->setCollection( Collection( mCollectionId ) );
-}
-
-void ResourceAkonadiConfig::collectionChanged( const Akonadi::Collection& collection )
-{
-  mCollectionId = collection.id();
-}
-
-void ResourceAkonadiConfig::rowsInserted( const QModelIndex &parent, int start, int end )
-{
-  QAbstractItemModel *model = mView->model();
-
-  for ( int row = start; row <= end; ++row ) {
-    QModelIndex index = model->index( row, 0, parent );
-    if ( !index.isValid() )
-      continue;
-
-    QVariant data = model->data( index, CollectionModel::CollectionIdRole );
-    if ( !data.isValid() )
-      continue;
-
-    if ( data.toInt() == mCollectionId ) {
-      mView->setCurrentIndex( index );
-      return;
-    }
   }
 }
 
