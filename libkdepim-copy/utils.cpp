@@ -2,7 +2,7 @@
  * utils.cpp
  *
  * Copyright (C) 2007 Laurent Montel <montel@kde.org>
- * Copyright (C) 2008 Jaroslaw Staniek <js@iidea.pl>
+ * Copyright (C) 2008 Jarosław Staniek <staniek@kde.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

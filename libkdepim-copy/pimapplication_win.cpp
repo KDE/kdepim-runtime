@@ -1,7 +1,7 @@
 /*
     This file is part of libkdepim.
 
-    Copyright (C) 2008 Jaroslaw Staniek <js@iidea.pl>
+    Copyright (C) 2008 Jarosław Staniek <staniek@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
