@@ -276,13 +276,20 @@ bool ResourceAkonadi::asyncLoad()
 {
   clear();
 
-  // TODO: re-fetch items
-//   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-//   job->fetchScope().fetchFullPayload();
-//
-//   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( loadResult( KJob* ) ) );
-//
-//   job->start();
+  delete d->mCollectionFilterModel;
+  delete d->mCollectionModel;
+
+  d->mCollectionModel = new CollectionModel( this );
+
+  d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
+  d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+
+  connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
+  connect( d->mCollectionFilterModel, SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionRowsRemoved( const QModelIndex&, int, int ) ) );
+
+  d->mCollectionFilterModel->setSourceModel( d->mCollectionModel );
 
   return true;
 }
@@ -486,7 +493,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
   }
 
   mParent->addressBook()->emitAddressBookChanged();
-  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "Contact" ), collectionUrl );
+  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "contact" ), collectionUrl );
 }
 
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
@@ -673,7 +680,7 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
             // TODO: remove addressees?
             mParent->addressBook()->emitAddressBookChanged();
 
-            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "Contact" ), collection.url().url() );
+            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), collection.url().url() );
 
             delete subResource;
           }
