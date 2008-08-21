@@ -23,6 +23,13 @@
 
 #include "kresources/configwidget.h"
 
+namespace Akonadi {
+  class CollectionView;
+}
+
+class KAction;
+class QPushButton;
+
 namespace KABC {
 
 class ResourceAkonadiConfig : public KRES::ConfigWidget
@@ -35,6 +42,22 @@ class ResourceAkonadiConfig : public KRES::ConfigWidget
   public Q_SLOTS:
     void loadSettings( KRES::Resource *resource );
     void saveSettings( KRES::Resource *resource );
+
+  private:
+    Akonadi::CollectionView *mCollectionView;
+
+    KAction *mCreateAction;
+    KAction *mDeleteAction;
+    KAction *mSyncAction;
+    KAction *mSubscriptionAction;
+
+    QPushButton *mCreateButton;
+    QPushButton *mDeleteButton;
+    QPushButton *mSyncButton;
+    QPushButton *mSubscriptionButton;
+
+  private Q_SLOTS:
+    void updateCollectionButtonState();
 };
 
 }
