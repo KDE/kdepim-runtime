@@ -351,6 +351,14 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
   // TODO: need to ask which sub resource it should be put into
+  SubResourceMap::const_iterator it    = d->mSubResources.begin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  for (; it != endIt; ++it ) {
+    if ( !it.value()->isActive() ) continue;
+
+    d->mUidToResourceMap.insert( addr.uid(), it.key() );
+    break;
+  }
   ResourceABC::insertAddressee( addr );
 }
 
@@ -735,13 +743,36 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
       if ( data.isValid() ) {
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
-          SubResource* subResource = mSubResources.take( collection.url().url() );
-          if ( subResource != 0 )
-          {
-            // TODO: remove addressees?
-            mParent->addressBook()->emitAddressBookChanged();
+          const QString collectionUrl = collection.url().url();
+          SubResource* subResource = mSubResources.take( collectionUrl );
+          if ( subResource != 0 ) {
+            bool changed = false;
 
-            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), collection.url().url() );
+            UidResourceMap::iterator uidIt = mUidToResourceMap.begin();
+            while ( uidIt != mUidToResourceMap.end() ) {
+              if ( uidIt.value() == collectionUrl ) {
+                changed = true;
+
+                mParent->mAddrMap.remove( uidIt.key() );
+                uidIt = mUidToResourceMap.erase( uidIt );
+              }
+              else
+                ++uidIt;
+            }
+
+            ItemIdResourceMap::iterator idIt = mItemIdToResourceMap.begin();
+            while ( idIt != mItemIdToResourceMap.end() ) {
+              if ( idIt.value() == collectionUrl ) {
+                idIt = mItemIdToResourceMap.erase( idIt );
+              }
+              else
+                ++idIt;
+            }
+
+            if ( changed )
+              mParent->addressBook()->emitAddressBookChanged();
+
+            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), collectionUrl );
 
             delete subResource;
           }
