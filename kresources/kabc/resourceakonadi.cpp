@@ -22,6 +22,7 @@
 #include "resourceakonadiconfig.h"
 
 #include <akonadi/collection.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionmodel.h>
 #include <akonadi/control.h>
@@ -242,36 +243,50 @@ bool ResourceAkonadi::load()
 {
   kDebug(5700);
 
+  // save the list of collections we potentially already have
+  Collection::List collections;
+  SubResourceMap::const_iterator it    = d->mSubResources.begin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  for ( ; it != endIt; ++it ) {
+    collections << it.value()->mCollection;
+  }
+
   clear();
 
-  // TODO: synchronous loading needs a different approach than
-  // using the collection model
-//   ItemFetchJob *job = new ItemFetchJob( d->mCollection );
-//   job->fetchScope().fetchFullPayload();
-//
-//   if ( !job->exec() ) {
-//     // TODO: error handling
-//     return false;
-//   }
-//
-//   Item::List items = job->items();
-//
-//   kDebug(5700) << "Item fetch produced" << items.count() << "items";
-//
-//   foreach ( const Item& item, items ) {
-//     if ( item.hasPayload<Addressee>() ) {
-//       Addressee addressee = item.payload<Addressee>();
-//       addressee.setResource( this );
-//
-//       const Item::Id id = item.id();
-//       d->mIdMapping.insert( addressee.uid(), id );
-//
-//       mAddrMap.insert( addressee.uid(), addressee );
-//       d->mItems.insert( id, item );
-//     }
-//   }
+  // if we do not have any collection yet, fetch them explicitly
+  if ( collections.isEmpty() ) {
+    CollectionFetchJob *colJob =
+      new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+    if ( !colJob->exec() ) {
+      emit loadingError( this, colJob->errorString() );
+      return false;
+    }
 
-  return true;
+    // TODO: should probably add the data to the model right here
+    collections = colJob->collections();
+  }
+
+  bool result = true;
+  foreach ( const Collection &collection, collections ) {
+     if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) ) )
+       continue;
+
+    const QString collectionUrl = collection.url().url();
+    SubResource *subResource = d->mSubResources[ collectionUrl ];
+    if ( subResource == 0 ) {
+      subResource = new SubResource( collection );
+      d->mSubResources.insert( collectionUrl, subResource );
+
+      emit signalSubresourceAdded( this, QLatin1String( "contact" ), collectionUrl );
+    }
+
+    // TODO should check whether the model signal handling has already fetched the
+    // collection's items
+    if ( !d->reloadSubResource( subResource ) )
+      result = false;
+  }
+
+  return result;
 }
 
 bool ResourceAkonadi::asyncLoad()
@@ -669,18 +684,23 @@ void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent
         // and the application can't handle them anyway
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
-          SubResource *subResource = new SubResource( collection );
-          mSubResources.insert( collection.url().url(), subResource );
-          kDebug(5700) << "Adding subResource" << subResource->mLabel
-                       << "for collection" << collection.url();
+          const QString collectionUrl = collection.url().url();
 
-          ItemFetchJob *job = new ItemFetchJob( collection );
-          job->fetchScope().fetchFullPayload();
+          SubResource *subResource = mSubResources[ collectionUrl ];
+          if ( subResource == 0 ) {
+            subResource = new SubResource( collection );
+            mSubResources.insert( collectionUrl, subResource );
+            kDebug(5700) << "Adding subResource" << subResource->mLabel
+                         << "for collection" << collection.url();
 
-          connect( job, SIGNAL( result( KJob* ) ),
-                   mParent, SLOT( subResourceLoadResult( KJob* ) ) );
+            ItemFetchJob *job = new ItemFetchJob( collection );
+            job->fetchScope().fetchFullPayload();
 
-          mJobToResourceMap.insert( job, collection.url().url() );
+            connect( job, SIGNAL( result( KJob* ) ),
+                     mParent, SLOT( subResourceLoadResult( KJob* ) ) );
+
+            mJobToResourceMap.insert( job, collectionUrl );
+          }
         }
       }
     }
