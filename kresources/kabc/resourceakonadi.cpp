@@ -119,6 +119,8 @@ class ResourceAkonadi::Private
     void collectionRowsRemoved( const QModelIndex &parent, int start, int end );
 
     KJob *createSaveSequence() const;
+
+    bool reloadSubResource( SubResource *subResource );
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -408,7 +410,29 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
   SubResource *resource = d->mSubResources[ subResource ];
   if ( resource != 0 ) {
     resource->setActive( active );
-    // TODO: add/remove addressees?
+
+    if ( !active ) {
+      bool changed = false;
+
+      UidResourceMap::iterator it = d->mUidToResourceMap.begin();
+      while ( it != d->mUidToResourceMap.end() ) {
+        if ( it.value() == subResource ) {
+          changed = true;
+
+          mAddrMap.remove( it.key() );
+          it = d->mUidToResourceMap.erase( it );
+        }
+        else
+          ++it;
+      }
+
+      if ( changed )
+        addressBook()->emitAddressBookChanged();
+
+    } else {
+      if ( d->reloadSubResource( resource ) )
+        addressBook()->emitAddressBookChanged();
+    }
   }
 }
 
@@ -734,6 +758,43 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
   }
 
   return sequence;
+}
+
+bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
+{
+  ItemFetchJob *job = new ItemFetchJob( subResource->mCollection );
+  job->fetchScope().fetchFullPayload();
+
+  if ( !job->exec() ) {
+    emit mParent->loadingError( mParent, job->errorString() );
+    return false;
+  }
+
+  const QString collectionUrl = subResource->mCollection.url().url();
+
+  Item::List items = job->items();
+
+  kDebug(5700) << "Reload for sub resource " << collectionUrl
+               << "produced" << items.count() << "items";
+
+  bool changed = false;
+  foreach ( const Item& item, items ) {
+    if ( item.hasPayload<Addressee>() ) {
+      changed = true;
+
+      Addressee addressee = item.payload<Addressee>();
+      addressee.setResource( mParent );
+
+      const Item::Id id = item.id();
+      mIdMapping.insert( addressee.uid(), id );
+
+      mParent->mAddrMap.insert( addressee.uid(), addressee );
+      mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+      mItems.insert( id, item );
+    }
+  }
+
+  return changed;
 }
 
 #include "resourceakonadi.moc"
