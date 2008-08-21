@@ -82,7 +82,8 @@ class SubResource
 
 typedef QHash<QString, SubResource*> SubResourceMap;
 
-typedef QMap<QString, QString> UidResourceMap;
+typedef QMap<QString, QString>  UidResourceMap;
+typedef QMap<Item::Id, QString> ItemIdResourceMap;
 
 class ResourceAkonadi::Private
 {
@@ -105,7 +106,8 @@ class ResourceAkonadi::Private
 
     SubResourceMap mSubResources;
 
-    UidResourceMap mUidToResourceMap;
+    UidResourceMap    mUidToResourceMap;
+    ItemIdResourceMap mItemIdToResourceMap;
 
     QHash<Akonadi::Job*, QString> mJobToResourceMap;
 
@@ -221,6 +223,7 @@ void ResourceAkonadi::doClose()
   d->mItems.clear();
   d->mIdMapping.clear();
   d->mUidToResourceMap.clear();
+  d->mItemIdToResourceMap.clear();
   d->mJobToResourceMap.clear();
 }
 
@@ -527,6 +530,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
 
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+      mItemIdToResourceMap.insert( id, collectionUrl );
       mItems.insert( id, item );
     }
   }
@@ -539,8 +543,9 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
                                           const Akonadi::Collection &collection )
 {
   kDebug(5700);
-  SubResource *subResource = mSubResources[ collection.url().url() ];
-  if ( subResource == 0 )
+  const QString collectionUrl = collection.url().url();
+  SubResource *subResource = mSubResources[ collectionUrl ];
+  if ( subResource == 0 || !subResource->isActive() )
     return;
 
   if ( !item.hasPayload<Addressee>() ) {
@@ -555,7 +560,8 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   const Item::Id id = item.id();
   mIdMapping.insert( addressee.uid(), id );
-  mUidToResourceMap.insert( addressee.uid(), collection.url().url() );
+  mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+  mItemIdToResourceMap.insert( id, collectionUrl );
 
   mItems.insert( id, item );
 
@@ -581,6 +587,11 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   }
 
   itemIt.value() = item;
+
+  const QString collectionUrl = mItemIdToResourceMap[ item.id() ];
+  SubResource *subResource = mSubResources[ collectionUrl ];
+  if ( subResource == 0 || !subResource->isActive() )
+    return;
 
   if ( !partIdentifiers.contains( Akonadi::Item::FullPayload ) ) {
     kDebug(5700) << "No update to the item body";
@@ -616,28 +627,33 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   mParent->addressBook()->emitAddressBookChanged();
 }
 
-void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &_item )
+void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
 {
   kDebug(5700);
 
-  const Item::Id id = _item.id();
+  const Item::Id id = item.id();
+
+  const QString collectionUrl = mItemIdToResourceMap[ id ];
+  SubResource *subResource = mSubResources[ collectionUrl ];
+  if ( subResource == 0 || !subResource->isActive() )
+    return;
 
   ItemMap::iterator itemIt = mItems.find( id );
   if ( itemIt == mItems.end() )
     return;
 
-  const Item item = itemIt.value();
-  if ( item != _item )
+  const Item oldItem = itemIt.value();
+  if ( oldItem != item )
     return;
 
   QString uid;
-  if ( item.hasPayload<Addressee>() ) {
-    uid = item.payload<Addressee>().uid();
+  if ( oldItem.hasPayload<Addressee>() ) {
+    uid = oldItem.payload<Addressee>().uid();
   } else {
     // since we always fetch the payload this should not happen
     // but we really do not want stale entries
     kWarning(5700) << "No Addressee in local item: id=" << id
-                   << ", remoteId=" << item.remoteId();
+                   << ", remoteId=" << oldItem.remoteId();
 
     IdHash::const_iterator idIt    = mIdMapping.begin();
     IdHash::const_iterator idEndIt = mIdMapping.end();
@@ -656,6 +672,7 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &_item )
   mItems.erase( itemIt );
   mIdMapping.remove( uid );
   mUidToResourceMap.remove( uid );
+  mItemIdToResourceMap.remove( id );
 
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( uid );
 
@@ -810,6 +827,7 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
 
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+      mItemIdToResourceMap.insert( id, collectionUrl );
       mItems.insert( id, item );
     }
   }
