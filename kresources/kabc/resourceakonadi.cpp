@@ -790,6 +790,10 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
     SubResource *subResource = mSubResources[ listIt.key() ];
     Q_ASSERT( subResource != 0 );
 
+    // do not save deactivated sub resources
+    if ( !subResource->isActive() )
+      continue;
+
     ItemSync *job = new ItemSync( subResource->mCollection, sequence );
     job->setFullSyncItems( listIt.value() );
   }
