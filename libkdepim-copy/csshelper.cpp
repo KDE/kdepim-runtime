@@ -284,6 +284,10 @@ namespace KPIM {
                "div.senderstatus{\n"
                "  text-align:center ! important;\n"
                "}\n\n"
+
+               "div.noprint {\n"
+               "  display:none ! important;\n"
+               "}\n\n"
             )
       .arg( headerFont,
             pal.color( QPalette::Background ).name(),
@@ -359,6 +363,14 @@ namespace KPIM {
       QString( "a {\n"
                "  color: %1 ! important;\n"
                "  text-decoration: none ! important;\n"
+               "}\n\n"
+
+               "a.white {\n"
+               "  color: white ! important;\n"
+               "}\n\n"
+
+               "a.black {\n"
+               "  color: black ! important;\n"
                "}\n\n"
 
                "table.textAtm { background-color: %2 ! important; }\n\n"
