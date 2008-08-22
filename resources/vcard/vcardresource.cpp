@@ -39,6 +39,9 @@ VCardResource::VCardResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload();
   connect( this, SIGNAL(reloadConfiguration()), SLOT(loadAddressees()) );
   loadAddressees();
+
+  connect( &mWriteWhenDirtyTimer, SIGNAL( timeout() ), this, SLOT( storeAddressees() ) );
+  mWriteWhenDirtyTimer.setSingleShot( true );
 }
 
 VCardResource::~VCardResource()
@@ -105,6 +108,8 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
     Item i( item );
     i.setRemoteId( addressee.uid() );
     changeCommitted( i );
+
+    startAutoSaveTimer();
   } else {
     changeProcessed();
   }
@@ -122,6 +127,8 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArra
     Item i( item );
     i.setRemoteId( addressee.uid() );
     changeCommitted( i );
+
+    startAutoSaveTimer();
   } else {
     changeProcessed();
   }
@@ -131,6 +138,9 @@ void VCardResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( mAddressees.contains( item.remoteId() ) )
     mAddressees.remove( item.remoteId() );
+
+  startAutoSaveTimer();
+
   changeProcessed();
 }
 
@@ -216,6 +226,15 @@ bool VCardResource::storeAddressees()
   file.close();
 
   return true;
+}
+
+void VCardResource::startAutoSaveTimer()
+{
+  if( Settings::self()->autosave() && !mWriteWhenDirtyTimer.isActive() )
+  {
+    mWriteWhenDirtyTimer.setInterval( Settings::self()->autosaveInterval() * 60 * 1000 );
+    mWriteWhenDirtyTimer.start();
+  }
 }
 
 AKONADI_RESOURCE_MAIN( VCardResource )

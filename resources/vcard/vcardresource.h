@@ -20,6 +20,8 @@
 #ifndef VCARDRESOURCE_H
 #define VCARDRESOURCE_H
 
+#include <QtCore/QTimer>
+
 #include <akonadi/resourcebase.h>
 
 #include <kabc/addressee.h>
@@ -51,12 +53,15 @@ class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::O
   private Q_SLOTS:
     bool loadAddressees();
 
-  private:
     bool storeAddressees();
+
+  private:
+    void startAutoSaveTimer();
 
   private:
     QMap<QString, KABC::Addressee> mAddressees;
     KABC::VCardConverter mConverter;
+		QTimer mWriteWhenDirtyTimer;
 };
 
 #endif
