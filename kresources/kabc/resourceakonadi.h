@@ -72,8 +72,8 @@ class ResourceAkonadi : public ResourceABC
     virtual QStringList subresources() const;
     virtual QMap<QString, QString> uidToResourceMap() const;
 
-//     void setCollection( const Akonadi::Collection& collection );
-//     Akonadi::Collection collection() const;
+    void setStoreCollection( const Akonadi::Collection& collection );
+    Akonadi::Collection storeCollection() const;
 
   public Q_SLOTS:
     virtual void setSubresourceActive( const QString &subResource, bool active );

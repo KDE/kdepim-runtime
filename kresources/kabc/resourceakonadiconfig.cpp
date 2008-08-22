@@ -40,6 +40,32 @@
 #include <QLayout>
 #include <QPushButton>
 
+static QModelIndex findCollection( const Akonadi::Collection &collection,
+        const QModelIndex &parent, QAbstractItemModel *model)
+{
+  const int rowCount = model->rowCount( parent );
+
+  for ( int row = 0; row < rowCount; ++row ) {
+    QModelIndex index = model->index( row, 0, parent );
+    if ( !index.isValid() )
+      continue;
+
+    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
+    if ( !data.isValid() )
+      continue;
+
+    if ( data.toInt() == collection.id() ) {
+      return index;
+    }
+
+    index = findCollection( collection, index, model );
+    if ( index.isValid() )
+      return index;
+  }
+
+  return QModelIndex();
+}
+
 using namespace KABC;
 
 ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
@@ -79,7 +105,13 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   filterModel->setSourceModel( model );
 
   mCollectionView = new Akonadi::CollectionView( widget );
+  mCollectionView->setSelectionMode( QAbstractItemView::SingleSelection );
   mCollectionView->setModel( filterModel );
+
+  connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
+           this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
+  connect( mCollectionView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionsInserted( const QModelIndex&, int, int ) ) );
 
   collectionLayout->addWidget( mCollectionView );
 
@@ -155,6 +187,12 @@ void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
     kDebug(5700) << "cast failed";
     return;
   }
+
+  mCollection = resource->storeCollection();
+
+  QModelIndex index = findCollection( mCollection, mCollectionView->rootIndex(), mCollectionView->model() );
+  if ( index.isValid() )
+    mCollectionView->setCurrentIndex( index );
 }
 
 void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
@@ -165,6 +203,8 @@ void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
     kDebug(5700) << "cast failed";
     return;
   }
+
+  resource->setStoreCollection( mCollection );
 }
 
 void ResourceAkonadiConfig::updateCollectionButtonState()
@@ -173,6 +213,56 @@ void ResourceAkonadiConfig::updateCollectionButtonState()
   mDeleteButton->setEnabled( mDeleteAction->isEnabled() );
   mSyncButton->setEnabled( mSyncAction->isEnabled() );
   mSubscriptionButton->setEnabled( mSubscriptionAction->isEnabled() );
+}
+
+void ResourceAkonadiConfig::collectionChanged( const Akonadi::Collection &collection )
+{
+  mCollection = collection;
+}
+
+void ResourceAkonadiConfig::collectionsInserted( const QModelIndex &parent, int start, int end )
+{
+  QAbstractItemModel *model = mCollectionView->model();
+
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = model->index( row, 0, parent );
+    if ( !index.isValid() )
+      continue;
+
+    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
+    if ( !data.isValid() )
+      continue;
+
+    if ( data.toInt() == mCollection.id() ) {
+      mCollectionView->setCurrentIndex( index );
+      return;
+    }
+
+    index = findCollection( mCollection, index, model );
+    if ( index.isValid() ) {
+      mCollectionView->setCurrentIndex( index );
+      return;
+    }
+  }
+}
+
+ResourceAkonadiConfigDialog::ResourceAkonadiConfigDialog( KRES::Resource *resource )
+  : KDialog(), mResource( resource ), mConfig( 0 )
+{
+  setCaption( i18nc( "@title:window", "Select Addressbook Folder") );
+
+  setButtons( KDialog::Ok | KDialog::Cancel );
+
+  mConfig = new ResourceAkonadiConfig( this );
+  setMainWidget( mConfig );
+
+  mConfig->loadSettings( mResource );
+}
+
+void ResourceAkonadiConfigDialog::accept()
+{
+  mConfig->saveSettings( mResource );
+  KDialog::accept();
 }
 
 #include "resourceakonadiconfig.moc"

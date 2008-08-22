@@ -23,11 +23,16 @@
 
 #include "kresources/configwidget.h"
 
+#include <akonadi/collection.h>
+
+#include <kdialog.h>
+
 namespace Akonadi {
   class CollectionView;
 }
 
 class KAction;
+class QModelIndex;
 class QPushButton;
 
 namespace KABC {
@@ -44,6 +49,8 @@ class ResourceAkonadiConfig : public KRES::ConfigWidget
     void saveSettings( KRES::Resource *resource );
 
   private:
+    Akonadi::Collection mCollection;
+
     Akonadi::CollectionView *mCollectionView;
 
     KAction *mCreateAction;
@@ -58,6 +65,26 @@ class ResourceAkonadiConfig : public KRES::ConfigWidget
 
   private Q_SLOTS:
     void updateCollectionButtonState();
+
+    void collectionChanged( const Akonadi::Collection &collection );
+
+    void collectionsInserted( const QModelIndex &parent, int start, int end );
+};
+
+class ResourceAkonadiConfigDialog : public KDialog
+{
+  Q_OBJECT
+
+  public:
+    ResourceAkonadiConfigDialog( KRES::Resource *resource );
+
+  protected:
+    virtual void accept();
+
+  private:
+    KRES::Resource *mResource;
+
+    ResourceAkonadiConfig *mConfig;
 };
 
 }

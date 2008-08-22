@@ -34,8 +34,8 @@
 #include <akonadi/itemsync.h>
 #include <akonadi/transactionsequence.h>
 
-#include <kdebug.h>
 #include <kconfiggroup.h>
+#include <kdebug.h>
 
 #include <QHash>
 
@@ -101,6 +101,8 @@ class ResourceAkonadi::Private
     ItemMap mItems;
     IdHash  mIdMapping;
 
+    Collection mStoreCollection;
+
     CollectionModel *mCollectionModel;
     CollectionFilterProxyModel *mCollectionFilterModel;
 
@@ -121,6 +123,7 @@ class ResourceAkonadi::Private
     void collectionRowsInserted( const QModelIndex &parent, int start, int end );
     void collectionRowsRemoved( const QModelIndex &parent, int start, int end );
 
+    bool prepareSaving();
     KJob *createSaveSequence() const;
 
     bool reloadSubResource( SubResource *subResource );
@@ -135,6 +138,14 @@ ResourceAkonadi::ResourceAkonadi()
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
   : ResourceABC( group ), d( new Private( this ) )
 {
+  KUrl url = group.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
+
+  if ( !url.isValid() ) {
+    // TODO error handling
+  } else {
+    d->mStoreCollection = Collection::fromUrl( url );
+  }
+
   init();
 }
 
@@ -163,6 +174,8 @@ void ResourceAkonadi::clear()
 
 void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
+  group.writeEntry( QLatin1String( "CollectionUrl" ), d->mStoreCollection.url() );
+
   ResourceABC::writeConfig( group );
 }
 
@@ -319,6 +332,9 @@ bool ResourceAkonadi::save( Ticket *ticket )
   Q_UNUSED( ticket );
   kDebug(5700);
 
+  if ( !d->prepareSaving() )
+    return false;
+
   KJob *job = d->createSaveSequence();
   if ( job == 0 )
     return false;
@@ -337,6 +353,9 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
   Q_UNUSED( ticket );
   kDebug(5700);
 
+  if ( !d->prepareSaving() )
+    return false;
+
   KJob *job = d->createSaveSequence();
   if ( job == 0 )
     return false;
@@ -350,15 +369,6 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
-  // TODO: need to ask which sub resource it should be put into
-  SubResourceMap::const_iterator it    = d->mSubResources.begin();
-  SubResourceMap::const_iterator endIt = d->mSubResources.end();
-  for (; it != endIt; ++it ) {
-    if ( !it.value()->isActive() ) continue;
-
-    d->mUidToResourceMap.insert( addr.uid(), it.key() );
-    break;
-  }
   ResourceABC::insertAddressee( addr );
 }
 
@@ -421,12 +431,23 @@ int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) c
 QStringList ResourceAkonadi::subresources() const
 {
   QSet<QString> uniqueValues = QSet<QString>::fromList( d->mUidToResourceMap.values() );
+  kDebug() << uniqueValues;
   return uniqueValues.toList();
 }
 
 QMap<QString, QString> ResourceAkonadi::uidToResourceMap() const
 {
   return d->mUidToResourceMap;
+}
+
+void ResourceAkonadi::setStoreCollection( const Akonadi::Collection& collection )
+{
+  d->mStoreCollection = collection;
+}
+
+Akonadi::Collection ResourceAkonadi::storeCollection() const
+{
+  return d->mStoreCollection;
 }
 
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
@@ -780,6 +801,35 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
       }
     }
   }
+}
+
+bool ResourceAkonadi::Private::prepareSaving()
+{
+  // if an addressee is not yet mapped to one of the sub resources we put it into
+  // our store collection.
+  // if the store collection is no or nor longer valid, ask for a new one
+  Addressee::Map::const_iterator addrIt    = mParent->mAddrMap.begin();
+  Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.end();
+  while ( addrIt != addrEndIt ) {
+    UidResourceMap::const_iterator findIt = mUidToResourceMap.find( addrIt.key() );
+    if ( findIt == mUidToResourceMap.end() ) {
+      if ( !mStoreCollection.isValid() ||
+           mSubResources[ mStoreCollection.url().url() ] == 0 ) {
+
+        ResourceAkonadiConfigDialog dialog( mParent );
+        if ( dialog.exec() != QDialog::Accepted )
+          return false;
+
+        // if accepted, use the same iterator position again to re-check
+      } else {
+        mUidToResourceMap.insert( addrIt.key(), mStoreCollection.url().url() );
+        ++addrIt;
+      }
+    } else
+      ++addrIt;
+  }
+
+  return true;
 }
 
 KJob *ResourceAkonadi::Private::createSaveSequence() const
