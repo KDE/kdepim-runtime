@@ -60,24 +60,23 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent, bool 
 
   fillList();
 
-  connect( mWidgets->mCategories,
-           SIGNAL( currentItemChanged( QTreeWidgetItem *, QTreeWidgetItem * )),
-           SLOT( editItem( QTreeWidgetItem * )) );
-  connect( mWidgets->mCategories, SIGNAL( itemSelectionChanged() ),
-           SLOT( slotSelectionChanged() ) );
-  connect( mWidgets->mCategories, SIGNAL( itemCollapsed( QTreeWidgetItem * ) ),
-           SLOT( expandIfToplevel( QTreeWidgetItem * ) ) );
-  connect( mWidgets->mEdit, SIGNAL( textChanged( const QString & )),
-           this, SLOT( slotTextChanged( const QString & )));
-  connect( mWidgets->mButtonAdd, SIGNAL( clicked() ),
-           this, SLOT( add() ) );
-  connect( mWidgets->mButtonAddSubcategory, SIGNAL( clicked() ),
-           this, SLOT( addSubcategory() ) );
-  connect( mWidgets->mButtonRemove, SIGNAL( clicked() ),
-           this, SLOT( remove() ) );
-  connect( this, SIGNAL( okClicked() ), this, SLOT( slotOk() ) );
-  connect( this, SIGNAL( cancelClicked() ), this, SLOT( slotCancel() ) );
-  connect( this, SIGNAL( applyClicked() ), this, SLOT( slotApply() ) );
+  connect( mWidgets->mCategories, SIGNAL(currentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)),
+           SLOT(editItem(QTreeWidgetItem *)) );
+  connect( mWidgets->mCategories, SIGNAL(itemSelectionChanged()),
+           SLOT(slotSelectionChanged()) );
+  connect( mWidgets->mCategories, SIGNAL(itemCollapsed(QTreeWidgetItem *)),
+           SLOT(expandIfToplevel(QTreeWidgetItem *)) );
+  connect( mWidgets->mEdit, SIGNAL(textChanged(const QString &)),
+           this, SLOT(slotTextChanged(const QString &)) );
+  connect( mWidgets->mButtonAdd, SIGNAL(clicked()),
+           this, SLOT(add()) );
+  connect( mWidgets->mButtonAddSubcategory, SIGNAL(clicked()),
+           this, SLOT(addSubcategory()) );
+  connect( mWidgets->mButtonRemove, SIGNAL(clicked()),
+           this, SLOT(remove()) );
+  connect( this, SIGNAL(okClicked()), this, SLOT(slotOk()) );
+  connect( this, SIGNAL(cancelClicked()), this, SLOT(slotCancel()) );
+  connect( this, SIGNAL(applyClicked()), this, SLOT(slotApply()) );
 }
 
 /*
@@ -114,10 +113,10 @@ void CategoryEditDialog::add()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
     QTreeWidgetItem *newItem =
-      new QTreeWidgetItem( mWidgets->mCategories, QStringList( "" ) );
-    // FIXME: Use a better string once string changes are allowed again
-//                                                i18n("New category") );
+      new QTreeWidgetItem( mWidgets->mCategories,
+                           QStringList( i18n( "New category" ) ) );
     newItem->setExpanded( true );
+
     mWidgets->mCategories->setCurrentItem( newItem );
     mWidgets->mCategories->clearSelection();
     newItem->setSelected( true );
@@ -132,10 +131,10 @@ void CategoryEditDialog::addSubcategory()
 {
   if ( !mWidgets->mEdit->text().isEmpty() ) {
     QTreeWidgetItem *newItem =
-      new QTreeWidgetItem( mWidgets->mCategories->currentItem(), QStringList( "" ) );
-    // FIXME: Use a better string once string changes are allowed again
-//                                                i18n("New category") );
+      new QTreeWidgetItem( mWidgets->mCategories->currentItem(),
+                           QStringList( i18n( "New category" ) ) );
     newItem->setExpanded( true );
+
     mWidgets->mCategories->setCurrentItem( newItem );
     mWidgets->mCategories->clearSelection();
     newItem->setSelected( true );
