@@ -36,6 +36,7 @@
 #include <ktabwidget.h>
 
 #include <QDialogButtonBox>
+#include <QLabel>
 #include <QLayout>
 #include <QPushButton>
 
@@ -54,24 +55,19 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
     mSubscriptionButton( 0 )
 {
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
-  mainLayout->setMargin( 0 );
+  mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
   KTabWidget *tabWidget = new KTabWidget( this );
-  mainLayout->addWidget( tabWidget );
 
   // list of contact data MIME types
   // TODO: check if we need to add text/x-vcard
   QStringList mimeList;
   mimeList << "text/directory";
 
-  QWidget *widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
-                                                KCModuleLoader::Inline, this, mimeList );
-
-  tabWidget->addTab( widget, i18nc( "@title", "Manage addressbook sources" ) );
   Akonadi::CollectionModel *model = new Akonadi::CollectionModel( this );
 
-  widget = new QWidget( this );
+  QWidget *widget = new QWidget( this );
 
   QHBoxLayout *collectionLayout = new QHBoxLayout( widget );
   collectionLayout->setMargin( KDialog::marginHint() );
@@ -124,7 +120,26 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   buttonBox->addButton( mSubscriptionButton, QDialogButtonBox::ActionRole );
   connect( mSubscriptionButton, SIGNAL( clicked() ), mSubscriptionAction, SLOT( trigger() ) );
 
-  tabWidget->addTab( widget, i18nc( "@title", "Manage addressbook folders" ) );
+  const QString foldersTitle = i18nc( "@title:tab", "Manage addressbook folders" );
+  tabWidget->addTab( widget, foldersTitle );
+
+  widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
+                                       KCModuleLoader::Inline, this, mimeList );
+
+  const QString sourcesTitle = i18nc( "@title:tab", "Manage addressbook sources" );
+  tabWidget->addTab( widget, sourcesTitle );
+
+  QLabel *label = new QLabel( this );
+  label->setText( i18nc( "@info", "<title>Please select the folder for storing"
+                         " newly created contacts.</title><note>If the folder"
+                         " list below is empty, you might have to add an"
+                         " addressbook source through <interface>%1</interface>"
+                         " <br>or change which folders you are subscribed to"
+                         " through <interface>%2</interface></note>",
+                         sourcesTitle, mSubscriptionButton->text() ) );
+
+  mainLayout->addWidget( label );
+  mainLayout->addWidget( tabWidget );
 
   updateCollectionButtonState();
 
