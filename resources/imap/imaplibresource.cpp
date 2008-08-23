@@ -360,8 +360,10 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
 
-        foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) )
-        i.setFlag( flag.toLatin1() /* ok? */ );
+        foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) ) {
+            i.setFlag( flag.toLatin1() );
+        }
+        kDebug() << "Flags: " << i.flags();
 
         messages.append( i );
     }

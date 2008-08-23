@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Nepomuk Tags (Virtual Folders)
+Comment=Virtual folders for selecting messages which have Nepomuk Tags.
+Type=AkonadiResource
+Exec=akonadi_nepomuktag_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_nepomuktag_resource

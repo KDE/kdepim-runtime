@@ -8,6 +8,7 @@ if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( kabc )
   add_subdirectory( kcal )
   add_subdirectory( imap )
+  add_subdirectory( nepomuktag )
 endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.
