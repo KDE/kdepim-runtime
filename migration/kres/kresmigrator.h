@@ -37,7 +37,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
       KResMigratorBase( type, bridgeType ),
       mConfig( 0 ),
       mManager( 0 ),
-      mBridgeManager( 0 )
+      mBridgeManager( 0 ),
+      mClientBridgeFound( false )
     {
     }
 
@@ -60,6 +61,12 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void migrateNext()
     {
       while ( mIt != mManager->end() ) {
+        if ( (*mIt)->type() == "akonadi" ) {
+          mClientBridgeFound = true;
+          emit successMessage( i18n( "Client-side bridge already set up." ) );
+          ++mIt;
+          continue;
+        }
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
         if ( migrationState( *mIt ) == None ) {
           emit infoMessage( i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
@@ -93,7 +100,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mBridgeManager = 0;
 
       if ( mPendingBridgedResources.isEmpty() ) {
-        deleteLater();
+        setupClientBridge();
         return;
       }
       const QString resId = mPendingBridgedResources.takeFirst();
@@ -142,10 +149,29 @@ template <typename T> class KResMigrator : public KResMigratorBase
     }
 
   private:
+    void setupClientBridge()
+    {
+      if ( !mClientBridgeFound ) {
+        emit infoMessage( i18n( "Setting up client-side bridge..." ) );
+        T* clientBridge = mManager->createResource( "akonadi" );
+        if ( clientBridge ) {
+          clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
+          mManager->add( clientBridge );
+          mManager->setStandardResource( clientBridge );
+          emit successMessage( i18n( "Client-side bridge set up successfully." ) );
+        } else {
+          emit errorMessage( i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
+        }
+      }
+      deleteLater();
+    }
+
+  private:
     KConfig *mConfig;
     KRES::Manager<T> *mManager, *mBridgeManager;
     typedef typename KRES::Manager<T>::Iterator ResourceIterator;
     ResourceIterator mIt;
+    bool mClientBridgeFound;
 };
 
 #endif

@@ -119,8 +119,7 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
 {
   kDebug();
   if ( job->error() ) {
-    migrationFailed( i18n( "Unable to create compatibility bridge: %1",
-                     mCurrentKResource->resourceName(), job->errorText() ) );
+    migrationFailed( i18n( "Unable to create compatibility bridge: %1", job->errorText() ) );
     return;
   }
   KRES::Resource *res = mCurrentKResource;
@@ -133,6 +132,7 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
   KConfig *akoResConfig = new KConfig( akoResCfgFile );
   KConfigGroup bridgeResCfg( akoResConfig, kresCfg.name() );
   kresCfg.copyTo( &bridgeResCfg );
+  bridgeResCfg.writeEntry( "ResourceIsActive", true );
   bridgeResCfg.sync();
 
   KConfigGroup generalCfg( akoResConfig, "General" );
