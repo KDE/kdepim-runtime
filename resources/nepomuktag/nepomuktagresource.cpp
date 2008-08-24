@@ -21,9 +21,11 @@
 
 #include <kdebug.h>
 #include <klocale.h>
+#include <kurl.h>
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
+#include <akonadi/linkjob.h>
 
 #include <nepomuk/tag.h>
 using namespace Akonadi;
@@ -40,22 +42,26 @@ NepomukTagResource::~NepomukTagResource()
 
 bool NepomukTagResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+    kDebug();
     itemRetrieved( item );
     return true;
 }
 
 void NepomukTagResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
+    kDebug();
     changeCommitted( item );
 }
 
 void NepomukTagResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
+    kDebug();
     changeCommitted( item );
 }
 
 void NepomukTagResource::itemRemoved( const Akonadi::Item &item )
 {
+    kDebug();
     changeProcessed();
 }
 
@@ -104,21 +110,30 @@ void NepomukTagResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug() << "Requested items for: " << col.remoteId();
 
-    QStringList taggedMessages;
+    Item::List taggedMessages;
     Nepomuk::Tag tag( col.remoteId() );
     QList<Nepomuk::Resource> list = tag.tagOf();
     foreach( const Nepomuk::Resource& resource, list ) {
         if ( !resource.uri().startsWith( "akonadi:" ) )
             continue;
         kDebug() << "Found message: " << resource.uri();
-        taggedMessages << resource.uri();
+        taggedMessages << Item::fromUrl( KUrl( resource.resourceUri() ) );
     }
 
-    kDebug() << "Messages found: " << taggedMessages;
+    kDebug() << "Messages found: " << taggedMessages.count();
 
-    Item::List messages;
-    itemsRetrieved( messages );
+    Akonadi::LinkJob* job = new Akonadi::LinkJob( col, taggedMessages, this );
+    connect( job, SIGNAL( result( KJob* ) ),
+             this, SLOT( slotResult( KJob* ) ) );
+}
 
+void NepomukTagResource::slotResult( KJob* job )
+{
+    kDebug();
+    if ( job->error() ) {
+        kDebug() << job->errorString();
+        emit error( job->errorString() );
+    }
     itemsRetrievalDone();
 }
 
