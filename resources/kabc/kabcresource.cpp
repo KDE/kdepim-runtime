@@ -18,18 +18,26 @@
 
 #include "kabcresource.h"
 
+#include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchscope.h>
+
 #include <kabc/addressbook.h>
 #include <kabc/addressee.h>
 #include <kabc/errorhandler.h>
 #include <kabc/resource.h>
+#include <kabc/resourceabc.h>
 
 #include <kresources/factory.h>
 #include <kresources/configdialog.h>
 
 #include <kconfig.h>
 #include <kinputdialog.h>
+#include <krandom.h>
+#include <kwindowsystem.h>
 
 #include <QTimer>
+
+typedef QMap<QString, QString> UidToResourceMap;
 
 using namespace Akonadi;
 
@@ -67,59 +75,189 @@ class KABCResource::AddressBook : public KABC::AddressBook
 KABCResource::KABCResource( const QString &id )
   : ResourceBase( id ),
     mAddressBook( new AddressBook() ),
-    mResource( 0 ),
-    mLoaded( false ),
-    mExplicitLoading( false ),
-    mDelayedUpdateTimer( new QTimer( this ) ),
+    mBaseResource( 0 ),
+    mFolderResource( 0 ),
     mErrorHandler( new ErrorHandler( this ) )
 {
-  mDelayedUpdateTimer->setInterval( 10 );
-  mDelayedUpdateTimer->setSingleShot( true );
-
-  load();
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(reload()) );
-}
-
-void KABCResource::load()
-{
-  mAddressBook->setErrorHandler( mErrorHandler );
-
-  KSharedConfig::Ptr config = KGlobal::config();
-  Q_ASSERT( !config.isNull() );
-
-  KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
-  manager->readConfig( config.data() );
-
-  mResource = manager->standardResource();
-  if ( mResource != 0 ) {
-    connect( mResource, SIGNAL( loadingError( Resource*, const QString& ) ),
-             this, SLOT(loadingError( Resource*, const QString& ) ) );
-
-    if ( !mResource->isOpen() ) {
-      if ( !mResource->open() ) {
-        kError() << "Opening resource" << mResource->identifier() << "failed";
-      }
-
-    }
-
-    // perform initial load without connected loadingFinished, since it triggers
-    // sending items to Akonadi server
-    mLoaded = mAddressBook->load();
-
-    connect( mResource, SIGNAL( loadingFinished( Resource* ) ),
-             this, SLOT(loadingFinished( Resource* ) ) );
-  }
+  connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
 
   connect( mAddressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
            this, SLOT( addressBookChanged() ) );
 
-  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
-           this, SLOT( delayedUpdate() ) );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
+
+  QTimer::singleShot( 0, this, SLOT( reloadConfiguration() ) );
 }
 
 KABCResource::~KABCResource()
 {
   delete mAddressBook;
+}
+
+void KABCResource::configure( WId windowId )
+{
+  KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
+
+  if ( mBaseResource != 0 ) {
+    KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
+    KWindowSystem::setMainWindow( &dlg, windowId );
+    if ( dlg.exec() )
+      manager->writeConfig( KGlobal::config().data() );
+
+    // TODO: do we need to react on changes?
+    return;
+  }
+
+  QStringList types = manager->resourceTypeNames();
+  QStringList descs = manager->resourceTypeDescriptions();
+
+  int index = types.indexOf( QLatin1String( "akonadi" ) );
+  if ( index != -1 ) {
+    types.removeAt( index );
+    descs.removeAt( index );
+  }
+
+  // TODO: use our own config dialog so we can use KWindowSystem
+  bool ok = false;
+  QString desc = KInputDialog::getItem( i18n( "Create KABC resource" ),
+                                        i18n( "Please select type of the new resource:" ),
+                                        descs, 0, false, &ok );
+  if ( !ok )
+    return;
+
+  QString type = types[ descs.indexOf( desc ) ];
+
+  // Create new resource
+  setResourcePointers( manager->createResource( type ) );
+  if ( mBaseResource == 0 ) {
+    kError() << "Unable to create a KABC resource of type" << type;
+    emit error( i18n( "Unable to create a KABC resource of type %1", type ) );
+    return;
+  }
+
+  mBaseResource->setResourceName( i18n( "%1 address book", type ) );
+  mBaseResource->setAddressBook( mAddressBook );
+
+  KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
+  KWindowSystem::setMainWindow( &dlg, windowId );
+
+  if ( !dlg.exec() ) {
+    delete mBaseResource;
+    setResourcePointers( 0 );
+    return;
+  }
+
+  manager->writeConfig( KGlobal::config().data() );
+
+  mAddressBook->addResource( mBaseResource );
+
+  if ( !initConfiguration() ) {
+    const QString message = i18nc( "@info:status", "Initialization based on newly created configuration failed." );
+    emit error( message );
+    emit status( Broken, message );
+    return;
+  }
+
+  if ( !mAddressBook->asyncLoad() ) {
+    const QString message = i18nc( "@info:status", "Loading of address book failed." );
+    emit error( message );
+    emit status( Broken, message );
+    return;
+  }
+
+  emit status( Running, i18nc( "@info:status", "Loading Address Book" ) );
+}
+
+void KABCResource::retrieveCollections()
+{
+  kDebug();
+  if ( mBaseResource == 0 ) {
+    kError() << "No KABC resource";
+
+    emit error( i18n( "No KABC resource plugin configured" ) );
+
+    emit status( Broken, i18n( "No KABC resource plugin configured" ) );
+    return;
+  }
+
+  Collection topLevelCollection;
+  topLevelCollection.setParent( Collection::root() );
+  topLevelCollection.setRemoteId( mBaseResource->identifier() );
+  topLevelCollection.setName( name() );
+
+  QStringList mimeTypes;
+  mimeTypes << QLatin1String( "text/directory" );
+
+  QStringList topLevelMimeTypes = mimeTypes;
+
+  if ( mFolderResource != 0 ) {
+    topLevelMimeTypes << Collection::mimeType();
+  }
+
+  Collection::Rights readOnlyRights;
+
+  Collection::Rights readWriteRights;
+  readWriteRights |= Collection::CanCreateItem;
+  readWriteRights |= Collection::CanChangeItem;
+  readWriteRights |= Collection::CanDeleteItem;
+
+  topLevelCollection.setContentMimeTypes( topLevelMimeTypes );
+  topLevelCollection.setRights( mBaseResource->readOnly() ? readOnlyRights : readWriteRights );
+
+  Collection::List list;
+  list << topLevelCollection;
+
+  if ( mFolderResource != 0 ) {
+    const QStringList subResources = mFolderResource->subresources();
+    kDebug() << "subResources" << subResources;
+    foreach( const QString& subResource, subResources ) {
+      Collection childCollection;
+      childCollection.setParent( topLevelCollection );
+      childCollection.setRemoteId( subResource );
+      childCollection.setName( mFolderResource->subresourceLabel( subResource ) );
+      childCollection.setContentMimeTypes( mimeTypes );
+      bool readOnly = !mFolderResource->subresourceWritable( subResource );
+      childCollection.setRights( readOnly ? readOnlyRights : readWriteRights );
+
+      list << childCollection;
+    }
+  }
+
+  collectionsRetrieved( list );
+}
+
+void KABCResource::retrieveItems( const Akonadi::Collection &col )
+{
+  const UidToResourceMap uidToResourceMap =
+    mFolderResource != 0 ? mFolderResource->uidToResourceMap() : UidToResourceMap();
+
+  Item::List items;
+
+  // check for each addressee whether there is a sub resource mapping.
+  // if there is a mapping, skip it if the mapping does not equal the collection's
+  // remoteId.
+  // if there is none, skip it if the collection is not the top level collection
+  KABC::AddressBook::const_iterator addrIt    = mAddressBook->begin();
+  KABC::AddressBook::const_iterator addrEndIt = mAddressBook->end();
+  for ( ; addrIt != addrEndIt; ++addrIt ) {
+    UidToResourceMap::const_iterator findIt = uidToResourceMap.find( addrIt->uid() );
+    if ( findIt != uidToResourceMap.end() ) {
+      if ( findIt.value() != col.remoteId() )
+        continue;
+    } else {
+      if ( col.parent() != Collection::root().id() )
+        continue;
+    }
+
+    Item item;
+    item.setRemoteId( addrIt->uid() );
+    item.setMimeType( QLatin1String( "text/directory" ) );
+    items.append( item );
+  }
+
+  // TODO: handle distribution lists once we have an Akonadi payload for them
+
+  itemsRetrieved( items );
 }
 
 bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -143,8 +281,133 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void KABCResource::aboutToQuit()
 {
-  if ( !mResource )
-    return;
+  saveAddressBook();
+}
+
+void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& col )
+{
+  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  // KABC::Resource only has one collection and
+  // KABC::ResourceABC does not have API for setting the storage sub resource
+  Q_UNUSED( col );
+
+  kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+
+    if ( addressee.uid().isEmpty() )
+      addressee.setUid( KRandom::randomString( 10 ) );
+
+    mAddressBook->insertAddressee( addressee );
+
+    // TODO: consider delayed saving
+    // TODO: proper error reporting
+    if ( saveAddressBook() ) {
+      Item i( item );
+      i.setRemoteId( addressee.uid() );
+      i.setPayload<KABC::Addressee>( addressee );
+
+      changeCommitted( i );
+    } else {
+      changeProcessed();
+    }
+  } else {
+    // TODO: handle distribution lists once we have an Akonadi payload for them
+    changeProcessed();
+  }
+}
+
+void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
+{
+  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  // we store the whole addressee any way
+  Q_UNUSED( parts );
+
+  kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+    Q_ASSERT( !addressee.uid().isEmpty() );
+
+    mAddressBook->insertAddressee( addressee );
+
+    // TODO: consider delayed saving
+    // TODO: proper error reporting
+    if ( saveAddressBook() ) {
+      changeCommitted( item );
+    } else {
+      changeProcessed();
+    }
+  } else {
+    // TODO: handle distribution lists once we have an Akonadi payload for them
+    changeProcessed();
+  }
+}
+
+void KABCResource::itemRemoved( const Akonadi::Item &item )
+{
+  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
+  if ( !addressee.isEmpty() ) {
+    mAddressBook->removeAddressee( addressee );
+    // TODO: consider delayed saving
+    // TODO: proper error reporting
+    if ( saveAddressBook() ) {
+      changeCommitted( item );
+    } else {
+      changeProcessed();
+    }
+  } else {
+    // TODO: handle distribution lists once we have an Akonadi payload for them
+    changeProcessed();
+  }
+}
+
+void KABCResource::setResourcePointers( KABC::Resource *resource )
+{
+  mBaseResource   = resource;
+  mFolderResource = dynamic_cast<KABC::ResourceABC*>( resource );
+
+  if ( mBaseResource != 0 )
+    mBaseResource->setAddressBook( mAddressBook );
+}
+
+bool KABCResource::initConfiguration()
+{
+  if ( mBaseResource != 0 ) {
+    if ( !mBaseResource->isOpen() ) {
+      if ( !mBaseResource->open() ) {
+        kError() << "Opening resource" << mBaseResource->identifier() << "failed";
+        return false;
+      }
+    }
+
+    connect( mBaseResource, SIGNAL( loadingError( Resource*, const QString& ) ),
+             this, SLOT( loadingError( Resource*, const QString& ) ) );
+
+    connect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
+             this, SLOT( initialLoadingFinished( Resource* ) ) );
+
+    if ( mFolderResource != 0 ) {
+        connect( mFolderResource,
+                 SIGNAL( signalSubresourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ),
+                 this, SLOT( subResourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ) );
+
+        connect( mFolderResource,
+                 SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
+                 this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
+    }
+  }
+
+  // do not react on addressbook changes until we have finished its initial loading
+  mAddressBook->blockSignals( true );
+
+  return true;
+}
+
+bool KABCResource::saveAddressBook()
+{
+  if ( !mBaseResource || mBaseResource->readOnly() )
+    return false;
 
   mErrorHandler->mLastError.clear();
 
@@ -152,198 +415,17 @@ void KABCResource::aboutToQuit()
   if ( ticket == 0 ) {
     kError() << "Could not get save ticket";
     emit error( i18n( "Saving of addressbook failed: could not get Saveticket" ) );
-    return;
+    return false;
   }
 
   if ( !mAddressBook->save(ticket) ) {
     kError() << "Saving failed: " << mErrorHandler->mLastError;
-    return;
+    mAddressBook->releaseSaveTicket( ticket );
+    return false;
   }
 
   kDebug() << "Saving succeeded";
-}
-
-void KABCResource::configure( WId windowId )
-{
-  Q_UNUSED( windowId );
-
-  QWidget *window = 0; // should use windowId somehow
-
-  KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
-
-  if ( mResource != 0 ) {
-    KRES::ConfigDialog dlg( window, QLatin1String( "contact" ), mResource );
-    if ( dlg.exec() )
-      manager->writeConfig( KGlobal::config().data() );
-    return;
-  }
-
-  QStringList types = manager->resourceTypeNames();
-  QStringList descs = manager->resourceTypeDescriptions();
-
-  int index = types.indexOf( QLatin1String( "akonadi" ) );
-  if ( index != -1 ) {
-    types.removeAt( index );
-    descs.removeAt( index );
-  }
-
-  bool ok = false;
-  QString desc = KInputDialog::getItem( i18n( "Create KABC resource" ),
-                                        i18n( "Please select type of the new resource:" ),
-                                        descs, 0, false, &ok, window );
-  if ( !ok )
-    return;
-
-  QString type = types[ descs.indexOf( desc ) ];
-
-  // Create new resource
-  mResource = manager->createResource( type );
-  if ( mResource == 0 ) {
-    kError() << "Unable to create a KABC resource of type" << type;
-    emit error( i18n( "Unable to create a KABC resource of type %1", type ) );
-    return;
-  }
-
-  mResource->setResourceName( i18n( "%1 address book", type ) );
-  mResource->setAddressBook( mAddressBook );
-
-  KRES::ConfigDialog dlg( window, QLatin1String( "contact" ), mResource );
-
-  if ( !dlg.exec() ) {
-    delete mResource;
-    mResource = 0;
-    return;
-  }
-
-  manager->writeConfig( KGlobal::config().data() );
-
-  mAddressBook->addResource( mResource );
-
-  connect( mResource, SIGNAL( loadingFinished( Resource* ) ),
-           this, SLOT(loadingFinished( Resource* ) ) );
-  connect( mResource, SIGNAL( loadingError( Resource*, const QString& ) ),
-           this, SLOT(loadingError( Resource*, const QString& ) ) );
-
-  if ( !mResource->isOpen() ) {
-    if ( !mResource->open() ) {
-      kError() << "Opening resource" << mResource->identifier() << "failed";
-    }
-  }
-
-  synchronize();
-}
-
-void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& col )
-{
-  Q_UNUSED( col );
-
-  KABC::Addressee addressee = item.payload<KABC::Addressee>();
-  if ( !addressee.isEmpty() ) {
-    mAddressBook->insertAddressee( addressee );
-
-    Item i( item );
-    i.setRemoteId( addressee.uid() );
-    changeCommitted( i );
-  } else {
-    changeProcessed();
-  }
-}
-
-void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
-{
-  Q_UNUSED( parts );
-
-  KABC::Addressee addressee = item.payload<KABC::Addressee>();
-  if ( !addressee.isEmpty() ) {
-    mAddressBook->insertAddressee( addressee );
-
-    Item i( item );
-    i.setRemoteId( addressee.uid() );
-    changeCommitted( i );
-  } else {
-    changeProcessed();
-  }
-}
-
-void KABCResource::itemRemoved( const Akonadi::Item &item )
-{
-  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
-  if ( !addressee.isEmpty() )
-    mAddressBook->removeAddressee( addressee );
-  changeProcessed();
-}
-
-void KABCResource::retrieveCollections()
-{
-  kDebug();
-  if ( mResource == 0 ) {
-    kError() << "No KABC resource";
-
-    emit error( i18n( "No KABC resource plugin configured" ) );
-
-    emit status( Broken, i18n( "No KABC resource plugin configured" ) );
-    return;
-  }
-
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( mResource->identifier() );
-  c.setName( name() );
-
-  QStringList mimeTypes;
-  mimeTypes << QLatin1String( "text/directory" );
-  c.setContentMimeTypes( mimeTypes );
-
-  Collection::List list;
-  list << c;
-  collectionsRetrieved( list );
-}
-
-void KABCResource::retrieveItems( const Akonadi::Collection &col )
-{
-  Q_UNUSED( col );
-
-  if ( !mLoaded ) {
-    mErrorHandler->mLastError.clear();
-
-    mExplicitLoading = true;
-    if ( !mAddressBook->asyncLoad() ) {
-      mExplicitLoading = false;
-      kError() << "Starting Load failed:" << mErrorHandler->mLastError;
-      return;
-    }
-  } else if ( !mDelayedUpdateTimer->isActive() ) {
-    Item::List items;
-
-    AddressBook::const_iterator it    = mAddressBook->begin();
-    AddressBook::const_iterator endIt = mAddressBook->end();
-    for ( ; it != endIt; ++it ) {
-      Item item;
-      item.setRemoteId( it->uid() );
-      item.setMimeType( QLatin1String( "text/directory" ) );
-      items.append( item );
-    }
-
-    itemsRetrieved( items );
-  }
-}
-
-void KABCResource::loadingFinished( KABC::Resource *resource )
-{
-  Q_UNUSED( resource );
-
-  mLoaded = true;
-
-  if ( mDelayedUpdateTimer->isActive() ) {
-    mExplicitLoading = false;
-    return;
-  }
-
-  if ( mExplicitLoading ) {
-    mDelayedUpdateTimer->start();
-    mExplicitLoading = false;
-  } else
-    synchronize();
+  return true;
 }
 
 void KABCResource::loadingError( KABC::Resource *resource, const QString &message )
@@ -355,47 +437,87 @@ void KABCResource::loadingError( KABC::Resource *resource, const QString &messag
   emit status( Broken, message );
 }
 
+void KABCResource::initialLoadingFinished( KABC::Resource *resource )
+{
+  kDebug() << resource;
+  Q_ASSERT( mBaseResource != 0 );
+  Q_ASSERT( resource == mBaseResource );
+
+
+  disconnect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
+              this, SLOT( initialLoadingFinished( Resource* ) ) );
+
+  emit status( Idle, QString() );
+
+  mAddressBook->blockSignals( false );
+
+  synchronizeCollectionTree();
+}
+
 void KABCResource::addressBookChanged()
 {
-  if ( mExplicitLoading )
-    return;
-
-  if ( mDelayedUpdateTimer->isActive() )
-    return;
-
+  kDebug();
+  // FIXME: there must be a better way to do this
   synchronize();
 }
 
-void KABCResource::delayedUpdate()
+void KABCResource::subResourceAdded( KABC::ResourceABC *resource,
+        const QString &type, const QString &subResource )
 {
-  kDebug();
-  Item::List items;
+  kDebug() << "subResource" << subResource;
+  Q_ASSERT( resource == mFolderResource );
+  Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
+  Q_ASSERT( !subResource.isEmpty() );
 
-  AddressBook::const_iterator it    = mAddressBook->begin();
-  AddressBook::const_iterator endIt = mAddressBook->end();
-  for ( ; it != endIt; ++it ) {
-    Item item;
-    item.setRemoteId( it->uid() );
-    item.setMimeType( QLatin1String( "text/directory" ) );
-    items.append( item );
-  }
-
-  itemsRetrieved( items );
+  // TODO: currently addressBookChanged() handles this already
 }
 
-void KABCResource::reload()
+void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
+        const QString &type, const QString &subResource )
 {
-  kDebug();
+  kDebug() << "subResource" << subResource;
+  Q_ASSERT( resource == mFolderResource );
+  Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
+  Q_ASSERT( !subResource.isEmpty() );
+
+  // TODO: currently addressBookChanged() handles this already
+}
+
+void KABCResource::reloadConfiguration()
+{
+  mAddressBook->setErrorHandler( mErrorHandler );
+
+  KSharedConfig::Ptr config = KGlobal::config();
+  Q_ASSERT( !config.isNull() );
+
   KGlobal::config()->reparseConfiguration();
-  aboutToQuit();
-  delete mAddressBook;
 
-  mAddressBook = new AddressBook();
-  mResource = 0;
-  mLoaded = false;
-  mExplicitLoading = false;
+  KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
+  manager->readConfig( config.data() );
 
-  load();
+  setResourcePointers( manager->standardResource() );
+  if ( mBaseResource == 0 )
+    return;
+
+  if ( !initConfiguration() ) {
+    kError() << "initConfiguration() failed";
+
+    const QString message = i18nc( "@info:status", "Initialization based on stored configuration failed." );
+    emit error( message );
+    emit status( Broken, message );
+    return;
+  }
+
+  if ( !mAddressBook->asyncLoad() ) {
+    kError() << "asyncLoad() failed";
+
+    const QString message = i18nc( "@info:status", "Loading of address book failed." );
+    emit error( message );
+    emit status( Broken, message );
+    return;
+  }
+
+  emit status( Running, i18nc( "@info:status", "Loading address book" ) );
 }
 
 AKONADI_RESOURCE_MAIN( KABCResource )

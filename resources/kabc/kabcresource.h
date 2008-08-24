@@ -23,6 +23,7 @@
 
 namespace KABC {
   class Resource;
+  class ResourceABC;
 }
 
 class QTimer;
@@ -51,27 +52,35 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    void load();
-
-  private:
     class AddressBook;
     AddressBook *mAddressBook;
-    KABC::Resource *mResource;
-    bool mLoaded;
-    bool mExplicitLoading;
-
-    QTimer *mDelayedUpdateTimer;
+    KABC::Resource *mBaseResource;
+    KABC::ResourceABC *mFolderResource;
 
     class ErrorHandler;
     ErrorHandler *mErrorHandler;
 
+  private:
+    void setResourcePointers( KABC::Resource *resource );
+
+    bool initConfiguration();
+
+    bool saveAddressBook();
+
     typedef KABC::Resource Resource;
+
   private Q_SLOTS:
-    void loadingFinished( Resource *resource );
     void loadingError( Resource *resource, const QString &message );
+    void initialLoadingFinished( Resource *resource );
+
     void addressBookChanged();
-    void delayedUpdate();
-    void reload();
+
+    void subResourceAdded( KABC::ResourceABC *resource,
+                           const QString &type, const QString &subResource );
+    void subResourceRemoved( KABC::ResourceABC *resource,
+                             const QString &type, const QString &subResource );
+
+    void reloadConfiguration();
 };
 
 #endif
