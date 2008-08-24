@@ -40,31 +40,6 @@ NepomukTagResource::~NepomukTagResource()
 {
 }
 
-bool NepomukTagResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
-{
-    kDebug();
-    itemRetrieved( item );
-    return true;
-}
-
-void NepomukTagResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
-{
-    kDebug();
-    changeCommitted( item );
-}
-
-void NepomukTagResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
-{
-    kDebug();
-    changeCommitted( item );
-}
-
-void NepomukTagResource::itemRemoved( const Akonadi::Item &item )
-{
-    kDebug();
-    changeProcessed();
-}
-
 void NepomukTagResource::retrieveCollections()
 {
     QHash<QString,Collection> collections;
@@ -76,7 +51,8 @@ void NepomukTagResource::retrieveCollections()
     root.setName( i18n( "Tags" ) );
     root.setRemoteId( "nepomuktags" );
     root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-    root.setRights( Collection::ReadOnly );
+    Collection::Rights rights = Collection::CanCreateCollection;
+    root.setRights( rights );
 
     CachePolicy policy;
     policy.setInheritFromParent( false );
@@ -114,17 +90,16 @@ void NepomukTagResource::retrieveItems( const Akonadi::Collection & col )
     Nepomuk::Tag tag( col.remoteId() );
     QList<Nepomuk::Resource> list = tag.tagOf();
     foreach( const Nepomuk::Resource& resource, list ) {
-        if ( !resource.uri().startsWith( "akonadi:" ) )
+        if ( !resource.resourceUri().toString().startsWith( "akonadi:" ) )
             continue;
-        kDebug() << "Found message: " << resource.uri();
+        kDebug() << "Found message: " << resource.resourceUri();
         taggedMessages << Item::fromUrl( KUrl( resource.resourceUri() ) );
     }
 
     kDebug() << "Messages found: " << taggedMessages.count();
 
     Akonadi::LinkJob* job = new Akonadi::LinkJob( col, taggedMessages, this );
-    connect( job, SIGNAL( result( KJob* ) ),
-             this, SLOT( slotResult( KJob* ) ) );
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotResult( KJob* ) ) );
 }
 
 void NepomukTagResource::slotResult( KJob* job )
@@ -139,6 +114,7 @@ void NepomukTagResource::slotResult( KJob* job )
 
 void NepomukTagResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
+    Q_UNUSED( parent );
     QString s = collection.name();
     Collection newCollection = collection;
     kDebug() << "Adding tag:" << s;
@@ -170,20 +146,6 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
 
     // TODO: sync folder list, as it does not seem to update automatically????
     synchronizeCollectionTree();
-}
-
-void NepomukTagResource::collectionChanged( const Collection & collection )
-{
-    kDebug( ) << "Implement me!";
-    changeProcessed();
-}
-
-void NepomukTagResource::collectionRemoved( const Akonadi::Collection &collection )
-{
-    kDebug( ) << "Del folder: " << collection.remoteId();
-    emit warning( i18n( "Deleting tags is not supported..." ) );
-    synchronizeCollectionTree();
-    changeProcessed();
 }
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )

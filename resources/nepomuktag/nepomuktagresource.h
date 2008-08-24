@@ -34,19 +34,13 @@ public:
 protected Q_SLOTS:
     virtual void retrieveCollections();
     virtual void retrieveItems( const Akonadi::Collection &col );
-    virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual bool retrieveItem( const Akonadi::Item &, const QSet<QByteArray> & ) { return true; };
 
 private Q_SLOTS:
     void slotResult( KJob* );
 
 protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
-
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
 };
 
 #endif
