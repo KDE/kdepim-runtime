@@ -71,6 +71,7 @@ class BrowserWidget: public QWidget
     Akonadi::Collection::Id mCurrentCollection;
     Akonadi::Item mCurrentItem;
     QStandardItemModel *mAttrModel;
+    QStandardItemModel *mNepomukModel;
 };
 
 #endif

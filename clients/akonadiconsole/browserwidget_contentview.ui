@@ -13,9 +13,17 @@
    <item row="0" column="0" colspan="2" >
     <widget class="KTabWidget" name="ktabwidget" >
      <property name="currentIndex" >
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>491</width>
+        <height>428</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Payload</string>
       </attribute>
@@ -29,6 +37,14 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="unsupportedTypePage" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>483</width>
+            <height>420</height>
+           </rect>
+          </property>
           <layout class="QVBoxLayout" >
            <item>
             <widget class="QLabel" name="unsupportedType" >
@@ -43,16 +59,32 @@
           </layout>
          </widget>
          <widget class="QWidget" name="addresseeViewPage" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>100</width>
+            <height>30</height>
+           </rect>
+          </property>
           <layout class="QVBoxLayout" >
            <item>
-            <widget class="KPIM::AddresseeView" native="1" name="addresseeView" />
+            <widget class="KPIM::AddresseeView" name="addresseeView" />
            </item>
           </layout>
          </widget>
          <widget class="QWidget" name="incidenceViewPage" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>100</width>
+            <height>30</height>
+           </rect>
+          </property>
           <layout class="QVBoxLayout" >
            <item>
-            <widget class="Akonadi::KCalItemBrowser" native="1" name="incidenceView" />
+            <widget class="Akonadi::KCalItemBrowser" name="incidenceView" />
            </item>
           </layout>
          </widget>
@@ -61,6 +93,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>491</width>
+        <height>428</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Attributes</string>
       </attribute>
@@ -74,7 +114,7 @@
        </item>
        <item row="1" column="0" >
         <widget class="KLineEdit" name="attrName" >
-         <property name="clickMessage" stdset="0" >
+         <property name="clickMessage" >
           <string>New Attribute</string>
          </property>
         </widget>
@@ -96,6 +136,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>491</width>
+        <height>428</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Raw Payload</string>
       </attribute>
@@ -113,6 +161,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>491</width>
+        <height>428</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Internals</string>
       </attribute>
@@ -248,6 +304,23 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_5" >
+      <attribute name="title" >
+       <string>Nepomuk</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <item>
+        <widget class="QTreeView" name="nepomukView" >
+         <property name="rootIsDecorated" >
+          <bool>false</bool>
+         </property>
+         <property name="allColumnsShowFocus" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item row="1" column="0" >
@@ -255,7 +328,7 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>40</width>
        <height>20</height>
