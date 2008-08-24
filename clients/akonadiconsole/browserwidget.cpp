@@ -20,6 +20,7 @@
 #include "browserwidget.h"
 #include "collectionattributespage.h"
 #include "collectioninternalspage.h"
+#include "collectionaclpage.h"
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/job.h>
@@ -58,6 +59,7 @@ using namespace Akonadi;
 
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAttributePageFactory, CollectionAttributePage)
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionInternalsPageFactory, CollectionInternalsPage)
+AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAclPageFactory, CollectionAclPage)
 
 BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
@@ -111,6 +113,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   connect( contentUi.attrAddButton, SIGNAL(clicked()), SLOT(addAttribute()) );
   connect( contentUi.attrDeleteButton, SIGNAL(clicked()), SLOT(delAttribute()) );
 
+  CollectionPropertiesDialog::registerPage( new CollectionAclPageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionAttributePageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
 }

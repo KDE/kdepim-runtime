@@ -10,6 +10,7 @@ set(akonadiconsole_bin_SRCS
   browserwidget.cpp
   collectionattributespage.cpp
   collectioninternalspage.cpp
+  collectionaclpage.cpp
   connectionpage.cpp
   debugwidget.cpp
   main.cpp
@@ -27,6 +28,7 @@ kde4_add_ui_files(akonadiconsole_bin_SRCS
   browserwidget_contentview.ui
   collectionattributespage.ui
   collectioninternalspage.ui
+  collectionaclpage.ui
 )
 
 kde4_add_executable(akonadiconsole_bin ${akonadiconsole_bin_SRCS})
