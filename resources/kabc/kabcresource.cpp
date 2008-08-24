@@ -18,6 +18,7 @@
 
 #include "kabcresource.h"
 
+#include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
 
@@ -180,10 +181,15 @@ void KABCResource::retrieveCollections()
     return;
   }
 
+  CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setSyncOnDemand( true );
+
   Collection topLevelCollection;
   topLevelCollection.setParent( Collection::root() );
   topLevelCollection.setRemoteId( mBaseResource->identifier() );
   topLevelCollection.setName( name() );
+  topLevelCollection.setCachePolicy( cachePolicy );
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/directory" );
@@ -215,6 +221,7 @@ void KABCResource::retrieveCollections()
       childCollection.setParent( topLevelCollection );
       childCollection.setRemoteId( subResource );
       childCollection.setName( mFolderResource->subresourceLabel( subResource ) );
+      childCollection.setCachePolicy( cachePolicy );
       childCollection.setContentMimeTypes( mimeTypes );
       bool readOnly = !mFolderResource->subresourceWritable( subResource );
       childCollection.setRights( readOnly ? readOnlyRights : readWriteRights );
