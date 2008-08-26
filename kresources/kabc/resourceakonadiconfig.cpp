@@ -68,6 +68,21 @@ static QModelIndex findCollection( const Akonadi::Collection &collection,
 
 using namespace KABC;
 
+class AkonadiResourceDialog : public KDialog
+{
+  public:
+    AkonadiResourceDialog( const QStringList &mimeList, QWidget *parent )
+      : KDialog( parent )
+    {
+      QWidget *widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
+                                                    KCModuleLoader::Inline, this, mimeList );                      
+      setMainWidget( widget );
+      
+      setButtons( Close );
+      setDefaultButton( Close );
+    }
+};
+
 ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   : KRES::ConfigWidget( parent ),
     mCollectionView( 0 ),
@@ -83,8 +98,6 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
   mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );
-
-  KTabWidget *tabWidget = new KTabWidget( this );
 
   // list of contact data MIME types
   // TODO: check if we need to add text/x-vcard
@@ -152,14 +165,14 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   buttonBox->addButton( mSubscriptionButton, QDialogButtonBox::ActionRole );
   connect( mSubscriptionButton, SIGNAL( clicked() ), mSubscriptionAction, SLOT( trigger() ) );
 
-  const QString foldersTitle = i18nc( "@title:tab", "Manage addressbook folders" );
-  tabWidget->addTab( widget, foldersTitle );
-
-  widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
-                                       KCModuleLoader::Inline, this, mimeList );
-
-  const QString sourcesTitle = i18nc( "@title:tab", "Manage addressbook sources" );
-  tabWidget->addTab( widget, sourcesTitle );
+  AkonadiResourceDialog *sourcesDialog = new AkonadiResourceDialog( mimeList, this );
+  const QString sourcesTitle = i18nc( "@title:window", "Manage Address Book Sources" );
+  sourcesDialog->setCaption( sourcesTitle );
+  
+  QPushButton *sourcesButton = new QPushButton( sourcesTitle );
+  buttonBox->addButton( sourcesButton, QDialogButtonBox::ActionRole );
+  
+  connect( sourcesButton, SIGNAL( clicked() ), sourcesDialog, SLOT( show() ) );
 
   QLabel *label = new QLabel( this );
   label->setText( i18nc( "@info", "<title>Please select the folder for storing"
@@ -171,7 +184,7 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
                          sourcesTitle, mSubscriptionButton->text() ) );
 
   mainLayout->addWidget( label );
-  mainLayout->addWidget( tabWidget );
+  mainLayout->addWidget( widget );
 
   updateCollectionButtonState();
 
