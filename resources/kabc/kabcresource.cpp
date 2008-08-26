@@ -18,6 +18,8 @@
 
 #include "kabcresource.h"
 
+#include "kresourceassistant.h"
+
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
@@ -109,44 +111,22 @@ void KABCResource::configure( WId windowId )
     return;
   }
 
-  QStringList types = manager->resourceTypeNames();
-  QStringList descs = manager->resourceTypeDescriptions();
+  KResourceAssistant kresAssistant( QLatin1String( "Contact" ) );
+  KWindowSystem::setMainWindow( &kresAssistant, windowId );
 
-  int index = types.indexOf( QLatin1String( "akonadi" ) );
-  if ( index != -1 ) {
-    types.removeAt( index );
-    descs.removeAt( index );
-  }
+  connect( &kresAssistant, SIGNAL( error( const QString& ) ),
+           this, SIGNAL( error( const QString& ) ) );
 
-  // TODO: use our own config dialog so we can use KWindowSystem
-  bool ok = false;
-  QString desc = KInputDialog::getItem( i18n( "Create KABC resource" ),
-                                        i18n( "Please select type of the new resource:" ),
-                                        descs, 0, false, &ok );
-  if ( !ok )
+  if ( kresAssistant.exec() != QDialog::Accepted )
     return;
 
-  QString type = types[ descs.indexOf( desc ) ];
+  KABC::Resource *resource = dynamic_cast<KABC::Resource*>( kresAssistant.resource() );
+  Q_ASSERT( resource != 0 );
 
-  // Create new resource
-  setResourcePointers( manager->createResource( type ) );
-  if ( mBaseResource == 0 ) {
-    kError() << "Unable to create a KABC resource of type" << type;
-    emit error( i18n( "Unable to create a KABC resource of type %1", type ) );
-    return;
-  }
+  setResourcePointers( resource );
 
-  mBaseResource->setResourceName( i18n( "%1 address book", type ) );
+  manager->add( resource );
   mBaseResource->setAddressBook( mAddressBook );
-
-  KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
-  KWindowSystem::setMainWindow( &dlg, windowId );
-
-  if ( !dlg.exec() ) {
-    delete mBaseResource;
-    setResourcePointers( 0 );
-    return;
-  }
 
   manager->writeConfig( KGlobal::config().data() );
 
@@ -530,3 +510,5 @@ void KABCResource::reloadConfiguration()
 AKONADI_RESOURCE_MAIN( KABCResource )
 
 #include "kabcresource.moc"
+
+// kate: space-indent on; indent-width 2; replace-tabs on;
