@@ -27,6 +27,7 @@
 #include <KDebug>
 #include <KLocale>
 #include <sonnet/speller.h>
+#include <kdeversion.h>
 
 #include <QTextEdit>
 #include <QTimer>
@@ -121,7 +122,10 @@ void KEMailQuotingHighlighter::unsetMisspelled( int start,  int count )
 
 void KEMailQuotingHighlighter::setMisspelled( int start, int count )
 {
-    setFormat( start, count, d->misspelledColor );
+#if KDE_IS_VERSION( 4, 1, 62 )
+    setMisspelledColor( d->misspelledColor );
+#endif
+    Sonnet::Highlighter::setMisspelled( start, count );
 }
 
 }
