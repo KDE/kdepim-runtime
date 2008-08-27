@@ -48,7 +48,7 @@ class CompatibilityIntroductionLabel : public QWidget
                "<para>This assistant will guide you through the necessary "
                "steps to use a traditional KDE resource plugin to populate "
                "a folder of your Akonadi personal information setup with data "
-               "otherwise not yet accesible through native Akonadi "
+               "otherwise not yet accessible through native Akonadi "
                "resources.</para>"
                "<para>The setup process consists of three steps:</para>"
                "<para><list>"
@@ -189,8 +189,10 @@ class KResourceConfigWidget : public QWidget
         mStackWidget->addWidget( configWidget );
         mStackedWidgets.insert( type, configWidget );
 
-        connect( configWidget->mPluginWidget, SIGNAL( setReadOnly( bool ) ),
-                 parent, SLOT( setReadOnly( bool ) ) );
+        if ( configWidget->mPluginWidget != 0 ) {
+          connect( configWidget->mPluginWidget, SIGNAL( setReadOnly( bool ) ),
+                   parent, SLOT( setReadOnly( bool ) ) );
+        }
       }
     }
 
