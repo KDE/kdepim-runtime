@@ -88,8 +88,6 @@ KABCResource::KABCResource( const QString &id )
            this, SLOT( addressBookChanged() ) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
-
-  QTimer::singleShot( 0, this, SLOT( reloadConfiguration() ) );
 }
 
 KABCResource::~KABCResource()
