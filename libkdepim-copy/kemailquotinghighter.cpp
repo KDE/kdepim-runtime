@@ -122,7 +122,7 @@ void KEMailQuotingHighlighter::unsetMisspelled( int start,  int count )
 
 void KEMailQuotingHighlighter::setMisspelled( int start, int count )
 {
-#if KDE_IS_VERSION( 4, 1, 62 )
+#if KDE_IS_VERSION( 4, 1, 63 )
     setMisspelledColor( d->misspelledColor );
 #endif
     Sonnet::Highlighter::setMisspelled( start, count );
