@@ -187,9 +187,24 @@ class KResourceFolderConfigWidget : public QWidget
       : QWidget( parent ), mName( 0 ), mReadOnly( 0 )
     {
       QVBoxLayout *mainLayout = new QVBoxLayout( this );
+      mainLayout->setSpacing( KDialog::spacingHint() );
+
+      // TODO probably add Akonadi related options
+      const QString helpText =
+        i18nc( "@info",
+               "The settings on this page allow you to customize how the "
+               "data from the plugin will fit into your personal information "
+               "setup." );
+
+      QLabel *helpLabel = new QLabel( this );
+      helpLabel->setWordWrap( true );
+      helpLabel->setText( helpText );
+
+      mainLayout->addWidget( helpLabel );
 
       QGroupBox *generalGroup = new QGroupBox( this );
       QGridLayout *generalLayout = new QGridLayout( generalGroup );
+      generalLayout->setMargin( KDialog::marginHint() );
       generalLayout->setSpacing( KDialog::spacingHint() );
 
       generalGroup->setTitle( i18nc( "@title:group general resource settings",
