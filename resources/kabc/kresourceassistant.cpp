@@ -41,6 +41,7 @@ class KResourceDescriptionLabel : public QWidget
       QVBoxLayout *mainLayout = new QVBoxLayout( this );
 
       QLabel *label = new QLabel( desc, this );
+      label->setWordWrap( true );
       mainLayout->addWidget( label );
 
       mainLayout->addItem( new QSpacerItem( 0, 0, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding ) );
