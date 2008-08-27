@@ -54,8 +54,9 @@ class KResourceDescriptionLabel : public QWidget
 class KResourceCreationWidget : public QWidget
 {
   public:
-    KResourceCreationWidget( KRES::Factory *factory, QWidget *parent )
-      : QWidget( parent ), mFactory( factory ), mResource( 0 ), mPageWidget( 0 )
+    KResourceCreationWidget( const QString &familyName, KRES::Factory *factory, QWidget *parent )
+      : QWidget( parent ), mFamilyName( familyName ),
+        mFactory( factory ), mResource( 0 ), mPageWidget( 0 )
     {
       QVBoxLayout *mainLayout = new QVBoxLayout( this );
       mainLayout->setSpacing( KDialog::spacingHint() );
@@ -91,9 +92,12 @@ class KResourceCreationWidget : public QWidget
 
       delete mResource;
       mResource = mFactory->resource( label->mType );
+
+      mResource->setResourceName( mFamilyName );
     }
 
   public:
+    QString mFamilyName;
     QStringList mTypes;
 
     KRES::Factory  *mFactory;
@@ -131,35 +135,11 @@ class KResourceConfigWidget : public QWidget
 {
   public:
     KResourceConfigWidget( const QStringList &types, KRES::Factory *factory, QWidget *parent )
-      : QWidget( parent ), mName( 0 ), mReadOnly( 0 ), mStackWidget( 0 )
+      : QWidget( parent ), mStackWidget( 0 )
     {
       QVBoxLayout *mainLayout = new QVBoxLayout( this );
       mainLayout->setSpacing( KDialog::spacingHint() );
       mainLayout->setMargin( KDialog::marginHint() );
-
-      QGroupBox *generalGroup = new QGroupBox( this );
-      QGridLayout *generalLayout = new QGridLayout( generalGroup );
-      generalLayout->setSpacing( KDialog::spacingHint() );
-
-      generalGroup->setTitle( i18nc( "@title:group", "General Settings" ) );
-
-      QLabel *nameLabel = new QLabel( i18nc( "@label resource name", "Name:" ), generalGroup );
-      generalLayout->addWidget( nameLabel, 0, 0 );
-
-      mName = new KLineEdit( generalGroup );
-      generalLayout->addWidget( mName, 0, 1 );
-
-      connect( mName, SIGNAL( textChanged( const QString& ) ),
-               parent, SLOT( slotNameChanged( const QString& ) ) );
-
-      mReadOnly = new QCheckBox( i18nc( "@option:check if resource is read-only",
-                                         "Read-only" ),
-                                 generalGroup );
-      generalLayout->addWidget( mReadOnly, 1, 0, 1, 2 );
-
-      mReadOnly->setChecked( false );
-
-      mainLayout->addWidget( generalGroup );
 
       mStackWidget = new QStackedWidget( this );
 
@@ -196,11 +176,50 @@ class KResourceConfigWidget : public QWidget
     }
 
   public:
-    KLineEdit *mName;
-    QCheckBox *mReadOnly;
-
     QStackedWidget *mStackWidget;
     QMap<QString, KResourcePluginConfigWidget*> mStackedWidgets;
+};
+
+class KResourceFolderConfigWidget : public QWidget
+{
+  public:
+    KResourceFolderConfigWidget( const QString &familyName, QWidget *parent )
+      : QWidget( parent ), mName( 0 ), mReadOnly( 0 )
+    {
+      QVBoxLayout *mainLayout = new QVBoxLayout( this );
+
+      QGroupBox *generalGroup = new QGroupBox( this );
+      QGridLayout *generalLayout = new QGridLayout( generalGroup );
+      generalLayout->setSpacing( KDialog::spacingHint() );
+
+      generalGroup->setTitle( i18nc( "@title:group general resource settings",
+                                     "%1 Folder Settings",
+                                     familyName ) );
+
+      QLabel *nameLabel = new QLabel( i18nc( "@label resource name", "Name:" ),
+                                      generalGroup );
+      generalLayout->addWidget( nameLabel, 0, 0 );
+
+      mName = new KLineEdit( generalGroup );
+      generalLayout->addWidget( mName, 0, 1 );
+
+      mReadOnly = new QCheckBox( i18nc( "@option:check if resource is read-only",
+                                        "Read-only" ),
+                                 generalGroup );
+      generalLayout->addWidget( mReadOnly, 1, 0, 1, 2 );
+
+      mReadOnly->setChecked( false );
+
+      mainLayout->addWidget( generalGroup );
+      mainLayout->addStretch();
+
+      connect( mName, SIGNAL( textChanged( const QString& ) ),
+               parent, SLOT( slotNameChanged( const QString& ) ) );
+    }
+
+  public:
+    KLineEdit *mName;
+    QCheckBox *mReadOnly;
 };
 
 class KResourceAssistant::Private
@@ -208,7 +227,8 @@ class KResourceAssistant::Private
   public:
     explicit Private( KResourceAssistant *parent )
       : mParent( parent ), mFactory( 0 ), mCreationWidget( 0 ),
-        mConfigWidget( 0 )
+        mConfigWidget( 0 ), mFolderWidget( 0 ),
+        mLastPage( 0 )
     {
     }
 
@@ -217,28 +237,55 @@ class KResourceAssistant::Private
 
     KRES::Factory *mFactory;
 
-    KResourceCreationWidget *mCreationWidget;
-    KResourceConfigWidget   *mConfigWidget;
+    KResourceCreationWidget     *mCreationWidget;
+    KResourceConfigWidget       *mConfigWidget;
+    KResourceFolderConfigWidget *mFolderWidget;
+
+    KPageWidgetItem *mLastPage;
+
+  public:
+    void setReadOnly( bool readOnly )
+    {
+      mFolderWidget->mReadOnly->setChecked( readOnly );
+    }
+
+    void slotNameChanged( const QString &text );
 };
 
 KResourceAssistant::KResourceAssistant( const QString& resourceFamily, QWidget *parent )
   : KAssistantDialog( parent ), d( new Private( this ) )
 {
+  // TODO they are most likely already defined somewhere
+  QMap<QString, QString> familyNames;
+  familyNames[ QLatin1String( "contact" ) ] =
+    i18nc( "@title user visible resource type", "Address Book" );
+  familyNames[ QLatin1String( "calendar" ) ] =
+    i18nc( "@title user visible resource type", "Calendar" );
+
+  const QString familyName = familyNames[ resourceFamily.toLower() ];
+
   setModal( true );
   setCaption( i18nc( "@title:window", "KDE Compatibility Assistant" ) );
 
   d->mFactory = KRES::Factory::self( resourceFamily.toLower() );
 
-  d->mCreationWidget = new KResourceCreationWidget( d->mFactory, this );
-  addPage( d->mCreationWidget, i18nc( "@title:tab", "Plugin Selection") );
+  d->mCreationWidget = new KResourceCreationWidget( familyName, d->mFactory, this );
+  addPage( d->mCreationWidget, i18nc( "@title assistant dialog step",
+                                      "Step 1: Select a KDE resource plugin") );
 
   d->mConfigWidget =
     new KResourceConfigWidget( d->mCreationWidget->mTypes, d->mFactory, this );
-  addPage( d->mConfigWidget, i18nc( "@title:tab", "Plugin Configuration") );
+  addPage( d->mConfigWidget, i18nc( "@title assistant dialog step",
+                                    "Step 2: Configure the selected KDE resource plugin") );
+
+  d->mFolderWidget = new KResourceFolderConfigWidget( familyName, this );
+  d->mLastPage = addPage( d->mFolderWidget, i18nc( "@title assistant dialog step",
+                                                   "Step 3: Choose target folder properties" ) );
 }
 
 KResourceAssistant::~KResourceAssistant()
 {
+  delete d;
 }
 
 KRES::Resource *KResourceAssistant::resource()
@@ -263,9 +310,19 @@ void KResourceAssistant::next()
     d->mCreationWidget->createResource();
 
     d->mConfigWidget->loadSettings( d->mCreationWidget->mResource );
+  } else if ( item->widget() == d->mConfigWidget ) {
+    const QString resourceName = d->mCreationWidget->mResource->resourceName();
+    d->mFolderWidget->mName->setText( resourceName );
   }
 
   KAssistantDialog::next();
+}
+
+void KResourceAssistant::Private::slotNameChanged( const QString &text )
+{
+
+  mParent->setValid( mLastPage, !text.isEmpty() );
+  mCreationWidget->mResource->setResourceName( text );
 }
 
 #include "kresourceassistant.moc"

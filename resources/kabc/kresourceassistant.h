@@ -46,6 +46,9 @@ class KResourceAssistant : public KAssistantDialog
   private:
     class Private;
     Private *d;
+
+    Q_PRIVATE_SLOT( d, void setReadOnly( bool ) )
+    Q_PRIVATE_SLOT( d, void slotNameChanged( const QString& ) )
 };
 
 #endif
