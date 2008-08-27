@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Nepomuk Tags (Virtual Folders)
+Name[et]=Nepomuki sildid (virtuaalkaustad)
+Name[km]=ស្លាក Nepomuk (ថត​និម្មិត)
+Name[nds]=Nepomuk-Steekwöör (Virtuell Ornern)
+Name[zh_TW]=Nepomuk 標籤（虛擬資料夾）
 Comment=Virtual folders for selecting messages which have Nepomuk Tags.
+Comment[et]=Virtuaalkaustad Nepomuki siltidega kirjade valimiseks.
+Comment[km]=ថត​និម្មិត​សម្រាប់​ជ្រើស​សារ​ដែល​មាន​ស្លាក Nepomuk ។
+Comment[nds]=Virtuell Ornen för Narichten mit Nepomuk-Steekwöör
+Comment[zh_TW]=用於選擇有 Nepomuk 標籤訊息用的虛擬資料夾
 Type=AkonadiResource
 Exec=akonadi_nepomuktag_resource
 Icon=message-rfc822
