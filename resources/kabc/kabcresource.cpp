@@ -132,7 +132,7 @@ void KABCResource::configure( WId windowId )
 
   mAddressBook->addResource( mBaseResource );
 
-  if ( !initConfiguration() ) {
+  if ( !openConfiguration() ) {
     const QString message = i18nc( "@info:status", "Initialization based on newly created configuration failed." );
     emit error( message );
     emit status( Broken, message );
@@ -271,6 +271,19 @@ void KABCResource::aboutToQuit()
   saveAddressBook();
 }
 
+void KABCResource::doSetOnline( bool online )
+{
+  kDebug() << "online" << online << "resource" << (void*) mBaseResource;
+
+  if ( online ) {
+    reloadConfiguration();
+  } else {
+    closeConfiguration();
+  }
+
+  ResourceBase::doSetOnline( online );
+}
+
 void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& col )
 {
   kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
@@ -358,7 +371,7 @@ void KABCResource::setResourcePointers( KABC::Resource *resource )
     mBaseResource->setAddressBook( mAddressBook );
 }
 
-bool KABCResource::initConfiguration()
+bool KABCResource::openConfiguration()
 {
   if ( mBaseResource != 0 ) {
     if ( !mBaseResource->isOpen() ) {
@@ -389,6 +402,33 @@ bool KABCResource::initConfiguration()
   mAddressBook->blockSignals( true );
 
   return true;
+}
+
+void KABCResource::closeConfiguration()
+{
+  // do not react on addressbook changes until we have finished its initial loading
+  mAddressBook->blockSignals( true );
+
+  if ( mBaseResource != 0 ) {
+    disconnect( mBaseResource, SIGNAL( loadingError( Resource*, const QString& ) ),
+                this, SLOT( loadingError( Resource*, const QString& ) ) );
+
+    disconnect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
+                this, SLOT( initialLoadingFinished( Resource* ) ) );
+
+    if ( mFolderResource != 0 ) {
+        disconnect( mFolderResource,
+                    SIGNAL( signalSubresourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ),
+                    this, SLOT( subResourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ) );
+
+        disconnect( mFolderResource,
+                    SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
+                    this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
+
+    if ( mBaseResource->isOpen() )
+      mBaseResource->close();
+    }
+  }
 }
 
 bool KABCResource::saveAddressBook()
@@ -474,6 +514,8 @@ void KABCResource::reloadConfiguration()
 {
   mAddressBook->setErrorHandler( mErrorHandler );
 
+  closeConfiguration();
+
   KSharedConfig::Ptr config = KGlobal::config();
   Q_ASSERT( !config.isNull() );
 
@@ -486,8 +528,11 @@ void KABCResource::reloadConfiguration()
   if ( mBaseResource == 0 )
     return;
 
-  if ( !initConfiguration() ) {
-    kError() << "initConfiguration() failed";
+  if ( !isOnline() )
+    return;
+
+  if ( !openConfiguration() ) {
+    kError() << "openConfiguration() failed";
 
     const QString message = i18nc( "@info:status", "Initialization based on stored configuration failed." );
     emit error( message );

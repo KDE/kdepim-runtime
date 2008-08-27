@@ -47,6 +47,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   protected:
     virtual void aboutToQuit();
 
+    virtual void doSetOnline( bool online );
+
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
@@ -63,7 +65,9 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   private:
     void setResourcePointers( KABC::Resource *resource );
 
-    bool initConfiguration();
+    bool openConfiguration();
+
+    void closeConfiguration();
 
     bool saveAddressBook();
 
