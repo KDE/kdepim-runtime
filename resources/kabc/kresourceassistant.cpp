@@ -32,6 +32,43 @@
 #include <QLayout>
 #include <QStackedWidget>
 
+class CompatibilityIntroductionLabel : public QWidget
+{
+  public:
+    explicit CompatibilityIntroductionLabel( QWidget *parent )
+      : QWidget( parent )
+    {
+      QVBoxLayout *mainLayout = new QVBoxLayout( this );
+      mainLayout->setSpacing( KDialog::spacingHint() );
+      mainLayout->setMargin( KDialog::marginHint() );
+
+      const QString introduction =
+        i18nc( "@info",
+               "<title>Introduction</title>"
+               "<para>This assistant will guide you through the necessary "
+               "steps to use a traditional KDE resource plugin to populate "
+               "a folder of your Akonadi personal information setup with data "
+               "otherwise not yet accesible through native Akonadi "
+               "resources.</para>"
+               "<para>The setup process consists of three steps:</para>"
+               "<para><list>"
+               "<item>Step 1: Selecting a plugin suitable for the kind of data "
+               "source you want to add</item>"
+               "<item>Step 2: Providing the selected plugin with information on "
+               "where to find and how to access the data</item>"
+               "<item>Step 3: Naming the resulting data source so you can easily "
+               "identify it in any application presenting you a choice of "
+               "which data to process</item></list></para>" );
+
+      QLabel *label = new QLabel( this );
+      label->setWordWrap( true );
+      label->setText( introduction );
+
+      mainLayout->addWidget( label );
+      mainLayout->addStretch();
+    }
+};
+
 class KResourceDescriptionLabel : public QWidget
 {
   public:
@@ -39,6 +76,7 @@ class KResourceDescriptionLabel : public QWidget
       : QWidget( parent ), mType( type )
     {
       QVBoxLayout *mainLayout = new QVBoxLayout( this );
+      mainLayout->setSpacing( KDialog::spacingHint() );
 
       QLabel *label = new QLabel( desc, this );
       label->setWordWrap( true );
@@ -281,6 +319,9 @@ KResourceAssistant::KResourceAssistant( const QString& resourceFamily, QWidget *
 
   setModal( true );
   setCaption( i18nc( "@title:window", "KDE Compatibility Assistant" ) );
+
+  QWidget *introPage = new CompatibilityIntroductionLabel( this );
+  addPage( introPage, QString() );
 
   d->mFactory = KRES::Factory::self( resourceFamily.toLower() );
 
