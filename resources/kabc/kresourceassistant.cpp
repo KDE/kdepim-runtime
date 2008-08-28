@@ -369,6 +369,8 @@ void KResourceAssistant::next()
 
     d->mConfigWidget->loadSettings( d->mCreationWidget->mResource );
   } else if ( item->widget() == d->mConfigWidget ) {
+    d->mConfigWidget->saveSettings( d->mCreationWidget->mResource );
+
     const QString resourceName = d->mCreationWidget->mResource->resourceName();
     d->mFolderWidget->mName->setText( resourceName );
   }
