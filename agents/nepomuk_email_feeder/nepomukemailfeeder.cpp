@@ -115,9 +115,11 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   KMime::Content* content = msg->mainBodyPart( "text/plain" );
 
   // FIXME: simplyfy this text as in: remove all html tags. Is there a quick way to do this?
-  QString text = content->decodedText( true, true );
-  if ( !text.isEmpty() ) {
-    r.setProperty( Soprano::Vocabulary::Xesam::asText(), text );
+  if ( content ) {
+    QString text = content->decodedText( true, true );
+    if ( !text.isEmpty() ) {
+      r.setProperty( Soprano::Vocabulary::Xesam::asText(), text );
+    }
   }
 
   // FIXME: is xesam:id the best idea here?
