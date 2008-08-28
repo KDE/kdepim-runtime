@@ -100,23 +100,30 @@ void KABCResource::configure( WId windowId )
   KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
 
   if ( mBaseResource != 0 ) {
+  emit status( Running,
+               i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
     KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() )
       manager->writeConfig( KGlobal::config().data() );
 
+    emit status( Idle, QString() );
     // TODO: do we need to react on changes?
     return;
   }
 
+  emit status( Running,
+               i18nc( "@info:status", "Acquiring address book plugin configuration" ) );
   KResourceAssistant kresAssistant( QLatin1String( "Contact" ) );
   KWindowSystem::setMainWindow( &kresAssistant, windowId );
 
   connect( &kresAssistant, SIGNAL( error( const QString& ) ),
            this, SIGNAL( error( const QString& ) ) );
 
-  if ( kresAssistant.exec() != QDialog::Accepted )
+  if ( kresAssistant.exec() != QDialog::Accepted ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
+  }
 
   KABC::Resource *resource = dynamic_cast<KABC::Resource*>( kresAssistant.resource() );
   Q_ASSERT( resource != 0 );
@@ -523,8 +530,10 @@ void KABCResource::reloadConfiguration()
   manager->readConfig( config.data() );
 
   setResourcePointers( manager->standardResource() );
-  if ( mBaseResource == 0 )
+  if ( mBaseResource == 0 ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
+  }
 
   if ( !isOnline() )
     return;
