@@ -108,7 +108,9 @@ void KABCResource::configure( WId windowId )
       manager->writeConfig( KGlobal::config().data() );
 
     emit status( Idle, QString() );
-    // TODO: do we need to react on changes?
+    // TODO: need to react on name changes, but do we need to react on data changes?
+    // as a workaround lets sync the collection tree
+    synchronizeCollectionTree();
     return;
   }
 
@@ -172,7 +174,7 @@ void KABCResource::retrieveCollections()
   Collection topLevelCollection;
   topLevelCollection.setParent( Collection::root() );
   topLevelCollection.setRemoteId( mBaseResource->identifier() );
-  topLevelCollection.setName( name() );
+  topLevelCollection.setName( mBaseResource->resourceName() );
   topLevelCollection.setCachePolicy( cachePolicy );
 
   QStringList mimeTypes;
