@@ -62,6 +62,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     class ErrorHandler;
     ErrorHandler *mErrorHandler;
 
+    bool mFullItemRetrieve;
+
   private:
     void setResourcePointers( KABC::Resource *resource );
 

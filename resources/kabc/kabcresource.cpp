@@ -80,7 +80,8 @@ KABCResource::KABCResource( const QString &id )
     mAddressBook( new AddressBook() ),
     mBaseResource( 0 ),
     mFolderResource( 0 ),
-    mErrorHandler( new ErrorHandler( this ) )
+    mErrorHandler( new ErrorHandler( this ) ),
+    mFullItemRetrieve( false )
 {
   connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
 
@@ -221,6 +222,7 @@ void KABCResource::retrieveCollections()
 
 void KABCResource::retrieveItems( const Akonadi::Collection &col )
 {
+  kDebug() << "full items:" << mFullItemRetrieve;
   const UidToResourceMap uidToResourceMap =
     mFolderResource != 0 ? mFolderResource->uidToResourceMap() : UidToResourceMap();
 
@@ -245,10 +247,13 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
     Item item;
     item.setRemoteId( addrIt->uid() );
     item.setMimeType( QLatin1String( "text/directory" ) );
+    if ( mFullItemRetrieve ) item.setPayload<KABC::Addressee>( *addrIt );
     items.append( item );
   }
 
   // TODO: handle distribution lists once we have an Akonadi payload for them
+
+  mFullItemRetrieve = false;
 
   itemsRetrieved( items );
 }
@@ -492,6 +497,7 @@ void KABCResource::addressBookChanged()
 {
   kDebug();
   // FIXME: there must be a better way to do this
+  mFullItemRetrieve = true;
   synchronize();
 }
 
