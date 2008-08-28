@@ -153,7 +153,7 @@ void KABCResource::configure( WId windowId )
     return;
   }
 
-  emit status( Running, i18nc( "@info:status", "Loading Address Book" ) );
+  emit status( Running, i18nc( "@info:status", "Loading address book" ) );
 }
 
 void KABCResource::retrieveCollections()
@@ -162,9 +162,10 @@ void KABCResource::retrieveCollections()
   if ( mBaseResource == 0 ) {
     kError() << "No KABC resource";
 
-    emit error( i18n( "No KABC resource plugin configured" ) );
+    const QString message = i18nc( "@info:status", "No KDE address book plugin configured yet" );
+    emit error( message );
 
-    emit status( Broken, i18n( "No KABC resource plugin configured" ) );
+    emit status( Broken, message );
     return;
   }
 
@@ -260,14 +261,19 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
 
 bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  kDebug() << "item(" << item.id() << "," << item.remoteId() << "),"
-           << parts;
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType() << "part=" << parts;
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
+
+  // TODO: handle distribution lists once we have an Akonadi payload for them
+
   KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( addressee.isEmpty() ) {
-    kError() << "Contact with uid" << rid << "not found";
-    emit error( i18n( "Contact with uid '%1' not found!", rid ) );
+    kError() << "No addressee with uid" << rid;
+    emit error( i18nc( "@info:status",
+                        "Request for data of a specific address book entry failed "
+                        "because there is no such entry" ) );
     return false;
   }
 
@@ -297,7 +303,8 @@ void KABCResource::doSetOnline( bool online )
 
 void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& col )
 {
-  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   // KABC::Resource only has one collection and
   // KABC::ResourceABC does not have API for setting the storage sub resource
   Q_UNUSED( col );
@@ -330,7 +337,8 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
 void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
 {
-  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   // we store the whole addressee any way
   Q_UNUSED( parts );
 
@@ -356,7 +364,8 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
 void KABCResource::itemRemoved( const Akonadi::Item &item )
 {
-  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( !addressee.isEmpty() ) {
     mAddressBook->removeAddressee( addressee );
@@ -452,8 +461,10 @@ bool KABCResource::saveAddressBook()
 
   KABC::Ticket *ticket = mAddressBook->requestSaveTicket();
   if ( ticket == 0 ) {
-    kError() << "Could not get save ticket";
-    emit error( i18n( "Saving of addressbook failed: could not get Saveticket" ) );
+    kError() << "Could not get address book save ticket";
+    emit error( i18nc( "@info:status",
+                       "Request for saving the address book failed. "
+                       "Probably locked by another application" ) );
     return false;
   }
 
