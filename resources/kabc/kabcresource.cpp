@@ -123,7 +123,6 @@ void KABCResource::configure( WId windowId )
 
   setResourcePointers( resource );
 
-  manager->add( resource );
   mBaseResource->setAddressBook( mAddressBook );
 
   manager->writeConfig( KGlobal::config().data() );
@@ -423,9 +422,10 @@ void KABCResource::closeConfiguration()
                     SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
                     this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
 
+    }
+
     if ( mBaseResource->isOpen() )
       mBaseResource->close();
-    }
   }
 }
 
