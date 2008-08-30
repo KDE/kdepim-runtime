@@ -53,6 +53,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
+    virtual void collectionChanged( const Akonadi::Collection &collection );
+
   private:
     class AddressBook;
     AddressBook *mAddressBook;

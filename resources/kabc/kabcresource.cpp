@@ -89,6 +89,7 @@ KABCResource::KABCResource( const QString &id )
            this, SLOT( addressBookChanged() ) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
+  changeRecorder()->fetchCollection( true );
 }
 
 KABCResource::~KABCResource()
@@ -169,15 +170,10 @@ void KABCResource::retrieveCollections()
     return;
   }
 
-  CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( false );
-  cachePolicy.setSyncOnDemand( true );
-
   Collection topLevelCollection;
   topLevelCollection.setParent( Collection::root() );
   topLevelCollection.setRemoteId( mBaseResource->identifier() );
   topLevelCollection.setName( mBaseResource->resourceName() );
-  topLevelCollection.setCachePolicy( cachePolicy );
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/directory" );
@@ -194,7 +190,6 @@ void KABCResource::retrieveCollections()
   readWriteRights |= Collection::CanCreateItem;
   readWriteRights |= Collection::CanChangeItem;
   readWriteRights |= Collection::CanDeleteItem;
-
   topLevelCollection.setContentMimeTypes( topLevelMimeTypes );
   topLevelCollection.setRights( mBaseResource->readOnly() ? readOnlyRights : readWriteRights );
 
@@ -209,7 +204,6 @@ void KABCResource::retrieveCollections()
       childCollection.setParent( topLevelCollection );
       childCollection.setRemoteId( subResource );
       childCollection.setName( mFolderResource->subresourceLabel( subResource ) );
-      childCollection.setCachePolicy( cachePolicy );
       childCollection.setContentMimeTypes( mimeTypes );
       bool readOnly = !mFolderResource->subresourceWritable( subResource );
       childCollection.setRights( readOnly ? readOnlyRights : readWriteRights );
@@ -380,6 +374,23 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
     // TODO: handle distribution lists once we have an Akonadi payload for them
     changeProcessed();
   }
+}
+
+void KABCResource::collectionChanged( const Akonadi::Collection &collection )
+{
+  Q_ASSERT( mBaseResource != 0);
+  kDebug() << "collection.name=" << collection.name()
+           << ", resource name=" << mBaseResource->resourceName();
+
+  if ( collection.parent() == Collection::root().id() ) {
+    if ( collection.name() != mBaseResource->resourceName() ) {
+      mBaseResource->setResourceName( collection.name() );
+      mAddressBook->getResourceManager()->writeConfig( KGlobal::config().data() );
+    }
+  } else
+    kWarning() << "Got collection change for a sub resource which we cannot change";
+
+  changeCommitted( collection );
 }
 
 void KABCResource::setResourcePointers( KABC::Resource *resource )
