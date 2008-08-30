@@ -107,6 +107,7 @@ class ResourceAkonadi::Private
     CollectionFilterProxyModel *mCollectionFilterModel;
 
     SubResourceMap mSubResources;
+    QSet<QString> mSubResourceIds;
 
     UidResourceMap    mUidToResourceMap;
     ItemIdResourceMap mItemIdToResourceMap;
@@ -168,6 +169,7 @@ void ResourceAkonadi::clear()
 
   qDeleteAll( d->mSubResources );
   d->mSubResources.clear();
+  d->mSubResourceIds.clear();
 
   ResourceABC::clear();
 }
@@ -430,9 +432,8 @@ int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) c
 
 QStringList ResourceAkonadi::subresources() const
 {
-  QSet<QString> uniqueValues = QSet<QString>::fromList( d->mUidToResourceMap.values() );
-  kDebug() << uniqueValues;
-  return uniqueValues.toList();
+  kDebug(5700) << d->mSubResourceIds;
+  return d->mSubResourceIds.toList();
 }
 
 QMap<QString, QString> ResourceAkonadi::uidToResourceMap() const
@@ -736,6 +737,7 @@ void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent
           if ( subResource == 0 ) {
             subResource = new SubResource( collection );
             mSubResources.insert( collectionUrl, subResource );
+            mSubResourceIds.insert( collectionUrl );
             kDebug(5700) << "Adding subResource" << subResource->mLabel
                          << "for collection" << collection.url();
 
@@ -765,6 +767,7 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
           const QString collectionUrl = collection.url().url();
+          mSubResourceIds.remove( collectionUrl );
           SubResource* subResource = mSubResources.take( collectionUrl );
           if ( subResource != 0 ) {
             bool changed = false;
