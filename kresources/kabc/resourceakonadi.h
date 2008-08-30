@@ -95,8 +95,10 @@ class ResourceAkonadi : public ResourceABC
 
     Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
     Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
+    Q_PRIVATE_SLOT( d, void collectionDataChanged( const QModelIndex&, const QModelIndex& ) )
 };
 
 }
 
 #endif
+// kate: space-indent on; indent-width 2; replace-tabs on;

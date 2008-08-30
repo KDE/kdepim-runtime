@@ -123,6 +123,7 @@ class ResourceAkonadi::Private
 
     void collectionRowsInserted( const QModelIndex &parent, int start, int end );
     void collectionRowsRemoved( const QModelIndex &parent, int start, int end );
+    void collectionDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
 
     bool prepareSaving();
     KJob *createSaveSequence() const;
@@ -198,6 +199,8 @@ bool ResourceAkonadi::doOpen()
            this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
   connect( d->mCollectionFilterModel, SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
            this, SLOT( collectionRowsRemoved( const QModelIndex&, int, int ) ) );
+  connect( d->mCollectionFilterModel, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
+           this, SLOT( collectionDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 
   d->mCollectionFilterModel->setSourceModel( d->mCollectionModel );
 
@@ -323,6 +326,8 @@ bool ResourceAkonadi::asyncLoad()
            this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
   connect( d->mCollectionFilterModel, SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
            this, SLOT( collectionRowsRemoved( const QModelIndex&, int, int ) ) );
+  connect( d->mCollectionFilterModel, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
+           this, SLOT( collectionDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 
   d->mCollectionFilterModel->setSourceModel( d->mCollectionModel );
 
@@ -725,7 +730,7 @@ void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent
   for ( int row = start; row <= end; ++row ) {
     QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
     if ( index.isValid() ) {
-      QVariant data = mCollectionFilterModel->data( index , CollectionModel::CollectionRole );
+      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
       if ( data.isValid() ) {
         // TODO: ignore virtual collections, since they break Uid to Resource mapping
         // and the application can't handle them anyway
@@ -762,7 +767,7 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
   for ( int row = start; row <= end; ++row ) {
     QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
     if ( index.isValid() ) {
-      QVariant data = mCollectionFilterModel->data( index , CollectionModel::CollectionRole );
+      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
       if ( data.isValid() ) {
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
@@ -804,6 +809,41 @@ void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent,
       }
     }
   }
+}
+
+void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight )
+{
+  const int start = topLeft.row();
+  const int end   = bottomRight.row();
+  kDebug(5700) << "start=" << start << ", end=" << end;
+
+  bool changed = false;
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = mCollectionFilterModel->index( row, 0, topLeft.parent() );
+    if ( index.isValid() ) {
+      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
+      if ( data.isValid() ) {
+        Collection collection = data.value<Collection>();
+        if ( collection.isValid() ) {
+          const QString collectionUrl = collection.url().url();
+          SubResource* subResource = mSubResources[ collectionUrl ];
+          if ( subResource != 0 ) {
+            if ( subResource->mLabel != collection.name() ) {
+              kDebug(5700) << "Renaming subResource" << collectionUrl
+                           << "from" << subResource->mLabel
+                           << "to"   << collection.name();
+              subResource->mLabel = collection.name();
+              changed = true;
+              emit mParent->signalSubresourceChanged( mParent, QLatin1String( "contact" ), collectionUrl );
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if ( changed )
+    mParent->addressBook()->emitAddressBookChanged();
 }
 
 bool ResourceAkonadi::Private::prepareSaving()
@@ -924,3 +964,4 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
 }
 
 #include "resourceakonadi.moc"
+// kate: space-indent on; indent-width 2; replace-tabs on;
