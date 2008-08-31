@@ -92,6 +92,9 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void subResourceRemoved( KABC::ResourceABC *resource,
                              const QString &type, const QString &subResource );
 
+    void subResourceChanged( KABC::ResourceABC *resource,
+                             const QString &type, const QString &subResource );
+
     void reloadConfiguration();
 
     void delayedSaveAddressBook();

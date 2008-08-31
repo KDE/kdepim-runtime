@@ -430,6 +430,10 @@ bool KABCResource::openConfiguration()
         connect( mFolderResource,
                  SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
                  this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
+
+        connect( mFolderResource,
+                 SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
+                 this, SLOT( subResourcChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
     }
   }
 
@@ -462,6 +466,9 @@ void KABCResource::closeConfiguration()
                     SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
                     this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
 
+        disconnect( mFolderResource,
+                    SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
+                    this, SLOT( subResourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
     }
 
     if ( mBaseResource->isOpen() )
@@ -555,7 +562,9 @@ void KABCResource::subResourceAdded( KABC::ResourceABC *resource,
   Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
   Q_ASSERT( !subResource.isEmpty() );
 
-  // TODO: currently addressBookChanged() handles this already
+  // synchronizeCollectionTree just in case the resource does not make
+  // the address book emit addressBookChanged()
+  synchronizeCollectionTree();
 }
 
 void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
@@ -566,7 +575,22 @@ void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
   Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
   Q_ASSERT( !subResource.isEmpty() );
 
-  // TODO: currently addressBookChanged() handles this already
+  // synchronizeCollectionTree just in case the resource does not make
+  // the address book emit addressBookChanged()
+  synchronizeCollectionTree();
+}
+
+void KABCResource::subResourceChanged( KABC::ResourceABC *resource,
+        const QString &type, const QString &subResource )
+{
+  kDebug() << "subResource" << subResource;
+  Q_ASSERT( resource == mFolderResource );
+  Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
+  Q_ASSERT( !subResource.isEmpty() );
+
+  // synchronizeCollectionTree just in case the resource does not make
+  // the address book emit addressBookChanged()
+  synchronizeCollectionTree();
 }
 
 void KABCResource::reloadConfiguration()
