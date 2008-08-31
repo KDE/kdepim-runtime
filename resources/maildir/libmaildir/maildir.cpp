@@ -199,9 +199,11 @@ QString Maildir::path() const
     return d->path;
 }
 
-bool Maildir::addSubFolder( const QString& path )
+QString Maildir::addSubFolder( const QString& path )
 {
-    if ( !isValid() ) return false;
+    if ( !isValid() )
+        return QString();
+
     // make the subdir dir
     QDir dir( d->path );
     if ( !d->isRoot ) {
@@ -214,8 +216,8 @@ bool Maildir::addSubFolder( const QString& path )
     const QString fullPath = dir.path() + '/' + path;
     Maildir subdir( fullPath );
     if ( subdir.create() )
-        return true;
-    return false;
+        return fullPath;
+    return QString();
 }
 
 bool Maildir::removeSubFolder( const QString& folderName )

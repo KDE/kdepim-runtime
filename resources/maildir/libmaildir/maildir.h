@@ -79,9 +79,11 @@ public:
     QStringList subFolderList() const;
 
     /**
-     * Adds subfolder with the given @param folderName. Returns success or failure.
+     * Adds subfolder with the given @param folderName.
+     * @return an empty string on failure or the full path of the new subfolder
+     *         on success
      */
-    bool addSubFolder( const QString& folderName );
+    QString addSubFolder( const QString& folderName );
 
     /**
      * Removes subfolder with the given @param folderName. Returns success or failure.

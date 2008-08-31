@@ -243,8 +243,9 @@ void MaildirTest::testMaildirRemoveSubfolder()
   Maildir d( m_temp->name() );
   QVERIFY( d.isValid() );
 
-  bool addingWorked = d.addSubFolder( "subFolderTest" );
-  QVERIFY( addingWorked );
+  QString folderPath = d.addSubFolder( "subFolderTest" );
+  QVERIFY( !folderPath.isEmpty() );
+  QVERIFY( folderPath.endsWith( ".directory/subFolderTest" ) );
   bool removingWorked = d.removeSubFolder( "subFolderTest" );
   QVERIFY( removingWorked );
 
