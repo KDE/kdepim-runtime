@@ -153,6 +153,10 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
   Item::List items;
 
+  // FIXME: Check if the KIO::Job is done and was successfull, if so send the
+  // items, otherwhise set a bool and in the result slot of the job send the
+  // items if the bool is set.
+  
   foreach ( const KABC::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
@@ -165,6 +169,9 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 
 bool VCardResource::loadAddressees()
 {
+  // FIXME: The url used in storeAddressees is the same as the one we want to
+  // load here. Use a member variable mCurrentUsedUrl to store addressees and
+  //  reset it after the file is loaded.
   if ( !mAddressees.isEmpty() )
     storeAddressees();
 
@@ -175,6 +182,10 @@ bool VCardResource::loadAddressees()
     emit status( Broken, i18n( "No vCard file specified." ) );
     return false;
   }
+
+  // FIXME: Make this asynchronous by using a KIO file job.
+  // See: http://api.kde.org/4.x-api/kdelibs-apidocs/kio/html/namespaceKIO.html
+  // NOTE: Test what happens with remotefile -> save, close before save is finished.
 
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
@@ -198,6 +209,8 @@ bool VCardResource::storeAddressees()
 {
   if ( Settings::self()->readOnly() )
     return true;
+
+  // FIXME: Make asynchronous.
 
   const QString fileName = Settings::self()->path();
   if ( fileName.isEmpty() ) {
