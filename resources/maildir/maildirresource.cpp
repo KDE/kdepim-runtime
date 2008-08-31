@@ -26,6 +26,8 @@
 #include <QtDBus/QDBusConnection>
 
 #include <akonadi/kmime/messageparts.h>
+#include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchscope.h>
 #include <kdebug.h>
 #include <kurl.h>
 #include <kfiledialog.h>
@@ -73,6 +75,12 @@ MaildirResource::MaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
+
+  // We need to enable this here, otherwise we neither get the remote ID of the
+  // parent collection when a collection changes, nor the full item when an item
+  // is added.
+  changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().fetchFullPayload( true );
 }
 
 MaildirResource::~ MaildirResource()
@@ -128,7 +136,8 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
+    const QString rid = collection.remoteId() + QDir::separator() + "new" +
+                        QDir::separator() + dir.addEntry( mail->encodedContent() );
     Item i( item );
     i.setRemoteId( rid );
     changeCommitted( i );
@@ -251,15 +260,25 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 {
   Maildir md( parent.remoteId() );
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
-  if ( Settings::self()->readOnly() || !md.isValid() || !md.addSubFolder( collection.name() ) ) {
+  if ( Settings::self()->readOnly() || !md.isValid() ) {
     changeProcessed();
     return;
   }
-  kDebug( 5254 ) << md.subFolderList() << md.entryList();
+  else {
 
-  Collection col = collection;
-  col.setRemoteId( parent.remoteId() + QDir::separator() + collection.name() );
-  changeCommitted( col );
+    QString newFolderPath = md.addSubFolder( collection.name() );
+    if ( newFolderPath.isEmpty() ) {
+      changeProcessed();
+      return;
+    }
+
+    kDebug( 5254 ) << md.subFolderList() << md.entryList();
+
+    Collection col = collection;
+    col.setRemoteId( newFolderPath );
+    changeCommitted( col );
+  }
+
 }
 
 void MaildirResource::collectionChanged(const Collection & collection)
