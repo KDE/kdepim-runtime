@@ -18,6 +18,7 @@
 */
 
 #include "vcardresource.h"
+#include "configdialog.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -26,6 +27,7 @@
 
 #include <kfiledialog.h>
 #include <klocale.h>
+#include <KWindowSystem>
 
 #include <QtDBus/QDBusConnection>
 using namespace Akonadi;
@@ -76,22 +78,11 @@ void VCardResource::aboutToQuit()
 
 void VCardResource::configure( WId windowId )
 {
-  const QString oldFile = Settings::self()->path();
-  KUrl url;
-  if ( !oldFile.isEmpty() )
-    url = KUrl::fromPath( oldFile );
-  else
-    url = KUrl::fromPath( QDir::homePath() );
+  ConfigDialog dlg;
+  if ( windowId )
+    KWindowSystem::setMainWindow( &dlg, windowId );
+  dlg.exec();
 
-  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.vcf |" + i18nc( "Filedialog filter for *.vcf", "vCard Contact File" ), windowId, i18n( "Select Address Book" ) );
-
-  if ( newFile.isEmpty() )
-    return;
-
-  if ( oldFile == newFile )
-    return;
-
-  Settings::self()->setPath( newFile );
   loadAddressees();
   synchronize();
 }

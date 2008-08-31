@@ -9,11 +9,13 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( vcardresource_SRCS
+  configdialog.cpp
   vcardresource.cpp
 )
 
 install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kde4_add_ui_files(vcardresource_SRCS configdialog.ui)
 kde4_add_kcfg_files(vcardresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
 qt4_add_dbus_adaptor(vcardresource_SRCS
