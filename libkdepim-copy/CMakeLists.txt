@@ -34,6 +34,7 @@ set(kdepim_LIB_SRCS
    kdatepickerpopup.cpp 
    ktimezonecombobox.cpp
    ldapclient.cpp 
+   ldapsearchdialog.cpp 
    overlaywidget.cpp 
    progressmanager.cpp 
    progressdialog.cpp 

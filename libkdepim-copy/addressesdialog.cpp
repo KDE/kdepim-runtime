@@ -23,7 +23,10 @@
  */
 
 #include "addressesdialog.h"
+#include "ldapsearchdialog.h"
 #include "distributionlist.h"
+
+#include <kpimutils/email.h>
 
 #include <kresources/selectdialog.h>
 
@@ -59,7 +62,10 @@ struct AddresseeViewItem::AddresseeViewItemPrivate {
 };
 
 struct AddressesDialog::AddressesDialogPrivate {
-  AddressesDialogPrivate() : ui(0), personal(0), recent(0), toItem(0), ccItem(0), bccItem(0)
+  AddressesDialogPrivate() :
+    ui(0), personal(0), recent(0),
+    toItem(0), ccItem(0), bccItem(0),
+    ldapSearchDialog(0)
   {}
 
   AddressPickerUI             *ui;
@@ -74,6 +80,7 @@ struct AddressesDialog::AddressesDialogPrivate {
   Q3Dict<AddresseeViewItem>     groupDict;
 
   KABC::Addressee::List       recentAddresses;
+  LdapSearchDialog            *ldapSearchDialog;
 };
 // privates end
 
@@ -551,6 +558,8 @@ AddressesDialog::initConnections()
            SLOT(addSelectedBCC())  );
   connect( d->ui->mSaveAs, SIGNAL(clicked()),
            SLOT(saveAs())  );
+  connect( d->ui->mLdapSearch, SIGNAL(clicked()),
+           SLOT(searchLdap())  );
   connect( d->ui->mRemoveButton, SIGNAL(clicked()),
            SLOT(removeEntry()) );
   connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
@@ -881,6 +890,34 @@ AddressesDialog::saveAs()
     dlist.insertEntry( *itr );
   }
   abook->insertAddressee( dlist );
+}
+
+void
+AddressesDialog::searchLdap()
+{
+    if ( !d->ldapSearchDialog ) {
+      d->ldapSearchDialog = new LdapSearchDialog( this );
+      connect( d->ldapSearchDialog, SIGNAL( addresseesAdded() ),
+               SLOT(ldapSearchResult() ) );
+    }
+    d->ldapSearchDialog->show();
+}
+
+void
+AddressesDialog::ldapSearchResult()
+{
+  QStringList emails = d->ldapSearchDialog->selectedEMails().split(',');
+  QStringList::iterator it( emails.begin() );
+  QStringList::iterator end( emails.end() );
+  for ( ; it != end; ++it ){
+      QString name;
+      QString email;
+      KPIMUtils::extractEmailAddressAndName( (*it), email, name );
+      KABC::Addressee ad;
+      ad.setNameFromString( name );
+      ad.insertEmail( email );
+      addAddresseeToSelected( ad, selectedToItem() );
+  }
 }
 
 void
