@@ -323,7 +323,7 @@ KResourceAssistant::KResourceAssistant( const QString& resourceFamily, QWidget *
   setCaption( i18nc( "@title:window", "KDE Compatibility Assistant" ) );
 
   QWidget *introPage = new CompatibilityIntroductionLabel( this );
-  addPage( introPage, QString() );
+  addPage( introPage, QLatin1String( " " ) );
 
   d->mFactory = KRES::Factory::self( resourceFamily.toLower() );
 

@@ -602,13 +602,26 @@ void KABCResource::reloadConfiguration()
   }
   closeConfiguration();
 
-  KSharedConfig::Ptr config = KGlobal::config();
-  Q_ASSERT( !config.isNull() );
-
   KGlobal::config()->reparseConfiguration();
 
+  if ( KGlobal::config()->groupList().isEmpty() ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    return;
+  }
+
+  Q_ASSERT( KGlobal::config().data() != 0);
+
   KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
-  manager->readConfig( config.data() );
+  manager->readConfig( KGlobal::config().data() );
+
+  KRES::Resource *resource = manager->standardResource();
+  if ( resource != 0 ) {
+    if ( resource->type().toLower() == QLatin1String( "akonadi" ) ) {
+      kError() << "Resource config points to an Akonadi bridge resource";
+      emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+      return;
+    }
+  }
 
   setResourcePointers( manager->standardResource() );
   if ( mBaseResource == 0 ) {
