@@ -28,10 +28,11 @@
 #include <akonadi/control.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
+#include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/itemsync.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/transactionsequence.h>
 
 #include <kconfiggroup.h>
@@ -114,6 +115,16 @@ class ResourceAkonadi::Private
 
     QHash<Akonadi::Job*, QString> mJobToResourceMap;
 
+    enum ChangeType
+    {
+      Added,
+      Changed,
+      Removed
+    };
+
+    typedef QMap<QString, ChangeType> ChangeMap;
+    ChangeMap mChanges;
+
   public:
     void subResourceLoadResult( KJob *job );
 
@@ -171,6 +182,8 @@ void ResourceAkonadi::clear()
   qDeleteAll( d->mSubResources );
   d->mSubResources.clear();
   d->mSubResourceIds.clear();
+
+  d->mChanges.clear();
 
   ResourceABC::clear();
 }
@@ -243,6 +256,7 @@ void ResourceAkonadi::doClose()
   d->mUidToResourceMap.clear();
   d->mItemIdToResourceMap.clear();
   d->mJobToResourceMap.clear();
+  d->mChanges.clear();
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
@@ -352,6 +366,8 @@ bool ResourceAkonadi::save( Ticket *ticket )
     return false;
   }
 
+  d->mChanges.clear();
+
   return true;
 }
 
@@ -376,17 +392,26 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
+  const QString uid = addr.uid();
+  if ( mAddrMap.find( uid ) == mAddrMap.end() )
+    d->mChanges[ uid ] = Private::Added;
+  else
+    d->mChanges[ uid ] = Private::Changed;
+
   ResourceABC::insertAddressee( addr );
 }
 
 void ResourceAkonadi::removeAddressee( const Addressee &addr )
 {
   kDebug(5700);
-  Addressee::Map::const_iterator findIt = mAddrMap.find( addr.uid() );
+  const QString uid = addr.uid();
+  Addressee::Map::const_iterator findIt = mAddrMap.find( uid );
   if ( findIt == mAddrMap.end() )
     return;
 
-  d->mUidToResourceMap.remove( addr.uid() );
+  d->mChanges[ uid ] = Private::Removed;
+
+  d->mUidToResourceMap.remove( uid );
 
   ResourceABC::removeAddressee( addr );
 }
@@ -521,8 +546,10 @@ void ResourceAkonadi::loadResult( KJob *job )
       d->mIdMapping.insert( addressee.uid(), id );
 
       mAddrMap.insert( addressee.uid(), addressee );
-      d->mItems.insert( id, item );
     }
+
+    // always update the item
+    d->mItems.insert( item.id(), item );
   }
 
   emit loadingFinished( this );
@@ -533,6 +560,8 @@ void ResourceAkonadi::saveResult( KJob *job )
   if ( job->error() != 0 ) {
     emit savingError( this, job->errorString() );
   } else {
+    d->mChanges.clear();
+
     emit savingFinished( this );
   }
 }
@@ -566,8 +595,10 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
-      mItems.insert( id, item );
     }
+
+    // always update the item
+    mItems.insert( item.id(), item );
   }
 
   mParent->addressBook()->emitAddressBookChanged();
@@ -602,6 +633,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   // might be the result of our own saving
   if ( mParent->mAddrMap.find( addressee.uid() ) == mParent->mAddrMap.end() ) {
+    mChanges.remove( addressee.uid() );
     mParent->mAddrMap.insert( addressee.uid(), addressee );
 
     mParent->addressBook()->emitAddressBookChanged();
@@ -651,6 +683,8 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
                  << ") changed but no longer in local list";
     return;
   }
+
+  mChanges.remove( addressee.uid() );
 
   if ( addrIt.value() == addressee ) {
     kDebug(5700) << "Local addressee object already up-to-date";
@@ -708,6 +742,7 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
   mIdMapping.remove( uid );
   mUidToResourceMap.remove( uid );
   mItemIdToResourceMap.remove( id );
+  mChanges.remove( uid );
 
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( uid );
 
@@ -877,49 +912,60 @@ bool ResourceAkonadi::Private::prepareSaving()
 
 KJob *ResourceAkonadi::Private::createSaveSequence() const
 {
-  QHash<QString, Item::List> itemLists;
-
-  Addressee::Map::const_iterator addrIt    = mParent->mAddrMap.begin();
-  Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.end();
-  for ( ; addrIt != addrEndIt; ++addrIt ) {
-    Addressee addressee = addrIt.value();
-
-    ItemMap::const_iterator itemIt = mItems.end();
-
-    IdHash::const_iterator idIt = mIdMapping.find( addressee.uid() );
-    if ( idIt != mIdMapping.end() ) {
-      itemIt = mItems.find( idIt.value() );
-    }
-
-    const QString subResourceId = mUidToResourceMap[ addressee.uid() ];
-
-    if ( itemIt == mItems.end() ) {
-      Item item( QLatin1String( "text/directory" ) );
-      item.setPayload<Addressee>( addressee );
-
-      itemLists[ subResourceId ] << item;
-    } else {
-      Item item = itemIt.value();
-      item.setPayload<Addressee>( addressee );
-
-      itemLists[ subResourceId ] << item;
-    }
-  }
-
   TransactionSequence *sequence = new TransactionSequence();
 
-  QHash<QString, Item::List>::const_iterator listIt    = itemLists.begin();
-  QHash<QString, Item::List>::const_iterator listEndIt = itemLists.end();
-  for ( ; listIt != listEndIt; ++listIt ) {
-    SubResource *subResource = mSubResources[ listIt.key() ];
-    Q_ASSERT( subResource != 0 );
+  ChangeMap::const_iterator changeIt    = mChanges.begin();
+  ChangeMap::const_iterator changeEndIt = mChanges.end();
+  for ( ; changeIt != changeEndIt; ++changeIt ) {
+    const QString uid = changeIt.key();
 
-    // do not save deactivated sub resources
-    if ( !subResource->isActive() )
-      continue;
+    IdHash::const_iterator idIt = mIdMapping.find( uid );
 
-    ItemSync *job = new ItemSync( subResource->mCollection, sequence );
-    job->setFullSyncItems( listIt.value() );
+    ItemMap::const_iterator itemIt;
+
+    Item item;
+    SubResource *subResource = 0;
+    KABC::Addressee addressee;
+
+    switch ( changeIt.value() ) {
+      case Added:
+        subResource = mSubResources[ mUidToResourceMap[ uid ] ];
+        Q_ASSERT( subResource != 0 );
+
+        item.setMimeType( QLatin1String( "text/directory" ) );
+        addressee = mParent->mAddrMap[ uid ];
+        item.setPayload<KABC::Addressee>( addressee );
+        (void) new ItemCreateJob( item, subResource->mCollection, sequence );
+        kDebug(5700) << "CreateJob for addressee" << addressee.uid()
+                     << addressee.formattedName();
+        break;
+
+      case Changed:
+        Q_ASSERT( itemIt != mItems.end() );
+        itemIt = mItems.find( idIt.value() );
+        Q_ASSERT( itemIt != mItems.end() );
+
+        item = itemIt.value();
+        addressee = mParent->mAddrMap[ uid ];
+        item.setPayload<KABC::Addressee>( addressee );
+        (void) new ItemModifyJob( item, sequence );
+        kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
+                     << addressee.formattedName();
+        break;
+
+      case Removed:
+        Q_ASSERT( itemIt != mItems.end() );
+        itemIt = mItems.find( idIt.value() );
+        Q_ASSERT( itemIt != mItems.end() );
+
+        item = itemIt.value();
+        if ( item.hasPayload<KABC::Addressee>() )
+          addressee = item.payload<KABC::Addressee>();
+        (void) new ItemDeleteJob( item, sequence );
+        kDebug(5700) << "DeleteJob for addressee" << uid
+                     << addressee.formattedName();
+        break;
+    }
   }
 
   return sequence;
@@ -956,8 +1002,10 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
-      mItems.insert( id, item );
     }
+
+    // always update the item
+    mItems.insert( item.id(), item );
   }
 
   return changed;
