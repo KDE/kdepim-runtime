@@ -59,10 +59,7 @@ class KDEPIM_EXPORT LdapSearchDialog : public KDialog
     void slotStopSearch();
     void slotSearchDone();
     void slotError( const QString& );
-    virtual void slotHelp();
-    virtual void slotUser1();
-    virtual void slotUser2();
-    virtual void slotUser3();
+    virtual void slotButtonClicked(int button);
 
   protected:
 

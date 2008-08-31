@@ -455,24 +455,24 @@ QString LdapSearchDialog::selectedEMails() const
   return result.join( ", " );
 }
 
-void LdapSearchDialog::slotHelp()
+void LdapSearchDialog::slotButtonClicked(int button)
 {
-  KToolInvocation::self()->invokeHelp( "ldap-queries" );
-}
-
-void LdapSearchDialog::slotUser1()
-{
-  mResultListView->selectAll( false );
-}
-
-void LdapSearchDialog::slotUser2()
-{
-  mResultListView->selectAll( true );
-}
-
-void LdapSearchDialog::slotUser3()
-{
-  emit addresseesAdded();
+  switch ( button ) {
+  case Help:
+    KToolInvocation::self()->invokeHelp( "ldap-queries" );
+    break;
+  case User1:
+    mResultListView->selectAll( false );
+    break;
+  case User2:
+    mResultListView->selectAll( true );
+    break;
+  case User3:
+    emit addresseesAdded();
+    break;
+  default:
+    KDialog::slotButtonClicked(button);
+  }
 }
 
 #include "ldapsearchdialog.moc"
