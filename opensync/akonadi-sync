@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config version="1.0">
+  <Resources>
+    <Resource>
+     <Enabled>1</Enabled>
+     <Formats>
+       <Format>
+         <Name>vcard30</Name>
+       </Format>
+     </Formats>
+     <ObjType>contact</ObjType>
+    </Resource>
+  </Resources>
+</config>
