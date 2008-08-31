@@ -66,6 +66,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 
     bool mFullItemRetrieve;
 
+    QTimer *mDelayedSaveTimer;
+
   private:
     void setResourcePointers( KABC::Resource *resource );
 
@@ -74,6 +76,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void closeConfiguration();
 
     bool saveAddressBook();
+
+    bool scheduleSaveAddressBook();
 
     typedef KABC::Resource Resource;
 
@@ -89,6 +93,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
                              const QString &type, const QString &subResource );
 
     void reloadConfiguration();
+
+    void delayedSaveAddressBook();
 };
 
 #endif

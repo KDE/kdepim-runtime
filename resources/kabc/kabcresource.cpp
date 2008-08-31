@@ -81,15 +81,22 @@ KABCResource::KABCResource( const QString &id )
     mBaseResource( 0 ),
     mFolderResource( 0 ),
     mErrorHandler( new ErrorHandler( this ) ),
-    mFullItemRetrieve( false )
+    mFullItemRetrieve( false ),
+    mDelayedSaveTimer( new QTimer( this ) )
 {
+  mAddressBook->setErrorHandler( mErrorHandler );
   connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
 
   connect( mAddressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
            this, SLOT( addressBookChanged() ) );
 
+  connect( mDelayedSaveTimer, SIGNAL( timeout() ),
+           this, SLOT( delayedSaveAddressBook() ) );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
+
+  mDelayedSaveTimer->setSingleShot( true );
 }
 
 KABCResource::~KABCResource()
@@ -312,9 +319,8 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
     mAddressBook->insertAddressee( addressee );
 
-    // TODO: consider delayed saving
     // TODO: proper error reporting
-    if ( saveAddressBook() ) {
+    if ( scheduleSaveAddressBook() ) {
       Item i( item );
       i.setRemoteId( addressee.uid() );
       i.setPayload<KABC::Addressee>( addressee );
@@ -343,9 +349,8 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
     mAddressBook->insertAddressee( addressee );
 
-    // TODO: consider delayed saving
     // TODO: proper error reporting
-    if ( saveAddressBook() ) {
+    if ( scheduleSaveAddressBook() ) {
       changeCommitted( item );
     } else {
       changeProcessed();
@@ -363,9 +368,8 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
   KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
   if ( !addressee.isEmpty() ) {
     mAddressBook->removeAddressee( addressee );
-    // TODO: consider delayed saving
     // TODO: proper error reporting
-    if ( saveAddressBook() ) {
+    if ( scheduleSaveAddressBook() ) {
       changeCommitted( item );
     } else {
       changeProcessed();
@@ -437,6 +441,8 @@ bool KABCResource::openConfiguration()
 
 void KABCResource::closeConfiguration()
 {
+  mDelayedSaveTimer->stop();
+
   // do not react on addressbook changes until we have finished its initial loading
   mAddressBook->blockSignals( true );
 
@@ -465,6 +471,8 @@ void KABCResource::closeConfiguration()
 
 bool KABCResource::saveAddressBook()
 {
+  mDelayedSaveTimer->stop();
+
   if ( !mBaseResource || mBaseResource->readOnly() )
     return false;
 
@@ -486,6 +494,17 @@ bool KABCResource::saveAddressBook()
   }
 
   kDebug() << "Saving succeeded";
+  return true;
+}
+
+bool KABCResource::scheduleSaveAddressBook()
+{
+  if ( !mBaseResource || mBaseResource->readOnly() )
+    return false;
+
+  if ( !mDelayedSaveTimer->isActive() )
+    mDelayedSaveTimer->start( 5000 );
+
   return true;
 }
 
@@ -518,6 +537,11 @@ void KABCResource::initialLoadingFinished( KABC::Resource *resource )
 void KABCResource::addressBookChanged()
 {
   kDebug();
+  if ( mDelayedSaveTimer->isActive() ) {
+    // TODO should record changes for delayed saving
+    kError() << "Delayed saving scheduled when resource changed. We might have lost changes";
+    mDelayedSaveTimer->stop();
+  }
   // FIXME: there must be a better way to do this
   mFullItemRetrieve = true;
   synchronize();
@@ -547,8 +571,11 @@ void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
 
 void KABCResource::reloadConfiguration()
 {
-  mAddressBook->setErrorHandler( mErrorHandler );
-
+  if ( mDelayedSaveTimer->isActive() ) {
+    if ( !saveAddressBook() ) {
+      kError() << "Saving of address book failed:" << mErrorHandler->mLastError;
+    }
+  }
   closeConfiguration();
 
   KSharedConfig::Ptr config = KGlobal::config();
@@ -587,6 +614,17 @@ void KABCResource::reloadConfiguration()
   }
 
   emit status( Running, i18nc( "@info:status", "Loading address book" ) );
+}
+
+void KABCResource::delayedSaveAddressBook()
+{
+  if ( !saveAddressBook() ) {
+    kError() << "Saving failed, rescheduling delayed save. Error was: "
+             << mErrorHandler->mLastError;
+    if ( !scheduleSaveAddressBook() ) {
+      kError() << "Scheduling failed as well, giving up";
+    }
+  }
 }
 
 AKONADI_RESOURCE_MAIN( KABCResource )
