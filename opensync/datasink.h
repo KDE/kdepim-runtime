@@ -39,6 +39,8 @@ class DataSink : public SinkBase
     bool initialize( OSyncPlugin *plugin, OSyncPluginInfo *info, OSyncObjTypeSink *sink, OSyncError **error );
 
     void getChanges();
+    void commit( OSyncChange *change );
+    void syncDone();
 
   protected:
     /**

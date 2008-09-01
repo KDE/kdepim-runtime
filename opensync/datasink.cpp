@@ -20,15 +20,20 @@
 #include "datasink.h"
 
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KDebug>
 #include <KLocale>
 #include <KUrl>
 
+#include <opensync/opensync.h>
+#include <opensync/opensync-data.h>
+#include <opensync/opensync-format.h>
+
 using namespace Akonadi;
 
 DataSink::DataSink() :
-    SinkBase( GetChanges )
+    SinkBase( GetChanges | Commit | SyncDone )
 {
 }
 
@@ -65,23 +70,74 @@ Akonadi::Collection DataSink::collection() const
 
 void DataSink::getChanges()
 {
+  // ### broken in OpenSync, I don't get valid configuration here!
+#if 1
   Collection col = collection();
   if ( !col.isValid() )
     return;
+#else
+  Collection col( 409 );
+#endif
 
   // TODO changes since when??
+  // TODO what about deletes since then??
 
   ItemFetchJob *job = new ItemFetchJob( col );
+  job->fetchScope().fetchFullPayload();
   // FIXME give me a real eventloop please!
   if ( !job->exec() ) {
     error( OSYNC_ERROR_IO_ERROR, job->errorText() );
     return;
   }
 
+  OSyncFormatEnv *formatenv = osync_plugin_info_get_format_env( pluginInfo() );
+  OSyncObjFormat *format = osync_format_env_find_objformat( formatenv, "vcard30" );
+
   Item::List items = job->items();
   kDebug() << "retrieved" << items.count() << "items";
 
-  // TODO and now what do we do here?
+  // report changes, should be in a result slot instead
+  foreach ( const Item &item, items ) {
+    OSyncError *error = 0;
+    OSyncChange *change = osync_change_new( &error );
+    if ( !change ) {
+      warning( error );
+      continue;
+    }
+
+    osync_change_set_uid( change, QByteArray::number( item.id() ) );
+    osync_change_set_changetype( change, OSYNC_CHANGE_TYPE_MODIFIED ); // TODO
+
+    QByteArray payloadData = item.payloadData();
+    error = 0;
+    kDebug() << item.id() << payloadData;
+    OSyncData *odata = osync_data_new( payloadData.data(), payloadData.size(), format, &error );
+    if ( !odata ) {
+      osync_change_unref( change );
+      warning( error );
+      continue;
+    }
+    osync_data_set_objtype( odata, osync_objtype_sink_get_name( sink() ) );
+    osync_change_set_data( change, odata );
+    osync_data_unref( odata );
+
+    osync_context_report_change( context(), change );
+    osync_change_unref( change );
+  }
 
   success();
 }
+
+void DataSink::commit(OSyncChange * change)
+{
+  kDebug() << change;
+  success();
+}
+
+void DataSink::syncDone()
+{
+  kDebug();
+  success();
+}
+
+#include "datasink.moc"

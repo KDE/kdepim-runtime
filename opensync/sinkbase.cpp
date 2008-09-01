@@ -119,6 +119,13 @@ void SinkBase::error(OSyncErrorType type, const QString &msg) const
   mContext = 0;
 }
 
+void SinkBase::warning(OSyncError * error) const
+{
+  Q_ASSERT( mContext );
+  osync_context_report_osyncwarning( mContext, error );
+  osync_error_unref( &error );
+}
+
 void SinkBase::wrapSink(OSyncObjTypeSink * sink)
 {
   Q_ASSERT( sink );

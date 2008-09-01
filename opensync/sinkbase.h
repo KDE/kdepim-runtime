@@ -64,6 +64,7 @@ class SinkBase : public QObject
   protected:
     void success() const;
     void error( OSyncErrorType type, const QString &msg ) const;
+    void warning( OSyncError *error ) const;
     void wrapSink( OSyncObjTypeSink *sink );
 
     OSyncObjTypeSink* sink() const { return mSink; }
