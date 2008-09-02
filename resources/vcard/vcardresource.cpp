@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2008 Bertjan Broeksema <b.broeksema@kdemail.net>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -151,6 +152,9 @@ void VCardResource::retrieveCollections()
 
 void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
+  // VCard does not support folders so we can savely ignore the collection
+  Q_UNUSED( col );
+  
   Item::List items;
 
   // FIXME: Check if the KIO::Job is done and was successfull, if so send the
@@ -169,9 +173,6 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 
 bool VCardResource::loadAddressees()
 {
-  // FIXME: The url used in storeAddressees is the same as the one we want to
-  // load here. Use a member variable mCurrentUsedUrl to store addressees and
-  //  reset it after the file is loaded.
   if ( !mAddressees.isEmpty() )
     storeAddressees();
 
@@ -186,8 +187,8 @@ bool VCardResource::loadAddressees()
   // FIXME: Make this asynchronous by using a KIO file job.
   // See: http://api.kde.org/4.x-api/kdelibs-apidocs/kio/html/namespaceKIO.html
   // NOTE: Test what happens with remotefile -> save, close before save is finished.
-
-  QFile file( fileName );
+  
+  QFile file( KUrl( fileName ).path() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
     return false;
@@ -201,6 +202,9 @@ bool VCardResource::loadAddressees()
     mAddressees.insert( list[ i ].uid(), list[ i ] );
   }
 
+  // From here we are using probably a new URL so update mCurrentlyUsedUrl
+  mCurrentlyUsedUrl = KUrl::fromPath( fileName );
+
   emit status( Idle );
   return true;
 }
@@ -212,7 +216,9 @@ bool VCardResource::storeAddressees()
 
   // FIXME: Make asynchronous.
 
-  const QString fileName = Settings::self()->path();
+  // We don't use the Settings::self()->path() here as that might have changed
+  // and in that case it would probably cause data lose.
+  const QString fileName = mCurrentlyUsedUrl.path();
   if ( fileName.isEmpty() ) {
     emit status( Broken, i18n( "No vCard file specified." ) );
     return false;

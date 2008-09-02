@@ -61,6 +61,7 @@ class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::O
   private:
     QMap<QString, KABC::Addressee> mAddressees;
     KABC::VCardConverter mConverter;
+    KUrl mCurrentlyUsedUrl;
 		QTimer mWriteWhenDirtyTimer;
 };
 
