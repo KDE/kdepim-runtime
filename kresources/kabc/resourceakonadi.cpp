@@ -136,6 +136,9 @@ class ResourceAkonadi::Private
     void collectionRowsRemoved( const QModelIndex &parent, int start, int end );
     void collectionDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
 
+    void addCollectionsRecursively( const QModelIndex &parent, int start, int end );
+    bool removeCollectionsRecursively( const QModelIndex &parent, int start, int end );
+
     bool prepareSaving();
     KJob *createSaveSequence() const;
 
@@ -762,88 +765,15 @@ void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent
 {
   kDebug(5700) << "start" << start << ", end" << end;
 
-  for ( int row = start; row <= end; ++row ) {
-    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
-    if ( index.isValid() ) {
-      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
-      if ( data.isValid() ) {
-        // TODO: ignore virtual collections, since they break Uid to Resource mapping
-        // and the application can't handle them anyway
-        Collection collection = data.value<Collection>();
-        if ( collection.isValid() ) {
-          const QString collectionUrl = collection.url().url();
-
-          SubResource *subResource = mSubResources[ collectionUrl ];
-          if ( subResource == 0 ) {
-            subResource = new SubResource( collection );
-            mSubResources.insert( collectionUrl, subResource );
-            mSubResourceIds.insert( collectionUrl );
-            kDebug(5700) << "Adding subResource" << subResource->mLabel
-                         << "for collection" << collection.url();
-
-            ItemFetchJob *job = new ItemFetchJob( collection );
-            job->fetchScope().fetchFullPayload();
-
-            connect( job, SIGNAL( result( KJob* ) ),
-                     mParent, SLOT( subResourceLoadResult( KJob* ) ) );
-
-            mJobToResourceMap.insert( job, collectionUrl );
-          }
-        }
-      }
-    }
-  }
+  addCollectionsRecursively( parent, start, end );
 }
 
 void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent, int start, int end )
 {
   kDebug(5700) << "start" << start << ", end" << end;
 
-  for ( int row = start; row <= end; ++row ) {
-    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
-    if ( index.isValid() ) {
-      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
-      if ( data.isValid() ) {
-        Collection collection = data.value<Collection>();
-        if ( collection.isValid() ) {
-          const QString collectionUrl = collection.url().url();
-          mSubResourceIds.remove( collectionUrl );
-          SubResource* subResource = mSubResources.take( collectionUrl );
-          if ( subResource != 0 ) {
-            bool changed = false;
-
-            UidResourceMap::iterator uidIt = mUidToResourceMap.begin();
-            while ( uidIt != mUidToResourceMap.end() ) {
-              if ( uidIt.value() == collectionUrl ) {
-                changed = true;
-
-                mParent->mAddrMap.remove( uidIt.key() );
-                uidIt = mUidToResourceMap.erase( uidIt );
-              }
-              else
-                ++uidIt;
-            }
-
-            ItemIdResourceMap::iterator idIt = mItemIdToResourceMap.begin();
-            while ( idIt != mItemIdToResourceMap.end() ) {
-              if ( idIt.value() == collectionUrl ) {
-                idIt = mItemIdToResourceMap.erase( idIt );
-              }
-              else
-                ++idIt;
-            }
-
-            if ( changed )
-              mParent->addressBook()->emitAddressBookChanged();
-
-            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), collectionUrl );
-
-            delete subResource;
-          }
-        }
-      }
-    }
-  }
+  if ( removeCollectionsRecursively( parent, start, end ) )
+    mParent->addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight )
@@ -879,6 +809,100 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
 
   if ( changed )
     mParent->addressBook()->emitAddressBookChanged();
+}
+
+void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &parent, int start, int end )
+{
+  kDebug(5700) << "start=" << start << ", end=" << end;
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
+    if ( index.isValid() ) {
+      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
+      if ( data.isValid() ) {
+        // TODO: ignore virtual collections, since they break Uid to Resource mapping
+        // and the application can't handle them anyway
+        Collection collection = data.value<Collection>();
+        if ( collection.isValid() ) {
+          const QString collectionUrl = collection.url().url();
+
+          SubResource *subResource = mSubResources[ collectionUrl ];
+          if ( subResource == 0 ) {
+            subResource = new SubResource( collection );
+            mSubResources.insert( collectionUrl, subResource );
+            mSubResourceIds.insert( collectionUrl );
+            kDebug(5700) << "Adding subResource" << subResource->mLabel
+                         << "for collection" << collection.url();
+
+            ItemFetchJob *job = new ItemFetchJob( collection );
+            job->fetchScope().fetchFullPayload();
+
+            connect( job, SIGNAL( result( KJob* ) ),
+                     mParent, SLOT( subResourceLoadResult( KJob* ) ) );
+
+            mJobToResourceMap.insert( job, collectionUrl );
+
+            // check if this item has children
+            const int rowCount = mCollectionFilterModel->rowCount( index );
+            if ( rowCount > 0 )
+              addCollectionsRecursively( index, 0, rowCount - 1 );
+          }
+        }
+      }
+    }
+  }
+}
+
+bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &parent, int start, int end )
+{
+  kDebug(5700) << "start=" << start << ", end=" << end;
+
+  bool changed = false;
+  for ( int row = start; row <= end; ++row ) {
+    QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
+    if ( index.isValid() ) {
+      QVariant data = mCollectionFilterModel->data( index, CollectionModel::CollectionRole );
+      if ( data.isValid() ) {
+        Collection collection = data.value<Collection>();
+        if ( collection.isValid() ) {
+          const QString collectionUrl = collection.url().url();
+          mSubResourceIds.remove( collectionUrl );
+          SubResource* subResource = mSubResources.take( collectionUrl );
+          if ( subResource != 0 ) {
+            UidResourceMap::iterator uidIt = mUidToResourceMap.begin();
+            while ( uidIt != mUidToResourceMap.end() ) {
+              if ( uidIt.value() == collectionUrl ) {
+                changed = true;
+
+                mParent->mAddrMap.remove( uidIt.key() );
+                uidIt = mUidToResourceMap.erase( uidIt );
+              }
+              else
+                ++uidIt;
+            }
+
+            ItemIdResourceMap::iterator idIt = mItemIdToResourceMap.begin();
+            while ( idIt != mItemIdToResourceMap.end() ) {
+              if ( idIt.value() == collectionUrl ) {
+                idIt = mItemIdToResourceMap.erase( idIt );
+              }
+              else
+                ++idIt;
+            }
+
+            emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), collectionUrl );
+
+            delete subResource;
+
+            const int rowCount = mCollectionFilterModel->rowCount( index );
+            if ( rowCount > 0 )
+              removeCollectionsRecursively( index, 0, rowCount - 1 );
+          }
+        }
+      }
+    }
+  }
+
+  return changed;
 }
 
 bool ResourceAkonadi::Private::prepareSaving()
