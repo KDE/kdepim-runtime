@@ -992,6 +992,39 @@ QString KMeditor::toWrappedPlainText() const
   return temp;
 }
 
+QString KMeditor::toCleanHtml() const {
+
+  QString totalCrapUselessHtml = toHtml();
+
+  // ### HACK to fix bug 86925: A completely empty line is ignored in HTML-mode
+  int offset = 0;
+  QRegExp paragraphFinder( "<p.*>(.*)</p>" );
+  QRegExp paragraphEnd( "</p>" );
+  paragraphFinder.setMinimal( true );
+
+  while ( offset != -1 ) {
+
+    // Find the next paragraph
+    offset = paragraphFinder.indexIn( totalCrapUselessHtml, offset );
+
+    if ( offset != -1 ) {
+
+      // If the text in the paragraph is empty, add a &nbsp there.
+      if ( paragraphFinder.capturedTexts().size() == 2 &&
+           paragraphFinder.capturedTexts()[1].isEmpty() ) {
+        int end = paragraphEnd.indexIn( totalCrapUselessHtml, offset );
+        Q_ASSERT( end != -1 && end > offset );
+        totalCrapUselessHtml.replace( end, paragraphEnd.pattern().length(), "<br></p>" );
+      }
+
+      // Avoid finding the same match again
+      offset++;
+    }
+  }
+
+  return totalCrapUselessHtml; // yeah it is still crap
+}
+
 void KMeditor::ensureCursorVisible()
 {
   QCoreApplication::processEvents();

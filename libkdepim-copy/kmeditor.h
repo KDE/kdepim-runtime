@@ -191,6 +191,16 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
     QString toWrappedPlainText() const;
 
     /**
+     * Same as toHtml() of QTextEdit, expect that the HTML produced by this is
+     * a bit nicer.
+     * Currently, the differences are:
+     *  - Don't eat empty paragraphs
+     *
+     * @return the text of the text edit as HTML code
+     */
+    QString toCleanHtml() const;
+
+    /**
      * Reimplemented again to work around a bug (see comment in implementation).
      * FIXME: This is _not_ virtual in the base class
      */
