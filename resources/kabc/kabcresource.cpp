@@ -538,7 +538,9 @@ void KABCResource::initialLoadingFinished( KABC::Resource *resource )
 
   mAddressBook->blockSignals( false );
 
-  synchronizeCollectionTree();
+  // Let Akonadi retrieve all items but only the base information, no payloads yet
+  mFullItemRetrieve = false;
+  synchronize();
 }
 
 void KABCResource::addressBookChanged()
