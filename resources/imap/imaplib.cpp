@@ -20,7 +20,6 @@
 #include "imaplib.h"
 
 // Qt
-#include <QStringList>
 #include <QRegExp>
 #include <QStringList>
 #include <QTimer>
@@ -985,7 +984,7 @@ void Imaplib::slotProcessQueue()
         return;
 
     m_currentQueueItem = m_queue.first();
-    // Dont enable, as it exposes the password on login.
+    // Don't enable, as it exposes the password on login.
     // kDebug( ) << m_currentQueueItem.command();
 
     if ( m_currentMailbox == m_currentQueueItem.mailbox() ||

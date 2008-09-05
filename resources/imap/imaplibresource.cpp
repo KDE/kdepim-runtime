@@ -168,7 +168,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     QSet<QByteArray> flags = item.flags();
     QByteArray newFlags;
     foreach( const QByteArray &flag, flags )
-    newFlags += flag + " ";
+    newFlags += flag + ' ';
 
     kDebug( ) << "Flags going to be set" << newFlags;
     const QString reference = item.remoteId();
