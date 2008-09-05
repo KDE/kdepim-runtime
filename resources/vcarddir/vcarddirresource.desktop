@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Akonadi VCard Directory Resource
+Name[x-test]=xxAkonadi VCard Directory Resourcexx
+Comment=An agent to load data from a directory with VCards
+Comment[x-test]=xxAn agent to load data from a directory with VCardsxx
+Type=AkonadiResource
+Exec=akonadi_vcarddir_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_vcarddir_resource
