@@ -1,0 +1,17 @@
+[Desktop Entry]
+Exec=kcmshell4 kcm_akonadi
+Icon=akonadi
+Type=Service
+ServiceTypes=KCModule
+
+X-KDE-ModuleType=Library
+X-KDE-Library=kcm_akonadi
+X-KDE-FactoryName=kcm_akonadi
+X-KDE-HasReadOnlyMode=false
+X-KDE-ParentApp=kcontrol
+X-KDE-ParentComponents=
+X-KDE-CfgDlgHierarchy=
+X-KDE-System-Settings-Parent-Category=advanced-user-settings
+
+Name=Akonadi Personal Information Management
+Comment=Configuration of the Akonadi Personal Information Management framework

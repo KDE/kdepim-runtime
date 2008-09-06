@@ -1,0 +1,14 @@
+[Desktop Entry]
+Icon=akonadi
+Type=Service
+ServiceTypes=KCModule
+
+X-KDE-ModuleType=Library
+X-KDE-Library=kcm_akonadi_server
+X-KDE-FactoryName=kcm_akonadi_server
+X-KDE-HasReadOnlyMode=false
+X-KDE-ParentApp=
+X-KDE-ParentComponents=
+X-KDE-CfgDlgHierarchy=
+
+Name=Akonadi Server Configuration
