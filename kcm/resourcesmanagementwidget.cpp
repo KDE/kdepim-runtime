@@ -101,6 +101,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->ui.addButton->setMenu( addMenu );
     connect( addMenu, SIGNAL( triggered( QAction* ) ), SLOT( addClicked( QAction* ) ) );
 
+    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
     foreach( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList, SIGNAL( currentChanged( const Akonadi::AgentInstance&, const Akonadi::AgentInstance& ) ),
