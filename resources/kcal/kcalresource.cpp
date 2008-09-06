@@ -18,18 +18,18 @@
 
 #include "kcalresource.h"
 
-#include <kcal/calendarresources.h>
+#include "../kabc/kresourceassistant.h"
+
 #include <kcal/resourcecalendar.h>
 
-#include <kresources/factory.h>
 #include <kresources/configdialog.h>
 
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kconfig.h>
 #include <kinputdialog.h>
-
-#include <QTimer>
+#include <krandom.h>
+#include <kwindowsystem.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -39,30 +39,12 @@ using namespace Akonadi;
 
 KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
-    mCalendar( new KCal::CalendarResources( QLatin1String( "UTC" ) ) ),
-    mLoaded( false ),
-    mDelayedUpdateTimer( new QTimer( this ) ),
-    mMimeVisitor( new KCalMimeTypeVisitor() )
+    mManager( new KCal::CalendarResourceManager( QLatin1String( "calendar" ) ) ),
+    mResource( 0 ),
+    mMimeVisitor( new KCalMimeTypeVisitor() ),
+    mFullItemRetrieve( false )
 {
-  mDelayedUpdateTimer->setInterval( 10 );
-  mDelayedUpdateTimer->setSingleShot( true );
-
-  connect( mCalendar, SIGNAL( signalErrorMessage( const QString& ) ),
-           this, SLOT( calendarError( const QString& ) ) );
-
-  connect( mCalendar, SIGNAL( calendarChanged() ),
-           this, SLOT( calendarChanged() ) );
-
-  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
-           this, SLOT( delayedUpdate() ) );
-
-  KSharedConfig::Ptr config = KGlobal::config();
-  Q_ASSERT( !config.isNull() );
-
-  mCalendar->readConfig( config.data() );
-  mLoaded = loadCalendar();
-
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(reload()) );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfig()) );
 }
 
 KCalResource::~KCalResource()
@@ -70,271 +52,487 @@ KCalResource::~KCalResource()
   delete mMimeVisitor;
 }
 
-bool KCalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
-{
-  kDebug() << "item(" << item.id() << "," << item.remoteId() << "),"
-           << parts;
-  Q_UNUSED( parts );
-  const QString rid = item.remoteId();
-
-  KCal::Incidence *incidence = mCalendar->incidence( item.remoteId() );
-  if ( incidence == 0 ) {
-    emit error( i18n( "Incidence with uid '%1' not found!", rid ) );
-    return false;
-  }
-  Item i( item );
-  i.setMimeType( mMimeVisitor->mimeType( incidence ) );
-  i.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
-  itemRetrieved( i );
-  return true;
-}
-
-void KCalResource::aboutToQuit()
-{
-  mLastError.clear();
-
-  if ( !mCalendar->save() ) {
-    kError() << "Saving failed: " << mLastError;
-    return;
-  }
-
-  kDebug() << "Saving succeeded";
-}
-
 void KCalResource::configure( WId windowId )
 {
-  Q_UNUSED( windowId );
-
-  QWidget *window = 0; // should use windowId somehow
-
-  KCal::CalendarResourceManager *manager = mCalendar->resourceManager();
-  KCal::ResourceCalendar *resource = manager->standardResource();
-
-  if ( resource != 0 ) {
-    KRES::ConfigDialog dlg( window, QLatin1String( "calendar" ), resource );
+  if ( mResource != 0 ) {
+    emit status( Running,
+                 i18nc( "@info:status", "Changing calendar plugin configuration" ) );
+    KRES::ConfigDialog dlg( 0, QLatin1String( "calendat" ), mResource );
+    KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() )
-      manager->writeConfig( KGlobal::config().data() );
+      mManager->writeConfig( KGlobal::config().data() );
+
+    emit status( Idle, QString() );
+    // TODO: need to react on name changes, but do we need to react on data changes?
+    // as a workaround lets sync the collection tree
+    synchronizeCollectionTree();
     return;
   }
 
-  QStringList types = manager->resourceTypeNames();
-  QStringList descs = manager->resourceTypeDescriptions();
+  emit status( Running,
+               i18nc( "@info:status", "Acquiring calendar plugin configuration" ) );
 
-  int index = types.indexOf( QLatin1String( "akonadi" ) );
-  if ( index != -1 ) {
-    types.removeAt( index );
-    descs.removeAt( index );
-  }
+  KResourceAssistant kresAssistant( QLatin1String( "Calendar" ) );
+  KWindowSystem::setMainWindow( &kresAssistant, windowId );
 
-  bool ok = false;
-  QString desc = KInputDialog::getItem( i18n( "Create KCal resource" ),
-                                        i18n( "Please select type of the new resource:" ),
-                                        descs, 0, false, &ok, window );
-  if ( !ok )
-    return;
+  connect( &kresAssistant, SIGNAL( error( const QString& ) ),
+           this, SIGNAL( error( const QString& ) ) );
 
-  QString type = types[ descs.indexOf( desc ) ];
-
-  // Create new resource
-  resource = manager->createResource( type );
-  if ( resource == 0 ) {
-    emit error( i18n( "Unable to create a KCal resource of type %1", type ) );
+  if ( kresAssistant.exec() != QDialog::Accepted ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
-  resource->setResourceName( i18n( "%1 calendar", type ) );
+  mResource = dynamic_cast<KCal::ResourceCalendar*>( kresAssistant.resource() );
+  Q_ASSERT( mResource != 0 );
 
-  KRES::ConfigDialog dlg( window, QLatin1String( "calendar" ), resource );
+  mManager->add( mResource );
+  mManager->writeConfig( KGlobal::config().data() );
 
-  if ( !dlg.exec() ) {
-    delete resource;
-    resource = 0;
+  if ( !openConfiguration() ) {
+    const QString message = i18nc( "@info:status", "Initialization based on newly created configuration failed." );
+    emit error( message );
+    emit status( Broken, message );
     return;
   }
 
-  manager->add( resource );
-  manager->writeConfig( KGlobal::config().data() );
+  emit status( Running, i18nc( "@info:status", "Loading calendar" ) );
 
-  connect( resource, SIGNAL( resourceLoaded( ResourceCalendar* ) ),
-           this, SLOT(loadingFinished( ResourceCalendar* ) ) );
-  connect( resource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
-           this, SLOT(loadingError( ResourceCalendar*, const QString& ) ) );
-
-  mLoaded = loadCalendar();
-  synchronize();
-}
-
-void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& col )
-{
-  Q_UNUSED( col );
-
-  IncidencePtr incidence = item.payload<IncidencePtr>();
-  if ( incidence.get() != 0 ) {
-    mCalendar->addIncidence( incidence->clone() );
-
-    Item i( item );
-    i.setRemoteId( incidence->uid() );
-    changeCommitted( i );
-  } else {
-    changeProcessed();
+  // signals emitted by initialLoadingFinished() or loadingError()
+  if ( !mResource->load() ) {
+    kError() << "Resource::load() failed";
   }
-}
-
-void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
-{
-  Q_UNUSED( parts );
-
-  IncidencePtr incidence = item.payload<IncidencePtr>();
-  if ( incidence.get() != 0 ) {
-    KCal::Incidence *oldIncidence = mCalendar->incidence( incidence->uid() );
-    if ( oldIncidence != 0)
-      mCalendar->deleteIncidence( oldIncidence );
-
-    mCalendar->addIncidence( incidence->clone() );
-
-    Item i( item );
-    i.setRemoteId( incidence->uid() );
-    changeCommitted( i );
-  } else {
-    changeProcessed();
-  }
-}
-
-void KCalResource::itemRemoved( const Akonadi::Item &item )
-{
-  KCal::Incidence *incidence = mCalendar->incidence( item.remoteId() );
-  if ( incidence != 0 )
-    mCalendar->deleteIncidence( incidence );
-
-  changeProcessed();
 }
 
 void KCalResource::retrieveCollections()
 {
   kDebug();
-  KCal::ResourceCalendar *resource = mCalendar->resourceManager()->standardResource();
-  if ( resource == 0 ) {
+  if ( mResource == 0 ) {
     kError() << "No KCal resource";
 
-    emit error( i18n( "No KCal resource plugin configured" ) );
+    const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
+    emit error( message );
 
-    emit status( Broken, i18n( "No KCal resource plugin configured" ) );
+    emit status( Broken, message );
     return;
   }
 
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( resource->identifier() );
-  c.setName( name() );
+  Collection topLevelCollection;
+  topLevelCollection.setParent( Collection::root() );
+  topLevelCollection.setRemoteId( mResource->identifier() );
+  topLevelCollection.setName( mResource->resourceName() );
 
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
   mimeTypes += mMimeVisitor->allMimeTypes();
-  c.setContentMimeTypes( mimeTypes );
+
+  Collection::Rights readOnlyRights;
+
+  Collection::Rights readWriteRights;
+  readWriteRights |= Collection::CanCreateItem;
+  readWriteRights |= Collection::CanChangeItem;
+  readWriteRights |= Collection::CanDeleteItem;
+
+  if ( mResource->canHaveSubresources() ) {
+    mimeTypes << Collection::mimeType();
+
+    readWriteRights |= Collection::CanCreateCollection;
+    readWriteRights |= Collection::CanChangeCollection;
+    readWriteRights |= Collection::CanDeleteCollection;
+  }
+
+  topLevelCollection.setContentMimeTypes( mimeTypes );
+  topLevelCollection.setRights( mResource->readOnly() ? readOnlyRights : readWriteRights );
 
   Collection::List list;
-  list << c;
+  list << topLevelCollection;
+
+  const QStringList subResources = mResource->subresources();
+  kDebug() << "subResources" << subResources;
+  foreach ( const QString &subResource, subResources ) {
+    // TODO check with KOrganizer how it handles subresources
+    Collection childCollection;
+    childCollection.setParent( topLevelCollection );
+    childCollection.setRemoteId( subResource );
+    childCollection.setName( mResource->labelForSubresource( subResource ) );
+
+    const QString type = mResource->subresourceType( subResource );
+
+    if ( !type.isEmpty() ) {
+      QStringList childMimeTypes( Collection::mimeType() );
+      childMimeTypes << QLatin1String( "application/x-vnd.akonadi.calendar." ) + type;
+      childCollection.setContentMimeTypes( childMimeTypes );
+    } else
+      childCollection.setContentMimeTypes( mimeTypes );
+
+    // TODO we have no API for adding incidences to specific sub resources, so we should
+    // not tell Akonadi adding that items is allowed
+    childCollection.setRights( mResource->readOnly() ? readOnlyRights : readWriteRights );
+
+    list << childCollection;
+  }
+
   collectionsRetrieved( list );
 }
 
-void KCalResource::retrieveItems( const Akonadi::Collection &col )
+void KCalResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  Q_UNUSED( col );
+  kDebug();
+  if ( mResource == 0 ) {
+    kError() << "No KCal resource";
 
-  if ( mDelayedUpdateTimer->isActive() )
+    const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
+    emit error( message );
+
+    emit status( Broken, message );
     return;
-
-  mDelayedUpdateTimer->start();
-}
-
-bool KCalResource::loadCalendar()
-{
-  if ( !mLoaded ) {
-    mLastError.clear();
-
-    KCal::CalendarResourceManager *manager = mCalendar->resourceManager();
-    KCal::ResourceCalendar *resource = manager->standardResource();
-    if ( !resource ) {
-      if ( manager->begin() != manager->end() ) {
-        resource = *(manager->begin());
-        manager->setStandardResource( resource );
-      } else {
-        kWarning() << "No resource available";
-        return false;
-      }
-    }
-    if ( resource != 0 && !resource->isOpen() ) {
-      if ( !resource->open() ) {
-        kError() << "Opening resource" << resource->identifier() << "failed";
-        return false;
-      }
-    }
-
-    mCalendar->load();
-    if ( !mLastError.isEmpty() ) {
-      kError() << "Loading failed:" << mLastError;
-      return false;
-    }
   }
 
-  return true;
-}
-
-void KCalResource::calendarError( const QString& message )
-{
-  kDebug() << message;
-
-  mLastError = message;
-}
-
-void KCalResource::calendarChanged()
-{
-  if ( mDelayedUpdateTimer->isActive() )
-    return;
-
-  synchronize();
-}
-
-void KCalResource::delayedUpdate()
-{
   Item::List items;
 
-  KCal::Incidence::List incidences = mCalendar->rawIncidences();
+  const KCal::Incidence::List incidenceList = mResource->rawIncidences();
+  foreach ( KCal::Incidence *incidence, incidenceList ) {
+    const QString subResource = mResource->subresourceIdentifier( incidence );
+    if ( subResource != collection.remoteId() ) {
+      if ( collection.parent() != Collection::root().id() )
+        continue;
+    }
 
-  KCal::Incidence::List::const_iterator it    = incidences.begin();
-  KCal::Incidence::List::const_iterator endIt = incidences.end();
-  for ( ; it != endIt; ++it ) {
-    Item item( mMimeVisitor->mimeType( *it ) );
-    item.setRemoteId( (*it)->uid() );
-    items.append( item );
+    Item item( mMimeVisitor->mimeType( incidence ) );
+    item.setRemoteId( incidence->uid() );
+    if ( mFullItemRetrieve )
+      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+    items << item;
   }
 
   itemsRetrieved( items );
 }
 
-void KCalResource::reload()
+bool KCalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType() << "parts=" << parts;
+
+  if ( mResource == 0 ) {
+    kError() << "No KCal resource";
+
+    const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
+    emit error( message );
+
+    emit status( Broken, message );
+    return false;
+  }
+
+  const QString rid = item.remoteId();
+
+  KCal::Incidence *incidence = mResource->incidence( rid );
+  if ( incidence == 0 ) {
+    kError() << "No incidence with uid" << rid;
+    emit error( i18nc( "@info:status",
+                        "Request for data of a specific calendar entry failed "
+                        "because there is no such entry" ) );
+    return false;
+  }
+
+  Item i( item );
+  i.setMimeType( mMimeVisitor->mimeType( incidence ) );
+  i.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+  itemRetrieved( i );
+
+  return true;
+}
+
+void KCalResource::aboutToQuit()
+{
+  mManager->writeConfig( KGlobal::config().data() );
+
+  mResource->save();
+}
+
+void KCalResource::doSetOnline( bool online )
+{
+  kDebug() << "online=" << online << ", isOnline=" << isOnline();
+  if ( online )
+    reloadConfig();
+  else
+    closeConfiguration();
+
+  ResourceBase::doSetOnline( online );
+}
+
+void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& collection )
+{
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
+
+  Q_UNUSED( collection );
+
+  if ( item.hasPayload<IncidencePtr>() ) {
+    IncidencePtr incidencePtr = item.payload<IncidencePtr>();
+    if ( incidencePtr->uid().isEmpty() ) {
+      const QString uid = KRandom::randomString( 10 );
+      incidencePtr->setUid( uid );
+    }
+
+    KCal::Incidence *incidence = incidencePtr->clone();
+    if ( mResource->addIncidence( incidence ) ) {
+      Item newItem( item );
+      newItem.setRemoteId( incidencePtr->uid() );
+      newItem.setPayload<IncidencePtr>( incidencePtr );
+      if ( !mResource->save( incidence ) ) {
+        kError() << "Failed to save incidence" << incidence->uid();
+        // resource error emitted by savingError()
+      }
+      changeCommitted( newItem );
+      return;
+    }
+
+    kError() << "Failed to add incidence to resource";
+  }
+
+  changeProcessed();
+}
+
+void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
+{
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType() << "parts=" << parts;
+
+  if ( item.hasPayload<IncidencePtr>() ) {
+    IncidencePtr incidencePtr = item.payload<IncidencePtr>();
+
+    // TODO check if there is a way to update an incidence instead of delete/add
+    KCal::Incidence *incidence = mResource->incidence( incidencePtr->uid() );
+    if ( incidence == 0 || mResource->deleteIncidence( incidence ) ) {
+      incidence = incidencePtr->clone();
+      if ( mResource->addIncidence( incidence ) ) {
+        if ( !mResource->save( incidence ) ) {
+          kError() << "Failed to save incidence" << incidence->uid();
+          // resource error emitted by savingError()
+        }
+        changeCommitted( item );
+        return;
+      }
+
+      kError() << "Failed to add incidence to resource";
+    } else
+      kError() << "Failed to delete old incidence from resource";
+  }
+
+  changeProcessed();
+}
+
+void KCalResource::itemRemoved( const Akonadi::Item &item )
+{
+  kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
+
+  KCal::Incidence *incidence = mResource->incidence( item.remoteId() );
+  if ( incidence != 0 && mResource->deleteIncidence( incidence ) ) {
+    changeCommitted( item );
+    // TODO save calendar
+    return;
+  }
+
+  changeProcessed();
+}
+
+void KCalResource::collectionAdded( const Akonadi::Collection &collection,
+                                    const Akonadi::Collection &parent )
+{
+  kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId()
+           << ", parent id="   << parent.id() << ", remoteId="     << parent.remoteId();
+
+  // TODO check how KOrganizer handles this
+  QString subResource = collection.remoteId();
+  if ( subResource.isEmpty() )
+    subResource = KRandom::randomString( 10 );
+
+  if ( mResource->addSubresource( subResource, parent.remoteId() ) ) {
+    Collection newCollection( collection );
+    newCollection.setRemoteId( subResource );
+    changeCommitted( newCollection );
+    // TODO save calendar
+    return;
+  }
+
+  changeProcessed();
+}
+
+void KCalResource::collectionChanged( const Akonadi::Collection &collection )
+{
+  kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId();
+
+  // currently only changing the top level collection's name supported
+  if ( collection.parent() == Collection::root().id() ) {
+    if ( collection.name() != mResource->resourceName() ) {
+      mResource->setResourceName( collection.name() );
+      changeCommitted( collection );
+      // TODO save config
+      return;
+    }
+  }
+
+  changeProcessed();
+}
+
+void KCalResource::collectionRemoved( const Akonadi::Collection &collection )
+{
+  kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId();
+
+  // currently only removing sub resource supported
+  const QStringList subResources = mResource->subresources();
+  if ( subResources.contains( collection.remoteId() ) ) {
+    if ( mResource->removeSubresource( collection.remoteId() ) ) {
+      changeCommitted( collection );
+      // TODO save calendar
+      return;
+    }
+  }
+
+  changeProcessed();
+}
+
+bool KCalResource::openConfiguration()
+{
+  if ( mResource != 0 ) {
+    if ( !mResource->isOpen() ) {
+      if ( !mResource->open() ) {
+        kError() << "Opening resource" << mResource->identifier() << "failed";
+        return false;
+      }
+    }
+
+    connect( mResource, SIGNAL( resourceLoaded( ResourceCalendar* ) ),
+             this, SLOT( initialLoadingFinished( ResourceCalendar* ) ) );
+    connect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
+             this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
+  }
+
+  return true;
+}
+
+void KCalResource::closeConfiguration()
+{
+  if ( mResource != 0 ) {
+    if ( mResource->isOpen() )
+      mResource->close();
+
+    disconnect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
+                this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
+    disconnect( mResource, SIGNAL( resourceSaveError( ResourceCalendar*, const QString& ) ),
+                this, SLOT( savingError( ResourceCalendar*, const QString& ) ) );
+    disconnect( mResource, SIGNAL( resourceChanged( ResourceCalendar* ) ),
+                this, SLOT( resourceChanged( ResourceCalendar* ) ) );
+  }
+}
+
+void KCalResource::reloadConfig()
+{
+  kDebug() << "resource=" << (void*) mResource;
+  if ( mResource != 0 ) {
+    if ( !mResource->save() ) {
+      kError() << "Saving of calendar failed";
+    }
+  }
+  closeConfiguration();
+
   KGlobal::config()->reparseConfiguration();
 
-  aboutToQuit();
-  delete mCalendar;
+  if ( KGlobal::config()->groupList().isEmpty() ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
 
-  mCalendar = new KCal::CalendarResources( QLatin1String( "UTC" ) );
-  mLoaded = false;
+  Q_ASSERT( KGlobal::config().data() != 0);
 
-  connect( mCalendar, SIGNAL( signalErrorMessage( const QString& ) ),
-          this, SLOT( calendarError( const QString& ) ) );
+  mManager->readConfig( KGlobal::config().data() );
 
-  connect( mCalendar, SIGNAL( calendarChanged() ),
-          this, SLOT( calendarChanged() ) );
+  mResource = mManager->standardResource();
+  if ( mResource != 0 ) {
+    if ( mResource->type().toLower() == QLatin1String( "akonadi" ) ) {
+      kError() << "Resource config points to an Akonadi bridge resource";
+      emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+      return;
+    }
+  }
 
-  connect( mDelayedUpdateTimer, SIGNAL( timeout() ),
-          this, SLOT( delayedUpdate() ) );
+  if ( mResource == 0 ) {
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
 
-  mCalendar->readConfig( KGlobal::config().data() );
-  mLoaded = loadCalendar();
+  if ( !isOnline() )
+    return;
+
+  if ( !openConfiguration() ) {
+    kError() << "openConfiguration() failed";
+
+    const QString message = i18nc( "@info:status", "Initialization based on stored configuration failed." );
+    emit error( message );
+    emit status( Broken, message );
+    return;
+  }
+
+  emit status( Running, i18nc( "@info:status", "Loading calendar" ) );
+
+  // signals emitted by initialLoadingFinished() or loadingError()
+  if ( !mResource->load() ) {
+    kError() << "Resource::load() failed";
+  }
+}
+
+void KCalResource::initialLoadingFinished( ResourceCalendar *resource )
+{
+  Q_ASSERT( resource == mResource );
+
+  kDebug();
+
+  disconnect( mResource, SIGNAL( resourceLoaded( ResourceCalendar* ) ),
+              this, SLOT( initialLoadingFinished( ResourceCalendar* ) ) );
+
+  connect( mResource, SIGNAL( resourceChanged( ResourceCalendar* ) ),
+           this, SLOT( resourceChanged( ResourceCalendar* ) ) );
+
+  emit status( Idle, QString() );
+  mFullItemRetrieve = false;
+  synchronize();
+}
+
+void KCalResource::resourceChanged( ResourceCalendar *resource )
+{
+  Q_ASSERT( resource == mResource );
+
+  kDebug();
+
+  mFullItemRetrieve = true;
+  synchronize();
+}
+
+void KCalResource::loadingError( ResourceCalendar *resource, const QString &message )
+{
+  Q_ASSERT( resource == mResource );
+
+  kError() << "Loading error: " << message;
+  const QString statusMessage =
+    i18nc( "@info:status", "Loading of calendar failed: %1", message );
+
+  emit error( statusMessage );
+  emit status( Broken, statusMessage );
+}
+
+void KCalResource::savingError( ResourceCalendar *resource, const QString &message )
+{
+  Q_ASSERT( resource == mResource );
+
+  kError() << "Saving error: " << message;
+  const QString statusMessage =
+    i18nc( "@info:status", "Saving of calendar failed: %1", message );
+
+  emit error( statusMessage );
+  emit status( Broken, statusMessage );
 }
 
 AKONADI_RESOURCE_MAIN( KCalResource )
 
 #include "kcalresource.moc"
+// kate: space-indent on; indent-width 2; replace-tabs on;

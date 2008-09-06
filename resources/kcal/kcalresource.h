@@ -26,8 +26,9 @@ namespace KRES {
 }
 
 namespace KCal {
-  class CalendarResources;
   class ResourceCalendar;
+
+  typedef KRES::Manager<ResourceCalendar> CalendarResourceManager;
 }
 
 namespace Akonadi {
@@ -49,34 +50,50 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 
   protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
+    void retrieveItems( const Akonadi::Collection &collection );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
     virtual void aboutToQuit();
 
+    virtual void doSetOnline( bool online );
+
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
+    virtual void collectionAdded( const Akonadi::Collection &collection,
+                                  const Akonadi::Collection &parent );
+
+    virtual void collectionChanged( const Akonadi::Collection &collection );
+
+    virtual void collectionRemoved( const Akonadi::Collection &collection );
+
   private:
-    KCal::CalendarResources *mCalendar;
-    bool mLoaded;
-
-    QString mLastError;
-
-    QTimer *mDelayedUpdateTimer;
+    KCal::CalendarResourceManager *mManager;
+    KCal::ResourceCalendar *mResource;
 
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
 
+    bool mFullItemRetrieve;
+
   private:
-    bool loadCalendar();
+    bool openConfiguration();
+    void closeConfiguration();
+
+    typedef KCal::ResourceCalendar ResourceCalendar;
 
   private Q_SLOTS:
-    void calendarError( const QString& message );
-    void calendarChanged();
-    void delayedUpdate();
-    void reload();
+    void reloadConfig();
+
+    void initialLoadingFinished( ResourceCalendar *resource );
+
+    void resourceChanged( ResourceCalendar *resource );
+
+    void loadingError( ResourceCalendar *resource, const QString &message );
+
+    void savingError( ResourceCalendar *resource, const QString &message );
 };
 
 #endif
+// kate: space-indent on; indent-width 2; replace-tabs on;
