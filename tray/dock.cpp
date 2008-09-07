@@ -113,12 +113,12 @@ void Dock::slotServerStopped()
 
 void Dock::slotStopAkonadi()
 {
-    Akonadi::Control::stop();
+    Akonadi::Control::stop( parentWidget() );
 }
 
 void Dock::slotStartAkonadi()
 {
-    Akonadi::Control::start();
+    Akonadi::Control::start( parentWidget() );
 }
 
 void Dock::slotActivated()
