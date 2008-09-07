@@ -112,14 +112,14 @@ void ServerConfigModule::updateStatus()
 void ServerConfigModule::startStopClicked()
 {
   if ( ServerManager::isRunning() )
-    Control::stop();
+    Control::stop( this );
   else
-    Control::start();
+    Control::start( this );
 }
 
 void ServerConfigModule::restartClicked()
 {
-  Control::restart();
+  Control::restart( this );
 }
 
 #include "serverconfigmodule.moc"

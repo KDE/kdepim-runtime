@@ -70,6 +70,7 @@ private Q_SLOTS:
     void slotStartAkonadi();
     void slotStartBackup();
     void slotStartRestore();
+    void slotConfigure();
     void slotQuit();
 
 private:
