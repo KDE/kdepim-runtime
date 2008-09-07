@@ -22,44 +22,173 @@
 #include "resourceakonadi.h"
 
 #include <akonadi/collection.h>
-#include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionmodel.h>
+#include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionview.h>
+#include <akonadi/standardactionmanager.h>
 
+#include <kaction.h>
+#include <kactioncollection.h>
 #include <kdebug.h>
 #include <kdialog.h>
 #include <kconfig.h>
+#include <kcmoduleloader.h>
+#include <ktabwidget.h>
 
+#include <QDialogButtonBox>
+#include <QLabel>
 #include <QLayout>
+#include <QPushButton>
 
-using namespace Akonadi;
+static QModelIndex findCollection( const Akonadi::Collection &collection,
+        const QModelIndex &parent, QAbstractItemModel *model)
+{
+  const int rowCount = model->rowCount( parent );
+
+  for ( int row = 0; row < rowCount; ++row ) {
+    QModelIndex index = model->index( row, 0, parent );
+    if ( !index.isValid() )
+      continue;
+
+    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
+    if ( !data.isValid() )
+      continue;
+
+    if ( data.toInt() == collection.id() ) {
+      return index;
+    }
+
+    index = findCollection( collection, index, model );
+    if ( index.isValid() )
+      return index;
+  }
+
+  return QModelIndex();
+}
+
 using namespace KCal;
 
+class AkonadiResourceDialog : public KDialog
+{
+  public:
+    AkonadiResourceDialog( const QStringList &mimeList, QWidget *parent )
+      : KDialog( parent )
+    {
+      QWidget *widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
+                                                    KCModuleLoader::Inline, this, mimeList );
+      setMainWidget( widget );
+
+      setButtons( Close );
+      setDefaultButton( Close );
+    }
+};
+
 ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
-  : KRES::ConfigWidget( parent ), mView( 0 )
+  : KRES::ConfigWidget( parent ),
+    mCollectionView( 0 ),
+    mCreateAction( 0 ),
+    mDeleteAction( 0 ),
+    mSyncAction( 0 ),
+    mSubscriptionAction( 0 ),
+    mCreateButton( 0 ),
+    mDeleteButton( 0 ),
+    mSyncButton( 0 ),
+    mSubscriptionButton( 0 )
 {
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
-  mainLayout->setMargin( 0 );
+  mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
-  mView = new CollectionView( 0, this );
-  mView->setSelectionMode( QAbstractItemView::SingleSelection );
+  // list of contact data MIME types
+  QStringList mimeList;
+  mimeList << "text/calendar";
 
-  mainLayout->addWidget( mView );
+  Akonadi::CollectionModel *model = new Akonadi::CollectionModel( this );
 
-  connect( mView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
+  QWidget *widget = new QWidget( this );
+
+  QHBoxLayout *collectionLayout = new QHBoxLayout( widget );
+  collectionLayout->setMargin( KDialog::marginHint() );
+  collectionLayout->setSpacing( KDialog::spacingHint() );
+
+  Akonadi::CollectionFilterProxyModel *filterModel =
+    new Akonadi::CollectionFilterProxyModel( this );
+  filterModel->addMimeTypeFilters( mimeList );
+  filterModel->setSourceModel( model );
+
+  mCollectionView = new Akonadi::CollectionView( widget );
+  mCollectionView->setSelectionMode( QAbstractItemView::SingleSelection );
+  mCollectionView->setModel( filterModel );
+
+  connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
            this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
+  connect( mCollectionView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+           this, SLOT( collectionsInserted( const QModelIndex&, int, int ) ) );
 
-  CollectionModel *sourceModel = new CollectionModel( this );
+  collectionLayout->addWidget( mCollectionView );
 
-  CollectionFilterProxyModel *filterModel = new CollectionFilterProxyModel( this );
-  filterModel->addMimeTypeFilter( QLatin1String( "text/calendar" ) );
-  filterModel->setSourceModel( sourceModel );
+  KActionCollection *actionCollection = new KActionCollection( this );
 
-  mView->setModel( filterModel );
+  Akonadi::StandardActionManager *actionManager =
+    new Akonadi::StandardActionManager( actionCollection, this );
+  actionManager->setCollectionSelectionModel( mCollectionView->selectionModel() );
 
-  connect( mView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-           this, SLOT( rowsInserted( const QModelIndex&, int, int ) ) );
+  mCreateAction = actionManager->createAction( Akonadi::StandardActionManager::CreateCollection );
+
+  mDeleteAction = actionManager->createAction( Akonadi::StandardActionManager::DeleteCollections );
+
+  mSyncAction = actionManager->createAction( Akonadi::StandardActionManager::SynchronizeCollections );
+
+  mSubscriptionAction = actionManager->createAction( Akonadi::StandardActionManager::ManageLocalSubscriptions );
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox( Qt::Vertical, widget );
+  collectionLayout->addWidget( buttonBox );
+
+  mCreateButton = new QPushButton( mCreateAction->text() );
+  mCreateButton->setIcon( mCreateAction->icon() );
+  buttonBox->addButton( mCreateButton, QDialogButtonBox::ActionRole );
+  connect( mCreateButton, SIGNAL( clicked() ), mCreateAction, SLOT( trigger() ) );
+
+  mDeleteButton = new QPushButton( mDeleteAction->text() );
+  mDeleteButton->setIcon( mDeleteAction->icon() );
+  buttonBox->addButton( mDeleteButton, QDialogButtonBox::DestructiveRole );
+  connect( mDeleteButton, SIGNAL( clicked() ), mDeleteAction, SLOT( trigger() ) );
+
+  mSyncButton = new QPushButton( mSyncAction->text() );
+  mSyncButton->setIcon( mSyncAction->icon() );
+  buttonBox->addButton( mSyncButton, QDialogButtonBox::ActionRole );
+  connect( mSyncButton, SIGNAL( clicked() ), mSyncAction, SLOT( trigger() ) );
+
+  mSubscriptionButton = new QPushButton( mSubscriptionAction->text() );
+  mSubscriptionButton->setIcon( mSubscriptionAction->icon() );
+  buttonBox->addButton( mSubscriptionButton, QDialogButtonBox::ActionRole );
+  connect( mSubscriptionButton, SIGNAL( clicked() ), mSubscriptionAction, SLOT( trigger() ) );
+
+  AkonadiResourceDialog *sourcesDialog = new AkonadiResourceDialog( mimeList, this );
+  const QString sourcesTitle = i18nc( "@title:window", "Manage Calendar Sources" );
+  sourcesDialog->setCaption( sourcesTitle );
+
+  QPushButton *sourcesButton = new QPushButton( sourcesTitle );
+  buttonBox->addButton( sourcesButton, QDialogButtonBox::ActionRole );
+
+  connect( sourcesButton, SIGNAL( clicked() ), sourcesDialog, SLOT( show() ) );
+
+  QLabel *label = new QLabel( this );
+  label->setText( i18nc( "@info", "<title>Please select the folder for storing"
+                         " newly created calendar entries.</title><note>If the folder"
+                         " list below is empty, you might have to add a"
+                         " calendar through <interface>%1</interface>"
+                         " <br>or change which folders you are subscribed to"
+                         " through <interface>%2</interface></note>",
+                         sourcesTitle, mSubscriptionButton->text() ) );
+
+  mainLayout->addWidget( label );
+  mainLayout->addWidget( widget );
+
+  updateCollectionButtonState();
+
+  connect( actionManager, SIGNAL( actionStateUpdated() ),
+           this, SLOT( updateCollectionButtonState() ) );
 }
 
 void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
@@ -71,28 +200,11 @@ void ResourceAkonadiConfig::loadSettings( KRES::Resource *res )
     return;
   }
 
-  Collection collection = resource->collection();
+  mCollection = resource->storeCollection();
 
-  mCollectionId = collection.id();
-
-  QAbstractItemModel *model = mView->model();
-
-  const int rowCount = model->rowCount();
-
-  for ( int row = 0; row < rowCount; ++row ) {
-    QModelIndex index = model->index( row, 0, mView->rootIndex() );
-    if ( !index.isValid() )
-      continue;
-
-    QVariant data = model->data( index, CollectionModel::CollectionIdRole );
-    if ( !data.isValid() )
-      continue;
-
-    if ( data.toInt() == mCollectionId ) {
-      mView->setCurrentIndex( index );
-      return;
-    }
-  }
+  QModelIndex index = findCollection( mCollection, mCollectionView->rootIndex(), mCollectionView->model() );
+  if ( index.isValid() )
+    mCollectionView->setCurrentIndex( index );
 }
 
 void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
@@ -104,32 +216,67 @@ void ResourceAkonadiConfig::saveSettings( KRES::Resource *res )
     return;
   }
 
-  resource->setCollection( Collection( mCollectionId ) );
+  resource->setStoreCollection( mCollection );
 }
 
-void ResourceAkonadiConfig::collectionChanged( const Akonadi::Collection& collection )
+void ResourceAkonadiConfig::updateCollectionButtonState()
 {
-  mCollectionId = collection.id();
+  mCreateButton->setEnabled( mCreateAction->isEnabled() );
+  mDeleteButton->setEnabled( mDeleteAction->isEnabled() );
+  mSyncButton->setEnabled( mSyncAction->isEnabled() );
+  mSubscriptionButton->setEnabled( mSubscriptionAction->isEnabled() );
 }
 
-void ResourceAkonadiConfig::rowsInserted( const QModelIndex &parent, int start, int end )
+void ResourceAkonadiConfig::collectionChanged( const Akonadi::Collection &collection )
 {
-  QAbstractItemModel *model = mView->model();
+  mCollection = collection;
+  kDebug() << "url=" << mCollection.url().url();
+}
+
+void ResourceAkonadiConfig::collectionsInserted( const QModelIndex &parent, int start, int end )
+{
+  QAbstractItemModel *model = mCollectionView->model();
 
   for ( int row = start; row <= end; ++row ) {
     QModelIndex index = model->index( row, 0, parent );
     if ( !index.isValid() )
       continue;
 
-    QVariant data = model->data( index, CollectionModel::CollectionIdRole );
+    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
     if ( !data.isValid() )
       continue;
 
-    if ( data.toInt() == mCollectionId ) {
-      mView->setCurrentIndex( index );
+    if ( data.toInt() == mCollection.id() ) {
+      mCollectionView->setCurrentIndex( index );
+      return;
+    }
+
+    index = findCollection( mCollection, index, model );
+    if ( index.isValid() ) {
+      mCollectionView->setCurrentIndex( index );
       return;
     }
   }
 }
 
+ResourceAkonadiConfigDialog::ResourceAkonadiConfigDialog( KRES::Resource *resource )
+  : KDialog(), mResource( resource ), mConfig( 0 )
+{
+  setCaption( i18nc( "@title:window", "Select Calendar Folder") );
+
+  setButtons( KDialog::Ok | KDialog::Cancel );
+
+  mConfig = new ResourceAkonadiConfig( this );
+  setMainWidget( mConfig );
+
+  mConfig->loadSettings( mResource );
+}
+
+void ResourceAkonadiConfigDialog::accept()
+{
+  mConfig->saveSettings( mResource );
+  KDialog::accept();
+}
+
 #include "resourceakonadiconfig.moc"
+// kate: space-indent on; indent-width 2; replace-tabs on;

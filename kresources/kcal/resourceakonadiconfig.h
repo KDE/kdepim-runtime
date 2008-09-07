@@ -23,12 +23,17 @@
 
 #include "kresources/configwidget.h"
 
-namespace Akonadi{
-  class Collection;
+#include <akonadi/collection.h>
+
+#include <kdialog.h>
+
+namespace Akonadi {
   class CollectionView;
 }
 
+class KAction;
 class QModelIndex;
+class QPushButton;
 
 namespace KCal {
 
@@ -44,15 +49,45 @@ class ResourceAkonadiConfig : public KRES::ConfigWidget
     void saveSettings( KRES::Resource *resource );
 
   private:
-    int mCollectionId;
+    Akonadi::Collection mCollection;
 
-    Akonadi::CollectionView *mView;
+    Akonadi::CollectionView *mCollectionView;
+
+    KAction *mCreateAction;
+    KAction *mDeleteAction;
+    KAction *mSyncAction;
+    KAction *mSubscriptionAction;
+
+    QPushButton *mCreateButton;
+    QPushButton *mDeleteButton;
+    QPushButton *mSyncButton;
+    QPushButton *mSubscriptionButton;
 
   private Q_SLOTS:
-    void collectionChanged( const Akonadi::Collection& collection );
-    void rowsInserted( const QModelIndex &parent, int start, int end );
+    void updateCollectionButtonState();
+
+    void collectionChanged( const Akonadi::Collection &collection );
+
+    void collectionsInserted( const QModelIndex &parent, int start, int end );
+};
+
+class ResourceAkonadiConfigDialog : public KDialog
+{
+  Q_OBJECT
+
+  public:
+    ResourceAkonadiConfigDialog( KRES::Resource *resource );
+
+  protected:
+    virtual void accept();
+
+  private:
+    KRES::Resource *mResource;
+
+    ResourceAkonadiConfig *mConfig;
 };
 
 }
 
 #endif
+// kate: space-indent on; indent-width 2; replace-tabs on;

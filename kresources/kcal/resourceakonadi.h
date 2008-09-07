@@ -23,12 +23,14 @@
 
 #include "kcal/resourcecalendar.h"
 
-class KJob;
-
 namespace Akonadi {
   class Collection;
   class Item;
 }
+
+class KJob;
+
+class QModelIndex;
 
 namespace KCal {
 
@@ -43,8 +45,8 @@ class ResourceAkonadi : public ResourceCalendar
 
     virtual void writeConfig( KConfigGroup &group );
 
-    void setCollection( const Akonadi::Collection& collection );
-    Akonadi::Collection collection() const;
+    void setStoreCollection( const Akonadi::Collection& collection );
+    Akonadi::Collection storeCollection() const;
 
     virtual KABC::Lock *lock();
 
@@ -117,6 +119,14 @@ class ResourceAkonadi : public ResourceCalendar
     virtual void shiftTimes( const KDateTime::Spec &oldSpec,
                              const KDateTime::Spec &newSpec );
 
+    virtual void setSubresourceActive( const QString &subResource, bool active );
+
+    virtual bool subresourceActive( const QString &resource ) const;
+
+    virtual QString subresourceIdentifier( Incidence *incidence );
+
+    virtual QStringList subresources() const;
+
   protected:
     virtual bool doLoad( bool syncCache );
 
@@ -142,9 +152,15 @@ class ResourceAkonadi : public ResourceCalendar
 
     void init();
 
+    Q_PRIVATE_SLOT( d, void subResourceLoadResult( KJob* ) )
+
     Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
     Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
+
+    Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
+    Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
+    Q_PRIVATE_SLOT( d, void collectionDataChanged( const QModelIndex&, const QModelIndex& ) )
 
     Q_PRIVATE_SLOT( d, void delayedAutoSaveOnDelete() )
     //@endcond
@@ -153,3 +169,4 @@ class ResourceAkonadi : public ResourceCalendar
 }
 
 #endif
+// kate: space-indent on; indent-width 2; replace-tabs on;
