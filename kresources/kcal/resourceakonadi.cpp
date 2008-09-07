@@ -25,6 +25,8 @@
 #include "kabc/locknull.h"
 
 #include <akonadi/collection.h>
+#include <akonadi/collectioncreatejob.h>
+#include <akonadi/collectiondeletejob.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionmodel.h>
@@ -449,6 +451,67 @@ bool ResourceAkonadi::subresourceActive( const QString &resource ) const
     return false;
 
   return subResource->isActive();
+}
+
+bool ResourceAkonadi::addSubresource( const QString &resource, const QString &parent )
+{
+  kDebug(5800) << "resource=" << resource << ", parent=" << parent;
+  Q_ASSERT( !resource.isEmpty() );
+
+  if ( parent.isEmpty() ) {
+    kError(5800) << "Cannot create Akonadi toplevel collection";
+    // TODO should probably rather open the resource KCM, though how do we pass
+    // the name then?
+    return false;
+  }
+
+  SubResource *subResource = d->mSubResources[ parent ];
+  if ( subResource == 0 ) {
+    kError(5800) << "No such parent subresource/collection:" << parent;
+    return false;
+  }
+
+  Collection collection;
+  collection.setName( resource );
+  collection.setParent( subResource->mCollection );
+
+  // TODO should we set content mime types at all?
+  collection.setContentMimeTypes( QStringList( QLatin1String( "text/calendar" ) ) );
+
+  CollectionCreateJob *job = new CollectionCreateJob( collection );
+
+  if ( !job->exec() ) {
+    kError(5800) << "Creating collection failed:" << job->errorString();
+    return false;
+  }
+
+  // TODO should we add the subresource right now? Not sure if it already got
+  // a remoteId
+
+  return true;
+}
+
+bool ResourceAkonadi::removeSubresource( const QString &resource )
+{
+  kDebug(5800) << "resource=" << resource;
+  Q_ASSERT( !resource.isEmpty() );
+
+  SubResource *subResource = d->mSubResources[ resource ];
+  if ( subResource == 0 ) {
+    kError(5800) << "No such subresource: " << resource;
+    return false;
+  }
+
+  CollectionDeleteJob *job = new CollectionDeleteJob( subResource->mCollection );
+
+  if ( !job->exec() ) {
+    kError(5800) << "Deleting collection failed:" << job->errorString();
+    return false;
+  }
+
+  // TODO should we remove the subresource right away?
+
+  return true;
 }
 
 QString ResourceAkonadi::subresourceIdentifier( Incidence *incidence )
@@ -989,6 +1052,9 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
               // TODO probably need to add this to ResourceCalendar as well
               //emit mParent->signalSubresourceChanged( mParent, QLatin1String( "calendar" ), collectionUrl );
             }
+
+            // update the collection object in any case
+            subResource->mCollection = collection;
           }
         }
       }
