@@ -41,6 +41,7 @@
 #include <akonadi/control.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
+#include <akonadi/servermanager.h>
 
 using namespace Akonadi;
 
@@ -79,10 +80,8 @@ Dock::Dock( QWidget *parent )
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
 
-    connect( QDBusConnection::sessionBus().interface(),
-             SIGNAL( serviceOwnerChanged( const QString&, const QString&, const QString& ) ),
-             SLOT( slotServiceChanged( const QString&, const QString&, const QString& ) ) );
-
+    connect( ServerManager::instance(), SIGNAL(started()), SLOT(slotServerStarted()) );
+    connect( ServerManager::instance(), SIGNAL(stopped()), SLOT(slotServerStopped()) );
 
     AgentManager *manager = AgentManager::self();
     connect( manager,
@@ -97,26 +96,23 @@ Dock::~Dock()
 {
 }
 
-void Dock::slotServiceChanged( const QString& service, const QString& oldOwner, const QString& newOwner )
+void Dock::slotServerStarted()
 {
-    if ( service != "org.freedesktop.Akonadi.Control" )
-        return;
+    updateMenu( true );
+    KPassivePopup::message( i18n( "Akonadi available" ),
+                            i18n( "The Akonadi server has been started and can be used now." ), this );
+}
 
-    if ( oldOwner.isEmpty() ) {
-        updateMenu( true );
-        KPassivePopup::message( i18n( "Akonadi available" ),
-                                i18n( "The Akonadi server has been started and can be used now." ), this );
-    } else if ( newOwner.isEmpty() ) {
-        updateMenu( false );
-        KPassivePopup::message( i18n( "Akonadi not available" ),
-                                i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ),this );
-    }
+void Dock::slotServerStopped()
+{
+    updateMenu( false );
+    KPassivePopup::message( i18n( "Akonadi not available" ),
+                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ),this );
 }
 
 void Dock::slotStopAkonadi()
 {
-    QDBusInterface dbus( "org.freedesktop.Akonadi.Control", "/ControlManager", "org.freedesktop.Akonadi.ControlManager" );
-    dbus.call( "shutdown" );
+    Akonadi::Control::stop();
 }
 
 void Dock::slotStartAkonadi()
@@ -126,13 +122,12 @@ void Dock::slotStartAkonadi()
 
 void Dock::slotActivated()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
-    updateMenu( registered );
+    updateMenu( ServerManager::isRunning() );
 }
 
 void Dock::slotStartBackup()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
+    bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
     QPointer<BackupAssistant> backup = new BackupAssistant( parentWidget() );
@@ -142,7 +137,7 @@ void Dock::slotStartBackup()
 
 void Dock::slotStartRestore()
 {
-    bool registered = QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.freedesktop.Akonadi.Control" );
+    bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
     QPointer<RestoreAssistant> restore = new RestoreAssistant( parentWidget() );

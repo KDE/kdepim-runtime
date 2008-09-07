@@ -34,6 +34,11 @@ class ServerConfigModule : public KCModule
     void save();
     void defaults();
 
+  private slots:
+    void updateStatus();
+    void startStopClicked();
+    void restartClicked();
+
   private:
     Ui::ServerConfigModule ui;
 };

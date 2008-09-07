@@ -63,7 +63,8 @@ public Q_SLOTS:
 private Q_SLOTS:
     void slotInstanceWarning( const Akonadi::AgentInstance&, const QString& );
     void slotInstanceError( const Akonadi::AgentInstance&, const QString& );
-    void slotServiceChanged( const QString&, const QString&, const QString& );
+    void slotServerStarted();
+    void slotServerStopped();
     void slotActivated();
     void slotStopAkonadi();
     void slotStartAkonadi();

@@ -25,6 +25,8 @@
 
 #include <QSettings>
 
+#include <akonadi/control.h>
+#include <akonadi/servermanager.h>
 #include <akonadi/private/xdgbasedirs_p.h>
 
 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
@@ -43,6 +45,12 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   connect( ui.username, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui.password, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui.options, SIGNAL(textChanged(QString)), SLOT(changed()) );
+
+  connect( ui.startStopButton, SIGNAL(clicked()), SLOT(startStopClicked()) );
+  connect( ui.restartButton, SIGNAL(clicked()), SLOT(restartClicked()) );
+
+  connect( ServerManager::instance(), SIGNAL(started()), SLOT(updateStatus()) );
+  connect( ServerManager::instance(), SIGNAL(stopped()), SLOT(updateStatus()) );
 }
 
 void ServerConfigModule::load()
@@ -58,6 +66,8 @@ void ServerConfigModule::load()
   ui.password->setText( settings.value( "Password", "" ).toString() );
   ui.options->setText( settings.value( "Options", "" ).toString() );
   settings.endGroup();
+
+  updateStatus();
 }
 
 void ServerConfigModule::save()
@@ -84,6 +94,32 @@ void ServerConfigModule::defaults()
   ui.startServer->setChecked( true );
   // TODO: detect default server path
   ui.name->setText( "akonadi" );
+}
+
+void ServerConfigModule::updateStatus()
+{
+  if ( ServerManager::isRunning() ) {
+    ui.statusLabel->setText( i18n( "<b>The Akonadi server is running.</b>" ) );
+    ui.startStopButton->setText( i18n( "Stop" ) );
+    ui.restartButton->setEnabled( true );
+  } else {
+    ui.statusLabel->setText( i18n( "The Akonadi server is <b>not</b> running." ) );
+    ui.startStopButton->setText( i18n( "Start" ) );
+    ui.restartButton->setEnabled( false );
+  }
+}
+
+void ServerConfigModule::startStopClicked()
+{
+  if ( ServerManager::isRunning() )
+    Control::stop();
+  else
+    Control::start();
+}
+
+void ServerConfigModule::restartClicked()
+{
+  Control::restart();
 }
 
 #include "serverconfigmodule.moc"
