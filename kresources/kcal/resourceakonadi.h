@@ -119,6 +119,10 @@ class ResourceAkonadi : public ResourceCalendar
     virtual void shiftTimes( const KDateTime::Spec &oldSpec,
                              const KDateTime::Spec &newSpec );
 
+    virtual bool canHaveSubresources() const;
+
+    virtual QString labelForSubresource( const QString &resource ) const;
+
     virtual void setSubresourceActive( const QString &subResource, bool active );
 
     virtual bool subresourceActive( const QString &resource ) const;

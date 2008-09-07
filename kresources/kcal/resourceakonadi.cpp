@@ -386,9 +386,25 @@ void ResourceAkonadi::shiftTimes( const KDateTime::Spec &oldSpec,
   d->mCalendar.shiftTimes( oldSpec, newSpec );
 }
 
+bool ResourceAkonadi::canHaveSubresources() const
+{
+  return true;
+}
+
+QString ResourceAkonadi::labelForSubresource( const QString &resource ) const
+{
+  kDebug(5800) << "resource=" << resource;
+
+  SubResource *subResource = d->mSubResources[ resource ];
+  if ( subResource == 0 )
+    return QString();
+
+  return subResource->mLabel;
+}
+
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
 {
-  kDebug(5700) << "subResource" << subResource << ", active" << active;
+  kDebug(5800) << "subResource" << subResource << ", active" << active;
 
   SubResource *resource = d->mSubResources[ subResource ];
   if ( resource != 0 ) {
@@ -442,6 +458,7 @@ QString ResourceAkonadi::subresourceIdentifier( Incidence *incidence )
 
 QStringList ResourceAkonadi::subresources() const
 {
+  kDebug(5800) << d->mSubResourceIds;
   return d->mSubResourceIds.toList();
 }
 
@@ -497,6 +514,9 @@ bool ResourceAkonadi::doLoad( bool syncCache )
     if ( subResource == 0 ) {
       subResource = new SubResource( collection );
       d->mSubResources.insert( collectionUrl, subResource );
+      d->mSubResourceIds.insert( collectionUrl );
+      kDebug(5800) << "Adding subResource" << subResource->mLabel
+                   << "for collection" << collection.url();
 
       emit signalSubresourceAdded( this, QLatin1String( "calendar" ), collectionUrl, subResource->mLabel );
     }
@@ -745,7 +765,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
 
   Item::List items = fetchJob->items();
 
-  kDebug(5700) << "Item fetch for sub resource " << collectionUrl
+  kDebug(5800) << "Item fetch for sub resource " << collectionUrl
                << "produced" << items.count() << "items";
 
   bool internalModification = mInternalCalendarModification;
@@ -888,7 +908,7 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &reference )
   } else {
     // since we always fetch the payload this should not happen
     // but we really do not want stale entries
-    kWarning(5700) << "No IncidencePtr in local item: id=" << id
+    kWarning(5800) << "No IncidencePtr in local item: id=" << id
                    << ", remoteId=" << item.remoteId();
 
     IdHash::const_iterator idIt    = mIdMapping.begin();
@@ -930,14 +950,14 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &reference )
 
 void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent, int start, int end )
 {
-  kDebug(5700) << "start" << start << ", end" << end;
+  kDebug(5800) << "start" << start << ", end" << end;
 
   addCollectionsRecursively( parent, start, end );
 }
 
 void ResourceAkonadi::Private::collectionRowsRemoved( const QModelIndex &parent, int start, int end )
 {
-  kDebug(5700) << "start" << start << ", end" << end;
+  kDebug(5800) << "start" << start << ", end" << end;
 
   if ( removeCollectionsRecursively( parent, start, end ) )
     emit mParent->resourceChanged( mParent );
@@ -947,7 +967,7 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
 {
   const int start = topLeft.row();
   const int end   = bottomRight.row();
-  kDebug(5700) << "start=" << start << ", end=" << end;
+  kDebug(5800) << "start=" << start << ", end=" << end;
 
   bool changed = false;
   for ( int row = start; row <= end; ++row ) {
@@ -961,7 +981,7 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
           SubResource* subResource = mSubResources[ collectionUrl ];
           if ( subResource != 0 ) {
             if ( subResource->mLabel != collection.name() ) {
-              kDebug(5700) << "Renaming subResource" << collectionUrl
+              kDebug(5800) << "Renaming subResource" << collectionUrl
                            << "from" << subResource->mLabel
                            << "to"   << collection.name();
               subResource->mLabel = collection.name();
@@ -981,7 +1001,7 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
 
 void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &parent, int start, int end )
 {
-  kDebug(5700) << "start=" << start << ", end=" << end;
+  kDebug(5800) << "start=" << start << ", end=" << end;
   for ( int row = start; row <= end; ++row ) {
     QModelIndex index = mCollectionFilterModel->index( row, 0, parent );
     if ( index.isValid() ) {
@@ -998,7 +1018,7 @@ void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &par
             subResource = new SubResource( collection );
             mSubResources.insert( collectionUrl, subResource );
             mSubResourceIds.insert( collectionUrl );
-            kDebug(5700) << "Adding subResource" << subResource->mLabel
+            kDebug(5800) << "Adding subResource" << subResource->mLabel
                          << "for collection" << collection.url();
 
             ItemFetchJob *job = new ItemFetchJob( collection );
@@ -1022,7 +1042,7 @@ void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &par
 
 bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &parent, int start, int end )
 {
-  kDebug(5700) << "start=" << start << ", end=" << end;
+  kDebug(5800) << "start=" << start << ", end=" << end;
 
   bool changed = false;
   for ( int row = start; row <= end; ++row ) {
@@ -1218,7 +1238,7 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
 
   Item::List items = job->items();
 
-  kDebug(5700) << "Reload for sub resource " << collectionUrl
+  kDebug(5800) << "Reload for sub resource " << collectionUrl
                << "produced" << items.count() << "items";
 
   bool internalModification = mInternalCalendarModification;
