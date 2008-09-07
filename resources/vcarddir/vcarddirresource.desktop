@@ -1,6 +1,12 @@
 [Desktop Entry]
 Name=Akonadi VCard Directory Resource
+Name[pt]=Recurso de Pasta de VCard's do Akonadi
+Name[pt_BR]=Recurso de Pasta de VCard's do Akonadi
+Name[uk]=Ресурс каталогу VCard Akonadi
 Comment=An agent to load data from a directory with VCards
+Comment[pt]=Um agente para carregar dados de uma pasta com ficheiros VCard
+Comment[pt_BR]=Um agente para carregar dados de uma pasta com ficheiros VCard
+Comment[uk]=Агент для завантаження даних з каталогу з VCard
 Type=AkonadiResource
 Exec=akonadi_vcarddir_resource
 Icon=text-directory
