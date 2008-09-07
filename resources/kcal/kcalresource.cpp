@@ -339,19 +339,12 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
 void KCalResource::collectionAdded( const Akonadi::Collection &collection,
                                     const Akonadi::Collection &parent )
 {
-  kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId()
+  kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId() << ", name=" << collection.name()
            << ", parent id="   << parent.id() << ", remoteId="     << parent.remoteId();
 
-  // TODO check how KOrganizer handles this
-  QString subResource = collection.remoteId();
-  if ( subResource.isEmpty() )
-    subResource = KRandom::randomString( 10 );
-
-  if ( mResource->addSubresource( subResource, parent.remoteId() ) ) {
-    Collection newCollection( collection );
-    newCollection.setRemoteId( subResource );
-    changeCommitted( newCollection );
-    // TODO save calendar
+  if ( mResource->addSubresource( collection.name(), parent.remoteId() ) ) {
+    // result delivered by signalSubresourceAdded(). how do we best relate this?
+    changeCommitted( collection );
     return;
   }
 
