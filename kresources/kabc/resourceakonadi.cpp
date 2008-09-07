@@ -314,6 +314,9 @@ bool ResourceAkonadi::load()
     if ( subResource == 0 ) {
       subResource = new SubResource( collection );
       d->mSubResources.insert( collectionUrl, subResource );
+      d->mSubResourceIds.insert( collectionUrl );
+      kDebug(5700) << "Adding subResource" << subResource->mLabel
+                   << "for collection" << collection.url();
 
       emit signalSubresourceAdded( this, QLatin1String( "contact" ), collectionUrl );
     }
