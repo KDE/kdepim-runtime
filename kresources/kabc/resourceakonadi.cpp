@@ -142,7 +142,7 @@ class ResourceAkonadi::Private
     bool prepareSaving();
     KJob *createSaveSequence() const;
 
-    bool reloadSubResource( SubResource *subResource );
+    bool reloadSubResource( SubResource *subResource, bool &changed );
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -323,9 +323,13 @@ bool ResourceAkonadi::load()
 
     // TODO should check whether the model signal handling has already fetched the
     // collection's items
-    if ( !d->reloadSubResource( subResource ) )
+    bool changed = false;
+    if ( !d->reloadSubResource( subResource, changed ) )
       result = false;
   }
+
+  if ( result )
+    emit loadingFinished( this );
 
   return result;
 }
@@ -491,13 +495,13 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 {
   kDebug(5700) << "subResource" << subResource << ", active" << active;
 
+  bool changed = false;
+
   SubResource *resource = d->mSubResources[ subResource ];
   if ( resource != 0 ) {
     resource->setActive( active );
 
     if ( !active ) {
-      bool changed = false;
-
       UidResourceMap::iterator it = d->mUidToResourceMap.begin();
       while ( it != d->mUidToResourceMap.end() ) {
         if ( it.value() == subResource ) {
@@ -509,15 +513,13 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
         else
           ++it;
       }
-
-      if ( changed )
-        addressBook()->emitAddressBookChanged();
-
     } else {
-      if ( d->reloadSubResource( resource ) )
-        addressBook()->emitAddressBookChanged();
+      d->reloadSubResource( resource, changed );
     }
   }
+
+  if ( changed )
+    addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::setSubresourceCompletionWeight( const QString &subResource, int weight )
@@ -998,8 +1000,9 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
   return sequence;
 }
 
-bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
+bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool &changed )
 {
+  changed = false;
   ItemFetchJob *job = new ItemFetchJob( subResource->mCollection );
   job->fetchScope().fetchFullPayload();
 
@@ -1015,7 +1018,6 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
   kDebug(5700) << "Reload for sub resource " << collectionUrl
                << "produced" << items.count() << "items";
 
-  bool changed = false;
   foreach ( const Item& item, items ) {
     if ( item.hasPayload<Addressee>() ) {
       changed = true;
@@ -1035,7 +1037,7 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
     mItems.insert( item.id(), item );
   }
 
-  return changed;
+  return true;
 }
 
 #include "resourceakonadi.moc"
