@@ -153,7 +153,6 @@ class ResourceAkonadi : public ResourceCalendar
     using QObject::event;   // prevent warning about hidden virtual method
 
   protected Q_SLOTS:
-    void loadResult( KJob *job );
     void saveResult( KJob *job );
 
   private:

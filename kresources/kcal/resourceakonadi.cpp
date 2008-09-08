@@ -198,7 +198,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
     virtual void calendarIncidenceModified( Incidence *incidence );
     virtual void calendarIncidenceDeleted( Incidence *incidence );
 
-    bool reloadSubResource( SubResource *subResource );
+    bool reloadSubResource( SubResource *subResource, bool &changed );
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -415,12 +415,13 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 {
   kDebug(5800) << "subResource" << subResource << ", active" << active;
 
+  bool changed = false;
+
   SubResource *resource = d->mSubResources[ subResource ];
   if ( resource != 0 ) {
     resource->setActive( active );
 
     if ( !active ) {
-      bool changed = false;
 
       bool internalModification = d->mInternalCalendarModification;
       d->mInternalCalendarModification = true;
@@ -441,14 +442,13 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
       d->mInternalCalendarModification = internalModification;
 
-      if ( changed )
-        emit resourceChanged( this );
-
     } else {
-      if ( d->reloadSubResource( resource ) )
-        emit resourceChanged( this );
+      d->reloadSubResource( resource, changed );
     }
   }
+
+  if ( changed )
+    emit resourceChanged( this );
 }
 
 bool ResourceAkonadi::subresourceActive( const QString &resource ) const
@@ -658,9 +658,13 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 
     // TODO should check whether the model signal handling has already fetched the
     // collection's items
-    if ( !d->reloadSubResource( subResource ) )
+    bool changed = true;
+    if ( !d->reloadSubResource( subResource, changed ) )
       result = false;
   }
+
+  if ( result )
+    emit resourceLoaded( this );
 
   return result;
 }
@@ -810,44 +814,6 @@ void ResourceAkonadi::doClose()
   d->mItemIdToResourceMap.clear();
   d->mJobToResourceMap.clear();
   d->mChanges.clear();
-}
-
-void ResourceAkonadi::loadResult( KJob *job )
-{
-  kDebug(5800) << job->errorString();
-
-  if ( job->error() != 0 ) {
-    loadError( job->errorString() );
-    return;
-  }
-
-  ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
-
-  Item::List items = fetchJob->items();
-
-  kDebug(5800) << "Item fetch produced" << items.count() << "items";
-
-  bool internalModification = d->mInternalCalendarModification;
-  d->mInternalCalendarModification = true;
-
-  foreach ( const Item& item, items ) {
-    if ( item.hasPayload<IncidencePtr>() ) {
-      IncidencePtr incidence = item.payload<IncidencePtr>();
-
-      const Item::Id id = item.id();
-      d->mIdMapping.insert( incidence->uid(), id );
-
-      d->mCalendar.addIncidence( incidence->clone() );
-      d->mItems.insert( id, item );
-
-      // TODO add resource mappings
-    }
-  }
-
-  d->mInternalCalendarModification = internalModification;
-
-  emit resourceLoaded( this );
 }
 
 void ResourceAkonadi::saveResult( KJob *job )
@@ -1370,8 +1336,10 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
     mChanges.remove( incidence->uid() );
 }
 
-bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
+bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool &changed )
 {
+  changed = false;
+
   ItemFetchJob *job = new ItemFetchJob( subResource->mCollection );
   job->fetchScope().fetchFullPayload();
 
@@ -1390,7 +1358,6 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
   bool internalModification = mInternalCalendarModification;
   mInternalCalendarModification = true;
 
-  bool changed = false;
   foreach ( const Item& item, items ) {
     if ( item.hasPayload<IncidencePtr>() ) {
       changed = true;
@@ -1407,7 +1374,6 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
       mCalendar.addIncidence( incidencePtr->clone() );
       mUidToResourceMap.insert( incidencePtr->uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
-
     }
 
     // always update the item
@@ -1416,7 +1382,7 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource )
 
   mInternalCalendarModification = internalModification;
 
-  return changed;
+  return true;
 }
 
 #include "resourceakonadi.moc"
