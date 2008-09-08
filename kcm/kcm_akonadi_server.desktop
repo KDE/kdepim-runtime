@@ -12,3 +12,8 @@ X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
 
 Name=Akonadi Server Configuration
+Name[pt]=Configuração do Servidor de Akonadi
+Name[pt_BR]=Configuração do Servidor de Akonadi
+Name[sv]=Akonadi-serverinställning
+Name[uk]=Налаштування сервера Akonadi
+Name[zh_TW]=Akonadi 伺服器設定

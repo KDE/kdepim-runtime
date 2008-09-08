@@ -2,11 +2,15 @@
 Name=Akonadi VCard Directory Resource
 Name[pt]=Recurso de Pasta de VCard's do Akonadi
 Name[pt_BR]=Recurso de Pasta de VCard's do Akonadi
+Name[sv]=Akonadi VCard-katalogresurs
 Name[uk]=Ресурс каталогу VCard Akonadi
+Name[zh_TW]=Akonadi VCard 目錄資源
 Comment=An agent to load data from a directory with VCards
 Comment[pt]=Um agente para carregar dados de uma pasta com ficheiros VCard
 Comment[pt_BR]=Um agente para carregar dados de uma pasta com ficheiros VCard
+Comment[sv]=En modul för att ladda data från en katalog med VCard-filer
 Comment[uk]=Агент для завантаження даних з каталогу з VCard
+Comment[zh_TW]=從含有 VCard 檔的目錄載入資料用的代理程式
 Type=AkonadiResource
 Exec=akonadi_vcarddir_resource
 Icon=text-directory
