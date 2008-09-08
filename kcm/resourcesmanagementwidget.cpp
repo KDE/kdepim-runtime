@@ -112,7 +112,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
-    updateButtonState();
+    updateButtonState( d->ui.resourcesList->currentAgentInstance() );
 }
 
 ResourcesManagementWidget::~ResourcesManagementWidget()
