@@ -49,7 +49,8 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
- if ( kresCfg.readEntry( "Format", "" ) != "ical" ) {
+  QString format = kresCfg.readEntry( "Format", "" );
+ if ( format != "ical" && format != "vcal" ) {
     migrationFailed( "Unsupported file format found." );
     return;
   }
