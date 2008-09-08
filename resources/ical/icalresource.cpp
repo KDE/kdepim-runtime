@@ -131,7 +131,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
 {
   Q_ASSERT( item.hasPayload<IncidencePtr>() );
   IncidencePtr i = item.payload<IncidencePtr>();
-  mCalendar->addIncidence( i.get() );
+  mCalendar->addIncidence( i.get()->clone() );
   Item it( item );
   it.setRemoteId( i->uid() );
   changeCommitted( it );
