@@ -33,7 +33,7 @@ MainWindow::MainWindow( QWidget *parent )
   toolBar->addAction( "Rethread", this, SIGNAL( threadCollection() ) );
   addToolBar( toolBar );
 
-  Akonadi::Control::start();
+  Akonadi::Control::start( this );
   setCentralWidget( new MainWidget( this ) );
   resize( 700, 500 );
 }

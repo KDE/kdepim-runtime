@@ -66,7 +66,8 @@ int main( int argc, char **argv )
 
   KGlobal::setAllowQuit( true );
 
-  Akonadi::Control::start();
+  if ( !Akonadi::Control::start( 0 ) )
+    return 1;
 
   InfoDialog *infoDialog = 0;
   if ( args->isSet( "interactive" ) ) {

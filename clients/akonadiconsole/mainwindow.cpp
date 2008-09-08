@@ -36,7 +36,7 @@
 MainWindow::MainWindow( QWidget *parent )
   : KXmlGuiWindow( parent )
 {
-  Akonadi::Control::start();
+  Akonadi::Control::start( this );
   setCentralWidget( new MainWidget( this ) );
 
   KStandardAction::quit( qApp, SLOT(quit()), actionCollection() );
