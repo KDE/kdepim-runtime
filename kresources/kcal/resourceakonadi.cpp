@@ -522,7 +522,8 @@ QString ResourceAkonadi::subresourceType( const QString &resource )
   if ( subResource == 0 )
     return QString();  // root
 
-  const QStringList mimeTypes = subResource->mCollection.contentMimeTypes();
+  QStringList mimeTypes = subResource->mCollection.contentMimeTypes();
+  mimeTypes.removeAll( Collection::mimeType() );
   if ( mimeTypes.count() > 1 )
     return QString(); // mixed
 
@@ -764,7 +765,7 @@ void ResourceAkonadi::loadResult( KJob *job )
   kDebug(5800) << job->errorString();
 
   if ( job->error() != 0 ) {
-    emit resourceLoadError( this, job->errorString() );
+    loadError( job->errorString() );
     return;
   }
 
@@ -802,7 +803,7 @@ void ResourceAkonadi::saveResult( KJob *job )
   kDebug(5800) << job->errorString();
 
   if ( job->error() != 0 ) {
-    emit resourceSaveError( this, job->errorString() );
+    saveError( job->errorString() );
   } else {
     emit resourceSaved( this );
   }
