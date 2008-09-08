@@ -135,6 +135,8 @@ class ResourceAkonadi : public ResourceCalendar
 
     virtual bool removeSubresource( const QString &resource );
 
+    virtual QString subresourceType( const QString &resource );
+
   protected:
     virtual bool doLoad( bool syncCache );
 

@@ -514,6 +514,33 @@ bool ResourceAkonadi::removeSubresource( const QString &resource )
   return true;
 }
 
+QString ResourceAkonadi::subresourceType( const QString &resource )
+{
+  kDebug(5800) << "resource=" << resource;
+
+  SubResource *subResource = d->mSubResources[ resource ];
+  if ( subResource == 0 )
+    return QString();  // root
+
+  const QStringList mimeTypes = subResource->mCollection.contentMimeTypes();
+  if ( mimeTypes.count() > 1 )
+    return QString(); // mixed
+
+  KMimeType::Ptr mimeType = KMimeType::mimeType( mimeTypes[ 0 ], KMimeType::ResolveAliases );
+  if ( !mimeType.isNull() ) {
+    if ( mimeType->is( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) ) )
+      return QLatin1String( "event" );
+
+    if ( mimeType->is( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) ) )
+      return QLatin1String( "todo" );
+
+    if ( mimeType->is( QLatin1String( "application/x-vnd.akonadi.calendar.journal" ) ) )
+      return QLatin1String( "journal" );
+  }
+
+  return QString();
+}
+
 QString ResourceAkonadi::subresourceIdentifier( Incidence *incidence )
 {
   return d->mUidToResourceMap[ incidence->uid() ];
