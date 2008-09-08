@@ -137,6 +137,8 @@ class ResourceAkonadi : public ResourceCalendar
 
     virtual QString subresourceType( const QString &resource );
 
+    virtual QString infoText() const;
+
   protected:
     virtual bool doLoad( bool syncCache );
 

@@ -24,6 +24,9 @@
 #include "kcal/calendarlocal.h"
 #include "kabc/locknull.h"
 
+#include <akonadi/agentfilterproxymodel.h>
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentinstancemodel.h>
 #include <akonadi/collection.h>
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/collectiondeletejob.h>
@@ -116,7 +119,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
       : mParent( parent ), mMonitor( 0 ), mCalendar( QLatin1String( "UTC" ) ),
         mLock( true ), mInternalCalendarModification( false ),
         mMimeVisitor( new KCalMimeTypeVisitor() ),
-        mCollectionModel( 0 ), mCollectionFilterModel( 0 )
+        mCollectionModel( 0 ), mCollectionFilterModel( 0 ),
+        mAgentModel( 0 ), mAgentFilterModel( 0 )
     {
       mCalendar.registerObserver( this );
     }
@@ -166,6 +170,9 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 
     typedef QMap<QString, ChangeType> ChangeMap;
     ChangeMap mChanges;
+
+    AgentInstanceModel *mAgentModel;
+    AgentFilterProxyModel *mAgentFilterModel;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -553,6 +560,43 @@ QStringList ResourceAkonadi::subresources() const
   return d->mSubResourceIds.toList();
 }
 
+QString ResourceAkonadi::infoText() const
+{
+  const QString online  = i18nc( "access to the source's backend possible", "Online" );
+  const QString offline = i18nc( "currently no access to the source's backend possible",
+                                 "Offline" );
+  const QLatin1String br( "<br>" );
+
+  QString text = i18nc( "@info:tooltip visible name of the resource",
+                        "<title>%1</title>", resourceName() );
+  text += i18nc( "@info:tooltip resource type", "Type: Akonadi Calendar Resource" ) + br;
+
+  const int rowCount = d->mAgentFilterModel->rowCount();
+  for ( int row = 0; row < rowCount; ++row ) {
+    QModelIndex index = d->mAgentFilterModel->index( row, 0 );
+    if ( index.isValid() ) {
+      QVariant data = d->mAgentFilterModel->data( index, AgentInstanceModel::InstanceRole );
+      if ( data.isValid() ) {
+        AgentInstance instance = data.value<AgentInstance>();
+        if ( instance.isValid() ) {
+          // TODO probably add progress if "Running"
+          QString status = instance.statusMessage();
+
+          text += br;
+          text += i18nc( "@info:tooltip name of a calendar data source",
+                         "<b>%1</b>", instance.name() ) + br;
+          text += i18nc( "@info:tooltip status of a calendar data source and its "
+                         "online/offline state",
+                         "Status: %1 (%2)", status,
+                         ( instance.isOnline() ? online : offline ) ) + br;
+        }
+      }
+    }
+  }
+
+  return text;
+}
+
 bool ResourceAkonadi::doLoad( bool syncCache )
 {
   kDebug(5800) << "syncCache=" << syncCache;
@@ -734,6 +778,14 @@ bool ResourceAkonadi::doOpen()
            SIGNAL( itemRemoved( const Akonadi::Item& ) ),
            this,
            SLOT( itemRemoved( const Akonadi::Item& ) ) );
+
+  d->mAgentModel = new AgentInstanceModel( this );
+
+  d->mAgentFilterModel = new AgentFilterProxyModel( this );
+  d->mAgentFilterModel->addCapabilityFilter( QLatin1String( "Resource" ) );
+  d->mAgentFilterModel->addMimeTypeFilter( QLatin1String( "text/calendar" ) );
+
+  d->mAgentFilterModel->setSourceModel( d->mAgentModel );
 
   return true;
 }
