@@ -97,7 +97,9 @@ void ICalResource::configure( WId windowId )
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"), windowId, i18n("Select Calendar") );
+  const QString newFile = KFileDialog::getOpenFileNameWId( url.directory(),
+      "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"),
+      windowId, i18n("Select Calendar") );
   if ( newFile.isEmpty() )
     return;
   if ( oldFile == newFile )
