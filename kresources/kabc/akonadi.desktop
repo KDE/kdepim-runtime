@@ -1,7 +1,5 @@
 [Desktop Entry]
 Name=Akonadi Address Books
-Name[de]=Akonadi Adressbücher
-Name[x-test]=xxAkonadixx
 Comment=Provides access to contacts stored in Akonadi address book folders
 X-KDE-Library=kabc_akonadi
 Type=Service

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Akonadi VCard Directory Resource
+Name[km]=ធនធាន​ថត Akonadi VCard
 Name[pt]=Recurso de Pasta de VCard's do Akonadi
 Name[pt_BR]=Recurso de Pasta de VCard's do Akonadi
 Name[sv]=Akonadi VCard-katalogresurs
 Name[uk]=Ресурс каталогу VCard Akonadi
 Name[zh_TW]=Akonadi VCard 目錄資源
 Comment=An agent to load data from a directory with VCards
+Comment[km]=ភ្នាក់ងារ​ត្រូវ​ផ្ទុក​ទិន្នន័យ​ពី​ថត​ដែល​មាន VCards
 Comment[pt]=Um agente para carregar dados de uma pasta com ficheiros VCard
 Comment[pt_BR]=Um agente para carregar dados de uma pasta com ficheiros VCard
 Comment[sv]=En modul för att ladda data från en katalog med VCard-filer
