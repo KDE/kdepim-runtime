@@ -22,6 +22,7 @@
 
 #include "kemailquotinghighter.h"
 
+#include "kmeditor.h"
 #include <KColorScheme>
 #include <KConfig>
 #include <KDebug>
@@ -41,9 +42,10 @@ class KEMailQuotingHighlighter::KEmailQuotingHighlighterPrivate
 public:
     QColor col1, col2, col3, misspelledColor;
     bool spellCheckingEnabled;
+    KMeditor *parent;
 };
 
-KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
+KEMailQuotingHighlighter::KEMailQuotingHighlighter( KMeditor *textEdit,
                                                     const QColor &normalColor,
                                                     const QColor &quoteDepth1,
                                                     const QColor &quoteDepth2,
@@ -63,6 +65,7 @@ KEMailQuotingHighlighter::KEMailQuotingHighlighter( QTextEdit *textEdit,
     d->col3 = quoteDepth3;
     d->misspelledColor = misspelledColor;
     d->spellCheckingEnabled = false;
+    d->parent = textEdit;
 }
 
 KEMailQuotingHighlighter::~KEMailQuotingHighlighter()
@@ -106,6 +109,8 @@ void KEMailQuotingHighlighter::highlightBlock( const QString & text )
         setFormat( 0, text.length(), d->col2 );
     else if ( simplified.startsWith( QLatin1String(">") ) )
         setFormat( 0, text.length(), d->col3 );
+    else if ( text.startsWith( d->parent->quotePrefixName() ) )
+        setFormat( 0, text.length(), d->col1 );
     else
     {
         if ( d->spellCheckingEnabled )

@@ -26,10 +26,10 @@
 
 #include <sonnet/highlighter.h>
 
-class QTextEdit;
-
 namespace KPIM
 {
+  class KMeditor;
+
   /**
    * This highlighter highlights spelling mistakes and also highlightes
    * quotes.
@@ -46,7 +46,7 @@ namespace KPIM
       // FIXME: Default colors don't obey color scheme
       // The normalColor parameter will be ignored, only provided for KNode
       // compatibility.
-      explicit KEMailQuotingHighlighter( QTextEdit *textEdit,
+      explicit KEMailQuotingHighlighter( KMeditor *textEdit,
                                          const QColor &normalColor = Qt::black,
                                          const QColor &quoteDepth1 = QColor( 0x00, 0x80, 0x00 ),
                                          const QColor &quoteDepth2 = QColor( 0x00, 0x80, 0x00 ),
