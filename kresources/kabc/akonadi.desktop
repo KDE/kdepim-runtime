@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Akonadi Address Books
+Name[nds]=Akonadi-Adressbook instellen
+Name[pt]=Livros de Endereços do Akonadi
+Name[pt_BR]=Livros de Endereços do Akonadi
+Name[uk]=Адресні книги Akonadi
 Comment=Provides access to contacts stored in Akonadi address book folders
+Comment[nds]=Stellt Togriep op binnen Akonadi sien Adressbookornern wohrte Kontakten praat
+Comment[pt]=Oferece o acesso aos contactos guardados nas pastas do livro de endereços do Akonadi
+Comment[pt_BR]=Oferece o acesso aos contactos guardados nas pastas do livro de endereços do Akonadi
+Comment[uk]=Надає доступ до контактів, які зберігаються у теках адресної книги Akonadi
 X-KDE-Library=kabc_akonadi
 Type=Service
 ServiceTypes=KResources/Plugin

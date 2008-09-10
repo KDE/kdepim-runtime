@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Tags (Virtual Folders)
+Name[el]=Ετικέτες Nepomuk (εικονικοί φάκελοι)
 Name[et]=Nepomuki sildid (virtuaalkaustad)
 Name[km]=ស្លាក Nepomuk (ថត​និម្មិត)
 Name[nds]=Nepomuk-Steekwöör (Virtuell Ornern)
@@ -10,6 +11,7 @@ Name[sv]=Nepomuk-etiketter (virtuella korgar)
 Name[uk]=Мітки Nepomuk (Віртуальні теки)
 Name[zh_TW]=Nepomuk 標籤（虛擬資料夾）
 Comment=Virtual folders for selecting messages which have Nepomuk Tags.
+Comment[el]=Εικονικοί φάκελοι για την επιλογή μηνυμάτων με ετικέτες Nepomuk.
 Comment[et]=Virtuaalkaustad Nepomuki siltidega kirjade valimiseks.
 Comment[km]=ថត​និម្មិត​សម្រាប់​ជ្រើស​សារ​ដែល​មាន​ស្លាក Nepomuk ។
 Comment[nds]=Virtuell Ornen för Narichten mit Nepomuk-Steekwöör
