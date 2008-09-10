@@ -45,6 +45,9 @@ KCalResource::KCalResource( const QString &id )
     mFullItemRetrieve( false )
 {
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfig()) );
+
+  changeRecorder()->itemFetchScope().fetchFullPayload();
+  changeRecorder()->fetchCollection( true );
 }
 
 KCalResource::~KCalResource()
