@@ -49,14 +49,13 @@ typedef QHash<QString, Item::Id> IdHash;
 class SubResource
 {
   public:
-    SubResource( const Collection &collection )
+    SubResource( const Collection &collection, const KConfigGroup &parentGroup )
         : mCollection( collection ), mLabel( collection.name() ),
           mActive(true), mCompletionWeight(80)
     {
+      readConfig( parentGroup );
     }
 
-    // TODO: need to use KConfigGroup instead
-    // or probably a collection attribute?
     void setActive( bool active )
     {
       mActive = active;
@@ -72,6 +71,25 @@ class SubResource
     }
 
     int completionWeight() const { return mCompletionWeight; }
+
+    void writeConfig( KConfigGroup &parentGroup ) const
+    {
+      KConfigGroup group( &parentGroup, mCollection.url().url() );
+
+      group.writeEntry( QLatin1String( "Active" ), mActive );
+      group.writeEntry( QLatin1String( "CompletionWeight" ), mCompletionWeight );
+    }
+
+    void readConfig( const KConfigGroup &parentGroup )
+    {
+      const QString collectionUrl = mCollection.url().url();
+      if ( !parentGroup.hasGroup( collectionUrl ) )
+        return;
+
+      KConfigGroup group( &parentGroup, collectionUrl );
+      mActive = group.readEntry<bool>( QLatin1String( "Active" ), true );
+      mCompletionWeight = group.readEntry<int>( QLatin1String( "CompletionWeight" ), 80 );
+    }
 
   public:
     Collection mCollection;
@@ -96,6 +114,8 @@ class ResourceAkonadi::Private
 
  public:
     ResourceAkonadi *mParent;
+
+    KConfigGroup mConfig;
 
     Monitor *mMonitor;
 
@@ -156,11 +176,10 @@ ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
 {
   KUrl url = group.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
 
-  if ( !url.isValid() ) {
-    // TODO error handling
-  } else {
+  if ( url.isValid() )
     d->mStoreCollection = Collection::fromUrl( url );
-  }
+
+  d->mConfig = group;
 
   init();
 }
@@ -193,9 +212,17 @@ void ResourceAkonadi::clear()
 
 void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
+  ResourceABC::writeConfig( group );
+
   group.writeEntry( QLatin1String( "CollectionUrl" ), d->mStoreCollection.url() );
 
-  ResourceABC::writeConfig( group );
+  SubResourceMap::const_iterator it    = d->mSubResources.begin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  for (; it != endIt; ++it ) {
+    it.value()->writeConfig( group );
+  }
+
+  d->mConfig = group;
 }
 
 bool ResourceAkonadi::doOpen()
@@ -312,7 +339,7 @@ bool ResourceAkonadi::load()
     const QString collectionUrl = collection.url().url();
     SubResource *subResource = d->mSubResources[ collectionUrl ];
     if ( subResource == 0 ) {
-      subResource = new SubResource( collection );
+      subResource = new SubResource( collection, d->mConfig );
       d->mSubResources.insert( collectionUrl, subResource );
       d->mSubResourceIds.insert( collectionUrl );
       kDebug(5700) << "Adding subResource" << subResource->mLabel
@@ -832,7 +859,7 @@ void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &par
 
           SubResource *subResource = mSubResources[ collectionUrl ];
           if ( subResource == 0 ) {
-            subResource = new SubResource( collection );
+            subResource = new SubResource( collection, mConfig );
             mSubResources.insert( collectionUrl, subResource );
             mSubResourceIds.insert( collectionUrl );
             kDebug(5700) << "Adding subResource" << subResource->mLabel
