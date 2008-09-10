@@ -24,6 +24,8 @@
 
 #include <kresources/configdialog.h>
 
+#include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kconfig.h>
