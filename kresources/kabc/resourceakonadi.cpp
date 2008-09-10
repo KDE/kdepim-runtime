@@ -923,9 +923,15 @@ bool ResourceAkonadi::Private::prepareSaving()
       if ( !mStoreCollection.isValid() ||
            mSubResources[ mStoreCollection.url().url() ] == 0 ) {
 
-        ResourceAkonadiConfigDialog dialog( mParent );
-        if ( dialog.exec() != QDialog::Accepted )
-          return false;
+        // if there is only one subresource take it instead of asking
+        // since this is the most likely choice of the user anyway
+        if ( mSubResourceIds.count() == 1 ) {
+          mStoreCollection = Collection::fromUrl( *mSubResourceIds.begin() );
+        } else {
+          ResourceAkonadiConfigDialog dialog( mParent );
+          if ( dialog.exec() != QDialog::Accepted )
+            return false;
+        }
 
         // if accepted, use the same iterator position again to re-check
       } else {
