@@ -110,6 +110,9 @@ class SubResource
 
     void readConfig( const KConfigGroup &parentGroup )
     {
+      if ( !parentGroup.isValid() )
+        return;
+
       const QString collectionUrl = mCollection.url().url();
       if ( !parentGroup.hasGroup( collectionUrl ) )
         return;
