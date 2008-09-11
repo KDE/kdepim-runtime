@@ -994,35 +994,40 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         subResource = mSubResources[ mUidToResourceMap[ uid ] ];
         Q_ASSERT( subResource != 0 );
 
-        item.setMimeType( QLatin1String( "text/directory" ) );
         addressee = mParent->mAddrMap[ uid ];
+
+        item.setMimeType( QLatin1String( "text/directory" ) );
         item.setPayload<KABC::Addressee>( addressee );
+
         (void) new ItemCreateJob( item, subResource->mCollection, sequence );
         kDebug(5700) << "CreateJob for addressee" << addressee.uid()
                      << addressee.formattedName();
         break;
 
       case Changed:
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( idIt != mIdMapping.end() );
         itemIt = mItems.find( idIt.value() );
         Q_ASSERT( itemIt != mItems.end() );
 
-        item = itemIt.value();
         addressee = mParent->mAddrMap[ uid ];
+
+        item = itemIt.value();
         item.setPayload<KABC::Addressee>( addressee );
+
         (void) new ItemModifyJob( item, sequence );
         kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
                      << addressee.formattedName();
         break;
 
       case Removed:
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( idIt != mIdMapping.end() );
         itemIt = mItems.find( idIt.value() );
         Q_ASSERT( itemIt != mItems.end() );
 
         item = itemIt.value();
         if ( item.hasPayload<KABC::Addressee>() )
           addressee = item.payload<KABC::Addressee>();
+
         (void) new ItemDeleteJob( item, sequence );
         kDebug(5700) << "DeleteJob for addressee" << uid
                      << addressee.formattedName();
