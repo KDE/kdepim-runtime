@@ -109,7 +109,8 @@ void KEMailQuotingHighlighter::highlightBlock( const QString & text )
         setFormat( 0, text.length(), d->col2 );
     else if ( simplified.startsWith( QLatin1String(">") ) )
         setFormat( 0, text.length(), d->col3 );
-    else if ( text.startsWith( d->parent->quotePrefixName() ) )
+    else if ( !d->parent->quotePrefixName().simplified().isEmpty() &&
+              text.startsWith( d->parent->quotePrefixName() ) )
         setFormat( 0, text.length(), d->col1 );
     else
     {
