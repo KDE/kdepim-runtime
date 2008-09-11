@@ -480,7 +480,8 @@ void KMeditor::setSpellCheckingEnabled( bool enable )
 
 bool KMeditor::shouldBlockBeSpellChecked(const QString& block) const
 {
-  return !block.startsWith( quotePrefixName() );
+  return quotePrefixName().simplified().isEmpty() ||
+         !block.startsWith( quotePrefixName() );
 }
 
 void KMeditor::createHighlighter()
