@@ -41,7 +41,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
-#include <akonadi/itemsync.h>
+#include <akonadi/transactionsequence.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kconfiggroup.h>
@@ -214,7 +214,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 
     // from the CalendarObserver interface
     virtual void calendarIncidenceAdded( Incidence *incidence );
-    virtual void calendarIncidenceModified( Incidence *incidence );
+    virtual void calendarIncidenceChanged( Incidence *incidence );
     virtual void calendarIncidenceDeleted( Incidence *incidence );
 
     bool reloadSubResource( SubResource *subResource, bool &changed );
@@ -708,7 +708,9 @@ bool ResourceAkonadi::doSave( bool syncCache )
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
 
-  job->start();
+  if ( !job->exec() )
+    return false;
+
   d->mChanges.clear();
 
   return true;
@@ -767,7 +769,9 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
 
-  job->start();
+  if ( !job->exec() )
+    return false;
+
   d->mChanges.remove( incidence->uid() );
 
   return true;
@@ -1292,39 +1296,71 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
   kDebug(5800);
   mAutoSaveOnDeleteTimer.stop();
 
-  Item::List items;
+  TransactionSequence *sequence = new TransactionSequence();
 
-  Incidence::List incidences = mCalendar.rawIncidences();
+  ChangeMap::const_iterator changeIt    = mChanges.begin();
+  ChangeMap::const_iterator changeEndIt = mChanges.end();
+  for ( ; changeIt != changeEndIt; ++changeIt ) {
+    const QString uid = changeIt.key();
 
-  Incidence::List::const_iterator incidenceIt    = incidences.begin();
-  Incidence::List::const_iterator incidenceEndIt = incidences.end();
-  for ( ; incidenceIt != incidenceEndIt; ++incidenceIt ) {
-    Incidence *incidence = *incidenceIt;
-    ItemMap::const_iterator itemIt = mItems.end();
+    kDebug() << mIdMapping;
+    kDebug() << uid;
+    IdHash::const_iterator idIt = mIdMapping.find( uid );
 
-    IdHash::const_iterator idIt = mIdMapping.find( incidence->uid() );
-    if ( idIt != mIdMapping.end() ){
-      itemIt = mItems.find( idIt.value() );
-    }
+    ItemMap::const_iterator itemIt;
 
-    if ( itemIt == mItems.end() ) {
-      incidence->accept( *mMimeVisitor );
-      Item item( mMimeVisitor->mimeType() );
-      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+    Item item;
+    SubResource *subResource = 0;
+    Incidence *incidence = 0;
 
-      items << item;
-    } else {
-      Item item = itemIt.value();
-      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+    switch ( changeIt.value() ) {
+      case Added:
+        subResource = mSubResources[ mUidToResourceMap[ uid ] ];
+        Q_ASSERT( subResource != 0 );
 
-      items << item;
+        incidence = mCalendar.incidence( uid );
+        Q_ASSERT( incidence != 0 );
+
+        item.setMimeType( mMimeVisitor->mimeType( incidence ) );
+        item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+
+        (void) new ItemCreateJob( item, subResource->mCollection, sequence );
+        kDebug(5800) << "CreateJob for incidence" << incidence->uid()
+                     << incidence->summary();
+        break;
+
+      case Changed:
+        Q_ASSERT( idIt != mIdMapping.end() );
+        itemIt = mItems.find( idIt.value() );
+        Q_ASSERT( itemIt != mItems.end() );
+
+        incidence = mCalendar.incidence( uid );
+        Q_ASSERT( incidence != 0 );
+
+        item = itemIt.value();
+        item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+
+        (void) new ItemModifyJob( item, sequence );
+        kDebug(5800) << "ModifyJob for incidence" << incidence->uid()
+                     << incidence->summary();
+        break;
+
+      case Removed:
+        Q_ASSERT( idIt != mIdMapping.end() );
+        itemIt = mItems.find( idIt.value() );
+        Q_ASSERT( itemIt != mItems.end() );
+
+        item = itemIt.value();
+
+        (void) new ItemDeleteJob( item, sequence );
+        kDebug(5800) << "DeleteJob for incidence" << uid
+                     << ( item.hasPayload<IncidencePtr>() ?
+                          item.payload<IncidencePtr>()->summary() : QString() );
+        break;
     }
   }
 
-  ItemSync *job = new ItemSync( mStoreCollection, mParent );
-  job->setFullSyncItems( items );
-
-  return job;
+  return sequence;
 }
 
 void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
@@ -1340,7 +1376,7 @@ void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
   mChanges[ incidence->uid() ] = Added;
 }
 
-void ResourceAkonadi::Private::calendarIncidenceModified( Incidence *incidence )
+void ResourceAkonadi::Private::calendarIncidenceChanged( Incidence *incidence )
 {
   if ( mInternalCalendarModification )
     return;
@@ -1364,7 +1400,6 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
   // check if we have saved it already, otherwise it is just a local change
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
   if ( idIt != mIdMapping.end() ) {
-    mIdMapping.erase( idIt );
     mUidToResourceMap.remove( incidence->uid() );
 
     mChanges[ incidence->uid() ] = Removed;
