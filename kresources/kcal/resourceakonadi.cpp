@@ -433,7 +433,7 @@ QString ResourceAkonadi::labelForSubresource( const QString &resource ) const
 {
   kDebug(5800) << "resource=" << resource;
 
-  SubResource *subResource = d->mSubResources[ resource ];
+  SubResource *subResource = d->mSubResources.value( resource, 0 );
   if ( subResource == 0 )
     return QString();
 
@@ -446,7 +446,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
   bool changed = false;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 ) {
     resource->setActive( active );
 
@@ -482,7 +482,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
 bool ResourceAkonadi::subresourceActive( const QString &resource ) const
 {
-  SubResource *subResource = d->mSubResources[ resource ];
+  SubResource *subResource = d->mSubResources.value( resource, 0 );
   if ( subResource == 0 )
     return false;
 
@@ -501,7 +501,7 @@ bool ResourceAkonadi::addSubresource( const QString &resource, const QString &pa
     return false;
   }
 
-  SubResource *subResource = d->mSubResources[ parent ];
+  SubResource *subResource = d->mSubResources.value( parent, 0 );
   if ( subResource == 0 ) {
     kError(5800) << "No such parent subresource/collection:" << parent;
     return false;
@@ -532,7 +532,7 @@ bool ResourceAkonadi::removeSubresource( const QString &resource )
   kDebug(5800) << "resource=" << resource;
   Q_ASSERT( !resource.isEmpty() );
 
-  SubResource *subResource = d->mSubResources[ resource ];
+  SubResource *subResource = d->mSubResources.value( resource, 0 );
   if ( subResource == 0 ) {
     kError(5800) << "No such subresource: " << resource;
     return false;
@@ -554,7 +554,7 @@ QString ResourceAkonadi::subresourceType( const QString &resource )
 {
   kDebug(5800) << "resource=" << resource;
 
-  SubResource *subResource = d->mSubResources[ resource ];
+  SubResource *subResource = d->mSubResources.value( resource, 0 );
   if ( subResource == 0 )
     return QString();  // root
 
@@ -580,7 +580,7 @@ QString ResourceAkonadi::subresourceType( const QString &resource )
 
 QString ResourceAkonadi::subresourceIdentifier( Incidence *incidence )
 {
-  return d->mUidToResourceMap[ incidence->uid() ];
+  return d->mUidToResourceMap.value( incidence->uid() );
 }
 
 QStringList ResourceAkonadi::subresources() const
@@ -674,7 +674,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
        continue;
 
     const QString collectionUrl = collection.url().url();
-    SubResource *subResource = d->mSubResources[ collectionUrl ];
+    SubResource *subResource = d->mSubResources.value( collectionUrl, 0 );
     if ( subResource == 0 ) {
       subResource = new SubResource( collection, d->mConfig );
       d->mSubResources.insert( collectionUrl, subResource );
@@ -727,7 +727,7 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   UidResourceMap::const_iterator findIt = d->mUidToResourceMap.find( incidence->uid() );
   while ( findIt == d->mUidToResourceMap.end() ) {
     if ( !d->mStoreCollection.isValid() ||
-          d->mSubResources[ d->mStoreCollection.url().url() ] == 0 ) {
+          d->mSubResources.value( d->mStoreCollection.url().url(), 0 ) == 0 ) {
 
       // if there is only one subresource take it instead of asking
       // since this is the most likely choice of the user anyway
@@ -940,7 +940,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
 
   emit mParent->resourceChanged( mParent );
 
-  SubResource *subResource = mSubResources[ collectionUrl ];
+  SubResource *subResource = mSubResources.value( collectionUrl, 0 );
   Q_ASSERT( subResource != 0 );
   emit mParent->signalSubresourceAdded( mParent, QLatin1String( "calendar" ), collectionUrl, subResource->mLabel );
 }
@@ -951,7 +951,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
   kDebug(5800);
 
   const QString collectionUrl = collection.url().url();
-  SubResource *subResource = mSubResources[ collectionUrl ];
+  SubResource *subResource = mSubResources.value( collectionUrl, 0 );
   if ( subResource == 0 )
     return;
 
@@ -1126,7 +1126,7 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
           const QString collectionUrl = collection.url().url();
-          SubResource* subResource = mSubResources[ collectionUrl ];
+          SubResource* subResource = mSubResources.value( collectionUrl, 0 );
           if ( subResource != 0 ) {
             if ( subResource->mLabel != collection.name() ) {
               kDebug(5800) << "Renaming subResource" << collectionUrl
@@ -1164,7 +1164,7 @@ void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &par
         if ( collection.isValid() ) {
           const QString collectionUrl = collection.url().url();
 
-          SubResource *subResource = mSubResources[ collectionUrl ];
+          SubResource *subResource = mSubResources.value( collectionUrl, 0 );
           if ( subResource == 0 ) {
             subResource = new SubResource( collection, mConfig );
             mSubResources.insert( collectionUrl, subResource );
@@ -1270,7 +1270,7 @@ bool ResourceAkonadi::Private::prepareSaving()
     UidResourceMap::const_iterator findIt = mUidToResourceMap.find( (*it)->uid() );
     if ( findIt == mUidToResourceMap.end() ) {
       if ( !mStoreCollection.isValid() ||
-           mSubResources[ mStoreCollection.url().url() ] == 0 ) {
+           mSubResources.value( mStoreCollection.url().url(), 0 ) == 0 ) {
 
         // if there is only one subresource take it instead of asking
         // since this is the most likely choice of the user anyway
@@ -1318,7 +1318,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
 
     switch ( changeIt.value() ) {
       case Added:
-        subResource = mSubResources[ mUidToResourceMap[ uid ] ];
+        subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
         Q_ASSERT( subResource != 0 );
 
         incidence = mCalendar.incidence( uid );
@@ -1388,7 +1388,7 @@ void ResourceAkonadi::Private::calendarIncidenceChanged( Incidence *incidence )
 
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
   if ( idIt == mIdMapping.end() ) {
-    Q_ASSERT( mChanges[ incidence->uid() ] == Added );
+    Q_ASSERT( mChanges.value( incidence->uid(), Removed ) == Added );
   } else
     mChanges[ incidence->uid() ] = Changed;
 }

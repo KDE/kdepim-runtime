@@ -340,7 +340,7 @@ bool ResourceAkonadi::load()
        continue;
 
     const QString collectionUrl = collection.url().url();
-    SubResource *subResource = d->mSubResources[ collectionUrl ];
+    SubResource *subResource = d->mSubResources.value( collectionUrl, 0 );
     if ( subResource == 0 ) {
       subResource = new SubResource( collection, d->mConfig );
       d->mSubResources.insert( collectionUrl, subResource );
@@ -460,7 +460,7 @@ bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 {
   kDebug(5700) << "subResource" << subResource;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 )
     return resource->isActive();
 
@@ -471,7 +471,7 @@ bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
 {
   kDebug(5700) << "subResource" << subResource;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 )
     return resource->isWritable();
 
@@ -482,7 +482,7 @@ QString ResourceAkonadi::subresourceLabel( const QString &subResource ) const
 {
   kDebug(5700) << "subResource" << subResource;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 )
     return resource->mLabel;
 
@@ -493,7 +493,7 @@ int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) c
 {
   kDebug(5700) << "subResource" << subResource;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 )
     return resource->completionWeight();
 
@@ -527,7 +527,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
   bool changed = false;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 ) {
     resource->setActive( active );
 
@@ -556,7 +556,7 @@ void ResourceAkonadi::setSubresourceCompletionWeight( const QString &subResource
 {
   kDebug(5700) << "subResource" << subResource << ", weight" << weight;
 
-  SubResource *resource = d->mSubResources[ subResource ];
+  SubResource *resource = d->mSubResources.value( subResource, 0 );
   if ( resource != 0 )
     resource->setCompletionWeight( weight );
 }
@@ -648,7 +648,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 {
   kDebug(5700);
   const QString collectionUrl = collection.url().url();
-  SubResource *subResource = mSubResources[ collectionUrl ];
+  SubResource *subResource = mSubResources.value( collectionUrl, 0 );
   if ( subResource == 0 || !subResource->isActive() )
     return;
 
@@ -693,8 +693,8 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 
   itemIt.value() = item;
 
-  const QString collectionUrl = mItemIdToResourceMap[ item.id() ];
-  SubResource *subResource = mSubResources[ collectionUrl ];
+  const QString collectionUrl = mItemIdToResourceMap.value( item.id() );
+  SubResource *subResource = mSubResources.value( collectionUrl, 0 );
   if ( subResource == 0 || !subResource->isActive() )
     return;
 
@@ -740,8 +740,8 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
 
   const Item::Id id = item.id();
 
-  const QString collectionUrl = mItemIdToResourceMap[ id ];
-  SubResource *subResource = mSubResources[ collectionUrl ];
+  const QString collectionUrl = mItemIdToResourceMap.value( id );
+  SubResource *subResource = mSubResources.value( collectionUrl, 0 );
   if ( subResource == 0 || !subResource->isActive() )
     return;
 
@@ -826,7 +826,7 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
         Collection collection = data.value<Collection>();
         if ( collection.isValid() ) {
           const QString collectionUrl = collection.url().url();
-          SubResource* subResource = mSubResources[ collectionUrl ];
+          SubResource* subResource = mSubResources.value( collectionUrl, 0 );
           if ( subResource != 0 ) {
             if ( subResource->mLabel != collection.name() ) {
               kDebug(5700) << "Renaming subResource" << collectionUrl
@@ -860,7 +860,7 @@ void ResourceAkonadi::Private::addCollectionsRecursively( const QModelIndex &par
         if ( collection.isValid() ) {
           const QString collectionUrl = collection.url().url();
 
-          SubResource *subResource = mSubResources[ collectionUrl ];
+          SubResource *subResource = mSubResources.value( collectionUrl, 0 );
           if ( subResource == 0 ) {
             subResource = new SubResource( collection, mConfig );
             mSubResources.insert( collectionUrl, subResource );
@@ -951,7 +951,7 @@ bool ResourceAkonadi::Private::prepareSaving()
     UidResourceMap::const_iterator findIt = mUidToResourceMap.find( addrIt.key() );
     if ( findIt == mUidToResourceMap.end() ) {
       if ( !mStoreCollection.isValid() ||
-           mSubResources[ mStoreCollection.url().url() ] == 0 ) {
+           mSubResources.value( mStoreCollection.url().url(), 0 ) == 0 ) {
 
         // if there is only one subresource take it instead of asking
         // since this is the most likely choice of the user anyway
@@ -994,10 +994,10 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
 
     switch ( changeIt.value() ) {
       case Added:
-        subResource = mSubResources[ mUidToResourceMap[ uid ] ];
+        subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
         Q_ASSERT( subResource != 0 );
 
-        addressee = mParent->mAddrMap[ uid ];
+        addressee = mParent->mAddrMap.value( uid );
 
         item.setMimeType( QLatin1String( "text/directory" ) );
         item.setPayload<KABC::Addressee>( addressee );
@@ -1012,7 +1012,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         itemIt = mItems.find( idIt.value() );
         Q_ASSERT( itemIt != mItems.end() );
 
-        addressee = mParent->mAddrMap[ uid ];
+        addressee = mParent->mAddrMap.value( uid );
 
         item = itemIt.value();
         item.setPayload<KABC::Addressee>( addressee );
