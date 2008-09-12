@@ -26,6 +26,7 @@
 #include <kdebug.h>
 
 #include <akonadi/item.h>
+#include <akonadi/kabc/contactparts.h>
 
 using namespace Akonadi;
 
@@ -33,15 +34,37 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label
 {
     Q_UNUSED( version );
 
-    if ( label != Item::FullPayload )
-      return false;
+    KABC::Addressee addr;
+    if ( label == Item::FullPayload ) {
+        addr = m_converter.parseVCard( data.readAll() );
+    } else if ( label == Akonadi::ContactPart::Standard ) {
+        addr = m_converter.parseVCard( data.readAll() );
 
-    KABC::Addressee a = m_converter.parseVCard( data.readAll() );
-    if ( !a.isEmpty() ) {
-        item.setPayload<KABC::Addressee>( a );
+        // remove pictures and sound
+        addr.setPhoto( KABC::Picture() );
+        addr.setLogo( KABC::Picture() );
+        addr.setSound( KABC::Sound() );
+    } else if ( label == Akonadi::ContactPart::Lookup ) {
+        const KABC::Addressee temp = m_converter.parseVCard( data.readAll() );
+
+        // copy only uid, name and email addresses
+        addr.setUid( temp.uid() );
+        addr.setPrefix( temp.prefix() );
+        addr.setGivenName( temp.givenName() );
+        addr.setAdditionalName( temp.additionalName() );
+        addr.setFamilyName( temp.familyName() );
+        addr.setSuffix( temp.suffix() );
+        addr.setEmails( temp.emails() );
+    } else {
+        return false;
+    }
+
+    if ( !addr.isEmpty() ) {
+        item.setPayload<KABC::Addressee>( addr );
     } else {
         kWarning( 5261 ) << "Empty addressee object!";
     }
+
     return true;
 }
 
@@ -49,10 +72,37 @@ void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& l
 {
     Q_UNUSED( version );
 
-    if ( label != Item::FullPayload || !item.hasPayload<KABC::Addressee>() )
-      return;
-    const KABC::Addressee a = item.payload<KABC::Addressee>();
-    data.write( m_converter.createVCard( a ) );
+    if ( label != Item::FullPayload && label != Akonadi::ContactPart::Standard && label != Akonadi::ContactPart::Lookup )
+        return;
+
+    if ( !item.hasPayload<KABC::Addressee>() )
+        return;
+
+    KABC::Addressee addr, temp;
+
+    temp = item.payload<KABC::Addressee>();
+
+    if ( label == Item::FullPayload ) {
+        addr = temp;
+    } else if ( label == Akonadi::ContactPart::Standard ) {
+        addr = temp;
+
+        // remove pictures and sound
+        addr.setPhoto( KABC::Picture() );
+        addr.setLogo( KABC::Picture() );
+        addr.setSound( KABC::Sound() );
+    } else if ( label == Akonadi::ContactPart::Lookup ) {
+        // copy only uid, name and email addresses
+        addr.setUid( temp.uid() );
+        addr.setPrefix( temp.prefix() );
+        addr.setGivenName( temp.givenName() );
+        addr.setAdditionalName( temp.additionalName() );
+        addr.setFamilyName( temp.familyName() );
+        addr.setSuffix( temp.suffix() );
+        addr.setEmails( temp.emails() );
+    }
+
+    data.write( m_converter.createVCard( addr ) );
 }
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, Akonadi::SerializerPluginAddressee )

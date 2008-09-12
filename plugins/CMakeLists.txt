@@ -9,7 +9,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 kde4_add_plugin(akonadi_serializer_addressee ${akonadi_serializer_addressee_PART_SRCS})
-target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_AKONADI_LIBS})
+target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KABC_LIBS})
 install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
