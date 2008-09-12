@@ -23,7 +23,7 @@ kde4_add_app_icon(kcontactmanager_SRCS "${KDE4_ICON_DIR}/oxygen/*/actions/view-p
 
 kde4_add_executable(kcontactmanager RUN_UNINSTALLED ${kcontactmanager_SRCS})
 
-target_link_libraries(kcontactmanager ${KDE4_AKONADI_LIBS} akonadi-kabc ${KDE4_KDEUI_LIBS} )
+target_link_libraries(kcontactmanager ${KDE4_AKONADI_LIBS} akonadi-kabccommon ${KDE4_KDEUI_LIBS} )
 
 #install(TARGETS kcontactmanager ${INSTALL_TARGETS_DEFAULT_ARGS})
 #install( FILES kcontactmanager.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
