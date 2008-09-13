@@ -46,7 +46,7 @@ void AkonadiSink::connect()
   osync_trace(TRACE_ENTRY, "%s(%p, %p)", __PRETTY_FUNCTION__, pluginInfo(), context());
   kDebug();
 
-  if ( !Akonadi::Control::start( 0 ) ) {
+  if ( !Akonadi::Control::start() ) {
     error( OSYNC_ERROR_NO_CONNECTION, "Could not start Akonadi." );
     osync_trace(TRACE_EXIT_ERROR, "%s: %s", __PRETTY_FUNCTION__, "Could not start Akonadi.");
     return;

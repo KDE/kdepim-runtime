@@ -85,7 +85,7 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
   osync_trace(TRACE_ENTRY, "%s(%p, %p, %p)", __func__, userdata, info, error);
   kDebug();
 
-  if ( !Akonadi::Control::start( 0 ) )
+  if ( !Akonadi::Control::start() )
     return false;
 
   // fetch all akonadi collections
