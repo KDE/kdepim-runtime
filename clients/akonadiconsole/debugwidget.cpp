@@ -21,19 +21,29 @@
 
 #include "debugwidget.h"
 
+#include "tracernotificationinterface.h"
+#include "connectionpage.h"
+#include "debuginterface.h"
+
+#include <KLocale>
+
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
-
-#include "tracernotificationinterface.h"
-#include "connectionpage.h"
+#include <QtGui/QCheckBox>
 
 DebugWidget::DebugWidget( QWidget *parent )
   : QWidget( parent )
 {
   QVBoxLayout *layout = new QVBoxLayout( this );
+
+  mDebugInterface = new DebugInterface( "org.freedesktop.Akonadi", "/debug", QDBusConnection::sessionBus(), this );
+  QCheckBox *cb = new QCheckBox( i18n("Enable Debugger"), this );
+  cb->setChecked( mDebugInterface->tracer().value() == QLatin1String( "dbus" ) );
+  connect( cb, SIGNAL(toggled(bool)), SLOT(enableDebugger(bool)) );
+  layout->addWidget( cb );
 
   QSplitter *splitter = new QSplitter( Qt::Vertical, this );
   splitter->setObjectName( "debugSplitter" );
@@ -118,6 +128,11 @@ void DebugWidget::warningEmitted( const QString &componentName, const QString &m
 void DebugWidget::errorEmitted( const QString &componentName, const QString &msg )
 {
   mGeneralView->append( QString( "<font color=\"red\">%1: %2</font>" ).arg( componentName, msg ) );
+}
+
+void DebugWidget::enableDebugger(bool enable)
+{
+  mDebugInterface->setTracer( enable ? QLatin1String( "dbus" ) : QLatin1String( "null" ) );
 }
 
 #include "debugwidget.moc"

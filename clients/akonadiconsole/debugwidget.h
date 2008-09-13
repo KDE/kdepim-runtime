@@ -29,6 +29,7 @@ class QTextEdit;
 class QTabWidget;
 
 class ConnectionPage;
+class DebugInterface;
 
 class DebugWidget : public QWidget
 {
@@ -44,10 +45,13 @@ class DebugWidget : public QWidget
     void warningEmitted( const QString&, const QString& );
     void errorEmitted( const QString&, const QString& );
 
+    void enableDebugger( bool enable );
+
   private:
     QTextEdit *mGeneralView;
     QTabWidget *mConnectionPages;
     QHash<QString, ConnectionPage*> mPageHash;
+    DebugInterface *mDebugInterface;
 };
 
 #endif

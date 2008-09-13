@@ -22,6 +22,12 @@ set(akonadiconsole_bin_SRCS
 qt4_add_dbus_interfaces( akonadiconsole_bin_SRCS
   ${AKONADI_DBUS_INTERFACES_DIR}/org.freedesktop.Akonadi.TracerNotification.xml
 )
+# Use intalled interface once we can depend on Akoandi 1.1
+set_source_files_properties( org.freedesktop.Akonadi.DebugInterface.xml PROPERTIES CLASSNAME DebugInterface )
+qt4_add_dbus_interface( akonadiconsole_bin_SRCS
+  org.freedesktop.Akonadi.DebugInterface.xml
+  debuginterface
+)
 
 kde4_add_ui_files(akonadiconsole_bin_SRCS
   browserwidget_itemview.ui
