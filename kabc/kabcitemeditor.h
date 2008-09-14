@@ -20,7 +20,7 @@
 #ifndef KABCITEMEDITOR_H
 #define KABCITEMEDITOR_H
 
-#include "akonadi-kabc_export.h"
+#include "akonadi-kabccommon_export.h"
 #include <QtGui/QWidget>
 
 namespace Akonadi {
@@ -28,7 +28,7 @@ namespace Akonadi {
 class Collection;
 class Item;
 
-class AKONADI_KABC_EXPORT KABCItemEditor : public QWidget
+class AKONADI_KABCCOMMON_EXPORT KABCItemEditor : public QWidget
 {
   Q_OBJECT
 

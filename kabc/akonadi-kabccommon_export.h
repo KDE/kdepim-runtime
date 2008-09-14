@@ -17,19 +17,19 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef AKONADI_KABC_EXPORT_H
-#define AKONADI_KABC_EXPORT_H
+#ifndef AKONADI_KABCCOMMON_EXPORT_H
+#define AKONADI_KABCCOMMON_EXPORT_H
 
 /* needed for KDE_EXPORT and KDE_IMPORT macros */
 #include <kdemacros.h>
 
-#ifndef AKONADI_KABC_EXPORT
+#ifndef AKONADI_KABCCOMMON_EXPORT
 # if defined(MAKE_AKONADI_KABCCOMMON_LIB)
    /* We are building this library */
-#  define AKONADI_KABC_EXPORT KDE_EXPORT
+#  define AKONADI_KABCCOMMON_EXPORT KDE_EXPORT
 # else
    /* We are using this library */
-#  define AKONADI_KABC_EXPORT KDE_IMPORT
+#  define AKONADI_KABCCOMMON_EXPORT KDE_IMPORT
 # endif
 #endif
 

@@ -20,7 +20,7 @@
 #ifndef AKONADI_ITEMBROWSER_H
 #define AKONADI_ITEMBROWSER_H
 
-#include "akonadi-kabc_export.h"
+#include "akonadi-kabccommon_export.h"
 #include <akonadi/itemmonitor.h>
 #include <ktextbrowser.h>
 
@@ -37,7 +37,7 @@ class Item;
  * @see KABCItemBrowser
  * @see KCalItemBrowser
  */
-class AKONADI_KABC_EXPORT ItemBrowser : public KTextBrowser, public ItemMonitor
+class AKONADI_KABCCOMMON_EXPORT ItemBrowser : public KTextBrowser, public ItemMonitor
 {
   Q_OBJECT
 
