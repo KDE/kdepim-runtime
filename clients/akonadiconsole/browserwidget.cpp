@@ -101,7 +101,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   itemUi.itemView->setXmlGuiWindow( xmlGuiWindow );
   itemUi.itemView->setModel( mItemModel );
   itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
-  connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
+  connect( itemUi.itemView, SIGNAL(activated(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   splitter2->addWidget( itemViewParent );
   itemViewParent->layout()->setMargin( 0 );
 
