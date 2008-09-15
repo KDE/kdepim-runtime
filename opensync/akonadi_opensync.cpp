@@ -19,6 +19,8 @@
 
 #include "akonadisink.h"
 #include "datasink.h"
+#include "calendarsink.h"
+#include "contactsink.h"
 
 #include <akonadi/control.h>
 #include <akonadi/collection.h>
@@ -33,6 +35,7 @@
 
 #include <opensync/opensync.h>
 #include <opensync/opensync-plugin.h>
+#include <opensync/opensync-format.h>
 
 static KComponentData *kcd = 0;
 static QCoreApplication *app = 0;
@@ -66,8 +69,16 @@ static void* akonadi_initialize(OSyncPlugin *plugin, OSyncPluginInfo *info, OSyn
   const int numobjs = osync_plugin_info_num_objtypes( info );
   for ( int i = 0; i < numobjs; ++i ) {
     OSyncObjTypeSink *sink = osync_plugin_info_nth_objtype( info, i );
-    kDebug() << "###" << i << osync_objtype_sink_get_name( sink );
-    DataSink *ds = new DataSink();
+    QString sinkName( osync_objtype_sink_get_name( sink ) );
+    kDebug() << "###" << i << sinkName;
+
+    DataSink *ds;
+    if( sinkName == "event" )
+      ds = new CalendarSink();
+
+    else if( sinkName == "contact" )
+      ds = new ContactSink();
+
     if ( !ds->initialize( plugin, info, sink, error ) ) {
       delete ds;
       delete mainSink;
@@ -106,12 +117,30 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
       kDebug() << "creating resource for" << col.name() << col.contentMimeTypes();
 //      if ( !col.contentMimeTypes().contains( "text/directory" ) ) // ### TODO
 //         continue;
+      if( col.contentMimeTypes().isEmpty() )
+        continue;
+      
       OSyncPluginResource *res = osync_plugin_resource_new( error );
       // TODO error handling?
       osync_plugin_resource_enable( res, TRUE );
       osync_plugin_resource_set_name( res, col.name().toUtf8() ); // TODO: full path instead of the name
       osync_plugin_resource_set_objtype( res, osync_objtype_sink_get_name( sink ) );
       osync_plugin_resource_set_url( res, col.url().url().toLatin1() );
+
+      QString formatName;
+      if( col.contentMimeTypes().contains( "text/calendar" ) )
+        formatName = "vevent20";
+      else if( col.contentMimeTypes().contains( "text/directory" ) )
+        formatName = "vcard30";
+      else
+        continue; // if the collection is not calendar or contact one, skip it
+      
+      /*OSyncFormatEnv *formatenv = osync_plugin_info_get_format_env( info );
+      OSyncObjFormat *format = osync_format_env_find_objformat( formatenv, formatName.toLatin1() );
+      osync_plugin_resource_set_objformat( res, format );*/
+
+      osync_plugin_resource_add_objformat_sink( res, osync_objformat_sink_new( formatName.toLatin1(), error ) );
+
       osync_plugin_config_add_resource( config, res );
     }
     osync_objtype_sink_set_available( sink, TRUE );
@@ -137,7 +166,6 @@ static void akonadi_finalize(void *userdata)
 KDE_EXPORT osync_bool get_sync_info(OSyncPluginEnv *env, OSyncError **error)
 {
   osync_trace(TRACE_ENTRY, "%s(%p)", __func__, env);
-  qDebug() << "I was here!";
 
   OSyncPlugin *plugin = osync_plugin_new( error );
   if ( !plugin ) {
@@ -147,7 +175,7 @@ KDE_EXPORT osync_bool get_sync_info(OSyncPluginEnv *env, OSyncError **error)
 
   osync_plugin_set_name(plugin, "akonadi-sync");
   osync_plugin_set_longname(plugin, "Akonadi");
-  osync_plugin_set_description(plugin, "Plugin for Akonadi");
+  osync_plugin_set_description(plugin, "Plugin to synchronize with Akonadi");
 //   osync_plugin_set_config_type(plugin, OSYNC_PLUGIN_NO_CONFIGURATION);
   osync_plugin_set_start_type(plugin, OSYNC_START_TYPE_PROCESS);
 

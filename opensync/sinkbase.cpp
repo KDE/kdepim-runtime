@@ -77,6 +77,8 @@ SinkBase::SinkBase( int features ) :
 
 SinkBase::~SinkBase()
 {
+  if( mSink )
+    osync_objtype_sink_unref( mSink );
 }
 
 void SinkBase::connect()

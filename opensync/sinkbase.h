@@ -26,6 +26,7 @@
 #include <opensync/opensync-plugin.h>
 #include <opensync/opensync-context.h>
 #include <opensync/opensync-error.h>
+#include <opensync/opensync-helper.h>
 
 /**
  * Base class providing wraping of OSyncObjTypeSink.

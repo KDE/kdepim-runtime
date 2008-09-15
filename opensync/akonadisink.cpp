@@ -28,7 +28,7 @@ AkonadiSink::AkonadiSink() :
 {
 }
 
-AkonadiSink::~ AkonadiSink()
+AkonadiSink::~AkonadiSink()
 {
 }
 
