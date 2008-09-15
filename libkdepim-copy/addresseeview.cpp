@@ -73,19 +73,12 @@ AddresseeView::AddresseeView( QWidget *parent, KConfig *config )
   setNotifyClick( true );
 
   mActionShowBirthday = new KToggleAction( i18n( "Show Birthday" ), this );
-  mActionShowBirthday->setCheckedState( KGuiItem( i18n( "Hide Birthday" ) ) );
   mActionShowAddresses = new KToggleAction( i18n( "Show Postal Addresses" ), this );
-  mActionShowAddresses->setCheckedState( KGuiItem( i18n( "Hide Postal Addresses" ) ) );
   mActionShowEmails = new KToggleAction( i18n( "Show Email Addresses" ), this );
-  mActionShowEmails->setCheckedState( KGuiItem( i18n( "Hide Email Addresses" ) ) );
   mActionShowPhones = new KToggleAction( i18n( "Show Telephone Numbers" ), this );
-  mActionShowPhones->setCheckedState( KGuiItem( i18n( "Hide Telephone Numbers" ) ) );
   mActionShowURLs = new KToggleAction( i18n( "Show Web Pages (URLs)" ), this );
-  mActionShowURLs->setCheckedState( KGuiItem( i18n( "Hide Web Pages (URLs)" ) ) );
   mActionShowIMAddresses = new KToggleAction( i18n( "Show Instant Messaging Addresses" ), this );
-  mActionShowIMAddresses->setCheckedState( KGuiItem( i18n( "Hide Instant Messaging Addresses" ) ) );
   mActionShowCustomFields = new KToggleAction( i18n( "Show Custom Fields" ), this );
-  mActionShowCustomFields->setCheckedState( KGuiItem( i18n( "Hide Custom Fields" ) ) );
 
   if ( !config ) {
     mConfig = new KConfig( "kaddressbookrc" );
