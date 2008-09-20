@@ -25,6 +25,8 @@
 #include "connectionpage.h"
 #include "debuginterface.h"
 
+#include <akonadi/control.h>
+
 #include <KLocale>
 
 #include <QtGui/QPushButton>
@@ -88,6 +90,8 @@ DebugWidget::DebugWidget( QWidget *parent )
 
   connect( clearAllButton, SIGNAL( clicked() ), page, SLOT( clear() ) );
   connect( clearGeneralButton, SIGNAL( clicked() ), mGeneralView, SLOT( clear() ) );
+
+  Akonadi::Control::widgetNeedsAkonadi( this );
 }
 
 void DebugWidget::connectionStarted( const QString &identifier, const QString &msg )

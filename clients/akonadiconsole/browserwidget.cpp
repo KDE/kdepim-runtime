@@ -26,6 +26,7 @@
 #include <akonadi/job.h>
 #include <akonadi/collectionmodel.h>
 #include <akonadi/collectionview.h>
+#include <akonadi/control.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -116,6 +117,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   CollectionPropertiesDialog::registerPage( new CollectionAclPageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionAttributePageFactory() );
   CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
+
+  Control::widgetNeedsAkonadi( this );
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)

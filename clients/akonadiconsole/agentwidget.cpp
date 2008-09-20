@@ -25,6 +25,7 @@
 #include <akonadi/agentinstancewidget.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
+#include <akonadi/control.h>
 
 #include <KLocale>
 
@@ -114,6 +115,8 @@ AgentWidget::AgentWidget( QWidget *parent )
   button = new QPushButton( "Toggle Online/Offline", this );
   connect( button, SIGNAL(clicked()), SLOT(toggleOnline()) );
   layout->addWidget( button, 1, 5 );
+
+  Control::widgetNeedsAkonadi( this );
 }
 
 void AgentWidget::addAgent()
