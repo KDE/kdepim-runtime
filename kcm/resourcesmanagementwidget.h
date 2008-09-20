@@ -57,6 +57,7 @@ private Q_SLOTS:
     void addClicked( QAction* );
     void editClicked();
     void removeClicked();
+    void updateMenu();
 
 private:
     class Private;
