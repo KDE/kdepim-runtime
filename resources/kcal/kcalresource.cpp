@@ -33,6 +33,8 @@
 #include <kinputdialog.h>
 #include <kwindowsystem.h>
 
+#include <QTimer>
+
 #include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
@@ -47,7 +49,8 @@ KCalResource::KCalResource( const QString &id )
     mManager( new KCal::CalendarResourceManager( QLatin1String( "calendar" ) ) ),
     mResource( 0 ),
     mMimeVisitor( new KCalMimeTypeVisitor() ),
-    mFullItemRetrieve( false )
+    mFullItemRetrieve( false ),
+    mDelayedSaveTimer( new QTimer( this ) )
 {
   // setup for UID generation
   const QString prodId = QLatin1String( "-//Akonadi//NONSGML KDE Compatibility Resource %1//EN" );
@@ -55,8 +58,12 @@ KCalResource::KCalResource( const QString &id )
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfig()) );
 
+  connect( mDelayedSaveTimer, SIGNAL( timeout() ), this, SLOT( delayedSaveCalendar() ) );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
+
+  mDelayedSaveTimer->setSingleShot( true );
 }
 
 KCalResource::~KCalResource()
@@ -341,7 +348,7 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
   KCal::Incidence *incidence = mResource->incidence( item.remoteId() );
   if ( incidence != 0 && mResource->deleteIncidence( incidence ) ) {
     changeCommitted( item );
-    // TODO save calendar
+    scheduleSaveCalendar();
     return;
   }
 
@@ -389,7 +396,7 @@ void KCalResource::collectionRemoved( const Akonadi::Collection &collection )
   if ( subResources.contains( collection.remoteId() ) ) {
     if ( mResource->removeSubresource( collection.remoteId() ) ) {
       changeCommitted( collection );
-      // TODO save calendar
+      scheduleSaveCalendar();
       return;
     }
   }
@@ -418,6 +425,8 @@ bool KCalResource::openConfiguration()
 
 void KCalResource::closeConfiguration()
 {
+  mDelayedSaveTimer->stop();
+
   if ( mResource != 0 ) {
     if ( mResource->isOpen() )
       mResource->close();
@@ -429,6 +438,35 @@ void KCalResource::closeConfiguration()
     disconnect( mResource, SIGNAL( resourceChanged( ResourceCalendar* ) ),
                 this, SLOT( resourceChanged( ResourceCalendar* ) ) );
   }
+}
+
+bool KCalResource::saveCalendar()
+{
+  kDebug();
+  mDelayedSaveTimer->stop();
+
+  if ( !mResource || mResource->readOnly() )
+    return false;
+
+  if ( !mResource->save() ) {
+    kError() << "Saving failed";
+    // resource error emitted by savingError()
+    return false;
+  }
+
+  kDebug() << "Saving succeeded";
+  return true;
+}
+
+bool KCalResource::scheduleSaveCalendar()
+{
+  if ( !mResource || mResource->readOnly() )
+    return false;
+
+  if ( !mDelayedSaveTimer->isActive() )
+    mDelayedSaveTimer->start( 5000 );
+
+  return true;
 }
 
 void KCalResource::reloadConfig()
@@ -508,6 +546,11 @@ void KCalResource::resourceChanged( ResourceCalendar *resource )
   Q_ASSERT( resource == mResource );
 
   kDebug();
+  if ( mDelayedSaveTimer->isActive() ) {
+    // TODO should record changes for delayed saving
+    kError() << "Delayed saving scheduled when resource changed. We might have lost changes";
+    mDelayedSaveTimer->stop();
+  }
 
   mFullItemRetrieve = true;
   synchronize();
@@ -535,6 +578,16 @@ void KCalResource::savingError( ResourceCalendar *resource, const QString &messa
 
   emit error( statusMessage );
   emit status( Broken, statusMessage );
+}
+
+void KCalResource::delayedSaveCalendar()
+{
+  if ( !saveCalendar() ) {
+    kError() << "Saving failed, rescheduling delayed save";
+    if ( !scheduleSaveCalendar() ) {
+      kError() << "Scheduling failed as well, giving up";
+    }
+  }
 }
 
 AKONADI_RESOURCE_MAIN( KCalResource )

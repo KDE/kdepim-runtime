@@ -77,9 +77,15 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 
     bool mFullItemRetrieve;
 
+    QTimer *mDelayedSaveTimer;
+
   private:
     bool openConfiguration();
     void closeConfiguration();
+
+    bool saveCalendar();
+
+    bool scheduleSaveCalendar();
 
     typedef KCal::ResourceCalendar ResourceCalendar;
 
@@ -93,6 +99,8 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void loadingError( ResourceCalendar *resource, const QString &message );
 
     void savingError( ResourceCalendar *resource, const QString &message );
+
+    void delayedSaveCalendar();
 };
 
 #endif
