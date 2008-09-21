@@ -20,6 +20,7 @@
 
 #include "../kabc/kresourceassistant.h"
 
+#include <kcal/calformat.h>
 #include <kcal/resourcecalendar.h>
 
 #include <kresources/configdialog.h>
@@ -30,7 +31,6 @@
 
 #include <kconfig.h>
 #include <kinputdialog.h>
-#include <krandom.h>
 #include <kwindowsystem.h>
 
 #include <boost/shared_ptr.hpp>
@@ -39,6 +39,9 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 
+static const char progName[]    = "KCalResource";
+static const char progVersion[] = "0.9";
+
 KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
     mManager( new KCal::CalendarResourceManager( QLatin1String( "calendar" ) ) ),
@@ -46,6 +49,10 @@ KCalResource::KCalResource( const QString &id )
     mMimeVisitor( new KCalMimeTypeVisitor() ),
     mFullItemRetrieve( false )
 {
+  // setup for UID generation
+  const QString prodId = QLatin1String( "-//Akonadi//NONSGML KDE Compatibility Resource %1//EN" );
+  KCal::CalFormat::setApplication( QLatin1String( progName ), prodId.arg( progVersion ) );
+
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfig()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -275,7 +282,7 @@ void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   if ( item.hasPayload<IncidencePtr>() ) {
     IncidencePtr incidencePtr = item.payload<IncidencePtr>();
     if ( incidencePtr->uid().isEmpty() ) {
-      const QString uid = KRandom::randomString( 10 );
+      const QString uid = KCal::CalFormat::createUniqueId();
       incidencePtr->setUid( uid );
     }
 
