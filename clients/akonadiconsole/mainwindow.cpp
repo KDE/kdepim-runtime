@@ -30,6 +30,7 @@
 #include <KActionCollection>
 #include <KConfigGroup>
 #include <KLocale>
+#include <KMessageBox>
 #include <KStandardAction>
 #include <QApplication>
 
@@ -44,6 +45,13 @@ MainWindow::MainWindow( QWidget *parent )
   setupGUI( Keys /*| ToolBar | StatusBar*/ | Save | Create, "akonadiconsoleui.rc" );
 
   KPIM::UiStateSaver::restoreState( this, KConfigGroup( KGlobal::config(), "UiState" ) );
+
+  KMessageBox::information( this, i18n("<p>Akonadi Console is purely a development tool. "
+      "It allows you to view and change internal data structures of Akonadi. "
+      "You should only change data in here if you know what you are doing, otherwise "
+      "you risk damaging or losing your personal information management data.<br/>"
+      "<b>Use at your own risk!</b></p>"),
+       QString(), "UseAtYourOwnRiskWarning" );
 }
 
 bool MainWindow::queryExit()
