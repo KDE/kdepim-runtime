@@ -109,8 +109,8 @@ void KABCResource::configure( WId windowId )
   KRES::Manager<KABC::Resource> *manager = mAddressBook->getResourceManager();
 
   if ( mBaseResource != 0 ) {
-  emit status( Running,
-               i18nc( "@info:status", "Changing address book plugin configuration" ) );
+    emit status( Running,
+                 i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
     KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() )
@@ -206,7 +206,7 @@ void KABCResource::retrieveCollections()
   if ( mFolderResource != 0 ) {
     const QStringList subResources = mFolderResource->subresources();
     kDebug() << "subResources" << subResources;
-    foreach( const QString& subResource, subResources ) {
+    foreach ( const QString &subResource, subResources ) {
       Collection childCollection;
       childCollection.setParent( topLevelCollection );
       childCollection.setRemoteId( subResource );
@@ -317,6 +317,7 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     if ( addressee.uid().isEmpty() )
       addressee.setUid( KRandom::randomString( 10 ) );
 
+    addressee.setResource( mBaseResource );
     mAddressBook->insertAddressee( addressee );
 
     // TODO: proper error reporting
@@ -347,6 +348,7 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
     Q_ASSERT( !addressee.uid().isEmpty() );
 
+    addressee.setResource( mBaseResource );
     mAddressBook->insertAddressee( addressee );
 
     // TODO: proper error reporting
