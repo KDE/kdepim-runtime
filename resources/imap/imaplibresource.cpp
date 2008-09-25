@@ -181,7 +181,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
 void ImaplibResource::itemRemoved( const Akonadi::Item &item )
 {
     //itemRemoved actually can not be implemented. The imap specs do not allow for a single
-    //message to be deleted. Users of this resource should make sure they set the the flag
+    //message to be deleted. Users of this resource should make sure they set the flag
     //to Deleted and call the DBus purge method when you want to get rid of the items
     //from the server.
     changeProcessed();
