@@ -158,7 +158,7 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
   Item::List items;
 
   // FIXME: Check if the KIO::Job is done and was successfull, if so send the
-  // items, otherwhise set a bool and in the result slot of the job send the
+  // items, otherwise set a bool and in the result slot of the job send the
   // items if the bool is set.
   
   foreach ( const KABC::Addressee &addressee, mAddressees ) {
