@@ -14,16 +14,6 @@ X-KDE-CfgDlgHierarchy=
 X-KDE-System-Settings-Parent-Category=advanced-user-settings
 
 Name=Personal Information Management
-Name[el]=Διαχειριστής προσωπικών πληροφοριών του Akonadi
-Name[km]=ការ​គ្រប់គ្រង​ព័ត៌មាន​ផ្ទាល់ខ្លួន​របស់ Akonadi
-Name[nds]=Akonadi - Pleger för persöönliche Informatschonen
-Name[nn]=Akonadi-handtering av personleg informasjon
-Name[pt]=Gestão de Informação Pessoal do Akonadi
-Name[pt_BR]=Gerenciador de Informações Pessoais do Akonadi
-Name[sv]=Akonadi personlig informationshantering
-Name[uk]=Керування особистою інформацією Akonadi
-Name[x-test]=xxAkonadi Personal Information Managementxx
-Name[zh_TW]=Akonadi 個人資訊管理者
 Comment=Configuration of the Akonadi Personal Information Management framework
 Comment[el]=Ρύθμιση του διαχειριστή προσωπικών πληροφοριών του Akonadi
 Comment[km]=ការ​កំណត់​រចនាសម្ព័ន្ធ​គម្រោងការ​ការ​គ្រប់គ្រង​ព័ត៌មាន​ផ្ទាល់ខ្លួន Akonadi
