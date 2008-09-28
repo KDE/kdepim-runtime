@@ -2,6 +2,7 @@
 Name=Nepomuk Tags (Virtual Folders)
 Name[el]=Ετικέτες Nepomuk (εικονικοί φάκελοι)
 Name[et]=Nepomuki sildid (virtuaalkaustad)
+Name[gl]=Etiquetas Nepomik (Cartafoles Virtuais)
 Name[km]=ស្លាក Nepomuk (ថត​និម្មិត)
 Name[nds]=Nepomuk-Steekwöör (Virtuell Ornern)
 Name[nn]=Nepomuk-merkelappar (virtuelle mapper)
@@ -14,6 +15,7 @@ Name[zh_TW]=Nepomuk 標籤（虛擬資料夾）
 Comment=Virtual folders for selecting messages which have Nepomuk Tags.
 Comment[el]=Εικονικοί φάκελοι για την επιλογή μηνυμάτων με ετικέτες Nepomuk.
 Comment[et]=Virtuaalkaustad Nepomuki siltidega kirjade valimiseks.
+Comment[gl]=Cartafoles virtuais para escoller mensaxes que teñen as etiquetas de Nepomuk.
 Comment[km]=ថត​និម្មិត​សម្រាប់​ជ្រើស​សារ​ដែល​មាន​ស្លាក Nepomuk ។
 Comment[nds]=Virtuell Ornen för Narichten mit Nepomuk-Steekwöör
 Comment[nn]=Virtuelle mapper for val av meldingar som har Nepomuk-merkelappar.

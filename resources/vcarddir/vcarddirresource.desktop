@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi VCard Directory Resource
 Name[el]=Πόρος καταλόγου VCard του Akonadi
+Name[gl]=Recurso de Cartafol con VCards de Akonadi 
 Name[km]=ធនធាន​ថត Akonadi VCard
 Name[nds]=Akonadi-VCard-Vertekenressource
 Name[nn]=Akonadi vCard-mapperessurs
@@ -12,6 +13,7 @@ Name[x-test]=xxAkonadi VCard Directory Resourcexx
 Name[zh_TW]=Akonadi VCard 目錄資源
 Comment=An agent to load data from a directory with VCards
 Comment[el]=Ένας πράκτορας φόρτωσης δεδομένων από έναν κατάλογο που περιέχει VCard
+Comment[gl]=Un axente para carregar datos desde un cartafol con VCards 
 Comment[km]=ភ្នាក់ងារ​ត្រូវ​ផ្ទុក​ទិន្នន័យ​ពី​ថត​ដែល​មាន VCards
 Comment[nds]=Hölper för't Laden vun VCard-Dateien ut en Verteken
 Comment[nn]=Ein agent for å lasta data frå ei mappe med vCard-filer
