@@ -197,6 +197,7 @@ void KCMDesignerFields::importFile()
   KUrl src = KFileDialog::getOpenFileName( QDir::homePath(), i18n("*.ui|Designer Files"),
                                               this, i18n("Import Page") );
   KUrl dest = localUiDir();
+  QDir().mkpath( localUiDir() );
   dest.setFileName(src.fileName());
   KIO::Job *job = KIO::file_copy( src, dest, -1, KIO::Overwrite );
   KIO::NetAccess::synchronousRun( job, this );
