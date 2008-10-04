@@ -20,7 +20,6 @@
 
 #include "vcardresource.h"
 #include "configdialog.h"
-#include "settings.h"
 #include "settingsadaptor.h"
 
 #include <akonadi/changerecorder.h>
@@ -34,17 +33,12 @@
 using namespace Akonadi;
 
 VCardResource::VCardResource( const QString &id )
-  : ResourceBase( id )
+  : SingleFileResource<Settings>( id )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(loadAddressees()) );
-  loadAddressees();
-
-  connect( &mWriteWhenDirtyTimer, SIGNAL( timeout() ), this, SLOT( storeAddressees() ) );
-  mWriteWhenDirtyTimer.setSingleShot( true );
 }
 
 VCardResource::~VCardResource()
@@ -68,12 +62,8 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
 void VCardResource::aboutToQuit()
 {
-  const QString fileName = Settings::self()->path();
-  if ( fileName.isEmpty() )
-    emit error( i18n( "No filename specified." ) );
-  else if ( !storeAddressees() )
-    emit error( i18n( "Failed to save address book file to %1", fileName ) );
-
+  // TODO: we need to delay termination whehn writeToFile() becomes async!
+  writeFile();
   Settings::self()->writeConfig();
 }
 
@@ -84,7 +74,7 @@ void VCardResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.exec();
 
-  loadAddressees();
+  readFile();
   synchronize();
 }
 
@@ -101,7 +91,7 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
     i.setRemoteId( addressee.uid() );
     changeCommitted( i );
 
-    startAutoSaveTimer();
+    fileDirty();
   } else {
     changeProcessed();
   }
@@ -120,7 +110,7 @@ void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArra
     i.setRemoteId( addressee.uid() );
     changeCommitted( i );
 
-    startAutoSaveTimer();
+    fileDirty();
   } else {
     changeProcessed();
   }
@@ -131,7 +121,7 @@ void VCardResource::itemRemoved(const Akonadi::Item & item)
   if ( mAddressees.contains( item.remoteId() ) )
     mAddressees.remove( item.remoteId() );
 
-  startAutoSaveTimer();
+  fileDirty();
 
   changeProcessed();
 }
@@ -154,13 +144,13 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
   // VCard does not support folders so we can savely ignore the collection
   Q_UNUSED( col );
-  
+
   Item::List items;
 
   // FIXME: Check if the KIO::Job is done and was successfull, if so send the
   // items, otherwise set a bool and in the result slot of the job send the
   // items if the bool is set.
-  
+
   foreach ( const KABC::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
@@ -171,23 +161,10 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
   itemsRetrieved( items );
 }
 
-bool VCardResource::loadAddressees()
+bool VCardResource::readFromFile( const QString &fileName )
 {
-  if ( !mAddressees.isEmpty() )
-    storeAddressees();
-
   mAddressees.clear();
 
-  const QString fileName = Settings::self()->path();
-  if ( fileName.isEmpty() ) {
-    emit status( Broken, i18n( "No vCard file specified." ) );
-    return false;
-  }
-
-  // FIXME: Make this asynchronous by using a KIO file job.
-  // See: http://api.kde.org/4.x-api/kdelibs-apidocs/kio/html/namespaceKIO.html
-  // NOTE: Test what happens with remotefile -> save, close before save is finished.
-  
   QFile file( KUrl( fileName ).path() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
@@ -202,28 +179,11 @@ bool VCardResource::loadAddressees()
     mAddressees.insert( list[ i ].uid(), list[ i ] );
   }
 
-  // From here we are using probably a new URL so update mCurrentlyUsedUrl
-  mCurrentlyUsedUrl = KUrl::fromPath( fileName );
-
-  emit status( Idle );
   return true;
 }
 
-bool VCardResource::storeAddressees()
+bool VCardResource::writeToFile( const QString &fileName )
 {
-  if ( Settings::self()->readOnly() )
-    return true;
-
-  // FIXME: Make asynchronous.
-
-  // We don't use the Settings::self()->path() here as that might have changed
-  // and in that case it would probably cause data lose.
-  const QString fileName = mCurrentlyUsedUrl.path();
-  if ( fileName.isEmpty() ) {
-    emit status( Broken, i18n( "No vCard file specified." ) );
-    return false;
-  }
-
   QFile file( fileName );
   if ( !file.open( QIODevice::WriteOnly ) ) {
     emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
@@ -236,15 +196,6 @@ bool VCardResource::storeAddressees()
   file.close();
 
   return true;
-}
-
-void VCardResource::startAutoSaveTimer()
-{
-  if( Settings::self()->autosave() && !mWriteWhenDirtyTimer.isActive() )
-  {
-    mWriteWhenDirtyTimer.setInterval( Settings::self()->autosaveInterval() * 60 * 1000 );
-    mWriteWhenDirtyTimer.start();
-  }
 }
 
 AKONADI_RESOURCE_MAIN( VCardResource )

@@ -1,3 +1,9 @@
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/shared )
+
+set ( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourcebase.cpp
+)
+
 if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( knut )
   add_subdirectory( ical )

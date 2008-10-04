@@ -20,14 +20,13 @@
 #ifndef VCARDRESOURCE_H
 #define VCARDRESOURCE_H
 
-#include <QtCore/QTimer>
-
-#include <akonadi/resourcebase.h>
+#include "singlefileresource.h"
+#include "settings.h"
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 
-class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class VCardResource : public Akonadi::SingleFileResource<Settings>, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
@@ -37,6 +36,8 @@ class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::O
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
+    bool readFromFile( const QString &fileName );
+    bool writeToFile( const QString &fileName );
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -50,19 +51,9 @@ class VCardResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::O
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
-  private Q_SLOTS:
-    bool loadAddressees();
-
-    bool storeAddressees();
-
-  private:
-    void startAutoSaveTimer();
-
   private:
     QMap<QString, KABC::Addressee> mAddressees;
     KABC::VCardConverter mConverter;
-    KUrl mCurrentlyUsedUrl;
-		QTimer mWriteWhenDirtyTimer;
 };
 
 #endif
