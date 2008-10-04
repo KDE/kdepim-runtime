@@ -100,7 +100,7 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
 
   const QByteArray data = md.readEntry( entry );
   KMime::Message *mail = new KMime::Message();
-  mail->setContent( data );
+  mail->setContent( KMime::CRLFtoLF( data ) );
   mail->parse();
 
   Item i( item );
@@ -248,7 +248,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
     item.setRemoteId( rid );
     item.setMimeType( "message/rfc822" );
     KMime::Message *msg = new KMime::Message;
-    msg->setHead( md.readEntryHeaders( entry ) );
+    msg->setHead( KMime::CRLFtoLF( md.readEntryHeaders( entry ) ) );
     msg->parse();
     item.setPayload( MessagePtr( msg ) );
     items << item;
