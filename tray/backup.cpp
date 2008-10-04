@@ -110,7 +110,7 @@ void Backup::create( const KUrl& filename )
     int result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-    	kWarning() << "Executed: " << proc->program() << "Result: " << result;
+    	kWarning() << "Executed: " << KStandardDirs::findExe( "mysqldump" ) << params << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -129,7 +129,7 @@ void Backup::create( const KUrl& filename )
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-    	kWarning() << "Executed: " << proc->program() << "Result: " << result;
+    	kWarning() << "Executed: " << KStandardDirs::findExe( "tar" ) << params << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );

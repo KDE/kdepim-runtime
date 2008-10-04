@@ -77,7 +77,7 @@ void Restore::restore( const KUrl& filename )
     int result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-	kWarning() << "Executed:" << proc->program() << " Result: " << result;
+	kWarning() << "Executed:" << KStandardDirs::findExe( "tar" ) << params << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -125,7 +125,7 @@ void Restore::restore( const KUrl& filename )
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-	kWarning() << "Executed:" << proc->program() << " Result: " << result;
+	kWarning() << "Executed:" << KStandardDirs::findExe( "mysql" ) << params << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
