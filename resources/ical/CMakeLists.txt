@@ -10,8 +10,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( icalresource_SRCS
+  ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   icalresource.cpp
-
 )
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

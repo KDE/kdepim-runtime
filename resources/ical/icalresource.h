@@ -20,7 +20,8 @@
 #ifndef ICALRESOURCE_H
 #define ICALRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include "singlefileresource.h"
+#include "settings.h"
 
 namespace KCal {
   class CalendarLocal;
@@ -31,7 +32,7 @@ namespace Akonadi {
   class KCalMimeTypeVisitor;
 }
 
-class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ICalResource : public Akonadi::SingleFileResource<Settings>, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
@@ -48,17 +49,13 @@ class ICalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
+    bool readFromFile( const QString &fileName );
+    bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-
-  private Q_SLOTS:
-    void loadFile();
-
-  private:
-    void writeFile();
 
   private:
     KCal::CalendarLocal *mCalendar;

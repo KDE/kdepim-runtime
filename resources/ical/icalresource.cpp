@@ -18,7 +18,6 @@
 */
 
 #include "icalresource.h"
-#include "settings.h"
 #include "settingsadaptor.h"
 
 #include <kcal/calendarlocal.h>
@@ -41,14 +40,12 @@ using namespace KCal;
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 ICalResource::ICalResource( const QString &id )
-    :ResourceBase( id ), mCalendar( 0 ), mMimeVisitor( new KCalMimeTypeVisitor() )
+    : SingleFileResource<Settings>( id ), mCalendar( 0 ), mMimeVisitor( new KCalMimeTypeVisitor() )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  loadFile();
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(loadFile()) );
 }
 
 ICalResource::~ICalResource()
@@ -83,8 +80,6 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void ICalResource::aboutToQuit()
 {
-  if ( Settings::self()->readOnly() )
-    return;
   writeFile();
   Settings::self()->writeConfig();
 }
@@ -106,25 +101,18 @@ void ICalResource::configure( WId windowId )
     return;
   Settings::self()->setPath( newFile );
   Settings::self()->writeConfig();
-  loadFile();
+  readFile();
   synchronize();
 }
 
-void ICalResource::loadFile()
+bool ICalResource::readFromFile( const QString &fileName )
 {
-  if ( mCalendar )
-    writeFile();
   delete mCalendar;
   mCalendar = 0;
-  const KUrl file = KUrl::fromPathOrUrl( Settings::self()->path() );
-  if ( file.isEmpty() ) {
-    emit status( Broken, i18n( "No iCal file specified." ) );
-    return;
-  }
 
   mCalendar = new KCal::CalendarLocal( QLatin1String( "UTC" ) );
-  mCalendar->load( file.path() );
-  emit status( Idle );
+  mCalendar->load( fileName );
+  return true;
 }
 
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
@@ -134,6 +122,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   mCalendar->addIncidence( i.get()->clone() );
   Item it( item );
   it.setRemoteId( i->uid() );
+  fileDirty();
   changeCommitted( it );
 }
 
@@ -148,6 +137,7 @@ void ICalResource::itemRemoved(const Akonadi::Item & item)
   Incidence *i = mCalendar->incidence( item.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
+  fileDirty();
   changeProcessed();
 }
 
@@ -182,13 +172,13 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
   itemsRetrieved( items );
 }
 
-void ICalResource::writeFile()
+bool ICalResource::writeToFile( const QString &fileName )
 {
-  const KUrl fileName = KUrl::fromPathOrUrl( Settings::self()->path() );
-  if ( fileName.isEmpty() )
-    emit error( i18n("No filename specified.") );
-  else if ( !mCalendar->save( fileName.path() ) )
-    emit error( i18n("Failed to save calendar file to %1", fileName.url() ) );
+  if ( !mCalendar->save( fileName ) ) {
+    emit error( i18n("Failed to save calendar file to %1", fileName ) );
+    return false;
+  }
+  return true;
 }
 
 AKONADI_RESOURCE_MAIN( ICalResource )

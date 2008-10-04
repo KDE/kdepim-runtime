@@ -36,8 +36,6 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>, public Akona
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
-    bool readFromFile( const QString &fileName );
-    bool writeToFile( const QString &fileName );
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -45,6 +43,8 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>, public Akona
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
+    bool readFromFile( const QString &fileName );
+    bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
