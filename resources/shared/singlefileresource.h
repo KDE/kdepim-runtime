@@ -25,6 +25,8 @@
 
 #include <KLocale>
 
+#include <QFile>
+
 namespace Akonadi
 {
 
@@ -69,12 +71,25 @@ class SingleFileResource : public SingleFileResourceBase
       // NOTE: Test what happens with remotefile -> save, close before save is finished.
 
       mCurrentUrl = KUrl( Settings::self()->path() );
+
+      // check if the file does not exist yet, if so, create it
+      if ( !QFile::exists( mCurrentUrl.path() ) ) {
+        QFile f( mCurrentUrl.path() );
+        if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
+          emit status( Idle, i18n( "File '%1' created.", mCurrentUrl.prettyUrl() ) );
+        } else {
+          emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
+          mCurrentUrl.clear();
+          return;
+        }
+      }
+
       if ( !readFromFile( mCurrentUrl.path() ) ) {
-        mCurrentUrl = KUrl();
+        mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
         return;
       }
 
-      emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.url() ) );
+      emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.prettyUrl() ) );
     }
 
     /**
@@ -101,7 +116,7 @@ class SingleFileResource : public SingleFileResourceBase
       if ( !writeToFile( mCurrentUrl.path() ) )
         return;
 
-      emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.url() ) );
+      emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
     }
 
   protected:
