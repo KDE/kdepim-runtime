@@ -39,6 +39,7 @@ void ConfigDialog::save()
 {
   mManager->updateSettings();
   Settings::self()->setPath( ui.kcfg_Path->url().path() );
+  Settings::self()->writeConfig();
 }
 
 #include "configdialog.moc"
