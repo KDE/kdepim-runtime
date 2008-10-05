@@ -44,7 +44,6 @@ class ICalResource : public Akonadi::SingleFileResource<Settings>, public Akonad
     virtual void configure( WId windowId );
 
   protected Q_SLOTS:
-    void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 

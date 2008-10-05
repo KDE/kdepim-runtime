@@ -35,6 +35,8 @@ using namespace Akonadi;
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
+  setSupportedMimetypes( QStringList() << "text/directory" );
+
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
@@ -124,20 +126,6 @@ void VCardResource::itemRemoved(const Akonadi::Item & item)
   fileDirty();
 
   changeProcessed();
-}
-
-void VCardResource::retrieveCollections()
-{
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( Settings::self()->path() );
-  c.setName( name() );
-  QStringList mimeTypes;
-  mimeTypes << "text/directory";
-  c.setContentMimeTypes( mimeTypes );
-  Collection::List list;
-  list << c;
-  collectionsRetrieved( list );
 }
 
 void VCardResource::retrieveItems( const Akonadi::Collection & col )

@@ -23,6 +23,7 @@
 #include <akonadi/resourcebase.h>
 
 #include <KDE/KUrl>
+#include <QtCore/QStringList>
 #include <QtCore/QTimer>
 
 namespace Akonadi
@@ -37,6 +38,11 @@ class SingleFileResourceBase : public ResourceBase
   Q_OBJECT
   public:
     SingleFileResourceBase( const QString &id );
+
+    /**
+     * Set the mimetypes supported by this resource.
+     */
+    void setSupportedMimetypes( const QStringList &mimeTypes );
 
   public Q_SLOTS:
     virtual void readFile() = 0;
@@ -60,6 +66,7 @@ class SingleFileResourceBase : public ResourceBase
   protected:
     QTimer mDirtyTimer;
     KUrl mCurrentUrl;
+    QStringList mSupportedMimetypes;
 };
 
 }

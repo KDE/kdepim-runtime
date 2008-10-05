@@ -43,6 +43,11 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 ICalResource::ICalResource( const QString &id )
     : SingleFileResource<Settings>( id ), mCalendar( 0 ), mMimeVisitor( new KCalMimeTypeVisitor() )
 {
+  QStringList mimeTypes;
+  mimeTypes << QLatin1String( "text/calendar" );
+  mimeTypes += mMimeVisitor->allMimeTypes();
+  setSupportedMimetypes( mimeTypes );
+
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
@@ -130,21 +135,6 @@ void ICalResource::itemRemoved(const Akonadi::Item & item)
     mCalendar->deleteIncidence( i );
   fileDirty();
   changeProcessed();
-}
-
-void ICalResource::retrieveCollections()
-{
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( Settings::self()->path() );
-  c.setName( name() );
-  QStringList mimeTypes;
-  mimeTypes << QLatin1String( "text/calendar" );
-  mimeTypes += mMimeVisitor->allMimeTypes();
-  c.setContentMimeTypes( mimeTypes );
-  Collection::List list;
-  list << c;
-  collectionsRetrieved( list );
 }
 
 void ICalResource::retrieveItems( const Akonadi::Collection & col )

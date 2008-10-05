@@ -44,7 +44,7 @@ class SingleFileResource : public SingleFileResourceBase
      */
     void fileDirty()
     {
-      if( Settings::self()->autosave() && !mDirtyTimer.isActive() ) {
+      if( !mDirtyTimer.isActive() ) {
         mDirtyTimer.setInterval( Settings::self()->autosaveInterval() * 60 * 1000 );
         mDirtyTimer.start();
       }
@@ -102,6 +102,29 @@ class SingleFileResource : public SingleFileResourceBase
         return;
 
       emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.url() ) );
+    }
+
+  protected:
+    void retrieveCollections()
+    {
+      Collection c;
+      c.setParent( Collection::root() );
+      c.setRemoteId( Settings::self()->path() );
+      c.setName( name() );
+      QStringList mimeTypes;
+      c.setContentMimeTypes( mSupportedMimetypes );
+      if ( Settings::self()->readOnly() ) {
+        c.setRights( Collection::ReadOnly );
+      } else {
+        Collection::Rights rights;
+        rights |= Collection::CanChangeItem;
+        rights |= Collection::CanCreateItem;
+        rights |= Collection::CanDeleteItem;
+        c.setRights( rights );
+      }
+      Collection::List list;
+      list << c;
+      collectionsRetrieved( list );
     }
 };
 

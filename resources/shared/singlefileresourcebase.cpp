@@ -32,4 +32,9 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
   QTimer::singleShot( 0, this, SLOT(readFile()) );
 }
 
+void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes)
+{
+  mSupportedMimetypes = mimeTypes;
+}
+
 #include "singlefileresourcebase.moc"
