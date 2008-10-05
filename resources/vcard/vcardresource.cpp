@@ -19,8 +19,8 @@
 */
 
 #include "vcardresource.h"
-#include "configdialog.h"
 #include "settingsadaptor.h"
+#include "singlefileresourceconfigdialog.h"
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
@@ -69,13 +69,13 @@ void VCardResource::aboutToQuit()
 
 void VCardResource::configure( WId windowId )
 {
-  ConfigDialog dlg;
-  if ( windowId )
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.exec();
-
-  readFile();
-  synchronize();
+  SingleFileResourceConfigDialog<Settings> dlg( windowId );
+  dlg.setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Addressbook File" ) );
+  dlg.setCaption( i18n("Select Addressbook") );
+  if ( dlg.exec() == QDialog::Accepted ) {
+    readFile();
+    synchronize();
+  }
 }
 
 void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
