@@ -21,8 +21,7 @@ set(kdepim_LIB_SRCS
    kpimprefs.cpp 
    categoryselectdialog.cpp 
    categoryeditdialog.cpp 
-   kdateedit.cpp 
-   kimportdialog.cpp 
+   kdateedit.cpp
    kvcarddrag.cpp 
    addressesdialog.cpp 
    addresseeview.cpp 
