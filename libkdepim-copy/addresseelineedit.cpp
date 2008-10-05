@@ -411,6 +411,7 @@ void AddresseeLineEdit::doCompletion( bool ctrlT )
     if ( m_searchString.isEmpty() ) {
       break;
     }
+    //else: fall-through to the CompletionPopup case
   }
 
   case KGlobalSettings::CompletionPopup:
