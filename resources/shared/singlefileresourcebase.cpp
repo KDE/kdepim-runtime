@@ -28,7 +28,7 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
   connect( &mDirtyTimer, SIGNAL(timeout()), SLOT(writeFile()) );
   mDirtyTimer.setSingleShot( true );
 
-  connect( this, SIGNAL(reconfigure()), SLOT(readFile()) );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(readFile()) );
   QTimer::singleShot( 0, this, SLOT(readFile()) );
 }
 

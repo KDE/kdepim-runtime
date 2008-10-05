@@ -19,6 +19,7 @@
 
 #include "icalresource.h"
 #include "settingsadaptor.h"
+#include "singlefileresourceconfigdialog.h"
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -86,23 +87,13 @@ void ICalResource::aboutToQuit()
 
 void ICalResource::configure( WId windowId )
 {
-  const QString oldFile = Settings::self()->path();
-  KUrl url;
-  if ( !oldFile.isEmpty() )
-    url = KUrl::fromPath( oldFile );
-  else
-    url = KUrl::fromPath( QDir::homePath() );
-  const QString newFile = KFileDialog::getOpenFileNameWId( url.directory(),
-      "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File"),
-      windowId, i18n("Select Calendar") );
-  if ( newFile.isEmpty() )
-    return;
-  if ( oldFile == newFile )
-    return;
-  Settings::self()->setPath( newFile );
-  Settings::self()->writeConfig();
-  readFile();
-  synchronize();
+  SingleFileResourceConfigDialog<Settings> dlg( windowId );
+  dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
+  dlg.setCaption( i18n("Select Calendar") );
+  if ( dlg.exec() == QDialog::Accepted ) {
+    readFile();
+    synchronize();
+  }
 }
 
 bool ICalResource::readFromFile( const QString &fileName )

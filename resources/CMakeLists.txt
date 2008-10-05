@@ -1,7 +1,15 @@
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/shared )
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared
+  ${CMAKE_CURRENT_BINARY_DIR}/shared
+)
 
-set ( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
+set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourcebase.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialogbase.cpp
+)
+
+set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
 
 if ( XSLTPROC_EXECUTABLE )
