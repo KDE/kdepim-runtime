@@ -124,8 +124,18 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
 
 void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  kWarning( 5251 ) << "Implement me!";
-  AgentBase::Observer::itemChanged( item, parts );
+  Q_ASSERT( item.hasPayload<IncidencePtr>() );
+  IncidencePtr payload = item.payload<IncidencePtr>();
+  Incidence *incidence = mCalendar->incidence( item.remoteId() );
+  if ( !incidence ) {
+    // not in the calendar yet, should not happen -> add it
+    mCalendar->addIncidence( payload.get()->clone() );
+  } else {
+    *incidence = *(payload.get());
+    mCalendar->setModified( true );
+  }
+  fileDirty();
+  changeCommitted( item );
 }
 
 void ICalResource::itemRemoved(const Akonadi::Item & item)
