@@ -40,6 +40,7 @@ class CollectionView;
 class CollectionModel;
 class ItemModel;
 class Job;
+class StandardActionManager;
 }
 
 class BrowserWidget: public QWidget
@@ -47,10 +48,7 @@ class BrowserWidget: public QWidget
   Q_OBJECT
 
   public:
-    explicit BrowserWidget( KXmlGuiWindow *xmlGuiWindow = 0, QWidget *parent = 0 );
-
-    QItemSelectionModel *collectionSelectionModel() const;
-    QItemSelectionModel *itemSelectionModel() const;
+    explicit BrowserWidget( KXmlGuiWindow *xmlGuiWindow, QWidget *parent = 0 );
 
   private slots:
     void collectionActivated( const QModelIndex &index );
@@ -72,6 +70,7 @@ class BrowserWidget: public QWidget
     Akonadi::Item mCurrentItem;
     QStandardItemModel *mAttrModel;
     QStandardItemModel *mNepomukModel;
+    Akonadi::StandardActionManager *mStdActionManager;
 };
 
 #endif

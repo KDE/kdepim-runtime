@@ -33,6 +33,7 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
+#include <akonadi/standardactionmanager.h>
 
 #include <kcal/kcalmodel.h>
 #include <kabc/kabcmodel.h>
@@ -66,8 +67,10 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
     mItemModel( 0 ),
     mCurrentCollection( 0 ),
-    mNepomukModel( 0 )
+    mNepomukModel( 0 ),
+    mStdActionManager( 0 )
 {
+  Q_ASSERT( xmlGuiWindow );
   QVBoxLayout *layout = new QVBoxLayout( this );
 
   QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
@@ -119,6 +122,11 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   CollectionPropertiesDialog::registerPage( new CollectionInternalsPageFactory() );
 
   Control::widgetNeedsAkonadi( this );
+
+  mStdActionManager = new StandardActionManager( xmlGuiWindow->actionCollection(), xmlGuiWindow );
+  mStdActionManager->setCollectionSelectionModel( mCollectionView->selectionModel() );
+  mStdActionManager->setItemSelectionModel( itemUi.itemView->selectionModel() );
+  mStdActionManager->createAllActions();
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
@@ -238,6 +246,8 @@ void BrowserWidget::modelChanged()
   itemUi.itemView->setModel( mItemModel );
   if ( mCurrentCollection > 0 )
     mItemModel->setCollection( Collection( mCurrentCollection ) );
+  if ( mStdActionManager )
+    mStdActionManager->setItemSelectionModel( itemUi.itemView->selectionModel() );
 }
 
 void BrowserWidget::save()
@@ -265,16 +275,6 @@ void BrowserWidget::save()
 
   ItemModifyJob *store = new ItemModifyJob( item, this );
   connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
-}
-
-QItemSelectionModel * BrowserWidget::collectionSelectionModel() const
-{
-  return mCollectionView->selectionModel();
-}
-
-QItemSelectionModel * BrowserWidget::itemSelectionModel() const
-{
-  return itemUi.itemView->selectionModel();
 }
 
 void BrowserWidget::saveResult(KJob * job)

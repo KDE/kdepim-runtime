@@ -28,7 +28,6 @@
 
 #include <akonadi/agentinstancewidget.h>
 #include <akonadi/agentfilterproxymodel.h>
-#include <akonadi/standardactionmanager.h>
 #include <akonadi/searchcreatejob.h>
 
 #include <KAction>
@@ -54,11 +53,6 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
   BrowserWidget *browser = new BrowserWidget( parent, tabWidget );
   tabWidget->addTab( browser, "Browser" );
   tabWidget->addTab( new DebugWidget( tabWidget ), "Debugger" );
-
-  Akonadi::StandardActionManager *actMgr = new Akonadi::StandardActionManager( parent->actionCollection(), this );
-  actMgr->setCollectionSelectionModel( browser->collectionSelectionModel() );
-  actMgr->setItemSelectionModel( browser->itemSelectionModel() );
-  actMgr->createAllActions();
 
   KAction *action = parent->actionCollection()->addAction( "akonadiconsole_search" );
   action->setText( "Create Search" );
