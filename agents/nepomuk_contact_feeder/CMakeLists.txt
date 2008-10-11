@@ -16,6 +16,7 @@ target_link_libraries(akonadi_nepomuk_contact_feeder
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KABC_LIBS}
   ${NEPOMUK_LIBRARIES}
+  ${SOPRANO_LIBRARIES}
   )
 
 install(TARGETS akonadi_nepomuk_contact_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
