@@ -15,6 +15,7 @@ X-KDE-System-Settings-Parent-Category=advanced-user-settings
 
 Name=Akonadi configuration
 Name[km]=ការ​កំណត់​រចនាសម្ព័ន្ធ​ម៉ាស៊ីនបម្រើ Akonadi
+Name[nb]=Akonadi-oppsett
 Name[nds]=Akonadi-Instellen
 Name[pt]=Configuração do Akonadi
 Name[pt_BR]=Configuração do Akonadi
@@ -26,6 +27,7 @@ Comment=Configuration of the Akonadi Personal Information Management framework
 Comment[el]=Ρύθμιση του διαχειριστή προσωπικών πληροφοριών του Akonadi
 Comment[gl]=Configuración da framework do Xestor de Información Persoal de Akonadi
 Comment[km]=ការ​កំណត់​រចនាសម្ព័ន្ធ​គម្រោងការ​ការ​គ្រប់គ្រង​ព័ត៌មាន​ផ្ទាល់ខ្លួន Akonadi
+Comment[nb]=Sette opp rammeverket for Akonadi personlig informasjonsbehandler
 Comment[nds]=Den Pleger för persöönliche Informatschonen Akonadi instellen
 Comment[nn]=Oppsett av Akonadi-rammeverket for handtering av personleg informasjon
 Comment[pt]=Configuração da plataforma de Gestão de Informação Pessoal do Akonadi
