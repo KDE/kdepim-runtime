@@ -19,8 +19,6 @@
 
 #include "akonadisink.h"
 #include "datasink.h"
-#include "calendarsink.h"
-#include "contactsink.h"
 
 #include <akonadi/control.h>
 #include <akonadi/collection.h>
