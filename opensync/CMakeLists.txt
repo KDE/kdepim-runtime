@@ -9,8 +9,6 @@ set( akonadi_opensync_srcs
   sinkbase.cpp
   akonadisink.cpp
   datasink.cpp
-  calendarsink.cpp
-  contactsink.cpp
 )
 
 # for boost

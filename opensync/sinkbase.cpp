@@ -18,6 +18,7 @@
 */
 
 #include "sinkbase.h"
+#include <KDebug>
 
 #define WRAP(X) \
   osync_trace( TRACE_ENTRY, "%s(%p, %p, %p)", __PRETTY_FUNCTION__, userdata, info, ctx); \
@@ -48,6 +49,7 @@ static void get_changes_wrapper(void *userdata, OSyncPluginInfo *info, OSyncCont
 
 static void commit_wrapper(void *userdata, OSyncPluginInfo *info, OSyncContext *ctx, OSyncChange *chg)
 {
+kDebug() << "commitwrap";
   WRAP( commit( chg ) )
 }
 
@@ -109,6 +111,7 @@ void SinkBase::syncDone()
 
 void SinkBase::success() const
 {
+kDebug();
   Q_ASSERT( mContext );
   osync_context_report_success( mContext );
   mContext = 0;
@@ -116,6 +119,7 @@ void SinkBase::success() const
 
 void SinkBase::error(OSyncErrorType type, const QString &msg) const
 {
+kDebug();
   Q_ASSERT( mContext );
   osync_context_report_error( mContext, type, msg.toUtf8() );
   mContext = 0;
@@ -123,6 +127,7 @@ void SinkBase::error(OSyncErrorType type, const QString &msg) const
 
 void SinkBase::warning(OSyncError * error) const
 {
+kDebug();
   Q_ASSERT( mContext );
   osync_context_report_osyncwarning( mContext, error );
   osync_error_unref( &error );
@@ -130,9 +135,11 @@ void SinkBase::warning(OSyncError * error) const
 
 void SinkBase::wrapSink(OSyncObjTypeSink * sink)
 {
+kDebug();
   Q_ASSERT( sink );
   Q_ASSERT( mSink == 0 );
   mSink = sink;
+
   osync_objtype_sink_set_functions( sink, mWrapedFunctions, this );
 }
 

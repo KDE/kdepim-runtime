@@ -55,8 +55,6 @@ static void* akonadi_initialize(OSyncPlugin *plugin, OSyncPluginInfo *info, OSyn
   if ( !kcd )
     kcd = new KComponentData( "akonadi_opensync" );
 
-  kDebug();
-
   // main sink
   AkonadiSink *mainSink = new AkonadiSink();
   if ( !mainSink->initialize( plugin, info, error ) ) {
@@ -74,10 +72,9 @@ static void* akonadi_initialize(OSyncPlugin *plugin, OSyncPluginInfo *info, OSyn
 
     DataSink *ds;
     if( sinkName == "event" )
-      ds = new CalendarSink();
-
+      ds = new DataSink( DataSink::Calendar );
     else if( sinkName == "contact" )
-      ds = new ContactSink();
+      ds = new DataSink( DataSink::Contacts );
 
     if ( !ds->initialize( plugin, info, sink, error ) ) {
       delete ds;
@@ -119,7 +116,7 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
 //         continue;
       if( col.contentMimeTypes().isEmpty() )
         continue;
-      
+
       OSyncPluginResource *res = osync_plugin_resource_new( error );
       // TODO error handling?
       osync_plugin_resource_enable( res, TRUE );
@@ -134,7 +131,7 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
         formatName = "vcard30";
       else
         continue; // if the collection is not calendar or contact one, skip it
-      
+
       /*OSyncFormatEnv *formatenv = osync_plugin_info_get_format_env( info );
       OSyncObjFormat *format = osync_format_env_find_objformat( formatenv, formatName.toLatin1() );
       osync_plugin_resource_set_objformat( res, format );*/

@@ -25,6 +25,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemcreatejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <opensync/opensync.h>
@@ -42,15 +43,18 @@ using namespace Akonadi;
 class DataSink : public SinkBase
 {
   Q_OBJECT
+
   public:
-    DataSink( int features );
+    enum Type { Calendar = 0, Contacts, Notes };
+
+    DataSink( int type );
     ~DataSink();
 
-    virtual bool initialize( OSyncPlugin *plugin, OSyncPluginInfo *info, OSyncObjTypeSink *sink, OSyncError **error );
+    bool initialize( OSyncPlugin *plugin, OSyncPluginInfo *info, OSyncObjTypeSink *sink, OSyncError **error );
 
-    virtual void getChanges();
-    virtual void commit( OSyncChange *change );
-    virtual void syncDone();
+    void getChanges();
+    void commit( OSyncChange *change );
+    void syncDone();
 
   public slots:
     void slotGetChangesFinished( KJob * );
@@ -67,28 +71,33 @@ class DataSink : public SinkBase
     */
     void reportChange( const Item& item, const QString& format );
 
-    // in case you're writing a new datasink, you have to reimplement the following methods.
-
     /**
      * Reimplement in subclass to provide data about changes to opensync. Note, that you must call DataSink::reportChange( Item, QString, int ) after you have organized data to be send to opensync.
      */
-    virtual void reportChange( const Item & item ) = 0;
+    void reportChange( const Item & item );
 
     /**
      * Creates a new item based on the data given by opensync.
      */
-    virtual int createItem( OSyncData *data ) = 0;
+    const Item createItem( OSyncChange *change );
     /**
      * Modified an item based on the data given by opensync.
      */
-    virtual int modifyItem( OSyncData *data ) = 0;
+    const Item modifyItem( OSyncChange *change );
     /**
      * Deletes an item based on the data given by opensync.
      */
-    //virtual void deleteItem( OSyncData *data );
+    void deleteItem( OSyncChange *change );
+
+  private:
+    const Item createAkonadiItem( OSyncChange *change );
+    const Item fetchItem( const QString& id );
+    const QString formatName();
+    bool setPayload( Item *item, const QString &str );
 
   private:
     OSyncHashTable *m_hashtable;
+    int m_type;
 };
 
 #endif
