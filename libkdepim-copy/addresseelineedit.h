@@ -71,7 +71,7 @@ class KDEPIM_EXPORT AddresseeLineEdit : public KLineEdit
     virtual void loadContacts();
     void slotIMAPCompletionOrderChanged();
   protected:
-    void addContact( const KABC::Addressee &, int weight, int source = -1 );
+    virtual void addContact( const KABC::Addressee &, int weight, int source = -1 );
     virtual void keyPressEvent( QKeyEvent * );
     /**
      * Reimplemented for smart insertion of email addresses.
