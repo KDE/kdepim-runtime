@@ -249,7 +249,6 @@ class MailThreaderAgent::Private
   {
     Item parent;
     Item ref = item;
-    int mark = 0;
 
     if ( !ref.isValid() )
       return;

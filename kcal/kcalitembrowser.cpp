@@ -47,6 +47,6 @@ QString KCalItemBrowser::itemToRichText( const Item& item )
     }
 
     IncidencePtr incidence = item.payload<IncidencePtr>();
-    return KCal::IncidenceFormatter::extensiveDisplayString( incidence.get() );
+    return KCal::IncidenceFormatter::extensiveDisplayStr( incidence.get(), KDateTime::Spec() );
 }
 

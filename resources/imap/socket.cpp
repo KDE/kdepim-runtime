@@ -133,7 +133,7 @@ void Socket::slotSocketRead()
         if ( m_tls ) {
             // TODO move intelligence to imap/smtp
             if ( msg.indexOf( "a02 OK" ) != -1 ||
-                    msg.indexOf( "220 " ) < msg.indexOf( "TLS" ) && msg.indexOf( "220 " ) != -1 ) {
+                  ( msg.indexOf( "220 " ) < msg.indexOf( "TLS" ) && msg.indexOf( "220 " ) != -1 ) ) {
                 // Request accepted.
                 kDebug() << objectName() << "Accepted, starting TLS handshake..." << m_socket->mode();
                 startShake();
