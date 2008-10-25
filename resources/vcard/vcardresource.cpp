@@ -22,9 +22,6 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchscope.h>
-
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
@@ -35,12 +32,11 @@ using namespace Akonadi;
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  setSupportedMimetypes( QStringList() << "text/directory" );
+  setSupportedMimetypes( QStringList() << "text/directory", "office-address-book" );
 
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
-  changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 
 VCardResource::~VCardResource()

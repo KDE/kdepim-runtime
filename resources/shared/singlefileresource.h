@@ -23,6 +23,8 @@
 
 #include "singlefileresourcebase.h"
 
+#include <akonadi/collectiondisplayattribute.h>
+
 #include <KLocale>
 
 #include <QFile>
@@ -61,6 +63,8 @@ class SingleFileResource : public SingleFileResourceBase
       if ( !mCurrentUrl.isEmpty() )
         writeFile();
 
+      const bool nameWasChanged = mCurrentUrl.fileName() != name() && !mCurrentUrl.isEmpty();
+
       if ( Settings::self()->path().isEmpty() ) {
         emit status( Broken, i18n( "No file selected." ) );
         return;
@@ -71,6 +75,8 @@ class SingleFileResource : public SingleFileResourceBase
       // NOTE: Test what happens with remotefile -> save, close before save is finished.
 
       mCurrentUrl = KUrl( Settings::self()->path() );
+      if ( !nameWasChanged )
+        setName( mCurrentUrl.fileName() );
 
       // check if the file does not exist yet, if so, create it
       if ( !QFile::exists( mCurrentUrl.path() ) ) {
@@ -125,18 +131,22 @@ class SingleFileResource : public SingleFileResourceBase
       Collection c;
       c.setParent( Collection::root() );
       c.setRemoteId( Settings::self()->path() );
-      c.setName( name() );
+      c.setName( identifier() );
       QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
       if ( Settings::self()->readOnly() ) {
-        c.setRights( Collection::ReadOnly );
+        c.setRights( Collection::CanChangeCollection );
       } else {
         Collection::Rights rights;
         rights |= Collection::CanChangeItem;
         rights |= Collection::CanCreateItem;
         rights |= Collection::CanDeleteItem;
+        rights |= Collection::CanChangeCollection;
         c.setRights( rights );
       }
+      CollectionDisplayAttribute* attr = c.attribute<CollectionDisplayAttribute>( Collection::AddIfMissing );
+      attr->setDisplayName( name() );
+      attr->setIconName( mCollectionIcon );
       Collection::List list;
       list << c;
       collectionsRetrieved( list );

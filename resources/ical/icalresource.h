@@ -32,7 +32,7 @@ namespace Akonadi {
   class KCalMimeTypeVisitor;
 }
 
-class ICalResource : public Akonadi::SingleFileResource<Settings>, public Akonadi::AgentBase::Observer
+class ICalResource : public Akonadi::SingleFileResource<Settings>
 {
   Q_OBJECT
 

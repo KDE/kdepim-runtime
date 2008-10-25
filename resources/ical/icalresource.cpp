@@ -24,8 +24,6 @@
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchscope.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kdebug.h>
@@ -46,12 +44,11 @@ ICalResource::ICalResource( const QString &id )
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
   mimeTypes += mMimeVisitor->allMimeTypes();
-  setSupportedMimetypes( mimeTypes );
+  setSupportedMimetypes( mimeTypes, "office-calendar" );
 
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
-  changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 
 ICalResource::~ICalResource()

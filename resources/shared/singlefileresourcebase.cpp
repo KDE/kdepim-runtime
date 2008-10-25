@@ -20,6 +20,10 @@
 
 #include "singlefileresourcebase.h"
 
+#include <akonadi/changerecorder.h>
+#include <akonadi/collectiondisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
+
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
@@ -30,11 +34,28 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(readFile()) );
   QTimer::singleShot( 0, this, SLOT(readFile()) );
+
+  changeRecorder()->itemFetchScope().fetchFullPayload();
+  changeRecorder()->fetchCollection( true );
 }
 
-void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes)
+void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes, const QString &icon)
 {
   mSupportedMimetypes = mimeTypes;
+  mCollectionIcon = icon;
+}
+
+void SingleFileResourceBase::collectionChanged(const Akonadi::Collection & collection)
+{
+  QString newName = collection.name();
+  if ( collection.hasAttribute<CollectionDisplayAttribute>() ) {
+    CollectionDisplayAttribute *attr = collection.attribute<CollectionDisplayAttribute>();
+    if ( !attr->displayName().isEmpty() )
+      newName = attr->displayName();
+  }
+
+  if ( newName != name() )
+    setName( newName );
 }
 
 #include "singlefileresourcebase.moc"
