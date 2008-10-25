@@ -47,6 +47,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     void collectionChanged( const Akonadi::Collection &collection );
 
   public Q_SLOTS:
+    void reloadFile();
     virtual void readFile() = 0;
     virtual void writeFile() = 0;
 
@@ -70,6 +71,9 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     KUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
+
+  private Q_SLOTS:
+    void fileChanged( const QString &fileName );
 };
 
 }

@@ -71,7 +71,7 @@ void VCardResource::configure( WId windowId )
   dlg.setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Addressbook File" ) );
   dlg.setCaption( i18n("Select Addressbook") );
   if ( dlg.exec() == QDialog::Accepted ) {
-    readFile();
+    reloadFile();
     synchronize();
   }
 }

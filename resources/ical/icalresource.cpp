@@ -93,7 +93,7 @@ void ICalResource::configure( WId windowId )
   dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
   dlg.setCaption( i18n("Select Calendar") );
   if ( dlg.exec() == QDialog::Accepted ) {
-    readFile();
+    reloadFile();
     synchronize();
   }
 }

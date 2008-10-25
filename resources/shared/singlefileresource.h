@@ -25,6 +25,7 @@
 
 #include <akonadi/collectiondisplayattribute.h>
 
+#include <KDirWatch>
 #include <KLocale>
 
 #include <QFile>
@@ -59,9 +60,8 @@ class SingleFileResource : public SingleFileResourceBase
      */
     void readFile()
     {
-      // if we have something loaded already, make sure we write that back in case the settings changed
-      if ( !mCurrentUrl.isEmpty() )
-        writeFile();
+      if ( KDirWatch::self()->contains( mCurrentUrl.path() ) )
+        KDirWatch::self()->removeFile( mCurrentUrl.path() );
 
       const bool nameWasChanged = mCurrentUrl.fileName() != name() && !mCurrentUrl.isEmpty();
 
@@ -95,6 +95,8 @@ class SingleFileResource : public SingleFileResourceBase
         return;
       }
 
+      if ( Settings::self()->monitorFile() )
+        KDirWatch::self()->addFile( mCurrentUrl.path() );
       emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.prettyUrl() ) );
     }
 
@@ -119,7 +121,10 @@ class SingleFileResource : public SingleFileResourceBase
         return;
       }
 
-      if ( !writeToFile( mCurrentUrl.path() ) )
+      KDirWatch::self()->stopScan();
+      const bool writeResult = writeToFile( mCurrentUrl.path() );
+      KDirWatch::self()->startScan();
+      if ( !writeResult )
         return;
 
       emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );

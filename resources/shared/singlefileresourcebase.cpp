@@ -24,6 +24,13 @@
 #include <akonadi/collectiondisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
+#include <KDebug>
+#include <KDirWatch>
+#include <KLocale>
+#include <KStandardDirs>
+
+#include <QDir>
+
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
@@ -32,11 +39,13 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
   connect( &mDirtyTimer, SIGNAL(timeout()), SLOT(writeFile()) );
   mDirtyTimer.setSingleShot( true );
 
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(readFile()) );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadFile()) );
   QTimer::singleShot( 0, this, SLOT(readFile()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
+
+  connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
 }
 
 void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes, const QString &icon)
@@ -56,6 +65,40 @@ void SingleFileResourceBase::collectionChanged(const Akonadi::Collection & colle
 
   if ( newName != name() )
     setName( newName );
+}
+
+void SingleFileResourceBase::reloadFile()
+{
+  // if we have something loaded already, make sure we write that back in case the settings changed
+  if ( !mCurrentUrl.isEmpty() )
+    writeFile();
+ readFile();
+}
+
+void SingleFileResourceBase::fileChanged(const QString & fileName)
+{
+  if ( fileName != mCurrentUrl.path() )
+    return;
+
+  // handle conflicts
+  if ( mDirtyTimer.isActive() && !mCurrentUrl.isEmpty() ) {
+    const KUrl prevUrl = mCurrentUrl;
+    int i = 0;
+    QString lostFoundFileName;
+    do {
+      lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
+          + prevUrl.fileName() + "-" + QString::number( ++i ) );
+    } while ( KStandardDirs::exists( lostFoundFileName ) );
+    mCurrentUrl = KUrl( lostFoundFileName );
+    writeFile();
+    emit warning( i18n( "The file '%1' was changed on disk while there were still pending changes in Akonadi. "
+        "To avoid dataloss, a backup of the internal changes has been created at '%2'.",
+         prevUrl.prettyUrl(), mCurrentUrl.prettyUrl() ) );
+    mCurrentUrl = prevUrl;
+  }
+
+  readFile();
+  synchronize();
 }
 
 #include "singlefileresourcebase.moc"
