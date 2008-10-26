@@ -126,12 +126,12 @@ void VCardResource::itemRemoved(const Akonadi::Item & item)
 
 void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
-  // VCard does not support folders so we can savely ignore the collection
+  // VCard does not support folders so we can safely ignore the collection
   Q_UNUSED( col );
 
   Item::List items;
 
-  // FIXME: Check if the KIO::Job is done and was successfull, if so send the
+  // FIXME: Check if the KIO::Job is done and was successful, if so send the
   // items, otherwise set a bool and in the result slot of the job send the
   // items if the bool is set.
 
