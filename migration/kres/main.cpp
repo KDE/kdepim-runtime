@@ -33,9 +33,8 @@ void connectMigrator( KResMigratorBase *m, InfoDialog *dlg )
   if ( !dlg || !m )
     return;
   dlg->migratorAdded();
-  QObject::connect( m, SIGNAL(successMessage(QString)), dlg, SLOT(successMessage(QString)) );
-  QObject::connect( m, SIGNAL(infoMessage(QString)), dlg, SLOT(infoMessage(QString)) );
-  QObject::connect( m, SIGNAL(errorMessage(QString)), dlg, SLOT(errorMessage(QString)) );
+  QObject::connect( m, SIGNAL(message(KResMigratorBase::MessageType,QString)), dlg,
+                    SLOT(message(KResMigratorBase::MessageType,QString)) );
   QObject::connect( m, SIGNAL(destroyed()), dlg, SLOT(migratorDone()) );
 }
 
@@ -52,12 +51,16 @@ int main( int argc, char **argv )
   aboutData.setProgramIconName( "akonadi" );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
 
+  const QStringList supportedTypes = QStringList() << "contact" << "calendar";
+
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
   options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
   options.add( "contacts-only", ki18n("Only migrate contact resources") );
   options.add( "calendar-only", ki18n("Only migrate calendar resources") );
-  options.add( "interactive", ki18n( "Do not show reporting dialog") );
+  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar)" ), "contact,calendar" );
+  options.add( "interactive", ki18n( "Show reporting dialog") );
+  options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
@@ -70,18 +73,21 @@ int main( int argc, char **argv )
     return 1;
 
   InfoDialog *infoDialog = 0;
-  if ( args->isSet( "interactive" ) ) {
-    infoDialog = new InfoDialog();
+  if ( args->isSet( "interactive" ) || args->isSet( "interactive-on-change" ) ) {
+    infoDialog = new InfoDialog( args->isSet( "interactive-on-change" ) );
     infoDialog->show();
   }
 
-  if ( !args->isSet( "calendar-only" ) ) {
-    KABCMigrator *m = new KABCMigrator();
-    m->setBridgingOnly( args->isSet( "bridge-only" ) );
-    connectMigrator( m, infoDialog );
-  }
-  if ( !args->isSet( "contacts-only" ) ) {
-    KCalMigrator *m = new KCalMigrator();
+  foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
+    KResMigratorBase *m = 0;
+    if ( type == "contact" )
+      m = new KABCMigrator();
+    else if ( type == "calendar" )
+      m = new KCalMigrator();
+    else {
+      kError() << "Unknown resource type: " << type;
+      continue;
+    }
     m->setBridgingOnly( args->isSet( "bridge-only" ) );
     connectMigrator( m, infoDialog );
   }

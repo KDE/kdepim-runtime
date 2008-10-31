@@ -48,6 +48,7 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 
 void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 {
+  Q_UNUSED( res );
   const AgentType type = AgentManager::self()->type( "akonadi_ical_resource" );
   if ( !type.isValid() ) {
     migrationFailed( "Unable to obtain ical resource type" );

@@ -63,20 +63,20 @@ template <typename T> class KResMigrator : public KResMigratorBase
       while ( mIt != mManager->end() ) {
         if ( (*mIt)->type() == "akonadi" ) {
           mClientBridgeFound = true;
-          emit successMessage( i18n( "Client-side bridge already set up." ) );
+          emit message( Skip, i18n( "Client-side bridge already set up." ) );
           ++mIt;
           continue;
         }
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
         if ( migrationState( *mIt ) == None ) {
-          emit infoMessage( i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
+          emit message( Info, i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
           mPendingBridgedResources.removeAll( (*mIt)->identifier() );
           T* res = *mIt;
           mCurrentKResource = res;
           ++mIt;
           bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
           if ( !nativeAvailable ) {
-            emit infoMessage( i18n( "No native backend for '%1' available.", res->resourceName() ) );
+            emit message( Info, i18n( "No native backend for '%1' available.", res->resourceName() ) );
             migrateToBridge( res, mBridgeType );
           }
           return;
@@ -84,7 +84,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         if ( migrationState( *mIt ) == Bridged && !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
           mPendingBridgedResources << (*mIt)->identifier();
         if ( migrationState( *mIt ) == Complete )
-          emit successMessage( i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
+          emit message( Skip, i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
         ++mIt;
       }
       if ( mIt == mManager->end() ) {
@@ -107,7 +107,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
-        emit errorMessage( "No Akonadi agent identifier specified for previously bridged resource '" + resId + "'" );
+        emit message( Error, "No Akonadi agent identifier specified for previously bridged resource '" + resId + "'" );
         migrateNext();
         return;
       }
@@ -119,17 +119,17 @@ template <typename T> class KResMigrator : public KResMigratorBase
       KRES::Manager<T> *mBridgeManager = new KRES::Manager<T>( mType );
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
-        emit errorMessage( "Bridged resource '" + resId + "' has no standard resource." );
+        emit message( Error, "Bridged resource '" + resId + "' has no standard resource." );
         migrateNext();
         return;
       }
 
       T *res = mBridgeManager->standardResource();
-      emit infoMessage( i18n( "Trying to migrate '%1' from compatibility bridge to native backend...", res->resourceName() ) );
+      emit message( Info, i18n( "Trying to migrate '%1' from compatibility bridge to native backend...", res->resourceName() ) );
       mCurrentKResource = res;
       bool nativeAvailable = migrateResource( res );
       if ( !nativeAvailable ) {
-        emit successMessage( i18n( "No native backend avaiable, keeping compatibility bridge for '%1'", res->resourceName() ) );
+        emit message( Skip, i18n( "No native backend avaiable, keeping compatibility bridge for '%1'", res->resourceName() ) );
         migrateNext();
       }
     }
@@ -152,15 +152,15 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void setupClientBridge()
     {
       if ( !mClientBridgeFound ) {
-        emit infoMessage( i18n( "Setting up client-side bridge..." ) );
+        emit message( Info, i18n( "Setting up client-side bridge..." ) );
         T* clientBridge = mManager->createResource( "akonadi" );
         if ( clientBridge ) {
           clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
           mManager->add( clientBridge );
           mManager->setStandardResource( clientBridge );
-          emit successMessage( i18n( "Client-side bridge set up successfully." ) );
+          emit message( Info, i18n( "Client-side bridge set up successfully." ) );
         } else {
-          emit errorMessage( i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
+          emit message( Error, i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
         }
       }
       deleteLater();

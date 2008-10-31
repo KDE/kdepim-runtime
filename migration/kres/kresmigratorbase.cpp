@@ -103,7 +103,7 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
     return;
   }
 
-  emit infoMessage( i18n( "Trying to migragte '%1' to compatibility bridge...", res->resourceName() ) );
+  emit message( Info, i18n( "Trying to migragte '%1' to compatibility bridge...", res->resourceName() ) );
   mBridgingInProgress = true;
   const AgentType type = AgentManager::self()->type( typeId );
   if ( !type.isValid() ) {
@@ -163,7 +163,7 @@ void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instanc
   }
 
   setMigrationState( mCurrentKResource, Complete, instance.identifier() );
-  emit successMessage( i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+  emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
   mCurrentKResource = 0;
   migrateNext();
 }
@@ -172,7 +172,7 @@ void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
 {
   mBridgingInProgress = false;
   setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
-  emit successMessage( i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
+  emit message( Success, i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
   mCurrentKResource = 0;
   migrateNext();
 }
@@ -180,10 +180,10 @@ void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
 void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::AgentInstance & instance)
 {
   if ( mBridgingInProgress ) {
-    emit errorMessage( i18n( "Migration of '%1' to compatibility bridge failed: %2",
+    emit message( Error, i18n( "Migration of '%1' to compatibility bridge failed: %2",
                        mCurrentKResource->resourceName(), errorMsg ) );
   } else {
-    emit errorMessage( i18n( "Migration of '%1' to native backend failed: %2",
+    emit message( Error, i18n( "Migration of '%1' to native backend failed: %2",
                        mCurrentKResource->resourceName(), errorMsg ) );
   }
 

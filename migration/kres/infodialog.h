@@ -20,6 +20,8 @@
 #ifndef INFODIALOG_H
 #define INFODIALOG_H
 
+#include "kresmigratorbase.h"
+
 #include <KDialog>
 
 class QListWidget;
@@ -28,20 +30,24 @@ class InfoDialog : public KDialog
 {
   Q_OBJECT
   public:
-    InfoDialog();
+    InfoDialog( bool closeWhenDone = true );
     ~InfoDialog();
 
   public slots:
-    void successMessage( const QString &msg );
-    void infoMessage( const QString &msg );
-    void errorMessage( const QString &msg );
+    void message( KResMigratorBase::MessageType type, const QString &msg );
 
     void migratorAdded();
     void migratorDone();
 
+    bool hasError() const { return mError; }
+    bool hasChange() const { return mChange; }
+
   private:
     QListWidget *mList;
     int mMigratorCount;
+    bool mError;
+    bool mChange;
+    bool mCloseWhenDone;
 };
 
 #endif

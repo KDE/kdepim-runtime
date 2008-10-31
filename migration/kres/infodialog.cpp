@@ -19,12 +19,16 @@
 
 #include "infodialog.h"
 
+#include <KDebug>
 #include <KGlobal>
 
 #include <QListWidget>
 
-InfoDialog::InfoDialog() :
-    mMigratorCount( 0 )
+InfoDialog::InfoDialog( bool closeWhenDone ) :
+    mMigratorCount( 0 ),
+    mError( false ),
+    mChange( false ),
+    mCloseWhenDone( closeWhenDone )
 {
   KGlobal::ref();
   setButtons( Close );
@@ -41,19 +45,31 @@ InfoDialog::~InfoDialog()
   KGlobal::deref();
 }
 
-void InfoDialog::successMessage(const QString & msg)
+void InfoDialog::message(KResMigratorBase::MessageType type, const QString & msg)
 {
-  new QListWidgetItem( KIcon( "dialog-ok" ), msg, mList );
-}
-
-void InfoDialog::infoMessage(const QString & msg)
-{
-  new QListWidgetItem( KIcon( "dialog-information" ), msg, mList );
-}
-
-void InfoDialog::errorMessage(const QString & msg)
-{
-  new QListWidgetItem( KIcon( "dialog-error" ), msg, mList );
+  QListWidgetItem *item = new QListWidgetItem( msg, mList );
+  switch ( type ) {
+    case KResMigratorBase::Success:
+      item->setIcon( KIcon( "dialog-ok-apply" ) );
+      mChange = true;
+      kDebug() << msg;
+      break;
+    case KResMigratorBase::Skip:
+      item->setIcon( KIcon( "dialog-ok" ) );
+      kDebug() << msg;
+      break;
+    case KResMigratorBase::Info:
+      item->setIcon( KIcon( "dialog-information" ) );
+      kDebug() << msg;
+      break;
+    case KResMigratorBase::Error:
+      item->setIcon( KIcon( "dialog-error" ) );
+      mError = true;
+      kError() << msg;
+      break;
+    default:
+      kError() << "WTF?";
+  }
 }
 
 void InfoDialog::migratorAdded()
@@ -64,6 +80,9 @@ void InfoDialog::migratorAdded()
 void InfoDialog::migratorDone()
 {
   --mMigratorCount;
-  if ( mMigratorCount == 0 )
+  if ( mMigratorCount == 0 ) {
     enableButton( Close, true );
+    if ( mCloseWhenDone && !hasError() && !hasChange() )
+      emit closeClicked();
+  }
 }

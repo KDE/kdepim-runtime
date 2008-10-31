@@ -46,6 +46,14 @@ class KResMigratorBase : public QObject
       Complete
     };
 
+    enum MessageType
+    {
+      Success,
+      Skip,
+      Info,
+      Error
+    };
+
     Q_ENUMS( MigrationState )
 
     KResMigratorBase( const QString &type, const QString &bridgeType );
@@ -65,9 +73,7 @@ class KResMigratorBase : public QObject
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
 
   signals:
-    void successMessage( const QString &msg );
-    void infoMessage( const QString &msg );
-    void errorMessage( const QString &msg );
+    void message( KResMigratorBase::MessageType type, const QString &msg );
 
   protected slots:
     virtual void migrate() = 0;
