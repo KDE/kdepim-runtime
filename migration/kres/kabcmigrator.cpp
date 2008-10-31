@@ -80,7 +80,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
     migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
-  iface->setPath( kresCfg.readPathEntry( "FileName", "" ) );
+  iface->setPath( kresCfg.readPathEntry( "FileName", KStandardDirs::locateLocal( "data", "kabc/std.vcf" ) ) );
   iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
   migrationCompleted( instance );
