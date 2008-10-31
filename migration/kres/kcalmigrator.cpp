@@ -48,12 +48,6 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 
 void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 {
-  const KConfigGroup kresCfg = kresConfig( res );
-  QString format = kresCfg.readEntry( "Format", "" );
- if ( format != "ical" && format != "vcal" ) {
-    migrationFailed( "Unsupported file format found." );
-    return;
-  }
   const AgentType type = AgentManager::self()->type( "akonadi_ical_resource" );
   if ( !type.isValid() ) {
     migrationFailed( "Unable to obtain ical resource type" );
