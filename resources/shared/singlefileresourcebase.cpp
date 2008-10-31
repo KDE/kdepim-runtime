@@ -73,6 +73,7 @@ void SingleFileResourceBase::reloadFile()
   if ( !mCurrentUrl.isEmpty() )
     writeFile();
  readFile();
+ synchronize();
 }
 
 void SingleFileResourceBase::fileChanged(const QString & fileName)
