@@ -60,7 +60,8 @@ int main( int argc, char **argv )
   options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
   options.add( "contacts-only", ki18n("Only migrate contact resources") );
   options.add( "calendar-only", ki18n("Only migrate calendar resources") );
-  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar)" ), "contact,calendar" );
+  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar)" ),
+               supportedTypes.join( "," ).toLatin1() );
   options.add( "interactive", ki18n( "Show reporting dialog") );
   options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
   KCmdLineArgs::addCmdLineOptions( options );
@@ -68,7 +69,9 @@ int main( int argc, char **argv )
 
   QStringList typesToMigrate;
   foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
-    if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.KResMigrator." + type ) )
+    if ( !supportedTypes.contains( type ) )
+      kWarning() << "Unknown resource type: " << type;
+    else if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.KResMigrator." + type ) )
       kWarning() << "Migrator instance already running for type " << type;
     else
       typesToMigrate << type;
