@@ -2,6 +2,7 @@
 Name=Akonadi
 Name[de]=Akonadi-Ressource
 Name[x-test]=xxAkonadixx
+Comment=Provides access to calendars stored in Akonadi calendar folders
 X-KDE-Library=kcal_akonadi
 Type=Service
 X-KDE-ServiceTypes=KResources/Plugin
