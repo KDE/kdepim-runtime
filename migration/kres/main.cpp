@@ -28,6 +28,8 @@
 #include <kcmdlineargs.h>
 #include <kglobal.h>
 
+#include <QDBusConnection>
+
 void connectMigrator( KResMigratorBase *m, InfoDialog *dlg )
 {
   if ( !dlg || !m )
@@ -64,13 +66,23 @@ int main( int argc, char **argv )
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
+  QStringList typesToMigrate;
+  foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
+    if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.KResMigrator." + type ) )
+      kWarning() << "Migrator instance already running for type " << type;
+    else
+      typesToMigrate << type;
+  }
+  if ( typesToMigrate.isEmpty() )
+    return 1;
+
   KApplication app;
   app.setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
 
   if ( !Akonadi::Control::start( 0 ) )
-    return 1;
+    return 2;
 
   InfoDialog *infoDialog = 0;
   if ( args->isSet( "interactive" ) || args->isSet( "interactive-on-change" ) ) {
@@ -78,7 +90,7 @@ int main( int argc, char **argv )
     infoDialog->show();
   }
 
-  foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
+  foreach ( const QString &type, typesToMigrate ) {
     KResMigratorBase *m = 0;
     if ( type == "contact" )
       m = new KABCMigrator();
@@ -92,5 +104,8 @@ int main( int argc, char **argv )
     connectMigrator( m, infoDialog );
   }
 
-  return app.exec();
+  const int result = app.exec();
+  if ( infoDialog && infoDialog->hasError() )
+    return 3;
+  return result;
 }
