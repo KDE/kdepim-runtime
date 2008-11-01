@@ -152,31 +152,6 @@ void KResMigratorBase::setBridgingOnly(bool b)
   mBridgeOnly = b;
 }
 
-void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instance )
-{
-  // check if this one was previously bridged and remove the bridge
-  KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
-  const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
-  if ( bridgeId != instance.identifier() ) {
-    const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
-    AgentManager::self()->removeInstance( bridge );
-  }
-
-  setMigrationState( mCurrentKResource, Complete, instance.identifier() );
-  emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
-  mCurrentKResource = 0;
-  migrateNext();
-}
-
-void KResMigratorBase::migratedToBridge(const Akonadi::AgentInstance & instance)
-{
-  mBridgingInProgress = false;
-  setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
-  emit message( Success, i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
-  mCurrentKResource = 0;
-  migrateNext();
-}
-
 void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::AgentInstance & instance)
 {
   if ( mBridgingInProgress ) {

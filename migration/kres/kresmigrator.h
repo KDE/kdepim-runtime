@@ -22,6 +22,8 @@
 
 #include "kresmigratorbase.h"
 
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
 #include <kresources/manager.h>
 #include <kresources/resource.h>
 
@@ -29,6 +31,8 @@
 #include <KDebug>
 #include <KGlobal>
 #include <KStandardDirs>
+
+using namespace Akonadi;
 
 template <typename T> class KResMigrator : public KResMigratorBase
 {
@@ -44,6 +48,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual ~KResMigrator()
     {
+      mManager->writeConfig();
       delete mConfig;
       delete mManager;
     }
@@ -146,6 +151,33 @@ template <typename T> class KResMigrator : public KResMigratorBase
       T* res = dynamic_cast<T*>( mCurrentKResource );
       Q_ASSERT( res );
       return res;
+    }
+
+    void migrationCompleted( const Akonadi::AgentInstance &instance )
+    {
+      // check if this one was previously bridged and remove the bridge
+      KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
+      const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
+      if ( bridgeId != instance.identifier() ) {
+        const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
+        AgentManager::self()->removeInstance( bridge );
+      }
+
+      setMigrationState( mCurrentKResource, Complete, instance.identifier() );
+      emit message( i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+      mCurrentKResource->setActive( false );
+      mCurrentKResource = 0;
+      migrateNext();
+    }
+
+    void migratedToBridge(const Akonadi::AgentInstance & instance)
+    {
+      mBridgingInProgress = false;
+      setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
+      emit message( i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
+      mManager->setActive( mCurrentKResource, false );
+      mCurrentKResource = 0;
+      migrateNext();
     }
 
   private:

@@ -63,13 +63,12 @@ class KResMigratorBase : public QObject
 
     virtual void migrateNext() = 0;
     void migrateToBridge( KRES::Resource* res, const QString &typeId );
+    virtual void migratedToBridge(const Akonadi::AgentInstance & instance) = 0;
 
     virtual KConfigGroup kresConfig( KRES::Resource* res ) const = 0;
 
     void setBridgingOnly( bool b );
 
-    void migrationCompleted( const Akonadi::AgentInstance &instance );
-    void migratedToBridge( const Akonadi::AgentInstance &instance );
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
 
   signals:
@@ -84,16 +83,12 @@ class KResMigratorBase : public QObject
     QStringList mPendingBridgedResources;
     bool mBridgeOnly;
     KRES::Resource *mCurrentKResource;
+    bool mBridgingInProgress;
 
-  private:
     void setMigrationState( KRES::Resource *res, MigrationState state, const QString &resId );
 
   private slots:
     void resourceBridgeCreated( KJob *job );
-
-  private:
-    bool mBridgingInProgress;
-
 };
 
 #endif
