@@ -212,16 +212,14 @@ void KCalResource::retrieveItems( const Akonadi::Collection &collection )
   const KCal::Incidence::List incidenceList = mResource->rawIncidences();
   foreach ( KCal::Incidence *incidence, incidenceList ) {
     const QString subResource = mResource->subresourceIdentifier( incidence );
-    if ( subResource != collection.remoteId() ) {
-      if ( collection.parent() != Collection::root().id() )
-        continue;
+    if ( subResource == collection.remoteId() ||
+         ( subResource.isEmpty() && collection.parent() == Collection::root().id() ) ) {
+      Item item( mMimeVisitor->mimeType( incidence ) );
+      item.setRemoteId( incidence->uid() );
+      if ( mFullItemRetrieve )
+        item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+      items << item;
     }
-
-    Item item( mMimeVisitor->mimeType( incidence ) );
-    item.setRemoteId( incidence->uid() );
-    if ( mFullItemRetrieve )
-      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
-    items << item;
   }
 
   itemsRetrieved( items );
