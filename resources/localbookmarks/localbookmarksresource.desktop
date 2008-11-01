@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Localbookmark Resource
+Name=Localbookmarks
 Name[ca]=Recurs de punts locals de l'Akonadi
 Name[da]=Akonadi lokalbogmærkeressource
 Name[de]=Akonadi-Ressource für lokale Lesezeichen
@@ -27,7 +27,7 @@ Name[uk]=Ресурс Akonadi Localbookmark
 Name[x-test]=xxAkonadi Localbookmark Resourcexx
 Name[zh_CN]=Akonadi 本地书签资源
 Name[zh_TW]=Akonadi 本地書籤資源
-Comment=An agent to load data from a local bookmarks file
+Comment=Loads data from a local bookmarks file
 Comment[ca]=Un agents per carregra dades des d'un fitxer de punts local
 Comment[da]=En agent til indlæsning af data fra en lokal bogmærkefil
 Comment[de]=Agent zum Laden von Daten aus einer lokalen Lesezeichen-Datei

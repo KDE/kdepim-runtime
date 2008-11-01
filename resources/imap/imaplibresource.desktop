@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Mailody Imaplib Resource
+Name=Mailody Imap
 Name[ca]=Recurs Imaplib Mailody de l'Akonadi
 Name[da]=Akonadi Mailody Imaplib-ressource
 Name[de]=Akonadi-Ressource für Mailody-Imaplib
@@ -26,6 +26,7 @@ Name[uk]=Ресурс Imaplib Mailody для Akonadi
 Name[x-test]=xxAkonadi Mailody Imaplib Resourcexx
 Name[zh_CN]=Akonadi Mailody IMAP 库资源
 Name[zh_TW]=Akonadi Maildir Imaplib 資源
+Comment=Connects to an IMAP-server. Based on the IMAP-library from Mailody.
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource
 Icon=message-rfc822

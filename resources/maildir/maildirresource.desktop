@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Maildir Resource
+Name=Maildir
 Name[ca]=Recurs maildir de l'Akonadi
 Name[da]=Akonadi Maildir-ressource
 Name[de]=Akonadi-Ressource für Maildir
@@ -28,6 +28,7 @@ Name[uk]=Ресурс Akonadi Maildir
 Name[x-test]=xxAkonadi Maildir Resourcexx
 Name[zh_CN]=Akonadi Maildir 资源
 Name[zh_TW]=Akonadi Maildir 資源
+Comment=Loads data from a local maildir folder
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
 Icon=message-rfc822
