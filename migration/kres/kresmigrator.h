@@ -164,7 +164,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       }
 
       setMigrationState( mCurrentKResource, Complete, instance.identifier() );
-      emit message( i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+      emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
       mCurrentKResource->setActive( false );
       mCurrentKResource = 0;
       migrateNext();
@@ -174,7 +174,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     {
       mBridgingInProgress = false;
       setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
-      emit message( i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
+      emit message( Success, i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
       mManager->setActive( mCurrentKResource, false );
       mCurrentKResource = 0;
       migrateNext();
