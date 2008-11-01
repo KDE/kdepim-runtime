@@ -116,8 +116,7 @@ void SingleFileResourceBase::fileChanged(const QString & fileName)
 
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 {
-  if ( job->error() ) {
-    static_cast<KIO::Job*>(job)->ui()->showErrorMessage();
+  if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
     emit status( Broken, i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() ) );
   } else {
     readFromFile( KUrl( cacheFile() ).url() );
@@ -132,7 +131,6 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )
 {
   if ( job->error() ) {
-    static_cast<KIO::Job*>(job)->ui()->showErrorMessage();
     emit status( Broken, i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() ) );
   }
 
