@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Nepomuk Contact Feeder
+Name=Nepomuk Contact Feeder
 Name[ca]=Alimentador de contactes del Nepomuk per a l'Akonadi
 Name[da]=Akonadi Nepomuk kontakt-feeder
 Name[de]=Akonadi-Modul für Nepomuk
@@ -26,7 +26,7 @@ Name[uk]=Отримувач контактів Nepomuk для Akonadi
 Name[wa]=Nourixheu d' soçon po Nepomuk d' Akonadi
 Name[x-test]=xxAkonadi Nepomuk Contact Feederxx
 Name[zh_CN]=Akonadi Nepomuk 联系人采集器
-Comment=Extension for Akonadi to push contacts into Nepomuk
+Comment=Extension to push contacts into Nepomuk
 Comment[ca]=Extensió per a l'Akonadi per introduir contactes en el Nepomuk
 Comment[da]=Akonadi-udvidelse til at skubbe kontakter ind i Nepomuk
 Comment[de]=Nepomuk-Erweiterung zur Übergabe von Kontakten an Nepomuk

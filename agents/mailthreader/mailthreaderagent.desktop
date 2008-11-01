@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Mail Threader Agent
+Name=Mail Threader Agent
 Name[ca]=Agent de fils de correu de l'Akonadi
 Name[da]=Akonadi posttrådningsagent
 Name[de]=E-Mail-Gruppierungs-Agent für Akonadi
@@ -29,7 +29,7 @@ Name[wa]=Adjint Akonadi po fé des lignoûles d' emiles
 Name[x-test]=xxAkonadi Mail Threader Agentxx
 Name[zh_CN]=Akonadi 邮件线索化代理
 Name[zh_TW]=Akonadi 信件串列代理程式
-Comment=An agent to thread mails from a collection
+Comment=Thread mails in a collection
 Comment[ca]=Un agent per a seguir el fil dels correus des d'una col·lecció
 Comment[da]=En agent til at tråde e-mail fra en samling
 Comment[de]=Agent zur Gruppierung von E-Mails aus einer Sammlung

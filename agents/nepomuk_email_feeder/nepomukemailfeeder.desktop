@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Nepomuk EMail Feeder
+Name=Nepomuk EMail Feeder
 Name[ca]=Alimentador de correus del Nepomuk per a l'Akonadi
 Name[da]=Akonadi Nepomuk e-mail-feeder
 Name[de]=Akonadi-Modul für Nepomuk-E-Mail-Übergabe
@@ -26,7 +26,7 @@ Name[uk]=Отримувач пошти Nepomuk для Akonadi
 Name[wa]=Nourixheu d' emiles po Nepomuk d' Akonadi
 Name[x-test]=xxAkonadi Nepomuk EMail Feederxx
 Name[zh_CN]=Akonadi Nepomuk 邮件采集器
-Comment=Extension for Akonadi to push emails into Nepomuk
+Comment=Extension to push emails into Nepomuk
 Comment[ca]=Extensió per a l'Akonadi per introduir correus en el Nepomuk
 Comment[da]=Akonadi-udvidelse til at skubbe e-mail ind i Nepomuk
 Comment[de]=Nepomuk-Erweiterung zur Übergabe von E-Mails an Nepomuk
