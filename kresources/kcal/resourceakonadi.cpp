@@ -887,29 +887,6 @@ void ResourceAkonadi::init()
   // TODO: might be better to do this already in the resource factory
   Akonadi::Control::start();
 
-  d->mMonitor = new Monitor( this );
-
-  // deactivate reacting to changes, will be enabled in doOpen()
-  d->mMonitor->blockSignals( true );
-
-  d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/calendar" ) );
-  d->mMonitor->itemFetchScope().fetchFullPayload();
-
-  connect( d->mMonitor,
-           SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
-           this,
-           SLOT( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
-
-  connect( d->mMonitor,
-           SIGNAL( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ),
-           this,
-           SLOT( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
-
-  connect( d->mMonitor,
-           SIGNAL( itemRemoved( const Akonadi::Item&) ),
-           this,
-           SLOT( itemRemoved( const Akonadi::Item& ) ) );
-
   connect( &d->mAutoSaveOnDeleteTimer, SIGNAL( timeout() ),
            this, SLOT( delayedAutoSaveOnDelete() ) );
 }
@@ -1382,7 +1359,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
 
         ItemModifyJob *job = new ItemModifyJob( item, sequence );
         // HACK we need to listen the result and update the revision number accordingly
-        // not as easy as it sounds though, since we would also need to revert if the 
+        // not as easy as it sounds though, since we would also need to revert if the
         // transaction sequence fails
         job->disableRevisionCheck();
         kDebug(5800) << "ModifyJob for incidence" << incidence->uid()
