@@ -54,10 +54,9 @@ public:
 
 private Q_SLOTS:
     void updateButtonState( const Akonadi::AgentInstance& = Akonadi::AgentInstance() );
-    void addClicked( QAction* );
+    void addClicked();
     void editClicked();
     void removeClicked();
-    void updateMenu();
 
 private:
     class Private;

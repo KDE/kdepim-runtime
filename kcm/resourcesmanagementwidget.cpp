@@ -27,33 +27,13 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/agentfilterproxymodel.h>
+#include <akonadi/agenttypedialog.h>
 #include <akonadi/control.h>
 
 #include <KDebug>
 #include <KMenu>
 #include <KMessageBox>
 #include <KMimeType>
-
-static bool isWantedResource( const QStringList &wantedMimeTypes, const QStringList &resourceMimeTypes )
-{
-  foreach ( const QString &resourceMimeType, resourceMimeTypes ) {
-    KMimeType::Ptr mimeType = KMimeType::mimeType( resourceMimeType, KMimeType::ResolveAliases );
-    if ( mimeType.isNull() )
-      continue;
-
-    // check if the resource MIME type is or inherits from the
-    // wanted one, e.g.
-    // if the resource offers message/news and wanted types includes
-    // message/rfc822 this will be true, because message/news is a
-    // "subclass" of message/rfc822
-    foreach ( const QString &wantedMimeType, wantedMimeTypes ) {
-      if ( mimeType->is( wantedMimeType ) )
-        return true;
-    }
-  }
-
-  return false;
-}
 
 class ResourcesManagementWidget::Private
 {
@@ -70,11 +50,6 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->wantedMimeTypes = args;
     d->ui.setupUi( this );
 
-    KMenu *addMenu = new KMenu( this );
-    d->ui.addButton->setMenu( addMenu );
-    updateMenu();
-    connect( addMenu, SIGNAL( triggered( QAction* ) ), SLOT( addClicked( QAction* ) ) );
-
     d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
     foreach( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
@@ -83,11 +58,9 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
              SLOT( editClicked() ) );
 
+    connect( d->ui.addButton, SIGNAL( clicked () ), SLOT( addClicked() ) );
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
-
-    connect( Akonadi::AgentManager::self(), SIGNAL(typeAdded(Akonadi::AgentType)), SLOT(updateMenu()) );
-    connect( Akonadi::AgentManager::self(), SIGNAL(typeRemoved(Akonadi::AgentType)), SLOT(updateMenu()) );
 
     updateButtonState( d->ui.resourcesList->currentAgentInstance() );
 
@@ -110,12 +83,23 @@ void ResourcesManagementWidget::updateButtonState( const Akonadi::AgentInstance&
     }
 }
 
-void ResourcesManagementWidget::addClicked( QAction *action )
+void ResourcesManagementWidget::addClicked()
 {
-    Q_ASSERT( d->menuOptions.contains( action ) );
-    Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( d->menuOptions.value( action ) , this );
-    job->configure( this );
-    job->start();
+    Akonadi::AgentTypeDialog dlg( this );
+    Akonadi::AgentFilterProxyModel* filter = dlg.agentFilterProxyModel();
+    foreach( const QString& type, d->wantedMimeTypes )
+        filter->addMimeTypeFilter( type );
+
+    if ( dlg.exec() ) {
+        const Akonadi::AgentType agentType = dlg.agentType();
+
+        if ( agentType.isValid() ) {
+
+            Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( agentType, this );
+            job->configure( this );
+            job->start();
+        }
+    }
 }
 
 void ResourcesManagementWidget::editClicked()
@@ -132,29 +116,6 @@ void ResourcesManagementWidget::removeClicked()
         Akonadi::AgentManager::self()->removeInstance( instance );
 
     updateButtonState( d->ui.resourcesList->currentAgentInstance() );
-}
-
-void ResourcesManagementWidget::updateMenu()
-{
-    QMenu *addMenu = d->ui.addButton->menu();
-    addMenu->clear();
-    d->menuOptions.clear();
-    Akonadi::AgentType::List agentTypes = Akonadi::AgentManager::self()->types();
-    foreach( const Akonadi::AgentType &agentType, agentTypes ) {
-
-        if ( !agentType.capabilities().contains( "Resource" ) )
-            continue;
-
-        const QStringList mimeTypes = agentType.mimeTypes();
-        bool wanted = isWantedResource( d->wantedMimeTypes, mimeTypes );
-
-        if ( !wanted && !d->wantedMimeTypes.isEmpty() )
-            continue;
-
-        QAction *action = addMenu->addAction( agentType.name() );
-        action->setIcon( agentType.icon() );
-        d->menuOptions.insert( action, agentType );
-    }
 }
 
 #include "resourcesmanagementwidget.moc"
