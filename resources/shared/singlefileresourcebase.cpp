@@ -21,7 +21,7 @@
 #include "singlefileresourcebase.h"
 
 #include <akonadi/changerecorder.h>
-#include <akonadi/collectiondisplayattribute.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <kio/job.h>
@@ -64,8 +64,8 @@ void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes
 void SingleFileResourceBase::collectionChanged(const Akonadi::Collection & collection)
 {
   QString newName = collection.name();
-  if ( collection.hasAttribute<CollectionDisplayAttribute>() ) {
-    CollectionDisplayAttribute *attr = collection.attribute<CollectionDisplayAttribute>();
+  if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
+    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
     if ( !attr->displayName().isEmpty() )
       newName = attr->displayName();
   }

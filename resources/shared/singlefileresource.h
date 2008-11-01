@@ -23,7 +23,7 @@
 
 #include "singlefileresourcebase.h"
 
-#include <akonadi/collectiondisplayattribute.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <kio/job.h>
 #include <KDirWatch>
@@ -78,7 +78,7 @@ class SingleFileResource : public SingleFileResourceBase
       {
         if ( !nameWasChanged )
           setName( mCurrentUrl.fileName() );
-        
+
         // check if the file does not exist yet, if so, create it
         if ( !QFile::exists( mCurrentUrl.path() ) ) {
           QFile f( mCurrentUrl.path() );
@@ -98,7 +98,7 @@ class SingleFileResource : public SingleFileResourceBase
 
         if ( Settings::self()->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.path() );
-        
+
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
       }
       else
@@ -116,7 +116,7 @@ class SingleFileResource : public SingleFileResourceBase
         }
 
         KGlobal::ref();
-        
+
         // NOTE: Test what happens with remotefile -> save, close before save is finished.
         mDownloadJob = KIO::file_copy( mCurrentUrl, KUrl( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
         connect( mDownloadJob, SIGNAL( result( KJob * ) ),
@@ -202,7 +202,7 @@ class SingleFileResource : public SingleFileResourceBase
         rights |= Collection::CanChangeCollection;
         c.setRights( rights );
       }
-      CollectionDisplayAttribute* attr = c.attribute<CollectionDisplayAttribute>( Collection::AddIfMissing );
+      EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
       attr->setDisplayName( name() );
       attr->setIconName( mCollectionIcon );
       Collection::List list;
