@@ -41,6 +41,7 @@ class CollectionModel;
 class ItemModel;
 class Job;
 class StandardActionManager;
+class Monitor;
 }
 
 class BrowserWidget: public QWidget
@@ -59,6 +60,7 @@ class BrowserWidget: public QWidget
     void saveResult( KJob* job );
     void addAttribute();
     void delAttribute();
+    void setItem( const Akonadi::Item &item );
 
   private:
     Akonadi::CollectionModel *mCollectionModel;
@@ -71,6 +73,7 @@ class BrowserWidget: public QWidget
     QStandardItemModel *mAttrModel;
     QStandardItemModel *mNepomukModel;
     Akonadi::StandardActionManager *mStdActionManager;
+    Akonadi::Monitor *mMonitor;
 };
 
 #endif

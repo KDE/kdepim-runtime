@@ -34,6 +34,7 @@
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
 #include <akonadi/standardactionmanager.h>
+#include <akonadi/monitor.h>
 
 #include <kcal/kcalmodel.h>
 #include <kabc/kabcmodel.h>
@@ -68,7 +69,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     mItemModel( 0 ),
     mCurrentCollection( 0 ),
     mNepomukModel( 0 ),
-    mStdActionManager( 0 )
+    mStdActionManager( 0 ),
+    mMonitor( 0 )
 {
   Q_ASSERT( xmlGuiWindow );
   QVBoxLayout *layout = new QVBoxLayout( this );
@@ -159,73 +161,86 @@ void BrowserWidget::itemFetchDone(KJob * job)
     kWarning( 5265 ) << "No item found!";
   } else {
     const Item item = fetch->items().first();
-    mCurrentItem = item;
-    if ( item.hasPayload<KABC::Addressee>() ) {
-      const KABC::Addressee addr = item.payload<KABC::Addressee>();
-
-      contentUi.addresseeView->setAddressee( addr );
-      contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
-    } else if ( item.mimeType().startsWith( "application/x-vnd.akonadi.calendar" ) ) {
-      contentUi.incidenceView->setItem( item );
-      contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
-    } else {
-      contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
-    }
-
-    QByteArray data = item.payloadData();
-    contentUi.dataView->setPlainText( data );
-
-    contentUi.id->setText( QString::number( item.id() ) );
-    contentUi.remoteId->setText( item.remoteId() );
-    contentUi.mimeType->setText( item.mimeType() );
-    contentUi.revision->setText( QString::number( item.revision() ) );
-    contentUi.size->setText( QString::number( item.size() ) );
-    contentUi.modificationtime->setText( item.modificationTime().toString() + ( " UTC" ) );
-    QStringList flags;
-    foreach ( const Item::Flag &f, item.flags() )
-      flags << QString::fromUtf8( f );
-    contentUi.flags->setItems( flags );
-
-    Attribute::List list = item.attributes();
-    mAttrModel = new QStandardItemModel( list.count(), 2 );
-    QStringList labels;
-    labels << i18n( "Attribute" ) << i18n( "Value" );
-    mAttrModel->setHorizontalHeaderLabels( labels );
-    for ( int i = 0; i < list.count(); ++i ) {
-      QModelIndex index = mAttrModel->index( i, 0 );
-      Q_ASSERT( index.isValid() );
-      mAttrModel->setData( index, QString::fromLatin1( list[i]->type() ) );
-      index = mAttrModel->index( i, 1 );
-      Q_ASSERT( index.isValid() );
-      mAttrModel->setData( index, QString::fromLatin1( list[i]->serialized() ) );
-      mAttrModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mAttrModel->flags( index ) );
-    }
-    contentUi.attrView->setModel( mAttrModel );
-
-    Nepomuk::Resource res( item.url() );
-    delete mNepomukModel;
-    mNepomukModel = 0;
-    if ( res.isValid() ) {
-      QHash<QUrl, Nepomuk::Variant> props = res.properties();
-      mNepomukModel = new QStandardItemModel( props.count(), 2, this );
-      QStringList labels;
-      labels << i18n( "Property" ) << i18n( "Value" );
-      mNepomukModel->setHorizontalHeaderLabels( labels );
-      int row = 0;
-      for ( QHash<QUrl, Nepomuk::Variant>::ConstIterator it = props.begin(); it != props.end(); ++it, ++row ) {
-        QModelIndex index = mNepomukModel->index( row, 0 );
-        Q_ASSERT( index.isValid() );
-        mNepomukModel->setData( index, it.key().toString() );
-        index = mNepomukModel->index( row, 1 );
-        Q_ASSERT( index.isValid() );
-        mNepomukModel->setData( index, it.value().toString() );
-      }
-      contentUi.nepomukView->setEnabled( true );
-    } else {
-      contentUi.nepomukView->setEnabled( false );
-    }
-    contentUi.nepomukView->setModel( mNepomukModel );
+    setItem( item );
   }
+}
+
+void BrowserWidget::setItem( const Akonadi::Item &item )
+{
+  mCurrentItem = item;
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    const KABC::Addressee addr = item.payload<KABC::Addressee>();
+
+    contentUi.addresseeView->setAddressee( addr );
+    contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
+  } else if ( item.mimeType().startsWith( "application/x-vnd.akonadi.calendar" ) ) {
+    contentUi.incidenceView->setItem( item );
+    contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
+  } else {
+    contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
+  }
+
+  QByteArray data = item.payloadData();
+  contentUi.dataView->setPlainText( data );
+
+  contentUi.id->setText( QString::number( item.id() ) );
+  contentUi.remoteId->setText( item.remoteId() );
+  contentUi.mimeType->setText( item.mimeType() );
+  contentUi.revision->setText( QString::number( item.revision() ) );
+  contentUi.size->setText( QString::number( item.size() ) );
+  contentUi.modificationtime->setText( item.modificationTime().toString() + ( " UTC" ) );
+  QStringList flags;
+  foreach ( const Item::Flag &f, item.flags() )
+    flags << QString::fromUtf8( f );
+  contentUi.flags->setItems( flags );
+
+  Attribute::List list = item.attributes();
+  mAttrModel = new QStandardItemModel( list.count(), 2 );
+  QStringList labels;
+  labels << i18n( "Attribute" ) << i18n( "Value" );
+  mAttrModel->setHorizontalHeaderLabels( labels );
+  for ( int i = 0; i < list.count(); ++i ) {
+    QModelIndex index = mAttrModel->index( i, 0 );
+    Q_ASSERT( index.isValid() );
+    mAttrModel->setData( index, QString::fromLatin1( list[i]->type() ) );
+    index = mAttrModel->index( i, 1 );
+    Q_ASSERT( index.isValid() );
+    mAttrModel->setData( index, QString::fromLatin1( list[i]->serialized() ) );
+    mAttrModel->itemFromIndex( index )->setFlags( Qt::ItemIsEditable | mAttrModel->flags( index ) );
+  }
+  contentUi.attrView->setModel( mAttrModel );
+
+  Nepomuk::Resource res( item.url() );
+  delete mNepomukModel;
+  mNepomukModel = 0;
+  if ( res.isValid() ) {
+    QHash<QUrl, Nepomuk::Variant> props = res.properties();
+    mNepomukModel = new QStandardItemModel( props.count(), 2, this );
+    QStringList labels;
+    labels << i18n( "Property" ) << i18n( "Value" );
+    mNepomukModel->setHorizontalHeaderLabels( labels );
+    int row = 0;
+    for ( QHash<QUrl, Nepomuk::Variant>::ConstIterator it = props.begin(); it != props.end(); ++it, ++row ) {
+      QModelIndex index = mNepomukModel->index( row, 0 );
+      Q_ASSERT( index.isValid() );
+      mNepomukModel->setData( index, it.key().toString() );
+      index = mNepomukModel->index( row, 1 );
+      Q_ASSERT( index.isValid() );
+      mNepomukModel->setData( index, it.value().toString() );
+    }
+    contentUi.nepomukView->setEnabled( true );
+  } else {
+    contentUi.nepomukView->setEnabled( false );
+  }
+  contentUi.nepomukView->setModel( mNepomukModel );
+
+  if ( mMonitor )
+    mMonitor->deleteLater(); // might be the one calling us
+  mMonitor = new Monitor( this );
+  mMonitor->setItemMonitored( item );
+  mMonitor->itemFetchScope().fetchFullPayload();
+  mMonitor->itemFetchScope().fetchAllAttributes();
+  connect( mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), SLOT(setItem(Akonadi::Item)) );
 }
 
 void BrowserWidget::modelChanged()
