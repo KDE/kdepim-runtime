@@ -94,6 +94,11 @@ class SubResource
       mCompletionWeight = group.readEntry<int>( QLatin1String( "CompletionWeight" ), 80 );
     }
 
+    Collection collection() const
+    {
+      return mCollection;
+    }
+
   public:
     Collection mCollection;
     QString mLabel;
@@ -162,6 +167,7 @@ class ResourceAkonadi::Private
     void addCollectionsRecursively( const QModelIndex &parent, int start, int end );
     bool removeCollectionsRecursively( const QModelIndex &parent, int start, int end );
 
+    Collection findDefaultCollection() const;
     bool prepareSaving();
     KJob *createSaveSequence() const;
 
@@ -518,7 +524,9 @@ void ResourceAkonadi::setStoreCollection( const Akonadi::Collection& collection 
 
 Akonadi::Collection ResourceAkonadi::storeCollection() const
 {
-  return d->mStoreCollection;
+  if ( d->mStoreCollection.isValid() )
+    return d->mStoreCollection;
+  else return d->findDefaultCollection();
 }
 
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
@@ -940,6 +948,20 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
   return changed;
 }
 
+Collection ResourceAkonadi::Private::findDefaultCollection() const
+{
+  const QString keyName( "DefaultAkonadiResourceIdentifier" );
+  if ( mConfig.hasKey( keyName ) ) {
+    const QString akonadiAgentIdentifier = mConfig.readEntry( keyName );
+    foreach( const SubResource *subResource, mSubResources ) {
+      if ( subResource->collection().resource() == akonadiAgentIdentifier ) {
+        return subResource->collection();
+      }
+    }
+  }
+  return Collection();
+}
+
 bool ResourceAkonadi::Private::prepareSaving()
 {
   // if an addressee is not yet mapped to one of the sub resources we put it into
@@ -958,9 +980,15 @@ bool ResourceAkonadi::Private::prepareSaving()
         if ( mSubResourceIds.count() == 1 ) {
           mStoreCollection = Collection::fromUrl( *mSubResourceIds.begin() );
         } else {
-          ResourceAkonadiConfigDialog dialog( mParent );
-          if ( dialog.exec() != QDialog::Accepted )
-            return false;
+          Collection defaultCollection = mParent->storeCollection();
+          if ( defaultCollection.isValid() ) {
+            mParent->setStoreCollection( defaultCollection );
+          }
+          else {
+            ResourceAkonadiConfigDialog dialog( mParent );
+            if ( dialog.exec() != QDialog::Accepted )
+              return false;
+          }
         }
 
         // if accepted, use the same iterator position again to re-check

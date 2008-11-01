@@ -48,9 +48,10 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual ~KResMigrator()
     {
-      mManager->writeConfig();
       delete mConfig;
+      mConfig = 0;
       delete mManager;
+      mManager = 0;
     }
 
     void migrate()
@@ -67,6 +68,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     {
       while ( mIt != mManager->end() ) {
         if ( (*mIt)->type() == "akonadi" ) {
+          mClientBridgeIdentifier = (*mIt)->identifier();
           mClientBridgeFound = true;
           emit message( Skip, i18n( "Client-side bridge already set up." ) );
           ++mIt;
@@ -93,8 +95,6 @@ template <typename T> class KResMigrator : public KResMigratorBase
         ++mIt;
       }
       if ( mIt == mManager->end() ) {
-        delete mConfig;
-        mConfig = 0;
         migrateBridged();
       }
     }
@@ -165,9 +165,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
       setMigrationState( mCurrentKResource, Complete, instance.identifier() );
       emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
-      mCurrentKResource->setActive( false );
-      mCurrentKResource = 0;
-      migrateNext();
+      migrationCompletedHelper( instance );
     }
 
     void migratedToBridge(const Akonadi::AgentInstance & instance)
@@ -175,18 +173,30 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mBridgingInProgress = false;
       setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
       emit message( Success, i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
+      migrationCompletedHelper( instance );
+    }
+
+  private:
+
+    // This is called when a native migration or a migration to a bridged resource is
+    // successfully completed.
+    void migrationCompletedHelper( const Akonadi::AgentInstance & instance )
+    {
+      if ( mManager->standardResource() == mCurrentKResource ) {
+        mAgentForOldDefaultResource = instance.identifier();
+      }
       mManager->setActive( mCurrentKResource, false );
       mCurrentKResource = 0;
       migrateNext();
     }
 
-  private:
     void setupClientBridge()
     {
       if ( !mClientBridgeFound ) {
         emit message( Info, i18n( "Setting up client-side bridge..." ) );
         T* clientBridge = mManager->createResource( "akonadi" );
         if ( clientBridge ) {
+          mClientBridgeIdentifier = clientBridge->identifier();
           clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
           mManager->add( clientBridge );
           mManager->setStandardResource( clientBridge );
@@ -194,6 +204,14 @@ template <typename T> class KResMigrator : public KResMigratorBase
         } else {
           emit message( Error, i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
         }
+      }
+
+      mManager->writeConfig();
+      const QString keyName( "DefaultAkonadiResourceIdentifier" );
+      KConfigGroup clientBridgeConfig( mConfig, "Resource_" + mClientBridgeIdentifier );
+      if ( !clientBridgeConfig.hasKey( keyName ) &&
+           !mAgentForOldDefaultResource.isEmpty() ) {
+        clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );
       }
       deleteLater();
     }
@@ -204,6 +222,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
     typedef typename KRES::Manager<T>::Iterator ResourceIterator;
     ResourceIterator mIt;
     bool mClientBridgeFound;
+    QString mClientBridgeIdentifier;
+    QString mAgentForOldDefaultResource;
 };
 
 #endif

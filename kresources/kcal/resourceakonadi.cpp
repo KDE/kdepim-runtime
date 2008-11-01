@@ -121,6 +121,11 @@ class SubResource
       mActive = group.readEntry<bool>( QLatin1String( "Active" ), true );
     }
 
+    Collection collection() const
+    {
+      return mCollection;
+    }
+
   public:
     Collection mCollection;
     QString mLabel;
@@ -212,6 +217,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 
     void delayedAutoSaveOnDelete();
 
+    Collection findDefaultCollection() const;
     bool prepareSaving();
     KJob *createSaveSequence();
 
@@ -272,6 +278,8 @@ void ResourceAkonadi::setStoreCollection( const Collection &collection )
 
 Collection ResourceAkonadi::storeCollection() const
 {
+  if ( !d->mStoreCollection.isValid() )
+    return d->findDefaultCollection();
   return d->mStoreCollection;
 }
 
@@ -734,9 +742,15 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
       if ( d->mSubResourceIds.count() == 1 ) {
         d->mStoreCollection = Collection::fromUrl( *d->mSubResourceIds.begin() );
       } else {
-        ResourceAkonadiConfigDialog dialog( this );
-        if ( dialog.exec() != QDialog::Accepted )
-          return false;
+        Collection defaultCollection = d->findDefaultCollection();
+        if ( defaultCollection.isValid() ) {
+          setStoreCollection( defaultCollection );
+        }
+        else {
+          ResourceAkonadiConfigDialog dialog( this );
+          if ( dialog.exec() != QDialog::Accepted )
+            return false;
+        }
       }
     } else
       d->mUidToResourceMap.insert( incidence->uid(), d->mStoreCollection.url().url() );
@@ -1258,6 +1272,20 @@ void ResourceAkonadi::Private::delayedAutoSaveOnDelete()
   mParent->doSave( false );
 }
 
+Collection ResourceAkonadi::Private::findDefaultCollection() const
+{
+  const QString keyName( "DefaultAkonadiResourceIdentifier" );
+  if ( mConfig.hasKey( keyName ) ) {
+    const QString akonadiAgentIdentifier = mConfig.readEntry( keyName );
+    foreach( const SubResource *subResource, mSubResources ) {
+      if ( subResource->collection().resource() == akonadiAgentIdentifier ) {
+        return subResource->collection();
+      }
+    }
+  }
+  return Collection();
+}
+
 bool ResourceAkonadi::Private::prepareSaving()
 {
   // if an incidence is not yet mapped to one of the sub resources we put it into
@@ -1277,9 +1305,15 @@ bool ResourceAkonadi::Private::prepareSaving()
         if ( mSubResourceIds.count() == 1 ) {
           mStoreCollection = Collection::fromUrl( *mSubResourceIds.begin() );
         } else {
-          ResourceAkonadiConfigDialog dialog( mParent );
-          if ( dialog.exec() != QDialog::Accepted )
-            return false;
+          Collection defaultCollection = findDefaultCollection();
+          if ( defaultCollection.isValid() ) {
+            mParent->setStoreCollection( defaultCollection );
+          }
+          else {
+            ResourceAkonadiConfigDialog dialog( mParent );
+            if ( dialog.exec() != QDialog::Accepted )
+              return false;
+          }
         }
 
         // if accepted, use the same iterator position again to re-check
