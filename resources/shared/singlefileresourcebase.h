@@ -86,6 +86,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     KIO::FileCopyJob *mUploadJob;
     
   private Q_SLOTS:
+    void handleProgress( KJob *, unsigned long );
     void fileChanged( const QString &fileName );
     void slotDownloadJobResult( KJob * );
     void slotUploadJobResult( KJob * );

@@ -21,6 +21,8 @@
 #include "singlefileresourceconfigdialogbase.h"
 
 #include <KConfigDialogManager>
+#include <KFileItem>
+#include <KIO/Job>
 #include <KWindowSystem>
 
 #include <QTimer>
@@ -28,10 +30,11 @@
 using namespace Akonadi;
 
 SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId windowId ) :
-    KDialog()
+    KDialog(), mStatJob( 0 ), mDirUrlChecked( false )
 {
   ui.setupUi( mainWidget() );
   ui.kcfg_Path->setMode( KFile::File );
+  ui.statusLabel->setVisible( false );
   setButtons( Ok | Cancel );
 
   if ( windowId )
@@ -61,6 +64,8 @@ void SingleFileResourceConfigDialogBase::validate()
 
   if ( currentUrl.isLocalFile() ) {
     ui.kcfg_MonitorFile->setEnabled( true );
+    ui.statusLabel->setVisible( false );
+    
     const QFileInfo file( currentUrl.path() );
     if ( file.exists() && !file.isWritable() ) {
       ui.kcfg_ReadOnly->setEnabled( false );
@@ -71,7 +76,64 @@ void SingleFileResourceConfigDialogBase::validate()
     enableButton( Ok, true );
   } else {
     ui.kcfg_MonitorFile->setEnabled( false );
-    // TODO: Check if remote server supports writing.
-    enableButton( Ok, true );
+    ui.statusLabel->setText( i18nc( "@info:status", "Checking file information..." ) );
+    ui.statusLabel->setVisible( true );
+    
+    if ( mStatJob )
+      mStatJob->kill();
+
+    mStatJob = KIO::stat( currentUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
+    mStatJob->setDetails( 2 ); // All details.
+    mStatJob->setSide( KIO::StatJob::SourceSide );
+    
+    connect( mStatJob, SIGNAL( result( KJob * ) ),
+             SLOT( slotStatJobResult( KJob * ) ) );
+
+    // Disable the button until the MetaJob is finished.
+    enableButton( Ok, false );
   }
+}
+
+void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
+{
+  if ( job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked ) {
+    // The file did not exists, so let's see if the directory the file should
+    // reside supports writing.
+    const KUrl dirUrl = ui.kcfg_Path->url().upUrl();
+
+    mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
+    mStatJob->setDetails( 2 ); // All details.
+    mStatJob->setSide( KIO::StatJob::SourceSide );
+
+    connect( mStatJob, SIGNAL( result( KJob * ) ),
+             SLOT( slotStatJobResult( KJob * ) ) );
+
+    // Make sure we don't check the whole path upwards.
+    mDirUrlChecked = true;
+    return;
+  } else if ( job->error() ) {
+    // It doesn't seem possible to read nor write from the location so leave the
+    // ok button disabled
+    ui.statusLabel->setVisible( false );
+    enableButton( Ok, false );
+    mDirUrlChecked = false;
+    mStatJob = 0;
+    return;
+  }
+
+  KIO::StatJob* statJob = qobject_cast<KIO::StatJob *>( job );
+  const KFileItem item( statJob->statResult(), KUrl() );
+
+  if ( item.isWritable() ) {
+    ui.kcfg_ReadOnly->setEnabled( true );
+  } else {
+    ui.kcfg_ReadOnly->setEnabled( false );
+    ui.kcfg_ReadOnly->setChecked( true );
+  }
+
+  ui.statusLabel->setVisible( false );
+  enableButton( Ok, true );
+
+  mDirUrlChecked = false;
+  mStatJob = 0;
 }

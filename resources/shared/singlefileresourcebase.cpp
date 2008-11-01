@@ -83,6 +83,11 @@ void SingleFileResourceBase::reloadFile()
  synchronize();
 }
 
+void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
+{
+  emit percent( pct );
+}
+
 void SingleFileResourceBase::fileChanged(const QString & fileName)
 {
   if ( fileName != mCurrentUrl.path() )
@@ -120,6 +125,8 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 
   mDownloadJob = 0;
   KGlobal::deref();
+
+  emit status( Idle, i18nc( "@info:status", "Ready" ) );
 }
 
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )
@@ -127,12 +134,12 @@ void SingleFileResourceBase::slotUploadJobResult( KJob *job )
   if ( job->error() ) {
     static_cast<KIO::Job*>(job)->ui()->showErrorMessage();
     emit status( Broken, i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() ) );
-  } else {
-    emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
   }
 
   mUploadJob = 0;
   KGlobal::deref();
+
+  emit status( Idle, i18nc( "@info:status", "Ready" ) );
 }
 
 #include "singlefileresourcebase.moc"

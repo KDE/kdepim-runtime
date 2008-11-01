@@ -83,7 +83,7 @@ class SingleFileResource : public SingleFileResourceBase
         if ( !QFile::exists( mCurrentUrl.path() ) ) {
           QFile f( mCurrentUrl.path() );
           if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
-            emit status( Idle, i18n( "File '%1' created.", mCurrentUrl.prettyUrl() ) );
+            emit status( Idle, i18nc( "@info:status", "Ready" ) );
           } else {
             emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
             mCurrentUrl.clear();
@@ -98,7 +98,8 @@ class SingleFileResource : public SingleFileResourceBase
 
         if ( Settings::self()->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.path() );
-        emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.prettyUrl() ) );
+        
+        emit status( Idle, i18nc( "@info:status", "Ready" ) );
       }
       else
       {
@@ -117,9 +118,11 @@ class SingleFileResource : public SingleFileResourceBase
         KGlobal::ref();
         
         // NOTE: Test what happens with remotefile -> save, close before save is finished.
-        mDownloadJob = KIO::file_copy( mCurrentUrl, KUrl( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags );
+        mDownloadJob = KIO::file_copy( mCurrentUrl, KUrl( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
         connect( mDownloadJob, SIGNAL( result( KJob * ) ),
                 SLOT( slotDownloadJobResult( KJob * ) ) );
+        connect( mDownloadJob, SIGNAL( percent( KJob *, unsigned long ) ),
+                 SLOT( handleProgress( KJob *, unsigned long ) ) );
 
         emit status( Running, i18n( "Downloading remote file." ) );
       }
@@ -151,7 +154,7 @@ class SingleFileResource : public SingleFileResourceBase
         if ( !writeResult )
           return;
 
-        emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
+        emit status( Idle, i18nc( "@info:status", "Ready" ) );
       } else {
         // Check if there is a download or an upload in progress.
         if ( mDownloadJob ) {
@@ -170,9 +173,11 @@ class SingleFileResource : public SingleFileResourceBase
 
         KGlobal::ref();
         // Start a job to upload the localy cached file to the remote location.
-        mUploadJob = KIO::file_copy( KUrl( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags );
+        mUploadJob = KIO::file_copy( KUrl( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
         connect( mUploadJob, SIGNAL( result( KJob * ) ),
                 SLOT( slotUploadJobResult( KJob * ) ) );
+        connect( mUploadJob, SIGNAL( percent( KJob *, unsigned long ) ),
+                 SLOT( handleProgress( KJob *, unsigned long ) ) );
 
         emit status( Running, i18n( "Uploading cached file to remote location." ) );
       }

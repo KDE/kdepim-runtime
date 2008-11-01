@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>547</width>
-    <height>301</height>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -45,6 +45,13 @@
              <widget class="KUrlRequester" name="kcfg_Path" />
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="statusLabel" >
+            <property name="text" >
+             <string>Status:</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_3" >

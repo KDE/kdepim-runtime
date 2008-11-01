@@ -26,6 +26,12 @@
 #include <KDE/KDialog>
 
 class KConfigDialogManager;
+class KFileItem;
+class KJob;
+
+namespace KIO {
+class StatJob;
+}
 
 namespace Akonadi {
 
@@ -51,8 +57,13 @@ class SingleFileResourceConfigDialogBase : public KDialog
     Ui::SingleFileResourceConfigDialog ui;
     KConfigDialogManager* mManager;
 
+  private:
+    KIO::StatJob* mStatJob;
+    bool mDirUrlChecked;
+
   private Q_SLOTS:
     void validate();
+    void slotStatJobResult( KJob * );
 };
 
 }
