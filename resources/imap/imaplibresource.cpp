@@ -351,6 +351,9 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         const QString headers = ( *it );
         ++it;
 
+        const QString size = ( *it );
+        ++it;
+
         KMime::Message* mail = new KMime::Message();
         mail->setContent( KMime::CRLFtoLF( headers.trimmed().toLatin1() ) );
         mail->parse();
@@ -359,6 +362,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
         i.setRemoteId( mbox + "-+-" + uid );
         i.setMimeType( "message/rfc822" );
         i.setPayload( MessagePtr( mail ) );
+        i.setSize( size.toLongLong() );
 
         foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) ) {
             i.setFlag( flag.toLatin1() );

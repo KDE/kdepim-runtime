@@ -944,14 +944,12 @@ void Imaplib::slotParseGetMessage()
             QString size;
             if ( m_currentQueueItem.state() == Queue::GetHeaders &&
                     rx1.indexIn( all_data.trimmed() ) != -1 )
-                size = "Size: " + rx1.cap( 1 );
-
-            text.append( "\n" );
-            text.append( size );
+                size = rx1.cap( 1 );
 
             headersToSend.append( rx0.cap( 1 ) );
             headersToSend.append( m_currentQueueItem.mailbox() );
             headersToSend.append( text );
+            headersToSend.append( size );
         } else
             emit message( this, m_currentQueueItem.mailbox(), uid, text );
 

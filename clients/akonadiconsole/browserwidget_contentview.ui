@@ -241,6 +241,30 @@
        <item row="3" column="0" >
         <layout class="QHBoxLayout" >
          <item>
+          <widget class="QLabel" name="label_7" >
+           <property name="text" >
+            <string>Size:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="size" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0" >
+        <layout class="QHBoxLayout" >
+         <item>
           <widget class="QLabel" name="label_5" >
            <property name="text" >
             <string>Last Modification Time:</string>
@@ -262,7 +286,7 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="0" >
+       <item row="5" column="0" >
         <layout class="QHBoxLayout" >
          <item>
           <widget class="QLabel" name="label_6" >
@@ -286,7 +310,7 @@
          </item>
         </layout>
        </item>
-       <item row="5" column="0" >
+       <item row="6" column="0" >
         <widget class="KEditListBox" name="flags" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
