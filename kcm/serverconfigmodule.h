@@ -38,6 +38,7 @@ class ServerConfigModule : public KCModule
     void updateStatus();
     void startStopClicked();
     void restartClicked();
+    void selfTestClicked();
 
   private:
     Ui::ServerConfigModule ui;

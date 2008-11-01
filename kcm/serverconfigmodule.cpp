@@ -48,6 +48,7 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
 
   connect( ui.startStopButton, SIGNAL(clicked()), SLOT(startStopClicked()) );
   connect( ui.restartButton, SIGNAL(clicked()), SLOT(restartClicked()) );
+  connect( ui.selfTestButton, SIGNAL(clicked()), SLOT(selfTestClicked()) );
 
   connect( ServerManager::instance(), SIGNAL(started()), SLOT(updateStatus()) );
   connect( ServerManager::instance(), SIGNAL(stopped()), SLOT(updateStatus()) );
@@ -120,6 +121,11 @@ void ServerConfigModule::startStopClicked()
 void ServerConfigModule::restartClicked()
 {
   Control::restart( this );
+}
+
+void ServerConfigModule::selfTestClicked()
+{
+  ServerManager::showSelfTestDialog( this );
 }
 
 #include "serverconfigmodule.moc"
