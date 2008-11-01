@@ -24,6 +24,8 @@
 #include <akonadi/collectiondisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
+#include <kio/job.h>
+#include <kio/jobuidelegate.h>
 #include <KDebug>
 #include <KDirWatch>
 #include <KLocale>
@@ -34,7 +36,7 @@
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
-    ResourceBase( id )
+    ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
 {
   connect( &mDirtyTimer, SIGNAL(timeout()), SLOT(writeFile()) );
   mDirtyTimer.setSingleShot( true );
@@ -46,6 +48,11 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
   changeRecorder()->fetchCollection( true );
 
   connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
+}
+
+ QString SingleFileResourceBase::cacheFile() const
+{
+  return KStandardDirs::locateLocal( "cache", "akonadi/" + identifier() );
 }
 
 void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes, const QString &icon)
@@ -100,6 +107,32 @@ void SingleFileResourceBase::fileChanged(const QString & fileName)
 
   readFile();
   synchronize();
+}
+
+void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    static_cast<KIO::Job*>(job)->ui()->showErrorMessage();
+    emit status( Broken, i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() ) );
+  } else {
+    readFromFile( KUrl( cacheFile() ).url() );
+  }
+
+  mDownloadJob = 0;
+  KGlobal::deref();
+}
+
+void SingleFileResourceBase::slotUploadJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    static_cast<KIO::Job*>(job)->ui()->showErrorMessage();
+    emit status( Broken, i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() ) );
+  } else {
+    emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
+  }
+
+  mUploadJob = 0;
+  KGlobal::deref();
 }
 
 #include "singlefileresourcebase.moc"

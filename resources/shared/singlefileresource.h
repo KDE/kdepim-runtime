@@ -25,8 +25,10 @@
 
 #include <akonadi/collectiondisplayattribute.h>
 
+#include <kio/job.h>
 #include <KDirWatch>
 #include <KLocale>
+#include <KStandardDirs>
 
 #include <QFile>
 
@@ -70,34 +72,57 @@ class SingleFileResource : public SingleFileResourceBase
         return;
       }
 
-      // FIXME: Make this asynchronous by using a KIO file job.
-      // See: http://api.kde.org/4.x-api/kdelibs-apidocs/kio/html/namespaceKIO.html
-      // NOTE: Test what happens with remotefile -> save, close before save is finished.
-
       mCurrentUrl = KUrl( Settings::self()->path() );
-      if ( !nameWasChanged )
-        setName( mCurrentUrl.fileName() );
 
-      // check if the file does not exist yet, if so, create it
-      if ( !QFile::exists( mCurrentUrl.path() ) ) {
-        QFile f( mCurrentUrl.path() );
-        if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
-          emit status( Idle, i18n( "File '%1' created.", mCurrentUrl.prettyUrl() ) );
-        } else {
-          emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
-          mCurrentUrl.clear();
+      if ( mCurrentUrl.isLocalFile() )
+      {
+        if ( !nameWasChanged )
+          setName( mCurrentUrl.fileName() );
+        
+        // check if the file does not exist yet, if so, create it
+        if ( !QFile::exists( mCurrentUrl.path() ) ) {
+          QFile f( mCurrentUrl.path() );
+          if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
+            emit status( Idle, i18n( "File '%1' created.", mCurrentUrl.prettyUrl() ) );
+          } else {
+            emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
+            mCurrentUrl.clear();
+            return;
+          }
+        }
+
+        if ( !readFromFile( mCurrentUrl.path() ) ) {
+          mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
           return;
         }
-      }
 
-      if ( !readFromFile( mCurrentUrl.path() ) ) {
-        mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
-        return;
+        if ( Settings::self()->monitorFile() )
+          KDirWatch::self()->addFile( mCurrentUrl.path() );
+        emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.prettyUrl() ) );
       }
+      else
+      {
+        if ( mDownloadJob )
+        {
+          emit error( i18n( "Another download is still in progress." ) );
+          return;
+        }
 
-      if ( Settings::self()->monitorFile() )
-        KDirWatch::self()->addFile( mCurrentUrl.path() );
-      emit status( Idle, i18n( "Data loaded from '%1'.", mCurrentUrl.prettyUrl() ) );
+        if ( mUploadJob )
+        {
+          emit error( i18n( "Uploading of another file is still in progress." ) );
+          return;
+        }
+
+        KGlobal::ref();
+        
+        // NOTE: Test what happens with remotefile -> save, close before save is finished.
+        mDownloadJob = KIO::file_copy( mCurrentUrl, KUrl( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags );
+        connect( mDownloadJob, SIGNAL( result( KJob * ) ),
+                SLOT( slotDownloadJobResult( KJob * ) ) );
+
+        emit status( Running, i18n( "Downloading remote file." ) );
+      }
     }
 
     /**
@@ -112,8 +137,6 @@ class SingleFileResource : public SingleFileResourceBase
 
       mDirtyTimer.stop();
 
-      // FIXME: Make asynchronous.
-
       // We don't use the Settings::self()->path() here as that might have changed
       // and in that case it would probably cause data lose.
       if ( mCurrentUrl.isEmpty() ) {
@@ -121,13 +144,38 @@ class SingleFileResource : public SingleFileResourceBase
         return;
       }
 
-      KDirWatch::self()->stopScan();
-      const bool writeResult = writeToFile( mCurrentUrl.path() );
-      KDirWatch::self()->startScan();
-      if ( !writeResult )
-        return;
+      if ( mCurrentUrl.isLocalFile() ) {
+        KDirWatch::self()->stopScan();
+        const bool writeResult = writeToFile( mCurrentUrl.path() );
+        KDirWatch::self()->startScan();
+        if ( !writeResult )
+          return;
 
-      emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
+        emit status( Idle, i18n( "Data successfully saved to '%1'.", mCurrentUrl.prettyUrl() ) );
+      } else {
+        // Check if there is a download or an upload in progress.
+        if ( mDownloadJob ) {
+          emit error( i18n( "A download is still in progress." ) );
+          return;
+        }
+
+        if ( mUploadJob ) {
+          emit error( i18n( "Uploading of another file is still in progress." ) );
+          return;
+        }
+
+        // Write te items to the localy cached file.
+        if ( !writeToFile( cacheFile() ) )
+          return;
+
+        KGlobal::ref();
+        // Start a job to upload the localy cached file to the remote location.
+        mUploadJob = KIO::file_copy( KUrl( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags );
+        connect( mUploadJob, SIGNAL( result( KJob * ) ),
+                SLOT( slotUploadJobResult( KJob * ) ) );
+
+        emit status( Running, i18n( "Uploading cached file to remote location." ) );
+      }
     }
 
   protected:

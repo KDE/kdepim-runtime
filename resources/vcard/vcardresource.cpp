@@ -60,7 +60,6 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
 void VCardResource::aboutToQuit()
 {
-  // TODO: we need to delay termination whehn writeToFile() becomes async!
   writeFile();
   Settings::self()->writeConfig();
 }

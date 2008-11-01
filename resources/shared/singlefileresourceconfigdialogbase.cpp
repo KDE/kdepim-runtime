@@ -31,6 +31,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
     KDialog()
 {
   ui.setupUi( mainWidget() );
+  ui.kcfg_Path->setMode( KFile::File );
   setButtons( Ok | Cancel );
 
   if ( windowId )
@@ -68,9 +69,9 @@ void SingleFileResourceConfigDialogBase::validate()
       ui.kcfg_ReadOnly->setEnabled( true );
     }
     enableButton( Ok, true );
-} else {
+  } else {
     ui.kcfg_MonitorFile->setEnabled( false );
-    // ### temporary until we support remote files
-    enableButton( Ok, false );
+    // TODO: Check if remote server supports writing.
+    enableButton( Ok, true );
   }
 }

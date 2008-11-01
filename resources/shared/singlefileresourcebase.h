@@ -26,6 +26,11 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 
+namespace KIO {
+class FileCopyJob;
+class Job;
+}
+
 namespace Akonadi
 {
 
@@ -66,14 +71,24 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      */
     virtual bool writeToFile( const QString &fileName ) = 0;
 
+    /**
+     * Generates the full path for the cache file in the case that a remote file
+     * is used.
+     */
+    QString cacheFile() const;
+    
   protected:
     QTimer mDirtyTimer;
     KUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
-
+    KIO::FileCopyJob *mDownloadJob;
+    KIO::FileCopyJob *mUploadJob;
+    
   private Q_SLOTS:
     void fileChanged( const QString &fileName );
+    void slotDownloadJobResult( KJob * );
+    void slotUploadJobResult( KJob * );
 };
 
 }
