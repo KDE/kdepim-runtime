@@ -72,7 +72,6 @@ void VCardResource::configure( WId windowId )
   dlg.setCaption( i18n("Select Addressbook") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
-    synchronize();
   }
 }
 

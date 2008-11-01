@@ -94,7 +94,6 @@ void ICalResource::configure( WId windowId )
   dlg.setCaption( i18n("Select Calendar") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
-    synchronize();
   }
 }
 
