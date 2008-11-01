@@ -780,6 +780,8 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     ItemModifyJob *modifyJob = new ItemModifyJob( item, this );
+    // HACK listen to the result and update revision accordingly
+    modifyJob->disableRevisionCheck();
 
     job = modifyJob;
   }
@@ -1367,6 +1369,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
         break;
 
       case Changed:
+      {
         Q_ASSERT( idIt != mIdMapping.end() );
         itemIt = mItems.find( idIt.value() );
         Q_ASSERT( itemIt != mItems.end() );
@@ -1377,10 +1380,15 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
         item = itemIt.value();
         item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-        (void) new ItemModifyJob( item, sequence );
+        ItemModifyJob *job = new ItemModifyJob( item, sequence );
+        // HACK we need to listen the result and update the revision number accordingly
+        // not as easy as it sounds though, since we would also need to revert if the 
+        // transaction sequence fails
+        job->disableRevisionCheck();
         kDebug(5800) << "ModifyJob for incidence" << incidence->uid()
                      << incidence->summary();
         break;
+      }
 
       case Removed:
         Q_ASSERT( idIt != mIdMapping.end() );
