@@ -47,6 +47,7 @@ class Dialog : public QDialog
       QVBoxLayout *layout = new QVBoxLayout( this );
 
       mWidget = new Akonadi::AgentTypeWidget( this );
+      connect( mWidget, SIGNAL( doubleClicked() ), this, SLOT( accept() ) );
 
       QDialogButtonBox *box = new QDialogButtonBox( this );
 
