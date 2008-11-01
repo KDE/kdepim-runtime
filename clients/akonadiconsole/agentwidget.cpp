@@ -21,7 +21,7 @@
 
 #include "agentwidget.h"
 
-#include <akonadi/agenttypewidget.h>
+#include <akonadi/agenttypedialog.h>
 #include <akonadi/agentinstancewidget.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -29,59 +29,11 @@
 
 #include <KLocale>
 
-#include <QtGui/QDialog>
-#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
 
 using namespace Akonadi;
-
-class Dialog : public QDialog
-{
-  public:
-    Dialog( QWidget *parent = 0 )
-      : QDialog( parent )
-    {
-      QVBoxLayout *layout = new QVBoxLayout( this );
-
-      mWidget = new Akonadi::AgentTypeWidget( this );
-      connect( mWidget, SIGNAL( doubleClicked() ), this, SLOT( accept() ) );
-
-      QDialogButtonBox *box = new QDialogButtonBox( this );
-
-      layout->addWidget( mWidget );
-      layout->addWidget( box );
-
-      QPushButton *ok = box->addButton( QDialogButtonBox::Ok );
-      connect( ok, SIGNAL( clicked() ), this, SLOT( accept() ) );
-
-      QPushButton *cancel = box->addButton( QDialogButtonBox::Cancel );
-      connect( cancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-
-      resize( 450, 320 );
-    }
-
-    virtual void done( int result )
-    {
-      if ( result == Accepted )
-        mAgentType = mWidget->currentAgentType();
-      else
-        mAgentType = AgentType();
-
-      QDialog::done( result );
-    }
-
-    AgentType agentType() const
-    {
-      return mAgentType;
-    }
-
-  private:
-    Akonadi::AgentTypeWidget *mWidget;
-    AgentType mAgentType;
-};
 
 AgentWidget::AgentWidget( QWidget *parent )
   : QWidget( parent )
@@ -122,7 +74,7 @@ AgentWidget::AgentWidget( QWidget *parent )
 
 void AgentWidget::addAgent()
 {
-  Dialog dlg( this );
+  Akonadi::AgentTypeDialog dlg( this );
   if ( dlg.exec() ) {
     const AgentType agentType = dlg.agentType();
 
