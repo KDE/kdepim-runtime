@@ -62,7 +62,7 @@ void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
 void KCalMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    migrationFailed( "Failed to create resource: " + job->errorText() );
+    migrationFailed( i18n("Failed to create resource: %1", job->errorText()) );
     return;
   }
   KCal::ResourceCalendar *res = currentResource();

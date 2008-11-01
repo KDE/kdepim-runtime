@@ -49,8 +49,10 @@ bool KABCMigrator::migrateResource( KABC::Resource* res)
 void KABCMigrator::migrateFileResource(KABC::Resource * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
-  if ( kresCfg.readEntry( "FileFormat", "" ) != "vcard" ) {
-    migrationFailed( "Unsupported file format found." );
+  const QString format = kresCfg.readEntry( "FileFormat", "" );
+  if ( format != "vcard" ) {
+    migrationFailed( i18n("Unsupported file format found. "
+        "The file format '%1' is no longer supported, please convert to another one.", format ) );
     return;
   }
   const AgentType type = AgentManager::self()->type( "akonadi_vcard_resource" );
@@ -66,7 +68,7 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
 void KABCMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    migrationFailed( "Failed to create resource: " + job->errorText() );
+    migrationFailed( i18n("Failed to create resource: %1", job->errorText()) );
     return;
   }
   KABC::Resource *res = currentResource();
