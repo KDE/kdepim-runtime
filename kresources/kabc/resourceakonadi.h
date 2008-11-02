@@ -65,6 +65,9 @@ class ResourceAkonadi : public ResourceABC
     virtual void insertAddressee( const Addressee &addr );
     virtual void removeAddressee( const Addressee &addr );
 
+    virtual void insertDistributionList( DistributionList *list );
+    virtual void removeDistributionList( DistributionList *list );
+
     virtual bool subresourceActive( const QString &subResource ) const;
     virtual bool subresourceWritable( const QString &subResource ) const;
     virtual QString subresourceLabel( const QString &subResource ) const;

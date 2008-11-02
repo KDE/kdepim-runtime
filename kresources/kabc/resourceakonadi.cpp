@@ -35,6 +35,8 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/transactionsequence.h>
 
+#include <kabc/contactgroup.h>
+
 #include <kconfiggroup.h>
 #include <kdebug.h>
 
@@ -172,6 +174,10 @@ class ResourceAkonadi::Private
     KJob *createSaveSequence() const;
 
     bool reloadSubResource( SubResource *subResource, bool &changed );
+
+    DistributionList *distListFromContactGroup( const ContactGroup &contactGroup );
+
+    ContactGroup contactGroupFromDistList( const DistributionList* list ) const;
 };
 
 ResourceAkonadi::ResourceAkonadi()
@@ -246,6 +252,7 @@ bool ResourceAkonadi::doOpen()
 
   d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
   d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+  d->mCollectionFilterModel->addMimeTypeFilter( ContactGroup::mimeType() );
 
   connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
            this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
@@ -290,6 +297,8 @@ void ResourceAkonadi::doClose()
 
   // clear local caches
   mAddrMap.clear();
+  qDeleteAll( mDistListMap );
+  mDistListMap.clear();
   d->mItems.clear();
   d->mIdMapping.clear();
   d->mUidToResourceMap.clear();
@@ -462,6 +471,37 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
   ResourceABC::removeAddressee( addr );
 }
 
+void ResourceAkonadi::insertDistributionList( DistributionList *list )
+{
+  kDebug(5700) << "identifier=" << list->identifier()
+               << ", name=" << list->name();
+
+  const QString uid = list->identifier();
+  if ( mDistListMap.find( uid ) == mDistListMap.end() )
+    d->mChanges[ uid ] = Private::Added;
+  else
+    d->mChanges[ uid ] = Private::Changed;
+
+  ResourceABC::insertDistributionList( list );
+}
+
+void ResourceAkonadi::removeDistributionList( DistributionList *list )
+{
+  kDebug(5700) << "identifier=" << list->identifier()
+               << ", name=" << list->name();
+
+  const QString uid = list->identifier();
+  DistributionListMap::const_iterator findIt = mDistListMap.find( uid );
+  if ( findIt == mDistListMap.end() )
+    return;
+
+  d->mChanges[ uid ] = Private::Removed;
+
+  d->mUidToResourceMap.remove( uid );
+
+  ResourceABC::removeDistributionList( list );
+}
+
 bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 {
   kDebug(5700) << "subResource" << subResource;
@@ -546,6 +586,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
           changed = true;
 
           mAddrMap.remove( it.key() );
+          mDistListMap.remove( it.key() );
           it = d->mUidToResourceMap.erase( it );
         }
         else
@@ -592,6 +633,13 @@ void ResourceAkonadi::loadResult( KJob *job )
       d->mIdMapping.insert( addressee.uid(), id );
 
       mAddrMap.insert( addressee.uid(), addressee );
+    } else if ( item.hasPayload<ContactGroup>() ) {
+      ContactGroup contactGroup = item.payload<ContactGroup>();
+
+      const Item::Id id = item.id();
+      d->mIdMapping.insert( contactGroup.id(), id );
+
+      mDistListMap.insert( contactGroup.id(), d->distListFromContactGroup( contactGroup ) );
     }
 
     // always update the item
@@ -641,6 +689,15 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
+    } else if ( item.hasPayload<ContactGroup>() ) {
+      ContactGroup contactGroup = item.payload<ContactGroup>();
+
+      const Item::Id id = item.id();
+      mIdMapping.insert( contactGroup.id(), id );
+
+      mParent->mDistListMap.insert( contactGroup.id(), distListFromContactGroup( contactGroup ) );
+      mUidToResourceMap.insert( contactGroup.id(), collectionUrl );
+      mItemIdToResourceMap.insert( id, collectionUrl );
     }
 
     // always update the item
@@ -660,29 +717,48 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
   if ( subResource == 0 || !subResource->isActive() )
     return;
 
-  if ( !item.hasPayload<Addressee>() ) {
-    kError(5700) << "Item does not have addressee payload";
-    return;
-  }
+  if ( item.hasPayload<Addressee>() ) {
+    Addressee addressee = item.payload<Addressee>();
 
-  Addressee addressee = item.payload<Addressee>();
+    kDebug(5700) << "Addressee" << addressee.uid() << "("
+                 << addressee.formattedName() << ")";
 
-  kDebug(5700) << "Addressee" << addressee.uid() << "("
-               << addressee.formattedName() << ")";
+    const Item::Id id = item.id();
+    mIdMapping.insert( addressee.uid(), id );
+    mUidToResourceMap.insert( addressee.uid(), collectionUrl );
+    mItemIdToResourceMap.insert( id, collectionUrl );
 
-  const Item::Id id = item.id();
-  mIdMapping.insert( addressee.uid(), id );
-  mUidToResourceMap.insert( addressee.uid(), collectionUrl );
-  mItemIdToResourceMap.insert( id, collectionUrl );
+    mItems.insert( id, item );
 
-  mItems.insert( id, item );
+    // might be the result of our own saving
+    if ( mParent->mAddrMap.find( addressee.uid() ) == mParent->mAddrMap.end() ) {
+      mChanges.remove( addressee.uid() );
+      mParent->mAddrMap.insert( addressee.uid(), addressee );
 
-  // might be the result of our own saving
-  if ( mParent->mAddrMap.find( addressee.uid() ) == mParent->mAddrMap.end() ) {
-    mChanges.remove( addressee.uid() );
-    mParent->mAddrMap.insert( addressee.uid(), addressee );
+      mParent->addressBook()->emitAddressBookChanged();
+    }
+  } else if ( item.hasPayload<ContactGroup>() ) {
+    ContactGroup contactGroup = item.payload<ContactGroup>();
 
-    mParent->addressBook()->emitAddressBookChanged();
+    kDebug(5700) << "ContactGroup" << contactGroup.id() << "("
+                 << contactGroup.name() << ")";
+
+    const Item::Id id = item.id();
+    mIdMapping.insert( contactGroup.id(), id );
+    mUidToResourceMap.insert( contactGroup.id(), collectionUrl );
+    mItemIdToResourceMap.insert( id, collectionUrl );
+
+    mItems.insert( id, item );
+
+    // might be the result of our own saving
+    if ( mParent->mDistListMap.find( contactGroup.id() ) == mParent->mDistListMap.end() ) {
+      mChanges.remove( contactGroup.id() );
+      mParent->mDistListMap.insert( contactGroup.id(), distListFromContactGroup( contactGroup ) );
+
+      mParent->addressBook()->emitAddressBookChanged();
+    }
+  } else {
+    kError(5700) << "item has neither addressee nor contact group payload";
   }
 }
 
@@ -712,34 +788,62 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
     //return;
   }
 
-  if ( !item.hasPayload<Addressee>() ) {
-    kError(5700) << "Item does not have addressee payload";
-    return;
+  if ( item.hasPayload<Addressee>() ) {
+    Addressee addressee = item.payload<Addressee>();
+
+    kDebug(5700) << "Addressee" << addressee.uid() << "("
+                 << addressee.formattedName() << ")";
+
+    Addressee::Map::iterator addrIt = mParent->mAddrMap.find( addressee.uid() );
+    if ( addrIt == mParent->mAddrMap.end() ) {
+      kWarning(5700) << "Addressee  " << addressee.uid() << "("
+                     << addressee.formattedName()
+                     << ") changed but no longer in local list";
+      return;
+    }
+
+    mChanges.remove( addressee.uid() );
+
+    if ( addrIt.value() == addressee ) {
+      kDebug(5700) << "Local addressee object already up-to-date";
+      return;
+    }
+
+    addrIt.value() = addressee;
+
+    mParent->addressBook()->emitAddressBookChanged();
+  } else if ( item.hasPayload<ContactGroup>() ) {
+    ContactGroup contactGroup = item.payload<ContactGroup>();
+
+    kDebug(5700) << "ContactGroup" << contactGroup.id() << "("
+                 << contactGroup.name() << ")";
+
+    DistributionListMap::iterator distListIt = mParent->mDistListMap.find( contactGroup.id() );
+    if ( distListIt == mParent->mDistListMap.end() ) {
+      kWarning(5700) << "DistributionList  " << contactGroup.id() << "("
+                     << contactGroup.name()
+                     << ") changed but no longer in local list";
+      return;
+    }
+
+    mChanges.remove( contactGroup.id() );
+
+    // TODO: check if we can compare DistributionList and ContactGroup for
+    // and equivalent check
+//     if ( addrIt.value() == addressee ) {
+//       kDebug(5700) << "Local addressee object already up-to-date";
+//       return;
+//     }
+
+    DistributionList *list = distListIt.value();
+    delete list;
+    list = distListFromContactGroup( contactGroup );
+    distListIt.value() = list;
+
+    mParent->addressBook()->emitAddressBookChanged();
+  } else {
+    kError(5700) << "item has neither addressee nor contact group payload";
   }
-
-  Addressee addressee = item.payload<Addressee>();
-
-  kDebug(5700) << "Addressee" << addressee.uid() << "("
-               << addressee.formattedName() << ")";
-
-  Addressee::Map::iterator addrIt = mParent->mAddrMap.find( addressee.uid() );
-  if ( addrIt == mParent->mAddrMap.end() ) {
-    kWarning(5700) << "Addressee  " << addressee.uid() << "("
-                 << addressee.formattedName()
-                 << ") changed but no longer in local list";
-    return;
-  }
-
-  mChanges.remove( addressee.uid() );
-
-  if ( addrIt.value() == addressee ) {
-    kDebug(5700) << "Local addressee object already up-to-date";
-    return;
-  }
-
-  addrIt.value() = addressee;
-
-  mParent->addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
@@ -764,10 +868,12 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
   QString uid;
   if ( oldItem.hasPayload<Addressee>() ) {
     uid = oldItem.payload<Addressee>().uid();
+  } else if ( oldItem.hasPayload<ContactGroup>() ) {
+    uid = oldItem.payload<ContactGroup>().id();
   } else {
     // since we always fetch the payload this should not happen
     // but we really do not want stale entries
-    kWarning(5700) << "No Addressee in local item: id=" << id
+    kWarning(5700) << "No Addressee or ContactGroup in local item: id=" << id
                    << ", remoteId=" << oldItem.remoteId();
 
     IdHash::const_iterator idIt    = mIdMapping.begin();
@@ -790,18 +896,34 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
   mItemIdToResourceMap.remove( id );
   mChanges.remove( uid );
 
+  bool changed = false;
+
   Addressee::Map::iterator addrIt = mParent->mAddrMap.find( uid );
-
   // if it does not exist as an addressee we already removed it locally
-  if ( addrIt == mParent->mAddrMap.end() )
-    return;
+  if ( addrIt != mParent->mAddrMap.end() ) {
+    kDebug(5700) << "Addressee" << uid << "("
+                 << addrIt.value().formattedName() << ")";
 
-  kDebug(5700) << "Addressee" << uid << "("
-               << addrIt.value().formattedName() << ")";
+    mParent->mAddrMap.erase( addrIt );
 
-  mParent->mAddrMap.erase( addrIt );
+    changed = true;
+  }
 
-  mParent->addressBook()->emitAddressBookChanged();
+  DistributionListMap::iterator distListIt = mParent->mDistListMap.find( uid );
+  // if it does not exist as a distribution list we already removed it locally
+  if ( distListIt != mParent->mDistListMap.end() ) {
+    DistributionList *list = distListIt.value();
+    kDebug(5700) << "DistributionList" << uid << "("
+                 << list->name() << ")";
+
+    delete list;
+    mParent->mDistListMap.erase( distListIt );
+
+    changed = true;
+  }
+
+  if ( changed )
+    mParent->addressBook()->emitAddressBookChanged();
 }
 
 void ResourceAkonadi::Private::collectionRowsInserted( const QModelIndex &parent, int start, int end )
@@ -1000,6 +1122,8 @@ bool ResourceAkonadi::Private::prepareSaving()
       ++addrIt;
   }
 
+  // TODO: need to handle distribution lists which are new
+
   return true;
 }
 
@@ -1026,13 +1150,26 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         Q_ASSERT( subResource != 0 );
 
         addressee = mParent->mAddrMap.value( uid );
+        if ( !addressee.isEmpty() ) {
+          item.setMimeType( QLatin1String( "text/directory" ) );
+          item.setPayload<KABC::Addressee>( addressee );
 
-        item.setMimeType( QLatin1String( "text/directory" ) );
-        item.setPayload<KABC::Addressee>( addressee );
+          (void) new ItemCreateJob( item, subResource->mCollection, sequence );
+          kDebug(5700) << "CreateJob for addressee" << addressee.uid()
+                      << addressee.formattedName();
+        } else {
+          DistributionList *list = mParent->mDistListMap.value( uid );
+          if ( list != 0 ) {
+            ContactGroup contactGroup = contactGroupFromDistList( list );
 
-        (void) new ItemCreateJob( item, subResource->mCollection, sequence );
-        kDebug(5700) << "CreateJob for addressee" << addressee.uid()
-                     << addressee.formattedName();
+            item.setMimeType( ContactGroup::mimeType() );
+            item.setPayload<ContactGroup>( contactGroup );
+
+            (void) new ItemCreateJob( item, subResource->mCollection, sequence );
+            kDebug(5700) << "CreateJob for contact group" << contactGroup.id()
+                         << contactGroup.name();
+          }
+        }
         break;
 
       case Changed:
@@ -1040,14 +1177,28 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         itemIt = mItems.find( idIt.value() );
         Q_ASSERT( itemIt != mItems.end() );
 
-        addressee = mParent->mAddrMap.value( uid );
-
         item = itemIt.value();
-        item.setPayload<KABC::Addressee>( addressee );
 
-        (void) new ItemModifyJob( item, sequence );
-        kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
-                     << addressee.formattedName();
+        if ( item.hasPayload<KABC::Addressee>() ) {
+          addressee = mParent->mAddrMap.value( uid );
+
+          item.setPayload<KABC::Addressee>( addressee );
+
+          (void) new ItemModifyJob( item, sequence );
+          kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
+                       << addressee.formattedName();
+        } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+          DistributionList *list = mParent->mDistListMap.value( uid );
+          if ( list != 0 ) {
+            ContactGroup contactGroup = contactGroupFromDistList( list );
+
+            item.setPayload<KABC::ContactGroup>( contactGroup );
+
+            (void) new ItemModifyJob( item, sequence );
+            kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
+                         << addressee.formattedName();
+          }
+        }
         break;
 
       case Removed:
@@ -1056,12 +1207,19 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         Q_ASSERT( itemIt != mItems.end() );
 
         item = itemIt.value();
-        if ( item.hasPayload<KABC::Addressee>() )
+        if ( item.hasPayload<KABC::Addressee>() ) {
           addressee = item.payload<KABC::Addressee>();
 
+          kDebug(5700) << "DeleteJob for addressee" << uid
+                      << addressee.formattedName();
+        } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+          ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+
+          kDebug(5700) << "DeleteJob for contact group" << uid
+                       << contactGroup.name();
+        }
+
         (void) new ItemDeleteJob( item, sequence );
-        kDebug(5700) << "DeleteJob for addressee" << uid
-                     << addressee.formattedName();
         break;
     }
   }
@@ -1100,6 +1258,20 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
+    } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+      changed = true;
+
+      ContactGroup contactGroup = item.payload<ContactGroup>();
+
+      DistributionList *list = distListFromContactGroup( contactGroup );
+
+      const Item::Id id = item.id();
+      mIdMapping.insert( contactGroup.id(), id );
+
+      // TODO can there be one in the map already? if yes, do we delete or update it?
+      mParent->mDistListMap.insert( contactGroup.id(), list );
+      mUidToResourceMap.insert( contactGroup.id(), collectionUrl );
+      mItemIdToResourceMap.insert( id, collectionUrl );
     }
 
     // always update the item
@@ -1107,6 +1279,75 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool
   }
 
   return true;
+}
+
+DistributionList *ResourceAkonadi::Private::distListFromContactGroup( const ContactGroup &contactGroup )
+{
+  DistributionList *list = new DistributionList( mParent, contactGroup.id(), contactGroup.name() );
+
+  for ( unsigned int refIndex = 0; refIndex < contactGroup.referencesCount(); ++refIndex ) {
+    const ContactGroup::Reference &reference = contactGroup.reference( refIndex );
+
+    Addressee addressee;
+    Addressee::Map::const_iterator it = mParent->mAddrMap.find( reference.uid() );
+    if ( it == mParent->mAddrMap.end() ) {
+      addressee.setUid( reference.uid() );
+
+      // TODO any way to set a good name?
+    } else
+      addressee = it.value();
+
+    // TODO how to handle ContactGroup::Reference custom fields?
+
+    list->insertEntry( addressee, reference.preferredEmail() );
+  }
+
+  for ( unsigned int dataIndex = 0; dataIndex < contactGroup.dataCount(); ++dataIndex ) {
+    const ContactGroup::Data &data = contactGroup.data( dataIndex );
+
+    Addressee addressee;
+    addressee.setName( data.name() );
+    addressee.insertEmail( data.email() );
+
+    // TODO how to handle ContactGroup::Data custom fields?
+
+    list->insertEntry( addressee );
+  }
+
+  return list;
+}
+
+ContactGroup ResourceAkonadi::Private::contactGroupFromDistList( const KABC::DistributionList* list ) const
+{
+  ContactGroup contactGroup( list->name() );
+  contactGroup.setId( list->identifier() );
+
+  DistributionList::Entry::List entries = list->entries();
+  foreach ( const DistributionList::Entry &entry, entries ) {
+    Addressee addressee = entry.addressee();
+    const QString email = entry.email();
+    if ( addressee.isEmpty() ) {
+      if ( email.isEmpty() )
+        continue;
+
+      ContactGroup::Data data( email, email );
+      contactGroup.append( data );
+    } else {
+      Addressee baseAddressee = mParent->mAddrMap.value( addressee.uid() );
+      if ( baseAddressee.isEmpty() ) {
+        ContactGroup::Data data( email, email );
+        // TODO: transer custom fields?
+        contactGroup.append( data );
+      } else {
+        ContactGroup::Reference reference( addressee.uid() );
+        reference.setPreferredEmail( email );
+        // TODO: transer custom fields?
+        contactGroup.append( reference );
+      }
+    }
+  }
+
+  return contactGroup;
 }
 
 #include "resourceakonadi.moc"
