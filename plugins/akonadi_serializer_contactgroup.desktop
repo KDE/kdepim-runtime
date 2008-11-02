@@ -1,0 +1,9 @@
+[Misc]
+Name=Contact Group Serializer
+Name[x-test]=xxContact Group Serializerxx
+Comment=An Akonadi serializer plugin for contact group objects
+Comment[x-test]=xxAn Akonadi serializer plugin for contact group objectsxx
+
+[Plugin]
+Type=application/x-vnd.kde.contactgroup
+X-KDE-Library=akonadi_serializer_contactgroup
