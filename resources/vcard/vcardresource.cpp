@@ -137,6 +137,7 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
     Item item;
     item.setRemoteId( addressee.uid() );
     item.setMimeType( "text/directory" );
+    item.setPayload( addressee );
     items.append( item );
   }
 

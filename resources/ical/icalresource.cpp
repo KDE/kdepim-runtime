@@ -154,6 +154,7 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
   foreach ( Incidence *incidence, incidences ) {
     Item item ( mMimeVisitor->mimeType( incidence ) );
     item.setRemoteId( incidence->uid() );
+    item.setPayload( IncidencePtr( incidence->clone() ) );
     items << item;
   }
   itemsRetrieved( items );
