@@ -76,7 +76,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      * is used.
      */
     QString cacheFile() const;
-    
+
   protected:
     QTimer mDirtyTimer;
     KUrl mCurrentUrl;
@@ -84,7 +84,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     QString mCollectionIcon;
     KIO::FileCopyJob *mDownloadJob;
     KIO::FileCopyJob *mUploadJob;
-    
+
   private Q_SLOTS:
     void handleProgress( KJob *, unsigned long );
     void fileChanged( const QString &fileName );

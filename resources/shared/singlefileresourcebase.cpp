@@ -31,37 +31,37 @@
 #include <KLocale>
 #include <KStandardDirs>
 
-#include <QDir>
+#include <QtCore/QDir>
 
 using namespace Akonadi;
 
-SingleFileResourceBase::SingleFileResourceBase( const QString & id ) :
-    ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
+SingleFileResourceBase::SingleFileResourceBase( const QString & id )
+  : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
 {
-  connect( &mDirtyTimer, SIGNAL(timeout()), SLOT(writeFile()) );
+  connect( &mDirtyTimer, SIGNAL( timeout() ), SLOT( writeFile() ) );
   mDirtyTimer.setSingleShot( true );
 
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadFile()) );
-  QTimer::singleShot( 0, this, SLOT(readFile()) );
+  connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadFile() ) );
+  QTimer::singleShot( 0, this, SLOT( readFile() ) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
 
-  connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
+  connect( KDirWatch::self(), SIGNAL( dirty( QString ) ), SLOT( fileChanged( QString ) ) );
 }
 
- QString SingleFileResourceBase::cacheFile() const
+QString SingleFileResourceBase::cacheFile() const
 {
   return KStandardDirs::locateLocal( "cache", "akonadi/" + identifier() );
 }
 
-void SingleFileResourceBase::setSupportedMimetypes(const QStringList & mimeTypes, const QString &icon)
+void SingleFileResourceBase::setSupportedMimetypes( const QStringList & mimeTypes, const QString &icon )
 {
   mSupportedMimetypes = mimeTypes;
   mCollectionIcon = icon;
 }
 
-void SingleFileResourceBase::collectionChanged(const Akonadi::Collection & collection)
+void SingleFileResourceBase::collectionChanged( const Akonadi::Collection & collection )
 {
   QString newName = collection.name();
   if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
@@ -83,8 +83,9 @@ void SingleFileResourceBase::reloadFile()
   // the settings changed
   if ( !mCurrentUrl.isEmpty() )
     writeFile();
- readFile();
- synchronize();
+
+  readFile();
+  synchronize();
 }
 
 void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
@@ -92,7 +93,7 @@ void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
   emit percent( pct );
 }
 
-void SingleFileResourceBase::fileChanged(const QString & fileName)
+void SingleFileResourceBase::fileChanged( const QString & fileName )
 {
   if ( fileName != mCurrentUrl.path() )
     return;
