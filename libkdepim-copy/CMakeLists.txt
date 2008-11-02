@@ -101,7 +101,7 @@ endif(MINGW)
 
 
 set_target_properties(kdepim PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
-install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
+install(TARGETS kdepim ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 ########### next target ###############
