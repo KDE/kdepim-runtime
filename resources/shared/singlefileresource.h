@@ -44,6 +44,8 @@ class SingleFileResource : public SingleFileResourceBase
   public:
     SingleFileResource( const QString &id ) : SingleFileResourceBase( id )
     {
+      // The resource needs network when the path refers to a non local file.
+      setNeedsNetwork( !KUrl( Settings::self()->path() ).isLocalFile() );
     }
 
     /**

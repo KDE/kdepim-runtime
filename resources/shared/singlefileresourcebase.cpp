@@ -76,7 +76,11 @@ void SingleFileResourceBase::collectionChanged(const Akonadi::Collection & colle
 
 void SingleFileResourceBase::reloadFile()
 {
-  // if we have something loaded already, make sure we write that back in case the settings changed
+  // Update the network setting.
+  setNeedsNetwork( !mCurrentUrl.isEmpty() && !mCurrentUrl.isLocalFile() );
+
+  // if we have something loaded already, make sure we write that back in case
+  // the settings changed
   if ( !mCurrentUrl.isEmpty() )
     writeFile();
  readFile();
