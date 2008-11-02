@@ -170,7 +170,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     foreach( const QByteArray &flag, flags )
     newFlags += flag + ' ';
 
-    kDebug( ) << "Flags going to be set" << newFlags;
+    // kDebug( ) << "Flags going to be set" << newFlags;
     const QString reference = item.remoteId();
     const QStringList temp = reference.split( "-+-" );
     m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags );
@@ -431,7 +431,7 @@ void ImaplibResource::slotCollectionRemoved( bool success )
 
 void ImaplibResource::slotLogin( Imaplib* connection )
 {
-    kDebug();
+    // kDebug();
 
     m_username =  Settings::self()->username();
     QString pass = Settings::self()->password();
@@ -442,6 +442,8 @@ void ImaplibResource::slotLogin( Imaplib* connection )
 
 void ImaplibResource::slotLoginFailed( Imaplib* connection )
 {
+    kDebug();
+
     // the credentials where not ok....
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
             i18n( "The server refused the supplied username and password. "
@@ -457,6 +459,12 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
         connection->logout();
         emit warning( i18n( "Could not connect to the IMAP-server %1", m_server ) );
     }
+}
+
+void ImaplibResource::slotLoginOk()
+{
+    kDebug();
+    synchronizeCollectionTree();
 }
 
 void ImaplibResource::slotAlert( Imaplib*, const QString& message )
@@ -613,10 +621,9 @@ void ImaplibResource::connections()
                                 const QString& ) ),
              SLOT( slotIntegrity( const QString&, int, const QString&,
                                   const QString& ) ) );
+    connect( m_imap, SIGNAL( loginOk( Imaplib* ) ),
+             SLOT( slotLoginOk() ) );
     /*
-    connect( m_imap,
-             SIGNAL( loginOk( Imaplib* ) ),
-             SIGNAL( loginOk() ) );
     connect( m_imap,
              SIGNAL( status( const QString& ) ),
              SIGNAL( status( const QString& ) ) );

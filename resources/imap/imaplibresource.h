@@ -55,6 +55,7 @@ protected:
 private Q_SLOTS:
     void slotLogin( Imaplib* connection );
     void slotLoginFailed( Imaplib* connection );
+    void slotLoginOk();
     void slotAlert( Imaplib*, const QString& message );
     void slotMessagesInFolder( Imaplib*, const QString&, int );
     void slotFolderListReceived( const QStringList& list, const QStringList& );
