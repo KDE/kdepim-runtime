@@ -38,6 +38,7 @@ public:
     void testRemoveEntry();
     void testDuplicate();
     void testDeleteList();
+    void testConverter();
 
 private:
     bool check(const QString& txt, QString a, QString b);

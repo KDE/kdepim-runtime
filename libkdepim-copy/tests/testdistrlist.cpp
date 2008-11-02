@@ -1,5 +1,6 @@
 /* This file is part of the KDE project
    Copyright (C) 2004 David Faure <faure@kde.org>
+   Copyright (C) 2008 Kevin Krammer <kevin.krammer@gmx.at>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -19,8 +20,12 @@
 #include "testdistrlist.h"
 
 #include <distributionlist.h>
+#include <distributionlistconverter.h>
 using KPIM::DistributionList;
+using KPIM::DistributionListConverter;
 
+#include <kabc/distributionlist.h>
+#include <kabc/resource.h>
 #include <kabc/stdaddressbook.h>
 #include <kurl.h>
 #include <kapplication.h>
@@ -291,6 +296,78 @@ void TestDistrList::testDeleteList()
     ab->removeAddressee( dl );
     dl = DistributionList::findByName( ab, "foo" );
     assert( dl.isEmpty() );
+}
+
+void TestDistrList::testConverter()
+{
+    kDebug() ;
+
+    KABC::AddressBook *ab = KABC::StdAddressBook::self();
+    QList<KABC::Resource*> resources = ab->resources();
+    assert( resources.count() == 1 );
+
+    DistributionListConverter converter( resources[ 0 ] );
+
+    DistributionList pimList;
+    KABC::DistributionList *kabcList = converter.convertToKABC( pimList );
+
+    assert( kabcList != 0 );
+    assert( kabcList->entries().isEmpty() && kabcList->emails().isEmpty() );
+    assert( kabcList->identifier().isEmpty() && kabcList->name().isEmpty() );
+
+    DistributionList pimList2 = converter.convertFromKABC( kabcList );
+    assert( pimList2 == pimList );
+
+    delete kabcList;
+
+    pimList.setName( "pimlist-name" );
+    pimList.setUid( "pimlist-id" );
+
+    kabcList = converter.convertToKABC( pimList );
+    assert( kabcList != 0 );
+    assert( kabcList->entries().isEmpty() && kabcList->emails().isEmpty() );
+    assert( kabcList->identifier() == "pimlist-id" &&
+            kabcList->name() == "pimlist-name" );
+
+    pimList2 = converter.convertFromKABC( kabcList );
+    assert( pimList2 == pimList );
+
+    delete kabcList;
+
+    KABC::Addressee addr1 = ab->findByName( "addr1" ).first();
+    assert( !addr1.isEmpty() );
+
+    pimList.insertEntry( addr1 );
+
+    kabcList = converter.convertToKABC( pimList );
+    assert( kabcList != 0 );
+    assert( kabcList->identifier() == "pimlist-id" &&
+            kabcList->name() == "pimlist-name" );
+    assert( kabcList->entries().count() == 1 && kabcList->emails().count() == 1 );
+    assert( kabcList->entries()[ 0 ].addressee() == addr1 );
+
+    pimList2 = converter.convertFromKABC( kabcList );
+    assert( pimList2 == pimList );
+
+    delete kabcList;
+
+    KABC::Addressee addr2 = ab->findByName( "addr2" ).first();
+    assert( !addr2.isEmpty() );
+
+    pimList.insertEntry( addr2 );
+
+    kabcList = converter.convertToKABC( pimList );
+    assert( kabcList != 0 );
+    assert( kabcList->identifier() == "pimlist-id" &&
+            kabcList->name() == "pimlist-name" );
+    assert( kabcList->entries().count() == 2 && kabcList->emails().count() == 2 );
+    assert( kabcList->entries()[ 0 ].addressee() == addr1 );
+    assert( kabcList->entries()[ 2 ].addressee() == addr2 );
+
+    pimList2 = converter.convertFromKABC( kabcList );
+    assert( pimList2 == pimList );
+
+    delete kabcList;
 }
 
 #include "testdistrlist.moc"

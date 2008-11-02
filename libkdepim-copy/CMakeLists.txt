@@ -15,58 +15,58 @@ add_definitions(${QT_QTDBUS_DEFINITIONS})
 ########### next target ###############
 
 set(kdepim_LIB_SRCS
-   ktimeedit.cpp 
+   ktimeedit.cpp
    reminderclient.cpp
-   kprefsdialog.cpp 
-   kpimprefs.cpp 
-   categoryselectdialog.cpp 
-   categoryeditdialog.cpp 
+   kprefsdialog.cpp
+   kpimprefs.cpp
+   categoryselectdialog.cpp
+   categoryeditdialog.cpp
    kdateedit.cpp
-   kvcarddrag.cpp 
-   addressesdialog.cpp 
-   addresseeview.cpp 
-   maillistdrag.cpp 
-   kconfigpropagator.cpp 
-   kconfigwizard.cpp 
-   pluginloaderbase.cpp 
-   addresseelineedit.cpp 
-   kdatepickerpopup.cpp 
+   kvcarddrag.cpp
+   addressesdialog.cpp
+   addresseeview.cpp
+   maillistdrag.cpp
+   kconfigpropagator.cpp
+   kconfigwizard.cpp
+   pluginloaderbase.cpp
+   addresseelineedit.cpp
+   kdatepickerpopup.cpp
    ktimezonecombobox.cpp
-   ldapclient.cpp 
-   ldapsearchdialog.cpp 
-   overlaywidget.cpp 
-   progressmanager.cpp 
-   progressdialog.cpp 
-   statusbarprogresswidget.cpp 
-   ssllabel.cpp 
-   completionordereditor.cpp 
-   diffalgo.cpp 
-   addresseediffalgo.cpp 
-   calendardiffalgo.cpp 
-   htmldiffalgodisplay.cpp 
-   broadcaststatus.cpp 
-   kresourceprefs.cpp 
-   kxface.cpp 
-   kaccount.cpp 
-   kaddrbookexternal.cpp 
-   kfoldertree.cpp 
+   ldapclient.cpp
+   ldapsearchdialog.cpp
+   overlaywidget.cpp
+   progressmanager.cpp
+   progressdialog.cpp
+   statusbarprogresswidget.cpp
+   ssllabel.cpp
+   completionordereditor.cpp
+   diffalgo.cpp
+   addresseediffalgo.cpp
+   calendardiffalgo.cpp
+   htmldiffalgodisplay.cpp
+   broadcaststatus.cpp
+   kresourceprefs.cpp
+   kxface.cpp
+   kaccount.cpp
+   kaddrbookexternal.cpp
+   kfoldertree.cpp
    treewidget.cpp
    foldertreewidget.cpp
-   kscoring.cpp 
-   kscoringeditor.cpp 
-   ksubscription.cpp 
-   kwidgetlister.cpp 
-   recentaddresses.cpp 
-   designerfields.cpp 
-   kcmdesignerfields.cpp 
-   embeddedurlpage.cpp 
-   kincidencechooser.cpp 
-   groupwarejob.cpp 
-   csshelper.cpp 
-   distributionlist.cpp 
-   sendsmsdialog.cpp 
-   categoryhierarchyreader.cpp 
-   messagestatus.cpp 
+   kscoring.cpp
+   kscoringeditor.cpp
+   ksubscription.cpp
+   kwidgetlister.cpp
+   recentaddresses.cpp
+   designerfields.cpp
+   kcmdesignerfields.cpp
+   embeddedurlpage.cpp
+   kincidencechooser.cpp
+   groupwarejob.cpp
+   csshelper.cpp
+   distributionlist.cpp
+   sendsmsdialog.cpp
+   categoryhierarchyreader.cpp
+   messagestatus.cpp
    kemailquotinghighter.cpp
    kmailcompletion.cpp
    networkstatus.cpp
@@ -76,6 +76,7 @@ set(kdepim_LIB_SRCS
    colorlistbox.cpp
    dictionarycombobox.cpp
    uistatesaver.cpp
+   distributionlistconverter.cpp
 )
 
 #if(WIN32)
@@ -105,7 +106,7 @@ install(TARGETS kdepim  DESTINATION ${LIB_INSTALL_DIR})
 
 ########### next target ###############
 
-set(kdepimwidgets_PART_SRCS) 
+set(kdepimwidgets_PART_SRCS)
 kde4_add_widget_files(kdepimwidgets_PART_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/kdepim.widgets)
 
 kde4_add_plugin(kdepimwidgets ${kdepimwidgets_PART_SRCS})
@@ -121,4 +122,4 @@ install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR}/plugins/designe
 
 install(FILES kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
 
-install(FILES interfaces/org.kde.addressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${KDE4_DBUS_INTERFACES_DIR}) 
+install(FILES interfaces/org.kde.addressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${KDE4_DBUS_INTERFACES_DIR})
