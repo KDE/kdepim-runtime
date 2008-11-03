@@ -1,6 +1,12 @@
 [Desktop Entry]
 Name=Mailody Imap
+Name[pt]=IMAP do Mailody
+Name[pt_BR]=IMAP do Mailody
 Comment=Connects to an IMAP-server. Based on the IMAP-library from Mailody.
+Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca de IMAP do Mailody.
+Comment[pt_BR]=Conecta a um servidor IMAP. Baseado na biblioteca de IMAP do Mailody.
+Comment[uk]=З’єднується з сервером IMAP. Засновано на бібліотеці IMAP з Mailody.
+Comment[zh_TW]=連到 IMAP 伺服器。基於從 Mailody 而來的 IMAP 函式庫。
 Type=AkonadiResource
 Exec=akonadi_imaplib_resource
 Icon=message-rfc822

@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Usenet Newsgroups (NNTP)
+Name[pt]=Grupos de Notícias da Usenet (NNTP)
+Name[pt_BR]=Grupos de notícias da Usenet (NNTP)
+Name[uk]=Групи новин Usenet (NNTP)
+Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
+Comment[pt]=Possibilita a leitura de artigos de um servidor de notícias
+Comment[pt_BR]=Possibilita a leitura de artigos de um servidor de notícias
+Comment[uk]=Робить можливим читання статей з сервера новин
+Comment[zh_TW]=從新聞伺服器讀取文章
 Type=AkonadiResource
 Exec=akonadi_nntp_resource
 Icon=message-news

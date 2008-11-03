@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=VCard Directory
+Name[pt]=Pasta de VCard's
+Name[pt_BR]=Pasta de VCards
+Name[uk]=Каталог VCard
+Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
+Comment[pt]=Carrega os dados de uma pasta com ficheiros VCard
+Comment[pt_BR]=Carrega os dados de uma pasta com VCards
+Comment[uk]=Завантажує дані з каталогу з VCard
+Comment[zh_TW]=從含有 VCard 檔的目錄載入資料
 Type=AkonadiResource
 Exec=akonadi_vcarddir_resource
 Icon=text-directory

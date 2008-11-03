@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=VCard File
+Name[pt]=Ficheiro VCard
+Name[pt_BR]=Arquivo VCard
+Name[uk]=Файл VCard
+Name[zh_TW]=VCard 檔案
 Comment=Loads data from a VCard file
+Comment[pt]=Carrega os dados de um ficheiro VCard
+Comment[pt_BR]=Carrega os dados de um arquivo VCard
+Comment[uk]=Завантажує дані з файла VCard
+Comment[zh_TW]=從 VCard 檔載入資料
 Type=AkonadiResource
 Exec=akonadi_vcard_resource
 Icon=text-directory

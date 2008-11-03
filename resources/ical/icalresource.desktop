@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=ICal Calendar File
+Name[pt]=Ficheiro de Calendário ICal
+Name[pt_BR]=Arquivo de calendário ICal
+Name[uk]=Файл календаря ICal
+Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
+Comment[pt]=Carrega os dados de um ficheiro iCal
+Comment[pt_BR]=Carrega os dados de um arquivo iCal
+Comment[uk]=Завантажує дані з файла iCal
+Comment[zh_TW]=從 iCal 檔載入資料
 Type=AkonadiResource
 Exec=akonadi_ical_resource
 Icon=text-calendar

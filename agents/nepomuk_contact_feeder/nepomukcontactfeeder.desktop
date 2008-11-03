@@ -1,6 +1,13 @@
 [Desktop Entry]
 Name=Nepomuk Contact Feeder
+Name[pt]=Alimentação de Contactos para o Nepomuk
+Name[pt_BR]=Alimentador de contatos para o Nepomuk
+Name[uk]=Передавач контактів Nepomuk
 Comment=Extension to push contacts into Nepomuk
+Comment[pt]=Extensão para enviar contactos para o Nepomuk
+Comment[pt_BR]=Extensão para enviar contatos para o Nepomuk
+Comment[uk]=Додаток для передачі контактів до Nepomuk
+Comment[zh_TW]=將聯絡人送進 Nepomuk 的延伸程式
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_contact_feeder
 

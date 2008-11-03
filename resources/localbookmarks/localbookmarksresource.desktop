@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Localbookmarks
+Name[pt]=Favoritos Locais
+Name[pt_BR]=Favoritos locais
+Name[uk]=Локальні закладки
+Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
+Comment[pt]=Carrega os dados a partir de um ficheiro de favoritos local
+Comment[pt_BR]=Carrega os dados de um arquivo de favoritos local
+Comment[uk]=Завантажує дані з локального файла закладок
+Comment[zh_TW]=從本地書籤檔載入資料
 Type=AkonadiResource
 Exec=akonadi_localbookmarks_resource
 Icon=bookmarks

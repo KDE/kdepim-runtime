@@ -1,6 +1,10 @@
 [Desktop Entry]
 Name=Maildir
 Comment=Loads data from a local maildir folder
+Comment[pt]=Carrega os dados de uma pasta Maildir local
+Comment[pt_BR]=Carrega os dados de uma pasta maildir local
+Comment[uk]=Завантажує дані з локальної теки maildir
+Comment[zh_TW]=從本地 Maildir 格式的目錄中載入資料
 Type=AkonadiResource
 Exec=akonadi_maildir_resource
 Icon=message-rfc822

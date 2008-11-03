@@ -1,6 +1,13 @@
 [Desktop Entry]
 Name=Nepomuk EMail Feeder
+Name[pt]=Alimentação de E-Mail do Nepomuk
+Name[pt_BR]=Alimentador de e-mail do Nepomuk
+Name[uk]=Передавач пошти Nepomuk
 Comment=Extension to push emails into Nepomuk
+Comment[pt]=Extensão para enviar mensagens de e-mail para o Nepomuk
+Comment[pt_BR]=Extensão para enviar e-mails para o Nepomuk
+Comment[uk]=Додаток для передачі електронних листів до Nepomuk
+Comment[zh_TW]=將電子郵件送進 Nepomuk 的延伸程式
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_email_feeder
 
