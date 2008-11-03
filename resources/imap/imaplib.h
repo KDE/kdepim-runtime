@@ -97,7 +97,7 @@ public:
     /**
      * Contructor
      */
-    Imaplib( QObject* parent,  const char* name );
+     Imaplib( QObject* parent = 0, const char* name = "noname" );
 
     /**
      * Destructor

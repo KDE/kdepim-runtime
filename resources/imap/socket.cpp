@@ -55,14 +55,14 @@ void Socket::reconnect()
     if ( m_aboutToClose )
         return;
 
+    if ( m_socket )
+        return;
+
     kDebug() << objectName() << "Connecting to: " << m_server << ":" <<  m_port;
 
 #ifdef comm_debug
     kDebug() << objectName() << m_proto;
 #endif
-
-    if ( m_socket )
-        return;
 
     m_socket = static_cast<QSslSocket*>
                ( KSocketFactory::connectToHost( m_proto, m_server, m_port, this ) );

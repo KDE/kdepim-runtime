@@ -1,3 +1,5 @@
+add_subdirectory( tests )
+
 set(imap_LIB_SRCS imaplib.cpp socket.cpp)
 
 kde4_add_library(imap SHARED ${imap_LIB_SRCS})

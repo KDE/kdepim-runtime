@@ -119,7 +119,7 @@ void Imaplib::slotRead( const QString& received )
             // we don't have to poll for it.
             if ( received.indexOf( "* OK [CAPABILITY" ) != -1 ) {
                 m_capabilities =
-                    received.mid( 13 ).toLower().split( ' ' );
+                    received.mid( 13 ).toLower().trimmed().split( ' ' );
             }
 
             if ( m_tls ) {
@@ -131,7 +131,7 @@ void Imaplib::slotRead( const QString& received )
 
         // In this state, we can receive a response...
         if ( received.indexOf( "* CAPABILITY" ) != -1 )
-            m_capabilities = received.mid( 13 ).toLower().split( ' ' );
+            m_capabilities = received.mid( 13 ).toLower().trimmed().split( ' ' );
 
         // Now, we should have the capabilities, carry on...
         if ( m_capabilities.count() > 1 ) {
@@ -469,7 +469,7 @@ void Imaplib::idleStop()
 bool Imaplib::capable( const QString& something )
 {
     // kDebug() << something;
-    return m_capabilities.indexOf( something ) > -1;
+    return m_capabilities.indexOf( something.toLower() ) > -1;
 }
 
 
@@ -497,7 +497,7 @@ void Imaplib::selectMailBox( const QString& box )
 void Imaplib::slotConnected()
 {
     // connection estabilished.
-    kDebug( );
+    kDebug();
     m_currentState = Connected;
     m_currentQueueItem = Queue();
 }
