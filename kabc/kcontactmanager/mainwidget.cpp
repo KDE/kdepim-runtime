@@ -98,7 +98,7 @@ void MainWidget::setupGui()
 
 void MainWidget::setupActions()
 {
-  QAction *action = 0;
+  KAction *action = 0;
   KActionCollection *collection = mGuiClient->actionCollection();
 
   action = collection->addAction( "file_new_contact" );
