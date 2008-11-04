@@ -300,7 +300,22 @@ QByteArray Maildir::readEntry( const QString& key ) const
 
     return result;
 }
+qint64 Maildir::size( const QString& key ) const
+{
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
+        return 0;
+    }
 
+    QFileInfo info( realKey );
+    if ( !info.exists() )
+        return 0;
+
+    return info.size();
+}
+    
 QByteArray Maildir::readEntryHeaders( const QString& key ) const
 {
     QByteArray result;

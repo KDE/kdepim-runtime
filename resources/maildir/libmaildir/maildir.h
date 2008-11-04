@@ -98,6 +98,12 @@ public:
     Maildir subFolder( const QString& folderName );
 
     /**
+     * Returns the size of the file in the maildir with the given @param key.
+     * @since 4.2
+     */
+    qint64 size( const QString& key ) const;
+
+    /**
      * Return the contents of the file in the maildir with the given @param key.
      */
     QByteArray readEntry( const QString& key ) const;
