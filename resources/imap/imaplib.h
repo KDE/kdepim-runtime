@@ -364,8 +364,8 @@ signals:
 
     /**
      * this signal is emitted when the server has returned the headers of
-     * the mailbox after a getMailBox(); @p values is a triplet in the form
-     * of uid, mailbox, headers.
+     * the mailbox after a getHeaders(); @p values is in the form
+     * of uid, mailbox, headers, size.
      */
     void headersInFolder( Imaplib*, const QString&, const QStringList& values );
 

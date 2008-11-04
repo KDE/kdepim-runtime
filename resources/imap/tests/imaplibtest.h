@@ -30,6 +30,9 @@ private Q_SLOTS:
     void initTestCase();
     void testCapabilities();
     void testLogin();
+    void testMailboxList();
+    void testMailboxCreateAndDelete();
+    void testGetHeaders();
 
 private:
     FakeServer* m_fake;
