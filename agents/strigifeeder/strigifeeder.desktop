@@ -1,7 +1,10 @@
 [Desktop Entry]
 Name=Strigi Feeder
+Name[el]=Τροφοδότης Strigi
+Name[nds]=Strigi-Ingaav
 Name[pt]=Alimentação do Strigi
 Name[pt_BR]=Alimentador do Strigi
+Name[sv]=Inmatning till Strigi
 Name[uk]=Передавач Strigi
 Comment=Strigi-based fulltext search
 Comment[ca]=Motor de cerca per text sencer basat en el Strigi

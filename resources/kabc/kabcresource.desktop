@@ -1,12 +1,18 @@
 [Desktop Entry]
 Name=KDE Addressbook (traditional)
+Name[el]=Βιβλίο διευθύνσεων του KDE (παραδοσιακό)
+Name[nds]=KDE-Adressbook (normaal)
 Name[pt]=Livro de Endereços do KDE (tradicional)
 Name[pt_BR]=Livro de endereços do KDE (tradicional)
+Name[sv]=KDE:s adressbok (traditionell)
 Name[uk]=Адресна книга KDE (традиційна)
 Name[zh_TW]=KDE 通訊錄（傳統）
 Comment=Loads data from a traditional KDE addressbook resource
+Comment[el]=Φόρτωση δεδομένων από έναν παραδοσιακό πόρο βιβλίου διευθύνσεων του KDE
+Comment[nds]=Laadt Daten ut en normaal KDE-Adressbookressource
 Comment[pt]=Carrega os dados de um recurso de livro de endereços tradicional do KDE
 Comment[pt_BR]=Carrega os dados do tradicional recurso do livro de endereços do KDE
+Comment[sv]=Laddar data från en traditionell adressboksresurs i KDE
 Comment[uk]=Завантажує дані зі звичайного ресурсу адресної книги для KDE
 Comment[zh_TW]=從傳統 KDE 通訊錄資源載入資料
 Type=AkonadiResource

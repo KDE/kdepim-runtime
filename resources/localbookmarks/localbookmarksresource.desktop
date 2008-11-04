@@ -1,12 +1,18 @@
 [Desktop Entry]
 Name=Localbookmarks
+Name[el]=Τοπικοί σελιδοδείκτες
+Name[nds]=Lokaalleestekens
 Name[pt]=Favoritos Locais
 Name[pt_BR]=Favoritos locais
+Name[sv]=Lokala bokmärken
 Name[uk]=Локальні закладки
 Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
+Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο σελιδοδεικτών
+Comment[nds]=Laadt Daten ut en lokaal Leestekendatei
 Comment[pt]=Carrega os dados a partir de um ficheiro de favoritos local
 Comment[pt_BR]=Carrega os dados de um arquivo de favoritos local
+Comment[sv]=Laddar data från en lokal bokmärkesfil
 Comment[uk]=Завантажує дані з локального файла закладок
 Comment[zh_TW]=從本地書籤檔載入資料
 Type=AkonadiResource

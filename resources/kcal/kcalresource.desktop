@@ -1,12 +1,18 @@
 [Desktop Entry]
 Name=KDE Calendar (traditional)
+Name[el]=Ημερολόγιο KDE (παραδοσιακό)
+Name[nds]=KDE-Kalenner (normaal)
 Name[pt]=Calendário do KDE (tradicional)
 Name[pt_BR]=Calendário do KDE (tradicional)
+Name[sv]=KDE:s kalender (traditionell)
 Name[uk]=Календар KDE (традиційний)
 Name[zh_TW]=KDE 行事曆（傳統）
 Comment=Loads data from a traditional KDE calendar resource
+Comment[el]=Φόρτωση δεδομένων από έναν παραδοσιακό πόρο ημερολογίου του KDE
+Comment[nds]=Laadt Daten ut en normaal KDE-Kalennerressource
 Comment[pt]=Carrega os dados de um recurso de calendário tradicional do KDE
 Comment[pt_BR]=Carrega os dados do tradicional recurso de calendário do KDE
+Comment[sv]=Laddar data från en traditionell kalenderresurs i KDE
 Comment[uk]=Завантажує дані зі звичайного ресурсу календаря для KDE
 Comment[zh_TW]=從傳統 KDE 行事曆資源載入資料
 Type=AkonadiResource

@@ -1,12 +1,18 @@
 [Desktop Entry]
 Name=Mail Threader Agent
+Name[el]=Πράκτορας νηματοποίησης αλληλογραφίας
+Name[nds]=Klöönsnackhölper
 Name[pt]=Agente de Tarefas de Correio
 Name[pt_BR]=Agente de tarefas de correio
+Name[sv]=E-posttrådningsmodul
 Name[uk]=Агент розгалуження пошти
 Name[zh_TW]=信件串列代理程式
 Comment=Thread mails in a collection
+Comment[el]=Νηματοποίηση αλληλογραφίας σε μια συλλογή
+Comment[nds]=Klöönsnacks binnen en Nettpostsammeln
 Comment[pt]=Agendar mensagens de e-mail numa colecção
 Comment[pt_BR]=Agendar as mensagens de uma coleção
+Comment[sv]=Tråda e-post från en samling
 Comment[uk]=Розгалужує поштові повідомлення зі збірки
 Comment[zh_TW]=將信件串列起來的代理程式
 Type=AkonadiAgent

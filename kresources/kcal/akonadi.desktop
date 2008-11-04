@@ -3,6 +3,7 @@ Name=Akonadi
 Name[de]=Akonadi-Ressource
 Name[x-test]=xxAkonadixx
 Comment=Provides access to calendars stored in Akonadi calendar folders
+Comment[el]=Προσφέρει πρόσβαση σε ημερολόγια αποθηκευμένα σε φακέλους ημερολογίου του Akonadi
 Comment[nds]=Stellt Togriep op binnen Akonadi sien Kalennerornern wohrte Kalenners praat
 Comment[pt]=Oferece o acesso aos calendários guardados nas pastas de calendários do Akonadi
 Comment[pt_BR]=Fornece acesso aos calendários armazenados nas pastas de calendários do Akonadi

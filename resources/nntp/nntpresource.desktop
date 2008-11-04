@@ -1,12 +1,18 @@
 [Desktop Entry]
 Name=Usenet Newsgroups (NNTP)
+Name[el]=Ομάδες συζήτησης Usenet (NNTP)
+Name[nds]=Usenet-Narichtenkrinken (NNTP)
 Name[pt]=Grupos de Notícias da Usenet (NNTP)
 Name[pt_BR]=Grupos de notícias da Usenet (NNTP)
+Name[sv]=Usenet-nyhetsgrupper (NNTP)
 Name[uk]=Групи новин Usenet (NNTP)
 Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
+Comment[el]=Καθιστά δυνατή την ανάγνωση άρθρων από έναν διακομιστή νέων
+Comment[nds]=MIt dit Moduul laat sik Artikels vun Narichtenservers lesen
 Comment[pt]=Possibilita a leitura de artigos de um servidor de notícias
 Comment[pt_BR]=Possibilita a leitura de artigos de um servidor de notícias
+Comment[sv]=Gör det möjligt att läsa artiklar från en nyhetsserver
 Comment[uk]=Робить можливим читання статей з сервера новин
 Comment[zh_TW]=從新聞伺服器讀取文章
 Type=AkonadiResource

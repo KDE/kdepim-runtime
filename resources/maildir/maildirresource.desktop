@@ -1,8 +1,12 @@
 [Desktop Entry]
 Name=Maildir
+Name[nds]=Nettpostorner
 Comment=Loads data from a local maildir folder
+Comment[el]=Φόρτωσης δεδομένων από έναν τοπικό φάκελο maildir
+Comment[nds]=Laadt Daten ut en lokaal Nettpostorner
 Comment[pt]=Carrega os dados de uma pasta Maildir local
 Comment[pt_BR]=Carrega os dados de uma pasta maildir local
+Comment[sv]=Laddar data från en lokal maildir-katalog
 Comment[uk]=Завантажує дані з локальної теки maildir
 Comment[zh_TW]=從本地 Maildir 格式的目錄中載入資料
 Type=AkonadiResource

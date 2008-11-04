@@ -1,11 +1,17 @@
 [Desktop Entry]
 Name=Nepomuk EMail Feeder
+Name[el]=Τροφοδότης EMail του Nepomuk
+Name[nds]=Nepomuk-Nettpostingaav
 Name[pt]=Alimentação de E-Mail do Nepomuk
 Name[pt_BR]=Alimentador de e-mail do Nepomuk
+Name[sv]=E-postinmatning till Nepomuk
 Name[uk]=Передавач пошти Nepomuk
 Comment=Extension to push emails into Nepomuk
+Comment[el]=Επέκταση για την τροφοδοσία email στο Nepomuk
+Comment[nds]=Verwiedern, mit de sik Nettpost na Nepomuk överdregen lett
 Comment[pt]=Extensão para enviar mensagens de e-mail para o Nepomuk
 Comment[pt_BR]=Extensão para enviar e-mails para o Nepomuk
+Comment[sv]=Utökning för att skicka e-postadresser till Nepomuk
 Comment[uk]=Додаток для передачі електронних листів до Nepomuk
 Comment[zh_TW]=將電子郵件送進 Nepomuk 的延伸程式
 Type=AkonadiAgent
