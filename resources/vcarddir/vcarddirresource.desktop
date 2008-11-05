@@ -5,6 +5,7 @@ Name[nds]=VCard-Verteken
 Name[pt]=Pasta de VCard's
 Name[pt_BR]=Pasta de VCards
 Name[sv]=vCard-katalog
+Name[tr]=VCard Dizini
 Name[uk]=Каталог VCard
 Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
