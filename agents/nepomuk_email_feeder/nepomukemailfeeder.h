@@ -23,9 +23,11 @@
 
 #include <akonadi/agentbase.h>
 
-namespace Nepomuk {
-  class Contact;
-}
+#include "personcontact.h"
+
+#include <QtCore/QList>
+
+#include <kmime/kmime_header_parsing.h>
 
 namespace Akonadi {
 
@@ -41,7 +43,8 @@ class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
     void itemRemoved(const Akonadi::Item &item);
 
   private:
-    Nepomuk::Contact findContact( const QString& address );
+    QList<Nepomuk::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs );
+    Nepomuk::Contact findContact( const QByteArray& address );
 };
 
 }

@@ -160,6 +160,16 @@ void NepomukContactFeeder::slotItemsReceivedForInitialScan( const Akonadi::Item:
   kDebug() << "done";
 }
 
+namespace {
+  QStringList listFromString( const QString& s ) {
+    if ( s.isEmpty() )
+      return QStringList();
+    else
+      return QStringList( s );
+  }
+}
+
+
 void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
 {
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
@@ -171,25 +181,28 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
   // Nepomuk::Resource::genericLabel()
   contact.setLabel( addressee.name() );
 
-  contact.setNameGivens( QStringList( addressee.givenName() ) );
-  contact.setNameAdditionals( QStringList( addressee.additionalName() ) );
-  contact.setNameFamilys( QStringList( addressee.familyName() ) );
-  contact.setNameHonorificPrefixs( QStringList( addressee.prefix() ) );
-  contact.setNameHonorificSuffixs( QStringList( addressee.suffix() ) );
-  contact.setLocations( QStringList( addressee.geo().toString() ) ); // make it better
+  contact.setNameGivens( listFromString( addressee.givenName() ) );
+  contact.setNameAdditionals( listFromString( addressee.additionalName() ) );
+  contact.setNameFamilys( listFromString( addressee.familyName() ) );
+  contact.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
+  contact.setNameHonorificSuffixs( listFromString( addressee.suffix() ) );
+  contact.setLocations( listFromString( addressee.geo().toString() ) ); // make it better
   // keys
   // sounds
   // logos
   // photos
-  contact.setNotes( QStringList( addressee.note() ) );
-  contact.setNicknames( QStringList( addressee.nickName() ) );
-  contact.setContactUIDs( QStringList( addressee.uid() ) );
-  contact.setFullnames( QStringList( addressee.name() ) );
+  contact.setNotes( listFromString( addressee.note() ) );
+  contact.setNicknames( listFromString( addressee.nickName() ) );
+  contact.setContactUIDs( listFromString( addressee.uid() ) );
+  contact.setFullnames( listFromString( addressee.name() ) );
   contact.setBirthDate( addressee.birthday().date() );
 
   // phone numbers
 
   // first clean all
+  foreach( Nepomuk::PhoneNumber n, contact.phoneNumbers() ) {
+    n.remove();
+  }
   contact.setPhoneNumbers( QList<Nepomuk::PhoneNumber>() );
 
   // add all existing
@@ -249,28 +262,39 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
   // im accounts
 
   // email addresses
+  foreach( Nepomuk::EmailAddress ea, contact.emailAddresses() ) {
+    ea.remove();
+  }
   contact.setEmailAddresses( QList<Nepomuk::EmailAddress>() );
 
   const QStringList emails = addressee.emails();
   for ( int i = 0; i < emails.count(); ++i ) {
-    Nepomuk::EmailAddress email;
+    Nepomuk::EmailAddress email( QUrl( "mailto:" + emails[i] ) );
     email.setEmailAddress( emails[ i ] );
     contact.addEmailAddress( email );
   }
 
   // addresses
+  foreach( Nepomuk::PostalAddress a, contact.postalAddresses() ) {
+    a.remove();
+  }
   contact.setPostalAddresses( QList<Nepomuk::PostalAddress>() );
 
   const KABC::Address::List addresses = addressee.addresses();
   for ( int i = 0; i < addresses.count(); ++i ) {
     Nepomuk::PostalAddress address;
-    address.addStreetAddress( addresses[ i ].street() );
-    address.setPostalcode( addresses[ i ].postalCode() );
-    address.setLocality( addresses[ i ].locality() );
-    address.setRegion( addresses[ i ].region() );
-    address.addPobox( addresses[ i ].postOfficeBox() );
-    address.setCountry( addresses[ i ].country() );
-    address.addExtendedAddress(  addresses[ i ].extended() );
+    address.setStreetAddresses( listFromString( addresses[ i ].street() ) );
+    if ( !addresses[ i ].postalCode().isEmpty() )
+      address.setPostalcode( addresses[ i ].postalCode() );
+    if ( !addresses[ i ].locality().isEmpty() )
+      address.setLocality( addresses[ i ].locality() );
+    if ( !addresses[ i ].region().isEmpty() )
+      address.setRegion( addresses[ i ].region() );
+    if ( !addresses[ i ].postOfficeBox().isEmpty() )
+      address.addPobox( addresses[ i ].postOfficeBox() );
+    if ( !addresses[ i ].country().isEmpty() )
+      address.setCountry( addresses[ i ].country() );
+    address.setExtendedAddresses( listFromString( addresses[ i ].extended() ) );
 
     contact.addPostalAddress( address );
   }

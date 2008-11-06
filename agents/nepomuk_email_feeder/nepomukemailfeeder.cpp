@@ -81,35 +81,19 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   }
 
   if ( msg->from( false ) ) {
-    foreach( const QString& address, msg->from()->prettyAddresses() ) {
-      if ( !address.isEmpty() ) {
-        r.addSender( findContact( address ) );
-      }
-    }
+    r.setSenders( extractContactsFromMailboxes( msg->from()->mailboxes() ) );
   }
 
   if ( msg->to( false ) ) {
-    foreach( const QString& address, msg->to()->prettyAddresses() ) {
-      if ( !address.isEmpty() ) {
-        r.addTo( findContact( address ) );
-      }
-    }
+    r.setTos( extractContactsFromMailboxes( msg->to()->mailboxes() ) );
   }
 
   if ( msg->cc( false ) ) {
-    foreach( const QString& address, msg->cc()->prettyAddresses() ) {
-      if ( !address.isEmpty() ) {
-        r.addCc( findContact( address ) );
-      }
-    }
+    r.setCcs( extractContactsFromMailboxes( msg->cc()->mailboxes() ) );
   }
 
   if ( msg->bcc( false ) ) {
-    foreach( const QString& address, msg->bcc()->prettyAddresses() ) {
-      if ( !address.isEmpty() ) {
-        r.addBcc( findContact( address ) );
-      }
-    }
+    r.setBccs( extractContactsFromMailboxes( msg->bcc()->mailboxes() ) );
   }
 
   KMime::Content* content = msg->mainBodyPart( "text/plain" );
@@ -132,11 +116,27 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
 
 void NepomukEMailFeeder::itemRemoved(const Akonadi::Item & item)
 {
-  Nepomuk::Resource r( item.url().url() );
+  Nepomuk::Resource r( item.url() );
   r.remove();
 }
 
-Nepomuk::Contact NepomukEMailFeeder::findContact( const QString& address )
+QList<Nepomuk::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs )
+{
+  QList<Nepomuk::Contact> contacts;
+
+  foreach( const KMime::Types::Mailbox& mbox, mbs ) {
+    if ( mbox.hasAddress() ) {
+      Nepomuk::PersonContact c = findContact( mbox.address() );
+      if ( c.fullnames().isEmpty() && mbox.hasName() )
+        c.addFullname( mbox.name() );
+      contacts << c;
+    }
+  }
+
+  return contacts;
+}
+
+Nepomuk::Contact NepomukEMailFeeder::findContact( const QByteArray& address )
 {
   //
   // Querying with the exact address string is not perfect since email addresses
@@ -147,7 +147,7 @@ Nepomuk::Contact NepomukEMailFeeder::findContact( const QString& address )
     Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString( "select distinct ?r where { ?r <%1> ?a . ?a <%2> \"%3\"^^<%4> . }" )
                                                                      .arg( Nepomuk::Role::emailAddressUri().toString() )
                                                                      .arg( Nepomuk::EmailAddress::emailAddressUri().toString() )
-                                                                     .arg( address )
+                                                                     .arg( QString::fromAscii( address ) )
                                                                      .arg( Soprano::Vocabulary::XMLSchema::string().toString() ),
                                                                      Soprano::Query::QueryLanguageSparql );
   if ( it.next() ) {
@@ -156,8 +156,8 @@ Nepomuk::Contact NepomukEMailFeeder::findContact( const QString& address )
   else {
     // create a new contact
     Nepomuk::PersonContact contact;
-    Nepomuk::EmailAddress email;
-    email.setEmailAddress( address );
+    Nepomuk::EmailAddress email( QUrl( "mailto:" + address ) );
+    email.setEmailAddress( QString::fromAscii( address ) );
     contact.addEmailAddress( email );
     return contact;
   }
