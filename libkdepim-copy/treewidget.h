@@ -40,8 +40,6 @@ class QAction;
 namespace KPIM
 {
 
-#define KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY "TreeWidgetLayout"
-
 /**
  * @brief A QTreeWidget with expanded capabilities
  *
@@ -53,7 +51,7 @@ namespace KPIM
  * a simple tree of items and don't want to care about anything complex like
  * a "data model".
  *
- * @author: Szymon Tomasz Stefanek <pragma@kvirc.net>
+ * @author Szymon Tomasz Stefanek <pragma@kvirc.net>
  */
 class KDEPIM_EXPORT TreeWidget : public QTreeWidget
 {
@@ -82,7 +80,7 @@ public:
    */
   bool saveLayout(
       KConfigGroup &group,
-      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY
+      const QString &keyName = QString()
     ) const;
 
   /**
@@ -98,8 +96,8 @@ public:
    */
   bool saveLayout(
       KConfig *config,
-      const char *groupName,
-      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY
+      const QString &groupName,
+      const QString &keyName = QString()
     ) const;
 
   /**
@@ -109,8 +107,8 @@ public:
    *
    * Please note that you must call this function after having added
    * all the relevant columns to the view. On the other hand if you're
-   * setting some of the view properties programmatically (like last section
-   * stretching) then you should set them after restoring the layout
+   * setting some of the view properties programmatically (like default
+   * section size) then you should set them after restoring the layout
    * because otherwise they might get overwritten by the stored data.
    * The proper order is: add columns, restore layout, set header properties.
    *
@@ -123,7 +121,7 @@ public:
    */
   bool restoreLayout(
       KConfigGroup &group,
-      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY
+      const QString &keyName = QString()
     );
 
   /**
@@ -133,8 +131,8 @@ public:
    *
    * Please note that you must call this function after having added
    * all the relevant columns to the view. On the other hand if you're
-   * setting some of the view properties programmatically (like last section
-   * stretching) then you should set them after restoring the layout
+   * setting some of the view properties programmatically (like default
+   * section size) then you should set them after restoring the layout
    * because otherwise they might get overwritten by the stored data.
    * The proper order is: add columns, restore layout, set header properties.
    *
@@ -147,8 +145,8 @@ public:
    */
   bool restoreLayout(
       KConfig *config,
-      const char *groupName,
-      const char *keyName = KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY
+      const QString &groupName,
+      const QString &keyName = QString()
     );
 
   //
@@ -183,6 +181,11 @@ public:
   bool isColumnHidden( int logicalIndex ) const;
 
   /**
+   * Toggle the visibility state of the specified column.
+   */
+  void toggleColumn( int logicalIndex );
+
+  /**
    * Called by this class to fill the contextual menu shown when the
    * user right clicks on one of the header columns and column hiding
    * is enabled.
@@ -195,7 +198,7 @@ public:
    * true unless you have no columns at all, column hiding is disabled
    * or you pass some weird parameter.
    */
-  virtual bool fillHeaderContextMenu( KMenu * menu, const QPoint &clickPoint );
+  virtual bool fillHeaderContextMenu( KMenu *menu, const QPoint &clickPoint );
 
   //
   // Facilities for adding and manipulating columns
@@ -225,7 +228,27 @@ public:
    */
   bool setColumnText( int columnIndex, const QString &label );
 
-protected Q_SLOTS:
+  /**
+   * Convenience function that returns the last item in the view.
+   */
+  QTreeWidgetItem *lastItem() const;
+
+  /**
+   * Convenience function that returns the first item in the view.
+   * This, in fact, is roughly equivalent to topLevelItem( 0 ).
+   * It is included for symmetry with lastItem().
+   */
+  QTreeWidgetItem *firstItem() const;
+
+Q_SIGNALS:
+  /**
+   * This signal is emitted when an existing column is shown or hidden
+   * either by the means of the popup menu or by a call to setColumnHidden().
+   * See also setManualColumnHidingEnabled().
+   */
+  void columnVisibilityChanged( int logicalIndex );
+
+private Q_SLOTS:
   /**
    * Internal slot connected to the customContextMenuRequested()
    * signal of the header().
@@ -236,7 +259,7 @@ protected Q_SLOTS:
    * Internal slot connected to the show/hide actions in the
    * header contextual menu.
    */
-  void slotToggleColumnActionTriggered( QAction *act );
+  void slotToggleColumnActionTriggered( bool );
 
 private:
   bool mEnableManualColumnHiding; ///< Is manual column hiding currently enabled ?

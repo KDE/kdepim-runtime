@@ -31,20 +31,42 @@
 #include "kdepim_export.h"
 #include "treewidget.h"
 
+#include <QHash>
+#include <QColor>
+
 namespace KPIM
 {
+
+class FolderTreeWidgetItem;
 
 /**
  * @brief A tree widget useful for displaying a tree of folders containing messages
  *
+ * This widget provides some facilities commonly used to display a tree of folders
+ * containing messages. 
  *
- * Work In Progress Warning:
+ * Besides the standard functionality of a KPIM::TreeWidget this implementation will handle
+ * four special columns: the "Label", the "Unread", the "Total" and the "DataSize" column.
  *
- * This widget is meant to be a Native-Qt4 polished replacement for
- * KDEPIM::KFolderTreeWidget which is based on K3ListView.
- * Necessary features are being added as existing clients are ported.
- * This approach is taken in order to isolate features that are no
- * longer necessary and can be dropped from the new implementation. Take care :)
+ * You add a Label column with addLabelColumn(). It will fetch the text data from
+ * FolderTreeWidgetItem::labelText() instead of QTreeWidgetItem::text(). It will
+ * also display the unread message count if the "Unread" column is not visible.
+ *
+ * You add a "Unread" column with addUnreadColumn(). It will fetch the numeric
+ * count of unread messages from FolderTreeWidgetItem::unreadCount() and
+ * it will automatically display it aligned to the right.
+ *
+ * You add a "Total" colum with addTotalColumn(). It will fetch the numeric
+ * total count of messages from FolderTreeWidgetItem::totalCount() and it will
+ * automatically display it aligned to the right.
+ *
+ * You add a "DataSize" column with addSizeColumn(). It will fetch the size in bytes
+ * of the message folder from FolderTreeWidgetItem::size() and it will
+ * display it aligned to the right and with a suitable textual rappresentation.
+ *
+ * You can set the color of the unread message count with setUnreadCountColor().
+ * When the items are marked with the closeToQuota() warning then the text in the
+ * "Label" colum is displayed with the color set by setCloseToQuotaWarningColor().
  *
  * @author: Szymon Tomasz Stefanek <pragma@kvirc.net>
  */
@@ -57,51 +79,174 @@ public:
    */
   explicit FolderTreeWidget( QWidget *parent , const char *name = 0 );
 
+private:
+  int mLabelColumnIndex;  ///< The index for the special "Label" column or -1 if none
+  int mUnreadColumnIndex; ///< The index for the special "Unread" column or -1 if none
+  int mTotalColumnIndex;  ///< The index for the special "Total" column or -1 if none
+  int mDataSizeColumnIndex;   ///< The index for the special "DataSize" column or -1 if none
+
+  QColor mUnreadCountColor;
+  QColor mCloseToQuotaWarningColor;
+
+public:
+  /**
+   * Adds a special "Label" column to this view and returns its logical index.
+   * If a "Label" column was already present in the view then nothing is added
+   * and the logical index of the existing column is returned.
+   */
+  int addLabelColumn( const QString &headerLabel );
+
+  /**
+   * Returns the logical index of the "Label" column or -1 if such a column
+   * has not been added (yet).
+   */
+  int labelColumnIndex() const
+    { return mLabelColumnIndex; };
+
+  /**
+   * Returns true if the widget contains a "Label" column and it's currently visible.
+   */
+  bool labelColumnVisible() const;
+
+  /**
+   * Adds a special "Unread" column to this view and returns its logical index.
+   * If a "Unread" column was already present in the view then nothing is added
+   * and the logical index of the existing column is returned.
+   */
+  int addUnreadColumn( const QString &headerLabel );
+
+  /**
+   * Returns the logical index of the "Unread" column or -1 if such a column
+   * has not been added (yet).
+   */
+  int unreadColumnIndex() const
+    { return mUnreadColumnIndex; };
+
+  /**
+   * Returns true if the widget contains an "Unread" column and it's currently visible.
+   */
+  bool unreadColumnVisible() const;
+
+  /**
+   * Adds a special "Total" column to this view and returns its logical index.
+   * If a "Total" column was already present in the view then nothing is added
+   * and the logical index of the existing column is returned.
+   */
+  int addTotalColumn( const QString &headerLabel );
+
+  /**
+   * Returns the logical index of the "Total" column or -1 if such a column
+   * has not been added (yet).
+   */
+  int totalColumnIndex() const
+    { return mTotalColumnIndex; };
+
+  /**
+   * Returns true if the widget contains a "Total" column and it's currently visible.
+   */
+  bool totalColumnVisible() const;
+
+  /**
+   * Adds a special "DataSize" column to this view and returns its logical index.
+   * If a "DataSize" column was already present in the view then nothing is added
+   * and the logical index of the existing column is returned.
+   */
+  int addDataSizeColumn( const QString &headerLabel );
+
+  /**
+   * Returns the logical index of the "DataSize" column or -1 if such a column
+   * has not been added (yet).
+   */
+  int dataSizeColumnIndex() const
+    { return mDataSizeColumnIndex; };
+
+  /**
+   * Returns true if the widget contains a "DataSize" column and it's currently visible.
+   */
+  bool dataSizeColumnVisible() const;
+
+  /**
+   * Returns the color used to display the "Label" column text when
+   * the item is marked as close to quota.
+   */
+  const QColor & closeToQuotaWarningColor() const
+    { return mCloseToQuotaWarningColor; };
+
+  /**
+   * Sets the color used to display the "Label" column text when
+   * the item is marked as close to quota.
+   */
+  void setCloseToQuotaWarningColor( const QColor &clr );
+
+  /**
+   * Returns the color used to display the unread message count in the "Label" column.
+   */
+  const QColor & unreadCountColor() const
+    { return mUnreadCountColor; };
+
+  /**
+   * Sets the color used to display the unread message count in the "Label" column.
+   */
+  void setUnreadCountColor( const QColor &clr );
+
+  /**
+   * Triggers an update for the specified column of the specified item.
+   */
+  void updateColumnForItem( FolderTreeWidgetItem * item, int columnIndex );
+
+private Q_SLOTS:
+
+  /**
+   * Connected to the itemExpanded/itemCollapsed signal, forwards this call
+   * to updateExpandedState() of the item.
+   */
+  void updateExpandedState( QTreeWidgetItem *item );
 };
 
+class FolderTreeWidgetItemLabelColumnDelegate;
 
 /**
  * @brief A folder tree node to be used with FolderTreeWidget
  *
- * @author: Szymon Tomasz Stefanek <pragma@kvirc.net>
+ * @author Szymon Tomasz Stefanek <pragma@kvirc.net>
  */
 class KDEPIM_EXPORT FolderTreeWidgetItem : public QTreeWidgetItem
 {
+  friend class FolderTreeWidgetItemLabelColumnDelegate;
 public:
   /**
    * Protocol information associated to the item.
+   * Please note that this list should be kept in the order of items
+   * that one wants to be shown in the foldertreewidget.
    */
   enum Protocol {
-      Imap,
-      Local,
-      News,
-      CachedImap,
-      Search,
-      NONE
+      Local, Imap, CachedImap, News, Search, NONE
   };
 
   /**
    * Folder type information
+   * Please note that this list should be kept in the order of items
+   * that one wants to be shown in the FolderTreeWidget, but better
+   * keep it in sync with the type in KFolderTree.
    */
+  // FIXME: Rename to FolderItemType
   enum FolderType {
-      Inbox,
-      Outbox,
-      SentMail,
-      Trash,
-      Drafts,
-      Templates,
-      Root,
-      Calendar,
-      Tasks,
-      Journals,
-      Contacts,
-      Notes,
-      Other
+      Inbox, Outbox, SentMail, Trash, Drafts, Templates, Root,
+      Calendar, Tasks, Journals, Contacts, Notes,  Other
   };
 
 private:
-  Protocol mProtocol;         ///< The protocol associated to the folder
-  FolderType mFolderType;     ///< The type of the folder
+  Protocol mProtocol;                  ///< The protocol associated to the folder
+  FolderType mFolderType;              ///< The type of the folder
+  QString mLabelText;                  ///< The text data for the special "Label" column
+  int mTotalCount;                     ///< The total count of messages
+  int mUnreadCount;                    ///< The count of unread messages
+  qint64 mDataSize;                    ///< The size of the folder in bytes, -1 if meaningless
+  unsigned int mIsCloseToQuota:1;      ///< The "Close to Quota" warning mark  
+  unsigned int mLabelTextElided:1;     ///< The "Label text elided" warning mark
+  int mChildrenTotalCount;             ///< The total count of messages in children
+  int mChildrenUnreadCount;            ///< The total count of unread messages in children
+  qint64 mChildrenDataSize;            ///< The size of the children folders in bytes, -1 if meaningless
 
 public:
   /**
@@ -109,9 +254,9 @@ public:
    */
   explicit FolderTreeWidgetItem(
       FolderTreeWidget *parent,
-      const QString &label = QString(),
-      Protocol protocol = NONE,
-      FolderType folderType = Root
+      const QString &label,
+      Protocol protocol,
+      FolderType folderType
     );
 
   /**
@@ -119,14 +264,102 @@ public:
    */
   explicit FolderTreeWidgetItem(
       FolderTreeWidgetItem *parent,
-      const QString &label = QString(),
-      Protocol protocol = NONE,
-      FolderType folderType = Other,
-      int unread = 0,
-      int total = 0
+      const QString &label,
+      Protocol protocol,
+      FolderType folderType
    );
 
 public:
+  /**
+   * Returns the sate of the "Close to quota" warning for this folder.
+   */
+  bool isCloseToQuota() const
+    { return mIsCloseToQuota; };
+
+  /**
+   * Sets the status of the close to quota warning.
+   */
+  void setIsCloseToQuota( bool closeToQuota );
+
+  /**
+   * Returns the textual data for the "Label" column of the parent FolderTreeWidget.
+   */
+  const QString & labelText() const
+    { return mLabelText; };
+
+  /**
+   * Sets the textual data for the "Label" column of the parent FolderTreeWidget.
+   */
+  void setLabelText( const QString &label );
+
+  /**
+   * Returns the unread message count. Displayed in the special "Unread" column
+   * by FolderTreeWidget.
+   */
+  int unreadCount() const
+    { return mUnreadCount; };
+
+  /**
+   * Sets the unread message count to be displayed in the special "Unread" column.
+   */
+  void setUnreadCount( int unreadCount );
+
+  /**
+   * Returns the total message count. Displayed in the special "Total" column
+   * by FolderTreeWidget.
+   */
+  int totalCount() const
+    { return mTotalCount; };
+
+  /**
+   * Sets the total message count to be displayed in the special "Total" column.
+   */
+  void setTotalCount( int totalCount );
+
+  /**
+   * Returns the size in bytes of the folder, displayed in the special "DataSize" column.
+   * If the size is meaningless (for folders that don't have storage, for example) then
+   * this function returns -1.
+   */
+  qint64 dataSize() const
+    { return mDataSize; };
+
+  /**
+   * Sets the size in bytes of the folder to be displayed in the special "DataSize" column.
+   * If s is -1 then the size becomes meaningless and is displayed as a dash in the view.
+   */
+  void setDataSize( qint64 s );
+
+  /**
+   * Returns the unread message count for the children. Displayed in the
+   * special "Unread" column by FolderTreeWidget.
+   */
+  int childrenUnreadCount() const
+    { return mChildrenUnreadCount; };
+
+  /**
+   * Returns the total message count for the children. Displayed in the special
+   * "Total" column by FolderTreeWidget.
+   */
+  int childrenTotalCount() const
+    { return mChildrenTotalCount; };
+
+  /**
+   * Returns the size in bytes of the children folders
+   * displayed in the special "DataSize" column.
+   */
+  qint64 childrenDataSize() const
+    { return mChildrenDataSize; };
+
+  /**
+   * Gathers the counts for the children.
+   * Please note that this function is NOT recursive. It will simply
+   * scan the children and sum up their own+children counts.
+   * It will also NOT update any text.
+   * Returns true if any of the counts has actually changed.
+   */
+  bool updateChildrenCounts();
+
   /**
    * Returns the protocol associated to the folder item
    */
@@ -138,6 +371,11 @@ public:
    */
   void setProtocol( Protocol protocol )
     { mProtocol = protocol; };
+
+  /**
+   * Returns a descriptive string of the folder's protocol
+   */
+  QString protocolDescription() const;
 
   /**
    * Returns the type of the folder
@@ -155,6 +393,35 @@ public:
    * Operator used for item sorting.
    */
   virtual bool operator < ( const QTreeWidgetItem &other ) const;
+
+  /**
+   * Triggers an update for the specified column of this item
+   */
+  void updateColumn( int columnIndex );
+
+  /**
+   * This should be called whenever this item is expanded/collapsed. It updates
+   * the text for the total, unread and size column. If the item is collapsed,
+   * that numbers will include the sum of the child numbers, otherwise it will
+   * just be the numbers of this item.
+   */
+  void updateExpandedState();
+
+  /**
+   * Returns true if the last painting operation had to elide
+   * the label text thus making it partially invisible.
+   * This flag is meaningful only for currently visible items.
+   */
+  bool labelTextElided() const
+    { return mLabelTextElided; };
+
+protected:
+  /**
+   * This is called by FolderTreeWidgetItemLabelColumnDelegate
+   * to update the mLabelTextElided flag.
+   */
+  void setLabelTextElided( bool labelTextElided )
+    { mLabelTextElided = labelTextElided ? 1 : 0; };
 
 };
 

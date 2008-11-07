@@ -29,8 +29,11 @@
 #include <KLocale>
 
 #include <QHeaderView>
+#include <QVector>
 
 namespace KPIM {
+
+#define KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY "TreeWidgetLayout"
 
 TreeWidget::TreeWidget( QWidget * parent, const char * name )
 : QTreeWidget( parent )
@@ -43,33 +46,31 @@ TreeWidget::TreeWidget( QWidget * parent, const char * name )
   setManualColumnHidingEnabled( true );
 }
 
-bool TreeWidget::saveLayout( KConfigGroup &group, const char * keyName ) const
+bool TreeWidget::saveLayout( KConfigGroup &group, const QString &keyName ) const
 {
-  if( !keyName )
-    return false;
-
-  group.writeEntry( keyName, QVariant( header()->saveState() ) );
+  group.writeEntry(
+      keyName.isEmpty() ? QString( KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY ) : keyName,
+      QVariant( header()->saveState() )
+    );
 
   return true;
 }
 
-bool TreeWidget::saveLayout( KConfig * config, const char * groupName, const char * keyName ) const
+bool TreeWidget::saveLayout( KConfig * config, const QString &groupName, const QString &keyName ) const
 {
-  if( !config || !groupName || !keyName )
+  if( !config || groupName.isEmpty() )
     return false;
 
   KConfigGroup group( config, groupName );
   return saveLayout( group, keyName );
 }
 
-bool TreeWidget::restoreLayout( KConfigGroup &group, const char * keyName )
+bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
 {
-  if( !keyName )
-    return false;
-
   // Restore the view column order, width and visibility
   QByteArray state = group.readEntry(
-                             keyName, QVariant( QVariant::ByteArray )
+                             keyName.isEmpty() ? QString( KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY ) : keyName,
+                             QVariant( QVariant::ByteArray )
                          ).toByteArray();
 
   if( state.isEmpty() )
@@ -82,16 +83,43 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const char * keyName )
 
   bool sectionsWereClickable = header()->isClickable();
   bool sectionsWereMovable = header()->isMovable();
-  //bool lastSectionWasStretched = header()->stretchLastSection();
+  bool lastSectionWasStretched = header()->stretchLastSection();
   bool sortIndicatorWasShown = header()->isSortIndicatorShown();
   Qt::Alignment originalDefaultAlignment = header()->defaultAlignment();
   //int defaultSectionSize = header()->defaultSectionSize();
   int minimumSectionSize = header()->minimumSectionSize();
   bool cascadingSectionResizes = header()->cascadingSectionResizes();
 
-  if ( !header()->restoreState( state ) )
-    return false;
+  // Qt (4.4) will perform a layout based on the stored column sizes
+  // when restoreState() is called. However, there is an issue
+  // related to the last section: the restoreState() call will
+  // preserve the _current_ (pre-restoreState()-call) width
+  // of the last section if that is actually greater than the stored
+  // value. This is very likely to throw the last section out of
+  // the view and cause a horizontal scroll bar to appear even
+  // if it wasn't present when saveState() was called. 
+  // This seems to be a Qt buggie and we workaround it by
+  // setting all the sections sizes to something very small
+  // just before calling restoreState().
 
+  int cc = header()->count();
+
+  // we also need to save the current sections sizes in order to remain
+  // consistent if restoreState() fails for some reason.
+  QVector<int> savedSizes( cc );
+  for ( int i = 0 ; i < cc ; i++ )
+  {
+     savedSizes[ i ] = header()->sectionSize( i );
+     header()->resizeSection( i , 10 );
+  }
+
+  if ( !header()->restoreState( state ) )
+  {
+    // failed: be consistent and restore the section sizes before returning
+    for ( int c = 0 ; c < cc ; c++ )
+      header()->resizeSection( c , savedSizes[ c ] );
+    return false;
+  }
 
   header()->setClickable( sectionsWereClickable );
   header()->setMovable( sectionsWereMovable );
@@ -99,19 +127,19 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const char * keyName )
   header()->setDefaultAlignment( originalDefaultAlignment );
   header()->setMinimumSectionSize( minimumSectionSize );
   header()->setCascadingSectionResizes( cascadingSectionResizes );
+  header()->setStretchLastSection( lastSectionWasStretched ); 
   // FIXME: This would cause the sections to be resized and thus
   //        can't be reliably reset after the configuration
   //        has been read. Can do nothing about that except warning
   //        the user in the docs.
   //header()->setDefaultSectionSize( defaultSectionSize );
-  //header()->setStretchLastSection( lastSectionWasStretched ); 
 
   return true;
 }
 
-bool TreeWidget::restoreLayout( KConfig * config, const char * groupName, const char * keyName )
+bool TreeWidget::restoreLayout( KConfig * config, const QString &groupName, const QString &keyName )
 {
-  if( !config || !groupName || !keyName )
+  if( !config || groupName.isEmpty() )
     return false;
 
   if ( !config->hasGroup( groupName ) )
@@ -139,15 +167,17 @@ void TreeWidget::setManualColumnHidingEnabled( bool enable )
 
 void TreeWidget::setColumnHidden( int logicalIndex, bool hide )
 {
+  if ( header()->isSectionHidden( logicalIndex ) == hide )
+    return;
   header()->setSectionHidden( logicalIndex, hide );
+
+  emit columnVisibilityChanged( logicalIndex );
 }
 
 bool TreeWidget::isColumnHidden( int logicalIndex ) const
 {
   return header()->isSectionHidden( logicalIndex );
 }
-
-static const int columnActionIDBase = 0x10000;
 
 bool TreeWidget::fillHeaderContextMenu( KMenu * menu, const QPoint & )
 {
@@ -171,14 +201,25 @@ bool TreeWidget::fillHeaderContextMenu( KMenu * menu, const QPoint & )
     act->setCheckable( true );
     if ( !header()->isSectionHidden( i ) )
         act->setChecked( true );
-    act->setData( QVariant( columnActionIDBase + i ) );
+    act->setData( QVariant( i ) );
+
+    connect(
+        act, SIGNAL( triggered( bool ) ),
+        this, SLOT( slotToggleColumnActionTriggered( bool ) ) );
   }
 
   return true;
 }
 
-void TreeWidget::slotToggleColumnActionTriggered( QAction *act )
+void TreeWidget::toggleColumn( int logicalIndex )
 {
+  setColumnHidden( logicalIndex, !header()->isSectionHidden( logicalIndex ) );
+}
+
+
+void TreeWidget::slotToggleColumnActionTriggered( bool )
+{
+  QAction *act = dynamic_cast< QAction * >( sender() );
   if ( !act )
     return;
 
@@ -189,15 +230,10 @@ void TreeWidget::slotToggleColumnActionTriggered( QAction *act )
   if ( !ok )
     return;
 
-  if ( id <= columnActionIDBase )
-    return;
-
-  id -= columnActionIDBase;
-
   if ( id > columnCount() )
     return;
 
-  header()->setSectionHidden( id, !act->isChecked() );
+  setColumnHidden( id, !act->isChecked() );
 }
 
 void TreeWidget::slotHeaderContextMenuRequested( const QPoint &clickPoint )
@@ -206,9 +242,6 @@ void TreeWidget::slotHeaderContextMenuRequested( const QPoint &clickPoint )
 
   if ( !fillHeaderContextMenu( &menu, clickPoint ) )
     return;
-
-  connect( &menu, SIGNAL( triggered( QAction* ) ),
-           this, SLOT( slotToggleColumnActionTriggered( QAction* ) ) );
 
   menu.exec( header()->mapToGlobal( clickPoint ) );
 }
@@ -243,6 +276,33 @@ bool TreeWidget::setColumnText( int columnIndex, const QString &label )
     return false;
   hitem->setText( columnIndex, label );
   return true;
+}
+
+QTreeWidgetItem * TreeWidget::firstItem() const
+{
+  if ( topLevelItemCount() < 1 )
+    return 0;
+  return topLevelItem( 0 );
+}
+
+QTreeWidgetItem * TreeWidget::lastItem() const
+{
+  QTreeWidgetItem *it = 0;
+  int cc = topLevelItemCount();
+  if ( cc < 1 )
+    return 0;
+  it = topLevelItem( cc - 1 );
+  if ( !it )
+    return 0; // sanity check
+  cc = it->childCount();
+  while ( cc > 0 )
+  {
+    it = it->child( cc - 1 );
+    if ( !it )
+      return 0; // aaaaaargh: something is really wrong :D
+    cc = it->childCount();
+  }
+  return it;
 }
 
 }
