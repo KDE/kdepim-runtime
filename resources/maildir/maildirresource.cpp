@@ -120,6 +120,8 @@ void MaildirResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.exec();
+
+  synchronizeCollectionTree();
 }
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
