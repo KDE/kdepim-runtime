@@ -10,6 +10,7 @@ Name[tr]=VCard Dizini
 Name[uk]=Каталог VCard
 Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
+Comment[de]=Daten werden aus einem Ordner mit Visitenkarten-Dateien geladen
 Comment[el]=Φόρτωση δεδομένων από έναν κατάλογο που περιέχει VCard
 Comment[nds]=Laadt Daten ut en Verteken mit VCard-Dateien
 Comment[pt]=Carrega os dados de uma pasta com ficheiros VCard

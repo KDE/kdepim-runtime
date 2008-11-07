@@ -10,6 +10,7 @@ Name[tr]=ICal Takvim Dosyası
 Name[uk]=Файл календаря ICal
 Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
+Comment[de]=Daten werden aus einer lokalen iCal-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο iCal
 Comment[nds]=Laadt Daten ut en ICal-Datei
 Comment[pt]=Carrega os dados de um ficheiro iCal

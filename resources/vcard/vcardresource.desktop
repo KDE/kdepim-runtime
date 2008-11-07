@@ -10,6 +10,7 @@ Name[tr]=VCard Dosyası
 Name[uk]=Файл VCard
 Name[zh_TW]=VCard 檔案
 Comment=Loads data from a VCard file
+Comment[de]=Daten werden aus einer Visitenkarten-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο VCard
 Comment[nds]=Laadt Daten ut en VCard-Datei
 Comment[pt]=Carrega os dados de um ficheiro VCard
