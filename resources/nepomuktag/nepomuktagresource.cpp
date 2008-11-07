@@ -112,6 +112,11 @@ void NepomukTagResource::slotResult( KJob* job )
     itemsRetrievalDone();
 }
 
+void NepomukTagResource::configure( WId )
+{
+    synchronizeCollectionTree();
+}
+
 void NepomukTagResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
     Q_UNUSED( parent );

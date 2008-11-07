@@ -31,6 +31,9 @@ public:
     NepomukTagResource( const QString &id );
     ~NepomukTagResource();
 
+public Q_SLOTS:
+    void configure( WId windowId );
+
 protected Q_SLOTS:
     virtual void retrieveCollections();
     virtual void retrieveItems( const Akonadi::Collection &col );
