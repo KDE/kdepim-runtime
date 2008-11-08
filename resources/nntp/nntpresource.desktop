@@ -2,6 +2,7 @@
 Name=Usenet Newsgroups (NNTP)
 Name[de]=Usenet Newsgruppen (NNTP)
 Name[el]=Ομάδες συζήτησης Usenet (NNTP)
+Name[gl]=Grupos de noticias da Usenet (NNTP)
 Name[nds]=Usenet-Narichtenkrinken (NNTP)
 Name[pt]=Grupos de Notícias da Usenet (NNTP)
 Name[pt_BR]=Grupos de notícias da Usenet (NNTP)
@@ -10,6 +11,7 @@ Name[uk]=Групи новин Usenet (NNTP)
 Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
 Comment[el]=Καθιστά δυνατή την ανάγνωση άρθρων από έναν διακομιστή νέων
+Comment[gl]=Permite ler artigos desde un servidor de novas
 Comment[nds]=MIt dit Moduul laat sik Artikels vun Narichtenservers lesen
 Comment[pt]=Possibilita a leitura de artigos de um servidor de notícias
 Comment[pt_BR]=Possibilita a leitura de artigos de um servidor de notícias

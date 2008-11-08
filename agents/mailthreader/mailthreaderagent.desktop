@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mail Threader Agent
 Name[el]=Πράκτορας νηματοποίησης αλληλογραφίας
+Name[gl]=Axente de FÃ­os de Correo
 Name[nds]=Klöönsnackhölper
 Name[pt]=Agente de Tarefas de Correio
 Name[pt_BR]=Agente de tarefas de correio
@@ -10,6 +11,7 @@ Name[zh_TW]=信件串列代理程式
 Comment=Thread mails in a collection
 Comment[de]=Gruppierung von E-Mails in einer Sammlung
 Comment[el]=Νηματοποίηση αλληλογραφίας σε μια συλλογή
+Comment[gl]=Ligar correo por fÃ­os nunha colecciÃ³n
 Comment[nds]=Klöönsnacks binnen en Nettpostsammeln
 Comment[pt]=Agendar mensagens de e-mail numa colecção
 Comment[pt_BR]=Agendar as mensagens de uma coleção

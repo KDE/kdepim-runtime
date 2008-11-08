@@ -12,6 +12,7 @@ Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
 Comment[de]=Daten werden aus einer lokalen Lesezeichen-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο σελιδοδεικτών
+Comment[gl]=Carregar datos desde un ficheiro local de marcadores
 Comment[nds]=Laadt Daten ut en lokaal Leestekendatei
 Comment[pt]=Carrega os dados a partir de um ficheiro de favoritos local
 Comment[pt_BR]=Carrega os dados de um arquivo de favoritos local

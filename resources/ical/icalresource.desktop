@@ -2,6 +2,7 @@
 Name=ICal Calendar File
 Name[de]=ICal-Kalenderdatei
 Name[el]=Αρχείο ημερολογίου ICal
+Name[gl]=Ficheiro de Calendario de ICal
 Name[nds]=ICal-Kalennerdatei
 Name[pt]=Ficheiro de Calendário ICal
 Name[pt_BR]=Arquivo de calendário ICal
@@ -12,6 +13,7 @@ Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
 Comment[de]=Daten werden aus einer lokalen iCal-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο iCal
+Comment[gl]=Carrega datos desde un ficheiro iCal
 Comment[nds]=Laadt Daten ut en ICal-Datei
 Comment[pt]=Carrega os dados de um ficheiro iCal
 Comment[pt_BR]=Carrega os dados de um arquivo iCal

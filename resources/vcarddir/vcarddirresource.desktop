@@ -2,6 +2,7 @@
 Name=VCard Directory
 Name[de]=VCard-Ordner
 Name[el]=Κατάλογος VCard
+Name[gl]=Directorio de VCard
 Name[nds]=VCard-Verteken
 Name[pt]=Pasta de VCard's
 Name[pt_BR]=Pasta de VCards
@@ -12,6 +13,7 @@ Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
 Comment[de]=Daten werden aus einem Ordner mit Visitenkarten-Dateien geladen
 Comment[el]=Φόρτωση δεδομένων από έναν κατάλογο που περιέχει VCard
+Comment[gl]=Carregar datos desde un cartafol con VCards 
 Comment[nds]=Laadt Daten ut en Verteken mit VCard-Dateien
 Comment[pt]=Carrega os dados de uma pasta com ficheiros VCard
 Comment[pt_BR]=Carrega os dados de uma pasta com VCards

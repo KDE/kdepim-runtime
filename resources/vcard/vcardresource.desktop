@@ -2,6 +2,7 @@
 Name=VCard File
 Name[de]=VCard-Datei
 Name[el]=Αρχείο VCard
+Name[gl]=Ficheiro de VCard
 Name[nds]=VCard-Datei
 Name[pt]=Ficheiro VCard
 Name[pt_BR]=Arquivo VCard
@@ -12,6 +13,7 @@ Name[zh_TW]=VCard 檔案
 Comment=Loads data from a VCard file
 Comment[de]=Daten werden aus einer Visitenkarten-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο VCard
+Comment[gl]=Carrega datos desde un ficheiro VCard
 Comment[nds]=Laadt Daten ut en VCard-Datei
 Comment[pt]=Carrega os dados de um ficheiro VCard
 Comment[pt_BR]=Carrega os dados de um arquivo VCard
