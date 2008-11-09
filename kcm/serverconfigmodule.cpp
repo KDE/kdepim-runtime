@@ -50,8 +50,8 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   connect( ui.restartButton, SIGNAL(clicked()), SLOT(restartClicked()) );
   connect( ui.selfTestButton, SIGNAL(clicked()), SLOT(selfTestClicked()) );
 
-  connect( ServerManager::instance(), SIGNAL(started()), SLOT(updateStatus()) );
-  connect( ServerManager::instance(), SIGNAL(stopped()), SLOT(updateStatus()) );
+  connect( ServerManager::self(), SIGNAL(started()), SLOT(updateStatus()) );
+  connect( ServerManager::self(), SIGNAL(stopped()), SLOT(updateStatus()) );
 }
 
 void ServerConfigModule::load()

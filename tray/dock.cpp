@@ -81,8 +81,8 @@ Dock::Dock( QWidget *parent )
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
 
-    connect( ServerManager::instance(), SIGNAL(started()), SLOT(slotServerStarted()) );
-    connect( ServerManager::instance(), SIGNAL(stopped()), SLOT(slotServerStopped()) );
+    connect( ServerManager::self(), SIGNAL(started()), SLOT(slotServerStarted()) );
+    connect( ServerManager::self(), SIGNAL(stopped()), SLOT(slotServerStopped()) );
 
     AgentManager *manager = AgentManager::self();
     connect( manager,
