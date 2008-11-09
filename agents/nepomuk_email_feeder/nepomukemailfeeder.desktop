@@ -22,5 +22,5 @@ Type=AkonadiAgent
 Exec=akonadi_nepomuk_email_feeder
 
 X-Akonadi-MimeTypes=message/rfc822,message/news
-X-Akonadi-Capabilities=
+X-Akonadi-Capabilities=Unique
 X-Akonadi-Identifier=akonadi_nepomuk_email_feeder

@@ -22,5 +22,5 @@ Type=AkonadiAgent
 Exec=akonadi_nepomuk_contact_feeder
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilities=Autostart
+X-Akonadi-Capabilities=Unique
 X-Akonadi-Identifier=akonadi_nepomuk_contact_feeder
