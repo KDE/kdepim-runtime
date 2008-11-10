@@ -2,6 +2,7 @@
 Name=KDE Calendar (traditional)
 Name[el]=Ημερολόγιο KDE (παραδοσιακό)
 Name[gl]=Calendario do KDE (tradicional)
+Name[nb]=KDE-kalender (tradisjonell)
 Name[nds]=KDE-Kalenner (normaal)
 Name[pt]=Calendário do KDE (tradicional)
 Name[pt_BR]=Calendário do KDE (tradicional)
@@ -12,6 +13,7 @@ Name[zh_TW]=KDE 行事曆（傳統）
 Comment=Loads data from a traditional KDE calendar resource
 Comment[el]=Φόρτωση δεδομένων από έναν παραδοσιακό πόρο ημερολογίου του KDE
 Comment[gl]=Carrega datos desde un recurso de calendario tradicional do KDE
+Comment[nb]=Laster data fra en tradisjonell KDE-kalenderresurs
 Comment[nds]=Laadt Daten ut en normaal KDE-Kalennerressource
 Comment[pt]=Carrega os dados de um recurso de calendário tradicional do KDE
 Comment[pt_BR]=Carrega os dados do tradicional recurso de calendário do KDE

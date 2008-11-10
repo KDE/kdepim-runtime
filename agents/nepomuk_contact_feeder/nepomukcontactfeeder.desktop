@@ -2,6 +2,7 @@
 Name=Nepomuk Contact Feeder
 Name[el]=Τροφοδότης επαφών Nepomuk
 Name[gl]=Fornecedor de Contactos de Nepomuk
+Name[nb]=Kontaktsender til Nepomuk
 Name[nds]=Nepomuk-Kontaktingaav
 Name[pt]=Alimentação de Contactos para o Nepomuk
 Name[pt_BR]=Alimentador de contatos para o Nepomuk
@@ -12,6 +13,7 @@ Comment=Extension to push contacts into Nepomuk
 Comment[de]=Erweiterung zur Übergabe von Kontakten an Nepomuk
 Comment[el]=Επέκταση για την τροφοδοσία επαφών στο Nepomuk
 Comment[gl]=ExtensiÃ³n para lle pasar os contactos a Nepomuk
+Comment[nb]=Utvidelse som sender kontakter inn til Nepomuk
 Comment[nds]=Verwiedern, mit de sik Kontakten na Nepomuk överdregen laat
 Comment[pt]=Extensão para enviar contactos para o Nepomuk
 Comment[pt_BR]=Extensão para enviar contatos para o Nepomuk

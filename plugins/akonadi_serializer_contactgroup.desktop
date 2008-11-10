@@ -1,6 +1,7 @@
 [Misc]
 Name=Contact Group Serializer
 Name[el]=Διαχειριστής ομάδων επαφών
+Name[nb]=Gruppeserialisering for kontakter
 Name[nds]=Kontaktkoppel-Reegmoduul
 Name[pt]=Serializador de Grupos de Contactos
 Name[pt_BR]=Serializador de grupos de contatos
@@ -9,6 +10,7 @@ Name[uk]=Серіалізатор груп контактів
 Name[zh_TW]=聯絡人群組序列器
 Comment=An Akonadi serializer plugin for contact group objects
 Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων ομάδων επαφών του Akonadi
+Comment[nb]=Et Akonadi programtillegg for serialisering av kontaktgruppe-objekter
 Comment[nds]=Akonadi-Inreegmoduul för Kontaktkoppeln
 Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos de grupos de contactos
 Comment[pt_BR]=Um plug-in de serialização do Akonadi para os objetos de grupos de contatos

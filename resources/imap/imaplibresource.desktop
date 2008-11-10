@@ -8,6 +8,7 @@ Name[sv]=Mailody IMAP
 Comment=Connects to an IMAP-server. Based on the IMAP-library from Mailody.
 Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισμένο στη βιβλιοθήκη IMAP του Mailody.
 Comment[gl]=Conecta cun servidor de IMAP. Baseado na biblioteca de IMAP do Mailody.
+Comment[nb]=Kobler til en IMAP-tjener. Basert på IMAP-biblioteket fra Mailody.
 Comment[nds]=Koppelt na en IMAP-Server to. Buut op Mailody sien IMAP-Bibliotheek op.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca de IMAP do Mailody.
 Comment[pt_BR]=Conecta a um servidor IMAP. Baseado na biblioteca de IMAP do Mailody.
