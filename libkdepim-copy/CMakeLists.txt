@@ -74,7 +74,6 @@ set(kdepim_LIB_SRCS
    autochecktreewidget.cpp
    utils.cpp
    colorlistbox.cpp
-   dictionarycombobox.cpp
    uistatesaver.cpp
    distributionlistconverter.cpp
 )
