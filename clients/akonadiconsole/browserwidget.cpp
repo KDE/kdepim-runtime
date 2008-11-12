@@ -220,7 +220,7 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
     labels << i18n( "Property" ) << i18n( "Value" );
     mNepomukModel->setHorizontalHeaderLabels( labels );
     int row = 0;
-    for ( QHash<QUrl, Nepomuk::Variant>::ConstIterator it = props.begin(); it != props.end(); ++it, ++row ) {
+    for ( QHash<QUrl, Nepomuk::Variant>::ConstIterator it = props.constBegin(); it != props.constEnd(); ++it, ++row ) {
       QModelIndex index = mNepomukModel->index( row, 0 );
       Q_ASSERT( index.isValid() );
       mNepomukModel->setData( index, it.key().toString() );

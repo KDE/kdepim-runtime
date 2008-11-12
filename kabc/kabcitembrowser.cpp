@@ -174,8 +174,8 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
         if ( key == QLatin1String( "BlogFeed" ) )
           continue;
 
-        const QMap<QString, QString>::ConstIterator keyIt = titleMap.find( key );
-        if ( keyIt != titleMap.end() )
+        const QMap<QString, QString>::ConstIterator keyIt = titleMap.constFind( key );
+        if ( keyIt != titleMap.constEnd() )
           key = keyIt.value();
 
         customData += rowFmtStr.arg( key ).arg( value ) ;

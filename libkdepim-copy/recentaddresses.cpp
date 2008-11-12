@@ -102,8 +102,8 @@ void RecentAddresses::save( KConfig *config )
 void RecentAddresses::add( const QString &entry )
 {
   if ( !entry.isEmpty() && m_maxCount > 0 ) {
-    QStringList list = KPIMUtils::splitAddressList( entry );
-    for ( QStringList::const_iterator e_it = list.begin(); e_it != list.end(); ++e_it ) {
+    const QStringList list = KPIMUtils::splitAddressList( entry );
+    for ( QStringList::const_iterator e_it = list.constBegin(); e_it != list.constEnd(); ++e_it ) {
       KPIMUtils::EmailParseResult errorCode = KPIMUtils::isValidAddress( *e_it );
       if ( errorCode != KPIMUtils::AddressOk ) {
         continue;
@@ -152,8 +152,8 @@ void RecentAddresses::clear()
 QStringList RecentAddresses::addresses() const
 {
   QStringList addresses;
-  for ( KABC::Addressee::List::ConstIterator it = m_addresseeList.begin();
-        it != m_addresseeList.end(); ++it ) {
+  for ( KABC::Addressee::List::ConstIterator it = m_addresseeList.constBegin();
+        it != m_addresseeList.constEnd(); ++it ) {
     addresses.append( (*it).fullEmail() );
   }
   return addresses;

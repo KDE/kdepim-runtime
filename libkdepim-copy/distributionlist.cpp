@@ -58,7 +58,7 @@ static ParseList parseCustom( const QString &str )
 {
   ParseList res;
   const QStringList lst = str.split( ';', QString::SkipEmptyParts );
-  for ( QStringList::ConstIterator it = lst.begin(); it != lst.end(); ++it ) {
+  for ( QStringList::ConstIterator it = lst.constBegin(); it != lst.constEnd(); ++it ) {
     if ( (*it).isEmpty() ) {
       continue;
     }
@@ -118,7 +118,7 @@ void KPIM::DistributionList::removeEntry( const QString &uid, const QString &ema
   Q_ASSERT( !email.isEmpty() || email.isNull() ); // never call with "", would lead to confusion
   ParseList parseList = parseCustom( custom( "KADDRESSBOOK", s_customFieldName ) );
   QString str;
-  for ( ParseList::ConstIterator it = parseList.begin(); it != parseList.end(); ++it ) {
+  for ( ParseList::ConstIterator it = parseList.constBegin(); it != parseList.constEnd(); ++it ) {
     const QString thisUid = (*it).first;
     const QString thisEmail = (*it).second;
     if ( thisUid == uid && thisEmail == email ) {
@@ -185,8 +185,8 @@ static KABC::Addressee findByUidOrName( KABC::AddressBook *book,
     // [This is used by e.g. the Kolab resource]
     if ( !email.isEmpty() ) {
       KABC::Addressee::List lst = book->findByEmail( email );
-      KABC::Addressee::List::ConstIterator listit = lst.begin();
-      for ( ; listit != lst.end(); ++listit ) {
+      KABC::Addressee::List::ConstIterator listit = lst.constBegin();
+      for ( ; listit != lst.constEnd(); ++listit ) {
         if ( (*listit).formattedName() == uidOrName ) {
           a = *listit;
           break;
@@ -235,7 +235,7 @@ QStringList KPIM::DistributionList::emails( KABC::AddressBook *book ) const
 
   const QString str = custom( "KADDRESSBOOK", s_customFieldName );
   ParseList parseList = parseCustom( str );
-  for ( ParseList::ConstIterator it = parseList.begin(); it != parseList.end(); ++it ) {
+  for ( ParseList::ConstIterator it = parseList.constBegin(); it != parseList.constEnd(); ++it ) {
     const QString thisUid = (*it).first;
     const QString thisEmail = (*it).second;
 
