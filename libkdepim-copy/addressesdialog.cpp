@@ -269,7 +269,7 @@ void
 AddressesDialog::setSelectedTo( const QStringList& l )
 {
   QString name, email;
-  for ( QStringList::ConstIterator it = l.begin(); it != l.end(); ++it ) {
+  for ( QStringList::ConstIterator it = l.constBegin(); it != l.constEnd(); ++it ) {
     KABC::Addressee addr;
     KABC::Addressee::parseEmailAddress( *it, name, email );
     addr.setNameFromString( name );
@@ -282,7 +282,7 @@ void
 AddressesDialog::setSelectedCC( const QStringList& l )
 {
   QString name, email;
-  for ( QStringList::ConstIterator it = l.begin(); it != l.end(); ++it ) {
+  for ( QStringList::ConstIterator it = l.constBegin(); it != l.constEnd(); ++it ) {
     KABC::Addressee addr;
     KABC::Addressee::parseEmailAddress( *it, name, email );
     addr.setNameFromString( name );
@@ -295,7 +295,7 @@ void
 AddressesDialog::setSelectedBCC( const QStringList& l )
 {
   QString name, email;
-  for ( QStringList::ConstIterator it = l.begin(); it != l.end(); ++it ) {
+  for ( QStringList::ConstIterator it = l.constBegin(); it != l.constEnd(); ++it ) {
     KABC::Addressee addr;
     KABC::Addressee::parseEmailAddress( *it, name, email );
     addr.setNameFromString( name );
@@ -328,7 +328,7 @@ AddressesDialog::updateRecentAddresses()
   }
 
   KABC::Addressee::List::ConstIterator it;
-  for ( it = d->recentAddresses.begin(); it != d->recentAddresses.end(); ++it )
+  for ( it = d->recentAddresses.constBegin(); it != d->recentAddresses.constEnd(); ++it )
     addAddresseeToAvailable( *it, d->recent );
 
   if ( d->recent->childCount() > 0 ) {
@@ -390,11 +390,11 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   KABC::Addressee::List aList = allAddressee( d->toItem );
   const QStringList dList = toDistributionLists();
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
-  for ( QStringList::ConstIterator it = dList.begin(); it != dList.end(); ++it ) {
+  for ( QStringList::ConstIterator it = dList.constBegin(); it != dList.constEnd(); ++it ) {
     const QList<KPIM::DistributionList::Entry> eList
       = KPIM::DistributionList::findByName(abook, *it).entries(abook);
     QList<KPIM::DistributionList::Entry>::ConstIterator eit;
-    for( eit = eList.begin(); eit != eList.end(); ++eit ) {
+    for( eit = eList.constBegin(); eit != eList.constEnd(); ++eit ) {
       KABC::Addressee a = (*eit).addressee;
       if ( !a.preferredEmail().isEmpty() && !aList.contains( a ) ) {
           aList.append( a ) ;
@@ -686,7 +686,7 @@ AddressesDialog::entryToString( const KABC::Addressee::List& l ) const
 {
   QStringList entries;
 
-  for( KABC::Addressee::List::ConstIterator it = l.begin(); it != l.end(); ++it ) {
+  for( KABC::Addressee::List::ConstIterator it = l.constBegin(); it != l.constEnd(); ++it ) {
     entries += (*it).fullEmail();
   }
   return entries;
@@ -1037,7 +1037,7 @@ AddressesDialog::addDistributionLists()
                                                       i18n( "Distribution Lists" ) );
 
   QList<KPIM::DistributionList>::ConstIterator listIt;
-  for ( listIt = distLists.begin(); listIt != distLists.end(); ++listIt ) {
+  for ( listIt = distLists.constBegin(); listIt != distLists.constEnd(); ++listIt ) {
     KPIM::DistributionList dlist = *listIt;
     KPIM::DistributionList::Entry::List entries = dlist.entries(abook);
 

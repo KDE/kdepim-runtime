@@ -80,7 +80,7 @@ KPrefsWid *create( KConfigSkeletonItem *item, QWidget *parent )
     } else {
       KPrefsWidRadios *radios = new KPrefsWidRadios( enumItem, parent );
       QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-      for ( it = choices.begin(); it != choices.end(); ++it ) {
+      for ( it = choices.constBegin(); it != choices.constEnd(); ++it ) {
         radios->addRadio( (*it).label );
       }
       return radios;
@@ -688,7 +688,7 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
   QList<KConfigSkeleton::ItemEnum::Choice2> choices;
   choices = item->choices2();
   QList<KConfigSkeleton::ItemEnum::Choice2>::ConstIterator it;
-  for ( it = choices.begin(); it != choices.end(); ++it ) {
+  for ( it = choices.constBegin(); it != choices.constEnd(); ++it ) {
     w->addRadio( (*it).label, (*it).toolTip, (*it).whatsThis );
   }
 #else
@@ -710,7 +710,7 @@ KPrefsWidCombo *KPrefsWidManager::addWidCombo( KConfigSkeleton::ItemEnum *item,
   QList<KConfigSkeleton::ItemEnum::Choice> choices;
   choices = item->choices();
   QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-  for ( it = choices.begin(); it != choices.end(); ++it ) {
+  for ( it = choices.constBegin(); it != choices.constEnd(); ++it ) {
     w->comboBox()->addItem( (*it).label );
   }
   addWid( w );
@@ -815,7 +815,7 @@ void KPrefsDialog::autoCreate()
   QMap<QString,int> mCurrentRows;
 
   KConfigSkeletonItem::List::ConstIterator it;
-  for ( it = items.begin(); it != items.end(); ++it ) {
+  for ( it = items.constBegin(); it != items.constEnd(); ++it ) {
     QString group = (*it)->group();
     QString name = (*it)->name();
 

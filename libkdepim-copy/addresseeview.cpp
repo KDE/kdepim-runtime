@@ -210,9 +210,9 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   }
 
   if ( fieldMask & PhoneFields ) {
-    KABC::PhoneNumber::List phones = addr.phoneNumbers();
+    const KABC::PhoneNumber::List phones = addr.phoneNumbers();
     KABC::PhoneNumber::List::ConstIterator phoneIt;
-    for ( phoneIt = phones.begin(); phoneIt != phones.end(); ++phoneIt ) {
+    for ( phoneIt = phones.constBegin(); phoneIt != phones.constEnd(); ++phoneIt ) {
       QString number = Qt::escape( (*phoneIt).number() );
 
       QString url;
@@ -238,10 +238,10 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   }
 
   if ( fieldMask & EmailFields ) {
-    QStringList emails = addr.emails();
+    const QStringList emails = addr.emails();
     QStringList::ConstIterator emailIt;
     QString type = i18n( "Email" );
-    for ( emailIt = emails.begin(); emailIt != emails.end(); ++emailIt ) {
+    for ( emailIt = emails.constBegin(); emailIt != emails.constEnd(); ++emailIt ) {
       QByteArray fullEmail = KUrl::toPercentEncoding( addr.fullEmail( *emailIt ) );
 
       if ( linkMask & EmailLinks ) {
@@ -277,9 +277,9 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
   }
 
   if ( fieldMask & AddressFields ) {
-    KABC::Address::List addresses = addr.addresses();
+    const KABC::Address::List addresses = addr.addresses();
     KABC::Address::List::ConstIterator addrIt;
-    for ( addrIt = addresses.begin(); addrIt != addresses.end(); ++addrIt ) {
+    for ( addrIt = addresses.constBegin(); addrIt != addresses.constEnd(); ++addrIt ) {
       if ( (*addrIt).label().isEmpty() ) {
         QString formattedAddress;
 
@@ -357,8 +357,8 @@ QString AddresseeView::vCardAsHTML( const KABC::Addressee& addr, ::KIMProxy*, Li
           if ( key == "BlogFeed" || key == "IMAddress" )
             continue;
 
-          const QMap<QString, QString>::ConstIterator keyIt = titleMap.find( key );
-          if ( keyIt != titleMap.end() )
+          const QMap<QString, QString>::ConstIterator keyIt = titleMap.constFind( key );
+          if ( keyIt != titleMap.constEnd() )
             key = keyIt.value();
 
           customData += rowFmtStr.arg( key ).arg( Qt::escape( value ) ) ;

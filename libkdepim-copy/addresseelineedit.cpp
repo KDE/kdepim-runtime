@@ -1105,8 +1105,8 @@ const QStringList KPIM::AddresseeLineEdit::getAdjustedCompletionItems( bool full
   QMap<int, QStringList> sections;
   QStringList sortedItems;
   for ( QStringList::Iterator it = items.begin(); it != items.end(); ++it, ++i ) {
-    CompletionItemsMap::const_iterator cit = s_completionItemMap->find(*it);
-    if ( cit == s_completionItemMap->end() ) {
+    CompletionItemsMap::const_iterator cit = s_completionItemMap->constFind(*it);
+    if ( cit == s_completionItemMap->constEnd() ) {
       continue;
     }
     int idx = (*cit).second;

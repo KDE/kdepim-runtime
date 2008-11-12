@@ -190,7 +190,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
   mItems.setAutoDelete( true );
   // The first step is to gather all the data, creating CompletionItem objects
   QList< LdapClient* > ldapClients = ldapSearch->clients();
-  for( QList<LdapClient*>::const_iterator it = ldapClients.begin(); it != ldapClients.end(); ++it ) {
+  for( QList<LdapClient*>::const_iterator it = ldapClients.constBegin(); it != ldapClients.constEnd(); ++it ) {
     //kDebug(5300) <<"LDAP: host" << (*it)->host() <<" weight" << (*it)->completionWeight();
     mItems.append( new LDAPCompletionItem( *it ) );
   }
@@ -203,7 +203,7 @@ CompletionOrderEditor::CompletionOrderEditor( KPIM::LdapSearch* ldapSearch,
     KABC::ResourceABC* res = dynamic_cast<KABC::ResourceABC *>( resource  );
     if ( res ) { // IMAP KABC resource
       const QStringList subresources = res->subresources();
-      for( QStringList::const_iterator it = subresources.begin(); it != subresources.end(); ++it ) {
+      for( QStringList::const_iterator it = subresources.constBegin(); it != subresources.constEnd(); ++it ) {
         mItems.append( new KABCImapSubResCompletionItem( res, *it ) );
       }
     } else { // non-IMAP KABC resource

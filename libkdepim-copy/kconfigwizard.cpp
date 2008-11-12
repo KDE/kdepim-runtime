@@ -123,9 +123,9 @@ void KConfigWizard::updateRules()
 
   mRuleView->clear();
 
-  KConfigPropagator::Rule::List rules = mPropagator->rules();
+  const KConfigPropagator::Rule::List rules = mPropagator->rules();
   KConfigPropagator::Rule::List::ConstIterator it;
-  for ( it = rules.begin(); it != rules.end(); ++it ) {
+  for ( it = rules.constBegin(); it != rules.constEnd(); ++it ) {
     KConfigPropagator::Rule r = *it;
     QString source = r.sourceFile + '/' + r.sourceGroup + '/' +
                      r.sourceEntry;

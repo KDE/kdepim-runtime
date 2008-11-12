@@ -214,12 +214,12 @@ KConfigSkeletonItem *KConfigPropagator::findItem( const QString &group,
 
   KConfigSkeletonItem::List items = mSkeleton->items();
   KConfigSkeletonItem::List::ConstIterator it;
-  for ( it = items.begin(); it != items.end(); ++it ) {
+  for ( it = items.constBegin(); it != items.constEnd(); ++it ) {
     if ( (*it)->group() == group && (*it)->name() == name ) {
       break;
     }
   }
-  if ( it == items.end() ) {
+  if ( it == items.constEnd() ) {
     return 0;
   } else {
     return *it;
@@ -246,7 +246,7 @@ void KConfigPropagator::updateChanges()
   mChanges.clear();
 
   Rule::List::ConstIterator it;
-  for ( it = mRules.begin(); it != mRules.end(); ++it ) {
+  for ( it = mRules.constBegin(); it != mRules.constEnd(); ++it ) {
     Rule r = *it;
     Condition c = r.condition;
     if ( c.isValid ) {

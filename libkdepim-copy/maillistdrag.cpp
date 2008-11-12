@@ -254,7 +254,7 @@ QVariant MailListMimeData::retrieveData( const QString & mimeType,
       dlg->progressBar()->setValue( i );
       dlg->show();
 
-      for ( MailList::ConstIterator it = list.begin(); it != list.end(); ++it ) {
+      for ( MailList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it ) {
 
         // Get the serial number from the mail summary and use the mail text source
         // to get the actual text of the mail.

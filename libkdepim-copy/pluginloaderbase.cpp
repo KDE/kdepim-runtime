@@ -39,7 +39,7 @@ namespace KPIM {
 
   QStringList PluginLoaderBase::types() const {
     QStringList result;
-    for ( QMap< QString, PluginMetaData >::const_iterator it = mPluginMap.begin(); it != mPluginMap.end() ; ++it )
+    for ( QMap< QString, PluginMetaData >::const_iterator it = mPluginMap.constBegin(); it != mPluginMap.constEnd() ; ++it )
       result.push_back( it.key() );
     return result;
   }
@@ -56,7 +56,7 @@ namespace KPIM {
       KGlobal::dirs()->findAllResources( "data", path,
                                          KStandardDirs::Recursive |
                                          KStandardDirs::NoDuplicates );
-    for ( QStringList::const_iterator it = list.begin(); it != list.end(); ++it ) {
+    for ( QStringList::const_iterator it = list.constBegin(); it != list.constEnd(); ++it ) {
       KConfig config( *it, KConfig::SimpleConfig);
       if ( config.hasGroup( "Misc" ) && config.hasGroup( "Plugin" ) ) {
         KConfigGroup group( &config, "Plugin" );

@@ -139,8 +139,8 @@ void LdapClient::finishCurrentObject()
 {
   mCurrentObject.setDn( mLdif.dn() );
   KLDAP::LdapAttrValue objectclasses;
-  for ( KLDAP::LdapAttrMap::ConstIterator it = mCurrentObject.attributes().begin();
-    it != mCurrentObject.attributes().end(); ++it ) {
+  for ( KLDAP::LdapAttrMap::ConstIterator it = mCurrentObject.attributes().constBegin();
+    it != mCurrentObject.attributes().constEnd(); ++it ) {
 
     if ( it.key().toLower() == "objectclass" ) {
       objectclasses = it.value();
@@ -149,8 +149,8 @@ void LdapClient::finishCurrentObject()
   }
 
   bool groupofnames = false;
-  for ( KLDAP::LdapAttrValue::ConstIterator it = objectclasses.begin();
-    it != objectclasses.end(); ++it ) {
+  for ( KLDAP::LdapAttrValue::ConstIterator it = objectclasses.constBegin();
+    it != objectclasses.constEnd(); ++it ) {
 
     QByteArray sClass = (*it).toLower();
     if ( sClass == "groupofnames" || sClass == "kolabgroupofnames" ) {
@@ -487,7 +487,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
   QString search_text_upper = mSearchText.toUpper();
 
   QList< ResultObject >::ConstIterator it1;
-  for ( it1 = mResults.begin(); it1 != mResults.end(); ++it1 ) {
+  for ( it1 = mResults.constBegin(); it1 != mResults.constEnd(); ++it1 ) {
     QString name, mail, givenname, sn;
     QStringList mails;
     bool isDistributionList = false;
@@ -497,7 +497,7 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
     kDebug(5300) <<"\n\nLdapSearch::makeSearchData()";
 
     KLDAP::LdapAttrMap::ConstIterator it2;
-    for ( it2 = (*it1).object.attributes().begin(); it2 != (*it1).object.attributes().end(); ++it2 ) {
+    for ( it2 = (*it1).object.attributes().constBegin(); it2 != (*it1).object.attributes().constEnd(); ++it2 ) {
       QByteArray val = (*it2).first();
       int len = val.size();
       if( len > 0 && '\0' == val[len-1] )
@@ -529,8 +529,8 @@ void LdapSearch::makeSearchData( QStringList& ret, LdapResultList& resList )
         wasDC = true;
       } else if( it2.key() == "mail" ) {
         mail = tmp;
-        KLDAP::LdapAttrValue::ConstIterator it3 = it2.value().begin();
-        for ( ; it3 != it2.value().end(); ++it3 ) {
+        KLDAP::LdapAttrValue::ConstIterator it3 = it2.value().constBegin();
+        for ( ; it3 != it2.value().constEnd(); ++it3 ) {
           mails.append( QString::fromUtf8( (*it3).data(), (*it3).size() ) );
         }
       } else if( it2.key() == "givenName" )
