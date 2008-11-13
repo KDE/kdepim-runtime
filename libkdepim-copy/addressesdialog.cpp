@@ -391,11 +391,13 @@ AddressesDialog::allToAddressesNoDuplicates()  const
   const QStringList dList = toDistributionLists();
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
   for ( QStringList::ConstIterator it = dList.constBegin(); it != dList.constEnd(); ++it ) {
-    const QList<KPIM::DistributionList::Entry> eList
-      = KPIM::DistributionList::findByName(abook, *it).entries(abook);
-    QList<KPIM::DistributionList::Entry>::ConstIterator eit;
+    const KABC::DistributionList *list = abook->findDistributionListByName( *it );
+    if ( !list )
+      continue;
+    const KABC::DistributionList::Entry::List eList = list->entries();
+    KABC::DistributionList::Entry::List::ConstIterator eit;
     for( eit = eList.constBegin(); eit != eList.constEnd(); ++eit ) {
-      KABC::Addressee a = (*eit).addressee;
+      KABC::Addressee a = (*eit).addressee();
       if ( !a.preferredEmail().isEmpty() && !aList.contains( a ) ) {
           aList.append( a ) ;
       }
@@ -867,8 +869,8 @@ AddressesDialog::saveAs()
 
   bool alreadyExists = false;
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
-  KPIM::DistributionList dlist = KPIM::DistributionList::findByName( abook, name );
-  alreadyExists = !dlist.isEmpty();
+  KABC::DistributionList *dlist = abook->findDistributionListByName( name );
+  alreadyExists = (dlist != 0);
 
   if ( alreadyExists ) {
     KMessageBox::information( 0,
@@ -882,14 +884,12 @@ AddressesDialog::saveAs()
   if ( !resource )
     return;
 
-  dlist.setResource( resource );
-  dlist.setName( name );
+  dlist = new KABC::DistributionList( resource, name );
   KABC::Addressee::List addrl = allAddressee( d->ui->mSelectedView, false );
   for ( KABC::Addressee::List::iterator itr = addrl.begin();
         itr != addrl.end(); ++itr ) {
-    dlist.insertEntry( *itr );
+    dlist->insertEntry( *itr );
   }
-  abook->insertAddressee( dlist );
 }
 
 void
@@ -1027,27 +1027,25 @@ AddressesDialog::addDistributionLists()
 {
   KABC::AddressBook* abook = KABC::StdAddressBook::self( true );
 
-  const QList<KPIM::DistributionList> distLists =
-    KPIM::DistributionList::allDistributionLists( abook );
-
+  const QList<KABC::DistributionList*> distLists = abook->allDistributionLists();
   if ( distLists.isEmpty() )
     return;
 
   AddresseeViewItem *topItem = new AddresseeViewItem( d->ui->mAvailableView,
                                                       i18n( "Distribution Lists" ) );
 
-  QList<KPIM::DistributionList>::ConstIterator listIt;
+  QList<KABC::DistributionList*>::ConstIterator listIt;
   for ( listIt = distLists.constBegin(); listIt != distLists.constEnd(); ++listIt ) {
-    KPIM::DistributionList dlist = *listIt;
-    KPIM::DistributionList::Entry::List entries = dlist.entries(abook);
+    KABC::DistributionList *dlist = *listIt;
+    KABC::DistributionList::Entry::List entries = dlist->entries();
 
-    AddresseeViewItem *item = new AddresseeViewItem( topItem, dlist.name() );
+    AddresseeViewItem *item = new AddresseeViewItem( topItem, dlist->name() );
     connect( item, SIGNAL( addressSelected( AddresseeViewItem*, bool ) ),
              this, SLOT( availableAddressSelected( AddresseeViewItem*, bool ) ) );
 
-    KPIM::DistributionList::Entry::List::Iterator itemIt;
-    for ( itemIt = entries.begin(); itemIt != entries.end(); ++itemIt )
-      addAddresseeToAvailable( (*itemIt).addressee, item, false );
+    KABC::DistributionList::Entry::List::ConstIterator itemIt;
+    for ( itemIt = entries.constBegin(); itemIt != entries.constEnd(); ++itemIt )
+      addAddresseeToAvailable( (*itemIt).addressee(), item, false );
   }
 }
 

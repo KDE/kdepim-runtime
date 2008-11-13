@@ -20,11 +20,7 @@
 #include "kaddrbookexternal.h"
 #include "kaddressbookcore_interface.h"
 
-#ifdef KDEPIM_NEW_DISTRLISTS
-#include "distributionlist.h"
-#else
 #include <kabc/distributionlist.h>
-#endif
 #include <kabc/resource.h>
 #include <kabc/stdaddressbook.h>
 #include <kabc/vcardconverter.h>
@@ -209,18 +205,10 @@ QString KAddrBookExternal::expandDistributionList( const QString &listName )
 
   const QString lowerListName = listName.toLower();
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
-#ifdef KDEPIM_NEW_DISTRLISTS
-  KPIM::DistributionList distrList =
-    KPIM::DistributionList::findByName( addressBook, lowerListName, false );
-  if ( !distrList.isEmpty() ) {
-    return distrList.emails( addressBook ).join( ", " );
-  }
-#else
   KABC::DistributionList* list = addressBook->findDistributionListByName( listName, Qt::CaseInsensitive );
 
   if ( list ) {
     return list->emails().join( ", " );
   }
-#endif
   return QString();
 }
