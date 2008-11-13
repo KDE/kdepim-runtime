@@ -1036,7 +1036,6 @@ void KScoringEditor::slotOk()
 {
   slotApply();
   manager->removeTOS();
-  KDialog::accept();
   manager->editorReady();
 }
 
