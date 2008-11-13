@@ -22,6 +22,8 @@
 #include <akonadi/resourcebase.h>
 
 namespace KABC {
+  class ContactGroup;
+  class DistributionList;
   class Resource;
   class ResourceABC;
 }
@@ -78,6 +80,10 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     bool saveAddressBook();
 
     bool scheduleSaveAddressBook();
+
+    KABC::DistributionList *distListFromContactGroup( const KABC::ContactGroup& contactGroup );
+
+    KABC::ContactGroup contactGroupFromDistList( const KABC::DistributionList* list ) const;
 
     typedef KABC::Resource Resource;
 

@@ -26,6 +26,8 @@
 
 #include <kabc/addressbook.h>
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
+#include <kabc/distributionlist.h>
 #include <kabc/errorhandler.h>
 #include <kabc/resource.h>
 #include <kabc/resourceabc.h>
@@ -186,6 +188,7 @@ void KABCResource::retrieveCollections()
   mimeTypes << QLatin1String( "text/directory" );
 
   QStringList topLevelMimeTypes = mimeTypes;
+  topLevelMimeTypes << KABC::ContactGroup::mimeType();
 
   if ( mFolderResource != 0 ) {
     topLevelMimeTypes << Collection::mimeType();
@@ -253,7 +256,18 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
     items.append( item );
   }
 
-  // TODO: handle distribution lists once we have an Akonadi payload for them
+  QList<KABC::DistributionList*> distLists = mBaseResource->allDistributionLists();
+  foreach ( const KABC::DistributionList *list, distLists ) {
+    Item item;
+    item.setRemoteId( list->identifier() );
+    item.setMimeType( KABC::ContactGroup::mimeType() );
+
+    if ( mFullItemRetrieve ) {
+      item.setPayload<KABC::ContactGroup>( contactGroupFromDistList( list ) );
+    }
+
+    items.append( item );
+  }
 
   mFullItemRetrieve = false;
 
@@ -267,20 +281,34 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
 
-  // TODO: handle distribution lists once we have an Akonadi payload for them
+  if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+    KABC::DistributionList *list =
+      mAddressBook->findDistributionListByIdentifier( rid );
+    if ( list == 0 ) {
+      kError() << "No distributionlist with identifier" << rid;
+      emit error( i18nc( "@info:status",
+                          "Request for data of a specific distribution list failed "
+                          "because there is no such list" ) );
+      return false;
+    }
 
-  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
-  if ( addressee.isEmpty() ) {
-    kError() << "No addressee with uid" << rid;
-    emit error( i18nc( "@info:status",
-                        "Request for data of a specific address book entry failed "
-                        "because there is no such entry" ) );
-    return false;
+    Item i( item );
+    i.setPayload<KABC::ContactGroup>( contactGroupFromDistList( list ) );
+    itemRetrieved( i );
+  } else {
+    KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
+    if ( addressee.isEmpty() ) {
+      kError() << "No addressee with uid" << rid;
+      emit error( i18nc( "@info:status",
+                          "Request for data of a specific address book entry failed "
+                          "because there is no such entry" ) );
+      return false;
+    }
+
+    Item i( item );
+    i.setPayload<KABC::Addressee>( addressee );
+    itemRetrieved( i );
   }
-
-  Item i( item );
-  i.setPayload<KABC::Addressee>( addressee );
-  itemRetrieved( i );
   return true;
 }
 
@@ -311,6 +339,7 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   Q_UNUSED( col );
 
   kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
+  kDebug() << "item.hasPayload<ContactGroup>() " << item.hasPayload<KABC::ContactGroup>();
   if ( item.hasPayload<KABC::Addressee>() ) {
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
@@ -327,23 +356,40 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
       i.setPayload<KABC::Addressee>( addressee );
 
       changeCommitted( i );
-    } else {
-      changeProcessed();
+      return;
     }
-  } else {
-    // TODO: handle distribution lists once we have an Akonadi payload for them
-    changeProcessed();
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+
+    if ( contactGroup.id().isEmpty() )
+      contactGroup.setId( KRandom::randomString( 10 ) );
+
+    // also inserts list into resource
+    distListFromContactGroup( contactGroup );
+
+    // TODO: proper error reporting
+    if ( scheduleSaveAddressBook() ) {
+      Item i( item );
+      i.setRemoteId( contactGroup.id() );
+      i.setPayload<KABC::ContactGroup>( contactGroup );
+
+      changeCommitted( i );
+      return;
+    }
   }
+
+  changeProcessed();
 }
 
 void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& parts )
 {
   kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
            << "mimeType=" << item.mimeType();
-  // we store the whole addressee any way
+  // we store the whole addressee/contactgroup anyway
   Q_UNUSED( parts );
 
   kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
+  kDebug() << "item.hasPayload<ContactGroup>() " << item.hasPayload<KABC::ContactGroup>();
   if ( item.hasPayload<KABC::Addressee>() ) {
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
     Q_ASSERT( !addressee.uid().isEmpty() );
@@ -354,32 +400,67 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     // TODO: proper error reporting
     if ( scheduleSaveAddressBook() ) {
       changeCommitted( item );
-    } else {
-      changeProcessed();
+      return;
     }
-  } else {
-    // TODO: handle distribution lists once we have an Akonadi payload for them
-    changeProcessed();
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+    Q_ASSERT( !contactGroup.id().isEmpty() );
+
+    KABC::DistributionList *list =
+      mAddressBook->findDistributionListByIdentifier( contactGroup.id() );
+    if ( list == 0 ) {
+      // TODO: rather report an error?
+
+      // also inserts list into resource
+      distListFromContactGroup( contactGroup );
+    } else {
+      // TODO: might be better to update the already existing instance
+      mBaseResource->removeDistributionList( list );
+      delete list;
+
+      // also inserts list into resource
+      distListFromContactGroup( contactGroup );
+    }
+
+    // TODO: proper error reporting
+    if ( scheduleSaveAddressBook() ) {
+      changeCommitted( item );
+      return;
+    }
   }
+
+  changeProcessed();
 }
 
 void KABCResource::itemRemoved( const Akonadi::Item &item )
 {
   kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
            << "mimeType=" << item.mimeType();
-  KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
-  if ( !addressee.isEmpty() ) {
-    mAddressBook->removeAddressee( addressee );
-    // TODO: proper error reporting
-    if ( scheduleSaveAddressBook() ) {
-      changeCommitted( item );
-    } else {
-      changeProcessed();
+  if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+    KABC::DistributionList *list =
+      mAddressBook->findDistributionListByIdentifier( item.remoteId() );
+    if ( list != 0 ) {
+      mAddressBook->removeDistributionList( list );
+      delete list;
+
+      // TODO: proper error reporting
+      if ( scheduleSaveAddressBook() ) {
+        changeCommitted( item );
+        return;
+      }
     }
   } else {
-    // TODO: handle distribution lists once we have an Akonadi payload for them
-    changeProcessed();
+    KABC::Addressee addressee = mAddressBook->findByUid( item.remoteId() );
+    if ( !addressee.isEmpty() ) {
+      mAddressBook->removeAddressee( addressee );
+      // TODO: proper error reporting
+      if ( scheduleSaveAddressBook() ) {
+        changeCommitted( item );
+        return;
+      }
+    }
   }
+  changeProcessed();
 }
 
 void KABCResource::collectionChanged( const Akonadi::Collection &collection )
@@ -666,6 +747,76 @@ void KABCResource::delayedSaveAddressBook()
       kError() << "Scheduling failed as well, giving up";
     }
   }
+}
+
+KABC::DistributionList *KABCResource::distListFromContactGroup( const KABC::ContactGroup& contactGroup )
+{
+  KABC::DistributionList *list =
+    new KABC::DistributionList( mBaseResource, contactGroup.id(), contactGroup.name() );
+
+  for ( unsigned int refIndex = 0; refIndex < contactGroup.referencesCount(); ++refIndex ) {
+    const KABC::ContactGroup::Reference &reference = contactGroup.reference( refIndex );
+
+    KABC::Addressee addressee = mBaseResource->findByUid( reference.uid() );
+    if ( addressee.isEmpty() ) {
+      addressee.setUid( reference.uid() );
+      // TODO any way to set a good name?
+    }
+
+    // TODO how to handle ContactGroup::Reference custom fields?
+
+    list->insertEntry( addressee, reference.preferredEmail() );
+  }
+
+  for ( unsigned int dataIndex = 0; dataIndex < contactGroup.dataCount(); ++dataIndex ) {
+    const KABC::ContactGroup::Data &data = contactGroup.data( dataIndex );
+
+    KABC::Addressee addressee;
+    addressee.setName( data.name() );
+    addressee.insertEmail( data.email() );
+
+    // TODO how to handle ContactGroup::Data custom fields?
+
+    list->insertEntry( addressee );
+  }
+
+  return list;
+}
+
+KABC::ContactGroup KABCResource::contactGroupFromDistList( const KABC::DistributionList* list ) const
+{
+  kDebug() << "name=" << list->name() << ", identifier=" << list->identifier()
+           << ", entries.count=" << list->entries().count();
+
+  KABC::ContactGroup contactGroup( list->name() );
+  contactGroup.setId( list->identifier() );
+
+  KABC::DistributionList::Entry::List entries = list->entries();
+  foreach ( const KABC::DistributionList::Entry &entry, entries ) {
+    KABC::Addressee addressee = entry.addressee();
+    const QString email = entry.email();
+    if ( addressee.isEmpty() ) {
+      if ( email.isEmpty() )
+        continue;
+
+      KABC::ContactGroup::Data data( email, email );
+      contactGroup.append( data );
+    } else {
+      KABC::Addressee baseAddressee = mBaseResource->findByUid( addressee.uid() );
+      if ( baseAddressee.isEmpty() ) {
+        KABC::ContactGroup::Data data( email, email );
+        // TODO: transer custom fields?
+        contactGroup.append( data );
+      } else {
+        KABC::ContactGroup::Reference reference( addressee.uid() );
+        reference.setPreferredEmail( email );
+        // TODO: transer custom fields?
+        contactGroup.append( reference );
+      }
+    }
+  }
+
+  return contactGroup;
 }
 
 AKONADI_RESOURCE_MAIN( KABCResource )

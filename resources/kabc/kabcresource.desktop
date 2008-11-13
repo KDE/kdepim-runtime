@@ -24,6 +24,6 @@ Type=AkonadiResource
 Exec=akonadi_kabc_resource
 Icon=text-directory
 
-X-Akonadi-MimeTypes=text/directory
+X-Akonadi-MimeTypes=text/directory,application/x-vnd.kde.contactgroup
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_kabc_resource
