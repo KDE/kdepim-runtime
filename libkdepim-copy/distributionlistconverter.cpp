@@ -69,6 +69,11 @@ KPIM::DistributionListConverter::convertFromKABC( const KABC::DistributionList *
 
   const KABC::DistributionList::Entry::List entries = kabcList->entries();
   foreach ( const KABC::DistributionList::Entry &entry, entries ) {
+    // KPIM::DistributionList doesn't like empty but not null email addresses
+    QString email = entry.email();
+    if ( email.isEmpty() && !email.isNull() )
+      email = QString();
+
     pimList.insertEntry( entry.addressee(), entry.email() );
   }
 
