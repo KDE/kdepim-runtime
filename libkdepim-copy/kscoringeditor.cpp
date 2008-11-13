@@ -212,9 +212,9 @@ void ConditionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanExpressions();
   foreach ( QWidget* w, mWidgetList ) {
-      if ( QString( w->metaObject()->className() ) != "SingleConditionWidget" ) {
+    if ( QString( w->metaObject()->className() ) != "KPIM::SingleConditionWidget" ) {
       kWarning(5100) <<"there is a widget in ConditionEditWidget"
-                     << "which isn't a SingleConditionWidget";
+                     << "which isn't a KPIM::SingleConditionWidget";
     } else {
       SingleConditionWidget *saw = dynamic_cast<SingleConditionWidget*>( w );
       if ( saw ) {
@@ -294,9 +294,13 @@ void SingleActionWidget::setAction( ActionBase *act )
 {
   kDebug(5100) <<"SingleActionWidget::setAction()";
 
-  int index = types->currentIndex();
-  types->setItemText( index, ActionBase::userName( act->getType() ) );
+  int index = types->findText( act->userName() );
+  if( index == -1 ) {
+    kWarning(5100) <<"unknown action in SingleActionWidget::setAction()";
+    index = 0;
+  }
 
+  types->setCurrentIndex( index );
   stack->setCurrentIndex( index );
   switch( act->getType() ) {
   case ActionBase::SETSCORE:
@@ -400,9 +404,9 @@ void ActionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanActions();
   foreach ( QWidget *w, mWidgetList ) {
-    if ( QString( w->metaObject()->className() ) != "SingleActionWidget" ) {
+    if ( QString( w->metaObject()->className() ) != "KPIM::SingleActionWidget" ) {
       kWarning(5100) <<"there is a widget in ActionEditWidget"
-                     << "which isn't a SingleActionWidget";
+                     << "which isn't a KPIM::SingleActionWidget";
     } else {
       SingleActionWidget *saw = dynamic_cast<SingleActionWidget*>( w );
       if (saw) {
