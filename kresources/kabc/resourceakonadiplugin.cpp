@@ -27,14 +27,14 @@
 
 using namespace KABC;
 
-class ResourceAkonadiFactory : public KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>
+class ResourceAkonadiKABCFactory : public KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>
 {
   public:
-    ResourceAkonadiFactory()
+    ResourceAkonadiKABCFactory()
       : KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>()
     {
       KGlobal::locale()->insertCatalog( QLatin1String( "kabc_akonadi" ) );
     }
 };
 
-K_EXPORT_PLUGIN(ResourceAkonadiFactory)
+K_EXPORT_PLUGIN(ResourceAkonadiKABCFactory)

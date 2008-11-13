@@ -26,14 +26,14 @@
 
 using namespace KCal;
 
-class ResourceAkonadiFactory : public KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>
+class ResourceAkonadiKCalFactory : public KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>
 {
   public:
-    ResourceAkonadiFactory()
+    ResourceAkonadiKCalFactory()
       : KRES::PluginFactory<ResourceAkonadi, ResourceAkonadiConfig>()
     {
       KGlobal::locale()->insertCatalog( QLatin1String( "kcal_akonadi" ) );
     }
 };
 
-K_EXPORT_PLUGIN(ResourceAkonadiFactory)
+K_EXPORT_PLUGIN(ResourceAkonadiKCalFactory)
