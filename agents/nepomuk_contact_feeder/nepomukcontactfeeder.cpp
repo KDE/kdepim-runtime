@@ -172,6 +172,9 @@ namespace {
 
 void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
 {
+  if ( !item.hasPayload() )
+    return;
+
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
   Nepomuk::PersonContact contact( item.url() );
