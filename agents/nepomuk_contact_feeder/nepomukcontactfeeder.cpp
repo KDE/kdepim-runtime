@@ -172,8 +172,11 @@ namespace {
 
 void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
 {
-  if ( !item.hasPayload() )
+  if ( !item.hasPayload<KABC::Addressee>() ) {
+    kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
+             << "Id:" << item.id();
     return;
+  }
 
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
