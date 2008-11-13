@@ -27,7 +27,6 @@
 
 #include <kpimidentities/signature.h>
 
-#include <kdeversion.h>
 #include <KCharsets>
 #include <KComboBox>
 #include <KCursor>

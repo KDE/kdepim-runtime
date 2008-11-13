@@ -26,7 +26,6 @@
 #include "ktimeedit.h"
 #include "kdateedit.h"
 
-#include <kdeversion.h>
 #include <KColorButton>
 #include <KComboBox>
 #include <KConfigSkeleton>
@@ -107,12 +106,10 @@ KPrefsWidBool::KPrefsWidBool( KConfigSkeleton::ItemBool *item, QWidget *parent )
 {
   mCheck = new QCheckBox( mItem->label(), parent );
   connect( mCheck, SIGNAL(clicked()), SIGNAL(changed()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mCheck->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mCheck->setWhatsThis( whatsThis );
@@ -154,13 +151,11 @@ KPrefsWidInt::KPrefsWidInt( KConfigSkeleton::ItemInt *item, QWidget *parent )
   }
   connect( mSpin, SIGNAL(valueChanged(int)), SIGNAL(changed()) );
   mLabel->setBuddy( mSpin );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mLabel->setToolTip( toolTip );
     mSpin->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mLabel->setWhatsThis( whatsThis );
@@ -203,12 +198,10 @@ KPrefsWidColor::KPrefsWidColor( KConfigSkeleton::ItemColor *item, QWidget *paren
   connect( mButton, SIGNAL(changed(const QColor&)), SIGNAL(changed()) );
   mLabel = new QLabel( mItem->label() + ':', parent );
   mLabel->setBuddy( mButton );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mButton->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mButton->setWhatsThis( whatsThis );
@@ -250,13 +243,11 @@ KPrefsWidFont::KPrefsWidFont( KConfigSkeleton::ItemFont *item,
 
   mButton = new QPushButton( i18n( "Choose..." ), parent );
   connect( mButton, SIGNAL(clicked()), SLOT(selectFont()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mPreview->setToolTip( toolTip );
     mButton->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mPreview->setWhatsThis( whatsThis );
@@ -310,12 +301,10 @@ KPrefsWidTime::KPrefsWidTime( KConfigSkeleton::ItemDateTime *item, QWidget *pare
   mTimeEdit = new KTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
   connect( mTimeEdit, SIGNAL(timeChanged(QTime)), SIGNAL(changed()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mTimeEdit->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mTimeEdit->setWhatsThis( whatsThis );
@@ -356,12 +345,10 @@ KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidg
   mTimeEdit->setMinimumTime( QTime( 0, 1 ) ); // [1 min]
   mTimeEdit->setMaximumTime( QTime( 24, 0 ) ); // [24 hr]
   connect( mTimeEdit, SIGNAL(timeChanged(const QTime&)), SIGNAL(changed()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mTimeEdit->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mTimeEdit->setWhatsThis( whatsThis );
@@ -397,12 +384,10 @@ KPrefsWidDate::KPrefsWidDate( KConfigSkeleton::ItemDateTime *item, QWidget *pare
   mDateEdit = new KDateEdit( parent );
   mLabel->setBuddy( mDateEdit );
   connect( mDateEdit, SIGNAL(dateChanged(const QDate&)), SIGNAL(changed()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mDateEdit->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mDateEdit->setWhatsThis( whatsThis );
@@ -526,12 +511,10 @@ KPrefsWidString::KPrefsWidString( KConfigSkeleton::ItemString *item, QWidget *pa
   mLabel->setBuddy( mEdit );
   connect( mEdit, SIGNAL(textChanged(const QString&)), SIGNAL(changed()) );
   mEdit->setEchoMode( echomode );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mEdit->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mEdit->setWhatsThis( whatsThis );
@@ -580,12 +563,10 @@ KPrefsWidPath::KPrefsWidPath( KConfigSkeleton::ItemPath *item, QWidget *parent,
   mURLRequester->setMode( mode );
   mURLRequester->setFilter( filter );
   connect( mURLRequester, SIGNAL(textChanged(const QString&)), SIGNAL(changed()) );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QString toolTip = mItem->toolTip();
   if ( !toolTip.isEmpty() ) {
     mURLRequester->setToolTip( toolTip );
   }
-#endif
   QString whatsThis = mItem->whatsThis();
   if ( !whatsThis.isEmpty() ) {
     mURLRequester->setWhatsThis( whatsThis );
@@ -684,21 +665,12 @@ KPrefsWidRadios *KPrefsWidManager::addWidRadios( KConfigSkeleton::ItemEnum *item
                                                  QWidget *parent )
 {
   KPrefsWidRadios *w = new KPrefsWidRadios( item, parent );
-#if KDE_IS_VERSION( 4, 1, 63 )
   QList<KConfigSkeleton::ItemEnum::Choice2> choices;
   choices = item->choices2();
   QList<KConfigSkeleton::ItemEnum::Choice2>::ConstIterator it;
   for ( it = choices.constBegin(); it != choices.constEnd(); ++it ) {
     w->addRadio( (*it).label, (*it).toolTip, (*it).whatsThis );
   }
-#else
-  QList<KConfigSkeleton::ItemEnum::Choice> choices;
-  choices = item->choices();
-  QList<KConfigSkeleton::ItemEnum::Choice>::ConstIterator it;
-  for ( it = choices.begin(); it != choices.end(); ++it ) {
-    w->addRadio( (*it).label, QString(), (*it).whatsThis );
-  }
-#endif
   addWid( w );
   return w;
 }
