@@ -50,7 +50,7 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
   KABC::Addressee::List addresseeList = addressBook->findByEmail(email);
 
   // If KAddressbook is running, talk to it, otherwise start it.
-  QDBusInterface abinterface( "org.kde.KAddressbook", "/kaddressbook_PimApplication",
+  QDBusInterface abinterface( "org.kde.kaddressbook", "/kaddressbook_PimApplication",
                               "org.kde.KUniqueApplication" );
 
   if ( abinterface.isValid() ) {
@@ -61,8 +61,8 @@ void KAddrBookExternal::openEmail( const QString &email, const QString &addr, QW
     KToolInvocation::startServiceByDesktopName( "kaddressbook" );
   }
 
-  OrgKdeKAddressbookCoreInterface interface( "org.kde.KAddressbook",
-                                             "/KAddressbook",
+  OrgKdeKAddressbookCoreInterface interface( "org.kde.kaddressbook",
+                                             "/KAddressBook",
                                              QDBusConnection::sessionBus() );
   if( !addresseeList.isEmpty() ) {
     interface.showContactEditor( addresseeList.first().uid() );
@@ -114,8 +114,8 @@ void KAddrBookExternal::openAddressBook( QWidget * )
 void KAddrBookExternal::addNewAddressee( QWidget * )
 {
   KToolInvocation::startServiceByDesktopName( "kaddressbook" );
-  OrgKdeKAddressbookCoreInterface interface( "org.kde.KAddressbook",
-                                             "/KAddressbook",
+  OrgKdeKAddressbookCoreInterface interface( "org.kde.kaddressbook",
+                                             "/KAddressBook",
                                              QDBusConnection::sessionBus() );
   interface.newContact();
 }
