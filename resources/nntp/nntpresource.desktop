@@ -11,6 +11,7 @@ Name[sv]=Usenet-nyhetsgrupper (NNTP)
 Name[uk]=Групи новин Usenet (NNTP)
 Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
+Comment[de]=Lesen von Artikeln von einem News-Server
 Comment[el]=Καθιστά δυνατή την ανάγνωση άρθρων από έναν διακομιστή νέων
 Comment[gl]=Permite ler artigos desde un servidor de novas
 Comment[nb]=Gjør det mulig å lese artikler fra en newstjener

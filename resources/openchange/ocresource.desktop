@@ -2,6 +2,7 @@
 Name=OpenChange
 Name[sv]=Openchange
 Comment=Makes it possible to work with an OpenChange / Exchange server
+Comment[de]=Verwendung mit Openchange- und Exchange-Servern
 Comment[el]=Καθιστά δυνατή τη συνεργασία με ένα διακομιστή OpenChange / Exchange
 Comment[gl]=Permite traballar cun servidor OpenChange / Exchange
 Comment[nb]=Gjør det mulig å arbeide med en OpenChange / Exchange-tjemer

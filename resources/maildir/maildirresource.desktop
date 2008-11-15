@@ -2,6 +2,7 @@
 Name=Maildir
 Name[nds]=Nettpostorner
 Comment=Loads data from a local maildir folder
+Comment[de]=Laden von Daten aus einem lokalen Maildir-Datei
 Comment[el]=Φόρτωσης δεδομένων από έναν τοπικό φάκελο maildir
 Comment[gl]=Carrega datos desde un cartafol de correo local
 Comment[nb]=Laster data fra en lokal maildir-mappe
