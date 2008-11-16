@@ -20,6 +20,7 @@ Comment[nds]=Laadt Daten ut en Verteken mit VCard-Dateien
 Comment[pt]=Carrega os dados de uma pasta com ficheiros VCard
 Comment[pt_BR]=Carrega os dados de uma pasta com VCards
 Comment[sv]=Laddar data från en katalog med vCard-filer
+Comment[tr]=VCard dosyaları bulunan bir dizinden verileri yükler
 Comment[uk]=Завантажує дані з каталогу з VCard
 Comment[zh_TW]=從含有 VCard 檔的目錄載入資料
 Type=AkonadiResource

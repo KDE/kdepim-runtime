@@ -19,6 +19,7 @@ Comment[nds]=MIt dit Moduul laat sik Artikels vun Narichtenservers lesen
 Comment[pt]=Possibilita a leitura de artigos de um servidor de notícias
 Comment[pt_BR]=Possibilita a leitura de artigos de um servidor de notícias
 Comment[sv]=Gör det möjligt att läsa artiklar från en nyhetsserver
+Comment[tr]=Bir haber sunucusundan haberleri okumak için bir araç
 Comment[uk]=Робить можливим читання статей з сервера новин
 Comment[zh_TW]=從新聞伺服器讀取文章
 Type=AkonadiResource
