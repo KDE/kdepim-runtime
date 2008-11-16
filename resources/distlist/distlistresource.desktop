@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Distributionlist File
+Comment=Loads data from a distributionlist file
+Type=AkonadiResource
+Exec=akonadi_distlist_resource
+Icon=x-mail-distribution-list
+
+X-Akonadi-MimeTypes=application/x-vnd.kde.contactgroup
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_distlist_resource
