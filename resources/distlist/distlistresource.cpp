@@ -26,13 +26,15 @@
 
 #include <kfiledialog.h>
 #include <klocale.h>
+#include <kmimetype.h>
 #include <KWindowSystem>
 
 #include <QtDBus/QDBusConnection>
 using namespace Akonadi;
 
 DistListResource::DistListResource( const QString &id )
-  : SingleFileResource<Settings>( id )
+  : SingleFileResource<Settings>( id ),
+    mLegacyKConfigFormat( false )
 {
   setSupportedMimetypes( QStringList() << KABC::ContactGroup::mimeType() );
 
@@ -46,26 +48,6 @@ DistListResource::~DistListResource()
   mContactGroups.clear();
 }
 
-bool DistListResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
-{
-  Q_UNUSED( parts );
-  const QString rid = item.remoteId();
-  if ( !mContactGroups.contains( rid ) ) {
-    emit error( QString( "ContactGroup with uid '%1' not found!" ).arg( rid ) );
-    return false;
-  }
-  Item i( item );
-  i.setPayload<KABC::ContactGroup>( mContactGroups.value( rid ) );
-  itemRetrieved( i );
-  return true;
-}
-
-void DistListResource::aboutToQuit()
-{
-  writeFile();
-  Settings::self()->writeConfig();
-}
-
 void DistListResource::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
@@ -74,54 +56,6 @@ void DistListResource::configure( WId windowId )
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
   }
-}
-
-void DistListResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
-{
-  KABC::ContactGroup contactGroup;
-  if ( item.hasPayload<KABC::ContactGroup>() )
-    contactGroup  = item.payload<KABC::ContactGroup>();
-
-  if ( !contactGroup.id().isEmpty() ) {
-    mContactGroups.insert( contactGroup.id(), contactGroup );
-
-    Item i( item );
-    i.setRemoteId( contactGroup.id() );
-    changeCommitted( i );
-
-    fileDirty();
-  } else {
-    changeProcessed();
-  }
-}
-
-void DistListResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  KABC::ContactGroup contactGroup;
-  if ( item.hasPayload<KABC::ContactGroup>() )
-    contactGroup  = item.payload<KABC::ContactGroup>();
-
-  if ( !contactGroup.id().isEmpty() ) {
-    mContactGroups.insert( contactGroup.id(), contactGroup );
-
-    Item i( item );
-    i.setRemoteId( contactGroup.id() );
-    changeCommitted( i );
-
-    fileDirty();
-  } else {
-    changeProcessed();
-  }
-}
-
-void DistListResource::itemRemoved(const Akonadi::Item & item)
-{
-  if ( mContactGroups.contains( item.remoteId() ) )
-    mContactGroups.remove( item.remoteId() );
-
-  fileDirty();
-
-  changeProcessed();
 }
 
 void DistListResource::retrieveItems( const Akonadi::Collection & col )
@@ -146,6 +80,20 @@ void DistListResource::retrieveItems( const Akonadi::Collection & col )
   itemsRetrieved( items );
 }
 
+bool DistListResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+{
+  Q_UNUSED( parts );
+  const QString rid = item.remoteId();
+  if ( !mContactGroups.contains( rid ) ) {
+    emit error( QString( "ContactGroup with uid '%1' not found!" ).arg( rid ) );
+    return false;
+  }
+  Item i( item );
+  i.setPayload<KABC::ContactGroup>( mContactGroups.value( rid ) );
+  itemRetrieved( i );
+  return true;
+}
+
 bool DistListResource::readFromFile( const QString &fileName )
 {
   mContactGroups.clear();
@@ -156,16 +104,58 @@ bool DistListResource::readFromFile( const QString &fileName )
     return false;
   }
 
-  // TODO: check for KDE legacy file (KConfig based)
+  const QByteArray peekData = file.peek( 100 );
+  KMimeType::Ptr contentType = KMimeType::findByContent( peekData );
+  if ( contentType->is( QLatin1String( "application/xml" ) ) ) {
+    kDebug() << "File format is XML based";
+    KABC::ContactGroup::List list;
+    // TODO check for error
+    KABC::ContactGroupTool::convertFromXml( &file, list );
 
-  KABC::ContactGroup::List list;
-  // TODO check for error
-  KABC::ContactGroupTool::convertFromXml( &file, list );
+    file.close();
 
-  file.close();
+    foreach( const KABC::ContactGroup &group, list ) {
+      mContactGroups.insert( group.id(), group );
+    }
+  } else {
+    kDebug() << "Checking for legacy format";
+    file.close();
 
-  foreach( const KABC::ContactGroup &group, list ) {
-    mContactGroups.insert( group.id(), group );
+    KConfig cfg( fileName );
+    if ( cfg.hasGroup( "DistributionLists" ) ) {
+      mLegacyKConfigFormat = true;
+
+      KConfigGroup cg( &cfg, "DistributionLists" );
+      const QStringList entryList = cg.keyList();
+
+      foreach ( const QString &entry, entryList ) {
+        const QStringList value = cg.readEntry( entry, QStringList() );
+
+        KABC::ContactGroup contactGroup( entry );
+        contactGroup.setId( fileName + entry );
+
+        QStringList::const_iterator entryIt = value.constBegin();
+        while ( entryIt != value.constEnd() ) {
+          const QString id = *entryIt;
+          ++entryIt;
+
+          const QString email = entryIt != value.constEnd() ? *entryIt : QString();
+
+          KABC::ContactGroup::Reference reference( id );
+          if ( !email.isEmpty() )
+            reference.setPreferredEmail( email );
+
+          contactGroup.append( reference );
+
+          if ( entryIt == value.constEnd() )
+            break;
+
+          ++entryIt;
+        }
+
+        mContactGroups.insert( contactGroup.id(), contactGroup );
+      }
+    }
   }
 
   return true;
@@ -179,7 +169,32 @@ bool DistListResource::writeToFile( const QString &fileName )
     return false;
   }
 
-  // TODO: check for KDE legacy file (KConfig based)
+  if ( mLegacyKConfigFormat ) {
+    file.close();
+
+    KConfig cfg( fileName );
+    KConfigGroup cg( &cfg, "DistributionLists" );
+    cg.deleteGroup();
+
+    QMap<QString, KABC::ContactGroup>::const_iterator it = mContactGroups.constBegin();
+    QMap<QString, KABC::ContactGroup>::const_iterator endIt = mContactGroups.constEnd();
+    for ( ; it != endIt; ++it ) {
+      const KABC::ContactGroup contactGroup = it.value();
+
+      QStringList value;
+      for ( unsigned int index = 0; index < contactGroup.referencesCount(); ++index ) {
+        const KABC::ContactGroup::Reference reference = contactGroup.reference( index );
+
+        value.append( reference.uid() );
+        value.append( reference.preferredEmail() );
+      }
+
+      cg.writeEntry( contactGroup.name(), value );
+    }
+
+    cg.sync();
+    return true;
+  }
 
   // TODO check for error
   KABC::ContactGroupTool::convertToXml( mContactGroups.values(), &file );
@@ -187,6 +202,78 @@ bool DistListResource::writeToFile( const QString &fileName )
   file.close();
 
   return true;
+}
+
+void DistListResource::aboutToQuit()
+{
+  writeFile();
+  Settings::self()->writeConfig();
+}
+
+void DistListResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
+{
+  KABC::ContactGroup contactGroup;
+  if ( item.hasPayload<KABC::ContactGroup>() )
+    contactGroup = item.payload<KABC::ContactGroup>();
+
+  if ( !contactGroup.id().isEmpty() ) {
+    if ( mLegacyKConfigFormat ) {
+      // legacy format only supports ContactGroup::Reference style data
+      if ( contactGroup.dataCount() > 0 ) {
+        error( i18nc( "@info:status",
+                      "Current storage format cannot handle distribution list entries for which no address book entry exists" ) );
+        changeProcessed();
+        return;
+      }
+    }
+    mContactGroups.insert( contactGroup.id(), contactGroup );
+
+    Item i( item );
+    i.setRemoteId( contactGroup.id() );
+    changeCommitted( i );
+
+    fileDirty();
+  } else {
+    changeProcessed();
+  }
+}
+
+void DistListResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
+{
+  KABC::ContactGroup contactGroup;
+  if ( item.hasPayload<KABC::ContactGroup>() )
+    contactGroup = item.payload<KABC::ContactGroup>();
+
+  if ( !contactGroup.id().isEmpty() ) {
+    if ( mLegacyKConfigFormat ) {
+      // legacy format only supports ContactGroup::Reference style data
+      if ( contactGroup.dataCount() > 0 ) {
+        error( i18nc( "@info:status",
+                      "Current storage format cannot handle distribution list entries for which no address book entry exists" ) );
+        changeProcessed();
+        return;
+      }
+    }
+    mContactGroups.insert( contactGroup.id(), contactGroup );
+
+    Item i( item );
+    i.setRemoteId( contactGroup.id() );
+    changeCommitted( i );
+
+    fileDirty();
+  } else {
+    changeProcessed();
+  }
+}
+
+void DistListResource::itemRemoved(const Akonadi::Item & item)
+{
+  if ( mContactGroups.contains( item.remoteId() ) )
+    mContactGroups.remove( item.remoteId() );
+
+  fileDirty();
+
+  changeProcessed();
 }
 
 AKONADI_RESOURCE_MAIN( DistListResource )

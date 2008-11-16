@@ -51,6 +51,7 @@ class DistListResource : public Akonadi::SingleFileResource<Settings>
 
   private:
     QMap<QString, KABC::ContactGroup> mContactGroups;
+    bool mLegacyKConfigFormat;
 };
 
 #endif
