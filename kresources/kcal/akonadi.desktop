@@ -11,6 +11,7 @@ Comment[pt]=Oferece o acesso aos calendários guardados nas pastas de calendári
 Comment[pt_BR]=Fornece acesso aos calendários armazenados nas pastas de calendários do Akonadi
 Comment[sv]=Ger tillgång till kalendrar lagrade i Akonadi-kalenderkataloger
 Comment[uk]=Надає доступ до календарів, які зберігаються у теках календарів Akonadi
+Comment[x-test]=xxProvides access to calendars stored in Akonadi calendar foldersxx
 Comment[zh_TW]=提供存取儲存在 Akonadi 通訊錄資料夾中的行事曆
 X-KDE-Library=kcal_akonadi
 Type=Service

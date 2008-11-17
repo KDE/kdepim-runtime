@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=OpenChange
 Name[sv]=Openchange
+Name[x-test]=xxOpenChangexx
 Comment=Makes it possible to work with an OpenChange / Exchange server
 Comment[de]=Verwendung mit Openchange- und Exchange-Servern
 Comment[el]=Καθιστά δυνατή τη συνεργασία με ένα διακομιστή OpenChange / Exchange
@@ -11,6 +12,7 @@ Comment[pt]=Possibilita a integração com um servidor de OpenChange / Exchange
 Comment[pt_BR]=Possibilita trabalhar com um servidor OpenChange / Exchange
 Comment[sv]=Gör det möjligt att arbeta med en Openchange- eller Exchange-server
 Comment[uk]=Робить можливою роботу з серверами OpenChange / Exchange
+Comment[x-test]=xxMakes it possible to work with an OpenChange / Exchange serverxx
 Comment[zh_TW]=與 OpenChange / Exchagne 伺服器一起運作
 Type=AkonadiResource
 Exec=akonadi_oc_resource

@@ -7,6 +7,7 @@ Name[pt]=Serializador de Grupos de Contactos
 Name[pt_BR]=Serializador de grupos de contatos
 Name[sv]=Kontaktgruppserialisering
 Name[uk]=Серіалізатор груп контактів
+Name[x-test]=xxContact Group Serializerxx
 Name[zh_TW]=聯絡人群組序列器
 Comment=An Akonadi serializer plugin for contact group objects
 Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων ομάδων επαφών του Akonadi
@@ -17,6 +18,7 @@ Comment[pt_BR]=Um plug-in de serialização do Akonadi para os objetos de grupos
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av kontaktgruppobjekt
 Comment[tr]=Kişi grubu nesneleri için bir Akonadi sıralandırıcısı
 Comment[uk]=Втулок серіалізації Akonadi для об'єктів груп контактів
+Comment[x-test]=xxAn Akonadi serializer plugin for contact group objectsxx
 Comment[zh_TW]=聯絡人群組物件的 Akonadi 序列器外掛程式
 
 [Plugin]
