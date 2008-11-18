@@ -1,6 +1,20 @@
 [Desktop Entry]
 Name=Distributionlist File
+Name[el]=Αρχείο λίστας διανομής
+Name[nds]=Verdeellistdatei
+Name[pt]=Ficheiro de Lista de Distribuição
+Name[pt_BR]=Arquivo de lista de distribuição
+Name[sv]=Fil med fördelningslista
+Name[uk]=Файл списку розповсюдження
+Name[zh_TW]=分派清單檔
 Comment=Loads data from a distributionlist file
+Comment[el]=Φόρτωση δεδομένων από ένα αρχείο λίστας διανομής
+Comment[nds]=Laadt Daten ut en Verdeellistdatei
+Comment[pt]=Carrega os dados a partir de um ficheiro de lista de distribuição
+Comment[pt_BR]=Carrega os dados de um arquivo de lista de distribuição
+Comment[sv]=Laddar data från en fil med en fördelningslista
+Comment[uk]=Завантажує дані з файла списку розповсюдження
+Comment[zh_TW]=從分派清單檔載入資料
 Type=AkonadiResource
 Exec=akonadi_distlist_resource
 Icon=x-mail-distribution-list
