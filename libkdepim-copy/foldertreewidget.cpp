@@ -323,7 +323,7 @@ FolderTreeWidgetItem::FolderTreeWidgetItem(
         mProtocol( protocol ), mFolderType( folderType ), mLabelText( label ),
         mTotalCount( 0 ), mUnreadCount( 0 ), mDataSize( -1 ), mIsCloseToQuota( 0 ),
         mLabelTextElided( 0 ), mChildrenTotalCount( 0 ), mChildrenUnreadCount( 0 ),
-        mChildrenDataSize( -1 )
+        mChildrenDataSize( -1 ), mAlwaysDisplayCounts( false )
 {
   setText( parent->labelColumnIndex(), label );
 }
@@ -337,7 +337,7 @@ FolderTreeWidgetItem::FolderTreeWidgetItem(
         mProtocol( protocol ), mFolderType( folderType ), mLabelText( label ),
         mTotalCount( 0 ), mUnreadCount( 0 ), mDataSize( -1 ), mIsCloseToQuota( 0 ),
         mLabelTextElided( 0 ), mChildrenTotalCount( 0 ), mChildrenUnreadCount( 0 ),
-        mChildrenDataSize( -1 )
+        mChildrenDataSize( -1 ), mAlwaysDisplayCounts( false )
 {
   FolderTreeWidget * tree = dynamic_cast< FolderTreeWidget * >( treeWidget() );
   if ( tree )
@@ -442,9 +442,10 @@ void FolderTreeWidgetItem::setUnreadCount( int unreadCount )
 
   FolderTreeWidget * tree = dynamic_cast< FolderTreeWidget * >( treeWidget() );
   int idx = tree->unreadColumnIndex();
-  if ( tree && idx >= 0 && parent() )
+  // FIXME: Why the "parent()" logic is hardwired here ?
+  if ( tree && idx >= 0 && ( parent() || mAlwaysDisplayCounts ) )
   {
-    if ( parent() || !isExpanded() )
+    if ( !isExpanded() )
       setText( idx, QString::number( unreadCountToDisplay ) );
     else
       setText( idx, QString() );
@@ -464,7 +465,8 @@ void FolderTreeWidgetItem::setTotalCount( int totalCount )
   int idx = tree->totalColumnIndex();
   if ( tree && idx >= 0 )
   {
-    if ( parent() || !isExpanded() )
+    // FIXME: Why the "parent()" logic is hardwired here ?
+    if ( parent() || mAlwaysDisplayCounts || !isExpanded() )
       setText( idx, QString::number( totalCountToDisplay ) );
     else
       setText( idx, QString() );
@@ -481,14 +483,15 @@ void FolderTreeWidgetItem::setDataSize( qint64 dataSize )
   QString childSizeText = KIO::convertSize( (KIO::filesize_t)mChildrenDataSize );
 
   // A top level item, they all have size 0
-  if ( !parent() ) {
+  // FIXME: Why this logic is hardwired here ?
+  if ( !parent() && !mAlwaysDisplayCounts ) {
     if ( mChildrenDataSize >= 0 && !isExpanded() )
       txt = childSizeText;
     else
       txt = QString();
   }
 
-  // Not a top level item
+  // Not a top level item (or always displays counts)
   else if ( ( mDataSize >= 0 ) || ( mChildrenDataSize >= 0 ) ) {
    txt = sizeText;
    if ( !isExpanded() ) {

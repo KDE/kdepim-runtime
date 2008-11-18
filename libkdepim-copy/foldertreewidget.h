@@ -80,9 +80,9 @@ public:
   explicit FolderTreeWidget( QWidget *parent , const char *name = 0 );
 
 private:
-  int mLabelColumnIndex;  ///< The index for the special "Label" column or -1 if none
-  int mUnreadColumnIndex; ///< The index for the special "Unread" column or -1 if none
-  int mTotalColumnIndex;  ///< The index for the special "Total" column or -1 if none
+  int mLabelColumnIndex;      ///< The index for the special "Label" column or -1 if none
+  int mUnreadColumnIndex;     ///< The index for the special "Unread" column or -1 if none
+  int mTotalColumnIndex;      ///< The index for the special "Total" column or -1 if none
   int mDataSizeColumnIndex;   ///< The index for the special "DataSize" column or -1 if none
 
   QColor mUnreadCountColor;
@@ -247,6 +247,7 @@ private:
   int mChildrenTotalCount;             ///< The total count of messages in children
   int mChildrenUnreadCount;            ///< The total count of unread messages in children
   qint64 mChildrenDataSize;            ///< The size of the children folders in bytes, -1 if meaningless
+  bool mAlwaysDisplayCounts;           ///< Bypasses data display logic for toplevel/children folders
 
 public:
   /**
@@ -414,6 +415,26 @@ public:
    */
   bool labelTextElided() const
     { return mLabelTextElided; };
+
+  /**
+   * Returns true if this item should bypass the size, total and unread
+   * display logic. Normally when this item is a toplevel one and
+   * has no children it doesn't display the counts. With this flag
+   * set it displays the counts regardless of this.
+   * FIXME: Why this logic is actually hardwired here ?
+   */
+  bool alwaysDisplayCounts() const
+    { return mAlwaysDisplayCounts; };
+
+  /**
+   * Sets wheter this item should bypass the size, total and unread
+   * display logic. Normally when this item is a toplevel one and
+   * has no children it doesn't display the counts. With this flag
+   * set it displays the counts regardless of this.
+   * FIXME: Why this logic is actually hardwired here ?
+   */
+  void setAlwaysDisplayCounts( bool alwaysDisplayCounts )
+    { mAlwaysDisplayCounts = alwaysDisplayCounts; };
 
 protected:
   /**
