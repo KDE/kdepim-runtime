@@ -31,7 +31,7 @@ K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
         KCModule( ResourcesConfigFactory::componentData(), parent, args )
 {
-    setButtons( 0 );
+    setButtons( KCModule::Default | KCModule::Apply );
     QVBoxLayout *l = new QVBoxLayout( this );
     l->setMargin( 0 );
 

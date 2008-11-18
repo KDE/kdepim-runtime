@@ -37,6 +37,7 @@ using namespace Akonadi;
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
     KCModule( ServerConfigModuleFactory::componentData(), parent, args )
 {
+  setButtons( KCModule::Default | KCModule::Apply );
   ui.setupUi( this );
   connect( ui.startServer, SIGNAL(toggled(bool)), SLOT(changed()) );
   connect( ui.serverPath, SIGNAL(textChanged(QString)), SLOT(changed()) );
