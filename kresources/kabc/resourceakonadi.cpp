@@ -266,6 +266,7 @@ bool ResourceAkonadi::doOpen()
   d->mMonitor = new Monitor( this );
 
   d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
+  d->mMonitor->setMimeTypeMonitored( ContactGroup::mimeType() );
   d->mMonitor->itemFetchScope().fetchFullPayload();
 
   connect( d->mMonitor,
@@ -351,7 +352,8 @@ bool ResourceAkonadi::load()
 
   bool result = true;
   foreach ( const Collection &collection, collections ) {
-     if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) ) )
+     if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) )
+          && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
        continue;
 
     const QString collectionUrl = collection.url().url();
@@ -390,6 +392,7 @@ bool ResourceAkonadi::asyncLoad()
 
   d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
   d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+  d->mCollectionFilterModel->addMimeTypeFilter( ContactGroup::mimeType() );
 
   connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
            this, SLOT( collectionRowsInserted( const QModelIndex&, int, int ) ) );
