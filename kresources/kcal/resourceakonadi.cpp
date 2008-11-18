@@ -1253,12 +1253,14 @@ void ResourceAkonadi::Private::delayedAutoSaveOnDelete()
 
 Collection ResourceAkonadi::Private::findDefaultCollection() const
 {
-  const QString keyName( "DefaultAkonadiResourceIdentifier" );
-  if ( mConfig.hasKey( keyName ) ) {
-    const QString akonadiAgentIdentifier = mConfig.readEntry( keyName );
-    foreach( const SubResource *subResource, mSubResources ) {
-      if ( subResource->collection().resource() == akonadiAgentIdentifier ) {
-        return subResource->collection();
+  if ( mConfig.isValid() ) {
+    const QString keyName( "DefaultAkonadiResourceIdentifier" );
+    if ( mConfig.hasKey( keyName ) ) {
+      const QString akonadiAgentIdentifier = mConfig.readEntry( keyName );
+      foreach( const SubResource *subResource, mSubResources ) {
+        if ( subResource->collection().resource() == akonadiAgentIdentifier ) {
+          return subResource->collection();
+        }
       }
     }
   }
