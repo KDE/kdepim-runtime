@@ -76,7 +76,7 @@ void KCalResource::configure( WId windowId )
   if ( mResource != 0 ) {
     emit status( Running,
                  i18nc( "@info:status", "Changing calendar plugin configuration" ) );
-    KRES::ConfigDialog dlg( 0, QLatin1String( "calendat" ), mResource );
+    KRES::ConfigDialog dlg( 0, QLatin1String( "calendar" ), mResource );
     KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() )
       mManager->writeConfig( KGlobal::config().data() );
