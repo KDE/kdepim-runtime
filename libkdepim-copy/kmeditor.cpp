@@ -27,6 +27,7 @@
 
 #include <kpimidentities/signature.h>
 
+#include <kabstractfilewidget.h>
 #include <KCharsets>
 #include <KComboBox>
 #include <KCursor>
@@ -529,23 +530,27 @@ KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr 
   fdlg.setOperationMode( KFileDialog::Opening );
   fdlg.okButton()->setText( i18n( "&Insert" ) );
   fdlg.setCaption( i18n( "Insert File" ) );
+
+  KComboBox *encodingCombo = 0;
   if ( !encodingLst.isEmpty() )
   {
-    KComboBox *combo = new KComboBox( this );
-    combo->addItems( encodingLst );
-    fdlg.toolBar()->addWidget( combo );
-    for ( int i = 0; i < combo->count(); i++ )
+    encodingCombo = new KComboBox( this );
+    encodingCombo->addItems( encodingLst );
+    // FIXME: after lifted string freeze: add back "Encoding" string
+    fdlg.fileWidget()->setCustomWidget( /*i18n( "Encoding:" )*/QString(), encodingCombo );
+    for ( int i = 0; i < encodingCombo->count(); i++ )
       if ( KGlobal::charsets()->codecForName( KGlobal::charsets()->
-                                       encodingForName( combo->itemText( i ) ) )
+                                       encodingForName( encodingCombo->itemText( i ) ) )
            == QTextCodec::codecForLocale() )
-        combo->setCurrentIndex(i);
-    encodingStr = combo->currentText();
+        encodingCombo->setCurrentIndex(i);
   }
   if ( !fdlg.exec() )
     return KUrl();
-
-  KUrl u = fdlg.selectedUrl();
-  return u;
+  else {
+    if ( encodingCombo )
+      encodingStr = encodingCombo->currentText();
+    return fdlg.selectedUrl();
+  }
 }
 
 void KMeditor::enableWordWrap( int wrapColumn )
