@@ -259,8 +259,8 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
 
   group.writeEntry( QLatin1String( "CollectionUrl" ), d->mStoreCollection.url() );
 
-  SubResourceMap::const_iterator it    = d->mSubResources.begin();
-  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  SubResourceMap::const_iterator it    = d->mSubResources.constBegin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.constEnd();
   for (; it != endIt; ++it ) {
     it.value()->writeConfig( group );
   }
@@ -645,8 +645,8 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 
   // save the list of collections we potentially already have
   Collection::List collections;
-  SubResourceMap::const_iterator it    = d->mSubResources.begin();
-  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  SubResourceMap::const_iterator it    = d->mSubResources.constBegin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.constEnd();
   for ( ; it != endIt; ++it ) {
     collections << it.value()->mCollection;
   }
@@ -732,8 +732,8 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   kDebug(5800) << "syncCache=" << syncCache
                << ", incidence" << incidence->uid();
 
-  UidResourceMap::const_iterator findIt = d->mUidToResourceMap.find( incidence->uid() );
-  while ( findIt == d->mUidToResourceMap.end() ) {
+  UidResourceMap::const_iterator findIt = d->mUidToResourceMap.constFind( incidence->uid() );
+  while ( findIt == d->mUidToResourceMap.constEnd() ) {
     if ( !d->mStoreCollection.isValid() ||
           d->mSubResources.value( d->mStoreCollection.url().url(), 0 ) == 0 ) {
 
@@ -755,19 +755,19 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     } else
       d->mUidToResourceMap.insert( incidence->uid(), d->mStoreCollection.url().url() );
 
-    findIt = d->mUidToResourceMap.find( incidence->uid() );
+    findIt = d->mUidToResourceMap.constFind( incidence->uid() );
   }
 
   KJob *job = 0;
 
-  ItemMap::const_iterator itemIt = d->mItems.end();
+  ItemMap::const_iterator itemIt = d->mItems.constEnd();
 
-  IdHash::const_iterator idIt = d->mIdMapping.find( incidence->uid() );
-  if ( idIt != d->mIdMapping.end() ) {
-    itemIt = d->mItems.find( idIt.value() );
+  IdHash::const_iterator idIt = d->mIdMapping.constFind( incidence->uid() );
+  if ( idIt != d->mIdMapping.constEnd() ) {
+    itemIt = d->mItems.constFind( idIt.value() );
   }
 
-  if ( itemIt == d->mItems.end() ) {
+  if ( itemIt == d->mItems.constEnd() ) {
     kDebug(5800) << "No item yet, using ItemCreateJob";
 
     Item item( d->mMimeVisitor->mimeType( incidence ) );
@@ -1052,8 +1052,8 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &reference )
     kWarning(5800) << "No IncidencePtr in local item: id=" << id
                    << ", remoteId=" << item.remoteId();
 
-    IdHash::const_iterator idIt    = mIdMapping.begin();
-    IdHash::const_iterator idEndIt = mIdMapping.end();
+    IdHash::const_iterator idIt    = mIdMapping.constBegin();
+    IdHash::const_iterator idEndIt = mIdMapping.constEnd();
     for ( ; idIt != idEndIt; ++idIt ) {
       if ( idIt.value() == id ) {
         uid = idIt.key();
@@ -1273,18 +1273,18 @@ bool ResourceAkonadi::Private::prepareSaving()
   // our store collection.
   // if the store collection is no or nor longer valid, ask for a new one
   Incidence::List incidenceList = mCalendar.rawIncidences();
-  Incidence::List::const_iterator it    = incidenceList.begin();
-  Incidence::List::const_iterator endIt = incidenceList.end();
+  Incidence::List::const_iterator it    = incidenceList.constBegin();
+  Incidence::List::const_iterator endIt = incidenceList.constEnd();
   while ( it != endIt ) {
-    UidResourceMap::const_iterator findIt = mUidToResourceMap.find( (*it)->uid() );
-    if ( findIt == mUidToResourceMap.end() ) {
+    UidResourceMap::const_iterator findIt = mUidToResourceMap.constFind( (*it)->uid() );
+    if ( findIt == mUidToResourceMap.constEnd() ) {
       if ( !mStoreCollection.isValid() ||
            mSubResources.value( mStoreCollection.url().url(), 0 ) == 0 ) {
 
         // if there is only one subresource take it instead of asking
         // since this is the most likely choice of the user anyway
         if ( mSubResourceIds.count() == 1 ) {
-          mStoreCollection = Collection::fromUrl( *mSubResourceIds.begin() );
+          mStoreCollection = Collection::fromUrl( *mSubResourceIds.constBegin() );
         } else {
           Collection defaultCollection = findDefaultCollection();
           if ( defaultCollection.isValid() ) {
@@ -1316,14 +1316,14 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
 
   TransactionSequence *sequence = new TransactionSequence();
 
-  ChangeMap::const_iterator changeIt    = mChanges.begin();
-  ChangeMap::const_iterator changeEndIt = mChanges.end();
+  ChangeMap::const_iterator changeIt    = mChanges.constBegin();
+  ChangeMap::const_iterator changeEndIt = mChanges.constEnd();
   for ( ; changeIt != changeEndIt; ++changeIt ) {
     const QString uid = changeIt.key();
 
     kDebug() << mIdMapping;
     kDebug() << uid;
-    IdHash::const_iterator idIt = mIdMapping.find( uid );
+    IdHash::const_iterator idIt = mIdMapping.constFind( uid );
 
     ItemMap::const_iterator itemIt;
 
@@ -1349,9 +1349,9 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
 
       case Changed:
       {
-        Q_ASSERT( idIt != mIdMapping.end() );
-        itemIt = mItems.find( idIt.value() );
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( idIt != mIdMapping.constEnd() );
+        itemIt = mItems.constFind( idIt.value() );
+        Q_ASSERT( itemIt != mItems.constEnd() );
 
         incidence = mCalendar.incidence( uid );
         Q_ASSERT( incidence != 0 );
@@ -1370,9 +1370,9 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
       }
 
       case Removed:
-        Q_ASSERT( idIt != mIdMapping.end() );
-        itemIt = mItems.find( idIt.value() );
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( idIt != mIdMapping.constEnd() );
+        itemIt = mItems.constFind( idIt.value() );
+        Q_ASSERT( itemIt != mItems.constEnd() );
 
         item = itemIt.value();
 
@@ -1395,7 +1395,7 @@ void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
   kDebug(5800) << incidence->uid();
 
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
-  Q_ASSERT( idIt == mIdMapping.end() );
+  Q_ASSERT( idIt == mIdMapping.constEnd() );
 
   mChanges[ incidence->uid() ] = Added;
 }
@@ -1408,7 +1408,7 @@ void ResourceAkonadi::Private::calendarIncidenceChanged( Incidence *incidence )
   kDebug(5800) << incidence->uid();
 
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
-  if ( idIt == mIdMapping.end() ) {
+  if ( idIt == mIdMapping.constEnd() ) {
     Q_ASSERT( mChanges.value( incidence->uid(), Removed ) == Added );
   } else
     mChanges[ incidence->uid() ] = Changed;
@@ -1423,7 +1423,7 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
 
   // check if we have saved it already, otherwise it is just a local change
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
-  if ( idIt != mIdMapping.end() ) {
+  if ( idIt != mIdMapping.constEnd() ) {
     mUidToResourceMap.remove( incidence->uid() );
 
     mChanges[ incidence->uid() ] = Removed;

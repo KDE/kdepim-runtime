@@ -231,8 +231,8 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
 
   group.writeEntry( QLatin1String( "CollectionUrl" ), d->mStoreCollection.url() );
 
-  SubResourceMap::const_iterator it    = d->mSubResources.begin();
-  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  SubResourceMap::const_iterator it    = d->mSubResources.constBegin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.constEnd();
   for (; it != endIt; ++it ) {
     it.value()->writeConfig( group );
   }
@@ -329,8 +329,8 @@ bool ResourceAkonadi::load()
 
   // save the list of collections we potentially already have
   Collection::List collections;
-  SubResourceMap::const_iterator it    = d->mSubResources.begin();
-  SubResourceMap::const_iterator endIt = d->mSubResources.end();
+  SubResourceMap::const_iterator it    = d->mSubResources.constBegin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.constEnd();
   for ( ; it != endIt; ++it ) {
     collections << it.value()->mCollection;
   }
@@ -451,7 +451,7 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
   const QString uid = addr.uid();
-  if ( mAddrMap.find( uid ) == mAddrMap.end() )
+  if ( mAddrMap.constFind( uid ) == mAddrMap.constEnd() )
     d->mChanges[ uid ] = Private::Added;
   else
     d->mChanges[ uid ] = Private::Changed;
@@ -463,8 +463,8 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
 {
   kDebug(5700);
   const QString uid = addr.uid();
-  Addressee::Map::const_iterator findIt = mAddrMap.find( uid );
-  if ( findIt == mAddrMap.end() )
+  Addressee::Map::const_iterator findIt = mAddrMap.constFind( uid );
+  if ( findIt == mAddrMap.constEnd() )
     return;
 
   d->mChanges[ uid ] = Private::Removed;
@@ -494,8 +494,8 @@ void ResourceAkonadi::removeDistributionList( DistributionList *list )
                << ", name=" << list->name();
 
   const QString uid = list->identifier();
-  DistributionListMap::const_iterator findIt = mDistListMap.find( uid );
-  if ( findIt == mDistListMap.end() )
+  DistributionListMap::const_iterator findIt = mDistListMap.constFind( uid );
+  if ( findIt == mDistListMap.constEnd() )
     return;
 
   d->mChanges[ uid ] = Private::Removed;
@@ -879,8 +879,8 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
     kWarning(5700) << "No Addressee or ContactGroup in local item: id=" << id
                    << ", remoteId=" << oldItem.remoteId();
 
-    IdHash::const_iterator idIt    = mIdMapping.begin();
-    IdHash::const_iterator idEndIt = mIdMapping.end();
+    IdHash::const_iterator idIt    = mIdMapping.constBegin();
+    IdHash::const_iterator idEndIt = mIdMapping.constEnd();
     for ( ; idIt != idEndIt; ++idIt ) {
       if ( idIt.value() == id ) {
         uid = idIt.key();
@@ -1094,18 +1094,18 @@ bool ResourceAkonadi::Private::prepareSaving()
   // if an addressee is not yet mapped to one of the sub resources we put it into
   // our store collection.
   // if the store collection is no or nor longer valid, ask for a new one
-  Addressee::Map::const_iterator addrIt    = mParent->mAddrMap.begin();
-  Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.end();
+  Addressee::Map::const_iterator addrIt    = mParent->mAddrMap.constBegin();
+  Addressee::Map::const_iterator addrEndIt = mParent->mAddrMap.constEnd();
   while ( addrIt != addrEndIt ) {
-    UidResourceMap::const_iterator findIt = mUidToResourceMap.find( addrIt.key() );
-    if ( findIt == mUidToResourceMap.end() ) {
+    UidResourceMap::const_iterator findIt = mUidToResourceMap.constFind( addrIt.key() );
+    if ( findIt == mUidToResourceMap.constEnd() ) {
       if ( !mStoreCollection.isValid() ||
            mSubResources.value( mStoreCollection.url().url(), 0 ) == 0 ) {
 
         // if there is only one subresource take it instead of asking
         // since this is the most likely choice of the user anyway
         if ( mSubResourceIds.count() == 1 ) {
-          mStoreCollection = Collection::fromUrl( *mSubResourceIds.begin() );
+          mStoreCollection = Collection::fromUrl( *mSubResourceIds.constBegin() );
         } else {
           Collection defaultCollection = mParent->storeCollection();
           if ( defaultCollection.isValid() ) {
@@ -1136,8 +1136,8 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
 {
   TransactionSequence *sequence = new TransactionSequence();
 
-  ChangeMap::const_iterator changeIt    = mChanges.begin();
-  ChangeMap::const_iterator changeEndIt = mChanges.end();
+  ChangeMap::const_iterator changeIt    = mChanges.constBegin();
+  ChangeMap::const_iterator changeEndIt = mChanges.constEnd();
   for ( ; changeIt != changeEndIt; ++changeIt ) {
     const QString uid = changeIt.key();
 
@@ -1178,9 +1178,9 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         break;
 
       case Changed:
-        Q_ASSERT( idIt != mIdMapping.end() );
+        Q_ASSERT( idIt != mIdMapping.constEnd() );
         itemIt = mItems.find( idIt.value() );
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( itemIt != mItems.constEnd() );
 
         item = itemIt.value();
 
@@ -1207,9 +1207,9 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         break;
 
       case Removed:
-        Q_ASSERT( idIt != mIdMapping.end() );
+        Q_ASSERT( idIt != mIdMapping.constEnd() );
         itemIt = mItems.find( idIt.value() );
-        Q_ASSERT( itemIt != mItems.end() );
+        Q_ASSERT( itemIt != mItems.constEnd() );
 
         item = itemIt.value();
         if ( item.hasPayload<KABC::Addressee>() ) {
@@ -1294,8 +1294,8 @@ DistributionList *ResourceAkonadi::Private::distListFromContactGroup( const Cont
     const ContactGroup::Reference &reference = contactGroup.reference( refIndex );
 
     Addressee addressee;
-    Addressee::Map::const_iterator it = mParent->mAddrMap.find( reference.uid() );
-    if ( it == mParent->mAddrMap.end() ) {
+    Addressee::Map::const_iterator it = mParent->mAddrMap.constFind( reference.uid() );
+    if ( it == mParent->mAddrMap.constEnd() ) {
       addressee.setUid( reference.uid() );
 
       // TODO any way to set a good name?
