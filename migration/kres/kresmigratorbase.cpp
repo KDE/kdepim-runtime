@@ -103,7 +103,7 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
     return;
   }
 
-  emit message( Info, i18n( "Trying to migragte '%1' to compatibility bridge...", res->resourceName() ) );
+  emit message( Info, i18n( "Trying to migrate '%1' to compatibility bridge...", res->resourceName() ) );
   mBridgingInProgress = true;
   const AgentType type = AgentManager::self()->type( typeId );
   if ( !type.isValid() ) {
