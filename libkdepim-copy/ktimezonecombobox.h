@@ -30,6 +30,10 @@
 #include <KComboBox>
 #include <KDateTime>
 
+namespace KCal {
+  class Calendar;
+}
+
 namespace KPIM {
 
 /**
@@ -41,7 +45,7 @@ namespace KPIM {
 class KDEPIM_EXPORT KTimeZoneComboBox : public KComboBox
 {
   public:
-    KTimeZoneComboBox( QWidget *parent = 0 );
+    explicit KTimeZoneComboBox( KCal::Calendar *calendar, QWidget *parent = 0 );
     ~KTimeZoneComboBox();
 
     /**
@@ -69,7 +73,7 @@ class KDEPIM_EXPORT KTimeZoneComboBox : public KComboBox
 
   private:
     class Private;
-    Private const *d;
+    Private *const d;
 };
 
 }

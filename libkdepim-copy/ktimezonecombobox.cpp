@@ -18,20 +18,27 @@
 
 #include "ktimezonecombobox.h"
 
+#include <kcal/calendar.h>
+#include <kcal/icaltimezones.h>
+
+#include <KDebug>
+#include <KGlobal>
 #include <KLocale>
 #include <KSystemTimeZone>
 
 using namespace KPIM;
+using namespace KCal;
 
-class KTimeZoneComboBox::Private
+class KPIM::KTimeZoneComboBox::Private
 {
   public:
-    Private( KTimeZoneComboBox *parent )
-      : mParent( parent )
+    Private( Calendar *calendar, KTimeZoneComboBox *parent )
+      : mParent( parent ), mCalendar( calendar )
     {}
 
     void fillComboBox() const;
     KTimeZoneComboBox *mParent;
+    Calendar *mCalendar;
 };
 
 void KTimeZoneComboBox::Private::fillComboBox() const
@@ -40,21 +47,31 @@ void KTimeZoneComboBox::Private::fillComboBox() const
   QStringList list;
 
   const KTimeZones::ZoneMap timezones = KSystemTimeZones::zones();
+  for ( KTimeZones::ZoneMap::ConstIterator it=timezones.begin(); it != timezones.end(); ++it ) {
+    list.append( it.key().toUtf8() );
+  }
+  list.sort();
 
-  for ( KTimeZones::ZoneMap::ConstIterator it = timezones.begin();  it != timezones.end();  ++it ) {
-    list.append( i18n( it.key().toUtf8() ) );
+  // Prepend the list of timezones from the Calendar
+  if ( mCalendar ) {
+    const ICalTimeZones::ZoneMap calzones = mCalendar->timeZones()->zones();
+    for ( ICalTimeZones::ZoneMap::ConstIterator it=calzones.begin(); it != calzones.end(); ++it ) {
+      kDebug() << "Prepend timezone " << it.key().toUtf8();
+      list.prepend( it.key().toUtf8() );
+    }
   }
 
-  list.sort();
+  // Prepend UTC and Floating, for convenience
   list.prepend( "UTC" );
   list.prepend( i18n( "Floating" ) );
 
   mParent->addItems( list );
 }
 
-KTimeZoneComboBox::KTimeZoneComboBox( QWidget *parent )
-  : KComboBox( parent ), d( new Private( this ) )
+KTimeZoneComboBox::KTimeZoneComboBox( Calendar *calendar, QWidget *parent )
+  : KComboBox( parent ), d( new KPIM::KTimeZoneComboBox::Private( calendar, this ) )
 {
+  KGlobal::locale()->insertCatalog( "timezones4" ); // for translated timezones
   d->fillComboBox();
 }
 
@@ -68,12 +85,13 @@ void KTimeZoneComboBox::selectTimeSpec( const KDateTime::Spec &spec )
   int nCurrentlySet = -1;
 
   for ( int i = 0; i < count(); ++i ) {
-    if ( itemText(i) ==  spec.timeZone().name() ) {
+    if ( itemText( i ) ==  spec.timeZone().name() ) {
       nCurrentlySet = i;
       break;
     }
   }
   if ( nCurrentlySet == -1 ) {
+    //TODO: now search in calendar defined timezone list
     if ( spec.isUtc() ) {
       setCurrentIndex( 1 ); // UTC
     } else {
@@ -82,11 +100,6 @@ void KTimeZoneComboBox::selectTimeSpec( const KDateTime::Spec &spec )
   } else {
     setCurrentIndex( nCurrentlySet );
   }
-}
-
-void KTimeZoneComboBox::selectLocalTimeSpec()
-{
-  selectTimeSpec( KDateTime::Spec( KSystemTimeZones::local() ) );
 }
 
 KDateTime::Spec KTimeZoneComboBox::selectedTimeSpec()
@@ -98,10 +111,16 @@ KDateTime::Spec KTimeZoneComboBox::selectedTimeSpec()
   } else if ( currentText() == i18n( "Floating" ) ) {
     spec = KDateTime::Spec( KDateTime::ClockTime );
   } else {
+    //TODO: calendar defined timezone might be selected
     spec.setType( KSystemTimeZones::zone( currentText() ) );
   }
 
   return spec;
+}
+
+void KTimeZoneComboBox::selectLocalTimeSpec()
+{
+  selectTimeSpec( KDateTime::Spec( KSystemTimeZones::local() ) );
 }
 
 void KTimeZoneComboBox::setFloating( bool floating, const KDateTime::Spec &spec )
