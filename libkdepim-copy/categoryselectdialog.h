@@ -80,7 +80,7 @@ class KDEPIM_EXPORT CategorySelectDialog : public KDialog
 {
   Q_OBJECT
   public:
-    explicit CategorySelectDialog( KPimPrefs *prefs, QWidget *parent = 0, bool modal = false );
+    explicit CategorySelectDialog( KPimPrefs *prefs, QWidget *parent = 0 );
     ~CategorySelectDialog();
 
     QStringList selectedCategories() const;

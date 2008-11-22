@@ -29,23 +29,17 @@
 
 #include <KLocale>
 
-#include <QLayout>
-#include <QStringList>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QBoxLayout>
-#include <QList>
 #include <QHeaderView>
+#include <QList>
+#include <QStringList>
 
 using namespace KPIM;
 
-CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent, bool modal )
+CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent )
   : KDialog( parent ), mPrefs( prefs )
 {
   setCaption( i18n( "Edit Categories" ) );
-  setModal( modal );
-  setButtons( Ok|Apply|Cancel|Help );
+  setButtons( Ok | Apply | Cancel | Help );
   mWidgets = new Ui::CategoryEditDialog_base();
   QWidget *widget = new QWidget( this );
   widget->setObjectName( "CategoryEdit" );
@@ -55,6 +49,22 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent, bool 
   mWidgets->mButtonAdd->setIcon( KIcon( "list-add" ) );
   mWidgets->mButtonAddSubcategory->setIcon( KIcon( "list-add" ) );
   mWidgets->mButtonRemove->setIcon( KIcon( "list-remove" ) );
+
+  // unfortunately, kde-core-devel will not allow this code in KDialog
+  // because these button's functionality cannot be easily generalized.
+  //TODO(KDE4.3): uncomment when strings are unfrozen
+  //setButtonToolTip( Ok, i18n( "Apply changes and close" ) );
+  //setButtonWhatsThis( Ok, i18n( "When clicking <b>Ok</b>, "
+  //                              "the settings will be handed over to the "
+  //                              "program and the dialog will be closed." ) );
+  //setButtonToolTip( Cancel, i18n( "Cancel changes and close" ) );
+  //setButtonWhatsThis( Cancel, i18n( "When clicking <b>Cancel</b>, "
+  //                                  "the settings will be discarded and the "
+  //                                  "dialog will be closed." ) );
+
+  //setButtonWhatsThis( Help, i18n( "When clicking <b>Help</b>, "
+  //                                "a separate KHelpCenter window will open "
+  //                                "providing more information about the settings." ) );
 
   setMainWidget( widget );
 
@@ -79,9 +89,6 @@ CategoryEditDialog::CategoryEditDialog( KPimPrefs *prefs, QWidget *parent, bool 
   connect( this, SIGNAL(applyClicked()), this, SLOT(slotApply()) );
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
 CategoryEditDialog::~CategoryEditDialog()
 {
   delete mWidgets;
