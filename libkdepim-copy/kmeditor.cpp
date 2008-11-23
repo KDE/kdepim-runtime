@@ -27,12 +27,11 @@
 
 #include <kpimidentities/signature.h>
 
-#include <kabstractfilewidget.h>
 #include <KCharsets>
 #include <KComboBox>
 #include <KCursor>
 #include <KDirWatch>
-#include <KFileDialog>
+#include <KEncodingFileDialog>
 #include <KLocale>
 #include <KMenu>
 #include <KMessageBox>
@@ -523,33 +522,18 @@ void KMeditor::setFontForWholeText( const QFont &font )
   document()->setDefaultFont( font );
 }
 
-KUrl KMeditor::insertFile( const QStringList &encodingLst, QString &encodingStr )
+KUrl KMeditor::insertFile()
 {
-  KUrl url;
-  KFileDialog fdlg( url, QString(), this );
-  fdlg.setOperationMode( KFileDialog::Opening );
+  KEncodingFileDialog fdlg( QString(), QString(),  QString(), QString(),
+                            KFileDialog::Opening, this );
   fdlg.okButton()->setText( i18n( "&Insert" ) );
   fdlg.setCaption( i18n( "Insert File" ) );
-
-  KComboBox *encodingCombo = 0;
-  if ( !encodingLst.isEmpty() )
-  {
-    encodingCombo = new KComboBox( this );
-    encodingCombo->addItems( encodingLst );
-    // FIXME: after lifted string freeze: add back "Encoding" string
-    fdlg.fileWidget()->setCustomWidget( /*i18n( "Encoding:" )*/QString(), encodingCombo );
-    for ( int i = 0; i < encodingCombo->count(); i++ )
-      if ( KGlobal::charsets()->codecForName( KGlobal::charsets()->
-                                       encodingForName( encodingCombo->itemText( i ) ) )
-           == QTextCodec::codecForLocale() )
-        encodingCombo->setCurrentIndex(i);
-  }
   if ( !fdlg.exec() )
     return KUrl();
   else {
-    if ( encodingCombo )
-      encodingStr = encodingCombo->currentText();
-    return fdlg.selectedUrl();
+    KUrl url = fdlg.selectedUrl();
+    url.setFileEncoding( fdlg.selectedEncoding() );
+    return url;
   }
 }
 

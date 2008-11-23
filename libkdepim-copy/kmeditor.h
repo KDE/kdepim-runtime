@@ -88,7 +88,12 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
     /// FIXME: Huh? This is not virtual in the base classes and thus never called
     void paste();
 
-    KUrl insertFile( const QStringList &encodingLst, QString &encodingStr );
+    /**
+     * Show the open file dialog and returns the selected URL there.
+     * The file dialog has an encoding combobox displayed, and the selected
+     * encoding there will be set as the encoding of the URL's fileEncoding().
+     */
+    KUrl insertFile();
 
     /**
      * Enables word wrap. Words will be wrapped at the specified column.
