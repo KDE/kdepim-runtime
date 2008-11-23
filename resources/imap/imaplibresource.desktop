@@ -2,6 +2,7 @@
 Name=Mailody Imap
 Name[gl]=Imap de Mailody
 Name[nds]=Mailody-Imap
+Name[nn]=Mailody-IMAP
 Name[pt]=IMAP do Mailody
 Name[pt_BR]=IMAP do Mailody
 Name[sv]=Mailody IMAP
@@ -11,6 +12,7 @@ Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισ�
 Comment[gl]=Conecta cun servidor de IMAP. Baseado na biblioteca de IMAP do Mailody.
 Comment[nb]=Kobler til en IMAP-tjener. Basert på IMAP-biblioteket fra Mailody.
 Comment[nds]=Koppelt na en IMAP-Server to. Buut op Mailody sien IMAP-Bibliotheek op.
+Comment[nn]=Koplar til ein IMAP-tenar. Basert på IMAP-biblioteket i Mailody.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca de IMAP do Mailody.
 Comment[pt_BR]=Conecta a um servidor IMAP. Baseado na biblioteca de IMAP do Mailody.
 Comment[sv]=Ansluter till en IMAP-server. Baserad på IMAP-biblioteket från Mailody.
