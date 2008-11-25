@@ -248,6 +248,13 @@ Q_SIGNALS:
    */
   void columnVisibilityChanged( int logicalIndex );
 
+protected:
+  /**
+   * Reimplemented in order to catch style change events
+   * and explicitly disable animations.
+   */
+  virtual void changeEvent( QEvent *e );
+
 private Q_SLOTS:
   /**
    * Internal slot connected to the customContextMenuRequested()

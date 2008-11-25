@@ -30,6 +30,7 @@
 
 #include <QHeaderView>
 #include <QVector>
+#include <QEvent>
 
 namespace KPIM {
 
@@ -44,6 +45,28 @@ TreeWidget::TreeWidget( QWidget * parent, const char * name )
   header()->setMovable( true );
 
   setManualColumnHidingEnabled( true );
+
+  // At the moment of writing (25.11.2008) there is a bug in Qt
+  // which causes an assertion failure in animated views when
+  // the animated item is deleted. The bug notification has been
+  // sent to qt-bugs. For the moment we keep animations explicitly disabled.
+  // FIXME: Re-enable animations once the qt bug is fixed.
+  setAnimated( false );
+}
+
+void TreeWidget::changeEvent( QEvent *e )
+{
+  QTreeWidget::changeEvent( e );
+
+  if ( e->type() == QEvent::StyleChange )
+  {
+    // At the moment of writing (25.11.2008) there is a bug in Qt
+    // which causes an assertion failure in animated views when
+    // the animated item is deleted. The bug notification has been
+    // sent to qt-bugs. For the moment we keep animations explicitly disabled.
+    // FIXME: Re-enable animations once the qt bug is fixed.
+    setAnimated( false );
+  }
 }
 
 bool TreeWidget::saveLayout( KConfigGroup &group, const QString &keyName ) const
