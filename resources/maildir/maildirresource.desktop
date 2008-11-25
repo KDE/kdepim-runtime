@@ -1,13 +1,17 @@
 [Desktop Entry]
 Name=Maildir
+Name[km]=ថត​សំបុត្រ
 Name[nds]=Nettpostorner
 Name[x-test]=xxMaildirxx
 Comment=Loads data from a local maildir folder
 Comment[de]=Laden von Daten aus einem lokalen Maildir-Datei
 Comment[el]=Φόρτωσης δεδομένων από έναν τοπικό φάκελο maildir
 Comment[gl]=Carrega datos desde un cartafol de correo local
+Comment[ja]=ローカルの maildir フォルダからデータを読み込みます
+Comment[km]=ផ្ទុក​ទិន្នន័យ​ពី​ថត maildir មូលដ្ឋាន
 Comment[nb]=Laster data fra en lokal maildir-mappe
 Comment[nds]=Laadt Daten ut en lokaal Nettpostorner
+Comment[nl]=Laadt gegevens van een lokaal maildir-map
 Comment[nn]=Lastar data frå ei lokal iCal-fil
 Comment[pt]=Carrega os dados de uma pasta Maildir local
 Comment[pt_BR]=Carrega os dados de uma pasta maildir local
