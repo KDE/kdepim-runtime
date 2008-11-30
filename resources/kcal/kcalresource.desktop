@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KDE Calendar (traditional)
+Name[ca]=Calendari del KDE (tradicional)
 Name[el]=Ημερολόγιο KDE (παραδοσιακό)
 Name[gl]=Calendario do KDE (tradicional)
 Name[ja]=KDE カレンダー (従来のタイプ)
@@ -16,6 +17,7 @@ Name[uk]=Календар KDE (традиційний)
 Name[x-test]=xxKDE Calendar (traditional)xx
 Name[zh_TW]=KDE 行事曆（傳統）
 Comment=Loads data from a traditional KDE calendar resource
+Comment[ca]=Carregar dades des d'un recurs de calendari tradicional del KDE
 Comment[el]=Φόρτωση δεδομένων από έναν παραδοσιακό πόρο ημερολογίου του KDE
 Comment[gl]=Carrega datos desde un recurso de calendario tradicional do KDE
 Comment[ja]=従来の KDE カレンダーリソースからデータを読み込みます

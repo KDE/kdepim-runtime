@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Localbookmarks
+Name[ca]=Punts locals
 Name[de]=Lokale Lesezeichen
 Name[el]=Τοπικοί σελιδοδείκτες
 Name[ja]=ローカルブックマーク
@@ -15,6 +16,7 @@ Name[uk]=Локальні закладки
 Name[x-test]=xxLocalbookmarksxx
 Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
+Comment[ca]=Carrega dades des d'un fitxer de punts local
 Comment[de]=Daten werden aus einer lokalen Lesezeichen-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο σελιδοδεικτών
 Comment[gl]=Carregar datos desde un ficheiro local de marcadores

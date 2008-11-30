@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Mail Threader Agent
+Name[ca]=Agent de fils de correu de l'Akonadi
 Name[de]=E-Mail-Gruppierungs-Agent
 Name[el]=Πράκτορας νηματοποίησης αλληλογραφίας
 Name[gl]=Axente de Fí­os de Correo
@@ -17,6 +18,7 @@ Name[uk]=Агент розгалуження пошти
 Name[x-test]=xxMail Threader Agentxx
 Name[zh_TW]=信件串列代理程式
 Comment=Thread mails in a collection
+Comment[ca]=Segueix els fils dels correus en una col·lecció
 Comment[de]=Gruppierung von E-Mails in einer Sammlung
 Comment[el]=Νηματοποίηση αλληλογραφίας σε μια συλλογή
 Comment[gl]=Ligar correo por fí­os nunha colección

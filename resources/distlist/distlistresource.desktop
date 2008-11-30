@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Distributionlist File
+Name[ca]=Fitxers de llistes de distribució
 Name[el]=Αρχείο λίστας διανομής
 Name[gl]=Ficheiro Distributionlist
 Name[ja]=配布リストファイル
@@ -14,6 +15,7 @@ Name[tr]=Dağıtım Listesi Dosyası
 Name[uk]=Файл списку розповсюдження
 Name[zh_TW]=分派清單檔
 Comment=Loads data from a distributionlist file
+Comment[ca]=Carrega dades des d'un fitxer de llistes de distribució
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο λίστας διανομής
 Comment[gl]=Carrega datos desde un ficheiro de distribución
 Comment[ja]=配布リストファイルからデータを読み込みます

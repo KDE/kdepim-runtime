@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Usenet Newsgroups (NNTP)
+Name[ca]=Grups de notícies d'Usenet (NNTP)
 Name[de]=Usenet Newsgruppen (NNTP)
 Name[el]=Ομάδες συζήτησης Usenet (NNTP)
 Name[gl]=Grupos de noticias da Usenet (NNTP)
@@ -16,6 +17,7 @@ Name[uk]=Групи новин Usenet (NNTP)
 Name[x-test]=xxUsenet Newsgroups (NNTP)xx
 Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
+Comment[ca]=Facilita la lectura d'articles des d'un servidor de notícies
 Comment[de]=Lesen von Artikeln von einem News-Server
 Comment[el]=Καθιστά δυνατή την ανάγνωση άρθρων από έναν διακομιστή νέων
 Comment[gl]=Permite ler artigos desde un servidor de novas

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=VCard File
+Name[ca]=Fitxer VCard
 Name[de]=VCard-Datei
 Name[el]=Αρχείο VCard
 Name[gl]=Ficheiro de VCard
@@ -17,6 +18,7 @@ Name[uk]=Файл VCard
 Name[x-test]=xxVCard Filexx
 Name[zh_TW]=VCard 檔案
 Comment=Loads data from a VCard file
+Comment[ca]=Carrega dades des d'un fitxer VCard
 Comment[de]=Daten werden aus einer Visitenkarten-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο VCard
 Comment[gl]=Carrega datos desde un ficheiro VCard

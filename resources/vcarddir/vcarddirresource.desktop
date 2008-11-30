@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=VCard Directory
+Name[ca]=Directori VCard
 Name[de]=VCard-Ordner
 Name[el]=Κατάλογος VCard
 Name[gl]=Directorio de VCard
@@ -17,6 +18,7 @@ Name[uk]=Каталог VCard
 Name[x-test]=xxVCard Directoryxx
 Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
+Comment[ca]=Carrega dades des d'un directori amb VCards
 Comment[de]=Daten werden aus einem Ordner mit Visitenkarten-Dateien geladen
 Comment[el]=Φόρτωση δεδομένων από έναν κατάλογο που περιέχει VCard
 Comment[gl]=Carregar datos desde un cartafol con VCards 

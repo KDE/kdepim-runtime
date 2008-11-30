@@ -1,5 +1,6 @@
 [Misc]
 Name=Contact Group Serializer
+Name[ca]=Serialitzador de grups de contactes
 Name[el]=Διαχειριστής ομάδων επαφών
 Name[gl]=Serializador de Grupo de Contacto
 Name[km]=អ្នក​ដាក់​លេខ​សៀរៀល​ក្រុម​ទំនាក់ទំនង
@@ -14,6 +15,7 @@ Name[uk]=Серіалізатор груп контактів
 Name[x-test]=xxContact Group Serializerxx
 Name[zh_TW]=聯絡人群組序列器
 Comment=An Akonadi serializer plugin for contact group objects
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes de grups de contactes
 Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων ομάδων επαφών του Akonadi
 Comment[gl]=Extensión de serialización de Akonadi para obxectos de grupo de contacto
 Comment[km]=កម្មវិធីជំនួយ​អ្នក​ដាក់លេខសៀរៀល Akonadi សម្រាប់​វត្ថុ​ក្រុម​ទំនាក់ទំនង

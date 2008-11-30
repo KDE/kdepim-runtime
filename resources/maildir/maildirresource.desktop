@@ -4,6 +4,7 @@ Name[km]=ថត​សំបុត្រ
 Name[nds]=Nettpostorner
 Name[x-test]=xxMaildirxx
 Comment=Loads data from a local maildir folder
+Comment[ca]=Carregar dades des d'una carpeta «maildir» local
 Comment[de]=Laden von Daten aus einem lokalen Maildir-Datei
 Comment[el]=Φόρτωσης δεδομένων από έναν τοπικό φάκελο maildir
 Comment[gl]=Carrega datos desde un cartafol de correo local

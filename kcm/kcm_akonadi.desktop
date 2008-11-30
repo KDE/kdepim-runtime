@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=
 X-KDE-System-Settings-Parent-Category=advanced-user-settings
 
 Name=Akonadi configuration
+Name[ca]=Configuració de l'Akonadi
 Name[el]=Ρυθμίσεις του Akonadi
 Name[fr]=Configuration d'Akonadi
 Name[gl]=Configuración do Akonadi 
@@ -31,6 +32,7 @@ Name[uk]=Налаштування Akonadi
 Name[x-test]=xxAkonadi configurationxx
 Name[zh_TW]=Akonadi 設定
 Comment=Configuration of the Akonadi Personal Information Management framework
+Comment[ca]=Configuració de l'entorn de gestió d'informació personal de l'Akonadi
 Comment[el]=Ρύθμιση του διαχειριστή προσωπικών πληροφοριών του Akonadi
 Comment[fr]=Configuration du gestionnaire d'informations personnelles Akonadi
 Comment[gl]=Configuración da infraestrutura do Xestor de Información Persoal de Akonadi

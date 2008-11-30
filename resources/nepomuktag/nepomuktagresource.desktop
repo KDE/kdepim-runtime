@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Tags (Virtual Folders)
+Name[ca]=Etiquetes del Nepomuk (Carpetes virtuals)
 Name[el]=Ετικέτες Nepomuk (εικονικοί φάκελοι)
 Name[et]=Nepomuki sildid (virtuaalkaustad)
 Name[fr]=Étiquettes Nepomuk (dossiers virtuels)
@@ -18,6 +19,7 @@ Name[uk]=Мітки Nepomuk (Віртуальні теки)
 Name[x-test]=xxNepomuk Tags (Virtual Folders)xx
 Name[zh_TW]=Nepomuk 標籤（虛擬資料夾）
 Comment=Virtual folders for selecting messages which have Nepomuk Tags.
+Comment[ca]=Carpetes virtuals per a seleccionar missatges que tinguin etiquetes del Nepomuk.
 Comment[el]=Εικονικοί φάκελοι για την επιλογή μηνυμάτων με ετικέτες Nepomuk.
 Comment[et]=Virtuaalkaustad Nepomuki siltidega kirjade valimiseks.
 Comment[fr]=Des dossiers virtuels qui permettent de sélectionner les messages avec des étiquettes Nepomuk.
