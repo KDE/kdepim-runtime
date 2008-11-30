@@ -212,14 +212,12 @@ void ConditionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanExpressions();
   foreach ( QWidget* w, mWidgetList ) {
-    if ( QString( w->metaObject()->className() ) != "KPIM::SingleConditionWidget" ) {
-      kWarning(5100) <<"there is a widget in ConditionEditWidget"
-                     << "which isn't a KPIM::SingleConditionWidget";
+    SingleConditionWidget *saw = dynamic_cast<SingleConditionWidget*>( w );
+    if ( saw ) {
+      rule->addExpression( saw->createCondition() );
     } else {
-      SingleConditionWidget *saw = dynamic_cast<SingleConditionWidget*>( w );
-      if ( saw ) {
-        rule->addExpression( saw->createCondition() );
-      }
+      kWarning(5100) <<"there is a widget in ConditionEditWidget"
+                    << "which isn't a KPIM::SingleConditionWidget";
     }
   }
 }
@@ -404,17 +402,15 @@ void ActionEditWidget::updateRule( KScoringRule *rule )
 {
   rule->cleanActions();
   foreach ( QWidget *w, mWidgetList ) {
-    if ( QString( w->metaObject()->className() ) != "KPIM::SingleActionWidget" ) {
-      kWarning(5100) <<"there is a widget in ActionEditWidget"
-                     << "which isn't a KPIM::SingleActionWidget";
-    } else {
-      SingleActionWidget *saw = dynamic_cast<SingleActionWidget*>( w );
-      if (saw) {
-        ActionBase *act = saw->createAction();
-        if ( act ) {
-          rule->addAction( act );
-        }
+    SingleActionWidget *saw = dynamic_cast<SingleActionWidget*>( w );
+    if (saw) {
+      ActionBase *act = saw->createAction();
+      if ( act ) {
+        rule->addAction( act );
       }
+    } else {
+      kWarning(5100) <<"there is a widget in ActionEditWidget"
+                    << "which isn't a KPIM::SingleActionWidget";
     }
   }
 }
