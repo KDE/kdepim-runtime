@@ -21,8 +21,9 @@ qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
 kde4_add_library( akonadi-kabccommon SHARED ${kabcakonadi_LIB_SRC} )
 
 target_link_libraries( akonadi-kabccommon ${KDE4_AKONADI_LIBS} ${KDE4_KABC_LIBS} )
+target_link_libraries( akonadi-kabccommon LINK_INTERFACE_LIBRARIES ${KDE4_AKONADI_LIBS} ${KDE4_KABC_LIBS} )
+
 set_target_properties( akonadi-kabccommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} 
-                                               SOVERSION ${GENERIC_LIB_SOVERSION} 
-                                               ${KDE4_DISABLE_PROPERTY_}LINK_INTERFACE_LIBRARIES "${KDE4_KABC_LIBRARY}" )
+                                               SOVERSION ${GENERIC_LIB_SOVERSION} )
 
 install(TARGETS akonadi-kabccommon ${INSTALL_TARGETS_DEFAULT_ARGS})
