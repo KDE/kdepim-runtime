@@ -57,6 +57,7 @@ private:
     void appendJournalToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
     void appendEventToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
     void appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item );
+    QString resolveMapiName(const char* username);
 
     QString mimeTypeForFolderType( const char *folderTypeValue ) const;
 

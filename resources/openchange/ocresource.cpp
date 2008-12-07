@@ -316,16 +316,16 @@ const char * encoding( const QString& data )
 
 /// \brief Returns a resolved MAPI name.
 /// \return QString.isNull() == true if name is not found.
-QString resolveMapiName(const char* username)
+QString OCResource::resolveMapiName(const char* username)
 {
   TALLOC_CTX* mem_ctx = talloc_init("OCResource_resolveMapiName_CTX");
 
   SPropTagArray* tagArray = set_SPropTagArray(mem_ctx, 0x2, PR_SMTP_ADDRESS, PR_SMTP_ADDRESS_UNICODE);
-  FlagList* flagList = NULL;
+  struct SPropTagArray* flagList = NULL;
   SRowSet* rowSet = NULL;
   const char* usernames[2] = { username, NULL };
-  if (ResolveNames(usernames, tagArray, &rowSet, &flagList, 0) != MAPI_E_SUCCESS) {
-    if (ResolveNames(usernames, tagArray, &rowSet, &flagList, MAPI_UNICODE) != MAPI_E_SUCCESS) {
+  if (ResolveNames(m_session.get_mapi_session(), usernames, tagArray, &rowSet, &flagList, 0) != MAPI_E_SUCCESS) {
+    if (ResolveNames(m_session.get_mapi_session(), usernames, tagArray, &rowSet, &flagList, MAPI_UNICODE) != MAPI_E_SUCCESS) {
        qDebug() << "*** COULD NOT RESOLVE EXCHANGE EMAIL ADDRESS ***";
     }
   }
@@ -874,7 +874,7 @@ KCal::Incidence::Secrecy getIncidentSecrecy(const uint32_t prop)
   }
 }
 
-struct RecurrencePattern
+struct MyRecurrencePattern
 {
   // Look at Microsoft's MS-OXOCAL.pdf (2.2.1.44.1)
   uint32_t* readerAndWriterVersion; // consolidate these two uint16_t since they are constant.
@@ -945,7 +945,7 @@ struct ExtendedException
 
 struct AppointmentRecurrencePattern
 {
-  RecurrencePattern recurrencePattern;
+  MyRecurrencePattern recurrencePattern;
   uint32_t* readerVersion2;
   uint32_t* writerVersion2;
   uint32_t* startTimeOffset;
@@ -959,9 +959,9 @@ struct AppointmentRecurrencePattern
   uint32_t* reservedBlock2; // reserved
 };
 
-RecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
+MyRecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
 {
-  RecurrencePattern recurrence;
+  MyRecurrencePattern recurrence;
 
   recurrence.readerAndWriterVersion = (uint32_t*) dataBlob;
   dataBlob += sizeof(uint32_t);
@@ -1069,7 +1069,7 @@ QBitArray getRecurrenceDays( const uint32_t* exchangeDays )
 
 void appendRecurrenceToEvent( uint8_t* binData, KCal::Recurrence* recurrence, KDateTime startTime )
 {
-  RecurrencePattern recurrencePattern = readRecurrencePattern( binData );
+  MyRecurrencePattern recurrencePattern = readRecurrencePattern( binData );
 
   recurrence->setStartDateTime( startTime );
   if ( *recurrencePattern.recurFrequency == 0x200a ) { // daily event
