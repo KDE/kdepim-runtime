@@ -1,5 +1,7 @@
 ########### next target ###############
 
+if ( NEPOMUK_FOUND )
+
 set( nepomuktagresource_SRCS
   nepomuktagresource.cpp
 )
@@ -16,4 +18,6 @@ kde4_add_executable(akonadi_nepomuktag_resource RUN_UNINSTALLED ${nepomuktagreso
 target_link_libraries(akonadi_nepomuktag_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES} )
 
 install(TARGETS akonadi_nepomuktag_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+endif ( NEPOMUK_FOUND )
 

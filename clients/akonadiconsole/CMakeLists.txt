@@ -1,8 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/akonadi)
 include_directories(${CMAKE_SOURCE_DIR}/libkdepim)
 
-find_package( Nepomuk )
-
 if ( NEPOMUK_FOUND )
 
 set(akonadiconsole_bin_SRCS
