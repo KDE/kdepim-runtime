@@ -2,6 +2,7 @@
 Name=KContactManager
 Name[de]=Kontaktverwaltung
 Name[pa]=ਕੇ-ਸੰਪਰਕ-ਮੈਨੇਜਰ
+Name[ro]=KGestionarContacte
 Name[sv]=Kcontactmanager
 Name[x-test]=xxKContactManagerxx
 Name[zh_TW]=Kontact 管理員
@@ -30,6 +31,7 @@ GenericName[pa]=ਸੰਪਰਕ ਮੈਨੇਜਰ
 GenericName[pl]=Zarządzanie kontaktami
 GenericName[pt]=Gestor de Contactos
 GenericName[pt_BR]=Gerenciador de Contatos
+GenericName[ro]=Gestionar de contacte
 GenericName[ru]=Карточки и контакты
 GenericName[sv]=Kontakthantering
 GenericName[th]=จัดการที่อยู่ติดต่อ
