@@ -2,6 +2,7 @@
 Name=Nepomuk EMail Feeder
 Name[ca]=Alimentador de correus del Nepomuk
 Name[el]=Τροφοδότης EMail του Nepomuk
+Name[et]=Nepomuki e-kirjade söötur
 Name[fr]=Connecteur Nepomuk pour les courriels
 Name[gl]=Fornecedor de Correo de Nepomuk
 Name[ja]=Nepomuk メールフィーダー
@@ -21,6 +22,7 @@ Comment=Extension to push emails into Nepomuk
 Comment[ca]=Extensió per a introduir correus en el Nepomuk
 Comment[de]=Erweiterung zur Übergabe von E-Mails an Nepomuk
 Comment[el]=Επέκταση για την τροφοδοσία email στο Nepomuk
+Comment[et]=Laiendus e-kirjade edastamiseks Nepomukile
 Comment[fr]=Extension pour fournir les courriels à Nepomuk
 Comment[gl]=Extensión para lle pasar mensaxes de correo a Nepomuk
 Comment[ja]=Nepomuk にメールを提供するエクステンション

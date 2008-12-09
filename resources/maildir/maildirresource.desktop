@@ -7,6 +7,7 @@ Comment=Loads data from a local maildir folder
 Comment[ca]=Carregar dades des d'una carpeta «maildir» local
 Comment[de]=Laden von Daten aus einem lokalen Maildir-Datei
 Comment[el]=Φόρτωσης δεδομένων από έναν τοπικό φάκελο maildir
+Comment[et]=Andmete laadimine kohalikust maildir-kaustast
 Comment[fr]=Charge des données d'un dossier au format maildir
 Comment[gl]=Carrega datos desde un cartafol de correo local
 Comment[ja]=ローカルの maildir フォルダからデータを読み込みます
