@@ -66,7 +66,7 @@ class KDEPIM_EXPORT CategoryEditDialog : public KDialog
     void fillList();
 
   private:
-    void deleteItem( QTreeWidgetItem *item );
+    void deleteItem( QTreeWidgetItem *item, QList<QTreeWidgetItem *> &to_remove );
     KPimPrefs *mPrefs;
     Ui::CategoryEditDialog_base *mWidgets;
 };

@@ -24,7 +24,6 @@
 #include "categoryeditdialog.h"
 #include "ui_categoryeditdialog_base.h"
 #include "categoryhierarchyreader.h"
-#include "autochecktreewidget.h"
 #include "kpimprefs.h"
 
 #include <KLocale>
@@ -154,7 +153,7 @@ void CategoryEditDialog::remove()
 {
   QList<QTreeWidgetItem*> to_remove = mWidgets->mCategories->selectedItems();
   while ( !to_remove.isEmpty() ) {
-    deleteItem( to_remove.takeFirst() );
+    deleteItem( to_remove.takeFirst(), to_remove );
   }
 
   mWidgets->mButtonRemove->setEnabled( mWidgets->mCategories->topLevelItemCount() > 0 );
@@ -164,14 +163,16 @@ void CategoryEditDialog::remove()
   }
 }
 
-void CategoryEditDialog::deleteItem( QTreeWidgetItem *item )
+void CategoryEditDialog::deleteItem( QTreeWidgetItem *item, QList<QTreeWidgetItem *> &to_remove )
 {
   if ( !item ) {
     return;
   }
 
   for ( int i = item->childCount() - 1; i >= 0; i-- ) {
-    deleteItem( item->child( i ) );
+    QTreeWidgetItem *child = item->child( i );
+    to_remove.removeAll( child );
+    deleteItem( child, to_remove );
   }
   delete item;
 }
