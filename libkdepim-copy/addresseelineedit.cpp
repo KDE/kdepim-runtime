@@ -184,14 +184,14 @@ void AddresseeLineEdit::keyPressEvent( QKeyEvent *e )
 {
   bool accept = false;
 
-  if ( KStandardShortcut::shortcut(
-         KStandardShortcut::SubstringCompletion ).contains( Qt::Key_E ) ) {
+  const int key = e->key() | e->modifiers();
+
+  if ( KStandardShortcut::shortcut( KStandardShortcut::SubstringCompletion ).contains( key ) ) {
     //TODO: add LDAP substring lookup, when it becomes available in KPIM::LDAPSearch
     updateSearchString();
     doCompletion( true );
     accept = true;
-  } else if ( KStandardShortcut::shortcut(
-                KStandardShortcut::TextCompletion ).contains( Qt::Key_E ) ) {
+  } else if ( KStandardShortcut::shortcut( KStandardShortcut::TextCompletion ).contains( key ) ) {
     int len = text().length();
 
     if ( len == cursorPosition() ) { // at End?
