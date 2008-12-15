@@ -470,7 +470,11 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
           Incidence *incidence = d->mCalendar.incidence( it.key() );
           Q_ASSERT( incidence != 0 );
-          Q_ASSERT( d->mCalendar.deleteIncidence( incidence ) );
+          if ( !d->mCalendar.deleteIncidence( incidence ) ) {
+            kError(5800) << "Failed to delete incidence" << incidence->uid()
+                         << "(" << incidence->summary()
+                         << ") from subResource" << subResource;
+          }
           it = d->mUidToResourceMap.erase( it );
         }
         else
@@ -920,7 +924,11 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       mIdMapping.insert( incidencePtr->uid(), id );
 
       Incidence *incidence = incidencePtr->clone();
-      Q_ASSERT( mCalendar.addIncidence( incidence ) );
+      if ( !mCalendar.addIncidence( incidence ) ) {
+        kError(5800) << "Failed to add incidence" << incidence->uid()
+                         << "(" << incidence->summary()
+                         << ") to subResource" << collectionUrl;
+      }
       mUidToResourceMap.insert( incidence->uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
     }
@@ -1210,7 +1218,11 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
 
                 Incidence *incidence = mCalendar.incidence( uidIt.key() );
                 Q_ASSERT( incidence != 0 );
-                Q_ASSERT( mCalendar.deleteIncidence( incidence ) );
+                if ( !mCalendar.deleteIncidence( incidence ) ) {
+                  kError(5800) << "Failed to delete incidence" << incidence->uid()
+                               << "(" << incidence->summary()
+                               << ") from subResource" << collectionUrl;
+                }
                 uidIt = mUidToResourceMap.erase( uidIt );
               }
               else
