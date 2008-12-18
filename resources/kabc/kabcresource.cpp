@@ -516,7 +516,7 @@ bool KABCResource::openConfiguration()
 
         connect( mFolderResource,
                  SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
-                 this, SLOT( subResourcChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                 this, SLOT( subResourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
     }
   }
 
