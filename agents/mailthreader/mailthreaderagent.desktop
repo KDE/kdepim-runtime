@@ -45,5 +45,5 @@ Type=AkonadiAgent
 Exec=akonadi_mailthreader_agent
 
 X-Akonadi-MimeTypes=message/rfc822,message/news
-X-Akonadi-Capabilities=Unique,Autostart
+X-Akonadi-Capabilities=Unique
 X-Akonadi-Identifier=akonadi_mailthreader_agent
