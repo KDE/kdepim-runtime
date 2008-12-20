@@ -1,2 +1,2 @@
 #!/bin/sh
-$XGETTEXT *.cpp -o $podir/kcm_akonadi_resources.pot
+$XGETTEXT *.cpp -o $podir/kcm_akonadi.pot

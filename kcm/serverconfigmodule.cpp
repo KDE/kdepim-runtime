@@ -20,6 +20,7 @@
 #include "serverconfigmodule.h"
 
 #include <kdebug.h>
+#include <klocale.h>
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 
@@ -37,6 +38,9 @@ using namespace Akonadi;
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
     KCModule( ServerConfigModuleFactory::componentData(), parent, args )
 {
+  KGlobal::locale()->insertCatalog( "kcm_akonadi" );
+  KGlobal::locale()->insertCatalog( "libakonadi" );
+
   setButtons( KCModule::Default | KCModule::Apply );
   ui.setupUi( this );
   connect( ui.startServer, SIGNAL(toggled(bool)), SLOT(changed()) );

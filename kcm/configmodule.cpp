@@ -21,6 +21,7 @@
 #include "configmodule.h"
 #include "resourcesmanagementwidget.h"
 
+#include <klocale.h>
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
@@ -31,6 +32,9 @@ K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
         KCModule( ResourcesConfigFactory::componentData(), parent, args )
 {
+    KGlobal::locale()->insertCatalog( "kcm_akonadi" );
+    KGlobal::locale()->insertCatalog( "libakonadi" );
+
     setButtons( KCModule::Default | KCModule::Apply );
     QVBoxLayout *l = new QVBoxLayout( this );
     l->setMargin( 0 );
