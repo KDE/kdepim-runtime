@@ -155,6 +155,8 @@ class ResourceAkonadi::Private
     typedef QMap<QString, ChangeType> ChangeMap;
     ChangeMap mChanges;
 
+    QSet<QString> mAsyncLoadCollections;
+
   public:
     void subResourceLoadResult( KJob *job );
 
@@ -221,6 +223,8 @@ void ResourceAkonadi::clear()
   d->mSubResourceIds.clear();
 
   d->mChanges.clear();
+
+  d->mAsyncLoadCollections.clear();
 
   ResourceABC::clear();
 }
@@ -383,7 +387,42 @@ bool ResourceAkonadi::load()
 
 bool ResourceAkonadi::asyncLoad()
 {
+  // FIXME: copied from synchronous load
+  // we need to get to rid of the model since this kind of usage is out of its
+  // scope. Should be replaced with a collection and item aggreation class
+  // similar to what the model does but with more control over how it does it.
+
+  // save the list of collections we potentially already have
+  Collection::List collections;
+  SubResourceMap::const_iterator it    = d->mSubResources.constBegin();
+  SubResourceMap::const_iterator endIt = d->mSubResources.constEnd();
+  for ( ; it != endIt; ++it ) {
+    collections << it.value()->mCollection;
+  }
+
   clear();
+
+  // if we do not have any collection yet, fetch them explicitly
+  if ( collections.isEmpty() ) {
+    CollectionFetchJob *colJob =
+      new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+    if ( !colJob->exec() ) {
+      emit loadingError( this, colJob->errorString() );
+      return false;
+    }
+
+    foreach ( const Collection &collection, colJob->collections() ) {
+      if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) )
+            && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
+        continue;
+
+      collections << collection;
+    }
+  }
+
+  foreach ( const Collection &collection, collections ) {
+    d->mAsyncLoadCollections.insert( collection.url().url() );
+  }
 
   delete d->mCollectionFilterModel;
   delete d->mCollectionModel;
@@ -402,6 +441,11 @@ bool ResourceAkonadi::asyncLoad()
            this, SLOT( collectionDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 
   d->mCollectionFilterModel->setSourceModel( d->mCollectionModel );
+
+  if ( d->mAsyncLoadCollections.isEmpty() ) {
+    kDebug(5700) << "No collections present at asyncLoad start, emitting loadingFinished";
+    emit loadingFinished( this );
+  }
 
   return true;
 }
@@ -709,6 +753,15 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
 
   mParent->addressBook()->emitAddressBookChanged();
   emit mParent->signalSubresourceAdded( mParent, QLatin1String( "contact" ), collectionUrl );
+
+  if ( !mAsyncLoadCollections.isEmpty() ) {
+    mAsyncLoadCollections.remove( collectionUrl );
+
+    if ( mAsyncLoadCollections.isEmpty() ) {
+      kDebug(5700) << "All collections present at asyncLoad start have been loaded, emitting loadingFinished";
+      emit mParent->loadingFinished( mParent );
+    }
+  }
 }
 
 void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
@@ -1064,6 +1117,14 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
             const int rowCount = mCollectionFilterModel->rowCount( index );
             if ( rowCount > 0 )
               removeCollectionsRecursively( index, 0, rowCount - 1 );
+          }
+
+          if ( !mAsyncLoadCollections.isEmpty() ) {
+            mAsyncLoadCollections.remove( collectionUrl );
+            if ( mAsyncLoadCollections.isEmpty() ) {
+              kDebug(5700) << "Last collection present at asyncLoad start has been removed, emitting loadingFinished";
+              emit mParent->loadingFinished( mParent );
+            }
           }
         }
       }
