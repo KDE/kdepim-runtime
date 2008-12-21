@@ -22,6 +22,7 @@ Comment[sv]=Gör det möjligt att arbeta med en Openchange- eller Exchange-serve
 Comment[tr]=OpenChange / Exchange sunucusu ile çalışabilmek için bir araç
 Comment[uk]=Робить можливою роботу з серверами OpenChange / Exchange
 Comment[x-test]=xxMakes it possible to work with an OpenChange / Exchange serverxx
+Comment[zh_CN]=可以和 OpenChange/Exchange 服务器协同工作
 Comment[zh_TW]=與 OpenChange / Exchagne 伺服器一起運作
 Type=AkonadiResource
 Exec=akonadi_oc_resource

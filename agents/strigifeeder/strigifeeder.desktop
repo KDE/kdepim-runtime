@@ -19,6 +19,7 @@ Name[sv]=Inmatning till Strigi
 Name[tr]=Strigi Besleyici
 Name[uk]=Передавач Strigi
 Name[x-test]=xxStrigi Feederxx
+Name[zh_CN]=Strigi 采集器
 Comment=Strigi-based fulltext search
 Comment[ca]=Motor de cerca per text sencer basat en el Strigi
 Comment[da]=Strigi-baseret fuldtekst-søgning

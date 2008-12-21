@@ -21,6 +21,7 @@ Comment[sv]=Ger tillgång till kalendrar lagrade i Akonadi-kalenderkataloger
 Comment[tr]=Akonadi takvim dizinlerindeki takvimlere erişim sağlar
 Comment[uk]=Надає доступ до календарів, які зберігаються у теках календарів Akonadi
 Comment[x-test]=xxProvides access to calendars stored in Akonadi calendar foldersxx
+Comment[zh_CN]=提供对存储在 Akonadi 日历文件夹中的日历的访问支持
 Comment[zh_TW]=提供存取儲存在 Akonadi 通訊錄資料夾中的行事曆
 X-KDE-Library=kcal_akonadi
 Type=Service
