@@ -109,6 +109,11 @@ bool ICalResource::readFromFile( const QString &fileName )
 
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
+  if ( !mCalendar ) {
+    emit error( i18n("Calendar not loaded!") );
+    return;
+  }
+
   Q_ASSERT( item.hasPayload<IncidencePtr>() );
   IncidencePtr i = item.payload<IncidencePtr>();
   mCalendar->addIncidence( i.get()->clone() );
@@ -120,6 +125,13 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
 
 void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+  Q_UNUSED( parts )
+
+  if ( !mCalendar ) {
+    emit error( i18n("Calendar not loaded!") );
+    return;
+  }
+
   Q_ASSERT( item.hasPayload<IncidencePtr>() );
   IncidencePtr payload = item.payload<IncidencePtr>();
   Incidence *incidence = mCalendar->incidence( item.remoteId() );
@@ -136,6 +148,11 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
 void ICalResource::itemRemoved(const Akonadi::Item & item)
 {
+  if ( !mCalendar ) {
+    emit error( i18n("Calendar not loaded!") );
+    return;
+  }
+
   Incidence *i = mCalendar->incidence( item.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
