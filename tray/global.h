@@ -24,8 +24,9 @@
 
 #include <QString>
 #include <QObject>
-  
-namespace Tray {
+
+namespace Tray
+{
 
 class Global
 {
@@ -50,6 +51,6 @@ private:
     QString m_dbname;
 };
 
-} 
+}
 
 #endif

@@ -25,15 +25,15 @@
 
 using namespace Akonadi;
 
-namespace Tray 
+namespace Tray
 {
-void Global::init() 
+void Global::init()
 {
     const QString serverConfigFile = XdgBaseDirs::akonadiServerConfigFile( XdgBaseDirs::ReadWrite );
     QSettings settings( serverConfigFile, QSettings::IniFormat );
 
-    const QString defaultDriver = QLatin1String("QMYSQL");
-    const QString driver = settings.value( QLatin1String("General/Driver"), defaultDriver ).toString();
+    const QString defaultDriver = QLatin1String( "QMYSQL" );
+    const QString driver = settings.value( QLatin1String( "General/Driver" ), defaultDriver ).toString();
     if ( driver != QLatin1String( "QMYSQL" ) ) {
         m_parsed = true;
         return;
@@ -41,14 +41,14 @@ void Global::init()
 
     settings.beginGroup( "QMYSQL" );
     const QString host = settings.value( "Host", "" ).toString();
-    if (host.isEmpty()) {
+    if ( host.isEmpty() ) {
         const QString options = settings.value( "Options", "" ).toString();
-        const QStringList list = options.split("=");
-        m_dboptions = "--socket=" + list.at(1);
+        const QStringList list = options.split( "=" );
+        m_dboptions = "--socket=" + list.at( 1 );
     } else {
         m_dboptions = "--host=" + host;
-        m_dboptions.append(" --user=" + settings.value( "User", "" ).toString() );
-        m_dboptions.append(" --password=" + settings.value( "Password", "" ).toString() );
+        m_dboptions.append( " --user=" + settings.value( "User", "" ).toString() );
+        m_dboptions.append( " --password=" + settings.value( "Password", "" ).toString() );
     }
     m_dbname = settings.value( "Name", "akonadi" ).toString();
     settings.endGroup();
@@ -58,7 +58,7 @@ void Global::init()
 
 const QString Global::dboptions()
 {
-    if (!m_parsed)
+    if ( !m_parsed )
         init();
 
     return m_dboptions;
@@ -66,7 +66,7 @@ const QString Global::dboptions()
 
 const QString Global::dbname()
 {
-    if (!m_parsed)
+    if ( !m_parsed )
         init();
 
     return m_dbname;
