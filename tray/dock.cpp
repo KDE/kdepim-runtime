@@ -72,7 +72,7 @@ Dock::Dock( QWidget *parent )
     m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT( slotStartAkonadi() ) );
     m_backupAction = menu->addAction( i18n( "Make &backup" ), this, SLOT( slotStartBackup() ) );
     m_restoreAction = menu->addAction( i18n( "&Restore backup" ), this, SLOT( slotStartRestore() ) );
-    menu->addAction( KIcon("configure"), i18n( "&Configure..."), this, SLOT( slotConfigure() ) );
+    menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT( slotConfigure() ) );
     menu->addSeparator();
     menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
                      KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
@@ -81,16 +81,16 @@ Dock::Dock( QWidget *parent )
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
     show();
 
-    connect( ServerManager::self(), SIGNAL(started()), SLOT(slotServerStarted()) );
-    connect( ServerManager::self(), SIGNAL(stopped()), SLOT(slotServerStopped()) );
+    connect( ServerManager::self(), SIGNAL( started() ), SLOT( slotServerStarted() ) );
+    connect( ServerManager::self(), SIGNAL( stopped() ), SLOT( slotServerStopped() ) );
 
     AgentManager *manager = AgentManager::self();
     connect( manager,
              SIGNAL( instanceWarning( const Akonadi::AgentInstance&, const QString& ) ),
-             SLOT( slotInstanceWarning(  const Akonadi::AgentInstance&, const QString& ) ) );
+             SLOT( slotInstanceWarning( const Akonadi::AgentInstance&, const QString& ) ) );
     connect( manager,
              SIGNAL( instanceError( const Akonadi::AgentInstance&, const QString& ) ),
-             SLOT( slotInstanceError(  const Akonadi::AgentInstance&, const QString& ) ) );
+             SLOT( slotInstanceError( const Akonadi::AgentInstance&, const QString& ) ) );
 }
 
 Dock::~Dock()
@@ -189,8 +189,8 @@ qlonglong Dock::getWinId()
 
 void Dock::slotConfigure()
 {
-  QProcess *proc = new QProcess( this );
-  proc->start( "kcmshell4", QStringList() << "kcm_akonadi" );
+    QProcess *proc = new QProcess( this );
+    proc->start( "kcmshell4", QStringList() << "kcm_akonadi" );
 }
 
 void Dock::slotQuit()

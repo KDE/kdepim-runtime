@@ -72,14 +72,14 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 
 void BackupAssistant::slotSelectFile()
 {
-    QString file = QString( "akonadibackup-" + 
-        QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tgz" );
+    QString file = QString( "akonadibackup-" +
+                            QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tgz" );
 
     // Build one special, as we want the keyword /and/ a proposed filename
-    KFileDialog dlg( KUrl(  "kfiledialog://BackupDir" ), QString(), this );
+    KFileDialog dlg( KUrl( "kfiledialog://BackupDir" ), QString(), this );
     dlg.setSelection( file );
-    dlg.setOperationMode(  KFileDialog::Saving );
-    dlg.setMode(  KFile::File );
+    dlg.setOperationMode( KFileDialog::Saving );
+    dlg.setMode( KFile::File );
     dlg.setWindowTitle( i18n( "Save As" ) );
     dlg.exec();
 

@@ -77,8 +77,8 @@ void Backup::create( const KUrl& filename )
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );
         if ( exists ) {
-            KIO::NetAccess::file_copy( configFileName, 
-			    tempDir->name() + "kdeconfig" + sep + agentFileName, this );
+            KIO::NetAccess::file_copy( configFileName,
+                                       tempDir->name() + "kdeconfig" + sep + agentFileName, this );
             filesToBackup << "kdeconfig" + sep + agentFileName;
         }
     }
@@ -88,15 +88,15 @@ void Backup::create( const KUrl& filename )
     QDir dir( config );
     const QStringList configlist = dir.entryList( QDir::Files );
     foreach( const QString& item, configlist ) {
-	KIO::NetAccess::file_copy( config + sep + item, 
-			tempDir->name() + "akonadiconfig" + sep + item, this );
+        KIO::NetAccess::file_copy( config + sep + item,
+                                   tempDir->name() + "akonadiconfig" + sep + item, this );
         filesToBackup << "akonadiconfig/" + item;
     }
-	      
+
 
     /* Dump the database */
     const QString socket = XdgBaseDirs::findResourceDir( "data",
-                           "akonadi" + sep + "db_misc" + sep) + "mysql.socket";
+                           "akonadi" + sep + "db_misc" + sep ) + "mysql.socket";
     if ( socket.isEmpty() )
         kFatal() << "No socket found";
 
@@ -110,7 +110,7 @@ void Backup::create( const KUrl& filename )
     int result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-    	kWarning() << "Executed: " << KStandardDirs::findExe( "mysqldump" ) << params << "Result: " << result;
+        kWarning() << "Executed: " << KStandardDirs::findExe( "mysqldump" ) << params << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -129,7 +129,7 @@ void Backup::create( const KUrl& filename )
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-    	kWarning() << "Executed: " << KStandardDirs::findExe( "tar" ) << params << "Result: " << result;
+        kWarning() << "Executed: " << KStandardDirs::findExe( "tar" ) << params << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
