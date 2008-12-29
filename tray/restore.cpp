@@ -17,6 +17,7 @@
 */
 
 #include "restore.h"
+#include "global.h"
 
 #include <KDebug>
 #include <KProcess>
@@ -112,14 +113,11 @@ void Restore::restore( const KUrl& filename )
     }
 
     /* Restore the database */
-    const QString socket = XdgBaseDirs::findResourceDir( "data",
-                           "akonadi" + sep + "db_misc" + sep ) + "mysql.socket";
-    if ( socket.isEmpty() )
-        kFatal() << "No socket found";
-
+    Tray::Global global;
     proc = new KProcess( this );
     params.clear();
-    params << "--socket=" + socket << "akonadi";
+    params << global.dboptions() << global.dbname();
+    kDebug() << "Executing:" << KStandardDirs::findExe( "mysql" ) << params;
     proc->setStandardInputFile( tempDir->name() + "db" + sep + "database.sql" );
     proc->setProgram( KStandardDirs::findExe( "mysql" ), params );
     result = proc->execute();

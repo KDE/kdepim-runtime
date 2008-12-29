@@ -17,6 +17,7 @@
 */
 
 #include "backup.h"
+#include "global.h"
 
 #include <KDebug>
 #include <KProcess>
@@ -95,17 +96,14 @@ void Backup::create( const KUrl& filename )
 
 
     /* Dump the database */
-    const QString socket = XdgBaseDirs::findResourceDir( "data",
-                           "akonadi" + sep + "db_misc" + sep ) + "mysql.socket";
-    if ( socket.isEmpty() )
-        kFatal() << "No socket found";
-
+    Tray::Global global;
     KProcess *proc = new KProcess( this );
     QStringList params;
     params << "--single-transaction" << "--master-data=2";
     params << "--flush-logs" << "--triggers";
     params << "--result-file=" + tempDir->name() + "db/database.sql";
-    params << "--socket=" + socket << "akonadi";
+    params << global.dboptions() << global.dbname();
+    kDebug() << "Executing: " << KStandardDirs::findExe( "mysqldump" ) << params;
     proc->setProgram( KStandardDirs::findExe( "mysqldump" ), params );
     int result = proc->execute();
     delete proc;
