@@ -72,6 +72,8 @@ void SingleFileResourceBase::collectionChanged( const Akonadi::Collection & coll
 
   if ( newName != name() )
     setName( newName );
+
+  changeCommitted( collection );
 }
 
 void SingleFileResourceBase::reloadFile()
