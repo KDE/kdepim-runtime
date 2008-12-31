@@ -43,7 +43,7 @@ kde4_add_kcfg_files(imaplibresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
 
 target_link_libraries(akonadi_imaplib_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} imap 
-                      ${KDE4_KMIME_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS})
+                      ${KDE4_KMIME_LIBS} ${KDE4_KIO_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS})
 
 install(TARGETS akonadi_imaplib_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
