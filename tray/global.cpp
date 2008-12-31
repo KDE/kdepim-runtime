@@ -44,11 +44,11 @@ void Global::init()
     if ( host.isEmpty() ) {
         const QString options = settings.value( "Options", "" ).toString();
         const QStringList list = options.split( "=" );
-        m_dboptions = "--socket=" + list.at( 1 );
+        m_dboptions.append( "--socket=" + list.at( 1 ) );
     } else {
-        m_dboptions = "--host=" + host;
-        m_dboptions.append( " --user=" + settings.value( "User", "" ).toString() );
-        m_dboptions.append( " --password=" + settings.value( "Password", "" ).toString() );
+        m_dboptions.append( "--host=" + host );
+        m_dboptions.append( "--user=" + settings.value( "User", "" ).toString() );
+        m_dboptions.append( "--password=" + settings.value( "Password", "" ).toString() );
     }
     m_dbname = settings.value( "Name", "akonadi" ).toString();
     settings.endGroup();
@@ -56,7 +56,7 @@ void Global::init()
     m_parsed = true;
 }
 
-const QString Global::dboptions()
+const QStringList Global::dboptions()
 {
     if ( !m_parsed )
         init();

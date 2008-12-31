@@ -22,7 +22,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <QString>
+#include <QStringList>
 #include <QObject>
 
 namespace Tray
@@ -36,7 +36,7 @@ public:
     /**
      * Returns a string usuable to connect to the akonadiserver.
      */
-    const QString dboptions();
+    const QStringList dboptions();
 
     /**
      * Returns the database to connect to.
@@ -47,7 +47,7 @@ private:
     void init();
 
     bool m_parsed;
-    QString m_dboptions;
+    QStringList m_dboptions;
     QString m_dbname;
 };
 
