@@ -45,7 +45,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
                                       "the current path. Restart this Assistant when this is fixed." ) );
     } else {
         label1->setText( '\n' + i18n( "Please select the file where to store "
-                                      "the backup, give it the extension .tgz." ) + "\n\n" );
+                                      "the backup, give it the extension .tar.bz2" ) + "\n\n" );
 
         m_selectFileButton = new QPushButton( i18n( "&Click here to select the Backup Location..." ), box1 );
         connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
@@ -73,7 +73,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 void BackupAssistant::slotSelectFile()
 {
     QString file = QString( "akonadibackup-" +
-                            QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tgz" );
+                            QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tar.bz2" );
 
     // Build one special, as we want the keyword /and/ a proposed filename
     KFileDialog dlg( KUrl( "kfiledialog://BackupDir" ), QString(), this );

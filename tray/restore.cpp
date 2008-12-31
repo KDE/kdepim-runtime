@@ -38,7 +38,7 @@ using namespace Akonadi;
  * Use this class to restore a backup. possible() will tell you if all
  * apps needed for the restore are available. Don't proceed without them.
  * After that call restore() to get it running. Please make sure the parameter
- * has the tgz extension.
+ * has the tar.bz2 extension.
  */
 Restore::Restore( QWidget *parent ) : QWidget( parent )
 {
