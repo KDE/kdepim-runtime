@@ -1,4 +1,5 @@
 [Agent]
+Id=birthdays
 Type=akonadi_birthday_resource
 Name=Birthdays
 

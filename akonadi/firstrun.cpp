@@ -63,7 +63,13 @@ void Firstrun::findPendingDefaults()
     const QStringList files = QDir( dirName ).entryList( QDir::Files | QDir::Readable );
     foreach ( const QString &fileName, files ) {
       const QString fullName = dirName + fileName;
-      if ( cfg.hasKey( fullName ) )
+      KConfig c( fullName );
+      const QString id = KConfigGroup( &c, "Agent" ).readEntry( "Id", QString() );
+      if ( id.isEmpty() ) {
+        kWarning() << "Found invalid default configuration in " << fullName;
+        continue;
+      }
+      if ( cfg.hasKey( id ) )
         continue;
       mPendingDefaults << dirName + fileName;
     }
@@ -141,7 +147,7 @@ void Firstrun::instanceCreated( KJob *job )
 
   // remember we set this one up already
   KConfigGroup cfg( mConfig, "ProcessedDefaults" );
-  cfg.writeEntry( mCurrentDefault->name(), true );
+  cfg.writeEntry( agentCfg.readEntry( "Id", QString() ), instance.identifier() );
   cfg.sync();
   
   setupNext();

@@ -1,4 +1,5 @@
 [Agent]
+Id=defaultaddressbook
 Type=akonadi_vcard_resource
 Name=My Addressbook 
 

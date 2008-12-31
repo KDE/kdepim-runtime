@@ -1,4 +1,5 @@
 [Agent]
+Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=My Calendar
 
