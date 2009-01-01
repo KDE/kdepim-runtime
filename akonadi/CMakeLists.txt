@@ -1,3 +1,5 @@
+add_subdirectory( knut )
+
 set( firstrun_srcs
   firstrun.cpp
   main.cpp
