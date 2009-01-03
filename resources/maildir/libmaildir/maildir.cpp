@@ -374,9 +374,11 @@ QString Maildir::addEntry( const QByteArray& data )
     /*
      * FIXME:
      *
-     * THe whole point of the locking free maildir idea is that the moves between
+     * The whole point of the locking free maildir idea is that the moves between
      * the internal directories are atomic. Afaik QFile::rename does not guarantee
      * that, so this will need to be done properly. - ta
+     *
+     * For reference: http://trolltech.com/developer/task-tracker/index_html?method=entry&id=211215
      */
     if (!f.rename( finalKey )) {
         qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
