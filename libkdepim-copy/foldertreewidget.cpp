@@ -550,7 +550,7 @@ bool FolderTreeWidgetItem::operator < ( const QTreeWidgetItem &other ) const
   if ( w )
   {
     // sanity check
-    if ( other.type() == FOLDERTREEWIDGETITEM_TYPE )
+    if ( dynamic_cast<const FolderTreeWidgetItem*>( &other ) )
     {
       const FolderTreeWidgetItem * oitem = dynamic_cast< const FolderTreeWidgetItem * >( &other );
       if ( oitem )
@@ -579,7 +579,7 @@ bool FolderTreeWidgetItem::operator < ( const QTreeWidgetItem &other ) const
             return false;
 
           // and finally compare by name
-          return mLabelText < oitem->labelText();
+          return mLabelText.toLower() < oitem->labelText().toLower();
         }
       }
     }
