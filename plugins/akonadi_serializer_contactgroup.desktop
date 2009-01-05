@@ -1,6 +1,7 @@
 [Misc]
 Name=Contact Group Serializer
 Name[ca]=Serialitzador de grups de contactes
+Name[da]=Serieordning af kontaktgruppe
 Name[el]=Διαχειριστής ομάδων επαφών
 Name[et]=Kontaktirühma jadasti
 Name[fr]=Sérialiseur de groupes de contacts
@@ -23,6 +24,7 @@ Name[zh_CN]=联系人分组序列转换器
 Name[zh_TW]=聯絡人群組序列器
 Comment=An Akonadi serializer plugin for contact group objects
 Comment[ca]=Un connector de serialització de l'Akonadi pels objectes de grups de contactes
+Comment[da]=Et Akonadi-plugin til serieordning af kontaktgruppeobjekter
 Comment[el]=Ένα πρόσθετο διαχείρισης αλληλουχίας αντικειμένων ομάδων επαφών του Akonadi
 Comment[et]=Akonadi kontaktirühma objektide jadastamisplugin
 Comment[fr]=Un module externe Akonadi pour la sérialisation des groupes de contacts

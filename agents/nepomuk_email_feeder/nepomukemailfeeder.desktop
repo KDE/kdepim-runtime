@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Nepomuk EMail Feeder
 Name[ca]=Alimentador de correus del Nepomuk
+Name[da]=Nepomuk e-mail-feeder
 Name[el]=Τροφοδότης EMail του Nepomuk
 Name[et]=Nepomuki e-kirjade söötur
 Name[fr]=Connecteur Nepomuk pour les courriels
@@ -22,6 +23,7 @@ Name[x-test]=xxNepomuk EMail Feederxx
 Name[zh_CN]=Nepomuk 邮件采集器
 Comment=Extension to push emails into Nepomuk
 Comment[ca]=Extensió per a introduir correus en el Nepomuk
+Comment[da]=Udvidelse til at skubbe e-mail ind i Nepomuk
 Comment[de]=Erweiterung zur Übergabe von E-Mails an Nepomuk
 Comment[el]=Επέκταση για την τροφοδοσία email στο Nepomuk
 Comment[et]=Laiendus e-kirjade edastamiseks Nepomukile

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi Address Books
 Name[ca]=Llibreta d'adreces de l'Akonadi
+Name[da]=Akonadi-adressebøger
 Name[de]=Akonadi-Adressbücher
 Name[el]=Βιβλία διευθύνσεων του Akonadi
 Name[et]=Akonadi aadressiraamatud
@@ -26,6 +27,7 @@ Name[zh_CN]=Akonadi 地址簿
 Name[zh_TW]=Akonadi 通訊錄
 Comment=Provides access to contacts stored in Akonadi address book folders
 Comment[ca]=Proporciona l'accés als contactes emmagatzemats en carpetes de llibreta d'adreces de l'Akonadi
+Comment[da]=Giver adgang til kontakter lagret i Akonadi adressebogs-mapper
 Comment[el]=Προσφέρει πρόσβαση σε επαφές αποθηκευμένες σε φακέλους βιβλίων διευθύνσεων του Akonadi
 Comment[et]=Võimaldab kasutada Akonadi aadressiraamatukaustadesse salvestatud kontakte
 Comment[fr]=Fourni l'accès aux contacts stockés dans les dossiers du carnet d'adresses Akonadi

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=ICal Calendar File
 Name[ca]=Fitxer de calendari ICal
+Name[da]=iCal-kalenderfil
 Name[de]=ICal-Kalenderdatei
 Name[el]=Αρχείο ημερολογίου ICal
 Name[et]=ICali kalendrifail
@@ -25,6 +26,7 @@ Name[zh_CN]=ICal 日历文件
 Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
 Comment[ca]=Carregar dades des d'un fitxer iCal
+Comment[da]=Indlæser data fra en iCal-fil
 Comment[de]=Daten werden aus einer lokalen iCal-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο iCal
 Comment[et]=Andmete laadimine iCal-failist

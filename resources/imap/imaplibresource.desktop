@@ -14,6 +14,7 @@ Name[x-test]=xxMailody Imapxx
 Name[zh_CN]=Mailody IMAP
 Comment=Connects to an IMAP-server. Based on the IMAP-library from Mailody.
 Comment[ca]=Connecta a un servidor IMAP. Basat en la biblioteca IMAP del Mailody.
+Comment[da]=Forbinder til en IMAP-server. Baseret på Mailodys IMAP-bibliotek.
 Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισμένο στη βιβλιοθήκη IMAP του Mailody.
 Comment[et]=Ühendumine IMAP-serveriga. Tugineb Mailody IMAP-teegile.
 Comment[fr]=Connexion à un serveur IMAP en utilisant la librairie IMAP de Mailody.

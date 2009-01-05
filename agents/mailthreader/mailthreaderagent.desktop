@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mail Threader Agent
 Name[ca]=Agent de fils de correu de l'Akonadi
+Name[da]=Mail Threader-agent
 Name[de]=E-Mail-Gruppierungs-Agent
 Name[el]=Πράκτορας νηματοποίησης αλληλογραφίας
 Name[et]=Kirjalõimede agent
@@ -25,6 +26,7 @@ Name[zh_CN]=邮件线索化代理
 Name[zh_TW]=信件串列代理程式
 Comment=Thread mails in a collection
 Comment[ca]=Segueix els fils dels correus en una col·lecció
+Comment[da]=En agent til at tråde e-mail fra en samling
 Comment[de]=Gruppierung von E-Mails in einer Sammlung
 Comment[el]=Νηματοποίηση αλληλογραφίας σε μια συλλογή
 Comment[et]=Kirjakogust kirjalõimede loomiseks

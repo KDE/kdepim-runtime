@@ -4,6 +4,7 @@ Name[de]=Akonadi-Ressource
 Name[x-test]=xxAkonadixx
 Comment=Provides access to calendars stored in Akonadi calendar folders
 Comment[ca]=Proporciona l'accés als calendaris emmagatzemats en carpetes de calendari de l'Akonadi
+Comment[da]=Giver adgang til kalendere lagret i Akonadi kalender-mapper
 Comment[el]=Προσφέρει πρόσβαση σε ημερολόγια αποθηκευμένα σε φακέλους ημερολογίου του Akonadi
 Comment[et]=Võimaldab kasutada Akonadi kalendrikaustadesse salvestatud kalendreid
 Comment[fr]=Fourni l'accès aux calendriers stockés dans les dossiers de calendrier Akonadi
