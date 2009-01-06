@@ -58,5 +58,6 @@ bool MainWindow::queryExit()
 {
   KConfigGroup config( KGlobal::config(), "UiState" );
   KPIM::UiStateSaver::saveState( this, config );
+  KGlobal::config()->sync();
   return KXmlGuiWindow::queryExit();
 }
