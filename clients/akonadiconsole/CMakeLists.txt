@@ -6,7 +6,7 @@ if(NEPOMUK_FOUND)
   include_directories(${NEPOMUK_INCLUDES})
 endif(NEPOMUK_FOUND)
 
-configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(config-akonadiconsole.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-akonadiconsole.h)
 
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp

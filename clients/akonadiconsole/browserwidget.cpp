@@ -19,8 +19,6 @@
 
 #include "browserwidget.h"
 
-#include <config.h>
-
 #include "collectionattributespage.h"
 #include "collectioninternalspage.h"
 #include "collectionaclpage.h"

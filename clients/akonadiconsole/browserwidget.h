@@ -20,6 +20,8 @@
 #ifndef BROWSERWIDGET_H
 #define BROWSERWIDGET_H
 
+#include <config-akonadiconsole.h>
+
 #include <ui_browserwidget_itemview.h>
 #include <ui_browserwidget_contentview.h>
 
