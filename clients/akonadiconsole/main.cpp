@@ -23,6 +23,8 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 
+#include <kabc/stdaddressbook.h>
+
 #include "mainwindow.h"
 
 int main( int argc, char **argv )
@@ -44,6 +46,12 @@ int main( int argc, char **argv )
 
   MainWindow *window = new MainWindow;
   window->show();
+
+  // ### HACK HACK HACK
+  // Load the addressbook now, since loading the addressbook with Akonadi resources uses
+  // subeventloops, which have great potential to mess things up (for example akonadiconsole
+  // would cease to load items after viewing a calendar item which has attendees).
+  KABC::StdAddressBook::self();
 
   return app.exec();
 }
