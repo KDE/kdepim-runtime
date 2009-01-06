@@ -71,7 +71,9 @@ class BrowserWidget: public QWidget
     Akonadi::Collection::Id mCurrentCollection;
     Akonadi::Item mCurrentItem;
     QStandardItemModel *mAttrModel;
+#ifdef NEPOMUK_FOUND
     QStandardItemModel *mNepomukModel;
+#endif
     Akonadi::StandardActionManager *mStdActionManager;
     Akonadi::Monitor *mMonitor;
 };

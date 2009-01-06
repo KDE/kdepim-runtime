@@ -18,6 +18,9 @@
 */
 
 #include "browserwidget.h"
+
+#include <config.h>
+
 #include "collectionattributespage.h"
 #include "collectioninternalspage.h"
 #include "collectionaclpage.h"
@@ -47,8 +50,11 @@
 #include <kconfig.h>
 #include <kmessagebox.h>
 #include <kxmlguiwindow.h>
+
+#ifdef NEPOMUK_FOUND
 #include <nepomuk/resource.h>
 #include <nepomuk/variant.h>
+#endif
 
 #include <QSplitter>
 #include <QTextEdit>
@@ -68,7 +74,9 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
     mItemModel( 0 ),
     mCurrentCollection( 0 ),
+#ifdef NEPOMUK_FOUND
     mNepomukModel( 0 ),
+#endif
     mStdActionManager( 0 ),
     mMonitor( 0 )
 {
@@ -130,6 +138,10 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mStdActionManager->setCollectionSelectionModel( mCollectionView->selectionModel() );
   mStdActionManager->setItemSelectionModel( itemUi.itemView->selectionModel() );
   mStdActionManager->createAllActions();
+
+#ifndef NEPOMUK_FOUND
+  contentUi.mainTabWidget->removeTab( contentUi.mainTabWidget->indexOf( contentUi.nepomukTab ) );
+#endif
 }
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
@@ -211,6 +223,7 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
   }
   contentUi.attrView->setModel( mAttrModel );
 
+#ifdef NEPOMUK_FOUND
   Nepomuk::Resource res( item.url() );
   delete mNepomukModel;
   mNepomukModel = 0;
@@ -234,6 +247,7 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
     contentUi.nepomukView->setEnabled( false );
   }
   contentUi.nepomukView->setModel( mNepomukModel );
+#endif
 
   if ( mMonitor )
     mMonitor->deleteLater(); // might be the one calling us
