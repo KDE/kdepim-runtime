@@ -160,7 +160,6 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
   job->fetchScope().fetchFullPayload();
   job->fetchScope().fetchAllAttributes();
   connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
-  job->start();
 }
 
 void BrowserWidget::itemFetchDone(KJob * job)
