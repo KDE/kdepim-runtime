@@ -26,6 +26,7 @@
 
 class KConfig;
 class KJob;
+class KProcess;
 class QMetaObject;
 
 namespace Akonadi {
@@ -43,15 +44,19 @@ class Firstrun : public QObject
   private:
     void findPendingDefaults();
     void setupNext();
+    void migrateKresType( const QString &resourceFamily );
     static QVariant::Type argumentType( const QMetaObject *mo, const QString &method );
 
   private slots:
     void instanceCreated( KJob* job );
+    void migrationFinished( int exitCode );
 
   private:
     QStringList mPendingDefaults;
     KConfig *mConfig;
     KConfig *mCurrentDefault;
+    KProcess *mProcess;
+    QString mResourceFamily;
 };
 
 }

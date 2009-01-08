@@ -28,6 +28,7 @@
 #include <KConfigGroup>
 #include <KDebug>
 #include <KGlobal>
+#include <KProcess>
 #include <KStandardDirs>
 
 #include <QDBusConnection>
@@ -42,7 +43,8 @@ using namespace Akonadi;
 Firstrun::Firstrun( QObject *parent ) :
   QObject( parent ),
   mConfig( new KConfig( "akonadi-firstrunrc" ) ),
-  mCurrentDefault( 0 )
+  mCurrentDefault( 0 ),
+  mProcess( 0 )
 {
   findPendingDefaults();
   kDebug() << mPendingDefaults;
@@ -57,7 +59,6 @@ Firstrun::~Firstrun()
 
 void Firstrun::findPendingDefaults()
 {
-  kDebug();
   const KConfigGroup cfg( mConfig, "ProcessedDefaults" );
   foreach ( const QString &dirName, KGlobal::dirs()->findDirs( "data", "akonadi/firstrun" ) ) {
     const QStringList files = QDir( dirName ).entryList( QDir::Files | QDir::Readable );
@@ -85,6 +86,52 @@ static QString resourceTypeForMimetype( const QStringList &mimeTypes )
   // TODO notes
   return QString();
 }
+
+void Firstrun::migrateKresType( const QString& resourceFamily )
+{
+  mResourceFamily = resourceFamily;
+  KConfig config( "kres-migratorrc" );
+  KConfigGroup migrationCfg( &config, "Migration" );
+  const bool enabled = migrationCfg.readEntry( "Enabled", false );
+  const int currentVersion = migrationCfg.readEntry( "Version-" + resourceFamily, 0 );
+  const int targetVersion = migrationCfg.readEntry( "TargetVersion", 0 );
+  if ( enabled && currentVersion < targetVersion ) {
+    kDebug() << "Performing migration of legacy KResource settings. Good luck!";
+    mProcess = new KProcess( this );
+    connect( mProcess, SIGNAL(finished(int)), SLOT(migrationFinished(int)) );
+    mProcess->setProgram( "kres-migrator",
+                          QStringList() << "--interactive-on-change" << "--type" << resourceFamily );
+    mProcess->start();
+    if ( !mProcess->waitForStarted() )
+      migrationFinished( -1 );
+  } else {
+    // nothing to do
+    setupNext();
+  }
+}
+
+void Firstrun::migrationFinished(int exitCode)
+{
+  Q_ASSERT( mProcess );
+  if ( exitCode == 0 ) {
+    kDebug() << "KResource -> Akonadi migration has been successful";
+    KConfig config( "kres-migratorrc" );
+    KConfigGroup migrationCfg( &config, "Migration" );
+    const int targetVersion = migrationCfg.readEntry( "TargetVersion", 0 );
+    migrationCfg.writeEntry( "Version-" + mResourceFamily, targetVersion );
+    migrationCfg.sync();
+  } else if ( exitCode != 1 ) {
+    // exit code 1 means it is already running, so we are probably called by a migrator instance
+    kError() << "KResource -> Akonadi migration failed!";
+    kError() << "command was: " << mProcess->program();
+    kError() << "exit code: " << mProcess->exitCode();
+    kError() << "stdout: " << mProcess->readAllStandardOutput();
+    kError() << "stderr: " << mProcess->readAllStandardError();
+  }
+
+  setupNext();
+}
+
 
 void Firstrun::setupNext()
 {
@@ -120,7 +167,7 @@ void Firstrun::setupNext()
       KConfigGroup cfg( mConfig, "ProcessedDefaults" );
       cfg.writeEntry( agentCfg.readEntry( "Id", QString() ), QString::fromLatin1( "kres" ) );
       cfg.sync();
-      setupNext();
+      migrateKresType( kresType );
       return;
     }
   }
