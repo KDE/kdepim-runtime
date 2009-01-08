@@ -42,7 +42,7 @@ using namespace Akonadi;
 
 Firstrun::Firstrun( QObject *parent ) :
   QObject( parent ),
-  mConfig( new KConfig( "akonadi-firstrunrc" ) ),
+  mConfig( new KConfig( QLatin1String("akonadi-firstrunrc") ) ),
   mCurrentDefault( 0 ),
   mProcess( 0 )
 {
@@ -60,7 +60,7 @@ Firstrun::~Firstrun()
 void Firstrun::findPendingDefaults()
 {
   const KConfigGroup cfg( mConfig, "ProcessedDefaults" );
-  foreach ( const QString &dirName, KGlobal::dirs()->findDirs( "data", "akonadi/firstrun" ) ) {
+  foreach ( const QString &dirName, KGlobal::dirs()->findDirs( "data", QLatin1String("akonadi/firstrun") ) ) {
     const QStringList files = QDir( dirName ).entryList( QDir::Files | QDir::Readable );
     foreach ( const QString &fileName, files ) {
       const QString fullName = dirName + fileName;
@@ -90,17 +90,18 @@ static QString resourceTypeForMimetype( const QStringList &mimeTypes )
 void Firstrun::migrateKresType( const QString& resourceFamily )
 {
   mResourceFamily = resourceFamily;
-  KConfig config( "kres-migratorrc" );
+  KConfig config( QLatin1String("kres-migratorrc") );
   KConfigGroup migrationCfg( &config, "Migration" );
   const bool enabled = migrationCfg.readEntry( "Enabled", false );
-  const int currentVersion = migrationCfg.readEntry( "Version-" + resourceFamily, 0 );
+  const int currentVersion = migrationCfg.readEntry( QString::fromLatin1("Version-%1").arg( resourceFamily ), 0 );
   const int targetVersion = migrationCfg.readEntry( "TargetVersion", 0 );
   if ( enabled && currentVersion < targetVersion ) {
     kDebug() << "Performing migration of legacy KResource settings. Good luck!";
     mProcess = new KProcess( this );
     connect( mProcess, SIGNAL(finished(int)), SLOT(migrationFinished(int)) );
-    mProcess->setProgram( "kres-migrator",
-                          QStringList() << "--interactive-on-change" << "--type" << resourceFamily );
+    mProcess->setProgram( QLatin1String("kres-migrator"),
+                          QStringList() << QLatin1String("--interactive-on-change")
+                                        << QLatin1String("--type") << resourceFamily );
     mProcess->start();
     if ( !mProcess->waitForStarted() )
       migrationFinished( -1 );
@@ -115,10 +116,10 @@ void Firstrun::migrationFinished(int exitCode)
   Q_ASSERT( mProcess );
   if ( exitCode == 0 ) {
     kDebug() << "KResource -> Akonadi migration has been successful";
-    KConfig config( "kres-migratorrc" );
+    KConfig config( QLatin1String("kres-migratorrc") );
     KConfigGroup migrationCfg( &config, "Migration" );
     const int targetVersion = migrationCfg.readEntry( "TargetVersion", 0 );
-    migrationCfg.writeEntry( "Version-" + mResourceFamily, targetVersion );
+    migrationCfg.writeEntry( QString::fromLatin1("Version-%1").arg( mResourceFamily ), targetVersion );
     migrationCfg.sync();
   } else if ( exitCode != 1 ) {
     // exit code 1 means it is already running, so we are probably called by a migrator instance
@@ -196,8 +197,8 @@ void Firstrun::instanceCreated( KJob *job )
   // agent specific settings, using the D-Bus <-> KConfigXT bridge
   const KConfigGroup settings = KConfigGroup( mCurrentDefault, "Settings" );
 
-  QDBusInterface *iface = new QDBusInterface( "org.freedesktop.Akonadi.Agent." + instance.identifier(),
-                                              "/Settings", QString(), QDBusConnection::sessionBus(), this );
+  QDBusInterface *iface = new QDBusInterface( QString::fromLatin1("org.freedesktop.Akonadi.Agent.%1").arg( instance.identifier() ),
+                                              QLatin1String("/Settings"), QString(), QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     kError() << "Unable to obtain the KConfigXT D-Bus interface of " << instance.identifier();
     setupNext();
@@ -206,7 +207,7 @@ void Firstrun::instanceCreated( KJob *job )
 
   foreach ( const QString &setting, settings.keyList() ) {
     kDebug() << "Setting up " << setting << " for agent " << instance.identifier();
-    const QString methodName = "set" + setting;
+    const QString methodName = QString::fromLatin1("set%1").arg( setting );
     const QVariant::Type argType = argumentType( iface->metaObject(), methodName );
     if ( argType == QVariant::Invalid ) {
       kError() << "Setting " << setting << " not found in agent configuration interface of " << instance.identifier();
