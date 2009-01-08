@@ -76,6 +76,16 @@ void Firstrun::findPendingDefaults()
   }
 }
 
+static QString resourceTypeForMimetype( const QStringList &mimeTypes )
+{
+  if ( mimeTypes.contains( QLatin1String("text/directory") ) )
+    return QString::fromLatin1( "contact" );
+  if ( mimeTypes.contains( QLatin1String("text/calendar") ) )
+    return QString::fromLatin1( "calendar" );
+  // TODO notes
+  return QString();
+}
+
 void Firstrun::setupNext()
 {
   delete mCurrentDefault;
@@ -88,12 +98,31 @@ void Firstrun::setupNext()
 
   mCurrentDefault = new KConfig( mPendingDefaults.takeFirst() );
   const KConfigGroup agentCfg = KConfigGroup( mCurrentDefault, "Agent" );
-  
+
   AgentType type = AgentManager::self()->type( agentCfg.readEntry( "Type", QString() ) );
   if ( !type.isValid() ) {
     kError() << "Unable to obtain agent type for default resource agent configuration " << mCurrentDefault->name();
     setupNext();
     return;
+  }
+
+  // KDE5: remove me
+  // check if there is a kresource setup for this type already
+  const QString kresType = resourceTypeForMimetype( type.mimeTypes() );
+  if ( !kresType.isEmpty() ) {
+    const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString::fromLatin1( "kresources/%1/stdrc" ).arg( kresType ) );
+    KConfig resCfg( kresCfgFile );
+    const KConfigGroup resGroup( &resCfg, "General" );
+    if ( !resGroup.readEntry( "ResourceKeys", QStringList() ).isEmpty()
+      || !resGroup.readEntry( "PassiveResourceKeys", QStringList() ).isEmpty() )
+    {
+      kDebug() << "ignoring " << mCurrentDefault->name() << " as there is a KResource setup for its type already.";
+      KConfigGroup cfg( mConfig, "ProcessedDefaults" );
+      cfg.writeEntry( agentCfg.readEntry( "Id", QString() ), QString::fromLatin1( "kres" ) );
+      cfg.sync();
+      setupNext();
+      return;
+    }
   }
 
    AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type );
@@ -149,7 +178,7 @@ void Firstrun::instanceCreated( KJob *job )
   KConfigGroup cfg( mConfig, "ProcessedDefaults" );
   cfg.writeEntry( agentCfg.readEntry( "Id", QString() ), instance.identifier() );
   cfg.sync();
-  
+
   setupNext();
 }
 
