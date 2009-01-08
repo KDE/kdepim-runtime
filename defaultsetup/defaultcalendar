@@ -1,0 +1,9 @@
+[Agent]
+Id=defaultcalendar
+Type=akonadi_ical_resource
+Name=My Calendar
+
+[Settings]
+Path[$e]=~/.kde/share/apps/korganizer/std.ics
+AutosaveInterval=1
+
