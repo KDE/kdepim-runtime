@@ -20,6 +20,9 @@
 
 #include "vcarddirresource.h"
 
+#include "settingsadaptor.h"
+#include "settingsdialog.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 #include <QtCore/QFile>
@@ -29,43 +32,15 @@
 
 using namespace Akonadi;
 
-static QString vCardDirectoryName()
-{
-  return QDir::homePath() + "/.contacts";
-}
-
-static QString vCardDirectoryFileName( const QString &file )
-{
-  return QDir::homePath() + "/.contacts/" + file;
-}
-
-static void initializeVCardDirectory()
-{
-  QDir dir( vCardDirectoryName() );
-
-  // if folder does not exists, create it
-  if ( !dir.exists() )
-    QDir::home().mkdir( ".contacts/" );
-
-  // check whether warning file is in place...
-  QFile file( dir.absolutePath() + "/WARNING_README.txt" );
-  if ( !file.exists() ) {
-    // ... if not, create it
-    file.open( QIODevice::WriteOnly );
-    file.write( "Important Warning!!!\n\n"
-                "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n" );
-    file.close();
-  }
-}
-
 VCardDirResource::VCardDirResource( const QString &id )
   : ResourceBase( id )
 {
   // setup the resource
-  changeRecorder()->itemFetchScope().fetchFullPayload();
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                            Settings::self(), QDBusConnection::ExportAdaptors );
 
-  // setup/check the directory
-  initializeVCardDirectory();
+  changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 
 VCardDirResource::~VCardDirResource()
@@ -74,22 +49,29 @@ VCardDirResource::~VCardDirResource()
   mAddressees.clear();
 }
 
-void VCardDirResource::configure( WId )
+void VCardDirResource::aboutToQuit()
 {
-  loadAddressees();
-  synchronize();
+  Settings::self()->writeConfig();
+}
+
+void VCardDirResource::configure( WId windowId )
+{
+  SettingsDialog dlg( windowId );
+  if ( dlg.exec() ) {
+    initializeVCardDirectory();
+    loadAddressees();
+  }
 }
 
 bool VCardDirResource::loadAddressees()
 {
   mAddressees.clear();
 
-  qDebug( "VCardDirResource::loadAddressees()" );
+  qDebug( "vcardDir: %s", qPrintable(vCardDirectoryName()) );
   QDirIterator it( vCardDirectoryName() );
   while ( it.hasNext() ) {
     it.next();
     if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
-      qDebug( "found %s", qPrintable(it.filePath()) );
       QFile file( it.filePath() );
       file.open( QIODevice::ReadOnly );
       const QByteArray data = file.readAll();
@@ -98,7 +80,6 @@ bool VCardDirResource::loadAddressees()
       const KABC::Addressee addr = mConverter.parseVCard( data );
       if ( !addr.isEmpty() ) {
         mAddressees.insert( addr.uid(), addr );
-        qDebug( "insert addr %s", qPrintable(addr.uid()) );
       }
     }
   }
@@ -216,6 +197,35 @@ void VCardDirResource::retrieveItems( const Akonadi::Collection& )
   }
 
   itemsRetrieved( items );
+}
+
+QString VCardDirResource::vCardDirectoryName() const
+{
+  return Settings::self()->path().mid( 7 );
+}
+
+QString VCardDirResource::vCardDirectoryFileName( const QString &file ) const
+{
+  return Settings::self()->path().mid( 7 ) + QDir::separator() + file;
+}
+
+void VCardDirResource::initializeVCardDirectory() const
+{
+  QDir dir( vCardDirectoryName() );
+
+  // if folder does not exists, create it
+  if ( !dir.exists() )
+    QDir::root().mkpath( dir.absolutePath() );
+
+  // check whether warning file is in place...
+  QFile file( dir.absolutePath() + QDir::separator() + "WARNING_README.txt" );
+  if ( !file.exists() ) {
+    // ... if not, create it
+    file.open( QIODevice::WriteOnly );
+    file.write( "Important Warning!!!\n\n"
+                "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n" );
+    file.close();
+  }
 }
 
 AKONADI_RESOURCE_MAIN( VCardDirResource )

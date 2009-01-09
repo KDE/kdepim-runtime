@@ -35,6 +35,7 @@ class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
+    virtual void aboutToQuit();
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -48,6 +49,9 @@ class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 
   private:
     bool loadAddressees();
+    QString vCardDirectoryName() const;
+    QString vCardDirectoryFileName( const QString &file ) const;
+    void initializeVCardDirectory() const;
 
   private:
     QMap<QString, KABC::Addressee> mAddressees;
