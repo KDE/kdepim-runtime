@@ -58,6 +58,7 @@ void VCardDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
   if ( dlg.exec() ) {
+    clearCache();
     initializeVCardDirectory();
     loadAddressees();
   }
@@ -67,7 +68,6 @@ bool VCardDirResource::loadAddressees()
 {
   mAddressees.clear();
 
-  qDebug( "vcardDir: %s", qPrintable(vCardDirectoryName()) );
   QDirIterator it( vCardDirectoryName() );
   while ( it.hasNext() ) {
     it.next();
@@ -106,6 +106,12 @@ bool VCardDirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 
 void VCardDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
+  if ( Settings::self()->readOnly() ) {
+    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
+    cancelTask();
+    return;
+  }
+
   KABC::Addressee addressee;
   if ( item.hasPayload<KABC::Addressee>() )
     addressee  = item.payload<KABC::Addressee>();
@@ -134,6 +140,12 @@ void VCardDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
 void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
+  if ( Settings::self()->readOnly() ) {
+    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
+    cancelTask();
+    return;
+  }
+
   KABC::Addressee addressee;
   if ( item.hasPayload<KABC::Addressee>() )
     addressee  = item.payload<KABC::Addressee>();
@@ -161,6 +173,12 @@ void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
 
 void VCardDirResource::itemRemoved( const Akonadi::Item &item )
 {
+  if ( Settings::self()->readOnly() ) {
+    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
+    cancelTask();
+    return;
+  }
+
   // remove it from the cache...
   if ( mAddressees.contains( item.remoteId() ) )
     mAddressees.remove( item.remoteId() );
@@ -180,6 +198,16 @@ void VCardDirResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "text/directory";
   c.setContentMimeTypes( mimeTypes );
+  if ( Settings::self()->readOnly() ) {
+    c.setRights( Collection::CanChangeCollection );
+  } else {
+    Collection::Rights rights;
+    rights |= Collection::CanChangeItem;
+    rights |= Collection::CanCreateItem;
+    rights |= Collection::CanDeleteItem;
+    rights |= Collection::CanChangeCollection;
+    c.setRights( rights );
+  }
   Collection::List list;
   list << c;
   collectionsRetrieved( list );
