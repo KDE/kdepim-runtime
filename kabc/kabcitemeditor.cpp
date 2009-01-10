@@ -52,7 +52,7 @@ class KABCItemEditor::Private
 
     void fetchDone( KJob* );
     void storeDone( KJob* );
-    void itemChanged( const Item &item, const QSet<QByteArray>& );
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& );
 
     void loadContact( const KABC::Addressee &addr );
     void storeContact( KABC::Addressee &addr );
@@ -259,8 +259,8 @@ void KABCItemEditor::Private::setupMonitor()
   mMonitor = new Monitor;
   mMonitor->ignoreSession( Session::defaultSession() );
 
-  connect( mMonitor, SIGNAL( itemChanged( const Item&, const QSet<QByteArray>& ) ),
-           mParent, SLOT( itemChanged( const Item&, const QSet<QByteArray>& ) ) );
+  connect( mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ),
+           mParent, SLOT( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
 }
 
 

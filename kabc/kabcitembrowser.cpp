@@ -42,7 +42,7 @@ KABCItemBrowser::~KABCItemBrowser()
 
 QString KABCItemBrowser::itemToRichText( const Item &item )
 {
-  static QPixmap defaultPixmap = KIcon( QLatin1String( "personal" ) ).pixmap( QSize( 100, 140 ) );
+  static QPixmap defaultPixmap = KIcon( QLatin1String( "x-office-contact" ) ).pixmap( QSize( 100, 140 ) );
 
   const KABC::Addressee addr = item.payload<KABC::Addressee>();
 

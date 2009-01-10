@@ -20,6 +20,8 @@
 #include "kabcmodel.h"
 
 #include <kabc/addressee.h>
+#include <kicon.h>
+#include <klocale.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -45,16 +47,13 @@ KABCModel::~KABCModel()
 
 int KABCModel::columnCount( const QModelIndex& ) const
 {
-  return 3;
+  return 4;
 }
 
 QVariant KABCModel::data( const QModelIndex &index, int role ) const
 {
   if ( role == ItemModel::IdRole )
     return ItemModel::data( index, role );
-
-  if ( role != Qt::DisplayRole )
-    return QVariant();
 
   if ( !index.isValid() )
     return QVariant();
@@ -68,18 +67,36 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
     return QVariant();
 
   const KABC::Addressee addr = item.payload<KABC::Addressee>();
-  switch ( index.column() ) {
-    case 0:
-      return addr.givenName();
-      break;
-    case 1:
-      return addr.familyName();
-      break;
-    case 2:
-      return addr.preferredEmail();
-      break;
-    default:
-      break;
+
+  if ( role == Qt::DecorationRole ) {
+    if ( index.column() == 0 ) {
+      const KABC::Picture picture = addr.photo();
+      if ( picture.isIntern() ) {
+        return picture.data().scaled( QSize( 16, 16 ) );
+      } else {
+        return KIcon( QLatin1String( "x-office-contact" ) );
+      }
+    }
+    return QVariant();
+  } else if ( role == Qt::DisplayRole ) {
+    switch ( index.column() ) {
+      case 0:
+        if ( !addr.formattedName().isEmpty() )
+          return addr.formattedName();
+        else
+          return addr.assembledName();
+      case 1:
+        return addr.givenName();
+        break;
+      case 2:
+        return addr.familyName();
+        break;
+      case 3:
+        return addr.preferredEmail();
+        break;
+      default:
+        break;
+    }
   }
 
   return QVariant();
@@ -95,12 +112,15 @@ QVariant KABCModel::headerData( int section, Qt::Orientation orientation, int ro
 
   switch ( section ) {
     case 0:
-      return KABC::Addressee::givenNameLabel();
+      return i18nc( "@title:column, name of a person", "Name" );
       break;
     case 1:
-      return KABC::Addressee::familyNameLabel();
+      return KABC::Addressee::givenNameLabel();
       break;
     case 2:
+      return KABC::Addressee::familyNameLabel();
+      break;
+    case 3:
       return KABC::Addressee::emailLabel();
       break;
     default:

@@ -74,7 +74,7 @@ class AKONADI_KABCCOMMON_EXPORT KABCItemEditor : public QWidget
      * This signal is emitted when the @p contact has been saved back
      * to the storage.
      */
-    void contactStored( const Item &contact );
+    void contactStored( const Akonadi::Item &contact );
 
     /**
      * This signal is emitted when an error occurred during the save.
@@ -91,7 +91,7 @@ class AKONADI_KABCCOMMON_EXPORT KABCItemEditor : public QWidget
 
     Q_PRIVATE_SLOT( d, void fetchDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void storeDone( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Item&, const QSet<QByteArray>& ) )
+    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
 };
 
 }
