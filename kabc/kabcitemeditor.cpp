@@ -34,6 +34,7 @@
 #include <akonadi/session.h>
 
 #include "ui_kabcitemeditor.h"
+#include "waitingoverlay.h"
 
 using namespace Akonadi;
 
@@ -288,6 +289,8 @@ void KABCItemEditor::loadContact( const Item &item )
 
   d->setupMonitor();
   d->mMonitor->setItemMonitored( item );
+
+  new WaitingOverlay( job, this );
 }
 
 void KABCItemEditor::saveContact()

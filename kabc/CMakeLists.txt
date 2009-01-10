@@ -13,6 +13,7 @@ set( kabcakonadi_LIB_SRC
   kabcitembrowser.cpp
   kabcitemeditor.cpp
   kabcmodel.cpp
+  waitingoverlay.cpp
 )
 
 qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
