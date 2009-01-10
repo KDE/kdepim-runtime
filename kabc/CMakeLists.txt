@@ -1,5 +1,3 @@
-add_subdirectory(kcontactmanager)
-
 include_directories(
 	${CMAKE_SOURCE_DIR}/
 	${CMAKE_SOURCE_DIR}/akonadi
