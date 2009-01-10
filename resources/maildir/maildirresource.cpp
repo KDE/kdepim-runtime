@@ -35,7 +35,7 @@
 
 #include <KWindowSystem>
 
-#include <maildir/maildir.h>
+#include "libmaildir/maildir.h"
 
 #include <kmime/kmime_message.h>
 

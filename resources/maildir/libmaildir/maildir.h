@@ -21,7 +21,7 @@
 #define __MAILDIR_H__
 
 
-#include <maildir_export.h>
+#include "maildir_export.h"
 
 #include <QString>
 #include <QStringList>
