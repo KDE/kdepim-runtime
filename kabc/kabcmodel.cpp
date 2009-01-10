@@ -20,6 +20,7 @@
 #include "kabcmodel.h"
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 #include <kicon.h>
 #include <klocale.h>
 #include <akonadi/item.h>
@@ -52,7 +53,8 @@ int KABCModel::columnCount( const QModelIndex& ) const
 
 QVariant KABCModel::data( const QModelIndex &index, int role ) const
 {
-  if ( role == ItemModel::IdRole )
+  // pass through the queries for ItemModel
+  if ( role == ItemModel::IdRole || role == ItemModel::MimeTypeRole )
     return ItemModel::data( index, role );
 
   if ( !index.isValid() )
@@ -63,39 +65,59 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   const Item item = itemForIndex( index );
 
-  if ( !item.hasPayload<KABC::Addressee>() )
-    return QVariant();
+  if ( item.mimeType() == QLatin1String( "text/directory" ) ) {
+    if ( !item.hasPayload<KABC::Addressee>() )
+      return QVariant();
 
-  const KABC::Addressee addr = item.payload<KABC::Addressee>();
+    const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
-  if ( role == Qt::DecorationRole ) {
-    if ( index.column() == 0 ) {
-      const KABC::Picture picture = addr.photo();
-      if ( picture.isIntern() ) {
-        return picture.data().scaled( QSize( 16, 16 ) );
-      } else {
-        return KIcon( QLatin1String( "x-office-contact" ) );
+    if ( role == Qt::DecorationRole ) {
+      if ( index.column() == 0 ) {
+        const KABC::Picture picture = addr.photo();
+        if ( picture.isIntern() ) {
+          return picture.data().scaled( QSize( 16, 16 ) );
+        } else {
+          return KIcon( QLatin1String( "x-office-contact" ) );
+        }
+      }
+      return QVariant();
+    } else if ( role == Qt::DisplayRole ) {
+      switch ( index.column() ) {
+        case 0:
+          if ( !addr.formattedName().isEmpty() )
+            return addr.formattedName();
+          else
+            return addr.assembledName();
+        case 1:
+          return addr.givenName();
+          break;
+        case 2:
+          return addr.familyName();
+          break;
+        case 3:
+          return addr.preferredEmail();
+          break;
+        default:
+          break;
       }
     }
-    return QVariant();
-  } else if ( role == Qt::DisplayRole ) {
-    switch ( index.column() ) {
-      case 0:
-        if ( !addr.formattedName().isEmpty() )
-          return addr.formattedName();
-        else
-          return addr.assembledName();
-      case 1:
-        return addr.givenName();
-        break;
-      case 2:
-        return addr.familyName();
-        break;
-      case 3:
-        return addr.preferredEmail();
-        break;
-      default:
-        break;
+  } else if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+    if ( role == Qt::DecorationRole ) {
+      if ( index.column() == 0 )
+        return KIcon( QLatin1String( "x-mail-distribution-list" ) );
+      else
+        return QVariant();
+    } else if ( role == Qt::DisplayRole ) {
+      switch ( index.column() ) {
+        case 0:
+          {
+            const KABC::ContactGroup group = item.payload<KABC::ContactGroup>();
+            return group.name();
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 
