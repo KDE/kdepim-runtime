@@ -1,3 +1,19 @@
+project(KDEPIM_AKONADI)
+
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+
+#search packages used by KDE
+find_package(KDE4 REQUIRED)
+include(KDE4Defaults)
+find_package(KdepimLibs REQUIRED)
+
+find_package(Boost REQUIRED)
+macro_log_feature(Boost_FOUND "boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
+
+find_package(Akonadi REQUIRED)
+include_directories(${AKONADI_INCLUDE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+
 find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   PATHS
   /usr/lib
@@ -5,25 +21,26 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   ${LIB_INSTALL_DIR}
   $ENV{STRIGI_HOME}/lib
 )
-
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the mailthreaderagent and the message searchprovider")
 
-if (XSLTPROC_EXECUTABLE)
-  # generates a D-Bus interface description from a KConfigXT file
-  macro( kcfg_generate_dbus_interface _kcfg _name )
-    add_custom_command(
-      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-      COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
-              ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
-              ${_kcfg}
-              > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-      DEPENDS ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
-              ${_kcfg}
-    )
-  endmacro( kcfg_generate_dbus_interface )
-endif (XSLTPROC_EXECUTABLE)
+find_program(XSLTPROC_EXECUTABLE xsltproc)
+macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
+if(NOT XSLTPROC_EXECUTABLE)
+  macro_display_feature_log()
+endif(NOT XSLTPROC_EXECUTABLE)
 
-include_directories(${AKONADI_INCLUDE_DIR})
+# generates a D-Bus interface description from a KConfigXT file
+macro(kcfg_generate_dbus_interface _kcfg _name)
+  add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+    COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
+    ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
+    ${_kcfg}
+    > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
+    DEPENDS ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
+    ${_kcfg}
+    )
+endmacro(kcfg_generate_dbus_interface)
 
 add_subdirectory(clients)
 add_subdirectory(resources)
@@ -36,16 +53,19 @@ add_subdirectory(kcm)
 add_subdirectory(tray)
 add_subdirectory(migration)
 add_subdirectory(defaultsetup)
-#if ( OPENSYNC_FOUND )
+#if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
-#endif ( OPENSYNC_FOUND )
+#endif(OPENSYNC_FOUND)
 
-if( Nepomuk_FOUND )
+if(Nepomuk_FOUND)
   add_subdirectory(nepomuk)
-endif( Nepomuk_FOUND )
+endif(Nepomuk_FOUND)
 
 #### MIME type spezializations
 
 set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
 find_package(SharedMimeInfo REQUIRED)
 
+if(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+    macro_display_feature_log()
+endif(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")

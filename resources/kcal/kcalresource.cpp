@@ -17,8 +17,8 @@
 */
 
 #include "kcalresource.h"
-
-#include "../kabc/kresourceassistant.h"
+#include "resources/kabc/kresourceassistant.h"
+#include "kcal/kcalmimetypevisitor.h" // the kcal at the akonadi top-level
 
 #include <kcal/calformat.h>
 #include <kcal/resourcecalendar.h>
@@ -27,7 +27,6 @@
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kconfig.h>
 #include <kinputdialog.h>

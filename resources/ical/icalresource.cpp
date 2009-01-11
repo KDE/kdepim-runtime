@@ -20,11 +20,10 @@
 #include "icalresource.h"
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
+#include "kcal/kcalmimetypevisitor.h"  // the kcal at the akonadi top-level
 
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
-
-#include <akonadi/kcal/kcalmimetypevisitor.h>
 
 #include <kdebug.h>
 #include <kfiledialog.h>

@@ -6,8 +6,8 @@ set(kres-migrator_srcs
     infodialog.cpp
 )
 
-kcfg_generate_dbus_interface(${CMAKE_SOURCE_DIR}/akonadi/resources/vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
-kcfg_generate_dbus_interface(${CMAKE_SOURCE_DIR}/akonadi/resources/ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../resources/vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../resources/ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
 
 qt4_add_dbus_interface(kres-migrator_srcs
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCard.Settings.xml vcardsettings VCardSettings
