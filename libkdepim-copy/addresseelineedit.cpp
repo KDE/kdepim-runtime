@@ -548,6 +548,18 @@ void AddresseeLineEdit::loadContacts()
         addContact( *it, weight, s_completionSources->size() - 1 );
       }
     }
+
+    // add distribution list names
+    int weight = config.readEntry( resource->identifier(), 60 );
+    const QStringList distListNames = resource->allDistributionListNames();
+    foreach ( const QString &distList, distListNames ) {
+      //for CompletionAuto
+      addCompletionItem( distList, weight, s_completionSources->size() - 1 );
+
+      //for CompletionShell, CompletionPopup
+      QStringList sl( distList );
+      addCompletionItem( distList, weight, s_completionSources->size() - 1, &sl );
+    }
   }
 
   QApplication::restoreOverrideCursor();
