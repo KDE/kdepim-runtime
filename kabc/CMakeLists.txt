@@ -10,6 +10,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 
 set( kabcakonadi_LIB_SRC
   contactgroupbrowser.cpp
+  contactgroupeditor.cpp
+  contactlineedit.cpp
   itembrowser.cpp
   kabcitembrowser.cpp
   kabcitemeditor.cpp
@@ -18,6 +20,7 @@ set( kabcakonadi_LIB_SRC
 )
 
 qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
+qt4_wrap_ui(kabcakonadi_LIB_SRC contactgroupeditor.ui)
 kde4_add_library( akonadi-kabccommon SHARED ${kabcakonadi_LIB_SRC} )
 
 target_link_libraries( akonadi-kabccommon ${KDE4_AKONADI_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KDEUI_LIBS} )
