@@ -48,10 +48,12 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual ~KResMigrator()
     {
-      delete mConfig;
-      mConfig = 0;
+      delete mBridgeManager;
+      mBridgeManager = 0;
       delete mManager;
       mManager = 0;
+      delete mConfig;
+      mConfig = 0;
     }
 
     void migrate()
@@ -121,7 +123,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       kDebug() << bridgedCfgFile;
       mConfig = new KConfig( bridgedCfgFile );
 
-      KRES::Manager<T> *mBridgeManager = new KRES::Manager<T>( mType );
+      mBridgeManager = new KRES::Manager<T>( mType );
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
         emit message( Error, "Bridged resource '" + resId + "' has no standard resource." );
@@ -192,26 +194,28 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void setupClientBridge()
     {
-      if ( !mClientBridgeFound ) {
-        emit message( Info, i18n( "Setting up client-side bridge..." ) );
-        T* clientBridge = mManager->createResource( "akonadi" );
-        if ( clientBridge ) {
-          mClientBridgeIdentifier = clientBridge->identifier();
-          clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
-          mManager->add( clientBridge );
-          mManager->setStandardResource( clientBridge );
-          emit message( Info, i18n( "Client-side bridge set up successfully." ) );
-        } else {
-          emit message( Error, i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
+      if ( !mOmitClientBridge ) {
+        if ( !mClientBridgeFound ) {
+          emit message( Info, i18n( "Setting up client-side bridge..." ) );
+          T* clientBridge = mManager->createResource( "akonadi" );
+          if ( clientBridge ) {
+            mClientBridgeIdentifier = clientBridge->identifier();
+            clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
+            mManager->add( clientBridge );
+            mManager->setStandardResource( clientBridge );
+            emit message( Info, i18n( "Client-side bridge set up successfully." ) );
+          } else {
+            emit message( Error, i18n( "Could not create client-side bridge, check if Akonadi KResource bridge is installed." ) );
+          }
         }
-      }
 
-      mManager->writeConfig();
-      const QString keyName( "DefaultAkonadiResourceIdentifier" );
-      KConfigGroup clientBridgeConfig( mConfig, "Resource_" + mClientBridgeIdentifier );
-      if ( !clientBridgeConfig.hasKey( keyName ) &&
-           !mAgentForOldDefaultResource.isEmpty() ) {
-        clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );
+        mManager->writeConfig();
+        const QString keyName( "DefaultAkonadiResourceIdentifier" );
+        KConfigGroup clientBridgeConfig( mConfig, "Resource_" + mClientBridgeIdentifier );
+        if ( !clientBridgeConfig.hasKey( keyName ) &&
+            !mAgentForOldDefaultResource.isEmpty() ) {
+          clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );
+        }
       }
       deleteLater();
     }

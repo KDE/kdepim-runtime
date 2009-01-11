@@ -177,4 +177,9 @@ void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::
   migrateNext();
 }
 
+void KResMigratorBase::setOmitClientBridge(bool b)
+{
+  mOmitClientBridge = b;
+}
+
 #include "kresmigratorbase.moc"

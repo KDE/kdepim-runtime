@@ -68,6 +68,7 @@ class KResMigratorBase : public QObject
     virtual KConfigGroup kresConfig( KRES::Resource* res ) const = 0;
 
     void setBridgingOnly( bool b );
+    void setOmitClientBridge( bool b );
 
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
 
@@ -82,6 +83,7 @@ class KResMigratorBase : public QObject
     QString mBridgeType;
     QStringList mPendingBridgedResources;
     bool mBridgeOnly;
+    bool mOmitClientBridge;
     KRES::Resource *mCurrentKResource;
     bool mBridgingInProgress;
 
