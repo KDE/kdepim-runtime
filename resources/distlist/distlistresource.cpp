@@ -141,7 +141,7 @@ bool DistListResource::readFromFile( const QString &fileName )
 
           const QString email = entryIt != value.constEnd() ? *entryIt : QString();
 
-          KABC::ContactGroup::Reference reference( id );
+          KABC::ContactGroup::ContactReference reference( id );
           if ( !email.isEmpty() )
             reference.setPreferredEmail( email );
 
@@ -182,8 +182,8 @@ bool DistListResource::writeToFile( const QString &fileName )
       const KABC::ContactGroup contactGroup = it.value();
 
       QStringList value;
-      for ( unsigned int index = 0; index < contactGroup.referencesCount(); ++index ) {
-        const KABC::ContactGroup::Reference reference = contactGroup.reference( index );
+      for ( unsigned int index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
+        const KABC::ContactGroup::ContactReference reference = contactGroup.contactReference( index );
 
         value.append( reference.uid() );
         value.append( reference.preferredEmail() );

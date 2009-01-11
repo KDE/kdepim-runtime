@@ -754,8 +754,8 @@ KABC::DistributionList *KABCResource::distListFromContactGroup( const KABC::Cont
   KABC::DistributionList *list =
     new KABC::DistributionList( mBaseResource, contactGroup.id(), contactGroup.name() );
 
-  for ( unsigned int refIndex = 0; refIndex < contactGroup.referencesCount(); ++refIndex ) {
-    const KABC::ContactGroup::Reference &reference = contactGroup.reference( refIndex );
+  for ( unsigned int refIndex = 0; refIndex < contactGroup.contactReferenceCount(); ++refIndex ) {
+    const KABC::ContactGroup::ContactReference &reference = contactGroup.contactReference( refIndex );
 
     KABC::Addressee addressee = mBaseResource->findByUid( reference.uid() );
     if ( addressee.isEmpty() ) {
@@ -763,7 +763,7 @@ KABC::DistributionList *KABCResource::distListFromContactGroup( const KABC::Cont
       // TODO any way to set a good name?
     }
 
-    // TODO how to handle ContactGroup::Reference custom fields?
+    // TODO how to handle ContactGroup::ContactReference custom fields?
 
     list->insertEntry( addressee, reference.preferredEmail() );
   }
@@ -808,7 +808,7 @@ KABC::ContactGroup KABCResource::contactGroupFromDistList( const KABC::Distribut
         // TODO: transer custom fields?
         contactGroup.append( data );
       } else {
-        KABC::ContactGroup::Reference reference( addressee.uid() );
+        KABC::ContactGroup::ContactReference reference( addressee.uid() );
         reference.setPreferredEmail( email );
         // TODO: transer custom fields?
         contactGroup.append( reference );
