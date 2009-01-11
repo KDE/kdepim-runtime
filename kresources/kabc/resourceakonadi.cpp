@@ -1351,8 +1351,8 @@ DistributionList *ResourceAkonadi::Private::distListFromContactGroup( const Cont
 {
   DistributionList *list = new DistributionList( mParent, contactGroup.id(), contactGroup.name() );
 
-  for ( unsigned int refIndex = 0; refIndex < contactGroup.referencesCount(); ++refIndex ) {
-    const ContactGroup::Reference &reference = contactGroup.reference( refIndex );
+  for ( unsigned int refIndex = 0; refIndex < contactGroup.contactReferenceCount(); ++refIndex ) {
+    const ContactGroup::ContactReference &reference = contactGroup.contactReference( refIndex );
 
     Addressee addressee;
     Addressee::Map::const_iterator it = mParent->mAddrMap.constFind( reference.uid() );
@@ -1405,7 +1405,7 @@ ContactGroup ResourceAkonadi::Private::contactGroupFromDistList( const KABC::Dis
         // TODO: transer custom fields?
         contactGroup.append( data );
       } else {
-        ContactGroup::Reference reference( addressee.uid() );
+        ContactGroup::ContactReference reference( addressee.uid() );
         reference.setPreferredEmail( email );
         // TODO: transer custom fields?
         contactGroup.append( reference );
