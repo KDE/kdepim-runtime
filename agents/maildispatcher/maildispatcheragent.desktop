@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Akonadi Mail Dispatcher Agent
+Name[de]=E-Mail-Versand-Agent für Akonadi
+Type=AkonadiAgent
+Exec=akonadi_maildispatcher_agent
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Unique,Autostart
+X-Akonadi-Identifier=akonadi_maildispatcher_agent
