@@ -777,6 +777,7 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
   if ( item.hasPayload<Addressee>() ) {
     Addressee addressee = item.payload<Addressee>();
+    addressee.setResource( mParent );
 
     kDebug(5700) << "Addressee" << addressee.uid() << "("
                  << addressee.formattedName() << ")";
@@ -848,6 +849,7 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
 
   if ( item.hasPayload<Addressee>() ) {
     Addressee addressee = item.payload<Addressee>();
+    addressee.setResource( mParent );
 
     kDebug(5700) << "Addressee" << addressee.uid() << "("
                  << addressee.formattedName() << ")";
@@ -1254,6 +1256,8 @@ bool ResourceAkonadi::Private::prepareSaving()
 
 KJob *ResourceAkonadi::Private::createSaveSequence() const
 {
+  kDebug(5700) << mChanges.count() << "changes";
+
   TransactionSequence *sequence = new TransactionSequence();
 
   ChangeMap::const_iterator changeIt    = mChanges.constBegin();
