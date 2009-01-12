@@ -736,6 +736,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       mParent->mAddrMap.insert( addressee.uid(), addressee );
       mUidToResourceMap.insert( addressee.uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
+      mChanges.remove( addressee.uid() );
     } else if ( item.hasPayload<ContactGroup>() ) {
       ContactGroup contactGroup = item.payload<ContactGroup>();
 
@@ -745,6 +746,7 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       mParent->mDistListMap.insert( contactGroup.id(), distListFromContactGroup( contactGroup ) );
       mUidToResourceMap.insert( contactGroup.id(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
+      mChanges.remove( contactGroup.id() );
     }
 
     // always update the item
@@ -808,8 +810,8 @@ void ResourceAkonadi::Private::itemAdded( const Akonadi::Item &item,
 
     // might be the result of our own saving
     if ( mParent->mDistListMap.find( contactGroup.id() ) == mParent->mDistListMap.end() ) {
-      mChanges.remove( contactGroup.id() );
       mParent->mDistListMap.insert( contactGroup.id(), distListFromContactGroup( contactGroup ) );
+      mChanges.remove( contactGroup.id() );
 
       mParent->addressBook()->emitAddressBookChanged();
     }
@@ -882,8 +884,6 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
       return;
     }
 
-    mChanges.remove( contactGroup.id() );
-
     // TODO: check if we can compare DistributionList and ContactGroup for
     // and equivalent check
 //     if ( addrIt.value() == addressee ) {
@@ -895,6 +895,9 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
     delete list;
     list = distListFromContactGroup( contactGroup );
     distListIt.value() = list;
+
+    // now remove the Change marking caused by implicit remove/add above
+    mChanges.remove( contactGroup.id() );
 
     mParent->addressBook()->emitAddressBookChanged();
   } else {
@@ -950,7 +953,6 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
   mIdMapping.remove( uid );
   mUidToResourceMap.remove( uid );
   mItemIdToResourceMap.remove( id );
-  mChanges.remove( uid );
 
   bool changed = false;
 
@@ -972,11 +974,13 @@ void ResourceAkonadi::Private::itemRemoved( const Akonadi::Item &item )
     kDebug(5700) << "DistributionList" << uid << "("
                  << list->name() << ")";
 
-    delete list;
     mParent->mDistListMap.erase( distListIt );
+    delete list;
 
     changed = true;
   }
+
+  mChanges.remove( uid );
 
   if ( changed )
     mParent->addressBook()->emitAddressBookChanged();
@@ -1188,7 +1192,62 @@ bool ResourceAkonadi::Private::prepareSaving()
       ++addrIt;
   }
 
-  // TODO: need to handle distribution lists which are new
+  // TODO: should probably ask for a store collection as well if a distribution list
+  // is new
+  // for now check if we have other dist lists and where they are stored, then
+  // check addressee store collection
+  QString distListStoreCollection;
+  DistributionListMap::const_iterator distListIt    = mParent->mDistListMap.constBegin();
+  DistributionListMap::const_iterator distListEndIt = mParent->mDistListMap.constEnd();
+  while ( distListIt != distListEndIt ) {
+    UidResourceMap::const_iterator findIt = mUidToResourceMap.constFind( distListIt.key() );
+    if ( findIt == mUidToResourceMap.constEnd() ) {
+      if ( distListStoreCollection.isEmpty() ) {
+        DistributionListMap::const_iterator searchIt = distListIt;
+        for ( ; searchIt != distListEndIt; ++searchIt ) {
+          UidResourceMap::const_iterator findIt2 = mUidToResourceMap.constFind( searchIt.key() );
+          if ( findIt2 != mUidToResourceMap.constEnd() ) {
+            distListStoreCollection = findIt2.value();
+            break;
+          }
+        }
+      }
+
+      if ( distListStoreCollection.isEmpty() ) {
+        DistributionList *list = distListIt.value();
+        Q_ASSERT( list != 0 );
+
+        DistributionList::Entry::List entries = list->entries();
+        foreach ( const DistributionList::Entry &entry, entries ) {
+          Addressee addressee = entry.addressee();
+          if ( !addressee.isEmpty() ) {
+            UidResourceMap::const_iterator findIt2 = mUidToResourceMap.constFind( addressee.uid() );
+            if ( findIt2 != mUidToResourceMap.constEnd() ) {
+              // check if the collection can store contact group items as well
+              SubResource *subResource = mSubResources.value( findIt2.value(), 0 );
+              if ( subResource != 0 ) {
+                if ( subResource->mCollection.contentMimeTypes().contains( ContactGroup::mimeType() ) ) {
+                  distListStoreCollection = findIt2.value();
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if ( !distListStoreCollection.isEmpty() ) {
+        mUidToResourceMap.insert( distListIt.key(), distListStoreCollection );
+        ++distListIt;
+      } else {
+        kError() << "Could not determine a collection for saving distlists";
+        return false;
+      }
+    } else {
+      distListStoreCollection = findIt.value();
+      ++distListIt;
+    }
+  }
 
   return true;
 }
