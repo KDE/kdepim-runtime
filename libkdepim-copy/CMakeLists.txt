@@ -120,6 +120,4 @@ install(TARGETS kdepimwidgets  DESTINATION ${PLUGIN_INSTALL_DIR}/plugins/designe
 
 ########### install files ###############
 
-install(FILES kdepimprotocols.h  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
-
 install(FILES interfaces/org.kde.addressbook.service.xml interfaces/org.kde.mailtransport.service.xml DESTINATION ${KDE4_DBUS_INTERFACES_DIR})
