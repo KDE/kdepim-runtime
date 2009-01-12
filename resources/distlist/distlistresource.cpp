@@ -126,13 +126,19 @@ bool DistListResource::readFromFile( const QString &fileName )
       mLegacyKConfigFormat = true;
 
       KConfigGroup cg( &cfg, "DistributionLists" );
+      KConfigGroup cgId( &cfg, "DistributionLists-Identifiers" );
       const QStringList entryList = cg.keyList();
 
       foreach ( const QString &entry, entryList ) {
         const QStringList value = cg.readEntry( entry, QStringList() );
 
+        QString id;
+        if ( cgId.isValid() )
+          id = cgId.readEntry( entry, QString() );
+
         KABC::ContactGroup contactGroup( entry );
-        contactGroup.setId( fileName + entry );
+        if ( !id.isEmpty() )
+          contactGroup.setId( id );
 
         QStringList::const_iterator entryIt = value.constBegin();
         while ( entryIt != value.constEnd() ) {
@@ -175,6 +181,8 @@ bool DistListResource::writeToFile( const QString &fileName )
     KConfig cfg( fileName );
     KConfigGroup cg( &cfg, "DistributionLists" );
     cg.deleteGroup();
+    KConfigGroup cgId( &cfg, "DistributionLists-Identifiers" );
+    cgId.deleteGroup();
 
     QMap<QString, KABC::ContactGroup>::const_iterator it = mContactGroups.constBegin();
     QMap<QString, KABC::ContactGroup>::const_iterator endIt = mContactGroups.constEnd();
@@ -190,9 +198,10 @@ bool DistListResource::writeToFile( const QString &fileName )
       }
 
       cg.writeEntry( contactGroup.name(), value );
+      cgId.writeEntry( contactGroup.name(), contactGroup.id() );
     }
 
-    cg.sync();
+    cfg.sync();
     return true;
   }
 
@@ -212,6 +221,8 @@ void DistListResource::aboutToQuit()
 
 void DistListResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   KABC::ContactGroup contactGroup;
   if ( item.hasPayload<KABC::ContactGroup>() )
     contactGroup = item.payload<KABC::ContactGroup>();
@@ -240,6 +251,8 @@ void DistListResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
 void DistListResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   KABC::ContactGroup contactGroup;
   if ( item.hasPayload<KABC::ContactGroup>() )
     contactGroup = item.payload<KABC::ContactGroup>();
@@ -268,6 +281,8 @@ void DistListResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
 
 void DistListResource::itemRemoved(const Akonadi::Item & item)
 {
+  kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
+           << "mimeType=" << item.mimeType();
   if ( mContactGroups.contains( item.remoteId() ) )
     mContactGroups.remove( item.remoteId() );
 
