@@ -56,7 +56,7 @@ class AKONADI_KABCCOMMON_EXPORT KABCItemEditor : public QWidget
     /**
      * Loads the @p contact into the editor.
      */
-    void loadContact( const Item &contact );
+    void loadContact( const Akonadi::Item &contact );
 
     /**
      * Saves the contact from the editor back to the storage.
@@ -67,7 +67,7 @@ class AKONADI_KABCCOMMON_EXPORT KABCItemEditor : public QWidget
      * Sets the @p collection which shall be used to store new
      * contacts.
      */
-    void setDefaultCollection( const Collection &collection );
+    void setDefaultCollection( const Akonadi::Collection &collection );
 
   Q_SIGNALS:
     /**

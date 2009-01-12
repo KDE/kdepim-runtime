@@ -65,18 +65,20 @@ class AKONADI_KABCCOMMON_EXPORT ContactGroupEditor : public QWidget
     /**
      * Loads the contact @p group into the editor.
      */
-    void loadContactGroup( const Item &group );
+    void loadContactGroup( const Akonadi::Item &group );
 
     /**
      * Saves the contact group from the editor back to the storage.
+     *
+     * @returns @c true if the contact group has been saved successfully, false otherwise.
      */
-    void saveContactGroup();
+    bool saveContactGroup();
 
     /**
      * Sets the @p collection which shall be used to store new
      * contact groups.
      */
-    void setDefaultCollection( const Collection &collection );
+    void setDefaultCollection( const Akonadi::Collection &collection );
 
   Q_SIGNALS:
     /**

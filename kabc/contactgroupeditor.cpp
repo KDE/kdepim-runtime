@@ -20,11 +20,13 @@
 #include "contactgroupeditor.h"
 
 #include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
 
+#include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
+#include <klocale.h>
+#include <klineedit.h>
+#include <kmessagebox.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -57,8 +59,9 @@ class ContactGroupEditor::Private
     void memberChanged();
 
     void loadContactGroup( const KABC::ContactGroup &group );
-    void storeContactGroup( KABC::ContactGroup &group );
+    bool storeContactGroup( KABC::ContactGroup &group );
     void setupMonitor();
+    KLineEdit* addMemberEdit();
 
     ContactGroupEditor *mParent;
     ContactGroupEditor::Mode mMode;
@@ -67,7 +70,7 @@ class ContactGroupEditor::Private
     Collection mDefaultCollection;
     Ui::ContactGroupEditor gui;
     QVBoxLayout *membersLayout;
-    QList<QLineEdit*> members;
+    QList<KLineEdit*> members;
 };
 
 }
@@ -118,6 +121,7 @@ void ContactGroupEditor::Private::itemChanged( const Item&, const QSet<QByteArra
     job->fetchScope().fetchFullPayload();
 
     mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
+    new WaitingOverlay( job, mParent );
   }
 }
 
@@ -128,18 +132,67 @@ void ContactGroupEditor::Private::loadContactGroup( const KABC::ContactGroup &gr
   qDeleteAll( members );
   for ( unsigned int i = 0; i < group.dataCount(); ++i ) {
     const KABC::ContactGroup::Data data = group.data( i );
-    QLineEdit *lineEdit = new QLineEdit( mParent );
-    members.append( lineEdit );
-    membersLayout->addWidget( lineEdit );
+    KLineEdit *lineEdit = addMemberEdit();
 
+    mParent->disconnect( lineEdit, SIGNAL( textChanged( const QString& ) ), mParent, SLOT( memberChanged() ) );
     lineEdit->setText( QString::fromLatin1( "%1 <%2>" ).arg( data.name() ).arg( data.email() ) );
     mParent->connect( lineEdit, SIGNAL( textChanged( const QString& ) ), SLOT( memberChanged() ) );
   }
 
-  QLineEdit *lineEdit = new QLineEdit( mParent );
+  addMemberEdit();
+}
+
+bool ContactGroupEditor::Private::storeContactGroup( KABC::ContactGroup &group )
+{
+  if ( gui.groupName->text().isEmpty() ) {
+    KMessageBox::error( mParent, i18n( "The name of the contact group must not be empty." ) );
+    return false;
+  }
+
+  group.setName( gui.groupName->text() );
+
+  group.removeAllContactData();
+  for ( int i = 0; i < members.count(); ++i ) {
+    const QString text = members.at( i )->text();
+    if ( !text.isEmpty() ) {
+      QString fullName, email;
+      KABC::Addressee::parseEmailAddress( text, fullName, email );
+
+      if ( fullName.isEmpty() ) {
+        KMessageBox::error( mParent, i18n( "The contact '%1' is missing a name.", text ) );
+        return false;
+      }
+      if ( email.isEmpty() ) {
+        KMessageBox::error( mParent, i18n( "The contact '%1' is missing an email address.", text ) );
+        return false;
+      }
+
+      group.append( KABC::ContactGroup::Data( fullName, email ) );
+    }
+  }
+
+  return true;
+}
+
+void ContactGroupEditor::Private::setupMonitor()
+{
+  delete mMonitor;
+  mMonitor = new Monitor;
+  mMonitor->ignoreSession( Session::defaultSession() );
+
+  connect( mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ),
+           mParent, SLOT( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
+}
+
+KLineEdit* ContactGroupEditor::Private::addMemberEdit()
+{
+  KLineEdit *lineEdit = new KLineEdit( mParent );
+  lineEdit->setToolTip( i18n( "Enter member in format: name <email>" ) );
   members.append( lineEdit );
   membersLayout->addWidget( lineEdit );
   mParent->connect( lineEdit, SIGNAL( textChanged( const QString& ) ), SLOT( memberChanged() ) );
+
+  return lineEdit;
 }
 
 void ContactGroupEditor::Private::memberChanged()
@@ -159,27 +212,8 @@ void ContactGroupEditor::Private::memberChanged()
   }
 
   // add new line edit if the last one contains text
-  if ( !members.last()->text().isEmpty() ) {
-    QLineEdit *lineEdit = new QLineEdit( mParent );
-    members.append( lineEdit );
-    membersLayout->addWidget( lineEdit );
-    mParent->connect( lineEdit, SIGNAL( textChanged( const QString& ) ), SLOT( memberChanged() ) );
-  }
-}
-
-void ContactGroupEditor::Private::storeContactGroup( KABC::ContactGroup &group )
-{
-  group.setName( gui.groupName->text() );
-}
-
-void ContactGroupEditor::Private::setupMonitor()
-{
-  delete mMonitor;
-  mMonitor = new Monitor;
-  mMonitor->ignoreSession( Session::defaultSession() );
-
-  connect( mMonitor, SIGNAL( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ),
-           mParent, SLOT( itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
+  if ( !members.last()->text().isEmpty() )
+    addMemberEdit();
 }
 
 
@@ -193,6 +227,9 @@ ContactGroupEditor::ContactGroupEditor( Mode mode, QWidget *parent )
   d->membersLayout = new QVBoxLayout();
   layout->addLayout( d->membersLayout );
   layout->addStretch();
+
+  if ( d->mMode == CreateMode )
+    d->addMemberEdit();
 }
 
 
@@ -200,7 +237,7 @@ ContactGroupEditor::~ContactGroupEditor()
 {
 }
 
-void ContactGroupEditor::loadContactGroup( const Item &item )
+void ContactGroupEditor::loadContactGroup( const Akonadi::Item &item )
 {
   if ( d->mMode == CreateMode )
     Q_ASSERT_X( false, "ContactGroupEditor::loadContactGroup", "You are calling loadContactGroup in CreateMode!" );
@@ -216,15 +253,16 @@ void ContactGroupEditor::loadContactGroup( const Item &item )
   new WaitingOverlay( job, this );
 }
 
-void ContactGroupEditor::saveContactGroup()
+bool ContactGroupEditor::saveContactGroup()
 {
   if ( d->mMode == EditMode ) {
     if ( !d->mItem.isValid() )
-      return;
+      return false;
 
     KABC::ContactGroup group = d->mItem.payload<KABC::ContactGroup>();
 
-    d->storeContactGroup( group );
+    if ( !d->storeContactGroup( group ) )
+      return false;
 
     d->mItem.setPayload<KABC::ContactGroup>( group );
 
@@ -234,7 +272,8 @@ void ContactGroupEditor::saveContactGroup()
     Q_ASSERT_X( d->mDefaultCollection.isValid(), "ContactGroupEditor::saveContactGroup", "Using invalid default collection for saving!" );
 
     KABC::ContactGroup group;
-    d->storeContactGroup( group );
+    if ( !d->storeContactGroup( group ) )
+      return false;
 
     Item item;
     item.setPayload<KABC::ContactGroup>( group );
@@ -243,9 +282,11 @@ void ContactGroupEditor::saveContactGroup()
     ItemCreateJob *job = new ItemCreateJob( item, d->mDefaultCollection );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   }
+
+  return true;
 }
 
-void ContactGroupEditor::setDefaultCollection( const Collection &collection )
+void ContactGroupEditor::setDefaultCollection( const Akonadi::Collection &collection )
 {
   d->mDefaultCollection = collection;
 }

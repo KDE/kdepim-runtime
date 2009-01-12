@@ -277,7 +277,7 @@ KABCItemEditor::~KABCItemEditor()
 {
 }
 
-void KABCItemEditor::loadContact( const Item &item )
+void KABCItemEditor::loadContact( const Akonadi::Item &item )
 {
   if ( d->mMode == CreateMode )
     Q_ASSERT_X( false, "KABCItemEditor::loadContact", "You are calling loadContact in CreateMode!" );
@@ -322,7 +322,7 @@ void KABCItemEditor::saveContact()
   }
 }
 
-void KABCItemEditor::setDefaultCollection( const Collection &collection )
+void KABCItemEditor::setDefaultCollection( const Akonadi::Collection &collection )
 {
   d->mDefaultCollection = collection;
 }
