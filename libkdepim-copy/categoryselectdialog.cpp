@@ -24,12 +24,29 @@
 #include "categoryhierarchyreader.h"
 #include "autochecktreewidget.h"
 #include "kpimprefs.h"
+#include "ui_categoryselectdialog_base.h"
 
 #include <KLocale>
 
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHeaderView>
+
+namespace KPIM
+{
+
+class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog_base
+{
+  public:
+    CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
+      setupUi( this );
+
+      mButtonClear->setIcon( KIcon( "edit-clear-locationbar-rtl" ) );
+      mButtonEdit->setIcon( KIcon( "document-properties" ) );
+    }
+};
+
+}
 
 using namespace KPIM;
 
