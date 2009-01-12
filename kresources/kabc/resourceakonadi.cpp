@@ -1100,8 +1100,14 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
               if ( uidIt.value() == collectionUrl ) {
                 changed = true;
 
-                mParent->mAddrMap.remove( uidIt.key() );
+                // save current uid, then change iterator
+                const QString uid = uidIt.key();
                 uidIt = mUidToResourceMap.erase( uidIt );
+
+                mParent->mAddrMap.remove( uid );
+                DistributionList *list = mParent->mDistListMap.value( uid, 0 );
+                delete list;
+                mChanges.remove( uid );
               }
               else
                 ++uidIt;
