@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ResourcesManagementWidget</class>
- <widget class="QWidget" name="ResourcesManagementWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ResourcesManagementWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,19 +10,19 @@
     <height>300</height>
    </rect>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>9</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>6</number>
    </property>
-   <item row="4" column="1" >
+   <item row="4" column="1">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>141</height>
@@ -29,30 +30,38 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="1" >
-    <widget class="KPushButton" name="removeButton" >
-     <property name="text" >
+   <item row="2" column="1">
+    <widget class="KPushButton" name="removeButton">
+     <property name="whatsThis">
+      <string>Remove resource from your Akonadi server.</string>
+     </property>
+     <property name="text">
       <string>R&amp;emove</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="KPushButton" name="editButton" >
-     <property name="text" >
+   <item row="1" column="1">
+    <widget class="KPushButton" name="editButton">
+     <property name="whatsThis">
+      <string>Modify your installed resources</string>
+     </property>
+     <property name="text">
       <string>&amp;Modify...</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" >
-    <widget class="KPushButton" name="addButton" >
-     <property name="text" >
+   <item row="0" column="1">
+    <widget class="KPushButton" name="addButton">
+     <property name="whatsThis">
+      <string>Add resource to your Akonadi server.</string>
+     </property>
+     <property name="text">
       <string>A&amp;dd...</string>
      </property>
     </widget>
    </item>
-   <item rowspan="5" row="0" column="0" >
-    <widget class="Akonadi::AgentInstanceWidget" name="resourcesList" >
-    </widget>
+   <item row="0" column="0" rowspan="5">
+    <widget class="Akonadi::AgentInstanceWidget" name="resourcesList" native="true"/>
    </item>
   </layout>
  </widget>
@@ -62,11 +71,10 @@
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
   </customwidget>
-   <customwidget>
+  <customwidget>
    <class>Akonadi::AgentInstanceWidget</class>
    <extends>QWidget</extends>
-   <header location="global" >akonadi/agentinstancewidget.h</header>
-                              akonadi/agentinstancewidget.h
+   <header location="global">akonadi/agentinstancewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
