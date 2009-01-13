@@ -1,5 +1,12 @@
 [Desktop Entry]
 Name=Akonadi Mail Dispatcher Agent
+Name[et]=Akonadi kirjade edastamise agent
+Name[km]=ភ្នាក់ងារ​បញ្ជូន​សំបុត្រ Akonadi
+Name[nds]=Akonadi-Nettpostverdeel-Hölper
+Name[pt]=Agente de Envio de Correio do Akonadi
+Name[pt_BR]=Agente de Envio de Correio do Akonadi
+Name[sv]=Akonadi e-postavsändningsmodul
+Name[uk]=Агент розподілу пошти Akonadi
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
 
