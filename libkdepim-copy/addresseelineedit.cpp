@@ -1064,7 +1064,7 @@ bool KPIM::AddresseeLineEdit::eventFilter( QObject *obj, QEvent *e )
         item->setSelected( true );
       }
     } else if ( ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab ) {
-      /// first, find the header of teh current section
+      /// first, find the header of the current section
       QListWidgetItem *myHeader = 0;
       int i = currentIndex;
       while ( i>=0 ) {
