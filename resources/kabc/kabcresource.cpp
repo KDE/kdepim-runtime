@@ -338,6 +338,12 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   // KABC::ResourceABC does not have API for setting the storage sub resource
   Q_UNUSED( col );
 
+  if ( mBaseResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    return;
+  }
+
   kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
   kDebug() << "item.hasPayload<ContactGroup>() " << item.hasPayload<KABC::ContactGroup>();
   if ( item.hasPayload<KABC::Addressee>() ) {
@@ -388,6 +394,12 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
   // we store the whole addressee/contactgroup anyway
   Q_UNUSED( parts );
 
+  if ( mBaseResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    return;
+  }
+
   kDebug() << "item.hasPayload<Addressee>() " << item.hasPayload<KABC::Addressee>();
   kDebug() << "item.hasPayload<ContactGroup>() " << item.hasPayload<KABC::ContactGroup>();
   if ( item.hasPayload<KABC::Addressee>() ) {
@@ -436,6 +448,13 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
 {
   kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
            << "mimeType=" << item.mimeType();
+
+  if ( mBaseResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    return;
+  }
+
   if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
     KABC::DistributionList *list =
       mAddressBook->findDistributionListByIdentifier( item.remoteId() );
@@ -465,9 +484,14 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
 
 void KABCResource::collectionChanged( const Akonadi::Collection &collection )
 {
-  Q_ASSERT( mBaseResource != 0);
   kDebug() << "collection.name=" << collection.name()
            << ", resource name=" << mBaseResource->resourceName();
+
+  if ( mBaseResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    return;
+  }
 
   if ( collection.parent() == Collection::root().id() ) {
     if ( collection.name() != mBaseResource->resourceName() ) {

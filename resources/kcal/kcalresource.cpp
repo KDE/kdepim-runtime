@@ -281,6 +281,12 @@ void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
            << "mimeType=" << item.mimeType();
 
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
+
   Q_UNUSED( collection );
 
   if ( item.hasPayload<IncidencePtr>() ) {
@@ -314,6 +320,12 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
   kDebug() << "item id="  << item.id() << ", remoteId=" << item.remoteId()
            << "mimeType=" << item.mimeType() << "parts=" << parts;
 
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
+
   if ( item.hasPayload<IncidencePtr>() ) {
     IncidencePtr incidencePtr = item.payload<IncidencePtr>();
 
@@ -342,6 +354,12 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
 {
   kDebug() << "item id=" << item.id() << ", remoteId=" << item.remoteId();
 
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
+
   KCal::Incidence *incidence = mResource->incidence( item.remoteId() );
   if ( incidence != 0 && mResource->deleteIncidence( incidence ) ) {
     changeCommitted( item );
@@ -358,6 +376,12 @@ void KCalResource::collectionAdded( const Akonadi::Collection &collection,
   kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId() << ", name=" << collection.name()
            << ", parent id="   << parent.id() << ", remoteId="     << parent.remoteId();
 
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
+
   if ( mResource->addSubresource( collection.name(), parent.remoteId() ) ) {
     // result delivered by signalSubresourceAdded(). how do we best relate this?
     changeCommitted( collection );
@@ -370,6 +394,12 @@ void KCalResource::collectionAdded( const Akonadi::Collection &collection,
 void KCalResource::collectionChanged( const Akonadi::Collection &collection )
 {
   kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId();
+
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
 
   // currently only changing the top level collection's name supported
   if ( collection.parent() == Collection::root().id() ) {
@@ -387,6 +417,12 @@ void KCalResource::collectionChanged( const Akonadi::Collection &collection )
 void KCalResource::collectionRemoved( const Akonadi::Collection &collection )
 {
   kDebug() << "collection id=" << collection.id() << ", remoteId=" << collection.remoteId();
+
+  if ( mResource == 0 ) {
+    kError() << "Resource not fully operational yet";
+    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    return;
+  }
 
   // currently only removing sub resource supported
   const QStringList subResources = mResource->subresources();
