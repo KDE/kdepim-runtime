@@ -80,4 +80,32 @@ KPIM::DistributionListConverter::convertFromKABC( const KABC::DistributionList *
   return pimList;
 }
 
+bool KPIM::DistributionListConverter::updateKABC( const KPIM::DistributionList &pimList, KABC::DistributionList *kabcList )
+{
+  Q_ASSERT( kabcList != 0 );
+
+  if ( pimList.uid() != kabcList->identifier() ) {
+    kError() << "Trying to update KABC distributionlist (id="
+             << kabcList->identifier() << ", name=" << kabcList->name()
+             << ") with different (id mismatch) KPIM distributionlist"
+             << pimList.uid() << ", name=" << pimList.name() << ")";
+    return false;
+  }
+
+  kabcList->setName( pimList.name() );
+
+  const KABC::DistributionList::Entry::List kabcEntries = kabcList->entries();
+  foreach ( const KABC::DistributionList::Entry &entry, kabcEntries ) {
+    kabcList->removeEntry( entry.addressee(), entry.email() );
+  }
+
+  const KPIM::DistributionList::Entry::List pimEntries =
+    pimList.entries( d->mResource->addressBook() );
+  foreach ( const KPIM::DistributionList::Entry &entry, pimEntries ) {
+    kabcList->insertEntry( entry.addressee, entry.email );
+  }
+
+  return true;
+}
+
 // kate: space-indent on; indent-width 2; replace-tabs on;

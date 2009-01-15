@@ -70,6 +70,15 @@ class KDEPIM_EXPORT DistributionListConverter
      */
     KPIM::DistributionList convertFromKABC( const KABC::DistributionList *kabcList );
 
+    /**
+     * Updates a KABC list using a matching KPIM list
+     *
+     * @param pimList the KPIM::Distribution list to take the data from
+     * @param kabcList the KABC::Distribution list to updateKABC
+     * @return @c false if the identifiers don't match, otherwise @c true
+     */
+    bool updateKABC( const KPIM::DistributionList &pimList, KABC::DistributionList *kabcList );
+
   private:
     //@cond PRIVATE
     class Private;
