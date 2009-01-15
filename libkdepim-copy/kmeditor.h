@@ -85,9 +85,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
     void setUseExternalEditor( bool use );
     void setExternalEditorPath( const QString & path );
 
-    /// FIXME: Huh? This is not virtual in the base classes and thus never called
-    void paste();
-
     /**
      * Show the open file dialog and returns the selected URL there.
      * The file dialog has an encoding combobox displayed, and the selected
@@ -196,6 +193,11 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
     QString toWrappedPlainText() const;
 
     /**
+     * Same as toPlainText() from QTextEdit, only that it removes embedded images.
+     */
+    QString toCleanPlainText() const;
+
+    /**
      * Reimplemented again to work around a bug (see comment in implementation).
      * FIXME: This is _not_ virtual in the base class
      */
@@ -225,7 +227,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
      */
     void focusChanged( bool focusGained );
 
-    void pasteImage();
     void focusUp();
     void overwriteModeText();
 

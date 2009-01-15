@@ -305,15 +305,6 @@ void KMeditor::dragMoveEvent( QDragMoveEvent *e )
   KRichTextWidget::dragMoveEvent( e );
 }
 
-void KMeditor::paste()
-{
-  if ( !QApplication::clipboard()->image().isNull() )  {
-    emit pasteImage();
-  }
-  else
-    KRichTextWidget::paste();
-}
-
 void KMeditor::insertFromMimeData( const QMimeData * source )
 {
   // Attempt to paste HTML contents into the text edit in plain text mode,
@@ -978,6 +969,17 @@ QString KMeditor::toWrappedPlainText() const
   // line separator character, so we can't even rely on that.
   temp.remove( QChar::LineSeparator );
 
+  // Get rid of embedded images, see QTextImageFormat documentation:
+  // "Inline images are represented by an object replacement character (0xFFFC in Unicode) "
+  temp.remove( 0xFFFC );
+
+  return temp;
+}
+
+QString KMeditor::toCleanPlainText() const
+{
+  QString temp = toPlainText();
+  temp.remove( 0xFFFC ); // See toWrappedPlainText().
   return temp;
 }
 
