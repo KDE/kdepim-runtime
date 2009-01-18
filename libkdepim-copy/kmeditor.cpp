@@ -79,7 +79,6 @@ class KMeditorPrivate
     //
 
     QString addQuotesToText( const QString &inputText );
-    QString removeQuotesFromText( const QString &inputText ) const;
     void init();
 
     // Returns the text of the signature. If the signature is HTML, the HTML
@@ -552,70 +551,44 @@ void KMeditor::slotPasteAsQuotation()
 
 void KMeditor::slotRemoveQuotes()
 {
-  // TODO: I think this is backwards.
-  // i.e, if no region is marked then remove quotes from every line
-  // else remove quotes only on the lines that are marked.
   QTextCursor cursor = textCursor();
-  if(cursor.hasSelection())
-  {
-    QString s = cursor.selectedText();
-    insertPlainText( d->removeQuotesFromText( s ) );
-  }
-  else
-  {
-    int oldPos = cursor.position();
-    cursor.movePosition( QTextCursor::StartOfBlock );
-    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-    QString s = cursor.selectedText();
-    if ( !s.isEmpty() )
-    {
-      cursor.insertText( d->removeQuotesFromText( s ) );
-      cursor.setPosition( qMax( 0, oldPos - 2 ) );
-      setTextCursor( cursor );
+  cursor.beginEditBlock();
+  if ( !cursor.hasSelection() )
+    cursor.select( QTextCursor::Document );
+
+  QTextBlock block = document()->findBlock( cursor.selectionStart() );
+  int selectionEnd = cursor.selectionEnd();
+  while ( block.isValid() && block.position() <= selectionEnd ) {
+    cursor.setPosition( block.position() );
+    if ( block.text().startsWith( quotePrefixName() ) ) {
+      int length = quotePrefixName().length();
+      cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor, length );
+      cursor.removeSelectedText();
+      selectionEnd -= length;
     }
+    block = block.next();
   }
+  cursor.clearSelection();
+  cursor.endEditBlock();
 }
 
 void KMeditor::slotAddQuotes()
 {
-  // TODO: I think this is backwards.
-  // i.e, if no region is marked then add quotes to every line
-  // else add quotes only on the lines that are marked.
   QTextCursor cursor = textCursor();
-  if ( cursor.hasSelection() )
-  {
-    QString s = cursor.selectedText();
-    if ( !s.isEmpty() ) {
-      cursor.insertText( d->addQuotesToText( s ) );
-      setTextCursor( cursor );
-    }
+  cursor.beginEditBlock();
+  if ( !cursor.hasSelection() )
+    cursor.select( QTextCursor::Document );
+
+  QTextBlock block = document()->findBlock( cursor.selectionStart() );
+  int selectionEnd = cursor.selectionEnd();
+  while ( block.isValid() && block.position() <= selectionEnd ) {
+    cursor.setPosition( block.position() );
+    cursor.insertText( quotePrefixName() );
+    selectionEnd += quotePrefixName().length();
+    block = block.next();
   }
-  else {
-    int oldPos = cursor.position();
-    cursor.movePosition( QTextCursor::StartOfBlock );
-    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-    QString s = cursor.selectedText();
-    cursor.insertText( d->addQuotesToText( s ) );
-    cursor.setPosition( oldPos + 2 ); //FIXME: 2 probably wrong
-    setTextCursor( cursor );
-  }
-}
-
-QString KMeditorPrivate::removeQuotesFromText( const QString &inputText ) const
-{
-  QString s = inputText;
-
-  // remove first leading quote
-  QString quotePrefix = '^' + q->quotePrefixName();
-  QRegExp rx( quotePrefix );
-  s.remove( rx );
-
-  // now remove all remaining leading quotes
-  quotePrefix = QString( QChar::ParagraphSeparator ) + ' ' + q->quotePrefixName();
-  QRegExp srx( quotePrefix );
-  s.remove( srx );
-
-  return s;
+  cursor.clearSelection();
+  cursor.endEditBlock();
 }
 
 QString KMeditorPrivate::addQuotesToText( const QString &inputText )
