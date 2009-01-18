@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Birthdays & Anniveraries
+Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
+Type=AkonadiResource
+Exec=akonadi_birthdays_resource
+Icon=preferences-web-browser-cookies
+
+X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event
+X-Akonadi-Capabilities=Resource,Unique
+X-Akonadi-Identifier=akonadi_birthdays_resource

@@ -25,6 +25,7 @@ if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( imap )
   add_subdirectory( nepomuktag )
   add_subdirectory( distlist )
+  add_subdirectory(birthdays)
 endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.
