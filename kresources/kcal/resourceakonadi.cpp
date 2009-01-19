@@ -475,6 +475,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
                          << "(" << incidence->summary()
                          << ") from subResource" << subResource;
           }
+          d->mChanges.remove( it.key() );
           it = d->mUidToResourceMap.erase( it );
         }
         else
@@ -923,13 +924,20 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
       const Item::Id id = item.id();
       mIdMapping.insert( incidencePtr->uid(), id );
 
-      Incidence *incidence = incidencePtr->clone();
-      if ( !mCalendar.addIncidence( incidence ) ) {
-        kError(5800) << "Failed to add incidence" << incidence->uid()
-                         << "(" << incidence->summary()
-                         << ") to subResource" << collectionUrl;
+      Incidence *cachedIncidence = mCalendar.incidence( incidencePtr->uid() );
+      if ( cachedIncidence != 0 ) {
+        *cachedIncidence = *(incidencePtr.get());
+      } else {
+        Incidence *incidence = incidencePtr->clone();
+        if ( !mCalendar.addIncidence( incidence ) ) {
+          kError(5800) << "Failed to add incidence" << incidence->uid()
+                          << "(" << incidence->summary()
+                          << ") to subResource" << collectionUrl;
+          delete incidence;
+        }
       }
-      mUidToResourceMap.insert( incidence->uid(), collectionUrl );
+      mChanges.remove( incidencePtr->uid() );
+      mUidToResourceMap.insert( incidencePtr->uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
     }
 
@@ -1027,8 +1035,9 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   bool internalModification = mInternalCalendarModification;
   mInternalCalendarModification = true;
 
-  mCalendar.deleteIncidence( cachedIncidence );
-  mCalendar.addIncidence( incidence.get()->clone() );
+//   mCalendar.deleteIncidence( cachedIncidence );
+//   mCalendar.addIncidence( incidence.get()->clone() );
+  *cachedIncidence = *(incidence.get());
 
   mInternalCalendarModification = internalModification;
 
@@ -1223,6 +1232,7 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
                                << "(" << incidence->summary()
                                << ") from subResource" << collectionUrl;
                 }
+                mChanges.remove( uidIt.key() );
                 uidIt = mUidToResourceMap.erase( uidIt );
               }
               else
@@ -1477,12 +1487,14 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool
       mIdMapping.insert( incidencePtr->uid(), id );
 
       Incidence *incidence = mCalendar.incidence( incidencePtr->uid() );
-      if ( incidence != 0 )
-        mCalendar.deleteIncidence( incidence );
-
-      mCalendar.addIncidence( incidencePtr->clone() );
+      if ( incidence != 0 ) {
+        *incidence = *(incidencePtr.get());
+      } else {
+        mCalendar.addIncidence( incidencePtr->clone() );
+      }
       mUidToResourceMap.insert( incidencePtr->uid(), collectionUrl );
       mItemIdToResourceMap.insert( id, collectionUrl );
+      mChanges.remove( incidencePtr->uid() );
     }
 
     // always update the item
