@@ -11,7 +11,7 @@
     </entry>
     <entry name="AutosaveInterval" type="UInt">
       <label>Autosave interval time (in minutes).</label>
-      <default>5</default>
+      <default>1</default>
     </entry>
     <entry name="ReadOnly" type="Bool">
       <label>Do not change the actual backend data.</label>
