@@ -1,3 +1,4 @@
+macro_optional_find_package(LibXml2)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
   ${CMAKE_CURRENT_BINARY_DIR}/shared
@@ -13,7 +14,9 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
 )
 
 if ( XSLTPROC_EXECUTABLE )
-  add_subdirectory( knut )
+  if(LIBXML2_FOUND)
+    add_subdirectory( knut )
+  endif(LIBXML2_FOUND)
   add_subdirectory( ical )
   add_subdirectory( maildir )
   add_subdirectory( nntp )
