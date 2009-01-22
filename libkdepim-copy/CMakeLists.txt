@@ -69,7 +69,6 @@ set(kdepim_LIB_SRCS
    messagestatus.cpp
    kemailquotinghighter.cpp
    kmailcompletion.cpp
-   networkstatus.cpp
    kmeditor.cpp
    autochecktreewidget.cpp
    utils.cpp
