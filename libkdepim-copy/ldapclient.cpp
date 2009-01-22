@@ -113,11 +113,6 @@ void LdapClient::slotDone()
 {
   endParseLDIF();
   mActive = false;
-#if 0
-  for ( Q3ValueList<LdapObject>::Iterator it = mObjects.begin(); it != mObjects.end(); ++it ) {
-    qDebug( (*it).toString().toLatin1() );
-  }
-#endif
   int err = mJob->error();
   if ( err && err != KIO::ERR_USER_CANCELED ) {
     emit error( mJob->errorString() );
