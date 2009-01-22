@@ -36,11 +36,8 @@
 #include <KConfig>
 #include <KDialog>
 
-#include <Q3PtrList>
-
-class Q3ListViewItem;
 class KPushButton;
-class K3ListView;
+class QTreeWidget;
 
 namespace KPIM {
 
@@ -59,14 +56,6 @@ public:
 };
 
 
-// I don't like QPtrList much, but it has compareItems, which QValueList doesn't
-class CompletionItemList : public Q3PtrList<CompletionItem>
-{
-public:
-  CompletionItemList() {}
-  virtual int compareItems( Q3PtrCollection::Item s1, Q3PtrCollection::Item s2 );
-};
-
 class KDEPIM_EXPORT CompletionOrderEditor : public KDialog {
   Q_OBJECT
 
@@ -80,15 +69,15 @@ Q_SIGNALS:
   void completionOrderChanged();
 
 private Q_SLOTS:
-  void slotSelectionChanged( Q3ListViewItem* );
+  void slotSelectionChanged();
   void slotMoveUp();
   void slotMoveDown();
   virtual void slotOk();
 
 private:
   KConfig mConfig;
-  CompletionItemList mItems;
-  K3ListView* mListView;
+  QList<CompletionItem*> mItems;
+  QTreeWidget* mListView;
   KPushButton* mUpButton;
   KPushButton* mDownButton;
 
