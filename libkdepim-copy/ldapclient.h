@@ -201,7 +201,6 @@ class KDEPIM_EXPORT LdapSearch : public QObject
     QString mConfigFile;
 
   private:
-    static KConfig *s_config;
     class LdapSearchPrivate* d;
 };
 

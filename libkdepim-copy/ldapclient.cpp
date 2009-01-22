@@ -42,8 +42,7 @@
 
 using namespace KPIM;
 
-KConfig *KPIM::LdapSearch::s_config = 0L;
-static K3StaticDeleter<KConfig> configDeleter;
+K_GLOBAL_STATIC_WITH_ARGS(KConfig, s_config, ("kabldaprc", KConfig::NoGlobals) )
 
 LdapClient::LdapClient( int clientNumber, QObject* parent, const char* name )
   : QObject( parent ), mJob( 0 ), mActive( false )
@@ -313,9 +312,6 @@ void LdapSearch::writeConfig( const KLDAP::LdapServer &server, KConfigGroup &con
 
 KConfig* LdapSearch::config()
 {
-  if ( !s_config )
-    configDeleter.setObject( s_config, new KConfig("kabldaprc", KConfig::NoGlobals) ); // Open read-write, no kdeglobals
-
   return s_config;
 }
 
