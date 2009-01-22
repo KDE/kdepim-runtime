@@ -27,7 +27,6 @@
 #include <akonadi/agenttype.h>
 
 #include <KDebug>
-#include <KGlobal>
 
 using namespace Akonadi;
 
