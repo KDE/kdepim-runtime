@@ -32,6 +32,7 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
+#include <klocale.h>
 
 #include "ui_kabcitemeditor.h"
 #include "waitingoverlay.h"
@@ -103,8 +104,8 @@ void KABCItemEditor::Private::itemChanged( const Item&, const QSet<QByteArray>& 
   QMessageBox dlg( mParent );
 
   dlg.setInformativeText( QLatin1String( "The contact has been changed by anyone else\nWhat shall be done?" ) );
-  dlg.addButton( QLatin1String( "Take over changes" ), QMessageBox::AcceptRole );
-  dlg.addButton( QLatin1String( "Ignore and Overwrite changes" ), QMessageBox::RejectRole );
+  dlg.addButton( i18n( "Take over changes" ), QMessageBox::AcceptRole );
+  dlg.addButton( i18n( "Ignore and Overwrite changes" ), QMessageBox::RejectRole );
 
   if ( dlg.exec() == QMessageBox::AcceptRole ) {
     ItemFetchJob *job = new ItemFetchJob( mItem );
