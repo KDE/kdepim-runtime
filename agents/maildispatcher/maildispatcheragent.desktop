@@ -7,6 +7,7 @@ Name[nds]=Akonadi-Nettpostverdeel-Hölper
 Name[pt]=Agente de Envio de Correio do Akonadi
 Name[pt_BR]=Agente de Envio de Correio do Akonadi
 Name[sv]=Akonadi e-postavsändningsmodul
+Name[tr]=Akonadi Posta Gönderim Aracısı
 Name[uk]=Агент розподілу пошти Akonadi
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
