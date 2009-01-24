@@ -46,7 +46,6 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   private:
-    void doFullSearch();
     void addPendingEvent( KCal::Event *event, const QString &remoteId );
 
     KCal::Event* createBirthday( const Akonadi::Item &contactItem );
@@ -54,6 +53,7 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     KCal::Event* createEvent( const QDate &date );
 
   private slots:
+    void doFullSearch();
     void listContacts( const Akonadi::Collection::List &cols );
     void createEvents( const Akonadi::Item::List &items );
 

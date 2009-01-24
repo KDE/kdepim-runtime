@@ -20,6 +20,7 @@
 #include "kcalmigrator.h"
 
 #include "icalsettings.h"
+#include "birthdayssettings.h"
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -40,6 +41,8 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
     createAgentInstance( "akonadi_ical_resource", this, SLOT(fileResourceCreated(KJob*)) );
+  else if ( res->type() == "birthdays" )
+    createAgentInstance( "akonadi_birthdays_resource", this, SLOT(birthdaysResourceCreated(KJob*)) );
   else
     return false;
   return true;
@@ -62,11 +65,37 @@ void KCalMigrator::fileResourceCreated(KJob * job)
     migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
-  // TODO: the akonadi ical resource doesn't support remote files yet...
   iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
   iface->setReadOnly( res->readOnly() );
   instance.reconfigure();
   migrationCompleted( instance );
 }
+
+void KCalMigrator::birthdaysResourceCreated(KJob* job)
+{
+  if ( job->error() ) {
+    migrationFailed( i18n("Failed to create birthdays resource: %1", job->errorText() ) );
+    return;
+  }
+  KCal::ResourceCalendar *res = currentResource();
+  AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
+  const KConfigGroup kresCfg = kresConfig( res );
+  instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Birthdays" ) );
+
+  OrgKdeAkonadiBirthdaysSettingsInterface *iface =
+    new OrgKdeAkonadiBirthdaysSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+                                                 "/Settings", QDBusConnection::sessionBus(), this );
+  if ( !iface->isValid() ) {
+    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    return;
+  }
+  iface->setEnableAlarm( kresCfg.readEntry( "Alarm", true ) );
+  iface->setAlarmDays( kresCfg.readEntry( "AlarmDays", 1 ) );
+  iface->setFilterOnCategories( kresCfg.readEntry( "UseCategories", false ) );
+  iface->setFilterCategories( kresCfg.readEntry( "Categories", QStringList() ) );
+  instance.reconfigure();
+  migrationCompleted( instance );
+}
+
 
 #include "kcalmigrator.moc"

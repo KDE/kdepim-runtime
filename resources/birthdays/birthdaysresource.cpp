@@ -61,6 +61,8 @@ BirthdaysResource::BirthdaysResource(const QString& id) :
            SLOT(contactChanged(Akonadi::Item)) );
   connect( monitor, SIGNAL(itemRemoved(Akonadi::Item)),
            SLOT(contactRemoved(Akonadi::Item)) );
+
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(doFullSearch()) );
 }
 
 BirthdaysResource::~BirthdaysResource()

@@ -1,4 +1,4 @@
 [Migration]
 Enabled=true
 SetupClientBridge=true
-TargetVersion=1
+TargetVersion=2

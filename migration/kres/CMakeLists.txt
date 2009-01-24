@@ -6,15 +6,17 @@ set(kres-migrator_srcs
     infodialog.cpp
 )
 
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../resources/vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../resources/ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
+macro(add_resource_iface _kcfgFile _ifaceName _className)
+  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../resources/${_kcfgFile} ${_ifaceName})
+  string(TOLOWER ${_className} _codeFile)
+  qt4_add_dbus_interface(kres-migrator_srcs
+    ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
+  )
+endmacro(add_resource_iface)
 
-qt4_add_dbus_interface(kres-migrator_srcs
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCard.Settings.xml vcardsettings VCardSettings
-)
-qt4_add_dbus_interface(kres-migrator_srcs
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml icalsettings ICalSettings
-)
+add_resource_iface( vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings VCardSettings )
+add_resource_iface( ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings ICalSettings )
+add_resource_iface( birthdays/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings BirthdaysSettings )
 
 kde4_add_app_icon(kres-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kres-migrator ${kres-migrator_srcs})

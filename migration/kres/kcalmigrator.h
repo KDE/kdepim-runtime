@@ -41,6 +41,7 @@ class KCalMigrator : public KResMigrator<KCal::ResourceCalendar>
 
   private slots:
     void fileResourceCreated( KJob* job );
+    void birthdaysResourceCreated( KJob *job );
 };
 
 #endif
