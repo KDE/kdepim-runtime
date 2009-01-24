@@ -54,14 +54,7 @@ void KABCMigrator::migrateFileResource(KABC::Resource * res)
         "The file format '%1' is no longer supported, please convert to another one.", format ) );
     return;
   }
-  const AgentType type = AgentManager::self()->type( "akonadi_vcard_resource" );
-  if ( !type.isValid() ) {
-    migrationFailed( "Unable to obtain vcard resource type." );
-    return;
-  }
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fileResourceCreated(KJob*)) );
-  job->start();
+  createAgentInstance( "akonadi_vcard_resource", this, SLOT(fileResourceCreated(KJob*)) );
 }
 
 void KABCMigrator::fileResourceCreated(KJob * job)

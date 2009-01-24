@@ -105,14 +105,7 @@ void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typ
 
   emit message( Info, i18n( "Trying to migrate '%1' to compatibility bridge...", res->resourceName() ) );
   mBridgingInProgress = true;
-  const AgentType type = AgentManager::self()->type( typeId );
-  if ( !type.isValid() ) {
-    migrationFailed( i18n( "Unable to obtain bridge type '%1'.", mBridgeType ) );
-    return;
-  }
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(resourceBridgeCreated(KJob*)) );
-  job->start();
+  createAgentInstance( typeId, this, SLOT(resourceBridgeCreated(KJob*)) );
 }
 
 void KResMigratorBase::resourceBridgeCreated(KJob * job)
@@ -181,5 +174,18 @@ void KResMigratorBase::setOmitClientBridge(bool b)
 {
   mOmitClientBridge = b;
 }
+
+void KResMigratorBase::createAgentInstance(const QString& typeId, QObject* receiver, const char* slot)
+{
+  const AgentType type = AgentManager::self()->type( typeId );
+  if ( !type.isValid() ) {
+    migrationFailed( i18n("Unable to obtain resource type '%1'.", typeId) );
+    return;
+  }
+  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
+  connect( job, SIGNAL(result(KJob*)), receiver, slot );
+  job->start();
+}
+
 
 #include "kresmigratorbase.moc"

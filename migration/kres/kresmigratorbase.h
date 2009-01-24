@@ -75,6 +75,9 @@ class KResMigratorBase : public QObject
   signals:
     void message( KResMigratorBase::MessageType type, const QString &msg );
 
+  protected:
+    void createAgentInstance( const QString &typeId, QObject *reciver, const char* slot );
+
   protected slots:
     virtual void migrate() = 0;
 

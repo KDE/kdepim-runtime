@@ -39,23 +39,10 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 {
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
-    migrateFileResource( res );
+    createAgentInstance( "akonadi_ical_resource", this, SLOT(fileResourceCreated(KJob*)) );
   else
     return false;
   return true;
-}
-
-void KCalMigrator::migrateFileResource(KCal::ResourceCalendar * res)
-{
-  Q_UNUSED( res );
-  const AgentType type = AgentManager::self()->type( "akonadi_ical_resource" );
-  if ( !type.isValid() ) {
-    migrationFailed( "Unable to obtain ical resource type" );
-    return;
-  }
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fileResourceCreated(KJob*)) );
-  job->start();
 }
 
 void KCalMigrator::fileResourceCreated(KJob * job)

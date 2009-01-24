@@ -41,12 +41,6 @@ class KCalMigrator : public KResMigrator<KCal::ResourceCalendar>
 
   private slots:
     void fileResourceCreated( KJob* job );
-
-  private:
-    void migrateFileResource( KCal::ResourceCalendar *res );
-
-  private:
-    QHash<KJob*, KCal::ResourceCalendar*> mJobMap;
 };
 
 #endif
