@@ -96,7 +96,6 @@ class KDEPIM_EXPORT BroadcastStatus : public QObject
     BroadcastStatus();
     QString mStatusMsg;
     bool mTransientActive;
-    static BroadcastStatus *instance_;
 };
 
 }

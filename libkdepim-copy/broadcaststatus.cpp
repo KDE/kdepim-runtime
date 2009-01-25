@@ -27,19 +27,25 @@
 
 #include <KLocale>
 #include <KGlobal>
-#include <K3StaticDeleter>
 
+#include <QCoreApplication>
 #include <QTime>
 
-KPIM::BroadcastStatus *KPIM::BroadcastStatus::instance_ = 0;
-static K3StaticDeleter<KPIM::BroadcastStatus> broadcastStatusDeleter;
+static KPIM::BroadcastStatus *instance_;
+
+static void deleteGlobalStaticBroadcastStatus()
+{
+  delete instance_;
+  instance_ = 0;
+}
 
 namespace KPIM {
 
 BroadcastStatus *BroadcastStatus::instance()
 {
   if ( !instance_ ) {
-    broadcastStatusDeleter.setObject( instance_, new BroadcastStatus() );
+    instance_ = new BroadcastStatus();
+    qAddPostRoutine( deleteGlobalStaticBroadcastStatus );
   }
   return instance_;
 }
