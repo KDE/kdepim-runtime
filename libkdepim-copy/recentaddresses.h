@@ -70,7 +70,7 @@ class KDEPIM_EXPORT RecentAddresses
     /*
      * @return true if self() was called, i.e. a RecentAddresses instance exists
      */
-    static bool exists() { return s_self != 0; }
+    static bool exists();
 
     /**
      * @returns the list of recent addresses.
@@ -124,8 +124,6 @@ class KDEPIM_EXPORT RecentAddresses
     void adjustSize();
 
     int m_maxCount;
-
-    static RecentAddresses *s_self;
 };
 
 }

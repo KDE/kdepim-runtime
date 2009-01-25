@@ -36,23 +36,33 @@
 #include <KGlobal>
 #include <KLocale>
 #include <KEditListBox>
-#include <K3StaticDeleter>
 
+#include <QCoreApplication>
 #include <QLayout>
 #include <QVBoxLayout>
 
 using namespace KPIM;
 
-static K3StaticDeleter<RecentAddresses> sd;
+RecentAddresses *s_self = 0;
 
-RecentAddresses *RecentAddresses::s_self = 0;
+void deleteGlobalRecentAddresses()
+{
+  delete s_self;
+  s_self = 0;
+}
 
 RecentAddresses *RecentAddresses::self( KConfig *config )
 {
   if ( !s_self ) {
-    sd.setObject( s_self, new RecentAddresses( config ) );
+    s_self = new RecentAddresses( config );
+    qAddPostRoutine( deleteGlobalRecentAddresses );
   }
   return s_self;
+}
+
+bool RecentAddresses::exists()
+{
+  return s_self != 0;
 }
 
 RecentAddresses::RecentAddresses( KConfig *config )
