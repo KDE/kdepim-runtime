@@ -34,10 +34,10 @@
 #include <qcheckbox.h>
 #include <qevent.h>
 #include <qgroupbox.h>
-#include <q3header.h>
+#include <QHeaderView>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <q3listview.h>
+#include <QTreeWidget>
 #include <qlistview.h>
 #include <qpushbutton.h>
 
@@ -101,22 +101,16 @@ static QMap<QString, QString> &adrbookattr2ldap()
   return keys;
 }
 
-class ContactListItem : public Q3ListViewItem
+class ContactListItem : public QTreeWidgetItem
 {
   public:
-    ContactListItem( Q3ListView *parent, const KLDAP::LdapAttrMap &attrs )
-      : Q3ListViewItem( parent ), mAttrs( attrs )
+    ContactListItem( QTreeWidget *parent, const KLDAP::LdapAttrMap &attrs )
+      : QTreeWidgetItem( parent ), mAttrs( attrs )
     { }
 
     KLDAP::LdapAttrMap mAttrs;
 
-    virtual QString text( int col ) const
-    {
-      // Look up a suitable attribute for column col
-      const QString colName = listView()->columnText( col );
-      const QString ldapAttrName = adrbookattr2ldap()[ colName ];
-      return join( mAttrs[ ldapAttrName ], ", " );
-    }
+
 };
 
 LdapSearchDialog::LdapSearchDialog( QWidget *parent, const char *name )
@@ -183,10 +177,11 @@ LdapSearchDialog::LdapSearchDialog( QWidget *parent, const char *name )
 
   topLayout->addWidget( groupBox );
 
-  mResultListView = new Q3ListView( page );
-  mResultListView->setSelectionMode( Q3ListView::Multi );
+  mResultListView = new QTreeWidget( page );
+  mResultListView->setAlternatingRowColors( true );
+  mResultListView->setSelectionMode( QAbstractItemView::MultiSelection );
   mResultListView->setAllColumnsShowFocus( true );
-  mResultListView->setShowSortIndicator( true );
+  mResultListView->setSortingEnabled( true );
   topLayout->addWidget( mResultListView );
 
   resize( QSize( 600, 400 ).expandedTo( minimumSizeHint() ) );
@@ -289,30 +284,32 @@ void LdapSearchDialog::restoreSettings()
       mLdapClientList.append( ldapClient );
     }
 
-/** CHECKIT*/
-    while ( mResultListView->header()->count() > 0 ) {
-      mResultListView->removeColumn(0);
-    }
+    // Remove existing columns
+    mResultListView->setColumnCount( 0 );
 
-    mResultListView->addColumn( i18n( "Full Name" ) );
-    mResultListView->addColumn( i18n( "Email" ) );
-    mResultListView->addColumn( i18n( "Home Number" ) );
-    mResultListView->addColumn( i18n( "Work Number" ) );
-    mResultListView->addColumn( i18n( "Mobile Number" ) );
-    mResultListView->addColumn( i18n( "Fax Number" ) );
-    mResultListView->addColumn( i18n( "Company" ) );
-    mResultListView->addColumn( i18n( "Organization" ) );
-    mResultListView->addColumn( i18n( "Street" ) );
-    mResultListView->addColumn( i18n( "State" ) );
-    mResultListView->addColumn( i18n( "Country" ) );
-    mResultListView->addColumn( i18n( "Zip Code" ) );
-    mResultListView->addColumn( i18n( "Postal Address" ) );
-    mResultListView->addColumn( i18n( "City" ) );
-    mResultListView->addColumn( i18n( "Department" ) );
-    mResultListView->addColumn( i18n( "Description" ) );
-    mResultListView->addColumn( i18n( "User ID" ) );
-    mResultListView->addColumn( i18n( "Title" ) );
+    QStringList headerLabels;
+    headerLabels << i18n( "Full Name" )
+                 << i18n( "Email" )
+                 << i18n( "Home Number" )
+                 << i18n( "Work Number" )
+                 << i18n( "Mobile Number" )
+                 << i18n( "Fax Number" )
+                 << i18n( "Company" )
+                 << i18n( "Organization" )
+                 << i18n( "Street" )
+                 << i18n( "State" )
+                 << i18n( "Country" )
+                 << i18n( "Zip Code" )
+                 << i18n( "Postal Address" )
+                 << i18n( "City" )
+                 << i18n( "Department" )
+                 << i18n( "Description" )
+                 << i18n( "User ID" )
+                 << i18n( "Title" );
 
+    mResultListView->setHeaderLabels( headerLabels );
+    mResultListView->setColumnWidth( 0, 200 );
+    mResultListView->setColumnWidth( 1, 200 );
     mResultListView->clear();
   }
 }
@@ -334,7 +331,16 @@ void LdapSearchDialog::cancelQuery()
 
 void LdapSearchDialog::slotAddResult( const KPIM::LdapClient &, const KLDAP::LdapObject &obj )
 {
-  new ContactListItem( mResultListView, obj.attributes() );
+  ContactListItem *itemToAdd = new ContactListItem( mResultListView, obj.attributes() );
+
+  for ( int column = 0; column < mResultListView->columnCount(); column++ )
+  {
+    const QString colName = mResultListView->model()->headerData( column, Qt::Horizontal ).toString();
+    const QString ldapAttrName = adrbookattr2ldap()[ colName ];
+    itemToAdd->setText( column, join( itemToAdd->mAttrs[ ldapAttrName ], ", " ) );
+  }
+
+  mResultListView->addTopLevelItem( itemToAdd );
 }
 
 void LdapSearchDialog::slotSetScope( bool rec )
@@ -453,8 +459,8 @@ void LdapSearchDialog::closeEvent( QCloseEvent *e )
 QString LdapSearchDialog::selectedEMails() const
 {
   QStringList result;
-  ContactListItem *cli = static_cast<ContactListItem *>( mResultListView->firstChild() );
-  while ( cli ) {
+  for ( int i = 0; i < mResultListView->topLevelItemCount(); i++ ) {
+    ContactListItem *cli = static_cast<ContactListItem *>( mResultListView->topLevelItem( i ) );
     if ( cli->isSelected() ) {
       QString email = asUtf8( cli->mAttrs[ "mail" ].first() ).trimmed();
       if ( !email.isEmpty() ) {
@@ -466,7 +472,6 @@ QString LdapSearchDialog::selectedEMails() const
         }
       }
     }
-    cli = static_cast<ContactListItem *>( cli->nextSibling() );
   }
 
   return result.join( ", " );
@@ -479,10 +484,10 @@ void LdapSearchDialog::slotButtonClicked( int button )
     KToolInvocation::self()->invokeHelp( "ldap-queries" );
     break;
   case User1:
-    mResultListView->selectAll( false );
+    mResultListView->clearSelection();
     break;
   case User2:
-    mResultListView->selectAll( true );
+    mResultListView->selectAll();
     break;
   case User3:
     emit addresseesAdded();

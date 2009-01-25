@@ -30,7 +30,7 @@
 class KComboBox;
 
 class QCheckBox;
-class Q3ListView;
+class QTreeWidget;
 class QPushButton;
 
 namespace KPIM {
@@ -87,7 +87,7 @@ class KDEPIM_EXPORT LdapSearchDialog : public KDialog
     KLineEdit *mSearchEdit;
 
     QCheckBox *mRecursiveCheckbox;
-    Q3ListView *mResultListView;
+    QTreeWidget *mResultListView;
     QPushButton *mSearchButton;
 };
 
