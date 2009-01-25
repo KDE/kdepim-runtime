@@ -29,7 +29,7 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
-#include <Q3Dict>
+#include <QHash>
 
 namespace KPIM {
 
@@ -41,7 +41,6 @@ class KDEPIM_EXPORT ProgressItem : public QObject
 {
   Q_OBJECT
   friend class ProgressManager;
-  friend class Q3Dict< ProgressItem >; // so it can be deleted from dicts
 
   public:
 
@@ -246,7 +245,6 @@ class KDEPIM_EXPORT ProgressItem : public QObject
  * needed regularly without the to store a pointer to them or to add child
  * items to parents by id.
  */
-
 class KDEPIM_EXPORT ProgressManager : public QObject
 {
 
@@ -416,7 +414,7 @@ class KDEPIM_EXPORT ProgressManager : public QObject
                                                   bool usesCrypto );
     void emitShowProgressDialogImpl();
 
-    Q3Dict< ProgressItem > mTransactions;
+    QHash< QString, ProgressItem* > mTransactions;
     static ProgressManager *mInstance;
     static unsigned int uID;
 };
