@@ -33,9 +33,9 @@
 #include <KDialog>
 #include <K3ListView>
 
+#include <QList>
+#include <QSet>
 #include <QStringList>
-#include <Q3PtrList>
-#include <Q3PtrDict>
 
 class AddressPickerUI : public QWidget, public Ui::AddressPickerUI
 {
@@ -207,7 +207,7 @@ namespace KPIM {
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
     void addAddresseesToSelected( AddresseeViewItem *parent,
-                                  const Q3PtrList<AddresseeViewItem>& addresses );
+                                  const QList<AddresseeViewItem*>& addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
     KABC::Addressee::List allAddressee( K3ListView* view, bool onlySelected = true ) const;
@@ -225,9 +225,9 @@ namespace KPIM {
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
 
-    Q3PtrList<AddresseeViewItem> selectedAvailableAddresses;
-    Q3PtrList<AddresseeViewItem> selectedSelectedAddresses;
-    Q3PtrDict<AddresseeViewItem> selectedToAvailableMapping;
+    QList<AddresseeViewItem*> selectedAvailableAddresses;
+    QList<AddresseeViewItem*> selectedSelectedAddresses;
+    QMap<AddresseeViewItem*,AddresseeViewItem*> selectedToAvailableMapping;
   };
 
 }

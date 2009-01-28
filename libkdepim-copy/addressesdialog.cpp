@@ -511,13 +511,13 @@ AddressesDialog::selectedSelectionChanged()
 void
 AddressesDialog::availableAddressSelected( AddresseeViewItem* item, bool selected )
 {
-  if (selected)
+  if ( selected )
   {
-    selectedAvailableAddresses.append(item);
+    selectedAvailableAddresses.append( item );
   }
   else
   {
-    selectedAvailableAddresses.remove(item);
+    selectedAvailableAddresses.removeAll( item );
   }
 }
 
@@ -530,13 +530,13 @@ AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected
   AddresseeViewItem* parent = static_cast<AddresseeViewItem*>(((Q3ListViewItem*)item)->parent());
   if ( parent  && selected )
     parent->setSelected( false );
-  if (selected)
+  if ( selected )
   {
-    selectedSelectedAddresses.append(item);
+    selectedSelectedAddresses.append( item );
   }
   else
   {
-    selectedSelectedAddresses.remove(item);
+    selectedSelectedAddresses.removeAll( item );
   }
   if ( selected ) {
     AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
@@ -638,22 +638,22 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
 
 void
 AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent,
-                                          const Q3PtrList<AddresseeViewItem>& addresses )
+                                          const QList<AddresseeViewItem*>& addresses )
 {
   Q_ASSERT( parent );
 
-  Q3PtrListIterator<AddresseeViewItem> itr( addresses );
+  QList<AddresseeViewItem*>::const_iterator itr = addresses.begin();
 
-  if (itr.current())
+  if ( itr != addresses.end() )
   {
     d->ui->mSaveAs->setEnabled(true);
   }
 
-  while ( itr.current() ) {
-    AddresseeViewItem* address = itr.current();
+  while ( itr != addresses.end() ) {
+    AddresseeViewItem* address = (*itr);
     ++itr;
 
-    if (selectedToAvailableMapping.find(address) != 0)
+    if ( selectedToAvailableMapping.find( address ) != selectedToAvailableMapping.end() )
     {
       continue;
     }
@@ -714,6 +714,7 @@ AddressesDialog::addSelectedTo()
     delete d->toItem;
     d->toItem = 0;
   }
+  availableSelectionChanged();
 }
 
 void
@@ -736,6 +737,7 @@ AddressesDialog::addSelectedCC()
     delete d->ccItem;
     d->ccItem = 0;
   }
+  availableSelectionChanged();
 }
 
 void
@@ -758,6 +760,7 @@ AddressesDialog::addSelectedBCC()
     delete d->bccItem;
     d->bccItem = 0;
   }
+  availableSelectionChanged();
 }
 
 void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
@@ -781,15 +784,14 @@ void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
 void
 AddressesDialog::removeEntry()
 {
-  Q3PtrList<AddresseeViewItem> lst;
+  QList<AddresseeViewItem*> lst;
   bool resetTo  = false;
   bool resetCC  = false;
   bool resetBCC = false;
 
-  lst.setAutoDelete( false );
-  Q3PtrListIterator<AddresseeViewItem> it( selectedSelectedAddresses );
-  while ( it.current() ) {
-    AddresseeViewItem* item = it.current();
+  QList<AddresseeViewItem*>::iterator it = selectedSelectedAddresses.begin();
+  while ( it != selectedSelectedAddresses.end() ) {
+    AddresseeViewItem* item = (*it);
     ++it;
     if ( d->toItem == item )
       resetTo = true;
@@ -802,7 +804,7 @@ AddressesDialog::removeEntry()
     lst.append( item );
   }
   selectedSelectedAddresses.clear();
-  lst.setAutoDelete( true );
+  qDeleteAll( lst );
   lst.clear();
   if ( resetTo )
     d->toItem  = 0;
@@ -826,6 +828,7 @@ AddressesDialog::removeEntry()
     d->bccItem = 0;
   }
   d->ui->mSaveAs->setEnabled(d->ui->mSelectedView->firstChild() != 0);
+  selectedSelectionChanged();
 }
 
 // copied from kabcore.cpp :(
