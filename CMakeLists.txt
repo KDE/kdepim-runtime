@@ -8,8 +8,11 @@ find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 find_package(KdepimLibs REQUIRED)
 
-find_package(Boost REQUIRED)
+macro_optional_find_package(Boost)
 macro_log_feature(Boost_FOUND "boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
+if(NOT Boost_FOUND)
+  macro_display_feature_log()
+endif(NOT Boost_FOUND)
 
 find_package(Akonadi REQUIRED)
 include_directories(${AKONADI_INCLUDE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
