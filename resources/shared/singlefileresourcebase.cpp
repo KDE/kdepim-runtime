@@ -88,7 +88,6 @@ void SingleFileResourceBase::reloadFile()
     writeFile();
 
   readFile();
-  synchronize();
 }
 
 void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
@@ -127,13 +126,14 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
   if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
     emit status( Broken, i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() ) );
   } else {
-    readFromFile( KUrl( cacheFile() ).url() );
+    readFromFile( KUrl( cacheFile() ).toLocalFile() );
   }
 
   mDownloadJob = 0;
   KGlobal::deref();
 
   emit status( Idle, i18nc( "@info:status", "Ready" ) );
+  synchronize();
 }
 
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )

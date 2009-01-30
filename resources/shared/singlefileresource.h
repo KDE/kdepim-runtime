@@ -102,6 +102,7 @@ class SingleFileResource : public SingleFileResourceBase
           KDirWatch::self()->addFile( mCurrentUrl.path() );
 
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
+        synchronize();
       }
       else
       {
