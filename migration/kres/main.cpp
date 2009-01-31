@@ -58,7 +58,7 @@ int main( int argc, char **argv )
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
   options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
-  options.add( "omit-client-bridge", ki18n("Omit setting up of the cliet side compat bridges") );
+  options.add( "omit-client-bridge", ki18n("Omit setting up of the client side compatibility bridges") );
   options.add( "contacts-only", ki18n("Only migrate contact resources") );
   options.add( "calendar-only", ki18n("Only migrate calendar resources") );
   options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar)" ),
