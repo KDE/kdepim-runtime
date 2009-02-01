@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=Birthdays & Anniversaries
-Name[pt_BR]=Aniversários e aniversários de casamento
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
+Comment[pt]=Oferece o acesso às datas de nascimento e aniversário dos contactos no livro de endereços como eventos do calendário
 Comment[pt_BR]=Fornece acesso às datas de aniversário e de casamento de contatos do seu livro de endereços como eventos de calendário
+Comment[sv]=Ger tillgång till datum för födelsedagar och årsdagar för kontakter i KDE:s adressbok som kalenderhändelser
+Comment[uk]=Надає доступ до дат днів народження і річниць, які зберігаються у вашій адресній книзі як події календаря
 Type=AkonadiResource
 Exec=akonadi_birthdays_resource
 Icon=preferences-web-browser-cookies
