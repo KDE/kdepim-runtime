@@ -48,8 +48,6 @@
 
 #include <QLayout>
 #include <QWidget>
-#include <Q3Dict>
-#include <Q3PtrList>
 #include <QPixmap>
 
 namespace KPIM {
@@ -68,19 +66,19 @@ struct AddressesDialog::AddressesDialogPrivate {
     ldapSearchDialog(0)
   {}
 
-  AddressPickerUI             *ui;
+  AddressPickerUI *ui;
 
-  AddresseeViewItem           *personal;
-  AddresseeViewItem           *recent;
+  AddresseeViewItem *personal;
+  AddresseeViewItem *recent;
 
-  AddresseeViewItem           *toItem;
-  AddresseeViewItem           *ccItem;
-  AddresseeViewItem           *bccItem;
+  AddresseeViewItem *toItem;
+  AddresseeViewItem *ccItem;
+  AddresseeViewItem *bccItem;
 
-  Q3Dict<AddresseeViewItem>     groupDict;
+  QHash<QString, AddresseeViewItem*> groupDict;
 
-  KABC::Addressee::List       recentAddresses;
-  LdapSearchDialog            *ldapSearchDialog;
+  KABC::Addressee::List recentAddresses;
+  LdapSearchDialog  *ldapSearchDialog;
 };
 // privates end
 
@@ -587,13 +585,13 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
     QStringList categories = addr.categories();
 
     for ( QStringList::Iterator it = categories.begin(); it != categories.end(); ++it ) {
-      if ( !d->groupDict[ *it ] ) {  //we don't have the category yet
+      if ( !d->groupDict.contains( *it ) ) {  //we don't have the category yet
         AddresseeViewItem* category = new AddresseeViewItem( d->ui->mAvailableView, *it );
         d->groupDict.insert( *it,  category );
       }
 
       for ( int i = 0; i < addr.emails().count(); ++i ) {
-        AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict[ *it ], addr, i );
+        AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict.value( *it ), addr, i );
         connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
                 this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
       }
@@ -638,7 +636,7 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
 
 void
 AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent,
-                                          const QList<AddresseeViewItem*>& addresses )
+                                          const QList<AddresseeViewItem*> addresses )
 {
   Q_ASSERT( parent );
 

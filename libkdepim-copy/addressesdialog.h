@@ -207,7 +207,7 @@ namespace KPIM {
     void addAddresseeToSelected( const KABC::Addressee& addr,
                                  AddresseeViewItem* defaultParent=0 );
     void addAddresseesToSelected( AddresseeViewItem *parent,
-                                  const QList<AddresseeViewItem*>& addresses );
+                                  const QList<AddresseeViewItem*> addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
     KABC::Addressee::List allAddressee( K3ListView* view, bool onlySelected = true ) const;
