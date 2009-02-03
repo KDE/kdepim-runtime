@@ -1,7 +1,7 @@
 // -*- c-basic-offset: 2 -*-
 /*
     This file is part of libkabc.
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008-2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -40,10 +40,55 @@
 #include <kconfiggroup.h>
 #include <kdebug.h>
 
+#include <QtConcurrentRun>
+#include <QFuture>
 #include <QHash>
 
 using namespace Akonadi;
 using namespace KABC;
+
+class ThreadJobContext
+{
+  public:
+    void clear()
+    {
+      mJobError.clear();
+      mCollections.clear();
+      mItems.clear();
+    }
+
+    bool fetchCollections()
+    {
+      CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+      if ( job->exec() ) {
+        mCollections = job->collections();
+        return true;
+      }
+
+      mJobError = job->errorString();
+      return false;
+    }
+
+    bool fetchItems( const Collection &collection )
+    {
+      ItemFetchJob *job = new ItemFetchJob( collection );
+      job->fetchScope().fetchFullPayload();
+
+      if ( job->exec() ) {
+        mItems = job->items();
+        return true;
+      }
+
+      mJobError = job->errorString();
+      return false;
+    }
+
+  public:
+    QString mJobError;
+
+    Collection::List mCollections;
+    Item::List mItems;
+};
 
 typedef QMap<Item::Id, Item> ItemMap;
 typedef QHash<QString, Item::Id> IdHash;
@@ -156,6 +201,8 @@ class ResourceAkonadi::Private
     ChangeMap mChanges;
 
     QSet<QString> mAsyncLoadCollections;
+
+    ThreadJobContext mThreadJobContext;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -343,15 +390,15 @@ bool ResourceAkonadi::load()
 
   // if we do not have any collection yet, fetch them explicitly
   if ( collections.isEmpty() ) {
-    CollectionFetchJob *colJob =
-      new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    if ( !colJob->exec() ) {
-      emit loadingError( this, colJob->errorString() );
+    d->mThreadJobContext.clear();
+    QFuture<bool> threadResult =
+      QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::fetchCollections );
+    if ( !threadResult.result() ) {
+      emit loadingError( this, d->mThreadJobContext.mJobError );
       return false;
     }
 
-    // TODO: should probably add the data to the model right here
-    collections = colJob->collections();
+    collections = d->mThreadJobContext.mCollections;
   }
 
   bool result = true;
@@ -404,14 +451,15 @@ bool ResourceAkonadi::asyncLoad()
 
   // if we do not have any collection yet, fetch them explicitly
   if ( collections.isEmpty() ) {
-    CollectionFetchJob *colJob =
-      new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    if ( !colJob->exec() ) {
-      emit loadingError( this, colJob->errorString() );
+    d->mThreadJobContext.clear();
+    QFuture<bool> threadResult =
+      QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::fetchCollections );
+    if ( !threadResult.result() ) {
+      emit loadingError( this, d->mThreadJobContext.mJobError );
       return false;
     }
 
-    foreach ( const Collection &collection, colJob->collections() ) {
+    foreach ( const Collection &collection, d->mThreadJobContext.mCollections ) {
       if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) )
             && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
         continue;
@@ -1383,17 +1431,17 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
 bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool &changed )
 {
   changed = false;
-  ItemFetchJob *job = new ItemFetchJob( subResource->mCollection );
-  job->fetchScope().fetchFullPayload();
-
-  if ( !job->exec() ) {
-    emit mParent->loadingError( mParent, job->errorString() );
+  mThreadJobContext.clear();
+  QFuture<bool> threadResult =
+    QtConcurrent::run( &mThreadJobContext, &ThreadJobContext::fetchItems, subResource->mCollection );
+  if ( !threadResult.result() ) {
+    emit mParent->loadingError( mParent, mThreadJobContext.mJobError );
     return false;
   }
 
-  const QString collectionUrl = subResource->mCollection.url().url();
+  Item::List items = mThreadJobContext.mItems;
 
-  Item::List items = job->items();
+  const QString collectionUrl = subResource->mCollection.url().url();
 
   kDebug(5700) << "Reload for sub resource " << collectionUrl
                << "produced" << items.count() << "items";
