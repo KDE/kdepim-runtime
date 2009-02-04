@@ -49,6 +49,7 @@
 #include <QLayout>
 #include <QWidget>
 #include <QPixmap>
+#include <QHeaderView>
 
 namespace KPIM {
 
@@ -84,50 +85,56 @@ struct AddressesDialog::AddressesDialogPrivate {
 
 AddresseeViewItem::AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr,
                                       int emailIndex )
-  : QObject( 0 ), K3ListViewItem( parent, addr.realName(),
-                               ( emailIndex == 0 ? addr.preferredEmail() : addr.emails()[ emailIndex ] ) )
+  : QObject( 0 ), QTreeWidgetItem( parent )
 {
   d = new AddresseeViewItemPrivate;
   d->address = addr;
   d->category = Entry;
 
+  setText( 0, addr.realName() );
+  setText( 1, ( emailIndex == 0 ? addr.preferredEmail() : addr.emails()[ emailIndex ] ) );
   if ( text( 0 ).trimmed().isEmpty() )
     setText( 0, addr.preferredEmail() );
 
   if ( addr.photo().url().isEmpty() ) {
     if ( addr.photo().data().isNull() )
-      setPixmap( 0, KIconLoader::global()->loadIcon( "x-office-contact", KIconLoader::Small ) );
+      setIcon( 0, KIconLoader::global()->loadIcon( "x-office-contact", KIconLoader::Small ) );
     else
-      setPixmap( 0, QPixmap::fromImage( addr.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation
+      setIcon( 0, QPixmap::fromImage( addr.photo().data().scaled( 16, 16, Qt::IgnoreAspectRatio, Qt::SmoothTransformation
 ) ) );
   } else {
-    setPixmap( 0, KIconLoader::global()->loadIcon( addr.photo().url(), KIconLoader::Small ) );
+    setIcon( 0, KIconLoader::global()->loadIcon( addr.photo().url(), KIconLoader::Small ) );
   }
 }
 
-AddresseeViewItem::AddresseeViewItem( K3ListView *lv, const QString& name, Category cat )
-  : QObject(0), K3ListViewItem( lv, name )
+AddresseeViewItem::AddresseeViewItem( QTreeWidget *lv, const QString& name, Category cat )
+  : QObject(0), QTreeWidgetItem( lv )
 {
   d = new AddresseeViewItemPrivate;
   d->category = cat;
+  setText( 0, name );
 }
 
 AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString& name,
                                        const KABC::Addressee::List &lst )
-  : QObject(0), K3ListViewItem( parent, name, i18n("<group>") )
+  : QObject(0), QTreeWidgetItem( parent )
 {
   d = new AddresseeViewItemPrivate;
   d->category = FilledGroup;
   d->addresses = lst;
+  setText( 0, name );
+  setText( 1, i18n("<group>") );
 }
 
 AddresseeViewItem::AddresseeViewItem(  AddresseeViewItem *parent, const QString &name )
-  : QObject( 0 ), K3ListViewItem( parent, name, i18n( "<group>" ) )
+  : QObject( 0 ), QTreeWidgetItem( parent )
 {
   d = new AddresseeViewItemPrivate;
   d->category = DistList;
 
-  setPixmap( 0, KIconLoader::global()->loadIcon( "x-mail-distribution-list", KIconLoader::Small ) );
+  setIcon( 0, KIconLoader::global()->loadIcon( "x-mail-distribution-list", KIconLoader::Small ) );
+  setText( 0, name );
+  setText( 1, i18n( "<group>" ) );
 }
 
 AddresseeViewItem::~AddresseeViewItem()
@@ -172,37 +179,24 @@ bool AddresseeViewItem::matches(const QString& txt) const
         || d->address.preferredEmail().contains(txt, Qt::CaseInsensitive);
 }
 
-void AddresseeViewItem::setSelected(bool selected)
-{
-    if (selected == isSelected())
-    {
-        return;
-    }
-
-    emit addressSelected( this, selected );
-    Q3ListViewItem::setSelected(selected);
-}
-
-int
-AddresseeViewItem::compare( Q3ListViewItem * i, int col, bool ascending ) const
+bool AddresseeViewItem::operator < ( const QTreeWidgetItem& other ) const
 {
   if ( category() == Group || category() == Entry )
-    return K3ListViewItem::compare( i , col, ascending );
+    return QTreeWidgetItem::operator < ( other );
 
-  AddresseeViewItem *item = static_cast<AddresseeViewItem*>( i );
+  // We define our custom sort behavior so that the To, CC and BCC groups are always
+  // sorted in that order, regardless of actual sort direction.
+
+  const AddresseeViewItem &item = static_cast<const AddresseeViewItem&>( other );
   int a = static_cast<int>( category() );
-  int b = static_cast<int>( item->category() );
+  int b = static_cast<int>( item.category() );
 
-  if ( ascending )
-    if ( a < b )
-      return -1;
-    else
-      return 1;
+  Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
+
+  if ( sortOrder == Qt::AscendingOrder )
+    return ( a < b );
   else
-    if ( a < b )
-      return 1;
-    else
-      return -1;
+    return ( a > b );
 }
 
 AddressesDialog::AddressesDialog( QWidget* parent)
@@ -221,7 +215,10 @@ AddressesDialog::AddressesDialog( QWidget* parent)
   updateAvailableAddressees();
   initConnections();
 
+  setInitialSize( QSize( 780, 450 ) );
   d->ui->mAvailableView->setFocus();
+  d->ui->mAvailableView->header()->setResizeMode( QHeaderView::ResizeToContents );
+  d->ui->mSelectedView->header()->setResizeMode( QHeaderView::ResizeToContents );
 }
 
 AddressesDialog::~AddressesDialog()
@@ -235,8 +232,6 @@ AddresseeViewItem* AddressesDialog::selectedToItem()
   if ( !d->toItem )
   {
     d->toItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("To"), AddresseeViewItem::To );
-    connect(d->toItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
   return d->toItem;
 }
@@ -246,8 +241,6 @@ AddresseeViewItem* AddressesDialog::selectedCcItem()
   if ( !d->ccItem )
   {
     d->ccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("CC"), AddresseeViewItem::CC );
-    connect(d->ccItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
   return d->ccItem;
 }
@@ -257,8 +250,6 @@ AddresseeViewItem* AddressesDialog::selectedBccItem()
   if ( !d->bccItem )
   {
     d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
-    connect(d->bccItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
   return d->bccItem;
 }
@@ -319,9 +310,7 @@ AddressesDialog::updateRecentAddresses()
 
   if ( !d->recent ) {
     d->recent = new AddresseeViewItem( d->ui->mAvailableView, recentGroup );
-    connect(d->recent, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
-    d->recent->setVisible( false );
+    d->recent->setHidden( true );
     d->groupDict.insert( recentGroup, d->recent );
   }
 
@@ -330,7 +319,7 @@ AddressesDialog::updateRecentAddresses()
     addAddresseeToAvailable( *it, d->recent );
 
   if ( d->recent->childCount() > 0 ) {
-    d->recent->setVisible( true );
+    d->recent->setHidden( false );
   }
 }
 
@@ -370,7 +359,6 @@ QStringList
 AddressesDialog::bcc() const
 {
   QStringList emails = allDistributionLists( d->bccItem );
-
   KABC::Addressee::List l = bccAddresses();
   emails += entryToString( l );
 
@@ -382,6 +370,7 @@ AddressesDialog::toAddresses()  const
 {
   return allAddressee( d->toItem );
 }
+
 KABC::Addressee::List
 AddressesDialog::allToAddressesNoDuplicates()  const
 {
@@ -397,7 +386,7 @@ AddressesDialog::allToAddressesNoDuplicates()  const
     for( eit = eList.constBegin(); eit != eList.constEnd(); ++eit ) {
       KABC::Addressee a = (*eit).addressee();
       if ( !a.preferredEmail().isEmpty() && !aList.contains( a ) ) {
-          aList.append( a ) ;
+        aList.append( a ) ;
       }
     }
   }
@@ -442,11 +431,8 @@ AddressesDialog::updateAvailableAddressees()
   d->groupDict.clear();
 
   static const QString &personalGroup = KGlobal::staticQString( i18n( "Other Addresses" ) );
-  d->ui->mAvailableView->setRootIsDecorated( true );
   d->personal = new AddresseeViewItem( d->ui->mAvailableView, personalGroup );
-  //connect(d->personal, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-  //        this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
-  d->personal->setVisible( false );
+  d->personal->setHidden( true );
   d->groupDict.insert( personalGroup, d->personal );
 
   KABC::AddressBook *addressBook = KABC::StdAddressBook::self( true );
@@ -460,7 +446,7 @@ AddressesDialog::updateAvailableAddressees()
 
   addDistributionLists();
   if ( d->personal->childCount() > 0 ) {
-    d->personal->setVisible( true );
+    d->personal->setHidden( false );
   }
 
   checkForSingleAvailableGroup();
@@ -468,32 +454,34 @@ AddressesDialog::updateAvailableAddressees()
 
 void AddressesDialog::checkForSingleAvailableGroup()
 {
-  Q3ListViewItem* item = d->ui->mAvailableView->firstChild();
-  Q3ListViewItem* firstGroup = 0;
+  int itemIndex = 0;
+  QTreeWidgetItem* item = d->ui->mAvailableView->topLevelItem( itemIndex );
+  QTreeWidgetItem* firstGroup = 0;
   int found = 0;
-  while (item)
+  while ( item )
   {
-    if (item->isVisible())
+    if ( !item->isHidden() )
     {
-      if (!firstGroup && static_cast<AddresseeViewItem*>(item)->category() != AddresseeViewItem::Entry)
+      if ( !firstGroup &&
+           static_cast<AddresseeViewItem*>( item )->category() != AddresseeViewItem::Entry )
       {
         firstGroup = item;
       }
       ++found;
     }
-    item = item->nextSibling();
+    item = d->ui->mAvailableView->topLevelItem( ++itemIndex );
   }
 
-  if (found == 1 && firstGroup)
+  if ( found == 1 && firstGroup )
   {
-    firstGroup->setOpen(true);
+    d->ui->mAvailableView->expandItem( firstGroup );
   }
 }
 
 void
 AddressesDialog::availableSelectionChanged()
 {
-  bool selection = !selectedAvailableAddresses.isEmpty();
+  bool selection = !d->ui->mAvailableView->selectedItems().isEmpty();
   d->ui->mToButton->setEnabled(selection);
   d->ui->mCCButton->setEnabled(selection);
   d->ui->mBCCButton->setEnabled(selection);
@@ -502,47 +490,8 @@ AddressesDialog::availableSelectionChanged()
 void
 AddressesDialog::selectedSelectionChanged()
 {
-  bool selection = !selectedSelectedAddresses.isEmpty();
+  bool selection = !d->ui->mSelectedView->selectedItems().isEmpty();
   d->ui->mRemoveButton->setEnabled(selection);
-}
-
-void
-AddressesDialog::availableAddressSelected( AddresseeViewItem* item, bool selected )
-{
-  if ( selected )
-  {
-    selectedAvailableAddresses.append( item );
-  }
-  else
-  {
-    selectedAvailableAddresses.removeAll( item );
-  }
-}
-
-void
-AddressesDialog::selectedAddressSelected( AddresseeViewItem* item, bool selected )
-{
-  // we have to avoid that a parent and a child is selected together
-  // because in this case we get a double object deletion ( program crashes )
-  // when removing the selected items from list
-  AddresseeViewItem* parent = static_cast<AddresseeViewItem*>(((Q3ListViewItem*)item)->parent());
-  if ( parent  && selected )
-    parent->setSelected( false );
-  if ( selected )
-  {
-    selectedSelectedAddresses.append( item );
-  }
-  else
-  {
-    selectedSelectedAddresses.removeAll( item );
-  }
-  if ( selected ) {
-    AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
-    while (child) {
-      child->setSelected( false );
-      child = static_cast<AddresseeViewItem*>(child->nextSibling());
-    }
-  }
 }
 
 void
@@ -562,13 +511,13 @@ AddressesDialog::initConnections()
            SLOT(searchLdap())  );
   connect( d->ui->mRemoveButton, SIGNAL(clicked()),
            SLOT(removeEntry()) );
-  connect( d->ui->mAvailableView, SIGNAL(selectionChanged()),
+  connect( d->ui->mAvailableView, SIGNAL(itemSelectionChanged()),
            SLOT(availableSelectionChanged())  );
-  connect( d->ui->mAvailableView, SIGNAL(doubleClicked(Q3ListViewItem*)),
+  connect( d->ui->mAvailableView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
            SLOT(addSelectedTo()) );
-  connect( d->ui->mSelectedView, SIGNAL(selectionChanged()),
+  connect( d->ui->mSelectedView, SIGNAL(itemSelectionChanged()),
            SLOT(selectedSelectionChanged()) );
-  connect( d->ui->mSelectedView, SIGNAL(doubleClicked(Q3ListViewItem*)),
+  connect( d->ui->mSelectedView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
            SLOT(removeEntry()) );
 
   connect( KABC::StdAddressBook::self( true ), SIGNAL( addressBookChanged(AddressBook*) ),
@@ -576,7 +525,8 @@ AddressesDialog::initConnections()
 }
 
 void
-AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, AddresseeViewItem* defaultParent, bool useCategory )
+AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr,
+                                          AddresseeViewItem* defaultParent, bool useCategory )
 {
   if ( addr.preferredEmail().isEmpty() )
     return;
@@ -591,9 +541,7 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
       }
 
       for ( int i = 0; i < addr.emails().count(); ++i ) {
-        AddresseeViewItem* addressee = new AddresseeViewItem( d->groupDict.value( *it ), addr, i );
-        connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-                this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
+        new AddresseeViewItem( d->groupDict.value( *it ), addr, i );
       }
     }
   }
@@ -606,9 +554,7 @@ AddressesDialog::addAddresseeToAvailable( const KABC::Addressee& addr, Addressee
     noCategory = true;
 
   if ( defaultParent && noCategory ) { // only non-categorized items here
-    AddresseeViewItem* addressee = new AddresseeViewItem( defaultParent, addr );
-    connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(availableAddressSelected(AddresseeViewItem*, bool)));
+    new AddresseeViewItem( defaultParent, addr );
   }
 }
 
@@ -619,16 +565,17 @@ AddressesDialog::addAddresseeToSelected( const KABC::Addressee& addr, AddresseeV
     return;
 
   if ( defaultParent ) {
-    AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( defaultParent->firstChild() );
+    int childIndex = 0;
+    AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>(
+        defaultParent->QTreeWidgetItem::child( childIndex ) );
     while( myChild ) {
       if ( myChild->addressee().preferredEmail() == addr.preferredEmail() )
         return;//already got it
-      myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
+      myChild = static_cast<AddresseeViewItem*>(
+          defaultParent->QTreeWidgetItem::child( ++childIndex ) );
     }
-    AddresseeViewItem* addressee = new AddresseeViewItem( defaultParent, addr );
-    connect(addressee, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
-    defaultParent->setOpen( true );
+    new AddresseeViewItem( defaultParent, addr );
+    d->ui->mSelectedView->expandItem( defaultParent );
   }
 
   d->ui->mSaveAs->setEnabled(true);
@@ -671,14 +618,12 @@ AddressesDialog::addAddresseesToSelected( AddresseeViewItem *parent,
     }
 
     address->setSelected( false );
-    address->setVisible( false );
+    address->setHidden( true );
     selectedToAvailableMapping.insert(address, newItem);
     selectedToAvailableMapping.insert(newItem, address);
-    connect(newItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
 
-  parent->setOpen( true );
+  d->ui->mSelectedView->expandItem( parent );
 }
 
 QStringList
@@ -692,21 +637,36 @@ AddressesDialog::entryToString( const KABC::Addressee::List& l ) const
   return entries;
 }
 
+QList<AddresseeViewItem*> AddressesDialog::selectedAvailableAddresses() const
+{
+  QList<AddresseeViewItem*> list;
+  foreach( QTreeWidgetItem* item, d->ui->mAvailableView->selectedItems() ) {
+    list.append( static_cast<AddresseeViewItem*>( item ) );
+  }
+  return list;
+}
+
+QList<AddresseeViewItem*> AddressesDialog::selectedSelectedAddresses() const
+{
+  QList<AddresseeViewItem*> list;;
+  foreach( QTreeWidgetItem* item, d->ui->mSelectedView->selectedItems() ) {
+    list.append( static_cast<AddresseeViewItem*>( item ) );
+  }
+  return list;
+}
+
 void
 AddressesDialog::addSelectedTo()
 {
   if ( !d->toItem )
   {
     d->toItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("To"), AddresseeViewItem::To );
-    connect(d->toItem, SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
 
-  addAddresseesToSelected( d->toItem, selectedAvailableAddresses );
-  selectedAvailableAddresses.clear();
+  addAddresseesToSelected( d->toItem, selectedAvailableAddresses() );
 
   if ( d->toItem->childCount() > 0 )
-    d->toItem->setVisible( true );
+    d->toItem->setHidden( false );
   else
   {
     delete d->toItem;
@@ -721,15 +681,12 @@ AddressesDialog::addSelectedCC()
   if ( !d->ccItem )
   {
     d->ccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("CC"), AddresseeViewItem::CC );
-    connect(d->ccItem , SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
 
-  addAddresseesToSelected( d->ccItem, selectedAvailableAddresses );
-  selectedAvailableAddresses.clear();
+  addAddresseesToSelected( d->ccItem, selectedAvailableAddresses() );
 
   if ( d->ccItem->childCount() > 0 )
-    d->ccItem->setVisible( true );
+    d->ccItem->setHidden( false );
   else
   {
     delete d->ccItem;
@@ -744,15 +701,12 @@ AddressesDialog::addSelectedBCC()
   if ( !d->bccItem )
   {
     d->bccItem = new AddresseeViewItem( d->ui->mSelectedView, i18n("BCC"), AddresseeViewItem::BCC );
-    connect(d->bccItem , SIGNAL(addressSelected(AddresseeViewItem*, bool)),
-            this, SLOT(selectedAddressSelected(AddresseeViewItem*, bool)));
   }
 
-  addAddresseesToSelected( d->bccItem, selectedAvailableAddresses );
-  selectedAvailableAddresses.clear();
+  addAddresseesToSelected( d->bccItem, selectedAvailableAddresses() );
 
   if ( d->bccItem->childCount() > 0 )
-    d->bccItem->setVisible( true );
+    d->bccItem->setHidden( false );
   else
   {
     delete d->bccItem;
@@ -766,16 +720,19 @@ void AddressesDialog::unmapSelectedAddress(AddresseeViewItem* item)
   AddresseeViewItem* correspondingItem = selectedToAvailableMapping[item];
   if (correspondingItem)
   {
-    correspondingItem->setVisible( true );
+    correspondingItem->setHidden( false );
     selectedToAvailableMapping.remove( item );
     selectedToAvailableMapping.remove( correspondingItem );
   }
 
-  AddresseeViewItem* child = static_cast<AddresseeViewItem*>(item->firstChild());
-  while (child)
+  int childIndex = 0;
+  AddresseeViewItem* child = static_cast<AddresseeViewItem*>(
+      item->QTreeWidgetItem::child( childIndex) );
+  while ( child )
   {
-    unmapSelectedAddress(child);
-    child = static_cast<AddresseeViewItem*>(child->nextSibling());
+    unmapSelectedAddress( child );
+    child = static_cast<AddresseeViewItem*>(
+        item->QTreeWidgetItem::child( ++childIndex ) );
   }
 }
 
@@ -787,8 +744,9 @@ AddressesDialog::removeEntry()
   bool resetCC  = false;
   bool resetBCC = false;
 
-  QList<AddresseeViewItem*>::iterator it = selectedSelectedAddresses.begin();
-  while ( it != selectedSelectedAddresses.end() ) {
+  QList<AddresseeViewItem*> selectedItems = selectedSelectedAddresses();
+  QList<AddresseeViewItem*>::iterator it = selectedItems.begin();
+  while ( it != selectedItems.end() ) {
     AddresseeViewItem* item = (*it);
     ++it;
     if ( d->toItem == item )
@@ -801,7 +759,6 @@ AddressesDialog::removeEntry()
     unmapSelectedAddress(item);
     lst.append( item );
   }
-  selectedSelectedAddresses.clear();
   qDeleteAll( lst );
   lst.clear();
   if ( resetTo )
@@ -825,7 +782,7 @@ AddressesDialog::removeEntry()
     delete d->bccItem;
     d->bccItem = 0;
   }
-  d->ui->mSaveAs->setEnabled(d->ui->mSelectedView->firstChild() != 0);
+  d->ui->mSaveAs->setEnabled( d->ui->mSelectedView->topLevelItemCount() > 0 );
   selectedSelectionChanged();
 }
 
@@ -838,21 +795,24 @@ static KABC::Resource *requestResource( KABC::AddressBook* abook, QWidget *paren
   QList<KRES::Resource*> kresResources;
   QList<KABC::Resource*>::const_iterator resIt;
   for ( resIt = kabcResources.begin(); resIt != kabcResources.end(); ++resIt) {
-    if ( (*resIt)->readOnly() ) {
+    if ( !(*resIt)->readOnly() ) {
       KRES::Resource *res = static_cast<KRES::Resource*>( *resIt );
       if ( res )
         kresResources.append( res );
     }
   }
 
-  KRES::Resource *res = KRES::SelectDialog::getResource( kresResources, parent );
-  return static_cast<KABC::Resource*>( res );
+  if ( kresResources.size() > 0 ) {
+    KRES::Resource *res = KRES::SelectDialog::getResource( kresResources, parent );
+    return static_cast<KABC::Resource*>( res );
+  }
+  else return 0;
 }
 
 void
 AddressesDialog::saveAs()
 {
-  if ( !d->ui->mSelectedView->firstChild() ) {
+  if ( d->ui->mSelectedView->topLevelItemCount() == 0 ) {
     KMessageBox::information( 0,
                               i18n("There are no addresses in your list. "
                                    "First add some addresses from your address book, "
@@ -922,52 +882,50 @@ AddressesDialog::ldapSearchResult()
 }
 
 void
-AddressesDialog::launchAddressBook()
-{
-  KToolInvocation::startServiceByDesktopName( "kaddressbook", QString() );
-}
-
-void
 AddressesDialog::filterChanged( const QString& txt )
 {
-  Q3ListViewItemIterator it( d->ui->mAvailableView );
+  QTreeWidgetItemIterator it( d->ui->mAvailableView );
   bool showAll = false;
 
   if ( txt.isEmpty() )
     showAll = true;
 
-  while ( it.current() ) {
-    AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
+  while ( (*it) ) {
+    AddresseeViewItem* item = static_cast<AddresseeViewItem*>( (*it) );
     ++it;
     if ( showAll ) {
-      item->setVisible( true );
+      item->setHidden( false );
       if ( item->category() == AddresseeViewItem::Group )
-        item->setOpen( false );//close to not have too many entries
+        d->ui->mAvailableView->collapseItem( item );//close to not have too many entries
       continue;
     }
     if ( item->category() == AddresseeViewItem::Entry ) {
       bool matches = item->matches( txt ) ;
-      item->setVisible( matches );
-      if ( matches && static_cast<Q3ListViewItem*>(item)->parent() ) {
-          static_cast<Q3ListViewItem*>(item)->parent()->setOpen( true );//open the parents with found entries
+      item->setHidden( !matches );
+      QTreeWidgetItem *parent = item->QTreeWidgetItem::parent();
+      if ( matches && parent ) {
+        d->ui->mAvailableView->expandItem( parent );//open the parents with found entries
       }
     }
   }
 }
 
 KABC::Addressee::List
-AddressesDialog::allAddressee( K3ListView* view, bool onlySelected ) const
+AddressesDialog::allAddressee( QTreeWidget* view, bool onlySelected ) const
 {
   KABC::Addressee::List lst;
-  Q3ListViewItemIterator it( view );
-  while ( it.current() ) {
-    AddresseeViewItem* item = static_cast<AddresseeViewItem*>( it.current() );
+  QTreeWidgetItemIterator it( view );
+  while ( *it ) {
+    AddresseeViewItem* item = static_cast<AddresseeViewItem*>( *it );
     if ( !onlySelected || item->isSelected() ) {
       if ( item->category() != AddresseeViewItem::Entry  ) {
-        AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( item->firstChild() );
+        int childIndex = 0;
+        AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>(
+            item->QTreeWidgetItem::child( childIndex ) );
         while( myChild ) {
           lst.append( myChild->addressee() );
-          myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
+          myChild = static_cast<AddresseeViewItem*>(
+              item->QTreeWidgetItem::child( ++childIndex ) );
         }
       } else {
         lst.append( item->addressee() );
@@ -992,13 +950,16 @@ AddressesDialog::allAddressee( AddresseeViewItem* parent ) const
     return lst;
   }
 
-  AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>( parent->firstChild() );
+  int childIndex = 0;
+  AddresseeViewItem *myChild = static_cast<AddresseeViewItem*>(
+      parent->QTreeWidgetItem::child( childIndex ) );
   while( myChild ) {
     if ( myChild->category() == AddresseeViewItem::FilledGroup )
       lst += myChild->addresses();
     else if ( !myChild->addressee().isEmpty() )
       lst.append( myChild->addressee() );
-    myChild = static_cast<AddresseeViewItem*>( myChild->nextSibling() );
+    myChild = static_cast<AddresseeViewItem*>(
+        parent->QTreeWidgetItem::child( ++childIndex ) );
   }
 
   return lst;
@@ -1012,12 +973,15 @@ AddressesDialog::allDistributionLists( AddresseeViewItem* parent ) const
   if ( !parent )
     return QStringList();
 
-  AddresseeViewItem *item = static_cast<AddresseeViewItem*>( parent->firstChild() );
+  int childIndex = 0;
+  AddresseeViewItem *item = static_cast<AddresseeViewItem*>(
+      parent->QTreeWidgetItem::child( childIndex ) );
   while ( item ) {
     if ( item->category() == AddresseeViewItem::DistList && !item->name().isEmpty() )
       lists.append( item->name() );
 
-    item = static_cast<AddresseeViewItem*>( item->nextSibling() );
+    item = static_cast<AddresseeViewItem*>(
+        parent->QTreeWidgetItem::child( ++childIndex ) );
   }
 
   return lists;
@@ -1041,8 +1005,6 @@ AddressesDialog::addDistributionLists()
     KABC::DistributionList::Entry::List entries = dlist->entries();
 
     AddresseeViewItem *item = new AddresseeViewItem( topItem, dlist->name() );
-    connect( item, SIGNAL( addressSelected( AddresseeViewItem*, bool ) ),
-             this, SLOT( availableAddressSelected( AddresseeViewItem*, bool ) ) );
 
     KABC::DistributionList::Entry::List::ConstIterator itemIt;
     for ( itemIt = entries.constBegin(); itemIt != entries.constEnd(); ++itemIt )

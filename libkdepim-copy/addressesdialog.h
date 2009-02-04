@@ -31,11 +31,11 @@
 #include <kabc/addressee.h>
 
 #include <KDialog>
-#include <K3ListView>
 
 #include <QList>
 #include <QSet>
 #include <QStringList>
+#include <QTreeWidget>
 
 class AddressPickerUI : public QWidget, public Ui::AddressPickerUI
 {
@@ -49,7 +49,7 @@ public:
 
 namespace KPIM {
 
-  class AddresseeViewItem : public QObject, public K3ListViewItem
+  class AddresseeViewItem : public QObject, public QTreeWidgetItem
   {
   Q_OBJECT
 
@@ -64,7 +64,7 @@ namespace KPIM {
       DistList    =6
     };
     AddresseeViewItem( AddresseeViewItem *parent, const KABC::Addressee& addr, int emailIndex = 0 );
-    AddresseeViewItem( K3ListView *lv, const QString& name, Category cat=Group );
+    AddresseeViewItem( QTreeWidget *lv, const QString& name, Category cat=Group );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name, const KABC::Addressee::List &lst );
     AddresseeViewItem( AddresseeViewItem *parent, const QString& name );
     ~AddresseeViewItem();
@@ -78,11 +78,7 @@ namespace KPIM {
 
     bool matches( const QString& ) const;
 
-    virtual int compare( Q3ListViewItem * i, int col, bool ascending ) const;
-    virtual void setSelected( bool );
-
-  Q_SIGNALS:
-    void addressSelected( AddresseeViewItem*, bool );
+    virtual bool operator < ( const QTreeWidgetItem& other ) const;
 
   private:
     struct AddresseeViewItemPrivate;
@@ -185,20 +181,20 @@ namespace KPIM {
     void saveAs();
     void searchLdap();
     void ldapSearchResult();
-    void launchAddressBook();
 
     void filterChanged( const QString & );
 
     void updateAvailableAddressees();
     void availableSelectionChanged();
     void selectedSelectionChanged();
-    void availableAddressSelected( AddresseeViewItem* item, bool selected );
-    void selectedAddressSelected( AddresseeViewItem* item, bool selected );
 
   protected:
     AddresseeViewItem* selectedToItem();
     AddresseeViewItem* selectedCcItem();
     AddresseeViewItem* selectedBccItem();
+
+    QList<AddresseeViewItem*> selectedAvailableAddresses() const;
+    QList<AddresseeViewItem*> selectedSelectedAddresses() const;
 
     void initConnections();
     void addDistributionLists();
@@ -210,7 +206,7 @@ namespace KPIM {
                                   const QList<AddresseeViewItem*> addresses );
     QStringList entryToString( const KABC::Addressee::List& l ) const;
     KABC::Addressee::List allAddressee( AddresseeViewItem* parent ) const;
-    KABC::Addressee::List allAddressee( K3ListView* view, bool onlySelected = true ) const;
+    KABC::Addressee::List allAddressee( QTreeWidget* view, bool onlySelected = true ) const;
     QStringList allDistributionLists( AddresseeViewItem* parent ) const;
 
   private:
@@ -225,8 +221,6 @@ namespace KPIM {
     struct AddressesDialogPrivate;
     AddressesDialogPrivate *d;
 
-    QList<AddresseeViewItem*> selectedAvailableAddresses;
-    QList<AddresseeViewItem*> selectedSelectedAddresses;
     QMap<AddresseeViewItem*,AddresseeViewItem*> selectedToAvailableMapping;
   };
 
