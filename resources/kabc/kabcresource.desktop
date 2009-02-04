@@ -1,10 +1,12 @@
 [Desktop Entry]
 Name=KDE Address Book (traditional)
 Name[et]=KDE aadressiraamat (traditsiooniline)
+Name[ga]=Leabhar Seoltaí KDE (traidisiúnta)
 Name[pt]=Livro de Endereços do KDE (tradicional)
 Name[pt_BR]=Livro de endereços do KDE (tradicional)
 Name[sv]=KDE:s adressbok (traditionell)
 Name[uk]=Адресна книга KDE (традиційна)
+Name[zh_TW]=KDE 通訊錄（傳統）
 Comment=Loads data from a traditional KDE addressbook resource
 Comment[ca]=Carregar dades des d'un recurs de llibreta d'adreces tradicional del KDE
 Comment[cs]=Načítá data z tradiční Knihy adres KDE
@@ -14,6 +16,7 @@ Comment[el]=Φόρτωση δεδομένων από έναν παραδοσια
 Comment[es]=Carga datos desde un recurso tradicional de Libreta de Direcciones de KDE
 Comment[et]=Andmete laadimine traditsioonilisest KDE aadressiraamatu ressursist
 Comment[fr]=Charge des données depuis un carnet d'adresses KDE traditionnel
+Comment[ga]=Breiseán a luchtaíonn sonraí ó acmhainn thraidisiúnta leabhair seoltaí KDE
 Comment[gl]=Carrega datos desde un recurso de caderno de enderezos do KDE
 Comment[it]=Carica dati da una tradizionale risorsa rubrica di KDE
 Comment[ja]=従来の KDE アドレス帳リソースからデータを読み込みます
