@@ -10,6 +10,7 @@ Name[pt_BR]=Agente de Envio de Correio do Akonadi
 Name[sv]=Akonadi e-postavsändningsmodul
 Name[tr]=Akonadi Posta Gönderim Aracısı
 Name[uk]=Агент розподілу пошти Akonadi
+Name[x-test]=xxAkonadi Mail Dispatcher Agentxx
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
 
