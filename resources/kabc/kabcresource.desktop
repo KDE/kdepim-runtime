@@ -2,10 +2,12 @@
 Name=KDE Address Book (traditional)
 Name[et]=KDE aadressiraamat (traditsiooniline)
 Name[ga]=Leabhar Seoltaí KDE (traidisiúnta)
+Name[nds]=KDE-Adressbook (normaal)
 Name[pt]=Livro de Endereços do KDE (tradicional)
 Name[pt_BR]=Livro de endereços do KDE (tradicional)
 Name[sv]=KDE:s adressbok (traditionell)
 Name[uk]=Адресна книга KDE (традиційна)
+Name[x-test]=xxKDE Address Book (traditional)xx
 Name[zh_TW]=KDE 通訊錄（傳統）
 Comment=Loads data from a traditional KDE addressbook resource
 Comment[ca]=Carregar dades des d'un recurs de llibreta d'adreces tradicional del KDE
