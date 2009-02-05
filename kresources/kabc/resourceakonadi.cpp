@@ -40,6 +40,7 @@
 #include <kconfiggroup.h>
 #include <kdebug.h>
 
+#include <QEventLoop>
 #include <QtConcurrentRun>
 #include <QFuture>
 #include <QHash>
@@ -60,13 +61,15 @@ class ThreadJobContext
     bool fetchCollections()
     {
       CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-      if ( job->exec() ) {
-        mCollections = job->collections();
-        return true;
-      }
 
-      mJobError = job->errorString();
-      return false;
+      bool jobResult = job->exec();
+      if ( jobResult )
+        mCollections = job->collections();
+      else
+        mJobError = job->errorString();
+
+      waitForDeleteLater( job );
+      return jobResult;
     }
 
     bool fetchItems( const Collection &collection )
@@ -74,13 +77,14 @@ class ThreadJobContext
       ItemFetchJob *job = new ItemFetchJob( collection );
       job->fetchScope().fetchFullPayload();
 
-      if ( job->exec() ) {
+      bool jobResult = job->exec();
+      if ( jobResult )
         mItems = job->items();
-        return true;
-      }
+      else
+        mJobError = job->errorString();
 
-      mJobError = job->errorString();
-      return false;
+      waitForDeleteLater( job );
+      return jobResult;
     }
 
   public:
@@ -88,6 +92,14 @@ class ThreadJobContext
 
     Collection::List mCollections;
     Item::List mItems;
+
+  private:
+    void waitForDeleteLater( KJob* job )
+    {
+      QEventLoop eventLoop;
+      QObject::connect( job, SIGNAL( destroyed() ), &eventLoop, SLOT( quit() ) );
+      eventLoop.exec();
+    }
 };
 
 typedef QMap<Item::Id, Item> ItemMap;
