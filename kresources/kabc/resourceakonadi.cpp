@@ -48,14 +48,32 @@
 using namespace Akonadi;
 using namespace KABC;
 
+class UidToCollectionMapper
+{
+public:
+  virtual ~UidToCollectionMapper() {}
+
+  virtual Collection collectionForUid( const QString &uid ) const = 0;
+};
+
+static KJob *createSaveSequence( const UidToCollectionMapper &mapper,
+    const Item::List &addedItems, const Item::List &modifiedItems, const Item::List &deletedItems );
+
 class ThreadJobContext
 {
   public:
+    explicit ThreadJobContext( const UidToCollectionMapper &mapper )
+      : mMapper( mapper ) {}
+
     void clear()
     {
       mJobError.clear();
       mCollections.clear();
       mItems.clear();
+
+      mAddedItems.clear();
+      mModifiedItems.clear();
+      mDeletedItems.clear();
     }
 
     bool fetchCollections()
@@ -87,11 +105,30 @@ class ThreadJobContext
       return jobResult;
     }
 
+    bool saveChanges()
+    {
+      KJob *job = createSaveSequence( mMapper, mAddedItems, mModifiedItems, mDeletedItems );
+
+      bool jobResult = job->exec();
+      if ( !jobResult )
+        mJobError = job->errorString();
+
+      waitForDeleteLater( job );
+      return jobResult;
+    }
+
   public:
     QString mJobError;
 
     Collection::List mCollections;
     Item::List mItems;
+
+    Item::List mAddedItems;
+    Item::List mModifiedItems;
+    Item::List mDeletedItems;
+
+  private:
+    const UidToCollectionMapper &mMapper;
 
   private:
     void waitForDeleteLater( KJob* job )
@@ -171,12 +208,21 @@ typedef QHash<QString, SubResource*> SubResourceMap;
 typedef QMap<QString, QString>  UidResourceMap;
 typedef QMap<Item::Id, QString> ItemIdResourceMap;
 
-class ResourceAkonadi::Private
+class ResourceAkonadi::Private : public UidToCollectionMapper
 {
   public:
     Private( ResourceAkonadi *parent )
-      : mParent( parent ), mMonitor( 0 ), mCollectionModel( 0 ), mCollectionFilterModel( 0 )
+      : mParent( parent ), mMonitor( 0 ), mCollectionModel( 0 ), mCollectionFilterModel( 0 ),
+        mThreadJobContext( *this )
     {
+    }
+
+    Collection collectionForUid( const QString &uid ) const
+    {
+      SubResource *subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
+      Q_ASSERT( subResource != 0 );
+
+      return subResource->mCollection;
     }
 
  public:
@@ -233,6 +279,8 @@ class ResourceAkonadi::Private
     Collection findDefaultCollection() const;
     bool prepareSaving();
     KJob *createSaveSequence() const;
+
+    void createItemListsForSave( Item::List &added, Item::List &modified, Item::List &deleted ) const;
 
     bool reloadSubResource( SubResource *subResource, bool &changed );
 
@@ -518,13 +566,17 @@ bool ResourceAkonadi::save( Ticket *ticket )
   if ( !d->prepareSaving() )
     return false;
 
-  KJob *job = d->createSaveSequence();
-  if ( job == 0 )
-    return false;
+  d->mThreadJobContext.clear();
 
-  if ( !job->exec() ) {
+  d->createItemListsForSave( d->mThreadJobContext.mAddedItems,
+                             d->mThreadJobContext.mModifiedItems,
+                             d->mThreadJobContext.mDeletedItems );
+
+  QFuture<bool> threadResult =
+    QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::saveChanges );
+  if ( !threadResult.result() ) {
     // TODO error handling
-    kError(5700) << "Save Sequence failed:" << job->errorString();
+    kError(5700) << "Save Sequence failed:" << d->mThreadJobContext.mJobError;
     return false;
   }
 
@@ -1338,11 +1390,82 @@ bool ResourceAkonadi::Private::prepareSaving()
   return true;
 }
 
+static KJob *createSaveSequence( const UidToCollectionMapper &mapper,
+    const Item::List &addedItems, const Item::List &modifiedItems, const Item::List &deletedItems )
+{
+  TransactionSequence *sequence = new TransactionSequence();
+
+  foreach ( const Item &item, addedItems ) {
+    QString uid;
+    if ( item.hasPayload<KABC::Addressee>() ) {
+      const KABC::Addressee addressee = item.payload<KABC::Addressee>();
+      kDebug(5700) << "CreateJob for addressee" << addressee.uid()
+                   << addressee.formattedName();
+      uid = addressee.uid();
+    } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+      const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+      kDebug(5700) << "CreateJob for contact group" << contactGroup.id()
+                   << contactGroup.name();
+      uid = contactGroup.id();
+    } else {
+      kWarning(5700) << "New item id=" << item.id() << "neither addressee nor contactgroup";
+      continue;
+    }
+
+    (void) new ItemCreateJob( item, mapper.collectionForUid( uid ), sequence );
+  }
+
+  foreach ( const Item &item, modifiedItems ) {
+    if ( item.hasPayload<KABC::Addressee>() ) {
+      const KABC::Addressee addressee = item.payload<KABC::Addressee>();
+      kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
+                   << addressee.formattedName();
+    } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+      const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+      kDebug(5700) << "ModifyJob for contact group" << contactGroup.id()
+                   << contactGroup.name();
+    } else {
+      kWarning(5700) << "Modified item id=" << item.id() << "neither addressee nor contactgroup";
+      continue;
+    }
+
+    (void) new ItemModifyJob( item, sequence );
+  }
+
+  foreach ( const Item &item, deletedItems ) {
+    if ( item.hasPayload<KABC::Addressee>() ) {
+      const KABC::Addressee addressee = item.payload<KABC::Addressee>();
+      kDebug(5700) << "DeleteJob for addressee" << addressee.uid()
+                   << addressee.formattedName();
+    } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+      const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+      kDebug(5700) << "DeleteJob for contact group" << contactGroup.id()
+                   << contactGroup.name();
+    } else {
+      kWarning(5700) << "Deleted item id=" << item.id() << "neither addressee nor contactgroup";
+      continue;
+    }
+
+    (void) new ItemDeleteJob( item, sequence );
+  }
+
+  return sequence;
+}
+
 KJob *ResourceAkonadi::Private::createSaveSequence() const
 {
-  kDebug(5700) << mChanges.count() << "changes";
+  Item::List addedItems;
+  Item::List modifiedItems;
+  Item::List deletedItems;
 
-  TransactionSequence *sequence = new TransactionSequence();
+  createItemListsForSave( addedItems, modifiedItems, deletedItems );
+
+  return ::createSaveSequence( *this, addedItems, modifiedItems, deletedItems );
+}
+
+void ResourceAkonadi::Private::createItemListsForSave( Item::List &added, Item::List &modified, Item::List &deleted ) const
+{
+  kDebug(5700) << mChanges.count() << "changes";
 
   ChangeMap::const_iterator changeIt    = mChanges.constBegin();
   ChangeMap::const_iterator changeEndIt = mChanges.constEnd();
@@ -1367,9 +1490,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
           item.setMimeType( QLatin1String( "text/directory" ) );
           item.setPayload<KABC::Addressee>( addressee );
 
-          (void) new ItemCreateJob( item, subResource->mCollection, sequence );
-          kDebug(5700) << "CreateJob for addressee" << addressee.uid()
-                      << addressee.formattedName();
+          added << item;
         } else {
           DistributionList *list = mParent->mDistListMap.value( uid );
           if ( list != 0 ) {
@@ -1378,9 +1499,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
             item.setMimeType( ContactGroup::mimeType() );
             item.setPayload<ContactGroup>( contactGroup );
 
-            (void) new ItemCreateJob( item, subResource->mCollection, sequence );
-            kDebug(5700) << "CreateJob for contact group" << contactGroup.id()
-                         << contactGroup.name();
+            added << item;
           }
         }
         break;
@@ -1397,9 +1516,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
 
           item.setPayload<KABC::Addressee>( addressee );
 
-          (void) new ItemModifyJob( item, sequence );
-          kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
-                       << addressee.formattedName();
+          modified << item;
         } else if ( item.hasPayload<KABC::ContactGroup>() ) {
           DistributionList *list = mParent->mDistListMap.value( uid );
           if ( list != 0 ) {
@@ -1407,9 +1524,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
 
             item.setPayload<KABC::ContactGroup>( contactGroup );
 
-            (void) new ItemModifyJob( item, sequence );
-            kDebug(5700) << "ModifyJob for addressee" << addressee.uid()
-                         << addressee.formattedName();
+            modified << item;
           }
         }
         break;
@@ -1420,24 +1535,10 @@ KJob *ResourceAkonadi::Private::createSaveSequence() const
         Q_ASSERT( itemIt != mItems.constEnd() );
 
         item = itemIt.value();
-        if ( item.hasPayload<KABC::Addressee>() ) {
-          addressee = item.payload<KABC::Addressee>();
-
-          kDebug(5700) << "DeleteJob for addressee" << uid
-                      << addressee.formattedName();
-        } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-          ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
-
-          kDebug(5700) << "DeleteJob for contact group" << uid
-                       << contactGroup.name();
-        }
-
-        (void) new ItemDeleteJob( item, sequence );
+        deleted << item;
         break;
     }
   }
-
-  return sequence;
 }
 
 bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool &changed )
