@@ -102,6 +102,9 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
       }
     }
   } else if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+    if ( !item.hasPayload<KABC::ContactGroup>() )
+      return QVariant();
+
     if ( role == Qt::DecorationRole ) {
       if ( index.column() == 0 )
         return KIcon( QLatin1String( "x-mail-distribution-list" ) );
