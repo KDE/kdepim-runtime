@@ -289,7 +289,7 @@ class KDEPIM_EXPORT KScoringRule
 };
 
 /** this helper class implements a stack for lists of lists of rules.
-    With the help of this class its very easy for the KScoringManager
+    With the help of this class it is very easy for the KScoringManager
     to temporary drop lists of rules and restore them afterwards
 */
 class KDEPIM_EXPORT RuleStack

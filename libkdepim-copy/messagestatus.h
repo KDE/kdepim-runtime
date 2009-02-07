@@ -276,14 +276,14 @@ class KDEPIM_EXPORT MessageStatus
     void fromQInt32( qint32 status );
 
     /** Convert the status to a string representation.
-        @return A string containing coded upercase letters
+        @return A string containing coded uppercase letters
                 which describe the status.
     */
     QString getStatusStr() const;
 
     /** Set the status based on a string representation.
         @param aStr The status string to be analyzed.
-                    Normally its a string obtained using
+                    Normally it is a string obtained using
                     getStatusStr().
     */
     void setStatusFromStr( QString aStr );
