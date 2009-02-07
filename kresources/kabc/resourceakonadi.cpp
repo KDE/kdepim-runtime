@@ -40,7 +40,6 @@
 #include <kconfiggroup.h>
 #include <kdebug.h>
 
-#include <QEventLoop>
 #include <QtConcurrentRun>
 #include <QFuture>
 #include <QHash>
@@ -86,7 +85,7 @@ class ThreadJobContext
       else
         mJobError = job->errorString();
 
-      waitForDeleteLater( job );
+      delete job;
       return jobResult;
     }
 
@@ -101,7 +100,7 @@ class ThreadJobContext
       else
         mJobError = job->errorString();
 
-      waitForDeleteLater( job );
+      delete job;
       return jobResult;
     }
 
@@ -113,7 +112,7 @@ class ThreadJobContext
       if ( !jobResult )
         mJobError = job->errorString();
 
-      waitForDeleteLater( job );
+      delete job;
       return jobResult;
     }
 
@@ -131,12 +130,6 @@ class ThreadJobContext
     const UidToCollectionMapper &mMapper;
 
   private:
-    void waitForDeleteLater( KJob* job )
-    {
-      QEventLoop eventLoop;
-      QObject::connect( job, SIGNAL( destroyed() ), &eventLoop, SLOT( quit() ) );
-      eventLoop.exec();
-    }
 };
 
 typedef QMap<Item::Id, Item> ItemMap;
