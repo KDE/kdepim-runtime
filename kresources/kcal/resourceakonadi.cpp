@@ -1587,7 +1587,7 @@ void ResourceAkonadi::Private::calendarIncidenceChanged( Incidence *incidence )
   kDebug(5800) << incidence->uid();
 
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
-  if ( idIt == mIdMapping.constEnd() ) {
+  if ( idIt == mIdMapping.end() ) {
     Q_ASSERT( mChanges.value( incidence->uid(), Removed ) == Added );
   } else
     mChanges[ incidence->uid() ] = Changed;
@@ -1602,7 +1602,7 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
 
   // check if we have saved it already, otherwise it is just a local change
   IdHash::iterator idIt = mIdMapping.find( incidence->uid() );
-  if ( idIt != mIdMapping.constEnd() ) {
+  if ( idIt != mIdMapping.end() ) {
     mUidToResourceMap.remove( incidence->uid() );
 
     mChanges[ incidence->uid() ] = Removed;
