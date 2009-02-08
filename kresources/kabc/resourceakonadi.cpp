@@ -609,7 +609,7 @@ void ResourceAkonadi::insertAddressee( const Addressee &addr )
   // if this is a new addressee or there is no Akonadi side item yet
   // mark it as add, otherwise it is a change
   if ( mAddrMap.constFind( uid ) == mAddrMap.constEnd() ||
-       d->mIdMapping.find( uid ) == d->mIdMapping.constEnd() )
+       d->mIdMapping.constFind( uid ) == d->mIdMapping.constEnd() )
     d->mChanges[ uid ] = Private::Added;
   else
     d->mChanges[ uid ] = Private::Changed;
@@ -627,7 +627,7 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
 
   // if the item exists on Akonadi side, mark it for removal, otherwise
   // this is a local change only
-  if ( d->mIdMapping.find( uid ) != d->mIdMapping.constEnd() )
+  if ( d->mIdMapping.constFind( uid ) != d->mIdMapping.constEnd() )
     d->mChanges[ uid ] = Private::Removed;
   else
     d->mChanges.remove( uid );
@@ -647,7 +647,7 @@ void ResourceAkonadi::insertDistributionList( DistributionList *list )
   // if this is a new distlist or there is no Akonadi side item yet
   // mark it as add, otherwise it is a change
   if ( mDistListMap.find( uid ) == mDistListMap.end() ||
-       d->mIdMapping.find( uid ) == d->mIdMapping.constEnd() )
+       d->mIdMapping.constFind( uid ) == d->mIdMapping.constEnd() )
     d->mChanges[ uid ] = Private::Added;
   else
     d->mChanges[ uid ] = Private::Changed;
@@ -667,7 +667,7 @@ void ResourceAkonadi::removeDistributionList( DistributionList *list )
 
   // if the item exists on Akonadi side, mark it for removal, otherwise
   // this is a local change only
-  if ( d->mIdMapping.find( uid ) != d->mIdMapping.constEnd() )
+  if ( d->mIdMapping.constFind( uid ) != d->mIdMapping.constEnd() )
     d->mChanges[ uid ] = Private::Removed;
   else
     d->mChanges.remove( uid );
