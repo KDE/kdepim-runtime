@@ -1,6 +1,6 @@
 /*
     This file is part of libkcal.
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008-2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -48,6 +48,8 @@
 #include <kdebug.h>
 #include <kmimetype.h>
 
+#include <QtConcurrentRun>
+#include <QFuture>
 #include <QHash>
 #include <QTimer>
 
@@ -82,6 +84,91 @@ static bool isCalendarCollection( const Akonadi::Collection &collection )
 
   return false;
 }
+
+class UidToCollectionMapper
+{
+public:
+  virtual ~UidToCollectionMapper() {}
+
+  virtual Collection collectionForUid( const QString &uid ) const = 0;
+};
+
+static KJob *createSaveSequence( const UidToCollectionMapper &mapper,
+    const Item::List &addedItems, const Item::List &modifiedItems, const Item::List &deletedItems );
+
+class ThreadJobContext
+{
+  public:
+    explicit ThreadJobContext( const UidToCollectionMapper &mapper )
+      : mMapper( mapper ) {}
+
+    void clear()
+    {
+      mJobError.clear();
+      mCollections.clear();
+      mItems.clear();
+
+      mAddedItems.clear();
+      mModifiedItems.clear();
+      mDeletedItems.clear();
+    }
+
+    bool fetchCollections()
+    {
+      CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+
+      bool jobResult = job->exec();
+      if ( jobResult )
+        mCollections = job->collections();
+      else
+        mJobError = job->errorString();
+
+      delete job;
+      return jobResult;
+    }
+
+    bool fetchItems( const Collection &collection )
+    {
+      ItemFetchJob *job = new ItemFetchJob( collection );
+      job->fetchScope().fetchFullPayload();
+
+      bool jobResult = job->exec();
+      if ( jobResult )
+        mItems = job->items();
+      else
+        mJobError = job->errorString();
+
+      delete job;
+      return jobResult;
+    }
+
+    bool saveChanges()
+    {
+      KJob *job = createSaveSequence( mMapper, mAddedItems, mModifiedItems, mDeletedItems );
+
+      bool jobResult = job->exec();
+      if ( !jobResult )
+        mJobError = job->errorString();
+
+      delete job;
+      return jobResult;
+    }
+
+  public:
+    QString mJobError;
+
+    Collection::List mCollections;
+    Item::List mItems;
+
+    Item::List mAddedItems;
+    Item::List mModifiedItems;
+    Item::List mDeletedItems;
+
+  private:
+    const UidToCollectionMapper &mMapper;
+
+  private:
+};
 
 class SubResource
 {
@@ -137,7 +224,8 @@ typedef QHash<QString, SubResource*> SubResourceMap;
 typedef QMap<QString, QString>  UidResourceMap;
 typedef QMap<Item::Id, QString> ItemIdResourceMap;
 
-class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
+class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
+                                 public UidToCollectionMapper
 {
   public:
     Private( ResourceAkonadi *parent )
@@ -145,7 +233,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
         mLock( true ), mInternalCalendarModification( false ),
         mMimeVisitor( new KCalMimeTypeVisitor() ),
         mCollectionModel( 0 ), mCollectionFilterModel( 0 ),
-        mAgentModel( 0 ), mAgentFilterModel( 0 )
+        mAgentModel( 0 ), mAgentFilterModel( 0 ),
+        mThreadJobContext( *this )
     {
       mCalendar.registerObserver( this );
     }
@@ -153,6 +242,14 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
     ~Private()
     {
       delete mMimeVisitor;
+    }
+
+    Collection collectionForUid( const QString &uid ) const
+    {
+      SubResource *subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
+      Q_ASSERT( subResource != 0 );
+
+      return subResource->mCollection;
     }
 
   public:
@@ -201,6 +298,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
     AgentInstanceModel *mAgentModel;
     AgentFilterProxyModel *mAgentFilterModel;
 
+    ThreadJobContext mThreadJobContext;
+
   public:
     void subResourceLoadResult( KJob *job );
 
@@ -219,7 +318,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver
 
     Collection findDefaultCollection() const;
     bool prepareSaving();
-    KJob *createSaveSequence();
+
+    void createItemListsForSave( Item::List &added, Item::List &modified, Item::List &deleted );
 
     // from the CalendarObserver interface
     virtual void calendarIncidenceAdded( Incidence *incidence );
@@ -670,15 +770,15 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 
   // if we do not have any collection yet, fetch them explicitly
   if ( collections.isEmpty() ) {
-    CollectionFetchJob *colJob =
-      new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    if ( !colJob->exec() ) {
-      loadError( colJob->errorString() );
+    d->mThreadJobContext.clear();
+    QFuture<bool> threadResult =
+      QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::fetchCollections );
+    if ( !threadResult.result() ) {
+      loadError( d->mThreadJobContext.mJobError );
       return false;
     }
 
-    // TODO: should probably add the data to the model right here
-    collections = colJob->collections();
+    collections = d->mThreadJobContext.mCollections;
   }
 
   bool result = true;
@@ -718,14 +818,24 @@ bool ResourceAkonadi::doSave( bool syncCache )
   if ( !d->prepareSaving() )
     return false;
 
-  KJob *job = d->createSaveSequence();
-  if ( job == 0 )
-    return false;
+  d->mAutoSaveOnDeleteTimer.stop();
 
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
+  d->mThreadJobContext.clear();
 
-  if ( !job->exec() )
+  d->createItemListsForSave( d->mThreadJobContext.mAddedItems,
+                             d->mThreadJobContext.mModifiedItems,
+                             d->mThreadJobContext.mDeletedItems );
+
+  QFuture<bool> threadResult =
+    QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::saveChanges );
+  if ( !threadResult.result() ) {
+    // TODO error handling
+    kError(5800) << "Save Sequence failed:" << d->mThreadJobContext.mJobError;
+    saveError( d->mThreadJobContext.mJobError );
     return false;
+  }
+
+  emit resourceSaved( this );
 
   d->mChanges.clear();
 
@@ -763,8 +873,6 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     findIt = d->mUidToResourceMap.constFind( incidence->uid() );
   }
 
-  KJob *job = 0;
-
   ItemMap::const_iterator itemIt = d->mItems.constEnd();
 
   IdHash::const_iterator idIt = d->mIdMapping.constFind( incidence->uid() );
@@ -772,29 +880,33 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
     itemIt = d->mItems.constFind( idIt.value() );
   }
 
+  d->mThreadJobContext.clear();
+
   if ( itemIt == d->mItems.constEnd() ) {
     kDebug(5800) << "No item yet, using ItemCreateJob";
 
     Item item( d->mMimeVisitor->mimeType( incidence ) );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-    job = new ItemCreateJob( item, d->mStoreCollection, this );
+    d->mThreadJobContext.mAddedItems << item;
   } else {
     kDebug(5800) << "Item already exists, using ItemModifyJob";
     Item item = itemIt.value();
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-    ItemModifyJob *modifyJob = new ItemModifyJob( item, this );
-    // HACK listen to the result and update revision accordingly
-    modifyJob->disableRevisionCheck();
-
-    job = modifyJob;
+    d->mThreadJobContext.mModifiedItems << item;
   }
 
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( saveResult( KJob* ) ) );
-
-  if ( !job->exec() )
+  QFuture<bool> threadResult =
+    QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::saveChanges );
+  if ( !threadResult.result() ) {
+    // TODO error handling
+    kError(5800) << "Save Sequence failed:" << d->mThreadJobContext.mJobError;
+    saveError( d->mThreadJobContext.mJobError );
     return false;
+  }
+
+  emit resourceSaved( this );
 
   d->mChanges.remove( incidence->uid() );
 
@@ -1331,12 +1443,62 @@ bool ResourceAkonadi::Private::prepareSaving()
   return true;
 }
 
-KJob *ResourceAkonadi::Private::createSaveSequence()
+static KJob *createSaveSequence( const UidToCollectionMapper &mapper,
+    const Item::List &addedItems, const Item::List &modifiedItems, const Item::List &deletedItems )
 {
-  kDebug(5800);
-  mAutoSaveOnDeleteTimer.stop();
-
   TransactionSequence *sequence = new TransactionSequence();
+
+  foreach ( const Item &item, addedItems ) {
+    QString uid;
+    if ( item.hasPayload<IncidencePtr>() ) {
+      const IncidencePtr incidence = item.payload<IncidencePtr>();
+      kDebug(5800) << "CreateJob for incidence" << incidence->uid()
+                   << incidence->summary();
+      uid = incidence->uid();
+    } else {
+      kWarning(5800) << "New item id=" << item.id() << "not an incidence";
+      continue;
+    }
+
+    (void) new ItemCreateJob( item, mapper.collectionForUid( uid ), sequence );
+  }
+
+  foreach ( const Item &item, modifiedItems ) {
+    if ( item.hasPayload<IncidencePtr>() ) {
+      const IncidencePtr incidence = item.payload<IncidencePtr>();
+      kDebug(5800) << "ModifyJob for incidence" << incidence->uid()
+                   << incidence->summary();
+    } else {
+      kWarning(5800) << "Modified item id=" << item.id() << "not an incidence";
+      continue;
+    }
+
+    ItemModifyJob *job = new ItemModifyJob( item, sequence );
+    // HACK we need to listen the result and update the revision number accordingly
+    // not as easy as it sounds though, since we would also need to revert if the
+    // transaction sequence fails
+    job->disableRevisionCheck();
+  }
+
+  foreach ( const Item &item, deletedItems ) {
+    if ( item.hasPayload<IncidencePtr>() ) {
+      const IncidencePtr incidence = item.payload<IncidencePtr>();
+      kDebug(5800) << "DeleteJob for incidence" << incidence->uid()
+                   << incidence->summary();
+    } else {
+      kWarning(5800) << "Deleted item id=" << item.id() << "not an incidence";
+      continue;
+    }
+
+    (void) new ItemDeleteJob( item, sequence );
+  }
+
+  return sequence;
+}
+
+void ResourceAkonadi::Private::createItemListsForSave( Item::List &added, Item::List &modified, Item::List &deleted )
+{
+  kDebug(5800) << mChanges.count() << "changes";
 
   ChangeMap::const_iterator changeIt    = mChanges.constBegin();
   ChangeMap::const_iterator changeEndIt = mChanges.constEnd();
@@ -1364,9 +1526,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
         item.setMimeType( mMimeVisitor->mimeType( incidence ) );
         item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-        (void) new ItemCreateJob( item, subResource->mCollection, sequence );
-        kDebug(5800) << "CreateJob for incidence" << incidence->uid()
-                     << incidence->summary();
+        added << item;
         break;
 
       case Changed:
@@ -1381,13 +1541,7 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
         item = itemIt.value();
         item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-        ItemModifyJob *job = new ItemModifyJob( item, sequence );
-        // HACK we need to listen the result and update the revision number accordingly
-        // not as easy as it sounds though, since we would also need to revert if the
-        // transaction sequence fails
-        job->disableRevisionCheck();
-        kDebug(5800) << "ModifyJob for incidence" << incidence->uid()
-                     << incidence->summary();
+        modified << item;
         break;
       }
 
@@ -1397,16 +1551,10 @@ KJob *ResourceAkonadi::Private::createSaveSequence()
         Q_ASSERT( itemIt != mItems.constEnd() );
 
         item = itemIt.value();
-
-        (void) new ItemDeleteJob( item, sequence );
-        kDebug(5800) << "DeleteJob for incidence" << uid
-                     << ( item.hasPayload<IncidencePtr>() ?
-                          item.payload<IncidencePtr>()->summary() : QString() );
+        deleted << item;
         break;
     }
   }
-
-  return sequence;
 }
 
 void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
@@ -1459,17 +1607,17 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool
 {
   changed = false;
 
-  ItemFetchJob *job = new ItemFetchJob( subResource->mCollection );
-  job->fetchScope().fetchFullPayload();
-
-  if ( !job->exec() ) {
-    mParent->loadError( job->errorString() );
+  mThreadJobContext.clear();
+  QFuture<bool> threadResult =
+    QtConcurrent::run( &mThreadJobContext, &ThreadJobContext::fetchItems, subResource->mCollection );
+  if ( !threadResult.result() ) {
+    mParent->loadError( mThreadJobContext.mJobError );
     return false;
   }
 
-  const QString collectionUrl = subResource->mCollection.url().url();
+  Item::List items = mThreadJobContext.mItems;
 
-  Item::List items = job->items();
+  const QString collectionUrl = subResource->mCollection.url().url();
 
   kDebug(5800) << "Reload for sub resource " << collectionUrl
                << "produced" << items.count() << "items";
