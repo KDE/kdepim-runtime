@@ -34,6 +34,7 @@
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionmodel.h>
 #include <akonadi/control.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
@@ -177,6 +178,10 @@ class SubResource
         : mCollection( collection ), mLabel( collection.name() ),
           mActive(true)
     {
+      if ( mCollection.hasAttribute<EntityDisplayAttribute>() &&
+           !mCollection.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
+        mLabel = mCollection.attribute<EntityDisplayAttribute>()->displayName();
+
       readConfig( parentGroup );
     }
 
@@ -1250,11 +1255,15 @@ void ResourceAkonadi::Private::collectionDataChanged( const QModelIndex &topLeft
           const QString collectionUrl = collection.url().url();
           SubResource* subResource = mSubResources.value( collectionUrl, 0 );
           if ( subResource != 0 ) {
-            if ( subResource->mLabel != collection.name() ) {
+            QString newName = collection.name();
+            if ( collection.hasAttribute<EntityDisplayAttribute>() &&
+                 !collection.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
+              newName = collection.attribute<EntityDisplayAttribute>()->displayName();
+            if ( subResource->mLabel != newName ) {
               kDebug(5800) << "Renaming subResource" << collectionUrl
                            << "from" << subResource->mLabel
-                           << "to"   << collection.name();
-              subResource->mLabel = collection.name();
+                           << "to"   << newName;
+              subResource->mLabel = newName;
               changed = true;
               // TODO probably need to add this to ResourceCalendar as well
               //emit mParent->signalSubresourceChanged( mParent, QLatin1String( "calendar" ), collectionUrl );
