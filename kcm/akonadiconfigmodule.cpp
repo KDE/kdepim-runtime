@@ -34,4 +34,3 @@ AkonadiConfigModule::AkonadiConfigModule( QWidget * parent, const QVariantList &
   addModule( QLatin1String("kcm_akonadi_server") );
 }
 
-#include "akonadiconfigmodule.moc"
