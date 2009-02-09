@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Volker Krause <vkrause@kde.org>
+    Copyright (C) 2009 Omat Holding B.V. <info@omat.nl>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,33 +17,31 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef __COMMUNICATION_H__
+#define __COMMUNICATION_H__
 
-#include <kdialog.h>
+#include <QObject>
+#include <kio/job.h>
 
-#include "ui_microblogconfig.h"
-#include "communication.h"
-
-class KConfigDialogManager;
-
-class ConfigDialog : public KDialog
+class Communication : public QObject
 {
-  Q_OBJECT
-  public:
-    ConfigDialog( QWidget *parent = 0 );
-    ~ConfigDialog();
+    Q_OBJECT
 
-  private slots:
-    void save();
-    void slotTestClicked();
-    void slotAuthOk();
-    void slotAuthFailed( const QString& );
+public:
+    Communication( QObject *parent );
+    ~Communication();
+    enum Service { Identi, Twitter };
+    void checkAuth( int service, const QString &username, const QString &password);
 
-  private:
-    Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
-    Communication* m_comm;
+private:
+    QString serviceToApi( int service );
+
+private slots:
+    void slotCheckAuthData( KJob* );
+
+signals:
+    void authOk();
+    void authFailed( const QString& );
 };
 
 #endif

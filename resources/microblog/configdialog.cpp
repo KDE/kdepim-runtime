@@ -21,16 +21,27 @@
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
+#include <kdebug.h>
+#include <kmessagebox.h>
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
     KDialog( parent )
 {
+  m_comm = new Communication( this );
+  connect( m_comm, SIGNAL( authOk() ), SLOT( slotAuthOk() ) );
+  connect( m_comm, SIGNAL( authFailed( const QString& ) ), SLOT( slotAuthFailed( const QString& ) ) );
   ui.setupUi( mainWidget() );
+  connect( ui.testButton, SIGNAL( clicked(bool) ), SLOT( slotTestClicked() ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.password->setText( Settings::self()->password() );
-
+  enableButton( KDialog::Ok, !ui.password->text().isEmpty() );
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
+}
+
+ConfigDialog::~ConfigDialog() 
+{
+  delete m_comm;
 }
 
 void ConfigDialog::save()
@@ -39,4 +50,27 @@ void ConfigDialog::save()
   mManager->updateSettings();
 }
 
+void ConfigDialog::slotTestClicked()
+{
+  kDebug() << "Test request" << ui.kcfg_Service->currentIndex() 
+          << ui.kcfg_UserName->text() << ui.password->text();
+
+  enableButton( KDialog::Ok, false );
+  ui.testButton->setEnabled( false );
+  m_comm->checkAuth( ui.kcfg_Service->currentIndex(), ui.kcfg_UserName->text(), ui.password->text() );
+}
+
+void ConfigDialog::slotAuthOk()
+{
+  enableButton( KDialog::Ok, true );
+  ui.testButton->setEnabled( true );
+  KMessageBox::error( this, i18n("Login ok"), i18n("Okidoki") );
+}
+
+void ConfigDialog::slotAuthFailed( const QString& error )
+{
+  enableButton( KDialog::Ok, false );
+  ui.testButton->setEnabled( true );
+  KMessageBox::error( this, error, i18n("Failed to log in") );
+}
 #include "configdialog.moc"

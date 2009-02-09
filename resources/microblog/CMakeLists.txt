@@ -32,6 +32,7 @@ set( microblogresource_SRCS
   microblog.cpp
   configdialog.cpp
   settings.cpp
+  communication.cpp
 )
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/microblogresource.kcfg org.kde.Akonadi.Microblog.Settings)
