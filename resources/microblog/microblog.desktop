@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Microblog (Twitter and Identi.ca)
+Comment=Shows your microblog data from Twitter or Identi.ca.
+Type=AkonadiResource
+Exec=akonadi_microblog_resource
+
+X-Akonadi-MimeTypes=message/x-microblog
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_microblog_resource
