@@ -26,6 +26,7 @@
 #include <kresources/configdialog.h>
 
 #include <akonadi/changerecorder.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <kconfig.h>
@@ -77,8 +78,10 @@ void KCalResource::configure( WId windowId )
                  i18nc( "@info:status", "Changing calendar plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "calendar" ), mResource );
     KWindowSystem::setMainWindow( &dlg, windowId );
-    if ( dlg.exec() )
+    if ( dlg.exec() ) {
+      setName( mResource->resourceName() );
       mManager->writeConfig( KGlobal::config().data() );
+    }
 
     emit status( Idle, QString() );
     // TODO: need to react on name changes, but do we need to react on data changes?
@@ -140,6 +143,11 @@ void KCalResource::retrieveCollections()
   topLevelCollection.setRemoteId( mResource->identifier() );
   topLevelCollection.setName( mResource->resourceName() );
 
+  EntityDisplayAttribute* attr =
+    topLevelCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( mResource->resourceName() );
+  attr->setIconName( QLatin1String( "office-calendar" ) );
+
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
   mimeTypes += mMimeVisitor->allMimeTypes();
@@ -174,14 +182,26 @@ void KCalResource::retrieveCollections()
     childCollection.setRemoteId( subResource );
     childCollection.setName( mResource->labelForSubresource( subResource ) );
 
+    attr = childCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    attr->setDisplayName( childCollection.name() );
+
     const QString type = mResource->subresourceType( subResource );
 
     if ( !type.isEmpty() ) {
       QStringList childMimeTypes( Collection::mimeType() );
       childMimeTypes << QLatin1String( "application/x-vnd.akonadi.calendar." ) + type;
       childCollection.setContentMimeTypes( childMimeTypes );
-    } else
+
+      if ( type == QLatin1String( "journal" ) )
+        attr->setIconName( QLatin1String( "view-pim-journal" ) );
+      else if ( type == QLatin1String( "todo" ) )
+        attr->setIconName( QLatin1String( "view-pim-tasks" ) );
+      else
+        attr->setIconName( QLatin1String( "office-calendar" ) );
+    } else {
+      attr->setIconName( QLatin1String( "office-calendar" ) );
       childCollection.setContentMimeTypes( mimeTypes );
+    }
 
     // TODO we have no API for adding incidences to specific sub resources, so we should
     // not tell Akonadi adding that items is allowed
@@ -403,8 +423,16 @@ void KCalResource::collectionChanged( const Akonadi::Collection &collection )
 
   // currently only changing the top level collection's name supported
   if ( collection.parent() == Collection::root().id() ) {
-    if ( collection.name() != mResource->resourceName() ) {
-      mResource->setResourceName( collection.name() );
+    QString newName = collection.name();
+    if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
+      EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+      if ( !attr->displayName().isEmpty() )
+        newName = attr->displayName();
+    }
+
+    if ( newName != mResource->resourceName() ) {
+      mResource->setResourceName( newName );
+      setName( newName );
       changeCommitted( collection );
       // TODO save config
       return;
@@ -452,6 +480,8 @@ bool KCalResource::openConfiguration()
     connect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
              this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
   }
+
+  setName( mResource->resourceName() );
 
   return true;
 }

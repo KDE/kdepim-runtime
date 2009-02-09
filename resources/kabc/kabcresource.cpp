@@ -22,6 +22,7 @@
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <kabc/addressbook.h>
@@ -115,8 +116,10 @@ void KABCResource::configure( WId windowId )
                  i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
     KWindowSystem::setMainWindow( &dlg, windowId );
-    if ( dlg.exec() )
+    if ( dlg.exec() ) {
+      setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );
+    }
 
     emit status( Idle, QString() );
     // TODO: need to react on name changes, but do we need to react on data changes?
@@ -184,6 +187,11 @@ void KABCResource::retrieveCollections()
   topLevelCollection.setRemoteId( mBaseResource->identifier() );
   topLevelCollection.setName( mBaseResource->resourceName() );
 
+  EntityDisplayAttribute* attr =
+    topLevelCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( mBaseResource->resourceName() );
+  attr->setIconName( QLatin1String( "office-address-book" ) );
+
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/directory" );
 
@@ -217,6 +225,10 @@ void KABCResource::retrieveCollections()
       childCollection.setContentMimeTypes( mimeTypes );
       bool readOnly = !mFolderResource->subresourceWritable( subResource );
       childCollection.setRights( readOnly ? readOnlyRights : readWriteRights );
+
+      attr = childCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      attr->setDisplayName( childCollection.name() );
+      attr->setIconName( QLatin1String( "office-address-book" ) );
 
       list << childCollection;
     }
@@ -494,8 +506,16 @@ void KABCResource::collectionChanged( const Akonadi::Collection &collection )
   }
 
   if ( collection.parent() == Collection::root().id() ) {
-    if ( collection.name() != mBaseResource->resourceName() ) {
-      mBaseResource->setResourceName( collection.name() );
+    QString newName = collection.name();
+    if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
+      EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+      if ( !attr->displayName().isEmpty() )
+        newName = attr->displayName();
+    }
+
+    if ( newName != mBaseResource->resourceName() ) {
+      mBaseResource->setResourceName( newName );
+      setName( newName );
       mAddressBook->getResourceManager()->writeConfig( KGlobal::config().data() );
     }
   } else
@@ -546,6 +566,8 @@ bool KABCResource::openConfiguration()
 
   // do not react on addressbook changes until we have finished its initial loading
   mAddressBook->blockSignals( true );
+
+  setName( mBaseResource->resourceName() );
 
   return true;
 }
