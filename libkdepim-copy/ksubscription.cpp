@@ -151,7 +151,7 @@ void GroupItem::setVisible( bool b )
       }
     } else {
       // non-checkable item
-      Q3PtrList<Q3ListViewItem> moveItems;
+      QList<Q3ListViewItem*> moveItems;
 
       for ( Q3ListViewItem * lvchild = firstChild(); lvchild != 0;
             lvchild = lvchild->nextSibling() ) {
@@ -160,14 +160,13 @@ void GroupItem::setVisible( bool b )
           moveItems.append( lvchild );
         }
       }
-      Q3PtrListIterator<Q3ListViewItem> it( moveItems );
-      for ( ; it.current(); ++it ) {
+      foreach( Q3ListViewItem *item, moveItems ) {
         // move the checkitem to top
-        Q3ListViewItem *parent = it.current()->parent();
+        Q3ListViewItem *parent = item->parent();
         if ( parent ) {
-          parent->takeItem( it.current() );
+          parent->takeItem( item );
         }
-        listView()->insertItem( it.current() );
+        listView()->insertItem( item );
       }
       Q3ListViewItem::setVisible( false );
     }
@@ -582,7 +581,7 @@ int KSubscription::activeItemCount()
 //------------------------------------------------------------------------------
 void KSubscription::restoreOriginalParent()
 {
-  Q3PtrList<Q3ListViewItem> move;
+  QList<Q3ListViewItem*> move;
   Q3ListViewItemIterator it( groupView );
   for ( ; it.current(); ++it ) {
     Q3ListViewItem *origParent =
@@ -592,13 +591,12 @@ void KSubscription::restoreOriginalParent()
       move.append( it.current() );
     }
   }
-  Q3PtrListIterator<Q3ListViewItem> it2( move );
-  for ( ; it2.current(); ++it2 ) {
+  foreach( Q3ListViewItem *item, move ) {
     // restore the original parent
     Q3ListViewItem *origParent =
-      static_cast<GroupItem*>( it2.current() )->originalParent();
-    groupView->takeItem( it2.current() );
-    origParent->insertItem( it2.current() );
+      static_cast<GroupItem*>( item )->originalParent();
+    groupView->takeItem( item );
+    origParent->insertItem( item );
   }
 }
 

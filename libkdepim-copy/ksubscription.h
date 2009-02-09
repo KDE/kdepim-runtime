@@ -26,12 +26,12 @@
 #ifndef KDEPIM_KSUBSCRIPTION_H
 #define KDEPIM_KSUBSCRIPTION_H
 
-#include "kfoldertree.h"
 #include "kdepim_export.h"
 
 #include <KDialog>
 
 #include <QCheckBox>
+#include <Q3CheckListItem>
 
 class KLineEdit;
 class QLabel;
