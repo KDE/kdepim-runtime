@@ -23,37 +23,39 @@
 
 class SettingsHelper
 {
-  public:
-    SettingsHelper() : q(0) {}
-    ~SettingsHelper() { delete q; }
+public:
+    SettingsHelper() : q( 0 ) {}
+    ~SettingsHelper() {
+        delete q;
+    }
     Settings *q;
 };
 
-K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
+K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings *Settings::self()
 {
-  if (!s_globalSettings->q) {
-    new Settings;
-    s_globalSettings->q->readConfig();
-  }
+    if ( !s_globalSettings->q ) {
+        new Settings;
+        s_globalSettings->q->readConfig();
+    }
 
-  return s_globalSettings->q;
+    return s_globalSettings->q;
 }
 
 Settings::Settings() : SettingsBase()
 {
-  Q_ASSERT(!s_globalSettings->q);
-  s_globalSettings->q = this;
+    Q_ASSERT( !s_globalSettings->q );
+    s_globalSettings->q = this;
 }
 
 QString Settings::password() const
 {
-  return mPassword;
+    return mPassword;
 }
 
-void Settings::setPassword(const QString & password)
+void Settings::setPassword( const QString & password )
 {
-  mPassword = password;
+    mPassword = password;
 }
 

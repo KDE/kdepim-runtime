@@ -31,10 +31,17 @@ public:
     Communication( QObject *parent );
     ~Communication();
     enum Service { Identi, Twitter };
-    void checkAuth( int service, const QString &username, const QString &password);
+    void setService( int );
+    void setCredentials( const QString&, const QString& );
+    void checkAuth();
 
 private:
     QString serviceToApi( int service );
+    KUrl getBaseUrl();
+
+    int m_service;
+    QString m_username;
+    QString m_password;
 
 private slots:
     void slotCheckAuthData( KJob* );
@@ -42,6 +49,8 @@ private slots:
 signals:
     void authOk();
     void authFailed( const QString& );
+
 };
+
 
 #endif

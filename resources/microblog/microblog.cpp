@@ -76,15 +76,15 @@ bool MicroblogResource::retrieveItem( const Akonadi::Item &item, const QSet<QByt
     itemRetrieved( item );
     return true;
 }
-   
+
 void MicroblogResource::configure( WId windowId )
 {
-  ConfigDialog dlg;
-  if ( windowId )
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.exec();
-  if ( !Settings::self()->name().isEmpty() )
-    setName( Settings::self()->name() );
+    ConfigDialog dlg;
+    if ( windowId )
+        KWindowSystem::setMainWindow( &dlg, windowId );
+    dlg.exec();
+    if ( !Settings::self()->name().isEmpty() )
+        setName( Settings::self()->name() );
 }
 
 AKONADI_RESOURCE_MAIN( MicroblogResource )

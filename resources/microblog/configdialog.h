@@ -29,17 +29,17 @@ class KConfigDialogManager;
 
 class ConfigDialog : public KDialog
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     ConfigDialog( QWidget *parent = 0 );
     ~ConfigDialog();
 
-  private slots:
+private slots:
     void slotTestClicked();
     void slotAuthOk();
     void slotAuthFailed( const QString& );
 
-  private:
+private:
     Ui::ConfigDialog ui;
     KConfigDialogManager* mManager;
     Communication* m_comm;

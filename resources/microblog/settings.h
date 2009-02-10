@@ -24,7 +24,7 @@
 
 class Settings : public SettingsBase
 {
-  public:
+public:
     Settings();
     static Settings *self();
 
@@ -32,7 +32,7 @@ class Settings : public SettingsBase
     QString password() const;
     void setPassword( const QString &password );
 
-  private:
+private:
     QString mPassword;
 };
 

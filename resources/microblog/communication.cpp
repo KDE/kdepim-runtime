@@ -28,7 +28,7 @@
 #include <kio/job.h>
 using namespace KIO;
 
-Communication::Communication( QObject* parent ) 
+Communication::Communication( QObject* parent )
         : QObject( parent )
 {
 }
@@ -37,61 +37,77 @@ Communication::~Communication()
 {
 }
 
-void Communication::checkAuth( int service, const QString& username, const QString& password )
+void Communication::setService( int service )
 {
-  kDebug() << service << username << password;
-  KUrl url( serviceToApi( service ) + "account/verify_credentials.xml" );
-  url.setUser( username );
-  url.setPass( password );
+    m_service = service;
+}
 
-  KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotCheckAuthData( KJob* ) ) );
+void Communication::setCredentials( const QString &username, const QString &password )
+{
+    m_username = username;
+    m_password = password;
+}
+
+KUrl Communication::getBaseUrl()
+{
+    KUrl url( serviceToApi( m_service ) + "account/verify_credentials.xml" );
+    url.setUser( m_username );
+    url.setPass( m_password );
+    return url;
+}
+
+void Communication::checkAuth()
+{
+    KUrl url = getBaseUrl();
+    url.addPath( "account/verify_credentials.xml" );
+    KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotCheckAuthData( KJob* ) ) );
 }
 
 void Communication::slotCheckAuthData( KJob *job )
 {
-  if ( job->error() ) {
+    if ( job->error() ) {
         kDebug() << "Job error, " << job->errorString();
-        emit authFailed( i18n("Login failed") );
+        emit authFailed( i18n( "Login failed" ) );
         return;
-  }
+    }
 
-  StoredTransferJob* transJob = static_cast<StoredTransferJob*>(job);
-  if ( transJob->isErrorPage() ) {
-      kDebug() << "Login failed";
-      emit authFailed( i18n( "Login failed" ) );
-      return;
-  }
-
-  QByteArray data = transJob->data();
-  kDebug() << "Received: " << data;
-
-  QDomDocument dom;
-  dom.setContent( data );
-  QDomNodeList nodeList = dom.elementsByTagName( "authorized" );
-  for (int i=0; i< nodeList.count(); ++i) {
-      QDomNode node = nodeList.at( i );
-      if ( node.toElement().text() == "true" ) {
-        kDebug() << "Authorisation is OK";
-        emit authOk();
+    StoredTransferJob* transJob = static_cast<StoredTransferJob*>( job );
+    if ( transJob->isErrorPage() ) {
+        kDebug() << "Login failed";
+        emit authFailed( i18n( "Login failed" ) );
         return;
-      }
-  }
+    }
 
-  QString error;
-  nodeList = dom.elementsByTagName( "error" );
-  for (int i=0; i< nodeList.count(); ++i) {
-      QDomNode node = nodeList.at( i );
-      error.append( node.toElement().text() );
-  }
-  
-  emit authFailed( error );
+    QByteArray data = transJob->data();
+    kDebug() << "Received: " << data;
+
+    QDomDocument dom;
+    dom.setContent( data );
+    QDomNodeList nodeList = dom.elementsByTagName( "authorized" );
+    for ( int i=0; i< nodeList.count(); ++i ) {
+        QDomNode node = nodeList.at( i );
+        if ( node.toElement().text() == "true" ) {
+            kDebug() << "Authorisation is OK";
+            emit authOk();
+            return;
+        }
+    }
+
+    QString error;
+    nodeList = dom.elementsByTagName( "error" );
+    for ( int i=0; i< nodeList.count(); ++i ) {
+        QDomNode node = nodeList.at( i );
+        error.append( node.toElement().text() );
+    }
+
+    emit authFailed( error );
 }
 
 QString Communication::serviceToApi( int service )
 {
-    if (service == 0) 
-      return QString( "http://identi.ca/api/" );
+    if ( service == 0 )
+        return QString( "http://identi.ca/api/" );
 
     return QString();
 }
