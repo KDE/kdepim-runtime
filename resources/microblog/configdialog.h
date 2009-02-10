@@ -35,7 +35,6 @@ class ConfigDialog : public KDialog
     ~ConfigDialog();
 
   private slots:
-    void save();
     void slotTestClicked();
     void slotAuthOk();
     void slotAuthFailed( const QString& );

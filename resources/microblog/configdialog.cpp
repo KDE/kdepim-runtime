@@ -31,12 +31,13 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   connect( m_comm, SIGNAL( authOk() ), SLOT( slotAuthOk() ) );
   connect( m_comm, SIGNAL( authFailed( const QString& ) ), SLOT( slotAuthFailed( const QString& ) ) );
   ui.setupUi( mainWidget() );
-  connect( ui.testButton, SIGNAL( clicked(bool) ), SLOT( slotTestClicked() ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.password->setText( Settings::self()->password() );
-  enableButton( KDialog::Ok, !ui.password->text().isEmpty() );
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  setButtons( KDialog::User1 | KDialog::Cancel );
+  setButtonText( KDialog::User1, i18n("Test settings && Ok") );
+  setDefaultButton( KDialog::User1 );
+  connect( this, SIGNAL(user1Clicked()), SLOT(slotTestClicked()) );
 }
 
 ConfigDialog::~ConfigDialog() 
@@ -44,33 +45,27 @@ ConfigDialog::~ConfigDialog()
   delete m_comm;
 }
 
-void ConfigDialog::save()
-{
-  Settings::self()->setPassword( ui.password->text() );
-  mManager->updateSettings();
-}
-
 void ConfigDialog::slotTestClicked()
 {
   kDebug() << "Test request" << ui.kcfg_Service->currentIndex() 
           << ui.kcfg_UserName->text() << ui.password->text();
 
-  enableButton( KDialog::Ok, false );
-  ui.testButton->setEnabled( false );
+  enableButton( KDialog::User1, false );
   m_comm->checkAuth( ui.kcfg_Service->currentIndex(), ui.kcfg_UserName->text(), ui.password->text() );
 }
 
 void ConfigDialog::slotAuthOk()
 {
-  enableButton( KDialog::Ok, true );
-  ui.testButton->setEnabled( true );
-  KMessageBox::error( this, i18n("Login ok"), i18n("Okidoki") );
+  enableButton( KDialog::User1, true );
+  Settings::self()->setPassword( ui.password->text() );
+  mManager->updateSettings();
+  accept();
 }
 
 void ConfigDialog::slotAuthFailed( const QString& error )
 {
-  enableButton( KDialog::Ok, false );
-  ui.testButton->setEnabled( true );
   KMessageBox::error( this, error, i18n("Failed to log in") );
+  enableButton( KDialog::User1, true );
 }
+
 #include "configdialog.moc"
