@@ -54,7 +54,7 @@ void ConfigDialog::slotTestClicked()
     enableButton( KDialog::User1, false );
     m_comm->setService( ui.kcfg_Service->currentIndex() );
     m_comm->setCredentials( ui.kcfg_UserName->text(), ui.password->text() );
-    m_comm->checkAuth(); 
+    m_comm->checkAuth();
 }
 
 void ConfigDialog::slotAuthOk()

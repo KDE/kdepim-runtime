@@ -22,6 +22,8 @@
 
 #include <akonadi/resourcebase.h>
 
+#include "communication.h"
+
 class MicroblogResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
@@ -38,6 +40,10 @@ protected Q_SLOTS:
     virtual void retrieveCollections();
     virtual void retrieveItems( const Akonadi::Collection &col );
     virtual bool retrieveItem( const Akonadi::Item&, const QSet<QByteArray>& );
+
+private:
+    void initComm();
+    Communication* m_comm;
 };
 
 #endif

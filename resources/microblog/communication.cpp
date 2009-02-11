@@ -104,6 +104,41 @@ void Communication::slotCheckAuthData( KJob *job )
     emit authFailed( error );
 }
 
+void Communication::retrieveFolder( const QString &folder )
+{
+    KUrl url = getBaseUrl();
+    if ( folder ==  "home" ) {
+        url.addPath( "statuses/friends_timeline.xml" );
+    } else if ( folder == "replies" ) {
+        url.addPath( "statuses/replies.xml" );
+    } else if ( folder == "favorites" ) {
+        url.addPath( "favorites.xml" );
+    } else if ( folder == "inbox" ) {
+        url.addPath( "direct_messages.xml" );
+    } else if ( folder == "outbox" ) {
+        url.addPath( "direct_messages/sent.xml" );
+    }
+
+    url.addQueryItem( "page", "1" ); // temp;
+
+    KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotStatusListReceived( KJob* ) ) );
+}
+
+void Communication::slotStatusListReceived( KJob* job )
+{
+    if ( job->error() ) {
+        kDebug() << "Job error, " << job->errorString();
+        // TODO: EMIT SOMETHING
+        return;
+    }
+
+    StoredTransferJob* transJob = static_cast<StoredTransferJob*>( job );
+
+    QByteArray data = transJob->data();
+    kDebug() << "Received: " << data;
+}
+
 QString Communication::serviceToApi( int service )
 {
     if ( service == 0 )

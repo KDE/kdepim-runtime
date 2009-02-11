@@ -19,7 +19,8 @@
 
 #include "microblog.h"
 #include "configdialog.h"
-#include "settings.h"
+#include "communication.h"
+#include "settingsadaptor.h"
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -33,12 +34,26 @@
 using namespace Akonadi;
 
 MicroblogResource::MicroblogResource( const QString &id )
-        : ResourceBase( id )
+        : ResourceBase( id ), m_comm( 0 )
 {
+    new SettingsAdaptor( Settings::self() );
+    QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+            Settings::self(), QDBusConnection::ExportAdaptors );
+    initComm();
 }
 
 MicroblogResource::~MicroblogResource()
 {
+    delete m_comm;
+}
+
+void MicroblogResource::initComm()
+{
+    delete m_comm;
+
+    m_comm = new Communication( this );
+    m_comm->setService( 0 ); // Todo..
+    m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
 }
 
 void MicroblogResource::retrieveCollections()
@@ -66,34 +81,34 @@ void MicroblogResource::retrieveCollections()
     QStringList folders;
     folders << "home" << "replies" << "favorites" << "inbox" << "outbox";
     QStringList foldersI18n;
-    foldersI18n << i18n("Home") << i18n("Replies") 
-                << i18n("Favorites") << i18n("Inbox") << i18n("Outbox");
+    foldersI18n << i18n( "Home" ) << i18n( "Replies" )
+    << i18n( "Favorites" ) << i18n( "Inbox" ) << i18n( "Outbox" );
     QStringList contentTypes;
     contentTypes << "message/x-status";
 
-    for ( int i=0; i<5; ++i )
-    {
+    for ( int i=0; i<5; ++i ) {
         Collection c;
         c.setRemoteId( folders.at( i ) );
         c.setContentMimeTypes( contentTypes );
         c.setName( foldersI18n.at( i ) );
         c.setParentRemoteId( "microblog" );
         c.setRights( Collection::ReadOnly );
-    
+
         CachePolicy policy;
         policy.setInheritFromParent( false );
         policy.setSyncOnDemand( true );
         policy.setIntervalCheckTime( 5 );
         c.setCachePolicy( policy );
 
-        collections[ folders.at( i ) ] = c;
+        collections[ folders.at( i )] = c;
     }
 
     collectionsRetrieved( collections.values() );
 }
 
-void MicroblogResource::retrieveItems( const Akonadi::Collection& )
+void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
 {
+    m_comm->retrieveFolder( collection.remoteId() );
     itemsRetrievalDone();
 }
 
@@ -111,6 +126,7 @@ void MicroblogResource::configure( WId windowId )
     dlg.exec();
     if ( !Settings::self()->name().isEmpty() )
         setName( Settings::self()->name() );
+    initComm();
 }
 
 AKONADI_RESOURCE_MAIN( MicroblogResource )

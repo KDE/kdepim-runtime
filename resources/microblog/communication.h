@@ -34,6 +34,7 @@ public:
     void setService( int );
     void setCredentials( const QString&, const QString& );
     void checkAuth();
+    void retrieveFolder( const QString& );
 
 private:
     QString serviceToApi( int service );
@@ -45,11 +46,12 @@ private:
 
 private slots:
     void slotCheckAuthData( KJob* );
+    void slotStatusListReceived( KJob* job );
 
 signals:
     void authOk();
     void authFailed( const QString& );
-
+    void statusList( const QStringList& );
 };
 
 

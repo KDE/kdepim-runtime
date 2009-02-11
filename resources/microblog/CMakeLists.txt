@@ -13,6 +13,12 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+find_program(XSLTPROC_EXECUTABLE xsltproc)
+macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
+if(NOT XSLTPROC_EXECUTABLE)
+  macro_display_feature_log()
+endif(NOT XSLTPROC_EXECUTABLE)
+
 # generates a D-Bus interface description from a KConfigXT file
 macro(kcfg_generate_dbus_interface _kcfg _name)
   add_custom_command(
@@ -36,12 +42,10 @@ set( microblogresource_SRCS
 )
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/microblogresource.kcfg org.kde.Akonadi.Microblog.Settings)
-
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/microblog.h org.kde.Akonadi.Microblog.Resource.xml )
 qt4_add_dbus_adaptor( microblogresource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Microblog.Resource.xml
-        microblog.h MicroblogResource
-     )
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Microblog.Settings.xml settings.h Settings
+)
+
 kde4_add_ui_files(microblogresource_SRCS microblogconfig.ui)
 kde4_add_kcfg_files(microblogresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_microblog_resource RUN_UNINSTALLED ${microblogresource_SRCS})
