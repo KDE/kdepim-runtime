@@ -36,7 +36,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <Q3Header>
+#include <QHeaderView>
 
 using namespace KPIM;
 
@@ -65,27 +65,44 @@ bool KGroupInfo::operator< ( const KGroupInfo &gi2 )
 
 //=============================================================================
 
-GroupItem::GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription *browser,
+GroupItem::GroupItem( QTreeWidget *v, const KGroupInfo &gi, KSubscription *browser,
     bool isCheckItem )
-  : Q3CheckListItem( v, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
+  : QTreeWidgetItem( v, customType ),
     mInfo( gi ), mBrowser( browser ), mIsCheckItem( isCheckItem ),
     mIgnoreStateChange( false )
 {
-  if ( listView()->columns() > 1 ) {
+  setText( 0, gi.name );
+  if ( isCheckItem ) {
+    setCheckState( 0, Qt::Unchecked );
+    setFlags( flags() | Qt::ItemIsUserCheckable );
+    mLastCheckState = isOn();
+  }
+  if ( treeWidget()->columnCount() > 1 ) {
     setDescription();
   }
+
+  connect( treeWidget(), SIGNAL( itemChanged ( QTreeWidgetItem *, int ) ),
+           this, SLOT( stateChange( QTreeWidgetItem* ) ) );
 }
 
 //-----------------------------------------------------------------------------
-GroupItem::GroupItem( Q3ListViewItem *i, const KGroupInfo &gi,
+GroupItem::GroupItem( QTreeWidgetItem *i, const KGroupInfo &gi,
                       KSubscription *browser, bool isCheckItem )
-  : Q3CheckListItem( i, gi.name, isCheckItem ? CheckBox : CheckBoxController ),
+  : QTreeWidgetItem( i, customType ),
     mInfo( gi ), mBrowser( browser ), mIsCheckItem( isCheckItem ),
     mIgnoreStateChange( false )
 {
-  if ( listView()->columns() > 1 ) {
+  setText( 0, gi.name );
+  if ( isCheckItem ) {
+    setCheckState( 0, Qt::Unchecked );
+    setFlags( flags() | Qt::ItemIsUserCheckable );
+    mLastCheckState = isOn();
+  }
+  if ( treeWidget()->columnCount() > 1 ) {
     setDescription();
   }
+  connect( treeWidget(), SIGNAL( itemChanged ( QTreeWidgetItem *, int ) ),
+           this, SLOT( stateChange( QTreeWidgetItem* ) ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -93,7 +110,7 @@ void GroupItem::setInfo( KGroupInfo info )
 {
   mInfo = info;
   setText( 0, mInfo.name );
-  if ( listView()->columns() > 1 ) {
+  if ( treeWidget()->columnCount() > 1 ) {
     setDescription();
   }
 }
@@ -113,105 +130,75 @@ void GroupItem::setOn( bool on )
     mInfo.subscribed = on;
   }
   if ( isCheckItem() ) {
-    Q3CheckListItem::setOn( on );
+    setCheckState( 0, on ? Qt::Checked : Qt::Unchecked );
   }
 }
 
 //------------------------------------------------------------------------------
-void GroupItem::stateChange( bool on )
+bool GroupItem::isOn() const
 {
+  if ( !isCheckItem() )
+    return false;
+  else
+    return checkState( 0 ) == Qt::Checked;
+}
+
+//------------------------------------------------------------------------------
+void GroupItem::stateChange( QTreeWidgetItem* item )
+{
+  if ( item != this )
+    return;
+
   // delegate to parent
-  if ( !mIgnoreStateChange ) {
-    mBrowser->changeItemState( this, on );
+  if ( !mIgnoreStateChange && mLastCheckState != isOn() ) {
+    mBrowser->changeItemState( this, isOn() );
   }
+
+  mLastCheckState = isOn();
 }
 
 //------------------------------------------------------------------------------
 void GroupItem::setVisible( bool b )
 {
   if ( b ) {
-    Q3ListViewItem::setVisible( b );
-    setEnabled( true );
+    setHidden( !b );
   } else {
     if ( isCheckItem() ) {
       bool setInvisible = true;
-      for ( Q3ListViewItem * lvchild = firstChild(); lvchild != 0;
-            lvchild = lvchild->nextSibling() ) {
-        if ( lvchild->isVisible() ) {
+      int childIndex = 0;
+      while ( QTreeWidgetItem *item = QTreeWidgetItem::child( childIndex++ ) ) {
+        if ( !( item->isHidden() ) ) {
           // item has a visible child
           setInvisible = false;
         }
       }
       if ( setInvisible ) {
-        Q3ListViewItem::setVisible( b );
+        setHidden( !b );
       } else {
-        // leave it visible so that children remain visible
-        setOpen( true );
-        setEnabled( false );
+        treeWidget()->expandItem( this );
       }
     } else {
       // non-checkable item
-      QList<Q3ListViewItem*> moveItems;
-
-      for ( Q3ListViewItem * lvchild = firstChild(); lvchild != 0;
-            lvchild = lvchild->nextSibling() ) {
-        if ( static_cast<GroupItem*>(lvchild)->isCheckItem() ) {
+      typedef QPair<QTreeWidgetItem*,bool> ItemWithVisibility;
+      QList< ItemWithVisibility > moveItems;
+      int childIndex = 0;
+      while ( QTreeWidgetItem *item = QTreeWidgetItem::child( childIndex++ ) ) {
+        if ( static_cast<GroupItem*>( item )->isCheckItem() ) {
           // remember the items
-          moveItems.append( lvchild );
+          moveItems.append( ItemWithVisibility( item, item->isHidden() ) );
         }
       }
-      foreach( Q3ListViewItem *item, moveItems ) {
+      foreach( const ItemWithVisibility &item, moveItems ) {
         // move the checkitem to top
-        Q3ListViewItem *parent = item->parent();
+        QTreeWidgetItem *parent = item.first->parent();
         if ( parent ) {
-          parent->takeItem( item );
+          parent->removeChild( item.first );
         }
-        listView()->insertItem( item );
+        treeWidget()->insertTopLevelItem( 0, item.first );
+        item.first->setHidden( item.second );
       }
-      Q3ListViewItem::setVisible( false );
+      setHidden( true );
     }
-  }
-}
-
-//-----------------------------------------------------------------------------
-void GroupItem::paintCell( QPainter *p, const QColorGroup &cg,
-                           int column, int width, int align )
-{
-  if ( mIsCheckItem ) {
-    return Q3CheckListItem::paintCell( p, cg, column, width, align );
-  } else {
-    return Q3ListViewItem::paintCell( p, cg, column, width, align );
-  }
-}
-
-//-----------------------------------------------------------------------------
-void GroupItem::paintFocus( QPainter *p, const QColorGroup &cg,
-                            const QRect &r )
-{
-  if ( mIsCheckItem ) {
-    Q3CheckListItem::paintFocus( p, cg, r );
-  } else {
-    Q3ListViewItem::paintFocus( p, cg, r );
-  }
-}
-
-//-----------------------------------------------------------------------------
-int GroupItem::width( const QFontMetrics &fm, const Q3ListView *lv, int column ) const
-{
-  if ( mIsCheckItem ) {
-    return Q3CheckListItem::width( fm, lv, column );
-  } else {
-    return Q3ListViewItem::width( fm, lv, column );
-  }
-}
-
-//-----------------------------------------------------------------------------
-void GroupItem::setup()
-{
-  if ( mIsCheckItem ) {
-    Q3CheckListItem::setup();
-  } else {
-    Q3ListViewItem::setup();
   }
 }
 
@@ -280,14 +267,13 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   arrowBtn2->setFixedSize( 35, 30 );
 
   // the main listview
-  groupView = new Q3ListView( page );
+  groupView = new QTreeWidget( page );
   groupView->setRootIsDecorated( true );
-  groupView->addColumn( i18nc( "subscription name", "Name" ) );
+  groupView->setHeaderLabel( i18nc( "subscription name", "Name" ) );
   groupView->setAllColumnsShowFocus( true );
+  groupView->setAlternatingRowColors( true );
   if ( descriptionColumn ) {
-    mDescrColumn = groupView->addColumn( i18nc( "subscription description", "Description" ) );
-  } else {
-    groupView->header()->setStretchEnabled( true, 0 );
+    groupView->setHeaderLabel( i18nc( "subscription description", "Description" ) );
   }
 
   // layout
@@ -327,12 +313,10 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   arrL->addWidget( arrowBtn2, Qt::AlignCenter );
 
   // listviews
-  subView = new Q3ListView( page );
-  subView->addColumn( i18n( "Subscribe To" ) );
-  subView->header()->setStretchEnabled( true, 0 );
-  unsubView = new Q3ListView( page );
-  unsubView->addColumn( i18n( "Unsubscribe From" ) );
-  unsubView->header()->setStretchEnabled( true, 0 );
+  subView = new QTreeWidget( page );
+  subView->setHeaderLabel( i18n( "Subscribe To" ) );
+  unsubView = new QTreeWidget( page );
+  unsubView->setHeaderLabel( i18n( "Unsubscribe From" ) );
 
   QVBoxLayout *protL = new QVBoxLayout();
   protL->setSpacing( 3 );
@@ -351,12 +335,12 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   filterEdit->setFocus();
 
    // items clicked
-  connect( groupView, SIGNAL(clicked(Q3ListViewItem *)),
-           this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
-  connect( subView, SIGNAL(clicked(Q3ListViewItem *)),
-           this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
-  connect( unsubView, SIGNAL(clicked(Q3ListViewItem *)),
-           this, SLOT(slotChangeButtonState(Q3ListViewItem*)));
+  connect( groupView, SIGNAL( itemClicked( QTreeWidgetItem *, int ) ),
+           this, SLOT(slotChangeButtonState(QTreeWidgetItem*)));
+  connect( subView, SIGNAL( itemClicked( QTreeWidgetItem *, int ) ),
+           this, SLOT(slotChangeButtonState(QTreeWidgetItem*)));
+  connect( unsubView, SIGNAL( itemClicked( QTreeWidgetItem *, int ) ),
+           this, SLOT(slotChangeButtonState(QTreeWidgetItem*)));
 
   // connect buttons
   connect( arrowBtn1, SIGNAL(clicked()), SLOT(slotButton1()));
@@ -384,27 +368,36 @@ KSubscription::~KSubscription()
 //-----------------------------------------------------------------------------
 void KSubscription::setStartItem( const KGroupInfo &info )
 {
-  Q3ListViewItemIterator it( groupView );
+  QTreeWidgetItemIterator it( groupView );
 
-  for ( ; it.current(); ++it ) {
-    if ( static_cast<GroupItem*>( it.current() )->info() == info ) {
-      it.current()->setSelected( true );
-      it.current()->setOpen( true );
+  for ( ; *it; ++it ) {
+    if ( static_cast<GroupItem*>( *it )->info() == info ) {
+      ( *it )->setSelected( true );
+      groupView->expandItem( *it );
     }
   }
 }
 
 //-----------------------------------------------------------------------------
-void KSubscription::removeListItem( Q3ListView *view, const KGroupInfo &gi )
+void KSubscription::removeListItem( QTreeWidget *view, const KGroupInfo &gi )
 {
   if ( !view ) {
     return;
   }
-  Q3ListViewItemIterator it( view );
+  QTreeWidgetItemIterator it( view );
 
-  for ( ; it.current(); ++it ) {
-    if ( static_cast<GroupItem*>( it.current() )->info() == gi ) {
-      delete it.current();
+  for ( ; *it; ++it ) {
+    if ( static_cast<GroupItem*>( *it )->info() == gi ) {
+
+      // Delete the item
+      QTreeWidgetItem *itemToDelete = *it;
+      QTreeWidgetItem *itemParent = itemToDelete->parent();
+      if ( itemParent )
+        delete itemParent->takeChild( itemParent->indexOfChild( itemToDelete ) );
+      else {
+        QTreeWidget *treeWidget = itemToDelete->treeWidget();
+        delete treeWidget->takeTopLevelItem( treeWidget->indexOfTopLevelItem( itemToDelete ) );
+      }
       break;
     }
   }
@@ -414,31 +407,31 @@ void KSubscription::removeListItem( Q3ListView *view, const KGroupInfo &gi )
 }
 
 //-----------------------------------------------------------------------------
-Q3ListViewItem *KSubscription::getListItem( Q3ListView *view, const KGroupInfo &gi )
+QTreeWidgetItem* KSubscription::getListItem( QTreeWidget *view, const KGroupInfo &gi )
 {
   if ( !view ) {
     return 0;
   }
-  Q3ListViewItemIterator it( view );
+  QTreeWidgetItemIterator it( view );
 
-  for ( ; it.current(); ++it ) {
-    if ( static_cast<GroupItem*>( it.current() )->info() == gi ) {
-      return it.current();
+  for ( ; *it; ++it ) {
+    if ( static_cast<GroupItem*>( *it )->info() == gi ) {
+      return *it;
     }
   }
   return 0;
 }
 
 //-----------------------------------------------------------------------------
-bool KSubscription::itemInListView( Q3ListView *view, const KGroupInfo &gi )
+bool KSubscription::itemInListView( QTreeWidget *view, const KGroupInfo &gi )
 {
   if ( !view ) {
     return false;
   }
-  Q3ListViewItemIterator it( view );
+  QTreeWidgetItemIterator it( view );
 
-  for ( ; it.current(); ++it ) {
-    if ( static_cast<GroupItem*>( it.current() )->info() == gi ) {
+  for ( ; *it; ++it ) {
+    if ( static_cast<GroupItem*>( *it )->info() == gi ) {
       return true;
     }
   }
@@ -482,7 +475,7 @@ void KSubscription::changeItemState( GroupItem *item, bool on )
   }
   if ( on ) {
     if ( !itemInListView( unsubView, item->info() ) ) {
-      Q3ListViewItem *p = item->parent();
+      QTreeWidgetItem *p = item->QTreeWidgetItem::parent();
       while ( p ) {
         // make sure all parents are subscribed
         GroupItem *pi = static_cast<GroupItem*>( p );
@@ -510,20 +503,25 @@ void KSubscription::changeItemState( GroupItem *item, bool on )
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::filterChanged( Q3ListViewItem *item, const QString &text )
+void KSubscription::filterChanged( QTreeWidgetItem *item, const QString &text )
 {
   if ( !item && groupView ) {
-    item = groupView->firstChild();
+    item = groupView->topLevelItem( 0 );
   }
   if ( !item ) {
     return;
   }
 
-  do
+  QTreeWidgetItem *parent = item->parent();
+  if ( !parent )
+    parent = groupView->invisibleRootItem();
+  Q_ASSERT( parent );
+  int childIndex = parent->indexOfChild( item );
+  while( ( item = parent->child( childIndex++ ) ) )
   {
-    if ( item->firstChild() ) {
+    if ( item->childCount() > 0 ) {
       // recursive descend
-      filterChanged( item->firstChild(), text );
+      filterChanged( item->child( 0 ), text );
     }
 
     GroupItem *gr = static_cast<GroupItem*>( item );
@@ -557,20 +555,18 @@ void KSubscription::filterChanged( Q3ListViewItem *item, const QString &text )
     } else {
       gr->setVisible( true );
     }
-
-  } while ( ( item = item->nextSibling() ) );
-
+  }
 }
 
 //------------------------------------------------------------------------------
 int KSubscription::activeItemCount()
 {
-  Q3ListViewItemIterator it( groupView );
+  QTreeWidgetItemIterator it( groupView );
 
   int count = 0;
-  for ( ; it.current(); ++it ) {
-    if ( static_cast<GroupItem*>( it.current() )->isCheckItem() &&
-         it.current()->isVisible() && it.current()->isEnabled() ) {
+  for ( ; *it; ++it ) {
+    if ( static_cast<GroupItem*>( *it )->isCheckItem() &&
+         !( ( *it )->isHidden() ) ) {
       count++;
     }
   }
@@ -581,42 +577,46 @@ int KSubscription::activeItemCount()
 //------------------------------------------------------------------------------
 void KSubscription::restoreOriginalParent()
 {
-  QList<Q3ListViewItem*> move;
-  Q3ListViewItemIterator it( groupView );
-  for ( ; it.current(); ++it ) {
-    Q3ListViewItem *origParent =
-      static_cast<GroupItem*>( it.current() )->originalParent();
-    if ( origParent && origParent != it.current()->parent() ) {
+  QList<QTreeWidgetItem*> move;
+  QTreeWidgetItemIterator it( groupView );
+  for ( ; *it; ++it ) {
+    QTreeWidgetItem *origParent =
+      static_cast<GroupItem*>( *it )->originalParent();
+    if ( origParent && origParent != ( *it )->parent() ) {
       // remember this to avoid messing up the iterator
-      move.append( it.current() );
+      move.append( *it );
     }
   }
-  foreach( Q3ListViewItem *item, move ) {
+  foreach( QTreeWidgetItem *item, move ) {
     // restore the original parent
-    Q3ListViewItem *origParent =
+    QTreeWidgetItem *origParent =
       static_cast<GroupItem*>( item )->originalParent();
-    groupView->takeItem( item );
-    origParent->insertItem( item );
+    groupView->takeTopLevelItem( groupView->indexOfTopLevelItem( item ) );
+    origParent->insertChild( 0, item );
   }
 }
 
 //-----------------------------------------------------------------------------
 void KSubscription::saveOpenStates()
 {
-  Q3ListViewItemIterator it( groupView );
+  QTreeWidgetItemIterator it( groupView );
 
-  for ( ; it.current(); ++it ) {
-    static_cast<GroupItem*>( it.current() )->setLastOpenState( it.current()->isOpen() );
+  for ( ; *it; ++it ) {
+    static_cast<GroupItem*>( *it )->setLastOpenState( groupView->isItemExpanded( *it ) );
   }
 }
 
 //-----------------------------------------------------------------------------
 void KSubscription::restoreOpenStates()
 {
-  Q3ListViewItemIterator it( groupView );
+  QTreeWidgetItemIterator it( groupView );
 
-  for ( ; it.current(); ++it ) {
-    it.current()->setOpen( static_cast<GroupItem*>( it.current() )->lastOpenState() );
+  for ( ; *it; ++it ) {
+    bool wasExpanded = static_cast<GroupItem*>( *it )->lastOpenState();
+    if ( wasExpanded )
+      groupView->expandItem( *it );
+    else
+      groupView->collapseItem( *it );
   }
 }
 
@@ -632,26 +632,26 @@ void KSubscription::slotLoadingComplete()
   subCB->setEnabled( true );
 
   // remember the correct parent
-  Q3ListViewItemIterator it( groupView );
-  for ( ; it.current(); ++it ) {
-    static_cast<GroupItem*>( it.current() )->setOriginalParent( it.current()->parent() );
+  QTreeWidgetItemIterator it( groupView );
+  for ( ; *it; ++it ) {
+    static_cast<GroupItem*>( *it )->setOriginalParent( ( *it )->parent() );
   }
 
   emit listChanged();
 }
 
 //------------------------------------------------------------------------------
-void KSubscription::slotChangeButtonState( Q3ListViewItem *item )
+void KSubscription::slotChangeButtonState( QTreeWidgetItem *item )
 {
   if ( !item ||
-       ( item->listView() == groupView && !static_cast<GroupItem*>(item)->isCheckItem() ) ) {
+       ( item->treeWidget() == groupView && !static_cast<GroupItem*>(item)->isCheckItem() ) ) {
     // disable and return
     arrowBtn1->setEnabled( false );
     arrowBtn2->setEnabled( false );
     return;
   }
   // set the direction of the buttons and enable/disable them
-  Q3ListView *currentView = item->listView();
+  QTreeWidget *currentView = item->treeWidget();
   if ( currentView == groupView ) {
     setDirectionButton1( Right );
     setDirectionButton2( Right );
@@ -693,7 +693,7 @@ void KSubscription::slotButton1()
     if ( subView->currentItem() ) {
       GroupItem *item = static_cast<GroupItem*>( subView->currentItem() );
       // get the corresponding item from the groupView
-      Q3ListViewItem *listitem = getListItem( groupView, item->info() );
+      QTreeWidgetItem *listitem = getListItem( groupView, item->info() );
       if ( listitem ) {
         // deactivate
         GroupItem *chk = static_cast<GroupItem*>( listitem );
@@ -717,7 +717,7 @@ void KSubscription::slotButton2()
     if ( unsubView->currentItem() ) {
       GroupItem *item = static_cast<GroupItem*>( unsubView->currentItem() );
       // get the corresponding item from the groupView
-      Q3ListViewItem *listitem = getListItem( groupView, item->info() );
+      QTreeWidgetItem *listitem = getListItem( groupView, item->info() );
       if ( listitem ) {
         // activate
         GroupItem *chk = static_cast<GroupItem*>( listitem );
@@ -734,7 +734,7 @@ void KSubscription::slotCBToggled()
     restoreOriginalParent();
   }
   // set items {in}visible
-  filterChanged( groupView->firstChild() );
+  filterChanged( groupView->topLevelItem( 0 ) );
   emit listChanged();
 }
 
@@ -749,14 +749,13 @@ void KSubscription::slotFilterTextChanged( const QString &text )
   if ( !mLastText.isEmpty() && text.length() < mLastText.length() ) {
     // reset
     restoreOriginalParent();
-    Q3ListViewItemIterator it( groupView );
-    for ( ; it.current(); ++it ) {
-      it.current()->setVisible( true );
-      it.current()->setEnabled( true );
+    QTreeWidgetItemIterator it( groupView );
+    for ( ; *it; ++it ) {
+      ( *it )->setHidden( false );
     }
   }
   // set items {in}visible
-  filterChanged( groupView->firstChild(), text );
+  filterChanged( groupView->topLevelItem( 0 ), text );
   // restore the open-states
   if ( text.isEmpty() ) {
     restoreOpenStates();
@@ -788,5 +787,3 @@ void KSubscription::slotLoadFolders()
   unsubView->clear();
   groupView->clear();
 }
-
-#include "ksubscription.moc"

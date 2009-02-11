@@ -31,13 +31,12 @@
 #include <KDialog>
 
 #include <QCheckBox>
-#include <Q3CheckListItem>
+#include <QTreeWidget>
 
 class KLineEdit;
-class QLabel;
 class QGridLayout;
-class Q3ListView;
-class Q3ListViewItem;
+class QLabel;
+class QTreeWidget;
 
 namespace KPIM {
 
@@ -75,12 +74,14 @@ class KDEPIM_EXPORT KGroupInfo
 //==========================================================================
 
 /** A class representing a single group item (what's that?) */
-class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
+class KDEPIM_EXPORT GroupItem : public QObject, public QTreeWidgetItem
 {
+  Q_OBJECT
+
   public:
-    GroupItem( Q3ListView *v, const KGroupInfo &gi, KSubscription *browser,
+    GroupItem( QTreeWidget *v, const KGroupInfo &gi, KSubscription *browser,
                bool isCheckItem = false );
-    GroupItem( Q3ListViewItem *i, const KGroupInfo &gi, KSubscription *browser,
+    GroupItem( QTreeWidgetItem *i, const KGroupInfo &gi, KSubscription *browser,
                bool isCheckItem = false );
 
     /**
@@ -92,8 +93,8 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
     /**
      * Get/Set the original parent
      */
-    Q3ListViewItem *originalParent() { return mOriginalParent; }
-    void setOriginalParent( Q3ListViewItem *parent ) { mOriginalParent = parent; }
+    QTreeWidgetItem *originalParent() { return mOriginalParent; }
+    void setOriginalParent( QTreeWidgetItem *parent ) { mOriginalParent = parent; }
 
     /**
      * Get/Set the last open state
@@ -119,16 +120,10 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
     void setIgnoreStateChange( bool ignore ) { mIgnoreStateChange = ignore; }
 
     /**
-     * Reimplemented
      * Sets the subscribed property (only while items are loaded)
      */
-    virtual void setOn( bool on );
-
-    /**
-     * Reimlemented
-     * Calls KSubscription::changeItemState if mIgnoreStateChange == false
-     */
-    virtual void stateChange( bool on );
+    void setOn( bool on );
+    bool isOn() const;
 
     /**
      * Reimplemented
@@ -136,41 +131,22 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
      */
     void setVisible( bool b );
 
-    /**
-     * Reimplemented
-     * Calls QListViewItem or QCheckListItem
-     */
-    virtual void paintCell( QPainter *p, const QColorGroup &cg,
-        int column, int width, int align );
+  protected Q_SLOTS:
 
-    /**
-     * Reimplemented
-     * Calls QListViewItem or QCheckListItem
+     /**
+     * Calls KSubscription::changeItemState if mIgnoreStateChange == false
      */
-    virtual void paintFocus( QPainter *p, const QColorGroup &cg,
-                 const QRect &r );
-
-    /**
-     * Reimplemented
-     * Calls QListViewItem or QCheckListItem
-     */
-    virtual int width( const QFontMetrics &, const Q3ListView *, int column ) const;
-
-    /**
-     * Reimplemented
-     * Calls QListViewItem or QCheckListItem
-     */
-    virtual void setup();
-
-    /** Reimplemented */
-    virtual int rtti () const { return 15689; }
+    void stateChange( QTreeWidgetItem* item );
 
   protected:
+
+    static const int customType = 15689;
     KGroupInfo mInfo;
     KSubscription *mBrowser;
-    Q3ListViewItem *mOriginalParent;
+    QTreeWidgetItem *mOriginalParent;
     // remember last open state
     bool mLastOpenState;
+    bool mLastCheckState;
     // is this a checkable item
     bool mIsCheckItem;
     // ignore state changes
@@ -190,7 +166,6 @@ class KDEPIM_EXPORT GroupItem : public Q3CheckListItem
  * You can hide unwanted checkboxes via the respective hide<checkboxname> methods
  *
  */
-
 class KDEPIM_EXPORT KSubscription : public KDialog
 {
   Q_OBJECT
@@ -220,7 +195,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     /**
      * Access to the treewidget that holds the GroupItems
      */
-    Q3ListView *folderTree() { return groupView; }
+    QTreeWidget *folderTree() { return groupView; }
 
     /**
      * Access to the searchfield
@@ -235,18 +210,18 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     /**
      * Removes the item from the listview
      */
-    void removeListItem( Q3ListView *view, const KGroupInfo &gi );
+    void removeListItem( QTreeWidget *view, const KGroupInfo &gi );
 
     /**
      * Gets the item from the listview
      * Returns 0 if the item can't be found
      */
-    Q3ListViewItem *getListItem( Q3ListView *view, const KGroupInfo &gi );
+    QTreeWidgetItem *getListItem( QTreeWidget *view, const KGroupInfo &gi );
 
     /**
      * Is the item in the given listview
      */
-    bool itemInListView( Q3ListView *view, const KGroupInfo &gi );
+    bool itemInListView( QTreeWidget *view, const KGroupInfo &gi );
 
     /**
      * Makes all changes after an item is toggled
@@ -286,7 +261,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
      * Update the item-states (visible, enabled) when a filter
      * criteria changed
      */
-    void filterChanged( Q3ListViewItem *item = 0,
+    void filterChanged( QTreeWidgetItem *item = 0,
                         const QString &text = QString() );
 
     /**
@@ -318,7 +293,7 @@ class KDEPIM_EXPORT KSubscription : public KDialog
     /**
      * Changes the current state of the buttons
      */
-    void slotChangeButtonState( Q3ListViewItem * );
+    void slotChangeButtonState( QTreeWidgetItem * );
 
     /**
      * Buttons are clicked
@@ -360,8 +335,8 @@ class KDEPIM_EXPORT KSubscription : public KDialog
 
     // widgets
     QWidget *page;
-    Q3ListView *groupView;
-    Q3ListView *subView, *unsubView;
+    QTreeWidget *groupView;
+    QTreeWidget *subView, *unsubView;
     KLineEdit *filterEdit;
     QCheckBox *noTreeCB, *subCB, *newCB;
     QPushButton  *arrowBtn1, *arrowBtn2;
@@ -378,9 +353,6 @@ class KDEPIM_EXPORT KSubscription : public KDialog
 
     // remember last searchtext
     QString mLastText;
-
-    // remember description column
-    int mDescrColumn;
 };
 
 }
