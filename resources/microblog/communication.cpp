@@ -50,7 +50,7 @@ void Communication::setCredentials( const QString &username, const QString &pass
 
 KUrl Communication::getBaseUrl()
 {
-    KUrl url( serviceToApi( m_service ) + "account/verify_credentials.xml" );
+    KUrl url( serviceToApi( m_service ) );
     url.setUser( m_username );
     url.setPass( m_password );
     return url;

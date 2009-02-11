@@ -63,6 +63,32 @@ void MicroblogResource::retrieveCollections()
     // for all the folders, inherit it from the parent.
     policy.setInheritFromParent( true );
 
+    QStringList folders;
+    folders << "home" << "replies" << "favorites" << "inbox" << "outbox";
+    QStringList foldersI18n;
+    foldersI18n << i18n("Home") << i18n("Replies") 
+                << i18n("Favorites") << i18n("Inbox") << i18n("Outbox");
+    QStringList contentTypes;
+    contentTypes << "message/x-status";
+
+    for ( int i=0; i<5; ++i )
+    {
+        Collection c;
+        c.setRemoteId( folders.at( i ) );
+        c.setContentMimeTypes( contentTypes );
+        c.setName( foldersI18n.at( i ) );
+        c.setParentRemoteId( "microblog" );
+        c.setRights( Collection::ReadOnly );
+    
+        CachePolicy policy;
+        policy.setInheritFromParent( false );
+        policy.setSyncOnDemand( true );
+        policy.setIntervalCheckTime( 5 );
+        c.setCachePolicy( policy );
+
+        collections[ folders.at( i ) ] = c;
+    }
+
     collectionsRetrieved( collections.values() );
 }
 
