@@ -41,9 +41,16 @@ ICalResource::ICalResource( const QString &id )
     : SingleFileResource<Settings>( id ), mCalendar( 0 ), mMimeVisitor( new KCalMimeTypeVisitor() )
 {
   QStringList mimeTypes;
-  mimeTypes << QLatin1String( "text/calendar" );
-  mimeTypes += mMimeVisitor->allMimeTypes();
-  setSupportedMimetypes( mimeTypes, "office-calendar" );
+  if ( isNotesResource() ) {
+    mimeTypes << QLatin1String("application/x-vnd.akonadi.notes");
+    setSupportedMimetypes( mimeTypes, "knotes" );
+  }
+  else {
+    mimeTypes << QLatin1String( "text/calendar" );
+    mimeTypes += mMimeVisitor->allMimeTypes();
+    setSupportedMimetypes( mimeTypes, "office-calendar" );
+  }
+
 
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -74,7 +81,13 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   Item i = item;
-  i.setMimeType( mMimeVisitor->mimeType( incidence.get() ) );
+  QString mimeType;
+  if ( isNotesResource() )
+    mimeType = "application/x-vnd.akonadi.note";
+  else
+    mimeType = mMimeVisitor->mimeType( incidence.get() );
+
+  i.setMimeType( mimeType );
   i.setPayload<IncidencePtr>( incidence );
   itemRetrieved( i );
   return true;
@@ -88,11 +101,17 @@ void ICalResource::aboutToQuit()
 
 void ICalResource::configure( WId windowId )
 {
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
-  dlg.setCaption( i18n("Select Calendar") );
-  if ( dlg.exec() == QDialog::Accepted ) {
+  if ( isNotesResource() ) {
+    Settings::self()->setPath( KGlobal::dirs()->saveLocation( "data", "knotes/" ) + "notes.ics" );
     reloadFile();
+  }
+  else {
+    SingleFileResourceConfigDialog<Settings> dlg( windowId );
+    dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
+    dlg.setCaption( i18n("Select Calendar") );
+    if ( dlg.exec() == QDialog::Accepted ) {
+      reloadFile();
+    }
   }
 }
 
@@ -168,7 +187,12 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
   Incidence::List incidences = mCalendar->incidences();
   Item::List items;
   foreach ( Incidence *incidence, incidences ) {
-    Item item ( mMimeVisitor->mimeType( incidence ) );
+    QString mimeType;
+    if ( isNotesResource() )
+      mimeType = "application/x-vnd.akonadi.note";
+    else
+      mimeType = mMimeVisitor->mimeType( incidence );
+    Item item ( mimeType );
     item.setRemoteId( incidence->uid() );
     item.setPayload( IncidencePtr( incidence->clone() ) );
     items << item;
@@ -185,6 +209,12 @@ bool ICalResource::writeToFile( const QString &fileName )
   return true;
 }
 
+bool ICalResource::isNotesResource() const
+{
+  return identifier().startsWith("akonadi_notes");
+}
+
 AKONADI_RESOURCE_MAIN( ICalResource )
+
 
 #include "icalresource.moc"

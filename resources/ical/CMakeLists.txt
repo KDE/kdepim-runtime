@@ -14,7 +14,7 @@ set( icalresource_SRCS
   icalresource.cpp
 )
 
-install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES icalresource.desktop notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_ui_files(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)

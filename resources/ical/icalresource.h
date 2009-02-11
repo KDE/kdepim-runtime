@@ -51,6 +51,7 @@ class ICalResource : public Akonadi::SingleFileResource<Settings>
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();
+    bool isNotesResource() const;
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
