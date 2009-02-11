@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Notes
+Comment=
+Type=AkonadiResource
+Exec=akonadi_ical_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_notes_resource
+X-Ubuntu-Gettext-Domain=desktop_kdesdk
