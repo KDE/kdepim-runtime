@@ -762,9 +762,12 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   }
 
   // clear local caches
-  d->mInternalCalendarModification = true;
-  d->mCalendar.close();
-  d->mInternalCalendarModification = false;
+  if ( !d->mCalendar.incidences().isEmpty() ) {
+    d->mInternalCalendarModification = true;
+    d->mCalendar.close();
+    d->mInternalCalendarModification = false;
+    emit resourceChanged( this );
+  }
 
   d->mItems.clear();
   d->mIdMapping.clear();
