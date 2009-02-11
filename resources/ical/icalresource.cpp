@@ -101,17 +101,14 @@ void ICalResource::aboutToQuit()
 
 void ICalResource::configure( WId windowId )
 {
-  if ( isNotesResource() ) {
+  if ( isNotesResource() )
     Settings::self()->setPath( KGlobal::dirs()->saveLocation( "data", "knotes/" ) + "notes.ics" );
+
+  SingleFileResourceConfigDialog<Settings> dlg( windowId );
+  dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
+  dlg.setCaption( i18n("Select Calendar") );
+  if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
-  }
-  else {
-    SingleFileResourceConfigDialog<Settings> dlg( windowId );
-    dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
-    dlg.setCaption( i18n("Select Calendar") );
-    if ( dlg.exec() == QDialog::Accepted ) {
-      reloadFile();
-    }
   }
 }
 
