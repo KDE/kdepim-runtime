@@ -11,7 +11,7 @@ Name[ga]=Srathóir Imeachtaí
 Name[gl]=Serializador de Incidencias
 Name[it]=Serializzatore occorrenze
 Name[ja]=イベントシリアライザ
-Name[km]=ម៉ាស៊ីនបោះពុម្ព​ឧប្បត្តិ� េតុ
+Name[km]=ម៉ាស៊ីនបោះពុម្ព​ឧប្បត្តិហេតុ
 Name[lv]=Notikumu serializētājs
 Name[nb]=Forekomst-serialisering
 Name[nds]=Begeefnis-Reegmoduul
@@ -28,7 +28,7 @@ Name[tr]=Tekrar Sıralandırıcısı
 Name[uk]=Серіалізатор подій
 Name[x-test]=xxIncidence Serializerxx
 Name[zh_CN]=事件序列转换器
-Name[zh_TW]=� �率序列器
+Name[zh_TW]=頻率序列器
 Comment=An Akonadi serializer plugin for events, tasks and journal entries
 Comment[ca]=Un connector de serialització de l'Akonadi pels objectes incidències
 Comment[da]=Et Akonadi-plugin til serieordning af hændelser, opgaver og journalindgange
@@ -60,7 +60,7 @@ Comment[tr]=Olay, görev ve günlük nesneleri için bir Akonadi sıralandırıc
 Comment[uk]=Втулок серіалізації Akonadi для подій, завдань і записів журналів
 Comment[x-test]=xxAn Akonadi serializer plugin for events, tasks and journal entriesxx
 Comment[zh_CN]=对事项、任务和日记项进行序列转换的 Akonadi 插件
-Comment[zh_TW]=事件、工作與日誌� �目物件的 Akonadi 序列器外掛程式
+Comment[zh_TW]=事件、工作與日誌項目物件的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=text/calendar,application/x-vnd.akonadi.note
