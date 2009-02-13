@@ -399,7 +399,7 @@ void KPrefsWidDate::readConfig()
   if ( !mItem->value().date().isValid() ) {
     mItem->setValue( QDateTime::currentDateTime() );
   }
-  mDateEdit->setDate( mItem->value().date() );
+  mDateEdit->setDate( mItem->value().date().isValid() ? mItem->value().date() : QDate::currentDate()  );
 }
 
 void KPrefsWidDate::writeConfig()
