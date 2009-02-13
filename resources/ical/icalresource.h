@@ -24,6 +24,7 @@
 #include "settings.h"
 
 namespace KCal {
+  class AssignmentVisitor;
   class CalendarLocal;
   class IncidenceBase;
 }
@@ -60,6 +61,7 @@ class ICalResource : public Akonadi::SingleFileResource<Settings>
   private:
     KCal::CalendarLocal *mCalendar;
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
+    KCal::AssignmentVisitor *mIncidenceAssigner;
 };
 
 #endif

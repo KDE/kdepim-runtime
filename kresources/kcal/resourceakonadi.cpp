@@ -21,8 +21,9 @@
 #include "resourceakonadi.h"
 #include "resourceakonadiconfig.h"
 
-#include "kcal/calendarlocal.h"
-#include "kabc/locknull.h"
+#include <kabc/locknull.h>
+#include <kcal/assignmentvisitor.h>
+#include <kcal/calendarlocal.h>
 
 #include <akonadi/agentfilterproxymodel.h>
 #include <akonadi/agentinstance.h>
@@ -55,9 +56,6 @@
 #include <QTimer>
 
 #include <boost/shared_ptr.hpp>
-
-using namespace Akonadi;
-using namespace KCal;
 
 using namespace Akonadi;
 using namespace KCal;
@@ -304,6 +302,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
     AgentFilterProxyModel *mAgentFilterModel;
 
     ThreadJobContext mThreadJobContext;
+
+    AssignmentVisitor mIncidenceAssigner;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -1046,7 +1046,15 @@ void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
 
       Incidence *cachedIncidence = mCalendar.incidence( incidencePtr->uid() );
       if ( cachedIncidence != 0 ) {
-        *cachedIncidence = *(incidencePtr.get());
+        if ( !mIncidenceAssigner.assign( cachedIncidence, incidencePtr.get() ) ) {
+          kWarning(5800) << "Incidence uid=" << cachedIncidence->uid()
+                         << ", " << cachedIncidence->summary()
+                         << "changed type. Replacing it.";
+
+          mCalendar.deleteIncidence( cachedIncidence );
+          delete cachedIncidence;
+          mCalendar.addIncidence( incidencePtr.get()->clone() );
+        }
       } else {
         Incidence *incidence = incidencePtr->clone();
         if ( !mCalendar.addIncidence( incidence ) ) {
@@ -1155,10 +1163,16 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
   bool internalModification = mInternalCalendarModification;
   mInternalCalendarModification = true;
 
-//   mCalendar.deleteIncidence( cachedIncidence );
-//   mCalendar.addIncidence( incidence.get()->clone() );
-  *cachedIncidence = *(incidence.get());
+  if ( !mIncidenceAssigner.assign( cachedIncidence, incidence.get() ) ) {
+    kWarning(5800) << "Incidence uid=" << cachedIncidence->uid()
+                   << ", " << cachedIncidence->summary()
+                   << "changed type. Replacing it.";
 
+    mCalendar.deleteIncidence( cachedIncidence );
+    delete cachedIncidence;
+    mCalendar.addIncidence( incidence.get()->clone() );
+  }
+                                                                                                          
   mInternalCalendarModification = internalModification;
 
   mChanges.remove( incidence->uid() );
@@ -1648,7 +1662,15 @@ bool ResourceAkonadi::Private::reloadSubResource( SubResource *subResource, bool
 
       Incidence *incidence = mCalendar.incidence( incidencePtr->uid() );
       if ( incidence != 0 ) {
-        *incidence = *(incidencePtr.get());
+        if ( !mIncidenceAssigner.assign( incidence, incidencePtr.get() ) ) {
+          kWarning(5800) << "Incidence uid=" << incidence->uid()
+                         << ", " << incidence->summary()
+                         << "changed type. Replacing it.";
+
+          mCalendar.deleteIncidence( incidence );
+          delete incidence;
+          mCalendar.addIncidence( incidencePtr.get()->clone() );
+        }
       } else {
         mCalendar.addIncidence( incidencePtr->clone() );
       }
