@@ -43,6 +43,7 @@ private:
     int m_service;
     QString m_username;
     QString m_password;
+    QString m_retrievingFolder;
 
 private slots:
     void slotCheckAuthData( KJob* );

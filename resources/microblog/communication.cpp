@@ -108,6 +108,8 @@ void Communication::slotCheckAuthData( KJob *job )
 
 void Communication::retrieveFolder( const QString &folder )
 {
+    m_retrievingFolder = folder;
+
     KUrl url = getBaseUrl();
     if ( folder ==  "home" ) {
         url.addPath( "statuses/friends_timeline.xml" );
@@ -144,17 +146,24 @@ void Communication::slotStatusListReceived( KJob* job )
     QDomDocument document;
     document.setContent( data );
 
+    QLatin1String main("statuses");
+    QLatin1String sub("status");
+    if ( m_retrievingFolder == "inbox" || m_retrievingFolder == "outbox" ) {
+        main = QLatin1String("direct-messages");
+        sub = QLatin1String("direct_message");
+    }
+
     QDomElement root = document.documentElement();
-    if ( root.tagName() != "statuses" ) {
-        kDebug() << "** there's no statuses tag in XML\t the XML is: \n" << data.data();
+    if ( root.tagName() != main ) {
+        kDebug() << "** there's no " << main << "tag in XML\t the XML is: \n" << data.data();
         emit statusList( list );
         return;
     }
 
     QDomNode node = root.firstChild();
     while ( !node.isNull() ) {
-        if ( node.toElement().tagName() != "status" ) {
-            kDebug() << "** there's no status tag in XML, maybe there is no new status!";
+        if ( node.toElement().tagName() != sub ) {
+            kDebug() << "** there's no " << sub << "tag in XML, maybe there is no new status!" << data.data();
             emit statusList( list );
             return;
         }

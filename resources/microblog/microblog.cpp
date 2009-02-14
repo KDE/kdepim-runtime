@@ -56,6 +56,8 @@ void MicroblogResource::initComm()
     m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
     connect( m_comm, SIGNAL( statusList( const QStringList& ) ), 
                      SLOT( slotStatusList( const QStringList& ) ) );
+
+    synchronizeCollectionTree();
 }
 
 void MicroblogResource::retrieveCollections()
