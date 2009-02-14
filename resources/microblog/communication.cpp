@@ -22,8 +22,10 @@
 #include <kdebug.h>
 #include <klocale.h>
 
+#include <QBuffer>
 #include <QDomDocument>
 #include <QObject>
+#include <QtXmlPatterns/QXmlQuery>
 
 #include <kio/job.h>
 using namespace KIO;
@@ -127,16 +129,59 @@ void Communication::retrieveFolder( const QString &folder )
 
 void Communication::slotStatusListReceived( KJob* job )
 {
+    QStringList list;
+
     if ( job->error() ) {
         kDebug() << "Job error, " << job->errorString();
-        // TODO: EMIT SOMETHING
+        emit statusList( list );
         return;
     }
 
     StoredTransferJob* transJob = static_cast<StoredTransferJob*>( job );
-
     QByteArray data = transJob->data();
-    kDebug() << "Received: " << data;
+
+    // Parse the data.
+    QDomDocument document;
+    document.setContent( data );
+
+    QDomElement root = document.documentElement();
+    if ( root.tagName() != "statuses" ) {
+        kDebug() << "** there's no statuses tag in XML\t the XML is: \n" << data.data();
+        emit statusList( list );
+        return;
+    }
+
+    QDomNode node = root.firstChild();
+    while ( !node.isNull() ) {
+        if ( node.toElement().tagName() != "status" ) {
+            kDebug() << "** there's no status tag in XML, maybe there is no new status!";
+            emit statusList( list );
+            return;
+        }
+        
+        //slowww??
+        QString g;
+        QTextStream out(&g);
+        node.save( out, 0);
+        out.readAll();
+        kDebug() << g;
+        list << g;
+        
+        node = node.nextSibling();
+    }
+    emit statusList( list );
+  
+
+    /*
+    QBuffer buffer(&data);
+    buffer.open(QIODevice::ReadOnly);
+    QXmlQuery query; 
+    query.bindVariable("myDocument", &buffer);
+    //query.setQuery("doc($myDocument)/statuses/status/string()", QUrl());
+    query.setQuery("doc($myDocument)/statuses/status/string()");
+    QStringList list; 
+    query.evaluateTo(&list);
+    */
 }
 
 QString Communication::serviceToApi( int service )
