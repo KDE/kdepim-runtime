@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mailody Imap
 Name[fr]=Imap Mailody
+Name[ga]=IMAP Mailody
 Name[gl]=Imap de Mailody
 Name[ja]=Mailody IMAP
 Name[ko]=Mailody IMAP
@@ -22,6 +23,7 @@ Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισ�
 Comment[es]=Conecta con un servidor IMAP. Basado en la biblioteca IMAP de Mailody
 Comment[et]=Ühendumine IMAP-serveriga. Tugineb Mailody IMAP-teegile.
 Comment[fr]=Connexion à un serveur IMAP en utilisant la librairie IMAP de Mailody.
+Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar leabharlann IMAP ó Mailody.
 Comment[gl]=Conecta cun servidor de IMAP. Baseado na biblioteca de IMAP do Mailody.
 Comment[it]=Si connette ad un server IMAP. Basato sulla libreria IMAP di Mailody.
 Comment[ja]=IMAP サーバに接続します。Mailody の IMAP ライブラリに基づいています。
