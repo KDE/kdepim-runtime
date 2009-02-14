@@ -32,7 +32,7 @@ using namespace Akonadi;
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  setSupportedMimetypes( QStringList() << "text/directory", "office-address-book" );
+  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), "office-address-book" );
 
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -136,7 +136,7 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
   foreach ( const KABC::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
-    item.setMimeType( "text/directory" );
+    item.setMimeType( KABC::Addressee::mimeType() );
     item.setPayload( addressee );
     items.append( item );
   }

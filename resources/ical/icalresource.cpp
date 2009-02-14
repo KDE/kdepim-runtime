@@ -41,11 +41,12 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 ICalResource::ICalResource( const QString &id )
     : SingleFileResource<Settings>( id ), mCalendar( 0 ),
       mMimeVisitor( new KCalMimeTypeVisitor() ),
-      mIncidenceAssigner( new AssignmentVisitor() )
+      mIncidenceAssigner( new AssignmentVisitor() ),
+      mNotesMimeType( QLatin1String( "application/x-vnd.akonadi.notes" ) )
 {
   QStringList mimeTypes;
   if ( isNotesResource() ) {
-    mimeTypes << QLatin1String("application/x-vnd.akonadi.notes");
+    mimeTypes << mNotesMimeType;
     setSupportedMimetypes( mimeTypes, "knotes" );
   }
   else {
@@ -87,7 +88,7 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   Item i = item;
   QString mimeType;
   if ( isNotesResource() )
-    mimeType = "application/x-vnd.akonadi.note";
+    mimeType = mNotesMimeType;
   else
     mimeType = mMimeVisitor->mimeType( incidence.get() );
 
@@ -197,7 +198,7 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
   foreach ( Incidence *incidence, incidences ) {
     QString mimeType;
     if ( isNotesResource() )
-      mimeType = "application/x-vnd.akonadi.note";
+      mimeType = mNotesMimeType;
     else
       mimeType = mMimeVisitor->mimeType( incidence );
     Item item ( mimeType );

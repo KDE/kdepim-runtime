@@ -196,7 +196,7 @@ void VCardDirResource::retrieveCollections()
   c.setRemoteId( vCardDirectoryName() );
   c.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "text/directory";
+  mimeTypes << KABC::Addressee::mimeType();
   c.setContentMimeTypes( mimeTypes );
   if ( Settings::self()->readOnly() ) {
     c.setRights( Collection::CanChangeCollection );
@@ -220,7 +220,7 @@ void VCardDirResource::retrieveItems( const Akonadi::Collection& )
   foreach ( const KABC::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
-    item.setMimeType( "text/directory" );
+    item.setMimeType( KABC::Addressee::mimeType() );
     items.append( item );
   }
 

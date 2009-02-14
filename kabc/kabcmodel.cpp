@@ -65,7 +65,7 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   const Item item = itemForIndex( index );
 
-  if ( item.mimeType() == QLatin1String( "text/directory" ) ) {
+  if ( item.mimeType() == KABC::Addressee::mimeType() ) {
     if ( !item.hasPayload<KABC::Addressee>() )
       return QVariant();
 

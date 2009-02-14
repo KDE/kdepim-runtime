@@ -193,7 +193,7 @@ void KABCResource::retrieveCollections()
   attr->setIconName( QLatin1String( "office-address-book" ) );
 
   QStringList mimeTypes;
-  mimeTypes << QLatin1String( "text/directory" );
+  mimeTypes << KABC::Addressee::mimeType();
 
   QStringList topLevelMimeTypes = mimeTypes;
   topLevelMimeTypes << KABC::ContactGroup::mimeType();
@@ -263,7 +263,7 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
 
     Item item;
     item.setRemoteId( addrIt->uid() );
-    item.setMimeType( QLatin1String( "text/directory" ) );
+    item.setMimeType( KABC::Addressee::mimeType() );
     if ( mFullItemRetrieve ) item.setPayload<KABC::Addressee>( *addrIt );
     items.append( item );
   }

@@ -360,7 +360,7 @@ bool ResourceAkonadi::doOpen()
   d->mCollectionModel = new CollectionModel( this );
 
   d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
-  d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+  d->mCollectionFilterModel->addMimeTypeFilter( Addressee::mimeType() );
   d->mCollectionFilterModel->addMimeTypeFilter( ContactGroup::mimeType() );
 
   connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
@@ -374,7 +374,7 @@ bool ResourceAkonadi::doOpen()
 
   d->mMonitor = new Monitor( this );
 
-  d->mMonitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
+  d->mMonitor->setMimeTypeMonitored( Addressee::mimeType() );
   d->mMonitor->setMimeTypeMonitored( ContactGroup::mimeType() );
   d->mMonitor->itemFetchScope().fetchFullPayload();
 
@@ -461,7 +461,7 @@ bool ResourceAkonadi::load()
 
   bool result = true;
   foreach ( const Collection &collection, collections ) {
-     if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) )
+     if ( !collection.contentMimeTypes().contains( Addressee::mimeType() )
           && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
        continue;
 
@@ -518,7 +518,7 @@ bool ResourceAkonadi::asyncLoad()
     }
 
     foreach ( const Collection &collection, d->mThreadJobContext.mCollections ) {
-      if ( !collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) )
+      if ( !collection.contentMimeTypes().contains( Addressee::mimeType() )
             && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
         continue;
 
@@ -536,7 +536,7 @@ bool ResourceAkonadi::asyncLoad()
   d->mCollectionModel = new CollectionModel( this );
 
   d->mCollectionFilterModel = new CollectionFilterProxyModel( this );
-  d->mCollectionFilterModel->addMimeTypeFilter( QLatin1String( "text/directory" ) );
+  d->mCollectionFilterModel->addMimeTypeFilter( Addressee::mimeType() );
   d->mCollectionFilterModel->addMimeTypeFilter( ContactGroup::mimeType() );
 
   connect( d->mCollectionFilterModel, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
@@ -1489,7 +1489,7 @@ void ResourceAkonadi::Private::createItemListsForSave( Item::List &added, Item::
 
         addressee = mParent->mAddrMap.value( uid );
         if ( !addressee.isEmpty() ) {
-          item.setMimeType( QLatin1String( "text/directory" ) );
+          item.setMimeType( KABC::Addressee::mimeType() );
           item.setPayload<KABC::Addressee>( addressee );
 
           added << item;

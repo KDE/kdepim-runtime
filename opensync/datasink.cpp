@@ -358,7 +358,7 @@ bool DataSink::setPayload( Item *item, const QString &str )
       KABC::Addressee vcard = converter.parseVCard( str.toUtf8() );
       kDebug() << vcard.uid() << vcard.name();
 
-      item->setMimeType( "text/directory" );
+      item->setMimeType( Addressee::mimeType() );
       item->setPayload<KABC::Addressee>( vcard );
       break;
     }

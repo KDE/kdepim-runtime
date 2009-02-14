@@ -64,7 +64,7 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
     mForceUpdate( false )
 {
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setMimeTypeMonitored( "text/directory" );
+  changeRecorder()->setMimeTypeMonitored( KABC::Addressee::mimeType() );
   changeRecorder()->setChangeRecordingEnabled( false );
 
   // do the initial scan to make sure all items have been fed to nepomuk
@@ -123,7 +123,7 @@ void NepomukContactFeeder::updateAll( bool force )
 
     foreach( const Collection &collection, collections) {
       kDebug() << "checking collection" << collection.name();
-      if ( collection.contentMimeTypes().contains( QLatin1String( "text/directory" ) ) ) {
+      if ( collection.contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
         kDebug() << "fetching items from collection" << collection.name();
         ItemFetchJob *itemFetch = new ItemFetchJob( collection );
         itemFetch->fetchScope().fetchFullPayload();

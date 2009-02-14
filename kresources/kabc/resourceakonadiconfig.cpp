@@ -27,6 +27,8 @@
 #include <akonadi/collectionview.h>
 #include <akonadi/standardactionmanager.h>
 
+#include <kabc/addressee.h>
+
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kdebug.h>
@@ -75,9 +77,9 @@ class AkonadiResourceDialog : public KDialog
       : KDialog( parent )
     {
       QWidget *widget = KCModuleLoader::loadModule( "kcm_akonadi_resources",
-                                                    KCModuleLoader::Inline, this, mimeList );                      
+                                                    KCModuleLoader::Inline, this, mimeList );
       setMainWidget( widget );
-      
+
       setButtons( Close );
       setDefaultButton( Close );
     }
@@ -100,9 +102,8 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   mainLayout->setSpacing( KDialog::spacingHint() );
 
   // list of contact data MIME types
-  // TODO: check if we need to add text/x-vcard
   QStringList mimeList;
-  mimeList << "text/directory";
+  mimeList << KABC::Addressee::mimeType();
 
   Akonadi::CollectionModel *model = new Akonadi::CollectionModel( this );
 
@@ -168,10 +169,10 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   AkonadiResourceDialog *sourcesDialog = new AkonadiResourceDialog( mimeList, this );
   const QString sourcesTitle = i18nc( "@title:window", "Manage Address Book Sources" );
   sourcesDialog->setCaption( sourcesTitle );
-  
+
   QPushButton *sourcesButton = new QPushButton( sourcesTitle );
   buttonBox->addButton( sourcesButton, QDialogButtonBox::ActionRole );
-  
+
   connect( sourcesButton, SIGNAL( clicked() ), sourcesDialog, SLOT( show() ) );
 
   QLabel *label = new QLabel( this );

@@ -62,6 +62,8 @@ class ICalResource : public Akonadi::SingleFileResource<Settings>
     KCal::CalendarLocal *mCalendar;
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
     KCal::AssignmentVisitor *mIncidenceAssigner;
+
+    const QString mNotesMimeType;
 };
 
 #endif

@@ -24,6 +24,8 @@
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
 
+#include <kabc/addressee.h>
+
 #include <KComponentData>
 #include <KDebug>
 #include <KUrl>
@@ -110,7 +112,7 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
     OSyncObjTypeSink *sink = osync_plugin_info_nth_objtype(info, i);
     foreach ( const Akonadi::Collection &col, cols ) {
       kDebug() << "creating resource for" << col.name() << col.contentMimeTypes();
-//      if ( !col.contentMimeTypes().contains( "text/directory" ) ) // ### TODO
+//      if ( !col.contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) // ### TODO
 //         continue;
       if( col.contentMimeTypes().isEmpty() )
         continue;
@@ -125,7 +127,7 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
       QString formatName;
       if( col.contentMimeTypes().contains( "text/calendar" ) )
         formatName = "vevent20";
-      else if( col.contentMimeTypes().contains( "text/directory" ) )
+      else if( col.contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
         formatName = "vcard30";
       else
         continue; // if the collection is not calendar or contact one, skip it

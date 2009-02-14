@@ -316,7 +316,7 @@ void KABCItemEditor::saveContact()
 
     Item item;
     item.setPayload<KABC::Addressee>( addr );
-    item.setMimeType( QLatin1String( "text/directory" ) );
+    item.setMimeType( KABC::Addressee::mimeType() );
 
     ItemCreateJob *job = new ItemCreateJob( item, d->mDefaultCollection );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
