@@ -172,8 +172,6 @@ class ResourceAkonadi : public ResourceCalendar
     Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
     Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
     Q_PRIVATE_SLOT( d, void collectionDataChanged( const QModelIndex&, const QModelIndex& ) )
-
-    Q_PRIVATE_SLOT( d, void delayedAutoSaveOnDelete() )
     //@endcond
 };
 

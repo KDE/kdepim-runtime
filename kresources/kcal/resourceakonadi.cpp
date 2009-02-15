@@ -54,7 +54,6 @@
 #include <QtConcurrentRun>
 #include <QFuture>
 #include <QHash>
-#include <QTimer>
 
 #include <boost/shared_ptr.hpp>
 
@@ -209,6 +208,15 @@ typedef QHash<QString, SubResource*> SubResourceMap;
 typedef QMap<QString, QString>  UidResourceMap;
 typedef QMap<Item::Id, QString> ItemIdResourceMap;
 
+enum ChangeType
+{
+  Added,
+  Changed,
+  Removed
+};
+
+typedef QMap<QString, ChangeType> ChangeMap;
+
 class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
                                  public UidToCollectionMapper
 {
@@ -256,8 +264,6 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
 
     bool mInternalCalendarModification;
 
-    QTimer mAutoSaveOnDeleteTimer;
-
     KCalMimeTypeVisitor *mMimeVisitor;
 
     CollectionModel *mCollectionModel;
@@ -271,14 +277,6 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
 
     QHash<Akonadi::Job*, QString> mJobToResourceMap;
 
-    enum ChangeType
-    {
-      Added,
-      Changed,
-      Removed
-    };
-
-    typedef QMap<QString, ChangeType> ChangeMap;
     ChangeMap mChanges;
 
     AgentInstanceModel *mAgentModel;
@@ -304,12 +302,12 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
     void addCollectionsRecursively( const QModelIndex &parent, int start, int end );
     bool removeCollectionsRecursively( const QModelIndex &parent, int start, int end );
 
-    void delayedAutoSaveOnDelete();
-
     Collection findDefaultCollection() const;
     bool prepareSaving();
 
     void createItemListsForSave( Item::List &added, Item::List &modified, Item::List &deleted );
+
+    void processChange( ChangeMap::const_iterator changeIt, Item::List &added, Item::List &modified, Item::List &deleted );
 
     // from the CalendarObserver interface
     virtual void calendarIncidenceAdded( Incidence *incidence );
@@ -811,8 +809,6 @@ bool ResourceAkonadi::doSave( bool syncCache )
   if ( !d->prepareSaving() )
     return false;
 
-  d->mAutoSaveOnDeleteTimer.stop();
-
   d->mThreadJobContext.clear();
 
   d->createItemListsForSave( d->mThreadJobContext.mAddedItems,
@@ -840,55 +836,41 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
   kDebug(5800) << "syncCache=" << syncCache
                << ", incidence" << incidence->uid();
 
-  UidResourceMap::const_iterator findIt = d->mUidToResourceMap.constFind( incidence->uid() );
-  while ( findIt == d->mUidToResourceMap.constEnd() ) {
-    if ( !d->mStoreCollection.isValid() ||
-          d->mSubResources.value( d->mStoreCollection.url().url(), 0 ) == 0 ) {
+  ChangeMap::const_iterator changeIt = d->mChanges.constFind( incidence->uid() );
+  Q_ASSERT( changeIt != d->mChanges.constEnd() );
 
-      // if there is only one subresource take it instead of asking
-      // since this is the most likely choice of the user anyway
-      if ( d->mSubResourceIds.count() == 1 ) {
-        d->mStoreCollection = Collection::fromUrl( *d->mSubResourceIds.begin() );
-      } else {
-        Collection defaultCollection = d->findDefaultCollection();
-        if ( defaultCollection.isValid() ) {
-          setStoreCollection( defaultCollection );
+  if ( changeIt.value() == Added ) {
+    UidResourceMap::const_iterator findIt = d->mUidToResourceMap.constFind( incidence->uid() );
+    while ( findIt == d->mUidToResourceMap.constEnd() ) {
+      if ( !d->mStoreCollection.isValid() ||
+            d->mSubResources.value( d->mStoreCollection.url().url(), 0 ) == 0 ) {
+
+        // if there is only one subresource take it instead of asking
+        // since this is the most likely choice of the user anyway
+        if ( d->mSubResourceIds.count() == 1 ) {
+          d->mStoreCollection = Collection::fromUrl( *d->mSubResourceIds.begin() );
+        } else {
+          Collection defaultCollection = d->findDefaultCollection();
+          if ( defaultCollection.isValid() ) {
+            setStoreCollection( defaultCollection );
+          }
+          else {
+            ResourceAkonadiConfigDialog dialog( this );
+            if ( dialog.exec() != QDialog::Accepted )
+              return false;
+          }
         }
-        else {
-          ResourceAkonadiConfigDialog dialog( this );
-          if ( dialog.exec() != QDialog::Accepted )
-            return false;
-        }
-      }
-    } else
-      d->mUidToResourceMap.insert( incidence->uid(), d->mStoreCollection.url().url() );
+      } else
+        d->mUidToResourceMap.insert( incidence->uid(), d->mStoreCollection.url().url() );
 
-    findIt = d->mUidToResourceMap.constFind( incidence->uid() );
-  }
-
-  ItemMap::const_iterator itemIt = d->mItems.constEnd();
-
-  IdHash::const_iterator idIt = d->mIdMapping.constFind( incidence->uid() );
-  if ( idIt != d->mIdMapping.constEnd() ) {
-    itemIt = d->mItems.constFind( idIt.value() );
+      findIt = d->mUidToResourceMap.constFind( incidence->uid() );
+    }
   }
 
   d->mThreadJobContext.clear();
 
-  if ( itemIt == d->mItems.constEnd() ) {
-    kDebug(5800) << "No item yet, using ItemCreateJob";
-
-    Item item( d->mMimeVisitor->mimeType( incidence ) );
-    item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
-
-    d->mThreadJobContext.mAddedItems << item;
-  } else {
-    kDebug(5800) << "Item already exists, using ItemModifyJob";
-    Item item = itemIt.value();
-    item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
-
-    d->mThreadJobContext.mModifiedItems << item;
-  }
+  d->processChange( changeIt, d->mThreadJobContext.mAddedItems,
+                    d->mThreadJobContext.mModifiedItems, d->mThreadJobContext.mDeletedItems );
 
   QFuture<bool> threadResult =
     QtConcurrent::run( &(d->mThreadJobContext), &ThreadJobContext::saveChanges );
@@ -996,9 +978,6 @@ void ResourceAkonadi::init()
 {
   // TODO: might be better to do this already in the resource factory
   Akonadi::Control::start();
-
-  connect( &d->mAutoSaveOnDeleteTimer, SIGNAL( timeout() ),
-           this, SLOT( delayedAutoSaveOnDelete() ) );
 }
 
 void ResourceAkonadi::Private::subResourceLoadResult( KJob *job )
@@ -1389,13 +1368,6 @@ bool ResourceAkonadi::Private::removeCollectionsRecursively( const QModelIndex &
   return changed;
 }
 
-void ResourceAkonadi::Private::delayedAutoSaveOnDelete()
-{
-  kDebug(5800);
-
-  mParent->doSave( false );
-}
-
 Collection ResourceAkonadi::Private::findDefaultCollection() const
 {
   if ( mConfig.isValid() ) {
@@ -1514,57 +1486,62 @@ void ResourceAkonadi::Private::createItemListsForSave( Item::List &added, Item::
   ChangeMap::const_iterator changeIt    = mChanges.constBegin();
   ChangeMap::const_iterator changeEndIt = mChanges.constEnd();
   for ( ; changeIt != changeEndIt; ++changeIt ) {
-    const QString uid = changeIt.key();
+    processChange( changeIt, added, modified, deleted );
+  }
+}
 
-    kDebug() << mIdMapping;
-    kDebug() << uid;
-    IdHash::const_iterator idIt = mIdMapping.constFind( uid );
+void ResourceAkonadi::Private::processChange( ChangeMap::const_iterator changeIt, Item::List &added, Item::List &modified, Item::List &deleted )
+{
+  const QString uid = changeIt.key();
 
-    ItemMap::const_iterator itemIt;
+  kDebug() << mIdMapping;
+  kDebug() << uid;
+  IdHash::const_iterator idIt = mIdMapping.constFind( uid );
 
-    Item item;
-    SubResource *subResource = 0;
-    Incidence *incidence = 0;
+  ItemMap::const_iterator itemIt;
 
-    switch ( changeIt.value() ) {
-      case Added:
-        subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
-        Q_ASSERT( subResource != 0 );
+  Item item;
+  SubResource *subResource = 0;
+  Incidence *incidence = 0;
 
-        incidence = mCalendar.incidence( uid );
-        Q_ASSERT( incidence != 0 );
+  switch ( changeIt.value() ) {
+    case Added:
+      subResource = mSubResources.value( mUidToResourceMap.value( uid ), 0 );
+      Q_ASSERT( subResource != 0 );
 
-        item.setMimeType( mMimeVisitor->mimeType( incidence ) );
-        item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+      incidence = mCalendar.incidence( uid );
+      Q_ASSERT( incidence != 0 );
 
-        added << item;
-        break;
+      item.setMimeType( mMimeVisitor->mimeType( incidence ) );
+      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-      case Changed:
-      {
-        Q_ASSERT( idIt != mIdMapping.constEnd() );
-        itemIt = mItems.constFind( idIt.value() );
-        Q_ASSERT( itemIt != mItems.constEnd() );
+      added << item;
+      break;
 
-        incidence = mCalendar.incidence( uid );
-        Q_ASSERT( incidence != 0 );
+    case Changed:
+    {
+      Q_ASSERT( idIt != mIdMapping.constEnd() );
+      itemIt = mItems.constFind( idIt.value() );
+      Q_ASSERT( itemIt != mItems.constEnd() );
 
-        item = itemIt.value();
-        item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
+      incidence = mCalendar.incidence( uid );
+      Q_ASSERT( incidence != 0 );
 
-        modified << item;
-        break;
-      }
+      item = itemIt.value();
+      item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
-      case Removed:
-        Q_ASSERT( idIt != mIdMapping.constEnd() );
-        itemIt = mItems.constFind( idIt.value() );
-        Q_ASSERT( itemIt != mItems.constEnd() );
-
-        item = itemIt.value();
-        deleted << item;
-        break;
+      modified << item;
+      break;
     }
+
+    case Removed:
+      Q_ASSERT( idIt != mIdMapping.constEnd() );
+      itemIt = mItems.constFind( idIt.value() );
+      Q_ASSERT( itemIt != mItems.constEnd() );
+
+      item = itemIt.value();
+      deleted << item;
+      break;
   }
 }
 
@@ -1608,8 +1585,6 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
     mUidToResourceMap.remove( incidence->uid() );
 
     mChanges[ incidence->uid() ] = Removed;
-
-    mAutoSaveOnDeleteTimer.start( 5000 ); // FIXME: configurable if needed at all
   } else
     mChanges.remove( incidence->uid() );
 }
