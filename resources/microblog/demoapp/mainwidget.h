@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 Omat Holding B.V. <info@omat.nl>
+    Copyright (c) 2007 Bruno Virlet <bruno.virlet@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,31 +17,43 @@
     02110-1301, USA.
 */
 
-#ifndef __STATUSITEM_H__
-#define __STATUSITEM_H__
+#ifndef MAINWIDGET_H
+#define MAINWIDGET_H
 
-#include <QSharedDataPointer>
-#include <QByteArray>
-#include <QHash>
+#include "blogmodel.h"
+#include <QWidget>
+#include <akonadi/collection.h>
 
-class StatusItem
+class QModelIndex;
+class QTreeView;
+
+class KJob;
+
+namespace Akonadi {
+class CollectionView;
+class CollectionModel;
+}
+
+class MainWindow;
+
+class MainWidget: public QWidget
 {
-public:
-    StatusItem();
-    StatusItem( const QByteArray& );
-    StatusItem( const StatusItem& );
-    ~StatusItem();
-    StatusItem operator=( const StatusItem& );
-    void setData( const QByteArray& );
-    qlonglong id() const;
-    QString user() const;
-    QString text() const;
-    QString date() const;
-    QByteArray data() const;
+  Q_OBJECT
 
-private:
-    class Private;
-    QSharedDataPointer<Private> d;
+  public:
+    MainWidget( MainWindow *parent = 0 );
+
+  private slots:
+    void collectionClicked(const Akonadi::Collection & collection);
+
+  private:
+    Akonadi::Collection mCurrentCollection;
+    Akonadi::CollectionModel *mCollectionModel;
+    Akonadi::CollectionView *mCollectionList;
+    Akonadi::BlogModel *mMessageModel;
+    QTreeView *mMessageList;
+
+    MainWindow *mMainWindow;
 };
 
 #endif

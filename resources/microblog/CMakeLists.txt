@@ -33,6 +33,7 @@ macro(kcfg_generate_dbus_interface _kcfg _name)
 endmacro(kcfg_generate_dbus_interface)
 
 add_subdirectory( serializer )
+add_subdirectory( demoapp )
 
 ########### next target ###############
 

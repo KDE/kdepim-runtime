@@ -104,3 +104,18 @@ QByteArray StatusItem::data() const
 {
     return d->data;
 }
+
+QString StatusItem::user() const
+{
+    return d->status.value( "user_name" );
+}
+
+QString StatusItem::text() const
+{
+    return d->status.value( "text" );
+}
+
+QString StatusItem::date() const
+{
+    return d->status.value( "created_at" );
+}
