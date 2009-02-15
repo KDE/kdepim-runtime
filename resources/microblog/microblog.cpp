@@ -22,12 +22,15 @@
 #include "communication.h"
 #include "settingsadaptor.h"
 #include "statusitem.h"
+#include "idattribute.h"
 
 #include <kdebug.h>
 #include <klocale.h>
 #include <kwindowsystem.h>
 
 #include <akonadi/collection.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/item.h>
 
@@ -40,6 +43,7 @@ MicroblogResource::MicroblogResource( const QString &id )
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
             Settings::self(), QDBusConnection::ExportAdaptors );
+    AttributeFactory::registerAttribute<IdAttribute>();
     initComm();
 }
 
@@ -113,15 +117,33 @@ void MicroblogResource::retrieveCollections()
 
 void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
 {
-    m_comm->retrieveFolder( collection.remoteId() );
+    m_collection = collection;
+
+    // get only newer items, except for favorites, which does not allow that.
+    int id = 0;
+    if ( m_collection.hasAttribute( "id" ) && collection.remoteId() != "favorites" ) {
+        IdAttribute* currentid = static_cast<IdAttribute*>( m_collection.attribute( "id" ) );
+        id = currentid->id();
+    }
+    kDebug() << "Getting everything for " << collection.name() << "and id >" << id;
+
+    m_comm->retrieveFolder( collection.remoteId(), id );
 }
 
 void MicroblogResource::slotStatusList( const QList<QByteArray> list )
 {
-    kDebug() << list.count();
+    kDebug() << list.count() << "received for" << m_collection.name();
     if ( list.count() == 0 ) {
         itemsRetrievalDone();
         return;
+    }
+
+    IdAttribute* currentid;
+    if ( m_collection.hasAttribute( "id" ) ) {
+        currentid = static_cast<IdAttribute*>( m_collection.attribute( "id" ) );
+    } else {
+        currentid = new IdAttribute( 0 );
+        m_collection.addAttribute( currentid );
     }
 
     Item::List messages;
@@ -129,13 +151,16 @@ void MicroblogResource::slotStatusList( const QList<QByteArray> list )
         Akonadi::Item item( -1 );
         StatusItem stat( status );
         item.setRemoteId( QString::number( stat.id() ) );
+        if ( stat.id() > currentid->id() )
+            currentid->setId( stat.id() );
         item.setMimeType( "application/x-vnd.kde.microblog" );
         item.setPayload<StatusItem>( stat );
         item.setSize( status.length() );
         messages.append( item );
     }
 
-    itemsRetrieved( messages );
+    new Akonadi::CollectionModifyJob( m_collection );
+    itemsRetrievedIncremental( messages, Item::List() );
 }
 
 bool MicroblogResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )

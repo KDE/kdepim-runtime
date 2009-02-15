@@ -42,6 +42,7 @@ set( microblogresource_SRCS
   settings.cpp
   communication.cpp
   statusitem.cpp
+  idattribute.cpp
 )
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/microblogresource.kcfg org.kde.Akonadi.Microblog.Settings)

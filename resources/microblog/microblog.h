@@ -47,6 +47,7 @@ private Q_SLOTS:
 private:
     void initComm();
     Communication* m_comm;
+    Akonadi::Collection m_collection;
 };
 
 #endif

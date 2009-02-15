@@ -34,7 +34,7 @@ public:
     void setService( int );
     void setCredentials( const QString&, const QString& );
     void checkAuth();
-    void retrieveFolder( const QString& );
+    void retrieveFolder( const QString&, qlonglong since=0 );
 
 private:
     QString serviceToApi( int service );

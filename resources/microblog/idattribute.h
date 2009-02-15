@@ -17,28 +17,25 @@
     02110-1301, USA.
 */
 
-#ifndef __STATUSITEM_H__
-#define __STATUSITEM_H__
+#ifndef IDATTRIBUTE_H
+#define IDATTRIBUTE_H
 
-#include <QSharedDataPointer>
-#include <QByteArray>
-#include <QHash>
+#include <akonadi/attribute.h>
 
-class StatusItem
+class IdAttribute : public Akonadi::Attribute
 {
 public:
-    StatusItem();
-    StatusItem( const QByteArray& );
-    StatusItem( const StatusItem& );
-    ~StatusItem();
-    StatusItem operator=( const StatusItem& );
-    void setData( const QByteArray& );
+    IdAttribute();
+    IdAttribute( qlonglong id );
+    void setId( qlonglong id );
     qlonglong id() const;
-    QByteArray data() const;
+    virtual QByteArray type() const;
+    virtual Attribute* clone() const;
+    virtual QByteArray serialized() const;
+    virtual void deserialize( const QByteArray &data );
 
 private:
-    class Private;
-    QSharedDataPointer<Private> d;
+    qlonglong mId;
 };
 
 #endif

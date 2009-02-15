@@ -105,7 +105,7 @@ void Communication::slotCheckAuthData( KJob *job )
     emit authFailed( error );
 }
 
-void Communication::retrieveFolder( const QString &folder )
+void Communication::retrieveFolder( const QString &folder, qlonglong since )
 {
     m_retrievingFolder = folder;
 
@@ -122,7 +122,12 @@ void Communication::retrieveFolder( const QString &folder )
         url.addPath( "direct_messages/sent.xml" );
     }
 
-    url.addQueryItem( "page", "1" ); // temp;
+    if ( since == 0 )
+        url.addQueryItem( "page", "1" );
+    else
+        url.addQueryItem( "since_id", QString::number( since ) );
+
+    kDebug() << url;
 
     KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
     connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotStatusListReceived( KJob* ) ) );
