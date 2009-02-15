@@ -17,43 +17,23 @@
     02110-1301, USA.
 */
 
-#ifndef __COMMUNICATION_H__
-#define __COMMUNICATION_H__
+#ifndef __STATUSITEM_H__
+#define __STATUSITEM_H__
 
-#include <QObject>
-#include <kio/job.h>
+#include <QByteArray>
+#include <QHash>
 
-class Communication : public QObject
+class StatusItem 
 {
-    Q_OBJECT
-
 public:
-    Communication( QObject *parent );
-    ~Communication();
-    enum Service { Identi, Twitter };
-    void setService( int );
-    void setCredentials( const QString&, const QString& );
-    void checkAuth();
-    void retrieveFolder( const QString& );
+    StatusItem( const QByteArray& );
+    ~StatusItem();
+    int id() { return m_status.value("id").toInt(); };
 
 private:
-    QString serviceToApi( int service );
-    KUrl getBaseUrl();
-
-    int m_service;
-    QString m_username;
-    QString m_password;
-    QString m_retrievingFolder;
-
-private slots:
-    void slotCheckAuthData( KJob* );
-    void slotStatusListReceived( KJob* job );
-
-signals:
-    void authOk();
-    void authFailed( const QString& );
-    void statusList( const QList<QByteArray> );
+    void init();
+    QByteArray m_data;
+    QHash<QString,QString> m_status;
 };
-
 
 #endif

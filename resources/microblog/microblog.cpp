@@ -21,6 +21,7 @@
 #include "configdialog.h"
 #include "communication.h"
 #include "settingsadaptor.h"
+#include "statusitem.h"
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -54,8 +55,8 @@ void MicroblogResource::initComm()
     m_comm = new Communication( this );
     m_comm->setService( 0 ); // Todo..
     m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
-    connect( m_comm, SIGNAL( statusList( const QStringList& ) ), 
-                     SLOT( slotStatusList( const QStringList& ) ) );
+    connect( m_comm, SIGNAL( statusList( const QList<QByteArray> ) ), 
+                     SLOT( slotStatusList( const QList<QByteArray> ) ) );
 
     synchronizeCollectionTree();
 }
@@ -115,7 +116,7 @@ void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
     m_comm->retrieveFolder( collection.remoteId() );
 }
 
-void MicroblogResource::slotStatusList( const QStringList &list )
+void MicroblogResource::slotStatusList( const QList<QByteArray> list )
 {
     kDebug() << list.count();
     if (list.count() == 0 ) {
@@ -124,12 +125,12 @@ void MicroblogResource::slotStatusList( const QStringList &list )
     }
 
     Item::List messages;
-    int k=0;
-    foreach( const QString& status, list ) {
+    foreach( const QByteArray& status, list ) {
         Akonadi::Item item( -1 );
-        item.setRemoteId( /*TODO*/ QString::number(++k));
+        StatusItem* stat = new StatusItem( status );
+        item.setRemoteId( QString::number( stat->id() ) );
         item.setMimeType( "message/x-status" );
-        item.setPayload( status.toUtf8() );
+        item.setPayload( status );
         item.setSize( status.length() ); 
         messages.append( item );
     }

@@ -42,7 +42,7 @@ protected Q_SLOTS:
     virtual bool retrieveItem( const Akonadi::Item&, const QSet<QByteArray>& );
 
 private Q_SLOTS:
-    void slotStatusList( const QStringList& );
+    void slotStatusList( const QList<QByteArray> );
 
 private:
     void initComm();

@@ -25,7 +25,6 @@
 #include <QBuffer>
 #include <QDomDocument>
 #include <QObject>
-#include <QtXmlPatterns/QXmlQuery>
 
 #include <kio/job.h>
 using namespace KIO;
@@ -131,7 +130,7 @@ void Communication::retrieveFolder( const QString &folder )
 
 void Communication::slotStatusListReceived( KJob* job )
 {
-    QStringList list;
+    QList<QByteArray> list;
 
     if ( job->error() ) {
         kDebug() << "Job error, " << job->errorString();
@@ -168,29 +167,14 @@ void Communication::slotStatusListReceived( KJob* job )
             return;
         }
         
-        //slowww??
-        QString g;
+        QByteArray g;
         QTextStream out(&g);
         node.save( out, 0);
-        out.readAll();
-        kDebug() << g;
         list << g;
         
         node = node.nextSibling();
     }
     emit statusList( list );
-  
-
-    /*
-    QBuffer buffer(&data);
-    buffer.open(QIODevice::ReadOnly);
-    QXmlQuery query; 
-    query.bindVariable("myDocument", &buffer);
-    //query.setQuery("doc($myDocument)/statuses/status/string()", QUrl());
-    query.setQuery("doc($myDocument)/statuses/status/string()");
-    QStringList list; 
-    query.evaluateTo(&list);
-    */
 }
 
 QString Communication::serviceToApi( int service )
