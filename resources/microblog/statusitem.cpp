@@ -72,8 +72,20 @@ StatusItem::StatusItem( const QByteArray &data ) : d( new Private )
     d->init();
 }
 
+StatusItem::StatusItem( const StatusItem& other) : d( other.d )
+{
+}
+
 StatusItem::~StatusItem()
 {
+}
+
+StatusItem StatusItem::operator=( const StatusItem &other )
+{
+  if ( &other != this )
+    d = other.d;
+
+  return *this;
 }
 
 void StatusItem::setData( const QByteArray &data )
@@ -87,3 +99,8 @@ int StatusItem::id() const
 {
     return d->status.value( "id" ).toInt();
 };
+
+QByteArray StatusItem::data() const
+{
+    return d->data;
+}

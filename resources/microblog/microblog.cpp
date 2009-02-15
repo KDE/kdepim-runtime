@@ -89,7 +89,7 @@ void MicroblogResource::retrieveCollections()
     foldersI18n << i18n( "Home" ) << i18n( "Replies" )
     << i18n( "Favorites" ) << i18n( "Inbox" ) << i18n( "Outbox" );
     QStringList contentTypes;
-    contentTypes << "message/x-status";
+    contentTypes << "application/x-vnd.kde.microblog";
 
     for ( int i=0; i<5; ++i ) {
         Collection c;
@@ -127,10 +127,10 @@ void MicroblogResource::slotStatusList( const QList<QByteArray> list )
     Item::List messages;
     foreach( const QByteArray& status, list ) {
         Akonadi::Item item( -1 );
-        StatusItem* stat = new StatusItem( status );
-        item.setRemoteId( QString::number( stat->id() ) );
-        item.setMimeType( "message/x-status" );
-        item.setPayload( status );
+        StatusItem stat( status );
+        item.setRemoteId( QString::number( stat.id() ) );
+        item.setMimeType( "application/x-vnd.kde.microblog" );
+        item.setPayload<StatusItem>( stat );
         item.setSize( status.length() );
         messages.append( item );
     }

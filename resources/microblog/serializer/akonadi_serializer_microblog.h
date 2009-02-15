@@ -17,28 +17,26 @@
     02110-1301, USA.
 */
 
-#ifndef __STATUSITEM_H__
-#define __STATUSITEM_H__
+#ifndef AKONADI_SERIALIZER_MICROBLOG_H
+#define AKONADI_SERIALIZER_MICROBLOG_H
 
-#include <QSharedDataPointer>
-#include <QByteArray>
-#include <QHash>
+#include <QtCore/QObject>
 
-class StatusItem
+#include <akonadi/itemserializerplugin.h>
+
+namespace Akonadi {
+
+class SerializerPluginmicroblog : public QObject, public ItemSerializerPlugin
 {
-public:
-    StatusItem();
-    StatusItem( const QByteArray& );
-    StatusItem( const StatusItem& );
-    ~StatusItem();
-    StatusItem operator=( const StatusItem& );
-    void setData( const QByteArray& );
-    int id() const;
-    QByteArray data() const;
+  Q_OBJECT
+  Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
-private:
-    class Private;
-    QSharedDataPointer<Private> d;
+public:
+  bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
+  void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+  QSet<QByteArray> parts( const Item &item ) const;
 };
+
+}
 
 #endif
