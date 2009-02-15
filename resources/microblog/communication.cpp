@@ -145,11 +145,11 @@ void Communication::slotStatusListReceived( KJob* job )
     QDomDocument document;
     document.setContent( data );
 
-    QLatin1String main("statuses");
-    QLatin1String sub("status");
+    QLatin1String main( "statuses" );
+    QLatin1String sub( "status" );
     if ( m_retrievingFolder == "inbox" || m_retrievingFolder == "outbox" ) {
-        main = QLatin1String("direct-messages");
-        sub = QLatin1String("direct_message");
+        main = QLatin1String( "direct-messages" );
+        sub = QLatin1String( "direct_message" );
     }
 
     QDomElement root = document.documentElement();
@@ -166,12 +166,12 @@ void Communication::slotStatusListReceived( KJob* job )
             emit statusList( list );
             return;
         }
-        
+
         QByteArray g;
-        QTextStream out(&g);
-        node.save( out, 0);
+        QTextStream out( &g );
+        node.save( out, 0 );
         list << g;
-        
+
         node = node.nextSibling();
     }
     emit statusList( list );

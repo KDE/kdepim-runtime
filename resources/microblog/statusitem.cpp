@@ -22,19 +22,25 @@
 
 #include <QDomElement>
 
-StatusItem::StatusItem(const QByteArray &data)  : m_data( data )
+class StatusItem::Private : public QSharedData
 {
-    init();
-}
+public:
+    Private() {}
+    Private( const Private& other ) : QSharedData( other ) {
+        data = other.data;
+        status = other.status;
+    }
 
-StatusItem::~StatusItem()
-{
-}
+public:
+    void init();
+    QByteArray data;
+    QHash<QString,QString> status;
+};
 
-void StatusItem::init()
+void StatusItem::Private::init()
 {
     QDomDocument document;
-    document.setContent( m_data );
+    document.setContent( data );
     QDomElement root = document.documentElement();
     QDomNode node = root.firstChild();
     while ( !node.isNull() ) {
@@ -44,15 +50,40 @@ void StatusItem::init()
             while ( !node2.isNull() ) {
                 const QString key2 = node2.toElement().tagName();
                 const QString val2 = node2.toElement().text();
-                m_status[ "user_" + key2 ] = val2;
+                status[ "user_" + key2 ] = val2;
                 node2 = node2.nextSibling();
             }
         } else {
             const QString value = node.toElement().text();
-            m_status[key] = value; 
+            status[key] = value;
         }
         node = node.nextSibling();
     }
-    //kDebug() << m_status;
+    //kDebug() << status;
 }
 
+StatusItem::StatusItem()  :  d( new Private )
+{
+}
+
+StatusItem::StatusItem( const QByteArray &data ) : d( new Private )
+{
+    d->data = data;
+    d->init();
+}
+
+StatusItem::~StatusItem()
+{
+}
+
+void StatusItem::setData( const QByteArray &data )
+{
+    d->data = data;
+    d->init();
+}
+
+
+int StatusItem::id() const
+{
+    return d->status.value( "id" ).toInt();
+};

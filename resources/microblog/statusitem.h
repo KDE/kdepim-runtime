@@ -20,20 +20,22 @@
 #ifndef __STATUSITEM_H__
 #define __STATUSITEM_H__
 
+#include <QSharedDataPointer>
 #include <QByteArray>
 #include <QHash>
 
-class StatusItem 
+class StatusItem
 {
 public:
+    StatusItem();
     StatusItem( const QByteArray& );
     ~StatusItem();
-    int id() { return m_status.value("id").toInt(); };
+    void setData( const QByteArray& );
+    int id() const;
 
 private:
-    void init();
-    QByteArray m_data;
-    QHash<QString,QString> m_status;
+    class Private;
+    QSharedDataPointer<Private> d;
 };
 
 #endif

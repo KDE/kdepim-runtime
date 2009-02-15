@@ -55,8 +55,8 @@ void MicroblogResource::initComm()
     m_comm = new Communication( this );
     m_comm->setService( 0 ); // Todo..
     m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
-    connect( m_comm, SIGNAL( statusList( const QList<QByteArray> ) ), 
-                     SLOT( slotStatusList( const QList<QByteArray> ) ) );
+    connect( m_comm, SIGNAL( statusList( const QList<QByteArray> ) ),
+             SLOT( slotStatusList( const QList<QByteArray> ) ) );
 
     synchronizeCollectionTree();
 }
@@ -119,7 +119,7 @@ void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
 void MicroblogResource::slotStatusList( const QList<QByteArray> list )
 {
     kDebug() << list.count();
-    if (list.count() == 0 ) {
+    if ( list.count() == 0 ) {
         itemsRetrievalDone();
         return;
     }
@@ -131,11 +131,11 @@ void MicroblogResource::slotStatusList( const QList<QByteArray> list )
         item.setRemoteId( QString::number( stat->id() ) );
         item.setMimeType( "message/x-status" );
         item.setPayload( status );
-        item.setSize( status.length() ); 
+        item.setSize( status.length() );
         messages.append( item );
     }
 
-    itemsRetrieved( messages ); 
+    itemsRetrieved( messages );
 }
 
 bool MicroblogResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
