@@ -26,6 +26,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/mimetypechecker.h>
 #include <akonadi/monitor.h>
 
 #include <kabc/addressee.h>
@@ -193,8 +194,10 @@ void BirthdaysResource::doFullSearch()
 
 void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
 {
+  MimeTypeChecker contactFilter;
+  contactFilter.addWantedMimeType( Addressee::mimeType() );
   foreach ( const Collection &col, cols ) {
-    if ( !col.contentMimeTypes().contains( Addressee::mimeType() ) )
+    if ( !contactFilter.isWantedCollection( col ) )
       continue;
     ItemFetchJob *job = new ItemFetchJob( col, this );
     job->fetchScope().fetchFullPayload();

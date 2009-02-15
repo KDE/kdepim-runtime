@@ -36,13 +36,14 @@
 #include <akonadi/collectionmodel.h>
 #include <akonadi/control.h>
 #include <akonadi/entitydisplayattribute.h>
-#include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
+#include <akonadi/mimetypechecker.h>
+#include <akonadi/monitor.h>
 #include <akonadi/transactionsequence.h>
 #include <akonadi/kcal/kcalmimetypevisitor.h>
 
@@ -64,25 +65,6 @@ typedef boost::shared_ptr<Incidence> IncidencePtr;
 
 typedef QMap<Item::Id, Item> ItemMap;
 typedef QHash<QString, Item::Id> IdHash;
-
-static bool isCalendarCollection( const Akonadi::Collection &collection )
-{
-  const QStringList collectionMimeTypes = collection.contentMimeTypes();
-  foreach ( const QString &collectionMimeType, collectionMimeTypes ) {
-    KMimeType::Ptr mimeType = KMimeType::mimeType( collectionMimeType, KMimeType::ResolveAliases );
-    if ( mimeType.isNull() )
-      continue;
-
-    // check if the collection content MIME type is or inherits from the
-    // wanted one, e.g.
-    // if the collection offers application/x-vnd.akonadi.calendar.todo
-    // this will be true, because it is a subclass of text/calendar
-    if ( mimeType->is( QLatin1String( "text/calendar" ) ) )
-      return true;
-  }
-
-  return false;
-}
 
 class UidToCollectionMapper
 {
@@ -240,6 +222,7 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
         mThreadJobContext( *this )
     {
       mCalendar.registerObserver( this );
+      mMimeChecker.addWantedMimeType( QLatin1String( "text/calendar" ) );
     }
 
     ~Private()
@@ -304,6 +287,8 @@ class ResourceAkonadi::Private : public KCal::Calendar::CalendarObserver,
     ThreadJobContext mThreadJobContext;
 
     AssignmentVisitor mIncidenceAssigner;
+
+    MimeTypeChecker mMimeChecker;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -791,7 +776,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 
   bool result = true;
   foreach ( const Collection &collection, collections ) {
-     if ( !isCalendarCollection( collection ) )
+     if ( !d->mMimeChecker.isWantedCollection( collection ) )
        continue;
 
     const QString collectionUrl = collection.url().url();
@@ -1172,7 +1157,7 @@ void ResourceAkonadi::Private::itemChanged( const Akonadi::Item &item,
     delete cachedIncidence;
     mCalendar.addIncidence( incidence.get()->clone() );
   }
-                                                                                                          
+
   mInternalCalendarModification = internalModification;
 
   mChanges.remove( incidence->uid() );

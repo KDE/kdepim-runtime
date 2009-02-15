@@ -24,6 +24,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <kabc/addressbook.h>
 #include <kabc/addressee.h>
@@ -85,7 +86,8 @@ KABCResource::KABCResource( const QString &id )
     mFolderResource( 0 ),
     mErrorHandler( new ErrorHandler( this ) ),
     mFullItemRetrieve( false ),
-    mDelayedSaveTimer( new QTimer( this ) )
+    mDelayedSaveTimer( new QTimer( this ) ),
+    mContactGroupMimeChecker( new MimeTypeChecker() )
 {
   mAddressBook->setErrorHandler( mErrorHandler );
   connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
@@ -100,11 +102,14 @@ KABCResource::KABCResource( const QString &id )
   changeRecorder()->fetchCollection( true );
 
   mDelayedSaveTimer->setSingleShot( true );
+
+  mContactGroupMimeChecker->addWantedMimeType( KABC::ContactGroup::mimeType() );
 }
 
 KABCResource::~KABCResource()
 {
   delete mAddressBook;
+  delete mContactGroupMimeChecker;
 }
 
 void KABCResource::configure( WId windowId )
@@ -293,7 +298,7 @@ bool KABCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
 
-  if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+  if ( mContactGroupMimeChecker->isWantedItem( item ) ) {
     KABC::DistributionList *list =
       mAddressBook->findDistributionListByIdentifier( rid );
     if ( list == 0 ) {
@@ -467,7 +472,7 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  if ( item.mimeType() == KABC::ContactGroup::mimeType() ) {
+  if ( mContactGroupMimeChecker->isWantedItem( item ) ) {
     KABC::DistributionList *list =
       mAddressBook->findDistributionListByIdentifier( item.remoteId() );
     if ( list != 0 ) {

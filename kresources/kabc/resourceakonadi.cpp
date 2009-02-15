@@ -27,13 +27,14 @@
 #include <akonadi/collectionmodel.h>
 #include <akonadi/control.h>
 #include <akonadi/entitydisplayattribute.h>
-#include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
+#include <akonadi/mimetypechecker.h>
+#include <akonadi/monitor.h>
 #include <akonadi/transactionsequence.h>
 
 #include <kabc/contactgroup.h>
@@ -213,6 +214,8 @@ class ResourceAkonadi::Private : public UidToCollectionMapper
       : mParent( parent ), mMonitor( 0 ), mCollectionModel( 0 ), mCollectionFilterModel( 0 ),
         mThreadJobContext( *this )
     {
+      mMimeChecker.addWantedMimeType( Addressee::mimeType() );
+      mMimeChecker.addWantedMimeType( ContactGroup::mimeType() );
     }
 
     Collection collectionForUid( const QString &uid ) const
@@ -259,6 +262,8 @@ class ResourceAkonadi::Private : public UidToCollectionMapper
     QSet<QString> mAsyncLoadCollections;
 
     ThreadJobContext mThreadJobContext;
+
+    MimeTypeChecker mMimeChecker;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -461,8 +466,7 @@ bool ResourceAkonadi::load()
 
   bool result = true;
   foreach ( const Collection &collection, collections ) {
-     if ( !collection.contentMimeTypes().contains( Addressee::mimeType() )
-          && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
+     if ( !d->mMimeChecker.isWantedCollection( collection ) )
        continue;
 
     const QString collectionUrl = collection.url().url();
@@ -518,8 +522,7 @@ bool ResourceAkonadi::asyncLoad()
     }
 
     foreach ( const Collection &collection, d->mThreadJobContext.mCollections ) {
-      if ( !collection.contentMimeTypes().contains( Addressee::mimeType() )
-            && !collection.contentMimeTypes().contains( ContactGroup::mimeType() ) )
+      if ( !d->mMimeChecker.isWantedCollection( collection ) )
         continue;
 
       collections << collection;
@@ -1366,7 +1369,7 @@ bool ResourceAkonadi::Private::prepareSaving()
               // check if the collection can store contact group items as well
               SubResource *subResource = mSubResources.value( findIt2.value(), 0 );
               if ( subResource != 0 ) {
-                if ( subResource->mCollection.contentMimeTypes().contains( ContactGroup::mimeType() ) ) {
+                if ( MimeTypeChecker::isWantedCollection( subResource->mCollection, ContactGroup::mimeType() ) ) {
                   distListStoreCollection = findIt2.value();
                   break;
                 }

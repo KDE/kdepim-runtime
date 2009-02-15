@@ -27,6 +27,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -55,7 +56,6 @@
 #include <QtDBus/QDBusConnection>
 
 #include <KDebug>
-
 
 namespace Akonadi {
 
@@ -121,9 +121,11 @@ void NepomukContactFeeder::updateAll( bool force )
   if ( collectionFetch->exec() ) {
     Collection::List collections = collectionFetch->collections();
 
+    MimeTypeChecker contactFilter;
+    contactFilter.addWantedMimeType( KABC::Addressee::mimeType() );
     foreach( const Collection &collection, collections) {
       kDebug() << "checking collection" << collection.name();
-      if ( collection.contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
+      if ( contactFilter.isWantedCollection( collection ) ) {
         kDebug() << "fetching items from collection" << collection.name();
         ItemFetchJob *itemFetch = new ItemFetchJob( collection );
         itemFetch->fetchScope().fetchFullPayload();

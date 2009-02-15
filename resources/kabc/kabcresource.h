@@ -28,6 +28,10 @@ namespace KABC {
   class ResourceABC;
 }
 
+namespace Akonadi {
+  class MimeTypeChecker;
+}
+
 class QTimer;
 
 class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -69,6 +73,8 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     bool mFullItemRetrieve;
 
     QTimer *mDelayedSaveTimer;
+
+    Akonadi::MimeTypeChecker *mContactGroupMimeChecker;
 
   private:
     void setResourcePointers( KABC::Resource *resource );

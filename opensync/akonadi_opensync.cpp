@@ -23,6 +23,7 @@
 #include <akonadi/control.h>
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <kabc/addressee.h>
 
@@ -107,12 +108,17 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
 
   OSyncPluginConfig *config = osync_plugin_info_get_config( info );
 
+  Akonadi::MimeTypeChecker contactMimeChecker;
+  contactMimeChecker.addWantedMimeType( KABC::Addressee::mimeType() );
+  Akonadi::MimeTypeChecker calendarMimeTypeChecker;
+  calendarMimeTypeChecker.addWantedMimeType( QLatin1String( "text/calendar" ) );
+
   const int num_objtypes = osync_plugin_info_num_objtypes(info);
   for ( int i = 0; i < num_objtypes; ++i ) {
     OSyncObjTypeSink *sink = osync_plugin_info_nth_objtype(info, i);
     foreach ( const Akonadi::Collection &col, cols ) {
       kDebug() << "creating resource for" << col.name() << col.contentMimeTypes();
-//      if ( !col.contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) // ### TODO
+//      if ( !contactMimeChecker.isWantedCollection( col ) ) // ### TODO
 //         continue;
       if( col.contentMimeTypes().isEmpty() )
         continue;
@@ -125,9 +131,9 @@ static osync_bool akonadi_discover(void *userdata, OSyncPluginInfo *info, OSyncE
       osync_plugin_resource_set_url( res, col.url().url().toLatin1() );
 
       QString formatName;
-      if( col.contentMimeTypes().contains( "text/calendar" ) )
+      if( calendarMimeChecker.isWantedCollection( col ) )
         formatName = "vevent20";
-      else if( col.contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+      else if( contactMimeChecker.isWantedCollection( col ) )
         formatName = "vcard30";
       else
         continue; // if the collection is not calendar or contact one, skip it
