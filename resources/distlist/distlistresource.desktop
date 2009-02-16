@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Distributionlist File
+Name=Distribution List File
 Name[ca]=Fitxers de llistes de distribució
 Name[da]=Distributionsliste-fil
 Name[de]=Verteilerlistendatei
@@ -30,7 +30,7 @@ Name[uk]=Файл списку розповсюдження
 Name[x-test]=xxDistributionlist Filexx
 Name[zh_CN]=分发列表文件
 Name[zh_TW]=分派清單檔
-Comment=Loads data from a distributionlist file
+Comment=Loads data from a distribution list file
 Comment[ca]=Carrega dades des d'un fitxer de llistes de distribució
 Comment[da]=Indlæser data fra en distributionsliste-fil
 Comment[de]=Daten werden aus einer Verteilerlistendatei geladen
