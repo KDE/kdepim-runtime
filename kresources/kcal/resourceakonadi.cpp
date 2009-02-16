@@ -837,7 +837,11 @@ bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
                << ", incidence" << incidence->uid();
 
   ChangeMap::const_iterator changeIt = d->mChanges.constFind( incidence->uid() );
-  Q_ASSERT( changeIt != d->mChanges.constEnd() );
+  if ( changeIt == d->mChanges.constEnd() ) {
+    kWarning(5800) << "There is no change for incidence uid=" << incidence->uid() 
+                   << "summary=" << incidence->summary();
+    return true;
+  }
 
   if ( changeIt.value() == Added ) {
     UidResourceMap::const_iterator findIt = d->mUidToResourceMap.constFind( incidence->uid() );
