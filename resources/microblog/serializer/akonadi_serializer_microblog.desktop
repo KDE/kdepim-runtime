@@ -1,23 +1,6 @@
 [Misc]
 Name=Microblog Serializer
-Name[et]=microblog jadasti
-Name[ga]=Srathóir microblog
-Name[nds]=microblog-Reegmoduul
-Name[pt]=Serialização do microblog
-Name[pt_BR]=Serialização do microblog
-Name[sv]=Serialisering av microblog
-Name[uk]=Перетворювач у послідовну форму microblog
-Name[x-test]=xxmicroblog Serializerxx
-Name[zh_CN]=microblog 转换器
 Comment=An Akonadi serializer plugin for Microblog
-Comment[et]=Akonadi microblog jadasti plugin
-Comment[nds]=En Akonadi-Reegmodul för microblog
-Comment[pt]=Um 'plugin' de serialização do Akonadi para o microblog
-Comment[pt_BR]=Um plugin de serialização do Akonadi para o microblog
-Comment[sv]=Ett Akonadi insticksprogram för serialisering av microblog
-Comment[uk]=Додаток перетворення у послідовну форму Akonadi для microblog
-Comment[x-test]=xxAn Akonadi serializer plugin for microblogxx
-Comment[zh_CN]=microblog 的 Akonadi 转换器插件
 
 [Plugin]
 Type=application/x-vnd.kde.microblog
