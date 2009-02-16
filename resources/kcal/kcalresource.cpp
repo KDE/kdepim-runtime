@@ -382,8 +382,12 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
 
   KCal::Incidence *incidence = mResource->incidence( item.remoteId() );
   if ( incidence != 0 && mResource->deleteIncidence( incidence ) ) {
+    if ( !mResource->save( incidence ) ) {
+      kError() << "Failed to save incidence" << incidence->uid();
+      // resource error emitted by savingError()
+    }
+    delete incidence;
     changeCommitted( item );
-    scheduleSaveCalendar();
     return;
   }
 
