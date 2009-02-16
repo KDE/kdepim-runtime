@@ -25,11 +25,12 @@
 #include <akonadi/collection.h>
 
 class QModelIndex;
-class QTreeView;
+class QListView;
 
 class KJob;
 
-namespace Akonadi {
+namespace Akonadi
+{
 class CollectionView;
 class CollectionModel;
 }
@@ -38,20 +39,20 @@ class MainWindow;
 
 class MainWidget: public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     MainWidget( MainWindow *parent = 0 );
 
-  private slots:
-    void collectionClicked(const Akonadi::Collection & collection);
+private slots:
+    void collectionClicked( const Akonadi::Collection & collection );
 
-  private:
+private:
     Akonadi::Collection mCurrentCollection;
     Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionView *mCollectionList;
-    Akonadi::BlogModel *mMessageModel;
-    QTreeView *mMessageList;
+    BlogModel *mMessageModel;
+    QListView *mMessageList;
 
     MainWindow *mMainWindow;
 };

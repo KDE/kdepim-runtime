@@ -26,11 +26,11 @@
 
 int main( int argc, char **argv )
 {
-  KCmdLineArgs::init( argc, argv, "akonablog", 0, ki18n("Akonablog"), "1.0" , ki18n("The blog client Proof-Of-Concept for Akonadi"));
-  KApplication app;
+    KCmdLineArgs::init( argc, argv, "akonablog", 0, ki18n( "Akonablog" ), "1.0" , ki18n( "The blog client Proof-Of-Concept for Akonadi" ) );
+    KApplication app;
 
-  MainWindow window;
-  window.show();
+    MainWindow window;
+    window.show();
 
-  return app.exec();
+    return app.exec();
 }

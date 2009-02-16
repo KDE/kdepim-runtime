@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 Omat Holding B.V. <info@omat.nl>
+    Copyright (c) 2009 Omat Holding B.V. <info@omat.nl>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,31 +17,31 @@
     02110-1301, USA.
 */
 
-#ifndef __STATUSITEM_H__
-#define __STATUSITEM_H__
+#include <kwidgetitemdelegate.h>
 
-#include <QSharedDataPointer>
-#include <QByteArray>
-#include <QHash>
+#ifndef MICROBLOGDELEGATE_H
+#define MICROBLOGDELEGATE_H
 
-class StatusItem
+class MicroblogDelegate : public KWidgetItemDelegate
 {
+    Q_OBJECT
+
 public:
-    StatusItem();
-    StatusItem( const QByteArray& );
-    StatusItem( const StatusItem& );
-    ~StatusItem();
-    StatusItem operator=( const StatusItem& );
-    void setData( const QByteArray& );
-    qlonglong id() const;
-    QString value( const QString& ) const;
-    QString text() const;
-    QString date() const;
-    QByteArray data() const;
+    MicroblogDelegate( QObject *parent, QListView *listView );
+
+    QList<QWidget*> createItemWidgets() const;
+
+    void updateItemWidgets( const QList<QWidget*> widgets,
+                            const QStyleOptionViewItem &option,
+                            const QPersistentModelIndex &index ) const;
+
+    void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+    QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+
 
 private:
-    class Private;
-    QSharedDataPointer<Private> d;
+    QWidget* m_parent;
 };
 
 #endif
+

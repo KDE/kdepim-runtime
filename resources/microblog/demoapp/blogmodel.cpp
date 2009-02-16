@@ -33,76 +33,75 @@
 
 using namespace Akonadi;
 
-class Akonadi::BlogModel::Private
+class BlogModel::Private
 {
-  public:
+public:
 };
 
 BlogModel::BlogModel( QObject *parent ) :
-    ItemModel( parent ),
-    d( new Private() )
+        ItemModel( parent ),
+        d( new Private() )
 {
     fetchScope().fetchFullPayload();
 }
 
 BlogModel::~BlogModel( )
 {
-  delete d;
+    delete d;
 }
 
 int BlogModel::columnCount( const QModelIndex & parent ) const
 {
-  if ( !parent.isValid() )
-    return 3; // keep in sync with the column type enum
+    if ( !parent.isValid() )
+        return 4; // keep in sync with the column type enum
 
-  return 0;
+    return 0;
 }
 
 QVariant BlogModel::data( const QModelIndex & index, int role ) const
 {
-  if ( role != Qt::DisplayRole ) 
-      return QVariant(); 
-  if ( !index.isValid() )
-    return QVariant();
-  if ( index.row() >= rowCount() )
-    return QVariant();
-  Item item = itemForIndex( index );
-  kDebug() << item.hasPayload<StatusItem>();
-  if ( !item.hasPayload<StatusItem>() )
-    return QVariant();
-  StatusItem msg = item.payload<StatusItem>();
-//  kDebug() << index.column() <<  msg.user() <<  msg.text() << msg.date();
-  switch ( index.column() ) {
-      case User:
-        kDebug() <<  msg.user();
-        return msg.user();
-      case Text:
-        kDebug() <<  msg.text();
+    if ( role != Qt::DisplayRole )
+        return QVariant();
+    if ( !index.isValid() )
+        return QVariant();
+    if ( index.row() >= rowCount() )
+        return QVariant();
+    Item item = itemForIndex( index );
+    if ( !item.hasPayload<StatusItem>() )
+        return QVariant();
+    StatusItem msg = item.payload<StatusItem>();
+    switch ( index.column() ) {
+    case User:
+        return msg.value( "user_screen_name" );
+    case Text:
         return msg.text();
-      case Date:
-        kDebug() << msg.date();
+    case Date:
         return msg.date();
-      default:
+    case Picture:
+        return msg.value( "user_profile_image_url" );
+    default:
         return QVariant();
     }
-  return ItemModel::data( index, role );
+    return ItemModel::data( index, role );
 }
 
 QVariant BlogModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
-  if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
-    switch ( section ) {
-      case User:
-        return i18nc( "@title:column, message (e.g. email) subject", "User" );
-      case Text:
-        return i18nc( "@title:column, sender of message (e.g. email)", "Text" );
-      case Date:
-        return i18nc( "@title:column, message (e.g. email) timestamp", "Date" );
-      default:
-        return QString();
+    if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
+        switch ( section ) {
+        case User:
+            return i18nc( "@title:column, message (e.g. email) subject", "User" );
+        case Text:
+            return i18nc( "@title:column, sender of message (e.g. email)", "Text" );
+        case Date:
+            return i18nc( "@title:column, message (e.g. email) timestamp", "Date" );
+        case Picture:
+            return i18nc( "@title:column, message (e.g. email) timestamp", "Picture" );
+        default:
+            return QString();
+        }
     }
-  }
-  return ItemModel::headerData( section, orientation, role );
+    return ItemModel::headerData( section, orientation, role );
 }
 
 #include "blogmodel.moc"

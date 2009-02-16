@@ -105,17 +105,19 @@ QByteArray StatusItem::data() const
     return d->data;
 }
 
-QString StatusItem::user() const
+QString StatusItem::value( const QString& value ) const
 {
-    return d->status.value( "user_name" );
+    return d->status.value( value );
 }
 
 QString StatusItem::text() const
 {
+    //linklocater
     return d->status.value( "text" );
 }
 
 QString StatusItem::date() const
 {
+    //return QDateTime
     return d->status.value( "created_at" );
 }

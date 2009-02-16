@@ -21,6 +21,7 @@
 #include "mainwidget.h"
 #include "mainwindow.h"
 #include "blogmodel.h"
+#include "microblogdelegate.h"
 
 #include <akonadi/collection.h>
 #include <akonadi/collectionview.h>
@@ -34,53 +35,55 @@
 #include <QSplitter>
 #include <QTextEdit>
 #include <QtGui/QSortFilterProxyModel>
+#include <QListView>
 
 using namespace Akonadi;
 
-MainWidget::MainWidget( MainWindow * parent) :
-  QWidget( parent ), mMainWindow( parent )
+MainWidget::MainWidget( MainWindow * parent ) :
+        QWidget( parent ), mMainWindow( parent )
 {
-  QHBoxLayout *layout = new QHBoxLayout( this );
+    QHBoxLayout *layout = new QHBoxLayout( this );
 
-  QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
-  layout->addWidget( splitter );
+    QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
+    layout->addWidget( splitter );
 
-  // Left part, collection view
-  mCollectionList = new Akonadi::CollectionView();
-  connect( mCollectionList, SIGNAL(clicked(const Akonadi::Collection &)),
-           SLOT(collectionClicked(const Akonadi::Collection &)) );
-  splitter->addWidget( mCollectionList );
+    // Left part, collection view
+    mCollectionList = new Akonadi::CollectionView();
+    connect( mCollectionList, SIGNAL( clicked( const Akonadi::Collection & ) ),
+             SLOT( collectionClicked( const Akonadi::Collection & ) ) );
+    splitter->addWidget( mCollectionList );
 
-  // Filter the collection to only show the blogs
-  mCollectionModel = new Akonadi::CollectionModel( this );
-  mCollectionList->setModel( mCollectionModel );
-  //mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
-  //mCollectionProxyModel->setSourceModel( mCollectionModel );
-  //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "message/x-microblog" ) );
-  //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "application/x-vnd.kde.microblog" ) );
+    // Filter the collection to only show the blogs
+    mCollectionModel = new Akonadi::CollectionModel( this );
+    mCollectionList->setModel( mCollectionModel );
+    //mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
+    //mCollectionProxyModel->setSourceModel( mCollectionModel );
+    //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "message/x-microblog" ) );
+    //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "application/x-vnd.kde.microblog" ) );
 
-  // display collections sorted
-  //QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
-  //sortModel->setDynamicSortFilter( true );
-  //sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-  //sortModel->setSourceModel( mCollectionProxyModel );
+    // display collections sorted
+    //QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
+    //sortModel->setDynamicSortFilter( true );
+    //sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
+    //sortModel->setSourceModel( mCollectionProxyModel );
 
-  // Right part, blog list
-  mMessageList = new QTreeView( this );
-  
-  mMessageList->setDragEnabled( false );
-  mMessageList->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    // Right part, blog list
+    mMessageList = new QListView( this );
+    mMessageList->setDragEnabled( false );
+    mMessageList->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    MicroblogDelegate *delegate = new MicroblogDelegate( this, mMessageList );
+    mMessageList->setItemDelegate( delegate );
 
-  mMessageModel = new BlogModel( this );
-  mMessageList->setModel( mMessageModel );
-  splitter->addWidget( mMessageList );
+    mMessageModel = new BlogModel( this );
+    mMessageList->setModel( mMessageModel );
+    splitter->addWidget( mMessageList );
 
-  splitter->setSizes( QList<int>() << 200 << 500 );
+    splitter->setSizes( QList<int>() << 200 << 200 );
 }
 
-void MainWidget::collectionClicked(const Akonadi::Collection & collection)
+void MainWidget::collectionClicked( const Akonadi::Collection & collection )
 {
-  mCurrentCollection = collection;
-  mMessageModel->setCollection( Collection( mCurrentCollection ) );
+    mCurrentCollection = collection;
+    mMessageModel->setCollection( Collection( mCurrentCollection ) );
 }
 

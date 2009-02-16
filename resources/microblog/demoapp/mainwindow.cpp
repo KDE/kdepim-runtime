@@ -27,13 +27,13 @@
 #include <akonadi/control.h>
 
 MainWindow::MainWindow( QWidget *parent )
-  : QMainWindow( parent )
+        : QMainWindow( parent )
 {
-  QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
-  toolBar->addAction( "Rethread", this, SIGNAL( threadCollection() ) );
-  addToolBar( toolBar );
+    QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
+    toolBar->addAction( "Rethread", this, SIGNAL( threadCollection() ) );
+    addToolBar( toolBar );
 
-  Akonadi::Control::start( this );
-  setCentralWidget( new MainWidget( this ) );
-  resize( 700, 500 );
+    Akonadi::Control::start( this );
+    setCentralWidget( new MainWidget( this ) );
+    resize( 700, 500 );
 }

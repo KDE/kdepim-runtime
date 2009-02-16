@@ -23,23 +23,22 @@
 #include <akonadi/itemmodel.h>
 #include <akonadi/job.h>
 
-namespace Akonadi {
-
 /**
   A flat self-updating message model.
 */
 class BlogModel : public Akonadi::ItemModel
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
       Column types.
     */
     enum Column {
-      User, /**< Usre column. */
-      Text, /**< Textr column. */
-      Date /**< Date column. */
+        User, /**< Usre column. */
+        Text, /**< Textr column. */
+        Date, /**< Date column. */
+        Picture /**< url to a profile picture column. */
     };
 
     /**
@@ -69,11 +68,9 @@ class BlogModel : public Akonadi::ItemModel
      */
     virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-  private:
+private:
     class Private;
     Private* const d;
 };
-
-}
 
 #endif

@@ -26,12 +26,12 @@
 
 class MainWindow : public QMainWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     MainWindow( QWidget *parent = 0 );
 
-  signals:
+signals:
     void threadCollection();
 };
 
