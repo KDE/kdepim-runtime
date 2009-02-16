@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008-2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ namespace KRES {
 }
 
 namespace KCal {
+  class AssignmentVisitor;
   class ResourceCalendar;
 
   typedef KRES::Manager<ResourceCalendar> CalendarResourceManager;
@@ -78,6 +79,8 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     bool mFullItemRetrieve;
 
     QTimer *mDelayedSaveTimer;
+
+    KCal::AssignmentVisitor *mIncidenceAssigner;
 
   private:
     bool openConfiguration();
