@@ -1,6 +1,16 @@
 [Misc]
 Name=Microblog Serializer
+Name[ga]=Srathóir Micreabhlagadóireachta
+Name[pt]=Serializador do Micro-blog
+Name[pt_BR]=Serializador do Micro-blog
+Name[sv]=Mikrowebbjournal-serialisering
+Name[uk]=Серіалізатор мікроблогів
 Comment=An Akonadi serializer plugin for Microblog
+Comment[ga]=Breiseán srathóra Akonadi le haghaidh Micreabhlagadóireachta
+Comment[pt]=Um 'plugin' de serialização do Akonadi para o Micro-blog
+Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para o Micro-blog
+Comment[sv]=Ett insticksprogram till Akonadi för serialisering av mikrowebbjournaler
+Comment[uk]=Додаток серіалізатора Akonadi для мікроблогів
 
 [Plugin]
 Type=application/x-vnd.kde.microblog
