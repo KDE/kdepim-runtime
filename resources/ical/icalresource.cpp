@@ -159,15 +159,20 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     // not in the calendar yet, should not happen -> add it
     mCalendar->addIncidence( payload.get()->clone() );
   } else {
-    if ( !mIncidenceAssigner->assign( incidence, payload.get() ) ) {
-        kWarning() << "Item changed incidence type. Replacing it.";
+    // make sure any observer the resource might have installed gets properly notified
+    incidence->startUpdates();
+    bool assignResult = mIncidenceAssigner->assign( incidence, payload.get() );
+    if ( assignResult )
+      incidence->updated();
+    incidence->endUpdates();
 
-        mCalendar->deleteIncidence( incidence );
-        delete incidence;
-        mCalendar->addIncidence( payload.get()->clone() );
+    if ( !assignResult ) {
+      kWarning() << "Item changed incidence type. Replacing it.";
+
+      mCalendar->deleteIncidence( incidence );
+      delete incidence;
+      mCalendar->addIncidence( payload.get()->clone() );
     }
-
-    mCalendar->setModified( true );
   }
   fileDirty();
   changeCommitted( item );

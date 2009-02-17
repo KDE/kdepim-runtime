@@ -366,7 +366,14 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
       kError() << "Failed to add incidence to resource";
     } else {
-      if ( !mIncidenceAssigner->assign( incidence, incidencePtr.get() ) ) {
+      // make sure any observer the resource might have installed gets properly notified
+      incidence->startUpdates();
+      bool assignResult = mIncidenceAssigner->assign( incidence, incidencePtr.get() );
+      if ( assignResult )
+        incidence->updated();
+      incidence->endUpdates();
+
+      if ( !assignResult ) {
         kWarning() << "Item changed incidence type. Replacing it.";
 
         mResource->deleteIncidence( incidence );
