@@ -94,6 +94,10 @@ class KMeditorPrivate
     // Each pair is the index of the start- and end position of the signature.
     QList< QPair<int,int> > signaturePositions( const KPIMIdentities::Signature &sig ) const;
 
+    // This fixes the string returned by QTextEdit::toPlainText(), by removing non-ASCII
+    // chars like QChar::LineSeparator, non-breaking spaces or embedded image markers.
+    void fixupTextEditString( QString &text ) const;
+
     void startExternalEditor();
     void slotEditorFinished( int, QProcess::ExitStatus exitStatus );
 
@@ -120,6 +124,19 @@ class KMeditorPrivate
 }
 
 using namespace KPIM;
+
+void KMeditorPrivate::fixupTextEditString( QString &text ) const
+{
+  // Remove line separators. Normal \n chars are still there, so no linebreaks get lost here
+  text.remove( QChar::LineSeparator );
+
+  // Get rid of embedded images, see QTextImageFormat documentation:
+  // "Inline images are represented by an object replacement character (0xFFFC in Unicode) "
+  text.remove( 0xFFFC );
+
+  // In plaintext mode, each space is non-breaking.
+  text.replace( QChar::Nbsp, QChar( ' ' ) );
+}
 
 QList< QPair<int,int> > KMeditorPrivate::signaturePositions( const KPIMIdentities::Signature &sig ) const
 {
@@ -936,23 +953,14 @@ QString KMeditor::toWrappedPlainText() const
     block = block.next();
   }
 
-  // Get rid of embedded linebreaks, caused by the <br> tag. We add our own,
-  // plain-text ascii linebreaks above.
-  // Additionally, when using plain text mode, the text doesn't contain the
-  // line separator character, so we can't even rely on that.
-  temp.remove( QChar::LineSeparator );
-
-  // Get rid of embedded images, see QTextImageFormat documentation:
-  // "Inline images are represented by an object replacement character (0xFFFC in Unicode) "
-  temp.remove( 0xFFFC );
-
+  d->fixupTextEditString( temp );
   return temp;
 }
 
 QString KMeditor::toCleanPlainText() const
 {
   QString temp = toPlainText();
-  temp.remove( 0xFFFC ); // See toWrappedPlainText().
+  d->fixupTextEditString( temp );
   return temp;
 }
 
