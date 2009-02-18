@@ -1,5 +1,12 @@
 [Desktop Entry]
 Name=Local Bookmarks
+Name[ga]=Leabharmharcanna Logánta
+Name[nds]=Lokaal Leestekens
+Name[pt]=Favoritos Locais
+Name[pt_BR]=Favoritos Locais
+Name[sv]=Lokala bokmärken
+Name[uk]=Локальні закладки
+Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
 Comment[ca]=Carrega dades des d'un fitxer de punts local
 Comment[cs]=Načítá data z místních záložek
