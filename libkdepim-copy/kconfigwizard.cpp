@@ -99,7 +99,7 @@ void KConfigWizard::setupRulesPage()
 {
   QFrame *page = new QFrame(this);
   KPageWidgetItem *item = addPage( page, i18nc( "@title:tab", "Rules" ) );
-  item->setHeader( i18nc( "@title:window", "Setup Rules" ) );
+  item->setHeader( i18nc( "@title:window", "Set Up Rules" ) );
   //TODO: set item icon
   //rame *topFrame = new QFrame( this );
   QVBoxLayout *topLayout = new QVBoxLayout;
@@ -144,7 +144,7 @@ void KConfigWizard::setupChangesPage()
 {
   QFrame *page = new QFrame( this );
   KPageWidgetItem *item = addPage( page, i18nc( "@title:tab", "Changes" ) );
-  item->setHeader( i18nc( "@title:window", "Setup Changes" ) );
+  item->setHeader( i18nc( "@title:window", "Set Up Changes" ) );
   //TODO: set item icon
   QVBoxLayout *topLayout = new QVBoxLayout;
   page->setLayout(topLayout);
