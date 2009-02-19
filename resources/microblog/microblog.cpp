@@ -55,6 +55,10 @@ MicroblogResource::~MicroblogResource()
 void MicroblogResource::initComm()
 {
     delete m_comm;
+    m_comm = 0;
+  
+    if ( Settings::self()->userName().isEmpty() || Settings::self()->password().isEmpty() )
+        return;
 
     m_comm = new Communication( this );
     m_comm->setService( 0 ); // Todo..
@@ -69,8 +73,15 @@ void MicroblogResource::retrieveCollections()
 {
     QHash<QString,Collection> collections;
 
+    // if there is no connection, don't continue.
+    if ( !m_comm ) {
+        kDebug() << "Tried to retrieve collection, but there is no connection";
+        collectionsRetrieved( collections.values() );
+        return;
+    }
+        
     Collection root;
-    root.setName( i18n( "Microblog" ) );
+    root.setName( i18n( "%1's microblog", Settings::self()->name() ) );
     root.setRemoteId( "microblog" );
     root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
     Collection::Rights rights = Collection::ReadOnly;
@@ -176,7 +187,7 @@ void MicroblogResource::configure( WId windowId )
         KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     if ( !Settings::self()->name().isEmpty() )
-        setName( Settings::self()->name() );
+        setName( i18n("%1's microblog", Settings::self()->name() ) );
     initComm();
 }
 
