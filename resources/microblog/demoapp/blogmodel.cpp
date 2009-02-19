@@ -70,17 +70,49 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
     if ( !item.hasPayload<StatusItem>() )
         return QVariant();
     StatusItem msg = item.payload<StatusItem>();
-    switch ( index.column() ) {
-    case User:
-        return msg.value( "user_screen_name" );
-    case Text:
-        return msg.text();
-    case Date:
-        return msg.date();
-    case Picture:
-        return msg.value( "user_profile_image_url" );
-    default:
-        return QVariant();
+    Collection col = collection();
+    if ( col.remoteId() == "home" || col.remoteId() == "replies" || 
+         col.remoteId() == "favorites" ) {
+       switch ( index.column() ) {
+        case User:
+            return msg.value( "user_screen_name" );
+        case Text:
+            return msg.text();
+        case Date:
+            return msg.date();
+        case Picture:
+            return msg.value( "user_-_profile_image_url" );
+        default:
+            return QVariant();
+        }
+    }
+    if ( col.remoteId() == "inbox" ) {
+       switch ( index.column() ) {
+        case User:
+            return msg.value( "sender_screen_name" );
+        case Text:
+            return msg.text();
+        case Date:
+            return msg.date();
+        case Picture:
+            return msg.value( "sender_-_profile_image_url" );
+        default:
+            return QVariant();
+        }
+    }
+    if ( col.remoteId() == "outbox" ) {
+       switch ( index.column() ) {
+        case User:
+            return msg.value( "recipient_screen_name" );
+        case Text:
+            return msg.text();
+        case Date:
+            return msg.date();
+        case Picture:
+            return msg.value( "recipient_-_profile_image_url" );
+        default:
+            return QVariant();
+        }
     }
     return ItemModel::data( index, role );
 }

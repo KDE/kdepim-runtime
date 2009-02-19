@@ -45,12 +45,12 @@ void StatusItem::Private::init()
     QDomNode node = root.firstChild();
     while ( !node.isNull() ) {
         const QString key = node.toElement().tagName();
-        if ( key == "user" ) {
+        if ( key == "user" || key == "sender" || key == "recipient" ) {
             QDomNode node2 = node.firstChild();
             while ( !node2.isNull() ) {
                 const QString key2 = node2.toElement().tagName();
                 const QString val2 = node2.toElement().text();
-                status[ "user_" + key2 ] = val2;
+                status[ key + "_-_" + key2 ] = val2;
                 node2 = node2.nextSibling();
             }
         } else {
