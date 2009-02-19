@@ -33,6 +33,7 @@ namespace Akonadi
 {
 class CollectionView;
 class CollectionModel;
+class CollectionFilterProxyModel;
 }
 
 class MainWindow;
@@ -50,6 +51,7 @@ private slots:
 private:
     Akonadi::Collection mCurrentCollection;
     Akonadi::CollectionModel *mCollectionModel;
+    Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
     Akonadi::CollectionView *mCollectionList;
     BlogModel *mMessageModel;
     QListView *mMessageList;

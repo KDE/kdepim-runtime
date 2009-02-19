@@ -55,17 +55,16 @@ MainWidget::MainWidget( MainWindow * parent ) :
 
     // Filter the collection to only show the blogs
     mCollectionModel = new Akonadi::CollectionModel( this );
-    mCollectionList->setModel( mCollectionModel );
-    //mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel(  this );
-    //mCollectionProxyModel->setSourceModel( mCollectionModel );
-    //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "message/x-microblog" ) );
-    //mCollectionProxyModel->addMimeTypeFilter( QString::fromLatin1( "application/x-vnd.kde.microblog" ) );
+/*
+    Does not seem to work untill next check. Recheck with current trunk and enable if needed.
 
-    // display collections sorted
-    //QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
-    //sortModel->setDynamicSortFilter( true );
-    //sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-    //sortModel->setSourceModel( mCollectionProxyModel );
+    mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
+    mCollectionProxyModel->setSourceModel( mCollectionModel );
+    mCollectionProxyModel->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
+    mCollectionList->setModel( mCollectionProxyModel );
+*/
+    mCollectionList->setModel( mCollectionModel );
+
 
     // Right part, blog list
     mMessageList = new QListView( this );

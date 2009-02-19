@@ -128,6 +128,11 @@ void MicroblogResource::retrieveCollections()
 
 void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
 {
+    if ( !m_comm ) {
+        itemsRetrievalDone();
+        return;
+    }
+
     m_collection = collection;
 
     // get only newer items, except for favorites, which does not allow that.

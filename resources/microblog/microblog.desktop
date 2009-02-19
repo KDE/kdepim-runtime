@@ -14,6 +14,6 @@ Comment[uk]=Показує ваші дані з мікроблогу Twitter а�
 Type=AkonadiResource
 Exec=akonadi_microblog_resource
 
-X-Akonadi-MimeTypes=message/x-microblog
+X-Akonadi-MimeTypes=application/x-vnd.kde.microblog
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_microblog_resource
