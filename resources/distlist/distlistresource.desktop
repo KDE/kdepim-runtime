@@ -1,17 +1,21 @@
 [Desktop Entry]
 Name=Distribution List File
 Name[ga]=Comhad Liosta Dáilte
+Name[gl]=Ficheiro de lista de distribución
+Name[ja]=配布リストファイル
 Name[nds]=Verdeellistdatei
 Name[pt]=Ficheiro de Lista de Distribuição
-Name[pt_BR]=Ficheiro de Lista de Distribuição
+Name[pt_BR]=Arquivo de lista de distribuição
 Name[sv]=Fil med fördelningslista
 Name[uk]=Файл списку розповсюдження
 Name[zh_TW]=分派清單檔
 Comment=Loads data from a distribution list file
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad liosta dáilte
+Comment[gl]=Carrega datos desde un ficheiro de lista de distribución
+Comment[ja]=配布リストファイルからデータを読み込みます
 Comment[nds]=Laadt Daten ut en Verdeellistdatei
 Comment[pt]=Carrega os dados a partir de um ficheiro de lista de distribuição
-Comment[pt_BR]=Carrega os dados a partir de um ficheiro de lista de distribuição
+Comment[pt_BR]=Carrega os dados de um arquivo de lista de distribuição
 Comment[sv]=Laddar data från en fil med en fördelningslista
 Comment[uk]=Завантажує дані з файла списку розповсюдження
 Comment[zh_TW]=從分派清單檔載入資料

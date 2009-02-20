@@ -58,6 +58,7 @@ Name[zh_TW]=備忘錄
 Comment=Loads data from a notes file
 Comment[et]=Andmete laadimine sedelite failist
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad nótaí
+Comment[gl]=Carrega datos desde un ficheiro de notas
 Comment[ja]=メモファイルからデータを読み込みます
 Comment[nds]=Laadt Daten ut en Notizen-Datei
 Comment[pt]=Carrega os dados de um ficheiro de notas

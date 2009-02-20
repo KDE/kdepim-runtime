@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Birthdays & Anniversaries
 Name[et]=Sünni- ja aastapäevad
+Name[gl]=Cumpreanos e aniversarios
 Name[ja]=誕生日と記念日
 Name[nds]=Geboorts- un Johrdaag
 Name[pt]=Datas de Nascimento & Aniversários
@@ -11,6 +12,7 @@ Name[x-test]=xxBirthdays & Anniversariesxx
 Name[zh_TW]=生日與紀念日
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
 Comment[et]=Võimaldab kasutada KDE aadressiraamatusse kalendrisündmustena salvestatud kontaktide sünni- ja aastapäevi
+Comment[gl]=Permite acceder ás datas de cumpreanos e aniversarios dos contactos do caderno de enderezos como eventos do calendario
 Comment[ja]=アドレス帳にカレンダーイベントとして保存されている誕生日と記念日へのアクセスを提供します
 Comment[nds]=Stellt Togriep op Geboorts- un Johrdaag vun Kontakten binnen Dien Adressbook as Kalenner-Begeevnissen praat
 Comment[pt]=Oferece o acesso às datas de nascimento e aniversário dos contactos no livro de endereços como eventos do calendário
