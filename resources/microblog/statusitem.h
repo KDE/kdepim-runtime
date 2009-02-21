@@ -23,6 +23,7 @@
 #include <QSharedDataPointer>
 #include <QByteArray>
 #include <QHash>
+#include <QDateTime>
 
 class StatusItem
 {
@@ -36,7 +37,7 @@ public:
     qlonglong id() const;
     QString value( const QString& ) const;
     QString text() const;
-    QString date() const;
+    QDateTime date() const;
     QByteArray data() const;
 
 private:

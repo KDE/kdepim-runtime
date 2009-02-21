@@ -25,7 +25,7 @@
 #include <akonadi/collection.h>
 
 class QModelIndex;
-class QListView;
+class QTreeView;
 
 class KJob;
 
@@ -54,7 +54,7 @@ private:
     Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
     Akonadi::CollectionView *mCollectionList;
     BlogModel *mMessageModel;
-    QListView *mMessageList;
+    QTreeView *mMessageList;
 
     MainWindow *mMainWindow;
 };

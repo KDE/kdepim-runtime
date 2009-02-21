@@ -53,86 +53,73 @@ BlogModel::~BlogModel( )
 int BlogModel::columnCount( const QModelIndex & parent ) const
 {
     if ( !parent.isValid() )
-        return 4; // keep in sync with the column type enum
+        return 1;
 
     return 0;
 }
 
 QVariant BlogModel::data( const QModelIndex & index, int role ) const
 {
-    if ( role != Qt::DisplayRole )
+    if ( role != Qt::DisplayRole && role != Qt::EditRole && role < Qt::UserRole )
         return QVariant();
+
     if ( !index.isValid() )
         return QVariant();
+
     if ( index.row() >= rowCount() )
         return QVariant();
+
     Item item = itemForIndex( index );
     if ( !item.hasPayload<StatusItem>() )
         return QVariant();
 
     StatusItem msg = item.payload<StatusItem>();
     Collection col = collection();
-    if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
-            col.remoteId() == "favorites" ) {
-        switch ( index.column() ) {
-        case Date:
-            return msg.date();
-        case User:
-            return msg.value( "user_screen_name" );
-        case Text:
-            return msg.text();
-        case Picture:
-            return msg.value( "user_-_profile_image_url" );
-        default:
-            return QVariant();
-        }
+
+    if ( role == Qt::EditRole ) {
+        return msg.date();
     }
-    if ( col.remoteId() == "inbox" ) {
-        switch ( index.column() ) {
-        case Date:
-            return msg.date();
-        case User:
+  
+    if ( role == Qt::DisplayRole )
+        return msg.id();
+
+    if ( role == Qt::UserRole )
+        return msg.date().toString();
+
+    if ( role == Qt::UserRole+1 ) {
+      if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
+            col.remoteId() == "favorites" )
+            return msg.value( "user_-_screen_name" );
+      else if ( col.remoteId() == "inbox" )
             return msg.value( "sender_screen_name" );
-        case Text:
-            return msg.text();
-        case Picture:
-            return msg.value( "sender_-_profile_image_url" );
-        default:
-            return QVariant();
-        }
-    }
-    if ( col.remoteId() == "outbox" ) {
-        switch ( index.column() ) {
-        case User:
+      else if ( col.remoteId() == "outbox" )
             return msg.value( "recipient_screen_name" );
-        case Text:
-            return msg.text();
-        case Date:
-            return msg.date();
-        case Picture:
-            return msg.value( "recipient_-_profile_image_url" );
-        default:
+      else
             return QVariant();
-        }
     }
+    
+    if ( role == Qt::UserRole+2 )
+            return msg.text();
+
+    if ( role == Qt::UserRole+3 ) {
+      if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
+            col.remoteId() == "favorites" )
+            return msg.value( "user_-_profile_image_url" );
+      else if ( col.remoteId() == "inbox" )
+            return msg.value( "sender_-_profile_image_url" );
+      else if ( col.remoteId() == "outbox" )
+            return msg.value( "recipient_-_profile_image_url" );
+      else
+            return QVariant();
+    }
+
     return ItemModel::data( index, role );
 }
 
 QVariant BlogModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
     if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
-        switch ( section ) {
-        case User:
-            return i18nc( "@title:column, message (e.g. email) subject", "User" );
-        case Text:
-            return i18nc( "@title:column, sender of message (e.g. email)", "Text" );
-        case Date:
-            return i18nc( "@title:column, message (e.g. email) timestamp", "Date" );
-        case Picture:
-            return i18nc( "@title:column, message (e.g. email) timestamp", "Picture" );
-        default:
-            return QString();
-        }
+        return i18nc( "@title:column, item id", "item id" );
     }
     return ItemModel::headerData( section, orientation, role );
 }

@@ -49,20 +49,27 @@ void MicroblogDelegate::updateItemWidgets( const QList<QWidget*> widgets,
     if ( !index.isValid() ) {
         return;
     }
+
     const BlogModel* model = static_cast<const BlogModel*>( index.model() );
+    int row = index.row();
 
     QWebView *edit = static_cast<QWebView*>( widgets[0] );
     edit->move( 5, 5 );
     edit->resize( 400,200 );
 
     QString text;
-    text.append( "<table><tr><td><img src=\"" + model->data( model->index( index.row(),3 ) ,Qt::DisplayRole ).toString() + "\"></td>" ) ;
-    text.append( "<td>" + model->data( model->index( index.row(),0 ) ,Qt::DisplayRole ).toString() );
-    text.append( "<Br>" + model->data( model->index( index.row(),2 ) ,Qt::DisplayRole ).toString() ) ;
+    text.append( "<table><tr><td><img src=\"" + this->getData( model, row, 3 ).toString() + "\"></td>" );
+    text.append( "<td>" + getData( model, row, 0 ).toString() );
+    text.append( "<Br>" + getData( model, row, 1 ).toString() );
     text.append( "</td></tr></table>" );
-    text.append( "<Br>" + model->data( model->index( index.row(),1 ) ,Qt::DisplayRole ).toString() ) ;
+    text.append( "<Br>" + getData( model, row, 2 ).toString() );
     //kDebug() << text;
     edit->setHtml( text );
+}
+
+QVariant MicroblogDelegate::getData( const BlogModel* model, int row, int column ) const 
+{
+    return model->data( model->index( row, 0 ), Qt::UserRole+column );
 }
 
 void MicroblogDelegate::paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const

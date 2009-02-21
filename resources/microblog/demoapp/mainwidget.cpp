@@ -35,7 +35,7 @@
 #include <QSplitter>
 #include <QTextEdit>
 #include <QtGui/QSortFilterProxyModel>
-#include <QListView>
+#include <QTreeView>
 
 using namespace Akonadi;
 
@@ -67,15 +67,23 @@ MainWidget::MainWidget( MainWindow * parent ) :
 
 
     // Right part, blog list
-    mMessageList = new QListView( this );
-    mMessageList->setAlternatingRowColors( true );
+    mMessageList = new QTreeView( this );
+    mMessageList->setRootIsDecorated( false );
     mMessageList->setDragEnabled( false );
     mMessageList->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    mMessageList->setSortingEnabled( true );
+
     MicroblogDelegate *delegate = new MicroblogDelegate( mMessageList, this );
     mMessageList->setItemDelegate( delegate );
 
     mMessageModel = new BlogModel( this );
-    mMessageList->setModel( mMessageModel );
+
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSortRole( Qt::EditRole );
+    proxyModel->setDynamicSortFilter( true );
+    proxyModel->setSourceModel( mMessageModel );
+
+    mMessageList->setModel( proxyModel );
     splitter->addWidget( mMessageList );
 
     splitter->setSizes( QList<int>() << 100 << 170 );

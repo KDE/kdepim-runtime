@@ -22,6 +22,8 @@
 #ifndef MICROBLOGDELEGATE_H
 #define MICROBLOGDELEGATE_H
 
+class BlogModel;
+
 class MicroblogDelegate : public KWidgetItemDelegate
 {
     Q_OBJECT
@@ -40,6 +42,7 @@ public:
 
 
 private:
+    QVariant getData( const BlogModel*, int row, int column ) const;
     QWidget* m_parent;
 };
 

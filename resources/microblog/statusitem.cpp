@@ -20,6 +20,7 @@
 #include "statusitem.h"
 #include <kdebug.h>
 
+#include <QDateTime>
 #include <QDomElement>
 
 class StatusItem::Private : public QSharedData
@@ -29,12 +30,14 @@ public:
     Private( const Private& other ) : QSharedData( other ) {
         data = other.data;
         status = other.status;
+        dateTime = other.dateTime;
     }
 
 public:
     void init();
     QByteArray data;
     QHash<QString,QString> status;
+    QDateTime dateTime;
 };
 
 void StatusItem::Private::init()
@@ -60,6 +63,15 @@ void StatusItem::Private::init()
         node = node.nextSibling();
     }
     //kDebug() << status;
+
+    dateTime = QDateTime::fromString( status.value( "created_at" ).toLower().mid(4),
+                    "MMM dd H:mm:ss +0000 yyyy" );
+    dateTime.setTimeSpec( Qt::UTC );
+    dateTime = dateTime.toLocalTime();
+    
+    if ( !dateTime.isValid() )
+         kDebug() << "Unable to parse" << status.value( "created_at" ).toLower().mid(4);
+    //kDebug() << dateTime;
 }
 
 StatusItem::StatusItem()  :  d( new Private )
@@ -116,8 +128,7 @@ QString StatusItem::text() const
     return d->status.value( "text" );
 }
 
-QString StatusItem::date() const
+QDateTime StatusItem::date() const
 {
-    //return QDateTime
-    return d->status.value( "created_at" );
+    return d->dateTime;
 }
