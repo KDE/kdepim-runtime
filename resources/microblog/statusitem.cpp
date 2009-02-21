@@ -98,7 +98,7 @@ void StatusItem::setData( const QByteArray &data )
 qlonglong StatusItem::id() const
 {
     return d->status.value( "id" ).toLongLong();
-};
+}
 
 QByteArray StatusItem::data() const
 {
