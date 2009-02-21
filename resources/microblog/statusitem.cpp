@@ -23,6 +23,8 @@
 #include <QDateTime>
 #include <QDomElement>
 
+#include <kpimutils/linklocator.h>
+
 class StatusItem::Private : public QSharedData
 {
 public:
@@ -64,13 +66,13 @@ void StatusItem::Private::init()
     }
     //kDebug() << status;
 
-    dateTime = QDateTime::fromString( status.value( "created_at" ).toLower().mid(4),
-                    "MMM dd H:mm:ss +0000 yyyy" );
+    dateTime = QDateTime::fromString( status.value( "created_at" ).toLower().mid( 4 ),
+                                      "MMM dd H:mm:ss +0000 yyyy" );
     dateTime.setTimeSpec( Qt::UTC );
     dateTime = dateTime.toLocalTime();
-    
+
     if ( !dateTime.isValid() )
-         kDebug() << "Unable to parse" << status.value( "created_at" ).toLower().mid(4);
+        kDebug() << "Unable to parse" << status.value( "created_at" ).toLower().mid( 4 );
     //kDebug() << dateTime;
 }
 
@@ -124,8 +126,9 @@ QString StatusItem::value( const QString& value ) const
 
 QString StatusItem::text() const
 {
-    //linklocater
-    return d->status.value( "text" );
+    using KPIMUtils::LinkLocator;
+    int flags = LinkLocator::PreserveSpaces | LinkLocator::HighlightText | LinkLocator::ReplaceSmileys;
+    return LinkLocator::convertToHtml( d->status.value( "text" ), flags );
 }
 
 QDateTime StatusItem::date() const

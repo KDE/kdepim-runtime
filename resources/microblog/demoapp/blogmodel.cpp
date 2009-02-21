@@ -83,9 +83,10 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
     if ( role == Qt::DisplayRole )
         return msg.id();
 
-    if ( role == Qt::UserRole )
+    switch ( role ) {
+      case Date:
         return msg.date().toString();
-
+      case User:
     if ( role == Qt::UserRole+1 ) {
       if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
             col.remoteId() == "favorites" )
@@ -97,10 +98,9 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
       else
             return QVariant();
     }
-    
-    if ( role == Qt::UserRole+2 )
+      case Text:
             return msg.text();
-
+      case Picture:
     if ( role == Qt::UserRole+3 ) {
       if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
             col.remoteId() == "favorites" )
@@ -112,6 +112,9 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
       else
             return QVariant();
     }
+      default:
+        return QVariant();
+    }
 
     return ItemModel::data( index, role );
 }
@@ -119,7 +122,7 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
 QVariant BlogModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
     if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
-        return i18nc( "@title:column, item id", "item id" );
+        return i18nc( "@title:column, item id", "Blogs by date" );
     }
     return ItemModel::headerData( section, orientation, role );
 }

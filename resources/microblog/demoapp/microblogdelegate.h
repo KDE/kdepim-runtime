@@ -41,6 +41,9 @@ public:
     QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 
 
+private slots:
+    void slotLinkClicked ( const QUrl &url );
+
 private:
     QVariant getData( const BlogModel*, int row, int column ) const;
     QWidget* m_parent;

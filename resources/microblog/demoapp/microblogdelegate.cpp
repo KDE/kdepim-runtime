@@ -21,6 +21,7 @@
 
 #include <KDebug>
 #include <KLocale>
+#include <KToolInvocation>
 #include <QWebView>
 
 #include "microblogdelegate.h"
@@ -37,6 +38,7 @@ QList<QWidget*> MicroblogDelegate::createItemWidgets() const
 
     QWebView * infoLabel = new QWebView();
     infoLabel->setBackgroundRole( QPalette::NoRole );
+    connect( infoLabel, SIGNAL( linkClicked ( const QUrl & ) ), SLOT( slotLinkClicked( const QUrl & ) ) );
     list << infoLabel;
     return list;
 }
@@ -54,22 +56,28 @@ void MicroblogDelegate::updateItemWidgets( const QList<QWidget*> widgets,
     int row = index.row();
 
     QWebView *edit = static_cast<QWebView*>( widgets[0] );
+    edit->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
     edit->move( 5, 5 );
     edit->resize( 400,200 );
 
     QString text;
-    text.append( "<table><tr><td><img src=\"" + this->getData( model, row, 3 ).toString() + "\"></td>" );
-    text.append( "<td>" + getData( model, row, 0 ).toString() );
-    text.append( "<Br>" + getData( model, row, 1 ).toString() );
+    text.append( "<table><tr><td><img src=\"" + this->getData( model, row, BlogModel::Picture ).toString() + "\"></td>" );
+    text.append( "<td>" + getData( model, row, BlogModel::Date ).toString() );
+    text.append( "<Br>" + getData( model, row, BlogModel::User ).toString() );
     text.append( "</td></tr></table>" );
-    text.append( "<Br>" + getData( model, row, 2 ).toString() );
+    text.append( "<Br>" + getData( model, row, BlogModel::Text ).toString() );
     //kDebug() << text;
     edit->setHtml( text );
 }
 
-QVariant MicroblogDelegate::getData( const BlogModel* model, int row, int column ) const 
+void MicroblogDelegate::slotLinkClicked ( const QUrl &url ) 
 {
-    return model->data( model->index( row, 0 ), Qt::UserRole+column );
+    KToolInvocation::invokeBrowser( url.toString() );
+}
+
+QVariant MicroblogDelegate::getData( const BlogModel* model, int row, int data ) const 
+{
+    return model->data( model->index( row, 0 ), data );
 }
 
 void MicroblogDelegate::paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const

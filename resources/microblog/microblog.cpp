@@ -56,7 +56,7 @@ void MicroblogResource::initComm()
 {
     delete m_comm;
     m_comm = 0;
-  
+
     if ( Settings::self()->userName().isEmpty() || Settings::self()->password().isEmpty() )
         return;
 
@@ -79,7 +79,7 @@ void MicroblogResource::retrieveCollections()
         collectionsRetrieved( collections.values() );
         return;
     }
-        
+
     Collection root;
     root.setName( i18n( "%1's microblog", Settings::self()->name() ) );
     root.setRemoteId( "microblog" );
@@ -192,7 +192,7 @@ void MicroblogResource::configure( WId windowId )
         KWindowSystem::setMainWindow( &dlg, windowId );
     dlg.exec();
     if ( !Settings::self()->name().isEmpty() )
-        setName( i18n("%1's microblog", Settings::self()->name() ) );
+        setName( i18n( "%1's microblog", Settings::self()->name() ) );
     initComm();
 }
 

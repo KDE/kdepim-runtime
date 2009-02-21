@@ -35,7 +35,7 @@ public:
       Column types.
     */
     enum Column {
-        Date, /**< Date column. */
+        Date = Qt::UserRole, /**< Date column. */
         User, /**< Usre column. */
         Text, /**< Textr column. */
         Picture /**< url to a profile picture column. */
