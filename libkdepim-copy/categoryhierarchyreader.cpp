@@ -52,7 +52,14 @@ void CategoryHierarchyReader::read( QStringList categories )
 {
   clear();
   QStringList::Iterator it;
-  categories.sort();
+
+  // case insensitive sort
+  QMap<QString, QString> map;
+    foreach ( QString str, categories )
+      map.insert( str.toLower(), str );
+
+  categories = map.values();
+
   QStringList last_path;
   for ( it = categories.begin(); it != categories.end(); ++it ) {
     QStringList _path = path( *it );
