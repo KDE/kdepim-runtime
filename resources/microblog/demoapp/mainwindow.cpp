@@ -29,11 +29,11 @@
 MainWindow::MainWindow( QWidget *parent )
         : QMainWindow( parent )
 {
-/*
-    QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
-    toolBar->addAction( "New", this, SIGNAL( threadCollection() ) );
-    addToolBar( toolBar );
-*/
+    /*
+        QToolBar *toolBar = new QToolBar( QLatin1String( "Main toolbar" ), this );
+        toolBar->addAction( "New", this, SIGNAL( threadCollection() ) );
+        addToolBar( toolBar );
+    */
 
     Akonadi::Control::start( this );
     setCentralWidget( new MainWidget( this ) );

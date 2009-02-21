@@ -26,20 +26,19 @@
 #include "microblogdelegate.h"
 #include "blogmodel.h"
 
-MicroblogDelegate::MicroblogDelegate( QObject *parent, QListView *listView )
-        : KWidgetItemDelegate( listView, parent ), m_parent( listView )
+MicroblogDelegate::MicroblogDelegate( QAbstractItemView *itemView, QObject * parent )
+        : KWidgetItemDelegate( itemView, parent ), m_parent( itemView )
 {
 }
 
 QList<QWidget*> MicroblogDelegate::createItemWidgets() const
 {
-    QList<QWidget*> widgetList;
+    QList<QWidget*> list;
 
-    QWebView* edit = new QWebView( m_parent );
-    edit->page()->view()->setMaximumWidth( 200 );
-    edit->page()->view()->setMaximumHeight( 200 );
-    widgetList << edit;
-    return widgetList;
+    QWebView * infoLabel = new QWebView();
+    infoLabel->setBackgroundRole( QPalette::NoRole );
+    list << infoLabel;
+    return list;
 }
 
 void MicroblogDelegate::updateItemWidgets( const QList<QWidget*> widgets,
@@ -53,25 +52,46 @@ void MicroblogDelegate::updateItemWidgets( const QList<QWidget*> widgets,
     const BlogModel* model = static_cast<const BlogModel*>( index.model() );
 
     QWebView *edit = static_cast<QWebView*>( widgets[0] );
+    edit->move( 5, 5 );
+    edit->resize( 400,200 );
+
     QString text;
     text.append( "<table><tr><td><img src=\"" + model->data( model->index( index.row(),3 ) ,Qt::DisplayRole ).toString() + "\"></td>" ) ;
     text.append( "<td>" + model->data( model->index( index.row(),0 ) ,Qt::DisplayRole ).toString() );
     text.append( "<Br>" + model->data( model->index( index.row(),2 ) ,Qt::DisplayRole ).toString() ) ;
     text.append( "</td></tr></table>" );
     text.append( "<Br>" + model->data( model->index( index.row(),1 ) ,Qt::DisplayRole ).toString() ) ;
-    kDebug() << text;
+    //kDebug() << text;
     edit->setHtml( text );
 }
 
-void MicroblogDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
+void MicroblogDelegate::paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
-    KWidgetItemDelegate::paintWidgets( painter, option, index );
+    painter->save();
+
+    if ( option.state & QStyle::State_Selected ) {
+        painter->fillRect( option.rect, option.palette.highlight() );
+    } else {
+        painter->fillRect( option.rect, ( index.row() % 2 == 0 ? option.palette.base() : option.palette.alternateBase() ) );
+        painter->setPen( QPen( option.palette.window().color() ) );
+        painter->drawRect( option.rect );
+    }
+
+    if ( option.state & QStyle::State_Selected ) {
+        painter->setPen( QPen( option.palette.highlightedText().color() ) );
+    } else {
+        painter->setPen( QPen( option.palette.text().color() ) );
+    }
+
+    painter->restore();
 }
+
 
 QSize MicroblogDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
     Q_UNUSED( option );
     Q_UNUSED( index );
-    return QSize( 200, 200 );
+
+    return QSize( 410, 210 );
 }
 #include "microblogdelegate.moc"

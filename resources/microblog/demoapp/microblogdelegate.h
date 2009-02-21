@@ -27,7 +27,7 @@ class MicroblogDelegate : public KWidgetItemDelegate
     Q_OBJECT
 
 public:
-    MicroblogDelegate( QObject *parent, QListView *listView );
+    MicroblogDelegate( QAbstractItemView *itemView, QObject * parent );
 
     QList<QWidget*> createItemWidgets() const;
 

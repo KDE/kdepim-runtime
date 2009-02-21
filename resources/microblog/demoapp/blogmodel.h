@@ -35,9 +35,9 @@ public:
       Column types.
     */
     enum Column {
+        Date, /**< Date column. */
         User, /**< Usre column. */
         Text, /**< Textr column. */
-        Date, /**< Date column. */
         Picture /**< url to a profile picture column. */
     };
 

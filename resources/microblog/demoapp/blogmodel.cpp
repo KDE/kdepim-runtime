@@ -69,17 +69,18 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
     Item item = itemForIndex( index );
     if ( !item.hasPayload<StatusItem>() )
         return QVariant();
+
     StatusItem msg = item.payload<StatusItem>();
     Collection col = collection();
-    if ( col.remoteId() == "home" || col.remoteId() == "replies" || 
-         col.remoteId() == "favorites" ) {
-       switch ( index.column() ) {
+    if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
+            col.remoteId() == "favorites" ) {
+        switch ( index.column() ) {
+        case Date:
+            return msg.date();
         case User:
             return msg.value( "user_screen_name" );
         case Text:
             return msg.text();
-        case Date:
-            return msg.date();
         case Picture:
             return msg.value( "user_-_profile_image_url" );
         default:
@@ -87,13 +88,13 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
         }
     }
     if ( col.remoteId() == "inbox" ) {
-       switch ( index.column() ) {
+        switch ( index.column() ) {
+        case Date:
+            return msg.date();
         case User:
             return msg.value( "sender_screen_name" );
         case Text:
             return msg.text();
-        case Date:
-            return msg.date();
         case Picture:
             return msg.value( "sender_-_profile_image_url" );
         default:
@@ -101,7 +102,7 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
         }
     }
     if ( col.remoteId() == "outbox" ) {
-       switch ( index.column() ) {
+        switch ( index.column() ) {
         case User:
             return msg.value( "recipient_screen_name" );
         case Text:

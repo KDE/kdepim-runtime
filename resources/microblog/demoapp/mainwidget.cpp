@@ -55,29 +55,30 @@ MainWidget::MainWidget( MainWindow * parent ) :
 
     // Filter the collection to only show the blogs
     mCollectionModel = new Akonadi::CollectionModel( this );
-/*
-    Does not seem to work untill next check. Recheck with current trunk and enable if needed.
+    /*
+        Does not seem to work untill next check. Recheck with current trunk and enable if needed.
 
-    mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
-    mCollectionProxyModel->setSourceModel( mCollectionModel );
-    mCollectionProxyModel->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
-    mCollectionList->setModel( mCollectionProxyModel );
-*/
+        mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
+        mCollectionProxyModel->setSourceModel( mCollectionModel );
+        mCollectionProxyModel->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
+        mCollectionList->setModel( mCollectionProxyModel );
+    */
     mCollectionList->setModel( mCollectionModel );
 
 
     // Right part, blog list
     mMessageList = new QListView( this );
+    mMessageList->setAlternatingRowColors( true );
     mMessageList->setDragEnabled( false );
     mMessageList->setSelectionMode( QAbstractItemView::ExtendedSelection );
-    MicroblogDelegate *delegate = new MicroblogDelegate( this, mMessageList );
+    MicroblogDelegate *delegate = new MicroblogDelegate( mMessageList, this );
     mMessageList->setItemDelegate( delegate );
 
     mMessageModel = new BlogModel( this );
     mMessageList->setModel( mMessageModel );
     splitter->addWidget( mMessageList );
 
-    splitter->setSizes( QList<int>() << 200 << 200 );
+    splitter->setSizes( QList<int>() << 100 << 170 );
 }
 
 void MainWidget::collectionClicked( const Akonadi::Collection & collection )
