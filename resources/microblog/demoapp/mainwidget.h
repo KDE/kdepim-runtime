@@ -26,12 +26,6 @@
 class QTreeView;
 class QListView;
 class AkonadiTabBar;
-
-namespace Akonadi
-{
-class CollectionFilterProxyModel;
-}
-
 class MainWindow;
 
 class MainWidget: public QWidget
@@ -46,7 +40,6 @@ private slots:
     void slotCurrentTabChanged( const Akonadi::Collection& );
 
 private:
-    Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
     BlogModel *mMessageModel;
     QTreeView *mMessageList;
     QListView *m_resourcesView;

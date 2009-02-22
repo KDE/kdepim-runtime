@@ -25,7 +25,7 @@
 #include "akonaditabbar.h"
 
 #include <akonadi/agentinstancemodel.h>
-#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/agentfilterproxymodel.h>
 #include <akonadi/collectionfetchjob.h>
 
 #include <QVBoxLayout>
@@ -48,15 +48,6 @@ MainWidget::MainWidget( MainWindow * parent ) :
     QSplitter *splitter = new QSplitter( Qt::Vertical, this );
     layout->addWidget( splitter );
 
-    // Filter the collection to only show the blogs
-    /*
-        Does not seem to work untill next check. Recheck with current trunk and enable if needed.
-
-        mCollectionProxyModel = new Akonadi::CollectionFilterProxyModel( this );
-        mCollectionProxyModel->setSourceModel( mCollectionModel );
-        mCollectionProxyModel->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
-        mCollectionList->setModel( mCollectionProxyModel );
-    */
 
     // Accounts
     Akonadi::AgentInstanceModel *model = new Akonadi::AgentInstanceModel( this );
@@ -65,6 +56,12 @@ MainWidget::MainWidget( MainWindow * parent ) :
     connect( m_resourcesView, SIGNAL( clicked( const QModelIndex& ) ),
              SLOT( slotCurrentResourceChanged( const QModelIndex& ) ) );
     splitter->addWidget( m_resourcesView );
+    
+    // Filter the collection to only show the blogs
+    Akonadi::AgentFilterProxyModel* proxy = new Akonadi::AgentFilterProxyModel( this );
+    proxy->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
+    proxy->setSourceModel( model );
+    m_resourcesView->setModel( proxy );
 
     // Bottom part
     KVBox* box = new KVBox( splitter );
