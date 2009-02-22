@@ -130,11 +130,15 @@ bool ICalResource::readFromFile( const QString &fileName )
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
   if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded!") );
     return;
   }
 
-  Q_ASSERT( item.hasPayload<IncidencePtr>() );
+  if ( !item.hasPayload<IncidencePtr>() ) {
+    cancelTask( i18n("Unable to retrieve added item %1.").arg( item.id() ) );
+    return;
+  }
+
   IncidencePtr i = item.payload<IncidencePtr>();
   mCalendar->addIncidence( i.get()->clone() );
   Item it( item );
@@ -148,11 +152,15 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
   Q_UNUSED( parts )
 
   if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded!") );
     return;
   }
 
-  Q_ASSERT( item.hasPayload<IncidencePtr>() );
+  if ( !item.hasPayload<IncidencePtr>() ) {
+    cancelTask( i18n("Unable to retrieve modified item %1.").arg( item.id() ) );
+    return;
+  }
+
   IncidencePtr payload = item.payload<IncidencePtr>();
   Incidence *incidence = mCalendar->incidence( item.remoteId() );
   if ( !incidence ) {
@@ -181,7 +189,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 void ICalResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded!") );
     return;
   }
 
