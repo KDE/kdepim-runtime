@@ -37,5 +37,5 @@ MainWindow::MainWindow( QWidget *parent )
 
     Akonadi::Control::start( this );
     setCentralWidget( new MainWidget( this ) );
-    resize( 700, 500 );
+    resize( 440, 500 );
 }

@@ -5,6 +5,7 @@ set(akonablog_bin_SRCS
     blogmodel.cpp
     microblogdelegate.cpp
     ../statusitem.cpp
+    akonaditabbar.cpp
 )
 
 kde4_add_app_icon(akonablog_bin_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/email.png")

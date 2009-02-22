@@ -22,6 +22,7 @@
 #include "mainwindow.h"
 #include "blogmodel.h"
 #include "microblogdelegate.h"
+#include "akonaditabbar.h"
 
 #include <akonadi/agentinstancemodel.h>
 #include <akonadi/collectionfilterproxymodel.h>
@@ -62,21 +63,16 @@ MainWidget::MainWidget( MainWindow * parent ) :
     m_resourcesView = new QListView( splitter );
     m_resourcesView->setModel( model );
     connect( m_resourcesView, SIGNAL( clicked( const QModelIndex& ) ),
-             SLOT( collectionChange() ) );
+             SLOT( slotCurrentResourceChanged( const QModelIndex& ) ) );
     splitter->addWidget( m_resourcesView );
 
     // Bottom part
     KVBox* box = new KVBox( splitter );
 
     // Folders
-    m_tabBar = new KTabBar( box );
-    m_tabBar->addTab( i18n( "Home" ) );
-    m_tabBar->addTab( i18n( "Replies" ) );
-    m_tabBar->addTab( i18n( "Favorites" ) );
-    m_tabBar->addTab( i18n( "Inbox" ) );
-    m_tabBar->addTab( i18n( "Outbox" ) );
-    connect( m_tabBar, SIGNAL( currentChanged( int ) ),
-             SLOT( collectionChange() ) );
+    m_tabBar = new AkonadiTabBar( box );
+    connect( m_tabBar, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
+             SLOT( slotCurrentTabChanged( const Akonadi::Collection& ) ) );
 
     mMessageList = new QTreeView( box );
     mMessageList->setRootIsDecorated( false );
@@ -97,51 +93,17 @@ MainWidget::MainWidget( MainWindow * parent ) :
     mMessageList->setModel( proxyModel );
     splitter->addWidget( box );
 
-    splitter->setSizes( QList<int>() << 40 << 170 );
+    splitter->setSizes( QList<int>() << 30 << 470 );
 }
 
-void MainWidget::collectionChange()
+void MainWidget::slotCurrentResourceChanged( const QModelIndex &index )
 {
-    // get the resource
-    const QModelIndex index = m_resourcesView->currentIndex();
     const Akonadi::AgentInstanceModel *model = static_cast<const AgentInstanceModel*>( m_resourcesView->model() );
     const QString identifier = model->data( index, AgentInstanceModel::InstanceIdentifierRole ).toString();
-
-    const int folder = m_tabBar->currentIndex();
-    QString folderName;
-    switch ( folder )  {
-    case 0:
-        folderName = "home";
-        break;
-    case 1:
-        folderName = "replies";
-        break;
-    case 2:
-        folderName = "favorites";
-        break;
-    case 3:
-        folderName = "inbox";
-        break;
-    case 4:
-        folderName = "outbox";
-        break;
-    default:
-        return;
-    }
-
-    // fetching all collections recursive, starting at the root collection
-    Collection col;
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    job->setResource( identifier );
-    if ( job->exec() ) {
-        Collection::List collections = job->collections();
-        foreach( const Collection &collection, collections ) {
-            if ( collection.remoteId() == folderName ) {
-                col = collection;
-                break;
-            }
-        }
-    }
-    mMessageModel->setCollection( col );
+    m_tabBar->setResource( identifier );
 }
 
+void MainWidget::slotCurrentTabChanged( const Akonadi::Collection& col )
+{
+    mMessageModel->setCollection( col );
+}
