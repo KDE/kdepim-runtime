@@ -38,7 +38,7 @@ QList<QWidget*> MicroblogDelegate::createItemWidgets() const
 
     QWebView * infoLabel = new QWebView();
     infoLabel->setBackgroundRole( QPalette::NoRole );
-    connect( infoLabel, SIGNAL( linkClicked ( const QUrl & ) ), SLOT( slotLinkClicked( const QUrl & ) ) );
+    connect( infoLabel, SIGNAL( linkClicked( const QUrl & ) ), SLOT( slotLinkClicked( const QUrl & ) ) );
     list << infoLabel;
     return list;
 }
@@ -70,12 +70,12 @@ void MicroblogDelegate::updateItemWidgets( const QList<QWidget*> widgets,
     edit->setHtml( text );
 }
 
-void MicroblogDelegate::slotLinkClicked ( const QUrl &url ) 
+void MicroblogDelegate::slotLinkClicked( const QUrl &url )
 {
     KToolInvocation::invokeBrowser( url.toString() );
 }
 
-QVariant MicroblogDelegate::getData( const BlogModel* model, int row, int data ) const 
+QVariant MicroblogDelegate::getData( const BlogModel* model, int row, int data ) const
 {
     return model->data( model->index( row, 0 ), data );
 }

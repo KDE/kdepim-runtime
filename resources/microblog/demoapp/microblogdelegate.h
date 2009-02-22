@@ -42,7 +42,7 @@ public:
 
 
 private slots:
-    void slotLinkClicked ( const QUrl &url );
+    void slotLinkClicked( const QUrl &url );
 
 private:
     QVariant getData( const BlogModel*, int row, int column ) const;

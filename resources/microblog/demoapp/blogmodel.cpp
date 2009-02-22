@@ -79,40 +79,40 @@ QVariant BlogModel::data( const QModelIndex & index, int role ) const
     if ( role == Qt::EditRole ) {
         return msg.date();
     }
-  
+
     if ( role == Qt::DisplayRole )
         return msg.id();
 
     switch ( role ) {
-      case Date:
+    case Date:
         return msg.date().toString();
-      case User:
-    if ( role == Qt::UserRole+1 ) {
-      if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
-            col.remoteId() == "favorites" )
-            return msg.value( "user_-_screen_name" );
-      else if ( col.remoteId() == "inbox" )
-            return msg.value( "sender_screen_name" );
-      else if ( col.remoteId() == "outbox" )
-            return msg.value( "recipient_screen_name" );
-      else
-            return QVariant();
-    }
-      case Text:
-            return msg.text();
-      case Picture:
-    if ( role == Qt::UserRole+3 ) {
-      if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
-            col.remoteId() == "favorites" )
-            return msg.value( "user_-_profile_image_url" );
-      else if ( col.remoteId() == "inbox" )
-            return msg.value( "sender_-_profile_image_url" );
-      else if ( col.remoteId() == "outbox" )
-            return msg.value( "recipient_-_profile_image_url" );
-      else
-            return QVariant();
-    }
-      default:
+    case User:
+        if ( role == Qt::UserRole+1 ) {
+            if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
+                    col.remoteId() == "favorites" )
+                return msg.value( "user_-_screen_name" );
+            else if ( col.remoteId() == "inbox" )
+                return msg.value( "sender_screen_name" );
+            else if ( col.remoteId() == "outbox" )
+                return msg.value( "recipient_screen_name" );
+            else
+                return QVariant();
+        }
+    case Text:
+        return msg.text();
+    case Picture:
+        if ( role == Qt::UserRole+3 ) {
+            if ( col.remoteId() == "home" || col.remoteId() == "replies" ||
+                    col.remoteId() == "favorites" )
+                return msg.value( "user_-_profile_image_url" );
+            else if ( col.remoteId() == "inbox" )
+                return msg.value( "sender_-_profile_image_url" );
+            else if ( col.remoteId() == "outbox" )
+                return msg.value( "recipient_-_profile_image_url" );
+            else
+                return QVariant();
+        }
+    default:
         return QVariant();
     }
 

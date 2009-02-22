@@ -23,38 +23,31 @@
 #include "blogmodel.h"
 #include "microblogdelegate.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionview.h>
+#include <akonadi/agentinstancemodel.h>
 #include <akonadi/collectionfilterproxymodel.h>
-#include <akonadi/collectionmodel.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectionfetchjob.h>
 
-#include <QtCore/QDebug>
 #include <QVBoxLayout>
 #include <QSplitter>
-#include <QTextEdit>
-#include <QtGui/QSortFilterProxyModel>
+#include <QListView>
 #include <QTreeView>
+
+#include <KVBox>
+#include <KTabBar>
+#include <KDebug>
+#include <KLocale>
 
 using namespace Akonadi;
 
 MainWidget::MainWidget( MainWindow * parent ) :
         QWidget( parent ), mMainWindow( parent )
 {
-    QHBoxLayout *layout = new QHBoxLayout( this );
+    QVBoxLayout *layout = new QVBoxLayout( this );
 
-    QSplitter *splitter = new QSplitter( Qt::Horizontal, this );
+    QSplitter *splitter = new QSplitter( Qt::Vertical, this );
     layout->addWidget( splitter );
 
-    // Left part, collection view
-    mCollectionList = new Akonadi::CollectionView();
-    connect( mCollectionList, SIGNAL( clicked( const Akonadi::Collection & ) ),
-             SLOT( collectionClicked( const Akonadi::Collection & ) ) );
-    splitter->addWidget( mCollectionList );
-
     // Filter the collection to only show the blogs
-    mCollectionModel = new Akonadi::CollectionModel( this );
     /*
         Does not seem to work untill next check. Recheck with current trunk and enable if needed.
 
@@ -63,11 +56,29 @@ MainWidget::MainWidget( MainWindow * parent ) :
         mCollectionProxyModel->addMimeTypeFilter( "application/x-vnd.kde.microblog" );
         mCollectionList->setModel( mCollectionProxyModel );
     */
-    mCollectionList->setModel( mCollectionModel );
 
+    // Accounts
+    Akonadi::AgentInstanceModel *model = new Akonadi::AgentInstanceModel( this );
+    m_resourcesView = new QListView( splitter );
+    m_resourcesView->setModel( model );
+    connect( m_resourcesView, SIGNAL( clicked( const QModelIndex& ) ),
+             SLOT( collectionChange() ) );
+    splitter->addWidget( m_resourcesView );
 
-    // Right part, blog list
-    mMessageList = new QTreeView( this );
+    // Bottom part
+    KVBox* box = new KVBox( splitter );
+
+    // Folders
+    m_tabBar = new KTabBar( box );
+    m_tabBar->addTab( i18n( "Home" ) );
+    m_tabBar->addTab( i18n( "Replies" ) );
+    m_tabBar->addTab( i18n( "Favorites" ) );
+    m_tabBar->addTab( i18n( "Inbox" ) );
+    m_tabBar->addTab( i18n( "Outbox" ) );
+    connect( m_tabBar, SIGNAL( currentChanged( int ) ),
+             SLOT( collectionChange() ) );
+
+    mMessageList = new QTreeView( box );
     mMessageList->setRootIsDecorated( false );
     mMessageList->setDragEnabled( false );
     mMessageList->setSelectionMode( QAbstractItemView::ExtendedSelection );
@@ -78,20 +89,59 @@ MainWidget::MainWidget( MainWindow * parent ) :
 
     mMessageModel = new BlogModel( this );
 
-    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel( this );
     proxyModel->setSortRole( Qt::EditRole );
     proxyModel->setDynamicSortFilter( true );
     proxyModel->setSourceModel( mMessageModel );
 
     mMessageList->setModel( proxyModel );
-    splitter->addWidget( mMessageList );
+    splitter->addWidget( box );
 
-    splitter->setSizes( QList<int>() << 100 << 170 );
+    splitter->setSizes( QList<int>() << 40 << 170 );
 }
 
-void MainWidget::collectionClicked( const Akonadi::Collection & collection )
+void MainWidget::collectionChange()
 {
-    mCurrentCollection = collection;
-    mMessageModel->setCollection( Collection( mCurrentCollection ) );
+    // get the resource
+    const QModelIndex index = m_resourcesView->currentIndex();
+    const Akonadi::AgentInstanceModel *model = static_cast<const AgentInstanceModel*>( m_resourcesView->model() );
+    const QString identifier = model->data( index, AgentInstanceModel::InstanceIdentifierRole ).toString();
+
+    const int folder = m_tabBar->currentIndex();
+    QString folderName;
+    switch ( folder )  {
+    case 0:
+        folderName = "home";
+        break;
+    case 1:
+        folderName = "replies";
+        break;
+    case 2:
+        folderName = "favorites";
+        break;
+    case 3:
+        folderName = "inbox";
+        break;
+    case 4:
+        folderName = "outbox";
+        break;
+    default:
+        return;
+    }
+
+    // fetching all collections recursive, starting at the root collection
+    Collection col;
+    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+    job->setResource( identifier );
+    if ( job->exec() ) {
+        Collection::List collections = job->collections();
+        foreach( const Collection &collection, collections ) {
+            if ( collection.remoteId() == folderName ) {
+                col = collection;
+                break;
+            }
+        }
+    }
+    mMessageModel->setCollection( col );
 }
 

@@ -22,17 +22,13 @@
 
 #include "blogmodel.h"
 #include <QWidget>
-#include <akonadi/collection.h>
 
-class QModelIndex;
 class QTreeView;
-
-class KJob;
+class QListView;
+class KTabBar;
 
 namespace Akonadi
 {
-class CollectionView;
-class CollectionModel;
 class CollectionFilterProxyModel;
 }
 
@@ -46,15 +42,14 @@ public:
     MainWidget( MainWindow *parent = 0 );
 
 private slots:
-    void collectionClicked( const Akonadi::Collection & collection );
+    void collectionChange();
 
 private:
-    Akonadi::Collection mCurrentCollection;
-    Akonadi::CollectionModel *mCollectionModel;
     Akonadi::CollectionFilterProxyModel *mCollectionProxyModel;
-    Akonadi::CollectionView *mCollectionList;
     BlogModel *mMessageModel;
     QTreeView *mMessageList;
+    QListView *m_resourcesView;
+    KTabBar *m_tabBar;
 
     MainWindow *mMainWindow;
 };
