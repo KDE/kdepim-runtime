@@ -55,8 +55,9 @@ void CategoryHierarchyReader::read( QStringList categories )
 
   // case insensitive sort
   QMap<QString, QString> map;
-    foreach ( QString str, categories )
-      map.insert( str.toLower(), str );
+  foreach ( QString str, categories ) {
+    map.insert( str.toLower(), str );
+  }
 
   categories = map.values();
 
