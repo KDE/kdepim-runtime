@@ -76,7 +76,7 @@ void AkonadiSlave::get(const KUrl & url)
   }
 
   if ( job->items().count() != 1 ) {
-    error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
   } else {
     const Item item = job->items().first();
     QByteArray tmp = item.payloadData();
@@ -106,7 +106,7 @@ void AkonadiSlave::stat(const KUrl & url)
         }
 
         if ( job->collections().count() != 1 ) {
-          error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+          error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
           return;
         }
 
@@ -132,7 +132,7 @@ void AkonadiSlave::stat(const KUrl & url)
     }
 
     if ( job->items().count() != 1 ) {
-      error( KIO::ERR_DOES_NOT_EXIST, "No such item." );
+      error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
       return;
     }
 
@@ -177,14 +177,14 @@ void AkonadiSlave::listDir( const KUrl &url )
 
   if ( !Collection::fromUrl( url ).isValid() )
   {
-    error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
+    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such collection.") );
     return;
   }
 
   // Fetching collections
   Collection collection = Collection::fromUrl( url );
   if ( !collection.isValid() ) {
-    error( KIO::ERR_DOES_NOT_EXIST, "No such collection." );
+    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such collection.") );
     return;
   }
   CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::FirstLevel );
