@@ -1061,7 +1061,7 @@ KScoringEditorWidgetDialog::KScoringEditorWidgetDialog( KScoringManager *m,
   : KDialog( p ), manager( m ), ruleName( r )
 {
   setCaption( i18n( "Edit Rule" ) );
-  setButtons( KDialog::Ok|KDialog::Apply|KDialog::Close );
+  setButtons( KDialog::Ok|KDialog::Apply|KDialog::Cancel );
   setDefaultButton( KDialog::Ok );
   setModal( true );
   showButtonSeparator( true );
