@@ -45,7 +45,7 @@ namespace KPIM {
       Clean,
       Done
     };
-    SSLLabel( QWidget* parent );
+    explicit SSLLabel( QWidget* parent );
 
     void setEncrypted( bool enc=true );
     void setState( State state );
