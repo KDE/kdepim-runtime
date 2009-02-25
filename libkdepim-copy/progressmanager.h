@@ -225,6 +225,8 @@ class KDEPIM_EXPORT ProgressItem : public QObject
     bool mUsesCrypto;
 };
 
+struct ProgressManagerPrivate;
+
 /**
  * The ProgressManager singleton keeps track of all ongoing transactions
  * and notifies observers (progress dialogs) when their progress percent value
@@ -249,6 +251,8 @@ class KDEPIM_EXPORT ProgressManager : public QObject
 {
 
   Q_OBJECT
+
+  friend struct ProgressManagerPrivate;
 
   public:
     virtual ~ProgressManager();
@@ -415,7 +419,6 @@ class KDEPIM_EXPORT ProgressManager : public QObject
     void emitShowProgressDialogImpl();
 
     QHash< QString, ProgressItem* > mTransactions;
-    static ProgressManager *mInstance;
     static unsigned int uID;
 };
 

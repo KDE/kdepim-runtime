@@ -25,11 +25,10 @@
 
 #include <KDebug>
 #include <KLocale>
-#include <K3StaticDeleter>
+#include <kglobal.h>
 
 namespace KPIM {
 
-KPIM::ProgressManager *KPIM::ProgressManager::mInstance = 0;
 unsigned int KPIM::ProgressManager::uID = 42;
 
 ProgressItem::ProgressItem( ProgressItem *parent, const QString &id,
@@ -128,21 +127,23 @@ void ProgressItem::setUsesCrypto( bool v )
 
 // ======================================
 
+struct ProgressManagerPrivate {
+    ProgressManager instance;
+};
+
+K_GLOBAL_STATIC( ProgressManagerPrivate, progressManagerPrivate )
+
 ProgressManager::ProgressManager()
   : QObject()
 {
-  mInstance = this;
+
 }
 
-ProgressManager::~ProgressManager() { mInstance = 0; }
-static K3StaticDeleter<ProgressManager> progressManagerDeleter;
+ProgressManager::~ProgressManager() {}
 
 ProgressManager *ProgressManager::instance()
 {
-  if ( !mInstance ) {
-    progressManagerDeleter.setObject( mInstance, new ProgressManager() );
-  }
-  return mInstance;
+    return progressManagerPrivate.isDestroyed() ? 0 : &progressManagerPrivate->instance ;
 }
 
 ProgressItem *ProgressManager::createProgressItemImpl( ProgressItem *parent,
