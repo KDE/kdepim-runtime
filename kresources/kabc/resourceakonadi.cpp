@@ -212,7 +212,7 @@ class ResourceAkonadi::Private : public UidToCollectionMapper
   public:
     Private( ResourceAkonadi *parent )
       : mParent( parent ), mMonitor( 0 ), mCollectionModel( 0 ), mCollectionFilterModel( 0 ),
-        mThreadJobContext( *this )
+        mThreadJobContext( *this ), mOpenState(Opened)
     {
       mMimeChecker.addWantedMimeType( Addressee::mimeType() );
       mMimeChecker.addWantedMimeType( ContactGroup::mimeType() );
@@ -264,6 +264,15 @@ class ResourceAkonadi::Private : public UidToCollectionMapper
     ThreadJobContext mThreadJobContext;
 
     MimeTypeChecker mMimeChecker;
+
+    enum OpenState
+    {
+      Closed,
+      Opened,
+      Failed
+    };
+
+    OpenState mOpenState;
 
   public:
     void subResourceLoadResult( KJob *job );
@@ -318,8 +327,6 @@ ResourceAkonadi::~ResourceAkonadi()
 
 void ResourceAkonadi::init()
 {
-  // TODO: might be better to do this already in the resource factory
-  Akonadi::Control::start();
 }
 
 void ResourceAkonadi::clear()
@@ -360,7 +367,10 @@ bool ResourceAkonadi::doOpen()
   if ( d->mCollectionFilterModel != 0 )
     return true;
 
-  // TODO: probably check if Akonadi is running
+  if ( !Akonadi::Control::start() ) {
+    d->mOpenState = Private::Failed;
+    return false;
+  }
 
   d->mCollectionModel = new CollectionModel( this );
 
@@ -398,6 +408,7 @@ bool ResourceAkonadi::doOpen()
            this,
            SLOT( itemRemoved( const Akonadi::Item& ) ) );
 
+  d->mOpenState = Private::Opened;
   return true;
 }
 
@@ -420,6 +431,7 @@ void ResourceAkonadi::doClose()
   d->mItemIdToResourceMap.clear();
   d->mJobToResourceMap.clear();
   d->mChanges.clear();
+  d->mOpenState = Private::Closed;
 }
 
 Ticket *ResourceAkonadi::requestSaveTicket()
@@ -440,6 +452,10 @@ void ResourceAkonadi::releaseSaveTicket( Ticket *ticket )
 bool ResourceAkonadi::load()
 {
   kDebug(5700);
+
+  // TODO error reporting
+  if ( d->mOpenState != Private::Opened )
+    return false;
 
   // save the list of collections we potentially already have
   Collection::List collections;
@@ -496,6 +512,10 @@ bool ResourceAkonadi::load()
 
 bool ResourceAkonadi::asyncLoad()
 {
+  // TODO error reporting
+  if ( d->mOpenState != Private::Opened )
+    return false;
+
   // FIXME: copied from synchronous load
   // we need to get to rid of the model since this kind of usage is out of its
   // scope. Should be replaced with a collection and item aggreation class
@@ -564,6 +584,10 @@ bool ResourceAkonadi::save( Ticket *ticket )
   Q_UNUSED( ticket );
   kDebug(5700);
 
+  // TODO error reporting
+  if ( d->mOpenState != Private::Opened )
+    return false;
+
   if ( !d->prepareSaving() )
     return false;
 
@@ -590,6 +614,10 @@ bool ResourceAkonadi::asyncSave( Ticket *ticket )
 {
   Q_UNUSED( ticket );
   kDebug(5700);
+
+  // TODO error reporting
+  if ( d->mOpenState != Private::Opened )
+    return false;
 
   if ( !d->prepareSaving() )
     return false;
