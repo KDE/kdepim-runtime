@@ -2,6 +2,7 @@
 Name=Microblog Serializer
 Name[et]=Mikroblogi jadasti
 Name[ga]=Srathóir Micreabhlagadóireachta
+Name[gl]=Serializador de microblogue
 Name[nds]=Microblog-Inreegmoduul
 Name[pt]=Serializador do Micro-blog
 Name[pt_BR]=Serializador do Micro-blog
@@ -10,6 +11,7 @@ Name[uk]=Серіалізатор мікроблогів
 Comment=An Akonadi serializer plugin for Microblog
 Comment[et]=Akonadi mikroblogi jadastamisplugin
 Comment[ga]=Breiseán srathóra Akonadi le haghaidh Micreabhlagadóireachta
+Comment[gl]=Unha extensión de Akonadi para serializar microblogues
 Comment[nds]=En Akonadi-Inreegmoduul för Microblog
 Comment[pt]=Um 'plugin' de serialização do Akonadi para o Micro-blog
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para o Micro-blog
