@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Distribution List File
+Name[el]=Αρχείο λίστας διανομής
 Name[et]=Postiloendi fail
 Name[ga]=Comhad Liosta Dáilte
 Name[gl]=Ficheiro de lista de distribución
@@ -11,6 +12,7 @@ Name[sv]=Fil med fördelningslista
 Name[uk]=Файл списку розповсюдження
 Name[zh_TW]=分派清單檔
 Comment=Loads data from a distribution list file
+Comment[el]=Φόρτωση δεδομένων από ένα αρχείο λίστας διανομής
 Comment[et]=Andmete laadimine postiloendi failist
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad liosta dáilte
 Comment[gl]=Carrega datos desde un ficheiro de lista de distribución
