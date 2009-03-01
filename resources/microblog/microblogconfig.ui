@@ -14,7 +14,7 @@
    <item>
     <widget class="QLabel" name="welcomelabel">
      <property name="text">
-      <string>This is where you can setup your account. Please note that OpenId users must first setup a password in the settings on the webpage. We can not use OpenId unfortunatly.</string>
+      <string>This is where you can setup your account. Please note that OpenId users must first setup a password in the settings on the webpage. We can not use OpenId unfortunately.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -47,7 +47,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="kcfg_Service">
+      <widget class="KComboBox" name="kcfg_Service">
        <item>
         <property name="text">
          <string>Identi.ca</string>

@@ -17,14 +17,16 @@
     02110-1301, USA.
 */
 
-#include <QtGui>
+#include "microblogdelegate.h"
 
 #include <KDebug>
 #include <KLocale>
 #include <KToolInvocation>
+
+#include <QAbstractItemView>
+#include <QPainter>
 #include <QWebView>
 
-#include "microblogdelegate.h"
 #include "blogmodel.h"
 
 MicroblogDelegate::MicroblogDelegate( QAbstractItemView *itemView, QObject * parent )
