@@ -1,7 +1,7 @@
 project(akonadi_playground)
 
-add_definitions( -DQT_NO_CAST_FROM_ASCII )
-add_definitions( -DQT_NO_CAST_TO_ASCII )
+#add_definitions( -DQT_NO_CAST_FROM_ASCII )
+#add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 find_package(KDE4 REQUIRED)
 find_package(Akonadi REQUIRED)
