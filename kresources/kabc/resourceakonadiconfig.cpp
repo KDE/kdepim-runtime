@@ -179,7 +179,7 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   label->setText( i18nc( "@info", "<title>Please select the folder for storing"
                          " newly created contacts.</title><note>If the folder"
                          " list below is empty, you might have to add an"
-                         " addressbook source through <interface>%1</interface>"
+                         " address book source through <interface>%1</interface>"
                          " <br>or change which folders you are subscribed to"
                          " through <interface>%2</interface></note>",
                          sourcesTitle, mSubscriptionButton->text() ) );
@@ -263,7 +263,7 @@ void ResourceAkonadiConfig::collectionsInserted( const QModelIndex &parent, int 
 ResourceAkonadiConfigDialog::ResourceAkonadiConfigDialog( KRES::Resource *resource )
   : KDialog(), mResource( resource ), mConfig( 0 )
 {
-  setCaption( i18nc( "@title:window", "Select Addressbook Folder") );
+  setCaption( i18nc( "@title:window", "Select Address Book Folder") );
 
   setButtons( KDialog::Ok | KDialog::Cancel );
 
