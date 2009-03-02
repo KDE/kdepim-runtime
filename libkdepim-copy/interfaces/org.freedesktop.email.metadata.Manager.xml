@@ -1,0 +1,10 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.freedesktop.email.metadata.Manager">
+    <method name="Register">
+      <arg type="o" name="registrar_path" direction="in" />
+      <arg type="u" name="last_modseq" direction="in" />
+    </method>
+  </interface>
+</node>
