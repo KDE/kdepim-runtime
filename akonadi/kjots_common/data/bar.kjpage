@@ -1,0 +1,7 @@
+<!DOCTYPE KJotsPage>
+<KJotsPage>
+ <Title>Bar Page</Title>
+ <Content><![CDATA[
+        Bar File content
+]]></Content>
+</KJotsPage>

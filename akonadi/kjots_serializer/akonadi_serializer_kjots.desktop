@@ -1,0 +1,35 @@
+[Misc]
+Name=KJots Serializer
+Name[el]=Διαχειριστής KJots
+Name[es]=Serializador KJots
+Name[et]=KJotsi jadasti
+Name[fr]=Sérialiseur KJots
+Name[ga]=Srathóir KJots
+Name[gl]=Serializador de KJots
+Name[km]=ការ​បោះពុម្ព KJots
+Name[nds]=KJots-Inreegmoduul
+Name[pt]=Serializador do KJots
+Name[pt_BR]=Serializador do KJots
+Name[sv]=Kjots-serialisering
+Name[tr]=KJots Sıralandırıcı
+Name[uk]=Серіалізатор KJots
+Name[x-test]=xxKJots Serializerxx
+Comment=An Akonadi serializer plugin for KJotsPage and KJotsBook objects
+Comment[el]=Ένα πρόσθετο διαχείρισης αντικειμένων KJotsPage και KJotsBook για το Akonadi
+Comment[es]=Un complemento para serializar objetos KJotsPage y KJotsBook
+Comment[et]=Akonadi KJotsPage ja KJotsBook objektide jadastamisplugin
+Comment[fr]=Un module de mise en série d'Akonadi pour des objets KJotsPage et KJotsBook
+Comment[ga]=Breiseán srathóra Akonadi le haghaidh réada KJotsPage agus KJotsBook
+Comment[gl]=Unha extensión de Akonadi para serializar obxectos KJotsPage e KJotsBook
+Comment[km]=កម្មវិធី​ជំនួយ​បោះពុម្ព Akonadi សម្រាប់​វត្ថុ KJotsPage និង KJotsBook
+Comment[nds]=En Akonadi-Inreegmoduul för KJotsPage- un KJotsBook-Objekten
+Comment[pt]=Um 'plugin' de serialização do Akonadi para os objectos KJotsPage e KJotsBook
+Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para os objectos KJotsPage e KJotsBook
+Comment[sv]=Ett insticksprogram till Akonadi för serialisering av Kjots-sidobjekt och Kjots-bokobjekt
+Comment[tr]=KJots Sayfaları ve KJots Defterleri için bir Akonadi sıralandırıcısı
+Comment[uk]=Додаток Akonadi переведення у послідовну форму для об’єктів KJotsPage і KJotsBook
+Comment[x-test]=xxAn Akonadi serializer plugin for KJotsPage and KJotsBook objectsxx
+
+[Plugin]
+Type=application/x-vnd.kde-app-kjots-page
+X-KDE-Library=akonadi_serializer_kjots

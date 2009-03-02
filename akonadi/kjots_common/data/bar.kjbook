@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<KJotsBook>
+ <Title>Bar Book</Title>
+ <Contents>
+  <KJotsPage filename="bar.kjpage" />
+  <KJotsPage filename="bar2.kjpage" />
+  <KJotsPage filename="bar4.kjpage" />
+  <KJotsPage filename="bar3.kjpage" />
+  <KJotsBook filename="bat.kjbook" />
+ </Contents>
+</KJotsBook>

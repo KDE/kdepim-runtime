@@ -1,0 +1,7 @@
+<!DOCTYPE KJotsPage>
+<KJotsPage>
+ <Title>Foo2 Page</Title>
+ <Content><![CDATA[
+        Foo2 File content
+]]></Content>
+</KJotsPage>

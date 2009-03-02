@@ -1,0 +1,40 @@
+[Desktop Entry]
+Name=Akonadi KJots Resource
+Name[de]=KJots-Ressource für Akonadi
+Name[el]=Πόρος KJots του Akonadi
+Name[es]=Recurso KJots de Akonadi
+Name[et]=Akonadi KJotsi ressurss
+Name[fr]=Ressource KJots pour Akonadi
+Name[ga]=Acmhainn KJots Akonadi
+Name[gl]=Recurso de KJots para Akonadi
+Name[km]=ធនធាន Akonadi KJots
+Name[nds]=Akonadi-KJots-Ressource
+Name[pt]=Recurso do KJots do Akonadi
+Name[pt_BR]=Recurso do KJots do Akonadi
+Name[sv]=Akonadi Kjots-resurs
+Name[tr]=Akonadi KJots Kaynağı
+Name[uk]=Ресурс KJots Akonadi
+Name[x-test]=xxAkonadi KJots Resourcexx
+Comment=A resource to load kjots notepages
+Comment[el]=Ένας πόρος φόρτωσης σελίδων σημειώσεων του kjots
+Comment[es]=Un recurso para cargar notas de páginas de kjots
+Comment[et]=Ressurss KJotsi märkmete laadimiseks
+Comment[fr]=Une ressource pour charger des pages de notes KJots
+Comment[ga]=Acmhainn a luchtaíonn leathanaigh nótaí kjots
+Comment[gl]=Un recurso para cargar páxinas de notas de KJots
+Comment[km]=ធនធាន​ត្រូវ​ផ្ទុក​ទំព័រ​ចំណាំរបស់ kjots
+Comment[nds]=En Ressource för KJots-Notizsieden
+Comment[pt]=Um recurso para carregar as notas do KJots
+Comment[pt_BR]=Um recurso para carregar as notas do KJots
+Comment[sv]=En resurs för att ladda Kjots anteckningssidor
+Comment[tr]=Kjots not sayfalarını yüklemek için bir kaynak
+Comment[uk]=Ресурс для завантаження сторінок нотаток kjots
+Comment[x-test]=xxA resource to load kjots notepagesxx
+Type=AkonadiResource
+Exec=akonadi_kjots_resource
+Icon=kjots
+
+X-Akonadi-MimeTypes=application/x-vnd.kde-app-kjots-page
+X-Akonadi-Capabilities=Resource,Unique
+X-Akonadi-Identifier=akonadi_kjots_resource
+

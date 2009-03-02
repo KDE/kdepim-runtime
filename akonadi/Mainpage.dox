@@ -1,0 +1,13 @@
+/** @mainpage kjotsrewrite
+
+@brief The kjots application rewritten using KDE4 pillars.
+
+@li akonadi_next is set to be merged into akonadi
+@li akonadi_kjots_serializer will be put in kdepim/akonadi/plugins
+@li kjotsresource will be put in kdepim/akonadi/resources/kjots
+@li Final locations of kjots_common, kjots app and kjots plasmoid are unclear.
+
+*/
+
+// DOXYGEN_REFERENCES = kdecore
+// DOXYGEN_SET_PROJECT_NAME = kjotsrewrite
