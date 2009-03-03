@@ -36,7 +36,6 @@
 //     fit together. Possibly store a list of collections whose items have already
 //     been lazily fetched.
 // * Fgure out whether DescendantEntitiesProxyModel needs to use fetchMore.
-// * Add setRootIndex functionality to EntityFilterProxyModel
 // * Profile this and DescendantEntitiesProxyModel. Make sure it's faster than
 //     FlatCollectionProxyModel. See if the cache in that class can be cleared less often.
 // * Unit tests. Much of the stuff here is not covered by modeltest, and some of

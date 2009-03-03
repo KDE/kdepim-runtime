@@ -89,15 +89,23 @@ void EntityFilterProxyModel::addMimeTypeExclusionFilter(const QString &type)
 bool EntityFilterProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const
 {
   // All rows that are not below m_rootIndex are unfiltered.
-  QModelIndex _parent = sourceParent.parent();
+
   bool found = false;
-  while (_parent.isValid())
+
+  const bool rootIsValid = d->m_rootIndex.isValid();
+  QModelIndex _parent = sourceParent;
+  while (true)
   {
     if (_parent == d->m_rootIndex)
     {
       found = true;
+      break;
     }
     _parent = _parent.parent();
+    if (!_parent.isValid() && rootIsValid)
+    {
+      break;
+    }
   }
 
   if (!found)
@@ -105,8 +113,10 @@ bool EntityFilterProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex 
     return true;
   }
 
-  QString rowMimetype = sourceModel()->data(
-          sourceModel()->index(sourceRow, 0, sourceParent), EntityTreeModel::MimeTypeRole ).toString();
+  const QModelIndex idx = sourceModel()->index(sourceRow, 0, sourceParent);
+
+  const QString rowMimetype = idx.data( EntityTreeModel::MimeTypeRole ).toString();
+
   if ( d->excludedMimeTypes.contains( rowMimetype ) )
     return false;
   if ( d->includedMimeTypes.isEmpty() || d->includedMimeTypes.contains( rowMimetype ) )
