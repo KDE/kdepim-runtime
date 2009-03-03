@@ -195,7 +195,7 @@ EntityTreeView *listView = new EntityTreeView(this);
 listView->setModel(itemList);
 @endcode
 
-A different view can also be used with the model, such as a QColumnView. However this does not work for an unknown reason.
+A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (no qt bug number yet).
 
 @code
 // ... Create an EntityTreeModel
