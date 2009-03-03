@@ -73,10 +73,10 @@ private:
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
   Akonadi::EntityTreeView *treeview;
-  Akonadi::EntityTreeView *itemlist;
-  Akonadi::EntityFilterProxyModel *treeproxy;
-  Akonadi::EntityFilterProxyModel *listproxy;
-  Akonadi::DescendantEntitiesProxyModel *descList;
+  Akonadi::EntityTreeView *listView;
+  Akonadi::EntityFilterProxyModel *collectionTree;
+  Akonadi::EntityFilterProxyModel *itemList;
+  Akonadi::DescendantEntitiesProxyModel *descendedList;
   //   KJotsBookshelf *bookshelf;
 };
 

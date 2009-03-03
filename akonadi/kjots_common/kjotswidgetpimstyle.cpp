@@ -30,7 +30,6 @@
 #include <QTextDocumentFragment>
 #include <QTextBrowser>
 
-#include <QSortFilterProxyModel>
 
 #include <akonadi/control.h>
 #include "collectionchildorderattribute.h"
@@ -50,7 +49,6 @@
 
 #include <KTextEdit>
 
-// #include "kjotsbookshelf.h"
 #include "kjotspage.h"
 
 #include <kdebug.h>
@@ -64,8 +62,6 @@ KJotsWidgetPimStyle::KJotsWidgetPimStyle( QWidget * parent, Qt::WindowFlags f )
 
   QSplitter *splitter = new QSplitter( this );
   QHBoxLayout *layout = new QHBoxLayout( this );
-
-//   bookshelf = new KJotsBookshelf( splitter );
 
   treeview = new EntityTreeView( splitter );
 
@@ -100,87 +96,55 @@ KJotsWidgetPimStyle::KJotsWidgetPimStyle( QWidget * parent, Qt::WindowFlags f )
   Session *session = new Session( QByteArray( "EntityTreeModel-" ) + QByteArray::number( qrand() ), this );
   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-//   ClientSideEntityStorage *cses = new ClientSideEntityStorage( monitor,
-//                                                                QStringList() << KJotsPage::mimeType(),
-//                                                                rootCollection,
-//                                                                this);
-
-//   etm = new Akonadi::EntityTreeModel( eua, cses, this);
   etm = new Akonadi::EntityTreeModel( eua, monitor, this);
   etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
 
-  treeproxy = new EntityFilterProxyModel(this);
+  collectionTree = new EntityFilterProxyModel(this);
 
-  treeproxy->setSourceModel(etm);
-  treeproxy->addMimeTypeInclusionFilter( Collection::mimeType() );
+  collectionTree->setSourceModel(etm);
+  // Include only collections in this proxy model.
+  collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
-//   QSortFilterProxyModel *proxy = new QSortFilterProxyModel(this);
-
-//   proxy = new Akonadi::EntityOrderProxyModel(this);
-//   proxy = new Akonadi::EntitySortFilterProxyModel( this );
-//   proxy->addMimeTypeFilters( QStringList()
-//                              << KJotsPage::mimeType() );
-//   proxy->setDynamicSortFilter ( true );
-//   proxy->setSourceModel( etm );
-//   proxy->sort( 0 );  // Sort ascending.
-
-//   new ModelTest(proxy, this);
-//   new ModelTest( etm, this );
-
-//   bookshelf->setModel( etm );
-//   bookshelf->setModel( proxy );
-
-  treeview->setModel(treeproxy);
-//   treeview->setModel( etm );
+  treeview->setModel(collectionTree);
 
   stackedWidget = new QStackedWidget( splitter );
 
   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
-//   QVBoxLayout *vl = new QVBoxLayout( stackedWidget );
+  descendedList = new DescendantEntitiesProxyModel(this);
+  descendedList->setSourceModel(etm);
 
-  descList = new DescendantEntitiesProxyModel(this);
-  descList->setSourceModel(etm);
+  itemList = new EntityFilterProxyModel(this);
+  itemList->setSourceModel(descendedList);
 
-  listproxy = new EntityFilterProxyModel(this);
-//   listproxy->setSourceModel(etm);
-  listproxy->setSourceModel(descList);
+  // Exclude collections from the list view.
+  itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
 
-  listproxy->addMimeTypeInclusionFilter( KJotsPage::mimeType() );
-//   listproxy->includeChildCollectionTree(false);
-
-//   listproxy->addMimeTypeExclusionFilter( Collection::mimeType() );
-
-  itemlist = new EntityTreeView(stackedWidget);
-  itemlist->setModel(etm);
-  itemlist->showChildCollectionTree(false);
-//   itemlist->setModel(listproxy);
-  hSplitter->addWidget(itemlist);
+  listView = new EntityTreeView(stackedWidget);
+  listView->setModel(itemList);
+  hSplitter->addWidget(listView);
   hSplitter->addWidget(stackedWidget);
 
   editor = new KTextEdit( stackedWidget );
   stackedWidget->addWidget( editor );
 
-//   stackedWidget->setLayout(vl);
   layout->addWidget( splitter );
-//   layout->addLayout(vl);
 
   browser = new QTextBrowser( stackedWidget );
   stackedWidget->addWidget( browser );
   stackedWidget->setCurrentWidget( browser );
-//   vl->addWidget( stackedWidget );
 
   connect( treeview->selectionModel(),
       SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
       SLOT( treeSelectionChanged ( const QItemSelection &, const QItemSelection & ) ) );
 
-  connect( itemlist->selectionModel(),
+  connect( listView->selectionModel(),
       SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
       SLOT( listSelectionChanged ( const QItemSelection &, const QItemSelection & ) ) );
 
 //   connect( treeview, SIGNAL( clicked( const QModelIndex & ) ), SLOT( showPages( const QModelIndex & ) ) );
 
-  connect( itemlist, SIGNAL( clicked( const QModelIndex & ) ), SLOT( editPage( const QModelIndex & ) ) );
+  connect( listView, SIGNAL( clicked( const QModelIndex & ) ), SLOT( editPage( const QModelIndex & ) ) );
 
   connect( etm, SIGNAL( dataChanged( const QModelIndex &, const QModelIndex & ) ),
       SLOT( modelDataChanged( const QModelIndex &, const QModelIndex & ) ) );
@@ -233,16 +197,15 @@ void KJotsWidgetPimStyle::treeSelectionChanged ( const QItemSelection & selected
     // Only one item selected. If it's a book, render it. If it's a page, display it for editing.
     QModelIndex idx = selected.indexes().at(0);
 
-//     itemlist->setRootIndex( listproxy->mapFromSource( treeproxy->mapToSource( idx ) ) );
-    QModelIndex etmIndex = treeproxy->mapToSource( idx );
-    descList->setRootIndex(etmIndex);
-    QModelIndex descListIndex = descList->mapFromSource(etmIndex);
-    listproxy->setRootIndex(descListIndex);
-    QModelIndex filteredListIndex = listproxy->mapFromSource(descListIndex);
+    QModelIndex etmIndex = collectionTree->mapToSource( idx );
+    descendedList->setRootIndex(etmIndex);
+    QModelIndex descendedListIndex = descendedList->mapFromSource(etmIndex);
 
-    itemlist->setRootIndex(filteredListIndex);
+    itemList->setRootIndex(descendedListIndex);
+    QModelIndex filteredListIndex = itemList->mapFromSource(descendedListIndex);
 
-//     itemlist->setRootIndex( treeproxy->mapToSource( idx ) );
+    listView->setRootIndex(filteredListIndex);
+
   }
 }
 
