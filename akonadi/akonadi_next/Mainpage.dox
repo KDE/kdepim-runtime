@@ -170,30 +170,33 @@ listView->setModel(itemList);
 
 \image html treeandlistapp.png "A single EntityTreeModel with several views and proxies."
 
-Or to also show items of child collections in the list: (Doesn't work yet. Requires setRootIndex in the EntityFilterProxyModel and better reset behaviour in model and proxies.)
+Or to also show items of child collections in the list:
 
 @code
+  collectionTree = new EntityFilterProxyModel(this);
+  collectionTree->setSourceModel(etm);
 
-// ... create an EntityTreeModel.
+  // Include only collections in this proxy model.
+  collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
-EntityFilterProxyModel *collectionTree = new EntityFilterProxyModel(this);
-collectionTree->setSourceModel(entityTree);
-// Filter to include collections only:
-collectionTree->setInclusionFilter(QStringList() << Collection::mimeType());
-EntityTreeView *treeView = new EntityTreeView(this);
-treeView->setModel(collectionTree);
+  treeview->setModel(collectionTree);
 
-// #### Only this is new:
-DescendantEntitiesProxyModel *descList = new DescendantEntitiesProxyModel(this);
-descList->setSourceModel(entityTree);
+  descendedList = new DescendantEntitiesProxyModel(this);
+  descendedList->setSourceModel(etm);                    
 
-EntityFilterProxyModel *itemList = new EntityFilterProxyModel(this);
-itemList->setSourceModel(descList);
-// Filter *out* collections
-itemList->setExclusionFilter(QStringList() << Collection::mimeType());
-EntityTreeView *listView = new EntityTreeView(this);
-listView->setModel(itemList);
+  itemList = new EntityFilterProxyModel(this);
+  itemList->setSourceModel(descendedList);    
+
+  // Exclude collections from the list view.
+  itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
+
+  listView = new EntityTreeView(stackedWidget);
+  listView->setModel(itemList); 
 @endcode
+
+\image html treeandlistappwithdesclist.png "Showing descendants of all Collections in the list"
+
+Note that it is important in this case to use the DescendantEntitesProxyModel before the EntityFilterProxyModel. Otherwise, by filtering out the collections first, you would also be filtering out their child items.
 
 A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (no qt bug number yet).
 
