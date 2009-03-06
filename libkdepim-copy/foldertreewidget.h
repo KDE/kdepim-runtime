@@ -72,6 +72,7 @@ class FolderTreeWidgetItem;
  */
 class KDEPIM_EXPORT FolderTreeWidget : public KPIM::TreeWidget
 {
+  friend class FolderTreeWidgetItemLabelColumnDelegate;
   Q_OBJECT
 public:
   /**
@@ -80,6 +81,10 @@ public:
   explicit FolderTreeWidget( QWidget *parent , const char *name = 0 );
 
 private:
+  /**
+   * Emits the renamed() signal
+   */
+  void emitRenamed( QTreeWidgetItem *item );
   int mLabelColumnIndex;      ///< The index for the special "Label" column or -1 if none
   int mUnreadColumnIndex;     ///< The index for the special "Unread" column or -1 if none
   int mTotalColumnIndex;      ///< The index for the special "Total" column or -1 if none
@@ -193,6 +198,13 @@ public:
    * Triggers an update for the specified column of the specified item.
    */
   void updateColumnForItem( FolderTreeWidgetItem * item, int columnIndex );
+
+Q_SIGNALS:
+  /**
+   * This signal is emitted when the label of @p item  has changed
+   * after an edition.
+   */
+  void renamed( QTreeWidgetItem *item );
 
 private Q_SLOTS:
 
@@ -444,6 +456,12 @@ protected:
   void setLabelTextElided( bool labelTextElided )
     { mLabelTextElided = labelTextElided ? 1 : 0; };
 
+  /**
+   * Returns the label text that has been elided if necessary to
+   * fit into the @p width for the given font @p metrics.
+   * The default implementation elides the right of the label.
+   */
+  virtual QString elidedLabelText( const QFontMetrics &metrics, unsigned int width ) const;
 };
 
 } // namespace KPIM

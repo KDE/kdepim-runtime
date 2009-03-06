@@ -24,6 +24,7 @@
 #include "foldertreewidget.h"
 
 #include <kio/global.h> // for KIO::filesize_t and related functions
+#include <klineedit.h>
 #include <klocale.h>
 
 #include <QHeaderView>
@@ -149,7 +150,7 @@ public:
         if ( maxWidth > textRect.width() ) 
         {
           // must elide
-          QString label = fm.elidedText( item->labelText(), Qt::ElideRight , textRect.width() - ( ITEM_LABEL_TO_UNREADCOUNT_SPACING + unreadWidth ) );
+          QString label = item->elidedLabelText( fm, textRect.width() - ( ITEM_LABEL_TO_UNREADCOUNT_SPACING + unreadWidth ) );
 
           // the condition inside this call is an optimisation (it's faster than simply label != item->labelText())
           item->setLabelTextElided( ( label.length() != item->labelText().length() ) || ( label != item->labelText() ) );
@@ -174,7 +175,7 @@ public:
         }
       } else {
         // got unread messages: bold font but no special text tricks
-        QString label = fm.elidedText( item->labelText(), Qt::ElideRight , textRect.width() );
+        QString label = item->elidedLabelText( fm, textRect.width() );
 
         // the condition inside this call is an optimisation (it's faster than simply label != item->labelText())
         item->setLabelTextElided( ( label.length() != item->labelText().length() ) || ( label != item->labelText() ) );
@@ -183,7 +184,7 @@ public:
       }
     } else {
       // no unread messages: normal font, no text tricks
-      QString label = opt.fontMetrics.elidedText( item->labelText(), Qt::ElideRight , textRect.width() );
+      QString label = item->elidedLabelText( opt.fontMetrics, textRect.width() );
 
       // the condition inside this call is an optimisation (it's faster than simply label != item->labelText())
       item->setLabelTextElided( ( label.length() != item->labelText().length() ) || ( label != item->labelText() ) );
@@ -194,6 +195,19 @@ public:
 
     painter->setPen( oldPen );
     painter->setFont( oldFont );
+  }
+
+  virtual void setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const
+  {
+    QStyledItemDelegate::setModelData( editor, model, index );
+    FolderTreeWidgetItem *item = static_cast<FolderTreeWidgetItem *>( index.internalPointer() );
+    if ( item ) {
+      // test if old text != new text
+      if( item->labelText() != item->text( mFolderTreeWidget->labelColumnIndex() ) ) {
+        item->setLabelText( item->text( mFolderTreeWidget->labelColumnIndex() ) );
+        mFolderTreeWidget->emitRenamed( item );
+      }
+    }
   }
 };
 
@@ -312,6 +326,10 @@ void FolderTreeWidget::setUnreadCountColor( const QColor &clr )
   update();
 }
 
+void FolderTreeWidget::emitRenamed( QTreeWidgetItem *item )
+{
+  emit renamed( item );
+}
 
 
 FolderTreeWidgetItem::FolderTreeWidgetItem(
@@ -588,4 +606,11 @@ bool FolderTreeWidgetItem::operator < ( const QTreeWidgetItem &other ) const
   return text(sortCol) < other.text(sortCol);
 }
 
+QString FolderTreeWidgetItem::elidedLabelText( const QFontMetrics &metrics, unsigned int width ) const
+{
+  return metrics.elidedText( labelText(), Qt::ElideRight, width );
 }
+
+}
+
+#include "foldertreewidget.moc"
