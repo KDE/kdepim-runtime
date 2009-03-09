@@ -335,13 +335,18 @@ KTimeEdit *KPrefsWidTime::timeEdit()
   return mTimeEdit;
 }
 
-KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent )
+KPrefsWidDuration::KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                      const QString &format, QWidget *parent )
   : mItem( item )
 {
   mLabel = new QLabel( mItem->label() + ':', parent );
   mTimeEdit = new QTimeEdit( parent );
   mLabel->setBuddy( mTimeEdit );
-  mTimeEdit->setDisplayFormat( "hh:mm:ss" );
+  if ( format.isEmpty() ) {
+    mTimeEdit->setDisplayFormat( "hh:mm:ss" );
+  } else {
+    mTimeEdit->setDisplayFormat( format );
+  }
   mTimeEdit->setMinimumTime( QTime( 0, 1 ) ); // [1 min]
   mTimeEdit->setMaximumTime( QTime( 24, 0 ) ); // [24 hr]
   connect( mTimeEdit, SIGNAL(timeChanged(const QTime&)), SIGNAL(changed()) );
@@ -638,9 +643,10 @@ KPrefsWidTime *KPrefsWidManager::addWidTime( KConfigSkeleton::ItemDateTime *item
 }
 
 KPrefsWidDuration *KPrefsWidManager::addWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                                     const QString &format,
                                                      QWidget *parent )
 {
-  KPrefsWidDuration *w = new KPrefsWidDuration( item, parent );
+  KPrefsWidDuration *w = new KPrefsWidDuration( item, format, parent );
   addWid( w );
   return w;
 }

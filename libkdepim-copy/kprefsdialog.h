@@ -213,9 +213,10 @@ class KDEPIM_EXPORT KPrefsWidDuration : public KPrefsWid
       spinbox.
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param format  display format. default is "hh:mm:ss"
       @param parent  Parent widget.
     */
-    explicit KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, QWidget *parent = 0 );
+    explicit KPrefsWidDuration( KConfigSkeleton::ItemDateTime *item, const QString &format, QWidget *parent = 0 );
 
     /**
       Return QLabel used by this widget.
@@ -624,9 +625,11 @@ class KDEPIM_EXPORT KPrefsWidManager
       Register a @ref KPrefsWidDuration object.
 
       @param item    The KConfigSkeletonItem representing the preferences entry.
+      @param format  display format. default is "hh:mm:ss"
       @param parent  Parent widget.
     */
     KPrefsWidDuration *addWidDuration( KConfigSkeleton::ItemDateTime *item,
+                                       const QString &format,
                                        QWidget *parent = 0 );
 
     /**
