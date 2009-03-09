@@ -49,7 +49,6 @@ set(kdepim_LIB_SRCS
    kxface.cpp
    kaccount.cpp
    kaddrbookexternal.cpp
-   kfoldertree.cpp
    treewidget.cpp
    foldertreewidget.cpp
    kscoring.cpp
