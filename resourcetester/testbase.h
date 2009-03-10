@@ -4,7 +4,7 @@
 #include <akonadi/entity.h>
 
 
-class AkonadiTestBase:public QObject
+class AkonadiTestBase
 {
   private:
     Akonadi::Entity mEntity;

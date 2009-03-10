@@ -9,7 +9,7 @@
 
 using namespace Akonadi;
 
-class TestAgent: public AkonadiTestBase
+class TestAgent: public QObject, public AkonadiTestBase
 {
   Q_OBJECT
   
