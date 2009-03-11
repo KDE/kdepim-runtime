@@ -28,15 +28,16 @@ add_subdirectory(akonadi_next)
 #### KJots commmon stuff ####
 add_subdirectory(kjots_common)
 
-
 add_subdirectory(kjots_serializer)
 
-
 add_subdirectory(kjots_resource)
-
 
 #### Clients ####
 
 #add_subdirectory(plasmoid)
 add_subdirectory(kjotsapp)
-# add_subdirectory(kjotsapppimstyle)
+add_subdirectory(kjotsapppimstyle)
+add_subdirectory(example_mail)
+add_subdirectory(example_contacts)
+#add_subdirectory(example_rss)
+
