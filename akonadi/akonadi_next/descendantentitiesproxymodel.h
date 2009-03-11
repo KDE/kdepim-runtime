@@ -6,9 +6,6 @@
 
 // #include "abstractproxymodel.h"
 
-#include <akonadi/collection.h>
-
-
 namespace Akonadi
 {
 class DescendantEntitiesProxyModelPrivate;
