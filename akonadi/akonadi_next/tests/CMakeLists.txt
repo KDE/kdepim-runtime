@@ -15,7 +15,7 @@ SET(testSources
 
 MACRO(KDEUI_UNIT_TESTS)
        FOREACH(_testname ${ARGN})
-               kde4_add_unit_test(${_testname} ${_testname}.cpp ${krichtexteditorSources} )
+               kde4_add_unit_test(${_testname} ${_testname}.cpp ${testSources} )
                target_link_libraries(${_testname} ${KDE4_KDEUI_LIBS} ${QT_QTTEST_LIBRARY} ${QT_QTXML_LIBRARY} ${KDEWIN32_LIBRARIES} )
        ENDFOREACH(_testname)
 ENDMACRO(KDEUI_UNIT_TESTS)
