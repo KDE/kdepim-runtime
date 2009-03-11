@@ -36,7 +36,6 @@ add_subdirectory(kjots_resource)
 
 #add_subdirectory(plasmoid)
 add_subdirectory(kjotsapp)
-add_subdirectory(kjotsapppimstyle)
 add_subdirectory(example_mail)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
