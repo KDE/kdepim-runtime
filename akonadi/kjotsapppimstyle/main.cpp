@@ -1,7 +1,7 @@
-/**
- * KJots rewrite
+/*
+ * This file is part of the Akonadi Mail example.
  *
- * Copyright 2008 Stephen Kelly <steveire@gmail.com>
+ * Copyright 2009 Stephen Kelly <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
  * 02110-1301  USA
  */
 
-#include "kjotsrewritepimstyle.h"
+#include "mainwindow.h"
 
 #include <kapplication.h>
 #include <kaboutdata.h>
@@ -27,12 +27,12 @@
 
 int main( int argc, char **argv )
 {
-  const QByteArray& ba = QByteArray( "kjotsrewrite" );
-  const KLocalizedString name = ki18n( "KJots rewrite app" );
+  const QByteArray& ba = QByteArray( "example_mail" );
+  const KLocalizedString name = ki18n( "Akonadi Mail example" );
   KAboutData aboutData( ba, ba, name, ba, name );
   KCmdLineArgs::init( argc, argv, &aboutData );
   KApplication app;
-  KJotsReWrite* mw = new KJotsReWrite();
+  MainWindow* mw = new MainWindow();
   mw->show();
   app.exec();
 }

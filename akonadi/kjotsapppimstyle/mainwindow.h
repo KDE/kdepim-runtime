@@ -1,7 +1,7 @@
 /*
- * KJots rewrite
+ * This file is part of the Akonadi Mail example.
  *
- * Copyright 2008  Stephen Kelly <steveire@gmail.com>
+ * Copyright 2009  Stephen Kelly <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,10 +19,10 @@
  * 02110-1301  USA
  */
 
-#ifndef KJOTSREWRITE_H
-#define KJOTSREWRITE_H
+#ifndef MAILAPPLICATION_H
+#define MAILAPPLICATION_H
 
-class KJotsWidgetPimStyle;
+class MailWidget;
 
 #include <kxmlguiwindow.h>
 
@@ -30,35 +30,17 @@ class KJotsWidgetPimStyle;
 
 /**
  * @internal
- * Test Application for the kjots rewrite
+ * main window
  */
-class KJotsReWrite : public KXmlGuiWindow
+class MainWindow : public KXmlGuiWindow
 {
   Q_OBJECT
 public:
-  KJotsReWrite();
-  ~KJotsReWrite();
-
-//     void setupActions();
-//
-// private slots:
-//     void newFile();
-//     void openFile();
-//     void saveFile();
-//     void saveFileAs();
-//     void saveFileAs ( const QString &outputFileName );
-//     void cursorPositionChanged();
-//     void updateDockedWidgets();
+  MainWindow();
+  ~MainWindow();
 
 private:
-  KJotsWidgetPimStyle* kjw;
-//     KRichTextWidget *textArea;
-//     KTextEdit *kte;
-//     KTextEdit *krte;
-//     KTextEdit *kpte;
-//     KTextEdit *kbbte;
-//     KTextEdit *kmwte;
-//     QString fileName;
+  MailWidget* mw;
 };
 
 //@endcond

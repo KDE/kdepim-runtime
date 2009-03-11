@@ -1,17 +1,19 @@
-project(kjotsrewriteapppimstyle)
+project(example_mail)
 
-set(kjotsrewriteapppimstyle_SRCS
+set(example_mail_SRCS
     main.cpp
-    kjotsrewritepimstyle.cpp
+    mailwidget.cpp
+    mainwindow.cpp
 )
 
-kde4_add_executable(kjotsrewriteapppimstyle ${kjotsrewriteapppimstyle_SRCS} )
+kde4_add_executable(example_mail ${example_mail_SRCS} )
 
-target_link_libraries(kjotsrewriteapppimstyle
-                      kjots_common
+target_link_libraries(example_mail
+                      akonadi_next
+                      ${KDE4_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
 )
 
-install(TARGETS kjotsrewriteapppimstyle
+install(TARGETS example_mail
         DESTINATION ${BIN_INSTALL_DIR})
 

@@ -1,7 +1,7 @@
 /*
- * KJots rewrite
+ * This file is part of the Akonadi Mail example.
  *
- * Copyright 2008  Stephen Kelly <steveire@gmail.com>
+ * Copyright 2009  Stephen Kelly <steveire@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,30 +19,18 @@
  * 02110-1301  USA
  */
 
-#include "kjotsrewritepimstyle.h"
+#include "mainwindow.h"
 
-#include "kjotswidgetpimstyle.h"
+#include "mailwidget.h"
 
-#include <kapplication.h>
-#include <kactioncollection.h>
-#include <kstandardaction.h>
-#include <kfiledialog.h>
-#include <kmessagebox.h>
-#include <kio/netaccess.h>
-#include <ksavefile.h>
-#include <kstatusbar.h>
-
-
-KJotsReWrite::KJotsReWrite() : KXmlGuiWindow()
+MainWindow::MainWindow() : KXmlGuiWindow()
 {
-
-  kjw = new KJotsWidgetPimStyle( this );
-  setCentralWidget( kjw );
+  mw = new MailWidget( this );
+  setCentralWidget( mw );
 }
 
 
-KJotsReWrite::~KJotsReWrite()
+MainWindow::~MainWindow()
 {
 }
-
 
