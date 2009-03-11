@@ -198,7 +198,7 @@ Or to also show items of child collections in the list:
 
 Note that it is important in this case to use the DescendantEntitesProxyModel before the EntityFilterProxyModel. Otherwise, by filtering out the collections first, you would also be filtering out their child items.
 
-A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (no qt bug number yet).
+A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (http://www.qtsoftware.com/developer/task-tracker/index_html?id=246999&method=entry).
 
 @code
 // ... Create an EntityTreeModel
@@ -206,7 +206,7 @@ view = new QColumnView(this);
 view->setModel(entityTree);
 @endcode
 
-Work is also started on time basedd proxy models so that Items containing calendar data can be represented in a table.
+Work is also started on time based proxy models so that Items containing calendar data can be represented in a table.
 
 <h2>Jobs and Monitors</h2>
 
