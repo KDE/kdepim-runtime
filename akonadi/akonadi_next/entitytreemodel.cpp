@@ -94,8 +94,8 @@ EntityTreeModel::EntityTreeModel( EntityUpdateAdapter *entityUpdateAdapter,
   d->m_rootCollection = Collection::root();
   d->m_rootCollectionDisplayName = QString("[*]");
 
-  // Start retrieving collections and items at the next event loop.
-  QTimer::singleShot( 0, this, SLOT(startFirstListJob()) );
+  // Initializes the model cleanly.
+  clearAndReset();
 
 }
 
@@ -110,10 +110,10 @@ EntityTreeModel::~EntityTreeModel()
 void EntityTreeModel::clearAndReset()
 {
   Q_D( EntityTreeModel );
-  reset();
   d->m_collections.clear();
   d->m_items.clear();
   d->m_childEntities.clear();
+  reset();
   d->startFirstListJob();
 }
 
@@ -144,11 +144,6 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
     return QVariant();
   Q_D( const EntityTreeModel );
 
-  if (!index.isValid())
-  {
-    return QVariant();
-  }
-
   if (d->m_collections.contains(index.internalId()))
   {
 
@@ -160,8 +155,8 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
       if ( role == Qt::DisplayRole)
         return d->m_rootCollectionDisplayName;
 
-      // I don't think this can happen...
-      return QVariant();
+      if ( role == Qt::EditRole)
+        return QVariant();
     }
 
     if ( index.column() == 0 && ( role == Qt::DisplayRole || role == Qt::EditRole ) ) {
