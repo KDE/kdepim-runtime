@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   TestAgent *test = new TestAgent();
   Script *script = new Script();
   
-  script->configure("/home/igor/test.js");
+  script->configure(path);
   script->insertObject(test, "TestResource");
   script->start();
 
