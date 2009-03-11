@@ -1,10 +1,6 @@
 
 #include "descendantentitiesproxymodel.h"
 
-#include <akonadi/collection.h>
-
-#include "entitytreemodel.h"
-
 #include "kdebug.h"
 
 using namespace Akonadi;
@@ -145,24 +141,14 @@ class DescendantEntitiesProxyModelPrivate
 
 }
 
-DescendantEntitiesProxyModel::DescendantEntitiesProxyModel(
-//                                                   QModelIndex rootDescendIndex,
-                                                  QObject *parent )
-//       : QSortFilterProxyModel( parent ),
-      : QAbstractProxyModel( parent ),
+DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
+      : QAbstractProxyModel( parent ),// AbstractItemModel( this ),
+//       : AbstractProxyModel( parent ),
         d_ptr( new DescendantEntitiesProxyModelPrivate(this) )
-
-      //,
-//         : EntityTreeModel( entityUpdateAdapter, clientSideEntityStorage, parent ),
-//         m_clientSideEntityStorage( clientSideEntityStorage ),
-//         m_entityUpdateAdapter( entityUpdateAdapter )
 {
   Q_D( DescendantEntitiesProxyModel );
-//   if (rootDescendCollection.isValid())
-//     m_rootDescendCollection = rootDescendCollection;
-  d->m_rootDescendIndex = QModelIndex(); //rootDescendIndex;
-//   else
-//     m_rootDescendCollection = clientSideEntityStorage->rootCollection();
+
+  d->m_rootDescendIndex = QModelIndex();
 }
 
 void DescendantEntitiesProxyModel::setRootIndex(const QModelIndex &index)
@@ -177,30 +163,27 @@ void DescendantEntitiesProxyModel::setRootIndex(const QModelIndex &index)
   // which involves looking at m_rootDescendIndex? It would break?
   // I think I need separate beginResetModel and endResetModel methods to
   // handle things like this. Can probably put them in my abstract class.
+
+//   begin_Reset_Model();
   d->m_rootDescendIndex = index;
-  kDebug() << "clear ###";
   d->m_descendantsCount.clear();
-  reset();
+//   reset_Model();
+//   reset();
 }
 
 DescendantEntitiesProxyModel::~DescendantEntitiesProxyModel()
 {
   Q_D(DescendantEntitiesProxyModel);
-  kDebug() << "clear ###";
   d->m_descendantsCount.clear();
 }
 
 QModelIndex DescendantEntitiesProxyModelPrivate::findSourceIndexForRow( int row, QModelIndex idx ) const
 {
-//     kDebug() << idx << row;
     Q_Q( const DescendantEntitiesProxyModel );
     int childCount = q->sourceModel()->rowCount(idx);
-//     kDebug() << childCount << idx.data();
     for (int childRow = 0; childRow < childCount; childRow++)
     {
-//     kDebug() << childRow;
       QModelIndex childIndex = q->sourceModel()->index(childRow, 0, idx);
-//       kDebug() << "ch r" << childIndex << row;
       if (row == 0)
       {
         return childIndex;
@@ -208,9 +191,7 @@ QModelIndex DescendantEntitiesProxyModelPrivate::findSourceIndexForRow( int row,
       row--;
       if (q->sourceModel()->hasChildren(childIndex))
       {
-//         kDebug() << "hasChildren";
         int childDesc = descendantCount(childIndex);
-//         kDebug() << "childDesc" << childDesc << "row" << row;
         if (childDesc > row)
         {
           return findSourceIndexForRow(row, childIndex);
@@ -237,8 +218,11 @@ void DescendantEntitiesProxyModel::setSourceModel(QAbstractItemModel * sourceMod
           SLOT(sourceRowsInserted(const QModelIndex, int, int)) );
   connect( sourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex, int, int)),
           SLOT(sourceRowsAboutToBeInserted(const QModelIndex, int, int)) );
+  connect( sourceModel, SIGNAL(rowsRemoved(const QModelIndex, int, int)),
+          SLOT(sourceRowsRemoved(const QModelIndex, int, int)) );
+  connect( sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex, int, int)),
+          SLOT(sourceRowsAboutToBeRemoved(const QModelIndex, int, int)) );
 
-  kDebug() << "clear ###";
   d->m_descendantsCount.clear();
   reset();
 }
@@ -419,7 +403,17 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
   if (operationType == InsertOperation)
     q->beginInsertRows(m_rootDescendIndex, proxy_start, proxy_end);
   else if (operationType == RemoveOperation)
+  {
+    // need to notify that we're also removing the descendants.
+    for (int childRow = start; childRow <= end; childRow++)
+    {
+      QModelIndex childIndex = q->sourceModel()->index(childRow,0,sourceParentIndex);
+      if (q->sourceModel()->hasChildren(childIndex))
+        proxy_end += descendantCount(childIndex);
+    }
+
     q->beginRemoveRows(m_rootDescendIndex, proxy_start, proxy_end);
+  }
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceRowsInserted(const QModelIndex &sourceParentIndex, int start, int end)
@@ -496,6 +490,9 @@ void DescendantEntitiesProxyModelPrivate::sourceModelAboutToBeReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
 
+  kDebug();
+//   begin_Reset_Model();
+
 // This doesn't work because it's a private method.
 //   q->modelAboutToBeReset();
   // We reset the proxy model when the source model is about to be reset.
@@ -506,15 +503,21 @@ void DescendantEntitiesProxyModelPrivate::sourceModelAboutToBeReset()
   // signal if they really do need to be emitted in concert
   // between the source and the proxy model.
 
-  kDebug() << "clear ###";
-  m_descendantsCount.clear();
-  q->reset();
+//   QMetaObject::invokeMethod(modelAboutToBeReset);
+//   q->reset();
+
+//   m_descendantsCount.clear();
+//   q->model_About_To_Be_Reset();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceModelReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
-//   m_descendantsCount.clear();
+//   QMetaObject::invokeMethod(modelReset);
+
+  m_descendantsCount.clear();
+
+//   q->model_Reset();
 //   q->reset();
 }
 
@@ -788,6 +791,10 @@ Q_D( const DescendantEntitiesProxyModel );
   if ( r > d->descendantCount(parent) )
     return QModelIndex();
 
+  // TODO: Use is decended instead.
+  if (parent.isValid())
+    return QModelIndex();
+
   return createIndex(r, c);
   QModelIndex sourceParentIndex = mapToSource(parent);
 //   kDebug() << sourceParentIndex;
@@ -827,12 +834,12 @@ int dr = d->descendedRow(sourceParentIndex);
   if (!idx.isValid())
     return QModelIndex();
   // EntityId role?
-  Collection col = sourceModel()->data(idx, EntityTreeModel::CollectionRole).value<Collection>();
+//   Collection col = sourceModel()->data(idx, EntityTreeModel::CollectionRole).value<Collection>();
 //   kDebug() << ok << createIndex(r, c, reinterpret_cast<void*>(col.id()));
 //   if (ok)
 //     kDebug() << r << c << col.id() << col.name();
 //     kDebug() << createIndex(r, c, reinterpret_cast<void*>(col.id()));
-    return createIndex(r, c, reinterpret_cast<void*>(col.id()));
+    return createIndex(r, c, reinterpret_cast<void*>(idx.internalId()));
 //   return QModelIndex();
 }
 

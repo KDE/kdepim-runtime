@@ -3,7 +3,8 @@
 #define DESCENDANTENTITIESPROXYMODEL_H
 
 #include <QAbstractProxyModel>
-// #include <QSortFilterProxyModel>
+
+// #include "abstractproxymodel.h"
 
 #include <akonadi/collection.h>
 
@@ -12,25 +13,14 @@ namespace Akonadi
 {
 class DescendantEntitiesProxyModelPrivate;
 
-// Make this a proxy model? That way I have to write maptosource, but I can make the proxy model
-// take a ClientSideEntityStorage so that it can directly get the same data as the source model.
-
 class DescendantEntitiesProxyModel : public QAbstractProxyModel
-// class DescendantEntitiesProxyModel : public QSortFilterProxyModel
 {
   Q_OBJECT
 public:
 
-//   DescendantEntitiesProxyModel( EntityUpdateAdapter *entityUpdateAdapter,
-//                                 ClientSideEntityStorage *clientSideEntityStorage,
-//                                 Collection rootDescendCollection = Collection(),
-//                                 QObject *parent = 0);
-    DescendantEntitiesProxyModel( //ClientSideEntityStorage *clientSideEntityStorage,
-//                                   Collection rootDescendCollection = Collection(),
-//                                   QModelIndex rootDescendIndex,
-                                  QObject *parent = 0 );
+    DescendantEntitiesProxyModel( QObject *parent = 0 );
 
-    ~DescendantEntitiesProxyModel();
+    virtual ~DescendantEntitiesProxyModel();
 
 
     virtual void setSourceModel ( QAbstractItemModel * sourceModel );
@@ -104,9 +94,6 @@ public:
     virtual QModelIndex index(int, int, const QModelIndex&) const;
     virtual QModelIndex parent(const QModelIndex&) const;
     virtual int columnCount(const QModelIndex&) const;
-
-//   virtual Qt::DropActions supportedDropActions() const;
-
 
 private:
   Q_DECLARE_PRIVATE( DescendantEntitiesProxyModel )
