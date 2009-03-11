@@ -57,7 +57,7 @@ static PPERF_COUNTER_DEFINITION FirstCounter( PPERF_OBJECT_TYPE PerfObj )
 
 static PPERF_INSTANCE_DEFINITION NextInstance( PPERF_INSTANCE_DEFINITION PerfInst )
 {
-  PPERF_COUNTER_BLOCK PerfCntrBlk 
+  PPERF_COUNTER_BLOCK PerfCntrBlk
     = (PPERF_COUNTER_BLOCK)((PBYTE)PerfInst + PerfInst->ByteLength);
   return (PPERF_INSTANCE_DEFINITION)((PBYTE)PerfCntrBlk + PerfCntrBlk->ByteLength);
 }
@@ -110,6 +110,7 @@ void Utils::getProcessesIdForName( const QString& processName, QList<int>& pids 
 
   // Get the first object type.
   perfObject = FirstObject( perfData );
+  if ( !perfObject ) return;
 
   // Process all objects.
   for( uint i = 0; i < perfData->NumObjectTypes; i++ ) {
@@ -124,7 +125,7 @@ void Utils::getProcessesIdForName( const QString& processName, QList<int>& pids 
     qDebug() << "INSTANCES: " << perfObject->NumInstances;
     for( int instance = 0; instance < perfObject->NumInstances; instance++ ) {
       curCounter = perfCounter;
-      const QString foundProcessName( 
+      const QString foundProcessName(
         fromWChar( (wchar_t *)( (PBYTE)perfInstance + perfInstance->NameOffset ) ) );
       qDebug() << "foundProcessName: " << foundProcessName;
       if ( foundProcessName == processName ) {
