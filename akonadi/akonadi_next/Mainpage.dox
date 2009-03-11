@@ -61,7 +61,7 @@ To create a model of only a collection tree and no items, set that in the model.
 
 @code
 entityTree->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
-@code
+@endcode
 
 
 \image html entitytreemodel-collections.png "A plain EntityTreeModel which does not fetch items."
