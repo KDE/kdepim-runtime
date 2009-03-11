@@ -14,7 +14,8 @@ include_directories(
 include(KDE4Defaults)
 
 set( akonadi_next_SRCS
-#   abstractitemmodel.cpp
+	#  abstractitemmodel.cpp
+	#  abstractproxymodel.cpp
   entitytreemodel.cpp
   entitytreemodel_p.cpp
   entityupdateadapter.cpp
@@ -47,3 +48,5 @@ install(FILES
 )
 
 install(TARGETS akonadi_next ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+add_subdirectory(tests)
