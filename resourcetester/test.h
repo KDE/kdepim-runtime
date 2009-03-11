@@ -5,32 +5,32 @@
 #include <akonadi/item.h>
 #include <akonadi/monitor.h>
 //#include <libakonadi-xml.h>
-#include "testbase.h"
 
 using namespace Akonadi;
 
-class TestAgent: public QObject, public AkonadiTestBase
+class TestAgent: public QObject
 {
   Q_OBJECT
   
   private:
     Monitor monitorResource;
     Item mItem;
+    Collection mCol;
     //void openXML();
 
-  private Q_SLOTS:
-    void itemCompare(const Item &item);
+  private:
+    void entityCompare(const Entity &entity1, const Entity &entity2);
+    void itemCompare(const Item &item, const Collection &col);
     //void CollectionCompare(const Collection &c1,const Collection &c2);
+    void check(Item item, Collection col, const char *signal, const char *slot);
+   // void check(Collection, const char *signal, const char *slot);
 
   public Q_SLOTS:
-
-    //Collection collectionFromXML(const QString &path);
-    //Item itemFromXML(const QString &path);
-     
+    void test();
     void agentMonitored(const QString &agentName);
 /*
-    void checkRemovedItem(const Item &item);
-    void checkChangedItem(const Item &item);
+    void checkRemovedItem(const Item &item, const Collection &col);
+    void checkChangedItem(const Item &item, const Collection &col;
 */
     void checkAddedItem(const Item &item, const Collection &col);
 /*
