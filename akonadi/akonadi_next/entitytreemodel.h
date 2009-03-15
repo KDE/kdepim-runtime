@@ -20,7 +20,7 @@
 #ifndef AKONADI_ENTITYTREEMODEL_H
 #define AKONADI_ENTITYTREEMODEL_H
 
-// #include "abstractitemmodel.h"
+//#include "abstractitemmodel.h"
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QStringList>
@@ -109,7 +109,7 @@ class EntityTreeModelPrivate;
  * @author Stephen Kelly <steveire@gmail.com>
  * @since 4.3
  */
-class EntityTreeModel : public QAbstractItemModel //AbstractItemModel<QAbstractItemModel> //
+class EntityTreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 
@@ -235,6 +235,11 @@ protected:
   Clears and resets the model. Always call this instead of the reset method in the superclass. Using the reset method will not reliably clear or refill the model
   */
   void clearAndReset();
+
+  virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
+
+  virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
+
 
 private:
   Q_DECLARE_PRIVATE( EntityTreeModel )

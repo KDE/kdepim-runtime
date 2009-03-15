@@ -138,86 +138,24 @@ int EntityTreeModel::columnCount( const QModelIndex & parent ) const
   return 1;
 }
 
-QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
+
+QVariant EntityTreeModel::getData(Item item, int column, int role) const
 {
-  if ( !index.isValid() )
-    return QVariant();
-  Q_D( const EntityTreeModel );
-
-  if (d->m_collections.contains(index.internalId()))
+  if (column == 0)
   {
-
-    const Collection col = d->m_collections.value(index.internalId());
-
-    if (col == Collection::root())
-    {
-      // Only display the root collection. It may not be edited.
-      if ( role == Qt::DisplayRole)
-        return d->m_rootCollectionDisplayName;
-
-      if ( role == Qt::EditRole)
-        return QVariant();
-    }
-
-    if ( index.column() == 0 && ( role == Qt::DisplayRole || role == Qt::EditRole ) ) {
-      if ( col.hasAttribute<EntityDisplayAttribute>() &&
-           !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
-        return col.attribute<EntityDisplayAttribute>()->displayName();
-      return col.name();
-    }
-    switch ( role ) {
-
-    case Qt::DisplayRole:
-    case Qt::EditRole:
-      if ( index.column() == 0 ) {
-        if ( col.hasAttribute<EntityDisplayAttribute>() &&
-             !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() ) {
-          return col.attribute<EntityDisplayAttribute>()->displayName();
-        }
-        return col.name();
-      }
-      break;
-
-    case Qt::DecorationRole:
-      if ( col.hasAttribute<EntityDisplayAttribute>() &&
-           ! col.attribute<EntityDisplayAttribute>()->iconName().isEmpty() ) {
-        return col.attribute<EntityDisplayAttribute>()->icon();
-      }
-      return KIcon( CollectionUtils::defaultIconName( col ) );
-
-    case MimeTypeRole:
-      return col.mimeType();
-
-    case RemoteIdRole:
-      return col.remoteId();
-
-    case CollectionIdRole:
-      return col.id();
-
-    case CollectionRole: {
-      return QVariant::fromValue( col );
-    }
-    default:
-      break;
-    }
-  }
-  else if (d->m_items.contains(index.internalId()))
-  {
-    const Item item = d->m_items.value(index.internalId());
-    if ( !item.isValid() )
-      return QVariant();
+    // return the eda or the remoteId.
 
     switch ( role ) {
     case Qt::DisplayRole:
     case Qt::EditRole:
       if ( item.hasAttribute<EntityDisplayAttribute>() &&
-           ! item.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
+          ! item.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
         return item.attribute<EntityDisplayAttribute>()->displayName();
       return item.remoteId();
 
     case Qt::DecorationRole:
       if ( item.hasAttribute<EntityDisplayAttribute>() &&
-           ! item.attribute<EntityDisplayAttribute>()->iconName().isEmpty() )
+          ! item.attribute<EntityDisplayAttribute>()->iconName().isEmpty() )
         return item.attribute<EntityDisplayAttribute>()->icon();
 
     case MimeTypeRole:
@@ -235,7 +173,96 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
     default:
       break;
     }
+  }
+  return QVariant();
+}
 
+QVariant EntityTreeModel::getData(Collection col, int column, int role) const
+{
+  Q_D(const EntityTreeModel);
+  if (column >0)
+    return QString();
+
+  if (col == Collection::root())
+  {
+//     Only display the root collection. It may not be edited.
+    if ( role == Qt::DisplayRole)
+      return d->m_rootCollectionDisplayName;
+
+    if ( role == Qt::EditRole)
+      return QVariant();
+  }
+
+  if ( column == 0 && ( role == Qt::DisplayRole || role == Qt::EditRole ) ) {
+    if ( col.hasAttribute<EntityDisplayAttribute>() &&
+          !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
+      return col.attribute<EntityDisplayAttribute>()->displayName();
+    return col.name();
+  }
+  switch ( role ) {
+
+  case Qt::DisplayRole:
+  case Qt::EditRole:
+    if ( column == 0 ) {
+      if ( col.hasAttribute<EntityDisplayAttribute>() &&
+            !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() ) {
+        return col.attribute<EntityDisplayAttribute>()->displayName();
+      }
+      return col.name();
+    }
+    break;
+
+  case Qt::DecorationRole:
+    if ( col.hasAttribute<EntityDisplayAttribute>() &&
+          ! col.attribute<EntityDisplayAttribute>()->iconName().isEmpty() ) {
+      return col.attribute<EntityDisplayAttribute>()->icon();
+    }
+    return KIcon( CollectionUtils::defaultIconName( col ) );
+
+  case MimeTypeRole:
+    return col.mimeType();
+
+  case RemoteIdRole:
+    return col.remoteId();
+
+  case CollectionIdRole:
+    return col.id();
+
+  case CollectionRole: {
+    return QVariant::fromValue( col );
+  }
+  default:
+    break;
+  }
+  return QVariant();
+}
+
+
+QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
+{
+  if ( !index.isValid() )
+    return QVariant();
+  Q_D( const EntityTreeModel );
+
+  if (d->m_collections.contains(index.internalId()))
+  {
+    const Collection col = d->m_collections.value(index.internalId());
+
+    if (!col.isValid())
+      return QVariant();
+//     kDebug();
+    return getData(col, index.column(), role);
+
+  }
+  else if (d->m_items.contains(index.internalId()))
+  {
+    const Item item = d->m_items.value(index.internalId());
+    if ( !item.isValid() )
+      return QVariant();
+
+    QVariant v = getData(item, index.column(), role);
+//     kDebug() << v;
+    return v;
   }
   return QVariant();
 
@@ -542,7 +569,9 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
   }
 
 //   kDebug() << d->m_childEntities.value(id);
-  return d->m_childEntities.value(id).size();
+  if (parent.column() == 0)
+    return d->m_childEntities.value(id).size();
+  return 0;
 }
 
 QVariant EntityTreeModel::headerData( int section, Qt::Orientation orientation, int role ) const
