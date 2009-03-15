@@ -72,8 +72,9 @@ class ResourcePrivateBase : public QObject
 
     void clear();
 
-  Q_SIGNALS:
-    void savingError( const QString &errorString );
+    void setDefaultStoreCollection( const Akonadi::Collection &collection );
+
+    Akonadi::Collection defaultStoreCollection() const;
 
   protected:
     KConfigGroup mConfig;

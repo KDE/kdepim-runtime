@@ -155,6 +155,8 @@ bool ResourcePrivateBase::doAsyncSave()
 
 void ResourcePrivateBase::writeConfig( KConfigGroup &config ) const
 {
+  config.writeEntry( QLatin1String( "CollectionUrl" ), mDefaultStoreCollection.url() );
+
   writeResourceConfig( config );
 }
 
@@ -163,6 +165,16 @@ void ResourcePrivateBase::clear()
   mIdArbiter->clear();
   mChanges.clear();
   clearResource();
+}
+
+void ResourcePrivateBase::setDefaultStoreCollection( const Akonadi::Collection &collection )
+{
+  mDefaultStoreCollection = collection;
+}
+
+Akonadi::Collection ResourcePrivateBase::defaultStoreCollection() const
+{
+  return mDefaultStoreCollection;
 }
 
 ResourcePrivateBase::State ResourcePrivateBase::state() const
