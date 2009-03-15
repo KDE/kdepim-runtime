@@ -22,8 +22,11 @@
 #include <akonadi/agentinstancecreatejob.h>
 
 #include <KDebug>
+#include <qtest_kde.h>
 
+#include <QDBusConnection>
 #include <QDBusInterface>
+#include <QDBusReply>
 
 using namespace Akonadi;
 
@@ -64,9 +67,28 @@ bool Resource::create()
   if ( !iface.isValid() )
     return false;
 
-  // TODO: apply settings;
-
+  // configure resource
+  for ( QHash<QString, QVariant>::const_iterator it = mSettings.constBegin(); it != mSettings.constEnd(); ++it ) {
+    kDebug() << "Setting up " << it.key() << " for agent " << identifier();
+    const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
+    const QVariant arg = it.value();
+    QDBusReply<void> reply = iface.call( methodName, arg );
+    if ( !reply.isValid() )
+      kError() << "Setting " << it.key() << " failed for agent " << identifier() << ":" << reply.error().message();
+  }
   mInstance.reconfigure();
+
+  // synchronize resource
+  QDBusInterface *resIface = new QDBusInterface( QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1").arg( identifier() ),
+                                                 "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this );
+  if ( resIface->isValid() ) {
+    mInstance.synchronize();
+    kDebug() << "waiting for resource to synchronize...";
+    // TODO: this crashs as soon as the signal is emitted, deep in qdbus stuff
+//     QTest::kWaitForSignal( resIface, SIGNAL(synchronized()) );
+    kDebug() << "done";
+  }
+  delete resIface;
 
   return true;
 }
