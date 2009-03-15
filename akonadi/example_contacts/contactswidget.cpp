@@ -28,7 +28,7 @@
 #include <akonadi/control.h>
 #include "descendantentitiesproxymodel.h"
 #include <akonadi/entitydisplayattribute.h>
-#include "entitytreemodel.h"
+// #include "entitytreemodel.h"
 #include "entityfilterproxymodel.h"
 #include "entitytreeview.h"
 #include "entityupdateadapter.h"
@@ -41,6 +41,8 @@
 
 #include <kdebug.h>
 #include "modeltest.h"
+
+#include "contactmodel.h"
 
 using namespace Akonadi;
 
@@ -73,7 +75,10 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   Session *session = new Session( QByteArray( "ContactsApplication-" ) + QByteArray::number( qrand() ), this );
   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-  etm = new Akonadi::EntityTreeModel( eua, monitor, this);
+//   etm = new Akonadi::EntityTreeModel( eua, monitor, this);
+  etm = new ContactsModel( eua, monitor, this);
+
+//   new ModelTest(etm, this);
 
   etm->fetchMimeTypes( QStringList() << "text/directory" );
 
@@ -86,9 +91,10 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
-  new ModelTest(collectionTree, this);
+// //   new ModelTest(collectionTree, this);
 
   treeview->setModel(collectionTree);
+  treeview->setColumnHidden(1, true);
 
   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
@@ -102,6 +108,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
 
   listView = new EntityTreeView(hSplitter);
+  listView->setModel(itemList);
   hSplitter->addWidget(listView);
 
   layout->addWidget( splitter );
@@ -128,8 +135,8 @@ ContactsWidget::~ContactsWidget()
 
 void ContactsWidget::listSelectionChanged( const QItemSelection & selected, const QItemSelection &deselected )
 {
-  if ( selected.indexes().size() == 1 )
-  {
+//   if ( selected.indexes().size() == 1 )
+//   {
     QModelIndex idx = selected.indexes().at( 0 );
     Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
     if ( i.isValid() )
@@ -137,15 +144,14 @@ void ContactsWidget::listSelectionChanged( const QItemSelection & selected, cons
       QByteArray ba = i.payload<QByteArray>();
       browser->setText( ba );
     }
-  }
+//   }
 }
 
 void ContactsWidget::treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 {
-  if ( selected.indexes().size() == 1 )
-  {
+//   if ( selected.indexes().size() == 1 )
+//   {
 
-    listView->setModel(itemList);
     QModelIndex idx = selected.indexes().at(0);
 
     QModelIndex etmIndex = collectionTree->mapToSource( idx );
@@ -158,7 +164,7 @@ void ContactsWidget::treeSelectionChanged ( const QItemSelection & selected, con
 
     listView->setRootIndex(filteredListIndex);
 
-  }
+//   }
 }
 
 void ContactsWidget::modelDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)

@@ -3,6 +3,7 @@ project(example_contacts)
 set(example_contacts_SRCS
     main.cpp
     contactswidget.cpp
+    contactsmodel.cpp
     mainwindow.cpp
 )
 
@@ -12,6 +13,7 @@ target_link_libraries(example_contacts
                       akonadi_next
                       ${KDE4_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
+                      ${KDE4_KABC_LIBS}
 )
 
 install(TARGETS example_contacts
