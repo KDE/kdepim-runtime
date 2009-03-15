@@ -140,6 +140,8 @@ class DescendantEntitiesProxyModelPrivate
   void sourceRowsInserted(const QModelIndex &, int start, int end);
   void sourceRowsAboutToBeRemoved(const QModelIndex &, int start, int end);
   void sourceRowsRemoved(const QModelIndex &, int start, int end);
+  void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+  void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
   void sourceModelAboutToBeReset();
   void sourceModelReset();
   void sourceLayoutAboutToBeChanged();
@@ -161,8 +163,7 @@ class DescendantEntitiesProxyModelPrivate
 }
 
 DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
-      : QAbstractProxyModel( parent ),// AbstractItemModel( this ),
-//       : AbstractProxyModel( parent ),
+      : QAbstractProxyModel( parent ),
         d_ptr( new DescendantEntitiesProxyModelPrivate(this) )
 {
   Q_D( DescendantEntitiesProxyModel );
@@ -178,16 +179,11 @@ void DescendantEntitiesProxyModel::setRootIndex(const QModelIndex &index)
 //   Q_ASSERT(index.model() == sourceModel());
   Q_D(DescendantEntitiesProxyModel);
 
-  // Hmm, what if a consumer of this class does an operation in modelAboutToBeReset
-  // which involves looking at m_rootDescendIndex? It would break?
-  // I think I need separate beginResetModel and endResetModel methods to
-  // handle things like this. Can probably put them in my abstract class.
-
-//   begin_Reset_Model();
+  //beginResetModel();
   d->m_rootDescendIndex = index;
   d->m_descendantsCount.clear();
-//   reset_Model();
-//   reset();
+  reset();
+ // endResetModel();
 }
 
 DescendantEntitiesProxyModel::~DescendantEntitiesProxyModel()
@@ -241,6 +237,10 @@ void DescendantEntitiesProxyModel::setSourceModel(QAbstractItemModel * sourceMod
           SLOT(sourceRowsRemoved(const QModelIndex, int, int)) );
   connect( sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex, int, int)),
           SLOT(sourceRowsAboutToBeRemoved(const QModelIndex, int, int)) );
+  connect( sourceModel, SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex, int)),
+          SLOT(sourceRowsMoved(const QModelIndex, int, int, const QModelIndex, int)) );
+  connect( sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int)),
+          SLOT(sourceRowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int) ) );
 
   d->m_descendantsCount.clear();
   reset();
@@ -248,7 +248,6 @@ void DescendantEntitiesProxyModel::setSourceModel(QAbstractItemModel * sourceMod
 
 bool DescendantEntitiesProxyModelPrivate::isDescended(const QModelIndex &sourceIndex) const
 {
-//     kDebug() << sourceIndex;
   Q_Q(const DescendantEntitiesProxyModel);
 
   if (sourceIndex == m_rootDescendIndex)
@@ -258,23 +257,15 @@ bool DescendantEntitiesProxyModelPrivate::isDescended(const QModelIndex &sourceI
 
   QModelIndex parentIndex = q->sourceModel()->parent(sourceIndex);
 
-  // The invalid index is implicitly always in the model and should be considered descendend?
-  // Really this should probably be outside this fn.
-//   if (!parentIndex.isValid())
-//     return true;
-
-
-// Hmmm, this should probably be false.
   if (parentIndex == m_rootDescendIndex)
   {
     return true;
   }
   bool found = false;
-//   kDebug() << parentIndex;
-  while(true)
+
+  forever
   {
     parentIndex = parentIndex.parent();
-//     kDebug() << "next" << parentIndex;
     if (parentIndex == m_rootDescendIndex)
     {
       found = true;
@@ -288,49 +279,40 @@ bool DescendantEntitiesProxyModelPrivate::isDescended(const QModelIndex &sourceI
 
 int DescendantEntitiesProxyModelPrivate::descendedRow(const QModelIndex &sourceIndex) const
 {
-//   kDebug() << "sourceIndex" << sourceIndex;
   Q_Q(const DescendantEntitiesProxyModel);
   QModelIndex parentIndex = sourceIndex.parent();
   int row = sourceIndex.row();
 
   for (int childRow = 0; childRow < sourceIndex.row(); childRow++ )
   {
-    QModelIndex childIndex = q->sourceModel()->index( childRow, 0, parentIndex );
-//     kDebug() << childIndex << descendantCount(childIndex);
+    QModelIndex childIndex = q->sourceModel()->index( childRow, sourceIndex.column(), parentIndex );
     if (q->sourceModel()->hasChildren(childIndex))
       row += descendantCount(childIndex);
   }
-//   kDebug() << row << parentIndex << m_rootDescendIndex;
 
   if (parentIndex == m_rootDescendIndex)
   {
-//     // Return 0 instead of -1 for an invalid index.
+    // Return 0 instead of -1 for an invalid index.
     if (row < 0)
     {
-//       kDebug() << "returning:" << sourceIndex << "row" << 0 << "(-1)";
       return 0;
     }
-//     kDebug() << "returning:" << sourceIndex << "row" << row;
     return row;
   }
   else if(!parentIndex.isValid())
   {
     // Should never happen.
     // Someone must have called this with sourceIndex outside of m_rootDescendIndex
-//     kDebug() << "returning (never)" << 0;
     return 0;
   }
   else {
   int dr = descendedRow(parentIndex);
-//     kDebug() << "returning:" << sourceIndex << "row" << row << "dr" << dr;
-    return row + dr +1; // + 1; // for self?
+    return row + dr + 1;
   }
 }
 
 QModelIndex DescendantEntitiesProxyModel::mapFromSource(const QModelIndex & sourceIndex) const
 {
-//   kDebug() << "sourceIndex" << sourceIndex;
-
   Q_D(const  DescendantEntitiesProxyModel );
 
   if (sourceIndex == d->m_rootDescendIndex)
@@ -341,15 +323,11 @@ QModelIndex DescendantEntitiesProxyModel::mapFromSource(const QModelIndex & sour
   if ( d->isDescended( sourceIndex ) )
   {
     int row = d->descendedRow( sourceIndex );
-//     kDebug() << "isDescended" << row;
     if (row < 0)
       return QModelIndex();
-    int column = 0;
-    // TODO use col.id? or just 0?
-    return createIndex( row, column, reinterpret_cast<void *>( sourceIndex.internalId() ) );
+    return createIndex( row, sourceIndex.column(), reinterpret_cast<void *>( sourceIndex.internalId() ) );
   } else {
     return QModelIndex();
-//     return createIndex( sourceIndex.row(), sourceIndex.column(), reinterpret_cast<void *>( sourceIndex.internalId() ) );
   }
 }
 
@@ -362,32 +340,21 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
 {
 
   Q_Q(DescendantEntitiesProxyModel);
-//   kDebug() << sourceParentIndex << start << end << sourceParentIndex.data();
-//   QModelIndex sourceStartIndex = q->sourceModel()->index(start, 0, sourceParentIndex);
-//   QModelIndex sourceEndIndex = q->sourceModel()->index(end, 0, sourceParentIndex);
-//   kDebug() << "sourceStartIndex" << sourceStartIndex;
-//   QModelIndex proxyStartIndex = q->mapFromSource(sourceStartIndex);
-//   kDebug() << "proxyStartIndex" << proxyStartIndex;
-//   QModelIndex proxyEndIndex = q->mapFromSource(sourceEndIndex);
-//   kDebug() << "proxyEndIndex" << proxyEndIndex;
-//   QModelIndex proxyParentIndex = q->mapFromSource(sourceParentIndex);
 
   int c = descendedRow(sourceParentIndex);
-//   kDebug() << c << start;
-//   kDebug() << proxyParentIndex << proxyStartIndex.row(); // << proxyEndIndex.row();
 
 // Can't simply get the descendantCount of sourceModel()->index(start, 0, sourceParent),
 // because start might not exist as a child of sourceParent yet.
 // Maybe I should special case (!sourceParent.hasChildren) instead.
+
+  // Only the first column can have child items. It is only those we need to count.
+  const int column = 0;
   for (int childRow = 0; childRow < start; childRow++)
   {
-    QModelIndex childIndex = q->sourceModel()->index( childRow, 0, sourceParentIndex );
+    QModelIndex childIndex = q->sourceModel()->index( childRow, column, sourceParentIndex );
 //     kDebug() << childIndex << descendantCount(childIndex);
     if (q->sourceModel()->hasChildren(childIndex))
       c += descendantCount(childIndex);
-    // Account for self too.
-//     c++;
-// Nope. Don't. That's already represented by @p start.
   }
 
 //   @code
@@ -407,18 +374,15 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
 
 // Check if it's descended instead?
 
-  int proxy_start = c + start; // + 1; //proxyStartIndex.row();
+  int proxy_start = c + start;
   int proxy_end = c + end;
-//   kDebug() << (sourceParentIndex != m_rootDescendIndex) << isDescended(sourceParentIndex);
-//   if (sourceParentIndex != m_rootDescendIndex)
 
   if (isDescended(sourceParentIndex))
   {
     proxy_start++;
     proxy_end++;
   }
-//   kDebug() << m_rootDescendIndex << proxy_start << proxy_end;
-//   q->beginInsertRows(proxyParentIndex, proxy_start, proxy_end);
+
   if (operationType == InsertOperation)
     q->beginInsertRows(m_rootDescendIndex, proxy_start, proxy_end);
   else if (operationType == RemoveOperation)
@@ -426,7 +390,7 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
     // need to notify that we're also removing the descendants.
     for (int childRow = start; childRow <= end; childRow++)
     {
-      QModelIndex childIndex = q->sourceModel()->index(childRow,0,sourceParentIndex);
+      QModelIndex childIndex = q->sourceModel()->index(childRow,column,sourceParentIndex);
       if (q->sourceModel()->hasChildren(childIndex))
         proxy_end += descendantCount(childIndex);
     }
@@ -439,40 +403,28 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsInserted(const QModelIndex &
 {
   Q_Q(DescendantEntitiesProxyModel);
 
-//   if ( isDescended( sourceParentIndex ) || ( sourceParentIndex == m_rootDescendIndex ) )
-//   {
-//     int difference = (end - start) + 1;
-//     m_descendantsCount[ sourceParentIndex.internalId() ] += difference;
-//     QModelIndex parentIndex = sourceParentIndex.parent();
-//     while (parentIndex != m_rootDescendIndex)
-//     {
-//       m_descendantsCount[ parentIndex.internalId() ] += difference;
-//       parentIndex = parentIndex.parent();
-//     }
-//   }
-
-  // Remove this instead of trying to keep it up to date.
-  // We were told how many rows were inserted into sourceParentIndex,
-  // But those rows could themselves have had descendants.
-  // Oh, that means I have to descend and remove more from the hash...
-  // Also, I have to ascend and remove the difference from higher entries.
-  // It's probably easier to just clear it.
-//   m_descendantsCount.remove( sourceParentIndex.internalId() );
-
-// Disable this and only clear on layout change.
-  // This is a rare operation, so clearing it should not be too expensive.
   m_descendantsCount.clear();
 
-
-//   kDebug() << sourceParentIndex.data();
-//   if (sourceParentIndex.data() == "Bar Book")
-//   {
-//     kDebug() << "per" << q->mapFromSource(sourceParentIndex);
-//     q->pmi = QPersistentModelIndex(q->mapFromSource(sourceParentIndex));
-//   }
-//   kDebug() << q->persistentIndexList();
   q->endInsertRows();
 }
+
+
+void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow)
+{
+  Q_Q(DescendantEntitiesProxyModel);
+  int c = descendedRow(parent);
+  int d = descendedRow(destParent);
+  //q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
+}
+
+void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sourceParentIndex, int start, int end, const QModelIndex &destParentIndex, int destRow)
+{
+  Q_Q(DescendantEntitiesProxyModel);
+
+  m_descendantsCount.clear();
+  //q->endMoveRows();
+}
+
 
 void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
@@ -482,62 +434,24 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeRemoved(const QMode
 void DescendantEntitiesProxyModelPrivate::sourceRowsRemoved(const QModelIndex &sourceParentIndex, int start, int end)
 {
   Q_Q(DescendantEntitiesProxyModel);
-//     kDebug();
-//   if (isDescended(sourceParentIndex) || ( sourceParentIndex == m_rootDescendIndex ) )
-//   {
-//     int difference = 0;
-//     m_descendantsCount[ sourceParentIndex.internalId()] -= difference;
-//     QModelIndex parentIndex = sourceParentIndex.parent();
-//     while (parentIndex != m_rootDescendIndex)
-//     {
-// //       m_descendantsCount[ parentIndex.internalId()] -= difference;
-//     }
-//   }
-  // Remove this instead of trying to keep it up to date.
-  // We were told how many rows were removed  from sourceParentIndex,
-  // But those rows could themselves have had descendants.
-  // Oh, that means I have to descend and remove more from the hash...
-//   m_descendantsCount.remove( sourceParentIndex.internalId() );
-
-
   m_descendantsCount.clear();
   q->endRemoveRows();
-
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceModelAboutToBeReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
 
-  kDebug();
-//   begin_Reset_Model();
-
-// This doesn't work because it's a private method.
-//   q->modelAboutToBeReset();
-  // We reset the proxy model when the source model is about to be reset.
-  // This way, consumers of the proxy model can react to the modelAboutToBeReset
-  // signal before the sourcemodel is fully reset.
-
-  // The alternative might be to use QMetaObject::invokeMethod to emit the private
-  // signal if they really do need to be emitted in concert
-  // between the source and the proxy model.
-
-//   QMetaObject::invokeMethod(modelAboutToBeReset);
-//   q->reset();
-
-//   m_descendantsCount.clear();
-//   q->model_About_To_Be_Reset();
+  //q->beginResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceModelReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
-//   QMetaObject::invokeMethod(modelReset);
 
   m_descendantsCount.clear();
-
-//   q->model_Reset();
-//   q->reset();
+  q->reset();
+  //q->endResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceLayoutAboutToBeChanged()
@@ -551,16 +465,13 @@ void DescendantEntitiesProxyModelPrivate::sourceLayoutChanged()
 {
   Q_Q(DescendantEntitiesProxyModel);
 
-  kDebug() << "clear ###";
   m_descendantsCount.clear();
   q->layoutChanged();
 }
 
 QModelIndex DescendantEntitiesProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
-//     kDebug() << proxyIndex;
   Q_D(const DescendantEntitiesProxyModel );
-//   Hmm. If this proxy shows only descendant items this could be much simpler.
 
   if (!proxyIndex.isValid())
     return d->m_rootDescendIndex;
@@ -569,73 +480,19 @@ QModelIndex DescendantEntitiesProxyModel::mapToSource(const QModelIndex &proxyIn
     return QModelIndex();
 
   QModelIndex idx = d->findSourceIndexForRow( proxyIndex.row(), d->m_rootDescendIndex );
-//   kDebug() << idx;
+
+  if (proxyIndex.column() > 0)
+  {
+    return sourceModel()->index(idx.row(), proxyIndex.column(), idx.parent());
+  }
   return idx;
-//   QModelIndex idx = findSourceIndexForRow( proxyIndex.row(), m_rootDescendIndex );
-
-//   if (!idx.isValid())
-//   {
-//     return m_rootDescendIndex;
-//   } else {
-//     return idx;
-//   }
-
-//   Can't do that obviously
-//   Collection col = sourceModel()->data(proxyIndex, EntityTreeModel::CollectionRole).value<Collection>();
-
-//   while (parentCol.isValid())
-//   if (col.parent() == m_rootDescendIndex.internalId())
-//   {
-//     int childCount = sourceModel()->rowCount(m_rootDescendIndex);
-//     for (int childRow = 0; childRow < childCount; childRow++)
-//     {
-//       QModelIndex childIndex = sourceModel()->index(childRow, 0, m_rootDescendIndex);
-//       int desc = descendantCount(childIndex);
-//     }
-//   }
-
-
-
-
-//   kDebug() << "proxyIndex" << proxyIndex;
-//   if (!proxyIndex.isValid())
-//     return QModelIndex();
-//
-//   Collection parCol;
-//   int entityType = m_clientSideEntityStorage->entityTypeForInternalIdentifier( proxyIndex.internalId() );
-//   if ( ClientSideEntityStorage::CollectionType == entityType )
-//   {
-//     Collection col = m_clientSideEntityStorage->getCollection( proxyIndex.internalId() );
-//     parCol = m_clientSideEntityStorage->getParentCollection( col );
-//   } else if ( ClientSideEntityStorage::ItemType == entityType )
-//   {
-//     Item item = m_clientSideEntityStorage->getItem( proxyIndex.internalId() );
-//     parCol = m_clientSideEntityStorage->getParentCollection( item );
-//   }
-//
-//   // TODO: the root of this model should be a member of this class for versatility.
-// //   Collection root = m_clientSideEntityStorage->rootCollection();
-//
-//   int ansec = getAncestorTotal( m_rootDescendCollection, proxyIndex.internalId() );
-//
-//   int column = 0;
-// //   int row = proxyIndex.row() - ansec;
-//   int row = ansec;
-// //   qint64 id = parCol.childAt( parCol.id(), entIndex );
-//
-//   QModelIndex idx = createIndex( row, column, reinterpret_cast<void *>( proxyIndex.internalId() ) );
-//   kDebug() << "idx" << idx;
-//   return idx;
-
 }
 
 QVariant DescendantEntitiesProxyModel::data(const QModelIndex & index, int role) const
 {
   Q_D(const DescendantEntitiesProxyModel);
-//   if ( role == Qt::DisplayRole ) {
-//     kDebug() << index;
-    QModelIndex sourceIndex = mapToSource( index );
-//     kDebug() << sourceIndex << sourceIndex.data();
+
+  QModelIndex sourceIndex = mapToSource( index );
 
   if ((d->m_displayAncestorData) && ( role == Qt::DisplayRole ) )
   {
@@ -656,80 +513,28 @@ QVariant DescendantEntitiesProxyModel::data(const QModelIndex & index, int role)
     return sourceIndex.data(role);
   }
 
-//     QString name = sourceIndex.data( role ).toString();
-//     sourceIndex = sourceIndex.parent();
-//     while ( sourceIndex.isValid() ) {
-//       name.prepend( sourceIndex.data( role ).toString() + QLatin1String( "/" ) );
-//       sourceIndex = sourceIndex.parent();
-//     }
-//     return name;
-//   }
-//   return QAbstractProxyModel::data( index, role );
 }
 
 bool DescendantEntitiesProxyModel::hasChildren ( const QModelIndex & parent ) const
 {
-//   kDebug() << parent;
   return rowCount(parent) > 0;
 }
 
 int DescendantEntitiesProxyModel::rowCount(const QModelIndex & proxyIndex) const
 {
-//   kDebug() << "proxyIndex" << proxyIndex;
-
-//   Collection col;
-//   if (proxyIndex.isValid())
-//     col = m_clientSideEntityStorage->getCollection( proxyIndex.internalId() );
-//   else
-//     col = m_rootDescendCollection;
-//   kDebug() << col.isValid() << col.id();
-//   int ansec = getAncestorTotal( col );
-
-
   Q_D( const DescendantEntitiesProxyModel );
+
+  if (proxyIndex.column() > 0)
+    return 0;
+
   QModelIndex sourceIndex = mapToSource(proxyIndex);
 
   if (sourceIndex == d->m_rootDescendIndex)
   {
     int c = d->descendantCount(sourceIndex);
-//     kDebug() << sourceIndex << c;
     return c;
   }
   return 0;
-//   kDebug() << sourceIndex;
-
-//   if (!sourceIndex.isValid())
-//     return 0;
-
-//   kDebug() << sourceModel()->hasChildren(sourceIndex)
-//            << sourceModel()->rowCount(sourceIndex);
-
-//   if (sourceIndex != d->m_rootDescendIndex )
-  if(sourceModel()->hasChildren(sourceIndex))
-  {
-    int c = d->descendantCount(sourceIndex);
-//     kDebug() << c;
-    return c;
-  }
-  return 0;
-
-//   if (isDescended(sourceIndex))
-//   {
-//     return descendantCount(sourceIndex);
-//   }
-//   else {
-//     return 0;
-//     // We're not listing the descendants of this index.
-//     return sourceModel()->rowCount(sourceIndex);
-//
-//   }
-
-//   int ansec = getAncestorTotal(sourceIndex);
-
-//   int num = QAbstractProxyModel::rowCount(proxyIndex);
-//   kDebug() << num << ansec;
-//   return ansec;
-//   return num;
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceDataChanged(QModelIndex,QModelIndex)
@@ -739,10 +544,8 @@ void DescendantEntitiesProxyModelPrivate::sourceDataChanged(QModelIndex,QModelIn
 
 int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sourceIndex) const
 {
-
-//   Q_ASSERT(sourceIndex.model() == sourceModel());
-
-//     kDebug();
+  if (sourceIndex.column() > 0)
+    return 0;
 
   Q_Q( const DescendantEntitiesProxyModel );
   if (m_descendantsCount.contains(sourceIndex.internalId()))
@@ -751,145 +554,51 @@ int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sour
   }
 
   int sourceIndexRowCount = q->sourceModel()->rowCount(sourceIndex);
-//   kDebug() << "sourceIndexRowCount" << sourceIndexRowCount << sourceIndex;
   if (sourceIndexRowCount == 0)
     return 0;
   int c = 0;
   c += sourceIndexRowCount;
-//   kDebug() << "(start) c:" << c << sourceIndex;
-//   kDebug() << "c:" << c;
+
   int childRow = 0;
   QModelIndex childIndex = q->sourceModel()->index(childRow, 0, sourceIndex);
   while (childIndex.isValid())
   {
     c += descendantCount(childIndex);
-//     kDebug() << "(while) c:" << c << childIndex << "childRow" << childRow << "sourceIndex" << sourceIndex << "sourceRowCount" << q->sourceModel()->rowCount(sourceIndex);
-// Taking this out of the index() fixed the loop. Figure out why.
-// Duh. It's obvious. ++childIndex would also have worked. I handled the first row already out of the loop, and I was processing it a second time.
     childRow++;
-//     kDebug() << "next row" << childRow;
     childIndex = q->sourceModel()->index(childRow, 0, sourceIndex);
-//     kDebug() << "next" << childIndex;
   }
-
-//   kDebug() << "(final) c:" << c;
 
   m_descendantsCount.insert( sourceIndex.internalId(), c );
 
   return c;
-
-//   ClientSideEntityStorage::Iterator i(colId);
-//   while (i.hasNext())
-//   {
-//     qint64 entId = i.next();
-//     int entityType = m_clientSideEntityStorage->entityTypeForInternalIdentifier(entId);
-//     if ( ClientSideEntityStorage::CollectionType == entityType )
-//     {
-//       c += descendantCount(entId);
-//     }
-//   }
-
-
 }
-
-// bool DescendantEntitiesProxyModel::hasChildren(const QModelIndex &idx) const
-// {
-//   return rowCount(idx) > 0;
-// }
 
 QModelIndex DescendantEntitiesProxyModel::index(int r, int c, const QModelIndex& parent) const
 {
-//   kDebug() << r << c << parent;
-//   if (!idx.isValid())
-//     return QModelIndex();
-Q_D( const DescendantEntitiesProxyModel );
+  Q_D( const DescendantEntitiesProxyModel );
 
-  if ( (r < 0) || (c < 0) || (c > 0) )
+  if ( (r < 0) || (c < 0) || (c >= sourceModel()->columnCount() ) )
     return QModelIndex();
 
   if ( r > d->descendantCount(parent) )
     return QModelIndex();
 
-  // TODO: Use is decended instead.
+  // TODO: Use is decended instead?
   if (parent.isValid())
     return QModelIndex();
 
   return createIndex(r, c);
-  QModelIndex sourceParentIndex = mapToSource(parent);
-//   kDebug() << sourceParentIndex;
-
-//   if (!sourceIndex.isValid())
-//     return QModelIndex();
-
-//   if (d->isDescended(sourceParentIndex))
-//   {
-//     // If we're descending into this index, then it should not have
-//     // any children. It's children will become its siblings.
-//     return QModelIndex();
-//   }
-
-  // ???
-  // If we're descending into this index, then it should not have
-  // any children. It's children will become its siblings.
-  // Only the root descend index has child indexes.
-//   kDebug() << sourceParentIndex << d->m_rootDescendIndex;
-  if (sourceParentIndex != d->m_rootDescendIndex)
-    return QModelIndex();
-
-int dc = d->descendantCount(sourceParentIndex);
-int dr = d->descendedRow(sourceParentIndex);
-//   kDebug() << r << dc << dr;
-  if (r >= dc ) //d->descendantCount(sourceParentIndex) )
-    return QModelIndex();
-
-//   if (!isDescended( sourceIndex ) )
-//   {
-//     return mapFromSource(sourceModel()->index(r, c, sourceIndex));
-//   }
-
-//   bool ok;
-  QModelIndex idx = d->findSourceIndexForRow(r, sourceParentIndex);
-//   kDebug() << "idx" << idx;
-  if (!idx.isValid())
-    return QModelIndex();
-  // EntityId role?
-//   Collection col = sourceModel()->data(idx, EntityTreeModel::CollectionRole).value<Collection>();
-//   kDebug() << ok << createIndex(r, c, reinterpret_cast<void*>(col.id()));
-//   if (ok)
-//     kDebug() << r << c << col.id() << col.name();
-//     kDebug() << createIndex(r, c, reinterpret_cast<void*>(col.id()));
-    return createIndex(r, c, reinterpret_cast<void*>(idx.internalId()));
-//   return QModelIndex();
 }
 
 QModelIndex DescendantEntitiesProxyModel::parent(const QModelIndex& proxyIndex) const
 {
-
-//   QModelIndex sourceIndex = mapToSource(proxyIndex);
-//
-//   if (isDescended(sourceIndex))
-//   {
-//     // TODO: make sure m_rootDescendIndex is persistant.
-//     return m_rootDescendIndex;
-//   } else {
-//     return QModelIndex();
-// //     return mapFromSource(sourceModel()->parent(sourceIndex));
-//   }
-
-//     kDebug() << proxyIndex;
   return QModelIndex();
-//   int column = 0;
-//   int row =
-//   return createIndex( row, column, reinterpret_cast<void *>( m_rootDescendCollection.id() ) );
-
 }
 
-int DescendantEntitiesProxyModel::columnCount(const QModelIndex&) const
+int DescendantEntitiesProxyModel::columnCount(const QModelIndex &index) const
 {
-//     kDebug();
-  return 1;
+  return sourceModel()->columnCount();
 }
-
 
 void DescendantEntitiesProxyModel::setDisplayAncestorData(bool display, const QString &sep)
 {
@@ -912,6 +621,4 @@ QString DescendantEntitiesProxyModel::ancestorSeparator() const
   return d->m_ancestorSeparator;
 }
 
-
 #include "moc_descendantentitiesproxymodel.cpp"
-

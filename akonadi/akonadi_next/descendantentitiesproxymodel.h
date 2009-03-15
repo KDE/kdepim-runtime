@@ -23,7 +23,7 @@
 
 #include <QAbstractProxyModel>
 
-// #include "abstractproxymodel.h"
+//#include "abstractproxymodel.h"
 
 namespace Akonadi
 {
@@ -120,6 +120,8 @@ private:
   Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
   Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int))
   Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &, int, int))
+  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int))
+  Q_PRIVATE_SLOT(d_func(), void sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int))
   Q_PRIVATE_SLOT(d_func(), void sourceModelAboutToBeReset())
   Q_PRIVATE_SLOT(d_func(), void sourceModelReset())
   Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
