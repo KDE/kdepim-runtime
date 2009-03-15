@@ -42,7 +42,7 @@
 #include <kdebug.h>
 #include "modeltest.h"
 
-#include "contactmodel.h"
+#include "contactsmodel.h"
 
 using namespace Akonadi;
 
