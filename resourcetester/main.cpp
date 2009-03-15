@@ -16,6 +16,7 @@
  */
 
 #include "test.h"
+#include "resource.h"
 #include "script.h"
 #include "xmlcomparator.h"
 
@@ -72,6 +73,8 @@ int main(int argc, char *argv[])
   
   script->configure(path);
   script->insertObject(test, "TestResource");
+  script->insertObject( new XmlComparator(), "XmlComparator" );
+  script->insertObject( new Resource(), "Resource" );
   script->start();
 
   return app.exec();

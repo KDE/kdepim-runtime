@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009  Igor Trindade Oliveira <igor_trindade@yahoo.com.br>
+ * Copyright (c) 2009 Volker Krause <vkrause@kde.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,15 +18,63 @@
 
 #include "resource.h"
 
-void Resource::load(const QString &resourceName, const QString &path)
-{
-  const AgentType = AgentManager::self()->type(resourceName);
+#include <akonadi/agentmanager.h>
+#include <akonadi/agentinstancecreatejob.h>
 
-  mResource = resourceName;
-  mPath = path;
+#include <KDebug>
+
+#include <QDBusInterface>
+
+using namespace Akonadi;
+
+Resource::Resource(QObject* parent) :
+  QObject( parent )
+{
 }
 
-void Resource::load()
+void Resource::setType(const QString& type)
 {
-  load(resource, path);
+  mTypeIdentifier = type;
 }
+
+QString Resource::identifier() const
+{
+  return mInstance.identifier();
+}
+
+void Resource::setOption(const QString& key, const QVariant& value)
+{
+  mSettings.insert( key, value );
+}
+
+bool Resource::create()
+{
+  const AgentType type = AgentManager::self()->type( mTypeIdentifier );
+  if ( !type.isValid() )
+    return false;
+
+  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
+  if ( !job->exec() ) {
+    kWarning() << job->errorText();
+    return false;
+  }
+  mInstance = job->instance();
+
+  QDBusInterface iface( "org.freedesktop.Akonadi.Resource." + identifier(), "/Settings" );
+  if ( !iface.isValid() )
+    return false;
+
+  // TODO: apply settings;
+
+  mInstance.reconfigure();
+
+  return true;
+}
+
+void Resource::destroy()
+{
+  AgentManager::self()->removeInstance( mInstance );
+  mInstance = AgentInstance();
+}
+
+#include "resource.moc"
