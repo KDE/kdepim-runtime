@@ -190,6 +190,25 @@ bool XmlOperations::compareCollection(const Collection& _col, const Collection& 
   return compareCollections( cols, refCols );
 }
 
+bool XmlOperations::hasItem(const Item& _item, const Collection& _col)
+{
+  ItemFetchJob *ijob = new ItemFetchJob( _col, this );
+  ijob->fetchScope().fetchAllAttributes( true );
+  ijob->fetchScope().fetchFullPayload( true );
+  if ( !ijob->exec() ) {
+    mErrorMsg = ijob->errorText();
+    return false;
+  }
+  const Item::List items = ijob->items();
+  
+  for( int i = 0; i < items.count(); ++i) { 
+    if( _item == items.at(i) ) {
+      return true;
+    }
+  }
+  return false;
+} 
+
 bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _refItems)
 {
   Item::List items( _items );

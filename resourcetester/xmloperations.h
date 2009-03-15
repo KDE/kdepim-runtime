@@ -45,7 +45,6 @@ class XmlOperations : public QObject
     Akonadi::Item getItemByRemoteId(const QString& rid);
     Akonadi::Collection getCollectionByRemoteId(const QString& rid);
 
-
     bool compare();
 
     QString lastError() const;
@@ -55,6 +54,7 @@ class XmlOperations : public QObject
     bool compareItems( const Akonadi::Item::List &items, const Akonadi::Item::List &refItems );
     bool compareItem( const Akonadi::Item &item, const Akonadi::Item &refItem );
     bool compareAttributes( const Akonadi::Entity &entity, const Akonadi::Entity &refEntity );
+    bool hasItem(const Akonadi::Item& _item, const Akonadi::Collection& _col);
 
   private:
     template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
