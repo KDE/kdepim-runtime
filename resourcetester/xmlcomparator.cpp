@@ -265,20 +265,4 @@ bool XmlComparator::compareAttributes(const Entity& entity, const Entity& refEnt
   return true;
 }
 
-
-// ### only for testing
-#include <QCoreApplication>
-#include <KComponentData>
-
-int main( int argc, char** argv )
-{
-  QCoreApplication app( argc, argv );
-  KComponentData kcd( "xmlcomparator" );
-  XmlComparator comp;
-  comp.setXmlFile( "/k/kde4/src/kdepim/akonadi/resources/knut/tests/knutdemo.xml" );
-  comp.setRootCollections( "akonadi_knut_resource_252" );
-  kDebug() << comp.compare();
-  kDebug() << comp.lastError();
-}
-
 #include "xmlcomparator.moc"

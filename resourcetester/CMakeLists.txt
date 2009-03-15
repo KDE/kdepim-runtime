@@ -23,6 +23,7 @@ set( resourcetester_SRCS
   main.cpp
   script.cpp
   dao.cpp
+  xmlcomparator.cpp
 )
 
 kde4_add_executable(resourcetester RUN_UNINSTALLED ${resourcetester_SRCS})
@@ -33,13 +34,5 @@ target_link_libraries( resourcetester
   ${QT_QTXML_LIBRARY}
   ${QT_QTTEST_LIBRARY}
   ${KDE4_KROSSUI_LIBS}
-)
-
-# just for testing, will eventually be integrated into resourcetester
-kde4_add_executable(xmlcomparator RUN_UNINSTALLED xmlcomparator.cpp)
-target_link_libraries(xmlcomparator
-  ${KDE4_AKONADI_LIBS}
-  ${QT_QTXML_LIBRARY}
-  ${QT_QTTEST_LIBRARY}
   akonadi-xml
 )

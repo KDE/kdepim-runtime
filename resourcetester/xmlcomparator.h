@@ -37,6 +37,7 @@ class XmlComparator : public QObject
     XmlComparator( QObject *parent = 0 );
     ~XmlComparator();
 
+  public slots:
     void setRootCollections( const QString &resourceId );
     void setRootCollections( const Akonadi::Collection::List &roots );
     void setXmlFile( const QString &fileName );

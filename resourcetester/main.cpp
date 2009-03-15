@@ -18,6 +18,7 @@
 #include "test.h"
 #include "script.h"
 #include "dao.h"
+#include "xmlcomparator.h"
 
 #include <KApplication>
 #include <KAboutData>
@@ -73,6 +74,7 @@ int main(int argc, char *argv[])
   script->configure(path);
   script->insertObject(test, "TestResource");
   script->insertObject(dao, "Dao");
+  script->insertObject( new XmlComparator(), "XmlComparator" );
   script->start();
 
   return app.exec();
