@@ -7,6 +7,8 @@
 
 #include <QDebug>
 
+#include <kdebug.h>
+
 DynamicTreeModel::DynamicTreeModel(QObject *parent)
   : QAbstractItemModel(parent),
     nextId(1)
@@ -15,17 +17,33 @@ DynamicTreeModel::DynamicTreeModel(QObject *parent)
 
 QModelIndex DynamicTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
-  if (column != 0)
+//   if (column != 0)
+//     return QModelIndex();
+
+
+  if ( column < 0 || row < 0 )
     return QModelIndex();
 
-  QList<qint64> childIds = m_childItems.value(parent.internalId());
+  QList<QList<qint64> > childIdColumns = m_childItems.value(parent.internalId());
 
-  if (row < 0 || row >= childIds.size())
+
+  if (childIdColumns.size() == 0)
     return QModelIndex();
 
-  qint64 id = childIds.at(row);
+  if (column >= childIdColumns.size())
+    return QModelIndex();
+
+  QList<qint64> rowIds = childIdColumns.at(column);
+
+//   kDebug() << rowIds;
+
+  if ( row >= rowIds.size())
+    return QModelIndex();
+
+  qint64 id = rowIds.at(row);
 
   return createIndex(row, column, reinterpret_cast<void *>(id));
+
 }
 
 qint64 DynamicTreeModel::findParentId(qint64 searchId) const
@@ -33,13 +51,18 @@ qint64 DynamicTreeModel::findParentId(qint64 searchId) const
   if (searchId <= 0)
     return -1;
 
-  QHashIterator<qint64, QList<qint64> > i(m_childItems);
+  QHashIterator<qint64, QList<QList<qint64> > > i(m_childItems);
   while (i.hasNext())
   {
     i.next();
-    if (i.value().contains(searchId))
+    QListIterator<QList<qint64> > j(i.value());
+    while (j.hasNext())
     {
-      return i.key();
+      QList<qint64> l = j.next();
+      if (l.contains(searchId))
+      {
+        return i.key();
+      }
     }
   }
   return -1;
@@ -60,10 +83,10 @@ QModelIndex DynamicTreeModel::parent(const QModelIndex &index) const
   if (grandParentId < 0)
     grandParentId = 0;
 
-  QList<qint64> childList = m_childItems.value(grandParentId);
+  int column = 0;
+  QList<qint64> childList = m_childItems.value(grandParentId).at(column);
 
   int row = childList.indexOf(parentId);
-  int column = 0;
 
   return createIndex(row, column, reinterpret_cast<void *>(parentId));
 
@@ -71,13 +94,21 @@ QModelIndex DynamicTreeModel::parent(const QModelIndex &index) const
 
 int DynamicTreeModel::rowCount(const QModelIndex &index ) const
 {
-  return m_childItems.value(index.internalId()).size();
+  QList<QList<qint64> > cols = m_childItems.value(index.internalId());
+
+  if (cols.size() == 0 )
+    return 0;
+
+  if (index.column() > 0)
+    return 0;
+
+  return cols.at(0).size();
 }
 
 int DynamicTreeModel::columnCount(const QModelIndex &index ) const
 {
-  Q_UNUSED(index);
-  return 1;
+//   Q_UNUSED(index);
+  return m_childItems.value(index.internalId()).size();
 }
 
 QVariant DynamicTreeModel::data(const QModelIndex &index, int role) const
