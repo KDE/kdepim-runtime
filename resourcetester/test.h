@@ -24,7 +24,7 @@
 
 using namespace Akonadi;
 
-class TestAgent: public QObject
+class TestAgent : public QObject
 {
   Q_OBJECT
   
@@ -42,7 +42,6 @@ class TestAgent: public QObject
    // void check(Collection, const char *signal, const char *slot);
 
   public Q_SLOTS:
-    void test();
     void agentMonitored(const QString &agentName);
 /*
     void checkRemovedItem(const Item &item, const Collection &col);

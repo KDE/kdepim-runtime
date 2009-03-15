@@ -21,7 +21,7 @@
 #include <kross/core/action.h>
 #include <QHash>
 
-class Script:public QObject
+class Script : public QObject
 {
   private:
     Kross::Action *action;

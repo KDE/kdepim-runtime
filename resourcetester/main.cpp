@@ -17,11 +17,21 @@
 
 #include "test.h"
 #include "script.h"
+#include "dao.h"
 
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
 #include <KDebug>
+
+#include <QCoreApplication>
+
+#include <signal.h>
+
+void sigHandler( int signal)
+{
+  QCoreApplication::quit();
+}
 
 int main(int argc, char *argv[])
 {
@@ -50,11 +60,19 @@ int main(int argc, char *argv[])
   else
     return -1;
 
+#ifdef Q_OS_UNIX
+  signal( SIGINT, sigHandler );
+  signal( SIGQUIT, sigHandler );
+#endif
+
   TestAgent *test = new TestAgent();
+  DAO *dao = new DAO();
+
   Script *script = new Script();
   
   script->configure(path);
   script->insertObject(test, "TestResource");
+  script->insertObject(dao, "Dao");
   script->start();
 
   return app.exec();

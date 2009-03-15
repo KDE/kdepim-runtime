@@ -17,12 +17,6 @@
 
 #include "test.h"
 #include <QTest>
-#include <QDebug>
-
-void TestAgent::test()
-{
-  qDebug()<<"teste";
-}
 
 void TestAgent::check(Item item, Collection col, const char *signal, const char *slot)
 {
