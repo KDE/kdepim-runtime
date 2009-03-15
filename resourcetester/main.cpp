@@ -15,7 +15,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "test.h"
 #include "resource.h"
 #include "script.h"
 #include "xmlcomparator.h"
@@ -66,13 +65,9 @@ int main(int argc, char *argv[])
   signal( SIGQUIT, sigHandler );
 #endif
 
-  TestAgent *test = new TestAgent();
- // DAO *dao = new DAO();
-
   Script *script = new Script();
   
   script->configure(path);
-  script->insertObject(test, "TestResource");
   script->insertObject( new XmlComparator(), "XmlComparator" );
   script->insertObject( new Resource(), "Resource" );
   script->start();
