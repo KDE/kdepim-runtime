@@ -252,7 +252,7 @@ public:
     QModelIndex srcParent = findIndex(m_rowNumbers);
     QModelIndex destParent = findIndex(m_destRowNumbers);
 
-    m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+    //m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
 
     QList<qint64> l = m_model->m_childItems.value(srcParent.internalId())[0].mid(m_startRow, m_endRow - m_startRow + 1 );
 
@@ -284,7 +284,7 @@ public:
     }
 //     kDebug() << "after insert" << m_model->m_childItems.value(srcParent.internalId())[0] << "dest" << m_model->m_childItems.value(destParent.internalId())[0];;
 
-    m_model->endMoveRows();
+    //m_model->endMoveRows();
   }
 
   void setDestAncestors( QList<int> rows )
