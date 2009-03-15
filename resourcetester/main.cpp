@@ -17,7 +17,6 @@
 
 #include "test.h"
 #include "script.h"
-#include "dao.h"
 #include "xmlcomparator.h"
 
 #include <KApplication>
@@ -67,14 +66,12 @@ int main(int argc, char *argv[])
 #endif
 
   TestAgent *test = new TestAgent();
-  DAO *dao = new DAO();
+ // DAO *dao = new DAO();
 
   Script *script = new Script();
   
   script->configure(path);
   script->insertObject(test, "TestResource");
-  script->insertObject(dao, "Dao");
-  script->insertObject( new XmlComparator(), "XmlComparator" );
   script->start();
 
   return app.exec();

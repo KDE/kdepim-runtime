@@ -22,26 +22,18 @@
 #include <akonadi/item.h>
 #include <akonadi/monitor.h>
 
+#include "xmlcomparator.h"
+
 using namespace Akonadi;
 
-class TestAgent : public QObject
+class TestAgent : public XmlComparator
 {
   Q_OBJECT
   
   private:
     Monitor monitorResource;
-    Item mItem;
-    Collection mCol;
-    //void openXML();
-
-  private:
-    void entityCompare(const Entity &entity1, const Entity &entity2);
-    void itemCompare(const Item &item, const Collection &col);
-    //void CollectionCompare(const Collection &c1,const Collection &c2);
-    void check(Item item, Collection col, const char *signal, const char *slot);
-   // void check(Collection, const char *signal, const char *slot);
-
-  public Q_SLOTS:
+  
+  public slots:
     void agentMonitored(const QString &agentName);
 /*
     void checkRemovedItem(const Item &item, const Collection &col);

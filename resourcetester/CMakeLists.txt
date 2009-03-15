@@ -22,7 +22,6 @@ set( resourcetester_SRCS
   test.cpp
   main.cpp
   script.cpp
-  dao.cpp
   xmlcomparator.cpp
 )
 

@@ -46,13 +46,15 @@ class XmlComparator : public QObject
 
     QString lastError() const;
 
-  private:
+  protected slots:
+
     bool compareCollections( const Akonadi::Collection::List &cols, const Akonadi::Collection::List &refCols );
     bool compareCollection( const Akonadi::Collection &col, const Akonadi::Collection &refCol );
     bool compareItems( const Akonadi::Item::List &items, const Akonadi::Item::List &refItems );
     bool compareItem( const Akonadi::Item &item, const Akonadi::Item &refItem );
     bool compareAttributes( const Akonadi::Entity &entity, const Akonadi::Entity &refEntity );
 
+  private:
     template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
                                              T (Akonadi::Collection::*property)() const,
                                              const char* propertyName );
