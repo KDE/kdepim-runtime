@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "xmlcomparator.h"
+#include "xmloperations.h"
 
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchjob.h>
@@ -47,16 +47,26 @@ QTextStream& operator<<( QTextStream &s, const QStringList &list )
   return s;
 }
 
-XmlComparator::XmlComparator(QObject* parent) :
+XmlOperations::XmlOperations(QObject* parent) :
   QObject( parent )
 {
 }
 
-XmlComparator::~XmlComparator()
+XmlOperations::~XmlOperations()
 {
 }
 
-void XmlComparator::setRootCollections(const QString& resourceId)
+Item XmlOperations::getItemByRemoteId(const QString& rid)
+{
+  return mDocument.itemByRemoteId( rid, true);
+} 
+
+Collection XmlOperations::getCollectionByRemoteId(const QString& rid)
+{
+  return mDocument.collectionByRemoteId(rid);
+}
+
+void XmlOperations::setRootCollections(const QString& resourceId)
 {
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   job->setResource( resourceId );
@@ -66,22 +76,22 @@ void XmlComparator::setRootCollections(const QString& resourceId)
     mErrorMsg = job->errorText();
 }
 
-void XmlComparator::setRootCollections(const Collection::List& roots)
+void XmlOperations::setRootCollections(const Collection::List& roots)
 {
   mRoots = roots;
 }
 
-void XmlComparator::setXmlFile(const QString& fileName)
+void XmlOperations::setXmlFile(const QString& fileName)
 {
   mDocument.loadFile( fileName );
 }
 
-QString XmlComparator::lastError() const
+QString XmlOperations::lastError() const
 {
   return mErrorMsg;
 }
 
-bool XmlComparator::compare()
+bool XmlOperations::compare()
 {
   if ( !mDocument.isValid() ) {
     mErrorMsg = mDocument.lastError();
@@ -98,7 +108,7 @@ bool XmlComparator::compare()
   return compareCollections( mRoots, docRoots );
 }
 
-bool XmlComparator::compareCollections(const Collection::List& _cols, const Collection::List& _refCols)
+bool XmlOperations::compareCollections(const Collection::List& _cols, const Collection::List& _refCols)
 {
   Collection::List cols( _cols );
   Collection::List refCols( _refCols );
@@ -140,7 +150,7 @@ static Collection normalize( const Collection &in )
   return out;
 }
 
-bool XmlComparator::compareCollection(const Collection& _col, const Collection& _refCol)
+bool XmlOperations::compareCollection(const Collection& _col, const Collection& _refCol)
 {
   Q_ASSERT( _col.remoteId() == _refCol.remoteId() );
 
@@ -180,7 +190,7 @@ bool XmlComparator::compareCollection(const Collection& _col, const Collection& 
   return compareCollections( cols, refCols );
 }
 
-bool XmlComparator::compareItems(const Item::List& _items, const Item::List& _refItems)
+bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _refItems)
 {
   Item::List items( _items );
   Item::List refItems( _refItems );
@@ -213,7 +223,7 @@ bool XmlComparator::compareItems(const Item::List& _items, const Item::List& _re
   return true;
 }
 
-bool XmlComparator::compareItem(const Item& item, const Item& refItem)
+bool XmlOperations::compareItem(const Item& item, const Item& refItem)
 {
   Q_ASSERT( item.remoteId() == refItem.remoteId() );
 
@@ -225,7 +235,7 @@ bool XmlComparator::compareItem(const Item& item, const Item& refItem)
   return compareAttributes( item, refItem );;
 }
 
-bool XmlComparator::compareAttributes(const Entity& entity, const Entity& refEntity)
+bool XmlOperations::compareAttributes(const Entity& entity, const Entity& refEntity)
 {
   Attribute::List attrs = entity.attributes();
   Attribute::List refAttrs = refEntity.attributes();
@@ -265,4 +275,4 @@ bool XmlComparator::compareAttributes(const Entity& entity, const Entity& refEnt
   return true;
 }
 
-#include "xmlcomparator.moc"
+#include "xmloperations.moc"

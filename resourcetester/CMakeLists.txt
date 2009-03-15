@@ -22,7 +22,7 @@ set( resourcetester_SRCS
   main.cpp
   resource.cpp
   script.cpp
-  xmlcomparator.cpp
+  xmloperations.cpp
 )
 
 kde4_add_executable(resourcetester RUN_UNINSTALLED ${resourcetester_SRCS})

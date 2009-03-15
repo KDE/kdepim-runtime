@@ -30,23 +30,25 @@
 /**
   Compares a Akonadi collection sub-tree with reference data supplied in an XML file.
 */
-class XmlComparator : public QObject
+class XmlOperations : public QObject
 {
   Q_OBJECT
   public:
-    XmlComparator( QObject *parent = 0 );
-    ~XmlComparator();
+    XmlOperations( QObject *parent = 0 );
+    ~XmlOperations();
 
   public slots:
     void setRootCollections( const QString &resourceId );
     void setRootCollections( const Akonadi::Collection::List &roots );
     void setXmlFile( const QString &fileName );
 
+    Akonadi::Item getItemByRemoteId(const QString& rid);
+    Akonadi::Collection getCollectionByRemoteId(const QString& rid);
+
+
     bool compare();
 
     QString lastError() const;
-
-  protected slots:
 
     bool compareCollections( const Akonadi::Collection::List &cols, const Akonadi::Collection::List &refCols );
     bool compareCollection( const Akonadi::Collection &col, const Akonadi::Collection &refCol );
@@ -71,7 +73,7 @@ class XmlComparator : public QObject
 
 
 template <typename T>
-bool XmlComparator::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
+bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
                                   T (Akonadi::Collection::*property)() const,
                                   const char* propertyName )
 {
@@ -84,7 +86,7 @@ bool XmlComparator::compareValue( const Akonadi::Collection& col, const Akonadi:
 }
 
 template <typename T>
-bool XmlComparator::compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
+bool XmlOperations::compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
                                   T (Akonadi::Item::*property)() const,
                                   const char* propertyName )
 {
@@ -97,7 +99,7 @@ bool XmlComparator::compareValue( const Akonadi::Item& item, const Akonadi::Item
 }
 
 template <typename T>
-bool XmlComparator::compareValue(const T& value, const T& refValue )
+bool XmlOperations::compareValue(const T& value, const T& refValue )
 {
   if ( value == refValue )
     return true;

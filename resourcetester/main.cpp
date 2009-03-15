@@ -17,7 +17,7 @@
 
 #include "resource.h"
 #include "script.h"
-#include "xmlcomparator.h"
+#include "xmloperations.h"
 
 #include <KApplication>
 #include <KAboutData>
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
   Script *script = new Script();
   
   script->configure(path);
-  script->insertObject( new XmlComparator(), "XmlComparator" );
+  script->insertObject( new XmlOperations(), "XmlOperations" );
   script->insertObject( new Resource(), "Resource" );
   script->start();
 
