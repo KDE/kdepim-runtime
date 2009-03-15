@@ -68,40 +68,19 @@ class ModelChangeCommand : public QObject
   Q_OBJECT
 public:
 
-  ModelChangeCommand( DynamicTreeModel *model, QObject *parent = 0 )
-    : QObject(parent), m_model(model), m_numCols(1) {}
+  ModelChangeCommand( DynamicTreeModel *model, QObject *parent = 0 );
 
   virtual ~ModelChangeCommand() {}
 
   void setAncestorRowNumbers(QList<int> rowNumbers) { m_rowNumbers = rowNumbers; }
 
-  QModelIndex findIndex(QList<int> rows)
-  {
-    const int col = 0;
-    QModelIndex parent = QModelIndex();
-    QListIterator<int> i(rows);
-    while (i.hasNext())
-    {
-      parent = m_model->index(i.next(), col, parent);
-      Q_ASSERT(parent.isValid());
-    }
-    return parent;
-  }
+  QModelIndex findIndex(QList<int> rows);
 
-  void setStartRow(int row)
-  {
-    m_startRow = row;
-  }
+  void setStartRow(int row) { m_startRow = row; }
 
-  void setEndRow(int row)
-  {
-    m_endRow = row;
-  }
+  void setEndRow(int row) { m_endRow = row; }
 
-  void setNumCols(int cols)
-  {
-    m_numCols = cols;
-  }
+  void setNumCols(int cols) { m_numCols = cols; }
 
   virtual void doCommand() = 0;
 
@@ -120,120 +99,37 @@ class ModelInsertCommand : public ModelChangeCommand
 
 public:
 
-  ModelInsertCommand(DynamicTreeModel *model, QObject *parent = 0 )
-    : ModelChangeCommand(model, parent) {}
+  ModelInsertCommand(DynamicTreeModel *model, QObject *parent = 0 );
   virtual ~ModelInsertCommand() {}
 
-  virtual void doCommand()
-  {
-    QModelIndex parent = findIndex(m_rowNumbers);
-    m_model->beginInsertRows(parent, m_startRow, m_endRow);
-    qint64 parentId = parent.internalId();
-    for (int row = m_startRow; row <= m_endRow; row++)
-    {
-      for(int col = 0; col < m_numCols; col++ )
-      {
-        if (m_model->m_childItems[parentId].size() <= col)
-        {
-          m_model->m_childItems[parentId].append(QList<qint64>());
-        }
-  //       QString name = QUuid::createUuid().toString();
-        qint64 id = m_model->newId();
-        QString name = QString::number(id);
-
-        m_model->m_items.insert(id, name);
-        m_model->m_childItems[parentId][col].insert(row, id);
-
-      }
-    }
-    m_model->endInsertRows();
-  }
+  virtual void doCommand();
 };
 
 class ModelRemoveCommand : public ModelChangeCommand
 {
   Q_OBJECT
 public:
-  ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = 0 )
-    : ModelChangeCommand(model, parent) {}
+  ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = 0 );
   virtual ~ModelRemoveCommand() {}
 
-  virtual void doCommand()
-  {
-    QModelIndex parent = findIndex(m_rowNumbers);
-    m_model->beginRemoveRows(parent, m_startRow, m_endRow);
-    qint64 parentId = parent.internalId();
-    for(int col = 0; col < m_numCols; col++ )
-    {
-      QList<qint64> childItems = m_model->m_childItems.value(parentId).value(col);
-      for (int row = m_startRow; row <= m_endRow; row++)
-      {
-        qint64 item = childItems[row];
-        purgeItem(item);
-        m_model->m_childItems[parentId][col].removeOne(item);
-      }
-    }
-    m_model->endRemoveRows();
-  }
+  virtual void doCommand();
 
-  void purgeItem(qint64 parent)
-  {
-    QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
-
-    if (childItemRows.size() > 0)
-    {
-      for (int col = 0; col < m_numCols; col++)
-      {
-        QList<qint64> childItems = childItemRows[col];
-        foreach(qint64 item, childItems)
-        {
-          purgeItem(item);
-          m_model->m_childItems[parent][col].removeOne(item);
-        }
-      }
-    }
-    m_model->m_items.remove(parent);
-
-  }
-
+  void purgeItem(qint64 parent);
 };
 
 class ModelDataChangeCommand : public ModelChangeCommand
 {
   Q_OBJECT
 public:
-  ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent = 0)
-    : ModelChangeCommand(model, parent), m_startColumn(0)
-  { }
+  ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent = 0);
 
   virtual ~ModelDataChangeCommand() {}
 
-  virtual void doCommand()
-  {
-    QModelIndex parent = findIndex(m_rowNumbers);
-    QModelIndex topLeft = m_model->index(m_startRow, m_startColumn, parent);
-    QModelIndex bottomRight = m_model->index(m_endRow, m_numCols - 1, parent);
+  virtual void doCommand();
 
-    QList<QList<qint64> > childItems = m_model->m_childItems[parent.internalId()];
-
-
-    for (int col = m_startColumn; col < m_startColumn + m_numCols; col++)
-    {
-      for (int row = m_startRow; row < m_endRow; row++ )
-      {
-        kDebug() << col << row;
-        QString name = QUuid::createUuid().toString();
-        m_model->m_items[childItems[col][row]] = name;
-      }
-    }
-    m_model->dataChanged(topLeft, bottomRight);
-  }
+  void setStartColumn(int column) { m_startColumn = column; }
 
 protected:
-  void setStartColumn(int column)
-  {
-    m_startColumn = column;
-  }
   int m_startColumn;
 };
 
@@ -241,61 +137,15 @@ class ModelMoveCommand : public ModelChangeCommand
 {
   Q_OBJECT
 public:
-  ModelMoveCommand(DynamicTreeModel *model, QObject *parent)
-    : ModelChangeCommand(model, parent)
-  {}
+  ModelMoveCommand(DynamicTreeModel *model, QObject *parent);
 
   virtual ~ModelMoveCommand() {}
 
-  virtual void doCommand()
-  {
-    QModelIndex srcParent = findIndex(m_rowNumbers);
-    QModelIndex destParent = findIndex(m_destRowNumbers);
+  virtual void doCommand();
 
-    //m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+  void setDestAncestors( QList<int> rows ) { m_destRowNumbers = rows; }
 
-    QList<qint64> l = m_model->m_childItems.value(srcParent.internalId())[0].mid(m_startRow, m_endRow - m_startRow + 1 );
-
-//     kDebug() << "before remove";
-//     kDebug() << "src" << m_model->m_childItems.value(srcParent.internalId())[0];
-//     kDebug() << "dest" << m_model->m_childItems.value(destParent.internalId())[0];
-    for (int i = m_startRow; i <= m_endRow ; i++)
-    {
-      m_model->m_childItems[srcParent.internalId()][0].removeAt(m_startRow);
-//       m_model->m_childItems[srcParent.internalId()].move(m_startRow, d);
-    }
-//     kDebug() << "after remove" << m_model->m_childItems.value(srcParent.internalId())[0] << "dest" << m_model->m_childItems.value(destParent.internalId())[0];;
-
-    int d;
-    if (m_destRow < m_startRow)
-      d = m_destRow;
-    else
-    {
-      if (srcParent == destParent)
-        d = m_destRow - (m_endRow - m_startRow + 1);
-      else
-        d = m_destRow - (m_endRow - m_startRow) + 1;
-    }
-
-//     kDebug() << "to insert" << l;
-    foreach(const qint64 id, l)
-    {
-      m_model->m_childItems[destParent.internalId()][0].insert(d++, id);
-    }
-//     kDebug() << "after insert" << m_model->m_childItems.value(srcParent.internalId())[0] << "dest" << m_model->m_childItems.value(destParent.internalId())[0];;
-
-    //m_model->endMoveRows();
-  }
-
-  void setDestAncestors( QList<int> rows )
-  {
-    m_destRowNumbers = rows;
-  }
-
-  void setDestRow(int row)
-  {
-    m_destRow = row;
-  }
+  void setDestRow(int row) { m_destRow = row; }
 
 protected:
   QList<int> m_destRowNumbers;
