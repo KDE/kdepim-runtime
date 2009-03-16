@@ -32,5 +32,4 @@ target_link_libraries( resourcetester
   ${QT_QTXML_LIBRARY}
   ${QT_QTTEST_LIBRARY}
   ${KDE4_KROSSUI_LIBS}
-  akonadi-xml
 )
