@@ -141,7 +141,7 @@ void ContactsWidget::listSelectionChanged( const QItemSelection & selected, cons
     Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
     if ( i.isValid() )
     {
-      QByteArray ba = i.payload<QByteArray>();
+      QByteArray ba = i.payloadData();
       browser->setText( ba );
     }
 //   }
