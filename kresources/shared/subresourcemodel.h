@@ -26,6 +26,7 @@
 
 #include <akonadi/item.h>
 #include <akonadi/collection.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <QtCore/QHash>
 #include <QtCore/QSet>
@@ -59,6 +60,21 @@ class SubResourceModel : public AbstractSubResourceModel
     SubResourceClass *subResource( const QString &kresId ) const
     {
       return mSubResourcesByKResId.value( kresId, 0 );
+    }
+
+    QList<SubResourceClass*> writableSubResourcesForMimeType( const QString &mimeType ) const
+    {
+      Akonadi::MimeTypeChecker mimeChecker;
+      mimeChecker.addWantedMimeType( mimeType );
+
+      QList<SubResourceClass*> result;
+      foreach ( SubResourceClass *subResource, mSubResourcesByColId ) {
+        if ( subResource->isWritable() && mimeChecker.isWantedCollection( subResource->collection() ) ) {
+          result << subResource;
+        }
+      }
+
+      return result;
     }
 
   protected:
