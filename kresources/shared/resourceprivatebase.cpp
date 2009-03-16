@@ -25,6 +25,7 @@
 #include "subresourcebase.h"
 
 #include <akonadi/control.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <KDebug>
 #include <KLocale>
@@ -192,7 +193,11 @@ Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QStri
   // TODO: config for mime type specific store collections
   Q_UNUSED( mimeType );
 
-  return mDefaultStoreCollection;
+  if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
+    return mDefaultStoreCollection;
+  }
+
+  return Akonadi::Collection();
 }
 
 void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
