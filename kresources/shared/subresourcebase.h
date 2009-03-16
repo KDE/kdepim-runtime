@@ -74,6 +74,8 @@ class SubResourceBase : public QObject
 
     bool isActive() const;
 
+    bool isWritable() const;
+
     QString subResourceIdentifier() const;
 
     void readConfig( const KConfigGroup &config );
@@ -119,6 +121,8 @@ class SubResourceBase : public QObject
     virtual void itemRemoved( const Akonadi::Item &item ) = 0;
 
     static QString label( const Akonadi::Collection &collection );
+
+    static bool isWritable( const Akonadi::Collection &collection );
 };
 
 #endif

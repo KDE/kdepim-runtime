@@ -130,6 +130,11 @@ bool SubResourceBase::isActive() const
   return mActive;
 }
 
+bool SubResourceBase::isWritable() const
+{
+  return isWritable( mCollection );
+}
+
 QString SubResourceBase::subResourceIdentifier() const
 {
   return mCollection.url().url();
@@ -273,6 +278,16 @@ QString SubResourceBase::label( const Akonadi::Collection &collection )
   }
 
   return collection.name();
+}
+
+bool SubResourceBase::isWritable( const Akonadi::Collection &collection )
+{
+  Akonadi::Collection::Rights itemRights;
+  itemRights |= Akonadi::Collection::CanCreateItem;
+  itemRights |= Akonadi::Collection::CanChangeItem;
+  itemRights |= Akonadi::Collection::CanDeleteItem;
+
+  return (collection.rights() & itemRights) != 0;
 }
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
