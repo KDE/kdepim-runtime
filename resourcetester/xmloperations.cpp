@@ -209,6 +209,22 @@ bool XmlOperations::hasItem(const Item& _item, const Collection& _col)
   return false;
 } 
 
+bool XmlOperations::hasItem(const Item& _item, const QString& rid)
+{
+  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
+  Collection::List colist;
+
+  if ( job->exec() )
+    colist = job->collections() ;
+  foreach( const Collection &collection, colist ) {
+     if(rid == collection.remoteId()) {
+       return hasItem(_item, collection);
+     }
+  }
+  return false;
+}
+
+
 bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _refItems)
 {
   Item::List items( _items );

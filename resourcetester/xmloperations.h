@@ -55,6 +55,7 @@ class XmlOperations : public QObject
     bool compareItem( const Akonadi::Item &item, const Akonadi::Item &refItem );
     bool compareAttributes( const Akonadi::Entity &entity, const Akonadi::Entity &refEntity );
     bool hasItem(const Akonadi::Item& _item, const Akonadi::Collection& _col);
+    bool hasItem(const Akonadi::Item& _item, const QString& rid);
 
   private:
     template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
