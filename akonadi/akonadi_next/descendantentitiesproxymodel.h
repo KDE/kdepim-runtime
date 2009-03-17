@@ -21,15 +21,15 @@
 #ifndef DESCENDANTENTITIESPROXYMODEL_H
 #define DESCENDANTENTITIESPROXYMODEL_H
 
-#include <QAbstractProxyModel>
+//#include <QAbstractProxyModel>
 
-//#include "abstractproxymodel.h"
+#include "abstractproxymodel.h"
 
 namespace Akonadi
 {
 class DescendantEntitiesProxyModelPrivate;
 
-class DescendantEntitiesProxyModel : public QAbstractProxyModel
+class DescendantEntitiesProxyModel : public AbstractProxyModel
 {
   Q_OBJECT
 public:

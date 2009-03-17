@@ -163,7 +163,7 @@ class DescendantEntitiesProxyModelPrivate
 }
 
 DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
-      : QAbstractProxyModel( parent ),
+      : AbstractProxyModel( parent ),
         d_ptr( new DescendantEntitiesProxyModelPrivate(this) )
 {
   Q_D( DescendantEntitiesProxyModel );
@@ -414,7 +414,8 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelI
   Q_Q(DescendantEntitiesProxyModel);
   int c = descendedRow(parent);
   int d = descendedRow(destParent);
-  //q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
+  kDebug() << c << d;
+  q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sourceParentIndex, int start, int end, const QModelIndex &destParentIndex, int destRow)
@@ -422,7 +423,8 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sou
   Q_Q(DescendantEntitiesProxyModel);
 
   m_descendantsCount.clear();
-  //q->endMoveRows();
+  kDebug();
+  q->endMoveRows();
 }
 
 
