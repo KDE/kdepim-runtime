@@ -73,6 +73,11 @@ ModelTest::ModelTest ( QAbstractItemModel *_model, QObject *parent ) : QObject (
     connect ( model, SIGNAL ( rowsRemoved ( const QModelIndex &, int, int ) ),
               this, SLOT ( rowsRemoved ( const QModelIndex &, int, int ) ) );
 
+    connect ( model, SIGNAL ( rowsAboutToBeMoved ( const QModelIndex &, int, int, const QModelIndex &, int ) ),
+              this, SLOT ( rowsAboutToBeMoved ( const QModelIndex &, int, int, const QModelIndex &, int ) ) );
+    connect ( model, SIGNAL ( rowsMoved ( const QModelIndex &, int, int, const QModelIndex &, int ) ),
+              this, SLOT ( rowsMoved ( const QModelIndex &, int, int, const QModelIndex &, int ) ) );
+
     runAllTests();
 }
 
@@ -344,6 +349,7 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
             Q_ASSERT ( index.column() == c );
             // While you can technically return a QVariant usually this is a sign
             // of an bug in data()  Disable if this really is ok in your model.
+//             qDebug() << index << index.data() << index.parent();
             Q_ASSERT ( model->data ( index, Qt::DisplayRole ).isValid() == true );
 
             // If the next test fails here is some somewhat useful debug you play with.
@@ -476,7 +482,7 @@ void ModelTest::rowsInserted ( const QModelIndex & parent, int start, int end )
     qDebug() << "rowsInserted"  << "start=" << start << "end=" << end << "oldsize=" << c.oldSize
     << "parent=" << model->data ( parent ).value<QString>() << "current rowcount=" << model->rowCount ( parent );
 
-    for (int ii=c.oldSize; ii < (c.oldSize + ( end - start + 1 )); ii++)
+    for (int ii=start; ii <= end; ii++)
     {
       qDebug() << "itemWasInserted:" << model->data ( model->index ( ii, 0, parent ));
     }
@@ -508,6 +514,64 @@ void ModelTest::layoutChanged()
         Q_ASSERT ( p == model->index ( p.row(), p.column(), p.parent() ) );
     }
     changing.clear();
+}
+
+void ModelTest::rowsAboutToBeMoved(const QModelIndex &srcParent, int start, int end, const QModelIndex &destParent, int destinationRow )
+{
+  qDebug() << "rowsAboutToBeMoved" << srcParent << start << end << destParent << destinationRow;
+  Changing cs;
+  cs.parent = srcParent;
+  cs.oldSize = model->rowCount ( srcParent );
+  cs.last = model->data ( model->index ( start - 1, 0, srcParent ) );
+  cs.next = model->data ( model->index ( end + 1, 0, srcParent ) );
+  remove.push ( cs );
+  Changing cd;
+  cd.parent = destParent;
+  cd.oldSize = model->rowCount ( destParent );
+  cd.last = model->data ( model->index ( destinationRow - 1, 0, destParent ) );
+  cd.next = model->data ( model->index ( destinationRow, 0, destParent ) );
+  insert.push ( cd );
+}
+
+void ModelTest::rowsMoved(const QModelIndex &srcParent, int start, int end, const QModelIndex &destParent, int destinationRow )
+{
+  qDebug() << "rowsMoved" << srcParent << start << end << destParent << destinationRow;
+
+  Changing cd = insert.pop();
+  Q_ASSERT ( cd.parent == destParent );
+  if (srcParent == destParent)
+  {
+    Q_ASSERT ( cd.oldSize == model->rowCount ( destParent ) );
+
+    // TODO: Find out what I can assert here about last and next.
+//     Q_ASSERT ( cd.last == model->data ( model->index ( destinationRow - 1, 0, cd.parent ) ) );
+//     Q_ASSERT ( cd.next == model->data ( model->index ( destinationRow + (end - start + 1), 0, cd.parent ) ) );
+
+
+  }
+  else
+  {
+    Q_ASSERT ( cd.oldSize + ( end - start + 1 ) == model->rowCount ( destParent ) );
+
+    Q_ASSERT ( cd.last == model->data ( model->index ( destinationRow - 1, 0, cd.parent ) ) );
+    Q_ASSERT ( cd.next == model->data ( model->index ( destinationRow + (end - start + 1), 0, cd.parent ) ) );
+  }
+  Changing cs = remove.pop();
+
+  Q_ASSERT ( cs.parent == srcParent );
+  if (srcParent == destParent)
+  {
+    Q_ASSERT ( cs.oldSize == model->rowCount ( srcParent ) );
+  }
+  else
+  {
+    Q_ASSERT ( cs.oldSize - ( end - start + 1 ) == model->rowCount ( srcParent ) );
+
+    Q_ASSERT ( cs.last == model->data ( model->index ( start - 1, 0, srcParent ) ) );
+    qDebug() << cs.next << model->data ( model->index ( start, 0, srcParent ) );
+    Q_ASSERT ( cs.next == model->data ( model->index ( start, 0, srcParent ) ) );
+  }
+
 }
 
 /*!

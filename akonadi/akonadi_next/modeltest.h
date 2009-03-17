@@ -52,6 +52,8 @@ protected Q_SLOTS:
   void rowsInserted( const QModelIndex & parent, int start, int end );
   void rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end );
   void rowsRemoved( const QModelIndex & parent, int start, int end );
+  void rowsAboutToBeMoved ( const QModelIndex &, int, int, const QModelIndex &, int);
+  void rowsMoved ( const QModelIndex &, int, int, const QModelIndex &, int );
 
 private:
   void checkChildren( const QModelIndex &parent, int currentDepth = 0 );
