@@ -45,6 +45,8 @@ public:
     Sets the root index to @p index. This is the root of the proxy model.
     @param index The root index in the *source* model which will be shown in this model.
     if the index is invalid, the model is empty.
+
+    You must set the model before setting the root index.
     */
     void setRootIndex( const QModelIndex &index);
 

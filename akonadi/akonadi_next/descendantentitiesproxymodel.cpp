@@ -173,15 +173,13 @@ DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
 
 void DescendantEntitiesProxyModel::setRootIndex(const QModelIndex &index)
 {
-  // Can't assert that because:
-  // a) The index might be invalid (root of source model)
-  // b) Someone might set the root index before setting the model.
-//   Q_ASSERT(index.model() == sourceModel());
   Q_D(DescendantEntitiesProxyModel);
+
+  if (index.isValid())
+    Q_ASSERT(index.model() == sourceModel());
 
   //beginResetModel();
   d->m_rootDescendIndex = index;
-  d->m_descendantsCount.clear();
   reset();
  // endResetModel();
 }
