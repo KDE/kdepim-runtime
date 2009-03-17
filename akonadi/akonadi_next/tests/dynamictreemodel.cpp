@@ -10,7 +10,7 @@
 #include <kdebug.h>
 
 DynamicTreeModel::DynamicTreeModel(QObject *parent)
-  : QAbstractItemModel(parent),
+  : AbstractItemModel(parent),
     nextId(1)
 {
 }
@@ -258,7 +258,7 @@ void ModelMoveCommand::doCommand()
   QModelIndex srcParent = findIndex(m_rowNumbers);
   QModelIndex destParent = findIndex(m_destRowNumbers);
 
-  //m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+  m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
 
   QList<qint64> l = m_model->m_childItems.value(srcParent.internalId())[0].mid(m_startRow, m_endRow - m_startRow + 1 );
 
@@ -281,5 +281,7 @@ void ModelMoveCommand::doCommand()
   {
     m_model->m_childItems[destParent.internalId()][0].insert(d++, id);
   }
-  //m_model->endMoveRows();
+
+  m_model->endMoveRows();
 }
+
