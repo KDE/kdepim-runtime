@@ -43,7 +43,7 @@ EntityTreeModel::EntityTreeModel( EntityUpdateAdapter *entityUpdateAdapter,
                                   Monitor *monitor,
                                   QObject *parent
                                 )
-    : QAbstractItemModel( parent ),
+    : AbstractItemModel( parent ),
     d_ptr( new EntityTreeModelPrivate( this ) )
 {
   Q_D( EntityTreeModel );
