@@ -14,8 +14,10 @@ include_directories(
 include(KDE4Defaults)
 
 set( akonadi_next_SRCS
-	#  abstractitemmodel.cpp
-	#  abstractproxymodel.cpp
+  abstractitemmodel.cpp
+  abstractitemmodel_p.cpp
+  abstractproxymodel.cpp
+#   qsortfilterproxymodel.cpp
   entitytreemodel.cpp
   entitytreemodel_p.cpp
   entityupdateadapter.cpp

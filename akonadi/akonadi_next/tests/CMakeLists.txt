@@ -11,7 +11,9 @@ SET(testSources
   dynamictreemodel.cpp
   ../modeltest.cpp
   ../descendantentitiesproxymodel.cpp
-  #  ../abstractproxymodel.cpp
+  ../abstractproxymodel.cpp
+  ../abstractitemmodel_p.cpp
+  ../abstractitemmodel.cpp
 )
 
 
