@@ -93,4 +93,44 @@ void ConcurrentItemSaveJob::handleSuccess()
 {
 }
 
+ConcurrentCollectionCreateJob::ConcurrentCollectionCreateJob( const Akonadi::Collection &collection )
+  : ConcurrentJob<CollectionCreateJob>(),
+    mCollection( collection )
+{
+}
+
+const ConcurrentCollectionCreateJob *ConcurrentCollectionCreateJob::operator->() const
+{
+  return this;
+}
+
+void ConcurrentCollectionCreateJob::createJob()
+{
+  mJob = new CollectionCreateJob( mCollection );
+}
+
+void ConcurrentCollectionCreateJob::handleSuccess()
+{
+}
+
+ConcurrentCollectionDeleteJob::ConcurrentCollectionDeleteJob( const Akonadi::Collection &collection )
+  : ConcurrentJob<CollectionDeleteJob>(),
+    mCollection( collection )
+{
+}
+
+const ConcurrentCollectionDeleteJob *ConcurrentCollectionDeleteJob::operator->() const
+{
+  return this;
+}
+
+void ConcurrentCollectionDeleteJob::createJob()
+{
+  mJob = new CollectionDeleteJob( mCollection );
+}
+
+void ConcurrentCollectionDeleteJob::handleSuccess()
+{
+}
+
 // kate: space-indent on; indent-width 2; replace-tabs on;

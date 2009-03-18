@@ -24,6 +24,8 @@
 #include "itemsavejob.h"
 
 #include <akonadi/collection.h>
+#include <akonadi/collectioncreatejob.h>
+#include <akonadi/collectiondeletejob.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
@@ -123,6 +125,38 @@ class ConcurrentItemSaveJob : public ConcurrentJob<ItemSaveJob>
 
   protected:
     const ItemSaveContext &mSaveContext;
+
+  protected:
+    void createJob();
+
+    void handleSuccess();
+};
+
+class ConcurrentCollectionCreateJob : public ConcurrentJob<Akonadi::CollectionCreateJob>
+{
+  public:
+    ConcurrentCollectionCreateJob( const Akonadi::Collection &collection );
+
+    const ConcurrentCollectionCreateJob *operator->() const;
+
+  protected:
+    Akonadi::Collection mCollection;
+
+  protected:
+    void createJob();
+
+    void handleSuccess();
+};
+
+class ConcurrentCollectionDeleteJob : public ConcurrentJob<Akonadi::CollectionDeleteJob>
+{
+  public:
+    ConcurrentCollectionDeleteJob( const Akonadi::Collection &collection );
+
+    const ConcurrentCollectionDeleteJob *operator->() const;
+
+  protected:
+    Akonadi::Collection mCollection;
 
   protected:
     void createJob();
