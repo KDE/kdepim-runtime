@@ -26,19 +26,33 @@
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemmodifyjob.h>
 
+#include <KDebug>
+
 using namespace Akonadi;
 
 ItemSaveJob::ItemSaveJob( const ItemSaveContext &saveContext )
 {
   foreach ( const ItemAddContext &addContext, saveContext.addedItems ) {
+    kDebug( 5650 ) << "CreateJob for Item (mimeType=" << addContext.item.mimeType()
+                   << "), collection (id=" << addContext.collection.id()
+                   << ", remoteId=" << addContext.collection.remoteId()
+                   << ")";
     (void)new ItemCreateJob( addContext.item, addContext.collection, this );
   }
 
   foreach ( const Item &item, saveContext.changedItems ) {
+    kDebug( 5650 ) << "ModifyJob for Item (id=" << item.id()
+                   << ", remoteId=" << item.remoteId()
+                   << ", mimeType=" << item.mimeType()
+                   << ")";
     (void)new ItemModifyJob( item, this );
   }
 
   foreach ( const Item &item, saveContext.removedItems ) {
+    kDebug( 5650 ) << "DeleteJob for Item (id=" << item.id()
+                   << ", remoteId=" << item.remoteId()
+                   << ", mimeType=" << item.mimeType()
+                   << ")";
     (void)new ItemDeleteJob( item, this );
   }
 }
