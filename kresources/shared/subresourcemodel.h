@@ -77,6 +77,32 @@ class SubResourceModel : public AbstractSubResourceModel
       return result;
     }
 
+    QList<const SubResourceBase*> writableSubResourceBasesForMimeType( const QString &mimeType ) const
+    {
+      Akonadi::MimeTypeChecker mimeChecker;
+      mimeChecker.addWantedMimeType( mimeType );
+
+      QList<const SubResourceBase*> result;
+      foreach ( const SubResourceClass *subResource, mSubResourcesByColId ) {
+        if ( subResource->isWritable() && mimeChecker.isWantedCollection( subResource->collection() ) ) {
+          result << subResource;
+        }
+      }
+
+      return result;
+    }
+
+    SubResourceClass *findSubResourceForMappedItem( const QString &kresId ) const
+    {
+      foreach ( SubResourceClass *subResource, mSubResourcesByColId ) {
+        if ( subResource->hasMappedItem( kresId ) ) {
+          return subResource;
+        }
+      }
+
+      return 0;
+    }
+
   protected:
     SubResByColId mSubResourcesByColId;
     SubResByKResId mSubResourcesByKResId;
