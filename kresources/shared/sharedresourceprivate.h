@@ -93,7 +93,17 @@ class SharedResourcePrivate : public ResourcePrivateBase
       mModel.clear();
     }
 
-    SubResourceClass *storeSubResourceForMimeType( const QString &mimeType ) const
+    const SubResourceBase *subResourceBase( const QString &subResourceIdentifier ) const
+    {
+      return subResource( subResourceIdentifier );
+    }
+
+    const SubResourceBase *findSubResourceForMappedItem( const QString &kresId ) const
+    {
+      return mModel.findSubResourceForMappedItem( kresId );
+    }
+
+    const SubResourceBase *storeSubResourceForMimeType( const QString &mimeType ) const
     {
       Akonadi::Collection collection = storeCollectionForMimeType( mimeType );
       if ( collection.isValid() ) {
@@ -101,6 +111,11 @@ class SharedResourcePrivate : public ResourcePrivateBase
       }
 
       return 0;
+    }
+
+    QList<const SubResourceBase*> writableSubResourcesForMimeType( const QString &mimeType ) const
+    {
+      return mModel.writableSubResourceBasesForMimeType( mimeType );
     }
 };
 
