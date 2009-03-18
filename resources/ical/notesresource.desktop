@@ -68,6 +68,7 @@ Comment[pt]=Carrega os dados de um ficheiro de notas
 Comment[pt_BR]=Carrega os dados de um arquivo de notas
 Comment[sv]=Laddar data från en anteckningsfil
 Comment[uk]=Завантажує дані з файла нотаток
+Comment[x-test]=xxLoads data from a notes filexx
 Comment[zh_TW]=從 notes 檔載入資料
 Type=AkonadiResource
 Exec=akonadi_ical_resource

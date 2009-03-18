@@ -23,6 +23,7 @@ Comment[pt]=Carrega os dados de um recurso de livro de endereços tradicional do
 Comment[pt_BR]=Carrega os dados do tradicional recurso do livro de endereços do KDE
 Comment[sv]=Laddar data från en traditionell adressboksresurs i KDE
 Comment[uk]=Завантажує дані зі звичайного ресурсу адресної книги для KDE
+Comment[x-test]=xxLoads data from a traditional KDE address book resourcexx
 Comment[zh_TW]=從傳統 KDE 通訊錄資源載入資料
 Type=AkonadiResource
 Exec=akonadi_kabc_resource
