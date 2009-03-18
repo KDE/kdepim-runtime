@@ -56,17 +56,20 @@ ResourcePrivateBase::~ResourcePrivateBase()
 
 bool ResourcePrivateBase::doOpen()
 {
+  kDebug( 5650 );
   if ( mState == Opened ) {
     kWarning( 5650 ) << "Trying to open already opened resource";
     return true;
   }
 
   if ( !startAkonadi() ) {
+    kError( 5650 ) << "Failed to start Akonadi";
     mState = Failed;
     return false;
   }
 
   if ( !openResource() ) {
+    kError( 5650 ) << "Failed to do type specific open";
     mState = Failed;
     return false;
   }
@@ -178,6 +181,75 @@ Akonadi::Collection ResourcePrivateBase::defaultStoreCollection() const
   return mDefaultStoreCollection;
 }
 
+bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeType )
+{
+  kDebug( 5650 ) << "uid=" << uid << ", mimeType=" << mimeType;
+
+  // check if there is a sub resource with a mapped item for the identifier
+  // if there is, we have a change, otherwise its an add
+  const SubResourceBase *resource = findSubResourceForMappedItem( uid );
+  if ( resource == 0 ) {
+    mChanges[ uid ] = Added;
+
+    resource = storeSubResourceForMimeType( mimeType );
+    if ( resource == 0 ) {
+      // check possible store sub resources. if there is only one, use it
+      // otherwise we need to ask the user
+      QList<const SubResourceBase*> possibleStores = writableSubResourcesForMimeType( mimeType );
+      if ( possibleStores.count() == 1 ) {
+        resource = possibleStores.first();
+      } else {
+        resource = storeSubResourceFromUser( uid, mimeType );
+        if ( resource == 0 ) {
+          mChanges.remove( uid );
+          return false;
+        }
+      }
+    }
+  } else {
+    mChanges[ uid ] = Changed;
+  }
+
+  Q_ASSERT( resource != 0 );
+  mUidToResourceMap[ uid ] = resource->subResourceIdentifier();
+
+  return true;
+}
+
+void ResourcePrivateBase::changeLocalItem( const QString &uid )
+{
+  const QString subResource = mUidToResourceMap.value( uid );
+  kDebug( 5650 ) << "uid=" << uid << ", subResource=" << subResource;
+
+  Q_ASSERT( !subResource.isEmpty() );
+
+  const SubResourceBase *resource = subResourceBase( subResource );
+  Q_ASSERT( resource != 0 );
+
+  if ( resource->hasMappedItem( uid ) ) {
+    mChanges[ uid ] = Changed;
+  } else {
+    mChanges[ uid ] = Added;
+  }
+}
+
+void ResourcePrivateBase::removeLocalItem( const QString &uid )
+{
+  const QString subResource = mUidToResourceMap.value( uid );
+  kDebug( 5650 ) << "uid=" << uid << ", subResource=" << subResource;
+
+  Q_ASSERT( !subResource.isEmpty() );
+
+  const SubResourceBase *resource = subResourceBase( subResource );
+  Q_ASSERT( resource != 0 );
+
+  if ( resource->hasMappedItem( uid ) ) {
+    mChanges[ uid ] = Removed;
+  } else {
+    mChanges.remove( uid );
+  }
+}
+
 ResourcePrivateBase::State ResourcePrivateBase::state() const
 {
   return mState;
@@ -190,8 +262,8 @@ bool ResourcePrivateBase::startAkonadi()
 
 Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QString &mimeType ) const
 {
+  kDebug( 5650 ) << "mimeType=" << mimeType;
   // TODO: config for mime type specific store collections
-  Q_UNUSED( mimeType );
 
   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
     return mDefaultStoreCollection;
@@ -199,6 +271,56 @@ Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QStri
 
   return Akonadi::Collection();
 }
+
+bool ResourcePrivateBase::prepareItemSaveContext( ItemSaveContext &saveContext )
+{
+  ChangeByKResId::const_iterator it    = mChanges.constBegin();
+  ChangeByKResId::const_iterator endIt = mChanges.constEnd();
+  for ( ; it != endIt; ++it ) {
+    if ( !prepareItemSaveContext( it, saveContext ) ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+bool ResourcePrivateBase::prepareItemSaveContext( const ChangeByKResId::const_iterator &it, ItemSaveContext &saveContext )
+{
+  const QString kresId = it.key();
+  const SubResourceBase *resource = subResourceBase( mUidToResourceMap.value( kresId ) );
+  Q_ASSERT( resource != 0 );
+
+  switch ( it.value() ) {
+    case Added: {
+      ItemAddContext addContext;
+      addContext.collection = resource->collection();
+      addContext.item = createItem( kresId );
+
+      saveContext.addedItems << addContext;
+      break;
+    }
+
+    case Changed: {
+      Akonadi::Item item = updateItem( resource->mappedItem( kresId ), kresId, mIdArbiter->mapToOriginalId( kresId ) );
+
+      saveContext.changedItems << item;
+      break;
+    }
+
+    case Removed:
+      saveContext.removedItems << resource->mappedItem( kresId );
+      break;
+
+    case NoChange:
+       Q_ASSERT( "Invalid ChangeType in change map" );
+       break;
+  }
+
+  return true;
+}
+
 
 void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
 {
@@ -220,6 +342,9 @@ void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
         }
       }
     }
+  } else if ( mDefaultStoreCollection == subResource->collection() ) {
+    // update locally cached instance
+    mDefaultStoreCollection = subResource->collection();
   }
 }
 

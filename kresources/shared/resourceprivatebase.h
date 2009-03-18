@@ -28,6 +28,10 @@
 #include <QtCore/QHash>
 #include <QtCore/QObject>
 
+namespace Akonadi {
+  class Item;
+}
+
 class IdArbiterBase;
 class ItemSaveContext;
 class SubResourceBase;
@@ -76,6 +80,12 @@ class ResourcePrivateBase : public QObject
 
     Akonadi::Collection defaultStoreCollection() const;
 
+    bool addLocalItem( const QString &uid, const QString &mimeType );
+
+    void changeLocalItem( const QString &uid );
+
+    void removeLocalItem( const QString &uid );
+
   protected:
     KConfigGroup mConfig;
 
@@ -85,6 +95,8 @@ class ResourcePrivateBase : public QObject
 
     Akonadi::Collection mDefaultStoreCollection;
 
+    QMap<QString, QString> mUidToResourceMap;
+
   protected:
     State state() const;
 
@@ -92,15 +104,31 @@ class ResourcePrivateBase : public QObject
 
     Akonadi::Collection storeCollectionForMimeType( const QString &mimeType ) const;
 
+    bool prepareItemSaveContext( ItemSaveContext &saveContext );
+
+    bool prepareItemSaveContext( const ChangeByKResId::const_iterator &it, ItemSaveContext &saveContext );
+
     virtual bool openResource() = 0;
 
     virtual bool closeResource() = 0;
 
-    virtual bool prepareItemSaveContext( ItemSaveContext &saveContext ) = 0;
-
     virtual void writeResourceConfig( KConfigGroup &config ) const = 0;
 
     virtual void clearResource() = 0;
+
+    virtual const SubResourceBase *subResourceBase( const QString &subResourceIdentifier ) const = 0;
+
+    virtual const SubResourceBase *findSubResourceForMappedItem( const QString &kresId ) const = 0;
+
+    virtual const SubResourceBase *storeSubResourceForMimeType( const QString &mimeType ) const = 0;
+
+    virtual QList<const SubResourceBase*> writableSubResourcesForMimeType( const QString &mimeType ) const = 0;
+
+    virtual const SubResourceBase *storeSubResourceFromUser( const QString &kresId, const QString &mimeType ) = 0;
+
+    virtual Akonadi::Item createItem( const QString &kresId ) = 0;
+
+    virtual Akonadi::Item updateItem( const Akonadi::Item &item, const QString &kresId, const QString &originalId ) = 0;
 
   protected Q_SLOTS:
     virtual void subResourceAdded( SubResourceBase *subResource );
@@ -113,6 +141,25 @@ class ResourcePrivateBase : public QObject
 
   private:
     State mState;
+};
+
+class BoolGuard
+{
+  public:
+    BoolGuard( bool &variable, bool overrideValue )
+      : mVariable( variable ), mBaseValue( variable )
+    {
+      mVariable = overrideValue;
+    }
+
+    ~BoolGuard()
+    {
+      mVariable = mBaseValue;
+    }
+
+  protected:
+    bool &mVariable;
+    const bool mBaseValue;
 };
 
 #endif
