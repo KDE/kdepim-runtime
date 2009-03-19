@@ -37,6 +37,9 @@ class SharedResourcePrivate : public ResourcePrivateBase
       connect( &mModel, SIGNAL( subResourceAdded( SubResourceBase* ) ),
                SLOT( subResourceAdded( SubResourceBase* ) ) );
 
+      connect( &mModel, SIGNAL( subResourceRemoved( SubResourceBase* ) ),
+               SLOT( subResourceRemoved( SubResourceBase* ) ) );
+
       connect( &mModel, SIGNAL( loadingResult( bool, QString ) ),
                SLOT( loadingResult( bool, QString ) ) );
     }
@@ -47,6 +50,9 @@ class SharedResourcePrivate : public ResourcePrivateBase
     {
       connect( &mModel, SIGNAL( subResourceAdded( SubResourceBase* ) ),
                SLOT( subResourceAdded( SubResourceBase* ) ) );
+
+      connect( &mModel, SIGNAL( subResourceRemoved( SubResourceBase* ) ),
+               SLOT( subResourceRemoved( SubResourceBase* ) ) );
 
       connect( &mModel, SIGNAL( loadingResult( bool, QString ) ),
                SLOT( loadingResult( bool, QString ) ) );
