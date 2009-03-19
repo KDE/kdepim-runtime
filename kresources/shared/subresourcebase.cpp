@@ -34,14 +34,15 @@ IdArbiterBase::~IdArbiterBase()
 
 QString IdArbiterBase::arbitrateOriginalId( const QString &originalId )
 {
-  QString arbitratedId = mapToArbitratedId( originalId );
-  if ( !arbitratedId.isEmpty() ) {
+  const IdSet arbitratedIds = mapToArbitratedIds( originalId );
+  QString arbitratedId;
+  if ( arbitratedIds.contains( originalId ) ) {
     arbitratedId = createArbitratedId();
   } else {
     arbitratedId = originalId;
   }
 
-  mOriginalToArbitrated.insert( originalId, arbitratedId );
+  mOriginalToArbitrated[ originalId ].insert( arbitratedId );
   mArbitratedToOriginal.insert( arbitratedId, originalId );
 
   return arbitratedId;
@@ -69,7 +70,12 @@ QString IdArbiterBase::removeArbitratedId( const QString &arbitratedId )
   if ( findIt != mArbitratedToOriginal.end() ) {
     const QString orignalId = findIt.value();
 
-    mOriginalToArbitrated.remove( orignalId );
+    IdSetMapping::iterator origIt = mOriginalToArbitrated.find( orignalId );
+    origIt.value().remove( arbitratedId );
+    if ( origIt.value().isEmpty() ) {
+      mOriginalToArbitrated.erase( origIt );
+    }
+
     mArbitratedToOriginal.erase( findIt );
     return orignalId;
   }
@@ -77,14 +83,14 @@ QString IdArbiterBase::removeArbitratedId( const QString &arbitratedId )
   return QString();
 }
 
-QString IdArbiterBase::mapToArbitratedId( const QString &originalId ) const
+IdArbiterBase::IdSet IdArbiterBase::mapToArbitratedIds( const QString &originalId ) const
 {
-  const IdMapping::const_iterator findIt = mOriginalToArbitrated.constFind( originalId );
+  const IdSetMapping::const_iterator findIt = mOriginalToArbitrated.constFind( originalId );
   if ( findIt != mOriginalToArbitrated.constEnd() ) {
     return findIt.value();
   }
 
-  return QString();
+  return IdSet();
 }
 
 SubResourceBase::SubResourceBase( const Akonadi::Collection &collection )

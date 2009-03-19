@@ -43,12 +43,14 @@ class IdArbiterBase
     void clear();
 
   protected:
+    typedef QSet<QString> IdSet;
     typedef QHash<QString, QString> IdMapping;
-    IdMapping mOriginalToArbitrated;
+    typedef QHash<QString, IdSet> IdSetMapping;
+    IdSetMapping mOriginalToArbitrated;
     IdMapping mArbitratedToOriginal;
 
   protected:
-    QString mapToArbitratedId( const QString &originalId ) const;
+    IdSet mapToArbitratedIds( const QString &originalId ) const;
 
     virtual QString createArbitratedId() const = 0;
 };
