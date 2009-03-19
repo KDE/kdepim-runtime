@@ -94,8 +94,7 @@ class AbstractSubResourceModel : public QObject
     AsyncLoadContext *mAsyncLoadContext;
 
   private Q_SLOTS:
-    void monitorCollectionAdded( const Akonadi::Collection &parentCollection,
-                                 const Akonadi::Collection &collection );
+    void monitorCollectionAdded( const Akonadi::Collection &collection );
 
     void monitorCollectionChanged( const Akonadi::Collection &collection );
 

@@ -81,11 +81,12 @@ AbstractSubResourceModel::AbstractSubResourceModel( const QStringList &supported
     mMonitor->setMimeTypeMonitored( mimeType );
   }
 
+  mMonitor->setCollectionMonitored( Akonadi::Collection::root() );
   mMonitor->fetchCollection( true );
   mMonitor->itemFetchScope().fetchFullPayload();
 
   connect( mMonitor, SIGNAL( collectionAdded( Akonadi::Collection, Akonadi::Collection ) ),
-          SLOT( monitorCollectionAdded( Akonadi::Collection, Akonadi::Collection ) ) );
+          SLOT( monitorCollectionAdded( Akonadi::Collection ) ) );
   connect( mMonitor, SIGNAL( collectionChanged( Akonadi::Collection ) ),
           SLOT( monitorCollectionChanged( Akonadi::Collection ) ) );
   connect( mMonitor, SIGNAL( collectionRemoved( Akonadi::Collection ) ),
@@ -141,6 +142,7 @@ bool AbstractSubResourceModel::load()
   foreach ( const Collection &collection, collections ) {
     if ( mMimeChecker->isWantedCollection( collection ) ) {
       collectionAdded( collection );
+      mMonitor->setCollectionMonitored( collection );
       ConcurrentItemFetchJob itemFetchJob( collection );
       if ( !itemFetchJob.exec() ) {
         kError( 5650 ) << "Loading items for collection (id=" << collection.id()
@@ -176,10 +178,8 @@ bool AbstractSubResourceModel::asyncLoad()
   return true;
 }
 
-void AbstractSubResourceModel::monitorCollectionAdded( const Akonadi::Collection &parentCollection, const Akonadi::Collection &collection )
+void AbstractSubResourceModel::monitorCollectionAdded( const Akonadi::Collection &collection )
 {
-  Q_UNUSED( parentCollection );
-
   // TODO check whether we need to do something while an async load is in progress
   if ( mMimeChecker->isWantedCollection( collection ) ) {
     collectionAdded( collection );
@@ -197,9 +197,8 @@ void AbstractSubResourceModel::monitorCollectionChanged( const Akonadi::Collecti
 void AbstractSubResourceModel::monitorCollectionRemoved( const Akonadi::Collection &collection )
 {
   // TODO check whether we need to do something while an async load is in progress
-  if ( mMimeChecker->isWantedCollection( collection ) ) {
-    collectionRemoved( collection );
-  }
+  mMonitor->setCollectionMonitored( collection, false );
+  collectionRemoved( collection );
 }
 
 void AbstractSubResourceModel::monitorItemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -236,6 +235,7 @@ void AbstractSubResourceModel::asyncCollectionsReceived( const Akonadi::Collecti
   foreach ( const Collection &collection, collections ) {
     if ( mMimeChecker->isWantedCollection( collection ) ) {
       collectionAdded( collection );
+      mMonitor->setCollectionMonitored( collection );
 
       context->mItemFetchJobs.insert( new ItemFetchAdapter( collection, this ) );
     }

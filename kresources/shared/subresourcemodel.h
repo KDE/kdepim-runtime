@@ -143,7 +143,12 @@ class SubResourceModel : public AbstractSubResourceModel
     void collectionRemoved( const Akonadi::Collection &collection )
     {
       SubResourceClass *subResource = mSubResourcesByColId.take( collection.id() );
+      if ( subResource == 0 ) {
+        return;
+      }
+
       mSubResourcesByKResId.remove( subResource->subResourceIdentifier() );
+      mSubResourceIdentifiers.remove( subResource->subResourceIdentifier() );
 
       emit subResourceRemoved( subResource );
 
