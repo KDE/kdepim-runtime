@@ -21,6 +21,7 @@
 #ifndef KABC_RESOURCEAKONADI_SUBRESOURCE_H
 #define KABC_RESOURCEAKONADI_SUBRESOURCE_H
 
+#include "idarbiterbase.h"
 #include "subresourcebase.h"
 
 namespace Akonadi {

@@ -21,6 +21,7 @@
 #include "resourceprivatebase.h"
 
 #include "concurrentjobs.h"
+#include "idarbiterbase.h"
 #include "itemsavecontext.h"
 #include "subresourcebase.h"
 

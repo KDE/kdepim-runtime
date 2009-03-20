@@ -21,6 +21,7 @@
 #ifndef KCAL_RESOURCEAKONADI_SUBRESOURCE_H
 #define KCAL_RESOURCEAKONADI_SUBRESOURCE_H
 
+#include "idarbiterbase.h"
 #include "subresourcebase.h"
 
 #include <kcal/incidence.h>

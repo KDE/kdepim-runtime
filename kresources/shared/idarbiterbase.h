@@ -21,8 +21,8 @@
 #ifndef KRES_AKONADI_IDARBITERBASE_H
 #define KRES_AKONADI_IDARBITERBASE_H
 
-#include <QHash>
-#include <QSet>
+#include <QtCore/QHash>
+#include <QtCore/QSet>
 
 class IdArbiterBase
 {

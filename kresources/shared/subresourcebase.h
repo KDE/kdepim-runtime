@@ -24,36 +24,10 @@
 #include <akonadi/item.h>
 #include <akonadi/collection.h>
 
-#include <QtCore/QHash>
 #include <QtCore/QObject>
 
+class IdArbiterBase;
 class KConfigGroup;
-
-class IdArbiterBase
-{
-  public:
-    virtual ~IdArbiterBase();
-
-    QString arbitrateOriginalId( const QString &originalId );
-
-    QString removeArbitratedId( const QString &arbitratedId );
-
-    QString mapToOriginalId( const QString &arbitratedId ) const;
-
-    void clear();
-
-  protected:
-    typedef QSet<QString> IdSet;
-    typedef QHash<QString, QString> IdMapping;
-    typedef QHash<QString, IdSet> IdSetMapping;
-    IdSetMapping mOriginalToArbitrated;
-    IdMapping mArbitratedToOriginal;
-
-  protected:
-    IdSet mapToArbitratedIds( const QString &originalId ) const;
-
-    virtual QString createArbitratedId() const = 0;
-};
 
 class SubResourceBase : public QObject
 {
