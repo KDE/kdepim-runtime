@@ -3,7 +3,8 @@
 
 ########### next target ###############
 
-set(kabc_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadiconfig.cpp)
+set(kabc_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadi_p.cpp resourceakonadiconfig.cpp subresource.cpp
+${RESOURCE_AKONADI_SHARED_SOURCES} )
 
 
 kde4_add_plugin(kabc_akonadi ${kabc_akonadi_SRCS})

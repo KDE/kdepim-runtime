@@ -4,7 +4,7 @@ include_directories (${Boost_INCLUDE_DIR})
 
 ########### next target ###############
 
-set(kcal_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadiconfig.cpp)
+set(kcal_akonadi_SRCS resourceakonadiplugin.cpp resourceakonadi.cpp resourceakonadi_p.cpp resourceakonadiconfig.cpp subresource.cpp ${RESOURCE_AKONADI_SHARED_SOURCES})
 
 
 kde4_add_plugin(kcal_akonadi ${kcal_akonadi_SRCS})

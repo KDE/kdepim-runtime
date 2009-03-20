@@ -42,10 +42,6 @@ class ResourceAkonadi : public ResourceABC
     ResourceAkonadi();
     explicit ResourceAkonadi( const KConfigGroup &group );
     virtual ~ResourceAkonadi();
-    /**
-     *  Call this after you used one of the set... methods
-     */
-    virtual void init();
 
     virtual void clear();
 
@@ -82,23 +78,9 @@ class ResourceAkonadi : public ResourceABC
     virtual void setSubresourceActive( const QString &subResource, bool active );
     virtual void setSubresourceCompletionWeight( const QString &subResource, int weight );
 
-  protected Q_SLOTS:
-    void loadResult( KJob *job );
-    void saveResult( KJob *job );
-
   private:
     class Private;
     Private *const d;
-
-    Q_PRIVATE_SLOT( d, void subResourceLoadResult( KJob* ) )
-
-    Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
-    Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
-
-    Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
-    Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
-    Q_PRIVATE_SLOT( d, void collectionDataChanged( const QModelIndex&, const QModelIndex& ) )
 };
 
 }

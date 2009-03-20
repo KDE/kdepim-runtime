@@ -152,26 +152,12 @@ class ResourceAkonadi : public ResourceCalendar
 
     using QObject::event;   // prevent warning about hidden virtual method
 
-  protected Q_SLOTS:
-    void saveResult( KJob *job );
-
   private:
     //@cond PRIVATE
     Q_DISABLE_COPY( ResourceAkonadi )
+
     class Private;
     Private *const d;
-
-    void init();
-
-    Q_PRIVATE_SLOT( d, void subResourceLoadResult( KJob* ) )
-
-    Q_PRIVATE_SLOT( d, void itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
-    Q_PRIVATE_SLOT( d, void itemRemoved( const Akonadi::Item& ) )
-
-    Q_PRIVATE_SLOT( d, void collectionRowsInserted( const QModelIndex&, int, int ) )
-    Q_PRIVATE_SLOT( d, void collectionRowsRemoved( const QModelIndex&, int, int ) )
-    Q_PRIVATE_SLOT( d, void collectionDataChanged( const QModelIndex&, const QModelIndex& ) )
     //@endcond
 };
 
