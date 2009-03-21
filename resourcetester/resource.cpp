@@ -17,6 +17,8 @@
  */
 
 #include "resource.h"
+
+#include "global.h"
 #include "resourcesynchronizationjob.h"
 
 #include <akonadi/agentmanager.h>
@@ -50,6 +52,15 @@ void Resource::setOption(const QString& key, const QVariant& value)
 {
   mSettings.insert( key, value );
 }
+
+void Resource::setPathOption(const QString& key, const QString& path)
+{
+  if ( QFileInfo( path ).isAbsolute() )
+    setOption( key, path );
+  else
+    setOption( key, Global::basePath() + QDir::separator() + path );
+}
+
 
 bool Resource::create()
 {

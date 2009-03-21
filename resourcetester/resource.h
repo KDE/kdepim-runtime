@@ -38,6 +38,7 @@ class Resource: public QObject
     QString identifier() const;
 
     void setOption( const QString &key, const QVariant &value );
+    void setPathOption( const QString &key, const QString &path );
 
     bool create();
     void destroy();

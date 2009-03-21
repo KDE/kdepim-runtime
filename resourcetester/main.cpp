@@ -18,6 +18,7 @@
 #include "resource.h"
 #include "script.h"
 #include "xmloperations.h"
+#include "global.h"
 
 #include <KApplication>
 #include <KAboutData>
@@ -26,6 +27,7 @@
 
 #include <QCoreApplication>
 #include <QtCore/QTimer>
+#include <QFileInfo>
 
 #include <signal.h>
 
@@ -36,7 +38,7 @@ void sigHandler( int signal)
 
 int main(int argc, char *argv[])
 {
-  QString path;     
+  QString path;
 
   KAboutData aboutdata( "akonadi-RT", 0,
                         ki18n( "Akonadi Resource Tester" ),
@@ -53,13 +55,14 @@ int main(int argc, char *argv[])
   KCmdLineArgs::addCmdLineOptions( options );
 
   KApplication app;
-  
+
   const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-  
+
   if ( args->isSet( "config" ) )
     path.append(args->getOption( "config" )) ;
   else
     return -1;
+  Global::setBasePath( QFileInfo( path ).absolutePath() );
 
 #ifdef Q_OS_UNIX
   signal( SIGINT, sigHandler );

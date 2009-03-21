@@ -18,6 +18,7 @@
 */
 
 #include "xmloperations.h"
+#include "global.h"
 
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchjob.h>
@@ -25,6 +26,8 @@
 
 #include <KDebug>
 
+#include <QDir>
+#include <QFileInfo>
 #include <QStringList>
 
 #include <boost/bind.hpp>
@@ -83,7 +86,10 @@ void XmlOperations::setRootCollections(const Collection::List& roots)
 
 void XmlOperations::setXmlFile(const QString& fileName)
 {
-  mDocument.loadFile( fileName );
+  if ( QFileInfo( fileName ).isAbsolute() )
+    mDocument.loadFile( fileName );
+  else
+    mDocument.loadFile( Global::basePath() + QDir::separator() + fileName );
 }
 
 QString XmlOperations::lastError() const
