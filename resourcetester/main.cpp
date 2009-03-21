@@ -33,6 +33,7 @@
 
 void sigHandler( int signal)
 {
+  Q_UNUSED( signal );
   QCoreApplication::quit();
 }
 
@@ -73,7 +74,8 @@ int main(int argc, char *argv[])
 
   script->configure(path);
   script->insertObject( new XmlOperations(), "XmlOperations" );
-  script->insertObject( new Resource(), "Resource" );
+  Resource res;
+  script->insertObject( &res, "Resource" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();

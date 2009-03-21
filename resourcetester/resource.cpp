@@ -38,6 +38,11 @@ Resource::Resource(QObject* parent) :
 {
 }
 
+Resource::~Resource()
+{
+  destroy();
+}
+
 void Resource::setType(const QString& type)
 {
   mTypeIdentifier = type;
@@ -99,6 +104,8 @@ bool Resource::create()
 
 void Resource::destroy()
 {
+  if ( !mInstance.isValid() )
+    return;
   AgentManager::self()->removeInstance( mInstance );
   mInstance = AgentInstance();
 }

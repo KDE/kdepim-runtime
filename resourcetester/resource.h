@@ -32,6 +32,7 @@ class Resource: public QObject
   Q_OBJECT
   public:
     Resource( QObject *parent = 0 );
+    ~Resource();
 
   public slots:
     void setType( const QString &type );
