@@ -17,6 +17,7 @@
  */
 
 #include "resource.h"
+#include "resourcesynchronizationjob.h"
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -78,17 +79,9 @@ bool Resource::create()
   }
   mInstance.reconfigure();
 
-  // synchronize resource
-  QDBusInterface *resIface = new QDBusInterface( QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1").arg( identifier() ),
-                                                 "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this );
-  if ( resIface->isValid() ) {
-    mInstance.synchronize();
-    kDebug() << "waiting for resource to synchronize...";
-    // TODO: this crashs as soon as the signal is emitted, deep in qdbus stuff
-//     QTest::kWaitForSignal( resIface, SIGNAL(synchronized()) );
-    kDebug() << "done";
-  }
-  delete resIface;
+  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
+  if ( !syncJob->exec() )
+    kError() << "Synching resource failed: " << syncJob->errorString();
 
   return true;
 }
