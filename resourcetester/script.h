@@ -23,6 +23,7 @@
 
 class Script : public QObject
 {
+  Q_OBJECT
   private:
     Kross::Action *action;
 
@@ -31,6 +32,8 @@ class Script : public QObject
     void configure(const QString &path, QHash<QString, QObject *> hash);
     void configure(const QString &path);
     void insertObject(QObject *object, const QString &objectName);
+
+  public slots:
     void start();
 };
 

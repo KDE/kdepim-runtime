@@ -16,11 +16,13 @@
  */
 
 #include "script.h"
+#include <qcoreapplication.h>
 
 Script::Script()
 {
   action = new Kross::Action(this, "ResourceTester");
-}  
+  connect( action, SIGNAL(finished(Kross::Action*)), QCoreApplication::instance(), SLOT(quit()) );
+}
 
 void Script::configure(const QString &path, QHash<QString, QObject * > hash)
 {
@@ -48,3 +50,5 @@ void Script::start()
 {
   action->trigger();
 }
+
+#include "script.moc"

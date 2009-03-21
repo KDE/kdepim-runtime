@@ -25,6 +25,7 @@
 #include <KDebug>
 
 #include <QCoreApplication>
+#include <QtCore/QTimer>
 
 #include <signal.h>
 
@@ -66,11 +67,11 @@ int main(int argc, char *argv[])
 #endif
 
   Script *script = new Script();
-  
+
   script->configure(path);
   script->insertObject( new XmlOperations(), "XmlOperations" );
   script->insertObject( new Resource(), "Resource" );
-  script->start();
+  QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();
 }
