@@ -33,9 +33,13 @@
 
 using namespace Akonadi;
 
+Resource* Resource::mSelf = 0;
+
 Resource::Resource(QObject* parent) :
   QObject( parent )
 {
+  Q_ASSERT( !mSelf );
+  mSelf = this;
 }
 
 Resource::~Resource()
@@ -69,6 +73,9 @@ void Resource::setPathOption(const QString& key, const QString& path)
 
 bool Resource::create()
 {
+  if ( mInstance.isValid() )
+    return false;
+
   const AgentType type = AgentManager::self()->type( mTypeIdentifier );
   if ( !type.isValid() )
     return false;
@@ -108,6 +115,11 @@ void Resource::destroy()
     return;
   AgentManager::self()->removeInstance( mInstance );
   mInstance = AgentInstance();
+}
+
+Resource* Resource::instance()
+{
+  return mSelf;
 }
 
 #include "resource.moc"

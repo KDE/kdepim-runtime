@@ -1,6 +1,5 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2009 Igor Trindade Oliveira <igor_trindade@yahoo.com.br>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,39 +17,22 @@
     02110-1301, USA.
 */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
-
-#include <akonadi/agentinstance.h>
+#ifndef TEST_H
+#define TEST_H
 
 #include <QObject>
-#include <QHash>
-#include <QVariant>
 
-class Resource: public QObject
+class Test : public QObject
 {
   Q_OBJECT
   public:
-    Resource( QObject *parent = 0 );
-    ~Resource();
-
-    static Resource* instance();
+    Test( QObject *parent = 0 );
 
   public slots:
-    void setType( const QString &type );
-    QString identifier() const;
-
-    void setOption( const QString &key, const QVariant &value );
-    void setPathOption( const QString &key, const QString &path );
-
-    bool create();
-    void destroy();
-
-  private:
-    QString mTypeIdentifier;
-    Akonadi::AgentInstance mInstance;
-    QHash<QString, QVariant> mSettings;
-    static Resource* mSelf;
+    void assert( bool value );
+    void verify( QObject *object, const QString &slot );
+    void fail( const QString &error );
+    void abort();
 };
 
 #endif

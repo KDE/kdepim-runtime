@@ -23,6 +23,7 @@ set( resourcetester_SRCS
   resource.cpp
   resourcesynchronizationjob.cpp
   script.cpp
+  test.cpp
   xmloperations.cpp
 )
 
