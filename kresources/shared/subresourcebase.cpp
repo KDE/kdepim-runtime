@@ -139,7 +139,7 @@ void SubResourceBase::addItem( const Akonadi::Item &item )
 void SubResourceBase::changeItem( const Akonadi::Item &item )
 {
   ItemsByItemId::iterator findIt = mItems.find( item.id() );
-  if ( findIt == mItems.constEnd() ) {
+  if ( findIt == mItems.end() ) {
     kWarning( 5650 ) << "Item id=" << item.id()
                      << ", remoteId=" << item.remoteId()
                      << ", mimeType=" << item.mimeType()
@@ -162,7 +162,7 @@ void SubResourceBase::changeItem( const Akonadi::Item &item )
 void SubResourceBase::removeItem( const Akonadi::Item &item )
 {
   ItemsByItemId::iterator findIt = mItems.find( item.id() );
-  if ( findIt == mItems.constEnd() ) {
+  if ( findIt == mItems.end() ) {
     kWarning( 5650 ) << "Item id=" << item.id()
                      << ", remoteId=" << item.remoteId()
                      << ", mimeType=" << item.mimeType()
