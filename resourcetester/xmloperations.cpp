@@ -52,7 +52,8 @@ QTextStream& operator<<( QTextStream &s, const QStringList &list )
 }
 
 XmlOperations::XmlOperations(QObject* parent) :
-  QObject( parent )
+  QObject( parent ),
+  mCollectionFields( 0xFF )
 {
 }
 
@@ -96,6 +97,17 @@ void XmlOperations::setXmlFile(const QString& fileName)
 QString XmlOperations::lastError() const
 {
   return mErrorMsg;
+}
+
+void XmlOperations::ignoreCollectionField(XmlOperations::CollectionField field)
+{
+  mCollectionFields = mCollectionFields & ~field;
+}
+
+void XmlOperations::ignoreCollectionField(const QString& fieldName)
+{
+  const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
+  ignoreCollectionField( static_cast<CollectionField>( me.keyToValue( fieldName.toLatin1() ) ) );
 }
 
 bool XmlOperations::compare()
@@ -172,8 +184,8 @@ bool XmlOperations::compareCollection(const Collection& _col, const Collection& 
   Collection refCol( normalize( _refCol ) );
   
   // compare the two collections
-  if ( !compareValue( col, refCol, &Collection::contentMimeTypes, "content mime type" ) ||
-       !compareValue( col, refCol, &Collection::name, "name" ) )
+  if ( !compareValue( col, refCol, &Collection::contentMimeTypes, ContentMimeType ) ||
+       !compareValue( col, refCol, &Collection::name, Name ) )
     return false;
 
   if ( !compareAttributes( col, refCol ) )

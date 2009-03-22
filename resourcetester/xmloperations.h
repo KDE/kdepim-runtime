@@ -24,6 +24,7 @@
 #include <akonadi/item.h>
 #include <akonadi/xml/xmldocument.h>
 
+#include <QtCore/QMetaEnum>
 #include <QtCore/QObject>
 #include <QtCore/QTextStream>
 
@@ -33,9 +34,22 @@
 class XmlOperations : public QObject
 {
   Q_OBJECT
+  Q_ENUMS( CollectionField )
+
   public:
     XmlOperations( QObject *parent = 0 );
     ~XmlOperations();
+
+    enum CollectionField {
+      None = 0,
+      RemoteId = 1,
+      Name = 2,
+      ContentMimeType = 4
+    };
+
+    Q_DECLARE_FLAGS( CollectionFields, CollectionField )
+
+    void ignoreCollectionField( CollectionField field );
 
   public slots:
     void setRootCollections( const QString &resourceId );
@@ -44,6 +58,8 @@ class XmlOperations : public QObject
 
     Akonadi::Item getItemByRemoteId(const QString& rid);
     Akonadi::Collection getCollectionByRemoteId(const QString& rid);
+
+    void ignoreCollectionField( const QString &fieldName );
 
     bool compare();
     void assertEqual();
@@ -61,7 +77,7 @@ class XmlOperations : public QObject
   private:
     template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
                                              T (Akonadi::Collection::*property)() const,
-                                             const char* propertyName );
+                                             CollectionField propertyType );
     template <typename T> bool compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
                                              T (Akonadi::Item::*property)() const,
                                              const char* propertyName );
@@ -71,20 +87,25 @@ class XmlOperations : public QObject
     Akonadi::Collection::List mRoots;
     Akonadi::XmlDocument mDocument;
     QString mErrorMsg;
+    CollectionFields mCollectionFields;
 };
 
 
 template <typename T>
 bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
                                   T (Akonadi::Collection::*property)() const,
-                                  const char* propertyName )
+                                  CollectionField propertyType )
 {
-  const bool result = compareValue<T>( ((col).*(property))(), ((refCol).*(property))() );
-  if ( !result ) {
-    mErrorMsg.prepend( QString::fromLatin1( "Collection with remote id '%1' differs in property '%2':\n" )
-    .arg( col.remoteId() ).arg( propertyName ) );
+  if ( mCollectionFields & propertyType ) {
+    const bool result = compareValue<T>( ((col).*(property))(), ((refCol).*(property))() );
+    if ( !result ) {
+      const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
+      mErrorMsg.prepend( QString::fromLatin1( "Collection with remote id '%1' differs in property '%2':\n" )
+      .arg( col.remoteId() ).arg( me.valueToKey( propertyType ) ) );
+    }
+    return result;
   }
-  return result;
+  return true;
 }
 
 template <typename T>
