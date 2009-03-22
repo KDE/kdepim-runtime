@@ -1,9 +1,9 @@
 <knut>
-  <collection content="message/rfc822,inode/directory" rid="root" name="Knut test data" >
-    <collection content="message/rfc822,inode/directory" rid="{b425174d-515d-4f98-ab7e-0a6ad0265fb6}" name="child2" />
-    <collection content="message/rfc822,inode/directory" rid="{ee5538ac-b01f-42fa-a166-85f9883f3780}" name="child1" >
-      <collection content="message/rfc822,inode/directory" rid="{10c2445c-e063-461e-868e-ce1d14a0b867}" name="grandchild" >
-        <item mimetype="message/rfc822" rid="{b6fc18ab-823a-48a5-ad48-a9fd08762067}" >
+  <collection content="message/rfc822,inode/directory" rid="maildir/root" name="Knut test data" >
+    <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/child2" name="child2" />
+    <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/child1" name="child1" >
+      <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/.child1.directory/grandchild" name="grandchild" >
+        <item mimetype="message/rfc822" rid="maildir/.root.directory/.child1.directory/grandchild/1237726881.6570.rfoxg:2,S" >
           <payload>Message-Id: &lt;1237720572.493438.13466.nullmailer@svn.kde.org>
 From: Volker Krause &lt;vkrause@kde.org>
 Subject: playground/pim/akonaditest/resourcetester
@@ -288,7 +288,7 @@ collections.
 </payload>
         </item>
       </collection>
-      <item mimetype="message/rfc822" rid="{d9261ca2-ddcf-4f77-9000-174458a51864}" >
+      <item mimetype="message/rfc822" rid="maildir/.root.directory/child1/1237726858.6570.dtdn4:2,S" >
         <payload>Message-Id: &lt;1237723253.005953.17235.nullmailer@svn.kde.org>
 From: Volker Krause &lt;vkrause@kde.org>
 Subject: playground/pim/akonaditest/resourcetester
@@ -397,7 +397,7 @@ Add CMake macro to run resource tests.
    + 
 </payload>
       </item>
-      <item mimetype="message/rfc822" rid="{e9faf6d1-746f-449e-9751-9e031714fe6c}" >
+      <item mimetype="message/rfc822" rid="maildir/.root.directory/child1/1237726875.6570.R4KOW:2,S" >
         <payload>Message-Id: &lt;1237724494.009832.20236.nullmailer@svn.kde.org>
 From: Volker Krause &lt;vkrause@kde.org>
 Subject: playground/pim/akonaditest/resourcetester
@@ -550,7 +550,7 @@ SVN commit 942656 by vkrause:
 </payload>
       </item>
     </collection>
-    <item mimetype="message/rfc822" rid="{ca7c63e9-64ae-41c3-a4bb-a9694ffdaa8d}" >
+    <item mimetype="message/rfc822" rid="maildir/root/1237726845.6570.BejQg:2,S" >
       <payload>Message-Id: &lt;1237726230.394911.25706.nullmailer@svn.kde.org>
 From: Volker Krause &lt;vkrause@kde.org>
 Subject: playground/pim/akonaditest/resourcetester

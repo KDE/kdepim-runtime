@@ -51,7 +51,8 @@ QTextStream& operator<<( QTextStream &s, const QStringList &list )
 XmlOperations::XmlOperations(QObject* parent) :
   QObject( parent ),
   mCollectionFields( 0xFF ),
-  mCollectionKey( RemoteId )
+  mCollectionKey( RemoteId ),
+  mNormalizeRemoteIds( false )
 {
 }
 
@@ -119,6 +120,11 @@ void XmlOperations::ignoreCollectionField(const QString& fieldName)
   ignoreCollectionField( static_cast<CollectionField>( me.keyToValue( fieldName.toLatin1() ) ) );
 }
 
+void XmlOperations::setNormalizeRemoteIds(bool enable)
+{
+  mNormalizeRemoteIds = enable;
+}
+
 bool XmlOperations::compare()
 {
   if ( !mDocument.isValid() ) {
@@ -142,10 +148,45 @@ void XmlOperations::assertEqual()
     Test::instance()->fail( lastError() );
 }
 
+static QString normalizeRemoteId( const QString &in )
+{
+  QString out( in );
+  if ( in.startsWith( Global:: basePath() ) ) {
+    out = in.mid( Global::basePath().length() );
+    if ( out.startsWith( QDir::separator() ) )
+      out = out.mid( 1 );
+  }
+  return out;
+}
+
+Collection XmlOperations::normalizeCollection( const Collection &in ) const
+{
+  Collection out( in );
+  if ( mNormalizeRemoteIds )
+    out.setRemoteId( normalizeRemoteId( in.remoteId() ) );
+  QStringList l = in.contentMimeTypes();
+  std::sort( l.begin(), l.end() );
+  out.setContentMimeTypes( l );
+  return out;
+}
+
+Item XmlOperations::normalizeItem( const Item& in ) const
+{
+  Item out( in );
+  if ( mNormalizeRemoteIds )
+    out.setRemoteId( normalizeRemoteId( in.remoteId() ) );
+  return out;
+}
+
 bool XmlOperations::compareCollections(const Collection::List& _cols, const Collection::List& _refCols)
 {
-  Collection::List cols( _cols );
-  Collection::List refCols( _refCols );
+  Collection::List cols;
+  foreach ( const Collection &c, _cols )
+    cols.append( normalizeCollection( c ) );
+  Collection::List refCols;
+  foreach ( const Collection &c, _refCols )
+    refCols.append( normalizeCollection( c ) );
+
   switch ( mCollectionKey ) {
     case RemoteId:
       sortCollectionList( cols, &Collection::remoteId );
@@ -182,21 +223,8 @@ bool XmlOperations::compareCollections(const Collection::List& _cols, const Coll
   return true;
 }
 
-static Collection normalize( const Collection &in )
+bool XmlOperations::compareCollection(const Collection& col, const Collection& refCol)
 {
-  Collection out( in );
-  QStringList l = in.contentMimeTypes();
-  std::sort( l.begin(), l.end() );
-  out.setContentMimeTypes( l );
-  return out;
-}
-
-bool XmlOperations::compareCollection(const Collection& _col, const Collection& _refCol)
-{
-  // normalize
-  Collection col( normalize( _col ) );
-  Collection refCol( normalize( _refCol ) );
-  
   // compare the two collections
   if ( !compareValue( col, refCol, &Collection::remoteId, RemoteId ) ||
        !compareValue( col, refCol, &Collection::contentMimeTypes, ContentMimeType ) ||
@@ -267,8 +295,13 @@ bool XmlOperations::hasItem(const Item& _item, const QString& rid)
 
 bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _refItems)
 {
-  Item::List items( _items );
-  Item::List refItems( _refItems );
+  Item::List items;
+  foreach ( const Item &i, _items )
+    items.append( normalizeItem( i ) );
+  Item::List refItems;
+  foreach ( const Item &i, _refItems )
+    refItems.append( normalizeItem( i ) );
+
   std::sort( items.begin(), items.end(), boost::bind( &Item::remoteId, _1 ) < boost::bind( &Item::remoteId, _2 ) );
   std::sort( refItems.begin(), refItems.end(), boost::bind( &Item::remoteId, _1 ) < boost::bind( &Item::remoteId, _2 ) );
 

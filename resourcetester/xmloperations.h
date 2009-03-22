@@ -67,6 +67,8 @@ class XmlOperations : public QObject
     void setCollectionKey( const QString &fieldName );
     void ignoreCollectionField( const QString &fieldName );
 
+    void setNormalizeRemoteIds( bool enable );
+
     bool compare();
     void assertEqual();
 
@@ -97,12 +99,16 @@ class XmlOperations : public QObject
     template <typename T> void sortCollectionList( Akonadi::Collection::List &list,
                                                    T ( Akonadi::Entity::*property)() const ) const;
 
+    Akonadi::Collection normalizeCollection( const Akonadi::Collection &in ) const;
+    Akonadi::Item normalizeItem( const Akonadi::Item &in ) const;
+
   private:
     Akonadi::Collection::List mRoots;
     Akonadi::XmlDocument mDocument;
     QString mErrorMsg;
     CollectionFields mCollectionFields;
     CollectionField mCollectionKey;
+    bool mNormalizeRemoteIds;
 };
 
 

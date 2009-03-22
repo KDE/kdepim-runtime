@@ -4,5 +4,7 @@ Resource.create();
 
 XmlOperations.setXmlFile( "maildir.xml" );
 XmlOperations.setRootCollections( Resource.identifier() );
+XmlOperations.setNormalizeRemoteIds( true );
+XmlOperations.ignoreCollectionField( "Name" );
 XmlOperations.assertEqual();
 
