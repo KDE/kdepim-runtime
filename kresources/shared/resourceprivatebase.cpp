@@ -42,7 +42,8 @@ ResourcePrivateBase::ResourcePrivateBase( const KConfigGroup &config, IdArbiterB
   : QObject( parent ),
     mConfig( config ),
     mIdArbiter( idArbiter ),
-    mState( Closed )
+    mState( Closed ),
+    mLoadingInProgress( false )
 {
   KUrl url = config.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
   if ( url.isValid() ) {
@@ -86,6 +87,26 @@ bool ResourcePrivateBase::doClose()
   mState = Closed;
 
   return result;
+}
+
+bool ResourcePrivateBase::doLoad()
+{
+  kDebug( 5650 ) << "isLoading=" << isLoading();
+  mLoadingInProgress = true;
+
+  bool result = loadResource();
+
+  Q_ASSERT( !mLoadingInProgress ); // subclass must have called loadingResult
+
+  return result;
+}
+
+bool ResourcePrivateBase::doAsyncLoad()
+{
+  kDebug( 5650 ) << "isLoading=" << isLoading();
+  mLoadingInProgress = true;
+
+  return asyncLoadResource();
 }
 
 bool ResourcePrivateBase::doSave()
@@ -256,6 +277,11 @@ ResourcePrivateBase::State ResourcePrivateBase::state() const
   return mState;
 }
 
+bool ResourcePrivateBase::isLoading() const
+{
+  return mLoadingInProgress;
+}
+
 bool ResourcePrivateBase::startAkonadi()
 {
   return Akonadi::Control::start();
@@ -358,12 +384,18 @@ void ResourcePrivateBase::loadingResult( bool ok, const QString &errorString )
 {
   Q_UNUSED( ok );
   Q_UNUSED( errorString );
+
+  Q_ASSERT( mLoadingInProgress );
+
+  mLoadingInProgress = false;
 }
 
 void ResourcePrivateBase::savingResult( bool ok, const QString &errorString )
 {
-  Q_UNUSED( ok );
   Q_UNUSED( errorString );
+  if ( ok ) {
+    mChanges.clear();
+  }
 }
 
 #include "resourceprivatebase.moc"

@@ -401,7 +401,7 @@ bool ResourceAkonadi::doLoad( bool syncCache )
   kDebug(5800) << "syncCache=" << syncCache;
 
   d->clear();
-  return d->load();
+  return d->doLoad();
 }
 
 bool ResourceAkonadi::doSave( bool syncCache )

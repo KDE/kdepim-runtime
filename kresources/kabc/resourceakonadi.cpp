@@ -87,14 +87,16 @@ bool ResourceAkonadi::load()
 {
   kDebug(5700);
 
-  return d->load();
+  d->clear();
+  return d->doLoad();
 }
 
 bool ResourceAkonadi::asyncLoad()
 {
   kDebug(5700);
 
-  return d->asyncLoad();
+  d->clear();
+  return d->doAsyncLoad();
 }
 
 bool ResourceAkonadi::save( Ticket *ticket )

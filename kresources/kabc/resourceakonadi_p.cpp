@@ -221,6 +221,8 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
 
 void ResourceAkonadi::Private::loadingResult( bool ok, const QString &errorString )
 {
+  SharedResourcePrivate<SubResource>::loadingResult( ok, errorString );
+
   if ( ok ) {
     emit mParent->loadingFinished( mParent );
     mModel.startMonitoring();
@@ -231,6 +233,8 @@ void ResourceAkonadi::Private::loadingResult( bool ok, const QString &errorStrin
 
 void ResourceAkonadi::Private::savingResult( bool ok, const QString &errorString )
 {
+  SharedResourcePrivate<SubResource>::savingResult( ok, errorString );
+
   if ( ok ) {
     mChanges.clear();
     emit mParent->savingFinished( mParent );
@@ -283,7 +287,9 @@ void ResourceAkonadi::Private::addresseeAdded( const KABC::Addressee &addressee,
 
     mUidToResourceMap.insert( addressee.uid(), subResourceIdentifier );
 
-    mParent->addressBook()->emitAddressBookChanged();
+    if ( !isLoading() ) {
+      mParent->addressBook()->emitAddressBookChanged();
+    }
   }
 }
 
@@ -305,7 +311,9 @@ void ResourceAkonadi::Private::addresseeChanged( const KABC::Addressee &addresse
   addr.setResource( mParent );
   mParent->mAddrMap[ addressee.uid() ] = addr;
 
-  mParent->addressBook()->emitAddressBookChanged();
+  if ( !isLoading() ) {
+    mParent->addressBook()->emitAddressBookChanged();
+  }
 }
 
 void ResourceAkonadi::Private::addresseeRemoved( const QString &uid, const QString &subResourceIdentifier )
@@ -320,7 +328,9 @@ void ResourceAkonadi::Private::addresseeRemoved( const QString &uid, const QStri
     mParent->mAddrMap.remove( uid );
     mUidToResourceMap.remove( uid );
 
-    mParent->addressBook()->emitAddressBookChanged();
+    if ( !isLoading() ) {
+      mParent->addressBook()->emitAddressBookChanged();
+    }
   }
 }
 
@@ -342,7 +352,9 @@ void ResourceAkonadi::Private::contactGroupAdded( const KABC::ContactGroup &cont
 
     mUidToResourceMap.insert( contactGroup.id(), subResourceIdentifier );
 
-    mParent->addressBook()->emitAddressBookChanged();
+    if ( !isLoading() ) {
+      mParent->addressBook()->emitAddressBookChanged();
+    }
   }
 }
 
@@ -371,7 +383,9 @@ void ResourceAkonadi::Private::contactGroupChanged( const KABC::ContactGroup &co
     distList = distListFromContactGroup( contactGroup );
   }
 
-  mParent->addressBook()->emitAddressBookChanged();
+  if ( !isLoading() ) {
+    mParent->addressBook()->emitAddressBookChanged();
+  }
 }
 
 void ResourceAkonadi::Private::contactGroupRemoved( const QString &uid, const QString &subResourceIdentifier )
@@ -392,7 +406,9 @@ void ResourceAkonadi::Private::contactGroupRemoved( const QString &uid, const QS
     }
     mUidToResourceMap.remove( uid );
 
-    mParent->addressBook()->emitAddressBookChanged();
+    if ( !isLoading() ) {
+      mParent->addressBook()->emitAddressBookChanged();
+    }
   }
 }
 

@@ -68,6 +68,10 @@ class ResourcePrivateBase : public QObject
 
     bool doClose();
 
+    bool doLoad();
+
+    bool doAsyncLoad();
+
     bool doSave();
 
     bool doAsyncSave();
@@ -100,6 +104,8 @@ class ResourcePrivateBase : public QObject
   protected:
     State state() const;
 
+    bool isLoading() const;
+
     bool startAkonadi();
 
     Akonadi::Collection storeCollectionForMimeType( const QString &mimeType ) const;
@@ -111,6 +117,10 @@ class ResourcePrivateBase : public QObject
     virtual bool openResource() = 0;
 
     virtual bool closeResource() = 0;
+
+    virtual bool loadResource() = 0;
+
+    virtual bool asyncLoadResource() = 0;
 
     virtual void writeResourceConfig( KConfigGroup &config ) const = 0;
 
@@ -141,6 +151,7 @@ class ResourcePrivateBase : public QObject
 
   private:
     State mState;
+    bool  mLoadingInProgress;
 };
 
 class BoolGuard

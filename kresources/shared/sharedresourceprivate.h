@@ -58,23 +58,6 @@ class SharedResourcePrivate : public ResourcePrivateBase
                SLOT( loadingResult( bool, QString ) ) );
     }
 
-    bool load()
-    {
-      mModel.stopMonitoring();
-      if ( mModel.load() ) {
-        mModel.startMonitoring();
-        return true;
-      }
-
-      return false;
-    }
-
-    bool asyncLoad()
-    {
-      mModel.stopMonitoring();
-      return mModel.asyncLoad();
-    }
-
     QStringList subResourceIdentifiers() const
     {
       return mModel.subResourceIdentifiers();
@@ -89,6 +72,18 @@ class SharedResourcePrivate : public ResourcePrivateBase
      SubResourceModelClass mModel;
 
   protected:
+    bool loadResource()
+    {
+      mModel.stopMonitoring();
+      return mModel.load();
+    }
+
+    bool asyncLoadResource()
+    {
+      mModel.stopMonitoring();
+      return mModel.asyncLoad();
+    }
+
     void writeResourceConfig( KConfigGroup &config ) const
     {
       mModel.writeConfig( config );
@@ -122,6 +117,15 @@ class SharedResourcePrivate : public ResourcePrivateBase
     QList<const SubResourceBase*> writableSubResourcesForMimeType( const QString &mimeType ) const
     {
       return mModel.writableSubResourceBasesForMimeType( mimeType );
+    }
+
+    void loadingResult( bool ok, const QString &errorString )
+    {
+      ResourcePrivateBase::loadingResult( ok, errorString );
+
+      if ( ok ) {
+        mModel.startMonitoring();
+      }
     }
 };
 

@@ -271,6 +271,8 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
 
 void ResourceAkonadi::Private::loadingResult( bool ok, const QString &errorString )
 {
+  SharedResourcePrivate<SubResource>::loadingResult( ok, errorString );
+
   if ( ok ) {
     emit mParent->resourceLoaded( mParent );
   } else {
@@ -280,6 +282,8 @@ void ResourceAkonadi::Private::loadingResult( bool ok, const QString &errorStrin
 
 void ResourceAkonadi::Private::savingResult( bool ok, const QString &errorString )
 {
+  SharedResourcePrivate<SubResource>::savingResult( ok, errorString );
+
   if ( ok ) {
     emit mParent->resourceSaved( mParent );
   } else {
@@ -307,7 +311,9 @@ void ResourceAkonadi::Private::incidenceAdded( const IncidencePtr &incidencePtr,
 
     mUidToResourceMap.insert( incidence->uid(), subResourceIdentifier );
 
-    emit mParent->resourceChanged( mParent );
+    if ( !isLoading() ) {
+      emit mParent->resourceChanged( mParent );
+    }
   }
 }
 
@@ -348,7 +354,9 @@ void ResourceAkonadi::Private::incidenceChanged( const IncidencePtr &incidencePt
     }
   }
 
-  emit mParent->resourceChanged( mParent );
+  if ( !isLoading() ) {
+    emit mParent->resourceChanged( mParent );
+  }
 }
 
 void ResourceAkonadi::Private::incidenceRemoved( const QString &uid, const QString &subResourceIdentifier )
@@ -371,7 +379,9 @@ void ResourceAkonadi::Private::incidenceRemoved( const QString &uid, const QStri
     delete cachedIncidence;
   }
 
-  emit mParent->resourceChanged( mParent );
+  if ( !isLoading() ) {
+    emit mParent->resourceChanged( mParent );
+  }
 }
 
 #include "resourceakonadi_p.moc"
