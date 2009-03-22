@@ -1,5 +1,5 @@
 <knut>
-  <collection rid="/k/kde4/src/playground/pim/akonaditest/resourcetester/tests/vcardtest.vcf" name="akonadi_vcard_resource_0" content="text/directory">
+  <collection rid="vcardtest.vcf" name="akonadi_vcard_resource_0" content="text/directory">
     <attribute type="AccessRights" >wcdW</attribute>
     <attribute type="ENTITYDISPLAY" >("vcardtest.vcf" "office-address-book")</attribute>
     <item rid="bb2slGmqxb" mimetype="text/directory">

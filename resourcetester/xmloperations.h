@@ -28,6 +28,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QTextStream>
 
+#include <boost/bind.hpp>
+#include <algorithm>
+
+
 /**
   Compares a Akonadi collection sub-tree with reference data supplied in an XML file.
 */
@@ -49,6 +53,7 @@ class XmlOperations : public QObject
 
     Q_DECLARE_FLAGS( CollectionFields, CollectionField )
 
+    void setCollectionKey( CollectionField field );
     void ignoreCollectionField( CollectionField field );
 
   public slots:
@@ -59,6 +64,7 @@ class XmlOperations : public QObject
     Akonadi::Item getItemByRemoteId(const QString& rid);
     Akonadi::Collection getCollectionByRemoteId(const QString& rid);
 
+    void setCollectionKey( const QString &fieldName );
     void ignoreCollectionField( const QString &fieldName );
 
     bool compare();
@@ -78,22 +84,48 @@ class XmlOperations : public QObject
     template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
                                              T (Akonadi::Collection::*property)() const,
                                              CollectionField propertyType );
+    template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
+                                             T (Akonadi::Entity::*property)() const,
+                                             CollectionField propertyType );
     template <typename T> bool compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
                                              T (Akonadi::Item::*property)() const,
                                              const char* propertyName );
     template <typename T> bool compareValue( const T& value, const T& refValue );
+
+    template <typename T> void sortCollectionList( Akonadi::Collection::List &list,
+                                                   T ( Akonadi::Collection::*property)() const ) const;
+    template <typename T> void sortCollectionList( Akonadi::Collection::List &list,
+                                                   T ( Akonadi::Entity::*property)() const ) const;
 
   private:
     Akonadi::Collection::List mRoots;
     Akonadi::XmlDocument mDocument;
     QString mErrorMsg;
     CollectionFields mCollectionFields;
+    CollectionField mCollectionKey;
 };
 
 
 template <typename T>
 bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
                                   T (Akonadi::Collection::*property)() const,
+                                  CollectionField propertyType )
+{
+  if ( mCollectionFields & propertyType ) {
+    const bool result = compareValue<T>( ((col).*(property))(), ((refCol).*(property))() );
+    if ( !result ) {
+      const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
+      mErrorMsg.prepend( QString::fromLatin1( "Collection with remote id '%1' differs in property '%2':\n" )
+      .arg( col.remoteId() ).arg( me.valueToKey( propertyType ) ) );
+    }
+    return result;
+  }
+  return true;
+}
+
+template <typename T>
+bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
+                                  T (Akonadi::Entity::*property)() const,
                                   CollectionField propertyType )
 {
   if ( mCollectionFields & propertyType ) {
@@ -129,6 +161,20 @@ bool XmlOperations::compareValue(const T& value, const T& refValue )
   QTextStream ts( &mErrorMsg );
   ts << " Actual: " << value << endl << " Expected: " << refValue;
   return false;
+}
+
+template <typename T>
+void XmlOperations::sortCollectionList( Akonadi::Collection::List &list,
+                                        T ( Akonadi::Collection::*property)() const ) const
+{
+  std::sort( list.begin(), list.end(), boost::bind( property, _1 ) < boost::bind( property, _2 ) );
+}
+
+template <typename T>
+void XmlOperations::sortCollectionList( Akonadi::Collection::List &list,
+                                        T ( Akonadi::Entity::*property)() const ) const
+{
+  std::sort( list.begin(), list.end(), boost::bind( property, _1 ) < boost::bind( property, _2 ) );
 }
 
 #endif

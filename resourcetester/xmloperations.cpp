@@ -31,9 +31,6 @@
 #include <QFileInfo>
 #include <QStringList>
 
-#include <boost/bind.hpp>
-#include <algorithm>
-
 using namespace Akonadi;
 
 template <typename T> QTextStream& operator<<( QTextStream &s, const QSet<T> &set )
@@ -53,7 +50,8 @@ QTextStream& operator<<( QTextStream &s, const QStringList &list )
 
 XmlOperations::XmlOperations(QObject* parent) :
   QObject( parent ),
-  mCollectionFields( 0xFF )
+  mCollectionFields( 0xFF ),
+  mCollectionKey( RemoteId )
 {
 }
 
@@ -99,6 +97,17 @@ QString XmlOperations::lastError() const
   return mErrorMsg;
 }
 
+void XmlOperations::setCollectionKey(XmlOperations::CollectionField field)
+{
+  mCollectionKey = field;
+}
+
+void XmlOperations::setCollectionKey(const QString& fieldName)
+{
+  const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
+  setCollectionKey( static_cast<CollectionField>( me.keyToValue( fieldName.toLatin1() ) ) );
+}
+
 void XmlOperations::ignoreCollectionField(XmlOperations::CollectionField field)
 {
   mCollectionFields = mCollectionFields & ~field;
@@ -137,8 +146,20 @@ bool XmlOperations::compareCollections(const Collection::List& _cols, const Coll
 {
   Collection::List cols( _cols );
   Collection::List refCols( _refCols );
-  std::sort( cols.begin(), cols.end(), boost::bind( &Collection::remoteId, _1 ) < boost::bind( &Collection::remoteId, _2 ) );
-  std::sort( refCols.begin(), refCols.end(), boost::bind( &Collection::remoteId, _1 ) < boost::bind( &Collection::remoteId, _2 ) );
+  switch ( mCollectionKey ) {
+    case RemoteId:
+      sortCollectionList( cols, &Collection::remoteId );
+      sortCollectionList( refCols, &Collection::remoteId );
+      break;
+    case Name:
+      sortCollectionList( cols, &Collection::name );
+      sortCollectionList( refCols, &Collection::name );
+      break;
+    case None:
+      break;
+    default:
+      Q_ASSERT( false );
+  }
 
   for ( int i = 0; i < cols.count(); ++i ) {
     const Collection col = cols.at( i );
@@ -148,11 +169,6 @@ bool XmlOperations::compareCollections(const Collection::List& _cols, const Coll
     }
 
     const Collection refCol = refCols.at( i );
-    if ( col.remoteId() != refCol.remoteId() ) {
-      mErrorMsg = QString::fromLatin1( "Collection with remote id '%1' is missing." ).arg( refCol.remoteId() );
-      return false;
-    }
-
     if ( !compareCollection( col, refCol ) )
       return false;
   }
@@ -177,14 +193,13 @@ static Collection normalize( const Collection &in )
 
 bool XmlOperations::compareCollection(const Collection& _col, const Collection& _refCol)
 {
-  Q_ASSERT( _col.remoteId() == _refCol.remoteId() );
-
   // normalize
   Collection col( normalize( _col ) );
   Collection refCol( normalize( _refCol ) );
   
   // compare the two collections
-  if ( !compareValue( col, refCol, &Collection::contentMimeTypes, ContentMimeType ) ||
+  if ( !compareValue( col, refCol, &Collection::remoteId, RemoteId ) ||
+       !compareValue( col, refCol, &Collection::contentMimeTypes, ContentMimeType ) ||
        !compareValue( col, refCol, &Collection::name, Name ) )
     return false;
 
