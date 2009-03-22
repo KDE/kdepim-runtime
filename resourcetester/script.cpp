@@ -16,12 +16,13 @@
  */
 
 #include "script.h"
+#include <KDebug>
 #include <qcoreapplication.h>
 
 Script::Script()
 {
   action = new Kross::Action(this, "ResourceTester");
-  connect( action, SIGNAL(finished(Kross::Action*)), QCoreApplication::instance(), SLOT(quit()) );
+  connect( action, SIGNAL(finished(Kross::Action*)), SLOT(finished(Kross::Action*)) );
 }
 
 void Script::configure(const QString &path, QHash<QString, QObject * > hash)
@@ -50,5 +51,16 @@ void Script::start()
 {
   action->trigger();
 }
+
+void Script::finished(Kross::Action* action)
+{
+  if ( action->hadError() ) {
+    kError() << action->errorMessage() << action->errorTrace();
+    QCoreApplication::instance()->exit( 1 );
+  } else {
+    QCoreApplication::instance()->quit();
+  }
+}
+
 
 #include "script.moc"

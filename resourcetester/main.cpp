@@ -21,6 +21,8 @@
 #include "global.h"
 #include "test.h"
 
+#include <akonadi/control.h>
+
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
@@ -70,6 +72,9 @@ int main(int argc, char *argv[])
   signal( SIGINT, sigHandler );
   signal( SIGQUIT, sigHandler );
 #endif
+
+  if ( !Akonadi::Control::start() )
+    qFatal( "Unable to start Akonadi!" );
 
   Script *script = new Script();
 
