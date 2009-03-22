@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
   script->insertObject( new XmlOperations(), "XmlOperations" );
   Resource res;
   script->insertObject( &res, "Resource" );
-  script->insertObject( new Test(), "Test" );
+  script->insertObject( Test::instance(), "Test" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();

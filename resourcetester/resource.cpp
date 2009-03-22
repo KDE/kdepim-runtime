@@ -20,6 +20,7 @@
 
 #include "global.h"
 #include "resourcesynchronizationjob.h"
+#include "test.h"
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -71,7 +72,7 @@ void Resource::setPathOption(const QString& key, const QString& path)
 }
 
 
-bool Resource::create()
+bool Resource::createResource()
 {
   if ( mInstance.isValid() )
     return false;
@@ -108,6 +109,13 @@ bool Resource::create()
 
   return true;
 }
+
+void Resource::create()
+{
+  if ( !createResource() )
+    Test::instance()->fail( "Creating resource failed." );
+}
+
 
 void Resource::destroy()
 {

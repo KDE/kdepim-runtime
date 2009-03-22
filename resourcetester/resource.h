@@ -43,7 +43,8 @@ class Resource: public QObject
     void setOption( const QString &key, const QVariant &value );
     void setPathOption( const QString &key, const QString &path );
 
-    bool create();
+    bool createResource();
+    void create();
     void destroy();
 
   private:

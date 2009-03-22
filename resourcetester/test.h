@@ -26,13 +26,18 @@ class Test : public QObject
 {
   Q_OBJECT
   public:
-    Test( QObject *parent = 0 );
+    static Test* instance();
 
   public slots:
     void assert( bool value );
     void verify( QObject *object, const QString &slot );
     void fail( const QString &error );
     void abort();
+
+  private:
+    Test( QObject *parent = 0 );
+
+    static Test* mSelf;
 };
 
 #endif

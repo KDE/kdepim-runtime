@@ -46,6 +46,7 @@ class XmlOperations : public QObject
     Akonadi::Collection getCollectionByRemoteId(const QString& rid);
 
     bool compare();
+    void assertEqual();
 
     QString lastError() const;
 

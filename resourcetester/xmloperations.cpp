@@ -19,6 +19,7 @@
 
 #include "xmloperations.h"
 #include "global.h"
+#include "test.h"
 
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchjob.h>
@@ -112,6 +113,12 @@ bool XmlOperations::compare()
 
   const Collection::List docRoots = mDocument.childCollections( QString() );
   return compareCollections( mRoots, docRoots );
+}
+
+void XmlOperations::assertEqual()
+{
+  if ( !compare() )
+    Test::instance()->fail( lastError() );
 }
 
 bool XmlOperations::compareCollections(const Collection::List& _cols, const Collection::List& _refCols)

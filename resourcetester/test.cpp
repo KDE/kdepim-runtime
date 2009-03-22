@@ -23,6 +23,8 @@
 #include <KDebug>
 #include <stdlib.h>
 
+Test* Test::mSelf = 0;
+
 Test::Test(QObject* parent) :
   QObject( parent )
 {
@@ -61,5 +63,13 @@ void Test::abort()
     Resource::instance()->destroy();
   exit( -1 );
 }
+
+Test* Test::instance()
+{
+  if ( !mSelf )
+    mSelf = new Test();
+  return mSelf;
+}
+
 
 #include "test.moc"
