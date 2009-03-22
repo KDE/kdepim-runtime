@@ -17,6 +17,26 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+macro( akonadi_add_resourcetest _testname _script )
+  if ( ${EXECUTABLE_OUTPUT_PATH} )
+    set( _exepath ${EXECUTABLE_OUTPUT_PATH} )
+  else ( ${EXECUTABLE_OUTPUT_PATH} )
+    set( _exepath ${CMAKE_CURRENT_BINARY_DIR}/.. )
+  endif ( ${EXECUTABLE_OUTPUT_PATH} )
+  if (WIN32)
+    set(_resourcetester ${_exepath}/resourcetester.bat)
+  else (WIN32)
+    set(_resourcetester ${_exepath}/resourcetester)
+  endif (WIN32)
+  if (UNIX)
+    set(_resourcetester ${_resourcetester}.shell)
+  endif (UNIX)
+
+  add_test( ${_testname} ${_resourcetester} -c ${CMAKE_CURRENT_SOURCE_DIR}/${_script} )
+endmacro( akonadi_add_resourcetest )
+
+add_subdirectory( tests )
+
 set( resourcetester_SRCS
   global.cpp
   main.cpp
