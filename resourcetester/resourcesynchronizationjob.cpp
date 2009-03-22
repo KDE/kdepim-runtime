@@ -18,12 +18,14 @@
 #include "resourcesynchronizationjob.h"
 
 #include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
 
 #include <KDebug>
 #include <KLocale>
 
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QTimer>
 
 namespace Akonadi
 {
@@ -31,15 +33,31 @@ namespace Akonadi
 class ResourceSynchronizationJobPrivate
 {
   public:
+    ResourceSynchronizationJobPrivate() :
+      interface( 0 ),
+      safetyTimer( 0 ),
+      timeoutCount( 0 )
+    {}
+
     AgentInstance instance;
     QDBusInterface* interface;
+    QTimer* safetyTimer;
+    int timeoutCount;
+    static int timeoutCountLimit;
 };
+
+int ResourceSynchronizationJobPrivate::timeoutCountLimit = 60;
 
 ResourceSynchronizationJob::ResourceSynchronizationJob(const AgentInstance& instance, QObject* parent) :
   KJob( parent ),
   d( new ResourceSynchronizationJobPrivate )
 {
   d->instance = instance;
+  d->safetyTimer = new QTimer( this );
+  connect( d->safetyTimer, SIGNAL(timeout()), SLOT(slotTimeout()) );
+  d->safetyTimer->setInterval( 10 * 1000 );
+  d->safetyTimer->setSingleShot( false );
+  d->safetyTimer->start();
 }
 
 ResourceSynchronizationJob::~ResourceSynchronizationJob()
@@ -72,7 +90,29 @@ void ResourceSynchronizationJob::start()
 
 void ResourceSynchronizationJob::slotSynchronized()
 {
+  disconnect( d->interface, SIGNAL(synchronized()), this, SLOT(slotSynchronized()) );
+  d->safetyTimer->stop();
   emitResult();
+}
+
+void ResourceSynchronizationJob::slotTimeout()
+{
+  d->instance = AgentManager::self()->instance( d->instance.identifier() );
+  d->timeoutCount++;
+
+  if ( d->timeoutCount > d->timeoutCountLimit ) {
+    d->safetyTimer->stop();
+    setError( UserDefinedError );
+    setErrorText( i18n( "Resource synchronization timed out." ) );
+    emitResult();
+    return;
+  }
+
+  if ( d->instance.status() == AgentInstance::Idle ) {
+    // try again, we might have lost the synchronized() signal
+    kDebug() << "trying again to sync resource" << d->instance.identifier();
+    d->instance.synchronize();
+  }
 }
 
 }

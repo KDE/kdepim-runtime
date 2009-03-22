@@ -27,7 +27,6 @@ class ResourceSynchronizationJobPrivate;
 
 /**
   Synchronizes a given resource.
-  @todo Add safety timeouts.
 */
 class ResourceSynchronizationJob : public KJob
 {
@@ -48,6 +47,7 @@ class ResourceSynchronizationJob : public KJob
 
   private slots:
     void slotSynchronized();
+    void slotTimeout();
 
   private:
     ResourceSynchronizationJobPrivate* const d;
