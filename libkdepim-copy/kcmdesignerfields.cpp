@@ -68,8 +68,10 @@ class PageItem : public Q3CheckListItem
       mName = path.mid( path.lastIndexOf( '/' ) + 1 );
 
       QFile f( mPath );
+      f.open(QFile::ReadOnly);
       QFormBuilder builder;
       QWidget *wdg = builder.load( &f, 0 );
+      f.close();
       if ( wdg ) {
         setText( 0, wdg->windowTitle() );
 
@@ -208,10 +210,10 @@ void KCMDesignerFields::importFile()
 
 void KCMDesignerFields::loadUiFiles()
 {
-  QStringList list = KGlobal::dirs()->findAllResources( "data", uiPath() + "/*.ui",
+  const QStringList list = KGlobal::dirs()->findAllResources( "data", uiPath() + "/*.ui",
                                                         KStandardDirs::Recursive |
                                                         KStandardDirs::NoDuplicates );
-  for ( QStringList::iterator it = list.begin(); it != list.end(); ++it ) {
+  for ( QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it ) {
     new PageItem( mPageView, *it );
   }
 }
