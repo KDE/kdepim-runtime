@@ -56,8 +56,10 @@ void DesignerFields::initGUI( const QString &uiFile )
   QVBoxLayout *layout = new QVBoxLayout( this );
 
   QFile f( uiFile );
+  f.open(QFile::ReadOnly);
   QFormBuilder builder;
   QWidget *wdg = builder.load( &f, this );
+  f.close();
   if ( !wdg ) {
     kError() <<"No ui file found";
     return;
