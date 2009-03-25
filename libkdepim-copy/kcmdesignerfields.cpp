@@ -87,6 +87,7 @@ class PageItem : public Q3CheckListItem
         allowedTypes.insert( "QComboBox", i18n( "Selection" ) );
         allowedTypes.insert( "QDateTimeEdit", i18n( "Date & Time" ) );
         allowedTypes.insert( "KLineEdit", i18n( "Text" ) );
+        allowedTypes.insert( "KTextEdit", i18n( "Text" ) );
         allowedTypes.insert( "KDateTimeWidget", i18n( "Date & Time" ) );
         allowedTypes.insert( "KDatePicker", i18n( "Date" ) );
 
