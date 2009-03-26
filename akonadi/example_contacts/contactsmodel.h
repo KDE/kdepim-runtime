@@ -6,11 +6,19 @@
 
 using namespace Akonadi;
 
+class ContactsModelPrivate;
+
 class ContactsModel : public EntityTreeModel
 {
   Q_OBJECT
 public:
-  ContactsModel(EntityUpdateAdapter *eua, Monitor *monitor, QObject *parent = 0);
+
+  enum Roles
+  {
+    EmailCompletionRole = EntityTreeModel::UserRole
+  };
+
+  ContactsModel(Session *session, Monitor *monitor, QObject *parent = 0);
   virtual ~ContactsModel();
 
   virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
@@ -18,6 +26,12 @@ public:
   virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
 
   virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
+
+  virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
+
+private:
+    Q_DECLARE_PRIVATE(ContactsModel);
+    ContactsModelPrivate *d_ptr;
 };
 
 #endif

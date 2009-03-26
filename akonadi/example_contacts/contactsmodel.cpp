@@ -8,8 +8,22 @@
 
 using namespace Akonadi;
 
-ContactsModel::ContactsModel(EntityUpdateAdapter *eua, Monitor *monitor, QObject *parent)
-  : EntityTreeModel(eua, monitor, parent)
+class ContactsModelPrivate
+{
+public:
+  ContactsModelPrivate(ContactsModel *model)
+    : q_ptr(model)
+  {
+
+  }
+
+  Q_DECLARE_PUBLIC(ContactsModel);
+  ContactsModel *q_ptr;
+
+};
+
+ContactsModel::ContactsModel(Session *session, Monitor *monitor, QObject *parent)
+  : EntityTreeModel(session, monitor, parent)
 {
 
 }
@@ -25,8 +39,6 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
   {
     if ( !item.hasPayload<KABC::Addressee>() )
     {
-      // The payload should be a KABC::Addressee. Why does it claim not to be?
-      Q_ASSERT( item.hasPayload<KABC::Addressee>() );
       // Pass modeltest
       if (role == Qt::DisplayRole)
         return item.remoteId();
@@ -34,15 +46,20 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
     }
     const KABC::Addressee addr = item.payload<KABC::Addressee>();
 
-    if (role == Qt::DisplayRole)
+    if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
     {
       switch (column)
       {
       case 0:
-        return addr.formattedName();
+        return addr.familyName();
       case 1:
         return addr.preferredEmail();
       }
+    }
+
+    if (role == EmailCompletionRole && column == 0)
+    {
+      return addr.givenName() + addr.familyName() + "<" + addr.preferredEmail() + ">";
     }
   }
   return EntityTreeModel::getData(item, column, role);
@@ -50,22 +67,52 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
 
 QVariant ContactsModel::getData(Collection collection, int column, int role) const
 {
-  if (column ==0)
+  if (role == Qt::DisplayRole)
   {
-    QVariant v = EntityTreeModel::getData(collection, column, role);
-    return v;
+    switch (column)
+    {
+    case 0:
+      return EntityTreeModel::getData(collection, column, role);
+    case 1:
+      return rowCount(EntityTreeModel::indexForCollection(collection));
+    default:
+      // Return a QString to pass modeltest.
+      return QString();
+  //     return QVariant();
+    }
   }
-  else {
-    // Return a QString to pass modeltest.
-    return QString();
-//     return QVariant();
-  }
+  return EntityTreeModel::getData(collection, column, role);
 }
 
 int ContactsModel::columnCount(const QModelIndex &index) const
 {
   Q_UNUSED(index);
   return 2;
+}
+
+QVariant ContactsModel::headerData( int section, Qt::Orientation orientation, int role ) const
+{
+//   if (role == EntityTreeModel::CollectionTreeHeaderDisplayRole)
+//   {
+//     switch(section)
+//     {
+//     case 0:
+//       return "Collection";
+//     case 1:
+//       return "Count";
+//     }
+//
+//   } else if (role == EntityTreeModel::ItemListHeaderDisplayRole)
+//   {
+//     switch(section)
+//     {
+//     case 0:
+//       return "Given Name";
+//     case 1:
+//       return "Family Name";
+//     }
+//   }
+  return EntityTreeModel::headerData(section, orientation, role);
 }
 
 #include "contactsmodel.moc"
