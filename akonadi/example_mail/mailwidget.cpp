@@ -37,8 +37,13 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
+#include "mailmodel.h"
+
+#include "../example_contacts/contactsmodel.h"
+
 #include <kdebug.h>
 #include "modeltest.h"
+#include <QTimer>
 
 using namespace Akonadi;
 
@@ -78,9 +83,10 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 //   monitor->fetchCollectionStatistics( false );
 
   Session *session = new Session( QByteArray( "MailApplication-" ) + QByteArray::number( qrand() ), this );
-  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
+//   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-  etm = new Akonadi::EntityTreeModel( eua, monitor, this);
+//   etm = new Akonadi::EntityTreeModel( session, monitor, this);
+  etm = new MailModel( session, monitor, this);
 
   etm->fetchMimeTypes( QStringList() << "message/rfc822" );
 
@@ -90,6 +96,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
+  collectionTree->setHeaderSet(AbstractItemModel::CollectionTreeHeaders);
 
   treeview->setModel(collectionTree);
 
@@ -100,6 +107,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
+  itemList->setHeaderSet(AbstractItemModel::ItemListHeaders);
 
   listView = new EntityTreeView(splitter);
   listView->setModel(itemList);
@@ -120,6 +128,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   connect( etm, SIGNAL( dataChanged( const QModelIndex &, const QModelIndex & ) ),
       SLOT( modelDataChanged( const QModelIndex &, const QModelIndex & ) ) );
+
 }
 
 MailWidget::~MailWidget()
@@ -129,23 +138,23 @@ MailWidget::~MailWidget()
 
 void MailWidget::listSelectionChanged( const QItemSelection & selected, const QItemSelection &deselected )
 {
-  if ( selected.indexes().size() == 1 )
-  {
+//   if ( selected.indexes().size() == 1 )
+//   {
     QModelIndex idx = selected.indexes().at( 0 );
 
     Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
     if ( i.isValid() )
     {
-      QByteArray ba = i.payload<QByteArray>();
+      QByteArray ba = i.payloadData();
       browser->setText( ba );
     }
-  }
+//   }
 }
 
 void MailWidget::treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 {
-  if ( selected.indexes().size() == 1 )
-  {
+//   if ( selected.indexes().size() == 1 )
+//   {
     QModelIndex idx = selected.indexes().at(0);
 
     QModelIndex etmIndex = collectionTree->mapToSource( idx );
@@ -154,7 +163,7 @@ void MailWidget::treeSelectionChanged ( const QItemSelection & selected, const Q
     QModelIndex filteredListIndex = itemList->mapFromSource(etmIndex);
 
     listView->setRootIndex(filteredListIndex);
-  }
+//   }
 }
 
 void MailWidget::modelDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)
