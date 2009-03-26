@@ -20,11 +20,14 @@
 #include "abstractproxymodel.h"
 #include "abstractitemmodel_p.h"
 
+#include <KDebug>
+
 class AbstractProxyModelPrivate : public AbstractItemModelPrivate
 {
 public:
   AbstractProxyModelPrivate(QAbstractProxyModel *proxy)
-    : AbstractItemModelPrivate(proxy)
+    : AbstractItemModelPrivate(proxy),
+      headerDataSet(0)
   {
 
   }
@@ -79,5 +82,24 @@ void AbstractProxyModel::endChangeChildOrder()
 {
   Q_D(AbstractProxyModel);
   d->endChangeChildOrder();
+}
+
+void AbstractProxyModel::setHeaderSet(int set)
+{
+  Q_D(AbstractProxyModel);
+  d->headerDataSet = set;
+}
+
+int AbstractProxyModel::headerSet() const
+{
+  Q_D(const AbstractProxyModel);
+  return d->headerDataSet;
+}
+
+QVariant AbstractProxyModel::headerData( int section, Qt::Orientation orientation, int role ) const
+{
+  Q_D(const AbstractProxyModel);
+  role += ( 1000 * d->headerDataSet );
+  return sourceModel()->headerData(section, orientation, role);
 }
 

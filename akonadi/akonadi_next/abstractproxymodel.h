@@ -35,9 +35,15 @@ class AbstractProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 public:
+
   AbstractProxyModel( QObject *parent = 0 );
 
   virtual ~AbstractProxyModel();
+
+  void setHeaderSet(int set);
+  int headerSet() const;
+
+  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
 protected:
   void beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationRow);

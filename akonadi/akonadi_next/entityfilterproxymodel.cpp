@@ -38,7 +38,8 @@ class EntityFilterProxyModel::Private
 {
   public:
     Private( EntityFilterProxyModel *parent )
-      : mParent( parent )
+      : mParent( parent ),
+        m_headerSet(0)
     {
     }
 
@@ -47,6 +48,8 @@ class EntityFilterProxyModel::Private
     QStringList excludedMimeTypes;
 
     QPersistentModelIndex m_rootIndex;
+
+    int m_headerSet;
 };
 
 EntityFilterProxyModel::EntityFilterProxyModel( QObject *parent )
@@ -148,4 +151,17 @@ void EntityFilterProxyModel::setRootIndex(const QModelIndex &srcIndex)
   reset();
 }
 
+void EntityFilterProxyModel::setHeaderSet(int set)
+{
+  d->m_headerSet = set;
+}
+
+
+QVariant EntityFilterProxyModel::headerData(int section, Qt::Orientation orientation, int role ) const
+{
+  role += (1000*d->m_headerSet);
+  return sourceModel()->headerData(section, orientation, role);
+}
+
 #include "entityfilterproxymodel.moc"
+

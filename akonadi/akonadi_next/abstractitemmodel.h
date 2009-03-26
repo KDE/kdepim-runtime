@@ -52,6 +52,14 @@ public:
   AbstractItemModel(QObject *parent = 0 );
   virtual ~AbstractItemModel();
 
+  // TODO: Move this to an akonadi abstract class.
+
+  enum HeaderGroup {
+    EntityTreeHeaders = 1,
+    CollectionTreeHeaders,
+    ItemListHeaders
+  };
+
 protected:
 
   /**

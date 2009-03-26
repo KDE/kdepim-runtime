@@ -115,6 +115,10 @@ class /*AKONADI_EXPORT*/ EntityFilterProxyModel : public QSortFilterProxyModel
 
     void setRootIndex(const QModelIndex &srcIndex);
 
+    void setHeaderSet(int set);
+
+  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+
   protected:
     virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const;
 
