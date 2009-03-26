@@ -39,6 +39,7 @@ Comment[nn]=Koplar til ein IMAP-tenar. Basert på IMAP-biblioteket i Mailody.
 Comment[pl]=Łączy z serwerem IMAP. Bazuje na bibliotece IMAP z Mailody.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca de IMAP do Mailody.
 Comment[pt_BR]=Conecta a um servidor IMAP. Baseado na biblioteca de IMAP do Mailody.
+Comment[ru]=Подключение к серверу IMAP через библиотеку Mailody.
 Comment[sl]=Se poveže s strežnikom IMAP. Temelji na knjižnici za IMAP iz Mailodya.
 Comment[sv]=Ansluter till en IMAP-server. Baserad på IMAP-biblioteket från Mailody.
 Comment[tr]=Bir IMAP-sunucuya bağlanır. Mailody IMAP-kitaplığını temel alır.
