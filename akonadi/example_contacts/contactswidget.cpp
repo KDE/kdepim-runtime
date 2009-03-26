@@ -95,6 +95,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   treeview->setModel(collectionTree);
   treeview->setColumnHidden(1, true);
+  treeview->setColumnHidden(2, true);
 
   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
@@ -110,6 +111,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   listView = new EntityTreeView(hSplitter);
   listView->setModel(itemList);
+  listView->setColumnHidden(2, true);
   hSplitter->addWidget(listView);
 
   layout->addWidget( splitter );

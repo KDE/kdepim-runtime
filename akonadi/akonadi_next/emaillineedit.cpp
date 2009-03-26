@@ -73,6 +73,7 @@ EmailLineEdit::EmailLineEdit(Akonadi::Session *session, QWidget *parent)
 
     QCompleter *completer = new QCompleter(filterProxy, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setCompletionColumn(2);
 //     completer->setCompletionRole(ContactsModel::EmailCompletionRole);
 
     this->setCompleter(completer);

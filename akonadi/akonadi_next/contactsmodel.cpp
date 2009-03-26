@@ -54,12 +54,9 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
         return addr.familyName();
       case 1:
         return addr.preferredEmail();
+      case 2:
+        return addr.givenName() + " " + addr.familyName() + " " + "<" + addr.preferredEmail() + ">";
       }
-    }
-
-    if (role == EmailCompletionRole && column == 0)
-    {
-      return addr.givenName() + addr.familyName() + "<" + addr.preferredEmail() + ">";
     }
   }
   return EntityTreeModel::getData(item, column, role);
@@ -87,7 +84,7 @@ QVariant ContactsModel::getData(Collection collection, int column, int role) con
 int ContactsModel::columnCount(const QModelIndex &index) const
 {
   Q_UNUSED(index);
-  return 2;
+  return 3;
 }
 
 QVariant ContactsModel::headerData( int section, Qt::Orientation orientation, int role ) const
