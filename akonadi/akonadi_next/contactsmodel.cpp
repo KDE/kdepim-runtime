@@ -18,7 +18,7 @@ public:
     m_itemHeaders << "Given Name" << "Family Name" << "Email";
   }
 
-  Q_DECLARE_PUBLIC(ContactsModel);
+  Q_DECLARE_PUBLIC(ContactsModel)
   ContactsModel *q_ptr;
 
   QStringList m_itemHeaders;

@@ -20,7 +20,7 @@ public:
     m_collectionHeaders << "Folder" << "Count";
     m_itemHeaders << "Subject" << "From" << "Date";
   }
-  Q_DECLARE_PUBLIC(MailModel);
+  Q_DECLARE_PUBLIC(MailModel)
   MailModel *q_ptr;
 
   QStringList m_itemHeaders;
