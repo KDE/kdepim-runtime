@@ -97,7 +97,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   treeview->setColumnHidden(1, true);
   treeview->setColumnHidden(2, true);
 
-  QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
+//   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
   descList = new DescendantEntitiesProxyModel(this);
   descList->setSourceModel(etm);
@@ -109,15 +109,15 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
 
-  listView = new EntityTreeView(hSplitter);
+  listView = new EntityTreeView(splitter);
   listView->setModel(itemList);
   listView->setColumnHidden(2, true);
-  hSplitter->addWidget(listView);
+  splitter->addWidget(listView);
 
   layout->addWidget( splitter );
 
-  browser = new QTextBrowser( hSplitter );
-  hSplitter->addWidget(browser);
+  browser = new QTextBrowser( splitter );
+  splitter->addWidget(browser);
 
   connect( treeview->selectionModel(),
       SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
