@@ -25,13 +25,15 @@
 
 #include <QAbstractProxyModel>
 
+#include "akonadi_next_export.h"
+
 class AbstractProxyModelPrivate;
 
 /**
 This class should be subclassed to create concrete proxy models which are aware of
 move operations reported by an AbstractEntityModel.
 */
-class AbstractProxyModel : public QAbstractProxyModel
+class AKONADI_NEXT_EXPORT AbstractProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 public:
