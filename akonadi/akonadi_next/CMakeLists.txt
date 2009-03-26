@@ -25,7 +25,7 @@ set( akonadi_next_SRCS
   entitytreeview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
-  #  emaillineedit.cpp
+  emaillineedit.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
