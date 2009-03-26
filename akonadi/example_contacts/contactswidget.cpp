@@ -73,10 +73,10 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->setCollectionMonitored( Collection::root() );
 
   Session *session = new Session( QByteArray( "ContactsApplication-" ) + QByteArray::number( qrand() ), this );
-  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
+//   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
 //   etm = new Akonadi::EntityTreeModel( eua, monitor, this);
-  etm = new ContactsModel( eua, monitor, this);
+  etm = new ContactsModel( session, monitor, this);
 
 //   new ModelTest(etm, this);
 
@@ -100,6 +100,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   descList = new DescendantEntitiesProxyModel(this);
   descList->setSourceModel(etm);
+//   descList->setHeaderDataRole(EntityTreeModel::ItemListHeaderDisplayRole);
 
   itemList = new EntityFilterProxyModel(this);
   itemList->setSourceModel(descList);
