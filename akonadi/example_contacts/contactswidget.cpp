@@ -91,17 +91,20 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
+  collectionTree->setHeaderSet(AbstractItemModel::CollectionTreeHeaders);
+
 // //   new ModelTest(collectionTree, this);
 
   treeview->setModel(collectionTree);
   treeview->setColumnHidden(1, true);
   treeview->setColumnHidden(2, true);
+  treeview->setColumnHidden(3, true);
 
 //   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
   descList = new DescendantEntitiesProxyModel(this);
   descList->setSourceModel(etm);
-//   descList->setHeaderDataRole(EntityTreeModel::ItemListHeaderDisplayRole);
+  descList->setHeaderSet(AbstractItemModel::ItemListHeaders);
 
   itemList = new EntityFilterProxyModel(this);
   itemList->setSourceModel(descList);
@@ -111,7 +114,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   listView = new EntityTreeView(splitter);
   listView->setModel(itemList);
-  listView->setColumnHidden(2, true);
+  listView->setColumnHidden(3, true);
   splitter->addWidget(listView);
 
   layout->addWidget( splitter );

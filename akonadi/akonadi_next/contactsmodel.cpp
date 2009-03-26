@@ -14,16 +14,20 @@ public:
   ContactsModelPrivate(ContactsModel *model)
     : q_ptr(model)
   {
-
+    m_collectionHeaders << "Collection" << "Count";
+    m_itemHeaders << "Given Name" << "Family Name" << "Email";
   }
 
   Q_DECLARE_PUBLIC(ContactsModel);
   ContactsModel *q_ptr;
 
+  QStringList m_itemHeaders;
+  QStringList m_collectionHeaders;
+
 };
 
 ContactsModel::ContactsModel(Session *session, Monitor *monitor, QObject *parent)
-  : EntityTreeModel(session, monitor, parent)
+  : EntityTreeModel(session, monitor, parent), d_ptr(new ContactsModelPrivate(this))
 {
 
 }
@@ -51,10 +55,12 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
       switch (column)
       {
       case 0:
-        return addr.familyName();
+        return addr.givenName();
       case 1:
-        return addr.preferredEmail();
+        return addr.familyName();
       case 2:
+        return addr.preferredEmail();
+      case 3:
         return addr.givenName() + " " + addr.familyName() + " " + "<" + addr.preferredEmail() + ">";
       }
     }
@@ -84,31 +90,39 @@ QVariant ContactsModel::getData(Collection collection, int column, int role) con
 int ContactsModel::columnCount(const QModelIndex &index) const
 {
   Q_UNUSED(index);
-  return 3;
+  return 4;
 }
 
 QVariant ContactsModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
-//   if (role == EntityTreeModel::CollectionTreeHeaderDisplayRole)
-//   {
-//     switch(section)
-//     {
-//     case 0:
-//       return "Collection";
-//     case 1:
-//       return "Count";
-//     }
-//
-//   } else if (role == EntityTreeModel::ItemListHeaderDisplayRole)
-//   {
-//     switch(section)
-//     {
-//     case 0:
-//       return "Given Name";
-//     case 1:
-//       return "Family Name";
-//     }
-//   }
+  Q_D(const ContactsModel);
+  const int roleSectionSize = 1000;
+  const int headerType = (role / roleSectionSize);
+
+  if (orientation == Qt::Horizontal)
+  {
+    if (headerType == EntityTreeModel::CollectionTreeHeaders)
+    {
+      role %= roleSectionSize;
+      if (role == Qt::DisplayRole)
+      {
+        if (section >= d->m_collectionHeaders.size() )
+          return QVariant();
+        return d->m_collectionHeaders.at(section);
+      }
+    } else if (headerType == EntityTreeModel::ItemListHeaders)
+    {
+      role %= roleSectionSize;
+      if (role == Qt::DisplayRole)
+      {
+        if (section >= d->m_itemHeaders.size() )
+          return QVariant();
+        return d->m_itemHeaders.at(section);
+      }
+    }
+  }
+
+
   return EntityTreeModel::headerData(section, orientation, role);
 }
 
