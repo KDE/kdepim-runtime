@@ -32,7 +32,7 @@ public:
   virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
 
 private:
-    Q_DECLARE_PRIVATE(ContactsModel);
+    Q_DECLARE_PRIVATE(ContactsModel)
     ContactsModelPrivate *d_ptr;
 };
 
