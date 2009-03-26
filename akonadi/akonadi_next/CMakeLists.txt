@@ -28,7 +28,7 @@ set( akonadi_next_SRCS
   modeltest.cpp
 )
 
-kde4_add_library(akonadi_next ${akonadi_next_SRCS} )
+kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
 
 target_link_libraries(akonadi_next
                       ${AKONADI_COMMON_LIBRARIES}
@@ -38,6 +38,8 @@ target_link_libraries(akonadi_next
                       ${KDE4_KIO_LIBS}
 )
 
+set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+
 install(FILES
 #   abstractitemmodel.h
   collectionchildorderattribute.h
@@ -46,6 +48,7 @@ install(FILES
   entitytreemodel.h
   entitytreeview.h
   entityupdateadapter.h
+  akonadi_next_export.h
   DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
 )
 

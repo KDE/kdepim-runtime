@@ -24,15 +24,13 @@
 
 #include <QString>
 #include <QDomDocument>
-// #include <QLatin1String>
-
-// #include <Qt>
+#include "kjots_common_export.h"
 
 class QString;
 class QLatin1String;
 class QIODevice;
 
-class KJotsPage
+class KJOTS_COMMON_EXPORT KJotsPage
 {
 public:
   KJotsPage();

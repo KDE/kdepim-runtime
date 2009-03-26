@@ -27,6 +27,7 @@
 
 #include <akonadi/collection.h>
 #include <akonadi/item.h>
+#include "akonadi_next_export.h"
 
 // TODO (Applies to all these 'new' models, not just EntityTreeModel):
 // * Implement support for moving entities in the model. This will require
@@ -109,7 +110,7 @@ class EntityTreeModelPrivate;
  * @author Stephen Kelly <steveire@gmail.com>
  * @since 4.3
  */
-class EntityTreeModel : public AbstractItemModel
+class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
 {
   Q_OBJECT
 

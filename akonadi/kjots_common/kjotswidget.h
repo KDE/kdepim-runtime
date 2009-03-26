@@ -41,8 +41,9 @@ class KJotsPage;
 
 #include <QWidget>
 #include <QModelIndexList>
+#include "kjots_common_export.h"
 
-class KJotsWidget : public QWidget
+class KJOTS_COMMON_EXPORT KJotsWidget : public QWidget
 {
   Q_OBJECT
 

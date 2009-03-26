@@ -21,9 +21,8 @@
 #ifndef AKONADI_ENTITYFILTERPROXYMODEL_H
 #define AKONADI_ENTITYFILTERPROXYMODEL_H
 
-// #include "akonadi_export.h"
 #include <QtGui/QSortFilterProxyModel>
-
+#include "akonadi_next_export.h"
 namespace Akonadi {
 
 /**
@@ -53,7 +52,7 @@ namespace Akonadi {
  * @author Bruno Virlet <bruno.virlet@gmail.com>
  * @author Stephen Kelly <steveire@gmail.com>
  */
-class /*AKONADI_EXPORT*/ EntityFilterProxyModel : public QSortFilterProxyModel
+class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
 {
   Q_OBJECT
 

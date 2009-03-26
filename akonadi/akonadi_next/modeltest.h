@@ -27,8 +27,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QStack>
-
-class ModelTest : public QObject
+#include "akonadi_next_export.h"
+class AKONADI_NEXT_EXPORT ModelTest : public QObject
 {
   Q_OBJECT
 

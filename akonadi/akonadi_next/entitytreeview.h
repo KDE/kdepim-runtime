@@ -21,9 +21,8 @@
 #ifndef AKONADI_ENTITY_TREE_VIEW
 #define AKONADI_ENTITY_TREE_VIEW
 
-// #include "akonadi_export.h"
+#include "akonadi_next_export.h"
 #include <QtGui/QTreeView>
-
 class KXmlGuiWindow;
 class QDragMoveEvent;
 
@@ -62,7 +61,7 @@ class Collection;
  * @author Volker Krause <vkrause@kde.org>
  * @author Stephen Kelly <steveire@gmail.com>
  */
-class EntityTreeView : public QTreeView
+class AKONADI_NEXT_EXPORT EntityTreeView : public QTreeView
 {
   Q_OBJECT
 

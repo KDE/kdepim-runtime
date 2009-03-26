@@ -22,6 +22,7 @@
 
 #include <akonadi/item.h>
 #include <akonadi/collection.h>
+#include "akonadi_next_export.h"
 
 namespace Akonadi
 {
@@ -31,7 +32,7 @@ class Session;
 Updates akonadi about changes in the model.
 @internal
 */
-class EntityUpdateAdapter : public QObject
+class AKONADI_NEXT_EXPORT EntityUpdateAdapter : public QObject
 {
   Q_OBJECT
 public:

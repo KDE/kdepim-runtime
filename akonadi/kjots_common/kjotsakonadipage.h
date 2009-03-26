@@ -23,19 +23,12 @@
 #define KJOTSAKONADIPAGE_H
 
 #include <QString>
-// #include <QLatin1String>
-
-// #include <Qt>
-
 class QString;
 class QLatin1String;
 class QIODevice;
 class QDomDocument;
 
-// namespace Akonadi
-// {
-// class Item;
-// }
+#include "kjots_common_export.h"
 
 #include <akonadi/item.h>
 #include <KUrl>
@@ -45,7 +38,7 @@ class QDomDocument;
 
 using namespace Akonadi;
 
-class KJotsAkonadiPage
+class KJOTS_COMMON_EXPORT KJotsAkonadiPage
 {
   enum Changes {
     ChangedPayload,

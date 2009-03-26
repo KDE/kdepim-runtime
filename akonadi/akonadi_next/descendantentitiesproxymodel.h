@@ -24,12 +24,13 @@
 //#include <QAbstractProxyModel>
 
 #include "abstractproxymodel.h"
+#include "akonadi_next_export.h"
 
 namespace Akonadi
 {
 class DescendantEntitiesProxyModelPrivate;
 
-class DescendantEntitiesProxyModel : public AbstractProxyModel
+class AKONADI_NEXT_EXPORT DescendantEntitiesProxyModel : public AbstractProxyModel
 {
   Q_OBJECT
 public:
