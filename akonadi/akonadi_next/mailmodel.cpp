@@ -91,12 +91,12 @@ int MailModel::columnCount(const QModelIndex &index) const
 
 QVariant MailModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
+  // TODO: Refactor this into EntityTreeModel and add some virtuals to get the header data.
   Q_D(const MailModel);
   const int roleSectionSize = 1000;
 
   const int headerType = (role / roleSectionSize);
 
-//   kDebug() << role << section;
 
   if (orientation == Qt::Horizontal)
   {
@@ -115,6 +115,8 @@ QVariant MailModel::headerData( int section, Qt::Orientation orientation, int ro
       role %= roleSectionSize;
       if (role == Qt::DisplayRole)
       {
+        if (section >= d->m_itemHeaders.size() )
+          return QVariant();
         return d->m_itemHeaders.at(section);
       }
     }
