@@ -27,7 +27,7 @@ public:
   virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
 
 private:
-    Q_DECLARE_PRIVATE(MailModel);
+    Q_DECLARE_PRIVATE(MailModel)
     MailModelPrivate *d_ptr;
 };
 
