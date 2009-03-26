@@ -39,6 +39,9 @@ public:
   MainWindow();
   ~MainWindow();
 
+public slots:
+  void compose();
+
 private:
   MailWidget* mw;
 };

@@ -21,12 +21,26 @@
 
 #include "mainwindow.h"
 
+#include <akonadi/session.h>
+
+#include <kaction.h>
+#include <kactioncollection.h>
+#include <klocale.h>
+
 #include "mailwidget.h"
+#include "mailcomposer.h"
 
 MainWindow::MainWindow() : KXmlGuiWindow()
 {
   mw = new MailWidget( this );
   setCentralWidget( mw );
+
+  KAction *action;
+  action = actionCollection()->addAction( "compose_mail");
+  action->setText( i18n("New Mail") );
+  connect(action, SIGNAL(triggered()), SLOT(compose()));
+
+  setupGUI();
 }
 
 
@@ -34,3 +48,10 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::compose()
+{
+  Akonadi::Session *session = new Akonadi::Session( QByteArray( "MailWindow-" ) + QByteArray::number( qrand() ), this );
+  MailComposer *mc = new MailComposer(session, this);
+  mc->show();
+
+}
