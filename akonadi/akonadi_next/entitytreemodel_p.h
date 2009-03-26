@@ -112,7 +112,8 @@ public:
     return "ItemFetchCollectionId";
   }
 
-  EntityUpdateAdapter *entityUpdateAdapter;
+  Session *m_session;
+//   EntityUpdateAdapter *entityUpdateAdapter;
 //   ClientSideEntityStorage *m_clientSideEntityStorage;
 
   Q_DECLARE_PUBLIC( EntityTreeModel )

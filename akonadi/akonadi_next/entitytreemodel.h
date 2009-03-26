@@ -76,9 +76,9 @@
 namespace Akonadi
 {
 class Item;
-class EntityUpdateAdapter;
 class CollectionStatistics;
 class Monitor;
+class Session;
 class ItemFetchScope;
 
 class EntityTreeModelPrivate;
@@ -129,6 +129,7 @@ public:
     UserRole = Qt::UserRole + 1000          ///< Role for user extensions.
   };
 
+
   // EntityTreeModel( EntityUpdateAdapter,
   //                  MonitorAdapter,
   //                  QStringList mimeFilter = QStringList(), QObject *parent = 0);
@@ -139,7 +140,7 @@ public:
    * @param parent The parent object.
    * @param mimeTypes The list of mimetypes to be retrieved in the model.
    */
-  EntityTreeModel( EntityUpdateAdapter *entityUpdateAdapter,
+  EntityTreeModel( Session *session,
                    Monitor *monitor,
                    QObject *parent = 0
 // TODO: figure out what to do about this:

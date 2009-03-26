@@ -30,9 +30,10 @@
 #include <akonadi/monitor.h>
 #include "collectionchildorderattribute.h"
 #include <akonadi/entitydisplayattribute.h>
-#include "entityupdateadapter.h"
+// #include "entityupdateadapter.h"
 // #include "clientsideentitystorage.h"
 
+#include <akonadi/session.h>
 #include <kdebug.h>
 
 using namespace Akonadi;
@@ -156,9 +157,9 @@ bool EntityTreeModelPrivate::mimetypeMatches( const QStringList &mimetypes, cons
 void EntityTreeModelPrivate::fetchItems( Collection parent, int retrieveDepth )
 {
   Q_Q( EntityTreeModel );
-  Akonadi::ItemFetchJob *itemJob = new Akonadi::ItemFetchJob( parent );
+  Akonadi::ItemFetchJob *itemJob = new Akonadi::ItemFetchJob( parent, m_session );
   itemJob->setFetchScope( m_monitor->itemFetchScope() );
-  kDebug() << parent.id();
+//   kDebug() << parent.id();
 
   // ### HACK: itemsReceivedFromJob needs to know which collection items were added to.
   // That is not provided by akonadi, so we attach it in a property.
@@ -187,8 +188,8 @@ void EntityTreeModelPrivate::fetchCollections( Collection col, CollectionFetchJo
 {
   Q_Q( EntityTreeModel );
   // Session?
-  kDebug() << col.name();
-  CollectionFetchJob *job = new CollectionFetchJob( col, type );
+//   kDebug() << col.name();
+  CollectionFetchJob *job = new CollectionFetchJob( col, type, m_session );
   job->includeUnsubscribed( m_includeUnsubscribed );
   q->connect( job, SIGNAL( collectionsReceived( Akonadi::Collection::List ) ),
            q, SLOT( collectionsFetched( Akonadi::Collection::List ) ) );
@@ -201,7 +202,7 @@ void EntityTreeModelPrivate::fetchCollections( Collection col, CollectionFetchJo
 void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List& cols )
 {
   Q_Q( EntityTreeModel );
-  kDebug() << cols.size();
+//   kDebug() << cols.size();
   QHash<Collection::Id, Collection> newCollections;
   QHash< Collection::Id, QList< Collection::Id > > newChildCollections;
   foreach( Collection col, cols ) {
@@ -228,7 +229,7 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
   }
 
   // Insert new child collections into model.
-  kDebug() << newChildCollections;
+//   kDebug() << newChildCollections;
   QHashIterator< Collection::Id, QList< Collection::Id > > i( newChildCollections );
   while ( i.hasNext() ) {
     i.next();
@@ -244,7 +245,7 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
 
   //       TODO: account for ordering.
         QModelIndex parentIndex = q->indexForCollection(m_collections.value(parentId));
-        kDebug() << parentIndex << startRow << startRow + newChildCount - 1;
+//         kDebug() << parentIndex << startRow << startRow + newChildCount - 1;
         q->beginInsertRows(parentIndex, startRow, startRow + newChildCount - 1 );
         foreach( Collection::Id id, newChildCols ) {
           Collection c = newCollections.value( id );
@@ -548,7 +549,7 @@ void EntityTreeModelPrivate::startFirstListJob()
     m_collections.insert( rootCollection.id(), rootCollection );
   }
 
-  kDebug() << "inserting" << rootCollection.id();
+//   kDebug() << "inserting" << rootCollection.id();
 //   m_collections.insert( rootCollection.id(), rootCollection );
 
   // Includes recursive trees. Lower levels are fetched in the onRowsInserted slot if

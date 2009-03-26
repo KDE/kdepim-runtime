@@ -32,14 +32,16 @@
 #include "collectionutils_p.h"
 #include "collectionchildorderattribute.h"
 #include <akonadi/entitydisplayattribute.h>
-#include "entityupdateadapter.h"
+#include <akonadi/transactionsequence.h>
+// #include "entityupdateadapter.h"
 #include <akonadi/monitor.h>
+#include <akonadi/session.h>
 
 #include "kdebug.h"
 
 using namespace Akonadi;
 
-EntityTreeModel::EntityTreeModel( EntityUpdateAdapter *entityUpdateAdapter,
+EntityTreeModel::EntityTreeModel( Session *session,// EntityUpdateAdapter *entityUpdateAdapter,
                                   Monitor *monitor,
                                   QObject *parent
                                 )
@@ -49,7 +51,8 @@ EntityTreeModel::EntityTreeModel( EntityUpdateAdapter *entityUpdateAdapter,
   Q_D( EntityTreeModel );
 
   d->m_monitor = monitor;
-  d->entityUpdateAdapter = entityUpdateAdapter;
+  d->m_session = session;
+//   d->entityUpdateAdapter = entityUpdateAdapter;
 
   // monitor collection changes
   connect( monitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
@@ -433,14 +436,17 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
         }
       }
       QHashIterator<Collection::Id, Item::List> item_iter( dropped_items );
-      d->entityUpdateAdapter->beginTransaction();
+//       d->entityUpdateAdapter->beginTransaction();
+      TransactionSequence *transaction = new TransactionSequence(d->m_session);
       while ( item_iter.hasNext() ) {
         item_iter.next();
         Collection srcCol = d->m_collections.value(item_iter.key());
         if ( action == Qt::MoveAction ) {
-          d->entityUpdateAdapter->moveEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), srcCol, destCol, row );
+//           ItemMoveJob(transaction);
+//           d->entityUpdateAdapter->moveEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), srcCol, destCol, row );
         } else if ( action == Qt::CopyAction ) {
-          d->entityUpdateAdapter->addEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), destCol, row );
+//             ItemCreateJob(transaction);
+//           d->entityUpdateAdapter->addEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), destCol, row );
         }
         dropped_cols.remove( item_iter.key() );
       }
@@ -449,13 +455,17 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
         col_iter.next();
         Collection srcCol = d->m_collections.value(item_iter.key());
         if ( action == Qt::MoveAction ) {
-          // Empty Item::List() because I know I've already dealt with the items of this parent.
-          d->entityUpdateAdapter->moveEntities( Item::List(), col_iter.value(), srcCol, destCol, row );
+//         CollectionMoveJob(transaction);
+//           // Empty Item::List() because I know I've already dealt with the items of this parent.
+
+// //           d->entityUpdateAdapter->moveEntities( Item::List(), col_iter.value(), srcCol, destCol, row );
         } else if ( action == Qt::CopyAction ) {
-          d->entityUpdateAdapter->addEntities( Item::List(), col_iter.value(), destCol, row );
+            // collectioncopyjob.
+//           d->entityUpdateAdapter->addEntities( Item::List(), col_iter.value(), destCol, row );
         }
       }
-      d->entityUpdateAdapter->endTransaction();
+      delete transaction;
+//       d->entityUpdateAdapter->endTransaction();
       return false; // ### Return false so that the view does not update with the dropped
       // in place where they were dropped. That will be done when the monitor notifies the model
       // through collectionsReceived that the move was successful.
@@ -569,7 +579,7 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
   }
 
 //   kDebug() << d->m_childEntities.value(id);
-  if (parent.column() == 0)
+  if (parent.column() <= 0)
     return d->m_childEntities.value(id).size();
   return 0;
 }
@@ -627,7 +637,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 //           col.addAttribute(displayAttribute);
 // //       }
 
-      d->entityUpdateAdapter->updateEntities( Collection::List() << col );
+//       d->entityUpdateAdapter->updateEntities( Collection::List() << col );
       return false;
     }
     if (d->m_items.contains(index.internalId()))
@@ -643,7 +653,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 //       displayAttribute->setDisplayName( value.toString() );
 //       }
 //           item.addAttribute(displayAttribute);
-      d->entityUpdateAdapter->updateEntities( Item::List() << i );
+//       d->entityUpdateAdapter->updateEntities( Item::List() << i );
 //       d->entityUpdateAdapter->updateEntities( Item::List() << item );
         return false;
     }

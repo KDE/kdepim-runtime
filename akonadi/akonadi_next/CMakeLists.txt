@@ -20,12 +20,12 @@ set( akonadi_next_SRCS
 #   qsortfilterproxymodel.cpp
   entitytreemodel.cpp
   entitytreemodel_p.cpp
-  entityupdateadapter.cpp
   descendantentitiesproxymodel.cpp
   entityfilterproxymodel.cpp
   entitytreeview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
+  #  emaillineedit.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
