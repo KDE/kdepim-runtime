@@ -1,25 +1,22 @@
 
-#ifndef CONTACTSMODEL_H
-#define CONTACTSMODEL_H
+#ifndef MAILMODEL_H
+#define MAILMODEL_H
 
 #include "entitytreemodel.h"
 
+#include "akonadi_next_export.h"
+
 using namespace Akonadi;
 
-class ContactsModelPrivate;
+class MailModelPrivate;
 
-class ContactsModel : public EntityTreeModel
+class AKONADI_NEXT_EXPORT MailModel : public EntityTreeModel
 {
   Q_OBJECT
 public:
 
-  enum Roles
-  {
-    EmailCompletionRole = EntityTreeModel::UserRole
-  };
-
-  ContactsModel(Session *session, Monitor *monitor, QObject *parent = 0);
-  virtual ~ContactsModel();
+  MailModel(Session *session, Monitor *monitor, QObject *parent = 0);
+  virtual ~MailModel();
 
   virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
 
@@ -30,8 +27,8 @@ public:
   virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
 
 private:
-    Q_DECLARE_PRIVATE(ContactsModel);
-    ContactsModelPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(MailModel);
+    MailModelPrivate *d_ptr;
 };
 
 #endif

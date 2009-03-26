@@ -3,12 +3,12 @@ project(example_mail)
 set(example_mail_SRCS
     main.cpp
     mailwidget.cpp
-    mailmodel.cpp
+    #    mailmodel.cpp
     mailcomposer.cpp
     mainwindow.cpp
     #    modeltest.cpp
-    ../example_contacts/contactsmodel.cpp
-    ../akonadi_next/tests/dynamictreemodel.cpp
+    #    ../example_contacts/contactsmodel.cpp
+    #   ../akonadi_next/tests/dynamictreemodel.cpp
 )
 
 kde4_add_executable(example_mail ${example_mail_SRCS} )

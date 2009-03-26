@@ -36,7 +36,7 @@
 #include "descendantentitiesproxymodel.h"
 #include "entityfilterproxymodel.h"
 
-#include "../example_contacts/contactsmodel.h"
+#include "contactsmodel.h"
 
 #include <kdebug.h>
 

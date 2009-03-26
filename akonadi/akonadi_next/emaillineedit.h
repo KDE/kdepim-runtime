@@ -24,6 +24,8 @@
 
 #include <QLineEdit>
 
+#include "akonadi_next_export.h"
+
 // #include <KComboBox>
 
 namespace Akonadi
@@ -31,7 +33,7 @@ namespace Akonadi
 class Session;
 }
 
-class EmailLineEdit : public QLineEdit //  KComboBox //
+class AKONADI_NEXT_EXPORT EmailLineEdit : public QLineEdit //  KComboBox //
 {
   Q_OBJECT
 public:

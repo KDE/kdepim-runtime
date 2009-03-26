@@ -39,7 +39,7 @@
 
 #include "mailmodel.h"
 
-#include "../example_contacts/contactsmodel.h"
+#include "contactsmodel.h"
 
 #include <kdebug.h>
 #include "modeltest.h"

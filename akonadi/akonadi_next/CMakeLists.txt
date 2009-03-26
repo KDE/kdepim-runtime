@@ -26,6 +26,10 @@ set( akonadi_next_SRCS
   collectionchildorderattribute.cpp
   modeltest.cpp
   emaillineedit.cpp
+  # TODO Move this to akonadi-kabc
+  contactsmodel.cpp
+  # TODO Move this to akonadi-mail?
+  mailmodel.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
@@ -36,6 +40,8 @@ target_link_libraries(akonadi_next
                       ${QT_QTGUI_LIBRARY}
                       ${KDE4_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
+                      ${KDE4_KABC_LIBS}
+                      ${KDE4_KMIME_LIBS}
 )
 
 set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )

@@ -3,7 +3,7 @@ project(example_contacts)
 set(example_contacts_SRCS
     main.cpp
     contactswidget.cpp
-    contactsmodel.cpp
+    #    contactsmodel.cpp
     mainwindow.cpp
 )
 
