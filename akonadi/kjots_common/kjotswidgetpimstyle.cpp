@@ -94,9 +94,9 @@ KJotsWidgetPimStyle::KJotsWidgetPimStyle( QWidget * parent, Qt::WindowFlags f )
 //   monitor->fetchCollectionStatistics( false );
 
   Session *session = new Session( QByteArray( "EntityTreeModel-" ) + QByteArray::number( qrand() ), this );
-  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
+//  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-  etm = new Akonadi::EntityTreeModel( eua, monitor, this);
+  etm = new Akonadi::EntityTreeModel( session, monitor, this); // now takes a session rather than an eua
   etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
 
   collectionTree = new EntityFilterProxyModel(this);

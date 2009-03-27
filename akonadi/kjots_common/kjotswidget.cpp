@@ -126,9 +126,9 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 
   Session *session = new Session( QByteArray( "EntityTreeModel-" ) + QByteArray::number( qrand() ), this );
 
-  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
+//  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-  etm = new Akonadi::EntityTreeModel(eua, monitor, this);
+  etm = new Akonadi::EntityTreeModel(session, monitor, this); // now takes a session rather than an EUA
   etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
 //   etm->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
 //   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
