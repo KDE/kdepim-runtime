@@ -24,7 +24,6 @@ include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
 add_subdirectory(akonadi_next)
-add_subdirectory(xml)
 
 #### KJots commmon stuff ####
 add_subdirectory(kjots_common)
