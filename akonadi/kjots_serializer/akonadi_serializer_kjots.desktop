@@ -1,6 +1,7 @@
 [Misc]
 Name=KJots Serializer
 Name[el]=Διαχειριστής KJots
+Name[en_GB]=KJots Serialiser
 Name[es]=Serializador KJots
 Name[et]=KJotsi jadasti
 Name[fr]=Sérialiseur KJots
@@ -17,6 +18,7 @@ Name[uk]=Серіалізатор KJots
 Name[x-test]=xxKJots Serializerxx
 Comment=An Akonadi serializer plugin for KJotsPage and KJotsBook objects
 Comment[el]=Ένα πρόσθετο διαχείρισης αντικειμένων KJotsPage και KJotsBook για το Akonadi
+Comment[en_GB]=An Akonadi serialiser plugin for KJotsPage and KJotsBook objects
 Comment[es]=Un complemento para serializar objetos KJotsPage y KJotsBook
 Comment[et]=Akonadi KJotsPage ja KJotsBook objektide jadastamisplugin
 Comment[fr]=Un module de mise en série d'Akonadi pour des objets KJotsPage et KJotsBook
