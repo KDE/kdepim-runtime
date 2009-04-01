@@ -471,7 +471,7 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 void EntityTreeModelPrivate::monitoredItemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_Q( EntityTreeModel );
-  m_items[ item.id() ] == item;
+  m_items[ item.id() * -1 ] = item;
 
   QModelIndex idx = q->indexForItem(item);
   q->dataChanged(idx, idx);
