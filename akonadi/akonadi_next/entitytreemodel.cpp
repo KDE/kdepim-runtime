@@ -33,7 +33,6 @@
 #include "collectionchildorderattribute.h"
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/transactionsequence.h>
-// #include "entityupdateadapter.h"
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
@@ -42,7 +41,7 @@
 
 using namespace Akonadi;
 
-EntityTreeModel::EntityTreeModel( Session *session,// EntityUpdateAdapter *entityUpdateAdapter,
+EntityTreeModel::EntityTreeModel( Session *session,
                                   Monitor *monitor,
                                   QObject *parent
                                 )
@@ -53,7 +52,6 @@ EntityTreeModel::EntityTreeModel( Session *session,// EntityUpdateAdapter *entit
 
   d->m_monitor = monitor;
   d->m_session = session;
-//   d->entityUpdateAdapter = entityUpdateAdapter;
 
   // monitor collection changes
   connect( monitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
@@ -108,9 +106,6 @@ EntityTreeModel::~EntityTreeModel()
   Q_D( EntityTreeModel );
 }
 
-// Could be a problem here. We can't control what slot will get called first when the
-// signal is emitted, but we require that this slot is called first.
-// Solved by calling this instead of reset()?
 void EntityTreeModel::clearAndReset()
 {
   Q_D( EntityTreeModel );
@@ -136,7 +131,7 @@ Item EntityTreeModel::getItem( qint64 id )
 
 int EntityTreeModel::columnCount( const QModelIndex & parent ) const
 {
-// TODO: Subscriptions? Statistics?
+// TODO: Statistics?
   if ( parent.isValid() && parent.column() != 0 )
     return 0;
   return 1;
@@ -147,8 +142,6 @@ QVariant EntityTreeModel::getData(Item item, int column, int role) const
 {
   if (column == 0)
   {
-    // return the eda or the remoteId.
-
     switch ( role ) {
     case Qt::DisplayRole:
     case Qt::EditRole:
@@ -254,7 +247,6 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
 
     if (!col.isValid())
       return QVariant();
-//     kDebug();
     return getData(col, index.column(), role);
 
   }
@@ -265,7 +257,6 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
       return QVariant();
 
     QVariant v = getData(item, index.column(), role);
-//     kDebug() << v;
     return v;
   }
   return QVariant();
@@ -338,28 +329,6 @@ Qt::ItemFlags EntityTreeModel::flags( const QModelIndex & index ) const
   }
   return flags;
 }
-
-// void EntityTreeModelPrivate::moveEntity(const QModelIndex &src, int srcRow, const QModelIndex &dest, int destRow)
-// {
-//   layoutAboutToBeChanged();
-//   // change persistant indexes.
-//   layoutChanged();
-// }
-//
-//
-// void EntityTreeModelPrivate::entityMoved(Collection col, Collection src, Collection dest)
-// {
-//   Q_Q(EntityTreeModel);
-//
-//   QModelIndex entityIndex = indexForCollection(col);
-//   QModelIndex srcIndex = entityIndex.parent();
-//   int srcRow = entityIndex.row();
-// }
-//
-// void EntityTreeModelPrivate::entityMoved(Item item, Collection src, Collection dest)
-// {
-//
-// }
 
 Qt::DropActions EntityTreeModel::supportedDropActions() const
 {
@@ -484,7 +453,7 @@ QModelIndex EntityTreeModel::index( int row, int column, const QModelIndex & par
 
   Q_D( const EntityTreeModel );
 
-  //TODO: don't use column count here. Use some d-> func.
+  //TODO: don't use column count here? Use some d-> func.
   if ( column >= columnCount() || column < 0 )
     return QModelIndex();
 
@@ -502,27 +471,12 @@ QModelIndex EntityTreeModel::index( int row, int column, const QModelIndex & par
     childEntities = d->m_childEntities.value(parent.internalId());
   }
 
-
-//   if (!parent.isValid() && d->m_showRootCollection)
-//   {
-//     childEntities << m_rootCollection.id();
-//   } else
-//   {
-//     childEntities = d->m_childEntities.value(parent.internalId());
-//   }
-
   int size = childEntities.size();
   if ( row < 0 || row >= size )
     return QModelIndex();
 
   qint64 internalIdentifier = childEntities.at(row);
 
-//   bool found;
-//   qint64 internalIdentifier = d->childAt( parent.internalId(), row, &found );
-//
-//   if (!found)
-//     return QModelIndex();
-//
   return createIndex( row, column, reinterpret_cast<void*>( internalIdentifier ) );
 
 }
@@ -566,7 +520,6 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 {
   Q_D( const EntityTreeModel );
 
-//   kDebug() << parent;
   qint64 id;
   if (!parent.isValid())
   {
@@ -579,7 +532,6 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
     id = parent.internalId();
   }
 
-//   kDebug() << d->m_childEntities.value(id);
   if (parent.column() <= 0)
     return d->m_childEntities.value(id).size();
   return 0;
@@ -678,6 +630,7 @@ bool EntityTreeModel::canFetchMore ( const QModelIndex & parent ) const
     return true;
   }
   // TODO: It might be possible to get akonadi to tell us if a collection is empty or not and use that information instead of assuming all collections are not empty.
+  // Using Collection statistics?
 }
 
 void EntityTreeModel::fetchMore ( const QModelIndex & parent )
@@ -694,10 +647,8 @@ void EntityTreeModel::fetchMore ( const QModelIndex & parent )
     if (!col.isValid())
       return;
 
-    kDebug() << col.id() << col.name();
     d->fetchItems( col, EntityTreeModelPrivate::Base );
   }
-//   kDebug() << parent;
 }
 
 bool EntityTreeModel::hasChildren(const QModelIndex &parent ) const
@@ -706,7 +657,7 @@ bool EntityTreeModel::hasChildren(const QModelIndex &parent ) const
   // TODO: Empty collections right now will return true and get a little + to expand.
   // There is probably no way to tell if a collection
   // has child items in akonadi without first attempting an itemFetchJob...
-  // Figure out a way to fix this.
+  // Figure out a way to fix this. (Statistics)
   return ((rowCount(parent) > 0) || (canFetchMore(parent) && d->m_itemPopulation == LazyPopulation));
 }
 

@@ -30,7 +30,6 @@
 
 namespace Akonadi
 {
-// class ClientSideEntityStorage;
 /**
  * @internal
  */
@@ -41,17 +40,9 @@ public:
   EntityTreeModelPrivate( EntityTreeModel *parent );
   EntityTreeModel *q_ptr;
 
-//   void collectionChanged( const Akonadi::Collection& );
-//   void itemChanged( const Item&, const QSet<QByteArray>& );
-
 //   void collectionStatisticsChanged( Collection::Id, const Akonadi::CollectionStatistics& );
 
   bool mimetypeMatches( const QStringList &mimetypes, const QStringList &other );
-
-//   void rowsAboutToBeInserted( Collection::Id colId, int start, int end );
-//   void rowsAboutToBeRemoved( Collection::Id colId, int start, int end );
-//   void rowsInserted();
-//   void rowsRemoved();
 
   enum RetrieveDepth{
     Base,
@@ -113,8 +104,6 @@ public:
   }
 
   Session *m_session;
-//   EntityUpdateAdapter *entityUpdateAdapter;
-//   ClientSideEntityStorage *m_clientSideEntityStorage;
 
   Q_DECLARE_PUBLIC( EntityTreeModel )
 };
