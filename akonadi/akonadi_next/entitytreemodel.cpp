@@ -34,6 +34,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/transactionsequence.h>
 // #include "entityupdateadapter.h"
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
@@ -655,6 +656,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 //           item.addAttribute(displayAttribute);
 //       d->entityUpdateAdapter->updateEntities( Item::List() << i );
 //       d->entityUpdateAdapter->updateEntities( Item::List() << item );
+        Akonadi::ItemModifyJob *itemModifyJob = new Akonadi::ItemModifyJob( i, d->m_session );
         return false;
     }
   }
