@@ -30,9 +30,6 @@
 #include "akonadi_next_export.h"
 
 // TODO (Applies to all these 'new' models, not just EntityTreeModel):
-// * Implement support for moving entities in the model. This will require
-//     AgentBase::ObserverV2 and support in the server, and figure out how to notify
-//     proxy models abouut moves: http://thread.gmane.org/gmane.comp.lib.qt.general/10723
 // * Figure out how LazyPopulation and signals from monitor containing items should
 //     fit together. Possibly store a list of collections whose items have already
 //     been lazily fetched.
@@ -43,9 +40,6 @@
 //     it is akonadi specific, such as setting root collection etc.
 // * Implement support for includeUnsubscribed.
 // * Use CollectionStatistics for item count stuff. Find out if I can get stats by mimetype.
-// * Figure out how for example new mails, rss, news items etc should be represented.
-//     Should there be an NewAttribute on Item that indicates that it is new? Then
-//     they would need to be counted and put into the displayrole data of collections.
 // * Make sure there are applications using it before committing to it until KDE5.
 //     Some API/ virtual methods might need to be added when real applications are made.
 // * Fix compiler warnings about unused variables. Could be mistakes about.
@@ -62,7 +56,6 @@
 //     fetchMimeTypes(text/foo) was set, Col0-2 would not make it into the model.
 //     This is because the model does Breadth first traversal and never fetches anything
 //     after Col0-1 because it doesn't match the mimetype we're interested in.
-// * Find out what the usecases are for structural collections.
 // * The API for tying proxies together is currently a bit cumbersome. Write a
 //     glue class to make stringing them together easier.
 
