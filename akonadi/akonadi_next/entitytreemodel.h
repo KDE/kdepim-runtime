@@ -65,13 +65,6 @@
 // * Find out what the usecases are for structural collections.
 // * The API for tying proxies together is currently a bit cumbersome. Write a
 //     glue class to make stringing them together easier.
-// * Implement support for linking/virtual collections using the QAbstractItemModel::buddy
-//     system.
-// * See if it makes sense to use the buddy system instead of a proxy model for descendant
-//     entities. That would probably make it easier to use QColumnView.
-// * Alternatively subclass QColumnView and make it insert descendants into the view, or
-//     create another proxy model which uses buddys to create virtual copies of
-//     descendants instead of moving them.
 
 namespace Akonadi
 {
