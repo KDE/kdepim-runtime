@@ -159,7 +159,7 @@ void EntityFilterProxyModel::setHeaderSet(int set)
 
 QVariant EntityFilterProxyModel::headerData(int section, Qt::Orientation orientation, int role ) const
 {
-  role += (1000*d->m_headerSet);
+  role += (EntityTreeModel::TerminalUserRole * d->m_headerSet);
   return sourceModel()->headerData(section, orientation, role);
 }
 

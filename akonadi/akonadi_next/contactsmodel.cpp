@@ -93,37 +93,34 @@ int ContactsModel::columnCount(const QModelIndex &index) const
   return 4;
 }
 
-QVariant ContactsModel::headerData( int section, Qt::Orientation orientation, int role ) const
+QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
 {
   Q_D(const ContactsModel);
-  const int roleSectionSize = 1000;
-  const int headerType = (role / roleSectionSize);
 
   if (orientation == Qt::Horizontal)
   {
-    if (headerType == EntityTreeModel::CollectionTreeHeaders)
+    if ( headerSet == EntityTreeModel::CollectionTreeHeaders )
     {
-      role %= roleSectionSize;
       if (role == Qt::DisplayRole)
       {
         if (section >= d->m_collectionHeaders.size() )
           return QVariant();
         return d->m_collectionHeaders.at(section);
       }
-    } else if (headerType == EntityTreeModel::ItemListHeaders)
+    } else if (headerSet == EntityTreeModel::ItemListHeaders)
     {
-      role %= roleSectionSize;
       if (role == Qt::DisplayRole)
       {
         if (section >= d->m_itemHeaders.size() )
           return QVariant();
+
+          kDebug() << d->m_itemHeaders.at(section);
         return d->m_itemHeaders.at(section);
       }
     }
   }
 
-
-  return EntityTreeModel::headerData(section, orientation, role);
+  return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
 }
 
 #include "contactsmodel.moc"

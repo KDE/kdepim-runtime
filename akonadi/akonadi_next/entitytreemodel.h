@@ -42,7 +42,7 @@
 // * Unit tests. Much of the stuff here is not covered by modeltest, and some of
 //     it is akonadi specific, such as setting root collection etc.
 // * Implement support for includeUnsubscribed.
-// * Find out what should be done for statistics.
+// * Use CollectionStatistics for item count stuff. Find out if I can get stats by mimetype.
 // * Figure out how for example new mails, rss, news items etc should be represented.
 //     Should there be an NewAttribute on Item that indicates that it is new? Then
 //     they would need to be counted and put into the displayrole data of collections.
@@ -119,9 +119,16 @@ public:
     MimeTypeRole,                           ///< The mimetype of the entity
     RemoteIdRole,                           ///< The remoteId of the entity
     CollectionChildOrderRole,               ///< Ordered list of child items if available
-    UserRole = Qt::UserRole + 1000          ///< Role for user extensions.
+    UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
+    TerminalUserRole = 1000000              ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
   };
 
+  enum HeaderGroup {
+    EntityTreeHeaders,
+    CollectionTreeHeaders,
+    ItemListHeaders
+    // Could we need more here?
+  };
 
   // EntityTreeModel( EntityUpdateAdapter,
   //                  MonitorAdapter,
@@ -136,11 +143,7 @@ public:
   EntityTreeModel( Session *session,
                    Monitor *monitor,
                    QObject *parent = 0
-// TODO: figure out what to do about this:
-// I think if you want to show stats, you fetch them in the monitor.
-// This model should show them if they are fetched.
-//                             int showStats = EntityTreeModel::DoNotShowStatistics
-                          );
+                  );
 
   /**
    * Destroys the entityTreeModel.
@@ -235,6 +238,7 @@ protected:
 
   virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
 
+  virtual QVariant getHeaderData(int section, Qt::Orientation orientation, int role, int headerSet) const;
 
 private:
   Q_DECLARE_PRIVATE( EntityTreeModel )

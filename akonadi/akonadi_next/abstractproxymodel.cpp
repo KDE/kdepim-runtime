@@ -20,6 +20,8 @@
 #include "abstractproxymodel.h"
 #include "abstractitemmodel_p.h"
 
+#include "entitytreemodel.h"
+
 #include <KDebug>
 
 class AbstractProxyModelPrivate : public AbstractItemModelPrivate
@@ -99,7 +101,7 @@ int AbstractProxyModel::headerSet() const
 QVariant AbstractProxyModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
   Q_D(const AbstractProxyModel);
-  role += ( 1000 * d->headerDataSet );
+  role += ( Akonadi::EntityTreeModel::TerminalUserRole * d->headerDataSet );
   return sourceModel()->headerData(section, orientation, role);
 }
 

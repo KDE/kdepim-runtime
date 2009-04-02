@@ -80,7 +80,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
 //   new ModelTest(etm, this);
 
-  etm->fetchMimeTypes( QStringList() << "text/directory" );
+   etm->fetchMimeTypes( QStringList() << "text/directory" );
 
   etm->setIncludeRootCollection(true);
   etm->setRootCollectionDisplayName(i18nc("Name of top level for all collections in the application", "[All]"));
@@ -91,7 +91,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
-  collectionTree->setHeaderSet(AbstractItemModel::CollectionTreeHeaders);
+  collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
 
 // //   new ModelTest(collectionTree, this);
 
@@ -104,10 +104,10 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   descList = new DescendantEntitiesProxyModel(this);
   descList->setSourceModel(etm);
-  descList->setHeaderSet(AbstractItemModel::ItemListHeaders);
 
   itemList = new EntityFilterProxyModel(this);
   itemList->setSourceModel(descList);
+  itemList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );

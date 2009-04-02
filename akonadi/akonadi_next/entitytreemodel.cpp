@@ -537,11 +537,19 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
   return 0;
 }
 
-QVariant EntityTreeModel::headerData( int section, Qt::Orientation orientation, int role ) const
+QVariant  EntityTreeModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet) const
 {
   if ( section == 0 && orientation == Qt::Horizontal && role == Qt::DisplayRole )
     return i18nc( "@title:column, name of a thing", "Name" );
   return QAbstractItemModel::headerData( section, orientation, role );
+}
+
+QVariant EntityTreeModel::headerData( int section, Qt::Orientation orientation, int role ) const
+{
+  const int headerSet = ( role / TerminalUserRole );
+
+  role %= TerminalUserRole;
+  return getHeaderData(section, orientation, role, headerSet);
 }
 
 QMimeData *EntityTreeModel::mimeData( const QModelIndexList &indexes ) const

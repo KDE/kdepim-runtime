@@ -24,7 +24,7 @@ public:
 
   virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
 
-  virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
+  virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
 
 private:
     Q_DECLARE_PRIVATE(MailModel)

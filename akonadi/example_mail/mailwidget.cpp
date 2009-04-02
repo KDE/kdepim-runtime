@@ -79,6 +79,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->setItemFetchScope( scope );
   // Only monitoring the root collection works.
   monitor->setCollectionMonitored( Collection::root() );
+//  monitor->setMimeTypeMonitored( "message/rfc822" );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
@@ -96,10 +97,10 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
-  collectionTree->setHeaderSet(AbstractItemModel::CollectionTreeHeaders);
+  collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
 
   treeview->setModel(collectionTree);
-
+  treeview->setColumnHidden(2, true);
   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
   itemList = new EntityFilterProxyModel(this);
@@ -107,7 +108,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
-  itemList->setHeaderSet(AbstractItemModel::ItemListHeaders);
+  itemList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
   listView = new EntityTreeView(splitter);
   listView->setModel(itemList);
