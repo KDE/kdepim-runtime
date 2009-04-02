@@ -4,7 +4,6 @@ set( kjots_common_SRCS
     kjotspage.cpp
     kjotsakonadipage.cpp
     kjotswidget.cpp
-    kjotswidgetpimstyle.cpp
 )
 
 # Temporary for development
@@ -23,4 +22,3 @@ set_target_properties(kjots_common PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOV
 
 install(TARGETS kjots_common ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-  FILE(WRITE somefile KDEPIMLibs__akonadi-kde)

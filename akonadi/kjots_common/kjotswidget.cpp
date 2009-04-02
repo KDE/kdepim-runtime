@@ -120,7 +120,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
-//   monitor->setMimeTypeMonitored( KJotsPage::mimeType() );
+//  monitor->setMimeTypeMonitored( KJotsPage::mimeType() );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
@@ -129,36 +129,36 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 //  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
   etm = new Akonadi::EntityTreeModel(session, monitor, this); // now takes a session rather than an EUA
-  etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
+   etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
 //   etm->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
 //   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 //   etm->setIncludeRootCollection(true);
 //   etm->setRootCollectionDisplayName("[All]");
 
-  DescendantEntitiesProxyModel *demp = new DescendantEntitiesProxyModel( //QModelIndex(),
-  this );
-  demp->setSourceModel(etm);
-  demp->setRootIndex(QModelIndex());
+//   DescendantEntitiesProxyModel *demp = new DescendantEntitiesProxyModel( //QModelIndex(),
+//   this );
+//   demp->setSourceModel(etm);
+//   demp->setRootIndex(QModelIndex());
 
-  demp->setDisplayAncestorData(true, QString(" / "));
+//   demp->setDisplayAncestorData(true, QString(" / "));
 
 //   EntityFilterProxyModel *proxy = new EntityFilterProxyModel();
 //   proxy->setSourceModel(demp);
 //   proxy->addMimeTypeExclusionFilter( Collection::mimeType() );
 
 //   new ModelTest(proxy, this);
-//   new ModelTest( etm, this );
+  new ModelTest( etm, this );
 //   new ModelTest( dem, this );
-  new ModelTest( demp, this );
+//   new ModelTest( demp, this );
 
 //   treeview->setModel(proxy);
 //   treeview->setModel( dem );
-  treeview->setModel( demp );
+//   treeview->setModel( demp );
 //   treeview->setModel( fcp );
 
 //   QDirModel *dm = new QDirModel(this);
 //   treeview->setModel( dm );
-//   treeview->setModel( etm );
+  treeview->setModel( etm );
 
   stackedWidget = new QStackedWidget( splitter );
 
@@ -325,6 +325,8 @@ void KJotsWidget::selectionChanged ( const QItemSelection & selected, const QIte
 
   } // else nothing was changed.
 
+  kDebug() << selected.indexes();
+
   if ( selected.indexes().size() == 1 )
   {
     // Only one item selected. If it's a book, render it. If it's a page, display it for editing.
@@ -332,6 +334,7 @@ void KJotsWidget::selectionChanged ( const QItemSelection & selected, const QIte
     Item i = etm->data( idx, EntityTreeModel::ItemRole ).value< Item >();
     if ( i.isValid() )
     {
+      kDebug() << i.payloadData();
       KJotsPage page = i.payload< KJotsPage >();
       editor->setText( page.content() );
       stackedWidget->setCurrentWidget( editor );
@@ -357,9 +360,11 @@ void KJotsWidget::dataChanged(const QModelIndex & topLeft, const QModelIndex & b
 
   if (topLeft == bottomRight)
   {
+  kDebug() << topLeft;
     Item i = etm->data(topLeft, EntityTreeModel::ItemRole).value<Item>();
     if (i.isValid())
     {
+      kDebug() << i.payloadData();
       // Check if the item updated is the item being edited and offer a conflict dialog.
 //       if ()
 
