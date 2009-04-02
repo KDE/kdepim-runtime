@@ -89,7 +89,9 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 //   etm = new Akonadi::EntityTreeModel( session, monitor, this);
   etm = new MailModel( session, monitor, this);
 
+  // TODO: This stuff should probably be in the mailmodel constructor.
   etm->fetchMimeTypes( QStringList() << "message/rfc822" );
+  etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 
   collectionTree = new EntityFilterProxyModel(this);
 
