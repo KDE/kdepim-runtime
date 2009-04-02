@@ -52,15 +52,7 @@ public:
   AbstractItemModel(QObject *parent = 0 );
   virtual ~AbstractItemModel();
 
-  // TODO: Move this to an akonadi abstract class.
-
-  enum HeaderGroup {
-    EntityTreeHeaders = 1,
-    CollectionTreeHeaders,
-    ItemListHeaders
-  };
-
-protected:
+  protected:
 
   /**
   In the case of moving rows within a parent, the destinationRow should be the row <b>above</b> the move operation.
@@ -111,8 +103,6 @@ protected:
 
   void beginResetModel();
   void endResetModel();
-
-protected:
 
 signals:
 
