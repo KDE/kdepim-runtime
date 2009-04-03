@@ -41,6 +41,7 @@ private slots:
     void slotTestClicked();
     void slotAuthOk();
     void slotAuthFailed( const QString& );
+    void slotLinkClicked();
 
 private:
     Ui::ConfigDialog ui;

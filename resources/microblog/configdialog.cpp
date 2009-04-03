@@ -25,6 +25,8 @@
 #include <kmessagebox.h>
 #include <KUser>
 
+#include <QWhatsThis>
+
 ConfigDialog::ConfigDialog( QWidget * parent ) :
         KDialog( parent )
 {
@@ -45,6 +47,7 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
     }
     setButtons( KDialog::Ok | KDialog::Cancel );
     connect( ui.testButton, SIGNAL( clicked() ), SLOT( slotTestClicked() ) );
+    connect( ui.welcomelabel, SIGNAL( linkActivated ( const QString & ) ), SLOT( slotLinkClicked() ) );
 }
 
 ConfigDialog::~ConfigDialog()
@@ -92,6 +95,12 @@ void ConfigDialog::slotAuthFailed( const QString& error )
     ui.statusLabel->setText( i18n( "Failed!" ) );
     ui.statusImageLabel->setPixmap( KIcon( "dialog-cancel" ).pixmap( 16 ) );
     ui.testButton->setEnabled( true );
+}
+
+void ConfigDialog::slotLinkClicked() 
+{
+    QWhatsThis::showText( QCursor::pos(), i18n( "OpenId users must first setup a password in "
+        "the settings on the webpage. We can not use OpenId unfortunately." ), this );
 }
 
 #include "configdialog.moc"

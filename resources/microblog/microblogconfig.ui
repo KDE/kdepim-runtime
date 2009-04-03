@@ -14,7 +14,7 @@
    <item>
     <widget class="QLabel" name="welcomelabel">
      <property name="text">
-      <string>This is where you can setup your account. Please note that OpenId users must first setup a password in the settings on the webpage. We can not use OpenId unfortunately.</string>
+      <string>This is where you can setup your account. &lt;a href=&quot;whatsthis&quot;&gt;Note for OpenId users&lt;/a&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
