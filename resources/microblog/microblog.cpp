@@ -61,7 +61,7 @@ void MicroblogResource::initComm()
         return;
 
     m_comm = new Communication( this );
-    m_comm->setService( 0 ); // Todo..
+    m_comm->setService( Settings::self()->service() );
     m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
     connect( m_comm, SIGNAL( statusList( const QList<QByteArray> ) ),
              SLOT( slotStatusList( const QList<QByteArray> ) ) );

@@ -176,6 +176,8 @@ QString Communication::serviceToApi( int service )
 {
     if ( service == 0 )
         return QString( "http://identi.ca/api/" );
+    else if ( service == 1 )
+        return QString( "http://twitter.com/" );
 
     return QString();
 }
