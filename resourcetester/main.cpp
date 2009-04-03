@@ -20,6 +20,7 @@
 #include "xmloperations.h"
 #include "global.h"
 #include "test.h"
+#include "collectiontest.h"
 
 #include <akonadi/control.h>
 
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
   Resource res;
   script->insertObject( &res, "Resource" );
   script->insertObject( Test::instance(), "Test" );
+  script->insertObject( new CollectionTest(), "CollectionTest" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();

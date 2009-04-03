@@ -1,6 +1,5 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2009 Igor Trindade Oliveira <igor_trindade@yahoo.com.br>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,41 +17,34 @@
     02110-1301, USA.
 */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
-
-#include <akonadi/agentinstance.h>
+#ifndef COLLECTIONTEST_H
+#define COLLECTIONTEST_H
 
 #include <QObject>
-#include <QHash>
-#include <QVariant>
 
-class Resource: public QObject
+#include <akonadi/collection.h>
+
+class CollectionTest : public QObject
 {
   Q_OBJECT
   public:
-    Resource( QObject *parent = 0 );
-    ~Resource();
+    CollectionTest( QObject *parent = 0 );
 
-    static Resource* instance();
+    void setParent( const Akonadi::Collection &parent );
+    void setCollection( const Akonadi::Collection &collection );
 
   public slots:
-    void setType( const QString &type );
-    QString identifier() const;
+    void setParent( const QString &parentPath );
+    void setCollection( const QString &path );
+    void setName( const QString &name );
+    void addContentType( const QString &type );
 
-    void setOption( const QString &key, const QVariant &value );
-    void setPathOption( const QString &key, const QString &path );
-
-    bool createResource();
     void create();
-    void destroy();
-    void recreate();
+    void update();
 
   private:
-    QString mTypeIdentifier;
-    Akonadi::AgentInstance mInstance;
-    QHash<QString, QVariant> mSettings;
-    static Resource* mSelf;
+    Akonadi::Collection mParent;
+    Akonadi::Collection mCollection;
 };
 
 #endif
