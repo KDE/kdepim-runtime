@@ -230,24 +230,17 @@ void EntityTreeModelPrivate::monitoredCollectionMoved( const Akonadi::Collection
 {
   Q_Q( EntityTreeModel );
 
-  // TODO: Change this to use beginMoveRows/endRemoveRows
-
   int srcRow = m_childEntities.value(src.id()).indexOf(col.id());
 
   QModelIndex srcParentIndex = q->indexForCollection(src);
-
-  q->beginRemoveRows(srcParentIndex, srcRow, srcRow);
-  Collection c = m_collections.take( col.id() );
-  m_childEntities[ src.id()].removeOne( col.id() );
-  q->endRemoveRows();
-
-  int dstRow = 0; // Prepend collections
-
   QModelIndex destParentIndex = q->indexForCollection(dest);
-  q->beginInsertRows(destParentIndex, dstRow, dstRow);
-  m_collections.insert( col.id(), col );
+
+  int destRow = 0; // Prepend collections
+
+  q->beginMoveRows(srcParentIndex, srcRow, srcRow, destParentIndex, destRow);
+  m_childEntities[ src.id()].removeAt( srcRow );
   m_childEntities[ dest.id() ].prepend( col.id() );
-  q->endRemoveRows();
+  q->endMoveRows();
 
 }
 
@@ -317,9 +310,21 @@ void EntityTreeModelPrivate::monitoredItemMoved( const Akonadi::Item& item,
 {
   Q_Q( EntityTreeModel );
 
-  int srcRow = m_childEntities.value(src.id()).indexOf( item.id() * -1 );
+  qint64 itemId = item.id() * -1;
 
-// TODO: use beginMoveRows etc
+  int srcRow = m_childEntities.value(src.id()).indexOf( itemId );
+
+  QModelIndex srcIndex = q->indexForCollection(src);
+  QModelIndex destIndex = q->indexForCollection(dest);
+
+  // Where should it go? Always append items and prepend collections and reorganize them with separate reactions to Attributes?
+
+  int destRow = q->rowCount(destIndex);
+
+  q->beginMoveRows(srcIndex, srcRow, srcRow, destIndex, destRow);
+  m_childEntities[src.id()].removeAt(srcRow);
+  m_childEntities[dest.id()].append(itemId);
+  q->endMoveRows();
 }
 
 bool EntityTreeModelPrivate::passesFilter( const QStringList &mimetypes )
