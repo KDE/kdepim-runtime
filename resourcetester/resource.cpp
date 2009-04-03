@@ -125,9 +125,8 @@ void Resource::destroy()
   mInstance = AgentInstance();
 }
 
-void Resource::recreate()
+void Resource::write()
 {
-  // make sure all changes are written by the resource
   QDBusInterface iface( "org.freedesktop.Akonadi", "/notifications/debug", "org.freedesktop.Akonadi.NotificationManager" );
   Q_ASSERT( iface.isValid() );
   QDBusReply<void> result = iface.call( "emitPendingNotifications" );
@@ -136,7 +135,11 @@ void Resource::recreate()
   ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
   if ( !syncJob->exec() )
     kError() << "Synching resource failed: " << syncJob->errorString();
+}
 
+void Resource::recreate()
+{
+  write();
   destroy();
   create();
 }

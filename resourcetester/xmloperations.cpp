@@ -372,7 +372,7 @@ bool XmlOperations::compareItem(const Item& item, const Item& refItem)
        !compareValue( item, refItem, &Item::payloadData, ItemPayload ) )
     return false;
 
-  return compareAttributes( item, refItem );;
+  return compareAttributes( item, refItem );
 }
 
 bool XmlOperations::compareAttributes(const Entity& entity, const Entity& refEntity)

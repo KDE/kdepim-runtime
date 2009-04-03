@@ -46,6 +46,7 @@ class Resource: public QObject
     bool createResource();
     void create();
     void destroy();
+    void write();
     void recreate();
 
   private:
