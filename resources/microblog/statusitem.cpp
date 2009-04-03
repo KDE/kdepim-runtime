@@ -22,6 +22,7 @@
 
 #include <QDateTime>
 #include <QDomElement>
+#include <QStringList>
 
 #include <kpimutils/linklocator.h>
 
@@ -122,6 +123,11 @@ QByteArray StatusItem::data() const
 QString StatusItem::value( const QString& value ) const
 {
     return d->status.value( value );
+}
+
+QStringList StatusItem::keys() const
+{
+    return d->status.keys();
 }
 
 QString StatusItem::text() const

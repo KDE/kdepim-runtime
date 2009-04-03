@@ -36,6 +36,7 @@ public:
     void setData( const QByteArray& );
     qlonglong id() const;
     QString value( const QString& ) const;
+    QStringList keys() const;
     QString text() const;
     QDateTime date() const;
     QByteArray data() const;
