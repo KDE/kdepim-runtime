@@ -120,16 +120,13 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
-//  monitor->setMimeTypeMonitored( KJotsPage::mimeType() );
+  monitor->setMimeTypeMonitored( KJotsPage::mimeType() );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
   Session *session = new Session( QByteArray( "EntityTreeModel-" ) + QByteArray::number( qrand() ), this );
 
-//  EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
-
   etm = new Akonadi::EntityTreeModel(session, monitor, this); // now takes a session rather than an EUA
-   etm->fetchMimeTypes(QStringList() << KJotsPage::mimeType());
 //   etm->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
 //   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 //   etm->setIncludeRootCollection(true);
@@ -307,7 +304,6 @@ void KJotsWidget::selectionChanged ( const QItemSelection & selected, const QIte
     QModelIndex idx = deselected.indexes().at(0);
     Item i = etm->data(idx, EntityTreeModel::ItemRole).value<Item>();
 // // //     // Hmmm. document.isModified is false on subsequent
-    kDebug() << idx << editor->document()->isModified();
     if ( i.isValid() && editor->document()->isModified() )
     {
         KJotsPage page = i.payload<KJotsPage>();
@@ -325,8 +321,6 @@ void KJotsWidget::selectionChanged ( const QItemSelection & selected, const QIte
 
   } // else nothing was changed.
 
-  kDebug() << selected.indexes();
-
   if ( selected.indexes().size() == 1 )
   {
     // Only one item selected. If it's a book, render it. If it's a page, display it for editing.
@@ -334,7 +328,6 @@ void KJotsWidget::selectionChanged ( const QItemSelection & selected, const QIte
     Item i = etm->data( idx, EntityTreeModel::ItemRole ).value< Item >();
     if ( i.isValid() )
     {
-      kDebug() << i.payloadData();
       KJotsPage page = i.payload< KJotsPage >();
       editor->setText( page.content() );
       stackedWidget->setCurrentWidget( editor );
@@ -360,11 +353,9 @@ void KJotsWidget::dataChanged(const QModelIndex & topLeft, const QModelIndex & b
 
   if (topLeft == bottomRight)
   {
-  kDebug() << topLeft;
     Item i = etm->data(topLeft, EntityTreeModel::ItemRole).value<Item>();
     if (i.isValid())
     {
-      kDebug() << i.payloadData();
       // Check if the item updated is the item being edited and offer a conflict dialog.
 //       if ()
 

@@ -113,8 +113,6 @@ QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation,
       {
         if (section >= d->m_itemHeaders.size() )
           return QVariant();
-
-          kDebug() << d->m_itemHeaders.at(section);
         return d->m_itemHeaders.at(section);
       }
     }

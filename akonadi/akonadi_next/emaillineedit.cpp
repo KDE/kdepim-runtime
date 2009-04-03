@@ -55,12 +55,9 @@ EmailLineEdit::EmailLineEdit(Akonadi::Session *session, QWidget *parent)
     monitor->fetchCollection( true );
     monitor->setItemFetchScope( scope );
     monitor->setCollectionMonitored( Collection::root() );
-
-//     Session *session = new Session( QByteArray( "ContactsApplication-" ) + QByteArray::number( qrand() ), this );
-//     EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
+    monitor->setMimeTypeMonitored( "text/directory" );
 
     ContactsModel *contactsModel = new ContactsModel( session, monitor, this);
-    contactsModel->fetchMimeTypes( QStringList() << "text/directory" );
 
     DescendantEntitiesProxyModel *descProxy = new DescendantEntitiesProxyModel(this);
     descProxy->setSourceModel(contactsModel);

@@ -728,19 +728,6 @@ QModelIndex EntityTreeModel::indexForItem(Item item) const
 
 }
 
-void EntityTreeModel::fetchMimeTypes(QStringList mimeTypes)
-{
-  Q_D(EntityTreeModel);
-  d->m_mimeTypeFilter = mimeTypes;
-  clearAndReset();
-}
-
-QStringList EntityTreeModel::mimeTypesToFetch() const
-{
-  Q_D(const EntityTreeModel);
-  return d->m_mimeTypeFilter;
-}
-
 void EntityTreeModel::setItemPopulationStrategy(int type)
 {
   Q_D(EntityTreeModel);

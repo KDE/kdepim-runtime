@@ -324,9 +324,16 @@ void EntityTreeModelPrivate::monitoredItemMoved( const Akonadi::Item& item,
 
 bool EntityTreeModelPrivate::passesFilter( const QStringList &mimetypes )
 {
-  if (m_mimeTypeFilter.size() == 0)
+  if ( m_monitor->mimeTypesMonitored().size() == 0 )
     return true;
-  return mimetypeMatches( m_mimeTypeFilter, mimetypes );
+
+  foreach(const QString &mime, mimetypes)
+  {
+    if ( m_monitor->mimeTypesMonitored().contains( mime ) )
+      return true;
+  }
+  return false;
+
 }
 
 

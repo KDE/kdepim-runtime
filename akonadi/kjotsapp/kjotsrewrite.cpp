@@ -22,7 +22,6 @@
 #include "kjotsrewrite.h"
 
 #include "kjotswidget.h"
-#include "kjotswidgetpimstyle.h"
 
 #include <kapplication.h>
 #include <kactioncollection.h>

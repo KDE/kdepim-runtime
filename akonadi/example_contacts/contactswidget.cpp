@@ -71,16 +71,15 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
+  monitor->setMimeTypeMonitored( "text/directory" );
 
   Session *session = new Session( QByteArray( "ContactsApplication-" ) + QByteArray::number( qrand() ), this );
-//   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-//   etm = new Akonadi::EntityTreeModel( eua, monitor, this);
   etm = new ContactsModel( session, monitor, this);
 
 //   new ModelTest(etm, this);
 
-   etm->fetchMimeTypes( QStringList() << "text/directory" );
+//   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 
   etm->setIncludeRootCollection(true);
   etm->setRootCollectionDisplayName(i18nc("Name of top level for all collections in the application", "[All]"));
@@ -96,6 +95,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 // //   new ModelTest(collectionTree, this);
 
   treeview->setModel(collectionTree);
+//   treeview->setModel(etm);
   treeview->setColumnHidden(1, true);
   treeview->setColumnHidden(2, true);
   treeview->setColumnHidden(3, true);
@@ -161,6 +161,8 @@ void ContactsWidget::treeSelectionChanged ( const QItemSelection & selected, con
     QModelIndex idx = selected.indexes().at(0);
 
     QModelIndex etmIndex = collectionTree->mapToSource( idx );
+
+//     QModelIndex etmIndex = idx;
 
     descList->setRootIndex(etmIndex);
     QModelIndex descendedListIndex = descList->mapFromSource(etmIndex);

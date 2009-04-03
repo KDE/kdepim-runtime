@@ -175,9 +175,6 @@ public:
   void setRootCollectionDisplayName(const QString &displayName);
   QString rootCollectionDisplayName() const;
 
-  void fetchMimeTypes(QStringList mimetypes);
-  QStringList mimeTypesToFetch() const;
-
   /**
   What to fetch and represent in the model.
   */

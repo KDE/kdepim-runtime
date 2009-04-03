@@ -79,18 +79,15 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->setItemFetchScope( scope );
   // Only monitoring the root collection works.
   monitor->setCollectionMonitored( Collection::root() );
-//  monitor->setMimeTypeMonitored( "message/rfc822" );
+  monitor->setMimeTypeMonitored( "message/rfc822" );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
   Session *session = new Session( QByteArray( "MailApplication-" ) + QByteArray::number( qrand() ), this );
-//   EntityUpdateAdapter *eua = new EntityUpdateAdapter( session, this );
 
-//   etm = new Akonadi::EntityTreeModel( session, monitor, this);
   etm = new MailModel( session, monitor, this);
 
   // TODO: This stuff should probably be in the mailmodel constructor.
-  etm->fetchMimeTypes( QStringList() << "message/rfc822" );
   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 
   collectionTree = new EntityFilterProxyModel(this);
