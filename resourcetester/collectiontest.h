@@ -41,6 +41,7 @@ class CollectionTest : public QObject
 
     void create();
     void update();
+    void remove();
 
   private:
     Akonadi::Collection mParent;

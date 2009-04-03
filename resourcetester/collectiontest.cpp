@@ -21,6 +21,8 @@
 #include "test.h"
 
 #include <akonadi/collectioncreatejob.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectiondeletejob.h>
 #include <akonadi/private/collectionpathresolver_p.h>
 
 #include <QStringList>
@@ -37,12 +39,25 @@ void CollectionTest::setParent(const Akonadi::Collection& parent)
   mParent = parent;
 }
 
+void CollectionTest::setCollection(const Akonadi::Collection& collection)
+{
+  mCollection = collection;
+}
+
 void CollectionTest::setParent(const QString& parentPath)
 {
   CollectionPathResolver* resolver = new CollectionPathResolver( parentPath, this );
   if ( !resolver->exec() )
     Test::instance()->fail( resolver->errorString() );
   setParent( Collection( resolver->collection() ) );
+}
+
+void CollectionTest::setCollection(const QString& path)
+{
+  CollectionPathResolver* resolver = new CollectionPathResolver( path, this );
+  if ( !resolver->exec() )
+    Test::instance()->fail( resolver->errorString() );
+  setCollection( Collection( resolver->collection() ) );
 }
 
 void CollectionTest::setName(const QString& name)
@@ -63,5 +78,18 @@ void CollectionTest::create()
     Test::instance()->fail( job->errorString() );
 }
 
+void CollectionTest::update()
+{
+  CollectionModifyJob* job = new CollectionModifyJob( mCollection, this );
+  if ( !job->exec() )
+    Test::instance()->fail( job->errorString() );
+}
+
+void CollectionTest::remove()
+{
+  CollectionDeleteJob* job = new CollectionDeleteJob( mCollection, this );
+  if ( !job->exec() )
+    Test::instance()->fail( job->errorString() );
+}
 
 #include "collectiontest.moc"
