@@ -38,7 +38,7 @@
 class XmlOperations : public QObject
 {
   Q_OBJECT
-  Q_ENUMS( CollectionField )
+  Q_ENUMS( CollectionField ItemField )
 
   public:
     XmlOperations( QObject *parent = 0 );
@@ -51,10 +51,21 @@ class XmlOperations : public QObject
       ContentMimeType = 4
     };
 
+    enum ItemField {
+      ItemNone = 0,
+      ItemRemoteId = 1,
+      ItemMimeType = 2,
+      ItemFlags = 4,
+      ItemPayload = 8
+    };
+
     Q_DECLARE_FLAGS( CollectionFields, CollectionField )
+    Q_DECLARE_FLAGS( ItemFields, ItemField )
 
     void setCollectionKey( CollectionField field );
     void ignoreCollectionField( CollectionField field );
+    void setItemKey( ItemField field );
+    void ignoreItemField( ItemField field );
 
   public slots:
     void setRootCollections( const QString &resourceId );
@@ -66,6 +77,8 @@ class XmlOperations : public QObject
 
     void setCollectionKey( const QString &fieldName );
     void ignoreCollectionField( const QString &fieldName );
+    void setItemKey( const QString &fieldName );
+    void ignoreItemField( const QString &fieldName );
 
     void setNormalizeRemoteIds( bool enable );
 
@@ -83,21 +96,17 @@ class XmlOperations : public QObject
     bool hasItem(const Akonadi::Item& _item, const QString& rid);
 
   private:
-    template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
-                                             T (Akonadi::Collection::*property)() const,
-                                             CollectionField propertyType );
-    template <typename T> bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
-                                             T (Akonadi::Entity::*property)() const,
-                                             CollectionField propertyType );
-    template <typename T> bool compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
-                                             T (Akonadi::Item::*property)() const,
-                                             const char* propertyName );
+    template <typename T, typename P>
+    bool compareValue( const Akonadi::Collection &col, const Akonadi::Collection &refCol,
+                       T (P::*property)() const, CollectionField propertyType );
+    template <typename T, typename P>
+    bool compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
+                       T (P::*property)() const, ItemField propertyType );
     template <typename T> bool compareValue( const T& value, const T& refValue );
 
-    template <typename T> void sortCollectionList( Akonadi::Collection::List &list,
-                                                   T ( Akonadi::Collection::*property)() const ) const;
-    template <typename T> void sortCollectionList( Akonadi::Collection::List &list,
-                                                   T ( Akonadi::Entity::*property)() const ) const;
+    template <typename T, typename E, typename P>
+    void sortEntityList( QList<E> &list, T ( P::*property)() const ) const;
+
 
     Akonadi::Collection normalizeCollection( const Akonadi::Collection &in ) const;
     Akonadi::Item normalizeItem( const Akonadi::Item &in ) const;
@@ -108,13 +117,15 @@ class XmlOperations : public QObject
     QString mErrorMsg;
     CollectionFields mCollectionFields;
     CollectionField mCollectionKey;
+    ItemFields mItemFields;
+    ItemField mItemKey;
     bool mNormalizeRemoteIds;
 };
 
 
-template <typename T>
+template <typename T, typename P>
 bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
-                                  T (Akonadi::Collection::*property)() const,
+                                  T (P::*property)() const,
                                   CollectionField propertyType )
 {
   if ( mCollectionFields & propertyType ) {
@@ -129,34 +140,21 @@ bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi:
   return true;
 }
 
-template <typename T>
-bool XmlOperations::compareValue( const Akonadi::Collection& col, const Akonadi::Collection& refCol,
-                                  T (Akonadi::Entity::*property)() const,
-                                  CollectionField propertyType )
-{
-  if ( mCollectionFields & propertyType ) {
-    const bool result = compareValue<T>( ((col).*(property))(), ((refCol).*(property))() );
-    if ( !result ) {
-      const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
-      mErrorMsg.prepend( QString::fromLatin1( "Collection with remote id '%1' differs in property '%2':\n" )
-      .arg( col.remoteId() ).arg( me.valueToKey( propertyType ) ) );
-    }
-    return result;
-  }
-  return true;
-}
-
-template <typename T>
+template <typename T, typename P>
 bool XmlOperations::compareValue( const Akonadi::Item& item, const Akonadi::Item& refItem,
-                                  T (Akonadi::Item::*property)() const,
-                                  const char* propertyName )
+                                  T (P::*property)() const,
+                                  ItemField propertyType )
 {
-  const bool result = compareValue<T>( ((item).*(property))(), ((refItem).*(property))() );
-  if ( !result ) {
-    mErrorMsg.prepend( QString::fromLatin1( "Item with remote id '%1' differs in property '%2':\n" )
-      .arg( item.remoteId() ).arg( propertyName ) );
+  if ( mItemFields & propertyType ) {
+    const bool result = compareValue<T>( ((item).*(property))(), ((refItem).*(property))() );
+    if ( !result ) {
+      const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "ItemField" ) );
+      mErrorMsg.prepend( QString::fromLatin1( "Item with remote id '%1' differs in property '%2':\n" )
+        .arg( item.remoteId() ).arg( me.valueToKey( propertyType ) ) );
+    }
+    return result;
   }
-  return result;
+  return true;
 }
 
 template <typename T>
@@ -169,18 +167,11 @@ bool XmlOperations::compareValue(const T& value, const T& refValue )
   return false;
 }
 
-template <typename T>
-void XmlOperations::sortCollectionList( Akonadi::Collection::List &list,
-                                        T ( Akonadi::Collection::*property)() const ) const
+template <typename T, typename E, typename P>
+void XmlOperations::sortEntityList( QList<E> &list, T ( P::*property)() const ) const
 {
   std::sort( list.begin(), list.end(), boost::bind( property, _1 ) < boost::bind( property, _2 ) );
 }
 
-template <typename T>
-void XmlOperations::sortCollectionList( Akonadi::Collection::List &list,
-                                        T ( Akonadi::Entity::*property)() const ) const
-{
-  std::sort( list.begin(), list.end(), boost::bind( property, _1 ) < boost::bind( property, _2 ) );
-}
 
 #endif

@@ -46,6 +46,7 @@ set( resourcetester_SRCS
   test.cpp
   xmloperations.cpp
   collectiontest.cpp
+  itemtest.cpp
 )
 
 kde4_add_executable(resourcetester RUN_UNINSTALLED ${resourcetester_SRCS})

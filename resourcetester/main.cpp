@@ -21,6 +21,7 @@
 #include "global.h"
 #include "test.h"
 #include "collectiontest.h"
+#include "itemtest.h"
 
 #include <akonadi/control.h>
 
@@ -85,6 +86,7 @@ int main(int argc, char *argv[])
   script->insertObject( &res, "Resource" );
   script->insertObject( Test::instance(), "Test" );
   script->insertObject( new CollectionTest(), "CollectionTest" );
+  script->insertObject( new ItemTest(), "ItemTest" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();

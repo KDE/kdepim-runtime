@@ -52,6 +52,8 @@ XmlOperations::XmlOperations(QObject* parent) :
   QObject( parent ),
   mCollectionFields( 0xFF ),
   mCollectionKey( RemoteId ),
+  mItemFields( 0xFF ),
+  mItemKey( ItemRemoteId ),
   mNormalizeRemoteIds( false )
 {
 }
@@ -118,6 +120,34 @@ void XmlOperations::ignoreCollectionField(const QString& fieldName)
 {
   const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "CollectionField" ) );
   ignoreCollectionField( static_cast<CollectionField>( me.keyToValue( fieldName.toLatin1() ) ) );
+}
+
+void XmlOperations::setItemKey(XmlOperations::ItemField field)
+{
+  mItemKey = field;
+}
+
+void XmlOperations::setItemKey(const QString& _fieldName)
+{
+  QString fieldName = _fieldName;
+  if ( !fieldName.startsWith( "Item" ) )
+    fieldName.prepend( "Item" );
+  const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "ItemField" ) );
+  setItemKey( static_cast<ItemField>( me.keyToValue( fieldName.toLatin1() ) ) );
+}
+
+void XmlOperations::ignoreItemField(XmlOperations::ItemField field)
+{
+  mItemFields = mItemFields & ~field;
+}
+
+void XmlOperations::ignoreItemField(const QString& _fieldName)
+{
+  QString fieldName = _fieldName;
+  if ( !fieldName.startsWith( "Item" ) )
+    fieldName.prepend( "Item" );
+  const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "ItemField" ) );
+  ignoreItemField( static_cast<ItemField>( me.keyToValue( fieldName.toLatin1() ) ) );
 }
 
 void XmlOperations::setNormalizeRemoteIds(bool enable)
@@ -189,12 +219,12 @@ bool XmlOperations::compareCollections(const Collection::List& _cols, const Coll
 
   switch ( mCollectionKey ) {
     case RemoteId:
-      sortCollectionList( cols, &Collection::remoteId );
-      sortCollectionList( refCols, &Collection::remoteId );
+      sortEntityList( cols, &Collection::remoteId );
+      sortEntityList( refCols, &Collection::remoteId );
       break;
     case Name:
-      sortCollectionList( cols, &Collection::name );
-      sortCollectionList( refCols, &Collection::name );
+      sortEntityList( cols, &Collection::name );
+      sortEntityList( refCols, &Collection::name );
       break;
     case None:
       break;
@@ -302,8 +332,16 @@ bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _re
   foreach ( const Item &i, _refItems )
     refItems.append( normalizeItem( i ) );
 
-  std::sort( items.begin(), items.end(), boost::bind( &Item::remoteId, _1 ) < boost::bind( &Item::remoteId, _2 ) );
-  std::sort( refItems.begin(), refItems.end(), boost::bind( &Item::remoteId, _1 ) < boost::bind( &Item::remoteId, _2 ) );
+  switch ( mItemKey ) {
+    case ItemRemoteId:
+      sortEntityList( items, &Item::remoteId );
+      sortEntityList( refItems, &Item::remoteId );
+      break;
+    case ItemNone:
+      break;
+    default:
+      Q_ASSERT( false );
+  }
 
   for ( int i = 0; i < items.count(); ++i ) {
     const Item item = items.at( i );
@@ -313,11 +351,6 @@ bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _re
     }
 
     const Item refItem = refItems.at( i );
-    if ( item.remoteId() != refItem.remoteId() ) {
-      mErrorMsg = QString::fromLatin1( "Item with remote id '%1' is missing." ).arg( refItem.remoteId() );
-      return false;
-    }
-
     if ( !compareItem( item, refItem ) )
       return false;
   }
@@ -333,11 +366,10 @@ bool XmlOperations::compareItems(const Item::List& _items, const Item::List& _re
 
 bool XmlOperations::compareItem(const Item& item, const Item& refItem)
 {
-  Q_ASSERT( item.remoteId() == refItem.remoteId() );
-
-  if ( !compareValue( item, refItem, &Item::mimeType, "mime type" ) ||
-       !compareValue( item, refItem, &Item::flags, "flags" ) ||
-       !compareValue( item, refItem, &Item::payloadData, "payload" ) )
+  if ( !compareValue( item, refItem, &Item::remoteId, ItemRemoteId ) ||
+       !compareValue( item, refItem, &Item::mimeType, ItemMimeType ) ||
+       !compareValue( item, refItem, &Item::flags, ItemFlags ) ||
+       !compareValue( item, refItem, &Item::payloadData, ItemPayload ) )
     return false;
 
   return compareAttributes( item, refItem );;

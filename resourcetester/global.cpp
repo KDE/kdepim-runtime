@@ -18,6 +18,7 @@
 #include "global.h"
 
 #include <kglobal.h>
+#include <QDir>
 
 class GlobalPrivate
 {
@@ -35,4 +36,6 @@ QString Global::basePath()
 void Global::setBasePath(const QString& path)
 {
   sInstance->basePath = path;
+  if ( !path.endsWith( QDir::separator() ) )
+    sInstance->basePath += QDir::separator();
 }
