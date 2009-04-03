@@ -85,24 +85,14 @@ void Communication::slotCheckAuthData( KJob *job )
 
     QDomDocument dom;
     dom.setContent( data );
-    QDomNodeList nodeList = dom.elementsByTagName( "authorized" );
-    for ( int i=0; i< nodeList.count(); ++i ) {
-        QDomNode node = nodeList.at( i );
-        if ( node.toElement().text() == "true" ) {
-            kDebug() << "Authorisation is OK";
-            emit authOk();
-            return;
-        }
+    QDomNodeList nodeList = dom.elementsByTagName( "user" );
+    if ( nodeList.count() > 0 ) {
+        kDebug() << "Authorisation is OK";
+        emit authOk();
+        return;
     }
 
-    QString error;
-    nodeList = dom.elementsByTagName( "error" );
-    for ( int i=0; i< nodeList.count(); ++i ) {
-        QDomNode node = nodeList.at( i );
-        error.append( node.toElement().text() );
-    }
-
-    emit authFailed( error );
+    emit authFailed( i18n( "Error authenticated" ) );
 }
 
 void Communication::retrieveFolder( const QString &folder, qlonglong since )
