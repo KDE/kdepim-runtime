@@ -63,10 +63,11 @@ static QString maildirId( const QString &remoteId )
 
 static QString maildirSubdirPath( const QString &parentPath, const QString &subName )
 {
-  const int pos = parentPath.lastIndexOf( QDir::separator() );
   QString basePath = maildirPath( parentPath );
-  QString name = maildirId( parentPath );
-  return basePath + QDir::separator() + '.' + name + ".directory" + QDir::separator() + subName;
+  if ( !basePath.endsWith( QDir::separator() ) )
+    basePath += QDir::separator();
+  const QString name = maildirId( parentPath );
+  return basePath + '.' + name + ".directory" + QDir::separator() + subName;
 }
 
 MaildirResource::MaildirResource( const QString &id )
@@ -75,6 +76,7 @@ MaildirResource::MaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(ensureDirExists()) );
 
   // We need to enable this here, otherwise we neither get the remote ID of the
   // parent collection when a collection changes, nor the full item when an item
@@ -121,6 +123,7 @@ void MaildirResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.exec();
 
+  ensureDirExists();
   synchronizeCollectionTree();
 }
 
@@ -295,6 +298,16 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   kDebug( 5254 ) << "Implement me!";
   AgentBase::Observer::collectionRemoved( collection );
 }
+
+void MaildirResource::ensureDirExists()
+{
+  Maildir root( Settings::self()->path() );
+  if ( !root.isValid() ) {
+    if ( !root.create() )
+      emit status( Broken, i18n( "Unable to create maildir '%1'." ).arg( Settings::self()->path() ) );
+  }
+}
+
 
 AKONADI_RESOURCE_MAIN( MaildirResource )
 

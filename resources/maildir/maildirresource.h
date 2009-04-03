@@ -49,6 +49,9 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
+  private slots:
+    void ensureDirExists();
+
 };
 
 #endif
