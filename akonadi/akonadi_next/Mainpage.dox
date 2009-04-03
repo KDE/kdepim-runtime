@@ -28,16 +28,44 @@ Collections are simply containers of Items. A Collection has a name and a list o
   col.setContentMimetypes( QStringList() << Collection::mimeType() << "text/calendar" );
 @endcode
 
-This systems makes it simple to create PIM applications. For example, to create an application for viewing and editing events, you simply need to tell akonadi to retrieve all items matching the mimetype 'text/application'.
+This systems makes it simple to create PIM applications. For example, to create an application for viewing and editing events, you simply need to tell akonadi to retrieve all items matching the mimetype 'text/calendar'.
 
 <h2> Models and Views</h2>
 Akonadi models and views are a high level way to interact with the akonadi server. Most applications will use these classes.
 
 Models provide an interface for viewing, deleting and moving Items and Collections. New Items can also be created by dropping data of the appropriate type on a model. Additionally, the models are updated automatically if another application changes the data or inserts of deletes items etc.
 
-The most basic model provided by akonadi is the EntityTreeModel. Most likely every application wants exactly one of these. It should be configured to store the items of the mimetypes the application is interested in.
+Akonadi provides several models for particular uses, eg the MailModel is used for emails and the ContactsModel is used for showing contacts. Additional specific models can be implemented using EntityTreeModel as a base class.
+
+A typical use of these would be to create a model and use proxy models to make the view show different parts of the model. For example, show a collection tree in on one side and show items in a selected collection in another view.
+
+@code
+  mailModel = new MailModel( session, monitor, this);
+
+  collectionTree = new EntityFilterProxyModel(this);
+  collectionTree->setSourceModel(mailModel);
+  // Filter out everything that is not a collection.
+  collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
+  collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
+
+  collectionView = new EntityTreeView(this);
+  collectionView->setModel(collectionTree);
+
+  itemList = new EntityFilterProxyModel(this);
+  itemList->setSourceModel(mailModel);
+  // Filter out collections
+  itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
+  itemList->setHeaderSet(EntityTreeModel::ItemListHeaders);
+
+  itemView = new EntityTreeView(this);
+  itemView->setModel(itemList);
+@endcode
+
+\image html mailmodelapp.png "An email application using MailModel"
 
 @warning Some of the features in the examples below are not fully implemented yet. See entitytreemodel.h for a list of remaining issues with the api and implementation of these classes.
+
+The content of the model is determined by the configuration of the Monitor passed into it. The examples below show a use of the EntityTreeModel and some proxy models for a simple heirarchical note collection. As the model is generic, the configuration and proxy models will also work with any other mimetype.
 
 @code
 
@@ -46,16 +74,16 @@ Monitor *monitor = new Monitor( this );
 monitor->fetchCollection( true );
 monitor->setItemFetchScope( scope );
 monitor->setCollectionMonitored( Collection::root() );
+monitor->setMimeTypeMonitored( MyEntity::mimeType() );
 
-// Provide objects for the model to update itself. The same EntityUpdateAdapter would likely be used elsewhere in the application also:
 Session *session = new Session( QByteArray( "MyEmailApp-" ) + QByteArray::number( qrand() ), this );
-EntityUpdateAdapter *entityUpdater = new EntityUpdateAdapter( session, this );
 
-EntityTreeModel *entityTree = new Akonadi::EntityTreeModel(eua, monitor, this);
-entityTree->fetchMimeTypes(QStringList() << EMail::mimeType());
+EntityTreeModel *entityTree = new Akonadi::EntityTreeModel(session, monitor, this);
 @endcode
 
 \image html entitytreemodel.png "A plain EntityTreeModel in a view"
+
+The EntityTreeModel can be further configured for certain behaviours such as fetching of collections and items.
 
 To create a model of only a collection tree and no items, set that in the model. This is just like CollectionModel:
 
@@ -66,15 +94,14 @@ entityTree->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
 
 \image html entitytreemodel-collections.png "A plain EntityTreeModel which does not fetch items."
 
-Or, to create a model of only items and not child collections. This is just like ItemModel:
+Or, create a model of only items and not child collections. This is just like ItemModel:
 
 @code
 entityTree->setRootCollection(myCollection);
-// This will need to be a filter.
 entityTree->setCollectionFetchStrategy(EntityTreeModel::FetchNoCollections);
 @endcode
 
-The CollectionModel-like and ItemModel-like configurations will probably not be used much. Usually, a full tree of collections and items will be created and prxoy models will be used to filter collections or items as needed.
+The CollectionModel-like and ItemModel-like configurations will probably not be used much. Usually, a full tree of collections and items will be created and proxy models will be used to filter collections or items as needed.
 
 Or, to create a model which includes items and first level collections:
 
@@ -174,7 +201,7 @@ Or to also show items of child collections in the list:
 
 @code
   collectionTree = new EntityFilterProxyModel(this);
-  collectionTree->setSourceModel(etm);
+  collectionTree->setSourceModel(entityTree);
 
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
@@ -182,16 +209,16 @@ Or to also show items of child collections in the list:
   treeview->setModel(collectionTree);
 
   descendedList = new DescendantEntitiesProxyModel(this);
-  descendedList->setSourceModel(etm);                    
+  descendedList->setSourceModel(entityTree);
 
   itemList = new EntityFilterProxyModel(this);
-  itemList->setSourceModel(descendedList);    
+  itemList->setSourceModel(descendedList);
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
 
-  listView = new EntityTreeView(stackedWidget);
-  listView->setModel(itemList); 
+  listView = new EntityTreeView(this);
+  listView->setModel(itemList);
 @endcode
 
 \image html treeandlistappwithdesclist.png "Showing descendants of all Collections in the list"

@@ -72,21 +72,16 @@ class EntityTreeModelPrivate;
 /**
  * @short A model for collections and items together.
  *
- * This class provides the interface of QAbstractItemModel for the
- * collection and item tree of the Akonadi storage.
- *
- * Child elements of a collection consist of the child collections
- * followed by the items. This arrangement can be modified using a proxy model.
+ * This class is a wrapper around a Akonadi::Monitor object. The model represents a
+ * part of the collection and item tree configured in the Monitor.
  *
  * @code
  *
  *   Monitor *monitor = new Monitor(this);
  *   monitor->setCollectionMonitored(Collection::root());
+ *   monitor->setMimeTypeMonitored(KABC::addresseeMimeType());
  *
- *   EntityUpdateAdapter *eua = new EntityUpdateAdapter(this);
- *
- *   EntityTreeModel *model = new EntityTreeModel( eua, monitor, this );
- *   model->fetchMimeTypes( QStringList() << FooMimeType << BarMimeType );
+ *   EntityTreeModel *model = new EntityTreeModel( session, monitor, this );
  *
  *   EntityTreeView *view = new EntityTreeView( this );
  *   view->setModel( model );
@@ -94,7 +89,7 @@ class EntityTreeModelPrivate;
  * @endcode
  *
  * @author Stephen Kelly <steveire@gmail.com>
- * @since 4.3
+ * @since 4.4
  */
 class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
 {
@@ -123,15 +118,12 @@ public:
     // Could we need more here?
   };
 
-  // EntityTreeModel( EntityUpdateAdapter,
-  //                  MonitorAdapter,
-  //                  QStringList mimeFilter = QStringList(), QObject *parent = 0);
-
   /**
    * Creates a new EntityTreeModel
    *
+   * @param session The Session to use to communicate with Akonadi.
+   * @param monitor The Monitor whose entities should be represented in the model.
    * @param parent The parent object.
-   * @param mimeTypes The list of mimetypes to be retrieved in the model.
    */
   EntityTreeModel( Session *session,
                    Monitor *monitor,
@@ -187,6 +179,7 @@ public:
   void setCollectionFetchStrategy(int type);
   int collectionFetchStrategy() const;
 
+  // TODO: Remove these and use the Monitor instead. Need to add api to Monitor for this.
   void setIncludeUnsubscribed(bool include);
   bool includeUnsubscribed() const;
 
@@ -224,10 +217,20 @@ protected:
   */
   void clearAndReset();
 
+  /**
+  Provided for convenience of subclasses.
+  */
   virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
 
+  /**
+  Provided for convenience of subclasses.
+  */
   virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
 
+  /**
+  Reimplement this to provide different header data. This is needed when using one model
+  with multiple proxies and views, and each should show different header data.
+  */
   virtual QVariant getHeaderData(int section, Qt::Orientation orientation, int role, int headerSet) const;
 
 private:
