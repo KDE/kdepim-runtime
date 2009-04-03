@@ -34,6 +34,9 @@ public:
     ConfigDialog( QWidget *parent = 0 );
     ~ConfigDialog();
 
+protected:
+    virtual void slotButtonClicked( int button );
+
 private slots:
     void slotTestClicked();
     void slotAuthOk();

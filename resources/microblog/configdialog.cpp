@@ -23,6 +23,7 @@
 #include <kconfigdialogmanager.h>
 #include <kdebug.h>
 #include <kmessagebox.h>
+#include <KUser>
 
 ConfigDialog::ConfigDialog( QWidget * parent ) :
         KDialog( parent )
@@ -34,10 +35,16 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
     mManager = new KConfigDialogManager( this, Settings::self() );
     mManager->updateWidgets();
     ui.password->setText( Settings::self()->password() );
-    setButtons( KDialog::User1 | KDialog::Cancel );
-    setButtonText( KDialog::User1, i18n( "Test settings && Ok" ) );
-    setDefaultButton( KDialog::User1 );
-    connect( this, SIGNAL( user1Clicked() ), SLOT( slotTestClicked() ) );
+    if (ui.kcfg_Name->text().isEmpty() ) {
+        KUser user;
+        QString usersName = user.property( KUser::FullName ).toString();
+        if ( usersName.isEmpty() )
+            usersName = user.loginName();
+        if ( !usersName.isEmpty() )
+            ui.kcfg_Name->setText( usersName );
+    }
+    setButtons( KDialog::Ok | KDialog::Cancel );
+    connect( ui.testButton, SIGNAL( clicked() ), SLOT( slotTestClicked() ) );
 }
 
 ConfigDialog::~ConfigDialog()
@@ -51,26 +58,40 @@ void ConfigDialog::slotTestClicked()
     << ui.kcfg_UserName->text() << ui.password->text();
 
     setCursor( Qt::BusyCursor );
-    enableButton( KDialog::User1, false );
+    ui.statusLabel->setText( i18n( "Checking..." ) );
+    ui.testButton->setEnabled( false );
     m_comm->setService( ui.kcfg_Service->currentIndex() );
     m_comm->setCredentials( ui.kcfg_UserName->text(), ui.password->text() );
     m_comm->checkAuth();
 }
 
+void ConfigDialog::slotButtonClicked( int button ) 
+{
+    if (button == KDialog::Ok) {
+        Settings::self()->setPassword( ui.password->text() );
+        mManager->updateSettings();
+        accept();
+    }  else {
+        KDialog::slotButtonClicked(button);
+    }
+ }
+
 void ConfigDialog::slotAuthOk()
 {
     unsetCursor();
-    enableButton( KDialog::User1, true );
+    ui.testButton->setEnabled( true );
+    ui.statusLabel->setText( i18n( "Ok!" ) );
+    ui.statusImageLabel->setPixmap( KIcon( "dialog-ok" ).pixmap( 16 ) );
     Settings::self()->setPassword( ui.password->text() );
     mManager->updateSettings();
-    accept();
 }
 
 void ConfigDialog::slotAuthFailed( const QString& error )
 {
     unsetCursor();
-    KMessageBox::error( this, error, i18n( "Failed to log in" ) );
-    enableButton( KDialog::User1, true );
+    ui.statusLabel->setText( i18n( "Failed!" ) );
+    ui.statusImageLabel->setPixmap( KIcon( "dialog-cancel" ).pixmap( 16 ) );
+    ui.testButton->setEnabled( true );
 }
 
 #include "configdialog.moc"
