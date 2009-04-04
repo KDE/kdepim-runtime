@@ -151,8 +151,9 @@ int MBox::open(OpenMode openMode)
   if (int rc = lock() != 0)
     return rc;
 
+  fcntl(fileno(d->mStream), F_SETFD, FD_CLOEXEC);
 
-  return 0;
+  return errno;
 }
 
 void MBox::setLockType(LockType ltype)

@@ -105,7 +105,9 @@ void MboxTest::testProcMailLock()
     QVERIFY(!QFile(fileName() + ".lock").exists());
     mbox.open();
     QVERIFY(QFile(fileName() + ".lock").exists());
-    mbox.close();
+    QFile file(fileName());
+    QVERIFY(!file.open(QFile::ReadWrite)); // The file should be locked so open
+    mbox.close();                          // should fail.
     QVERIFY(!QFile(fileName() + ".lock").exists());
   } else {
     QVERIFY(!QFile(fileName() + ".lock").exists());
