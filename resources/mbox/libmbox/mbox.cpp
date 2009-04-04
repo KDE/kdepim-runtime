@@ -17,29 +17,42 @@
     02110-1301, USA.
 */
 
-#ifndef MBOX_H
-#define MBOX_H
+#include "mbox.h"
 
-#include <QtCore/QString>
+#include <klocalizedstring.h>
+#include <QtCore/QFileInfo>
 
-#include "mbox_export.h"
-
-class MBOX_EXPORT MBox
+class MBox::Private
 {
   public:
-    MBox(const QString &mboxFile = QString());
-    
-    ~MBox();
-    
-    /**
-     * Checks if the file exists and if it can be opened for read/write.
-     * TODO: Add some heuristics to see if it is actually a mbox file.
-     */
-    bool isValid(QString &errorMsg) const;
- 
-  private:
-    class Private;
-    Private *d;
+    Private(const QString &mboxFile) : mMboxFile(mboxFile)
+    {}
+
+    QString mMboxFile;
 };
 
-#endif // MBOX_H
+MBox::MBox(const QString &mboxFile) : d(new Private(mboxFile))
+{
+}
+
+MBox::~MBox()
+{
+  delete d;
+}
+
+bool MBox::isValid(QString &errorMsg) const
+{
+  QFileInfo info(d->mMboxFile);
+
+  if (!info.isFile()) {
+    errorMsg = i18n("%1 is not a file.").arg(d->mMboxFile);
+    return false;
+  }
+
+  if (!info.exists()) {
+    errorMsg = i18n("%1 does not exist").arg(d->mMboxFile);
+    return false;
+  }
+
+  return true;
+}

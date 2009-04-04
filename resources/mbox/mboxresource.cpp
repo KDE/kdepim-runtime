@@ -25,6 +25,7 @@
 #include <QtDBus/QDBusConnection>
 
 #include "configdialog.h"
+#include "mbox.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -56,11 +57,29 @@ void MboxResource::configure( WId windowId )
 
 void MboxResource::retrieveCollections()
 {
+  MBox mbox(Settings::self()->file());
+
+  QString errMsg;
+  if ( !mbox.isValid( errMsg ) ) {
+    emit error( errMsg );
+    collectionsRetrieved( Collection::List() );
+  }
+
+  Collection col;
+  col.setParent(Collection::root());
+  col.setRemoteId(Settings::self()->file());
+  col.setName(name());
+
+  QStringList mimeTypes;
+  mimeTypes << "message/rfc822" << Collection::mimeType();
+  col.setContentMimeTypes( mimeTypes );
+
+  collectionsRetrieved(Collection::List() << col);
 }
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
 {
-  Q_UNUSED(col);
+
 }
 
 bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -89,13 +108,6 @@ void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 void MboxResource::itemRemoved( const Akonadi::Item &item )
 {
   Q_UNUSED(item);
-}
-
-void MboxResource::collectionAdded( const Akonadi::Collection &collection
-                                  , const Akonadi::Collection &parent )
-{
-  Q_UNUSED(collection);
-  Q_UNUSED(parent);
 }
 
 void MboxResource::collectionChanged( const Akonadi::Collection &collection )
