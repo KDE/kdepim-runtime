@@ -62,7 +62,7 @@ void MboxTest::testIsValid()
   MBox mbox1(fileName(), true); // ReadOnly
   QVERIFY(mbox1.isValid());     // FCNTL is the default lock method.
 
-  if (KStandardDirs::findExe("lockfile") != QString()) {
+  if (!KStandardDirs::findExe("lockfile").isEmpty()) {
     mbox1.setLockType(MBox::procmail_lockfile);
     QVERIFY(mbox1.isValid());
   } else {
@@ -70,7 +70,7 @@ void MboxTest::testIsValid()
     QVERIFY(!mbox1.isValid());
   }
 
-  if (KStandardDirs::findExe("mutt_dotlock") != QString()) {
+  if (!KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
     mbox1.setLockType(MBox::mutt_dotlock);
     QVERIFY(mbox1.isValid());
     mbox1.setLockType(MBox::mutt_dotlock_privileged);
@@ -101,7 +101,7 @@ void MboxTest::testProcMailLock()
   // found.
   MBox mbox(fileName(), true);
   mbox.setLockType(MBox::procmail_lockfile);
-  if (KStandardDirs::findExe("lockfile") != QString()) {
+  if (!KStandardDirs::findExe("lockfile").isEmpty()) {
     QVERIFY(!QFile(fileName() + ".lock").exists());
     mbox.open();
     QVERIFY(QFile(fileName() + ".lock").exists());
