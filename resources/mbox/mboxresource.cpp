@@ -79,7 +79,42 @@ void MboxResource::retrieveCollections()
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
 {
+  MBox mbox( col.remoteId() );
 
+  if (Settings::self()->lockfileMethod() == Settings::procmail)
+    mbox.setProcmailLockFile(Settings::self()->lockfile());
+
+  if (!mbox.isValid()) {
+    emit error( i18n("Invalid mbox file: %1", col.remoteId() ) );
+    itemsRetrieved(Item::List());
+    return;
+  }
+
+  if (int rc = mbox.open() != 0) { // This can happen for example when the lock fails.
+    emit error(i18n("Error while opening mbox file %1: %2", col.remoteId(), rc));
+    itemsRetrieved(Item::List());
+    return;
+  }
+
+  /*
+  QStringList entryList = mbox.entryList();
+  mbox.close();
+
+  Item::List items;
+  foreach ( const QString &entry, entryList ) {
+    const QString rid = col.remoteId() + QDir::separator() + entry;
+    Item item;
+    item.setRemoteId( rid );
+    item.setMimeType( "message/rfc822" );
+    item.setSize( md.size( entry ) );
+    KMime::Message *msg = new KMime::Message;
+    msg->setHead( KMime::CRLFtoLF( md.readEntryHeaders( entry ) ) );
+    msg->parse();
+    item.setPayload( MessagePtr( msg ) );
+    items << item;
+  }
+  itemsRetrieved( items );
+  */
 }
 
 bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )

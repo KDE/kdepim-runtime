@@ -27,16 +27,87 @@
 class MBOX_EXPORT MBox
 {
   public:
-    MBox(const QString &mboxFile = QString());
-    
-    ~MBox();
-    
+    enum OpenMode {
+      Normal,
+      Reload
+    };
+
+    enum LockType {
+      FCNTL,
+      procmail_lockfile,
+      mutt_dotlock,
+      mutt_dotlock_privileged,
+      lock_none
+    };
+
+  public:
+    explicit MBox(const QString &mboxFile = QString(), bool readOnly = false);
+
     /**
-     * Checks if the file exists and if it can be opened for read/write.
-     * TODO: Add some heuristics to see if it is actually a mbox file.
+     * Closes the file if it is still open.
+     */
+    ~MBox();
+
+    /**
+     * Closes the file and releases the lock.
+     */
+    void close();
+
+    /**
+     * Checks if the file exists and if it can be opened for read/write. Also
+     * checks if the selected lock method is available when it is set to
+     * procmail_lockfile or one of the mutt_dotlock variants.
+     */
+    bool isValid() const;
+
+    /**
+     * @see isValid()
+     * @param errorMsg can be used to find out what kind of error occured and
+     *                 passed onto the user.
      */
     bool isValid(QString &errorMsg) const;
- 
+
+    /**
+     * Open folder for access. Does nothing if the folder is already opened
+     * and openMode equals Normal (default behavior). When Reload is given as
+     * open mode the file will be closed first if it is open.
+     *
+     * Returns zero on success and an error code equal to the c-library fopen
+     * call otherwise (errno).
+     */
+    int open(OpenMode openMode = Normal);
+
+    /**
+     * Sets the locktype that should be used for locking the mbox file. The
+     * isValid method will check if the lock method is available when the
+     * procmail_lockfile or one of the mutt_dotlock variants is set.
+     */
+    void setLockType(LockType ltype);
+
+    /**
+     * Sets the lockfile that should be used by the procmail lock file method.
+     * If this method is not called and procfile is used the name of the lock
+     * file will be equal to MBOXFILENAME.lock.
+     */
+    void setProcmailLockFile(const QString &lockFile);
+
+  private:
+    /**
+     * Locks the mbox file. Called by open(). Returns 0 on success and an errno
+     * error code on failure.
+     *
+     * NOTE: This method will set the MBox object to ReadOnly mode when locking
+     *       failed to prevent data corruption, even when the MBox was originally
+     *       opened ReadWrite.
+     */
+    int lock();
+
+    /**
+     * Unlock the mbox file. Called by close() or ~MBox(). Returns 0 on success
+     * and an errno error code on failure.
+     */
+    int unlock();
+
   private:
     class Private;
     Private *d;
