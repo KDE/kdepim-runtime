@@ -468,7 +468,8 @@ QModelIndex EntityTreeModel::index( int row, int column, const QModelIndex & par
       childEntities = d->m_childEntities.value(d->m_rootCollection.id());
     }
   } else {
-    childEntities = d->m_childEntities.value(parent.internalId());
+    if(parent.internalId() >= 0)
+      childEntities = d->m_childEntities.value(parent.internalId());
   }
 
   int size = childEntities.size();
@@ -519,6 +520,9 @@ QModelIndex EntityTreeModel::parent( const QModelIndex & index ) const
 int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 {
   Q_D( const EntityTreeModel );
+
+  if (parent.internalId() < 0)
+    return 0;
 
   qint64 id;
   if (!parent.isValid())
