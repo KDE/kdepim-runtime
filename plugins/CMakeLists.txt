@@ -32,6 +32,10 @@ kde4_add_plugin(akonadi_serializer_contactgroup ${akonadi_serializer_contactgrou
 target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_AKONADI_LIBS} akonadi-kabc ${KDE4_AKONADI_KABC_LIBS})
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
+set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp statusitem.cpp )
+kde4_add_plugin(akonadi_serializer_microblog ${akonadi_serializer_microblog_SRCS})
+target_link_libraries(akonadi_serializer_microblog ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDE4_KPIMUTILS_LIBS} )
+
 ########### install files ###############
 
 install( FILES
@@ -40,5 +44,12 @@ install( FILES
   akonadi_serializer_kcal.desktop
   akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
+  akonadi_serializer_microblog.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
+
+
+install( FILES
+  statusitem.h
+  DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi COMPONENT Devel
+)
 
