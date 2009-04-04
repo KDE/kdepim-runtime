@@ -46,8 +46,10 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
             ui.kcfg_Name->setText( usersName );
     }
     setButtons( KDialog::Ok | KDialog::Cancel );
+    ui.testButton->setEnabled(false);
     connect( ui.testButton, SIGNAL( clicked() ), SLOT( slotTestClicked() ) );
-    connect( ui.welcomelabel, SIGNAL( linkActivated ( const QString & ) ), SLOT( slotLinkClicked() ) );
+    connect( ui.kcfg_UserName, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
+    connect( ui.openidLabel, SIGNAL( linkActivated ( const QString & ) ), SLOT( slotLinkClicked() ) );
 }
 
 ConfigDialog::~ConfigDialog()
@@ -59,7 +61,6 @@ void ConfigDialog::slotTestClicked()
 {
     kDebug() << "Test request" << ui.kcfg_Service->currentIndex()
     << ui.kcfg_UserName->text() << ui.password->text();
-
     setCursor( Qt::BusyCursor );
     ui.statusLabel->setText( i18n( "Checking..." ) );
     ui.testButton->setEnabled( false );
@@ -68,7 +69,12 @@ void ConfigDialog::slotTestClicked()
     m_comm->checkAuth();
 }
 
-void ConfigDialog::slotButtonClicked( int button ) 
+void ConfigDialog::slotTextChanged(const QString &text)
+{
+    ui.testButton->setEnabled(!text.isEmpty());
+}
+
+void ConfigDialog::slotButtonClicked( int button )
 {
     if (button == KDialog::Ok) {
         Settings::self()->setPassword( ui.password->text() );
@@ -97,7 +103,7 @@ void ConfigDialog::slotAuthFailed( const QString& error )
     ui.testButton->setEnabled( true );
 }
 
-void ConfigDialog::slotLinkClicked() 
+void ConfigDialog::slotLinkClicked()
 {
     QWhatsThis::showText( QCursor::pos(), i18n( "OpenId users must first setup a password in "
         "the settings on the webpage. We can not use OpenId unfortunately." ), this );
