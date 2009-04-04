@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Mbox
+Comment=Loads data from a local mbox file
+Type=AkonadiResource
+Exec=akonadi_mbox_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_mbox_resource
