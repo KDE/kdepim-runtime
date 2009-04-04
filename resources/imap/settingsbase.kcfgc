@@ -1,4 +1,4 @@
-File=imaplib.kcfg
+File=imapresource.kcfg
 ClassName=SettingsBase
 Mutators=true
 ItemAccessors=true

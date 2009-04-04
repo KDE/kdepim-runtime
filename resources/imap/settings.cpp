@@ -63,8 +63,8 @@ QString Settings::password() const
 {
     QString password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imaplib" ) ) {
-        wallet->setFolder( "imaplib" );
+    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
+        wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), password );
     }
     delete wallet;
@@ -86,9 +86,9 @@ void Settings::setPassword( const QString & password )
 {
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
-        if ( !wallet->hasFolder( "imaplib" ) )
-            wallet->createFolder( "imaplib" );
-        wallet->setFolder( "imaplib" );
+        if ( !wallet->hasFolder( "imap" ) )
+            wallet->createFolder( "imap" );
+        wallet->setFolder( "imap" );
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }

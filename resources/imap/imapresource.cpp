@@ -18,7 +18,7 @@
     02110-1301, USA.
 */
 
-#include "imaplibresource.h"
+#include "imapresource.h"
 #include "setupserver.h"
 #include "settingsadaptor.h"
 #include "uidvalidityattribute.h"
@@ -53,7 +53,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
-ImaplibResource::ImaplibResource( const QString &id )
+ImapResource::ImapResource( const QString &id )
         :ResourceBase( id ), m_imap( 0 ), m_incrementalFetch( false )
 {
     changeRecorder()->fetchCollection( true );
@@ -64,12 +64,12 @@ ImaplibResource::ImaplibResource( const QString &id )
     startConnect();
 }
 
-ImaplibResource::~ImaplibResource()
+ImapResource::~ImapResource()
 {
     delete m_imap;
 }
 
-bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
     Q_UNUSED( parts );
 
@@ -81,7 +81,7 @@ bool ImaplibResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
     return true;
 }
 
-void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
+void ImapResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
         const QString& body )
 {
     const QString reference =  mb + "-+-" + QString::number( uid );
@@ -102,7 +102,7 @@ void ImaplibResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
     itemRetrieved( i );
 }
 
-void ImaplibResource::configure( WId windowId )
+void ImapResource::configure( WId windowId )
 {
     SetupServer dlg( windowId );
     KWindowSystem::setMainWindow( &dlg, windowId );
@@ -114,7 +114,7 @@ void ImaplibResource::configure( WId windowId )
     startConnect();
 }
 
-void ImaplibResource::startConnect()
+void ImapResource::startConnect()
 {
     m_server = Settings::self()->imapServer();
     int safe = Settings::self()->safety();
@@ -139,7 +139,7 @@ void ImaplibResource::startConnect()
     m_imap->startConnection( server, port, safe );
 }
 
-void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
+void ImapResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
     m_itemAdded = item;
     m_collection = collection;
@@ -151,7 +151,7 @@ void ImaplibResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
 }
 
-void ImaplibResource::slotSaveDone( int uid )
+void ImapResource::slotSaveDone( int uid )
 {
     if ( uid > -1 ) {
         const QString reference =  m_collection.remoteId() + "-+-" + QString::number( uid );
@@ -161,7 +161,7 @@ void ImaplibResource::slotSaveDone( int uid )
     changeCommitted( m_itemAdded );
 }
 
-void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
+void ImapResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
     // We can just assume that we only get here if the flags have changed. So get them and
     // store those on the server.
@@ -178,7 +178,7 @@ void ImaplibResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     changeCommitted( item );
 }
 
-void ImaplibResource::itemRemoved( const Akonadi::Item &item )
+void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
     //itemRemoved actually can not be implemented. The imap specs do not allow for a single
     //message to be deleted. Users of this resource should make sure they set the flag
@@ -187,7 +187,7 @@ void ImaplibResource::itemRemoved( const Akonadi::Item &item )
     changeProcessed();
 }
 
-void ImaplibResource::retrieveCollections()
+void ImapResource::retrieveCollections()
 {
     if ( !m_imap ) {
         kDebug() << "Ignoring this request. Probably there is no connection.";
@@ -215,7 +215,7 @@ static QString findParent( QHash<QString, Collection> &collections, const Collec
     return c.remoteId();
 }
 
-void ImaplibResource::slotFolderListReceived( const QStringList& list, const QStringList& noselectfolders )
+void ImapResource::slotFolderListReceived( const QStringList& list, const QStringList& noselectfolders )
 {
     QHash<QString, Collection> collections;
     QStringList contentTypes;
@@ -275,7 +275,7 @@ void ImaplibResource::slotFolderListReceived( const QStringList& list, const QSt
 
 // ----------------------------------------------------------------------------------
 
-void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
+void ImapResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug( ) << col.remoteId();
     m_collection = col;
@@ -296,13 +296,13 @@ void ImaplibResource::retrieveItems( const Akonadi::Collection & col )
     m_imap->checkMail( col.remoteId() );
 }
 
-void ImaplibResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
+void ImapResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
     kDebug( ) << mb << amount;
 
 }
 
-void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
+void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
     kDebug( ) << mb << values.count();
 
@@ -334,7 +334,7 @@ void ImaplibResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const
     m_imap->getHeaders( mb, fetchlist );
 }
 
-void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
+void ImapResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
 {
     kDebug( ) << mb << list.count();
 
@@ -379,7 +379,7 @@ void ImaplibResource::slotHeadersReceived( Imaplib*, const QString& mb, const QS
 
 // ----------------------------------------------------------------------------------
 
-void ImaplibResource::collectionAdded( const Collection & collection, const Collection &parent )
+void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
     const QString remoteName = parent.remoteId() + '.' + collection.name();
     kDebug( ) << "New folder: " << remoteName;
@@ -389,7 +389,7 @@ void ImaplibResource::collectionAdded( const Collection & collection, const Coll
     m_collection.setRemoteId( remoteName );
 }
 
-void ImaplibResource::slotCollectionAdded( bool success )
+void ImapResource::slotCollectionAdded( bool success )
 {
     // finish the task.
     changeCommitted( m_collection );
@@ -403,19 +403,19 @@ void ImaplibResource::slotCollectionAdded( bool success )
     }
 }
 
-void ImaplibResource::collectionChanged( const Collection & collection )
+void ImapResource::collectionChanged( const Collection & collection )
 {
     kDebug( ) << "Implement me!";
     changeProcessed();
 }
 
-void ImaplibResource::collectionRemoved( const Akonadi::Collection &collection )
+void ImapResource::collectionRemoved( const Akonadi::Collection &collection )
 {
     kDebug( ) << "Del folder: " << collection.id() << collection.remoteId();
     m_imap->deleteMailBox( collection.remoteId() );
 }
 
-void ImaplibResource::slotCollectionRemoved( bool success )
+void ImapResource::slotCollectionRemoved( bool success )
 {
     // finish the task.
     changeProcessed();
@@ -429,7 +429,7 @@ void ImaplibResource::slotCollectionRemoved( bool success )
 
 /******************* Slots  ***********************************************/
 
-void ImaplibResource::slotLogin( Imaplib* connection )
+void ImapResource::slotLogin( Imaplib* connection )
 {
     // kDebug();
 
@@ -440,7 +440,7 @@ void ImaplibResource::slotLogin( Imaplib* connection )
     : connection->login( m_username, pass );
 }
 
-void ImaplibResource::slotLoginFailed( Imaplib* connection )
+void ImapResource::slotLoginFailed( Imaplib* connection )
 {
     kDebug();
 
@@ -461,23 +461,23 @@ void ImaplibResource::slotLoginFailed( Imaplib* connection )
     }
 }
 
-void ImaplibResource::slotLoginOk()
+void ImapResource::slotLoginOk()
 {
     kDebug();
     synchronizeCollectionTree();
 }
 
-void ImaplibResource::slotAlert( Imaplib*, const QString& message )
+void ImapResource::slotAlert( Imaplib*, const QString& message )
 {
     emit error( i18n( "Server reported: %1",message ) );
 }
 
-void ImaplibResource::slotPurge( const QString &folder )
+void ImapResource::slotPurge( const QString &folder )
 {
     m_imap->expungeMailBox( folder );
 }
 
-void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
+void ImapResource::slotIntegrity( const QString& mb, int totalShouldBe,
                                      const QString& uidvalidity, const QString& uidnext )
 {
     // uidvalidity can change between sessions, we don't want to refetch
@@ -573,7 +573,7 @@ void ImaplibResource::slotIntegrity( const QString& mb, int totalShouldBe,
 
 /******************* Private ***********************************************/
 
-void ImaplibResource::connections()
+void ImapResource::connections()
 {
     connect( m_imap,
              SIGNAL( login( Imaplib* ) ),
@@ -651,7 +651,7 @@ void ImaplibResource::connections()
     */
 }
 
-void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
+void ImapResource::manualAuth( Imaplib* connection, const QString& username )
 {
     KPasswordDialog dlg( 0 /* no winId constructor available */ );
     dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
@@ -661,8 +661,8 @@ void ImaplibResource::manualAuth( Imaplib* connection, const QString& username )
         connection->logout();
 }
 
-AKONADI_RESOURCE_MAIN( ImaplibResource )
+AKONADI_RESOURCE_MAIN( ImapResource )
 
-#include "imaplibresource.moc"
+#include "imapresource.moc"
 
 

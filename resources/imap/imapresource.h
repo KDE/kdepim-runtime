@@ -18,21 +18,21 @@
     02110-1301, USA.
 */
 
-#ifndef __IMAPLIB_RESOURCE_H__
-#define __IMAPLIB_RESOURCE_H__
+#ifndef __IMAP_RESOURCE_H__
+#define __IMAP_RESOURCE_H__
 
 class Imaplib;
 
 #include <akonadi/resourcebase.h>
 
-class ImaplibResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
-    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imaplib.Resource" )
+    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
 
 public:
-    ImaplibResource( const QString &id );
-    ~ImaplibResource();
+    ImapResource( const QString &id );
+    ~ImapResource();
 
 public Q_SLOTS:
     virtual void configure( WId windowId );

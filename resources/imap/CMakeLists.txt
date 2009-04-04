@@ -19,31 +19,31 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 ########### next target ###############
 
-set( imaplibresource_SRCS
+set( imapresource_SRCS
   setupserver.cpp
-  imaplibresource.cpp
+  imapresource.cpp
   settings.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   noselectattribute.cpp
 )
 
-install( FILES imaplibresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplib.kcfg org.kde.Akonadi.Imaplib.Settings )
-qt4_add_dbus_adaptor( imaplibresource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Settings.xml settings.h Settings
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
+qt4_add_dbus_adaptor( imapresource_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imaplibresource.h org.kde.Akonadi.Imaplib.Resource.xml )
-qt4_add_dbus_adaptor( imaplibresource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imaplib.Resource.xml
-        imaplibresource.h ImaplibResource
+qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml )
+qt4_add_dbus_adaptor( imapresource_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
+        imapresource.h ImapResource
      )
-kde4_add_kcfg_files(imaplibresource_SRCS settingsbase.kcfgc)
-kde4_add_executable(akonadi_imaplib_resource RUN_UNINSTALLED ${imaplibresource_SRCS})
+kde4_add_kcfg_files(imapresource_SRCS settingsbase.kcfgc)
+kde4_add_executable(akonadi_imap_resource RUN_UNINSTALLED ${imapresource_SRCS})
 
-target_link_libraries(akonadi_imaplib_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} imap 
+target_link_libraries(akonadi_imap_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} imap 
                       ${KDE4_KMIME_LIBS} ${KDE4_KIO_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS})
 
-install(TARGETS akonadi_imaplib_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

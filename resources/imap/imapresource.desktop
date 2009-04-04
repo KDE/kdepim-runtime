@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi Imap
+Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
+Type=AkonadiResource
+Exec=akonadi_imap_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_imap_resource
