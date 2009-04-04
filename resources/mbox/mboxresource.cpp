@@ -22,6 +22,8 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <boost/shared_ptr.hpp>
+#include <kmime/kmime_message.h>
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
 
@@ -32,6 +34,8 @@
 #include "settingsadaptor.h"
 
 using namespace Akonadi;
+
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
 {
@@ -101,7 +105,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  QStringList entryList;
+  QList<QByteArray> entryList;
   if (col.hasAttribute<DeletedItemsAttribute>()) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
     entryList = mbox.entryList(attr->deletedItemOffsets());
@@ -109,24 +113,26 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     entryList = mbox.entryList();
   }
 
-  mbox.close(); // No we have the items, unlock and close the mbox file.
+  mbox.close(); // Now we have the items, unlock and close the mbox file.
 
-  /*
   Item::List items;
-  foreach ( const QString &entry, entryList ) {
-    const QString rid = col.remoteId() + QDir::separator() + entry;
+  int offset = 0;
+  foreach (const QByteArray &entry, entryList) {
+    KMime::Message *mail = new KMime::Message();
+    mail->setContent(KMime::CRLFtoLF(entry));
+    mail->parse();
+
     Item item;
-    item.setRemoteId( rid );
-    item.setMimeType( "message/rfc822" );
-    item.setSize( md.size( entry ) );
-    KMime::Message *msg = new KMime::Message;
-    msg->setHead( KMime::CRLFtoLF( md.readEntryHeaders( entry ) ) );
-    msg->parse();
-    item.setPayload( MessagePtr( msg ) );
+    item.setRemoteId(QString::number(offset));
+    item.setMimeType("message/rfc822");
+    item.setSize(entry.size());
+    item.setPayload( MessagePtr( mail ) );
     items << item;
+
+    offset += entry.size();
   }
+
   itemsRetrieved( items );
-  */
 }
 
 bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )

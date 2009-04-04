@@ -59,7 +59,7 @@ class MBOX_EXPORT MBox
      * @param deletedItems should be a list of file offsets of messages which
      * are deleted.
      */
-    QStringList entryList(const QSet<int> &deletedItems = QSet<int>()) const;
+    QList<QByteArray> entryList(const QSet<int> &deletedItems = QSet<int>()) const;
 
     /**
      * Checks if the file exists and if it can be opened for read/write. Also
