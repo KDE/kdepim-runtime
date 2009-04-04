@@ -48,9 +48,3 @@ install( FILES
   akonadi_serializer_microblog.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 
-
-install( FILES
-  statusitem.h
-  DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi COMPONENT Devel
-)
-
