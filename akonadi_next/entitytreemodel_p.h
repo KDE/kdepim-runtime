@@ -65,6 +65,9 @@ public:
   void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& );
   void monitoredItemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& );
 
+  void monitoredItemLinked( const Akonadi::Item&, const Akonadi::Collection& );
+  void monitoredItemUnlinked( const Akonadi::Item&, const Akonadi::Collection& );
+
 
   Collection getParentCollection( qint64 id ) const;
   Collection getParentCollection( Item item ) const;

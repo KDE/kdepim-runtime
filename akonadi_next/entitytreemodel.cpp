@@ -85,11 +85,10 @@ EntityTreeModel::EntityTreeModel( Session *session,
            SLOT(monitoredCollectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) ) );
 
 
-// TODO:
-//   q->connect( monitor, SIGNAL( itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection)),
-//             q, SLOT(itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection)));
-//   q->connect( monitor, SIGNAL( itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)),
-//             q, SLOT(itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)));
+  connect( monitor, SIGNAL( itemLinked(const Akonadi::Item &, const Akonadi::Collection &)),
+            SLOT(monitoredItemLinked(const Akonadi::Item &, const Akonadi::Collection &)));
+  connect( monitor, SIGNAL( itemUnlinked(const Akonadi::Item &, const Akonadi::Collection &)),
+            SLOT(monitoredItemUnlinked(const Akonadi::Item &, const Akonadi::Collection &)));
 
 //   connect(q, SIGNAL(modelReset()), q, SLOT(slotModelReset()));
 
