@@ -42,7 +42,6 @@ set( microblogresource_SRCS
   configdialog.cpp
   settings.cpp
   communication.cpp
-  statusitem.cpp
   idattribute.cpp
 )
 
@@ -55,7 +54,7 @@ kde4_add_ui_files(microblogresource_SRCS microblogconfig.ui)
 kde4_add_kcfg_files(microblogresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_microblog_resource RUN_UNINSTALLED ${microblogresource_SRCS})
 
-target_link_libraries(akonadi_microblog_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${KDE4_KPIMUTILS_LIBS} )
+target_link_libraries(akonadi_microblog_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${KDE4_KPIMUTILS_LIBS} microblog )
 
 install(TARGETS akonadi_microblog_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES microblog.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

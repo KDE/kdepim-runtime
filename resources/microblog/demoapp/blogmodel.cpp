@@ -18,8 +18,8 @@
 */
 
 #include "blogmodel.h"
-#include "../statusitem.h"
 
+#include <microblog/statusitem.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
@@ -32,6 +32,7 @@
 #include <QtCore/QDebug>
 
 using namespace Akonadi;
+using namespace Microblog;
 
 class BlogModel::Private
 {

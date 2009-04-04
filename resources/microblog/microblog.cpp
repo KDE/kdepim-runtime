@@ -21,7 +21,6 @@
 #include "configdialog.h"
 #include "communication.h"
 #include "settingsadaptor.h"
-#include "statusitem.h"
 #include "idattribute.h"
 
 #include <kdebug.h>
@@ -33,9 +32,11 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/item.h>
+#include <microblog/statusitem.h>
 
 
 using namespace Akonadi;
+using namespace Microblog;
 
 MicroblogResource::MicroblogResource( const QString &id )
         : ResourceBase( id ), m_comm( 0 )
