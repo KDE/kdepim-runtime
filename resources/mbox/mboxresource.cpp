@@ -132,27 +132,20 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 {
   Q_UNUSED(item);
   Q_UNUSED(collection);
+  changeProcessed();
 }
 
 void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED(item);
   Q_UNUSED(parts);
+  changeProcessed();
 }
 
 void MboxResource::itemRemoved( const Akonadi::Item &item )
 {
   Q_UNUSED(item);
-}
-
-void MboxResource::collectionChanged( const Akonadi::Collection &collection )
-{
-  Q_UNUSED(collection);
-}
-
-void MboxResource::collectionRemoved( const Akonadi::Collection &collection )
-{
-  Q_UNUSED(collection);
+  changeProcessed();
 }
 
 

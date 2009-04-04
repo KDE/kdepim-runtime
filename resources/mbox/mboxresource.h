@@ -44,9 +44,6 @@ class MboxResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
 };
 
 #endif
