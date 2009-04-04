@@ -178,10 +178,9 @@ void DescendantEntitiesProxyModel::setRootIndex(const QModelIndex &index)
   if (index.isValid())
     Q_ASSERT(index.model() == sourceModel());
 
-  //beginResetModel();
   d->m_rootDescendIndex = index;
+  d->m_descendantsCount.clear();
   reset();
- // endResetModel();
 }
 
 DescendantEntitiesProxyModel::~DescendantEntitiesProxyModel()
@@ -492,6 +491,9 @@ QVariant DescendantEntitiesProxyModel::data(const QModelIndex & index, int role)
 {
   Q_D(const DescendantEntitiesProxyModel);
 
+  if (!index.isValid())
+    return QVariant();
+
   QModelIndex sourceIndex = mapToSource( index );
 
   if ((d->m_displayAncestorData) && ( role == Qt::DisplayRole ) )
@@ -620,5 +622,17 @@ QString DescendantEntitiesProxyModel::ancestorSeparator() const
     return QString();
   return d->m_ancestorSeparator;
 }
+
+Qt::ItemFlags DescendantEntitiesProxyModel::flags( const QModelIndex &index ) const
+{
+  Q_D(const DescendantEntitiesProxyModel);
+
+  // if index is invalid, it might be mapped to a valid source index with more flags.
+  // Can't allow that...
+  if (!index.isValid())
+    return 0;
+  return AbstractProxyModel::flags(index);
+}
+
 
 #include "moc_descendantentitiesproxymodel.cpp"

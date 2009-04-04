@@ -106,6 +106,7 @@ public:
     QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
     int descendantCount(const QModelIndex &index);
 
+    virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
     QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
     virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 
