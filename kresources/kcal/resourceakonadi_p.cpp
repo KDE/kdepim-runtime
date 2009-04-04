@@ -34,7 +34,7 @@ using namespace KCal;
 ResourceAkonadi::Private::Private( ResourceAkonadi *parent )
   : SharedResourcePrivate<SubResource>( new IdArbiter(), parent ),
     mParent( parent ), mCalendar( QLatin1String( "UTC" ) ),
-    mLock( new KABC::LockNull( true ) ),
+    mLock( new KABC::LockNull( true ) ), mInternalCalendarModification( false ),
     mAgentModel( 0 ), mAgentFilterModel( 0 )
 {
 }
@@ -42,7 +42,7 @@ ResourceAkonadi::Private::Private( ResourceAkonadi *parent )
 ResourceAkonadi::Private::Private( const KConfigGroup &config, ResourceAkonadi *parent )
   : SharedResourcePrivate<SubResource>( config, new IdArbiter(), parent ),
     mParent( parent ), mCalendar( QLatin1String( "UTC" ) ),
-    mLock( new KABC::LockNull( true ) ),
+    mLock( new KABC::LockNull( true ) ), mInternalCalendarModification( false ),
     mAgentModel( 0 ), mAgentFilterModel( 0 )
 {
 }
