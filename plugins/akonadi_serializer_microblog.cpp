@@ -18,13 +18,14 @@
 */
 
 #include "akonadi_serializer_microblog.h"
-#include "statusitem.h"
 
+#include <microblog/statusitem.h>
 #include <akonadi/item.h>
 
 #include <QtCore/qplugin.h>
 
 using namespace Akonadi;
+using namespace Microblog;
 
 bool SerializerPluginmicroblog::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
