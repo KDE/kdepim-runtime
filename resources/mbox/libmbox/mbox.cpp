@@ -111,13 +111,17 @@ bool MBox::isValid(QString &errorMsg) const
 
   switch (d->mLockType) {
     case procmail_lockfile:
-      if (KStandardDirs::findExe("lockfile") == QString())
+      if (KStandardDirs::findExe("lockfile") == QString()) {
         errorMsg = i18n("Could not find the lockfile executable");
+        return false;
+      }
       break;
     case mutt_dotlock: // fall through
     case mutt_dotlock_privileged:
-      if (KStandardDirs::findExe("mutt_dotlock") == QString())
+      if (KStandardDirs::findExe("mutt_dotlock") == QString()) {
         errorMsg = i18n("Could not find the mutt_dotlock executable");
+        return false;
+      }
       break;
     default:
       break; // We assume fcntl available and lock_none doesn't need a check.
@@ -144,7 +148,9 @@ int MBox::open(OpenMode openMode)
     return errno;
   }
 
-  lock();
+  if (int rc = lock() != 0)
+    return rc;
+
 
   return 0;
 }

@@ -1,5 +1,7 @@
 set(mbox_LIB_SRCS mbox.cpp)
 
+add_subdirectory(tests)
+
 kde4_add_library(mbox SHARED ${mbox_LIB_SRCS})
 
 target_link_libraries(mbox ${KDE4_KDECORE_LIBS} ${KDE4_KPIMUTILS_LIBS} )
