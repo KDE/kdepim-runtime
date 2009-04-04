@@ -89,6 +89,13 @@ void MBox::close()
   d->mStream = 0;
 }
 
+QStringList MBox::entryList(const QSet<int> &deletedItems) const
+{
+  Q_UNUSED(deletedItems);
+  // FIXME: Implement.
+  return QStringList();
+}
+
 bool MBox::isValid() const
 {
   QString msg;

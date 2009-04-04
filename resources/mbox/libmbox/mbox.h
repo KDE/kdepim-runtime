@@ -20,6 +20,7 @@
 #ifndef MBOX_H
 #define MBOX_H
 
+#include <QtCore/QSet>
 #include <QtCore/QString>
 
 #include "mbox_export.h"
@@ -52,6 +53,13 @@ class MBOX_EXPORT MBox
      * Closes the file and releases the lock.
      */
     void close();
+
+    /**
+     * Read all the messages from the file except the @param deleteItems. The
+     * @param deletedItems should be a list of file offsets of messages which
+     * are deleted.
+     */
+    QStringList entryList(const QSet<int> &deletedItems = QSet<int>()) const;
 
     /**
      * Checks if the file exists and if it can be opened for read/write. Also

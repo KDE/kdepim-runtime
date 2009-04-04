@@ -19,12 +19,14 @@
 
 #include "mboxresource.h"
 
+#include <akonadi/attributefactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
 
 #include "configdialog.h"
+#include "deleteditemsattribute.h"
 #include "mbox.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -36,6 +38,9 @@ MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
+
+  // Register the list of deleted items as an attribe of the collection.
+  AttributeFactory::registerAttribute<DeletedItemsAttribute>();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -96,10 +101,17 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  /*
-  QStringList entryList = mbox.entryList();
-  mbox.close();
+  QStringList entryList;
+  if (col.hasAttribute<DeletedItemsAttribute>()) {
+    DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
+    entryList = mbox.entryList(attr->deletedItemOffsets());
+  } else { // No deleted items (yet)
+    entryList = mbox.entryList();
+  }
 
+  mbox.close(); // No we have the items, unlock and close the mbox file.
+
+  /*
   Item::List items;
   foreach ( const QString &entry, entryList ) {
     const QString rid = col.remoteId() + QDir::separator() + entry;

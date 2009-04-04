@@ -14,6 +14,7 @@ add_subdirectory(libmbox)
 ########### next target ###############
 
 set( mboxresource_SRCS
+  deleteditemsattribute.cpp
   mboxresource.cpp
   configdialog.cpp
 )
