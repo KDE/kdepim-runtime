@@ -33,6 +33,9 @@ class ConfigDialog : public KDialog
   public:
     ConfigDialog( QWidget *parent = 0 );
 
+  private:
+    void checkAvailableLockMethods();
+
   private slots:
     void save();
 

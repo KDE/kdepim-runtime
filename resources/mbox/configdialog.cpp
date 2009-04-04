@@ -22,6 +22,7 @@
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
+#include <kstandarddirs.h>
 #include <kurlrequester.h>
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
@@ -32,7 +33,37 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   mManager->updateWidgets();
   ui.kcfg_File->setUrl( KUrl( Settings::self()->file() ) );
 
+  checkAvailableLockMethods();
+  
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
+}
+
+void ConfigDialog::checkAvailableLockMethods()
+{
+  // FIXME: I guess this whole checking makes only sense on linux machines.
+  
+  // Check for procmail lock method.
+  if (KStandardDirs::findExe("lockfile") == QString()) {
+    ui.procmail->setEnabled(false);
+    if (ui.procmail->isChecked()) // Select another lock method if necessary
+      ui.mutt_dotlock->setChecked(true);
+  }
+
+  // Check for mutt lock method.
+  if (KStandardDirs::findExe("mutt_dotlock") == QString()) {
+    ui.mutt_dotlock->setEnabled(false);
+    ui.mutt_dotlock_privileged->setEnabled(false);
+    if (ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked())
+    {
+      if (ui.procmail->isEnabled())
+        ui.procmail->setChecked(true);
+      else
+        ui.fcntl->setChecked(true);
+    }
+  }
+
+  // FIXME: I assume fcntl is available on *nix machines. Maybe some kind of
+  //       (compile time) check is needed here.
 }
 
 void ConfigDialog::save()
