@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=POP3
+Comment=Fetches mail from a POP3 server
+Type=AkonadiResource
+Exec=akonadi_pop3_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_pop3_resource

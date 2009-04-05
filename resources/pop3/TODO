@@ -1,0 +1,46 @@
+BUGS
+====
+
+itemcreatejob not executed the second time after first one fails
+gmail ssl not working (still?)
+uses wrong config file -> what happens on name change!?
+(!!!) processpendingmessaes: old duplicate problem
+
+TODO
+====
+
+make resource name configureable
+rename vars, functions
+kdebug
+astyle
+(!) kconfigxt
+(!) Config UI
+debug area in kdelibs
+unit tests
+  all leave on server rules
+  weird bugs in svn log
+compare each function with popaccount.cpp, find out what is missing, write it down
+password handling / kwallet
+for -> foreach
+header filtering framework
+mail progress items / status messages / done signal
+config file migration from kmail
+listen to collection removals -> complain if no longer there
+error handling
+parents for messageboxes
+fixmes
+grep for kmail
+proof read and coverage test
+
+refactoring: each stage in command classes or such
+
+Questions
+=========
+
+cancelTask or emit status?
+itemaddjob syncronus? -> duplicate mails problem!
+
+Missing Stuff
+=============
+
+Progress stuff - SSL icons. Needs to be added to akonadi client / progressmanagaer
