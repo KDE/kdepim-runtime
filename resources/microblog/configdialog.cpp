@@ -89,7 +89,7 @@ void ConfigDialog::slotAuthOk()
 {
     unsetCursor();
     ui.testButton->setEnabled( true );
-    ui.statusLabel->setText( i18n( "Ok!" ) );
+    ui.statusLabel->setText( i18n( "OK" ) );
     ui.statusImageLabel->setPixmap( KIcon( "dialog-ok" ).pixmap( 16 ) );
     Settings::self()->setPassword( ui.password->text() );
     mManager->updateSettings();
@@ -98,15 +98,15 @@ void ConfigDialog::slotAuthOk()
 void ConfigDialog::slotAuthFailed( const QString& error )
 {
     unsetCursor();
-    ui.statusLabel->setText( i18n( "Failed!" ) );
+    ui.statusLabel->setText( i18n( "Failed" ) );
     ui.statusImageLabel->setPixmap( KIcon( "dialog-cancel" ).pixmap( 16 ) );
     ui.testButton->setEnabled( true );
 }
 
 void ConfigDialog::slotLinkClicked()
 {
-    QWhatsThis::showText( QCursor::pos(), i18n( "OpenId users must first setup a password in "
-        "the settings on the webpage. We can not use OpenId unfortunately." ), this );
+    QWhatsThis::showText( QCursor::pos(), i18n( "OpenId users must first specify a password in "
+        "the settings on the webpage. However, OpenId cannot be used." ), this );
 }
 
 #include "configdialog.moc"

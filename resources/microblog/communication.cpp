@@ -92,7 +92,7 @@ void Communication::slotCheckAuthData( KJob *job )
         return;
     }
 
-    emit authFailed( i18n( "Error authenticated" ) );
+    emit authFailed( i18n( "Authentication error" ) );
 }
 
 void Communication::retrieveFolder( const QString &folder, qlonglong since )
