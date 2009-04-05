@@ -1,6 +1,10 @@
 [Desktop Entry]
 Name=Mbox
 Comment=Loads data from a local mbox file
+Comment[pt]=Carrega os dados a partir de um ficheiro 'mbox' local
+Comment[pt_BR]=Carrega os dados a partir de um ficheiro 'mbox' local
+Comment[sv]=Laddar data från en lokal mbox-fil
+Comment[uk]=Завантажує дані з локального файла mbox
 Type=AkonadiResource
 Exec=akonadi_mbox_resource
 Icon=message-rfc822
