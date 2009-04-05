@@ -106,7 +106,7 @@ void ConfigDialog::slotAuthFailed( const QString& error )
 void ConfigDialog::slotLinkClicked()
 {
     QWhatsThis::showText( QCursor::pos(), i18n( "OpenId users must first specify a password in "
-        "the settings on the webpage. However, OpenId cannot be used." ), this );
+        "the settings on the webpage, as this resource cannot use OpenId." ), this );
 }
 
 #include "configdialog.moc"
