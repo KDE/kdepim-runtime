@@ -36,7 +36,7 @@ static const char * testFile = "test-mbox-file";
 
 QString MboxTest::fileName()
 {
-  return mTempDir->name() + QDir::separator() + testFile;
+  return mTempDir->name() + testFile;
 }
 
 void MboxTest::initTestCase()
@@ -63,26 +63,26 @@ void MboxTest::testIsValid()
   QVERIFY(mbox1.isValid());     // FCNTL is the default lock method.
 
   if (!KStandardDirs::findExe("lockfile").isEmpty()) {
-    mbox1.setLockType(MBox::procmail_lockfile);
+    mbox1.setLockType(MBox::ProcmailLockfile);
     QVERIFY(mbox1.isValid());
   } else {
-    mbox1.setLockType(MBox::procmail_lockfile);
+    mbox1.setLockType(MBox::ProcmailLockfile);
     QVERIFY(!mbox1.isValid());
   }
 
   if (!KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
-    mbox1.setLockType(MBox::mutt_dotlock);
+    mbox1.setLockType(MBox::MuttDotlock);
     QVERIFY(mbox1.isValid());
-    mbox1.setLockType(MBox::mutt_dotlock_privileged);
+    mbox1.setLockType(MBox::MuttDotlockPrivileged);
     QVERIFY(mbox1.isValid());
   } else {
-    mbox1.setLockType(MBox::mutt_dotlock);
+    mbox1.setLockType(MBox::MuttDotlock);
     QVERIFY(!mbox1.isValid());
-    mbox1.setLockType(MBox::mutt_dotlock_privileged);
+    mbox1.setLockType(MBox::MuttDotlockPrivileged);
     QVERIFY(!mbox1.isValid());
   }
 
-  mbox1.setLockType(MBox::lock_none);
+  mbox1.setLockType(MBox::None);
   QVERIFY(mbox1.isValid());
 
   MBox mbox2(fileName(), false);
@@ -100,14 +100,12 @@ void MboxTest::testProcMailLock()
   // It really only makes sense to test this if the lockfile executable can be
   // found.
   MBox mbox(fileName(), true);
-  mbox.setLockType(MBox::procmail_lockfile);
+  mbox.setLockType(MBox::ProcmailLockfile);
   if (!KStandardDirs::findExe("lockfile").isEmpty()) {
     QVERIFY(!QFile(fileName() + ".lock").exists());
-    mbox.open();
+    QCOMPARE(mbox.open(), 0);
     QVERIFY(QFile(fileName() + ".lock").exists());
-    QFile file(fileName());
-    QVERIFY(!file.open(QFile::ReadWrite)); // The file should be locked so open
-    mbox.close();                          // should fail.
+    mbox.close();
     QVERIFY(!QFile(fileName() + ".lock").exists());
   } else {
     QVERIFY(!QFile(fileName() + ".lock").exists());

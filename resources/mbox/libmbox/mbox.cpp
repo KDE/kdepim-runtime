@@ -26,35 +26,45 @@
 
 #include "mbox.h"
 
-#include <errno.h>
-#include <kde_file.h>
 #include <kdebug.h>
 #include <klocalizedstring.h>
+#include <klockfile.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <QtCore/QFileInfo>
+#include <QtCore/QReadWriteLock>
+#include <QtCore/QProcess>
 
 class MBox::Private
 {
   public:
-    Private(const QString &mboxFile, bool readOnly)
-      : mMboxFile(mboxFile), mReadOnly(readOnly)
-    {}
+    Private(const QString &mboxFileName, bool readOnly)
+      : mLock(mboxFileName)
+      , mMboxFile(mboxFileName)
+      , mReadOnly(readOnly)
+      
+    { }
 
     ~Private()
     {
-      if (mStream) // shouldn't happen.
-        fclose(mStream);
+      if (mMboxFile.isOpen())
+        mMboxFile.close();
     }
 
     bool mFileLocked;
-    bool mFileOpen;
+    KLockFile mLock;
     LockType mLockType;
-    QString mMboxFile;
+    QFile mMboxFile;
     QString mProcmailLockFileName;
     bool mReadOnly;
-    FILE* mStream;
 };
+
+/// private static methods.
+
+QByteArray quoteAndEncode(const QString &str)
+{
+  return QFile::encodeName(KShell::quoteArg(str));
+}
 
 /// public methods.
 
@@ -63,15 +73,12 @@ MBox::MBox(const QString &mboxFile, bool readOnly)
 {
   // Set some sane defaults
   d->mFileLocked = false;
-  d->mFileOpen = false;
-  d->mLockType = FCNTL;
-  d->mStream = 0;
+  d->mLockType = KDELockFile;
 }
 
 MBox::~MBox()
 {
-  if (d->mFileOpen)
-    close();
+  close();
 
   delete d;
 }
@@ -81,12 +88,10 @@ void MBox::close()
   if (d->mFileLocked)
     unlock();
 
-  if (d->mStream)
-    fclose(d->mStream);
+  if (d->mMboxFile.isOpen())
+    d->mMboxFile.close();
 
   d->mFileLocked = false;
-  d->mFileOpen = false;
-  d->mStream = 0;
 }
 
 QList<MsgInfo> MBox::entryList(const QSet<int> &deletedItems) const
@@ -107,24 +112,24 @@ bool MBox::isValid(QString &errorMsg) const
   QFileInfo info(d->mMboxFile);
 
   if (!info.isFile()) {
-    errorMsg = i18n("%1 is not a file.").arg(d->mMboxFile);
+    errorMsg = i18n("%1 is not a file.").arg(info.absoluteFilePath());
     return false;
   }
 
   if (!info.exists()) {
-    errorMsg = i18n("%1 does not exist").arg(d->mMboxFile);
+    errorMsg = i18n("%1 does not exist").arg(info.absoluteFilePath());
     return false;
   }
 
   switch (d->mLockType) {
-    case procmail_lockfile:
+    case ProcmailLockfile:
       if (KStandardDirs::findExe("lockfile").isEmpty()) {
         errorMsg = i18n("Could not find the lockfile executable");
         return false;
       }
       break;
-    case mutt_dotlock: // fall through
-    case mutt_dotlock_privileged:
+    case MuttDotlock: // fall through
+    case MuttDotlockPrivileged:
       if (KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
         errorMsg = i18n("Could not find the mutt_dotlock executable");
         return false;
@@ -141,35 +146,39 @@ bool MBox::isValid(QString &errorMsg) const
 
 int MBox::open(OpenMode openMode)
 {
-  if (d->mFileOpen && openMode == Normal) {
+  if (d->mMboxFile.isOpen() && openMode == Normal) {
     return 0;  // already open
-  } else if (d->mFileOpen) {
+  } else if (d->mMboxFile.isOpen()) {
     close(); // ReloadMode, so close the file first.
   }
 
   d->mFileLocked = false;
-  d->mStream = KDE_fopen( QFile::encodeName( d->mMboxFile ), "r+" ); // messages file
-  if (!d->mStream) {
-    kDebug() << "Cannot open mbox file `" << d->mMboxFile << "':" << strerror(errno);
-    d->mFileOpen = false;
-    return errno;
+
+  if (int rc = lock()) {
+    kDebug() << "Locking of the mbox file failed.";
+    return rc;
+  }
+  
+  if (!d->mMboxFile.open(QIODevice::ReadOnly)) { // messages file
+    kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
+             << d->mMboxFile.error();
+    return d->mMboxFile.error();
   }
 
-  if (int rc = lock() != 0)
-    return rc;
-
-  fcntl(fileno(d->mStream), F_SETFD, FD_CLOEXEC);
-
-  return errno;
+  return 0;
 }
 
 QByteArray MBox::readEntryHeaders(int offset)
 {
   Q_UNUSED(offset);
+  return QByteArray();
 }
 
 void MBox::setLockType(LockType ltype)
 {
+  if (d->mFileLocked)
+    return; // Don't change the method if the file is currently locked.
+
   d->mLockType = ltype;
 }
 
@@ -182,158 +191,113 @@ void MBox::setProcmailLockFile(const QString &lockFile)
 
 int MBox::lock()
 {
-  // TODO: Probably it is better to use QReadWriteLock in stead of the fcnt calls
-  //       to make the code a bit more portable.
-#ifdef Q_WS_WIN
-# ifdef __GNUC__
-#  warning TODO implement mbox locking on Windows
-# else
-#  pragma WARNING( TODO implement mbox locking on Windows )
-# endif
-  Q_ASSERT(d->mStream != 0);
-  d->mFileLocked = true;
-  d->mReadOnly = false;
-#else
-  Q_ASSERT(d->mStream != 0);
+  if (d->mLockType == None)
+    return 0;
 
   d->mFileLocked = false;
+
+  QStringList args;
   int rc = 0;
-  QByteArray cmd_str;
 
   switch(d->mLockType)
   {
-    case FCNTL:
-      struct flock fl;
-      fl.l_type   = F_WRLCK;
-      fl.l_whence = 0;
-      fl.l_start  = 0;
-      fl.l_len    = 0;
-      fl.l_pid    = -1;
-      // Set the lock, optionally wait until a previous set lock is released.
-      rc = fcntl(fileno(d->mStream), F_SETLKW, &fl);
-
-      if (rc < 0) {
-        kDebug() << "Cannot lock mbox file `" << d->mMboxFile << "':"
-                 << strerror(errno) << "(" << errno << ")"
-                 << " switching to read only mode";
-        d->mReadOnly = true; // In case the MBox object was created read/write we
-                             // set it to read only when locking failed.
-        return errno;
+    case KDELockFile:
+      if ((rc = d->mLock.lock(KLockFile::ForceFlag))) {
+        kDebug() << "KLockFile lock failed: (" << rc
+                 << ") switching to read only mode";
+        d->mReadOnly = true;
+        return rc;
       }
-      break;
+      break; // We only need to lock the file using the QReadWriteLock
 
-    case procmail_lockfile:
-      cmd_str = "lockfile -l20 -r5 ";
-
+    case ProcmailLockfile:
+      args << "-l20" << "-r5";
       if (!d->mProcmailLockFileName.isEmpty())
-        cmd_str += QFile::encodeName(KShell::quoteArg(d->mProcmailLockFileName));
+        args << quoteAndEncode(d->mProcmailLockFileName);
       else
-        cmd_str += QFile::encodeName(KShell::quoteArg(d->mMboxFile + ".lock"));
+        args << quoteAndEncode(d->mMboxFile.fileName() + ".lock");
 
-      rc = system(cmd_str.data());
+      rc = QProcess::execute("lockfile", args);
       if(rc != 0) {
-        kDebug() << "Cannot lock mbox file `" << d->mMboxFile << "':"
-                 << strerror(rc) << "(" << rc << ")"
-                 << " switching to read only mode";
+        kDebug() << "lockfile -l20 -r5 " << d->mMboxFile.fileName()
+                 << ": Failed ("<< rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
                              // set it to read only when locking failed.
         return rc;
       }
       break;
 
-    case mutt_dotlock:
-      cmd_str = "mutt_dotlock "
-        + QFile::encodeName(KShell::quoteArg(d->mMboxFile));
-      rc = system( cmd_str.data() );
+    case MuttDotlock:
+      args << quoteAndEncode(d->mMboxFile.fileName());
+      rc = QProcess::execute("mutt_dotlock", args);
 
       if(rc != 0) {
-        kDebug() << "Cannot lock mbox file `" << d->mMboxFile << "':"
-                 << strerror(rc) << "(" << rc << ")"
-                 << " switching to read only mode";
+        kDebug() << "mutt_dotlock " << d->mMboxFile.fileName()
+                 << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
                           // set it to read only when locking failed.
         return rc;
       }
       break;
 
-    case mutt_dotlock_privileged:
-      cmd_str = "mutt_dotlock -p "
-        + QFile::encodeName(KShell::quoteArg(d->mMboxFile));
-      rc = system(cmd_str.data());
+    case MuttDotlockPrivileged:
+      args << "-p" << quoteAndEncode(d->mMboxFile.fileName());
+      rc = QProcess::execute("mutt_dotlock", args);
 
       if(rc != 0) {
-        kDebug() << "Cannot lock mbox file `" << d->mMboxFile << "':"
-                 << strerror(rc) << "(" << rc << ")"
-                 << " switching to read only mode";
+        kDebug() << "mutt_dotlock -p " << d->mMboxFile.fileName() << ":"
+                 << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true;
         return rc;
       }
       break;
 
-    case lock_none: // Fall through
+    case None: // This is never reached because of the check at the
+      return 0;     // beginning of the function.
     default:
       break;
   }
 
   d->mFileLocked = true;
-#endif
   return 0;
 }
 
 int MBox::unlock()
 {
-  #ifdef Q_WS_WIN
-# ifdef __GNUC__
-#  warning TODO implement mbox unlocking on Windows
-# else
-#  pragma WARNING( TODO implement mbox unlocking on Windows )
-# endif
-  mFilesLocked = false;
-  return 0;
-#else
-  int rc;
-  struct flock fl;
-  fl.l_type=F_UNLCK;
-  fl.l_whence=0;
-  fl.l_start=0;
-  fl.l_len=0;
-  QByteArray cmd_str;
-
-  Q_ASSERT(d->mStream != 0);
-  d->mFileLocked = false;
+  int rc = 0;
+  QStringList args;
 
   switch(d->mLockType)
   {
-    case FCNTL:
-      fcntl(fileno(d->mStream), F_SETLK, &fl);
-      rc = errno;
+    case KDELockFile:
+      d->mLock.unlock();
       break;
 
-    case procmail_lockfile:
-      cmd_str = "rm -f ";
+    case ProcmailLockfile:
+      // QFile::remove returns true on succes so negate the result.
       if (!d->mProcmailLockFileName.isEmpty())
-        cmd_str += QFile::encodeName(KShell::quoteArg(d->mProcmailLockFileName));
+        rc = !QFile(d->mProcmailLockFileName).remove();
       else
-        cmd_str += QFile::encodeName(KShell::quoteArg(d->mMboxFile + ".lock"));
-
-      rc = system(cmd_str.data());
+        rc = !QFile(d->mMboxFile.fileName() + ".lock").remove();
       break;
 
-    case mutt_dotlock:
-      cmd_str = "mutt_dotlock -u " + QFile::encodeName(KShell::quoteArg(d->mMboxFile));
-      rc = system(cmd_str.data());
+    case MuttDotlock:
+      args << "-u" << quoteAndEncode(d->mMboxFile.fileName());
+      rc = QProcess::execute("mutt_dotlock", args);
       break;
 
-    case mutt_dotlock_privileged:
-      cmd_str = "mutt_dotlock -p -u " + QFile::encodeName(KShell::quoteArg(d->mMboxFile));
-      rc = system(cmd_str.data());
+    case MuttDotlockPrivileged:
+      args << "-u" << "-p" << quoteAndEncode(d->mMboxFile.fileName());
+      rc = QProcess::execute("mutt_dotlock", args);
       break;
 
-    case lock_none: // Fall through.
+    case None: // Fall through.
     default:
-      rc = 0;
       break;
   }
+
+  if (!rc) // Unlocking succeeded
+    d->mFileLocked = false;
+
   return rc;
-#endif
 }

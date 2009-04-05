@@ -36,11 +36,11 @@ class MBOX_EXPORT MBox
     };
 
     enum LockType {
-      FCNTL,
-      procmail_lockfile,
-      mutt_dotlock,
-      mutt_dotlock_privileged,
-      lock_none
+      KDELockFile,           // Uses KLockFile
+      ProcmailLockfile,
+      MuttDotlock,
+      MuttDotlockPrivileged,
+      None
     };
 
   public:
@@ -101,6 +101,10 @@ class MBOX_EXPORT MBox
      * Sets the locktype that should be used for locking the mbox file. The
      * isValid method will check if the lock method is available when the
      * procmail_lockfile or one of the mutt_dotlock variants is set.
+     *
+     * This method will not do anything if the mbox obeject is currently locked
+     * to make sure that it doesn't leave a locked file for one of the lockfile
+     * / mutt_dotlock methods.
      */
     void setLockType(LockType ltype);
 
