@@ -51,8 +51,8 @@ DistListResource::~DistListResource()
 void DistListResource::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.distlist|" + i18nc("Filedialog filter for *.distlist", "Distributionlist File" ) );
-  dlg.setCaption( i18n("Select Distributionlist File") );
+  dlg.setFilter( "*.distlist|" + i18nc("Filedialog filter for *.distlist", "Distribution List File" ) );
+  dlg.setCaption( i18n("Select Distribution List File") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
   }
@@ -100,7 +100,7 @@ bool DistListResource::readFromFile( const QString &fileName )
 
   QFile file( KUrl( fileName ).path() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    emit status( Broken, i18n( "Unable to open distributionlist file '%1'.", fileName ) );
+    emit status( Broken, i18n( "Unable to open distribution list file '%1'.", fileName ) );
     return false;
   }
 
@@ -171,7 +171,7 @@ bool DistListResource::writeToFile( const QString &fileName )
 {
   QFile file( fileName );
   if ( !file.open( QIODevice::WriteOnly ) ) {
-    emit status( Broken, i18n( "Unable to open distributionlist file '%1'.", fileName ) );
+    emit status( Broken, i18n( "Unable to open distribution list file '%1'.", fileName ) );
     return false;
   }
 
@@ -232,7 +232,7 @@ void DistListResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       // legacy format only supports ContactGroup::Reference style data
       if ( contactGroup.dataCount() > 0 ) {
         error( i18nc( "@info:status",
-                      "Current storage format cannot handle distribution list entries for which no address book entry exists" ) );
+                      "Current storage format cannot handle distribution list entries for which no address book entry exists." ) );
         changeProcessed();
         return;
       }
@@ -262,7 +262,7 @@ void DistListResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
       // legacy format only supports ContactGroup::Reference style data
       if ( contactGroup.dataCount() > 0 ) {
         error( i18nc( "@info:status",
-                      "Current storage format cannot handle distribution list entries for which no address book entry exists" ) );
+                      "Current storage format cannot handle distribution list entries for which no address book entry exists." ) );
         changeProcessed();
         return;
       }

@@ -6,7 +6,7 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <group name="General">
     <entry name="Path" type="Path">
-      <label>Path to distributionlist file.</label>
+      <label>Path to distribution list file.</label>
       <default></default>
     </entry>
     <entry name="AutosaveInterval" type="UInt">

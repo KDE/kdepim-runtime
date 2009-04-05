@@ -53,12 +53,12 @@ class CompatibilityIntroductionLabel : public QWidget
                "<para>The setup process consists of three steps:</para>"
                "<para><list>"
                "<item>Step 1: Selecting a plugin suitable for the kind of data "
-               "source you want to add</item>"
+               "source you want to add;</item>"
                "<item>Step 2: Providing the selected plugin with information on "
-               "where to find and how to access the data</item>"
+               "where to find and how to access the data;</item>"
                "<item>Step 3: Naming the resulting data source so you can easily "
                "identify it in any application presenting you a choice of "
-               "which data to process</item></list></para>" );
+               "which data to process.</item></list></para>" );
 
       QLabel *label = new QLabel( this );
       label->setWordWrap( true );

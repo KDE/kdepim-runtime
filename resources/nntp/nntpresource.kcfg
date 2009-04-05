@@ -39,7 +39,7 @@
       <default>false</default>
     </entry>
     <entry name="UserName" type="String">
-      <label>User name for login</label>
+      <label>Username for login</label>
       <default></default>
     </entry>
     <entry name="StorePassword" type="Bool">

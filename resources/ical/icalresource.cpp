@@ -74,14 +74,14 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   kDebug( 5251 ) << "Item:" << item.url();
 
   if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded!") );
+    emit error( i18n("Calendar not loaded.") );
     return false;
   }
 
   const QString rid = item.remoteId();
   IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
   if ( !incidence ) {
-    emit error( i18n("Incidence with uid '%1' not found!", rid ) );
+    emit error( i18n("Incidence with uid '%1' not found.", rid ) );
     return false;
   }
 
@@ -130,7 +130,7 @@ bool ICalResource::readFromFile( const QString &fileName )
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
   if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded.") );
     return;
   }
 
@@ -152,7 +152,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
   Q_UNUSED( parts )
 
   if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded.") );
     return;
   }
 
@@ -189,7 +189,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 void ICalResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded!") );
+    cancelTask( i18n("Calendar not loaded.") );
     return;
   }
 

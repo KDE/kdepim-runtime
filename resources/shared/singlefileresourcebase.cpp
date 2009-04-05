@@ -112,7 +112,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     mCurrentUrl = KUrl( lostFoundFileName );
     writeFile();
     emit warning( i18n( "The file '%1' was changed on disk while there were still pending changes in Akonadi. "
-        "To avoid dataloss, a backup of the internal changes has been created at '%2'.",
+        "To avoid data loss, a backup of the internal changes has been created at '%2'.",
          prevUrl.prettyUrl(), mCurrentUrl.prettyUrl() ) );
     mCurrentUrl = prevUrl;
   }

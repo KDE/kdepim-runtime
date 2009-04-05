@@ -54,7 +54,7 @@ ProfileEditDialog::ProfileEditDialog( QWidget *parent,
            this, SLOT( checkIfComplete() ) );
   mainLayout->addWidget( m_profileNameEdit );
 
-  QLabel *usernameLabel = new QLabel( i18n( "User name" ) );
+  QLabel *usernameLabel = new QLabel( i18n( "Username" ) );
   mainLayout->addWidget( usernameLabel );
   m_usernameEdit = new QLineEdit();
   m_usernameEdit->setText( userName );

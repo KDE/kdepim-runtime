@@ -67,8 +67,8 @@ void VCardResource::aboutToQuit()
 void VCardResource::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Addressbook File" ) );
-  dlg.setCaption( i18n("Select Addressbook") );
+  dlg.setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
+  dlg.setCaption( i18n("Select Address Book") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
   }

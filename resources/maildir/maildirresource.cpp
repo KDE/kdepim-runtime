@@ -137,7 +137,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-      emit error( i18n("Only email messages can be added to the Maildir resource!") );
+      emit error( i18n("Only email messages can be added to the Maildir resource.") );
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
@@ -166,7 +166,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-        emit error( i18n("Only email messages can be added to the Maildir resource!") );
+        emit error( i18n("Only email messages can be added to the Maildir resource.") );
         return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
