@@ -590,10 +590,10 @@ void POP3Resource::slotJobFinished()
     /*if ( mFilterOnServer == true) {
       for ( QMap<QByteArray, int>::const_iterator hids = mMsgsPendingDownload.constBegin();
             hids != mMsgsPendingDownload.constEnd(); ++hids ) {
-          kDebug(5006) <<"Length:" << hids.value();
+          kDebug() <<"Length:" << hids.value();
           //check for mails bigger mFilterOnServerCheckSize
           if ( (unsigned int)hids.value() >= mFilterOnServerCheckSize ) {
-            kDebug(5006) <<"bigger than" << mFilterOnServerCheckSize;
+            kDebug() <<"bigger than" << mFilterOnServerCheckSize;
             const QByteArray uid = mUidForIdMap[ hids.key() ];
             KMPopHeaders *header = new KMPopHeaders( hids.key(), uid, Later );
             //set Action if already known
@@ -614,7 +614,7 @@ void POP3Resource::slotJobFinished()
       mHeaderDownUids.clear();
       mHeaderLaterUids.clear();
     }*/
-    // kDebug(5006) <<"Num of Msgs to Filter:" << mHeadersOnServer.count();
+    // kDebug() <<"Num of Msgs to Filter:" << mHeadersOnServer.count();
     // if there are mails which should be checkedc download the headers
     /* if ( ( mHeadersOnServer.count() > 0 ) && ( mFilterOnServer == true ) ) {
       KUrl url = getUrl();
@@ -654,7 +654,7 @@ void POP3Resource::slotJobFinished()
     }
   }
   /*else if (stage == Head) {
-    kDebug(5006) <<"stage == Head";
+    kDebug() <<"stage == Head";
 
     // All headers have been downloaded, check which mail you want to get
     // data is in list mHeadersOnServer
@@ -669,24 +669,24 @@ void POP3Resource::slotJobFinished()
       //debug todo
       switch ( action ) {
         case NoAction:
-          kDebug(5006) <<"PopFilterAction = NoAction";
+          kDebug() <<"PopFilterAction = NoAction";
           break;
         case Later:
-          kDebug(5006) <<"PopFilterAction = Later";
+          kDebug() <<"PopFilterAction = Later";
           break;
         case Delete:
-          kDebug(5006) <<"PopFilterAction = Delete";
+          kDebug() <<"PopFilterAction = Delete";
           break;
         case Down:
-          kDebug(5006) <<"PopFilterAction = Down";
+          kDebug() <<"PopFilterAction = Down";
           break;
         default:
-          kDebug(5006) <<"PopFilterAction = default oops!";
+          kDebug() <<"PopFilterAction = default oops!";
           break;
       }
       switch ( action ) {
         case NoAction:
-          //kDebug(5006) <<"PopFilterAction = NoAction";
+          //kDebug() <<"PopFilterAction = NoAction";
           dlgPopup = true;
           break;
         case Later:
@@ -1023,14 +1023,14 @@ void POP3Resource::slotMsgRetrieved( KJob*, const QString &infoMsg, const QStrin
   //FIXME:
     KMPopHeaders *header = mHeadersOnServer[ mHeaderIndex ];
     int size = mMsgsPendingDownload[ header->id() ];
-    kDebug(5006) <<"Size of Message:" << size;
+    kDebug() <<"Size of Message:" << size;
     msg->setMsgLength( size );
     header->setHeader( msg );
     ++mHeaderIndex;
     slotGetNextHdr();
   } else*/ {
-    //kDebug(5006) << kfuncinfo <<"stage == Retr";
-    //kDebug(5006) <<"curMsgData.size() =" << curMsgData.size();
+    //kDebug() << kfuncinfo <<"stage == Retr";
+    //kDebug() <<"curMsgData.size() =" << curMsgData.size();
     //msg->setMsgLength( curMsgData.size() );
     msgsAwaitingProcessing.enqueue( msg );
     msgIdsAwaitingProcessing.enqueue( idsOfMsgs[indexOfCurrentMsg] );
@@ -1130,7 +1130,7 @@ void POP3Resource::writeConfig()
 
 void POP3Resource::slotAbortRequested()
 {
-  kDebug(5006);
+  kDebug();
   if ( mStage == Idle )
     return;
   //disconnect( mMailCheckProgressItem, SIGNAL( progressItemCanceled( KPIM::ProgressItem* ) ),
@@ -1198,7 +1198,7 @@ void POP3Resource::readConfig()
 
 /* //FIXME: implement me
 void PopAccount::slotGetNextHdr(){
-  kDebug(5006) <<"slotGetNextHeader";
+  kDebug() <<"slotGetNextHeader";
 
   curMsgData.resize(0);
   delete curMsgStrm;
