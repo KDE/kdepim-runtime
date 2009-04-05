@@ -1119,7 +1119,7 @@ void POP3Resource::saveUidList()
 
 void POP3Resource::slotAbortRequested()
 {
-  kDebug();
+  kDebug() << "Aborting mail check, going to the quit stage.";
   if ( mStage == Idle )
     return;
   //disconnect( mMailCheckProgressItem, SIGNAL( progressItemCanceled( KPIM::ProgressItem* ) ),
@@ -1137,6 +1137,7 @@ void POP3Resource::slotCancel()
 {
   mMsgsPendingDownload.clear();
   createJobsMap.clear();
+  processMsgsTimer.stop();
   saveUidList();
   slotJobFinished();
 
