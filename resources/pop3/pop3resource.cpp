@@ -76,10 +76,10 @@ POP3Resource::POP3Resource( const QString &id )
     processingDelay( 2 * 100 ),
     interactive( true ),
     curMsgStrm( 0 ),
-    dataCounter( 0 ),
-    mTargetCollectionId( -1 )
+    dataCounter( 0 )
 {
   new SettingsAdaptor( Settings::self() );
+
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -106,10 +106,10 @@ void POP3Resource::retrieveCollections()
 
   if ( mStage == Idle ) {
 
-   /* FIXME if ( !Collection( mTargetCollectionId ).isValid() ) {
+    if ( !Collection( Settings::targetCollection() ).isValid() ) {
       cancelTask( i18n("No target folder set, aborting mail check.") );
       return;
-    }*/
+    }
 
     // SHow the user/password dialog if needed 
     if ( (mAskAgain || Settings::password().isEmpty() || Settings::login().isEmpty()) &&
@@ -952,12 +952,12 @@ void POP3Resource::slotProcessPendingMsgs()
     const QByteArray curUid = msgUidsAwaitingProcessing.dequeue();
 
     kDebug() << "Going to add message with id" << curId << "to the target folder.";
-    // FIXME Q_ASSERT( Collection( mTargetCollectionId ).isValid() );
+    Q_ASSERT( Collection( Settings::targetCollection() ).isValid() );
 
     Akonadi::Item item;
     item.setMimeType( "message/rfc822" );
     item.setPayload<MessagePtr>( msg );
-    Akonadi::Collection collection( mTargetCollectionId );
+    Akonadi::Collection collection( Settings::targetCollection() );
     ItemCreateJob *job = new ItemCreateJob( item, collection );
     IdUidPair pair( curId, curUid );
     createJobsMap.insert( job, pair );

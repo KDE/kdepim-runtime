@@ -114,7 +114,6 @@ class POP3Resource : public Akonadi::ResourceBase,
     QDataStream *curMsgStrm;
     QByteArray curMsgData;
     int dataCounter;
-    int mTargetCollectionId;
     // Map of ID's vs. sizes of messages which should be downloaded; use QMap because the order needs to be
     // predictable
     QMap<QByteArray, int> mMsgsPendingDownload;

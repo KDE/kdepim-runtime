@@ -5,6 +5,7 @@ doesn't recover from error, endless processpendingmessages going on
 itemcreatejob not executed the second time after first one fails
 gmail ssl not working (still?)
 createJobResult: duplicate messages after cancel
+Status shows percentages instead of full status message sometimes
 
 TODO
 ====
