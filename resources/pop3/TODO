@@ -19,6 +19,11 @@ debug area in kdelibs
 unit tests
   all leave on server rules
   weird bugs in svn log
+  add fails -> second check will still work
+  correct error messages passed from pop3 server?
+  abort requested during mail check
+    -> no duplicate messages on next mail check, already added mails added to the seen
+       UID list
 compare each function with popaccount.cpp, find out what is missing, write it down
 password handling / kwallet
 for -> foreach

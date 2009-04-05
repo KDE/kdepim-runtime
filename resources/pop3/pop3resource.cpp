@@ -110,7 +110,7 @@ POP3Resource::~POP3Resource()
   if ( mJob ) {
     mJob->kill();
     mMsgsPendingDownload.clear();
-    processRemainingQueuedMessages();
+    createJobsMap.clear();
     saveUidList();
   }
 }
@@ -233,11 +233,15 @@ void POP3Resource::startJob()
     return;
   }
 
+  msgsAwaitingProcessing.clear();
+  msgIdsAwaitingProcessing.clear();
+  msgUidsAwaitingProcessing.clear();
   mMsgsPendingDownload.clear();
   idsOfMsgs.clear();
   mUidForIdMap.clear();
   idsOfMsgsToDelete.clear();
   idsOfForcedDeletes.clear();
+  createJobsMap.clear();
   //delete any headers if there are some this have to be done because of check again
   /*qDeleteAll( mHeadersOnServer );
   mHeadersOnServer.clear();
@@ -558,9 +562,8 @@ void POP3Resource::slotResult( KJob* )
 // finit state machine to cycle trow the stages
 void POP3Resource::slotJobFinished()
 {
-  QStringList emptyList;
   if ( mStage == List ) {
-    kDebug() << "stage == List";
+    kDebug() << "Finished LIST stage.";
     // set the initial size of mUidsOfNextSeenMsgsDict to the number of
     // messages on the server + 10%
     mUidsOfNextSeenMsgsDict.reserve( nextPrime( ( idsOfMsgs.count() * 11 ) / 10 ) );
@@ -571,7 +574,7 @@ void POP3Resource::slotJobFinished()
     mStage = Uidl;
   }
   else if ( mStage == Uidl ) {
-    kDebug() << "stage == Uidl";
+    kDebug() << "Finished UIDL stage.";
     mUidlFinished = true;
 
     if ( mLeaveOnServer && mUidForIdMap.isEmpty() &&
@@ -765,10 +768,16 @@ void POP3Resource::slotJobFinished()
     delete mPopFilterConfirmationDialog;
     mPopFilterConfirmationDialog = 0;
   }*/
-  else if (mStage == Retr) {
+  else if ( mStage == Retr ) {
+    kDebug() << "Finished RETR stage.";
     emit percent( 100 );
+    emit status( Running, i18n( "Adding remaining messages to the target folder." ) );
+    mStage = ProcessRemainingMessages;
     processRemainingQueuedMessages();
+  }
+  else if ( mStage == ProcessRemainingMessages ) {
 
+    kDebug() << "Finished ProcessRemainingMessages stage.";
     mHeaderDeleteUids.clear();
     mHeaderDownUids.clear();
     mHeaderLaterUids.clear();
@@ -895,7 +904,7 @@ void POP3Resource::slotJobFinished()
     connectJob();
   }
   else if (mStage == Dele) {
-    kDebug() <<"stage == Dele";
+    kDebug() << "Finished DELE stage";
     // remove the uids of all messages which have been deleted
     for ( QSet<QByteArray>::const_iterator it = idsOfMsgsToDelete.constBegin();
           it != idsOfMsgsToDelete.constEnd(); ++it ) {
@@ -912,7 +921,7 @@ void POP3Resource::slotJobFinished()
     connectJob();
   }
   else if (mStage == Quit) {
-    kDebug() <<"stage == Quit";
+    kDebug() << "Finished QUIT stage";
     saveUidList();
     mJob = 0;
     if ( mSlave )
@@ -958,20 +967,27 @@ void POP3Resource::slotGetNextMsg()
 
 void POP3Resource::slotProcessPendingMsgs()
 {
-  static bool mProcessing = false;
-  if ( mProcessing ) // not reentrant
-    return;
-  mProcessing = true;
+  kDebug() << "Going to process pending messages.";
 
+  // If we are in the processing stage and have nothing to process, advance to the
+  // next stage immediately
+  if ( msgsAwaitingProcessing.isEmpty() && mStage == ProcessRemainingMessages &&
+       createJobsMap.isEmpty() ) {
+    kDebug() << "No more messages to process, going to next stage.";
+    slotJobFinished();
+    return;
+  }
+
+  // For each message in the list of messages to be processed, create an
+  // ItemCreateJob that adds the message to the target collection.
+  // When such a job is complete, slotItemCreateResult() is called.
   while ( !msgsAwaitingProcessing.isEmpty() ) {
-    // note we can actually end up processing events in processNewMsg
-    // this happens when send receipts is turned on
-    // hence the check for re-entry at the start of this method.
-    // -sanders Update processNewMsg should no longer process events
 
     MessagePtr msg = msgsAwaitingProcessing.dequeue();
+    const QByteArray curId = msgIdsAwaitingProcessing.dequeue();
+    const QByteArray curUid = msgUidsAwaitingProcessing.dequeue();
 
-    kDebug() << "Going to add message with id" << msgIdsAwaitingProcessing.head() << "to the target folder.";
+    kDebug() << "Going to add message with id" << curId << "to the target folder.";
     // FIXME Q_ASSERT( Collection( mTargetCollectionId ).isValid() );
 
     Akonadi::Item item;
@@ -979,29 +995,69 @@ void POP3Resource::slotProcessPendingMsgs()
     item.setPayload<MessagePtr>( msg );
     Akonadi::Collection collection( mTargetCollectionId );
     ItemCreateJob *job = new ItemCreateJob( item, collection );
-    const bool addedOk = job->exec();
+    IdUidPair pair( curId, curUid );
+    createJobsMap.insert( job, pair );
 
-    if ( !addedOk ) {
-      kWarning() << "Could not add the message to the folder! Error was:" << job->errorString();
-      cancelTask( i18n("The message could not be added to the target folder.\n%1", job->errorString() ) );
-      slotAbortRequested();
-      mMsgsPendingDownload.clear();
-      break;
-    }
+    connect( job, SIGNAL( result( KJob* ) ),
+             this, SLOT( slotItemCreateResult( KJob*) ) );
+  }
+}
 
-    const QByteArray curId = msgIdsAwaitingProcessing.dequeue();
-    const QByteArray curUid = msgUidsAwaitingProcessing.dequeue();
+void POP3Resource::slotItemCreateResult( KJob* job )
+{
+  Akonadi::ItemCreateJob* createJob = dynamic_cast<Akonadi::ItemCreateJob*>( job );
+  Q_ASSERT( job );
+  if ( !createJobsMap.contains( createJob ) ) {
+    kWarning() << "Got a message from a job that is no longer in the map!";
+    Q_ASSERT( mStage == Idle );
+    // FIXME: What should we actually do here? This means duplicated messages on the
+    //        next mail check!! Should only happen when the user canceled the mail check...
+    // Maybe add the message to the seen uid list??
+    return;
+  }
+
+  IdUidPair pair = createJobsMap.value( createJob );
+  createJobsMap.remove( createJob );
+
+  if ( job->error() ) {
+    kWarning() << "Could not add the message to the folder! Error was:" << job->errorString();
+    cancelTask( i18n("The message could not be added to the target folder.\n%1", job->errorString() ) );
+    slotAbortRequested();
+    mMsgsPendingDownload.clear();
+    return;
+  }
+  else {
+    QByteArray curId = pair.first;
+    QByteArray curUid = pair.second;
     kDebug() << "Processed mail with id" << curId << "and uid" << curUid;
+
+    // Now that the message is added to the folder correctly, we can delete it
+    // from the server.
+    // If something else fails in the meantime and the message is not deleted,
+    // we at least add the message to the list of "next seen" messages, which 
+    // will cause KMail to not download the message on the next check again,
+    // to prevent duplicate mails.
+    Q_ASSERT( !idsOfMsgsToDelete.contains ( curId ) );
+    Q_ASSERT( !mUidsOfNextSeenMsgsDict.contains( curUid ) );
+    Q_ASSERT( !mTimeOfNextSeenMsgsMap.contains( curUid ) );
     idsOfMsgsToDelete.insert( curId );
     mUidsOfNextSeenMsgsDict.insert( curUid, 1 );
     mTimeOfNextSeenMsgsMap.insert( curUid, time( 0 ) );
-  }
 
-  msgsAwaitingProcessing.clear();
-  msgIdsAwaitingProcessing.clear();
-  msgUidsAwaitingProcessing.clear();
-  mProcessing = false;
+    // If we processed all messages, we can advance to the next stage
+    if ( createJobsMap.isEmpty() && mStage == ProcessRemainingMessages ) {
+
+      // slotJobFinished of the Retr stage should have called processRemainingQueuedMgs.
+      // At this point, we really want to have all messages processed, because the next
+      // stage will be delete, and only processed messages will be deleted correctly
+      Q_ASSERT( msgsAwaitingProcessing.isEmpty() );
+
+      // This will activate the next stage, Delete or Quit.
+      slotJobFinished();
+    }
+  }
 }
+
 
 // one message is finished
 // add data to a KMMessage
@@ -1059,7 +1115,6 @@ void POP3Resource::processRemainingQueuedMessages()
   slotProcessPendingMsgs(); // Force processing of any messages still in the queue
   processMsgsTimer.stop();
 
-  mStage = Quit;
   /*if ( kmkernel && kmkernel->folderMgr() ) {
     kmkernel->folderMgr()->syncAllFolders();
   }*/ // FIXME(?)
@@ -1147,7 +1202,7 @@ void POP3Resource::slotAbortRequested()
 void POP3Resource::slotCancel()
 {
   mMsgsPendingDownload.clear();
-  processRemainingQueuedMessages();
+  createJobsMap.clear();
   saveUidList();
   slotJobFinished();
 

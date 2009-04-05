@@ -40,6 +40,10 @@ namespace KMime {
 class Message;
 }
 
+namespace Akonadi {
+class ItemCreateJob;
+}
+
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 class POP3Resource : public Akonadi::ResourceBase,
@@ -68,6 +72,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     void slotMsgRetrieved( KJob*, const QString &infoMsg, const QString & );
     void slotAbortRequested();
     void slotCancel();
+    void slotItemCreateResult( KJob* job );
 
   protected:
 
@@ -82,8 +87,10 @@ class POP3Resource : public Akonadi::ResourceBase,
 
   private:
 
-    enum Stage { Idle, List, Uidl, Head, Retr, Dele, Quit };
+    typedef QPair<QByteArray, QByteArray> IdUidPair;
+    enum Stage { Idle, List, Uidl, Head, Retr, ProcessRemainingMessages, Dele, Quit };
 
+    QMap<Akonadi::ItemCreateJob*, IdUidPair> createJobsMap;
     unsigned short int defaultPort() const;
     QString protocol() const;
     void processRemainingQueuedMessages();
