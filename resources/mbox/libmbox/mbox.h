@@ -25,6 +25,8 @@
 
 #include "mbox_export.h"
 
+typedef QPair<int, int> MsgInfo; // QPair<offset, size>
+
 class MBOX_EXPORT MBox
 {
   public:
@@ -55,11 +57,16 @@ class MBOX_EXPORT MBox
     void close();
 
     /**
-     * Read all the messages from the file except the @param deleteItems. The
-     * @param deletedItems should be a list of file offsets of messages which
-     * are deleted.
+     * Retrieve MsgInfo objects for all emails from the file except the
+     * @param deleteItems. The @param deletedItems should be a list of file
+     * offsets of messages which are deleted.
+     *
+     * Each MsgInfo object contains the offset and the size of the messages in
+     * the file which are not marked as deleted.
+     *
+     * Note: One <em>must</em> call open() before calling this method.
      */
-    QList<QByteArray> entryList(const QSet<int> &deletedItems = QSet<int>()) const;
+    QList<MsgInfo> entryList(const QSet<int> &deletedItems = QSet<int>()) const;
 
     /**
      * Checks if the file exists and if it can be opened for read/write. Also
@@ -84,6 +91,11 @@ class MBOX_EXPORT MBox
      * call otherwise (errno).
      */
     int open(OpenMode openMode = Normal);
+
+    /**
+     * Reads the headers of the message at given @param offset.
+     */
+    QByteArray readEntryHeaders(int offset);
 
     /**
      * Sets the locktype that should be used for locking the mbox file. The

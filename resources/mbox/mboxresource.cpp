@@ -105,7 +105,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  QList<QByteArray> entryList;
+  QList<MsgInfo> entryList;
   if (col.hasAttribute<DeletedItemsAttribute>()) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
     entryList = mbox.entryList(attr->deletedItemOffsets());
@@ -117,19 +117,22 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
 
   Item::List items;
   int offset = 0;
-  foreach (const QByteArray &entry, entryList) {
+  foreach (const MsgInfo &entry, entryList) {
+    // TODO: Use cache policy to see what actualy has to been set as payload.
+    //       Currently most views need a minimal amount of information so the
+    //       Items get Envelopes as payload.
     KMime::Message *mail = new KMime::Message();
-    mail->setContent(KMime::CRLFtoLF(entry));
+    mail->setHead(KMime::CRLFtoLF(mbox.readEntryHeaders(entry.first)));
     mail->parse();
 
     Item item;
     item.setRemoteId(QString::number(offset));
     item.setMimeType("message/rfc822");
-    item.setSize(entry.size());
-    item.setPayload( MessagePtr( mail ) );
+    item.setSize(entry.second);
+    item.setPayload(MessagePtr(mail));
     items << item;
 
-    offset += entry.size();
+    offset += entry.second;
   }
 
   itemsRetrieved( items );

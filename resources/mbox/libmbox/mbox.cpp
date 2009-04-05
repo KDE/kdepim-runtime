@@ -89,11 +89,11 @@ void MBox::close()
   d->mStream = 0;
 }
 
-QList<QByteArray> MBox::entryList(const QSet<int> &deletedItems) const
+QList<MsgInfo> MBox::entryList(const QSet<int> &deletedItems) const
 {
   Q_UNUSED(deletedItems);
   // FIXME: Implement.
-  return QList<QByteArray>();
+  return QList<MsgInfo>();
 }
 
 bool MBox::isValid() const
@@ -144,7 +144,7 @@ int MBox::open(OpenMode openMode)
   if (d->mFileOpen && openMode == Normal) {
     return 0;  // already open
   } else if (d->mFileOpen) {
-    close(); // ReloadMode, so close the file first. 
+    close(); // ReloadMode, so close the file first.
   }
 
   d->mFileLocked = false;
@@ -163,6 +163,11 @@ int MBox::open(OpenMode openMode)
   return errno;
 }
 
+QByteArray MBox::readEntryHeaders(int offset)
+{
+  Q_UNUSED(offset);
+}
+
 void MBox::setLockType(LockType ltype)
 {
   d->mLockType = ltype;
@@ -177,6 +182,8 @@ void MBox::setProcmailLockFile(const QString &lockFile)
 
 int MBox::lock()
 {
+  // TODO: Probably it is better to use QReadWriteLock in stead of the fcnt calls
+  //       to make the code a bit more portable.
 #ifdef Q_WS_WIN
 # ifdef __GNUC__
 #  warning TODO implement mbox locking on Windows
