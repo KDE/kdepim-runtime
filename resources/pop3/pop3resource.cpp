@@ -71,22 +71,9 @@ POP3Resource::POP3Resource( const QString &id )
     mJob( 0 ),
     mSlave( 0 ),
     mStage( Idle ),
-    mAuth( "*" ),
-    mPort( defaultPort() ),
-    mStorePasswd( true ),
-    mUseSSL( false ),
-    mUseTLS( false ),
     mAskAgain( false ),
-    mPasswdDirty( false ),
-    mUsePipelining( false ),
-    mLeaveOnServerDays( -1 ),
-    mLeaveOnServerCount( -1 ),
-    mLeaveOnServerSize( -1 ),
-    mFilterOnServer( false ),
-    mFilterOnServerCheckSize( 50000 ),
     indexOfCurrentMsg( -1 ),
     processingDelay( 2 * 100 ),
-    mLeaveOnServer( false ),
     interactive( true ),
     curMsgStrm( 0 ),
     dataCounter( 0 ),
@@ -101,8 +88,6 @@ POP3Resource::POP3Resource( const QString &id )
   KIO::Scheduler::connect(
     SIGNAL(slaveError(KIO::Slave *, int, const QString &)),
     this, SLOT(slotSlaveError(KIO::Slave *, int, const QString &)) );
-
-  readConfig();
 }
 
 POP3Resource::~POP3Resource()
@@ -113,29 +98,6 @@ POP3Resource::~POP3Resource()
     createJobsMap.clear();
     saveUidList();
   }
-}
-
-QString POP3Resource::passwd() const
-{
-  //FIXME!!!
-  return mPasswd;
-}
-
-bool POP3Resource::storePasswd()
-{
-  return mStorePasswd;
-  // FIXME!!!!
-}
-
-void POP3Resource::setStorePasswd( bool store )
-{
-  mStorePasswd = store;
-}
-
-
-void POP3Resource::setPassword( const QString& password )
-{
-  mPasswd = password;
 }
 
 void POP3Resource::retrieveCollections()
@@ -150,24 +112,26 @@ void POP3Resource::retrieveCollections()
     }*/
 
     // SHow the user/password dialog if needed 
-    if ( (mAskAgain || passwd().isEmpty() || mLogin.isEmpty()) &&
-      mAuth != "GSSAPI" ) {
+    if ( (mAskAgain || Settings::password().isEmpty() || Settings::login().isEmpty()) &&
+         Settings::authenticationMethod() != "GSSAPI" ) {
       //QString passwd = NetworkAccount::passwd();
-      QString passwd = mPasswd; //FIXME
-      bool b = storePasswd();
-      if (KIO::PasswordDialog::getNameAndPassword(mLogin, passwd, &b,
-        i18n("You need to supply a username and a password to access this "
-        "mailbox."), false, QString(), /* FIXME: mName:*/ name(), i18n("Account:"))
+      QString passwd = Settings::password();
+      QString login = Settings::login();
+      bool b = Settings::storePassword();
+      if ( KIO::PasswordDialog::getNameAndPassword( login, passwd, &b,
+                         i18n("You need to supply a username and a password to access this "
+                              "mailbox."),
+                         false, QString(), name(), i18n("Account:") )
         != KDialog::Accepted)
       {
         cancelTask( i18n( "No username and password supplied." ) );
         return;
       } else {
-        setPassword( passwd );
-        setStorePasswd( b );
+        Settings::setPassword( passwd );
+        Settings::setLogin( login );
+        Settings::setStorePassword( b );
         if ( b ) {
-          //FIXME: kmkernel->acctMgr()->writeConfig( true );
-          writeConfig();
+          Settings::self()->writeConfig();
         }
         mAskAgain = false;
       }
@@ -318,11 +282,10 @@ const KUrl POP3Resource::getUrl() const
 {
   KUrl url;
   url.setProtocol( protocol() );
-  url.setUser( mLogin );
-  url.setPass( mPasswd );
-  url.setHost( mHost );
-  url.setPort( mPort );
-
+  url.setUser( Settings::login() );
+  url.setPass( Settings::password() );
+  url.setHost( Settings::host() );
+  url.setPort( Settings::port() );
   return url;
 }
 
@@ -331,16 +294,17 @@ KIO::MetaData POP3Resource::slaveConfig() const
   KIO::MetaData m;
 
   m.insert( "progress", "off" );
-  m.insert( "tls", mUseTLS ? "on" : "off" );
-  m.insert( "pipelining", ( mUsePipelining ) ? "on" : "off" );
-  if ( mAuth == "PLAIN" || mAuth == "LOGIN" || mAuth == "CRAM-MD5" ||
-       mAuth == "DIGEST-MD5" || mAuth == "NTLM" || mAuth == "GSSAPI" ) {
+  m.insert( "tls", Settings::useTLS() ? "on" : "off" );
+  m.insert( "pipelining", ( Settings::pipelining() ) ? "on" : "off" );
+  const QString &auth = Settings::authenticationMethod();
+  if ( auth == "PLAIN" || auth == "LOGIN" || auth == "CRAM-MD5" ||
+       auth == "DIGEST-MD5" || auth == "NTLM" || auth == "GSSAPI" ) {
     m.insert( "auth", "SASL" );
-    m.insert( "sasl", mAuth );
-  } else if ( mAuth == "*" )
+    m.insert( "sasl", auth );
+  } else if ( auth == "*" )
     m.insert( "auth", "USER" );
   else
-    m.insert( "auth", mAuth );
+    m.insert( "auth", auth );
 
   return m;
 }
@@ -379,7 +343,7 @@ void POP3Resource::slotSlaveError( KIO::Slave* slave, int error,
 
 
   mStage = Quit;
-  if (error == KIO::ERR_COULD_NOT_LOGIN && !mStorePasswd)
+  if (error == KIO::ERR_COULD_NOT_LOGIN && !Settings::storePassword())
     mAskAgain = true;
   /* We need a timer, otherwise slotSlaveError of the next account is also
      executed, if it reuses the slave, because the slave member variable
@@ -409,20 +373,20 @@ void POP3Resource::slotData( KIO::Job* job, const QByteArray &data )
     if ( dataCounter % 5 == 0 )
     {
       QString msg;
-      if ( numBytes != numBytesToRead && mLeaveOnServer )
+      if ( numBytes != numBytesToRead && Settings::leaveOnServer() )
       {
         msg = ki18n( "Fetching message %1 of %2 (%3 of %4 KB) for %5@%6 "
                      "(%7 KB remain on the server)." )
            .subs( indexOfCurrentMsg + 1 ).subs( numMsgs )
            .subs( numBytesRead / 1024 ).subs( numBytesToRead / 1024 )
-           .subs( mLogin ).subs( mHost ).subs( numBytes / 1024 )
+           .subs( Settings::login() ).subs( Settings::host() ).subs( numBytes / 1024 )
            .toString();
       }
       else
       {
         msg = ki18n( "Fetching message %1 of %2 (%3 of %4 KB) for %5@%6." )
            .subs( indexOfCurrentMsg + 1 ).subs( numMsgs ).subs( numBytesRead / 1024 )
-           .subs( numBytesToRead / 1024 ).subs( mLogin ).subs( mHost )
+           .subs( numBytesToRead / 1024 ).subs( Settings::login() ).subs( Settings::host() )
            .toString();
       }
       emit status( Running, msg );
@@ -577,7 +541,7 @@ void POP3Resource::slotJobFinished()
     kDebug() << "Finished UIDL stage.";
     mUidlFinished = true;
 
-    if ( mLeaveOnServer && mUidForIdMap.isEmpty() &&
+    if ( Settings::leaveOnServer() && mUidForIdMap.isEmpty() &&
         mUidsOfNextSeenMsgsDict.isEmpty() && !idsOfMsgs.isEmpty() ) {
      /* KMessageBox::sorry(0, i18n("Your POP3 server (Account: %1) does not support "
       "the UIDL command: this command is required to determine, in a reliable way, "
@@ -803,14 +767,14 @@ void POP3Resource::slotJobFinished()
     // Start with an empty list of messages to keep
     QList< QPair<time_t, QByteArray> > idsToSave;
 
-    if ( mLeaveOnServer && !idsOfMsgsToDelete.isEmpty() ) {
+    if ( Settings::leaveOnServer() && !idsOfMsgsToDelete.isEmpty() ) {
 
       kDebug() << "We're going to leave some messages on the server.";
 
       // If the time-limited leave rule is checked, add the newer messages to
       // the list of messages to keep
-      if ( mLeaveOnServerDays > 0 && !mTimeOfNextSeenMsgsMap.isEmpty() ) {
-        time_t timeLimit = time(0) - (86400 * mLeaveOnServerDays);
+      if ( Settings::leaveOnServerDays() > 0 && !mTimeOfNextSeenMsgsMap.isEmpty() ) {
+        time_t timeLimit = time(0) - (86400 * Settings::leaveOnServerDays());
         for ( QSet<QByteArray>::const_iterator it = idsOfMsgsToDelete.constBegin();
               it != idsOfMsgsToDelete.constEnd(); ++it ) {
           time_t msgTime = mTimeOfNextSeenMsgsMap[ mUidForIdMap[*it] ];
@@ -838,8 +802,8 @@ void POP3Resource::slotJobFinished()
       qSort( idsToSave );
 
       // Delete more old messages if there are more than mLeaveOnServerCount
-      if ( mLeaveOnServerCount > 0 ) {
-        int numToDelete = idsToSave.count() - mLeaveOnServerCount;
+      if ( Settings::leaveOnServerCount() > 0 ) {
+        int numToDelete = idsToSave.count() - Settings::leaveOnServerCount();
         if ( numToDelete > 0 && numToDelete < idsToSave.count() ) {
           // get rid of the first numToDelete messages
           idsToSave = idsToSave.mid( numToDelete );
@@ -849,8 +813,8 @@ void POP3Resource::slotJobFinished()
       }
 
       // Delete more old messages until we're under mLeaveOnServerSize MBs
-      if ( mLeaveOnServerSize > 0 ) {
-        const long limitInBytes = mLeaveOnServerSize * ( 1024 * 1024 );
+      if ( Settings::leaveOnServerSize() > 0 ) {
+        const long limitInBytes = Settings::leaveOnServerSize() * ( 1024 * 1024 );
         long sizeOnServer = 0;
         int firstMsgToKeep = idsToSave.count() - 1;
         for ( ; firstMsgToKeep >= 0 && sizeOnServer <= limitInBytes; --firstMsgToKeep ) {
@@ -881,7 +845,7 @@ void POP3Resource::slotJobFinished()
       emit status( Running,
                    i18np( "Fetched 1 message from %2. Deleting messages from server...",
                           "Fetched %1 messages from %2. Deleting messages from server...",
-                          numMsgs, mHost ) );
+                          numMsgs, Settings::host() ) );
       QSet<QByteArray>::const_iterator it = idsOfMsgsToDelete.constBegin();
       QByteArray ids = *it;
       ++it;
@@ -897,7 +861,7 @@ void POP3Resource::slotJobFinished()
       mStage = Quit;
       emit status( Running, i18np( "Fetched 1 message from %2. Terminating transmission...",
                                    "Fetched %1 messages from %2. Terminating transmission...",
-                                   numMsgs, mHost ) );
+                                   numMsgs, Settings::host() ) );
       url.setPath( "/commit" );
     }
     mJob = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
@@ -913,7 +877,7 @@ void POP3Resource::slotJobFinished()
     idsOfMsgsToDelete.clear();
     emit status( Running, i18np( "Fetched 1 message from %2. Terminating transmission...",
                                  "Fetched %1 messages from %2. Terminating transmission...",
-                                 numMsgs, mHost ) );
+                                 numMsgs, Settings::host() ) );
     KUrl url = getUrl();
     url.setPath( "/commit" );
     mJob = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
@@ -1097,7 +1061,7 @@ void POP3Resource::slotMsgRetrieved( KJob*, const QString &infoMsg, const QStrin
 
 QString POP3Resource::protocol() const
 {
-  return mUseSSL ? POP_SSL_PROTOCOL : POP_PROTOCOL;
+  return Settings::useSSL() ? POP_SSL_PROTOCOL : POP_PROTOCOL;
 }
 
 unsigned short int POP3Resource::defaultPort() const
@@ -1153,36 +1117,6 @@ void POP3Resource::saveUidList()
   configFile->sync();
 }
 
-void POP3Resource::writeConfig()
-{
-  KSharedConfigPtr configFile = KGlobal::config();
-  KConfigGroup config = KConfigGroup( configFile, "General" );
-  //FIXME: massivly port this to kconfigxt!!!!!!!!!!!!
-  if ( storePasswd() ) {
-
-    config.writeEntry( "password", passwd() ); //FIXME: use kwallet
-    // write password to the wallet if possible and necessary
-    }
-
-  config.writeEntry( "store-passwd", storePasswd() );
-  config.writeEntry( "login", mLogin );
-  config.writeEntry( "host", mHost );
-  config.writeEntry( "port", static_cast<unsigned int>( mPort ) );
-  config.writeEntry( "auth", mAuth );
-  config.writeEntry( "use-ssl", mUseSSL );
-  config.writeEntry( "use-tls", mUseTLS );
-
-  config.writeEntry("pipelining", mUsePipelining);
-  config.writeEntry("leave-on-server", mLeaveOnServer);
-  config.writeEntry("leave-on-server-days", mLeaveOnServerDays);
-  config.writeEntry("leave-on-server-count", mLeaveOnServerCount);
-  config.writeEntry("leave-on-server-size", mLeaveOnServerSize);
-  config.writeEntry("filter-on-server", mFilterOnServer);
-  config.writeEntry("filter-os-check-size", mFilterOnServerCheckSize);
-  config.writeEntry("targetCollection", mTargetCollectionId);
-  configFile->sync();
-}
-
 void POP3Resource::slotAbortRequested()
 {
   kDebug();
@@ -1217,38 +1151,6 @@ void POP3Resource::slotCancel()
     mPopFilterConfirmationDialog->reject();
   }*/
   // FIXME: make pop filters work
-}
-
-void POP3Resource::readConfig()
-{
-  KSharedConfigPtr configFile = KGlobal::config();
-  KConfigGroup config = KConfigGroup( configFile, "General" );
-  mLogin = config.readEntry( "login" );
-
-  mStorePasswd = config.readEntry( "store-passwd", false );
-  if ( mStorePasswd ) {
-    mPasswd = config.readEntry( "password" );
-  }
-  else
-    mPasswd.clear();
-
-  mHost = config.readEntry( "host" );
-
-  unsigned int port = config.readEntry( "port", (uint)defaultPort() );
-  if ( port > USHRT_MAX ) port = defaultPort();
-  mPort = port;
-
-  mAuth = config.readEntry( "auth", "*" );
-  mUseSSL = config.readEntry( "use-ssl", false );
-  mUseTLS = config.readEntry( "use-tls", false );
-  mUsePipelining = config.readEntry("pipelining", false );
-  mLeaveOnServer = config.readEntry("leave-on-server", false );
-  mLeaveOnServerDays = config.readEntry("leave-on-server-days", -1 );
-  mLeaveOnServerCount = config.readEntry("leave-on-server-count", -1 );
-  mLeaveOnServerSize = config.readEntry("leave-on-server-size", -1 );
-  mFilterOnServer = config.readEntry("filter-on-server", false );
-  mFilterOnServerCheckSize = config.readEntry("filter-os-check-size", (uint) 50000 );
-  mTargetCollectionId = config.readEntry("targetCollection", -1 );
 }
 
 /* //FIXME: implement me

@@ -95,12 +95,6 @@ class POP3Resource : public Akonadi::ResourceBase,
     QString protocol() const;
     void processRemainingQueuedMessages();
     void saveUidList();
-    QString passwd() const;
-    void setStorePasswd( bool store );
-    bool storePasswd();
-    void setPassword( const QString& password );
-    void writeConfig();
-    void readConfig();
     void startJob();
     void cancelMailCheck();
     
@@ -110,24 +104,11 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     QTimer processMsgsTimer;
     int numBytesRead, numMsgBytesRead, curMsgLen, numBytes, numBytesToRead, numMsgs;
-    QString mLogin, mPasswd, mAuth, mHost;
-    unsigned short int mPort;
-    bool mStorePasswd : 1;
-    bool mUseSSL : 1;
-    bool mUseTLS : 1;
-    bool mAskAgain : 1;
-    bool mPasswdDirty : 1;
-    bool mUsePipelining;
-    int  mLeaveOnServerDays;
-    int  mLeaveOnServerCount;
-    int  mLeaveOnServerSize;
-    bool    mFilterOnServer;
-    unsigned int mFilterOnServerCheckSize;
+    bool mAskAgain;
     QList<QByteArray> idsOfMsgs;
     int indexOfCurrentMsg;
     int processingDelay;
     bool headers;
-    bool mLeaveOnServer;
     bool interactive;
     bool mUidlFinished;
     QDataStream *curMsgStrm;

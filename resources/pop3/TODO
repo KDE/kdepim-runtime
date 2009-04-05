@@ -1,10 +1,10 @@
 BUGS
 ====
 
+doesn't recover from error, endless processpendingmessages going on
 itemcreatejob not executed the second time after first one fails
 gmail ssl not working (still?)
-uses wrong config file -> what happens on name change!?
-(!!!) processpendingmessaes: old duplicate problem
+createJobResult: duplicate messages after cancel
 
 TODO
 ====
@@ -30,14 +30,19 @@ for -> foreach
 header filtering framework
 mail progress items / status messages / done signal
 config file migration from kmail
+  -> now DeleteLater group
+  -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
+  -> kwallet?
 listen to collection removals -> complain if no longer there
 error handling
 parents for messageboxes
 fixmes
 grep for kmail
 proof read and coverage test
+kconfigxt: labels, tooltips, whatsthis etc
 
 refactoring: each stage in command classes or such
+delete on server: monitor + store item UIDs somewhere
 
 Questions
 =========
