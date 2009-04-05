@@ -30,12 +30,54 @@
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 
-#include <QtCore/QtConcurrentRun>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
+#include <QtCore/QThread>
+#include <QtCore/QWaitCondition>
 
 class ItemSaveContext;
 
+class ConcurrentJobBase
+{
+  public:
+    virtual ~ConcurrentJobBase();
+
+    QString errorString() const
+    {
+      return mErrorString;
+    }
+
+  protected:
+    bool mRunnerResult;
+
+    QString mErrorString;
+
+    QMutex mMutex;
+    QWaitCondition mCondition;
+
+  protected:
+    virtual void createJob() = 0;
+
+    virtual void handleSuccess() = 0;
+
+    virtual Akonadi::Job *job() = 0;
+
+  private:
+    class JobRunner : public QThread
+    {
+      public:
+        JobRunner( ConcurrentJobBase *parent );
+
+      protected:
+        void run();
+
+      private:
+        ConcurrentJobBase *mParent;
+    };
+};
+
 template <class JobClass>
-class ConcurrentJob
+class ConcurrentJob : public ConcurrentJobBase
 {
   public:
     ConcurrentJob() : mJob( 0 ) {}
@@ -44,40 +86,25 @@ class ConcurrentJob
 
     bool exec()
     {
-      QFuture<bool> result = QtConcurrent::run( this, &ConcurrentJob::concurrentExec );
-      return result.result();
-    }
+      JobRunner *runner = new JobRunner( this );
+      QObject::connect( runner, SIGNAL( finished() ), runner, SLOT( deleteLater() ) );
 
-    QString errorString() const
-    {
-      return mErrorString;
+      QMutexLocker mutexLocker( &mMutex );
+
+      runner->start();
+
+      mCondition.wait( &mMutex );
+
+      return mRunnerResult;
     }
 
   protected:
     JobClass *mJob;
 
-    QString mErrorString;
-
   protected:
-    virtual void createJob() = 0;
-
-    virtual void handleSuccess() = 0;
-
-  private:
-    bool concurrentExec()
+    Akonadi::Job *job()
     {
-      createJob();
-      Q_ASSERT( mJob != 0 );
-
-      bool result = mJob->exec();
-      if ( result ) {
-        handleSuccess();
-      } else {
-        mErrorString = mJob->errorString();
-      }
-
-      delete mJob;
-      return result;
+      return mJob;
     }
 };
 

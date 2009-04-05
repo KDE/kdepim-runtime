@@ -26,6 +26,36 @@
 
 using namespace Akonadi;
 
+ConcurrentJobBase::~ConcurrentJobBase()
+{
+}
+
+ConcurrentJobBase::JobRunner::JobRunner( ConcurrentJobBase *parent )
+  : QThread(), mParent( parent )
+{
+  Q_ASSERT( mParent != 0 );
+}
+
+void ConcurrentJobBase::JobRunner::run()
+{
+  QMutexLocker mutexLocker( &(mParent->mMutex) );
+
+  mParent->createJob();
+  Job *job = mParent->job();
+  Q_ASSERT( job != 0 );
+
+  mParent->mRunnerResult = job->exec();
+  if ( mParent->mRunnerResult ) {
+    mParent->handleSuccess();
+  } else {
+    mParent->mErrorString = job->errorString();
+  }
+
+  delete job;
+
+  mParent->mCondition.wakeAll();
+}
+
 const ConcurrentCollectionFetchJob *ConcurrentCollectionFetchJob::operator->() const
 {
   return this;
