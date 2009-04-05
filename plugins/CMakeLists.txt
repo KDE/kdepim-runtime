@@ -34,7 +34,7 @@ install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
 kde4_add_plugin(akonadi_serializer_microblog ${akonadi_serializer_microblog_SRCS})
-target_link_libraries(akonadi_serializer_microblog ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDE4_KPIMUTILS_LIBS} microblog)
+target_link_libraries(akonadi_serializer_microblog ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDE4_KPIMUTILS_LIBS} ${KDE4_MICROBLOG_LIBS})
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 
 ########### install files ###############
