@@ -1,6 +1,9 @@
 [Desktop Entry]
 Name=POP3
 Comment=Fetches mail from a POP3 server
+Comment[pt]=Obtém o correio de um servidor POP3
+Comment[pt_BR]=Obtém o correio de um servidor POP3
+Comment[uk]=Отримує пошту з сервера POP3
 Type=AkonadiResource
 Exec=akonadi_pop3_resource
 Icon=message-rfc822
