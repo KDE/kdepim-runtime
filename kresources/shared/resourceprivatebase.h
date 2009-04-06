@@ -34,6 +34,7 @@ namespace Akonadi {
 
 class IdArbiterBase;
 class ItemSaveContext;
+class StoreCollectionDialog;
 class SubResourceBase;
 
 class ResourcePrivateBase : public QObject
@@ -57,6 +58,7 @@ class ResourcePrivateBase : public QObject
     };
 
     typedef QHash<QString, ChangeType> ChangeByKResId;
+    typedef QHash<QString, Akonadi::Collection> CollectionsByMimeType;
 
     ResourcePrivateBase( IdArbiterBase *idArbiter, QObject *parent );
 
@@ -84,6 +86,8 @@ class ResourcePrivateBase : public QObject
 
     Akonadi::Collection defaultStoreCollection() const;
 
+    void setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection );
+
     bool addLocalItem( const QString &uid, const QString &mimeType );
 
     void changeLocalItem( const QString &uid );
@@ -99,7 +103,11 @@ class ResourcePrivateBase : public QObject
 
     Akonadi::Collection mDefaultStoreCollection;
 
+    CollectionsByMimeType mStoreCollectionsByMimeType;
+
     QMap<QString, QString> mUidToResourceMap;
+
+    StoreCollectionDialog *mStoreCollectionDialog;
 
   protected:
     State state() const;

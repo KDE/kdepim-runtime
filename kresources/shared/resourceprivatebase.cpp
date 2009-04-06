@@ -23,6 +23,7 @@
 #include "concurrentjobs.h"
 #include "idarbiterbase.h"
 #include "itemsavecontext.h"
+#include "storecollectiondialog.h"
 #include "subresourcebase.h"
 
 #include <akonadi/control.h>
@@ -34,7 +35,9 @@
 ResourcePrivateBase::ResourcePrivateBase( IdArbiterBase *idArbiter, QObject *parent )
   : QObject( parent ),
     mIdArbiter( idArbiter ),
-    mState( Closed )
+    mStoreCollectionDialog( 0 ),
+    mState( Closed ),
+    mLoadingInProgress( false )
 {
 }
 
@@ -42,18 +45,36 @@ ResourcePrivateBase::ResourcePrivateBase( const KConfigGroup &config, IdArbiterB
   : QObject( parent ),
     mConfig( config ),
     mIdArbiter( idArbiter ),
+    mStoreCollectionDialog( 0 ),
     mState( Closed ),
     mLoadingInProgress( false )
 {
-  KUrl url = config.readEntry( QLatin1String( "CollectionUrl" ), KUrl() );
+  const QLatin1String urlKey( "CollectionUrl" );
+  KUrl url = config.readEntry( urlKey, KUrl() );
   if ( url.isValid() ) {
     mDefaultStoreCollection = Akonadi::Collection::fromUrl( url );
+  }
+
+  const KConfigGroup storeConfig = config.group( QLatin1String( "StoreConfig" ) );
+  if ( storeConfig.isValid() ) {
+    const QStringList groups = storeConfig.groupList();
+    foreach ( const QString &group, groups ) {
+      KConfigGroup mimeConfig = storeConfig.group( group );
+
+      url = mimeConfig.readEntry( urlKey );
+      kDebug( 5650 ) << "read MIME config pair: mimeType=" << group
+                    << ", url=" << url;
+      if ( url.isValid() ) {
+        mStoreCollectionsByMimeType[ group ] = Akonadi::Collection::fromUrl( url );
+      }
+    }
   }
 }
 
 ResourcePrivateBase::~ResourcePrivateBase()
 {
   delete mIdArbiter;
+  delete mStoreCollectionDialog;
 }
 
 bool ResourcePrivateBase::doOpen()
@@ -82,6 +103,8 @@ bool ResourcePrivateBase::doOpen()
 
 bool ResourcePrivateBase::doClose()
 {
+  writeConfig( mConfig );
+
   bool result = closeResource();
 
   mState = Closed;
@@ -181,7 +204,27 @@ bool ResourcePrivateBase::doAsyncSave()
 
 void ResourcePrivateBase::writeConfig( KConfigGroup &config ) const
 {
-  config.writeEntry( QLatin1String( "CollectionUrl" ), mDefaultStoreCollection.url() );
+  const QLatin1String urlKey( "CollectionUrl" );
+  config.writeEntry( urlKey, mDefaultStoreCollection.url() );
+
+  KConfigGroup storeConfig = config.group( QLatin1String( "StoreConfig" ) );
+  QSet<QString> mimeConfigs = QSet<QString>::fromList( storeConfig.groupList() );
+
+  CollectionsByMimeType::const_iterator it    = mStoreCollectionsByMimeType.constBegin();
+  CollectionsByMimeType::const_iterator endIt = mStoreCollectionsByMimeType.constEnd();
+  for ( ; it != endIt; ++it ) {
+    KConfigGroup mimeConfig = storeConfig.group( it.key() );
+
+    mimeConfig.writeEntry( urlKey, it.value().url() );
+    mimeConfigs.remove( it.key() );
+
+    kDebug( 5650 ) << "wrote MIME config pair: mimeType=" << it.key()
+                   << ", url=" << it.value().url();
+  }
+
+  foreach ( const QString &group, mimeConfigs ) {
+    storeConfig.deleteGroup( group );
+  }
 
   writeResourceConfig( config );
 }
@@ -203,6 +246,14 @@ Akonadi::Collection ResourcePrivateBase::defaultStoreCollection() const
   return mDefaultStoreCollection;
 }
 
+void ResourcePrivateBase::setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection )
+{
+  Q_ASSERT( !mimeType.isEmpty() );
+  Q_ASSERT( Akonadi::MimeTypeChecker::isWantedCollection( collection, mimeType ) );
+
+  mStoreCollectionsByMimeType[ mimeType ] = collection;
+}
+
 bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeType )
 {
   kDebug( 5650 ) << "uid=" << uid << ", mimeType=" << mimeType;
@@ -212,6 +263,10 @@ bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeT
   const SubResourceBase *resource = findSubResourceForMappedItem( uid );
   if ( resource == 0 ) {
     mChanges[ uid ] = Added;
+
+    if ( mStoreCollectionDialog == 0 ) {
+      mStoreCollectionDialog = new StoreCollectionDialog();
+    }
 
     resource = storeSubResourceForMimeType( mimeType );
     if ( resource == 0 ) {
@@ -290,7 +345,11 @@ bool ResourcePrivateBase::startAkonadi()
 Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QString &mimeType ) const
 {
   kDebug( 5650 ) << "mimeType=" << mimeType;
-  // TODO: config for mime type specific store collections
+
+  Akonadi::Collection collection = mStoreCollectionsByMimeType.value( mimeType );
+  if ( collection.isValid() ) {
+    return collection;
+  }
 
   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
     return mDefaultStoreCollection;
@@ -372,6 +431,16 @@ void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
   } else if ( mDefaultStoreCollection == subResource->collection() ) {
     // update locally cached instance
     mDefaultStoreCollection = subResource->collection();
+  }
+
+  // check if any of the MIME type specific collections can be updated
+  CollectionsByMimeType::iterator it    = mStoreCollectionsByMimeType.begin();
+  CollectionsByMimeType::iterator endIt = mStoreCollectionsByMimeType.end();
+  for (; it != endIt; ++it ) {
+    if ( it.value() == subResource->collection() ) {
+      // update locally cached instance
+      it.value() = subResource->collection();
+    }
   }
 }
 
