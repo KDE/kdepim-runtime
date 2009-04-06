@@ -138,6 +138,11 @@ class MBOX_EXPORT MBox
      */
     int unlock();
 
+    /**
+     * Unescapes the raw message read from the file.
+     */
+    static void unescapeFrom(char *msg, size_t size);
+
   private:
     class Private;
     Private *d;

@@ -201,7 +201,6 @@ QByteArray MBox::readEntry(quint64 offset) const
 
   d->mMboxFile.seek(offset);
 
-  
   QByteArray line = d->mMboxFile.readLine();
   QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
   if (regexp.indexIn(line) < 0)
@@ -215,6 +214,8 @@ QByteArray MBox::readEntry(quint64 offset) const
     message += line;
     line = d->mMboxFile.readLine();
   }
+
+  unescapeFrom(message.data(), message.size());
 
   return message;
 }
@@ -366,3 +367,39 @@ int MBox::unlock()
 
   return rc;
 }
+
+#define STRDIM(x) (sizeof(x)/sizeof(*x)-1)
+// performs (\n|^)>{n}From_ -> \1>{n-1}From_ conversion
+void MBox::unescapeFrom(char* str, size_t strLen)
+{
+  if (!str)
+    return;
+  if ( strLen <= STRDIM(">From ") )
+    return;
+
+  // yes, *d++ = *s++ is a no-op as long as d == s (until after the
+  // first >From_), but writes are cheap compared to reads and the
+  // data is already in the cache from the read, so special-casing
+  // might even be slower...
+  const char * s = str;
+  char * d = str;
+  const char * const e = str + strLen - STRDIM(">From ");
+
+  while ( s < e ) {
+    if ( *s == '\n' && *(s+1) == '>' ) { // we can do the lookahead, since e is 6 chars from the end!
+      *d++ = *s++;  // == '\n'
+      *d++ = *s++;  // == '>'
+      while ( s < e && *s == '>' )
+        *d++ = *s++;
+      if ( qstrncmp( s, "From ", STRDIM("From ") ) == 0 )
+        --d;
+    }
+    *d++ = *s++; // yes, s might be e here, but e is not the end :-)
+  }
+  // copy the rest:
+  while ( s < str + strLen )
+    *d++ = *s++;
+  if ( d < s ) // only NUL-terminate if it's shorter
+    *d = 0;
+}
+#undef STRDIM
