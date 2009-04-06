@@ -219,8 +219,8 @@ void ProgressManager::slotStandardCancelHandler( ProgressItem *item )
 ProgressItem *ProgressManager::singleItem() const
 {
   ProgressItem *item = 0;
-  QHash< QString, ProgressItem* >::const_iterator it = mTransactions.begin();
-  while ( it != mTransactions.end() ) {
+  QHash< QString, ProgressItem* >::const_iterator it = mTransactions.constBegin();
+  while ( it != mTransactions.constEnd() ) {
     if ( !(*it)->parent() ) { // if it's a top level one, only those count
       if ( item ) {
         return 0; // we found more than one
@@ -235,11 +235,12 @@ ProgressItem *ProgressManager::singleItem() const
 
 void ProgressManager::slotAbortAll()
 {
-  QHash< QString, ProgressItem* >::iterator it = mTransactions.begin();
-  while ( it != mTransactions.end() ) {
-    (*it)->cancel();
-    ++it;
+  QHashIterator<QString, ProgressItem *> it(mTransactions);
+  while (it.hasNext()) {
+    it.next();
+    it.value()->cancel();
   }
+
 }
 
 } // namespace
