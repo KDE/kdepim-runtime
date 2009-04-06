@@ -1,14 +1,18 @@
 [Misc]
 Name=Microblog Serializer
+Name[en_GB]=Microblog Serialiser
 Name[pt]=Serializador do Micro-blog
 Name[pt_BR]=Serializador do Micro-blog
 Name[sv]=Serialisering av mikrowebbjournal
 Name[uk]=Серіалізатор мікроблогів
+Name[zh_TW]=Microblog 序列器
 Comment=An Akonadi serializer plugin for Microblog
+Comment[en_GB]=An Akonadi serialiser plugin for Microblog
 Comment[pt]=Um 'plugin' de serialização do Akonadi para o Micro-blog
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para o Micro-blog
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av mikrowebbjournaler
 Comment[uk]=Додаток серіалізації Akonadi для об'єктів мікроблогів
+Comment[zh_TW]=Microblog 的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=application/x-vnd.kde.microblog

@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Microblog (Twitter and Identi.ca)
+Name[pt]=Micro-blog (Twitter e Identi.ca)
+Name[pt_BR]=Micro-blog (Twitter e Identi.ca)
+Name[uk]=Міктоблог (Twitter і Identi.ca)
+Name[zh_TW]=Microblog（Twitter 與 Identi.ca）
 Comment=Shows your microblog data from Twitter or Identi.ca.
+Comment[pt]=Mostra os seus dados dos micro-blogs Twitter ou Identi.ca.
+Comment[pt_BR]=Mostra os seus dados dos micro-blogs Twitter ou Identi.ca.
+Comment[uk]=Показує ваші дані з мікроблогу Twitter або Identi.ca.
+Comment[zh_TW]=顯示從 Twitter 或 Identi.ca 來的 microblog 資料
 Type=AkonadiResource
 Exec=akonadi_microblog_resource
 

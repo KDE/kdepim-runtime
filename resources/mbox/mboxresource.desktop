@@ -5,6 +5,7 @@ Comment[pt]=Carrega os dados a partir de um ficheiro 'mbox' local
 Comment[pt_BR]=Carrega os dados a partir de um ficheiro 'mbox' local
 Comment[sv]=Laddar data från en lokal mbox-fil
 Comment[uk]=Завантажує дані з локального файла mbox
+Comment[zh_TW]=從本地 mbox 檔載入資料
 Type=AkonadiResource
 Exec=akonadi_mbox_resource
 Icon=message-rfc822

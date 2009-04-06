@@ -1,6 +1,12 @@
 [Desktop Entry]
 Name=Akonadi Imap
+Name[pt]=IMAP do Akonadi
+Name[pt_BR]=IMAP do Akonadi
 Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
+Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
+Comment[pt_BR]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
+Comment[uk]=З’єднується з сервером IMAP. Засновано на бібліотеці KIMAP з kdepimlibs.
+Comment[zh_TW]=連到 IMAP 伺服器。基於從 kdepimlibs 而來的 KIMAP 函式庫。
 Type=AkonadiResource
 Exec=akonadi_imap_resource
 Icon=message-rfc822
