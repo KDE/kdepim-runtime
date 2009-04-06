@@ -25,7 +25,7 @@
 
 #include "mbox_export.h"
 
-typedef QPair<int, int> MsgInfo; // QPair<offset, size>
+typedef QPair<quint64, quint64> MsgInfo; // QPair<offset, size>
 
 class MBOX_EXPORT MBox
 {
@@ -92,10 +92,16 @@ class MBOX_EXPORT MBox
      */
     int open(OpenMode openMode = Normal);
 
+
+    /**
+     * Reads the entire message from the file at given @param offset.
+     */
+    QByteArray readEntry(quint64 offset) const;
+
     /**
      * Reads the headers of the message at given @param offset.
      */
-    QByteArray readEntryHeaders(int offset);
+    QByteArray readEntryHeaders(quint64 offset);
 
     /**
      * Sets the locktype that should be used for locking the mbox file. The

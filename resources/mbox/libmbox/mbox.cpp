@@ -42,7 +42,6 @@ class MBox::Private
       : mLock(mboxFileName)
       , mMboxFile(mboxFileName)
       , mReadOnly(readOnly)
-      
     { }
 
     ~Private()
@@ -96,9 +95,36 @@ void MBox::close()
 
 QList<MsgInfo> MBox::entryList(const QSet<int> &deletedItems) const
 {
-  Q_UNUSED(deletedItems);
-  // FIXME: Implement.
-  return QList<MsgInfo>();
+  Q_ASSERT(d->mMboxFile.isOpen());
+
+  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+  QByteArray line;
+  quint64 offs = 0; // The offset of the next message to read.
+
+  QList<MsgInfo> result;
+
+  while (!d->mMboxFile.atEnd()) {
+    quint64 pos = d->mMboxFile.pos();
+
+    line = d->mMboxFile.readLine();
+
+    if (regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd()) {
+      // Found the seperator or at end of file, the message starts at offs
+      quint64 msgSize = pos - offs;
+      if(pos > 0 && !deletedItems.contains(offs)) {
+        // This is not the seperator of the first mail in the file. If pos == 0
+        // than we matched the separator of the first mail in the file.
+        MsgInfo info;
+        info.first = offs;
+        info.second = msgSize;
+
+        result << info;
+        offs += msgSize; // Mark the beginning of the next message.
+      }
+    }
+  }
+
+  return result;
 }
 
 bool MBox::isValid() const
@@ -158,7 +184,7 @@ int MBox::open(OpenMode openMode)
     kDebug() << "Locking of the mbox file failed.";
     return rc;
   }
-  
+
   if (!d->mMboxFile.open(QIODevice::ReadOnly)) { // messages file
     kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
              << d->mMboxFile.error();
@@ -168,10 +194,46 @@ int MBox::open(OpenMode openMode)
   return 0;
 }
 
-QByteArray MBox::readEntryHeaders(int offset)
+QByteArray MBox::readEntry(quint64 offset) const
 {
-  Q_UNUSED(offset);
-  return QByteArray();
+  Q_ASSERT(d->mMboxFile.isOpen());
+  Q_ASSERT(d->mMboxFile.size() > offset);
+
+  d->mMboxFile.seek(offset);
+
+  
+  QByteArray line = d->mMboxFile.readLine();
+  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+  if (regexp.indexIn(line) < 0)
+    return QByteArray(); // The file is messed up or the index is incorrect.
+
+  QByteArray message;
+  message += line;
+  line = d->mMboxFile.readLine();
+
+  while (regexp.indexIn(line) < 0) {
+    message += line;
+    line = d->mMboxFile.readLine();
+  }
+
+  return message;
+}
+
+QByteArray MBox::readEntryHeaders(quint64 offset)
+{
+  Q_ASSERT(d->mMboxFile.isOpen());
+  Q_ASSERT(d->mMboxFile.size() > offset);
+
+  d->mMboxFile.seek(offset);
+  QByteArray headers;
+  QByteArray line = d->mMboxFile.readLine();
+
+  while (!line[0] == '\n') {
+    headers += line;
+    line = d->mMboxFile.readLine();
+  }
+
+  return headers;
 }
 
 void MBox::setLockType(LockType ltype)
@@ -202,12 +264,14 @@ int MBox::lock()
   switch(d->mLockType)
   {
     case KDELockFile:
+      /* FIXME: Don't use the mbox file itself as lock file.
       if ((rc = d->mLock.lock(KLockFile::ForceFlag))) {
         kDebug() << "KLockFile lock failed: (" << rc
                  << ") switching to read only mode";
         d->mReadOnly = true;
-        return rc;
       }
+      */
+      return 0;
       break; // We only need to lock the file using the QReadWriteLock
 
     case ProcmailLockfile:
@@ -270,7 +334,8 @@ int MBox::unlock()
   switch(d->mLockType)
   {
     case KDELockFile:
-      d->mLock.unlock();
+      // FIXME
+      //d->mLock.unlock();
       break;
 
     case ProcmailLockfile:

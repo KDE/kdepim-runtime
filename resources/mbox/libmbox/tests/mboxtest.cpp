@@ -57,6 +57,22 @@ void MboxTest::initTestCase()
   QVERIFY(mboxfile.exists());
 }
 
+void MboxTest::testClose()
+{
+  MBox mbox1(fileName(), true); // ReadOnly
+  mbox1.open();
+  mbox1.close();
+
+  QFile mboxfile(fileName());
+  QVERIFY(mboxfile.exists()); // It should not get deleted on close.
+
+  MBox mbox2(fileName(), false);
+  mbox2.open();
+  mbox2.close();
+
+  QVERIFY(mboxfile.exists()); // It should not get deleted on close.
+}
+
 void MboxTest::testIsValid()
 {
   MBox mbox1(fileName(), true); // ReadOnly

@@ -37,6 +37,16 @@ using namespace Akonadi;
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+static QString mboxFile(const QString &remoteItemId)
+{
+  return remoteItemId.left(remoteItemId.lastIndexOf(QDir::separator()));
+}
+
+static quint64 itemOffset(const QString &remoteItemId)
+{
+  return remoteItemId.split(QDir::separator()).last().toULongLong();
+}
+
 MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
 {
   new SettingsAdaptor( Settings::self() );
@@ -113,10 +123,9 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     entryList = mbox.entryList();
   }
 
-  mbox.close(); // Now we have the items, unlock and close the mbox file.
-
   Item::List items;
   int offset = 0;
+  QString colId = col.remoteId();
   foreach (const MsgInfo &entry, entryList) {
     // TODO: Use cache policy to see what actualy has to been set as payload.
     //       Currently most views need a minimal amount of information so the
@@ -126,7 +135,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     mail->parse();
 
     Item item;
-    item.setRemoteId(QString::number(offset));
+    item.setRemoteId(colId + QDir::separator() + QString::number(offset));
     item.setMimeType("message/rfc822");
     item.setSize(entry.second);
     item.setPayload(MessagePtr(mail));
@@ -135,14 +144,35 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     offset += entry.second;
   }
 
+  mbox.close(); // Now we have the items, unlock and close the mbox file.
+
   itemsRetrieved( items );
 }
 
 bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED(item);
   Q_UNUSED(parts);
-  return false;
+
+  MBox mbox(mboxFile(item.remoteId()));
+
+  if(!mbox.isValid())
+    return false;
+
+  mbox.open();
+
+  quint64 offset = itemOffset(item.remoteId());
+  const QByteArray rawMsg = mbox.readEntry(offset);
+
+  Q_ASSERT(rawMsg.size() == item.size());
+
+  KMime::Message *mail = new KMime::Message();
+  mail->setContent(KMime::CRLFtoLF(rawMsg));
+  mail->parse();
+
+  Item i(item);
+  i.setPayload(MessagePtr(mail));
+  itemRetrieved(i);
+  return true;
 }
 
 void MboxResource::aboutToQuit()
