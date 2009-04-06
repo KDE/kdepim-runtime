@@ -23,6 +23,7 @@
 #include "concurrentjobs.h"
 #include "itemsavecontext.h"
 #include "resourceakonadiconfig.h"
+#include "storecollectiondialog.h"
 
 #include <akonadi/agentfilterproxymodel.h>
 #include <akonadi/agentinstancemodel.h>
@@ -122,22 +123,41 @@ void ResourceAkonadi::Private::clearResource()
 
 const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const QString &uid, const QString &mimeType )
 {
+  // TODO Strings should reflect whether this is a question for just one
+  // item (ask always) or for all of a certain category (ask once)
   Q_UNUSED( uid );
-  // TODO can probably be moved to SharedResourcePrivate if we
-  // refactor the dialog to be template based as well
 
-  // FIXME dialog needs to be capable of filtering depending on MIME type
-  // probably use a special dialog here so the consequences of cancelling
-  // are more obvious and accepting is only possible if it results in a
-  // suitable store selection
+  Q_ASSERT( mStoreCollectionDialog != 0 );
+
+  if ( mimeType == Akonadi::KCalMimeTypeVisitor::eventMimeType() ) {
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Event", "Please select a storage folder for this event" ) );
+  } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::todoMimeType() ) {
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Todo", "Please select a storage folder for this todo" ) );
+  } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::journalMimeType() ) {
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Journal", "Please select a storage folder for this journal" ) );
+  } else if ( mimeType == QLatin1String( "text/calendar" ) ) {
+    kWarning( 5800 ) << "Unexpected generic MIME type text/calendar";
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of unspecified type", "Please select a storage folder for this calendar entry" ) );
+  } else {
+    kError( 5800 ) << "Unexpected MIME type:" << mimeType;
+    mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder" ) );
+  }
+
+  mStoreCollectionDialog->setMimeType( mimeType );
+
   const SubResourceBase *resource = 0;
   while ( resource == 0 ) {
-    ResourceAkonadiConfigDialog dialog( mParent );
-    if ( dialog.exec() != QDialog::Accepted ) {
+    if ( mStoreCollectionDialog->exec() != QDialog::Accepted ) {
       return 0;
     }
 
-    resource = storeSubResourceForMimeType( mimeType );
+    Akonadi::Collection collection = mStoreCollectionDialog->selectedCollection();
+    if ( collection.isValid() ) {
+      resource = mModel.subResource( collection.id() );
+      if ( resource != 0 ) {
+        setStoreCollectionForMimeType( mimeType, collection );
+      }
+    }
   }
 
   return resource;

@@ -21,6 +21,7 @@
 #include "resourceakonadi_p.h"
 
 #include "resourceakonadiconfig.h"
+#include "storecollectiondialog.h"
 
 #include <akonadi/item.h>
 
@@ -245,22 +246,36 @@ void ResourceAkonadi::Private::savingResult( bool ok, const QString &errorString
 
 const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const QString &uid, const QString &mimeType )
 {
+  // TODO Strings should reflect whether this is a question for just one
+  // item (ask always) or for all of a certain category (ask once)
   Q_UNUSED( uid );
-  // TODO can probably be moved to SharedResourcePrivate if we
-  // refactor the dialog to be template based as well
 
-  // FIXME dialog needs to be capable of filtering depending on MIME type
-  // probably use a special dialog here so the consequences of cancelling
-  // are more obvious and accepting is only possible if it results in a
-  // suitable store selection
+  Q_ASSERT( mStoreCollectionDialog != 0 );
+
+  if ( mimeType == Addressee::mimeType() ) {
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new address book entry", "Please select a storage folder for this contact" ) );
+  } else if ( mimeType == ContactGroup::mimeType() ) {
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new email distribution list", "Please select a storage folder for this distribution list" ) );
+  } else {
+    kError( 5700 ) << "Unexpected MIME type:" << mimeType;
+    mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder" ) );
+  }
+
+  mStoreCollectionDialog->setMimeType( mimeType );
+
   const SubResourceBase *resource = 0;
   while ( resource == 0 ) {
-    ResourceAkonadiConfigDialog dialog( mParent );
-    if ( dialog.exec() != QDialog::Accepted ) {
+    if ( mStoreCollectionDialog->exec() != QDialog::Accepted ) {
       return 0;
     }
 
-    resource = storeSubResourceForMimeType( mimeType );
+    Akonadi::Collection collection = mStoreCollectionDialog->selectedCollection();
+    if ( collection.isValid() ) {
+      resource = mModel.subResource( collection.id() );
+      if ( resource != 0 ) {
+        setStoreCollectionForMimeType( mimeType, collection );
+      }
+    }
   }
 
   return resource;
