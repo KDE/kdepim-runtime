@@ -23,6 +23,8 @@
 
 #include "kabc/resourceabc.h"
 
+#include "sharedresourceiface.h"
+
 class KJob;
 class QModelIndex;
 
@@ -33,7 +35,7 @@ namespace Akonadi {
 
 namespace KABC {
 
-class ResourceAkonadi : public ResourceABC
+class ResourceAkonadi : public ResourceABC, public SharedResourceIface
 {
   Q_OBJECT
 

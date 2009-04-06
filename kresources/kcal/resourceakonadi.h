@@ -23,6 +23,8 @@
 
 #include "kcal/resourcecalendar.h"
 
+#include "sharedresourceiface.h"
+
 namespace Akonadi {
   class Collection;
   class Item;
@@ -34,7 +36,7 @@ class QModelIndex;
 
 namespace KCal {
 
-class ResourceAkonadi : public ResourceCalendar
+class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 {
   Q_OBJECT
 
