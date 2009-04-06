@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008-2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -87,3 +87,25 @@ QString KCalMimeTypeVisitor::mimeType( IncidenceBase *incidence )
   incidence->accept( *this );
   return mimeType();
 }
+
+QString KCalMimeTypeVisitor::eventMimeType()
+{
+  return sEventType;
+}
+
+QString KCalMimeTypeVisitor::todoMimeType()
+{
+  return sTodoType;
+}
+
+QString KCalMimeTypeVisitor::journalMimeType()
+{
+  return sJournalType;
+}
+
+QString KCalMimeTypeVisitor::freeBusyMimeType()
+{
+  return sFreeBusyType;
+}
+
+// kate: space-indent on; indent-width 2; replace-tabs on;

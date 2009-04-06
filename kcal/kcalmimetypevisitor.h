@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008-2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -127,6 +127,34 @@ public:
     */
     QString mimeType( KCal::IncidenceBase *incidence );
 
+    /**
+      Returns the sub MIME type for Events
+
+      @since 4.3
+    */
+    static QString eventMimeType();
+
+    /**
+      Returns the sub MIME type for Todos
+
+      @since 4.3
+    */
+    static QString todoMimeType();
+
+    /**
+      Returns the sub MIME type for Journals
+
+      @since 4.3
+    */
+    static QString journalMimeType();
+
+    /**
+      Returns the sub MIME type for FreeBusys
+
+      @since 4.3
+    */
+    static QString freeBusyMimeType();
+
   private:
     //@cond PRIVATE
     class Private;
@@ -139,3 +167,5 @@ public:
 }
 
 #endif
+
+// kate: space-indent on; indent-width 2; replace-tabs on;
