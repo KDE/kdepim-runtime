@@ -931,7 +931,7 @@ void POP3Resource::slotGetNextMsg()
 
 void POP3Resource::slotProcessPendingMsgs()
 {
-  kDebug() << "Going to process pending messages.";
+  kDebug() << "Going to process pending messages, we have" << msgsAwaitingProcessing.count() << "pending.";
 
   // If we are in the processing stage and have nothing to process, advance to the
   // next stage immediately
@@ -993,7 +993,8 @@ void POP3Resource::slotItemCreateResult( KJob* job )
   else {
     QByteArray curId = pair.first;
     QByteArray curUid = pair.second;
-    kDebug() << "Processed mail with id" << curId << "and uid" << curUid;
+    kDebug() << "Processed mail with POP3 ID" << curId << "and UID" << curUid
+             << ". The Akonadi ID is" << createJob->item().id();
 
     // Now that the message is added to the folder correctly, we can delete it
     // from the server.

@@ -1,11 +1,13 @@
 BUGS
 ====
 
-doesn't recover from error, endless processpendingmessages going on
-itemcreatejob not executed the second time after first one fails
-gmail ssl not working (still?)
-createJobResult: duplicate messages after cancel
-Status shows percentages instead of full status message sometimes
+- itemcreatejob not executed the second time after first one fails (comment out target collection test)
+- gmail ssl not working (still?)
+- createJobResult: duplicate messages after cancel
+- Status shows percentages instead of full status message sometimes
+- mysql problem: item ids are reused after restarting -> delete from server will break terribly
+- After fetching 25 items, only 20 or so are really added to the maildir (not strictly a POP3 problem,
+  the items do end up on the server
 
 TODO
 ====
@@ -16,7 +18,6 @@ kdebug
 astyle
 (!) kconfigxt
 (!) Config UI
-debug area in kdelibs
 unit tests
   all leave on server rules
   weird bugs in svn log
@@ -30,12 +31,12 @@ password handling / kwallet
 for -> foreach
 header filtering framework
 mail progress items / status messages / done signal
+  error handling
 config file migration from kmail
   -> now DeleteLater group
   -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
   -> kwallet?
 listen to collection removals -> complain if no longer there
-error handling
 parents for messageboxes
 fixmes
 grep for kmail
@@ -44,12 +45,6 @@ kconfigxt: labels, tooltips, whatsthis etc
 
 refactoring: each stage in command classes or such
 delete on server: monitor + store item UIDs somewhere
-
-Questions
-=========
-
-cancelTask or emit status?
-itemaddjob syncronus? -> duplicate mails problem!
 
 Missing Stuff
 =============
