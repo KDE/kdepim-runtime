@@ -19,7 +19,7 @@
 #include "pop3test.h"
 
 #include <Akonadi/AgentManager>
-
+#include <Akonadi/CollectionFetchJob>
 #include <akonadi/qtest_akonadi.h>
 
 QTEST_AKONADIMAIN( Pop3Test, NoGUI )
@@ -41,6 +41,17 @@ void Pop3Test::initTestCase()
 
   QVERIFY( popFound );
   QVERIFY( maildirFound );
+
+  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+  QVERIFY( job->exec() );
+  Collection::List collections = job->collections();
+  foreach( const Collection &col, collections ) {
+    if ( col.name() != "Search" )
+      maildirCollection = col;
+  }
+  QCOMPARE( collections.size(), 2 );
+
+  //fakeServer.run();
 }
 
 void Pop3Test::testSimpleDownload()

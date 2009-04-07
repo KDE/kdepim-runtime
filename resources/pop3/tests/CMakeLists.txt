@@ -14,7 +14,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
-  set(_srcList ${_source})
+  set(_srcList ${_source} fakeserver/fakeserver.cpp)
 
   # add the dbus interace to every test (easier than adding to particular tests only)
   #qt4_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)

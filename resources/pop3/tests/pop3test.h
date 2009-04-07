@@ -19,6 +19,10 @@
 #ifndef POP3TEST_H
 #define POP3TEST_H
 
+#include "fakeserver/fakeserver.h"
+
+#include <Akonadi/Collection>
+
 #include <QtCore/QObject>
 
 class Pop3Test : public QObject
@@ -28,6 +32,10 @@ class Pop3Test : public QObject
     void initTestCase();
     void testSimpleDownload();
     void testSimpleLeaveOnServer();
+
+  private:
+    FakeServer fakeServer;
+    Akonadi::Collection maildirCollection;
 };
 
 #endif
