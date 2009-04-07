@@ -94,13 +94,13 @@ void KAddrBookExternal::addEmail( const QString &addr, QWidget *parent )
 
     if ( KAddrBookExternal::addAddressee( a ) ) {
       QString text = i18n( "<qt>The email address <b>%1</b> was added to your "
-                           "addressbook; you can add more information to this "
-                           "entry by opening the addressbook.</qt>", addr );
+                           "address book; you can add more information to this "
+                           "entry by opening the address book.</qt>", addr );
       KMessageBox::information( parent, text, QString(), "addedtokabc" );
     }
   } else {
     QString text =
-      i18n( "<qt>The email address <b>%1</b> is already in your addressbook.</qt>", addr );
+      i18n( "<qt>The email address <b>%1</b> is already in your address book.</qt>", addr );
     KMessageBox::information( parent, text, QString(), "alreadyInAddressBook" );
   }
   ab->setErrorHandler( 0 );
@@ -132,16 +132,16 @@ bool KAddrBookExternal::addVCard( const KABC::Addressee &addressee, QWidget *par
 
   if ( addressees.isEmpty() ) {
     if ( KAddrBookExternal::addAddressee( addressee ) ) {
-      QString text = i18n( "The VCard was added to your addressbook; "
+      QString text = i18n( "The VCard was added to your address book; "
                            "you can add more information to this "
-                           "entry by opening the addressbook." );
+                           "entry by opening the address book." );
       KMessageBox::information( parent, text, QString(), "addedtokabc" );
       inserted = true;
     }
   } else {
     QString text = i18n( "The VCard's primary email address is already in "
-                         "your addressbook; however, you may save the VCard "
-                         "into a file and import it into the addressbook manually." );
+                         "your address book; however, you may save the VCard "
+                         "into a file and import it into the address book manually." );
     KMessageBox::information( parent, text );
     inserted = true;
   }
