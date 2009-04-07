@@ -132,12 +132,12 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     Maildir dir( collection.remoteId() );
     QString errMsg;
     if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
-      emit error( errMsg );
+      cancelTask( errMsg );
       return;
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-      emit error( i18n("Only email messages can be added to the Maildir resource.") );
+      cancelTask( i18n("Only email messages can be added to the Maildir resource.") );
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
@@ -161,12 +161,12 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     Maildir dir( path );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
-        emit error( errMsg );
+        cancelTask( errMsg );
         return;
     }
     // we can only deal with mail
     if ( item.mimeType() != "message/rfc822" ) {
-        emit error( i18n("Only email messages can be added to the Maildir resource.") );
+        cancelTask( i18n("Only email messages can be added to the Maildir resource.") );
         return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
@@ -183,7 +183,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     Maildir dir( path );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
-      emit error( errMsg );
+      cancelTask( errMsg );
       return;
     }
     if ( !dir.removeEntry( entry ) ) {
