@@ -253,12 +253,12 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
   Q_ASSERT( mStoreCollectionDialog != 0 );
 
   if ( mimeType == Addressee::mimeType() ) {
-    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new address book entry", "Please select a storage folder for this contact" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new address book entry", "Please select a storage folder for this contact:" ) );
   } else if ( mimeType == ContactGroup::mimeType() ) {
-    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new email distribution list", "Please select a storage folder for this distribution list" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a new email distribution list", "Please select a storage folder for this distribution list:" ) );
   } else {
     kError( 5700 ) << "Unexpected MIME type:" << mimeType;
-    mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder:" ) );
   }
 
   mStoreCollectionDialog->setMimeType( mimeType );
