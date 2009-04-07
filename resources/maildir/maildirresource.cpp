@@ -97,8 +97,11 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
   const QString entry = maildirId( item.remoteId() );
 
   Maildir md( dir );
-  if ( !md.isValid() )
+  if ( !md.isValid() ) {
+    cancelTask( i18n( "Unable to fetch item: The maildir folder \"%1\" is not valid.",
+                      md.path() ) );
     return false;
+  }
 
   const QByteArray data = md.readEntry( entry );
   KMime::Message *mail = new KMime::Message();
