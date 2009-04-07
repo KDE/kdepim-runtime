@@ -42,6 +42,8 @@ fixmes
 grep for kmail
 proof read and coverage test
 kconfigxt: labels, tooltips, whatsthis etc
+clean up cmakefiles, remove code duplication with kdepimlibs
+clean up includes
 
 refactoring: each stage in command classes or such
 delete on server: monitor + store item UIDs somewhere

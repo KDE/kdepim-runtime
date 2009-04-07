@@ -1,0 +1,7 @@
+<config>
+  <kdehome>kdehome</kdehome>
+  <confighome>xdgconfig</confighome>
+  <datahome>xdglocal</datahome>
+  <agent synchronize="false">akonadi_pop3_resource</agent>
+  <agent synchronize="true">akonadi_maildir_resource</agent>
+</config>

@@ -1,13 +1,6 @@
 project(pop3)
 
-# search packages used by KDE
-#find_package (KDE4 REQUIRED)
-#include(KDE4Defaults)
-#include(MacroLibrary)
-#include(MacroOptionalAddSubdirectory)
-#include(CheckIncludeFiles)
-#find_package (KdepimLibs REQUIRED)
-
+find_package(Akonadi)
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
 
@@ -68,5 +61,7 @@ target_link_libraries( akonadi_pop3_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KMIME_LIBS}
 )
+
+add_subdirectory(tests)
 
 install(TARGETS akonadi_pop3_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
