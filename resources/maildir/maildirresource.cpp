@@ -144,8 +144,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    const QString rid = collection.remoteId() + QDir::separator() + "new" +
-                        QDir::separator() + dir.addEntry( mail->encodedContent() );
+    const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
     Item i( item );
     i.setRemoteId( rid );
     changeCommitted( i );
