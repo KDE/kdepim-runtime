@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=POP3
 Comment=Fetches mail from a POP3 server
+Comment[et]=Kirjade tõmbamine POP3 serverist
 Comment[ga]=Faigheann sé seo ríomhphost ó fhreastalaí POP3
 Comment[pt]=Obtém o correio de um servidor POP3
 Comment[pt_BR]=Obtém o correio de um servidor POP3
