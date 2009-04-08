@@ -5,6 +5,7 @@ Name[pt]=IMAP do Akonadi
 Name[pt_BR]=IMAP do Akonadi
 Name[sv]=Akonadi IMAP
 Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
+Comment[et]=Ühendumine IMAP-serveriga. Tugineb KIMAP-ile kdepimlibs'ist.
 Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar KIMAP as kdepimlibs.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
 Comment[pt_BR]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.

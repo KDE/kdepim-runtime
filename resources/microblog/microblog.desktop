@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Microblog (Twitter and Identi.ca)
+Name[et]=Mikroblogi (Twitter ja Identi.ca)
 Name[ga]=Micreabhlagadóireacht (Twitter agus Identi.ca)
 Name[pt]=Micro-blog (Twitter e Identi.ca)
 Name[pt_BR]=Micro-blog (Twitter e Identi.ca)
@@ -7,6 +8,7 @@ Name[sv]=Mikrowebbjournal (Twitter och Identi.ca)
 Name[uk]=Міктоблог (Twitter і Identi.ca)
 Name[zh_TW]=Microblog（Twitter 與 Identi.ca）
 Comment=Shows your microblog data from Twitter or Identi.ca.
+Comment[et]=Näitab mikroblogi andmeid Twitterist või Identi.ca-st
 Comment[pt]=Mostra os seus dados dos micro-blogs Twitter ou Identi.ca.
 Comment[pt_BR]=Mostra os seus dados dos micro-blogs Twitter ou Identi.ca.
 Comment[sv]=Visar data från din mikrowebbjournal hos Twitter eller Identi.ca.

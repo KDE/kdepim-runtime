@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mbox
 Comment=Loads data from a local mbox file
+Comment[et]=Andmete laadimine kohalikust mbox-failist
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad logánta mbox
 Comment[pt]=Carrega os dados a partir de um ficheiro 'mbox' local
 Comment[pt_BR]=Carrega os dados a partir de um ficheiro 'mbox' local
