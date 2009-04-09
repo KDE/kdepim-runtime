@@ -136,7 +136,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mCurrentKResource = res;
       bool nativeAvailable = migrateResource( res );
       if ( !nativeAvailable ) {
-        emit message( Skip, i18n( "No native backend avaiable, keeping compatibility bridge for '%1'", res->resourceName() ) );
+        emit message( Skip, i18n( "No native backend available, keeping compatibility bridge for '%1'.", res->resourceName() ) );
         migrateNext();
       }
     }
