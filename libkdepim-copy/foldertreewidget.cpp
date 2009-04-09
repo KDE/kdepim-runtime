@@ -460,10 +460,9 @@ void FolderTreeWidgetItem::setUnreadCount( int unreadCount )
 
   FolderTreeWidget * tree = dynamic_cast< FolderTreeWidget * >( treeWidget() );
   int idx = tree->unreadColumnIndex();
-  // FIXME: Why the "parent()" logic is hardwired here ?
-  if ( tree && idx >= 0 && ( parent() || mAlwaysDisplayCounts ) )
+  if ( tree && idx >= 0  )
   {
-    if ( !isExpanded() )
+    if ( parent() || mAlwaysDisplayCounts || !isExpanded() )
       setText( idx, QString::number( unreadCountToDisplay ) );
     else
       setText( idx, QString() );
