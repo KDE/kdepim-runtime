@@ -114,7 +114,7 @@ class SingleFileResource : public SingleFileResourceBase
 
         if ( mUploadJob )
         {
-          emit error( i18n( "Uploading of another file is still in progress." ) );
+          emit error( i18n( "Another file upload is still in progress." ) );
           return;
         }
 
@@ -137,7 +137,7 @@ class SingleFileResource : public SingleFileResourceBase
     void writeFile()
     {
       if ( Settings::self()->readOnly() ) {
-        emit error( i18n( "Trying to write to a read-only file: '%1'", Settings::self()->path() ) );
+        emit error( i18n( "Trying to write to a read-only file: '%1'.", Settings::self()->path() ) );
         return;
       }
 
@@ -166,7 +166,7 @@ class SingleFileResource : public SingleFileResourceBase
         }
 
         if ( mUploadJob ) {
-          emit error( i18n( "Uploading of another file is still in progress." ) );
+          emit error( i18n( "Another file upload is still in progress." ) );
           return;
         }
 
