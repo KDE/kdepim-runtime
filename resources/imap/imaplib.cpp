@@ -802,7 +802,7 @@ void Imaplib::slotParseExists()
 
         m_checkMailTimer->stop();
 
-        emit statusError( i18n( "Failed to select the mailbox" ) );
+        emit statusError( i18n( "Failed to select the mailbox." ) );
         emit uidsAndFlagsInFolder( this, m_currentQueueItem.mailbox(), QStringList() );
 
         m_currentQueueItem = Queue();

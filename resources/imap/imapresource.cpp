@@ -131,7 +131,7 @@ void ImapResource::startConnect()
     if (( safe == 1 || safe == 2 ) && !QSslSocket::supportsSsl() ) {
         kWarning() << "Crypto not supported!";
         emit error( i18n( "You requested TLS/SSL to connect to %1, but your "
-                          "system does not seem to be set up for that.", m_server ) );
+                          "system does not appear to support it.", m_server ) );
         return;
     }
 
@@ -447,8 +447,8 @@ void ImapResource::slotLoginFailed( Imaplib* connection )
     // the credentials where not ok....
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
             i18n( "The server refused the supplied username and password. "
-                  "Do you want to go to the settings, re-enter it for one "
-                  "time or do nothing?" ),
+                  "Do you want to go to the settings, have another attempt at logging in, "
+                  "or do nothing?" ),
             i18n( "Could Not Log In" ),
             KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
     if ( i == KMessageBox::Yes )
@@ -457,7 +457,7 @@ void ImapResource::slotLoginFailed( Imaplib* connection )
         manualAuth( connection, m_username );
     } else {
         connection->logout();
-        emit warning( i18n( "Could not connect to the IMAP-server %1", m_server ) );
+        emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
     }
 }
 
@@ -469,7 +469,7 @@ void ImapResource::slotLoginOk()
 
 void ImapResource::slotAlert( Imaplib*, const QString& message )
 {
-    emit error( i18n( "Server reported: %1",message ) );
+    emit error( i18n( "Server reported: %1.",message ) );
 }
 
 void ImapResource::slotPurge( const QString &folder )
@@ -654,7 +654,7 @@ void ImapResource::connections()
 void ImapResource::manualAuth( Imaplib* connection, const QString& username )
 {
     KPasswordDialog dlg( 0 /* no winId constructor available */ );
-    dlg.setPrompt( i18n( "Could not find a valid password, please enter it here" ) );
+    dlg.setPrompt( i18n( "Could not find a valid password, please enter it here." ) );
     if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )
         connection->login( username, QString( dlg.password() ) );
     else

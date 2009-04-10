@@ -50,8 +50,8 @@ SetupServer::SetupServer( WId parent )
     mainGrid->addWidget( l4, 0, 0 );
     l4->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
     l4->setWhatsThis( i18n( "Indicate the IMAP server. If you want to "
-                            "connect to a non-standard port for a chosen safety, you can add "
-                            "\":port\" to indicate that. For example: \"imap.bla.nl:144\"" ) );
+                            "connect to a non-standard port for a specific encryption scheme, you can add "
+                            "\":port\" to indicate that. For example: \"imap.bla.nl:144\"." ) );
 
     m_imapServer = new KLineEdit( mainWidget() );
     mainGrid->addWidget( m_imapServer, 0, 1 );
@@ -66,7 +66,7 @@ SetupServer::SetupServer( WId parent )
     l5->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
     l5->setWhatsThis( i18n( "<b>SSL</b> is safe IMAP over port 993, <b>TLS</b> "
                             "will operate on port 143 and switch to a secure connection "
-                            "directly after connecting and <b>None</b> will connect to port "
+                            "directly after connecting, and <b>None</b> will connect to port "
                             "143 but not switch to a secure connection. This setting is not "
                             "recommended." ) );
 
@@ -172,10 +172,11 @@ void SetupServer::readSettings()
 
     if ( !Settings::self()->passwordPossible() ) {
         m_password->setEnabled( false );
-        KMessageBox::information( 0, i18n( "Could not access KWallet, "
-                                           "if you want to store the password permanently then you have to "
+        KMessageBox::information( 0, i18n( "Could not access KWallet. "
+                                           "If you want to store the password permanently then you have to "
                                            "activate it. If you do not "
-                                           "want to use KWallet, check the box below and enjoy the dialogs." ),
+                                           "want to use KWallet, check the box below, but note that you will be "
+                                           "prompted for your password when needed." ),
                                   i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
     } else
         m_password->insert( Settings::self()->password() );
@@ -221,10 +222,10 @@ void SetupServer::slotFinished( QList<int> testResult )
     QString text;
     if ( testResult.contains( Transport::EnumEncryption::SSL ) ) {
         m_safeImap_group->button( 2 )->setChecked( true );
-        text = i18n( "<qt><b>SSL is supported and recommended</b></qt>" );
+        text = i18n( "<qt><b>SSL is supported and recommended.</b></qt>" );
     } else if ( testResult.contains( Transport::EnumEncryption::TLS ) ) {
         m_safeImap_group->button( 3 )->setChecked( true );
-        text = i18n( "<qt><b>TLS is supported and recommended</b></qt>" );
+        text = i18n( "<qt><b>TLS is supported and recommended.</b></qt>" );
     } else if ( testResult.contains( Transport::EnumEncryption::None ) ) {
         m_safeImap_group->button( 1 )->setChecked( true );
         text = i18n( "<qt><b>No security is supported. It is not "
