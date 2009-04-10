@@ -23,6 +23,8 @@
 #include <KUrl>
 #include <KIconLoader>
 
+#include <akonadi/agentmanager.h>
+#include <akonadi/agenttype.h>
 #include <akonadi/collectionstatistics.h>
 #include <akonadi/collectionstatisticsjob.h>
 #include <akonadi/collectionfetchjob.h>
@@ -88,19 +90,36 @@ void EntityTreeModelPrivate::fetchCollections( Collection col, CollectionFetchJo
 
 void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List& cols )
 {
+  // TODO: refactor this stuff into separate methods for listing resources in Collection::root, and listing collections within resources.
   Q_Q( EntityTreeModel );
   QHash<Collection::Id, Collection> newCollections;
   QHash< Collection::Id, QList< Collection::Id > > newChildCollections;
+
+  Akonadi::AgentManager *am = Akonadi::AgentManager::self();
+
   foreach( Collection col, cols ) {
     if ( m_collections.contains( col.id() ) ) {
       // If we already know about the collection, there is nothing left to do
       continue;
     }
     // ... otherwise we add it to the set of collections we need to handle.
-    if ( passesFilter( col.contentMimeTypes() ) ) {
+//    if ( passesFilter( col.contentMimeTypes() ) ) {
+    if (col.parent() == Collection::root().id())
+    {
+      Akonadi::AgentInstance ai = am->instance( col.resource() );
+      if (!passesFilter( ai.type().mimeTypes() ))
+      {
+//         if ( ( isVirtual ( col ) ) && !m_monitor.monitoredResources().contains( col.resource() ) ) )
+//         {
+//           continue;
+//         }
+//       } else
+          continue;
+//       }
+      }
       newChildCollections[ col.parent()].append( col.id() );
       newCollections.insert( col.id(), col );
-    }
+   }
   }
 
 
