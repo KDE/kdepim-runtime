@@ -21,13 +21,13 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 
+#include "wrappedobject.h"
 #include <akonadi/agentinstance.h>
 
-#include <QObject>
 #include <QHash>
 #include <QVariant>
 
-class Resource: public QObject
+class Resource: public QObject, protected WrappedObject
 {
   Q_OBJECT
   public:
@@ -37,6 +37,8 @@ class Resource: public QObject
     static Resource* instance();
 
   public slots:
+    QObject* newInstance();
+
     void setType( const QString &type );
     QString identifier() const;
 

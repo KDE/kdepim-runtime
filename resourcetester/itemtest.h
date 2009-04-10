@@ -20,12 +20,12 @@
 #ifndef ITEMTEST_H
 #define ITEMTEST_H
 
+#include "wrappedobject.h"
+
 #include <akonadi/collection.h>
 #include <akonadi/item.h>
 
-#include <QObject>
-
-class ItemTest : public QObject
+class ItemTest : public QObject, protected WrappedObject
 {
   Q_OBJECT
   public:
@@ -34,7 +34,10 @@ class ItemTest : public QObject
     void setParentCollection( const Akonadi::Collection &parent );
 
   public slots:
+    QObject* newInstance();
+
     void setParentCollection( const QString &path );
+    QString mimeType() const;
     void setMimeType( const QString &mimeType );
     void setPayloadFromFile( const QString &fileName );
 
@@ -44,5 +47,7 @@ class ItemTest : public QObject
     Akonadi::Collection mParent;
     Akonadi::Item mItem;
 };
+
+Q_DECLARE_METATYPE( ItemTest* )
 
 #endif

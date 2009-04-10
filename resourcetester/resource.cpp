@@ -149,4 +149,9 @@ Resource* Resource::instance()
   return mSelf;
 }
 
+QObject* Resource::newInstance()
+{
+  return createNewInstance<Resource>( this );
+}
+
 #include "resource.moc"

@@ -92,4 +92,9 @@ void CollectionTest::remove()
     Test::instance()->fail( job->errorString() );
 }
 
+QObject* CollectionTest::newInstance()
+{
+  return createNewInstance<CollectionTest>( this );
+}
+
 #include "collectiontest.moc"

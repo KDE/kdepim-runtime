@@ -33,6 +33,7 @@ using namespace Akonadi;
 ItemTest::ItemTest( QObject *parent ) :
   QObject( parent )
 {
+  setObjectName( "global" );
 }
 
 void ItemTest::setParentCollection(const Akonadi::Collection& parent)
@@ -46,6 +47,11 @@ void ItemTest::setParentCollection(const QString& path)
   if ( !resolver->exec() )
     Test::instance()->fail( resolver->errorString() );
   setParentCollection( Collection( resolver->collection() ) );
+}
+
+QString ItemTest::mimeType() const
+{
+  return mItem.mimeType();
 }
 
 void ItemTest::setMimeType(const QString& mimeType)
@@ -67,6 +73,11 @@ void ItemTest::create()
   if ( !job->exec() )
     Test::instance()->fail( job->errorString() );
   mItem = job->item();
+}
+
+QObject* ItemTest::newInstance()
+{
+  return createNewInstance<ItemTest>( this );
 }
 
 #include "itemtest.moc"

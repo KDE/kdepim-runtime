@@ -17,37 +17,6 @@
     02110-1301, USA.
 */
 
-#ifndef COLLECTIONTEST_H
-#define COLLECTIONTEST_H
-
 #include "wrappedobject.h"
 
-#include <akonadi/collection.h>
-
-class CollectionTest : public QObject, protected WrappedObject
-{
-  Q_OBJECT
-  public:
-    CollectionTest( QObject *parent = 0 );
-
-    void setParent( const Akonadi::Collection &parent );
-    void setCollection( const Akonadi::Collection &collection );
-
-  public slots:
-    QObject* newInstance();
-
-    void setParent( const QString &parentPath );
-    void setCollection( const QString &path );
-    void setName( const QString &name );
-    void addContentType( const QString &type );
-
-    void create();
-    void update();
-    void remove();
-
-  private:
-    Akonadi::Collection mParent;
-    Akonadi::Collection mCollection;
-};
-
-#endif
+int WrappedObject::mInstanceCounter = 0;
