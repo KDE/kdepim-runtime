@@ -93,6 +93,7 @@ POP3Resource::POP3Resource( const QString &id )
 POP3Resource::~POP3Resource()
 {
   if ( mJob ) {
+    kDebug() << "Killing jobs and saving UID list.";
     mJob->kill();
     mMsgsPendingDownload.clear();
     createJobsMap.clear();
@@ -102,11 +103,13 @@ POP3Resource::~POP3Resource()
 
 void POP3Resource::retrieveCollections()
 {
+  kDebug() << "Starting mail check...";
   emit status( Running, i18n( "Starting mail check..." ) );
 
   if ( mStage == Idle ) {
 
     if ( !Collection( Settings::targetCollection() ).isValid() ) {
+      kWarning() << "We have no target collection!";
       cancelTask( i18n("No target folder set, aborting mail check.") );
       return;
     }
@@ -325,6 +328,7 @@ void POP3Resource::slotSlaveError( KIO::Slave* slave, int error,
 {
   Q_UNUSED( slave );
   Q_UNUSED( error );
+  kWarning() << "Got a slave error:" << errorMsg;
   emit status( Broken, errorMsg ); // FIXME, see below
 
   if ( slave != mSlave )
@@ -854,7 +858,6 @@ void POP3Resource::slotJobFinished()
         ids += *it;
       }
       kDebug() << "Going to delete these messages:" << ids;
-      Q_ASSERT( ids.isEmpty() ); /// FIXME: only temporary, to avoid mail loss
       url.setPath( "/remove/" + ids );
     } else {
       kDebug() << "No messages to delete.";
@@ -1136,6 +1139,7 @@ void POP3Resource::slotAbortRequested()
 
 void POP3Resource::slotCancel()
 {
+  kDebug() << "Canceling mail check.";
   mMsgsPendingDownload.clear();
   createJobsMap.clear();
   processMsgsTimer.stop();

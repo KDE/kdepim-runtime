@@ -23,7 +23,7 @@
     </entry>
     <entry name="port" type="UInt">
       <label></label>
-      <default></default>
+      <default>110</default>
     </entry>
     <entry name="authenticationMethod" type="String">
       <label></label>

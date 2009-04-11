@@ -1,5 +1,6 @@
 /*
    Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
+   Copyright (C) 2009 Thomas McGuire <mcguire@kde.org>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -34,17 +35,30 @@ public:
     FakeServer( QObject* parent = 0 );
     ~FakeServer();
     virtual void run();
-    void setResponse( const QStringList& data );
+    void setNextConversation( const QString &conversation );
+    void testConversation();
+    void setAllowedDeletions( const QString &deleteIds );
 
+Q_SIGNALS:
+    void disconnected();
+    void progress();
 private Q_SLOTS:
     void newConnection();
     void dataAvailable();
-    
+    void slotDisconnected();
+
 private:
-    QStringList m_data;
-    QTcpServer *m_tcpServer;
-    QMutex m_mutex;
-    QTcpSocket* tcpServerConnection;
+
+    void parseConversationData( const QString &conversation );
+    QByteArray parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived );
+
+    QList<QByteArray> mReadData;
+    QList<QByteArray> mWriteData;
+    QList<QByteArray> mAllowedDeletions;
+    int mConnections;
+    QTcpServer *mTcpServer;
+    QMutex mMutex;
+    QTcpSocket* mTcpServerConnection;
 };
 
 #endif

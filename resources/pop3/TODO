@@ -8,6 +8,7 @@ BUGS
 - mysql problem: item ids are reused after restarting -> delete from server will break terribly
 - After fetching 25 items, only 20 or so are really added to the maildir (not strictly a POP3 problem,
   the items do end up on the server
+- unit tests: metatype declaration missing
 
 TODO
 ====
@@ -23,6 +24,8 @@ unit tests
   weird bugs in svn log
   add fails -> second check will still work
   correct error messages passed from pop3 server?
+  byte stuffing
+  pipelining
   abort requested during mail check
     -> no duplicate messages on next mail check, already added mails added to the seen
        UID list

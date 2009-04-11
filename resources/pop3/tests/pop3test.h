@@ -20,22 +20,27 @@
 #define POP3TEST_H
 
 #include "fakeserver/fakeserver.h"
+#include "settings.h"
 
 #include <Akonadi/Collection>
 
 #include <QtCore/QObject>
+#include <QtCore/QList>
 
 class Pop3Test : public QObject
 {
   Q_OBJECT
   private slots:
     void initTestCase();
+    void cleanupTestCase();
     void testSimpleDownload();
     void testSimpleLeaveOnServer();
 
   private:
-    FakeServer fakeServer;
-    Akonadi::Collection maildirCollection;
+    FakeServer *mFakeServer;
+    OrgKdeAkonadiPOP3SettingsInterface *mSettingsInterface;
+    Akonadi::Collection mMaildirCollection;
+    QString mPop3Identifier;
 };
 
 #endif

@@ -35,8 +35,11 @@ void Pop3Test::initTestCase()
   foreach( const AgentInstance &agent, agents ) {
     if ( agent.type().identifier() == "akonadi_maildir_resource" )
       maildirFound = true;
-    if ( agent.type().identifier() == "akonadi_pop3_resource" )
+    if ( agent.type().identifier() == "akonadi_pop3_resource" ) {
       popFound = true;
+      mPop3Identifier = agent.identifier();
+      agent.reconfigure();
+    }
   }
 
   QVERIFY( popFound );
@@ -47,18 +50,127 @@ void Pop3Test::initTestCase()
   Collection::List collections = job->collections();
   foreach( const Collection &col, collections ) {
     if ( col.name() != "Search" )
-      maildirCollection = col;
+      mMaildirCollection = col;
   }
   QCOMPARE( collections.size(), 2 );
 
-  //fakeServer.run();
+  mFakeServer = new FakeServer( this );
+  mFakeServer->start();
+
+  mSettingsInterface = new OrgKdeAkonadiPOP3SettingsInterface(
+      "org.freedesktop.Akonadi.Resource." + mPop3Identifier,
+       "/Settings", QDBusConnection::sessionBus(), this );
+
+  QDBusReply<uint> reply0 = mSettingsInterface->port();
+  QVERIFY( reply0.isValid() );
+  QVERIFY( reply0.value() == 110 );
+  
+  mSettingsInterface->setPort( 5989 );
+  AgentManager::self()->instance( mPop3Identifier ).reconfigure();
+  QDBusReply<uint> reply = mSettingsInterface->port();
+  QVERIFY( reply.isValid() );
+  QVERIFY( reply.value() == 5989 );
+
+  mSettingsInterface->setHost( "localhost" );
+  AgentManager::self()->instance( mPop3Identifier ).reconfigure();
+  QDBusReply<QString> reply2 = mSettingsInterface->host();
+  QVERIFY( reply2.isValid() );
+  QVERIFY( reply2.value() == "localhost" );
+  mSettingsInterface->setLogin( "HansWurst" );
+  AgentManager::self()->instance( mPop3Identifier ).reconfigure();
+  QDBusReply<QString> reply3 = mSettingsInterface->login();
+  QVERIFY( reply3.isValid() );
+  QVERIFY( reply3.value() == "HansWurst" );
+
+  mSettingsInterface->setPassword( "Geheim" );
+  AgentManager::self()->instance( mPop3Identifier ).reconfigure();
+  QDBusReply<QString> reply4 = mSettingsInterface->password();
+  QVERIFY( reply4.isValid() );
+  QVERIFY( reply4.value() == "Geheim" );
+
+  mSettingsInterface->setTargetCollection( mMaildirCollection.id() );
+  AgentManager::self()->instance( mPop3Identifier ).reconfigure();
+  QDBusReply<qlonglong> reply5 = mSettingsInterface->targetCollection();
+  QVERIFY( reply5.isValid() );
+  QVERIFY( reply5.value() == mMaildirCollection.id() );
+}
+
+void Pop3Test::cleanupTestCase()
+{
+  qDebug() << "Cleaning up testcase.";
+  delete mFakeServer;
+  mFakeServer = 0;
 }
 
 void Pop3Test::testSimpleDownload()
 {
+  mFakeServer->setNextConversation(
+    "C: USER HansWurst\r\n"
+    "S: +OK May I have your password, please?\r\n"
+    "C: PASS Geheim\r\n"
+    "S: +OK Mailbox locked and ready\r\n"
+    "C: LIST\r\n"
+    "S: +OK You got new spam\r\n"
+        "1 100\r\n"
+        "2 200\r\n"
+        "3 300\r\n"
+        ".\r\n"
+    "C: UIDL\r\n"
+    "S: +OK\r\n"
+        "1 melone\r\n"
+        "2 toaster\r\n"
+        "3 78AB89EF899AA89C3D\r\n"
+        ".\r\n"
+    "C: RETR 1\r\n"
+    "S: +OK Here is your spam\r\n"
+        "1lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        ".\r\n"
+    "C: RETR 2\r\n"
+    "S: +OK Here is your spam\r\n"
+        "2lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        ".\r\n"
+    "C: RETR 3\r\n"
+    "S: +OK Here is your spam\r\n"
+        "lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        ".\r\n"
+    "C: DELE %DELE%\r\n"
+    "S: +OK message sent to /dev/null\r\n"
+    "C: DELE %DELE%\r\n"
+    "S: +OK message sent to /dev/null\r\n"
+    "C: DELE %DELE%\r\n"
+    "S: +OK message sent to /dev/null\r\n"
+    "C: QUIT\r\n"
+    "S: +OK Have a nice day.\r\n"
+  );
+  mFakeServer->setAllowedDeletions("1,2,3");
+
+  QSignalSpy disconnectSpy( mFakeServer, SIGNAL( disconnected() ) );
+  QSignalSpy progressSpy( mFakeServer, SIGNAL( progress() ) );
+  AgentManager::self()->instance( mPop3Identifier ).synchronize();
+
+  // The pop3 resource, ioslave and the fakeserver are all in different processes or threads.
+  // We simply wait until the FakeServer got disconnected or until a timeout.
+  // Since POP3 fetching can take longer, we reset the timeout timer when the FakeServer
+  // does some processing.
+  QTime time;
+  time.start();
+  forever {
+    qApp->processEvents();
+    if ( disconnectSpy.count() >= 1 ) {
+      qDebug() << "Server quit normally.";
+      break;
+    }
+    if ( progressSpy.count() > 0 ) {
+      time.restart();
+      progressSpy.clear();
+    }
+    if ( time.elapsed() >= 60000 ) {
+      Q_ASSERT_X( false, "poptest", "FakeServer timed out." );
+      break;
+    }
+  }
 }
 
 void Pop3Test::testSimpleLeaveOnServer()
 {
-
 }

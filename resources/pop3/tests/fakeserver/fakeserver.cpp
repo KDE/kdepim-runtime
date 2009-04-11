@@ -1,5 +1,6 @@
 /*
    Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
+   Copyright (C) 2009 Thomas McGuire <mcguire@kde.org>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -22,13 +23,15 @@
 // Qt
 #include <QDebug>
 #include <QTcpServer>
+#include <QtTest>
 
 // KDE
 #include <KDebug>
 
-FakeServer::FakeServer( QObject* parent ) : QThread( parent )
+FakeServer::FakeServer( QObject* parent )
+    : QThread( parent ),
+      mConnections( 0 )
 {
-     moveToThread(this);
 }
 
 
@@ -38,54 +41,148 @@ FakeServer::~FakeServer()
   wait();
 }
 
+QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived )
+{
+  const QByteArray deleteMark = QString( "%DELE%" ).toUtf8();
+  if ( expectedData.contains( deleteMark ) ) {
+    Q_ASSERT( !mAllowedDeletions.isEmpty() );
+    for ( int i = 0; i < mAllowedDeletions.size(); i++ ) {
+      QByteArray substituted = expectedData;
+      substituted = substituted.replace( deleteMark, mAllowedDeletions[i] );
+      if (  substituted == dataReceived ) {
+        mAllowedDeletions.removeAt( i );
+        return substituted;
+      }
+    }
+    Q_ASSERT_X( false, "FakeServer::parseResponse", "Unable to substitute data!" );
+    return QByteArray();
+  }
+  else return expectedData;
+}
+
+static QByteArray removeCRLF( const QByteArray &ba )
+{
+  QByteArray returnArray = ba;
+  returnArray.replace( "\r\n", QByteArray() );
+  return returnArray;
+}
+
 void FakeServer::dataAvailable()
 {
-    QMutexLocker locker(&m_mutex);
-    
-    QByteArray data = tcpServerConnection->readAll();
-//     kDebug() << "R: " << data.trimmed();
+  QMutexLocker locker( &mMutex );
 
-    Q_ASSERT( !m_data.isEmpty() );
+  emit progress();
 
-    QByteArray toWrite = QString( m_data.takeFirst() + "\r\n" ).toLatin1();
-//     kDebug() << "S: " << toWrite.trimmed();
+  // We got data, so we better expect it and have an answer!
+  Q_ASSERT( !mReadData.isEmpty() );
+  Q_ASSERT( !mWriteData.isEmpty() );
 
-    Q_FOREVER {
-        tcpServerConnection->write( toWrite );
-        if (toWrite.startsWith("* ")) {
-          toWrite = QString( m_data.takeFirst() + "\r\n" ).toLatin1();
-//           kDebug() << "S: " << toWrite.trimmed();
-        } else
-          break;
-    }
+  const QByteArray data = mTcpServerConnection->readAll();
+  qDebug() << "Got data:" << removeCRLF( data );
+  const QByteArray expected( mReadData.takeFirst() );
+  qDebug() << "Expected data:" << removeCRLF( expected );
+  const QByteArray reallyExpected = parseResponse( expected, data );
+  qDebug() << "Really expected:" << removeCRLF( reallyExpected );
+
+  Q_ASSERT( data == reallyExpected );
+
+  QByteArray toWrite = mWriteData.takeFirst();
+  qDebug() << "Going to write data:" << removeCRLF( toWrite );
+  Q_ASSERT( mTcpServerConnection->write( toWrite ) == toWrite.size() );
+  Q_ASSERT( mTcpServerConnection->flush() );
 }
 
 void FakeServer::newConnection()
 {
-    QMutexLocker locker(&m_mutex);
+  QMutexLocker locker( &mMutex );
 
-    tcpServerConnection = m_tcpServer->nextPendingConnection();
-    tcpServerConnection->write( QByteArray( "* OK localhost Test Library server ready\r\n" ) );
-    connect(tcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
+  Q_ASSERT( mConnections == 0 );
+  mConnections++;
+
+  mTcpServerConnection = mTcpServer->nextPendingConnection();
+  mTcpServerConnection->write( QByteArray( "+OK Initech POP3 server ready.\r\n" ) );
+  connect( mTcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()) );
+  connect( mTcpServerConnection, SIGNAL(disconnected()), this, SLOT(slotDisconnected()) );
+}
+
+void FakeServer::slotDisconnected()
+{
+  qDebug() << "FakeServer got disconnected.";
+  QMutexLocker locker( &mMutex );
+  mConnections--;
+  Q_ASSERT( mConnections >= 0 );
+  emit disconnected();
 }
 
 void FakeServer::run()
 {
-    m_tcpServer = new QTcpServer();
-    if ( !m_tcpServer->listen( QHostAddress( QHostAddress::LocalHost ), 5989 ) ) {
-        kFatal() << "Unable to start the server";
-    }
+  mTcpServer = new QTcpServer();
+  if ( !mTcpServer->listen( QHostAddress( QHostAddress::LocalHost ), 5989 ) ) {
+    kFatal() << "Unable to start the server";
+  }
 
-    connect(m_tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+  connect( mTcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()) );
 
-    exec();
-    disconnect(tcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
-    delete m_tcpServer;
+  exec();
+
+  if ( mConnections > 0 )
+    disconnect( mTcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()) );
+
+  delete mTcpServer;
+  mTcpServer = 0;
 }
 
-void FakeServer::setResponse( const QStringList& data )
+void FakeServer::setNextConversation( const QString& conversation )
 {
-    m_data = data;
+  parseConversationData( conversation );
+}
+
+void FakeServer::setAllowedDeletions( const QString &deleteIds )
+{
+  QStringList ids = deleteIds.split( ',' );
+  foreach( const QString &id, ids ) {
+    mAllowedDeletions.append( id.toUtf8() );
+  }
+}
+
+
+void FakeServer::testConversation()
+{
+  Q_ASSERT( mReadData.isEmpty() && mWriteData.isEmpty() );
+}
+
+void FakeServer::parseConversationData( const QString& conversation )
+{
+  QMutexLocker locker( &mMutex );
+
+  Q_ASSERT( mReadData.isEmpty() );
+  Q_ASSERT( mWriteData.isEmpty() );
+  Q_ASSERT( mAllowedDeletions.isEmpty() );
+  Q_ASSERT( !conversation.isEmpty() );
+
+  QStringList lines = conversation.split( "\r\n", QString::SkipEmptyParts );
+  Q_ASSERT( lines.first().startsWith( "C:" ) );
+
+  enum Mode { Client, Server };
+  Mode mode = Client;
+
+  foreach( const QString &line, lines ) {
+    QByteArray lineData( line.toUtf8() );
+    if ( lineData.startsWith( "S: " ) ) {
+      mWriteData.append( lineData.mid( 3 ) + "\r\n" );
+      mode = Server;
+    }
+    else if ( line.startsWith("C: " ) ) {
+      mReadData.append( lineData.mid( 3 ) + "\r\n" );
+      mode = Client;
+    }
+    else {
+      switch ( mode ) {
+        case Server: mWriteData.last() += ( lineData + "\r\n" ); break;
+        case Client: mReadData.last() += ( lineData + "\r\n" ); break;
+      }
+    }
+  }
 }
 
 #include "fakeserver.moc"
