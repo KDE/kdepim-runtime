@@ -23,7 +23,13 @@ macro(add_akonadi_isolated_test _source)
   #qt4_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
   kde4_add_executable(${_targetName} TEST ${_srcList})
-  target_link_libraries(${_targetName} ${QT_QTTEST_LIBRARY} ${QT_QTGUI_LIBRARY} ${KDE4_AKONADI_LIBS} ${KDE4_KDECORE_LIBS})
+  target_link_libraries(${_targetName}
+    ${QT_QTTEST_LIBRARY}
+    ${QT_QTGUI_LIBRARY}
+    ${KDE4_AKONADI_LIBS}
+    ${KDE4_KDECORE_LIBS}
+    ${KDE4_KMIME_LIBS}
+  )
 
   # based on kde4_add_unit_test
   if (WIN32)

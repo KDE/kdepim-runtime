@@ -20,7 +20,15 @@
 
 #include <Akonadi/AgentManager>
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 #include <akonadi/qtest_akonadi.h>
+#include <kmime/kmime_message.h>
+
+#include <boost/shared_ptr.hpp>
+
+typedef boost::shared_ptr<KMime::Message> MsgPtr;
 
 QTEST_AKONADIMAIN( Pop3Test, NoGUI )
 
@@ -106,6 +114,9 @@ static const QByteArray simpleMail1 =
   "From: \"Bill Lumbergh\" <BillLumbergh@initech.com>\r\n"
   "To: \"Peter Gibbons\" <PeterGibbons@initech.com>\r\n"
   "Subject: TPS Reports - New Cover Sheets\r\n"
+  "MIME-Version: 1.0\r\n"
+  "Content-Type: text/plain\r\n"
+  "Date: Mon, 23 Mar 2009 18:04:05 +0300\r\n"
   "\r\n"
   "Hi, Peter. What's happening? We need to talk about your TPS reports.\r\n";
 
@@ -113,6 +124,9 @@ static const QByteArray simpleMail2 =
   "From: \"Amy McCorkell\" <yooper@mtao.net>\r\n"
   "To: gov.palin@yaho.com\r\n"
   "Subject: HI SARAH\r\n"
+  "MIME-Version: 1.0\r\n"
+  "Content-Type: text/plain\r\n"
+  "Date: Mon, 23 Mar 2009 18:04:05 +0300\r\n"
   "\r\n"
   "Hey Sarah,\r\n"
   "bla bla bla bla bla\r\n";
@@ -121,13 +135,18 @@ static const QByteArray simpleMail3 =
   "From: chunkylover53@aol.com\r\n"
   "To: tylerdurden@paperstreetsoapcompany.com\r\n"
   "Subject: ILOVEYOU\r\n"
+  "MIME-Version: 1.0\r\n"
+  "Content-Type: text/plain\r\n"
+  "Date: Mon, 23 Mar 2009 18:04:05 +0300\r\n"
   "\r\n"
   "kindly check the attached LOVELETTER coming from me.\r\n";
 
 void Pop3Test::testSimpleDownload()
 {
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
   mFakeServer->setAllowedDeletions("1,2,3");
-  mFakeServer->setMails( QList<QByteArray>() << simpleMail1 << simpleMail2 << simpleMail3 );
+  mFakeServer->setMails( mails );
   mFakeServer->setNextConversation(
     "C: USER HansWurst\r\n"
     "S: +OK May I have your password, please?\r\n"
@@ -191,6 +210,45 @@ void Pop3Test::testSimpleDownload()
       Q_ASSERT_X( false, "poptest", "FakeServer timed out." );
       break;
     }
+  }
+
+  // The fake server got disconnected, which means the pop3 resource has entered the QUIT
+  // stage. That means all messages should be on the server now, so test that.
+  ItemFetchJob *job = new ItemFetchJob( mMaildirCollection );
+  job->fetchScope().fetchFullPayload();
+  QVERIFY( job->exec() );
+  Item::List items = job->items();
+  QCOMPARE( mails.size(), items.size() );
+  foreach( const Item &item, items ) {
+    MsgPtr itemMail = item.payload<MsgPtr>();
+    QByteArray itemMailBody = itemMail->body();
+
+    // For some reason, the body in the maildir has one additional newline.
+    // Get rid of this so we can compare them.
+    // FIXME: is this a bug? Find out where the newline comes from!
+    itemMailBody.chop( 1 );
+    bool mailKnown = false;
+    foreach( const QByteArray &mail, mails ) {
+
+      MsgPtr ourMail( new KMime::Message() );
+      ourMail->setContent( KMime::CRLFtoLF( mail ) );
+      ourMail->parse();
+      QByteArray ourMailBody = ourMail->body();
+
+      // FIXME: We really want to compare the whole message, including headers,
+      // but kmime doesn't seem to have an easy compare function for this
+      if ( itemMailBody == ourMailBody ) {
+        mailKnown = true;
+        break;
+      }
+    }
+    QVERIFY( mailKnown );
+  }
+
+  // Delete all mails so the maildir is clean for the next test
+  foreach( const Item &item, items ) {
+    ItemDeleteJob *job = new ItemDeleteJob( item );
+    QVERIFY( job->exec() );
   }
 }
 
