@@ -36,8 +36,8 @@ public:
     ~FakeServer();
     virtual void run();
     void setNextConversation( const QString &conversation );
-    void testConversation();
     void setAllowedDeletions( const QString &deleteIds );
+    void setMails( const QList<QByteArray> &mails );
 
 Q_SIGNALS:
     void disconnected();
@@ -55,6 +55,7 @@ private:
     QList<QByteArray> mReadData;
     QList<QByteArray> mWriteData;
     QList<QByteArray> mAllowedDeletions;
+    QList<QByteArray> mMails;
     int mConnections;
     QTcpServer *mTcpServer;
     QMutex mMutex;

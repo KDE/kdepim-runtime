@@ -102,8 +102,32 @@ void Pop3Test::cleanupTestCase()
   mFakeServer = 0;
 }
 
+static const QByteArray simpleMail1 =
+  "From: \"Bill Lumbergh\" <BillLumbergh@initech.com>\r\n"
+  "To: \"Peter Gibbons\" <PeterGibbons@initech.com>\r\n"
+  "Subject: TPS Reports - New Cover Sheets\r\n"
+  "\r\n"
+  "Hi, Peter. What's happening? We need to talk about your TPS reports.\r\n";
+
+static const QByteArray simpleMail2 =
+  "From: \"Amy McCorkell\" <yooper@mtao.net>\r\n"
+  "To: gov.palin@yaho.com\r\n"
+  "Subject: HI SARAH\r\n"
+  "\r\n"
+  "Hey Sarah,\r\n"
+  "bla bla bla bla bla\r\n";
+
+static const QByteArray simpleMail3 =
+  "From: chunkylover53@aol.com\r\n"
+  "To: tylerdurden@paperstreetsoapcompany.com\r\n"
+  "Subject: ILOVEYOU\r\n"
+  "\r\n"
+  "kindly check the attached LOVELETTER coming from me.\r\n";
+
 void Pop3Test::testSimpleDownload()
 {
+  mFakeServer->setAllowedDeletions("1,2,3");
+  mFakeServer->setMails( QList<QByteArray>() << simpleMail1 << simpleMail2 << simpleMail3 );
   mFakeServer->setNextConversation(
     "C: USER HansWurst\r\n"
     "S: +OK May I have your password, please?\r\n"
@@ -111,9 +135,9 @@ void Pop3Test::testSimpleDownload()
     "S: +OK Mailbox locked and ready\r\n"
     "C: LIST\r\n"
     "S: +OK You got new spam\r\n"
-        "1 100\r\n"
-        "2 200\r\n"
-        "3 300\r\n"
+        "1 %MAILSIZE%\r\n"
+        "2 %MAILSIZE%\r\n"
+        "3 %MAILSIZE%\r\n"
         ".\r\n"
     "C: UIDL\r\n"
     "S: +OK\r\n"
@@ -123,15 +147,15 @@ void Pop3Test::testSimpleDownload()
         ".\r\n"
     "C: RETR 1\r\n"
     "S: +OK Here is your spam\r\n"
-        "1lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        "%MAIL%\r\n"
         ".\r\n"
     "C: RETR 2\r\n"
     "S: +OK Here is your spam\r\n"
-        "2lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        "%MAIL%\r\n"
         ".\r\n"
     "C: RETR 3\r\n"
     "S: +OK Here is your spam\r\n"
-        "lkadsjflkajsdlkfjaslkdjfklasjdflkjaskldf\r\n"
+        "%MAIL%\r\n"
         ".\r\n"
     "C: DELE %DELE%\r\n"
     "S: +OK message sent to /dev/null\r\n"
@@ -142,7 +166,6 @@ void Pop3Test::testSimpleDownload()
     "C: QUIT\r\n"
     "S: +OK Have a nice day.\r\n"
   );
-  mFakeServer->setAllowedDeletions("1,2,3");
 
   QSignalSpy disconnectSpy( mFakeServer, SIGNAL( disconnected() ) );
   QSignalSpy progressSpy( mFakeServer, SIGNAL( progress() ) );

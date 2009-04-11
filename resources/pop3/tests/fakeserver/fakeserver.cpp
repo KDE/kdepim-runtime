@@ -145,10 +145,9 @@ void FakeServer::setAllowedDeletions( const QString &deleteIds )
   }
 }
 
-
-void FakeServer::testConversation()
+void FakeServer::setMails( const QList<QByteArray> &mails)
 {
-  Q_ASSERT( mReadData.isEmpty() && mWriteData.isEmpty() );
+  mMails = mails;
 }
 
 void FakeServer::parseConversationData( const QString& conversation )
@@ -157,7 +156,6 @@ void FakeServer::parseConversationData( const QString& conversation )
 
   Q_ASSERT( mReadData.isEmpty() );
   Q_ASSERT( mWriteData.isEmpty() );
-  Q_ASSERT( mAllowedDeletions.isEmpty() );
   Q_ASSERT( !conversation.isEmpty() );
 
   QStringList lines = conversation.split( "\r\n", QString::SkipEmptyParts );
@@ -166,8 +164,24 @@ void FakeServer::parseConversationData( const QString& conversation )
   enum Mode { Client, Server };
   Mode mode = Client;
 
+  const QByteArray mailSizeMarker = QString( "%MAILSIZE%" ).toAscii();
+  const QByteArray mailMarker = QString( "%MAIL%" ).toAscii();
+  int sizeIndex = 0;
+  int mailIndex = 0;
+
   foreach( const QString &line, lines ) {
+
     QByteArray lineData( line.toUtf8() );
+
+    if ( lineData.contains( mailSizeMarker ) ) {
+      Q_ASSERT( mMails.size() > sizeIndex );
+      lineData.replace( mailSizeMarker, QString( mMails[sizeIndex++].size() ).toAscii() );
+    }
+    if ( lineData.contains( mailMarker ) ) {
+      Q_ASSERT( mMails.size() > mailIndex );
+      lineData.replace( mailMarker, mMails[mailIndex++] );
+    }
+
     if ( lineData.startsWith( "S: " ) ) {
       mWriteData.append( lineData.mid( 3 ) + "\r\n" );
       mode = Server;
