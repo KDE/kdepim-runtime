@@ -325,4 +325,29 @@ void Pop3Test::testSimpleDownload()
 
 void Pop3Test::testSimpleLeaveOnServer()
 {
+  mSettingsInterface->setLeaveOnServer( true );
+
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
+  mFakeServer->setAllowedDeletions("1,2,3");
+  mFakeServer->setMails( mails );
+  mFakeServer->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    "C: UIDL\r\n"
+    "S: +OK\r\n"
+        "1 melone\r\n"
+        "2 toaster\r\n"
+        "3 78AB89EF899AA89C3D\r\n"
+        ".\r\n" +
+    retrieveSequence( mails ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+  cleanupMaildir( items );
+
+  mSettingsInterface->setLeaveOnServer( false );
 }
