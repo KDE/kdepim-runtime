@@ -296,22 +296,29 @@ QString Pop3Test::listSequence( const QList<QByteArray> &mails ) const
   return result;
 }
 
+QString Pop3Test::uidSequence( const QStringList& uids ) const
+{
+  QString result = "C: UIDL\r\n"
+                   "S: +OK\r\n";
+  for ( int i = 1; i <= uids.size(); i++ ) {
+    result += QString( "%1 %2\r\n" ).arg( i ).arg( uids[i - 1] );
+  }
+  result += ".\r\n";
+  return result;
+}
+
 
 void Pop3Test::testSimpleDownload()
 {
   QList<QByteArray> mails;
   mails << simpleMail1 << simpleMail2 << simpleMail3;
-  mFakeServer->setAllowedDeletions("1,2,3");
+  QStringList uids;
+  uids << "UID1" << "UID2" << "UID3";  mFakeServer->setAllowedDeletions("1,2,3");
   mFakeServer->setMails( mails );
   mFakeServer->setNextConversation(
     loginSequence() +
     listSequence( mails ) +
-    "C: UIDL\r\n"
-    "S: +OK\r\n"
-        "1 melone\r\n"
-        "2 toaster\r\n"
-        "3 78AB89EF899AA89C3D\r\n"
-        ".\r\n" +
+    uidSequence( uids ) +
     retrieveSequence( mails ) +
     deleteSequence( mails.size() ) +
     quitSequence()
@@ -329,17 +336,14 @@ void Pop3Test::testSimpleLeaveOnServer()
 
   QList<QByteArray> mails;
   mails << simpleMail1 << simpleMail2 << simpleMail3;
+  QStringList uids;
+  uids << "UID1" << "UID2" << "UID3";
   mFakeServer->setAllowedDeletions("1,2,3");
   mFakeServer->setMails( mails );
   mFakeServer->setNextConversation(
     loginSequence() +
     listSequence( mails ) +
-    "C: UIDL\r\n"
-    "S: +OK\r\n"
-        "1 melone\r\n"
-        "2 toaster\r\n"
-        "3 78AB89EF899AA89C3D\r\n"
-        ".\r\n" +
+    uidSequence( uids ) +
     retrieveSequence( mails ) +
     quitSequence()
   );
@@ -348,6 +352,9 @@ void Pop3Test::testSimpleLeaveOnServer()
   Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
   checkMailsInMaildir( mails );
   cleanupMaildir( items );
+
+  // The resource should have saved the UIDs of the seen messages
+  QVERIFY( qEqual( uids.begin(), uids.end(), mSettingsInterface->seenUidList().value().begin() ) );
 
   mSettingsInterface->setLeaveOnServer( false );
 }

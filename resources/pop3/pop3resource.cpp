@@ -140,13 +140,8 @@ void POP3Resource::retrieveCollections()
       }
     }
 
-    // FIXME: !!!!
-    //QString seenUidList = KStandardDirs::locateLocal( "data", "kmail/" + mLogin + ':' + '@' +
-    //                                   mHost + ':' + QString("%1").arg(mPort) );
     QString seenUidList;
-    KSharedConfigPtr configFile = KGlobal::config(); // FIXME: this is all wrong: akonadi config files are somehwere else!!!
-    KConfigGroup group( configFile, "LeaveOnServer" );
-    QStringList uidsOfSeenMsgs = group.readEntry( "seenUidList", QStringList() );
+    QStringList uidsOfSeenMsgs = Settings::seenUidList();
     mUidsOfSeenMsgsDict.clear();
     mUidsOfSeenMsgsDict.reserve( nextPrime( ( uidsOfSeenMsgs.count() * 11 ) / 10 ) );
     for ( int i = 0; i < uidsOfSeenMsgs.count(); ++i ) {
@@ -155,7 +150,7 @@ void POP3Resource::retrieveCollections()
       // mTimeOfSeenMsgsVector for use in PopAccount::slotData()
       mUidsOfSeenMsgsDict.insert( uidsOfSeenMsgs[i].toLatin1(), i );
     }
-    QList<int> timeOfSeenMsgs = group.readEntry( "seenUidTimeList",QList<int>() );
+    QList<int> timeOfSeenMsgs = Settings::seenUidTimeList();
     // If the counts differ then the config file has presumably been tampered
     // with and so to avoid possible unwanted message deletion we'll treat
     // them all as newly seen by clearing the seen times vector
@@ -163,7 +158,7 @@ void POP3Resource::retrieveCollections()
       mTimeOfSeenMsgsVector = timeOfSeenMsgs.toVector();
     else
       mTimeOfSeenMsgsVector.clear();
-    QStringList downloadLater = group.readEntry( "downloadLater", QStringList() );
+    QStringList downloadLater = Settings::downloadLater();
     for ( int i = 0; i < downloadLater.count(); ++i ) {
       mHeaderLaterUids.insert( downloadLater[i].toLatin1() );
     }
@@ -1090,35 +1085,30 @@ void POP3Resource::processRemainingQueuedMessages()
 
 void POP3Resource::saveUidList()
 {
-  kDebug();
+  kDebug() << "Going to save the UID list of messages which are still on the server.";
+
   // Don't update the seen uid list unless we successfully got
   // a new list from the server
-  if (!mUidlFinished) return;
+  if ( !mUidlFinished )
+    return;
 
   QStringList uidsOfNextSeenMsgs;
   QList<int> seenUidTimeList;
-  for ( QHash<QByteArray,int>::const_iterator it = mUidsOfNextSeenMsgsDict.constBegin();
-       it != mUidsOfNextSeenMsgsDict.constEnd(); ++it ) {
-    uidsOfNextSeenMsgs.append( it.key() );
-    seenUidTimeList.append( mTimeOfNextSeenMsgsMap[ it.key() ] );
+  foreach( const QByteArray &uid, mUidsOfNextSeenMsgsDict.keys() ) {
+    uidsOfNextSeenMsgs.append( uid );
+    seenUidTimeList.append( mTimeOfNextSeenMsgsMap[ uid ] );
   }
-  //FIXME!!!
- // QString seenUidList;// = KStandardDirs::locateLocal( "data", "kmail/" + mLogin + ':' + '@' +
-                        //              mHost + ':' + QString::number( mPort ) );
-  KSharedConfigPtr configFile = KGlobal::config(); // FIXME: this is all wrong: akonadi config files are somehwere else!!!
-  // FIXME: config compat!!
-  KConfigGroup group( configFile, "LeaveOnServer" );
-  group.writeEntry( "seenUidList", uidsOfNextSeenMsgs );
-  group.writeEntry( "seenUidTimeList", seenUidTimeList );
-  QByteArray laterList;
-  laterList.reserve( mHeaderLaterUids.count() * 5 ); // what's the average size of a uid?
+
+  QStringList laterList;
   foreach( const QByteArray& uid, mHeaderLaterUids ) {
-      if ( !laterList.isEmpty() )
-          laterList += ',';
-      laterList.append( uid );
+    laterList.append( uid );
   }
-  group.writeEntry( "downloadLater", laterList.constData() );
-  configFile->sync();
+
+  Settings::setSeenUidList( uidsOfNextSeenMsgs );
+  Settings::setSeenUidTimeList( seenUidTimeList );
+  Settings::setDownloadLater( laterList );
+  Settings::self()->writeConfig();
+  Settings::self()->config()->sync();
 }
 
 void POP3Resource::slotAbortRequested()

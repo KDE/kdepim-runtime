@@ -47,6 +47,7 @@ class Pop3Test : public QObject
     QString deleteSequence( int numToDelete ) const;
     QString quitSequence() const;
     QString listSequence( const QList<QByteArray> &mails ) const;
+    QString uidSequence( const QStringList &uids ) const;
 
     FakeServer *mFakeServer;
     OrgKdeAkonadiPOP3SettingsInterface *mSettingsInterface;

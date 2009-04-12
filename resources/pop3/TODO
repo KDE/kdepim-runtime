@@ -13,12 +13,12 @@ BUGS
 TODO
 ====
 
+get rid of "interactive"
 make resource name configureable
 rename vars, functions
 kdebug
 astyle
 api documentation (also for fakeserver)
-(!) kconfigxt
 (!) Config UI
   -> target collection chooser
 auto-create local inbox
