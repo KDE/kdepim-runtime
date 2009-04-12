@@ -338,7 +338,6 @@ void Pop3Test::testSimpleLeaveOnServer()
   mails << simpleMail1 << simpleMail2 << simpleMail3;
   QStringList uids;
   uids << "UID1" << "UID2" << "UID3";
-  mFakeServer->setAllowedDeletions("1,2,3");
   mFakeServer->setMails( mails );
   mFakeServer->setNextConversation(
     loginSequence() +
