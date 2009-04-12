@@ -539,8 +539,12 @@ void FolderTreeWidgetItem::updateExpandedState()
 void FolderTreeWidgetItem::updateColumn( int columnIndex )
 {
   FolderTreeWidget * tree = dynamic_cast< FolderTreeWidget * >( treeWidget() );
-  if ( tree )
+  if ( tree ) {
     tree->updateColumnForItem( this, columnIndex );
+    if ( columnIndex!=tree->labelColumnIndex() && !tree->unreadColumnVisible() && tree->labelColumnVisible() ) {
+      updateColumn( tree->labelColumnIndex() );
+    }
+  }
 }
 
 void FolderTreeWidgetItem::setIsCloseToQuota( bool closeToQuota )
