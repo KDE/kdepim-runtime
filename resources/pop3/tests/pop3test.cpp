@@ -26,6 +26,8 @@
 #include <akonadi/qtest_akonadi.h>
 #include <kmime/kmime_message.h>
 
+#include <KStandardDirs>
+
 #include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<KMime::Message> MsgPtr;
@@ -61,6 +63,7 @@ void Pop3Test::initTestCase()
       mMaildirCollection = col;
   }
   QCOMPARE( collections.size(), 2 );
+  mMaildirPath = KGlobal::dirs()->saveLocation( "data", "tester", false ) + "maildirtest/new";
 
   mFakeServer = new FakeServer( this );
   mFakeServer->start();
@@ -219,6 +222,10 @@ void Pop3Test::testSimpleDownload()
   QVERIFY( job->exec() );
   Item::List items = job->items();
   QCOMPARE( mails.size(), items.size() );
+
+  QSet<QByteArray> ourMailBodies;
+  QSet<QByteArray> itemMailBodies;
+
   foreach( const Item &item, items ) {
     MsgPtr itemMail = item.payload<MsgPtr>();
     QByteArray itemMailBody = itemMail->body();
@@ -227,28 +234,44 @@ void Pop3Test::testSimpleDownload()
     // Get rid of this so we can compare them.
     // FIXME: is this a bug? Find out where the newline comes from!
     itemMailBody.chop( 1 );
-    bool mailKnown = false;
-    foreach( const QByteArray &mail, mails ) {
+    itemMailBodies.insert( itemMailBody );
+  }
 
-      MsgPtr ourMail( new KMime::Message() );
-      ourMail->setContent( KMime::CRLFtoLF( mail ) );
-      ourMail->parse();
-      QByteArray ourMailBody = ourMail->body();
+  foreach( const QByteArray &mail, mails ) {
+    MsgPtr ourMail( new KMime::Message() );
+    ourMail->setContent( KMime::CRLFtoLF( mail ) );
+    ourMail->parse();
+    QByteArray ourMailBody = ourMail->body();
+    ourMailBodies.insert( ourMailBody );
+  }
 
-      // FIXME: We really want to compare the whole message, including headers,
-      // but kmime doesn't seem to have an easy compare function for this
-      if ( itemMailBody == ourMailBody ) {
-        mailKnown = true;
-        break;
-      }
+  QVERIFY( ourMailBodies == itemMailBodies );
+
+  // Now, test that all mails actually ended up in the maildir. Since the maildir resource
+  // might be slower, give it a timeout so it can write the files to disk
+  time.restart();
+  forever {
+    QDir maildir( mMaildirPath );
+    maildir.refresh();
+    if ( static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() ) == mails.count() ) {
+      break;
     }
-    QVERIFY( mailKnown );
+    QVERIFY( static_cast<int>( maildir.entryList( QDir::NoDotAndDotDot ).count() ) <= mails.count() );
+    QVERIFY( time.elapsed() < 60000 );
   }
 
   // Delete all mails so the maildir is clean for the next test
   foreach( const Item &item, items ) {
     ItemDeleteJob *job = new ItemDeleteJob( item );
     QVERIFY( job->exec() );
+  }
+  time.restart();
+  forever {
+    QDir maildir( mMaildirPath );
+    maildir.refresh();
+    if ( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() == 0 )
+      break;
+    QVERIFY( time.elapsed() < 60000 );
   }
 }
 

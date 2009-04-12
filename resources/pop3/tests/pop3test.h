@@ -41,6 +41,7 @@ class Pop3Test : public QObject
     OrgKdeAkonadiPOP3SettingsInterface *mSettingsInterface;
     Akonadi::Collection mMaildirCollection;
     QString mPop3Identifier;
+    QString mMaildirPath;
 };
 
 #endif
