@@ -23,6 +23,7 @@
 #include "settings.h"
 
 #include <Akonadi/Collection>
+#include <Akonadi/Item>
 
 #include <QtCore/QObject>
 #include <QtCore/QList>
@@ -37,6 +38,16 @@ class Pop3Test : public QObject
     void testSimpleLeaveOnServer();
 
   private:
+    void cleanupMaildir( Akonadi::Item::List items );
+    void checkMailsInMaildir( const QList<QByteArray> &mails );
+    Akonadi::Item::List checkMailsOnAkonadiServer( const QList<QByteArray> &mails );
+    void syncAndWaitForFinish();
+    QString loginSequence() const;
+    QString retrieveSequence( const QList<QByteArray> &mails ) const;
+    QString deleteSequence( int numToDelete ) const;
+    QString quitSequence() const;
+    QString listSequence( const QList<QByteArray> &mails ) const;
+
     FakeServer *mFakeServer;
     OrgKdeAkonadiPOP3SettingsInterface *mSettingsInterface;
     Akonadi::Collection mMaildirCollection;

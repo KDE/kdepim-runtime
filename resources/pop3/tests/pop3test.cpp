@@ -108,7 +108,6 @@ void Pop3Test::initTestCase()
 
 void Pop3Test::cleanupTestCase()
 {
-  qDebug() << "Cleaning up testcase.";
   delete mFakeServer;
   mFakeServer = 0;
 }
@@ -144,51 +143,81 @@ static const QByteArray simpleMail3 =
   "\r\n"
   "kindly check the attached LOVELETTER coming from me.\r\n";
 
-void Pop3Test::testSimpleDownload()
+void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
-  QList<QByteArray> mails;
-  mails << simpleMail1 << simpleMail2 << simpleMail3;
-  mFakeServer->setAllowedDeletions("1,2,3");
-  mFakeServer->setMails( mails );
-  mFakeServer->setNextConversation(
-    "C: USER HansWurst\r\n"
-    "S: +OK May I have your password, please?\r\n"
-    "C: PASS Geheim\r\n"
-    "S: +OK Mailbox locked and ready\r\n"
-    "C: LIST\r\n"
-    "S: +OK You got new spam\r\n"
-        "1 %MAILSIZE%\r\n"
-        "2 %MAILSIZE%\r\n"
-        "3 %MAILSIZE%\r\n"
-        ".\r\n"
-    "C: UIDL\r\n"
-    "S: +OK\r\n"
-        "1 melone\r\n"
-        "2 toaster\r\n"
-        "3 78AB89EF899AA89C3D\r\n"
-        ".\r\n"
-    "C: RETR 1\r\n"
-    "S: +OK Here is your spam\r\n"
-        "%MAIL%\r\n"
-        ".\r\n"
-    "C: RETR 2\r\n"
-    "S: +OK Here is your spam\r\n"
-        "%MAIL%\r\n"
-        ".\r\n"
-    "C: RETR 3\r\n"
-    "S: +OK Here is your spam\r\n"
-        "%MAIL%\r\n"
-        ".\r\n"
-    "C: DELE %DELE%\r\n"
-    "S: +OK message sent to /dev/null\r\n"
-    "C: DELE %DELE%\r\n"
-    "S: +OK message sent to /dev/null\r\n"
-    "C: DELE %DELE%\r\n"
-    "S: +OK message sent to /dev/null\r\n"
-    "C: QUIT\r\n"
-    "S: +OK Have a nice day.\r\n"
-  );
+  // Delete all mails so the maildir is clean for the next test
+  foreach( const Item &item, items ) {
+    ItemDeleteJob *job = new ItemDeleteJob( item );
+    QVERIFY( job->exec() );
+  }
+  QTime time;
+  time.start();
+  forever {
+    QDir maildir( mMaildirPath );
+    maildir.refresh();
+    if ( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() == 0 )
+      break;
+    QVERIFY( time.elapsed() < 60000 );
+  }
+}
 
+void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
+{
+  // Now, test that all mails actually ended up in the maildir. Since the maildir resource
+  // might be slower, give it a timeout so it can write the files to disk
+  QTime time;
+  time.start();
+  forever {
+    QDir maildir( mMaildirPath );
+    maildir.refresh();
+    if ( static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() ) == mails.count() ) {
+      break;
+    }
+    QVERIFY( static_cast<int>( maildir.entryList( QDir::NoDotAndDotDot ).count() ) <= mails.count() );
+    QVERIFY( time.elapsed() < 60000 );
+  }
+
+  // TODO: check file contents as well or is this overkill?
+}
+
+Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer( const QList<QByteArray> &mails )
+{
+  // The fake server got disconnected, which means the pop3 resource has entered the QUIT
+  // stage. That means all messages should be on the server now, so test that.
+  ItemFetchJob *job = new ItemFetchJob( mMaildirCollection );
+  job->fetchScope().fetchFullPayload();
+  Q_ASSERT( job->exec() );
+  Item::List items = job->items();
+  Q_ASSERT( mails.size() == items.size() );
+
+  QSet<QByteArray> ourMailBodies;
+  QSet<QByteArray> itemMailBodies;
+
+  foreach( const Item &item, items ) {
+    MsgPtr itemMail = item.payload<MsgPtr>();
+    QByteArray itemMailBody = itemMail->body();
+
+    // For some reason, the body in the maildir has one additional newline.
+    // Get rid of this so we can compare them.
+    // FIXME: is this a bug? Find out where the newline comes from!
+    itemMailBody.chop( 1 );
+    itemMailBodies.insert( itemMailBody );
+  }
+
+  foreach( const QByteArray &mail, mails ) {
+    MsgPtr ourMail( new KMime::Message() );
+    ourMail->setContent( KMime::CRLFtoLF( mail ) );
+    ourMail->parse();
+    QByteArray ourMailBody = ourMail->body();
+    ourMailBodies.insert( ourMailBody );
+  }
+
+  Q_ASSERT( ourMailBodies == itemMailBodies );
+  return items;
+}
+
+void Pop3Test::syncAndWaitForFinish()
+{
   QSignalSpy disconnectSpy( mFakeServer, SIGNAL( disconnected() ) );
   QSignalSpy progressSpy( mFakeServer, SIGNAL( progress() ) );
   AgentManager::self()->instance( mPop3Identifier ).synchronize();
@@ -214,65 +243,84 @@ void Pop3Test::testSimpleDownload()
       break;
     }
   }
+}
 
-  // The fake server got disconnected, which means the pop3 resource has entered the QUIT
-  // stage. That means all messages should be on the server now, so test that.
-  ItemFetchJob *job = new ItemFetchJob( mMaildirCollection );
-  job->fetchScope().fetchFullPayload();
-  QVERIFY( job->exec() );
-  Item::List items = job->items();
-  QCOMPARE( mails.size(), items.size() );
+QString Pop3Test::loginSequence() const
+{
+  return
+    "C: USER HansWurst\r\n"
+    "S: +OK May I have your password, please?\r\n"
+    "C: PASS Geheim\r\n"
+    "S: +OK Mailbox locked and ready\r\n";
+}
 
-  QSet<QByteArray> ourMailBodies;
-  QSet<QByteArray> itemMailBodies;
-
-  foreach( const Item &item, items ) {
-    MsgPtr itemMail = item.payload<MsgPtr>();
-    QByteArray itemMailBody = itemMail->body();
-
-    // For some reason, the body in the maildir has one additional newline.
-    // Get rid of this so we can compare them.
-    // FIXME: is this a bug? Find out where the newline comes from!
-    itemMailBody.chop( 1 );
-    itemMailBodies.insert( itemMailBody );
+QString Pop3Test::retrieveSequence( const QList<QByteArray> &mails ) const
+{
+  QString result;
+  for( int i = 1; i <= mails.size(); i++ ) {
+    result += QString(
+      "C: RETR %1\r\n"
+      "S: +OK Here is your spam\r\n"
+          "%MAIL%\r\n"
+          ".\r\n" ).arg( i );
   }
+  return result;
+}
 
-  foreach( const QByteArray &mail, mails ) {
-    MsgPtr ourMail( new KMime::Message() );
-    ourMail->setContent( KMime::CRLFtoLF( mail ) );
-    ourMail->parse();
-    QByteArray ourMailBody = ourMail->body();
-    ourMailBodies.insert( ourMailBody );
+QString Pop3Test::deleteSequence( int numToDelete ) const
+{
+  QString result;
+  for ( int i = 0; i < numToDelete; i++ ) {
+    result +=
+        "C: DELE %DELE%\r\n"
+        "S: +OK message sent to /dev/null\r\n";
   }
+  return result;
+}
 
-  QVERIFY( ourMailBodies == itemMailBodies );
+QString Pop3Test::quitSequence() const
+{
+  return
+    "C: QUIT\r\n"
+    "S: +OK Have a nice day.\r\n";
+}
 
-  // Now, test that all mails actually ended up in the maildir. Since the maildir resource
-  // might be slower, give it a timeout so it can write the files to disk
-  time.restart();
-  forever {
-    QDir maildir( mMaildirPath );
-    maildir.refresh();
-    if ( static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() ) == mails.count() ) {
-      break;
-    }
-    QVERIFY( static_cast<int>( maildir.entryList( QDir::NoDotAndDotDot ).count() ) <= mails.count() );
-    QVERIFY( time.elapsed() < 60000 );
+QString Pop3Test::listSequence( const QList<QByteArray> &mails ) const
+{
+  QString result = "C: LIST\r\n"
+                   "S: +OK You got new spam\r\n";
+  for ( int i = 1; i <= mails.size(); i++ ) {
+    result += QString( "%1 %MAILSIZE%\r\n" ).arg( i );
   }
+  result += ".\r\n";
+  return result;
+}
 
-  // Delete all mails so the maildir is clean for the next test
-  foreach( const Item &item, items ) {
-    ItemDeleteJob *job = new ItemDeleteJob( item );
-    QVERIFY( job->exec() );
-  }
-  time.restart();
-  forever {
-    QDir maildir( mMaildirPath );
-    maildir.refresh();
-    if ( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() == 0 )
-      break;
-    QVERIFY( time.elapsed() < 60000 );
-  }
+
+void Pop3Test::testSimpleDownload()
+{
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
+  mFakeServer->setAllowedDeletions("1,2,3");
+  mFakeServer->setMails( mails );
+  mFakeServer->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    "C: UIDL\r\n"
+    "S: +OK\r\n"
+        "1 melone\r\n"
+        "2 toaster\r\n"
+        "3 78AB89EF899AA89C3D\r\n"
+        ".\r\n" +
+    retrieveSequence( mails ) +
+    deleteSequence( mails.size() ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+  cleanupMaildir( items );
 }
 
 void Pop3Test::testSimpleLeaveOnServer()
