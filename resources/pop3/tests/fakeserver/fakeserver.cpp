@@ -110,7 +110,10 @@ void FakeServer::slotDisconnected()
   qDebug() << "FakeServer got disconnected.";
   QMutexLocker locker( &mMutex );
   mConnections--;
-  Q_ASSERT( mConnections >= 0 );
+  Q_ASSERT( mConnections == 0 );
+  Q_ASSERT( mAllowedDeletions.isEmpty() );
+  Q_ASSERT( mReadData.isEmpty() );
+  Q_ASSERT( mWriteData.isEmpty() );
   emit disconnected();
 }
 
@@ -132,11 +135,6 @@ void FakeServer::run()
   mTcpServer = 0;
 }
 
-void FakeServer::setNextConversation( const QString& conversation )
-{
-  parseConversationData( conversation );
-}
-
 void FakeServer::setAllowedDeletions( const QString &deleteIds )
 {
   QStringList ids = deleteIds.split( ',' );
@@ -150,7 +148,8 @@ void FakeServer::setMails( const QList<QByteArray> &mails)
   mMails = mails;
 }
 
-void FakeServer::parseConversationData( const QString& conversation )
+void FakeServer::setNextConversation( const QString& conversation,
+                                      const QList<int> &exceptions )
 {
   QMutexLocker locker( &mMutex );
 
@@ -178,6 +177,8 @@ void FakeServer::parseConversationData( const QString& conversation )
       lineData.replace( mailSizeMarker, QString( mMails[sizeIndex++].size() ).toAscii() );
     }
     if ( lineData.contains( mailMarker ) ) {
+      while( exceptions.contains( mailIndex + 1 ) )
+        mailIndex++;
       Q_ASSERT( mMails.size() > mailIndex );
       lineData.replace( mailMarker, mMails[mailIndex++] );
     }

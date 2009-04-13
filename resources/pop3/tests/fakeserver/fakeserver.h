@@ -35,7 +35,8 @@ public:
     FakeServer( QObject* parent = 0 );
     ~FakeServer();
     virtual void run();
-    void setNextConversation( const QString &conversation );
+    void setNextConversation( const QString &conversation,
+                              const QList<int> &exceptions = QList<int>() );
     void setAllowedDeletions( const QString &deleteIds );
     void setMails( const QList<QByteArray> &mails );
 
@@ -49,7 +50,6 @@ private Q_SLOTS:
 
 private:
 
-    void parseConversationData( const QString &conversation );
     QByteArray parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived );
 
     QList<QByteArray> mReadData;

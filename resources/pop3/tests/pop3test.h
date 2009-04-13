@@ -43,7 +43,8 @@ class Pop3Test : public QObject
     Akonadi::Item::List checkMailsOnAkonadiServer( const QList<QByteArray> &mails );
     void syncAndWaitForFinish();
     QString loginSequence() const;
-    QString retrieveSequence( const QList<QByteArray> &mails ) const;
+    QString retrieveSequence( const QList< QByteArray >& mails,
+                              const QList<int> &exceptions = QList<int>() ) const;
     QString deleteSequence( int numToDelete ) const;
     QString quitSequence() const;
     QString listSequence( const QList<QByteArray> &mails ) const;

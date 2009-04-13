@@ -143,6 +143,13 @@ static const QByteArray simpleMail3 =
   "\r\n"
   "kindly check the attached LOVELETTER coming from me.\r\n";
 
+static const QByteArray simpleMail4 =
+  "From: karl@aol.com\r\n"
+  "To: lenny@aol.com\r\n"
+  "Subject: Who took the donuts?\r\n"
+  "\r\n"
+  "Hi Lenny, do you know who took all the donuts?\r\n";
+
 void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
   // Delete all mails so the maildir is clean for the next test
@@ -254,15 +261,18 @@ QString Pop3Test::loginSequence() const
     "S: +OK Mailbox locked and ready\r\n";
 }
 
-QString Pop3Test::retrieveSequence( const QList<QByteArray> &mails ) const
+QString Pop3Test::retrieveSequence( const QList<QByteArray> &mails,
+                                    const QList<int> &exceptions ) const
 {
   QString result;
   for( int i = 1; i <= mails.size(); i++ ) {
-    result += QString(
-      "C: RETR %1\r\n"
-      "S: +OK Here is your spam\r\n"
-          "%MAIL%\r\n"
-          ".\r\n" ).arg( i );
+    if ( !exceptions.contains( i ) ) {
+      result += QString(
+        "C: RETR %1\r\n"
+        "S: +OK Here is your spam\r\n"
+            "%MAIL%\r\n"
+            ".\r\n" ).arg( i );
+    }
   }
   return result;
 }
@@ -350,10 +360,34 @@ void Pop3Test::testSimpleLeaveOnServer()
   syncAndWaitForFinish();
   Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
   checkMailsInMaildir( mails );
-  cleanupMaildir( items );
 
   // The resource should have saved the UIDs of the seen messages
   QVERIFY( qEqual( uids.begin(), uids.end(), mSettingsInterface->seenUidList().value().begin() ) );
+
+  //
+  // OK, next mail check: We have to check that the old seen messages are not downloaded again,
+  // only new mails.
+  //
+  QList<QByteArray> newMails( mails );
+  newMails << simpleMail4;
+  QStringList newUids( uids );
+  newUids << "newUID";
+  QList<int> idsToNotDownload;
+  idsToNotDownload << 1 << 2 << 3;
+  mFakeServer->setMails( newMails );
+  mFakeServer->setNextConversation(
+    loginSequence() +
+    listSequence( newMails ) +
+    uidSequence( newUids ) +
+    retrieveSequence( newMails, idsToNotDownload ) +
+    quitSequence(),
+    idsToNotDownload
+  );
+
+  syncAndWaitForFinish();
+  items = checkMailsOnAkonadiServer( newMails );
+  checkMailsInMaildir( newMails );
+  QVERIFY( qEqual( newUids.begin(), newUids.end(), mSettingsInterface->seenUidList().value().begin() ) );
 
   mSettingsInterface->setLeaveOnServer( false );
 }
