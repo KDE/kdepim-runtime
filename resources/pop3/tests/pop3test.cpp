@@ -389,5 +389,24 @@ void Pop3Test::testSimpleLeaveOnServer()
   checkMailsInMaildir( newMails );
   QVERIFY( qEqual( newUids.begin(), newUids.end(), mSettingsInterface->seenUidList().value().begin() ) );
 
+  //
+  // Ok, next test: When turning off leaving on the server, all mails should be deleted, but
+  // none downloaded.
+  //
   mSettingsInterface->setLeaveOnServer( false );
+
+  mFakeServer->setAllowedDeletions( "1,2,3,4" );
+  mFakeServer->setNextConversation(
+    loginSequence() +
+    listSequence( newMails ) +
+    uidSequence( newUids ) +
+    deleteSequence( newMails.size() ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  items = checkMailsOnAkonadiServer( newMails );
+  checkMailsInMaildir( newMails );
+  cleanupMaildir( items );
+  QVERIFY( mSettingsInterface->seenUidList().value().isEmpty() );
 }
