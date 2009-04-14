@@ -235,6 +235,7 @@ ContactGroupEditor::ContactGroupEditor( Mode mode, QWidget *parent )
 
 ContactGroupEditor::~ContactGroupEditor()
 {
+   delete d;
 }
 
 void ContactGroupEditor::loadContactGroup( const Akonadi::Item &item )

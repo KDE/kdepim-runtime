@@ -34,7 +34,7 @@ ContactsModel::ContactsModel(Session *session, Monitor *monitor, QObject *parent
 
 ContactsModel::~ContactsModel()
 {
-
+   delete d_ptr;
 }
 
 QVariant ContactsModel::getData(Item item, int column, int role) const

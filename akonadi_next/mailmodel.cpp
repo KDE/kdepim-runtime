@@ -36,7 +36,7 @@ MailModel::MailModel(Session *session, Monitor *monitor, QObject *parent)
 
 MailModel::~MailModel()
 {
-
+   delete d_ptr;
 }
 
 QVariant MailModel::getData(Item item, int column, int role) const

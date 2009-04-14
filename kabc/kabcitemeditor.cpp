@@ -276,6 +276,7 @@ KABCItemEditor::KABCItemEditor( Mode mode, QWidget *parent )
 
 KABCItemEditor::~KABCItemEditor()
 {
+  delete d;
 }
 
 void KABCItemEditor::loadContact( const Akonadi::Item &item )
