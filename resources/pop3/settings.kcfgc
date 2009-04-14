@@ -4,5 +4,5 @@ Mutators=true
 ItemAccessors=true
 SetUserTexts=true
 Singleton=true
-#IncludeFiles=
+IncludeFiles=metatype.h
 GlobalEnums=true
