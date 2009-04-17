@@ -184,7 +184,7 @@ public:
   bool includeUnsubscribed() const;
 
   QModelIndex indexForCollection(Collection col) const;
-  QModelIndex indexForItem(Item item) const;
+  QModelIndexList indexesForItem(Item item) const;
 
   Collection getCollection(Collection::Id);
   Item getItem(Item::Id);
@@ -262,6 +262,11 @@ private:
   Q_PRIVATE_SLOT( d_func(), void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
   Q_PRIVATE_SLOT( d_func(), void monitoredItemMoved( const Akonadi::Item&,
                   const Akonadi::Collection&, const Akonadi::Collection& ) )
+
+  Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
+                  const Akonadi::Collection& ) )
+  Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
+                  const Akonadi::Collection& ) )
 
   Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
                   const Akonadi::Collection& ) )

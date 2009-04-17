@@ -84,11 +84,10 @@ EntityTreeModel::EntityTreeModel( Session *session,
   connect( monitor, SIGNAL( collectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) ),
            SLOT(monitoredCollectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) ) );
 
-
   connect( monitor, SIGNAL( itemLinked(const Akonadi::Item &, const Akonadi::Collection &)),
-            SLOT(monitoredItemLinked(const Akonadi::Item &, const Akonadi::Collection &)));
+           SLOT(monitoredItemLinked(const Akonadi::Item &, const Akonadi::Collection &)));
   connect( monitor, SIGNAL( itemUnlinked(const Akonadi::Item &, const Akonadi::Collection &)),
-            SLOT(monitoredItemUnlinked(const Akonadi::Item &, const Akonadi::Collection &)));
+           SLOT(monitoredItemUnlinked(const Akonadi::Item &, const Akonadi::Collection &)));
 
 //   connect(q, SIGNAL(modelReset()), q, SLOT(slotModelReset()));
 
@@ -103,6 +102,12 @@ EntityTreeModel::EntityTreeModel( Session *session,
 EntityTreeModel::~EntityTreeModel()
 {
   Q_D( EntityTreeModel );
+
+  foreach(QList<Node*> list, d->m_childEntities)
+  {
+    qDeleteAll(list);
+    list.clear();
+  }
 }
 
 void EntityTreeModel::clearAndReset()
@@ -112,7 +117,7 @@ void EntityTreeModel::clearAndReset()
   d->m_items.clear();
   d->m_childEntities.clear();
   reset();
-  d->startFirstListJob();
+  QTimer::singleShot(0, this, SLOT(startFirstListJob()));
 }
 
 Collection EntityTreeModel::getCollection( Collection::Id id )
@@ -121,10 +126,9 @@ Collection EntityTreeModel::getCollection( Collection::Id id )
   return d->m_collections.value(id);
 }
 
-Item EntityTreeModel::getItem( qint64 id )
+Item EntityTreeModel::getItem( Item::Id id )
 {
   Q_D( EntityTreeModel );
-  if (id > 0) id *= -1;
   return d->m_items.value(id);
 }
 
@@ -240,18 +244,20 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
     return QVariant();
   Q_D( const EntityTreeModel );
 
-  if (d->m_collections.contains(index.internalId()))
+  Node *node = reinterpret_cast<Node *>(index.internalPointer());
+
+  if (Node::Collection == node->type)
   {
-    const Collection col = d->m_collections.value(index.internalId());
+    const Collection col = d->m_collections.value(node->id);
 
     if (!col.isValid())
       return QVariant();
     return getData(col, index.column(), role);
 
   }
-  else if (d->m_items.contains(index.internalId()))
+  else if (Node::Item == node->type)
   {
-    const Item item = d->m_items.value(index.internalId());
+    const Item item = d->m_items.value(node->id);
     if ( !item.isValid() )
       return QVariant();
 
@@ -278,9 +284,11 @@ Qt::ItemFlags EntityTreeModel::flags( const QModelIndex & index ) const
   if ( index.column() != 0 )
     return flags;
 
-  if (d->m_collections.contains(index.internalId()))
+  Node *node = reinterpret_cast<Node *>(index.internalPointer());
+
+  if (Node::Collection == node->type )
   {
-    const Collection col = d->m_collections.value(index.internalId());
+    const Collection col = d->m_collections.value(node->id);
     if ( col.isValid() ) {
 
       if (col == Collection::root())
@@ -306,14 +314,16 @@ Qt::ItemFlags EntityTreeModel::flags( const QModelIndex & index ) const
         flags |= Qt::ItemIsDropEnabled;
       }
     }
-  } else if (d->m_items.contains(index.internalId()))
+  } else if (Node::Item == node->type)
   {
     // Rights come from the parent collection.
+
+    Node *parentNode = reinterpret_cast<Node *>( index.parent().internalPointer() );
 
     // TODO: Is this right for the root collection? I think so, but only by chance.
     // But will it work if m_rootCollection is different from Collection::root?
     // Should probably rely on index.parent().isValid() for that.
-    const Collection parentCol = d->m_collections.value( index.parent().internalId() );
+    const Collection parentCol = d->m_collections.value( parentNode->id );
     if ( parentCol.isValid() ) {
       int rights = parentCol.rights();
       // Can't drop onto items.
@@ -364,7 +374,9 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
   if ( column > 0 )
     return false;
 
-  if (d->m_items.contains(parent.internalId()))
+  Node *node = reinterpret_cast<Node *>(parent.internalId());
+
+  if (Node::Item == node->type)
   {
     // Can't drop data onto an item, although we can drop data between items.
     return false;
@@ -372,9 +384,9 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
     // Find out what others do.
   }
 
-  if (d->m_collections.contains(parent.internalId()))
+  if ( Node::Collection == node->type)
   {
-    Collection destCol = d->m_collections.value( parent.internalId() );
+    Collection destCol = d->m_collections.value( node->id );
 
     // Applications can't create new collections in root. Only resources can.
     if (destCol == Collection::root())
@@ -395,8 +407,8 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
         } else {
           Item item = d->m_items.value( Item::fromUrl( url ).id() );
           if ( item.isValid() ) {
-            Collection col = d->getParentCollection( item );
-            dropped_items[ col.id()].append( item );
+//             Collection col = d->getParentCollection( item );
+//             dropped_items[ col.id()].append( item );
           } else {
             // A uri, but not an akonadi url. What to do?
             // Should handle known mimetypes like vcards first.
@@ -405,7 +417,6 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
         }
       }
       QHashIterator<Collection::Id, Item::List> item_iter( dropped_items );
-//       d->entityUpdateAdapter->beginTransaction();
       TransactionSequence *transaction = new TransactionSequence(d->m_session);
       while ( item_iter.hasNext() ) {
         item_iter.next();
@@ -456,28 +467,30 @@ QModelIndex EntityTreeModel::index( int row, int column, const QModelIndex & par
   if ( column >= columnCount() || column < 0 )
     return QModelIndex();
 
-  QList<Entity::Id> childEntities;
+  QList< Node * > childEntities;
 
-  if (!parent.isValid())
+  Node *parentNode = reinterpret_cast<Node *>( parent.internalPointer() );
+
+  if ( !parentNode || !parent.isValid() )
   {
     if (d->m_showRootCollection)
     {
-      childEntities << d->m_rootCollection.id();
+      childEntities << d->m_childEntities.value(-1);
     } else {
       childEntities = d->m_childEntities.value(d->m_rootCollection.id());
     }
   } else {
-    if(parent.internalId() >= 0)
-      childEntities = d->m_childEntities.value(parent.internalId());
+    if(parentNode->id >= 0)
+      childEntities = d->m_childEntities.value(parentNode->id);
   }
 
   int size = childEntities.size();
   if ( row < 0 || row >= size )
     return QModelIndex();
 
-  qint64 internalIdentifier = childEntities.at(row);
+  Node *node = childEntities.at(row);
 
-  return createIndex( row, column, reinterpret_cast<void*>( internalIdentifier ) );
+  return createIndex( row, column, reinterpret_cast<void*>( node ) );
 
 }
 
@@ -488,16 +501,12 @@ QModelIndex EntityTreeModel::parent( const QModelIndex & index ) const
   if ( !index.isValid() )
     return QModelIndex();
 
-  Collection col;
-  if (d->m_collections.contains(index.internalId()))
-  {
-    Collection childCol = d->m_collections.value( index.internalId() );
-    col = d->getParentCollection( childCol );
-  } else if ( d->m_items.contains(index.internalId() ) )
-  {
-    Item item = d->getItem(index.internalId());
-    col = d->getParentCollection( item );
-  }
+  Node *node = reinterpret_cast<Node *>(index.internalPointer());
+
+  if (!node)
+    return QModelIndex();
+
+  Collection col = d->m_collections.value( node->parent );
 
   if ( !col.isValid() )
     return QModelIndex();
@@ -507,12 +516,14 @@ QModelIndex EntityTreeModel::parent( const QModelIndex & index ) const
     if (!d->m_showRootCollection)
       return QModelIndex();
     else
-      return createIndex(0, 0, reinterpret_cast<void *>(d->m_rootCollection.id()));
+      return createIndex(0, 0, reinterpret_cast<void *>( d->m_rootNode ) );
   }
 
-  int row = d->m_childEntities.value(col.parent()).indexOf(col.id());
+  int row = d->indexOf(d->m_childEntities.value(col.parent()), col.id());
 
-  return createIndex( row, 0, reinterpret_cast<void*>( col.id() ) );
+  Node *n = d->m_childEntities.value(col.parent()).at(row);
+
+  return createIndex( row, 0, reinterpret_cast<void*>( n ) );
 
 }
 
@@ -520,8 +531,7 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 {
   Q_D( const EntityTreeModel );
 
-  if (parent.internalId() < 0)
-    return 0;
+  Node *node = reinterpret_cast<Node *>(parent.internalPointer());
 
   qint64 id;
   if (!parent.isValid())
@@ -532,9 +542,18 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 
     id = d->m_rootCollection.id();
   } else {
-    id = parent.internalId();
-  }
 
+    if (!node)
+      return 0;
+
+    if (Node::Item == node->type)
+    {
+      return 0;
+    }
+
+    id = node->id;
+  }
+//   kDebug() << parent << id << d->m_childEntities.value(id).size();
   if (parent.column() <= 0)
     return d->m_childEntities.value(id).size();
   return 0;
@@ -567,12 +586,14 @@ QMimeData *EntityTreeModel::mimeData( const QModelIndexList &indexes ) const
     if (!index.isValid())
       continue;
 
-    if (d->m_collections.contains(index.internalId()))
+    Node *node = reinterpret_cast<Node *>(index.internalPointer());
+
+    if (Node::Collection == node->type)
     {
-      urls << d->m_collections.value(index.internalId()).url();
-    } else if (d->m_items.contains(index.internalId()))
+      urls << d->m_collections.value(node->id).url();
+    } else if (Node::Item == node->type)
     {
-      urls << d->m_items.value( index.internalId() ).url( Item::UrlWithMimeType );
+      urls << d->m_items.value( node->id ).url( Item::UrlWithMimeType );
     }
   }
   urls.populateMimeData( data );
@@ -584,13 +605,13 @@ QMimeData *EntityTreeModel::mimeData( const QModelIndexList &indexes ) const
 bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, int role )
 {
   Q_D( EntityTreeModel );
-  // Delegate to something? Akonadi updater, or the manager classes? I think akonadiUpdater. entityUpdateAdapter
+
+  Node *node = reinterpret_cast<Node *>(index.internalPointer());
+
   if ( index.column() == 0 && ( role & (Qt::EditRole | ItemRole | CollectionRole) ) ) {
-    if (d->m_collections.contains(index.internalId()))
+    if (Node::Collection == node->type)
     {
-      // rename collection
-//       Collection col = d->collectionForIndex( index );
-      Collection col = d->m_collections.value( index.internalId() );
+      Collection col = d->m_collections.value( node->id );
       if ( !col.isValid() || value.toString().isEmpty() )
         return false;
 
@@ -604,7 +625,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 //       d->entityUpdateAdapter->updateEntities( Collection::List() << col );
       return false;
     }
-    if (d->m_items.contains(index.internalId()))
+    if (Node::Item == node->type)
     {
       Item i = value.value<Item>();
 //       Item item = d->m_items.value( index.internalId() );
@@ -635,6 +656,7 @@ bool EntityTreeModel::canFetchMore ( const QModelIndex & parent ) const
   if (item.isValid())
   {
     // items can't have more rows.
+    // TODO: Should I use this for fetching more of an item, ie more payload parts?
     return false;
   } else {
     // but collections can...
@@ -713,21 +735,34 @@ QModelIndex EntityTreeModel::indexForCollection(Collection col) const
 
   // TODO: will this work for collection::root while showing it?
 
-  int row = d->m_childEntities.value(col.parent()).indexOf(col.id());
+  int row = d->indexOf(d->m_childEntities.value(col.parent()), col.id());
+
   if (row < 0)
     return QModelIndex();
   int column = 0;
-  return createIndex(row, column, reinterpret_cast<void *>(col.id()));
+
+  Node *node = d->m_childEntities.value(col.parent()).at(row);
+
+  return createIndex(row, column, reinterpret_cast<void *>(node));
 }
 
-QModelIndex EntityTreeModel::indexForItem(Item item) const
+QModelIndexList EntityTreeModel::indexesForItem(Item item) const
 {
   Q_D(const EntityTreeModel);
-  Collection col = d->getParentCollection(item);
-  qint64 id = item.id() * - 1;
-  int row = d->m_childEntities.value(col.id()).indexOf(id);
-  int column = 0;
-  return createIndex(row, column, reinterpret_cast<void *>(id));
+  QModelIndexList idxList;
+  Collection::List colList = d->getParentCollections(item);
+  qint64 id = item.id();
+
+  foreach(const Collection &col, colList)
+  {
+    int row = d->indexOf(d->m_childEntities.value(col.id()), id);
+    int column = 0;
+
+    Node *node = d->m_childEntities.value(col.id()).at(row);
+
+    idxList << createIndex(row, column, reinterpret_cast<void *>(node));
+  }
+  return idxList;
 
 }
 

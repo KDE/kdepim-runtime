@@ -46,6 +46,19 @@ EntityTreeModelPrivate::EntityTreeModelPrivate( EntityTreeModel *parent )
 {
 }
 
+
+int EntityTreeModelPrivate::indexOf(QList<Node*> list, qint64 id) const
+{
+  int i = 0;
+  foreach(Node *node, list)
+  {
+    if (node->id == id)
+      return i;
+    i++;
+  }
+  return -1;
+}
+
 bool EntityTreeModelPrivate::mimetypeMatches( const QStringList &mimetypes, const QStringList &other )
 {
   QStringList::const_iterator constIterator;
@@ -63,6 +76,7 @@ bool EntityTreeModelPrivate::mimetypeMatches( const QStringList &mimetypes, cons
 void EntityTreeModelPrivate::fetchItems( Collection parent, int retrieveDepth )
 {
   Q_Q( EntityTreeModel );
+//   kDebug() << parent.remoteId();
   Akonadi::ItemFetchJob *itemJob = new Akonadi::ItemFetchJob( parent, m_session );
   itemJob->setFetchScope( m_monitor->itemFetchScope() );
 
@@ -103,25 +117,19 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
       continue;
     }
     // ... otherwise we add it to the set of collections we need to handle.
-//    if ( passesFilter( col.contentMimeTypes() ) ) {
     if (col.parent() == Collection::root().id())
     {
       Akonadi::AgentInstance ai = am->instance( col.resource() );
-      if (!passesFilter( ai.type().mimeTypes() ))
+      if ( (!passesFilter( ai.type().mimeTypes() ) ) &&
+           (!m_monitor->resourcesMonitored().contains( col.resource().toUtf8() ) ) )
       {
-//         if ( ( isVirtual ( col ) ) && !m_monitor.monitoredResources().contains( col.resource() ) ) )
-//         {
-//           continue;
-//         }
-//       } else
-          continue;
-//       }
+        continue;
       }
-      newChildCollections[ col.parent()].append( col.id() );
-      newCollections.insert( col.id(), col );
    }
-  }
+    newChildCollections[ col.parent()].append( col.id() );
+    newCollections.insert( col.id(), col );
 
+  }
 
   // Insert new child collections into model.
   QHashIterator< Collection::Id, QList< Collection::Id > > i( newChildCollections );
@@ -139,13 +147,22 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
 
   //       TODO: account for ordering.
         QModelIndex parentIndex = q->indexForCollection(m_collections.value(parentId));
+//         kDebug() << "before crash" << parentIndex << startRow << newChildCount;
         q->beginInsertRows(parentIndex, startRow, startRow + newChildCount - 1 );
         foreach( Collection::Id id, newChildCols ) {
           Collection c = newCollections.value( id );
           m_collections.insert( id, c );
-          m_childEntities[ parentId ].prepend( id );
+          Node *n = new Node;
+          n->id = id;
+          n->parent = parentId;
+          n->type = Node::Collection;
+          m_childEntities[ parentId ].prepend( n );
+//           kDebug() << c.name() << c.remoteId() << id;
         }
+//         kDebug() << "ok";
         q->endInsertRows();
+
+//         kDebug() << "go";
 
       foreach( Collection::Id id, newChildCols ) {
         Collection col = newCollections.value( id );
@@ -175,21 +192,20 @@ void EntityTreeModelPrivate::itemsFetched( const Akonadi::Item::List& list )
   QObject *job = q->sender();
   if ( job ) {
     Collection::Id colId = job->property( ItemFetchCollectionId() ).value<Collection::Id>();
-//     kDebug() << list.size() << "items in " << colId;
     Item::List itemsToInsert;
     Item::List itemsToUpdate;
 
     Collection col = m_collections.value(colId);
 
-    QList<Collection::Id> colEntities = m_childEntities.value(colId);
+//     QList<Collection::Id> colEntities = m_childEntities.value(colId);
+    QList<Node *> colEntities = m_childEntities.value(colId);
     foreach( const Item &item, list ) {
-      if ( colEntities.contains( item.id() * -1 ) ) {
+      if ( indexOf(colEntities, item.id() ) != -1 ) {
         itemsToUpdate << item;
       } else {
         if ( passesFilter( QStringList() << item.mimeType() ) ) {
           itemsToInsert << item;
         }
-
       }
     }
     if ( itemsToInsert.size() > 0 ) {
@@ -198,9 +214,13 @@ void EntityTreeModelPrivate::itemsFetched( const Akonadi::Item::List& list )
       QModelIndex parentIndex = q->indexForCollection(m_collections.value(colId));
       q->beginInsertRows(parentIndex, startRow, startRow + list.size() - 1);
       foreach( Item item, list ) {
-        qint64 itemId = item.id() * -1;
+        qint64 itemId = item.id();
         m_items.insert( itemId, item );
-        m_childEntities[ colId ].append( itemId );
+        Node *n = new Node;
+        n->id = itemId;
+        n->parent = colId;
+        n->type = Node::Item;
+        m_childEntities[ colId ].append( n );
       }
       q->endInsertRows();
     }
@@ -210,8 +230,8 @@ void EntityTreeModelPrivate::itemsFetched( const Akonadi::Item::List& list )
 void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
 {
   Q_Q( EntityTreeModel );
-  if ( !passesFilter( collection.contentMimeTypes() ) )
-    return;
+//   if ( !passesFilter( collection.contentMimeTypes() ) )
+//     return;
 
   // TODO: Use order attribute of parent if available
   // Otherwise prepend collections and append items. Currently this prepends all collections.
@@ -226,7 +246,11 @@ void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection
   QModelIndex parentIndex = q->indexForCollection(parent);
   q->beginInsertRows(parentIndex, row, row);
   m_collections.insert( collection.id(), collection );
-  m_childEntities[ parent.id()].prepend( collection.id() );
+  Node *n = new Node;
+  n->id = collection.id();
+  n->parent = parent.id();
+  n->type = Node::Collection;
+  m_childEntities[ parent.id()].prepend( n );
   q->endInsertRows();
 
 }
@@ -235,7 +259,9 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
 {
   Q_Q( EntityTreeModel );
 
-  int row = m_childEntities.value(collection.parent()).indexOf(collection.id());
+  int row = indexOf(m_childEntities.value(collection.parent()), collection.id());
+
+//   int row = m_childEntities.value(collection.parent()).indexOf(collection.id());
 
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(collection.parent()));
 
@@ -244,6 +270,7 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
   // TODO: Also need to handle all descendant collections and items here.
 
   m_collections.remove( collection.id() );                 // Remove deleted collection.
+
   m_childEntities.remove( collection.id() );               // Remove children of deleted collection.
   m_childEntities[ collection.parent() ].removeAt( row );  // Remove deleted collection from its parent.
 
@@ -254,7 +281,9 @@ void EntityTreeModelPrivate::monitoredCollectionMoved( const Akonadi::Collection
 {
   Q_Q( EntityTreeModel );
 
-  int srcRow = m_childEntities.value(src.id()).indexOf(col.id());
+//   int srcRow = m_childEntities.value(src.id()).indexOf(col.id());
+
+  int srcRow = indexOf(m_childEntities.value(src.id()), col.id() );
 
   QModelIndex srcParentIndex = q->indexForCollection(src);
   QModelIndex destParentIndex = q->indexForCollection(dest);
@@ -262,8 +291,8 @@ void EntityTreeModelPrivate::monitoredCollectionMoved( const Akonadi::Collection
   int destRow = 0; // Prepend collections
 
   q->beginMoveRows(srcParentIndex, srcRow, srcRow, destParentIndex, destRow);
-  m_childEntities[ src.id()].removeAt( srcRow );
-  m_childEntities[ dest.id() ].prepend( col.id() );
+  Node *n = m_childEntities[ src.id()].takeAt( srcRow );
+  m_childEntities[ dest.id() ].prepend( n );
   q->endMoveRows();
 
 }
@@ -298,8 +327,12 @@ void EntityTreeModelPrivate::monitoredItemAdded( const Akonadi::Item& item, cons
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(col.id()));
 
   q->beginInsertRows(parentIndex, row, row);
-  m_items.insert( item.id() * -1, item );
-  m_childEntities[ col.id()].append( item.id() * -1 );
+  m_items.insert( item.id(), item );
+  Node *n = new Node;
+  n->id = item.id();
+  n->parent = col.id();
+  n->type = Node::Item;
+  m_childEntities[ col.id()].append( n );
   q->endInsertRows();
 
 }
@@ -308,14 +341,18 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 {
   Q_Q( EntityTreeModel );
 
-  Collection col = getParentCollection( item );
+  Collection::List colList = getParentCollections( item );
 
-  int row = m_childEntities.value(col.id()).indexOf(item.id() * -1);
+  Collection col = colList.at(0);
+
+  int row = indexOf(m_childEntities.value(col.id()), item.id() );
+
+//   int row = m_childEntities.value(col.id()).indexOf(item.id() * -1);
 
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(col.id()));
 
   q->beginInsertRows(parentIndex, row, row);
-  m_items.remove( item.id() * -1 );
+  m_items.remove( item.id() );
   m_childEntities[ col.id() ].removeAt( row );
   q->endInsertRows();
 }
@@ -323,10 +360,11 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 void EntityTreeModelPrivate::monitoredItemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_Q( EntityTreeModel );
-  m_items[ item.id() * -1 ] = item;
+  m_items[ item.id() ] = item;
 
-  QModelIndex idx = q->indexForItem(item);
-  q->dataChanged(idx, idx);
+  QModelIndexList idxs = q->indexesForItem(item);
+  foreach(const QModelIndex &idx, idxs)
+    q->dataChanged(idx, idx);
 }
 
 void EntityTreeModelPrivate::monitoredItemMoved( const Akonadi::Item& item,
@@ -334,9 +372,11 @@ void EntityTreeModelPrivate::monitoredItemMoved( const Akonadi::Item& item,
 {
   Q_Q( EntityTreeModel );
 
-  qint64 itemId = item.id() * -1;
+  qint64 itemId = item.id();
 
-  int srcRow = m_childEntities.value(src.id()).indexOf( itemId );
+  int srcRow = indexOf(m_childEntities.value(src.id()), itemId);
+
+//   int srcRow = m_childEntities.value(src.id()).indexOf( itemId );
 
   QModelIndex srcIndex = q->indexForCollection(src);
   QModelIndex destIndex = q->indexForCollection(dest);
@@ -346,10 +386,11 @@ void EntityTreeModelPrivate::monitoredItemMoved( const Akonadi::Item& item,
   int destRow = q->rowCount(destIndex);
 
   q->beginMoveRows(srcIndex, srcRow, srcRow, destIndex, destRow);
-  m_childEntities[src.id()].removeAt(srcRow);
-  m_childEntities[dest.id()].append(itemId);
+  Node *n = m_childEntities[src.id()].takeAt(srcRow);
+  m_childEntities[dest.id()].append(n);
   q->endMoveRows();
 }
+
 
 void EntityTreeModelPrivate::monitoredItemLinked( const Akonadi::Item& item, const Akonadi::Collection& col )
 {
@@ -364,8 +405,12 @@ void EntityTreeModelPrivate::monitoredItemLinked( const Akonadi::Item& item, con
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(col.id()));
 
   q->beginInsertRows(parentIndex, row, row);
-//   m_items.insert( item.id() * -1, item );
-  m_childEntities[ col.id()].append( item.id() * -1 );
+//   m_items.insert( item.id() , item );
+  Node *n = new Node;
+  n->id = item.id();
+  n->parent = col.id();
+  n->type = Node::Item;
+  m_childEntities[ col.id()].append( n );
   q->endInsertRows();
 
 }
@@ -374,7 +419,9 @@ void EntityTreeModelPrivate::monitoredItemUnlinked( const Akonadi::Item& item, c
 {
   Q_Q( EntityTreeModel );
 
-  int row = m_childEntities.value(col.id()).indexOf(item.id() * -1);
+  int row = indexOf(m_childEntities.value(col.id()), item.id());
+
+//   int row = m_childEntities.value(col.id()).indexOf(item.id() * -1);
 
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(col.id()));
 
@@ -424,6 +471,14 @@ void EntityTreeModelPrivate::updateJobDone( KJob *job )
 void EntityTreeModelPrivate::startFirstListJob()
 {
   Q_Q(EntityTreeModel);
+
+  kDebug() << m_collections.size();
+
+  if (m_collections.size() > 0)
+  {
+    q->clearAndReset();
+    return;
+  }
   Collection rootCollection;
   // Even if the root collection is the invalid collection, we still need to start
   // the first list job with Collection::root.
@@ -431,13 +486,23 @@ void EntityTreeModelPrivate::startFirstListJob()
   {
     rootCollection = Collection::root();
     // Notify the outside that we're putting collection::root into the model.
+//     kDebug() << "begin";
     q->beginInsertRows(QModelIndex(), 0, 0);
     m_collections.insert( rootCollection.id(), rootCollection );
-    m_childEntities[-1].append(rootCollection.id());
+    m_rootNode = new Node;
+    m_rootNode->id = rootCollection.id();
+    m_rootNode->parent = -1;
+    m_rootNode->type = Node::Collection;
+    m_childEntities[-1].append(m_rootNode);
+//     kDebug() << "why";
     q->endInsertRows();
   } else {
     // Otherwise store it silently because it's not part of the usable model.
     rootCollection = m_rootCollection;
+    m_rootNode = new Node;
+    m_rootNode->id = rootCollection.id();
+    m_rootNode->parent = -1;
+    m_rootNode->type = Node::Collection;
     m_collections.insert( rootCollection.id(), rootCollection );
   }
 
@@ -455,6 +520,7 @@ void EntityTreeModelPrivate::startFirstListJob()
 
   if ( m_itemPopulation != EntityTreeModel::NoItemPopulation )
   {
+//     kDebug() << (rootCollection == Collection::root());
     if (rootCollection != Collection::root())
       fetchItems( rootCollection, Base );
   }
@@ -462,19 +528,30 @@ void EntityTreeModelPrivate::startFirstListJob()
 
 Collection EntityTreeModelPrivate::getParentCollection( qint64 id ) const
 {
-  QHashIterator< Collection::Id, QList<qint64> > iter( m_childEntities );
+  QHashIterator< Collection::Id, QList<Node *> > iter( m_childEntities );
   while ( iter.hasNext() ) {
     iter.next();
-    if ( iter.value().contains( id ) ) {
+    if ( indexOf(iter.value(), id ) != -1 ) {
       return m_collections.value( iter.key() );
     }
   }
   return Collection();
 }
 
-Collection EntityTreeModelPrivate::getParentCollection( Item item ) const
+Collection::List EntityTreeModelPrivate::getParentCollections( Item item ) const
 {
-  return getParentCollection( item.id() * -1);
+  Collection::List list;
+  QHashIterator< Collection::Id, QList<Node *> > iter( m_childEntities );
+  while ( iter.hasNext() ) {
+    iter.next();
+    if ( indexOf(iter.value(), item.id() ) != -1 ) {
+      list << m_collections.value( iter.key() );
+    }
+  }
+  return list;
+
+
+//   return getParentCollection( item.id() * -1);
 }
 
 Collection EntityTreeModelPrivate::getParentCollection( Collection col ) const
@@ -484,20 +561,20 @@ Collection EntityTreeModelPrivate::getParentCollection( Collection col ) const
 
 qint64 EntityTreeModelPrivate::childAt(Collection::Id id, int position, bool *ok) const
 {
-  QList<qint64> list = m_childEntities.value( id );
+  QList<Node *> list = m_childEntities.value( id );
   if (list.size() <= position )
   {
     *ok = false;
     return 0;
   }
   *ok = true;
-  return list.at( position );
+  return list.at( position )->id;
 }
 
 
 int EntityTreeModelPrivate::indexOf( Collection::Id parent, Collection::Id col ) const
 {
-  return m_childEntities.value(parent).indexOf(col);
+  return indexOf(m_childEntities.value(parent), col);
 }
 
 Item EntityTreeModelPrivate::getItem(qint64 id) const

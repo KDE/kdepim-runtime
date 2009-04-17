@@ -28,6 +28,19 @@
 
 #include "entitytreemodel.h"
 
+struct Node
+{
+  qint64 id;
+  qint64 parent;
+
+  enum Type
+  {
+    Item,
+    Collection
+  };
+  int type;
+};
+
 namespace Akonadi
 {
 /**
@@ -53,6 +66,7 @@ public:
   // TODO: Remove retrieveDepth?
   void fetchItems( Collection col, int retrieveDepth = Base );
   void collectionsFetched( const Akonadi::Collection::List& );
+//   void resourceTopCollectionsFetched( const Akonadi::Collection::List& );
   void itemsFetched( const Akonadi::Item::List& );
 
   void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& );
@@ -68,9 +82,8 @@ public:
   void monitoredItemLinked( const Akonadi::Item&, const Akonadi::Collection& );
   void monitoredItemUnlinked( const Akonadi::Item&, const Akonadi::Collection& );
 
-
   Collection getParentCollection( qint64 id ) const;
-  Collection getParentCollection( Item item ) const;
+  Collection::List getParentCollections( Item item ) const;
   Collection getParentCollection( Collection col ) const;
   qint64 childAt(Collection::Id, int position, bool *ok) const;
   int indexOf(Collection::Id parent, Collection::Id col) const;
@@ -78,12 +91,12 @@ public:
 
   QHash< Collection::Id, Collection > m_collections;
   QHash< qint64, Item > m_items;
-  QHash< Collection::Id, QList< qint64 > > m_childEntities;
+  QHash< Collection::Id, QList< Node * > > m_childEntities;
   QSet<Collection::Id> m_populatedCols;
 
   Monitor *m_monitor;
-//   int m_entitiesToFetch;
   Collection m_rootCollection;
+  Node *m_rootNode;
   QString m_rootCollectionDisplayName;
   QStringList m_mimeTypeFilter;
   int m_collectionFetchStrategy;
@@ -97,6 +110,11 @@ public:
   void updateJobDone( KJob *job );
 
   bool passesFilter( const QStringList &mimetypes );
+
+  /**
+    Returns the index of the node in @p list with the id @p id. Returns -1 if not found.
+  */
+  int indexOf(QList<Node*> list, qint64 id) const;
 
   /**
   The id of the collection which starts an item fetch job. This is part of a hack with QObject::sender
