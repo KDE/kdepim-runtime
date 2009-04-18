@@ -33,6 +33,7 @@ class Test : public QObject
     void verify( QObject *object, const QString &slot );
     void fail( const QString &error );
     void abort();
+    void alert( const QString &msg );
 
   private:
     Test( QObject *parent = 0 );

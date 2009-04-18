@@ -21,6 +21,7 @@
 #include "resource.h"
 
 #include <KDebug>
+#include <KMessageBox>
 #include <stdlib.h>
 
 Test* Test::mSelf = 0;
@@ -62,6 +63,11 @@ void Test::abort()
   if ( Resource::instance() )
     Resource::instance()->destroy();
   exit( -1 );
+}
+
+void Test::alert(const QString& msg)
+{
+  KMessageBox::information( 0, msg );
 }
 
 Test* Test::instance()
