@@ -220,19 +220,16 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
     const QMimeData *data = event->mimeData();
     KUrl::List urls = KUrl::List::fromMimeData( data );
     foreach( const KUrl &url, urls ) {
-      kDebug() << url;
       const Collection collection = Collection::fromUrl( url );
       if ( collection.isValid() ) {
         if ( !supportedContentTypes.contains( Collection::mimeType() ) )
           break;
 
-        kDebug() << d->hasParent( index, collection.id() );
         // Check if we don't try to drop on one of the children
         if ( d->hasParent( index, collection.id() ) )
           break;
       } else { // This is an item.
         QString type = url.queryItems()[ QString::fromLatin1( "type" )];
-        kDebug() << type << supportedContentTypes;
         if ( !supportedContentTypes.contains( type ) )
           break;
       }
@@ -256,13 +253,11 @@ void EntityTreeView::dragLeaveEvent( QDragLeaveEvent * event )
 
 void EntityTreeView::dropEvent( QDropEvent * event )
 {
-kDebug();
   d->dragExpandTimer.stop();
   d->dragOverIndex = QModelIndex();
 
   QModelIndexList idxs = selectedIndexes();
 
-  kDebug() << idxs;
 
   QMenu popup( this );
   QAction* moveDropAction;
@@ -282,22 +277,7 @@ kDebug();
   QAction *activatedAction = popup.exec( QCursor::pos() );
 
   if ( activatedAction == moveDropAction ) {
-//       Very ugly hack: QAbstractItemView ignores actions set using event->setDropAction.
-//       To make moves be communicated to the model properly, we set the mode temporarily
-//       to InternalMove, and change it back afterward.
-//       http://thread.gmane.org/gmane.comp.lib.qt.general/8765
-//
-//       Stephen Kelly, 18th December 2008.
-    DragDropMode ddm = dragDropMode();
-    setDragDropMode( InternalMove );
-//     kDebug() << "setting move action";
-//     kDebug() << event->possibleActions() << (event->possibleActions() & Qt::MoveAction );
     event->setDropAction( Qt::MoveAction );
-//     kDebug() << (event->proposedAction() == Qt::CopyAction) << (event->dropAction() == Qt::MoveAction );
-
-    QTreeView::dropEvent( event );
-    setDragDropMode( ddm );
-    return;
   } else if ( activatedAction == copyDropAction ) {
     event->setDropAction( Qt::CopyAction );
   }
