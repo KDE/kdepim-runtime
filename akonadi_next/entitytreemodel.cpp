@@ -31,9 +31,13 @@
 #include <akonadi/attributefactory.h>
 #include "collectionutils_p.h"
 #include "collectionchildorderattribute.h"
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectioncopyjob.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/transactionsequence.h>
 #include <akonadi/itemmodifyjob.h>
+#include <akonadi/itemcopyjob.h>
+#include <akonadi/itemmovejob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
@@ -108,6 +112,7 @@ EntityTreeModel::~EntityTreeModel()
     qDeleteAll(list);
     list.clear();
   }
+  delete d_ptr;
 }
 
 void EntityTreeModel::clearAndReset()
@@ -180,7 +185,7 @@ QVariant EntityTreeModel::getData(Item item, int column, int role) const
 QVariant EntityTreeModel::getData(Collection col, int column, int role) const
 {
   Q_D(const EntityTreeModel);
-  if (column >0)
+  if (column > 0)
     return QString();
 
   if (col == Collection::root())
@@ -272,7 +277,6 @@ QVariant EntityTreeModel::data( const QModelIndex & index, int role ) const
 Qt::ItemFlags EntityTreeModel::flags( const QModelIndex & index ) const
 {
   Q_D( const EntityTreeModel );
-
   // Pass modeltest.
   // http://labs.trolltech.com/forums/topic/79
   if ( !index.isValid() )
@@ -393,8 +397,10 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
       return false;
 
     if ( data->hasFormat( "text/uri-list" ) ) {
-      QHash<Collection::Id, Collection::List> dropped_cols;
-      QHash<Collection::Id, Item::List> dropped_items;
+      Collection::List dropped_cols;
+      Item::List dropped_items;
+
+      TransactionSequence *transaction = new TransactionSequence(d->m_session);
 
       KUrl::List urls = KUrl::List::fromMimeData( data );
       foreach( const KUrl &url, urls ) {
@@ -403,12 +409,19 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
           if ( !d->mimetypeMatches( destCol.contentMimeTypes(), col.contentMimeTypes() ) )
             return false;
 
-          dropped_cols[ col.parent()].append( col );
+          if ( Qt::MoveAction == action ) {
+    //         new CollectionMoveJob(col, destCol, transaction);
+          } else if ( Qt::CopyAction == action ) {
+            CollectionCopyJob *collectionCopyJob = new CollectionCopyJob(col, destCol, transaction);
+          }
         } else {
           Item item = d->m_items.value( Item::fromUrl( url ).id() );
           if ( item.isValid() ) {
-//             Collection col = d->getParentCollection( item );
-//             dropped_items[ col.id()].append( item );
+            if ( Qt::MoveAction == action ) {
+              ItemMoveJob *itemMoveJob = new ItemMoveJob( item, destCol, transaction );
+            } else if ( Qt::CopyAction == action ) {
+              ItemCopyJob *itemCopyJob = new ItemCopyJob( item, destCol, transaction);
+            }
           } else {
             // A uri, but not an akonadi url. What to do?
             // Should handle known mimetypes like vcards first.
@@ -416,36 +429,6 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
           }
         }
       }
-      QHashIterator<Collection::Id, Item::List> item_iter( dropped_items );
-      TransactionSequence *transaction = new TransactionSequence(d->m_session);
-      while ( item_iter.hasNext() ) {
-        item_iter.next();
-        Collection srcCol = d->m_collections.value(item_iter.key());
-        if ( action == Qt::MoveAction ) {
-//           ItemMoveJob(transaction);
-//           d->entityUpdateAdapter->moveEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), srcCol, destCol, row );
-        } else if ( action == Qt::CopyAction ) {
-//             ItemCreateJob(transaction);
-//           d->entityUpdateAdapter->addEntities( item_iter.value(), dropped_cols.value( item_iter.key() ), destCol, row );
-        }
-        dropped_cols.remove( item_iter.key() );
-      }
-      QHashIterator<Collection::Id, Collection::List> col_iter( dropped_cols );
-      while ( col_iter.hasNext() ) {
-        col_iter.next();
-        Collection srcCol = d->m_collections.value(item_iter.key());
-        if ( action == Qt::MoveAction ) {
-//         CollectionMoveJob(transaction);
-//           // Empty Item::List() because I know I've already dealt with the items of this parent.
-
-// //           d->entityUpdateAdapter->moveEntities( Item::List(), col_iter.value(), srcCol, destCol, row );
-        } else if ( action == Qt::CopyAction ) {
-            // collectioncopyjob.
-//           d->entityUpdateAdapter->addEntities( Item::List(), col_iter.value(), destCol, row );
-        }
-      }
-      delete transaction;
-//       d->entityUpdateAdapter->endTransaction();
       return false; // ### Return false so that the view does not update with the dropped
       // in place where they were dropped. That will be done when the monitor notifies the model
       // through collectionsReceived that the move was successful.
@@ -553,7 +536,6 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 
     id = node->id;
   }
-//   kDebug() << parent << id << d->m_childEntities.value(id).size();
   if (parent.column() <= 0)
     return d->m_childEntities.value(id).size();
   return 0;
@@ -608,40 +590,59 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 
   Node *node = reinterpret_cast<Node *>(index.internalPointer());
 
-  if ( index.column() == 0 && ( role & (Qt::EditRole | ItemRole | CollectionRole) ) ) {
+  if ( index.column() == 0 && ( role & (Qt::EditRole | ItemRole | CollectionRole) ) )
+  {
     if (Node::Collection == node->type)
     {
       Collection col = d->m_collections.value( node->id );
-      if ( !col.isValid() || value.toString().isEmpty() )
+      if ( !col.isValid() || !value.isValid() )
         return false;
 
-// //       if ( col.hasAttribute< EntityDisplayAttribute >() )
-// //       {
-//       EntityDisplayAttribute *displayAttribute = col.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
-//       displayAttribute->setDisplayName( value.toString() );
-//           col.addAttribute(displayAttribute);
-// //       }
+      if (Qt::EditRole == role)
+      {
+        col.setName( value.toString() );
 
-//       d->entityUpdateAdapter->updateEntities( Collection::List() << col );
+        if ( col.hasAttribute< EntityDisplayAttribute >() )
+        {
+          EntityDisplayAttribute *displayAttribute = col.attribute<EntityDisplayAttribute>();
+          displayAttribute->setDisplayName( value.toString() );
+          col.addAttribute(displayAttribute);
+        }
+      }
+
+      if (CollectionRole == role)
+      {
+        col = value.value<Collection>();
+      }
+
+      CollectionModifyJob *job = new CollectionModifyJob( col, d->m_session );
+
       return false;
     }
     if (Node::Item == node->type)
     {
-      Item i = value.value<Item>();
-//       Item item = d->m_items.value( index.internalId() );
-//       if ( !item.isValid() || value.toString().isEmpty() )
-//         return false;
+      Item item = d->m_items.value( node->id );
 
-//       if ( item.hasAttribute< EntityDisplayAttribute >() )
-//       {
-//       EntityDisplayAttribute *displayAttribute = item.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
-//       displayAttribute->setDisplayName( value.toString() );
-//       }
-//           item.addAttribute(displayAttribute);
-//       d->entityUpdateAdapter->updateEntities( Item::List() << i );
-//       d->entityUpdateAdapter->updateEntities( Item::List() << item );
-        Akonadi::ItemModifyJob *itemModifyJob = new Akonadi::ItemModifyJob( i, d->m_session );
+      if ( !item.isValid() || !value.isValid() )
         return false;
+
+      if (Qt::EditRole == role)
+      {
+        if ( item.hasAttribute< EntityDisplayAttribute >() )
+        {
+          EntityDisplayAttribute *displayAttribute = item.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
+          displayAttribute->setDisplayName( value.toString() );
+          item.addAttribute(displayAttribute);
+        }
+      }
+
+      if (Qt::EditRole == ItemRole)
+      {
+        item = value.value<Item>();
+      }
+
+      Akonadi::ItemModifyJob *itemModifyJob = new Akonadi::ItemModifyJob( item, d->m_session );
+      return false;
     }
   }
 
