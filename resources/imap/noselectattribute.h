@@ -25,8 +25,8 @@
 class NoSelectAttribute : public Akonadi::Attribute
 {
 public:
-    NoSelectAttribute( bool );
-    void setNoSelect( bool );
+    NoSelectAttribute( bool noSelect = false );
+    void setNoSelect( bool noSelect );
     bool noSelect() const;
     virtual QByteArray type() const;
     virtual Attribute* clone() const;

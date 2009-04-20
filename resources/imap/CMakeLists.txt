@@ -1,14 +1,3 @@
-add_subdirectory( tests )
-
-set(imap_LIB_SRCS imaplib.cpp socket.cpp)
-
-kde4_add_library(imap SHARED ${imap_LIB_SRCS})
-
-target_link_libraries(imap ${QT_AND_KDECORE_LIBS} ${QT_QTSQL_LIBRARY} ${KDE4_KDE3SUPPORT_LIBS} ${KDE4_KIMAP_LIBS})
-
-set_target_properties(imap PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
-install(TARGETS imap ${INSTALL_TARGETS_DEFAULT_ARGS})
-
 include_directories(
     ${CMAKE_SOURCE_DIR}/akonadi
     ${QT_QTDBUS_INCLUDE_DIR}
@@ -42,8 +31,8 @@ qt4_add_dbus_adaptor( imapresource_SRCS
 kde4_add_kcfg_files(imapresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imap_resource RUN_UNINSTALLED ${imapresource_SRCS})
 
-target_link_libraries(akonadi_imap_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} imap 
-                      ${KDE4_KMIME_LIBS} ${KDE4_KIO_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS})
+target_link_libraries(akonadi_imap_resource ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}
+                      ${KDE4_KIMAP_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS})
 
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

@@ -25,7 +25,7 @@
 class UidValidityAttribute : public Akonadi::Attribute
 {
 public:
-    UidValidityAttribute( int uidvalidity );
+    UidValidityAttribute( int uidvalidity = 0 );
     void setUidValidity( int uidvalidity );
     int uidValidity() const;
     virtual QByteArray type() const;

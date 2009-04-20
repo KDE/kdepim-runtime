@@ -25,7 +25,7 @@
 class UidNextAttribute : public Akonadi::Attribute
 {
 public:
-    UidNextAttribute( int uidnext );
+    UidNextAttribute( int uidnext = 0 );
     void setUidNext( int uidnext );
     int uidNext() const;
     virtual QByteArray type() const;

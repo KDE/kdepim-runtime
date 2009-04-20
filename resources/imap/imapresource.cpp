@@ -19,15 +19,16 @@
 */
 
 #include "imapresource.h"
+#include <qglobal.h>
 #include "setupserver.h"
 #include "settingsadaptor.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 #include "noselectattribute.h"
-#include "imaplib.h"
 
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
+#include <QtNetwork/QSslSocket>
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -36,12 +37,20 @@
 #include <KWindowSystem>
 #include <KAboutData>
 
+#include <kimap/session.h>
+#include <kimap/fetchjob.h>
+#include <kimap/listjob.h>
+#include <kimap/loginjob.h>
+#include <kimap/selectjob.h>
+#include <kimap/statusjob.h>
+
 #include <kmime/kmime_message.h>
 
-#include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+#include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/collectionstatisticsjob.h>
 #include <akonadi/collectionstatistics.h>
@@ -54,14 +63,18 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_imap( 0 ), m_incrementalFetch( false )
+        :ResourceBase( id ), m_imap( 0 )
 {
-    changeRecorder()->fetchCollection( true );
-    new SettingsAdaptor( Settings::self() );
-    QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-            Settings::self(), QDBusConnection::ExportAdaptors );
+  Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
 
-    startConnect();
+  changeRecorder()->fetchCollection( true );
+  new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                                                Settings::self(), QDBusConnection::ExportAdaptors );
+
+  startConnect();
 }
 
 ImapResource::~ImapResource()
@@ -71,76 +84,129 @@ ImapResource::~ImapResource()
 
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-    Q_UNUSED( parts );
+    const QString remoteId = item.remoteId();
+    const QStringList temp = remoteId.split( "-+-" );
+    QByteArray mailBox = temp[0].toUtf8();
+    mailBox.replace( rootRemoteId().toUtf8(), "" );
+    const QByteArray uid = temp[1].toUtf8();
 
-    const QString reference = item.remoteId();
-    kDebug( ) << "Fetch request for" << reference;
-    const QStringList temp = reference.split( "-+-" );
-    m_imap->getMessage( temp[0], temp[1].toInt() );
-    m_itemCache[reference] = item;
+    m_itemCache[remoteId] = item;
+
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+    select->setMailBox( mailBox );
+    select->start();
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setUidBased( true );
+    fetch->setSequenceSet( uid+':'+uid );
+    scope.parts.clear();// = parts.toList();
+    scope.mode = KIMAP::FetchJob::FetchScope::Content;
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( messageReceived( QByteArray, qint64, int, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onMessageReceived( QByteArray, qint64, int, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( partReceived( QByteArray, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ),
+             this, SLOT( onPartReceived( QByteArray, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ) );
+    fetch->start();
     return true;
 }
 
-void ImapResource::slotMessageReceived( Imaplib*, const QString& mb, int uid,
-        const QString& body )
+void ImapResource::onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message )
 {
-    const QString reference =  mb + "-+-" + QString::number( uid );
+  const QString remoteId =  mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid );
 
-    kDebug() << "MESSAGE from Imap server" << reference;
-    Q_ASSERT( m_itemCache.value( reference ).isValid() );
+  Item i = m_itemCache.take(remoteId);
 
-    KMime::Message *mail = new KMime::Message();
-    mail->setContent( KMime::CRLFtoLF( body.toLatin1() ) );
-    mail->parse();
+  kDebug() << "MESSAGE from Imap server" << remoteId;
+  Q_ASSERT( i.isValid() );
 
-    Item i( m_itemCache.value( reference ) );
-    i.setMimeType( "message/rfc822" );
-    i.setPayload( MessagePtr( mail ) );
+  i.setMimeType( "message/rfc822" );
+  i.setPayload( MessagePtr( message ) );
 
-    kDebug() << "Has Payload: " << i.hasPayload();
+  kDebug() << "Has Payload: " << i.hasPayload();
+  kDebug() << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
-    itemRetrieved( i );
+  itemRetrieved( i );
 }
 
 void ImapResource::configure( WId windowId )
 {
-    SetupServer dlg( windowId );
-    KWindowSystem::setMainWindow( &dlg, windowId );
-    dlg.exec();
-    if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->username().isEmpty() )
-        setName( Settings::self()->imapServer() + '/' + Settings::self()->username() );
-    else
-        setName( KGlobal::mainComponent().aboutData()->appName() );
-    startConnect();
+  SetupServer dlg( windowId );
+  KWindowSystem::setMainWindow( &dlg, windowId );
+
+  dlg.exec();
+
+  if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->userName().isEmpty() ) {
+    setName( Settings::self()->imapServer() + '/' + Settings::self()->userName() );
+  } else {
+    setName( KGlobal::mainComponent().aboutData()->appName() );
+  }
+
+  startConnect();
 }
 
 void ImapResource::startConnect()
 {
-    m_server = Settings::self()->imapServer();
-    int safe = Settings::self()->safety();
+  m_server = Settings::self()->imapServer();
+  int safe = Settings::self()->safety();
 
-    if ( m_server.isEmpty() ) {
-        return;
+  if ( m_server.isEmpty() ) {
+    return;
+  }
+
+  QString server = m_server.section( ":", 0, 0 );
+  int port = m_server.section( ":", 1, 1 ).toInt();
+
+  if (( safe == 1 || safe == 2 ) && !QSslSocket::supportsSsl() ) {
+    kWarning() << "Crypto not supported!";
+    emit error( i18n( "You requested TLS/SSL to connect to %1, but your "
+                      "system does not seem to be set up for that.", m_server ) );
+    return;
+  }
+
+  if ( port == 0 ) {
+    switch ( safe ) {
+    case 1:
+    case 3:
+      port = 143;
+      break;
+    case 2:
+      port = 993;
+      break;
     }
+  }
 
-    QString server = m_server.section( ":",0,0 );
-    int port = m_server.section( ":",1,1 ).toInt();
+  m_session = new KIMAP::Session( server, port, this );
 
-    m_imap = new Imaplib( 0,"serverconnection" );
+  m_userName =  Settings::self()->userName();
+  QString password = Settings::self()->password();
 
-    if (( safe == 1 || safe == 2 ) && !QSslSocket::supportsSsl() ) {
-        kWarning() << "Crypto not supported!";
-        emit error( i18n( "You requested TLS/SSL to connect to %1, but your "
-                          "system does not appear to support it.", m_server ) );
-        return;
-    }
+  if ( password.isEmpty() ) {
+    manualAuth( 0, m_userName );
+  }
 
-    connections(); // todo: double connections on reconnect?
-    m_imap->startConnection( server, port, safe );
+  KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( m_session );
+  loginJob->setUserName( m_userName );
+  loginJob->setPassword( password );
+
+  switch ( safe ) {
+  case 1:
+    break;
+  case 2:
+    kFatal("Sorry, not implemented yet: ImapResource::startConnect with SSL support");
+    break;
+  case 3:
+    loginJob->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
+    break;
+  }
+
+  connect( loginJob, SIGNAL( result(KJob*) ),
+           this, SLOT( onLoginDone(KJob*) ) );
+  loginJob->start();
 }
 
 void ImapResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     m_itemAdded = item;
     m_collection = collection;
     const QString mailbox = collection.remoteId();
@@ -149,20 +215,30 @@ void ImapResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
     // save message to the server.
     MessagePtr msg = item.payload<MessagePtr>();
     m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::itemAdded");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotSaveDone( int uid )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     if ( uid > -1 ) {
         const QString reference =  m_collection.remoteId() + "-+-" + QString::number( uid );
         kDebug() << "Setting reference to " << reference;
         m_itemAdded.setRemoteId( reference );
     }
     changeCommitted( m_itemAdded );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotSaveDone");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     // We can just assume that we only get here if the flags have changed. So get them and
     // store those on the server.
     QSet<QByteArray> flags = item.flags();
@@ -176,134 +252,141 @@ void ImapResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray
     m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags );
 
     changeCommitted( item );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::itemChanged");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     //itemRemoved actually can not be implemented. The imap specs do not allow for a single
     //message to be deleted. Users of this resource should make sure they set the flag
     //to Deleted and call the DBus purge method when you want to get rid of the items
     //from the server.
     changeProcessed();
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::itemRemoved");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::retrieveCollections()
 {
-    if ( !m_imap ) {
-        kDebug() << "Ignoring this request. Probably there is no connection.";
-        return;
-    }
-    kDebug();
-    m_imap->getMailBoxList();
+  if ( !m_session ) {
+    kDebug() << "Ignoring this request. Probably there is no connection.";
+    return;
+  }
+
+  Collection root;
+  root.setName( m_server + '/' + m_userName );
+  root.setRemoteId( rootRemoteId() );
+  root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+
+  CachePolicy policy;
+  policy.setInheritFromParent( false );
+  policy.setSyncOnDemand( true );
+  root.setCachePolicy( policy );
+
+  collectionsRetrievedIncremental( Collection::List() << root, Collection::List() );
+
+  KIMAP::ListJob *listJob = new KIMAP::ListJob( m_session );
+  listJob->setIncludeUnsubscribed( true );
+  connect( listJob, SIGNAL( mailBoxReceived(QList<QByteArray>, QList<QByteArray>) ),
+           this, SLOT( onMailBoxReceived(QList<QByteArray>, QList<QByteArray>) ) );
+  listJob->start();
 }
 
-static QString findParent( QHash<QString, Collection> &collections, const Collection &root, const QStringList &_path )
+void ImapResource::onMailBoxReceived( const QList<QByteArray> &descriptor,
+                                      const QList<QByteArray> &flags )
 {
-    QStringList path = _path;
-    path.removeLast();
-    if ( path.isEmpty() )
-        return root.remoteId();
-    const QString id = path.join( "." ); // ### is this always the correct path separator?
-    if ( collections.contains( id ) )
-        return collections.value( id ).remoteId();
+  QList<QByteArray> pathParts = descriptor;
+  QByteArray separator = pathParts.takeFirst();
+
+  QString parentPath;
+  QString currentPath;
+  Collection::List collections;
+
+  QStringList contentTypes;
+  contentTypes << "message/rfc822" << Collection::mimeType();
+
+  foreach ( const QByteArray &pathPart, pathParts ) {
+    currentPath+='/'+pathPart;
+    if ( currentPath.startsWith( '/' ) ) {
+      currentPath.remove( 0, 1 );
+    }
+
     Collection c;
-    c.setName( path.last() );
-    c.setRemoteId( id );
-    c.setParentRemoteId( findParent( collections, root, path ) );
-    c.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-    collections.insert( id, c );
-    return c.remoteId();
-}
+    c.setName( pathPart );
+    c.setRemoteId( mailBoxRemoteId( currentPath ) );
+    c.setParentRemoteId( mailBoxRemoteId( parentPath ) );
+    c.setRights( Collection::AllRights );
+    c.setContentMimeTypes( contentTypes );
 
-void ImapResource::slotFolderListReceived( const QStringList& list, const QStringList& noselectfolders )
-{
-    QHash<QString, Collection> collections;
-    QStringList contentTypes;
-    contentTypes << "message/rfc822" << Collection::mimeType();
+    CachePolicy cachePolicy;
+    cachePolicy.setInheritFromParent( false );
+    cachePolicy.setIntervalCheckTime( -1 );
+    cachePolicy.setSyncOnDemand( true );
 
-    Collection root;
-    root.setName( m_server + '/' + m_username );
-    root.setRemoteId( "temporary random unique identifier" ); // ### should be the server url or similar
-    root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-
-    CachePolicy policy;
-    policy.setInheritFromParent( false );
-    policy.setSyncOnDemand( true );
-    root.setCachePolicy( policy );
-
-    collections.insert( root.remoteId(), root );
-
-    QStringList::ConstIterator it = list.begin();
-    while ( it != list.end() ) {
-        QStringList path = ( *it ).split( '.' ); // ### is . always the path separator?
-        Q_ASSERT( !path.isEmpty() );
-        Collection c;
-        if ( collections.contains( *it ) ) {
-            c = collections.value( *it );
-        } else {
-            c.setName( path.last() );
-        }
-        c.setRemoteId( *it );
-        c.setRights( Collection::AllRights );
-        c.setContentMimeTypes( contentTypes );
-        c.setParentRemoteId( findParent( collections, root, path ) );
-
-        CachePolicy itemPolicy;
-        itemPolicy.setInheritFromParent( false );
-        itemPolicy.setIntervalCheckTime( -1 );
-        itemPolicy.setSyncOnDemand( true );
-
-        // If the folder is the Inbox, make some special settings.
-        if ( (*it).compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-            itemPolicy.setIntervalCheckTime( 1 );
-            c.setName( "Inbox" );
-        }
-
-        // If this folder is a noselect folder, make some special settings.
-        if ( noselectfolders.contains( *it ) ) {
-            itemPolicy.setSyncOnDemand( false );
-            c.addAttribute( new NoSelectAttribute( true ) );
-        }
-        c.setCachePolicy( itemPolicy );
-
-        collections[ *it ] = c;
-        ++it;
+    // If the folder is the Inbox, make some special settings.
+    if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
+      cachePolicy.setIntervalCheckTime( 1 );
+      c.setName( "Inbox" );
     }
 
-    collectionsRetrieved( collections.values() );
+    // If this folder is a noselect folder, make some special settings.
+    if ( flags.contains( "\\NoSelect" ) ) {
+      cachePolicy.setSyncOnDemand( false );
+      c.addAttribute( new NoSelectAttribute( true ) );
+    }
+
+    c.setCachePolicy( cachePolicy );
+
+    collections << c;
+    parentPath = currentPath;
+  }
+
+  collectionsRetrievedIncremental( collections, Collection::List() );
 }
 
 // ----------------------------------------------------------------------------------
 
 void ImapResource::retrieveItems( const Akonadi::Collection & col )
 {
-    kDebug( ) << col.remoteId();
-    m_collection = col;
+  kDebug( ) << col.remoteId();
 
-    // If there is new mail, we get it without giubg through integrity, so the default is true!
-    m_incrementalFetch = true;
-
-    // Prevent fetching items from noselect folders.
-    if ( m_collection.hasAttribute( "noselect" ) ) {
-        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( m_collection.attribute( "noselect" ) );
-        if ( noselect->noSelect() ) {
-            kDebug() << "No Select folder";
-            itemsRetrievalDone();
-            return;
-        }
+  // Prevent fetching items from noselect folders.
+  if ( col.hasAttribute( "noselect" ) ) {
+    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( col.attribute( "noselect" ) );
+    if ( noselect->noSelect() ) {
+      kDebug() << "No Select folder";
+      itemsRetrievalDone();
+      return;
     }
+  }
 
-    m_imap->checkMail( col.remoteId() );
+  KIMAP::StatusJob *statusJob = new KIMAP::StatusJob( m_session );
+  statusJob->setMailBox( col.remoteId().replace( rootRemoteId(), "" ).toUtf8() );
+  connect( statusJob, SIGNAL( status( QByteArray, int, qint64, int ) ),
+           this, SLOT( onStatusReceived( QByteArray, int, qint64, int ) ) );
+  statusJob->start();
 }
 
 void ImapResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     kDebug( ) << mb << amount;
 
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotMessagesInFolder");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     kDebug( ) << mb << values.count();
 
     if ( values.count() == 0 ) {
@@ -332,65 +415,56 @@ void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QS
     setTotalItems( fetchlist.count() );
 
     m_imap->getHeaders( mb, fetchlist );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotUidsAndFlagsReceived");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::slotHeadersReceived( Imaplib*, const QString& mb, const QStringList& list )
+void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, qint64 size, boost::shared_ptr<KMime::Message> message )
 {
-    kDebug( ) << mb << list.count();
+  Akonadi::Item i;
+  i.setRemoteId( mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid ) );
+  i.setMimeType( "message/rfc822" );
+  i.setPayload( MessagePtr( message ) );
+  i.setSize( size );
 
-    Item::List messages;
+#if FIXME_FLAGS_MISSING
+  foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) ) {
+    i.setFlag( flag.toLatin1() );
+  }
+  kDebug() << "Flags: " << i.flags();
+#endif
 
-    QStringList::ConstIterator it = list.begin();
-    while ( it != list.end() ) {
-        const QString uid = ( *it );
-        ++it;
-
-        const QString mbox = ( *it );
-        ++it;
-
-        const QString headers = ( *it );
-        ++it;
-
-        const QString size = ( *it );
-        ++it;
-
-        KMime::Message* mail = new KMime::Message();
-        mail->setContent( KMime::CRLFtoLF( headers.trimmed().toLatin1() ) );
-        mail->parse();
-
-        Akonadi::Item i( -1 );
-        i.setRemoteId( mbox + "-+-" + uid );
-        i.setMimeType( "message/rfc822" );
-        i.setPayload( MessagePtr( mail ) );
-        i.setSize( size.toLongLong() );
-
-        foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) ) {
-            i.setFlag( flag.toLatin1() );
-        }
-        kDebug() << "Flags: " << i.flags();
-
-        messages.append( i );
-    }
-
-    kDebug() << "calling partlyretrieved with amount: " << messages.count() << "Incremental?" << m_incrementalFetch;
-
-    m_incrementalFetch ? itemsRetrievedIncremental( messages, Item::List() ) :  itemsRetrieved( messages );
+  itemsRetrievedIncremental( Item::List() << i, Item::List() );
 }
+
+void ImapResource::onHeadersFetchDone( KJob *job )
+{
+  itemsRetrievalDone();
+}
+
 
 // ----------------------------------------------------------------------------------
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     const QString remoteName = parent.remoteId() + '.' + collection.name();
     kDebug( ) << "New folder: " << remoteName;
 
     m_collection = collection;
     m_imap->createMailBox( remoteName );
     m_collection.setRemoteId( remoteName );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::collectionAdded");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotCollectionAdded( bool success )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     // finish the task.
     changeCommitted( m_collection );
 
@@ -401,22 +475,37 @@ void ImapResource::slotCollectionAdded( bool success )
         emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
         new CollectionDeleteJob( m_collection, this );
     }
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotCollectionAdded");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::collectionChanged( const Collection & collection )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     kDebug( ) << "Implement me!";
     changeProcessed();
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::collectionChanged");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::collectionRemoved( const Akonadi::Collection &collection )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     kDebug( ) << "Del folder: " << collection.id() << collection.remoteId();
     m_imap->deleteMailBox( collection.remoteId() );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::collectionRemoved");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotCollectionRemoved( bool success )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     // finish the task.
     changeProcessed();
 
@@ -425,25 +514,38 @@ void ImapResource::slotCollectionRemoved( bool success )
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
     }
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotCollectionRemoved");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 /******************* Slots  ***********************************************/
 
 void ImapResource::slotLogin( Imaplib* connection )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     // kDebug();
 
-    m_username =  Settings::self()->username();
+    m_userName =  Settings::self()->userName();
     QString pass = Settings::self()->password();
 
-    pass.isEmpty() ? manualAuth( connection, m_username )
-    : connection->login( m_username, pass );
+    pass.isEmpty() ? manualAuth( connection, m_userName )
+    : connection->login( m_userName, pass );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotLogin");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::slotLoginFailed( Imaplib* connection )
+void ImapResource::onLoginDone( KJob *job )
 {
-    kDebug();
+  if ( job->error()==0 ) {
+    synchronizeCollectionTree();
+    return;
+  }
 
+#if KIMAP_PORT_TEMPORARILY_REMOVED
     // the credentials where not ok....
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
             i18n( "The server refused the supplied username and password. "
@@ -454,127 +556,210 @@ void ImapResource::slotLoginFailed( Imaplib* connection )
     if ( i == KMessageBox::Yes )
         configure( winIdForDialogs() );
     else if ( i == KMessageBox::No ) {
-        manualAuth( connection, m_username );
+        manualAuth( connection, m_userName );
     } else {
         connection->logout();
         emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
     }
+#endif
 }
 
 void ImapResource::slotLoginOk()
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     kDebug();
-    synchronizeCollectionTree();
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotLoginOk");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotAlert( Imaplib*, const QString& message )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     emit error( i18n( "Server reported: %1.",message ) );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotAlert");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotPurge( const QString &folder )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     m_imap->expungeMailBox( folder );
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::slotPurge");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::slotIntegrity( const QString& mb, int totalShouldBe,
-                                     const QString& uidvalidity, const QString& uidnext )
+void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount,
+                                     qint64 uidValidity, int nextUid )
 {
-    // uidvalidity can change between sessions, we don't want to refetch
-    // folders in that case. Keep track of what is processed and what not.
-    static QStringList processed;
-    bool firsttime = false;
-    if ( processed.indexOf( mb ) == -1 ) {
-        firsttime = true;
-        processed.append( mb );
+  // uidvalidity can change between sessions, we don't want to refetch
+  // folders in that case. Keep track of what is processed and what not.
+  static QList<QByteArray> processed;
+  bool firstTime = false;
+  if ( processed.indexOf( mailBox ) == -1 ) {
+    firstTime = true;
+    processed.append( mailBox );
+  }
+
+  Collection collection = collectionFromRemoteId( mailBoxRemoteId( mailBox ) );
+  Q_ASSERT( collection.isValid() );
+
+  // Get the current uid next value and store it
+  int oldUidValidity = 0;
+  if ( !collection.hasAttribute( "uidvalidity" ) ) {
+    UidValidityAttribute* currentUidValidity  = new UidValidityAttribute( uidValidity );
+    collection.addAttribute( currentUidValidity );
+  } else {
+    UidValidityAttribute* currentUidValidity =
+      static_cast<UidValidityAttribute*>( collection.attribute( "uidvalidity" ) );
+    oldUidValidity = currentUidValidity->uidValidity();
+    if ( oldUidValidity != uidValidity ) {
+      currentUidValidity->setUidValidity( uidValidity );
     }
+  }
 
-    // Get the current uid next value and store it
-    int oldUidValidity = 0;
-    if ( !m_collection.hasAttribute( "uidvalidity" ) ) {
-        UidValidityAttribute* currentuidvalidity  = new UidValidityAttribute( uidvalidity.toInt() );
-        m_collection.addAttribute( currentuidvalidity );
-    } else {
-        UidValidityAttribute* currentuidvalidity =
-            static_cast<UidValidityAttribute*>( m_collection.attribute( "uidvalidity" ) );
-        oldUidValidity = currentuidvalidity->uidValidity();
-        if ( currentuidvalidity->uidValidity() != uidvalidity.toInt() ) {
-            currentuidvalidity->setUidValidity( uidvalidity.toInt() );
-        }
+  // Get the current uid next value and store it
+  int oldNextUid = 0;
+  if ( !collection.hasAttribute( "uidnext" ) ) {
+    UidNextAttribute* currentNextUid  = new UidNextAttribute( nextUid );
+    collection.addAttribute( currentNextUid );
+  } else {
+    UidNextAttribute* currentNextUid =
+      static_cast<UidNextAttribute*>( collection.attribute( "uidnext" ) );
+    oldNextUid = currentNextUid->uidNext();
+    if ( oldNextUid != nextUid ) {
+      currentNextUid->setUidNext( nextUid );
     }
+  }
 
-    // Get the current uid next value and store it
-    int oldUidNext = 0;
-    if ( !m_collection.hasAttribute( "uidnext" ) ) {
-        UidNextAttribute* currentuidnext  = new UidNextAttribute( uidnext.toInt() );
-        m_collection.addAttribute( currentuidnext );
-    } else {
-        UidNextAttribute* currentuidnext =
-            static_cast<UidNextAttribute*>( m_collection.attribute( "uidnext" ) );
-        oldUidNext = currentuidnext->uidNext();
-        if ( currentuidnext->uidNext() != uidnext.toInt() ) {
-            currentuidnext->setUidNext( uidnext.toInt() );
-        }
+  CollectionModifyJob *modify = new CollectionModifyJob( collection );
+  modify->exec();
+
+  // First check the uidvalidity, if this has changed, it means the folder
+  // has been deleted and recreated. So we wipe out the messages and
+  // retrieve all.
+  if ( oldUidValidity != uidValidity && !firstTime
+    && oldUidValidity != 0 ) {
+    kDebug() << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+             << uidValidity <<") refetching "<< mailBox;
+
+    setItemStreamingEnabled( true );
+
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+    select->setMailBox( mailBox );
+    select->start();
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->start();
+    return;
+  }
+
+  // See how many messages are in the folder currently
+  qint64 realMessageCount = collection.statistics().count();
+  if ( realMessageCount == -1 ) {
+    Akonadi::CollectionStatisticsJob *job = new Akonadi::CollectionStatisticsJob( collection );
+    if ( job->exec() ) {
+      Akonadi::CollectionStatistics statistics = job->statistics();
+      realMessageCount = statistics.count();
     }
+  }
 
-    // First check the uidvalidity, if this has changed, it means the folder
-    // has been deleted and recreated. So we wipe out the messages and
-    // retrieve all.
-    if ( oldUidValidity != uidvalidity.toInt() && !firsttime
-            && oldUidValidity != 0 && !uidvalidity.isEmpty() ) {
-        kDebug() << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-        << uidvalidity <<") refetching "<< mb << endl;
+  kDebug() << "integrity: " << mailBox << " should be: " << messageCount << " current: " << realMessageCount;
 
-        m_imap->getHeaderList( mb, 1, totalShouldBe );
-        return;
-    }
+  if ( messageCount > realMessageCount ) {
+    // The amount on the server is bigger than that we have in the cache
+    // that probably means that there is new mail. Fetch missing.
+    kDebug() << "Fetch missing: " << messageCount << " But: " << realMessageCount;
 
-    // See how many messages are in the folder currently
-    qint64 mailsReal = m_collection.statistics().count();
-    if ( mailsReal == -1 ) {
-        Akonadi::CollectionStatisticsJob *job = new Akonadi::CollectionStatisticsJob( m_collection );
-        if ( job->exec() ) {
-            Akonadi::CollectionStatistics statistics = job->statistics();
-            mailsReal = statistics.count();
-        }
-    }
+    setItemStreamingEnabled( true );
 
-    kDebug() << "integrity: " << mb << " should be: " << totalShouldBe << " current: " << mailsReal;
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+    select->setMailBox( mailBox );
+    select->start();
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setSequenceSet( QByteArray::number( realMessageCount+1 )+':'+QByteArray::number( messageCount ) );
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->start();
+    return;
+  } else if ( messageCount != realMessageCount ) {
+    // The amount on the server does not match the amount in the cache.
+    // that means we need reget the catch completely.
+    //itemsRetrieved( Item::List() );
+    kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
+    kFatal() << "Woot!";
 
-    if ( totalShouldBe > mailsReal ) {
-        // The amount on the server is bigger than that we have in the cache
-        // that probably means that there is new mail. Fetch missing.
-        kDebug() << "Fetch missing: " << totalShouldBe << " But: " << mailsReal;
-        m_incrementalFetch = true;
-        m_imap->getHeaderList( mb, mailsReal+1, totalShouldBe );
-        return;
-    } else if ( totalShouldBe != mailsReal ) {
-        // The amount on the server does not match the amount in the cache.
-        // that means we need reget the catch completely.
-        kDebug() << "O OH: " << totalShouldBe << " But: " << mailsReal;
-        m_incrementalFetch = false;
-        m_imap->getHeaderList( mb, 1, totalShouldBe );
-        return;
-    } else if ( totalShouldBe == mailsReal && oldUidNext != uidnext.toInt()
-                && oldUidNext != 0 && !uidnext.isEmpty() && !firsttime ) {
-        //buggy
-        itemsRetrievalDone();
-        return;
+    setItemStreamingEnabled( true );
 
-        // amount is right but uidnext is different.... something happened
-        // behind our back...
-        m_imap->getHeaderList( mb, 1, totalShouldBe );
-        kDebug() << "UIDNEXT check failed, refetching mailbox" << endl;
-    }
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+    select->setMailBox( mailBox );
+    select->start();
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->start();
+    return;
+  } else if ( messageCount == realMessageCount && oldNextUid != nextUid
+           && oldNextUid != 0 && !firstTime ) {
+    // amount is right but uidnext is different.... something happened
+    // behind our back...
+    kDebug() << "UIDNEXT check failed, refetching mailbox";
+    kFatal() << "Woot!";
 
-    kDebug() << "All fine, nothing to do";
-    itemsRetrievalDone();
+    setItemStreamingEnabled( true );
+
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+    select->setMailBox( mailBox );
+    select->start();
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->start();
+    return;
+  }
+
+  kDebug() << "All fine, nothing to do";
+  itemsRetrievalDone();
 }
 
 /******************* Private ***********************************************/
 
 void ImapResource::connections()
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     connect( m_imap,
              SIGNAL( login( Imaplib* ) ),
              SLOT( slotLogin( Imaplib* ) ) );
@@ -649,16 +834,66 @@ void ImapResource::connections()
              SIGNAL( expungeCompleted( Imaplib*, const QString& ) ),
              SLOT( slotMailBoxExpunged( Imaplib*, const QString& ) ) );
     */
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::connections");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::manualAuth( Imaplib* connection, const QString& username )
 {
+#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     KPasswordDialog dlg( 0 /* no winId constructor available */ );
     dlg.setPrompt( i18n( "Could not find a valid password, please enter it here." ) );
     if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )
         connection->login( username, QString( dlg.password() ) );
     else
         connection->logout();
+#else // KIMAP_PORT_TEMPORARILY_REMOVED
+    kFatal("Sorry, not implemented: ImapResource::manualAuth");
+    return ;
+#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+}
+
+QString ImapResource::rootRemoteId() const
+{
+  return "imap://"+m_userName+'@'+m_server+'/';
+}
+
+QString ImapResource::mailBoxRemoteId( const QString &path ) const
+{
+  return rootRemoteId()+path;
+}
+
+Collection ImapResource::collectionFromRemoteId( const QString &remoteId )
+{
+  CollectionFetchJob *fetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+  fetch->setResource( identifier() );
+  fetch->exec();
+
+  Collection::List collections = fetch->collections();
+  foreach ( const Collection &collection, collections ) {
+    if ( collection.remoteId()==remoteId ) {
+      return collection;
+    }
+  }
+
+  return Collection();
+}
+
+Item ImapResource::itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId )
+{
+  ItemFetchJob *fetch = new ItemFetchJob( collection );
+  fetch->exec();
+
+  Item::List items = fetch->items();
+  foreach ( const Item &item, items ) {
+    if ( item.remoteId()==remoteId ) {
+      return item;
+    }
+  }
+
+  return Item();
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )

@@ -147,7 +147,7 @@ SetupServer::~SetupServer()
 void SetupServer::applySettings()
 {
     Settings::self()->setImapServer( m_imapServer->text() );
-    Settings::self()->setUsername( m_userName->text() );
+    Settings::self()->setUserName( m_userName->text() );
     Settings::self()->setSafety( m_safeImap_group->checkedId() );
     Settings::self()->setPassword( m_password->text() );
     Settings::self()->writeConfig();
@@ -163,7 +163,7 @@ void SetupServer::readSettings()
         !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
         esetting.getSetting( KEMailSettings::InServer ) );
     m_userName->setText(
-        !Settings::self()->username().isEmpty() ? Settings::self()->username() :
+        !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
         currentUser->loginName() );
     int i = Settings::self()->safety();
     if ( i == 0 )

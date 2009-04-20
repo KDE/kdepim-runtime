@@ -8,7 +8,7 @@
     <entry name="ImapServer" type="String">
       <label>IMAP server</label>
     </entry>
-    <entry name="Username" type="String">
+    <entry name="UserName" type="String">
       <label>Username</label>
     </entry>
     <entry name="Safety" type="Int">
