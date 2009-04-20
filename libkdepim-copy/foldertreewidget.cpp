@@ -462,7 +462,7 @@ void FolderTreeWidgetItem::setUnreadCount( int unreadCount )
   int idx = tree->unreadColumnIndex();
   if ( tree && idx >= 0  )
   {
-    if ( parent() || mAlwaysDisplayCounts || !isExpanded() )
+    if ( ( parent() || mAlwaysDisplayCounts || !isExpanded() ) && unreadCountToDisplay > 0 )
       setText( idx, QString::number( unreadCountToDisplay ) );
     else
       setText( idx, QString() );
