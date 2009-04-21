@@ -9,6 +9,7 @@ include_directories(
   ${KDE4_INCLUDES}
   ${KDEPIMLIBS_INCLUDE_DIR}
   ${QT_INCLUDES}
+  ${Boost_INCLUDE_DIR}
 )
 
 include(KDE4Defaults)
