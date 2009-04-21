@@ -60,6 +60,7 @@ add_subdirectory(defaultsetup)
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
 #endif(OPENSYNC_FOUND)
+add_subdirectory(akonadi_next)
 
 if(Nepomuk_FOUND)
   add_subdirectory(nepomuk)
