@@ -70,10 +70,12 @@ private Q_SLOTS:
                           const QList<QByteArray> &flags );
   void onStatusReceived( const QByteArray &mailBox, int messageCount,
                          qint64 uidValidity,  int nextUid );
+  void onStatusDone( KJob *job );
   void onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber,
                           qint64 size, boost::shared_ptr<KMime::Message> message );
   void onHeadersFetchDone( KJob *job );
   void onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
+  void onContentFetchDone( KJob *job );
 
   void slotLogin( Imaplib* connection );
   void slotLoginOk();
@@ -91,7 +93,6 @@ private:
   Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );
 
   KIMAP::Session *m_session;
-  Imaplib* m_imap;
   Akonadi::Collection m_collection;
   Akonadi::Item m_itemAdded;
   QHash<QString, QString> m_flagsCache;

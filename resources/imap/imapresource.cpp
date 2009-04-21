@@ -63,7 +63,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_imap( 0 )
+        :ResourceBase( id )
 {
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -79,7 +79,6 @@ ImapResource::ImapResource( const QString &id )
 
 ImapResource::~ImapResource()
 {
-    delete m_imap;
 }
 
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -106,11 +105,13 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
              this, SLOT( onMessageReceived( QByteArray, qint64, int, boost::shared_ptr<KMime::Message> ) ) );
     connect( fetch, SIGNAL( partReceived( QByteArray, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ),
              this, SLOT( onPartReceived( QByteArray, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onContentFetchDone( KJob* ) ) );
     fetch->start();
     return true;
 }
 
-void ImapResource::onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message )
+void ImapResource::onMessageReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/, boost::shared_ptr<KMime::Message> message )
 {
   const QString remoteId =  mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid );
 
@@ -126,6 +127,18 @@ void ImapResource::onMessageReceived( const QByteArray &mailBox, qint64 uid, int
   kDebug() << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
   itemRetrieved( i );
+}
+
+void ImapResource::onContentFetchDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  } else {
+    KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( job );
+    if ( fetch->messages().isEmpty() && fetch->parts().isEmpty() ) {
+      cancelTask( i18n("No message retrieved, server reply was empty.") );
+    }
+  }
 }
 
 void ImapResource::configure( WId windowId )
@@ -370,6 +383,8 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
   statusJob->setMailBox( col.remoteId().replace( rootRemoteId(), "" ).toUtf8() );
   connect( statusJob, SIGNAL( status( QByteArray, int, qint64, int ) ),
            this, SLOT( onStatusReceived( QByteArray, int, qint64, int ) ) );
+  connect( statusJob, SIGNAL( result( KJob* ) ),
+           this, SLOT( onStatusDone( KJob* ) ) );
   statusJob->start();
 }
 
@@ -421,7 +436,7 @@ void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QS
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, qint64 size, boost::shared_ptr<KMime::Message> message )
+void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/, qint64 size, boost::shared_ptr<KMime::Message> message )
 {
   Akonadi::Item i;
   i.setRemoteId( mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid ) );
@@ -439,7 +454,7 @@ void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int
   itemsRetrievedIncremental( Item::List() << i, Item::List() );
 }
 
-void ImapResource::onHeadersFetchDone( KJob *job )
+void ImapResource::onHeadersFetchDone( KJob */*job*/ )
 {
   itemsRetrievalDone();
 }
@@ -754,6 +769,14 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
   kDebug() << "All fine, nothing to do";
   itemsRetrievalDone();
 }
+
+void ImapResource::onStatusDone( KJob *job )
+{
+    if ( job->error() ) {
+      itemsRetrievalDone();
+    }
+}
+
 
 /******************* Private ***********************************************/
 
