@@ -14,8 +14,7 @@
 
 #include <kdebug.h>
 
-template class QList<qint64>;
-// template class QHash<qint64, QList<qint64> >;
+template<typename T> class QList;
 
 class DynamicTreeModel : public AbstractItemModel
 {
