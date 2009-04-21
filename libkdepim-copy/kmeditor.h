@@ -118,6 +118,10 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
     void killExternalEditor();
     void setCursorPositionFromStart( unsigned int pos );
 
+    /**
+     * @return the line number where the cursor is. This takes word-wrapping
+     *         into account. Line numbers start at 0.
+     */
     int linePosition();
     int columnNumber();
     void setCursorPosition( int linePos, int columnPos );

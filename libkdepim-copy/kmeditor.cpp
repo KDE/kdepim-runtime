@@ -30,6 +30,7 @@
 #include <KCharsets>
 #include <KComboBox>
 #include <KCursor>
+#include <KDebug>
 #include <KDirWatch>
 #include <KEncodingFileDialog>
 #include <KLocale>
@@ -759,8 +760,50 @@ void KMeditor::slotAddBox()
 
 int KMeditor::linePosition()
 {
-  QTextCursor cursor = textCursor();
-  return cursor.blockNumber();
+  const QTextCursor cursor = textCursor();
+  const QTextDocument* doc = document();
+  QTextBlock block = doc->begin();
+  int lineCount = 0;
+
+  // Simply using cursor.block.blockNumber() would not work since that does not
+  // take word-wrapping into account, i.e. it is possible to have more than one line
+  // in a block.
+  //
+  // What we have to do therefore is to iterate over the blocks and count the lines
+  // in them. Once we have reached the block where the cursor is, we have to iterate
+  // over each line in it, to find the exact line in the block where the cursor is.
+  while ( block.isValid() ) {
+    const QTextLayout *layout = block.layout();
+
+    // If the current block has the cursor in it, iterate over all its lines
+    if ( block == cursor.block() ) {
+
+      // Special case: Cursor at end of single non-wrapped line, exit early
+      // in this case as the logic below can't handle it
+      if ( block.lineCount() == layout->lineCount() )
+        return lineCount;
+
+      const int cursorBasePosition = cursor.position() - block.position();
+      for ( int i = 0; i < layout->lineCount(); i++ ) {
+        QTextLine line = layout->lineAt( i );
+        if ( cursorBasePosition >= line.textStart() &&
+             cursorBasePosition < line.textStart() + line.textLength() )
+          break;
+        lineCount++;
+      }
+      return lineCount;
+    }
+
+    // No, cursor is not in the current block
+    else
+      lineCount += layout->lineCount();
+
+    block = block.next();
+  }
+
+  // Only gets here if the cursor block can't be found, shouldn't happen except
+  // for an empty document maybe
+  return lineCount;
 }
 
 int KMeditor::columnNumber()
