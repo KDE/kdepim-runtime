@@ -73,7 +73,7 @@ void EntityTreeView::showChildCollectionTree( bool include )
   d->showChildCollectionTree = include;
 }
 
-bool EntityTreeView::childCollectionTreeShown()
+bool EntityTreeView::childCollectionTreeShown() const
 {
   return d->showChildCollectionTree;
 }

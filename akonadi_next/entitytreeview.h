@@ -89,12 +89,12 @@ public:
   virtual ~EntityTreeView();
 
   void showChildCollectionTree( bool show );
-  bool childCollectionTreeShown();
+  bool childCollectionTreeShown() const;
 
   /**
-  Reimplemented to hide the child collection tree if that option is set.
-  */
-  void setRootIndex(const QModelIndex &idx);
+   * Reimplemented to hide the child collection tree if that option is set.
+   */
+  void setRootIndex( const QModelIndex &index );
 
   /**
    * Sets the KXmlGuiWindow which the view is used in.
