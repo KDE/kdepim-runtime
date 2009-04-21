@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>CategorySelectDialog_base</class>
  <widget class="QWidget" name="CategorySelectDialog_base" >
   <property name="geometry" >
@@ -76,8 +73,6 @@
    </item>
   </layout>
  </widget>
- <layoutfunction spacing="KDialog::spacingHint()" margin="KDialog::marginHint()" />
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>KPIM::AutoCheckTreeWidget</class>
