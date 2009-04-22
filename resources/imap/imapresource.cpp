@@ -57,8 +57,10 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectiondeletejob.h>
+#include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/session.h>
+#include <akonadi/transactionsequence.h>
 
 using namespace Akonadi;
 
@@ -719,10 +721,9 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
   } else if ( messageCount != realMessageCount ) {
     // The amount on the server does not match the amount in the cache.
     // that means we need reget the catch completely.
-    //itemsRetrieved( Item::List() );
     kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
-    kFatal() << "Woot!";
 
+    itemsClear();
     setItemStreamingEnabled( true );
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -745,8 +746,8 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     // amount is right but uidnext is different.... something happened
     // behind our back...
     kDebug() << "UIDNEXT check failed, refetching mailbox";
-    kFatal() << "Woot!";
 
+    itemsClear();
     setItemStreamingEnabled( true );
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -917,6 +918,21 @@ Item ImapResource::itemFromRemoteId( const Akonadi::Collection &collection, cons
   }
 
   return Item();
+}
+
+void ImapResource::itemsClear()
+{
+  ItemFetchJob *fetch = new ItemFetchJob( currentCollection() );
+  fetch->exec();
+
+  TransactionSequence *transaction = new TransactionSequence;
+
+  Item::List items = fetch->items();
+  foreach ( const Item &item, items ) {
+    new ItemDeleteJob( item, transaction );
+  }
+
+  transaction->exec();
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )
