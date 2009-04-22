@@ -163,6 +163,7 @@ void ImapResource::startConnect()
 {
   m_server = Settings::self()->imapServer();
   int safe = Settings::self()->safety();
+  int auth = Settings::self()->authentication();
 
   if ( m_server.isEmpty() ) {
     return;
@@ -212,6 +213,37 @@ void ImapResource::startConnect()
   case 3:
     loginJob->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
     break;
+  default:
+    kFatal("Shouldn't happen...");
+  }
+
+  switch ( auth ) {
+  case 1:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::ClearText );
+    break;
+  case 2:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::Login );
+    break;
+  case 3:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::Plain );
+    break;
+  case 4:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::CramMD5 );
+    break;
+  case 5:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::DigestMD5 );
+    break;
+  case 6:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::NTLM );
+    break;
+  case 7:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::GSSAPI );
+    break;
+  case 8:
+    loginJob->setAuthenticationMode( KIMAP::LoginJob::Anonymous );
+    break;
+  default:
+    kFatal("Shouldn't happen...");
   }
 
   connect( loginJob, SIGNAL( result(KJob*) ),
