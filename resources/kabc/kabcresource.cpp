@@ -254,8 +254,8 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
   // if there is a mapping, skip it if the mapping does not equal the collection's
   // remoteId.
   // if there is none, skip it if the collection is not the top level collection
-  KABC::AddressBook::const_iterator addrIt    = mAddressBook->begin();
-  KABC::AddressBook::const_iterator addrEndIt = mAddressBook->end();
+  KABC::AddressBook::const_iterator addrIt    = mAddressBook->constBegin();
+  KABC::AddressBook::const_iterator addrEndIt = mAddressBook->constEnd();
   for ( ; addrIt != addrEndIt; ++addrIt ) {
     UidToResourceMap::const_iterator findIt = uidToResourceMap.find( addrIt->uid() );
     if ( findIt != uidToResourceMap.end() ) {
