@@ -37,7 +37,10 @@
 #include <KWindowSystem>
 #include <KAboutData>
 
+#include <kio/ksslcertificatemanager.h>
+
 #include <kimap/session.h>
+#include <kimap/sessionuiproxy.h>
 #include <kimap/fetchjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
@@ -63,6 +66,17 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/transactionsequence.h>
 
 using namespace Akonadi;
+
+class SessionUiProxy : public KIMAP::SessionUiProxy {
+  public:
+    bool ignoreSslError(const KSslErrorUiData& errorData) {
+      if (KSslCertificateManager::askIgnoreSslErrors(errorData, KSslCertificateManager::StoreRules)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+};
 
 ImapResource::ImapResource( const QString &id )
         :ResourceBase( id )
@@ -192,6 +206,7 @@ void ImapResource::startConnect()
   }
 
   m_session = new KIMAP::Session( server, port, this );
+  m_session->setUiProxy( new SessionUiProxy );
 
   m_userName =  Settings::self()->userName();
   QString password = Settings::self()->password();
