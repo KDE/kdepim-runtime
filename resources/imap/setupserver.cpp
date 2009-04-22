@@ -40,104 +40,48 @@
 #include <kuser.h>
 #include <solid/networking.h>
 
+#include "ui_setupserverview.h"
+
 SetupServer::SetupServer( WId parent )
-        : KDialog()
+  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0)
 {
-    Settings::self()->setWinId( parent );
-    QGridLayout *mainGrid = new QGridLayout( mainWidget() );
+  Settings::self()->setWinId( parent );
+  m_ui->setupUi( mainWidget() );
 
-    QLabel *l4 = new QLabel( i18n( "IMAP server:" ) + ' ', mainWidget() );
-    mainGrid->addWidget( l4, 0, 0 );
-    l4->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
-    l4->setWhatsThis( i18n( "Indicate the IMAP server. If you want to "
-                            "connect to a non-standard port for a specific encryption scheme, you can add "
-                            "\":port\" to indicate that. For example: \"imap.bla.nl:144\"." ) );
+  m_ui->safeImapGroup->setId( m_ui->noRadio, 1 );
+  m_ui->safeImapGroup->setId( m_ui->sslRadio, 2 );
+  m_ui->safeImapGroup->setId( m_ui->tlsRadio, 3 );
 
-    m_imapServer = new KLineEdit( mainWidget() );
-    mainGrid->addWidget( m_imapServer, 0, 1 );
-    l4->setBuddy( m_imapServer );
-    connect( m_imapServer, SIGNAL( textChanged( const QString & ) ),
-             SLOT( slotTestChanged() ) );
-    connect( m_imapServer, SIGNAL( textChanged( const QString & ) ),
-             SLOT( slotComplete() ) );
+  connect( m_ui->noRadio, SIGNAL( toggled(bool) ),
+           this, SLOT( slotSafetyChanged() ) );
+  connect( m_ui->sslRadio, SIGNAL( toggled(bool) ),
+           this, SLOT( slotSafetyChanged() ) );
+  connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
+           this, SLOT( slotSafetyChanged() ) );
 
-    QLabel *l5 = new QLabel( i18n( "Safety:" ) + ' ', mainWidget() );
-    mainGrid->addWidget( l5, 2, 0 );
-    l5->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
-    l5->setWhatsThis( i18n( "<b>SSL</b> is safe IMAP over port 993, <b>TLS</b> "
-                            "will operate on port 143 and switch to a secure connection "
-                            "directly after connecting, and <b>None</b> will connect to port "
-                            "143 but not switch to a secure connection. This setting is not "
-                            "recommended." ) );
+  m_ui->authImapGroup->setId( m_ui->clearRadio, 1 );
+  m_ui->authImapGroup->setId( m_ui->loginRadio, 2 );
+  m_ui->authImapGroup->setId( m_ui->plainRadio, 3 );
+  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 4 );
+  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 5 );
+  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 6 );
+  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 7 );
+  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 8 );
 
-    m_safeImap = new QGroupBox( mainWidget() );
-    QHBoxLayout* safePartLay = new QHBoxLayout( m_safeImap );
-    safePartLay->setMargin( 0 );
-    safePartLay->setSpacing( KDialog::spacingHint() );
-    m_testButton = new KPushButton( i18n( "Auto detect" ), m_safeImap );
-    safePartLay->addWidget( m_testButton );
-    m_noRadio = new QRadioButton( i18n( "None" ), m_safeImap );
-    safePartLay->addWidget( m_noRadio );
-    m_sslRadio = new QRadioButton( i18n( "SSL" ), m_safeImap );
-    safePartLay->addWidget( m_sslRadio );
-    m_tlsRadio = new QRadioButton( i18n( "TLS" ), m_safeImap );
-    safePartLay->addWidget( m_tlsRadio );
-    mainGrid->addWidget( m_safeImap,2,1 );
-    l5->setBuddy( m_safeImap );
+  m_ui->testInfo->hide();
+  m_ui->testProgress->hide();
+  connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
-    connect( m_testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
-
-    m_safeImap_group = new QButtonGroup( mainWidget() );
-    m_safeImap_group->addButton( m_noRadio,1 );
-    m_safeImap_group->addButton( m_sslRadio,2 );
-    m_safeImap_group->addButton( m_tlsRadio,3 );
-
-    QLabel *l6 = new QLabel( i18n( "Username:" ) + ' ', mainWidget() );
-    mainGrid->addWidget( l6,3,0 );
-    l6->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
-    l6->setWhatsThis( i18n( "The username" ) );
-    m_userName = new KLineEdit( mainWidget() );
-    mainGrid->addWidget( m_userName,3,1 );
-    l6->setBuddy( m_userName );
-    connect( m_userName, SIGNAL( textChanged( const QString & ) ),
-             SLOT( slotComplete() ) );
-
-    QLabel *l7 = new QLabel( i18n( "Password:" ) + ' ', mainWidget() );
-    mainGrid->addWidget( l7,4,0 );
-    l7->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
-    l7->setWhatsThis( i18n( "The password" ) );
-    m_password = new KLineEdit( mainWidget() );
-    m_password->setPasswordMode( true );
-    mainGrid->addWidget( m_password,4, 1 );
-    l7->setBuddy( m_password );
-
-    QSpacerItem* spacer2 = new QSpacerItem( 20, 20, QSizePolicy::Minimum,
-                                            QSizePolicy::Expanding );
-    mainGrid->addItem( spacer2, 5, 1 );
-
-    m_testInfo = new QLabel( mainWidget() );
-    m_testInfo->setAlignment( Qt::AlignHCenter );
-    m_testInfo->hide();
-    mainGrid->addWidget( m_testInfo, 6, 1 );
-
-    m_testProgress = new QProgressBar( mainWidget() );
-    mainGrid->addWidget( m_testProgress, 7, 1 );
-    m_testProgress->hide();
-
-    QSpacerItem* spacer3 = new QSpacerItem( 20, 20, QSizePolicy::Minimum,
-                                            QSizePolicy::Expanding );
-    mainGrid->addItem( spacer3, 8, 1 );
-
-    readSettings();
-    slotTestChanged();
-    slotComplete();
-    connect( Solid::Networking::notifier(),
-             SIGNAL( statusChanged( Solid::Networking::Status ) ),
-             SLOT( slotTestChanged() ) );
-    connect( this, SIGNAL( applyClicked() ),
-             SLOT( applySettings() ) );
-    connect( this, SIGNAL( okClicked() ),
-             SLOT( applySettings() ) );
+  readSettings();
+  slotTestChanged();
+  slotComplete();
+  connect( Solid::Networking::notifier(),
+           SIGNAL( statusChanged( Solid::Networking::Status ) ),
+           SLOT( slotTestChanged() ) );
+  connect( this, SIGNAL( applyClicked() ),
+           SLOT( applySettings() ) );
+  connect( this, SIGNAL( okClicked() ),
+           SLOT( applySettings() ) );
 }
 
 SetupServer::~SetupServer()
@@ -146,107 +90,163 @@ SetupServer::~SetupServer()
 
 void SetupServer::applySettings()
 {
-    Settings::self()->setImapServer( m_imapServer->text() );
-    Settings::self()->setUserName( m_userName->text() );
-    Settings::self()->setSafety( m_safeImap_group->checkedId() );
-    Settings::self()->setPassword( m_password->text() );
-    Settings::self()->writeConfig();
-    kDebug() << "wrote" << m_imapServer->text() << m_userName->text() << m_safeImap_group->checkedId();
+  Settings::self()->setImapServer( m_ui->imapServer->text() );
+  Settings::self()->setUserName( m_ui->userName->text() );
+  Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
+  Settings::self()->setAuthentication( m_ui->authImapGroup->checkedId() );
+  Settings::self()->setPassword( m_ui->password->text() );
+  Settings::self()->writeConfig();
+  kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
 
 void SetupServer::readSettings()
 {
-    KUser* currentUser = new KUser();
-    KEMailSettings esetting;
+  KUser* currentUser = new KUser();
+  KEMailSettings esetting;
 
-    m_imapServer->setText(
-        !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
-        esetting.getSetting( KEMailSettings::InServer ) );
-    m_userName->setText(
-        !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
-        currentUser->loginName() );
-    int i = Settings::self()->safety();
-    if ( i == 0 )
-        i = 1; // it crashes when 0, shouldn't happen, but you never know.
-    m_safeImap_group->button( i )->setChecked( true );
+  m_ui->imapServer->setText(
+    !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
+    esetting.getSetting( KEMailSettings::InServer ) );
 
-    if ( !Settings::self()->passwordPossible() ) {
-        m_password->setEnabled( false );
-        KMessageBox::information( 0, i18n( "Could not access KWallet. "
-                                           "If you want to store the password permanently then you have to "
-                                           "activate it. If you do not "
-                                           "want to use KWallet, check the box below, but note that you will be "
-                                           "prompted for your password when needed." ),
-                                  i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
-    } else
-        m_password->insert( Settings::self()->password() );
-    delete currentUser;
+  m_ui->userName->setText(
+    !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
+    currentUser->loginName() );
+
+  int i = Settings::self()->safety();
+  if ( i == 0 )
+    i = 1; // it crashes when 0, shouldn't happen, but you never know.
+  m_ui->safeImapGroup->button( i )->setChecked( true );
+
+  i = Settings::self()->authentication();
+  if ( i == 0 )
+    i = 1; // it crashes when 0, shouldn't happen, but you never know.
+  m_ui->authImapGroup->button( i )->setChecked( true );
+
+  if ( !Settings::self()->passwordPossible() ) {
+    m_ui->password->setEnabled( false );
+    KMessageBox::information( 0, i18n( "Could not access KWallet. "
+                                       "If you want to store the password permanently then you have to "
+                                       "activate it. If you do not "
+                                       "want to use KWallet, check the box below, but note that you will be "
+                                       "prompted for your password when needed." ),
+                              i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
+  } else {
+    m_ui->password->insert( Settings::self()->password() );
+  }
+  delete currentUser;
 }
 
 void SetupServer::slotTest()
 {
-    kDebug() << m_imapServer->text() << endl;
+  kDebug() << m_ui->imapServer->text();
 
-    m_testInfo->clear();
-    m_sslRadio->setEnabled( false );
-    m_tlsRadio->setEnabled( false );
-    m_noRadio->setEnabled( false );
+  m_ui->testButton->setEnabled( false );
+  m_ui->safeImap->setEnabled( false );
+  m_ui->authImap->setEnabled( false );
 
+  m_ui->testInfo->clear();
+  m_ui->testInfo->hide();
 
-    MailTransport::ServerTest* test = new MailTransport::ServerTest( this );
-    test->setServer( m_imapServer->text() );
-    test->setProtocol( "imap" );
-    test->setProgressBar( m_testProgress );
-    connect( test, SIGNAL( finished( QList<int> ) ),
-             SLOT( slotFinished( QList<int> ) ) );
-    test->start();
+  delete m_serverTest;
+  m_serverTest = new MailTransport::ServerTest( this );
+  m_serverTest->setServer( m_ui->imapServer->text() );
+  m_serverTest->setProtocol( "imap" );
+  m_serverTest->setProgressBar( m_ui->testProgress );
+  connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
+           SLOT( slotFinished( QList<int> ) ) );
+  m_serverTest->start();
 }
 
 void SetupServer::slotFinished( QList<int> testResult )
 {
-    kDebug() << testResult << endl;
+  kDebug() << testResult;
 
-    using namespace MailTransport;
+  using namespace MailTransport;
 
-    m_testInfo->show();
+  m_ui->testInfo->show();
 
-    if ( testResult.contains( Transport::EnumEncryption::SSL ) )
-        m_sslRadio->setEnabled( true );
+  m_ui->sslRadio->setEnabled( testResult.contains( Transport::EnumEncryption::SSL ) );
+  m_ui->tlsRadio->setEnabled( testResult.contains( Transport::EnumEncryption::TLS ) );
+  m_ui->noRadio->setEnabled( testResult.contains( Transport::EnumEncryption::None ) );
 
-    if ( testResult.contains( Transport::EnumEncryption::TLS ) )
-        m_tlsRadio->setEnabled( true );
+  QString text;
+  if ( testResult.contains( Transport::EnumEncryption::TLS ) ) {
+    m_ui->tlsRadio->setChecked( true );
+    text = i18n( "<qt><b>TLS is supported and recommended.</b></qt>" );
+  } else if ( testResult.contains( Transport::EnumEncryption::SSL ) ) {
+    m_ui->sslRadio->setChecked( true );
+    text = i18n( "<qt><b>SSL is supported and recommended.</b></qt>" );
+  } else if ( testResult.contains( Transport::EnumEncryption::None ) ) {
+    m_ui->noRadio->setChecked( true );
+    text = i18n( "<qt><b>No security is supported. It is not "
+                 "recommended to connect to this server.</b></qt>" );
+  } else {
+    text = i18n( "<qt><b>It is not possible to use this server.</b></qt>" );
+  }
+  m_ui->testInfo->setText( text );
 
-    if ( testResult.contains( Transport::EnumEncryption::None ) )
-        m_noRadio->setEnabled( true );
-
-    QString text;
-    if ( testResult.contains( Transport::EnumEncryption::SSL ) ) {
-        m_safeImap_group->button( 2 )->setChecked( true );
-        text = i18n( "<qt><b>SSL is supported and recommended.</b></qt>" );
-    } else if ( testResult.contains( Transport::EnumEncryption::TLS ) ) {
-        m_safeImap_group->button( 3 )->setChecked( true );
-        text = i18n( "<qt><b>TLS is supported and recommended.</b></qt>" );
-    } else if ( testResult.contains( Transport::EnumEncryption::None ) ) {
-        m_safeImap_group->button( 1 )->setChecked( true );
-        text = i18n( "<qt><b>No security is supported. It is not "
-                     "recommended to connect to this server.</b></qt>" );
-    } else {
-        text = i18n( "<qt><b>It is not possible to use this server.</b></qt>" );
-    }
-    m_testInfo->setText( text );
+  m_ui->testButton->setEnabled( true );
+  m_ui->safeImap->setEnabled( true );
+  m_ui->authImap->setEnabled( true );
 }
 
 void SetupServer::slotTestChanged()
 {
-    // do not use imapConnectionPossible, as the data is not yet saved.
-    m_testButton->setEnabled( true /* TODO Global::connectionPossible() ||
-                              m_imapServer->text() == "localhost"*/ );
+  // do not use imapConnectionPossible, as the data is not yet saved.
+  m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
+                                        m_ui->imapServer->text() == "localhost"*/ );
 }
 
 void SetupServer::slotComplete()
 {
-    bool ok =  !m_imapServer->text().isEmpty() && !m_userName->text().isEmpty();
-    button( KDialog::Ok )->setEnabled( ok );
+  bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
+  button( KDialog::Ok )->setEnabled( ok );
+}
+
+void SetupServer::slotSafetyChanged()
+{
+  if ( m_serverTest==0 ) {
+    m_ui->clearRadio->setEnabled( true );
+    m_ui->loginRadio->setEnabled( true );
+    m_ui->plainRadio->setEnabled( true );
+    m_ui->cramMd5Radio->setEnabled( true );
+    m_ui->digestMd5Radio->setEnabled( true );
+    m_ui->ntlmRadio->setEnabled( true );
+    m_ui->gssapiRadio->setEnabled( true );
+    m_ui->anonymousRadio->setEnabled( true );
+    return;
+  }
+
+  QList<int> protocols;
+
+  switch ( m_ui->safeImapGroup->checkedId() ) {
+  case 1:
+    protocols = m_serverTest->normalProtocols();
+    break;
+  case 2:
+    protocols = m_serverTest->secureProtocols();
+    break;
+  case 3:
+    protocols = m_serverTest->tlsProtocols();
+    break;
+  default:
+    kFatal() << "Shouldn't happen";
+  }
+
+  using namespace MailTransport;
+
+  m_ui->clearRadio->setEnabled( true );
+  m_ui->loginRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::LOGIN ) );
+  m_ui->plainRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::PLAIN ) );
+  m_ui->cramMd5Radio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::CRAM_MD5 ) );
+  m_ui->digestMd5Radio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::DIGEST_MD5 ) );
+  m_ui->ntlmRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::NTLM ) );
+  m_ui->gssapiRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::GSSAPI ) );
+  m_ui->anonymousRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::ANONYMOUS ) );
+
+  if ( !m_ui->authImapGroup->checkedButton()->isEnabled() ) {
+    m_ui->clearRadio->setChecked( true );
+  }
 }
 
 #include "setupserver.moc"

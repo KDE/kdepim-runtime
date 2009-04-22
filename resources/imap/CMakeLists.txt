@@ -19,6 +19,7 @@ set( imapresource_SRCS
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kde4_add_ui_files(imapresource_SRCS setupserverview.ui)
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 qt4_add_dbus_adaptor( imapresource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings

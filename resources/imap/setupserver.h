@@ -29,6 +29,16 @@ class QLabel;
 class QRadioButton;
 class QPushButton;
 
+namespace Ui
+{
+class SetupServerView;
+}
+
+namespace MailTransport
+{
+class ServerTest;
+}
+
 /**
  * @class SetupServer
  * These contain the account settings
@@ -36,49 +46,38 @@ class QPushButton;
  */
 class SetupServer : public KDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    /**
-     * Constructor
-     * @param parent Parent WId
-     */
-    SetupServer( WId parent );
+  /**
+   * Constructor
+   * @param parent Parent WId
+   */
+  SetupServer( WId parent );
 
-    /**
-     * Destructor
-     */
-    ~SetupServer();
+  /**
+   * Destructor
+   */
+  ~SetupServer();
 
 private slots:
-    /**
-     * Call this if you want the settings saved from this page.
-     */
-    void applySettings();
+  /**
+   * Call this if you want the settings saved from this page.
+   */
+  void applySettings();
 
 private:
-    void readSettings();
+  void readSettings();
 
-    QGroupBox*          m_safeImap;
-    QButtonGroup*       m_safeImap_group;
-    KLineEdit*          m_imapServer;
-    KLineEdit*          m_userName;
-    KLineEdit*          m_password;
-    QLabel*             m_testInfo;
-    QProgressBar*       m_testProgress;
-
-    QPushButton*        m_testButton;
-    QRadioButton*       m_noRadio;
-    QRadioButton*       m_sslRadio;
-    QRadioButton*       m_tlsRadio;
-
-    WId m_winId;
+  Ui::SetupServerView *m_ui;
+  MailTransport::ServerTest *m_serverTest;
 
 private slots:
-    void slotTest();
-    void slotFinished( QList<int> testResult );
-    void slotTestChanged();
-    void slotComplete();
+  void slotTest();
+  void slotFinished( QList<int> testResult );
+  void slotTestChanged();
+  void slotComplete();
+  void slotSafetyChanged();
 };
 
 #endif

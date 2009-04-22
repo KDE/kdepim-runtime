@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SetupServerView</class>
+ <widget class="QWidget" name="SetupServerView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>464</width>
+    <height>505</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,1">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="whatsThis">
+        <string>Indicate the IMAP server. If you want to connect to a non-standard port for a specific encryption scheme, you can add &quot;:port&quot; to indicate that. For example: &quot;imap.foo.com:144&quot;.</string>
+       </property>
+       <property name="text">
+        <string>IMAP server:</string>
+       </property>
+       <property name="buddy">
+        <cstring>imapServer</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="KLineEdit" name="imapServer"/>
+       </item>
+       <item>
+        <widget class="KPushButton" name="testButton">
+         <property name="text">
+          <string>Auto detect</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QGroupBox" name="safeImap">
+       <property name="whatsThis">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SSL&lt;/span&gt; is safe IMAP over port 993;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TLS&lt;/span&gt; will operate on port 143 and switch to a secure connection directly after connecting;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;None&lt;/span&gt; will connect to port 143 but not switch to a secure connection. This setting is not recommended.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Encryption</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QRadioButton" name="noRadio">
+          <property name="text">
+           <string>None</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string>safeImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="sslRadio">
+          <property name="text">
+           <string>SSL</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>safeImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="tlsRadio">
+          <property name="text">
+           <string>TLS</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>safeImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="whatsThis">
+        <string>The username.</string>
+       </property>
+       <property name="text">
+        <string>User name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>userName</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="KLineEdit" name="userName"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="whatsThis">
+        <string>The password.</string>
+       </property>
+       <property name="text">
+        <string>Password:</string>
+       </property>
+       <property name="buddy">
+        <cstring>password</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="KLineEdit" name="password">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QGroupBox" name="authImap">
+       <property name="title">
+        <string>Authentication Method</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="clearRadio">
+          <property name="text">
+           <string>Clear text</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="digestMd5Radio">
+          <property name="text">
+           <string>DIGEST-MD5</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="loginRadio">
+          <property name="text">
+           <string>LOGIN</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QRadioButton" name="ntlmRadio">
+          <property name="text">
+           <string>NTLM</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="plainRadio">
+          <property name="text">
+           <string>PLAIN</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QRadioButton" name="gssapiRadio">
+          <property name="text">
+           <string>GSSAPI</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="cramMd5Radio">
+          <property name="text">
+           <string>CRAM-MD5</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QRadioButton" name="anonymousRadio">
+          <property name="text">
+           <string>Anonymous</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>authImapGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="testInfo">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Empty</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="testProgress">
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="authImapGroup"/>
+  <buttongroup name="safeImapGroup"/>
+ </buttongroups>
+</ui>
