@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi Imap
 Name[ga]=IMAP Akonadi
+Name[nn]=Akonadi-IMAP
 Name[pt]=IMAP do Akonadi
 Name[pt_BR]=IMAP do Akonadi
 Name[sv]=Akonadi IMAP
@@ -8,9 +9,12 @@ Name[x-test]=xxAkonadi Imapxx
 Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
 Comment[et]=Ühendumine IMAP-serveriga. Tugineb KIMAP-ile kdepimlibs'ist.
 Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar KIMAP as kdepimlibs.
+Comment[nb]=Kobler til en IMAP-tjener. Basert på KIMAP  fra kdepimlibs.
+Comment[nn]=Koplar til ein IMAP-tenar. Basert på KIMAP frå kdepimlibs.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
 Comment[pt_BR]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
 Comment[sv]=Ansluter till en IMAP-server. Baserad på KIMAP-biblioteket från kdepimlibs.
+Comment[tr]=Bir IMAP-sunucuya bağlanır. Kdepimlibs KIMAP'ı temel alır.
 Comment[uk]=З’єднується з сервером IMAP. Засновано на бібліотеці KIMAP з kdepimlibs.
 Comment[x-test]=xxConnects to an IMAP-server. Based on the KIMAP from kdepimlibs.xx
 Comment[zh_TW]=連到 IMAP 伺服器。基於從 kdepimlibs 而來的 KIMAP 函式庫。
