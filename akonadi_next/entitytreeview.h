@@ -22,8 +22,10 @@
 #define AKONADI_ENTITY_TREE_VIEW
 
 #include "akonadi_next_export.h"
+
 #include <QtGui/QTreeView>
-class KXmlGuiWindow;
+
+class KXMLGUIClient;
 class QDragMoveEvent;
 
 namespace Akonadi
@@ -77,12 +79,12 @@ public:
   /**
    * Creates a new entity tree view.
    *
-   * @param xmlGuiWindow The KXmlGuiWindow the view is used in.
+   * @param xmlGuiClient The KXMLGUIClient the view is used in.
    *                     This is needed for the XMLGUI based context menu.
    *                     Passing 0 is ok and will disable the builtin context menu.
    * @param parent The parent widget.
    */
-  explicit EntityTreeView( KXmlGuiWindow *xmlGuiWindow, QWidget *parent = 0 );
+  explicit EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget *parent = 0 );
 
   /**
    * Destroys the entity tree view.
@@ -98,12 +100,13 @@ public:
   void setRootIndex( const QModelIndex &index );
 
   /**
-   * Sets the KXmlGuiWindow which the view is used in.
+   * Sets the XML GUI client which the view is used in.
+   *
    * This is needed if you want to use the built-in context menu.
    *
-   * @param xmlGuiWindow The KXmlGuiWindow the view is used in.
+   * @param xmlGuiClient The KXMLGUIClient the view is used in.
    */
-  void setXmlGuiWindow( KXmlGuiWindow *xmlGuiWindow );
+  void setXmlGuiClient( KXMLGUIClient *xmlGuiClient );
 
   virtual void setModel( QAbstractItemModel * model );
 

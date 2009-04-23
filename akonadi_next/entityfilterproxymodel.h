@@ -77,10 +77,10 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
     void addMimeTypeInclusionFilters( const QStringList &mimeTypes );
 
     /**
-    Add mimetypes to filter out
-
-    @param mimeTypes A list to exclude from the model.
-    */
+     * Add mimetypes to filter out
+     *
+     * @param mimeTypes A list to exclude from the model.
+     */
     void addMimeTypeExclusionFilters( const QStringList &mimeTypes );
 
     /**
@@ -116,7 +116,7 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
 
     void setHeaderSet(int set);
 
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
   protected:
     virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const;

@@ -32,7 +32,8 @@
 #include <KMessageBox>
 #include <KUrl>
 #include <KXMLGUIFactory>
-#include <KXmlGuiWindow>
+
+#include <kxmlguiclient.h>
 
 #include <akonadi/collection.h>
 #include <akonadi/control.h>
@@ -51,7 +52,7 @@ class EntityTreeView::Private
 public:
   Private( EntityTreeView *parent )
       : mParent( parent ),
-      xmlGuiWindow( 0 ), showChildCollectionTree(false) {
+      xmlGuiClient( 0 ), showChildCollectionTree(false) {
   }
 
   void init();
@@ -65,7 +66,7 @@ public:
   QModelIndex dragOverIndex;
   QTimer dragExpandTimer;
 
-  KXmlGuiWindow *xmlGuiWindow;
+  KXMLGUIClient *xmlGuiClient;
   bool showChildCollectionTree;
 };
 
@@ -178,11 +179,11 @@ EntityTreeView::EntityTreeView( QWidget * parent ) :
   d->init();
 }
 
-EntityTreeView::EntityTreeView( KXmlGuiWindow *xmlGuiWindow, QWidget * parent ) :
+EntityTreeView::EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget * parent ) :
     QTreeView( parent ),
     d( new Private( this ) )
 {
-  d->xmlGuiWindow = xmlGuiWindow;
+  d->xmlGuiClient = xmlGuiClient;
   d->init();
 }
 
@@ -313,17 +314,17 @@ void EntityTreeView::dropEvent( QDropEvent * event )
 
 void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
 {
-  if ( !d->xmlGuiWindow )
+  if ( !d->xmlGuiClient )
     return;
-  QMenu *popup = static_cast<QMenu*>( d->xmlGuiWindow->guiFactory()->container(
-                                        QLatin1String( "akonadi_collectionview_contextmenu" ), d->xmlGuiWindow ) );
+  QMenu *popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
+                                        QLatin1String( "akonadi_collectionview_contextmenu" ), d->xmlGuiClient ) );
   if ( popup )
     popup->exec( event->globalPos() );
 }
 
-void EntityTreeView::setXmlGuiWindow( KXmlGuiWindow * xmlGuiWindow )
+void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 {
-  d->xmlGuiWindow = xmlGuiWindow;
+  d->xmlGuiClient = xmlGuiClient;
 }
 
 #include "entitytreeview.moc"
