@@ -44,6 +44,7 @@
 #include <kimap/fetchjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
+#include <kimap/logoutjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/statusjob.h>
 
@@ -173,7 +174,7 @@ void ImapResource::configure( WId windowId )
   startConnect();
 }
 
-void ImapResource::startConnect()
+void ImapResource::startConnect( bool forceManualAuth )
 {
   m_server = Settings::self()->imapServer();
   int safe = Settings::self()->safety();
@@ -211,8 +212,12 @@ void ImapResource::startConnect()
   m_userName =  Settings::self()->userName();
   QString password = Settings::self()->password();
 
-  if ( password.isEmpty() ) {
-    manualAuth( 0, m_userName );
+  if ( password.isEmpty() || forceManualAuth ) {
+    if ( !manualAuth( m_userName, password ) ) {
+      KIMAP::LogoutJob *job = new KIMAP::LogoutJob( m_session );
+      job->start();
+      return;
+    }
   }
 
   KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( m_session );
@@ -609,23 +614,23 @@ void ImapResource::onLoginDone( KJob *job )
     return;
   }
 
-#if KIMAP_PORT_TEMPORARILY_REMOVED
-    // the credentials where not ok....
-    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
-            i18n( "The server refused the supplied username and password. "
-                  "Do you want to go to the settings, have another attempt at logging in, "
-                  "or do nothing?" ),
-            i18n( "Could Not Log In" ),
-            KGuiItem( i18n( "Settings" ) ), KGuiItem( i18n( "Single Input" ) ) );
-    if ( i == KMessageBox::Yes )
-        configure( winIdForDialogs() );
-    else if ( i == KMessageBox::No ) {
-        manualAuth( connection, m_userName );
-    } else {
-        connection->logout();
-        emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
-    }
-#endif
+  // the credentials where not ok....
+  int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
+                                               i18n( "The server refused the supplied username and password. "
+                                                     "Do you want to go to the settings, have another attempt "
+                                                     "at logging in, or do nothing?" ),
+                                               i18n( "Could Not Authenticate" ),
+                                               KGuiItem( i18n( "Settings" ) ),
+                                               KGuiItem( i18n( "Single Input" ) ) );
+  if ( i == KMessageBox::Yes ) {
+    configure( winIdForDialogs() );
+  } else if ( i == KMessageBox::No ) {
+    startConnect( true );
+  } else {
+    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_session );
+    logout->start();
+    emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
+  }
 }
 
 void ImapResource::slotLoginOk()
@@ -911,19 +916,17 @@ void ImapResource::connections()
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::manualAuth( Imaplib* connection, const QString& username )
+bool ImapResource::manualAuth( const QString& username, QString &password )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    KPasswordDialog dlg( 0 /* no winId constructor available */ );
-    dlg.setPrompt( i18n( "Could not find a valid password, please enter it here." ) );
-    if ( dlg.exec() == QDialog::Accepted && !dlg.password().isEmpty() )
-        connection->login( username, QString( dlg.password() ) );
-    else
-        connection->logout();
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::manualAuth");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  KPasswordDialog dlg( 0 );
+  dlg.setPrompt( i18n( "Could not find a valid password, please enter it here." ) );
+  if ( dlg.exec() == QDialog::Accepted ) {
+    password = dlg.password();
+    return true;
+  } else {
+    password = QString();
+    return false;
+  }
 }
 
 QString ImapResource::rootRemoteId() const

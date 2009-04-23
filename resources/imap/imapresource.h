@@ -101,8 +101,8 @@ private:
   QString m_server;
   QString m_userName;
   void connections();
-  void manualAuth( Imaplib* connection, const QString& username );
-  void startConnect();
+  bool manualAuth( const QString& username, QString &password );
+  void startConnect( bool forceManualAuth = false );
 };
 
 #endif
