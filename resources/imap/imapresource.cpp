@@ -702,7 +702,7 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     // that means we need reget the catch completely.
     kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
 
-    itemsClear();
+    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -726,7 +726,7 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     // behind our back...
     kDebug() << "UIDNEXT check failed, refetching mailbox";
 
-    itemsClear();
+    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -814,9 +814,9 @@ Item ImapResource::itemFromRemoteId( const Akonadi::Collection &collection, cons
   return Item();
 }
 
-void ImapResource::itemsClear()
+void ImapResource::itemsClear( const Collection &collection )
 {
-  ItemFetchJob *fetch = new ItemFetchJob( currentCollection() );
+  ItemFetchJob *fetch = new ItemFetchJob( collection );
   fetch->exec();
 
   TransactionSequence *transaction = new TransactionSequence;
