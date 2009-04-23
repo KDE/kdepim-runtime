@@ -442,17 +442,6 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
   statusJob->start();
 }
 
-void ImapResource::slotMessagesInFolder( Imaplib*, const QString& mb, int amount )
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    kDebug( ) << mb << amount;
-
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotMessagesInFolder");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
-
 void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
 {
 #ifdef KIMAP_PORT_TEMPORARILY_REMOVED
@@ -591,22 +580,6 @@ void ImapResource::slotCollectionRemoved( bool success )
 
 /******************* Slots  ***********************************************/
 
-void ImapResource::slotLogin( Imaplib* connection )
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    // kDebug();
-
-    m_userName =  Settings::self()->userName();
-    QString pass = Settings::self()->password();
-
-    pass.isEmpty() ? manualAuth( connection, m_userName )
-    : connection->login( m_userName, pass );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotLogin");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
-
 void ImapResource::onLoginDone( KJob *job )
 {
   if ( job->error()==0 ) {
@@ -631,16 +604,6 @@ void ImapResource::onLoginDone( KJob *job )
     logout->start();
     emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
   }
-}
-
-void ImapResource::slotLoginOk()
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    kDebug();
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotLoginOk");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 void ImapResource::slotAlert( Imaplib*, const QString& message )
@@ -832,89 +795,6 @@ void ImapResource::onStatusDone( KJob *job )
 
 
 /******************* Private ***********************************************/
-
-void ImapResource::connections()
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    connect( m_imap,
-             SIGNAL( login( Imaplib* ) ),
-             SLOT( slotLogin( Imaplib* ) ) );
-    connect( m_imap,
-             SIGNAL( loginFailed( Imaplib* ) ),
-             SLOT( slotLoginFailed( Imaplib* ) ) );
-
-    connect( m_imap,
-             SIGNAL( alert( Imaplib*, const QString& ) ),
-             SLOT( slotAlert( Imaplib*, const QString& ) ) );
-
-    connect( m_imap,
-             SIGNAL( currentFolders( const QStringList&, const QStringList& ) ),
-             SLOT( slotFolderListReceived( const QStringList&, const QStringList& ) ) );
-
-    connect( m_imap,
-             SIGNAL( messageCount( Imaplib*, const QString&, int ) ),
-             SLOT( slotMessagesInFolder( Imaplib*, const QString&, int ) ) );
-
-    connect( m_imap,
-             SIGNAL( uidsAndFlagsInFolder( Imaplib*,const QString&,const QStringList& ) ),
-             SLOT( slotUidsAndFlagsReceived( Imaplib*,const QString&,const QStringList& ) ) );
-    connect( m_imap,
-             SIGNAL( headersInFolder( Imaplib*, const QString&, const QStringList& ) ),
-             SLOT( slotHeadersReceived( Imaplib*, const QString&, const QStringList& ) ) );
-
-    connect( m_imap,
-             SIGNAL( message( Imaplib*, const QString&, int, const QString& ) ),
-             SLOT( slotMessageReceived( Imaplib*, const QString&, int, const QString& ) ) );
-
-    connect( m_imap,
-             SIGNAL( saveDone( int ) ),
-             SLOT( slotSaveDone( int ) ) );
-
-    connect( m_imap,
-             SIGNAL( mailBoxAdded( bool ) ),
-             SLOT( slotCollectionAdded( bool ) ) );
-    connect( m_imap,
-             SIGNAL( mailBoxDeleted( bool, const QString& ) ),
-             SLOT( slotCollectionRemoved( bool ) ) );
-
-    connect( m_imap,
-             SIGNAL( integrity( const QString&, int, const QString&,
-                                const QString& ) ),
-             SLOT( slotIntegrity( const QString&, int, const QString&,
-                                  const QString& ) ) );
-    connect( m_imap, SIGNAL( loginOk( Imaplib* ) ),
-             SLOT( slotLoginOk() ) );
-    /*
-    connect( m_imap,
-             SIGNAL( status( const QString& ) ),
-             SIGNAL( status( const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( statusReady() ),
-             SIGNAL( statusReady() ) );
-    connect( m_imap,
-             SIGNAL( statusError( const QString& ) ),
-             SIGNAL( statusError( const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( error( const QString& ) ),
-             SLOT( slotError( const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( unexpectedDisconnect() ),
-             SLOT( slotDisconnected() ) );
-    connect( m_imap,
-             SIGNAL( disconnected() ),
-             SIGNAL( disconnected() ) );
-    connect( m_imap,
-             SIGNAL( mailBoxRenamed( const QString&, const QString& ) ),
-             SLOT( slotMailBoxRenamed( const QString&, const QString& ) ) );
-    connect( m_imap,
-             SIGNAL( expungeCompleted( Imaplib*, const QString& ) ),
-             SLOT( slotMailBoxExpunged( Imaplib*, const QString& ) ) );
-    */
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::connections");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
 
 bool ImapResource::manualAuth( const QString& username, QString &password )
 {

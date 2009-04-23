@@ -77,10 +77,7 @@ private Q_SLOTS:
   void onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
   void onContentFetchDone( KJob *job );
 
-  void slotLogin( Imaplib* connection );
-  void slotLoginOk();
   void slotAlert( Imaplib*, const QString& message );
-  void slotMessagesInFolder( Imaplib*, const QString&, int );
   void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
   void slotSaveDone( int );
   void slotCollectionAdded( bool success );
@@ -93,6 +90,9 @@ private:
   Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );
   void itemsClear();
 
+  bool manualAuth( const QString& username, QString &password );
+  void startConnect( bool forceManualAuth = false );
+
   KIMAP::Session *m_session;
   Akonadi::Collection m_collection;
   Akonadi::Item m_itemAdded;
@@ -100,9 +100,6 @@ private:
   QHash<QString, Akonadi::Item> m_itemCache;
   QString m_server;
   QString m_userName;
-  void connections();
-  bool manualAuth( const QString& username, QString &password );
-  void startConnect( bool forceManualAuth = false );
 };
 
 #endif
