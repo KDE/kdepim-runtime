@@ -72,7 +72,8 @@ private Q_SLOTS:
                          qint64 uidValidity,  int nextUid );
   void onStatusDone( KJob *job );
   void onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber,
-                          qint64 size, boost::shared_ptr<KMime::Message> message );
+                          qint64 size, QList<QByteArray> flags,
+                          boost::shared_ptr<KMime::Message> message );
   void onHeadersFetchDone( KJob *job );
   void onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
   void onContentFetchDone( KJob *job );

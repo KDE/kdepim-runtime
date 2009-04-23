@@ -479,7 +479,9 @@ void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QS
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/, qint64 size, boost::shared_ptr<KMime::Message> message )
+void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/,
+                                      qint64 size, QList<QByteArray> flags,
+                                      boost::shared_ptr<KMime::Message> message )
 {
   Akonadi::Item i;
   i.setRemoteId( mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid ) );
@@ -487,12 +489,10 @@ void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int
   i.setPayload( MessagePtr( message ) );
   i.setSize( size );
 
-#if FIXME_FLAGS_MISSING
-  foreach( const QString &flag, m_flagsCache.value( mbox + "-+-" + uid ).split( " " ) ) {
-    i.setFlag( flag.toLatin1() );
+  foreach( const QByteArray &flag, flags ) {
+    i.setFlag( flag );
   }
   kDebug() << "Flags: " << i.flags();
-#endif
 
   itemsRetrievedIncremental( Item::List() << i, Item::List() );
 }
@@ -691,8 +691,8 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -727,8 +727,8 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -750,8 +750,8 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -774,8 +774,8 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
+             this, SLOT( onHeadersReceived( QByteArray, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
