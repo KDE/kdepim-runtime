@@ -80,7 +80,6 @@ private Q_SLOTS:
   void onContentFetchDone( KJob *job );
 
   void slotAlert( Imaplib*, const QString& message );
-  void slotUidsAndFlagsReceived( Imaplib*, const QString&, const QStringList& );
   void slotSaveDone( int );
   void slotCollectionAdded( bool success );
   void slotCollectionRemoved( bool );

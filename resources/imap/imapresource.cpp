@@ -443,43 +443,6 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
   statusJob->start();
 }
 
-void ImapResource::slotUidsAndFlagsReceived( Imaplib*,const QString& mb,const QStringList& values )
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    kDebug( ) << mb << values.count();
-
-    if ( values.count() == 0 ) {
-        itemsRetrievalDone();
-        return;
-    }
-
-    // results contain the uid and the flags for each item in this folder.
-    // we will ignore the fact that we already have items.
-    QStringList fetchlist;
-    QStringList::ConstIterator it = values.begin();
-    while ( it != values.end() ) {
-        const QString uid = ( *it );
-        ++it;
-
-        m_flagsCache[mb + "-+-" + uid] = *it;
-        ++it;
-
-        //  if (all.indexOf(uid) == -1)
-
-        fetchlist.append( uid );
-    }
-
-    // if we are not fetching the whole folder, we can not do it in batches, so don't set
-    // the totalItems, as that would put it in batch mode.
-    setTotalItems( fetchlist.count() );
-
-    m_imap->getHeaders( mb, fetchlist );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotUidsAndFlagsReceived");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
-
 void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/,
                                       qint64 size, QList<QByteArray> flags,
                                       boost::shared_ptr<KMime::Message> message )
