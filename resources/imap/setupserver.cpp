@@ -1,4 +1,5 @@
 /* This file is part of the KDE project
+   Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
    Copyright (C) 2006-2008 Omat Holding B.V. <info@omat.nl>
    Copyright (C) 2006 Frode M. Døving <frode@lnix.net>
 

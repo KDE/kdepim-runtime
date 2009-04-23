@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2007 Till Adam <adam@kde.org>
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
+    Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
