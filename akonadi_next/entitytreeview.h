@@ -30,6 +30,7 @@ namespace Akonadi
 {
 
 class Collection;
+class Item;
 
 /**
  * @short A view to show a collection tree provided by a CollectionModel.
@@ -115,7 +116,29 @@ Q_SIGNALS:
    */
   void clicked( const Akonadi::Collection &collection );
 
-//     void clicked( const Akonadi::Item &item );
+  /**
+   * This signal is emitted whenever the user has clicked
+   * an item in the view.
+   *
+   * @param item The clicked item.
+   */
+  void clicked( const Akonadi::Item &item );
+
+  /**
+   * This signal is emitted whenever the user has double clicked
+   * a collection in the view.
+   *
+   * @param collection The double clicked collection.
+   */
+  void doubleClicked( const Akonadi::Collection &collection );
+
+  /**
+   * This signal is emitted whenever the user has double clicked
+   * an item in the view.
+   *
+   * @param item The double clicked item.
+   */
+  void doubleClicked( const Akonadi::Item &item );
 
   /**
    * This signal is emitted whenever the current collection
@@ -124,6 +147,14 @@ Q_SIGNALS:
    * @param collection The new current collection.
    */
   void currentChanged( const Akonadi::Collection &collection );
+
+  /**
+   * This signal is emitted whenever the current item
+   * in the view has changed.
+   *
+   * @param item The new current item.
+   */
+  void currentChanged( const Akonadi::Item &item );
 
 protected:
   using QTreeView::currentChanged;
@@ -139,6 +170,7 @@ private:
 
   Q_PRIVATE_SLOT( d, void dragExpand() )
   Q_PRIVATE_SLOT( d, void itemClicked( const QModelIndex& ) )
+  Q_PRIVATE_SLOT( d, void itemDoubleClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemCurrentChanged( const QModelIndex& ) )
   //@endcond
 };

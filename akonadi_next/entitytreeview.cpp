@@ -57,6 +57,7 @@ public:
   void init();
   void dragExpand();
   void itemClicked( const QModelIndex& );
+  void itemDoubleClicked( const QModelIndex& );
   void itemCurrentChanged( const QModelIndex& );
   bool hasParent( const QModelIndex& idx, Collection::Id parentId );
 
@@ -99,6 +100,8 @@ void EntityTreeView::Private::init()
 
   mParent->connect( mParent, SIGNAL( clicked( const QModelIndex& ) ),
                     mParent, SLOT( itemClicked( const QModelIndex& ) ) );
+  mParent->connect( mParent, SIGNAL( doubleClicked( const QModelIndex& ) ),
+                    mParent, SLOT( itemDoubleClicked( const QModelIndex& ) ) );
 
   Control::widgetNeedsAkonadi( mParent );
 }
@@ -126,11 +129,29 @@ void EntityTreeView::Private::itemClicked( const QModelIndex &index )
   if ( !index.isValid() )
     return;
 
-  const Collection col = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
-  if ( !col.isValid() )
+  const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
+  if ( collection.isValid() ) {
+    emit mParent->clicked( collection );
+  } else {
+    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
+    if ( item.isValid() )
+      emit mParent->clicked( item );
+  }
+}
+
+void EntityTreeView::Private::itemDoubleClicked( const QModelIndex &index )
+{
+  if ( !index.isValid() )
     return;
 
-  emit mParent->clicked( col );
+  const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
+  if ( collection.isValid() ) {
+    emit mParent->doubleClicked( collection );
+  } else {
+    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
+    if ( item.isValid() )
+      emit mParent->doubleClicked( item );
+  }
 }
 
 void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
@@ -138,11 +159,14 @@ void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
   if ( !index.isValid() )
     return;
 
-  const Collection col = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
-  if ( !col.isValid() )
-    return;
-
-  emit mParent->currentChanged( col );
+  const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
+  if ( collection.isValid() ) {
+    emit mParent->currentChanged( collection );
+  } else {
+    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
+    if ( item.isValid() )
+      emit mParent->currentChanged( item );
+  }
 }
 
 EntityTreeView::EntityTreeView( QWidget * parent ) :
