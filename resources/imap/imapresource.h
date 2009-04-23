@@ -89,7 +89,7 @@ private:
   QString mailBoxRemoteId( const QString &path ) const;
   Akonadi::Collection collectionFromRemoteId( const QString &remoteId );
   Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );
-  void itemsClear();
+  void itemsClear( const Akonadi::Collection &collection );
 
   bool manualAuth( const QString& username, QString &password );
   void startConnect( bool forceManualAuth = false );
