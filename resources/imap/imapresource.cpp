@@ -42,6 +42,8 @@
 
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
+
+#include <kimap/createjob.h>
 #include <kimap/fetchjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
@@ -471,36 +473,35 @@ void ImapResource::onHeadersFetchDone( KJob */*job*/ )
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    const QString remoteName = parent.remoteId() + '.' + collection.name();
-    kDebug( ) << "New folder: " << remoteName;
+  const QString remoteName = parent.remoteId() + '/' + collection.name();
 
-    m_collection = collection;
-    m_imap->createMailBox( remoteName );
-    m_collection.setRemoteId( remoteName );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::collectionAdded");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  kDebug( ) << "New folder: " << remoteName;
+
+  Collection c = collection;
+  c.setRemoteId( remoteName );
+
+  QByteArray mailBox = remoteName.toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
+
+  KIMAP::CreateJob *job = new KIMAP::CreateJob( m_session );
+  job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+  job->setMailBox( mailBox );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onCreateMailBoxDone( KJob* ) ) );
+  job->start();
 }
 
-void ImapResource::slotCollectionAdded( bool success )
+void ImapResource::onCreateMailBoxDone( KJob *job )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    // finish the task.
-    changeCommitted( m_collection );
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
 
-    if ( !success ) {
-        // remove the collection again.
-        // TODO: this will trigger collectionRemoved again ;-)
-        kDebug() << "Failed to create the folder, deleting it in akonadi again";
-        emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
-        new CollectionDeleteJob( m_collection, this );
-    }
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotCollectionAdded");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  if ( !job->error() ) {
+    changeCommitted( collection );
+  } else {
+    // remove the collection again.
+    kDebug() << "Failed to create the folder, deleting it in akonadi again";
+    emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
+    new CollectionDeleteJob( collection, this );
+  }
 }
 
 void ImapResource::collectionChanged( const Collection & collection )
