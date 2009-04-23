@@ -72,6 +72,13 @@ SetupServer::SetupServer( WId parent )
   m_ui->testProgress->hide();
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
+  connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
+           SLOT( slotTestChanged() ) );
+  connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
+           SLOT( slotComplete() ) );
+  connect( m_ui->userName, SIGNAL( textChanged( const QString & ) ),
+           SLOT( slotComplete() ) );
+
   readSettings();
   slotTestChanged();
   slotComplete();
@@ -192,6 +199,10 @@ void SetupServer::slotFinished( QList<int> testResult )
 
 void SetupServer::slotTestChanged()
 {
+  delete m_serverTest;
+  m_serverTest = 0;
+  slotSafetyChanged();
+
   // do not use imapConnectionPossible, as the data is not yet saved.
   m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
                                         m_ui->imapServer->text() == "localhost"*/ );
@@ -206,6 +217,10 @@ void SetupServer::slotComplete()
 void SetupServer::slotSafetyChanged()
 {
   if ( m_serverTest==0 ) {
+    m_ui->noRadio->setEnabled( true );
+    m_ui->sslRadio->setEnabled( true );
+    m_ui->tlsRadio->setEnabled( true );
+
     m_ui->clearRadio->setEnabled( true );
     m_ui->loginRadio->setEnabled( true );
     m_ui->plainRadio->setEnabled( true );
