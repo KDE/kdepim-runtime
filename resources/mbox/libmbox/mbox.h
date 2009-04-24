@@ -77,7 +77,7 @@ class MBOX_EXPORT MBox
 
     /**
      * @see isValid()
-     * @param errorMsg can be used to find out what kind of error occured and
+     * @param errorMsg can be used to find out what kind of error occurred and
      *                 passed onto the user.
      */
     bool isValid(QString &errorMsg) const;

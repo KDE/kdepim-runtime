@@ -34,7 +34,7 @@ public:
     Global() : m_parsed( false ) {};
 
     /**
-     * Returns a string usuable to connect to the akonadiserver.
+     * Returns a string usable to connect to the akonadiserver.
      */
     const QStringList dboptions();
 

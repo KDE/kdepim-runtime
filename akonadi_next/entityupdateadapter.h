@@ -46,7 +46,7 @@ public:
   void endTransaction();
 
   /**
-  Moves entities from src to dst. If items are coming from mulitple sources, this must be called once for each source.
+  Moves entities from src to dst. If items are coming from multiple sources, this must be called once for each source.
   */
   void moveEntities( Item::List movedItems, Collection::List movedCollections, Collection src, Collection dst, int row );
   void removeEntities( Item::List removedItems, Collection::List removedCollections, Collection parent );

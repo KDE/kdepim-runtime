@@ -109,10 +109,10 @@ QList<MsgInfo> MBox::entryList(const QSet<int> &deletedItems) const
     line = d->mMboxFile.readLine();
 
     if (regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd()) {
-      // Found the seperator or at end of file, the message starts at offs
+      // Found the separator or at end of file, the message starts at offs
       quint64 msgSize = pos - offs;
       if(pos > 0 && !deletedItems.contains(offs)) {
-        // This is not the seperator of the first mail in the file. If pos == 0
+        // This is not the separator of the first mail in the file. If pos == 0
         // than we matched the separator of the first mail in the file.
         MsgInfo info;
         info.first = offs;

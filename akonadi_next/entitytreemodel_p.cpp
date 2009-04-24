@@ -166,12 +166,12 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
 
       foreach( Collection::Id id, newChildCols ) {
         Collection col = newCollections.value( id );
-        // Fetch the next level of collections if neccessary.
+        // Fetch the next level of collections if necessary.
         if ( m_collectionFetchStrategy == EntityTreeModel::FetchCollectionsRecursive )
         {
           fetchCollections( col, CollectionFetchJob::FirstLevel );
         }
-        // Fetch items if neccessary. If we don't fetch them now, we'll wait for an application
+        // Fetch items if necessary. If we don't fetch them now, we'll wait for an application
         // to request them through EntityTreeModel::fetchMore
         if ( m_itemPopulation == EntityTreeModel::ImmediatePopulation )
         {

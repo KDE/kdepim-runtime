@@ -358,14 +358,14 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 {
   Q_D( EntityTreeModel );
 
-  // TODO Use action and collection rights and return false if neccessary
+  // TODO Use action and collection rights and return false if necessary
 
 // if row and column are -1, then the drop was on parent directly.
 // data should then be appended on the end of the items of the collections as appropriate.
 // That will mean begin insert rows etc.
 // Otherwise it was a sibling of the row^th item of parent.
 // That will need to be handled by a proxy model. This one can't handle ordering.
-// if parent is invalid the drop occured somewhere on the view that is no model, and corresponds to the root.
+// if parent is invalid the drop occurred somewhere on the view that is no model, and corresponds to the root.
   kDebug() << "ismove" << ( action == Qt::MoveAction );
   if ( action == Qt::IgnoreAction )
     return true;
@@ -374,7 +374,7 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 //   if (!data->hasFormat("text/uri-list"))
 //       return false;
 
-// TODO This is probably wrong and unneccessary.
+// TODO This is probably wrong and unnecessary.
   if ( column > 0 )
     return false;
 

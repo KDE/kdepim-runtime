@@ -364,7 +364,7 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
 //   @endcode
 //
 // If the sourceModel reports that a row is inserted between Item 0-2 Item 1-2,
-// this methods recieves a sourceParent of Item 1-1, and a start of 1.
+// this methods receives a sourceParent of Item 1-1, and a start of 1.
 // It has a descendedRow of 2. The proxied start is the number of rows above parent,
 // and the start below parent. The parent itself must also be accounted for if it
 // is part of the model.

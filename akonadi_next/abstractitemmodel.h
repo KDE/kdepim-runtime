@@ -67,7 +67,7 @@ public:
   -> Item 4-0
   @endcode
 
-  and Item 1-0 is to be moved to beneath Item 4-0, it should be put above the (non-existant) item at index 5.
+  and Item 1-0 is to be moved to beneath Item 4-0, it should be put above the (nonexistent) item at index 5.
 
   @code
   beginMoveRows(QModelIndex(), 1,1, QModelIndex(), 5);
