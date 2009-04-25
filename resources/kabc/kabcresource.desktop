@@ -17,6 +17,7 @@ Name[uk]=Адресна книга KDE (традиційна)
 Name[x-test]=xxKDE Address Book (traditional)xx
 Name[zh_TW]=KDE 通訊錄（傳統）
 Comment=Loads data from a traditional KDE address book resource
+Comment[el]=Φόρτωση δεδομένων από έναν παραδοσιακό πόρο βιβλίου διευθύνσεων του KDE
 Comment[et]=Andmete laadimine traditsioonilisest KDE aadressiraamatu ressursist
 Comment[ga]=Breiseán a luchtaíonn sonraí ó acmhainn thraidisiúnta leabhair seoltaí KDE
 Comment[gl]=Carrega datos desde un recurso de caderno de enderezos do KDE
