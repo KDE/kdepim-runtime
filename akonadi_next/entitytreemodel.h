@@ -108,7 +108,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
       RemoteIdRole,                           ///< The remoteId of the entity
       CollectionChildOrderRole,               ///< Ordered list of child items if available
       UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
-      TerminalUserRole = 1000000              ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
+      TerminalUserRole = 10000                ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
     };
 
     /**
