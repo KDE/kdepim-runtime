@@ -48,6 +48,7 @@
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/logoutjob.h>
+#include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/statusjob.h>
 
@@ -506,13 +507,44 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 
 void ImapResource::collectionChanged( const Collection & collection )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    kDebug( ) << "Implement me!";
-    changeProcessed();
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::collectionChanged");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  QString oldRemoteId = collection.remoteId();
+  QString parentRemoteId = oldRemoteId.mid( 0, oldRemoteId.lastIndexOf('/') );
+
+  QString newRemoteId = parentRemoteId + '/' + collection.name();
+
+  Collection c = collection;
+  c.setRemoteId( newRemoteId );
+
+  QByteArray oldMailBox = oldRemoteId.toUtf8();
+  oldMailBox.replace( rootRemoteId().toUtf8(), "" );
+  QByteArray newMailBox = newRemoteId.toUtf8();
+  newMailBox.replace( rootRemoteId().toUtf8(), "" );
+
+  KIMAP::RenameJob *job = new KIMAP::RenameJob( m_session );
+  job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+  job->setMailBox( oldMailBox );
+  job->setNewMailBox( newMailBox );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
+  job->start();
+}
+
+void ImapResource::onRenameMailBoxDone( KJob *job )
+{
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+
+  if ( !job->error() ) {
+    changeCommitted( collection );
+  } else {
+    KIMAP::RenameJob *rename = qobject_cast<KIMAP::RenameJob*>( job );
+
+    // rename the collection again.
+    kDebug() << "Failed to rename the folder, resetting it in akonadi again";
+    collection.setName( rename->mailBox().split('/').last() );
+    collection.setRemoteId( mailBoxRemoteId( rename->mailBox() ) );
+    emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
+    changeCommitted( collection );
+    //new CollectionModifyJob( collection, this );
+  }
 }
 
 void ImapResource::collectionRemoved( const Akonadi::Collection &collection )

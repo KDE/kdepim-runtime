@@ -79,6 +79,7 @@ private Q_SLOTS:
   void onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
   void onContentFetchDone( KJob *job );
   void onCreateMailBoxDone( KJob *job );
+  void onRenameMailBoxDone( KJob *job );
 
   void slotAlert( Imaplib*, const QString& message );
   void slotSaveDone( int );
