@@ -40,9 +40,9 @@ using namespace Akonadi;
 
 EntityTreeModelPrivate::EntityTreeModelPrivate( EntityTreeModel *parent )
     : q_ptr( parent ),
-      m_showRootCollection(false),
       m_collectionFetchStrategy(EntityTreeModel::FetchCollectionsRecursive),
-      m_itemPopulation(EntityTreeModel::ImmediatePopulation)
+      m_itemPopulation(EntityTreeModel::ImmediatePopulation),
+      m_showRootCollection(false)
 {
 }
 

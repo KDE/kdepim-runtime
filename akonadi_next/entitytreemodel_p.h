@@ -99,8 +99,8 @@ public:
   Node *m_rootNode;
   QString m_rootCollectionDisplayName;
   QStringList m_mimeTypeFilter;
-  int m_collectionFetchStrategy;
-  int m_itemPopulation;
+  EntityTreeModel::CollectionFetchStrategy m_collectionFetchStrategy;
+  EntityTreeModel::ItemPopulationStrategy m_itemPopulation;
   bool m_includeUnsubscribed;
   bool m_showRootCollection;
 

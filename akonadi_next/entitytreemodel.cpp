@@ -125,15 +125,15 @@ void EntityTreeModel::clearAndReset()
   QTimer::singleShot(0, this, SLOT(startFirstListJob()));
 }
 
-Collection EntityTreeModel::getCollection( Collection::Id id )
+Collection EntityTreeModel::collectionForId( Collection::Id id ) const
 {
-  Q_D( EntityTreeModel );
+  Q_D( const EntityTreeModel );
   return d->m_collections.value(id);
 }
 
-Item EntityTreeModel::getItem( Item::Id id )
+Item EntityTreeModel::itemForId( Item::Id id ) const
 {
-  Q_D( EntityTreeModel );
+  Q_D( const EntityTreeModel );
   return d->m_items.value(id);
 }
 
@@ -649,8 +649,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
   return QAbstractItemModel::setData( index, value, role );
 }
 
-
-bool EntityTreeModel::canFetchMore ( const QModelIndex & parent ) const
+bool EntityTreeModel::canFetchMore( const QModelIndex & parent ) const
 {
   Q_D( const EntityTreeModel );
   Item item = parent.data(ItemRole).value<Item>();
@@ -667,7 +666,7 @@ bool EntityTreeModel::canFetchMore ( const QModelIndex & parent ) const
   // Using Collection statistics?
 }
 
-void EntityTreeModel::fetchMore ( const QModelIndex & parent )
+void EntityTreeModel::fetchMore( const QModelIndex & parent )
 {
   Q_D( EntityTreeModel );
 
@@ -676,7 +675,7 @@ void EntityTreeModel::fetchMore ( const QModelIndex & parent )
     return;
   else if ( d->m_itemPopulation == LazyPopulation )
   {
-    Collection col = parent.data(CollectionRole).value<Collection>();
+    const Collection col = parent.data(CollectionRole).value<Collection>();
 
     if (!col.isValid())
       return;
@@ -715,12 +714,12 @@ bool EntityTreeModel::removeColumns(int, int, const QModelIndex&)
     return false;
 }
 
-void EntityTreeModel::setRootCollection(Collection col)
+void EntityTreeModel::setRootCollection( const Collection &collection )
 {
   Q_D(EntityTreeModel);
 
-  Q_ASSERT(col.isValid());
-  d->m_rootCollection = col;
+  Q_ASSERT( collection.isValid() );
+  d->m_rootCollection = collection;
   clearAndReset();
 }
 
@@ -730,7 +729,7 @@ Collection EntityTreeModel::rootCollection() const
   return d->m_rootCollection;
 }
 
-QModelIndex EntityTreeModel::indexForCollection(Collection col) const
+QModelIndex EntityTreeModel::indexForCollection( const Collection &col ) const
 {
   Q_D(const EntityTreeModel);
 
@@ -747,7 +746,7 @@ QModelIndex EntityTreeModel::indexForCollection(Collection col) const
   return createIndex(row, column, reinterpret_cast<void *>(node));
 }
 
-QModelIndexList EntityTreeModel::indexesForItem(Item item) const
+QModelIndexList EntityTreeModel::indexesForItem( const Item &item ) const
 {
   Q_D(const EntityTreeModel);
   QModelIndexList idxList;
@@ -767,14 +766,14 @@ QModelIndexList EntityTreeModel::indexesForItem(Item item) const
 
 }
 
-void EntityTreeModel::setItemPopulationStrategy(int type)
+void EntityTreeModel::setItemPopulationStrategy( ItemPopulationStrategy strategy )
 {
   Q_D(EntityTreeModel);
-  d->m_itemPopulation = type;
+  d->m_itemPopulation = strategy;
   clearAndReset();
 }
 
-int EntityTreeModel::itemPopulationStrategy() const
+EntityTreeModel::ItemPopulationStrategy EntityTreeModel::itemPopulationStrategy() const
 {
   Q_D(const EntityTreeModel);
   return d->m_itemPopulation;
@@ -807,14 +806,14 @@ QString EntityTreeModel::rootCollectionDisplayName() const
   return d->m_rootCollectionDisplayName;
 }
 
-void EntityTreeModel::setCollectionFetchStrategy(int type)
+void EntityTreeModel::setCollectionFetchStrategy( CollectionFetchStrategy strategy )
 {
   Q_D( EntityTreeModel);
-  d->m_collectionFetchStrategy = type;
+  d->m_collectionFetchStrategy = strategy;
   clearAndReset();
 }
 
-int EntityTreeModel::collectionFetchStrategy() const
+EntityTreeModel::CollectionFetchStrategy EntityTreeModel::collectionFetchStrategy() const
 {
   Q_D( const EntityTreeModel);
   return d->m_collectionFetchStrategy;

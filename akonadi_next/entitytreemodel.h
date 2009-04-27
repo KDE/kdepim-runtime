@@ -95,187 +95,232 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
 {
   Q_OBJECT
 
-public:
-  /**
-   * Describes the roles for items. Roles for collections are defined by the superclass.
-   */
-  enum Roles {
-    CollectionRole = Qt::UserRole,          ///< The collection.
-    CollectionIdRole,                       ///< The collection id.
-    ItemRole,                               ///< The Item
-    ItemIdRole,                             ///< The item id
-    MimeTypeRole,                           ///< The mimetype of the entity
-    RemoteIdRole,                           ///< The remoteId of the entity
-    CollectionChildOrderRole,               ///< Ordered list of child items if available
-    UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
-    TerminalUserRole = 1000000              ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
-  };
+  public:
+    /**
+     * Describes the roles for items. Roles for collections are defined by the superclass.
+     */
+    enum Roles {
+      CollectionRole = Qt::UserRole,          ///< The collection.
+      CollectionIdRole,                       ///< The collection id.
+      ItemRole,                               ///< The Item
+      ItemIdRole,                             ///< The item id
+      MimeTypeRole,                           ///< The mimetype of the entity
+      RemoteIdRole,                           ///< The remoteId of the entity
+      CollectionChildOrderRole,               ///< Ordered list of child items if available
+      UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
+      TerminalUserRole = 1000000              ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
+    };
 
-  enum HeaderGroup {
-    EntityTreeHeaders,
-    CollectionTreeHeaders,
-    ItemListHeaders
-    // Could we need more here?
-  };
+    /**
+     * Describes what header information the model shall return.
+     */
+    enum HeaderGroup {
+      EntityTreeHeaders,      ///< Header information for a tree with collections and items
+      CollectionTreeHeaders,  ///< Header information for a collection-only tree
+      ItemListHeaders,        ///< Header information for a list of items
+      UserHeaders = 1000      ///< Last header information for submodel extensions
+    };
 
-  /**
-   * Creates a new EntityTreeModel
-   *
-   * @param session The Session to use to communicate with Akonadi.
-   * @param monitor The Monitor whose entities should be represented in the model.
-   * @param parent The parent object.
-   */
-  EntityTreeModel( Session *session,
-                   Monitor *monitor,
-                   QObject *parent = 0
-                  );
+    /**
+     * Creates a new entity tree model.
+     *
+     * @param session The Session to use to communicate with Akonadi.
+     * @param monitor The Monitor whose entities should be represented in the model.
+     * @param parent The parent object.
+     */
+    EntityTreeModel( Session *session, Monitor *monitor, QObject *parent = 0 );
 
-  /**
-   * Destroys the entityTreeModel.
-   */
-  virtual ~EntityTreeModel();
+    /**
+     * Destroys the entity tree model.
+     */
+    virtual ~EntityTreeModel();
 
-  /**
-  How the model should be populated with items.
-  */
-  enum ItemPopulationStrategy {
-    NoItemPopulation, ///< Do not include items in the model.
-    ImmediatePopulation, ///< Retrieve items immediately when their parent is in the model. This is the default.
-    LazyPopulation ///< Fetch items only when requested (using canFetchMore/fetchMore)
-  };
+    /**
+     * Describes how the model should populated its items.
+     */
+    enum ItemPopulationStrategy {
+      NoItemPopulation,    ///< Do not include items in the model.
+      ImmediatePopulation, ///< Retrieve items immediately when their parent is in the model. This is the default.
+      LazyPopulation       ///< Fetch items only when requested (using canFetchMore/fetchMore)
+    };
 
-  void setItemPopulationStrategy(int type);
-  int itemPopulationStrategy() const;
+    /**
+     * Sets the item population @p strategy of the model.
+     */
+    void setItemPopulationStrategy( ItemPopulationStrategy strategy );
 
-  /**
-  The root collection to create an entity tree for. By default the Collection::root() is used.
+    /**
+     * Returns the item population strategy of the model.
+     */
+    ItemPopulationStrategy itemPopulationStrategy() const;
 
-  The Collection @p col must be valid.
-  */
-  void setRootCollection(Collection col);
-  Collection rootCollection() const;
+    /**
+     * Sets the root collection to create an entity tree for.
+     * The @p collection must be a valid Collection object.
+     *
+     * By default the Collection::root() is used.
+     */
+    void setRootCollection( const Collection &collection );
 
-  void setIncludeRootCollection(bool include);
-  bool includeRootCollection() const;
+    /**
+     * Returns the root collection of the entity tree.
+     */
+    Collection rootCollection() const;
 
-  /**
-  If Collection::root() is shown in the model, set a displayName for it.
-  Default is "[*]"
-  If another collection (ie not Collection::root()), is at the root, it's name
-  or display attribute is automatically used instead and this method as no effect.
-  */
-  void setRootCollectionDisplayName(const QString &displayName);
-  QString rootCollectionDisplayName() const;
+    /**
+     * Sets whether the root collection shall be provided by the model.
+     *
+     * @see setRootCollectionDisplayName()
+     */
+    void setIncludeRootCollection( bool include );
 
-  /**
-  What to fetch and represent in the model.
-  */
-  enum CollectionsToFetch {
-    FetchNoCollections,                     /// Fetch nothing. This creates an empty model.
-    FetchFirstLevelChildCollections,        /// Fetch first level collections in the root collection.
-    FetchCollectionsRecursive               /// Fetch collections in the root collection recursively. This is the default.
-  };
+    /**
+     * Returns whether the root collection is provided by the model.
+     */
+    bool includeRootCollection() const;
 
-  void setCollectionFetchStrategy(int type);
-  int collectionFetchStrategy() const;
+    /**
+     * Sets the display @p name of the root collection of the model.
+     * The default display name is "[*]".
+     *
+     * @note The display name for the root collection is only used if
+     *       the root collection has been included with setIncludeRootCollection().
+     */
+    void setRootCollectionDisplayName( const QString &name );
 
-  // TODO: Remove these and use the Monitor instead. Need to add api to Monitor for this.
-  void setIncludeUnsubscribed(bool include);
-  bool includeUnsubscribed() const;
+    /**
+     * Returns the display name of the root collection.
+     */
+    QString rootCollectionDisplayName() const;
 
-  QModelIndex indexForCollection(Collection col) const;
-  QModelIndexList indexesForItem(Item item) const;
+    /**
+     * Describes what collections shall be fetched by and represent in the model.
+     */
+    enum CollectionFetchStrategy {
+      FetchNoCollections,               ///< Fetches nothing. This creates an empty model.
+      FetchFirstLevelChildCollections,  ///< Fetches first level collections in the root collection.
+      FetchCollectionsRecursive         ///< Fetches collections in the root collection recursively. This is the default.
+    };
 
-  Collection getCollection(Collection::Id);
-  Item getItem(Item::Id);
+    /**
+     * Sets the collection fetch @p strategy of the model.
+     */
+    void setCollectionFetchStrategy( CollectionFetchStrategy strategy );
 
-  virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-  virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
+    /**
+     * Returns the collection fetch strategy of the model.
+     */
+    CollectionFetchStrategy collectionFetchStrategy() const;
 
-  virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-  virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    /**
+     * Returns the model index for the given @p collection.
+     */
+    QModelIndex indexForCollection( const Collection &collection ) const;
 
-  virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
-  virtual QStringList mimeTypes() const;
+    /**
+     * Returns the model indexes for the given @p item.
+     */
+    QModelIndexList indexesForItem( const Item &item ) const;
 
-  virtual Qt::DropActions supportedDropActions() const;
-  virtual QMimeData *mimeData( const QModelIndexList &indexes ) const;
-  virtual bool dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent );
-  virtual bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole );
+    /**
+     * Returns the collection for the given collection @p id.
+     */
+    Collection collectionForId( Collection::Id id ) const;
 
-  virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
-  virtual QModelIndex parent( const QModelIndex & index ) const;
+    /**
+     * Returns the item for the given item @p id.
+     */
+    Item itemForId( Item::Id id ) const;
 
-// TODO: Review the implementations of these. I think they could be better.
-  virtual bool canFetchMore ( const QModelIndex & parent ) const;
-  virtual void fetchMore ( const QModelIndex & parent );
-  virtual bool hasChildren(const QModelIndex &parent = QModelIndex() ) const;
+    // TODO: Remove these and use the Monitor instead. Need to add api to Monitor for this.
+    void setIncludeUnsubscribed(bool include);
+    bool includeUnsubscribed() const;
 
-protected:
-  /**
-  Clears and resets the model. Always call this instead of the reset method in the superclass. Using the reset method will not reliably clear or refill the model
-  */
-  void clearAndReset();
+    virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+    virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 
-  /**
-  Provided for convenience of subclasses.
-  */
-  virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
+    virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+    virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-  /**
-  Provided for convenience of subclasses.
-  */
-  virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
+    virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
+    virtual QStringList mimeTypes() const;
 
-  /**
-  Reimplement this to provide different header data. This is needed when using one model
-  with multiple proxies and views, and each should show different header data.
-  */
-  virtual QVariant getHeaderData(int section, Qt::Orientation orientation, int role, int headerSet) const;
+    virtual Qt::DropActions supportedDropActions() const;
+    virtual QMimeData *mimeData( const QModelIndexList &indexes ) const;
+    virtual bool dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent );
+    virtual bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole );
 
-private:
-  Q_DECLARE_PRIVATE( EntityTreeModel )
-  //@cond PRIVATE
-  EntityTreeModelPrivate *d_ptr;
+    virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+    virtual QModelIndex parent( const QModelIndex & index ) const;
 
-  // Make these private, they shouldn't be called by applications
-  virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
-  virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
-  virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
-  virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
+  // TODO: Review the implementations of these. I think they could be better.
+    virtual bool canFetchMore( const QModelIndex & parent ) const;
+    virtual void fetchMore( const QModelIndex & parent );
+    virtual bool hasChildren(const QModelIndex &parent = QModelIndex() ) const;
 
-  Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
-//   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
+  protected:
+    /**
+    Clears and resets the model. Always call this instead of the reset method in the superclass. Using the reset method will not reliably clear or refill the model
+    */
+    void clearAndReset();
 
-  Q_PRIVATE_SLOT( d_func(), void fetchJobDone( KJob *job ) )
-  Q_PRIVATE_SLOT( d_func(), void updateJobDone( KJob *job ) )
-  Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List list ) )
-  Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List list ) )
+    /**
+    Provided for convenience of subclasses.
+    */
+    virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
 
-  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionRemoved( const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionChanged( const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection&) )
+    /**
+    Provided for convenience of subclasses.
+    */
+    virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
 
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemRemoved( const Akonadi::Item& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemMoved( const Akonadi::Item&,
-                  const Akonadi::Collection&, const Akonadi::Collection& ) )
+    /**
+    Reimplement this to provide different header data. This is needed when using one model
+    with multiple proxies and views, and each should show different header data.
+    */
+    virtual QVariant getHeaderData(int section, Qt::Orientation orientation, int role, int headerSet) const;
 
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
-                  const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
-                  const Akonadi::Collection& ) )
+  private:
+    //@cond PRIVATE
+    Q_DECLARE_PRIVATE( EntityTreeModel )
+    EntityTreeModelPrivate *d_ptr;
 
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
-                  const Akonadi::Collection& ) )
-  Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
-                  const Akonadi::Collection& ) )
+    // Make these private, they shouldn't be called by applications
+    virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
+    virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
+    virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
+    virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
 
-  //@endcond
+    Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
+  //   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
 
+    Q_PRIVATE_SLOT( d_func(), void fetchJobDone( KJob *job ) )
+    Q_PRIVATE_SLOT( d_func(), void updateJobDone( KJob *job ) )
+    Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List list ) )
+    Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List list ) )
 
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionRemoved( const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionChanged( const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection&) )
+
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemRemoved( const Akonadi::Item& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemMoved( const Akonadi::Item&,
+                    const Akonadi::Collection&, const Akonadi::Collection& ) )
+
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
+                    const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
+                    const Akonadi::Collection& ) )
+
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
+                    const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
+                    const Akonadi::Collection& ) )
+
+    //@endcond
 };
 
 } // namespace
