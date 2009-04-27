@@ -44,6 +44,7 @@
 #include <kimap/sessionuiproxy.h>
 
 #include <kimap/createjob.h>
+#include <kimap/deletejob.h>
 #include <kimap/fetchjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
@@ -543,36 +544,31 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
     collection.setRemoteId( mailBoxRemoteId( rename->mailBox() ) );
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
-    //new CollectionModifyJob( collection, this );
   }
 }
 
-void ImapResource::collectionRemoved( const Akonadi::Collection &collection )
+void ImapResource::collectionRemoved( const Collection &collection )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    kDebug( ) << "Del folder: " << collection.id() << collection.remoteId();
-    m_imap->deleteMailBox( collection.remoteId() );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::collectionRemoved");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  QByteArray mailBox = collection.remoteId().toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
+
+  KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_session );
+  job->setProperty( "akonadiCollection", QVariant::fromValue( collection ) );
+  job->setMailBox( mailBox );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onDeleteMailBoxDone( KJob* ) ) );
+  job->start();
 }
 
-void ImapResource::slotCollectionRemoved( bool success )
+void ImapResource::onDeleteMailBoxDone( KJob *job )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    // finish the task.
-    changeProcessed();
+  // finish the task.
+  changeProcessed();
 
-    if ( !success ) {
+    if ( !job->error() ) {
         kDebug() << "Failed to delete the folder, resync the folder tree";
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
     }
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotCollectionRemoved");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
 /******************* Slots  ***********************************************/
