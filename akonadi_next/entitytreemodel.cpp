@@ -64,9 +64,9 @@ EntityTreeModel::EntityTreeModel( Session *session,
            SLOT( monitoredCollectionAdded( const Akonadi::Collection &, const Akonadi::Collection & ) ) );
   connect( monitor, SIGNAL( collectionRemoved( const Akonadi::Collection & ) ),
            SLOT( monitoredCollectionRemoved( const Akonadi::Collection &) ) );
-  connect( monitor,
-            SIGNAL( collectionMoved( const Akonadi::Collection &, const Akonadi::Collection &, const Akonadi::Collection & ) ),
-           SLOT( monitoredCollectionMoved( const Akonadi::Collection &, const Akonadi::Collection &, const Akonadi::Collection & ) ) );
+//   connect( monitor,
+//             SIGNAL( collectionMoved( const Akonadi::Collection &, const Akonadi::Collection &, const Akonadi::Collection & ) ),
+//            SLOT( monitoredCollectionMoved( const Akonadi::Collection &, const Akonadi::Collection &, const Akonadi::Collection & ) ) );
 
   //TODO: Figure out if the monitor emits these signals even without an item fetch scope.
   // Wrap them in an if() if so.

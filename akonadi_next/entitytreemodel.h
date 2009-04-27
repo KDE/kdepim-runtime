@@ -291,6 +291,8 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
     virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
 
+  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged(Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) )
+
     Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
   //   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
 
