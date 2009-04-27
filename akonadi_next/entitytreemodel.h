@@ -46,16 +46,6 @@
 // * Implement ordering support.
 // * Implement some proxy models for time-table like uses, eg KOrganizer events.
 // * Apidox++
-// * Handle 'structural' collections better. Possibly make the server tell us
-//     the mimetypes of descendants of a collection. Eg,
-//         Col0-0 (contentMimeTypes: text/foo, Collection::mimeType())
-//         -> Col0-1 (contentMimeTypes: Collection::mimeType())
-//         -> -> Col 0-2 (contentMimeTypes: text/foo, Collection::mimeType())
-//
-//     If a tree in the akonadi server had the above structure, and
-//     fetchMimeTypes(text/foo) was set, Col0-2 would not make it into the model.
-//     This is because the model does Breadth first traversal and never fetches anything
-//     after Col0-1 because it doesn't match the mimetype we're interested in.
 // * The API for tying proxies together is currently a bit cumbersome. Write a
 //     glue class to make stringing them together easier.
 
