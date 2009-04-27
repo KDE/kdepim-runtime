@@ -291,7 +291,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
     virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
 
-  Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged(Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged(Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) )
 
     Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
   //   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
@@ -300,6 +300,8 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     Q_PRIVATE_SLOT( d_func(), void updateJobDone( KJob *job ) )
     Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List list ) )
     Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List list ) )
+
+    Q_PRIVATE_SLOT( d_func(), void monitoredMimeTypeChanged(const QString &, bool) )
 
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionRemoved( const Akonadi::Collection& ) )

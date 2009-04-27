@@ -25,6 +25,7 @@
 
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/mimetypechecker.h>
 
 #include "entitytreemodel.h"
 
@@ -55,8 +56,6 @@ public:
 
 //   void collectionStatisticsChanged( Collection::Id, const Akonadi::CollectionStatistics& );
 
-  bool mimetypeMatches( const QStringList &mimetypes, const QStringList &other );
-
   enum RetrieveDepth{
     Base,
     Recursive
@@ -82,6 +81,8 @@ public:
   void monitoredItemLinked( const Akonadi::Item&, const Akonadi::Collection& );
   void monitoredItemUnlinked( const Akonadi::Item&, const Akonadi::Collection& );
 
+  void monitoredMimeTypeChanged(const QString &mimeType, bool monitored);
+
   Collection getParentCollection( qint64 id ) const;
   Collection::List getParentCollections( Item item ) const;
   Collection getParentCollection( Collection col ) const;
@@ -99,6 +100,7 @@ public:
   Node *m_rootNode;
   QString m_rootCollectionDisplayName;
   QStringList m_mimeTypeFilter;
+  MimeTypeChecker m_mimeChecker;
   EntityTreeModel::CollectionFetchStrategy m_collectionFetchStrategy;
   EntityTreeModel::ItemPopulationStrategy m_itemPopulation;
   bool m_includeUnsubscribed;
@@ -108,8 +110,6 @@ public:
 
   void fetchJobDone( KJob *job );
   void updateJobDone( KJob *job );
-
-  bool passesFilter( const QStringList &mimetypes );
 
   /**
     Returns the index of the node in @p list with the id @p id. Returns -1 if not found.

@@ -59,20 +59,6 @@ int EntityTreeModelPrivate::indexOf(QList<Node*> list, qint64 id) const
   return -1;
 }
 
-bool EntityTreeModelPrivate::mimetypeMatches( const QStringList &mimetypes, const QStringList &other )
-{
-  QStringList::const_iterator constIterator;
-  bool found = false;
-
-  for ( constIterator = mimetypes.constBegin(); constIterator != mimetypes.constEnd(); ++constIterator ) {
-    if ( other.contains(( *constIterator ) ) ) {
-      found = true;
-      break;
-    }
-  }
-  return found;
-}
-
 void EntityTreeModelPrivate::fetchItems( Collection parent, int retrieveDepth )
 {
   Q_Q( EntityTreeModel );
@@ -101,7 +87,6 @@ void EntityTreeModelPrivate::fetchCollections( Collection col, CollectionFetchJo
            q, SLOT( fetchJobDone( KJob* ) ) );
 }
 
-
 void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List& cols )
 {
   // TODO: refactor this stuff into separate methods for listing resources in Collection::root, and listing collections within resources.
@@ -120,8 +105,9 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
     if (col.parent() == Collection::root().id())
     {
       Akonadi::AgentInstance ai = am->instance( col.resource() );
-      if ( (!passesFilter( ai.type().mimeTypes() ) ) &&
-           (!m_monitor->resourcesMonitored().contains( col.resource().toUtf8() ) ) )
+
+      if ( ( !m_mimeChecker.isWantedCollection( col ) ) &&
+           ( !m_monitor->resourcesMonitored().contains( col.resource().toUtf8() ) ) )
       {
         continue;
       }
@@ -203,7 +189,7 @@ void EntityTreeModelPrivate::itemsFetched( const Akonadi::Item::List& list )
       if ( indexOf(colEntities, item.id() ) != -1 ) {
         itemsToUpdate << item;
       } else {
-        if ( passesFilter( QStringList() << item.mimeType() ) ) {
+        if ( m_mimeChecker.isWantedItem(item) ) {
           itemsToInsert << item;
         }
       }
@@ -225,6 +211,14 @@ void EntityTreeModelPrivate::itemsFetched( const Akonadi::Item::List& list )
       q->endInsertRows();
     }
   }
+}
+
+void EntityTreeModelPrivate::monitoredMimeTypeChanged(const QString & mimeType, bool monitored)
+{
+  if (monitored)
+    m_mimeChecker.addWantedMimeType(mimeType);
+  else
+    m_mimeChecker.removeWantedMimeType(mimeType);
 }
 
 void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
@@ -319,7 +313,7 @@ void EntityTreeModelPrivate::monitoredItemAdded( const Akonadi::Item& item, cons
 {
   Q_Q( EntityTreeModel );
 
-  if ( !passesFilter( QStringList() << item.mimeType() ) )
+  if ( !m_mimeChecker.isWantedItem( item ) )
     return;
 
   int row = m_childEntities.value(col.id()).size();
@@ -397,7 +391,7 @@ void EntityTreeModelPrivate::monitoredItemLinked( const Akonadi::Item& item, con
   kDebug() << item.remoteId() << col.id();
   Q_Q( EntityTreeModel );
 
-  if ( !passesFilter( QStringList() << item.mimeType() ) )
+  if ( !m_mimeChecker.isWantedItem(item))
     return;
 
   int row = m_childEntities.value(col.id()).size();
@@ -430,21 +424,6 @@ void EntityTreeModelPrivate::monitoredItemUnlinked( const Akonadi::Item& item, c
   q->endInsertRows();
 
 }
-
-bool EntityTreeModelPrivate::passesFilter( const QStringList &mimetypes )
-{
-  if ( m_monitor->mimeTypesMonitored().size() == 0 )
-    return true;
-
-  foreach(const QString &mime, mimetypes)
-  {
-    if ( m_monitor->mimeTypesMonitored().contains( mime ) )
-      return true;
-  }
-  return false;
-
-}
-
 
 void EntityTreeModelPrivate::fetchJobDone( KJob *job )
 {

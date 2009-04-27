@@ -57,6 +57,10 @@ EntityTreeModel::EntityTreeModel( Session *session,
   d->m_monitor = monitor;
   d->m_session = session;
 
+  d->m_mimeChecker.setWantedMimeTypes( d->m_monitor->mimeTypesMonitored() );
+
+  connect (monitor, SIGNAL(mimeTypeMonitored(QString,bool)), SLOT(monitoredMimeTypeChanged(QString,bool)));
+
   // monitor collection changes
   connect( monitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
            SLOT( monitoredCollectionChanged( const Akonadi::Collection& ) ) );
@@ -82,8 +86,8 @@ EntityTreeModel::EntityTreeModel( Session *session,
            SLOT( monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) ) );
   connect( monitor, SIGNAL( itemRemoved( const Akonadi::Item& ) ),
            SLOT( monitoredItemRemoved( const Akonadi::Item& ) ) );
-  connect( monitor, SIGNAL( itemMoved( const Akonadi::Item, const Akonadi::Collection, const Akonadi::Collection ) ),
-           SLOT( monitoredItemMoved( const Akonadi::Item, const Akonadi::Collection, const Akonadi::Collection ) ) );
+  //connect( monitor, SIGNAL( itemMoved( const Akonadi::Item, const Akonadi::Collection, const Akonadi::Collection ) ),
+  //         SLOT( monitoredItemMoved( const Akonadi::Item, const Akonadi::Collection, const Akonadi::Collection ) ) );
 
   connect( monitor, SIGNAL( collectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) ),
            SLOT(monitoredCollectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) ) );
@@ -400,13 +404,18 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
       Collection::List dropped_cols;
       Item::List dropped_items;
 
+      MimeTypeChecker mimeChecker;
+
+      mimeChecker.setWantedMimeTypes(destCol.contentMimeTypes());
+
       TransactionSequence *transaction = new TransactionSequence(d->m_session);
 
       KUrl::List urls = KUrl::List::fromMimeData( data );
       foreach( const KUrl &url, urls ) {
         Collection col = d->m_collections.value( Collection::fromUrl( url ).id() );
         if ( col.isValid() ) {
-          if ( !d->mimetypeMatches( destCol.contentMimeTypes(), col.contentMimeTypes() ) )
+          
+          if ( !mimeChecker.isWantedCollection(col) )
             return false;
 
           if ( Qt::MoveAction == action ) {
