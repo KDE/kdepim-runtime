@@ -54,6 +54,7 @@
 #include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/statusjob.h>
+#include <kimap/storejob.h>
 
 #include <kmime/kmime_message.h>
 
@@ -319,26 +320,41 @@ void ImapResource::onAppendMessageDone( KJob *job )
   changeCommitted( item );
 }
 
-void ImapResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
+void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    // We can just assume that we only get here if the flags have changed. So get them and
-    // store those on the server.
-    QSet<QByteArray> flags = item.flags();
-    QByteArray newFlags;
-    foreach( const QByteArray &flag, flags )
-    newFlags += flag + ' ';
+  const QString remoteId = item.remoteId();
+  const QStringList temp = remoteId.split( "-+-" );
+  QByteArray mailBox = temp[0].toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
+  const QByteArray uid = temp[1].toUtf8();
 
-    // kDebug( ) << "Flags going to be set" << newFlags;
-    const QString reference = item.remoteId();
-    const QStringList temp = reference.split( "-+-" );
-    m_imap->setFlags( temp[0], temp[1].toInt(), temp[1].toInt(), newFlags );
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+  select->setMailBox( mailBox );
+  select->start();
+  KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
+  store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
+  store->setProperty( "itemUid", uid.toLongLong() );
+  store->setUidBased( true );
+  store->setSequenceSet( uid+':'+uid );
+  store->setFlags( item.flags().toList() );
+  store->setMode( KIMAP::StoreJob::SetFlags );
+  connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
+  store->start();
+}
 
-    changeCommitted( item );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::itemChanged");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+void ImapResource::onStoreFlagsDone( KJob *job )
+{
+  KIMAP::StoreJob *store = qobject_cast<KIMAP::StoreJob*>( job );
+
+  if ( store->error() ) {
+    deferTask();
+  }
+
+  Item item = job->property( "akonadiItem" ).value<Item>();
+  qint64 uid = job->property( "itemUid" ).toLongLong();
+
+  item.setFlags( store->resultingFlags()[uid].toSet() );
+  changeCommitted( item );
 }
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )

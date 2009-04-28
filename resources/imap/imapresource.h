@@ -83,6 +83,7 @@ private Q_SLOTS:
   void onRenameMailBoxDone( KJob *job );
   void onDeleteMailBoxDone( KJob *job );
   void onAppendMessageDone( KJob *job );
+  void onStoreFlagsDone( KJob *job );
 
   void slotAlert( Imaplib*, const QString& message );
 
