@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi Imap
+Name[de]=Akonadi-Imap
 Name[ga]=IMAP Akonadi
 Name[nn]=Akonadi-IMAP
 Name[pt]=IMAP do Akonadi
@@ -7,6 +8,7 @@ Name[pt_BR]=IMAP Akonadi
 Name[sv]=Akonadi IMAP
 Name[x-test]=xxAkonadi Imapxx
 Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
+Comment[de]=Verbindet zu einem IMAP-Server. Basiert auf der KIMAP-Bibliothek der kdepimlibs.
 Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισμένο στη βιβλιοθήκη IMAP του kdepimlibs.
 Comment[et]=Ühendumine IMAP-serveriga. Tugineb KIMAP-ile kdepimlibs'ist.
 Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar KIMAP as kdepimlibs.

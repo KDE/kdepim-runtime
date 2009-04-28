@@ -3,6 +3,7 @@ Name=Mbox
 Name[nn]=MBOX
 Name[x-test]=xxMboxxx
 Comment=Loads data from a local mbox file
+Comment[de]=Daten werden aus einer lokalen MBox-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο mbox
 Comment[et]=Andmete laadimine kohalikust mbox-failist
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad logánta mbox
