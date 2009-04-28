@@ -43,6 +43,7 @@
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
+#include <kimap/appendjob.h>
 #include <kimap/capabilitiesjob.h>
 #include <kimap/createjob.h>
 #include <kimap/deletejob.h>
@@ -69,6 +70,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/collectiondeletejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
 #include <akonadi/transactionsequence.h>
 
@@ -93,6 +95,8 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
 
   changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().fetchFullPayload( true );
+
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                                                 Settings::self(), QDBusConnection::ExportAdaptors );
@@ -279,34 +283,40 @@ void ImapResource::startConnect( bool forceManualAuth )
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    m_itemAdded = item;
-    m_collection = collection;
-    const QString mailbox = collection.remoteId();
-    kDebug() << "mailbox:" << mailbox;
+  QByteArray mailBox = collection.remoteId().toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
 
-    // save message to the server.
-    MessagePtr msg = item.payload<MessagePtr>();
-    m_imap->saveMessage( mailbox, msg->encodedContent( true ) + "\r\n" );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::itemAdded");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  // save message to the server.
+  MessagePtr msg = item.payload<MessagePtr>();
+
+  KIMAP::AppendJob *job = new KIMAP::AppendJob( m_session );
+  job->setProperty( "akonadiCollection", QVariant::fromValue( collection ) );
+  job->setProperty( "akonadiItem", QVariant::fromValue( item ) );
+  job->setMailBox( mailBox );
+  job->setContent( msg->encodedContent( true ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onAppendMessageDone( KJob* ) ) );
+  job->start();
 }
 
 void ImapResource::onAppendMessageDone( KJob *job )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    if ( uid > -1 ) {
-        const QString reference =  m_collection.remoteId() + "-+-" + QString::number( uid );
-        kDebug() << "Setting reference to " << reference;
-        m_itemAdded.setRemoteId( reference );
-    }
-    changeCommitted( m_itemAdded );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotSaveDone");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
+
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Item item = job->property( "akonadiItem" ).value<Item>();
+
+  if ( append->error() ) {
+    deferTask();
+  }
+
+  qint64 uid = append->uid();
+  Q_ASSERT( uid > 0 );
+
+  const QString remoteId =  collection.remoteId() + "-+-" + QString::number( uid );
+  kDebug() << "Setting remote ID to " << remoteId;
+  item.setRemoteId( remoteId );
+
+  changeCommitted( item );
 }
 
 void ImapResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
