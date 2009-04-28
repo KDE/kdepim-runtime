@@ -43,6 +43,7 @@
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
+#include <kimap/capabilitiesjob.h>
 #include <kimap/createjob.h>
 #include <kimap/deletejob.h>
 #include <kimap/fetchjob.h>
@@ -576,7 +577,9 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
 void ImapResource::onLoginDone( KJob *job )
 {
   if ( job->error()==0 ) {
-    synchronizeCollectionTree();
+    KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( m_session );
+    connect( capJob, SIGNAL( result( KJob* ) ), SLOT( onCapabilitiesTestDone( KJob* ) ) );
+    capJob->start();
     return;
   }
 
@@ -597,6 +600,37 @@ void ImapResource::onLoginDone( KJob *job )
     logout->start();
     emit warning( i18n( "Could not connect to the IMAP-server %1.", m_server ) );
   }
+}
+
+void ImapResource::onCapabilitiesTestDone( KJob *job )
+{
+  if ( job->error() ) {
+    emit error( i18n( "Could not test the capabilities supported by the IMAP server %1.", m_server ) );
+    return;
+  }
+
+  KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
+  QStringList supported = capJob->capabilities();
+  QStringList expected;
+  expected << "IMAP4rev1" << "UIDPLUS";
+
+  QStringList missing;
+
+  foreach ( const QString &capability, expected ) {
+    if ( !supported.contains( capability ) ) {
+      missing << capability;
+    }
+  }
+
+  if ( !missing.isEmpty() ) {
+    emit error( i18n( "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
+                      "Please ask your sysadmin to upgrade the server.", m_server, missing.join( ", " ) ) );
+    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_session );
+    logout->start();
+    return;
+  }
+
+  synchronizeCollectionTree();
 }
 
 void ImapResource::slotAlert( Imaplib*, const QString& message )

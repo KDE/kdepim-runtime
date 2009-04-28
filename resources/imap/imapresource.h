@@ -67,6 +67,7 @@ protected:
 
 private Q_SLOTS:
   void onLoginDone( KJob *job );
+  void onCapabilitiesTestDone( KJob *job );
   void onMailBoxReceived( const QList<QByteArray> &descriptor,
                           const QList<QByteArray> &flags );
   void onStatusReceived( const QByteArray &mailBox, int messageCount,
