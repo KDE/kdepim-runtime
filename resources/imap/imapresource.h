@@ -49,7 +49,6 @@ public:
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
-  void slotPurge( const QString& );
 
 protected Q_SLOTS:
   void retrieveCollections();

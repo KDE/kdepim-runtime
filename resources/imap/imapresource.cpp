@@ -47,6 +47,7 @@
 #include <kimap/capabilitiesjob.h>
 #include <kimap/createjob.h>
 #include <kimap/deletejob.h>
+#include <kimap/expungejob.h>
 #include <kimap/fetchjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
@@ -352,23 +353,40 @@ void ImapResource::onStoreFlagsDone( KJob *job )
 
   Item item = job->property( "akonadiItem" ).value<Item>();
   qint64 uid = job->property( "itemUid" ).toLongLong();
+  bool itemRemoval = job->property( "itemRemoval" ).toBool();
 
-  item.setFlags( store->resultingFlags()[uid].toSet() );
-  changeCommitted( item );
+  if ( !itemRemoval ) {
+    item.setFlags( store->resultingFlags()[uid].toSet() );
+    changeCommitted( item );
+  } else {
+    changeProcessed();
+  }
 }
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    //itemRemoved actually can not be implemented. The imap specs do not allow for a single
-    //message to be deleted. Users of this resource should make sure they set the flag
-    //to Deleted and call the DBus purge method when you want to get rid of the items
-    //from the server.
-    changeProcessed();
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::itemRemoved");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
+  // The imap specs do not allow for a single message to be deleted. We can only
+  // set the \Deleted flag. The message will actually be deleted when EXPUNGE will
+  // be issued on the next retrieveItems().
+
+  const QString remoteId = item.remoteId();
+  const QStringList temp = remoteId.split( "-+-" );
+  QByteArray mailBox = temp[0].toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
+  const QByteArray uid = temp[1].toUtf8();
+
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+  select->setMailBox( mailBox );
+  select->start();
+  KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
+  store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
+  store->setProperty( "itemRemoval", true );
+  store->setUidBased( true );
+  store->setSequenceSet( uid+':'+uid );
+  store->setFlags( QList<QByteArray>() << "\\Deleted" );
+  store->setMode( KIMAP::StoreJob::AppendFlags );
+  connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
+  store->start();
 }
 
 void ImapResource::retrieveCollections()
@@ -465,8 +483,18 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
     }
   }
 
+  QByteArray mailBox = col.remoteId().toUtf8();
+  mailBox.replace( rootRemoteId().toUtf8(), "" );
+
+  // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
+  select->setMailBox( mailBox );
+  select->start();
+  KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_session );
+  expunge->start();
+
   KIMAP::StatusJob *statusJob = new KIMAP::StatusJob( m_session );
-  statusJob->setMailBox( col.remoteId().replace( rootRemoteId(), "" ).toUtf8() );
+  statusJob->setMailBox( mailBox );
   connect( statusJob, SIGNAL( status( QByteArray, int, qint64, int ) ),
            this, SLOT( onStatusReceived( QByteArray, int, qint64, int ) ) );
   connect( statusJob, SIGNAL( result( KJob* ) ),
@@ -665,16 +693,6 @@ void ImapResource::slotAlert( Imaplib*, const QString& message )
     emit error( i18n( "Server reported: %1.",message ) );
 #else // KIMAP_PORT_TEMPORARILY_REMOVED
     kFatal("Sorry, not implemented: ImapResource::slotAlert");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
-
-void ImapResource::slotPurge( const QString &folder )
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    m_imap->expungeMailBox( folder );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotPurge");
     return ;
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
