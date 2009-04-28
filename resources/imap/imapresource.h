@@ -81,9 +81,9 @@ private Q_SLOTS:
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
   void onDeleteMailBoxDone( KJob *job );
+  void onAppendMessageDone( KJob *job );
 
   void slotAlert( Imaplib*, const QString& message );
-  void slotSaveDone( int );
 
 private:
   QString rootRemoteId() const;

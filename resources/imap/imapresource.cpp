@@ -276,7 +276,7 @@ void ImapResource::startConnect( bool forceManualAuth )
   loginJob->start();
 }
 
-void ImapResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
+void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
 #ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     m_itemAdded = item;
@@ -293,7 +293,7 @@ void ImapResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::slotSaveDone( int uid )
+void ImapResource::onAppendMessageDone( KJob *job )
 {
 #ifdef KIMAP_PORT_TEMPORARILY_REMOVED
     if ( uid > -1 ) {
