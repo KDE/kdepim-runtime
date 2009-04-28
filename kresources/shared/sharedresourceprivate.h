@@ -18,8 +18,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KRES_AKONADI_RESOURCEPRIVATE_H
-#define KRES_AKONADI_RESOURCEPRIVATE_H
+#ifndef KRES_AKONADI_SHAREDRESOURCEPRIVATE_H
+#define KRES_AKONADI_SHAREDRESOURCEPRIVATE_H
 
 #include "resourceprivatebase.h"
 #include "subresourcemodel.h"
