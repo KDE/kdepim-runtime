@@ -142,8 +142,7 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
     kError( 5800 ) << "Unexpected MIME type:" << mimeType;
     mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder" ) );
   }
-
-  mStoreCollectionDialog->setMimeType( mimeType );
+  mStoreCollectionDialog->setMimeType( QLatin1String( "text/calendar" ) );
 
   const SubResourceBase *resource = 0;
   while ( resource == 0 ) {
