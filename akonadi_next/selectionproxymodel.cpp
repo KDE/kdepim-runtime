@@ -37,7 +37,7 @@ public:
 
   }
 
-  Q_DECLARE_PUBLIC(SelectionProxyModel);
+  Q_DECLARE_PUBLIC(SelectionProxyModel)
   SelectionProxyModel *q_ptr;
 
   QItemSelectionModel *m_selectionModel;

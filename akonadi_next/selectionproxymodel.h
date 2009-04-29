@@ -55,7 +55,7 @@ public:
   virtual int columnCount(const QModelIndex&) const;
 
 private:
-  Q_DECLARE_PRIVATE(SelectionProxyModel);
+  Q_DECLARE_PRIVATE(SelectionProxyModel)
   //@cond PRIVATE
   SelectionProxyModelPrivate *d_ptr;
 
