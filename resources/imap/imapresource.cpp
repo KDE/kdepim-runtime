@@ -49,6 +49,7 @@
 #include <kimap/deletejob.h>
 #include <kimap/expungejob.h>
 #include <kimap/fetchjob.h>
+#include <kimap/getmetadatajob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/logoutjob.h>
@@ -76,6 +77,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/transactionsequence.h>
 
 #include "collectionflagsattribute.h"
+#include "collectionannotationsattribute.h"
 
 using namespace Akonadi;
 
@@ -97,6 +99,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -471,7 +474,7 @@ void ImapResource::onMailBoxReceived( const QList<QByteArray> &descriptor,
 
 // ----------------------------------------------------------------------------------
 
-void ImapResource::retrieveItems( const Akonadi::Collection & col )
+void ImapResource::retrieveItems( const Collection &col )
 {
   kDebug( ) << col.remoteId();
 
@@ -487,6 +490,22 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
 
   QByteArray mailBox = col.remoteId().toUtf8();
   mailBox.replace( rootRemoteId().toUtf8(), "" );
+
+  // First get the annotations from the mailbox if it's supported
+  if ( m_capabilities.contains( "METADATA" ) || m_capabilities.contains( "ANNOTATEMORE" ) ) {
+    KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_session );
+    meta->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    meta->setMailBox( mailBox );
+    if ( m_capabilities.contains( "METADATA" ) ) {
+      meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
+      meta->addEntry( "*" );
+    } else {
+      meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
+      meta->addEntry( "*", "value.shared" );
+    }
+    connect( meta, SIGNAL( result( KJob* ) ), SLOT( onGetMetaDataDone( KJob* ) ) );
+    meta->start();
+  }
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -665,14 +684,14 @@ void ImapResource::onCapabilitiesTestDone( KJob *job )
   }
 
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
-  QStringList supported = capJob->capabilities();
+  m_capabilities = capJob->capabilities();
   QStringList expected;
   expected << "IMAP4rev1" << "UIDPLUS";
 
   QStringList missing;
 
   foreach ( const QString &capability, expected ) {
-    if ( !supported.contains( capability ) ) {
+    if ( !m_capabilities.contains( capability ) ) {
       missing << capability;
     }
   }
@@ -686,6 +705,44 @@ void ImapResource::onCapabilitiesTestDone( KJob *job )
   }
 
   synchronizeCollectionTree();
+}
+
+void ImapResource::onGetMetaDataDone( KJob *job )
+{
+  if ( job->error() ) {
+    return; // Well, no metadata for us then...
+  }
+
+  KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
+  QMap<QByteArray, QMap<QByteArray, QByteArray> > rawAnnotations = meta->allMetaData( meta->mailBox() );
+
+  QMap<QByteArray, QByteArray> annotations;
+  QByteArray attribute = "";
+  if ( meta->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
+    attribute = "value.shared";
+  }
+
+  foreach ( const QByteArray &entry, rawAnnotations.keys() ) {
+    annotations[entry] = rawAnnotations[entry][attribute];
+  }
+
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+
+  // Store the mailbox metadata
+  if ( !collection.hasAttribute( "collectionannotations" ) ) {
+    CollectionAnnotationsAttribute *annotationsAttribute  = new CollectionAnnotationsAttribute( annotations );
+    collection.addAttribute( annotationsAttribute );
+  } else {
+    CollectionAnnotationsAttribute *annotationsAttribute =
+      static_cast<CollectionAnnotationsAttribute*>( collection.attribute( "collectionannotations" ) );
+    const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
+    if ( oldAnnotations != annotations ) {
+      annotationsAttribute->setAnnotations( annotations );
+    }
+  }
+
+  CollectionModifyJob *modify = new CollectionModifyJob( collection );
+  modify->exec();
 }
 
 void ImapResource::onSelectDone( KJob *job )

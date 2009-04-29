@@ -27,6 +27,7 @@ class KJob;
 
 #include <akonadi/resourcebase.h>
 #include <boost/shared_ptr.hpp>
+#include <QtCore/QStringList>
 
 namespace KMime
 {
@@ -69,6 +70,7 @@ private Q_SLOTS:
   void onCapabilitiesTestDone( KJob *job );
   void onMailBoxReceived( const QList<QByteArray> &descriptor,
                           const QList<QByteArray> &flags );
+  void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
   void onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber,
                           qint64 size, QList<QByteArray> flags,
@@ -93,6 +95,7 @@ private:
   void startConnect( bool forceManualAuth = false );
 
   KIMAP::Session *m_session;
+  QStringList m_capabilities;
   QHash<QString, Akonadi::Item> m_itemCache;
   QString m_server;
   QString m_userName;
