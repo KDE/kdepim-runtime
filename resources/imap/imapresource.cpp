@@ -54,7 +54,6 @@
 #include <kimap/logoutjob.h>
 #include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
-#include <kimap/statusjob.h>
 #include <kimap/storejob.h>
 
 #include <kmime/kmime_message.h>
@@ -493,13 +492,12 @@ void ImapResource::retrieveItems( const Akonadi::Collection & col )
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_session );
   expunge->start();
 
-  KIMAP::StatusJob *statusJob = new KIMAP::StatusJob( m_session );
-  statusJob->setMailBox( mailBox );
-  connect( statusJob, SIGNAL( status( QByteArray, int, qint64, int ) ),
-           this, SLOT( onStatusReceived( QByteArray, int, qint64, int ) ) );
-  connect( statusJob, SIGNAL( result( KJob* ) ),
-           this, SLOT( onStatusDone( KJob* ) ) );
-  statusJob->start();
+  // Issue another select to get the updated info from the mailbox
+  select = new KIMAP::SelectJob( m_session );
+  select->setMailBox( mailBox );
+  connect( select, SIGNAL( result( KJob* ) ),
+           this, SLOT( onSelectDone( KJob* ) ) );
+  select->start();
 }
 
 void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/,
@@ -697,9 +695,20 @@ void ImapResource::slotAlert( Imaplib*, const QString& message )
 #endif // KIMAP_PORT_TEMPORARILY_REMOVED
 }
 
-void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount,
-                                     qint64 uidValidity, int nextUid )
+void ImapResource::onSelectDone( KJob *job )
 {
+  if ( job->error() ) {
+    itemsRetrievalDone();
+    return;
+  }
+
+  KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob*>( job );
+
+  const QByteArray mailBox = select->mailBox();
+  const int messageCount = select->messageCount();
+  const qint64 uidValidity = select->uidValidity();
+  const int nextUid = select->nextUid();
+
   // uidvalidity can change between sessions, we don't want to refetch
   // folders in that case. Keep track of what is processed and what not.
   static QList<QByteArray> processed;
@@ -753,9 +762,6 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
 
     setItemStreamingEnabled( true );
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-    select->setMailBox( mailBox );
-    select->start();
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
@@ -789,9 +795,6 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
 
     setItemStreamingEnabled( true );
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-    select->setMailBox( mailBox );
-    select->start();
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( QByteArray::number( realMessageCount+1 )+':'+QByteArray::number( messageCount ) );
@@ -812,9 +815,6 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     itemsClear( collection );
     setItemStreamingEnabled( true );
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-    select->setMailBox( mailBox );
-    select->start();
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
@@ -836,9 +836,6 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
     itemsClear( collection );
     setItemStreamingEnabled( true );
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-    select->setMailBox( mailBox );
-    select->start();
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
@@ -855,13 +852,6 @@ void ImapResource::onStatusReceived( const QByteArray &mailBox, int messageCount
 
   kDebug() << "All fine, nothing to do";
   itemsRetrievalDone();
-}
-
-void ImapResource::onStatusDone( KJob *job )
-{
-    if ( job->error() ) {
-      itemsRetrievalDone();
-    }
 }
 
 

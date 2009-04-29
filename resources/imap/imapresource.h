@@ -69,9 +69,7 @@ private Q_SLOTS:
   void onCapabilitiesTestDone( KJob *job );
   void onMailBoxReceived( const QList<QByteArray> &descriptor,
                           const QList<QByteArray> &flags );
-  void onStatusReceived( const QByteArray &mailBox, int messageCount,
-                         qint64 uidValidity,  int nextUid );
-  void onStatusDone( KJob *job );
+  void onSelectDone( KJob *job );
   void onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber,
                           qint64 size, QList<QByteArray> flags,
                           boost::shared_ptr<KMime::Message> message );
