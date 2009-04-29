@@ -685,16 +685,6 @@ void ImapResource::onCapabilitiesTestDone( KJob *job )
   synchronizeCollectionTree();
 }
 
-void ImapResource::slotAlert( Imaplib*, const QString& message )
-{
-#ifdef KIMAP_PORT_TEMPORARILY_REMOVED
-    emit error( i18n( "Server reported: %1.",message ) );
-#else // KIMAP_PORT_TEMPORARILY_REMOVED
-    kFatal("Sorry, not implemented: ImapResource::slotAlert");
-    return ;
-#endif // KIMAP_PORT_TEMPORARILY_REMOVED
-}
-
 void ImapResource::onSelectDone( KJob *job )
 {
   if ( job->error() ) {

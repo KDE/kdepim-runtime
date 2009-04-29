@@ -82,8 +82,6 @@ private Q_SLOTS:
   void onAppendMessageDone( KJob *job );
   void onStoreFlagsDone( KJob *job );
 
-  void slotAlert( Imaplib*, const QString& message );
-
 private:
   QString rootRemoteId() const;
   QString mailBoxRemoteId( const QString &path ) const;
