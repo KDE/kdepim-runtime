@@ -18,6 +18,7 @@ set( RESOURCE_AKONADI_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/resourceconfigbase.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/resourceprivatebase.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/storecollectiondialog.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/storecollectionfilterproxymodel.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/subresourcebase.cpp
 )
 

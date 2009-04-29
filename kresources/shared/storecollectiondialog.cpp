@@ -20,7 +20,8 @@
 
 #include "storecollectiondialog.h"
 
-#include <akonadi/collectionfilterproxymodel.h>
+#include "storecollectionfilterproxymodel.h"
+
 #include <akonadi/collectionmodel.h>
 #include <akonadi/collectionview.h>
 
@@ -81,7 +82,7 @@ StoreCollectionDialog::StoreCollectionDialog( QWidget* parent )
 
   mainLayout->addWidget( mLabel );
 
-  mFilterModel = new CollectionFilterProxyModel( this );
+  mFilterModel = new StoreCollectionFilterProxyModel( this );
   mFilterModel->setSourceModel( model );
 
   mView = new CollectionView( widget );
