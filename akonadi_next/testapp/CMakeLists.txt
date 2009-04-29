@@ -18,6 +18,4 @@ target_link_libraries(proxymodeltestapp
                       ${KDE4_KABC_LIBS}
 )
 
-install(TARGETS proxymodeltestapp
-        DESTINATION ${BIN_INSTALL_DIR})
 
