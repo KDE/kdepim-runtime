@@ -75,6 +75,8 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/session.h>
 #include <akonadi/transactionsequence.h>
 
+#include "collectionflagsattribute.h"
+
 using namespace Akonadi;
 
 class SessionUiProxy : public KIMAP::SessionUiProxy {
@@ -94,6 +96,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -698,6 +701,7 @@ void ImapResource::onSelectDone( KJob *job )
   const int messageCount = select->messageCount();
   const qint64 uidValidity = select->uidValidity();
   const int nextUid = select->nextUid();
+  const QList<QByteArray> flags = select->flags();
 
   // uidvalidity can change between sessions, we don't want to refetch
   // folders in that case. Keep track of what is processed and what not.
@@ -736,6 +740,19 @@ void ImapResource::onSelectDone( KJob *job )
     oldNextUid = currentNextUid->uidNext();
     if ( oldNextUid != nextUid ) {
       currentNextUid->setUidNext( nextUid );
+    }
+  }
+
+  // Store the mailbox flags
+  if ( !collection.hasAttribute( "collectionflags" ) ) {
+    CollectionFlagsAttribute *flagsAttribute  = new CollectionFlagsAttribute( flags );
+    collection.addAttribute( flagsAttribute );
+  } else {
+    CollectionFlagsAttribute *flagsAttribute =
+      static_cast<CollectionFlagsAttribute*>( collection.attribute( "collectionflags" ) );
+    const QList<QByteArray> oldFlags = flagsAttribute->flags();
+    if ( oldFlags != flags ) {
+      flagsAttribute->setFlags( flags );
     }
   }
 

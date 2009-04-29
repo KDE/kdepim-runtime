@@ -13,6 +13,10 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
 
+set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionflagsattribute.cpp
+)
+
 if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( knut )
   add_subdirectory( ical )

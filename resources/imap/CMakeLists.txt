@@ -15,6 +15,7 @@ set( imapresource_SRCS
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   noselectattribute.cpp
+  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
