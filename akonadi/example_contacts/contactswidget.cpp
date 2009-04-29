@@ -36,6 +36,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
+#include "selectionproxymodel.h"    
 
 #include <KLocale>
 
@@ -92,18 +93,20 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
 
-// //   new ModelTest(collectionTree, this);
-
   treeview->setModel(collectionTree);
-//   treeview->setModel(etm);
   treeview->setColumnHidden(1, true);
   treeview->setColumnHidden(2, true);
   treeview->setColumnHidden(3, true);
 
-//   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
+  treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+  SelectionProxyModel *selProxy = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxy->setSourceModel(etm);
+//   new ModelTest(selProxy, this);
 
   descList = new DescendantEntitiesProxyModel(this);
-  descList->setSourceModel(etm);
+  descList->setSourceModel(selProxy);
+//   new ModelTest(descList, this);
 
   itemList = new EntityFilterProxyModel(this);
   itemList->setSourceModel(descList);
@@ -113,6 +116,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
 
   listView = new EntityTreeView(splitter);
+  listView->setSortingEnabled(false);
   listView->setModel(itemList);
   listView->setColumnHidden(3, true);
   splitter->addWidget(listView);
@@ -121,10 +125,6 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   browser = new QTextBrowser( splitter );
   splitter->addWidget(browser);
-
-  connect( treeview->selectionModel(),
-      SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      SLOT( treeSelectionChanged ( const QItemSelection &, const QItemSelection & ) ) );
 
   connect( listView->selectionModel(),
       SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
@@ -150,28 +150,6 @@ void ContactsWidget::listSelectionChanged( const QItemSelection & selected, cons
       QByteArray ba = i.payloadData();
       browser->setText( ba );
     }
-//   }
-}
-
-void ContactsWidget::treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
-{
-//   if ( selected.indexes().size() == 1 )
-//   {
-
-    QModelIndex idx = selected.indexes().at(0);
-
-    QModelIndex etmIndex = collectionTree->mapToSource( idx );
-
-//     QModelIndex etmIndex = idx;
-
-    descList->setRootIndex(etmIndex);
-    QModelIndex descendedListIndex = descList->mapFromSource(etmIndex);
-
-    itemList->setRootIndex(descendedListIndex);
-    QModelIndex filteredListIndex = itemList->mapFromSource(descendedListIndex);
-
-    listView->setRootIndex(filteredListIndex);
-
 //   }
 }
 

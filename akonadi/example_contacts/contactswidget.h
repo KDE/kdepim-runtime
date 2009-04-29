@@ -47,7 +47,6 @@ public:
 
 
 protected slots:
-  void treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void listSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void modelDataChanged(const QModelIndex &, const QModelIndex &);
 
