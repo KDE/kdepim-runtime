@@ -93,9 +93,6 @@ private:
   void startConnect( bool forceManualAuth = false );
 
   KIMAP::Session *m_session;
-  Akonadi::Collection m_collection;
-  Akonadi::Item m_itemAdded;
-  QHash<QString, QString> m_flagsCache;
   QHash<QString, Akonadi::Item> m_itemCache;
   QString m_server;
   QString m_userName;
