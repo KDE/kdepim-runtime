@@ -455,7 +455,6 @@ void EntityTreeModelPrivate::startFirstListJob()
 
   if (m_collections.size() > 0)
   {
-    q->clearAndReset();
     return;
   }
   Collection rootCollection;
