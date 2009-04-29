@@ -35,6 +35,7 @@ namespace Akonadi
 {
 class EntityTreeModel;
 class EntityTreeView;
+class SelectionProxyModel;
 }
 
 class KJotsPage;
@@ -52,21 +53,19 @@ public:
   ~KJotsWidget();
 
 protected slots:
-  void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
-  void dataChanged(const QModelIndex &, const QModelIndex &);
+  void renderSelection();
+//   void dataChanged(const QModelIndex &, const QModelIndex &);
 
 protected:
-  void renderToBrowser( const QItemSelection & selected );
-  void addBook(QTextCursor *cursor, QModelIndex idx);
-  void addPage(QTextCursor *cursor, KJotsPage);
-  void renderSelected();
-  QModelIndexList squash(QModelIndexList list);
+  void addBook(QTextCursor *cursor, const QModelIndex &idx);
+  void addPage(QTextCursor *cursor, const QModelIndex &idx);
 
 private:
   KTextEdit      *editor;
   QTextBrowser   *browser;
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
+  Akonadi::SelectionProxyModel *selProxy;
 //   Akonadi::EntityTreeView *treeview;
 //   QColumnView *treeview;
   QAbstractItemView *treeview;
