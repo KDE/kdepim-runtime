@@ -711,7 +711,7 @@ void ImapResource::onSelectDone( KJob *job )
   Collection collection = collectionFromRemoteId( mailBoxRemoteId( mailBox ) );
   Q_ASSERT( collection.isValid() );
 
-  // Get the current uid next value and store it
+  // Get the current uid validity value and store it
   int oldUidValidity = 0;
   if ( !collection.hasAttribute( "uidvalidity" ) ) {
     UidValidityAttribute* currentUidValidity  = new UidValidityAttribute( uidValidity );
