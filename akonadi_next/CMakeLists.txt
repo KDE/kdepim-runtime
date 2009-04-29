@@ -32,6 +32,7 @@ set( akonadi_next_SRCS
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
   entityupdateadapter.cpp
+  selectionproxymodel.cpp
   )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
@@ -63,3 +64,4 @@ install(FILES
 install(TARGETS akonadi_next ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory(tests)
+add_subdirectory(testapp)
