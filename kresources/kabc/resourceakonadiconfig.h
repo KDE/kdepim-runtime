@@ -1,6 +1,6 @@
 /*
     This file is part of libkabc.
-    Copyright (c) 2008 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2008, 2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,70 +21,16 @@
 #ifndef KABC_RESOURCEAKONADICONFIG_H
 #define KABC_RESOURCEAKONADICONFIG_H
 
-#include "kresources/configwidget.h"
-
-#include <akonadi/collection.h>
-
-#include <kdialog.h>
-
-namespace Akonadi {
-  class CollectionView;
-}
-
-class KAction;
-class QModelIndex;
-class QPushButton;
+#include "resourceconfigbase.h"
 
 namespace KABC {
 
-class ResourceAkonadiConfig : public KRES::ConfigWidget
+class ResourceAkonadiConfig : public ResourceConfigBase
 {
   Q_OBJECT
 
   public:
     ResourceAkonadiConfig( QWidget *parent = 0 );
-
-  public Q_SLOTS:
-    void loadSettings( KRES::Resource *resource );
-    void saveSettings( KRES::Resource *resource );
-
-  private:
-    Akonadi::Collection mCollection;
-
-    Akonadi::CollectionView *mCollectionView;
-
-    KAction *mCreateAction;
-    KAction *mDeleteAction;
-    KAction *mSyncAction;
-    KAction *mSubscriptionAction;
-
-    QPushButton *mCreateButton;
-    QPushButton *mDeleteButton;
-    QPushButton *mSyncButton;
-    QPushButton *mSubscriptionButton;
-
-  private Q_SLOTS:
-    void updateCollectionButtonState();
-
-    void collectionChanged( const Akonadi::Collection &collection );
-
-    void collectionsInserted( const QModelIndex &parent, int start, int end );
-};
-
-class ResourceAkonadiConfigDialog : public KDialog
-{
-  Q_OBJECT
-
-  public:
-    ResourceAkonadiConfigDialog( KRES::Resource *resource );
-
-  protected:
-    virtual void accept();
-
-  private:
-    KRES::Resource *mResource;
-
-    ResourceAkonadiConfig *mConfig;
 };
 
 }

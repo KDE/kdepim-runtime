@@ -274,6 +274,8 @@ bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeT
       // otherwise we need to ask the user
       QList<const SubResourceBase*> possibleStores = writableSubResourcesForMimeType( mimeType );
       if ( possibleStores.count() == 1 ) {
+        kDebug( 5650 ) << "Only one possible sub resource for MIME type="
+                       << mimeType;
         resource = possibleStores.first();
       } else {
         resource = storeSubResourceFromUser( uid, mimeType );
@@ -348,10 +350,14 @@ Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QStri
 
   Akonadi::Collection collection = mStoreCollectionsByMimeType.value( mimeType );
   if ( collection.isValid() ) {
+    kDebug( 5650 ) << "Found storage collection in map: id=" << collection.id()
+                   << ", remoteId=" << collection.remoteId();
     return collection;
   }
 
   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
+    kDebug( 5650 ) << "Taking DefaultStoreCollection: id=" << collection.id()
+                   << ", remoteId=" << collection.remoteId();
     return mDefaultStoreCollection;
   }
 
