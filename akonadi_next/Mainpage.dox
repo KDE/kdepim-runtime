@@ -225,6 +225,39 @@ Or to also show items of child collections in the list:
 
 Note that it is important in this case to use the DescendantEntitesProxyModel before the EntityFilterProxyModel. Otherwise, by filtering out the collections first, you would also be filtering out their child items.
 
+A SelectionProxyModel can be used to simplify managing selection in one view through multiple proxy models to a representation in another view. The selectionModel of the initial view is used to create a proxied model which includes only the selected indexes and their children.
+
+@code 
+  collectionTree = new EntityFilterProxyModel(this);
+  collectionTree->setSourceModel(entityTree);
+
+  // Include only collections in this proxy model.
+  collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
+
+  treeview->setModel(collectionTree);
+
+  // SelectionProxyModel can handle complex selections:  
+  treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+  SelectionProxyModel *selProxy = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxy->setSourceModel(etm);
+
+  EntityTreeView *selView = new EntityTreeView(splitter);
+  selView->setModel(selProxy);
+@endcode
+
+\image html selectionproxymodelsimpleselection.png "A Selection in one view creating a model for use with another view."
+
+The SelectionProxyModel can handle complex selections.
+
+\image html selectionproxymodelmultipleselection.png "Non-contiguous selection creating a new simple model in a second view."
+
+If an index and one or more of its descendants are selected, only the top-most selected index (including all of its descendants) are included in the proxy model.
+
+\image html selectionproxymodelmultipleselection-withdescendant.png "Selecting an item and its descendant."
+
+Obviously, the SelectionProxyModel may be used in a view, or further processed with other proxy models. See the example_contacts application for example which uses a further DescendantEntitiesProxyModel and EntityFilterProxyModel on top of a SelectionProxyModel.
+
 A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (http://www.qtsoftware.com/developer/task-tracker/index_html?id=246999&method=entry).
 
 @code
