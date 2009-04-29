@@ -46,8 +46,6 @@
 // * Implement ordering support.
 // * Implement some proxy models for time-table like uses, eg KOrganizer events.
 // * Apidox++
-// * The API for tying proxies together is currently a bit cumbersome. Write a
-//     glue class to make stringing them together easier.
 
 namespace Akonadi
 {
