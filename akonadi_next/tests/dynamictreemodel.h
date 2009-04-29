@@ -1,3 +1,21 @@
+/*
+    Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 #ifndef DYNAMICTREEMODEL_H
 #define DYNAMICTREEMODEL_H
@@ -52,6 +70,7 @@ private:
   int maxDepth;
 
   friend class ModelInsertCommand;
+  friend class ModelInsertWithDescendantsCommand;
   friend class ModelRemoveCommand;
   friend class ModelDataChangeCommand;
   friend class ModelMoveCommand;
@@ -102,6 +121,22 @@ public:
   virtual ~ModelInsertCommand() {}
 
   virtual void doCommand();
+};
+
+class ModelInsertWithDescendantsCommand : public ModelInsertCommand
+{
+  Q_OBJECT
+
+public:
+  ModelInsertWithDescendantsCommand(DynamicTreeModel *model, QObject *parent = 0);
+  virtual ~ModelInsertWithDescendantsCommand() {}
+
+  void setNumDescendants(QList<QPair<int, int > > descs);
+
+  virtual void doCommand();
+
+protected:
+  QList<QPair<int, int> > m_descs;
 };
 
 class ModelRemoveCommand : public ModelChangeCommand

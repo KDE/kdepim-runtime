@@ -99,7 +99,13 @@ class DescendantEntitiesProxyModelPrivate
   etc.
 
   */
-  int descendantCount(const QModelIndex &sourceIndex) const;
+  int descendantCount(const QModelIndex &sourceIndex, int ignoreTerminals=ObserveTerminals) const;
+
+  enum TerminalIgnorance
+  {
+    ObserveTerminals,
+    IgnoreTerminals
+  };
 
   /**
   @internal
@@ -157,6 +163,9 @@ class DescendantEntitiesProxyModelPrivate
 
   bool m_displayAncestorData;
   QString m_ancestorSeparator;
+
+  QList<QPersistentModelIndex> m_terminalIndexes;
+  void descendNewIndexes();
 
 };
 
@@ -337,7 +346,7 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
 {
 
   Q_Q(DescendantEntitiesProxyModel);
-
+ 
   int c = descendedRow(sourceParentIndex);
 
 // Can't simply get the descendantCount of sourceModel()->index(start, 0, sourceParent),
@@ -402,7 +411,60 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsInserted(const QModelIndex &
 
   m_descendantsCount.clear();
 
+  // Don't count the descendants of newly inserted indexes until after endInsertRows.
+  // The reason for this is that at the time we emitted beginInsertRows, we couldn't count the descendants
+  // of new items (they weren't known to the sourceModel), and now we can.
+  const int column = 0;
+  for (int childRow = start; childRow <= end; childRow++)
+  {
+    QModelIndex childIndex = q->sourceModel()->index( childRow, column, sourceParentIndex );
+    m_terminalIndexes << QPersistentModelIndex(childIndex);
+  }
+  
   q->endInsertRows();
+  descendNewIndexes();
+}
+
+void DescendantEntitiesProxyModelPrivate::descendNewIndexes()
+{
+  Q_Q(DescendantEntitiesProxyModel);
+  
+  QMutableListIterator<QPersistentModelIndex> i(m_terminalIndexes);
+  while (i.hasNext())
+  {
+    QModelIndex idx = i.next();
+
+    int descCount = descendantCount(idx, IgnoreTerminals);
+
+    if (descCount <= 0)
+    {
+      i.remove();
+      continue;
+    }
+
+    int c = descendedRow(idx);
+    const int column = 0;
+    for (int childRow = 0; childRow < c; childRow++)
+    {
+      QModelIndex childIndex = q->sourceModel()->index( childRow, column, idx.parent() );
+      if (q->sourceModel()->hasChildren(childIndex))
+        c += descendantCount(childIndex);
+    }
+
+    int proxyStart = c;
+    // Need to ignore terminals so we know how many rows will be inserted by removing them.
+    int proxyEnd = c + descendantCount(idx, IgnoreTerminals);
+
+    if (isDescended(idx))
+    {
+      proxyStart++;
+      proxyEnd++;
+    }
+    q->beginInsertRows(QModelIndex(), proxyStart, proxyEnd - 1 );
+    i.remove();
+    m_descendantsCount.clear();
+    q->endInsertRows();
+  }
 }
 
 
@@ -544,11 +606,19 @@ void DescendantEntitiesProxyModelPrivate::sourceDataChanged(QModelIndex,QModelIn
 
 }
 
-int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sourceIndex) const
+int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sourceIndex, int ignoreTerminals) const
 {
   if (sourceIndex.column() > 0)
     return 0;
 
+  if (ObserveTerminals == ignoreTerminals)
+  {
+    if (m_terminalIndexes.contains(sourceIndex))
+    {
+      return 0;
+    }
+  }
+  
   Q_Q( const DescendantEntitiesProxyModel );
   if (m_descendantsCount.contains(sourceIndex.internalId()))
   {

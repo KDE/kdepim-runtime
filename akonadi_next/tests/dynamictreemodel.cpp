@@ -1,3 +1,21 @@
+/*
+    Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 #include "dynamictreemodel.h"
 
@@ -170,6 +188,51 @@ void ModelInsertCommand::doCommand()
       m_model->m_childItems[parentId][col].insert(row, id);
 
     }
+  }
+  m_model->endInsertRows();
+}
+
+ModelInsertWithDescendantsCommand::ModelInsertWithDescendantsCommand(DynamicTreeModel *model, QObject *parent)
+    : ModelInsertCommand(model, parent)
+{
+
+}
+
+void ModelInsertWithDescendantsCommand::setNumDescendants(QList<QPair<int, int > > descs)
+{
+  m_descs = descs;
+}
+
+void ModelInsertWithDescendantsCommand::doCommand()
+{
+  QModelIndex idx = findIndex(m_rowNumbers);
+
+  QPair<int, int> firstPair = m_descs.value(0);
+  QModelIndex parent = m_model->index(firstPair.first, 0, idx);
+  int row = m_model->rowCount(parent);
+  m_model->beginInsertRows(parent, row, row + firstPair.second - 1);
+
+  qint64 parentId = parent.internalId();
+  QListIterator<QPair<int, int> > i(m_descs);
+  while (i.hasNext())
+  {
+    QPair<int, int> pair = i.next();
+    for(int col = 0; col < m_numCols; col++ )
+    {
+      if (m_model->m_childItems[parentId].size() <= col)
+      {
+        m_model->m_childItems[parentId].append(QList<qint64>());
+      }
+      for (int i = 0; i < pair.second; i++)
+      {
+        qint64 id = m_model->newId();
+        QString name = QString::number(id);
+
+        m_model->m_items.insert(id, name);
+        m_model->m_childItems[parentId][col].append(id);
+      }
+    }
+    parentId = m_model->m_childItems[parentId][0].at(pair.first);
   }
   m_model->endInsertRows();
 }
