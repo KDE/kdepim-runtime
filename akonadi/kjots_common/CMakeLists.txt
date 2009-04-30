@@ -1,6 +1,7 @@
 project(kjots_common)
 
 set( kjots_common_SRCS
+    kjotsmodel.cpp
     kjotspage.cpp
     kjotsakonadipage.cpp
     kjotswidget.cpp
