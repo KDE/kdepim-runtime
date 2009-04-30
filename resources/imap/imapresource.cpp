@@ -84,7 +84,7 @@ using namespace Akonadi;
 class SessionUiProxy : public KIMAP::SessionUiProxy {
   public:
     bool ignoreSslError(const KSslErrorUiData& errorData) {
-      if (KSslCertificateManager::askIgnoreSslErrors(errorData, KSslCertificateManager::StoreRules)) {
+      if (KSslCertificateManager::askIgnoreSslErrors(errorData, KSslCertificateManager::RecallAndStoreRules)) {
         return true;
       } else {
         return false;
