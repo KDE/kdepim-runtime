@@ -74,9 +74,10 @@ void CollectionAnnotationsAttribute::deserialize( const QByteArray &data )
   QList<QByteArray> lines = data.split( '*' );
 
   foreach ( const QByteArray &line, lines ) {
-    int wsIndex = line.indexOf( ' ' );
-    const QByteArray key = line.mid( 0, wsIndex ).trimmed();
-    const QByteArray value = line.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
+    QByteArray trimmed = line.trimmed();
+    int wsIndex = trimmed.indexOf( ' ' );
+    const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
+    const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
     mAnnotations[key] = value;
   }
 }
