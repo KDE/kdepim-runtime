@@ -34,6 +34,7 @@ if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( distlist )
   add_subdirectory( birthdays )
   add_subdirectory( mbox )
+  add_subdirectory( kolabproxy )
 endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.

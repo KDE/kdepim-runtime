@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi Kolab Proxy Resource
+Comment=Proxy resource to monitor groupware folders
+Type=AkonadiResource
+Exec=akonadi_kolabproxy_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_kolabproxy_resource
