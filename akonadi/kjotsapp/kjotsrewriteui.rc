@@ -1,0 +1,9 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kjotsrewriteapp" version="1">
+
+<ToolBar name="mainToolBar" iconText="icononly"><text>Main Toolbar</text>
+  <Action name="change_theme"/>
+  <Action name="export_selection"/>
+</ToolBar>
+
+</kpartgui>

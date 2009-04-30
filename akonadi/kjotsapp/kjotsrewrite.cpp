@@ -31,6 +31,8 @@
 #include <kio/netaccess.h>
 #include <ksavefile.h>
 #include <kstatusbar.h>
+#include <kaction.h>
+#include <KLocale>
 
 
 KJotsReWrite::KJotsReWrite() : KXmlGuiWindow()
@@ -38,6 +40,17 @@ KJotsReWrite::KJotsReWrite() : KXmlGuiWindow()
 
   kjw = new KJotsWidget( this );
   setCentralWidget( kjw );
+
+  KAction *action;
+  action = actionCollection()->addAction( "change_theme");
+  action->setText( i18n("Change Theme...") );
+  connect(action, SIGNAL(triggered()), kjw, SLOT(changeTheme()));
+
+  action = actionCollection()->addAction( "export_selection");
+  action->setText( i18n("Export...") );
+  connect(action, SIGNAL(triggered()), kjw, SLOT(exportSelection()));
+
+  setupGUI();
 }
 
 

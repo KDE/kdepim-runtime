@@ -14,3 +14,8 @@ target_link_libraries(kjotsrewriteapp
 
 install(TARGETS kjotsrewriteapp
         DESTINATION ${BIN_INSTALL_DIR})
+
+install(FILES
+  kjotsrewriteui.rc
+  DESTINATION  ${DATA_INSTALL_DIR}/kjotsrewrite)
+
