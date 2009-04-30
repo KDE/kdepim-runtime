@@ -256,7 +256,7 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
   int row = indexOf(m_childEntities.value(collection.parent()), collection.id());
 
 //   int row = m_childEntities.value(collection.parent()).indexOf(collection.id());
-
+  Q_ASSERT( row >= 0 );
   QModelIndex parentIndex = q->indexForCollection(m_collections.value(collection.parent()));
 
   q->beginRemoveRows(parentIndex, row, row);
