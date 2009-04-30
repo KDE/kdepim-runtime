@@ -31,7 +31,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
-#include "entityupdateadapter.h"
+//#include "entityupdateadapter.h"
 #include "descendantentitiesproxymodel.h"
 #include "entityfilterproxymodel.h"
 
