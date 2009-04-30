@@ -31,7 +31,6 @@ set( akonadi_next_SRCS
   contactsmodel.cpp
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
-  entityupdateadapter.cpp
   selectionproxymodel.cpp
   )
 
