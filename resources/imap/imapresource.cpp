@@ -123,12 +123,11 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     mailBox.replace( rootRemoteId().toUtf8(), "" );
     const QByteArray uid = temp[1].toUtf8();
 
-    m_itemCache[remoteId] = item;
-
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
     select->setMailBox( mailBox );
     select->start();
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    fetch->setProperty( "akonadiItem", QVariant::fromValue( item ) );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setUidBased( true );
     fetch->setSequenceSet( uid+':'+uid );
@@ -147,11 +146,12 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void ImapResource::onMessageReceived( const QByteArray &mailBox, qint64 uid, int /*messageNumber*/, boost::shared_ptr<KMime::Message> message )
 {
-  const QString remoteId =  mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid );
+  KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( sender() );
+  Q_ASSERT( fetch!=0 );
 
-  Item i = m_itemCache.take(remoteId);
+  Item i = fetch->property( "akonadiItem" ).value<Item>();
 
-  kDebug() << "MESSAGE from Imap server" << remoteId;
+  kDebug() << "MESSAGE from Imap server" << i.remoteId();
   Q_ASSERT( i.isValid() );
 
   i.setMimeType( "message/rfc822" );

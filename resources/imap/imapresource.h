@@ -96,7 +96,6 @@ private:
 
   KIMAP::Session *m_session;
   QStringList m_capabilities;
-  QHash<QString, Akonadi::Item> m_itemCache;
   QString m_server;
   QString m_userName;
 };
