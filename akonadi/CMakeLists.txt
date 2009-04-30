@@ -10,7 +10,7 @@ find_package(KdepimLibs REQUIRED)
 include_directories(
     akonadi_next
     ${AKONADI_INCLUDE_DIR}
-    kjots_common
+    #    kjots_common
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIR}
     ${QT_INCLUDES}
@@ -26,16 +26,16 @@ include(FindKdepimLibs)
 add_subdirectory(akonadi_next)
 
 #### KJots commmon stuff ####
-add_subdirectory(kjots_common)
+#add_subdirectory(kjots_common)
 
-add_subdirectory(kjots_serializer)
+#add_subdirectory(kjots_serializer)
 
-add_subdirectory(kjots_resource)
+#add_subdirectory(kjots_resource)
 
 #### Clients ####
 
 #add_subdirectory(plasmoid)
-add_subdirectory(kjotsapp)
+#add_subdirectory(kjotsapp)
 add_subdirectory(example_mail)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
