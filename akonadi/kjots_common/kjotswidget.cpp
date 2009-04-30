@@ -28,6 +28,7 @@
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextBrowser>
+#include <QInputDialog>
 
 #include <QDirModel>
 #include <QColumnView>
@@ -54,9 +55,17 @@
 #include <akonadi/session.h>
 #include "selectionproxymodel.h"
 
+#include <grantlee/template.h>
+#include <grantlee/context.h>
+
 #include <KTextEdit>
+#include <KLocale>
+#include <KFileDialog>
+#include <KMessageBox>
+#include <KStandardDirs>
 
 #include "kjotspage.h"
+#include "kjotsmodel.h"
 
 #include <kdebug.h>
 #include "modeltest.h"
@@ -64,7 +73,7 @@
 using namespace Akonadi;
 
 KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
-    : QWidget( parent, f )
+    : QWidget( parent, f ), m_themeName("default")
 {
 
   QSplitter *splitter = new QSplitter( this );
@@ -127,7 +136,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 
   Session *session = new Session( QByteArray( "EntityTreeModel-" ) + QByteArray::number( qrand() ), this );
 
-  etm = new Akonadi::EntityTreeModel(session, monitor, this); // now takes a session rather than an EUA
+  etm = new KJotsModel(session, monitor, this);
 //   etm->setItemPopulationStrategy(EntityTreeModel::NoItemPopulation);
 //   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 //   etm->setIncludeRootCollection(true);
@@ -145,7 +154,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 //   proxy->addMimeTypeInclusionFilter( Collection::mimeType() );
 
 //   new ModelTest(proxy, this);
-  new ModelTest( etm, this );
+//   new ModelTest( etm, this );
 //   new ModelTest( dem, this );
 //   new ModelTest( demp, this );
 
@@ -188,9 +197,36 @@ KJotsWidget::~KJotsWidget()
 
 }
 
+QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
+{
+  QHash<QString, QVariant> hash;
+
+  QList<QVariant> objectList;
+
+  const int rows = selProxy->rowCount();
+  const int column = 0;
+  for (int row = 0; row < rows; ++row)
+  {
+    QModelIndex idx = selProxy->index(row, column, QModelIndex());
+    QObject *obj = idx.data(KJotsModel::GrantleeObjectRole).value<QObject*>();
+    objectList << QVariant::fromValue(obj);
+  }
+
+  hash.insert("entities", objectList);
+  Context c(hash);
+  TemplateLoader *tl = TemplateLoader::instance();
+  // TODO: Use KStandardDirs for these?
+  tl->setTemplateDirs(QStringList() << QString("/home/kde-devel/kde/share/apps/kjotsrewrite/") + "themes/");
+  tl->setPluginDirs(QStringList() << "/home/kde-devel/kde/lib/");
+
+  tl->setTheme(themeName);
+  Template t = tl->loadFromFile("template.html");
+  return t.render(&c);
+}
+
 void KJotsWidget::renderSelection()
 {
-  int rows = selProxy->rowCount();
+  const int rows = selProxy->rowCount();
 
   // If the selection is a single page, present it for editing...
   if (rows == 1)
@@ -211,55 +247,57 @@ void KJotsWidget::renderSelection()
   QTextDocument doc;
   QTextCursor cursor(&doc);
 
-  const int column = 0;
-  for (int row = 0; row < rows; ++row)
-  {
-    QModelIndex idx = selProxy->index(row, column, QModelIndex());
-    Collection col = idx.data(EntityTreeModel::CollectionRole).value<Collection>();
-    if (col.isValid())
-    {
-      addBook( &cursor, idx);
-    }
-    Item item = idx.data(EntityTreeModel::ItemRole).value<Item>();
-    if (item.isValid())
-    {
-      addPage( &cursor, idx);
-    }
-  }
-  browser->setText( doc.toPlainText() );
+  browser->setHtml( renderSelectionToHtml(m_themeName) );
   stackedWidget->setCurrentWidget( browser );
 }
 
-void KJotsWidget::addPage(QTextCursor *cursor, const QModelIndex &idx)
+QString KJotsWidget::getThemeFromUser()
 {
-  Item item = etm->data( idx, EntityTreeModel::ItemRole ).value< Item >();
-  KJotsPage page = item.payload<KJotsPage>();
-  cursor->insertText("Title: " + page.title() + "\n");
-  cursor->insertText("Content: " + page.content() + "\n");
-}
+  bool ok;
+  QString text = QInputDialog::getText(this, i18n("Change Theme"),
+                                      tr("Theme name:"), QLineEdit::Normal,
+                                      m_themeName, &ok);
+  if (!ok)
+    return QString();
 
-void KJotsWidget::addBook(QTextCursor *cursor, const QModelIndex &idx)
-{
-  Collection c = etm->data( idx, EntityTreeModel::CollectionRole ).value< Collection >();
-  cursor->insertText( "Begin book: " + c.name() + "\n" );
-  int rowCount = etm->rowCount(idx);
-  for( int row = 0; row < rowCount; row++ )
+  if (text.isEmpty())
   {
-    QModelIndex bookContentIndex = etm->index(row, idx.column(), idx);
-    Item i = etm->data( bookContentIndex, EntityTreeModel::ItemRole ).value< Item >();
-
-    if (i.isValid())
-    {
-      addPage(cursor, bookContentIndex);
-    } else {
-      Collection c = etm->data( bookContentIndex, EntityTreeModel::CollectionRole ).value<Collection>();
-      if (c.isValid())
-      {
-          addBook(cursor, bookContentIndex);
-      }
-    }
+    return QString("default");
   }
-  cursor->insertText( "End book: " + c.name() + "\n" );
+  else
+  {
+    return text;
+  }
 }
+
+
+void KJotsWidget::changeTheme()
+{
+  m_themeName = getThemeFromUser();
+  renderSelection();
+}
+
+void KJotsWidget::exportSelection()
+{
+  QString themeName = getThemeFromUser();
+  if (themeName.isEmpty())
+  {
+    themeName = "default";
+  }
+
+  QString filename = KFileDialog::getSaveFileName();
+  if (!filename.isEmpty())
+  {
+    QFile exportFile ( filename );
+    if ( !exportFile.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+        KMessageBox::error(0, i18n("<qt>Error opening internal file.</qt>"));
+        return;
+    }
+    exportFile.write(renderSelectionToHtml(themeName).toUtf8());
+
+    exportFile.close();
+  }
+}
+
 
 #include "kjotswidget.moc"

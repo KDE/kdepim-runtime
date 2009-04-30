@@ -1,0 +1,16 @@
+<div>
+<table border="1" cellspacing="1" cellpadding="1" width="100%"><tr><td>
+<h2>{{ entity.title }}</h2>
+<div>
+{% for entity in entity.entities %}
+  {% if entity.isBook %}
+    {% include booktemplate.html %}
+  {% else %}
+    {% if entity.isPage %}
+      {% include pagetemplate.html %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</div>
+</td></tr></table>
+</div>

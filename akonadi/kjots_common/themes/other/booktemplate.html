@@ -1,0 +1,14 @@
+<div>
+<h2 style="color:blue;">{{ entity.title }}</h2>
+<div>
+{% for entity in entity.entities %}
+  {% if entity.isBook %}
+    {% include booktemplate.html %}
+  {% else %}
+    {% if entity.isPage %}
+      {% include pagetemplate.html %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</div>
+</div>

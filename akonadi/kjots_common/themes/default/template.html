@@ -1,0 +1,13 @@
+<html>
+{% for entity in entities %}
+<div>
+  {% if entity.isBook %}
+    {% include booktemplate.html %}
+  {% else %}
+    {% if entity.isPage %}
+      {% include pagetemplate.html %}
+    {% endif %}
+  {% endif %}
+</div>
+{% endfor %}
+</html>

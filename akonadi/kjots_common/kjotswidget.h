@@ -52,13 +52,15 @@ public:
   KJotsWidget( QWidget *parent = 0, Qt::WindowFlags f = 0 );
   ~KJotsWidget();
 
+protected:
+  QString renderSelectionToHtml(const QString &themeName);
+  QString getThemeFromUser();
+
 protected slots:
   void renderSelection();
+  void changeTheme();
+  void exportSelection();
 //   void dataChanged(const QModelIndex &, const QModelIndex &);
-
-protected:
-  void addBook(QTextCursor *cursor, const QModelIndex &idx);
-  void addPage(QTextCursor *cursor, const QModelIndex &idx);
 
 private:
   KTextEdit      *editor;
@@ -66,6 +68,7 @@ private:
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
   Akonadi::SelectionProxyModel *selProxy;
+  QString m_themeName;
 //   Akonadi::EntityTreeView *treeview;
 //   QColumnView *treeview;
   QAbstractItemView *treeview;
