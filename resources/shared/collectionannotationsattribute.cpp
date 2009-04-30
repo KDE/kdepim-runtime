@@ -61,7 +61,7 @@ QByteArray CollectionAnnotationsAttribute::serialized() const
     result+= key;
     result+= ' ';
     result+= mAnnotations[key];
-    result+= " * "; // We use this separator as '*' is not allowed in keys or values
+    result+= " % "; // We use this separator as '%' is not allowed in keys or values
   }
   result.chop( 3 );
 
@@ -71,7 +71,7 @@ QByteArray CollectionAnnotationsAttribute::serialized() const
 void CollectionAnnotationsAttribute::deserialize( const QByteArray &data )
 {
   mAnnotations.clear();
-  QList<QByteArray> lines = data.split( '*' );
+  QList<QByteArray> lines = data.split( '%' );
 
   foreach ( const QByteArray &line, lines ) {
     QByteArray trimmed = line.trimmed();
