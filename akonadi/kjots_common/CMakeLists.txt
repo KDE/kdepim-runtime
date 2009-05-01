@@ -25,5 +25,5 @@ set_target_properties(kjots_common PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOV
 install(TARGETS kjots_common ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 # TODO Figure out how to exclude the .svn dirs.
-install(DIRECTORY themes DESTINATION ${DATA_INSTALL_DIR}/kjotsrewrite )
+install(DIRECTORY themes DESTINATION ${DATA_INSTALL_DIR}/kjotsrewrite PATTERN *.svn EXCLUDE )
 
