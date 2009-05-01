@@ -47,7 +47,6 @@
 #include "entityfilterproxymodel.h"
 #include "entitytreemodel.h"
 #include "entitytreeview.h"
-#include "entityupdateadapter.h"
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
