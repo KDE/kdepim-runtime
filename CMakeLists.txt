@@ -16,6 +16,7 @@ endif(NOT Boost_FOUND)
 
 find_package(Akonadi REQUIRED)
 include_directories(${AKONADI_INCLUDE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   PATHS
