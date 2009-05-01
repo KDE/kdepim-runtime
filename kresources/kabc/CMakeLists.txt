@@ -1,5 +1,6 @@
 
 #include_directories( ${CMAKE_SOURCE_DIR}/kabc )
+include_directories( ${Boost_INCLUDE_DIR} )
 
 ########### next target ###############
 
