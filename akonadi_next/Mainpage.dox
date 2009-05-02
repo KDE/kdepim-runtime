@@ -258,6 +258,10 @@ If an index and one or more of its descendants are selected, only the top-most s
 
 Obviously, the SelectionProxyModel may be used in a view, or further processed with other proxy models. See the example_contacts application for example which uses a further DescendantEntitiesProxyModel and EntityFilterProxyModel on top of a SelectionProxyModel.
 
+The SelectionProxyModel orders its items in the same top-to-bottom order as they appear in the source model. Note that this order may be different to the order in the selection model if there is a QSortFilterProxyModel between the selection and the source model.
+
+\image html selectionproxymodel-ordered.png "Ordered items in the SelectionProxyModel"
+
 A different view can also be used with the model, such as a QColumnView. However this does not work because QColumnView does not listen to signals from the model (http://www.qtsoftware.com/developer/task-tracker/index_html?id=246999&method=entry).
 
 @code
