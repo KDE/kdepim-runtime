@@ -227,6 +227,7 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &
 void SelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
   Q_Q(SelectionProxyModel);
+  Q_UNUSED(end);
 
   QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
 
