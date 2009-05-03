@@ -480,9 +480,13 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelI
 void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sourceParentIndex, int start, int end, const QModelIndex &destParentIndex, int destRow)
 {
   Q_Q(DescendantEntitiesProxyModel);
+  Q_UNUSED(sourceParentIndex);
+  Q_UNUSED(start);
+  Q_UNUSED(end);
+  Q_UNUSED(destParentIndex);
+  Q_UNUSED(destRow);
 
   m_descendantsCount.clear();
-  kDebug();
   q->endMoveRows();
 }
 
@@ -495,6 +499,10 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeRemoved(const QMode
 void DescendantEntitiesProxyModelPrivate::sourceRowsRemoved(const QModelIndex &sourceParentIndex, int start, int end)
 {
   Q_Q(DescendantEntitiesProxyModel);
+  Q_UNUSED(sourceParentIndex);
+  Q_UNUSED(start);
+  Q_UNUSED(end);
+
   m_descendantsCount.clear();
   q->endRemoveRows();
 }
@@ -663,6 +671,8 @@ QModelIndex DescendantEntitiesProxyModel::index(int r, int c, const QModelIndex&
 
 QModelIndex DescendantEntitiesProxyModel::parent(const QModelIndex& proxyIndex) const
 {
+  Q_UNUSED(proxyIndex);
+
   return QModelIndex();
 }
 
