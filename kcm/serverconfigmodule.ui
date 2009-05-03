@@ -14,7 +14,7 @@
    <item row="0" column="0">
     <widget class="QCheckBox" name="startServer">
      <property name="whatsThis">
-      <string>Choose if Akonadi will use a internal or external MySQL server</string>
+      <string>Choose whether Akonadi should use an internal or external MySQL server.</string>
      </property>
      <property name="text">
       <string>Use internal MySQL server</string>
