@@ -21,6 +21,10 @@
 #define MAILDISPATCHERAGENT_H
 
 #include <akonadi/agentbase.h>
+#include <akonadi/item.h>
+
+class KJob;
+
 
 /**
  * This agent dispatches mail put into the outbox collection.
@@ -48,6 +52,12 @@ class MailDispatcherAgent : public Akonadi::AgentBase, public Akonadi::AgentBase
   private:
     class Private;
     Private* const d;
+    QMap < KJob *, Akonadi::Item > sentItems;
+
+  private slots:
+    void itemFetchDone( KJob *job );
+    void transportResult( KJob *job );
+
 };
 
 #endif // MAILDISPATCHERAGENT_H

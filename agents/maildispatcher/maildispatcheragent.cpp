@@ -28,21 +28,24 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
-#include <akonadi/item.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/kmime/messageparts.h>
+
+#include <mailtransport/transport.h>
+#include <mailtransport/transportmanager.h>
+#include <mailtransport/transportjob.h>
 
 #include <kdebug.h>
 #include <kurl.h>
 #include <KWindowSystem>
 
-//#include <kmime/kmime_message.h>
+#include <kmime/kmime_message.h>
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include <QtDBus/QDBusConnection>
-
-//#include <boost/shared_ptr.hpp>
-
-//typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
@@ -133,6 +136,11 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
 
 MailDispatcherAgent::~MailDispatcherAgent()
 {
+  if ( !sentItems.empty() )
+  {
+    // can we do kWarning from destructors?
+    kWarning() << "agent destroyed while jobs still in progress.";
+  }
   delete d;
 }
 
@@ -213,16 +221,23 @@ void MailDispatcherAgent::itemAdded( const Akonadi::Item &item,
   if ( col.id() == d->outbox.id() )
   {
     kDebug() << "An item was added to the outbox.";
+    if ( isOnline() )
+    {
+      kDebug() << "fetching item.";
+      Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( item, this );
+      fetchJob->fetchScope().fetchFullPayload();
+      connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
+    }
+    else
+    {
+      kDebug() << "maildispatcheragent: We are offline. Putting message in spool..." ;
+    }
   }
   else
   {
     kDebug() << "An item was added to collection" << col.id() << "with name" << col.name();
   }
 
-  if ( ! isOnline() )
-  {
-    kDebug() << "maildispatcheragent: We are offline. Putting message in spool..." ;
-  }
   Item modifiedItem = Item( item );
 
   // let base implementation tell the change recorder that we
@@ -233,7 +248,7 @@ void MailDispatcherAgent::itemAdded( const Akonadi::Item &item,
 void MailDispatcherAgent::itemChanged( const Akonadi::Item &item,
   const QSet< QByteArray > &partIdentifiers )
 {
-  kDebug() << "An item has changed.";
+  kDebug() << "An item has changed. What am I supposed to do??";
 
   // let base implementation tell the change recorder that we
   // have processed the change
@@ -242,12 +257,108 @@ void MailDispatcherAgent::itemChanged( const Akonadi::Item &item,
 
 void MailDispatcherAgent::itemRemoved( const Akonadi::Item &item )
 {
-  kDebug() << "An item was removed.";
+  kDebug() << "An item was removed. Big deal.";
   // nothing to do for us
 
   // let base implementation tell the change recorder that we
   // have processed the change
   AgentBase::Observer::itemRemoved( item );
+}
+
+void MailDispatcherAgent::itemFetchDone( KJob *job )
+{
+  Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>( job );
+  if ( job->error() )
+  {
+    kError() << job->errorString();
+    return;
+  }
+
+  if ( fetchJob->items().isEmpty() )
+  {
+    kWarning() << "Job did not retrieve any items";
+    return;
+  }
+
+  Akonadi::Item item = fetchJob->items().first();
+  if ( !item.isValid() )
+  {
+    kWarning() << "Item not valid";
+    return;
+  }
+
+  if ( !item.hasPayload<MessagePtr>() )
+  {
+    kWarning() << "Item does not have message payload";
+    return;
+  }
+
+  const MessagePtr message = item.payload<MessagePtr>();
+
+  // following code mostly stolen from Mailody:
+  const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
+  kDebug() << cmsg;
+  if ( cmsg.isEmpty() )
+    return;
+
+  // hardwired to use default transport
+  const int transportId = MailTransport::TransportManager::self()->defaultTransportId();
+  if ( transportId == -1 )
+  {
+    // HACK: checking for -1 breaks encapsulation. TransportManager should provide a hasDefaultTransport()
+    kWarning() << "There is no default mail transport. I can't send anything.";
+    return;
+  }
+  MailTransport::Transport *base =
+    MailTransport::TransportManager::self()->transportById( transportId );
+  if ( base == 0 )
+  {
+    kWarning() << "I got a null transport!";
+    return;
+  }
+  kDebug() << "Sending to:" << base->host() << base->port();
+
+  MailTransport::TransportJob *sendJob =
+      MailTransport::TransportManager::self()->createTransportJob( transportId );
+  if ( !sendJob )
+  {
+    kWarning() << "Not possible to create TransportJob!";
+    return;
+  }
+
+  sendJob->setData( cmsg );
+  // hardwired sender
+  sendJob->setSender( "fake-sender-in-code@naiba.md" );
+  // hardwired receiver
+  sendJob->setTo( QStringList( "idanoka@gmail.com" ) );
+
+  connect( sendJob, SIGNAL( result( KJob* ) ), SLOT( transportResult( KJob* ) ) );
+  // keep track of what item this jobs refers to (is there a better way?!)
+  sentItems[sendJob] = item;
+  MailTransport::TransportManager::self()->schedule( sendJob );
+}
+
+void MailDispatcherAgent::transportResult( KJob *job )
+{
+  if ( job->error() )
+  {
+    kWarning() << "TransportJob reported error...";
+  }
+  else
+  {
+    kDebug() << "TransportJob succeeded. Removing message from outbox.";
+    if ( !sentItems.contains( job ) )
+    {
+      kWarning() << "I know of no such job!";
+      return;
+    }
+
+    Akonadi::Item item = sentItems.value(job);
+    sentItems.remove(job);
+    Akonadi::ItemDeleteJob *job = new ItemDeleteJob(item);
+    // do we care about the result?
+    kDebug() << "ItemDeleteJob created.";
+  }
 }
 
 AKONADI_AGENT_MAIN( MailDispatcherAgent )

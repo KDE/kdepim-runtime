@@ -1,16 +1,15 @@
 #! /bin/sh
 
-OUTBOXPATH=$HOME/.local/share/maildispatcher/outbox
-#OUTBOXPATH=$HOME/ttt
+OUTBOXPATH=$HOME/.ako-maildir.directory/outbox
 
 TMPPATH=${OUTBOXPATH}/tmp
 NEWPATH=${OUTBOXPATH}/new
 
-TMPFILE=`mktemp --tmpdir=${TMPPATH} XXXXXXXXXX`
+TMPFILE=`mktemp -p ${TMPPATH} XXXXXXXXXX`
 FAKEDATE=`LCALL=C date --rfc-2822`
 cat >>${TMPFILE} <<EOF
-From: Fake Sender <fake-sender@ingo-kloecker.de>
-To: Dummy Recipient <dummy@ingo-kloecker.de>
+From: Fake Sender <fake-sender@naiba.md>
+To: Dummy Recipient <idanoka@gmail.com>
 Subject: Test Message
 Date: ${FAKEDATE}
 
