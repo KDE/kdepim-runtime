@@ -7,6 +7,9 @@ find_package(KDE4 REQUIRED)
 find_package(Akonadi REQUIRED)
 find_package(KdepimLibs REQUIRED)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
+
 include_directories(
     akonadi_next
     ${AKONADI_INCLUDE_DIR}
@@ -24,17 +27,26 @@ include(FindKdepimLibs)
 
 add_subdirectory(akonadi_next)
 
-#### KJots commmon stuff ####
-#add_subdirectory(kjots_common)
+# This isn't released yet, sorry...
+find_package(Grantlee)
 
-#add_subdirectory(kjots_serializer)
+if (Grantlee_FOUND)
+  message("Found Grantlee. Building KJots.")
 
-#add_subdirectory(kjots_resource)
+  #### KJots commmon stuff ####
+  add_subdirectory(kjots_common)
+
+  add_subdirectory(kjots_serializer)
+
+  add_subdirectory(kjots_resource)
+
+  add_subdirectory(kjotsapp)
+endif (Grantlee_FOUND)
+
 
 #### Clients ####
 
 #add_subdirectory(plasmoid)
-#add_subdirectory(kjotsapp)
 add_subdirectory(example_mail)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
