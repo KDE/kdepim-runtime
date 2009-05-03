@@ -214,9 +214,11 @@ QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
   hash.insert("entities", objectList);
   Context c(hash);
   TemplateLoader *tl = TemplateLoader::instance();
-  // TODO: Use KStandardDirs for these?
-  tl->setTemplateDirs(QStringList() << QString("/home/kde-devel/kde/share/apps/kjotsrewrite/") + "themes/");
-  tl->setPluginDirs(QStringList() << "/home/kde-devel/kde/lib/");
+
+  KStandardDirs KStd;
+
+  tl->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
+  tl->setPluginDirs(KStd.findDirs("lib", QString()));
 
   tl->setTheme(themeName);
   Template t = tl->loadFromFile("template.html");
