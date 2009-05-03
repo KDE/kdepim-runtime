@@ -1,8 +1,13 @@
 [Desktop Entry]
 Name=Akonadi Kolab Proxy Resource
+Name[pt]=Recurso 'Proxy' do Kolab para o Akonadi
+Name[pt_BR]=Recurso 'Proxy' do Kolab para o Akonadi
 Name[sv]=Akonadi Kolab-proxyresurs
 Name[uk]=Ресурс проксі-сервера Kolab Akonadi
 Comment=Proxy resource to monitor groupware folders.
+Comment[en_GB]=Proxy resource to monitor groupware folders.
+Comment[pt]=Recurso 'proxy' para vigiar as pastas de 'groupware'
+Comment[pt_BR]=Recurso 'proxy' para vigiar as pastas de 'groupware'
 Comment[sv]=Proxyresurs för att övervaka grupprogramkorgar
 Comment[uk]=Ресурс проксі-сервера, призначений для спостереження за теками групи
 Type=AkonadiResource
