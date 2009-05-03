@@ -221,7 +221,7 @@ QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
   tl->setPluginDirs(KStd.findDirs("lib", QString()));
 
   tl->setTheme(themeName);
-  Template t = tl->loadFromFile("template.html");
+  Template t = tl->loadByName("template.html");
   return t.render(&c);
 }
 
