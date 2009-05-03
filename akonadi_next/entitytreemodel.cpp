@@ -558,6 +558,9 @@ int EntityTreeModel::rowCount( const QModelIndex & parent ) const
 
 QVariant  EntityTreeModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet) const
 {
+  // Not needed in this model.
+  Q_UNUSED(headerSet);
+
   if ( section == 0 && orientation == Qt::Horizontal && role == Qt::DisplayRole )
     return i18nc( "@title:column, name of a thing", "Name" );
   return QAbstractItemModel::headerData( section, orientation, role );
