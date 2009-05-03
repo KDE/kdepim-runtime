@@ -59,7 +59,7 @@ int EntityTreeModelPrivate::indexOf(QList<Node*> list, qint64 id) const
   return -1;
 }
 
-void EntityTreeModelPrivate::fetchItems( Collection parent, int retrieveDepth )
+void EntityTreeModelPrivate::fetchItems( Collection parent )
 {
   Q_Q( EntityTreeModel );
 //   kDebug() << parent.remoteId();
@@ -161,7 +161,7 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
         // to request them through EntityTreeModel::fetchMore
         if ( m_itemPopulation == EntityTreeModel::ImmediatePopulation )
         {
-          fetchItems( col, Base );
+          fetchItems( col );
         }
       }
     }
@@ -514,7 +514,7 @@ void EntityTreeModelPrivate::startFirstListJob()
   {
 //     kDebug() << (rootCollection == Collection::root());
     if (rootCollection != Collection::root())
-      fetchItems( rootCollection, Base );
+      fetchItems( rootCollection );
   }
 }
 

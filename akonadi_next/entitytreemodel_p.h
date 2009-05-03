@@ -62,8 +62,7 @@ public:
   };
 
   void fetchCollections( Collection col, CollectionFetchJob::Type = CollectionFetchJob::FirstLevel );
-  // TODO: Remove retrieveDepth?
-  void fetchItems( Collection col, int retrieveDepth = Base );
+  void fetchItems( Collection col);
   void collectionsFetched( const Akonadi::Collection::List& );
 //   void resourceTopCollectionsFetched( const Akonadi::Collection::List& );
   void itemsFetched( const Akonadi::Item::List& );

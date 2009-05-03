@@ -698,7 +698,7 @@ void EntityTreeModel::fetchMore( const QModelIndex & parent )
     if (!col.isValid())
       return;
 
-    d->fetchItems( col, EntityTreeModelPrivate::Base );
+    d->fetchItems( col );
   }
 }
 
