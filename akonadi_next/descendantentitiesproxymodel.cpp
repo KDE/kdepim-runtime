@@ -694,8 +694,6 @@ QString DescendantEntitiesProxyModel::ancestorSeparator() const
 
 Qt::ItemFlags DescendantEntitiesProxyModel::flags( const QModelIndex &index ) const
 {
-  Q_D(const DescendantEntitiesProxyModel);
-
   // if index is invalid, it might be mapped to a valid source index with more flags.
   // Can't allow that...
   if (!index.isValid())

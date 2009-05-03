@@ -672,7 +672,6 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
 
 bool EntityTreeModel::canFetchMore( const QModelIndex & parent ) const
 {
-  Q_D( const EntityTreeModel );
   Item item = parent.data(ItemRole).value<Item>();
   if (item.isValid())
   {
