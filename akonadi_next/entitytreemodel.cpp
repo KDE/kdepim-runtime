@@ -414,7 +414,7 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
       foreach( const KUrl &url, urls ) {
         Collection col = d->m_collections.value( Collection::fromUrl( url ).id() );
         if ( col.isValid() ) {
-          
+
           if ( !mimeChecker.isWantedCollection(col) )
             return false;
 
@@ -422,14 +422,20 @@ bool EntityTreeModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
     //         new CollectionMoveJob(col, destCol, transaction);
           } else if ( Qt::CopyAction == action ) {
             CollectionCopyJob *collectionCopyJob = new CollectionCopyJob(col, destCol, transaction);
+            connect( collectionCopyJob, SIGNAL( result( KJob* ) ),
+                     SLOT( copyJobDone( KJob* ) ) );
           }
         } else {
           Item item = d->m_items.value( Item::fromUrl( url ).id() );
           if ( item.isValid() ) {
             if ( Qt::MoveAction == action ) {
               ItemMoveJob *itemMoveJob = new ItemMoveJob( item, destCol, transaction );
+              connect( itemMoveJob, SIGNAL( result( KJob* ) ),
+                       SLOT( moveJobDone( KJob* ) ) );
             } else if ( Qt::CopyAction == action ) {
               ItemCopyJob *itemCopyJob = new ItemCopyJob( item, destCol, transaction);
+              connect( itemCopyJob, SIGNAL( result( KJob* ) ),
+                       SLOT( copyJobDone( KJob* ) ) );
             }
           } else {
             // A uri, but not an akonadi url. What to do?
@@ -625,7 +631,8 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
       }
 
       CollectionModifyJob *job = new CollectionModifyJob( col, d->m_session );
-
+      connect( job, SIGNAL( result( KJob* ) ),
+               SLOT( updateJobDone( KJob* ) ) );
       return false;
     }
     if (Node::Item == node->type)
@@ -651,6 +658,8 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
       }
 
       Akonadi::ItemModifyJob *itemModifyJob = new Akonadi::ItemModifyJob( item, d->m_session );
+      connect( itemModifyJob, SIGNAL( result( KJob* ) ),
+               SLOT( updateJobDone( KJob* ) ) );
       return false;
     }
   }

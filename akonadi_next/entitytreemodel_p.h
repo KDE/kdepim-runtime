@@ -109,6 +109,8 @@ public:
   void startFirstListJob();
 
   void fetchJobDone( KJob *job );
+  void copyJobDone( KJob *job );
+  void moveJobDone( KJob *job );
   void updateJobDone( KJob *job );
 
   /**

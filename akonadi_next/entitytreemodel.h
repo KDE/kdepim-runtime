@@ -284,8 +284,12 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
   //   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
 
+    // TODO: Can I merge these into one jobResult slot?
     Q_PRIVATE_SLOT( d_func(), void fetchJobDone( KJob *job ) )
+    Q_PRIVATE_SLOT( d_func(), void copyJobDone( KJob *job ) )
+    Q_PRIVATE_SLOT( d_func(), void moveJobDone( KJob *job ) )
     Q_PRIVATE_SLOT( d_func(), void updateJobDone( KJob *job ) )
+
     Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List list ) )
     Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List list ) )
 
