@@ -25,6 +25,8 @@ namespace Akonadi {
   class Collection;
 }
 
+class AbstractSubResourceModel;
+
 class SharedResourceIface
 {
   public:
@@ -33,6 +35,8 @@ class SharedResourceIface
     virtual void setStoreCollection( const Akonadi::Collection& collection ) = 0;
 
     virtual Akonadi::Collection storeCollection() const = 0;
+
+    virtual const AbstractSubResourceModel *subResourceModel() const = 0;
 };
 
 #endif

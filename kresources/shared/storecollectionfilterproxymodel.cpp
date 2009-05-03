@@ -20,17 +20,29 @@
 
 #include "storecollectionfilterproxymodel.h"
 
+#include "abstractsubresourcemodel.h"
+#include "subresourcebase.h"
+
 #include <akonadi/collectionmodel.h>
 
 using namespace Akonadi;
 
 StoreCollectionFilterProxyModel::StoreCollectionFilterProxyModel( QObject *parent )
-  : CollectionFilterProxyModel( parent )
+  : CollectionFilterProxyModel( parent ),
+    mSubResourceModel( 0 )
 {
 }
 
 StoreCollectionFilterProxyModel::~StoreCollectionFilterProxyModel()
 {
+}
+
+void StoreCollectionFilterProxyModel::setSubResourceModel( const AbstractSubResourceModel *subResourceModel )
+{
+  if ( mSubResourceModel != subResourceModel ) {
+    mSubResourceModel = subResourceModel;
+    invalidateFilter();
+  }
 }
 
 bool StoreCollectionFilterProxyModel::filterAcceptsRow( int sourceRow,
@@ -48,7 +60,18 @@ bool StoreCollectionFilterProxyModel::filterAcceptsRow( int sourceRow,
       Collection collection = data.value<Collection>();
       if ( collection.isValid() ) {
         // only accept collections into which we can store new items
-        return ( collection.rights() & Collection::CanCreateItem ) != 0;
+        if ( ( collection.rights() & Collection::CanCreateItem ) != 0 ) {
+          // if we have a sub resource model, check the associated sub resource,
+          // otherwise just accept
+          if ( mSubResourceModel != 0 ) {
+            SubResourceBase *subResource = mSubResourceModel->subResourceBase( collection.id() );
+
+            // only accept sub resources which are active
+            return subResource != 0 && subResource->isActive();
+          }
+
+          return true;
+        }
       }
     }
   }

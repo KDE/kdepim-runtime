@@ -69,6 +69,11 @@ Collection ResourceAkonadi::storeCollection() const
   return d->defaultStoreCollection();
 }
 
+const AbstractSubResourceModel *ResourceAkonadi::subResourceModel() const
+{
+  return d->subResourceModel();
+}
+
 KABC::Lock *ResourceAkonadi::lock()
 {
   return d->mLock;

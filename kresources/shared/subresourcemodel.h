@@ -62,6 +62,11 @@ class SubResourceModel : public AbstractSubResourceModel
       return mSubResourcesByKResId.value( kresId, 0 );
     }
 
+    SubResourceBase *subResourceBase( Akonadi::Collection::Id colId ) const
+    {
+      return subResource( colId );
+    }
+
     QList<SubResourceClass*> writableSubResourcesForMimeType( const QString &mimeType ) const
     {
       Akonadi::MimeTypeChecker mimeChecker;

@@ -68,6 +68,11 @@ class SharedResourcePrivate : public ResourcePrivateBase
       return mModel.subResource( id );
     }
 
+    const AbstractSubResourceModel *subResourceModel() const
+    {
+      return &mModel;
+    }
+
   protected:
      SubResourceModelClass mModel;
 

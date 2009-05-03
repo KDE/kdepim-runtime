@@ -266,6 +266,7 @@ bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeT
 
     if ( mStoreCollectionDialog == 0 ) {
       mStoreCollectionDialog = new StoreCollectionDialog();
+      mStoreCollectionDialog->setSubResourceModel( subResourceModel() );
     }
 
     resource = storeSubResourceForMimeType( mimeType );

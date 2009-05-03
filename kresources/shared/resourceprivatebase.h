@@ -32,6 +32,7 @@ namespace Akonadi {
   class Item;
 }
 
+class AbstractSubResourceModel;
 class IdArbiterBase;
 class ItemSaveContext;
 class StoreCollectionDialog;
@@ -87,6 +88,8 @@ class ResourcePrivateBase : public QObject
     Akonadi::Collection defaultStoreCollection() const;
 
     void setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection );
+
+    virtual const AbstractSubResourceModel *subResourceModel() const = 0;
 
     bool addLocalItem( const QString &uid, const QString &mimeType );
 

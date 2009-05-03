@@ -224,6 +224,11 @@ Akonadi::Collection ResourceAkonadi::storeCollection() const
   return d->defaultStoreCollection();
 }
 
+const AbstractSubResourceModel *ResourceAkonadi::subResourceModel() const
+{
+  return d->subResourceModel();
+}
+
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
 {
   kDebug(5700) << "subResource" << subResource << ", active" << active;

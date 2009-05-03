@@ -23,6 +23,8 @@
 
 #include <akonadi/collectionfilterproxymodel.h>
 
+class AbstractSubResourceModel;
+
 namespace Akonadi {
 
 class StoreCollectionFilterProxyModel : public CollectionFilterProxyModel
@@ -33,6 +35,11 @@ class StoreCollectionFilterProxyModel : public CollectionFilterProxyModel
     explicit StoreCollectionFilterProxyModel( QObject *parent );
 
     ~StoreCollectionFilterProxyModel();
+
+    void setSubResourceModel( const AbstractSubResourceModel *subResourceModel );
+
+  protected:
+    const AbstractSubResourceModel *mSubResourceModel;
 
   protected:
     bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const;

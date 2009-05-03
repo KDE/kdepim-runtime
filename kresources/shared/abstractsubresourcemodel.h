@@ -60,6 +60,8 @@ class AbstractSubResourceModel : public QObject
 
     bool asyncLoad();
 
+    virtual SubResourceBase *subResourceBase( Akonadi::Collection::Id colId ) const = 0;
+
   Q_SIGNALS:
     void subResourceAdded( SubResourceBase *subResource );
 

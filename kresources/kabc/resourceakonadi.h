@@ -75,6 +75,7 @@ class ResourceAkonadi : public ResourceABC, public SharedResourceIface
 
     void setStoreCollection( const Akonadi::Collection& collection );
     Akonadi::Collection storeCollection() const;
+    const AbstractSubResourceModel *subResourceModel() const;
 
   public Q_SLOTS:
     virtual void setSubresourceActive( const QString &subResource, bool active );

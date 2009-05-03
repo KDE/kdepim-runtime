@@ -130,6 +130,11 @@ Collection StoreCollectionDialog::selectedCollection() const
   return mSelectedCollection;
 }
 
+void StoreCollectionDialog::setSubResourceModel( const AbstractSubResourceModel *subResourceModel )
+{
+  mFilterModel->setSubResourceModel( subResourceModel );
+}
+
 void StoreCollectionDialog::collectionChanged( const Collection &collection )
 {
   mSelectedCollection = collection;

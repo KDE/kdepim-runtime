@@ -26,10 +26,11 @@
 #include <KDialog>
 
 namespace Akonadi {
-  class CollectionFilterProxyModel;
   class CollectionView;
+  class StoreCollectionFilterProxyModel;
 }
 
+class AbstractSubResourceModel;
 class QLabel;
 class QModelIndex;
 
@@ -50,9 +51,11 @@ class StoreCollectionDialog : public KDialog
 
     Akonadi::Collection selectedCollection() const;
 
+    void setSubResourceModel( const AbstractSubResourceModel *subResourceModel );
+
   protected:
     QLabel *mLabel;
-    Akonadi::CollectionFilterProxyModel *mFilterModel;
+    Akonadi::StoreCollectionFilterProxyModel *mFilterModel;
     Akonadi::CollectionView *mView;
 
     Akonadi::Collection mSelectedCollection;
