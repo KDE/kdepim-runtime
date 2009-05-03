@@ -70,6 +70,7 @@
 #include "modeltest.h"
 
 using namespace Akonadi;
+using namespace Grantlee;
 
 KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
     : QWidget( parent, f ), m_themeName("default")
