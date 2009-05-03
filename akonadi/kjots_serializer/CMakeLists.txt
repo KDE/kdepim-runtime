@@ -3,6 +3,10 @@
 # AKONADI SERIALIZER SECTION
 #########################################################################
 
+include_directories(
+  ../kjots_common
+)
+
 set(akonadi_serializer_kjots_PART_SRCS
   akonadi_serializer_kjots.cpp
 )

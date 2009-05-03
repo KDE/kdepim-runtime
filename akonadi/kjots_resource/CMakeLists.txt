@@ -5,6 +5,7 @@ project(kjots_resource)
 #########################################################################
 
 include_directories(
+  ../kjots_common
   ${QT_QTDBUS_INCLUDE_DIR}
 )
 

@@ -10,7 +10,6 @@ find_package(KdepimLibs REQUIRED)
 include_directories(
     akonadi_next
     ${AKONADI_INCLUDE_DIR}
-    #    kjots_common
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIR}
     ${QT_INCLUDES}

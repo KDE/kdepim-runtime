@@ -1,5 +1,9 @@
 project(kjotsrewriteapp)
 
+include_directories(
+  ../kjots_common
+)
+
 set(kjotsrewriteapp_SRCS
     main.cpp
     kjotsrewrite.cpp
