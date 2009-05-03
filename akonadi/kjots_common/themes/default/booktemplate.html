@@ -4,10 +4,10 @@
 <div>
 {% for entity in entity.entities %}
   {% if entity.isBook %}
-    {% include booktemplate.html %}
+    {% include "booktemplate.html" %}
   {% else %}
     {% if entity.isPage %}
-      {% include pagetemplate.html %}
+      {% include "pagetemplate.html" %}
     {% endif %}
   {% endif %}
 {% endfor %}
