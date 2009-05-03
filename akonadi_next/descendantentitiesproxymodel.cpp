@@ -346,7 +346,7 @@ void DescendantEntitiesProxyModelPrivate::insertOrRemoveRows(const QModelIndex &
 {
 
   Q_Q(DescendantEntitiesProxyModel);
- 
+
   int c = descendedRow(sourceParentIndex);
 
 // Can't simply get the descendantCount of sourceModel()->index(start, 0, sourceParent),
@@ -420,7 +420,7 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsInserted(const QModelIndex &
     QModelIndex childIndex = q->sourceModel()->index( childRow, column, sourceParentIndex );
     m_terminalIndexes << QPersistentModelIndex(childIndex);
   }
-  
+
   q->endInsertRows();
   descendNewIndexes();
 }
@@ -428,7 +428,7 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsInserted(const QModelIndex &
 void DescendantEntitiesProxyModelPrivate::descendNewIndexes()
 {
   Q_Q(DescendantEntitiesProxyModel);
-  
+
   QMutableListIterator<QPersistentModelIndex> i(m_terminalIndexes);
   while (i.hasNext())
   {
@@ -503,7 +503,7 @@ void DescendantEntitiesProxyModelPrivate::sourceModelAboutToBeReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
 
-  //q->beginResetModel();
+  q->beginResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceModelReset()
@@ -511,8 +511,7 @@ void DescendantEntitiesProxyModelPrivate::sourceModelReset()
   Q_Q(DescendantEntitiesProxyModel);
 
   m_descendantsCount.clear();
-  q->reset();
-  //q->endResetModel();
+  q->endResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceLayoutAboutToBeChanged()
@@ -618,7 +617,7 @@ int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sour
       return 0;
     }
   }
-  
+
   Q_Q( const DescendantEntitiesProxyModel );
   if (m_descendantsCount.contains(sourceIndex.internalId()))
   {
