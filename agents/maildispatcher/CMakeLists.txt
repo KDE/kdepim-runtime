@@ -1,7 +1,5 @@
 project (maildispatcheragent)
 
-SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} )
-
 # search packages used by KDE
 find_package(KDE4 REQUIRED)
 find_package(KdepimLibs REQUIRED)
