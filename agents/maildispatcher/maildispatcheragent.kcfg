@@ -9,5 +9,9 @@
       <label>Outbox collection id</label>
       <default>-1</default>
     </entry>
+    <entry name="SentMail" type="LongLong">
+      <label>Sent Mail collection id</label>
+      <default>-1</default>
+    </entry>
   </group>
 </kcfg>

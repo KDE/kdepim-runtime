@@ -25,7 +25,11 @@
 //#include <akonadi/collectionmodel.h>
 //#include <akonadi/collectionview.h>
 //#include <akonadi/collectionfilterproxymodel.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionrequester.h>
+
+using namespace Akonadi;
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
     KDialog( parent )
@@ -33,12 +37,25 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
     ui.setupUi( mainWidget() );
     mManager = new KConfigDialogManager( this, Settings::self() );
     mManager->updateWidgets();
-    QWidget *w = ui.collectionListContainer;
-    QVBoxLayout *l = new QVBoxLayout( w );
 
-    mOutboxRequester = new Akonadi::CollectionRequester();
-    mOutboxRequester->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
-    l->addWidget( mOutboxRequester );
+    ui.outboxSelector->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
+    // collection has no name if I skip the fetch job and just do Collection c(id)
+    CollectionFetchJob *job = new CollectionFetchJob( Collection( Settings::self()->outbox() ), CollectionFetchJob::Base );
+    if( job->exec() )
+    {
+        Collection::List cs = job->collections();
+        if( !cs.empty() )
+            ui.outboxSelector->setCollection( cs.first() );
+    }
+
+    ui.sentMailSelector->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
+    job = new CollectionFetchJob( Collection( Settings::self()->sentMail() ), CollectionFetchJob::Base );
+    if( job->exec() )
+    {
+        Collection::List cs = job->collections();
+        if( !cs.empty() )
+            ui.sentMailSelector->setCollection( cs.first() );
+    }
 
 //   mCollectionView = new Akonadi::CollectionView( w );
 //   mCollectionView->setSelectionMode( QAbstractItemView::SingleSelection );
@@ -72,11 +89,18 @@ void ConfigDialog::save()
 //       Settings::self()->setOutbox( col.id() );
 //     }
 //   }
-    const Akonadi::Collection outbox = mOutboxRequester->collection();
+    const Collection outbox = ui.outboxSelector->collection();
     if ( outbox.isValid() )
     {
-        kDebug() << "Collection" << outbox.id() << "selected";
+        kDebug() << "Collection" << outbox.id() << "selected for outbox.";
         Settings::self()->setOutbox( outbox.id() );
+    }
+
+    const Collection sentMail = ui.sentMailSelector->collection();
+    if ( sentMail.isValid() )
+    {
+        kDebug() << "Collection" << sentMail.id() << "selected for sentMail.";
+        Settings::self()->setSentMail( sentMail.id() );
     }
 
     Settings::self()->writeConfig();

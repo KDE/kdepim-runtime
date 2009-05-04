@@ -26,10 +26,6 @@
 
 class KConfigDialogManager;
 
-namespace Akonadi {
-  class CollectionRequester;
-}
-
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
@@ -43,7 +39,6 @@ class ConfigDialog : public KDialog
     Ui::ConfigDialog ui;
     KConfigDialogManager *mManager;
 
-    Akonadi::CollectionRequester *mOutboxRequester;
 };
 
 #endif

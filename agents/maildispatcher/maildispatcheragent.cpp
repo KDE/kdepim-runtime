@@ -67,6 +67,7 @@ class MailDispatcherAgent::Private
 
   private:
     Collection outbox;
+    Collection sentMail;
 
     MailDispatcherAgent * const q;
 };

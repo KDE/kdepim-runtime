@@ -1,8 +1,9 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <author>Till Adam &lt;adam@kde.org&gt;</author>
  <class>ConfigDialog</class>
- <widget class="QWidget" name="ConfigDialog" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ConfigDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,27 +11,50 @@
     <height>250</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Mail Dispatcher Agent Settings</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label" >
-     <property name="text" >
-      <string>Select the collection to be used as outbox</string>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Select the collection to be used as outbox:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="collectionListContainer" >
+    <widget class="Akonadi::CollectionRequester" name="outboxSelector">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Select the collection to move sent messages into:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Akonadi::CollectionRequester" name="sentMailSelector">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>13</height>
@@ -42,9 +66,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KUrlRequester</class>
+   <class>Akonadi::CollectionRequester</class>
    <extends>QFrame</extends>
-   <header>kurlrequester.h</header>
+   <header>akonadi/collectionrequester.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
