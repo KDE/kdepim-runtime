@@ -92,8 +92,6 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
 
   connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
            this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
-  connect( mCollectionView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-           this, SLOT( collectionsInserted( const QModelIndex&, int, int ) ) );
 
   collectionLayout->addWidget( mCollectionView );
 
@@ -120,6 +118,7 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   connect( mSourcesButton, SIGNAL( clicked() ), mSourcesDialog, SLOT( show() ) );
 
   mInfoTextLabel = new QLabel( this );
+  mInfoTextLabel->setWordWrap( true );
 
   mainLayout->addWidget( mInfoTextLabel );
   mainLayout->addWidget( widget );
@@ -214,9 +213,6 @@ void ResourceConfigBase::mimeCheckBoxToggled( bool checked )
   const QString itemType = mItemTypes.value( mimeType, QString() );
 
   Akonadi::StoreCollectionModel::StoreItemsByCollection storeMapping = mCollectionModel->storeMapping();
-
-  kDebug() << "mimeType=" << mimeType << ", itemType=" << itemType
-           << "checkBox=" << (void*) checkBox;
 
   if ( checked ) {
     Akonadi::StoreCollectionModel::StoreItemsByCollection::iterator it =
