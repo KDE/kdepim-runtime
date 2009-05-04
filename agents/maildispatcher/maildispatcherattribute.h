@@ -20,10 +20,11 @@
 #ifndef MAILDISPATCHERATTRIBUTE_H
 #define MAILDISPATCHERATTRIBUTE_H
 
-#include <akonadi/attribute.h>
-#include <akonadi/entity.h>
-
 #include <QDateTime>
+
+#include <Akonadi/Attribute>
+#include <Akonadi/Entity>
+
 
 /**
  * This agent dispatches mail put into the outbox collection.

@@ -19,11 +19,14 @@
 
 #include "maildispatcherattribute.h"
 
+using namespace Akonadi;
+
+
 class MailDispatcherAttribute::Private
 {
   public:
     int transport;
-    Akonadi::Entity::Id sentMailCollection;
+    Entity::Id sentMailCollection;
     QDateTime dueDate;
 };
 
@@ -82,12 +85,12 @@ void MailDispatcherAttribute::setTransport( int id )
     d->transport = id;
 }
 
-Akonadi::Entity::Id MailDispatcherAttribute::sentMailCollection() const
+Entity::Id MailDispatcherAttribute::sentMailCollection() const
 {
     return d->sentMailCollection;
 }
 
-void MailDispatcherAttribute::setSentMailCollection( Akonadi::Entity::Id id )
+void MailDispatcherAttribute::setSentMailCollection( Entity::Id id )
 {
     d->sentMailCollection = id;
 }

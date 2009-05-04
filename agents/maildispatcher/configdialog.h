@@ -20,9 +20,10 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <kdialog.h>
+#include <KDialog>
 
 #include "ui_settings.h"
+
 
 class KConfigDialogManager;
 

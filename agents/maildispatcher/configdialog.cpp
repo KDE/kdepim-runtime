@@ -20,14 +20,14 @@
 #include "configdialog.h"
 #include "settings.h"
 
-#include <kconfigdialogmanager.h>
+#include <KConfigDialogManager>
 
 //#include <akonadi/collectionmodel.h>
 //#include <akonadi/collectionview.h>
 //#include <akonadi/collectionfilterproxymodel.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionrequester.h>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionRequester>
 
 using namespace Akonadi;
 

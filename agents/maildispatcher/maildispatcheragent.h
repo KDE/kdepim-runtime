@@ -20,8 +20,8 @@
 #ifndef MAILDISPATCHERAGENT_H
 #define MAILDISPATCHERAGENT_H
 
-#include <akonadi/agentbase.h>
-#include <akonadi/item.h>
+#include <Akonadi/AgentBase>
+#include <Akonadi/Item>
 
 class KJob;
 

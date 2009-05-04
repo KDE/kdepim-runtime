@@ -24,30 +24,31 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/kmime/messageparts.h>
+#include <QtDBus/QDBusConnection>
+
+#include <KDebug>
+#include <KUrl>
+#include <KWindowSystem>
+
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 
 #include <mailtransport/transport.h>
 #include <mailtransport/transportmanager.h>
 #include <mailtransport/transportjob.h>
 
-#include <kdebug.h>
-#include <kurl.h>
-#include <KWindowSystem>
-
+#include <akonadi/kmime/messageparts.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-#include <QtDBus/QDBusConnection>
-
 using namespace Akonadi;
+
 
 class MailDispatcherAgent::Private
 {
@@ -74,7 +75,7 @@ class MailDispatcherAgent::Private
 
 void MailDispatcherAgent::Private::updateMonitoredCollection()
 {
-  const Akonadi::Entity::Id outboxId = Settings::self()->outbox();
+  const Entity::Id outboxId = Settings::self()->outbox();
   if ( outbox.id() == outboxId )
   {
     // outbox collection did not change
@@ -169,7 +170,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
   }
 }
 
-void MailDispatcherAgent::collectionChanged( const Akonadi::Collection &col )
+void MailDispatcherAgent::collectionChanged( const Collection &col )
 {
   if ( col.id() == d->outbox.id() )
   {
@@ -200,7 +201,7 @@ void MailDispatcherAgent::collectionChanged( const Akonadi::Collection &col )
 */
 }
 
-void MailDispatcherAgent::collectionRemoved( const Akonadi::Collection &col )
+void MailDispatcherAgent::collectionRemoved( const Collection &col )
 {
   if ( col.id() == d->outbox.id() )
   {
@@ -216,8 +217,8 @@ void MailDispatcherAgent::collectionRemoved( const Akonadi::Collection &col )
   AgentBase::Observer::collectionRemoved( col );
 }
 
-void MailDispatcherAgent::itemAdded( const Akonadi::Item &item,
-  const Akonadi::Collection &col )
+void MailDispatcherAgent::itemAdded( const Item &item,
+  const Collection &col )
 {
   if ( col.id() == d->outbox.id() )
   {
@@ -225,7 +226,7 @@ void MailDispatcherAgent::itemAdded( const Akonadi::Item &item,
     if ( isOnline() )
     {
       kDebug() << "fetching item.";
-      Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( item, this );
+      ItemFetchJob *fetchJob = new ItemFetchJob( item, this );
       fetchJob->fetchScope().fetchFullPayload();
       connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
     }
@@ -246,7 +247,7 @@ void MailDispatcherAgent::itemAdded( const Akonadi::Item &item,
   AgentBase::Observer::itemAdded( item, col );
 }
 
-void MailDispatcherAgent::itemChanged( const Akonadi::Item &item,
+void MailDispatcherAgent::itemChanged( const Item &item,
   const QSet< QByteArray > &partIdentifiers )
 {
   kDebug() << "An item has changed. What am I supposed to do??";
@@ -256,7 +257,7 @@ void MailDispatcherAgent::itemChanged( const Akonadi::Item &item,
   AgentBase::Observer::itemChanged( item, partIdentifiers );
 }
 
-void MailDispatcherAgent::itemRemoved( const Akonadi::Item &item )
+void MailDispatcherAgent::itemRemoved( const Item &item )
 {
   kDebug() << "An item was removed. Big deal.";
   // nothing to do for us
@@ -268,7 +269,7 @@ void MailDispatcherAgent::itemRemoved( const Akonadi::Item &item )
 
 void MailDispatcherAgent::itemFetchDone( KJob *job )
 {
-  Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>( job );
+  ItemFetchJob *fetchJob = static_cast<ItemFetchJob*>( job );
   if ( job->error() )
   {
     kError() << job->errorString();
@@ -281,7 +282,7 @@ void MailDispatcherAgent::itemFetchDone( KJob *job )
     return;
   }
 
-  Akonadi::Item item = fetchJob->items().first();
+  Item item = fetchJob->items().first();
   if ( !item.isValid() )
   {
     kWarning() << "Item not valid";
@@ -354,9 +355,9 @@ void MailDispatcherAgent::transportResult( KJob *job )
       return;
     }
 
-    Akonadi::Item item = sentItems.value(job);
+    Item item = sentItems.value(job);
     sentItems.remove(job);
-    Akonadi::ItemDeleteJob *job = new ItemDeleteJob(item);
+    ItemDeleteJob *job = new ItemDeleteJob(item);
     // do we care about the result?
     kDebug() << "ItemDeleteJob created.";
   }
