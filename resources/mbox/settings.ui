@@ -52,7 +52,7 @@
         <item>
          <widget class="QRadioButton" name="procmail">
           <property name="text">
-           <string>Procmail loc&amp;kfile</string>
+           <string>Procmail loc&amp;kfile:</string>
           </property>
           <property name="checked">
            <bool>true</bool>

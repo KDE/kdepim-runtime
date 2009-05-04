@@ -125,7 +125,7 @@
      </property>
      <column>
       <property name="text" >
-       <string>Default category</string>
+       <string>Default Category</string>
       </property>
      </column>
     </widget>

@@ -72,7 +72,7 @@
           <item>
            <widget class="QCheckBox" name="kcfg_ReadOnly" >
             <property name="text" >
-             <string>Read Only</string>
+             <string>Read only</string>
             </property>
            </widget>
           </item>

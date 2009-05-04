@@ -131,7 +131,7 @@
           <item row="1" column="0" >
            <widget class="QLabel" name="label_6" >
             <property name="text" >
-             <string>Additional Email:</string>
+             <string>Additional email:</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -342,7 +342,7 @@
           <item row="2" column="2" >
            <widget class="QLabel" name="label_16" >
             <property name="text" >
-             <string>ZIP/Postal Code:</string>
+             <string>ZIP/Postal code:</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -492,7 +492,7 @@
           <item row="5" column="2" >
            <widget class="QLabel" name="label_25" >
             <property name="text" >
-             <string>ZIP/Postal Code:</string>
+             <string>ZIP/Postal code:</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -37,7 +37,7 @@
        <item>
         <widget class="KPushButton" name="testButton">
          <property name="text">
-          <string>Auto detect</string>
+          <string>Auto Detect</string>
          </property>
         </widget>
        </item>

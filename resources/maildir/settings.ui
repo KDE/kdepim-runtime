@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>Select the folder containing the maildir information</string>
+      <string>Select the folder containing the maildir information:</string>
      </property>
     </widget>
    </item>

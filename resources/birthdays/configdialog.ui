@@ -22,7 +22,7 @@
       <item row="0" column="0" >
        <widget class="QCheckBox" name="kcfg_EnableAlarm" >
         <property name="text" >
-         <string>Set &amp;Reminder</string>
+         <string>Set &amp;reminder</string>
         </property>
        </widget>
       </item>
