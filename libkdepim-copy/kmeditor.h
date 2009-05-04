@@ -24,7 +24,7 @@
 #define KDEPIM_KMEDITOR_H
 
 #include "kdepim_export.h"
-#include <KRichTextWidget>
+#include <KPIMTextEdit/TextEdit>
 
 namespace KPIMIdentities {
   class Signature;
@@ -43,26 +43,16 @@ class KEMailQuotingHighlighter;
  *
  * It offers sevaral additional functions of a KRichTextWidget:
  *
- * @li Quote highlighting
  * @li The ability to us an external editor
- * @li Signature handling
  * @li Utility functions like removing whitespace, inserting a file,
  *     adding quotes or rot13'ing the text
  */
-class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellInterface
-{                             //TODO: KDE5: get rid of KTextEditSpellInterface
+class KDEPIM_EXPORT KMeditor : public KPIMTextEdit::TextEdit
+{
   Q_OBJECT
 
   public:
 
-    /**
-     * Describes the placement of a text which is to be inserted into this
-     * textedit
-     */
-    enum Placement { Start,    ///< The text is placed at the start of the textedit
-                     End,      ///< The text is placed at the end of the textedit
-                     AtCursor  ///< The text is placed at the current cursor position
-                   };
 
     /**
      * Constructs a KMeditor object
@@ -76,14 +66,13 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
 
     virtual ~KMeditor();
 
-    virtual void changeHighlighterColors(KEMailQuotingHighlighter*);
-
     //Redefine it for each apps
-    virtual QString quotePrefixName() const; //define by kmail
     virtual QString smartQuote( const QString & msg ); //need by kmail
 
     void setUseExternalEditor( bool use );
     void setExternalEditorPath( const QString & path );
+    bool checkExternalEditorFinished();
+    void killExternalEditor();
 
     /**
      * Show the open file dialog and returns the selected URL there.
@@ -114,8 +103,6 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
      */
     void setFontForWholeText( const QFont &font );
 
-    bool checkExternalEditorFinished();
-    void killExternalEditor();
     void setCursorPositionFromStart( unsigned int pos );
 
     /**
@@ -123,83 +110,11 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
      *         into account. Line numbers start at 0.
      */
     int linePosition();
+
+    /**
+     * @return the column numbe where the cursor is.
+     */
     int columnNumber();
-    void setCursorPosition( int linePos, int columnPos );
-
-    /**
-     * Inserts the signature @p sig into the textedit.
-     * The cursor position is preserved.
-     * A leading or trailing newline is also added automatically, depending on
-     * the placement.
-     * For undo/redo, this is treated as one operation.
-     *
-     * Rich text mode will be enabled if the signature is in inlined HTML format.
-     *
-     * @param placement defines where in the textedit the signature should be
-     *                  inserted.
-     * @param addSeparator if true, the separator '-- \n' will be added in front
-     *                     of the signature
-     */
-    void insertSignature( const KPIMIdentities::Signature &sig,
-                          Placement placement = End, bool addSeparator = true );
-
-    /**
-     * Inserts the signature @p sig into the textedit.
-     * The cursor position is preserved.
-     * A leading or trailing newline is also added automatically, depending on
-     * the placement.
-     * For undo/redo, this is treated as one operation.
-     * A separator is not added.
-     *
-     * Use the other insertSignature() function if possible, as it has support
-     * for separators and does HTML detection automatically.
-     *
-     * Rich text mode will be enabled if @p isHtml is true.
-     *
-     * @param placement defines where in the textedit the signature should be
-     *                  inserted.
-     * @param isHtml defines whether the signature should be inserted as text or html
-     */
-    void insertSignature( const QString &signature, Placement placement = End,
-                          bool isHtml = false );
-
-    /**
-     * Replaces all occurrences of the old signature with the new signature.
-     * Text in quotes will be ignored.
-     * For undo/redo, this is treated as one operation.
-     * If the old signature is empty, nothing is done.
-     * If the new signature is empty, the old signature including the
-     * separator is removed.
-     *
-     * @param oldSig the old signature, which will be replaced
-     * @param newSig the new signature
-     */
-    void replaceSignature( const KPIMIdentities::Signature &oldSig,
-                           const KPIMIdentities::Signature &newSig );
-
-    /**
-     * Cleans the whitespace of the edit's text.
-     * Adjacent tabs and spaces will be converted to a single space.
-     * Trailing whitespace will be removed.
-     * More than 2 newlines in a row will be changed to 2 newlines.
-     * Text in quotes or text inside of the given signature will not be
-     * cleaned.
-     * For undo/redo, this is treated as one operation.
-     *
-     * @param sig text inside this signature will not be cleaned
-     */
-    void cleanWhitespace( const KPIMIdentities::Signature &sig );
-
-    /**
-     * Returns the text of the editor as plain text, with linebreaks inserted
-     * where word-wrapping occurred.
-     */
-    QString toWrappedPlainText() const;
-
-    /**
-     * Same as toPlainText() from QTextEdit, only that it removes embedded images.
-     */
-    QString toCleanPlainText() const;
 
     /**
      * Reimplemented again to work around a bug (see comment in implementation).
@@ -231,50 +146,20 @@ class KDEPIM_EXPORT KMeditor : public KRichTextWidget, protected KTextEditSpellI
      */
     void focusChanged( bool focusGained );
 
+    /**
+     * Emitted when the user uses the up arrow in the first line. The application
+     * should then put the focus on the widget above the text edit.
+     */
     void focusUp();
-    void overwriteModeText();
+
+    void insertModeChanged();
 
   protected:
 
-    // For the explaination for these three methods, see the comment at the
-    // spellCheckingEnabled variable of the private class.
-
     /**
-     * Reimplemented from KTextEditSpellInterface
+     * Reimplemented to start the external editor and to emit focusUp().
      */
-    virtual bool isSpellCheckingEnabled() const;
-
-    /**
-     * Reimplemented from KTextEditSpellInterface
-     */
-    virtual void setSpellCheckingEnabled(bool enable);
-
-    /**
-     * Reimplemented from KTextEditSpellInterface, to avoid spellchecking
-     * quoted text.
-     */
-    virtual bool shouldBlockBeSpellChecked(const QString& block) const;
-
-    /**
-     * Reimplemented to create our own highlighter which does quote and
-     * spellcheck highlighting
-     */
-    virtual void createHighlighter();
-
-    virtual void dragEnterEvent( QDragEnterEvent *e );
-    virtual void dragMoveEvent( QDragMoveEvent *e );
-    virtual bool eventFilter( QObject *o, QEvent *e );
-    virtual void keyPressEvent( QKeyEvent *e );
-
-    /**
-     * Handles drag enter/move event for dragEnterEvent() and dragMoveEvent()
-     */
-    void handleDragEvent( QDragMoveEvent *e );
-
-    /**
-     * Reimplemented to block rich text pastes in plain text mode.
-     */
-    virtual void insertFromMimeData ( const QMimeData * source );
+    virtual void keyPressEvent ( QKeyEvent * e );
 
   private:
     KMeditorPrivate *const d;

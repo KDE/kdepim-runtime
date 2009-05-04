@@ -66,7 +66,6 @@ set(kdepim_LIB_SRCS
    sendsmsdialog.cpp
    categoryhierarchyreader.cpp
    messagestatus.cpp
-   kemailquotinghighter.cpp
    kmailcompletion.cpp
    kmeditor.cpp
    autochecktreewidget.cpp
@@ -90,8 +89,31 @@ kde4_add_ui_files(kdepim_LIB_SRCS categoryselectdialog_base.ui categoryeditdialo
 
 kde4_add_library(kdepim SHARED ${kdepim_LIB_SRCS})
 
-target_link_libraries(kdepim  ${KDE4_KDE3SUPPORT_LIBS} ${QT_QTDESIGNER_LIBRARY} ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy ${KDE4_KPIMUTILS_LIBS} ${KDE4_KLDAP_LIBS} ${KDE4_KPIMIDENTITIES_LIBS} ${KDE4_KPARTS_LIBS})
-target_link_libraries(kdepim  LINK_INTERFACE_LIBRARIES ${KDE4_KRESOURCES_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KCAL_LIBS}  kimproxy ${KDE4_KPIMUTILS_LIBS} ${KDE4_KLDAP_LIBS} ${KDE4_KPIMIDENTITIES_LIBS} ${KDE4_KPARTS_LIBS})
+target_link_libraries(kdepim
+  ${KDE4_KDE3SUPPORT_LIBS}
+  ${QT_QTDESIGNER_LIBRARY}
+  ${KDE4_KRESOURCES_LIBS}
+  ${KDE4_KABC_LIBS}
+  ${KDE4_KCAL_LIBS}
+  kimproxy
+  ${KDE4_KPIMUTILS_LIBS}
+  ${KDE4_KLDAP_LIBS}
+  ${KDE4_KPIMIDENTITIES_LIBS}
+  ${KDE4_KPARTS_LIBS}
+  ${KDE4_KPIMTEXTEDIT_LIBS}
+)
+
+target_link_libraries(kdepim LINK_INTERFACE_LIBRARIES
+  ${KDE4_KRESOURCES_LIBS}
+  ${KDE4_KABC_LIBS}
+  ${KDE4_KCAL_LIBS}
+  kimproxy
+  ${KDE4_KPIMUTILS_LIBS}
+  ${KDE4_KLDAP_LIBS}
+  ${KDE4_KPIMIDENTITIES_LIBS}
+  ${KDE4_KPARTS_LIBS}
+  ${KDE4_KPIMTEXTEDIT_LIBS}
+)
 
 if(MINGW)
    target_link_libraries(kdepim oleaut32)
