@@ -68,8 +68,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
     Akonadi::Monitor *m_monitor;
     QStringList m_managedCollections;
-    QString m_id;
-    Akonadi::Item m_item;
+    QMap<KJob*, QString> m_ids;
+    QMap<KJob*, Akonadi::Item> m_items;
+    QList<Akonadi::Item::Id> m_excludeAppend;
 };
 
 #endif
