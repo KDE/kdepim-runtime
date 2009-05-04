@@ -46,10 +46,14 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   mSourcesButton->setText( sourcesTitle );
 
   mInfoTextLabel->setText( i18nc( "@info",
-                                  "<title>Please select the folder for storing"
-                                   " newly created contacts.</title><note>If the folder"
-                                  " list below is empty, you might have to add an"
-                                  " address book source through <interface>%1</interface></note>",
+                                  "<para>By default you will be asked where to put a "
+                                  "new Contact or Distribution List when you create "
+                                  "them.</para>"
+                                  "<para>For convenience it is also possible to configure "
+                                  "a default folder for each of the two data items.</para>"
+                                  "<para><note>If the folder list below is empty, you might "
+                                  "have to add an address book source through "
+                                  "<interface>%1</interface></note></para>",
                                   sourcesTitle ) );
 
   mItemTypes[ Addressee::mimeType() ] = i18nc( "@item:inlistbox, address book entries", "Contacts" );
