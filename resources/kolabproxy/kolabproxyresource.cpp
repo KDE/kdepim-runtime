@@ -30,13 +30,14 @@
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <kabc/addressee.h>
 
 
 #include <QtDBus/QDBusConnection>
-#include <QApplication>
+#include <QSet>
 
 using namespace Akonadi;
 
@@ -157,18 +158,41 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &item, const Akonadi::Co
 
 void KolabProxyResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED( item );
-  Q_UNUSED( parts );
+  Akonadi::Item addrItem;
+  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+  job->fetchScope().fetchFullPayload();
+  if (job->exec()) {
+    Akonadi::Item::List items = job->items();
+    addrItem = items[0];
+  } else {
+    kWarning() << "Can't fetch address item " << item.id();
+  }
+  Item imapItem;
+  KABC::Addressee addressee = addrItem.payload<KABC::Addressee>();
+  job = new Akonadi::ItemFetchJob( Item(addrItem.remoteId().toUInt()) );
+  job->fetchScope().fetchFullPayload();
+  if (job->exec()) {
+    Akonadi::Item::List items = job->items();
+    imapItem = items[0];
+  } else {
+    kWarning() << "Can't fetch imap item " << addrItem.remoteId();
+  }
+  MessagePtr message = imapItem.payload<MessagePtr>();
+  KMime::Content *xmlContent = findContent(message, "application/x-vnd.kolab.contact");
+  if (xmlContent) {
+    Kolab::Contact contact(&addressee, 0);
+    xmlContent->setContent(contact.saveXML().toUtf8());
+    Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
+    if (!mjob->exec()) {
+      kWarning() << "Can't modify imap item " << imapItem.id();
+    }
+  }
 
-  // TODO: this method is called when somebody else, e.g. a client application,
-  // has changed an item managed by your resource.
-
-  // NOTE: There is an equivalent method for collections, but it isn't part
-  // of this template code to keep it simple
 }
 
 void KolabProxyResource::itemRemoved( const Akonadi::Item &item )
 {
+
   Q_UNUSED( item );
 
   // TODO: this method is called when somebody else, e.g. a client application,
