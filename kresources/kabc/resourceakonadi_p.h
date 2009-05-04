@@ -77,6 +77,8 @@ class KABC::ResourceAkonadi::Private : public SharedResourcePrivate<SubResource>
 
     Akonadi::Item updateItem( const Akonadi::Item &item, const QString &kresId, const QString &originalId );
 
+    CollectionsByMimeType storeCollectionsFromOldDefault() const;
+
   protected Q_SLOTS:
     void subResourceChanged( const QString &subResourceIdentifier );
 

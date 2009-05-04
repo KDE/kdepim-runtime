@@ -205,7 +205,11 @@ bool ResourcePrivateBase::doAsyncSave()
 void ResourcePrivateBase::writeConfig( KConfigGroup &config ) const
 {
   const QLatin1String urlKey( "CollectionUrl" );
-  config.writeEntry( urlKey, mDefaultStoreCollection.url() );
+  if ( mDefaultStoreCollection.isValid() ) {
+    config.writeEntry( urlKey, mDefaultStoreCollection.url() );
+  } else {
+    config.deleteEntry( urlKey );
+  }
 
   KConfigGroup storeConfig = config.group( QLatin1String( "StoreConfig" ) );
   QSet<QString> mimeConfigs = QSet<QString>::fromList( storeConfig.groupList() );
@@ -239,21 +243,18 @@ void ResourcePrivateBase::clear()
 void ResourcePrivateBase::setStoreCollectionsByMimeType( const StoreConfigIface::CollectionsByMimeType &collections )
 {
   mStoreCollectionsByMimeType = collections;
+
+  mDefaultStoreCollection = Akonadi::Collection();
+  // TODO remove or remember to remove DefaultAkonadiResourceIdentifier
 }
 
 StoreConfigIface::CollectionsByMimeType ResourcePrivateBase::storeCollectionsByMimeType() const
 {
+  if ( mStoreCollectionsByMimeType.isEmpty() && mDefaultStoreCollection.isValid() ) {
+    return storeCollectionsFromOldDefault();
+  }
+
   return mStoreCollectionsByMimeType;
-}
-
-void ResourcePrivateBase::setDefaultStoreCollection( const Akonadi::Collection &collection )
-{
-  mDefaultStoreCollection = collection;
-}
-
-Akonadi::Collection ResourcePrivateBase::defaultStoreCollection() const
-{
-  return mDefaultStoreCollection;
 }
 
 bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeType )
@@ -351,19 +352,20 @@ Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QStri
 {
   kDebug( 5650 ) << "mimeType=" << mimeType;
 
+  if ( mStoreCollectionsByMimeType.isEmpty() && mDefaultStoreCollection.isValid() ) {
+    if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
+      kDebug( 5650 ) << "Taking DefaultStoreCollection: id=" << mDefaultStoreCollection.id()
+                    << ", remoteId=" << mDefaultStoreCollection.remoteId();
+      return mDefaultStoreCollection;
+    }
+  }
+
   Akonadi::Collection collection = mStoreCollectionsByMimeType.value( mimeType );
   if ( collection.isValid() ) {
     kDebug( 5650 ) << "Found storage collection in map: id=" << collection.id()
                    << ", remoteId=" << collection.remoteId();
     return collection;
   }
-
-  // TODO check if we can use this somewhere else
-//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
-//     kDebug( 5650 ) << "Taking DefaultStoreCollection: id=" << collection.id()
-//                    << ", remoteId=" << collection.remoteId();
-//     return mDefaultStoreCollection;
-//   }
 
   return Akonadi::Collection();
 }

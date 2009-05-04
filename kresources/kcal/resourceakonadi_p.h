@@ -94,6 +94,8 @@ class KCal::ResourceAkonadi::Private : public SharedResourcePrivate<SubResource>
 
     Akonadi::Item updateItem( const Akonadi::Item &item, const QString &kresId, const QString &originalId );
 
+    CollectionsByMimeType storeCollectionsFromOldDefault() const;
+
     // from the CalendarObserver interface
     void calendarIncidenceAdded( KCal::Incidence *incidence );
 

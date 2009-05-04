@@ -83,23 +83,9 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
 
     void clear();
 
-    void setStoreCollection( const Akonadi::Collection& collection )
-    {
-      setDefaultStoreCollection( collection );
-    }
-
-    Akonadi::Collection storeCollection() const
-    {
-      return defaultStoreCollection();
-    }
-
     void setStoreCollectionsByMimeType( const CollectionsByMimeType &collections );
 
     CollectionsByMimeType storeCollectionsByMimeType() const;
-
-    void setDefaultStoreCollection( const Akonadi::Collection &collection );
-
-    Akonadi::Collection defaultStoreCollection() const;
 
     bool addLocalItem( const QString &uid, const QString &mimeType );
 
@@ -162,6 +148,8 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
     virtual Akonadi::Item updateItem( const Akonadi::Item &item, const QString &kresId, const QString &originalId ) = 0;
 
     virtual const AbstractSubResourceModel *subResourceModel() const = 0;
+
+    virtual CollectionsByMimeType storeCollectionsFromOldDefault() const = 0;
 
   protected Q_SLOTS:
     virtual void subResourceAdded( SubResourceBase *subResource );

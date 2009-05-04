@@ -24,6 +24,7 @@
 #include "storecollectiondialog.h"
 
 #include <akonadi/item.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
@@ -146,6 +147,22 @@ Akonadi::Item ResourceAkonadi::Private::updateItem( const Akonadi::Item &item, c
   }
 
   return update;
+}
+
+StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectionsFromOldDefault() const
+{
+  Q_ASSERT( mDefaultStoreCollection.isValid() );
+
+  CollectionsByMimeType storeCollections;
+
+  if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Addressee::mimeType() ) ) {
+    storeCollections[ Addressee::mimeType() ] = mDefaultStoreCollection;
+  }
+  if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, ContactGroup::mimeType() ) ) {
+    storeCollections[ ContactGroup::mimeType() ] = mDefaultStoreCollection;
+  }
+
+  return storeCollections;
 }
 
 void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResource )

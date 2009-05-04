@@ -36,10 +36,6 @@ class StoreConfigIface
 
     virtual ~StoreConfigIface() {}
 
-    virtual void setStoreCollection( const Akonadi::Collection& collection ) = 0;
-
-    virtual Akonadi::Collection storeCollection() const = 0;
-
     virtual CollectionsByMimeType storeCollectionsByMimeType() const = 0;
 
     virtual void setStoreCollectionsByMimeType( const CollectionsByMimeType &collections ) = 0;

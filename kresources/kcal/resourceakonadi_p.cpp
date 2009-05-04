@@ -140,6 +140,8 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
     kError( 5800 ) << "Unexpected MIME type:" << mimeType;
     mStoreCollectionDialog->setLabelText( i18nc( "@label", "Please select a storage folder" ) );
   }
+
+  // FIXME should be sub MIME type
   mStoreCollectionDialog->setMimeType( QLatin1String( "text/calendar" ) );
 
   const SubResourceBase *resource = 0;
@@ -185,6 +187,30 @@ Akonadi::Item ResourceAkonadi::Private::updateItem( const Akonadi::Item &item, c
   }
 
   return update;
+}
+
+StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectionsFromOldDefault() const
+{
+  Q_ASSERT( mDefaultStoreCollection.isValid() );
+
+  CollectionsByMimeType storeCollections;
+
+  // FIXME should be sub MIME type
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::eventMimeType() ) ) {
+//     storeCollections[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
+//   }
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::todoMimeType() ) ) {
+//     storeCollections[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
+//   }
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::journalMimeType() ) ) {
+//     storeCollections[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
+//   }
+
+  storeCollections[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
+
+  return storeCollections;
 }
 
 void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
