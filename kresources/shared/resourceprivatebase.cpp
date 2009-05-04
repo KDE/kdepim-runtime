@@ -49,6 +49,9 @@ ResourcePrivateBase::ResourcePrivateBase( const KConfigGroup &config, IdArbiterB
     mState( Closed ),
     mLoadingInProgress( false )
 {
+  const QLatin1String resourceKey( "DefaultAkonadiResourceIdentifier" );
+  mDefaultResourceIdentifier = config.readEntry( resourceKey, QString() );
+
   const QLatin1String urlKey( "CollectionUrl" );
   KUrl url = config.readEntry( urlKey, KUrl() );
   if ( url.isValid() ) {
@@ -205,10 +208,29 @@ bool ResourcePrivateBase::doAsyncSave()
 void ResourcePrivateBase::writeConfig( KConfigGroup &config ) const
 {
   const QLatin1String urlKey( "CollectionUrl" );
-  if ( mDefaultStoreCollection.isValid() ) {
-    config.writeEntry( urlKey, mDefaultStoreCollection.url() );
+  const QLatin1String resourceKey( "DefaultAkonadiResourceIdentifier" );
+
+  Akonadi::Collection defaultStoreCollection = mDefaultStoreCollection;
+  QString defaultResourceIdentifier = mDefaultResourceIdentifier;
+
+  // if we have new store config, then delete the old keys
+  if ( !mStoreCollectionsByMimeType.isEmpty() ) {
+    defaultStoreCollection = Akonadi::Collection();
+    defaultResourceIdentifier = QString();
+  }
+
+  // if we have a valid default store collection, then delete the resource identifier key
+  if ( defaultStoreCollection.isValid() ) {
+    defaultResourceIdentifier = QString();
+    config.writeEntry( urlKey, defaultStoreCollection.url() );
   } else {
     config.deleteEntry( urlKey );
+  }
+
+  if ( !defaultResourceIdentifier.isEmpty() ) {
+    config.writeEntry( resourceKey, defaultResourceIdentifier );
+  } else {
+    config.deleteEntry( resourceKey );
   }
 
   KConfigGroup storeConfig = config.group( QLatin1String( "StoreConfig" ) );
@@ -245,7 +267,6 @@ void ResourcePrivateBase::setStoreCollectionsByMimeType( const StoreConfigIface:
   mStoreCollectionsByMimeType = collections;
 
   mDefaultStoreCollection = Akonadi::Collection();
-  // TODO remove or remember to remove DefaultAkonadiResourceIdentifier
 }
 
 StoreConfigIface::CollectionsByMimeType ResourcePrivateBase::storeCollectionsByMimeType() const
@@ -431,13 +452,10 @@ void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
   // config indicates a default resource and whether the newly added sub resource
   // maps to one of its collections
   if ( !mDefaultStoreCollection.isValid() ) {
-    const QLatin1String keyName( "DefaultAkonadiResourceIdentifier" );
-    if ( mConfig.isValid() && mConfig.hasKey( keyName ) ) {
-      const QString resourceAgentIdentifier = mConfig.readEntry( keyName );
-      if ( !resourceAgentIdentifier.isEmpty() ) {
-        if ( subResource->collection().resource() == resourceAgentIdentifier ) {
-          mDefaultStoreCollection = subResource->collection();
-        }
+    if ( !mDefaultResourceIdentifier.isEmpty() ) {
+      if ( subResource->collection().resource() == mDefaultResourceIdentifier ) {
+        mDefaultStoreCollection = subResource->collection();
+        mDefaultResourceIdentifier = QString();
       }
     }
   } else if ( mDefaultStoreCollection == subResource->collection() ) {

@@ -163,6 +163,8 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
   private:
     State mState;
     bool  mLoadingInProgress;
+
+    QString mDefaultResourceIdentifier;
 };
 
 class BoolGuard
