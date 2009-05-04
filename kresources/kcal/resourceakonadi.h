@@ -47,9 +47,7 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 
     virtual void writeConfig( KConfigGroup &group );
 
-    void setStoreCollection( const Akonadi::Collection& collection );
-    Akonadi::Collection storeCollection() const;
-    const AbstractSubResourceModel *subResourceModel() const;
+    StoreConfigIface &storeConfig();
 
     virtual KABC::Lock *lock();
 

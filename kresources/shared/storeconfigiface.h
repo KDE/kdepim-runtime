@@ -18,17 +18,31 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KRES_AKONADI_SHAREDRESOURCEIFACE_H
-#define KRES_AKONADI_SHAREDRESOURCEIFACE_H
+#ifndef KRES_AKONADI_STORECONFIGIFACE_H
+#define KRES_AKONADI_STORECONFIGIFACE_H
 
-class StoreConfigIface;
+#include <QHash>
 
-class SharedResourceIface
+namespace Akonadi {
+  class Collection;
+}
+
+class AbstractSubResourceModel;
+
+class StoreConfigIface
 {
   public:
-    virtual ~SharedResourceIface() {}
+    typedef QHash<QString, Akonadi::Collection> CollectionsByMimeType;
 
-    virtual StoreConfigIface &storeConfig() = 0;
+    virtual ~StoreConfigIface() {}
+
+    virtual void setStoreCollection( const Akonadi::Collection& collection ) = 0;
+
+    virtual Akonadi::Collection storeCollection() const = 0;
+
+    virtual CollectionsByMimeType storeCollectionsByMimeType() const = 0;
+
+    virtual void setStoreCollectionsByMimeType( const CollectionsByMimeType &collections ) = 0;
 };
 
 #endif

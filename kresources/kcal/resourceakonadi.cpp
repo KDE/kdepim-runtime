@@ -59,19 +59,9 @@ void ResourceAkonadi::writeConfig( KConfigGroup &group )
   d->writeConfig( group );
 }
 
-void ResourceAkonadi::setStoreCollection( const Collection &collection )
+StoreConfigIface &ResourceAkonadi::storeConfig()
 {
-  d->setDefaultStoreCollection( collection );
-}
-
-Collection ResourceAkonadi::storeCollection() const
-{
-  return d->defaultStoreCollection();
-}
-
-const AbstractSubResourceModel *ResourceAkonadi::subResourceModel() const
-{
-  return d->subResourceModel();
+  return *d;
 }
 
 KABC::Lock *ResourceAkonadi::lock()

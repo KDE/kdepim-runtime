@@ -19,11 +19,17 @@
 */
 
 #include "resourceakonadiconfig.h"
+
 #include "resourceakonadi.h"
+#include "storecollectionmodel.h"
+
+#include "akonadi/kcal/kcalmimetypevisitor.h"
 
 #include <kdebug.h>
 #include <kdialog.h>
 
+#include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QLabel>
 #include <QPushButton>
 
@@ -40,10 +46,35 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
                                   "<title>Please select the folder for storing"
                                   " newly created calendar entries.</title><note>If the folder"
                                   " list below is empty, you might have to add a"
-                                  " calendar through <interface>%1</interface>"
-                                  " <br>or change which folders you are subscribed to"
-                                  " through <interface>%2</interface></note>",
-                                  sourcesTitle, mSubscriptionButton->text() ) );
+                                  " calendar through <interface>%1</interface></note>",
+                                  sourcesTitle ) );
+
+  mItemTypes[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] =
+    i18nc( "@item:inlistbox, calendar entries", "Events" );
+  mItemTypes[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] =
+    i18nc( "@item:inlistbox, calendar entries", "Todos" );
+  mItemTypes[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] =
+    i18nc( "@item:inlistbox, calendar entries", "Journals" );
+
+  QCheckBox *checkBox = new QCheckBox( mButtonBox );
+  mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
+  checkBox->setText( mItemTypes[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::KCalMimeTypeVisitor::eventMimeType(), checkBox );
+  checkBox->setEnabled( false );
+
+  checkBox = new QCheckBox( mButtonBox );
+  mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
+  checkBox->setText( mItemTypes[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::KCalMimeTypeVisitor::todoMimeType(), checkBox );
+  checkBox->setEnabled( false );
+
+  checkBox = new QCheckBox( mButtonBox );
+  mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
+  checkBox->setText( mItemTypes[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::KCalMimeTypeVisitor::journalMimeType(), checkBox );
+  checkBox->setEnabled( false );
+
+  connectMimeCheckBoxes();
 }
 
 #include "resourceakonadiconfig.moc"

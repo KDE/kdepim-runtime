@@ -19,7 +19,9 @@
 */
 
 #include "resourceakonadiconfig.h"
+
 #include "resourceakonadi.h"
+#include "storecollectionmodel.h"
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
@@ -27,14 +29,16 @@
 #include <kdebug.h>
 #include <kdialog.h>
 
+#include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QLabel>
 #include <QPushButton>
 
 using namespace KABC;
 
 ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
-  : ResourceConfigBase( QStringList() << KABC::Addressee::mimeType()
-                                      << KABC::ContactGroup::mimeType(),
+  : ResourceConfigBase( QStringList() << Addressee::mimeType()
+                                      << ContactGroup::mimeType(),
                         parent )
 {
   const QString sourcesTitle = i18nc( "@title:window", "Manage Address Book Sources" );
@@ -45,10 +49,25 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
                                   "<title>Please select the folder for storing"
                                    " newly created contacts.</title><note>If the folder"
                                   " list below is empty, you might have to add an"
-                                  " address book source through <interface>%1</interface>"
-                                  " <br>or change which folders you are subscribed to"
-                                  " through <interface>%2</interface></note>",
-                                  sourcesTitle, mSubscriptionButton->text() ) );
+                                  " address book source through <interface>%1</interface></note>",
+                                  sourcesTitle ) );
+
+  mItemTypes[ Addressee::mimeType() ] = i18nc( "@item:inlistbox, address book entries", "Contacts" );
+  mItemTypes[ ContactGroup::mimeType() ] = i18nc( "@item:inlistbox, email distribution lists", "Distribution Lists" );
+
+  QCheckBox *checkBox = new QCheckBox( mButtonBox );
+  mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
+  checkBox->setText( mItemTypes[ Addressee::mimeType() ] );
+  mMimeCheckBoxes.insert( Addressee::mimeType(), checkBox );
+  checkBox->setEnabled( false );
+
+  checkBox = new QCheckBox( mButtonBox );
+  mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
+  checkBox->setText( mItemTypes[ ContactGroup::mimeType() ] );
+  mMimeCheckBoxes.insert( ContactGroup::mimeType(), checkBox );
+  checkBox->setEnabled( false );
+
+  connectMimeCheckBoxes();
 }
 
 #include "resourceakonadiconfig.moc"

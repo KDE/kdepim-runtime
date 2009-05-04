@@ -23,9 +23,10 @@
 
 #include <akonadi/collection.h>
 
+#include "storeconfigiface.h"
+
 #include <KConfigGroup>
 
-#include <QtCore/QHash>
 #include <QtCore/QObject>
 
 namespace Akonadi {
@@ -38,7 +39,7 @@ class ItemSaveContext;
 class StoreCollectionDialog;
 class SubResourceBase;
 
-class ResourcePrivateBase : public QObject
+class ResourcePrivateBase : public QObject, public StoreConfigIface
 {
   Q_OBJECT
 
@@ -59,7 +60,6 @@ class ResourcePrivateBase : public QObject
     };
 
     typedef QHash<QString, ChangeType> ChangeByKResId;
-    typedef QHash<QString, Akonadi::Collection> CollectionsByMimeType;
 
     ResourcePrivateBase( IdArbiterBase *idArbiter, QObject *parent );
 
@@ -83,13 +83,25 @@ class ResourcePrivateBase : public QObject
 
     void clear();
 
+    void setStoreCollection( const Akonadi::Collection& collection )
+    {
+      setDefaultStoreCollection( collection );
+    }
+
+    Akonadi::Collection storeCollection() const
+    {
+      return defaultStoreCollection();
+    }
+
+    void setStoreCollectionsByMimeType( const CollectionsByMimeType &collections );
+
+    CollectionsByMimeType storeCollectionsByMimeType() const;
+
     void setDefaultStoreCollection( const Akonadi::Collection &collection );
 
     Akonadi::Collection defaultStoreCollection() const;
 
     void setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection );
-
-    virtual const AbstractSubResourceModel *subResourceModel() const = 0;
 
     bool addLocalItem( const QString &uid, const QString &mimeType );
 
@@ -150,6 +162,8 @@ class ResourcePrivateBase : public QObject
     virtual Akonadi::Item createItem( const QString &kresId ) = 0;
 
     virtual Akonadi::Item updateItem( const Akonadi::Item &item, const QString &kresId, const QString &originalId ) = 0;
+
+    virtual const AbstractSubResourceModel *subResourceModel() const = 0;
 
   protected Q_SLOTS:
     virtual void subResourceAdded( SubResourceBase *subResource );

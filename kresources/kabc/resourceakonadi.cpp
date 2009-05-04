@@ -214,19 +214,9 @@ QMap<QString, QString> ResourceAkonadi::uidToResourceMap() const
   return d->uidToResourceMap();
 }
 
-void ResourceAkonadi::setStoreCollection( const Akonadi::Collection& collection )
+StoreConfigIface &ResourceAkonadi::storeConfig()
 {
-  d->setDefaultStoreCollection( collection );
-}
-
-Akonadi::Collection ResourceAkonadi::storeCollection() const
-{
-  return d->defaultStoreCollection();
-}
-
-const AbstractSubResourceModel *ResourceAkonadi::subResourceModel() const
-{
-  return d->subResourceModel();
+  return *d;
 }
 
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )

@@ -236,6 +236,16 @@ void ResourcePrivateBase::clear()
   clearResource();
 }
 
+void ResourcePrivateBase::setStoreCollectionsByMimeType( const StoreConfigIface::CollectionsByMimeType &collections )
+{
+  mStoreCollectionsByMimeType = collections;
+}
+
+StoreConfigIface::CollectionsByMimeType ResourcePrivateBase::storeCollectionsByMimeType() const
+{
+  return mStoreCollectionsByMimeType;
+}
+
 void ResourcePrivateBase::setDefaultStoreCollection( const Akonadi::Collection &collection )
 {
   mDefaultStoreCollection = collection;

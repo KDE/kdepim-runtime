@@ -68,11 +68,6 @@ class SharedResourcePrivate : public ResourcePrivateBase
       return mModel.subResource( id );
     }
 
-    const AbstractSubResourceModel *subResourceModel() const
-    {
-      return &mModel;
-    }
-
   protected:
      SubResourceModelClass mModel;
 
@@ -122,6 +117,11 @@ class SharedResourcePrivate : public ResourcePrivateBase
     QList<const SubResourceBase*> writableSubResourcesForMimeType( const QString &mimeType ) const
     {
       return mModel.writableSubResourceBasesForMimeType( mimeType );
+    }
+
+    const AbstractSubResourceModel *subResourceModel() const
+    {
+      return &mModel;
     }
 
     void loadingResult( bool ok, const QString &errorString )

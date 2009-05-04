@@ -21,18 +21,24 @@
 #ifndef KRES_AKONADI_RESOURCECONFIGBASE_H
 #define KRES_AKONADI_RESOURCECONFIGBASE_H
 
+#include "storeconfigiface.h"
+
 #include <kresources/configwidget.h>
 
 #include <akonadi/collection.h>
 
+#include <QHash>
+
 namespace Akonadi {
   class CollectionView;
+  class StoreCollectionModel;
 }
 
 class KAction;
 class KDialog;
+class QCheckBox;
+class QDialogButtonBox;
 class QLabel;
-class QModelIndex;
 class QPushButton;
 
 class ResourceConfigBase : public KRES::ConfigWidget
@@ -52,31 +58,38 @@ class ResourceConfigBase : public KRES::ConfigWidget
   protected:
     const QStringList mMimeList;
 
+    typedef QHash<QString, QString> ItemTypesByMimeType;
+    ItemTypesByMimeType mItemTypes;
+
     Akonadi::Collection mCollection;
 
+    Akonadi::StoreCollectionModel *mCollectionModel;
     Akonadi::CollectionView *mCollectionView;
 
-    KAction *mCreateAction;
-    KAction *mDeleteAction;
-    KAction *mSyncAction;
-    KAction *mSubscriptionAction;
+    QDialogButtonBox *mButtonBox;
 
-    QPushButton *mCreateButton;
-    QPushButton *mDeleteButton;
+    typedef QHash<QString, QCheckBox*> MimeCheckBoxes;
+    MimeCheckBoxes mMimeCheckBoxes;
+
+    StoreConfigIface::CollectionsByMimeType mStoreCollections;
+
+    KAction     *mSyncAction;
     QPushButton *mSyncButton;
-    QPushButton *mSubscriptionButton;
 
     QLabel *mInfoTextLabel;
 
     KDialog     *mSourcesDialog;
     QPushButton *mSourcesButton;
 
+  protected:
+    void connectMimeCheckBoxes();
+
   private Q_SLOTS:
     void updateCollectionButtonState();
 
     void collectionChanged( const Akonadi::Collection &collection );
 
-    void collectionsInserted( const QModelIndex &parent, int start, int end );
+    void mimeCheckBoxToggled( bool checked );
 };
 
 #endif

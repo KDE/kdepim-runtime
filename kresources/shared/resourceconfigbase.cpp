@@ -21,9 +21,9 @@
 #include "resourceconfigbase.h"
 
 #include "sharedresourceiface.h"
+#include "storecollectionmodel.h"
 
 #include <akonadi/collection.h>
-#include <akonadi/collectionmodel.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionview.h>
 #include <akonadi/standardactionmanager.h>
@@ -36,36 +36,12 @@
 #include <kcmoduleloader.h>
 #include <ktabwidget.h>
 
+#include <QCheckBox>
 #include <QDialogButtonBox>
+#include <QHeaderView>
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
-
-static QModelIndex findCollection( const Akonadi::Collection &collection,
-        const QModelIndex &parent, QAbstractItemModel *model)
-{
-  const int rowCount = model->rowCount( parent );
-
-  for ( int row = 0; row < rowCount; ++row ) {
-    QModelIndex index = model->index( row, 0, parent );
-    if ( !index.isValid() )
-      continue;
-
-    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
-    if ( !data.isValid() )
-      continue;
-
-    if ( data.toInt() == collection.id() ) {
-      return index;
-    }
-
-    index = findCollection( collection, index, model );
-    if ( index.isValid() )
-      return index;
-  }
-
-  return QModelIndex();
-}
 
 class AkonadiResourceDialog : public KDialog
 {
@@ -85,14 +61,9 @@ class AkonadiResourceDialog : public KDialog
 ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *parent )
   : KRES::ConfigWidget( parent ),
     mCollectionView( 0 ),
-    mCreateAction( 0 ),
-    mDeleteAction( 0 ),
+    mButtonBox( 0 ),
     mSyncAction( 0 ),
-    mSubscriptionAction( 0 ),
-    mCreateButton( 0 ),
-    mDeleteButton( 0 ),
     mSyncButton( 0 ),
-    mSubscriptionButton( 0 ),
     mInfoTextLabel( 0 ),
     mSourcesDialog( 0 ),
     mSourcesButton( 0 )
@@ -101,7 +72,7 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
-  Akonadi::CollectionModel *model = new Akonadi::CollectionModel( this );
+  mCollectionModel = new Akonadi::StoreCollectionModel( this );
 
   QWidget *widget = new QWidget( this );
 
@@ -112,11 +83,12 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   Akonadi::CollectionFilterProxyModel *filterModel =
     new Akonadi::CollectionFilterProxyModel( this );
   filterModel->addMimeTypeFilters( mimeList );
-  filterModel->setSourceModel( model );
+  filterModel->setSourceModel( mCollectionModel );
 
   mCollectionView = new Akonadi::CollectionView( widget );
   mCollectionView->setSelectionMode( QAbstractItemView::SingleSelection );
   mCollectionView->setModel( filterModel );
+  mCollectionView->header()->setResizeMode( QHeaderView::ResizeToContents );
 
   connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
            this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
@@ -131,41 +103,19 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
     new Akonadi::StandardActionManager( actionCollection, this );
   actionManager->setCollectionSelectionModel( mCollectionView->selectionModel() );
 
-  mCreateAction = actionManager->createAction( Akonadi::StandardActionManager::CreateCollection );
-
-  mDeleteAction = actionManager->createAction( Akonadi::StandardActionManager::DeleteCollections );
-
   mSyncAction = actionManager->createAction( Akonadi::StandardActionManager::SynchronizeCollections );
 
-  mSubscriptionAction = actionManager->createAction( Akonadi::StandardActionManager::ManageLocalSubscriptions );
-
-  QDialogButtonBox *buttonBox = new QDialogButtonBox( Qt::Vertical, widget );
-  collectionLayout->addWidget( buttonBox );
-
-  mCreateButton = new QPushButton( mCreateAction->text() );
-  mCreateButton->setIcon( mCreateAction->icon() );
-  buttonBox->addButton( mCreateButton, QDialogButtonBox::ActionRole );
-  connect( mCreateButton, SIGNAL( clicked() ), mCreateAction, SLOT( trigger() ) );
-
-  mDeleteButton = new QPushButton( mDeleteAction->text() );
-  mDeleteButton->setIcon( mDeleteAction->icon() );
-  buttonBox->addButton( mDeleteButton, QDialogButtonBox::DestructiveRole );
-  connect( mDeleteButton, SIGNAL( clicked() ), mDeleteAction, SLOT( trigger() ) );
+  mButtonBox = new QDialogButtonBox( Qt::Vertical, widget );
+  collectionLayout->addWidget( mButtonBox );
 
   mSyncButton = new QPushButton( mSyncAction->text() );
   mSyncButton->setIcon( mSyncAction->icon() );
-  buttonBox->addButton( mSyncButton, QDialogButtonBox::ActionRole );
+  mButtonBox->addButton( mSyncButton, QDialogButtonBox::ActionRole );
   connect( mSyncButton, SIGNAL( clicked() ), mSyncAction, SLOT( trigger() ) );
-
-  mSubscriptionButton = new QPushButton( mSubscriptionAction->text() );
-  mSubscriptionButton->setIcon( mSubscriptionAction->icon() );
-  buttonBox->addButton( mSubscriptionButton, QDialogButtonBox::ActionRole );
-  connect( mSubscriptionButton, SIGNAL( clicked() ), mSubscriptionAction, SLOT( trigger() ) );
-
   mSourcesDialog = new AkonadiResourceDialog( mimeList, this );
 
   mSourcesButton = new QPushButton( this );
-  buttonBox->addButton( mSourcesButton, QDialogButtonBox::ActionRole );
+  mButtonBox->addButton( mSourcesButton, QDialogButtonBox::ActionRole );
 
   connect( mSourcesButton, SIGNAL( clicked() ), mSourcesDialog, SLOT( show() ) );
 
@@ -192,11 +142,16 @@ void ResourceConfigBase::loadSettings( KRES::Resource *resource )
     return;
   }
 
-  mCollection = akonadiResource->storeCollection();
+  Akonadi::StoreCollectionModel::StoreItemsByCollection storeMapping;
 
-  QModelIndex index = findCollection( mCollection, mCollectionView->rootIndex(), mCollectionView->model() );
-  if ( index.isValid() )
-    mCollectionView->setCurrentIndex( index );
+  mStoreCollections = akonadiResource->storeConfig().storeCollectionsByMimeType();
+  StoreConfigIface::CollectionsByMimeType::const_iterator it    = mStoreCollections.constBegin();
+  StoreConfigIface::CollectionsByMimeType::const_iterator endIt = mStoreCollections.constEnd();
+  for ( ; it != endIt; ++it ) {
+    storeMapping[ it.value().id() ] << mItemTypes[ it.key() ];
+  }
+
+  mCollectionModel->setStoreMapping( storeMapping );
 }
 
 void ResourceConfigBase::saveSettings( KRES::Resource *resource )
@@ -207,45 +162,79 @@ void ResourceConfigBase::saveSettings( KRES::Resource *resource )
     return;
   }
 
-  akonadiResource->setStoreCollection( mCollection );
+  akonadiResource->storeConfig().setStoreCollectionsByMimeType( mStoreCollections );
+}
+
+void ResourceConfigBase::connectMimeCheckBoxes()
+{
+  foreach ( const QCheckBox *checkBox, mMimeCheckBoxes ) {
+    connect( checkBox, SIGNAL( toggled( bool ) ), SLOT( mimeCheckBoxToggled( bool ) ) );
+  }
 }
 
 void ResourceConfigBase::updateCollectionButtonState()
 {
-  mCreateButton->setEnabled( mCreateAction->isEnabled() );
-  mDeleteButton->setEnabled( mDeleteAction->isEnabled() );
   mSyncButton->setEnabled( mSyncAction->isEnabled() );
-  mSubscriptionButton->setEnabled( mSubscriptionAction->isEnabled() );
 }
 
 void ResourceConfigBase::collectionChanged( const Akonadi::Collection &collection )
 {
   mCollection = collection;
-}
 
-void ResourceConfigBase::collectionsInserted( const QModelIndex &parent, int start, int end )
-{
-  QAbstractItemModel *model = mCollectionView->model();
+  MimeCheckBoxes::const_iterator it    = mMimeCheckBoxes.constBegin();
+  MimeCheckBoxes::const_iterator endIt = mMimeCheckBoxes.constEnd();
+  for ( ; it != endIt; ++it ) {
+    const QString mimeType = it.key();
+    QCheckBox *checkBox = it.value();
 
-  for ( int row = start; row <= end; ++row ) {
-    QModelIndex index = model->index( row, 0, parent );
-    if ( !index.isValid() )
-      continue;
+    checkBox->blockSignals( true );
+    checkBox->setChecked( mStoreCollections.value( mimeType, Akonadi::Collection() ) == mCollection );
+    checkBox->blockSignals( false );
 
-    QVariant data = model->data( index, Akonadi::CollectionModel::CollectionIdRole );
-    if ( !data.isValid() )
-      continue;
-
-    if ( data.toInt() == mCollection.id() ) {
-      mCollectionView->setCurrentIndex( index );
-      return;
-    }
-
-    index = findCollection( mCollection, index, model );
-    if ( index.isValid() ) {
-      mCollectionView->setCurrentIndex( index );
-      return;
-    }
+    checkBox->setEnabled( mCollection.isValid() );
   }
 }
+
+void ResourceConfigBase::mimeCheckBoxToggled( bool checked )
+{
+  QString mimeType;
+  QCheckBox *checkBox = 0;
+  MimeCheckBoxes::const_iterator it    = mMimeCheckBoxes.constBegin();
+  MimeCheckBoxes::const_iterator endIt = mMimeCheckBoxes.constEnd();
+  for ( ; it != endIt; ++it ) {
+    if ( it.value() == QObject::sender() ) {
+      mimeType = it.key();
+      checkBox = it.value();
+      break;
+    }
+  }
+
+  Q_ASSERT( !mimeType.isEmpty() && checkBox != 0 );
+
+  const QString itemType = mItemTypes.value( mimeType, QString() );
+
+  Akonadi::StoreCollectionModel::StoreItemsByCollection storeMapping = mCollectionModel->storeMapping();
+
+  kDebug() << "mimeType=" << mimeType << ", itemType=" << itemType
+           << "checkBox=" << (void*) checkBox;
+
+  if ( checked ) {
+    Akonadi::StoreCollectionModel::StoreItemsByCollection::iterator it =
+      storeMapping.begin();
+    Akonadi::StoreCollectionModel::StoreItemsByCollection::iterator endIt =
+      storeMapping.end();
+    for ( ; it != endIt; ++it ) {
+      it.value().removeAll( itemType );
+    }
+
+    storeMapping[ mCollection.id() ] << itemType;
+    mStoreCollections[ mimeType ] = mCollection;
+  } else {
+    storeMapping[ mCollection.id() ].removeAll( itemType );
+    mStoreCollections.remove( mimeType );
+  }
+
+  mCollectionModel->setStoreMapping( storeMapping );
+}
+
 // kate: space-indent on; indent-width 2; replace-tabs on;

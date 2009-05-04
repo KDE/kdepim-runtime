@@ -73,9 +73,7 @@ class ResourceAkonadi : public ResourceABC, public SharedResourceIface
     virtual QStringList subresources() const;
     virtual QMap<QString, QString> uidToResourceMap() const;
 
-    void setStoreCollection( const Akonadi::Collection& collection );
-    Akonadi::Collection storeCollection() const;
-    const AbstractSubResourceModel *subResourceModel() const;
+    StoreConfigIface &storeConfig();
 
   public Q_SLOTS:
     virtual void setSubresourceActive( const QString &subResource, bool active );
