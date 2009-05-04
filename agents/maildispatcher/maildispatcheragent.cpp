@@ -50,71 +50,69 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 
-class MailDispatcherAgent::Private
-{
-  friend class MailDispatcherAgent;
-
-  public:
-    Private( MailDispatcherAgent *parent )
-        : q( parent )
-    {
-    }
-
-    ~Private()
-    {
-    }
-
-    void updateMonitoredCollection();
-
-  private:
-    Collection outbox;
-    Collection sentMail;
-
-    MailDispatcherAgent * const q;
-};
-
-void MailDispatcherAgent::Private::updateMonitoredCollection()
+void MailDispatcherAgent::updateMonitoredCollections()
 {
   const Entity::Id outboxId = Settings::self()->outbox();
-  if ( outbox.id() == outboxId )
+  if ( mOutbox.id() != outboxId ) // it changed
   {
-    // outbox collection did not change
-    return;
-  }
-
-  // stop monitoring the old outbox collection
-  if ( outbox.isValid() )
-  {
-    q->changeRecorder()->setCollectionMonitored( outbox, false );
-  }
-
-  outbox = Collection();
-  if ( outboxId != -1 )
-  {
-    CollectionFetchJob *job = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
-    if ( job->exec() )
+    // stop monitoring the old collection
+    if ( mOutbox.isValid() )
     {
-      Collection::List collections = job->collections();
-      if ( collections.size() == 1 )
+      changeRecorder()->setCollectionMonitored( mOutbox, false );
+    }
+
+    mOutbox = Collection();
+    if ( outboxId != -1 )
+    {
+      CollectionFetchJob *job = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
+      if ( job->exec() )
       {
-        outbox = collections.first();
+        Collection::List collections = job->collections();
+        if ( collections.size() == 1 )
+        {
+          mOutbox = collections.first();
+        }
       }
+    }
+
+    // start monitoring the new collection
+    if ( mOutbox.isValid() )
+    {
+      kDebug() << "maildispatcheragent: Monitoring collection ("
+               << mOutbox.id() << "," << mOutbox.name() << ") as outbox.";
+      changeRecorder()->setCollectionMonitored( mOutbox, true );
     }
   }
 
-  // start monitoring the new outbox collection
-  if ( outbox.isValid() )
+  const Entity::Id sentId = Settings::self()->sentMail();
+  if ( mSentMail.id() != sentId )
   {
-    kDebug() << "maildispatcheragent: Monitoring collection ("
-             << outbox.id() << "," << outbox.name() << ") as outbox.";
-    q->changeRecorder()->setCollectionMonitored( outbox, true );
+    // we do not monitor the sent-mail collection, only keep track of it.
+    mSentMail = Collection();
+    if ( sentId != -1 )
+    {
+      CollectionFetchJob *job = new CollectionFetchJob( Collection( sentId ), CollectionFetchJob::Base );
+      if ( job->exec() )
+      {
+        Collection::List collections = job->collections();
+        if ( collections.size() == 1 )
+        {
+          mSentMail = collections.first();
+        }
+      }
+    }
+
+    if ( mSentMail.isValid() )
+    {
+      kDebug() << "maildispatcheragent: SentMail collection was changed to ("
+               << mSentMail.id() << "," << mSentMail.name() << ").";
+    }
   }
 }
 
 
 MailDispatcherAgent::MailDispatcherAgent( const QString &id )
-  : AgentBase( id ),
-    d( new Private( this ) )
+  : AgentBase( id )
 {
   // register MailDispatcherAttribute
   AttributeFactory::registerAttribute<MailDispatcherAttribute>();
@@ -133,17 +131,17 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   //changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().fetchPayloadPart( MessagePart::Envelope );
 
-  d->updateMonitoredCollection();
+  updateMonitoredCollections();
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
 {
-  if ( !sentItems.empty() )
+  if ( !mSentItems.empty() )
   {
     // can we do kWarning from destructors?
     kWarning() << "agent destroyed while jobs still in progress.";
+    // should we attempt to abort the jobs?
   }
-  delete d;
 }
 
 void MailDispatcherAgent::configure( WId windowId )
@@ -155,7 +153,7 @@ void MailDispatcherAgent::configure( WId windowId )
   }
   dlg.exec();
 
-  d->updateMonitoredCollection();
+  updateMonitoredCollections();
 }
 
 void MailDispatcherAgent::doSetOnline( bool online )
@@ -172,9 +170,13 @@ void MailDispatcherAgent::doSetOnline( bool online )
 
 void MailDispatcherAgent::collectionChanged( const Collection &col )
 {
-  if ( col.id() == d->outbox.id() )
+  if ( col.id() == mOutbox.id() )
   {
     kDebug() << "Outbox collection has changed.";
+  }
+  else if ( col.id() == mSentMail.id() )
+  {
+    kDebug() << "SentMail collection has changed. Why am I getting this?";
   }
   else
   {
@@ -203,9 +205,13 @@ void MailDispatcherAgent::collectionChanged( const Collection &col )
 
 void MailDispatcherAgent::collectionRemoved( const Collection &col )
 {
-  if ( col.id() == d->outbox.id() )
+  if ( col.id() == mOutbox.id() )
   {
     kDebug() << "Outbox collection has been removed.";
+  }
+  else if ( col.id() == mSentMail.id() )
+  {
+    kDebug() << "SentMail collection has been removed.";
   }
   else
   {
@@ -217,10 +223,9 @@ void MailDispatcherAgent::collectionRemoved( const Collection &col )
   AgentBase::Observer::collectionRemoved( col );
 }
 
-void MailDispatcherAgent::itemAdded( const Item &item,
-  const Collection &col )
+void MailDispatcherAgent::itemAdded( const Item &item, const Collection &col )
 {
-  if ( col.id() == d->outbox.id() )
+  if ( col.id() == mOutbox.id() )
   {
     kDebug() << "An item was added to the outbox.";
     if ( isOnline() )
@@ -336,7 +341,7 @@ void MailDispatcherAgent::itemFetchDone( KJob *job )
 
   connect( sendJob, SIGNAL( result( KJob* ) ), SLOT( transportResult( KJob* ) ) );
   // keep track of what item this jobs refers to (is there a better way?!)
-  sentItems[sendJob] = item;
+  mSentItems[sendJob] = item;
   MailTransport::TransportManager::self()->schedule( sendJob );
 }
 
@@ -348,20 +353,22 @@ void MailDispatcherAgent::transportResult( KJob *job )
   }
   else
   {
+    // TODO: move message to sent-mail
     kDebug() << "TransportJob succeeded. Removing message from outbox.";
-    if ( !sentItems.contains( job ) )
+    if ( !mSentItems.contains( job ) )
     {
       kWarning() << "I know of no such job!";
       return;
     }
 
-    Item item = sentItems.value(job);
-    sentItems.remove(job);
+    Item item = mSentItems.value(job);
+    mSentItems.remove(job);
     ItemDeleteJob *job = new ItemDeleteJob(item);
     // do we care about the result?
     kDebug() << "ItemDeleteJob created.";
   }
 }
+
 
 AKONADI_AGENT_MAIN( MailDispatcherAgent )
 

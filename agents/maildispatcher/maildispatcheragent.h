@@ -21,6 +21,7 @@
 #define MAILDISPATCHERAGENT_H
 
 #include <Akonadi/AgentBase>
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
 
 class KJob;
@@ -50,9 +51,11 @@ class MailDispatcherAgent : public Akonadi::AgentBase, public Akonadi::AgentBase
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    class Private;
-    Private* const d;
-    QMap < KJob *, Akonadi::Item > sentItems;
+    Akonadi::Collection mOutbox;
+    Akonadi::Collection mSentMail;
+    QMap < KJob *, Akonadi::Item > mSentItems;
+
+    void updateMonitoredCollections();
 
   private slots:
     void itemFetchDone( KJob *job );
