@@ -123,18 +123,16 @@ void ResourceAkonadi::Private::clearResource()
 
 const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const QString &uid, const QString &mimeType )
 {
-  // TODO Strings should reflect whether this is a question for just one
-  // item (ask always) or for all of a certain category (ask once)
   Q_UNUSED( uid );
 
   Q_ASSERT( mStoreCollectionDialog != 0 );
 
   if ( mimeType == Akonadi::KCalMimeTypeVisitor::eventMimeType() ) {
-    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Event", "Please select a storage folder for this event" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Event", "Please select a storage folder for this Event" ) );
   } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::todoMimeType() ) {
-    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Todo", "Please select a storage folder for this todo" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Todo", "Please select a storage folder for this Todo" ) );
   } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::journalMimeType() ) {
-    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Journal", "Please select a storage folder for this journal" ) );
+    mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Journal", "Please select a storage folder for this Journal" ) );
   } else if ( mimeType == QLatin1String( "text/calendar" ) ) {
     kWarning( 5800 ) << "Unexpected generic MIME type text/calendar";
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of unspecified type", "Please select a storage folder for this calendar entry" ) );
@@ -153,9 +151,6 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
     Akonadi::Collection collection = mStoreCollectionDialog->selectedCollection();
     if ( collection.isValid() ) {
       resource = mModel.subResource( collection.id() );
-      if ( resource != 0 ) {
-        setStoreCollectionForMimeType( mimeType, collection );
-      }
     }
   }
 

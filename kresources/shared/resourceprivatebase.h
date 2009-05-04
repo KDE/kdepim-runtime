@@ -101,8 +101,6 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
 
     Akonadi::Collection defaultStoreCollection() const;
 
-    void setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection );
-
     bool addLocalItem( const QString &uid, const QString &mimeType );
 
     void changeLocalItem( const QString &uid );

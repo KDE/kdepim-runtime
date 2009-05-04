@@ -256,14 +256,6 @@ Akonadi::Collection ResourcePrivateBase::defaultStoreCollection() const
   return mDefaultStoreCollection;
 }
 
-void ResourcePrivateBase::setStoreCollectionForMimeType( const QString& mimeType, const Akonadi::Collection &collection )
-{
-  Q_ASSERT( !mimeType.isEmpty() );
-  Q_ASSERT( Akonadi::MimeTypeChecker::isWantedCollection( collection, mimeType ) );
-
-  mStoreCollectionsByMimeType[ mimeType ] = collection;
-}
-
 bool ResourcePrivateBase::addLocalItem( const QString &uid, const QString &mimeType )
 {
   kDebug( 5650 ) << "uid=" << uid << ", mimeType=" << mimeType;
@@ -366,11 +358,12 @@ Akonadi::Collection ResourcePrivateBase::storeCollectionForMimeType( const QStri
     return collection;
   }
 
-  if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
-    kDebug( 5650 ) << "Taking DefaultStoreCollection: id=" << collection.id()
-                   << ", remoteId=" << collection.remoteId();
-    return mDefaultStoreCollection;
-  }
+  // TODO check if we can use this somewhere else
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, mimeType ) ) {
+//     kDebug( 5650 ) << "Taking DefaultStoreCollection: id=" << collection.id()
+//                    << ", remoteId=" << collection.remoteId();
+//     return mDefaultStoreCollection;
+//   }
 
   return Akonadi::Collection();
 }
