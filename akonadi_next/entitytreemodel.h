@@ -42,7 +42,6 @@
 // * Use CollectionStatistics for item count stuff. Find out if I can get stats by mimetype.
 // * Make sure there are applications using it before committing to it until KDE5.
 //     Some API/ virtual methods might need to be added when real applications are made.
-// * Fix compiler warnings about unused variables. Could be mistakes about.
 // * Implement ordering support.
 // * Implement some proxy models for time-table like uses, eg KOrganizer events.
 // * Apidox++
