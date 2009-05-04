@@ -655,7 +655,7 @@ bool EntityTreeModel::setData( const QModelIndex &index, const QVariant &value, 
         }
       }
 
-      if (Qt::EditRole == ItemRole)
+      if ( ItemRole == role )
       {
         item = value.value<Item>();
       }
