@@ -22,6 +22,10 @@
 
 #include <akonadi/resourcebase.h>
 #include <QStringList>
+#include <boost/shared_ptr.hpp>
+#include <kmime/kmime_message.h>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
 
 namespace Akonadi {
   class Monitor;
@@ -59,7 +63,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-    bool addresseFromKolab(const QByteArray &data, KABC::Addressee &addressee);
+    bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
+    KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
     Akonadi::Monitor *m_monitor;
     QStringList m_managedCollections;

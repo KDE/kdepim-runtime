@@ -33,6 +33,8 @@
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <kabc/addressee.h>
+
+
 #include <QtDBus/QDBusConnection>
 #include <QApplication>
 
@@ -199,7 +201,8 @@ void KolabProxyResource::collectionFetchDone(KJob *job)
       }
     }
     KABC::Addressee addressee;
-    if (addresseFromKolab(m_item.payloadData(), addressee)) {
+    MessagePtr message = m_item.payload<MessagePtr>();
+    if (addresseFromKolab(message, addressee)) {
       Item newItem("text/directory");
       newItem.setRemoteId(QString::number(m_item.id()));
       newItem.setPayload(addressee);
@@ -225,14 +228,26 @@ void KolabProxyResource::imapItemRemoved(const Akonadi::Item& item)
   Q_UNUSED(job);
 }
 
-bool KolabProxyResource::addresseFromKolab(const QByteArray &data, KABC::Addressee &addressee)
+bool KolabProxyResource::addresseFromKolab(MessagePtr data, KABC::Addressee &addressee)
 {
-  int pos = data.indexOf("Content-Type: application/x-vnd.kolab.contact;");
-  if (pos != -1) {
-    pos = data.indexOf("<?xml", pos);//TODO find the encoding???
-
-    QByteArray xmlData = data.mid( pos, data.indexOf("--Boundary-", pos) - pos);
+  KMime::Content *xmlContent  = findContent(data, "application/x-vnd.kolab.contact");
+  if (xmlContent) {
+    QByteArray xmlData = xmlContent->decodedContent();
     Kolab::Contact contact(QString::fromLatin1(xmlData));
+    QString pictureAttachmentName = contact.pictureAttachmentName();
+    if (!pictureAttachmentName.isEmpty()) {
+      KMime::Content *imgContent = findContent(data, "image/png");
+      kDebug() << imgContent;
+      if (imgContent) {
+        QByteArray imgData = imgContent->decodedContent();
+        kDebug() << imgData;
+        QBuffer buffer(&imgData);
+        buffer.open(QIODevice::ReadOnly);
+        QImage image;
+        image.load(&buffer, "PNG");
+        contact.setPicture(image);
+      }
+    }
     contact.saveTo(&addressee);
     return true;
   }
@@ -244,7 +259,7 @@ void KolabProxyResource::createAddressEntry(const Akonadi::Item::List & addrs)
   Akonadi::Item::List items;
   Q_FOREACH(Akonadi::Item addr, addrs)
   {
-    QByteArray payload = addr.payloadData();
+    MessagePtr payload = addr.payload<MessagePtr>();
     KABC::Addressee addressee;
     if (addresseFromKolab(payload, addressee)) {
       Item item("text/directory");
@@ -254,6 +269,18 @@ void KolabProxyResource::createAddressEntry(const Akonadi::Item::List & addrs)
     }
   }
   itemsRetrieved(items);
+}
+
+KMime::Content *KolabProxyResource::findContent(MessagePtr data, const QByteArray &type)
+{
+  KMime::Content::List list = data->contents();
+  Q_FOREACH(KMime::Content *c, list)
+  {
+    if (c->contentType()->mimeType() ==  type)
+      return c;
+  }
+  return 0L;
+
 }
 
 AKONADI_RESOURCE_MAIN( KolabProxyResource )
