@@ -316,8 +316,19 @@ void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
 {
   if ( !d->xmlGuiClient )
     return;
-  QMenu *popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
-                                        QLatin1String( "akonadi_collectionview_contextmenu" ), d->xmlGuiClient ) );
+
+  const QModelIndex index = indexAt( event->pos() );
+
+  QMenu *popup = 0;
+
+  // check if the index under the cursor is a collection or item
+  const Item item = model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
+  if ( item.isValid() )
+    popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
+                                 QLatin1String( "akonadi_itemview_contextmenu" ), d->xmlGuiClient ) );
+  else
+    popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
+                                 QLatin1String( "akonadi_collectionview_contextmenu" ), d->xmlGuiClient ) );
   if ( popup )
     popup->exec( event->globalPos() );
 }
