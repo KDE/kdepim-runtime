@@ -670,7 +670,7 @@ void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
   forever {
 
     // Find the next occurrence of the signature text
-    QString text = toPlainText();
+    QString text = document()->toPlainText();
     int currentMatch = text.indexOf( oldSigText, currentSearchPosition );
     currentSearchPosition = currentMatch;
     if ( currentMatch == -1 )
