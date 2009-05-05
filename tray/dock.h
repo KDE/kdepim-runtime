@@ -21,7 +21,7 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-#include <knotificationitem-1/knotificationitem.h>
+#include <knotificationitem.h>
 #include <QWidget>
 
 #include <akonadi/agentinstance.h>
