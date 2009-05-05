@@ -21,13 +21,15 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-#include <KSystemTrayIcon>
+#include <knotificationitem-1/knotificationitem.h>
 #include <QWidget>
 
 #include <akonadi/agentinstance.h>
 
 class QLabel;
 class QAction;
+
+using namespace Experimental;
 
 class Tray : public QWidget
 {
@@ -38,7 +40,7 @@ protected:
     void setVisible( bool );
 };
 
-class Dock : public KSystemTrayIcon
+class Dock : public KNotificationItem
 {
     Q_OBJECT
     Q_CLASSINFO( "D-Bus Interface", "org.kde.akonaditray" )

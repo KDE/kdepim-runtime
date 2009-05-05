@@ -48,8 +48,7 @@ using namespace Akonadi;
 Tray::Tray() : QWidget()
 {
     hide();
-    Dock* docker = new Dock( this );
-    docker->show();
+    new Dock( this );
 }
 
 void Tray::setVisible( bool )
@@ -59,8 +58,9 @@ void Tray::setVisible( bool )
 }
 
 Dock::Dock( QWidget *parent )
-        : KSystemTrayIcon( KIcon( "akonadi" ), parent )
+        : KNotificationItem(parent )
 {
+    setIcon("akonadi");
     KMenu *menu = new KMenu();
     m_title = menu->addTitle( i18n( "Akonadi" ) );
 
@@ -73,13 +73,9 @@ Dock::Dock( QWidget *parent )
     m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT( slotStartBackup() ) );
     m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT( slotStartRestore() ) );
     menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT( slotConfigure() ) );
-    menu->addSeparator();
-    menu->addAction( KIcon( "application-exit" ), i18n( "Quit" ), this, SLOT( slotQuit() ),
-                     KStandardShortcut::shortcut( KStandardShortcut::Quit ).primary() );
 
     setContextMenu( menu );
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
-    show();
 
     connect( ServerManager::self(), SIGNAL( started() ), SLOT( slotServerStarted() ) );
     connect( ServerManager::self(), SIGNAL( stopped() ), SLOT( slotServerStopped() ) );
@@ -101,24 +97,24 @@ void Dock::slotServerStarted()
 {
     updateMenu( true );
     KPassivePopup::message( i18n( "Akonadi available" ),
-                            i18n( "The Akonadi server has been started and can be used now." ), this );
+                            i18n( "The Akonadi server has been started and can be used now." ), associatedWidget() );
 }
 
 void Dock::slotServerStopped()
 {
     updateMenu( false );
     KPassivePopup::message( i18n( "Akonadi not available" ),
-                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ),this );
+                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), associatedWidget()  );
 }
 
 void Dock::slotStopAkonadi()
 {
-    Akonadi::Control::stop( parentWidget() );
+    Akonadi::Control::stop( associatedWidget()  );
 }
 
 void Dock::slotStartAkonadi()
 {
-    Akonadi::Control::start( parentWidget() );
+    Akonadi::Control::start( associatedWidget()  );
 }
 
 void Dock::slotActivated()
@@ -131,7 +127,7 @@ void Dock::slotStartBackup()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<BackupAssistant> backup = new BackupAssistant( parentWidget() );
+    QPointer<BackupAssistant> backup = new BackupAssistant( associatedWidget()  );
     backup->exec();
     delete backup;
 }
@@ -141,7 +137,7 @@ void Dock::slotStartRestore()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<RestoreAssistant> restore = new RestoreAssistant( parentWidget() );
+    QPointer<RestoreAssistant> restore = new RestoreAssistant( associatedWidget()  );
     restore->exec();
     delete restore;
 }
@@ -168,7 +164,7 @@ void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QStri
 void Dock::infoMessage( const QString &message, const QString &title )
 {
     KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title,
-                            message, this );
+                            message, associatedWidget()  );
 }
 
 void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString& message )
@@ -178,13 +174,13 @@ void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString
 
 void Dock::errorMessage( const QString &message, const QString &title )
 {
-    KMessageBox::error( parentWidget(), message,
+    KMessageBox::error( associatedWidget() , message,
                         title.isEmpty() ?i18n( "Akonadi error" ) : title );
 }
 
 qlonglong Dock::getWinId()
 {
-    return ( qlonglong )parentWidget()->winId();
+    return ( qlonglong )associatedWidget() ->winId();
 }
 
 void Dock::slotConfigure()
