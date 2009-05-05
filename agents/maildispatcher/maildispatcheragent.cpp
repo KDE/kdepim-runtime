@@ -20,7 +20,7 @@
 #include "maildispatcheragent.h"
 
 #include "configdialog.h"
-#include "maildispatcherattribute.h"
+#include "dispatchmodeattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -143,8 +143,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
-  // register MailDispatcherAttribute
-  AttributeFactory::registerAttribute<MailDispatcherAttribute>();
+  // register attributes
+  AttributeFactory::registerAttribute<DispatchModeAttribute>();
 
   kDebug() << "maildispatcheragent: At your service, sir!";
 
