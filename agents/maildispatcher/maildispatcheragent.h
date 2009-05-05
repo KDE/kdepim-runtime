@@ -24,8 +24,6 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-class KJob;
-
 
 /**
  * This agent dispatches mail put into the outbox collection.
@@ -51,15 +49,11 @@ class MailDispatcherAgent : public Akonadi::AgentBase, public Akonadi::AgentBase
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    Akonadi::Collection mOutbox;
-    Akonadi::Collection mSentMail;
-    QMap < KJob *, Akonadi::Item > mSentItems;
+    class Private;
+    Private* const d;
 
-    void updateMonitoredCollections();
-
-  private slots:
-    void itemFetchDone( KJob *job );
-    void transportResult( KJob *job );
+    Q_PRIVATE_SLOT( d, void itemFetchDone( KJob* ) )
+    Q_PRIVATE_SLOT( d, void transportResult( KJob* ) )
 
 };
 
