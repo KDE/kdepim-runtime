@@ -58,8 +58,10 @@ void Tray::setVisible( bool )
 }
 
 Dock::Dock( QWidget *parent )
-        : KNotificationItem(parent )
+        : KNotificationItem( 0 )
 {
+    m_parentWidget = parent;
+  
     setIcon("akonadi");
     KMenu *menu = new KMenu();
     m_title = menu->addTitle( i18n( "Akonadi" ) );
@@ -97,24 +99,24 @@ void Dock::slotServerStarted()
 {
     updateMenu( true );
     KPassivePopup::message( i18n( "Akonadi available" ),
-                            i18n( "The Akonadi server has been started and can be used now." ), associatedWidget() );
+                            i18n( "The Akonadi server has been started and can be used now." ), m_parentWidget );
 }
 
 void Dock::slotServerStopped()
 {
     updateMenu( false );
     KPassivePopup::message( i18n( "Akonadi not available" ),
-                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), associatedWidget()  );
+                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), m_parentWidget  );
 }
 
 void Dock::slotStopAkonadi()
 {
-    Akonadi::Control::stop( associatedWidget()  );
+    Akonadi::Control::stop( m_parentWidget  );
 }
 
 void Dock::slotStartAkonadi()
 {
-    Akonadi::Control::start( associatedWidget()  );
+    Akonadi::Control::start( m_parentWidget  );
 }
 
 void Dock::slotActivated()
@@ -127,7 +129,7 @@ void Dock::slotStartBackup()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<BackupAssistant> backup = new BackupAssistant( associatedWidget()  );
+    QPointer<BackupAssistant> backup = new BackupAssistant( m_parentWidget  );
     backup->exec();
     delete backup;
 }
@@ -137,7 +139,7 @@ void Dock::slotStartRestore()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<RestoreAssistant> restore = new RestoreAssistant( associatedWidget()  );
+    QPointer<RestoreAssistant> restore = new RestoreAssistant( m_parentWidget  );
     restore->exec();
     delete restore;
 }
@@ -164,7 +166,7 @@ void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QStri
 void Dock::infoMessage( const QString &message, const QString &title )
 {
     KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title,
-                            message, associatedWidget()  );
+                            message, m_parentWidget  );
 }
 
 void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString& message )
@@ -174,13 +176,13 @@ void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString
 
 void Dock::errorMessage( const QString &message, const QString &title )
 {
-    KMessageBox::error( associatedWidget() , message,
+    KMessageBox::error( m_parentWidget , message,
                         title.isEmpty() ?i18n( "Akonadi error" ) : title );
 }
 
 qlonglong Dock::getWinId()
 {
-    return ( qlonglong )associatedWidget() ->winId();
+    return ( qlonglong )m_parentWidget ->winId();
 }
 
 void Dock::slotConfigure()

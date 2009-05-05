@@ -77,6 +77,7 @@ private Q_SLOTS:
 
 private:
     void updateMenu( bool );
+    QWidget *m_parentWidget;
     QAction *m_title;
     QAction *m_stopAction;
     QAction *m_startAction;
