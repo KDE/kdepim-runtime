@@ -53,6 +53,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void imapItemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
     void imapItemRemoved(const Akonadi::Item &item);
+    void imapCollectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    void imapCollectionRemoved(const Akonadi::Collection &collection);
+    void imapCollectionChanged(const Akonadi::Collection &collection);
     void createAddressEntry(const Akonadi::Item::List & addrs);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
@@ -64,10 +67,13 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
     bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
+    Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
     KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
     Akonadi::Monitor *m_monitor;
+    Akonadi::Monitor *m_colectionMonitor;
     QStringList m_managedCollections;
+    QList<Akonadi::Item::Id> m_monitoredCollections;
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
