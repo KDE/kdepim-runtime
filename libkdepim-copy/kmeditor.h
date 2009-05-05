@@ -122,6 +122,33 @@ class KDEPIM_EXPORT KMeditor : public KPIMTextEdit::TextEdit
      */
     void ensureCursorVisible();
 
+    /**
+     * Cleans the whitespace of the edit's text.
+     * Adjacent tabs and spaces will be converted to a single space.
+     * Trailing whitespace will be removed.
+     * More than 2 newlines in a row will be changed to 2 newlines.
+     * Text in quotes or text inside of the given signature will not be
+     * cleaned.
+     * For undo/redo, this is treated as one operation.
+     *
+     * @param sig text inside this signature will not be cleaned
+     */
+    void cleanWhitespace( const KPIMIdentities::Signature &sig );
+
+   /**
+     * Replaces all occurrences of the old signature with the new signature.
+     * Text in quotes will be ignored.
+     * For undo/redo, this is treated as one operation.
+     * If the old signature is empty, nothing is done.
+     * If the new signature is empty, the old signature including the
+     * separator is removed.
+     *
+     * @param oldSig the old signature, which will be replaced
+     * @param newSig the new signature
+     */
+    void replaceSignature( const KPIMIdentities::Signature &oldSig,
+                           const KPIMIdentities::Signature &newSig );
+
   public Q_SLOTS:
 
     void slotAddQuotes();

@@ -86,6 +86,29 @@ class KMeditorPrivate
     void startExternalEditor();
     void slotEditorFinished( int, QProcess::ExitStatus exitStatus );
 
+    /**
+     * Replaces each text which matches the regular expression with another text.
+     * Text inside quotes or the given signature will be ignored.
+     */
+    void cleanWhitespaceHelper( const QRegExp &regExp, const QString &newText,
+                                const KPIMIdentities::Signature &sig );
+
+    /**
+     * Returns a list of all occurences of the given signature.
+     * The list contains pairs which consists of the starting position and the end
+     * of the signature.
+     *
+     * @param sig this signature will be searched for
+     * @return a list of pairs of start and end positions of the signature
+     */
+    QList< QPair<int,int> > signaturePositions( const KPIMIdentities::Signature &sig ) const;
+
+    /**
+     * Returns the text of the signature. If the signature is HTML, the HTML
+     * tags will be stripped.
+     */
+    QString plainSignatureText( const KPIMIdentities::Signature &signature ) const;
+
     // Data members
     QString extEditorPath;
     KMeditor *q;
@@ -536,6 +559,177 @@ void KMeditor::ensureCursorVisible()
   //       Delay the actual call to ensureCursorVisible() a bit to work around
   //       the problem.
   QTimer::singleShot( 500, this, SLOT( ensureCursorVisibleDelayed() ) );
+}
+
+void KMeditorPrivate::cleanWhitespaceHelper( const QRegExp &regExp,
+                                             const QString &newText,
+                                             const KPIMIdentities::Signature &sig )
+{
+  int currentSearchPosition = 0;
+
+  forever {
+
+    // Find the text
+    QString text = q->document()->toPlainText();
+    int currentMatch = regExp.indexIn( text, currentSearchPosition );
+    currentSearchPosition = currentMatch;
+    if ( currentMatch == -1 )
+      break;
+
+    // Select the text
+    QTextCursor cursor( q->document() );
+    cursor.setPosition( currentMatch );
+    cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor,
+                         regExp.matchedLength() );
+
+    // Skip quoted text
+    if ( q->isLineQuoted( cursor.block().text() ) ) {
+      currentSearchPosition += regExp.matchedLength();
+      continue;
+    }
+
+    // Skip text inside signatures
+    bool insideSignature = false;
+    QList< QPair<int,int> > sigPositions = signaturePositions( sig );
+    QPair<int,int> position;
+    foreach( position, sigPositions ) { //krazy:exclude=foreach
+      if ( cursor.position() >= position.first &&
+           cursor.position() <= position.second )
+        insideSignature = true;
+    }
+    if ( insideSignature ) {
+      currentSearchPosition += regExp.matchedLength();
+      continue;
+    }
+
+    // Replace the text
+    cursor.removeSelectedText();
+    cursor.insertText( newText );
+    currentSearchPosition += newText.length();
+  }
+}
+
+void KMeditor::cleanWhitespace( const KPIMIdentities::Signature &sig )
+{
+  QTextCursor cursor( document() );
+  cursor.beginEditBlock();
+
+  // Squeeze tabs and spaces
+  d->cleanWhitespaceHelper( QRegExp( QLatin1String( "[\t ]+" ) ),
+                            QString( QLatin1Char( ' ' ) ), sig );
+
+  // Remove trailing whitespace
+  d->cleanWhitespaceHelper( QRegExp( QLatin1String( "[\t ][\n]" ) ),
+                            QString( QLatin1Char( '\n' ) ), sig );
+
+  // Single space lines
+  d->cleanWhitespaceHelper( QRegExp( QLatin1String( "[\n]{3,}" ) ),
+                            QLatin1String( "\n\n" ), sig );
+
+  if ( !textCursor().hasSelection() ) {
+    textCursor().clearSelection();
+  }
+
+  cursor.endEditBlock();
+}
+
+QList< QPair<int,int> > KMeditorPrivate::signaturePositions( const KPIMIdentities::Signature &sig ) const
+{
+  QList< QPair<int,int> > signaturePositions;
+  if ( !sig.rawText().isEmpty() ) {
+
+    QString sigText = plainSignatureText( sig );
+
+    int currentSearchPosition = 0;
+    forever {
+
+      // Find the next occurrence of the signature text
+      QString text = q->document()->toPlainText();
+      int currentMatch = text.indexOf( sigText, currentSearchPosition );
+      currentSearchPosition = currentMatch + sigText.length();
+      if ( currentMatch == -1 )
+        break;
+
+      signaturePositions.append( QPair<int,int>( currentMatch,
+                                 currentMatch + sigText.length() ) );
+    }
+  }
+  return signaturePositions;
+}
+
+
+void KMeditor::replaceSignature( const KPIMIdentities::Signature &oldSig,
+                                 const KPIMIdentities::Signature &newSig )
+{
+  QTextCursor cursor( document() );
+  cursor.beginEditBlock();
+
+  QString oldSigText = d->plainSignatureText( oldSig );
+
+  int currentSearchPosition = 0;
+  forever {
+
+    // Find the next occurrence of the signature text
+    QString text = toPlainText();
+    int currentMatch = text.indexOf( oldSigText, currentSearchPosition );
+    currentSearchPosition = currentMatch;
+    if ( currentMatch == -1 )
+      break;
+
+    // Select the signature
+    QTextCursor cursor( document() );
+    cursor.setPosition( currentMatch );
+
+    // If the new signature is completely empty, we also want to remove the
+    // signature separator, so include it in the selection
+    int additionalMove = 0;
+    if ( newSig.rawText().isEmpty() &&
+         text.mid( currentMatch - 4, 4 ) == QLatin1String( "-- \n" ) ) {
+      cursor.movePosition( QTextCursor::PreviousCharacter,
+                           QTextCursor::MoveAnchor, 4 );
+      additionalMove = 4;
+    }
+    cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor,
+                         oldSigText.length() + additionalMove );
+
+
+    // Skip quoted signatures
+    if ( isLineQuoted( cursor.block().text() ) ) {
+      currentSearchPosition += d->plainSignatureText( oldSig ).length();
+      continue;
+    }
+
+    // Remove the old and instert the new signature
+    cursor.removeSelectedText();
+    if ( newSig.isInlinedHtml() &&
+         newSig.type() == KPIMIdentities::Signature::Inlined ) {
+      cursor.insertHtml( newSig.rawText() );
+      enableRichTextMode();
+    }
+    else
+      cursor.insertText( newSig.rawText() );
+
+    currentSearchPosition += d->plainSignatureText( newSig ).length();
+  }
+
+  cursor.endEditBlock();
+}
+
+
+QString KMeditorPrivate::plainSignatureText( const KPIMIdentities::Signature &signature ) const
+{
+  QString sigText = signature.rawText();
+  if ( signature.isInlinedHtml() &&
+       signature.type() == KPIMIdentities::Signature::Inlined ) {
+
+    // Use a QTextDocument as a helper, it does all the work for us and
+    // strips all HTML tags.
+    QTextDocument helper;
+    QTextCursor helperCursor( &helper );
+    helperCursor.insertHtml( sigText );
+    sigText = helper.toPlainText();
+  }
+  return sigText;
 }
 
 #include "kmeditor.moc"
