@@ -105,3 +105,24 @@ QVariant AbstractProxyModel::headerData( int section, Qt::Orientation orientatio
   return sourceModel()->headerData(section, orientation, role);
 }
 
+bool AbstractProxyModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
+{
+  Q_ASSERT(sourceModel());
+  const QModelIndex sourceParent = mapToSource(parent);
+  return sourceModel()->dropMimeData(data, action, row, column, sourceParent);
+}
+
+QMimeData* AbstractProxyModel::mimeData( const QModelIndexList & indexes ) const
+{
+  Q_ASSERT(sourceModel());
+  QModelIndexList sourceIndexes;
+  foreach(const QModelIndex& index, indexes)
+    sourceIndexes << mapToSource(index);
+  return sourceModel()->mimeData(sourceIndexes);
+}
+
+QStringList AbstractProxyModel::mimeTypes() const
+{
+  Q_ASSERT(sourceModel());
+  return sourceModel()->mimeTypes();
+}

@@ -47,6 +47,11 @@ public:
 
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
+  // QAbstractProxyModel does not proxy all methods...
+  virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
+  virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
+  virtual QStringList mimeTypes() const;
+
 protected:
   void beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationRow);
   void endMoveRows();

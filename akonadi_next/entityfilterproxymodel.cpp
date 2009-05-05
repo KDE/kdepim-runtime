@@ -163,5 +163,27 @@ QVariant EntityFilterProxyModel::headerData(int section, Qt::Orientation orienta
   return sourceModel()->headerData(section, orientation, role);
 }
 
+bool EntityFilterProxyModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
+{
+  Q_ASSERT(sourceModel());
+  const QModelIndex sourceParent = mapToSource(parent);
+  return sourceModel()->dropMimeData(data, action, row, column, sourceParent);
+}
+
+QMimeData* EntityFilterProxyModel::mimeData( const QModelIndexList & indexes ) const
+{
+  Q_ASSERT(sourceModel());
+  QModelIndexList sourceIndexes;
+  foreach(const QModelIndex& index, indexes)
+    sourceIndexes << mapToSource(index);
+  return sourceModel()->mimeData(sourceIndexes);
+}
+
+QStringList EntityFilterProxyModel::mimeTypes() const
+{
+  Q_ASSERT(sourceModel());
+  return sourceModel()->mimeTypes();
+}
+
 #include "entityfilterproxymodel.moc"
 

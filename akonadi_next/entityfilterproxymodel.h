@@ -118,6 +118,11 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
 
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
+    // QAbstractProxyModel does not proxy all methods...
+    virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
+    virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
+    virtual QStringList mimeTypes() const;
+
   protected:
     virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const;
 
