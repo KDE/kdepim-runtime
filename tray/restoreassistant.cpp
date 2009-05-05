@@ -48,7 +48,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
                                       "make a backup first and please consider closing all Akonadi "
                                       "applications (but do not stop the akonadi server)." ) + "\n\n" );
 
-        m_selectFileButton = new QPushButton( i18n( "&Click here to select the file to restore..." ), box1 );
+        m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the File to Restore..." ), box1 );
         connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
 
         QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Restore" ), box1 );

@@ -47,7 +47,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
         label1->setText( '\n' + i18n( "Please select the file where to store "
                                       "the backup, give it the extension .tar.bz2" ) + "\n\n" );
 
-        m_selectFileButton = new QPushButton( i18n( "&Click here to select the Backup Location..." ), box1 );
+        m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the Backup Location..." ), box1 );
         connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
 
         QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Backup" ), box1 );

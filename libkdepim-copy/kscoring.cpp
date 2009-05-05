@@ -196,7 +196,7 @@ QString ActionBase::userName( int type )
   case COLOR:
     return i18n( "Colorize Header" );
   case MARKASREAD:
-    return i18n( "Mark As Read" );
+    return i18n( "Mark as Read" );
   default:
     kWarning(5100) <<"unknown type" << type <<" in ActionBase::userName()";
     return 0;
