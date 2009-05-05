@@ -34,9 +34,9 @@
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemMoveJob>
 
 #include <mailtransport/transport.h>
 #include <mailtransport/transportmanager.h>
@@ -380,22 +380,32 @@ void MailDispatcherAgent::Private::transportResult( KJob *job )
   if ( job->error() )
   {
     kWarning() << "TransportJob reported error...";
+    return;
+  }
+
+  if ( !sentMail.isValid() )
+  {
+    kWarning() << "Invalid sent-mail collection.";
+    return;
+  }
+
+  if ( !sentItems.contains( job ) )
+  {
+    kWarning() << "I know of no such job!";
+    return;
+  }
+
+  kDebug() << "TransportJob succeeded. Moving message to sent-mail.";
+  Item item = sentItems.value(job);
+  sentItems.remove(job);
+  ItemMoveJob *mjob = new ItemMoveJob(item, sentMail);
+  if ( mjob->exec() )
+  {
+      kDebug() << "Moved ok.";
   }
   else
   {
-    // TODO: move message to sent-mail
-    kDebug() << "TransportJob succeeded. Removing message from outbox.";
-    if ( !sentItems.contains( job ) )
-    {
-      kWarning() << "I know of no such job!";
-      return;
-    }
-
-    Item item = sentItems.value(job);
-    sentItems.remove(job);
-    ItemDeleteJob *job = new ItemDeleteJob(item);
-    // do we care about the result?
-    kDebug() << "ItemDeleteJob created.";
+      kWarning() << "MoveJob failed.";
   }
 }
 
