@@ -594,6 +594,9 @@ QMimeData *EntityTreeModel::mimeData( const QModelIndexList &indexes ) const
     } else if (Node::Item == node->type)
     {
       urls << d->m_items.value( node->id ).url( Item::UrlWithMimeType );
+    } else
+    { // if that happens something went horrible wrong
+      Q_ASSERT(false);
     }
   }
   urls.populateMimeData( data );
