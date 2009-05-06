@@ -14,6 +14,8 @@ set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
   contact.cpp
   kolabbase.cpp
+  kolabhandler.cpp
+  addressbookhandler.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 

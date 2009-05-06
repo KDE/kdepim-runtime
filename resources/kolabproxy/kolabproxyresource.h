@@ -22,18 +22,13 @@
 
 #include <akonadi/resourcebase.h>
 #include <QStringList>
-#include <boost/shared_ptr.hpp>
-#include <kmime/kmime_message.h>
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 
 namespace Akonadi {
   class Monitor;
 }
 
-namespace KABC{
-  class Addressee;
-}
+class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -56,7 +51,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapCollectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
     void imapCollectionRemoved(const Akonadi::Collection &collection);
     void imapCollectionChanged(const Akonadi::Collection &collection);
-    void createAddressEntry(const Akonadi::Item::List & addrs);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
 
@@ -66,14 +60,12 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-    bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
-    KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_colectionMonitor;
     QStringList m_managedCollections;
-    QList<Akonadi::Item::Id> m_monitoredCollections;
+    QMap<Akonadi::Item::Id, KolabHandler*> m_monitoredCollections;
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
