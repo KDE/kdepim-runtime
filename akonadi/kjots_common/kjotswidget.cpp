@@ -69,6 +69,8 @@
 #include <kdebug.h>
 #include "modeltest.h"
 
+#include <memory>
+
 using namespace Akonadi;
 using namespace Grantlee;
 
@@ -221,8 +223,10 @@ QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
   tl->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
   tl->setPluginDirs(KStd.findDirs("lib", QString()));
 
+
   tl->setTheme(themeName);
-  Template *t = tl->loadByName("template.html");
+
+  std::auto_ptr<Template> t ( tl->loadByName("template.html") );
   return t->render(&c);
 }
 
