@@ -4,6 +4,6 @@ Type=akonadi_vcard_resource
 Name=My Addressbook 
 
 [Settings]
-Path[$e]=~/.kde/share/apps/kabc/std.vcf
+Path[$e]=~/${KDE_DEFAULT_HOME}/share/apps/kabc/std.vcf
 AutosaveInterval=1
 
