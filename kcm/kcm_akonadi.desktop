@@ -14,6 +14,9 @@ X-KDE-CfgDlgHierarchy=
 X-KDE-System-Settings-Parent-Category=advanced-user-settings
 
 Name=Akonadi Configuration
+Name[sv]=Inställning av Akonadi
+Name[uk]=Налаштування Akonadi
+Name[zh_TW]=Akonadi 設定
 Comment=Configuration of the Akonadi Personal Information Management framework
 Comment[ca]=Configuració de l'entorn de gestió d'informació personal de l'Akonadi
 Comment[da]=Konfiguration af Akonadi - framework til håndtering af personlig information (PIM)
