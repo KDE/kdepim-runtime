@@ -86,7 +86,9 @@ private Q_SLOTS:
 
 private:
   QString rootRemoteId() const;
-  QString mailBoxRemoteId( const QString &path ) const;
+  QString remoteIdForMailBox( const QString &path ) const;
+  QString mailBoxForRemoteId( const QString &remoteId ) const;
+
   Akonadi::Collection collectionFromRemoteId( const QString &remoteId );
   Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );
   void itemsClear( const Akonadi::Collection &collection );

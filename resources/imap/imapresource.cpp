@@ -119,8 +119,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 {
     const QString remoteId = item.remoteId();
     const QStringList temp = remoteId.split( "-+-" );
-    QString mailBox = temp[0];
-    mailBox.replace( rootRemoteId(), "" );
+    const QString mailBox = mailBoxForRemoteId( temp[0] );
     const QByteArray uid = temp[1].toUtf8();
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -290,8 +289,7 @@ void ImapResource::startConnect( bool forceManualAuth )
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
-  QString mailBox = collection.remoteId();
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
 
   // save message to the server.
   MessagePtr msg = item.payload<MessagePtr>();
@@ -330,8 +328,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 {
   const QString remoteId = item.remoteId();
   const QStringList temp = remoteId.split( "-+-" );
-  QString mailBox = temp[0];
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( temp[0] );
   const QByteArray uid = temp[1].toUtf8();
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -376,8 +373,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 
   const QString remoteId = item.remoteId();
   const QStringList temp = remoteId.split( "-+-" );
-  QString mailBox = temp[0];
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( temp[0] );
   const QByteArray uid = temp[1].toUtf8();
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
@@ -441,8 +437,8 @@ void ImapResource::onMailBoxReceived( const QStringList &descriptor,
 
     Collection c;
     c.setName( pathPart );
-    c.setRemoteId( mailBoxRemoteId( currentPath ) );
-    c.setParentRemoteId( mailBoxRemoteId( parentPath ) );
+    c.setRemoteId( remoteIdForMailBox( currentPath ) );
+    c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
     c.setRights( Collection::AllRights );
     c.setContentMimeTypes( contentTypes );
 
@@ -488,8 +484,7 @@ void ImapResource::retrieveItems( const Collection &col )
     }
   }
 
-  QString mailBox = col.remoteId();
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( col.remoteId() );
 
   // First get the annotations from the mailbox if it's supported
   if ( m_capabilities.contains( "METADATA" ) || m_capabilities.contains( "ANNOTATEMORE" ) ) {
@@ -527,7 +522,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, qint64 uid, int /*
                                       boost::shared_ptr<KMime::Message> message )
 {
   Akonadi::Item i;
-  i.setRemoteId( mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid ) );
+  i.setRemoteId( remoteIdForMailBox( mailBox ) + "-+-" + QString::number( uid ) );
   i.setMimeType( "message/rfc822" );
   i.setPayload( MessagePtr( message ) );
   i.setSize( size );
@@ -557,8 +552,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
   Collection c = collection;
   c.setRemoteId( remoteName );
 
-  QString mailBox = remoteName;
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( remoteName );
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( m_session );
   job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
@@ -591,10 +585,8 @@ void ImapResource::collectionChanged( const Collection & collection )
   Collection c = collection;
   c.setRemoteId( newRemoteId );
 
-  QString oldMailBox = oldRemoteId;
-  oldMailBox.replace( rootRemoteId(), "" );
-  QString newMailBox = newRemoteId;
-  newMailBox.replace( rootRemoteId(), "" );
+  const QString oldMailBox = mailBoxForRemoteId( oldRemoteId );
+  const QString newMailBox = mailBoxForRemoteId( newRemoteId );
 
   KIMAP::RenameJob *job = new KIMAP::RenameJob( m_session );
   job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
@@ -616,7 +608,7 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
     // rename the collection again.
     kDebug() << "Failed to rename the folder, resetting it in akonadi again";
     collection.setName( rename->mailBox().split('/').last() );
-    collection.setRemoteId( mailBoxRemoteId( rename->mailBox() ) );
+    collection.setRemoteId( remoteIdForMailBox( rename->mailBox() ) );
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
   }
@@ -624,8 +616,7 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
-  QString mailBox = collection.remoteId();
-  mailBox.replace( rootRemoteId(), "" );
+  const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
 
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_session );
   job->setProperty( "akonadiCollection", QVariant::fromValue( collection ) );
@@ -769,7 +760,7 @@ void ImapResource::onSelectDone( KJob *job )
     processed.append( mailBox );
   }
 
-  Collection collection = collectionFromRemoteId( mailBoxRemoteId( mailBox ) );
+  Collection collection = collectionFromRemoteId( remoteIdForMailBox( mailBox ) );
   Q_ASSERT( collection.isValid() );
 
   // Get the current uid validity value and store it
@@ -939,9 +930,16 @@ QString ImapResource::rootRemoteId() const
   return "imap://"+m_userName+'@'+m_server+'/';
 }
 
-QString ImapResource::mailBoxRemoteId( const QString &path ) const
+QString ImapResource::remoteIdForMailBox( const QString &path ) const
 {
   return rootRemoteId()+path;
+}
+
+QString ImapResource::mailBoxForRemoteId( const QString &remoteId ) const
+{
+  QString path = remoteId;
+  path.replace( rootRemoteId(), "" );
+  return path;
 }
 
 Collection ImapResource::collectionFromRemoteId( const QString &remoteId )
