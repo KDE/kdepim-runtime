@@ -434,13 +434,13 @@ void ImapResource::onMailBoxReceived( const QList<QByteArray> &descriptor,
   contentTypes << "message/rfc822" << Collection::mimeType();
 
   foreach ( const QByteArray &pathPart, pathParts ) {
-    currentPath+='/'+pathPart;
+    currentPath+='/'+QString::fromUtf8( pathPart );
     if ( currentPath.startsWith( '/' ) ) {
       currentPath.remove( 0, 1 );
     }
 
     Collection c;
-    c.setName( pathPart );
+    c.setName( QString::fromUtf8( pathPart ) );
     c.setRemoteId( mailBoxRemoteId( currentPath ) );
     c.setParentRemoteId( mailBoxRemoteId( parentPath ) );
     c.setRights( Collection::AllRights );
@@ -527,7 +527,7 @@ void ImapResource::onHeadersReceived( const QByteArray &mailBox, qint64 uid, int
                                       boost::shared_ptr<KMime::Message> message )
 {
   Akonadi::Item i;
-  i.setRemoteId( mailBoxRemoteId( mailBox ) + "-+-" + QString::number( uid ) );
+  i.setRemoteId( mailBoxRemoteId( QString::fromUtf8( mailBox ) ) + "-+-" + QString::number( uid ) );
   i.setMimeType( "message/rfc822" );
   i.setPayload( MessagePtr( message ) );
   i.setSize( size );
@@ -769,7 +769,7 @@ void ImapResource::onSelectDone( KJob *job )
     processed.append( mailBox );
   }
 
-  Collection collection = collectionFromRemoteId( mailBoxRemoteId( mailBox ) );
+  Collection collection = collectionFromRemoteId( mailBoxRemoteId( QString::fromUtf8( mailBox ) ) );
   Q_ASSERT( collection.isValid() );
 
   // Get the current uid validity value and store it
