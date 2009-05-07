@@ -68,15 +68,15 @@ protected:
 private Q_SLOTS:
   void onLoginDone( KJob *job );
   void onCapabilitiesTestDone( KJob *job );
-  void onMailBoxReceived( const QList<QByteArray> &descriptor,
+  void onMailBoxReceived( const QStringList &descriptor,
                           const QList<QByteArray> &flags );
   void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
-  void onHeadersReceived( const QByteArray &mailBox, qint64 uid, int messageNumber,
+  void onHeadersReceived( const QString &mailBox, qint64 uid, int messageNumber,
                           qint64 size, QList<QByteArray> flags,
                           boost::shared_ptr<KMime::Message> message );
   void onHeadersFetchDone( KJob *job );
-  void onMessageReceived( const QByteArray &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
+  void onMessageReceived( const QString &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
   void onContentFetchDone( KJob *job );
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
