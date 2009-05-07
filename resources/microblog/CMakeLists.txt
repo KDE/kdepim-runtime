@@ -1,15 +1,4 @@
-# I know nothing about cmake, alter at will. toma
-## copied from elsewhere
-find_package(KDE4 REQUIRED)
-find_package(Boost REQUIRED)
-find_package(KdepimLibs REQUIRED)
-
-include (KDE4Defaults)
-include_directories (${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIR} ${QT_INCLUDES})
-
-include_directories(
-  ${Boost_INCLUDE_DIR}
-)
+include_directories( ${Boost_INCLUDE_DIR} )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
