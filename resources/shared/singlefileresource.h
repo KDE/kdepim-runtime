@@ -31,6 +31,7 @@
 #include <KStandardDirs>
 
 #include <QFile>
+#include <QDir>
 
 namespace Akonadi
 {
@@ -84,6 +85,13 @@ class SingleFileResource : public SingleFileResourceBase
         // check if the file does not exist yet, if so, create it
         if ( !QFile::exists( mCurrentUrl.path() ) ) {
           QFile f( mCurrentUrl.path() );
+
+          // first create try to create the directory the file should be located in
+          QDir dir = QFileInfo(f).dir();
+          if ( ! dir.exists() ) {
+            dir.mkpath( dir.path() );
+          }
+
           if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
             emit status( Idle, i18nc( "@info:status", "Ready" ) );
           } else {
