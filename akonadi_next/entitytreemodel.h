@@ -89,9 +89,12 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     enum Roles {
       CollectionRole = Qt::UserRole,          ///< The collection.
       CollectionIdRole,                       ///< The collection id.
-      ItemRole,                               ///< The Item
-      ItemIdRole,                             ///< The item id
-      MimeTypeRole,                           ///< The mimetype of the entity
+      //sebsauer, 2009-05-07; ItemRole, ItemIdRole and MimeTypeRole need to have with Akonadi::ItemModel compatible
+      //int-values cause ItemModel::Roles is still used in e.g. StandardActionManager::Private::slotDeleteItems() even
+      //if an EntityTreeModel rather then a ItemModel is used (like the case in kcontactmanager).
+      ItemRole = Qt::UserRole + 2,            ///< The Item
+      ItemIdRole = Qt::UserRole + 1,          ///< The item id
+      MimeTypeRole = Qt::UserRole + 3,        ///< The mimetype of the entity
       RemoteIdRole,                           ///< The remoteId of the entity
       CollectionChildOrderRole,               ///< Ordered list of child items if available
       UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
