@@ -40,6 +40,98 @@ public:
 
   virtual void setSourceModel ( QAbstractItemModel * sourceModel );
 
+  /**
+    @code
+    A
+    B
+    - C
+    - - D
+    - - - E
+    - F
+    G
+    @endcode
+
+
+    If B is selected,
+      If omit is true: the proxy shows two levels of items.
+
+      @code
+      B
+      - C
+      @endcode
+
+      else it shows all available levels:
+
+      @code
+      B
+      - C
+      - - D
+      - - - E
+      @endcode
+
+  */
+  void setOmitDescendants(bool omit);
+
+  /**
+    @code
+    A
+    B
+    - C
+    - - D
+    - - - E
+    - F
+    G
+    @endcode
+
+    If startWithChildTrees is true,
+      If B is selected, shows:
+
+      @code
+      C
+      - D
+      - - E
+      F
+      @endcode
+
+    else show:
+    @code
+      B
+      - C
+      - - D
+      - - - E
+      - F
+      @endcode
+  */
+  void setStartWithChildTrees(bool startWithChildTrees);
+
+  /**
+    @code
+    A
+    B
+    - C
+    - - D
+    - - - E
+    - F
+    G
+    @endcode
+
+    Normally, if B and C are selected, only B and descendants appear in the proxy model because C (as a descendant)
+    is already part of the model.
+
+    However, if startWithChildTrees is true and omitDescendants is true, @p includeAllSelected can be set to true
+    to process all selected indexes.
+
+    If B and D are selected, it shows:
+
+    @code
+    C
+    E
+    F
+    @endcode
+
+    This method has no effect if either startWithChildTrees or omitDescendants are false.
+  */
+  void setIncludeAllSelected(bool includeAllSelected);
 
   QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
   QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;

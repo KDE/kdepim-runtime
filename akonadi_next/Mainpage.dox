@@ -227,7 +227,7 @@ Note that it is important in this case to use the DescendantEntitesProxyModel be
 
 A SelectionProxyModel can be used to simplify managing selection in one view through multiple proxy models to a representation in another view. The selectionModel of the initial view is used to create a proxied model which includes only the selected indexes and their children.
 
-@code 
+@code
   collectionTree = new EntityFilterProxyModel(this);
   collectionTree->setSourceModel(entityTree);
 
@@ -236,7 +236,7 @@ A SelectionProxyModel can be used to simplify managing selection in one view thr
 
   treeview->setModel(collectionTree);
 
-  // SelectionProxyModel can handle complex selections:  
+  // SelectionProxyModel can handle complex selections:
   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   SelectionProxyModel *selProxy = new SelectionProxyModel(treeview->selectionModel(), this);
@@ -252,9 +252,11 @@ The SelectionProxyModel can handle complex selections.
 
 \image html selectionproxymodelmultipleselection.png "Non-contiguous selection creating a new simple model in a second view."
 
-If an index and one or more of its descendants are selected, only the top-most selected index (including all of its descendants) are included in the proxy model.
+If an index and one or more of its descendants are selected, only the top-most selected index (including all of its descendants) are included in the proxy model. (Though this is configurable. See below)
 
 \image html selectionproxymodelmultipleselection-withdescendant.png "Selecting an item and its descendant."
+
+SelectionProxyModel allows configuration using the methods setStartWithChildTrees, setOmitDescendants, setIncludeAllSelected. See testapp/proxymodeltestapp to try out the 5 valid configurations.
 
 Obviously, the SelectionProxyModel may be used in a view, or further processed with other proxy models. See the example_contacts application for example which uses a further DescendantEntitiesProxyModel and EntityFilterProxyModel on top of a SelectionProxyModel.
 

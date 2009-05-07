@@ -29,53 +29,99 @@
 #include "../descendantentitiesproxymodel.h"
 #include "../selectionproxymodel.h"
 
+#include "../modeltest.h"
+
 using namespace Akonadi;
 
 MainWindow::MainWindow() : KXmlGuiWindow()
 {
   QSplitter *vSplitter = new QSplitter( this );
+  QSplitter *hSplitter1 = new QSplitter ( Qt::Vertical, vSplitter );
+  QSplitter *hSplitter2 = new QSplitter ( Qt::Vertical, vSplitter );
 
   m_rootModel = new DynamicTreeModel(this);
 
   QList<int> ancestorRows;
 
   ModelInsertCommand *ins;
-  int max_runs = 5;
+  int max_runs = 4;
   for (int i = 0; i < max_runs; i++)
   {
     ins = new ModelInsertCommand(m_rootModel, this);
     ins->setAncestorRowNumbers(ancestorRows);
     ins->setStartRow(0);
-    ins->setEndRow(9);
+    ins->setEndRow(4);
     ins->doCommand();
     ancestorRows << 2;
   }
 
-  EntityTreeView *treeview = new EntityTreeView( vSplitter );
+  ancestorRows.clear();
+  ancestorRows << 3;
+  for (int i = 0; i < max_runs - 1; i++)
+  {
+    ins = new ModelInsertCommand(m_rootModel, this);
+    ins->setAncestorRowNumbers(ancestorRows);
+    ins->setStartRow(0);
+    ins->setEndRow(4);
+    ins->doCommand();
+    ancestorRows << 3;
+  }
+
+  QTreeView *treeview = new QTreeView( hSplitter1 );
   treeview->setModel(m_rootModel);
   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  QSplitter *hSplitter1 = new QSplitter ( Qt::Vertical, vSplitter );
+//   DescendantEntitiesProxyModel *descProxyModel = new DescendantEntitiesProxyModel(this);
+//   descProxyModel->setSourceModel(m_rootModel);
 
-  DescendantEntitiesProxyModel *descProxyModel = new DescendantEntitiesProxyModel(this);
-  descProxyModel->setSourceModel(m_rootModel);
+//   QTreeView *descView = new QTreeView( hSplitter1 );
+//   descView->setModel(descProxyModel);
 
-  EntityTreeView *descView = new EntityTreeView( hSplitter1 );
-  descView->setModel(descProxyModel);
+  SelectionProxyModel *selProxyModel1 = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxyModel1->setSourceModel(m_rootModel);
 
-  QSplitter *vSplitter2 = new QSplitter ( Qt::Horizontal, hSplitter1 );
+//   new ModelTest(selProxyModel, this);
 
-  SelectionProxyModel *selProxyModel = new SelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel->setSourceModel(m_rootModel);
+  QTreeView *selView1 = new QTreeView( hSplitter2 );
+  selView1->setModel(selProxyModel1);
 
-  EntityTreeView *selView = new EntityTreeView( vSplitter2 );
-  selView->setModel(selProxyModel);
+  SelectionProxyModel *selProxyModel2 = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxyModel2->setSourceModel(m_rootModel);
+  selProxyModel2->setStartWithChildTrees(true);
 
-  DescendantEntitiesProxyModel *descProxyModel2 = new DescendantEntitiesProxyModel(this);
-  descProxyModel2->setSourceModel(selProxyModel);
+  QTreeView *selView2 = new QTreeView( hSplitter1 );
+  selView2->setModel(selProxyModel2);
 
-  EntityTreeView *descView2 = new EntityTreeView( vSplitter2 );
-  descView2->setModel(descProxyModel2);
+  SelectionProxyModel *selProxyModel3 = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxyModel3->setSourceModel(m_rootModel);
+  selProxyModel3->setOmitDescendants(true);
+
+  QTreeView *selView3 = new QTreeView( hSplitter2 );
+  selView3->setModel(selProxyModel3);
+
+  SelectionProxyModel *selProxyModel4 = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxyModel4->setSourceModel(m_rootModel);
+  selProxyModel4->setStartWithChildTrees(true);
+  selProxyModel4->setOmitDescendants(true);
+
+  QTreeView *selView4 = new QTreeView( hSplitter1 );
+  selView4->setModel(selProxyModel4);
+
+  SelectionProxyModel *selProxyModel5 = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxyModel5->setSourceModel(m_rootModel);
+  selProxyModel5->setStartWithChildTrees(true);
+  selProxyModel5->setOmitDescendants(true);
+  selProxyModel5->setIncludeAllSelected(true);
+
+  QTreeView *selView5 = new QTreeView( hSplitter2 );
+  selView5->setModel(selProxyModel5);
+
+
+//   DescendantEntitiesProxyModel *descProxyModel2 = new DescendantEntitiesProxyModel(this);
+//   descProxyModel2->setSourceModel(selProxyModel);
+
+//   QTreeView *descView2 = new QTreeView( vSplitter2 );
+//   descView2->setModel(descProxyModel2);
 
   setCentralWidget( vSplitter );
 }
