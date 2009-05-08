@@ -24,10 +24,10 @@ install( FILES vcarddirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 kde4_add_executable(akonadi_vcarddir_resource RUN_UNINSTALLED ${vcarddirresource_SRCS})
 target_link_libraries(akonadi_vcarddir_resource
-  ${KDE4_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${KDE4_KDECORE_LIBS}
-  ${KDE4_KABC_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
   ${KDE4_KIO_LIBS}
 )
 

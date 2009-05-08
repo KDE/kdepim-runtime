@@ -30,7 +30,7 @@ qt4_add_dbus_adaptor(mboxresource_SRCS
 
 kde4_add_executable(akonadi_mbox_resource RUN_UNINSTALLED ${mboxresource_SRCS})
 
-target_link_libraries(akonadi_mbox_resource mbox ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDE4_KMIME_LIBS})
+target_link_libraries(akonadi_mbox_resource mbox ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
 install(TARGETS akonadi_mbox_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

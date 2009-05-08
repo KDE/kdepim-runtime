@@ -19,9 +19,9 @@ kde4_add_executable(akonadi_birthdays_resource RUN_UNINSTALLED ${birthdayresourc
 
 target_link_libraries(akonadi_birthdays_resource
   ${KDE4_KIO_LIBS}
-  ${KDE4_AKONADI_LIBS}
-  ${KDE4_KABC_LIBS}
-  ${KDE4_KCAL_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
+  ${KDEPIMLIBS_KCAL_LIBS}
 )
 
 install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )

@@ -19,6 +19,6 @@ install( FILES kcalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/a
 
 kde4_add_executable(akonadi_kcal_resource RUN_UNINSTALLED ${kcalresource_SRCS})
 
-target_link_libraries(akonadi_kcal_resource ${KDE4_AKONADI_LIBS} akonadi-kcal ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KCAL_LIBS} ${KDE4_KIO_LIBS})
+target_link_libraries(akonadi_kcal_resource ${KDEPIMLIBS_AKONADI_LIBS} akonadi-kcal ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_kcal_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

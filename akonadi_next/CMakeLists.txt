@@ -40,10 +40,10 @@ target_link_libraries(akonadi_next
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTGUI_LIBRARY}
-                      ${KDE4_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
-                      ${KDE4_KABC_LIBS}
-                      ${KDE4_KMIME_LIBS}
+                      ${KDEPIMLIBS_KABC_LIBS}
+                      ${KDEPIMLIBS_KMIME_LIBS}
 )
 
 set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )

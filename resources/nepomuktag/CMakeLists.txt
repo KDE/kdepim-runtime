@@ -15,7 +15,7 @@ qt4_add_dbus_adaptor( nepomuktagresource_SRCS
      )
 kde4_add_executable(akonadi_nepomuktag_resource RUN_UNINSTALLED ${nepomuktagresource_SRCS})
 
-target_link_libraries(akonadi_nepomuktag_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES} )
+target_link_libraries(akonadi_nepomuktag_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES} )
 
 install(TARGETS akonadi_nepomuktag_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

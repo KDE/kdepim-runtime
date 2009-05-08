@@ -11,10 +11,10 @@ kde4_add_executable(akonadi_nepomuk_contact_feeder RUN_UNINSTALLED nepomukcontac
 
 target_link_libraries(akonadi_nepomuk_contact_feeder
   nie
-  ${KDE4_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
-  ${KDE4_KABC_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
   ${NEPOMUK_LIBRARIES}
   ${SOPRANO_LIBRARIES}
   ${KDE4_KDECORE_LIBS}

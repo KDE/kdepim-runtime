@@ -16,11 +16,11 @@ target_link_libraries(akonadi_nepomuk_email_feeder
   nie
   ${SOPRANO_LIBRARIES}
   ${KDE4_KDEUI_LIBRARY}
-  ${KDE4_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
   akonadi-kmime
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
-  ${KDE4_KMIME_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
   ${NEPOMUK_LIBRARIES}
   )
 

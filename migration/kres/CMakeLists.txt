@@ -21,10 +21,10 @@ add_resource_iface( birthdays/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.S
 kde4_add_app_icon(kres-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kres-migrator ${kres-migrator_srcs})
 target_link_libraries(kres-migrator
-    ${KDE4_AKONADI_LIBS}
+    ${KDEPIMLIBS_AKONADI_LIBS}
     ${KDE4_KRESOURCE_LIBS}
-    ${KDE4_KABC_LIBS}
-    ${KDE4_KCAL_LIBS}
+    ${KDEPIMLIBS_KABC_LIBS}
+    ${KDEPIMLIBS_KCAL_LIBS}
     ${KDE4_KDECORE_LIBS}
     ${QT_QTGUI_LIBRARY}
 )

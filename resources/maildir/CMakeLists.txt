@@ -29,7 +29,7 @@ qt4_add_dbus_adaptor(maildirresource_SRCS
 
 kde4_add_executable(akonadi_maildir_resource RUN_UNINSTALLED ${maildirresource_SRCS})
 
-target_link_libraries(akonadi_maildir_resource ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDE4_KMIME_LIBS})
+target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
 install(TARGETS akonadi_maildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

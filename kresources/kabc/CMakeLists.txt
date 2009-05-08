@@ -10,7 +10,7 @@ ${RESOURCE_AKONADI_SHARED_SOURCES} )
 
 kde4_add_plugin(kabc_akonadi ${kabc_akonadi_SRCS})
 
-target_link_libraries(kabc_akonadi ${KDE4_KABC_LIBS} ${KDE4_AKONADI_LIBS} ${KDE4_KUTILS_LIBS})
+target_link_libraries(kabc_akonadi ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KUTILS_LIBS})
 
 
 install(TARGETS kabc_akonadi  DESTINATION ${PLUGIN_INSTALL_DIR} )

@@ -22,8 +22,8 @@ qt4_wrap_ui(kabcakonadi_LIB_SRC kabcitemeditor.ui)
 qt4_wrap_ui(kabcakonadi_LIB_SRC contactgroupeditor.ui)
 kde4_add_library(akonadi-kabccommon SHARED ${kabcakonadi_LIB_SRC})
 
-target_link_libraries(akonadi-kabccommon ${KDE4_AKONADI_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KDEUI_LIBS})
-target_link_libraries(akonadi-kabccommon LINK_INTERFACE_LIBRARIES ${KDE4_AKONADI_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KDEUI_LIBS})
+target_link_libraries(akonadi-kabccommon ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KDEUI_LIBS})
+target_link_libraries(akonadi-kabccommon LINK_INTERFACE_LIBRARIES ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KDEUI_LIBS})
 
 set_target_properties(akonadi-kabccommon PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
 
