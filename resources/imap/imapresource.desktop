@@ -2,6 +2,7 @@
 Name=Akonadi Imap
 Name[de]=Akonadi-Imap
 Name[ga]=IMAP Akonadi
+Name[gl]=Imap de Akonadi
 Name[nn]=Akonadi-IMAP
 Name[pt]=IMAP do Akonadi
 Name[pt_BR]=IMAP Akonadi
@@ -12,6 +13,7 @@ Comment[de]=Verbindet zu einem IMAP-Server. Basiert auf der KIMAP-Bibliothek der
 Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισμένο στη βιβλιοθήκη IMAP του kdepimlibs.
 Comment[et]=Ühendumine IMAP-serveriga. Tugineb KIMAP-ile kdepimlibs'ist.
 Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar KIMAP as kdepimlibs.
+Comment[gl]=Conecta cun servidor de IMAP. Baseado en KIMAP de kdepimlibs.
 Comment[nb]=Kobler til en IMAP-tjener. Basert på KIMAP  fra kdepimlibs.
 Comment[nn]=Koplar til ein IMAP-tenar. Basert på KIMAP frå kdepimlibs.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.

@@ -14,6 +14,7 @@ X-KDE-CfgDlgHierarchy=
 X-KDE-System-Settings-Parent-Category=advanced-user-settings
 
 Name=Akonadi Configuration
+Name[gl]=Configuración do Akonadi 
 Name[pt]=Configuração do Akonadi
 Name[pt_BR]=Configuração do Akonadi
 Name[sv]=Inställning av Akonadi
