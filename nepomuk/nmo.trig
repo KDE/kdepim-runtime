@@ -3,14 +3,15 @@
 @prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
 @prefix nfo:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix tmo:     <http://www.semanticdesktop.org/ontologies/2008/05/20/tmo#> .
 @prefix protege:  <http://protege.stanford.edu/system#> .
 @prefix nmo:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix nexif:   <http://www.semanticdesktop.org/ontologies/2007/05/10/nexif#> .
 @prefix ncal:    <http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#> .
+@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
 @prefix dcterms:  <http://purl.org/dc/terms/> .
 @prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
-@prefix pimo:    <http://www.semanticdesktop.org/ontologies/2007/11/01/pimo#> .
 @prefix geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
 @prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
@@ -21,7 +22,7 @@ nmo: {nmo:IMMessage
           a       rdfs:Class ;
           rdfs:comment "A message sent with Instant Messaging software." ;
           rdfs:label "IMMessage" ;
-          rdfs:subClassOf nmo:Message .
+          rdfs:subClassOf nmo:MimeEntity , nmo:Message .
 
     nmo:Email
           a       rdfs:Class ;
@@ -118,7 +119,7 @@ nmo: {nmo:IMMessage
 
     nmo:messageId
           a       rdf:Property ;
-          rdfs:comment "An identifier of a message. This property has been inspired by the message-id property defined in RFC 2822, Sec. 3.6.4. It should be used for all kinds of identifiers used by various messaging applications to connect multiple messages into conversations." ;
+          rdfs:comment "An identifier of a message. This property has been inspired by the message-id property defined in RFC 2822, Sec. 3.6.4. It should be used for all kinds of identifiers used by various messaging applications to connect multiple messages into conversations. For email messageids, values are according to RFC2822/sec 3.6.4 and the literal value in RDF must include the brackets." ;
           rdfs:domain nmo:Message ;
           rdfs:label "messageId" ;
           rdfs:range xsd:string ;
@@ -131,6 +132,12 @@ nmo: {nmo:IMMessage
           rdfs:label "receivedDate" ;
           rdfs:range xsd:dateTime ;
           rdfs:subPropertyOf dc:date .
+
+    nmo:MimeEntity
+          a       rdfs:Class ;
+          rdfs:comment "A MIME entity, as defined in RFC2045, Section 2.4." ;
+          rdfs:label "MimeEntity" ;
+          rdfs:subClassOf nie:InformationElement .
 
     nmo:replyTo
           a       rdf:Property ;
@@ -245,7 +252,7 @@ content defaults to the value specified by the 'mimeType' property.""" ;
                   "http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#" ;
           nao:hasDefaultNamespaceAbbreviation
                   "nmo" ;
-          nao:lastModified "2008-02-06T14:35:29.031Z" ;
+          nao:lastModified "2008-10-05T19:45:56.656Z" ;
           nao:status "Unstable" ;
           nao:updatable "0 " ;
           nao:version "Revision-8" .
