@@ -63,10 +63,6 @@ add_subdirectory(defaultsetup)
 #endif(OPENSYNC_FOUND)
 add_subdirectory(akonadi_next)
 
-if(Nepomuk_FOUND)
-  add_subdirectory(nepomuk)
-endif(Nepomuk_FOUND)
-
 #### MIME type spezializations
 
 set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
