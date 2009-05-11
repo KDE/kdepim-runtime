@@ -456,9 +456,8 @@ KScoringExpression::KScoringExpression( const QString &h, const QString &t,
   }
 
   neg = ng.toInt();
-  c_header = header.toLatin1();
 
-  kDebug(5100) <<"new expr:" << c_header << t
+  kDebug(5100) <<"new expr:" << header << t
                << expr_str << neg;
 }
 
@@ -550,7 +549,7 @@ bool KScoringExpression::match( ScorableArticle &a ) const
   } else if ( header == "Subject" ) {
     head = a.subject();
   } else {
-    head = a.getHeaderByType(c_header);
+    head = a.getHeaderByType( header );
   }
 
   if ( !head.isEmpty() ) {

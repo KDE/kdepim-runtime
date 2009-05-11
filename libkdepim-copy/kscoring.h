@@ -217,7 +217,6 @@ class KDEPIM_EXPORT KScoringExpression
   private:
     bool neg;
     QString header;
-    const char *c_header;
     Condition cond;
     QRegExp expr;
     QString expr_str;
