@@ -13,9 +13,12 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
   contact.cpp
+  event.cpp
+  incidence.cpp
   kolabbase.cpp
   kolabhandler.cpp
   addressbookhandler.cpp
+  calendarhandler.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 

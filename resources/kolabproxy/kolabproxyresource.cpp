@@ -136,8 +136,7 @@ bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> 
 
 void KolabProxyResource::aboutToQuit()
 {
-  // TODO: any cleanup you need to do while there is still an active
-  // event loop. The resource will terminate after this method returns
+  qDeleteAll(m_monitoredCollections);
 }
 
 void KolabProxyResource::configure( WId windowId )

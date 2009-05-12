@@ -16,28 +16,31 @@
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
+
+#ifndef CALENDARHANDLER_H
+#define CALENDARHANDLER_H
+
 #include "kolabhandler.h"
-#include "addressbookhandler.h"
-#include "calendarhandler.h"
+#include <kcal/event.h>
+#include <boost/shared_ptr.hpp>
+typedef boost::shared_ptr<KCal::Event> EventPtr;
 
-KolabHandler::KolabHandler()
-{
-}
+/**
+	@author Andras Mantia <amantia@kde.org>
+*/
+class CalendarHandler : public KolabHandler {
+public:
+    CalendarHandler();
 
-KolabHandler *KolabHandler::createHandler(const QByteArray& type)
-{
-  if (type ==  "contact.default" || type ==  "contact") {
-    return new AddressBookHandler;
-  } else if (type ==  "event.default" || type ==  "event") {
-    return new CalendarHandler;
-  } else {
-    return 0L;
-  }
-}
+    virtual ~CalendarHandler();
+    
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
+    virtual Akonadi::Item toKolabFormat(const Akonadi::Item& item);
+    
+private:
+    bool calendarFromKolab(MessagePtr data, EventPtr &calendarEvent);
+    KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
+};
 
-KolabHandler::~KolabHandler()
-{
-}
-
-
+#endif
