@@ -95,6 +95,7 @@ KMime::Content* CalendarHandler::findContent(MessagePtr data, const QByteArray &
 
 Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
 {
+  Akonadi::Item imapItem;
 /*  KABC::Addressee addressee = item.payload<KABC::Addressee>();
   Kolab::Contact contact(&addressee, 0);
   
@@ -145,6 +146,6 @@ Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
   }
 
   imapItem.setPayload<MessagePtr>(message);
-
-  return imapItem;*/
+*/
+  return imapItem;
 }
