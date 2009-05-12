@@ -1,7 +1,7 @@
 /****************************************************************************** *
  *
- *  File : filter.h
- *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
+ *  File : condition.cpp
+ *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,33 +23,77 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#include "condition.h"
 
-#include "config-akonadi-filter.h"
-
-#include <QString>
-
-class QTextStream;
+#include "data.h"
 
 namespace Akonadi
 {
-
-#if 0
-namespace Filter
+namespace Filter 
+{
+namespace Condition
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+Base::Base( ConditionType type, Component * parent )
+  : Component( ComponentTypeCondition, parent ), mConditionType( type )
+{
+  Q_ASSERT( parent );
+}
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+Base::~Base()
+{
+}
+
+bool Base::matches( Data * data )
+{
+  return false;
+}
+
+
+Multi::Multi( ConditionType type, Component * parent )
+  : Base( type, parent )
+{
+}
+
+Multi::~Multi()
+{
+  qDeleteAll( mChildConditions );
+}
+
+
+
+And::And( Component * parent )
+  : Multi( ConditionTypeAnd, parent )
+{
+}
+
+And::~And()
+{
+}
+
+bool And::matches( Data * data )
+{
+  return false;
+}
+
+
+Or::Or( Component * parent )
+  : Multi( ConditionTypeOr, parent )
+{
+}
+
+Or::~Or()
+{
+}
+
+bool Or::matches( Data * data )
+{
+  return false;
+}
+
+} // namespace Condition
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_

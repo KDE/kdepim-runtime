@@ -18,7 +18,19 @@ configure_file(
 
 set(
 		AKONADI_FILTER_LIB_SRCS
+		action.cpp
+		afldecoder.cpp
+		component.cpp
+		componentfactory.cpp
+		condition.cpp
+		decoder.cpp
+		data.cpp
+		encoder.cpp
 		filter.cpp
+		program.cpp
+		rule.cpp
+		sievedecoder.cpp
+		sievereader.cpp
 	)
 
 kde4_add_library(

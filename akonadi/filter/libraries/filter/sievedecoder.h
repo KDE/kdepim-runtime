@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : filter.h
+ *  File : sievedecoder.h
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,33 +23,64 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#ifndef _AKONADI_FILTER_IO_SIEVEDECODER_H_
+#define _AKONADI_FILTER_IO_SIEVEDECODER_H_
 
 #include "config-akonadi-filter.h"
 
-#include <QString>
-
-class QTextStream;
+#include "decoder.h"
 
 namespace Akonadi
 {
-
-#if 0
 namespace Filter
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+class Program;
+class Rule;
+class Component;
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+namespace Condition
+{
+  class Base;
+} // namespace Condition;
+
+namespace IO
+{
+
+namespace Private
+{
+  class SieveReader;
+} // namespace Private
+
+class AKONADI_FILTER_EXPORT SieveDecoder : public Decoder
+{
+  friend class Private::SieveReader;
+public:
+  SieveDecoder( ComponentFactory * componentFactory );
+  ~SieveDecoder();
+protected:
+  Program * mProgram; // the currently parsed program
+
+  Component * mCurrentComponent; // the component we're 'in'
+  bool mGotError;
+public:
+
+  virtual Program * run();
+protected:
+  void onCommandStart( const QString & identifier );
+  void onCommandEnd();
+  void onTestStart( const QString & identifier );
+  void onTestEnd();
+  void onTestListStart();
+  void onTestListEnd();
+  void onError( const QString &error );
+
+};
+
+} // namespace IO
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_
+#endif //!_AKONADI_FILTER_IO_DECODER_H_

@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : filter.h
+ *  File : afldecoder.h
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,33 +23,48 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#ifndef _AKONADI_FILTER_IO_AFLDECODER_H_
+#define _AKONADI_FILTER_IO_AFLDECODER_H_
 
 #include "config-akonadi-filter.h"
 
-#include <QString>
-
-class QTextStream;
+#include "decoder.h"
 
 namespace Akonadi
 {
-
-#if 0
 namespace Filter
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+class Program;
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+namespace IO
+{
+
+class AKONADI_FILTER_EXPORT AFLDecoder : public Decoder
+{
+public:
+  AFLDecoder( ComponentFactory * componentFactory );
+  virtual ~AFLDecoder();
+protected:
+  const QChar * mCurrentChar;
+  int mCurrentLine;
+  Program * mProgram;
+public:
+
+  virtual Program * run();
+protected:
+  void parseComment();
+  void nextChar();
+  bool parseDeclaration();
+  bool extractIdentifier( QString &buffer );
+  bool fatal( const QString &error );
+  bool fatalUnexpectedCharacter( const QString &where );
+};
+
+} // namespace IO
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_
+#endif //!_AKONADI_FILTER_IO_DECODER_H_

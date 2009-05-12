@@ -25,162 +25,17 @@
 
 #include "filter.h"
 
-#include <ksieve/parser.h>
-#include <ksieve/error.h>
-#include <ksieve/scriptbuilder.h>
+#include "sievereader.h" // private header
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QByteArray>
 
+
 namespace Akonadi
 {
 
-class SieveReader : public KSieve::ScriptBuilder
-{
-public:
-  SieveReader( Filter * filter );
-  ~SieveReader();
-protected:
-  virtual void taggedArgument( const QString & tag );
-  virtual void stringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment );
-  virtual void numberArgument( unsigned long number, char quantifier );
-
-  virtual void stringListArgumentStart();
-  virtual void stringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment );
-  virtual void stringListArgumentEnd();
-
-  virtual void commandStart( const QString & identifier );
-  virtual void commandEnd();
-
-  virtual void testStart( const QString & identifier );
-  virtual void testEnd();
-
-  virtual void testListStart();
-  virtual void testListEnd();
-
-  virtual void blockStart();
-  virtual void blockEnd();
-
-  virtual void hashComment( const QString & comment );
-  virtual void bracketComment( const QString & comment );
-
-  virtual void lineFeed();
-
-  virtual void error( const KSieve::Error & error );
-
-  virtual void finished();
-
-protected:
-  Filter * mFilter;
-};
-
-SieveReader::SieveReader( Filter * filter )
-  : KSieve::ScriptBuilder(), mFilter( filter )
-{
-}
-
-SieveReader::~SieveReader()
-{
-}
-
-
-void SieveReader::taggedArgument( const QString & tag )
-{
-  qDebug( "Tagged argument '%s'", tag.toUtf8().data() );
-}
-
-void SieveReader::stringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment )
-{
-  qDebug( "String argument '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
-}
-
-void SieveReader::numberArgument( unsigned long number, char quantifier )
-{
-  qDebug( "Number argument %lu (quantifier=%d)", number, quantifier );
-}
-
-void SieveReader::stringListArgumentStart()
-{
-  qDebug( "String list argument start" );
-}
-
-void SieveReader::stringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
-{
-  qDebug( "String list entry '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
-}
-
-void SieveReader::stringListArgumentEnd()
-{
-  qDebug( "String list argument end" );
-}
-
-void SieveReader::commandStart( const QString & identifier )
-{
-  qDebug( "Command start '%s'", identifier.toUtf8().data() );
-}
-
-void SieveReader::commandEnd()
-{
-  qDebug( "Command end" );
-}
-
-void SieveReader::testStart( const QString & identifier )
-{
-  qDebug( "Test start '%s'", identifier.toUtf8().data() );
-}
-
-void SieveReader::testEnd()
-{
-  qDebug( "Test end" );
-}
-
-void SieveReader::testListStart()
-{
-  qDebug( "Test list start" );
-}
-
-void SieveReader::testListEnd()
-{
-  qDebug( "Test list end" );
-}
-
-void SieveReader::blockStart()
-{
-  qDebug( "Block start" );
-}
-
-void SieveReader::blockEnd()
-{
-  qDebug( "Block end" );
-}
-
-void SieveReader::hashComment( const QString & comment )
-{
-  qDebug( "Hash comment ('%s')", comment.toUtf8().data() );
-}
-
-void SieveReader::bracketComment( const QString & comment )
-{
-  qDebug( "Bracket comment ('%s')", comment.toUtf8().data() );
-}
-
-void SieveReader::lineFeed()
-{
-  qDebug( "Line feed" );
-}
-
-void SieveReader::error( const KSieve::Error & error )
-{
-  qDebug( "Error: %s", error.asString().toUtf8().data() );
-}
-
-void SieveReader::finished()
-{
-  qDebug( "Finished" );
-}
-
-
+#if 0
 
 Filter::Filter()
 {
@@ -237,6 +92,6 @@ bool Filter::saveSieveScript( QTextStream &stream )
   return true;
 }
 
-
+#endif
 
 } // namespace Akonadi

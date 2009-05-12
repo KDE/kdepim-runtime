@@ -1,7 +1,7 @@
 /****************************************************************************** *
  *
- *  File : filter.h
- *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
+ *  File : componentfactory.cpp
+ *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,33 +23,46 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
-
-#include "config-akonadi-filter.h"
-
-#include <QString>
-
-class QTextStream;
+#include "componentfactory.h"
+#include "program.h"
+#include "action.h"
+#include "condition.h"
+#include "rule.h"
 
 namespace Akonadi
 {
-
-#if 0
-namespace Filter
+namespace Filter 
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+ComponentFactory::ComponentFactory()
+{
+}
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+ComponentFactory::~ComponentFactory()
+{
+}
+
+Program * ComponentFactory::createProgram( Component * parent )
+{
+  return new Program( parent );
+}
+
+Rule * ComponentFactory::createRule( Component * parent )
+{
+  return new Rule( parent );
+}
+
+Condition::And * ComponentFactory::createAndCondition( Component * parent )
+{
+  return new Condition::And( parent );
+}
+
+Condition::Or * ComponentFactory::createOrCondition( Component * parent )
+{
+  return new Condition::Or( parent );
+}
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_

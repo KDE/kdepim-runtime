@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : filter.h
+ *  File : decoder.h
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,33 +23,57 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#ifndef _AKONADI_FILTER_IO_DECODER_H_
+#define _AKONADI_FILTER_IO_DECODER_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
 
-class QTextStream;
-
 namespace Akonadi
 {
-
-#if 0
 namespace Filter
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+class ComponentFactory;
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+namespace IO
+{
+
+class AKONADI_FILTER_EXPORT Decoder
+{
+public:
+  Decoder( ComponentFactory * componentFactory );
+  virtual ~Decoder();
+protected:
+  ComponentFactory * mComponentFactory;
+  QString mLastError;
+
+public:
+
+  /**
+   * Returns the last error occured in this component execution run.
+   */
+  const QString & lastError() const
+  {
+    return mLastError;
+  }
+
+  void setLastError( const QString &error )
+  {
+    mLastError = error;
+  }
+
+  ComponentFactory * componentFactory() const
+  {
+    return mComponentFactory;
+  }
+};
+
+} // namespace IO
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_
+#endif //!_AKONADI_FILTER_IO_DECODER_H_

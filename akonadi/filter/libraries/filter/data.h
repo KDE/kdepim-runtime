@@ -1,7 +1,7 @@
 /****************************************************************************** *
  *
- *  File : filter.h
- *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
+ *  File : data.h
+ *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,33 +23,25 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#ifndef _AKONADI_FILTER_DATA_H_
+#define _AKONADI_FILTER_DATA_H_
 
 #include "config-akonadi-filter.h"
 
-#include <QString>
-
-class QTextStream;
-
 namespace Akonadi
 {
-
-#if 0
 namespace Filter
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
-
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+class AKONADI_FILTER_EXPORT Data
+{
+public:
+  Data();
+  virtual ~Data();
+};
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_
+#endif //!_AKONADI_FILTER_DATA_H_

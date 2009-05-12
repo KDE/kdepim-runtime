@@ -1,7 +1,7 @@
 /****************************************************************************** *
  *
- *  File : filter.h
- *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
+ *  File : program.cpp
+ *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,33 +23,57 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#include "program.h"
 
-#include "config-akonadi-filter.h"
-
-#include <QString>
-
-class QTextStream;
+#include <QObject>
 
 namespace Akonadi
 {
-
-#if 0
-namespace Filter
+namespace Filter 
 {
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+Program::Program( Component * parent )
+  : Component( ComponentTypeProgram, parent )
+{
+}
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+Program::~Program()
+{
+  qDeleteAll( mRuleList );
+}
+
+bool Program::run( Data * data )
+{
+  Q_ASSERT( data );
+
+  setLastError( QString() );
+
+  foreach ( Rule * rule, mRuleList )
+  {
+    switch ( rule->execute( data ) )
+    {
+      case SuccessAndContinue:
+        // okie, move on
+      break;
+      case SuccessAndStop:
+        // okie, but stop
+        return true;
+      break;
+      case Failure:
+        setLastError( QObject::tr( "Rule execution failed: %1" ).arg( rule->lastError() ) );
+        return false;
+      break;
+      default:
+        Q_ASSERT( false ); // invalid rule execution result
+        return false;
+      break;
+    }
+  }
+
+  return true;
+}
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_
