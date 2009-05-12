@@ -73,7 +73,7 @@ bool TreeWidget::saveLayout( KConfigGroup &group, const QString &keyName ) const
 {
   group.writeEntry(
       keyName.isEmpty() ? QString( KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY ) : keyName,
-      QVariant( header()->saveState() )
+      QVariant( header()->saveState().toHex() )
     );
 
   return true;
@@ -95,6 +95,7 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
                              keyName.isEmpty() ? QString( KPIM_TREEWIDGET_DEFAULT_CONFIG_KEY ) : keyName,
                              QVariant( QVariant::ByteArray )
                          ).toByteArray();
+  state = QByteArray::fromHex( state );
 
   if( state.isEmpty() )
     return false;
