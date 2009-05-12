@@ -100,6 +100,8 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
   if( state.isEmpty() )
     return false;
 
+  int cc = header()->count();
+
   // Qt writes also some options that can be set only
   // programmatically. This can drive you crazy if you
   // first setup the view and then restore the layout:
@@ -113,6 +115,10 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
   //int defaultSectionSize = header()->defaultSectionSize();
   int minimumSectionSize = header()->minimumSectionSize();
   bool cascadingSectionResizes = header()->cascadingSectionResizes();
+  QVector<QHeaderView::ResizeMode> resizeModes( cc );
+  for ( int i = 0 ; i < cc ; ++i ) {
+    resizeModes[ i ] = header()->resizeMode( i );
+  }
 
   // Qt (4.4) will perform a layout based on the stored column sizes
   // when restoreState() is called. However, there is an issue
@@ -121,12 +127,10 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
   // of the last section if that is actually greater than the stored
   // value. This is very likely to throw the last section out of
   // the view and cause a horizontal scroll bar to appear even
-  // if it wasn't present when saveState() was called. 
+  // if it wasn't present when saveState() was called.
   // This seems to be a Qt buggie and we workaround it by
   // setting all the sections sizes to something very small
   // just before calling restoreState().
-
-  int cc = header()->count();
 
   // we also need to save the current sections sizes in order to remain
   // consistent if restoreState() fails for some reason.
@@ -151,7 +155,11 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
   header()->setDefaultAlignment( originalDefaultAlignment );
   header()->setMinimumSectionSize( minimumSectionSize );
   header()->setCascadingSectionResizes( cascadingSectionResizes );
-  header()->setStretchLastSection( lastSectionWasStretched ); 
+  header()->setStretchLastSection( lastSectionWasStretched );
+  for ( int i = 0 ; i < cc ; ++i ) {
+    header()->setResizeMode( i, resizeModes[ i ] );
+  }
+
   // FIXME: This would cause the sections to be resized and thus
   //        can't be reliably reset after the configuration
   //        has been read. Can do nothing about that except warning
