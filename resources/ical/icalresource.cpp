@@ -79,21 +79,23 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   const QString rid = item.remoteId();
-  IncidencePtr incidence( mCalendar->incidence( rid )->clone() );
+  Incidence* incidence = mCalendar->incidence( rid );
   if ( !incidence ) {
     emit error( i18n("Incidence with uid '%1' not found.", rid ) );
     return false;
   }
+
+  IncidencePtr incidencePtr( incidence->clone() );
 
   Item i = item;
   QString mimeType;
   if ( isNotesResource() )
     mimeType = mNotesMimeType;
   else
-    mimeType = mMimeVisitor->mimeType( incidence.get() );
+    mimeType = mMimeVisitor->mimeType( incidencePtr.get() );
 
   i.setMimeType( mimeType );
-  i.setPayload<IncidencePtr>( incidence );
+  i.setPayload<IncidencePtr>( incidencePtr );
   itemRetrieved( i );
   return true;
 }
