@@ -71,8 +71,8 @@ protected:
 private Q_SLOTS:
   void onLoginDone( KJob *job );
   void onCapabilitiesTestDone( KJob *job );
-  void onMailBoxReceived( const KIMAP::MailBoxDescriptor &descriptor,
-                          const QList<QByteArray> &flags );
+  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
+                            const QList< QList<QByteArray> > &flags );
   void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
   void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,

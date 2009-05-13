@@ -416,60 +416,74 @@ void ImapResource::retrieveCollections()
 
   KIMAP::ListJob *listJob = new KIMAP::ListJob( m_session );
   listJob->setIncludeUnsubscribed( true );
-  connect( listJob, SIGNAL( mailBoxReceived(KIMAP::MailBoxDescriptor, QList<QByteArray>) ),
-           this, SLOT( onMailBoxReceived(KIMAP::MailBoxDescriptor, QList<QByteArray>) ) );
+  connect( listJob, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
+           this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
   listJob->start();
 }
 
-void ImapResource::onMailBoxReceived( const KIMAP::MailBoxDescriptor &descriptor,
-                                      const QList<QByteArray> &flags )
+void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > &descriptors,
+                                        const QList< QList<QByteArray> > &flags )
 {
-  QStringList pathParts = descriptor.name.split(descriptor.separator);
-  QString separator = descriptor.separator;
+  QStringList reportedPaths = sender()->property("reportedPaths").toStringList();
 
-  QString parentPath;
-  QString currentPath;
   Collection::List collections;
-
   QStringList contentTypes;
   contentTypes << "message/rfc822" << Collection::mimeType();
 
-  foreach ( const QString &pathPart, pathParts ) {
-    currentPath+='/'+pathPart;
-    if ( currentPath.startsWith( '/' ) ) {
-      currentPath.remove( 0, 1 );
+  for ( int i=0; i<descriptors.size(); ++i ) {
+    KIMAP::MailBoxDescriptor descriptor = descriptors[i];
+
+    QStringList pathParts = descriptor.name.split(descriptor.separator);
+    QString separator = descriptor.separator;
+
+    QString parentPath;
+    QString currentPath;
+
+    foreach ( const QString &pathPart, pathParts ) {
+      currentPath+='/'+pathPart;
+      if ( currentPath.startsWith( '/' ) ) {
+        currentPath.remove( 0, 1 );
+      }
+
+      if ( reportedPaths.contains( currentPath ) ) {
+        parentPath = currentPath;
+        continue;
+      } else {
+        reportedPaths << currentPath;
+      }
+
+      Collection c;
+      c.setName( pathPart );
+      c.setRemoteId( remoteIdForMailBox( currentPath ) );
+      c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
+      c.setRights( Collection::AllRights );
+      c.setContentMimeTypes( contentTypes );
+
+      CachePolicy cachePolicy;
+      cachePolicy.setInheritFromParent( false );
+      cachePolicy.setIntervalCheckTime( -1 );
+      cachePolicy.setSyncOnDemand( true );
+
+      // If the folder is the Inbox, make some special settings.
+      if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
+        cachePolicy.setIntervalCheckTime( 1 );
+        c.setName( "Inbox" );
+      }
+
+      // If this folder is a noselect folder, make some special settings.
+      if ( flags[i].contains( "\\NoSelect" ) ) {
+        cachePolicy.setSyncOnDemand( false );
+        c.addAttribute( new NoSelectAttribute( true ) );
+      }
+
+      c.setCachePolicy( cachePolicy );
+
+      collections << c;
+      parentPath = currentPath;
     }
-
-    Collection c;
-    c.setName( pathPart );
-    c.setRemoteId( remoteIdForMailBox( currentPath ) );
-    c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
-    c.setRights( Collection::AllRights );
-    c.setContentMimeTypes( contentTypes );
-
-    CachePolicy cachePolicy;
-    cachePolicy.setInheritFromParent( false );
-    cachePolicy.setIntervalCheckTime( -1 );
-    cachePolicy.setSyncOnDemand( true );
-
-    // If the folder is the Inbox, make some special settings.
-    if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-      cachePolicy.setIntervalCheckTime( 1 );
-      c.setName( "Inbox" );
-    }
-
-    // If this folder is a noselect folder, make some special settings.
-    if ( flags.contains( "\\NoSelect" ) ) {
-      cachePolicy.setSyncOnDemand( false );
-      c.addAttribute( new NoSelectAttribute( true ) );
-    }
-
-    c.setCachePolicy( cachePolicy );
-
-    collections << c;
-    parentPath = currentPath;
   }
 
+  sender()->setProperty("reportedPaths", reportedPaths);
   collectionsRetrievedIncremental( collections, Collection::List() );
 }
 
