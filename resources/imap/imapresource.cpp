@@ -120,7 +120,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     const QString remoteId = item.remoteId();
     const QStringList temp = remoteId.split( "-+-" );
     const QString mailBox = mailBoxForRemoteId( temp[0] );
-    const QByteArray uid = temp[1].toUtf8();
+    const qint64 uid = temp[1].toLongLong();
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
     select->setMailBox( mailBox );
@@ -129,29 +129,34 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     fetch->setProperty( "akonadiItem", QVariant::fromValue( item ) );
     KIMAP::FetchJob::FetchScope scope;
     fetch->setUidBased( true );
-    fetch->setSequenceSet( uid+':'+uid );
+    fetch->setSequenceSet( KIMAP::ImapSet( uid ) );
     scope.parts.clear();// = parts.toList();
     scope.mode = KIMAP::FetchJob::FetchScope::Content;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( messageReceived( QString, qint64, int, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onMessageReceived( QString, qint64, int, boost::shared_ptr<KMime::Message> ) ) );
-    connect( fetch, SIGNAL( partReceived( QString, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ),
-             this, SLOT( onPartReceived( QString, qint64, int, QByteArray, boost::shared_ptr<KMime::Content> ) ) );
+    connect( fetch, SIGNAL( messagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onMessagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
+             this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onContentFetchDone( KJob* ) ) );
     fetch->start();
     return true;
 }
 
-void ImapResource::onMessageReceived( const QString &mailBox, qint64 uid, int /*messageNumber*/, boost::shared_ptr<KMime::Message> message )
+void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                       const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( sender() );
   Q_ASSERT( fetch!=0 );
+  Q_ASSERT( uids.size()==1 );
+  Q_ASSERT( messages.size()==1 );
 
   Item i = fetch->property( "akonadiItem" ).value<Item>();
 
   kDebug() << "MESSAGE from Imap server" << i.remoteId();
   Q_ASSERT( i.isValid() );
+
+  KIMAP::MessagePtr message = messages[messages.keys().first()];
 
   i.setMimeType( "message/rfc822" );
   i.setPayload( MessagePtr( message ) );
@@ -329,16 +334,16 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
   const QString remoteId = item.remoteId();
   const QStringList temp = remoteId.split( "-+-" );
   const QString mailBox = mailBoxForRemoteId( temp[0] );
-  const QByteArray uid = temp[1].toUtf8();
+  const qint64 uid = temp[1].toLongLong();
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
   select->start();
   KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
   store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
-  store->setProperty( "itemUid", uid.toLongLong() );
+  store->setProperty( "itemUid", uid );
   store->setUidBased( true );
-  store->setSequenceSet( uid+':'+uid );
+  store->setSequenceSet( KIMAP::ImapSet( uid ) );
   store->setFlags( item.flags().toList() );
   store->setMode( KIMAP::StoreJob::SetFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
@@ -374,7 +379,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   const QString remoteId = item.remoteId();
   const QStringList temp = remoteId.split( "-+-" );
   const QString mailBox = mailBoxForRemoteId( temp[0] );
-  const QByteArray uid = temp[1].toUtf8();
+  const qint64 uid = temp[1].toLongLong();
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
@@ -383,7 +388,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
   store->setProperty( "itemRemoval", true );
   store->setUidBased( true );
-  store->setSequenceSet( uid+':'+uid );
+  store->setSequenceSet( KIMAP::ImapSet( uid ) );
   store->setFlags( QList<QByteArray>() << "\\Deleted" );
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
@@ -411,16 +416,16 @@ void ImapResource::retrieveCollections()
 
   KIMAP::ListJob *listJob = new KIMAP::ListJob( m_session );
   listJob->setIncludeUnsubscribed( true );
-  connect( listJob, SIGNAL( mailBoxReceived(QStringList, QList<QByteArray>) ),
-           this, SLOT( onMailBoxReceived(QStringList, QList<QByteArray>) ) );
+  connect( listJob, SIGNAL( mailBoxReceived(KIMAP::MailBoxDescriptor, QList<QByteArray>) ),
+           this, SLOT( onMailBoxReceived(KIMAP::MailBoxDescriptor, QList<QByteArray>) ) );
   listJob->start();
 }
 
-void ImapResource::onMailBoxReceived( const QStringList &descriptor,
+void ImapResource::onMailBoxReceived( const KIMAP::MailBoxDescriptor &descriptor,
                                       const QList<QByteArray> &flags )
 {
-  QStringList pathParts = descriptor;
-  QString separator = pathParts.takeFirst();
+  QStringList pathParts = descriptor.name.split(descriptor.separator);
+  QString separator = descriptor.separator;
 
   QString parentPath;
   QString currentPath;
@@ -517,22 +522,28 @@ void ImapResource::retrieveItems( const Collection &col )
   select->start();
 }
 
-void ImapResource::onHeadersReceived( const QString &mailBox, qint64 uid, int /*messageNumber*/,
-                                      qint64 size, QList<QByteArray> flags,
-                                      boost::shared_ptr<KMime::Message> message )
+void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                      const QMap<qint64, qint64> &sizes,
+                                      const QMap<qint64, KIMAP::MessageFlags> &flags,
+                                      const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
-  Akonadi::Item i;
-  i.setRemoteId( remoteIdForMailBox( mailBox ) + "-+-" + QString::number( uid ) );
-  i.setMimeType( "message/rfc822" );
-  i.setPayload( MessagePtr( message ) );
-  i.setSize( size );
+  Item::List addedItems;
 
-  foreach( const QByteArray &flag, flags ) {
-    i.setFlag( flag );
+  foreach ( qint64 number, uids.keys() ) {
+    Akonadi::Item i;
+    i.setRemoteId( remoteIdForMailBox( mailBox ) + "-+-" + QString::number( uids[number] ) );
+    i.setMimeType( "message/rfc822" );
+    i.setPayload( MessagePtr( messages[number] ) );
+    i.setSize( sizes[number] );
+
+    foreach( const QByteArray &flag, flags[number] ) {
+      i.setFlag( flag );
+    }
+    kDebug() << "Flags: " << i.flags();
+    addedItems << i;
   }
-  kDebug() << "Flags: " << i.flags();
 
-  itemsRetrievedIncremental( Item::List() << i, Item::List() );
+  itemsRetrievedIncremental( addedItems, Item::List() );
 }
 
 void ImapResource::onHeadersFetchDone( KJob */*job*/ )
@@ -590,8 +601,8 @@ void ImapResource::collectionChanged( const Collection & collection )
 
   KIMAP::RenameJob *job = new KIMAP::RenameJob( m_session );
   job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
-  job->setMailBox( oldMailBox );
-  job->setNewMailBox( newMailBox );
+  job->setSourceMailBox( oldMailBox );
+  job->setDestinationMailBox( newMailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
   job->start();
 }
@@ -607,8 +618,8 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
 
     // rename the collection again.
     kDebug() << "Failed to rename the folder, resetting it in akonadi again";
-    collection.setName( rename->mailBox().split('/').last() );
-    collection.setRemoteId( remoteIdForMailBox( rename->mailBox() ) );
+    collection.setName( rename->sourceMailBox().split('/').last() );
+    collection.setRemoteId( remoteIdForMailBox( rename->sourceMailBox() ) );
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
   }
@@ -748,7 +759,7 @@ void ImapResource::onSelectDone( KJob *job )
   const QString mailBox = select->mailBox();
   const int messageCount = select->messageCount();
   const qint64 uidValidity = select->uidValidity();
-  const int nextUid = select->nextUid();
+  const qint64 nextUid = select->nextUid();
   const QList<QByteArray> flags = select->flags();
 
   // uidvalidity can change between sessions, we don't want to refetch
@@ -819,12 +830,14 @@ void ImapResource::onSelectDone( KJob *job )
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
-    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -852,12 +865,14 @@ void ImapResource::onSelectDone( KJob *job )
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
-    fetch->setSequenceSet( QByteArray::number( realMessageCount+1 )+':'+QByteArray::number( messageCount ) );
+    fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -872,12 +887,14 @@ void ImapResource::onSelectDone( KJob *job )
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
-    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
@@ -893,12 +910,14 @@ void ImapResource::onSelectDone( KJob *job )
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     KIMAP::FetchJob::FetchScope scope;
-    fetch->setSequenceSet( "1:"+QByteArray::number( messageCount ) );
+    fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ),
-             this, SLOT( onHeadersReceived( QString, qint64, int, qint64, QList<QByteArray>, boost::shared_ptr<KMime::Message> ) ) );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();

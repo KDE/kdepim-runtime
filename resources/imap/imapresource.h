@@ -29,6 +29,9 @@ class KJob;
 #include <boost/shared_ptr.hpp>
 #include <QtCore/QStringList>
 
+#include <kimap/fetchjob.h>
+#include <kimap/listjob.h>
+
 namespace KMime
 {
   class Message;
@@ -68,15 +71,16 @@ protected:
 private Q_SLOTS:
   void onLoginDone( KJob *job );
   void onCapabilitiesTestDone( KJob *job );
-  void onMailBoxReceived( const QStringList &descriptor,
+  void onMailBoxReceived( const KIMAP::MailBoxDescriptor &descriptor,
                           const QList<QByteArray> &flags );
   void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
-  void onHeadersReceived( const QString &mailBox, qint64 uid, int messageNumber,
-                          qint64 size, QList<QByteArray> flags,
-                          boost::shared_ptr<KMime::Message> message );
+  void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                          const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
+                          const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onHeadersFetchDone( KJob *job );
-  void onMessageReceived( const QString &mailBox, qint64 uid, int messageNumber, boost::shared_ptr<KMime::Message> message );
+  void onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                           const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onContentFetchDone( KJob *job );
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
