@@ -42,12 +42,15 @@
 #include <mailtransport/transportmanager.h>
 #include <mailtransport/transportjob.h>
 
+#include <outboxinterface/localfolders.h>
+
 #include <akonadi/kmime/messageparts.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
+using namespace OutboxInterface;
 
 
 class MailDispatcherAgent::Private
@@ -69,73 +72,43 @@ class MailDispatcherAgent::Private
     QMap < KJob *, Akonadi::Item > sentItems;
 
 
-    void updateMonitoredCollections();
+    void getCollections();
 
-    // slots from MailDispatcherAgent:
+    // slots:
+    void localFoldersReady();
     void itemFetchDone( KJob *job );
     void transportResult( KJob *job );
 
 };
 
 
-void MailDispatcherAgent::Private::updateMonitoredCollections()
+void MailDispatcherAgent::Private::getCollections()
 {
-  const Entity::Id outboxId = Settings::self()->outbox();
-  if ( outbox.id() != outboxId ) // it changed
-  {
-    // stop monitoring the old collection
-    if ( outbox.isValid() )
-    {
-      q->changeRecorder()->setCollectionMonitored( outbox, false );
-    }
+  LocalFolders *folders = LocalFolders::self(); //triggers loading/creating collections
+  connect( folders, SIGNAL( foldersReady() ), q, SLOT( localFoldersReady() ) );
 
-    outbox = Collection();
-    if ( outboxId != -1 )
-    {
-      CollectionFetchJob *job = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
-      if ( job->exec() )
-      {
-        Collection::List collections = job->collections();
-        if ( collections.size() == 1 )
-        {
-          outbox = collections.first();
-        }
-      }
-    }
+  // TODO: how to make sure that nothing (like idemAdded) will happen until localFoldersReady?
+}
 
-    // start monitoring the new collection
-    if ( outbox.isValid() )
-    {
-      kDebug() << "maildispatcheragent: Monitoring collection ("
-               << outbox.id() << "," << outbox.name() << ") as outbox.";
-      q->changeRecorder()->setCollectionMonitored( outbox, true );
-    }
+void MailDispatcherAgent::Private::localFoldersReady()
+{
+  LocalFolders *folders = LocalFolders::self();
+  // TODO is it ok to assign collections like this?
+  outbox = folders->outbox();
+  sentMail = folders->sentMail();
+
+  // start monitoring outbox
+  if( !outbox.isValid() ) {
+    kFatal() << "invalid outbox collection.";
   }
+  kDebug() << "outbox collection (" << outbox.id() << "," << outbox.name() << ").";
+  q->changeRecorder()->setCollectionMonitored( outbox, true );
 
-  const Entity::Id sentId = Settings::self()->sentMail();
-  if ( sentMail.id() != sentId )
-  {
-    // we do not monitor the sent-mail collection, only keep track of it.
-    sentMail = Collection();
-    if ( sentId != -1 )
-    {
-      CollectionFetchJob *job = new CollectionFetchJob( Collection( sentId ), CollectionFetchJob::Base );
-      if ( job->exec() )
-      {
-        Collection::List collections = job->collections();
-        if ( collections.size() == 1 )
-        {
-          sentMail = collections.first();
-        }
-      }
-    }
-
-    if ( sentMail.isValid() )
-    {
-      kDebug() << "maildispatcheragent: SentMail collection was changed to ("
-               << sentMail.id() << "," << sentMail.name() << ").";
-    }
+  if( !sentMail.isValid() ) {
+    // non-fatal: some users don't have a sent-mail folder at all
+    kWarning() << "invalid sent-mail collection.";
   }
+  kDebug() << "sent-mail collection (" << sentMail.id() << "," << sentMail.name() << ").";
 }
 
 
@@ -160,7 +133,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   //changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().fetchPayloadPart( MessagePart::Envelope );
 
-  d->updateMonitoredCollections();
+  d->getCollections();
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
@@ -176,14 +149,7 @@ MailDispatcherAgent::~MailDispatcherAgent()
 
 void MailDispatcherAgent::configure( WId windowId )
 {
-  ConfigDialog dlg;
-  if ( windowId )
-  {
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  }
-  dlg.exec();
-
-  d->updateMonitoredCollections();
+  kDebug() << "I have no options; you can't break me.";
 }
 
 void MailDispatcherAgent::doSetOnline( bool online )
