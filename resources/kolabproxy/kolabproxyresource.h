@@ -53,6 +53,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapCollectionChanged(const Akonadi::Collection &collection);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
+    void imapCollectionFetched(KJob *job);
+    void retrieveItemFetchDone(KJob *);
 
   protected:
     virtual void aboutToQuit();

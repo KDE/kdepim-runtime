@@ -24,6 +24,7 @@
 #include <kcal/event.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KCal::Event> EventPtr;
+typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -33,12 +34,12 @@ public:
     CalendarHandler();
 
     virtual ~CalendarHandler();
-    
+
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
     virtual Akonadi::Item toKolabFormat(const Akonadi::Item& item);
-    
+
 private:
-    bool calendarFromKolab(MessagePtr data, EventPtr &calendarEvent);
+    KCal::Event * calendarFromKolab(MessagePtr data);
     KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
 };

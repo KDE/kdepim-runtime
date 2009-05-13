@@ -36,15 +36,18 @@ CalendarHandler::~CalendarHandler()
 
 Akonadi::Item::List CalendarHandler::translateItems(const Akonadi::Item::List & items)
 {
+  kDebug() << "translateItems";
   Akonadi::Item::List newItems;
   Q_FOREACH(Akonadi::Item item, items)
   {
 //     kDebug() << item.id();
     MessagePtr payload = item.payload<MessagePtr>();
-    EventPtr event(new KCal::Event);
-    if (calendarFromKolab(payload, event)) {
+    KCal::Event *e = calendarFromKolab(payload);
+    if (e) {
       Akonadi::Item newItem("text/directory");
       newItem.setRemoteId(QString::number(item.id()));
+      kDebug() << "Event : " << e << e->organizer().email();
+      EventPtr event(e);
       newItem.setPayload<EventPtr>(event);
       newItems << newItem;
     }
@@ -53,15 +56,16 @@ Akonadi::Item::List CalendarHandler::translateItems(const Akonadi::Item::List & 
   return newItems;
 }
 
-bool CalendarHandler::calendarFromKolab(MessagePtr data, EventPtr &calendarEvent)
+KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
 {
-  KMime::Content *xmlContent  = findContent(data, "application/x-vnd.kolab.contact");
+  KMime::Content *xmlContent  = findContent(data, "application/x-vnd.kolab.event");
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
 
     //FIXME: read the tz
-    EventPtr e(Kolab::Event::xmlToEvent(QString::fromLatin1(xmlData), QString() ));
+    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromLatin1(xmlData), QString() );
+    kDebug() << "calendarFromKolab" << calendarEvent << calendarEvent->organizer().email();
 //     QString pictureAttachmentName = contact.pictureAttachmentName();
 //     if (!pictureAttachmentName.isEmpty()) {
 //       KMime::Content *imgContent = findContent(data, "image/png");
@@ -74,11 +78,10 @@ bool CalendarHandler::calendarFromKolab(MessagePtr data, EventPtr &calendarEvent
 //         contact.setPicture(image);
 //       }
 //     }
-    calendarEvent = e;
 //     event->saveTo(&calendarEvent);
-    return true;
+    return calendarEvent;
   }
-  return false;
+  return 0L;
 }
 
 KMime::Content* CalendarHandler::findContent(MessagePtr data, const QByteArray &type)
@@ -95,21 +98,23 @@ KMime::Content* CalendarHandler::findContent(MessagePtr data, const QByteArray &
 
 Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
 {
+  kDebug() << "toKolabFormat";
   Akonadi::Item imapItem;
+  IncidencePtr e(item.payload<IncidencePtr>());
+
 /*  KABC::Addressee addressee = item.payload<KABC::Addressee>();
   Kolab::Contact contact(&addressee, 0);
-  
-  Akonadi::Item imapItem;
+*/
   imapItem.setMimeType( "message/rfc822" );
 
   MessagePtr message(new KMime::Message);
   QString header;
-  header += "From: " + addressee.fullEmail() + "\n";
-  header += "Subject: " + addressee.uid() + "\n";
+  header += "From: " /*+ addressee.fullEmail() + */"\n";
+  header += "Subject: " /*+ addressee.uid() + */"\n";
 //   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: application/x-vnd.kolab.contact\n\n\n";
+  header += "X-Kolab-Type: application/x-vnd.kolab.event\n\n\n";
   message->setContent(header.toLatin1());
 
   KMime::Content *content = new KMime::Content();
@@ -122,30 +127,13 @@ Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
   message->addContent(content);
 
   content = new KMime::Content();
-  header = "Content-Type: application/x-vnd.kolab.contact; name=\"kolab.xml\"\n";
+  header = "Content-Type: application/x-vnd.kolab.event; name=\"kolab.xml\"\n";
   header += "Content-Transfer-Encoding: 7bit\n"; //FIXME 7bit???
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
-  content->setBody(contact.saveXML().toUtf8());
+//   content->setBody(Kolab::Event::eventToXML(e.get(), "").toUtf8());
   message->addContent(content);
 
-  if (!contact.pictureAttachmentName().isEmpty()) {
-    header = "Content-Type: image/png; name=\"kolab-picture.png\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"kolab-picture.png\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
-    QByteArray pic;
-    QBuffer buffer(&pic);
-    buffer.open(QIODevice::WriteOnly);
-    contact.picture().save(&buffer, "PNG");
-    buffer.close();
-    content->setBody(pic.toBase64());
-    message->addContent(content);
-
-  }
-
   imapItem.setPayload<MessagePtr>(message);
-*/
   return imapItem;
 }
