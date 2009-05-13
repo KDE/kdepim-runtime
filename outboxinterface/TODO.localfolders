@@ -1,0 +1,14 @@
+* qAddPostRoutine( destroyStaticLocalFolders );
+  -> when exactly is this going to be called?
+* I copied the code from TransportManager and changed most of it.
+  I deleted all of the D-Bus code.  Do we want that here?
+  I also removed the Q_SCRIPTABLE before the public methods.  Documented where?
+  I also removed the locale code.  This class has no user-visible strings.
+* if merging into mt, fix transportmanager.h -> it uses strings that are /
+  should be defined in mailtransport_defs.h
+* is it worth it to use something like KSharedConfig in LocalFolders::Private?
+* see StaticLocalFolders comment
+* figure out a better name (than outboxinterface), or decide whether to merge
+  into mailtransport???
+* make sense of CMakeLists.txt... (current version mostly stolen from here and
+  there)
