@@ -365,14 +365,8 @@ void MailDispatcherAgent::Private::transportResult( KJob *job )
   Item item = sentItems.value(job);
   sentItems.remove(job);
   ItemMoveJob *mjob = new ItemMoveJob(item, sentMail);
-  if ( mjob->exec() )
-  {
-      kDebug() << "Moved ok.";
-  }
-  else
-  {
-      kWarning() << "MoveJob failed.";
-  }
+  // TODO: care about the result
+  kDebug() << "MoveJob created.";
 }
 
 
