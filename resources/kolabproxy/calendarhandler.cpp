@@ -44,9 +44,8 @@ Akonadi::Item::List CalendarHandler::translateItems(const Akonadi::Item::List & 
     MessagePtr payload = item.payload<MessagePtr>();
     KCal::Event *e = calendarFromKolab(payload);
     if (e) {
-      Akonadi::Item newItem("text/directory");
+      Akonadi::Item newItem("text/calendar");
       newItem.setRemoteId(QString::number(item.id()));
-      kDebug() << "Event : " << e << e->organizer().email();
       EventPtr event(e);
       newItem.setPayload<EventPtr>(event);
       newItems << newItem;
