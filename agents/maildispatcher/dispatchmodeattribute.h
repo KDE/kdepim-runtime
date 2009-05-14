@@ -23,7 +23,6 @@
 #include <QDateTime>
 
 #include <Akonadi/Attribute>
-#include <Akonadi/Entity>
 
 
 /**

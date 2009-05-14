@@ -20,10 +20,7 @@
 #ifndef TRANSPORTATTRIBUTE_H
 #define TRANSPORTATTRIBUTE_H
 
-#include <QDateTime>
-
 #include <Akonadi/Attribute>
-#include <Akonadi/Entity>
 
 
 namespace MailTransport
@@ -57,4 +54,4 @@ class TransportAttribute : public Akonadi::Attribute
 };
 
 
-#endif // DISPATCHMODEATTRIBUTE_H
+#endif // TRANSPORTATTRIBUTE_H

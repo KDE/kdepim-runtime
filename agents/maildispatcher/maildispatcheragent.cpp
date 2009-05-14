@@ -151,6 +151,7 @@ MailDispatcherAgent::~MailDispatcherAgent()
 
 void MailDispatcherAgent::configure( WId windowId )
 {
+  Q_UNUSED( windowId );
   kDebug() << "I have no options; you can't break me.";
 }
 
