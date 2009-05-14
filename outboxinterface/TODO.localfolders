@@ -12,3 +12,11 @@
   into mailtransport???
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
+
+
+* use K_GLOBAL_STATIC for singleton
+* Q_SCRIPTABLE is for marking methods as dbus methods.  With cmake magic one
+  can get an XML definition and header out of that.
+
+* fix corner case -- it's not as hard as I thought. after fetching
+  collections, just make sure they belong to the right resource.

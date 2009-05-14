@@ -92,11 +92,6 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
     LocalFolders();
 
   private:
-    // TODO: does it make sense to move these to the ::Private?
-    void readConfig();
-    void writeConfig();
-
-  private:
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void createResourceIfNeeded() )

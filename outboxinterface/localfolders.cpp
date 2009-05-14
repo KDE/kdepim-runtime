@@ -47,6 +47,9 @@ class LocalFolders::Private
     Private( LocalFolders *parent )
       : q( parent )
     {
+      ready = false;
+      config = new KConfig( QLatin1String( "localfolders" ) );
+      readConfig();
     }
     ~Private()
     {
@@ -87,6 +90,10 @@ class LocalFolders::Private
 
     // slot called by job fetching a collection
     void collectionFetchResult( KJob *job );
+
+    void readConfig();
+    void writeConfig();
+
 };
 
 void LocalFolders::Private::createResourceIfNeeded()
@@ -237,7 +244,7 @@ void LocalFolders::Private::collectionFetchResult( KJob *job )
 
     Q_ASSERT( !ready );
     ready = true;
-    q->writeConfig();
+    writeConfig();
     emit q->foldersReady();
   }
 }
@@ -263,8 +270,6 @@ LocalFolders::LocalFolders()
 
   // KGlobal::locale()->insertCatalog( QLatin1String( "libmailtransport" ) );
   qAddPostRoutine( destroyStaticLocalFolders );
-  d->ready = false;
-  d->config = new KConfig( QLatin1String( "localfolders" ) );
 }
 
 LocalFolders::~LocalFolders()
@@ -280,7 +285,6 @@ LocalFolders *LocalFolders::self()
   if ( !sSelf ) {
     // TODO why not just sSelf = new LocalFolders???
     sSelf = new StaticLocalFolders;
-    sSelf->readConfig();
   }
   return sSelf;
 }
@@ -297,28 +301,28 @@ Collection LocalFolders::sentMail() const
   return d->sentMail;
 }
 
-void LocalFolders::readConfig()
+void LocalFolders::Private::readConfig()
 {
-  KConfigGroup group( d->config, "General" );
+  KConfigGroup group( config, "General" );
   // TODO test these. Entity::Id is a typedef for qint64.
-  d->resourceId = group.readEntry( "resource-id", QString("") );
-  d->outboxId = group.readEntry( "outbox-id", Entity::Id(-1) );
-  d->sentMailId = group.readEntry( "sent-mail-id", Entity::Id(-1) );
-  kDebug() << "resource" << d->resourceId << "outbox" << d->outboxId
-           << "sent-mail" << d->sentMailId;
-  d->createResourceIfNeeded(); // will emit foldersReady()
+  resourceId = group.readEntry( "resource-id", QString("") );
+  outboxId = group.readEntry( "outbox-id", Entity::Id(-1) );
+  sentMailId = group.readEntry( "sent-mail-id", Entity::Id(-1) );
+  kDebug() << "resource" << resourceId << "outbox" << outboxId
+           << "sent-mail" << sentMailId;
+  createResourceIfNeeded(); // will emit foldersReady()
 }
 
-void LocalFolders::writeConfig()
+void LocalFolders::Private::writeConfig()
 {
-  kDebug() << "resource" << d->resourceId << "outbox" << d->outboxId
-           << "sent-mail" << d->sentMailId;
+  kDebug() << "resource" << resourceId << "outbox" << outboxId
+           << "sent-mail" << sentMailId;
 
-  KConfigGroup group( d->config, "General" );
-  group.writeEntry( "resource-id", d->resourceId );
-  group.writeEntry( "outbox-id", d->outboxId );
-  group.writeEntry( "sent-mail-id", d->sentMailId );
-  d->config->sync();
+  KConfigGroup group( config, "General" );
+  group.writeEntry( "resource-id", resourceId );
+  group.writeEntry( "outbox-id", outboxId );
+  group.writeEntry( "sent-mail-id", sentMailId );
+  config->sync();
 }
 
 
