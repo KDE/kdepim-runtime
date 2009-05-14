@@ -25,6 +25,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( maildispatcheragent_SRCS
   maildispatcheragent.cpp
+  addressattribute.cpp
   dispatchmodeattribute.cpp
   transportattribute.cpp
   configdialog.cpp

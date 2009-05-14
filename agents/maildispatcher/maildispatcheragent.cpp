@@ -20,6 +20,7 @@
 #include "maildispatcheragent.h"
 
 #include "configdialog.h"
+#include "addressattribute.h"
 #include "dispatchmodeattribute.h"
 #include "transportattribute.h"
 #include "settings.h"
@@ -118,6 +119,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     d( new Private( this ) )
 {
   // register attributes
+  AttributeFactory::registerAttribute<AddressAttribute>();
   AttributeFactory::registerAttribute<DispatchModeAttribute>();
   AttributeFactory::registerAttribute<TransportAttribute>();
 
