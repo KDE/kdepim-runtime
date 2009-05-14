@@ -4,7 +4,7 @@ find_package(Akonadi REQUIRED)
 include(KDE4Defaults)
 
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
-include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
 
 # TODO: 5324 is mailtransport. we need one of our own!
 add_definitions( -DKDE_DEFAULT_DEBUG_AREA=5324 )
