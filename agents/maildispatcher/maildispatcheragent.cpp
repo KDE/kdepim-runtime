@@ -21,6 +21,7 @@
 
 #include "configdialog.h"
 #include "dispatchmodeattribute.h"
+#include "transportattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -118,6 +119,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
 {
   // register attributes
   AttributeFactory::registerAttribute<DispatchModeAttribute>();
+  AttributeFactory::registerAttribute<TransportAttribute>();
 
   kDebug() << "maildispatcheragent: At your service, sir!";
 
