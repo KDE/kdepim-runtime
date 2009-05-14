@@ -107,19 +107,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   kDebug() << "RETRIEVEITEMS";
   ItemFetchJob *job = new ItemFetchJob( Collection(collection.remoteId().toUInt()) );
   job->fetchScope().fetchFullPayload();
-  bool itemsCreated = false;
-  if (job->exec()) {
-    Item::List items = job->items();
-    KolabHandler *handler = m_monitoredCollections.value(collection.remoteId().toUInt());
-    if (handler) {
-      Item::List newItems = handler->translateItems(items);
-      itemsRetrieved(newItems);
-      itemsCreated = true;
-    }
-  }
-
-  if (!itemsCreated)
-    cancelTask();
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
 }
 
 bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> &parts )
@@ -135,6 +123,7 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
 {
   if ( job->error() ) {
     kWarning( ) << "Error on item fetch:" << job->errorText();
+    cancelTask();
   } else {
     Item::Id collectionId = -1;
     Item::List items = qobject_cast<ItemFetchJob*>(job)->items();
