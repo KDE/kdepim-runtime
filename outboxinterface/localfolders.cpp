@@ -50,6 +50,9 @@ class OutboxInterface::LocalFoldersPrivate
       : instance( new LocalFolders(this) )
     {
       ready = false;
+      recreate = false;
+      outboxJob = 0;
+      sentMailJob = 0;
       config = new KConfig( QLatin1String( "localfolders" ) );
       readConfig();
     }
@@ -60,15 +63,16 @@ class OutboxInterface::LocalFoldersPrivate
     }
 
     LocalFolders *instance;
-    bool waitForOutbox;
-    bool waitForSentMail;
     bool ready;
+    bool recreate;
     KConfig *config;
     QString resourceId;
     Entity::Id outboxId;
     Entity::Id sentMailId;
     Collection outbox;
     Collection sentMail;
+    KJob *outboxJob;
+    KJob *sentMailJob;
 
     /**
       Creates the maildir resource, if it is not found.
@@ -146,40 +150,34 @@ void LocalFoldersPrivate::createResourceIfNeeded()
 
 void LocalFoldersPrivate::createCollectionsIfNeeded()
 {
-  // FIXME corner case not treated: what if the collections exist but are not
-  // owned by the right resource?
-
   if( outboxId < 0 ) {
     kDebug() << "creating outbox collection...";
-    waitForOutbox = true;
     Collection col;
     col.setParent( Collection::root() );
     col.setName( "outbox" );
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
     col.setResource( resourceId );
-    CollectionCreateJob *job = new CollectionCreateJob( col );
-    QObject::connect( job, SIGNAL( result( KJob * ) ),
+    Q_ASSERT( outboxJob == 0 );
+    outboxJob = new CollectionCreateJob( col );
+    QObject::connect( outboxJob, SIGNAL( result( KJob * ) ),
       instance, SLOT( collectionCreateResult( KJob * ) ) );
-  } else {
-    waitForOutbox = false;
   }
 
   if( sentMailId < 0 ) {
     kDebug() << "creating sent-mail collection...";
-    waitForSentMail = true;
     Collection col;
     col.setParent( Collection::root() );
     col.setName( "sent-mail" );
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
     col.setResource( resourceId );
-    CollectionCreateJob *job = new CollectionCreateJob( col );
-    QObject::connect( job, SIGNAL( result( KJob * ) ),
+    Q_ASSERT( sentMailJob == 0 );
+    sentMailJob = new CollectionCreateJob( col );
+    QObject::connect( sentMailJob, SIGNAL( result( KJob * ) ),
       instance, SLOT( collectionCreateResult( KJob * ) ) );
-  } else {
-    waitForSentMail = false;
   }
 
-  if( !waitForOutbox && !waitForSentMail ) {
+  if( outboxJob == 0 && sentMailJob == 0 ) {
+    // didn't need to create anything
     fetchCollections();
   }
 }
@@ -187,16 +185,15 @@ void LocalFoldersPrivate::createCollectionsIfNeeded()
 void LocalFoldersPrivate::fetchCollections()
 {
   kDebug() << "fetching collections...";
-  Q_ASSERT( !waitForOutbox && !waitForSentMail );
-  waitForOutbox = true;
-  waitForSentMail = true;
 
-  CollectionFetchJob *job = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
-  QObject::connect( job, SIGNAL( result( KJob * ) ),
+  Q_ASSERT( outboxJob == 0 );
+  outboxJob = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
+  QObject::connect( outboxJob, SIGNAL( result( KJob * ) ),
     instance, SLOT( collectionFetchResult( KJob * ) ) );
 
-  job = new CollectionFetchJob( Collection( sentMailId ), CollectionFetchJob::Base );
-  QObject::connect( job, SIGNAL( result( KJob * ) ),
+  Q_ASSERT( sentMailJob == 0 );
+  sentMailJob = new CollectionFetchJob( Collection( sentMailId ), CollectionFetchJob::Base );
+  QObject::connect( sentMailJob, SIGNAL( result( KJob * ) ),
     instance, SLOT( collectionFetchResult( KJob * ) ) );
 }
 
@@ -210,9 +207,6 @@ void LocalFoldersPrivate::resourceCreateResult( KJob *job )
   resourceId = createJob->instance().identifier();
   kDebug() << "created maildir resource with id" << resourceId;
 
-  // make sure createCollectionsIfNeeded will know it needs to create these
-  outboxId = -1;
-  sentMailId = -1;
   createCollectionsIfNeeded();
 }
 
@@ -224,59 +218,77 @@ void LocalFoldersPrivate::collectionCreateResult( KJob *job )
 
   CollectionCreateJob *createJob = static_cast<CollectionCreateJob *>( job );
   Collection col = createJob->collection();
-  if( col.name() == "outbox" ) {
-    Q_ASSERT( waitForOutbox );
-    waitForOutbox = false;
+  if( job == outboxJob ) {
+    outboxJob = 0;
     outboxId = col.id();
     kDebug() << "created outbox collection with id" << outboxId;
-  } else if( col.name() == "sent-mail" ) {
-    Q_ASSERT( waitForSentMail );
-    waitForSentMail = false;
+  } else if( job == sentMailJob ) {
+    sentMailJob = 0;
     sentMailId = col.id();
     kDebug() << "created sent-mail collection with id" << sentMailId;
   } else {
-    Q_ASSERT(false);
+    kFatal() << "got a result for a job I don't know about.";
   }
 
-  if( !waitForOutbox && !waitForSentMail ) {
+  if( outboxJob == 0 && sentMailJob == 0 ) {
+    // finished creating everything
     fetchCollections();
   }
 }
 
 void LocalFoldersPrivate::collectionFetchResult( KJob *job )
 {
-  if( job->error() ) {
-    kFatal() << "CollectionFetchJob failed to fetch a collection for us.";
-  }
-
   CollectionFetchJob *fetchJob = static_cast<CollectionFetchJob *>( job );
   Collection::List cols = fetchJob->collections();
-  if( cols.count() != 1 ) {
-    kFatal() << "FetchJob fetched" << cols.count() << "collections; expected one.";
-  }
-  Collection col = cols.first();
-  if( col.id() == outboxId ) {
-    Q_ASSERT( waitForOutbox );
-    waitForOutbox = false;
-    outbox = col;
-    kDebug() << "fetched outbox collection.";
-  } else if( col.id() == sentMailId ) {
-    Q_ASSERT( waitForSentMail );
-    waitForSentMail = false;
-    sentMail = col;
-    kDebug() << "fetched sent-mail collection.";
+
+  if( job == outboxJob ) {
+    if( job->error() ) {
+      kWarning() << "failed to fetch outbox collection. Recreating it.";
+      outboxId = -1;
+      recreate = true;
+    } else {
+      kDebug() << "fetched outbox collection.";
+      Q_ASSERT( cols.count() == 1 );
+      Collection col = cols.first();
+      outbox = col;
+    }
+    outboxJob = 0;
+  } else if( job == sentMailJob ) {
+    if( job->error() ) {
+      kWarning() << "failed to fetch sent-mail collection. Recreating it.";
+      sentMailId = -1;
+      recreate = true;
+    } else {
+      kDebug() << "fetched sent-mail collection.";
+      Q_ASSERT( cols.count() == 1 );
+      Collection col = cols.first();
+      sentMail = col;
+    }
+    sentMailJob = 0;
   } else {
-    Q_ASSERT(false);
+    kFatal() << "got a result for a job I don't know about.";
   }
+    
+  if( outboxJob == 0 && sentMailJob == 0 ) {
+    if( recreate ) {
+      kDebug() << "recreating problematic collections...";
+      recreate = false;
+      createCollectionsIfNeeded();
+    } else {
+      kDebug() << "Local folders ready. resourceId" << resourceId << "outbox id"
+               << outboxId << "sentMail id" << sentMailId;
 
-  if( !waitForOutbox && !waitForSentMail ) {
-    kDebug() << "Local folders ready. resourceId" << resourceId << "outbox id"
-             << outboxId << "sentMail id" << sentMailId;
+      // Make sure the collections belong to the right resource.
+      // This may be false if the resource was recreated, but the collections
+      // existed before.
+      outbox.setResource( resourceId );
+      sentMail.setResource( resourceId );
 
-    Q_ASSERT( !ready );
-    ready = true;
-    writeConfig();
-    emit instance->foldersReady();
+      Q_ASSERT( !ready );
+      ready = true;
+      writeConfig();
+      emit instance->foldersReady();
+    }
   }
 }
 

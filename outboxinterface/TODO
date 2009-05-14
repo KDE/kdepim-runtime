@@ -2,6 +2,3 @@
   (in mailtransport?)
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
-
-* fix corner case -- it's not as hard as I thought. after fetching
-  collections, just make sure they belong to the right resource.
