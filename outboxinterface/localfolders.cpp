@@ -20,10 +20,12 @@
 #include "localfolders.h"
 
 #include <QApplication>
+#include <QObject>
 
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDebug>
+#include <KGlobal>
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentInstanceCreateJob>
@@ -41,22 +43,23 @@ using namespace OutboxInterface;
  * Private class that helps to provide binary compatibility between releases.
  * @internal
  */
-class LocalFolders::Private
+class OutboxInterface::LocalFoldersPrivate
 {
   public:
-    Private( LocalFolders *parent )
-      : q( parent )
+    LocalFoldersPrivate()
+      : instance( new LocalFolders(this) )
     {
       ready = false;
       config = new KConfig( QLatin1String( "localfolders" ) );
       readConfig();
     }
-    ~Private()
+    ~LocalFoldersPrivate()
     {
+      delete instance;
       delete config;
     }
 
-    LocalFolders * const q;
+    LocalFolders *instance;
     bool waitForOutbox;
     bool waitForSentMail;
     bool ready;
@@ -96,7 +99,35 @@ class LocalFolders::Private
 
 };
 
-void LocalFolders::Private::createResourceIfNeeded()
+
+K_GLOBAL_STATIC( LocalFoldersPrivate, sInstance )
+
+
+LocalFolders::LocalFolders( LocalFoldersPrivate *dd )
+  : QObject()
+  , d( dd )
+{
+}
+
+LocalFolders *LocalFolders::self()
+{
+  return sInstance->instance;
+}
+
+Collection LocalFolders::outbox() const
+{
+  Q_ASSERT( d->ready );
+  return d->outbox;
+}
+
+Collection LocalFolders::sentMail() const
+{
+  Q_ASSERT( d->ready );
+  return d->sentMail;
+}
+
+
+void LocalFoldersPrivate::createResourceIfNeeded()
 {
   // check that the maildir resource exists
   AgentInstance resource = AgentManager::self()->instance( resourceId );
@@ -104,8 +135,8 @@ void LocalFolders::Private::createResourceIfNeeded()
     kDebug() << "creating maildir resource...";
     AgentType type = AgentManager::self()->type( "akonadi_maildir_resource" );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type );
-    connect( job, SIGNAL( result( KJob * ) ),
-             q, SLOT( resourceCreateResult( KJob * ) ) );
+    QObject::connect( job, SIGNAL( result( KJob * ) ),
+      instance, SLOT( resourceCreateResult( KJob * ) ) );
     // this is not an Akonadi::Job, so we must start it ourselves
     job->start();
   } else {
@@ -113,7 +144,7 @@ void LocalFolders::Private::createResourceIfNeeded()
   }
 }
 
-void LocalFolders::Private::createCollectionsIfNeeded()
+void LocalFoldersPrivate::createCollectionsIfNeeded()
 {
   // FIXME corner case not treated: what if the collections exist but are not
   // owned by the right resource?
@@ -127,8 +158,8 @@ void LocalFolders::Private::createCollectionsIfNeeded()
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
     col.setResource( resourceId );
     CollectionCreateJob *job = new CollectionCreateJob( col );
-    connect( job, SIGNAL( result( KJob * ) ),
-             q, SLOT( collectionCreateResult( KJob * ) ) );
+    QObject::connect( job, SIGNAL( result( KJob * ) ),
+      instance, SLOT( collectionCreateResult( KJob * ) ) );
   } else {
     waitForOutbox = false;
   }
@@ -142,8 +173,8 @@ void LocalFolders::Private::createCollectionsIfNeeded()
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
     col.setResource( resourceId );
     CollectionCreateJob *job = new CollectionCreateJob( col );
-    connect( job, SIGNAL( result( KJob * ) ),
-             q, SLOT( collectionCreateResult( KJob * ) ) );
+    QObject::connect( job, SIGNAL( result( KJob * ) ),
+      instance, SLOT( collectionCreateResult( KJob * ) ) );
   } else {
     waitForSentMail = false;
   }
@@ -153,7 +184,7 @@ void LocalFolders::Private::createCollectionsIfNeeded()
   }
 }
 
-void LocalFolders::Private::fetchCollections()
+void LocalFoldersPrivate::fetchCollections()
 {
   kDebug() << "fetching collections...";
   Q_ASSERT( !waitForOutbox && !waitForSentMail );
@@ -161,15 +192,15 @@ void LocalFolders::Private::fetchCollections()
   waitForSentMail = true;
 
   CollectionFetchJob *job = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
-  connect( job, SIGNAL( result( KJob * ) ),
-           q, SLOT( collectionFetchResult( KJob * ) ) );
+  QObject::connect( job, SIGNAL( result( KJob * ) ),
+    instance, SLOT( collectionFetchResult( KJob * ) ) );
 
   job = new CollectionFetchJob( Collection( sentMailId ), CollectionFetchJob::Base );
-  connect( job, SIGNAL( result( KJob * ) ),
-           q, SLOT( collectionFetchResult( KJob * ) ) );
+  QObject::connect( job, SIGNAL( result( KJob * ) ),
+    instance, SLOT( collectionFetchResult( KJob * ) ) );
 }
 
-void LocalFolders::Private::resourceCreateResult( KJob *job )
+void LocalFoldersPrivate::resourceCreateResult( KJob *job )
 {
   if( job->error() ) {
     kFatal() << "AgentInstanceCreateJob failed to make a maildir resource for us.";
@@ -185,7 +216,7 @@ void LocalFolders::Private::resourceCreateResult( KJob *job )
   createCollectionsIfNeeded();
 }
 
-void LocalFolders::Private::collectionCreateResult( KJob *job )
+void LocalFoldersPrivate::collectionCreateResult( KJob *job )
 {
   if( job->error() ) {
     kFatal() << "CollectionCreateJob failed to make a collection for us.";
@@ -212,7 +243,7 @@ void LocalFolders::Private::collectionCreateResult( KJob *job )
   }
 }
 
-void LocalFolders::Private::collectionFetchResult( KJob *job )
+void LocalFoldersPrivate::collectionFetchResult( KJob *job )
 {
   if( job->error() ) {
     kFatal() << "CollectionFetchJob failed to fetch a collection for us.";
@@ -245,63 +276,12 @@ void LocalFolders::Private::collectionFetchResult( KJob *job )
     Q_ASSERT( !ready );
     ready = true;
     writeConfig();
-    emit q->foldersReady();
+    emit instance->foldersReady();
   }
 }
 
 
-class StaticLocalFolders : public LocalFolders
-{
-  public:
-    StaticLocalFolders() : LocalFolders() {}
-};
-
-StaticLocalFolders *sSelf = 0;
-
-static void destroyStaticLocalFolders() {
-  delete sSelf;
-}
-
-LocalFolders::LocalFolders()
-  : QObject()
-  , d( new Private( this ) )
-{
-  kDebug() << "LocalFolders constructor";
-
-  // KGlobal::locale()->insertCatalog( QLatin1String( "libmailtransport" ) );
-  qAddPostRoutine( destroyStaticLocalFolders );
-}
-
-LocalFolders::~LocalFolders()
-{
-  kDebug() << "LocalFolders destructor";
-
-  qRemovePostRoutine( destroyStaticLocalFolders );
-  delete d;
-}
-
-LocalFolders *LocalFolders::self()
-{
-  if ( !sSelf ) {
-    // TODO why not just sSelf = new LocalFolders???
-    sSelf = new StaticLocalFolders;
-  }
-  return sSelf;
-}
-
-Collection LocalFolders::outbox() const
-{
-  Q_ASSERT( d->ready );
-  return d->outbox;
-}
-
-Collection LocalFolders::sentMail() const
-{
-  Q_ASSERT( d->ready );
-  return d->sentMail;
-}
-
-void LocalFolders::Private::readConfig()
+void LocalFoldersPrivate::readConfig()
 {
   KConfigGroup group( config, "General" );
   // TODO test these. Entity::Id is a typedef for qint64.
@@ -313,7 +293,7 @@ void LocalFolders::Private::readConfig()
   createResourceIfNeeded(); // will emit foldersReady()
 }
 
-void LocalFolders::Private::writeConfig()
+void LocalFoldersPrivate::writeConfig()
 {
   kDebug() << "resource" << resourceId << "outbox" << outboxId
            << "sent-mail" << sentMailId;

@@ -34,6 +34,9 @@ namespace Akonadi {
 namespace OutboxInterface {
 
 
+class LocalFoldersPrivate;
+
+
 /**
   Takes care of creating the Outbox and Sent-Mail collections for the mail
   dispatcher agent.
@@ -51,16 +54,7 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 {
   Q_OBJECT
 
-  friend class Private;
-
   public:
-    class Private;
-
-    /**
-      Destructor.
-    */
-    virtual ~LocalFolders();
-
     /**
       Returns the LocalFolders instance.  When this is first called, it
       reads the config and creates / fetches the collections.
@@ -87,12 +81,13 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
     */
     void foldersReady();
 
-  protected:
-    // non-public constructor -- this is a singleton class
-    LocalFolders();
-
   private:
-    Private *const d;
+    friend class LocalFoldersPrivate;
+
+    // singleton class; the only instance resides in sInstance->instance
+    LocalFolders( LocalFoldersPrivate *dd );
+
+    LocalFoldersPrivate *const d;
 
     Q_PRIVATE_SLOT( d, void createResourceIfNeeded() )
     Q_PRIVATE_SLOT( d, void resourceCreateResult( KJob * ) )
