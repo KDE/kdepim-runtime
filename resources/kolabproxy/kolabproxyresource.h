@@ -55,6 +55,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void collectionFetchDone(KJob *job);
     void imapCollectionFetched(KJob *job);
     void retrieveItemFetchDone(KJob *);
+    void retrieveCollectionsFetchDone(KJob* job);
 
   protected:
     virtual void aboutToQuit();
@@ -71,6 +72,14 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
+
+    enum RetrieveState {
+      RetrieveItems,
+      RetrieveItem
+    };
+
+    RetrieveState m_retrieveState;
+
 };
 
 #endif

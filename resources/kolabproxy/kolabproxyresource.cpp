@@ -75,8 +75,16 @@ void KolabProxyResource::retrieveCollections()
 {
   kDebug() << "RETRIEVECOLLECTIONS ";
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  if ( job->exec() ) {
-    Collection::List collections = job->collections();
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsFetchDone(KJob *)));
+}
+
+void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
+{
+  if ( job->error() ) {
+    kWarning( ) << "Error on collection fetch:" << job->errorText();
+    cancelTask();
+  } else {
+    Collection::List collections = qobject_cast<CollectionFetchJob*>(job)->collections();
     foreach( const Collection &collection, collections ) {
       CollectionAnnotationsAttribute *annotationsAttribute =
           collection.attribute<CollectionAnnotationsAttribute>();
@@ -90,14 +98,14 @@ void KolabProxyResource::retrieveCollections()
         }
       }
     }
-  }
 
-  Collection::List addrCollections;
-  Collection::List imapCollections = m_monitor->collectionsMonitored();
+    Collection::List addrCollections;
+    Collection::List imapCollections = m_monitor->collectionsMonitored();
 
-  Q_FOREACH(Collection collection, imapCollections) {
-    Collection c = createCollection(collection);
-    collectionsRetrievedIncremental(Collection::List() << c, Collection::List());
+    Q_FOREACH(Collection collection, imapCollections) {
+      Collection c = createCollection(collection);
+      collectionsRetrievedIncremental(Collection::List() << c, Collection::List());
+    }
   }
 
 }
@@ -105,6 +113,7 @@ void KolabProxyResource::retrieveCollections()
 void KolabProxyResource::retrieveItems( const Collection &collection )
 {
   kDebug() << "RETRIEVEITEMS";
+  m_retrieveState = RetrieveItems;
   ItemFetchJob *job = new ItemFetchJob( Collection(collection.remoteId().toUInt()) );
   job->fetchScope().fetchFullPayload();
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
@@ -113,6 +122,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
 bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> &parts )
 {
   kDebug() << "RETRIEVEITEM";
+  m_retrieveState = RetrieveItem;
   ItemFetchJob *job = new ItemFetchJob( item );
   job->fetchScope().fetchFullPayload();
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
@@ -131,7 +141,11 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
     KolabHandler *handler = m_monitoredCollections.value(collectionId);
     if (handler) {
       Item::List newItems = handler->translateItems(items);
-      itemsRetrieved(newItems);
+      if (m_retrieveState == RetrieveItems)
+        itemsRetrieved(newItems);
+      else
+        itemRetrieved(newItems[0]);
+      kDebug() << "RETRIEVEITEM DONE";
     } else {
       cancelTask();
     }
