@@ -43,7 +43,7 @@ class OUTBOXINTERFACE_EXPORT DispatchModeAttribute : public Akonadi::Attribute
     {
       Immediately,
       AfterDueDate,
-      Never,
+      Never
     };
 
     DispatchModeAttribute( DispatchMode mode = Immediately, const QDateTime &date = QDateTime() );
