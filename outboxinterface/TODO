@@ -1,4 +1,5 @@
 * figure out a better name (than outboxinterface), and decide where to merge
   (in mailtransport?)
+* better name for MessageQueuer?
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)

@@ -20,7 +20,7 @@
 #ifndef OUTBOXINTERFACE_LOCALFOLDERS_H
 #define OUTBOXINTERFACE_LOCALFOLDERS_H
 
-#include <Akonadi/Entity>
+#include <QObject>
 
 #include <outboxinterface/outboxinterface_export.h>
 
@@ -62,6 +62,8 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
       TODO: perhaps do this explicitly with prepare() or something?
     */
     static LocalFolders *self();
+
+    bool isReady() const;
 
   public Q_SLOTS:
     /**

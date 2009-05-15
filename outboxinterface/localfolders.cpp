@@ -118,6 +118,11 @@ LocalFolders *LocalFolders::self()
   return sInstance->instance;
 }
 
+bool LocalFolders::isReady() const
+{
+  return d->ready;
+}
+
 Collection LocalFolders::outbox() const
 {
   Q_ASSERT( d->ready );
