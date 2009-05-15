@@ -52,6 +52,7 @@
 
 using namespace Akonadi;
 using namespace KMime;
+using namespace MailTransport;
 using namespace OutboxInterface;
 
 
@@ -234,6 +235,7 @@ void MailDispatcherAgent::itemAdded( const Item &item, const Collection &col )
       kDebug() << "fetching item.";
       ItemFetchJob *fetchJob = new ItemFetchJob( item, this );
       fetchJob->fetchScope().fetchFullPayload();
+      fetchJob->fetchScope().fetchAllAttributes();
       connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
     }
     else
@@ -301,44 +303,46 @@ void MailDispatcherAgent::Private::itemFetchDone( KJob *job )
     return;
   }
 
-  const Message::Ptr message = item.payload<Message::Ptr>();
+  // TODO: honor DispatchModeAttribute instead of always sending immediately
 
-  // following code mostly stolen from Mailody:
+  // get message from payload
+  const Message::Ptr message = item.payload<Message::Ptr>();
   const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
   kDebug() << "msg:" << cmsg;
   if ( cmsg.isEmpty() )
     return;
 
-  // hardwired to use default transport
-  const int transportId = MailTransport::TransportManager::self()->defaultTransportId();
-  if ( transportId == -1 )
-  {
-    // HACK: checking for -1 breaks encapsulation. TransportManager should provide a hasDefaultTransport()
-    kWarning() << "There is no default mail transport. I can't send anything.";
+  // get transport from attribute
+  TransportAttribute *tA = item.attribute<TransportAttribute>();
+  if( tA == 0 ) {
+    kWarning() << "Item doesn't have TransportAttribute!";
     return;
   }
-  MailTransport::Transport *base =
-    MailTransport::TransportManager::self()->transportById( transportId );
-  if ( base == 0 )
-  {
-    kWarning() << "I got a null transport!";
+  Transport *transport = tA->transport();
+  if( transport == 0 ) {
+    kWarning() << "Invalid transport with id" << tA->transportId();
     return;
   }
-  kDebug() << "Sending to:" << base->host() << base->port();
+  kDebug() << "Sending to server:" << transport->host() << transport->port();
 
-  MailTransport::TransportJob *sendJob =
-      MailTransport::TransportManager::self()->createTransportJob( transportId );
-  if ( !sendJob )
-  {
-    kWarning() << "Not possible to create TransportJob!";
+  // get addresses from attribute
+  AddressAttribute *addrA = item.attribute<AddressAttribute>();
+  if( addrA == 0 ) {
+    kWarning() << "Item doesn't have AddressAttribute!";
     return;
   }
-
+  TransportJob *sendJob = TransportManager::self()->createTransportJob( tA->transportId() );
+  if( !sendJob ) {
+    kWarning() << "Failed to create TransportJob!";
+    return;
+  }
   sendJob->setData( cmsg );
-  // hardwired sender
-  sendJob->setSender( "fake-sender-in-code@naiba.md" );
-  // hardwired receiver
-  sendJob->setTo( QStringList( "idanoka@gmail.com" ) );
+  sendJob->setSender( addrA->from() );
+  sendJob->setTo( addrA->to() );
+  sendJob->setCc( addrA->cc() );
+  sendJob->setBcc( addrA->bcc() );
+  kDebug() << "from" << addrA->from() << "to" << addrA->to()
+           << "cc" << addrA->cc() << "bcc" << addrA->bcc();
 
   q->connect( sendJob, SIGNAL( result( KJob* ) ), q, SLOT( transportResult( KJob* ) ) );
   // keep track of what item this jobs refers to (is there a better way?!)
