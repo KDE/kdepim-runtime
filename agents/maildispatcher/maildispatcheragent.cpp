@@ -20,9 +20,6 @@
 #include "maildispatcheragent.h"
 
 #include "configdialog.h"
-#include "addressattribute.h"
-#include "dispatchmodeattribute.h"
-#include "transportattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -45,13 +42,16 @@
 #include <mailtransport/transportjob.h>
 
 #include <outboxinterface/localfolders.h>
+#include <outboxinterface/addressattribute.h>
+#include <outboxinterface/dispatchmodeattribute.h>
+#include <outboxinterface/transportattribute.h>
 
 #include <akonadi/kmime/messageparts.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
+using namespace KMime;
 using namespace OutboxInterface;
 
 
@@ -295,17 +295,17 @@ void MailDispatcherAgent::Private::itemFetchDone( KJob *job )
     return;
   }
 
-  if ( !item.hasPayload<MessagePtr>() )
+  if ( !item.hasPayload<Message::Ptr>() )
   {
     kWarning() << "Item does not have message payload";
     return;
   }
 
-  const MessagePtr message = item.payload<MessagePtr>();
+  const Message::Ptr message = item.payload<Message::Ptr>();
 
   // following code mostly stolen from Mailody:
   const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
-  kDebug() << cmsg;
+  kDebug() << "msg:" << cmsg;
   if ( cmsg.isEmpty() )
     return;
 
