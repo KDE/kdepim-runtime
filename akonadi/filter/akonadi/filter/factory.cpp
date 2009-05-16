@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : componentfactory.cpp
+ *  File : factory.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "componentfactory.h"
+#include "factory.h"
 #include "program.h"
 #include "action.h"
 #include "condition.h"
@@ -37,7 +37,7 @@ namespace Akonadi
 namespace Filter 
 {
 
-ComponentFactory::ComponentFactory()
+Factory::Factory()
 {
   // register the basic attributes
 
@@ -52,12 +52,12 @@ ComponentFactory::ComponentFactory()
 
 }
 
-ComponentFactory::~ComponentFactory()
+Factory::~Factory()
 {
   qDeleteAll( mAttributeHash );
 }
 
-void ComponentFactory::registerAttribute( Attribute * attribute )
+void Factory::registerAttribute( Attribute * attribute )
 {
   Q_ASSERT( attribute );
 
@@ -73,58 +73,58 @@ void ComponentFactory::registerAttribute( Attribute * attribute )
 }
 
 
-const Attribute * ComponentFactory::findAttribute( const QString &id )
+const Attribute * Factory::findAttribute( const QString &id )
 {
   return mAttributeHash.value( id, 0 );
 }
 
-const QList< const Attribute * > & ComponentFactory::enumerateAttributes()
+const QList< const Attribute * > & Factory::enumerateAttributes()
 {
   return mAttributeList;
 }
 
-Program * ComponentFactory::createProgram( Component * parent )
+Program * Factory::createProgram( Component * parent )
 {
   return new Program( parent );
 }
 
-Rule * ComponentFactory::createRule( Component * parent )
+Rule * Factory::createRule( Component * parent )
 {
   return new Rule( parent );
 }
 
-Condition::And * ComponentFactory::createAndCondition( Component * parent )
+Condition::And * Factory::createAndCondition( Component * parent )
 {
   return new Condition::And( parent );
 }
 
-Condition::Or * ComponentFactory::createOrCondition( Component * parent )
+Condition::Or * Factory::createOrCondition( Component * parent )
 {
   return new Condition::Or( parent );
 }
 
-Condition::Not * ComponentFactory::createNotCondition( Component * parent )
+Condition::Not * Factory::createNotCondition( Component * parent )
 {
   return new Condition::Not( parent );
 }
 
-Action::Stop * ComponentFactory::createStopAction( Component * parent )
+Action::Stop * Factory::createStopAction( Component * parent )
 {
   return new Action::Stop( parent );
 }
 
-Action::Base * ComponentFactory::createGenericAction( Component * parent, const QString &name )
+Action::Base * Factory::createGenericAction( Component * parent, const QString &name )
 {
   return 0; // by default we have no generic actions
 }
 
-Condition::Base * ComponentFactory::createAttributeTestCondition( Component * parent, const Attribute * attribute )
+Condition::Base * Factory::createAttributeTestCondition( Component * parent, const Attribute * attribute )
 {
   return 0; // by default we have no generic conditions
 }
 
 
-Action::RuleList * ComponentFactory::createRuleList( Component * parent )
+Action::RuleList * Factory::createRuleList( Component * parent )
 {
   return new Action::RuleList( parent );
 }

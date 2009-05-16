@@ -43,7 +43,7 @@ namespace IO
 class AKONADI_FILTER_EXPORT AFLDecoder : public Decoder
 {
 public:
-  AFLDecoder( ComponentFactory * componentFactory );
+  AFLDecoder( Factory * componentFactory );
   virtual ~AFLDecoder();
 protected:
   const QChar * mCurrentChar;

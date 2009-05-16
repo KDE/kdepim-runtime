@@ -26,11 +26,11 @@ set(
 		afldecoder.cpp
 		attribute.cpp
 		component.cpp
-		componentfactory.cpp
 		condition.cpp
 		decoder.cpp
 		data.cpp
 		encoder.cpp
+		factory.cpp
 		filter.cpp
 		program.cpp
 		rule.cpp

@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : componentfactory.h
+ *  File : factory.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_COMPONENTFACTORY_H_
-#define _AKONADI_FILTER_COMPONENTFACTORY_H_
+#ifndef _AKONADI_FILTER_FACTORY_H_
+#define _AKONADI_FILTER_FACTORY_H_
 
 #include "config-akonadi-filter.h"
 
@@ -58,11 +58,11 @@ namespace Action
   class RuleList;
 } // namespace Action
 
-class AKONADI_FILTER_EXPORT ComponentFactory
+class AKONADI_FILTER_EXPORT Factory
 {
 public:
-  ComponentFactory();
-  virtual ~ComponentFactory();
+  Factory();
+  virtual ~Factory();
 
 private:
   QList< const Attribute * > mAttributeList;
@@ -87,10 +87,10 @@ public:
   virtual Action::Base * createGenericAction( Component * parent, const QString &name );
   virtual Action::RuleList * createRuleList( Component * parent );
   virtual Action::Stop * createStopAction( Component * parent );
-}; // class ComponentFactory
+}; // class Factory
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_COMPONENTFACTORY_H_
+#endif //!_AKONADI_FILTER_FACTORY_H_

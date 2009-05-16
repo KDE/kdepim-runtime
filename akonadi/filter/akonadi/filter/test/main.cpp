@@ -2,16 +2,16 @@
 #include "../filter.h"
 #include "../sievedecoder.h"
 #include "../program.h"
-#include "../componentfactory.h"
+#include "../factory.h"
 #include "../condition.h"
 
 #include <QTextStream>
 
-class MyComponentFactory : public Akonadi::Filter::ComponentFactory
+class MyFactory : public Akonadi::Filter::Factory
 {
 public:
-  MyComponentFactory(){};
-  virtual ~MyComponentFactory(){};
+  MyFactory(){};
+  virtual ~MyFactory(){};
 public:
   virtual Akonadi::Filter::Action::Base * createGenericAction( Akonadi::Filter::Component * parent, const QString &identifier )
   {
@@ -26,7 +26,7 @@ public:
 
 int main(int argc,char ** argv)
 {
-  Akonadi::Filter::IO::SieveDecoder d( new MyComponentFactory() );
+  Akonadi::Filter::IO::SieveDecoder d( new MyFactory() );
   Akonadi::Filter::Program * p = d.run();
   if( p )
     delete p;

@@ -35,7 +35,7 @@ namespace Akonadi
 namespace Filter
 {
 
-class ComponentFactory;
+class Factory;
 
 namespace IO
 {
@@ -43,10 +43,10 @@ namespace IO
 class AKONADI_FILTER_EXPORT Decoder
 {
 public:
-  Decoder( ComponentFactory * componentFactory );
+  Decoder( Factory * componentFactory );
   virtual ~Decoder();
 protected:
-  ComponentFactory * mComponentFactory;
+  Factory * mFactory;
   QString mLastError;
 
 public:
@@ -64,9 +64,9 @@ public:
     mLastError = error;
   }
 
-  ComponentFactory * componentFactory() const
+  Factory * factory() const
   {
-    return mComponentFactory;
+    return mFactory;
   }
 };
 
