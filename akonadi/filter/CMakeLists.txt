@@ -21,3 +21,4 @@ include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
 add_subdirectory(akonadi)
+add_subdirectory(mailfilter)
