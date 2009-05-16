@@ -28,16 +28,28 @@
 
 #include "config-akonadi-filter.h"
 
+#include <QString>
+#include <QStringList>
+#include <QDateTime>
+
 namespace Akonadi
 {
 namespace Filter
 {
+
+class Attribute;
 
 class AKONADI_FILTER_EXPORT Data
 {
 public:
   Data();
   virtual ~Data();
+
+public:
+  virtual bool getAttributeValue( const Attribute * attribute, QString &buffer );
+  virtual bool getAttributeValue( const Attribute * attribute, int &buffer );
+  virtual bool getAttributeValue( const Attribute * attribute, QStringList &buffer );
+  virtual bool getAttributeValue( const Attribute * attribute, QDateTime &buffer );
 };
 
 } // namespace Filter

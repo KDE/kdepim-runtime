@@ -170,6 +170,45 @@ AttributeTest::~AttributeTest()
 
 bool AttributeTest::matches( Data * data )
 {
+  // Generic attribute test implementation.
+  //
+  // Override this method in a derived class if you want to provide
+  // an optimized/custom match (then override Factory::createAttributeTestCondition() to return your subclasses).
+
+  switch( mAttribute->dataType() )
+  {
+    case Attribute::DataTypeString:
+    {
+      QString buffer;
+      if( !data->getAttributeValue( mAttribute, buffer ) )
+        return false;
+    }
+    break;
+    case Attribute::DataTypeInteger:
+    {
+      int buffer;
+      if( !data->getAttributeValue( mAttribute, buffer ) )
+        return false;
+    }
+    break;
+    case Attribute::DataTypeStringList:
+    {
+      QStringList buffer;
+      if( !data->getAttributeValue( mAttribute, buffer ) )
+        return false;
+    }
+    break;
+    case Attribute::DataTypeDate:
+    {
+      QDateTime buffer;
+      if( !data->getAttributeValue( mAttribute, buffer ) )
+        return false;
+    }
+    break;
+    default:
+      Q_ASSERT(false); // should never end up here
+    break;
+  }
   return false;
 }
 

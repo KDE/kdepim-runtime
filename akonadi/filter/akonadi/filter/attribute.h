@@ -44,7 +44,9 @@ public:
   enum DataType
   {
     DataTypeString,
-    DataTypeInteger
+    DataTypeInteger,
+    DataTypeStringList,
+    DataTypeDate
   };
 public:
   Attribute(

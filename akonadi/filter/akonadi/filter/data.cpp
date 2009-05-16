@@ -38,6 +38,26 @@ Data::~Data()
 {
 }
 
+bool Data::getAttributeValue( const Attribute * attribute, QString &buffer )
+{
+  return false;
+}
+
+bool Data::getAttributeValue( const Attribute * attribute, int &buffer )
+{
+  return false;
+}
+
+bool Data::getAttributeValue( const Attribute * attribute, QStringList &buffer )
+{
+  return false;
+}
+
+bool Data::getAttributeValue( const Attribute * attribute, QDateTime &buffer )
+{
+  return false;
+}
+
 } // namespace Filter
 
 } // namespace Akonadi
