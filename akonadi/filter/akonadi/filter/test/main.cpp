@@ -10,7 +10,7 @@
 class MyFactory : public Akonadi::Filter::Factory
 {
 public:
-  MyFactory(){};
+  MyFactory() : Factory() {};
   virtual ~MyFactory(){};
 public:
   virtual Akonadi::Filter::Action::Base * createGenericAction( Akonadi::Filter::Component * parent, const QString &identifier )

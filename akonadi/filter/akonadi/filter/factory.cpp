@@ -31,6 +31,7 @@
 #include "rulelist.h"
 
 #include <KLocale>
+#include <KDebug>
 
 namespace Akonadi
 {
@@ -50,6 +51,14 @@ Factory::Factory()
         )
     );
 
+  registerAttribute(
+      new Attribute(
+          QString::fromAscii( "from" ),
+          i18n( "From" ),
+          i18n( "The \"From\" field" ),
+          Attribute::DataTypeString
+        )
+    );
 }
 
 Factory::~Factory()
@@ -68,14 +77,14 @@ void Factory::registerAttribute( Attribute * attribute )
     delete existing;
   }
    
-  mAttributeHash.insert( attribute->id(), attribute ); // wil replace
+  mAttributeHash.insert( attribute->id().toLower(), attribute ); // wil replace
   mAttributeList.append( attribute );
 }
 
 
 const Attribute * Factory::findAttribute( const QString &id )
 {
-  return mAttributeHash.value( id, 0 );
+  return mAttributeHash.value( id.toLower(), 0 );
 }
 
 const QList< const Attribute * > & Factory::enumerateAttributes()
@@ -120,7 +129,7 @@ Action::Base * Factory::createGenericAction( Component * parent, const QString &
 
 Condition::Base * Factory::createAttributeTestCondition( Component * parent, const Attribute * attribute )
 {
-  return 0; // by default we have no generic conditions
+  return new Condition::AttributeTest( parent, attribute );
 }
 
 

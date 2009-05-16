@@ -58,6 +58,16 @@ namespace Action
   class RuleList;
 } // namespace Action
 
+/**
+ * The Akonadi::Filter::Factory class plays a very central role in the filter management and customisation.
+ *
+ * - It's responsable for the creation of the filter tree components, either standard ones (the Program,
+ *   the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
+ *
+ * - It acts as repository of the Attributes that can be tested in filter conditions
+ *
+ * - It acts as repository of the Actions that the filter can perform
+ */
 class AKONADI_FILTER_EXPORT Factory
 {
 public:

@@ -76,7 +76,7 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
     {
       delete condition;
       mGotError = true; 
-      setLastError( i18n( "Unexpected start of test '%1' after a previous test" ).arg( identifier ) );
+      setLastError( i18n( "Unexpected start of test '%1' after a previous test", identifier ) );
       return;  
     }
     rule->setCondition( condition );
@@ -128,7 +128,7 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
   delete condition;
 
   mGotError = true;
-  setLastError( i18n( "Unexpected start of test '%1'" ).arg( identifier ) );
+  setLastError( i18n( "Unexpected start of test '%1'", identifier ) );
 }
 
 void SieveDecoder::onTestStart( const QString & identifier )
@@ -140,7 +140,7 @@ void SieveDecoder::onTestStart( const QString & identifier )
   {
     // a test can't start inside a simple test
     mGotError = true; 
-    setLastError( i18n( "Unexpected start of test '%1' inside a simple test" ).arg( identifier ) );
+    setLastError( i18n( "Unexpected start of test '%1' inside a simple test", identifier ) );
     return;  
   }
 
@@ -180,7 +180,7 @@ void SieveDecoder::onTestEnd()
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Unrecognized attribute '%1'" ).arg( mCurrentSimpleTestName ) );
+      setLastError( i18n( "Unrecognized attribute '%1'", mCurrentSimpleTestName ) );
       return;
     }
 
@@ -189,7 +189,7 @@ void SieveDecoder::onTestEnd()
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Test on attribute '%1' isn't supported" ).arg( mCurrentSimpleTestName ) );
+      setLastError( i18n( "Test on attribute '%1' isn't supported", mCurrentSimpleTestName ) );
       return;
     }
 
@@ -215,14 +215,23 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   if( mGotError )
     return; // ignore everything
 
-  if( mCurrentSimpleTestName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
-    mGotError = true;
-    setLastError( i18n( "Unexpected tagged argument outside of a test" ) );
+    Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
+    // argument to a simple command
+    mCurrentSimpleCommandArguments.append( QVariant( tag ) );
     return;
   }
 
-  mCurrentSimpleTestArguments.append( QVariant( tag ) );
+  if( !mCurrentSimpleTestName.isEmpty() )
+  {
+    // argument to a simple test
+    mCurrentSimpleTestArguments.append( QVariant( tag ) );
+    return;
+  }
+
+  mGotError = true;
+  setLastError( i18n( "Unexpected tagged argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onStringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment )
@@ -230,14 +239,23 @@ void SieveDecoder::onStringArgument( const QString & string, bool multiLine, con
   if( mGotError )
     return; // ignore everything
 
-  if( mCurrentSimpleTestName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
-    mGotError = true;
-    setLastError( i18n( "Unexpected string argument outside of a test" ) );
+    Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
+    // argument to a simple command
+    mCurrentSimpleCommandArguments.append( QVariant( string ) );
     return;
   }
 
-  mCurrentSimpleTestArguments.append( QVariant( string ) );
+  if( !mCurrentSimpleTestName.isEmpty() )
+  {
+    // argument to a simple test
+    mCurrentSimpleTestArguments.append( QVariant( string ) );
+    return;
+  }
+
+  mGotError = true;
+  setLastError( i18n( "Unexpected string argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
@@ -245,21 +263,28 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   if( mGotError )
     return; // ignore everything
 
-  if( mCurrentSimpleTestName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
-    mGotError = true;
-    setLastError( i18n( "Unexpected number argument outside of a test" ) );
+    Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
+    // argument to a simple command
+    mCurrentSimpleCommandArguments.append( QVariant( (uint)number ) );
     return;
   }
 
-  mCurrentSimpleTestArguments.append( QVariant( (uint)number ) );
+  if( !mCurrentSimpleTestName.isEmpty() )
+  {
+    // argument to a simple test
+    mCurrentSimpleTestArguments.append( QVariant( (uint)number ) );
+    return;
+  }
+
+  mGotError = true;
+  setLastError( i18n( "Unexpected number argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
-  if( mGotError )
-    return; // ignore everything
-
+  onStringArgument( string, multiLine, embeddedHashComment );
 }
 
 void SieveDecoder::onTestListStart()
@@ -341,7 +366,7 @@ void SieveDecoder::onCommandStart( const QString & identifier )
   {
     // unrecognized command
     mGotError = true; 
-    setLastError( i18n( "Unexpected start of command '%1' outside of a rule list/rule" ).arg( identifier ) );
+    setLastError( i18n( "Unexpected start of command '%1' outside of a rule list/rule", identifier ) );
     return;
   }
 
@@ -354,6 +379,8 @@ void SieveDecoder::onCommandStart( const QString & identifier )
       ( QString::compare( identifier, QLatin1String( "else" ), Qt::CaseInsensitive ) == 0 )
     )
   {
+    mCurrentSimpleCommandName = QString(); // this is not a simple command
+
     // conditional rule start
     if( mCurrentComponent->isRuleList() )
     {
@@ -381,44 +408,9 @@ void SieveDecoder::onCommandStart( const QString & identifier )
     return;
   }
 
-  Action::Base * action;
-  if (
-       ( QString::compare( identifier, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
-       ( QString::compare( identifier, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
-    )
-  {
-    action = factory()->createStopAction( mCurrentComponent );
-    Q_ASSERT( action );
-  } else {
-    action = factory()->createGenericAction( mCurrentComponent, identifier );
-
-    if ( !action )
-    {
-      mGotError = true; 
-      setLastError( i18n( "Unrecognized action '%1'" ).arg( identifier ) );
-      return;
-    }
-  }
-
-  if ( mCurrentComponent->isRuleList() )
-  {
-    // unconditional rule start with an action
-    ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-    rule = factory()->createRule( mCurrentComponent );
-    ruleList->addRule( rule );
-
-    rule->addAction( action );
-
-    mCurrentComponent = action;
-    return;
-  }
-
-  Q_ASSERT( mCurrentComponent->isRule() );
-
-  // a plain action within the current rule
-  static_cast< Rule * >( mCurrentComponent )->addAction( action );
-
-  mCurrentComponent = action;
+  // We delay the creation of simple commands to the onCommandEnd() so we have all the arguments
+  mCurrentSimpleCommandName = identifier;
+  mCurrentSimpleCommandArguments.clear();
 }
 
 void SieveDecoder::onCommandEnd()
@@ -426,12 +418,63 @@ void SieveDecoder::onCommandEnd()
   if( mGotError )
     return; // ignore everything
 
+  if( !mCurrentSimpleCommandName.isEmpty() )
+  {
+    // delayed simple command creation
+
+    Q_ASSERT( mCurrentComponent->isRuleList() || mCurrentComponent->isRule() );
+
+    Action::Base * action;
+    if (
+         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
+         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
+      )
+    {
+      action = factory()->createStopAction( mCurrentComponent );
+      Q_ASSERT( action );
+    } else {
+
+      action = factory()->createGenericAction( mCurrentComponent, mCurrentSimpleCommandName );
+
+      if ( !action )
+      {
+        mGotError = true; 
+        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandName ) );
+        return;
+      }
+    }
+
+    if ( mCurrentComponent->isRuleList() )
+    {
+      // unconditional rule start with an action
+      Action::RuleList * ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
+      Rule * rule = factory()->createRule( mCurrentComponent );
+      ruleList->addRule( rule );
+
+      rule->addAction( action );
+
+      mCurrentComponent = action;
+      return;
+    }
+
+    Q_ASSERT( mCurrentComponent->isRule() );
+
+    // a plain action within the current rule
+    static_cast< Rule * >( mCurrentComponent )->addAction( action );
+
+    mCurrentComponent = action;
+
+  }
+
+  // not a simple command
+
   if( !( mCurrentComponent->isRule() || mCurrentComponent->isAction()) )
   {
     mGotError = true;
     setLastError( i18n( "Unexpected end of command outside of a rule/action" ) );
     return;
   }
+
 
   // pop
   mCurrentComponent = mCurrentComponent->parent();
@@ -465,7 +508,7 @@ Program * SieveDecoder::run()
        "  fileinto \"huge\";\r\n" \
        "  stop;\r\n" \
        "}\r\n"
-       "if allof( size :below 100K, not( size :below 20K ), not( field :matches \"x\", field :matches \"y\" ) ) {\r\n" \
+       "if allof( size :below 100K, not( size :below 20K ), not( from :matches \"x\", from :matches \"y\" ) ) {\r\n" \
        "  fileinto \"medium\";\r\n" \
        "  if not allof( size :below 80K, not size :below 70K) {\r\n" \
        "    fileinto \"strange\";\r\n" \

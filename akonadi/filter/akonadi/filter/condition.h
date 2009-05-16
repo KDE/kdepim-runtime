@@ -37,6 +37,7 @@ namespace Akonadi
 namespace Filter
 {
 
+class Attribute;
 class Data;
 
 namespace Condition
@@ -49,7 +50,8 @@ public:
   {
     ConditionTypeAnd,
     ConditionTypeOr,
-    ConditionTypeNot
+    ConditionTypeNot,
+    ConditionTypeAttributeTest
   };
 public:
   Base( ConditionType type, Component * parent );
@@ -138,6 +140,19 @@ public:
 
   virtual void dump( const QString &prefix );
 }; // class Or
+
+class AKONADI_FILTER_EXPORT AttributeTest : public Base
+{
+public:
+  AttributeTest( Component * parent, const Attribute * attribute );
+  virtual ~AttributeTest();
+protected:
+  const Attribute * mAttribute; // shallow, never null
+public:
+  virtual bool matches( Data * data );
+
+  virtual void dump( const QString &prefix );
+};
 
 } // namespace Condition
 

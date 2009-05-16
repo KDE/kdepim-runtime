@@ -24,7 +24,7 @@
  *******************************************************************************/
 
 #include "condition.h"
-
+#include "attribute.h"
 #include "data.h"
 
 #include <KDebug>
@@ -155,6 +155,27 @@ void Or::dump( const QString &prefix )
 {
   debugOutput( prefix, "Condition::Or" );
   dumpChildConditions( prefix );
+}
+
+
+AttributeTest::AttributeTest( Component * parent, const Attribute * attribute )
+  : Base( ConditionTypeAttributeTest, parent ), mAttribute( attribute )
+{
+  Q_ASSERT( mAttribute );
+}
+
+AttributeTest::~AttributeTest()
+{
+}
+
+bool AttributeTest::matches( Data * data )
+{
+  return false;
+}
+
+void AttributeTest::dump( const QString &prefix )
+{
+  debugOutput( prefix, QString::fromAscii( "Condition::AttributeTest(%1)" ).arg( mAttribute->name() ) );
 }
 
 } // namespace Condition

@@ -67,6 +67,8 @@ protected:
   Component * mCurrentComponent; // the component we're 'in'
   QString mCurrentSimpleTestName;
   QList< QVariant > mCurrentSimpleTestArguments;
+  QString mCurrentSimpleCommandName;
+  QList< QVariant > mCurrentSimpleCommandArguments;
   bool mGotError;
 public:
 
