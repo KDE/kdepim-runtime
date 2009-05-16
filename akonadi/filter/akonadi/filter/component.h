@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : rule.h
+ *  File : component.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,57 +23,68 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_RULE_H_
-#define _AKONADI_FILTER_RULE_H_
+#ifndef _AKONADI_FILTER_COMPONENT_H_
+#define _AKONADI_FILTER_COMPONENT_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
-#include <QList>
-
-#include "component.h"
-#include "action.h"
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Data;
-
-namespace Condition
-{
-  class Base;
-} // namespace Condition
-
-class AKONADI_FILTER_EXPORT Rule : public Component
+class AKONADI_FILTER_EXPORT Component
 {
 public:
-  Rule( Component * parent );
-  virtual ~Rule();
-protected:
-
-  /**
-   * The condition attached to this rule. Owned pointer. May be null (null condition is always true)
-   */
-  Condition::Base * mCondition;
-
-  QList< Action::Base * > mActionList;
-
-public:
-
-  Condition::Base * condition() const
+  enum ProcessingStatus
   {
-    return mCondition;
+    SuccessAndContinue,
+    SuccessAndStop,
+    Failure
+  };
+
+public:
+  Component( Component * parent );
+  virtual ~Component();
+
+protected:
+  QString mLastError;
+  Component * mParent;
+public:
+
+  Component * parent() const
+  {
+    return mParent;
   }
 
-  void setCondition( Condition::Base * condition );
+  virtual bool isProgram() const;
+  virtual bool isRule() const;
+  virtual bool isAction() const;
+  virtual bool isCondition() const;
+  virtual bool isRuleList() const;
 
-  virtual ProcessingStatus execute( Data * data );
+  /**
+   * Returns the last error occured in this component execution run.
+   */
+  const QString & lastError() const
+  {
+    return mLastError;
+  }
+
+  void setLastError( const QString &error )
+  {
+    mLastError = error;
+  }
+
+  virtual void dump( const QString &prefix );
+  void debugOutput( const QString &prefix, const char *text );
+  void debugOutput( const QString &prefix, const QString &text );
 };
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_RULE_H_
+#endif //!_AKONADI_FILTER_COMPONENT_H_

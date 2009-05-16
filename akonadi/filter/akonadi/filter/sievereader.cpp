@@ -49,16 +49,19 @@ SieveReader::~SieveReader()
 void SieveReader::taggedArgument( const QString & tag )
 {
   qDebug( "Tagged argument '%s'", tag.toUtf8().data() );
+  mDecoder->onTaggedArgument( tag );
 }
 
 void SieveReader::stringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
   qDebug( "String argument '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
+  mDecoder->onStringArgument( string, multiLine, embeddedHashComment );
 }
 
 void SieveReader::numberArgument( unsigned long number, char quantifier )
 {
   qDebug( "Number argument %lu (quantifier=%d)", number, quantifier );
+  mDecoder->onNumberArgument( number, quantifier );
 }
 
 void SieveReader::stringListArgumentStart()
@@ -69,6 +72,7 @@ void SieveReader::stringListArgumentStart()
 void SieveReader::stringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
   qDebug( "String list entry '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
+  mDecoder->onStringListEntry( string, multiLine, embeddedHashComment );
 }
 
 void SieveReader::stringListArgumentEnd()
@@ -115,11 +119,13 @@ void SieveReader::testListEnd()
 void SieveReader::blockStart()
 {
   qDebug( "Block start" );
+  mDecoder->onBlockStart();
 }
 
 void SieveReader::blockEnd()
 {
   qDebug( "Block end" );
+  mDecoder->onBlockEnd();
 }
 
 void SieveReader::hashComment( const QString & comment )

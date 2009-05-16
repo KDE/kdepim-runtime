@@ -30,19 +30,22 @@
 
 #include "decoder.h"
 
+#include <QString>
+#include <QList>
+#include <QVariant>
+
 namespace Akonadi
 {
 namespace Filter
 {
 
 class Program;
-class Rule;
 class Component;
 
 namespace Condition
 {
   class Base;
-} // namespace Condition;
+}
 
 namespace IO
 {
@@ -62,6 +65,8 @@ protected:
   Program * mProgram; // the currently parsed program
 
   Component * mCurrentComponent; // the component we're 'in'
+  QString mCurrentSimpleTestName;
+  QList< QVariant > mCurrentSimpleTestArguments;
   bool mGotError;
 public:
 
@@ -74,6 +79,15 @@ protected:
   void onTestListStart();
   void onTestListEnd();
   void onError( const QString &error );
+  void onBlockStart();
+  void onBlockEnd();
+  void onTaggedArgument( const QString & tag );
+  void onStringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment );
+  void onNumberArgument( unsigned long number, char quantifier );
+  void onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment );
+
+private:
+  void addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier );
 
 };
 

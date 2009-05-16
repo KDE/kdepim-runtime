@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : component.cpp
+ *  File : action.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,21 +23,61 @@
  *
  *******************************************************************************/
 
-#include "component.h"
+#include "action.h"
+
+#include <KDebug>
 
 namespace Akonadi
 {
 namespace Filter 
 {
+namespace Action
+{
 
-Component::Component( ComponentType type, Component * parent )
-  : mComponentType( type ), mParent( parent )
+Base::Base( Component * parent )
+  : Component( parent )
 {
 }
 
-Component::~Component()
+Base::~Base()
 {
 }
+
+Base::ProcessingStatus Base::execute( Data * data )
+{
+  return SuccessAndContinue;
+}
+
+bool Base::isAction() const
+{
+  return true;
+}
+
+void Base::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Action::Base" );
+}
+
+Stop::Stop( Component * parent )
+  : Base( parent )
+{
+}
+
+Stop::~Stop()
+{
+}
+
+Stop::ProcessingStatus Stop::execute( Data * data )
+{
+  return SuccessAndStop;
+}
+
+void Stop::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Action::Stop" );
+}
+
+} // namespace Action
 
 } // namespace Filter
 

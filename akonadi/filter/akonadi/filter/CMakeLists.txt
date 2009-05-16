@@ -6,6 +6,10 @@ add_subdirectory(
 		test
 	)
 
+add_subdirectory(
+		ui
+	)
+
 include_directories(
 		${CMAKE_SOURCE_DIR}
 		${CMAKE_CURRENT_BINARY_DIR}
@@ -20,6 +24,7 @@ set(
 		AKONADI_FILTER_LIB_SRCS
 		action.cpp
 		afldecoder.cpp
+		attribute.cpp
 		component.cpp
 		componentfactory.cpp
 		condition.cpp
@@ -29,6 +34,7 @@ set(
 		filter.cpp
 		program.cpp
 		rule.cpp
+		rulelist.cpp
 		sievedecoder.cpp
 		sievereader.cpp
 	)
@@ -72,7 +78,7 @@ install(
 		FILES
 			filter.h
 		DESTINATION
-			${INCLUDE_INSTALL_DIR}/akonadi-filter
+			${INCLUDE_INSTALL_DIR}/akonadi/filter
 		COMPONENT
 			Devel
 	)

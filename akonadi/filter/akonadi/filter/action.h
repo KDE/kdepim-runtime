@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : action.cpp
+ *  File : action.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,29 +23,49 @@
  *
  *******************************************************************************/
 
-#include "action.h"
+#ifndef _AKONADI_FILTER_ACTION_H_
+#define _AKONADI_FILTER_ACTION_H_
+
+#include "config-akonadi-filter.h"
+
+#include "component.h"
+
+#include <QList>
 
 namespace Akonadi
 {
-namespace Filter 
+namespace Filter
 {
+
+class Data;
+
 namespace Action
 {
 
-Base::Base( Component * parent )
-  : Component( ComponentTypeAction, parent )
+class AKONADI_FILTER_EXPORT Base : public Component
 {
-  Q_ASSERT( parent );
-}
+public:
+  Base( Component * parent );
+  virtual ~Base();
+public:
 
-Base::~Base()
-{
-}
+  virtual bool isAction() const;
 
-Base::ProcessingStatus Base::execute( Data * data )
+  virtual ProcessingStatus execute( Data * data );
+
+  virtual void dump( const QString &prefix );
+}; // class Base
+
+class AKONADI_FILTER_EXPORT Stop : public Base
 {
-  return SuccessAndContinue;
-}
+public:
+  Stop( Component * parent );
+  virtual ~Stop();
+public:
+  virtual ProcessingStatus execute( Data * data );
+
+  virtual void dump( const QString &prefix );
+}; // class Stop
 
 } // namespace Action
 
@@ -53,3 +73,4 @@ Base::ProcessingStatus Base::execute( Data * data )
 
 } // namespace Akonadi
 
+#endif //!_AKONADI_FILTER_ACTION_H_

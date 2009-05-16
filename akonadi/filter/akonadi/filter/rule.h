@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : component.h
+ *  File : rule.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,92 +23,66 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_COMPONENT_H_
-#define _AKONADI_FILTER_COMPONENT_H_
+#ifndef _AKONADI_FILTER_RULE_H_
+#define _AKONADI_FILTER_RULE_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
+#include <QList>
+
+#include "component.h"
+#include "action.h"
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class AKONADI_FILTER_EXPORT Component
+class Data;
+
+namespace Condition
+{
+  class Base;
+} // namespace Condition
+
+class AKONADI_FILTER_EXPORT Rule : public Component
 {
 public:
-  enum ProcessingStatus
-  {
-    SuccessAndContinue,
-    SuccessAndStop,
-    Failure
-  };
-
-  enum ComponentType
-  {
-    ComponentTypeProgram,
-    ComponentTypeRule,
-    ComponentTypeCondition,
-    ComponentTypeAction
-  };
-public:
-  Component( ComponentType type, Component * parent );
-  virtual ~Component();
-
+  Rule( Component * parent );
+  virtual ~Rule();
 protected:
-  QString mLastError;
-  ComponentType mComponentType;
-  Component * mParent;
-public:
-
-  Component * parent() const
-  {
-    return mParent;
-  }
-
-  ComponentType componentType() const
-  {
-    return mComponentType;
-  }
-
-  bool isProgram() const
-  {
-    return mComponentType == ComponentTypeProgram;
-  }
-
-  bool isRule() const
-  {
-    return mComponentType == ComponentTypeRule;
-  }
-
-  bool isAction() const
-  {
-    return mComponentType == ComponentTypeAction;
-  }
-
-  bool isCondition() const
-  {
-    return mComponentType == ComponentTypeCondition;
-  }
 
   /**
-   * Returns the last error occured in this component execution run.
+   * The condition attached to this rule. Owned pointer. May be null (null condition is always true)
    */
-  const QString & lastError() const
+  Condition::Base * mCondition;
+
+  QList< Action::Base * > mActionList;
+
+public:
+
+  virtual bool isRule() const;
+
+  Condition::Base * condition() const
   {
-    return mLastError;
+    return mCondition;
   }
 
-  void setLastError( const QString &error )
+  void addAction( Action::Base * action )
   {
-    mLastError = error;
+    mActionList.append( action );
   }
 
+  void setCondition( Condition::Base * condition );
+
+  virtual ProcessingStatus execute( Data * data );
+
+  virtual void dump( const QString &prefix );
 };
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_COMPONENT_H_
+#endif //!_AKONADI_FILTER_RULE_H_

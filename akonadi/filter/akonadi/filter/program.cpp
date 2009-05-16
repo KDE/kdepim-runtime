@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : componentfactory.cpp
+ *  File : program.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,43 +23,35 @@
  *
  *******************************************************************************/
 
-#include "componentfactory.h"
 #include "program.h"
-#include "action.h"
-#include "condition.h"
-#include "rule.h"
+
+#include <QObject>
+
+#include <KDebug>
 
 namespace Akonadi
 {
 namespace Filter 
 {
 
-ComponentFactory::ComponentFactory()
+Program::Program( Component * parent )
+  : Action::RuleList( parent )
 {
 }
 
-ComponentFactory::~ComponentFactory()
+Program::~Program()
 {
 }
 
-Program * ComponentFactory::createProgram( Component * parent )
+bool Program::isProgram() const
 {
-  return new Program( parent );
+  return true;
 }
 
-Rule * ComponentFactory::createRule( Component * parent )
+void Program::dump( const QString &prefix )
 {
-  return new Rule( parent );
-}
-
-Condition::And * ComponentFactory::createAndCondition( Component * parent )
-{
-  return new Condition::And( parent );
-}
-
-Condition::Or * ComponentFactory::createOrCondition( Component * parent )
-{
-  return new Condition::Or( parent );
+  debugOutput( prefix, "Program" );
+  dumpRuleList( prefix );
 }
 
 } // namespace Filter

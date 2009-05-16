@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : program.cpp
+ *  File : component.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,55 +23,70 @@
  *
  *******************************************************************************/
 
-#include "program.h"
+#include "component.h"
 
-#include <QObject>
+#include <KDebug>
 
 namespace Akonadi
 {
 namespace Filter 
 {
 
-Program::Program( Component * parent )
-  : Component( ComponentTypeProgram, parent )
+Component::Component( Component * parent )
+  : mParent( parent )
 {
 }
 
-Program::~Program()
+Component::~Component()
 {
-  qDeleteAll( mRuleList );
 }
 
-bool Program::run( Data * data )
+bool Component::isProgram() const
 {
-  Q_ASSERT( data );
-
-  setLastError( QString() );
-
-  foreach ( Rule * rule, mRuleList )
-  {
-    switch ( rule->execute( data ) )
-    {
-      case SuccessAndContinue:
-        // okie, move on
-      break;
-      case SuccessAndStop:
-        // okie, but stop
-        return true;
-      break;
-      case Failure:
-        setLastError( QObject::tr( "Rule execution failed: %1" ).arg( rule->lastError() ) );
-        return false;
-      break;
-      default:
-        Q_ASSERT( false ); // invalid rule execution result
-        return false;
-      break;
-    }
-  }
-
-  return true;
+  return false;
 }
+
+bool Component::isRule() const
+{
+  return false;
+}
+
+bool Component::isAction() const
+{
+  return false;
+}
+
+bool Component::isCondition() const
+{
+  return false;
+}
+
+bool Component::isRuleList() const
+{
+  return false;
+}
+
+void Component::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Generic component" );
+}
+
+void Component::debugOutput( const QString &prefix, const char *text )
+{
+  QByteArray pref = prefix.toUtf8();
+  const char * prefData = pref.data();
+  qDebug( "%s%s", prefData ? prefData : "", text ? text : "");
+}
+
+void Component::debugOutput( const QString &prefix, const QString &text )
+{
+  QByteArray pref = prefix.toUtf8();
+  const char * prefData = pref.data();
+  QByteArray txt = text.toUtf8();
+  const char * txtData = txt.data();
+  qDebug( "%s%s", prefData ? prefData : "", txtData ? txtData : "");
+}
+
 
 } // namespace Filter
 

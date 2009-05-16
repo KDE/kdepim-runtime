@@ -28,6 +28,12 @@
 
 #include "config-akonadi-filter.h"
 
+#include <QString>
+#include <QList>
+#include <QHash>
+
+#include "attribute.h"
+
 namespace Akonadi
 {
 namespace Filter
@@ -39,20 +45,48 @@ class Component;
 
 namespace Condition
 {
+  class Base;
   class And;
   class Or;
+  class Not;
 } // namespace Condition
+
+namespace Action
+{
+  class Base;
+  class Stop;
+  class RuleList;
+} // namespace Action
 
 class AKONADI_FILTER_EXPORT ComponentFactory
 {
 public:
   ComponentFactory();
   virtual ~ComponentFactory();
+
+private:
+  QList< const Attribute * > mAttributeList;
+  QHash< QString, Attribute * > mAttributeHash;
+
 public:
+  void registerAttribute( Attribute * attribute );
+
+  virtual const Attribute * findAttribute( const QString &id );
+
+  virtual const QList< const Attribute * > & enumerateAttributes();
+
   virtual Program * createProgram( Component * parent );
+
   virtual Rule * createRule( Component * parent );
+
   virtual Condition::And * createAndCondition( Component * parent );
   virtual Condition::Or * createOrCondition( Component * parent );
+  virtual Condition::Not * createNotCondition( Component * parent );
+  virtual Condition::Base * createAttributeTestCondition( Component * parent, const Attribute * attribute );
+
+  virtual Action::Base * createGenericAction( Component * parent, const QString &name );
+  virtual Action::RuleList * createRuleList( Component * parent );
+  virtual Action::Stop * createStopAction( Component * parent );
 }; // class ComponentFactory
 
 } // namespace Filter

@@ -27,6 +27,8 @@
 
 #include "data.h"
 
+#include <KDebug>
+
 namespace Akonadi
 {
 namespace Filter 
@@ -35,7 +37,7 @@ namespace Condition
 {
 
 Base::Base( ConditionType type, Component * parent )
-  : Component( ComponentTypeCondition, parent ), mConditionType( type )
+  : Component( parent ), mConditionType( type )
 {
   Q_ASSERT( parent );
 }
@@ -44,11 +46,21 @@ Base::~Base()
 {
 }
 
+bool Base::isCondition() const
+{
+  return true;
+}
+
+
 bool Base::matches( Data * data )
 {
   return false;
 }
 
+void Base::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::Base" );
+}
 
 Multi::Multi( ConditionType type, Component * parent )
   : Base( type, parent )
@@ -60,6 +72,48 @@ Multi::~Multi()
   qDeleteAll( mChildConditions );
 }
 
+void Multi::dumpChildConditions( const QString &prefix )
+{
+  QString localPrefix = prefix;
+  localPrefix += QLatin1String("  ");
+  foreach( Condition::Base * condition, mChildConditions )
+    condition->dump( localPrefix );
+}
+
+void Multi::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::Multi" );
+  dumpChildConditions( prefix );
+}
+
+Not::Not( Component * parent )
+  : Base( ConditionTypeNot, parent ), mChildCondition( 0 )
+{
+}
+
+Not::~Not()
+{
+}
+
+bool Not::matches( Data * data )
+{
+  if( !mChildCondition )
+    return false;
+  return !mChildCondition->matches( data );
+}
+
+void Not::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::Not" );
+  if( mChildCondition )
+  {
+    QString localPrefix = prefix;
+    localPrefix += QLatin1String( "  " );
+    mChildCondition->dump( localPrefix );
+  } else {
+    debugOutput( prefix, "  No Child Condition (So The Not is Always False)" );
+  }
+}
 
 
 And::And( Component * parent )
@@ -76,6 +130,12 @@ bool And::matches( Data * data )
   return false;
 }
 
+void And::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::And" );
+  dumpChildConditions( prefix );
+}
+
 
 Or::Or( Component * parent )
   : Multi( ConditionTypeOr, parent )
@@ -89,6 +149,12 @@ Or::~Or()
 bool Or::matches( Data * data )
 {
   return false;
+}
+
+void Or::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::Or" );
+  dumpChildConditions( prefix );
 }
 
 } // namespace Condition

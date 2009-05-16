@@ -30,13 +30,15 @@
 
 #include <QObject>
 
+#include <KDebug>
+
 namespace Akonadi
 {
 namespace Filter 
 {
 
 Rule::Rule( Component * parent )
-  : Component( ComponentTypeRule, parent ), mCondition( 0 )
+  : Component( parent ), mCondition( 0 )
 {
   Q_ASSERT( parent );
 }
@@ -54,6 +56,11 @@ void Rule::setCondition( Condition::Base * condition )
   if( mCondition )
     delete mCondition;
   mCondition = condition;
+}
+
+bool Rule::isRule() const
+{
+  return true;
 }
 
 
@@ -90,6 +97,18 @@ Rule::ProcessingStatus Rule::execute( Data * data )
   return SuccessAndContinue;
 }
 
+void Rule::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Rule" );
+  QString localPrefix = prefix;
+  localPrefix += QLatin1String("  ");
+  if ( mCondition )
+    mCondition->dump( localPrefix );  
+  else
+    debugOutput( localPrefix, "Null Condition (Always True)" );
+  foreach( Action::Base * action, mActionList )
+    action->dump( localPrefix );
+}
 
 } // namespace Filter
 

@@ -48,7 +48,8 @@ public:
   enum ConditionType
   {
     ConditionTypeAnd,
-    ConditionTypeOr
+    ConditionTypeOr,
+    ConditionTypeNot
   };
 public:
   Base( ConditionType type, Component * parent );
@@ -56,11 +57,15 @@ public:
 protected:
   ConditionType mConditionType;
 public:
+  virtual bool isCondition() const;
+
   ConditionType conditionType() const
   {
     return mConditionType;
   }
   virtual bool matches( Data * data );
+
+  virtual void dump( const QString &prefix );
 }; // class Base
 
 class AKONADI_FILTER_EXPORT Multi : public Base
@@ -75,6 +80,41 @@ public:
   {
     mChildConditions.append( condition );
   }
+
+  void dumpChildConditions( const QString &prefix );
+  virtual void dump( const QString &prefix );
+};
+
+class AKONADI_FILTER_EXPORT Not : public Base
+{
+public:
+  Not( Component * parent );
+  ~Not();
+protected:
+  Condition::Base * mChildCondition;
+public:
+
+  Condition::Base * childCondition()
+  {
+    return mChildCondition;
+  }
+
+  Condition::Base * releaseChildCondition()
+  {
+    Condition::Base * cond = mChildCondition;
+    mChildCondition = 0;
+    return cond;
+  }
+
+
+  void setChildCondition( Condition::Base * condition )
+  {
+    Q_ASSERT( !mChildCondition );
+    mChildCondition = condition;
+  }
+  virtual bool matches( Data * data );
+
+  virtual void dump( const QString &prefix );
 };
 
 class AKONADI_FILTER_EXPORT And : public Multi
@@ -84,6 +124,8 @@ public:
   virtual ~And();
 public:
   virtual bool matches( Data * data );
+
+  virtual void dump( const QString &prefix );
 }; // class And
 
 class AKONADI_FILTER_EXPORT Or : public Multi
@@ -93,6 +135,8 @@ public:
   virtual ~Or();
 public:
   virtual bool matches( Data * data );
+
+  virtual void dump( const QString &prefix );
 }; // class Or
 
 } // namespace Condition

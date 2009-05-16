@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : action.h
+ *  File : program.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,36 +23,75 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_ACTION_H_
-#define _AKONADI_FILTER_ACTION_H_
+#ifndef _AKONADI_FILTER_PROGRAM_H_
+#define _AKONADI_FILTER_PROGRAM_H_
 
 #include "config-akonadi-filter.h"
 
+#include <QList>
+#include <QString>
+
 #include "component.h"
+#include "rulelist.h"
+#include "data.h"
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Data;
-
-namespace Action
-{
-
-class AKONADI_FILTER_EXPORT Base : public Component
+/**
+ * A complete filtering program.
+ *
+ * The program is made up of a list of rules that are applied in sequence.
+ */
+class AKONADI_FILTER_EXPORT Program : public Action::RuleList
 {
 public:
-  Base( Component * parent );
-  virtual ~Base();
-public:
-  virtual ProcessingStatus execute( Data * data );
-}; // class Base
 
-} // namespace Action
+  /**
+   * Creates an empty filtering program.
+   */
+  Program( Component * parent );
+
+  /**
+   * Destroys the filtering program including any included rules.
+   */
+  virtual ~Program();
+
+public:
+
+  /**
+   * The user supplied description of this filtering program.
+   */
+  QString mDescription;
+
+public:
+
+  /**
+   * Returns the user supplied description attacched to this program.
+   */
+  const QString & description() const
+  {
+    return mDescription;
+  }
+
+  /**
+   * Sets the user supplied description of this filtering program.
+   */
+  void setDescription( const QString &description )
+  {
+    mDescription = description;
+  }
+
+  virtual bool isProgram() const;
+
+
+  virtual void dump( const QString &prefix );
+};
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_ACTION_H_
+#endif //!_AKONADI_FILTER_PROGRAM_H_

@@ -20,4 +20,4 @@ include(MacroOptionalAddSubdirectory)
 include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
-add_subdirectory(libraries)
+add_subdirectory(akonadi)
