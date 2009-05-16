@@ -65,7 +65,7 @@ int TransportAttribute::transportId() const
 
 Transport* TransportAttribute::transport() const
 {
-  return TransportManager::self()->transportById( mId );
+  return TransportManager::self()->transportById( mId, false );
 }
 
 void TransportAttribute::setTransportId( int id )

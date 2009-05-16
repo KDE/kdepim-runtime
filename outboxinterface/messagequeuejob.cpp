@@ -96,6 +96,8 @@ bool MessageQueueJob::Private::validate()
 {
   // TODO: what kind of validation should I do for the MIME message and the
   // addresses?
+  // NOTE: the MDA asserts that msg->encodedContent(true) is non-empty. Is
+  // it expensive to do that twice?
 
   // TODO: perhaps let the apps handle these errors, and just assume everything
   // is good?
@@ -107,7 +109,7 @@ bool MessageQueueJob::Private::validate()
     return false;
   }
 
-  if( !TransportManager::self()->transportById( transport )->isValid() ) {
+  if( TransportManager::self()->transportById( transport, false ) == 0 ) {
     q->setError( UserDefinedError );
     q->setErrorText( i18n( "Invalid transport." ) );
     q->emitResult();
@@ -145,10 +147,16 @@ void MessageQueueJob::Private::doStart()
   item.addAttribute( sA );
   item.addAttribute( tA );
 
+  // set flags
+  item.setFlag( "queued" );
+
   // put item in Akonadi storage
   Collection col = LocalFolders::self()->outbox();
   ItemCreateJob *job = new ItemCreateJob( item, col );
   q->addSubjob( job );
+
+  // TODO: since ItemCreateJob starts automatically, adding it as a subjob
+  // here may be problematic.
 }
 
 
