@@ -1,5 +1,6 @@
 /*
     Copyright 2008 Ingo Klöcker <kloecker@kde.org>
+    Copyright 2009 Constantin Berzan <exit3219@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -28,7 +29,7 @@
 /**
  * This agent dispatches mail put into the outbox collection.
  */
-class MailDispatcherAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
+class MailDispatcherAgent : public Akonadi::AgentBase
 {
   Q_OBJECT
 
@@ -42,19 +43,14 @@ class MailDispatcherAgent : public Akonadi::AgentBase, public Akonadi::AgentBase
   protected:
     virtual void doSetOnline( bool online );
 
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);
-    virtual void itemRemoved( const Akonadi::Item &item );
-
   private:
     class Private;
     Private* const d;
 
+    Q_PRIVATE_SLOT( d, void dispatch() )
     Q_PRIVATE_SLOT( d, void localFoldersReady() )
-    Q_PRIVATE_SLOT( d, void itemFetchDone( KJob* ) )
-    Q_PRIVATE_SLOT( d, void transportResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
+    Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
 
 };
 
