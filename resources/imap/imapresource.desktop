@@ -19,6 +19,7 @@ Comment[nb]=Kobler til en IMAP-tjener. Basert på KIMAP  fra kdepimlibs.
 Comment[nn]=Koplar til ein IMAP-tenar. Basert på KIMAP frå kdepimlibs.
 Comment[pt]=Liga-se a um servidor de IMAP. Baseia-se na biblioteca KIMAP do kdepimlibs.
 Comment[pt_BR]=Conecta a um servidor IMAP. Baseado no KIMAP do kdepimlibs.
+Comment[ru]=Подключение к серверу IMAP через библиотеку KIMAP из kdepimlibs.
 Comment[sv]=Ansluter till en IMAP-server. Baserad på KIMAP-biblioteket från kdepimlibs.
 Comment[tr]=Bir IMAP-sunucuya bağlanır. Kdepimlibs KIMAP'ı temel alır.
 Comment[uk]=З’єднується з сервером IMAP. Засновано на бібліотеці KIMAP з kdepimlibs.
