@@ -38,58 +38,207 @@ namespace Akonadi
 namespace Filter 
 {
 
+
+Factory::OperatorSet::OperatorSet()
+{
+}
+
+Factory::OperatorSet::~OperatorSet()
+{
+  qDeleteAll( mOperatorHash );
+}
+
+void Factory::OperatorSet::registerOperator( Operator * op )
+{
+  Q_ASSERT( op );
+
+  Operator * existing = mOperatorHash.value( op->id(), 0 );
+  if( existing )
+  {
+    mOperatorList.removeOne( existing );
+    delete existing;
+  }
+   
+  mOperatorHash.insert( op->id().toLower(), op ); // wil replace
+  mOperatorList.append( op );
+}
+
+
+
+
+
+
+
 Factory::Factory()
 {
-  // register the basic attributes
+  // register the basic properties
 
-  registerAttribute(
-      new Attribute(
+  registerProperty(
+      new Property(
           QString::fromAscii( "size" ),
-          i18n( "Size" ),
-          i18n( "The size of the whole item" ),
-          Attribute::DataTypeInteger
+          i18n( "size of" ),
+          i18n( "The size of a specific item part. If the specified item doesn't exist then the returned size is 0." ),
+          DataTypeInteger
         )
     );
 
-  registerAttribute(
-      new Attribute(
-          QString::fromAscii( "from" ),
-          i18n( "From" ),
-          i18n( "The \"From\" field" ),
-          Attribute::DataTypeString
+  registerProperty(
+      new Property(
+          QString::fromAscii( "header" ),
+          i18n( "value of" ),
+          i18n( "Returns the string value of the specified item part" ),
+          DataTypeString
+        )
+    );
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "address" ),
+          i18n( "any address in" ),
+          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          DataTypeString
+        )
+    );
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "address:all" ),
+          i18n( "any address in" ),
+          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          DataTypeString
+        )
+    );
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "address:domain" ),
+          i18n( "any domain address part in" ),
+          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          DataTypeString
+        )
+    );
+
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "address:local" ),
+          i18n( "any local address part in" ),
+          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          DataTypeString
+        )
+    );
+
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "date" ),
+          i18n( "date in" ),
+          i18n( "Returns the first date extracted from the specified item part" ),
+          DataTypeDateTime
+        )
+    );
+
+  registerProperty(
+      new Property(
+          QString::fromAscii( "exists" ),
+          i18n( "exists" ),
+          i18n( "Returns true if the specified item part exists" ),
+          DataTypeBoolean
+        )
+    );
+
+
+
+
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "above" ),
+          i18n( "Is Greater Than" ),
+          i18n( "Returns true if the left operand has greater numeric value than the right operand" ),
+          DataTypeInteger
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "below" ),
+          i18n( "Is Lower Than" ),
+          i18n( "Returns true if the left operand has smaller numeric value than the right operand" ),
+          DataTypeInteger
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "matches" ),
+          i18n( "Matches Regular Expression" ),
+          i18n( "Returns true if the left operand matches the regular expression specified by the right operand" ),
+          DataTypeString
         )
     );
 }
 
 Factory::~Factory()
 {
-  qDeleteAll( mAttributeHash );
+  qDeleteAll( mPropertyHash );
+  qDeleteAll( mOperatorSetHash );
 }
 
-void Factory::registerAttribute( Attribute * attribute )
+void Factory::registerOperator( Operator * op )
 {
-  Q_ASSERT( attribute );
+  Q_ASSERT( op );
 
-  Attribute * existing = mAttributeHash.value( attribute->id(), 0 );
+  OperatorSet * set = mOperatorSetHash.value( op->dataType(), 0 );
+  if( !set )
+  {
+    set = new OperatorSet();
+    mOperatorSetHash.insert( op->dataType(), set );
+  }
+
+  set->registerOperator( op );
+}
+
+const Operator * Factory::findOperator( DataType dataType, const QString &id )
+{
+  OperatorSet * set = mOperatorSetHash.value( dataType, 0 );
+  if( !set )
+    return 0;
+  return set->findOperator( id );
+}
+
+const QList< const Operator * > * Factory::enumerateOperators( DataType dataType )
+{
+  OperatorSet * set = mOperatorSetHash.value( dataType, 0 );
+  if( !set )
+    return 0;
+  return set->enumerateOperators();
+}
+
+void Factory::registerProperty( Property * property )
+{
+  Q_ASSERT( property );
+
+  Property * existing = mPropertyHash.value( property->id(), 0 );
   if( existing )
   {
-    mAttributeList.removeOne( existing );
+    mPropertyList.removeOne( existing );
     delete existing;
   }
    
-  mAttributeHash.insert( attribute->id().toLower(), attribute ); // wil replace
-  mAttributeList.append( attribute );
+  mPropertyHash.insert( property->id().toLower(), property ); // wil replace
+  mPropertyList.append( property );
 }
 
 
-const Attribute * Factory::findAttribute( const QString &id )
+const Property * Factory::findProperty( const QString &id )
 {
-  return mAttributeHash.value( id.toLower(), 0 );
+  return mPropertyHash.value( id.toLower(), 0 );
 }
 
-const QList< const Attribute * > & Factory::enumerateAttributes()
+const QList< const Property * > * Factory::enumerateProperties()
 {
-  return mAttributeList;
+  return &mPropertyList;
 }
 
 Program * Factory::createProgram( Component * parent )
@@ -127,9 +276,10 @@ Action::Base * Factory::createGenericAction( Component * parent, const QString &
   return 0; // by default we have no generic actions
 }
 
-Condition::Base * Factory::createAttributeTestCondition( Component * parent, const Attribute * attribute )
+Condition::Base * Factory::createPropertyTestCondition( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand )
 {
-  return new Condition::AttributeTest( parent, attribute );
+  Q_ASSERT( property->dataType() == op->dataType() );
+  return new Condition::PropertyTest( parent, property, propertyArgument, op, operand );
 }
 
 

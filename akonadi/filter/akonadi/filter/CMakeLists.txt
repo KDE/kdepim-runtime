@@ -24,7 +24,6 @@ set(
 		AKONADI_FILTER_LIB_SRCS
 		action.cpp
 		afldecoder.cpp
-		attribute.cpp
 		component.cpp
 		condition.cpp
 		decoder.cpp
@@ -32,7 +31,9 @@ set(
 		encoder.cpp
 		factory.cpp
 		filter.cpp
+		operator.cpp
 		program.cpp
+		property.cpp
 		rule.cpp
 		rulelist.cpp
 		sievedecoder.cpp

@@ -31,6 +31,7 @@
 #include "decoder.h"
 
 #include <QString>
+#include <QStringList>
 #include <QList>
 #include <QVariant>
 
@@ -69,6 +70,7 @@ protected:
   QList< QVariant > mCurrentSimpleTestArguments;
   QString mCurrentSimpleCommandName;
   QList< QVariant > mCurrentSimpleCommandArguments;
+  QStringList mCurrentStringList;
   bool mGotError;
 public:
 
@@ -86,10 +88,12 @@ protected:
   void onTaggedArgument( const QString & tag );
   void onStringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment );
   void onNumberArgument( unsigned long number, char quantifier );
+  void onStringListArgumentStart();
   void onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment );
+  void onStringListArgumentEnd();
 
 private:
-  void addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier );
+  bool addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier );
 
 };
 

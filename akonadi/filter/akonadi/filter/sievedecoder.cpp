@@ -31,7 +31,7 @@
 #include "sievereader.h"
 #include "condition.h"
 #include "rulelist.h"
-#include "attribute.h"
+#include "property.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -41,7 +41,10 @@
 
 #define DEBUG_SIEVE_DECODER 1
 
-// Sieve is hard to parse this way :/
+// Sieve is somewhat an ugly language. It's hard to parse, has some ambiguities
+// and a human has trouble understanding its constructs. We actually support
+// a subset of the whole language and we extend it in other directions to support
+// constructs which the original specification is unable to encode.
 
 namespace Akonadi
 {
@@ -67,7 +70,7 @@ void SieveDecoder::onError( const QString & error )
   setLastError( error );
 }
 
-void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier )
+bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier )
 {
   if( mCurrentComponent->isRule() )
   {
@@ -77,11 +80,11 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
       delete condition;
       mGotError = true; 
       setLastError( i18n( "Unexpected start of test '%1' after a previous test", identifier ) );
-      return;  
+      return false;  
     }
     rule->setCondition( condition );
     mCurrentComponent = condition;
-    return;
+    return true;
   }
 
   if( mCurrentComponent->isCondition() )
@@ -95,7 +98,7 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
         Condition::Multi * multi = static_cast< Condition::Multi * >( mCurrentComponent );
         multi->addChildCondition( condition );
         mCurrentComponent = condition;
-        return;
+        return true;
       }
       break;
       case Condition::Base::ConditionTypeNot:
@@ -116,7 +119,7 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
           whoTheHeckDefinedNotToTheExclamationMark->setChildCondition( condition );
         }
         mCurrentComponent = condition;
-        return;
+        return true;
       }
       break;
       default:
@@ -129,6 +132,7 @@ void SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
 
   mGotError = true;
   setLastError( i18n( "Unexpected start of test '%1'", identifier ) );
+  return false;
 }
 
 void SieveDecoder::onTestStart( const QString & identifier )
@@ -175,25 +179,161 @@ void SieveDecoder::onTestEnd()
   if( !mCurrentSimpleTestName.isEmpty() )
   {
     // this is the end of a simple test
-    const Attribute * attribute = factory()->findAttribute( mCurrentSimpleTestName );
-    if ( !attribute )
+
+    // here you have most of the weirdness of the sieve syntax
+
+    // standard sieve syntax
+    //
+    //   testname {:<modifier> {<modifierArgument>}} [:<operator>] {:<modifier> {<modifierArgument>}} [ header_name ] [ values ]
+    //
+
+    const Property * property = factory()->findProperty( mCurrentSimpleTestName );
+    if ( !property )
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Unrecognized attribute '%1'", mCurrentSimpleTestName ) );
+      setLastError( i18n( "Unrecognized property '%1'", mCurrentSimpleTestName ) );
       return;
     }
 
-    Condition::Base * condition = factory()->createAttributeTestCondition( mCurrentComponent, attribute );
-    if ( !condition )
+    // Must have at least 1 non optional argument (the value)
+    if( mCurrentSimpleTestArguments.count() < 1 )
+    {
+      mGotError = true;
+      setLastError( i18n( "The 'header' test requires at one non-optional argument" ) );
+      return;
+    }
+
+    QList< QVariant >::Iterator it = mCurrentSimpleTestArguments.end();
+
+    --it;
+    QVariant values = *it;
+
+    // do we have field names around ?
+    QVariant fieldNames;
+
+    if ( it != mCurrentSimpleTestArguments.begin() )
+    {
+      --it;
+      fieldNames = *it;
+      // check if it is not a tagged argument
+      if( fieldNames.type() == QVariant::String )
+      {
+        QString maybeTaggedArgument = fieldNames.toString();
+        if( maybeTaggedArgument.length() > 1 )
+        {
+          if ( maybeTaggedArgument.at( 0 ) == QChar( ':' ) )
+            fieldNames = QVariant(); // this is a tagged argument
+        }
+      }
+    }
+
+    QStringList fieldList;
+
+    mCurrentSimpleTestArguments.removeLast();
+    if ( !fieldNames.isNull() )
+    {
+      mCurrentSimpleTestArguments.removeLast();
+
+      if( !qVariantCanConvert< QStringList >( fieldNames ) )
+      {
+        mGotError = true;
+        setLastError( i18n( "The 'header' field name argument must be convertible to a string list" ) );
+        return;
+      }
+
+      fieldList = fieldNames.toStringList();
+    } else {
+      // use a string list with a single null value
+      fieldList.append( QString() );
+    }
+    
+    const Operator * op = 0;
+
+    foreach( QVariant argVariant, mCurrentSimpleTestArguments )
+    {
+      if( argVariant.type() != QVariant::String )
+        continue;
+      QString arg = argVariant.toString();
+      Q_ASSERT( arg.length() > 0 );
+      QString argNoTag = arg.at( 0 ) == QChar(':') ? arg.mid(1) : arg;
+      op = factory()->findOperator( property->dataType(), argNoTag );
+      if( op )
+      {
+        mCurrentSimpleTestArguments.removeOne( arg );
+        break;
+      }
+    }
+
+    if( !op )
     {
       // unrecognized test
-      mGotError = true; 
-      setLastError( i18n( "Test on attribute '%1' isn't supported", mCurrentSimpleTestName ) );
+      mGotError = true;
+      switch( mCurrentSimpleTestArguments.count() )
+      {
+        case 0:
+          setLastError( i18n( "Property '%1' expects an operator", mCurrentSimpleTestName ) );
+        break;
+        case 1:
+          setLastError( i18n( "Invalid operator '%1' for property '%2'", mCurrentSimpleTestArguments.at( 0 ).toString() , mCurrentSimpleTestName ) );
+        break;
+        default:
+          setLastError( i18n( "No such operator for property '%1'", mCurrentSimpleTestName ) );
+        break;
+      }
       return;
     }
 
-    addConditionToCurrentComponent( condition, mCurrentSimpleTestName );
+    QList< QVariant > valueList;
+
+    switch( values.type() )
+    {
+      case QVariant::ULongLong:
+        valueList.append( values );
+      break;
+      case QVariant::String:
+        valueList.append( values );
+      break;
+      case QVariant::StringList:
+      {
+        QStringList sl = values.toStringList();
+        foreach( QString stringValue, sl )
+          valueList.append( QVariant( stringValue ) );
+      }
+      break;
+      default:
+        Q_ASSERT( false ); // shouldn't happen
+      break;
+    }
+
+    // if there is more than one field or more than one value then we use an "or" test as parent
+    if( ( valueList.count() > 1 ) || ( fieldList.count() > 1 ) )
+    {
+      Condition::Or * orCondition = factory()->createOrCondition( mCurrentComponent );
+      Q_ASSERT( orCondition );
+
+      if( !addConditionToCurrentComponent( orCondition, QLatin1String( "anyof" ) ) )
+        return; // error already signaled
+    }
+
+    foreach( QString field, fieldList )
+    {
+      foreach( QVariant value, valueList )
+      {
+        Condition::Base * condition = factory()->createPropertyTestCondition( mCurrentComponent, property, field, op, value );
+        if ( !condition )
+        {
+          // unrecognized test
+          mGotError = true; 
+          setLastError( i18n( "Test on property '%1' isn't supported", field ) );
+          return;
+        }
+
+        if( !addConditionToCurrentComponent( condition, field ) )
+          return; // error already set
+      }
+    }
+
     mCurrentSimpleTestName = QString();
   }
 
@@ -226,7 +366,9 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   if( !mCurrentSimpleTestName.isEmpty() )
   {
     // argument to a simple test
-    mCurrentSimpleTestArguments.append( QVariant( tag ) );
+    QString bleah = QChar( ':' );
+    bleah += tag;
+    mCurrentSimpleTestArguments.append( QVariant( bleah ) );
     return;
   }
 
@@ -267,14 +409,14 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandArguments.append( QVariant( (uint)number ) );
+    mCurrentSimpleCommandArguments.append( QVariant( (qulonglong)number ) );
     return;
   }
 
   if( !mCurrentSimpleTestName.isEmpty() )
   {
     // argument to a simple test
-    mCurrentSimpleTestArguments.append( QVariant( (uint)number ) );
+    mCurrentSimpleTestArguments.append( QVariant( (qulonglong)number ) );
     return;
   }
 
@@ -282,9 +424,50 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   setLastError( i18n( "Unexpected number argument outside of a simple test or simple command" ) );
 }
 
+void SieveDecoder::onStringListArgumentStart()
+{
+  if( mGotError )
+    return; // ignore everything
+
+  if( !mCurrentStringList.isEmpty() )
+  {
+    mGotError = true;
+    setLastError( i18n( "Unexpected start of string list inside a string list" ) ); 
+  }
+}
+
 void SieveDecoder::onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
-  onStringArgument( string, multiLine, embeddedHashComment );
+  if( mGotError )
+    return; // ignore everything
+
+  mCurrentStringList.append( string );
+}
+
+void SieveDecoder::onStringListArgumentEnd()
+{
+  if( mGotError )
+    return; // ignore everything
+
+  if( !mCurrentSimpleCommandName.isEmpty() )
+  {
+    Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
+    // argument to a simple command
+    mCurrentSimpleCommandArguments.append( QVariant( mCurrentStringList ) );
+    mCurrentStringList.clear();
+    return;
+  }
+
+  if( !mCurrentSimpleTestName.isEmpty() )
+  {
+    // argument to a simple test
+    mCurrentSimpleTestArguments.append( QVariant( mCurrentStringList ) );
+    mCurrentStringList.clear();
+    return;
+  }
+
+  mGotError = true;
+  setLastError( i18n( "Unexpected string list argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onTestListStart()
@@ -432,6 +615,7 @@ void SieveDecoder::onCommandEnd()
     {
       action = factory()->createStopAction( mCurrentComponent );
       Q_ASSERT( action );
+
     } else {
 
       action = factory()->createGenericAction( mCurrentComponent, mCurrentSimpleCommandName );
@@ -443,6 +627,9 @@ void SieveDecoder::onCommandEnd()
         return;
       }
     }
+
+    Q_ASSERT( action );
+    mCurrentSimpleCommandName = QString();
 
     if ( mCurrentComponent->isRuleList() )
     {
@@ -504,11 +691,11 @@ Program * SieveDecoder::run()
 {
   QString script = QString::fromUtf8(
        "# Test script\r\n" \
-       "if allof( size :over 100K, size :below 200K) {\r\n" \
+       "if allof( size :above 100K, size :below 200K) {\r\n" \
        "  fileinto \"huge\";\r\n" \
        "  stop;\r\n" \
        "}\r\n"
-       "if allof( size :below 100K, not( size :below 20K ), not( from :matches \"x\", from :matches \"y\" ) ) {\r\n" \
+       "if allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
        "  fileinto \"medium\";\r\n" \
        "  if not allof( size :below 80K, not size :below 70K) {\r\n" \
        "    fileinto \"strange\";\r\n" \

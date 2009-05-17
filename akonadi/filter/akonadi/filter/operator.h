@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : data.h
+ *  File : operator.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,14 +23,12 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#ifndef _AKONADI_FILTER_OPERATOR_H_
+#define _AKONADI_FILTER_OPERATOR_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
-#include <QStringList>
-#include <QDateTime>
 
 #include "datatype.h"
 
@@ -39,23 +37,65 @@ namespace Akonadi
 namespace Filter
 {
 
-class Property;
-
-class AKONADI_FILTER_EXPORT Data
+class AKONADI_FILTER_EXPORT Operator
 {
 public:
-  Data();
-  virtual ~Data();
+  Operator(
+      const QString &id,
+      const QString &name,
+      const QString &description,
+      DataType dataType
+    );
+  virtual ~Operator();
+
+protected:
+
+  /**
+   * The internal, non-localized identifier of the operator.
+   */
+  QString mId;
+
+  /**
+   * The localized name of the operator (this is what is shown in the selection combos)
+   */
+  QString mName;
+
+  /**
+   * The localized description of the operator (if needed)
+   */
+  QString mDescription;
+
+  /**
+   * The type of this operator
+   */
+  DataType mDataType;
 
 public:
-  virtual bool getPropertyValue( const Property * property, QString &buffer );
-  virtual bool getPropertyValue( const Property * property, Integer &buffer );
-  virtual bool getPropertyValue( const Property * property, QStringList &buffer );
-  virtual bool getPropertyValue( const Property * property, QDateTime &buffer );
-};
+
+  DataType dataType() const
+  {
+    return mDataType;
+  }
+
+  const QString & id() const
+  {
+    return mId;
+  }
+
+  const QString & name() const
+  {
+    return mName;
+  }
+
+  const QString & description() const
+  {
+    return mDescription;
+  }
+
+}; // class Operator
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_
+#endif //!_AKONADI_FILTER_OPERATOR_H_

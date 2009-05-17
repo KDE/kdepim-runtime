@@ -31,14 +31,16 @@
 #include "component.h"
 
 #include <QList>
+#include <QVariant>
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Attribute;
+class Property;
 class Data;
+class Operator;
 
 namespace Condition
 {
@@ -51,7 +53,7 @@ public:
     ConditionTypeAnd,
     ConditionTypeOr,
     ConditionTypeNot,
-    ConditionTypeAttributeTest
+    ConditionTypePropertyTest
   };
 public:
   Base( ConditionType type, Component * parent );
@@ -141,13 +143,16 @@ public:
   virtual void dump( const QString &prefix );
 }; // class Or
 
-class AKONADI_FILTER_EXPORT AttributeTest : public Base
+class AKONADI_FILTER_EXPORT PropertyTest : public Base
 {
 public:
-  AttributeTest( Component * parent, const Attribute * attribute );
-  virtual ~AttributeTest();
+  PropertyTest( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand );
+  virtual ~PropertyTest();
 protected:
-  const Attribute * mAttribute; // shallow, never null
+  const Property * mProperty; // shallow, never null
+  QString mPropertyArgument; // may be empty (no argument given)
+  const Operator * mOperator; // may be null (only for boolean properties)
+  QVariant mOperand; // may be null (only for boolean properties)
 public:
   virtual bool matches( Data * data );
 

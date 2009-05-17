@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : data.h
+ *  File : operator.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,39 +23,33 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#include "operator.h"
 
-#include "config-akonadi-filter.h"
-
-#include <QString>
-#include <QStringList>
-#include <QDateTime>
-
-#include "datatype.h"
+#include <KDebug>
 
 namespace Akonadi
 {
-namespace Filter
+namespace Filter 
 {
 
-class Property;
-
-class AKONADI_FILTER_EXPORT Data
+Operator::Operator(
+    const QString &id,
+    const QString &name,
+    const QString &description,
+    DataType dataType
+  ) :
+  mId( id ),
+  mName( name ),
+  mDescription( description ),
+  mDataType( dataType )
 {
-public:
-  Data();
-  virtual ~Data();
+}
 
-public:
-  virtual bool getPropertyValue( const Property * property, QString &buffer );
-  virtual bool getPropertyValue( const Property * property, Integer &buffer );
-  virtual bool getPropertyValue( const Property * property, QStringList &buffer );
-  virtual bool getPropertyValue( const Property * property, QDateTime &buffer );
-};
+Operator::~Operator()
+{
+}
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_

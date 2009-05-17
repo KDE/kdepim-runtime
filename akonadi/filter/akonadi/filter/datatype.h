@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : data.h
+ *  File : datatype.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,39 +23,31 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#ifndef _AKONADI_FILTER_DATATYPE_H_
+#define _AKONADI_FILTER_DATATYPE_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
-#include <QStringList>
-#include <QDateTime>
-
-#include "datatype.h"
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Property;
-
-class AKONADI_FILTER_EXPORT Data
+enum DataType
 {
-public:
-  Data();
-  virtual ~Data();
-
-public:
-  virtual bool getPropertyValue( const Property * property, QString &buffer );
-  virtual bool getPropertyValue( const Property * property, Integer &buffer );
-  virtual bool getPropertyValue( const Property * property, QStringList &buffer );
-  virtual bool getPropertyValue( const Property * property, QDateTime &buffer );
+  DataTypeString,
+  DataTypeInteger,
+  DataTypeStringList,
+  DataTypeDateTime,
+  DataTypeBoolean
 };
+
+typedef qint64 Integer;
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_
+#endif //!_AKONADI_FILTER_DATATYPE_H_

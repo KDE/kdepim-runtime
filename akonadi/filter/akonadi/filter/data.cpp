@@ -38,22 +38,22 @@ Data::~Data()
 {
 }
 
-bool Data::getAttributeValue( const Attribute * attribute, QString &buffer )
+bool Data::getPropertyValue( const Property * property, QString &buffer )
 {
   return false;
 }
 
-bool Data::getAttributeValue( const Attribute * attribute, int &buffer )
+bool Data::getPropertyValue( const Property * property, Integer &buffer )
 {
   return false;
 }
 
-bool Data::getAttributeValue( const Attribute * attribute, QStringList &buffer )
+bool Data::getPropertyValue( const Property * property, QStringList &buffer )
 {
   return false;
 }
 
-bool Data::getAttributeValue( const Attribute * attribute, QDateTime &buffer )
+bool Data::getPropertyValue( const Property * property, QDateTime &buffer )
 {
   return false;
 }

@@ -7,3 +7,4 @@ Icon=message-rfc822
 X-Akonadi-MimeTypes=message/rfc822,message/news
 X-Akonadi-Capabilities=Unique
 X-Akonadi-Identifier=akonadi_mailfilter_agent
+

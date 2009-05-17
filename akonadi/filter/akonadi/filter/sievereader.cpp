@@ -67,6 +67,7 @@ void SieveReader::numberArgument( unsigned long number, char quantifier )
 void SieveReader::stringListArgumentStart()
 {
   qDebug( "String list argument start" );
+  mDecoder->onStringListArgumentStart();
 }
 
 void SieveReader::stringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
@@ -78,6 +79,7 @@ void SieveReader::stringListEntry( const QString & string, bool multiLine, const
 void SieveReader::stringListArgumentEnd()
 {
   qDebug( "String list argument end" );
+  mDecoder->onStringListArgumentEnd();
 }
 
 void SieveReader::commandStart( const QString & identifier )

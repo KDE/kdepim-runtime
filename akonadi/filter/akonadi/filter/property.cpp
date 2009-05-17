@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : attribute.cpp
+ *  File : property.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "attribute.h"
+#include "property.h"
 
 #include <KDebug>
 
@@ -32,7 +32,7 @@ namespace Akonadi
 namespace Filter 
 {
 
-Attribute::Attribute(
+Property::Property(
     const QString &id,
     const QString &name,
     const QString &description,
@@ -45,7 +45,7 @@ Attribute::Attribute(
 {
 }
 
-Attribute::~Attribute()
+Property::~Property()
 {
 }
 

@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : attribute.h
+ *  File : property.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,10 +23,12 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_ATTRIBUTE_H_
-#define _AKONADI_FILTER_ATTRIBUTE_H_
+#ifndef _AKONADI_FILTER_PROPERTY_H_
+#define _AKONADI_FILTER_PROPERTY_H_
 
 #include "config-akonadi-filter.h"
+
+#include "datatype.h"
 
 #include <QString>
 
@@ -35,47 +37,36 @@ namespace Akonadi
 namespace Filter
 {
 
-class AKONADI_FILTER_EXPORT Attribute
+class AKONADI_FILTER_EXPORT Property
 {
 public:
-  /**
-   * The resulting type of the attribute.
-   */
-  enum DataType
-  {
-    DataTypeString,
-    DataTypeInteger,
-    DataTypeStringList,
-    DataTypeDate
-  };
-public:
-  Attribute(
+  Property(
       const QString &id,
       const QString &name,
       const QString &description,
       DataType dataType
     );
-  virtual ~Attribute();
+  virtual ~Property();
 
 protected:
 
   /**
-   * The internal, non-localized identifier of the attribute.
+   * The internal, non-localized identifier of the property.
    */
   QString mId;
 
   /**
-   * The localized name of the attribute (this is what is shown in the selection combos)
+   * The localized name of the property (this is what is shown in the selection combos)
    */
   QString mName;
 
   /**
-   * The localized description of the attribute (if needed)
+   * The localized description of the property (if needed)
    */
   QString mDescription;
 
   /**
-   * The type of this attribute
+   * The type of this property
    */
   DataType mDataType;
 
@@ -101,10 +92,10 @@ public:
     return mDescription;
   }
 
-}; // class Attribute
+}; // class Property
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_ATTRIBUTE_H_
+#endif //!_AKONADI_FILTER_PROPERTY_H_
