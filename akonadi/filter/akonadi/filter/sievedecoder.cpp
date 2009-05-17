@@ -83,7 +83,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
       return false;  
     }
     rule->setCondition( condition );
-    mCurrentComponent = condition;
+    mCurrentComponent = condition; // always becomes current
     return true;
   }
 
@@ -131,7 +131,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
   delete condition;
 
   mGotError = true;
-  setLastError( i18n( "Unexpected start of test '%1'", identifier ) );
+  setLastError( i18n( "Unexpected start of test '%1' outside of a rule or a condition", identifier ) );
   return false;
 }
 
@@ -168,7 +168,6 @@ void SieveDecoder::onTestStart( const QString & identifier )
   Q_ASSERT( condition );
 
   addConditionToCurrentComponent( condition, identifier );
-
 }
 
 void SieveDecoder::onTestEnd()
@@ -306,6 +305,8 @@ void SieveDecoder::onTestEnd()
       break;
     }
 
+    bool multiTest = false;
+
     // if there is more than one field or more than one value then we use an "or" test as parent
     if( ( valueList.count() > 1 ) || ( fieldList.count() > 1 ) )
     {
@@ -314,8 +315,11 @@ void SieveDecoder::onTestEnd()
 
       if( !addConditionToCurrentComponent( orCondition, QLatin1String( "anyof" ) ) )
         return; // error already signaled
+
+      multiTest = true;
     }
 
+    int first = true;
     foreach( QString field, fieldList )
     {
       foreach( QVariant value, valueList )
@@ -329,8 +333,17 @@ void SieveDecoder::onTestEnd()
           return;
         }
 
-        if( !addConditionToCurrentComponent( condition, field ) )
+        if( !addConditionToCurrentComponent( condition, mCurrentSimpleTestName ) )
           return; // error already set
+
+        if( multiTest )
+        {
+          // pop it (so the current condition becomes the or added above)
+
+          mCurrentComponent = mCurrentComponent->parent();
+          Q_ASSERT( mCurrentComponent ); // a condition always has a parent
+          Q_ASSERT( mCurrentComponent->isCondition() );
+        }
       }
     }
 
@@ -697,7 +710,7 @@ Program * SieveDecoder::run()
        "}\r\n"
        "if allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
        "  fileinto \"medium\";\r\n" \
-       "  if not allof( size :below 80K, not size :below 70K) {\r\n" \
+       "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K) {\r\n" \
        "    fileinto \"strange\";\r\n" \
        "    keep;\r\n" \
        "  }\r\n"
