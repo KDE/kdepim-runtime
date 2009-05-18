@@ -4,3 +4,6 @@
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
 * make collections have a remoteId, and be stored on disk
+* replace StatusAttribute with ErrorAttribute
+* use KConfigXT instead of plain old KConfig for LocalFolders
+

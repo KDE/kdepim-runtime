@@ -104,14 +104,14 @@ bool MessageQueueJob::Private::validate()
 
   if( mode == DispatchModeAttribute::AfterDueDate && !dueDate.isValid() ) {
     q->setError( UserDefinedError );
-    q->setErrorText( i18n( "Invalid due date for sending message." ) );
+    q->setErrorText( i18n( "Message has invalid due date." ) );
     q->emitResult();
     return false;
   }
 
   if( TransportManager::self()->transportById( transport, false ) == 0 ) {
     q->setError( UserDefinedError );
-    q->setErrorText( i18n( "Invalid transport." ) );
+    q->setErrorText( i18n( "Message has invalid transport." ) );
     q->emitResult();
     return false;
   }
@@ -131,8 +131,6 @@ void MessageQueueJob::Private::doStart()
   // create item
   Item item;
   item.setMimeType( "message/rfc822" );
-  // TODO: I am uneasy about this. Is it guaranteed that the object will not
-  // be deleted?
   item.setPayload<Message::Ptr>( message );
   kDebug() << "message:" << message->encodedContent( true );
 
@@ -140,7 +138,7 @@ void MessageQueueJob::Private::doStart()
   AddressAttribute *addrA = new AddressAttribute( from, to, cc, bcc );
   DispatchModeAttribute *dmA = new DispatchModeAttribute( mode );
   StatusAttribute *sA = new StatusAttribute( StatusAttribute::Queued,
-      i18n("This message is ready to be sent.") );
+      i18n( "Message is ready to be sent." ) );
   TransportAttribute *tA = new TransportAttribute( transport );
   item.addAttribute( addrA );
   item.addAttribute( dmA );

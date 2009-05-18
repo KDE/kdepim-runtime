@@ -33,6 +33,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Control>
 
 
 using namespace Akonadi;
@@ -49,6 +50,10 @@ class OutboxInterface::LocalFoldersPrivate
     LocalFoldersPrivate()
       : instance( new LocalFolders(this) )
     {
+      if( !Akonadi::Control::start() ) {
+        kFatal() << "Cannot start Akonadi server.  Quitting.";
+      }
+
       ready = false;
       recreate = false;
       outboxJob = 0;
