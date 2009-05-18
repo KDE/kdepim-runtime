@@ -19,6 +19,8 @@
 
 #include "localfolders.h"
 
+#include "settings.h"
+
 #include <QApplication>
 #include <QObject>
 
@@ -58,19 +60,16 @@ class OutboxInterface::LocalFoldersPrivate
       recreate = false;
       outboxJob = 0;
       sentMailJob = 0;
-      config = new KConfig( QLatin1String( "localfolders" ) );
       readConfig();
     }
     ~LocalFoldersPrivate()
     {
       delete instance;
-      delete config;
     }
 
     LocalFolders *instance;
     bool ready;
     bool recreate;
-    KConfig *config;
     QString resourceId;
     Entity::Id outboxId;
     Entity::Id sentMailId;
@@ -305,11 +304,9 @@ void LocalFoldersPrivate::collectionFetchResult( KJob *job )
 
 void LocalFoldersPrivate::readConfig()
 {
-  KConfigGroup group( config, "General" );
-  // TODO test these. Entity::Id is a typedef for qint64.
-  resourceId = group.readEntry( "resource-id", QString("") );
-  outboxId = group.readEntry( "outbox-id", Entity::Id(-1) );
-  sentMailId = group.readEntry( "sent-mail-id", Entity::Id(-1) );
+  resourceId = Settings::resourceId();
+  outboxId = Settings::outboxId();
+  sentMailId = Settings::sentMailId();
   kDebug() << "resource" << resourceId << "outbox" << outboxId
            << "sent-mail" << sentMailId;
   createResourceIfNeeded(); // will emit foldersReady()
@@ -319,12 +316,10 @@ void LocalFoldersPrivate::writeConfig()
 {
   kDebug() << "resource" << resourceId << "outbox" << outboxId
            << "sent-mail" << sentMailId;
-
-  KConfigGroup group( config, "General" );
-  group.writeEntry( "resource-id", resourceId );
-  group.writeEntry( "outbox-id", outboxId );
-  group.writeEntry( "sent-mail-id", sentMailId );
-  config->sync();
+  Settings::setResourceId( resourceId );
+  Settings::setOutboxId( outboxId );
+  Settings::setSentMailId( sentMailId );
+  Settings::self()->writeConfig();
 }
 
 

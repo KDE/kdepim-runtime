@@ -28,9 +28,13 @@ set(outboxinterface_lib_srcs
   transportattribute.cpp
 )
 
+kde4_add_kcfg_files(outboxinterface_lib_srcs settings.kcfgc)
+install(FILES outboxinterface.kcfg DESTINATION ${KCFG_INSTALL_DIR})
+
 kde4_add_library(outboxinterface SHARED ${outboxinterface_lib_srcs})
 target_link_libraries(outboxinterface ${KDE4_AKONADI_LIBS} ${KDE4_KIO_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_KMIME_LIBS} )
 set_target_properties(outboxinterface PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+
 
 install(TARGETS outboxinterface ${INSTALL_TARGETS_DEFAULT_ARGS})
 
