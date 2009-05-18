@@ -150,11 +150,8 @@ void MessageQueueJob::Private::doStart()
 
   // put item in Akonadi storage
   Collection col = LocalFolders::self()->outbox();
-  ItemCreateJob *job = new ItemCreateJob( item, col );
+  ItemCreateJob *job = new ItemCreateJob( item, col ); // job autostarts
   q->addSubjob( job );
-
-  // TODO: since ItemCreateJob starts automatically, adding it as a subjob
-  // here may be problematic.
 }
 
 
@@ -289,7 +286,6 @@ void MessageQueueJob::slotResult( KJob *job )
 
   if( !error() ) {
     kDebug() << "item created ok. emitting result.";
-    // TODO: shouldn't KCompositeJob do this by itself when the last subjob is done?
     emitResult();
   }
 }
