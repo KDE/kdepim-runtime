@@ -38,7 +38,7 @@
 #include <KWindowSystem>
 #include <KAboutData>
 
-#include <kio/ksslcertificatemanager.h>
+#include <kio/sslui.h>
 
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
@@ -84,7 +84,7 @@ using namespace Akonadi;
 class SessionUiProxy : public KIMAP::SessionUiProxy {
   public:
     bool ignoreSslError(const KSslErrorUiData& errorData) {
-      if (KSslCertificateManager::askIgnoreSslErrors(errorData, KSslCertificateManager::RecallAndStoreRules)) {
+      if (KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules)) {
         return true;
       } else {
         return false;
