@@ -91,7 +91,7 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
     LocalFoldersPrivate *const d;
 
-    Q_PRIVATE_SLOT( d, void createResourceIfNeeded() )
+    Q_PRIVATE_SLOT( d, void fetchCollections() )
     Q_PRIVATE_SLOT( d, void resourceCreateResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob * ) )

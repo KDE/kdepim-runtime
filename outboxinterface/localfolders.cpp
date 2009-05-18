@@ -22,12 +22,14 @@
 #include "settings.h"
 
 #include <QApplication>
+#include <QDBusInterface>
 #include <QObject>
 
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDebug>
 #include <KGlobal>
+#include <KStandardDirs>
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentInstanceCreateJob>
@@ -51,6 +53,7 @@ class OutboxInterface::LocalFoldersPrivate
   public:
     LocalFoldersPrivate()
       : instance( new LocalFolders(this) )
+      , rootMaildir( -1 )
     {
       if( !Akonadi::Control::start() ) {
         kFatal() << "Cannot start Akonadi server.  Quitting.";
@@ -60,6 +63,7 @@ class OutboxInterface::LocalFoldersPrivate
       recreate = false;
       outboxJob = 0;
       sentMailJob = 0;
+      iface = 0;
       readConfig();
     }
     ~LocalFoldersPrivate()
@@ -75,8 +79,10 @@ class OutboxInterface::LocalFoldersPrivate
     Entity::Id sentMailId;
     Collection outbox;
     Collection sentMail;
+    Collection rootMaildir;
     KJob *outboxJob;
     KJob *sentMailJob;
+    QDBusInterface *iface;
 
     /**
       Creates the maildir resource, if it is not found.
@@ -89,9 +95,11 @@ class OutboxInterface::LocalFoldersPrivate
     void createCollectionsIfNeeded();
 
     /**
-      Fetches the collections once they have been created or loaded from config.
-    */
-    void fetchCollections();
+      Fetches the collections of the maildir resource.
+      There is one root collection, which contains the outbox and sent-mail
+      collections.
+     */
+    void fetchCollections(); // slot
 
     // slot called by job creating the resource
     void resourceCreateResult( KJob *job );
@@ -99,7 +107,7 @@ class OutboxInterface::LocalFoldersPrivate
     // slot called by job creating a collection
     void collectionCreateResult( KJob *job );
 
-    // slot called by job fetching a collection
+    // slot called by job fetching the collections
     void collectionFetchResult( KJob *job );
 
     void readConfig();
@@ -145,7 +153,7 @@ void LocalFoldersPrivate::createResourceIfNeeded()
   // check that the maildir resource exists
   AgentInstance resource = AgentManager::self()->instance( resourceId );
   if( !resource.isValid() ) {
-    kDebug() << "creating maildir resource...";
+    kDebug() << "Creating maildir resource.";
     AgentType type = AgentManager::self()->type( "akonadi_maildir_resource" );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type );
     QObject::connect( job, SIGNAL( result( KJob * ) ),
@@ -153,19 +161,21 @@ void LocalFoldersPrivate::createResourceIfNeeded()
     // this is not an Akonadi::Job, so we must start it ourselves
     job->start();
   } else {
-    createCollectionsIfNeeded();
+    fetchCollections();
   }
 }
 
 void LocalFoldersPrivate::createCollectionsIfNeeded()
 {
+  Q_ASSERT( rootMaildir.isValid() );
+
   if( outboxId < 0 ) {
-    kDebug() << "creating outbox collection...";
+    kDebug() << "Creating outbox collection.";
     Collection col;
-    col.setParent( Collection::root() );
+    col.setParent( rootMaildir );
     col.setName( "outbox" );
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
-    col.setResource( resourceId );
+    //col.setResource( resourceId );
     Q_ASSERT( outboxJob == 0 );
     outboxJob = new CollectionCreateJob( col );
     QObject::connect( outboxJob, SIGNAL( result( KJob * ) ),
@@ -173,12 +183,12 @@ void LocalFoldersPrivate::createCollectionsIfNeeded()
   }
 
   if( sentMailId < 0 ) {
-    kDebug() << "creating sent-mail collection...";
+    kDebug() << "Creating sent-mail collection.";
     Collection col;
-    col.setParent( Collection::root() );
+    col.setParent( rootMaildir );
     col.setName( "sent-mail" );
     col.setContentMimeTypes( QStringList( "message/rfc822" ) );
-    col.setResource( resourceId );
+    //col.setResource( resourceId );
     Q_ASSERT( sentMailJob == 0 );
     sentMailJob = new CollectionCreateJob( col );
     QObject::connect( sentMailJob, SIGNAL( result( KJob * ) ),
@@ -186,24 +196,30 @@ void LocalFoldersPrivate::createCollectionsIfNeeded()
   }
 
   if( outboxJob == 0 && sentMailJob == 0 ) {
-    // didn't need to create anything
-    fetchCollections();
+    // Everything is ready (created and fetched).
+    kDebug() << "Local folders ready. resourceId" << resourceId << "outbox id"
+             << outboxId << "sentMail id" << sentMailId;
+
+    Q_ASSERT( !ready );
+    ready = true;
+    writeConfig();
+    emit instance->foldersReady();
   }
 }
 
 void LocalFoldersPrivate::fetchCollections()
 {
-  kDebug() << "fetching collections...";
+  if( iface ) {
+    iface->deleteLater();
+    iface = 0;
+  }
 
-  Q_ASSERT( outboxJob == 0 );
-  outboxJob = new CollectionFetchJob( Collection( outboxId ), CollectionFetchJob::Base );
-  QObject::connect( outboxJob, SIGNAL( result( KJob * ) ),
-    instance, SLOT( collectionFetchResult( KJob * ) ) );
+  kDebug() << "Fetching collections in maildir resource.";
 
-  Q_ASSERT( sentMailJob == 0 );
-  sentMailJob = new CollectionFetchJob( Collection( sentMailId ), CollectionFetchJob::Base );
-  QObject::connect( sentMailJob, SIGNAL( result( KJob * ) ),
-    instance, SLOT( collectionFetchResult( KJob * ) ) );
+  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+  job->setResource( resourceId ); // limit search
+  QObject::connect( job, SIGNAL( result( KJob * ) ),
+      instance, SLOT( collectionFetchResult( KJob * ) ) );
 }
 
 void LocalFoldersPrivate::resourceCreateResult( KJob *job )
@@ -214,9 +230,28 @@ void LocalFoldersPrivate::resourceCreateResult( KJob *job )
 
   AgentInstanceCreateJob *createJob = static_cast<AgentInstanceCreateJob *>( job );
   resourceId = createJob->instance().identifier();
-  kDebug() << "created maildir resource with id" << resourceId;
+  kDebug() << "Created maildir resource with id" << resourceId;
 
-  createCollectionsIfNeeded();
+  // set the root maildir
+  QDBusInterface ifaceSet( "org.freedesktop.Akonadi.Resource." + resourceId,
+      "/Settings", "org.kde.Akonadi.Maildir.Settings" );
+  ifaceSet.call( "setPath", KGlobal::dirs()->localxdgdatadir() + "mail" );
+  // TODO: error checking for DBus calls?
+
+  // tell the resource about it and wait for it to sync in
+  Q_ASSERT( iface == 0 );
+  iface = new QDBusInterface( "org.freedesktop.Akonadi.Resource." + resourceId,
+      "/", "org.freedesktop.Akonadi.Resource" );
+  QObject::connect( iface, SIGNAL( synchronized() ),
+      instance, SLOT( fetchCollections() ) );
+  iface->call( "synchronize" );
+
+  // TODO: is there a simpler / nicer way of doing the above?
+
+  // NOTE: initially I called synchronizeCollectionTree instead of synchronize,
+  // but the problem was, that one is async, so half the time it wouldn't sync
+  // in time for fetchCollections().  Calling synchronize allows us to connect
+  // to the synchronized signal.
 }
 
 void LocalFoldersPrivate::collectionCreateResult( KJob *job )
@@ -240,7 +275,7 @@ void LocalFoldersPrivate::collectionCreateResult( KJob *job )
   }
 
   if( outboxJob == 0 && sentMailJob == 0 ) {
-    // finished creating everything
+    // Done creating.  Refetch everything.
     fetchCollections();
   }
 }
@@ -250,75 +285,48 @@ void LocalFoldersPrivate::collectionFetchResult( KJob *job )
   CollectionFetchJob *fetchJob = static_cast<CollectionFetchJob *>( job );
   Collection::List cols = fetchJob->collections();
 
-  if( job == outboxJob ) {
-    if( job->error() ) {
-      kWarning() << "failed to fetch outbox collection. Recreating it.";
-      outboxId = -1;
-      recreate = true;
-    } else {
-      kDebug() << "fetched outbox collection.";
-      Q_ASSERT( cols.count() == 1 );
-      Collection col = cols.first();
+  kDebug() << "CollectionFetchJob fetched" << cols.count() << "collections.";
+
+  outboxId = -1;
+  sentMailId = -1;
+  foreach( const Collection col, cols ) {
+    if( col.parent() == Collection::root().id() ) {
+      rootMaildir = col;
+      kDebug() << "Fetched root maildir collection.";
+    } else if( col.name() == "outbox" ) {
+      Q_ASSERT( outboxId == -1 );
       outbox = col;
-    }
-    outboxJob = 0;
-  } else if( job == sentMailJob ) {
-    if( job->error() ) {
-      kWarning() << "failed to fetch sent-mail collection. Recreating it.";
-      sentMailId = -1;
-      recreate = true;
-    } else {
-      kDebug() << "fetched sent-mail collection.";
-      Q_ASSERT( cols.count() == 1 );
-      Collection col = cols.first();
+      outboxId = col.id();
+      kDebug() << "Fetched outbox collection.";
+    } else if( col.name() == "sent-mail" ) {
+      Q_ASSERT( sentMailId == -1 );
       sentMail = col;
-    }
-    sentMailJob = 0;
-  } else {
-    kFatal() << "got a result for a job I don't know about.";
-  }
-    
-  if( outboxJob == 0 && sentMailJob == 0 ) {
-    if( recreate ) {
-      kDebug() << "recreating problematic collections...";
-      recreate = false;
-      createCollectionsIfNeeded();
+      sentMailId = col.id();
+      kDebug() << "Fetched sent-mail collection.";
     } else {
-      kDebug() << "Local folders ready. resourceId" << resourceId << "outbox id"
-               << outboxId << "sentMail id" << sentMailId;
-
-      // Make sure the collections belong to the right resource.
-      // This may be false if the resource was recreated, but the collections
-      // existed before.
-      outbox.setResource( resourceId );
-      sentMail.setResource( resourceId );
-
-      Q_ASSERT( !ready );
-      ready = true;
-      writeConfig();
-      emit instance->foldersReady();
+      kWarning() << "Extraneous collection" << col.name() << "with id"
+        << col.id() << "found.";
     }
   }
-}
 
+  if( !rootMaildir.isValid() ) {
+    kFatal() << "Failed to fetch root maildir collection.";
+  }
+
+  createCollectionsIfNeeded();
+}
 
 void LocalFoldersPrivate::readConfig()
 {
   resourceId = Settings::resourceId();
-  outboxId = Settings::outboxId();
-  sentMailId = Settings::sentMailId();
-  kDebug() << "resource" << resourceId << "outbox" << outboxId
-           << "sent-mail" << sentMailId;
+  kDebug() << "Resource" << resourceId;
   createResourceIfNeeded(); // will emit foldersReady()
 }
 
 void LocalFoldersPrivate::writeConfig()
 {
-  kDebug() << "resource" << resourceId << "outbox" << outboxId
-           << "sent-mail" << sentMailId;
+  kDebug() << "Resource" << resourceId;
   Settings::setResourceId( resourceId );
-  Settings::setOutboxId( outboxId );
-  Settings::setSentMailId( sentMailId );
   Settings::self()->writeConfig();
 }
 

@@ -3,6 +3,7 @@
 * better name for MessageQueuer?
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
-* make collections have a remoteId, and be stored on disk
 * replace StatusAttribute with ErrorAttribute
+* Make maildir_resource export its DBus interface, so that we can use the nice
+  qdbusxml2cpp.
 
