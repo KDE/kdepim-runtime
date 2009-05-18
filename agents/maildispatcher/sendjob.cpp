@@ -133,7 +133,6 @@ void SendJob::Private::doNextStep()
              << "cc" << addrA->cc() << "bcc" << addrA->bcc();
     TransportJob *job = TransportManager::self()->createTransportJob( tA->transportId() );
     if( !job ) {
-      // TODO: check that this doesn't interfere with the fact that q already has subjobs
       q->setError( UserDefinedError );
       q->setErrorText( i18n( "Could not initiate message transport. Possibly invalid transport." ) );
       doStoreError();
@@ -161,9 +160,8 @@ void SendJob::Private::doNextStep()
     // TODO: use attribute for sent-mail collection
     Collection sentMail = LocalFolders::self()->sentMail();
     if( !sentMail.isValid() ) {
-      // TODO: check that this doesn't interfere with the fact that q already has subjobs
       q->setError( UserDefinedError );
-      q->setErrorText( i18n( "Invalid sent-mail collection. Keeping message in outbox." ) );
+      q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
       doStoreError();
       return;
     }

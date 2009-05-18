@@ -110,6 +110,7 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 void ItemFilterProxyModel::Private::itemFetchResult( KJob *job )
 {
   Q_ASSERT( job == currentJob );
+  Q_UNUSED( job );
   Item::List items = currentJob->items();
   currentJob = 0;
   if( items.count() != 1 ) {
