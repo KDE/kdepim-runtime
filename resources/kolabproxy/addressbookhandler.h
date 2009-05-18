@@ -34,13 +34,12 @@ public:
     AddressBookHandler();
 
     virtual ~AddressBookHandler();
-    
+
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
     virtual Akonadi::Item toKolabFormat(const Akonadi::Item& item);
-    
+
 private:
     bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
-    KMime::Content *findContent(MessagePtr data, const QByteArray &type);
 
 };
 

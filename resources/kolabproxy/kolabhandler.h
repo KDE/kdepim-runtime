@@ -45,12 +45,13 @@ public:
 
   /**
    * Translates an item into Kolab format.
-   * @return 
+   * @return
    */
   virtual Akonadi::Item toKolabFormat(const Akonadi::Item &item) = 0;
 
 protected:
   KolabHandler();
+  KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
 
 };
 

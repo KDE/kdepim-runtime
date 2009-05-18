@@ -22,6 +22,7 @@
 
 #include <kabc/addressee.h>
 #include <kdebug.h>
+#include <kmime/kmime_codecs.h>
 
 #include <QBuffer>
 
@@ -56,14 +57,14 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
 
 bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &addressee)
 {
-  KMime::Content *xmlContent  = findContent(data, "application/x-vnd.kolab.contact");
+  KMime::Content *xmlContent  = findContentByType(data, "application/x-vnd.kolab.contact");
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
     Kolab::Contact contact(QString::fromLatin1(xmlData));
     QString pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
-      KMime::Content *imgContent = findContent(data, "image/png");
+      KMime::Content *imgContent = findContentByType(data, "image/png");
       if (imgContent) {
         QByteArray imgData = imgContent->decodedContent();
         QBuffer buffer(&imgData);
@@ -79,23 +80,12 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
   return false;
 }
 
-KMime::Content* AddressBookHandler::findContent(MessagePtr data, const QByteArray &type)
-{
-  KMime::Content::List list = data->contents();
-  Q_FOREACH(KMime::Content *c, list)
-  {
-    if (c->contentType()->mimeType() ==  type)
-      return c;
-  }
-  return 0L;
-
-}
 
 Akonadi::Item AddressBookHandler::toKolabFormat(const Akonadi::Item& item)
 {
   KABC::Addressee addressee = item.payload<KABC::Addressee>();
   Kolab::Contact contact(&addressee, 0);
-  
+
   Akonadi::Item imapItem;
   imapItem.setMimeType( "message/rfc822" );
 
@@ -120,10 +110,11 @@ Akonadi::Item AddressBookHandler::toKolabFormat(const Akonadi::Item& item)
 
   content = new KMime::Content();
   header = "Content-Type: application/x-vnd.kolab.contact; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: 7bit\n"; //FIXME 7bit???
+  header += "Content-Transfer-Encoding: quoted-printable\n";
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
-  content->setBody(contact.saveXML().toUtf8());
+  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
+  content->setBody(codec->encode(contact.saveXML().toUtf8()));
   message->addContent(content);
 
   if (!contact.pictureAttachmentName().isEmpty()) {

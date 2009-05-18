@@ -41,3 +41,14 @@ KolabHandler::~KolabHandler()
 }
 
 
+KMime::Content* KolabHandler::findContentByType(MessagePtr data, const QByteArray &type)
+{
+  KMime::Content::List list = data->contents();
+  Q_FOREACH(KMime::Content *c, list)
+  {
+    if (c->contentType()->mimeType() ==  type)
+      return c;
+  }
+  return 0L;
+
+}
