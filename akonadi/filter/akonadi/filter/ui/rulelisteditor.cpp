@@ -47,12 +47,35 @@ RuleListEditor::RuleListEditor( QWidget * parent, Action::RuleList * ruleList )
   mToolBox = new QToolBox( mScrollArea );
   mScrollArea->setWidget( mToolBox );
   mScrollArea->setWidgetResizable( true );
-  for( int i = 0; i < 10; i++ )
-  {
-    RuleEditor * ruleEditor = new RuleEditor( mToolBox, 0 );
-    //ruleEditor->setMinimumSize(120,300);
-    mToolBox->addItem( ruleEditor, QString::fromAscii( "Test" ) );
-  }
+
+  RuleEditor * ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 1: if size >= 100Kb and size <= 400Kb then move to collection \"X\"" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 2: if the value of subject contains \"viagra\" then move to collection spam" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 3: if the domain of any sender address is \"mywork.org\" then execute subprogram" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 4: if the value of the X-Mailer field contains KMail then add tag \"high-priority\"" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 5: if multiple conditions apply then move to collection \"Y\"" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 6: if multiple conditions apply then delete item" ) );
+
+  ruleEditor = new RuleEditor( mToolBox, 0 );
+  //ruleEditor->setMinimumSize(120,300);
+  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 7: ..." ) );
+
 }
 
 RuleListEditor::~RuleListEditor()
