@@ -44,7 +44,7 @@ Akonadi::Item::List TasksHandler::translateItems(const Akonadi::Item::List & ite
   Q_FOREACH(Akonadi::Item item, items)
   {
     MessagePtr payload = item.payload<MessagePtr>();
-    KCal::Todo *t = calendarFromKolab(payload);
+    KCal::Todo *t = todoFromKolab(payload);
     if (t) {
       Akonadi::Item newItem("text/calendar");
       newItem.setRemoteId(QString::number(item.id()));
@@ -57,7 +57,7 @@ Akonadi::Item::List TasksHandler::translateItems(const Akonadi::Item::List & ite
   return newItems;
 }
 
-KCal::Todo * TasksHandler::calendarFromKolab(MessagePtr data)
+KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
 {
   KMime::Content *xmlContent  = findContentByType(data, "application/x-vnd.kolab.task");
   if (xmlContent) {

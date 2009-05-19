@@ -1,5 +1,6 @@
 /*
-    Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (C) 2009 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
+    Copyright (c) 2009 Andras Mantia <andras@kdab.net>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,29 +18,29 @@
     02110-1301, USA.
 */
 
-#ifndef CALENDARHANDLER_H
-#define CALENDARHANDLER_H
+#ifndef JOURNALHANDLER_H
+#define JOURNALHANDLER_H
 
 #include "kolabhandler.h"
-#include <kcal/event.h>
+#include <kcal/journal.h>
 #include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KCal::Event> EventPtr;
+typedef boost::shared_ptr<KCal::Journal> JournalPtr;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
-class CalendarHandler : public KolabHandler {
+class JournalHandler : public KolabHandler {
 public:
-    CalendarHandler();
+    JournalHandler();
 
-    virtual ~CalendarHandler();
+    virtual ~JournalHandler();
 
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
     virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
 
 private:
-    KCal::Event * calendarFromKolab(MessagePtr data);
+    KCal::Journal *journalFromKolab(MessagePtr data);
     KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type
     );
 

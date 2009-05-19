@@ -40,7 +40,7 @@ public:
     virtual QStringList contentMimeTypes();
 
 private:
-    KCal::Todo * calendarFromKolab(MessagePtr data);
+    KCal::Todo *todoFromKolab(MessagePtr data);
     KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type
     );
 

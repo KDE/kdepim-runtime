@@ -15,12 +15,14 @@ set( kolabproxyresource_SRCS
   contact.cpp
   event.cpp
   task.cpp
+  journal.cpp
   incidence.cpp
   kolabbase.cpp
   kolabhandler.cpp
   addressbookhandler.cpp
   calendarhandler.cpp
   taskshandler.cpp
+  journalhandler.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 
