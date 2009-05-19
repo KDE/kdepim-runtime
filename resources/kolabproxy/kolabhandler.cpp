@@ -36,6 +36,8 @@ KolabHandler *KolabHandler::createHandler(const QByteArray& type)
     return new TasksHandler;
   } else if (type ==  "journal.default" || type ==  "journal") {
     return new JournalHandler;
+  } else if (type ==  "note.default" || type ==  "note") {
+    return new JournalHandler;
   } else {
     return 0L;
   }
