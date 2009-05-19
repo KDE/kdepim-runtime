@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
+ *  File : conditioneditor.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,39 +23,51 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#include "conditioneditor.h"
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/condition.h>
 
-#include "rulelisteditor.h"
+#include <KComboBox>
+#include <KLocale>
+
+#include <QLayout>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Program;
-
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+#define INDENT 20
+
+ConditionEditor::ConditionEditor( QWidget * parent, Condition::Base * condition )
+  : QWidget( parent ), mCondition( condition )
 {
-  Q_OBJECT
-public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
+  QGridLayout * g = new QGridLayout( this );
+  g->setMargin( 1 );
 
-protected:
-  Program * mProgram;
+  mTypeComboBox = new KComboBox( false, this );
 
-}; // class ProgramEditor
+  g->addWidget( mTypeComboBox, 0, 0, 1, 2 );
+
+  mTypeComboBox->addItem( i18n( "if the following condition is not met" ) );
+  mTypeComboBox->addItem( i18n( "if the value of the field" ) );
+  mTypeComboBox->addItem( i18n( "if the size of the field" ) );
+  mTypeComboBox->addItem( i18n( "if the field exists" ) );
+  mTypeComboBox->addItem( i18n( "if all of the following conditions are met" ) );
+  mTypeComboBox->addItem( i18n( "if any of the following conditions is met" ) );
+
+  g->setColumnMinimumWidth( 0, INDENT );
+  
+}
+
+ConditionEditor::~ConditionEditor()
+{
+}
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_

@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
+ *  File : ruleeditor.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,34 +23,40 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#ifndef _AKONADI_FILTER_UI_RULEEDITOR_H_
+#define _AKONADI_FILTER_UI_RULEEDITOR_H_
 
 #include "config-akonadi-filter-ui.h"
 
-#include "rulelisteditor.h"
+#include <QWidget>
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Program;
+class Rule;
 
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+class ConditionEditor;
+class ActionEditor;
+
+class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
   Q_OBJECT
 public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
+  RuleEditor( QWidget * parent, Rule * program );
+  virtual ~RuleEditor();
 
 protected:
-  Program * mProgram;
+  Rule * mRule;
 
-}; // class ProgramEditor
+  ConditionEditor * mConditionEditor;
+  ActionEditor * mActionEditor;
+
+}; // class RuleEditor
 
 } // namespace UI
 
@@ -58,4 +64,4 @@ protected:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#endif //!_AKONADI_FILTER_UI_RULEEDITOR_H_

@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
+ *  File : actioneditor.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,39 +23,50 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#include "actioneditor.h"
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/action.h>
 
-#include "rulelisteditor.h"
+#include <QLayout>
+
+#include <KComboBox>
+#include <KLocale>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Program;
-
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+#define INDENT 20
+
+ActionEditor::ActionEditor( QWidget * parent, Action::Base * action )
+  : QWidget( parent ), mAction( action )
 {
-  Q_OBJECT
-public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
 
-protected:
-  Program * mProgram;
+  QGridLayout * g = new QGridLayout( this );
+  g->setMargin( 1 );
 
-}; // class ProgramEditor
+  mTypeComboBox = new KComboBox( false, this );
+
+  g->addWidget( mTypeComboBox, 0, 0, 1, 2 );
+
+  mTypeComboBox->addItem( i18n( "then stop processing here" ) );
+  mTypeComboBox->addItem( i18n( "then execute the following rule list (sub-program)" ) );
+  mTypeComboBox->addItem( i18n( "then move the item in the collection" ) );
+  mTypeComboBox->addItem( i18n( "then delete the item" ) );
+  mTypeComboBox->addItem( i18n( "then tag the item" ) );
+
+  g->setColumnMinimumWidth( 0, INDENT );
+}
+
+ActionEditor::~ActionEditor()
+{
+}
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_

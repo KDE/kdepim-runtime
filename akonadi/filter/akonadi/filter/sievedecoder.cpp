@@ -708,7 +708,7 @@ Program * SieveDecoder::run()
        "  fileinto \"huge\";\r\n" \
        "  stop;\r\n" \
        "}\r\n"
-       "if allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
+       "elsif allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
        "  fileinto \"medium\";\r\n" \
        "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K) {\r\n" \
        "    fileinto \"strange\";\r\n" \

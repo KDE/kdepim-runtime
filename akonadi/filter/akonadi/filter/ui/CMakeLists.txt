@@ -19,7 +19,11 @@ configure_file(
 
 set(
 		AKONADI_FILTER_UI_LIB_SRCS
+		actioneditor.cpp
+		conditioneditor.cpp
 		programeditor.cpp
+		ruleeditor.cpp
+		rulelisteditor.cpp
 	)
 
 kde4_add_library(
@@ -34,6 +38,7 @@ target_link_libraries(
 		${KDE4_AKONADI_LIBS}
 		ksieve
 		${KDE4_KDECORE_LIBS}
+		${KDE4_KDEUI_LIBS}
 		${QT_LIBRARIES}
 		${QT_QTCORE_LIBRARY}
 		${QT_QTGUI_LIBRARY}
@@ -62,7 +67,11 @@ install(
 
 install(
 		FILES
+			actioneditor.h
+			conditioneditor.h
 			programeditor.h
+			ruleeditor.h
+			rulelisteditor.h
 		DESTINATION
 			${INCLUDE_INSTALL_DIR}/akonadi/filter/ui
 		COMPONENT

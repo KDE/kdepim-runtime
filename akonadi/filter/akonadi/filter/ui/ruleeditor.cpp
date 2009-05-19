@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
+ *  File : ruleeditor.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,39 +23,43 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#include "ruleeditor.h"
 
-#include "config-akonadi-filter-ui.h"
+#include "conditioneditor.h"
+#include "actioneditor.h"
 
-#include "rulelisteditor.h"
+#include <akonadi/filter/rule.h>
+
+#include <QLayout>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Program;
-
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+RuleEditor::RuleEditor( QWidget * parent, Rule * program )
+  : QWidget( parent ), mRule( program )
 {
-  Q_OBJECT
-public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
+  QGridLayout * g = new QGridLayout( this );
+  g->setMargin( 1 );
 
-protected:
-  Program * mProgram;
+  mConditionEditor = new ConditionEditor( this, 0 );
+  g->addWidget( mConditionEditor, 0, 0 );
 
-}; // class ProgramEditor
+  mActionEditor = new ActionEditor( this, 0 );
+  g->addWidget( mActionEditor, 1, 0 );
+
+  g->setRowStretch( 2, 1 );
+}
+
+RuleEditor::~RuleEditor()
+{
+}
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_

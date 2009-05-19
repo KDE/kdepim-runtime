@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
+ *  File : conditioneditor.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,34 +23,41 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#ifndef _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
+#define _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
 
 #include "config-akonadi-filter-ui.h"
 
-#include "rulelisteditor.h"
+#include <QWidget>
+
+class KComboBox;
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Program;
+namespace Condition
+{
+  class Base;
+} // namespace Condition
 
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
 {
   Q_OBJECT
 public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
+  ConditionEditor( QWidget * parent, Condition::Base * condition );
+  virtual ~ConditionEditor();
 
 protected:
-  Program * mProgram;
+  Condition::Base * mCondition;
 
-}; // class ProgramEditor
+  KComboBox * mTypeComboBox;
+
+}; // class ConditionEditor
 
 } // namespace UI
 
@@ -58,4 +65,4 @@ protected:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_
+#endif //!_AKONADI_FILTER_UI_CONDITIONEDITOR_H_

@@ -1,4 +1,5 @@
 /****************************************************************************** * *
+ *
  *  File : programeditor.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
@@ -23,7 +24,8 @@
  *******************************************************************************/
 
 #include "programeditor.h"
-#include "programeditor.h"
+
+#include <akonadi/filter/program.h>
 
 namespace Akonadi
 {
@@ -33,7 +35,7 @@ namespace UI
 {
 
 ProgramEditor::ProgramEditor( QWidget * parent, Program * program )
-  : QWidget( parent ), mProgram( program )
+  : RuleListEditor( parent, program ), mProgram( program )
 {
 }
 

@@ -1,7 +1,7 @@
 /****************************************************************************** * *
  *
- *  File : programeditor.h
- *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
+ *  File : rulelisteditor.cpp
+ *  Created on Tue 19 May 2009 02:20:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,39 +23,53 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-#define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
-
-#include "config-akonadi-filter-ui.h"
-
 #include "rulelisteditor.h"
+
+#include <akonadi/filter/rulelist.h>
+
+#include "ruleeditor.h"
+
+#include <QScrollArea>
+#include <QToolBox>
+#include <QResizeEvent>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Program;
-
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
+RuleListEditor::RuleListEditor( QWidget * parent, Action::RuleList * ruleList )
+  : QWidget( parent ), mRuleList( ruleList )
 {
-  Q_OBJECT
-public:
-  ProgramEditor( QWidget * parent, Program * program );
-  virtual ~ProgramEditor();
+  mScrollArea = new QScrollArea( this );
+  mToolBox = new QToolBox( mScrollArea );
+  mScrollArea->setWidget( mToolBox );
+  mScrollArea->setWidgetResizable( true );
+  for( int i = 0; i < 10; i++ )
+  {
+    RuleEditor * ruleEditor = new RuleEditor( mToolBox, 0 );
+    //ruleEditor->setMinimumSize(120,300);
+    mToolBox->addItem( ruleEditor, QString::fromAscii( "Test" ) );
+  }
+}
 
-protected:
-  Program * mProgram;
+RuleListEditor::~RuleListEditor()
+{
+}
 
-}; // class ProgramEditor
+void RuleListEditor::resizeEvent( QResizeEvent * e )
+{
+  QWidget::resizeEvent( e );
+
+#define MARGIN 2
+
+  mScrollArea->setGeometry( MARGIN, MARGIN, width() - ( 2 * MARGIN ), height() - ( 2 * MARGIN ) );
+}
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_PROGRAMEDITOR_H_

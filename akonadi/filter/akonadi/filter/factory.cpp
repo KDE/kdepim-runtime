@@ -282,7 +282,6 @@ Condition::Base * Factory::createPropertyTestCondition( Component * parent, cons
   return new Condition::PropertyTest( parent, property, propertyArgument, op, operand );
 }
 
-
 Action::RuleList * Factory::createRuleList( Component * parent )
 {
   return new Action::RuleList( parent );

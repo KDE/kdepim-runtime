@@ -1,11 +1,15 @@
 
-#include "../filter.h"
-#include "../sievedecoder.h"
-#include "../program.h"
-#include "../factory.h"
-#include "../condition.h"
+#include <akonadi/filter/sievedecoder.h>
+#include <akonadi/filter/program.h>
+#include <akonadi/filter/factory.h>
+#include <akonadi/filter/condition.h>
 
-#include <QTextStream>
+#include <akonadi/filter/ui/programeditor.h>
+
+
+#include <KCmdLineArgs>
+#include <KApplication>
+#include <KAboutData>
 
 class MyFactory : public Akonadi::Filter::Factory
 {
@@ -26,10 +30,28 @@ public:
 
 int main(int argc,char ** argv)
 {
+
   Akonadi::Filter::IO::SieveDecoder d( new MyFactory() );
   Akonadi::Filter::Program * p = d.run();
   if( p )
+  {
+    const QByteArray& ba = QByteArray( "test" );
+    const KLocalizedString name = ki18n( "Test" );
+    KAboutData aboutData( ba, ba, name, ba, name );
+    KCmdLineArgs::init( argc, argv, &aboutData );
+    KApplication app;
+
+
+    Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, p );
+
+    ed->show();
+    
+    app.exec();
+
+    delete ed;
+
     delete p;
+  }
 
 
   return 0;
