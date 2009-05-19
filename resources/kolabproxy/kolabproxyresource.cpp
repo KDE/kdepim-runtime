@@ -211,7 +211,8 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
     kWarning() << "No handler found";
     return;
   }
-  Item imapItem = handler->toKolabFormat(addrItem);
+  Item imapItem;
+  handler->toKolabFormat(addrItem, imapItem);
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
   if (!cjob->exec()) {
@@ -227,7 +228,7 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
 
 void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
 {
-  kDebug() << "ITEMCHANGED";
+  kDebug() << "ITEMCHANGED" << item.id() << item.remoteId();
   Item addrItem;
   ItemFetchJob *job = new ItemFetchJob( item );
   job->fetchScope().fetchFullPayload();
@@ -254,7 +255,7 @@ void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &
     return;
   }
 
-  imapItem = handler->toKolabFormat(addrItem);
+  handler->toKolabFormat(addrItem, imapItem);
   ItemModifyJob *mjob = new ItemModifyJob( imapItem );
     if (!mjob->exec()) {
       kWarning() << "Can't modify imap item " << imapItem.id();
@@ -432,7 +433,12 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   }
   m_managedCollections << name;
   c.setName( name );
-  c.setContentMimeTypes( QStringList() << "text/directory" );
+  KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
+  if (handler) {
+    c.setContentMimeTypes( handler->contentMimeTypes() );
+  } else {
+    c.setContentMimeTypes( QStringList() << "text/directory" );
+  }
   c.setRights( Collection::Right(Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem | Collection::CanChangeCollection) );
   c.setRemoteId(QString::number(imapCollection.id()));
 

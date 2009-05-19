@@ -36,7 +36,8 @@ public:
     virtual ~AddressBookHandler();
 
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual Akonadi::Item toKolabFormat(const Akonadi::Item& item);
+    virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
+    virtual QStringList contentMimeTypes();
 
 private:
     bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);

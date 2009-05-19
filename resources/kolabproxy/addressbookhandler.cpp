@@ -81,12 +81,11 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
 }
 
 
-Akonadi::Item AddressBookHandler::toKolabFormat(const Akonadi::Item& item)
+void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   KABC::Addressee addressee = item.payload<KABC::Addressee>();
   Kolab::Contact contact(&addressee, 0);
 
-  Akonadi::Item imapItem;
   imapItem.setMimeType( "message/rfc822" );
 
   MessagePtr message(new KMime::Message);
@@ -134,6 +133,9 @@ Akonadi::Item AddressBookHandler::toKolabFormat(const Akonadi::Item& item)
   }
 
   imapItem.setPayload<MessagePtr>(message);
+}
 
-  return imapItem;
+QStringList AddressBookHandler::contentMimeTypes()
+{
+  return QStringList() << "text/directory";
 }

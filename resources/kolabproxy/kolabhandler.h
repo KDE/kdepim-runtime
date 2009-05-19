@@ -45,9 +45,15 @@ public:
 
   /**
    * Translates an item into Kolab format.
-   * @return
+   * @param item the item to be translated
+   * @param imapItem the item that will hold the Kolab format payload data.
    */
-  virtual Akonadi::Item toKolabFormat(const Akonadi::Item &item) = 0;
+  virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem) = 0;
+
+  /**
+   * Return the mimetypes for the collections managed by the handler.
+   */
+  virtual QStringList contentMimeTypes() = 0;
 
 protected:
   KolabHandler();

@@ -96,10 +96,9 @@ KMime::Content* CalendarHandler::findContentByName(MessagePtr data, const QStrin
 
 }
 
-Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
+void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   kDebug() << "toKolabFormat";
-  Akonadi::Item imapItem;
   EventPtr e(item.payload<EventPtr>());
   KCal::Event *event = e.get();
 
@@ -108,7 +107,7 @@ Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
   MessagePtr message(new KMime::Message);
   QString header;
   header += "From: " + event->organizer().fullName() + "<" + event->organizer().email() + ">\n";
-  header += "Subject: event-" + event->uid() + "\n";
+  header += "Subject: " + event->uid() + "\n";
 //   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
@@ -145,5 +144,9 @@ Akonadi::Item CalendarHandler::toKolabFormat(const Akonadi::Item& item)
   }
 
   imapItem.setPayload<MessagePtr>(message);
-  return imapItem;
+}
+
+QStringList  CalendarHandler::contentMimeTypes()
+{
+  return QStringList() << "text/calendar";
 }
