@@ -19,6 +19,7 @@
 #include "kolabhandler.h"
 #include "addressbookhandler.h"
 #include "calendarhandler.h"
+#include "taskshandler.h"
 
 KolabHandler::KolabHandler()
 {
@@ -30,6 +31,8 @@ KolabHandler *KolabHandler::createHandler(const QByteArray& type)
     return new AddressBookHandler;
   } else if (type ==  "event.default" || type ==  "event") {
     return new CalendarHandler;
+  } else if (type ==  "task.default" || type ==  "task") {
+    return new TasksHandler;
   } else {
     return 0L;
   }
