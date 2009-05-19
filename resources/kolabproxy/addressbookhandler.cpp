@@ -29,12 +29,14 @@
 
 AddressBookHandler::AddressBookHandler()
 {
+  m_mimeType = "application/x-vnd.kolab.contact";
 }
 
 
 AddressBookHandler::~AddressBookHandler()
 {
 }
+
 
 Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List & items)
 {
@@ -57,7 +59,7 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
 
 bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &addressee)
 {
-  KMime::Content *xmlContent  = findContentByType(data, "application/x-vnd.kolab.contact");
+  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
@@ -95,7 +97,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
 //   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: application/x-vnd.kolab.contact\n\n\n";
+  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
   message->setContent(header.toLatin1());
 
   KMime::Content *content = new KMime::Content();
@@ -108,7 +110,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
   message->addContent(content);
 
   content = new KMime::Content();
-  header = "Content-Type: application/x-vnd.kolab.contact; name=\"kolab.xml\"\n";
+  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
   header += "Content-Transfer-Encoding: quoted-printable\n";
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());

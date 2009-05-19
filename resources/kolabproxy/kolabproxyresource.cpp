@@ -137,6 +137,11 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
   } else {
     Item::Id collectionId = -1;
     Item::List items = qobject_cast<ItemFetchJob*>(job)->items();
+    if (items.size() < 1) {
+      kWarning() << "Items is emtpy";
+      cancelTask();
+      return;
+    }
     collectionId = items[0].collectionId();
     KolabHandler *handler = m_monitoredCollections.value(collectionId);
     if (handler) {

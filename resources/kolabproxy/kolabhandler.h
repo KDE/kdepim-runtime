@@ -55,10 +55,14 @@ public:
    */
   virtual QStringList contentMimeTypes() = 0;
 
+  virtual QByteArray mimeType() const;
+  virtual void setMimeType(const QByteArray& type);
+
 protected:
   KolabHandler();
   KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
 
+  QByteArray m_mimeType;
 };
 
 #endif

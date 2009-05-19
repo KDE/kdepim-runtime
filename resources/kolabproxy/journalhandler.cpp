@@ -30,6 +30,7 @@
 
 JournalHandler::JournalHandler()
 {
+  m_mimeType = "application/x-vnd.kolab.journal";
 }
 
 
@@ -59,7 +60,7 @@ Akonadi::Item::List JournalHandler::translateItems(const Akonadi::Item::List & i
 
 KCal::Journal * JournalHandler::journalFromKolab(MessagePtr data)
 {
-  KMime::Content *xmlContent  = findContentByType(data, "application/x-vnd.kolab.journal");
+  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
@@ -112,7 +113,7 @@ void JournalHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &ima
 //   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: application/x-vnd.kolab.journal\n\n\n";
+  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
   message->setContent(header.toLatin1());
 
   KMime::Content *content = new KMime::Content();
@@ -125,7 +126,7 @@ void JournalHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &ima
   message->addContent(content);
 
   content = new KMime::Content();
-  header = "Content-Type: application/x-vnd.kolab.journal; name=\"kolab.xml\"\n";
+  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
   header += "Content-Transfer-Encoding: quoted-printable\n";
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
