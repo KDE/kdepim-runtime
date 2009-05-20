@@ -100,7 +100,11 @@ KMime::Content* CalendarHandler::findContentByName(MessagePtr data, const QStrin
 void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   kDebug() << "toKolabFormat";
-  EventPtr e(item.payload<EventPtr>());
+  EventPtr e(new KCal::Event());
+  if (item.hasPayload<EventPtr>()) {
+      e = item.payload<EventPtr>();
+  }
+  kDebug() << "item payload: " << item.payloadData();
   KCal::Event *event = e.get();
 
   imapItem.setMimeType( "message/rfc822" );
@@ -109,7 +113,7 @@ void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &im
   QString header;
   header += "From: " + event->organizer().fullName() + "<" + event->organizer().email() + ">\n";
   header += "Subject: " + event->uid() + "\n";
-//   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";

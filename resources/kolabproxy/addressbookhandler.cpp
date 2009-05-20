@@ -94,7 +94,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
   QString header;
   header += "From: " + addressee.fullEmail() + "\n";
   header += "Subject: " + addressee.uid() + "\n";
-//   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";

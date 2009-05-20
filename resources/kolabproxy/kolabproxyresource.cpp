@@ -203,6 +203,7 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
     Item::List items = job->items();
     if (items.isEmpty()) {
       kDebug() << "Empty fecth";
+      cancelTask();
       return;
     }
 
@@ -211,12 +212,14 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
     kWarning() << "Can't fetch address item " << item.id();
   }
 
+
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
   if (!handler) {
     kWarning() << "No handler found";
+    cancelTask();
     return;
   }
-  Item imapItem;
+  Item imapItem(handler->contentMimeTypes()[0]);
   handler->toKolabFormat(addrItem, imapItem);
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
@@ -257,6 +260,7 @@ void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &
   KolabHandler *handler = m_monitoredCollections.value(imapItem.collectionId());
   if (!handler) {
     kWarning() << "No handler found";
+    cancelTask();
     return;
   }
 
@@ -276,6 +280,7 @@ void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &
     imapItem = Akonadi::Item();
   } else {
     kWarning() << "Can't delete imap item " << addrItem.remoteId();
+    cancelTask();
     return;
   }
   handler->toKolabFormat(addrItem, imapItem);

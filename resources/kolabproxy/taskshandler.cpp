@@ -110,7 +110,7 @@ void TasksHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapI
   QString header;
   header += "From: " + todo->organizer().fullName() + "<" + todo->organizer().email() + ">\n";
   header += "Subject: " + todo->uid() + "\n";
-//   header += "Date: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
