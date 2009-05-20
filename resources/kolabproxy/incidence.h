@@ -77,8 +77,7 @@ public:
     QString delegator;
   };
 
-  explicit Incidence( /*KCal::ResourceKolab *res, const QString &subResource, quint32 sernum,*/
-                      const QString& tz, KCal::Incidence* incidence = 0 );
+  explicit Incidence( const QString& tz, KCal::Incidence* incidence = 0 );
 
 public:
   virtual ~Incidence();
@@ -148,8 +147,6 @@ protected:
   void saveCustomAttributes( QDomElement& element ) const;
   void loadCustomAttributes( QDomElement& element );
 
-//   void loadAttachments();
-
   QString productID() const;
 
   QString mSummary;
@@ -172,9 +169,6 @@ protected:
   };
   QList<Custom> mCustomList;
 
-//   KCal::ResourceKolab *mResource;
-  QString mSubResource;
-  quint32 mSernum;
 };
 
 }

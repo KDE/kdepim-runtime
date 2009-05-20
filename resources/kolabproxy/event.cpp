@@ -39,10 +39,9 @@
 using namespace Kolab;
 
 
-KCal::Event* Event::xmlToEvent( const QString& xml, const QString& tz /*, KCal::ResourceKolab* res,
-                                const QString& subResource, quint32 sernum */)
+KCal::Event* Event::xmlToEvent( const QString& xml, const QString& tz)
 {
-  Event event( /*res, subResource, sernum, */tz );
+  Event event( tz );
   event.load( xml );
   KCal::Event* kcalEvent = new KCal::Event();
   event.saveTo( kcalEvent );
@@ -51,13 +50,12 @@ KCal::Event* Event::xmlToEvent( const QString& xml, const QString& tz /*, KCal::
 
 QString Event::eventToXML( KCal::Event* kcalEvent, const QString& tz  )
 {
-  Event event( /*0, QString(), 0, */tz, kcalEvent );
+  Event event( tz, kcalEvent );
   return event.saveXML();
 }
 
-Event::Event( /*KCal::ResourceKolab *res,const QString &subResource, quint32 sernum,*/
-              const QString& tz, KCal::Event* event )
-  : Incidence( /*res, subResource, sernum, */tz, event ),
+Event::Event( const QString& tz, KCal::Event* event )
+  : Incidence( tz, event ),
   mShowTimeAs( KCal::Event::Opaque ), mHasEndDate( false )
 {
   if ( event )
@@ -172,7 +170,6 @@ bool Event::loadXML( const QDomDocument& document )
       kDebug() <<"Node is not a comment or an element???";
   }
 
-//   loadAttachments();
   return true;
 }
 

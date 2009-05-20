@@ -70,7 +70,7 @@ public:
   };
 
   explicit Contact( const KABC::Addressee* address, KABC::AddressBook* addressBook );
-  Contact( const QString& xml/*, KABC::ResourceKolab* resource, const QString& subResource,quint32 sernum */);
+  Contact( const QString& xml );
   ~Contact();
 
   void saveTo( KABC::Addressee* address );
@@ -222,10 +222,8 @@ private:
   void loadDistrListMember( const QDomElement& element );
   void saveDistrListMembers( QDomElement& element ) const;
 
-//   QImage loadPictureFromKMail( const QString& attachmentName, KABC::ResourceKolab* resource, const QString& subResource, quint32 sernum );
   QImage loadPictureFromAddressee( const KABC::Picture& picture );
 
-//   QByteArray loadDataFromKMail( const QString& attachmentName, KABC::ResourceKolab* resource, const QString& subResource, quint32 sernum );
   QByteArray loadSoundFromAddressee( const KABC::Sound& sound );
 
   QString productID() const;

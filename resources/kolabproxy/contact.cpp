@@ -56,7 +56,7 @@ Contact::Contact( const KABC::Addressee* addr, KABC::AddressBook* addressBook )
 }
 
 // loading (xml->addressee)
-Contact::Contact( const QString& xml/*, KABC::ResourceKolab* resource, const QString& subResource, quint32 sernum */)
+Contact::Contact( const QString& xml )
   : mHasGeo( false )
 {
   load( xml );
@@ -1252,19 +1252,6 @@ void Contact::saveTo( KABC::Addressee* addressee )
   //kDebug(5006) << addressee->customs();
 }
 
-
-// QImage Contact::loadPictureFromKMail( const QString& attachmentName, KABC::ResourceKolab* resource, const QString& subResource, quint32 sernum )
-// {
-//   QImage img;
-//   KUrl url;
-//   if ( resource->kmailGetAttachment( url, subResource, sernum, attachmentName ) && !url.isEmpty() ) {
-//     const QString path = url.path();
-//     img.load( path );
-//     QFile::remove(path);
-//   }
-//   return img;
-// }
-
 QImage Contact::loadPictureFromAddressee( const KABC::Picture& picture )
 {
   QImage img;
@@ -1278,21 +1265,6 @@ QImage Contact::loadPictureFromAddressee( const KABC::Picture& picture )
     img = picture.data();
   return img;
 }
-
-// QByteArray Kolab::Contact::loadDataFromKMail( const QString& attachmentName, KABC::ResourceKolab* resource, const QString& subResource, quint32 sernum )
-// {
-//   QByteArray data;
-//   KUrl url;
-//   if ( resource->kmailGetAttachment( url, subResource, sernum, attachmentName ) && !url.isEmpty() ) {
-//     QFile f( url.path() );
-//     if ( f.open( QIODevice::ReadOnly ) ) {
-//       data = f.readAll();
-//       f.close();
-//     }
-//     f.remove();
-//   }
-//   return data;
-// }
 
 QByteArray Kolab::Contact::loadSoundFromAddressee( const KABC::Sound& sound )
 {

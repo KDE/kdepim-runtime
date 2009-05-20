@@ -45,13 +45,9 @@
 using namespace Kolab;
 
 
-Incidence::Incidence( /*KCal::ResourceKolab *res, const QString &subResource, quint32 sernum,*/
-                      const QString& tz, KCal::Incidence* incidence )
+Incidence::Incidence( const QString& tz, KCal::Incidence* incidence )
   : KolabBase( tz ), mFloatingStatus( Unset ), mHasAlarm( false ),
-    mRevision( 0 )//,
-//     mResource( res ),
-//     mSubResource( subResource ),
-//     mSernum( sernum )
+    mRevision( 0 )
 {
 }
 
@@ -976,32 +972,7 @@ void Incidence::saveTo( KCal::Incidence* incidence )
   }
 
 }
-/*
-void Incidence::loadAttachments()
-{
-  QStringList attachments;
-  if ( mResource->kmailListAttachments( attachments, mSubResource, mSernum ) ) {
-    foreach ( const QString& attachment, attachments ) {
-      QByteArray data;
-      KUrl url;
-      if ( mResource->kmailGetAttachment( url, mSubResource, mSernum, attachment ) && !url.isEmpty() ) {
-        QFile f( url.path() );
-        if ( f.open( QFile::ReadOnly ) ) {
-          data = f.readAll();
-          QString mimeType;
-          if ( !mResource->kmailAttachmentMimetype( mimeType, mSubResource, mSernum, attachment ) )
-            mimeType = "application/octet-stream";
-          KCal::Attachment *a = new KCal::Attachment( data.toBase64().constData(), mimeType );
-          a->setLabel( attachment );
-          mAttachments.append( a );
-          f.close();
-        }
-        f.remove();
-      }
-    }
-  }
-}
-*/
+
 QString Incidence::productID() const
 {
   return QString( "KOrganizer %1, Kolab resource" ).arg( korgVersion );

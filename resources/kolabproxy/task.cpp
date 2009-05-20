@@ -39,10 +39,9 @@
 using namespace Kolab;
 
 
-KCal::Todo* Task::xmlToTask( const QString& xml, const QString& tz/*, KCal::ResourceKolab *res,
-                             const QString& subResource, quint32 sernum*/ )
+KCal::Todo* Task::xmlToTask( const QString& xml, const QString& tz )
 {
-  Task task( /*res, subResource, sernum,*/ tz );
+  Task task( tz );
   task.load( xml );
   KCal::Todo* todo = new KCal::Todo();
   task.saveTo( todo );
@@ -51,13 +50,12 @@ KCal::Todo* Task::xmlToTask( const QString& xml, const QString& tz/*, KCal::Reso
 
 QString Task::taskToXML( KCal::Todo* todo, const QString& tz )
 {
-  Task task( /*0, QString(), 0,*/ tz, todo );
+  Task task( tz, todo );
   return task.saveXML();
 }
 
-Task::Task(/*KCal::ResourceKolab *res, const QString &subResource, quint32 sernum,*/
-            const QString& tz, KCal::Todo* task )
-  : Incidence( /*res, subResource, sernum,*/ tz, task ),
+Task::Task( const QString& tz, KCal::Todo* task )
+  : Incidence( tz, task ),
     mPriority( 5 ), mPercentCompleted( 0 ),
     mStatus( KCal::Incidence::StatusNone ),
     mHasStartDate( false ), mHasDueDate( false ),
@@ -268,7 +266,6 @@ bool Task::loadXML( const QDomDocument& document )
       kDebug() <<"Node is not a comment or an element???";
   }
 
-//  loadAttachments();
   return true;
 }
 
