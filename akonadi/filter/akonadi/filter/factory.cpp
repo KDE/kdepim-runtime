@@ -77,7 +77,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "size" ),
           i18n( "size of" ),
-          i18n( "The size of a specific item part. If the specified item doesn't exist then the returned size is 0." ),
+          i18n( "The size of a specific item part. If the specified item does not exist, then the size returned is 0." ),
           DataTypeInteger
         )
     );

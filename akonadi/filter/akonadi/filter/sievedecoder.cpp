@@ -199,7 +199,7 @@ void SieveDecoder::onTestEnd()
     if( mCurrentSimpleTestArguments.count() < 1 )
     {
       mGotError = true;
-      setLastError( i18n( "The 'header' test requires at one non-optional argument" ) );
+      setLastError( i18n( "The 'header' test requires at least one non-optional argument." ) );
       return;
     }
 
@@ -329,7 +329,7 @@ void SieveDecoder::onTestEnd()
         {
           // unrecognized test
           mGotError = true; 
-          setLastError( i18n( "Test on property '%1' isn't supported", field ) );
+          setLastError( i18n( "Test on property '%1' is not supported.", field ) );
           return;
         }
 
@@ -688,7 +688,7 @@ void SieveDecoder::onBlockStart()
   if ( !mCurrentComponent->isRule() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected start of block outisde of a rule" ) );
+    setLastError( i18n( "Unexpected start of block outside of a rule." ) );
     return;
   }
 }
