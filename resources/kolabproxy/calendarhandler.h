@@ -40,8 +40,6 @@ public:
 
 private:
     KCal::Event * calendarFromKolab(MessagePtr data);
-    KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type
-    );
 
 };
 

@@ -61,6 +61,7 @@ public:
 protected:
   KolabHandler(const QString& timezoneId);
   KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
+  KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type);
 
   QByteArray m_mimeType;
   QString m_timezoneId;

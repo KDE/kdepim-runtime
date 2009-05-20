@@ -60,12 +60,6 @@ Contact::Contact( const QString& xml )
   : mHasGeo( false )
 {
   load( xml );
-//   if ( !mPictureAttachmentName.isEmpty() )
-//     mPicture = loadPictureFromKMail( mPictureAttachmentName, resource, subResource, sernum );
-//   if ( !mLogoAttachmentName.isEmpty() )
-//     mLogo = loadPictureFromKMail( mLogoAttachmentName, resource, subResource, sernum );
-//   if ( !mSoundAttachmentName.isEmpty() )
-//     mSound = loadDataFromKMail( mSound, resource, subResource, sernum );
 }
 
 Contact::~Contact()

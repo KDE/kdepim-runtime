@@ -73,3 +73,17 @@ KMime::Content* KolabHandler::findContentByType(MessagePtr data, const QByteArra
   return 0L;
 
 }
+
+KMime::Content* KolabHandler::findContentByName(MessagePtr data, const QString &name, QByteArray &type)
+{
+  KMime::Content::List list = data->contents();
+  Q_FOREACH(KMime::Content *c, list)
+  {
+    if (c->contentType()->name() == name)
+      type = QByteArray(c->contentType()->type());
+    return c;
+  }
+  return 0L;
+
+}
+

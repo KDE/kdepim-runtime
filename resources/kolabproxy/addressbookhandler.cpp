@@ -66,7 +66,8 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
     Kolab::Contact contact(QString::fromLatin1(xmlData));
     QString pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
-      KMime::Content *imgContent = findContentByType(data, "image/png");
+      QByteArray type;
+      KMime::Content *imgContent = findContentByName(data, "kolab-picture.png", type);
       if (imgContent) {
         QByteArray imgData = imgContent->decodedContent();
         QBuffer buffer(&imgData);
@@ -74,6 +75,30 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
         QImage image;
         image.load(&buffer, "PNG");
         contact.setPicture(image);
+      }
+    }
+
+    QString logoAttachmentName = contact.logoAttachmentName();
+    if (!logoAttachmentName.isEmpty()) {
+      QByteArray type;
+      KMime::Content *imgContent = findContentByName(data, "kolab-logo.png", type);
+      if (imgContent) {
+        QByteArray imgData = imgContent->decodedContent();
+        QBuffer buffer(&imgData);
+        buffer.open(QIODevice::ReadOnly);
+        QImage image;
+        image.load(&buffer, "PNG");
+        contact.setLogo(image);
+      }
+    }
+
+    QString soundAttachmentName = contact.soundAttachmentName();
+    if (!soundAttachmentName.isEmpty()) {
+      QByteArray type;
+      KMime::Content *content = findContentByName(data, "sound", type);
+      if (content) {
+        QByteArray sData = content->decodedContent();
+        contact.setSound(sData);
       }
     }
     contact.saveTo(&addressee);
@@ -131,8 +156,34 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
     buffer.close();
     content->setBody(pic.toBase64());
     message->addContent(content);
-
   }
+
+  if (!contact.logoAttachmentName().isEmpty()) {
+    header = "Content-Type: image/png; name=\"kolab-logo.png\"\n";
+    header += "Content-Transfer-Encoding: base64\n";
+    header += "Content-Disposition: attachment; filename=\"kolab-logo.png\"";
+    content = new KMime::Content();
+    content->setHead(header.toLatin1());
+    QByteArray pic;
+    QBuffer buffer(&pic);
+    buffer.open(QIODevice::WriteOnly);
+    contact.logo().save(&buffer, "PNG");
+    buffer.close();
+    content->setBody(pic.toBase64());
+    message->addContent(content);
+  }
+
+
+  if (!contact.soundAttachmentName().isEmpty()) {
+    header = "Content-Type: audio/unknown; name=\"sound\"\n";
+    header += "Content-Transfer-Encoding: base64\n";
+    header += "Content-Disposition: attachment; filename=\"sound\"";
+    content = new KMime::Content();
+    content->setHead(header.toLatin1());
+    content->setBody(contact.sound().toBase64());
+    message->addContent(content);
+  }
+
 
   imapItem.setPayload<MessagePtr>(message);
 }

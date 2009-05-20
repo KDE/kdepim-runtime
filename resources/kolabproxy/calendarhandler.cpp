@@ -83,19 +83,6 @@ KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
   return 0L;
 }
 
-KMime::Content* CalendarHandler::findContentByName(MessagePtr data, const QString &name, QByteArray &type)
-{
-  KMime::Content::List list = data->contents();
-  Q_FOREACH(KMime::Content *c, list)
-  {
-    if (c->contentType()->name() == name)
-      type = QByteArray(c->contentType()->type());
-      return c;
-  }
-  return 0L;
-
-}
-
 void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   kDebug() << "toKolabFormat";
