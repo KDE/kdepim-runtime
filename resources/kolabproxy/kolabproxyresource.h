@@ -20,6 +20,8 @@
 #ifndef KOLABPROXYRESOURCE_H
 #define KOLABPROXYRESOURCE_H
 
+#include <kcal/calendarlocal.h>
+
 #include <akonadi/resourcebase.h>
 #include <QStringList>
 
@@ -79,6 +81,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     };
 
     RetrieveState m_retrieveState;
+
+    KCal::CalendarLocal m_calendar;
 
 };
 

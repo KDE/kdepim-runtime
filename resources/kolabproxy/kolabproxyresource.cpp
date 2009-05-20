@@ -43,7 +43,7 @@
 using namespace Akonadi;
 
 KolabProxyResource::KolabProxyResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ), m_calendar( QString::fromLatin1("UTC") )
 {
   AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
 
@@ -90,7 +90,7 @@ void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
           collection.attribute<CollectionAnnotationsAttribute>();
       if (annotationsAttribute) {
         QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-        KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
+        KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], m_calendar.timeZoneId());
         if (handler) {
           kDebug() << "Monitor folder: " << collection.name() << collection.remoteId();
           m_monitor->setCollectionMonitored(collection);
@@ -399,7 +399,7 @@ void KolabProxyResource::imapCollectionFetched(KJob *job)
   if (annotationsAttribute) {
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
 
-    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
+    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], m_calendar.timeZoneId());
     if (handler) {
       m_monitor->setCollectionMonitored(imapCollection);
       m_monitoredCollections.insert(imapCollection.id(), handler);

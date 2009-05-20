@@ -31,7 +31,7 @@ typedef boost::shared_ptr<KCal::Todo> TodoPtr;
 */
 class TasksHandler : public KolabHandler {
 public:
-    TasksHandler();
+    TasksHandler(const QString& timezoneId);
 
     virtual ~TasksHandler();
 

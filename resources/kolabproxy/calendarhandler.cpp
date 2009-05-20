@@ -27,7 +27,7 @@
 #include <QDomDocument>
 
 
-CalendarHandler::CalendarHandler()
+CalendarHandler::CalendarHandler(const QString& timezoneId)  : KolabHandler(timezoneId)
 {
   m_mimeType = "application/x-vnd.kolab.event";
 }
@@ -64,8 +64,7 @@ KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
 
-    //FIXME: read the tz
-    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), QString() );
+    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_timezoneId );
     QDomDocument doc;
     doc.setContent(QString::fromUtf8(xmlData));
     QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
@@ -134,7 +133,7 @@ void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &im
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
   KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(Kolab::Event::eventToXML(event, "").toUtf8()));
+  content->setBody(codec->encode(Kolab::Event::eventToXML(event, m_timezoneId).toUtf8()));
   message->addContent(content);
 
   Q_FOREACH (KCal::Attachment *attachment, e->attachments()) {

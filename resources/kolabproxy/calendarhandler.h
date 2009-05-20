@@ -30,7 +30,7 @@ typedef boost::shared_ptr<KCal::Event> EventPtr;
 */
 class CalendarHandler : public KolabHandler {
 public:
-    CalendarHandler();
+    CalendarHandler(const QString& timezoneId);
 
     virtual ~CalendarHandler();
 

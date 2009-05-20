@@ -31,7 +31,7 @@ typedef boost::shared_ptr<KCal::Journal> JournalPtr;
 */
 class JournalHandler : public KolabHandler {
 public:
-    JournalHandler();
+    JournalHandler(const QString& timezoneId);
 
     virtual ~JournalHandler();
 

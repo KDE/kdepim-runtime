@@ -28,7 +28,7 @@
 #include <QDomDocument>
 
 
-TasksHandler::TasksHandler()
+TasksHandler::TasksHandler(const QString& timezoneId) : KolabHandler(timezoneId)
 {
   m_mimeType = "application/x-vnd.kolab.task";
 }
@@ -66,7 +66,7 @@ KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
 //     kDebug() << "xmlData " << xmlData;
 
     //FIXME: read the tz
-    KCal::Todo *todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), QString() );
+    KCal::Todo *todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_timezoneId );
     QDomDocument doc;
     doc.setContent(QString::fromUtf8(xmlData));
     QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
@@ -131,7 +131,7 @@ void TasksHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapI
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
   KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(Kolab::Task::taskToXML(todo, "").toUtf8()));
+  content->setBody(codec->encode(Kolab::Task::taskToXML(todo, m_timezoneId).toUtf8()));
   message->addContent(content);
 
   Q_FOREACH (KCal::Attachment *attachment, t->attachments()) {

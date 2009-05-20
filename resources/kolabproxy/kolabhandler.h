@@ -32,7 +32,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 */
 class KolabHandler{
 public:
-  static KolabHandler *createHandler(const QByteArray& type);
+  static KolabHandler *createHandler(const QByteArray& type, const QString& timezoneId);
 
   virtual ~KolabHandler();
 
@@ -59,10 +59,11 @@ public:
   virtual void setMimeType(const QByteArray& type);
 
 protected:
-  KolabHandler();
+  KolabHandler(const QString& timezoneId);
   KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
 
   QByteArray m_mimeType;
+  QString m_timezoneId;
 };
 
 #endif

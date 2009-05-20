@@ -28,7 +28,7 @@
 #include <QDomDocument>
 
 
-JournalHandler::JournalHandler()
+JournalHandler::JournalHandler(const QString& timezoneId) : KolabHandler(timezoneId)
 {
   m_mimeType = "application/x-vnd.kolab.journal";
 }
@@ -66,7 +66,7 @@ KCal::Journal * JournalHandler::journalFromKolab(MessagePtr data)
 //     kDebug() << "xmlData " << xmlData;
 
     //FIXME: read the tz
-    KCal::Journal *journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), QString() );
+    KCal::Journal *journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), m_timezoneId );
     QDomDocument doc;
     doc.setContent(QString::fromUtf8(xmlData));
     QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
@@ -131,7 +131,7 @@ void JournalHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &ima
   header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
   content->setHead(header.toLatin1());
   KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(Kolab::Journal::journalToXML(journal, "").toUtf8()));
+  content->setBody(codec->encode(Kolab::Journal::journalToXML(journal, m_timezoneId).toUtf8()));
   message->addContent(content);
 
   Q_FOREACH (KCal::Attachment *attachment, journal->attachments()) {

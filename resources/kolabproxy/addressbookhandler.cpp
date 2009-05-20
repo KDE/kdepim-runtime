@@ -27,7 +27,7 @@
 #include <QBuffer>
 
 
-AddressBookHandler::AddressBookHandler()
+AddressBookHandler::AddressBookHandler(const QString& timezoneId): KolabHandler(timezoneId)
 {
   m_mimeType = "application/x-vnd.kolab.contact";
 }

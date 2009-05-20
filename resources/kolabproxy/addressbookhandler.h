@@ -31,7 +31,7 @@ namespace KABC{
 */
 class AddressBookHandler : public KolabHandler {
 public:
-    AddressBookHandler();
+    AddressBookHandler(const QString& timezoneId);
 
     virtual ~AddressBookHandler();
 
