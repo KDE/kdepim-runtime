@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Distribution List File
+Name[da]=Distributionsliste-fil
 Name[de]=Verteilerlistendatei
 Name[el]=Αρχείο λίστας διανομής
 Name[et]=Postiloendi fail
@@ -19,6 +20,7 @@ Name[uk]=Файл списку розповсюдження
 Name[x-test]=xxDistribution List Filexx
 Name[zh_TW]=分派清單檔
 Comment=Loads data from a distribution list file
+Comment[da]=Indlæser data fra en distributionsliste-fil
 Comment[de]=Daten werden aus einer Verteilerlistendatei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα αρχείο λίστας διανομής
 Comment[et]=Andmete laadimine postiloendi failist

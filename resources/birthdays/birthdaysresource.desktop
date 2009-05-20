@@ -19,6 +19,7 @@ Name[uk]=Дні народження і річниці
 Name[x-test]=xxBirthdays & Anniversariesxx
 Name[zh_TW]=生日與紀念日
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
+Comment[da]=Giver adgang til fødsels- og mærkedage-datoer for kontakter i din adressebog som kalenderbegivenheder
 Comment[el]=Προσφέρει πρόσβαση σε γενέθλια και επετείους επαφών του βιβλίου διευθύνσεών σας ως γεγονότα ημερολογίου
 Comment[es]=Provee acceso a las fechas de cumpleaños  y aniversarios de los contactos en la libreta de direcciones como eventos de calendario
 Comment[et]=Võimaldab kasutada KDE aadressiraamatusse kalendrisündmustena salvestatud kontaktide sünni- ja aastapäevi

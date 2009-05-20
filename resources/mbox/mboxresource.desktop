@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=Mbox
+Name[nds]=MBox
 Name[nn]=MBOX
 Name[x-test]=xxMboxxx
 Comment=Loads data from a local mbox file
+Comment[da]=Indlæser data fra en lokal mbox-fil
 Comment[de]=Daten werden aus einer lokalen MBox-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο mbox
 Comment[et]=Andmete laadimine kohalikust mbox-failist
@@ -10,6 +12,7 @@ Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad logánta mbox
 Comment[gl]=Carrega datos desde un ficheiro mbox local
 Comment[km]=ផ្ទុក​ទិន្នន័យ​ពី​ឯកសារ mbox មូលដ្ឋាន
 Comment[nb]=Laster data fra en lokal mbox-fil
+Comment[nds]=Laadt Daten ut en lokaal Postfach (MBox-Datei)
 Comment[nn]=Lastar data frå ei lokal MBOX-fil
 Comment[pt]=Carrega os dados a partir de um ficheiro 'mbox' local
 Comment[pt_BR]=Carrega os dados de um arquivo mbox local
