@@ -7,55 +7,59 @@ BUGS
 - Status shows percentages instead of full status message sometimes
 - After fetching 25 items, only 20 or so are really added to the maildir (not strictly a POP3 problem,
   the items do end up on the server
-- unit tests: metatype declaration missing
 - additional \n in item
+- (!) big fetch test fails
 
 TODO
 ====
 
-get rid of "interactive"
-make resource name configureable
-rename vars, functions
-kdebug
-astyle
-api documentation (also for fakeserver)
-(!) Config UI
+- get rid of "interactive"
+- Coding Style
+  - astyle
+  - rename vars, functions
+  - kdebug
+  - api documentation (also for fakeserver)
+  - for -> foreach
+  - clean up includes
+  - clean up cmakefiles, remove code duplication with kdepimlibs
+  - grep for kmail and remove references
+
+- (!) Implement canceling of a sync
+- (!) password handling / kwallet
+- (!) Config UI
   -> target collection chooser
-auto-create local inbox
-unit tests
-  test ssl/tls
-  test with disabled cache
-  item create storm test (failed to add to maildir!)
-  all leave on server rules
-  weird bugs in svn log
-  add fails -> second check will still work
-  correct error messages passed from pop3 server?
-  byte stuffing
-  pipelining
-  abort requested during mail check
+      -> auto-create local inbox
+  -> make resource name configureable
+- unit tests
+  - test ssl/tls
+  - test with disabled cache
+  - all leave on server rules
+  - weird bugs in svn log (for example the forcedIdsToDelete stuff)
+  - add fails -> second check will still work
+  - correct error messages passed from pop3 server?
+  - byte stuffing
+  - pipelining
+  (!) abort requested during mail check
     -> no duplicate messages on next mail check, already added mails added to the seen
        UID list
-compare each function with popaccount.cpp, find out what is missing, write it down
-password handling / kwallet
-for -> foreach
-header filtering framework
-mail progress items / status messages / done signal
-  error handling
-config file migration from kmail
+- compare each function with popaccount.cpp, find out what is missing, write it down
+- fix FIXMEs
+- error handling
+    - parents for messageboxes (or no messageboxes at all and signal error?)
+    - mail progress items / status messages / done signal
+- listen to collection removals -> complain if no longer there
+- proof read and coverage test
+- kconfigxt: labels, tooltips, whatsthis etc
+
+Later:
+
+- delete on server: monitor + store item UIDs somewhere
+- refactoring: each stage in command classes or such
+- header filtering framework
+- config file migration from kmail
   -> now DeleteLater group
   -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
   -> kwallet?
-listen to collection removals -> complain if no longer there
-parents for messageboxes
-fixmes
-grep for kmail
-proof read and coverage test
-kconfigxt: labels, tooltips, whatsthis etc
-clean up cmakefiles, remove code duplication with kdepimlibs
-clean up includes
-
-refactoring: each stage in command classes or such
-delete on server: monitor + store item UIDs somewhere
 
 Missing Stuff
 =============

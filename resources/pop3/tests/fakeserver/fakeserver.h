@@ -38,6 +38,7 @@ public:
     void setNextConversation( const QString &conversation,
                               const QList<int> &exceptions = QList<int>() );
     void setAllowedDeletions( const QString &deleteIds );
+    void setAllowedRetrieves( const QString &retrieveIds );
     void setMails( const QList<QByteArray> &mails );
 
 Q_SIGNALS:
@@ -50,11 +51,14 @@ private Q_SLOTS:
 
 private:
 
+    QByteArray parseDeleteMark( const QByteArray& expectedData, const QByteArray& dataReceived );
+    QByteArray parseRetrMark( const QByteArray& expectedData, const QByteArray& dataReceived );
     QByteArray parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived );
 
     QList<QByteArray> mReadData;
     QList<QByteArray> mWriteData;
     QList<QByteArray> mAllowedDeletions;
+    QList<QByteArray> mAllowedRetrieves;
     QList<QByteArray> mMails;
     int mConnections;
     QTcpServer *mTcpServer;

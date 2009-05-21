@@ -30,6 +30,9 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <iostream> // FIXME: temporary. we use std::cout because qDebug is limited to 1000 calls in unit tests
+                    //        remove the std::cout when the problem has been found
+
 typedef boost::shared_ptr<KMime::Message> MsgPtr;
 
 QTEST_AKONADIMAIN( Pop3Test, NoGUI )
@@ -152,17 +155,39 @@ static const QByteArray simpleMail4 =
 
 void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
+  std::cout << "======================= CLEAN UP MAILDIR ======================";
+  // FIXME: this job + the foreach only for debugging, remove later!
+  ItemFetchJob *job = new ItemFetchJob( mMaildirCollection );
+  Q_ASSERT( job->exec() );
+  foreach( const Item &item, job->items() ) {
+    std::cout << "Item in maildir:" << int( item.id() ) << "Remote Id:" << (const char*)(item.remoteId().data()) << std::endl;
+  }
+  std::cout << "======================= CLEAN UP MAILDIR 2 ======================";
   // Delete all mails so the maildir is clean for the next test
   foreach( const Item &item, items ) {
+    std::cout << "Deleting item with ID:" << item.id() << std::endl;
     ItemDeleteJob *job = new ItemDeleteJob( item );
     QVERIFY( job->exec() );
   }
   QTime time;
   time.start();
+  int lastCount = -1;
   forever {
     QDir maildir( mMaildirPath );
     maildir.refresh();
-    if ( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() == 0 )
+    int curCount = maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count();
+
+    std::cout << "Currently in maildir:" << curCount << std::endl;
+    std::cout << "Last:" << lastCount << std::endl;
+
+    // Restart the timer when a mail arrives, as it shows that the maildir resource is
+    // still alive and kicking.
+    if ( curCount != lastCount ) {
+      time.restart();
+      lastCount = curCount;
+    }
+
+    if ( curCount == 0 )
       break;
     QVERIFY( time.elapsed() < 60000 );
   }
@@ -173,11 +198,23 @@ void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
   // Now, test that all mails actually ended up in the maildir. Since the maildir resource
   // might be slower, give it a timeout so it can write the files to disk
   QTime time;
+  int lastCount = -1;
   time.start();
   forever {
     QDir maildir( mMaildirPath );
     maildir.refresh();
-    if ( static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() ) == mails.count() ) {
+    int curCount = static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() );
+
+    std::cout << "Currently in maildir:" << curCount << std::endl;
+    std::cout << "Last:" << lastCount << std::endl;
+    // Restart the timer when a mail arrives, as it shows that the maildir resource is
+    // still alive and kicking.
+    if ( curCount != lastCount ) {
+      time.restart();
+      lastCount = curCount;
+    }
+
+    if (  curCount == mails.count() ) {
       break;
     }
     QVERIFY( static_cast<int>( maildir.entryList( QDir::NoDotAndDotDot ).count() ) <= mails.count() );
@@ -268,10 +305,10 @@ QString Pop3Test::retrieveSequence( const QList<QByteArray> &mails,
   for( int i = 1; i <= mails.size(); i++ ) {
     if ( !exceptions.contains( i ) ) {
       result += QString(
-        "C: RETR %1\r\n"
+        "C: RETR %RETR%\r\n"
         "S: +OK Here is your spam\r\n"
             "%MAIL%\r\n"
-            ".\r\n" ).arg( i );
+            ".\r\n" );
     }
   }
   return result;
@@ -323,7 +360,9 @@ void Pop3Test::testSimpleDownload()
   QList<QByteArray> mails;
   mails << simpleMail1 << simpleMail2 << simpleMail3;
   QStringList uids;
-  uids << "UID1" << "UID2" << "UID3";  mFakeServer->setAllowedDeletions("1,2,3");
+  uids << "UID1" << "UID2" << "UID3";
+  mFakeServer->setAllowedDeletions("1,2,3");
+  mFakeServer->setAllowedRetrieves("1,2,3");
   mFakeServer->setMails( mails );
   mFakeServer->setNextConversation(
     loginSequence() +
@@ -340,6 +379,44 @@ void Pop3Test::testSimpleDownload()
   cleanupMaildir( items );
 }
 
+void Pop3Test::testBigFetch()
+{
+  QList<QByteArray> mails;
+  QStringList uids;
+  QString allowedRetrs;
+  for( int i = 0; i < 1000; i++ ) {
+    QByteArray newMail = simpleMail1;
+    newMail.append( QString::number( i ).toAscii() );
+    mails << newMail;
+    uids << QString( "UID%1" ).arg( i );
+    allowedRetrs += QString::number( i + 1 ) + ',';
+  }
+  allowedRetrs.chop( 1 );
+
+  mFakeServer->setMails( mails );
+  mFakeServer->setAllowedRetrieves( allowedRetrs );
+  mFakeServer->setAllowedDeletions( allowedRetrs );
+  mFakeServer->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    uidSequence( uids ) +
+    retrieveSequence( mails ) +
+    deleteSequence( mails.size() ) +
+    quitSequence()
+  );
+
+  qDebug() << "============= Going to start mail check ===================";
+  syncAndWaitForFinish();
+  qDebug() << "============= Going to check that mails are in Akonadi ===================";
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  qDebug() << "============= Going to check that mails are in the maildir ===================";
+  checkMailsInMaildir( mails );
+  qDebug() << "============= Cleaining up maildir ===================";
+  cleanupMaildir( items );
+  qDebug() << "============= Finished ===================";
+}
+
+
 void Pop3Test::testSimpleLeaveOnServer()
 {
   mSettingsInterface->setLeaveOnServer( true );
@@ -349,6 +426,7 @@ void Pop3Test::testSimpleLeaveOnServer()
   QStringList uids;
   uids << "UID1" << "UID2" << "UID3";
   mFakeServer->setMails( mails );
+  mFakeServer->setAllowedRetrieves("1,2,3");
   mFakeServer->setNextConversation(
     loginSequence() +
     listSequence( mails ) +
@@ -375,6 +453,7 @@ void Pop3Test::testSimpleLeaveOnServer()
   QList<int> idsToNotDownload;
   idsToNotDownload << 1 << 2 << 3;
   mFakeServer->setMails( newMails );
+  mFakeServer->setAllowedRetrieves("4");
   mFakeServer->setNextConversation(
     loginSequence() +
     listSequence( newMails ) +

@@ -41,7 +41,8 @@ FakeServer::~FakeServer()
   wait();
 }
 
-QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived )
+QByteArray FakeServer::parseDeleteMark( const QByteArray &expectedData,
+                                        const QByteArray &dataReceived )
 {
   const QByteArray deleteMark = QString( "%DELE%" ).toUtf8();
   if ( expectedData.contains( deleteMark ) ) {
@@ -54,10 +55,39 @@ QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByt
         return substituted;
       }
     }
-    Q_ASSERT_X( false, "FakeServer::parseResponse", "Unable to substitute data!" );
+    Q_ASSERT_X( false, "FakeServer::parseDeleteMark", "Unable to substitute data!" );
     return QByteArray();
   }
   else return expectedData;
+}
+
+QByteArray FakeServer::parseRetrMark( const QByteArray &expectedData,
+                                      const QByteArray &dataReceived )
+{
+  const QByteArray retrMark = QString( "%RETR%" ).toUtf8();
+  if ( expectedData.contains( retrMark ) ) {
+    Q_ASSERT( !mAllowedRetrieves.isEmpty() );
+    for ( int i = 0; i < mAllowedRetrieves.size(); i++ ) {
+      QByteArray substituted = expectedData;
+      substituted = substituted.replace( retrMark, mAllowedRetrieves[i] );
+      if (  substituted == dataReceived ) {
+        mAllowedRetrieves.removeAt( i );
+        return substituted;
+      }
+    }
+    Q_ASSERT_X( false, "FakeServer::parseRetrMark", "Unable to substitute data!" );
+    return QByteArray();
+  }
+  else return expectedData;
+}
+
+QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived )
+{
+  QByteArray result;
+  result = parseDeleteMark( expectedData, dataReceived );
+  if ( result != expectedData )
+    return result;
+  else return parseRetrMark( expectedData,dataReceived );
 }
 
 static QByteArray removeCRLF( const QByteArray &ba )
@@ -112,6 +142,7 @@ void FakeServer::slotDisconnected()
   mConnections--;
   Q_ASSERT( mConnections == 0 );
   Q_ASSERT( mAllowedDeletions.isEmpty() );
+  Q_ASSERT( mAllowedRetrieves.isEmpty() );
   Q_ASSERT( mReadData.isEmpty() );
   Q_ASSERT( mWriteData.isEmpty() );
   emit disconnected();
@@ -140,6 +171,14 @@ void FakeServer::setAllowedDeletions( const QString &deleteIds )
   QStringList ids = deleteIds.split( ',' );
   foreach( const QString &id, ids ) {
     mAllowedDeletions.append( id.toUtf8() );
+  }
+}
+
+void FakeServer::setAllowedRetrieves( const QString &retrieveIds )
+{
+  QStringList ids = retrieveIds.split( ',' );
+  foreach( const QString &id, ids ) {
+    mAllowedRetrieves.append( id.toUtf8() );
   }
 }
 

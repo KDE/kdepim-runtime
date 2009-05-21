@@ -36,10 +36,11 @@ class Pop3Test : public QObject
     void cleanupTestCase();
     void testSimpleDownload();
     void testSimpleLeaveOnServer();
+    void testBigFetch();
 
   private:
     void cleanupMaildir( Akonadi::Item::List items );
-    void checkMailsInMaildir( const QList<QByteArray> &mails );
+    void checkMailsInMaildir( const QList< QByteArray >& mails );
     Akonadi::Item::List checkMailsOnAkonadiServer( const QList<QByteArray> &mails );
     void syncAndWaitForFinish();
     QString loginSequence() const;
