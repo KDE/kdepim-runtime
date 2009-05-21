@@ -1,8 +1,12 @@
 project(pop3)
 
+find_package(KDE4)
 find_package(Akonadi)
+find_package(KdepimLibs)
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
+
+include(KDE4Defaults)
 
 if (XSLTPROC_EXECUTABLE)
   # generates a D-Bus interface description from a KConfigXT file
