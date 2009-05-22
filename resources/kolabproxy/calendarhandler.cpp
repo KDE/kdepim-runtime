@@ -141,3 +141,4 @@ QStringList  CalendarHandler::contentMimeTypes()
 {
   return QStringList() << "text/calendar";
 }
+
