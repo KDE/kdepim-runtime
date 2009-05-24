@@ -31,7 +31,8 @@ public:
 int main(int argc,char ** argv)
 {
 
-  Akonadi::Filter::IO::SieveDecoder d( new MyFactory() );
+  MyFactory * f = new MyFactory();
+  Akonadi::Filter::IO::SieveDecoder d( f );
   Akonadi::Filter::Program * p = d.run();
   if( p )
   {
@@ -42,7 +43,8 @@ int main(int argc,char ** argv)
     KApplication app;
 
 
-    Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, p );
+    Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, f );
+    ed->fillFromProgram( p );
 
     ed->show();
     
@@ -53,6 +55,7 @@ int main(int argc,char ** argv)
     delete p;
   }
 
+  delete f;
 
   return 0;
 }

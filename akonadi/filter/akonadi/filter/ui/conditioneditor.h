@@ -30,12 +30,12 @@
 
 #include <QWidget>
 
-class KComboBox;
-
 namespace Akonadi
 {
 namespace Filter
 {
+
+class Factory;
 
 namespace Condition
 {
@@ -45,18 +45,40 @@ namespace Condition
 namespace UI
 {
 
+class ConditionEditorPrivate;
+
 class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
 {
   Q_OBJECT
+
 public:
-  ConditionEditor( QWidget * parent, Condition::Base * condition );
+  enum ConditionType
+  {
+    ConditionTypeNone,
+    ConditionTypeNot,
+    ConditionTypePropertyTest,
+    ConditionTypeAnd,
+    ConditionTypeOr
+  };
+
+public:
+  ConditionEditor( QWidget * parent, Factory * factory );
   virtual ~ConditionEditor();
 
 protected:
-  Condition::Base * mCondition;
 
-  KComboBox * mTypeComboBox;
+  Factory * mFactory;
+  ConditionEditorPrivate * mPrivate;
 
+public:
+  virtual void fillFromCondition( Condition::Base * condition );
+  virtual bool commitToCondition( Condition::Base * condition );
+
+private:
+  void setupUIForActiveType();
+
+protected slots:
+  void typeComboBoxActivated( int index );
 }; // class ConditionEditor
 
 } // namespace UI

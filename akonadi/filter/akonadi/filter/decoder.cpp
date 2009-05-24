@@ -42,8 +42,6 @@ Decoder::Decoder( Factory * componentFactory )
 
 Decoder::~Decoder()
 {
-  if( mFactory )
-    delete mFactory;
 }
 
 } // namespace IO

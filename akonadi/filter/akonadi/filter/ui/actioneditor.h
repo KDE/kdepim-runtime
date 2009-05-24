@@ -37,6 +37,8 @@ namespace Akonadi
 namespace Filter
 {
 
+class Factory;
+
 namespace Action
 {
   class Base;
@@ -49,13 +51,16 @@ class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
 {
   Q_OBJECT
 public:
-  ActionEditor( QWidget * parent, Action::Base * action );
+  ActionEditor( QWidget * parent, Factory * factory );
   virtual ~ActionEditor();
 
 protected:
-  Action::Base * mAction;
-
+  Factory * mFactory;
   KComboBox * mTypeComboBox;
+
+public:
+  virtual void fillFromAction( Action::Base * action );
+  virtual bool commitToAction( Action::Base * action );
 
 }; // class ActionEditor
 

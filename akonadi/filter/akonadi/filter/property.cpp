@@ -34,13 +34,13 @@ namespace Filter
 
 Property::Property(
     const QString &id,
-    const QString &name,
-    const QString &description,
+    const QString &shortName,
+    const QString &longName,
     DataType dataType
   ) :
   mId( id ),
-  mName( name ),
-  mDescription( description ),
+  mShortName( shortName ),
+  mLongName( longName ),
   mDataType( dataType )
 {
 }

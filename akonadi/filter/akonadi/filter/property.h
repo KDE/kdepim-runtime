@@ -42,8 +42,8 @@ class AKONADI_FILTER_EXPORT Property
 public:
   Property(
       const QString &id,
-      const QString &name,
-      const QString &description,
+      const QString &shortName,
+      const QString &longName,
       DataType dataType
     );
   virtual ~Property();
@@ -56,14 +56,14 @@ protected:
   QString mId;
 
   /**
-   * The localized name of the property (this is what is shown in the selection combos)
+   * The localized name of the property (this is what is shown in rule descriptions)
    */
-  QString mName;
+  QString mShortName;
 
   /**
-   * The localized description of the property (if needed)
+   * The localized long name of the property (this is what is shown in the selection combos)
    */
-  QString mDescription;
+  QString mLongName;
 
   /**
    * The type of this property
@@ -82,14 +82,14 @@ public:
     return mId;
   }
 
-  const QString & name() const
+  const QString & shortName() const
   {
-    return mName;
+    return mShortName;
   }
 
-  const QString & description() const
+  const QString & longName() const
   {
-    return mDescription;
+    return mLongName;
   }
 
 }; // class Property

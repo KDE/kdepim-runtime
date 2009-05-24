@@ -77,7 +77,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "size" ),
           i18n( "size of" ),
-          i18n( "The size of a specific item part. If the specified item does not exist, then the size returned is 0." ),
+          i18n( "if the size of the field" ),
           DataTypeInteger
         )
     );
@@ -86,7 +86,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "header" ),
           i18n( "value of" ),
-          i18n( "Returns the string value of the specified item part" ),
+          i18n( "if the value of the field" ),
           DataTypeString
         )
     );
@@ -95,25 +95,27 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "address" ),
           i18n( "any address in" ),
-          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          i18n( "if any address extracted from the field" ),
           DataTypeString
         )
     );
 
+#if 0
   registerProperty(
       new Property(
           QString::fromAscii( "address:all" ),
           i18n( "any address in" ),
-          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          i18n( "if any address extracted from the field" ),
           DataTypeString
         )
     );
+#endif
 
   registerProperty(
       new Property(
           QString::fromAscii( "address:domain" ),
           i18n( "any domain address part in" ),
-          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          i18n( "if any domain name extracted from the field" ),
           DataTypeString
         )
     );
@@ -123,7 +125,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "address:local" ),
           i18n( "any local address part in" ),
-          i18n( "Returns a list of addresses extracted from the specified item part" ),
+          i18n( "if any local address part extracted from the field" ),
           DataTypeString
         )
     );
@@ -133,7 +135,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "date" ),
           i18n( "date in" ),
-          i18n( "Returns the first date extracted from the specified item part" ),
+          i18n( "if the date extracted from the field" ),
           DataTypeDateTime
         )
     );
@@ -142,7 +144,7 @@ Factory::Factory()
       new Property(
           QString::fromAscii( "exists" ),
           i18n( "exists" ),
-          i18n( "Returns true if the specified item part exists" ),
+          i18n( "if the following field exists" ),
           DataTypeBoolean
         )
     );
@@ -166,6 +168,42 @@ Factory::Factory()
           i18n( "Is Lower Than" ),
           i18n( "Returns true if the left operand has smaller numeric value than the right operand" ),
           DataTypeInteger
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "contains" ),
+          i18n( "Contains String" ),
+          i18n( "Returns true if the left operand contains the string specified by the right operand" ),
+          DataTypeString
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "is" ),
+          i18n( "Is Equal To" ),
+          i18n( "Returns true if the left operand is equal to the string specified by the right operand" ),
+          DataTypeString
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "equals" ),
+          i18n( "Is Equal To" ),
+          i18n( "Returns true if the left operand is equal to the integer specified by the right operand" ),
+          DataTypeInteger
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "equals" ),
+          i18n( "Is Equal To" ),
+          i18n( "Returns true if the left operand is equal to the date/time specified by the right operand" ),
+          DataTypeDateTime
         )
     );
 

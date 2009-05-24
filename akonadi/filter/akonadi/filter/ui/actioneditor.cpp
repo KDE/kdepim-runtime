@@ -26,6 +26,7 @@
 #include "actioneditor.h"
 
 #include <akonadi/filter/action.h>
+#include <akonadi/filter/factory.h>
 
 #include <QLayout>
 
@@ -41,8 +42,8 @@ namespace UI
 
 #define INDENT 20
 
-ActionEditor::ActionEditor( QWidget * parent, Action::Base * action )
-  : QWidget( parent ), mAction( action )
+ActionEditor::ActionEditor( QWidget * parent, Factory * factory )
+  : QWidget( parent ), mFactory( factory )
 {
 
   QGridLayout * g = new QGridLayout( this );
@@ -64,6 +65,16 @@ ActionEditor::ActionEditor( QWidget * parent, Action::Base * action )
 ActionEditor::~ActionEditor()
 {
 }
+
+void ActionEditor::fillFromAction( Action::Base * action )
+{
+}
+
+bool ActionEditor::commitToAction( Action::Base * action )
+{
+  return false;
+}
+
 
 } // namespace UI
 

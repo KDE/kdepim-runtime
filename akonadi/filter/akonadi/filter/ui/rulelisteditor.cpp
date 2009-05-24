@@ -26,12 +26,27 @@
 #include "rulelisteditor.h"
 
 #include <akonadi/filter/rulelist.h>
+#include <akonadi/filter/factory.h>
 
 #include "ruleeditor.h"
 
-#include <QScrollArea>
-#include <QToolBox>
 #include <QResizeEvent>
+#include <QLayout>
+#include <QList>
+#include <QFrame>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPainter>
+#include <QStyle>
+#include <QEvent>
+#include <QToolButton>
+
+#include <KDebug>
+#include <KLocale>
+#include <KIconLoader>
+#include <KMessageBox>
+
+// We're not using QToolBox because it doesn't allow us to customize the item headers...
 
 namespace Akonadi
 {
@@ -40,56 +55,441 @@ namespace Filter
 namespace UI
 {
 
-RuleListEditor::RuleListEditor( QWidget * parent, Action::RuleList * ruleList )
-  : QWidget( parent ), mRuleList( ruleList )
+
+
+class RuleListEditorItem
 {
-  mScrollArea = new QScrollArea( this );
-  mToolBox = new QToolBox( mScrollArea );
-  mScrollArea->setWidget( mToolBox );
-  mScrollArea->setWidgetResizable( true );
+public:
+  RuleListEditorItemHeader * mHeader;
+  QScrollArea * mScrollArea;
+  RuleEditor * mRuleEditor;
+};
 
-  RuleEditor * ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 1: if size >= 100Kb and size <= 400Kb then move to collection \"X\"" ) );
+class RuleListEditorPrivate
+{
+public:
+  QVBoxLayout * mLayout;
+  QList< RuleListEditorItem * > mItemList;
+  RuleListEditorHeader * mAddRuleHeader;
+  QWidget * mFiller;
+};
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 2: if the value of subject contains \"viagra\" then move to collection spam" ) );
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 3: if the domain of any sender address is \"mywork.org\" then execute subprogram" ) );
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 4: if the value of the X-Mailer field contains KMail then add tag \"high-priority\"" ) );
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 5: if multiple conditions apply then move to collection \"Y\"" ) );
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 6: if multiple conditions apply then delete item" ) );
+RuleListEditorHeader::RuleListEditorHeader( QWidget *parent )
+  : QWidget( parent )
+{
+  setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Minimum );
+  setFocusPolicy( Qt::NoFocus );
 
-  ruleEditor = new RuleEditor( mToolBox, 0 );
-  //ruleEditor->setMinimumSize(120,300);
-  mToolBox->addItem( ruleEditor, QString::fromAscii( "Rule 7: ..." ) );
+  mLayout = new QHBoxLayout( this );
+  mLayout->setMargin( 2 );
 
+  mIconLabel = new QLabel( this );
+  mIconLabel->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
+  mLayout->addWidget( mIconLabel );
+
+  mTextLabel = new QLabel( this );
+  mLayout->addWidget( mTextLabel );
+}
+
+RuleListEditorHeader::~RuleListEditorHeader()
+{
+
+}
+
+void RuleListEditorHeader::addWidgetToLayout( QWidget * widget )
+{
+  mLayout->addWidget( widget );
+}
+
+
+QString RuleListEditorHeader::text()
+{
+  return mTextLabel->text();
+}
+
+void RuleListEditorHeader::setText( const QString &text )
+{
+  mTextLabel->setText( text );
+}
+
+void RuleListEditorHeader::setIcon( const QPixmap &pixmap )
+{
+  mIconLabel->setPixmap( pixmap );
+}
+
+QSize RuleListEditorHeader::sizeHint() const
+{
+  return mLayout->minimumSize();
+}
+
+QSize RuleListEditorHeader::minimumSizeHint() const
+{
+  return mLayout->minimumSize();
+}
+
+
+void RuleListEditorHeader::paintEvent( QPaintEvent *e )
+{
+  QWidget::paintEvent( e );
+
+  QPainter p( this );
+
+  qDrawShadeLine( &p, 0, 0, width(), 0, palette(), true, 1, 1 );
+
+#if 0
+  QPainter p( this );
+  QStyleOptionRuleListEditorV2 opt;
+  opt.initFrom( this );
+
+  // option->state |= QStyle::State_Selected;
+  // option->state |= QStule::State_Sunken;
+
+  //  option->text = text();
+  //  option->icon = icon();
+  opt.position = QStyleOptionRuleListEditorV2::Middle;
+  opt.selectedPosition = QStyleOptionRuleListEditorV2::NotAdjacent;
+
+    if (QStyleOptionRuleListEditorV2 *optionV2 = qstyleoption_cast<QStyleOptionRuleListEditorV2 *>(option)) {
+        QRuleListEditor *toolBox = static_cast<QRuleListEditor *>(parentWidget()); // I know I'm in a tool box.
+        int widgetCount = toolBox->count();
+        int currIndex = toolBox->currentIndex();
+        if (widgetCount == 1) {
+            optionV2->position = QStyleOptionRuleListEditorV2::OnlyOneTab;
+        } else if (indexInPage == 0) {
+            optionV2->position = QStyleOptionRuleListEditorV2::Beginning;
+        } else if (indexInPage == widgetCount - 1) {
+            optionV2->position = QStyleOptionRuleListEditorV2::End;
+        } else {
+            optionV2->position = QStyleOptionRuleListEditorV2::Middle;
+        }
+        if (currIndex == indexInPage - 1) {
+            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::PreviousIsSelected;
+        } else if (currIndex == indexInPage + 1) {
+            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::NextIsSelected;
+        } else {
+            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::NotAdjacent;
+        }
+    }
+
+  style()->drawControl( QStyle::CE_RuleListEditorTab, &opt, &p, this );
+#endif
+
+}
+
+
+void RuleListEditorHeader::mouseReleaseEvent( QMouseEvent *e )
+{
+  QWidget::mouseReleaseEvent( e );
+
+  kDebug() << "Mouse released";
+
+  emit activated( this );
+}
+
+
+RuleListEditorItemHeader::RuleListEditorItemHeader( QWidget *parent )
+  : RuleListEditorHeader( parent )
+{
+  mDescriptionEdit = new QLineEdit( this );
+  mDescriptionEdit->setFrame( false );
+  mDescriptionEdit->setBackgroundRole( QPalette::Button ); // this doesn't work (style ignores this)
+  QPalette pal = palette();
+  pal.setColor( QPalette::Base, pal.color( QPalette::Button ) );
+  mDescriptionEdit->setPalette( pal );
+  mDescriptionEdit->installEventFilter( this );
+  addWidgetToLayout( mDescriptionEdit );
+
+  mMoveDownButton = new QToolButton( this );
+  mMoveDownButton->setIcon( SmallIcon( "arrow-down" ) );
+  mMoveDownButton->setAutoRaise( true );
+  mMoveDownButton->setToolTip( i18n( "Move this rule down" ) );
+  connect( mMoveDownButton, SIGNAL( clicked() ), this, SLOT( moveDownButtonClicked() ) );
+  addWidgetToLayout( mMoveDownButton );
+
+  mMoveUpButton = new QToolButton( this );
+  mMoveUpButton->setIcon( SmallIcon( "arrow-up" ) );
+  mMoveUpButton->setAutoRaise( true );
+  mMoveUpButton->setToolTip( i18n( "Move this rule up" ) );
+  connect( mMoveUpButton, SIGNAL( clicked() ), this, SLOT( moveUpButtonClicked() ) );
+  addWidgetToLayout( mMoveUpButton );
+
+  mDeleteButton = new QToolButton( this );
+  mDeleteButton->setIcon( SmallIcon( "edit-delete" ) );
+  mDeleteButton->setAutoRaise( true );
+  mDeleteButton->setToolTip( i18n( "Delete this rule" ) );
+  connect( mDeleteButton, SIGNAL( clicked() ), this, SLOT( deleteButtonClicked() ) );
+  addWidgetToLayout( mDeleteButton );
+  
+}
+
+RuleListEditorItemHeader::~RuleListEditorItemHeader()
+{
+
+}
+
+void RuleListEditorItemHeader::setMoveUpEnabled( bool b )
+{
+  mMoveUpButton->setEnabled( b );
+}
+
+void RuleListEditorItemHeader::setMoveDownEnabled( bool b )
+{
+  mMoveDownButton->setEnabled( b );
+}
+
+void RuleListEditorItemHeader::moveUpButtonClicked()
+{
+  emit moveUpRequest( this );
+}
+
+void RuleListEditorItemHeader::moveDownButtonClicked()
+{
+  emit moveDownRequest( this );
+}
+
+void RuleListEditorItemHeader::deleteButtonClicked()
+{
+  emit deleteRequest( this );
+}
+
+bool RuleListEditorItemHeader::eventFilter( QObject *o, QEvent *e )
+{
+  if( o == static_cast< QObject * >( mDescriptionEdit ) )
+  {
+    if( e->type() == QEvent::MouseButtonRelease )
+      emit activated( this );
+  }
+  
+  return QObject::eventFilter( o, e );
+}
+
+
+
+RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory )
+  : QScrollArea( parent ), mFactory( factory )
+{
+  mBase = new QFrame( this );
+  mBase->setFrameStyle( QFrame::NoFrame );
+  setWidget( mBase );
+  setWidgetResizable( true );
+
+  mPrivate = new RuleListEditorPrivate;
+  mPrivate->mLayout = 0;
+  mPrivate->mFiller = new QWidget( mBase );
+  mPrivate->mFiller->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+  mPrivate->mAddRuleHeader = new RuleListEditorHeader( mBase );
+  mPrivate->mAddRuleHeader->setText( i18n( "Add Rule" ) );
+  mPrivate->mAddRuleHeader->setIcon( SmallIcon( "list-add" ) );
+  connect( mPrivate->mAddRuleHeader, SIGNAL( activated( RuleListEditorHeader * ) ), this, SLOT( addRuleHeaderActivated( RuleListEditorHeader * ) ) );
+
+  setBackgroundRole( QPalette::Button );
+
+  reLayout();
 }
 
 RuleListEditor::~RuleListEditor()
 {
+  qDeleteAll( mPrivate->mItemList );
+  delete mPrivate;
 }
 
-void RuleListEditor::resizeEvent( QResizeEvent * e )
+void RuleListEditor::fillFromRuleList( Action::RuleList * ruleList )
 {
-  QWidget::resizeEvent( e );
+  const QList< Rule * > * rules = ruleList->ruleList();
+  Q_ASSERT( rules );
 
-#define MARGIN 2
+  foreach( Rule * rule, *rules )
+  {
+    RuleEditor * ruleEditor = new RuleEditor( mBase, mFactory );
+    ruleEditor->fillFromRule( rule );
+    //ruleEditor->setBackgroundRole( QPalette::ToolTipBase );
+    addRuleEditor( ruleEditor );
+  }
 
-  mScrollArea->setGeometry( MARGIN, MARGIN, width() - ( 2 * MARGIN ), height() - ( 2 * MARGIN ) );
+  reLayout();
 }
+
+RuleListEditorItem * RuleListEditor::findItemByRuleEditor( RuleEditor * editor )
+{
+  foreach( RuleListEditorItem * it, mPrivate->mItemList )
+  {
+    if( it->mRuleEditor == editor )
+      return it;
+  }
+  return 0;
+}
+
+RuleListEditorItem * RuleListEditor::findItemByHeader( RuleListEditorItemHeader *header )
+{
+  foreach( RuleListEditorItem * it, mPrivate->mItemList )
+  {
+    if( it->mHeader == header )
+      return it;
+  }
+  return 0;
+}
+
+
+RuleListEditorItem * RuleListEditor::addRuleEditor( RuleEditor * editor )
+{
+  Q_ASSERT( editor );
+
+  RuleListEditorItem * item = new RuleListEditorItem;
+  item->mHeader = new RuleListEditorItemHeader( mBase );
+  connect( item->mHeader, SIGNAL( activated( RuleListEditorHeader * ) ), this, SLOT( itemHeaderActivated( RuleListEditorHeader * ) ) );
+  item->mHeader->setIcon( SmallIcon( "application-x-executable" ) );
+
+  connect( item->mHeader, SIGNAL( moveUpRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderMoveUpRequest( RuleListEditorItemHeader * ) ) );
+  connect( item->mHeader, SIGNAL( moveDownRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderMoveDownRequest( RuleListEditorItemHeader * ) ) );
+  connect( item->mHeader, SIGNAL( deleteRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderDeleteRequest( RuleListEditorItemHeader * ) ) );
+
+  item->mScrollArea = new QScrollArea( mBase );
+  item->mScrollArea->setWidget( editor );
+  item->mScrollArea->setWidgetResizable( true );
+  item->mScrollArea->setFrameStyle( QFrame::NoFrame );
+  item->mScrollArea->hide();
+
+  item->mRuleEditor = editor;
+
+  mPrivate->mItemList.append( item );
+
+  item->mHeader->show();
+
+  reLayout();
+
+  return item;
+}
+
+void RuleListEditor::reLayout()
+{
+  if( mPrivate->mLayout )
+    delete mPrivate->mLayout;
+
+  mPrivate->mLayout = new QVBoxLayout( mBase );
+  mPrivate->mLayout->setMargin( 0 );
+
+  RuleListEditorItem * item;
+
+  int idx = 1;
+
+  foreach( item, mPrivate->mItemList )
+  {
+    mPrivate->mLayout->addWidget( item->mHeader );
+    item->mHeader->setText( i18n( "Rule %1:", idx ) );
+    mPrivate->mLayout->addWidget( item->mScrollArea );
+    item->mHeader->setMoveUpEnabled( true );
+    item->mHeader->setMoveDownEnabled( true );
+    idx++;
+  }
+
+  mPrivate->mLayout->addWidget( mPrivate->mAddRuleHeader );
+
+  if( mPrivate->mItemList.isEmpty() )
+    mPrivate->mLayout->addWidget( mPrivate->mFiller );
+  else {
+    item = mPrivate->mItemList.first();
+    Q_ASSERT( item );
+    item->mHeader->setMoveUpEnabled( false );
+
+    item = mPrivate->mItemList.last();
+    Q_ASSERT( item );
+    item->mHeader->setMoveDownEnabled( false );
+    setCurrentItem( item );
+  }
+}
+
+
+void RuleListEditor::setCurrentItem( RuleListEditorItem *item )
+{
+  foreach( RuleListEditorItem * it, mPrivate->mItemList )
+  {
+    if( it == item )
+    {
+      it->mScrollArea->show();
+    } else {
+      it->mScrollArea->hide();
+    }
+  }
+
+  // we have at least one item: no filler is needed
+  mPrivate->mLayout->removeWidget( mPrivate->mFiller );
+}
+
+void RuleListEditor::addRuleHeaderActivated( RuleListEditorHeader *header )
+{
+  addRuleEditor( new RuleEditor( mBase, mFactory ) );
+}
+
+void RuleListEditor::itemHeaderActivated( RuleListEditorHeader *header )
+{
+  RuleListEditorItem * item = findItemByHeader( static_cast< RuleListEditorItemHeader * >( header ) );
+  Q_ASSERT( item );
+  setCurrentItem( item );
+}
+
+void RuleListEditor::itemHeaderDeleteRequest( RuleListEditorItemHeader *header )
+{
+  RuleListEditorItem * item = findItemByHeader( header );
+  Q_ASSERT( item );
+
+  //setCurrentItem( item );
+
+  if(
+     KMessageBox::questionYesNo(
+         this,
+         i18n( "Do you really want to delete the specified rule?" ),
+         i18n( "Confirm Rule Deletion")
+       ) != KMessageBox::Yes
+    )
+     return;
+
+  delete item->mHeader;
+  delete item->mRuleEditor;
+  delete item->mScrollArea;
+
+  mPrivate->mItemList.removeAll( item );
+
+  reLayout();
+}
+
+void RuleListEditor::itemHeaderMoveUpRequest( RuleListEditorItemHeader *header )
+{
+  RuleListEditorItem * item = findItemByHeader( header );
+  Q_ASSERT( item );
+
+  int idx = mPrivate->mItemList.indexOf( item );
+  Q_ASSERT( idx >= 0 );
+
+  if( idx == 0 )
+    return;
+
+  mPrivate->mItemList.removeAt( idx );
+  mPrivate->mItemList.insert( idx - 1, item );
+
+  reLayout();
+}
+
+void RuleListEditor::itemHeaderMoveDownRequest( RuleListEditorItemHeader *header )
+{
+  RuleListEditorItem * item = findItemByHeader( header );
+  Q_ASSERT( item );
+
+  int idx = mPrivate->mItemList.indexOf( item );
+  Q_ASSERT( idx >= 0 );
+
+  if( idx == ( mPrivate->mItemList.count() - 1 ) )
+    return;
+
+  mPrivate->mItemList.removeAt( idx );
+  mPrivate->mItemList.insert( idx + 1, item );
+
+  reLayout();
+}
+
 
 } // namespace UI
 

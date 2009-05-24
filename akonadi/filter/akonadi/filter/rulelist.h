@@ -62,9 +62,9 @@ public:
   /**
    * Returns the list of rules that this program is composed of.
    */
-  const QList< Rule * > & ruleList() const
+  const QList< Rule * > * ruleList() const
   {
-    return mRuleList;
+    return &mRuleList;
   }
 
   void addRule( Rule * rule )

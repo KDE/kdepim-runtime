@@ -28,6 +28,7 @@
 #include "conditioneditor.h"
 #include "actioneditor.h"
 
+#include <akonadi/filter/factory.h>
 #include <akonadi/filter/rule.h>
 
 #include <QLayout>
@@ -39,16 +40,18 @@ namespace Filter
 namespace UI
 {
 
-RuleEditor::RuleEditor( QWidget * parent, Rule * program )
-  : QWidget( parent ), mRule( program )
+RuleEditor::RuleEditor( QWidget * parent, Factory * factory )
+  : QWidget( parent ), mFactory( factory )
 {
-  QGridLayout * g = new QGridLayout( this );
-  g->setMargin( 1 );
+  setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
 
-  mConditionEditor = new ConditionEditor( this, 0 );
+  QGridLayout * g = new QGridLayout( this );
+  g->setMargin( 2 );
+
+  mConditionEditor = new ConditionEditor( this, factory );
   g->addWidget( mConditionEditor, 0, 0 );
 
-  mActionEditor = new ActionEditor( this, 0 );
+  mActionEditor = new ActionEditor( this, factory );
   g->addWidget( mActionEditor, 1, 0 );
 
   g->setRowStretch( 2, 1 );
@@ -56,6 +59,27 @@ RuleEditor::RuleEditor( QWidget * parent, Rule * program )
 
 RuleEditor::~RuleEditor()
 {
+}
+
+void RuleEditor::fillFromRule( Rule * rule )
+{
+  mConditionEditor->fillFromCondition( rule->condition() );
+}
+
+bool RuleEditor::commitToRule( Rule * rule )
+{
+  return false;
+}
+
+
+QSize RuleEditor::sizeHint() const
+{
+  return layout()->minimumSize();
+}
+
+QSize RuleEditor::minimumSizeHint() const
+{
+  return layout()->minimumSize();
 }
 
 } // namespace UI

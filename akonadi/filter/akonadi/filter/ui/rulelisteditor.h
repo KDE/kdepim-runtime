@@ -29,15 +29,20 @@
 #include "config-akonadi-filter-ui.h"
 
 #include <QWidget>
+#include <QScrollArea>
 
-class QScrollArea;
-class QToolBox;
-class QResizeEvent;
+class QLabel;
+class QLineEdit;
+class QFrame;
+class QHBoxLayout;
+class QToolButton;
 
 namespace Akonadi
 {
 namespace Filter
 {
+
+class Factory;
 
 namespace Action
 {
@@ -47,27 +52,112 @@ namespace Action
 namespace UI
 {
 
-class AKONADI_FILTER_UI_EXPORT RuleListEditor : public QWidget
+class RuleEditor;
+
+class RuleListEditorHeader : public QWidget
 {
   Q_OBJECT
+
 public:
-  RuleListEditor( QWidget * parent, Action::RuleList * rulelist );
+  RuleListEditorHeader( QWidget * parent );
+  virtual ~RuleListEditorHeader();
+
+protected:
+  QString mText;
+  QLabel * mIconLabel;
+  QLabel * mTextLabel;
+
+  QHBoxLayout * mLayout;
+public:
+  void setText( const QString &text );
+  QString text();
+  void setIcon( const QPixmap &pixmap );
+
+protected:
+  void addWidgetToLayout( QWidget * widget );
+  virtual void mouseReleaseEvent( QMouseEvent *e );
+  virtual void paintEvent( QPaintEvent *e );
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
+
+Q_SIGNALS:
+  void activated( RuleListEditorHeader * header );
+  
+};
+
+class RuleListEditorItemHeader : public RuleListEditorHeader
+{
+  Q_OBJECT
+
+public:
+  RuleListEditorItemHeader( QWidget *parent );
+  virtual ~RuleListEditorItemHeader();
+
+protected:
+  QLineEdit * mDescriptionEdit;
+  QToolButton * mMoveUpButton;
+  QToolButton * mMoveDownButton;
+  QToolButton * mDeleteButton;
+public:
+  void setMoveUpEnabled( bool b );
+  void setMoveDownEnabled( bool b );
+protected:
+  virtual bool eventFilter( QObject *o, QEvent *e );
+Q_SIGNALS:
+  void moveUpRequest( RuleListEditorItemHeader * header );
+  void moveDownRequest( RuleListEditorItemHeader * header );
+  void deleteRequest( RuleListEditorItemHeader * header );
+protected slots:
+  void moveUpButtonClicked();
+  void moveDownButtonClicked();
+  void deleteButtonClicked();
+
+};
+
+class RuleListEditorPrivate;
+class RuleListEditorItem;
+
+class AKONADI_FILTER_UI_EXPORT RuleListEditor : public QScrollArea
+{
+  Q_OBJECT
+
+public:
+  RuleListEditor( QWidget * parent, Factory * factory );
   virtual ~RuleListEditor();
 
-protected:
-  Action::RuleList * mRuleList;
-
-  QScrollArea * mScrollArea;
-  QToolBox * mToolBox;
 
 protected:
-  virtual void resizeEvent( QResizeEvent * e );
-}; // class RuleListEditor
+  RuleListEditorPrivate * mPrivate;
+  QFrame * mBase;
+  Factory * mFactory;
+
+public:
+  void fillFromRuleList( Action::RuleList * ruleList );
+
+private:
+  RuleListEditorItem * addRuleEditor( RuleEditor * editor );
+  RuleListEditorItem * findItemByRuleEditor( RuleEditor * editor );
+  RuleListEditorItem * findItemByHeader( RuleListEditorItemHeader *header );
+
+  void setCurrentItem( RuleListEditorItem *item );
+  void reLayout();
+protected slots:
+  void addRuleHeaderActivated( RuleListEditorHeader *header );
+  void itemHeaderActivated( RuleListEditorHeader *header );
+  void itemHeaderDeleteRequest( RuleListEditorItemHeader *header );
+  void itemHeaderMoveUpRequest( RuleListEditorItemHeader *header );
+  void itemHeaderMoveDownRequest( RuleListEditorItemHeader *header );
+};
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
+
+
+
+
+
 
 #endif //!_AKONADI_FILTER_UI_RULELISTEDITOR_H_

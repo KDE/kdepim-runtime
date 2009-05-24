@@ -222,7 +222,7 @@ bool PropertyTest::matches( Data * data )
 void PropertyTest::dump( const QString &prefix )
 {
   debugOutput( prefix, QString::fromAscii( "Condition::PropertyTest(%1,%2,%3,%4)" )
-      .arg( mProperty->name() )
+      .arg( mProperty->shortName() )
       .arg( mPropertyArgument )
       .arg( mOperator ? mOperator->name() : QString::fromAscii( "Boolean" ) )
       .arg( mOperand.toString() )

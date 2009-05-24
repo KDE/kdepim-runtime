@@ -26,6 +26,7 @@
 #include "programeditor.h"
 
 #include <akonadi/filter/program.h>
+#include <akonadi/filter/factory.h>
 
 namespace Akonadi
 {
@@ -34,13 +35,18 @@ namespace Filter
 namespace UI
 {
 
-ProgramEditor::ProgramEditor( QWidget * parent, Program * program )
-  : RuleListEditor( parent, program ), mProgram( program )
+ProgramEditor::ProgramEditor( QWidget * parent, Factory * factory )
+  : RuleListEditor( parent, factory )
 {
 }
 
 ProgramEditor::~ProgramEditor()
 {
+}
+
+void ProgramEditor::fillFromProgram( Program * program )
+{
+  fillFromRuleList( program );
 }
 
 } // namespace UI

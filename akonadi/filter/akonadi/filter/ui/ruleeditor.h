@@ -35,6 +35,7 @@ namespace Akonadi
 namespace Filter
 {
 
+class Factory;
 class Rule;
 
 namespace UI
@@ -47,14 +48,21 @@ class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
   Q_OBJECT
 public:
-  RuleEditor( QWidget * parent, Rule * program );
+  RuleEditor( QWidget * parent, Factory * factory );
   virtual ~RuleEditor();
 
 protected:
-  Rule * mRule;
-
   ConditionEditor * mConditionEditor;
   ActionEditor * mActionEditor;
+  Factory * mFactory;
+
+public:
+  virtual void fillFromRule( Rule * rule );
+  virtual bool commitToRule( Rule * rule );
+
+protected:
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
 
 }; // class RuleEditor
 

@@ -35,6 +35,7 @@ namespace Akonadi
 namespace Filter
 {
 
+class Factory;
 class Program;
 
 namespace UI
@@ -44,11 +45,11 @@ class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
 {
   Q_OBJECT
 public:
-  ProgramEditor( QWidget * parent, Program * program );
+  ProgramEditor( QWidget * parent, Factory * factory );
   virtual ~ProgramEditor();
 
-protected:
-  Program * mProgram;
+public:
+  void fillFromProgram( Program * program );
 
 }; // class ProgramEditor
 
