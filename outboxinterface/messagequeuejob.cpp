@@ -22,7 +22,6 @@
 #include "localfolders.h"
 #include "addressattribute.h"
 #include "dispatchmodeattribute.h"
-#include "statusattribute.h"
 #include "transportattribute.h"
 
 #include <QTimer>
@@ -137,12 +136,9 @@ void MessageQueueJob::Private::doStart()
   // set attributes
   AddressAttribute *addrA = new AddressAttribute( from, to, cc, bcc );
   DispatchModeAttribute *dmA = new DispatchModeAttribute( mode );
-  StatusAttribute *sA = new StatusAttribute( StatusAttribute::Queued,
-      i18n( "Message is ready to be sent." ) );
   TransportAttribute *tA = new TransportAttribute( transport );
   item.addAttribute( addrA );
   item.addAttribute( dmA );
-  item.addAttribute( sA );
   item.addAttribute( tA );
 
   // set flags

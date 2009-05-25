@@ -3,7 +3,5 @@
 * better name for MessageQueuer?
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
-* replace StatusAttribute with ErrorAttribute
-* Make maildir_resource export its DBus interface, so that we can use the nice
-  qdbusxml2cpp.
+* Figure out a better way to configure the resource via D-Bus.
 

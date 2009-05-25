@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef OUTBOXINTERFACE_STATUSATTRIBUTE_H
-#define OUTBOXINTERFACE_STATUSATTRIBUTE_H
+#ifndef OUTBOXINTERFACE_ERRORATTRIBUTE_H
+#define OUTBOXINTERFACE_ERRORATTRIBUTE_H
 
 #include <outboxinterface/outboxinterface_export.h>
 
@@ -34,37 +34,24 @@ namespace OutboxInterface
 /**
  * Attribute storing the status of a message in the outbox.
  */
-class OUTBOXINTERFACE_EXPORT StatusAttribute : public Akonadi::Attribute
+class OUTBOXINTERFACE_EXPORT ErrorAttribute : public Akonadi::Attribute
 {
   public:
-    enum Status
-    {
-      Queued,     ///< to be sent
-      Active,     ///< currently being sent
-      Succeeded,  ///< sending succeeded
-      Failed      ///< sending failed
-    };
+    ErrorAttribute( const QString &msg = QString() );
+    virtual ~ErrorAttribute();
 
-    StatusAttribute( Status status = Queued, const QString &msg = QString() );
-    virtual ~StatusAttribute();
-
-    virtual StatusAttribute* clone() const;
+    virtual ErrorAttribute* clone() const;
     virtual QByteArray type() const;
     virtual QByteArray serialized() const;
     virtual void deserialize( const QByteArray &data );
 
-    Status status() const;
-    void setStatus( Status status );
-
     /**
-      A text message detailing the status.
-      (For example, the reason why if Failed.)
+      Textual explanation of error.
     */
     QString message() const;
     void setMessage( const QString &msg );
 
   private:
-    Status mStatus;
     QString mMessage;
 
 };
