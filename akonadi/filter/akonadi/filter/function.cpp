@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : property.cpp
+ *  File : function.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "property.h"
+#include "function.h"
 
 #include <KDebug>
 
@@ -32,20 +32,20 @@ namespace Akonadi
 namespace Filter 
 {
 
-Property::Property(
+Function::Function(
     const QString &id,
-    const QString &shortName,
-    const QString &longName,
-    DataType dataType
+    const QString &name,
+    DataType outputDataType,
+    int acceptableInputDataTypeMask
   ) :
   mId( id ),
-  mShortName( shortName ),
-  mLongName( longName ),
-  mDataType( dataType )
+  mName( name ),
+  mOutputDataType( outputDataType ),
+  mAcceptableInputDataTypeMask( acceptableInputDataTypeMask )
 {
 }
 
-Property::~Property()
+Function::~Function()
 {
 }
 

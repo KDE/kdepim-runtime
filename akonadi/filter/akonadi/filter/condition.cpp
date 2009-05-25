@@ -23,9 +23,10 @@
  *
  *******************************************************************************/
 
-#include "property.h"
 #include "condition.h"
 #include "data.h"
+#include "datamember.h"
+#include "function.h"
 #include "operator.h"
 
 #include <KDebug>
@@ -159,13 +160,15 @@ void Or::dump( const QString &prefix )
 }
 
 
-PropertyTest::PropertyTest( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand )
-  : Base( ConditionTypePropertyTest, parent ), mProperty( property ), mPropertyArgument( propertyArgument ), mOperator( op ), mOperand( operand )
+PropertyTest::PropertyTest( Component * parent, const Function * function, const DataMember * dataMember, const Operator * op, const QVariant &operand )
+  : Base( ConditionTypePropertyTest, parent ), mFunction( function ), mDataMember( dataMember ), mOperator( op ), mOperand( operand )
 {
-  Q_ASSERT( mProperty );
+  Q_ASSERT( mFunction );
+  Q_ASSERT( mDataMember );
+
   if( mOperator )
   {
-    Q_ASSERT( mProperty->dataType() == mOperator->dataType() );
+    Q_ASSERT( mFunction->outputDataType() == mOperator->dataType() );
   }
 }
 
@@ -176,38 +179,38 @@ PropertyTest::~PropertyTest()
 bool PropertyTest::matches( Data * data )
 {
 #if 0
-  // Generic property test implementation.
+  // Generic function test implementation.
   //
   // Override this method in a derived class if you want to provide
   // an optimized/custom match (then override Factory::createPropertyTestCondition() to return your subclasses).
 
-  switch( mProperty->dataType() )
+  switch( mFunction->dataType() )
   {
     case DataTypeString:
     {
       QString buffer;
-      if( !data->getPropertyValue( mProperty, buffer ) )
+      if( !data->getPropertyValue( mFunction, dataMember, buffer ) )
         return false;
     }
     break;
     case DataTypeInteger:
     {
       Integer buffer;
-      if( !data->getPropertyValue( mProperty, buffer ) )
+      if( !data->getPropertyValue( mFunction, functionArgument, buffer ) )
         return false;
     }
     break;
     case DataTypeStringList:
     {
       QStringList buffer;
-      if( !data->getPropertyValue( mProperty, buffer ) )
+      if( !data->getPropertyValue( mFunction, functionArgument, buffer ) )
         return false;
     }
     break;
     case DataTypeDateTime:
     {
       QDateTime buffer;
-      if( !data->getPropertyValue( mProperty, buffer ) )
+      if( !data->getPropertyValue( mFunction, functionArgument, buffer ) )
         return false;
     }
     break;
@@ -222,8 +225,8 @@ bool PropertyTest::matches( Data * data )
 void PropertyTest::dump( const QString &prefix )
 {
   debugOutput( prefix, QString::fromAscii( "Condition::PropertyTest(%1,%2,%3,%4)" )
-      .arg( mProperty->shortName() )
-      .arg( mPropertyArgument )
+      .arg( mFunction->name() )
+      .arg( mDataMember->name() )
       .arg( mOperator ? mOperator->name() : QString::fromAscii( "Boolean" ) )
       .arg( mOperand.toString() )
     );

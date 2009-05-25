@@ -72,7 +72,18 @@ protected:
   QList< QVariant > mCurrentSimpleCommandArguments;
   QStringList mCurrentStringList;
   bool mGotError;
+  bool mCreationOfCustomDataMembersEnabled;
 public:
+  void setSreationOfCustomDataMembersEnabled( bool enable )
+  {
+    mCreationOfCustomDataMembersEnabled = enable;
+  }
+
+  bool creationOfCustomDataMembersEnabled()
+  {
+    return mCreationOfCustomDataMembersEnabled;
+  }
+
 
   virtual Program * run();
 protected:

@@ -25,6 +25,9 @@
 
 #include "data.h"
 
+#include "function.h"
+#include "datamember.h"
+
 namespace Akonadi
 {
 namespace Filter 
@@ -38,25 +41,69 @@ Data::~Data()
 {
 }
 
-bool Data::getPropertyValue( const Property * property, QString &buffer )
+bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QString &buffer )
+{
+  Q_ASSERT( function->outputDataType() == DataTypeString );
+
+#if 0
+  switch( dataMember->dataType() )
+  {
+    case DataTypeString:
+      getDataMemberValue( dataMember, buffer );
+    break;
+  }
+#endif
+  return false;
+}
+
+bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, Integer &buffer )
 {
   return false;
 }
 
-bool Data::getPropertyValue( const Property * property, Integer &buffer )
+bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QStringList &buffer )
 {
   return false;
 }
 
-bool Data::getPropertyValue( const Property * property, QStringList &buffer )
+bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QDateTime &buffer )
 {
   return false;
 }
 
-bool Data::getPropertyValue( const Property * property, QDateTime &buffer )
+bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, bool &buffer )
 {
   return false;
 }
+
+
+bool Data::getDataMemberValue( const DataMember * dataMember, QString &buffer )
+{
+  Q_ASSERT( dataMember->dataType() == DataTypeString );
+
+  return false;
+}
+
+bool Data::getDataMemberValue( const DataMember * dataMember, Integer &buffer )
+{
+  return false;
+}
+
+bool Data::getDataMemberValue( const DataMember * dataMember, QStringList &buffer )
+{
+  return false;
+}
+
+bool Data::getDataMemberValue( const DataMember * dataMember, QDateTime &buffer )
+{
+  return false;
+}
+
+bool Data::getDataMemberValue( const DataMember * dataMember, bool &buffer )
+{
+  return false;
+}
+
 
 } // namespace Filter
 

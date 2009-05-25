@@ -24,9 +24,10 @@
  *******************************************************************************/
 
 #include "factory.h"
-#include "program.h"
+
 #include "action.h"
 #include "condition.h"
+#include "program.h"
 #include "rule.h"
 #include "rulelist.h"
 
@@ -71,81 +72,105 @@ void Factory::OperatorSet::registerOperator( Operator * op )
 
 Factory::Factory()
 {
-  // register the basic properties
+  // register the basic functions
 
-  registerProperty(
-      new Property(
+  registerDataMember(
+      new DataMember(
+          QString::fromAscii( "from" ),
+          i18n( "the from field" ),
+          DataTypeString
+        )
+    );
+
+  registerDataMember(
+      new DataMember(
+          QString::fromAscii( "anyheader" ),
+          i18n( "any header field" ),
+          DataTypeStringList
+        )
+    );
+
+  registerDataMember(
+      new DataMember(
+          QString::fromAscii( "item" ),
+          i18n( "the whole item" ),
+          DataTypeString
+        )
+    );
+
+  registerFunction(
+      new Function(
           QString::fromAscii( "size" ),
-          i18n( "size of" ),
-          i18n( "if the size of the field" ),
-          DataTypeInteger
+          i18n( "if the size of" ),
+          DataTypeInteger,
+          DataTypeString | DataTypeStringList
         )
     );
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "header" ),
-          i18n( "value of" ),
-          i18n( "if the value of the field" ),
+          i18n( "if the value of" ),
+          DataTypeString,
           DataTypeString
         )
     );
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "address" ),
-          i18n( "any address in" ),
-          i18n( "if any address extracted from the field" ),
-          DataTypeString
+          i18n( "if any address extracted from" ),
+          DataTypeStringList,
+          DataTypeString | DataTypeStringList
         )
     );
 
 #if 0
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "address:all" ),
-          i18n( "any address in" ),
-          i18n( "if any address extracted from the field" ),
-          DataTypeString
+          i18n( "if any address extracted from" ),
+          DataTypeStringList,
+          DataTypeString | DataTypeStringList
         )
     );
 #endif
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "address:domain" ),
-          i18n( "any domain address part in" ),
-          i18n( "if any domain name extracted from the field" ),
-          DataTypeString
+          i18n( "if any domain name extracted from" ),
+          DataTypeStringList,
+          DataTypeString | DataTypeStringList
         )
     );
 
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "address:local" ),
-          i18n( "any local address part in" ),
-          i18n( "if any local address part extracted from the field" ),
-          DataTypeString
+          i18n( "if any local address part extracted from" ),
+          DataTypeStringList,
+          DataTypeString | DataTypeStringList
         )
     );
 
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "date" ),
-          i18n( "date in" ),
-          i18n( "if the date extracted from the field" ),
-          DataTypeDateTime
+          i18n( "if the date extracted from" ),
+          DataTypeDateTime,
+          DataTypeString | DataTypeDateTime
         )
     );
 
-  registerProperty(
-      new Property(
+  registerFunction(
+      new Function(
           QString::fromAscii( "exists" ),
-          i18n( "exists" ),
-          i18n( "if the following field exists" ),
-          DataTypeBoolean
+          i18n( "if exists" ),
+          DataTypeBoolean,
+          DataTypeString | DataTypeStringList | DataTypeDateTime | DataTypeInteger | DataTypeBoolean
         )
     );
 
@@ -156,7 +181,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "above" ),
-          i18n( "Is Greater Than" ),
+          i18n( "is greater than" ),
           i18n( "Returns true if the left operand has greater numeric value than the right operand" ),
           DataTypeInteger
         )
@@ -165,7 +190,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "below" ),
-          i18n( "Is Lower Than" ),
+          i18n( "is lower than" ),
           i18n( "Returns true if the left operand has smaller numeric value than the right operand" ),
           DataTypeInteger
         )
@@ -174,7 +199,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "contains" ),
-          i18n( "Contains String" ),
+          i18n( "contains string" ),
           i18n( "Returns true if the left operand contains the string specified by the right operand" ),
           DataTypeString
         )
@@ -183,7 +208,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "is" ),
-          i18n( "Is Equal To" ),
+          i18n( "is equal to" ),
           i18n( "Returns true if the left operand is equal to the string specified by the right operand" ),
           DataTypeString
         )
@@ -192,7 +217,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "equals" ),
-          i18n( "Is Equal To" ),
+          i18n( "is equal to" ),
           i18n( "Returns true if the left operand is equal to the integer specified by the right operand" ),
           DataTypeInteger
         )
@@ -201,7 +226,7 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "equals" ),
-          i18n( "Is Equal To" ),
+          i18n( "is equal to" ),
           i18n( "Returns true if the left operand is equal to the date/time specified by the right operand" ),
           DataTypeDateTime
         )
@@ -210,8 +235,17 @@ Factory::Factory()
   registerOperator(
       new Operator(
           QString::fromAscii( "matches" ),
-          i18n( "Matches Regular Expression" ),
+          i18n( "matches regular expression" ),
           i18n( "Returns true if the left operand matches the regular expression specified by the right operand" ),
+          DataTypeString
+        )
+    );
+
+  registerOperator(
+      new Operator(
+          QString::fromAscii( "like" ),
+          i18n( "matches wildcard expression" ),
+          i18n( "Returns true if the left operand matches the wildcard expression specified by the right operand" ),
           DataTypeString
         )
     );
@@ -219,8 +253,32 @@ Factory::Factory()
 
 Factory::~Factory()
 {
-  qDeleteAll( mPropertyHash );
+  qDeleteAll( mFunctionHash );
+  qDeleteAll( mDataMemberHash );
   qDeleteAll( mOperatorSetHash );
+}
+
+void Factory::registerDataMember( DataMember * dataMember )
+{
+  Q_ASSERT( dataMember );
+
+  mDataMemberHash.insert( dataMember->id().toLower(), dataMember ); // will replace
+}
+
+const DataMember * Factory::findDataMember( const QString &id )
+{
+  return mDataMemberHash.value( id.toLower(), 0 );
+}
+
+QList< const DataMember * > Factory::enumerateDataMembers( int acceptableDataTypeMask )
+{
+  QList< const DataMember * > lReturn;
+  foreach( DataMember * dataMember, mDataMemberHash )
+  {
+    if( dataMember->dataType() & acceptableDataTypeMask )
+      lReturn.append( dataMember );
+  }
+  return lReturn;
 }
 
 void Factory::registerOperator( Operator * op )
@@ -253,30 +311,30 @@ const QList< const Operator * > * Factory::enumerateOperators( DataType dataType
   return set->enumerateOperators();
 }
 
-void Factory::registerProperty( Property * property )
+void Factory::registerFunction( Function * function )
 {
-  Q_ASSERT( property );
+  Q_ASSERT( function );
 
-  Property * existing = mPropertyHash.value( property->id(), 0 );
+  Function * existing = mFunctionHash.value( function->id(), 0 );
   if( existing )
   {
-    mPropertyList.removeOne( existing );
+    mFunctionList.removeOne( existing );
     delete existing;
   }
    
-  mPropertyHash.insert( property->id().toLower(), property ); // wil replace
-  mPropertyList.append( property );
+  mFunctionHash.insert( function->id().toLower(), function ); // wil replace
+  mFunctionList.append( function );
 }
 
 
-const Property * Factory::findProperty( const QString &id )
+const Function * Factory::findFunction( const QString &id )
 {
-  return mPropertyHash.value( id.toLower(), 0 );
+  return mFunctionHash.value( id.toLower(), 0 );
 }
 
-const QList< const Property * > * Factory::enumerateProperties()
+const QList< const Function * > * Factory::enumerateFunctions()
 {
-  return &mPropertyList;
+  return &mFunctionList;
 }
 
 Program * Factory::createProgram( Component * parent )
@@ -314,10 +372,16 @@ Action::Base * Factory::createGenericAction( Component * parent, const QString &
   return 0; // by default we have no generic actions
 }
 
-Condition::Base * Factory::createPropertyTestCondition( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand )
+Condition::Base * Factory::createPropertyTestCondition(
+    Component * parent,
+    const Function * function,
+    const DataMember * dataMember,
+    const Operator * op,
+    const QVariant &operand
+  )
 {
-  Q_ASSERT( property->dataType() == op->dataType() );
-  return new Condition::PropertyTest( parent, property, propertyArgument, op, operand );
+  Q_ASSERT( function->outputDataType() == op->dataType() );
+  return new Condition::PropertyTest( parent, function, dataMember, op, operand );
 }
 
 Action::RuleList * Factory::createRuleList( Component * parent )

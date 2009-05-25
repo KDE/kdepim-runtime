@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : datatype.h
+ *  File : datamember.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,32 +23,75 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATATYPE_H_
-#define _AKONADI_FILTER_DATATYPE_H_
+#ifndef _AKONADI_FILTER_DATAMEMBER_H_
+#define _AKONADI_FILTER_DATAMEMBER_H_
 
 #include "config-akonadi-filter.h"
 
 #include <QString>
+
+#include "datatype.h"
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-enum DataType
+/**
+ *
+ */
+class AKONADI_FILTER_EXPORT DataMember
 {
-  DataTypeString      = 1,
-  DataTypeInteger     = 1 << 1,
-  DataTypeStringList  = 1 << 2,
-  DataTypeDateTime    = 1 << 3,
-  DataTypeBoolean     = 1 << 4,
-  DataTypeAny         = DataTypeString | DataTypeInteger | DataTypeStringList | DataTypeDateTime | DataTypeBoolean
-};
+public:
+  /**
+   * Create a function with the specified identifier
+   *
+   */
+  DataMember(
+      const QString &id,               //< Unique data member identifier: it matches the keyword used in Sieve scripts.
+      const QString &name,             //< The token that is displayed in the UI editors.
+      DataType dataType                //< The output data type of this function
+    );
+  virtual ~DataMember();
 
-typedef qint64 Integer;
+protected:
+
+  /**
+   * The internal, non-localized identifier of the data member.
+   */
+  QString mId;
+
+  /**
+   * The localized name of the function (this is what is shown in rule combos)
+   */
+  QString mName;
+
+  /**
+   * The type of this function
+   */
+  DataType mDataType;
+
+public:
+
+  DataType dataType() const
+  {
+    return mDataType;
+  }
+
+  const QString & id() const
+  {
+    return mId;
+  }
+
+  const QString & name() const
+  {
+    return mName;
+  }
+
+}; // class DataMember
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATATYPE_H_
+#endif //!_AKONADI_FILTER_DATAMEMBER_H_

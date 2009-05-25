@@ -38,8 +38,9 @@ namespace Akonadi
 namespace Filter
 {
 
-class Property;
 class Data;
+class DataMember;
+class Function;
 class Operator;
 
 namespace Condition
@@ -53,7 +54,8 @@ public:
     ConditionTypeAnd,
     ConditionTypeOr,
     ConditionTypeNot,
-    ConditionTypePropertyTest
+    ConditionTypePropertyTest,
+    ConditionTypeUnknown // this is used only in the editor
   };
 public:
   Base( ConditionType type, Component * parent );
@@ -83,6 +85,11 @@ public:
   void addChildCondition( Condition::Base * condition )
   {
     mChildConditions.append( condition );
+  }
+
+  const QList< Condition::Base * > * childConditions()
+  {
+    return &mChildConditions;
   }
 
   void dumpChildConditions( const QString &prefix );
@@ -146,14 +153,34 @@ public:
 class AKONADI_FILTER_EXPORT PropertyTest : public Base
 {
 public:
-  PropertyTest( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand );
+  PropertyTest( Component * parent, const Function * function, const DataMember * dataMember, const Operator * op, const QVariant &operand );
   virtual ~PropertyTest();
 protected:
-  const Property * mProperty; // shallow, never null
-  QString mPropertyArgument; // may be empty (no argument given)
-  const Operator * mOperator; // may be null (only for boolean properties)
-  QVariant mOperand; // may be null (only for boolean properties)
+  const Function * mFunction; // shallow, never null
+  const DataMember * mDataMember; // shallow, never null
+  const Operator * mOperator; // may be null (only for boolean functions)
+  QVariant mOperand; // may be null (only for boolean functions)
 public:
+  const Function * function() const
+  {
+    return mFunction;
+  }
+
+  const DataMember * dataMember() const
+  {
+    return mDataMember;
+  }
+
+  const Operator * functionOperator() const
+  {
+    return mOperator;
+  }
+
+  const QVariant & operand() const
+  {
+    return mOperand;
+  }
+
   virtual bool matches( Data * data );
 
   virtual void dump( const QString &prefix );

@@ -28,12 +28,13 @@ set(
 		condition.cpp
 		decoder.cpp
 		data.cpp
+		datamember.cpp
 		encoder.cpp
 		factory.cpp
 		filter.cpp
+		function.cpp
 		operator.cpp
 		program.cpp
-		property.cpp
 		rule.cpp
 		rulelist.cpp
 		sievedecoder.cpp

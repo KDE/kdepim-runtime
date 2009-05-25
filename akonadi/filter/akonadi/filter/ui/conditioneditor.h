@@ -45,6 +45,7 @@ namespace Condition
 namespace UI
 {
 
+class ConditionDescriptor;
 class ConditionEditorPrivate;
 
 class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
@@ -52,31 +53,28 @@ class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
   Q_OBJECT
 
 public:
-  enum ConditionType
-  {
-    ConditionTypeNone,
-    ConditionTypeNot,
-    ConditionTypePropertyTest,
-    ConditionTypeAnd,
-    ConditionTypeOr
-  };
-
-public:
-  ConditionEditor( QWidget * parent, Factory * factory );
+  ConditionEditor( QWidget * parent, Factory * factory, ConditionEditor * parentConditionEditor = 0 );
   virtual ~ConditionEditor();
 
 protected:
 
   Factory * mFactory;
+  ConditionEditor * mParentConditionEditor;
   ConditionEditorPrivate * mPrivate;
 
 public:
   virtual void fillFromCondition( Condition::Base * condition );
   virtual bool commitToCondition( Condition::Base * condition );
+  void reset();
+  bool isEmpty();
+
+protected:
+  void childEditorTypeChanged( ConditionEditor * child );
 
 private:
   void setupUIForActiveType();
-
+  ConditionDescriptor * descriptorForActiveType();
+  void fillPropertyTestControls( ConditionDescriptor * descriptor );
 protected slots:
   void typeComboBoxActivated( int index );
 }; // class ConditionEditor

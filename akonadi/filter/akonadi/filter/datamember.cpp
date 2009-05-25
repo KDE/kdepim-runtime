@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : property.h
+ *  File : datamember.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,79 +23,31 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_PROPERTY_H_
-#define _AKONADI_FILTER_PROPERTY_H_
+#include "datamember.h"
 
-#include "config-akonadi-filter.h"
-
-#include "datatype.h"
-
-#include <QString>
+#include <KDebug>
 
 namespace Akonadi
 {
-namespace Filter
+namespace Filter 
 {
 
-class AKONADI_FILTER_EXPORT Property
+DataMember::DataMember(
+    const QString &id,
+    const QString &name,
+    DataType dataType
+  ) :
+  mId( id ),
+  mName( name ),
+  mDataType( dataType )
 {
-public:
-  Property(
-      const QString &id,
-      const QString &shortName,
-      const QString &longName,
-      DataType dataType
-    );
-  virtual ~Property();
+}
 
-protected:
-
-  /**
-   * The internal, non-localized identifier of the property.
-   */
-  QString mId;
-
-  /**
-   * The localized name of the property (this is what is shown in rule descriptions)
-   */
-  QString mShortName;
-
-  /**
-   * The localized long name of the property (this is what is shown in the selection combos)
-   */
-  QString mLongName;
-
-  /**
-   * The type of this property
-   */
-  DataType mDataType;
-
-public:
-
-  DataType dataType() const
-  {
-    return mDataType;
-  }
-
-  const QString & id() const
-  {
-    return mId;
-  }
-
-  const QString & shortName() const
-  {
-    return mShortName;
-  }
-
-  const QString & longName() const
-  {
-    return mLongName;
-  }
-
-}; // class Property
+DataMember::~DataMember()
+{
+}
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_PROPERTY_H_

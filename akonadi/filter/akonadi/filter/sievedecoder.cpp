@@ -31,7 +31,7 @@
 #include "sievereader.h"
 #include "condition.h"
 #include "rulelist.h"
-#include "property.h"
+#include "function.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -54,7 +54,7 @@ namespace IO
 {
 
 SieveDecoder::SieveDecoder( Factory * componentFactory )
-  : Decoder( componentFactory ), mProgram( 0 )
+  : Decoder( componentFactory ), mProgram( 0 ), mCreationOfCustomDataMembersEnabled( true )
 {
 }
 
@@ -186,12 +186,12 @@ void SieveDecoder::onTestEnd()
     //   testname {:<modifier> {<modifierArgument>}} [:<operator>] {:<modifier> {<modifierArgument>}} [ header_name ] [ values ]
     //
 
-    const Property * property = factory()->findProperty( mCurrentSimpleTestName );
-    if ( !property )
+    const Function * function = factory()->findFunction( mCurrentSimpleTestName );
+    if ( !function )
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Unrecognized property '%1'", mCurrentSimpleTestName ) );
+      setLastError( i18n( "Unrecognized function '%1'", mCurrentSimpleTestName ) );
       return;
     }
 
@@ -199,7 +199,7 @@ void SieveDecoder::onTestEnd()
     if( mCurrentSimpleTestArguments.count() < 1 )
     {
       mGotError = true;
-      setLastError( i18n( "The 'header' test requires at least one non-optional argument." ) );
+      setLastError( i18n( "A test requires at least one non-optional argument." ) );
       return;
     }
 
@@ -237,14 +237,14 @@ void SieveDecoder::onTestEnd()
       if( !qVariantCanConvert< QStringList >( fieldNames ) )
       {
         mGotError = true;
-        setLastError( i18n( "The 'header' field name argument must be convertible to a string list" ) );
+        setLastError( i18n( "The field name argument must be convertible to a string list" ) );
         return;
       }
 
       fieldList = fieldNames.toStringList();
     } else {
-      // use a string list with a single null value
-      fieldList.append( QString() );
+      // use a single "item" data member (the whole item)
+      fieldList.append( "item" );
     }
     
     const Operator * op = 0;
@@ -256,7 +256,7 @@ void SieveDecoder::onTestEnd()
       QString arg = argVariant.toString();
       Q_ASSERT( arg.length() > 0 );
       QString argNoTag = arg.at( 0 ) == QChar(':') ? arg.mid(1) : arg;
-      op = factory()->findOperator( property->dataType(), argNoTag );
+      op = factory()->findOperator( function->outputDataType(), argNoTag );
       if( op )
       {
         mCurrentSimpleTestArguments.removeOne( arg );
@@ -271,13 +271,13 @@ void SieveDecoder::onTestEnd()
       switch( mCurrentSimpleTestArguments.count() )
       {
         case 0:
-          setLastError( i18n( "Property '%1' expects an operator", mCurrentSimpleTestName ) );
+          setLastError( i18n( "Function '%1' expects an operator", mCurrentSimpleTestName ) );
         break;
         case 1:
-          setLastError( i18n( "Invalid operator '%1' for property '%2'", mCurrentSimpleTestArguments.at( 0 ).toString() , mCurrentSimpleTestName ) );
+          setLastError( i18n( "Invalid operator '%1' for function '%2'", mCurrentSimpleTestArguments.at( 0 ).toString() , mCurrentSimpleTestName ) );
         break;
         default:
-          setLastError( i18n( "No such operator for property '%1'", mCurrentSimpleTestName ) );
+          setLastError( i18n( "No such operator for function '%1'", mCurrentSimpleTestName ) );
         break;
       }
       return;
@@ -322,14 +322,49 @@ void SieveDecoder::onTestEnd()
     int first = true;
     foreach( QString field, fieldList )
     {
+      Q_ASSERT( !field.isEmpty() );
+
       foreach( QVariant value, valueList )
       {
-        Condition::Base * condition = factory()->createPropertyTestCondition( mCurrentComponent, property, field, op, value );
+        const DataMember * dataMember = factory()->findDataMember( field );
+        if( !dataMember )
+        {
+          if( ( !mCreationOfCustomDataMembersEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
+          {
+            mGotError = true;
+            setLastError( i18n( "Test on data member '%1' is not supported.", field ) );
+            return;
+          }
+
+          // search for "custom:field" first
+          QString id = QString::fromAscii( "custom:%1" ).arg( field );
+          dataMember = factory()->findDataMember( id );
+          if( !dataMember )
+          {
+             // create it
+
+            QString name = i18n( "custom field '%1'", field );
+            DataMember * newDataMember = new DataMember( id, name, DataTypeString );
+            factory()->registerDataMember( newDataMember );
+            dataMember = newDataMember;
+          }
+        }
+
+        Q_ASSERT( dataMember );
+
+        if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
+        {
+          mGotError = true; 
+          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->id(), field ) );
+          return;
+        }
+
+        Condition::Base * condition = factory()->createPropertyTestCondition( mCurrentComponent, function, dataMember, op, value );
         if ( !condition )
         {
           // unrecognized test
           mGotError = true; 
-          setLastError( i18n( "Test on property '%1' is not supported.", field ) );
+          setLastError( i18n( "Test on function '%1' is not supported.", field ) );
           return;
         }
 

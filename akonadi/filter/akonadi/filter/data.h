@@ -39,7 +39,8 @@ namespace Akonadi
 namespace Filter
 {
 
-class Property;
+class Function;
+class DataMember;
 
 class AKONADI_FILTER_EXPORT Data
 {
@@ -48,10 +49,18 @@ public:
   virtual ~Data();
 
 public:
-  virtual bool getPropertyValue( const Property * property, QString &buffer );
-  virtual bool getPropertyValue( const Property * property, Integer &buffer );
-  virtual bool getPropertyValue( const Property * property, QStringList &buffer );
-  virtual bool getPropertyValue( const Property * property, QDateTime &buffer );
+  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QString &buffer );
+  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, Integer &buffer );
+  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QStringList &buffer );
+  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QDateTime &buffer );
+  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, bool &buffer );
+
+protected:
+  virtual bool getDataMemberValue( const DataMember * dataMember, QString &buffer );
+  virtual bool getDataMemberValue( const DataMember * dataMember, QStringList &buffer );
+  virtual bool getDataMemberValue( const DataMember * dataMember, Integer &buffer );
+  virtual bool getDataMemberValue( const DataMember * dataMember, QDateTime &buffer );
+  virtual bool getDataMemberValue( const DataMember * dataMember, bool &buffer );
 };
 
 } // namespace Filter

@@ -33,8 +33,9 @@
 #include <QHash>
 
 
-#include "property.h"
+#include "function.h"
 #include "datatype.h"
+#include "datamember.h"
 #include "operator.h"
 
 namespace Akonadi
@@ -67,7 +68,7 @@ namespace Action
  * - It's responsable for the creation of the filter tree components, either standard ones (the Program,
  *   the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
  *
- * - It acts as repository of the Properties that can be tested in filter conditions
+ * - It acts as repository of the Functions that can be tested in filter conditions
  *
  * - It acts as repository of the Actions that the filter can perform
  */
@@ -99,21 +100,23 @@ private:
   };
 
 private:
-  QList< const Property * > mPropertyList;
-  QHash< QString, Property * > mPropertyHash;
+  QList< const Function * > mFunctionList;
+  QHash< QString, Function * > mFunctionHash;
+  QHash< QString, DataMember * > mDataMemberHash;
 
   QHash< DataType, OperatorSet * > mOperatorSetHash;
+
 public:
-  void registerProperty( Property * property );
+  void registerFunction( Function * function );
+  virtual const Function * findFunction( const QString &id );
+  virtual const QList< const Function * > * enumerateFunctions();
 
-  virtual const Property * findProperty( const QString &id );
-
-  virtual const QList< const Property * > * enumerateProperties();
+  void registerDataMember( DataMember * dataMember );
+  virtual const DataMember * findDataMember( const QString &id );
+  virtual QList< const DataMember * > enumerateDataMembers( int acceptableDataTypeMask );
 
   void registerOperator( Operator * op );
-
   virtual const Operator * findOperator( DataType dataType, const QString &id );
-
   virtual const QList< const Operator * > * enumerateOperators( DataType dataType );
 
   virtual Program * createProgram( Component * parent );
@@ -123,7 +126,13 @@ public:
   virtual Condition::And * createAndCondition( Component * parent );
   virtual Condition::Or * createOrCondition( Component * parent );
   virtual Condition::Not * createNotCondition( Component * parent );
-  virtual Condition::Base * createPropertyTestCondition( Component * parent, const Property * property, const QString &propertyArgument, const Operator * op, const QVariant &operand );
+  virtual Condition::Base * createPropertyTestCondition(
+      Component * parent,
+      const Function * function,
+      const DataMember * dataMember,
+      const Operator * op,
+      const QVariant &operand
+    );
 
   virtual Action::Base * createGenericAction( Component * parent, const QString &name );
   virtual Action::RuleList * createRuleList( Component * parent );
