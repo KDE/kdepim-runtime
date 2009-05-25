@@ -44,9 +44,9 @@
 #include <kimap/subscribejob.h>
 
 SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &caption,
-    KAccount *acct, const QString &startPath )
+    KAccount *acct, bool &selectionChanged, const QString &startPath )
   : KSubscription( parent, caption, acct, User1, QString(), false ),
-    mStartPath( startPath ), mSubscribed( false ), mForceSubscriptionEnable( false )
+    mStartPath( startPath ), mSubscribed( false ), mForceSubscriptionEnable( false ), mSelectionChanged( selectionChanged )
 {
   // hide unneeded checkboxes
   hideTreeCheckbox();
@@ -270,8 +270,8 @@ void SubscriptionDialogBase::loadingComplete()
 //------------------------------------------------------------------------------
 
 SubscriptionDialog::SubscriptionDialog( QWidget *parent, const QString &caption,
-    KAccount *acct, const QString & startPath )
-  : SubscriptionDialogBase( parent, caption, acct, startPath )
+    KAccount *acct, bool &selectionChanged, const QString & startPath )
+  : SubscriptionDialogBase( parent, caption, acct, selectionChanged, startPath )
 {
 }
 
@@ -342,6 +342,7 @@ bool SubscriptionDialog::doSave()
       static_cast<GroupItem*>(*it)->info().path
     );
     subscribe->exec();
+    mSelectionChanged = true;
   }
 
   // unsubscribe
@@ -353,6 +354,7 @@ bool SubscriptionDialog::doSave()
       static_cast<GroupItem*>(*it2)->info().path
     );
     unsubscribe->exec();
+    mSelectionChanged = true;
   }
 
   if ( mForceSubscriptionEnable ) {

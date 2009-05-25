@@ -47,7 +47,8 @@
 #include "ui_setupserverview.h"
 
 SetupServer::SetupServer( WId parent )
-  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0), m_subscriptionEnabled(false), m_shouldClearCache(false)
+  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0), m_subscriptionEnabled(false),
+    m_subscriptionsChanged(false), m_shouldClearCache(false)
 {
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
@@ -110,7 +111,8 @@ void SetupServer::applySettings()
 {
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
                     || ( Settings::self()->userName() != m_ui->userName->text() )
-                    || ( Settings::self()->subscriptionEnabled() != m_subscriptionEnabled );
+                    || ( Settings::self()->subscriptionEnabled() != m_subscriptionEnabled )
+                    || m_subscriptionsChanged;
 
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
@@ -333,7 +335,8 @@ void SetupServer::slotManageSubscriptions()
     kFatal("Shouldn't happen...");
   }
 
-  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account );
+  m_subscriptionsChanged = false;
+  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
 
   connect( &account, SIGNAL( success() ),
            subscriptions, SLOT( slotConnectionSuccess() ) );

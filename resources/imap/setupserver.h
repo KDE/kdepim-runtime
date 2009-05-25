@@ -75,6 +75,7 @@ private:
   Ui::SetupServerView *m_ui;
   MailTransport::ServerTest *m_serverTest;
   bool m_subscriptionEnabled;
+  bool m_subscriptionsChanged;
   bool m_shouldClearCache;
 
 private slots:

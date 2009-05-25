@@ -55,6 +55,7 @@ class SubscriptionDialogBase : public KSubscription
     SubscriptionDialogBase( QWidget *parent,
                             const QString &caption,
                             KAccount* acct,
+                            bool &selectionChanged,
                             const QString &startPath = QString() );
     virtual ~SubscriptionDialogBase() {
       mItemDict.clear();
@@ -146,6 +147,7 @@ class SubscriptionDialogBase : public KSubscription
     QString mStartPath;
     bool mSubscribed;
     bool mForceSubscriptionEnable;
+    bool &mSelectionChanged;
 };
 
 class SubscriptionDialog : public SubscriptionDialogBase
@@ -156,6 +158,7 @@ class SubscriptionDialog : public SubscriptionDialogBase
     SubscriptionDialog( QWidget *parent,
                         const QString &caption,
                         KAccount* acct,
+                        bool &selectionChanged,
                         const QString & startPath = QString() );
     virtual ~SubscriptionDialog();
   protected:
