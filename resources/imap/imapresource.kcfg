@@ -19,5 +19,9 @@
       <label>Defines the authentication type to use</label>
       <default>1</default>
     </entry>
+    <entry name="SubscriptionEnabled" type="Bool">
+      <label>Defines if the server side subscription is enabled</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>

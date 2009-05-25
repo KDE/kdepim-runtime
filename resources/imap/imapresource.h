@@ -42,6 +42,8 @@ namespace KIMAP
   class Session;
 }
 
+class ImapAccount;
+
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
@@ -69,8 +71,8 @@ protected:
   virtual void collectionRemoved( const Akonadi::Collection &collection );
 
 private Q_SLOTS:
-  void onLoginDone( KJob *job );
-  void onCapabilitiesTestDone( KJob *job );
+  void onConnectSuccess();
+  void onConnectError( int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
   void onGetMetaDataDone( KJob *job );
@@ -100,10 +102,7 @@ private:
   bool manualAuth( const QString& username, QString &password );
   void startConnect( bool forceManualAuth = false );
 
-  KIMAP::Session *m_session;
-  QStringList m_capabilities;
-  QString m_server;
-  QString m_userName;
+  ImapAccount *m_account;
 };
 
 #endif

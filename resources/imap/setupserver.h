@@ -61,6 +61,8 @@ public:
    */
   ~SetupServer();
 
+  bool shouldClearCache() const;
+
 private slots:
   /**
    * Call this if you want the settings saved from this page.
@@ -72,6 +74,8 @@ private:
 
   Ui::SetupServerView *m_ui;
   MailTransport::ServerTest *m_serverTest;
+  bool m_subscriptionEnabled;
+  bool m_shouldClearCache;
 
 private slots:
   void slotTest();
@@ -79,6 +83,7 @@ private slots:
   void slotTestChanged();
   void slotComplete();
   void slotSafetyChanged();
+  void slotManageSubscriptions();
 };
 
 #endif

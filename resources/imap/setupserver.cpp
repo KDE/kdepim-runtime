@@ -41,10 +41,13 @@
 #include <kuser.h>
 #include <solid/networking.h>
 
+#include "imapaccount.h"
+#include "subscriptiondialog.h"
+
 #include "ui_setupserverview.h"
 
 SetupServer::SetupServer( WId parent )
-  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0)
+  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0), m_subscriptionEnabled(false), m_shouldClearCache(false)
 {
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
@@ -80,6 +83,8 @@ SetupServer::SetupServer( WId parent )
   connect( m_ui->userName, SIGNAL( textChanged( const QString & ) ),
            SLOT( slotComplete() ) );
 
+  connect( m_ui->subscriptionButton, SIGNAL( pressed() ), SLOT( slotManageSubscriptions() ) );
+
   readSettings();
   slotTestChanged();
   slotComplete();
@@ -96,13 +101,23 @@ SetupServer::~SetupServer()
 {
 }
 
+bool SetupServer::shouldClearCache() const
+{
+  return m_shouldClearCache;
+}
+
 void SetupServer::applySettings()
 {
+  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
+                    || ( Settings::self()->userName() != m_ui->userName->text() )
+                    || ( Settings::self()->subscriptionEnabled() != m_subscriptionEnabled );
+
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
   Settings::self()->setAuthentication( m_ui->authImapGroup->checkedId() );
   Settings::self()->setPassword( m_ui->password->text() );
+  Settings::self()->setSubscriptionEnabled( m_subscriptionEnabled );
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -141,6 +156,9 @@ void SetupServer::readSettings()
   } else {
     m_ui->password->insert( Settings::self()->password() );
   }
+
+  m_subscriptionEnabled = Settings::self()->subscriptionEnabled();
+
   delete currentUser;
 }
 
@@ -263,6 +281,67 @@ void SetupServer::slotSafetyChanged()
   if ( !m_ui->authImapGroup->checkedButton()->isEnabled() ) {
     m_ui->clearRadio->setChecked( true );
   }
+}
+
+void SetupServer::slotManageSubscriptions()
+{
+  ImapAccount account;
+  account.setServer( m_ui->imapServer->text() );
+  account.setUserName( m_ui->userName->text() );
+  account.setSubscriptionEnabled( m_subscriptionEnabled );
+
+  switch ( m_ui->safeImapGroup->checkedId() ) {
+  case 1:
+    account.setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+    break;
+  case 2:
+    account.setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
+    break;
+  case 3:
+    account.setEncryptionMode( KIMAP::LoginJob::TlsV1 );
+    break;
+  default:
+    kFatal("Shouldn't happen...");
+  }
+
+  switch ( m_ui->authImapGroup->checkedId() ) {
+  case 1:
+    account.setAuthenticationMode( KIMAP::LoginJob::ClearText );
+    break;
+  case 2:
+    account.setAuthenticationMode( KIMAP::LoginJob::Login );
+    break;
+  case 3:
+    account.setAuthenticationMode( KIMAP::LoginJob::Plain );
+    break;
+  case 4:
+    account.setAuthenticationMode( KIMAP::LoginJob::CramMD5 );
+    break;
+  case 5:
+    account.setAuthenticationMode( KIMAP::LoginJob::DigestMD5 );
+    break;
+  case 6:
+    account.setAuthenticationMode( KIMAP::LoginJob::NTLM );
+    break;
+  case 7:
+    account.setAuthenticationMode( KIMAP::LoginJob::GSSAPI );
+    break;
+  case 8:
+    account.setAuthenticationMode( KIMAP::LoginJob::Anonymous );
+    break;
+  default:
+    kFatal("Shouldn't happen...");
+  }
+
+  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account );
+
+  connect( &account, SIGNAL( success() ),
+           subscriptions, SLOT( slotConnectionSuccess() ) );
+
+  account.connect( m_ui->password->text() );
+  subscriptions->exec();
+
+  m_subscriptionEnabled = account.isSubscriptionEnabled();
 }
 
 #include "setupserver.moc"
