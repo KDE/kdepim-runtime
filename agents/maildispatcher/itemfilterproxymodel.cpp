@@ -32,6 +32,7 @@
 
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
+#include <outboxinterface/sentcollectionattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -75,6 +76,7 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 
   if( !item.hasAttribute<AddressAttribute>() ||
       !item.hasAttribute<DispatchModeAttribute>() ||
+      !item.hasAttribute<SentCollectionAttribute>() ||
       !item.hasAttribute<TransportAttribute>() ) {
     kWarning() << "item" << item.id() << "does not have all required attributes.";
     return false;

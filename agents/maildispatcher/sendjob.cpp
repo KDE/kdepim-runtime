@@ -37,10 +37,10 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
 #include <outboxinterface/errorattribute.h>
+#include <outboxinterface/sentcollectionattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -164,8 +164,11 @@ void SendJob::Private::doNextStep()
   } else if( currentStep == MoveToSentMail ) {
     // 4. move to sent-mail
     kDebug() << "Step 4: moving to sent-mail.";
-    // TODO: use attribute for sent-mail collection
-    Collection sentMail = LocalFolders::self()->sentMail();
+    kFatal() << "Moving to sent-mail currently doesn't work."; // see TODO
+    SentCollectionAttribute *sA = item.attribute<SentCollectionAttribute>();
+    Q_ASSERT( sA );
+    kDebug() << "Sent-mail collection with id" << sA->sentCollection();
+    Collection sentMail( sA->sentCollection() );
     if( !sentMail.isValid() ) {
       q->setError( UserDefinedError );
       q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
