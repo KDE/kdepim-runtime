@@ -77,8 +77,8 @@ class OutboxInterface::LocalFoldersPrivate
     LocalFolders *instance;
     bool ready;
     bool recreate;
-    Entity::Id outboxId;
-    Entity::Id sentMailId;
+    Collection::Id outboxId;
+    Collection::Id sentMailId;
     Collection outbox;
     Collection sentMail;
     Collection rootMaildir;

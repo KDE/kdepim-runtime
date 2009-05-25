@@ -25,6 +25,7 @@ set(outboxinterface_lib_srcs
   addressattribute.cpp
   dispatchmodeattribute.cpp
   errorattribute.cpp
+  sentcollectionattribute.cpp
   transportattribute.cpp
 )
 
@@ -46,6 +47,7 @@ install( FILES
         addressattribute.h
         dispatchmodeattribute.h
         errorattribute.h
+        sentcollectionattribute.h
         transportattribute.h
 
         DESTINATION ${INCLUDE_INSTALL_DIR}/outboxinterface COMPONENT Devel)

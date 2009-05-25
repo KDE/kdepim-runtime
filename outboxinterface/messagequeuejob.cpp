@@ -22,6 +22,7 @@
 #include "localfolders.h"
 #include "addressattribute.h"
 #include "dispatchmodeattribute.h"
+#include "sentcollectionattribute.h"
 #include "transportattribute.h"
 
 #include <QTimer>
@@ -65,7 +66,7 @@ class OutboxInterface::MessageQueueJob::Private
     int transport;
     DispatchModeAttribute::DispatchMode mode;
     QDateTime dueDate;
-    Akonadi::Entity::Id sentMail;
+    Collection::Id sentMail;
     QString from;
     QStringList to;
     QStringList cc;
@@ -115,6 +116,9 @@ bool MessageQueueJob::Private::validate()
     return false;
   }
 
+  if( sentMail < 0 ) {
+    sentMail = LocalFolders::self()->sentMail().id();
+  }
   // TODO: should I fetch the sentMail collection just to make sure it is
   // valid?
 
@@ -136,9 +140,11 @@ void MessageQueueJob::Private::doStart()
   // set attributes
   AddressAttribute *addrA = new AddressAttribute( from, to, cc, bcc );
   DispatchModeAttribute *dmA = new DispatchModeAttribute( mode );
+  SentCollectionAttribute *sA = new SentCollectionAttribute( sentMail );
   TransportAttribute *tA = new TransportAttribute( transport );
   item.addAttribute( addrA );
   item.addAttribute( dmA );
+  item.addAttribute( sA );
   item.addAttribute( tA );
 
   // set flags
@@ -187,7 +193,7 @@ QDateTime MessageQueueJob::sendDueDate() const
   return d->dueDate;
 }
 
-Akonadi::Entity::Id MessageQueueJob::sentMailCollection() const
+Collection::Id MessageQueueJob::sentMailCollection() const
 {
   return d->sentMail;
 }
@@ -232,7 +238,7 @@ void MessageQueueJob::setDueDate( const QDateTime &date )
   d->dueDate = date;
 }
 
-void MessageQueueJob::setSendMailCollection( Akonadi::Entity::Id id )
+void MessageQueueJob::setSentMailCollection( Collection::Id id )
 {
   d->sentMail = id;
 }

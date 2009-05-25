@@ -30,7 +30,7 @@
 
 #include <KCompositeJob>
 
-#include <Akonadi/Entity>
+#include <Akonadi/Collection>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
@@ -64,7 +64,7 @@ class OUTBOXINTERFACE_EXPORT MessageQueueJob : public KCompositeJob
     int transportId() const;
     DispatchModeAttribute::DispatchMode dispatchMode() const;
     QDateTime sendDueDate() const;
-    Akonadi::Entity::Id sentMailCollection() const;
+    Akonadi::Collection::Id sentMailCollection() const;
     QString from() const;
     QStringList to() const;
     QStringList cc() const;
@@ -74,7 +74,7 @@ class OUTBOXINTERFACE_EXPORT MessageQueueJob : public KCompositeJob
     void setTransportId( int id );
     void setDispatchMode( DispatchModeAttribute::DispatchMode mode );
     void setDueDate( const QDateTime &date );
-    void setSendMailCollection( Akonadi::Entity::Id id );
+    void setSentMailCollection( Akonadi::Collection::Id id );
     void setFrom( const QString &from );
     void setTo( const QStringList &to );
     void setCc( const QStringList &cc );
@@ -100,8 +100,6 @@ class OUTBOXINTERFACE_EXPORT MessageQueueJob : public KCompositeJob
       (reimplemented from KCompositeJob)
     */
     virtual void slotResult( KJob * );
-    
-
 
   private:
     class Private;
