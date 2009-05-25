@@ -116,6 +116,9 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
 
 void MaildirResource::aboutToQuit()
 {
+  // The settings may not have been saved if e.g. they have been modified via
+  // DBus instead of the config dialog.
+  Settings::self()->writeConfig();
   kDebug( 5254 ) << "Implement me!" ;
 }
 
