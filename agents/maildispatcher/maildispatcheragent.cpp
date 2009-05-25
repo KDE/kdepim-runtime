@@ -94,9 +94,6 @@ void MailDispatcherAgent::Private::connectModel( bool connect )
     kDebug() << "Online. Connecting model.";
     q->connect( model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
         q, SLOT( dispatch() ) );
-    // HACK: see comments in sendResult()
-    q->connect( model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
-        q, SLOT( dispatch() ) );
     q->connect( model, SIGNAL( itemFetched( Akonadi::Item& ) ),
         q, SLOT( itemFetched( Akonadi::Item& ) ) );
     dispatch();
@@ -210,13 +207,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   }
 
   // dispatch next message
-  //QTimer::singleShot( 0, q, SLOT( dispatch() ) );
-  // HACK: The above sends duplicate messages because apparently the model
-  // isn't updated soon enough.  Is this a bug???
-  // Now I connected rowsRemoved() to dispatch() so that the next message
-  // would be dispatched only when the model updates and removes the current
-  // one.  This avoids sending duplicate messages, but might cause problems if
-  // items are removed from the model for other reasons. (?)
+  QTimer::singleShot( 0, q, SLOT( dispatch() ) );
 }
 
 

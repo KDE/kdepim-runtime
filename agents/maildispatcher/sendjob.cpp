@@ -40,7 +40,7 @@
 #include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
-#include <outboxinterface/statusattribute.h>
+#include <outboxinterface/errorattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -70,8 +70,10 @@ class SendJob::Private
       AddActiveFlag,
       DoTransport,
       AddSentFlag,
-      MoveToSentMail,
+      //MoveToSentMail,
       Finished
+      
+      ,MoveToSentMail // TODO: put in the right place when moves work in Akonadi
     } currentStep;
 
     SendJob *const q;
@@ -88,6 +90,10 @@ class SendJob::Private
 
 void SendJob::Private::doNextStep()
 {
+  static bool called = false;
+  Q_ASSERT( called == false );
+  called = true;
+
   currentStep = Step( int( currentStep ) + 1 ); // ugly HACK
   kDebug() << "current step" << currentStep;
 
@@ -136,6 +142,7 @@ void SendJob::Private::doNextStep()
       q->setError( UserDefinedError );
       q->setErrorText( i18n( "Could not initiate message transport. Possibly invalid transport." ) );
       doStoreError();
+      called = false;
       return;
     }
     job->setData( cmsg );
@@ -163,6 +170,7 @@ void SendJob::Private::doNextStep()
       q->setError( UserDefinedError );
       q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
       doStoreError();
+      called = false;
       return;
     }
     ItemMoveJob *job = new ItemMoveJob( item, sentMail );
@@ -174,18 +182,23 @@ void SendJob::Private::doNextStep()
   } else {
     Q_ASSERT( false );
   }
+
+  called = false;
 }
 
 void SendJob::Private::doStoreError()
 {
+  // TODO: Test this.  If the error is because the item was modified
+  // elsewhere, then this function will definitely not work (the item must
+  // be refetched).  Is it even useful to store the error as an attribute?
+
   // I can only be called once.
   Q_ASSERT( !errorStored );
   errorStored = true;
 
   Q_ASSERT( q->error() );
-  StatusAttribute *sA = new StatusAttribute( StatusAttribute::Failed,
-      q->errorString() );
-  item.addAttribute( sA ); // replaces old one
+  ErrorAttribute *eA = new ErrorAttribute( q->errorString() );
+  item.addAttribute( eA ); // replaces old one
   ItemModifyJob *job = new ItemModifyJob( item );
   q->addSubjob( job );
 }
@@ -209,15 +222,6 @@ void SendJob::start()
 
 void SendJob::slotResult( KJob *job )
 {
-  // TODO: there is probably a better way to do this.  Maybe the switch( currentStep )
-  // should happen here???
-  ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
-  if( modifyJob ) {
-    // If it was an ItemModifyJob, we need to save the modified item.
-    // Otherwise we get the 'Item was modified elsewhere' error.
-    d->item = modifyJob->item();
-  }
-
   // HACK: This is based on KCompositeJob::slotResult.
   // We can't call that directly because we need to doStoreError() before
   // doing emitResult().
@@ -229,7 +233,9 @@ void SendJob::slotResult( KJob *job )
       emitResult();
     } else {
       // First error from a regular subjob.  Store it.
-      kDebug() << "Error. Trying to store result in item.";
+      kDebug() << "Error. Trying to store error in item.";
+      kDebug() << "Error is:" << job->errorString();
+      kDebug() << "my item has revision" << d->item.revision();
       setError( job->error() );
       setErrorText( job->errorText() );
       d->doStoreError();
@@ -239,6 +245,17 @@ void SendJob::slotResult( KJob *job )
     kDebug() << "Error stored. Emitting result.";
     emitResult();
   } else {
+    // TODO: there is probably a better way to do this.  Maybe the switch( currentStep )
+    // should happen in this function?
+    ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
+    if( modifyJob ) {
+      // If it was an ItemModifyJob, we need to save the modified item.
+      // Otherwise we get the 'Item was modified elsewhere' error.
+      d->item = Item();
+      d->item = modifyJob->item();
+      kDebug() << "that was an ItemModifyJob; the updated item has revision" << d->item.revision();
+    }
+
     // No error.  Do next step.
     kDebug() << "No error so far; doing next step.";
     d->doNextStep();

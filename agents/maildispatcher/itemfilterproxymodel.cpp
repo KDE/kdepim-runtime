@@ -65,9 +65,16 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 {
   const Item item = q->sourceModel()->data( index, ItemModel::ItemRole ).value<Item>();
 
+  if( item.remoteId().isEmpty() ) {
+    kDebug() << "item" << item.id() << "has an empty remoteId.";
+    // This probably means that it hasn't yet been stored on disk by the
+    // maildir resource, so I'll let it go for now, and process it when
+    // it's ready.
+    return false;
+  }
+
   if( !item.hasAttribute<AddressAttribute>() ||
       !item.hasAttribute<DispatchModeAttribute>() ||
-      //!item.hasAttribute<StatusAttribute>() ||
       !item.hasAttribute<TransportAttribute>() ) {
     kWarning() << "item" << item.id() << "does not have all required attributes.";
     return false;
@@ -110,9 +117,7 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 void ItemFilterProxyModel::Private::itemFetchResult( KJob *job )
 {
   Q_ASSERT( job == currentJob );
-  Q_UNUSED( job );
   Item::List items = currentJob->items();
-  currentJob = 0;
   if( items.count() != 1 ) {
     kWarning() << "ItemFetchJob fetched" << items.count() << "items; expected 1.";
     
@@ -126,6 +131,8 @@ void ItemFilterProxyModel::Private::itemFetchResult( KJob *job )
     kDebug() << "fetched item" << item.id() << "from collection" << item.collectionId();
     emit q->itemFetched( item );
   }
+  Q_UNUSED( job );
+  currentJob = 0;
 }
 
 
@@ -133,6 +140,16 @@ ItemFilterProxyModel::ItemFilterProxyModel( QObject *parent )
   : QSortFilterProxyModel( parent ),
     d( new Private( this ) )
 {
+  // Let me know when the source model changes.
+  setDynamicSortFilter( true );
+
+  // TODO: This fixes the problem when the MDA tried to send an item (which
+  // involves modifying it), and the maildir resource tried to store the item
+  // at the same time (which involves modifying it as well).  This meant about
+  // half the time the MDA would get 'NO item was modified elsewhere, STORE
+  // aborted'.  But this is expensive, updating the model at every change --
+  // look into better ways of doing this.  (Also, why does the maildir
+  // resource disable revision number checks?!)
 }
 
 ItemFilterProxyModel::~ItemFilterProxyModel()
