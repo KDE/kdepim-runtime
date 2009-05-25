@@ -61,7 +61,7 @@ MessageQueuer::MessageQueuer()
 
 void MessageQueuer::sendBtnClicked()
 {
-  Message *msg = new Message();
+  Message::Ptr msg = Message::Ptr( new Message );
   // HACK: TODO: figure out why it doesn't work without a '\n' at the
   // beginning.  Without it there, when the MDA fetches the item's payload as
   // a KMime::Message, it's empty!  (and in akonadiconsole the raw payload is
@@ -70,10 +70,10 @@ void MessageQueuer::sendBtnClicked()
   kDebug() << "msg:" << msg->encodedContent( true );
 
   MessageQueueJob *job = new MessageQueueJob();
-  job->setMessage( Message::Ptr(msg) );
+  job->setMessage( msg );
   job->setTransportId( mComboBox->currentTransportId() );
-  job->setDispatchMode( DispatchModeAttribute::Immediately );
-  // let it use the default sent-mail collection
+  // default dispatch mode
+  // default sent-mail collection
   job->setFrom( mSenderEdit->text() );
   job->setTo( mToEdit->text().isEmpty() ? QStringList() : mToEdit->text().split( ',' ) );
   job->setCc( mCcEdit->text().isEmpty() ? QStringList() : mCcEdit->text().split( ',' ) );

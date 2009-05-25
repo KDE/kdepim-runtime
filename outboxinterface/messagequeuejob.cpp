@@ -56,16 +56,17 @@ class OutboxInterface::MessageQueueJob::Private
     {
       transport = -1;
       mode = DispatchModeAttribute::Immediately;
+      useDefaultSentMail = true;
       sentMail = -1;
     }
 
     MessageQueueJob *const q;
 
-    // TODO: shared pointer; is this ok?
     Message::Ptr message;
     int transport;
     DispatchModeAttribute::DispatchMode mode;
     QDateTime dueDate;
+    bool useDefaultSentMail;
     Collection::Id sentMail;
     QString from;
     QStringList to;
@@ -94,13 +95,21 @@ void MessageQueueJob::Private::readAddressesFromMime()
 
 bool MessageQueueJob::Private::validate()
 {
-  // TODO: what kind of validation should I do for the MIME message and the
-  // addresses?
-  // NOTE: the MDA asserts that msg->encodedContent(true) is non-empty. Is
-  // it expensive to do that twice?
+  if( !message ) {
+    q->setError( UserDefinedError );
+    q->setErrorText( i18n( "Empty message." ) );
+    q->emitResult();
+    return false;
 
-  // TODO: perhaps let the apps handle these errors, and just assume everything
-  // is good?
+    // NOTE: the MDA also asserts that msg->encodedContent(true) is non-empty.
+  }
+
+  if( to.count() + cc.count() + bcc.count() == 0 ) {
+    q->setError( UserDefinedError );
+    q->setErrorText( i18n( "Message has no recipients." ) );
+    q->emitResult();
+    return false;
+  }
 
   if( mode == DispatchModeAttribute::AfterDueDate && !dueDate.isValid() ) {
     q->setError( UserDefinedError );
@@ -116,11 +125,18 @@ bool MessageQueueJob::Private::validate()
     return false;
   }
 
-  if( sentMail < 0 ) {
+  if( useDefaultSentMail ) {
+    Q_ASSERT( LocalFolders::self()->isReady() );
     sentMail = LocalFolders::self()->sentMail().id();
+    // Can't do this in the constructor because LocalFolders is not ready.
   }
-  // TODO: should I fetch the sentMail collection just to make sure it is
-  // valid?
+
+  if( sentMail < 0 ) {
+    q->setError( UserDefinedError );
+    q->setErrorText( i18n( "Message has invalid sent-mail folder." ) );
+    q->emitResult();
+    return false;
+  }
 
   return true; // all ok
 }
@@ -128,6 +144,7 @@ bool MessageQueueJob::Private::validate()
 void MessageQueueJob::Private::doStart()
 {
   if( !validate() ) {
+    // The error has been set; the result has been emitted.
     return;
   }
 
@@ -240,6 +257,7 @@ void MessageQueueJob::setDueDate( const QDateTime &date )
 
 void MessageQueueJob::setSentMailCollection( Collection::Id id )
 {
+  d->useDefaultSentMail = false;
   d->sentMail = id;
 }
 

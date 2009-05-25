@@ -4,4 +4,6 @@
 * make sense of CMakeLists.txt... (current version mostly stolen from here and
   there)
 * Figure out a better way to configure the resource via D-Bus.
+* Provide an option (attribute?) for messages to be deleted from outbox once
+  they have been sent (as opposed to moving to sent-mail).
 

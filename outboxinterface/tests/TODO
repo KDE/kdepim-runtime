@@ -1,0 +1,16 @@
+LocalFolders:
+* LocalFolders should be able to recover from any of the following situations:
+- maildir resource and collection were removed
+- maildir resource was removed, but collections are still there
+- one or both collections have been removed
+
+MessageQueueJob:
+* Issues with the current test:
+- Hangs in shutdownHarder if run with ctest, but runs ok with akonaditest.
+  WTF?
+- Might still have problems if two instances of LocalFolders (from separate
+  processes) try to create the resource at the same time.  This can happen
+  in the real world too, so this should somehow be fixed in LocalFolders.
+- Slow: runs kbuildsycoca.  Not sure that's avoidable; I think it's because
+  the test depends on MT and MT depends on KWallet.
+
