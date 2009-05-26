@@ -47,10 +47,12 @@
 #include <kimap/deletejob.h>
 #include <kimap/expungejob.h>
 #include <kimap/fetchjob.h>
+#include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/logoutjob.h>
+#include <kimap/myrightsjob.h>
 #include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
@@ -76,6 +78,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 #include "collectionflagsattribute.h"
 #include "collectionannotationsattribute.h"
+#include "imapaclattribute.h"
 
 #include "imapaccount.h"
 
@@ -89,6 +92,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -442,6 +446,22 @@ void ImapResource::retrieveItems( const Collection &col )
     meta->start();
   }
 
+  // Get the ACLs from the mailbox if it's supported
+  if ( capabilities.contains( "ACL" ) ) {
+    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_account->session() );
+    acl->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    acl->setMailBox( mailBox );
+    connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
+    acl->start();
+
+    KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->session() );
+    rights->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    rights->setMailBox( mailBox );
+    connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
+    rights->start();
+  }
+
+
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
   select->setMailBox( mailBox );
@@ -616,6 +636,73 @@ void ImapResource::onConnectError( int code, const QString &message )
 void ImapResource::onConnectSuccess()
 {
   synchronizeCollectionTree();
+}
+
+void ImapResource::onGetAclDone( KJob *job )
+{
+  if ( job->error() ) {
+    return; // Well, no metadata for us then...
+  }
+
+  KIMAP::GetAclJob *acl = qobject_cast<KIMAP::GetAclJob*>( job );
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+
+  // Store the mailbox ACLs
+  if ( !collection.hasAttribute( "imapacl" ) ) {
+    ImapAclAttribute *aclAttribute  = new ImapAclAttribute( acl->allRights() );
+    collection.addAttribute( aclAttribute );
+  } else {
+    ImapAclAttribute *aclAttribute =
+      static_cast<ImapAclAttribute*>( collection.attribute( "imapacl" ) );
+    const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
+    if ( oldRights != acl->allRights() ) {
+      aclAttribute->setRights( acl->allRights() );
+    }
+  }
+
+  CollectionModifyJob *modify = new CollectionModifyJob( collection );
+  modify->exec();
+}
+
+void ImapResource::onRightsReceived( KJob *job )
+{
+  if ( job->error() ) {
+    return; // Well, no metadata for us then...
+  }
+
+  KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+
+  KIMAP::Acl::Rights imapRights = rightsJob->rights();
+  Collection::Rights newRights = Collection::ReadOnly;
+
+  if ( imapRights & KIMAP::Acl::Write ) {
+    newRights|= Collection::CanChangeItem;
+  }
+
+  if ( imapRights & KIMAP::Acl::Insert ) {
+    newRights|= Collection::CanCreateItem;
+  }
+
+  if ( imapRights & KIMAP::Acl::DeleteMessage ) {
+    newRights|= Collection::CanDeleteItem;
+  }
+
+  if ( imapRights & KIMAP::Acl::CreateMailbox ) {
+    newRights|= Collection::CanChangeCollection;
+    newRights|= Collection::CanCreateCollection;
+  }
+
+  if ( imapRights & KIMAP::Acl::DeleteMailbox ) {
+    newRights|= Collection::CanDeleteCollection;
+  }
+
+  if ( newRights != collection.rights() ) {
+    collection.setRights( newRights );
+
+    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    modify->exec();
+  }
 }
 
 void ImapResource::onGetMetaDataDone( KJob *job )

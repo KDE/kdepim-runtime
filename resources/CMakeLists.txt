@@ -18,6 +18,10 @@ set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionannotationsattribute.cpp
 )
 
+set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapaclattribute.cpp
+)
+
 if ( XSLTPROC_EXECUTABLE )
   add_subdirectory( knut )
   add_subdirectory( ical )

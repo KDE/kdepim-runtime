@@ -18,6 +18,7 @@ set( imapresource_SRCS
   noselectattribute.cpp
   subscriptiondialog.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
+  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
