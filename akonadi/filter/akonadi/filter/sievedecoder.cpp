@@ -37,6 +37,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QByteArray>
 
+#include <KDebug>
 #include <KLocale>
 
 #define DEBUG_SIEVE_DECODER 1
@@ -183,126 +184,206 @@ void SieveDecoder::onTestEnd()
 
     // standard sieve syntax
     //
-    //   testname {:<modifier> {<modifierArgument>}} [:<operator>] {:<modifier> {<modifierArgument>}} [ header_name ] [ values ]
+    //   testname {:<modifier> {<modifierArgument>}} [:<operator>] {:<modifier> {<modifierArgument>}} [ field_list ] [ value_list ]
     //
 
-    const Function * function = factory()->findFunction( mCurrentSimpleTestName );
+    // kill the ugly modifiers we don't support and split the arguments in tagged and not tagged
+    // FIXME: we should take care of the non tagged arguments that live "in between" the tagged ones: these should be discarded too!
+
+    QString arg;
+
+    QList< QString > taggedArguments;
+    QList< QVariant > nonTaggedArguments;
+
+    QList< QVariant >::Iterator it = mCurrentSimpleTestArguments.begin();
+    while( it != mCurrentSimpleTestArguments.end() )
+    {
+      if( ( *it ).type() != QVariant::String )
+      {
+        nonTaggedArguments.append( *it );
+        ++it;
+        continue;
+      }
+
+      arg = ( *it ).toString();
+
+      if( arg.length() < 1 )
+      {
+        nonTaggedArguments.append( *it );
+        ++it;
+        continue;
+      }
+
+      if( arg.at( 0 ) != QChar(':') )
+      {
+        nonTaggedArguments.append( *it );
+        ++it;
+        continue; // not tagged
+      }
+
+      if( QString::compare( arg, QString::fromAscii(":comparator"), Qt::CaseInsensitive ) == 0 )
+      {
+        // kill it, and the following argument too
+        ++it;
+        if( it != mCurrentSimpleTestArguments.end() )
+          ++it;
+        continue;
+      }
+
+      if( QString::compare( arg, QString::fromAscii(":content"), Qt::CaseInsensitive ) == 0 )
+      {
+        // kill it, and the following argument too
+        ++it;
+        if( it != mCurrentSimpleTestArguments.end() )
+          ++it;
+        continue;
+      }
+
+      if( QString::compare( arg, QString::fromAscii(":all"), Qt::CaseInsensitive ) == 0 )
+      {
+        // bleah.. this is the default
+        ++it;
+        continue;
+      }
+
+      if( QString::compare( arg, QString::fromAscii(":raw"), Qt::CaseInsensitive ) == 0 )
+      {
+        ++it;
+        continue;
+      }
+
+      if( QString::compare( arg, QString::fromAscii(":text"), Qt::CaseInsensitive ) == 0 )
+      {
+        ++it;
+        continue;
+      }
+
+      taggedArguments.append( arg.mid( 1 ) );
+      ++it;
+    }
+
+    mCurrentSimpleTestArguments.clear();
+
+    // now play with the tagged arguments: the last one should be the operator (if any)
+
+    QVariant argVariant;
+    QString operatorKeyword;
+    QString functionKeyword = mCurrentSimpleTestName;
+
+    if( taggedArguments.count() > 0 )
+    {
+      operatorKeyword = taggedArguments.last();
+      taggedArguments.removeLast();
+
+      foreach( arg, taggedArguments )
+      {
+        functionKeyword += QChar(':');
+        functionKeyword += arg;
+      }
+    }
+
+    // lookup the function
+
+    const Function * function = factory()->findFunction( functionKeyword );
     if ( !function )
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Unrecognized function '%1'", mCurrentSimpleTestName ) );
+      setLastError( i18n( "Unrecognized function '%1'", functionKeyword ) );
       return;
     }
 
-    // Must have at least 1 non optional argument (the value)
-    if( mCurrentSimpleTestArguments.count() < 1 )
+
+    if( operatorKeyword.isEmpty() )
     {
+      // FIXME: Use a default "forwarding" operator that accepts only boolean results ?
+      kDebug() << "Operator keyword is empty in function" << functionKeyword;
+    }
+
+    // look up the operator
+
+    const Operator * op = 0;
+
+    op = factory()->findOperator( operatorKeyword, function->outputDataTypeMask() );
+
+    if( !op )
+    {
+      // unrecognized test
       mGotError = true;
-      setLastError( i18n( "A test requires at least one non-optional argument." ) );
+      setLastError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
       return;
     }
 
-    QList< QVariant >::Iterator it = mCurrentSimpleTestArguments.end();
+    // now we may or may not have additional arguments: [field_list] [value_list]
+    // if the operator *requires* a value then we *must* have it.
+    QVariant values;
+    QVariant fields;
 
-    --it;
-    QVariant values = *it;
-
-    // do we have field names around ?
-    QVariant fieldNames;
-
-    if ( it != mCurrentSimpleTestArguments.begin() )
+    if( op->rightOperandDataType() != DataTypeNone )
     {
-      --it;
-      fieldNames = *it;
-      // check if it is not a tagged argument
-      if( fieldNames.type() == QVariant::String )
+      // we expect a right operand (list)
+      if( nonTaggedArguments.isEmpty() )
       {
-        QString maybeTaggedArgument = fieldNames.toString();
-        if( maybeTaggedArgument.length() > 1 )
-        {
-          if ( maybeTaggedArgument.at( 0 ) == QChar( ':' ) )
-            fieldNames = QVariant(); // this is a tagged argument
-        }
+        mGotError = true;
+        setLastError( i18n( "The operator '%1' expects a value argument", operatorKeyword ) );
+        return;
       }
+
+      values = nonTaggedArguments.last();
+      nonTaggedArguments.removeLast();
+    } else {
+      // we don't expect a right operand
     }
+
+    // now we may or may not have an argument (field).
+    // the empty field is considered as "item" (whole item, in most cases)
+
+    if( !nonTaggedArguments.isEmpty() )
+      fields = nonTaggedArguments.last();
 
     QStringList fieldList;
 
-    mCurrentSimpleTestArguments.removeLast();
-    if ( !fieldNames.isNull() )
+    if ( !fields.isNull() )
     {
-      mCurrentSimpleTestArguments.removeLast();
-
-      if( !qVariantCanConvert< QStringList >( fieldNames ) )
+      if( !qVariantCanConvert< QStringList >( fields ) )
       {
         mGotError = true;
         setLastError( i18n( "The field name argument must be convertible to a string list" ) );
         return;
       }
 
-      fieldList = fieldNames.toStringList();
+      fieldList = fields.toStringList();
     } else {
       // use a single "item" data member (the whole item)
       fieldList.append( "item" );
     }
     
-    const Operator * op = 0;
-
-    foreach( QVariant argVariant, mCurrentSimpleTestArguments )
-    {
-      if( argVariant.type() != QVariant::String )
-        continue;
-      QString arg = argVariant.toString();
-      Q_ASSERT( arg.length() > 0 );
-      QString argNoTag = arg.at( 0 ) == QChar(':') ? arg.mid(1) : arg;
-      op = factory()->findOperator( function->outputDataType(), argNoTag );
-      if( op )
-      {
-        mCurrentSimpleTestArguments.removeOne( arg );
-        break;
-      }
-    }
-
-    if( !op )
-    {
-      // unrecognized test
-      mGotError = true;
-      switch( mCurrentSimpleTestArguments.count() )
-      {
-        case 0:
-          setLastError( i18n( "Function '%1' expects an operator", mCurrentSimpleTestName ) );
-        break;
-        case 1:
-          setLastError( i18n( "Invalid operator '%1' for function '%2'", mCurrentSimpleTestArguments.at( 0 ).toString() , mCurrentSimpleTestName ) );
-        break;
-        default:
-          setLastError( i18n( "No such operator for function '%1'", mCurrentSimpleTestName ) );
-        break;
-      }
-      return;
-    }
 
     QList< QVariant > valueList;
 
-    switch( values.type() )
+    if( values.isNull() )
     {
-      case QVariant::ULongLong:
-        valueList.append( values );
-      break;
-      case QVariant::String:
-        valueList.append( values );
-      break;
-      case QVariant::StringList:
+       valueList.append( values );
+    } else {
+      switch( values.type() )
       {
-        QStringList sl = values.toStringList();
-        foreach( QString stringValue, sl )
-          valueList.append( QVariant( stringValue ) );
+        case QVariant::ULongLong:
+          valueList.append( values );
+        break;
+        case QVariant::String:
+          valueList.append( values );
+        break;
+        case QVariant::StringList:
+        {
+          QStringList sl = values.toStringList();
+          foreach( QString stringValue, sl )
+            valueList.append( QVariant( stringValue ) );
+        }
+        break;
+        default:
+          Q_ASSERT( false ); // shouldn't happen
+        break;
       }
-      break;
-      default:
-        Q_ASSERT( false ); // shouldn't happen
-      break;
     }
 
     bool multiTest = false;
@@ -336,18 +417,10 @@ void SieveDecoder::onTestEnd()
             return;
           }
 
-          // search for "custom:field" first
-          QString id = QString::fromAscii( "custom:%1" ).arg( field );
-          dataMember = factory()->findDataMember( id );
-          if( !dataMember )
-          {
-             // create it
-
-            QString name = i18n( "custom field '%1'", field );
-            DataMember * newDataMember = new DataMember( id, name, DataTypeString );
-            factory()->registerDataMember( newDataMember );
-            dataMember = newDataMember;
-          }
+          QString name = i18n( "the field '%1'", field );
+          DataMember * newDataMember = new DataMember( field, name, DataTypeString );
+          factory()->registerDataMember( newDataMember );
+          dataMember = newDataMember;
         }
 
         Q_ASSERT( dataMember );
@@ -355,7 +428,7 @@ void SieveDecoder::onTestEnd()
         if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
         {
           mGotError = true; 
-          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->id(), field ) );
+          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
           return;
         }
 
@@ -745,7 +818,7 @@ Program * SieveDecoder::run()
        "}\r\n"
        "elsif allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
        "  fileinto \"medium\";\r\n" \
-       "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K) {\r\n" \
+       "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K, anyof( address :inaddressbook \"cc\", not address :domain :like \"from\" \"*xyz*\")) {\r\n" \
        "    fileinto \"strange\";\r\n" \
        "    keep;\r\n" \
        "  }\r\n"
@@ -772,7 +845,7 @@ Program * SieveDecoder::run()
   if( !parser.parse() )
   {
     // force an error
-    if( mGotError )
+    if( !mGotError )
     {
       mGotError = true;
       setLastError( i18n( "Internal sieve library error" ) );

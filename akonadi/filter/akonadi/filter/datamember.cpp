@@ -33,11 +33,11 @@ namespace Filter
 {
 
 DataMember::DataMember(
-    const QString &id,
+    const QString &keyword,
     const QString &name,
     DataType dataType
   ) :
-  mId( id ),
+  mKeyword( keyword ),
   mName( name ),
   mDataType( dataType )
 {

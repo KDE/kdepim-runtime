@@ -33,14 +33,16 @@ namespace Filter
 {
 
 Function::Function(
-    const QString &id,
+    int id,
+    const QString &keyword,
     const QString &name,
-    DataType outputDataType,
+    int outputDataTypeMask,
     int acceptableInputDataTypeMask
   ) :
   mId( id ),
+  mKeyword( keyword ),
   mName( name ),
-  mOutputDataType( outputDataType ),
+  mOutputDataTypeMask( outputDataTypeMask ),
   mAcceptableInputDataTypeMask( acceptableInputDataTypeMask )
 {
 }

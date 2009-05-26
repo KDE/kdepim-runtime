@@ -28,9 +28,10 @@
 #include <akonadi/filter/action.h>
 #include <akonadi/filter/factory.h>
 
+#include "coolcombobox.h"
+
 #include <QLayout>
 
-#include <KComboBox>
 #include <KLocale>
 
 namespace Akonadi
@@ -42,28 +43,37 @@ namespace UI
 
 #define INDENT 20
 
+class ActionEditorPrivate
+{
+public:
+  Private::CoolComboBox * mTypeComboBox;
+};
+
 ActionEditor::ActionEditor( QWidget * parent, Factory * factory )
   : QWidget( parent ), mFactory( factory )
 {
+  mPrivate = new ActionEditorPrivate;
 
   QGridLayout * g = new QGridLayout( this );
   g->setMargin( 1 );
 
-  mTypeComboBox = new KComboBox( false, this );
+  mPrivate->mTypeComboBox = new Private::CoolComboBox( false, this );
+  mPrivate->mTypeComboBox->setOverlayColor( Qt::yellow );
 
-  g->addWidget( mTypeComboBox, 0, 0, 1, 2 );
+  g->addWidget( mPrivate->mTypeComboBox, 0, 0, 1, 2 );
 
-  mTypeComboBox->addItem( i18n( "then stop processing here" ) );
-  mTypeComboBox->addItem( i18n( "then execute the following rule list (sub-program)" ) );
-  mTypeComboBox->addItem( i18n( "then move the item in the collection" ) );
-  mTypeComboBox->addItem( i18n( "then delete the item" ) );
-  mTypeComboBox->addItem( i18n( "then tag the item" ) );
+  mPrivate->mTypeComboBox->addItem( i18n( "then stop processing here" ) );
+  mPrivate->mTypeComboBox->addItem( i18n( "then execute the following rule list (sub-program)" ) );
+  mPrivate->mTypeComboBox->addItem( i18n( "then move the item in the collection" ) );
+  mPrivate->mTypeComboBox->addItem( i18n( "then delete the item" ) );
+  mPrivate->mTypeComboBox->addItem( i18n( "then tag the item" ) );
 
   g->setColumnMinimumWidth( 0, INDENT );
 }
 
 ActionEditor::~ActionEditor()
 {
+  delete mPrivate;
 }
 
 void ActionEditor::fillFromAction( Action::Base * action )

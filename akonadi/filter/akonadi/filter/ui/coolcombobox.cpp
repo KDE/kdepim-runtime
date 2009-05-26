@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.h
+ *  File : coolcombobox.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,53 +23,73 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_ACTIONEDITOR_H_
-#define _AKONADI_FILTER_UI_ACTIONEDITOR_H_
+#include "coolcombobox.h"
 
-#include "config-akonadi-filter-ui.h"
+#include <QPaintEvent>
+#include <QStyleOption>
+#include <QStylePainter>
+#include <QStyle>
 
-#include <QWidget>
-
-class KComboBox;
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Factory;
-
-namespace Action
-{
-  class Base;
-} // namespace Action
-
 namespace UI
 {
-
-class ActionEditorPrivate;
-
-class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
+namespace Private
 {
-  Q_OBJECT
-public:
-  ActionEditor( QWidget * parent, Factory * factory );
-  virtual ~ActionEditor();
 
-protected:
-  Factory * mFactory;
-  ActionEditorPrivate * mPrivate;
+CoolComboBox::CoolComboBox( bool rw, QWidget * parent )
+  : KComboBox( rw, parent ), mOpacity( 1.0 )
+{
+}
 
-public:
-  virtual void fillFromAction( Action::Base * action );
-  virtual bool commitToAction( Action::Base * action );
+void CoolComboBox::setOpacity( qreal opacity )
+{
+  mOpacity = opacity;
+  if( opacity > 1.0 )
+    opacity = 1.0;
+  else if( opacity < 0.0 )
+    opacity = 0.0;
 
-}; // class ActionEditor
+  update();
+}
+
+void CoolComboBox::setOverlayColor( const QColor &clr )
+{
+  mOverlayColor = clr;
+  update();
+}
+
+
+void CoolComboBox::paintEvent( QPaintEvent * e )
+{
+  QStylePainter painter( this );
+  painter.setPen( palette().color( QPalette::Text ) );
+
+  if( mOpacity < 1.0 )
+    painter.setOpacity( mOpacity );
+
+  // draw the combobox frame, focusrect and selected etc.
+  QStyleOptionComboBox opt;
+  initStyleOption( &opt );
+  painter.drawComplexControl( QStyle::CC_ComboBox, opt );
+
+  // draw the icon and text
+  painter.drawControl( QStyle::CE_ComboBoxLabel, opt );
+
+  if( mOverlayColor.isValid() )
+  {
+    painter.setOpacity( 0.1 * mOpacity );
+    painter.fillRect( rect(), mOverlayColor );
+  }
+}
+
+} // namespace Private
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_ACTIONEDITOR_H_

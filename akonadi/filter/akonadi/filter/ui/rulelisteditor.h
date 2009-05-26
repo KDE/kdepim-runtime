@@ -114,6 +114,17 @@ protected slots:
 
 };
 
+class RuleListEditorItemScrollArea : public QScrollArea
+{
+  Q_OBJECT
+public:
+  RuleListEditorItemScrollArea( QWidget * parent );
+protected:
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
+  virtual bool eventFilter( QObject *o, QEvent *e );
+};
+
 class RuleListEditorPrivate;
 class RuleListEditorItem;
 

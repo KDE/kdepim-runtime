@@ -28,9 +28,7 @@
 
 #include "config-akonadi-filter.h"
 
-#include <QString>
-#include <QStringList>
-#include <QDateTime>
+#include <QVariant>
 
 #include "datatype.h"
 
@@ -49,18 +47,10 @@ public:
   virtual ~Data();
 
 public:
-  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QString &buffer );
-  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, Integer &buffer );
-  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QStringList &buffer );
-  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, QDateTime &buffer );
-  virtual bool getPropertyValue( const Function * function, const DataMember * dataMember, bool &buffer );
+  virtual QVariant getPropertyValue( const Function * function, const DataMember * dataMember );
 
 protected:
-  virtual bool getDataMemberValue( const DataMember * dataMember, QString &buffer );
-  virtual bool getDataMemberValue( const DataMember * dataMember, QStringList &buffer );
-  virtual bool getDataMemberValue( const DataMember * dataMember, Integer &buffer );
-  virtual bool getDataMemberValue( const DataMember * dataMember, QDateTime &buffer );
-  virtual bool getDataMemberValue( const DataMember * dataMember, bool &buffer );
+  virtual QVariant getDataMemberValue( const DataMember * dataMember );
 };
 
 } // namespace Filter

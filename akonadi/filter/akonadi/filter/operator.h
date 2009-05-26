@@ -37,23 +37,66 @@ namespace Akonadi
 namespace Filter
 {
 
+/**
+ * The standard operator numeric identifiers.
+ */
+enum OperatorIdentifiers
+{
+  StandardOperatorGreaterThan = 1,         // Integer > Integer
+  StandardOperatorLowerThan,               // Integer < Integer
+  StandardOperatorIntegerIsEqualTo,        // Integer == Integer 
+  StandardOperatorStringIsEqualTo,         // String | Address == String
+  StandardOperatorContains,                // String | StringList | Address | AddressList contains String
+  StandardOperatorIsInAddressbook,         // Address | AddressList is in addressbook
+  StandardOperatorStringMatchesRegexp,     // String | StringList | Address | AddressList matches String (regexp)
+  StandardOperatorStringMatchesWildcard,   // String | StringList | Address | AddressList matches String (wildcard)
+  StandardOperatorDateIsEqualTo,           // DateTime == DateTime
+  StandardOperatorDateIsAfter,             // DateTime > DateTime
+  StandardOperatorDateIsBefore             // DateTime < DateTime
+};
+
+/**
+ * The Operator is an essential part of a Condition::PropertyTest object inside a filtering Rule.
+ *
+ * Examples of operators are "matches", "equals", "above", "below", "inaddressbook" etc...
+ *
+ * Each operator can accept a set of left data types (obtained as result of a Function applied
+ * to a DataMember which in turn extracts stuff from the item being filtered) and none or exactly
+ * one right data type (which is the data type of the constant the operator compares "against").
+ *
+ * The Operator has a keyword and an id which *must* be unique inside a filtering application set.
+ * The keyword is used in filter storage (sieve scripts at the time of writing) while the integer id
+ * can be used for fast identification inside the filter implementations.
+ *
+ * The id is either a member of the OperatorIdentifiers enumeration or a custom id (which should
+ * be a number above OperatorIdentifiers::OperatorCustomFirst.
+ *
+ * An operator must always return a boolean result. This is different from a Function which
+ * can return any data type (even multiple ones).
+ */
 class AKONADI_FILTER_EXPORT Operator
 {
 public:
   Operator(
-      const QString &id,
+      int id,
+      const QString &keyword,
       const QString &name,
-      const QString &description,
-      DataType dataType
+      int acceptableLeftOperandDataTypeMask,
+      DataType rightOperandDataType
     );
   virtual ~Operator();
 
 protected:
 
   /**
-   * The internal, non-localized identifier of the operator.
+   * The unique id of this operator.
    */
-  QString mId;
+  int mId;
+
+  /**
+   * The non-localized keyword of the operator. Must be unique.
+   */
+  QString mKeyword;
 
   /**
    * The localized name of the operator (this is what is shown in the selection combos)
@@ -61,35 +104,40 @@ protected:
   QString mName;
 
   /**
-   * The localized description of the operator (if needed)
+   * The left input data types we can accept.
    */
-  QString mDescription;
+  int mAcceptableLeftOperandDataTypeMask;
 
   /**
-   * The type of this operator
+   * The expected data type of the right operand (may be DataTypeNone for no right operand)
    */
-  DataType mDataType;
+  DataType mRightOperandDataType;
 
 public:
 
-  DataType dataType() const
-  {
-    return mDataType;
-  }
-
-  const QString & id() const
+  int id() const
   {
     return mId;
+  }
+
+  int acceptableLeftOperandDataTypeMask() const
+  {
+    return mAcceptableLeftOperandDataTypeMask;
+  }
+
+  DataType rightOperandDataType() const
+  {
+    return mRightOperandDataType;
+  }
+
+  const QString & keyword() const
+  {
+    return mKeyword;
   }
 
   const QString & name() const
   {
     return mName;
-  }
-
-  const QString & description() const
-  {
-    return mDescription;
   }
 
 }; // class Operator

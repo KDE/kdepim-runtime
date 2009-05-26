@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.h
+ *  File : extensionlabel.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,53 +23,68 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_ACTIONEDITOR_H_
-#define _AKONADI_FILTER_UI_ACTIONEDITOR_H_
+#include "extensionlabel.h"
 
-#include "config-akonadi-filter-ui.h"
+#include <QPaintEvent>
+#include <QPainter>
 
-#include <QWidget>
-
-class KComboBox;
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Factory;
-
-namespace Action
-{
-  class Base;
-} // namespace Action
-
 namespace UI
 {
-
-class ActionEditorPrivate;
-
-class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
+namespace Private
 {
-  Q_OBJECT
-public:
-  ActionEditor( QWidget * parent, Factory * factory );
-  virtual ~ActionEditor();
 
-protected:
-  Factory * mFactory;
-  ActionEditorPrivate * mPrivate;
+ExtensionLabel::ExtensionLabel( QWidget * parent )
+  : QWidget( parent ), mFixedHeight( -1 ), mOpacity( 1.0 )
+{
+}
 
-public:
-  virtual void fillFromAction( Action::Base * action );
-  virtual bool commitToAction( Action::Base * action );
+void ExtensionLabel::setFixedHeight( int h )
+{
+  mFixedHeight = h;
+  update();
+}
 
-}; // class ActionEditor
+void ExtensionLabel::setOpacity( qreal opacity )
+{
+  mOpacity = opacity;
+  if( opacity > 1.0 )
+    opacity = 1.0;
+  else if( opacity < 0.0 )
+    opacity = 0.0;
+
+  update();
+}
+
+void ExtensionLabel::setOverlayColor( const QColor &clr )
+{
+  mOverlayColor = clr;
+  update();
+}
+
+
+void ExtensionLabel::paintEvent( QPaintEvent * e )
+{
+  QWidget::paintEvent( e );
+
+  QPainter p( this );
+  p.setOpacity( 0.2 );
+  p.setPen( mOverlayColor );
+
+  int h = mFixedHeight >= 0 ? mFixedHeight : ( height() - 5 );
+
+  p.drawLine( 5, 0, 5, h );
+  p.drawLine( 5, h, 10, h );
+}
+
+} // namespace Private
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_UI_ACTIONEDITOR_H_

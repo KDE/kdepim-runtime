@@ -41,6 +41,7 @@
 #include <QEvent>
 #include <QToolButton>
 
+#include <KApplication>
 #include <KDebug>
 #include <KLocale>
 #include <KIconLoader>
@@ -138,45 +139,13 @@ void RuleListEditorHeader::paintEvent( QPaintEvent *e )
 
   QPainter p( this );
 
-  qDrawShadeLine( &p, 0, 0, width(), 0, palette(), true, 1, 1 );
+  qDrawShadeLine( &p, 0, 0, width()+1, 0, palette(), true, 1, 1 );
 
-#if 0
-  QPainter p( this );
-  QStyleOptionRuleListEditorV2 opt;
-  opt.initFrom( this );
+  QLinearGradient g( 0, 0, 0, height() - 4 );
+  g.setColorAt( 0.0, palette().color( QPalette::Light ) );
+  g.setColorAt( 1.0, palette().color( QPalette::Button ) );
 
-  // option->state |= QStyle::State_Selected;
-  // option->state |= QStule::State_Sunken;
-
-  //  option->text = text();
-  //  option->icon = icon();
-  opt.position = QStyleOptionRuleListEditorV2::Middle;
-  opt.selectedPosition = QStyleOptionRuleListEditorV2::NotAdjacent;
-
-    if (QStyleOptionRuleListEditorV2 *optionV2 = qstyleoption_cast<QStyleOptionRuleListEditorV2 *>(option)) {
-        QRuleListEditor *toolBox = static_cast<QRuleListEditor *>(parentWidget()); // I know I'm in a tool box.
-        int widgetCount = toolBox->count();
-        int currIndex = toolBox->currentIndex();
-        if (widgetCount == 1) {
-            optionV2->position = QStyleOptionRuleListEditorV2::OnlyOneTab;
-        } else if (indexInPage == 0) {
-            optionV2->position = QStyleOptionRuleListEditorV2::Beginning;
-        } else if (indexInPage == widgetCount - 1) {
-            optionV2->position = QStyleOptionRuleListEditorV2::End;
-        } else {
-            optionV2->position = QStyleOptionRuleListEditorV2::Middle;
-        }
-        if (currIndex == indexInPage - 1) {
-            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::PreviousIsSelected;
-        } else if (currIndex == indexInPage + 1) {
-            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::NextIsSelected;
-        } else {
-            optionV2->selectedPosition = QStyleOptionRuleListEditorV2::NotAdjacent;
-        }
-    }
-
-  style()->drawControl( QStyle::CE_RuleListEditorTab, &opt, &p, this );
-#endif
+  p.fillRect( 0, 1, width(), height() - 3 , QBrush( g ) );
 
 }
 
@@ -269,6 +238,52 @@ bool RuleListEditorItemHeader::eventFilter( QObject *o, QEvent *e )
 
 
 
+RuleListEditorItemScrollArea::RuleListEditorItemScrollArea( QWidget * parent )
+  : QScrollArea( parent )
+{
+}
+
+bool RuleListEditorItemScrollArea::eventFilter( QObject *o, QEvent *e )
+{
+  // QScrollArea monitors the child widget events and updates its scrollbars
+  // when its resized.
+  // We actually DON'T want the vertical scrollbar to appear in this area
+  // so we monitor the event too and actually force the parent
+  // to redo a layout (which will grow this QScrollArea size because of
+  // the size policies and propagated size hints).
+
+  if( o == widget() && e->type() == QEvent::Resize )
+  {
+    // This machinery is needed in order to trigger the parent geometry update
+    updateGeometry();
+
+    if( parentWidget()->layout() )
+    {
+      parentWidget()->layout()->invalidate();
+      parentWidget()->layout()->update();
+    }
+
+    //parentWidget()->updateGeometry();
+  }
+  return QScrollArea::eventFilter( o, e );
+}
+
+
+QSize RuleListEditorItemScrollArea::sizeHint() const
+{
+  if( !widget() )
+    return QScrollArea::sizeHint();
+  return widget()->sizeHint();
+}
+
+QSize RuleListEditorItemScrollArea::minimumSizeHint() const
+{
+  if( !widget() )
+    return QScrollArea::minimumSizeHint();
+  return widget()->minimumSizeHint();
+}
+
+
 RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory )
   : QScrollArea( parent ), mFactory( factory )
 {
@@ -347,9 +362,10 @@ RuleListEditorItem * RuleListEditor::addRuleEditor( RuleEditor * editor )
   connect( item->mHeader, SIGNAL( moveDownRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderMoveDownRequest( RuleListEditorItemHeader * ) ) );
   connect( item->mHeader, SIGNAL( deleteRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderDeleteRequest( RuleListEditorItemHeader * ) ) );
 
-  item->mScrollArea = new QScrollArea( mBase );
+  item->mScrollArea = new RuleListEditorItemScrollArea( mBase );
   item->mScrollArea->setWidget( editor );
   item->mScrollArea->setWidgetResizable( true );
+  item->mScrollArea->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
   item->mScrollArea->setFrameStyle( QFrame::NoFrame );
   item->mScrollArea->hide();
 

@@ -33,15 +33,17 @@ namespace Filter
 {
 
 Operator::Operator(
-    const QString &id,
+    int id,
+    const QString &keyword,
     const QString &name,
-    const QString &description,
-    DataType dataType
+    int acceptableLeftOperandDataTypeMask,
+    DataType rightOperandDataType
   ) :
   mId( id ),
+  mKeyword( keyword ),
   mName( name ),
-  mDescription( description ),
-  mDataType( dataType )
+  mAcceptableLeftOperandDataTypeMask( acceptableLeftOperandDataTypeMask ),
+  mRightOperandDataType( rightOperandDataType )
 {
 }
 

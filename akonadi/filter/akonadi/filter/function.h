@@ -37,6 +37,23 @@ namespace Akonadi
 namespace Filter
 {
 
+enum FunctionIdentifiers
+{
+  // standard functions
+  StandardFunctionValueOf = 1,
+  StandardFunctionSizeOf = 2,
+  StandardFunctionCountOf = 3,
+  StandardFunctionExists = 4,
+  StandardFunctionDateIn = 5,
+
+  // e-mail related functions
+  StandardFunctionAnyEMailAddressIn = 101,
+  StandardFunctionAnyEMailAddressDomainIn = 102,
+  StandardFunctionAnyEMailAddressLocalPartIn = 103,
+
+  // custom functions
+  FunctionCustomFirst = 10000
+};
 
 
 /**
@@ -47,13 +64,14 @@ class AKONADI_FILTER_EXPORT Function
 {
 public:
   /**
-   * Create a function with the specified identifier
+   * Create a function with the specified keywordentifier
    *
    */
   Function(
-      const QString &id,               //< Unique function identifier: it matches the keyword used in Sieve scripts.
+      int id,                          //< The id of the function: it should be unique within an application
+      const QString &keyword,          //< Unique function keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
-      DataType outputDataType,         //< The output data type of this function
+      int outputDataTypeMask,          //< The mask of possible output data types of this function
       int acceptableInputDataTypeMask  //< The acceptable input data types of this function
     );
   virtual ~Function();
@@ -61,9 +79,14 @@ public:
 protected:
 
   /**
-   * The internal, non-localized identifier of the function.
+   * The unique id of the function.
    */
-  QString mId;
+  int mId;
+
+  /**
+   * The non-localized keywordentifier of the function.
+   */
+  QString mKeyword;
 
   /**
    * The localized name of the function (this is what is shown in rule selection combos)
@@ -71,9 +94,9 @@ protected:
   QString mName;
 
   /**
-   * The type of this function
+   * The possible output types of this function
    */
-  DataType mOutputDataType;
+  int mOutputDataTypeMask;
 
   /**
    * The acceptable input data types
@@ -82,19 +105,24 @@ protected:
 
 public:
 
-  DataType outputDataType() const
-  {
-    return mOutputDataType;
-  }
-
-  const QString & id() const
+  int id() const
   {
     return mId;
+  }
+
+  const QString & keyword() const
+  {
+    return mKeyword;
   }
 
   const QString & name() const
   {
     return mName;
+  }
+
+  int outputDataTypeMask() const
+  {
+    return mOutputDataTypeMask;
   }
 
   int acceptableInputDataTypeMask() const

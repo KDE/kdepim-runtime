@@ -168,7 +168,7 @@ PropertyTest::PropertyTest( Component * parent, const Function * function, const
 
   if( mOperator )
   {
-    Q_ASSERT( mFunction->outputDataType() == mOperator->dataType() );
+    Q_ASSERT( ( mFunction->outputDataTypeMask() & mOperator->acceptableLeftOperandDataTypeMask() ) == mFunction->outputDataTypeMask() );
   }
 }
 

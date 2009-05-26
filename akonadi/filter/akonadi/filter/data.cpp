@@ -41,67 +41,51 @@ Data::~Data()
 {
 }
 
-bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QString &buffer )
+QVariant Data::getPropertyValue( const Function * function, const DataMember * dataMember )
 {
-  Q_ASSERT( function->outputDataType() == DataTypeString );
-
 #if 0
-  switch( dataMember->dataType() )
+  Q_ASSERT( function->outputDataType() == DataTypeString );
+  Q_ASSERT( function->acceptableInputDataTypeMask() & dataMember->dataType() );
+
+  switch( function->id() )
   {
-    case DataTypeString:
-      getDataMemberValue( dataMember, buffer );
+    case StandardFunctionValueOf:
+      Q_ASSERT( dataMember->dataType() == DataTypeString );
+      if( !getDataMemberValue( dataMember, buffer ) )
+      {
+        // the value of a member that doesn't exist is an empty string
+        buffer = QString();
+      }
+    break;
+    case StandardFunctionSizeOf:
+    case StandardFunctionCountOf:
+    case StandardFunctionExists:
+    case StandardFunctionDateIn:
+      Q_ASSERT( false ); // function data type mismatch
+    break;
+    case StandardFunctionAnyAddressIn:
+    break;
+    case StandardFunctionAnyAddressDomainIn:
+    break;
+    case StandardFunctionAnyAddressLocalPartIn:
+    break;
+    default:
+      // unrecognized function: you should provide a handler for it by overriding getPropertyValue()
+      kDebug() <<
+          "Unrecognized function with id " << function->id() <<
+          ", keyword '" << function->keyword() <<
+          "' and name '" << function->name() << "'. You should provide a handler by overriding Data::getPropertyValue()";
+
+      Q_ASSERT( false );
     break;
   }
 #endif
-  return false;
+  return QVariant();
 }
 
-bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, Integer &buffer )
+QVariant Data::getDataMemberValue( const DataMember * dataMember )
 {
-  return false;
-}
-
-bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QStringList &buffer )
-{
-  return false;
-}
-
-bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, QDateTime &buffer )
-{
-  return false;
-}
-
-bool Data::getPropertyValue( const Function * function, const DataMember * dataMember, bool &buffer )
-{
-  return false;
-}
-
-
-bool Data::getDataMemberValue( const DataMember * dataMember, QString &buffer )
-{
-  Q_ASSERT( dataMember->dataType() == DataTypeString );
-
-  return false;
-}
-
-bool Data::getDataMemberValue( const DataMember * dataMember, Integer &buffer )
-{
-  return false;
-}
-
-bool Data::getDataMemberValue( const DataMember * dataMember, QStringList &buffer )
-{
-  return false;
-}
-
-bool Data::getDataMemberValue( const DataMember * dataMember, QDateTime &buffer )
-{
-  return false;
-}
-
-bool Data::getDataMemberValue( const DataMember * dataMember, bool &buffer )
-{
-  return false;
+  return QVariant();
 }
 
 

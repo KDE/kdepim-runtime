@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : conditioneditor.h
+ *  File : coolcombobox.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,64 +23,48 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
-#define _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
+#ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
 
 #include "config-akonadi-filter-ui.h"
 
-#include <QWidget>
+#include <KComboBox>
+#include <QColor>
 
+class QPaintEvent;
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Factory;
-
-namespace Condition
-{
-  class Base;
-} // namespace Condition
-
 namespace UI
 {
+namespace Private
+{
 
-class ConditionDescriptor;
-class ConditionEditorPrivate;
-
-class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
+class CoolComboBox : public KComboBox
 {
   Q_OBJECT
-
 public:
-  ConditionEditor( QWidget * parent, Factory * factory, ConditionEditor * parentConditionEditor = 0 );
-  virtual ~ConditionEditor();
-
+  CoolComboBox( bool rw, QWidget * parent );
 protected:
-
-  Factory * mFactory;
-  ConditionEditor * mParentConditionEditor;
-  ConditionEditorPrivate * mPrivate;
-
+  qreal mOpacity;
+  QColor mOverlayColor;
 public:
-  virtual void fillFromCondition( Condition::Base * condition );
-  virtual bool commitToCondition( Condition::Base * condition );
-  void reset();
-  bool isEmpty();
+  void setOpacity( qreal opacity );
+  qreal opacity()
+  {
+    return mOpacity;
+  }
+  void setOverlayColor( const QColor &clr );
+  QColor overlayColor()
+  {
+    return mOverlayColor;
+  }
+  virtual void paintEvent( QPaintEvent * e );
+}; // class CoolComboBox
 
-protected:
-  void childEditorTypeChanged( ConditionEditor * child );
-  virtual QSize sizeHint() const;
-  virtual QSize minimumSizeHint() const;
-
-private:
-  void setupUIForActiveType();
-  ConditionDescriptor * descriptorForActiveType();
-  void fillPropertyTestControls( ConditionDescriptor * descriptor );
-protected slots:
-  void typeComboBoxActivated( int index );
-}; // class ConditionEditor
+} // namespace Private
 
 } // namespace UI
 
@@ -88,4 +72,4 @@ protected slots:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_CONDITIONEDITOR_H_
+#endif //!_AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_

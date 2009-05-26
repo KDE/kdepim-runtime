@@ -37,12 +37,14 @@ namespace Filter
 
 enum DataType
 {
+  DataTypeNone        = 0,
   DataTypeString      = 1,
   DataTypeInteger     = 1 << 1,
   DataTypeStringList  = 1 << 2,
   DataTypeDateTime    = 1 << 3,
   DataTypeBoolean     = 1 << 4,
-  DataTypeAny         = DataTypeString | DataTypeInteger | DataTypeStringList | DataTypeDateTime | DataTypeBoolean
+  DataTypeAddress     = 1 << 5,
+  DataTypeAddressList = 1 << 6
 };
 
 typedef qint64 Integer;

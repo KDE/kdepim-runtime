@@ -79,45 +79,27 @@ public:
   virtual ~Factory();
 
 private:
-  class OperatorSet
-  {
-  protected:
-    QList< const Operator * > mOperatorList;
-    QHash< QString, Operator * > mOperatorHash;
-  public:
-    OperatorSet();
-    ~OperatorSet();
-  public:
-    void registerOperator( Operator * op );
-    Operator * findOperator( const QString &id )
-    {
-      return mOperatorHash.value( id, 0 );
-    }
-    const QList< const Operator * > * enumerateOperators()
-    {
-      return &mOperatorList;
-    }
-  };
-
-private:
   QList< const Function * > mFunctionList;
+  QMultiHash< QString, Operator * > mOperatorMultiHash;
+
+  QList< Operator * > mOperatorList;
+
   QHash< QString, Function * > mFunctionHash;
   QHash< QString, DataMember * > mDataMemberHash;
 
-  QHash< DataType, OperatorSet * > mOperatorSetHash;
 
 public:
   void registerFunction( Function * function );
-  virtual const Function * findFunction( const QString &id );
+  virtual const Function * findFunction( const QString &keyword );
   virtual const QList< const Function * > * enumerateFunctions();
 
   void registerDataMember( DataMember * dataMember );
-  virtual const DataMember * findDataMember( const QString &id );
+  virtual const DataMember * findDataMember( const QString &keyword );
   virtual QList< const DataMember * > enumerateDataMembers( int acceptableDataTypeMask );
 
   void registerOperator( Operator * op );
-  virtual const Operator * findOperator( DataType dataType, const QString &id );
-  virtual const QList< const Operator * > * enumerateOperators( DataType dataType );
+  virtual const Operator * findOperator( const QString &keyword, int leftOperandDataTypeMask );
+  virtual QList< const Operator * > enumerateOperators( int leftOperandDataTypeMask );
 
   virtual Program * createProgram( Component * parent );
 

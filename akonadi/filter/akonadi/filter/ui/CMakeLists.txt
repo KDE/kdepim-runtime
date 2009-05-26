@@ -21,6 +21,8 @@ set(
 		AKONADI_FILTER_UI_LIB_SRCS
 		actioneditor.cpp
 		conditioneditor.cpp
+		coolcombobox.cpp
+		extensionlabel.cpp
 		programeditor.cpp
 		ruleeditor.cpp
 		rulelisteditor.cpp

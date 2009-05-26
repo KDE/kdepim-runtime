@@ -48,7 +48,7 @@ public:
    *
    */
   DataMember(
-      const QString &id,               //< Unique data member identifier: it matches the keyword used in Sieve scripts.
+      const QString &keyword,          //< Unique data member keyword
       const QString &name,             //< The token that is displayed in the UI editors.
       DataType dataType                //< The output data type of this function
     );
@@ -57,9 +57,9 @@ public:
 protected:
 
   /**
-   * The internal, non-localized identifier of the data member.
+   * The non-localized keyword of the data member. Must be unique
    */
-  QString mId;
+  QString mKeyword;
 
   /**
    * The localized name of the function (this is what is shown in rule combos)
@@ -78,9 +78,9 @@ public:
     return mDataType;
   }
 
-  const QString & id() const
+  const QString & keyword() const
   {
-    return mId;
+    return mKeyword;
   }
 
   const QString & name() const
