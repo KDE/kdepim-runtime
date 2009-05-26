@@ -23,8 +23,12 @@
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentManager>
-#include <Akonadi/Collection>
+#include <Akonadi/CollectionStatistics>
+#include <Akonadi/CollectionStatisticsJob>
 #include <Akonadi/Control>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemDeleteJob>
 #include <akonadi/qtest_akonadi.h>
 
 #include <mailtransport/transportmanager.h>
@@ -33,7 +37,13 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
+#include <outboxinterface/localfolders.h>
 #include <outboxinterface/messagequeuejob.h>
+#include <outboxinterface/addressattribute.h>
+#include <outboxinterface/dispatchmodeattribute.h>
+#include <outboxinterface/errorattribute.h>
+#include <outboxinterface/sentcollectionattribute.h>
+#include <outboxinterface/transportattribute.h>
 
 #define SPAM_ADDRESS ( QStringList() << "idanoka@gmail.com" )
 
@@ -53,10 +63,20 @@ void MessageQueueJobTest::initTestCase()
   // failing because the DB cannot have collections with the same name
   // TODO: come up with a real locking mechanism
 
-  // switch all resources offline to avoid interference and spam
+  // Switch MDA offline to avoid spam.
+  // We need the maildir resource online to store the item for us.
   foreach( AgentInstance agent, AgentManager::self()->instances() ) {
-    agent.setIsOnline( false );
+    if( agent.type().identifier() == "akonadi_maildispatcher_agent" ) {
+      agent.setIsOnline( false );
+    }
   }
+
+  // check that outbox is empty
+  LocalFolders::self(); // triggers loading the collections...
+  QTest::qWait( 1000 );
+  QVERIFY( LocalFolders::self()->isReady() );
+  outbox = LocalFolders::self()->outbox();
+  verifyOutboxContents( 0 );
 }
 
 void MessageQueueJobTest::testAddressesFromMime()
@@ -71,13 +91,51 @@ void MessageQueueJobTest::testValidMessages()
   QVERIFY2( tid >= 0, "I need a default transport, but there is none." );
 
   // send a valid message using the default transport
-  MessageQueueJob *job = new MessageQueueJob;
-  job->setTransportId( tid );
+  MessageQueueJob *qjob = new MessageQueueJob;
+  qjob->setTransportId( tid );
   Message::Ptr msg = Message::Ptr( new Message );
-  msg->setContent( "This is message #1 sent from the MessageQueueJobTest unittest.\n" );
-  job->setMessage( msg );
-  job->setTo( SPAM_ADDRESS );
-  AKVERIFYEXEC( job );
+  msg->setContent( "This is message #1 sent from the MessageQueueJobTest unit test.\n" );
+  qjob->setMessage( msg );
+  qjob->setTo( SPAM_ADDRESS );
+  verifyOutboxContents( 0 );
+  AKVERIFYEXEC( qjob );
+
+  // fetch the message and verify it
+  QTest::qWait( 1000 );
+  verifyOutboxContents( 1 );
+  ItemFetchJob *fjob = new ItemFetchJob( outbox );
+  fjob->fetchScope().fetchFullPayload();
+  fjob->fetchScope().fetchAllAttributes();
+  AKVERIFYEXEC( fjob );
+  QCOMPARE( fjob->items().count(), 1 );
+  Item item = fjob->items().first();
+  QVERIFY( !item.remoteId().isEmpty() ); // stored by the resource
+  QVERIFY( item.hasPayload<Message::Ptr>() );
+  AddressAttribute *addrA = item.attribute<AddressAttribute>();
+  QVERIFY( addrA );
+  QVERIFY( addrA->from().isEmpty() );
+  QCOMPARE( addrA->to().count(), 1 );
+  QCOMPARE( addrA->to(), SPAM_ADDRESS );
+  QCOMPARE( addrA->cc().count(), 0 );
+  QCOMPARE( addrA->bcc().count(), 0 );
+  DispatchModeAttribute *dA = item.attribute<DispatchModeAttribute>();
+  QVERIFY( dA );
+  QCOMPARE( dA->dispatchMode(), DispatchModeAttribute::Immediately ); // default mode
+  SentCollectionAttribute *sA = item.attribute<SentCollectionAttribute>();
+  QVERIFY( sA );
+  QCOMPARE( sA->sentCollection(), LocalFolders::self()->sentMail().id() ); // default sent collection
+  TransportAttribute *tA = item.attribute<TransportAttribute>();
+  QVERIFY( tA );
+  QCOMPARE( tA->transportId(), tid );
+  ErrorAttribute *eA = item.attribute<ErrorAttribute>();
+  QVERIFY( !eA ); // no error
+  QCOMPARE( item.flags().count(), 1 );
+  QVERIFY( item.flags().contains( "queued" ) );
+
+  // delete message, for further tests
+  ItemDeleteJob *djob = new ItemDeleteJob( item );
+  AKVERIFYEXEC( djob );
+  verifyOutboxContents( 0 );
 
   // TODO test with no To: but only BCC:
 
@@ -132,7 +190,15 @@ void MessageQueueJobTest::testInvalidMessages()
   QVERIFY( !job->exec() );
 }
 
+void MessageQueueJobTest::verifyOutboxContents( qlonglong count )
+{
+  QVERIFY( outbox.isValid() );
+  CollectionStatisticsJob *job = new CollectionStatisticsJob( outbox );
+  AKVERIFYEXEC( job );
+  QCOMPARE( job->statistics().count(), count );
+}
 
-QTEST_AKONADIMAIN( MessageQueueJobTest, NoGUI )
+
+QTEST_AKONADIMAIN( MessageQueueJobTest, GUI )
 
 #include "messagequeuejobtest.moc"

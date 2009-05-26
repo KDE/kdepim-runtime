@@ -62,10 +62,8 @@ MessageQueuer::MessageQueuer()
 void MessageQueuer::sendBtnClicked()
 {
   Message::Ptr msg = Message::Ptr( new Message );
-  // HACK: TODO: figure out why it doesn't work without a '\n' at the
-  // beginning.  Without it there, when the MDA fetches the item's payload as
-  // a KMime::Message, it's empty!  (and in akonadiconsole the raw payload is
-  // just "MIME-Version: 1.0\n\n".
+  // No headers; need a '\n' to separate headers from body.
+  // TODO: use real headers
   msg->setContent( QByteArray("\n") + mMailEdit->document()->toPlainText().toLatin1() );
   kDebug() << "msg:" << msg->encodedContent( true );
 
