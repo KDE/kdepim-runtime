@@ -32,8 +32,8 @@ class ImapAclAttribute : public Akonadi::Attribute
 {
   public:
     ImapAclAttribute();
-    ImapAclAttribute( QMap<QByteArray, KIMAP::Acl::Rights> rights );
-    void setRights( QMap<QByteArray, KIMAP::Acl::Rights> rights );
+    ImapAclAttribute( const QMap<QByteArray, KIMAP::Acl::Rights> &rights );
+    void setRights( const QMap<QByteArray, KIMAP::Acl::Rights> &rights );
     QMap<QByteArray, KIMAP::Acl::Rights> rights() const;
     virtual QByteArray type() const;
     virtual Attribute *clone() const;

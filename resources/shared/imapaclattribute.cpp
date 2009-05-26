@@ -27,12 +27,12 @@ ImapAclAttribute::ImapAclAttribute()
 {
 }
 
-ImapAclAttribute::ImapAclAttribute( QMap<QByteArray, KIMAP::Acl::Rights> rights )
+ImapAclAttribute::ImapAclAttribute( const QMap<QByteArray, KIMAP::Acl::Rights> &rights )
   : mRights( rights )
 {
 }
 
-void ImapAclAttribute::setRights( QMap<QByteArray, KIMAP::Acl::Rights> rights )
+void ImapAclAttribute::setRights( const QMap<QByteArray, KIMAP::Acl::Rights> &rights )
 {
   mRights = rights;
 }
