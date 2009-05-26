@@ -111,7 +111,7 @@ Factory::Factory()
       new Function(
           StandardFunctionCountOf,
           QString::fromAscii( "count" ),
-          i18n( "if the count of" ),
+          i18n( "if the total count of" ),
           DataTypeInteger,
           DataTypeStringList | DataTypeAddressList
         )
@@ -131,7 +131,7 @@ Factory::Factory()
       new Function(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address" ),
-          i18n( "if any address from" ),
+          i18n( "if any address extracted from" ),
           DataTypeAddress | DataTypeAddressList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -142,7 +142,7 @@ Factory::Factory()
       new Function(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address:all" ),
-          i18n( "if any address from" ),
+          i18n( "if any address extracted from" ),
           DataTypeAddress | DataTypeAddressList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -153,7 +153,7 @@ Factory::Factory()
       new Function(
           StandardFunctionAnyEMailAddressDomainIn,
           QString::fromAscii( "address:domain" ),
-          i18n( "if any domain from" ),
+          i18n( "if any domain address part extracted from" ),
           DataTypeString | DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -164,7 +164,7 @@ Factory::Factory()
       new Function(
           StandardFunctionAnyEMailAddressLocalPartIn,
           QString::fromAscii( "address:local" ),
-          i18n( "if any username from" ),
+          i18n( "if any username address part extracted from" ),
           DataTypeString | DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )
