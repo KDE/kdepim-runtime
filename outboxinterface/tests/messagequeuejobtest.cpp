@@ -23,6 +23,7 @@
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentManager>
+#include <Akonadi/Collection>
 #include <Akonadi/CollectionStatistics>
 #include <Akonadi/CollectionStatisticsJob>
 #include <Akonadi/Control>
@@ -72,10 +73,8 @@ void MessageQueueJobTest::initTestCase()
   }
 
   // check that outbox is empty
-  LocalFolders::self(); // triggers loading the collections...
+  LocalFolders::self()->fetch();
   QTest::qWait( 1000 );
-  QVERIFY( LocalFolders::self()->isReady() );
-  outbox = LocalFolders::self()->outbox();
   verifyOutboxContents( 0 );
 }
 
@@ -103,7 +102,7 @@ void MessageQueueJobTest::testValidMessages()
   // fetch the message and verify it
   QTest::qWait( 1000 );
   verifyOutboxContents( 1 );
-  ItemFetchJob *fjob = new ItemFetchJob( outbox );
+  ItemFetchJob *fjob = new ItemFetchJob( LocalFolders::self()->outbox() );
   fjob->fetchScope().fetchFullPayload();
   fjob->fetchScope().fetchAllAttributes();
   AKVERIFYEXEC( fjob );
@@ -192,6 +191,8 @@ void MessageQueueJobTest::testInvalidMessages()
 
 void MessageQueueJobTest::verifyOutboxContents( qlonglong count )
 {
+  QVERIFY( LocalFolders::self()->isReady() );
+  Collection outbox = LocalFolders::self()->outbox();
   QVERIFY( outbox.isValid() );
   CollectionStatisticsJob *job = new CollectionStatisticsJob( outbox );
   AKVERIFYEXEC( job );

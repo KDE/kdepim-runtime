@@ -60,6 +60,7 @@ class OutboxInterface::MessageQueueJob::Private
       mode = DispatchModeAttribute::Immediately;
       useDefaultSentMail = true;
       sentMail = -1;
+      started = false;
     }
 
     MessageQueueJob *const q;
@@ -74,6 +75,7 @@ class OutboxInterface::MessageQueueJob::Private
     QStringList to;
     QStringList cc;
     QStringList bcc;
+    bool started;
 
 
     void readAddressesFromMime();
@@ -131,6 +133,9 @@ bool MessageQueueJob::Private::validate()
     Q_ASSERT( LocalFolders::self()->isReady() );
     sentMail = LocalFolders::self()->sentMail().id();
     // Can't do this in the constructor because LocalFolders is not ready.
+
+    // TODO: add support for DefaultSentMailCollection and DeleteAfterSending
+    // in SentCollectionAttribute
   }
 
   if( sentMail < 0 ) {
@@ -149,6 +154,9 @@ void MessageQueueJob::Private::doStart()
     // The error has been set; the result has been emitted.
     return;
   }
+
+  Q_ASSERT( !started );
+  started = true;
 
   // create item
   Item item;
@@ -170,6 +178,7 @@ void MessageQueueJob::Private::doStart()
   item.setFlag( "queued" );
 
   // put item in Akonadi storage
+  Q_ASSERT( LocalFolders::self()->isReady() );
   Collection col = LocalFolders::self()->outbox();
   ItemCreateJob *job = new ItemCreateJob( item, col ); // job autostarts
   q->addSubjob( job );
@@ -297,14 +306,9 @@ void MessageQueueJob::readAddressesFromMime()
 void MessageQueueJob::start()
 {
   LocalFolders *folders = LocalFolders::self();
-  if( folders->isReady() ) {
-    // doStart as soon as we enter the event loop.
-    QTimer::singleShot( 0, this, SLOT( doStart() ) );
-  } else {
-    // doStart when foldersReady
-    connect( folders, SIGNAL( foldersReady() ),
-        this, SLOT( doStart() ) );
-  }
+  connect( folders, SIGNAL( foldersReady() ),
+      this, SLOT( doStart() ) );
+  folders->fetch(); // will emit foldersReady()
 }
 
 void MessageQueueJob::slotResult( KJob *job )

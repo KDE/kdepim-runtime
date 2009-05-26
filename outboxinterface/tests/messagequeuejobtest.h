@@ -22,8 +22,6 @@
 
 #include <QtCore/QObject>
 
-#include <Akonadi/Collection>
-
 
 /**
   This tests the ability to queue messages (MessageQueueJob class).
@@ -42,8 +40,6 @@ class MessageQueueJobTest : public QObject
 
   private:
     void verifyOutboxContents( qlonglong count );
-
-    Akonadi::Collection outbox;
 
 };
 

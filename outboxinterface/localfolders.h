@@ -38,16 +38,19 @@ class LocalFoldersPrivate;
 
 
 /**
-  Takes care of creating the Outbox and Sent-Mail collections for the mail
+  Creates and monitors the Outbox and Sent-Mail collections for the mail
   dispatcher agent.
 
-  The first time it is used, this class:
-  1) creates a new maildir resource;
-  2) creates 'outbox' and 'sent-mail' collections and assigns them to that
-     resource;
-  3) fetches those collections.
-  After that, the collections are easily accessible through outbox() and
-  sentMail().
+  The first time it is used, or when you call fetch(), this class checks for
+  the following:
+  * a maildir resource with name 'Local Mail Folders'
+  * 'outbox' and 'sent-mail' collections under that resource
+  If they do not exist, this class creates them, and then emits foldersReady().
+
+  Do not store the collections returned by outbox() and sentMail().  They can
+  become invalid if e.g. the user deletes them and LocalFolders creates them
+  again, so you should always use LocalFolders::outbox() instead of storing
+  its return value.
 
 */
 class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
@@ -56,13 +59,21 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
   public:
     /**
-      Returns the LocalFolders instance.  When this is first called, it
-      reads the config and creates / fetches the collections.
-
-      TODO: perhaps do this explicitly with prepare() or something?
+      Returns the LocalFolders instance.
+      Does a fetch() when first called.
     */
     static LocalFolders *self();
 
+    /**
+      Begins creating / fetching the resource and collections.
+      Emits foldersReady() when done.
+    */
+    void fetch();
+
+    /**
+      Returns whether the outbox and sent-mail collections have been
+      fetched and are ready to be used via outbox() and sentMail().
+    */
     bool isReady() const;
 
   public Q_SLOTS:
@@ -78,7 +89,7 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
   Q_SIGNALS:
     /**
-      Emitted when the outbox and sent-mail collections have been created and
+      Emitted when the outbox and sent-mail collections have been fetched and
       are ready to be used via outbox() and sentMail().
     */
     void foldersReady();
@@ -91,7 +102,10 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
     LocalFoldersPrivate *const d;
 
-    Q_PRIVATE_SLOT( d, void fetchCollections() )
+    Q_PRIVATE_SLOT( d, void dbusServiceOwnerChanged( const QString &service,
+          const QString &oldOwner, const QString &newOwner ) )
+    Q_PRIVATE_SLOT( d, void prepare() )
+    Q_PRIVATE_SLOT( d, void connectMonitor() )
     Q_PRIVATE_SLOT( d, void resourceCreateResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob * ) )

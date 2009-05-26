@@ -22,9 +22,13 @@
 #include "settings.h"
 
 #include <QApplication>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QMetaType>
 #include <QObject>
+#include <QTimer>
 #include <QVariant>
 
 #include <KDebug>
@@ -39,6 +43,9 @@
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Control>
+#include <Akonadi/Monitor>
+
+#define DBUS_SERVICE_NAME QLatin1String( "org.kde.pim.LocalFolders" )
 
 
 using namespace Akonadi;
@@ -52,39 +59,36 @@ using namespace OutboxInterface;
 class OutboxInterface::LocalFoldersPrivate
 {
   public:
-    LocalFoldersPrivate()
-      : instance( new LocalFolders(this) )
-      , rootMaildir( -1 )
-    {
-      if( !Akonadi::Control::start() ) {
-        kFatal() << "Cannot start Akonadi server.  Quitting.";
-      }
-
-      ready = false;
-      recreate = false;
-      outboxJob = 0;
-      sentMailJob = 0;
-      iface = 0;
-
-      createResourceIfNeeded(); // will emit foldersReady()
-    }
-    ~LocalFoldersPrivate()
-    {
-      delete instance;
-      delete iface;
-    }
+    LocalFoldersPrivate();
+    ~LocalFoldersPrivate();
 
     LocalFolders *instance;
     bool ready;
-    bool recreate;
-    Collection::Id outboxId;
-    Collection::Id sentMailId;
+    bool preparing;
+    bool isMainInstance;
     Collection outbox;
     Collection sentMail;
     Collection rootMaildir;
     KJob *outboxJob;
     KJob *sentMailJob;
     QDBusInterface *iface;
+    Monitor *monitor;
+
+    /**
+      Called when DBus ownership of the service has changed.  This gives us
+      the opportunity to register this class as the "main instance" when the
+      previous "main instance" has quit.
+    */
+    void dbusServiceOwnerChanged( const QString &service, const QString &oldOwner,
+                                  const QString &newOwner ); // slot
+
+    /**
+      Called on startup, or whenever something changes and LocalFolders needs
+      to re-create / re-fetch the resource and collections.
+
+      Will emit foldersReady() when done
+    */
+    void prepare(); // slot
 
     /**
       Creates the maildir resource, if it is not found.
@@ -97,11 +101,17 @@ class OutboxInterface::LocalFoldersPrivate
     void createCollectionsIfNeeded();
 
     /**
+      Creates a Monitor to watch the resource and connects to its signals.
+      This is used to watch for evil users deleting the resource / outbox / etc.
+    */
+    void connectMonitor();
+
+    /**
       Fetches the collections of the maildir resource.
       There is one root collection, which contains the outbox and sent-mail
       collections.
      */
-    void fetchCollections(); // slot
+    void fetchCollections();
 
     // slot called by job creating the resource
     void resourceCreateResult( KJob *job );
@@ -129,6 +139,11 @@ LocalFolders *LocalFolders::self()
   return sInstance->instance;
 }
 
+void LocalFolders::fetch()
+{
+  d->prepare();
+}
+
 bool LocalFolders::isReady() const
 {
   return d->ready;
@@ -147,30 +162,106 @@ Collection LocalFolders::sentMail() const
 }
 
 
+
+LocalFoldersPrivate::LocalFoldersPrivate()
+  : instance( new LocalFolders(this) )
+{
+  qRegisterMetaType<Akonadi::Collection>();
+  if( !Akonadi::Control::start() ) {
+    kFatal() << "Cannot start Akonadi server.  Quitting.";
+  }
+
+  QDBusConnection bus = QDBusConnection::sessionBus();
+  isMainInstance = bus.registerService( DBUS_SERVICE_NAME );
+  kDebug() << "isMainInstance" << isMainInstance;
+  QObject::connect( bus.interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),
+      instance, SLOT(dbusServiceOwnerChanged(QString,QString,QString)) );
+
+  ready = false;
+  // prepare() expects these
+  preparing = false;
+  outboxJob = 0;
+  sentMailJob = 0;
+  iface = 0;
+  monitor = 0;
+  prepare();
+}
+
+LocalFoldersPrivate::~LocalFoldersPrivate()
+{
+  delete instance;
+  delete iface;
+}
+
+void LocalFoldersPrivate::dbusServiceOwnerChanged( const QString &service,
+    const QString &oldOwner, const QString &newOwner )
+{
+  Q_UNUSED( oldOwner );
+  if( !isMainInstance && service == DBUS_SERVICE_NAME && newOwner.isEmpty() ) {
+    kDebug() << "Previous main instance released D-Bus service name.";
+    isMainInstance = QDBusConnection::sessionBus().registerService( DBUS_SERVICE_NAME );
+    if( isMainInstance ) {
+      kDebug() << "I have become the main instance.";
+    }
+  }
+}
+
+void LocalFoldersPrivate::prepare()
+{
+  if( preparing ) {
+    kDebug() << "Already preparing.";
+    return;
+  }
+  kDebug() << "Called. isMainInstance" << isMainInstance;
+  preparing = true;
+  ready = false;
+
+  Q_ASSERT( outboxJob == 0 );
+  Q_ASSERT( sentMailJob == 0 );
+
+  delete iface;
+  iface = 0;
+  delete monitor;
+  monitor = 0;
+
+  rootMaildir = Collection( -1 );
+  outbox = Collection( -1 );
+  sentMail = Collection( -1 );
+
+  createResourceIfNeeded();
+}
+
 void LocalFoldersPrivate::createResourceIfNeeded()
 {
+  Q_ASSERT( preparing );
   kDebug() << "Resource" << Settings::resourceId();
 
   // check that the maildir resource exists
   AgentInstance resource = AgentManager::self()->instance( Settings::resourceId() );
   if( !resource.isValid() ) {
-    kDebug() << "Creating maildir resource.";
-    AgentType type = AgentManager::self()->type( "akonadi_maildir_resource" );
-    AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type );
-    QObject::connect( job, SIGNAL( result( KJob * ) ),
-      instance, SLOT( resourceCreateResult( KJob * ) ) );
-    // this is not an Akonadi::Job, so we must start it ourselves
-    job->start();
+    if( !isMainInstance ) {
+      kDebug() << "Waiting for the main instance to create the resource.";
+      QTimer::singleShot( 1000, instance, SLOT( prepare() ) );
+    } else {
+      kDebug() << "Creating maildir resource.";
+      AgentType type = AgentManager::self()->type( "akonadi_maildir_resource" );
+      AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type );
+      QObject::connect( job, SIGNAL( result( KJob * ) ),
+        instance, SLOT( resourceCreateResult( KJob * ) ) );
+      // this is not an Akonadi::Job, so we must start it ourselves
+      job->start();
+    }
   } else {
-    fetchCollections();
+    connectMonitor();
   }
 }
 
 void LocalFoldersPrivate::createCollectionsIfNeeded()
 {
+  Q_ASSERT( preparing ); // but I may not be the main instance
   Q_ASSERT( rootMaildir.isValid() );
 
-  if( outboxId < 0 ) {
+  if( !outbox.isValid() ) {
     kDebug() << "Creating outbox collection.";
     Collection col;
     col.setParent( rootMaildir );
@@ -182,7 +273,7 @@ void LocalFoldersPrivate::createCollectionsIfNeeded()
       instance, SLOT( collectionCreateResult( KJob * ) ) );
   }
 
-  if( sentMailId < 0 ) {
+  if( !sentMail.isValid() ) {
     kDebug() << "Creating sent-mail collection.";
     Collection col;
     col.setParent( rootMaildir );
@@ -197,17 +288,31 @@ void LocalFoldersPrivate::createCollectionsIfNeeded()
   if( outboxJob == 0 && sentMailJob == 0 ) {
     // Everything is ready (created and fetched).
     kDebug() << "Local folders ready. resourceId" << Settings::resourceId()
-             << "outbox id" << outboxId << "sentMail id" << sentMailId;
+             << "outbox id" << outbox.id() << "sentMail id" << sentMail.id();
 
     Q_ASSERT( !ready );
     ready = true;
+    preparing = false;
     Settings::self()->writeConfig();
     emit instance->foldersReady();
   }
 }
 
+void LocalFoldersPrivate::connectMonitor()
+{
+  Q_ASSERT( preparing ); // but I may not be the main instance
+  Q_ASSERT( monitor == 0 );
+  monitor = new Monitor( instance );
+  monitor->setResourceMonitored( Settings::resourceId().toAscii() );
+  QObject::connect( monitor, SIGNAL( collectionRemoved( Akonadi::Collection ) ),
+      instance, SLOT( prepare() ), Qt::QueuedConnection );
+  kDebug() << "Connected monitor.";
+  fetchCollections();
+}
+
 void LocalFoldersPrivate::fetchCollections()
 {
+  Q_ASSERT( preparing ); // but I may not be the main instance
   if( iface ) {
     iface->deleteLater();
     iface = 0;
@@ -222,6 +327,8 @@ void LocalFoldersPrivate::fetchCollections()
 
 void LocalFoldersPrivate::resourceCreateResult( KJob *job )
 {
+  Q_ASSERT( isMainInstance );
+  Q_ASSERT( preparing );
   if( job->error() ) {
     kFatal() << "AgentInstanceCreateJob failed to make a maildir resource for us.";
   }
@@ -247,7 +354,7 @@ void LocalFoldersPrivate::resourceCreateResult( KJob *job )
   iface = new QDBusInterface( "org.freedesktop.Akonadi.Resource." + Settings::resourceId(),
       "/", "org.freedesktop.Akonadi.Resource" );
   QObject::connect( iface, SIGNAL( synchronized() ),
-      instance, SLOT( fetchCollections() ) );
+      instance, SLOT( connectMonitor() ) );
   reply = iface->call( "synchronize" );
   if( !reply.isValid() ) {
     kFatal() << "Cannot sync the resource via DBus.";
@@ -261,22 +368,22 @@ void LocalFoldersPrivate::resourceCreateResult( KJob *job )
 
 void LocalFoldersPrivate::collectionCreateResult( KJob *job )
 {
+  Q_ASSERT( isMainInstance );
   if( job->error() ) {
     kFatal() << "CollectionCreateJob failed to make a collection for us.";
   }
 
   CollectionCreateJob *createJob = static_cast<CollectionCreateJob *>( job );
-  Collection col = createJob->collection();
   if( job == outboxJob ) {
     outboxJob = 0;
-    outboxId = col.id();
-    kDebug() << "created outbox collection with id" << outboxId;
+    outbox = createJob->collection();
+    kDebug() << "Created outbox collection with id" << outbox.id();
   } else if( job == sentMailJob ) {
     sentMailJob = 0;
-    sentMailId = col.id();
-    kDebug() << "created sent-mail collection with id" << sentMailId;
+    sentMail = createJob->collection();
+    kDebug() << "Created sent-mail collection with id" << sentMail.id();
   } else {
-    kFatal() << "got a result for a job I don't know about.";
+    kFatal() << "Got a result for a job I don't know about.";
   }
 
   if( outboxJob == 0 && sentMailJob == 0 ) {
@@ -287,26 +394,25 @@ void LocalFoldersPrivate::collectionCreateResult( KJob *job )
 
 void LocalFoldersPrivate::collectionFetchResult( KJob *job )
 {
+  Q_ASSERT( preparing ); // but I may not be the main instance
   CollectionFetchJob *fetchJob = static_cast<CollectionFetchJob *>( job );
   Collection::List cols = fetchJob->collections();
 
   kDebug() << "CollectionFetchJob fetched" << cols.count() << "collections.";
 
-  outboxId = -1;
-  sentMailId = -1;
+  outbox = Collection( -1 );
+  sentMail = Collection( -1 );
   Q_FOREACH( const Collection col, cols ) {
     if( col.parent() == Collection::root().id() ) {
       rootMaildir = col;
       kDebug() << "Fetched root maildir collection.";
     } else if( col.name() == "outbox" ) {
-      Q_ASSERT( outboxId == -1 );
+      Q_ASSERT( outbox.id() == -1 );
       outbox = col;
-      outboxId = col.id();
       kDebug() << "Fetched outbox collection.";
     } else if( col.name() == "sent-mail" ) {
-      Q_ASSERT( sentMailId == -1 );
+      Q_ASSERT( sentMail.id() == -1 );
       sentMail = col;
-      sentMailId = col.id();
       kDebug() << "Fetched sent-mail collection.";
     } else {
       kWarning() << "Extraneous collection" << col.name() << "with id"
