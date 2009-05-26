@@ -68,6 +68,7 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 
   if( item.remoteId().isEmpty() ) {
     kDebug() << "item" << item.id() << "has an empty remoteId.";
+    // HACK:
     // This probably means that it hasn't yet been stored on disk by the
     // maildir resource, so I'll let it go for now, and process it when
     // it's ready.

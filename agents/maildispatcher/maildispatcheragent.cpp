@@ -39,6 +39,8 @@
 #include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
+#include <outboxinterface/errorattribute.h>
+#include <outboxinterface/sentcollectionattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -62,30 +64,19 @@ class MailDispatcherAgent::Private
 
     MailDispatcherAgent * const q;
 
-    Collection outbox;
-    // TODO: only SendJob should worry about sent-mail
-    Collection sentMail;
     ItemFilterProxyModel *model;
-    Item currentItem;
     KJob *currentJob;
 
-    void getLocalFolders();
     void connectModel( bool connect );
 
     // slots:
     void dispatch();
-    void localFoldersReady();
+    void localFoldersChanged();
     void itemFetched( Item &item );
     void sendResult( KJob *job );
 
 };
 
-
-void MailDispatcherAgent::Private::getLocalFolders()
-{
-  LocalFolders *folders = LocalFolders::self(); //triggers loading/creating collections
-  connect( folders, SIGNAL( foldersReady() ), q, SLOT( localFoldersReady() ) );
-}
 
 void MailDispatcherAgent::Private::connectModel( bool connect )
 {
@@ -116,31 +107,17 @@ void MailDispatcherAgent::Private::dispatch()
   model->fetchAnItem(); // will trigger itemFetched
 }
 
-void MailDispatcherAgent::Private::localFoldersReady()
+void MailDispatcherAgent::Private::localFoldersChanged()
 {
-  LocalFolders *folders = LocalFolders::self();
-  // TODO is it ok to assign collections like this?
-  outbox = folders->outbox();
-  sentMail = folders->sentMail();
+  // NOTE that this is called whenever the outbox/sent-mail collections change,
+  // not only on startup.
 
-  // create model to monitor outbox
-  if( !outbox.isValid() ) {
-    kFatal() << "invalid outbox collection.";
-  }
-  kDebug() << "outbox collection (" << outbox.id() << "," << outbox.name() << ").";
-  model = new ItemFilterProxyModel();
-  ItemModel *itemModel = new ItemModel( model ); // child -> autodeletes
-  // we need to set the fetchScope before calling setCollection
-  itemModel->fetchScope().fetchAllAttributes(); // what ItemFilterProxyModel needs to check
+  Collection outbox = LocalFolders::self()->outbox();
+  Q_ASSERT( outbox.isValid() );
+  kDebug() << "Outbox collection changed to (" << outbox.id() << "," << outbox.name() << ").";
+  ItemModel *itemModel = dynamic_cast<ItemModel*>( model->sourceModel() );
+  Q_ASSERT( itemModel );
   itemModel->setCollection( outbox );
-  model->setSourceModel( itemModel );
-  connectModel( q->isOnline() );
-
-  if( !sentMail.isValid() ) {
-    // non-fatal: some users don't have a sent-mail folder at all
-    kWarning() << "invalid sent-mail collection.";
-  }
-  kDebug() << "sent-mail collection (" << sentMail.id() << "," << sentMail.name() << ").";
 }
 
 
@@ -151,6 +128,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   // register attributes
   AttributeFactory::registerAttribute<AddressAttribute>();
   AttributeFactory::registerAttribute<DispatchModeAttribute>();
+  AttributeFactory::registerAttribute<ErrorAttribute>();
+  AttributeFactory::registerAttribute<SentCollectionAttribute>();
   AttributeFactory::registerAttribute<TransportAttribute>();
 
   kDebug() << "maildispatcheragent: At your service, sir!";
@@ -159,7 +138,14 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
-  d->getLocalFolders();
+  d->model = new ItemFilterProxyModel();
+  ItemModel *itemModel = new ItemModel( d->model ); // child -> autodeletes
+  // we need to set the fetchScope before calling setCollection
+  itemModel->fetchScope().fetchAllAttributes(); // what ItemFilterProxyModel needs to check
+  d->model->setSourceModel( itemModel );
+  LocalFolders *folders = LocalFolders::self();
+  connect( folders, SIGNAL( foldersReady() ), this, SLOT( localFoldersChanged() ) );
+  folders->fetch(); // will emit foldersReady()
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
@@ -182,8 +168,6 @@ void MailDispatcherAgent::doSetOnline( bool online )
 
 void MailDispatcherAgent::Private::itemFetched( Item &item )
 {
-  currentItem = item;
-
   kDebug() << "Fetched item" << item.id() << "; creating SendJob.";
   Q_ASSERT( currentJob == 0 );
   currentJob = new SendJob( item );
