@@ -88,6 +88,9 @@ class KDEPIM_EXPORT CategorySelectDialog : public KDialog
     void categoriesSelected( const QStringList & );
     void editCategories();
 
+  protected:
+    /*reimp*/void enterEvent( QEvent * );
+
   private:
     CategorySelectWidget *mWidgets;
 

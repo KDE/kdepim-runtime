@@ -38,7 +38,8 @@ namespace KPIM
 class CategorySelectWidgetBase : public QWidget, public Ui::CategorySelectDialog_base
 {
   public:
-    CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent ) {
+    CategorySelectWidgetBase( QWidget *parent ) : QWidget( parent )
+    {
       setupUi( this );
 
       mButtonClear->setIcon( KIcon( "edit-clear-locationbar-rtl" ) );
@@ -187,6 +188,7 @@ CategorySelectDialog::CategorySelectDialog( KPimPrefs *prefs, QWidget *parent )
   lay->addWidget( mWidgets );
 
   mWidgets->setCategories();
+  mWidgets->setFocus();
 
   connect( mWidgets, SIGNAL(editCategories()), SIGNAL(editCategories()) );
 
@@ -239,6 +241,12 @@ void CategorySelectDialog::setCategoryList( const QStringList &categories )
 void CategorySelectDialog::setSelected( const QStringList &selList )
 {
   mWidgets->setSelected( selList );
+}
+
+void CategorySelectDialog::enterEvent( QEvent *event )
+{
+  Q_UNUSED( event );
+  mWidgets->setFocus();
 }
 
 #include "categoryselectdialog.moc"
