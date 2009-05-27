@@ -77,6 +77,7 @@ private Q_SLOTS:
                             const QList< QList<QByteArray> > &flags );
   void onGetAclDone( KJob *job );
   void onRightsReceived( KJob *job );
+  void onQuotasReceived( KJob *job );
   void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
   void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,

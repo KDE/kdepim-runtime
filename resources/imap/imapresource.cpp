@@ -49,6 +49,7 @@
 #include <kimap/fetchjob.h>
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
+#include <kimap/getquotarootjob.h>
 #include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/logoutjob.h>
@@ -79,6 +80,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include "collectionflagsattribute.h"
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
+#include "imapquotaattribute.h"
 
 #include "imapaccount.h"
 
@@ -93,6 +95,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -461,6 +464,14 @@ void ImapResource::retrieveItems( const Collection &col )
     rights->start();
   }
 
+  // Get the QUOTA info from the mailbox if it's supported
+  if ( capabilities.contains( "QUOTA" ) ) {
+    KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_account->session() );
+    quota->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    quota->setMailBox( mailBox );
+    connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
+    quota->start();
+  }
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
@@ -703,6 +714,46 @@ void ImapResource::onRightsReceived( KJob *job )
     CollectionModifyJob *modify = new CollectionModifyJob( collection );
     modify->exec();
   }
+}
+
+void ImapResource::onQuotasReceived( KJob *job )
+{
+  if ( job->error() ) {
+    return; // Well, no metadata for us then...
+  }
+
+  KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob*>( job );
+  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+
+  QList<QByteArray> newRoots = quotaJob->roots();
+  QList< QMap<QByteArray, qint64> > newLimits;
+  QList< QMap<QByteArray, qint64> > newUsages;
+
+  foreach ( const QByteArray &root, newRoots ) {
+    newLimits << quotaJob->allLimits( root );
+    newUsages << quotaJob->allUsages( root );
+  }
+
+  // Store the mailbox Quotas
+  if ( !collection.hasAttribute( "imapquota" ) ) {
+    ImapQuotaAttribute *quotaAttribute  = new ImapQuotaAttribute( newRoots, newLimits, newUsages );
+    collection.addAttribute( quotaAttribute );
+  } else {
+    ImapQuotaAttribute *quotaAttribute =
+      static_cast<ImapQuotaAttribute*>( collection.attribute( "imapquota" ) );
+    const QList<QByteArray> oldRoots = quotaAttribute->roots();
+    const QList< QMap<QByteArray, qint64> > oldLimits = quotaAttribute->limits();
+    const QList< QMap<QByteArray, qint64> > oldUsages = quotaAttribute->usages();
+
+    if ( oldRoots != newRoots
+      || oldLimits != newLimits
+      || oldUsages != newUsages ) {
+      quotaAttribute->setQuotas( newRoots, newLimits, newUsages );
+    }
+  }
+
+  CollectionModifyJob *modify = new CollectionModifyJob( collection );
+  modify->exec();
 }
 
 void ImapResource::onGetMetaDataDone( KJob *job )
