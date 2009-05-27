@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.cpp
+ *  File : actionselector.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "actioneditor.h"
+#include "actionselector.h"
 
 #include <akonadi/filter/action.h>
 #include <akonadi/filter/factory.h>
@@ -43,16 +43,16 @@ namespace UI
 
 #define INDENT 20
 
-class ActionEditorPrivate
+class ActionSelectorPrivate
 {
 public:
   Private::CoolComboBox * mTypeComboBox;
 };
 
-ActionEditor::ActionEditor( QWidget * parent, Factory * factory )
+ActionSelector::ActionSelector( QWidget * parent, Factory * factory )
   : QWidget( parent ), mFactory( factory )
 {
-  mPrivate = new ActionEditorPrivate;
+  mPrivate = new ActionSelectorPrivate;
 
   QGridLayout * g = new QGridLayout( this );
   g->setMargin( 1 );
@@ -72,16 +72,16 @@ ActionEditor::ActionEditor( QWidget * parent, Factory * factory )
   g->setColumnMinimumWidth( 0, INDENT );
 }
 
-ActionEditor::~ActionEditor()
+ActionSelector::~ActionSelector()
 {
   delete mPrivate;
 }
 
-void ActionEditor::fillFromAction( Action::Base * action )
+void ActionSelector::fillFromAction( Action::Base * action )
 {
 }
 
-bool ActionEditor::commitToAction( Action::Base * action )
+bool ActionSelector::commitToAction( Action::Base * action )
 {
   return false;
 }

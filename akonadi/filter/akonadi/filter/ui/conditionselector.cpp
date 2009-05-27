@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : conditioneditor.cpp
+ *  File : conditionselector.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "conditioneditor.h"
+#include "conditionselector.h"
 
 #include <akonadi/filter/condition.h>
 #include <akonadi/filter/factory.h>
@@ -62,7 +62,7 @@ public:
   const Function * mFunction;
 };
 
-class ConditionEditorPrivate
+class ConditionSelectorPrivate
 {
 public:
   QList< ConditionDescriptor * > mConditionDescriptorList; // FIXME: This could be shared between all the editors with the same factory
@@ -73,18 +73,18 @@ public:
   KLineEdit * mValueLineEdit;
   QWidget * mChildConditionListBase;
   QWidget * mRightControlsBase;
-  QList< ConditionEditor * > mChildConditionEditorList;
+  QList< ConditionSelector * > mChildConditionSelectorList;
   QVBoxLayout * mChildConditionListLayout;  
 };
 
 
 
-ConditionEditor::ConditionEditor( QWidget * parent, Factory * factory, ConditionEditor * parentConditionEditor )
+ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, ConditionSelector * parentConditionSelector )
   : QWidget( parent ), mFactory( factory )
 {
-  mParentConditionEditor = parentConditionEditor;
+  mParentConditionSelector = parentConditionSelector;
 
-  mPrivate = new ConditionEditorPrivate;
+  mPrivate = new ConditionSelectorPrivate;
 
   QGridLayout * g = new QGridLayout( this );
   g->setMargin( 0 );
@@ -234,24 +234,24 @@ ConditionEditor::ConditionEditor( QWidget * parent, Factory * factory, Condition
   g->setColumnStretch( 1, 1 );
 }
 
-ConditionEditor::~ConditionEditor()
+ConditionSelector::~ConditionSelector()
 {
   qDeleteAll( mPrivate->mConditionDescriptorList );
   delete mPrivate;
 }
 
-QSize ConditionEditor::sizeHint() const
+QSize ConditionSelector::sizeHint() const
 {
   return layout()->minimumSize();
 }
 
-QSize ConditionEditor::minimumSizeHint() const
+QSize ConditionSelector::minimumSizeHint() const
 {
   return layout()->minimumSize();
 }
 
 
-void ConditionEditor::setupUIForActiveType()
+void ConditionSelector::setupUIForActiveType()
 {
   int index = mPrivate->mTypeComboBox->currentIndex();
   if( index < 0 )
@@ -329,10 +329,10 @@ void ConditionEditor::setupUIForActiveType()
       mPrivate->mOperatorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
 
-      if( mPrivate->mChildConditionEditorList.count() == 0 )
+      if( mPrivate->mChildConditionSelectorList.count() == 0 )
       {
-        ConditionEditor * child = new ConditionEditor( mPrivate->mChildConditionListBase, mFactory, this );
-        mPrivate->mChildConditionEditorList.append( child );
+        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+        mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
 
@@ -346,7 +346,7 @@ void ConditionEditor::setupUIForActiveType()
 
 }
 
-void ConditionEditor::childEditorTypeChanged( ConditionEditor * child )
+void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
 {
   ConditionDescriptor * d = descriptorForActiveType();
 
@@ -356,17 +356,17 @@ void ConditionEditor::childEditorTypeChanged( ConditionEditor * child )
     )
     return; // nothing to do here
 
-  int idx = mPrivate->mChildConditionEditorList.indexOf( child );
+  int idx = mPrivate->mChildConditionSelectorList.indexOf( child );
 
   Q_ASSERT( idx >= 0 );
 
-  if( idx == ( mPrivate->mChildConditionEditorList.count() - 1 ) )
+  if( idx == ( mPrivate->mChildConditionSelectorList.count() - 1 ) )
   {
     if( !child->isEmpty() )
     {
       // need a new one
-      child = new ConditionEditor( mPrivate->mChildConditionListBase, mFactory, this );
-      mPrivate->mChildConditionEditorList.append( child );
+      child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+      mPrivate->mChildConditionSelectorList.append( child );
       mPrivate->mChildConditionListLayout->addWidget( child );
     }
   } else {
@@ -374,14 +374,14 @@ void ConditionEditor::childEditorTypeChanged( ConditionEditor * child )
     {
       // if the following editors are empty too: kill them
       idx++;
-      while( idx < mPrivate->mChildConditionEditorList.count() ) // note that it's count() that changes here, not idx
+      while( idx < mPrivate->mChildConditionSelectorList.count() ) // note that it's count() that changes here, not idx
       {
-        child = mPrivate->mChildConditionEditorList.at( idx );
+        child = mPrivate->mChildConditionSelectorList.at( idx );
         Q_ASSERT( child );
         if( child->isEmpty() )
         {
           delete child;
-          mPrivate->mChildConditionEditorList.removeOne( child );
+          mPrivate->mChildConditionSelectorList.removeOne( child );
         } else {
           break;
         }
@@ -390,7 +390,7 @@ void ConditionEditor::childEditorTypeChanged( ConditionEditor * child )
   }
 }
 
-void ConditionEditor::typeComboBoxActivated( int )
+void ConditionSelector::typeComboBoxActivated( int )
 {
   setupUIForActiveType();
 
@@ -412,8 +412,8 @@ void ConditionEditor::typeComboBoxActivated( int )
       // do nothing here
     break;
     case Condition::ConditionTypePropertyTest:
-      qDeleteAll( mPrivate->mChildConditionEditorList );
-      mPrivate->mChildConditionEditorList.clear();
+      qDeleteAll( mPrivate->mChildConditionSelectorList );
+      mPrivate->mChildConditionSelectorList.clear();
       fillPropertyTestControls( d );
     break;
     default:
@@ -421,11 +421,11 @@ void ConditionEditor::typeComboBoxActivated( int )
     break;
   }
 
-  if( mParentConditionEditor )
-    mParentConditionEditor->childEditorTypeChanged( this );
+  if( mParentConditionSelector )
+    mParentConditionSelector->childEditorTypeChanged( this );
 }
 
-ConditionDescriptor * ConditionEditor::descriptorForActiveType()
+ConditionDescriptor * ConditionSelector::descriptorForActiveType()
 {
   int idx = mPrivate->mTypeComboBox->currentIndex();
   if( idx < 0 )
@@ -435,14 +435,14 @@ ConditionDescriptor * ConditionEditor::descriptorForActiveType()
 }
 
 
-bool ConditionEditor::isEmpty()
+bool ConditionSelector::isEmpty()
 {
   ConditionDescriptor * d = descriptorForActiveType();
   Q_ASSERT( d );
   return d->mType == Condition::ConditionTypeUnknown;
 }
 
-void ConditionEditor::reset()
+void ConditionSelector::reset()
 {
   ConditionDescriptor * descriptor = 0;
   int idx = 0;
@@ -463,7 +463,7 @@ void ConditionEditor::reset()
    mPrivate->mTypeComboBox->setCurrentIndex( idx );
 }
 
-void ConditionEditor::fillPropertyTestControls( ConditionDescriptor * descriptor )
+void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descriptor )
 {
   mPrivate->mDataMemberComboBox->clear();
 
@@ -490,7 +490,7 @@ void ConditionEditor::fillPropertyTestControls( ConditionDescriptor * descriptor
   }
 }
 
-void ConditionEditor::fillFromCondition( Condition::Base * condition )
+void ConditionSelector::fillFromCondition( Condition::Base * condition )
 {
   ConditionDescriptor * descriptor = 0;
   int idx = 0;
@@ -546,24 +546,24 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
 
       int expectedEditorCount = childConditions->count() + 1;
 
-      ConditionEditor * child;
+      ConditionSelector * child;
 
-      while( mPrivate->mChildConditionEditorList.count() > expectedEditorCount )
+      while( mPrivate->mChildConditionSelectorList.count() > expectedEditorCount )
       {
-        child = mPrivate->mChildConditionEditorList.last();
+        child = mPrivate->mChildConditionSelectorList.last();
         Q_ASSERT( child );
         delete child;
-        mPrivate->mChildConditionEditorList.removeLast();
+        mPrivate->mChildConditionSelectorList.removeLast();
       }
       
-      while( mPrivate->mChildConditionEditorList.count() < expectedEditorCount )
+      while( mPrivate->mChildConditionSelectorList.count() < expectedEditorCount )
       {
-        child = new ConditionEditor( mPrivate->mChildConditionListBase, mFactory, this );
-        mPrivate->mChildConditionEditorList.append( child );
+        child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+        mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
 
-      QList< ConditionEditor * >::Iterator editorListIterator = mPrivate->mChildConditionEditorList.begin();
+      QList< ConditionSelector * >::Iterator editorListIterator = mPrivate->mChildConditionSelectorList.begin();
       QList< Condition::Base * >::ConstIterator conditionIterator = childConditions->begin();
       while( conditionIterator != childConditions->end() )
       {
@@ -572,48 +572,48 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
         ++editorListIterator;
       }
 
-      Q_ASSERT( editorListIterator != mPrivate->mChildConditionEditorList.end() ); // there must be exactly another one
+      Q_ASSERT( editorListIterator != mPrivate->mChildConditionSelectorList.end() ); // there must be exactly another one
       ( *editorListIterator )->reset();
 
       ++editorListIterator;
-      Q_ASSERT( editorListIterator == mPrivate->mChildConditionEditorList.end() );
+      Q_ASSERT( editorListIterator == mPrivate->mChildConditionSelectorList.end() );
 
     }
     break;
     case Condition::ConditionTypeNot:
     {
-      ConditionEditor * child;
-      if( mPrivate->mChildConditionEditorList.count() != 1 )
+      ConditionSelector * child;
+      if( mPrivate->mChildConditionSelectorList.count() != 1 )
       {
-        if( mPrivate->mChildConditionEditorList.count() == 0 )
+        if( mPrivate->mChildConditionSelectorList.count() == 0 )
         {
-          child = new ConditionEditor( mPrivate->mChildConditionListBase, mFactory, this );
-          mPrivate->mChildConditionEditorList.append( child );
+          child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+          mPrivate->mChildConditionSelectorList.append( child );
           mPrivate->mChildConditionListLayout->addWidget( child );
         } else {
-          while( mPrivate->mChildConditionEditorList.count() != 1 )
+          while( mPrivate->mChildConditionSelectorList.count() != 1 )
           {
-            child = mPrivate->mChildConditionEditorList.last();
+            child = mPrivate->mChildConditionSelectorList.last();
             Q_ASSERT( child );
             delete child;
-            mPrivate->mChildConditionEditorList.removeLast();
+            mPrivate->mChildConditionSelectorList.removeLast();
           }
         }
       }
-      child = mPrivate->mChildConditionEditorList.last();
+      child = mPrivate->mChildConditionSelectorList.last();
       Q_ASSERT( child );
       child->fillFromCondition( static_cast< Condition::Not * >( condition )->childCondition() );
     }
     break;
     case Condition::ConditionTypeTrue:
     case Condition::ConditionTypeFalse:
-      qDeleteAll( mPrivate->mChildConditionEditorList );
-      mPrivate->mChildConditionEditorList.clear();
+      qDeleteAll( mPrivate->mChildConditionSelectorList );
+      mPrivate->mChildConditionSelectorList.clear();
     break;
     case Condition::ConditionTypePropertyTest:
     {
-      qDeleteAll( mPrivate->mChildConditionEditorList );
-      mPrivate->mChildConditionEditorList.clear();
+      qDeleteAll( mPrivate->mChildConditionSelectorList );
+      mPrivate->mChildConditionSelectorList.clear();
       fillPropertyTestControls( descriptor );
     }
     break;
@@ -626,7 +626,7 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
 
 }
 
-bool ConditionEditor::commitToCondition( Condition::Base * condition )
+bool ConditionSelector::commitToCondition( Condition::Base * condition )
 {
   return false;
 }

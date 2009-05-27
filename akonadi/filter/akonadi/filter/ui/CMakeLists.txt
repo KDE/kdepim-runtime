@@ -19,8 +19,8 @@ configure_file(
 
 set(
 		AKONADI_FILTER_UI_LIB_SRCS
-		actioneditor.cpp
-		conditioneditor.cpp
+		actionselector.cpp
+		conditionselector.cpp
 		coolcombobox.cpp
 		extensionlabel.cpp
 		programeditor.cpp
@@ -69,8 +69,8 @@ install(
 
 install(
 		FILES
-			actioneditor.h
-			conditioneditor.h
+			actionselector.h
+			conditionselector.h
 			programeditor.h
 			ruleeditor.h
 			rulelisteditor.h

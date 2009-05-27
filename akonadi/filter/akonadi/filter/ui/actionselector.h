@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : conditioneditor.h
+ *  File : actionselector.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,13 +23,14 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
-#define _AKONADI_FILTER_UI_CONDITIONEDITOR_H_
+#ifndef _AKONADI_FILTER_UI_ACTIONSELECTOR_H_
+#define _AKONADI_FILTER_UI_ACTIONSELECTOR_H_
 
 #include "config-akonadi-filter-ui.h"
 
 #include <QWidget>
 
+class KComboBox;
 
 namespace Akonadi
 {
@@ -38,49 +39,32 @@ namespace Filter
 
 class Factory;
 
-namespace Condition
+namespace Action
 {
   class Base;
-} // namespace Condition
+} // namespace Action
 
 namespace UI
 {
 
-class ConditionDescriptor;
-class ConditionEditorPrivate;
+class ActionSelectorPrivate;
 
-class AKONADI_FILTER_UI_EXPORT ConditionEditor : public QWidget
+class AKONADI_FILTER_UI_EXPORT ActionSelector : public QWidget
 {
   Q_OBJECT
-
 public:
-  ConditionEditor( QWidget * parent, Factory * factory, ConditionEditor * parentConditionEditor = 0 );
-  virtual ~ConditionEditor();
+  ActionSelector( QWidget * parent, Factory * factory );
+  virtual ~ActionSelector();
 
 protected:
-
   Factory * mFactory;
-  ConditionEditor * mParentConditionEditor;
-  ConditionEditorPrivate * mPrivate;
+  ActionSelectorPrivate * mPrivate;
 
 public:
-  virtual void fillFromCondition( Condition::Base * condition );
-  virtual bool commitToCondition( Condition::Base * condition );
-  void reset();
-  bool isEmpty();
+  virtual void fillFromAction( Action::Base * action );
+  virtual bool commitToAction( Action::Base * action );
 
-protected:
-  void childEditorTypeChanged( ConditionEditor * child );
-  virtual QSize sizeHint() const;
-  virtual QSize minimumSizeHint() const;
-
-private:
-  void setupUIForActiveType();
-  ConditionDescriptor * descriptorForActiveType();
-  void fillPropertyTestControls( ConditionDescriptor * descriptor );
-protected slots:
-  void typeComboBoxActivated( int index );
-}; // class ConditionEditor
+}; // class ActionSelector
 
 } // namespace UI
 
@@ -88,4 +72,4 @@ protected slots:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_CONDITIONEDITOR_H_
+#endif //!_AKONADI_FILTER_UI_ACTIONSELECTOR_H_
