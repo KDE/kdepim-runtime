@@ -40,6 +40,7 @@ class RaceTest : public QObject
     void initTestCase();
     void testMultipleProcesses_data();
     void testMultipleProcesses();
+    void killZombies();
 
   private:
     QList<KProcess*> procs;

@@ -67,14 +67,7 @@ void RaceTest::testMultipleProcesses()
   QFETCH( int, count );
   QFETCH( int, delay );
 
-  while( !procs.isEmpty() ) {
-    // These processes probably hung, and will never recover, so we need to kill them.
-    // (This happens if the last test failed.)
-    kDebug() << "Killing zombies from the past.";
-    KProcess *proc = procs.takeFirst();
-    proc->kill();
-    proc->deleteLater();
-  }
+  killZombies();
 
   // Remove all maildir instances (at most 1 really) and MDAs (which use LocalFolders).
   // (This is to ensure that one of *our* instances is the main instance.)
@@ -155,6 +148,17 @@ void RaceTest::testMultipleProcesses()
   QVERIFY( procs.isEmpty() );
 }
 
+void RaceTest::killZombies()
+{
+  while( !procs.isEmpty() ) {
+    // These processes probably hung, and will never recover, so we need to kill them.
+    // (This happens if the last test failed.)
+    kDebug() << "Killing zombies from the past.";
+    KProcess *proc = procs.takeFirst();
+    proc->kill();
+    proc->deleteLater();
+  }
+}
 
 QTEST_AKONADIMAIN( RaceTest, NoGUI )
 
