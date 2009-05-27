@@ -26,7 +26,6 @@
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusReply>
-#include <QMetaType>
 #include <QObject>
 #include <QTimer>
 #include <QVariant>
@@ -65,6 +64,7 @@ class OutboxInterface::LocalFoldersPrivate
     LocalFolders *instance;
     bool ready;
     bool preparing;
+    bool scheduled;
     bool isMainInstance;
     Collection outbox;
     Collection sentMail;
@@ -83,12 +83,21 @@ class OutboxInterface::LocalFoldersPrivate
                                   const QString &newOwner ); // slot
 
     /**
-      Called on startup, or whenever something changes and LocalFolders needs
-      to re-create / re-fetch the resource and collections.
+      If this is the main instance, attempts to create the resource and collections
+      if necessary, then fetches them.
+      If this is not the main instance, waits for them to be created by the main
+      instance, and then fetches them.
 
       Will emit foldersReady() when done
     */
-    void prepare(); // slot
+    void prepare();
+
+    /**
+      Schedules a prepare() in 1 second.
+      Called when this is not the main instance and we need to wait, or when
+      something disappeared and needs to be recreated.
+    */
+    void schedulePrepare(); // slot
 
     /**
       Creates the maildir resource, if it is not found.
@@ -166,14 +175,12 @@ Collection LocalFolders::sentMail() const
 LocalFoldersPrivate::LocalFoldersPrivate()
   : instance( new LocalFolders(this) )
 {
-  qRegisterMetaType<Akonadi::Collection>();
   if( !Akonadi::Control::start() ) {
     kFatal() << "Cannot start Akonadi server.  Quitting.";
   }
 
   QDBusConnection bus = QDBusConnection::sessionBus();
   isMainInstance = bus.registerService( DBUS_SERVICE_NAME );
-  kDebug() << "isMainInstance" << isMainInstance;
   QObject::connect( bus.interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),
       instance, SLOT(dbusServiceOwnerChanged(QString,QString,QString)) );
 
@@ -208,21 +215,23 @@ void LocalFoldersPrivate::dbusServiceOwnerChanged( const QString &service,
 
 void LocalFoldersPrivate::prepare()
 {
+  if( ready ) {
+    kDebug() << "Already ready.  Emitting foldersReady().";
+    emit instance->foldersReady();
+    return;
+  }
   if( preparing ) {
     kDebug() << "Already preparing.";
     return;
   }
-  kDebug() << "Called. isMainInstance" << isMainInstance;
+  kDebug() << "Preparing. isMainInstance" << isMainInstance;
   preparing = true;
-  ready = false;
+  scheduled = false;
 
   Q_ASSERT( outboxJob == 0 );
   Q_ASSERT( sentMailJob == 0 );
-
-  delete iface;
-  iface = 0;
-  delete monitor;
-  monitor = 0;
+  Q_ASSERT( iface == 0 );
+  Q_ASSERT( monitor == 0);
 
   rootMaildir = Collection( -1 );
   outbox = Collection( -1 );
@@ -231,17 +240,41 @@ void LocalFoldersPrivate::prepare()
   createResourceIfNeeded();
 }
 
+void LocalFoldersPrivate::schedulePrepare()
+{
+  if( scheduled ) {
+    kDebug() << "Prepare already scheduled.";
+    return;
+  }
+
+  kDebug() << "Scheduling prepare.";
+
+  if( monitor ) {
+    monitor->disconnect( instance );
+    monitor->deleteLater();
+    monitor = 0;
+  }
+
+  ready = false;
+  preparing = false;
+  scheduled = true;
+  QTimer::singleShot( 1000, instance, SLOT( prepare() ) );
+}
+
 void LocalFoldersPrivate::createResourceIfNeeded()
 {
   Q_ASSERT( preparing );
-  kDebug() << "Resource" << Settings::resourceId();
+
+  // Another instance might have created the resource and updated the config.
+  Settings::self()->readConfig();
+  kDebug() << "Resource from config:" << Settings::resourceId();
 
   // check that the maildir resource exists
   AgentInstance resource = AgentManager::self()->instance( Settings::resourceId() );
   if( !resource.isValid() ) {
     if( !isMainInstance ) {
       kDebug() << "Waiting for the main instance to create the resource.";
-      QTimer::singleShot( 1000, instance, SLOT( prepare() ) );
+      schedulePrepare();
     } else {
       kDebug() << "Creating maildir resource.";
       AgentType type = AgentManager::self()->type( "akonadi_maildir_resource" );
@@ -305,7 +338,7 @@ void LocalFoldersPrivate::connectMonitor()
   monitor = new Monitor( instance );
   monitor->setResourceMonitored( Settings::resourceId().toAscii() );
   QObject::connect( monitor, SIGNAL( collectionRemoved( Akonadi::Collection ) ),
-      instance, SLOT( prepare() ), Qt::QueuedConnection );
+      instance, SLOT( schedulePrepare() ) );
   kDebug() << "Connected monitor.";
   fetchCollections();
 }

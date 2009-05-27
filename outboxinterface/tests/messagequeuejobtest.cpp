@@ -57,20 +57,14 @@ using namespace OutboxInterface;
 void MessageQueueJobTest::initTestCase()
 {
   Control::start();
+  // HACK: Otherwise the MDA is never switched offline.
+  // This could be because LocalFolders calls Control::start() as well...
   QTest::qWait( 1000 );
-  // HACK:
-  // Akonadi will start the MDA, and that will attempt to create the Local Folders
-  // resource and collections.  The MessageQueueJob will try to do the same,
-  // failing because the DB cannot have collections with the same name
-  // TODO: come up with a real locking mechanism
 
   // Switch MDA offline to avoid spam.
-  // We need the maildir resource online to store the item for us.
-  foreach( AgentInstance agent, AgentManager::self()->instances() ) {
-    if( agent.type().identifier() == "akonadi_maildispatcher_agent" ) {
-      agent.setIsOnline( false );
-    }
-  }
+  AgentInstance mda = AgentManager::self()->instance( "akonadi_maildispatcher_agent" );
+  QVERIFY( mda.isValid() );
+  mda.setIsOnline( false );
 
   // check that outbox is empty
   LocalFolders::self()->fetch();

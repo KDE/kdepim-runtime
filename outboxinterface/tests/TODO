@@ -5,8 +5,4 @@ LocalFolders:
 - one or both collections have been removed
 
 MessageQueueJob:
-* Issues with the current test:
-- Might still have problems if two instances of LocalFolders (from separate
-  processes) try to create the resource at the same time.  This can happen
-  in the real world too, so this should somehow be fixed in LocalFolders.
 
