@@ -41,7 +41,6 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
-#include <Akonadi/Control>
 #include <Akonadi/Monitor>
 
 #define DBUS_SERVICE_NAME QLatin1String( "org.kde.pim.LocalFolders" )
@@ -175,10 +174,6 @@ Collection LocalFolders::sentMail() const
 LocalFoldersPrivate::LocalFoldersPrivate()
   : instance( new LocalFolders(this) )
 {
-  if( !Akonadi::Control::start() ) {
-    kFatal() << "Cannot start Akonadi server.  Quitting.";
-  }
-
   QDBusConnection bus = QDBusConnection::sessionBus();
   isMainInstance = bus.registerService( DBUS_SERVICE_NAME );
   QObject::connect( bus.interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),

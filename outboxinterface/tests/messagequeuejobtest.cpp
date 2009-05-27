@@ -57,8 +57,7 @@ using namespace OutboxInterface;
 void MessageQueueJobTest::initTestCase()
 {
   Control::start();
-  // HACK: Otherwise the MDA is never switched offline.
-  // This could be because LocalFolders calls Control::start() as well...
+  // HACK: Otherwise the MDA is not switched offline soon enough apparently...
   QTest::qWait( 1000 );
 
   // Switch MDA offline to avoid spam.
@@ -68,7 +67,7 @@ void MessageQueueJobTest::initTestCase()
 
   // check that outbox is empty
   LocalFolders::self()->fetch();
-  QTest::qWait( 1000 );
+  QTest::kWaitForSignal( LocalFolders::self(), SIGNAL( foldersReady() ) );
   verifyOutboxContents( 0 );
 }
 
@@ -87,7 +86,7 @@ void MessageQueueJobTest::testValidMessages()
   MessageQueueJob *qjob = new MessageQueueJob;
   qjob->setTransportId( tid );
   Message::Ptr msg = Message::Ptr( new Message );
-  msg->setContent( "This is message #1 sent from the MessageQueueJobTest unit test.\n" );
+  msg->setContent( "\nThis is message #1 from the MessageQueueJobTest unit test.\n" );
   qjob->setMessage( msg );
   qjob->setTo( SPAM_ADDRESS );
   verifyOutboxContents( 0 );
@@ -151,7 +150,7 @@ void MessageQueueJobTest::testInvalidMessages()
   // without recipients
   job = new MessageQueueJob;
   msg = Message::Ptr( new Message );
-  msg->setContent( "This is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
+  msg->setContent( "\nThis is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
   job->setMessage( msg );
   job->setTransportId( TransportManager::self()->defaultTransportId() );
   QVERIFY( !job->exec() );
@@ -159,7 +158,7 @@ void MessageQueueJobTest::testInvalidMessages()
   // without transport
   job = new MessageQueueJob;
   msg = Message::Ptr( new Message );
-  msg->setContent( "This is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
+  msg->setContent( "\nThis is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
   job->setMessage( msg );
   job->setTo( SPAM_ADDRESS );
   QVERIFY( !job->exec() );
@@ -167,7 +166,7 @@ void MessageQueueJobTest::testInvalidMessages()
   // with AfterDueDate and no due date
   job = new MessageQueueJob;
   msg = Message::Ptr( new Message );
-  msg->setContent( "This is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
+  msg->setContent( "\nThis is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
   job->setMessage( msg );
   job->setTo( SPAM_ADDRESS );
   job->setDispatchMode( DispatchModeAttribute::AfterDueDate );
@@ -176,7 +175,7 @@ void MessageQueueJobTest::testInvalidMessages()
   // with invalid sent-mail folder
   job = new MessageQueueJob;
   msg = Message::Ptr( new Message );
-  msg->setContent( "This is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
+  msg->setContent( "\nThis is a message sent from the MessageQueueJobTest unittest. This shouldn't have been sent.\n" );
   job->setMessage( msg );
   job->setTo( SPAM_ADDRESS );
   job->setSentMailCollection( -1 );

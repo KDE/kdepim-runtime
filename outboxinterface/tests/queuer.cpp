@@ -27,6 +27,8 @@
 #include <QPushButton>
 #include <QTextEdit>
 
+#include <Akonadi/Control>
+
 #include <mailtransport/transportmanager.h>
 #include <mailtransport/transport.h>
 
@@ -40,6 +42,10 @@ using namespace OutboxInterface;
 
 MessageQueuer::MessageQueuer()
 {
+  if( !Akonadi::Control::start() ) {
+    kFatal() << "Could not start Akonadi server.";
+  }
+
   mComboBox = new TransportComboBox( this );
   mComboBox->setEditable( true );
   mSenderEdit = new KLineEdit( this );
