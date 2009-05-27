@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : data.h
+ *  File : datamemberdescriptor.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,12 +23,12 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#ifndef _AKONADI_FILTER_DATAMEMBERDESCRIPTOR_H_
+#define _AKONADI_FILTER_DATAMEMBERDESCRIPTOR_H_
 
 #include "config-akonadi-filter.h"
 
-#include <QVariant>
+#include <QString>
 
 #include "datatype.h"
 
@@ -37,24 +37,61 @@ namespace Akonadi
 namespace Filter
 {
 
-class FunctionDescriptor;
-class DataMemberDescriptor;
-
-class AKONADI_FILTER_EXPORT Data
+/**
+ *
+ */
+class AKONADI_FILTER_EXPORT DataMemberDescriptor
 {
 public:
-  Data();
-  virtual ~Data();
-
-public:
-  virtual QVariant getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember );
+  /**
+   * Create a function with the specified identifier
+   *
+   */
+  DataMemberDescriptor(
+      const QString &keyword,          //< Unique data member keyword
+      const QString &name,             //< The token that is displayed in the UI editors.
+      DataType dataType                //< The output data type of this function
+    );
+  virtual ~DataMemberDescriptor();
 
 protected:
-  virtual QVariant getDataMemberDescriptorValue( const DataMemberDescriptor * dataMember );
-};
+
+  /**
+   * The non-localized keyword of the data member. Must be unique
+   */
+  QString mKeyword;
+
+  /**
+   * The localized name of the function (this is what is shown in rule combos)
+   */
+  QString mName;
+
+  /**
+   * The type of this function
+   */
+  DataType mDataType;
+
+public:
+
+  DataType dataType() const
+  {
+    return mDataType;
+  }
+
+  const QString & keyword() const
+  {
+    return mKeyword;
+  }
+
+  const QString & name() const
+  {
+    return mName;
+  }
+
+}; // class DataMemberDescriptor
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_
+#endif //!_AKONADI_FILTER_DATAMEMBERDESCRIPTOR_H_

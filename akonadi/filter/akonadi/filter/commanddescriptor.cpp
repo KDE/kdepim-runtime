@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : data.h
+ *  File : commanddescriptor.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,38 +23,31 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#include "commanddescriptor.h"
 
-#include "config-akonadi-filter.h"
-
-#include <QVariant>
-
-#include "datatype.h"
+#include <KDebug>
 
 namespace Akonadi
 {
-namespace Filter
+namespace Filter 
 {
 
-class FunctionDescriptor;
-class DataMemberDescriptor;
-
-class AKONADI_FILTER_EXPORT Data
+CommandDescriptor::CommandDescriptor(
+    int id,
+    const QString &keyword,
+    const QString &name
+  ) :
+  mId( id ),
+  mKeyword( keyword ),
+  mName( name )
 {
-public:
-  Data();
-  virtual ~Data();
+}
 
-public:
-  virtual QVariant getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember );
-
-protected:
-  virtual QVariant getDataMemberDescriptorValue( const DataMemberDescriptor * dataMember );
-};
+CommandDescriptor::~CommandDescriptor()
+{
+}
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_

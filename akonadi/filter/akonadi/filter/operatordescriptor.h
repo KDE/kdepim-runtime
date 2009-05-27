@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : operator.h
+ *  File : operatordescriptor.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_OPERATOR_H_
-#define _AKONADI_FILTER_OPERATOR_H_
+#ifndef _AKONADI_FILTER_OPERATORDESCRIPTOR_H_
+#define _AKONADI_FILTER_OPERATORDESCRIPTOR_H_
 
 #include "config-akonadi-filter.h"
 
@@ -56,45 +56,45 @@ enum OperatorIdentifiers
 };
 
 /**
- * The Operator is an essential part of a Condition::PropertyTest object inside a filtering Rule.
+ * The OperatorDescriptor is an essential part of a Condition::PropertyTest object inside a filtering Rule.
  *
  * Examples of operators are "matches", "equals", "above", "below", "inaddressbook" etc...
  *
- * Each operator can accept a set of left data types (obtained as result of a Function applied
- * to a DataMember which in turn extracts stuff from the item being filtered) and none or exactly
+ * Each operator can accept a set of left data types (obtained as result of a FunctionDescriptor applied
+ * to a DataMemberDescriptor which in turn extracts stuff from the item being filtered) and none or exactly
  * one right data type (which is the data type of the constant the operator compares "against").
  *
- * The Operator has a keyword and an id which *must* be unique inside a filtering application set.
+ * The OperatorDescriptor has a keyword and an id which *must* be unique inside a filtering application set.
  * The keyword is used in filter storage (sieve scripts at the time of writing) while the integer id
  * can be used for fast identification inside the filter implementations.
  *
  * The id is either a member of the OperatorIdentifiers enumeration or a custom id (which should
- * be a number above OperatorIdentifiers::OperatorCustomFirst.
+ * be a number above OperatorIdentifiers::OperatorDescriptorCustomFirst.
  *
- * An operator must always return a boolean result. This is different from a Function which
+ * An operator must always return a boolean result. This is different from a FunctionDescriptor which
  * can return any data type (even multiple ones).
  */
-class AKONADI_FILTER_EXPORT Operator
+class AKONADI_FILTER_EXPORT OperatorDescriptor
 {
 public:
-  Operator(
+  OperatorDescriptor(
       int id,
       const QString &keyword,
       const QString &name,
       int acceptableLeftOperandDataTypeMask,
       DataType rightOperandDataType
     );
-  virtual ~Operator();
+  virtual ~OperatorDescriptor();
 
 protected:
 
   /**
-   * The unique id of this operator.
+   * The unique id of this operatordescriptor.
    */
   int mId;
 
   /**
-   * The non-localized keyword of the operator. Must be unique.
+   * The non-localized keyword of the operatordescriptor. Must be unique.
    */
   QString mKeyword;
 
@@ -140,10 +140,10 @@ public:
     return mName;
   }
 
-}; // class Operator
+}; // class OperatorDescriptor
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_OPERATOR_H_
+#endif //!_AKONADI_FILTER_OPERATORDESCRIPTOR_H_

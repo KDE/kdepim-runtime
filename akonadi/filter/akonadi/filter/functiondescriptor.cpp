@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : operator.cpp
+ *  File : functiondescriptor.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "operator.h"
+#include "functiondescriptor.h"
 
 #include <KDebug>
 
@@ -32,22 +32,22 @@ namespace Akonadi
 namespace Filter 
 {
 
-Operator::Operator(
+FunctionDescriptor::FunctionDescriptor(
     int id,
     const QString &keyword,
     const QString &name,
-    int acceptableLeftOperandDataTypeMask,
-    DataType rightOperandDataType
+    int outputDataTypeMask,
+    int acceptableInputDataTypeMask
   ) :
   mId( id ),
   mKeyword( keyword ),
   mName( name ),
-  mAcceptableLeftOperandDataTypeMask( acceptableLeftOperandDataTypeMask ),
-  mRightOperandDataType( rightOperandDataType )
+  mOutputDataTypeMask( outputDataTypeMask ),
+  mAcceptableInputDataTypeMask( acceptableInputDataTypeMask )
 {
 }
 
-Operator::~Operator()
+FunctionDescriptor::~FunctionDescriptor()
 {
 }
 

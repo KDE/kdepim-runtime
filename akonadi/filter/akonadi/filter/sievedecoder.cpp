@@ -31,7 +31,7 @@
 #include "sievereader.h"
 #include "condition.h"
 #include "rulelist.h"
-#include "function.h"
+#include "functiondescriptor.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -55,7 +55,7 @@ namespace IO
 {
 
 SieveDecoder::SieveDecoder( Factory * componentFactory )
-  : Decoder( componentFactory ), mProgram( 0 ), mCreationOfCustomDataMembersEnabled( true )
+  : Decoder( componentFactory ), mProgram( 0 ), mCreationOfCustomDataMemberDescriptorsEnabled( true )
 {
 }
 
@@ -288,7 +288,7 @@ void SieveDecoder::onTestEnd()
 
     // lookup the function
 
-    const Function * function = factory()->findFunction( functionKeyword );
+    const FunctionDescriptor * function = factory()->findFunction( functionKeyword );
     if ( !function )
     {
       // unrecognized test
@@ -301,12 +301,12 @@ void SieveDecoder::onTestEnd()
     if( operatorKeyword.isEmpty() )
     {
       // FIXME: Use a default "forwarding" operator that accepts only boolean results ?
-      kDebug() << "Operator keyword is empty in function" << functionKeyword;
+      kDebug() << "OperatorDescriptor keyword is empty in function" << functionKeyword;
     }
 
     // look up the operator
 
-    const Operator * op = 0;
+    const OperatorDescriptor * op = 0;
 
     op = factory()->findOperator( operatorKeyword, function->outputDataTypeMask() );
 
@@ -411,10 +411,10 @@ void SieveDecoder::onTestEnd()
 
       foreach( QVariant value, valueList )
       {
-        const DataMember * dataMember = factory()->findDataMember( field );
+        const DataMemberDescriptor * dataMember = factory()->findDataMember( field );
         if( !dataMember )
         {
-          if( ( !mCreationOfCustomDataMembersEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
+          if( ( !mCreationOfCustomDataMemberDescriptorsEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
           {
             mGotError = true;
             setLastError( i18n( "Test on data member '%1' is not supported.", field ) );
@@ -422,9 +422,9 @@ void SieveDecoder::onTestEnd()
           }
 
           QString name = i18n( "the field '%1'", field );
-          DataMember * newDataMember = new DataMember( field, name, DataTypeString );
-          factory()->registerDataMember( newDataMember );
-          dataMember = newDataMember;
+          DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( field, name, DataTypeString );
+          factory()->registerDataMember( newDataMemberDescriptor );
+          dataMember = newDataMemberDescriptor;
         }
 
         Q_ASSERT( dataMember );
@@ -432,7 +432,7 @@ void SieveDecoder::onTestEnd()
         if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
         {
           mGotError = true; 
-          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+          setLastError( i18n( "FunctionDescriptor '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
           return;
         }
 
@@ -480,11 +480,11 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandName.isEmpty() )
+  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandArguments.append( QVariant( tag ) );
+    mCurrentSimpleCommandDescriptorArguments.append( QVariant( tag ) );
     return;
   }
 
@@ -506,11 +506,11 @@ void SieveDecoder::onStringArgument( const QString & string, bool multiLine, con
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandName.isEmpty() )
+  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandArguments.append( QVariant( string ) );
+    mCurrentSimpleCommandDescriptorArguments.append( QVariant( string ) );
     return;
   }
 
@@ -530,11 +530,11 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandName.isEmpty() )
+  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandArguments.append( QVariant( (qulonglong)number ) );
+    mCurrentSimpleCommandDescriptorArguments.append( QVariant( (qulonglong)number ) );
     return;
   }
 
@@ -574,11 +574,11 @@ void SieveDecoder::onStringListArgumentEnd()
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandName.isEmpty() )
+  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandArguments.append( QVariant( mCurrentStringList ) );
+    mCurrentSimpleCommandDescriptorArguments.append( QVariant( mCurrentStringList ) );
     mCurrentStringList.clear();
     return;
   }
@@ -665,7 +665,7 @@ void SieveDecoder::onTestListEnd()
 }
 
 
-void SieveDecoder::onCommandStart( const QString & identifier )
+void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
 {
   if( mGotError )
     return; // ignore everything
@@ -687,7 +687,7 @@ void SieveDecoder::onCommandStart( const QString & identifier )
       ( QString::compare( identifier, QLatin1String( "else" ), Qt::CaseInsensitive ) == 0 )
     )
   {
-    mCurrentSimpleCommandName = QString(); // this is not a simple command
+    mCurrentSimpleCommandDescriptorName = QString(); // this is not a simple command
 
     // conditional rule start
     if( mCurrentComponent->isRuleList() )
@@ -716,45 +716,54 @@ void SieveDecoder::onCommandStart( const QString & identifier )
     return;
   }
 
-  // We delay the creation of simple commands to the onCommandEnd() so we have all the arguments
-  mCurrentSimpleCommandName = identifier;
-  mCurrentSimpleCommandArguments.clear();
+  // We delay the creation of simple commands to the onCommandDescriptorEnd() so we have all the arguments
+  mCurrentSimpleCommandDescriptorName = identifier;
+  mCurrentSimpleCommandDescriptorArguments.clear();
 }
 
-void SieveDecoder::onCommandEnd()
+void SieveDecoder::onCommandDescriptorEnd()
 {
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandName.isEmpty() )
+  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
   {
     // delayed simple command creation
 
     Q_ASSERT( mCurrentComponent->isRuleList() || mCurrentComponent->isRule() );
 
     Action::Base * action;
-    if (
-         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
-         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
+    if(
+         ( QString::compare( mCurrentSimpleCommandDescriptorName, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
+         ( QString::compare( mCurrentSimpleCommandDescriptorName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
       )
     {
       action = factory()->createStopAction( mCurrentComponent );
       Q_ASSERT( action );
 
     } else {
+      // a "command" action
 
-      action = factory()->createGenericAction( mCurrentComponent, mCurrentSimpleCommandName );
-
-      if ( !action )
+      const CommandDescriptor * command = factory()->findCommand( mCurrentSimpleCommandDescriptorName );
+      if( !command )
       {
         mGotError = true; 
-        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandName ) );
+        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandDescriptorName ) );
         return;
       }
+
+      action = factory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandDescriptorArguments );
+      if( !action )
+      {
+        mGotError = true; 
+        setLastError( i18n( "Could not create action '%1'", mCurrentSimpleCommandDescriptorName ) );
+        return;
+      }
+
     }
 
     Q_ASSERT( action );
-    mCurrentSimpleCommandName = QString();
+    mCurrentSimpleCommandDescriptorName = QString();
 
     if ( mCurrentComponent->isRuleList() )
     {

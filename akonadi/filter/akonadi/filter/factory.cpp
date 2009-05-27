@@ -46,7 +46,7 @@ Factory::Factory()
   // register the basic functions
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "from" ),
           i18n( "From address" ),
           DataTypeAddress
@@ -54,7 +54,7 @@ Factory::Factory()
     );
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "cc" ),
           i18n( "CC address list" ),
           DataTypeAddressList
@@ -62,7 +62,7 @@ Factory::Factory()
     );
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "anyrecipient" ),
           i18n( "recipient address list" ),
           DataTypeAddressList
@@ -70,7 +70,7 @@ Factory::Factory()
     );
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "bcc" ),
           i18n( "BCC address list" ),
           DataTypeAddressList
@@ -78,7 +78,7 @@ Factory::Factory()
     );
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "anyheader" ),
           i18n( "header list" ),
           DataTypeStringList
@@ -86,7 +86,7 @@ Factory::Factory()
     );
 
   registerDataMember(
-      new DataMember(
+      new DataMemberDescriptor(
           QString::fromAscii( "item" ),
           i18n( "whole item" ),
           DataTypeString
@@ -98,7 +98,7 @@ Factory::Factory()
 
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionSizeOf,
           QString::fromAscii( "size" ),
           i18n( "if the total size of" ),
@@ -108,7 +108,7 @@ Factory::Factory()
     );
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionCountOf,
           QString::fromAscii( "count" ),
           i18n( "if the total count of" ),
@@ -118,7 +118,7 @@ Factory::Factory()
     );
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionValueOf,
           QString::fromAscii( "header" ),
           i18n( "if the value of" ),
@@ -128,7 +128,7 @@ Factory::Factory()
     );
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address" ),
           i18n( "if any address extracted from" ),
@@ -139,7 +139,7 @@ Factory::Factory()
 
 #if 0
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address:all" ),
           i18n( "if any address extracted from" ),
@@ -150,7 +150,7 @@ Factory::Factory()
 #endif
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionAnyEMailAddressDomainIn,
           QString::fromAscii( "address:domain" ),
           i18n( "if any domain address part extracted from" ),
@@ -161,7 +161,7 @@ Factory::Factory()
 
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionAnyEMailAddressLocalPartIn,
           QString::fromAscii( "address:local" ),
           i18n( "if any username address part extracted from" ),
@@ -172,7 +172,7 @@ Factory::Factory()
 
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionDateIn,
           QString::fromAscii( "date" ),
           i18n( "if the date from" ),
@@ -182,7 +182,7 @@ Factory::Factory()
     );
 
   registerFunction(
-      new Function(
+      new FunctionDescriptor(
           StandardFunctionExists,
           QString::fromAscii( "exists" ),
           i18n( "if exists" ),
@@ -196,7 +196,7 @@ Factory::Factory()
 
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorGreaterThan,
           QString::fromAscii( "above" ),
           i18n( "is greater than" ),
@@ -206,7 +206,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorLowerThan,
           QString::fromAscii( "below" ),
           i18n( "is lower than" ),
@@ -216,7 +216,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorIntegerIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
@@ -226,7 +226,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorContains,
           QString::fromAscii( "contains" ),
           i18n( "contains string" ),
@@ -236,7 +236,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorStringIsEqualTo,
           QString::fromAscii( "is" ),
           i18n( "is equal to" ),
@@ -246,7 +246,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorStringMatchesRegexp,
           QString::fromAscii( "matches" ),
           i18n( "matches regular expression" ),
@@ -256,7 +256,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorStringMatchesWildcard,
           QString::fromAscii( "like" ),
           i18n( "matches wildcard expression" ),
@@ -266,7 +266,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorIsInAddressbook,
           QString::fromAscii( "inaddressbook" ),
           i18n( "is in addressbook" ),
@@ -277,7 +277,7 @@ Factory::Factory()
 
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorDateIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
@@ -287,7 +287,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorDateIsAfter,
           QString::fromAscii( "after" ),
           i18n( "is after" ),
@@ -297,7 +297,7 @@ Factory::Factory()
     );
 
   registerOperator(
-      new Operator(
+      new OperatorDescriptor(
           StandardOperatorDateIsBefore,
           QString::fromAscii( "before" ),
           i18n( "is before" ),
@@ -305,31 +305,42 @@ Factory::Factory()
           DataTypeDateTime
         )
     );
+
+
+  registerCommand(
+      new CommandDescriptor(
+          StandardCommandDownload,
+          QString::fromAscii( "download" ),
+          i18n( "download the message" )
+        )
+    );
 }
 
 Factory::~Factory()
 {
-  qDeleteAll( mFunctionHash );
-  qDeleteAll( mDataMemberHash );
-  qDeleteAll( mOperatorList );
+  qDeleteAll( mCommandDescriptorHash );
+  qDeleteAll( mFunctionDescriptorHash );
+  qDeleteAll( mDataMemberDescriptorHash );
+  qDeleteAll( mOperatorDescriptorList );
 }
 
-void Factory::registerDataMember( DataMember * dataMember )
+
+void Factory::registerDataMember( DataMemberDescriptor * dataMember )
 {
   Q_ASSERT( dataMember );
 
-  mDataMemberHash.insert( dataMember->keyword().toLower(), dataMember ); // will replace
+  mDataMemberDescriptorHash.insert( dataMember->keyword().toLower(), dataMember ); // will replace
 }
 
-const DataMember * Factory::findDataMember( const QString &keyword )
+const DataMemberDescriptor * Factory::findDataMember( const QString &keyword )
 {
-  return mDataMemberHash.value( keyword.toLower(), 0 );
+  return mDataMemberDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-QList< const DataMember * > Factory::enumerateDataMembers( int acceptableDataTypeMask )
+QList< const DataMemberDescriptor * > Factory::enumerateDataMembers( int acceptableDataTypeMask )
 {
-  QList< const DataMember * > lReturn;
-  foreach( DataMember * dataMember, mDataMemberHash )
+  QList< const DataMemberDescriptor * > lReturn;
+  foreach( DataMemberDescriptor * dataMember, mDataMemberDescriptorHash )
   {
     if( dataMember->dataType() & acceptableDataTypeMask )
       lReturn.append( dataMember );
@@ -337,20 +348,20 @@ QList< const DataMember * > Factory::enumerateDataMembers( int acceptableDataTyp
   return lReturn;
 }
 
-void Factory::registerOperator( Operator * op )
+void Factory::registerOperator( OperatorDescriptor * op )
 {
   Q_ASSERT( op );
 
   QString lowerKeyword = op->keyword().toLower();
 
   // Get the list of operators with the same keyword
-  QList< Operator * > existingOperators = mOperatorMultiHash.values( lowerKeyword );
-  if( !existingOperators.isEmpty() )
+  QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( lowerKeyword );
+  if( !existingOperatorDescriptors.isEmpty() )
   {
-    QList< Operator * > toRemove;
-    Operator * existing;
+    QList< OperatorDescriptor * > toRemove;
+    OperatorDescriptor * existing;
 
-    foreach( existing, existingOperators )
+    foreach( existing, existingOperatorDescriptors )
     {
       if( existing->id() == op->id() )
       {
@@ -367,21 +378,21 @@ void Factory::registerOperator( Operator * op )
 
     foreach( existing, toRemove )
     {
-      mOperatorMultiHash.remove( lowerKeyword, existing );
-      mOperatorList.removeOne( existing );
+      mOperatorDescriptorMultiHash.remove( lowerKeyword, existing );
+      mOperatorDescriptorList.removeOne( existing );
       delete existing;
     }
   }
 
-  mOperatorMultiHash.insertMulti( lowerKeyword, op );
-  mOperatorList.append( op );
+  mOperatorDescriptorMultiHash.insertMulti( lowerKeyword, op );
+  mOperatorDescriptorList.append( op );
 }
 
-const Operator * Factory::findOperator( const QString &keyword, int leftOperandDataTypeMask )
+const OperatorDescriptor * Factory::findOperator( const QString &keyword, int leftOperandDataTypeMask )
 {
   // Get the list of operators with the same keyword
-  QList< Operator * > existingOperators = mOperatorMultiHash.values( keyword.toLower() );
-  foreach( Operator * op, existingOperators )
+  QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( keyword.toLower() );
+  foreach( OperatorDescriptor * op, existingOperatorDescriptors )
   {
     // the operator must cover ALL the left operand data types
     if( ( leftOperandDataTypeMask & op->acceptableLeftOperandDataTypeMask() ) == leftOperandDataTypeMask )
@@ -390,10 +401,10 @@ const Operator * Factory::findOperator( const QString &keyword, int leftOperandD
   return 0;
 }
 
-QList< const Operator * > Factory::enumerateOperators( int leftOperandDataTypeMask )
+QList< const OperatorDescriptor * > Factory::enumerateOperators( int leftOperandDataTypeMask )
 {
-  QList< const Operator * > ret;
-  foreach( Operator * op, mOperatorList )
+  QList< const OperatorDescriptor * > ret;
+  foreach( OperatorDescriptor * op, mOperatorDescriptorList )
   {
     // the operator must cover ALL the left operand data types
     if( ( leftOperandDataTypeMask & op->acceptableLeftOperandDataTypeMask() ) == leftOperandDataTypeMask )
@@ -403,30 +414,56 @@ QList< const Operator * > Factory::enumerateOperators( int leftOperandDataTypeMa
   return ret;
 }
 
-void Factory::registerFunction( Function * function )
+void Factory::registerFunction( FunctionDescriptor * function )
 {
   Q_ASSERT( function );
 
-  Function * existing = mFunctionHash.value( function->keyword(), 0 );
+  FunctionDescriptor * existing = mFunctionDescriptorHash.value( function->keyword(), 0 );
   if( existing )
   {
-    mFunctionList.removeOne( existing );
+    mFunctionDescriptorList.removeOne( existing );
     delete existing;
   }
    
-  mFunctionHash.insert( function->keyword().toLower(), function ); // wil replace
-  mFunctionList.append( function );
+  mFunctionDescriptorHash.insert( function->keyword().toLower(), function ); // wil replace
+  mFunctionDescriptorList.append( function );
 }
 
 
-const Function * Factory::findFunction( const QString &keyword )
+const FunctionDescriptor * Factory::findFunction( const QString &keyword )
 {
-  return mFunctionHash.value( keyword.toLower(), 0 );
+  return mFunctionDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-const QList< const Function * > * Factory::enumerateFunctions()
+const QList< const FunctionDescriptor * > * Factory::enumerateFunctions()
 {
-  return &mFunctionList;
+  return &mFunctionDescriptorList;
+}
+
+void Factory::registerCommand( CommandDescriptor * command )
+{
+  Q_ASSERT( command );
+
+  CommandDescriptor * existing = mCommandDescriptorHash.value( command->keyword(), 0 );
+  if( existing )
+  {
+    mCommandDescriptorList.removeOne( existing );
+    delete existing;
+  }
+   
+  mCommandDescriptorHash.insert( command->keyword().toLower(), command ); // wil replace
+  mCommandDescriptorList.append( command );
+}
+
+
+const CommandDescriptor * Factory::findCommand( const QString &keyword )
+{
+  return mCommandDescriptorHash.value( keyword.toLower(), 0 );
+}
+
+const QList< const CommandDescriptor * > * Factory::enumerateCommands()
+{
+  return &mCommandDescriptorList;
 }
 
 Program * Factory::createProgram( Component * parent )
@@ -469,16 +506,17 @@ Action::Stop * Factory::createStopAction( Component * parent )
   return new Action::Stop( parent );
 }
 
-Action::Base * Factory::createGenericAction( Component * parent, const QString &name )
+Action::Base * Factory::createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
 {
-  return 0; // by default we have no generic actions
+  return 0;
 }
+
 
 Condition::Base * Factory::createPropertyTestCondition(
     Component * parent,
-    const Function * function,
-    const DataMember * dataMember,
-    const Operator * op,
+    const FunctionDescriptor * function,
+    const DataMemberDescriptor * dataMember,
+    const OperatorDescriptor * op,
     const QVariant &operand
   )
 {

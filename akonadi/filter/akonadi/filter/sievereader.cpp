@@ -84,14 +84,14 @@ void SieveReader::stringListArgumentEnd()
 
 void SieveReader::commandStart( const QString & identifier )
 {
-  qDebug( "Command start '%s'", identifier.toUtf8().data() );
-  mDecoder->onCommandStart( identifier );
+  qDebug( "CommandDescriptor start '%s'", identifier.toUtf8().data() );
+  mDecoder->onCommandDescriptorStart( identifier );
 }
 
 void SieveReader::commandEnd()
 {
-  qDebug( "Command end" );
-  mDecoder->onCommandEnd();
+  qDebug( "CommandDescriptor end" );
+  mDecoder->onCommandDescriptorEnd();
 }
 
 void SieveReader::testStart( const QString & identifier )

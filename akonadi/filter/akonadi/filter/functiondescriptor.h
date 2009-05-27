@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : function.h
+ *  File : functiondescriptor.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_FUNCTION_H_
-#define _AKONADI_FILTER_FUNCTION_H_
+#ifndef _AKONADI_FILTER_FUNCTIONDESCRIPTOR_H_
+#define _AKONADI_FILTER_FUNCTIONDESCRIPTOR_H_
 
 #include "config-akonadi-filter.h"
 
@@ -52,7 +52,7 @@ enum FunctionIdentifiers
   StandardFunctionAnyEMailAddressLocalPartIn = 103,
 
   // custom functions
-  FunctionCustomFirst = 10000
+  FunctionDescriptorCustomFirst = 10000
 };
 
 
@@ -60,31 +60,31 @@ enum FunctionIdentifiers
  * 
  *
  */
-class AKONADI_FILTER_EXPORT Function
+class AKONADI_FILTER_EXPORT FunctionDescriptor
 {
 public:
   /**
    * Create a function with the specified keywordentifier
    *
    */
-  Function(
+  FunctionDescriptor(
       int id,                          //< The id of the function: it should be unique within an application
       const QString &keyword,          //< Unique function keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
       int outputDataTypeMask,          //< The mask of possible output data types of this function
       int acceptableInputDataTypeMask  //< The acceptable input data types of this function
     );
-  virtual ~Function();
+  virtual ~FunctionDescriptor();
 
 protected:
 
   /**
-   * The unique id of the function.
+   * The unique id of the functiondescriptor.
    */
   int mId;
 
   /**
-   * The non-localized keywordentifier of the function.
+   * The non-localized keywordentifier of the functiondescriptor.
    */
   QString mKeyword;
 
@@ -130,10 +130,10 @@ public:
     return mAcceptableInputDataTypeMask;
   }
 
-}; // class Function
+}; // class FunctionDescriptor
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_FUNCTION_H_
+#endif //!_AKONADI_FILTER_FUNCTIONDESCRIPTOR_H_

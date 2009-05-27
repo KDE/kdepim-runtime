@@ -33,10 +33,11 @@
 #include <QHash>
 
 
-#include "function.h"
+#include "functiondescriptor.h"
+#include "commanddescriptor.h"
 #include "datatype.h"
-#include "datamember.h"
-#include "operator.h"
+#include "datamemberdescriptor.h"
+#include "operatordescriptor.h"
 
 namespace Akonadi
 {
@@ -70,7 +71,7 @@ namespace Action
  * - It's responsable for the creation of the filter tree components, either standard ones (the Program,
  *   the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
  *
- * - It acts as repository of the Functions that can be tested in filter conditions
+ * - It acts as repository of the FunctionDescriptors that can be tested in filter conditions
  *
  * - It acts as repository of the Actions that the filter can perform
  */
@@ -81,27 +82,115 @@ public:
   virtual ~Factory();
 
 private:
-  QList< const Function * > mFunctionList;
-  QMultiHash< QString, Operator * > mOperatorMultiHash;
+  QList< const FunctionDescriptor * > mFunctionDescriptorList;
+  QHash< QString, FunctionDescriptor * > mFunctionDescriptorHash;
 
-  QList< Operator * > mOperatorList;
+  QList< OperatorDescriptor * > mOperatorDescriptorList;
+  QMultiHash< QString, OperatorDescriptor * > mOperatorDescriptorMultiHash;
 
-  QHash< QString, Function * > mFunctionHash;
-  QHash< QString, DataMember * > mDataMemberHash;
+  QList< const CommandDescriptor * > mCommandDescriptorList;
+  QHash< QString, CommandDescriptor * > mCommandDescriptorHash;
 
+  QHash< QString, DataMemberDescriptor * > mDataMemberDescriptorHash;
 
 public:
-  void registerFunction( Function * function );
-  virtual const Function * findFunction( const QString &keyword );
-  virtual const QList< const Function * > * enumerateFunctions();
 
-  void registerDataMember( DataMember * dataMember );
-  virtual const DataMember * findDataMember( const QString &keyword );
-  virtual QList< const DataMember * > enumerateDataMembers( int acceptableDataTypeMask );
+  /**
+   * Registers a FunctionDescriptor to be used by the filter condtions.
+   */
+  void registerFunction( FunctionDescriptor * function );
 
-  void registerOperator( Operator * op );
-  virtual const Operator * findOperator( const QString &keyword, int leftOperandDataTypeMask );
-  virtual QList< const Operator * > enumerateOperators( int leftOperandDataTypeMask );
+  /**
+   * Finds a registered FunctionDescriptor by its keyword. This is used
+   * by the Decoder subclasses.
+   *
+   * Returns 0 if no FunctionDescriptor is registered with the specified keyword.
+   *
+   * Please note that the keywords are case insensitive.
+   */
+  virtual const FunctionDescriptor * findFunction( const QString &keyword );
+
+  /**
+   * Enumerates the avaiable FunctionDescriptor descriptors.
+   *
+   * This is used primairly by the UI filter editors.
+   */
+  virtual const QList< const FunctionDescriptor * > * enumerateFunctions();
+
+  /**
+   * Registers a CommandDescriptor to be used by the filter actions.
+   */
+  void registerCommand( CommandDescriptor * command );
+
+  /**
+   * Finds a registered CommandDescriptor by its keyword. This is used
+   * by the Decoder subclasses.
+   *
+   * Returns 0 if no CommandDescriptor is registered with the specified keyword.
+   *
+   * Please note that the keywords are case insensitive.
+   */
+  virtual const CommandDescriptor * findCommand( const QString &keyword );
+
+  /**
+   * Enumerates the avaiable CommandDescriptor descriptors.
+   *
+   * This is used primairly by the UI filter editors.
+   */
+  virtual const QList< const CommandDescriptor * > * enumerateCommands();
+
+
+  /**
+   * Registers a DataMemberDescriptor to be used by the filtering conditions.
+   */
+  void registerDataMember( DataMemberDescriptor * dataMember );
+
+  /**
+   * Finds a registered DataMemberDescriptor object by its keyword. This is used
+   * by the Decoder subclasses.
+   *
+   * Returns 0 if no DataMemberDescriptor is registered with the specified keyword.
+   *
+   * Please note that the keywords are case insensitive.
+   */
+  virtual const DataMemberDescriptor * findDataMember( const QString &keyword );
+
+  /**
+   * Enumerates the DataMemberDescriptor descriptors that are matched by the
+   * specified data type mask.
+   *
+   * This is used primairly by the UI filter editors to find the
+   * DataMemberDescriptor objects that can be "used by" a FunctionDescriptor with a
+   * given allowed input DataType set.
+   */
+  virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask );
+
+  /**
+   * Registers an OperatorDescriptor to be used by the filtering conditions.
+   */
+  void registerOperator( OperatorDescriptor * op );
+
+  /**
+   * Finds a registered OperatorDescriptor object which has the specified keyword
+   * and supports all the DataTypes specified by leftOperandDataTypeMask.
+   * This is used by the Decoder subclasses.
+   *
+   * Returns 0 if no register OperatorDescriptor matches the specified conditions.
+   *
+   * Please note that the keywords are case insensitive.
+   */
+  virtual const OperatorDescriptor * findOperator( const QString &keyword, int leftOperandDataTypeMask );
+
+  /**
+   * Enumerates the OperatorDescriptor objects that are matched by the specified
+   * data type mask.
+   *
+   * This is used primairly by the UI filter editors to find the
+   * OperatorDescriptor objects that can be applied to the result of a FunctionDescriptor
+   * with a given possible ouptut DataType set.
+   */
+  virtual QList< const OperatorDescriptor * > enumerateOperators( int leftOperandDataTypeMask );
+
 
   virtual Program * createProgram( Component * parent );
 
@@ -114,13 +203,13 @@ public:
   virtual Condition::False * createFalseCondition( Component * parent );
   virtual Condition::Base * createPropertyTestCondition(
       Component * parent,
-      const Function * function,
-      const DataMember * dataMember,
-      const Operator * op,
+      const FunctionDescriptor * function,
+      const DataMemberDescriptor * dataMember,
+      const OperatorDescriptor * op,
       const QVariant &operand
     );
 
-  virtual Action::Base * createGenericAction( Component * parent, const QString &name );
+  virtual Action::Base * createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
   virtual Action::RuleList * createRuleList( Component * parent );
   virtual Action::Stop * createStopAction( Component * parent );
 }; // class Factory

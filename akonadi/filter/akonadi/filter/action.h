@@ -63,16 +63,19 @@ enum ActionType
    * the processing in the filter.
    */
   ActionTypeStop,
+
   /**
    * The action is a sub-sequence of rules (just like a nested sub-filter).
    * The sub-sequence will have it's own conditions and actions.
    */
   ActionTypeRuleList,
+
   /**
    * This member indicates "no action" or "unknown action".
    * It is used in the UI editors.
    */
   ActionTypeUnknown
+
 }; // enum ActionType
 
 /**
@@ -127,6 +130,7 @@ public:
    * Reimplemented from Component.
    */
   virtual void dump( const QString &prefix );
+
 }; // class Base
 
 /**
@@ -150,6 +154,7 @@ public:
    * Destroys the Stop action.
    */
   virtual ~Stop();
+
 public:
 
   /**
@@ -163,6 +168,7 @@ public:
    * Reimplemented from Base.
    */
   virtual void dump( const QString &prefix );
+
 }; // class Stop
 
 } // namespace Action

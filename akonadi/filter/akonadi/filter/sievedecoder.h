@@ -68,27 +68,27 @@ protected:
   Component * mCurrentComponent; // the component we're 'in'
   QString mCurrentSimpleTestName;
   QList< QVariant > mCurrentSimpleTestArguments;
-  QString mCurrentSimpleCommandName;
-  QList< QVariant > mCurrentSimpleCommandArguments;
+  QString mCurrentSimpleCommandDescriptorName;
+  QList< QVariant > mCurrentSimpleCommandDescriptorArguments;
   QStringList mCurrentStringList;
   bool mGotError;
-  bool mCreationOfCustomDataMembersEnabled;
+  bool mCreationOfCustomDataMemberDescriptorsEnabled;
 public:
-  void setSreationOfCustomDataMembersEnabled( bool enable )
+  void setSreationOfCustomDataMemberDescriptorsEnabled( bool enable )
   {
-    mCreationOfCustomDataMembersEnabled = enable;
+    mCreationOfCustomDataMemberDescriptorsEnabled = enable;
   }
 
-  bool creationOfCustomDataMembersEnabled()
+  bool creationOfCustomDataMemberDescriptorsEnabled()
   {
-    return mCreationOfCustomDataMembersEnabled;
+    return mCreationOfCustomDataMemberDescriptorsEnabled;
   }
 
 
   virtual Program * run();
 protected:
-  void onCommandStart( const QString & identifier );
-  void onCommandEnd();
+  void onCommandDescriptorStart( const QString & identifier );
+  void onCommandDescriptorEnd();
   void onTestStart( const QString & identifier );
   void onTestEnd();
   void onTestListStart();

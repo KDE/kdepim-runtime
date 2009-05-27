@@ -24,16 +24,17 @@ set(
 		AKONADI_FILTER_LIB_SRCS
 		action.cpp
 		afldecoder.cpp
+		commanddescriptor.cpp
 		component.cpp
 		condition.cpp
 		decoder.cpp
 		data.cpp
-		datamember.cpp
+		datamemberdescriptor.cpp
 		encoder.cpp
 		factory.cpp
 		filter.cpp
-		function.cpp
-		operator.cpp
+		functiondescriptor.cpp
+		operatordescriptor.cpp
 		program.cpp
 		rule.cpp
 		rulelist.cpp

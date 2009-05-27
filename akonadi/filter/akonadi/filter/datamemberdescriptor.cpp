@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : function.cpp
+ *  File : datamemberdescriptor.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "function.h"
+#include "datamemberdescriptor.h"
 
 #include <KDebug>
 
@@ -32,22 +32,18 @@ namespace Akonadi
 namespace Filter 
 {
 
-Function::Function(
-    int id,
+DataMemberDescriptor::DataMemberDescriptor(
     const QString &keyword,
     const QString &name,
-    int outputDataTypeMask,
-    int acceptableInputDataTypeMask
+    DataType dataType
   ) :
-  mId( id ),
   mKeyword( keyword ),
   mName( name ),
-  mOutputDataTypeMask( outputDataTypeMask ),
-  mAcceptableInputDataTypeMask( acceptableInputDataTypeMask )
+  mDataType( dataType )
 {
 }
 
-Function::~Function()
+DataMemberDescriptor::~DataMemberDescriptor()
 {
 }
 

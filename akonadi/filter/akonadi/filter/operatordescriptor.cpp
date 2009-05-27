@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : datamember.cpp
+ *  File : operatordescriptor.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "datamember.h"
+#include "operatordescriptor.h"
 
 #include <KDebug>
 
@@ -32,18 +32,22 @@ namespace Akonadi
 namespace Filter 
 {
 
-DataMember::DataMember(
+OperatorDescriptor::OperatorDescriptor(
+    int id,
     const QString &keyword,
     const QString &name,
-    DataType dataType
+    int acceptableLeftOperandDataTypeMask,
+    DataType rightOperandDataType
   ) :
+  mId( id ),
   mKeyword( keyword ),
   mName( name ),
-  mDataType( dataType )
+  mAcceptableLeftOperandDataTypeMask( acceptableLeftOperandDataTypeMask ),
+  mRightOperandDataType( rightOperandDataType )
 {
 }
 
-DataMember::~DataMember()
+OperatorDescriptor::~OperatorDescriptor()
 {
 }
 

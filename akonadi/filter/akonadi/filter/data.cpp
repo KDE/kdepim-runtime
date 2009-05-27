@@ -25,8 +25,8 @@
 
 #include "data.h"
 
-#include "function.h"
-#include "datamember.h"
+#include "functiondescriptor.h"
+#include "datamemberdescriptor.h"
 
 namespace Akonadi
 {
@@ -41,7 +41,7 @@ Data::~Data()
 {
 }
 
-QVariant Data::getPropertyValue( const Function * function, const DataMember * dataMember )
+QVariant Data::getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember )
 {
 #if 0
   Q_ASSERT( function->outputDataType() == DataTypeString );
@@ -51,7 +51,7 @@ QVariant Data::getPropertyValue( const Function * function, const DataMember * d
   {
     case StandardFunctionValueOf:
       Q_ASSERT( dataMember->dataType() == DataTypeString );
-      if( !getDataMemberValue( dataMember, buffer ) )
+      if( !getDataMemberDescriptorValue( dataMember, buffer ) )
       {
         // the value of a member that doesn't exist is an empty string
         buffer = QString();
@@ -83,7 +83,7 @@ QVariant Data::getPropertyValue( const Function * function, const DataMember * d
   return QVariant();
 }
 
-QVariant Data::getDataMemberValue( const DataMember * dataMember )
+QVariant Data::getDataMemberDescriptorValue( const DataMemberDescriptor * dataMember )
 {
   return QVariant();
 }

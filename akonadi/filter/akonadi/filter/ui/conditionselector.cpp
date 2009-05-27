@@ -27,7 +27,7 @@
 
 #include <akonadi/filter/condition.h>
 #include <akonadi/filter/factory.h>
-#include <akonadi/filter/function.h>
+#include <akonadi/filter/functiondescriptor.h>
 
 #include "coolcombobox.h"
 #include "extensionlabel.h"
@@ -59,7 +59,7 @@ public:
   Condition::ConditionType mType;
   QString mText;
   QColor mColor;
-  const Function * mFunction;
+  const FunctionDescriptor * mFunctionDescriptor;
 };
 
 class ConditionSelectorPrivate
@@ -67,9 +67,9 @@ class ConditionSelectorPrivate
 public:
   QList< ConditionDescriptor * > mConditionDescriptorList; // FIXME: This could be shared between all the editors with the same factory
   Private::CoolComboBox * mTypeComboBox;
-  KComboBox * mDataMemberComboBox;
+  KComboBox * mDataMemberDescriptorComboBox;
   Private::ExtensionLabel * mExtensionLabel;
-  KComboBox * mOperatorComboBox;
+  KComboBox * mOperatorDescriptorComboBox;
   KLineEdit * mValueLineEdit;
   QWidget * mChildConditionListBase;
   QWidget * mRightControlsBase;
@@ -103,40 +103,40 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Condi
   d->mType = Condition::ConditionTypeUnknown;
   d->mText = i18n( "<...select to activate condition...>" );
   d->mColor = palette().color( QPalette::Button );
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeNot;
   d->mText = i18n( "if the condition below is NOT met" );
   d->mColor = Qt::red;
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeAnd;
   d->mText = i18n( "if ALL of the conditions below are met" );
   d->mColor = Qt::blue;
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeOr;
   d->mText = i18n( "if ANY of the conditions below is met" );
   d->mColor = Qt::darkGreen;
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
-  const QList< const Function * > * props = mFactory->enumerateFunctions();
+  const QList< const FunctionDescriptor * > * props = mFactory->enumerateFunctions();
   Q_ASSERT( props );
 
-  foreach( const Function *prop, *props )
+  foreach( const FunctionDescriptor *prop, *props )
   {
     d = new ConditionDescriptor;
     d->mType = Condition::ConditionTypePropertyTest;
     d->mText = prop->name();
     d->mColor = QColor(); // no overlay
-    d->mFunction = prop;
+    d->mFunctionDescriptor = prop;
     mPrivate->mConditionDescriptorList.append( d );
   }
 
@@ -144,14 +144,14 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Condi
   d->mType = Condition::ConditionTypeTrue;
   d->mText = i18n( "if true (so always)" );
   d->mColor = QColor( 0, 60, 0 );
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeFalse;
   d->mText = i18n( "if false (so never)" );
   d->mColor = QColor( 60, 0, 0 );
-  d->mFunction = 0;
+  d->mFunctionDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   int idx = 0;
@@ -188,19 +188,19 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Condi
   if( gSpacing != -1 )
     rightGrid->setSpacing( gSpacing );
 
-  mPrivate->mDataMemberComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
-  mPrivate->mDataMemberComboBox->hide();
-  rightGrid->addWidget( mPrivate->mDataMemberComboBox, 0, 0 );
+  mPrivate->mDataMemberDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
+  mPrivate->mDataMemberDescriptorComboBox->hide();
+  rightGrid->addWidget( mPrivate->mDataMemberDescriptorComboBox, 0, 0 );
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
   rightGrid->setColumnStretch( 0, 1 );
 #endif
   
-  mPrivate->mOperatorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
-  mPrivate->mOperatorComboBox->hide();
+  mPrivate->mOperatorDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
+  mPrivate->mOperatorDescriptorComboBox->hide();
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-  mPrivate->mOperatorComboBox->setFixedWidth( 200 );
+  mPrivate->mOperatorDescriptorComboBox->setFixedWidth( 200 );
 #endif
-  rightGrid->addWidget( mPrivate->mOperatorComboBox, 0, 1 );
+  rightGrid->addWidget( mPrivate->mOperatorDescriptorComboBox, 0, 1 );
 
   mPrivate->mValueLineEdit = new KLineEdit( mPrivate->mRightControlsBase );
   mPrivate->mValueLineEdit->hide();
@@ -280,8 +280,8 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( gSemiTransparentWidgetsOpacity );
-      mPrivate->mDataMemberComboBox->hide();
-      mPrivate->mOperatorComboBox->hide();
+      mPrivate->mDataMemberDescriptorComboBox->hide();
+      mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
       mPrivate->mExtensionLabel->hide();
       mPrivate->mChildConditionListBase->hide();
@@ -292,8 +292,8 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-      mPrivate->mDataMemberComboBox->hide();
-      mPrivate->mOperatorComboBox->hide();
+      mPrivate->mDataMemberDescriptorComboBox->hide();
+      mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
       mPrivate->mExtensionLabel->hide();
       mPrivate->mChildConditionListBase->hide();
@@ -304,8 +304,8 @@ void ConditionSelector::setupUIForActiveType()
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
 
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-      mPrivate->mDataMemberComboBox->show();
-      mPrivate->mOperatorComboBox->show();
+      mPrivate->mDataMemberDescriptorComboBox->show();
+      mPrivate->mOperatorDescriptorComboBox->show();
       mPrivate->mValueLineEdit->show();
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
       mPrivate->mChildConditionListBase->show();
@@ -325,8 +325,8 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
       mPrivate->mExtensionLabel->setFixedHeight( ( d->mType == Condition::ConditionTypeNot ) ? ( mPrivate->mTypeComboBox->sizeHint().height() - 5 ) : -1 );
       mPrivate->mExtensionLabel->setOverlayColor( d->mColor );
-      mPrivate->mDataMemberComboBox->hide();
-      mPrivate->mOperatorComboBox->hide();
+      mPrivate->mDataMemberDescriptorComboBox->hide();
+      mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
 
       if( mPrivate->mChildConditionSelectorList.count() == 0 )
@@ -465,28 +465,28 @@ void ConditionSelector::reset()
 
 void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descriptor )
 {
-  mPrivate->mDataMemberComboBox->clear();
+  mPrivate->mDataMemberDescriptorComboBox->clear();
 
-  QList< const DataMember * > dataMembers = mFactory->enumerateDataMembers( descriptor->mFunction->acceptableInputDataTypeMask() );
+  QList< const DataMemberDescriptor * > dataMembers = mFactory->enumerateDataMembers( descriptor->mFunctionDescriptor->acceptableInputDataTypeMask() );
 
-  foreach( const DataMember * dataMember, dataMembers )
+  foreach( const DataMemberDescriptor * dataMember, dataMembers )
   {
-    mPrivate->mDataMemberComboBox->addItem( dataMember->name() );
+    mPrivate->mDataMemberDescriptorComboBox->addItem( dataMember->name() );
   }
 
-  mPrivate->mOperatorComboBox->clear();
+  mPrivate->mOperatorDescriptorComboBox->clear();
 
-  const QList< const Operator * > operators = mFactory->enumerateOperators( descriptor->mFunction->outputDataTypeMask() );
+  const QList< const OperatorDescriptor * > operators = mFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
   if( operators.isEmpty() )
   {
     // doesn't need an operator
-    mPrivate->mOperatorComboBox->hide();
+    mPrivate->mOperatorDescriptorComboBox->hide();
     mPrivate->mValueLineEdit->hide();
     return;
   }
-  foreach( const Operator * op, operators )
+  foreach( const OperatorDescriptor * op, operators )
   {
-    mPrivate->mOperatorComboBox->addItem( op->name() );
+    mPrivate->mOperatorDescriptorComboBox->addItem( op->name() );
   }
 }
 
@@ -517,7 +517,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       {
         if(
             ( d->mType == Condition::ConditionTypePropertyTest ) &&
-            ( d->mFunction == static_cast< Condition::PropertyTest * >( condition )->function() )
+            ( d->mFunctionDescriptor == static_cast< Condition::PropertyTest * >( condition )->function() )
           )
         {
           descriptor = d;

@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : datamember.h
+ *  File : commanddescriptor.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,59 +23,69 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATAMEMBER_H_
-#define _AKONADI_FILTER_DATAMEMBER_H_
+#ifndef _AKONADI_FILTER_COMMANDDESCRIPTOR_H_
+#define _AKONADI_FILTER_COMMANDDESCRIPTOR_H_
 
 #include "config-akonadi-filter.h"
 
-#include <QString>
-
 #include "datatype.h"
+
+#include <QString>
 
 namespace Akonadi
 {
 namespace Filter
 {
 
+enum CommandIdentifiers
+{
+  // standard commands
+  StandardCommandDownload = 1,
+  // custom commands
+  CommandCustomFirst = 10000
+};
+
+
 /**
+ * 
  *
  */
-class AKONADI_FILTER_EXPORT DataMember
+class AKONADI_FILTER_EXPORT CommandDescriptor
 {
 public:
   /**
-   * Create a function with the specified identifier
+   * Create a command descriptor with the specified keyword
    *
    */
-  DataMember(
-      const QString &keyword,          //< Unique data member keyword
-      const QString &name,             //< The token that is displayed in the UI editors.
-      DataType dataType                //< The output data type of this function
+  CommandDescriptor(
+      int id,                          //< The id of the command: it should be unique within an application
+      const QString &keyword,          //< Unique command keyword: it matches the keyword used in Sieve scripts.
+      const QString &name              //< The token that is displayed in the UI editors.
     );
-  virtual ~DataMember();
+  virtual ~CommandDescriptor();
 
 protected:
 
   /**
-   * The non-localized keyword of the data member. Must be unique
+   * The unique id of the commanddescriptor.
+   */
+  int mId;
+
+  /**
+   * The non-localized keywordentifier of the command.
    */
   QString mKeyword;
 
   /**
-   * The localized name of the function (this is what is shown in rule combos)
+   * The localized name of the command (this is what is shown in rule selection combos)
    */
   QString mName;
 
-  /**
-   * The type of this function
-   */
-  DataType mDataType;
-
 public:
 
-  DataType dataType() const
+  int id() const
   {
-    return mDataType;
+    return mId;
   }
 
   const QString & keyword() const
@@ -88,10 +98,10 @@ public:
     return mName;
   }
 
-}; // class DataMember
+}; // class CommandDescriptor
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATAMEMBER_H_
+#endif //!_AKONADI_FILTER_COMMANDDESCRIPTOR_H_
