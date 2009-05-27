@@ -160,6 +160,47 @@ void Or::dump( const QString &prefix )
 }
 
 
+True::True( Component * parent )
+  : Base( ConditionTypeTrue, parent )
+{
+}
+
+True::~True()
+{
+}
+
+bool True::matches( Data * )
+{
+  // this always matches
+  return true;
+}
+
+void True::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::True" );
+}
+
+
+False::False( Component * parent )
+  : Base( ConditionTypeFalse, parent )
+{
+}
+
+False::~False()
+{
+}
+
+bool False::matches( Data * )
+{
+  // this never matches
+  return false;
+}
+
+void False::dump( const QString &prefix )
+{
+  debugOutput( prefix, "Condition::False" );
+}
+
 PropertyTest::PropertyTest( Component * parent, const Function * function, const DataMember * dataMember, const Operator * op, const QVariant &operand )
   : Base( ConditionTypePropertyTest, parent ), mFunction( function ), mDataMember( dataMember ), mOperator( op ), mOperand( operand )
 {

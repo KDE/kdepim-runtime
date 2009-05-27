@@ -69,6 +69,11 @@ public:
     return mCondition;
   }
 
+  QList< Action::Base * > * actionList()
+  {
+    return &mActionList;
+  }
+
   void addAction( Action::Base * action )
   {
     mActionList.append( action );

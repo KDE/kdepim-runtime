@@ -53,6 +53,8 @@ namespace Condition
   class And;
   class Or;
   class Not;
+  class True;
+  class False;
 } // namespace Condition
 
 namespace Action
@@ -108,6 +110,8 @@ public:
   virtual Condition::And * createAndCondition( Component * parent );
   virtual Condition::Or * createOrCondition( Component * parent );
   virtual Condition::Not * createNotCondition( Component * parent );
+  virtual Condition::True * createTrueCondition( Component * parent );
+  virtual Condition::False * createFalseCondition( Component * parent );
   virtual Condition::Base * createPropertyTestCondition(
       Component * parent,
       const Function * function,

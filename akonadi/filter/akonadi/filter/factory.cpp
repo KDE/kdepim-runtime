@@ -454,6 +454,16 @@ Condition::Not * Factory::createNotCondition( Component * parent )
   return new Condition::Not( parent );
 }
 
+Condition::True * Factory::createTrueCondition( Component * parent )
+{
+  return new Condition::True( parent );
+}
+
+Condition::False * Factory::createFalseCondition( Component * parent )
+{
+  return new Condition::False( parent );
+}
+
 Action::Stop * Factory::createStopAction( Component * parent )
 {
   return new Action::Stop( parent );

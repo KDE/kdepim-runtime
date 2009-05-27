@@ -34,8 +34,8 @@ namespace Filter
 namespace Action
 {
 
-Base::Base( Component * parent )
-  : Component( parent )
+Base::Base( ActionType type, Component * parent )
+  : Component( parent ), mActionType( type )
 {
 }
 
@@ -59,7 +59,7 @@ void Base::dump( const QString &prefix )
 }
 
 Stop::Stop( Component * parent )
-  : Base( parent )
+  : Base( ActionTypeStop, parent )
 {
 }
 

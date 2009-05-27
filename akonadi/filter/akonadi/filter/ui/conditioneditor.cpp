@@ -56,7 +56,7 @@ namespace UI
 class ConditionDescriptor
 {
 public:
-  Condition::Base::ConditionType mType;
+  Condition::ConditionType mType;
   QString mText;
   QColor mColor;
   const Function * mFunction;
@@ -100,28 +100,28 @@ ConditionEditor::ConditionEditor( QWidget * parent, Factory * factory, Condition
   ConditionDescriptor * d;
 
   d = new ConditionDescriptor;
-  d->mType = Condition::Base::ConditionTypeUnknown;
+  d->mType = Condition::ConditionTypeUnknown;
   d->mText = i18n( "<...select to activate condition...>" );
   d->mColor = palette().color( QPalette::Button );
   d->mFunction = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
-  d->mType = Condition::Base::ConditionTypeNot;
+  d->mType = Condition::ConditionTypeNot;
   d->mText = i18n( "if the condition below is NOT met" );
   d->mColor = Qt::red;
   d->mFunction = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
-  d->mType = Condition::Base::ConditionTypeAnd;
+  d->mType = Condition::ConditionTypeAnd;
   d->mText = i18n( "if ALL of the conditions below are met" );
   d->mColor = Qt::blue;
   d->mFunction = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
-  d->mType = Condition::Base::ConditionTypeOr;
+  d->mType = Condition::ConditionTypeOr;
   d->mText = i18n( "if ANY of the conditions below is met" );
   d->mColor = Qt::darkGreen;
   d->mFunction = 0;
@@ -133,12 +133,26 @@ ConditionEditor::ConditionEditor( QWidget * parent, Factory * factory, Condition
   foreach( const Function *prop, *props )
   {
     d = new ConditionDescriptor;
-    d->mType = Condition::Base::ConditionTypePropertyTest;
+    d->mType = Condition::ConditionTypePropertyTest;
     d->mText = prop->name();
     d->mColor = QColor(); // no overlay
     d->mFunction = prop;
     mPrivate->mConditionDescriptorList.append( d );
   }
+
+  d = new ConditionDescriptor;
+  d->mType = Condition::ConditionTypeTrue;
+  d->mText = i18n( "if true (so always)" );
+  d->mColor = QColor( 0, 60, 0 );
+  d->mFunction = 0;
+  mPrivate->mConditionDescriptorList.append( d );
+
+  d = new ConditionDescriptor;
+  d->mType = Condition::ConditionTypeFalse;
+  d->mText = i18n( "if false (so never)" );
+  d->mColor = QColor( 60, 0, 0 );
+  d->mFunction = 0;
+  mPrivate->mConditionDescriptorList.append( d );
 
   int idx = 0;
 
@@ -261,7 +275,7 @@ void ConditionEditor::setupUIForActiveType()
 
   switch( d->mType )
   {
-    case Condition::Base::ConditionTypeUnknown:
+    case Condition::ConditionTypeUnknown:
 #if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
@@ -272,7 +286,19 @@ void ConditionEditor::setupUIForActiveType()
       mPrivate->mExtensionLabel->hide();
       mPrivate->mChildConditionListBase->hide();
     break;
-    case Condition::Base::ConditionTypePropertyTest:
+    case Condition::ConditionTypeTrue:
+    case Condition::ConditionTypeFalse:
+#if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
+      mPrivate->mRightControlsBase->hide();
+#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
+      mPrivate->mTypeComboBox->setOpacity( 1.0 );
+      mPrivate->mDataMemberComboBox->hide();
+      mPrivate->mOperatorComboBox->hide();
+      mPrivate->mValueLineEdit->hide();
+      mPrivate->mExtensionLabel->hide();
+      mPrivate->mChildConditionListBase->hide();
+    break;
+    case Condition::ConditionTypePropertyTest:
 #if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->show();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
@@ -290,14 +316,14 @@ void ConditionEditor::setupUIForActiveType()
       mPrivate->mExtensionLabel->hide();
 #endif
     break;
-    case Condition::Base::ConditionTypeNot:
-    case Condition::Base::ConditionTypeAnd:
-    case Condition::Base::ConditionTypeOr:
+    case Condition::ConditionTypeNot:
+    case Condition::ConditionTypeAnd:
+    case Condition::ConditionTypeOr:
 #if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-      mPrivate->mExtensionLabel->setFixedHeight( ( d->mType == Condition::Base::ConditionTypeNot ) ? ( mPrivate->mTypeComboBox->sizeHint().height() - 5 ) : -1 );
+      mPrivate->mExtensionLabel->setFixedHeight( ( d->mType == Condition::ConditionTypeNot ) ? ( mPrivate->mTypeComboBox->sizeHint().height() - 5 ) : -1 );
       mPrivate->mExtensionLabel->setOverlayColor( d->mColor );
       mPrivate->mDataMemberComboBox->hide();
       mPrivate->mOperatorComboBox->hide();
@@ -325,8 +351,8 @@ void ConditionEditor::childEditorTypeChanged( ConditionEditor * child )
   ConditionDescriptor * d = descriptorForActiveType();
 
   if(
-      ( d->mType != Condition::Base::ConditionTypeAnd ) &&
-      ( d->mType != Condition::Base::ConditionTypeOr )
+      ( d->mType != Condition::ConditionTypeAnd ) &&
+      ( d->mType != Condition::ConditionTypeOr )
     )
     return; // nothing to do here
 
@@ -373,15 +399,19 @@ void ConditionEditor::typeComboBoxActivated( int )
 
   switch( d->mType )
   {
-    case Condition::Base::ConditionTypeUnknown:
+    case Condition::ConditionTypeUnknown:
       // do nothing here
     break;
-    case Condition::Base::ConditionTypeAnd:
-    case Condition::Base::ConditionTypeOr:
-    case Condition::Base::ConditionTypeNot:
+    case Condition::ConditionTypeFalse:
+    case Condition::ConditionTypeTrue:
       // do nothing here
     break;
-    case Condition::Base::ConditionTypePropertyTest:
+    case Condition::ConditionTypeAnd:
+    case Condition::ConditionTypeOr:
+    case Condition::ConditionTypeNot:
+      // do nothing here
+    break;
+    case Condition::ConditionTypePropertyTest:
       qDeleteAll( mPrivate->mChildConditionEditorList );
       mPrivate->mChildConditionEditorList.clear();
       fillPropertyTestControls( d );
@@ -409,7 +439,7 @@ bool ConditionEditor::isEmpty()
 {
   ConditionDescriptor * d = descriptorForActiveType();
   Q_ASSERT( d );
-  return d->mType == Condition::Base::ConditionTypeUnknown;
+  return d->mType == Condition::ConditionTypeUnknown;
 }
 
 void ConditionEditor::reset()
@@ -419,7 +449,7 @@ void ConditionEditor::reset()
 
   foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
   {
-    if( d->mType == Condition::Base::ConditionTypeUnknown )
+    if( d->mType == Condition::ConditionTypeUnknown )
     {
       descriptor = d;
       break;
@@ -467,9 +497,11 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
 
   switch( condition->conditionType() )
   {
-    case Condition::Base::ConditionTypeAnd:
-    case Condition::Base::ConditionTypeOr:
-    case Condition::Base::ConditionTypeNot:
+    case Condition::ConditionTypeAnd:
+    case Condition::ConditionTypeOr:
+    case Condition::ConditionTypeNot:
+    case Condition::ConditionTypeFalse:
+    case Condition::ConditionTypeTrue:
       foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
       {
         if( d->mType == condition->conditionType() )
@@ -480,11 +512,11 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
         idx++;
       }
     break;
-    case Condition::Base::ConditionTypePropertyTest:
+    case Condition::ConditionTypePropertyTest:
       foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
       {
         if(
-            ( d->mType == Condition::Base::ConditionTypePropertyTest ) &&
+            ( d->mType == Condition::ConditionTypePropertyTest ) &&
             ( d->mFunction == static_cast< Condition::PropertyTest * >( condition )->function() )
           )
         {
@@ -506,8 +538,8 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
 
   switch( condition->conditionType() )
   {
-    case Condition::Base::ConditionTypeAnd:
-    case Condition::Base::ConditionTypeOr:
+    case Condition::ConditionTypeAnd:
+    case Condition::ConditionTypeOr:
     {
       const QList< Condition::Base * > * childConditions = static_cast< Condition::Multi * >( condition )->childConditions();
       Q_ASSERT( childConditions );
@@ -548,7 +580,7 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
 
     }
     break;
-    case Condition::Base::ConditionTypeNot:
+    case Condition::ConditionTypeNot:
     {
       ConditionEditor * child;
       if( mPrivate->mChildConditionEditorList.count() != 1 )
@@ -573,7 +605,12 @@ void ConditionEditor::fillFromCondition( Condition::Base * condition )
       child->fillFromCondition( static_cast< Condition::Not * >( condition )->childCondition() );
     }
     break;
-    case Condition::Base::ConditionTypePropertyTest:
+    case Condition::ConditionTypeTrue:
+    case Condition::ConditionTypeFalse:
+      qDeleteAll( mPrivate->mChildConditionEditorList );
+      mPrivate->mChildConditionEditorList.clear();
+    break;
+    case Condition::ConditionTypePropertyTest:
     {
       qDeleteAll( mPrivate->mChildConditionEditorList );
       mPrivate->mChildConditionEditorList.clear();

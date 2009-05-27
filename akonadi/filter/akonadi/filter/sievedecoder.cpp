@@ -93,8 +93,8 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
     // hm
     switch( static_cast< Condition::Base *>( mCurrentComponent )->conditionType() )
     {
-      case Condition::Base::ConditionTypeAnd:
-      case Condition::Base::ConditionTypeOr:
+      case Condition::ConditionTypeAnd:
+      case Condition::ConditionTypeOr:
       {
         Condition::Multi * multi = static_cast< Condition::Multi * >( mCurrentComponent );
         multi->addChildCondition( condition );
@@ -102,7 +102,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
         return true;
       }
       break;
-      case Condition::Base::ConditionTypeNot:
+      case Condition::ConditionTypeNot:
       {
         Condition::Not * whoTheHeckDefinedNotToTheExclamationMark = static_cast< Condition::Not * >( mCurrentComponent );
         Condition::Base * currentNotChild = whoTheHeckDefinedNotToTheExclamationMark->childCondition();
@@ -157,6 +157,10 @@ void SieveDecoder::onTestStart( const QString & identifier )
     condition = factory()->createOrCondition( mCurrentComponent );
   else if( QString::compare( identifier, QLatin1String( "not" ), Qt::CaseInsensitive ) == 0 )
     condition = factory()->createNotCondition( mCurrentComponent );
+  else if( QString::compare( identifier, QLatin1String( "true" ), Qt::CaseInsensitive ) == 0 )
+    condition = factory()->createTrueCondition( mCurrentComponent );
+  else if( QString::compare( identifier, QLatin1String( "false" ), Qt::CaseInsensitive ) == 0 )
+    condition = factory()->createFalseCondition( mCurrentComponent );
   else {
     // we delay the start of the simple tests to "onTestEnd", as they can't be structured.
     mCurrentSimpleTestName = identifier;
@@ -617,9 +621,9 @@ void SieveDecoder::onTestListStart()
     // this is a parenthesis after either an allof or anyof
     switch( static_cast< Condition::Base *>( mCurrentComponent )->conditionType() )
     {
-      case Condition::Base::ConditionTypeAnd:
-      case Condition::Base::ConditionTypeOr:
-      case Condition::Base::ConditionTypeNot:
+      case Condition::ConditionTypeAnd:
+      case Condition::ConditionTypeOr:
+      case Condition::ConditionTypeNot:
         // ok
         return;
       break;
@@ -644,9 +648,9 @@ void SieveDecoder::onTestListEnd()
     // this is a parenthesis after either an allof or anyof
     switch( static_cast< Condition::Base *>( mCurrentComponent )->conditionType() )
     {
-      case Condition::Base::ConditionTypeAnd:
-      case Condition::Base::ConditionTypeOr:
-      case Condition::Base::ConditionTypeNot:
+      case Condition::ConditionTypeAnd:
+      case Condition::ConditionTypeOr:
+      case Condition::ConditionTypeNot:
         // ok
         return;
       break;
@@ -812,7 +816,7 @@ Program * SieveDecoder::run()
 {
   QString script = QString::fromUtf8(
        "# Test script\r\n" \
-       "if allof( size :above 100K, size :below 200K) {\r\n" \
+       "if allof( size :above 100K, size :below 200K, true) {\r\n" \
        "  fileinto \"huge\";\r\n" \
        "  stop;\r\n" \
        "}\r\n"

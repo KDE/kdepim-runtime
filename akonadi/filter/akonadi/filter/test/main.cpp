@@ -19,11 +19,11 @@ public:
 public:
   virtual Akonadi::Filter::Action::Base * createGenericAction( Akonadi::Filter::Component * parent, const QString &identifier )
   {
-    return new Akonadi::Filter::Action::Base( parent );
+    return new Akonadi::Filter::Action::Stop( parent );
   }
   virtual Akonadi::Filter::Condition::Base * createGenericCondition( Akonadi::Filter::Component * parent, const QString &identifier )
   {
-    return new Akonadi::Filter::Condition::Base( Akonadi::Filter::Condition::Base::ConditionTypeAnd, parent );
+    return new Akonadi::Filter::Condition::True( parent );
   }
 };
 

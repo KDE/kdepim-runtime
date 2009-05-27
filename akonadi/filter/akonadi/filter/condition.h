@@ -46,17 +46,19 @@ class Operator;
 namespace Condition
 {
 
+enum ConditionType
+{
+  ConditionTypeAnd,
+  ConditionTypeOr,
+  ConditionTypeNot,
+  ConditionTypeTrue,
+  ConditionTypeFalse,
+  ConditionTypePropertyTest,
+  ConditionTypeUnknown // this is used only in the editor
+};
+
 class AKONADI_FILTER_EXPORT Base : public Component
 {
-public:
-  enum ConditionType
-  {
-    ConditionTypeAnd,
-    ConditionTypeOr,
-    ConditionTypeNot,
-    ConditionTypePropertyTest,
-    ConditionTypeUnknown // this is used only in the editor
-  };
 public:
   Base( ConditionType type, Component * parent );
   virtual ~Base();
@@ -135,7 +137,6 @@ public:
   virtual ~And();
 public:
   virtual bool matches( Data * data );
-
   virtual void dump( const QString &prefix );
 }; // class And
 
@@ -149,6 +150,26 @@ public:
 
   virtual void dump( const QString &prefix );
 }; // class Or
+
+class AKONADI_FILTER_EXPORT True : public Base
+{
+public:
+  True( Component * parent );
+  virtual ~True();
+public:
+  virtual bool matches( Data * data );
+  virtual void dump( const QString &prefix );
+};
+
+class AKONADI_FILTER_EXPORT False : public Base
+{
+public:
+  False( Component * parent );
+  virtual ~False();
+public:
+  virtual bool matches( Data * data );
+  virtual void dump( const QString &prefix );
+};
 
 class AKONADI_FILTER_EXPORT PropertyTest : public Base
 {

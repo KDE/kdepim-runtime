@@ -41,8 +41,7 @@ class Rule;
 namespace UI
 {
 
-class ConditionEditor;
-class ActionEditor;
+class RuleEditorPrivate;
 
 class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
@@ -52,9 +51,8 @@ public:
   virtual ~RuleEditor();
 
 protected:
-  ConditionEditor * mConditionEditor;
-  ActionEditor * mActionEditor;
   Factory * mFactory;
+  RuleEditorPrivate * mPrivate;
 
 public:
   virtual void fillFromRule( Rule * rule );

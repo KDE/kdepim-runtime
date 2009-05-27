@@ -37,7 +37,7 @@ namespace Action
 {
 
 RuleList::RuleList( Component * parent )
-  : Base( parent )
+  : Base( ActionTypeRuleList, parent )
 {
 }
 

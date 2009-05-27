@@ -62,6 +62,7 @@ ActionEditor::ActionEditor( QWidget * parent, Factory * factory )
 
   g->addWidget( mPrivate->mTypeComboBox, 0, 0, 1, 2 );
 
+  mPrivate->mTypeComboBox->addItem( i18n( "then continue processing" ) );
   mPrivate->mTypeComboBox->addItem( i18n( "then stop processing here" ) );
   mPrivate->mTypeComboBox->addItem( i18n( "then execute the following rule list (sub-program)" ) );
   mPrivate->mTypeComboBox->addItem( i18n( "then move the item in the collection" ) );

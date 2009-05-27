@@ -40,30 +40,77 @@ namespace Filter
 namespace UI
 {
 
+class RuleEditorPrivate
+{
+public:
+  ConditionEditor * mConditionEditor;
+  QList< ActionEditor * > mActionEditorList;
+  QVBoxLayout * mLayout;
+};
+
 RuleEditor::RuleEditor( QWidget * parent, Factory * factory )
   : QWidget( parent ), mFactory( factory )
 {
+  mPrivate = new RuleEditorPrivate;
+
   setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
 
-  QGridLayout * g = new QGridLayout( this );
-  g->setMargin( 2 );
+  mPrivate->mLayout = new QVBoxLayout( this );
+  mPrivate->mLayout->setMargin( 2 );
 
-  mConditionEditor = new ConditionEditor( this, factory );
-  g->addWidget( mConditionEditor, 0, 0 );
+  mPrivate->mLayout->addStretch();
 
-  mActionEditor = new ActionEditor( this, factory );
-  g->addWidget( mActionEditor, 1, 0 );
+  mPrivate->mConditionEditor = new ConditionEditor( this, factory );
+  mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, mPrivate->mConditionEditor );
 
-  g->setRowStretch( 2, 1 );
+  ActionEditor * actionEditor = new ActionEditor( this, factory );
+  mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
+  mPrivate->mActionEditorList.append( actionEditor );
 }
 
 RuleEditor::~RuleEditor()
 {
+  qDeleteAll( mPrivate->mActionEditorList );
+  delete mPrivate;
 }
 
 void RuleEditor::fillFromRule( Rule * rule )
 {
-  mConditionEditor->fillFromCondition( rule->condition() );
+  mPrivate->mConditionEditor->fillFromCondition( rule->condition() );
+
+  QList< Action::Base * > * actionList = rule->actionList();
+
+  // kill the excess of action editors
+  while( mPrivate->mActionEditorList.count() > actionList->count() )
+  {
+    delete mPrivate->mActionEditorList.last();
+    mPrivate->mActionEditorList.removeLast();
+  }
+
+  QList< ActionEditor * >::Iterator editorIterator = mPrivate->mActionEditorList.begin();
+  QList< Action::Base * >::Iterator actionIterator = actionList->begin();
+
+  // fill the existing action editors
+  while( editorIterator != mPrivate->mActionEditorList.end() )
+  {
+    Q_ASSERT( actionIterator != actionList->end() );
+    ( *editorIterator )->fillFromAction( *actionIterator );
+    ++editorIterator;
+    ++actionIterator;
+  }
+
+  ActionEditor * actionEditor;
+
+  // add new ones, if needed
+  while( actionIterator != actionList->end() )
+  {
+    actionEditor = new ActionEditor( this, mFactory );
+    mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
+    mPrivate->mActionEditorList.append( actionEditor );
+    actionEditor->show();
+    actionEditor->fillFromAction( *actionIterator );
+    ++actionIterator;
+  }
 }
 
 bool RuleEditor::commitToRule( Rule * rule )
