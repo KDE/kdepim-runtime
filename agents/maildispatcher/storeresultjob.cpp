@@ -69,6 +69,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
     q->setError( Unknown );
     q->setErrorText( QLatin1String( "Failed to fetch item." ) );
     q->commit();
+    return;
   }
   
   // Store result in item.
