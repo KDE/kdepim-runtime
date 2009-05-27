@@ -248,7 +248,7 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
   m_capabilities = capJob->capabilities();
   QStringList expected;
-  expected << "IMAP4rev1";
+  expected << "IMAP4rev1" << "UIDPLUS";
 
   QStringList missing;
 
@@ -256,10 +256,6 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
     if ( !m_capabilities.contains( capability ) ) {
       missing << capability;
     }
-  }
-
-  if ( !m_capabilities.contains( "UIDPLUS" ) && !m_capabilities.contains( "ID" ) ) {
-    missing << "UIDPLUS or ID";
   }
 
   if ( !missing.isEmpty() ) {
