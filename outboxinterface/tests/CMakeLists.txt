@@ -1,9 +1,16 @@
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
+
 set(queuer_srcs queuer.cpp)
 kde4_add_executable(queuer TEST ${queuer_srcs})
 target_link_libraries(queuer ${KDE4_KDEUI_LIBS} ${KDE4_MAILTRANSPORT_LIBS} ${KDE4_KMIME_LIBS} outboxinterface)
 
+
+set( requester_srcs foldersrequester.cpp )
+kde4_add_executable( requester TEST ${requester_srcs} )
+target_link_libraries( requester ${KDE4_KDEUI_LIBS} outboxinterface )
+# for racetest
+add_definitions( -DREQUESTER_EXE=\\"${CMAKE_CURRENT_BINARY_DIR}/requester\\" )
 
 
 
@@ -45,4 +52,5 @@ endmacro(add_akonadi_isolated_test)
 
 
 add_akonadi_isolated_test( messagequeuejobtest.cpp )
+add_akonadi_isolated_test( racetest.cpp )
 

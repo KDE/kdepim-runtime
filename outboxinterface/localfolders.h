@@ -102,8 +102,6 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
     LocalFoldersPrivate *const d;
 
-    Q_PRIVATE_SLOT( d, void dbusServiceOwnerChanged( const QString &service,
-          const QString &oldOwner, const QString &newOwner ) )
     Q_PRIVATE_SLOT( d, void prepare() )
     Q_PRIVATE_SLOT( d, void schedulePrepare() )
     Q_PRIVATE_SLOT( d, void connectMonitor() )

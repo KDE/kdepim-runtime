@@ -193,6 +193,6 @@ void MessageQueueJobTest::verifyOutboxContents( qlonglong count )
 }
 
 
-QTEST_AKONADIMAIN( MessageQueueJobTest, GUI )
+QTEST_AKONADIMAIN( MessageQueueJobTest, NoGUI )
 
 #include "messagequeuejobtest.moc"

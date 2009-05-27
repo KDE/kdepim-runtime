@@ -174,10 +174,7 @@ Collection LocalFolders::sentMail() const
 LocalFoldersPrivate::LocalFoldersPrivate()
   : instance( new LocalFolders(this) )
 {
-  QDBusConnection bus = QDBusConnection::sessionBus();
-  isMainInstance = bus.registerService( DBUS_SERVICE_NAME );
-  QObject::connect( bus.interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),
-      instance, SLOT(dbusServiceOwnerChanged(QString,QString,QString)) );
+  isMainInstance = QDBusConnection::sessionBus().registerService( DBUS_SERVICE_NAME );
 
   ready = false;
   // prepare() expects these
@@ -193,19 +190,6 @@ LocalFoldersPrivate::~LocalFoldersPrivate()
 {
   delete instance;
   delete iface;
-}
-
-void LocalFoldersPrivate::dbusServiceOwnerChanged( const QString &service,
-    const QString &oldOwner, const QString &newOwner )
-{
-  Q_UNUSED( oldOwner );
-  if( !isMainInstance && service == DBUS_SERVICE_NAME && newOwner.isEmpty() ) {
-    kDebug() << "Previous main instance released D-Bus service name.";
-    isMainInstance = QDBusConnection::sessionBus().registerService( DBUS_SERVICE_NAME );
-    if( isMainInstance ) {
-      kDebug() << "I have become the main instance.";
-    }
-  }
 }
 
 void LocalFoldersPrivate::prepare()
@@ -267,6 +251,15 @@ void LocalFoldersPrivate::createResourceIfNeeded()
   // check that the maildir resource exists
   AgentInstance resource = AgentManager::self()->instance( Settings::resourceId() );
   if( !resource.isValid() ) {
+    // Try to grab main instance status (if previous main instance quit).
+    if( !isMainInstance ) {
+      isMainInstance = QDBusConnection::sessionBus().registerService( DBUS_SERVICE_NAME );
+      if( isMainInstance ) {
+        kDebug() << "I have become the main instance.";
+      }
+    }
+
+    // Create resource if main instance.
     if( !isMainInstance ) {
       kDebug() << "Waiting for the main instance to create the resource.";
       schedulePrepare();
