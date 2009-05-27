@@ -248,7 +248,11 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
   m_capabilities = capJob->capabilities();
   QStringList expected;
-  expected << "IMAP4rev1" << "UIDPLUS";
+  expected << "IMAP4rev1";
+
+  if ( !m_capabilities.contains( "X-GM-EXT-1" ) ) {
+    expected << "UIDPLUS";
+  }
 
   QStringList missing;
 
