@@ -246,7 +246,7 @@ void CategorySelectDialog::setSelected( const QStringList &selList )
 void CategorySelectDialog::enterEvent( QEvent *event )
 {
   Q_UNUSED( event );
-  mWidgets->setFocus();
+  mWidgets->listView()->setFocus();
 }
 
 #include "categoryselectdialog.moc"
