@@ -40,8 +40,6 @@ class OutboxQueue : public QObject
     explicit OutboxQueue( QObject *parent = 0 );
     virtual ~OutboxQueue();
 
-    void setCollection( Akonadi::Collection &col );
-
     bool isEmpty() const;
 
     /**
@@ -58,9 +56,12 @@ class OutboxQueue : public QObject
     Private* const d;
 
     Q_PRIVATE_SLOT( d, void collectionFetched( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
+    Q_PRIVATE_SLOT( d, void outboxChanged() )
     Q_PRIVATE_SLOT( d, void itemAdded( Akonadi::Item ) )
     Q_PRIVATE_SLOT( d, void itemChanged( Akonadi::Item ) )
-    Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) )
+    Q_PRIVATE_SLOT( d, void itemRemoved( Akonadi::Item ) )
 
 };
 

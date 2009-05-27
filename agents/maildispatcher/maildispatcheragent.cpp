@@ -35,7 +35,6 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/ItemFetchScope>
 
-#include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
 #include <outboxinterface/errorattribute.h>
@@ -66,7 +65,6 @@ class MailDispatcherAgent::Private
 
     // slots:
     void dispatch();
-    void localFoldersChanged();
     void itemFetched( Item &item );
     void sendResult( KJob *job );
 
@@ -91,18 +89,6 @@ void MailDispatcherAgent::Private::dispatch()
   queue->fetchOne(); // will trigger itemFetched
 }
 
-void MailDispatcherAgent::Private::localFoldersChanged()
-{
-  // NOTE that this is called whenever the outbox/sent-mail collections change,
-  // not only on startup.
-
-  Collection outbox = LocalFolders::self()->outbox();
-  Q_ASSERT( outbox.isValid() );
-  kDebug() << "Outbox collection changed to (" << outbox.id() << "," << outbox.name() << ").";
-  Q_ASSERT( queue );
-  queue->setCollection( outbox );
-}
-
 
 MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   : AgentBase( id ),
@@ -125,9 +111,6 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
   connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
       this, SLOT( itemFetched( Akonadi::Item& ) ) );
-  LocalFolders *folders = LocalFolders::self();
-  connect( folders, SIGNAL( foldersReady() ), this, SLOT( localFoldersChanged() ) );
-  folders->fetch(); // will emit foldersReady()
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()

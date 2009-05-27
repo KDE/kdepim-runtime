@@ -30,6 +30,7 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
+#include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
 #include <outboxinterface/sentcollectionattribute.h>
@@ -47,33 +48,38 @@ class OutboxQueue::Private
   public:
     Private( OutboxQueue *qq )
       : q( qq )
+      , outbox( -1 )
     {
     }
 
 
     OutboxQueue *const q;
 
+    Collection outbox;
     Monitor *monitor;
     QList<Item> queue;
 
-    void initQueue( Collection &col );
+    void initQueue();
     void addIfComplete( const Item &item );
 
     // slots:
     void collectionFetched( KJob *job );
+    void itemFetched( KJob *job );
+    void outboxChanged();
     void itemAdded( const Item &item );
     void itemChanged( const Item &item );
-    void itemFetched( KJob *job );
+    void itemMoved( const Item &item, const Collection &source, const Collection &dest );
+    void itemRemoved( const Item &item );
 
 };
 
 
-void OutboxQueue::Private::initQueue( Collection &col )
+void OutboxQueue::Private::initQueue()
 {
   queue.clear();
 
-  kDebug() << "Fetching items in collection" << col.id();
-  ItemFetchJob *job = new ItemFetchJob( col );
+  kDebug() << "Fetching items in collection" << outbox.id();
+  ItemFetchJob *job = new ItemFetchJob( outbox );
   job->fetchScope().fetchAllAttributes();
   job->fetchScope().fetchFullPayload( false );
   connect( job, SIGNAL( result( KJob* ) ), q, SLOT( collectionFetched( KJob* ) ) );
@@ -134,7 +140,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
 void OutboxQueue::Private::collectionFetched( KJob *job )
 {
   if( job->error() ) {
-    kWarning() << "Failed to fetch outbox collection.  Queue will be empty until setCollection is called.";
+    kWarning() << "Failed to fetch outbox collection.  Queue will be empty until the outbox changes.";
     return;
   }
 
@@ -144,17 +150,6 @@ void OutboxQueue::Private::collectionFetched( KJob *job )
   foreach( Item item, fjob->items() ) {
     addIfComplete( item );
   }
-}
-
-void OutboxQueue::Private::itemAdded( const Item &item )
-{
-  addIfComplete( item );
-}
-
-void OutboxQueue::Private::itemChanged( const Item &item )
-{
-  addIfComplete( item );
-  // TODO: if the item is moved out of the outbox, will I get itemChanged?
 }
 
 void OutboxQueue::Private::itemFetched( KJob *job )
@@ -174,6 +169,48 @@ void OutboxQueue::Private::itemFetched( KJob *job )
   emit q->itemReady( fjob->items().first() );
 }
 
+void OutboxQueue::Private::outboxChanged()
+{
+  // Called on startup, and whenever the local folders change.
+  Collection col = LocalFolders::self()->outbox();
+  Q_ASSERT( col.isValid() );
+  if( col == outbox ) {
+    return;
+  }
+
+  monitor->setCollectionMonitored( outbox, false );
+  monitor->setCollectionMonitored( col, true );
+  outbox = col;
+  kDebug() << "Changed outbox to" << outbox.id();
+  initQueue();
+}
+
+void OutboxQueue::Private::itemAdded( const Item &item )
+{
+  addIfComplete( item );
+}
+
+void OutboxQueue::Private::itemChanged( const Item &item )
+{
+  addIfComplete( item );
+  // TODO: if the item is moved out of the outbox, will I get itemChanged?
+}
+
+void OutboxQueue::Private::itemMoved( const Item &item, const Collection &source, const Collection &dest )
+{
+  if( source == outbox ) {
+    queue.removeAll( item );
+  } else if( dest == outbox ) {
+    addIfComplete( item );
+  }
+}
+
+void OutboxQueue::Private::itemRemoved( const Item &item )
+{
+  queue.removeAll( item );
+}
+
+
 
 
 OutboxQueue::OutboxQueue( QObject *parent )
@@ -187,27 +224,19 @@ OutboxQueue::OutboxQueue( QObject *parent )
       this, SLOT( itemAdded( Akonadi::Item ) ) );
   connect( d->monitor, SIGNAL( itemChanged( Akonadi::Item, QSet<QByteArray> ) ),
       this, SLOT( itemChanged( Akonadi::Item ) ) );
+  connect( d->monitor, SIGNAL( itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) ),
+      this, SLOT( itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) ) );
+  connect( d->monitor, SIGNAL( itemRemoved( Akonadi::Item ) ),
+      this, SLOT( itemRemoved( Akonadi::Item ) ) );
+
+  connect( LocalFolders::self(), SIGNAL( foldersReady() ),
+      this, SLOT( outboxChanged() ) );
+  LocalFolders::self()->fetch();
 }
 
 OutboxQueue::~OutboxQueue()
 {
   delete d;
-}
-
-void OutboxQueue::setCollection( Akonadi::Collection &col )
-{
-  if( d->monitor->collectionsMonitored().count() > 0 ) {
-    Q_ASSERT( d->monitor->collectionsMonitored().count() == 1 );
-    Collection old = d->monitor->collectionsMonitored().first();
-    if( old == col ) {
-      return;
-    }
-
-    d->monitor->setCollectionMonitored( old, false );
-  }
-
-  d->monitor->setCollectionMonitored( col, true );
-  d->initQueue( col );
 }
 
 bool OutboxQueue::isEmpty() const

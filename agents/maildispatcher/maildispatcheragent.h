@@ -48,7 +48,6 @@ class MailDispatcherAgent : public Akonadi::AgentBase
     Private* const d;
 
     Q_PRIVATE_SLOT( d, void dispatch() )
-    Q_PRIVATE_SLOT( d, void localFoldersChanged() )
     Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
     Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
 
