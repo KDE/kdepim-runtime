@@ -17,42 +17,50 @@
     02110-1301, USA.
 */
 
-#ifndef SENDJOB_H
-#define SENDJOB_H
+#ifndef OUTBOXQUEUE_H
+#define OUTBOXQUEUE_H
 
-#include <KJob>
+#include <QObject>
 
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
+
+class KJob;
 
 
 /**
-  This class takes a prevalidated Item with all the required attributes,
-  sends it using MailTransport, and then stores the result of the sending
-  operation in the item.
-*/
-class SendJob : public KJob
+  Monitors the outbox collection and provides a queue of messages for the MDA to send.
+ */
+class OutboxQueue : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit SendJob( const Akonadi::Item &item, QObject *parent = 0 );
-    virtual ~SendJob();
+    // TODO docu
+    explicit OutboxQueue( QObject *parent = 0 );
+    virtual ~OutboxQueue();
+
+    void setCollection( Akonadi::Collection &col );
+
+    bool isEmpty() const;
 
     /**
-      Sends the item.
+      Fetches an item and emits itemReady() when done.
     */
-    virtual void start();
+    void fetchOne();
+
+  signals:
+    void itemReady( Akonadi::Item &item );
+    void newItems();
 
   private:
     class Private;
-    //friend class Private;
+    Private* const d;
 
-    Private *const d;
-
-    Q_PRIVATE_SLOT( d, void doTransport() )
-    Q_PRIVATE_SLOT( d, void transportResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void moveResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void doEmitResult( KJob *job ) )
+    Q_PRIVATE_SLOT( d, void collectionFetched( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemAdded( Akonadi::Item ) )
+    Q_PRIVATE_SLOT( d, void itemChanged( Akonadi::Item ) )
+    Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
 
 };
 

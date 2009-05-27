@@ -17,42 +17,41 @@
     02110-1301, USA.
 */
 
-#ifndef SENDJOB_H
-#define SENDJOB_H
+#ifndef STORERESULTJOB_H
+#define STORERESULTJOB_H
 
-#include <KJob>
+#include <QString>
 
 #include <Akonadi/Item>
+#include <Akonadi/TransactionSequence>
 
 
 /**
-  This class takes a prevalidated Item with all the required attributes,
-  sends it using MailTransport, and then stores the result of the sending
-  operation in the item.
+  This class stores the result of a StoreResultJob in an item.
+  First, it removes the 'queued' flag.
+  After that, if the result was success, it stores the 'sent' flag.
+  If the result was failure, it stores the 'error' flag and an ErrorAttribute.
 */
-class SendJob : public KJob
+class StoreResultJob : public Akonadi::TransactionSequence
 {
   Q_OBJECT
 
   public:
-    explicit SendJob( const Akonadi::Item &item, QObject *parent = 0 );
-    virtual ~SendJob();
+    // TODO docu
+    explicit StoreResultJob( const Akonadi::Item &item, bool success, const QString &message, QObject *parent = 0 );
+    virtual ~StoreResultJob();
 
-    /**
-      Sends the item.
-    */
-    virtual void start();
+  protected:
+    // reimpl from TransactionSequence
+    virtual void doStart();
 
   private:
     class Private;
     //friend class Private;
-
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void doTransport() )
-    Q_PRIVATE_SLOT( d, void transportResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void moveResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void doEmitResult( KJob *job ) )
+    Q_PRIVATE_SLOT( d, void fetchDone( KJob *job ) )
+    Q_PRIVATE_SLOT( d, void modifyDone( KJob *job ) )
 
 };
 
