@@ -152,15 +152,8 @@ class KDEPIM_EXPORT KMeditor : public KPIMTextEdit::TextEdit
   public Q_SLOTS:
 
     void slotAddQuotes();
-    void slotRemoveBox();
-    void slotAddBox();
     void slotPasteAsQuotation();
     void slotRemoveQuotes();
-
-    /**
-     * Warning: This function switches back to plain text mode.
-     */
-    void slotRot13();
 
     void slotChangeInsertMode();
 
