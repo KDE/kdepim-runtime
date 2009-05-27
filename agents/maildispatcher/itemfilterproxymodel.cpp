@@ -120,22 +120,21 @@ bool ItemFilterProxyModel::Private::itemAccepted( const QModelIndex &index )
 void ItemFilterProxyModel::Private::itemFetchResult( KJob *job )
 {
   Q_ASSERT( job == currentJob );
+  Q_UNUSED( job );
   Item::List items = currentJob->items();
+  currentJob = 0;
   if( items.count() != 1 ) {
     kWarning() << "ItemFetchJob fetched" << items.count() << "items; expected 1.";
     
-    // TODO: When can this happen?  How to handle this?
-    // HACK: Remove from model and try next one.
-    Q_ASSERT( q->rowCount() >= 1 );
-    q->removeRows( 0, 1 );
+    // HACK:
+    // This can happen if the item disappeared from the model (removed by
+    // someone else).  Just try the next one.
     q->fetchAnItem();
   } else {
     Item item = items.first();
     kDebug() << "fetched item" << item.id() << "from collection" << item.collectionId();
     emit q->itemFetched( item );
   }
-  Q_UNUSED( job );
-  currentJob = 0;
 }
 
 

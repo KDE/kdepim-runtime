@@ -87,7 +87,7 @@ void MailDispatcherAgent::Private::connectModel( bool connect )
         q, SLOT( dispatch() ) );
     q->connect( model, SIGNAL( itemFetched( Akonadi::Item& ) ),
         q, SLOT( itemFetched( Akonadi::Item& ) ) );
-    dispatch();
+    QTimer::singleShot( 0, q, SLOT( dispatch() ) );
   } else {
     kDebug() << "Offline. Disconnecting model.";
     model->disconnect( q );
