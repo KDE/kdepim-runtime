@@ -110,6 +110,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
 
   const DispatchModeAttribute *mA = item.attribute<DispatchModeAttribute>();
+  Q_ASSERT( mA );
   if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
       mA->dueDate() > QDateTime::currentDateTime() ) {
     kDebug() << "Item" << item.id() << "is to be sent in the future.";
@@ -119,6 +120,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
 
   const TransportAttribute *tA = item.attribute<TransportAttribute>();
+  Q_ASSERT( tA );
   if( tA->transport() == 0 ) {
     kWarning() << "Item" << item.id() << "has invalid transport.";
     return;

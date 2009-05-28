@@ -32,17 +32,9 @@
 #include <KDebug>
 #include <KWindowSystem>
 
-#include <Akonadi/AttributeFactory>
 #include <Akonadi/ItemFetchScope>
 
-#include <outboxinterface/addressattribute.h>
-#include <outboxinterface/dispatchmodeattribute.h>
-#include <outboxinterface/errorattribute.h>
-#include <outboxinterface/sentcollectionattribute.h>
-#include <outboxinterface/transportattribute.h>
-
 using namespace Akonadi;
-using namespace OutboxInterface;
 
 
 class MailDispatcherAgent::Private
@@ -94,13 +86,6 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
-  // register attributes
-  AttributeFactory::registerAttribute<AddressAttribute>();
-  AttributeFactory::registerAttribute<DispatchModeAttribute>();
-  AttributeFactory::registerAttribute<ErrorAttribute>();
-  AttributeFactory::registerAttribute<SentCollectionAttribute>();
-  AttributeFactory::registerAttribute<TransportAttribute>();
-
   kDebug() << "maildispatcheragent: At your service, sir!";
 
   new SettingsAdaptor( Settings::self() );
