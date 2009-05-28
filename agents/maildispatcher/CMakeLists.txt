@@ -33,7 +33,7 @@ set( maildispatcheragent_SRCS
   outboxqueue.cpp
   sendjob.cpp
   storeresultjob.cpp
-  configdialog.cpp
+  #configdialog.cpp
 )
 
 add_definitions( -DKDE_DEFAULT_DEBUG_AREA=5266 )

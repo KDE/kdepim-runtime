@@ -20,7 +20,7 @@
 
 #include "maildispatcheragent.h"
 
-#include "configdialog.h"
+//#include "configdialog.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
 #include "settings.h"
