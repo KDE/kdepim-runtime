@@ -62,7 +62,7 @@ Dock::Dock( QWidget *parent )
 {
     m_parentWidget = parent;
   
-    setIcon("akonadi");
+    setIconByName("akonadi");
     setCategory(SystemServices);
     setStatus(Passive);
 
