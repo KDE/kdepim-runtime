@@ -6,4 +6,6 @@
 * Figure out a better way to configure the resource via D-Bus.
 * Provide an option (attribute?) for messages to be deleted from outbox once
   they have been sent (as opposed to moving to sent-mail).
+* Krazy wants me to use private d-pointers in the attributes -- probably a good
+  idea since this is a library?...
 

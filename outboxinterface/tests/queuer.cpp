@@ -23,9 +23,9 @@
 #include <KApplication>
 #include <KCmdLineArgs>
 #include <KLineEdit>
+#include <KTextEdit>
 
 #include <QPushButton>
-#include <QTextEdit>
 
 #include <Akonadi/Control>
 
@@ -57,7 +57,7 @@ MessageQueuer::MessageQueuer()
   mCcEdit->setClickMessage( "Cc" );
   mBccEdit = new KLineEdit( this );
   mBccEdit->setClickMessage( "Bcc" );
-  mMailEdit = new QTextEdit( this );
+  mMailEdit = new KTextEdit( this );
   mMailEdit->setText( "test from queuer!" );
   mMailEdit->setAcceptRichText( false );
   mMailEdit->setLineWrapMode( QTextEdit::NoWrap );

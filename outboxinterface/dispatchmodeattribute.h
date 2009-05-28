@@ -22,7 +22,7 @@
 
 #include <outboxinterface/outboxinterface_export.h>
 
-#include <QDateTime>
+#include <QtCore/QDateTime>
 
 #include <Akonadi/Attribute>
 
@@ -46,7 +46,7 @@ class OUTBOXINTERFACE_EXPORT DispatchModeAttribute : public Akonadi::Attribute
       Never
     };
 
-    DispatchModeAttribute( DispatchMode mode = Immediately, const QDateTime &date = QDateTime() );
+    explicit DispatchModeAttribute( DispatchMode mode = Immediately, const QDateTime &date = QDateTime() );
     virtual ~DispatchModeAttribute();
 
     virtual DispatchModeAttribute* clone() const;

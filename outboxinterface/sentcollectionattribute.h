@@ -37,7 +37,7 @@ namespace OutboxInterface
 class OUTBOXINTERFACE_EXPORT SentCollectionAttribute : public Akonadi::Attribute
 {
   public:
-    SentCollectionAttribute( Akonadi::Collection::Id id = -1 );
+    explicit SentCollectionAttribute( Akonadi::Collection::Id id = -1 );
     virtual ~SentCollectionAttribute();
 
     virtual SentCollectionAttribute* clone() const;

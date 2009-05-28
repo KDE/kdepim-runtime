@@ -22,7 +22,7 @@
 
 #include <outboxinterface/outboxinterface_export.h>
 
-#include <QString>
+#include <QtCore/QString>
 
 #include <Akonadi/Attribute>
 

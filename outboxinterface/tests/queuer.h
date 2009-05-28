@@ -26,7 +26,7 @@
 
 class KJob;
 class KLineEdit;
-class QTextEdit;
+class KTextEdit;
 
 
 /**
@@ -48,7 +48,7 @@ class MessageQueuer : public KVBox
   private:
     MailTransport::TransportComboBox *mComboBox;
     KLineEdit *mSenderEdit, *mToEdit, *mCcEdit, *mBccEdit;
-    QTextEdit *mMailEdit;
+    KTextEdit *mMailEdit;
 
 };
 

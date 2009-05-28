@@ -76,7 +76,7 @@ void RaceTest::testMultipleProcesses()
   types.append( AgentManager::self()->type( "akonadi_maildir_resource" ) );
   types.append( AgentManager::self()->type( "akonadi_maildispatcher_agent" ) );
   AgentInstance::List instances = AgentManager::self()->instances();
-  foreach( AgentInstance instance, instances ) {
+  foreach( const AgentInstance &instance, instances ) {
     if( types.contains( instance.type() ) ) {
       kDebug() << "Removing instance of type" << instance.type().identifier();
       AgentManager::self()->removeInstance( instance );
@@ -84,7 +84,7 @@ void RaceTest::testMultipleProcesses()
     }
   }
   instances = AgentManager::self()->instances();
-  foreach( AgentInstance instance, instances ) {
+  foreach( const AgentInstance &instance, instances ) {
     QVERIFY( !types.contains( instance.type() ) );
   }
 

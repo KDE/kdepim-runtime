@@ -22,8 +22,8 @@
 
 #include <outboxinterface/outboxinterface_export.h>
 
-#include <QString>
-#include <QStringList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 #include <Akonadi/Attribute>
 
@@ -44,10 +44,10 @@ namespace OutboxInterface
 class OUTBOXINTERFACE_EXPORT AddressAttribute : public Akonadi::Attribute
 {
   public:
-    AddressAttribute( const QString &from = QString(),
-                      const QStringList &to = QStringList(),
-                      const QStringList &cc = QStringList(),
-                      const QStringList &bcc = QStringList() );
+    explicit AddressAttribute( const QString &from = QString(),
+                               const QStringList &to = QStringList(),
+                               const QStringList &cc = QStringList(),
+                               const QStringList &bcc = QStringList() );
     virtual ~AddressAttribute();
 
     virtual AddressAttribute* clone() const;

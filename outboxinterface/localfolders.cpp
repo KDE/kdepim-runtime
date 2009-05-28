@@ -416,7 +416,7 @@ void LocalFoldersPrivate::collectionFetchResult( KJob *job )
 
   outbox = Collection( -1 );
   sentMail = Collection( -1 );
-  Q_FOREACH( const Collection col, cols ) {
+  Q_FOREACH( const Collection &col, cols ) {
     if( col.parent() == Collection::root().id() ) {
       rootMaildir = col;
       kDebug() << "Fetched root maildir collection.";

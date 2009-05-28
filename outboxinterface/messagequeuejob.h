@@ -17,18 +17,18 @@
     02110-1301, USA.
 */
 
-#ifndef OUTBOXINTERFACE_SENDMESSAGEJOB_H
-#define OUTBOXINTERFACE_SENDMESSAGEJOB_H
+#ifndef OUTBOXINTERFACE_MESSAGEQUEUEJOB_H
+#define OUTBOXINTERFACE_MESSAGEQUEUEJOB_H
 
 #include <outboxinterface/outboxinterface_export.h>
 
 #include "dispatchmodeattribute.h"
 
-#include <QDateTime>
-#include <QString>
-#include <QStringList>
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
-#include <KCompositeJob>
+#include <KDE/KCompositeJob>
 
 #include <Akonadi/Collection>
 

@@ -20,7 +20,7 @@
 #ifndef OUTBOXINTERFACE_LOCALFOLDERS_H
 #define OUTBOXINTERFACE_LOCALFOLDERS_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include <outboxinterface/outboxinterface_export.h>
 

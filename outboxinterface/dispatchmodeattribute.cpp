@@ -66,7 +66,7 @@ void DispatchModeAttribute::deserialize( const QByteArray &data )
     mMode = Immediately;
   else if ( data == "never" )
     mMode = Never;
-  else if ( data.startsWith( "after" ) )
+  else if ( data.startsWith( QByteArray( "after" ) ) )
   {
     mMode = AfterDueDate;
     mDueDate = QDateTime::fromString( data.mid(5), Qt::ISODate );
