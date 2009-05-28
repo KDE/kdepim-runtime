@@ -22,7 +22,6 @@
 #include "localfolders.h"
 #include "addressattribute.h"
 #include "dispatchmodeattribute.h"
-#include "errorattribute.h"
 #include "sentcollectionattribute.h"
 #include "transportattribute.h"
 
@@ -31,7 +30,6 @@
 #include <KDebug>
 #include <KLocalizedString>
 
-#include <Akonadi/AttributeFactory>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 #include <Akonadi/ItemCreateJob>
@@ -190,12 +188,6 @@ MessageQueueJob::MessageQueueJob( QObject *parent )
   : KCompositeJob( parent )
   , d( new Private( this ) )
 {
-  // register attributes
-  AttributeFactory::registerAttribute<AddressAttribute>();
-  AttributeFactory::registerAttribute<DispatchModeAttribute>();
-  AttributeFactory::registerAttribute<ErrorAttribute>();
-  AttributeFactory::registerAttribute<SentCollectionAttribute>();
-  AttributeFactory::registerAttribute<TransportAttribute>();
 }
 
 MessageQueueJob::~MessageQueueJob()

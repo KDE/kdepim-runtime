@@ -20,6 +20,11 @@
 #include "localfolders.h"
 
 #include "settings.h"
+#include "addressattribute.h"
+#include "dispatchmodeattribute.h"
+#include "errorattribute.h"
+#include "sentcollectionattribute.h"
+#include "transportattribute.h"
 
 #include <QApplication>
 #include <QDBusConnection>
@@ -38,6 +43,7 @@
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
@@ -140,6 +146,12 @@ LocalFolders::LocalFolders( LocalFoldersPrivate *dd )
   : QObject()
   , d( dd )
 {
+  // register attributes
+  AttributeFactory::registerAttribute<AddressAttribute>();
+  AttributeFactory::registerAttribute<DispatchModeAttribute>();
+  AttributeFactory::registerAttribute<ErrorAttribute>();
+  AttributeFactory::registerAttribute<SentCollectionAttribute>();
+  AttributeFactory::registerAttribute<TransportAttribute>();
 }
 
 LocalFolders *LocalFolders::self()
