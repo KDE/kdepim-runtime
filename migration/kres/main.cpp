@@ -84,7 +84,7 @@ int main( int argc, char **argv )
   app.setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
-
+  KGlobal::locale()->insertCatalog( "libakonadi" );
   if ( !Akonadi::Control::start( 0 ) )
     return 2;
 
