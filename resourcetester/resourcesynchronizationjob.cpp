@@ -57,7 +57,6 @@ ResourceSynchronizationJob::ResourceSynchronizationJob(const AgentInstance& inst
   connect( d->safetyTimer, SIGNAL(timeout()), SLOT(slotTimeout()) );
   d->safetyTimer->setInterval( 10 * 1000 );
   d->safetyTimer->setSingleShot( false );
-  d->safetyTimer->start();
 }
 
 ResourceSynchronizationJob::~ResourceSynchronizationJob()
@@ -80,6 +79,7 @@ void ResourceSynchronizationJob::start()
 
   if ( d->interface->isValid() ) {
     d->instance.synchronize();
+    d->safetyTimer->start();
   } else {
     setError( UserDefinedError );
     setErrorText( i18n( "Unable to obtain D-Bus interface for resource '%1'", d->instance.identifier() ) );

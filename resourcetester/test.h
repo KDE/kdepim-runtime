@@ -20,6 +20,10 @@
 #ifndef TEST_H
 #define TEST_H
 
+#ifdef assert
+  #undef assert
+#endif
+
 #include <QObject>
 
 class Test : public QObject
