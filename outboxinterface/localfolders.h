@@ -104,8 +104,8 @@ class OUTBOXINTERFACE_EXPORT LocalFolders : public QObject
 
     Q_PRIVATE_SLOT( d, void prepare() )
     Q_PRIVATE_SLOT( d, void schedulePrepare() )
-    Q_PRIVATE_SLOT( d, void connectMonitor() )
     Q_PRIVATE_SLOT( d, void resourceCreateResult( KJob * ) )
+    Q_PRIVATE_SLOT( d, void resourceSyncResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob * ) )
     Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob * ) )
 

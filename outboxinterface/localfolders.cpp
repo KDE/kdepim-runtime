@@ -30,7 +30,6 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
-#include <QDBusReply>
 #include <QObject>
 #include <QTimer>
 #include <QVariant>
@@ -48,6 +47,8 @@
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Monitor>
+
+#include <akonaditest/resourcetester/resourcesynchronizationjob.h> // from playground/pim
 
 #define DBUS_SERVICE_NAME QLatin1String( "org.kde.pim.LocalFolders" )
 
@@ -76,16 +77,7 @@ class OutboxInterface::LocalFoldersPrivate
     Collection rootMaildir;
     KJob *outboxJob;
     KJob *sentMailJob;
-    QDBusInterface *iface;
     Monitor *monitor;
-
-    /**
-      Called when DBus ownership of the service has changed.  This gives us
-      the opportunity to register this class as the "main instance" when the
-      previous "main instance" has quit.
-    */
-    void dbusServiceOwnerChanged( const QString &service, const QString &oldOwner,
-                                  const QString &newOwner ); // slot
 
     /**
       If this is the main instance, attempts to create the resource and collections
@@ -127,13 +119,9 @@ class OutboxInterface::LocalFoldersPrivate
      */
     void fetchCollections();
 
-    // slot called by job creating the resource
     void resourceCreateResult( KJob *job );
-
-    // slot called by job creating a collection
+    void resourceSyncResult( KJob *job );
     void collectionCreateResult( KJob *job );
-
-    // slot called by job fetching the collections
     void collectionFetchResult( KJob *job );
 
 };
@@ -193,7 +181,6 @@ LocalFoldersPrivate::LocalFoldersPrivate()
   preparing = false;
   outboxJob = 0;
   sentMailJob = 0;
-  iface = 0;
   monitor = 0;
   prepare();
 }
@@ -201,7 +188,6 @@ LocalFoldersPrivate::LocalFoldersPrivate()
 LocalFoldersPrivate::~LocalFoldersPrivate()
 {
   delete instance;
-  delete iface;
 }
 
 void LocalFoldersPrivate::prepare()
@@ -221,7 +207,6 @@ void LocalFoldersPrivate::prepare()
 
   Q_ASSERT( outboxJob == 0 );
   Q_ASSERT( sentMailJob == 0 );
-  Q_ASSERT( iface == 0 );
   Q_ASSERT( monitor == 0);
 
   rootMaildir = Collection( -1 );
@@ -346,10 +331,6 @@ void LocalFoldersPrivate::connectMonitor()
 void LocalFoldersPrivate::fetchCollections()
 {
   Q_ASSERT( preparing ); // but I may not be the main instance
-  if( iface ) {
-    iface->deleteLater();
-    iface = 0;
-  }
   kDebug() << "Fetching collections in maildir resource.";
 
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
@@ -381,22 +362,22 @@ void LocalFoldersPrivate::resourceCreateResult( KJob *job )
   }
   agent.reconfigure();
 
-  // wait for the sync to take place
-  // TODO: use ResourceSynchronizeJob from playground/pim/akonaditest/resourcetester
-  Q_ASSERT( iface == 0 );
-  iface = new QDBusInterface( "org.freedesktop.Akonadi.Resource." + Settings::resourceId(),
-      "/", "org.freedesktop.Akonadi.Resource" );
-  QObject::connect( iface, SIGNAL( synchronized() ),
-      instance, SLOT( connectMonitor() ) );
-  reply = iface->call( "synchronize" );
-  if( !reply.isValid() ) {
-    kFatal() << "Cannot sync the resource via DBus.";
+  // sync the resource
+  ResourceSynchronizationJob *sjob = new ResourceSynchronizationJob( agent );
+  QObject::connect( sjob, SIGNAL( result( KJob* ) ),
+      instance, SLOT( resourceSyncResult( KJob* ) ) );
+  sjob->start(); // non-Akonadi
+}
+
+void LocalFoldersPrivate::resourceSyncResult( KJob *job )
+{
+  Q_ASSERT( isMainInstance );
+  Q_ASSERT( preparing );
+  if( job->error() ) {
+    kFatal() << "ResourceSynchronizationJob failed.";
   }
 
-  // NOTE: initially I called synchronizeCollectionTree instead of synchronize,
-  // but the problem was, the function is async, so half the time it wouldn't sync
-  // in time for fetchCollections().  Calling synchronize allows us to connect
-  // to the synchronized signal.
+  connectMonitor();
 }
 
 void LocalFoldersPrivate::collectionCreateResult( KJob *job )

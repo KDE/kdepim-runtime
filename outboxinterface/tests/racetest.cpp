@@ -31,6 +31,7 @@
 
 #include <outboxinterface/localfolders.h>
 
+#define TIMEOUT_SECONDS 20
 #define MAXCOUNT 10
 // NOTE: REQUESTER_EXE is defined by cmake.
 
@@ -41,7 +42,7 @@ using namespace OutboxInterface;
 void RaceTest::initTestCase()
 {
   QVERIFY( Control::start() );
-  //QTest::qWait( 1000 );
+  QTest::qWait( 1000 ); // give the MDA time to start so that we can kill it in peace
 }
 
 void RaceTest::testMultipleProcesses_data()
@@ -122,12 +123,12 @@ void RaceTest::testMultipleProcesses()
       break;
 
 #if 0
-    if( seconds >= 15 ) {
+    if( seconds >= TIMEOUT_SECONDS ) {
       kDebug() << "Timeout, gdb master!";
       QTest::qWait( 1000*1000 );
     }
 #endif
-    QVERIFY2( seconds < 15, "Timeout" );
+    QVERIFY2( seconds < TIMEOUT_SECONDS, "Timeout" );
   }
 
   QCOMPARE( error, 0 );

@@ -27,6 +27,8 @@ set(outboxinterface_lib_srcs
   errorattribute.cpp
   sentcollectionattribute.cpp
   transportattribute.cpp
+
+  ../akonaditest/resourcetester/resourcesynchronizationjob.cpp
 )
 
 kde4_add_kcfg_files(outboxinterface_lib_srcs settings.kcfgc)
