@@ -254,6 +254,30 @@ void ImapResource::onAppendMessageDone( KJob *job )
   item.setRemoteId( remoteId );
 
   changeCommitted( item );
+
+  // Get the current uid next value and store it
+  UidNextAttribute *uidAttr = 0;
+  int oldNextUid = 0;
+  if ( collection.hasAttribute( "uidnext" ) ) {
+    uidAttr = static_cast<UidNextAttribute*>( collection.attribute( "uidnext" ) );
+    oldNextUid = uidAttr->uidNext();
+  }
+
+  // If the uid we just got back is the expected next one of the box
+  // then update the property to the probable next uid to keep the cache in sync.
+  // If not something happened in our back, so we don't update and a refetch will
+  // happen at some point.
+  if ( uid==oldNextUid ) {
+    if ( uidAttr==0 ) {
+      uidAttr = new UidNextAttribute( uid+1 );
+      collection.addAttribute( uidAttr );
+    } else {
+      uidAttr->setUidNext( uid+1 );
+    }
+
+    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    modify->exec();
+  }
 }
 
 void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
