@@ -30,7 +30,7 @@
 
 #include <QWidget>
 
-class KComboBox;
+#include <akonadi/filter/action.h>
 
 namespace Akonadi
 {
@@ -47,22 +47,35 @@ namespace Action
 namespace UI
 {
 
+class EditorFactory;
+class RuleEditor;
+
 class ActionSelectorPrivate;
+class ActionDescriptor;
 
 class AKONADI_FILTER_UI_EXPORT ActionSelector : public QWidget
 {
   Q_OBJECT
 public:
-  ActionSelector( QWidget * parent, Factory * factory );
+  ActionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, RuleEditor * ruleEditor );
   virtual ~ActionSelector();
 
 protected:
   Factory * mFactory;
+  EditorFactory * mEditorFactory;
   ActionSelectorPrivate * mPrivate;
+  RuleEditor * mRuleEditor;
 
 public:
   virtual void fillFromAction( Action::Base * action );
-  virtual bool commitToAction( Action::Base * action );
+  virtual Action::Base * commit();
+  Action::ActionType currentActionType();
+  bool currentActionIsTerminal();
+protected slots:
+  void typeComboBoxActivated( int index );
+private:
+  ActionDescriptor * descriptorForActiveType();
+  void setupUIForActiveType();
 
 }; // class ActionSelector
 

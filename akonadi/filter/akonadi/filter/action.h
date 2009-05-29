@@ -30,12 +30,16 @@
 
 #include "component.h"
 
+#include <QList>
+#include <QVariant>
+
 namespace Akonadi
 {
 namespace Filter
 {
 
 class Data;
+class CommandDescriptor;
 
 /**
  * Each rule inside a filter has a list of associated actions which are executed
@@ -69,6 +73,11 @@ enum ActionType
    * The sub-sequence will have it's own conditions and actions.
    */
   ActionTypeRuleList,
+
+  /**
+   * The action is a command.
+   */
+  ActionTypeCommand,
 
   /**
    * This member indicates "no action" or "unknown action".
@@ -170,6 +179,19 @@ public:
   virtual void dump( const QString &prefix );
 
 }; // class Stop
+
+class AKONADI_FILTER_EXPORT Command : public Base
+{
+public:
+  Command( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
+  virtual ~Command();
+protected:
+  const CommandDescriptor * mCommandDescriptor;
+  QList< QVariant > mParams;
+public:
+  virtual ProcessingStatus execute( Data * data );
+  virtual void dump( const QString &prefix );
+}; // class Command
 
 } // namespace Action
 

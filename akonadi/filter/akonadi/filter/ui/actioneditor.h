@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : coolcombobox.h
+ *  File : actioneditor.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,57 +23,50 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
-#define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#ifndef _AKONADI_FILTER_UI_ACTIONEDITOR_H_
+#define _AKONADI_FILTER_UI_ACTIONEDITOR_H_
 
 #include "config-akonadi-filter-ui.h"
 
-#include <KComboBox>
-#include <QColor>
-
-class QPaintEvent;
+#include <QWidget>
 
 namespace Akonadi
 {
 namespace Filter
 {
+
+namespace Action
+{
+  class Base;
+} // namespace Action
+
+class Factory;
+
 namespace UI
 {
-namespace Private
-{
 
-class CoolComboBox : public KComboBox
+class EditorFactory;
+
+class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
 {
   Q_OBJECT
 public:
-  CoolComboBox( bool rw, QWidget * parent );
-protected:
-  qreal mOpacity;
-  qreal mOverlayOpacity;
-  QColor mOverlayColor;
-public:
-  void setOpacity( qreal opacity );
-  qreal opacity() const
-  {
-    return mOpacity;
-  }
-  void setOverlayColor( const QColor &clr );
-  QColor overlayColor() const
-  {
-    return mOverlayColor;
-  }
-  qreal overlayOpacity() const
-  {
-    return mOverlayOpacity;
-  }
-  void setOverlayOpacity( qreal overlayOpacity )
-  {
-    mOverlayOpacity = overlayOpacity;
-  }
-  virtual void paintEvent( QPaintEvent * e );
-}; // class CoolComboBox
+  ActionEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  virtual ~ActionEditor();
 
-} // namespace Private
+protected:
+  Factory * mFactory;
+  EditorFactory * mEditorFactory;
+
+public:
+  virtual void fillFromAction( Action::Base * action ) = 0;
+  virtual Action::Base * commit() = 0;
+
+protected:
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
+
+}; // class ActionEditor
 
 } // namespace UI
 
@@ -81,4 +74,4 @@ public:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#endif //!_AKONADI_FILTER_UI_ACTIONEDITOR_H_

@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : coolcombobox.h
+ *  File : editorfactory.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,15 +23,16 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
-#define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#include "editorfactory.h"
 
-#include "config-akonadi-filter-ui.h"
+#include "actioneditor.h"
+#include "rulelisteditor.h"
 
-#include <KComboBox>
-#include <QColor>
+#include <akonadi/filter/commanddescriptor.h>
 
-class QPaintEvent;
+#include <KDebug>
+
+#include <QWidget>
 
 namespace Akonadi
 {
@@ -39,41 +40,39 @@ namespace Filter
 {
 namespace UI
 {
-namespace Private
-{
 
-class CoolComboBox : public KComboBox
+EditorFactory::EditorFactory()
 {
-  Q_OBJECT
-public:
-  CoolComboBox( bool rw, QWidget * parent );
-protected:
-  qreal mOpacity;
-  qreal mOverlayOpacity;
-  QColor mOverlayColor;
-public:
-  void setOpacity( qreal opacity );
-  qreal opacity() const
-  {
-    return mOpacity;
-  }
-  void setOverlayColor( const QColor &clr );
-  QColor overlayColor() const
-  {
-    return mOverlayColor;
-  }
-  qreal overlayOpacity() const
-  {
-    return mOverlayOpacity;
-  }
-  void setOverlayOpacity( qreal overlayOpacity )
-  {
-    mOverlayOpacity = overlayOpacity;
-  }
-  virtual void paintEvent( QPaintEvent * e );
-}; // class CoolComboBox
+}
 
-} // namespace Private
+EditorFactory::~EditorFactory()
+{
+}
+
+RuleListEditor * EditorFactory::createRuleListEditor( QWidget * parent, Factory * factory )
+{
+  return new RuleListEditor( parent, factory, this );
+}
+
+ActionEditor * EditorFactory::createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, Factory * factory )
+{
+  switch( command->id() )
+  {
+    case StandardCommandLeaveMessageOnServer:
+      // this command has no parameters
+      Q_ASSERT( command->parameters()->isEmpty() );
+      // no need for an editor
+    break;
+    default:
+      kWarning() << "No idea on how to create ActionEditor for command" << command->keyword();
+      // If you have implemented a custom command then you probably need
+      // to reimplement createCommandActionEditor() and return an appropriate ActionEditor
+      // instance. If you haven't... then well.. there is a bug somewhere in this module.
+      Q_ASSERT( false );
+    break;
+  }
+  return 0; // no editor for this command
+}
 
 } // namespace UI
 
@@ -81,4 +80,3 @@ public:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_

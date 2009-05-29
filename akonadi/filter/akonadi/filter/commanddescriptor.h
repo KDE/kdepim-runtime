@@ -31,6 +31,7 @@
 #include "datatype.h"
 
 #include <QString>
+#include <QList>
 
 namespace Akonadi
 {
@@ -40,7 +41,7 @@ namespace Filter
 enum CommandIdentifiers
 {
   // standard commands
-  StandardCommandDownload = 1,
+  StandardCommandLeaveMessageOnServer = 1,
   // custom commands
   CommandCustomFirst = 10000
 };
@@ -53,6 +54,29 @@ enum CommandIdentifiers
 class AKONADI_FILTER_EXPORT CommandDescriptor
 {
 public:
+  class ParameterDescriptor
+  {
+  protected:
+    QString mName;
+    DataType mDataType;
+    bool mIsTerminal;
+  public:
+    ParameterDescriptor( DataType dataType, const QString &name )
+      : mName( name ), mDataType( dataType )
+    {
+    }
+  public:
+
+    const QString & name() const
+    {
+      return mName;
+    }
+    DataType dataType() const
+    {
+      return mDataType;
+    }
+  };
+public:
   /**
    * Create a command descriptor with the specified keyword
    *
@@ -60,7 +84,8 @@ public:
   CommandDescriptor(
       int id,                          //< The id of the command: it should be unique within an application
       const QString &keyword,          //< Unique command keyword: it matches the keyword used in Sieve scripts.
-      const QString &name              //< The token that is displayed in the UI editors.
+      const QString &name,             //< The token that is displayed in the UI editors.
+      bool isTerminal = false          //< Is this command terminal ?
     );
   virtual ~CommandDescriptor();
 
@@ -81,6 +106,16 @@ protected:
    */
   QString mName;
 
+  /**
+   * The list of parameter descriptors for this command. Owned pointers.
+   */
+  QList< ParameterDescriptor * > mParameters;
+
+  /**
+   * Is this command a terminal one (that is.. does it stop processing with success ?)
+   */
+  bool mIsTerminal;
+
 public:
 
   int id() const
@@ -96,6 +131,21 @@ public:
   const QString & name() const
   {
     return mName;
+  }
+
+  bool isTerminal() const
+  {
+    return mIsTerminal;
+  }
+
+  const QList< ParameterDescriptor * > * parameters() const
+  {
+    return &mParameters;
+  }
+
+  void addParameter( ParameterDescriptor * parameter )
+  {
+    mParameters.append( parameter );
   }
 
 }; // class CommandDescriptor

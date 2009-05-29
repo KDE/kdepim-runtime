@@ -307,13 +307,26 @@ Factory::Factory()
     );
 
 
-  registerCommand(
-      new CommandDescriptor(
-          StandardCommandDownload,
-          QString::fromAscii( "download" ),
-          i18n( "download the message" )
-        )
+  CommandDescriptor * cmd;
+  cmd = new CommandDescriptor(
+      StandardCommandLeaveMessageOnServer,
+      QString::fromAscii( "leaveonserver" ),
+      i18n( "leave the message on server and stop processing here" ),
+      true
     );
+
+  registerCommand( cmd );
+
+#if 0
+  cmd = new CommandDescriptor(
+      StandardCommandMoveToCollection,
+      QString::fromAscii( "movetocollection" ),
+      i18n( "move the item to collection" ),
+      false
+    )
+  cmd.addParameter( DataTypeInteger, i18n( "collection id" ) );
+  registerCommand( cmd );
+#endif
 }
 
 Factory::~Factory()
@@ -508,9 +521,11 @@ Action::Stop * Factory::createStopAction( Component * parent )
 
 Action::Base * Factory::createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
 {
+  Q_ASSERT( parent );
+  Q_ASSERT( command );
+  setLastError( i18n( "Command %1 is not supported", command->keyword() ) );
   return 0;
 }
-
 
 Condition::Base * Factory::createPropertyTestCondition(
     Component * parent,

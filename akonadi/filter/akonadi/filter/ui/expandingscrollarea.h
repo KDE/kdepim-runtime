@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : coolcombobox.h
+ *  File : expandingscrollarea.h
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,15 +23,12 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
-#define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#ifndef _AKONADI_FILTER_UI_PRIVATE_EXPANDINGSCROLLAREA_H_
+#define _AKONADI_FILTER_UI_PRIVATE_EXPANDINGSCROLLAREA_H_
 
 #include "config-akonadi-filter-ui.h"
 
-#include <KComboBox>
-#include <QColor>
-
-class QPaintEvent;
+#include <QScrollArea>
 
 namespace Akonadi
 {
@@ -39,41 +36,29 @@ namespace Filter
 {
 namespace UI
 {
-namespace Private
-{
 
-class CoolComboBox : public KComboBox
+class ExpandingScrollArea : public QScrollArea
 {
   Q_OBJECT
 public:
-  CoolComboBox( bool rw, QWidget * parent );
+  ExpandingScrollArea( QWidget * parent );
 protected:
-  qreal mOpacity;
-  qreal mOverlayOpacity;
-  QColor mOverlayColor;
+  bool mAutoExpand;
 public:
-  void setOpacity( qreal opacity );
-  qreal opacity() const
+  bool autoExpand() const
   {
-    return mOpacity;
+    return mAutoExpand;
   }
-  void setOverlayColor( const QColor &clr );
-  QColor overlayColor() const
-  {
-    return mOverlayColor;
-  }
-  qreal overlayOpacity() const
-  {
-    return mOverlayOpacity;
-  }
-  void setOverlayOpacity( qreal overlayOpacity )
-  {
-    mOverlayOpacity = overlayOpacity;
-  }
-  virtual void paintEvent( QPaintEvent * e );
-}; // class CoolComboBox
 
-} // namespace Private
+  void setAutoExpand( bool b )
+  {
+    mAutoExpand = b;
+  }
+protected:
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
+  virtual bool eventFilter( QObject *o, QEvent *e );
+}; // class ExpandingScrollArea
 
 } // namespace UI
 
@@ -81,4 +66,4 @@ public:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#endif //!_AKONADI_FILTER_UI_PRIVATE_EXPANDINGSCROLLAREA_H_

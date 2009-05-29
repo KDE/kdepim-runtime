@@ -1,7 +1,7 @@
-/****************************************************************************** *
+/****************************************************************************** * *
  *
- *  File : commanddescriptor.cpp
- *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
+ *  File : editorfactory.h
+ *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -13,7 +13,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; without even the editoried warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
@@ -23,33 +23,43 @@
  *
  *******************************************************************************/
 
-#include "commanddescriptor.h"
+#ifndef _AKONADI_FILTER_UI_EDITORFACTORY_H_
+#define _AKONADI_FILTER_UI_EDITORFACTORY_H_
 
-#include <KDebug>
+#include "config-akonadi-filter-ui.h"
+
+class QWidget;
 
 namespace Akonadi
 {
-namespace Filter 
+namespace Filter
 {
 
-CommandDescriptor::CommandDescriptor(
-    int id,
-    const QString &keyword,
-    const QString &name,
-    bool isTerminal
-  ) :
-  mId( id ),
-  mKeyword( keyword ),
-  mName( name ),
-  mIsTerminal( isTerminal )
-{
-}
+class CommandDescriptor;
+class Factory;
 
-CommandDescriptor::~CommandDescriptor()
+namespace UI
 {
-}
+
+class ActionEditor;
+class RuleListEditor;
+
+class AKONADI_FILTER_UI_EXPORT EditorFactory
+{
+public:
+  EditorFactory();
+  virtual ~EditorFactory();
+
+public:
+  virtual RuleListEditor * createRuleListEditor( QWidget * parent, Factory * factory );
+  virtual ActionEditor * createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, Factory * factory );
+
+}; // class EditorFactory
+
+} // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
 
+#endif //!_AKONADI_FILTER_UI_EDITORFACTORY_H_

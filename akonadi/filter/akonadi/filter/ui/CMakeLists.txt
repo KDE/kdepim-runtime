@@ -19,10 +19,13 @@ configure_file(
 
 set(
 		AKONADI_FILTER_UI_LIB_SRCS
+		actioneditor.cpp
 		actionselector.cpp
 		conditionselector.cpp
 		coolcombobox.cpp
+		editorfactory.cpp
 		extensionlabel.cpp
+		expandingscrollarea.cpp
 		programeditor.cpp
 		ruleeditor.cpp
 		rulelisteditor.cpp

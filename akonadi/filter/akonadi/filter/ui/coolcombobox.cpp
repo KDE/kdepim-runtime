@@ -41,7 +41,7 @@ namespace Private
 {
 
 CoolComboBox::CoolComboBox( bool rw, QWidget * parent )
-  : KComboBox( rw, parent ), mOpacity( 1.0 )
+  : KComboBox( rw, parent ), mOpacity( 1.0 ), mOverlayOpacity( 0.1 )
 {
 }
 
@@ -81,7 +81,7 @@ void CoolComboBox::paintEvent( QPaintEvent * e )
 
   if( mOverlayColor.isValid() )
   {
-    painter.setOpacity( 0.1 * mOpacity );
+    painter.setOpacity( mOverlayOpacity * mOpacity );
     painter.fillRect( rect(), mOverlayColor );
   }
 }

@@ -29,6 +29,7 @@
 #include <akonadi/filter/factory.h>
 
 #include "ruleeditor.h"
+#include "expandingscrollarea.h"
 
 #include <QResizeEvent>
 #include <QLayout>
@@ -62,11 +63,11 @@ class RuleListEditorItem
 {
 public:
   RuleListEditorItemHeader * mHeader;
-  QScrollArea * mScrollArea;
+  ExpandingScrollArea * mScrollArea;
   RuleEditor * mRuleEditor;
 };
 
-class RuleListEditorPrivate
+class RuleListEditorScrollAreaPrivate
 {
 public:
   QVBoxLayout * mLayout;
@@ -238,61 +239,20 @@ bool RuleListEditorItemHeader::eventFilter( QObject *o, QEvent *e )
 
 
 
-RuleListEditorItemScrollArea::RuleListEditorItemScrollArea( QWidget * parent )
-  : QScrollArea( parent )
+
+
+
+RuleListEditorScrollArea::RuleListEditorScrollArea( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
+  : ExpandingScrollArea( parent ), mFactory( factory ), mEditorFactory( editorFactory )
 {
-}
+  setFrameStyle( QFrame::NoFrame );
 
-bool RuleListEditorItemScrollArea::eventFilter( QObject *o, QEvent *e )
-{
-  // QScrollArea monitors the child widget events and updates its scrollbars
-  // when its resized.
-  // We actually DON'T want the vertical scrollbar to appear in this area
-  // so we monitor the event too and actually force the parent
-  // to redo a layout (which will grow this QScrollArea size because of
-  // the size policies and propagated size hints).
-
-  if( o == widget() && e->type() == QEvent::Resize )
-  {
-    // This machinery is needed in order to trigger the parent geometry update
-    updateGeometry();
-
-    if( parentWidget()->layout() )
-    {
-      parentWidget()->layout()->invalidate();
-      parentWidget()->layout()->update();
-    }
-
-    //parentWidget()->updateGeometry();
-  }
-  return QScrollArea::eventFilter( o, e );
-}
-
-
-QSize RuleListEditorItemScrollArea::sizeHint() const
-{
-  if( !widget() )
-    return QScrollArea::sizeHint();
-  return widget()->sizeHint();
-}
-
-QSize RuleListEditorItemScrollArea::minimumSizeHint() const
-{
-  if( !widget() )
-    return QScrollArea::minimumSizeHint();
-  return widget()->minimumSizeHint();
-}
-
-
-RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory )
-  : QScrollArea( parent ), mFactory( factory )
-{
   mBase = new QFrame( this );
   mBase->setFrameStyle( QFrame::NoFrame );
   setWidget( mBase );
   setWidgetResizable( true );
 
-  mPrivate = new RuleListEditorPrivate;
+  mPrivate = new RuleListEditorScrollAreaPrivate;
   mPrivate->mLayout = 0;
   mPrivate->mFiller = new QWidget( mBase );
   mPrivate->mFiller->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
@@ -306,20 +266,20 @@ RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory )
   reLayout();
 }
 
-RuleListEditor::~RuleListEditor()
+RuleListEditorScrollArea::~RuleListEditorScrollArea()
 {
   qDeleteAll( mPrivate->mItemList );
   delete mPrivate;
 }
 
-void RuleListEditor::fillFromRuleList( Action::RuleList * ruleList )
+void RuleListEditorScrollArea::fillFromRuleList( Action::RuleList * ruleList )
 {
   const QList< Rule * > * rules = ruleList->ruleList();
   Q_ASSERT( rules );
 
   foreach( Rule * rule, *rules )
   {
-    RuleEditor * ruleEditor = new RuleEditor( mBase, mFactory );
+    RuleEditor * ruleEditor = new RuleEditor( mBase, mFactory, mEditorFactory );
     ruleEditor->fillFromRule( rule );
     //ruleEditor->setBackgroundRole( QPalette::ToolTipBase );
     addRuleEditor( ruleEditor );
@@ -328,7 +288,7 @@ void RuleListEditor::fillFromRuleList( Action::RuleList * ruleList )
   reLayout();
 }
 
-RuleListEditorItem * RuleListEditor::findItemByRuleEditor( RuleEditor * editor )
+RuleListEditorItem * RuleListEditorScrollArea::findItemByRuleEditor( RuleEditor * editor )
 {
   foreach( RuleListEditorItem * it, mPrivate->mItemList )
   {
@@ -338,7 +298,7 @@ RuleListEditorItem * RuleListEditor::findItemByRuleEditor( RuleEditor * editor )
   return 0;
 }
 
-RuleListEditorItem * RuleListEditor::findItemByHeader( RuleListEditorItemHeader *header )
+RuleListEditorItem * RuleListEditorScrollArea::findItemByHeader( RuleListEditorItemHeader *header )
 {
   foreach( RuleListEditorItem * it, mPrivate->mItemList )
   {
@@ -349,7 +309,7 @@ RuleListEditorItem * RuleListEditor::findItemByHeader( RuleListEditorItemHeader 
 }
 
 
-RuleListEditorItem * RuleListEditor::addRuleEditor( RuleEditor * editor )
+RuleListEditorItem * RuleListEditorScrollArea::addRuleEditor( RuleEditor * editor )
 {
   Q_ASSERT( editor );
 
@@ -362,7 +322,7 @@ RuleListEditorItem * RuleListEditor::addRuleEditor( RuleEditor * editor )
   connect( item->mHeader, SIGNAL( moveDownRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderMoveDownRequest( RuleListEditorItemHeader * ) ) );
   connect( item->mHeader, SIGNAL( deleteRequest( RuleListEditorItemHeader * ) ), this, SLOT( itemHeaderDeleteRequest( RuleListEditorItemHeader * ) ) );
 
-  item->mScrollArea = new RuleListEditorItemScrollArea( mBase );
+  item->mScrollArea = new ExpandingScrollArea( mBase );
   item->mScrollArea->setWidget( editor );
   item->mScrollArea->setWidgetResizable( true );
   item->mScrollArea->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
@@ -380,7 +340,7 @@ RuleListEditorItem * RuleListEditor::addRuleEditor( RuleEditor * editor )
   return item;
 }
 
-void RuleListEditor::reLayout()
+void RuleListEditorScrollArea::reLayout()
 {
   if( mPrivate->mLayout )
     delete mPrivate->mLayout;
@@ -419,7 +379,7 @@ void RuleListEditor::reLayout()
 }
 
 
-void RuleListEditor::setCurrentItem( RuleListEditorItem *item )
+void RuleListEditorScrollArea::setCurrentItem( RuleListEditorItem *item )
 {
   foreach( RuleListEditorItem * it, mPrivate->mItemList )
   {
@@ -435,19 +395,19 @@ void RuleListEditor::setCurrentItem( RuleListEditorItem *item )
   mPrivate->mLayout->removeWidget( mPrivate->mFiller );
 }
 
-void RuleListEditor::addRuleHeaderActivated( RuleListEditorHeader *header )
+void RuleListEditorScrollArea::addRuleHeaderActivated( RuleListEditorHeader *header )
 {
-  addRuleEditor( new RuleEditor( mBase, mFactory ) );
+  addRuleEditor( new RuleEditor( mBase, mFactory, mEditorFactory ) );
 }
 
-void RuleListEditor::itemHeaderActivated( RuleListEditorHeader *header )
+void RuleListEditorScrollArea::itemHeaderActivated( RuleListEditorHeader *header )
 {
   RuleListEditorItem * item = findItemByHeader( static_cast< RuleListEditorItemHeader * >( header ) );
   Q_ASSERT( item );
   setCurrentItem( item );
 }
 
-void RuleListEditor::itemHeaderDeleteRequest( RuleListEditorItemHeader *header )
+void RuleListEditorScrollArea::itemHeaderDeleteRequest( RuleListEditorItemHeader *header )
 {
   RuleListEditorItem * item = findItemByHeader( header );
   Q_ASSERT( item );
@@ -472,7 +432,7 @@ void RuleListEditor::itemHeaderDeleteRequest( RuleListEditorItemHeader *header )
   reLayout();
 }
 
-void RuleListEditor::itemHeaderMoveUpRequest( RuleListEditorItemHeader *header )
+void RuleListEditorScrollArea::itemHeaderMoveUpRequest( RuleListEditorItemHeader *header )
 {
   RuleListEditorItem * item = findItemByHeader( header );
   Q_ASSERT( item );
@@ -489,7 +449,7 @@ void RuleListEditor::itemHeaderMoveUpRequest( RuleListEditorItemHeader *header )
   reLayout();
 }
 
-void RuleListEditor::itemHeaderMoveDownRequest( RuleListEditorItemHeader *header )
+void RuleListEditorScrollArea::itemHeaderMoveDownRequest( RuleListEditorItemHeader *header )
 {
   RuleListEditorItem * item = findItemByHeader( header );
   Q_ASSERT( item );
@@ -504,6 +464,50 @@ void RuleListEditor::itemHeaderMoveDownRequest( RuleListEditorItemHeader *header
   mPrivate->mItemList.insert( idx + 1, item );
 
   reLayout();
+}
+
+
+
+RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
+  : ActionEditor( parent, factory, editorFactory )
+{
+  mScrollArea = new RuleListEditorScrollArea( this, factory, editorFactory );
+
+  QGridLayout * g = new QGridLayout( this );
+  g->addWidget( mScrollArea, 0, 0 );
+  g->setMargin( 0 );
+}
+
+RuleListEditor::~RuleListEditor()
+{
+}
+
+void RuleListEditor::fillFromAction( Action::Base * action )
+{
+  Q_ASSERT( action );
+  Q_ASSERT( action->actionType() == Action::ActionTypeRuleList );
+  fillFromRuleList( static_cast< Action::RuleList * >( action ) );
+}
+
+void RuleListEditor::fillFromRuleList( Action::RuleList * ruleList )
+{
+  Q_ASSERT( ruleList );
+  mScrollArea->fillFromRuleList( ruleList );  
+}
+
+Action::Base * RuleListEditor::commit()
+{
+  return 0;
+}
+
+bool RuleListEditor::autoExpand() const
+{
+  return mScrollArea->autoExpand();
+}
+
+void RuleListEditor::setAutoExpand( bool b )
+{
+  mScrollArea->setAutoExpand( b );
 }
 
 

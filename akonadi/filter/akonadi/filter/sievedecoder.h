@@ -68,8 +68,8 @@ protected:
   Component * mCurrentComponent; // the component we're 'in'
   QString mCurrentSimpleTestName;
   QList< QVariant > mCurrentSimpleTestArguments;
-  QString mCurrentSimpleCommandDescriptorName;
-  QList< QVariant > mCurrentSimpleCommandDescriptorArguments;
+  QString mCurrentSimpleCommandName;
+  QList< QVariant > mCurrentSimpleCommandArguments;
   QStringList mCurrentStringList;
   bool mGotError;
   bool mCreationOfCustomDataMemberDescriptorsEnabled;

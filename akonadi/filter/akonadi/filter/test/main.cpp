@@ -5,6 +5,7 @@
 #include <akonadi/filter/condition.h>
 
 #include <akonadi/filter/ui/programeditor.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
 
 #include <KCmdLineArgs>
@@ -32,6 +33,7 @@ int main(int argc,char ** argv)
 {
 
   MyFactory * f = new MyFactory();
+  f->setDefaultActionDescription( i18n( "download message" ) );
   Akonadi::Filter::IO::SieveDecoder d( f );
   Akonadi::Filter::Program * p = d.run();
   if( p )
@@ -42,8 +44,9 @@ int main(int argc,char ** argv)
     KCmdLineArgs::init( argc, argv, &aboutData );
     KApplication app;
 
+    Akonadi::Filter::UI::EditorFactory * ef = new Akonadi::Filter::UI::EditorFactory();
 
-    Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, f );
+    Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, f, ef );
     ed->fillFromProgram( p );
 
     ed->show();
@@ -53,6 +56,8 @@ int main(int argc,char ** argv)
     delete ed;
 
     delete p;
+
+    delete ef;
   }
 
   delete f;

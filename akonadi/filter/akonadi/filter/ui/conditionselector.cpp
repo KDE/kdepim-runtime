@@ -31,6 +31,7 @@
 
 #include "coolcombobox.h"
 #include "extensionlabel.h"
+#include "editorfactory.h"
 
 #include <KLineEdit>
 #include <KLocale>
@@ -79,8 +80,8 @@ public:
 
 
 
-ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, ConditionSelector * parentConditionSelector )
-  : QWidget( parent ), mFactory( factory )
+ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, ConditionSelector * parentConditionSelector )
+  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
 {
   mParentConditionSelector = parentConditionSelector;
 
@@ -331,7 +332,7 @@ void ConditionSelector::setupUIForActiveType()
 
       if( mPrivate->mChildConditionSelectorList.count() == 0 )
       {
-        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -365,7 +366,7 @@ void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
     if( !child->isEmpty() )
     {
       // need a new one
-      child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+      child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
       mPrivate->mChildConditionSelectorList.append( child );
       mPrivate->mChildConditionListLayout->addWidget( child );
     }
@@ -558,7 +559,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       
       while( mPrivate->mChildConditionSelectorList.count() < expectedEditorCount )
       {
-        child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+        child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -587,7 +588,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       {
         if( mPrivate->mChildConditionSelectorList.count() == 0 )
         {
-          child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, this );
+          child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
           mPrivate->mChildConditionSelectorList.append( child );
           mPrivate->mChildConditionListLayout->addWidget( child );
         } else {

@@ -93,7 +93,30 @@ private:
 
   QHash< QString, DataMemberDescriptor * > mDataMemberDescriptorHash;
 
+  QString mLastError;
+
+  QString mDefaultActionDescription;
 public:
+
+  void setDefaultActionDescription( const QString &defaultActionDescription )
+  {
+    mDefaultActionDescription = defaultActionDescription;
+  }
+
+  const QString & defaultActionDescription()
+  {
+    return mDefaultActionDescription;
+  }
+
+  void setLastError( const QString &error )
+  {
+    mLastError = error;
+  }
+
+  const QString & lastError() const
+  {
+    return mLastError;
+  }
 
   /**
    * Registers a FunctionDescriptor to be used by the filter condtions.

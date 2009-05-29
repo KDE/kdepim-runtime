@@ -27,6 +27,7 @@
 
 #include "conditionselector.h"
 #include "actionselector.h"
+#include "editorfactory.h"
 
 #include <akonadi/filter/factory.h>
 #include <akonadi/filter/rule.h>
@@ -48,8 +49,8 @@ public:
   QVBoxLayout * mLayout;
 };
 
-RuleEditor::RuleEditor( QWidget * parent, Factory * factory )
-  : QWidget( parent ), mFactory( factory )
+RuleEditor::RuleEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
+  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
 {
   mPrivate = new RuleEditorPrivate;
 
@@ -60,10 +61,10 @@ RuleEditor::RuleEditor( QWidget * parent, Factory * factory )
 
   mPrivate->mLayout->addStretch();
 
-  mPrivate->mConditionSelector = new ConditionSelector( this, factory );
+  mPrivate->mConditionSelector = new ConditionSelector( this, factory, editorFactory );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, mPrivate->mConditionSelector );
 
-  ActionSelector * actionEditor = new ActionSelector( this, factory );
+  ActionSelector * actionEditor = new ActionSelector( this, factory, editorFactory, this );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
   mPrivate->mActionSelectorList.append( actionEditor );
 }
@@ -81,41 +82,94 @@ void RuleEditor::fillFromRule( Rule * rule )
   QList< Action::Base * > * actionList = rule->actionList();
 
   // kill the excess of action editors
-  while( mPrivate->mActionSelectorList.count() > actionList->count() )
-  {
-    delete mPrivate->mActionSelectorList.last();
-    mPrivate->mActionSelectorList.removeLast();
-  }
+  int expectedCount = actionList->count();
+  if( expectedCount < 1 )
+    expectedCount = 1;
+
+  setSelectorCount( expectedCount );
 
   QList< ActionSelector * >::Iterator editorIterator = mPrivate->mActionSelectorList.begin();
   QList< Action::Base * >::Iterator actionIterator = actionList->begin();
 
   // fill the existing action editors
-  while( editorIterator != mPrivate->mActionSelectorList.end() )
+  while( actionIterator == actionList->end() )
   {
-    Q_ASSERT( actionIterator != actionList->end() );
+    Q_ASSERT( editorIterator != mPrivate->mActionSelectorList.end() );
     ( *editorIterator )->fillFromAction( *actionIterator );
     ++editorIterator;
     ++actionIterator;
   }
 
-  ActionSelector * actionEditor;
+  fixupVisibleSelectorList();
+}
 
-  // add new ones, if needed
-  while( actionIterator != actionList->end() )
+Rule * RuleEditor::commit()
+{
+  return 0;
+}
+
+void RuleEditor::setSelectorCount( int count )
+{
+  while( mPrivate->mActionSelectorList.count() > count )
   {
-    actionEditor = new ActionSelector( this, mFactory );
-    mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
-    mPrivate->mActionSelectorList.append( actionEditor );
-    actionEditor->show();
-    actionEditor->fillFromAction( *actionIterator );
-    ++actionIterator;
+    delete mPrivate->mActionSelectorList.last();
+    mPrivate->mActionSelectorList.removeLast();
+  }
+
+  ActionSelector * actionSelector;
+
+  while( mPrivate->mActionSelectorList.count() < count )
+  {
+    actionSelector = new ActionSelector( this, mFactory, mEditorFactory, this );
+    mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionSelector );
+    mPrivate->mActionSelectorList.append( actionSelector );
+    actionSelector->show();
   }
 }
 
-bool RuleEditor::commitToRule( Rule * rule )
+void RuleEditor::fixupVisibleSelectorList()
 {
-  return false;
+  Q_ASSERT( mPrivate->mActionSelectorList.count() > 0 );
+  QList< ActionSelector * >::Iterator editorIterator = mPrivate->mActionSelectorList.end();
+  Q_ASSERT( editorIterator != mPrivate->mActionSelectorList.begin() );
+  editorIterator--;
+
+  // now pointing to the last
+  if( !( *editorIterator )->currentActionIsTerminal() )
+  {
+    // need an additional selector here
+    setSelectorCount( mPrivate->mActionSelectorList.count() + 1 );
+    return;
+  }
+
+  int countToKill = 0;
+
+  // last is "continue processing" or "stop processing"
+  // check if there are duplicates around
+
+  while( editorIterator != mPrivate->mActionSelectorList.begin() )
+  {
+    editorIterator--;
+    if( !( *editorIterator )->currentActionIsTerminal() )
+      break;
+    countToKill++;
+  }  
+
+  // kill the excess of editors then
+  while( countToKill > 0 )
+  {
+    delete mPrivate->mActionSelectorList.last();
+    mPrivate->mActionSelectorList.removeLast();
+    countToKill--;    
+  }
+
+  // FIXME: it would be nice to check for "continue processing" and "stop processing"
+  //        in the middle and move them to the end, eventually.
+}
+
+void RuleEditor::childActionSelectorTypeChanged( ActionSelector * )
+{
+  fixupVisibleSelectorList();
 }
 
 

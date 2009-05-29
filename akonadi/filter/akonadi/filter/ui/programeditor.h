@@ -41,11 +41,13 @@ class Program;
 namespace UI
 {
 
+class EditorFactory;
+
 class AKONADI_FILTER_UI_EXPORT ProgramEditor : public RuleListEditor
 {
   Q_OBJECT
 public:
-  ProgramEditor( QWidget * parent, Factory * factory );
+  ProgramEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
   virtual ~ProgramEditor();
 
 public:

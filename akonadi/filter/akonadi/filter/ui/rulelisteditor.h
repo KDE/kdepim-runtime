@@ -28,8 +28,12 @@
 
 #include "config-akonadi-filter-ui.h"
 
+#include "actioneditor.h"
+
 #include <QWidget>
 #include <QScrollArea>
+
+#include "expandingscrollarea.h"
 
 class QLabel;
 class QLineEdit;
@@ -114,33 +118,25 @@ protected slots:
 
 };
 
-class RuleListEditorItemScrollArea : public QScrollArea
-{
-  Q_OBJECT
-public:
-  RuleListEditorItemScrollArea( QWidget * parent );
-protected:
-  virtual QSize sizeHint() const;
-  virtual QSize minimumSizeHint() const;
-  virtual bool eventFilter( QObject *o, QEvent *e );
-};
 
-class RuleListEditorPrivate;
+
+class RuleListEditorScrollAreaPrivate;
 class RuleListEditorItem;
 
-class AKONADI_FILTER_UI_EXPORT RuleListEditor : public QScrollArea
+class AKONADI_FILTER_UI_EXPORT RuleListEditorScrollArea : public ExpandingScrollArea
 {
   Q_OBJECT
 
 public:
-  RuleListEditor( QWidget * parent, Factory * factory );
-  virtual ~RuleListEditor();
+  RuleListEditorScrollArea( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  virtual ~RuleListEditorScrollArea();
 
 
 protected:
-  RuleListEditorPrivate * mPrivate;
+  RuleListEditorScrollAreaPrivate * mPrivate;
   QFrame * mBase;
   Factory * mFactory;
+  EditorFactory * mEditorFactory;
 
 public:
   void fillFromRuleList( Action::RuleList * ruleList );
@@ -158,6 +154,22 @@ protected slots:
   void itemHeaderDeleteRequest( RuleListEditorItemHeader *header );
   void itemHeaderMoveUpRequest( RuleListEditorItemHeader *header );
   void itemHeaderMoveDownRequest( RuleListEditorItemHeader *header );
+};
+
+class AKONADI_FILTER_UI_EXPORT RuleListEditor : public ActionEditor
+{
+  Q_OBJECT
+public:
+  RuleListEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  virtual ~RuleListEditor();
+protected:
+  RuleListEditorScrollArea * mScrollArea;
+public:
+  void setAutoExpand( bool b );
+  bool autoExpand() const;
+  virtual void fillFromAction( Action::Base * action );
+  virtual void fillFromRuleList( Action::RuleList * ruleList );
+  virtual Action::Base * commit();
 };
 
 } // namespace UI

@@ -46,6 +46,8 @@ namespace Condition
 namespace UI
 {
 
+class EditorFactory;
+
 class ConditionDescriptor;
 class ConditionSelectorPrivate;
 
@@ -54,12 +56,13 @@ class AKONADI_FILTER_UI_EXPORT ConditionSelector : public QWidget
   Q_OBJECT
 
 public:
-  ConditionSelector( QWidget * parent, Factory * factory, ConditionSelector * parentConditionSelector = 0 );
+  ConditionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, ConditionSelector * parentConditionSelector = 0 );
   virtual ~ConditionSelector();
 
 protected:
 
   Factory * mFactory;
+  EditorFactory * mEditorFactory;
   ConditionSelector * mParentConditionSelector;
   ConditionSelectorPrivate * mPrivate;
 

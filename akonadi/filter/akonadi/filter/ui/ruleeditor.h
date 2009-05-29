@@ -41,24 +41,32 @@ class Rule;
 namespace UI
 {
 
+class EditorFactory;
+class ActionSelector;
 class RuleEditorPrivate;
 
 class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
+  friend class ActionSelector;
   Q_OBJECT
 public:
-  RuleEditor( QWidget * parent, Factory * factory );
+  RuleEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
   virtual ~RuleEditor();
 
 protected:
   Factory * mFactory;
+  EditorFactory * mEditorFactory;
   RuleEditorPrivate * mPrivate;
 
 public:
   virtual void fillFromRule( Rule * rule );
-  virtual bool commitToRule( Rule * rule );
+  virtual Rule * commit();
 
 protected:
+  void childActionSelectorTypeChanged( ActionSelector * child );
+  void setSelectorCount( int count );
+  void fixupVisibleSelectorList();
+
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
 

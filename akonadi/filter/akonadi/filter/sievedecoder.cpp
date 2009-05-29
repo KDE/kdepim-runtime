@@ -432,7 +432,7 @@ void SieveDecoder::onTestEnd()
         if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
         {
           mGotError = true; 
-          setLastError( i18n( "FunctionDescriptor '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
           return;
         }
 
@@ -441,7 +441,7 @@ void SieveDecoder::onTestEnd()
         {
           // unrecognized test
           mGotError = true; 
-          setLastError( i18n( "Test on function '%1' is not supported.", field ) );
+          setLastError( i18n( "Test on function '%1' is not supported: %2", field, factory()->lastError() ) );
           return;
         }
 
@@ -480,11 +480,11 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandDescriptorArguments.append( QVariant( tag ) );
+    mCurrentSimpleCommandArguments.append( QVariant( tag ) );
     return;
   }
 
@@ -506,11 +506,11 @@ void SieveDecoder::onStringArgument( const QString & string, bool multiLine, con
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandDescriptorArguments.append( QVariant( string ) );
+    mCurrentSimpleCommandArguments.append( QVariant( string ) );
     return;
   }
 
@@ -530,11 +530,11 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandDescriptorArguments.append( QVariant( (qulonglong)number ) );
+    mCurrentSimpleCommandArguments.append( QVariant( (qulonglong)number ) );
     return;
   }
 
@@ -574,11 +574,11 @@ void SieveDecoder::onStringListArgumentEnd()
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
     Q_ASSERT( mCurrentSimpleTestName.isEmpty() );
     // argument to a simple command
-    mCurrentSimpleCommandDescriptorArguments.append( QVariant( mCurrentStringList ) );
+    mCurrentSimpleCommandArguments.append( QVariant( mCurrentStringList ) );
     mCurrentStringList.clear();
     return;
   }
@@ -687,7 +687,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
       ( QString::compare( identifier, QLatin1String( "else" ), Qt::CaseInsensitive ) == 0 )
     )
   {
-    mCurrentSimpleCommandDescriptorName = QString(); // this is not a simple command
+    mCurrentSimpleCommandName = QString(); // this is not a simple command
 
     // conditional rule start
     if( mCurrentComponent->isRuleList() )
@@ -717,8 +717,8 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
   }
 
   // We delay the creation of simple commands to the onCommandDescriptorEnd() so we have all the arguments
-  mCurrentSimpleCommandDescriptorName = identifier;
-  mCurrentSimpleCommandDescriptorArguments.clear();
+  mCurrentSimpleCommandName = identifier;
+  mCurrentSimpleCommandArguments.clear();
 }
 
 void SieveDecoder::onCommandDescriptorEnd()
@@ -726,7 +726,7 @@ void SieveDecoder::onCommandDescriptorEnd()
   if( mGotError )
     return; // ignore everything
 
-  if( !mCurrentSimpleCommandDescriptorName.isEmpty() )
+  if( !mCurrentSimpleCommandName.isEmpty() )
   {
     // delayed simple command creation
 
@@ -734,8 +734,8 @@ void SieveDecoder::onCommandDescriptorEnd()
 
     Action::Base * action;
     if(
-         ( QString::compare( mCurrentSimpleCommandDescriptorName, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
-         ( QString::compare( mCurrentSimpleCommandDescriptorName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
+         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("stop" ), Qt::CaseInsensitive ) == 0 ) ||
+         ( QString::compare( mCurrentSimpleCommandName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
       )
     {
       action = factory()->createStopAction( mCurrentComponent );
@@ -744,26 +744,33 @@ void SieveDecoder::onCommandDescriptorEnd()
     } else {
       // a "command" action
 
-      const CommandDescriptor * command = factory()->findCommand( mCurrentSimpleCommandDescriptorName );
+      const CommandDescriptor * command = factory()->findCommand( mCurrentSimpleCommandName );
       if( !command )
       {
         mGotError = true; 
-        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandDescriptorName ) );
+        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandName ) );
         return;
       }
 
-      action = factory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandDescriptorArguments );
+      if( mCurrentSimpleCommandArguments.count() < command->parameters()->count() )
+      {
+        mGotError = true; 
+        setLastError( i18n( "Action '%1' required at least %2 arguments", mCurrentSimpleCommandName, command->parameters()->count() ) );
+        return;
+      }
+
+      action = factory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandArguments );
       if( !action )
       {
         mGotError = true; 
-        setLastError( i18n( "Could not create action '%1'", mCurrentSimpleCommandDescriptorName ) );
+        setLastError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, factory()->lastError() ) );
         return;
       }
 
     }
 
     Q_ASSERT( action );
-    mCurrentSimpleCommandDescriptorName = QString();
+    mCurrentSimpleCommandName = QString();
 
     if ( mCurrentComponent->isRuleList() )
     {
@@ -826,13 +833,13 @@ Program * SieveDecoder::run()
   QString script = QString::fromUtf8(
        "# Test script\r\n" \
        "if allof( size :above 100K, size :below 200K, true) {\r\n" \
-       "  fileinto \"huge\";\r\n" \
+       "  #fileinto \"huge\";\r\n" \
        "  stop;\r\n" \
        "}\r\n"
        "elsif allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
-       "  fileinto \"medium\";\r\n" \
+       "  #fileinto \"medium\";\r\n" \
        "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K, anyof( address :inaddressbook \"cc\", not address :domain :like \"from\" \"*xyz*\")) {\r\n" \
-       "    fileinto \"strange\";\r\n" \
+       "    #fileinto \"strange\";\r\n" \
        "    keep;\r\n" \
        "  }\r\n"
        "}\r\n"

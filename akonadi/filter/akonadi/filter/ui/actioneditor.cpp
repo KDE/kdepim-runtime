@@ -1,6 +1,6 @@
 /****************************************************************************** * *
  *
- *  File : coolcombobox.h
+ *  File : actioneditor.cpp
  *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,15 +23,13 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
-#define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
+#include "actioneditor.h"
+#include "editorfactory.h"
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/action.h>
+#include <akonadi/filter/factory.h>
 
-#include <KComboBox>
-#include <QColor>
-
-class QPaintEvent;
+#include <QLayout>
 
 namespace Akonadi
 {
@@ -39,41 +37,30 @@ namespace Filter
 {
 namespace UI
 {
-namespace Private
-{
 
-class CoolComboBox : public KComboBox
+ActionEditor::ActionEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
+  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
 {
-  Q_OBJECT
-public:
-  CoolComboBox( bool rw, QWidget * parent );
-protected:
-  qreal mOpacity;
-  qreal mOverlayOpacity;
-  QColor mOverlayColor;
-public:
-  void setOpacity( qreal opacity );
-  qreal opacity() const
-  {
-    return mOpacity;
-  }
-  void setOverlayColor( const QColor &clr );
-  QColor overlayColor() const
-  {
-    return mOverlayColor;
-  }
-  qreal overlayOpacity() const
-  {
-    return mOverlayOpacity;
-  }
-  void setOverlayOpacity( qreal overlayOpacity )
-  {
-    mOverlayOpacity = overlayOpacity;
-  }
-  virtual void paintEvent( QPaintEvent * e );
-}; // class CoolComboBox
+  setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
+}
 
-} // namespace Private
+ActionEditor::~ActionEditor()
+{
+}
+
+QSize ActionEditor::sizeHint() const
+{
+  if( layout() )
+    return layout()->minimumSize();
+  return QWidget::sizeHint();
+}
+
+QSize ActionEditor::minimumSizeHint() const
+{
+  if( layout() )
+    return layout()->minimumSize();
+  return QWidget::minimumSizeHint();
+}
 
 } // namespace UI
 
@@ -81,4 +68,3 @@ public:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_

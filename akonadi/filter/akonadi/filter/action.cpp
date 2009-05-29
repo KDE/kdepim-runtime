@@ -27,6 +27,8 @@
 
 #include <KDebug>
 
+#include "commanddescriptor.h"
+
 namespace Akonadi
 {
 namespace Filter 
@@ -75,6 +77,27 @@ Stop::ProcessingStatus Stop::execute( Data * data )
 void Stop::dump( const QString &prefix )
 {
   debugOutput( prefix, "Action::Stop" );
+}
+
+
+Command::Command( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
+  : Base( ActionTypeCommand, parent ), mCommandDescriptor( command ), mParams( params )
+{
+}
+
+Command::~Command()
+{
+}
+
+Command::ProcessingStatus Command::execute( Data * data )
+{
+  
+  return SuccessAndContinue;
+}
+
+void Command::dump( const QString &prefix )
+{
+  debugOutput( prefix, QString::fromAscii( "Action::Command(%1)" ).arg( mCommandDescriptor->keyword() ) );
 }
 
 } // namespace Action
