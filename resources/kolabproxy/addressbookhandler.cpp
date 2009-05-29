@@ -27,7 +27,7 @@
 #include <QBuffer>
 
 
-AddressBookHandler::AddressBookHandler(const QString& timezoneId): KolabHandler(timezoneId)
+AddressBookHandler::AddressBookHandler(): KolabHandler()
 {
   m_mimeType = "application/x-vnd.kolab.contact";
 }
@@ -44,6 +44,10 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
   Q_FOREACH(Akonadi::Item item, items)
   {
 //     kDebug() << item.id();
+    if (!item.hasPayload<MessagePtr>()) {
+      kWarning() << "Payload is not a MessagePtr!";
+      continue;
+    }
     MessagePtr payload = item.payload<MessagePtr>();
     KABC::Addressee addressee;
     if (addresseFromKolab(payload, addressee)) {
@@ -110,6 +114,10 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
 
 void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
+  if (!item.hasPayload<KABC::Addressee>()) {
+    kWarning() << "Payload is not a KABC::Addressee!";
+    return;
+  }
   KABC::Addressee addressee = item.payload<KABC::Addressee>();
   Kolab::Contact contact(&addressee, 0);
 
@@ -185,7 +193,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
   }
 
 
-  imapItem.setPayload<MessagePtr>(message);
+  imapItem.setPayload(message);
 }
 
 QStringList AddressBookHandler::contentMimeTypes()

@@ -21,7 +21,7 @@
 #ifndef JOURNALHANDLER_H
 #define JOURNALHANDLER_H
 
-#include "kolabhandler.h"
+#include "incidencehandler.h"
 #include <kcal/journal.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KCal::Journal> JournalPtr;
@@ -29,21 +29,17 @@ typedef boost::shared_ptr<KCal::Journal> JournalPtr;
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
-class JournalHandler : public KolabHandler {
+class JournalHandler : public IncidenceHandler {
 public:
-    JournalHandler(const QString& timezoneId);
+  JournalHandler();
+  virtual ~JournalHandler();
 
-    virtual ~JournalHandler();
-
-    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
-    virtual QStringList contentMimeTypes();
+  virtual QStringList contentMimeTypes();
 
 private:
-    KCal::Journal *journalFromKolab(MessagePtr data);
-    KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type
-    );
-
+  virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
+  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
+  KCal::Journal *journalFromKolab(MessagePtr data);
 };
 
 #endif

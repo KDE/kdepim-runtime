@@ -23,11 +23,14 @@
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
 
+#include <kcal/calformat.h>
+#include <KLocale>
+
 #include <QBuffer>
 #include <QDomDocument>
 
 
-CalendarHandler::CalendarHandler(const QString& timezoneId)  : KolabHandler(timezoneId)
+CalendarHandler::CalendarHandler()  : IncidenceHandler()
 {
   m_mimeType = "application/x-vnd.kolab.event";
 }
@@ -37,24 +40,9 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-Akonadi::Item::List CalendarHandler::translateItems(const Akonadi::Item::List & items)
+KCal::Incidence* CalendarHandler::incidenceFromKolab(MessagePtr data)
 {
-  kDebug() << "translateItems";
-  Akonadi::Item::List newItems;
-  Q_FOREACH(Akonadi::Item item, items)
-  {
-    MessagePtr payload = item.payload<MessagePtr>();
-    KCal::Event *e = calendarFromKolab(payload);
-    if (e) {
-      Akonadi::Item newItem("text/calendar");
-      newItem.setRemoteId(QString::number(item.id()));
-      EventPtr event(e);
-      newItem.setPayload<EventPtr>(event);
-      newItems << newItem;
-    }
-  }
-
-  return newItems;
+   return calendarFromKolab(data);
 }
 
 KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
@@ -64,7 +52,7 @@ KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
 
-    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_timezoneId );
+    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     QDomDocument doc;
     doc.setContent(QString::fromUtf8(xmlData));
     QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
@@ -83,62 +71,14 @@ KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
   return 0L;
 }
 
-void CalendarHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
+QByteArray CalendarHandler::incidenceToXml(KCal::Incidence *incidence)
 {
-  kDebug() << "toKolabFormat";
-  EventPtr e(new KCal::Event());
-  if (item.hasPayload<EventPtr>()) {
-      e = item.payload<EventPtr>();
-  }
-  kDebug() << "item payload: " << item.payloadData();
-  KCal::Event *event = e.get();
-
-  imapItem.setMimeType( "message/rfc822" );
-
-  MessagePtr message(new KMime::Message);
-  QString header;
-  header += "From: " + event->organizer().fullName() + "<" + event->organizer().email() + ">\n";
-  header += "Subject: " + event->uid() + "\n";
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
-  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
-  header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
-  message->setContent(header.toLatin1());
-
-  KMime::Content *content = new KMime::Content();
-  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
-  "This is a Kolab Groupware object.\n" +
-  "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
-  "For a list of such email clients please visit\n"
-  "http://www.kolab.org/kolab2-clients.html\n";
-  content->setContent(contentData);
-  message->addContent(content);
-
-  content = new KMime::Content();
-  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: quoted-printable\n";
-  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
-  content->setHead(header.toLatin1());
-  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(Kolab::Event::eventToXML(event, m_timezoneId).toUtf8()));
-  message->addContent(content);
-
-  Q_FOREACH (KCal::Attachment *attachment, e->attachments()) {
-    header = "Content-Type: "  +attachment->mimeType() + "; name=\""  + attachment->label() + "\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"" + attachment->label() + "\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
-    content->setBody(attachment->data());
-    message->addContent(content);
-
-  }
-
-  imapItem.setPayload<MessagePtr>(message);
+  return Kolab::Event::eventToXML(dynamic_cast<KCal::Event*>(incidence), m_calendar.timeZoneId()).toUtf8();
 }
 
 QStringList  CalendarHandler::contentMimeTypes()
 {
   return QStringList() << "text/calendar";
 }
+
 

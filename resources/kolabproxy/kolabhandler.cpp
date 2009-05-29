@@ -22,23 +22,22 @@
 #include "taskshandler.h"
 #include "journalhandler.h"
 
-KolabHandler::KolabHandler(const QString& timezoneId)
+KolabHandler::KolabHandler()
 {
-  m_timezoneId = timezoneId;
 }
 
-KolabHandler *KolabHandler::createHandler(const QByteArray& type, const QString& timezoneId)
+KolabHandler *KolabHandler::createHandler(const QByteArray& type)
 {
   if (type ==  "contact.default" || type ==  "contact") {
-    return new AddressBookHandler(timezoneId);
+    return new AddressBookHandler();
   } else if (type ==  "event.default" || type ==  "event") {
-    return new CalendarHandler(timezoneId);
+    return new CalendarHandler();
   } else if (type ==  "task.default" || type ==  "task") {
-    return new TasksHandler(timezoneId);
+    return new TasksHandler();
   } else if (type ==  "journal.default" || type ==  "journal") {
-    return new JournalHandler(timezoneId);
+    return new JournalHandler();
   } else if (type ==  "note.default" || type ==  "note") {
-    JournalHandler *handler =  new JournalHandler(timezoneId);
+    JournalHandler *handler =  new JournalHandler();
     handler->setMimeType("application/x-vnd.kolab.note");
     return handler;
   } else {

@@ -20,7 +20,7 @@
 #ifndef CALENDARHANDLER_H
 #define CALENDARHANDLER_H
 
-#include "kolabhandler.h"
+#include "incidencehandler.h"
 #include <kcal/event.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KCal::Event> EventPtr;
@@ -28,19 +28,17 @@ typedef boost::shared_ptr<KCal::Event> EventPtr;
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
-class CalendarHandler : public KolabHandler {
+class CalendarHandler : public IncidenceHandler {
+  Q_OBJECT
 public:
-    CalendarHandler(const QString& timezoneId);
-
-    virtual ~CalendarHandler();
-
-    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
-    virtual QStringList contentMimeTypes();
+  CalendarHandler();
+  virtual ~CalendarHandler();
+  virtual QStringList contentMimeTypes();
 
 private:
-    KCal::Event * calendarFromKolab(MessagePtr data);
-
+  virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
+  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
+  KCal::Event * calendarFromKolab(MessagePtr data);
 };
 
 #endif

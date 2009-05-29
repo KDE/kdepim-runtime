@@ -28,7 +28,7 @@
 #include <QDomDocument>
 
 
-TasksHandler::TasksHandler(const QString& timezoneId) : KolabHandler(timezoneId)
+TasksHandler::TasksHandler() : IncidenceHandler()
 {
   m_mimeType = "application/x-vnd.kolab.task";
 }
@@ -38,25 +38,11 @@ TasksHandler::~TasksHandler()
 {
 }
 
-Akonadi::Item::List TasksHandler::translateItems(const Akonadi::Item::List & items)
+KCal::Incidence* TasksHandler::incidenceFromKolab(MessagePtr data)
 {
-  kDebug() << "translateItems";
-  Akonadi::Item::List newItems;
-  Q_FOREACH(Akonadi::Item item, items)
-  {
-    MessagePtr payload = item.payload<MessagePtr>();
-    KCal::Todo *t = todoFromKolab(payload);
-    if (t) {
-      Akonadi::Item newItem("text/calendar");
-      newItem.setRemoteId(QString::number(item.id()));
-      TodoPtr todo(t);
-      newItem.setPayload<TodoPtr>(todo);
-      newItems << newItem;
-    }
-  }
-
-  return newItems;
+  return todoFromKolab(data);
 }
+
 
 KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
 {
@@ -65,8 +51,7 @@ KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
 
-    //FIXME: read the tz
-    KCal::Todo *todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_timezoneId );
+    KCal::Todo *todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     QDomDocument doc;
     doc.setContent(QString::fromUtf8(xmlData));
     QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
@@ -85,68 +70,12 @@ KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
   return 0L;
 }
 
-KMime::Content* TasksHandler::findContentByName(MessagePtr data, const QString &name, QByteArray &type)
-{
-  KMime::Content::List list = data->contents();
-  Q_FOREACH(KMime::Content *c, list)
-  {
-    if (c->contentType()->name() == name)
-      type = QByteArray(c->contentType()->type());
-      return c;
-  }
-  return 0L;
 
+QByteArray TasksHandler::incidenceToXml(KCal::Incidence *incidence)
+{
+  return Kolab::Task::taskToXML(dynamic_cast<KCal::Todo*>(incidence), m_calendar.timeZoneId()).toUtf8();
 }
 
-void TasksHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
-{
-  kDebug() << "toKolabFormat";
-  TodoPtr t(item.payload<TodoPtr>());
-  KCal::Todo *todo = t.get();
-
-  imapItem.setMimeType( "message/rfc822" );
-
-  MessagePtr message(new KMime::Message);
-  QString header;
-  header += "From: " + todo->organizer().fullName() + "<" + todo->organizer().email() + ">\n";
-  header += "Subject: " + todo->uid() + "\n";
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
-  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
-  header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
-  message->setContent(header.toLatin1());
-
-  KMime::Content *content = new KMime::Content();
-  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
-  "This is a Kolab Groupware object.\n" +
-  "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
-  "For a list of such email clients please visit\n"
-  "http://www.kolab.org/kolab2-clients.html\n";
-  content->setContent(contentData);
-  message->addContent(content);
-
-  content = new KMime::Content();
-  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: quoted-printable\n";
-  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
-  content->setHead(header.toLatin1());
-  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(Kolab::Task::taskToXML(todo, m_timezoneId).toUtf8()));
-  message->addContent(content);
-
-  Q_FOREACH (KCal::Attachment *attachment, t->attachments()) {
-    header = "Content-Type: "  +attachment->mimeType() + "; name=\""  + attachment->label() + "\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"" + attachment->label() + "\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
-    content->setBody(attachment->data());
-    message->addContent(content);
-
-  }
-
-  imapItem.setPayload<MessagePtr>(message);
-}
 
 QStringList  TasksHandler::contentMimeTypes()
 {

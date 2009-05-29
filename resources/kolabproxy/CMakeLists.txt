@@ -20,6 +20,7 @@ set( kolabproxyresource_SRCS
   kolabbase.cpp
   kolabhandler.cpp
   addressbookhandler.cpp
+  incidencehandler.cpp
   calendarhandler.cpp
   taskshandler.cpp
   journalhandler.cpp

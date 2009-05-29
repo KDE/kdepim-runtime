@@ -21,7 +21,7 @@
 #ifndef TASKSHANDLER_H
 #define TASKSHANDLER_H
 
-#include "kolabhandler.h"
+#include "incidencehandler.h"
 #include <kcal/todo.h>
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KCal::Todo> TodoPtr;
@@ -29,20 +29,16 @@ typedef boost::shared_ptr<KCal::Todo> TodoPtr;
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
-class TasksHandler : public KolabHandler {
+class TasksHandler : public IncidenceHandler {
 public:
-    TasksHandler(const QString& timezoneId);
-
-    virtual ~TasksHandler();
-
-    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
-    virtual QStringList contentMimeTypes();
+  TasksHandler();
+  virtual ~TasksHandler();
+  virtual QStringList contentMimeTypes();
 
 private:
-    KCal::Todo *todoFromKolab(MessagePtr data);
-    KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type
-    );
+  virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
+  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
+  KCal::Todo *todoFromKolab(MessagePtr data);
 
 };
 

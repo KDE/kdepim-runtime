@@ -20,8 +20,6 @@
 #ifndef KOLABPROXYRESOURCE_H
 #define KOLABPROXYRESOURCE_H
 
-#include <kcal/calendarlocal.h>
-
 #include <akonadi/resourcebase.h>
 #include <QStringList>
 
@@ -58,6 +56,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapCollectionFetched(KJob *job);
     void retrieveItemFetchDone(KJob *);
     void retrieveCollectionsFetchDone(KJob* job);
+    void addImapItem(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
+    void deleteImapItem(const Akonadi::Item& item);
+
 
   protected:
     virtual void aboutToQuit();
@@ -77,13 +78,11 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
     enum RetrieveState {
       RetrieveItems,
-      RetrieveItem
+      RetrieveItem,
+      DeleteItem
     };
 
     RetrieveState m_retrieveState;
-
-    KCal::CalendarLocal m_calendar;
-
 };
 
 #endif
