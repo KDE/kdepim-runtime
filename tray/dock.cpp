@@ -102,8 +102,8 @@ void Dock::slotServerStarted()
 {
     updateMenu( true );
     if ( m_explicitStart ) {
-      KPassivePopup::message( i18n( "Akonadi available" ),
-                              i18n( "The Akonadi server has been started and can be used now." ), m_parentWidget );
+      showMessage( i18n( "Akonadi available" ),
+                   i18n( "The Akonadi server has been started and can be used now." ), "akonadi" );
     m_explicitStart = false;
     }
 }
@@ -111,19 +111,19 @@ void Dock::slotServerStarted()
 void Dock::slotServerStopped()
 {
     updateMenu( false );
-    KPassivePopup::message( i18n( "Akonadi not available" ),
-                            i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), m_parentWidget  );
+    showMessage( i18n( "Akonadi not available" ),
+                 i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), "akonadi" );
 }
 
 void Dock::slotStopAkonadi()
 {
-    Akonadi::Control::stop( m_parentWidget  );
+    Akonadi::Control::stop( m_parentWidget );
 }
 
 void Dock::slotStartAkonadi()
 {
     m_explicitStart = true;
-    Akonadi::Control::start( m_parentWidget  );
+    Akonadi::Control::start( m_parentWidget );
 }
 
 void Dock::slotActivated()
@@ -136,7 +136,7 @@ void Dock::slotStartBackup()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<BackupAssistant> backup = new BackupAssistant( m_parentWidget  );
+    QPointer<BackupAssistant> backup = new BackupAssistant( m_parentWidget );
     backup->exec();
     delete backup;
 }
@@ -146,13 +146,21 @@ void Dock::slotStartRestore()
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
 
-    QPointer<RestoreAssistant> restore = new RestoreAssistant( m_parentWidget  );
+    QPointer<RestoreAssistant> restore = new RestoreAssistant( m_parentWidget );
     restore->exec();
     delete restore;
 }
 
 void Dock::updateMenu( bool registered )
 {
+    if ( registered ) {
+          setToolTip( "akonadi", i18n( "Akonadi available" ),
+                                 i18n( "The Akonadi server has been started and can be used now." ) );
+    } else {
+          setToolTip( "akonadi", i18n( "Akonadi not available" ),
+                                 i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ) );
+    }
+
     /* kdelibs... */
     QToolButton *button = static_cast<QToolButton*>(( static_cast<QWidgetAction*>( m_title ) )->defaultWidget() );
     QAction* action = button->defaultAction();
