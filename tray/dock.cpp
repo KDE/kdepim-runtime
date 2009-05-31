@@ -1,5 +1,5 @@
 /* This file is part of the KDE project
-   Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
+   Copyright (C) 2008-2009 Omat Holding B.V. <info@omat.nl>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -58,7 +58,7 @@ void Tray::setVisible( bool )
 }
 
 Dock::Dock( QWidget *parent )
-        : KNotificationItem( 0 )
+        : KNotificationItem( 0 ), m_explicitStart( false )
 {
     m_parentWidget = parent;
   
@@ -101,8 +101,11 @@ Dock::~Dock()
 void Dock::slotServerStarted()
 {
     updateMenu( true );
-    KPassivePopup::message( i18n( "Akonadi available" ),
-                            i18n( "The Akonadi server has been started and can be used now." ), m_parentWidget );
+    if ( m_explicitStart ) {
+      KPassivePopup::message( i18n( "Akonadi available" ),
+                              i18n( "The Akonadi server has been started and can be used now." ), m_parentWidget );
+    m_explicitStart = false;
+    }
 }
 
 void Dock::slotServerStopped()
@@ -119,6 +122,7 @@ void Dock::slotStopAkonadi()
 
 void Dock::slotStartAkonadi()
 {
+    m_explicitStart = true;
     Akonadi::Control::start( m_parentWidget  );
 }
 

@@ -83,6 +83,7 @@ private:
     QAction *m_startAction;
     QAction *m_backupAction;
     QAction *m_restoreAction;
+    bool m_explicitStart;
 };
 
 #endif // DOCK_H
