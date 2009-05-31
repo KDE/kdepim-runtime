@@ -23,29 +23,26 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapquotaattribute.cpp
 )
 
-if ( XSLTPROC_EXECUTABLE )
-  add_subdirectory( birthdays )
-  add_subdirectory( distlist )
-  add_subdirectory( ical )
-  add_subdirectory( imap ) # REQ: libkdepim
-  add_subdirectory( kabc )
-  add_subdirectory( kcal )
-  add_subdirectory( knut )
-  add_subdirectory( kolabproxy ) # REQ: libkdepim/distributionlist.h
-  add_subdirectory( localbookmarks )
-  add_subdirectory( maildir )
-  add_subdirectory( mbox )
-  add_subdirectory( microblog )
+add_subdirectory( birthdays )
+add_subdirectory( distlist )
+add_subdirectory( ical )
+add_subdirectory( imap ) # REQ: libkdepim
+add_subdirectory( kabc )
+add_subdirectory( kcal )
+add_subdirectory( knut )
+add_subdirectory( kolabproxy ) # REQ: libkdepim/distributionlist.h
+add_subdirectory( localbookmarks )
+add_subdirectory( maildir )
+add_subdirectory( mbox )
+add_subdirectory( microblog )
 
-  if ( NEPOMUK_FOUND )
-    add_subdirectory( nepomuktag )
-  endif ( NEPOMUK_FOUND )
+if ( NEPOMUK_FOUND )
+  add_subdirectory( nepomuktag )
+endif ( NEPOMUK_FOUND )
 
-  add_subdirectory( nntp )
-  add_subdirectory( vcard )
-  add_subdirectory( vcarddir )
-
-endif( XSLTPROC_EXECUTABLE )
+add_subdirectory( nntp )
+add_subdirectory( vcard )
+add_subdirectory( vcarddir )
 
 #This is experimental and probably experiencing bit-rot.
 #Also, there is a GSoC project for it.
