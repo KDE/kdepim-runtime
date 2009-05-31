@@ -1,22 +1,39 @@
-project(KDEPIM_AKONADI)
+project(kdepim-runtime)
 
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+# where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
+set(CMAKE_MODULE_PATH "${kdepim-runtime_SOURCE_DIR}/cmake/modules")
 
-#search packages used by KDE
+############### search packages used by KDE ###############
+
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
-find_package(KdepimLibs REQUIRED)
 
-macro_optional_find_package(Boost)
-macro_log_feature(Boost_FOUND "boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
-if(NOT Boost_FOUND)
-  macro_display_feature_log()
-endif(NOT Boost_FOUND)
+find_package(KdepimLibs 4.2.87 REQUIRED)
 
-find_package(Akonadi REQUIRED)
-include_directories(${AKONADI_INCLUDE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${Boost_INCLUDE_DIR})
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+find_package(Boost)
+macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
+
+find_package(Akonadi)
+macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi client libraries (from kdepimlibs)" "http://pim.kde.org/akonadi" TRUE "" "Akonadi is required to build kdepim-runtime.")
+
+set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
+find_package(SharedMimeInfo)
+macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesktop.org/wiki/Software/shared-mime-info" TRUE "0.20" "SharedMimeInfo is required.")
+
+find_package(LibXml2)
+macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
+
+find_package(Nepomuk)
+macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" FALSE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
+
+find_package(LibKNotificationItem-1_New)
+macro_log_feature(LIBKNOTIFICATIONITEM-1_FOUND "LibKNotificationItem-1" "An experimental library" "svn://anonsvn.kde.org/home/kde/trunk/KDE/kdelibs/experimental" TRUE "" "LibKNotificationItem-1 is an unfinished library which is required by korgac and akonaditray.")
+
+
+############### search programs & libraries used by kpim-runtime ###############
+
+find_program(XSLTPROC_EXECUTABLE xsltproc)
+macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
 
 find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   PATHS
@@ -27,11 +44,14 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the mailthreaderagent and the message searchprovider")
 
-find_program(XSLTPROC_EXECUTABLE xsltproc)
-macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
-if(NOT XSLTPROC_EXECUTABLE)
-  macro_display_feature_log()
-endif(NOT XSLTPROC_EXECUTABLE)
+
+############### Needed commands before building anything ###############
+
+include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${AKONADI_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
+
+
+############### Macros ###############
 
 # generates a D-Bus interface description from a KConfigXT file
 macro(kcfg_generate_dbus_interface _kcfg _name)
@@ -46,6 +66,9 @@ macro(kcfg_generate_dbus_interface _kcfg _name)
     )
 endmacro(kcfg_generate_dbus_interface)
 
+
+############### Now, we add the components ###############
+
 add_subdirectory(xml)
 add_subdirectory(clients)
 add_subdirectory(resources)
@@ -58,16 +81,13 @@ add_subdirectory(kcm)
 add_subdirectory(tray)
 add_subdirectory(migration)
 add_subdirectory(defaultsetup)
+add_subdirectory(akonadi_next)
+
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
 #endif(OPENSYNC_FOUND)
-add_subdirectory(akonadi_next)
 
-#### MIME type spezializations
 
-set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
-find_package(SharedMimeInfo REQUIRED)
-
-if(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+if(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
     macro_display_feature_log()
-endif(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+endif(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")

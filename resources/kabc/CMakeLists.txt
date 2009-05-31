@@ -1,5 +1,5 @@
 include_directories(
-  ${CMAKE_SOURCE_DIR}/akonadi
+  ${kdepim-runtime_SOURCE_DIR}
   ${QT_QTDBUS_INCLUDE_DIR}
 )
 

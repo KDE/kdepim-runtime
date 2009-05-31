@@ -1,4 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/akonadi)
+include_directories( ${kdepim-runtime_SOURCE_DIR} )
 
 set(akonamail_bin_SRCS
     main.cpp

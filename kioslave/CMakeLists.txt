@@ -1,4 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/akonadi)
+include_directories( ${kdepim-runtime_SOURCE_DIR} )
 
 set(kio_akonadi_srcs akonadislave.cpp )
 

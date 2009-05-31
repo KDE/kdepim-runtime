@@ -1,5 +1,5 @@
 include_directories(
-  ${CMAKE_SOURCE_DIR}/akonadi
+  ${kdepim-runtime_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/../nie
   ${Boost_INCLUDE_DIR}
   )

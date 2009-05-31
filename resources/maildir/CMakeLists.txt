@@ -1,6 +1,6 @@
 include_directories(
-    ${CMAKE_SOURCE_DIR}/akonadi
-    ${CMAKE_SOURCE_DIR}/maildir
+    ${kdepim-runtime_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/libmaildir
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
 )
@@ -21,8 +21,11 @@ set( maildirresource_SRCS
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_ui_files(maildirresource_SRCS settings.ui)
+
 kde4_add_kcfg_files(maildirresource_SRCS settings.kcfgc)
+
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
+
 qt4_add_dbus_adaptor(maildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Settings
 )

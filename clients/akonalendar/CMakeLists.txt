@@ -1,5 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/akonadi)
-include_directories(${KDE4_INCLUDES})
+include_directories( ${kdepim-runtime_SOURCE_DIR} )
 
 set(calendar_bin_SRCS
     calendar.cpp

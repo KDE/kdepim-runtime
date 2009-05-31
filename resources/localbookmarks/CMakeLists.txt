@@ -1,5 +1,5 @@
 include_directories(
-    ${CMAKE_SOURCE_DIR}/akonadi
+    ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
 )
@@ -24,7 +24,7 @@ qt4_add_dbus_adaptor(localbookmarksresource_SRCS
 
 kde4_add_executable(akonadi_localbookmarks_resource RUN_UNINSTALLED ${localbookmarksresource_SRCS})
 
-target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
+target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

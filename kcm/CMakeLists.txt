@@ -1,4 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/ ${CMAKE_SOURCE_DIR}/akonadi)
+include_directories( ${kdepim-runtime_SOURCE_DIR} )
 
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
 kde4_add_ui_files(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )

@@ -44,5 +44,3 @@ target_link_libraries(akonadi_microblog_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDE
 
 install(TARGETS akonadi_microblog_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES microblog.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
-
-

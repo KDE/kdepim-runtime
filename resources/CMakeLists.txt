@@ -24,22 +24,27 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 )
 
 if ( XSLTPROC_EXECUTABLE )
-  add_subdirectory( knut )
+  add_subdirectory( birthdays )
+  add_subdirectory( distlist )
   add_subdirectory( ical )
+  add_subdirectory( imap ) # REQ: libkdepim
+  add_subdirectory( kabc )
+  add_subdirectory( kcal )
+  add_subdirectory( knut )
+  add_subdirectory( kolabproxy ) # REQ: libkdepim/distributionlist.h
+  add_subdirectory( localbookmarks )
   add_subdirectory( maildir )
+  add_subdirectory( mbox )
+  add_subdirectory( microblog )
+
+  if ( NEPOMUK_FOUND )
+    add_subdirectory( nepomuktag )
+  endif ( NEPOMUK_FOUND )
+
   add_subdirectory( nntp )
   add_subdirectory( vcard )
   add_subdirectory( vcarddir )
-  add_subdirectory( localbookmarks )
-  add_subdirectory( kabc )
-  add_subdirectory( kcal )
-  add_subdirectory( imap )
-  add_subdirectory( nepomuktag )
-  add_subdirectory( microblog )
-  add_subdirectory( distlist )
-  add_subdirectory( birthdays )
-  add_subdirectory( mbox )
-  add_subdirectory( kolabproxy )
+
 endif( XSLTPROC_EXECUTABLE )
 
 #This is experimental and probably experiencing bit-rot.
