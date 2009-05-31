@@ -137,6 +137,7 @@ bool TreeWidget::restoreLayout( KConfigGroup &group, const QString &keyName )
   for ( int i = 0 ; i < cc ; i++ )
   {
      savedSizes[ i ] = header()->sectionSize( i );
+    header()->resizeSection( i , 10 );
   }
 
   if ( !header()->restoreState( state ) )
