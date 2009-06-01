@@ -41,9 +41,9 @@ public:
   ContactsModel(Session *session, Monitor *monitor, QObject *parent = 0);
   virtual ~ContactsModel();
 
-  virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
+  virtual QVariant getData(const Item &item, int column, int role=Qt::DisplayRole) const;
 
-  virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
+  virtual QVariant getData(const Collection &collection, int column, int role=Qt::DisplayRole) const;
 
   virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
 

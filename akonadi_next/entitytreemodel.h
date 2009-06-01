@@ -226,7 +226,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     Item itemForId( Item::Id id ) const;
 
     // TODO: Remove these and use the Monitor instead. Need to add api to Monitor for this.
-    void setIncludeUnsubscribed(bool include);
+    void setIncludeUnsubscribed( bool include );
     bool includeUnsubscribed() const;
 
     virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -246,32 +246,33 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
     virtual QModelIndex parent( const QModelIndex & index ) const;
 
-  // TODO: Review the implementations of these. I think they could be better.
+    // TODO: Review the implementations of these. I think they could be better.
     virtual bool canFetchMore( const QModelIndex & parent ) const;
     virtual void fetchMore( const QModelIndex & parent );
-    virtual bool hasChildren(const QModelIndex &parent = QModelIndex() ) const;
+    virtual bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
 
   protected:
     /**
-    Clears and resets the model. Always call this instead of the reset method in the superclass. Using the reset method will not reliably clear or refill the model
-    */
+     * Clears and resets the model. Always call this instead of the reset method in the superclass.
+     * Using the reset method will not reliably clear or refill the model.
+     */
     void clearAndReset();
 
     /**
-    Provided for convenience of subclasses.
-    */
-    virtual QVariant getData(Item item, int column, int role=Qt::DisplayRole) const;
+     * Provided for convenience of subclasses.
+     */
+    virtual QVariant getData( const Item &item, int column, int role = Qt::DisplayRole ) const;
 
     /**
-    Provided for convenience of subclasses.
-    */
-    virtual QVariant getData(Collection collection, int column, int role=Qt::DisplayRole) const;
+     * Provided for convenience of subclasses.
+     */
+    virtual QVariant getData( const Collection &collection, int column, int role = Qt::DisplayRole ) const;
 
     /**
-    Reimplement this to provide different header data. This is needed when using one model
-    with multiple proxies and views, and each should show different header data.
-    */
-    virtual QVariant getHeaderData(int section, Qt::Orientation orientation, int role, int headerSet) const;
+     * Reimplement this to provide different header data. This is needed when using one model
+     * with multiple proxies and views, and each should show different header data.
+     */
+    virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
 
   private:
     //@cond PRIVATE
@@ -279,15 +280,16 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     EntityTreeModelPrivate *d_ptr;
 
     // Make these private, they shouldn't be called by applications
-    virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
-    virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
-    virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
-    virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
+    virtual bool insertRows( int , int, const QModelIndex& = QModelIndex() );
+    virtual bool insertColumns( int, int, const QModelIndex& = QModelIndex() );
+    virtual bool removeRows( int, int, const QModelIndex& = QModelIndex() );
+    virtual bool removeColumns( int, int, const QModelIndex& = QModelIndex() );
 
-    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged(Akonadi::Collection::Id, const Akonadi::CollectionStatistics &) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged( Akonadi::Collection::Id,
+                                                                         const Akonadi::CollectionStatistics& ) )
 
     Q_PRIVATE_SLOT( d_func(), void startFirstListJob() )
-  //   Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
+    // Q_PRIVATE_SLOT( d_func(), void slotModelReset() )
 
     // TODO: Can I merge these into one jobResult slot?
     Q_PRIVATE_SLOT( d_func(), void fetchJobDone( KJob *job ) )
@@ -295,32 +297,25 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     Q_PRIVATE_SLOT( d_func(), void moveJobDone( KJob *job ) )
     Q_PRIVATE_SLOT( d_func(), void updateJobDone( KJob *job ) )
 
-    Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List list ) )
-    Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List list ) )
+    Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List ) )
+    Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List ) )
 
-    Q_PRIVATE_SLOT( d_func(), void monitoredMimeTypeChanged(const QString &, bool) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredMimeTypeChanged( const QString&, bool ) )
 
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionRemoved( const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionChanged( const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection&) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&,
+                                                             const Akonadi::Collection&) )
 
     Q_PRIVATE_SLOT( d_func(), void monitoredItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) )
     Q_PRIVATE_SLOT( d_func(), void monitoredItemRemoved( const Akonadi::Item& ) )
     Q_PRIVATE_SLOT( d_func(), void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
-    Q_PRIVATE_SLOT( d_func(), void monitoredItemMoved( const Akonadi::Item&,
-                    const Akonadi::Collection&, const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemMoved( const Akonadi::Item&, const Akonadi::Collection&,
+                                                       const Akonadi::Collection& ) )
 
-    Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
-                    const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
-                    const Akonadi::Collection& ) )
-
-    Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&,
-                    const Akonadi::Collection& ) )
-    Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&,
-                    const Akonadi::Collection& ) )
-
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemLinked( const Akonadi::Item&, const Akonadi::Collection& ) )
+    Q_PRIVATE_SLOT( d_func(), void monitoredItemUnlinked( const Akonadi::Item&, const Akonadi::Collection& ) )
     //@endcond
 };
 

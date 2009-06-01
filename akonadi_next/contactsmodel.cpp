@@ -55,7 +55,7 @@ ContactsModel::~ContactsModel()
    delete d_ptr;
 }
 
-QVariant ContactsModel::getData(Item item, int column, int role) const
+QVariant ContactsModel::getData(const Item &item, int column, int role) const
 {
   if ( item.mimeType() == "text/directory" )
   {
@@ -86,7 +86,7 @@ QVariant ContactsModel::getData(Item item, int column, int role) const
   return EntityTreeModel::getData(item, column, role);
 }
 
-QVariant ContactsModel::getData(Collection collection, int column, int role) const
+QVariant ContactsModel::getData(const Collection &collection, int column, int role) const
 {
   if (role == Qt::DisplayRole)
   {
