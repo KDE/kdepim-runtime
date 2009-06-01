@@ -75,6 +75,7 @@ private Q_SLOTS:
   void onConnectError( int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
+  void onMailBoxesReceiveDone( KJob *job );
   void onGetAclDone( KJob *job );
   void onRightsReceived( KJob *job );
   void onQuotasReceived( KJob *job );

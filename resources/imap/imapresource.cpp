@@ -363,12 +363,14 @@ void ImapResource::retrieveCollections()
   policy.setSyncOnDemand( true );
   root.setCachePolicy( policy );
 
+  setCollectionStreamingEnabled( true );
   collectionsRetrievedIncremental( Collection::List() << root, Collection::List() );
 
   KIMAP::ListJob *listJob = new KIMAP::ListJob( m_account->session() );
   listJob->setIncludeUnsubscribed( !m_account->isSubscriptionEnabled() );
   connect( listJob, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
            this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
+  connect( listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)) );
   listJob->start();
 }
 
@@ -436,6 +438,12 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
   sender()->setProperty("reportedPaths", reportedPaths);
   collectionsRetrievedIncremental( collections, Collection::List() );
+}
+
+void ImapResource::onMailBoxesReceiveDone(KJob* job)
+{
+  // TODO error handling
+  collectionsRetrievalDone();
 }
 
 // ----------------------------------------------------------------------------------
