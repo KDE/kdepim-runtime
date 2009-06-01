@@ -16,6 +16,7 @@ Name[sv]=Serialisering av mikrowebbjournal
 Name[tr]=Mini Günlük Sıralandırıcı
 Name[uk]=Серіалізатор мікроблогів
 Name[x-test]=xxMicroblog Serializerxx
+Name[zh_CN]=微博客序列转换器
 Name[zh_TW]=Microblog 序列器
 Comment=An Akonadi serializer plugin for Microblog
 Comment[da]=Et Akonadi-plugin til serieordning af microblogs
@@ -35,6 +36,7 @@ Comment[sv]=Ett insticksprogram till Akonadi för serialisering av mikrowebbjour
 Comment[tr]=Mini günlükler için bir Akonadi sıralandırıcı
 Comment[uk]=Додаток серіалізації Akonadi для об'єктів мікроблогів
 Comment[x-test]=xxAn Akonadi serializer plugin for Microblogxx
+Comment[zh_CN]=对微博客信息进行转换的 Akonadi 序列器
 Comment[zh_TW]=Microblog 的 Akonadi 序列器外掛程式
 
 [Plugin]

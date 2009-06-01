@@ -74,6 +74,7 @@ Comment[sv]=Laddar data från en anteckningsfil
 Comment[tr]=Bir not dosyasından veri yükler
 Comment[uk]=Завантажує дані з файла нотаток
 Comment[x-test]=xxLoads data from a notes filexx
+Comment[zh_CN]=从便笺文件载入数据
 Comment[zh_TW]=從 notes 檔載入資料
 Type=AkonadiResource
 Exec=akonadi_ical_resource

@@ -18,6 +18,7 @@ Name[sv]=Lokala bokmärken
 Name[tr]=Yerel Yer İmleri
 Name[uk]=Локальні закладки
 Name[x-test]=xxLocal Bookmarksxx
+Name[zh_CN]=本地书签
 Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
 Comment[ca]=Carrega dades des d'un fitxer de punts local
