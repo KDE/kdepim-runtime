@@ -112,11 +112,19 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
      */
     void clearFilters();
 
-    void setRootIndex(const QModelIndex &srcIndex);
+    /**
+     * Sets the @p index that shall be used as the root for this model.
+     */
+    void setRootIndex( const QModelIndex &index );
 
-    void setHeaderSet(int set);
+    /**
+     * Sets the header @p set of the filter model.
+     *
+     * \sa EntityTreeModel::HeaderGroup
+     */
+    void setHeaderSet( int set );
 
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
     // QAbstractProxyModel does not proxy all methods...
     virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
@@ -124,7 +132,7 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
     virtual QStringList mimeTypes() const;
 
   protected:
-    virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent ) const;
 
   private:
     //@cond PRIVATE

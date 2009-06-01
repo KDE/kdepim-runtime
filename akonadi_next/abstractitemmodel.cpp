@@ -20,21 +20,21 @@
 #include "abstractitemmodel.h"
 #include "abstractitemmodel_p.h"
 
-AbstractItemModel::AbstractItemModel(QObject *parent)
-    : QAbstractItemModel(parent), d_ptr(new AbstractItemModelPrivate(this))
+AbstractItemModel::AbstractItemModel( QObject *parent )
+  : QAbstractItemModel( parent ),
+    d_ptr( new AbstractItemModelPrivate( this ) )
 {
-
 }
 
 AbstractItemModel::~AbstractItemModel()
 {
-
 }
 
-void AbstractItemModel::beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationStart)
+void AbstractItemModel::beginMoveRows( const QModelIndex &srcParent, int start, int end,
+                                       const QModelIndex &destinationParent, int destinationStart )
 {
   Q_D(AbstractItemModel);
-  return d->beginMoveRows(srcParent, start, end, destinationParent, destinationStart);
+  return d->beginMoveRows( srcParent, start, end, destinationParent, destinationStart );
 }
 
 void AbstractItemModel::endMoveRows()
@@ -43,10 +43,11 @@ void AbstractItemModel::endMoveRows()
   d->endMoveRows();
 }
 
-void AbstractItemModel::beginMoveColumns(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationStart)
+void AbstractItemModel::beginMoveColumns( const QModelIndex &srcParent, int start, int end,
+                                          const QModelIndex &destinationParent, int destinationStart )
 {
   Q_D(AbstractItemModel);
-  return d->beginMoveColumns(srcParent, start, end, destinationParent, destinationStart);
+  return d->beginMoveColumns( srcParent, start, end, destinationParent, destinationStart );
 }
 
 void AbstractItemModel::endMoveColumns()
@@ -67,10 +68,10 @@ void AbstractItemModel::endResetModel()
   d->endResetModel();
 }
 
-void AbstractItemModel::beginChangeChildOrder(const QModelIndex &index)
+void AbstractItemModel::beginChangeChildOrder( const QModelIndex &index )
 {
   Q_D(AbstractItemModel);
-  d->beginChangeChildOrder(index);
+  d->beginChangeChildOrder( index );
 }
 
 void AbstractItemModel::endChangeChildOrder()

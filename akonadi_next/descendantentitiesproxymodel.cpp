@@ -38,9 +38,9 @@ class DescendantEntitiesProxyModelPrivate
 
   DescendantEntitiesProxyModelPrivate(DescendantEntitiesProxyModel *model)
     : q_ptr(model),
-      m_displayAncestorData(false)
+      m_displayAncestorData( false ),
+      m_ancestorSeparator( QLatin1String( " / " ) )
     {
-
     }
 
   Q_DECLARE_PUBLIC( DescendantEntitiesProxyModel )
@@ -681,11 +681,10 @@ int DescendantEntitiesProxyModel::columnCount(const QModelIndex &index) const
   return sourceModel()->columnCount();
 }
 
-void DescendantEntitiesProxyModel::setDisplayAncestorData(bool display, const QString &sep)
+void DescendantEntitiesProxyModel::setDisplayAncestorData( bool display )
 {
   Q_D(DescendantEntitiesProxyModel);
   d->m_displayAncestorData = display;
-  d->m_ancestorSeparator = sep;
 }
 
 bool DescendantEntitiesProxyModel::displayAncestorData() const
@@ -694,11 +693,15 @@ bool DescendantEntitiesProxyModel::displayAncestorData() const
   return d->m_displayAncestorData;
 }
 
+void DescendantEntitiesProxyModel::setAncestorSeparator( const QString &separator )
+{
+  Q_D(DescendantEntitiesProxyModel);
+  d->m_ancestorSeparator = separator;
+}
+
 QString DescendantEntitiesProxyModel::ancestorSeparator() const
 {
   Q_D(const DescendantEntitiesProxyModel);
-  if (!d->m_displayAncestorData)
-    return QString();
   return d->m_ancestorSeparator;
 }
 

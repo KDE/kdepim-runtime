@@ -21,8 +21,6 @@
 #ifndef DESCENDANTENTITIESPROXYMODEL_H
 #define DESCENDANTENTITIESPROXYMODEL_H
 
-//#include <QAbstractProxyModel>
-
 #include "abstractproxymodel.h"
 #include "akonadi_next_export.h"
 
@@ -33,78 +31,97 @@ class DescendantEntitiesProxyModelPrivate;
 class AKONADI_NEXT_EXPORT DescendantEntitiesProxyModel : public AbstractProxyModel
 {
   Q_OBJECT
-public:
 
-    DescendantEntitiesProxyModel( QObject *parent = 0 );
-
-    virtual ~DescendantEntitiesProxyModel();
-
-
-    virtual void setSourceModel ( QAbstractItemModel * sourceModel );
+  public:
 
     /**
-    Sets the root index to @p index. This is the root of the proxy model.
-    @param index The root index in the *source* model which will be shown in this model.
-    if the index is invalid, the model is empty.
+     * Creates a new descendant entities proxy model.
+     *
+     * @param parent The parent object.
+     */
+    DescendantEntitiesProxyModel( QObject *parent = 0 );
 
-    You must set the model before setting the root index.
-    */
+    /**
+     * Destroys the descendant entities proxy model.
+     */
+    virtual ~DescendantEntitiesProxyModel();
+
+    /**
+     * Sets the source @p model of the proxy.
+     */
+    virtual void setSourceModel( QAbstractItemModel *model );
+
+    /**
+     * Sets the root index to @p index. This is the root of the proxy model.
+     *
+     * @param index The root index in the *source* model which will be shown in this model.
+     *              If the index is invalid, the model is empty.
+     *
+     * \note You must set the model before setting the root index.
+     */
     void setRootIndex( const QModelIndex &index);
 
     /**
-    Set whether to show ancestor data in the model. If @p display is true, then
-    a source model which is displayed as
-
-    @code
-    -> "Item 0-0" (this is row-depth)
-    -> -> "Item 0-1"
-    -> -> "Item 1-1"
-    -> -> -> "Item 0-2"
-    -> -> -> "Item 1-2"
-    -> "Item 1-0"
-    @endcode
-
-    will be displayed as
-
-    @code
-    -> *Item 0-0"
-    -> "Item 0-0 / Item 0-1"
-    -> "Item 0-0 / Item 1-1"
-    -> "Item 0-0 / Item 1-1 / Item 0-2"
-    -> "Item 0-0 / Item 1-1 / Item 1-2"
-    -> "Item 1-0"
-    @endcode
-
-    If @p display is false, the proxy will show
-
-    @code
-    -> *Item 0-0"
-    -> "Item 0-1"
-    -> "Item 1-1"
-    -> "Item 0-2"
-    -> "Item 1-2"
-    -> "Item 1-0"
-    @endcode
-
-    Default is false.
-
-    */
-    void setDisplayAncestorData(bool display, const QString &sep = QString(" / "));
+     * Set whether to show ancestor data in the model. If @p display is true, then
+     * a source model which is displayed as
+     *
+     * @code
+     *  -> "Item 0-0" (this is row-depth)
+     *  -> -> "Item 0-1"
+     *  -> -> "Item 1-1"
+     *  -> -> -> "Item 0-2"
+     *  -> -> -> "Item 1-2"
+     *  -> "Item 1-0"
+     * @endcode
+     *
+     * will be displayed as
+     *
+     * @code
+     *  -> *Item 0-0"
+     *  -> "Item 0-0 / Item 0-1"
+     *  -> "Item 0-0 / Item 1-1"
+     *  -> "Item 0-0 / Item 1-1 / Item 0-2"
+     *  -> "Item 0-0 / Item 1-1 / Item 1-2"
+     *  -> "Item 1-0"
+     * @endcode
+     *
+     * If @p display is false, the proxy will show
+     *
+     * @code
+     *  -> *Item 0-0"
+     *  -> "Item 0-1"
+     *  -> "Item 1-1"
+     *  -> "Item 0-2"
+     *  -> "Item 1-2"
+     *  -> "Item 1-0"
+     * @endcode
+     *
+     * Default is false.
+     */
+    void setDisplayAncestorData( bool display );
 
     /**
-    Whether ancestor data will be displayed.
-    */
+     * Whether ancestor data will be displayed.
+     */
     bool displayAncestorData() const;
 
     /**
-    Separator used between data of ancestors.
-    Returns a null QString() if displayAncestorData is false.
-    */
+     * Sets the ancestor @p separator used between data of ancestors.
+     */
+    void setAncestorSeparator( const QString &separator );
+
+    /**
+     * Separator used between data of ancestors.
+     */
     QString ancestorSeparator() const;
+
+    /**
+     * Returns the number of descendant entries for the given model @p index.
+     */
+    int descendantCount( const QModelIndex &index ) const;
 
     QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
     QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
-    int descendantCount(const QModelIndex &index);
 
     virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
     QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;

@@ -23,64 +23,81 @@
 
 // WARNING: Changes to this class will probably also have to be made to AbstractItemModel
 
-#include <QAbstractProxyModel>
+#include <QtGui/QAbstractProxyModel>
 
 #include "akonadi_next_export.h"
 
 class AbstractProxyModelPrivate;
 
 /**
-This class should be subclassed to create concrete proxy models which are aware of
-move operations reported by an AbstractEntityModel.
-*/
+ * This class should be subclassed to create concrete proxy models which are aware of
+ * move operations reported by an AbstractEntityModel.
+ */
 class AKONADI_NEXT_EXPORT AbstractProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
-public:
 
-  AbstractProxyModel( QObject *parent = 0 );
+  public:
+    /**
+     * Creates a new abstract proxy model.
+     *
+     * @param parent The parent object.
+     */
+    AbstractProxyModel( QObject *parent = 0 );
 
-  virtual ~AbstractProxyModel();
+    /**
+     * Destroys the abstract proxy model.
+     */
+    virtual ~AbstractProxyModel();
 
-  void setHeaderSet(int set);
-  int headerSet() const;
+    /**
+     * Sets the header @p set that shall be used by the proxy.
+     *
+     * \s EntityTreeModel::HeaderGroup
+     */
+    void setHeaderSet( int set );
 
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    /**
+     * Returns the header set used by the proxy.
+     */
+    int headerSet() const;
 
-  // QAbstractProxyModel does not proxy all methods...
-  virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
-  virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
-  virtual QStringList mimeTypes() const;
+    virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-protected:
-  void beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationRow);
-  void endMoveRows();
+    // QAbstractProxyModel does not proxy all methods...
+    virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
+    virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
+    virtual QStringList mimeTypes() const;
 
-  void beginChangeChildOrder(const QModelIndex &index);
-  void endChangeChildOrder();
+  protected:
+    void beginMoveRows( const QModelIndex &srcParent, int start, int end,
+                        const QModelIndex &destinationParent, int destinationRow);
+    void endMoveRows();
 
-  void beginResetModel();
-  void endResetModel();
+    void beginChangeChildOrder( const QModelIndex &index );
+    void endChangeChildOrder();
 
-signals:
+    void beginResetModel();
+    void endResetModel();
+
+  signals:
 #if !defined(Q_MOC_RUN) && !defined(qdoc)
-private: // can only be emitted by AbstractItemModel
+  private: // can only be emitted by AbstractItemModel
 #endif
 
-  void rowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
-  void rowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
+    void rowsAboutToBeMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row );
+    void rowsMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row );
 
-  void columnsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column);
-  void columnsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column);
+    void columnsAboutToBeMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column );
+    void columnsMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column );
 
-  void childOrderAboutToBeChanged(const QModelIndex &index);
-  void childOrderChanged(const QModelIndex &index);
+    void childOrderAboutToBeChanged( const QModelIndex &index );
+    void childOrderChanged( const QModelIndex &index );
 
-private:
-  Q_DECLARE_PRIVATE(AbstractProxyModel)
+  private:
+    Q_DECLARE_PRIVATE( AbstractProxyModel )
 
-  AbstractProxyModelPrivate *d_ptr;
-
+    AbstractProxyModelPrivate *d_ptr;
 };
 
 #endif

@@ -22,37 +22,36 @@
 
 #include "entitytreemodel.h"
 
-#include <KDebug>
+#include <KDE/KDebug>
 
 class AbstractProxyModelPrivate : public AbstractItemModelPrivate
 {
-public:
-  AbstractProxyModelPrivate(QAbstractProxyModel *proxy)
-    : AbstractItemModelPrivate(proxy),
-      headerDataSet(0)
-  {
+  public:
+    AbstractProxyModelPrivate( QAbstractProxyModel *proxy )
+      : AbstractItemModelPrivate( proxy ),
+        mHeaderDataSet( 0 )
+    {
 
-  }
+    }
 
-  int headerDataSet;
-
+    int mHeaderDataSet;
 };
 
-AbstractProxyModel::AbstractProxyModel(QObject *parent)
-  : QAbstractProxyModel(parent), d_ptr(new AbstractProxyModelPrivate(this))
+AbstractProxyModel::AbstractProxyModel( QObject *parent )
+  : QAbstractProxyModel( parent ),
+    d_ptr( new AbstractProxyModelPrivate( this ) )
 {
-
 }
 
 AbstractProxyModel::~AbstractProxyModel()
 {
-
 }
 
-void AbstractProxyModel::beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationRow)
+void AbstractProxyModel::beginMoveRows( const QModelIndex &srcParent, int start, int end,
+                                        const QModelIndex &destinationParent, int destinationRow )
 {
   Q_D(AbstractProxyModel);
-  return d->beginMoveRows(srcParent, start, end, destinationParent, destinationRow);
+  return d->beginMoveRows( srcParent, start, end, destinationParent, destinationRow );
 }
 
 void AbstractProxyModel::endMoveRows()
@@ -74,10 +73,10 @@ void AbstractProxyModel::endResetModel()
   d->endResetModel();
 }
 
-void AbstractProxyModel::beginChangeChildOrder(const QModelIndex &index)
+void AbstractProxyModel::beginChangeChildOrder( const QModelIndex &index )
 {
   Q_D(AbstractProxyModel);
-  d->beginChangeChildOrder(index);
+  d->beginChangeChildOrder( index );
 }
 
 void AbstractProxyModel::endChangeChildOrder()
@@ -86,43 +85,47 @@ void AbstractProxyModel::endChangeChildOrder()
   d->endChangeChildOrder();
 }
 
-void AbstractProxyModel::setHeaderSet(int set)
+void AbstractProxyModel::setHeaderSet( int set )
 {
   Q_D(AbstractProxyModel);
-  d->headerDataSet = set;
+  d->mHeaderDataSet = set;
 }
 
 int AbstractProxyModel::headerSet() const
 {
   Q_D(const AbstractProxyModel);
-  return d->headerDataSet;
+  return d->mHeaderDataSet;
 }
 
 QVariant AbstractProxyModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
   Q_D(const AbstractProxyModel);
-  role += ( Akonadi::EntityTreeModel::TerminalUserRole * d->headerDataSet );
-  return sourceModel()->headerData(section, orientation, role);
+  role += ( Akonadi::EntityTreeModel::TerminalUserRole * d->mHeaderDataSet );
+  return sourceModel()->headerData( section, orientation, role );
 }
 
-bool AbstractProxyModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
+bool AbstractProxyModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column,
+                                       const QModelIndex & parent )
 {
-  Q_ASSERT(sourceModel());
-  const QModelIndex sourceParent = mapToSource(parent);
-  return sourceModel()->dropMimeData(data, action, row, column, sourceParent);
+  Q_ASSERT( sourceModel() );
+
+  const QModelIndex sourceParent = mapToSource( parent );
+  return sourceModel()->dropMimeData( data, action, row, column, sourceParent );
 }
 
 QMimeData* AbstractProxyModel::mimeData( const QModelIndexList & indexes ) const
 {
-  Q_ASSERT(sourceModel());
+  Q_ASSERT( sourceModel() );
+
   QModelIndexList sourceIndexes;
-  foreach(const QModelIndex& index, indexes)
-    sourceIndexes << mapToSource(index);
-  return sourceModel()->mimeData(sourceIndexes);
+  foreach ( const QModelIndex& index, indexes )
+    sourceIndexes << mapToSource( index );
+
+  return sourceModel()->mimeData( sourceIndexes );
 }
 
 QStringList AbstractProxyModel::mimeTypes() const
 {
-  Q_ASSERT(sourceModel());
+  Q_ASSERT( sourceModel() );
   return sourceModel()->mimeTypes();
 }

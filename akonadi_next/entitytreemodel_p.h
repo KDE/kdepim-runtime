@@ -31,14 +31,15 @@
 
 struct Node
 {
-  qint64 id;
-  qint64 parent;
+  Akonadi::Entity::Id id;
+  Akonadi::Entity::Id parent;
 
   enum Type
   {
     Item,
     Collection
   };
+
   int type;
 };
 
@@ -56,13 +57,13 @@ public:
 
 //   void collectionStatisticsChanged( Collection::Id, const Akonadi::CollectionStatistics& );
 
-  enum RetrieveDepth{
+  enum RetrieveDepth {
     Base,
     Recursive
   };
 
-  void fetchCollections( Collection col, CollectionFetchJob::Type = CollectionFetchJob::FirstLevel );
-  void fetchItems( Collection col);
+  void fetchCollections( const Collection &collection, CollectionFetchJob::Type = CollectionFetchJob::FirstLevel );
+  void fetchItems( const Collection &collection );
   void collectionsFetched( const Akonadi::Collection::List& );
 //   void resourceTopCollectionsFetched( const Akonadi::Collection::List& );
   void itemsFetched( const Akonadi::Item::List& );
@@ -70,8 +71,8 @@ public:
   void monitoredCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& );
   void monitoredCollectionRemoved( const Akonadi::Collection& );
   void monitoredCollectionChanged( const Akonadi::Collection& );
-  void monitoredCollectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics &);
-  void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection&);
+  void monitoredCollectionStatisticsChanged( Akonadi::Collection::Id, const Akonadi::CollectionStatistics& );
+  void monitoredCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection& );
   void monitoredItemAdded( const Akonadi::Item&, const Akonadi::Collection& );
   void monitoredItemRemoved( const Akonadi::Item& );
   void monitoredItemChanged( const Akonadi::Item&, const QSet<QByteArray>& );
@@ -80,18 +81,18 @@ public:
   void monitoredItemLinked( const Akonadi::Item&, const Akonadi::Collection& );
   void monitoredItemUnlinked( const Akonadi::Item&, const Akonadi::Collection& );
 
-  void monitoredMimeTypeChanged(const QString &mimeType, bool monitored);
+  void monitoredMimeTypeChanged( const QString &mimeType, bool monitored );
 
-  Collection getParentCollection( qint64 id ) const;
-  Collection::List getParentCollections( Item item ) const;
-  Collection getParentCollection( Collection col ) const;
-  qint64 childAt(Collection::Id, int position, bool *ok) const;
-  int indexOf(Collection::Id parent, Collection::Id col) const;
-  Item getItem(qint64) const;
+  Collection getParentCollection( Entity::Id id ) const;
+  Collection::List getParentCollections( const Item &item ) const;
+  Collection getParentCollection( const Collection &collection ) const;
+  Entity::Id childAt( Collection::Id, int position, bool *ok ) const;
+  int indexOf( Collection::Id parent, Collection::Id id ) const;
+  Item getItem( Item::Id id ) const;
 
-  QHash< Collection::Id, Collection > m_collections;
-  QHash< qint64, Item > m_items;
-  QHash< Collection::Id, QList< Node * > > m_childEntities;
+  QHash<Collection::Id, Collection> m_collections;
+  QHash<Entity::Id, Item> m_items;
+  QHash<Collection::Id, QList<Node*> > m_childEntities;
   QSet<Collection::Id> m_populatedCols;
 
   Monitor *m_monitor;
@@ -113,14 +114,14 @@ public:
   void updateJobDone( KJob *job );
 
   /**
-    Returns the index of the node in @p list with the id @p id. Returns -1 if not found.
-  */
-  int indexOf(QList<Node*> list, qint64 id) const;
+   * Returns the index of the node in @p list with the id @p id. Returns -1 if not found.
+   */
+  int indexOf( const QList<Node*> &list, Entity::Id id ) const;
 
   /**
-  The id of the collection which starts an item fetch job. This is part of a hack with QObject::sender
-  in itemsReceivedFromJob to correctly insert items into the model.
-  */
+   * The id of the collection which starts an item fetch job. This is part of a hack with QObject::sender
+   * in itemsReceivedFromJob to correctly insert items into the model.
+   */
   static QByteArray ItemFetchCollectionId() {
     return "ItemFetchCollectionId";
   }

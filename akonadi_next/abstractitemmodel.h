@@ -21,109 +21,121 @@
 #ifndef AKONADI_ABSTRACTITEMMODEL_H
 #define AKONADI_ABSTRACTITEMMODEL_H
 
-// WARNING: Changes to this cless will probably also have to be made to AbstractProxyModel
+// WARNING: Changes to this class will probably also have to be made to AbstractProxyModel
 
-#include <QAbstractItemModel>
+#include <QtCore/QAbstractItemModel>
 
 class AbstractItemModelPrivate;
 
 /**
-This class adds some api considered missing from QAbstractItemModel.
-
-It can notify observers explicitly about rows moving in the model, instead of emitting only layout{,AboutToBe}Changed.
-
-You must call beginMoveRows before moving items in the model, and endMoveRows
-after the operation has been completed.
-
-Additionally, it can notify about the children of an index being rearranged, also , instead of emitting only layout{,AboutToBe}Changed.
-
-This means that observers don't have to take persistent indexes of all items in the model, and can take indexes only of the children of that index.
-
-You must call beginChangeChildOrder before moving items in the model, and endChangeChildOrder after the operation has been completed.
-
-Additionally, methods are provided to emit separate signals before and after reseting the model.
-
-/sa AbstractProxyModel.
-*/
+ * @short This class adds some api considered missing from QAbstractItemModel.
+ *
+ * It can notify observers explicitly about rows moving in the model, instead of emitting only layout{,AboutToBe}Changed.
+ *
+ * You must call beginMoveRows before moving items in the model, and endMoveRows
+ * after the operation has been completed.
+ *
+ * Additionally, it can notify about the children of an index being rearranged, also , instead of emitting only
+ * layout{,AboutToBe}Changed.
+ *
+ * This means that observers don't have to take persistent indexes of all items in the model,
+ * and can take indexes only of the children of that index.
+ *
+ * You must call beginChangeChildOrder before moving items in the model, and endChangeChildOrder after
+ * the operation has been completed.
+ *
+ * Additionally, methods are provided to emit separate signals before and after reseting the model.
+ *
+ * /sa AbstractProxyModel.
+ */
 class AbstractItemModel : public QAbstractItemModel
 {
   Q_OBJECT
-public:
-  AbstractItemModel(QObject *parent = 0 );
-  virtual ~AbstractItemModel();
+
+  public:
+    /**
+     * Creates a new abstract item model.
+     *
+     * @param parent The parent object.
+     */
+    AbstractItemModel( QObject *parent = 0 );
+
+    /**
+     * Destroys the abstract item model.
+     */
+    virtual ~AbstractItemModel();
 
   protected:
+    /**
+     * In the case of moving rows within a parent, the destinationRow should be the row <b>above</b> the move operation.
+     * eg, if the model can be represented as:
+     *
+     * @code
+     *  (root)
+     *  -> Item 0-0
+     *  -> Item 1-0
+     *  -> Item 2-0
+     *  -> Item 3-0
+     *  -> Item 4-0
+     * @endcode
+     *
+     *  and Item 1-0 is to be moved to beneath Item 4-0, it should be put above the (nonexistent) item at index 5.
+     *
+     * @code
+     *  beginMoveRows(QModelIndex(), 1,1, QModelIndex(), 5);
+     * @endcode
+     *
+     *  would be called.
+     *
+     *  Moving a set of rows to a destination that overlaps the source has no effect.
+     *  eg
+     *  @code
+     *   beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 1);
+     *   beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 2);
+     *   beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 3);
+     * @endcode
+     * all have no effect.
+     */
+    void beginMoveRows( const QModelIndex &srcParent, int start, int end,
+                        const QModelIndex &destinationParent, int destinationStart);
 
-  /**
-  In the case of moving rows within a parent, the destinationRow should be the row <b>above</b> the move operation.
+    /**
+     * Called when the row move operation is complete.
+     */
+    void endMoveRows();
 
-  eg, if the model can be represented as:
-  @code
-  (root)
-  -> Item 0-0
-  -> Item 1-0
-  -> Item 2-0
-  -> Item 3-0
-  -> Item 4-0
-  @endcode
+    void beginMoveColumns( const QModelIndex &srcParent, int start, int end,
+                           const QModelIndex &destinationParent, int destinationStart );
 
-  and Item 1-0 is to be moved to beneath Item 4-0, it should be put above the (nonexistent) item at index 5.
+    /**
+     * Called when the row move operation is complete.
+     */
+    void endMoveColumns();
 
-  @code
-  beginMoveRows(QModelIndex(), 1,1, QModelIndex(), 5);
-  @endcode
+    void beginChangeChildOrder(const QModelIndex &index);
+    void endChangeChildOrder();
 
-  would be called.
+    void beginResetModel();
+    void endResetModel();
 
-  Moving a set of rows to a destination that overlaps the source has no effect.
-  eg
-  @code
-  beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 1);
-  beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 2);
-  beginMoveRows(QModelIndex(), 1, 2, QModelIndex(), 3);
-  @endcode
-  all have no effect.
-  */
-  void beginMoveRows(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationStart);
-
-  /**
-  Called when the row move operation is complete.
-  */
-  void endMoveRows();
-
-  void beginMoveColumns(const QModelIndex &srcParent, int start, int end, const QModelIndex &destinationParent, int destinationStart);
-
-  /**
-  Called when the row move operation is complete.
-  */
-  void endMoveColumns();
-
-  void beginChangeChildOrder(const QModelIndex &index);
-  void endChangeChildOrder();
-
-  void beginResetModel();
-  void endResetModel();
-
-signals:
+  signals:
 
 #if !defined(Q_MOC_RUN) && !defined(qdoc)
-private: // can only be emitted by AbstractItemModel
+  private: // can only be emitted by AbstractItemModel
 #endif
+    void rowsAboutToBeMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row );
+    void rowsMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row );
 
-  void rowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
-  void rowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
+    void columnsAboutToBeMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column );
+    void columnsMoved( const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column );
 
-  void columnsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column);
-  void columnsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int column);
+    void childOrderAboutToBeChanged( const QModelIndex &index );
+    void childOrderChanged( const QModelIndex &index );
 
-  void childOrderAboutToBeChanged(const QModelIndex &index);
-  void childOrderChanged(const QModelIndex &index);
+  private:
+    Q_DECLARE_PRIVATE( AbstractItemModel )
 
-private:
-  Q_DECLARE_PRIVATE(AbstractItemModel)
-
-  AbstractItemModelPrivate *d_ptr;
-
+    AbstractItemModelPrivate *d_ptr;
 };
 
 #endif
