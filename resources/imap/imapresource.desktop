@@ -18,6 +18,7 @@ Comment[et]=Ühendumine IMAP-serveriga. Tugineb KIMAP-ile kdepimlibs'ist.
 Comment[ga]=Breiseán a bhunaíonn ceangal le freastalaí IMAP.  Bunaithe ar KIMAP as kdepimlibs.
 Comment[gl]=Conecta cun servidor de IMAP. Baseado en KIMAP de kdepimlibs.
 Comment[km]=តភ្ជាប់​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ មាន​មូលដ្ឋាន​លើ KIMAP ពី kdepimlibs ។
+Comment[lv]=Pieslēdzas IMAP serverim. Balstīts uz KIMAP bibliotēku no kdepimlibs.
 Comment[nb]=Kobler til en IMAP-tjener. Basert på KIMAP  fra kdepimlibs.
 Comment[nds]=Koppelt na en IMAP-Server to. Buut op KIMAP ut dat kdepimlibs-Paket op.
 Comment[nn]=Koplar til ein IMAP-tenar. Basert på KIMAP frå kdepimlibs.
