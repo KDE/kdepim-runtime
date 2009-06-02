@@ -29,6 +29,7 @@
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <klockfile.h>
+#include <kmime/kmime_message.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <QtCore/QFileInfo>
@@ -185,7 +186,7 @@ int MBox::open(OpenMode openMode)
     return rc;
   }
 
-  if (!d->mMboxFile.open(QIODevice::ReadOnly)) { // messages file
+  if (!d->mMboxFile.open(QIODevice::ReadWrite)) { // messages file
     kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
              << d->mMboxFile.error();
     return d->mMboxFile.error();
@@ -197,12 +198,14 @@ int MBox::open(OpenMode openMode)
 QByteArray MBox::readEntry(quint64 offset) const
 {
   Q_ASSERT(d->mMboxFile.isOpen());
-  Q_ASSERT(d->mMboxFile.size() > offset);
+  Q_ASSERT(d->mMboxFile.size() > 0);
+  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
 
   d->mMboxFile.seek(offset);
 
   QByteArray line = d->mMboxFile.readLine();
   QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+
   if (regexp.indexIn(line) < 0)
     return QByteArray(); // The file is messed up or the index is incorrect.
 
@@ -210,7 +213,7 @@ QByteArray MBox::readEntry(quint64 offset) const
   message += line;
   line = d->mMboxFile.readLine();
 
-  while (regexp.indexIn(line) < 0) {
+  while (regexp.indexIn(line) < 0 && !d->mMboxFile.atEnd()) {
     message += line;
     line = d->mMboxFile.readLine();
   }
@@ -223,7 +226,8 @@ QByteArray MBox::readEntry(quint64 offset) const
 QByteArray MBox::readEntryHeaders(quint64 offset)
 {
   Q_ASSERT(d->mMboxFile.isOpen());
-  Q_ASSERT(d->mMboxFile.size() > offset);
+  Q_ASSERT(d->mMboxFile.size() > 0);
+  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
 
   d->mMboxFile.seek(offset);
   QByteArray headers;
@@ -248,6 +252,47 @@ void MBox::setLockType(LockType ltype)
 void MBox::setProcmailLockFile(const QString &lockFile)
 {
   d->mProcmailLockFileName = lockFile;
+}
+
+qint64 MBox::writeEntry(const QByteArray &entry)
+{
+  QByteArray msgText = escapeFrom(entry);
+
+  if (msgText.size() <= 0) {
+    kDebug() << "Message added to folder `" << d->mMboxFile.fileName()
+             << "' contains no data. Ignoring it.";
+    return -1;
+  }
+
+  int nextOffset = d->mMboxFile.size(); // Offset of the appended message
+  // Make sure the file is large enough to check for an end character. Then check
+  // if the required newlines are there.
+  if (nextOffset >= 2) {
+    d->mMboxFile.seek(nextOffset - 2);
+    char endStr[3];
+    d->mMboxFile.read(endStr, 2);
+
+    if (d->mMboxFile.pos() > 0 && endStr[0] != '\n') {
+      if ( endStr[1]!='\n' ) {
+        d->mMboxFile.write("\n\n");
+        nextOffset += 2;
+      } else {
+        d->mMboxFile.write("\n");
+        ++nextOffset;
+      }
+    }
+  }
+
+  d->mMboxFile.write(mboxMessageSeparator(entry));
+  d->mMboxFile.write(entry);
+  if (entry[entry.size() - 1] != '\n' ) {
+    d->mMboxFile.write("\n\n");
+  }
+
+  if(!d->mMboxFile.flush())
+    return -1; // TODO Some proper error handling when writing fails.
+
+  return nextOffset;
 }
 
 /// private methods
@@ -368,7 +413,64 @@ int MBox::unlock()
   return rc;
 }
 
+QByteArray MBox::mboxMessageSeparator(const QByteArray &msg)
+{
+  KMime::Message mail;
+  mail.setHead(KMime::CRLFtoLF(msg));
+  mail.parse();
+
+  QByteArray seperator = "From ";
+
+  KMime::Headers::From *from = mail.from(false);
+  if (!from || from->addresses().isEmpty())
+    seperator += "unknown@unknown.invalid";
+  else
+    seperator += from->addresses().first();
+
+  seperator += QDateTime::currentDateTime().toString(Qt::ISODate).toUtf8() + '\n';
+  return seperator;
+}
+
 #define STRDIM(x) (sizeof(x)/sizeof(*x)-1)
+
+QByteArray MBox::escapeFrom(const QByteArray &str)
+{
+  const unsigned int strLen = str.length();
+  if ( strLen <= STRDIM("From ") )
+    return str;
+
+  // worst case: \nFrom_\nFrom_\nFrom_... => grows to 7/6
+  QByteArray result(int( strLen + 5 ) / 6 * 7 + 1, '\0');
+
+  const char * s = str.data();
+  const char * const e = s + strLen - STRDIM("From ");
+  char * d = result.data();
+
+  bool onlyAnglesAfterLF = false; // dont' match ^From_
+  while ( s < e ) {
+    switch ( *s ) {
+    case '\n':
+      onlyAnglesAfterLF = true;
+      break;
+    case '>':
+      break;
+    case 'F':
+      if ( onlyAnglesAfterLF && qstrncmp( s+1, "rom ", STRDIM("rom ") ) == 0 )
+        *d++ = '>';
+      // fall through
+    default:
+      onlyAnglesAfterLF = false;
+      break;
+    }
+    *d++ = *s++;
+  }
+  while ( s < str.data() + strLen )
+    *d++ = *s++;
+
+  result.truncate( d - result.data() );
+  return result;
+}
+
 // performs (\n|^)>{n}From_ -> \1>{n-1}From_ conversion
 void MBox::unescapeFrom(char* str, size_t strLen)
 {

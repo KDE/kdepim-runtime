@@ -163,7 +163,8 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   quint64 offset = itemOffset(item.remoteId());
   const QByteArray rawMsg = mbox.readEntry(offset);
 
-  Q_ASSERT(rawMsg.size() == item.size());
+  // This doesn't work for first retrieval, when item.size() == 0.
+  //Q_ASSERT(rawMsg.size() == item.size());
 
   KMime::Message *mail = new KMime::Message();
   mail->setContent(KMime::CRLFtoLF(rawMsg));
@@ -181,9 +182,22 @@ void MboxResource::aboutToQuit()
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  Q_UNUSED(item);
-  Q_UNUSED(collection);
-  changeProcessed();
+  MBox mbox(collection.remoteId());
+  QString errMsg;
+  if (Settings::readOnly() || !mbox.isValid(errMsg)) {
+    cancelTask(errMsg);
+    return;
+  }
+  // we can only deal with mail
+  if (item.mimeType() != "message/rfc822") {
+    cancelTask(i18n("Only email messages can be added to the MBox resource."));
+    return;
+  }
+  const MessagePtr mail = item.payload<MessagePtr>();
+  const QString rid = collection.remoteId() + QDir::separator() + mbox.writeEntry(mail->encodedContent());
+  Item i( item );
+  i.setRemoteId( rid );
+  changeCommitted( i );
 }
 
 void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )

@@ -121,7 +121,15 @@ class MBOX_EXPORT MBox
      */
     void setProcmailLockFile(const QString &lockFile);
 
+    /**
+     * Appends @param entry to the mbox file. Returns the offset in the file
+     * where the added message starts or -1 if the message was not added.
+     */
+    qint64 writeEntry(const QByteArray &entry);
+
   private:
+    static QByteArray escapeFrom(const QByteArray &msg);
+
     /**
      * Locks the mbox file. Called by open(). Returns 0 on success and an errno
      * error code on failure.
@@ -131,6 +139,11 @@ class MBOX_EXPORT MBox
      *       opened ReadWrite.
      */
     int lock();
+
+    /**
+     * Generates a mbox message sperator line for given message.
+     */
+    static QByteArray mboxMessageSeparator(const QByteArray &msg);
 
     /**
      * Unlock the mbox file. Called by close() or ~MBox(). Returns 0 on success
