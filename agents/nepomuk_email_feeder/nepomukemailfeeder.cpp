@@ -54,6 +54,9 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   changeRecorder()->setMimeTypeMonitored( "message/rfc822" );
   changeRecorder()->setMimeTypeMonitored( "message/news" );
   changeRecorder()->setChangeRecordingEnabled( false );
+
+  // initialize Nepomuk
+  Nepomuk::ResourceManager::instance()->init();
 }
 
 void NepomukEMailFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)

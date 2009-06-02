@@ -72,6 +72,9 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 
   // The line below is not necessary anymore once AgentBase also exports scriptable slots
   QDBusConnection::sessionBus().registerObject( "/nepomukcontactfeeder", this, QDBusConnection::ExportScriptableSlots );
+
+  // initialize Nepomuk
+  Nepomuk::ResourceManager::instance()->init();
 }
 
 void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
