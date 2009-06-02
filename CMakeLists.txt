@@ -1,7 +1,7 @@
 project(kdepim-runtime)
 
 # where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
-set(CMAKE_MODULE_PATH ${kdepim_SOURCE_DIR}/cmake/modules)
+set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 ############### search packages used by KDE ###############
 
