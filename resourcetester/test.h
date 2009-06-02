@@ -20,10 +20,6 @@
 #ifndef TEST_H
 #define TEST_H
 
-#ifdef assert
-  #undef assert
-#endif
-
 #include <QObject>
 
 class Test : public QObject
@@ -33,7 +29,7 @@ class Test : public QObject
     static Test* instance();
 
   public slots:
-    void assert( bool value );
+    void verify( bool value );
     void verify( QObject *object, const QString &slot );
     void fail( const QString &error );
     void abort();

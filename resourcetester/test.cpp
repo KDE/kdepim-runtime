@@ -31,7 +31,7 @@ Test::Test(QObject* parent) :
 {
 }
 
-void Test::assert(bool value)
+void Test::verify(bool value)
 {
   if ( !value )
     fail( "Assertion failed." );

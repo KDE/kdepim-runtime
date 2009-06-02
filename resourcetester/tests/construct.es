@@ -8,5 +8,5 @@ i1.setMimeType( "application/foo" );
 i2.setMimeType( "application/bar" );
 
 print( i1.mimeType() + " != " + i2.mimeType() );
-Test.assert( i1.mimeType() != i2.mimeType() );
+Test.verify( i1.mimeType() != i2.mimeType() );
 
