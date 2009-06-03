@@ -22,6 +22,8 @@
 #include "test.h"
 #include "collectiontest.h"
 #include "itemtest.h"
+#include "system.h"
+#include "qemu.h"
 
 #include <akonadi/control.h>
 
@@ -87,6 +89,9 @@ int main(int argc, char *argv[])
   script->insertObject( Test::instance(), "Test" );
   script->insertObject( new CollectionTest(), "CollectionTest" );
   script->insertObject( new ItemTest(), "ItemTest" );
+  script->insertObject( new System(), "System" );
+  QEmu emu;
+  script->insertObject( &emu, "QEmu" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
   return app.exec();

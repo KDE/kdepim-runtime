@@ -19,11 +19,14 @@
 
 #include <kglobal.h>
 #include <QDir>
+#include <kstandarddirs.h>
+#include <KDebug>
 
 class GlobalPrivate
 {
   public:
     QString basePath;
+    QString vmPath;
 };
 
 K_GLOBAL_STATIC( GlobalPrivate, sInstance )
@@ -38,4 +41,22 @@ void Global::setBasePath(const QString& path)
   sInstance->basePath = path;
   if ( !path.endsWith( QDir::separator() ) )
     sInstance->basePath += QDir::separator();
+}
+
+QString Global::vmPath()
+{
+  if ( sInstance->vmPath.isEmpty() )
+    setVMPath( KStandardDirs::locateLocal( "cache", "akonadi-resourcetester/", true ) );
+  return sInstance->vmPath;
+}
+
+void Global::setVMPath(const QString& path)
+{
+  kDebug() << path;
+  sInstance->vmPath = path;
+  if ( !path.endsWith( QDir::separator() ) )
+    sInstance->vmPath += QDir::separator();
+  const QDir dir( path );
+  if ( !dir.exists() )
+    QDir::root().mkpath( path );
 }

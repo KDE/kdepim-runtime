@@ -1,6 +1,5 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2009 Igor Trindade Oliveira <igor_trindade@yahoo.com.br>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,45 +17,36 @@
     02110-1301, USA.
 */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
+#ifndef QEMU_H
+#define QEMU_H
 
-#include "wrappedobject.h"
-#include <akonadi/agentinstance.h>
+#include <QObject>
 
-#include <QHash>
-#include <QPointer>
-#include <QVariant>
+class KConfig;
+class KProcess;
 
-class Resource: public QObject, protected WrappedObject
+class QEmu : public QObject
 {
   Q_OBJECT
   public:
-    Resource( QObject *parent = 0 );
-    ~Resource();
-
-    static void destroyAll();
+    QEmu( QObject *parent = 0 );
+    ~QEmu();
 
   public slots:
-    QObject* newInstance();
-
-    void setType( const QString &type );
-    QString identifier() const;
-
-    void setOption( const QString &key, const QVariant &value );
-    void setPathOption( const QString &key, const QString &path );
-
-    bool createResource();
-    void create();
-    void destroy();
-    void write();
-    void recreate();
+    void setVMConfig( const QString &configFileName );
+    void start();
+    void stop();
+    int portOffset() const;
 
   private:
-    QString mTypeIdentifier;
-    Akonadi::AgentInstance mInstance;
-    QHash<QString, QVariant> mSettings;
-    static QList<QPointer<Resource> > mSelfs;
+    QString vmImage() const;
+    void waitForPort( int port );
+
+  private:
+    KConfig* mVMConfig;
+    KProcess* mVMProcess;
+    int mPortOffset;
+    int mMonitorPort;
 };
 
 #endif

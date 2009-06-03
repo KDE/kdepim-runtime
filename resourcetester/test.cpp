@@ -60,8 +60,7 @@ void Test::fail(const QString& error)
 
 void Test::abort()
 {
-  if ( Resource::instance() )
-    Resource::instance()->destroy();
+  Resource::destroyAll();
   exit( -1 );
 }
 

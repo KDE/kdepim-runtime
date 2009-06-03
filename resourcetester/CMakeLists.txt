@@ -47,6 +47,8 @@ set( resourcetester_SRCS
   xmloperations.cpp
   collectiontest.cpp
   itemtest.cpp
+  qemu.cpp
+  system.cpp
   wrappedobject.cpp
 )
 

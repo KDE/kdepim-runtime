@@ -24,6 +24,9 @@ namespace Global
 {
   QString basePath();
   void setBasePath( const QString &path );
+
+  QString vmPath();
+  void setVMPath( const QString &path );
 }
 
 #endif
