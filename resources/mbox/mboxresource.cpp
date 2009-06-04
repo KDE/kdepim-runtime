@@ -37,14 +37,25 @@ using namespace Akonadi;
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+static QString collectionId(const QString &remoteItemId)
+{
+  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  Q_ASSERT(remoteItemId.split(':').size() == 3);
+  return remoteItemId.split(':').first();
+}
+
 static QString mboxFile(const QString &remoteItemId)
 {
-  return remoteItemId.left(remoteItemId.lastIndexOf(QDir::separator()));
+  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  Q_ASSERT(remoteItemId.split(':').size() == 3);
+  return remoteItemId.split(':').at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
-  return remoteItemId.split(QDir::separator()).last().toULongLong();
+  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  Q_ASSERT(remoteItemId.split(':').size() == 3);
+  return remoteItemId.split(':').last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
@@ -125,7 +136,8 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
 
   Item::List items;
   int offset = 0;
-  QString colId = col.remoteId();
+  QString colId = QString::number(col.id());
+  QString colRid = col.remoteId();
   foreach (const MsgInfo &entry, entryList) {
     // TODO: Use cache policy to see what actualy has to been set as payload.
     //       Currently most views need a minimal amount of information so the
@@ -135,7 +147,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     mail->parse();
 
     Item item;
-    item.setRemoteId(colId + QDir::separator() + QString::number(offset));
+    item.setRemoteId(colId + ':' + colRid + ':' + QString::number(offset));
     item.setMimeType("message/rfc822");
     item.setSize(entry.second);
     item.setPayload(MessagePtr(mail));
@@ -194,7 +206,8 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     return;
   }
   const MessagePtr mail = item.payload<MessagePtr>();
-  const QString rid = collection.remoteId() + QDir::separator() + mbox.writeEntry(mail->encodedContent());
+  const QString rid = collection.id() + ':' + collection.remoteId() + ':'
+                      + QString::number(mbox.writeEntry(mail->encodedContent()));
   Item i( item );
   i.setRemoteId( rid );
   changeCommitted( i );
