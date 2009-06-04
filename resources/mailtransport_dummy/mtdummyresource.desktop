@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Dummy MailTransport Resource
+Comment=Dummy Resource implementing mail transport interface
+Type=AkonadiResource
+Exec=akonadi_mailtransport_dummy_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource,MailTransport
+X-Akonadi-Identifier=akonadi_mailtransport_dummy_resource
