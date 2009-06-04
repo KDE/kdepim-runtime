@@ -33,6 +33,7 @@
 
 #include <mailtransport/transport.h>
 #include <mailtransport/transportjob.h>
+#include <mailtransport/akonadijob.h> // TODO really stinks that it needs special treatment
 #include <mailtransport/transportmanager.h>
 
 #include <akonadi/kmime/messageparts.h>
@@ -80,30 +81,40 @@ void SendJob::Private::doTransport()
 {
   kDebug() << "Transporting message.";
 
-  // get message from payload
-  Q_ASSERT( item.hasPayload<Message::Ptr>() );
-  const Message::Ptr message = item.payload<Message::Ptr>();
-  const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
-  kDebug() << "msg:" << cmsg;
-  Q_ASSERT( !cmsg.isEmpty() );
-
   // get transport and addresses from attributes
   TransportAttribute *tA = item.attribute<TransportAttribute>();
   Q_ASSERT( tA );
-  AddressAttribute *addrA = item.attribute<AddressAttribute>();
-  Q_ASSERT( addrA );
   TransportJob *job = TransportManager::self()->createTransportJob( tA->transportId() );
   if( !job ) {
     storeResult( false, i18n( "Could not initiate message transport. Possibly invalid transport." ) );
     return;
   }
-  job->setData( cmsg );
-  job->setSender( addrA->from() );
-  job->setTo( addrA->to() );
-  job->setCc( addrA->cc() );
-  job->setBcc( addrA->bcc() );
+  AkonadiJob *ajob = dynamic_cast<AkonadiJob*>( job );
+  if( ajob ) {
+    // It's an Akonadi job.
+    ajob->setItemId( item.id() );
+    // FIXME this keeps all the attributes and flags of the MDA...
+  } else {
+    // It's a SMTP or Sendmail job.
+    // get message from payload
+    Q_ASSERT( item.hasPayload<Message::Ptr>() );
+    const Message::Ptr message = item.payload<Message::Ptr>();
+    const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
+    kDebug() << "msg:" << cmsg;
+    Q_ASSERT( !cmsg.isEmpty() );
+
+    AddressAttribute *addrA = item.attribute<AddressAttribute>();
+    Q_ASSERT( addrA );
+    job->setData( cmsg );
+    job->setSender( addrA->from() );
+    job->setTo( addrA->to() );
+    job->setCc( addrA->cc() );
+    job->setBcc( addrA->bcc() );
+  }
   connect( job, SIGNAL( result( KJob * ) ), q, SLOT( transportResult( KJob * ) ) );
   job->start(); // non-Akonadi
+
+  // TODO something about timeouts.
 }
 
 void SendJob::Private::transportResult( KJob *job )
