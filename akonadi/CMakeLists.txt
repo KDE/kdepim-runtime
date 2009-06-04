@@ -52,3 +52,4 @@ add_subdirectory(example_mail)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
 
+add_subdirectory(mailtransport_dummy_resource)
