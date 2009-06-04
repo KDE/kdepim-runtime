@@ -94,7 +94,7 @@ void MBox::close()
   d->mFileLocked = false;
 }
 
-QList<MsgInfo> MBox::entryList(const QSet<int> &deletedItems) const
+QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
 {
   Q_ASSERT(d->mMboxFile.isOpen());
 

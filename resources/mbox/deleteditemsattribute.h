@@ -33,9 +33,11 @@ class DeletedItemsAttribute : public Akonadi::Attribute
 
     ~DeletedItemsAttribute();
 
+    void addDeletedItemOffset(quint64);
+
     virtual Attribute *clone() const;
 
-    QSet<int> deletedItemOffsets() const;
+    QSet<quint64> deletedItemOffsets() const;
 
     virtual void deserialize(const QByteArray &data);
 
@@ -44,6 +46,6 @@ class DeletedItemsAttribute : public Akonadi::Attribute
     virtual QByteArray type() const;
 
   private:
-    QSet<int> mDeletedItemOffsets;
+    QSet<quint64> mDeletedItemOffsets;
 };
 

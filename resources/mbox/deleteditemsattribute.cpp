@@ -36,12 +36,17 @@ DeletedItemsAttribute::~DeletedItemsAttribute()
 {
 }
 
+void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
+{
+  mDeletedItemOffsets.insert( offset );
+}
+
 Akonadi::Attribute *DeletedItemsAttribute::clone() const
 {
   return new DeletedItemsAttribute(*this);
 }
 
-QSet<int> DeletedItemsAttribute::deletedItemOffsets() const
+QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
 {
   return mDeletedItemOffsets;
 }
@@ -52,7 +57,7 @@ void DeletedItemsAttribute::deserialize(const QByteArray &data)
   mDeletedItemOffsets.clear();
 
   foreach(const QByteArray& offset, offsets) {
-    mDeletedItemOffsets.insert(offset.toInt());
+    mDeletedItemOffsets.insert(offset.toULongLong());
   }
 }
 
@@ -60,7 +65,7 @@ QByteArray DeletedItemsAttribute::serialized() const
 {
   QByteArray serialized;
 
-  foreach(int offset, mDeletedItemOffsets) {
+  foreach(quint64 offset, mDeletedItemOffsets) {
     serialized += QByteArray::number(offset);
     serialized += ',';
   }
@@ -72,5 +77,5 @@ QByteArray DeletedItemsAttribute::serialized() const
 
 QByteArray DeletedItemsAttribute::type() const
 {
-  return "deleted mbox items";
+  return "DeletedMboxItems";
 }

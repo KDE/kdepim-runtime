@@ -21,6 +21,8 @@
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/changerecorder.h>
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <boost/shared_ptr.hpp>
 #include <kmime/kmime_message.h>
@@ -37,11 +39,11 @@ using namespace Akonadi;
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
-static QString collectionId(const QString &remoteItemId)
+static Entity::Id collectionId(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
   Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').first();
+  return remoteItemId.split(':').first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
@@ -222,7 +224,31 @@ void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
 void MboxResource::itemRemoved( const Akonadi::Item &item )
 {
-  Q_UNUSED(item);
+  Collection mboxCollection( collectionId( item.remoteId() ) );
+  CollectionFetchJob *fetchJob =
+    new CollectionFetchJob( Collection( mboxCollection ), CollectionFetchJob::Base );
+
+  if ( !fetchJob->exec() ) {
+    error( fetchJob->errorString() );
+    return;
+  }
+
+  DeletedItemsAttribute *attr;
+  if ( mboxCollection.hasAttribute<DeletedItemsAttribute>() ) {
+    attr = mboxCollection.attribute<DeletedItemsAttribute>();
+  } else { // No deleted items (yet)
+    attr = new DeletedItemsAttribute();
+    mboxCollection.addAttribute( attr );
+  }
+
+  attr->addDeletedItemOffset( itemOffset(item.remoteId() ) );
+
+  CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
+   if ( !modifyJob->exec() ) {
+    error( modifyJob->errorString() );
+    return;
+  }
+
   changeProcessed();
 }
 

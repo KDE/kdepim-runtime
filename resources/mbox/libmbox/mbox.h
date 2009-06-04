@@ -66,7 +66,7 @@ class MBOX_EXPORT MBox
      *
      * Note: One <em>must</em> call open() before calling this method.
      */
-    QList<MsgInfo> entryList(const QSet<int> &deletedItems = QSet<int>()) const;
+    QList<MsgInfo> entryList(const QSet<quint64> &deletedItems = QSet<quint64>()) const;
 
     /**
      * Checks if the file exists and if it can be opened for read/write. Also
