@@ -1,7 +1,0 @@
-File=outboxinterface.kcfg
-ClassName=Settings
-NameSpace=OutboxInterface
-Singleton=true
-ItemAccessors=true
-Mutators=true
-SetUserTextx=true
