@@ -31,7 +31,7 @@ Comment[zh_CN]=监控群件文件夹的代理资源。
 Comment[zh_TW]=監控群組資料夾的 Proxy 資源。
 Type=AkonadiResource
 Exec=akonadi_kolabproxy_resource
-Icon=text-directory
+Icon=kolab
 
 X-Akonadi-MimeTypes=text/directory
 X-Akonadi-Capabilities=Resource
