@@ -261,7 +261,7 @@ bool XmlOperations::compareCollection(const Collection& col, const Collection& r
        !compareValue( col, refCol, &Collection::name, Name ) )
     return false;
 
-  if ( !compareAttributes( col, refCol ) )
+  if ( (mCollectionFields & Attributes) && !compareAttributes( col, refCol ) )
     return false;
 
   // compare child items

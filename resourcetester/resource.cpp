@@ -146,4 +146,12 @@ QObject* Resource::newInstance()
   return createNewInstance<Resource>( this );
 }
 
+QObject* Resource::newInstance(const QString& type)
+{
+  Resource* r = qobject_cast<Resource*>( createNewInstance<Resource>( this ) );
+  Q_ASSERT( r );
+  r->setType( type );
+  return r;
+}
+
 #include "resource.moc"

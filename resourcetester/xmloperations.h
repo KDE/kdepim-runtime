@@ -48,7 +48,8 @@ class XmlOperations : public QObject
       None = 0,
       RemoteId = 1,
       Name = 2,
-      ContentMimeType = 4
+      ContentMimeType = 4,
+      Attributes = 8
     };
 
     enum ItemField {

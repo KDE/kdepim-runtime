@@ -35,10 +35,9 @@ class Resource: public QObject, protected WrappedObject
     Resource( QObject *parent );
     ~Resource();
 
-    static void destroyAll();
-
   public slots:
     QObject* newInstance();
+    QObject* newInstance( const QString &type );
 
     void setType( const QString &type );
     QString identifier() const;
