@@ -19,12 +19,14 @@
 */
 
 #include "settings.h"
-
+#include "settingsadaptor.h"
 
 #include <kwallet.h>
 using KWallet::Wallet;
 
 #include <kglobal.h>
+
+#include <QDBusConnection>
 
 class SettingsHelper
 {
@@ -52,6 +54,9 @@ Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 {
     Q_ASSERT( !s_globalSettings->q );
     s_globalSettings->q = this;
+
+    new SettingsAdaptor( this );
+    QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
 }
 
 void Settings::setWinId( WId winId )
@@ -94,3 +99,4 @@ void Settings::setPassword( const QString & password )
     }
 }
 
+#include "settings.moc"

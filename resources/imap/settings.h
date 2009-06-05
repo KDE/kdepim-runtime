@@ -25,14 +25,17 @@
 
 class Settings : public SettingsBase
 {
+  Q_OBJECT
+  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Wallet" )
 public:
     Settings( WId = 0 );
     static Settings *self();
-
-    QString password() const;
-    void setPassword( const QString &password );
     bool passwordPossible() const;
     void setWinId( WId );
+
+public slots:
+    Q_SCRIPTABLE QString password() const;
+    Q_SCRIPTABLE void setPassword( const QString &password );
 
 private:
     WId m_winId;

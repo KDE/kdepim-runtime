@@ -22,7 +22,7 @@
 #include "imapresource.h"
 #include <qglobal.h>
 #include "setupserver.h"
-#include "settingsadaptor.h"
+#include "settings.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 #include "noselectattribute.h"
@@ -99,10 +99,6 @@ ImapResource::ImapResource( const QString &id )
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
-
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                                                Settings::self(), QDBusConnection::ExportAdaptors );
 
   startConnect();
 }
