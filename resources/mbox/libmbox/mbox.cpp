@@ -101,12 +101,13 @@ QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
   QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
   QByteArray line;
   quint64 offs = 0; // The offset of the next message to read.
+  bool previousLineIsEmpty;
 
   QList<MsgInfo> result;
 
   while (!d->mMboxFile.atEnd()) {
     quint64 pos = d->mMboxFile.pos();
-
+    previousLineIsEmpty = line.isEmpty();
     line = d->mMboxFile.readLine();
 
     if (regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd()) {
@@ -117,11 +118,15 @@ QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
         // than we matched the separator of the first mail in the file.
         MsgInfo info;
         info.first = offs;
-        info.second = msgSize;
+
+        // The actual mail message size starts just before the seperator. If
+        // there're two new line characters we assume that one of them was added
+        // with the seperator.
+        info.second = previousLineIsEmpty ? (msgSize - 2) : (msgSize - 1);
 
         result << info;
-        offs += msgSize; // Mark the beginning of the next message.
       }
+      offs += msgSize; // Mark the beginning of the next message.
     }
   }
 

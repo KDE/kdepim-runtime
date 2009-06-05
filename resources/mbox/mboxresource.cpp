@@ -137,7 +137,6 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   }
 
   Item::List items;
-  int offset = 0;
   QString colId = QString::number(col.id());
   QString colRid = col.remoteId();
   foreach (const MsgInfo &entry, entryList) {
@@ -149,13 +148,11 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     mail->parse();
 
     Item item;
-    item.setRemoteId(colId + ':' + colRid + ':' + QString::number(offset));
+    item.setRemoteId(colId + ':' + colRid + ':' + QString::number(entry.first));
     item.setMimeType("message/rfc822");
     item.setSize(entry.second);
     item.setPayload(MessagePtr(mail));
     items << item;
-
-    offset += entry.second;
   }
 
   mbox.close(); // Now we have the items, unlock and close the mbox file.
