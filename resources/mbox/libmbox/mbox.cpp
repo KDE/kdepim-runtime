@@ -210,13 +210,15 @@ QByteArray MBox::readEntry(quint64 offset) const
     return QByteArray(); // The file is messed up or the index is incorrect.
 
   QByteArray message;
-  message += line;
   line = d->mMboxFile.readLine();
-
   while (regexp.indexIn(line) < 0 && !d->mMboxFile.atEnd()) {
     message += line;
     line = d->mMboxFile.readLine();
   }
+
+  // Remove te last '\n' added by writeEntry.
+  if (message.endsWith('\n'))
+    message.chop(1);
 
   unescapeFrom(message.data(), message.size());
 
@@ -256,6 +258,8 @@ void MBox::setProcmailLockFile(const QString &lockFile)
 
 qint64 MBox::writeEntry(const QByteArray &entry)
 {
+  Q_ASSERT(d->mMboxFile.isOpen());
+
   QByteArray msgText = escapeFrom(entry);
 
   if (msgText.size() <= 0) {
@@ -264,7 +268,7 @@ qint64 MBox::writeEntry(const QByteArray &entry)
     return -1;
   }
 
-  int nextOffset = d->mMboxFile.size(); // Offset of the appended message
+  int nextOffset = d->mMboxFile.size() - 1; // Offset of the appended message
   // Make sure the file is large enough to check for an end character. Then check
   // if the required newlines are there.
   if (nextOffset >= 2) {
@@ -425,9 +429,14 @@ QByteArray MBox::mboxMessageSeparator(const QByteArray &msg)
   if (!from || from->addresses().isEmpty())
     seperator += "unknown@unknown.invalid";
   else
-    seperator += from->addresses().first();
+    seperator += from->addresses().first() + " ";
 
-  seperator += QDateTime::currentDateTime().toString(Qt::ISODate).toUtf8() + '\n';
+  KMime::Headers::Date *date = mail.date(false);
+  if (!date || date->isEmpty())
+    seperator += QDateTime::currentDateTime().toString(Qt::TextDate).toUtf8() + '\n';
+  else
+    seperator += date->as7BitString(false) + '\n';
+
   return seperator;
 }
 

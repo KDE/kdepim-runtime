@@ -207,11 +207,16 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     cancelTask(i18n("Only email messages can be added to the MBox resource."));
     return;
   }
+
+  mbox.open();
+
   const MessagePtr mail = item.payload<MessagePtr>();
-  const QString rid = collection.id() + ':' + collection.remoteId() + ':'
-                      + QString::number(mbox.writeEntry(mail->encodedContent()));
-  Item i( item );
-  i.setRemoteId( rid );
+  const QByteArray rawContent = mail->encodedContent();
+  const QString rid = QString::number(collection.id()) + ':' + collection.remoteId()
+                      + ':' + QString::number(mbox.writeEntry(rawContent));
+  Item i(item);
+  i.setRemoteId(rid);
+
   changeCommitted( i );
 }
 

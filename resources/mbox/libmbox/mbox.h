@@ -31,8 +31,8 @@ class MBOX_EXPORT MBox
 {
   public:
     enum OpenMode {
-      Normal,
-      Reload
+      Normal, ///< Does nothing when the file is already open.
+      Reload  ///< Closes the file first if it is already open.
     };
 
     enum LockType {
