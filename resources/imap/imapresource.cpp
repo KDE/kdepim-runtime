@@ -100,6 +100,7 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
 
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(startConnect()) );
   startConnect();
 }
 

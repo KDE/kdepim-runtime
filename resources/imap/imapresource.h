@@ -94,6 +94,8 @@ private Q_SLOTS:
   void onAppendMessageDone( KJob *job );
   void onStoreFlagsDone( KJob *job );
 
+  void startConnect( bool forceManualAuth = false );
+
 private:
   QString rootRemoteId() const;
   QString remoteIdForMailBox( const QString &path ) const;
@@ -104,7 +106,6 @@ private:
   void itemsClear( const Akonadi::Collection &collection );
 
   bool manualAuth( const QString& username, QString &password );
-  void startConnect( bool forceManualAuth = false );
 
   ImapAccount *m_account;
 };
