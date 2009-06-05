@@ -20,10 +20,9 @@
 #ifndef QEMU_H
 #define QEMU_H
 
-#include <QObject>
+#include <KProcess>
 
 class KConfig;
-class KProcess;
 
 class QEmu : public QObject
 {
@@ -42,11 +41,15 @@ class QEmu : public QObject
     QString vmImage() const;
     void waitForPort( int port );
 
+  private slots:
+    void vmFinished( int exitCode, QProcess::ExitStatus exitStatus );
+
   private:
     KConfig* mVMConfig;
     KProcess* mVMProcess;
     int mPortOffset;
     int mMonitorPort;
+    bool mStarted;
 };
 
 #endif

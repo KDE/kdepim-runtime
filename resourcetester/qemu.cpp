@@ -20,10 +20,10 @@
 #include "qemu.h"
 
 #include "global.h"
+#include "test.h"
 
 #include <KConfig>
 #include <KDebug>
-#include <KProcess>
 #include <KConfigGroup>
 #include <KShell>
 #include <KIO/NetAccess>
@@ -39,7 +39,8 @@ QEmu::QEmu(QObject* parent) :
   mVMConfig( 0 ),
   mVMProcess( 0 ),
   mPortOffset( 42000 ), // TODO should be somewhat dynamic to allo running multiple instances in parallel
-  mMonitorPort( -1 )
+  mMonitorPort( -1 ),
+  mStarted( false )
 {
   Q_ASSERT( parent );
 }
@@ -78,9 +79,11 @@ void QEmu::start()
   kDebug() << "Starting QEMU with arguments" << args << "...";
 
   mVMProcess = new KProcess( this );
+  connect( mVMProcess, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(vmFinished(int,QProcess::ExitStatus)) );
   mVMProcess->setProgram( "qemu", args );
   mVMProcess->start();
   mVMProcess->waitForStarted();
+  mStarted = true;
   kDebug() << "QEMU started.";
 
   if ( emuConf.readEntry( "WaitForPorts", true ) ) {
@@ -92,6 +95,7 @@ void QEmu::start()
 
 void QEmu::stop()
 {
+  mStarted = false;
   if ( !mVMProcess )
     return;
   kDebug() << "Stopping QEMU...";
@@ -173,5 +177,14 @@ int QEmu::portOffset() const
 {
   return mPortOffset;
 }
+
+void QEmu::vmFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+  Q_UNUSED( exitCode );
+  Q_UNUSED( exitStatus );
+  if ( mStarted )
+    Test::instance()->fail( "QEMU termineated!" );
+}
+
 
 #include "qemu.moc"
