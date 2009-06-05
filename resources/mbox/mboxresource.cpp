@@ -66,7 +66,7 @@ MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
-  // Register the list of deleted items as an attribe of the collection.
+  // Register the list of deleted items as an attribute of the collection.
   AttributeFactory::registerAttribute<DeletedItemsAttribute>();
 
   changeRecorder()->fetchCollection( true );
@@ -101,6 +101,7 @@ void MboxResource::retrieveCollections()
   col.setParent(Collection::root());
   col.setRemoteId(Settings::self()->file());
   col.setName(name());
+  col.addAttribute( new DeletedItemsAttribute );
 
   QStringList mimeTypes;
   mimeTypes << "message/rfc822" << Collection::mimeType();
@@ -226,24 +227,20 @@ void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
 void MboxResource::itemRemoved( const Akonadi::Item &item )
 {
-  Collection mboxCollection( collectionId( item.remoteId() ) );
   CollectionFetchJob *fetchJob =
-    new CollectionFetchJob( Collection( mboxCollection ), CollectionFetchJob::Base );
+    new CollectionFetchJob( Collection( collectionId( item.remoteId() ) )
+                          , CollectionFetchJob::Base );
 
   if ( !fetchJob->exec() ) {
     error( fetchJob->errorString() );
     return;
   }
 
-  DeletedItemsAttribute *attr;
-  if ( mboxCollection.hasAttribute<DeletedItemsAttribute>() ) {
-    attr = mboxCollection.attribute<DeletedItemsAttribute>();
-  } else { // No deleted items (yet)
-    attr = new DeletedItemsAttribute();
-    mboxCollection.addAttribute( attr );
-  }
-
-  attr->addDeletedItemOffset( itemOffset(item.remoteId() ) );
+  Q_ASSERT( fetchJob->collections().size() == 1 );
+  Collection mboxCollection = fetchJob->collections().first();
+  DeletedItemsAttribute *attr
+    = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
+  attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
 
   CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
    if ( !modifyJob->exec() ) {
