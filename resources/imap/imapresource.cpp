@@ -383,8 +383,9 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 
 void ImapResource::retrieveCollections()
 {
-  if ( !m_account->session() ) {
+  if ( !m_account || !m_account->session() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
+    cancelTask();
     return;
   }
 
