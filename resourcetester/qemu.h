@@ -29,7 +29,7 @@ class QEmu : public QObject
 {
   Q_OBJECT
   public:
-    QEmu( QObject *parent = 0 );
+    QEmu( QObject *parent );
     ~QEmu();
 
   public slots:

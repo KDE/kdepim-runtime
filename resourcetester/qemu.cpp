@@ -41,6 +41,7 @@ QEmu::QEmu(QObject* parent) :
   mPortOffset( 42000 ), // TODO should be somewhat dynamic to allo running multiple instances in parallel
   mMonitorPort( -1 )
 {
+  Q_ASSERT( parent );
 }
 
 QEmu::~QEmu()

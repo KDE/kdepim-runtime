@@ -25,8 +25,10 @@
 class GlobalPrivate
 {
   public:
+    GlobalPrivate() : parent( new QObject() ) {}
     QString basePath;
     QString vmPath;
+    QObject *parent;
 };
 
 K_GLOBAL_STATIC( GlobalPrivate, sInstance )
@@ -59,4 +61,16 @@ void Global::setVMPath(const QString& path)
   const QDir dir( path );
   if ( !dir.exists() )
     QDir::root().mkpath( path );
+}
+
+QObject* Global::parent()
+{
+  Q_ASSERT( sInstance->parent );
+  return sInstance->parent;
+}
+
+void Global::cleanup()
+{
+  delete sInstance->parent;
+  sInstance->parent = 0;
 }

@@ -83,16 +83,16 @@ int main(int argc, char *argv[])
   Script *script = new Script();
 
   script->configure(path);
-  script->insertObject( new XmlOperations(), "XmlOperations" );
-  Resource res;
-  script->insertObject( &res, "Resource" );
+  script->insertObject( new XmlOperations( Global::parent() ), "XmlOperations" );
+  script->insertObject( new Resource( Global::parent() ), "Resource" );
   script->insertObject( Test::instance(), "Test" );
-  script->insertObject( new CollectionTest(), "CollectionTest" );
-  script->insertObject( new ItemTest(), "ItemTest" );
-  script->insertObject( new System(), "System" );
-  QEmu emu;
-  script->insertObject( &emu, "QEmu" );
+  script->insertObject( new CollectionTest( Global::parent() ), "CollectionTest" );
+  script->insertObject( new ItemTest( Global::parent() ), "ItemTest" );
+  script->insertObject( new System( Global::parent() ), "System" );
+  script->insertObject( new QEmu( Global::parent() ), "QEmu" );
   QTimer::singleShot( 0, script, SLOT(start()) );
 
-  return app.exec();
+  const int result = app.exec();
+  Global::cleanup();
+  return result;
 }

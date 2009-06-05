@@ -34,12 +34,10 @@
 
 using namespace Akonadi;
 
-QList<QPointer<Resource> > Resource::mSelfs;
-
 Resource::Resource(QObject* parent) :
   QObject( parent )
 {
-  mSelfs.append( this );
+  Q_ASSERT( parent );
 }
 
 Resource::~Resource()
@@ -142,16 +140,6 @@ void Resource::recreate()
   destroy();
   create();
 }
-
-void Resource::destroyAll()
-{
-  foreach( const QPointer<Resource> res, mSelfs ) {
-    if ( res )
-      res->destroy();
-  }
-  mSelfs.clear();
-}
-
 
 QObject* Resource::newInstance()
 {

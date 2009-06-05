@@ -32,7 +32,7 @@ class Resource: public QObject, protected WrappedObject
 {
   Q_OBJECT
   public:
-    Resource( QObject *parent = 0 );
+    Resource( QObject *parent );
     ~Resource();
 
     static void destroyAll();
@@ -56,7 +56,6 @@ class Resource: public QObject, protected WrappedObject
     QString mTypeIdentifier;
     Akonadi::AgentInstance mInstance;
     QHash<QString, QVariant> mSettings;
-    static QList<QPointer<Resource> > mSelfs;
 };
 
 #endif

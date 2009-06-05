@@ -19,6 +19,7 @@
 
 #include "test.h"
 #include "resource.h"
+#include "global.h"
 
 #include <KDebug>
 #include <KMessageBox>
@@ -60,7 +61,7 @@ void Test::fail(const QString& error)
 
 void Test::abort()
 {
-  Resource::destroyAll();
+  Global::cleanup();
   exit( -1 );
 }
 
@@ -72,7 +73,7 @@ void Test::alert(const QString& msg)
 Test* Test::instance()
 {
   if ( !mSelf )
-    mSelf = new Test();
+    mSelf = new Test( Global::parent() );
   return mSelf;
 }
 

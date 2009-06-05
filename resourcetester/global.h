@@ -20,6 +20,8 @@
 
 #include <QString>
 
+class QObject;
+
 namespace Global
 {
   QString basePath();
@@ -27,6 +29,9 @@ namespace Global
 
   QString vmPath();
   void setVMPath( const QString &path );
+
+  QObject *parent();
+  void cleanup();
 }
 
 #endif
