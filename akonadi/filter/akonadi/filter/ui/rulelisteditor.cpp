@@ -26,10 +26,11 @@
 #include "rulelisteditor.h"
 
 #include <akonadi/filter/rulelist.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 
 #include "ruleeditor.h"
 #include "expandingscrollarea.h"
+#include "editorfactory.h"
 
 #include <QResizeEvent>
 #include <QLayout>
@@ -56,8 +57,6 @@ namespace Filter
 {
 namespace UI
 {
-
-
 
 class RuleListEditorItem
 {
@@ -242,8 +241,8 @@ bool RuleListEditorItemHeader::eventFilter( QObject *o, QEvent *e )
 
 
 
-RuleListEditorScrollArea::RuleListEditorScrollArea( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
-  : ExpandingScrollArea( parent ), mFactory( factory ), mEditorFactory( editorFactory )
+RuleListEditorScrollArea::RuleListEditorScrollArea( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
+  : ExpandingScrollArea( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   setFrameStyle( QFrame::NoFrame );
 
@@ -279,13 +278,37 @@ void RuleListEditorScrollArea::fillFromRuleList( Action::RuleList * ruleList )
 
   foreach( Rule * rule, *rules )
   {
-    RuleEditor * ruleEditor = new RuleEditor( mBase, mFactory, mEditorFactory );
+    RuleEditor * ruleEditor = mEditorFactory->createRuleEditor( mBase, mComponentFactory );
+    Q_ASSERT( ruleEditor );
+
     ruleEditor->fillFromRule( rule );
     //ruleEditor->setBackgroundRole( QPalette::ToolTipBase );
     addRuleEditor( ruleEditor );
   }
 
   reLayout();
+}
+
+bool RuleListEditorScrollArea::commitStateToRuleList( Action::RuleList * ruleList )
+{
+  Q_ASSERT( ruleList );
+
+  ruleList->clear();
+
+  RuleListEditorItem * item;
+
+  foreach( item, mPrivate->mItemList )
+  {
+    Rule * rule = item->mRuleEditor->commitState( ruleList );
+    if( !rule )
+    {
+      kDebug() << "Failed to create rule";
+      return false; // error already shown
+    }
+    ruleList->addRule( rule );
+  }
+
+  return true;
 }
 
 RuleListEditorItem * RuleListEditorScrollArea::findItemByRuleEditor( RuleEditor * editor )
@@ -397,7 +420,7 @@ void RuleListEditorScrollArea::setCurrentItem( RuleListEditorItem *item )
 
 void RuleListEditorScrollArea::addRuleHeaderActivated( RuleListEditorHeader *header )
 {
-  addRuleEditor( new RuleEditor( mBase, mFactory, mEditorFactory ) );
+  addRuleEditor( new RuleEditor( mBase, mComponentFactory, mEditorFactory ) );
 }
 
 void RuleListEditorScrollArea::itemHeaderActivated( RuleListEditorHeader *header )
@@ -468,10 +491,10 @@ void RuleListEditorScrollArea::itemHeaderMoveDownRequest( RuleListEditorItemHead
 
 
 
-RuleListEditor::RuleListEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
-  : ActionEditor( parent, factory, editorFactory )
+RuleListEditor::RuleListEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
+  : ActionEditor( parent, componentfactory, editorComponentFactory )
 {
-  mScrollArea = new RuleListEditorScrollArea( this, factory, editorFactory );
+  mScrollArea = new RuleListEditorScrollArea( this, componentfactory, editorComponentFactory );
 
   QGridLayout * g = new QGridLayout( this );
   g->addWidget( mScrollArea, 0, 0 );
@@ -495,9 +518,25 @@ void RuleListEditor::fillFromRuleList( Action::RuleList * ruleList )
   mScrollArea->fillFromRuleList( ruleList );  
 }
 
-Action::Base * RuleListEditor::commit()
+Action::Base * RuleListEditor::commitState( Component * parent )
 {
-  return 0;
+  Action::RuleList * ruleList = componentFactory()->createRuleList( parent );
+  Q_ASSERT( ruleList );
+
+  if( !commitStateToRuleList( ruleList ) )
+  {
+    delete ruleList;
+    return 0;
+  }
+
+  return ruleList;
+}
+
+bool RuleListEditor::commitStateToRuleList( Action::RuleList * ruleList )
+{
+  Q_ASSERT( ruleList );
+
+  return mScrollArea->commitStateToRuleList( ruleList );
 }
 
 bool RuleListEditor::autoExpand() const

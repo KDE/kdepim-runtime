@@ -28,7 +28,7 @@
 #include "editorfactory.h"
 
 #include <akonadi/filter/program.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 
 namespace Akonadi
 {
@@ -37,8 +37,8 @@ namespace Filter
 namespace UI
 {
 
-ProgramEditor::ProgramEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
-  : RuleListEditor( parent, factory, editorFactory )
+ProgramEditor::ProgramEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
+  : RuleListEditor( parent, componentfactory, editorComponentFactory )
 {
   setAutoExpand( false );
 }
@@ -50,6 +50,20 @@ ProgramEditor::~ProgramEditor()
 void ProgramEditor::fillFromProgram( Program * program )
 {
   fillFromRuleList( program );
+}
+
+Program * ProgramEditor::commit()
+{
+  Program * program = componentFactory()->createProgram();
+  Q_ASSERT( program );
+
+  if( !commitStateToRuleList( program ) )
+  {
+    delete program;
+    return 0;
+  }
+
+  return program;
 }
 
 } // namespace UI

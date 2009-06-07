@@ -25,7 +25,7 @@
 
 #include "decoder.h"
 
-#include "factory.h"
+#include "componentfactory.h"
 
 namespace Akonadi
 {
@@ -34,10 +34,10 @@ namespace Filter
 namespace IO
 {
 
-Decoder::Decoder( Factory * componentFactory )
-  : mFactory( componentFactory )
+Decoder::Decoder( ComponentFactory * componentFactory )
+  : mComponentFactory( componentFactory )
 {
-  Q_ASSERT( mFactory );
+  Q_ASSERT( mComponentFactory );
 }
 
 Decoder::~Decoder()

@@ -27,7 +27,7 @@
 #include "editorfactory.h"
 
 #include <akonadi/filter/action.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 
 #include <QLayout>
 
@@ -38,8 +38,8 @@ namespace Filter
 namespace UI
 {
 
-ActionEditor::ActionEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
-  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
+ActionEditor::ActionEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
+  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
 }

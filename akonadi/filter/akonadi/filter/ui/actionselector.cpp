@@ -26,7 +26,7 @@
 #include "actionselector.h"
 
 #include <akonadi/filter/action.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/commanddescriptor.h>
 
 #include "coolcombobox.h"
@@ -40,6 +40,7 @@
 #include <QColor>
 
 #include <KLocale>
+#include <KMessageBox>
 
 namespace Akonadi
 {
@@ -65,13 +66,13 @@ class ActionSelectorPrivate
 {
 public:
   Private::CoolComboBox * mTypeComboBox;
-  QList< ActionDescriptor * > mActionDescriptorList; // FIXME: This could be shared between all the editors with the same factory
+  QList< ActionDescriptor * > mActionDescriptorList; // FIXME: This could be shared between all the editors with the same componentfactory
   ActionEditor * mActionEditor;
   QGridLayout * mLayout;
 };
 
-ActionSelector::ActionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, RuleEditor * ruleEditor )
-  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory ), mRuleEditor( ruleEditor )
+ActionSelector::ActionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, RuleEditor * ruleEditor )
+  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory ), mRuleEditor( ruleEditor )
 {
   mPrivate = new ActionSelectorPrivate;
 
@@ -99,7 +100,7 @@ ActionSelector::ActionSelector( QWidget * parent, Factory * factory, EditorFacto
 
   d = new ActionDescriptor;
   d->mType = Action::ActionTypeStop;
-  QString defaultActionDescription = mFactory->defaultActionDescription();
+  QString defaultActionDescription = mComponentFactory->defaultActionDescription();
   if( defaultActionDescription.isEmpty() )
     d->mText = i18n( "stop processing here" );
   else
@@ -115,7 +116,7 @@ ActionSelector::ActionSelector( QWidget * parent, Factory * factory, EditorFacto
   d->mCommandDescriptor = 0;
   mPrivate->mActionDescriptorList.append( d );
 
-  const QList< const CommandDescriptor * > * props = mFactory->enumerateCommands();
+  const QList< const CommandDescriptor * > * props = mComponentFactory->enumerateCommands();
   Q_ASSERT( props );
 
   foreach( const CommandDescriptor *prop, *props )
@@ -162,8 +163,36 @@ void ActionSelector::fillFromAction( Action::Base * action )
 {
 }
 
-Action::Base * ActionSelector::commit()
+Action::Base * ActionSelector::commitState( Component * parent )
 {
+  ActionDescriptor * d = descriptorForActiveType();
+  Q_ASSERT( d );
+
+  switch( d->mType )
+  {
+    case Action::ActionTypeUnknown:
+      KMessageBox::sorry( this, i18n( "You must select a valid action type" ), i18n( "Invalid condition selection" ) );
+      mPrivate->mTypeComboBox->setOverlayColor( Qt::red );
+      return 0;
+    break;
+    case Action::ActionTypeRuleList:
+      Q_ASSERT( mPrivate->mActionEditor );
+      Q_ASSERT( mPrivate->mActionEditor->inherits("Akonadi::Filter::UI::RuleListEditor") );
+      return mPrivate->mActionEditor->commitState( parent );
+    break;
+    case Action::ActionTypeStop:
+      return mComponentFactory->createStopAction( parent );
+    break;
+    case Action::ActionTypeCommand:
+      if( mPrivate->mActionEditor )
+        return mPrivate->mActionEditor->commitState( parent );
+      return mComponentFactory->createCommandAction( parent, d->mCommandDescriptor, QList< QVariant >() );
+    break;
+    default:
+      Q_ASSERT( false ); // unhandled action type
+    break;
+  } 
+
   return 0;
 }
 
@@ -211,12 +240,12 @@ void ActionSelector::setupUIForActiveType()
     case Action::ActionTypeUnknown:
     break;
     case Action::ActionTypeRuleList:
-      mPrivate->mActionEditor = mEditorFactory->createRuleListEditor( this, mFactory );
+      mPrivate->mActionEditor = mEditorFactory->createRuleListEditor( this, mComponentFactory );
     break;
     case Action::ActionTypeStop:
     break;
     case Action::ActionTypeCommand:
-      mPrivate->mActionEditor = mEditorFactory->createCommandActionEditor( this, d->mCommandDescriptor, mFactory );
+      mPrivate->mActionEditor = mEditorFactory->createCommandActionEditor( this, d->mCommandDescriptor, mComponentFactory );
     break;
     default:
       Q_ASSERT( false ); // unhandled action type

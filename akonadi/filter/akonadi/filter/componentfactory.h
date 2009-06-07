@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : factory.h
+ *  File : componentfactory.h
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_FACTORY_H_
-#define _AKONADI_FILTER_FACTORY_H_
+#ifndef _AKONADI_FILTER_COMPONENTFACTORY_H_
+#define _AKONADI_FILTER_COMPONENTFACTORY_H_
 
 #include "config-akonadi-filter.h"
 
@@ -66,7 +66,7 @@ namespace Action
 } // namespace Action
 
 /**
- * The Akonadi::Filter::Factory class plays a very central role in the filter management and customisation.
+ * The Akonadi::Filter::ComponentFactory class plays a very central role in the filter management and customisation.
  *
  * - It's responsable for the creation of the filter tree components, either standard ones (the Program,
  *   the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
@@ -75,11 +75,11 @@ namespace Action
  *
  * - It acts as repository of the Actions that the filter can perform
  */
-class AKONADI_FILTER_EXPORT Factory
+class AKONADI_FILTER_EXPORT ComponentFactory
 {
 public:
-  Factory();
-  virtual ~Factory();
+  ComponentFactory();
+  virtual ~ComponentFactory();
 
 private:
   QList< const FunctionDescriptor * > mFunctionDescriptorList;
@@ -215,7 +215,7 @@ public:
   virtual QList< const OperatorDescriptor * > enumerateOperators( int leftOperandDataTypeMask );
 
 
-  virtual Program * createProgram( Component * parent );
+  virtual Program * createProgram();
 
   virtual Rule * createRule( Component * parent );
 
@@ -235,10 +235,10 @@ public:
   virtual Action::Base * createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
   virtual Action::RuleList * createRuleList( Component * parent );
   virtual Action::Stop * createStopAction( Component * parent );
-}; // class Factory
+}; // class ComponentFactory
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_FACTORY_H_
+#endif //!_AKONADI_FILTER_COMPONENTFACTORY_H_

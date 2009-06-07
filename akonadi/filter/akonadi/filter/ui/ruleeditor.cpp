@@ -29,10 +29,12 @@
 #include "actionselector.h"
 #include "editorfactory.h"
 
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/rule.h>
 
 #include <QLayout>
+
+#include <KDebug>
 
 namespace Akonadi
 {
@@ -49,8 +51,8 @@ public:
   QVBoxLayout * mLayout;
 };
 
-RuleEditor::RuleEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory )
-  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
+RuleEditor::RuleEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
+  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   mPrivate = new RuleEditorPrivate;
 
@@ -61,10 +63,10 @@ RuleEditor::RuleEditor( QWidget * parent, Factory * factory, EditorFactory * edi
 
   mPrivate->mLayout->addStretch();
 
-  mPrivate->mConditionSelector = new ConditionSelector( this, factory, editorFactory );
+  mPrivate->mConditionSelector = new ConditionSelector( this, componentfactory, editorComponentFactory );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, mPrivate->mConditionSelector );
 
-  ActionSelector * actionEditor = new ActionSelector( this, factory, editorFactory, this );
+  ActionSelector * actionEditor = new ActionSelector( this, componentfactory, editorComponentFactory, this );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
   mPrivate->mActionSelectorList.append( actionEditor );
 }
@@ -103,9 +105,43 @@ void RuleEditor::fillFromRule( Rule * rule )
   fixupVisibleSelectorList();
 }
 
-Rule * RuleEditor::commit()
+Rule * RuleEditor::commitState( Component * parent )
 {
-  return 0;
+  Rule * rule = mComponentFactory->createRule( parent );
+  Q_ASSERT( rule );
+
+  if( mPrivate->mConditionSelector->currentConditionType() != Condition::ConditionTypeUnknown )
+  {
+    Condition::Base * condition = mPrivate->mConditionSelector->commitState( rule );
+    if( !condition )
+    {
+      kDebug() << "Failed to create condition";
+      delete rule;
+      return 0;
+    }
+
+    rule->setCondition( condition );
+  }
+
+  rule->clearActionList(); // just to make sure
+
+  foreach( ActionSelector * sel, mPrivate->mActionSelectorList )
+  {
+    if( sel->currentActionType() == Action::ActionTypeUnknown )
+      continue; // a null action
+
+    Action::Base * action = sel->commitState( rule );
+    if( !action )
+    {
+      kDebug() << "Failed to create action";
+      delete rule;
+      return 0;
+    }
+
+    rule->addAction( action );
+  }
+
+  return rule;
 }
 
 void RuleEditor::setSelectorCount( int count )
@@ -120,7 +156,7 @@ void RuleEditor::setSelectorCount( int count )
 
   while( mPrivate->mActionSelectorList.count() < count )
   {
-    actionSelector = new ActionSelector( this, mFactory, mEditorFactory, this );
+    actionSelector = new ActionSelector( this, mComponentFactory, mEditorFactory, this );
     mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionSelector );
     mPrivate->mActionSelectorList.append( actionSelector );
     actionSelector->show();

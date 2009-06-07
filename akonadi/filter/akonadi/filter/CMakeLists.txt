@@ -31,7 +31,7 @@ set(
 		data.cpp
 		datamemberdescriptor.cpp
 		encoder.cpp
-		factory.cpp
+		componentfactory.cpp
 		filter.cpp
 		functiondescriptor.cpp
 		operatordescriptor.cpp

@@ -35,7 +35,8 @@ namespace Akonadi
 namespace Filter
 {
 
-class Factory;
+class Component;
+class ComponentFactory;
 class Rule;
 
 namespace UI
@@ -50,17 +51,17 @@ class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
   friend class ActionSelector;
   Q_OBJECT
 public:
-  RuleEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  RuleEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
   virtual ~RuleEditor();
 
 protected:
-  Factory * mFactory;
+  ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
   RuleEditorPrivate * mPrivate;
 
 public:
   virtual void fillFromRule( Rule * rule );
-  virtual Rule * commit();
+  virtual Rule * commitState( Component * parent );
 
 protected:
   void childActionSelectorTypeChanged( ActionSelector * child );

@@ -26,6 +26,7 @@
 #include "editorfactory.h"
 
 #include "actioneditor.h"
+#include "ruleeditor.h"
 #include "rulelisteditor.h"
 
 #include <akonadi/filter/commanddescriptor.h>
@@ -49,12 +50,17 @@ EditorFactory::~EditorFactory()
 {
 }
 
-RuleListEditor * EditorFactory::createRuleListEditor( QWidget * parent, Factory * factory )
+RuleEditor * EditorFactory::createRuleEditor( QWidget * parent, ComponentFactory * componentFactory )
 {
-  return new RuleListEditor( parent, factory, this );
+  return new RuleEditor( parent, componentFactory, this );
 }
 
-ActionEditor * EditorFactory::createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, Factory * factory )
+RuleListEditor * EditorFactory::createRuleListEditor( QWidget * parent, ComponentFactory * componentFactory )
+{
+  return new RuleListEditor( parent, componentFactory, this );
+}
+
+ActionEditor * EditorFactory::createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory )
 {
   switch( command->id() )
   {

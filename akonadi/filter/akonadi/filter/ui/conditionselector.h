@@ -30,18 +30,17 @@
 
 #include <QWidget>
 
+#include <akonadi/filter/condition.h>
+
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class Factory;
-
-namespace Condition
-{
-  class Base;
-} // namespace Condition
+class Component;
+class ComponentFactory;
+class OperatorDescriptor;
 
 namespace UI
 {
@@ -56,19 +55,20 @@ class AKONADI_FILTER_UI_EXPORT ConditionSelector : public QWidget
   Q_OBJECT
 
 public:
-  ConditionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, ConditionSelector * parentConditionSelector = 0 );
+  ConditionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, ConditionSelector * parentConditionSelector = 0 );
   virtual ~ConditionSelector();
 
 protected:
 
-  Factory * mFactory;
+  ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
   ConditionSelector * mParentConditionSelector;
   ConditionSelectorPrivate * mPrivate;
 
 public:
   virtual void fillFromCondition( Condition::Base * condition );
-  virtual bool commitToCondition( Condition::Base * condition );
+  Condition::Base * commitState( Component * parent );
+  Condition::ConditionType currentConditionType();
   void reset();
   bool isEmpty();
 
@@ -79,7 +79,8 @@ protected:
 
 private:
   void setupUIForActiveType();
-  ConditionDescriptor * descriptorForActiveType();
+  ConditionDescriptor * conditionDescriptorForActiveType();
+  const OperatorDescriptor * operatorDescriptorForActiveType();
   void fillPropertyTestControls( ConditionDescriptor * descriptor );
 protected slots:
   void typeComboBoxActivated( int index );

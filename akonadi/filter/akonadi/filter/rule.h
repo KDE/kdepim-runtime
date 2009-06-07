@@ -74,6 +74,11 @@ public:
     return &mActionList;
   }
 
+  void clearActionList()
+  {
+    mActionList.clear();
+  }
+
   void addAction( Action::Base * action )
   {
     mActionList.append( action );

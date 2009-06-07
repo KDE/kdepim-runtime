@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : factory.cpp
+ *  File : componentfactory.cpp
  *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "factory.h"
+#include "componentfactory.h"
 
 #include "action.h"
 #include "condition.h"
@@ -41,7 +41,7 @@ namespace Filter
 
 
 
-Factory::Factory()
+ComponentFactory::ComponentFactory()
 {
   // register the basic functions
 
@@ -131,7 +131,7 @@ Factory::Factory()
       new FunctionDescriptor(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address" ),
-          i18n( "if any address extracted from" ),
+          i18n( "if any address in" ),
           DataTypeAddress | DataTypeAddressList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -142,7 +142,7 @@ Factory::Factory()
       new FunctionDescriptor(
           StandardFunctionAnyEMailAddressIn,
           QString::fromAscii( "address:all" ),
-          i18n( "if any address extracted from" ),
+          i18n( "if any address in" ),
           DataTypeAddress | DataTypeAddressList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -153,7 +153,7 @@ Factory::Factory()
       new FunctionDescriptor(
           StandardFunctionAnyEMailAddressDomainIn,
           QString::fromAscii( "address:domain" ),
-          i18n( "if any domain address part extracted from" ),
+          i18n( "if any domain in" ),
           DataTypeString | DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -164,7 +164,7 @@ Factory::Factory()
       new FunctionDescriptor(
           StandardFunctionAnyEMailAddressLocalPartIn,
           QString::fromAscii( "address:local" ),
-          i18n( "if any username address part extracted from" ),
+          i18n( "if any username in" ),
           DataTypeString | DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -329,7 +329,7 @@ Factory::Factory()
 #endif
 }
 
-Factory::~Factory()
+ComponentFactory::~ComponentFactory()
 {
   qDeleteAll( mCommandDescriptorHash );
   qDeleteAll( mFunctionDescriptorHash );
@@ -338,19 +338,19 @@ Factory::~Factory()
 }
 
 
-void Factory::registerDataMember( DataMemberDescriptor * dataMember )
+void ComponentFactory::registerDataMember( DataMemberDescriptor * dataMember )
 {
   Q_ASSERT( dataMember );
 
   mDataMemberDescriptorHash.insert( dataMember->keyword().toLower(), dataMember ); // will replace
 }
 
-const DataMemberDescriptor * Factory::findDataMember( const QString &keyword )
+const DataMemberDescriptor * ComponentFactory::findDataMember( const QString &keyword )
 {
   return mDataMemberDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-QList< const DataMemberDescriptor * > Factory::enumerateDataMembers( int acceptableDataTypeMask )
+QList< const DataMemberDescriptor * > ComponentFactory::enumerateDataMembers( int acceptableDataTypeMask )
 {
   QList< const DataMemberDescriptor * > lReturn;
   foreach( DataMemberDescriptor * dataMember, mDataMemberDescriptorHash )
@@ -361,7 +361,7 @@ QList< const DataMemberDescriptor * > Factory::enumerateDataMembers( int accepta
   return lReturn;
 }
 
-void Factory::registerOperator( OperatorDescriptor * op )
+void ComponentFactory::registerOperator( OperatorDescriptor * op )
 {
   Q_ASSERT( op );
 
@@ -401,7 +401,7 @@ void Factory::registerOperator( OperatorDescriptor * op )
   mOperatorDescriptorList.append( op );
 }
 
-const OperatorDescriptor * Factory::findOperator( const QString &keyword, int leftOperandDataTypeMask )
+const OperatorDescriptor * ComponentFactory::findOperator( const QString &keyword, int leftOperandDataTypeMask )
 {
   // Get the list of operators with the same keyword
   QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( keyword.toLower() );
@@ -414,7 +414,7 @@ const OperatorDescriptor * Factory::findOperator( const QString &keyword, int le
   return 0;
 }
 
-QList< const OperatorDescriptor * > Factory::enumerateOperators( int leftOperandDataTypeMask )
+QList< const OperatorDescriptor * > ComponentFactory::enumerateOperators( int leftOperandDataTypeMask )
 {
   QList< const OperatorDescriptor * > ret;
   foreach( OperatorDescriptor * op, mOperatorDescriptorList )
@@ -427,7 +427,7 @@ QList< const OperatorDescriptor * > Factory::enumerateOperators( int leftOperand
   return ret;
 }
 
-void Factory::registerFunction( FunctionDescriptor * function )
+void ComponentFactory::registerFunction( FunctionDescriptor * function )
 {
   Q_ASSERT( function );
 
@@ -443,17 +443,17 @@ void Factory::registerFunction( FunctionDescriptor * function )
 }
 
 
-const FunctionDescriptor * Factory::findFunction( const QString &keyword )
+const FunctionDescriptor * ComponentFactory::findFunction( const QString &keyword )
 {
   return mFunctionDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-const QList< const FunctionDescriptor * > * Factory::enumerateFunctions()
+const QList< const FunctionDescriptor * > * ComponentFactory::enumerateFunctions()
 {
   return &mFunctionDescriptorList;
 }
 
-void Factory::registerCommand( CommandDescriptor * command )
+void ComponentFactory::registerCommand( CommandDescriptor * command )
 {
   Q_ASSERT( command );
 
@@ -469,57 +469,57 @@ void Factory::registerCommand( CommandDescriptor * command )
 }
 
 
-const CommandDescriptor * Factory::findCommand( const QString &keyword )
+const CommandDescriptor * ComponentFactory::findCommand( const QString &keyword )
 {
   return mCommandDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-const QList< const CommandDescriptor * > * Factory::enumerateCommands()
+const QList< const CommandDescriptor * > * ComponentFactory::enumerateCommands()
 {
   return &mCommandDescriptorList;
 }
 
-Program * Factory::createProgram( Component * parent )
+Program * ComponentFactory::createProgram()
 {
-  return new Program( parent );
+  return new Program();
 }
 
-Rule * Factory::createRule( Component * parent )
+Rule * ComponentFactory::createRule( Component * parent )
 {
   return new Rule( parent );
 }
 
-Condition::And * Factory::createAndCondition( Component * parent )
+Condition::And * ComponentFactory::createAndCondition( Component * parent )
 {
   return new Condition::And( parent );
 }
 
-Condition::Or * Factory::createOrCondition( Component * parent )
+Condition::Or * ComponentFactory::createOrCondition( Component * parent )
 {
   return new Condition::Or( parent );
 }
 
-Condition::Not * Factory::createNotCondition( Component * parent )
+Condition::Not * ComponentFactory::createNotCondition( Component * parent )
 {
   return new Condition::Not( parent );
 }
 
-Condition::True * Factory::createTrueCondition( Component * parent )
+Condition::True * ComponentFactory::createTrueCondition( Component * parent )
 {
   return new Condition::True( parent );
 }
 
-Condition::False * Factory::createFalseCondition( Component * parent )
+Condition::False * ComponentFactory::createFalseCondition( Component * parent )
 {
   return new Condition::False( parent );
 }
 
-Action::Stop * Factory::createStopAction( Component * parent )
+Action::Stop * ComponentFactory::createStopAction( Component * parent )
 {
   return new Action::Stop( parent );
 }
 
-Action::Base * Factory::createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
+Action::Base * ComponentFactory::createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
 {
   Q_ASSERT( parent );
   Q_ASSERT( command );
@@ -527,7 +527,7 @@ Action::Base * Factory::createCommandAction( Component * parent, const CommandDe
   return 0;
 }
 
-Condition::Base * Factory::createPropertyTestCondition(
+Condition::Base * ComponentFactory::createPropertyTestCondition(
     Component * parent,
     const FunctionDescriptor * function,
     const DataMemberDescriptor * dataMember,
@@ -539,7 +539,7 @@ Condition::Base * Factory::createPropertyTestCondition(
   return new Condition::PropertyTest( parent, function, dataMember, op, operand );
 }
 
-Action::RuleList * Factory::createRuleList( Component * parent )
+Action::RuleList * ComponentFactory::createRuleList( Component * parent )
 {
   return new Action::RuleList( parent );
 }

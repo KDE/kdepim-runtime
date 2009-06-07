@@ -26,7 +26,7 @@
 #include "conditionselector.h"
 
 #include <akonadi/filter/condition.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/functiondescriptor.h>
 
 #include "coolcombobox.h"
@@ -44,7 +44,7 @@ static int gIndent = 20;
 static const qreal gSemiTransparentWidgetsOpacity = 0.32;
 
 //#define NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT 1
-#define PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW 1
+//#define PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW 1
 
 namespace Akonadi
 {
@@ -61,14 +61,15 @@ public:
   QString mText;
   QColor mColor;
   const FunctionDescriptor * mFunctionDescriptor;
+  const DataMemberDescriptor * mDataMemberDescriptor;
 };
 
 class ConditionSelectorPrivate
 {
 public:
-  QList< ConditionDescriptor * > mConditionDescriptorList; // FIXME: This could be shared between all the editors with the same factory
+  QList< ConditionDescriptor * > mConditionDescriptorList; // FIXME: This could be shared between all the editors with the same componentfactory
   Private::CoolComboBox * mTypeComboBox;
-  KComboBox * mDataMemberDescriptorComboBox;
+  //KComboBox * mDataMemberDescriptorComboBox;
   Private::ExtensionLabel * mExtensionLabel;
   KComboBox * mOperatorDescriptorComboBox;
   KLineEdit * mValueLineEdit;
@@ -80,8 +81,8 @@ public:
 
 
 
-ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, EditorFactory * editorFactory, ConditionSelector * parentConditionSelector )
-  : QWidget( parent ), mFactory( factory ), mEditorFactory( editorFactory )
+ConditionSelector::ConditionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, ConditionSelector * parentConditionSelector )
+  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   mParentConditionSelector = parentConditionSelector;
 
@@ -105,6 +106,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "<...select to activate condition...>" );
   d->mColor = palette().color( QPalette::Button );
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -112,6 +114,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "if the condition below is NOT met" );
   d->mColor = Qt::red;
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -119,6 +122,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "if ALL of the conditions below are met" );
   d->mColor = Qt::blue;
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -126,19 +130,28 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "if ANY of the conditions below is met" );
   d->mColor = Qt::darkGreen;
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
-  const QList< const FunctionDescriptor * > * props = mFactory->enumerateFunctions();
+  const QList< const FunctionDescriptor * > * props = mComponentFactory->enumerateFunctions();
   Q_ASSERT( props );
 
   foreach( const FunctionDescriptor *prop, *props )
   {
-    d = new ConditionDescriptor;
-    d->mType = Condition::ConditionTypePropertyTest;
-    d->mText = prop->name();
-    d->mColor = QColor(); // no overlay
-    d->mFunctionDescriptor = prop;
-    mPrivate->mConditionDescriptorList.append( d );
+    QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( prop->acceptableInputDataTypeMask() );
+
+    foreach( const DataMemberDescriptor * dm, dataMembers )
+    {
+      d = new ConditionDescriptor;
+      d->mType = Condition::ConditionTypePropertyTest;
+      d->mText = prop->name();
+      d->mText += QChar(' ');
+      d->mText += dm->name();
+      d->mColor = QColor(); // no overlay
+      d->mFunctionDescriptor = prop;
+      d->mDataMemberDescriptor = dm;
+      mPrivate->mConditionDescriptorList.append( d );
+    }
   }
 
   d = new ConditionDescriptor;
@@ -146,6 +159,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "if true (so always)" );
   d->mColor = QColor( 0, 60, 0 );
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -153,6 +167,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   d->mText = i18n( "if false (so never)" );
   d->mColor = QColor( 60, 0, 0 );
   d->mFunctionDescriptor = 0;
+  d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
   int idx = 0;
@@ -161,7 +176,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
 
   foreach( d, mPrivate->mConditionDescriptorList )
   {
-    mPrivate->mTypeComboBox->addItem( d->mText, idx );
+    mPrivate->mTypeComboBox->addItem( d->mText, QVariant( idx ) );
     if( d->mColor.isValid() )
     {
       QColor clrMerged = QColor::fromRgb(
@@ -189,13 +204,15 @@ ConditionSelector::ConditionSelector( QWidget * parent, Factory * factory, Edito
   if( gSpacing != -1 )
     rightGrid->setSpacing( gSpacing );
 
+#if 0
   mPrivate->mDataMemberDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
   mPrivate->mDataMemberDescriptorComboBox->hide();
   rightGrid->addWidget( mPrivate->mDataMemberDescriptorComboBox, 0, 0 );
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
   rightGrid->setColumnStretch( 0, 1 );
 #endif
-  
+#endif
+
   mPrivate->mOperatorDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
   mPrivate->mOperatorDescriptorComboBox->hide();
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
@@ -281,7 +298,9 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( gSemiTransparentWidgetsOpacity );
+#if 0
       mPrivate->mDataMemberDescriptorComboBox->hide();
+#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
       mPrivate->mExtensionLabel->hide();
@@ -293,7 +312,9 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mRightControlsBase->hide();
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
+#if 0
       mPrivate->mDataMemberDescriptorComboBox->hide();
+#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
       mPrivate->mExtensionLabel->hide();
@@ -305,7 +326,9 @@ void ConditionSelector::setupUIForActiveType()
 #endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
 
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
+#if 0
       mPrivate->mDataMemberDescriptorComboBox->show();
+#endif
       mPrivate->mOperatorDescriptorComboBox->show();
       mPrivate->mValueLineEdit->show();
 #ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
@@ -326,13 +349,15 @@ void ConditionSelector::setupUIForActiveType()
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
       mPrivate->mExtensionLabel->setFixedHeight( ( d->mType == Condition::ConditionTypeNot ) ? ( mPrivate->mTypeComboBox->sizeHint().height() - 5 ) : -1 );
       mPrivate->mExtensionLabel->setOverlayColor( d->mColor );
+#if 0
       mPrivate->mDataMemberDescriptorComboBox->hide();
+#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
       mPrivate->mValueLineEdit->hide();
 
       if( mPrivate->mChildConditionSelectorList.count() == 0 )
       {
-        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
+        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -349,7 +374,7 @@ void ConditionSelector::setupUIForActiveType()
 
 void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
 {
-  ConditionDescriptor * d = descriptorForActiveType();
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
 
   if(
       ( d->mType != Condition::ConditionTypeAnd ) &&
@@ -366,7 +391,7 @@ void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
     if( !child->isEmpty() )
     {
       // need a new one
-      child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
+      child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
       mPrivate->mChildConditionSelectorList.append( child );
       mPrivate->mChildConditionListLayout->addWidget( child );
     }
@@ -395,7 +420,7 @@ void ConditionSelector::typeComboBoxActivated( int )
 {
   setupUIForActiveType();
 
-  ConditionDescriptor * d = descriptorForActiveType();
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
   Q_ASSERT( d );
 
   switch( d->mType )
@@ -426,7 +451,15 @@ void ConditionSelector::typeComboBoxActivated( int )
     mParentConditionSelector->childEditorTypeChanged( this );
 }
 
-ConditionDescriptor * ConditionSelector::descriptorForActiveType()
+Condition::ConditionType ConditionSelector::currentConditionType()
+{
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
+  Q_ASSERT( d );
+  return d->mType;
+}
+
+
+ConditionDescriptor * ConditionSelector::conditionDescriptorForActiveType()
 {
   int idx = mPrivate->mTypeComboBox->currentIndex();
   if( idx < 0 )
@@ -438,7 +471,7 @@ ConditionDescriptor * ConditionSelector::descriptorForActiveType()
 
 bool ConditionSelector::isEmpty()
 {
-  ConditionDescriptor * d = descriptorForActiveType();
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
   Q_ASSERT( d );
   return d->mType == Condition::ConditionTypeUnknown;
 }
@@ -461,23 +494,25 @@ void ConditionSelector::reset()
   Q_ASSERT( descriptor );
   Q_ASSERT( idx >= 0 );
 
-   mPrivate->mTypeComboBox->setCurrentIndex( idx );
+  mPrivate->mTypeComboBox->setCurrentIndex( idx );
 }
 
 void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descriptor )
 {
+#if 0
   mPrivate->mDataMemberDescriptorComboBox->clear();
 
-  QList< const DataMemberDescriptor * > dataMembers = mFactory->enumerateDataMembers( descriptor->mFunctionDescriptor->acceptableInputDataTypeMask() );
+  QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( descriptor->mFunctionDescriptor->acceptableInputDataTypeMask() );
 
   foreach( const DataMemberDescriptor * dataMember, dataMembers )
   {
     mPrivate->mDataMemberDescriptorComboBox->addItem( dataMember->name() );
   }
+#endif
 
   mPrivate->mOperatorDescriptorComboBox->clear();
 
-  const QList< const OperatorDescriptor * > operators = mFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
+  const QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
   if( operators.isEmpty() )
   {
     // doesn't need an operator
@@ -487,7 +522,7 @@ void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descript
   }
   foreach( const OperatorDescriptor * op, operators )
   {
-    mPrivate->mOperatorDescriptorComboBox->addItem( op->name() );
+    mPrivate->mOperatorDescriptorComboBox->addItem( op->name(), QVariant( (qlonglong)op ) );
   }
 }
 
@@ -559,7 +594,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       
       while( mPrivate->mChildConditionSelectorList.count() < expectedEditorCount )
       {
-        child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
+        child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -588,7 +623,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       {
         if( mPrivate->mChildConditionSelectorList.count() == 0 )
         {
-          child = new ConditionSelector( mPrivate->mChildConditionListBase, mFactory, mEditorFactory, this );
+          child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
           mPrivate->mChildConditionSelectorList.append( child );
           mPrivate->mChildConditionListLayout->addWidget( child );
         } else {
@@ -627,9 +662,115 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
 
 }
 
-bool ConditionSelector::commitToCondition( Condition::Base * condition )
+const OperatorDescriptor * ConditionSelector::operatorDescriptorForActiveType()
 {
-  return false;
+  int idx = mPrivate->mOperatorDescriptorComboBox->currentIndex();
+  if( idx < 0 )
+    return 0;
+  QVariant v = mPrivate->mOperatorDescriptorComboBox->itemData( idx );
+  if( v.isNull() )
+    return 0;
+
+  bool ok;
+  qlonglong ptr = v.toLongLong( &ok );
+
+  if( !ok )
+    return 0;
+
+  return reinterpret_cast< const OperatorDescriptor * >( ptr );
+}
+
+
+Condition::Base * ConditionSelector::commitState( Component * parent )
+{
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
+  Q_ASSERT( d );
+
+  switch( d->mType )
+  {
+    case Condition::ConditionTypeUnknown:
+      // empty condition (always true)
+      return mComponentFactory->createTrueCondition( parent );
+    break;
+    case Condition::ConditionTypeFalse:
+      return mComponentFactory->createFalseCondition( parent );
+    break;
+    case Condition::ConditionTypeTrue:
+      return mComponentFactory->createTrueCondition( parent );
+    break;
+    case Condition::ConditionTypeAnd:
+    case Condition::ConditionTypeOr:
+    {
+      Condition::Multi * multiCondition = ( d->mType == Condition::ConditionTypeAnd ) ? \
+                                             static_cast< Condition::Multi * >( mComponentFactory->createAndCondition( parent ) ) : \
+                                             static_cast< Condition::Multi * >( mComponentFactory->createOrCondition( parent ) );
+      Q_ASSERT( multiCondition );
+
+      foreach( ConditionSelector * sel, mPrivate->mChildConditionSelectorList )
+      {
+        if( sel->currentConditionType() == Condition::ConditionTypeUnknown )
+          continue;
+
+        Condition::Base * child = sel->commitState( multiCondition );
+        if( !child )
+        {
+          delete multiCondition;
+          return 0;
+        }
+        multiCondition->addChildCondition( child );
+      }
+
+      return multiCondition;     
+    }
+    break;
+    case Condition::ConditionTypeNot:
+    {
+      Q_ASSERT( mPrivate->mChildConditionSelectorList.count() == 1 );
+      ConditionSelector * ed = mPrivate->mChildConditionSelectorList.first();
+      Q_ASSERT( ed );
+
+      if( ed->currentConditionType() == Condition::ConditionTypeUnknown )
+        return mComponentFactory->createFalseCondition( parent );
+
+      Condition::Not * notCondition = mComponentFactory->createNotCondition( parent );
+      Q_ASSERT( notCondition );
+
+      Condition::Base * child = ed->commitState( notCondition );
+      if( !child )
+      {
+        delete notCondition;
+        return 0;
+      }
+      notCondition->setChildCondition( child );
+      return notCondition;
+    }
+    break;
+    case Condition::ConditionTypePropertyTest:
+    {
+      Q_ASSERT( d->mFunctionDescriptor );
+      Q_ASSERT( d->mDataMemberDescriptor );
+
+      QString txt = mPrivate->mValueLineEdit->text();
+
+      const OperatorDescriptor * op = operatorDescriptorForActiveType();
+      Q_ASSERT( op );
+
+      return mComponentFactory->createPropertyTestCondition(
+          parent,
+          d->mFunctionDescriptor,
+          d->mDataMemberDescriptor,
+          op,
+          QVariant( txt )
+        );
+    }
+    break;
+    default:
+      Q_ASSERT( false ); //unhandled condition type
+    break;
+  }
+
+  Q_ASSERT( false );
+  return 0;
 }
 
 } // namespace UI

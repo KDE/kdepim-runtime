@@ -1,7 +1,7 @@
 
 #include <akonadi/filter/sievedecoder.h>
 #include <akonadi/filter/program.h>
-#include <akonadi/filter/factory.h>
+#include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/condition.h>
 
 #include <akonadi/filter/ui/programeditor.h>
@@ -11,12 +11,13 @@
 #include <KCmdLineArgs>
 #include <KApplication>
 #include <KAboutData>
+#include <KDebug>
 
-class MyFactory : public Akonadi::Filter::Factory
+class MyComponentFactory : public Akonadi::Filter::ComponentFactory
 {
 public:
-  MyFactory() : Factory() {};
-  virtual ~MyFactory(){};
+  MyComponentFactory() : ComponentFactory() {};
+  virtual ~MyComponentFactory(){};
 public:
   virtual Akonadi::Filter::Action::Base * createGenericAction( Akonadi::Filter::Component * parent, const QString &identifier )
   {
@@ -32,7 +33,7 @@ public:
 int main(int argc,char ** argv)
 {
 
-  MyFactory * f = new MyFactory();
+  MyComponentFactory * f = new MyComponentFactory();
   f->setDefaultActionDescription( i18n( "download message" ) );
   Akonadi::Filter::IO::SieveDecoder d( f );
   Akonadi::Filter::Program * p = d.run();
@@ -48,14 +49,23 @@ int main(int argc,char ** argv)
 
     Akonadi::Filter::UI::ProgramEditor * ed = new Akonadi::Filter::UI::ProgramEditor( 0, f, ef );
     ed->fillFromProgram( p );
+    delete p;
 
     ed->show();
     
     app.exec();
 
-    delete ed;
+    p = ed->commit();
+    if( p )
+    {
+      qDebug( "Edited program dump" );
+      p->dump( QString() );
+      delete p;
+    } else {
+      qDebug( "Could not commit program" );
+    }
 
-    delete p;
+    delete ed;
 
     delete ef;
   }

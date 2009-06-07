@@ -46,7 +46,7 @@ namespace Akonadi
 namespace Filter
 {
 
-class Factory;
+class ComponentFactory;
 
 namespace Action
 {
@@ -128,19 +128,29 @@ class AKONADI_FILTER_UI_EXPORT RuleListEditorScrollArea : public ExpandingScroll
   Q_OBJECT
 
 public:
-  RuleListEditorScrollArea( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  RuleListEditorScrollArea( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
   virtual ~RuleListEditorScrollArea();
 
 
 protected:
   RuleListEditorScrollAreaPrivate * mPrivate;
   QFrame * mBase;
-  Factory * mFactory;
+  ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
 
 public:
-  void fillFromRuleList( Action::RuleList * ruleList );
+  ComponentFactory * componentFactory()
+  {
+    return mComponentFactory;
+  }
 
+  EditorFactory * editorFactory()
+  {
+    return mEditorFactory;
+  }
+
+  void fillFromRuleList( Action::RuleList * ruleList );
+  bool commitStateToRuleList( Action::RuleList * ruleList );
 private:
   RuleListEditorItem * addRuleEditor( RuleEditor * editor );
   RuleListEditorItem * findItemByRuleEditor( RuleEditor * editor );
@@ -160,7 +170,7 @@ class AKONADI_FILTER_UI_EXPORT RuleListEditor : public ActionEditor
 {
   Q_OBJECT
 public:
-  RuleListEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  RuleListEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
   virtual ~RuleListEditor();
 protected:
   RuleListEditorScrollArea * mScrollArea;
@@ -169,7 +179,8 @@ public:
   bool autoExpand() const;
   virtual void fillFromAction( Action::Base * action );
   virtual void fillFromRuleList( Action::RuleList * ruleList );
-  virtual Action::Base * commit();
+  bool commitStateToRuleList( Action::RuleList * ruleList );
+  virtual Action::Base * commitState( Component * parent );
 };
 
 } // namespace UI

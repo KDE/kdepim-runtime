@@ -60,7 +60,7 @@ class AKONADI_FILTER_EXPORT SieveDecoder : public Decoder
 {
   friend class Private::SieveReader;
 public:
-  SieveDecoder( Factory * componentFactory );
+  SieveDecoder( ComponentFactory * componentFactory );
   ~SieveDecoder();
 protected:
   Program * mProgram; // the currently parsed program

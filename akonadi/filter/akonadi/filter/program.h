@@ -52,7 +52,7 @@ public:
   /**
    * Creates an empty filtering program.
    */
-  Program( Component * parent );
+  Program();
 
   /**
    * Destroys the filtering program including any included rules.

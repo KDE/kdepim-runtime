@@ -25,7 +25,7 @@
 
 #include "afldecoder.h"
 #include "program.h"
-#include "factory.h"
+#include "componentfactory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -38,7 +38,7 @@ namespace Filter
 namespace IO
 {
 
-AFLDecoder::AFLDecoder( Factory * componentFactory )
+AFLDecoder::AFLDecoder( ComponentFactory * componentFactory )
   : Decoder( componentFactory ), mCurrentChar( 0 ), mProgram( 0 )
 {
 }

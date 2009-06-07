@@ -67,6 +67,11 @@ public:
     return &mRuleList;
   }
 
+  void clear()
+  {
+    mRuleList.clear();
+  }
+
   void addRule( Rule * rule )
   {
     mRuleList.append( rule );

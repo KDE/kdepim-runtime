@@ -40,7 +40,8 @@ namespace Action
   class Base;
 } // namespace Action
 
-class Factory;
+class Component;
+class ComponentFactory;
 
 namespace UI
 {
@@ -51,16 +52,26 @@ class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
 {
   Q_OBJECT
 public:
-  ActionEditor( QWidget * parent, Factory * factory, EditorFactory * editorFactory );
+  ActionEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
   virtual ~ActionEditor();
 
 protected:
-  Factory * mFactory;
+  ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
 
 public:
+  ComponentFactory * componentFactory()
+  {
+    return mComponentFactory;
+  }
+
+  EditorFactory * editorFactory()
+  {
+    return mEditorFactory;
+  }
+
   virtual void fillFromAction( Action::Base * action ) = 0;
-  virtual Action::Base * commit() = 0;
+  virtual Action::Base * commitState( Component * parent ) = 0;
 
 protected:
   virtual QSize sizeHint() const;

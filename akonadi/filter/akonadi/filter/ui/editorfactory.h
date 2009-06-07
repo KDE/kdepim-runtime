@@ -36,12 +36,13 @@ namespace Filter
 {
 
 class CommandDescriptor;
-class Factory;
+class ComponentFactory;
 
 namespace UI
 {
 
 class ActionEditor;
+class RuleEditor;
 class RuleListEditor;
 
 class AKONADI_FILTER_UI_EXPORT EditorFactory
@@ -51,8 +52,9 @@ public:
   virtual ~EditorFactory();
 
 public:
-  virtual RuleListEditor * createRuleListEditor( QWidget * parent, Factory * factory );
-  virtual ActionEditor * createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, Factory * factory );
+  virtual RuleEditor * createRuleEditor( QWidget * parent, ComponentFactory * componentFactory );
+  virtual RuleListEditor * createRuleListEditor( QWidget * parent, ComponentFactory * componentFactory );
+  virtual ActionEditor * createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory );
 
 }; // class EditorFactory
 

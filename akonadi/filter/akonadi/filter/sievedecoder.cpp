@@ -25,7 +25,7 @@
 
 #include "sievedecoder.h"
 
-#include "factory.h"
+#include "componentfactory.h"
 #include "program.h"
 #include "rule.h"
 #include "sievereader.h"
@@ -54,7 +54,7 @@ namespace Filter
 namespace IO
 {
 
-SieveDecoder::SieveDecoder( Factory * componentFactory )
+SieveDecoder::SieveDecoder( ComponentFactory * componentFactory )
   : Decoder( componentFactory ), mProgram( 0 ), mCreationOfCustomDataMemberDescriptorsEnabled( true )
 {
 }
@@ -111,7 +111,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
           // ugly.. the not alreay has a child condition: it should have.
           // we fix this by creating an inner "or"
           whoTheHeckDefinedNotToTheExclamationMark->releaseChildCondition();
-          Condition::Or * orCondition = factory()->createOrCondition( mCurrentComponent );
+          Condition::Or * orCondition = componentFactory()->createOrCondition( mCurrentComponent );
           Q_ASSERT( orCondition );
           whoTheHeckDefinedNotToTheExclamationMark->setChildCondition( orCondition );
           orCondition->addChildCondition( currentNotChild );
@@ -152,15 +152,15 @@ void SieveDecoder::onTestStart( const QString & identifier )
   Condition::Base * condition = 0;
 
   if( QString::compare( identifier, QLatin1String( "allof" ), Qt::CaseInsensitive ) == 0 )
-    condition = factory()->createAndCondition( mCurrentComponent );
+    condition = componentFactory()->createAndCondition( mCurrentComponent );
   else if( QString::compare( identifier, QLatin1String( "anyof" ), Qt::CaseInsensitive ) == 0 )
-    condition = factory()->createOrCondition( mCurrentComponent );
+    condition = componentFactory()->createOrCondition( mCurrentComponent );
   else if( QString::compare( identifier, QLatin1String( "not" ), Qt::CaseInsensitive ) == 0 )
-    condition = factory()->createNotCondition( mCurrentComponent );
+    condition = componentFactory()->createNotCondition( mCurrentComponent );
   else if( QString::compare( identifier, QLatin1String( "true" ), Qt::CaseInsensitive ) == 0 )
-    condition = factory()->createTrueCondition( mCurrentComponent );
+    condition = componentFactory()->createTrueCondition( mCurrentComponent );
   else if( QString::compare( identifier, QLatin1String( "false" ), Qt::CaseInsensitive ) == 0 )
-    condition = factory()->createFalseCondition( mCurrentComponent );
+    condition = componentFactory()->createFalseCondition( mCurrentComponent );
   else {
     // we delay the start of the simple tests to "onTestEnd", as they can't be structured.
     mCurrentSimpleTestName = identifier;
@@ -288,7 +288,7 @@ void SieveDecoder::onTestEnd()
 
     // lookup the function
 
-    const FunctionDescriptor * function = factory()->findFunction( functionKeyword );
+    const FunctionDescriptor * function = componentFactory()->findFunction( functionKeyword );
     if ( !function )
     {
       // unrecognized test
@@ -308,7 +308,7 @@ void SieveDecoder::onTestEnd()
 
     const OperatorDescriptor * op = 0;
 
-    op = factory()->findOperator( operatorKeyword, function->outputDataTypeMask() );
+    op = componentFactory()->findOperator( operatorKeyword, function->outputDataTypeMask() );
 
     if( !op )
     {
@@ -395,7 +395,7 @@ void SieveDecoder::onTestEnd()
     // if there is more than one field or more than one value then we use an "or" test as parent
     if( ( valueList.count() > 1 ) || ( fieldList.count() > 1 ) )
     {
-      Condition::Or * orCondition = factory()->createOrCondition( mCurrentComponent );
+      Condition::Or * orCondition = componentFactory()->createOrCondition( mCurrentComponent );
       Q_ASSERT( orCondition );
 
       if( !addConditionToCurrentComponent( orCondition, QLatin1String( "anyof" ) ) )
@@ -411,7 +411,7 @@ void SieveDecoder::onTestEnd()
 
       foreach( QVariant value, valueList )
       {
-        const DataMemberDescriptor * dataMember = factory()->findDataMember( field );
+        const DataMemberDescriptor * dataMember = componentFactory()->findDataMember( field );
         if( !dataMember )
         {
           if( ( !mCreationOfCustomDataMemberDescriptorsEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
@@ -423,7 +423,7 @@ void SieveDecoder::onTestEnd()
 
           QString name = i18n( "the field '%1'", field );
           DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( field, name, DataTypeString );
-          factory()->registerDataMember( newDataMemberDescriptor );
+          componentFactory()->registerDataMember( newDataMemberDescriptor );
           dataMember = newDataMemberDescriptor;
         }
 
@@ -436,12 +436,12 @@ void SieveDecoder::onTestEnd()
           return;
         }
 
-        Condition::Base * condition = factory()->createPropertyTestCondition( mCurrentComponent, function, dataMember, op, value );
+        Condition::Base * condition = componentFactory()->createPropertyTestCondition( mCurrentComponent, function, dataMember, op, value );
         if ( !condition )
         {
           // unrecognized test
           mGotError = true; 
-          setLastError( i18n( "Test on function '%1' is not supported: %2", field, factory()->lastError() ) );
+          setLastError( i18n( "Test on function '%1' is not supported: %2", field, componentFactory()->lastError() ) );
           return;
         }
 
@@ -610,7 +610,7 @@ void SieveDecoder::onTestListStart()
       setLastError( i18n( "Unexpected start of test list after a previous test" ) );
       return;  
     }
-    Condition::Or * condition = factory()->createOrCondition( mCurrentComponent );
+    Condition::Or * condition = componentFactory()->createOrCondition( mCurrentComponent );
     rule->setCondition( condition );
     mCurrentComponent = condition;
     return;
@@ -694,7 +694,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
     {
       // a rule for the current rule list
       ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      rule = factory()->createRule( mCurrentComponent );
+      rule = componentFactory()->createRule( mCurrentComponent );
       ruleList->addRule( rule );
       mCurrentComponent = rule;
       return;
@@ -705,11 +705,11 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
 
     // create the rule list and add it as action
     rule = static_cast< Rule * >( mCurrentComponent );
-    ruleList = factory()->createRuleList( mCurrentComponent );
+    ruleList = componentFactory()->createRuleList( mCurrentComponent );
     rule->addAction( ruleList );
 
     // create the rule and add it to the rule list we've just created
-    rule = factory()->createRule( mCurrentComponent );
+    rule = componentFactory()->createRule( mCurrentComponent );
     ruleList->addRule( rule );
     mCurrentComponent = rule;
 
@@ -738,13 +738,13 @@ void SieveDecoder::onCommandDescriptorEnd()
          ( QString::compare( mCurrentSimpleCommandName, QLatin1String("keep" ), Qt::CaseInsensitive ) == 0 )
       )
     {
-      action = factory()->createStopAction( mCurrentComponent );
+      action = componentFactory()->createStopAction( mCurrentComponent );
       Q_ASSERT( action );
 
     } else {
       // a "command" action
 
-      const CommandDescriptor * command = factory()->findCommand( mCurrentSimpleCommandName );
+      const CommandDescriptor * command = componentFactory()->findCommand( mCurrentSimpleCommandName );
       if( !command )
       {
         mGotError = true; 
@@ -759,11 +759,11 @@ void SieveDecoder::onCommandDescriptorEnd()
         return;
       }
 
-      action = factory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandArguments );
+      action = componentFactory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandArguments );
       if( !action )
       {
         mGotError = true; 
-        setLastError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, factory()->lastError() ) );
+        setLastError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, componentFactory()->lastError() ) );
         return;
       }
 
@@ -776,7 +776,7 @@ void SieveDecoder::onCommandDescriptorEnd()
     {
       // unconditional rule start with an action
       Action::RuleList * ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      Rule * rule = factory()->createRule( mCurrentComponent );
+      Rule * rule = componentFactory()->createRule( mCurrentComponent );
       ruleList->addRule( rule );
 
       rule->addAction( action );
@@ -856,8 +856,8 @@ Program * SieveDecoder::run()
   if( mProgram )
     delete mProgram;
 
-  mProgram = factory()->createProgram( 0 );
-  Q_ASSERT( mProgram ); // component factory shall never fail creating a Program
+  mProgram = componentFactory()->createProgram();
+  Q_ASSERT( mProgram ); // component componentfactory shall never fail creating a Program
 
   mGotError = false;
   mCurrentComponent = mProgram;

@@ -223,7 +223,7 @@ bool PropertyTest::matches( Data * data )
   // Generic function test implementation.
   //
   // Override this method in a derived class if you want to provide
-  // an optimized/custom match (then override Factory::createPropertyTestCondition() to return your subclasses).
+  // an optimized/custom match (then override ComponentFactory::createPropertyTestCondition() to return your subclasses).
 
   switch( mFunctionDescriptor->dataType() )
   {

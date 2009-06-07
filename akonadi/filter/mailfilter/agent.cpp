@@ -38,7 +38,7 @@
 MailFilterAgent::MailFilterAgent( const QString &id )
   : Akonadi::AgentBase( id )
 {
-  //AttributeFactory::registerAttribute<MessageThreadingAttribute>();
+  //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug() << "mailfilteragent: ready and waiting..." ;
 }
 

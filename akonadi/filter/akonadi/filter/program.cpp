@@ -34,8 +34,8 @@ namespace Akonadi
 namespace Filter 
 {
 
-Program::Program( Component * parent )
-  : Action::RuleList( parent )
+Program::Program()
+  : Action::RuleList( 0 )
 {
 }
 
