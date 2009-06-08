@@ -1,5 +1,5 @@
 project(
-		akonadi_mailfilter_agent
+		akonadi_filter_agent
 	)
 
 include_directories(
@@ -39,13 +39,13 @@ qt4_add_dbus_adaptor(
 
 
 kde4_add_executable(
-		akonadi_mailfilter_agent
+		akonadi_filter_agent
 		RUN_UNINSTALLED
 		${AKONADI_MAILFILTER_AGENT_SRCS}
 	)
 
 target_link_libraries(
-		akonadi_mailfilter_agent
+		akonadi_filter_agent
 		akonadi-filter
 		${KDE4_AKONADI_LIBS}
 		ksieve
@@ -68,17 +68,17 @@ install(
 	)
 
 
-#target_link_libraries(akonadi_mailfilter_agent ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBS} ${KDE4_KMIME_LIBS} )
+#target_link_libraries(akonadi_filter_agent ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBS} ${KDE4_KMIME_LIBS} )
 
 install(
 		TARGETS
-			akonadi_mailfilter_agent
+			akonadi_filter_agent
 		${INSTALL_TARGETS_DEFAULT_ARGS}
 	)
 	
 install(
 		FILES
-			mailfilteragent.desktop
+			filteragent.desktop
 		DESTINATION
 			"${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
 	)

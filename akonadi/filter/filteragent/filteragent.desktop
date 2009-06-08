@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Akonadi Filtering Agent
+Comment=Filters PIM Data in Multiple Collections
+Comment[it]=Filtra dati PIM in Collezioni Multiple
+Type=AkonadiAgent
+Exec=akonadi_filter_agent
+Icon=view-filter
+No_Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822,message/news
+X-Akonadi-Capabilities=Unique
+X-Akonadi-Identifier=akonadi_filter_agent
+
