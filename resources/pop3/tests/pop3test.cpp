@@ -18,6 +18,7 @@
 */
 #include "pop3test.h"
 
+#include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemDeleteJob>
@@ -41,70 +42,89 @@ using namespace Akonadi;
 
 void Pop3Test::initTestCase()
 {
-  Akonadi::AgentInstance::List agents = AgentManager::self()->instances();
-  QCOMPARE( agents.size(), 2 );
-  bool popFound = false;
-  bool maildirFound = false;
-  foreach( const AgentInstance &agent, agents ) {
-    if ( agent.type().identifier() == "akonadi_maildir_resource" )
-      maildirFound = true;
-    if ( agent.type().identifier() == "akonadi_pop3_resource" ) {
-      popFound = true;
-      mPop3Identifier = agent.identifier();
-      agent.reconfigure();
-    }
-  }
+  //
+  // Create the maildir and pop3 resources
+  //
+  AgentType maildirType = AgentManager::self()->type( "akonadi_maildir_resource" );
+  AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob( maildirType );
+  QVERIFY( agentCreateJob->exec() );
+  mMaildirIdentifier = agentCreateJob->instance().identifier();
 
-  QVERIFY( popFound );
-  QVERIFY( maildirFound );
+  AgentType popType = AgentManager::self()->type( "akonadi_pop3_resource" );
+  agentCreateJob = new AgentInstanceCreateJob( popType );
+  QVERIFY( agentCreateJob->exec() );
+  mPop3Identifier = agentCreateJob->instance().identifier();
 
+  //
+  // Configure the maildir resource
+  //
+  QString maildirRootPath = KGlobal::dirs()->saveLocation( "data", "tester", false ) + "maildirtest";
+  mMaildirPath = maildirRootPath + "/new";
+  mMaildirSettingsInterface = new OrgKdeAkonadiMaildirSettingsInterface(
+      "org.freedesktop.Akonadi.Resource." + mMaildirIdentifier,
+       "/Settings", QDBusConnection::sessionBus(), this );
+  QDBusReply<void> setPathReply = mMaildirSettingsInterface->setPath( maildirRootPath );
+  QVERIFY( setPathReply.isValid() );
+  AgentManager::self()->instance( mMaildirIdentifier ).reconfigure();
+  QDBusReply<QString> getPathReply = mMaildirSettingsInterface->path();
+  QCOMPARE( getPathReply.value(), maildirRootPath );
+  
+  //
+  // Find the root maildir collection
+  //
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
   QVERIFY( job->exec() );
   Collection::List collections = job->collections();
   foreach( const Collection &col, collections ) {
+    kDebug() << "Resource is:" << col.resource();
+    kDebug() << "Remote id is:" << col.remoteId();
     if ( col.name() != "Search" )
       mMaildirCollection = col;
   }
-  QCOMPARE( collections.size(), 2 );
-  mMaildirPath = KGlobal::dirs()->saveLocation( "data", "tester", false ) + "maildirtest/new";
 
+  //
+  // Start the fake POP3 server
+  //
   mFakeServer = new FakeServer( this );
   mFakeServer->start();
 
-  mSettingsInterface = new OrgKdeAkonadiPOP3SettingsInterface(
+  //
+  // Configure the pop3 resource
+  //
+  mPOP3SettingsInterface = new OrgKdeAkonadiPOP3SettingsInterface(
       "org.freedesktop.Akonadi.Resource." + mPop3Identifier,
        "/Settings", QDBusConnection::sessionBus(), this );
 
-  QDBusReply<uint> reply0 = mSettingsInterface->port();
+  QDBusReply<uint> reply0 = mPOP3SettingsInterface->port();
   QVERIFY( reply0.isValid() );
   QVERIFY( reply0.value() == 110 );
   
-  mSettingsInterface->setPort( 5989 );
+  mPOP3SettingsInterface->setPort( 5989 );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<uint> reply = mSettingsInterface->port();
+  QDBusReply<uint> reply = mPOP3SettingsInterface->port();
   QVERIFY( reply.isValid() );
   QVERIFY( reply.value() == 5989 );
 
-  mSettingsInterface->setHost( "localhost" );
+  mPOP3SettingsInterface->setHost( "localhost" );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<QString> reply2 = mSettingsInterface->host();
+  QDBusReply<QString> reply2 = mPOP3SettingsInterface->host();
   QVERIFY( reply2.isValid() );
   QVERIFY( reply2.value() == "localhost" );
-  mSettingsInterface->setLogin( "HansWurst" );
+  mPOP3SettingsInterface->setLogin( "HansWurst" );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<QString> reply3 = mSettingsInterface->login();
+  QDBusReply<QString> reply3 = mPOP3SettingsInterface->login();
   QVERIFY( reply3.isValid() );
   QVERIFY( reply3.value() == "HansWurst" );
 
-  mSettingsInterface->setPassword( "Geheim" );
+  mPOP3SettingsInterface->setPassword( "Geheim" );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<QString> reply4 = mSettingsInterface->password();
+  QDBusReply<QString> reply4 = mPOP3SettingsInterface->password();
   QVERIFY( reply4.isValid() );
   QVERIFY( reply4.value() == "Geheim" );
 
-  mSettingsInterface->setTargetCollection( mMaildirCollection.id() );
+  mPOP3SettingsInterface->setTargetCollection( mMaildirCollection.id() );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<qlonglong> reply5 = mSettingsInterface->targetCollection();
+  QDBusReply<qlonglong> reply5 = mPOP3SettingsInterface->targetCollection();
   QVERIFY( reply5.isValid() );
   QVERIFY( reply5.value() == mMaildirCollection.id() );
 }
@@ -419,7 +439,7 @@ void Pop3Test::testBigFetch()
 
 void Pop3Test::testSimpleLeaveOnServer()
 {
-  mSettingsInterface->setLeaveOnServer( true );
+  mPOP3SettingsInterface->setLeaveOnServer( true );
 
   QList<QByteArray> mails;
   mails << simpleMail1 << simpleMail2 << simpleMail3;
@@ -440,7 +460,7 @@ void Pop3Test::testSimpleLeaveOnServer()
   checkMailsInMaildir( mails );
 
   // The resource should have saved the UIDs of the seen messages
-  QVERIFY( qEqual( uids.begin(), uids.end(), mSettingsInterface->seenUidList().value().begin() ) );
+  QVERIFY( qEqual( uids.begin(), uids.end(), mPOP3SettingsInterface->seenUidList().value().begin() ) );
 
   //
   // OK, next mail check: We have to check that the old seen messages are not downloaded again,
@@ -466,13 +486,13 @@ void Pop3Test::testSimpleLeaveOnServer()
   syncAndWaitForFinish();
   items = checkMailsOnAkonadiServer( newMails );
   checkMailsInMaildir( newMails );
-  QVERIFY( qEqual( newUids.begin(), newUids.end(), mSettingsInterface->seenUidList().value().begin() ) );
+  QVERIFY( qEqual( newUids.begin(), newUids.end(), mPOP3SettingsInterface->seenUidList().value().begin() ) );
 
   //
   // Ok, next test: When turning off leaving on the server, all mails should be deleted, but
   // none downloaded.
   //
-  mSettingsInterface->setLeaveOnServer( false );
+  mPOP3SettingsInterface->setLeaveOnServer( false );
 
   mFakeServer->setAllowedDeletions( "1,2,3,4" );
   mFakeServer->setNextConversation(
@@ -487,5 +507,5 @@ void Pop3Test::testSimpleLeaveOnServer()
   items = checkMailsOnAkonadiServer( newMails );
   checkMailsInMaildir( newMails );
   cleanupMaildir( items );
-  QVERIFY( mSettingsInterface->seenUidList().value().isEmpty() );
+  QVERIFY( mPOP3SettingsInterface->seenUidList().value().isEmpty() );
 }

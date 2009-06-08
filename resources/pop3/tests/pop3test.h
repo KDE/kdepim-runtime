@@ -20,7 +20,8 @@
 #define POP3TEST_H
 
 #include "fakeserver/fakeserver.h"
-#include "settings.h"
+#include "pop3settings.h"
+#include "maildirsettings.h"
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
@@ -31,6 +32,8 @@
 class Pop3Test : public QObject
 {
   Q_OBJECT
+
+    void replymMaildirSettingsInterface ( QString arg1 );
   private slots:
     void initTestCase();
     void cleanupTestCase();
@@ -52,9 +55,12 @@ class Pop3Test : public QObject
     QString uidSequence( const QStringList &uids ) const;
 
     FakeServer *mFakeServer;
-    OrgKdeAkonadiPOP3SettingsInterface *mSettingsInterface;
+
+    OrgKdeAkonadiPOP3SettingsInterface *mPOP3SettingsInterface;
+    OrgKdeAkonadiMaildirSettingsInterface *mMaildirSettingsInterface;
     Akonadi::Collection mMaildirCollection;
     QString mPop3Identifier;
+    QString mMaildirIdentifier;
     QString mMaildirPath;
 };
 
