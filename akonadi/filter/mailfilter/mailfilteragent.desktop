@@ -1,4 +1,5 @@
-[Desktop Entry]Name=Mail Filter Agent
+[Desktop Entry]
+Name=Akonadi Mail Filtering Agent
 Comment=Filters Mail in Multiple Collections
 Comment[et]=Kirjade filtreerimine mitmes kogus
 Comment[km]=ត្រង​សំបុត្រ​ក្នុង​ការ​ប្រមូល​ផ្ដុំ​ជា​ច្រើន
@@ -8,7 +9,8 @@ Comment[sv]=Filtrerar e-post i flera samlingar
 Comment[uk]=Фільтрує поштові повідомлення за збірками
 Type=AkonadiAgent
 Exec=akonadi_mailfilter_agent
-Icon=message-rfc822
+Icon=view-filter
+No_Icon=message-rfc822
 
 X-Akonadi-MimeTypes=message/rfc822,message/news
 X-Akonadi-Capabilities=Unique

@@ -1,8 +1,9 @@
-/****************************************************************************** * *
+/******************************************************************************
+ *
  *  File : agent.cpp
  *  Created on Sat 16 May 2009 14:24:16 by Szymon Tomasz Stefanek
  *
- *  This file is part of the Akonadi Mail Filtering Agent
+ *  This file is part of the Akonadi  Filtering Agent
  *
  *  Copyright 2009 Szymon Tomasz Stefanek <pragma@kvirc.net>
  *
@@ -24,6 +25,8 @@
 
 #include "agent.h"
 
+#include "filteragentadaptor.h"
+
 #include <akonadi/attributefactory.h>
 #include <akonadi/session.h>
 #include <akonadi/monitor.h>
@@ -35,27 +38,73 @@
 
 #include <KDebug>
 
-MailFilterAgent::MailFilterAgent( const QString &id )
+#include <QDialog>
+
+FilterAgent * FilterAgent::mInstance = 0;
+
+FilterAgent::FilterAgent( const QString &id )
   : Akonadi::AgentBase( id )
 {
+  Q_ASSERT( mInstance == 0 ); // must be unique
+
+  mInstance = this;
+
+  Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
+  mComponentFactories.insert( QLatin1String( "message/rfc822" ), f );
+
+  new FilterAgentAdaptor( this );
+
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug() << "mailfilteragent: ready and waiting..." ;
 }
 
-MailFilterAgent::~MailFilterAgent()
+FilterAgent::~FilterAgent()
+{
+  qDeleteAll( mEngines );
+
+  mInstance = 0;
+}
+
+void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+{
+  // find out the filter chain that we need to apply to this item
+  QList< FilterEngine * > * filterChain = mFilterChains.value( collection.id(), 0 );
+
+  Q_ASSERT( filterChain ); // if this fails then we have received a notification for a collection we shouldn't be watching
+  Q_ASSERT( filterChain->count() > 0 );
+
+  // apply each filter
+  foreach( FilterEngine * engine, *filterChain )
+  {
+#if 0
+    engine->run( item, collection );
+#endif
+  }
+}
+
+void FilterAgent::createEngine( const QString &id )
+{
+}
+
+
+void FilterAgent::loadConfiguration()
+{
+}
+
+void FilterAgent::saveConfiguration()
+{
+}
+
+void FilterAgent::configure( WId winId )
 {
 }
 
 /*
-void MailFilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
+void FilterAgent::itemRemoved(const Akonadi::Item & ref)
 {
 }
 
-void MailFilterAgent::itemRemoved(const Akonadi::Item & ref)
-{
-}
-
-void MailFilterAgent::collectionChanged( const Akonadi::Collection &col )
+void FilterAgent::collectionChanged( const Akonadi::Collection &col )
 {
 }
 */

@@ -1,9 +1,9 @@
-/****************************************************************************** *
+/******************************************************************************
  *
- *  File : main.cpp
- *  Created on Sat 16 May 2009 14:24:16 by Szymon Tomasz Stefanek
+ *  File : engine.cpp
+ *  Created on Mon 8 Jun 2009 04:17:16 by Szymon Tomasz Stefanek
  *
- *  This file is part of the Akonadi Mail Filtering Agent
+ *  This file is part of the Akonadi  Filtering Agent
  *
  *  Copyright 2009 Szymon Tomasz Stefanek <pragma@kvirc.net>
  *
@@ -23,7 +23,33 @@
  *
  *******************************************************************************/
 
-#include "agent.h"
+#include "engine.h"
 
-AKONADI_AGENT_MAIN( FilterAgent )
+#include <akonadi/filter/program.h>
+#include <akonadi/filter/sievedecoder.h>
+#include <akonadi/filter/componentfactory.h>
+
+FilterEngine::FilterEngine(
+   const QString &id,
+   Akonadi::Filter::ComponentFactory * componentFactory
+ )
+  : mId( id ), mComponentFactory( componentFactory ), mProgram( 0 )
+{
+  Q_ASSERT( mComponentFactory );
+}
+
+FilterEngine::~FilterEngine()
+{
+  if( mProgram )
+    delete mProgram;
+}
+
+bool FilterEngine::loadConfiguration( const QString &filterProgramFile )
+{
+  //Akonadi::Filter::IO::SieveDecoder d( f );
+  //Akonadi::Filter::Program * p = d.run();
+
+  return false;
+}
+
 

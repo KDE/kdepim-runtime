@@ -3,16 +3,40 @@ project(
 	)
 
 include_directories(
-		${CMAKE_SOURCE_DIR}/../
-		${CMAKE_CURRENT_BINARY_DIR}
 		${Boost_INCLUDE_DIR}
 	)
+
+# This path emulates the KDE include path when the library headers
+# are actually installed.
+
+include_directories(
+		${CMAKE_CURRENT_SOURCE_DIR}/../
+	)
+
+# we need these because we're including in-tree stuff which isn't installed yet
+
+include_directories(
+		${CMAKE_CURRENT_BINARY_DIR}/../
+		${CMAKE_CURRENT_BINARY_DIR}/../akonadi/filter/
+		${CMAKE_CURRENT_BINARY_DIR}/../akonadi/filter/ui/
+	)
+
 
 set(
 		AKONADI_MAILFILTER_AGENT_SRCS
 		agent.cpp
+		engine.cpp
 		main.cpp
 	)
+
+
+qt4_add_dbus_adaptor(
+		AKONADI_MAILFILTER_AGENT_SRCS
+		org.freedesktop.Akonadi.FilterAgent.xml
+		agent.h
+		FilterAgent
+	)
+
 
 kde4_add_executable(
 		akonadi_mailfilter_agent
@@ -22,6 +46,7 @@ kde4_add_executable(
 
 target_link_libraries(
 		akonadi_mailfilter_agent
+		akonadi-filter
 		${KDE4_AKONADI_LIBS}
 		ksieve
 		${KDE4_KDECORE_LIBS}
@@ -35,19 +60,26 @@ set(
 	)
 
 
+install(
+		FILES
+			org.freedesktop.Akonadi.FilterAgent.xml
+		DESTINATION
+			${DBUS_INTERFACES_INSTALL_DIR}
+	)
+
 
 #target_link_libraries(akonadi_mailfilter_agent ${KDE4_AKONADI_LIBS} ${KDE4_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${STRIGIQTDBUSCLIENT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KABC_LIBS} ${KDE4_KIO_LIBS} ${KDE4_KMIME_LIBS} )
 
 install(
 		TARGETS
-		akonadi_mailfilter_agent
+			akonadi_mailfilter_agent
 		${INSTALL_TARGETS_DEFAULT_ARGS}
 	)
 	
 install(
 		FILES
-		mailfilteragent.desktop
+			mailfilteragent.desktop
 		DESTINATION
-		"${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
+			"${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
 	)
 
