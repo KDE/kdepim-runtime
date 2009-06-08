@@ -67,7 +67,7 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    Kolab::Contact contact(QString::fromLatin1(xmlData));
+    Kolab::Contact contact(QString::fromUtf8(xmlData));
     QString pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
       QByteArray type;
