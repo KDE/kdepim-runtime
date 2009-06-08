@@ -68,18 +68,27 @@ void Pop3Test::initTestCase()
   AgentManager::self()->instance( mMaildirIdentifier ).reconfigure();
   QDBusReply<QString> getPathReply = mMaildirSettingsInterface->path();
   QCOMPARE( getPathReply.value(), maildirRootPath );
+  AgentManager::self()->instance( mMaildirIdentifier ).synchronize();
   
   //
   // Find the root maildir collection
   //
-  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  QVERIFY( job->exec() );
-  Collection::List collections = job->collections();
-  foreach( const Collection &col, collections ) {
-    kDebug() << "Resource is:" << col.resource();
-    kDebug() << "Remote id is:" << col.remoteId();
-    if ( col.name() != "Search" )
-      mMaildirCollection = col;
+  bool found = false;
+  QTime time;
+  time.start();
+  while ( !found ) {
+    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+    QVERIFY( job->exec() );
+    Collection::List collections = job->collections();
+    foreach( const Collection &col, collections ) {
+      if ( col.resource() == AgentManager::self()->instance( mMaildirIdentifier ).identifier() ) {
+        mMaildirCollection = col;
+        found = true;
+        break;
+      }
+    }
+
+    QVERIFY( time.elapsed() < 10 * 1000 ); // maildir should not need more than 10 secs to sync
   }
 
   //
