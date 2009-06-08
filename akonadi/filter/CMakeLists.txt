@@ -21,5 +21,5 @@ include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
 add_subdirectory(akonadi)
-add_subdirectory(filteragent)
+add_subdirectory(agent)
 add_subdirectory(console)

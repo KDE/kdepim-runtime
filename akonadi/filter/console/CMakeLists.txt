@@ -26,7 +26,7 @@ include_directories(
 
 qt4_add_dbus_interface(
 		AKONADI_FILTER_CONSOLE_SRCS
-		../filteragent/org.freedesktop.Akonadi.FilterAgent.xml
+		../agent/org.freedesktop.Akonadi.FilterAgent.xml
 		filteragentinterface
 	)
 
