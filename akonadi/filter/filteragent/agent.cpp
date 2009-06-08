@@ -37,8 +37,8 @@
 #include <akonadi/item.h>
 
 #include <KDebug>
+#include <KLocale>
 
-#include <QDialog>
 
 FilterAgent * FilterAgent::mInstance = 0;
 
@@ -84,6 +84,7 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
 
 void FilterAgent::createEngine( const QString &id )
 {
+  sendErrorReply( QDBusError::Failed, QLatin1String("The method call 'methodWithError()' is not supported") );
 }
 
 
