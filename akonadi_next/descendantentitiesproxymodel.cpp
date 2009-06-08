@@ -152,7 +152,7 @@ class DescendantEntitiesProxyModelPrivate
   void sourceModelReset();
   void sourceLayoutAboutToBeChanged();
   void sourceLayoutChanged();
-  void sourceDataChanged(QModelIndex,QModelIndex);
+  void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
   QPersistentModelIndex m_rootDescendIndex;
   // Hmm, if I make this QHash<QPersistentModelIndex, int> instead then moves are
@@ -234,7 +234,7 @@ void DescendantEntitiesProxyModel::setSourceModel(QAbstractItemModel * sourceMod
   connect( sourceModel, SIGNAL(layoutChanged()), SLOT(sourceLayoutChanged()) );
   connect( sourceModel, SIGNAL(layoutAboutToBeChanged()), SLOT(sourceLayoutAboutToBeChanged()) );
   connect( sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-          SLOT(sourceDataChanged(QModelIndex,QModelIndex)) );
+          SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex & ) ) );
   connect( sourceModel, SIGNAL(rowsInserted(const QModelIndex, int, int)),
           SLOT(sourceRowsInserted(const QModelIndex, int, int)) );
   connect( sourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex, int, int)),
@@ -608,9 +608,23 @@ int DescendantEntitiesProxyModel::rowCount(const QModelIndex & proxyIndex) const
   return 0;
 }
 
-void DescendantEntitiesProxyModelPrivate::sourceDataChanged(QModelIndex,QModelIndex)
+void DescendantEntitiesProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+  Q_Q( DescendantEntitiesProxyModel );
+  int topRow = topLeft.row();
+  int bottomRow = bottomRight.row();
 
+  for(int i = topRow; i <= bottomRow; ++i)
+  {
+    QModelIndex sourceTopLeft = q->sourceModel()->index(i, topLeft.column(), topLeft.parent());
+    QModelIndex proxyTopLeft = q->mapFromSource(sourceTopLeft);
+    // TODO. If an index does not have any descendants, then we can emit in blocks of rows.
+    // As it is we emit once for each row.
+    QModelIndex sourceBottomRight = q->sourceModel()->index(i, bottomRight.column(), bottomRight.parent());
+    QModelIndex proxyBottomRight = q->mapFromSource(sourceBottomRight);
+    kDebug() << proxyTopLeft << proxyBottomRight;
+    emit q->dataChanged(proxyTopLeft, proxyBottomRight);
+  }
 }
 
 int DescendantEntitiesProxyModelPrivate::descendantCount(const QModelIndex &sourceIndex, int ignoreTerminals) const
