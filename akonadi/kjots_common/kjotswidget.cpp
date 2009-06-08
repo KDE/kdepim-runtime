@@ -55,6 +55,7 @@
 #include "selectionproxymodel.h"
 
 #include <grantlee/template.h>
+#include <grantlee/engine.h>
 #include <grantlee/context.h>
 
 #include <KTextEdit>
@@ -75,11 +76,21 @@ using namespace Akonadi;
 using namespace Grantlee;
 
 KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
-    : QWidget( parent, f ), m_themeName("default")
+    : QWidget( parent, f )
 {
 
   QSplitter *splitter = new QSplitter( this );
   QHBoxLayout *layout = new QHBoxLayout( this );
+
+  KStandardDirs KStd;
+  Engine *engine = Engine::instance();
+  engine->setPluginDirs(KStd.findDirs("lib", "grantlee"));
+
+  m_loader = new FileSystemTemplateLoader(this);
+  m_loader->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
+  m_loader->setTheme("default");
+
+  engine->addTemplateResource(m_loader);
 
   treeview = new EntityTreeView( splitter );
 //   treeview = new QColumnView(splitter);
@@ -199,7 +210,7 @@ KJotsWidget::~KJotsWidget()
 
 }
 
-QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
+QString KJotsWidget::renderSelectionToHtml()
 {
   QHash<QString, QVariant> hash;
 
@@ -216,18 +227,13 @@ QString KJotsWidget::renderSelectionToHtml(const QString &themeName)
 
   hash.insert("entities", objectList);
   Context c(hash);
-  TemplateLoader *tl = TemplateLoader::instance();
 
-  KStandardDirs KStd;
+  Engine *engine = Engine::instance();
+  Template *t = engine->loadByName("template.html", this);
 
-  tl->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
-  tl->setPluginDirs(KStd.findDirs("lib", QString()));
-
-
-  tl->setTheme(themeName);
-
-  std::auto_ptr<Template> t ( tl->loadByName("template.html") );
-  return t->render(&c);
+  QString result = t->render(&c);
+  // TODO: handle errors.
+  return result;
 }
 
 void KJotsWidget::renderSelection()
@@ -253,7 +259,7 @@ void KJotsWidget::renderSelection()
   QTextDocument doc;
   QTextCursor cursor(&doc);
 
-  browser->setHtml( renderSelectionToHtml(m_themeName) );
+  browser->setHtml( renderSelectionToHtml() );
   stackedWidget->setCurrentWidget( browser );
 }
 
@@ -262,47 +268,47 @@ QString KJotsWidget::getThemeFromUser()
   bool ok;
   QString text = QInputDialog::getText(this, i18n("Change Theme"),
                                       tr("Theme name:"), QLineEdit::Normal,
-                                      m_themeName, &ok);
-  if (!ok)
-    return QString();
-
-  if (text.isEmpty())
+                                      m_loader->themeName(), &ok);
+  if (!ok || text.isEmpty())
   {
     return QString("default");
   }
-  else
-  {
-    return text;
-  }
+
+  return text;
+
 }
 
 
 void KJotsWidget::changeTheme()
 {
-  m_themeName = getThemeFromUser();
+  m_loader->setTheme(getThemeFromUser());
   renderSelection();
 }
 
 void KJotsWidget::exportSelection()
 {
+  QString currentTheme = m_loader->themeName();
   QString themeName = getThemeFromUser();
   if (themeName.isEmpty())
   {
     themeName = "default";
   }
+  m_loader->setTheme(themeName);
 
   QString filename = KFileDialog::getSaveFileName();
   if (!filename.isEmpty())
   {
     QFile exportFile ( filename );
     if ( !exportFile.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+        m_loader->setTheme(currentTheme);
         KMessageBox::error(0, i18n("<qt>Error opening internal file.</qt>"));
         return;
     }
-    exportFile.write(renderSelectionToHtml(themeName).toUtf8());
+    exportFile.write(renderSelectionToHtml().toUtf8());
 
     exportFile.close();
   }
+  m_loader->setTheme(currentTheme);
 }
 
 

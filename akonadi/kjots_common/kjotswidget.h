@@ -38,6 +38,11 @@ class EntityTreeView;
 class SelectionProxyModel;
 }
 
+namespace Grantlee
+{
+class FileSystemTemplateLoader;
+}
+
 class KJotsPage;
 
 #include <QWidget>
@@ -53,7 +58,7 @@ public:
   ~KJotsWidget();
 
 protected:
-  QString renderSelectionToHtml(const QString &themeName);
+  QString renderSelectionToHtml();
   QString getThemeFromUser();
 
 protected slots:
@@ -68,7 +73,7 @@ private:
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
   Akonadi::SelectionProxyModel *selProxy;
-  QString m_themeName;
+  Grantlee::FileSystemTemplateLoader *m_loader;
 //   Akonadi::EntityTreeView *treeview;
 //   QColumnView *treeview;
   QAbstractItemView *treeview;
