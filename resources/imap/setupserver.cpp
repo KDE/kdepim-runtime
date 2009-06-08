@@ -177,7 +177,17 @@ void SetupServer::slotTest()
 
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
-  m_serverTest->setServer( m_ui->imapServer->text() );
+
+  QString server = m_ui->imapServer->text().section( ":", 0, 0 );
+  int port = m_ui->imapServer->text().section( ":", 1, 1 ).toInt();
+
+  m_serverTest->setServer( server );
+
+  if ( port>0 ) {
+    m_serverTest->setPort( MailTransport::Transport::EnumEncryption::None, port );
+    m_serverTest->setPort( MailTransport::Transport::EnumEncryption::SSL, port );
+  }
+
   m_serverTest->setProtocol( "imap" );
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
