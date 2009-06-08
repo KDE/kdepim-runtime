@@ -234,8 +234,9 @@ void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
     maildir.refresh();
     int curCount = static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() );
 
-    std::cout << "Currently in maildir:" << curCount << std::endl;
-    std::cout << "Last:" << lastCount << std::endl;
+    if ( curCount != lastCount ) {
+      std::cout << time.elapsed() << ": Currently in maildir:" << curCount << std::endl;
+    }
     // Restart the timer when a mail arrives, as it shows that the maildir resource is
     // still alive and kicking.
     if ( curCount != lastCount ) {
