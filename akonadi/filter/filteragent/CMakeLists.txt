@@ -23,7 +23,7 @@ include_directories(
 
 
 set(
-		AKONADI_MAILFILTER_AGENT_SRCS
+		AKONADI_FILTER_AGENT_SRCS
 		agent.cpp
 		engine.cpp
 		main.cpp
@@ -31,7 +31,7 @@ set(
 
 
 qt4_add_dbus_adaptor(
-		AKONADI_MAILFILTER_AGENT_SRCS
+		AKONADI_FILTER_AGENT_SRCS
 		org.freedesktop.Akonadi.FilterAgent.xml
 		agent.h
 		FilterAgent
@@ -41,7 +41,7 @@ qt4_add_dbus_adaptor(
 kde4_add_executable(
 		akonadi_filter_agent
 		RUN_UNINSTALLED
-		${AKONADI_MAILFILTER_AGENT_SRCS}
+		${AKONADI_FILTER_AGENT_SRCS}
 	)
 
 target_link_libraries(
