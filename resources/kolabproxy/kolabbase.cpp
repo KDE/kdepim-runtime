@@ -36,7 +36,6 @@
 #include <kabc/addressee.h>
 #include <kcal/incidence.h>
 #include <kcal/journal.h>
-#include <libkdepim/kpimprefs.h>
 #include <ksystemtimezone.h>
 #include <kdebug.h>
 #include <QFile>

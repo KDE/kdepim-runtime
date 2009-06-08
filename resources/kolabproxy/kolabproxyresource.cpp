@@ -274,34 +274,13 @@ void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &
     return;
   }
 
-#if 0
-  //FIXME: enable this code instead of Delete + Create when it is properly supported by the server and the imap resource
-
   handler->toKolabFormat(addrItem, imapItem);
   ItemModifyJob *mjob = new ItemModifyJob( imapItem );
     if (!mjob->exec()) {
       kWarning() << "Can't modify imap item " << imapItem.id();
     }
-#endif
-  //Here starts the delete+create code
-  Collection imapCollection(imapItem.collectionId());
-  ItemDeleteJob *djob = new ItemDeleteJob( imapItem );
-  if (job->exec()) {
-    imapItem = Akonadi::Item();
-  } else {
-    kWarning() << "Can't delete imap item " << addrItem.remoteId();
-    cancelTask();
-    return;
-  }
-  handler->toKolabFormat(addrItem, imapItem);
-
-  ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
-  if (!cjob->exec()) {
-    kWarning() << "Can't create imap item " << imapItem.id() << cjob->errorString();
-  }
 
   changeCommitted( addrItem );
-
 }
 
 void KolabProxyResource::itemRemoved( const Item &item )
