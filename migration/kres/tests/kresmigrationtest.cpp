@@ -64,6 +64,8 @@ void KResMigrationTester::test_initalSetup()
   // TODO: repeat same checks when Akonadi is not started
   // -> control::stop
   // -> remove akonadi resources
+  // -> remove kresources
   // -> reset migrator state (how to do that?)
+
   // TODO: Same checks for kabc
 }
