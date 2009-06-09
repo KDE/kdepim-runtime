@@ -49,6 +49,8 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
 
   connect( KDirWatch::self(), SIGNAL( dirty( QString ) ), SLOT( fileChanged( QString ) ) );
   connect( KDirWatch::self(), SIGNAL( created( QString ) ), SLOT( fileChanged( QString ) ) );
+
+  KGlobal::locale()->insertCatalog( "akonadi_singlefile_resource" );
 }
 
 QString SingleFileResourceBase::cacheFile() const
