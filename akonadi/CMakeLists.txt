@@ -27,6 +27,7 @@ include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
 add_subdirectory(akonadi_next)
+add_subdirectory(pop3)
 
 # This isn't released yet, sorry...
 find_package(Grantlee)
