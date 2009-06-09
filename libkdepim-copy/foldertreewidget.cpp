@@ -136,7 +136,7 @@ public:
         {
           if ( displayChildUnread )
             unreadText = QString("(%1 + %2)").arg( unread ).arg( childUnread );
-          else 
+          else
             unreadText = QString("(%1)").arg( unread );
         } else
           unreadText = QString("(0 + %1)").arg( childUnread );
@@ -147,32 +147,29 @@ public:
         int labelWidth = fm.width( item->labelText() );
         int maxWidth = labelWidth + ITEM_LABEL_TO_UNREADCOUNT_SPACING + unreadWidth;
 
-        if ( maxWidth > textRect.width() ) 
+        QString label;
+        if ( maxWidth > textRect.width() )
         {
           // must elide
-          QString label = item->elidedLabelText( fm, textRect.width() - ( ITEM_LABEL_TO_UNREADCOUNT_SPACING + unreadWidth ) );
+          label = item->elidedLabelText( fm, textRect.width() - ( ITEM_LABEL_TO_UNREADCOUNT_SPACING + unreadWidth ) );
+          labelWidth = fm.width( label );
 
           // the condition inside this call is an optimisation (it's faster than simply label != item->labelText())
           item->setLabelTextElided( ( label.length() != item->labelText().length() ) || ( label != item->labelText() ) );
-
-          painter->drawText( textRect, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignVCenter, label );
-
-          if ( !( opt.state & QStyle::State_Selected ) )
-            painter->setPen( QPen( mFolderTreeWidget->unreadCountColor(), 0 ) );
-          painter->drawText( textRect, Qt::AlignRight | Qt::TextSingleLine | Qt::AlignVCenter, unreadText );
-
         } else {
+          label = item->labelText();
           // no elision needed
           item->setLabelTextElided( false );
-
-          painter->drawText( textRect, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignVCenter, item->labelText() );
-
-          textRect.setLeft( textRect.left() + labelWidth + ITEM_LABEL_TO_UNREADCOUNT_SPACING );
-
-          if ( !( opt.state & QStyle::State_Selected ) )
-            painter->setPen( QPen( mFolderTreeWidget->unreadCountColor(), 0 ) );
-          painter->drawText( textRect, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignVCenter, unreadText );
         }
+
+        painter->drawText( textRect, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignVCenter, label );
+
+        textRect.setLeft( textRect.left() + labelWidth + ITEM_LABEL_TO_UNREADCOUNT_SPACING );
+
+        if ( !( opt.state & QStyle::State_Selected ) ) {
+          painter->setPen( QPen( mFolderTreeWidget->unreadCountColor(), 0 ) );
+        }
+        painter->drawText( textRect, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignVCenter, unreadText );
       } else {
         // got unread messages: bold font but no special text tricks
         QString label = item->elidedLabelText( fm, textRect.width() );
@@ -409,7 +406,7 @@ bool FolderTreeWidgetItem::updateChildrenCounts()
   mChildrenUnreadCount = 0;
   mChildrenDataSize = 0;
 
-  bool gotValidDataSize = false;  
+  bool gotValidDataSize = false;
 
   while ( idx < cc )
   {
@@ -445,7 +442,7 @@ void FolderTreeWidgetItem::setLabelText( const QString &label )
   int idx = tree->labelColumnIndex();
   if ( tree && idx >= 0 )
   {
-    setText( idx, label );  
+    setText( idx, label );
     setTextAlignment( idx, Qt::AlignRight );
   }
 }
