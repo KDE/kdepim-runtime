@@ -31,9 +31,6 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <iostream> // FIXME: temporary. we use std::cout because qDebug is limited to 1000 calls in unit tests
-                    //        remove the std::cout when the problem has been found
-
 typedef boost::shared_ptr<KMime::Message> MsgPtr;
 
 QTEST_AKONADIMAIN( Pop3Test, NoGUI )
@@ -184,17 +181,8 @@ static const QByteArray simpleMail4 =
 
 void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
-  std::cout << "======================= CLEAN UP MAILDIR ======================";
-  // FIXME: this job + the foreach only for debugging, remove later!
-  ItemFetchJob *job = new ItemFetchJob( mMaildirCollection );
-  Q_ASSERT( job->exec() );
-  foreach( const Item &item, job->items() ) {
-    std::cout << "Item in maildir:" << int( item.id() ) << "Remote Id:" << (const char*)(item.remoteId().data()) << std::endl;
-  }
-  std::cout << "======================= CLEAN UP MAILDIR 2 ======================";
   // Delete all mails so the maildir is clean for the next test
   foreach( const Item &item, items ) {
-    std::cout << "Deleting item with ID:" << item.id() << std::endl;
     ItemDeleteJob *job = new ItemDeleteJob( item );
     QVERIFY( job->exec() );
   }
@@ -202,12 +190,10 @@ void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
   time.start();
   int lastCount = -1;
   forever {
+    qApp->processEvents();
     QDir maildir( mMaildirPath );
     maildir.refresh();
     int curCount = maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count();
-
-    std::cout << "Currently in maildir:" << curCount << std::endl;
-    std::cout << "Last:" << lastCount << std::endl;
 
     // Restart the timer when a mail arrives, as it shows that the maildir resource is
     // still alive and kicking.
@@ -218,6 +204,7 @@ void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 
     if ( curCount == 0 )
       break;
+
     QVERIFY( time.elapsed() < 60000 );
   }
 }
@@ -227,20 +214,18 @@ void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
   // Now, test that all mails actually ended up in the maildir. Since the maildir resource
   // might be slower, give it a timeout so it can write the files to disk
   QTime time;
-  int lastCount = -1;
   time.start();
+  int lastCount = -1;
   forever {
+    qApp->processEvents();
     QDir maildir( mMaildirPath );
     maildir.refresh();
     int curCount = static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() );
 
-    if ( curCount != lastCount ) {
-      std::cout << time.elapsed() << ": Currently in maildir:" << curCount << std::endl;
-    }
     // Restart the timer when a mail arrives, as it shows that the maildir resource is
     // still alive and kicking.
     if ( curCount != lastCount ) {
-      time.restart();
+      time.start();
       lastCount = curCount;
     }
 
@@ -435,15 +420,10 @@ void Pop3Test::testBigFetch()
     quitSequence()
   );
 
-  qDebug() << "============= Going to start mail check ===================";
   syncAndWaitForFinish();
-  qDebug() << "============= Going to check that mails are in Akonadi ===================";
   Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
-  qDebug() << "============= Going to check that mails are in the maildir ===================";
   checkMailsInMaildir( mails );
-  qDebug() << "============= Cleaining up maildir ===================";
   cleanupMaildir( items );
-  qDebug() << "============= Finished ===================";
 }
 
 
