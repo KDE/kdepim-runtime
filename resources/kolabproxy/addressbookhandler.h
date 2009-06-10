@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -23,7 +24,14 @@
 #include "kolabhandler.h"
 
 namespace KABC{
+  class AddressBook;
   class Addressee;
+  class ContactGroup;
+}
+
+namespace Kolab {
+  class Contact;
+  class DistributionList;
 }
 
 /**
@@ -42,6 +50,13 @@ public:
 private:
     bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
 
+    bool contactGroupFromKolab(MessagePtr data, KABC::ContactGroup &contactGroup);
+
+    void contactToKolabFormat(const Kolab::Contact &contact, Akonadi::Item &imapItem);
+
+    void distListToKolabFormat(const Kolab::DistributionList &distList, Akonadi::Item &imapItem);
+
+    KABC::AddressBook* mAddressBook;
 };
 
 #endif

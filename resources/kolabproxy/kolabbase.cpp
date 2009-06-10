@@ -34,6 +34,7 @@
 #include "kolabbase.h"
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 #include <kcal/incidence.h>
 #include <kcal/journal.h>
 #include <ksystemtimezone.h>
@@ -165,6 +166,32 @@ void KolabBase::saveTo( KABC::Addressee* addressee ) const
     break;
   }
   // TODO: Attachments
+}
+
+void KolabBase::setFields( const KABC::ContactGroup* contactGroup )
+{
+  // A contactgroup does not have a creation date, so somehow we should
+  // make one, if this is a new entry
+
+  setUid( contactGroup->id() );
+
+  // Set creation-time and last-modification-time
+  KDateTime creationDate = KDateTime::currentDateTime( KDateTime::Spec( mTimeZone ) );
+  kDebug(5006) <<"Creation date set to current time";
+
+  KDateTime modified = KDateTime::currentUtcDateTime();
+  setLastModified( modified );
+  if ( modified < creationDate ) {
+    // It's not possible that the modification date is earlier than creation
+    creationDate = modified;
+    kDebug(5006) <<"Creation date set to modification date";
+  }
+  setCreationDate( creationDate );
+}
+
+void KolabBase::saveTo( KABC::ContactGroup* contactGroup ) const
+{
+  contactGroup->setId( uid() );
 }
 
 void KolabBase::setUid( const QString& uid )

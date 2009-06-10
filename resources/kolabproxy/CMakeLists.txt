@@ -13,6 +13,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
   contact.cpp
+  distributionlist.cpp
   event.cpp
   task.cpp
   journal.cpp

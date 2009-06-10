@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2009 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,8 +20,11 @@
 
 #include "addressbookhandler.h"
 #include "contact.h"
+#include "distributionlist.h"
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
+#include <kabc/stdaddressbook.h>
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
 
@@ -30,6 +34,9 @@
 AddressBookHandler::AddressBookHandler(): KolabHandler()
 {
   m_mimeType = "application/x-vnd.kolab.contact";
+
+  // TODO using old KABC API should really be avoided
+  mAddressBook = KABC::StdAddressBook::self(true);
 }
 
 
@@ -41,7 +48,7 @@ AddressBookHandler::~AddressBookHandler()
 Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List & items)
 {
   Akonadi::Item::List newItems;
-  Q_FOREACH(Akonadi::Item item, items)
+  Q_FOREACH(const Akonadi::Item &item, items)
   {
 //     kDebug() << item.id();
     if (!item.hasPayload<MessagePtr>()) {
@@ -50,10 +57,16 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
     }
     MessagePtr payload = item.payload<MessagePtr>();
     KABC::Addressee addressee;
+    KABC::ContactGroup contactGroup;
     if (addresseFromKolab(payload, addressee)) {
-      Akonadi::Item newItem("text/directory");
+      Akonadi::Item newItem(KABC::Addressee::mimeType());
       newItem.setRemoteId(QString::number(item.id()));
       newItem.setPayload(addressee);
+      newItems << newItem;
+    } else if (contactGroupFromKolab(payload, contactGroup)) {
+      Akonadi::Item newItem(KABC::ContactGroup::mimeType());
+      newItem.setRemoteId(QString::number(item.id()));
+      newItem.setPayload(contactGroup);
       newItems << newItem;
     }
   }
@@ -111,22 +124,45 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
   return false;
 }
 
+bool AddressBookHandler::contactGroupFromKolab(MessagePtr data, KABC::ContactGroup &contactGroup)
+{
+  KMime::Content *xmlContent  = findContentByType(data, m_mimeType + ".distlist");
+  if (xmlContent) {
+    QByteArray xmlData = xmlContent->decodedContent();
+//     kDebug() << "xmlData " << xmlData;
+    Kolab::DistributionList distList(QString::fromUtf8(xmlData));
+    distList.saveTo(&contactGroup);
+    return true;
+  }
+  return false;
+}
 
 void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
-  if (!item.hasPayload<KABC::Addressee>()) {
-    kWarning() << "Payload is not a KABC::Addressee!";
+  if (item.hasPayload<KABC::Addressee>()) {
+    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+    Kolab::Contact contact(&addressee, 0);
+
+    contactToKolabFormat(contact, imapItem);
+  } else if (item.hasPayload<KABC::ContactGroup>()) {
+    KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+    Kolab::DistributionList distList(&contactGroup, mAddressBook);
+
+    distListToKolabFormat(distList, imapItem);
+  } else {
+    kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
     return;
   }
-  KABC::Addressee addressee = item.payload<KABC::Addressee>();
-  Kolab::Contact contact(&addressee, 0);
+}
 
+void AddressBookHandler::contactToKolabFormat(const Kolab::Contact& contact, Akonadi::Item &imapItem)
+{
   imapItem.setMimeType( "message/rfc822" );
 
   MessagePtr message(new KMime::Message);
   QString header;
-  header += "From: " + addressee.fullEmail() + "\n";
-  header += "Subject: " + addressee.uid() + "\n";
+  header += "From: " + contact.fullEmail() + "\n";
+  header += "Subject: " + contact.uid() + "\n";
   header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
@@ -196,7 +232,43 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
   imapItem.setPayload(message);
 }
 
+void AddressBookHandler::distListToKolabFormat(const Kolab::DistributionList& distList, Akonadi::Item &imapItem)
+{
+  imapItem.setMimeType( "message/rfc822" );
+
+  MessagePtr message(new KMime::Message);
+  QString header;
+  header += "From: " + distList.name() + "\n";
+  header += "Subject: " + distList.uid() + "\n";
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
+  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
+  header += "MIME-Version: 1.0\n";
+  header += "X-Kolab-Type: " + m_mimeType + ".distlist\n\n\n";
+  message->setContent(header.toLatin1());
+
+  KMime::Content *content = new KMime::Content();
+  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
+  "This is a Kolab Groupware object.\n" +
+  "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
+  "For a list of such email clients please visit\n"
+  "http://www.kolab.org/kolab2-clients.html\n";
+  content->setContent(contentData);
+  message->addContent(content);
+
+  content = new KMime::Content();
+  header = "Content-Type: " + m_mimeType + ".distlist; name=\"kolab.xml\"\n";
+  header += "Content-Transfer-Encoding: quoted-printable\n";
+  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
+  content->setHead(header.toLatin1());
+  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
+  content->setBody(codec->encode(distList.saveXML().toUtf8()));
+  message->addContent(content);
+
+  imapItem.setPayload(message);
+}
+
 QStringList AddressBookHandler::contentMimeTypes()
 {
-  return QStringList() << "text/directory";
+  return QStringList() << KABC::Addressee::mimeType()
+                       << KABC::ContactGroup::mimeType();
 }

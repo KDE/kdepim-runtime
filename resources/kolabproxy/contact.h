@@ -172,6 +172,8 @@ public:
   QList<Email>& emails();
   const QList<Email>& emails() const;
 
+  QString fullEmail() const;
+
   void addAddress( const Address& address );
   QList<Address>& addresses();
   const QList<Address>& addresses() const;
@@ -198,9 +200,6 @@ public:
   // Serialize this note to an XML string
   QString saveXML() const;
 
-  // Return true if this contact is a distr list
-  bool isDistributionList() const { return mIsDistributionList; }
-
 protected:
   void setFields( const KABC::Addressee*, KABC::AddressBook* );
 
@@ -218,9 +217,6 @@ private:
 
   void loadCustomAttributes( QDomElement& element );
   void saveCustomAttributes( QDomElement& element ) const;
-
-  void loadDistrListMember( const QDomElement& element );
-  void saveDistrListMembers( QDomElement& element ) const;
 
   QImage loadPictureFromAddressee( const KABC::Picture& picture );
 
@@ -261,23 +257,18 @@ private:
   QString mLanguage;
   QList<PhoneNumber> mPhoneNumbers;
   QList<Email> mEmails;
+  QString mFullEmail;
   QList<Address> mAddresses;
   QString mPreferredAddress;
   float mLatitude;
   float mLongitude;
   bool mHasGeo;
-  bool mIsDistributionList;
   struct Custom {
     QString app;
     QString name;
     QString value;
   };
   QList<Custom> mCustomList;
-  struct Member {
-    QString displayName;
-    QString email;
-  };
-  QList<Member> mDistrListMembers;
 };
 
 }
