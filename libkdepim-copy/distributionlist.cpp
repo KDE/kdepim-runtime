@@ -64,14 +64,18 @@ static ParseList parseCustom( const QString &str )
     }
 
     // parse "uid,email"
-    QStringList helpList = (*it).split( ',', QString::SkipEmptyParts );
+    QStringList helpList = (*it).split( ',' );
     Q_ASSERT( !helpList.isEmpty() );
     if ( helpList.isEmpty() ) {
       continue;
     }
-    const QString uid = helpList.first();
-    QString email;
     Q_ASSERT( helpList.count() < 3 ); // 1 or 2 items, but not more
+    const QString uid = helpList.first();
+    // if it's the only thing we have, empty UID is not ok
+    if ( helpList.count() == 1 && uid.isEmpty() ) {
+      continue;
+    }
+    QString email;
     if ( helpList.count() == 2 ) {
       email = helpList.last();
     }
@@ -102,7 +106,9 @@ void KPIM::DistributionList::insertEntry( const QString &uid, const QString &ema
   removeEntry( uid, email ); // avoid duplicates
   QString str = custom( "KADDRESSBOOK", s_customFieldName );
   // Assumption: UIDs don't contain ; nor ,
-  str += ';' + uid + ',' + email;
+  if ( str != ";" )
+    str += ';';
+  str += uid + ',' + email;
   insertCustom( "KADDRESSBOOK", s_customFieldName, str ); // replace old value
 }
 
