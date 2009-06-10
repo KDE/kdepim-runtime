@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Akonadi Filtering Agent
+Name[pt]=Agente de Filtragem do Akonadi
+Name[pt_BR]=Agente de Filtragem do Akonadi
+Name[sv]=Akonadi filtreringsmodul
+Name[uk]=Агент фільтрування Akonadi
 Comment=Filters PIM Data in Multiple Collections
+Comment[pt]=Filtra os Dados de PIM em Várias Colecções
+Comment[pt_BR]=Filtra os Dados de PIM em Várias Colecções
+Comment[sv]=Filtrerar data för personlig informationshantering i flera samlingar
+Comment[uk]=Фільтрує дані керування особистими відомостями за збірками
 Type=AkonadiAgent
 Exec=akonadi_filter_agent
 Icon=view-filter
