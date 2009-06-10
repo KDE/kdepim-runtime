@@ -30,7 +30,6 @@
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/kmime/messagemodel.h>
 #include <akonadi/kmime/messagethreaderproxymodel.h>
-#include <agents/mailthreader/mailthreaderagent.h>
 
 #include <QtCore/QDebug>
 #include <QVBoxLayout>
@@ -129,11 +128,11 @@ void MainWidget::itemFetchDone(KJob * job)
 
 void MainWidget::threadCollection()
 {
-  MailThreaderAttribute *a = mCurrentCollection.attribute<MailThreaderAttribute>( Collection::AddIfMissing );
+  /*MailThreaderAttribute *a = mCurrentCollection.attribute<MailThreaderAttribute>( Collection::AddIfMissing );
   a->deserialize( QByteArray( "sort" ) );
   CollectionModifyJob *job = new CollectionModifyJob( mCurrentCollection );
   if ( !job->exec() )
-    qDebug() << "Unable to modify collection";
+    qDebug() << "Unable to modify collection";*/
 }
 
 
