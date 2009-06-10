@@ -1,3 +1,13 @@
+find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
+  PATHS
+  /usr/lib
+  /usr/local/lib
+  ${LIB_INSTALL_DIR}
+  $ENV{STRIGI_HOME}/lib
+)
+macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the mail threader agent")
+
+
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
