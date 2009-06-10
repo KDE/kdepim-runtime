@@ -1,4 +1,3 @@
-add_subdirectory( mailthreader )
 add_subdirectory( strigifeeder )
 
 if( Nepomuk_FOUND AND NOT Q_WS_MAC )
