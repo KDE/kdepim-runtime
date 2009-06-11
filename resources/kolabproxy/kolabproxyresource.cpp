@@ -84,7 +84,7 @@ void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
 {
   if ( job->error() ) {
     kWarning( ) << "Error on collection fetch:" << job->errorText();
-    cancelTask();
+    cancelTask( job->errorText() );
   } else {
     Collection::List collections = qobject_cast<CollectionFetchJob*>(job)->collections();
     foreach( const Collection &collection, collections ) {
@@ -103,13 +103,12 @@ void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
       }
     }
 
-    Collection::List addrCollections;
+    Collection::List kolabCollections;
     Collection::List imapCollections = m_monitor->collectionsMonitored();
 
-    Q_FOREACH(Collection collection, imapCollections) {
-      Collection c = createCollection(collection);
-      collectionsRetrievedIncremental(Collection::List() << c, Collection::List());
-    }
+    Q_FOREACH(const Collection &collection, imapCollections)
+      kolabCollections.append( createCollection(collection) );
+    collectionsRetrieved( kolabCollections );
   }
 
 }
