@@ -51,12 +51,9 @@ void LockMethodPage::checkAvailableLockMethods()
       if (ui.procmail->isEnabled())
         ui.procmail->setChecked(true);
       else
-        ui.fcntl->setChecked(true);
+        ui.kde_lock_file->setChecked(true);
     }
   }
-
-  // FIXME: I assume fcntl is available on *nix machines. Maybe some kind of
-  //       (compile time) check is needed here.
 }
 
 #include "lockmethodpage.moc"

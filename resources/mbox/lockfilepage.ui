@@ -15,7 +15,7 @@
    <string>MBox Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -31,7 +31,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="3">
     <widget class="KButtonGroup" name="kcfg_LockfileMethod">
      <property name="title">
       <string/>
@@ -40,23 +40,11 @@ p, li { white-space: pre-wrap; }
       <item row="0" column="0">
        <widget class="QRadioButton" name="procmail">
         <property name="text">
-         <string>Procmail loc&amp;kfile:</string>
+         <string>Procmail loc&amp;kfile</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="kcfg_Lockfile">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string>.lock</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="1" column="0">
@@ -74,9 +62,9 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QRadioButton" name="fcntl">
+       <widget class="QRadioButton" name="kde_lock_file">
         <property name="text">
-         <string>&amp;FCNTL</string>
+         <string>&amp;KDE lockfile</string>
         </property>
        </widget>
       </item>
@@ -90,7 +78,7 @@ p, li { white-space: pre-wrap; }
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -99,6 +87,50 @@ p, li { white-space: pre-wrap; }
       <size>
        <width>20</width>
        <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="kcfg_Lockfile">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>.lock</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Lock file:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -113,9 +145,6 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>kcfg_Lockfile</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -125,12 +154,28 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>75</y>
+     <x>90</x>
+     <y>145</y>
     </hint>
     <hint type="destinationlabel">
-     <x>229</x>
-     <y>78</y>
+     <x>172</x>
+     <y>284</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kde_lock_file</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_Lockfile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>109</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>

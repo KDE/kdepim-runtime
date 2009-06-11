@@ -60,7 +60,9 @@ static quint64 itemOffset(const QString &remoteItemId)
   return remoteItemId.split(':').last().toULongLong();
 }
 
-MboxResource::MboxResource( const QString &id ) : SingleFileResource<Settings>( id )
+MboxResource::MboxResource( const QString &id )
+  : SingleFileResource<Settings>( id )
+  , mMBox( 0 )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -116,7 +118,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   MBox mbox( col.remoteId() );
 
   if (Settings::self()->lockfileMethod() == Settings::procmail)
-    mbox.setProcmailLockFile(Settings::self()->lockfile());
+    mbox.setLockFile(Settings::self()->lockfile());
 
   if (!mbox.isValid()) {
     emit error( i18n("Invalid mbox file: %1", col.remoteId() ) );
@@ -271,9 +273,29 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
 
 bool MboxResource::readFromFile( const QString &fileName )
 {
-  Q_UNUSED( fileName );
-  // TODO: Change mbox api
-  return true;
+  delete mMBox;
+  mMBox = 0;
+
+  mMBox = new MBox( KUrl( fileName ).path(), Settings::self()->readOnly() );
+
+  switch ( Settings::self()->lockfileMethod() ) {
+    case Settings::procmail:
+      mMBox->setLockType( MBox::ProcmailLockfile );
+      mMBox->setLockFile( Settings::self()->lockfile() );
+      break;
+    case Settings::mutt_dotlock:
+      mMBox->setLockType( MBox::MuttDotlock );
+      break;
+    case Settings::mutt_dotlock_privileged:
+      mMBox->setLockType( MBox::MuttDotlockPrivileged );
+      break;
+    case Settings::kde_lock_file:
+      mMBox->setLockType( MBox::KDELockFile );
+      mMBox->setLockFile( Settings::self()->lockfile() );
+      break;
+  }
+
+  return mMBox->isValid();
 }
 
 bool MboxResource::writeToFile( const QString &fileName )

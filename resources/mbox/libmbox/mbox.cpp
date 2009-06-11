@@ -55,7 +55,7 @@ class MBox::Private
     KLockFile mLock;
     LockType mLockType;
     QFile mMboxFile;
-    QString mProcmailLockFileName;
+    QString mLockFileName;
     bool mReadOnly;
 };
 
@@ -256,9 +256,9 @@ void MBox::setLockType(LockType ltype)
   d->mLockType = ltype;
 }
 
-void MBox::setProcmailLockFile(const QString &lockFile)
+void MBox::setLockFile(const QString &lockFile)
 {
-  d->mProcmailLockFileName = lockFile;
+  d->mLockFileName = lockFile;
 }
 
 qint64 MBox::writeEntry(const QByteArray &entry)
@@ -331,8 +331,8 @@ int MBox::lock()
 
     case ProcmailLockfile:
       args << "-l20" << "-r5";
-      if (!d->mProcmailLockFileName.isEmpty())
-        args << quoteAndEncode(d->mProcmailLockFileName);
+      if (!d->mLockFileName.isEmpty())
+        args << quoteAndEncode(d->mLockFileName);
       else
         args << quoteAndEncode(d->mMboxFile.fileName() + ".lock");
 
@@ -395,8 +395,8 @@ int MBox::unlock()
 
     case ProcmailLockfile:
       // QFile::remove returns true on succes so negate the result.
-      if (!d->mProcmailLockFileName.isEmpty())
-        rc = !QFile(d->mProcmailLockFileName).remove();
+      if (!d->mLockFileName.isEmpty())
+        rc = !QFile(d->mLockFileName).remove();
       else
         rc = !QFile(d->mMboxFile.fileName() + ".lock").remove();
       break;

@@ -23,6 +23,8 @@
 #include "settings.h"
 #include "singlefileresource.h"
 
+class MBox;
+
 class MboxResource : public Akonadi::SingleFileResource<Settings>
 {
   Q_OBJECT
@@ -56,6 +58,7 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
 
   private:
     QMap<KJob*, Akonadi::Item> mCurrentItemDeletions;
+    MBox *mMBox;
 };
 
 #endif

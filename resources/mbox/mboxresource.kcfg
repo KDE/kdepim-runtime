@@ -28,13 +28,13 @@
         <choice name="procmail"/>
         <choice name="mutt_dotlock"/>
         <choice name="mutt_dotlock_privileged"/>
-        <choice name="fcntl"/>
+        <choice name="kde_lock_file"/>
         <choice name="none"/>
       </choices>
       <default>procmail</default>
     </entry>
     <entry name="Lockfile" type="String">
-      <label>Procmail lockfile</label>
+      <label>Lockfile</label>
       <default></default>
     </entry>
   </group>

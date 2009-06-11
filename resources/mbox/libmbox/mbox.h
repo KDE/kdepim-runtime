@@ -115,11 +115,12 @@ class MBOX_EXPORT MBox
     void setLockType(LockType ltype);
 
     /**
-     * Sets the lockfile that should be used by the procmail lock file method.
-     * If this method is not called and procfile is used the name of the lock
-     * file will be equal to MBOXFILENAME.lock.
+     * Sets the lockfile that should be used by the procmail or the KDE lock
+     * file method. If this method is not called and one of the before mentioned
+     * lock methods is used the name of the lock file will be equal to
+     * MBOXFILENAME.lock.
      */
-    void setProcmailLockFile(const QString &lockFile);
+    void setLockFile(const QString &lockFile);
 
     /**
      * Appends @param entry to the mbox file. Returns the offset in the file
