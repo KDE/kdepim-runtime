@@ -78,7 +78,7 @@ void ResourcesManagementWidget::updateButtonState( const Akonadi::AgentInstance&
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
     } else {
-        d->ui.editButton->setEnabled( true );
+        d->ui.editButton->setEnabled( !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
         d->ui.removeButton->setEnabled( true );
     }
 }

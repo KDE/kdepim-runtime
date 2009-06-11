@@ -36,5 +36,5 @@ Exec=akonadi_kolabproxy_resource
 Icon=kolab
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilities=Resource
+X-Akonadi-Capabilities=Resource,Unique,NoConfig
 X-Akonadi-Identifier=akonadi_kolabproxy_resource
