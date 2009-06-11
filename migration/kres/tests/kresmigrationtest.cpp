@@ -23,11 +23,11 @@
 #include <KResources/Manager>
 #include <KCal/ResourceCalendar>
 
-#include <qtest_kde.h>
+#include <akonadi/qtest_akonadi.h>
 
 using namespace Akonadi;
 
-QTEST_KDEMAIN( KResMigrationTester, NoGUI )
+QTEST_AKONADIMAIN( KResMigrationTester, NoGUI )
 
 void KResMigrationTester::test_initalSetup()
 {
