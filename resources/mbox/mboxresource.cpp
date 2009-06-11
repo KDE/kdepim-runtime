@@ -101,7 +101,6 @@ void MboxResource::retrieveCollections()
   col.setParent(Collection::root());
   col.setRemoteId(Settings::self()->file());
   col.setName(name());
-  col.addAttribute( new DeletedItemsAttribute );
 
   QStringList mimeTypes;
   mimeTypes << "message/rfc822" << Collection::mimeType();
@@ -220,8 +219,24 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
 void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED(item);
-  Q_UNUSED(parts);
+  if ( parts.contains( "PLD:RFC822" ) ) {
+    kDebug() << "MboxResource::itemChanged()" << itemOffset( item.remoteId() );
+    // Only complete messages can be stored in a MBox file. Because all messages
+    // are stored in one single file we do an ItemDelete and an ItemCreate to
+    // prevent that whole file must been rewritten.
+    CollectionFetchJob *fetchJob =
+      new CollectionFetchJob( Collection( collectionId( item.remoteId() ) )
+                              , CollectionFetchJob::Base );
+
+    connect( fetchJob, SIGNAL( result( KJob* ) ),
+             this, SLOT( onCollectionFetch( KJob* ) ) );
+
+    mCurrentItemDeletions.insert( fetchJob, item );
+
+    fetchJob->start();
+    return;
+  }
+
   changeProcessed();
 }
 
@@ -232,7 +247,8 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
                           , CollectionFetchJob::Base );
 
   if ( !fetchJob->exec() ) {
-    error( fetchJob->errorString() );
+    cancelTask( i18n( "Could not fetch the collection: %1" )
+                  .arg( fetchJob->errorString() ) );
     return;
   }
 
@@ -243,14 +259,65 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
 
   CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
-   if ( !modifyJob->exec() ) {
-    error( modifyJob->errorString() );
+  if ( !modifyJob->exec() ) {
+    cancelTask( modifyJob->errorString() );
     return;
   }
 
   changeProcessed();
 }
 
+/// Private slots
+
+void MboxResource::onCollectionFetch( KJob *job )
+{
+  Q_ASSERT( mCurrentItemDeletions.contains( job ) );
+  const Item item = mCurrentItemDeletions.take( job );
+
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    job->deleteLater();
+    return;
+  }
+
+  CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
+  Q_ASSERT( fetchJob );
+  Q_ASSERT( fetchJob->collections().size() == 1 );
+
+  job->deleteLater();
+
+  Collection mboxCollection = fetchJob->collections().first();
+  DeletedItemsAttribute *attr
+    = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
+  attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
+
+  CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
+  mCurrentItemDeletions.insert( modifyJob, item );
+  connect( modifyJob, SIGNAL( result( KJob* ) ),
+           this, SLOT( onCollectionModify( KJob* ) ) );
+  modifyJob->start();
+}
+
+void MboxResource::onCollectionModify( KJob *job )
+{
+  Q_ASSERT( mCurrentItemDeletions.contains( job ) );
+  const Item item = mCurrentItemDeletions.take( job );
+
+  if ( job->error() ) {
+    // Failed to store the offset of a deleted item in the DeletedItemsAttribute
+    // of the collection. In this case we shouldn't try to store the modified
+    // item.
+    cancelTask( i18n( "Failed to update the changed item because the old item "
+                      "could not be deleted Reason: %1" ).arg( job->errorString() ) );
+    job->deleteLater();
+    return;
+  }
+
+  Collection c( collectionId( item.remoteId() ) );
+  c.setRemoteId( mboxFile( item.remoteId() ) );
+
+  itemAdded( item, c );
+}
 
 AKONADI_RESOURCE_MAIN( MboxResource )
 

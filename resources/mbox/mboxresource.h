@@ -44,6 +44,13 @@ class MboxResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+
+  private Q_SLOTS:
+    void onCollectionFetch( KJob *job );
+    void onCollectionModify( KJob *job );
+
+  private:
+    QMap<KJob*, Akonadi::Item> mCurrentItemDeletions;
 };
 
 #endif
