@@ -27,10 +27,13 @@
 #include <akonadi/control.h>
 
 #include <KDebug>
+#include <KMessageBox>
+#include <KLocale>
+#include <KIcon>
 
-#include <QSplitter>
+#include <QPushButton>
 #include <QListWidget>
-#include <QTabWidget>
+#include <QLayout>
 
 #include "filteragentinterface.h"
 
@@ -43,20 +46,30 @@ MainWindow::MainWindow()
     return;
   }
 
-  QSplitter * spl = new QSplitter( Qt::Horizontal, this );
-  setCentralWidget( spl );
+  QWidget * base = new QWidget( this );
+  setCentralWidget( base );
 
-  mFilterListWidget = new QListWidget( spl );
-  spl->addWidget( mFilterListWidget );
+  QGridLayout * g = new QGridLayout( base );
+  g->setMargin( 2 );
 
-  mTabWidget = new QTabWidget( spl );
-  spl->addWidget( mTabWidget );
+  mFilterListWidget = new QListWidget( base );
+  g->addWidget( mFilterListWidget, 0, 0, 1, 2 );
 
-  QList< int > sizes;
-  sizes.append( 200 );
-  sizes.append( 500 );
+  mNewFilterButton = new QPushButton( base );
+  mNewFilterButton->setIcon( KIcon( "edit-new" ) );
+  mNewFilterButton->setText( i18n( "New Filter") );
+  g->addWidget( mNewFilterButton, 1, 0 );
 
-  spl->setSizes( sizes );
+  connect( mNewFilterButton, SIGNAL( clicked() ), this, SLOT( slotNewFilterButtonClicked() ) );
+
+  mDeleteFilterButton = new QPushButton( base );
+  mDeleteFilterButton->setIcon( KIcon( "edit-delete" ) );
+  mDeleteFilterButton->setText( i18n( "Delete Filter") );
+  g->addWidget( mDeleteFilterButton, 1, 1 );
+
+  connect( mDeleteFilterButton, SIGNAL( clicked() ), this, SLOT( slotDeleteFilterButtonClicked() ) );
+
+  g->setRowStretch( 0, 1 );
 
   listFilters();
 }
@@ -67,25 +80,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::listFilters()
 {
-  kDebug() << "Creating FilterAgent interface";
-
   org::freedesktop::Akonadi::FilterAgent a( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
-  kDebug() << "calling createEngine";
-
-  QDBusPendingReply<> r = a.createEngine( QLatin1String( "pippo" ) );
-
-  kDebug() << "waiting for completion";
-
+  QDBusPendingReply< QStringList > r = a.enumerateFilters( QLatin1String( "message/rfc822" ) );
   r.waitForFinished();
 
-  kDebug() << "completion ok";
+  mFilterListWidget->clear();
 
   if( r.isError() )
   {
-    kDebug() << "Could not call createEngine: " << r.error();
-  } else {
-    kDebug() << "createEngine called";
+    KMessageBox::error( this, r.error().message(), i18n( "Could not enumerate filters" ) );
+    return;
   }
+
+  mFilterListWidget->addItems( r.value() );
+}
+
+void MainWindow::slotNewFilterButtonClicked()
+{
+  org::freedesktop::Akonadi::FilterAgent a( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
+
+  QDBusPendingReply< bool > r = a.createFilter( QLatin1String( "pippo" ), QLatin1String( "message/rfc822" ), QLatin1String( "" ) );
+  r.waitForFinished();
+
+  if( r.isError() )
+  {
+    KMessageBox::error( this, r.error().message(), i18n( "Could not crate new filter" ) );
+    return;
+  }
+
+  listFilters();
+}
+
+void MainWindow::slotDeleteFilterButtonClicked()
+{
 }
 

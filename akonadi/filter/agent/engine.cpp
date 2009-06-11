@@ -31,9 +31,10 @@
 
 FilterEngine::FilterEngine(
    const QString &id,
+   const QString &mimeType,
    Akonadi::Filter::ComponentFactory * componentFactory
  )
-  : mId( id ), mComponentFactory( componentFactory ), mProgram( 0 )
+  : mId( id ), mMimeType( mimeType ), mComponentFactory( componentFactory ), mProgram( 0 )
 {
   Q_ASSERT( mComponentFactory );
 }

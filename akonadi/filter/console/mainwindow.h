@@ -28,7 +28,7 @@
 #include <KXmlGuiWindow>
 
 class QListWidget;
-class QTabWidget;
+class QPushButton;
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -38,10 +38,15 @@ public:
   virtual ~MainWindow();
 public:
   QListWidget * mFilterListWidget;
-  QTabWidget * mTabWidget;
+  QPushButton * mNewFilterButton;
+  QPushButton * mDeleteFilterButton;
 
 protected:
   void listFilters();
+
+protected slots:
+  void slotNewFilterButtonClicked();
+  void slotDeleteFilterButtonClicked();
 };
 
 #endif //!_MAINWINDOW_H_

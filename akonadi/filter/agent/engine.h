@@ -53,6 +53,7 @@ public:
    */
   FilterEngine(
       const QString &id,
+      const QString &mimeType,
       Akonadi::Filter::ComponentFactory * componentFactory
     );
 
@@ -66,7 +67,13 @@ protected:
   QString mId;
 
   /**
+   * The mimetype this engine is associated to.
+   */
+  QString mMimeType;
+
+  /**
    * The filtering component factory we use to create our program objects.
+   * This is a shallow pointer: the FilterAgent owns it.
    */
   Akonadi::Filter::ComponentFactory * mComponentFactory;
 
@@ -83,6 +90,14 @@ public:
   const QString & id() const
   {
     return mId;
+  }
+
+  /**
+   * Returns the mimetype associated to this filtering engine.
+   */
+  const QString & mimeType() const
+  {
+    return mMimeType;
   }
 
   bool loadConfiguration( const QString &filterProgramFile );

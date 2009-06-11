@@ -83,7 +83,34 @@ public:
     return mInstance;
   }
 
-  void createEngine( const QString &id );
+  /**
+   * Creates a new filter with the specified id, mimetype and filter source file name.
+   * The id must be an unique non-empty string. If the filter with the specified id already
+   * exists then this method fails.. The sourceFileName must point to an existing and valid filter
+   * specification source (in sieve format, at the time of writing).
+   *
+   * On success true is returned and a success reply is sent through D-BUS.
+   * On failure false is returned and an error message is sent through D-BUS.
+   *
+   * This is a D-BUS method handler.
+   */
+  bool createFilter( const QString &id, const QString &mimeType, const QString &sourceFileName );
+
+  /**
+   * Returns the list of the mimetypes that this filtering agent can handle.
+   *
+   * This is a D-BUS method handler.
+   */
+  QStringList enumerateMimeTypes();
+
+
+  /**
+   * Returns the list of currently existing filter ids that match the specified mimetype.
+   * If the mimetype is a null string then the list of filters matching any mimetype is returned.
+   *
+   * This is a D-BUS method handler.
+   */
+  QStringList enumerateFilters( const QString &mimeType );
 
 protected:
   virtual void configure( WId winId );

@@ -52,6 +52,9 @@ FilterAgent::FilterAgent( const QString &id )
   Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), f );
 
+  f = new Akonadi::Filter::ComponentFactory();
+  mComponentFactories.insert( QLatin1String( "message/news" ), f );
+
   new FilterAgentAdaptor( this );
 
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
@@ -82,11 +85,55 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   }
 }
 
-void FilterAgent::createEngine( const QString &id )
+bool FilterAgent::createFilter( const QString &id, const QString &mimeType, const QString &sourceFileName )
 {
-  sendErrorReply( QDBusError::Failed, QLatin1String("The method call 'methodWithError()' is not supported") );
+  if( id.isEmpty() )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("The specified filter id is empty") );
+    return false;
+  }
+
+  FilterEngine * engine = mEngines.value( id, 0 );
+  if( engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier already exists") );
+    return false;
+  }
+
+  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( mimeType, 0 );
+  if( !factory )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("Filtering of the specified mimetype is not supported") );
+    return false;
+  }
+
+  engine = new FilterEngine( id, mimeType, factory );
+
+  mEngines.insert( id, engine );
+
+  return true;
 }
 
+QStringList FilterAgent::enumerateFilters( const QString &mimeType )
+{
+  QStringList ret;
+
+  foreach( FilterEngine * engine, mEngines )
+    ret.append( engine->id() );
+
+  return ret;
+}
+
+QStringList FilterAgent::enumerateMimeTypes()
+{
+  QStringList ret;
+  QList< QString > keys = mComponentFactories.uniqueKeys();
+
+  foreach( QString key, keys )
+    ret.append( key );
+
+  return ret;
+}
 
 void FilterAgent::loadConfiguration()
 {
