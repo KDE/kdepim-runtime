@@ -18,30 +18,23 @@
     02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "lockmethodpage.h"
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
 
-ConfigDialog::ConfigDialog(QWidget * parent) :
-    KDialog( parent )
+LockMethodPage::LockMethodPage(QWidget * parent) : QWidget( parent )
 {
-  ui.setupUi( mainWidget() );
-  mManager = new KConfigDialogManager( this, Settings::self() );
-  mManager->updateWidgets();
-  ui.kcfg_File->setUrl( KUrl( Settings::self()->file() ) );
-
+  ui.setupUi( this );
   checkAvailableLockMethods();
-  
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
 }
 
-void ConfigDialog::checkAvailableLockMethods()
+void LockMethodPage::checkAvailableLockMethods()
 {
   // FIXME: I guess this whole checking makes only sense on linux machines.
-  
+
   // Check for procmail lock method.
   if (KStandardDirs::findExe("lockfile") == QString()) {
     ui.procmail->setEnabled(false);
@@ -66,11 +59,4 @@ void ConfigDialog::checkAvailableLockMethods()
   //       (compile time) check is needed here.
 }
 
-void ConfigDialog::save()
-{
-  mManager->updateSettings();
-  Settings::self()->setFile( ui.kcfg_File->url().path() );
-  Settings::self()->writeConfig();
-}
-
-#include "configdialog.moc"
+#include "lockmethodpage.moc"

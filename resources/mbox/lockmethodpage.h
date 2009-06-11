@@ -18,30 +18,24 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef LOCKMETHODPAGE_H
+#define LOCKMETHODPAGE_H
 
-#include <kdialog.h>
+#include <QtGui/QWidget>
 
-#include "ui_settings.h"
+#include "ui_lockfilepage.h"
 
-class KConfigDialogManager;
-
-class ConfigDialog : public KDialog
+class LockMethodPage : public QWidget
 {
   Q_OBJECT
   public:
-    ConfigDialog( QWidget *parent = 0 );
+    LockMethodPage( QWidget *parent = 0 );
 
   private:
     void checkAvailableLockMethods();
 
-  private slots:
-    void save();
-
   private:
-    Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
+    Ui::LockFilePage ui;
 };
 
 #endif

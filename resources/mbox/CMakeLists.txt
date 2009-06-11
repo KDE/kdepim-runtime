@@ -14,14 +14,18 @@ add_subdirectory(libmbox)
 ########### next target ###############
 
 set( mboxresource_SRCS
+  ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
+  lockmethodpage.cpp
   deleteditemsattribute.cpp
   mboxresource.cpp
-  configdialog.cpp
 )
 
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(mboxresource_SRCS settings.ui)
+kde4_add_ui_files(mboxresource_SRCS
+  ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}
+  lockfilepage.ui
+)
 kde4_add_kcfg_files(mboxresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mboxresource.kcfg org.kde.Akonadi.Mbox.Settings)
 qt4_add_dbus_adaptor(mboxresource_SRCS

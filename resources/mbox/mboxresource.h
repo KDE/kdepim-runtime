@@ -20,9 +20,10 @@
 #ifndef MBOX_RESOURCE_H
 #define MBOX_RESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include "settings.h"
+#include "singlefileresource.h"
 
-class MboxResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class MboxResource : public Akonadi::SingleFileResource<Settings>
 {
   Q_OBJECT
 
@@ -44,6 +45,10 @@ class MboxResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+
+    // From SingleFileResourceBase
+    virtual bool readFromFile( const QString &fileName );
+    virtual bool writeToFile( const QString &fileName );
 
   private Q_SLOTS:
     void onCollectionFetch( KJob *job );

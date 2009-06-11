@@ -29,11 +29,11 @@
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
 
-#include "configdialog.h"
 #include "deleteditemsattribute.h"
+#include "lockmethodpage.h"
 #include "mbox.h"
-#include "settings.h"
 #include "settingsadaptor.h"
+#include "singlefileresourceconfigdialog.h"
 
 using namespace Akonadi;
 
@@ -60,17 +60,18 @@ static quint64 itemOffset(const QString &remoteItemId)
   return remoteItemId.split(':').last().toULongLong();
 }
 
-MboxResource::MboxResource( const QString &id ) : ResourceBase( id )
+MboxResource::MboxResource( const QString &id ) : SingleFileResource<Settings>( id )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
+  QStringList mimeTypes;
+  mimeTypes << "message/rfc822";
+  setSupportedMimetypes( mimeTypes, "message-rfc822" );
+
   // Register the list of deleted items as an attribute of the collection.
   AttributeFactory::registerAttribute<DeletedItemsAttribute>();
-
-  changeRecorder()->fetchCollection( true );
-  changeRecorder()->itemFetchScope().fetchFullPayload( true );
 }
 
 MboxResource::~MboxResource()
@@ -79,17 +80,18 @@ MboxResource::~MboxResource()
 
 void MboxResource::configure( WId windowId )
 {
-  ConfigDialog dlg;
-  if ( windowId )
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.exec();
-
-  synchronizeCollectionTree();
+  SingleFileResourceConfigDialog<Settings> dlg( windowId );
+  dlg.addPage( "Lock method", new LockMethodPage() );
+  dlg.setCaption( i18n("Select MBox file") );
+  if ( dlg.exec() == QDialog::Accepted ) {
+    reloadFile();
+  }
 }
 
 void MboxResource::retrieveCollections()
 {
-  MBox mbox(Settings::self()->file());
+  const QString mboxFile = KUrl(Settings::self()->path()).path();
+  MBox mbox(mboxFile);
 
   QString errMsg;
   if ( !mbox.isValid( errMsg ) ) {
@@ -99,7 +101,7 @@ void MboxResource::retrieveCollections()
 
   Collection col;
   col.setParent(Collection::root());
-  col.setRemoteId(Settings::self()->file());
+  col.setRemoteId( mboxFile );
   col.setName(name());
 
   QStringList mimeTypes;
@@ -265,6 +267,20 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   }
 
   changeProcessed();
+}
+
+bool MboxResource::readFromFile( const QString &fileName )
+{
+  Q_UNUSED( fileName );
+  // TODO: Change mbox api
+  return true;
+}
+
+bool MboxResource::writeToFile( const QString &fileName )
+{
+  Q_UNUSED( fileName );
+  // TODO: Change mbox api
+  return true;
 }
 
 /// Private slots
