@@ -5,7 +5,7 @@ function runImapCmd( cmd )
   System.exec( "runimapcommand.py", args );
 }
 
-function testKolab( vm ) {
+function testImap( vm ) {
   QEmu.setVMConfig( vm );
   QEmu.start();
 
@@ -16,8 +16,7 @@ function testKolab( vm ) {
   System.sleep( 20 );
 
   runImapCmd( [ "create", "INBOX/Calendar" ] );
-  runImapCmd( [ "setannotation", "INBOX/Calendar", "/vendor/kolab/folder-type", "event.default" ] );
-  runImapCmd( [ "append", "INBOX/Calendar", "kolabevent.mbox" ] );
+  runImapCmd( [ "append", "INBOX", "testmail.mbox" ] );
 
   var imapResource = Resource.newInstance( "akonadi_imap_resource" );
   imapResource.setOption( "ImapServer", "localhost:42143" );
@@ -25,23 +24,17 @@ function testKolab( vm ) {
   imapResource.setOption( "Password", "nichtgeheim" );
   imapResource.create();
 
-  Test.alert( "wait" );
-
-  XmlOperations.setXmlFile( "kolab-step1.xml" );
-  XmlOperations.setRootCollections( kolabResource.identifier() );
+  XmlOperations.setXmlFile( "imap-step1.xml" );
+  XmlOperations.setRootCollections( imapResource.identifier() );
+  // FIXME: one of the attributes contains a current date/time breaking the comparison
+  XmlOperations.ignoreCollectionField( "Attributes" );
   XmlOperations.assertEqual();
 
   // TODO: test changing stuff
 
-  Test.alert( "done" );
   imapResource.destroy();
   QEmu.stop();
 }
 
-var kolabResource = Resource.newInstance( "akonadi_kolabproxy_resource" );
-kolabResource.create();
-
-testKolab( "kolabvm.conf" );
-// testKolab( "dovecotvm.conf" );
-
-kolabResource.destroy();
+testImap( "kolabvm.conf" );
+testImap( "dovecotvm.conf" );

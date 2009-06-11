@@ -1,0 +1,24 @@
+<knut>
+  <collection content="text/calendar" rid="69" name="CalendarUaeH" >
+    <attribute type="AccessRights" >wcdW</attribute>
+    <item mimetype="text/calendar" rid="5529" >
+      <payload>BEGIN:VCALENDAR
+PRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN
+VERSION:2.0
+BEGIN:VEVENT&#xd;
+DTSTAMP:20090611T154825Z&#xd;
+ORGANIZER;CN="Volker Krause":MAILTO:vkrause@kde.org&#xd;
+CREATED:20090412T113649Z&#xd;
+UID:libkcal-1109914.774&#xd;
+LAST-MODIFIED:20090412T113649Z&#xd;
+SUMMARY:Release KDE 4.2.4&#xd;
+CATEGORIES:KDE&#xd;
+DTSTART;VALUE=DATE:20090603&#xd;
+DTEND;VALUE=DATE:20090604&#xd;
+TRANSP:TRANSPARENT&#xd;
+END:VEVENT&#xd;
+
+END:VCALENDAR</payload>
+    </item>
+  </collection>
+</knut>
