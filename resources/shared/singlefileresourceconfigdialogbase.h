@@ -46,6 +46,12 @@ class SingleFileResourceConfigDialogBase : public KDialog
     explicit SingleFileResourceConfigDialogBase( WId windowId );
 
     /**
+     * Adds @param page to the tabwidget. This can be used to add custom
+     * settings for a specific single file resource.
+     */
+    void addPage( const QString &title, QWidget *page );
+
+    /**
      * Set file extension filter.
      */
     void setFilter( const QString &filter );

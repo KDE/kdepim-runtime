@@ -49,6 +49,12 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   QTimer::singleShot( 0, this, SLOT(validate()) );
 }
 
+void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
+{
+  ui.ktabwidget->addTab( page, title );
+  mManager->updateWidgets();
+}
+
 void SingleFileResourceConfigDialogBase::setFilter(const QString & filter)
 {
   ui.kcfg_Path->setFilter( filter );
@@ -65,7 +71,7 @@ void SingleFileResourceConfigDialogBase::validate()
   if ( currentUrl.isLocalFile() ) {
     ui.kcfg_MonitorFile->setEnabled( true );
     ui.statusLabel->setVisible( false );
-    
+
     const QFileInfo file( currentUrl.path() );
     if ( file.exists() && !file.isWritable() ) {
       ui.kcfg_ReadOnly->setEnabled( false );
@@ -78,14 +84,14 @@ void SingleFileResourceConfigDialogBase::validate()
     ui.kcfg_MonitorFile->setEnabled( false );
     ui.statusLabel->setText( i18nc( "@info:status", "Checking file information..." ) );
     ui.statusLabel->setVisible( true );
-    
+
     if ( mStatJob )
       mStatJob->kill();
 
     mStatJob = KIO::stat( currentUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
     mStatJob->setDetails( 2 ); // All details.
     mStatJob->setSide( KIO::StatJob::SourceSide );
-    
+
     connect( mStatJob, SIGNAL( result( KJob * ) ),
              SLOT( slotStatJobResult( KJob * ) ) );
 
