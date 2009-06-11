@@ -691,7 +691,7 @@ void ImapResource::onConnectError( int code, const QString &message )
                                                        "at logging in, or do nothing?" ),
                                                  i18n( "Could Not Authenticate" ),
                                                  KGuiItem( i18n( "Settings" ) ),
-                                                 KGuiItem( i18n( "Single Input" ) ) );
+                                                 KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
     if ( i == KMessageBox::Yes ) {
       configure( winIdForDialogs() );
       return;
