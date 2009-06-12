@@ -24,6 +24,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/xml/xmlwritejob.h>
 
 #include <KDebug>
 
@@ -65,7 +66,7 @@ XmlOperations::~XmlOperations()
 Item XmlOperations::getItemByRemoteId(const QString& rid)
 {
   return mDocument.itemByRemoteId( rid, true);
-} 
+}
 
 Collection XmlOperations::getCollectionByRemoteId(const QString& rid)
 {
@@ -89,6 +90,7 @@ void XmlOperations::setRootCollections(const Collection::List& roots)
 
 void XmlOperations::setXmlFile(const QString& fileName)
 {
+  mFileName = fileName;
   if ( QFileInfo( fileName ).isAbsolute() )
     mDocument.loadFile( fileName );
   else
@@ -169,7 +171,13 @@ bool XmlOperations::compare()
   }
 
   const Collection::List docRoots = mDocument.childCollections( QString() );
-  return compareCollections( mRoots, docRoots );
+  if ( compareCollections( mRoots, docRoots ) )
+    return true;
+
+  XmlWriteJob *xmlJob = new XmlWriteJob( mRoots, mFileName + ".actual", this );
+  if ( !xmlJob->exec() )
+    kError() << xmlJob->errorText();
+  return false;
 }
 
 void XmlOperations::assertEqual()
@@ -298,14 +306,14 @@ bool XmlOperations::hasItem(const Item& _item, const Collection& _col)
     return false;
   }
   const Item::List items = ijob->items();
-  
-  for( int i = 0; i < items.count(); ++i) { 
+
+  for( int i = 0; i < items.count(); ++i) {
     if( _item == items.at(i) ) {
       return true;
     }
   }
   return false;
-} 
+}
 
 bool XmlOperations::hasItem(const Item& _item, const QString& rid)
 {
