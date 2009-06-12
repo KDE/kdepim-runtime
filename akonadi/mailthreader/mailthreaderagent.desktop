@@ -1,6 +1,12 @@
 [Desktop Entry]
 Name=Mail Threader Agent
+Name[sv]=E-posttrådningsmodul
+Name[uk]=Агент розгалуження пошти
+Name[x-test]=xxMail Threader Agentxx
 Comment=Thread mails in a collection
+Comment[sv]=Tråda brev i en samling
+Comment[uk]=Розгалужує поштові повідомлення зі збірки
+Comment[x-test]=xxThread mails in a collectionxx
 Type=AkonadiAgent
 Exec=akonadi_mailthreader_agent
 
