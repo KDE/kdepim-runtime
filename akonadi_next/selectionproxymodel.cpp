@@ -35,7 +35,8 @@ public:
     : q_ptr(model),
       m_startWithChildTrees(false),
       m_omitDescendants(false),
-      m_includeAllSelected(false)
+      m_includeAllSelected(false),
+      m_rowBlocksToRemove(0)
   {
 
   }
@@ -44,8 +45,7 @@ public:
   SelectionProxyModel *q_ptr;
 
   QItemSelectionModel *m_selectionModel;
-  // TODO: Make this persistent.
-  QModelIndexList m_rootIndexList;
+  QList<QPersistentModelIndex> m_rootIndexList;
 
   QList<QAbstractProxyModel *> m_proxyChain;
 
@@ -62,6 +62,8 @@ public:
   void sourceDataChanged(const QModelIndex &,const QModelIndex &);
 
   void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected );
+
+  QModelIndexList toNonPersistent(const QList<QPersistentModelIndex> &list) const;
 
   /**
     Return true if @p idx is a descendant of one of the indexes in @p list.
@@ -135,29 +137,73 @@ public:
   bool m_startWithChildTrees;
   bool m_omitDescendants;
   bool m_includeAllSelected;
+
+  // Number of separate blocks that need to be removed as a result of sourceRowsRemoved.
+  int m_rowBlocksToRemove;
 };
 
+}
+
+QModelIndexList SelectionProxyModelPrivate::toNonPersistent(const QList<QPersistentModelIndex> &list) const
+{
+  QModelIndexList returnList;
+  QList<QPersistentModelIndex>::const_iterator it;
+  for (it = list.constBegin(); it != list.constEnd(); ++it)
+    returnList << *it;
+
+  return returnList;
 }
 
 void SelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
   Q_Q(SelectionProxyModel);
 
-
-  QPair<int, int> range = getRootRange(topLeft.parent(), topLeft.row(), bottomRight.row());
-
-  // TODO: This assumes that contiguous ranges in the selection source model are contiguous in the source model.
-  // Wrong assumption. Need to fix in all source* slots.
-
-  if (isInModel(topLeft))
+  QModelIndexList list = toNonPersistent(m_rootIndexList);
+  if (!m_rootIndexList.contains(topLeft) && isInModel(topLeft))
   {
+    // The easy case. A contiguous block not at the root of our model.
     QModelIndex proxyTopLeft = q->mapFromSource(topLeft);
     QModelIndex proxyBottomRight = q->mapFromSource(bottomRight);
-
-  // If topLeft to bottomRight are not part of the selection, then if
-  // topLeft is in the model, bottomRight is too.
-
+    // If we're showing only chilren in our model and a grandchild is
+    // changed, this will be invalid.
+    if (!proxyTopLeft.isValid())
+      return;
     emit q->dataChanged(proxyTopLeft, proxyBottomRight);
+    return;
+  }
+
+  // We're not showing the m_rootIndexList, so we don't care if they change.
+  if (m_startWithChildTrees)
+    return;
+
+  // The harder case. Parts of the reported changed range are part of
+  // the model if they are in m_rootIndexList. Emit signals in blocks.
+
+  const int leftColumn = topLeft.column();
+  const int rightColumn = bottomRight.column();
+  const QModelIndex parent = topLeft.parent();
+  int startRow = topLeft.row();
+  for (int row = startRow; row <= bottomRight.row(); ++row)
+  {
+    QModelIndex idx = q->sourceModel()->index(row, leftColumn, parent);
+    if (m_rootIndexList.contains(idx))
+    {
+      startRow = row;
+      ++row;
+      idx = q->sourceModel()->index(row, leftColumn, parent);
+      while(m_rootIndexList.contains(idx))
+      {
+        ++row;
+        idx = q->sourceModel()->index(row, leftColumn, parent);
+      }
+      --row;
+      QModelIndex sourceTopLeft = q->sourceModel()->index(startRow, leftColumn, parent);
+      QModelIndex sourceBottomRight = q->sourceModel()->index(row, rightColumn, parent);
+      QModelIndex proxyTopLeft = q->mapFromSource(sourceTopLeft);
+      QModelIndex proxyBottomRight = q->mapFromSource(sourceBottomRight);
+
+      emit q->dataChanged(proxyTopLeft, proxyBottomRight);
+    }
   }
 }
 
@@ -220,16 +266,22 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &
 {
   Q_Q(SelectionProxyModel);
 
-  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-
-  if (isInModel(sourceStart))
+  if (isInModel(parent))
   {
-    // ?? A a selected index is getting new neighbours ??
-    if (m_rootIndexList.contains(sourceStart))
-      return;
-
+    // The easy case.
     q->beginInsertRows(q->mapFromSource(parent), start, end);
+    return;
   }
+
+  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
+  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
+  {
+    // Another fairly easy case.
+    const int proxyStartRow = q->mapFromSource(sourceStart).row();
+    q->beginInsertRows(QModelIndex(), proxyStartRow, proxyStartRow + (end - start));
+    return;
+  }
+
 }
 
 void SelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
@@ -237,13 +289,14 @@ void SelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, i
   Q_Q(SelectionProxyModel);
   Q_UNUSED(end);
 
-  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-
-  if (isInModel(sourceStart))
+  if (isInModel(parent))
   {
-    if (m_rootIndexList.contains(sourceStart))
-      return;
+    q->endInsertRows();
+  }
 
+  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
+  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
+  {
     q->endInsertRows();
   }
 }
@@ -252,40 +305,82 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &p
 {
   Q_Q(SelectionProxyModel);
 
-  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-  if (isInModel(sourceStart))
+  if (!parent.isValid())
   {
-    if (m_rootIndexList.contains(sourceStart))
+    // Might have to remove some stuff from our model.
+    int startRow;
+    const int column = 0;
+    for (int row = start; row <= end; ++row)
     {
-      QPair<int, int> range = getRootRange(parent, start, end);
-      if (range.first != -1 && range.second != -1)
+      QModelIndex idx = q->sourceModel()->index(row, column);
+      if (m_rootIndexList.contains(idx))
       {
-        start = range.first;
-        end = range.second;
+        startRow = row;
+        ++row;
+        idx = q->sourceModel()->index(row, column);
+        while(m_rootIndexList.contains(idx))
+        {
+          ++row;
+          idx = q->sourceModel()->index(row, column);
+        }
+        --row;
+        int proxyStartRow = q->mapFromSource(q->sourceModel()->index(startRow, column)).row();
+        m_rowBlocksToRemove++;
+        q->beginRemoveRows(QModelIndex(), proxyStartRow, proxyStartRow + (row - startRow));
       }
     }
-    q->beginInsertRows(q->mapFromSource(parent), start, end);
+  }
+
+  if (isInModel(parent))
+  {
+    q->beginRemoveRows(q->mapFromSource(parent), start, end);
+    return;
+  }
+
+  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
+  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
+  {
+    const int proxyStartRow = q->mapFromSource(sourceStart).row();
+    q->beginRemoveRows(QModelIndex(), proxyStartRow, proxyStartRow + (end - start));
+    return;
   }
 }
 
 void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
 {
   Q_Q(SelectionProxyModel);
+  Q_UNUSED(end)
+
+  if (!parent.isValid())
+  {
+    // Rows to remove are now invalid indexes.
+    QMutableListIterator<QPersistentModelIndex> it(m_rootIndexList);
+    while (it.hasNext())
+    {
+      QPersistentModelIndex idx = it.next();
+      if (!idx.isValid())
+      {
+        it.remove();
+      }
+    }
+    if (m_rowBlocksToRemove > 0)
+    {
+      --m_rowBlocksToRemove;
+      q->endRemoveRows();
+    }
+  }
+
+  if(isInModel(parent))
+  {
+    q->endRemoveRows();
+    return;
+  }
 
   QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-  if (isInModel(sourceStart))
+  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
   {
-    if (m_rootIndexList.contains(sourceStart))
-    {
-      QPair<int, int> range = getRootRange(parent, start, end);
-      if ( -1 == range.first || -1 == range.second )
-      {
-        return;
-      }
-      start = range.first;
-      end = range.second;
-    }
-    q->beginInsertRows(q->mapFromSource(parent), start, end);
+    q->endRemoveRows();
+    return;
   }
 }
 
@@ -400,7 +495,8 @@ void SelectionProxyModelPrivate::selectionChanged(const QItemSelection &selected
     {
       QItemSelectionRange range = i.next();
       QModelIndex topLeft = range.topLeft();
-      if (isDescendantOf(m_rootIndexList, topLeft))
+      QModelIndexList list = toNonPersistent(m_rootIndexList);
+      if (isDescendantOf(list, topLeft))
       {
         i.remove();
       }
@@ -419,7 +515,8 @@ void SelectionProxyModelPrivate::selectionChanged(const QItemSelection &selected
       QModelIndex topLeft = range.topLeft();
       if (isDescendantOf(removeIndexes, topLeft))
       {
-        if ( !isDescendantOf(m_rootIndexList, topLeft) && !isDescendantOf(newIndexes, topLeft) )
+        QModelIndexList list = toNonPersistent(m_rootIndexList);
+        if ( !isDescendantOf(list, topLeft) && !isDescendantOf(newIndexes, topLeft) )
           additionalRanges << range;
       }
 
@@ -586,7 +683,8 @@ void SelectionProxyModelPrivate::insertionSort(const QModelIndexList &list)
   {
     if ( m_startWithChildTrees )
     {
-      int row = getTargetRow(m_rootIndexList, newIndex);
+      QModelIndexList list = toNonPersistent(m_rootIndexList);
+      int row = getTargetRow(list, newIndex);
       int rowCount = q->sourceModel()->rowCount(newIndex);
       if ( rowCount > 0 )
       {
@@ -595,7 +693,8 @@ void SelectionProxyModelPrivate::insertionSort(const QModelIndexList &list)
         q->endInsertRows();
       }
     } else {
-      int row = getTargetRow(m_rootIndexList, newIndex);
+      QModelIndexList list = toNonPersistent(m_rootIndexList);
+      int row = getTargetRow(list, newIndex);
       q->beginInsertRows(QModelIndex(), row, row);
       m_rootIndexList.insert(row, newIndex);
       q->endInsertRows();
@@ -814,7 +913,9 @@ int SelectionProxyModel::rowCount(const QModelIndex &index) const
     {
       return d->m_rootIndexList.size();
     } else {
-      return d->childrenCount(d->m_rootIndexList);
+
+      QModelIndexList list = d->toNonPersistent(d->m_rootIndexList);
+      return d->childrenCount(list);
     }
   }
 
