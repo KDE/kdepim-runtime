@@ -66,6 +66,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+
+  private:
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
 
     Akonadi::Monitor *m_monitor;
@@ -75,6 +77,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
+    Akonadi::Collection m_root;
 
     enum RetrieveState {
       RetrieveItems,

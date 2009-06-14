@@ -36,8 +36,7 @@
 #include <akonadi/monitor.h>
 #include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
-
-#include <KRandom>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <QtDBus/QDBusConnection>
 #include <QSet>
@@ -67,6 +66,16 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   connect(m_colectionMonitor, SIGNAL(collectionRemoved(const Akonadi::Collection &)), this, SLOT(imapCollectionRemoved(const Akonadi::Collection &)));
   connect(m_colectionMonitor, SIGNAL(collectionChanged(const Akonadi::Collection &)), this, SLOT(imapCollectionChanged(const Akonadi::Collection &)));
 
+  m_root.setName( identifier() );
+  m_root.setParent( Collection::root() );
+  EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( "Kolab" );
+  attr->setIconName( "kolab" );
+  m_root.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  m_root.setRemoteId( identifier() );
+
+  // among other things, this ensures that m_root actually exists when a new imap folder is added
+  synchronizeCollectionTree();
 }
 
 KolabProxyResource::~KolabProxyResource()
@@ -104,8 +113,10 @@ void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
     }
 
     Collection::List kolabCollections;
+    kolabCollections.append( m_root );
     Collection::List imapCollections = m_monitor->collectionsMonitored();
 
+    m_managedCollections.clear();
     Q_FOREACH(const Collection &collection, imapCollections)
       kolabCollections.append( createCollection(collection) );
     collectionsRetrieved( kolabCollections );
@@ -384,7 +395,6 @@ void KolabProxyResource::imapCollectionAdded(const Collection &collection, const
     return;
   }
 
-  Collection imapCollection;
   CollectionFetchJob *coljob = new CollectionFetchJob( Collection::List() << collection );
   connect(coljob, SIGNAL(result(KJob*)), this, SLOT(imapCollectionFetched(KJob *)));
 }
@@ -395,8 +405,10 @@ void KolabProxyResource::imapCollectionFetched(KJob *job)
     kWarning() << "Can't fetch collection" ;
     return;
   }
-  Collection::List collections = qobject_cast<CollectionFetchJob*>(job)->collections();
-  Collection imapCollection = collections[0];
+  const Collection::List collections = qobject_cast<CollectionFetchJob*>(job)->collections();
+  const Collection imapCollection = collections[0];
+  if ( m_monitoredCollections.contains( imapCollection.id() ) )
+    return;
   CollectionAnnotationsAttribute *annotationsAttribute =
       imapCollection.attribute<CollectionAnnotationsAttribute>();
   if (annotationsAttribute) {
@@ -458,12 +470,12 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)
 {
   Collection c;
-  c.setParent( Collection::root() );
+  c.setParent( m_root );
   QString origName = imapCollection.name();
-  QString name = origName + KRandom::randomString(4);
+  QString name = origName;
   uint i = 1;
   while ( m_managedCollections.contains(name) ) {
-    name = origName + "_" + QString::number(i);
+    name = origName + '_' + QString::number(i);
     i++;
   }
   m_managedCollections << name;
@@ -474,7 +486,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   } else {
     c.setContentMimeTypes( QStringList() << "text/directory" );
   }
-  c.setRights( Collection::Right(Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem | Collection::CanChangeCollection) );
+  c.setRights( imapCollection.rights() );
   c.setRemoteId(QString::number(imapCollection.id()));
 
   return c;
