@@ -23,13 +23,15 @@
  *
  *******************************************************************************/
 
-#include "agent.h"
+#include "filteragent.h"
 
 #include "filteragentadaptor.h"
 
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/item.h>
+
+#include <akonadi/filter/io/sievedecoder.h>
 
 #include <KDebug>
 #include <KLocale>
@@ -81,29 +83,40 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   }
 }
 
-bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &sourceFileName )
+bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source )
 {
   if( filterId.isEmpty() )
   {
-    sendErrorReply( QDBusError::Failed, i18n("The specified filter id is empty") );
+    sendErrorReply( QDBusError::Failed, i18n( "The specified filter id is empty" ) );
     return false;
   }
 
   FilterEngine * engine = mEngines.value( filterId, 0 );
   if( engine )
   {
-    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier already exists") );
+    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier already exists" ) );
     return false;
   }
 
   Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( mimeType, 0 );
   if( !factory )
   {
-    sendErrorReply( QDBusError::Failed, i18n("Filtering of the specified mimetype is not supported") );
+    sendErrorReply( QDBusError::Failed, i18n( "Filtering of the specified mimetype is not supported" ) );
     return false;
   }
 
-  engine = new FilterEngine( filterId, mimeType, factory );
+  Akonadi::Filter::IO::SieveDecoder decoder( factory );
+
+  Akonadi::Filter::Program * program = decoder.run( source );
+  if( !program )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "Error reading filter program: %1", decoder.lastError() ) );
+    return false;
+  }
+
+  // TODO: store the program in a config file
+
+  engine = new FilterEngine( filterId, mimeType, source, program );
 
   mEngines.insert( filterId, engine );
 
@@ -237,4 +250,3 @@ void FilterAgent::collectionChanged( const Akonadi::Collection &col )
 }
 */
 
-#include "agent.moc"

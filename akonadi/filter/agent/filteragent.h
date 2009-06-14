@@ -31,10 +31,10 @@
 
 #include <akonadi/filter/componentfactory.h>
 
-#include <QList>
-#include <QHash>
+#include <QtCore/QList>
+#include <QtCore/QHash>
 
-#include "engine.h"
+#include "filterengine.h"
 
 class FilterAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
 {
@@ -99,17 +99,16 @@ public:
   QStringList enumerateFilters( const QString &mimeType );
 
   /**
-   * Creates a new filter with the specified id, mimetype and filter source file name.
+   * Creates a new filter with the specified id, mimetype and filter source in sieve format.
    * The id must be an unique non-empty string. If the filter with the specified id already
-   * exists then this method fails.. The sourceFileName must point to an existing and valid filter
-   * specification source (in sieve format, at the time of writing).
+   * exists then this method fails.
    *
    * On success true is returned and a success reply is sent through D-BUS.
    * On failure false is returned and an error message is sent through D-BUS.
    *
    * This is a D-BUS method handler.
    */
-  bool createFilter( const QString &filterId, const QString &mimeType, const QString &sourceFileName );
+  bool createFilter( const QString &filterId, const QString &mimeType, const QString &source );
 
   /**
    * Detaches the filter with the specified id and destroys it.

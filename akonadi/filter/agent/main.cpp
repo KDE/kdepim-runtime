@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "agent.h"
+#include "filteragent.h"
 
 AKONADI_AGENT_MAIN( FilterAgent )
 

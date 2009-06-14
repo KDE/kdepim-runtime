@@ -26,35 +26,50 @@
 #ifndef _AKONADI_FILTER_ENGINE_H_
 #define _AKONADI_FILTER_ENGINE_H_
 
-#include <QString>
+#include <QtCore/QString>
 
 namespace Akonadi
 {
 namespace Filter
 {
-  class ComponentFactory;
   class Program;
 } // namespace Filter
 } // namespace Akonadi
 
 /**
- * A single mail filtering engine.
+ * A single mail filtering engine descriptor.
  *
- * This one executes a single filtering program (so has a single
- * configuration file). It can be attacched to multiple collections though.
+ * This object contains all the informations about a single filter (which can be attached
+ * to multiple collections by the FilterAgent.
+ *
+ * Each engine has a runtime id, which must be unique inside the agent.
+ * Each engine has a mimetype, which determines the ComponentFactory used
+ * to encode/decode the program and the Filter::Data subclass that is used
+ * for Program execution.
+ * Each engine has a source code for the program, in sieve format.
+ * Each engine has a filtering program: the real tree of filtering instructions.
  */
 class FilterEngine
 {
 public:
 
   /**
-   * Create an instance of a filtering engine with the specified
-   * unique engine id.
+   * Create an instance of a filtering engine.
+   *
+   * \param id
+   *   The unique id of the engine
+   * \param mimeType
+   *   The mimetype associated to the filtering program
+   * \param source
+   *   The sieve source code of the program
+   * \param program
+   *   The program decoded from the sieve source: the engine takes the ownership of this pointer
    */
   FilterEngine(
       const QString &id,
       const QString &mimeType,
-      Akonadi::Filter::ComponentFactory * componentFactory
+      const QString &source,
+      Akonadi::Filter::Program * program
     );
 
   ~FilterEngine();
@@ -72,13 +87,12 @@ protected:
   QString mMimeType;
 
   /**
-   * The filtering component factory we use to create our program objects.
-   * This is a shallow pointer: the FilterAgent owns it.
+   * The sieve source code of the filtering program this engine executes
    */
-  Akonadi::Filter::ComponentFactory * mComponentFactory;
+  QString mSource;
 
   /**
-   * The program this engine executes.
+   * The program this engine executes. Owned pointer.
    */
   Akonadi::Filter::Program * mProgram;
 
@@ -100,7 +114,14 @@ public:
     return mMimeType;
   }
 
-  bool loadConfiguration( const QString &filterProgramFile );
+  /**
+   * Returns the source code of the filtering program this engine executes.
+   */
+  const QString & source() const
+  {
+    return mSource;
+  }
+
 };
 
 #endif //!_AKONADI_FILTER_ENGINE_H_

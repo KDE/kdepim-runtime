@@ -24,8 +24,8 @@ include_directories(
 
 set(
 		AKONADI_FILTER_AGENT_SRCS
-		agent.cpp
-		engine.cpp
+		filteragent.cpp
+		filterengine.cpp
 		main.cpp
 	)
 
@@ -33,7 +33,7 @@ set(
 qt4_add_dbus_adaptor(
 		AKONADI_FILTER_AGENT_SRCS
 		org.freedesktop.Akonadi.FilterAgent.xml
-		agent.h
+		filteragent.h
 		FilterAgent
 	)
 

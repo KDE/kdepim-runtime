@@ -23,20 +23,19 @@
  *
  *******************************************************************************/
 
-#include "engine.h"
+#include "filterengine.h"
 
 #include <akonadi/filter/program.h>
-#include <akonadi/filter/sievedecoder.h>
-#include <akonadi/filter/componentfactory.h>
 
 FilterEngine::FilterEngine(
    const QString &id,
    const QString &mimeType,
-   Akonadi::Filter::ComponentFactory * componentFactory
+   const QString &source,
+   Akonadi::Filter::Program * program
  )
-  : mId( id ), mMimeType( mimeType ), mComponentFactory( componentFactory ), mProgram( 0 )
+  : mId( id ), mMimeType( mimeType ), mSource( source ), mProgram( program )
 {
-  Q_ASSERT( mComponentFactory );
+  Q_ASSERT( mProgram );
 }
 
 FilterEngine::~FilterEngine()
@@ -45,12 +44,5 @@ FilterEngine::~FilterEngine()
     delete mProgram;
 }
 
-bool FilterEngine::loadConfiguration( const QString &filterProgramFile )
-{
-  //Akonadi::Filter::IO::SieveDecoder d( f );
-  //Akonadi::Filter::Program * p = d.run();
-
-  return false;
-}
 
 

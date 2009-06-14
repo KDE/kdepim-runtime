@@ -37,6 +37,8 @@ MimeTypeSelectionDialog::MimeTypeSelectionDialog( QWidget * parent, const QStrin
   mMimeTypeComboBox = new KComboBox( false, this );
   mMimeTypeComboBox->addItems( mimeTypes );
 
+  setMainWidget( mMimeTypeComboBox );
+
   if( mimeTypes.count() > 0 )
     mMimeTypeComboBox->setCurrentIndex( 0 );
 
