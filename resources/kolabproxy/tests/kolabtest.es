@@ -77,15 +77,42 @@ function testKolab( vm )
   imapResource.setOption( "Password", "nichtgeheim" );
   imapResource.create();
 
-  Test.alert( "wait" );
+  Test.alert( "wait" ); // FIXME
 
   XmlOperations.setXmlFile( "kolab-step1.xml" );
   XmlOperations.setRootCollections( kolabResource.identifier() );
   XmlOperations.setCollectionKey( "Name" );
   XmlOperations.ignoreCollectionField( "RemoteId" );
+  XmlOperations.setItemKey( "None" ); // FIXME this should not be necessary when using the testrunner?
+  XmlOperations.ignoreItemField( "RemoteId" );
   XmlOperations.assertEqual();
 
-  // TODO: test changing stuff
+  // TODO: adding/changing/removing collections, adding/changing/removing items, in both directions
+
+  var eventItem = ItemTest.newInstance();
+  eventItem.setMimeType( "application/x-vnd.akonadi.calendar.event" );
+  eventItem.setParentCollection( "akonadi_kolabproxy_resource/Calendar" );
+  eventItem.setPayloadFromFile( "event.ical" );
+  eventItem.create();
+
+  var taskItem = ItemTest.newInstance();
+  taskItem.setMimeType( "application/x-vnd.akonadi.calendar.todo" );
+  taskItem.setParentCollection( "akonadi_kolabproxy_resource/Tasks" );
+  taskItem.setPayloadFromFile( "task.ical" );
+  taskItem.create();
+
+  Test.alert( "wait again" ); // FIXME
+
+  // FIXME I need either two instances or a way to reset this thing...
+  XmlOperations.setXmlFile( "kolab-step2.xml" );
+  XmlOperations.setRootCollections( imapResource.identifier() );
+  XmlOperations.setCollectionKey( "RemoteId" );
+  // FIXME: one of the attributes contains a current date/time breaking the comparison
+  XmlOperations.ignoreCollectionField( "Attributes" );
+  XmlOperations.setItemKey( "RemoteId" );
+  // FIXME: payload contains a current date/time...
+  XmlOperations.ignoreItemField( "Payload" );
+  XmlOperations.assertEqual();
 
   Test.alert( "done" );
   imapResource.destroy();
