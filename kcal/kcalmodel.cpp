@@ -79,6 +79,13 @@ KCalModel::~KCalModel()
   delete d;
 }
 
+QStringList KCalModel::mimeTypes() const
+{
+  return QStringList()
+      << QLatin1String("text/uri-list")
+      << d->allMimeTypes();
+}
+
 int KCalModel::columnCount( const QModelIndex& ) const
 {
   if ( d->collectionMatchesMimeTypes() )
