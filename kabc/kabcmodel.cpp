@@ -75,7 +75,8 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
       if ( role == Qt::DisplayRole )
-          return i18n( "This model can only handle contact folders. The current collection holds mimetypes: %1",
+          // FIXME: i18n when strings unfreeze for 4.4
+          return QString::fromLatin1( "This model can only handle contact folders. The current collection holds mimetypes: %1").arg(
                        collection().contentMimeTypes().join( QLatin1String(",") ) );
       return QVariant();
   }
