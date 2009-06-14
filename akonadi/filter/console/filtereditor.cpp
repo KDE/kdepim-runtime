@@ -36,16 +36,21 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QLabel>
-#include <QTreeWidget>
+#include <QTreeView>
 
 #include <akonadi/filter/ui/programeditor.h>
 #include <akonadi/filter/ui/componentfactory.h>
 #include <akonadi/filter/ui/editorfactory.h>
 
-#include <akonadi/collectiondialog.h>
+#include <akonadi/collection.h>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/collectionmodel.h>
 
 #include "filter.h"
+#include "filtercollectionmodel.h"
 #include "mainwindow.h"
+
+
 
 FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
   : KDialog( parent ), mFilter( filter )
@@ -64,10 +69,14 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
   g->addWidget( l, 0, 0 );
 
   mIdLineEdit = new QLineEdit( tab );
+  mIdLineEdit->setText( filter->id() );
   g->addWidget( mIdLineEdit, 0, 1, 1, 2 );
 
-  mCollectionList = new QTreeWidget( tab );
+  mFilterCollectionModel = new FilterCollectionModel( this, filter );
+
+  mCollectionList = new QTreeView( tab );
   g->addWidget( mCollectionList, 1, 0, 1, 3 );
+  mCollectionList->setModel( mFilterCollectionModel );
 
   mAddCollectionButton = new QPushButton( tab );
   mAddCollectionButton->setIcon( KIcon( "edit-new" ) );
@@ -87,23 +96,10 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
 
   mProgramEditor = new Akonadi::Filter::UI::ProgramEditor( tabWidget, mFilter->componentFactory(), mFilter->editorFactory() );
   tabWidget->addTab( mProgramEditor, i18n( "Program" ) );
-
+  mProgramEditor->fillFromProgram( filter->program() );
 }
 
 FilterEditor::~FilterEditor()
-{
-}
-
-void FilterEditor::slotAddCollectionButtonClicked()
-{
-  Akonadi::CollectionDialog d( this );
-  QStringList mimeTypes;
-  mimeTypes << QLatin1String( "message/rfc822" );
-  d.setMimeTypeFilter( mimeTypes );
-  d.exec();
-}
-
-void FilterEditor::slotRemoveCollectionButtonClicked()
 {
 }
 

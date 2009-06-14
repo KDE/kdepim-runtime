@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  File : filtereditor.h
- *  Created on Sat 13 Jun 2009 06:08:16 by Szymon Tomasz Stefanek
+ *  File : filtercollectionmodel.h
+ *  Created on Sun 14 Jun 2009 23:21:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filter Console Application
  *
@@ -23,49 +23,24 @@
  *
  *******************************************************************************/
 
-#ifndef _FILTEREDITOR_H_
-#define _FILTEREDITOR_H_
+#ifndef _FILTERCOLLECTIONMODEL_H_
+#define _FILTERCOLLECTIONMODEL_H_
 
-#include <KDialog>
+#include <akonadi/collection.h>
+#include <akonadi/collectionmodel.h>
+
 
 class Filter;
-class FilterCollectionModel;
 
-class QLineEdit;
-class QTreeView;
-class QPushButton;
-
-namespace Akonadi
+class FilterCollectionModel : public Akonadi::CollectionModel
 {
-  class Collection;
-
-  namespace Filter
-  {
-  namespace UI
-  {
-    class ProgramEditor;
-  } // namespace UI
-
-  } // namespace Filter
-
-} // namespace Akonadi
-
-
-class FilterEditor : public KDialog
-{
-  Q_OBJECT
 public:
-  FilterEditor( QWidget * parent, Filter * filter );
-  virtual ~FilterEditor();
-
+  FilterCollectionModel( QObject * parent, Filter * filter );
+  virtual ~FilterCollectionModel();
 protected:
-  Filter * mFilter;
-  QLineEdit * mIdLineEdit;
-  QTreeView * mCollectionList;
-  QPushButton * mAddCollectionButton;
-  QPushButton * mRemoveCollectionButton;
-  Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
-  FilterCollectionModel * mFilterCollectionModel;
+  virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
+  virtual QVariant data( const QModelIndex &index, int role ) const;
+
 };
 
-#endif //!_FILTEREDITOR_H_
+#endif //!_FILTERCOLLECTIONMODEL_H_

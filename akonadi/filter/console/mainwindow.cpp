@@ -28,6 +28,7 @@
 #include <akonadi/control.h>
 
 #include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/program.h>
 #include <akonadi/filter/ui/editorfactory.h>
 
 #include <KDebug>
@@ -158,6 +159,7 @@ void MainWindow::slotNewFilterButtonClicked()
   filter.setMimeType( mimeType );
   filter.setComponentFactory( componentFactory );
   filter.setEditorFactory( editorFactory );
+  filter.setProgram( new Akonadi::Filter::Program() );
 
   FilterEditor ed( this, &filter );
   if( ed.exec() != KDialog::Accepted )

@@ -49,6 +49,7 @@ ProgramEditor::~ProgramEditor()
 
 void ProgramEditor::fillFromProgram( Program * program )
 {
+  Q_ASSERT( program );
   fillFromRuleList( program );
 }
 

@@ -38,6 +38,7 @@ Filter::~Filter()
 {
   if( mProgram )
     delete mProgram;
+  qDeleteAll( mCollections );
 }
 
 void Filter::setProgram( Akonadi::Filter::Program * prog )
@@ -47,3 +48,41 @@ void Filter::setProgram( Akonadi::Filter::Program * prog )
     delete mProgram;
   mProgram = prog;
 }
+
+Akonadi::Collection * Filter::findCollection( Akonadi::Collection::Id id )
+{
+  foreach( Akonadi::Collection * c, mCollections )
+  {
+    if( c->id() == id )
+      return c;
+  }
+
+  return 0;
+}
+
+
+bool Filter::hasCollection( Akonadi::Collection::Id id )
+{
+  foreach( Akonadi::Collection * c, mCollections )
+  {
+    if( c->id() == id )
+      return true;
+  }
+
+  return false;
+}
+
+void Filter::addCollection( Akonadi::Collection * collection )
+{
+  Q_ASSERT( !hasCollection( collection->id() ) );
+  mCollections.append( collection );
+}
+
+void Filter::removeCollection( Akonadi::Collection::Id id )
+{
+  Akonadi::Collection * c = findCollection( id );
+  Q_ASSERT( c );
+  mCollections.removeOne( c );
+  delete c;
+}
+

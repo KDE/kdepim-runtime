@@ -28,5 +28,12 @@
       <arg name="mimeType" type="s" direction="in"/>
       <arg type="as" direction="out"/>
     </method>
+    <method name="getFilterProperties">
+      <arg name="filterId" type="s" direction="in"/>
+      <arg type="b" direction="out"/>
+      <arg name="mimeType" type="s" direction="out"/>
+      <arg name="source" type="s" direction="out"/>
+      <arg name="attachedCollectionIds" type="av" direction="out"/>
+    </method>
   </interface>
 </node>

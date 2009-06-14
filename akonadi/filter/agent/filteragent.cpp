@@ -123,6 +123,33 @@ bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType
   return true;
 }
 
+bool FilterAgent::getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QVariantList &attachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier doesn't exist" ) );
+    return false;
+  }
+
+  mimeType = engine->mimeType();
+  source = engine->source();
+
+  attachedCollectionIds.clear();
+
+  QList< Akonadi::Collection::Id > ids = mFilterChains.keys();
+  foreach( Akonadi::Collection::Id id, ids )
+  {
+    QList< FilterEngine * > * filterChain = mFilterChains.value( id, 0 );
+    Q_ASSERT( filterChain );
+    if( filterChain->contains( engine ) )
+      attachedCollectionIds.append( QVariant( (qint64)id ) );
+  }
+
+  return true;
+}
+
+
 bool FilterAgent::deleteFilter( const QString &filterId )
 {
   FilterEngine * engine = mEngines.value( filterId, 0 );
@@ -133,6 +160,7 @@ bool FilterAgent::deleteFilter( const QString &filterId )
   }
 
   mEngines.remove( filterId );
+
 
   delete engine;
   return true;

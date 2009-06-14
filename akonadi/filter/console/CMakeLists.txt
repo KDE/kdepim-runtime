@@ -5,6 +5,7 @@ project(
 set(
 		AKONADI_FILTER_CONSOLE_SRCS
 		filter.cpp
+		filtercollectionmodel.cpp
 		filtereditor.cpp
 		main.cpp
 		mainwindow.cpp

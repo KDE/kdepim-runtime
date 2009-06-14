@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  File : filtereditor.h
- *  Created on Sat 13 Jun 2009 06:08:16 by Szymon Tomasz Stefanek
+ *  File : filtercollectionmodel.cpp
+ *  Created on Sun 14 Jun 2009 23:21:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filter Console Application
  *
@@ -23,49 +23,29 @@
  *
  *******************************************************************************/
 
-#ifndef _FILTEREDITOR_H_
-#define _FILTEREDITOR_H_
+#include "filtercollectionmodel.h"
+#include "filter.h"
 
-#include <KDialog>
-
-class Filter;
-class FilterCollectionModel;
-
-class QLineEdit;
-class QTreeView;
-class QPushButton;
-
-namespace Akonadi
+FilterCollectionModel::FilterCollectionModel( QObject * parent, Filter * filter )
+  : Akonadi::CollectionModel( parent )
 {
-  class Collection;
+}
 
-  namespace Filter
-  {
-  namespace UI
-  {
-    class ProgramEditor;
-  } // namespace UI
-
-  } // namespace Filter
-
-} // namespace Akonadi
-
-
-class FilterEditor : public KDialog
+FilterCollectionModel::~FilterCollectionModel()
 {
-  Q_OBJECT
-public:
-  FilterEditor( QWidget * parent, Filter * filter );
-  virtual ~FilterEditor();
+}
 
-protected:
-  Filter * mFilter;
-  QLineEdit * mIdLineEdit;
-  QTreeView * mCollectionList;
-  QPushButton * mAddCollectionButton;
-  QPushButton * mRemoveCollectionButton;
-  Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
-  FilterCollectionModel * mFilterCollectionModel;
-};
+QVariant FilterCollectionModel::data( const QModelIndex &index, int role ) const
+{
+  if( role == Qt::CheckStateRole )
+    return QVariant( Qt::Checked );
+  return Akonadi::CollectionModel::data( index, role );
+}
 
-#endif //!_FILTEREDITOR_H_
+Qt::ItemFlags FilterCollectionModel::flags( const QModelIndex &index ) const
+{
+  Qt::ItemFlags flags = Akonadi::CollectionModel::flags( index );
+  return flags | Qt::ItemIsUserCheckable;
+}
+
+

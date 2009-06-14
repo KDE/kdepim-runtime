@@ -85,6 +85,11 @@ public:
     return &mCollections;
   }
 
+  bool hasCollection( Akonadi::Collection::Id id );
+  void addCollection( Akonadi::Collection * collection );
+  void removeCollection( Akonadi::Collection::Id id );
+  Akonadi::Collection * findCollection( Akonadi::Collection::Id id );
+
   const QString & fileName() const
   {
     return mFileName;

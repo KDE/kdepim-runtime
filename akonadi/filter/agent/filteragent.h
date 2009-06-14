@@ -33,6 +33,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QHash>
+#include <QtCore/QVariantList>
 
 #include "filterengine.h"
 
@@ -120,6 +121,9 @@ public:
    * This is a D-BUS method handler.
    */
   bool deleteFilter( const QString &filterId );
+
+  bool getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QVariantList &attachedCollectionIds );
+
 
   bool attachFilter( const QString &filterId, qint64 collectionId );
 
