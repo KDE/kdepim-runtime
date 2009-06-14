@@ -62,7 +62,6 @@ class ConcurrentJobBase
 
     virtual Akonadi::Job *job() = 0;
 
-  private:
     class JobRunner : public QThread
     {
       public:
