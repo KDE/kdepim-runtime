@@ -52,10 +52,11 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
+  changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
+
   m_monitor = new Monitor();
-  ItemFetchScope scope;
-  scope.fetchFullPayload();
-  m_monitor->setItemFetchScope(scope);
+  m_monitor->itemFetchScope().fetchFullPayload();
 
   m_colectionMonitor = new Monitor();
   m_colectionMonitor->setCollectionMonitored(Collection::root());
@@ -193,44 +194,21 @@ void KolabProxyResource::configure( WId windowId )
   // of focus stealing prevention technique
 }
 
-void KolabProxyResource::itemAdded( const Item &_item, const Collection &collection )
+void KolabProxyResource::itemAdded( const Item &item, const Collection &collection )
 {
   kDebug() << "ITEMADDED";
 
-  Item item(_item);
+  Item kolabItem( item );
 //   kDebug() << "Item added " << item.id() << collection.remoteId() << collection.id();
-  Collection c;
-  CollectionFetchJob *coljob = new CollectionFetchJob( Collection::List() << collection );
-  if ( coljob->exec() ) {
-    Collection::List collections = coljob->collections();
-    c = collections[0];
-  }
 
-  Collection imapCollection(c.remoteId().toUInt());
-  coljob = new CollectionFetchJob( Collection::List() << imapCollection );
+  Collection imapCollection( collection.remoteId().toUInt() );
+  CollectionFetchJob* coljob = new CollectionFetchJob( Collection::List() << imapCollection );
   if ( coljob->exec() ) {
     Collection::List collections = coljob->collections();
     imapCollection = collections[0];
   }else {
     kWarning() << "Can't fetch collection" << imapCollection.id();
   }
-
-  Item addrItem;
-  ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().fetchFullPayload();
-  if (job->exec()) {
-    Item::List items = job->items();
-    if (items.isEmpty()) {
-      kDebug() << "Empty fecth";
-      cancelTask();
-      return;
-    }
-
-    addrItem = items[0];
-  } else {
-    kWarning() << "Can't fetch address item " << item.id();
-  }
-
 
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
   if (!handler) {
@@ -239,7 +217,7 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
     return;
   }
   Item imapItem(handler->contentMimeTypes()[0]);
-  handler->toKolabFormat(addrItem, imapItem);
+  handler->toKolabFormat( kolabItem, imapItem );
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
   if (!cjob->exec()) {
@@ -250,31 +228,22 @@ void KolabProxyResource::itemAdded( const Item &_item, const Collection &collect
   handler->itemAdded(imapItem);
   m_excludeAppend << imapItem.id();
 
-  addrItem.setRemoteId(QString::number(imapItem.id()));
-  changeCommitted( addrItem );
+  kolabItem.setRemoteId(QString::number(imapItem.id()));
+  changeCommitted( kolabItem );
 }
 
-void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
+void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArray> &parts )
 {
   kDebug() << "ITEMCHANGED" << item.id() << item.remoteId();
-  Item addrItem;
-  ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().fetchFullPayload();
-  if (job->exec()) {
-    Item::List items = job->items();
-    addrItem = items[0];
-  } else {
-    kWarning() << "Can't fetch address item " << item.id();
-  }
 
   Item imapItem;
-  job = new ItemFetchJob( Item(addrItem.remoteId().toUInt()) );
+  ItemFetchJob* job = new ItemFetchJob( Item(kolabItem.remoteId().toUInt()) );
   job->fetchScope().fetchFullPayload();
   if (job->exec()) {
     Item::List items = job->items();
     imapItem = items[0];
   } else {
-    kWarning() << "Can't fetch imap item " << addrItem.remoteId();
+    kWarning() << "Can't fetch imap item " << kolabItem.remoteId();
   }
 
   KolabHandler *handler = m_monitoredCollections.value(imapItem.collectionId());
@@ -284,27 +253,20 @@ void KolabProxyResource::itemChanged( const Item &item, const QSet<QByteArray> &
     return;
   }
 
-  handler->toKolabFormat(addrItem, imapItem);
+  handler->toKolabFormat(kolabItem, imapItem);
   ItemModifyJob *mjob = new ItemModifyJob( imapItem );
     if (!mjob->exec()) {
       kWarning() << "Can't modify imap item " << imapItem.id();
     }
 
-  changeCommitted( addrItem );
+  changeCommitted( kolabItem );
 }
 
 void KolabProxyResource::itemRemoved( const Item &item )
 {
   kDebug() << "ITEMREMOVED";
   kDebug() << "Item removed " << item.id() << item.remoteId();
-  Item imapItem(item.remoteId().toUInt());
-  ItemFetchJob *job = new ItemFetchJob( imapItem );
-  if (job->exec()) {
-    Item::List items = job->items();
-    imapItem = items[0];
-  } else {
-    kWarning() << "Can't fetch imap item " << imapItem.id();
-  }
+  const Item imapItem( item.remoteId().toUInt() );
   ItemDeleteJob *djob = new ItemDeleteJob( imapItem );
   changeCommitted( item );
   Q_UNUSED(djob);
@@ -379,12 +341,12 @@ void KolabProxyResource::itemCreatedDone(KJob *job)
 void KolabProxyResource::imapItemRemoved(const Item& item)
 {
   kDebug() << "IMAPITEMREMOVED";
-  Item addr;
-  addr.setRemoteId(QString::number(item.id()));
+  Item kolabItem;
+  kolabItem.setRemoteId( QString::number( item.id() ) );
   Q_FOREACH(KolabHandler *handler, m_monitoredCollections.values()) {
     handler->itemDeleted(item);
   }
-  ItemDeleteJob *job = new ItemDeleteJob( addr );
+  ItemDeleteJob *job = new ItemDeleteJob( kolabItem );
 }
 
 void KolabProxyResource::imapCollectionAdded(const Collection &collection, const Collection &parent)
