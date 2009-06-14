@@ -234,7 +234,7 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
 
 void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArray> &parts )
 {
-  kDebug() << "ITEMCHANGED" << item.id() << item.remoteId();
+  kDebug() << "ITEMCHANGED" << kolabItem.id() << kolabItem.remoteId();
 
   Item imapItem;
   ItemFetchJob* job = new ItemFetchJob( Item(kolabItem.remoteId().toUInt()) );
