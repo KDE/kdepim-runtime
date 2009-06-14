@@ -81,6 +81,8 @@ function testKolab( vm )
 
   XmlOperations.setXmlFile( "kolab-step1.xml" );
   XmlOperations.setRootCollections( kolabResource.identifier() );
+  XmlOperations.setCollectionKey( "Name" );
+  XmlOperations.ignoreCollectionField( "RemoteId" );
   XmlOperations.assertEqual();
 
   // TODO: test changing stuff
