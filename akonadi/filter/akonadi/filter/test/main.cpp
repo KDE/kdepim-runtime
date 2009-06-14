@@ -1,5 +1,5 @@
 
-#include <akonadi/filter/sievedecoder.h>
+#include <akonadi/filter/io/sievedecoder.h>
 #include <akonadi/filter/program.h>
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/condition.h>
@@ -36,7 +36,7 @@ int main(int argc,char ** argv)
   MyComponentFactory * f = new MyComponentFactory();
   f->setDefaultActionDescription( i18n( "download message" ) );
   Akonadi::Filter::IO::SieveDecoder d( f );
-  Akonadi::Filter::Program * p = d.run();
+  Akonadi::Filter::Program * p = d.run( "fileinto \"X\"" );
   if( p )
   {
     const QByteArray& ba = QByteArray( "test" );

@@ -23,10 +23,10 @@
  *
  *******************************************************************************/
 
-#include "data.h"
+#include <akonadi/filter/data.h>
 
-#include "functiondescriptor.h"
-#include "datamemberdescriptor.h"
+#include <akonadi/filter/functiondescriptor.h>
+#include <akonadi/filter/datamemberdescriptor.h>
 
 namespace Akonadi
 {

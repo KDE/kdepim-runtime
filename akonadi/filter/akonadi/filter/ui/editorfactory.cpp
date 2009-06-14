@@ -23,17 +23,17 @@
  *
  *******************************************************************************/
 
-#include "editorfactory.h"
+#include <akonadi/filter/ui/editorfactory.h>
 
-#include "actioneditor.h"
-#include "ruleeditor.h"
-#include "rulelisteditor.h"
+#include <akonadi/filter/ui/actioneditor.h>
+#include <akonadi/filter/ui/ruleeditor.h>
+#include <akonadi/filter/ui/rulelisteditor.h>
 
 #include <akonadi/filter/commanddescriptor.h>
 
 #include <KDebug>
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 namespace Akonadi
 {

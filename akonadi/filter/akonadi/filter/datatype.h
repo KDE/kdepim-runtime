@@ -26,9 +26,9 @@
 #ifndef _AKONADI_FILTER_DATATYPE_H_
 #define _AKONADI_FILTER_DATATYPE_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <QString>
+#include <QtCore/QString>
 
 namespace Akonadi
 {

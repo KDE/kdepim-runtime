@@ -26,13 +26,13 @@
 #ifndef _AKONADI_FILTER_RULELIST_H_
 #define _AKONADI_FILTER_RULELIST_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include "component.h"
-#include "rule.h"
-#include "action.h"
+#include <akonadi/filter/component.h>
+#include <akonadi/filter/rule.h>
+#include <akonadi/filter/action.h>
 
-#include <QList>
+#include <QtCore/QList>
 
 namespace Akonadi
 {

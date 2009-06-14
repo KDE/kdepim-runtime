@@ -23,25 +23,25 @@
  *
  *******************************************************************************/
 
-#include "rulelisteditor.h"
+#include <akonadi/filter/ui/rulelisteditor.h>
 
 #include <akonadi/filter/rulelist.h>
 #include <akonadi/filter/componentfactory.h>
 
-#include "ruleeditor.h"
-#include "expandingscrollarea.h"
-#include "editorfactory.h"
+#include <akonadi/filter/ui/ruleeditor.h>
+#include <akonadi/filter/ui/expandingscrollarea.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
-#include <QResizeEvent>
-#include <QLayout>
-#include <QList>
-#include <QFrame>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPainter>
-#include <QStyle>
-#include <QEvent>
-#include <QToolButton>
+#include <QtCore/QEvent>
+#include <QtCore/QList>
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPainter>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QStyle>
+#include <QtGui/QToolButton>
 
 #include <KApplication>
 #include <KDebug>

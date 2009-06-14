@@ -23,12 +23,12 @@
  *
  *******************************************************************************/
 
-#include "rule.h"
-#include "data.h"
-#include "condition.h"
-#include "action.h"
+#include <akonadi/filter/rule.h>
+#include <akonadi/filter/data.h>
+#include <akonadi/filter/condition.h>
+#include <akonadi/filter/action.h>
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include <KDebug>
 

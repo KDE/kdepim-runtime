@@ -23,11 +23,11 @@
  *
  *******************************************************************************/
 
-#include "action.h"
+#include <akonadi/filter/action.h>
 
 #include <KDebug>
 
-#include "commanddescriptor.h"
+#include <akonadi/filter/commanddescriptor.h>
 
 namespace Akonadi
 {

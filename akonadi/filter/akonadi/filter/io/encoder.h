@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : decoder.h
+ *  File : encoder.h
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,52 +23,29 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_IO_DECODER_H_
-#define _AKONADI_FILTER_IO_DECODER_H_
+#ifndef _AKONADI_FILTER_IO_ENCODER_H_
+#define _AKONADI_FILTER_IO_ENCODER_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <QString>
+#include <QtCore/QString>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class ComponentFactory;
-
 namespace IO
 {
 
-class AKONADI_FILTER_EXPORT Decoder
+class AKONADI_FILTER_EXPORT Encoder
 {
 public:
-  Decoder( ComponentFactory * componentFactory );
-  virtual ~Decoder();
+  Encoder();
+  virtual ~Encoder();
+
 protected:
-  ComponentFactory * mComponentFactory;
-  QString mLastError;
 
-public:
-
-  /**
-   * Returns the last error occured in this component execution run.
-   */
-  const QString & lastError() const
-  {
-    return mLastError;
-  }
-
-  void setLastError( const QString &error )
-  {
-    mLastError = error;
-  }
-
-  ComponentFactory * componentFactory() const
-  {
-    return mComponentFactory;
-  }
-};
+}; // class Encoder
 
 } // namespace IO
 
@@ -76,4 +53,4 @@ public:
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_IO_DECODER_H_
+#endif //!_AKONADI_FILTER_IO_ENCODER_H_

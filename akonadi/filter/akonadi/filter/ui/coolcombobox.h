@@ -26,10 +26,10 @@
 #ifndef _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
 #define _AKONADI_FILTER_UI_PRIVATE_COOLCOMBOBOX_H_
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
 #include <KComboBox>
-#include <QColor>
+#include <QtGui/QColor>
 
 class QPaintEvent;
 

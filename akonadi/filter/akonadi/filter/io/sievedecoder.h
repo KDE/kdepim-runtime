@@ -26,14 +26,14 @@
 #ifndef _AKONADI_FILTER_IO_SIEVEDECODER_H_
 #define _AKONADI_FILTER_IO_SIEVEDECODER_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include "decoder.h"
+#include <akonadi/filter/io/decoder.h>
 
-#include <QString>
-#include <QStringList>
-#include <QList>
-#include <QVariant>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
 
 namespace Akonadi
 {
@@ -63,6 +63,8 @@ public:
   SieveDecoder( ComponentFactory * componentFactory );
   ~SieveDecoder();
 protected:
+  QString mSource;
+
   Program * mProgram; // the currently parsed program
 
   Component * mCurrentComponent; // the component we're 'in'
@@ -85,7 +87,7 @@ public:
   }
 
 
-  virtual Program * run();
+  virtual Program * run( const QString &source );
 protected:
   void onCommandDescriptorStart( const QString & identifier );
   void onCommandDescriptorEnd();

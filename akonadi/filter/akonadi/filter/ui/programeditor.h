@@ -26,9 +26,9 @@
 #ifndef _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
 #define _AKONADI_FILTER_UI_PROGRAMEDITOR_H_
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include "rulelisteditor.h"
+#include <akonadi/filter/ui/rulelisteditor.h>
 
 namespace Akonadi
 {

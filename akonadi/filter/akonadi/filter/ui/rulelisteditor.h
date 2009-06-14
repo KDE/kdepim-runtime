@@ -26,14 +26,14 @@
 #ifndef _AKONADI_FILTER_UI_RULELISTEDITOR_H_
 #define _AKONADI_FILTER_UI_RULELISTEDITOR_H_
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include "actioneditor.h"
+#include <akonadi/filter/ui/actioneditor.h>
 
-#include <QWidget>
-#include <QScrollArea>
+#include <QtGui/QWidget>
+#include <QtGui/QScrollArea>
 
-#include "expandingscrollarea.h"
+#include <akonadi/filter/ui/expandingscrollarea.h>
 
 class QLabel;
 class QLineEdit;

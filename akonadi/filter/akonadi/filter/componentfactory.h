@@ -26,18 +26,18 @@
 #ifndef _AKONADI_FILTER_COMPONENTFACTORY_H_
 #define _AKONADI_FILTER_COMPONENTFACTORY_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <QString>
-#include <QList>
-#include <QHash>
+#include <QtCore/QString>
+#include <QtCore/QList>
+#include <QtCore/QHash>
 
 
-#include "functiondescriptor.h"
-#include "commanddescriptor.h"
-#include "datatype.h"
-#include "datamemberdescriptor.h"
-#include "operatordescriptor.h"
+#include <akonadi/filter/functiondescriptor.h>
+#include <akonadi/filter/commanddescriptor.h>
+#include <akonadi/filter/datatype.h>
+#include <akonadi/filter/datamemberdescriptor.h>
+#include <akonadi/filter/operatordescriptor.h>
 
 namespace Akonadi
 {

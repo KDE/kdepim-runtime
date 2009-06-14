@@ -23,11 +23,11 @@
  *
  *******************************************************************************/
 
-#include "condition.h"
-#include "data.h"
-#include "datamemberdescriptor.h"
-#include "functiondescriptor.h"
-#include "operatordescriptor.h"
+#include <akonadi/filter/condition.h>
+#include <akonadi/filter/data.h>
+#include <akonadi/filter/datamemberdescriptor.h>
+#include <akonadi/filter/functiondescriptor.h>
+#include <akonadi/filter/operatordescriptor.h>
 
 #include <KDebug>
 

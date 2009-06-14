@@ -23,15 +23,16 @@
  *
  *******************************************************************************/
 
-#include "sievedecoder.h"
+#include <akonadi/filter/io/sievedecoder.h>
 
-#include "componentfactory.h"
-#include "program.h"
-#include "rule.h"
-#include "sievereader.h"
-#include "condition.h"
-#include "rulelist.h"
-#include "functiondescriptor.h"
+#include <akonadi/filter/io/sievereader.h>
+
+#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/program.h>
+#include <akonadi/filter/rule.h>
+#include <akonadi/filter/condition.h>
+#include <akonadi/filter/rulelist.h>
+#include <akonadi/filter/functiondescriptor.h>
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -828,24 +829,9 @@ void SieveDecoder::onBlockEnd()
 
 }
 
-Program * SieveDecoder::run()
+Program * SieveDecoder::run( const QString &source )
 {
-  QString script = QString::fromUtf8(
-       "# Test script\r\n" \
-       "if allof( size :above 100K, size :below 200K, true) {\r\n" \
-       "  #fileinto \"huge\";\r\n" \
-       "  stop;\r\n" \
-       "}\r\n"
-       "elsif allof( size :below 100K, not( size :below 20K ), not( header :matches \"from\" \"x\", header :matches \"to\" \"y\" ) ) {\r\n" \
-       "  #fileinto \"medium\";\r\n" \
-       "  if not allof( size :below 80K, not size :below [\"From\", \"To\"] 70K, anyof( address :inaddressbook \"cc\", not address :domain :like \"from\" \"*xyz*\")) {\r\n" \
-       "    #fileinto \"strange\";\r\n" \
-       "    keep;\r\n" \
-       "  }\r\n"
-       "}\r\n"
-    );
-
-  QByteArray utf8Script = script.toUtf8();
+  QByteArray utf8Script = source.toUtf8();
 
   KSieve::Parser parser( utf8Script.data(), utf8Script.data() + utf8Script.length() );
 
@@ -873,9 +859,9 @@ Program * SieveDecoder::run()
   }
 
 #ifdef DEBUG_SIEVE_DECODER
-  qDebug( "\nSCRIPT\n" );
-  qDebug( "%s", script.toUtf8().data() );
-  qDebug( "\nTREE\n" );
+  qDebug( "\nDECODING SIEVE SCRIPT\n" );
+  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "\nDECODED TREE\n" );
   if ( mProgram )
   {
     QString prefix;
@@ -886,7 +872,7 @@ Program * SieveDecoder::run()
 
   if( mGotError )
   {
-    qDebug( "ERROR: %s", lastError().toUtf8().data() );
+    qDebug( "DECODING ERROR: %s", lastError().toUtf8().data() );
     return 0;
   }
 

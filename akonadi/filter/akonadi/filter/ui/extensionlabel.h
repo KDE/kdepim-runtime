@@ -26,10 +26,10 @@
 #ifndef _AKONADI_FILTER_UI_PRIVATE_EXTENSIONLABEL_H_
 #define _AKONADI_FILTER_UI_PRIVATE_EXTENSIONLABEL_H_
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include <QWidget>
-#include <QColor>
+#include <QtGui/QWidget>
+#include <QtGui/QColor>
 
 class QPaintEvent;
 

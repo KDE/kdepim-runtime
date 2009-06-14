@@ -23,16 +23,16 @@
  *
  *******************************************************************************/
 
-#include "ruleeditor.h"
+#include <akonadi/filter/ui/ruleeditor.h>
 
-#include "conditionselector.h"
-#include "actionselector.h"
-#include "editorfactory.h"
+#include <akonadi/filter/ui/conditionselector.h>
+#include <akonadi/filter/ui/actionselector.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/rule.h>
 
-#include <QLayout>
+#include <QtGui/QLayout>
 
 #include <KDebug>
 

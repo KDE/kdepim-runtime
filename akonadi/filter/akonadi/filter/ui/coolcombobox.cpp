@@ -23,12 +23,12 @@
  *
  *******************************************************************************/
 
-#include "coolcombobox.h"
+#include <akonadi/filter/ui/coolcombobox.h>
 
-#include <QPaintEvent>
-#include <QStyleOption>
-#include <QStylePainter>
-#include <QStyle>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QStyleOption>
+#include <QtGui/QStylePainter>
+#include <QtGui/QStyle>
 
 
 namespace Akonadi

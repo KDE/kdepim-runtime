@@ -24,8 +24,9 @@
  *******************************************************************************/
 
 #include "afldecoder.h"
-#include "program.h"
-#include "componentfactory.h"
+
+#include "../program.h"
+#include "../componentfactory.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>

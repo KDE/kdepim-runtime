@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "functiondescriptor.h"
+#include <akonadi/filter/functiondescriptor.h>
 
 #include <KDebug>
 

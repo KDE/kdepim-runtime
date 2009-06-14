@@ -23,21 +23,21 @@
  *
  *******************************************************************************/
 
-#include "actionselector.h"
+#include <akonadi/filter/ui/actionselector.h>
 
 #include <akonadi/filter/action.h>
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/commanddescriptor.h>
 
-#include "coolcombobox.h"
-#include "editorfactory.h"
-#include "actioneditor.h"
-#include "rulelisteditor.h"
-#include "ruleeditor.h"
+#include <akonadi/filter/ui/coolcombobox.h>
+#include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/ui/actioneditor.h>
+#include <akonadi/filter/ui/rulelisteditor.h>
+#include <akonadi/filter/ui/ruleeditor.h>
 
-#include <QLayout>
-#include <QString>
-#include <QColor>
+#include <QtGui/QLayout>
+#include <QtCore/QString>
+#include <QtGui/QColor>
 
 #include <KLocale>
 #include <KMessageBox>

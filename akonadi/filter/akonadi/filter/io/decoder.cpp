@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : filter.h
+ *  File : decoder.cpp
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,33 +23,30 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_H_
-#define _AKONADI_FILTER_H_
+#include <akonadi/filter/io/decoder.h>
 
-#include "config-akonadi-filter.h"
-
-#include <QString>
-
-class QTextStream;
+#include <akonadi/filter/componentfactory.h>
 
 namespace Akonadi
 {
-
-#if 0
 namespace Filter
 {
+namespace IO
+{
 
-  bool loadSieveScript( QTextStream &stream );
-  bool saveSieveScript( QTextStream &stream );
+Decoder::Decoder( ComponentFactory * componentFactory )
+  : mComponentFactory( componentFactory )
+{
+  Q_ASSERT( mComponentFactory );
+}
 
-  bool loadSieveScript( const QString &fileName );
-  bool saveSieveScript( const QString &fileName );
+Decoder::~Decoder()
+{
+}
+
+} // namespace IO
 
 } // namespace Filter
-#endif
 
 } // namespace Akonadi
 
-
-
-#endif //!_AKONADI_FILTER_H_

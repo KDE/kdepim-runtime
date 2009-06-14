@@ -26,12 +26,12 @@
 #ifndef _AKONADI_FILTER_ACTION_H_
 #define _AKONADI_FILTER_ACTION_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include "component.h"
+#include <akonadi/filter/component.h>
 
-#include <QList>
-#include <QVariant>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
 
 namespace Akonadi
 {

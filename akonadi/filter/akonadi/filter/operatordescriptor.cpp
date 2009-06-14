@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "operatordescriptor.h"
+#include <akonadi/filter/operatordescriptor.h>
 
 #include <KDebug>
 

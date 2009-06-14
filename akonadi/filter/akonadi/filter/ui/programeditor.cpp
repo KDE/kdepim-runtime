@@ -23,9 +23,9 @@
  *
  *******************************************************************************/
 
-#include "programeditor.h"
+#include <akonadi/filter/ui/programeditor.h>
 
-#include "editorfactory.h"
+#include <akonadi/filter/ui/editorfactory.h>
 
 #include <akonadi/filter/program.h>
 #include <akonadi/filter/componentfactory.h>

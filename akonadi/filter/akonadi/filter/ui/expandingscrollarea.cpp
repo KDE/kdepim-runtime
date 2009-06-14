@@ -23,10 +23,10 @@
  *
  *******************************************************************************/
 
-#include "expandingscrollarea.h"
+#include <akonadi/filter/ui/expandingscrollarea.h>
 
-#include <QEvent>
-#include <QLayout>
+#include <QtCore/QEvent>
+#include <QtGui/QLayout>
 
 namespace Akonadi
 {

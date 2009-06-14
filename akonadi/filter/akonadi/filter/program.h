@@ -26,14 +26,14 @@
 #ifndef _AKONADI_FILTER_PROGRAM_H_
 #define _AKONADI_FILTER_PROGRAM_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <QList>
-#include <QString>
+#include <QtCore/QList>
+#include <QtCore/QString>
 
-#include "component.h"
-#include "rulelist.h"
-#include "data.h"
+#include <akonadi/filter/component.h>
+#include <akonadi/filter/rulelist.h>
+#include <akonadi/filter/data.h>
 
 namespace Akonadi
 {

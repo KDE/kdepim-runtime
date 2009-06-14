@@ -31,11 +31,12 @@
 /// as it depends on the ksieve headers.
 ///
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <ksieve/scriptbuilder.h>
-#include <ksieve/error.h>
-#include <ksieve/parser.h>
+// These headers should be probably installed in some other place
+#include <akonadi/filter/ksieve/scriptbuilder.h>
+#include <akonadi/filter/ksieve/error.h>
+#include <akonadi/filter/ksieve/parser.h>
 
 namespace Akonadi
 {

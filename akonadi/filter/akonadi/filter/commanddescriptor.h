@@ -26,12 +26,12 @@
 #ifndef _AKONADI_FILTER_COMMANDDESCRIPTOR_H_
 #define _AKONADI_FILTER_COMMANDDESCRIPTOR_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include "datatype.h"
+#include <akonadi/filter/datatype.h>
 
-#include <QString>
-#include <QList>
+#include <QtCore/QString>
+#include <QtCore/QList>
 
 namespace Akonadi
 {

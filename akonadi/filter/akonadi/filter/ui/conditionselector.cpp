@@ -23,21 +23,21 @@
  *
  *******************************************************************************/
 
-#include "conditionselector.h"
+#include <akonadi/filter/ui/conditionselector.h>
 
 #include <akonadi/filter/condition.h>
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/functiondescriptor.h>
 
-#include "coolcombobox.h"
-#include "extensionlabel.h"
-#include "editorfactory.h"
+#include <akonadi/filter/ui/coolcombobox.h>
+#include <akonadi/filter/ui/extensionlabel.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
 #include <KLineEdit>
 #include <KLocale>
 
-#include <QLayout>
-#include <QList>
+#include <QtGui/QLayout>
+#include <QtCore/QList>
 
 static int gSpacing = -1; // 0 would be nice for several reasons, but it looks confusing in windows and cde styles... -1 means default
 static int gIndent = 20;

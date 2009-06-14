@@ -23,9 +23,9 @@
  *
  *******************************************************************************/
 
-#include "rulelist.h"
+#include <akonadi/filter/rulelist.h>
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include <KDebug>
 

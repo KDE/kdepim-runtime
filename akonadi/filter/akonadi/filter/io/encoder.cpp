@@ -1,6 +1,6 @@
 /****************************************************************************** *
  *
- *  File : afldecoder.h
+ *  File : encoder.cpp
  *  Created on Sun 03 May 2009 12:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
@@ -23,48 +23,25 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_IO_AFLDECODER_H_
-#define _AKONADI_FILTER_IO_AFLDECODER_H_
-
-#include "config-akonadi-filter.h"
-
-#include "decoder.h"
+#include <akonadi/filter/io/encoder.h>
 
 namespace Akonadi
 {
 namespace Filter
 {
-
-class Program;
-
 namespace IO
 {
 
-class AKONADI_FILTER_EXPORT AFLDecoder : public Decoder
+Encoder::Encoder()
 {
-public:
-  AFLDecoder( ComponentFactory * componentFactory );
-  virtual ~AFLDecoder();
-protected:
-  const QChar * mCurrentChar;
-  int mCurrentLine;
-  Program * mProgram;
-public:
+}
 
-  virtual Program * run();
-protected:
-  void parseComment();
-  void nextChar();
-  bool parseDeclaration();
-  bool extractIdentifier( QString &buffer );
-  bool fatal( const QString &error );
-  bool fatalUnexpectedCharacter( const QString &where );
-};
+Encoder::~Encoder()
+{
+}
 
 } // namespace IO
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-#endif //!_AKONADI_FILTER_IO_DECODER_H_

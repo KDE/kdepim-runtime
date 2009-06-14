@@ -23,13 +23,13 @@
  *
  *******************************************************************************/
 
-#include "actioneditor.h"
-#include "editorfactory.h"
+#include <akonadi/filter/ui/actioneditor.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
 #include <akonadi/filter/action.h>
 #include <akonadi/filter/componentfactory.h>
 
-#include <QLayout>
+#include <QtGui/QLayout>
 
 namespace Akonadi
 {

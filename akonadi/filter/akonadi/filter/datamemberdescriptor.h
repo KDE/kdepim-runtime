@@ -26,11 +26,11 @@
 #ifndef _AKONADI_FILTER_DATAMEMBERDESCRIPTOR_H_
 #define _AKONADI_FILTER_DATAMEMBERDESCRIPTOR_H_
 
-#include "config-akonadi-filter.h"
+#include <akonadi/filter/config-akonadi-filter.h>
 
-#include <QString>
+#include <QtCore/QString>
 
-#include "datatype.h"
+#include <akonadi/filter/datatype.h>
 
 namespace Akonadi
 {

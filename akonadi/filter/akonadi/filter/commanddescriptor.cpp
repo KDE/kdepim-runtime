@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include "commanddescriptor.h"
+#include <akonadi/filter/commanddescriptor.h>
 
 #include <KDebug>
 

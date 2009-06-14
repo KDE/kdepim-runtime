@@ -12,7 +12,7 @@ add_subdirectory(
 
 include_directories(
 		${CMAKE_SOURCE_DIR}
-		${CMAKE_CURRENT_BINARY_DIR}
+		${CMAKE_CURRENT_BINARY_DIR}/../../
 	)
 
 configure_file(
@@ -23,23 +23,22 @@ configure_file(
 set(
 		AKONADI_FILTER_LIB_SRCS
 		action.cpp
-		afldecoder.cpp
 		commanddescriptor.cpp
 		component.cpp
 		condition.cpp
-		decoder.cpp
 		data.cpp
 		datamemberdescriptor.cpp
-		encoder.cpp
 		componentfactory.cpp
-		filter.cpp
 		functiondescriptor.cpp
 		operatordescriptor.cpp
 		program.cpp
 		rule.cpp
 		rulelist.cpp
-		sievedecoder.cpp
-		sievereader.cpp
+		io/afldecoder.cpp
+		io/decoder.cpp
+		io/encoder.cpp
+		io/sievedecoder.cpp
+		io/sievereader.cpp
 	)
 
 kde4_add_library(
@@ -79,7 +78,7 @@ install(
 
 install(
 		FILES
-			filter.h
+			program.h
 		DESTINATION
 			${INCLUDE_INSTALL_DIR}/akonadi/filter
 		COMPONENT

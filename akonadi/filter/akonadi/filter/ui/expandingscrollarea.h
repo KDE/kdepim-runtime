@@ -26,9 +26,9 @@
 #ifndef _AKONADI_FILTER_UI_PRIVATE_EXPANDINGSCROLLAREA_H_
 #define _AKONADI_FILTER_UI_PRIVATE_EXPANDINGSCROLLAREA_H_
 
-#include "config-akonadi-filter-ui.h"
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include <QScrollArea>
+#include <QtGui/QScrollArea>
 
 namespace Akonadi
 {
