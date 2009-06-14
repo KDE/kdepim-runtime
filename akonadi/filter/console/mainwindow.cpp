@@ -1,5 +1,6 @@
-/****************************************************************************** * *
- *  File : mainwindow.h
+/******************************************************************************
+ *
+ *  File : mainwindow.cpp
  *  Created on Mon 08 Jun 2009 22:38:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filter Console Application
@@ -26,6 +27,9 @@
 
 #include <akonadi/control.h>
 
+#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/ui/editorfactory.h>
+
 #include <KDebug>
 #include <KMessageBox>
 #include <KLocale>
@@ -35,16 +39,38 @@
 #include <QListWidget>
 #include <QLayout>
 
+#include "filter.h"
+#include "filtereditor.h"
 #include "filteragentinterface.h"
+#include "mimetypeselectiondialog.h"
+
+MainWindow * MainWindow::mInstance = 0;
 
 MainWindow::MainWindow()
   : KXmlGuiWindow( 0 )
 {
+  mInstance = this;
+
   if( !Akonadi::Control::start( this ) )
   {
     kDebug() << "Could not start akonadi server";
     return;
   }
+
+  mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
+
+  Akonadi::Filter::ComponentFactory * componentFactory = new Akonadi::Filter::ComponentFactory();
+  mComponentFactories.insert( QLatin1String( "message/rfc822" ), componentFactory );
+
+  componentFactory = new Akonadi::Filter::ComponentFactory();
+  mComponentFactories.insert( QLatin1String( "message/news" ), componentFactory );
+
+  Akonadi::Filter::UI::EditorFactory * editorFactory = new Akonadi::Filter::UI::EditorFactory();
+  mEditorFactories.insert( QLatin1String( "message/rfc822" ), editorFactory );
+
+  editorFactory = new Akonadi::Filter::UI::EditorFactory();
+  mEditorFactories.insert( QLatin1String( "message/news" ), editorFactory );
+
 
   QWidget * base = new QWidget( this );
   setCentralWidget( base );
@@ -76,13 +102,14 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+  qDeleteAll( mComponentFactories );
+  qDeleteAll( mEditorFactories );
+  delete mFilterAgent;
 }
 
 void MainWindow::listFilters()
 {
-  org::freedesktop::Akonadi::FilterAgent a( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
-
-  QDBusPendingReply< QStringList > r = a.enumerateFilters( QLatin1String( "message/rfc822" ) );
+  QDBusPendingReply< QStringList > r = mFilterAgent->enumerateFilters( QString() );
   r.waitForFinished();
 
   mFilterListWidget->clear();
@@ -98,18 +125,65 @@ void MainWindow::listFilters()
 
 void MainWindow::slotNewFilterButtonClicked()
 {
-  org::freedesktop::Akonadi::FilterAgent a( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
+  QDBusPendingReply< QStringList > rMimeTypes = mFilterAgent->enumerateMimeTypes();
+  rMimeTypes.waitForFinished();
 
-  QDBusPendingReply< bool > r = a.createFilter( QLatin1String( "pippo" ), QLatin1String( "message/rfc822" ), QLatin1String( "" ) );
-  r.waitForFinished();
-
-  if( r.isError() )
+  if( rMimeTypes.isError() )
   {
-    KMessageBox::error( this, r.error().message(), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, rMimeTypes.error().message(), i18n( "Could not enumerate mimetypes" ) );
+    return;
+  }
+
+  MimeTypeSelectionDialog dlg( this, rMimeTypes.value() );
+  if( dlg.exec() != KDialog::Accepted )
+    return;
+
+  QString mimeType = dlg.selectedMimeType();
+
+  Akonadi::Filter::ComponentFactory * componentFactory = mComponentFactories.value( mimeType, 0 );
+  if( !componentFactory )
+  {
+    KMessageBox::error( this, i18n( "The specified mimetype has no installed component factory" ), i18n( "Internal error" ) );
+    return;
+  }
+
+  Akonadi::Filter::UI::EditorFactory * editorFactory = mEditorFactories.value( mimeType, 0 );
+  if( !editorFactory )
+  {
+    KMessageBox::error( this, i18n( "The specified mimetype has no installed editor factory" ), i18n( "Internal error" ) );
+    return;
+  }
+
+  Filter filter;
+  filter.setMimeType( mimeType );
+  filter.setComponentFactory( componentFactory );
+  filter.setEditorFactory( editorFactory );
+
+  FilterEditor ed( this, &filter );
+  if( ed.exec() != KDialog::Accepted )
+    return;
+
+  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), QLatin1String( "" ) );
+  rCreate.waitForFinished();
+
+  if( rCreate.isError() )
+  {
+    KMessageBox::error( this, rCreate.error().message(), i18n( "Could not crate new filter" ) );
     return;
   }
 
   listFilters();
+
+  QDBusPendingReply< bool > rAttach = mFilterAgent->attachFilter( QLatin1String( "pippo" ), 3 );
+  rAttach.waitForFinished();
+
+  if( rAttach.isError() )
+  {
+    KMessageBox::error( this, rAttach.error().message(), i18n( "Could not attach filter to collection" ) );
+    return;
+  }
+
+  // Done!  
 }
 
 void MainWindow::slotDeleteFilterButtonClicked()

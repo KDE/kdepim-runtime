@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  File : mainwindow.h
- *  Created on Mon 08 Jun 2009 22:38:16 by Szymon Tomasz Stefanek
+ *  File : filtereditor.h
+ *  Created on Sat 13 Jun 2009 06:08:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filter Console Application
  *
@@ -23,60 +23,47 @@
  *
  *******************************************************************************/
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
+#ifndef _FILTEREDITOR_H_
+#define _FILTEREDITOR_H_
 
-#include <KXmlGuiWindow>
+#include <KDialog>
 
-#include <QHash>
-
-class QListWidget;
+class Filter;
+class QLineEdit;
+class QTreeWidget;
 class QPushButton;
 
-namespace Akonadi {
-namespace Filter {
-  class ComponentFactory;
-
-  namespace UI {
-    class EditorFactory;
-  } // namespace UI
+namespace Akonadi
+{
+namespace Filter
+{
+namespace UI
+{
+  class ProgramEditor;
+} // namespace UI
 
 } // namespace Filter
+
 } // namespace Akonadi
 
-class OrgFreedesktopAkonadiFilterAgentInterface;
 
-
-class MainWindow : public KXmlGuiWindow
+class FilterEditor : public KDialog
 {
   Q_OBJECT
 public:
-  MainWindow();
-  virtual ~MainWindow();
-public:
-  QListWidget * mFilterListWidget;
-  QPushButton * mNewFilterButton;
-  QPushButton * mDeleteFilterButton;
-  static MainWindow * mInstance;
-  OrgFreedesktopAkonadiFilterAgentInterface * mFilterAgent;
-  /**
-   * The hash table of the filter component factories indicized by mimetype.
-   */
-  QHash< QString, Akonadi::Filter::ComponentFactory * > mComponentFactories;
-  QHash< QString, Akonadi::Filter::UI::EditorFactory * > mEditorFactories;
+  FilterEditor( QWidget * parent, Filter * filter );
+  virtual ~FilterEditor();
 
-public:
-  static MainWindow * instance()
-  {
-    return mInstance;
-  }
- 
 protected:
-  void listFilters();
-
+  Filter * mFilter;
+  QLineEdit * mIdLineEdit;
+  QTreeWidget * mCollectionList;
+  QPushButton * mAddCollectionButton;
+  QPushButton * mRemoveCollectionButton;
+  Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
 protected slots:
-  void slotNewFilterButtonClicked();
-  void slotDeleteFilterButtonClicked();
+  void slotAddCollectionButtonClicked();
+  void slotRemoveCollectionButtonClicked();
 };
 
-#endif //!_MAINWINDOW_H_
+#endif //!_FILTEREDITOR_H_

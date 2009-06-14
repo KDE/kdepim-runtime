@@ -4,8 +4,11 @@ project(
 
 set(
 		AKONADI_FILTER_CONSOLE_SRCS
+		filter.cpp
+		filtereditor.cpp
 		main.cpp
 		mainwindow.cpp
+		mimetypeselectiondialog.cpp
 	)
 
 # This path emulates the KDE include path when the library headers

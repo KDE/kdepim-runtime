@@ -27,13 +27,8 @@
 
 #include "filteragentadaptor.h"
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/session.h>
-#include <akonadi/monitor.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collection.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/item.h>
 
 #include <KDebug>
@@ -64,6 +59,7 @@ FilterAgent::FilterAgent( const QString &id )
 FilterAgent::~FilterAgent()
 {
   qDeleteAll( mEngines );
+  qDeleteAll( mFilterChains );
 
   mInstance = 0;
 }
@@ -85,15 +81,15 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   }
 }
 
-bool FilterAgent::createFilter( const QString &id, const QString &mimeType, const QString &sourceFileName )
+bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &sourceFileName )
 {
-  if( id.isEmpty() )
+  if( filterId.isEmpty() )
   {
     sendErrorReply( QDBusError::Failed, i18n("The specified filter id is empty") );
     return false;
   }
 
-  FilterEngine * engine = mEngines.value( id, 0 );
+  FilterEngine * engine = mEngines.value( filterId, 0 );
   if( engine )
   {
     sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier already exists") );
@@ -107,9 +103,93 @@ bool FilterAgent::createFilter( const QString &id, const QString &mimeType, cons
     return false;
   }
 
-  engine = new FilterEngine( id, mimeType, factory );
+  engine = new FilterEngine( filterId, mimeType, factory );
 
-  mEngines.insert( id, engine );
+  mEngines.insert( filterId, engine );
+
+  return true;
+}
+
+bool FilterAgent::deleteFilter( const QString &filterId )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
+    return false;
+  }
+
+  mEngines.remove( filterId );
+
+  delete engine;
+  return true;
+}
+
+bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
+    return false;
+  }
+
+  // Fixme: check that the collection is valid!
+
+  QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
+  if( !chain )
+  {
+    // no such chain, yet: need to verify that the collection exists
+    Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Recursive );
+
+    bool collectionIsValid = job->exec();
+
+    delete job;
+
+    if( !collectionIsValid )
+    {
+      sendErrorReply( QDBusError::Failed, i18n("The specified collection id is not valid") );
+      return false;
+    }
+
+    chain = new QList< FilterEngine * >();
+    mFilterChains.insert( collectionId, chain );
+  }
+
+  chain->append( engine );
+
+  return true;
+}
+
+bool FilterAgent::detachFilter( const QString &filterId, qint64 collectionId )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
+    return false;
+  }
+
+  QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
+  if( !chain )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("The specified filter is not attacched to the specified collection") );
+    return false;
+  }
+
+  if( !chain->contains( engine ) )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("The specified filter is not attacched to the specified collection") );
+    return false;
+  }
+
+  chain->removeOne( engine );
+
+  if( chain->isEmpty() )
+  {
+    mFilterChains.remove( collectionId );
+    delete chain;
+  }
 
   return true;
 }
