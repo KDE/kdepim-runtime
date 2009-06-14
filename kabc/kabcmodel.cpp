@@ -26,6 +26,7 @@
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/collection.h>
 
 using namespace Akonadi;
 
@@ -46,8 +47,17 @@ KABCModel::~KABCModel()
   delete d;
 }
 
+int KABCModel::rowCount( const QModelIndex& ) const
+{
+  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+    return 1;
+  return ItemModel::rowCount();
+}
+
 int KABCModel::columnCount( const QModelIndex& ) const
 {
+  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+    return 1;
   return 4;
 }
 
@@ -62,6 +72,13 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   if ( index.row() >= rowCount() )
     return QVariant();
+
+  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
+      if ( role == Qt::DisplayRole )
+          return i18n( "This model can only handle contact folders. The current collection holds mimetypes: %1",
+                       collection().contentMimeTypes().join( QLatin1String(",") ) );
+      return QVariant();
+  }
 
   const Item item = itemForIndex( index );
 
@@ -134,6 +151,9 @@ QVariant KABCModel::headerData( int section, Qt::Orientation orientation, int ro
 
   if ( orientation != Qt::Horizontal )
     return QVariant();
+
+  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+      return QVariant();
 
   switch ( section ) {
     case 0:
