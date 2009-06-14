@@ -47,6 +47,13 @@ KABCModel::~KABCModel()
   delete d;
 }
 
+QStringList KABCModel::mimeTypes() const
+{
+  return QStringList()
+      << QLatin1String("text/uri-list")
+      << KABC::Addressee::mimeType();
+}
+
 int KABCModel::rowCount( const QModelIndex& ) const
 {
   if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )

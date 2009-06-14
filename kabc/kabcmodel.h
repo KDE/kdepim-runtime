@@ -36,7 +36,10 @@ class AKONADI_KABCCOMMON_EXPORT KABCModel : public ItemModel
     virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
     virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
     virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-
+    /**
+      Reimplemented from QAbstractItemModel.
+     */
+    virtual QStringList mimeTypes() const;
   private:
     class Private;
     Private* const d;
