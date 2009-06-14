@@ -18,10 +18,12 @@
 */
 
 #include "kcalmodel.h"
+#include "kcalmimetypevisitor.h"
 
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/collection.h>
 
 #include <kcal/incidence.h>
 #include <kcal/event.h>
@@ -39,11 +41,35 @@ using namespace Akonadi;
 class KCalModel::Private
 {
   public:
+    Private( KCalModel *model )
+    :q( model )
+    {
+    }
+
+    static QStringList allMimeTypes()
+    {
+        QStringList types;
+        types << KCalMimeTypeVisitor::eventMimeType()
+              << KCalMimeTypeVisitor::todoMimeType()
+              << KCalMimeTypeVisitor::journalMimeType()
+              << KCalMimeTypeVisitor::freeBusyMimeType();
+        return types;
+    }
+    bool collectionMatchesMimeTypes() const
+    {
+      Q_FOREACH( QString type, allMimeTypes() ) {
+      if ( q->collection().contentMimeTypes().contains( type ) )
+        return true;
+      }
+      return false;
+    }
+  private:
+    KCalModel *q;
 };
 
 KCalModel::KCalModel( QObject *parent )
   : ItemModel( parent ),
-    d( new Private() )
+    d( new Private( this ) )
 {
   fetchScope().fetchFullPayload();
 }
@@ -55,7 +81,18 @@ KCalModel::~KCalModel()
 
 int KCalModel::columnCount( const QModelIndex& ) const
 {
-  return 4;
+  if ( d->collectionMatchesMimeTypes() )
+    return 4;
+  else
+    return 1;
+}
+
+int KCalModel::rowCount( const QModelIndex& ) const
+{
+  if ( d->collectionMatchesMimeTypes() )
+    return ItemModel::rowCount();
+  else
+    return 1;
 }
 
 QVariant KCalModel::data( const QModelIndex &index,  int role ) const
@@ -65,6 +102,15 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
 
   if ( !index.isValid() || index.row() >= rowCount() )
     return QVariant();
+
+  // guard against use with collections that do not have the right contents
+  if ( !d->collectionMatchesMimeTypes() ) {
+    if ( role == Qt::DisplayRole )
+      // FIXME: i18n when strings unfreeze for 4.4
+      return QString::fromLatin1( "This model can only handle event, task, journal or free-busy list folders. The current collection holds mimetypes: %1").arg(
+                 collection().contentMimeTypes().join( QLatin1String(",") ) );
+    return QVariant();
+  }
 
   const Item item = itemForIndex( index );
 
@@ -116,6 +162,9 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
 
 QVariant KCalModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
+  if ( !d->collectionMatchesMimeTypes() )
+    return QVariant();
+
   if ( role == Qt::DisplayRole && orientation == Qt::Horizontal ) {
     switch( section ) {
     case Summary:
