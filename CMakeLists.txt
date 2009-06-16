@@ -69,6 +69,7 @@ endmacro(kcfg_generate_dbus_interface)
 
 ############### Now, we add the components ###############
 
+add_subdirectory(libkdepim-copy)
 add_subdirectory(xml)
 add_subdirectory(clients)
 add_subdirectory(resources)
