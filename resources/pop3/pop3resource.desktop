@@ -4,6 +4,7 @@ Name[x-test]=xxPOP3xx
 Comment=Fetches mail from a POP3 server
 Comment[et]=Kirjade tõmbamine POP3 serverist
 Comment[ga]=Faigheann sé seo ríomhphost ó fhreastalaí POP3
+Comment[km]=ទៅ​យក​សំបុត្រ​ពី​ម៉ាស៊ីនបម្រើ POP3
 Comment[pt]=Obtém o correio de um servidor POP3
 Comment[pt_BR]=Obtém e-mails de um servidor POP3
 Comment[sv]=Hämtar e-post från en POP3-server
