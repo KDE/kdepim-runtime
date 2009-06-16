@@ -28,6 +28,8 @@
 
 #include <akonadi/collection.h>
 
+#include <QVariantList>
+
 namespace Akonadi
 {
 
@@ -85,10 +87,13 @@ public:
     return &mCollections;
   }
 
+  QVariantList collectionsAsVariantList();
+
   bool hasCollection( Akonadi::Collection::Id id );
   void addCollection( Akonadi::Collection * collection );
   void removeCollection( Akonadi::Collection::Id id );
   Akonadi::Collection * findCollection( Akonadi::Collection::Id id );
+  void removeAllCollections();
 
   const QString & fileName() const
   {
@@ -126,6 +131,7 @@ public:
   }
 
   void setProgram( Akonadi::Filter::Program * prog );
+
 };
 
 #endif //!_FILTER_H_

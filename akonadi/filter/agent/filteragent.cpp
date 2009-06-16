@@ -83,7 +83,7 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   }
 }
 
-bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source )
+bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source, const QVariantList &attachedCollectionIds )
 {
   if( filterId.isEmpty() )
   {
@@ -125,6 +125,16 @@ bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType
   engine = new FilterEngine( filterId, mimeType, source, program );
 
   mEngines.insert( filterId, engine );
+
+  foreach( QVariant val, attachedCollectionIds )
+  {
+    bool ok;
+    qint64 id = val.toLongLong( &ok );
+    Q_ASSERT( ok );
+
+    QString error;
+    internalAttachFilter( filterId, id, error ); // ignore errors here (FIXME ?)
+  }
 
   return true;
 }
@@ -176,9 +186,9 @@ bool FilterAgent::changeFilter( const QString &filterId, const QString &source, 
     qint64 id = val.toLongLong( &ok );
     Q_ASSERT( ok );
 
-    if( !attachFilter( filterId, id ) )
-      return false; // error reply already sent
-  }
+    QString error;
+    internalAttachFilter( filterId, id, error ); // ignore errors here (FIXME ?)
+  }    
 
   return true;
 }
@@ -227,16 +237,14 @@ bool FilterAgent::deleteFilter( const QString &filterId )
   return true;
 }
 
-bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
+bool FilterAgent::internalAttachFilter( const QString &filterId, qint64 collectionId, QString &error )
 {
   FilterEngine * engine = mEngines.value( filterId, 0 );
   if( !engine )
   {
-    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
+    error = i18n("A filter with the specified unique identifier doesnt' exist");
     return false;
   }
-
-  // Fixme: check that the collection is valid!
 
   QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
   if( !chain )
@@ -250,7 +258,7 @@ bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
 
     if( !collectionIsValid )
     {
-      sendErrorReply( QDBusError::Failed, i18n("The specified collection id is not valid") );
+      error = i18n("The specified collection id is not valid");
       return false;
     }
 
@@ -262,12 +270,24 @@ bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
 
   if( chain->contains( engine ) )
   {
-    sendErrorReply( QDBusError::Failed, i18n("The specified filter is already attached to this collection") );
+    error = i18n("The specified filter is already attached to this collection");
     return false;
   }
 
   chain->append( engine );
 
+  return true;
+}
+
+
+bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
+{
+  QString error;
+  if( !internalAttachFilter( filterId, collectionId, error ) )
+  {
+    sendErrorReply( QDBusError::Failed, error );
+    return false;
+  }
   return true;
 }
 

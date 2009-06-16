@@ -109,7 +109,7 @@ public:
    *
    * This is a D-BUS method handler.
    */
-  bool createFilter( const QString &filterId, const QString &mimeType, const QString &source );
+  bool createFilter( const QString &filterId, const QString &mimeType, const QString &source, const QVariantList &attachedCollectionIds );
 
   /**
    * Detaches the filter with the specified id and destroys it.
@@ -172,6 +172,8 @@ protected:
   virtual void itemRemoved( const Akonadi::Item &item );
   virtual void collectionChanged( const Akonadi::Collection &collection );
 */
+
+  bool internalAttachFilter( const QString &filterId, qint64 collectionId, QString &error );
 
   void loadConfiguration();
   void saveConfiguration();

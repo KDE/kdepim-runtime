@@ -207,21 +207,13 @@ void MainWindow::slotEditFilterButtonClicked()
   qDebug( "%s", source.toUtf8().data() );
   qDebug( "END OF FILTER SOURCE:" );
 
-  QDBusPendingReply< bool > rDelete = mFilterAgent->deleteFilter( filterId );
-  rDelete.waitForFinished();
 
-  if( rDelete.isError() )
+  QDBusPendingReply< bool > rChange = mFilterAgent->changeFilter( filter.id(), source, filter.collectionsAsVariantList() );
+  rChange.waitForFinished();
+
+  if( rChange.isError() )
   {
-    KMessageBox::error( this, rDelete.error().message(), i18n( "Could not delete the old filter" ) );
-    return;
-  }
-
-  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
-  rCreate.waitForFinished();
-
-  if( rCreate.isError() )
-  {
-    KMessageBox::error( this, rCreate.error().message(), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, rChange.error().message(), i18n( "Could not change filter" ) );
     return;
   }
 
@@ -282,7 +274,7 @@ void MainWindow::slotNewFilterButtonClicked()
   qDebug( "%s", source.toUtf8().data() );
   qDebug( "END OF FILTER SOURCE:" );
 
-  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
+  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source, filter.collectionsAsVariantList() );
   rCreate.waitForFinished();
 
   if( rCreate.isError() )

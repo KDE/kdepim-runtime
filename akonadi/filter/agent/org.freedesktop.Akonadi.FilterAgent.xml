@@ -5,6 +5,7 @@
       <arg name="filterId" type="s" direction="in"/>
       <arg name="mimeType" type="s" direction="in"/>
       <arg name="source" type="s" direction="in"/>
+      <arg name="attachedCollectionIds" type="av" direction="in"/>
       <arg type="b" direction="out"/>
     </method>
     <method name="deleteFilter">

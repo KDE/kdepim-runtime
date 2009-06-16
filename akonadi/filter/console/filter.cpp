@@ -60,7 +60,6 @@ Akonadi::Collection * Filter::findCollection( Akonadi::Collection::Id id )
   return 0;
 }
 
-
 bool Filter::hasCollection( Akonadi::Collection::Id id )
 {
   foreach( Akonadi::Collection * c, mCollections )
@@ -71,6 +70,16 @@ bool Filter::hasCollection( Akonadi::Collection::Id id )
 
   return false;
 }
+
+QVariantList Filter::collectionsAsVariantList()
+{
+  QVariantList ret;
+  foreach( Akonadi::Collection * c, mCollections )
+    ret.append( QVariant( c->id() ) );
+
+  return ret;
+}
+
 
 void Filter::addCollection( Akonadi::Collection * collection )
 {
@@ -84,5 +93,11 @@ void Filter::removeCollection( Akonadi::Collection::Id id )
   Q_ASSERT( c );
   mCollections.removeOne( c );
   delete c;
+}
+
+void Filter::removeAllCollections()
+{
+  qDeleteAll(mCollections);
+  mCollections.clear();
 }
 
