@@ -1,10 +1,20 @@
 [Desktop Entry]
 Name=Mail Threader Agent
+Name[et]=Kirjalõime agent
+Name[km]=ភ្នាក់ងារ​ខ្សែស្រឡាយ​សំបុត្រ
+Name[pt]=Agente de Tópicos de Correio
+Name[pt_BR]=Agente de Tópicos de Correio
 Name[sv]=E-posttrådningsmodul
+Name[tr]=E-posta Dizme Aracı
 Name[uk]=Агент розгалуження пошти
 Name[x-test]=xxMail Threader Agentxx
 Comment=Thread mails in a collection
+Comment[et]=Kirjade seadmine lõime kogus
+Comment[km]=ដាក់​សំបុត្រ​ជា​ខ្សែ​ស្រឡាយ​នៅ​ក្នុង​សម្រាំង
+Comment[pt]=Colocar as mensagens por tópicos numa colecção
+Comment[pt_BR]=Colocar as mensagens por tópicos numa colecção
 Comment[sv]=Tråda brev i en samling
+Comment[tr]=E-postaları bir koleksiyon içerisine diz
 Comment[uk]=Розгалужує поштові повідомлення зі збірки
 Comment[x-test]=xxThread mails in a collectionxx
 Type=AkonadiAgent
