@@ -45,4 +45,11 @@ FilterEngine::~FilterEngine()
 }
 
 
+void FilterEngine::setProgram( Akonadi::Filter::Program * program )
+{
+  if( mProgram )
+    delete mProgram;
+
+  mProgram = program;
+}
 

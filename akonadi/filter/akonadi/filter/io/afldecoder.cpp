@@ -170,7 +170,7 @@ bool AFLDecoder::parseDeclaration()
   return true;
 }
 
-Program * AFLDecoder::run()
+Program * AFLDecoder::run( const QString &source )
 {
   if( mProgram )
   {

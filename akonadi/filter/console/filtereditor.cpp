@@ -30,7 +30,6 @@
 #include <KLocale>
 #include <KIcon>
 
-#include <QPushButton>
 #include <QLayout>
 #include <QTabWidget>
 #include <QWidget>
@@ -78,20 +77,6 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
   g->addWidget( mCollectionList, 1, 0, 1, 3 );
   mCollectionList->setModel( mFilterCollectionModel );
 
-  mAddCollectionButton = new QPushButton( tab );
-  mAddCollectionButton->setIcon( KIcon( "edit-new" ) );
-  mAddCollectionButton->setText( i18n( "Add Filtered Collection...") );
-  g->addWidget( mAddCollectionButton, 2, 0, 1, 2 );
-
-  connect( mAddCollectionButton, SIGNAL( clicked() ), this, SLOT( slotAddCollectionButtonClicked() ) );
-
-  mRemoveCollectionButton = new QPushButton( tab );
-  mRemoveCollectionButton->setIcon( KIcon( "edit-delete" ) );
-  mRemoveCollectionButton->setText( i18n( "Remove Filtered Collection") );
-  g->addWidget( mRemoveCollectionButton, 2, 2 );
-
-  connect( mRemoveCollectionButton, SIGNAL( clicked() ), this, SLOT( slotRemoveCollectionButtonClicked() ) );
-
   g->setRowStretch( 1, 1 );
 
   mProgramEditor = new Akonadi::Filter::UI::ProgramEditor( tabWidget, mFilter->componentFactory(), mFilter->editorFactory() );
@@ -101,5 +86,31 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
 
 FilterEditor::~FilterEditor()
 {
+}
+
+void FilterEditor::done( int result )
+{
+  if( result != KDialog::Accepted )
+  {
+    KDialog::done( result );
+    return;
+  }
+
+  QString id = mIdLineEdit->text().trimmed();
+  if( id.isEmpty() )
+  {
+    KMessageBox::error( this, i18n( "The filter id can't be empty" ), i18n( "Can't commit filter" ) );
+    return;
+  }
+
+  Akonadi::Filter::Program * prog = mProgramEditor->commit();
+  if( !prog )
+    return;
+
+  mFilter->setProgram( prog );
+
+  mFilter->setId( id );  
+
+  KDialog::done( result );
 }
 

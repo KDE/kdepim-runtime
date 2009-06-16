@@ -38,6 +38,7 @@ set(
 		io/decoder.cpp
 		io/encoder.cpp
 		io/sievedecoder.cpp
+		io/sieveencoder.cpp
 		io/sievereader.cpp
 	)
 

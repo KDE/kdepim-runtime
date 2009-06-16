@@ -122,6 +122,23 @@ public:
     return mSource;
   }
 
+  /**
+   * Sets the sieve source of the filtering program this engine executes.
+   * You *MUST* call setProgram() with the corresponding Akonadi::Filter::Program
+   * object in order to preserve coherency.
+   */
+  void setSource( const QString &source )
+  {
+    mSource = source;
+  }
+
+  /**
+   * Sets the filtering program this engine will execute.
+   * You *MUST* call setSource() with the corresponding sieve source code
+   * in order to preserve coherency.
+   */
+  void setProgram( Akonadi::Filter::Program * program );
+
 };
 
 #endif //!_AKONADI_FILTER_ENGINE_H_

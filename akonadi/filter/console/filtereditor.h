@@ -62,10 +62,10 @@ protected:
   Filter * mFilter;
   QLineEdit * mIdLineEdit;
   QTreeView * mCollectionList;
-  QPushButton * mAddCollectionButton;
-  QPushButton * mRemoveCollectionButton;
   Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
   FilterCollectionModel * mFilterCollectionModel;
+protected:
+  virtual void done( int result );
 };
 
 #endif //!_FILTEREDITOR_H_

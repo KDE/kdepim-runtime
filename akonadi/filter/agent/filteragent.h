@@ -122,11 +122,46 @@ public:
    */
   bool deleteFilter( const QString &filterId );
 
+  /**
+   * Atomically returns the main properties of a filter: the mimeType, the source
+   * of the filtering program and the list of filtered collections.
+   *
+   * On success true is returned and a success reply is sent through D-BUS.
+   * On failure false is returned and an error message is sent through D-BUS.
+   *
+   * This is a D-BUS method handler.  
+   */
   bool getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QVariantList &attachedCollectionIds );
 
+  /**
+   * Atomically changes the source of the filter and the attached collections.
+   * You can't change the mimetype of a filter: you must destroy and re-create it.
+   *
+   * On success true is returned and a success reply is sent through D-BUS.
+   * On failure false is returned and an error message is sent through D-BUS.
+   *
+   * This is a D-BUS method handler.  
+   */
+  bool changeFilter( const QString &filterId, const QString &source, const QVariantList &attachedCollectionIds );
 
+  /**
+   * Attaches the filter with the specified id to the specified collection.
+   *
+   * On success true is returned and a success reply is sent through D-BUS.
+   * On failure false is returned and an error message is sent through D-BUS.
+   *
+   * This is a D-BUS method handler.
+   */
   bool attachFilter( const QString &filterId, qint64 collectionId );
 
+  /**
+   * Detaches the filter with the specified id from the specified collection.
+   *
+   * On success true is returned and a success reply is sent through D-BUS.
+   * On failure false is returned and an error message is sent through D-BUS.
+   *
+   * This is a D-BUS method handler.
+   */
   bool detachFilter( const QString &filterId, qint64 collectionId );
 
 protected:

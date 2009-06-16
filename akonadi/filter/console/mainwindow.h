@@ -56,6 +56,7 @@ public:
 public:
   QListWidget * mFilterListWidget;
   QPushButton * mNewFilterButton;
+  QPushButton * mEditFilterButton;
   QPushButton * mDeleteFilterButton;
   static MainWindow * mInstance;
   OrgFreedesktopAkonadiFilterAgentInterface * mFilterAgent;
@@ -76,6 +77,7 @@ protected:
 
 protected slots:
   void slotNewFilterButtonClicked();
+  void slotEditFilterButtonClicked();
   void slotDeleteFilterButtonClicked();
 };
 

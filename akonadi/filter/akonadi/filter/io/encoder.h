@@ -34,6 +34,9 @@ namespace Akonadi
 {
 namespace Filter
 {
+
+  class Program;
+
 namespace IO
 {
 
@@ -44,6 +47,23 @@ public:
   virtual ~Encoder();
 
 protected:
+  QString mLastError;
+
+public:
+  /**
+   * Returns the last error occured in this component execution run.
+   */
+  const QString & lastError() const
+  {
+    return mLastError;
+  }
+
+  void setLastError( const QString &error )
+  {
+    mLastError = error;
+  }
+
+  virtual QString run( Program * program ) = 0;
 
 }; // class Encoder
 

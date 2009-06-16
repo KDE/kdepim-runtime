@@ -30,6 +30,8 @@
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/program.h>
 #include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/io/sieveencoder.h>
+#include <akonadi/filter/io/sievedecoder.h>
 
 #include <KDebug>
 #include <KMessageBox>
@@ -80,7 +82,7 @@ MainWindow::MainWindow()
   g->setMargin( 2 );
 
   mFilterListWidget = new QListWidget( base );
-  g->addWidget( mFilterListWidget, 0, 0, 1, 2 );
+  g->addWidget( mFilterListWidget, 0, 0, 1, 3 );
 
   mNewFilterButton = new QPushButton( base );
   mNewFilterButton->setIcon( KIcon( "edit-new" ) );
@@ -89,14 +91,24 @@ MainWindow::MainWindow()
 
   connect( mNewFilterButton, SIGNAL( clicked() ), this, SLOT( slotNewFilterButtonClicked() ) );
 
+  mEditFilterButton = new QPushButton( base );
+  mEditFilterButton->setIcon( KIcon( "edit" ) );
+  mEditFilterButton->setText( i18n( "Edit Filter") );
+  g->addWidget( mEditFilterButton, 1, 1 );
+
+  connect( mEditFilterButton, SIGNAL( clicked() ), this, SLOT( slotEditFilterButtonClicked() ) );
+
+
   mDeleteFilterButton = new QPushButton( base );
   mDeleteFilterButton->setIcon( KIcon( "edit-delete" ) );
   mDeleteFilterButton->setText( i18n( "Delete Filter") );
-  g->addWidget( mDeleteFilterButton, 1, 1 );
+  g->addWidget( mDeleteFilterButton, 1, 2 );
 
   connect( mDeleteFilterButton, SIGNAL( clicked() ), this, SLOT( slotDeleteFilterButtonClicked() ) );
 
   g->setRowStretch( 0, 1 );
+
+  setMinimumSize( 300, 400 );
 
   listFilters();
 }
@@ -122,6 +134,98 @@ void MainWindow::listFilters()
   }
 
   mFilterListWidget->addItems( r.value() );
+}
+
+void MainWindow::slotEditFilterButtonClicked()
+{
+  QString filterId;
+
+  QListWidgetItem * item = mFilterListWidget->currentItem();
+  if( !item )
+    return;  
+
+  filterId = item->text();
+
+  QDBusPendingReply<bool, QString, QString, QVariantList> rProps = mFilterAgent->getFilterProperties( filterId );
+  rProps.waitForFinished();
+
+  if( rProps.isError() )
+  {
+    KMessageBox::error( this, rProps.error().message(), i18n( "Could not fetch filter properties" ) );
+    return;
+  }
+
+  QString mimeType = rProps.argumentAt< 1 >();
+  QString source = rProps.argumentAt< 2 >();
+  QVariantList attachedCollectionIds = rProps.argumentAt< 3 >();
+
+  Akonadi::Filter::ComponentFactory * componentFactory = mComponentFactories.value( mimeType, 0 );
+  if( !componentFactory )
+  {
+    KMessageBox::error( this, i18n( "The filter mimetype has no installed component factory" ), i18n( "Internal error" ) );
+    return;
+  }
+
+  Akonadi::Filter::UI::EditorFactory * editorFactory = mEditorFactories.value( mimeType, 0 );
+  if( !editorFactory )
+  {
+    KMessageBox::error( this, i18n( "The filter mimetype has no installed editor factory" ), i18n( "Internal error" ) );
+    return;
+  }
+
+  Akonadi::Filter::IO::SieveDecoder decoder( componentFactory );
+  Akonadi::Filter::Program * prog = decoder.run( source );
+  if( !prog )
+  {
+    KMessageBox::error( this, i18n( "Failed to decode the filter from sieve format: %1", decoder.lastError() ), i18n( "Could not edit filter" ) );
+    return;    
+  }
+
+
+  Filter filter;
+
+  filter.setId( filterId );
+  filter.setMimeType( mimeType );
+  filter.setComponentFactory( componentFactory );
+  filter.setEditorFactory( editorFactory );
+  filter.setProgram( prog );
+
+  FilterEditor ed( this, &filter );
+  if( ed.exec() != KDialog::Accepted )
+    return;
+
+  Akonadi::Filter::IO::SieveEncoder encoder;
+  source = encoder.run( filter.program() );
+
+  if( source.isEmpty() )
+  {
+    KMessageBox::error( this, i18n( "Failed to encode the filter to sieve format: %1", encoder.lastError() ), i18n( "Could not edit filter" ) );
+    return;    
+  }
+
+  qDebug( "FILTER SOURCE:" );
+  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "END OF FILTER SOURCE:" );
+
+  QDBusPendingReply< bool > rDelete = mFilterAgent->deleteFilter( filterId );
+  rDelete.waitForFinished();
+
+  if( rDelete.isError() )
+  {
+    KMessageBox::error( this, rDelete.error().message(), i18n( "Could not delete the old filter" ) );
+    return;
+  }
+
+  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
+  rCreate.waitForFinished();
+
+  if( rCreate.isError() )
+  {
+    KMessageBox::error( this, rCreate.error().message(), i18n( "Could not crate new filter" ) );
+    return;
+  }
+
+  listFilters();
 }
 
 void MainWindow::slotNewFilterButtonClicked()
@@ -165,7 +269,20 @@ void MainWindow::slotNewFilterButtonClicked()
   if( ed.exec() != KDialog::Accepted )
     return;
 
-  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), QLatin1String( "" ) );
+  Akonadi::Filter::IO::SieveEncoder encoder;
+  QString source = encoder.run( filter.program() );
+
+  if( source.isEmpty() )
+  {
+    KMessageBox::error( this, i18n( "Failed to encode the filter to sieve format: %1", encoder.lastError() ), i18n( "Could not crate new filter" ) );
+    return;    
+  }
+
+  qDebug( "FILTER SOURCE:" );
+  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "END OF FILTER SOURCE:" );
+
+  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
   rCreate.waitForFinished();
 
   if( rCreate.isError() )
@@ -175,15 +292,6 @@ void MainWindow::slotNewFilterButtonClicked()
   }
 
   listFilters();
-
-  QDBusPendingReply< bool > rAttach = mFilterAgent->attachFilter( QLatin1String( "pippo" ), 3 );
-  rAttach.waitForFinished();
-
-  if( rAttach.isError() )
-  {
-    KMessageBox::error( this, rAttach.error().message(), i18n( "Could not attach filter to collection" ) );
-    return;
-  }
 
   // Done!  
 }

@@ -189,7 +189,18 @@ protected:
   const CommandDescriptor * mCommandDescriptor;
   QList< QVariant > mParams;
 public:
+  const CommandDescriptor * commandDescriptor() const
+  {
+    return mCommandDescriptor;
+  }
+
+  const QList< QVariant > * params() const
+  {
+    return &mParams;
+  }
+
   virtual ProcessingStatus execute( Data * data );
+
   virtual void dump( const QString &prefix );
 }; // class Command
 

@@ -105,6 +105,12 @@ bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType
     return false;
   }
 
+  if( source.isEmpty() )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "Cowardly refusing to create an empty filter" ) );
+    return false;
+  }
+
   Akonadi::Filter::IO::SieveDecoder decoder( factory );
 
   Akonadi::Filter::Program * program = decoder.run( source );
@@ -119,6 +125,60 @@ bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType
   engine = new FilterEngine( filterId, mimeType, source, program );
 
   mEngines.insert( filterId, engine );
+
+  return true;
+}
+
+bool FilterAgent::changeFilter( const QString &filterId, const QString &source, const QVariantList &attachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier doesn't exist" ) );
+    return false;
+  }
+
+  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( engine->mimeType(), 0 );
+  Q_ASSERT_X( factory, "FilterAgent::changeFilter", "We got a filter without a corresponding ComponentFactory!" );
+
+  if( source.isEmpty() )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "Cowardly refusing to create an empty filter" ) );
+    return false;
+  }
+
+  Akonadi::Filter::IO::SieveDecoder decoder( factory );
+
+  Akonadi::Filter::Program * program = decoder.run( source );
+  if( !program )
+  {
+    sendErrorReply( QDBusError::Failed, i18n( "Error reading filter program: %1", decoder.lastError() ) );
+    return false;
+  }
+
+  foreach( QVariant val, attachedCollectionIds )
+  {
+    bool ok;
+    qint64 id = val.toLongLong( &ok );
+    if( !ok )
+    {
+      sendErrorReply( QDBusError::Failed, i18n( "One of the collection identifiers is not valid" ) );
+      return false;
+    }
+  }
+
+  engine->setSource( source );
+  engine->setProgram( program );
+
+  foreach( QVariant val, attachedCollectionIds )
+  {
+    bool ok;
+    qint64 id = val.toLongLong( &ok );
+    Q_ASSERT( ok );
+
+    if( !attachFilter( filterId, id ) )
+      return false; // error reply already sent
+  }
 
   return true;
 }
@@ -161,6 +221,7 @@ bool FilterAgent::deleteFilter( const QString &filterId )
 
   mEngines.remove( filterId );
 
+  // FIXME: Detach any collection!
 
   delete engine;
   return true;
@@ -195,6 +256,14 @@ bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
 
     chain = new QList< FilterEngine * >();
     mFilterChains.insert( collectionId, chain );
+  }
+
+  Q_ASSERT( chain );
+
+  if( chain->contains( engine ) )
+  {
+    sendErrorReply( QDBusError::Failed, i18n("The specified filter is already attached to this collection") );
+    return false;
   }
 
   chain->append( engine );

@@ -29,15 +29,26 @@
 #include <KComboBox>
 #include <KLocale>
 
+#include <QLayout>
+#include <QLabel>
+
 MimeTypeSelectionDialog::MimeTypeSelectionDialog( QWidget * parent, const QStringList &mimeTypes )
   : KDialog( parent )
 {
   setCaption( i18n( "Select Filter Mime Type" ) );
 
-  mMimeTypeComboBox = new KComboBox( false, this );
+  QVBoxLayout * vbox = new QVBoxLayout( mainWidget() );
+
+
+  QLabel * l = new QLabel( mainWidget() );
+  l->setText( i18n( "Please select the mimetype for the new filter" ) );
+
+  vbox->addWidget( l );
+
+  mMimeTypeComboBox = new KComboBox( false, mainWidget() );
   mMimeTypeComboBox->addItems( mimeTypes );
 
-  setMainWidget( mMimeTypeComboBox );
+  vbox->addWidget( mMimeTypeComboBox );
 
   if( mimeTypes.count() > 0 )
     mMimeTypeComboBox->setCurrentIndex( 0 );

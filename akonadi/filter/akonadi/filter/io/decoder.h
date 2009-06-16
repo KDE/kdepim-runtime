@@ -36,6 +36,7 @@ namespace Filter
 {
 
 class ComponentFactory;
+class Program;
 
 namespace IO
 {
@@ -68,6 +69,9 @@ public:
   {
     return mComponentFactory;
   }
+
+  virtual Program * run( const QString &source ) = 0;
+
 };
 
 } // namespace IO
