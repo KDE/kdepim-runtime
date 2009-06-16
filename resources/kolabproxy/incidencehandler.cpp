@@ -80,7 +80,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
           Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
           job->fetchScope().fetchFullPayload();
           if (job->exec()) {
-            emit addItemToImap(copiedItem, job->items()[0].collectionId());
+            emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
           }
         }
       }

@@ -157,7 +157,7 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
       cancelTask();
       return;
     }
-    collectionId = items[0].collectionId();
+    collectionId = items[0].storageCollectionId();
     KolabHandler *handler = m_monitoredCollections.value(collectionId);
     if (handler) {
       if (m_retrieveState == DeleteItem) {
@@ -246,7 +246,7 @@ void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArr
     kWarning() << "Can't fetch imap item " << kolabItem.remoteId();
   }
 
-  KolabHandler *handler = m_monitoredCollections.value(imapItem.collectionId());
+  KolabHandler *handler = m_monitoredCollections.value(imapItem.storageCollectionId());
   if (!handler) {
     kWarning() << "No handler found";
     cancelTask();
