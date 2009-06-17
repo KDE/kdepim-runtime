@@ -29,7 +29,7 @@
 #include <kmime/kmime_codecs.h>
 #include <kcal/comparisonvisitor.h>
 #include <kcal/calformat.h>
-#include <libkdepim/kincidencechooser.h>
+#include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
 
 #include <QBuffer>

@@ -32,15 +32,17 @@
 */
 
 #include "incidence.h"
+#include "kdepim-version.h"
 
 #include <QFile>
 #include <QList>
 
 #include <kcal/journal.h>
-#include <korganizer/version.h>
 #include <kdebug.h>
 #include <kurl.h>
 #include <kio/netaccess.h>
+
+static const char korgVersion[] = KDEPIM_VERSION;
 
 using namespace Kolab;
 

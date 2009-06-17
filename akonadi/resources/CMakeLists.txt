@@ -1,5 +1,6 @@
 
 include_directories(
+  ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
   ${CMAKE_CURRENT_BINARY_DIR}/shared
 )
@@ -26,11 +27,11 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 add_subdirectory( birthdays )
 add_subdirectory( distlist )
 add_subdirectory( ical )
-add_subdirectory( imap ) # REQ: libkdepim
+add_subdirectory( imap )
 add_subdirectory( kabc )
 add_subdirectory( kcal )
 add_subdirectory( knut )
-add_subdirectory( kolabproxy ) # REQ: libkdepim/distributionlist.h
+add_subdirectory( kolabproxy )
 add_subdirectory( localbookmarks )
 add_subdirectory( maildir )
 add_subdirectory( mbox )

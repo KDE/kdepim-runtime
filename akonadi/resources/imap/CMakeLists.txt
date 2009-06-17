@@ -1,5 +1,4 @@
 include_directories(
-    ${CMAKE_SOURCE_DIR}
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
@@ -37,7 +36,7 @@ qt4_add_dbus_adaptor( imapresource_SRCS
 kde4_add_kcfg_files(imapresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_imap_resource RUN_UNINSTALLED ${imapresource_SRCS})
 
-target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim)
+target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_SOLID_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy)
 
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

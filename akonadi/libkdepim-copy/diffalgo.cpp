@@ -19,7 +19,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <libkdepim/diffalgo.h>
+#include "diffalgo.h"
 #include <QList>
 
 using namespace KPIM;

@@ -32,10 +32,12 @@
 */
 
 #include "journal.h"
+#include "kdepim-version.h"
 
 #include <kcal/journal.h>
-#include <korganizer/version.h>
 #include <kdebug.h>
+
+static const char korgVersion[] = KDEPIM_VERSION;
 
 using namespace Kolab;
 
