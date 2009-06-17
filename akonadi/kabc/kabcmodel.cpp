@@ -56,7 +56,7 @@ QStringList KABCModel::mimeTypes() const
 
 int KABCModel::rowCount( const QModelIndex& ) const
 {
-  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+  if ( collection().isValid() && !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
     return 1;
   return ItemModel::rowCount();
 }
@@ -82,8 +82,7 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
 
   if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
       if ( role == Qt::DisplayRole )
-          // FIXME: i18n when strings unfreeze for 4.4
-          return QString::fromLatin1( "This model can only handle contact folders. The current collection holds mimetypes: %1").arg(
+          return i18n( "This model can only handle contact folders. The current collection holds mimetypes: %1",
                        collection().contentMimeTypes().join( QLatin1String(",") ) );
       return QVariant();
   }
