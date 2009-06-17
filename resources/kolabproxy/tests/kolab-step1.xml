@@ -1,25 +1,25 @@
 <knut>
   <collection content="inode/directory" rid="akonadi_kolabproxy_resource" name="akonadi_kolabproxy_resource" >
-    <collection content="text/calendar" rid="1194" name="Tasks" >
+    <collection content="text/calendar,inode/directory" rid="83" name="Tasks" >
       <attribute type="AccessRights" >a</attribute>
     </collection>
-    <collection content="text/calendar" rid="1193" name="Notes" >
+    <collection content="text/calendar,inode/directory" rid="82" name="Notes" >
       <attribute type="AccessRights" >a</attribute>
     </collection>
-    <collection content="text/calendar" rid="1192" name="Journal" >
+    <collection content="text/calendar,inode/directory" rid="81" name="Journal" >
       <attribute type="AccessRights" >a</attribute>
     </collection>
-    <collection content="text/directory,application/x-vnd.kde.contactgroup" rid="1191" name="Contacts" >
+    <collection content="inode/directory,text/directory,application/x-vnd.kde.contactgroup" rid="80" name="Contacts" >
       <attribute type="AccessRights" >a</attribute>
     </collection>
-    <collection content="text/calendar" rid="1190" name="Calendar" >
+    <collection content="text/calendar,inode/directory" rid="79" name="Calendar" >
       <attribute type="AccessRights" >a</attribute>
-      <item mimetype="text/calendar" rid="1043" >
+      <item mimetype="text/calendar" rid="5527" >
         <payload>BEGIN:VCALENDAR
 PRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN
 VERSION:2.0
 BEGIN:VEVENT&#xd;
-DTSTAMP:20090614T140920Z&#xd;
+DTSTAMP:20090617T171806Z&#xd;
 ORGANIZER;CN="Volker Krause":MAILTO:vkrause@kde.org&#xd;
 CREATED:20090412T113649Z&#xd;
 UID:libkcal-1109914.774&#xd;
@@ -35,5 +35,6 @@ END:VCALENDAR</payload>
       </item>
     </collection>
     <attribute type="ENTITYDISPLAY" >("Kolab" "kolab")</attribute>
+    <attribute type="AccessRights" ></attribute>
   </collection>
 </knut>
