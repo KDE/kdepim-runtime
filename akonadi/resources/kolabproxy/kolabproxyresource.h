@@ -66,9 +66,18 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
+    virtual void collectionChanged(const Akonadi::Collection& collection);
+    virtual void collectionRemoved(const Akonadi::Collection& collection);
 
   private:
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
+    /**
+      Creates a new KolabHandler for @p imapCollection given it actually is a Kolab
+      folder.
+      @return @c true if @p imapCollection is a Kolab folder, @c false otherwise.
+    */
+    bool registerHandlerForCollection( const Akonadi::Collection& imapCollection );
 
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_colectionMonitor;

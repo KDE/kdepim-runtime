@@ -25,6 +25,7 @@
 #include "addressbookhandler.h"
 #include <akonadi/attributefactory.h>
 
+#include <akonadi/cachepolicy.h>
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/collectiondeletejob.h>
 #include <akonadi/collectionfetchjob.h>
@@ -38,8 +39,11 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
 
+#include <KLocale>
+
 #include <QtDBus/QDBusConnection>
 #include <QSet>
+#include <akonadi/collectionmodifyjob.h>
 
 using namespace Akonadi;
 
@@ -70,10 +74,13 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   m_root.setName( identifier() );
   m_root.setParent( Collection::root() );
   EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-  attr->setDisplayName( "Kolab" );
+  attr->setDisplayName( i18n("Kolab") );
   attr->setIconName( "kolab" );
   m_root.setContentMimeTypes( QStringList() << Collection::mimeType() );
   m_root.setRemoteId( identifier() );
+  m_root.setRights( Collection::ReadOnly );
+
+  setName( i18n("Kolab") );
 
   // among other things, this ensures that m_root actually exists when a new imap folder is added
   synchronizeCollectionTree();
@@ -96,26 +103,17 @@ void KolabProxyResource::retrieveCollectionsFetchDone(KJob* job)
     kWarning( ) << "Error on collection fetch:" << job->errorText();
     cancelTask( job->errorText() );
   } else {
-    Collection::List collections = qobject_cast<CollectionFetchJob*>(job)->collections();
-    foreach( const Collection &collection, collections ) {
-      CollectionAnnotationsAttribute *annotationsAttribute =
-          collection.attribute<CollectionAnnotationsAttribute>();
-      if (annotationsAttribute) {
-        QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-        KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
-        if (handler) {
-          connect(handler, SIGNAL(deleteItemFromImap(const Akonadi::Item&)), this, SLOT(deleteImapItem(const Akonadi::Item&)));
-          connect(handler, SIGNAL(addItemToImap(const Akonadi::Item&, Akonadi::Entity::Id)), this, SLOT(addImapItem(const Akonadi::Item&, Akonadi::Entity::Id)));
-          kDebug() << "Monitor folder: " << collection.name() << collection.remoteId();
-          m_monitor->setCollectionMonitored(collection);
-          m_monitoredCollections.insert(collection.id(), handler);
-        }
-      }
+    Collection::List imapCollections;
+    Collection::List allCollections = qobject_cast<CollectionFetchJob*>(job)->collections();
+    foreach( const Collection &collection, allCollections ) {
+      if ( collection.resource() == identifier() )
+        continue;
+      if ( registerHandlerForCollection( collection ) )
+        imapCollections.append( collection );
     }
 
     Collection::List kolabCollections;
     kolabCollections.append( m_root );
-    Collection::List imapCollections = m_monitor->collectionsMonitored();
 
     m_managedCollections.clear();
     Q_FOREACH(const Collection &collection, imapCollections)
@@ -272,6 +270,42 @@ void KolabProxyResource::itemRemoved( const Item &item )
   Q_UNUSED(djob);
 }
 
+void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
+{
+  Collection imapCollection( collection );
+  imapCollection.setId( -1 );
+  imapCollection.setRemoteId( QString() );
+  Collection imapParent( parent.remoteId().toLongLong() );
+  imapCollection.setParent( imapParent );
+
+  CollectionCreateJob *job = new CollectionCreateJob( imapCollection, this );
+  // TODO wait for the result
+  changeCommitted( collection );
+}
+
+void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection)
+{
+  Collection imapCollection;
+  imapCollection.setId( collection.remoteId().toLongLong() );
+  imapCollection.setName( collection.name() );
+  imapCollection.setCachePolicy( collection.cachePolicy() );
+  imapCollection.setRights( collection.rights() );
+
+  CollectionModifyJob *job = new CollectionModifyJob( imapCollection, this );
+  // TODO wait for the result
+  changeCommitted( collection );
+}
+
+void KolabProxyResource::collectionRemoved(const Akonadi::Collection& collection)
+{
+  Collection imapCollection;
+  imapCollection.setId( collection.remoteId().toLongLong() );
+
+  CollectionDeleteJob *job = new CollectionDeleteJob( imapCollection, this );
+  // TODO wait for result
+  changeCommitted( collection );
+}
+
 void KolabProxyResource::deleteImapItem(const Item& item)
 {
   kDebug() << "DELETEIMAPITEM";
@@ -371,21 +405,9 @@ void KolabProxyResource::imapCollectionFetched(KJob *job)
   const Collection imapCollection = collections[0];
   if ( m_monitoredCollections.contains( imapCollection.id() ) )
     return;
-  CollectionAnnotationsAttribute *annotationsAttribute =
-      imapCollection.attribute<CollectionAnnotationsAttribute>();
-  if (annotationsAttribute) {
-    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-
-    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
-    if (handler) {
-      connect(handler, SIGNAL(deleteItemFromImap(const Akonadi::Item&)), this, SLOT(deleteImapItem(const Akonadi::Item&)));
-      connect(handler, SIGNAL(addItemToImap(const Akonadi::Item&, Akonadi::Entity::Id)), this, SLOT(addImapItem(const Akonadi::Item&, Akonadi::Entity::Id)));
-      m_monitor->setCollectionMonitored(imapCollection);
-      m_monitoredCollections.insert(imapCollection.id(), handler);
-      Collection c = createCollection(imapCollection);
-      new CollectionCreateJob(c);
-
-    }
+  if ( registerHandlerForCollection( imapCollection ) ) {
+    Collection c = createCollection(imapCollection);
+    new CollectionCreateJob(c);
   }
   kDebug() << "IMAPCOLLECTIONADDED DONE";
 }
@@ -443,17 +465,36 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   m_managedCollections << name;
   c.setName( name );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
-  if (handler) {
-    c.setContentMimeTypes( handler->contentMimeTypes() );
-  } else {
-    c.setContentMimeTypes( QStringList() << "text/directory" );
-  }
+  QStringList contentTypes;
+  contentTypes.append( Collection::mimeType() );
+  if ( handler )
+    contentTypes.append( handler->contentMimeTypes() );
+  c.setContentMimeTypes( contentTypes );
   c.setRights( imapCollection.rights() );
   c.setRemoteId(QString::number(imapCollection.id()));
 
   return c;
 }
 
+bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection& imapCollection)
+{
+  CollectionAnnotationsAttribute *annotationsAttribute =
+      imapCollection.attribute<CollectionAnnotationsAttribute>();
+  if ( annotationsAttribute ) {
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+
+    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
+    if ( handler ) {
+      connect(handler, SIGNAL(deleteItemFromImap(const Akonadi::Item&)), this, SLOT(deleteImapItem(const Akonadi::Item&)));
+      connect(handler, SIGNAL(addItemToImap(const Akonadi::Item&, Akonadi::Entity::Id)), this, SLOT(addImapItem(const Akonadi::Item&, Akonadi::Entity::Id)));
+      m_monitor->setCollectionMonitored(imapCollection);
+      m_monitoredCollections.insert(imapCollection.id(), handler);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 AKONADI_RESOURCE_MAIN( KolabProxyResource )
 
