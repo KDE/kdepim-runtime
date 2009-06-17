@@ -96,7 +96,7 @@ int KCalModel::columnCount( const QModelIndex& ) const
 
 int KCalModel::rowCount( const QModelIndex& ) const
 {
-  if ( d->collectionMatchesMimeTypes() )
+  if ( !collection().isValid() || d->collectionMatchesMimeTypes() )
     return ItemModel::rowCount();
   else
     return 1;
