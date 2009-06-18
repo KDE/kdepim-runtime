@@ -29,30 +29,45 @@
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <klockfile.h>
-#include <kmime/kmime_message.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <QtCore/QFileInfo>
 #include <QtCore/QReadWriteLock>
 #include <QtCore/QProcess>
+#include <fcntl.h>
+#include <kurl.h>
 
 class MBox::Private
 {
   public:
-    Private(const QString &mboxFileName, bool readOnly)
-      : mLock(mboxFileName)
-      , mMboxFile(mboxFileName)
-      , mReadOnly(readOnly)
-    { }
+    Private() : mInitialMboxFileSize( 0 ), mLock( 0 )
+    {}
 
     ~Private()
     {
-      if (mMboxFile.isOpen())
+      if ( mMboxFile.isOpen() )
         mMboxFile.close();
+
+      if ( mLock && mLock->isLocked() )
+        mLock->unlock();
+
+      delete mLock;
+      mLock = 0;
     }
 
+    void close()
+    {
+      if ( mMboxFile.isOpen() )
+        mMboxFile.close();
+
+      mFileLocked = false;
+    }
+
+    QByteArray mAppendedEntries;
+    QList<MsgInfo> mEntries;
     bool mFileLocked;
-    KLockFile mLock;
+    quint64 mInitialMboxFileSize;
+    KLockFile *mLock;
     LockType mLockType;
     QFile mMboxFile;
     QString mLockFileName;
@@ -68,8 +83,8 @@ QByteArray quoteAndEncode(const QString &str)
 
 /// public methods.
 
-MBox::MBox(const QString &mboxFile, bool readOnly)
-  : d(new Private(mboxFile, readOnly))
+MBox::MBox()
+  : d(new Private())
 {
   // Set some sane defaults
   d->mFileLocked = false;
@@ -78,56 +93,58 @@ MBox::MBox(const QString &mboxFile, bool readOnly)
 
 MBox::~MBox()
 {
-  close();
+  if ( d->mFileLocked )
+    unlock();
+
+  d->close();
 
   delete d;
 }
 
-void MBox::close()
+qint64 MBox::appendEntry( const MessagePtr &entry )
 {
-  if (d->mFileLocked)
-    unlock();
+  const QByteArray rawEntry = escapeFrom( entry->encodedContent() );
 
-  if (d->mMboxFile.isOpen())
-    d->mMboxFile.close();
+  if ( rawEntry.size() <= 0 ) {
+    kDebug() << "Message added to folder `" << d->mMboxFile.fileName()
+             << "' contains no data. Ignoring it.";
+    return -1;
+  }
 
-  d->mFileLocked = false;
+  int nextOffset = d->mAppendedEntries.size() - 1; // Offset of the appended message
+
+  // Make sure the byte array is large enough to check for an end character.
+  // Then check if the required newlines are there.
+  if ( nextOffset >= 2 ) {
+    if ( nextOffset > 0 && d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
+      if ( d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
+        d->mAppendedEntries.append( "\n\n" );
+        nextOffset += 2;
+      } else {
+        d->mAppendedEntries.append( "\n" );
+        ++nextOffset;
+      }
+    }
+  }
+
+  d->mAppendedEntries.append( mboxMessageSeparator( rawEntry ) );
+  d->mAppendedEntries.append( rawEntry );
+  if ( rawEntry[rawEntry.size() - 1] != '\n' ) {
+    d->mAppendedEntries.append( "\n\n" );
+  }
+
+  return d->mInitialMboxFileSize + nextOffset;
 }
 
 QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
 {
   Q_ASSERT(d->mMboxFile.isOpen());
 
-  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
-  QByteArray line;
-  quint64 offs = 0; // The offset of the next message to read.
-  bool previousLineIsEmpty;
-
   QList<MsgInfo> result;
 
-  while (!d->mMboxFile.atEnd()) {
-    quint64 pos = d->mMboxFile.pos();
-    previousLineIsEmpty = line.isEmpty();
-    line = d->mMboxFile.readLine();
-
-    if (regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd()) {
-      // Found the separator or at end of file, the message starts at offs
-      quint64 msgSize = pos - offs;
-      if(pos > 0 && !deletedItems.contains(offs)) {
-        // This is not the separator of the first mail in the file. If pos == 0
-        // than we matched the separator of the first mail in the file.
-        MsgInfo info;
-        info.first = offs;
-
-        // The actual mail message size starts just before the seperator. If
-        // there're two new line characters we assume that one of them was added
-        // with the seperator.
-        info.second = previousLineIsEmpty ? (msgSize - 2) : (msgSize - 1);
-
-        result << info;
-      }
-      offs += msgSize; // Mark the beginning of the next message.
-    }
+  foreach ( const MsgInfo &info, d->mEntries ) {
+    if ( !deletedItems.contains( info.first ) )
+      result << info;
   }
 
   return result;
@@ -141,6 +158,11 @@ bool MBox::isValid() const
 
 bool MBox::isValid(QString &errorMsg) const
 {
+  if ( d->mMboxFile.fileName().isEmpty() ) {
+    errorMsg = i18n("No file specified.");
+    return false;
+  }
+
   QFileInfo info(d->mMboxFile);
 
   if (!info.isFile()) {
@@ -176,140 +198,60 @@ bool MBox::isValid(QString &errorMsg) const
   return true;
 }
 
-int MBox::open(OpenMode openMode)
+bool MBox::load( const QString &fileName )
 {
-  if (d->mMboxFile.isOpen() && openMode == Normal) {
-    return 0;  // already open
-  } else if (d->mMboxFile.isOpen()) {
-    close(); // ReloadMode, so close the file first.
-  }
+  if ( d->mFileLocked )
+    return false;
 
-  d->mFileLocked = false;
+  d->mMboxFile.setFileName( KUrl(fileName).path() );
+  if ( ! d->mMboxFile.exists() )
+    return false;
 
-  if (int rc = lock()) {
-    kDebug() << "Locking of the mbox file failed.";
-    return rc;
-  }
+  if ( ! lock() )
+    return false;
 
-  if (!d->mMboxFile.open(QIODevice::ReadWrite)) { // messages file
-    kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
-             << d->mMboxFile.error();
-    return d->mMboxFile.error();
-  }
+  d->mAppendedEntries.clear();
+  d->mEntries.clear();
 
-  return 0;
-}
-
-QByteArray MBox::readEntry(quint64 offset) const
-{
-  Q_ASSERT(d->mMboxFile.isOpen());
-  Q_ASSERT(d->mMboxFile.size() > 0);
-  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
-
-  d->mMboxFile.seek(offset);
-
-  QByteArray line = d->mMboxFile.readLine();
   QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+  QByteArray line;
+  quint64 offs = 0; // The offset of the next message to read.
+  bool previousLineIsEmpty;
 
-  if (regexp.indexIn(line) < 0)
-    return QByteArray(); // The file is messed up or the index is incorrect.
-
-  QByteArray message;
-  line = d->mMboxFile.readLine();
-  while (regexp.indexIn(line) < 0 && !d->mMboxFile.atEnd()) {
-    message += line;
+  while ( !d->mMboxFile.atEnd() ) {
+    quint64 pos = d->mMboxFile.pos();
+    previousLineIsEmpty = line.isEmpty();
     line = d->mMboxFile.readLine();
-  }
 
-  // Remove te last '\n' added by writeEntry.
-  if (message.endsWith('\n'))
-    message.chop(1);
+    if ( regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd() ) {
+      // Found the separator or at end of file, the message starts at offs
+      quint64 msgSize = pos - offs;
+      if( pos > 0 ) {
+        // This is not the separator of the first mail in the file. If pos == 0
+        // than we matched the separator of the first mail in the file.
+        MsgInfo info;
+        info.first = offs;
 
-  unescapeFrom(message.data(), message.size());
+        // The actual mail message size starts just before the seperator. If
+        // there're two new line characters we assume that one of them was added
+        // with the seperator.
+        info.second = previousLineIsEmpty ? (msgSize - 2) : (msgSize - 1);
 
-  return message;
-}
-
-QByteArray MBox::readEntryHeaders(quint64 offset)
-{
-  Q_ASSERT(d->mMboxFile.isOpen());
-  Q_ASSERT(d->mMboxFile.size() > 0);
-  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
-
-  d->mMboxFile.seek(offset);
-  QByteArray headers;
-  QByteArray line = d->mMboxFile.readLine();
-
-  while (!line[0] == '\n') {
-    headers += line;
-    line = d->mMboxFile.readLine();
-  }
-
-  return headers;
-}
-
-void MBox::setLockType(LockType ltype)
-{
-  if (d->mFileLocked)
-    return; // Don't change the method if the file is currently locked.
-
-  d->mLockType = ltype;
-}
-
-void MBox::setLockFile(const QString &lockFile)
-{
-  d->mLockFileName = lockFile;
-}
-
-qint64 MBox::writeEntry(const QByteArray &entry)
-{
-  Q_ASSERT(d->mMboxFile.isOpen());
-
-  QByteArray msgText = escapeFrom(entry);
-
-  if (msgText.size() <= 0) {
-    kDebug() << "Message added to folder `" << d->mMboxFile.fileName()
-             << "' contains no data. Ignoring it.";
-    return -1;
-  }
-
-  int nextOffset = d->mMboxFile.size() - 1; // Offset of the appended message
-  // Make sure the file is large enough to check for an end character. Then check
-  // if the required newlines are there.
-  if (nextOffset >= 2) {
-    d->mMboxFile.seek(nextOffset - 2);
-    char endStr[3];
-    d->mMboxFile.read(endStr, 2);
-
-    if (d->mMboxFile.pos() > 0 && endStr[0] != '\n') {
-      if ( endStr[1]!='\n' ) {
-        d->mMboxFile.write("\n\n");
-        nextOffset += 2;
-      } else {
-        d->mMboxFile.write("\n");
-        ++nextOffset;
+        d->mEntries << info;
       }
+      offs += msgSize; // Mark the beginning of the next message.
     }
   }
 
-  d->mMboxFile.write(mboxMessageSeparator(entry));
-  d->mMboxFile.write(entry);
-  if (entry[entry.size() - 1] != '\n' ) {
-    d->mMboxFile.write("\n\n");
-  }
+  unlock(); // FIXME: What if unlock fails?
 
-  if(!d->mMboxFile.flush())
-    return -1; // TODO Some proper error handling when writing fails.
-
-  return nextOffset;
+  return true;
 }
 
-/// private methods
-
-int MBox::lock()
+bool MBox::lock()
 {
   if (d->mLockType == None)
-    return 0;
+    return true;
 
   d->mFileLocked = false;
 
@@ -326,7 +268,6 @@ int MBox::lock()
         d->mReadOnly = true;
       }
       */
-      return 0;
       break; // We only need to lock the file using the QReadWriteLock
 
     case ProcmailLockfile:
@@ -342,7 +283,8 @@ int MBox::lock()
                  << ": Failed ("<< rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
                              // set it to read only when locking failed.
-        return rc;
+      } else {
+        d->mFileLocked = true;
       }
       break;
 
@@ -355,7 +297,8 @@ int MBox::lock()
                  << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
                           // set it to read only when locking failed.
-        return rc;
+      } else {
+        d->mFileLocked = true;
       }
       break;
 
@@ -367,26 +310,150 @@ int MBox::lock()
         kDebug() << "mutt_dotlock -p " << d->mMboxFile.fileName() << ":"
                  << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true;
-        return rc;
+      } else {
+        d->mFileLocked = true;
       }
       break;
 
-    case None: // This is never reached because of the check at the
-      return 0;     // beginning of the function.
+    case None:  // This is never reached because of the check at the
+      return 0; // beginning of the function.
     default:
       break;
   }
 
-  d->mFileLocked = true;
-  return 0;
+  if ( d->mFileLocked ) {
+    if ( !open() ) {
+      const bool unlocked = unlock();
+      Q_ASSERT( unlocked ); // If this fails we're in trouble.
+      Q_UNUSED( unlocked );
+    }
+  }
+
+  return d->mFileLocked;
 }
 
-int MBox::unlock()
+KMime::Message *MBox::readEntry(quint64 offset)
+{
+  bool wasLocked = d->mFileLocked;
+  if ( ! wasLocked )
+    if ( ! lock() )
+      return 0;
+
+  // TODO: Add error handling in case locking failed.
+
+  Q_ASSERT( d->mFileLocked );
+  Q_ASSERT( d->mMboxFile.isOpen() );
+  Q_ASSERT( d->mMboxFile.size() > 0 );
+
+  if ( offset > static_cast<quint64>( d->mMboxFile.size() ) ) {
+    unlock();
+    return 0;
+  }
+
+  d->mMboxFile.seek(offset);
+
+  QByteArray line = d->mMboxFile.readLine();
+  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+
+  if (regexp.indexIn(line) < 0) {
+    unlock();
+    return 0; // The file is messed up or the index is incorrect.
+  }
+
+  QByteArray message;
+  line = d->mMboxFile.readLine();
+  while (regexp.indexIn(line) < 0 && !d->mMboxFile.atEnd()) {
+    message += line;
+    line = d->mMboxFile.readLine();
+  }
+
+  // Remove te last '\n' added by writeEntry.
+  if (message.endsWith('\n'))
+    message.chop(1);
+
+  unescapeFrom(message.data(), message.size());
+
+  if ( ! wasLocked ) {
+    const bool unlocked = unlock();
+    Q_ASSERT( unlocked );
+    Q_UNUSED( unlocked );
+  }
+
+  KMime::Message *mail = new KMime::Message();
+  mail->setContent( KMime::CRLFtoLF( message ) );
+  mail->parse();
+
+  return mail;
+}
+
+QByteArray MBox::readEntryHeaders(quint64 offset)
+{
+  bool wasLocked = d->mFileLocked;
+  if ( ! wasLocked )
+    lock();
+
+  Q_ASSERT( d->mFileLocked );
+  Q_ASSERT(d->mMboxFile.isOpen());
+  Q_ASSERT(d->mMboxFile.size() > 0);
+  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
+
+  d->mMboxFile.seek(offset);
+  QByteArray headers;
+  QByteArray line = d->mMboxFile.readLine();
+
+  while (!line[0] == '\n') {
+    headers += line;
+    line = d->mMboxFile.readLine();
+  }
+
+  if ( ! wasLocked )
+    unlock();
+
+  return headers;
+}
+
+bool MBox::save( const QString &fileName )
+{
+  if ( d->mMboxFile.fileName().isEmpty()
+       || KUrl( fileName ).path() != d->mMboxFile.fileName() )
+  {
+    // File saved != file loaded from
+    return false; // FIXME: Implement this case
+  }
+
+  if ( d->mAppendedEntries.size() == 0 )
+    return true; // Nothing to do.
+
+  if ( !lock() )
+    return false;
+
+  d->mMboxFile.seek( d->mMboxFile.size() );
+  d->mMboxFile.write( d->mAppendedEntries );
+  d->mAppendedEntries.clear();
+
+  unlock();
+  return true;
+}
+
+void MBox::setLockType(LockType ltype)
+{
+  if (d->mFileLocked)
+    return; // Don't change the method if the file is currently locked.
+
+  d->mLockType = ltype;
+}
+
+void MBox::setLockFile(const QString &lockFile)
+{
+  d->mLockFileName = lockFile;
+}
+
+bool MBox::unlock()
 {
   int rc = 0;
   QStringList args;
 
-  switch(d->mLockType)
+  switch( d->mLockType )
   {
     case KDELockFile:
       // FIXME
@@ -416,10 +483,28 @@ int MBox::unlock()
       break;
   }
 
-  if (!rc) // Unlocking succeeded
+  if ( rc == 0 ) // Unlocking succeeded
     d->mFileLocked = false;
 
-  return rc;
+  d->mMboxFile.close();
+
+  return !d->mFileLocked;
+}
+
+/// private methods
+
+bool MBox::open()
+{
+  if ( d->mMboxFile.isOpen() )
+    return true;  // already open
+
+  if ( !d->mMboxFile.open( QIODevice::ReadWrite ) ) { // messages file
+    kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
+             << d->mMboxFile.error();
+    return false;
+  }
+
+  return true;
 }
 
 QByteArray MBox::mboxMessageSeparator(const QByteArray &msg)

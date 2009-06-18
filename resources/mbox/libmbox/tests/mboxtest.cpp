@@ -41,6 +41,7 @@ QString MboxTest::fileName()
 
 void MboxTest::initTestCase()
 {
+  /*
   mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
 
   QDir temp(mTempDir->name());
@@ -55,10 +56,12 @@ void MboxTest::initTestCase()
 
   mboxfile.close();
   QVERIFY(mboxfile.exists());
+  */
 }
 
 void MboxTest::testClose()
 {
+  /*
   MBox mbox1(fileName(), true); // ReadOnly
   mbox1.open();
   mbox1.close();
@@ -71,10 +74,12 @@ void MboxTest::testClose()
   mbox2.close();
 
   QVERIFY(mboxfile.exists()); // It should not get deleted on close.
+  */
 }
 
 void MboxTest::testIsValid()
 {
+  /*
   MBox mbox1(fileName(), true); // ReadOnly
   QVERIFY(mbox1.isValid());     // FCNTL is the default lock method.
 
@@ -109,10 +114,12 @@ void MboxTest::testIsValid()
 
   MBox mbox4("2_Non-ExistingFile", false);
   QVERIFY(!mbox4.isValid());
+  */
 }
 
 void MboxTest::testProcMailLock()
 {
+  /*
   // It really only makes sense to test this if the lockfile executable can be
   // found.
   MBox mbox(fileName(), true);
@@ -131,6 +138,7 @@ void MboxTest::testProcMailLock()
     mbox.close();
     QVERIFY(!QFile(fileName() + ".lock").exists());
   }
+  */
 }
 
 void MboxTest::cleanupTestCase()

@@ -20,21 +20,19 @@
 #ifndef MBOX_H
 #define MBOX_H
 
+#include <boost/shared_ptr.hpp>
+#include <kmime/kmime_message.h>
 #include <QtCore/QSet>
 #include <QtCore/QString>
 
 #include "mbox_export.h"
 
 typedef QPair<quint64, quint64> MsgInfo; // QPair<offset, size>
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 class MBOX_EXPORT MBox
 {
   public:
-    enum OpenMode {
-      Normal, ///< Does nothing when the file is already open.
-      Reload  ///< Closes the file first if it is already open.
-    };
-
     enum LockType {
       KDELockFile,           // Uses KLockFile
       ProcmailLockfile,
@@ -44,7 +42,7 @@ class MBOX_EXPORT MBox
     };
 
   public:
-    explicit MBox(const QString &mboxFile = QString(), bool readOnly = false);
+    MBox();
 
     /**
      * Closes the file if it is still open.
@@ -52,9 +50,11 @@ class MBOX_EXPORT MBox
     ~MBox();
 
     /**
-     * Closes the file and releases the lock.
+     * Appends @param entry to the MBox. Returns the offset in the file
+     * where the added message starts or -1 if the entry was not added (e.g.
+     * when it doesn't contain data).
      */
-    void close();
+    qint64 appendEntry( const MessagePtr &entry );
 
     /**
      * Retrieve MsgInfo objects for all emails from the file except the
@@ -82,26 +82,72 @@ class MBOX_EXPORT MBox
      */
     bool isValid(QString &errorMsg) const;
 
+
     /**
-     * Open folder for access. Does nothing if the folder is already opened
-     * and openMode equals Normal (default behavior). When Reload is given as
-     * open mode the file will be closed first if it is open.
+     * Loads a mbox on disk  into the current mbox. Messages already present are
+     * *not* preserved. This method does not load the full messages into memory
+     * but only the offsets of the messages and their sizes. If the file
+     * currently is locked this method will do nothing and return false.
+     * Appended messages that are not written yet will get lost.
      *
-     * Returns zero on success and an error code equal to the c-library fopen
-     * call otherwise (errno).
+     * @param fileName the name of the mbox on disk.
+     * @return true, if successful, false on error.
+     *
+     * @see save( const QString & )
      */
-    int open(OpenMode openMode = Normal);
-
+    bool load( const QString &fileName );
 
     /**
-     * Reads the entire message from the file at given @param offset.
+     * Locks the mbox file using the configured lock method. This can be used
+     * for consecutive calls to readEntry and readEntryHeaders. Calling lock()
+     * before these calls prevents the mbox file being locked for every call.
+     *
+     * @return true if locked successful, false on error.
+     *
+     * @see setLockType( LockType ), unlock()
      */
-    QByteArray readEntry(quint64 offset) const;
+    bool lock();
 
     /**
-     * Reads the headers of the message at given @param offset.
+     * Reads the entire message from the file at given @param offset. If the
+     * mbox file is not locked this method will lock the file before reading and
+     * unlock it after reading. If the file already is locked, it will not
+     * unlock the file after reading the entry.
+     *
+     * @param offset The start position of the entry in the mbox file.
+     * @return Message at given offset or 0 if the the file could not be locked
+     *         or the offset > fileSize.
+     *
+     * @see lock(), unlock()
+     */
+    KMime::Message *readEntry( quint64 offset );
+
+    /**
+     * Reads the headers of the message at given @param offset. If the
+     * mbox file is not locked this method will lock the file before reading and
+     * unlock it after reading. If the file already is locked, it will not
+     * unlock the file after reading the entry.
+     *
+     * @param offset The start position of the entry in the mbox file.
+     * @return QByteArray containing the raw Entry data.
+     *
+     * @see lock(), unlock()
      */
     QByteArray readEntryHeaders(quint64 offset);
+
+
+    /**
+     * Writes the mbox to disk. If the fileName is empty only appended messages
+     * will be written to the file that was passed to load( const QString & ).
+     * Otherwise the contents of the file that was loaded with load is copied to
+     * @p fileName first.
+     *
+     * @param fileName the name of the file
+     * @return true if the save was successful; false otherwise.
+     *
+     * @see load( const QString & )
+     */
+    bool save( const QString &fileName = QString() );
 
     /**
      * Sets the locktype that should be used for locking the mbox file. The
@@ -123,34 +169,23 @@ class MBOX_EXPORT MBox
     void setLockFile(const QString &lockFile);
 
     /**
-     * Appends @param entry to the mbox file. Returns the offset in the file
-     * where the added message starts or -1 if the message was not added.
+     * Unlock the mbox file.
+     *
+     * @return true if the unlock was successful, false otherwise.
+     *
+     * @see lock()
      */
-    qint64 writeEntry(const QByteArray &entry);
+    bool unlock();
 
   private:
-    static QByteArray escapeFrom(const QByteArray &msg);
+    bool open();
 
-    /**
-     * Locks the mbox file. Called by open(). Returns 0 on success and an errno
-     * error code on failure.
-     *
-     * NOTE: This method will set the MBox object to ReadOnly mode when locking
-     *       failed to prevent data corruption, even when the MBox was originally
-     *       opened ReadWrite.
-     */
-    int lock();
+    static QByteArray escapeFrom(const QByteArray &msg);
 
     /**
      * Generates a mbox message sperator line for given message.
      */
     static QByteArray mboxMessageSeparator(const QByteArray &msg);
-
-    /**
-     * Unlock the mbox file. Called by close() or ~MBox(). Returns 0 on success
-     * and an errno error code on failure.
-     */
-    int unlock();
 
     /**
      * Unescapes the raw message read from the file.

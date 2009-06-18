@@ -37,7 +37,6 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
     virtual void configure( WId windowId );
 
   protected Q_SLOTS:
-    virtual void retrieveCollections();
     virtual void retrieveItems( const Akonadi::Collection &col );
     virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
