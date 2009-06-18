@@ -88,7 +88,7 @@ MBox::MBox()
 {
   // Set some sane defaults
   d->mFileLocked = false;
-  d->mLockType = None;
+  d->mLockType = None; //
 }
 
 MBox::~MBox()
@@ -103,6 +103,9 @@ MBox::~MBox()
 
 qint64 MBox::appendEntry( const MessagePtr &entry )
 {
+  if ( d->mMboxFile.fileName().isEmpty() )
+    return -1; // It doesn't make sense to add entries when we don't have an reference file.
+
   const QByteArray rawEntry = escapeFrom( entry->encodedContent() );
 
   if ( rawEntry.size() <= 0 ) {
@@ -115,9 +118,20 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
 
   // Make sure the byte array is large enough to check for an end character.
   // Then check if the required newlines are there.
-  if ( nextOffset >= 2 ) {
-    if ( nextOffset > 0 && d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
-      if ( d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
+  if ( nextOffset < 1 ) { // Empty, add one empty line
+    if ( d->mMboxFile.size() == 0 ) {
+      d->mAppendedEntries.append( "\n");
+      ++nextOffset;
+    }
+  } else if ( nextOffset == 1 && d->mAppendedEntries.at( 0 ) != '\n' ) {
+    // This should actually not happen, but catch it anyway.
+    if (d->mMboxFile.size() < 0 ) {
+      d->mAppendedEntries.append( "\n");
+      ++nextOffset;
+    }
+  } else {
+    if ( d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
+      if ( d->mAppendedEntries.at( nextOffset ) != '\n' ) {
         d->mAppendedEntries.append( "\n\n" );
         nextOffset += 2;
       } else {
@@ -132,6 +146,11 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
   if ( rawEntry[rawEntry.size() - 1] != '\n' ) {
     d->mAppendedEntries.append( "\n\n" );
   }
+
+  MsgInfo info;
+  info.first = d->mInitialMboxFileSize + nextOffset;
+  info.second = rawEntry.size();
+  d->mEntries << info;
 
   return d->mInitialMboxFileSize + nextOffset;
 }
@@ -195,9 +214,7 @@ bool MBox::load( const QString &fileName )
     }
   }
 
-  unlock(); // FIXME: What if unlock fails?
-
-  return true;
+  return unlock(); // FIXME: What if unlock fails?
 }
 
 bool MBox::lock()

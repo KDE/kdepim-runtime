@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+#include "../mbox.h"
+
 class KTempDir;
 
 class MboxTest : public QObject
@@ -32,6 +34,7 @@ class MboxTest : public QObject
     void testSetLockMethod();
     void testLockBeforeLoad();
     void testProcMailLock();
+    void testAppend();
     void cleanupTestCase();
 
   private:
@@ -40,6 +43,8 @@ class MboxTest : public QObject
 
   private:
     KTempDir *mTempDir;
+    MessagePtr mMail1;
+    MessagePtr mMail2;
 };
 
 #endif // MBOXTEST_H

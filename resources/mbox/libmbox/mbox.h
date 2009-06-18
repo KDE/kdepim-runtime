@@ -45,14 +45,20 @@ class MBOX_EXPORT MBox
     MBox();
 
     /**
-     * Closes the file if it is still open.
+     * Unlocks the file if it is still open.
      */
     ~MBox();
 
     /**
      * Appends @param entry to the MBox. Returns the offset in the file
      * where the added message starts or -1 if the entry was not added (e.g.
-     * when it doesn't contain data).
+     * when it doesn't contain data). Entries are only added after a call to
+     * load( const QString& ). The returned offset is <em>only</em> valid for
+     * that particular file.
+     *
+     * @param entry The message to append to the mbox.
+     * @return the offset of the entry in the file or -1 if the entry was not
+     *         added.
      */
     qint64 appendEntry( const MessagePtr &entry );
 

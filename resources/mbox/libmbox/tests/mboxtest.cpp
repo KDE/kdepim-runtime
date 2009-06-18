@@ -29,7 +29,7 @@
 
 QTEST_KDEMAIN_CORE(MboxTest)
 
-#include "../mbox.h"
+#include "test-entries.h"
 
 static const char * testDir = "libmbox-unit-test";
 static const char * testFile = "test-mbox-file";
@@ -56,6 +56,15 @@ void MboxTest::initTestCase()
   mboxfile.open( QIODevice::WriteOnly );
   mboxfile.close();
   QVERIFY(mboxfile.exists());
+
+  mMail1 = MessagePtr( new KMime::Message );
+  mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
+  mMail1->parse();
+
+  mMail2 = MessagePtr( new KMime::Message );
+  mMail2->setContent( KMime::CRLFtoLF( sEntry2 ) );
+  mMail2->parse();
+
 }
 
 void MboxTest::testSetLockMethod()
@@ -132,6 +141,32 @@ void MboxTest::testProcMailLock()
   QVERIFY( QFile( lockFileName() ).exists() );
   QVERIFY( mbox.unlock() );
   QVERIFY( !QFile( lockFileName() ).exists() );
+}
+
+void MboxTest::testAppend()
+{
+  QFileInfo info( fileName() );
+  QCOMPARE( info.size(), static_cast<qint64>( 0 ) );
+
+  MBox mbox;
+  mbox.setLockType( MBox::None );
+
+  // When no file is loaded no entries should get added to the mbox.
+  QCOMPARE( mbox.entryList().size(), 0 );
+  QCOMPARE( mbox.appendEntry( mMail1 ), static_cast<qint64>( -1 ) );
+  QCOMPARE( mbox.entryList().size(), 0 );
+
+  QVERIFY( mbox.load( fileName() ) );
+
+  // First message added to an emtpy file should be at offset 0
+  QCOMPARE( mbox.entryList().size(), 0 );
+  QCOMPARE( mbox.appendEntry( mMail1 ), static_cast<qint64>( 0 ) );
+  QCOMPARE( mbox.entryList().size(), 1 );
+  QCOMPARE( mbox.entryList().first().second, static_cast<quint64>( sEntry1.size() ) );
+
+  QVERIFY( mbox.appendEntry( mMail2 ) > sEntry1.size() );
+  QCOMPARE( mbox.entryList().size(), 2 );
+  QCOMPARE( mbox.entryList().last().second, static_cast<quint64>( sEntry2.size() ) );
 }
 
 void MboxTest::cleanupTestCase()
