@@ -75,13 +75,40 @@ void MboxTest::testSetLockMethod()
   QVERIFY( mbox1.setLockType( MBox::KDELockFile ) );
 }
 
+void MboxTest::testLockBeforeLoad()
+{
+  // Should fail because it's not known which file to lock.
+  MBox mbox;
+
+  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+    QVERIFY( mbox.setLockType(MBox::ProcmailLockfile) );
+    QVERIFY( !mbox.lock() );
+  }
+
+  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+    QVERIFY( mbox.setLockType( MBox::MuttDotlock ) );
+    QVERIFY( !mbox.lock() );
+    QVERIFY( mbox.setLockType( MBox::MuttDotlockPrivileged ) );
+    QVERIFY( !mbox.lock() );
+  }
+
+  QVERIFY( mbox.setLockType( MBox::None ) );
+  QVERIFY( !mbox.lock() );
+
+  QEXPECT_FAIL("", "KDELockFile method is not yet implmented", Continue);
+  QVERIFY( mbox.setLockType( MBox::KDELockFile ) );
+  QVERIFY( !mbox.lock() );
+}
+
 void MboxTest::testProcMailLock()
 {
-  /*
   // It really only makes sense to test this if the lockfile executable can be
   // found.
+  /*
   MBox mbox(fileName(), true);
-  mbox.setLockType(MBox::ProcmailLockfile);
+
+  QEXPECT_FAIL("", "This only works when procmail is installed.", Continue);
+  QVERIFY( mbox.setLockType( MBox::ProcmailLockfile ) );
   if (!KStandardDirs::findExe("lockfile").isEmpty()) {
     QVERIFY(!QFile(fileName() + ".lock").exists());
     QCOMPARE(mbox.open(), 0);
@@ -91,7 +118,6 @@ void MboxTest::testProcMailLock()
   } else {
     QVERIFY(!QFile(fileName() + ".lock").exists());
     QVERIFY(mbox.open() != 0);
-    QEXPECT_FAIL("", "This only works when procmail is installed.", Continue);
     QVERIFY(QFile(fileName() + ".lock").exists());
     mbox.close();
     QVERIFY(!QFile(fileName() + ".lock").exists());

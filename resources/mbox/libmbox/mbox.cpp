@@ -202,7 +202,10 @@ bool MBox::load( const QString &fileName )
 
 bool MBox::lock()
 {
-  if (d->mLockType == None)
+  if ( d->mMboxFile.fileName().isEmpty() )
+    return false; // We cannot lock if there is no file loaded.
+
+  if ( d->mLockType == None )
     return true;
 
   d->mFileLocked = false;

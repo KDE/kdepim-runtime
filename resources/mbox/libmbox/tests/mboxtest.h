@@ -30,6 +30,7 @@ class MboxTest : public QObject
   private Q_SLOTS:
     void initTestCase();
     void testSetLockMethod();
+    void testLockBeforeLoad();
     void testProcMailLock();
     void cleanupTestCase();
 
