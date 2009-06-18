@@ -55,12 +55,12 @@ function setupKolab()
   runImapCmd( "autotest0", [ "append", "INBOX/Calendar", "kolabevent.mbox" ] );
 
   // create folders and messages for the user sharing his folders with the test user
-/*  createKolabFolders( "autotest1" );
+  createKolabFolders( "autotest1" );
   runImapCmd( "autotest1", [ "setacl", "INBOX/Calendar", "autotest0@example.com", "lrs" ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/Contacts", "autotest0@example.com", "lrs" ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/Journal", "autotest0@example.com", "lrs" ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/Notes", "autotest0@example.com", "lrs" ] );
-  runImapCmd( "autotest1", [ "setacl", "INBOX/Tasks", "autotest0@example.com", "lrs" ] );*/
+  runImapCmd( "autotest1", [ "setacl", "INBOX/Tasks", "autotest0@example.com", "lrs" ] );
 }
 
 /** The actual tests for the Kolab resource. */
