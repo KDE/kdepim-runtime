@@ -41,80 +41,38 @@ QString MboxTest::fileName()
 
 void MboxTest::initTestCase()
 {
-  /*
   mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
 
   QDir temp(mTempDir->name());
   QVERIFY(temp.exists());
 
-  QFile mboxfile(fileName());
-  mboxfile.open(QFile::ReadWrite);
-
-  // Put some testdata in the file.
-  QTextStream out(&mboxfile);
-  out << "From: me@me.me" << endl;
-
+  QFile mboxfile( fileName() );
+  mboxfile.open( QIODevice::WriteOnly );
   mboxfile.close();
   QVERIFY(mboxfile.exists());
-  */
 }
 
-void MboxTest::testClose()
+void MboxTest::testSetLockMethod()
 {
-  /*
-  MBox mbox1(fileName(), true); // ReadOnly
-  mbox1.open();
-  mbox1.close();
+  MBox mbox1;
 
-  QFile mboxfile(fileName());
-  QVERIFY(mboxfile.exists()); // It should not get deleted on close.
-
-  MBox mbox2(fileName(), false);
-  mbox2.open();
-  mbox2.close();
-
-  QVERIFY(mboxfile.exists()); // It should not get deleted on close.
-  */
-}
-
-void MboxTest::testIsValid()
-{
-  /*
-  MBox mbox1(fileName(), true); // ReadOnly
-  QVERIFY(mbox1.isValid());     // FCNTL is the default lock method.
-
-  if (!KStandardDirs::findExe("lockfile").isEmpty()) {
-    mbox1.setLockType(MBox::ProcmailLockfile);
-    QVERIFY(mbox1.isValid());
+  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+    QVERIFY( mbox1.setLockType(MBox::ProcmailLockfile) );
   } else {
-    mbox1.setLockType(MBox::ProcmailLockfile);
-    QVERIFY(!mbox1.isValid());
+    QVERIFY( !mbox1.setLockType( MBox::ProcmailLockfile ) );
   }
 
-  if (!KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
-    mbox1.setLockType(MBox::MuttDotlock);
-    QVERIFY(mbox1.isValid());
-    mbox1.setLockType(MBox::MuttDotlockPrivileged);
-    QVERIFY(mbox1.isValid());
+  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+    QVERIFY( mbox1.setLockType( MBox::MuttDotlock ) );
+    QVERIFY( mbox1.setLockType( MBox::MuttDotlockPrivileged ) );
   } else {
-    mbox1.setLockType(MBox::MuttDotlock);
-    QVERIFY(!mbox1.isValid());
-    mbox1.setLockType(MBox::MuttDotlockPrivileged);
-    QVERIFY(!mbox1.isValid());
+    QVERIFY( !mbox1.setLockType( MBox::MuttDotlock ) );
+    QVERIFY( !mbox1.setLockType( MBox::MuttDotlockPrivileged ) );
   }
 
-  mbox1.setLockType(MBox::None);
-  QVERIFY(mbox1.isValid());
-
-  MBox mbox2(fileName(), false);
-  QVERIFY(mbox2.isValid());
-
-  MBox mbox3("2_Non-ExistingFile", true);
-  QVERIFY(!mbox3.isValid());
-
-  MBox mbox4("2_Non-ExistingFile", false);
-  QVERIFY(!mbox4.isValid());
-  */
+  QVERIFY( mbox1.setLockType( MBox::None ) );
+  QEXPECT_FAIL("", "KDELockFile method is not yet implmented", Continue);
+  QVERIFY( mbox1.setLockType( MBox::KDELockFile ) );
 }
 
 void MboxTest::testProcMailLock()

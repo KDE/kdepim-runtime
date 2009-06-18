@@ -150,54 +150,6 @@ QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
   return result;
 }
 
-bool MBox::isValid() const
-{
-  QString msg;
-  return isValid(msg);
-}
-
-bool MBox::isValid(QString &errorMsg) const
-{
-  if ( d->mMboxFile.fileName().isEmpty() ) {
-    errorMsg = i18n("No file specified.");
-    return false;
-  }
-
-  QFileInfo info(d->mMboxFile);
-
-  if (!info.isFile()) {
-    errorMsg = i18n("%1 is not a file.").arg(info.absoluteFilePath());
-    return false;
-  }
-
-  if (!info.exists()) {
-    errorMsg = i18n("%1 does not exist").arg(info.absoluteFilePath());
-    return false;
-  }
-
-  switch (d->mLockType) {
-    case ProcmailLockfile:
-      if (KStandardDirs::findExe("lockfile").isEmpty()) {
-        errorMsg = i18n("Could not find the lockfile executable");
-        return false;
-      }
-      break;
-    case MuttDotlock: // fall through
-    case MuttDotlockPrivileged:
-      if (KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
-        errorMsg = i18n("Could not find the mutt_dotlock executable");
-        return false;
-      }
-      break;
-    default:
-      break; // We assume fcntl available and lock_none doesn't need a check.
-  }
-
-  // TODO: Add some heuristics to see if the file actually is a mbox file.
-
-  return true;
-}
-
 bool MBox::load( const QString &fileName )
 {
   if ( d->mFileLocked )
@@ -435,12 +387,36 @@ bool MBox::save( const QString &fileName )
   return true;
 }
 
-void MBox::setLockType(LockType ltype)
+bool MBox::setLockType(LockType ltype)
 {
-  if (d->mFileLocked)
-    return; // Don't change the method if the file is currently locked.
+  if (d->mFileLocked) {
+    kDebug() << "File is currently locked.";
+    return false; // Don't change the method if the file is currently locked.
+  }
+
+  switch ( ltype ) {
+    case KDELockFile:
+      kDebug() << "KLockFile not supported yet"; // FIXME
+      return false;
+    case ProcmailLockfile:
+      if ( KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+        kDebug() << "Could not find the lockfile executable";
+        return false;
+      }
+      break;
+    case MuttDotlock: // fall through
+    case MuttDotlockPrivileged:
+      if (KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
+        kDebug() << "Could not find the mutt_dotlock executable";
+        return false;
+      }
+      break;
+    default:
+      break; // We assume fcntl available and lock_none doesn't need a check.
+  }
 
   d->mLockType = ltype;
+  return true;
 }
 
 void MBox::setLockFile(const QString &lockFile)

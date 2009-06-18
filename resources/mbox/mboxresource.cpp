@@ -93,12 +93,6 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   if ( !mMBox )
     return;
 
-  if ( !mMBox->isValid() ) {
-    emit error( i18n("Invalid mbox file: %1", col.remoteId() ) );
-    itemsRetrieved(Item::List());
-    return;
-  }
-
   QList<MsgInfo> entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
@@ -140,12 +134,6 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
   if ( !mMBox ) {
     emit error( i18n( "MBox not loaded." ) );
-    return false;
-  }
-
-  QString msg;
-  if( !mMBox->isValid( msg ) ) {
-    emit error( i18n( "MBox not valid: %1" ).arg( msg ) );
     return false;
   }
 
@@ -269,12 +257,7 @@ bool MboxResource::readFromFile( const QString &fileName )
       break;
   }
 
-  if ( mMBox->isValid() ) {
-    mMBox->load( KUrl( fileName ).path() );
-    return true;
-  }
-
-  return false;
+  return mMBox->load( KUrl( fileName ).path() );
 }
 
 bool MboxResource::writeToFile( const QString &fileName )
