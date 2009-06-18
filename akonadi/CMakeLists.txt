@@ -34,6 +34,9 @@ add_subdirectory(mailthreader)
 find_package(Grantlee)
 
 if (Grantlee_FOUND)
+
+  add_subdirectory(akonaditemplateloader)
+  add_subdirectory(akonaditemplateresource)
   message("Found Grantlee. Building KJots.")
 
   #### KJots commmon stuff ####

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Akonadi Granltee Template Resource
+Comment=A resource to load Grantlee Templates
+Type=GrantleeTemplateResource
+Exec=akonadi_template_resource
+Icon=kjots
+
+X-Akonadi-MimeTypes=text/x-vnd.grantlee-template
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_template_resource
+
