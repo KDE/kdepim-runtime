@@ -88,7 +88,7 @@ MBox::MBox()
 {
   // Set some sane defaults
   d->mFileLocked = false;
-  d->mLockType = KDELockFile;
+  d->mLockType = None;
 }
 
 MBox::~MBox()
