@@ -34,10 +34,12 @@ add_subdirectory(mailthreader)
 find_package(Grantlee)
 
 if (Grantlee_FOUND)
+  message("Found Grantlee. Building KJots.")
 
   add_subdirectory(akonaditemplateloader)
   add_subdirectory(akonaditemplateresource)
-  message("Found Grantlee. Building KJots.")
+
+  add_subdirectory(example_mail)
 
   #### KJots commmon stuff ####
   add_subdirectory(kjots_common)
@@ -53,6 +55,5 @@ endif (Grantlee_FOUND)
 #### Clients ####
 
 #add_subdirectory(plasmoid)
-add_subdirectory(example_mail)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)

@@ -41,8 +41,22 @@
 #include "contactsmodel.h"
 
 #include <kdebug.h>
+#include <KStandardDirs>
 #include "modeltest.h"
 #include <QTimer>
+
+#include <grantlee/template.h>
+#include <grantlee/context.h>
+#include "akonaditemplateloader.h"
+
+#include <kmime/kmime_message.h>
+
+#include <boost/shared_ptr.hpp>
+
+#include <KDebug>
+
+typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
 
 using namespace Akonadi;
 
@@ -52,6 +66,30 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   QSplitter *splitter = new QSplitter( this );
   QHBoxLayout *layout = new QHBoxLayout( this );
+
+
+  ItemFetchScope templateScope;
+  templateScope.fetchFullPayload( true );
+
+  Monitor *templateMonitor = new Monitor( this );
+  templateMonitor->fetchCollection( true );
+  templateMonitor->setItemFetchScope( templateScope );
+  templateMonitor->setCollectionMonitored( Collection::root() );
+  templateMonitor->setMimeTypeMonitored( "text/x-vnd.grantlee-template" );
+
+  AkonadiTemplateLoader *akoLoader = new AkonadiTemplateLoader(templateMonitor, this);
+
+
+  connect( templateMonitor, SIGNAL( itemChanged(const Akonadi::Item &, const QSet< QByteArray > &) ),
+           SLOT(someSlot( const Akonadi::Item &, const QSet< QByteArray > & ) ) );
+
+  connect( templateMonitor, SIGNAL( itemChanged() ), SLOT( templateChanged() ) );
+
+  Grantlee::Engine *engine = Grantlee::Engine::instance();
+  KStandardDirs KStd;
+  engine->setPluginDirs(KStd.findDirs("lib", "grantlee"));
+
+  engine->addTemplateLoader(akoLoader);
 
   treeview = new EntityTreeView( splitter );
 
@@ -140,14 +178,52 @@ void MailWidget::listSelectionChanged( const QItemSelection & selected, const QI
 //   if ( selected.indexes().size() == 1 )
 //   {
     QModelIndex idx = selected.indexes().at( 0 );
-
-    Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
-    if ( i.isValid() )
-    {
-      QByteArray ba = i.payloadData();
-      browser->setText( ba );
-    }
+    renderMail(idx);
 //   }
+}
+
+void MailWidget::someSlot(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers)
+{
+  kDebug() << item.remoteId();
+
+  QModelIndex idx = listView->selectionModel()->selection().indexes().at(0);
+  renderMail(idx);
+}
+
+void MailWidget::templateChanged()
+{
+  qDebug() << "t c";
+  QModelIndex idx = listView->selectionModel()->selection().indexes().at(0);
+  renderMail(idx);
+}
+
+void MailWidget::renderMail(const QModelIndex &idx)
+{
+  Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
+  if ( i.isValid() )
+  {
+    const MessagePtr mail = i.payload<MessagePtr>();
+    KMime::Content *content = mail->mainBodyPart();
+    if (!content)
+      return;
+    QByteArray ba = i.payloadData();
+
+    Grantlee::Engine *engine = Grantlee::Engine::instance();
+    Grantlee::Template *t = engine->loadByName("template.html", this);
+    if (!t)
+      return;
+    QVariantHash h;
+    h.insert( "subject", mail->subject()->asUnicodeString() );
+    h.insert( "date", mail->date()->asUnicodeString() );
+    h.insert( "from", mail->from()->asUnicodeString() );
+
+    QString messageHtml = content->decodedContent();
+    messageHtml.replace("\n", "<br />");
+    h.insert( "messageContent", messageHtml );
+
+    Grantlee::Context c(h);
+    browser->setHtml( t->render(&c) );
+  }
 }
 
 void MailWidget::treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )

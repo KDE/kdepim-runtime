@@ -36,6 +36,8 @@ class EntityFilterProxyModel;
 #include <QWidget>
 #include <QModelIndexList>
 
+#include <akonadi/item.h>
+
 class MailWidget : public QWidget
 {
   Q_OBJECT
@@ -48,6 +50,12 @@ protected slots:
   void treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void listSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void modelDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
+  void someSlot(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);
+
+  void templateChanged();
+
+protected:
+  void renderMail(const QModelIndex &idx);
 
 private:
   QTextBrowser   *browser;
