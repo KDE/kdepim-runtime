@@ -90,7 +90,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   m_loader->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
   m_loader->setTheme("default");
 
-  engine->addTemplateResource(m_loader);
+  engine->addTemplateLoader(m_loader);
 
   treeview = new EntityTreeView( splitter );
 //   treeview = new QColumnView(splitter);
