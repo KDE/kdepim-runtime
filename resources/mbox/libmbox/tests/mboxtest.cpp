@@ -33,10 +33,16 @@ QTEST_KDEMAIN_CORE(MboxTest)
 
 static const char * testDir = "libmbox-unit-test";
 static const char * testFile = "test-mbox-file";
+static const char * testLockFile = "test-mbox-lock-file";
 
 QString MboxTest::fileName()
 {
   return mTempDir->name() + testFile;
+}
+
+QString MboxTest::lockFileName()
+{
+  return mTempDir->name() + testLockFile;
 }
 
 void MboxTest::initTestCase()
@@ -104,25 +110,28 @@ void MboxTest::testProcMailLock()
 {
   // It really only makes sense to test this if the lockfile executable can be
   // found.
-  /*
-  MBox mbox(fileName(), true);
 
-  QEXPECT_FAIL("", "This only works when procmail is installed.", Continue);
-  QVERIFY( mbox.setLockType( MBox::ProcmailLockfile ) );
-  if (!KStandardDirs::findExe("lockfile").isEmpty()) {
-    QVERIFY(!QFile(fileName() + ".lock").exists());
-    QCOMPARE(mbox.open(), 0);
-    QVERIFY(QFile(fileName() + ".lock").exists());
-    mbox.close();
-    QVERIFY(!QFile(fileName() + ".lock").exists());
-  } else {
-    QVERIFY(!QFile(fileName() + ".lock").exists());
-    QVERIFY(mbox.open() != 0);
-    QVERIFY(QFile(fileName() + ".lock").exists());
-    mbox.close();
-    QVERIFY(!QFile(fileName() + ".lock").exists());
+  MBox mbox;
+  if ( !mbox.setLockType( MBox::ProcmailLockfile ) ) {
+    QEXPECT_FAIL( "", "This test only works when procmail is installed.", Abort );
+    QVERIFY( false );
   }
-  */
+
+  QVERIFY( mbox.load( fileName() ) );
+
+  // By default the filename is used as part of the lockfile filename.
+  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( mbox.lock() );
+  QVERIFY( QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( mbox.unlock() );
+  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+
+  mbox.setLockFile( lockFileName() );
+  QVERIFY( !QFile( lockFileName() ).exists() );
+  QVERIFY( mbox.lock() );
+  QVERIFY( QFile( lockFileName() ).exists() );
+  QVERIFY( mbox.unlock() );
+  QVERIFY( !QFile( lockFileName() ).exists() );
 }
 
 void MboxTest::cleanupTestCase()

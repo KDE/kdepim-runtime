@@ -36,6 +36,7 @@ class MboxTest : public QObject
 
   private:
     QString fileName();
+    QString lockFileName();
 
   private:
     KTempDir *mTempDir;
