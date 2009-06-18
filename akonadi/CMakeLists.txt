@@ -30,7 +30,7 @@ add_subdirectory(akonadi_next)
 add_subdirectory(pop3)
 add_subdirectory(mailthreader)
 
-# This isn't released yet, sorry...
+# http://gitorious.org/grantlee
 find_package(Grantlee)
 
 if (Grantlee_FOUND)
