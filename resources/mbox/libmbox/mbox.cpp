@@ -114,22 +114,20 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
     return -1;
   }
 
-  int nextOffset = d->mAppendedEntries.size() - 1; // Offset of the appended message
+  int nextOffset = d->mAppendedEntries.size(); // Offset of the appended message
 
   // Make sure the byte array is large enough to check for an end character.
   // Then check if the required newlines are there.
-  if ( nextOffset < 1 ) { // Empty, add one empty line
-    if ( d->mMboxFile.size() == 0 ) {
-      d->mAppendedEntries.append( "\n");
-      ++nextOffset;
-    }
+  if ( nextOffset < 1 && d->mMboxFile.size() > 0 ) { // Empty, add one empty line
+    d->mAppendedEntries.append( "\n");
+    ++nextOffset;
   } else if ( nextOffset == 1 && d->mAppendedEntries.at( 0 ) != '\n' ) {
     // This should actually not happen, but catch it anyway.
     if (d->mMboxFile.size() < 0 ) {
       d->mAppendedEntries.append( "\n");
       ++nextOffset;
     }
-  } else {
+  } else if (nextOffset >= 2) {
     if ( d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
       if ( d->mAppendedEntries.at( nextOffset ) != '\n' ) {
         d->mAppendedEntries.append( "\n\n" );
@@ -157,8 +155,6 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
 
 QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
 {
-  Q_ASSERT(d->mMboxFile.isOpen());
-
   QList<MsgInfo> result;
 
   foreach ( const MsgInfo &info, d->mEntries ) {
@@ -175,7 +171,7 @@ bool MBox::load( const QString &fileName )
     return false;
 
   d->mMboxFile.setFileName( KUrl(fileName).path() );
-  if ( ! d->mMboxFile.exists() )
+  if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
     return false;
 
   if ( ! lock() )
@@ -186,17 +182,21 @@ bool MBox::load( const QString &fileName )
 
   QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
   QByteArray line;
+  QByteArray prevSeparator;
   quint64 offs = 0; // The offset of the next message to read.
   bool previousLineIsEmpty;
 
   while ( !d->mMboxFile.atEnd() ) {
     quint64 pos = d->mMboxFile.pos();
+
     previousLineIsEmpty = line.isEmpty();
+
     line = d->mMboxFile.readLine();
 
     if ( regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd() ) {
       // Found the separator or at end of file, the message starts at offs
       quint64 msgSize = pos - offs;
+
       if( pos > 0 ) {
         // This is not the separator of the first mail in the file. If pos == 0
         // than we matched the separator of the first mail in the file.
@@ -207,9 +207,18 @@ bool MBox::load( const QString &fileName )
         // there're two new line characters we assume that one of them was added
         // with the seperator.
         info.second = previousLineIsEmpty ? (msgSize - 2) : (msgSize - 1);
+        if ( d->mMboxFile.atEnd() )
+          info.second += 1;
+
+        // Don't add the seperator size and the newline up to the message size.
+        info.second -= prevSeparator.size() + 1;
 
         d->mEntries << info;
       }
+
+      if ( regexp.indexIn(line) >= 0 )
+        prevSeparator = line;
+
       offs += msgSize; // Mark the beginning of the next message.
     }
   }
@@ -221,9 +230,6 @@ bool MBox::lock()
 {
   if ( d->mMboxFile.fileName().isEmpty() )
     return false; // We cannot lock if there is no file loaded.
-
-  if ( d->mLockType == None )
-    return true;
 
   d->mFileLocked = false;
 
@@ -287,8 +293,9 @@ bool MBox::lock()
       }
       break;
 
-    case None:  // This is never reached because of the check at the
-      return 0; // beginning of the function.
+    case None:
+      d->mFileLocked = true;
+      break;
     default:
       break;
   }
@@ -386,8 +393,7 @@ QByteArray MBox::readEntryHeaders(quint64 offset)
 
 bool MBox::save( const QString &fileName )
 {
-  if ( d->mMboxFile.fileName().isEmpty()
-       || KUrl( fileName ).path() != d->mMboxFile.fileName() )
+  if ( !fileName.isEmpty() && KUrl( fileName ).path() != d->mMboxFile.fileName() )
   {
     // File saved != file loaded from
     return false; // FIXME: Implement this case
@@ -399,12 +405,13 @@ bool MBox::save( const QString &fileName )
   if ( !lock() )
     return false;
 
+  Q_ASSERT( d->mMboxFile.isOpen() );
+
   d->mMboxFile.seek( d->mMboxFile.size() );
   d->mMboxFile.write( d->mAppendedEntries );
   d->mAppendedEntries.clear();
 
-  unlock();
-  return true;
+  return unlock();
 }
 
 bool MBox::setLockType(LockType ltype)

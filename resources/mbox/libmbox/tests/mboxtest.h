@@ -35,6 +35,7 @@ class MboxTest : public QObject
     void testLockBeforeLoad();
     void testProcMailLock();
     void testAppend();
+    void testSaveAndLoad();
     void cleanupTestCase();
 
   private:

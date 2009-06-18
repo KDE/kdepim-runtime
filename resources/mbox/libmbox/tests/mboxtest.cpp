@@ -169,6 +169,45 @@ void MboxTest::testAppend()
   QCOMPARE( mbox.entryList().last().second, static_cast<quint64>( sEntry2.size() ) );
 }
 
+void MboxTest::testSaveAndLoad()
+{
+  QFile file( fileName() );
+  file.remove();
+  QVERIFY( !file.exists() );
+
+  MBox mbox;
+  QVERIFY( mbox.setLockType( MBox::None ) );
+  QVERIFY( mbox.load( fileName() ) );
+  mbox.appendEntry( mMail1 );
+  mbox.appendEntry( mMail2 );
+
+  QList<MsgInfo> infos1 = mbox.entryList();
+  QCOMPARE( infos1.size(), 2 );
+
+  QVERIFY( mbox.save() );
+  QVERIFY( file.exists() );
+
+  QList<MsgInfo> infos2 = mbox.entryList();
+  QCOMPARE( infos2.size(), 2 );
+
+  for ( int i = 0; i < 2; ++i ) {
+    QCOMPARE( infos1.at(i).first, infos2.at(i).first );
+    QCOMPARE( infos1.at(i).second, infos2.at(i).second );
+  }
+
+  MBox mbox2;
+  QVERIFY( mbox2.setLockType( MBox::None ) );
+  QVERIFY( mbox2.load( fileName() ) );
+
+  QList<MsgInfo> infos3 = mbox2.entryList();
+  QCOMPARE( infos3.size(), 2 );
+
+  for ( int i = 0; i < 2; ++i ) {
+    QCOMPARE( infos3.at(i).first, infos2.at(i).first );
+    QCOMPARE( infos3.at(i).second, infos2.at(i).second );
+  }
+}
+
 void MboxTest::cleanupTestCase()
 {
   mTempDir->unlink();
