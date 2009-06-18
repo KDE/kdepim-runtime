@@ -1,6 +1,6 @@
 set(mbox_LIB_SRCS mbox.cpp)
 
-# add_subdirectory(tests)
+add_subdirectory(tests)
 
 kde4_add_library(mbox SHARED ${mbox_LIB_SRCS})
 
