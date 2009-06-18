@@ -1,5 +1,7 @@
 <div>
-<h2 style="color:blue;">{{ entity.title }}</h2>
+<table border="1" cellspacing="1" cellpadding="1" width="100%"><tr><td width="20%">
+  <h2 style="color:blue;">{{ entity.title }}</h2>
+</td><td>
 <div>
 {% for entity in entity.entities %}
   {% if entity.isBook %}
@@ -11,4 +13,5 @@
   {% endif %}
 {% endfor %}
 </div>
+</td></tr></table>
 </div>
