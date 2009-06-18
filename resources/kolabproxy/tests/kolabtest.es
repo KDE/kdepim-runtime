@@ -91,13 +91,13 @@ function testKolab( vm )
 
   var eventItem = ItemTest.newInstance();
   eventItem.setMimeType( "application/x-vnd.akonadi.calendar.event" );
-  eventItem.setParentCollection( "akonadi_kolabproxy_resource/Calendar" );
+  eventItem.setParentCollection( "akonadi_kolabproxy_resource/localhost:42143\\/autotest0@example.com/Inbox/Calendar" );
   eventItem.setPayloadFromFile( "event.ical" );
   eventItem.create();
 
   var taskItem = ItemTest.newInstance();
   taskItem.setMimeType( "application/x-vnd.akonadi.calendar.todo" );
-  taskItem.setParentCollection( "akonadi_kolabproxy_resource/Tasks" );
+  taskItem.setParentCollection( "akonadi_kolabproxy_resource/localhost:42143\\/autotest0@example.com/Inbox/Tasks" );
   taskItem.setPayloadFromFile( "task.ical" );
   taskItem.create();
 
