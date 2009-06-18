@@ -22,10 +22,14 @@
 
 #include <akonadi/item.h>
 #include <kmime/kmime_message.h>
+
 #include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+namespace Akonadi {
+  class Collection;
+}
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -34,6 +38,11 @@ class KolabHandler : public QObject{
   Q_OBJECT
 public:
   static KolabHandler *createHandler(const QByteArray& type);
+
+  /**
+    Returns the Kolab folder type for the given collection.
+  */
+  static QByteArray kolabTypeForCollection( const Akonadi::Collection &collection );
 
   virtual ~KolabHandler();
 

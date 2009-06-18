@@ -22,6 +22,10 @@
 #include "taskshandler.h"
 #include "journalhandler.h"
 
+#include <akonadi/collection.h>
+#include <akonadi/kcal/kcalmimetypevisitor.h>
+#include <kabc/addressee.h>
+
 KolabHandler::KolabHandler()
 {
 }
@@ -44,6 +48,25 @@ KolabHandler *KolabHandler::createHandler(const QByteArray& type)
     return 0L;
   }
 }
+
+
+QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& collection)
+{
+  const QStringList contentMimeTypes = collection.contentMimeTypes();
+  if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) ) {
+    return "contact";
+  } else if ( contentMimeTypes.contains( Akonadi::KCalMimeTypeVisitor::eventMimeType() ) ) {
+    return "event";
+  } else if ( contentMimeTypes.contains( Akonadi::KCalMimeTypeVisitor::todoMimeType() ) ) {
+    return "task";
+  } else if ( contentMimeTypes.contains( Akonadi::KCalMimeTypeVisitor::journalMimeType() ) ) {
+    return "journal";
+  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.notes" ) ) {
+    return "note";
+  }
+  return QByteArray();
+}
+
 
 
 KolabHandler::~KolabHandler()
