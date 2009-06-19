@@ -49,6 +49,8 @@
 
 using namespace Akonadi;
 
+static const char KOLAB_COLLECTION[] = "KolabCollection";
+
 KolabProxyResource::KolabProxyResource( const QString &id )
   : ResourceBase( id )
 {
@@ -282,8 +284,20 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   attr->setAnnotations( annotations );
 
   CollectionCreateJob *job = new CollectionCreateJob( imapCollection, this );
-  // TODO wait for the result
-  changeCommitted( collection );
+  job->setProperty( KOLAB_COLLECTION, QVariant::fromValue( collection ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(imapFolderCreateResult(KJob*)) );
+}
+
+void KolabProxyResource::imapFolderCreateResult(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+  } else {
+    const Collection imapCollection = qobject_cast<CollectionCreateJob*>( job )->collection();
+    Collection kolabCollection = job->property( KOLAB_COLLECTION ).value<Collection>();
+    kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
+    changeCommitted( kolabCollection );
+  }
 }
 
 void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection)
@@ -402,7 +416,7 @@ void KolabProxyResource::imapCollectionAdded(const Collection &collection, const
   if ( registerHandlerForCollection( collection ) ) {
     const Collection kolabCollection = createCollection( collection );
     CollectionCreateJob *job = new CollectionCreateJob( kolabCollection, this );
-    connect( job, SIGNAL(result(KJob*)), SLOT(imapFolderChangeResult(KJob*)) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   }
 }
 
@@ -421,10 +435,10 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
 
   Collection kolabCollection = createCollection( collection );
   CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(imapFolderChangeResult(KJob*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
 }
 
-void KolabProxyResource::imapFolderChangeResult(KJob* job)
+void KolabProxyResource::kolabFolderChangeResult(KJob* job)
 {
   if ( job->error() ) {
     // something went wrong or the change was too complex to handle in the above slots,
