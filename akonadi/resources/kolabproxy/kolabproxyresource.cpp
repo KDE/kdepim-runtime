@@ -427,15 +427,29 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
 
   kDebug() << "IMAPCOLLECTIONCHANGED";
   if ( !m_monitoredCollections.contains(collection.id()) ) {
-    // something is wrong, so better reload out collection tree
-    kDebug() << "IMAPCOLLECTIONCHANGED ABORTED";
-    synchronizeCollectionTree();
-    return;
-  }
+    // check if this is a Kolab folder at all, if yet something is wrong
+    CollectionAnnotationsAttribute *annotationsAttribute =
+     collection.attribute<CollectionAnnotationsAttribute>();
+    bool isKolabFolder = false;
+    if ( annotationsAttribute ) {
+      const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+      isKolabFolder = annotations.contains( "/vendor/kolab/folder-type" );
+    }
 
-  Collection kolabCollection = createCollection( collection );
-  CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
+    if ( isKolabFolder ) {
+      synchronizeCollectionTree();
+      return;
+    }
+    // not a Kolab folder, no need to resync the tree, just try to update a possible structural collection
+    // if that fails it's not in our tree -> we don't care
+    Collection kolabCollection = createCollection( collection );
+    CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
+  } else {
+    // Kolab folder we already have in our tree, if the update fails, reload our tree
+    Collection kolabCollection = createCollection( collection );
+    CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
+    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
+  }
 }
 
 void KolabProxyResource::kolabFolderChangeResult(KJob* job)
