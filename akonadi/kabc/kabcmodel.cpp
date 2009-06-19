@@ -33,6 +33,12 @@ using namespace Akonadi;
 class KABCModel::Private
 {
   public:
+    bool collectionIsValid( const Collection& collection )
+    {
+      return !collection.isValid()
+          || collection.contentMimeTypes().contains( KABC::Addressee::mimeType() )
+          || collection.contentMimeTypes() == QStringList( QLatin1String("inode/directory") );
+    }
 };
 
 KABCModel::KABCModel( QObject *parent )
@@ -56,14 +62,14 @@ QStringList KABCModel::mimeTypes() const
 
 int KABCModel::rowCount( const QModelIndex& ) const
 {
-  if ( collection().isValid() && !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+  if ( !d->collectionIsValid( collection() ) )
     return 1;
   return ItemModel::rowCount();
 }
 
 int KABCModel::columnCount( const QModelIndex& ) const
 {
-  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+  if ( !d->collectionIsValid( collection() ) )
     return 1;
   return 4;
 }
@@ -80,7 +86,7 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
   if ( index.row() >= rowCount() )
     return QVariant();
 
-  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) ) {
+  if ( !d->collectionIsValid( collection() ) ) {
       if ( role == Qt::DisplayRole )
           return i18n( "This model can only handle contact folders. The current collection holds mimetypes: %1",
                        collection().contentMimeTypes().join( QLatin1String(",") ) );
@@ -159,7 +165,7 @@ QVariant KABCModel::headerData( int section, Qt::Orientation orientation, int ro
   if ( orientation != Qt::Horizontal )
     return QVariant();
 
-  if ( !collection().contentMimeTypes().contains( KABC::Addressee::mimeType() ) )
+  if ( !d->collectionIsValid( collection() ) )
       return QVariant();
 
   switch ( section ) {
