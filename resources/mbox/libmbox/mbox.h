@@ -100,6 +100,23 @@ class MBOX_EXPORT MBox
     bool lock();
 
     /**
+     * Removes all messages at given offsets from the current reference file
+     * (i.e. the file that is loaded with load( const QString & ) or the file
+     * from the last save( const QString & ) call if that was not the same file).
+     * This method will first check if all lines at the offsets are actually
+     * seperator lines if this is not the no message will be deleted to prevent
+     * corruption.
+     *
+     * @param deletedItems Offsets of the messages that should be removed from
+     *                     the file.
+     *
+     * @return true if all offsets refer to a mbox seperator line and a file was
+     *         loaded, false otherewhise. In the latter the physical file has
+     *         not changed.
+     */
+    bool purge( const QSet<quint64> &deletedItems );
+
+    /**
      * Reads the entire message from the file at given @param offset. If the
      * mbox file is not locked this method will lock the file before reading and
      * unlock it after reading. If the file already is locked, it will not

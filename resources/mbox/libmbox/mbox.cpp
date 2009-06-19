@@ -74,6 +74,8 @@ class MBox::Private
     bool mReadOnly;
 };
 
+static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
+
 /// private static methods.
 
 QByteArray quoteAndEncode(const QString &str)
@@ -182,7 +184,7 @@ bool MBox::load( const QString &fileName )
   d->mAppendedEntries.clear();
   d->mEntries.clear();
 
-  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+  QRegExp regexp( sMBoxSeperatorRegExp );
   QByteArray line;
   QByteArray prevSeparator;
   quint64 offs = 0; // The offset of the next message to read.
@@ -313,6 +315,119 @@ bool MBox::lock()
   return d->mFileLocked;
 }
 
+static bool lessThanByOffset( const MsgInfo &left, const MsgInfo &right )
+{
+  return left.first < right.first;
+}
+
+bool MBox::purge( const QSet<quint64> &deletedItems )
+{
+  if ( d->mMboxFile.fileName().isEmpty() )
+    return false; // No file loaded yet.
+
+  if ( deletedItems.isEmpty() )
+    return true; // Nothing to do.
+
+  if ( !lock() )
+    return false;
+
+  foreach ( quint64 offset, deletedItems ) {
+    d->mMboxFile.seek( offset );
+    QByteArray line = d->mMboxFile.readLine();
+    QRegExp regexp( sMBoxSeperatorRegExp );
+
+    if ( regexp.indexIn(line) < 0 ) {
+      unlock();
+      return false; // The file is messed up or the index is incorrect.
+    }
+  }
+
+  qSort( d->mEntries.begin(), d->mEntries.end(), lessThanByOffset );
+  quint64 writeOffset = 0;
+  QList<MsgInfo> resultingEntryList;
+
+  QListIterator<MsgInfo> i( d->mEntries );
+  while ( i.hasNext() ) {
+    MsgInfo entry = i.next();
+
+    if ( deletedItems.contains( entry.first ) ) {
+      // This entry must get removed from the file.
+      writeOffset = entry.first;
+
+      if ( i.hasNext() ) {
+        // One ore more entries after this one, find the first that should be
+        // kept, or find eof if all following entries must be deleted.
+        MsgInfo entryToWrite;
+        bool nextEntryFound = false;
+        while ( i.hasNext() && !nextEntryFound ) {
+          entryToWrite = i.next();
+          if ( !deletedItems.contains( entryToWrite.first ) )
+            nextEntryFound = true;
+        }
+
+        if ( nextEntryFound ) {
+          if ( i.hasNext() ) { // Read the next entry to determine the size.
+            MsgInfo entryAfterEntryToWrite = i.next();
+            quint64 entryToWriteSize = entryAfterEntryToWrite.first - entryToWrite.first - 1;
+            quint64 mapSize = entryAfterEntryToWrite.first - writeOffset - 1;
+
+            // Now map writeOffSet to entryAfterEntryToWrite offset into mem.
+            uchar *memArea = d->mMboxFile.map( writeOffset, mapSize );
+
+            // Now read the entry that must be moved to writeOffset.
+            quint64 startOffset = entryToWrite.first - writeOffset;
+            char *start = reinterpret_cast<char*>( memArea + startOffset );
+            QByteArray entryToWriteData( start, entryToWriteSize );
+
+            memcpy( memArea, entryToWriteData.constData(), entryToWriteSize );
+
+            d->mMboxFile.unmap( memArea );
+
+            resultingEntryList << MsgInfo( writeOffset, entryToWrite.second );
+            writeOffset += entryToWriteSize + 1;
+          } else { // entryToWrite is the last entry in the file
+            quint64 entryToWriteSize = d->mMboxFile.size() - entryToWrite.first - 1;
+            quint64 mapSize = d->mMboxFile.size() - writeOffset - 1;
+
+            // Now map writeOffSet upto mapSize into mem.
+            uchar *memArea = d->mMboxFile.map( writeOffset, mapSize );
+
+            quint64 startOffset = entryToWrite.first - writeOffset;
+            char *start = reinterpret_cast<char*>( memArea + startOffset );
+            QByteArray entryToWriteData( start, entryToWriteSize );
+
+            memcpy( memArea, entryToWriteData.constData(), entryToWriteSize );
+
+            d->mMboxFile.unmap( memArea );
+
+            resultingEntryList << MsgInfo( writeOffset, entryToWrite.second );
+            writeOffset += entryToWriteSize + 1;
+
+            // Chop off the remaining bytes.
+            d->mMboxFile.resize( writeOffset );
+          }
+        } else {
+          // All entries after writeOffset are marked as deleted so resize the
+          // file.
+          d->mMboxFile.resize( writeOffset );
+        }
+      } else {
+        // It is the last entry of the file so just chop off the remaining content
+        // from writeOffset to end of file.
+        d->mMboxFile.resize( writeOffset );
+      }
+    } else {
+      resultingEntryList << MsgInfo( writeOffset, entry.second );
+    }
+  }
+
+  d->mEntries = resultingEntryList;
+
+  kDebug() << "Purge comleted successfully, unlocking the file.";
+  return unlock(); // FIXME: What if this fails? It will return false but the
+                   // file has changed.
+}
+
 KMime::Message *MBox::readEntry(quint64 offset)
 {
   bool wasLocked = d->mFileLocked;
@@ -334,7 +449,7 @@ KMime::Message *MBox::readEntry(quint64 offset)
   d->mMboxFile.seek(offset);
 
   QByteArray line = d->mMboxFile.readLine();
-  QRegExp regexp("^From .*[0-9][0-9]:[0-9][0-9]");
+  QRegExp regexp( sMBoxSeperatorRegExp );
 
   if (regexp.indexIn(line) < 0) {
     unlock();
