@@ -143,6 +143,8 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
   d->mAppendedEntries.append( rawEntry );
   if ( rawEntry[rawEntry.size() - 1] != '\n' ) {
     d->mAppendedEntries.append( "\n\n" );
+  } else {
+    d->mAppendedEntries.append( "\n" );
   }
 
   MsgInfo info;
@@ -184,12 +186,9 @@ bool MBox::load( const QString &fileName )
   QByteArray line;
   QByteArray prevSeparator;
   quint64 offs = 0; // The offset of the next message to read.
-  bool previousLineIsEmpty;
 
   while ( !d->mMboxFile.atEnd() ) {
     quint64 pos = d->mMboxFile.pos();
-
-    previousLineIsEmpty = line.isEmpty();
 
     line = d->mMboxFile.readLine();
 
@@ -203,12 +202,15 @@ bool MBox::load( const QString &fileName )
         MsgInfo info;
         info.first = offs;
 
-        // The actual mail message size starts just before the seperator. If
-        // there're two new line characters we assume that one of them was added
-        // with the seperator.
-        info.second = previousLineIsEmpty ? (msgSize - 2) : (msgSize - 1);
+        // There is always a blank line and a seperator line between two emails.
+        // Sometimes there are two '\n' characters added to the email (i.e. when
+        // the mail self did not end with a '\n' char) and sometimes only one to
+        // achieve this. When reading the file it is not possible to see which
+        // was the case.
         if ( d->mMboxFile.atEnd() )
-          info.second += 1;
+          info.second = msgSize; // We use readLine so there's no additional '\n'
+        else
+          info.second = msgSize - 1;
 
         // Don't add the seperator size and the newline up to the message size.
         info.second -= prevSeparator.size() + 1;

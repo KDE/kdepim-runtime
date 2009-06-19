@@ -204,7 +204,44 @@ void MboxTest::testSaveAndLoad()
 
   for ( int i = 0; i < 2; ++i ) {
     QCOMPARE( infos3.at(i).first, infos2.at(i).first );
-    QCOMPARE( infos3.at(i).second, infos2.at(i).second );
+
+    quint64 minSize = infos2.at(i).second;
+    quint64 maxSize = infos2.at(i).second + 1;
+    QVERIFY( infos3.at(i).second >= minSize  );
+    QVERIFY( infos3.at(i).second <= maxSize  );
+  }
+}
+
+void MboxTest::testBlankLines()
+{
+  for ( int i = 0; i < 5; ++i ) {
+    QFile file( fileName() );
+    file.remove();
+    QVERIFY( !file.exists() );
+
+    MessagePtr mail = MessagePtr( new KMime::Message );
+    mail->setContent( KMime::CRLFtoLF( sEntry1 + QByteArray( i, '\n' ) ) );
+    mail->parse();
+
+    MBox mbox1;
+    QVERIFY( mbox1.setLockType( MBox::None ) );
+    QVERIFY( mbox1.load( fileName() ) );
+    mbox1.appendEntry( mail );
+    mbox1.appendEntry( mail );
+    mbox1.appendEntry( mail );
+    mbox1.save();
+
+    MBox mbox2;
+    QVERIFY( mbox1.setLockType( MBox::None ) );
+    QVERIFY( mbox1.load( fileName() ) );
+    QCOMPARE( mbox1.entryList().size(), 3 );
+
+    quint64 minSize = sEntry1.size() + i - 1; // Possibly on '\n' falls off.
+    quint64 maxSize = sEntry1.size() + i;
+    for ( int i = 0; i < 3; ++i ) {
+      QVERIFY( mbox1.entryList().at( i ).second >= minSize  );
+      QVERIFY( mbox1.entryList().at( i ).second <= maxSize  );
+    }
   }
 }
 
