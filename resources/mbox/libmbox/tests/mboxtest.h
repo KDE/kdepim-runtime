@@ -38,10 +38,12 @@ class MboxTest : public QObject
     void testSaveAndLoad();
     void testBlankLines();
     void cleanupTestCase();
+    void testEntries();
 
   private:
     QString fileName();
     QString lockFileName();
+    void removeTestFile();
 
   private:
     KTempDir *mTempDir;

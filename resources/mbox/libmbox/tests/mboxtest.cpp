@@ -45,6 +45,13 @@ QString MboxTest::lockFileName()
   return mTempDir->name() + testLockFile;
 }
 
+void MboxTest::removeTestFile()
+{
+  QFile file( fileName() );
+  file.remove();
+  QVERIFY( !file.exists() );
+}
+
 void MboxTest::initTestCase()
 {
   mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
@@ -171,9 +178,7 @@ void MboxTest::testAppend()
 
 void MboxTest::testSaveAndLoad()
 {
-  QFile file( fileName() );
-  file.remove();
-  QVERIFY( !file.exists() );
+  removeTestFile();
 
   MBox mbox;
   QVERIFY( mbox.setLockType( MBox::None ) );
@@ -185,7 +190,7 @@ void MboxTest::testSaveAndLoad()
   QCOMPARE( infos1.size(), 2 );
 
   QVERIFY( mbox.save() );
-  QVERIFY( file.exists() );
+  QVERIFY( QFileInfo( fileName() ).exists() );
 
   QList<MsgInfo> infos2 = mbox.entryList();
   QCOMPARE( infos2.size(), 2 );
@@ -215,9 +220,7 @@ void MboxTest::testSaveAndLoad()
 void MboxTest::testBlankLines()
 {
   for ( int i = 0; i < 5; ++i ) {
-    QFile file( fileName() );
-    file.remove();
-    QVERIFY( !file.exists() );
+    removeTestFile();
 
     MessagePtr mail = MessagePtr( new KMime::Message );
     mail->setContent( KMime::CRLFtoLF( sEntry1 + QByteArray( i, '\n' ) ) );
@@ -243,6 +246,47 @@ void MboxTest::testBlankLines()
       QVERIFY( mbox1.entryList().at( i ).second <= maxSize  );
     }
   }
+}
+
+void MboxTest::testEntries()
+{
+  removeTestFile();
+
+  MBox mbox1;
+  QVERIFY( mbox1.setLockType( MBox::None ) );
+  QVERIFY( mbox1.load( fileName() ) );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail2 );
+  mbox1.appendEntry( mMail1 );
+
+  QList<MsgInfo> infos = mbox1.entryList();
+  QCOMPARE( infos.size() , 3 );
+
+  QSet<quint64> deletedEntries;
+  deletedEntries << infos.at( 0 ).first;
+
+  QList<MsgInfo> infos2 = mbox1.entryList( deletedEntries );
+  QCOMPARE( infos2.size() , 2 );
+  QVERIFY( infos2.first().first != infos.first().first );
+  QVERIFY( infos2.last().first != infos.first().first );
+
+  deletedEntries << infos.at( 1 ).first;
+  infos2 = mbox1.entryList( deletedEntries );
+
+  QCOMPARE( infos2.size() , 1 );
+  QVERIFY( infos2.first().first != infos.at( 0 ).first );
+  QVERIFY( infos2.first().first != infos.at( 1 ).first );
+
+  deletedEntries << infos.at( 2 ).first;
+  infos2 = mbox1.entryList( deletedEntries );
+  QCOMPARE( infos2.size() , 0 );
+
+  QVERIFY( !deletedEntries.contains( 10 ) ); // some random offset
+  infos2 = mbox1.entryList( QSet<quint64>() << 10 );
+  QCOMPARE( infos2.size() , 3 );
+  QCOMPARE( infos2.at( 0 ).first, infos.at( 0 ).first );
+  QCOMPARE( infos2.at( 1 ).first, infos.at( 1 ).first );
+  QCOMPARE( infos2.at( 2 ).first, infos.at( 2 ).first );
 }
 
 void MboxTest::cleanupTestCase()
