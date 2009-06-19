@@ -44,6 +44,7 @@ endif ( NEPOMUK_FOUND )
 add_subdirectory( nntp )
 add_subdirectory( vcard )
 add_subdirectory( vcarddir )
+add_subdirectory( shared )
 
 #This is experimental and probably experiencing bit-rot.
 #Also, there is a GSoC project for it.

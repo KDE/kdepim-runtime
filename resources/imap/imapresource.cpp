@@ -839,16 +839,11 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   Collection collection = job->property( "akonadiCollection" ).value<Collection>();
 
   // Store the mailbox metadata
-  if ( !collection.hasAttribute( "collectionannotations" ) ) {
-    CollectionAnnotationsAttribute *annotationsAttribute  = new CollectionAnnotationsAttribute( annotations );
-    collection.addAttribute( annotationsAttribute );
-  } else {
-    CollectionAnnotationsAttribute *annotationsAttribute =
-      static_cast<CollectionAnnotationsAttribute*>( collection.attribute( "collectionannotations" ) );
-    const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
-    if ( oldAnnotations != annotations ) {
-      annotationsAttribute->setAnnotations( annotations );
-    }
+  CollectionAnnotationsAttribute *annotationsAttribute =
+    collection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
+  const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
+  if ( oldAnnotations != annotations ) {
+    annotationsAttribute->setAnnotations( annotations );
   }
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );

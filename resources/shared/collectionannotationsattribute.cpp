@@ -75,9 +75,15 @@ void CollectionAnnotationsAttribute::deserialize( const QByteArray &data )
 
   foreach ( const QByteArray &line, lines ) {
     QByteArray trimmed = line.trimmed();
+    if ( trimmed.isEmpty() )
+      continue;
     int wsIndex = trimmed.indexOf( ' ' );
-    const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
-    const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
-    mAnnotations[key] = value;
+    if ( wsIndex > 0 ) {
+      const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
+      const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
+      mAnnotations[key] = value;
+    } else {
+      mAnnotations.insert( trimmed, QByteArray() );
+    }
   }
 }
