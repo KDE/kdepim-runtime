@@ -39,22 +39,22 @@ using namespace Akonadi;
 static Entity::Id collectionId(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').first().toLongLong();
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').at(1);
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').last().toULongLong();
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id )
@@ -116,7 +116,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     mail->parse();
 
     Item item;
-    item.setRemoteId( colId + ':' + colRid + ':' + QString::number( entry.first ) );
+    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.first ) );
     item.setMimeType( "message/rfc822" );
     item.setSize( entry.second );
     item.setPayload( MessagePtr( mail ) );
@@ -174,8 +174,8 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     return;
   }
 
-  const QString rid = QString::number( collection.id() ) + ':'
-                      + collection.remoteId() + ':' + QString::number( offset );
+  const QString rid = QString::number( collection.id() ) + "::"
+                      + collection.remoteId() + "::" + QString::number( offset );
 
   Item i( item );
   i.setRemoteId(rid);
