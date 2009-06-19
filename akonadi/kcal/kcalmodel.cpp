@@ -63,6 +63,14 @@ class KCalModel::Private
       }
       return false;
     }
+
+    bool collectionIsValid()
+    {
+      return !q->collection().isValid()
+          || collectionMatchesMimeTypes()
+          || q->collection().contentMimeTypes() == QStringList( QLatin1String("inode/directory") );
+    }
+
   private:
     KCalModel *q;
 };
@@ -88,15 +96,15 @@ QStringList KCalModel::mimeTypes() const
 
 int KCalModel::columnCount( const QModelIndex& ) const
 {
-  if ( d->collectionMatchesMimeTypes() )
-    return 4;
-  else
+  if ( !d->collectionIsValid() )
     return 1;
+  else
+    return 4;
 }
 
 int KCalModel::rowCount( const QModelIndex& ) const
 {
-  if ( !collection().isValid() || d->collectionMatchesMimeTypes() )
+  if ( d->collectionIsValid() )
     return ItemModel::rowCount();
   else
     return 1;
@@ -111,7 +119,7 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
     return QVariant();
 
   // guard against use with collections that do not have the right contents
-  if ( !d->collectionMatchesMimeTypes() ) {
+  if ( !d->collectionIsValid() ) {
     if ( role == Qt::DisplayRole )
       // FIXME: i18n when strings unfreeze for 4.4
       return QString::fromLatin1( "This model can only handle event, task, journal or free-busy list folders. The current collection holds mimetypes: %1").arg(
@@ -169,7 +177,7 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
 
 QVariant KCalModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
-  if ( !d->collectionMatchesMimeTypes() )
+  if ( !d->collectionIsValid() )
     return QVariant();
 
   if ( role == Qt::DisplayRole && orientation == Qt::Horizontal ) {
