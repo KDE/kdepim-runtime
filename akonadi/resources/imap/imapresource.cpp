@@ -291,7 +291,6 @@ void ImapResource::onAppendMessageDone( KJob *job )
     }
 
     CollectionModifyJob *modify = new CollectionModifyJob( collection );
-    modify->exec();
   }
 }
 
@@ -737,7 +736,6 @@ void ImapResource::onGetAclDone( KJob *job )
   }
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );
-  modify->exec();
 }
 
 void ImapResource::onRightsReceived( KJob *job )
@@ -777,7 +775,6 @@ void ImapResource::onRightsReceived( KJob *job )
     collection.setRights( newRights );
 
     CollectionModifyJob *modify = new CollectionModifyJob( collection );
-    modify->exec();
   }
 }
 
@@ -818,7 +815,6 @@ void ImapResource::onQuotasReceived( KJob *job )
   }
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );
-  modify->exec();
 }
 
 void ImapResource::onGetMetaDataDone( KJob *job )
@@ -843,20 +839,14 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   Collection collection = job->property( "akonadiCollection" ).value<Collection>();
 
   // Store the mailbox metadata
-  if ( !collection.hasAttribute( "collectionannotations" ) ) {
-    CollectionAnnotationsAttribute *annotationsAttribute  = new CollectionAnnotationsAttribute( annotations );
-    collection.addAttribute( annotationsAttribute );
-  } else {
-    CollectionAnnotationsAttribute *annotationsAttribute =
-      static_cast<CollectionAnnotationsAttribute*>( collection.attribute( "collectionannotations" ) );
-    const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
-    if ( oldAnnotations != annotations ) {
-      annotationsAttribute->setAnnotations( annotations );
-    }
+  CollectionAnnotationsAttribute *annotationsAttribute =
+    collection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
+  const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
+  if ( oldAnnotations != annotations ) {
+    annotationsAttribute->setAnnotations( annotations );
   }
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );
-  modify->exec();
 }
 
 void ImapResource::onSelectDone( KJob *job )
@@ -928,7 +918,6 @@ void ImapResource::onSelectDone( KJob *job )
   }
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );
-  modify->exec();
 
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and

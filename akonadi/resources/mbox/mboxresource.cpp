@@ -24,7 +24,6 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemfetchscope.h>
-#include <boost/shared_ptr.hpp>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
@@ -37,27 +36,25 @@
 
 using namespace Akonadi;
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 static Entity::Id collectionId(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').first().toLongLong();
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').at(1);
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split(':').size() == 3);
-  return remoteItemId.split(':').last().toULongLong();
+  Q_ASSERT(remoteItemId.split("::").size() == 3);
+  return remoteItemId.split("::").last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id )
@@ -90,76 +87,43 @@ void MboxResource::configure( WId windowId )
   }
 }
 
-void MboxResource::retrieveCollections()
-{
-  const QString mboxFile = KUrl(Settings::self()->path()).path();
-  MBox mbox(mboxFile);
-
-  QString errMsg;
-  if ( !mbox.isValid( errMsg ) ) {
-    emit error( errMsg );
-    collectionsRetrieved( Collection::List() );
-  }
-
-  Collection col;
-  col.setParent(Collection::root());
-  col.setRemoteId( mboxFile );
-  col.setName(name());
-
-  QStringList mimeTypes;
-  mimeTypes << "message/rfc822" << Collection::mimeType();
-  col.setContentMimeTypes( mimeTypes );
-
-  collectionsRetrieved(Collection::List() << col);
-}
-
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
 {
-  MBox mbox( col.remoteId() );
-
-  if (Settings::self()->lockfileMethod() == Settings::procmail)
-    mbox.setLockFile(Settings::self()->lockfile());
-
-  if (!mbox.isValid()) {
-    emit error( i18n("Invalid mbox file: %1", col.remoteId() ) );
-    itemsRetrieved(Item::List());
+  Q_UNUSED( col );
+  if ( !mMBox )
     return;
-  }
-
-  if (int rc = mbox.open() != 0) { // This can happen for example when the lock fails.
-    emit error(i18n("Error while opening mbox file %1: %2", col.remoteId(), rc));
-    itemsRetrieved(Item::List());
-    return;
-  }
 
   QList<MsgInfo> entryList;
-  if (col.hasAttribute<DeletedItemsAttribute>()) {
+  if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
-    entryList = mbox.entryList(attr->deletedItemOffsets());
+    entryList = mMBox->entryList( attr->deletedItemOffsets() );
   } else { // No deleted items (yet)
-    entryList = mbox.entryList();
+    entryList = mMBox->entryList();
   }
 
+  mMBox->lock(); // Lock the file so that it doesn't get locked for every
+                 // readEntryHeaders() call.
+
   Item::List items;
-  QString colId = QString::number(col.id());
+  QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
-  foreach (const MsgInfo &entry, entryList) {
+  foreach ( const MsgInfo &entry, entryList ) {
     // TODO: Use cache policy to see what actualy has to been set as payload.
     //       Currently most views need a minimal amount of information so the
     //       Items get Envelopes as payload.
     KMime::Message *mail = new KMime::Message();
-    mail->setHead(KMime::CRLFtoLF(mbox.readEntryHeaders(entry.first)));
+    mail->setHead( KMime::CRLFtoLF( mMBox->readEntryHeaders( entry.first ) ) );
     mail->parse();
 
     Item item;
-    item.setRemoteId(colId + ':' + colRid + ':' + QString::number(entry.first));
-    item.setMimeType("message/rfc822");
-    item.setSize(entry.second);
-    item.setPayload(MessagePtr(mail));
+    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.first ) );
+    item.setMimeType( "message/rfc822" );
+    item.setSize( entry.second );
+    item.setPayload( MessagePtr( mail ) );
     items << item;
   }
 
-  mbox.close(); // Now we have the items, unlock and close the mbox file.
+  mMBox->unlock(); // Now we have the items, unlock
 
   itemsRetrieved( items );
 }
@@ -168,26 +132,22 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 {
   Q_UNUSED(parts);
 
-  MBox mbox(mboxFile(item.remoteId()));
-
-  if(!mbox.isValid())
+  if ( !mMBox ) {
+    emit error( i18n( "MBox not loaded." ) );
     return false;
+  }
 
-  mbox.open();
+  QString rid = item.remoteId();
+  quint64 offset = itemOffset( rid );
+  KMime::Message *mail = mMBox->readEntry( offset );
+  if ( !mail ) {
+    emit error( i18n("Failed to read message with uid '%1'.", rid ) );
+    return false;
+  }
 
-  quint64 offset = itemOffset(item.remoteId());
-  const QByteArray rawMsg = mbox.readEntry(offset);
-
-  // This doesn't work for first retrieval, when item.size() == 0.
-  //Q_ASSERT(rawMsg.size() == item.size());
-
-  KMime::Message *mail = new KMime::Message();
-  mail->setContent(KMime::CRLFtoLF(rawMsg));
-  mail->parse();
-
-  Item i(item);
-  i.setPayload(MessagePtr(mail));
-  itemRetrieved(i);
+  Item i( item );
+  i.setPayload( MessagePtr( mail ) );
+  itemRetrieved( i );
   return true;
 }
 
@@ -197,25 +157,27 @@ void MboxResource::aboutToQuit()
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  MBox mbox(collection.remoteId());
-  QString errMsg;
-  if (Settings::readOnly() || !mbox.isValid(errMsg)) {
-    cancelTask(errMsg);
+  if ( !mMBox ) {
+    cancelTask( i18n( "MBox not loaded." ) );
     return;
   }
+
   // we can only deal with mail
-  if (item.mimeType() != "message/rfc822") {
-    cancelTask(i18n("Only email messages can be added to the MBox resource."));
+  if ( !item.hasPayload<MessagePtr>() ) {
+    cancelTask( i18n( "Only email messages can be added to the MBox resource." ) );
     return;
   }
 
-  mbox.open();
+  qint64 offset = mMBox->appendEntry( item.payload<MessagePtr>() );
+  if ( offset == -1 ) {
+    cancelTask( i18n( "Mail message not added to the MBox." ) );
+    return;
+  }
 
-  const MessagePtr mail = item.payload<MessagePtr>();
-  const QByteArray rawContent = mail->encodedContent();
-  const QString rid = QString::number(collection.id()) + ':' + collection.remoteId()
-                      + ':' + QString::number(mbox.writeEntry(rawContent));
-  Item i(item);
+  const QString rid = QString::number( collection.id() ) + "::"
+                      + collection.remoteId() + "::" + QString::number( offset );
+
+  Item i( item );
   i.setRemoteId(rid);
 
   changeCommitted( i );
@@ -276,7 +238,7 @@ bool MboxResource::readFromFile( const QString &fileName )
   delete mMBox;
   mMBox = 0;
 
-  mMBox = new MBox( KUrl( fileName ).path(), Settings::self()->readOnly() );
+  mMBox = new MBox();
 
   switch ( Settings::self()->lockfileMethod() ) {
     case Settings::procmail:
@@ -295,13 +257,15 @@ bool MboxResource::readFromFile( const QString &fileName )
       break;
   }
 
-  return mMBox->isValid();
+  return mMBox->load( KUrl( fileName ).path() );
 }
 
 bool MboxResource::writeToFile( const QString &fileName )
 {
-  Q_UNUSED( fileName );
-  // TODO: Change mbox api
+  if ( !mMBox->save( fileName ) ) {
+    emit error( i18n( "Failed to save mbox file to %1", fileName ) );
+    return false;
+  }
   return true;
 }
 
