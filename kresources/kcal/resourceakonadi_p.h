@@ -25,7 +25,7 @@
 #include "resourceakonadi.h"
 #include "sharedresourceprivate.h"
 
-#include <akonadi/kcal/kcalmimetypevisitor.h>
+#include "kcal/kcalmimetypevisitor.h"
 
 #include <kcal/assignmentvisitor.h>
 #include <kcal/calendarlocal.h>

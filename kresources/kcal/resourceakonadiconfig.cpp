@@ -23,7 +23,7 @@
 #include "resourceakonadi.h"
 #include "storecollectionmodel.h"
 
-#include "akonadi/kcal/kcalmimetypevisitor.h"
+#include "kcal/kcalmimetypevisitor.h"
 
 #include <kdebug.h>
 #include <kdialog.h>
