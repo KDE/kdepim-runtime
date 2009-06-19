@@ -63,6 +63,9 @@ p, li { white-space: pre-wrap; }
       </item>
       <item row="3" column="0">
        <widget class="QRadioButton" name="kde_lock_file">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>&amp;KDE lockfile</string>
         </property>
