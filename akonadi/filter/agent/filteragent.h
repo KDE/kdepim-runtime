@@ -23,19 +23,22 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_AGENT_H_
-#define _AKONADI_FILTER_AGENT_H_
+#ifndef _FILTERAGENT_H_
+#define _FILTERAGENT_H_
 
 #include <akonadi/agentbase.h>
 #include <akonadi/collection.h>
 
 #include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/agent.h>
 
 #include <QtCore/QList>
 #include <QtCore/QHash>
-#include <QtCore/QVariantList>
+#include <QtCore/QStringList>
 
 #include "filterengine.h"
+
+#include <QObject>
 
 class FilterAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
 {
@@ -84,16 +87,21 @@ public:
     return mInstance;
   }
 
+public Q_SLOTS: // D-BUS Interface
+
   /**
    * Returns the list of the mimetypes that this filtering agent can handle.
+   * This method can fail only at D-BUS level: it will never fail at agent level
+   * and thus has no returned error conditions.
    *
    * This is a D-BUS method handler.
    */
-  QStringList enumerateMimeTypes();
+  Q_SCRIPTABLE QStringList enumerateMimeTypes();
 
   /**
    * Returns the list of currently existing filter ids that match the specified mimetype.
    * If the mimetype is a null string then the list of filters matching any mimetype is returned.
+   * If the mimetyps is invalid then you'll simply get an empty filter list.
    *
    * This is a D-BUS method handler.
    */
@@ -104,65 +112,86 @@ public:
    * The id must be an unique non-empty string. If the filter with the specified id already
    * exists then this method fails.
    *
-   * On success true is returned and a success reply is sent through D-BUS.
-   * On failure false is returned and an error message is sent through D-BUS.
-   *
    * This is a D-BUS method handler.
+   *
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
    */
-  bool createFilter( const QString &filterId, const QString &mimeType, const QString &source, const QVariantList &attachedCollectionIds );
+  int createFilter( const QString &filterId, const QString &mimeType, const QString &source );
 
   /**
    * Detaches the filter with the specified id and destroys it.
    * The source file is not touched.
    *
-   * On success true is returned and a success reply is sent through D-BUS.
-   * On failure false is returned and an error message is sent through D-BUS.
+   * This is a D-BUS method handler.
+   *
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
+   */
+  int deleteFilter( const QString &filterId );
+
+  /**
+   * Attaches the filter with the specified id to the collections specified
+   * by the attachedCollectionsIds list. If the filter is already attached to one
+   * of the specified collections then no error is triggered. If one of the collections
+   * is invalid then the other collections are processed as usual but an error is returned
+   * at the end of the call (you'll get Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed)
+   *
+   * If you want the filter to be attached to the specified collections only then preceeded
+   * this call with a call to detachFilter().
    *
    * This is a D-BUS method handler.
+   *
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
    */
-  bool deleteFilter( const QString &filterId );
+  int attachFilter( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
+
+  /**
+   * Detaches the filter with the specified id from the specified collections.
+   * If you pass an empty list of collections then the filter is completly detached.
+   * If the filter wasn't attached to some of the specified collections then
+   * the processing will continue with the others but you'll get Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed
+   * as return value.
+   *
+   * This is a D-BUS method handler.
+   *
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
+   */
+  int detachFilter( const QString &filterId, const QList< Akonadi::Collection::Id > &detachedCollectionIds );
 
   /**
    * Atomically returns the main properties of a filter: the mimeType, the source
    * of the filtering program and the list of filtered collections.
    *
-   * On success true is returned and a success reply is sent through D-BUS.
-   * On failure false is returned and an error message is sent through D-BUS.
+   * This is a D-BUS method handler.
    *
-   * This is a D-BUS method handler.  
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
    */
-  bool getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QVariantList &attachedCollectionIds );
+  int getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
   /**
    * Atomically changes the source of the filter and the attached collections.
    * You can't change the mimetype of a filter: you must destroy and re-create it.
-   *
-   * On success true is returned and a success reply is sent through D-BUS.
-   * On failure false is returned and an error message is sent through D-BUS.
-   *
-   * This is a D-BUS method handler.  
-   */
-  bool changeFilter( const QString &filterId, const QString &source, const QVariantList &attachedCollectionIds );
-
-  /**
-   * Attaches the filter with the specified id to the specified collection.
+   * This call is more or less equivalent to the sequence of deleteFilter(), createFilter() and attachFilter().
    *
    * On success true is returned and a success reply is sent through D-BUS.
    * On failure false is returned and an error message is sent through D-BUS.
    *
    * This is a D-BUS method handler.
-   */
-  bool attachFilter( const QString &filterId, qint64 collectionId );
-
-  /**
-   * Detaches the filter with the specified id from the specified collection.
    *
-   * On success true is returned and a success reply is sent through D-BUS.
-   * On failure false is returned and an error message is sent through D-BUS.
-   *
-   * This is a D-BUS method handler.
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
    */
-  bool detachFilter( const QString &filterId, qint64 collectionId );
+  int changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
 protected:
   virtual void configure( WId winId );
@@ -173,10 +202,11 @@ protected:
   virtual void collectionChanged( const Akonadi::Collection &collection );
 */
 
-  bool internalAttachFilter( const QString &filterId, qint64 collectionId, QString &error );
+  void detachEngine( FilterEngine * engine );
+  bool attachEngine( FilterEngine * engine, Akonadi::Collection::Id collectionId );
 
   void loadConfiguration();
   void saveConfiguration();
 };
 
-#endif //!_AKONADI_FILTER_AGENT_H_
+#endif //!_FILTERAGENT_H_

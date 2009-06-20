@@ -37,6 +37,8 @@
 #include <QLabel>
 #include <QTreeView>
 
+#include <akonadi/filter/agent.h>
+
 #include <akonadi/filter/ui/programeditor.h>
 #include <akonadi/filter/ui/componentfactory.h>
 #include <akonadi/filter/ui/editorfactory.h>

@@ -27,11 +27,27 @@ include_directories(
 		${CMAKE_CURRENT_BINARY_DIR}/../akonadi/filter/ui/
 	)
 
+# A little trick to force qt4_add_dbus_interface to add the correct include
+# to the generated file
+set(
+		SAVE_QT_DBUSXML2CPP_EXECUTABLE
+		${QT_DBUSXML2CPP_EXECUTABLE}
+	)
+
+set(
+		QT_DBUSXML2CPP_EXECUTABLE
+		${QT_DBUSXML2CPP_EXECUTABLE} -i akonadi/collection.h -i akonadi/filter/agent.h
+	)
 
 qt4_add_dbus_interface(
 		AKONADI_FILTER_CONSOLE_SRCS
 		../agent/org.freedesktop.Akonadi.FilterAgent.xml
 		filteragentinterface
+	)
+
+set(
+		QT_DBUSXML2CPP_EXECUTABLE
+		${SAVE_QT_DBUSXML2CPP_EXECUTABLE}
 	)
 
 kde4_add_executable(

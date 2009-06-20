@@ -28,7 +28,7 @@
 
 #include <akonadi/collection.h>
 
-#include <QVariantList>
+#include <QList>
 
 namespace Akonadi
 {
@@ -87,7 +87,7 @@ public:
     return &mCollections;
   }
 
-  QVariantList collectionsAsVariantList();
+  QList< Akonadi::Collection::Id > collectionsAsIdList();
 
   bool hasCollection( Akonadi::Collection::Id id );
   void addCollection( Akonadi::Collection * collection );

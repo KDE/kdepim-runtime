@@ -28,6 +28,7 @@
 #include "filteragentadaptor.h"
 
 #include <akonadi/collection.h>
+#include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/item.h>
 
@@ -44,6 +45,8 @@ FilterAgent::FilterAgent( const QString &id )
 {
   Q_ASSERT( mInstance == 0 ); // must be unique
 
+  Akonadi::Filter::Agent::registerMetaTypes();
+
   mInstance = this;
 
   Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
@@ -53,6 +56,16 @@ FilterAgent::FilterAgent( const QString &id )
   mComponentFactories.insert( QLatin1String( "message/news" ), f );
 
   new FilterAgentAdaptor( this );
+
+  // Kill the recorded queue
+  while( !changeRecorder()->isEmpty() )
+  {
+    changeRecorder()->replayNext();
+    changeRecorder()->changeProcessed();
+  }
+
+  changeRecorder()->setChangeRecordingEnabled( false ); // we want notifications now!
+
 
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug() << "mailfilteragent: ready and waiting..." ;
@@ -74,6 +87,8 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   Q_ASSERT( filterChain ); // if this fails then we have received a notification for a collection we shouldn't be watching
   Q_ASSERT( filterChain->count() > 0 );
 
+  kDebug() << "mailfilteragent: item added to collection " << collection.id() ;
+
   // apply each filter
   foreach( FilterEngine * engine, *filterChain )
   {
@@ -81,247 +96,6 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
     engine->run( item, collection );
 #endif
   }
-}
-
-bool FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source, const QVariantList &attachedCollectionIds )
-{
-  if( filterId.isEmpty() )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "The specified filter id is empty" ) );
-    return false;
-  }
-
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( engine )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier already exists" ) );
-    return false;
-  }
-
-  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( mimeType, 0 );
-  if( !factory )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "Filtering of the specified mimetype is not supported" ) );
-    return false;
-  }
-
-  if( source.isEmpty() )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "Cowardly refusing to create an empty filter" ) );
-    return false;
-  }
-
-  Akonadi::Filter::IO::SieveDecoder decoder( factory );
-
-  Akonadi::Filter::Program * program = decoder.run( source );
-  if( !program )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "Error reading filter program: %1", decoder.lastError() ) );
-    return false;
-  }
-
-  // TODO: store the program in a config file
-
-  engine = new FilterEngine( filterId, mimeType, source, program );
-
-  mEngines.insert( filterId, engine );
-
-  foreach( QVariant val, attachedCollectionIds )
-  {
-    bool ok;
-    qint64 id = val.toLongLong( &ok );
-    Q_ASSERT( ok );
-
-    QString error;
-    internalAttachFilter( filterId, id, error ); // ignore errors here (FIXME ?)
-  }
-
-  return true;
-}
-
-bool FilterAgent::changeFilter( const QString &filterId, const QString &source, const QVariantList &attachedCollectionIds )
-{
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( !engine )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier doesn't exist" ) );
-    return false;
-  }
-
-  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( engine->mimeType(), 0 );
-  Q_ASSERT_X( factory, "FilterAgent::changeFilter", "We got a filter without a corresponding ComponentFactory!" );
-
-  if( source.isEmpty() )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "Cowardly refusing to create an empty filter" ) );
-    return false;
-  }
-
-  Akonadi::Filter::IO::SieveDecoder decoder( factory );
-
-  Akonadi::Filter::Program * program = decoder.run( source );
-  if( !program )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "Error reading filter program: %1", decoder.lastError() ) );
-    return false;
-  }
-
-  foreach( QVariant val, attachedCollectionIds )
-  {
-    bool ok;
-    qint64 id = val.toLongLong( &ok );
-    if( !ok )
-    {
-      sendErrorReply( QDBusError::Failed, i18n( "One of the collection identifiers is not valid" ) );
-      return false;
-    }
-  }
-
-  engine->setSource( source );
-  engine->setProgram( program );
-
-  foreach( QVariant val, attachedCollectionIds )
-  {
-    bool ok;
-    qint64 id = val.toLongLong( &ok );
-    Q_ASSERT( ok );
-
-    QString error;
-    internalAttachFilter( filterId, id, error ); // ignore errors here (FIXME ?)
-  }    
-
-  return true;
-}
-
-bool FilterAgent::getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QVariantList &attachedCollectionIds )
-{
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( !engine )
-  {
-    sendErrorReply( QDBusError::Failed, i18n( "A filter with the specified unique identifier doesn't exist" ) );
-    return false;
-  }
-
-  mimeType = engine->mimeType();
-  source = engine->source();
-
-  attachedCollectionIds.clear();
-
-  QList< Akonadi::Collection::Id > ids = mFilterChains.keys();
-  foreach( Akonadi::Collection::Id id, ids )
-  {
-    QList< FilterEngine * > * filterChain = mFilterChains.value( id, 0 );
-    Q_ASSERT( filterChain );
-    if( filterChain->contains( engine ) )
-      attachedCollectionIds.append( QVariant( (qint64)id ) );
-  }
-
-  return true;
-}
-
-
-bool FilterAgent::deleteFilter( const QString &filterId )
-{
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( !engine )
-  {
-    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
-    return false;
-  }
-
-  mEngines.remove( filterId );
-
-  // FIXME: Detach any collection!
-
-  delete engine;
-  return true;
-}
-
-bool FilterAgent::internalAttachFilter( const QString &filterId, qint64 collectionId, QString &error )
-{
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( !engine )
-  {
-    error = i18n("A filter with the specified unique identifier doesnt' exist");
-    return false;
-  }
-
-  QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
-  if( !chain )
-  {
-    // no such chain, yet: need to verify that the collection exists
-    Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Recursive );
-
-    bool collectionIsValid = job->exec();
-
-    delete job;
-
-    if( !collectionIsValid )
-    {
-      error = i18n("The specified collection id is not valid");
-      return false;
-    }
-
-    chain = new QList< FilterEngine * >();
-    mFilterChains.insert( collectionId, chain );
-  }
-
-  Q_ASSERT( chain );
-
-  if( chain->contains( engine ) )
-  {
-    error = i18n("The specified filter is already attached to this collection");
-    return false;
-  }
-
-  chain->append( engine );
-
-  return true;
-}
-
-
-bool FilterAgent::attachFilter( const QString &filterId, qint64 collectionId )
-{
-  QString error;
-  if( !internalAttachFilter( filterId, collectionId, error ) )
-  {
-    sendErrorReply( QDBusError::Failed, error );
-    return false;
-  }
-  return true;
-}
-
-bool FilterAgent::detachFilter( const QString &filterId, qint64 collectionId )
-{
-  FilterEngine * engine = mEngines.value( filterId, 0 );
-  if( !engine )
-  {
-    sendErrorReply( QDBusError::Failed, i18n("A filter with the specified unique identifier doesnt' exist") );
-    return false;
-  }
-
-  QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
-  if( !chain )
-  {
-    sendErrorReply( QDBusError::Failed, i18n("The specified filter is not attacched to the specified collection") );
-    return false;
-  }
-
-  if( !chain->contains( engine ) )
-  {
-    sendErrorReply( QDBusError::Failed, i18n("The specified filter is not attacched to the specified collection") );
-    return false;
-  }
-
-  chain->removeOne( engine );
-
-  if( chain->isEmpty() )
-  {
-    mFilterChains.remove( collectionId );
-    delete chain;
-  }
-
-  return true;
 }
 
 QStringList FilterAgent::enumerateFilters( const QString &mimeType )
@@ -343,6 +117,232 @@ QStringList FilterAgent::enumerateMimeTypes()
     ret.append( key );
 
   return ret;
+}
+
+int FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source )
+{
+  if( filterId.isEmpty() )
+    return Akonadi::Filter::Agent::ErrorInvalidParameter;
+
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( engine )
+    return Akonadi::Filter::Agent::ErrorFilterAlreadyExists;
+
+  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( mimeType, 0 );
+  if( !factory )
+    return Akonadi::Filter::Agent::ErrorInvalidMimeType;
+
+  if( source.isEmpty() )
+    return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+
+  Akonadi::Filter::IO::SieveDecoder decoder( factory );
+
+  Akonadi::Filter::Program * program = decoder.run( source );
+  if( !program )
+    return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+
+  // TODO: store the program in a config file
+
+  engine = new FilterEngine( filterId, mimeType, source, program );
+
+  mEngines.insert( filterId, engine );
+
+  kDebug() << "mailfilteragent: created filter" << filterId;
+
+
+  return Akonadi::Filter::Agent::Success;
+}
+
+void FilterAgent::detachEngine( FilterEngine * engine )
+{
+  Q_ASSERT( engine );
+
+  QList< Akonadi::Collection::Id > emptyChains;
+  QList< FilterEngine * > * filterChain;
+
+  QHash< Akonadi::Collection::Id, QList< FilterEngine * > * >::Iterator it;
+
+  for( it = mFilterChains.begin(); it != mFilterChains.end(); ++it )
+  {
+    filterChain = *it;
+    Q_ASSERT( filterChain );
+
+    if( filterChain->isEmpty() )
+      emptyChains.append( it.key() );
+  }
+
+  foreach( Akonadi::Collection::Id id, emptyChains )
+  {
+    filterChain = mFilterChains.value( id, 0 );
+    Q_ASSERT( filterChain );
+    Q_ASSERT( filterChain->isEmpty() );
+
+    changeRecorder()->setCollectionMonitored( Akonadi::Collection( id ), false );
+   
+    mFilterChains.remove( id );
+    delete filterChain;
+  }
+}
+
+int FilterAgent::deleteFilter( const QString &filterId )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+
+  detachEngine( engine );
+
+  mEngines.remove( filterId );
+
+  kDebug() << "mailfilteragent: destroyed filter" << filterId;
+
+  delete engine;
+  return Akonadi::Filter::Agent::Success;
+}
+
+bool FilterAgent::attachEngine( FilterEngine * engine, Akonadi::Collection::Id collectionId )
+{
+  QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
+  if( !chain )
+  {
+    // no such chain, yet: need to verify that the collection exists
+    Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Recursive );
+
+    bool collectionIsValid = job->exec();
+
+    delete job;
+
+    if( !collectionIsValid )
+      return false;
+
+    chain = new QList< FilterEngine * >();
+    mFilterChains.insert( collectionId, chain );
+
+    kDebug() << "mailfilteragent: now monitoring collection" << collectionId;
+
+    changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), true );
+  }
+
+  Q_ASSERT( chain );
+
+  if( !chain->contains( engine ) )
+  {
+    chain->append( engine );
+    kDebug() << "mailfilteragent: attached filter" << engine->id() << "to collection" << collectionId;
+  }
+
+  return true;
+}
+
+int FilterAgent::attachFilter( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+
+  bool gotInvalidCollection = false;
+
+  foreach( Akonadi::Collection::Id collectionId, attachedCollectionIds )
+  {
+    if( !attachEngine( engine, collectionId ) )
+      gotInvalidCollection = true;
+  }
+
+  return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
+}
+
+int FilterAgent::detachFilter( const QString &filterId, const QList< Akonadi::Collection::Id > &detachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+
+  if( detachedCollectionIds.isEmpty() )
+  {
+    // detach all
+    detachEngine( engine );
+    return Akonadi::Filter::Agent::Success;
+  }
+
+  bool gotInvalidCollection = false;
+
+  foreach( Akonadi::Collection::Id collectionId, detachedCollectionIds )
+  {
+    QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
+    if( !chain )
+    {
+      gotInvalidCollection = true;
+      continue;
+    }
+
+    if( !chain->contains( engine ) )
+    {
+      gotInvalidCollection = true;
+      continue;
+    }
+
+    chain->removeOne( engine );
+
+    if( chain->isEmpty() )
+    {
+
+      kDebug() << "mailfilteragent: no longer monitoring collection" << collectionId;
+
+      changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), false );
+   
+      mFilterChains.remove( collectionId );
+      delete chain;
+    }
+  }
+
+  return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
+}
+
+int FilterAgent::getFilterProperties( const QString &filterId, QString &mimeType, QString &source, QList< Akonadi::Collection::Id > &attachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+
+  mimeType = engine->mimeType();
+  source = engine->source();
+  attachedCollectionIds = mFilterChains.keys();
+
+  return Akonadi::Filter::Agent::Success;
+}
+
+int FilterAgent::changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds )
+{
+  FilterEngine * engine = mEngines.value( filterId, 0 );
+  if( !engine )
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+
+  Akonadi::Filter::ComponentFactory * factory = mComponentFactories.value( engine->mimeType(), 0 );
+  Q_ASSERT_X( factory, "FilterAgent::changeFilter", "We got a filter without a corresponding ComponentFactory!" );
+
+  if( source.isEmpty() )
+    return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+
+  Akonadi::Filter::IO::SieveDecoder decoder( factory );
+
+  Akonadi::Filter::Program * program = decoder.run( source );
+  if( !program )
+    return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+
+  engine->setSource( source );
+  engine->setProgram( program );
+
+  detachEngine( engine );
+
+  bool gotInvalidCollection = false;
+
+  foreach( Akonadi::Collection::Id collectionId, attachedCollectionIds )
+  {
+    if( !attachEngine( engine, collectionId ) )
+      gotInvalidCollection = true;
+  }
+
+  return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
 }
 
 void FilterAgent::loadConfiguration()

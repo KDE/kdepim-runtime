@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_ENGINE_H_
-#define _AKONADI_FILTER_ENGINE_H_
+#ifndef _FILTERENGINE_H_
+#define _FILTERENGINE_H_
 
 #include <QtCore/QString>
 
@@ -141,4 +141,4 @@ public:
 
 };
 
-#endif //!_AKONADI_FILTER_ENGINE_H_
+#endif //!_FILTERENGINE_H_

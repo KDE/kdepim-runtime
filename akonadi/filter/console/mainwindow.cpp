@@ -29,6 +29,7 @@
 
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/program.h>
+#include <akonadi/filter/agent.h>
 #include <akonadi/filter/ui/editorfactory.h>
 #include <akonadi/filter/io/sieveencoder.h>
 #include <akonadi/filter/io/sievedecoder.h>
@@ -59,6 +60,8 @@ MainWindow::MainWindow()
     kDebug() << "Could not start akonadi server";
     return;
   }
+
+  Akonadi::Filter::Agent::registerMetaTypes();
 
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
@@ -146,7 +149,7 @@ void MainWindow::slotEditFilterButtonClicked()
 
   filterId = item->text();
 
-  QDBusPendingReply<bool, QString, QString, QVariantList> rProps = mFilterAgent->getFilterProperties( filterId );
+  QDBusPendingReply< int, QString, QString, QList< Akonadi::Collection::Id > > rProps = mFilterAgent->getFilterProperties( filterId );
   rProps.waitForFinished();
 
   if( rProps.isError() )
@@ -155,9 +158,17 @@ void MainWindow::slotEditFilterButtonClicked()
     return;
   }
 
+  Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rProps.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    return;
+  }
+
   QString mimeType = rProps.argumentAt< 1 >();
   QString source = rProps.argumentAt< 2 >();
-  QVariantList attachedCollectionIds = rProps.argumentAt< 3 >();
+  QList< Akonadi::Collection::Id > attachedCollectionIds = rProps.argumentAt< 3 >();
 
   Akonadi::Filter::ComponentFactory * componentFactory = mComponentFactories.value( mimeType, 0 );
   if( !componentFactory )
@@ -208,7 +219,7 @@ void MainWindow::slotEditFilterButtonClicked()
   qDebug( "END OF FILTER SOURCE:" );
 
 
-  QDBusPendingReply< bool > rChange = mFilterAgent->changeFilter( filter.id(), source, filter.collectionsAsVariantList() );
+  QDBusPendingReply< int > rChange = mFilterAgent->changeFilter( filter.id(), source, filter.collectionsAsIdList() );
   rChange.waitForFinished();
 
   if( rChange.isError() )
@@ -216,6 +227,15 @@ void MainWindow::slotEditFilterButtonClicked()
     KMessageBox::error( this, rChange.error().message(), i18n( "Could not change filter" ) );
     return;
   }
+
+  ret = static_cast< Akonadi::Filter::Agent::Status >( rChange.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    return;
+  }
+
 
   listFilters();
 }
@@ -274,7 +294,7 @@ void MainWindow::slotNewFilterButtonClicked()
   qDebug( "%s", source.toUtf8().data() );
   qDebug( "END OF FILTER SOURCE:" );
 
-  QDBusPendingReply< bool > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source, filter.collectionsAsVariantList() );
+  QDBusPendingReply< int > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
   rCreate.waitForFinished();
 
   if( rCreate.isError() )
@@ -282,6 +302,31 @@ void MainWindow::slotNewFilterButtonClicked()
     KMessageBox::error( this, rCreate.error().message(), i18n( "Could not crate new filter" ) );
     return;
   }
+
+  Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rCreate.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    return;
+  }
+
+  QDBusPendingReply< int > rAttach = mFilterAgent->attachFilter( filter.id(), filter.collectionsAsIdList() );
+
+  if( rAttach.isError() )
+  {
+    KMessageBox::error( this, rAttach.error().message(), i18n( "Could not crate new filter" ) );
+    return;
+  }
+
+  ret = static_cast< Akonadi::Filter::Agent::Status >( rAttach.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    return;
+  }
+
 
   listFilters();
 

@@ -23,6 +23,7 @@ configure_file(
 set(
 		AKONADI_FILTER_LIB_SRCS
 		action.cpp
+		agent.cpp
 		commanddescriptor.cpp
 		component.cpp
 		condition.cpp

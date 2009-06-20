@@ -71,11 +71,11 @@ bool Filter::hasCollection( Akonadi::Collection::Id id )
   return false;
 }
 
-QVariantList Filter::collectionsAsVariantList()
+QList< Akonadi::Collection::Id > Filter::collectionsAsIdList()
 {
-  QVariantList ret;
+  QList< Akonadi::Collection::Id > ret;
   foreach( Akonadi::Collection * c, mCollections )
-    ret.append( QVariant( c->id() ) );
+    ret.append( c->id() );
 
   return ret;
 }
