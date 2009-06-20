@@ -10,7 +10,7 @@ include(KDE4Defaults)
 
 find_package(KdepimLibs 4.2.87 REQUIRED)
 
-find_package(Boost)
+find_package(Boost 1.33.1)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
 
 find_package(Akonadi)
