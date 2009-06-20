@@ -1,6 +1,16 @@
 [Desktop Entry]
 Name=Akonadi Granltee Template Resource
+Name[pt]=Recurso de Modelos do Granltee para o Akonadi
+Name[pt_BR]=Recurso de Modelos do Granltee para o Akonadi
+Name[sv]=Akonadi Grantlee-mallresurs
+Name[uk]=Ресурс шаблонів Grantlee Akonadi
+Name[x-test]=xxAkonadi Granltee Template Resourcexx
 Comment=A resource to load Grantlee Templates
+Comment[pt]=Um recurso para carregar modelos do Grantlee
+Comment[pt_BR]=Um recurso para carregar modelos do Grantlee
+Comment[sv]=En resurs för att ladda Grantlee-mallar
+Comment[uk]=Ресурс для завантаження шаблонів Grantlee
+Comment[x-test]=xxA resource to load Grantlee Templatesxx
 Type=GrantleeTemplateResource
 Exec=akonadi_template_resource
 Icon=kjots
