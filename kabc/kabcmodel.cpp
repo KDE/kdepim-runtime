@@ -93,7 +93,6 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
           return QString::fromLatin1( "This model can only handle contact folders. The current collection holds mimetypes: %1").arg(
                        collection().contentMimeTypes().join( QLatin1String(",") ) );
       return QVariant();
-  }
 
   const Item item = itemForIndex( index );
 
