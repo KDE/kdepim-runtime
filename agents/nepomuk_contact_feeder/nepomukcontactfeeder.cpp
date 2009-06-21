@@ -21,6 +21,7 @@
 #include "nepomukcontactfeeder.h"
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
@@ -46,6 +47,7 @@
 #include "bbsnumber.h"
 #include "carphonenumber.h"
 #include "cellphonenumber.h"
+#include "contactgroup.h"
 #include "emailaddress.h"
 #include "faxnumber.h"
 #include "isdnnumber.h"
@@ -85,6 +87,7 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 {
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->setMimeTypeMonitored( KABC::Addressee::mimeType() );
+  changeRecorder()->setMimeTypeMonitored( KABC::ContactGroup::mimeType() );
   changeRecorder()->setChangeRecordingEnabled( false );
 
   // do the initial scan to make sure all items have been fed to nepomuk
@@ -110,7 +113,7 @@ void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  if ( item.hasPayload<KABC::Addressee>() )
+  if ( item.hasPayload<KABC::Addressee>() || item.hasPayload<KABC::ContactGroup>() )
     updateItem( item );
 }
 
@@ -135,6 +138,7 @@ void NepomukContactFeeder::updateAll( bool force )
 
     MimeTypeChecker contactFilter;
     contactFilter.addWantedMimeType( KABC::Addressee::mimeType() );
+    contactFilter.addWantedMimeType( KABC::ContactGroup::mimeType() );
     foreach( const Collection &collection, collections) {
       kDebug() << "checking collection" << collection.name();
       if ( contactFilter.isWantedCollection( collection ) ) {
@@ -185,7 +189,7 @@ namespace {
 
 void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
 {
-  if ( !item.hasPayload<KABC::Addressee>() ) {
+  if ( !item.hasPayload<KABC::Addressee>() && !item.hasPayload<KABC::ContactGroup>() ) {
     kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
              << "Id:" << item.id();
     return;
@@ -204,6 +208,14 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
                            QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
                            item.url(), metaDataGraphUri );
 
+  if ( item.hasPayload<KABC::Addressee>() )
+    updateContactItem( item, graphUri );
+  else
+    updateGroupItem( item, graphUri );
+}
+
+void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const QUrl &graphUri )
+{
   // create the contact with the graph reference
   NepomukFast::PersonContact contact( item.url(), graphUri );
 
@@ -341,6 +353,23 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
     address.setExtendedAddresses( listFromString( addresses[ i ].extended() ) );
 
     contact.addPostalAddress( address );
+  }
+}
+
+void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, const QUrl &graphUri )
+{
+  // create the contact group with the graph reference
+  NepomukFast::ContactGroup group( item.url(), graphUri );
+
+  const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+
+  group.setContactGroupName( contactGroup.name() );
+
+  for ( uint i = 0; i < contactGroup.contactReferenceCount(); ++i ) {
+    const Akonadi::Item contactItem( contactGroup.contactReference( i ).uid().toLongLong() );
+
+    NepomukFast::PersonContact person( contactItem.url(), graphUri );
+    person.addBelongsToGroup( group );
   }
 }
 
