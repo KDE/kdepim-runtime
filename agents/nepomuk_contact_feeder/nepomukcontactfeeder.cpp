@@ -35,6 +35,12 @@
 #include <kurl.h>
 
 #include <Soprano/Model>
+#include <Soprano/NodeIterator>
+#include <Soprano/QueryResultIterator>
+#include <soprano/nrl.h>
+
+#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
+#include <soprano/nrlmodel.h>
 
 // ontology includes
 #include "bbsnumber.h"
@@ -51,13 +57,27 @@
 #include "postaladdress.h"
 #include "videotelephonenumber.h"
 #include "voicephonenumber.h"
+#include "website.h"
 
+#include <QtCore/QTime>
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
 
 #include <KDebug>
 
 namespace Akonadi {
+
+static void removeItemFromNepomuk( const Akonadi::Item &item )
+{
+  // find the graph that contains our item and delete the complete graph
+  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
+                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
+                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
+                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+
+  foreach ( const Soprano::Node &node, list )
+    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
+}
 
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : AgentBase( id ),
@@ -75,6 +95,12 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
+
+  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
+}
+
+NepomukContactFeeder::~NepomukContactFeeder()
+{
 }
 
 void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
@@ -90,24 +116,7 @@ void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QB
 
 void NepomukContactFeeder::itemRemoved( const Akonadi::Item &item )
 {
-  Nepomuk::PersonContact contact( item.url() );
-
-  QList<Nepomuk::PhoneNumber> numbers = contact.phoneNumbers();
-  Q_FOREACH( Nepomuk::PhoneNumber number, numbers ) {
-    number.remove();
-  }
-
-  QList<Nepomuk::EmailAddress> emails = contact.emailAddresses();
-  Q_FOREACH( Nepomuk::EmailAddress email, emails ) {
-    email.remove();
-  }
-
-  QList<Nepomuk::PostalAddress> addresses = contact.postalAddresses();
-  Q_FOREACH( Nepomuk::PostalAddress address, addresses ) {
-    address.remove();
-  }
-
-  contact.remove();
+  removeItemFromNepomuk( item );
 }
 
 void NepomukContactFeeder::slotInitialItemScan()
@@ -166,14 +175,13 @@ void NepomukContactFeeder::slotItemsReceivedForInitialScan( const Akonadi::Item:
 }
 
 namespace {
-  QStringList listFromString( const QString& s ) {
+  inline QStringList listFromString( const QString& s ) {
     if ( s.isEmpty() )
       return QStringList();
     else
       return QStringList( s );
   }
 }
-
 
 void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
 {
@@ -183,88 +191,123 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
     return;
   }
 
+  // first remove the item: since we use a graph that has a reference to all parts
+  // of the item's semantic representation this is a really fast operation
+  removeItemFromNepomuk( item );
+
+  // create a new graph for the item
+  QUrl metaDataGraphUri;
+  QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
+
+  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
+  mNrlModel->addStatement( graphUri,
+                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
+                           item.url(), metaDataGraphUri );
+
+  // create the contact with the graph reference
+  NepomukFast::PersonContact contact( item.url(), graphUri );
+
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
-  Nepomuk::PersonContact contact( item.url() );
+  if ( !addressee.formattedName().isEmpty() )
+    contact.setLabel( addressee.formattedName() );
+  else
+    contact.setLabel( addressee.assembledName() );
 
-  // Nepomuk has no inference yet, thus having a label makes things easier
-  // when displaying resources generically, since it will be returned by
-  // Nepomuk::Resource::genericLabel()
-  contact.setLabel( addressee.name() );
+  if ( !addressee.givenName().isEmpty() )
+    contact.setNameGivens( listFromString( addressee.givenName() ) );
 
-  contact.setNameGivens( listFromString( addressee.givenName() ) );
-  contact.setNameAdditionals( listFromString( addressee.additionalName() ) );
-  contact.setNameFamilys( listFromString( addressee.familyName() ) );
-  contact.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
-  contact.setNameHonorificSuffixs( listFromString( addressee.suffix() ) );
-  contact.setLocations( listFromString( addressee.geo().toString() ) ); // make it better
+  if ( !addressee.additionalName().isEmpty() )
+    contact.setNameAdditionals( listFromString( addressee.additionalName() ) );
+
+  if ( !addressee.familyName().isEmpty() )
+    contact.setNameFamilys( listFromString( addressee.familyName() ) );
+
+  if ( !addressee.prefix().isEmpty() )
+    contact.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
+
+  if ( !addressee.suffix().isEmpty() )
+    contact.setNameHonorificSuffixs( listFromString( addressee.suffix() ) );
+
+  const KABC::Geo geo = addressee.geo();
+  if ( geo.isValid() ) {
+    QString geoString;
+    geoString.sprintf( "%.6f;%.6f", geo.latitude(), geo.longitude() );
+    contact.setLocations( listFromString( geoString ) ); // make it better
+  }
+
   // keys
   // sounds
   // logos
   // photos
-  contact.setNotes( listFromString( addressee.note() ) );
-  contact.setNicknames( listFromString( addressee.nickName() ) );
-  contact.setContactUIDs( listFromString( addressee.uid() ) );
-  contact.setFullnames( listFromString( addressee.name() ) );
-  contact.setBirthDate( addressee.birthday().date() );
+  if ( !addressee.note().isEmpty() )
+    contact.setNotes( listFromString( addressee.note() ) );
+
+  if ( !addressee.nickName().isEmpty() )
+    contact.setNicknames( listFromString( addressee.nickName() ) );
+
+  contact.setContactUIDs( listFromString( addressee.uid() ) ); // never empty
+
+  if ( !addressee.name().isEmpty() )
+    contact.setFullnames( listFromString( addressee.name() ) );
+
+  if ( addressee.birthday().date().isValid() )
+    contact.setBirthDate( addressee.birthday().date() );
+
+  if ( addressee.url().isValid() ) {
+    NepomukFast::Website website( addressee.url(), graphUri );
+    contact.addWebsiteUrl( website );
+  }
 
   // phone numbers
-
-  // first clean all
-  foreach( Nepomuk::PhoneNumber n, contact.phoneNumbers() ) {
-    n.remove();
-  }
-  contact.setPhoneNumbers( QList<Nepomuk::PhoneNumber>() );
-
-  // add all existing
   const KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
   for ( int i = 0; i < phoneNumbers.count(); ++i ) {
     if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Bbs ) {
-      Nepomuk::BbsNumber number;
+      NepomukFast::BbsNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Car ) {
-      Nepomuk::CarPhoneNumber number;
+      NepomukFast::CarPhoneNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Cell ) {
-      Nepomuk::CellPhoneNumber number;
+      NepomukFast::CellPhoneNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Fax ) {
-      Nepomuk::FaxNumber number;
+      NepomukFast::FaxNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Isdn ) {
-      Nepomuk::IsdnNumber number;
+      NepomukFast::IsdnNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Msg ) {
-      Nepomuk::MessagingNumber number;
+      NepomukFast::MessagingNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Modem ) {
-      Nepomuk::ModemNumber number;
+      NepomukFast::ModemNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pager ) {
-      Nepomuk::PagerNumber number;
+      NepomukFast::PagerNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pcs ) {
-      Nepomuk::PcsNumber number;
+      NepomukFast::PcsNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Video ) {
-      Nepomuk::VideoTelephoneNumber number;
+      NepomukFast::VideoTelephoneNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Voice ) {
-      Nepomuk::VoicePhoneNumber number;
+      NepomukFast::VoicePhoneNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     } else { // matches Home and Work
-      Nepomuk::PhoneNumber number;
+      NepomukFast::PhoneNumber number( QUrl(), graphUri );
       number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
       contact.addPhoneNumber( number );
     }
@@ -273,27 +316,17 @@ void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
   // im accounts
 
   // email addresses
-  foreach( Nepomuk::EmailAddress ea, contact.emailAddresses() ) {
-    ea.remove();
-  }
-  contact.setEmailAddresses( QList<Nepomuk::EmailAddress>() );
-
   const QStringList emails = addressee.emails();
   for ( int i = 0; i < emails.count(); ++i ) {
-    Nepomuk::EmailAddress email( QUrl( "mailto:" + emails[i] ) );
+    NepomukFast::EmailAddress email( QUrl( "mailto:" + emails[i] ), graphUri );
     email.setEmailAddress( emails[ i ] );
     contact.addEmailAddress( email );
   }
 
   // addresses
-  foreach( Nepomuk::PostalAddress a, contact.postalAddresses() ) {
-    a.remove();
-  }
-  contact.setPostalAddresses( QList<Nepomuk::PostalAddress>() );
-
   const KABC::Address::List addresses = addressee.addresses();
   for ( int i = 0; i < addresses.count(); ++i ) {
-    Nepomuk::PostalAddress address;
+    NepomukFast::PostalAddress address( QUrl(), graphUri );
     address.setStreetAddresses( listFromString( addresses[ i ].street() ) );
     if ( !addresses[ i ].postalCode().isEmpty() )
       address.setPostalcode( addresses[ i ].postalCode() );

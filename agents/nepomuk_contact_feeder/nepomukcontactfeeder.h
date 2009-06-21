@@ -24,6 +24,11 @@
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
 
+namespace Soprano
+{
+class NRLModel;
+}
+
 namespace Akonadi {
 
 class NepomukContactFeeder : public AgentBase, public AgentBase::Observer
@@ -33,6 +38,7 @@ class NepomukContactFeeder : public AgentBase, public AgentBase::Observer
 
   public:
     NepomukContactFeeder( const QString &id );
+    ~NepomukContactFeeder();
 
   public Q_SLOTS:
     Q_SCRIPTABLE void updateAll( bool force = false );
@@ -50,6 +56,7 @@ class NepomukContactFeeder : public AgentBase, public AgentBase::Observer
     void updateItem( const Akonadi::Item &item );
 
     bool mForceUpdate;
+    Soprano::NRLModel *mNrlModel;
 };
 
 }

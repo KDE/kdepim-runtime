@@ -4,6 +4,7 @@
 #
 # Usage:
 #   NEPOMUK_ADD_ONTOLOGY_CLASSES(<sources-var>
+#         [FAST]
 #         [ONTOLOGIES] <onto-file1> [<onto-file2> ...]
 #         [TEMPLATES <template1> [<template2> ...]]
 #       )
@@ -16,6 +17,8 @@ macro(NEPOMUK_ADD_ONTOLOGY_CLASSES _sources)
   foreach(_arg ${ARGN})
     if(${_arg} STREQUAL "ONTOLOGIES")
       set(_current_arg_type "onto")
+    elseif(${_arg} STREQUAL "FAST")
+      set(_fastmode "--fast")
     elseif(${_arg} STREQUAL "TEMPLATES")
       set(_current_arg_type "templ")
     else(${_arg} STREQUAL "ONTOLOGIES")
@@ -43,12 +46,12 @@ macro(NEPOMUK_ADD_ONTOLOGY_CLASSES _sources)
 
     # generate the list of source and header files
     execute_process(
-      COMMAND ${RCGEN} --listheaders --prefix ${_targetdir}/ --ontologies ${_ontologies}
+      COMMAND ${RCGEN} ${_fastmode} --listheaders --prefix ${_targetdir}/ --ontologies ${_ontologies}
       OUTPUT_VARIABLE _out_headers
       RESULT_VARIABLE rcgen_result
       )
     execute_process(
-      COMMAND ${RCGEN} --listsources --prefix ${_targetdir}/ --ontologies ${_ontologies}
+      COMMAND ${RCGEN} ${_fastmode} --listsources --prefix ${_targetdir}/ --ontologies ${_ontologies}
       OUTPUT_VARIABLE _out_sources
       )
 
@@ -58,7 +61,7 @@ macro(NEPOMUK_ADD_ONTOLOGY_CLASSES _sources)
     endif(NOT ${rcgen_result} EQUAL 0)
 
     add_custom_command(OUTPUT ${_out_headers} ${_out_sources}
-      COMMAND ${RCGEN} --writeall --templates ${_templates} --target ${_targetdir}/ --ontologies ${_ontologies}
+      COMMAND ${RCGEN} ${_fastmode} --writeall --templates ${_templates} --target ${_targetdir}/ --ontologies ${_ontologies}
       DEPENDS ${_ontologies}
       COMMENT "Generating ontology source files from ${_ontofilenames}"
       )
