@@ -486,33 +486,19 @@ void KolabProxyResource::kolabFolderChangeResult(KJob* job)
   }
 }
 
-void KolabProxyResource::imapCollectionRemoved(const Collection &collection)
+void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
 {
-  if ( collection.resource() == identifier() ) // just to be sure...
+  if ( imapCollection.resource() == identifier() ) // just to be sure...
     return;
 
   kDebug() << "IMAPCOLLECTIONREMOVED";
-  // FIXME: make CollectionDeleteJob work on RIDs
-  Collection c;
-  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  if ( job->exec() ) {
-    Collection::List collections = job->collections();
+  Collection kolabCollection;
+  kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
+  new CollectionDeleteJob( kolabCollection );
 
-    foreach( const Collection &col, collections ) {
-      if (col.remoteId() == QString::number(collection.id())) {
-        c = col;
-        break;
-      }
-    }
-  } else {
-    kWarning() << "Can't find the matching collection for  " << collection.id();
-    return;
-  }
-
-  KolabHandler *handler = m_monitoredCollections.value(collection.id());
+  KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   delete handler;
-  m_monitoredCollections.remove(collection.id());
-  new CollectionDeleteJob(c);
+  m_monitoredCollections.remove(imapCollection.id());
 }
 
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)
