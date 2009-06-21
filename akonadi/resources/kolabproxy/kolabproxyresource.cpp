@@ -50,6 +50,8 @@
 using namespace Akonadi;
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
+static const char KOLAB_ITEM[] = "KolabItem";
+static const char IMAP_COLLECTION[] = "ImapCollection";
 
 KolabProxyResource::KolabProxyResource( const QString &id )
   : ResourceBase( id )
@@ -197,17 +199,10 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
   Item kolabItem( item );
 //   kDebug() << "Item added " << item.id() << collection.remoteId() << collection.id();
 
-  Collection imapCollection( collection.remoteId().toUInt() );
-  CollectionFetchJob* coljob = new CollectionFetchJob( Collection::List() << imapCollection );
-  if ( coljob->exec() ) {
-    Collection::List collections = coljob->collections();
-    imapCollection = collections[0];
-  }else {
-    kWarning() << "Can't fetch collection" << imapCollection.id();
-  }
+  const Collection imapCollection( collection.remoteId().toUInt() );
 
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
-  if (!handler) {
+  if ( !handler ) {
     kWarning() << "No handler found";
     cancelTask();
     return;
@@ -216,15 +211,30 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
   handler->toKolabFormat( kolabItem, imapItem );
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
-  if (!cjob->exec()) {
-    kWarning() << "Can't create imap item " << imapItem.id() << cjob->errorString();
+  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
+  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
+}
+
+void KolabProxyResource::imapItemCreationResult(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
   }
 
-  imapItem = cjob->item();
+  ItemCreateJob *cjob = qobject_cast<ItemCreateJob*>( job );
+  const Item imapItem = cjob->item();
+  Item kolabItem = cjob->property( KOLAB_ITEM ).value<Item>();
+  // TODO add accessor to ItemCreateJob for the parent collection
+  const Collection imapCollection = cjob->property( IMAP_COLLECTION ).value<Collection>();
+
+  KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
+  Q_ASSERT( handler );
   handler->itemAdded(imapItem);
   m_excludeAppend << imapItem.id();
 
-  kolabItem.setRemoteId(QString::number(imapItem.id()));
+  kolabItem.setRemoteId( QString::number( imapItem.id() ) );
   changeCommitted( kolabItem );
 }
 
