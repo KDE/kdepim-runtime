@@ -62,7 +62,8 @@ Comment[zh_CN]=将联系人推送到 Nepomuk 的扩展
 Comment[zh_TW]=將聯絡人送進 Nepomuk 的延伸程式
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_contact_feeder
+Icon=nepomuk
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilities=Unique
+X-Akonadi-Capabilities=Unique,NoConfig
 X-Akonadi-Identifier=akonadi_nepomuk_contact_feeder
