@@ -86,6 +86,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   private slots:
     void imapItemCreationResult( KJob* job );
+    void imapItemUpdateFetchResult( KJob* job );
+    void imapItemUpdateResult( KJob *job );
     void imapFolderCreateResult( KJob* job );
     void kolabFolderChangeResult( KJob* job );
 

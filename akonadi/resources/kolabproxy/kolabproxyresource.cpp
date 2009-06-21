@@ -242,29 +242,43 @@ void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArr
 {
   kDebug() << "ITEMCHANGED" << kolabItem.id() << kolabItem.remoteId();
 
-  Item imapItem;
   ItemFetchJob* job = new ItemFetchJob( Item(kolabItem.remoteId().toUInt()) );
-  job->fetchScope().fetchFullPayload();
-  if (job->exec()) {
-    Item::List items = job->items();
-    imapItem = items[0];
-  } else {
-    kWarning() << "Can't fetch imap item " << kolabItem.remoteId();
+  job->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(imapItemUpdateFetchResult(KJob*)) );
+}
+
+void KolabProxyResource::imapItemUpdateFetchResult(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
   }
 
-  KolabHandler *handler = m_monitoredCollections.value(imapItem.storageCollectionId());
+  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob->items().size() == 1 );
+  Item imapItem = fetchJob->items().first();
+
+  KolabHandler *handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
   if (!handler) {
     kWarning() << "No handler found";
     cancelTask();
     return;
   }
 
-  handler->toKolabFormat(kolabItem, imapItem);
+  const Item kolabItem = fetchJob->property( KOLAB_ITEM ).value<Item>();
+  handler->toKolabFormat( kolabItem , imapItem );
   ItemModifyJob *mjob = new ItemModifyJob( imapItem );
-    if (!mjob->exec()) {
-      kWarning() << "Can't modify imap item " << imapItem.id();
-    }
+  mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
+  connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
+}
 
+void KolabProxyResource::imapItemUpdateResult(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+  const Item kolabItem = job->property( KOLAB_ITEM ).value<Item>();
   changeCommitted( kolabItem );
 }
 
@@ -478,6 +492,7 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &collection)
     return;
 
   kDebug() << "IMAPCOLLECTIONREMOVED";
+  // FIXME: make CollectionDeleteJob work on RIDs
   Collection c;
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
   if ( job->exec() ) {
