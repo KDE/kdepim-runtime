@@ -96,10 +96,10 @@ QStringList KCalModel::mimeTypes() const
 
 int KCalModel::columnCount( const QModelIndex& ) const
 {
-  if ( !d->collectionIsValid() )
-    return 1;
-  else
+  if ( d->collectionIsValid() )
     return 4;
+  else
+    return 1;
 }
 
 int KCalModel::rowCount( const QModelIndex& ) const
