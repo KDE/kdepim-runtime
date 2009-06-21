@@ -1,6 +1,6 @@
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}/../nie
+  ${CMAKE_CURRENT_BINARY_DIR}/../nie_fast
   ${Boost_INCLUDE_DIR}
   )
 
@@ -13,7 +13,7 @@ kde4_add_app_icon(akonadi_nepomuk_email_feeder_SRCS "${KDE4_ICON_DIR}/oxygen/*/a
 kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED ${akonadi_nepomuk_email_feeder_SRCS})
 
 target_link_libraries(akonadi_nepomuk_email_feeder
-  nie
+  niefast
   ${SOPRANO_LIBRARIES}
   ${KDE4_KDEUI_LIBRARY}
   ${KDEPIMLIBS_AKONADI_LIBS}
