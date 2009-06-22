@@ -320,14 +320,14 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
     //qDebug() << "parent:" << model->data(parent).toString() << "rows:" << rows
     //         << "columns:" << columns << "parent column:" << parent.column();
 
-    Q_ASSERT ( model->hasIndex ( rows + 1, 0, parent ) == false );
+    Q_ASSERT ( model->hasIndex ( rows, 0, parent ) == false );
     for ( int r = 0; r < rows; ++r ) {
         if ( model->canFetchMore ( parent ) ) {
             fetchingMore = true;
             model->fetchMore ( parent );
             fetchingMore = false;
         }
-        Q_ASSERT ( model->hasIndex ( r, columns + 1, parent ) == false );
+        Q_ASSERT ( model->hasIndex ( r, columns, parent ) == false );
         for ( int c = 0; c < columns; ++c ) {
             Q_ASSERT ( model->hasIndex ( r, c, parent ) == true );
             QModelIndex index = model->index ( r, c, parent );
