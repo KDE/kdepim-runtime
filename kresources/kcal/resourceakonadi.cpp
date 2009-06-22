@@ -45,6 +45,7 @@ ResourceAkonadi::ResourceAkonadi()
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
   : ResourceCalendar( group ), d( new Private( group, this ) )
 {
+   KGlobal::locale()->insertCatalog("kresources_shared_akonadi");
 }
 
 ResourceAkonadi::~ResourceAkonadi()

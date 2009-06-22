@@ -28,6 +28,7 @@ using namespace KABC;
 ResourceAkonadi::ResourceAkonadi()
   : ResourceABC(), d( new Private( this ) )
 {
+  KGlobal::locale()->insertCatalog("kresources_shared_akonadi");
 }
 
 ResourceAkonadi::ResourceAkonadi( const KConfigGroup &group )
