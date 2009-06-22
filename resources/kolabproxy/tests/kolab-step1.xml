@@ -1,48 +1,48 @@
 <knut>
   <collection content="inode/directory" rid="akonadi_kolabproxy_resource" name="akonadi_kolabproxy_resource" >
-    <collection content="inode/directory" rid="48" name="localhost:42143/autotest0@example.com" >
-      <collection content="inode/directory" rid="50" name="user" >
-        <collection content="inode/directory" rid="56" name="autotest1" >
-          <collection content="inode/directory,application/x-vnd.akonadi.calendar.todo" rid="57" name="Tasks" >
+    <collection content="inode/directory" rid="1778" name="localhost:42143/autotest0@example.com" >
+      <collection content="inode/directory" rid="1780" name="user" >
+        <collection content="inode/directory" rid="1786" name="autotest1" >
+          <collection content="inode/directory,application/x-vnd.akonadi.calendar.todo" rid="1787" name="Tasks" >
             <attribute type="AccessRights" ></attribute>
           </collection>
-          <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="61" name="Notes" >
+          <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="1791" name="Notes" >
             <attribute type="AccessRights" ></attribute>
           </collection>
-          <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="60" name="Journal" >
+          <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="1790" name="Journal" >
             <attribute type="AccessRights" ></attribute>
           </collection>
-          <collection content="inode/directory,text/directory,application/x-vnd.kde.contactgroup" rid="59" name="Contacts" >
+          <collection content="inode/directory,text/directory,application/x-vnd.kde.contactgroup" rid="1789" name="Contacts" >
             <attribute type="AccessRights" ></attribute>
           </collection>
-          <collection content="inode/directory,application/x-vnd.akonadi.calendar.event" rid="58" name="Calendar" >
+          <collection content="inode/directory,application/x-vnd.akonadi.calendar.event" rid="1788" name="Calendar" >
             <attribute type="AccessRights" ></attribute>
           </collection>
-          <attribute type="AccessRights" >a</attribute>
+          <attribute type="AccessRights" ></attribute>
         </collection>
-        <attribute type="AccessRights" >a</attribute>
+        <attribute type="AccessRights" ></attribute>
       </collection>
-      <collection content="inode/directory" rid="49" name="Inbox" >
-        <collection content="inode/directory,application/x-vnd.akonadi.calendar.todo" rid="55" name="Tasks" >
+      <collection content="inode/directory" rid="1779" name="INBOX" >
+        <collection content="inode/directory,application/x-vnd.akonadi.calendar.todo" rid="1785" name="Tasks" >
           <attribute type="AccessRights" >a</attribute>
         </collection>
-        <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="54" name="Notes" >
+        <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="1784" name="Notes" >
           <attribute type="AccessRights" >a</attribute>
         </collection>
-        <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="53" name="Journal" >
+        <collection content="inode/directory,application/x-vnd.akonadi.calendar.journal" rid="1783" name="Journal" >
           <attribute type="AccessRights" >a</attribute>
         </collection>
-        <collection content="inode/directory,text/directory,application/x-vnd.kde.contactgroup" rid="52" name="Contacts" >
+        <collection content="inode/directory,text/directory,application/x-vnd.kde.contactgroup" rid="1782" name="Contacts" >
           <attribute type="AccessRights" >a</attribute>
         </collection>
-        <collection content="inode/directory,application/x-vnd.akonadi.calendar.event" rid="51" name="Calendar" >
+        <collection content="inode/directory,application/x-vnd.akonadi.calendar.event" rid="1781" name="Calendar" >
           <attribute type="AccessRights" >a</attribute>
-          <item mimetype="text/calendar" rid="5521" >
+          <item mimetype="text/calendar" rid="1144" >
             <payload>BEGIN:VCALENDAR
 PRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN
 VERSION:2.0
 BEGIN:VEVENT&#xd;
-DTSTAMP:20090618T165531Z&#xd;
+DTSTAMP:20090622T141953Z&#xd;
 ORGANIZER;CN="Volker Krause":MAILTO:vkrause@kde.org&#xd;
 CREATED:20090412T113649Z&#xd;
 UID:libkcal-1109914.774&#xd;
@@ -59,7 +59,7 @@ END:VCALENDAR</payload>
         </collection>
         <attribute type="AccessRights" >a</attribute>
       </collection>
-      <attribute type="AccessRights" >a</attribute>
+      <attribute type="AccessRights" ></attribute>
     </collection>
     <attribute type="ENTITYDISPLAY" >("Kolab" "kolab")</attribute>
     <attribute type="AccessRights" ></attribute>

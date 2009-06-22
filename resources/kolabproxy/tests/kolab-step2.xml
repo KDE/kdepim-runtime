@@ -1,70 +1,120 @@
 <knut>
   <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/" name="localhost:42143/autotest0@example.com" >
-    <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user" name="user" >
-      <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1" name="autotest1" >
+    <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/user" name="user" >
+      <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1" name="autotest1" >
         <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/Tasks" name="Tasks" >
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1245350983</attribute>
-          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:47 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type task.default</attribute>
+          <attribute type="uidvalidity" >1245682294</attribute>
+          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:37 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type task.default</attribute>
           <attribute type="imapquota" >  </attribute>
         </collection>
         <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/Notes" name="Notes" >
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1245350980</attribute>
-          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:47 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type note.default</attribute>
+          <attribute type="uidvalidity" >1245682293</attribute>
+          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:37 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type note.default</attribute>
           <attribute type="imapquota" >  </attribute>
         </collection>
         <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/Journal" name="Journal" >
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1245350977</attribute>
-          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:46 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type journal.default</attribute>
+          <attribute type="uidvalidity" >1245682293</attribute>
+          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:37 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type journal.default</attribute>
           <attribute type="imapquota" >  </attribute>
         </collection>
         <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/Contacts" name="Contacts" >
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1245350976</attribute>
-          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:45 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type contact.default</attribute>
+          <attribute type="uidvalidity" >1245682293</attribute>
+          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:37 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type contact.default</attribute>
           <attribute type="imapquota" >  </attribute>
         </collection>
         <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/Calendar" name="Calendar" >
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1245350976</attribute>
-          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:45 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type event.default</attribute>
+          <attribute type="uidvalidity" >1245682293</attribute>
+          <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:36 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type event.default</attribute>
           <attribute type="imapquota" >  </attribute>
         </collection>
-        <attribute type="AccessRights" >a</attribute>
-        <attribute type="collectionannotations" ></attribute>
+        <attribute type="AccessRights" ></attribute>
+        <attribute type="noselect" >1</attribute>
       </collection>
-      <attribute type="AccessRights" >a</attribute>
-      <attribute type="collectionannotations" ></attribute>
+      <attribute type="ENTITYDISPLAY" >("Shared Folders" "x-mail-distribution-list")</attribute>
+      <attribute type="AccessRights" ></attribute>
+      <attribute type="noselect" >1</attribute>
     </collection>
-    <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX" name="Inbox" >
+    <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX" name="INBOX" >
       <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Tasks" name="Tasks" >
-        <attribute type="uidnext" >1</attribute>
+        <attribute type="uidnext" >2</attribute>
         <attribute type="AccessRights" >a</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1245350971</attribute>
-        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:57 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type task.default</attribute>
+        <attribute type="uidvalidity" >1245682291</attribute>
+        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:31 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type task.default</attribute>
         <attribute type="imapquota" >  </attribute>
+        <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX/Tasks-+-1" >
+          <payload>From: vkrause@kde.org, vkrause@kde.org
+Subject: libkcal-1506191911.958
+User-Agent: Akonadi Kolab Proxy Resource 
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="nextPart1765520.vjZoYI2vSi"
+Date: Mon Jun 22 16:53:27 2009
+X-Kolab-Type: application/x-vnd.kolab.task
+
+
+--nextPart1765520.vjZoYI2vSi
+
+
+--nextPart1765520.vjZoYI2vSi
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+This is a Kolab Groupware object.
+To view this object you will need an email client that can understand the Kolab Groupware format.
+For a list of such email clients please visit
+http://www.kolab.org/kolab2-clients.html
+
+--nextPart1765520.vjZoYI2vSi
+Content-Type: application/x-vnd.kolab.task; name="kolab.xml"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="kolab.xml"
+
+&lt;?xml version=3D"1.0" encoding=3D"UTF-8"?>
+&lt;task version=3D"1.0" >
+ &lt;product-id>KOrganizer 4.3.0 rc1, Kolab resource&lt;/product-id>
+ &lt;uid>libkcal-1506191911.958&lt;/uid>
+ &lt;creation-date>2004-05-05T09:41:43Z&lt;/creation-date>
+ &lt;last-modification-date>2004-05-12T13:39:25+00:00&lt;/last-modification-date>
+ &lt;sensitivity>public&lt;/sensitivity>
+ &lt;summary>Add a demo task to this file&lt;/summary>
+ &lt;organizer>
+  &lt;smtp-address>vkrause@kde.org&lt;/smtp-address>
+ &lt;/organizer>
+ &lt;revision>0&lt;/revision>
+ &lt;priority>3&lt;/priority>
+ &lt;completed>100&lt;/completed>
+ &lt;status>not-started&lt;/status>
+ &lt;due-date>2009-01-01T00:00:00Z&lt;/due-date>
+ &lt;x-completed-date>2009-01-01T13:39:25Z&lt;/x-completed-date>
+&lt;/task>
+
+--nextPart1765520.vjZoYI2vSi--
+</payload>
+        </item>
       </collection>
       <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Notes" name="Notes" >
         <attribute type="uidnext" >1</attribute>
         <attribute type="AccessRights" >a</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1245350970</attribute>
-        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:30 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type note.default</attribute>
+        <attribute type="uidvalidity" >1245682290</attribute>
+        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:30 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type note.default</attribute>
         <attribute type="imapquota" >  </attribute>
       </collection>
       <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Journal" name="Journal" >
@@ -72,8 +122,8 @@
         <attribute type="AccessRights" >a</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1245350969</attribute>
-        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:30 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type journal.default</attribute>
+        <attribute type="uidvalidity" >1245682289</attribute>
+        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:29 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type journal.default</attribute>
         <attribute type="imapquota" >  </attribute>
       </collection>
       <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Contacts" name="Contacts" >
@@ -81,17 +131,17 @@
         <attribute type="AccessRights" >a</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1245350969</attribute>
-        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:29 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type contact.default</attribute>
+        <attribute type="uidvalidity" >1245682289</attribute>
+        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:29 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0 % /vendor/kolab/folder-type contact.default</attribute>
         <attribute type="imapquota" >  </attribute>
       </collection>
       <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Calendar" name="Calendar" >
-        <attribute type="uidnext" >2</attribute>
+        <attribute type="uidnext" >3</attribute>
         <attribute type="AccessRights" >a</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1245350968</attribute>
-        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:35 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 1750 % /vendor/kolab/folder-type event.default</attribute>
+        <attribute type="uidvalidity" >1245682289</attribute>
+        <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:51:32 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 1750 % /vendor/kolab/folder-type event.default</attribute>
         <attribute type="imapquota" >  </attribute>
         <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX/Calendar-+-1" >
           <payload>From: Volker Krause &lt;vkrause@kde.org>
@@ -149,14 +199,73 @@ Content-Disposition: attachment; filename="kolab.xml"
 </payload>
           <flag>\Seen</flag>
         </item>
+        <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX/Calendar-+-2" >
+          <payload>From: Volker Krause &lt;vkrause@kde.org>, vkrause@kde.org
+Subject: libkcal-1135684253.945
+User-Agent: Akonadi Kolab Proxy Resource 
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="nextPart4368523.kW76qGQa90"
+Date: Mon Jun 22 16:53:26 2009
+X-Kolab-Type: application/x-vnd.kolab.event
+
+
+--nextPart4368523.kW76qGQa90
+
+
+--nextPart4368523.kW76qGQa90
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+This is a Kolab Groupware object.
+To view this object you will need an email client that can understand the Kolab Groupware format.
+For a list of such email clients please visit
+http://www.kolab.org/kolab2-clients.html
+
+--nextPart4368523.kW76qGQa90
+Content-Type: application/x-vnd.kolab.event; name="kolab.xml"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="kolab.xml"
+
+&lt;?xml version=3D"1.0" encoding=3D"UTF-8"?>
+&lt;event version=3D"1.0" >
+ &lt;product-id>KOrganizer 4.3.0 rc1, Kolab resource&lt;/product-id>
+ &lt;uid>libkcal-1135684253.945&lt;/uid>
+ &lt;categories>KDE&lt;/categories>
+ &lt;creation-date>2007-01-09T10:05:53Z&lt;/creation-date>
+ &lt;last-modification-date>2007-01-09T10:06:25+00:00&lt;/last-modification-date>
+ &lt;sensitivity>public&lt;/sensitivity>
+ &lt;start-date>2007-01-09T18:30:00Z&lt;/start-date>
+ &lt;summary>Test event&lt;/summary>
+ &lt;location>here&lt;/location>
+ &lt;organizer>
+  &lt;display-name>Volker Krause&lt;/display-name>
+  &lt;smtp-address>vkrause@kde.org&lt;/smtp-address>
+ &lt;/organizer>
+ &lt;alarm>45&lt;/alarm>
+ &lt;advanced-alarms>
+  &lt;alarm type=3D"display" >
+   &lt;enabled>1&lt;/enabled>
+   &lt;start-offset>-45&lt;/start-offset>
+  &lt;/alarm>
+ &lt;/advanced-alarms>
+ &lt;revision>0&lt;/revision>
+ &lt;show-time-as>busy&lt;/show-time-as>
+ &lt;end-date>2007-01-09T22:59:00Z&lt;/end-date>
+&lt;/event>
+
+--nextPart4368523.kW76qGQa90--
+</payload>
+        </item>
       </collection>
+      <attribute type="ENTITYDISPLAY" >("Inbox" "mail-folder-inbox")</attribute>
       <attribute type="uidnext" >1</attribute>
       <attribute type="AccessRights" >a</attribute>
       <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
       <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-      <attribute type="uidvalidity" >1245350958</attribute>
-      <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop /vendor/cmu/cyrus-imapd/lastpop % /vendor/cmu/cyrus-imapd/lastupdate 18-Jun-2009 20:49:58 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
+      <attribute type="uidvalidity" >1245682273</attribute>
+      <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop  % /vendor/cmu/cyrus-imapd/lastupdate 22-Jun-2009 16:53:28 +0200 % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
       <attribute type="imapquota" >  </attribute>
     </collection>
+    <attribute type="AccessRights" ></attribute>
   </collection>
 </knut>
