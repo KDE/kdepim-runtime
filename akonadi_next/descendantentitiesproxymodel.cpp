@@ -673,7 +673,7 @@ QModelIndex DescendantEntitiesProxyModel::index(int r, int c, const QModelIndex&
   if ( (r < 0) || (c < 0) || (c >= sourceModel()->columnCount() ) )
     return QModelIndex();
 
-  if ( r > d->descendantCount(parent) )
+  if ( r >= d->descendantCount(parent) )
     return QModelIndex();
 
   // TODO: Use is decended instead?
