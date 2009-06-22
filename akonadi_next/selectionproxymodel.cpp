@@ -53,8 +53,8 @@ public:
   void sourceRowsInserted(const QModelIndex &, int start, int end);
   void sourceRowsAboutToBeRemoved(const QModelIndex &, int start, int end);
   void sourceRowsRemoved(const QModelIndex &, int start, int end);
-//   void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-//   void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+  void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+  void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
   void sourceModelAboutToBeReset();
   void sourceModelReset();
   void sourceLayoutAboutToBeChanged();
@@ -382,6 +382,16 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
     q->endRemoveRows();
     return;
   }
+}
+
+void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+{
+
+}
+
+void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+{
+
 }
 
 bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
