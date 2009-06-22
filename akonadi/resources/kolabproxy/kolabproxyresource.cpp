@@ -87,6 +87,11 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   m_root.setContentMimeTypes( QStringList() << Collection::mimeType() );
   m_root.setRemoteId( identifier() );
   m_root.setRights( Collection::ReadOnly );
+  CachePolicy policy;
+  policy.setInheritFromParent( false );
+  policy.setCacheTimeout( -1 );
+  policy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
+  m_root.setCachePolicy( policy );
 
   setName( i18n("Kolab") );
 
@@ -508,9 +513,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     c.setParent( m_root );
   else
     c.setParentRemoteId( QString::number( imapCollection.parent() ) );
-  QString origName = imapCollection.name();
-  QString name = origName;
-  c.setName( name );
+  c.setName( imapCollection.name() );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;
   contentTypes.append( Collection::mimeType() );
