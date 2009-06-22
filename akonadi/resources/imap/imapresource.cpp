@@ -393,6 +393,7 @@ void ImapResource::retrieveCollections()
   root.setName( m_account->server() + '/' + m_account->userName() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+  root.setRights( Collection::ReadOnly );
 
   CachePolicy policy;
   policy.setInheritFromParent( false );
