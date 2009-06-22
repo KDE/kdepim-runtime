@@ -852,6 +852,25 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
   d->createProxyChain();
   d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
 
+  connect(sourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+          SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+          SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+          SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+          SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+          SLOT(sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+  connect(sourceModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+          SLOT(sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+  connect(sourceModel, SIGNAL(sourceModelAboutToBeReset()),
+          SLOT(sourceModelAboutToBeReset()));
+  connect(sourceModel, SIGNAL(sourceModelReset()),
+          SLOT(sourceModelReset()));
+  connect(sourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+          SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex & )));
+
 }
 
 QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) const
