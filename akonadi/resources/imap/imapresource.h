@@ -70,6 +70,8 @@ protected:
   virtual void collectionChanged( const Akonadi::Collection &collection );
   virtual void collectionRemoved( const Akonadi::Collection &collection );
 
+  virtual void doSetOnline(bool online);
+
 private Q_SLOTS:
   void onConnectSuccess();
   void onConnectError( int code, const QString &message );
@@ -95,11 +97,13 @@ private Q_SLOTS:
   void onStoreFlagsDone( KJob *job );
 
   void startConnect( bool forceManualAuth = false );
+  void reconnect();
 
 private:
   QString rootRemoteId() const;
   QString remoteIdForMailBox( const QString &path ) const;
   QString mailBoxForRemoteId( const QString &remoteId ) const;
+  bool needsNetwork() const;
 
   Akonadi::Collection collectionFromRemoteId( const QString &remoteId );
   Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );

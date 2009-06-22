@@ -30,6 +30,7 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtNetwork/QSslSocket>
+#include <QHostInfo>
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -37,6 +38,8 @@
 #include <kmessagebox.h>
 #include <KWindowSystem>
 #include <KAboutData>
+
+#include <solid/networking.h>
 
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
@@ -100,8 +103,8 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
 
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(startConnect()) );
-  startConnect();
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
+  reconnect();
 }
 
 ImapResource::~ImapResource()
@@ -188,7 +191,8 @@ void ImapResource::configure( WId windowId )
     setName( KGlobal::mainComponent().aboutData()->appName() );
   }
 
-  startConnect();
+  if ( dlg.result() == QDialog::Accepted )
+    reconnect();
 }
 
 void ImapResource::startConnect( bool forceManualAuth )
@@ -1106,6 +1110,36 @@ void ImapResource::itemsClear( const Collection &collection )
   }
 
   transaction->exec();
+}
+
+void ImapResource::doSetOnline(bool online)
+{
+  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected )
+    m_account->disconnect();
+  else if ( online )
+    startConnect();
+  ResourceBase::doSetOnline( online );
+}
+
+bool ImapResource::needsNetwork() const
+{
+  const QString hostName = Settings::self()->imapServer().section( ":", 0, 0 );
+  // ### is there a better way to do this?
+  if ( hostName == QLatin1String( "127.0.0.1" ) ||
+       hostName == QLatin1String( "localhost" ) ||
+       hostName == QHostInfo::localHostName() ) {
+    return false;
+  }
+  return true;
+}
+
+void ImapResource::reconnect()
+{
+  setNeedsNetwork( needsNetwork() );
+  setOnline( false ); // we are not connected initially
+  setOnline( !needsNetwork() ||
+             Solid::Networking::status() == Solid::Networking::Unknown ||
+             Solid::Networking::status() == Solid::Networking::Connected );
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )
