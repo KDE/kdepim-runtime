@@ -74,6 +74,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectiondeletejob.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -430,17 +431,22 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
     QString currentPath;
 
     foreach ( const QString &pathPart, pathParts ) {
+      const bool isDummy = pathPart != pathParts.last();
       currentPath+='/'+pathPart;
       if ( currentPath.startsWith( '/' ) ) {
         currentPath.remove( 0, 1 );
       }
 
       if ( reportedPaths.contains( currentPath ) ) {
+        if ( !isDummy )
+          kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
         parentPath = currentPath;
         continue;
       } else {
         reportedPaths << currentPath;
       }
+
+      const QList<QByteArray> currentFlags  = isDummy ? (QList<QByteArray>() << "\\NoSelect") : flags[i];
 
       Collection c;
       c.setName( pathPart );
@@ -457,13 +463,24 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       // If the folder is the Inbox, make some special settings.
       if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
         cachePolicy.setIntervalCheckTime( 1 );
-        c.setName( "Inbox" );
+        EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+        attr->setDisplayName( i18n( "Inbox" ) );
+        attr->setIconName( "mail-folder-inbox" );
+      }
+
+      // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
+      if ( currentPath == QLatin1String( "user" ) && currentFlags.contains( "\\NoSelect" ) ) {
+        EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+        attr->setDisplayName( i18n( "Shared Folders" ) );
+        attr->setIconName( "x-mail-distribution-list" );
       }
 
       // If this folder is a noselect folder, make some special settings.
-      if ( flags[i].contains( "\\NoSelect" ) ) {
+      if ( currentFlags.contains( "\\NoSelect" ) ) {
         cachePolicy.setSyncOnDemand( false );
         c.addAttribute( new NoSelectAttribute( true ) );
+        c.setContentMimeTypes( QStringList() << Collection::mimeType() );
+        c.setRights( Collection::ReadOnly );
       }
 
       c.setCachePolicy( cachePolicy );
