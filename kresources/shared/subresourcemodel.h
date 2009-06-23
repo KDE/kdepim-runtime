@@ -118,6 +118,8 @@ class SubResourceModel : public AbstractSubResourceModel
     {
       qDeleteAll( mSubResourcesByColId );
       mSubResourcesByColId.clear();
+      mSubResourcesByKResId.clear();
+      mCollectionsByItemId.clear();
     }
 
   protected:
