@@ -84,6 +84,7 @@ add_subdirectory(migration)
 add_subdirectory(defaultsetup)
 add_subdirectory(akonadi_next)
 add_subdirectory(kresources)
+add_subdirectory(akonadiconsole)
 
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
