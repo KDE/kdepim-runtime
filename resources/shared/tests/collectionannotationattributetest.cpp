@@ -45,6 +45,16 @@ class CollectionAnnotationAttributeTest : public QObject
 
       a.insert( "/vendor/cmu/cyrus-imapd/sharedseen", "false" );
       QTest::newRow( "empty value, three keys" ) << a;
+
+      a.clear();
+      a.insert( "vendor/cmu/cyrus-imapd/lastpop", " " );
+      QTest::newRow( "space value, single key" ) << a;
+
+      a.insert( "/vendor/cmu/cyrus-imapd/condstore", "false" );
+      QTest::newRow( "space value, two keys" ) << a;
+
+      a.insert( "/vendor/cmu/cyrus-imapd/sharedseen", "false" );
+      QTest::newRow( "space value, three keys" ) << a;
     }
 
     void testSerializeDeserialize()
@@ -58,8 +68,13 @@ class CollectionAnnotationAttributeTest : public QObject
       attr2->deserialize( attr1->serialized() );
       QCOMPARE( attr2->annotations(), annotation );
 
+      CollectionAnnotationsAttribute *attr3 = new CollectionAnnotationsAttribute();
+      attr3->setAnnotations( attr2->annotations() );
+      QCOMPARE( attr3->serialized(), attr1->serialized() );
+
       delete attr1;
       delete attr2;
+      delete attr3;
     }
 
 };
