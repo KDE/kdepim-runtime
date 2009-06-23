@@ -209,6 +209,10 @@ class SubResourceModel : public AbstractSubResourceModel
     void itemRemoved( const Akonadi::Item &item )
     {
       ColIdsByItemId::iterator findIt = mCollectionsByItemId.find( item.id() );
+      if ( findIt == mCollectionsByItemId.end() ) {
+        return;
+      }
+
       foreach ( const Akonadi::Collection::Id id, findIt.value() ) {
         SubResourceClass *subResource = mSubResourcesByColId.value( id, 0 );
         Q_ASSERT( subResource != 0 );
