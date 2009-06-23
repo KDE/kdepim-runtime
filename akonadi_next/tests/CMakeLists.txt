@@ -9,6 +9,7 @@ set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 SET(testSources
   dynamictreemodel.cpp
+  proxymodeltest.cpp
   ../modeltest.cpp
   ../descendantentitiesproxymodel.cpp
   ../abstractproxymodel.cpp
