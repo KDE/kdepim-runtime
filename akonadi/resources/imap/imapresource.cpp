@@ -858,6 +858,11 @@ void ImapResource::onGetMetaDataDone( KJob *job )
     annotations[entry] = rawAnnotations[entry][attribute];
   }
 
+  // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
+  // which contains the current date and time and thus constantly changes for no good
+  // reason which triggers a change notification and thus a bunch of Akonadi operations
+  annotations.remove( "/vendor/cmu/cyrus-imapd/lastupdate" );
+
   Collection collection = job->property( "akonadiCollection" ).value<Collection>();
 
   // Store the mailbox metadata
