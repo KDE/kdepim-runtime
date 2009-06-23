@@ -34,7 +34,8 @@
 
 using namespace Akonadi;
 
-class TestProxyModel : public QObject
+
+class DescendantEntitiesProxyModelTest : public QObject
 {
   Q_OBJECT
 
@@ -48,7 +49,7 @@ private slots:
   void testInsertionWithDescendants();
 };
 
-void TestProxyModel::testInsertionChangeAndRemoval()
+void DescendantEntitiesProxyModelTest::testInsertionChangeAndRemoval()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -110,7 +111,7 @@ void TestProxyModel::testInsertionChangeAndRemoval()
   QVERIFY(true);
 }
 
-void TestProxyModel::testSameParentDown()
+void DescendantEntitiesProxyModelTest::testSameParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -141,7 +142,7 @@ void TestProxyModel::testSameParentDown()
   QVERIFY(true);
 }
 
-void TestProxyModel::testSameParentUp()
+void DescendantEntitiesProxyModelTest::testSameParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -192,7 +193,7 @@ void TestProxyModel::testSameParentUp()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentUp()
+void DescendantEntitiesProxyModelTest::testDifferentParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -227,7 +228,7 @@ void TestProxyModel::testDifferentParentUp()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentDown()
+void DescendantEntitiesProxyModelTest::testDifferentParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -262,7 +263,7 @@ void TestProxyModel::testDifferentParentDown()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentSameLevel()
+void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -299,7 +300,7 @@ void TestProxyModel::testDifferentParentSameLevel()
 
 }
 
-void TestProxyModel::testInsertionWithDescendants()
+void DescendantEntitiesProxyModelTest::testInsertionWithDescendants()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
@@ -328,5 +329,5 @@ void TestProxyModel::testInsertionWithDescendants()
 }
 
 
-QTEST_KDEMAIN(TestProxyModel, GUI)
+QTEST_KDEMAIN(DescendantEntitiesProxyModelTest, GUI)
 #include "descendantentitiesproxymodeltest.moc"
