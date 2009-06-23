@@ -42,6 +42,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
+#include <akonadi/control.h>
 
 class AkonadiResourceDialog : public KDialog
 {
@@ -68,6 +69,7 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
     mSourcesDialog( 0 ),
     mSourcesButton( 0 )
 {
+  Akonadi::Control::start( this );
   QVBoxLayout *mainLayout = new QVBoxLayout( this );
   mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );

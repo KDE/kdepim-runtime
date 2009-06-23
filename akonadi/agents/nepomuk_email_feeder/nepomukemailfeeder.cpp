@@ -42,10 +42,28 @@
 #include <Soprano/Vocabulary/XMLSchema>
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
+#include <soprano/node.h>
+#include <soprano/nodeiterator.h>
+#include <soprano/nrl.h>
+
+#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
+#include <soprano/nrlmodel.h>
 
 
 using namespace Akonadi;
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
+static void removeItemFromNepomuk( const Akonadi::Item &item )
+{
+  // find the graph that contains our item and delete the complete graph
+  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
+                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
+                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
+                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+
+  foreach ( const Soprano::Node &node, list )
+    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
+}
 
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   AgentBase( id )
@@ -57,6 +75,13 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
 
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
+
+  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
+}
+
+NepomukEMailFeeder::~NepomukEMailFeeder()
+{
+  delete mNrlModel;
 }
 
 void NepomukEMailFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
@@ -70,10 +95,24 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   Q_UNUSED( partIdentifiers );
   if ( !item.hasPayload<MessagePtr>() )
     return;
+
+  // first remove the item: since we use a graph that has a reference to all parts
+  // of the item's semantic representation this is a really fast operation
+  removeItemFromNepomuk( item );
+
+  // create a new graph for the item
+  QUrl metaDataGraphUri;
+  QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
+
+  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
+  mNrlModel->addStatement( graphUri,
+                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
+                           item.url(), metaDataGraphUri );
+
   MessagePtr msg = item.payload<MessagePtr>();
 
   // FIXME: make a distinction between email and news
-  Nepomuk::Email r( item.url() );
+  NepomukFast::Email r( item.url(), graphUri );
 
   if ( msg->subject( false ) ) {
     r.setMessageSubject( msg->subject()->asUnicodeString() );
@@ -84,19 +123,19 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   }
 
   if ( msg->from( false ) ) {
-    r.setSenders( extractContactsFromMailboxes( msg->from()->mailboxes() ) );
+    r.setSenders( extractContactsFromMailboxes( msg->from()->mailboxes(), graphUri ) );
   }
 
   if ( msg->to( false ) ) {
-    r.setTos( extractContactsFromMailboxes( msg->to()->mailboxes() ) );
+    r.setTos( extractContactsFromMailboxes( msg->to()->mailboxes(), graphUri ) );
   }
 
   if ( msg->cc( false ) ) {
-    r.setCcs( extractContactsFromMailboxes( msg->cc()->mailboxes() ) );
+    r.setCcs( extractContactsFromMailboxes( msg->cc()->mailboxes(), graphUri ) );
   }
 
   if ( msg->bcc( false ) ) {
-    r.setBccs( extractContactsFromMailboxes( msg->bcc()->mailboxes() ) );
+    r.setBccs( extractContactsFromMailboxes( msg->bcc()->mailboxes(), graphUri ) );
   }
 
   KMime::Content* content = msg->mainBodyPart( "text/plain" );
@@ -105,13 +144,13 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   if ( content ) {
     QString text = content->decodedText( true, true );
     if ( !text.isEmpty() ) {
-      r.setProperty( Soprano::Vocabulary::Xesam::asText(), text );
+      r.addProperty( Soprano::Vocabulary::Xesam::asText(), Soprano::LiteralValue( text ) );
     }
   }
 
   // FIXME: is xesam:id the best idea here?
   if ( msg->messageID( false ) ) {
-    r.setProperty( Soprano::Vocabulary::Xesam::id(), Nepomuk::Variant(msg->messageID()->asUnicodeString()) );
+    r.addProperty( Soprano::Vocabulary::Xesam::id(), Soprano::LiteralValue( msg->messageID()->asUnicodeString() ) );
   }
 
   // IDEA: use Strigi to index the attachments
@@ -119,18 +158,19 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
 
 void NepomukEMailFeeder::itemRemoved(const Akonadi::Item & item)
 {
-  Nepomuk::Resource r( item.url() );
-  r.remove();
+  removeItemFromNepomuk( item );
 }
 
-QList<Nepomuk::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs )
+QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs,
+                                                                              const QUrl &graphUri )
 {
-  QList<Nepomuk::Contact> contacts;
+  QList<NepomukFast::Contact> contacts;
 
   foreach( const KMime::Types::Mailbox& mbox, mbs ) {
     if ( mbox.hasAddress() ) {
-      Nepomuk::PersonContact c = findContact( mbox.address() );
-      if ( c.fullnames().isEmpty() && mbox.hasName() )
+      bool found = false;
+      NepomukFast::Contact c = findContact( mbox.address(), graphUri, &found );
+      if ( !found && mbox.hasName() )
         c.addFullname( mbox.name() );
       contacts << c;
     }
@@ -139,7 +179,7 @@ QList<Nepomuk::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( const 
   return contacts;
 }
 
-Nepomuk::Contact NepomukEMailFeeder::findContact( const QByteArray& address )
+NepomukFast::PersonContact NepomukEMailFeeder::findContact( const QByteArray& address, const QUrl &graphUri, bool *found )
 {
   //
   // Querying with the exact address string is not perfect since email addresses
@@ -148,18 +188,20 @@ Nepomuk::Contact NepomukEMailFeeder::findContact( const QByteArray& address )
   //
   Soprano::QueryResultIterator it =
     Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString( "select distinct ?r where { ?r <%1> ?a . ?a <%2> \"%3\"^^<%4> . }" )
-                                                                     .arg( Nepomuk::Role::emailAddressUri().toString() )
-                                                                     .arg( Nepomuk::EmailAddress::emailAddressUri().toString() )
+                                                                     .arg( NepomukFast::Role::emailAddressUri().toString() )
+                                                                     .arg( NepomukFast::EmailAddress::emailAddressUri().toString() )
                                                                      .arg( QString::fromAscii( address ) )
                                                                      .arg( Soprano::Vocabulary::XMLSchema::string().toString() ),
                                                                      Soprano::Query::QueryLanguageSparql );
   if ( it.next() ) {
-    return Nepomuk::Contact( it.binding( 0 ).uri() );
+    *found = true;
+    return NepomukFast::PersonContact( it.binding( 0 ).uri(), graphUri );
   }
   else {
+    *found = false;
     // create a new contact
-    Nepomuk::PersonContact contact;
-    Nepomuk::EmailAddress email( QUrl( "mailto:" + address ) );
+    NepomukFast::PersonContact contact( QUrl(), graphUri );
+    NepomukFast::EmailAddress email( QUrl( "mailto:" + address ), graphUri );
     email.setEmailAddress( QString::fromAscii( address ) );
     contact.addEmailAddress( email );
     return contact;

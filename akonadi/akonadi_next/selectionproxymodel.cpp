@@ -53,8 +53,8 @@ public:
   void sourceRowsInserted(const QModelIndex &, int start, int end);
   void sourceRowsAboutToBeRemoved(const QModelIndex &, int start, int end);
   void sourceRowsRemoved(const QModelIndex &, int start, int end);
-//   void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-//   void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+  void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+  void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
   void sourceModelAboutToBeReset();
   void sourceModelReset();
   void sourceLayoutAboutToBeChanged();
@@ -382,6 +382,16 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
     q->endRemoveRows();
     return;
   }
+}
+
+void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+{
+
+}
+
+void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+{
+
 }
 
 bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
@@ -841,6 +851,25 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
   AbstractProxyModel::setSourceModel(sourceModel);
   d->createProxyChain();
   d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
+
+  connect(sourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+          SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+          SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+          SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+          SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+  connect(sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+          SLOT(sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+  connect(sourceModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+          SLOT(sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+  connect(sourceModel, SIGNAL(sourceModelAboutToBeReset()),
+          SLOT(sourceModelAboutToBeReset()));
+  connect(sourceModel, SIGNAL(sourceModelReset()),
+          SLOT(sourceModelReset()));
+  connect(sourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+          SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex & )));
 
 }
 

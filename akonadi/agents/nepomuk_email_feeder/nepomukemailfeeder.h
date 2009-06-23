@@ -29,6 +29,11 @@
 
 #include <kmime/kmime_header_parsing.h>
 
+namespace Soprano
+{
+class NRLModel;
+}
+
 namespace Akonadi {
 
 class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
@@ -36,6 +41,7 @@ class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
   Q_OBJECT
   public:
     NepomukEMailFeeder( const QString &id );
+    ~NepomukEMailFeeder();
 
   protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -43,8 +49,9 @@ class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
     void itemRemoved(const Akonadi::Item &item);
 
   private:
-    QList<Nepomuk::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs );
-    Nepomuk::Contact findContact( const QByteArray& address );
+    QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl& );
+    NepomukFast::PersonContact findContact( const QByteArray& address, const QUrl&, bool *found );
+    Soprano::NRLModel *mNrlModel;
 };
 
 }

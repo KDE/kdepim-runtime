@@ -54,6 +54,8 @@ class NepomukContactFeeder : public AgentBase, public AgentBase::Observer
 
   private:
     void updateItem( const Akonadi::Item &item );
+    void updateContactItem( const Akonadi::Item &item, const QUrl& );
+    void updateGroupItem( const Akonadi::Item &item, const QUrl& );
 
     bool mForceUpdate;
     Soprano::NRLModel *mNrlModel;
