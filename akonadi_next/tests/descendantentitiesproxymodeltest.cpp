@@ -55,7 +55,6 @@ void TestProxyModel::testInsertionChangeAndRemoval()
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -118,8 +117,6 @@ void TestProxyModel::testSameParentDown()
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
-  new ModelTest(proxy, this);
-
   QList<int> ancestorRows;
 
   ModelInsertCommand *ins;
@@ -150,8 +147,6 @@ void TestProxyModel::testSameParentUp()
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -204,8 +199,6 @@ void TestProxyModel::testDifferentParentUp()
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
-  new ModelTest(proxy, this);
-
   QList<int> ancestorRows;
 
   ModelInsertCommand *ins;
@@ -241,8 +234,6 @@ void TestProxyModel::testDifferentParentDown()
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
-  new ModelTest(proxy, this);
-
   QList<int> ancestorRows;
 
   ModelInsertCommand *ins;
@@ -277,8 +268,6 @@ void TestProxyModel::testDifferentParentSameLevel()
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -316,8 +305,6 @@ void TestProxyModel::testInsertionWithDescendants()
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   // First insert 4 items to the root.
   ModelInsertCommand *ins = new ModelInsertCommand(model, this);
