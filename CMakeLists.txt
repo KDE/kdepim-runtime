@@ -94,3 +94,13 @@ add_subdirectory(akonadiconsole)
 if(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
     macro_display_feature_log()
 endif(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
+
+############### Here we install some extra stuff  ###############
+
+## install the MIME type spec file for KDEPIM specific MIME types
+set(SHARED_MIME_INFO_MINIMUM_VERSION "0.30")
+find_package(SharedMimeInfo REQUIRED)
+
+install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+

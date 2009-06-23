@@ -83,6 +83,6 @@ Type=AkonadiResource
 Exec=akonadi_ical_resource
 Icon=view-pim-notes
 
-X-Akonadi-MimeTypes=application/x-vnd.akonadi.notes
+X-Akonadi-MimeTypes=application/x-vnd.kde.notes
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_notes_resource
