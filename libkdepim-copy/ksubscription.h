@@ -26,7 +26,7 @@
 #ifndef KDEPIM_KSUBSCRIPTION_H
 #define KDEPIM_KSUBSCRIPTION_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 
 #include <KDialog>
 
@@ -45,7 +45,7 @@ class KSubscription;
 
 //==========================================================================
 
-class KDEPIM_EXPORT KGroupInfo
+class KDEPIM_COPY_EXPORT KGroupInfo
 {
   public:
     enum Status {
@@ -74,7 +74,7 @@ class KDEPIM_EXPORT KGroupInfo
 //==========================================================================
 
 /** A class representing a single group item (what's that?) */
-class KDEPIM_EXPORT GroupItem : public QObject, public QTreeWidgetItem
+class KDEPIM_COPY_EXPORT GroupItem : public QObject, public QTreeWidgetItem
 {
   Q_OBJECT
 
@@ -166,7 +166,7 @@ class KDEPIM_EXPORT GroupItem : public QObject, public QTreeWidgetItem
  * You can hide unwanted checkboxes via the respective hide<checkboxname> methods
  *
  */
-class KDEPIM_EXPORT KSubscription : public KDialog
+class KDEPIM_COPY_EXPORT KSubscription : public KDialog
 {
   Q_OBJECT
 

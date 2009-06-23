@@ -20,7 +20,7 @@
 #ifndef UISTATESAVER_H
 #define UISTATESAVER_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 
 class QWidget;
 class KConfigGroup;
@@ -45,7 +45,7 @@ namespace UiStateSaver {
    * @param config The config group the settings should be
    * written to.
    */
-  KDEPIM_EXPORT void saveState( QWidget* widget, KConfigGroup &config );
+  KDEPIM_COPY_EXPORT void saveState( QWidget* widget, KConfigGroup &config );
 
   /**
    * Restore UI state of @p widget and all its sub-widgets
@@ -55,7 +55,7 @@ namespace UiStateSaver {
    * @param config The config gorup the settings should be
    * read from.
    */
-  KDEPIM_EXPORT void restoreState( QWidget *widget, const KConfigGroup &config );
+  KDEPIM_COPY_EXPORT void restoreState( QWidget *widget, const KConfigGroup &config );
 }
 
 }

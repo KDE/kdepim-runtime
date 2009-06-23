@@ -17,24 +17,24 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef KDEPIM_EXPORT_H
-#define KDEPIM_EXPORT_H
+#ifndef KDEPIM_COPY_EXPORT_H
+#define KDEPIM_COPY_EXPORT_H
 
 /* needed for KDE_EXPORT and KDE_IMPORT macros */
 #include <kdemacros.h>
 
-#ifndef KDEPIM_EXPORT
-# if defined(MAKE_KDEPIM_LIB)
-   /* We are building this library */ 
-#  define KDEPIM_EXPORT KDE_EXPORT
+#ifndef KDEPIM_COPY_EXPORT
+# if defined(MAKE_KDEPIM_COPY_LIB)
+   /* We are building this library */
+#  define KDEPIM_COPY_EXPORT KDE_EXPORT
 # else
-   /* We are using this library */ 
-#  define KDEPIM_EXPORT KDE_IMPORT
+   /* We are using this library */
+#  define KDEPIM_COPY_EXPORT KDE_IMPORT
 # endif
 #endif
 
-# ifndef KDEPIM_EXPORT_DEPRECATED
-#  define KDEPIM_EXPORT_DEPRECATED KDE_DEPRECATED KDEPIM_EXPORT
+# ifndef KDEPIM_COPY_EXPORT_DEPRECATED
+#  define KDEPIM_COPY_EXPORT_DEPRECATED KDE_DEPRECATED KDEPIM_COPY_EXPORT
 # endif
 
 #endif

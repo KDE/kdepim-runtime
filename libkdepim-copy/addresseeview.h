@@ -22,7 +22,7 @@
 #ifndef KDEPIM_ADDRESSEEVIEW_H
 #define KDEPIM_ADDRESSEEVIEW_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 
 #include <kabc/addressee.h>
 
@@ -42,7 +42,7 @@ class KJob;
 namespace KPIM {
 
 
-class KDEPIM_EXPORT AddresseeView : public KTextBrowser
+class KDEPIM_COPY_EXPORT AddresseeView : public KTextBrowser
 {
   Q_OBJECT
   public:
