@@ -20,6 +20,7 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #ifndef AKONADI_COLLECTIONCHILDORDERATTRIBUTE_H
 #define AKONADI_COLLECTIONCHILDORDERATTRIBUTE_H
 
+#include "akonadi_next_export.h"
 #include <akonadi/attribute.h>
 
 // #include <QStringList>
