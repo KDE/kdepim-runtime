@@ -89,6 +89,8 @@ void SendJob::Private::doTransport()
 
   if( aborting ) {
     kDebug() << "Marking message as aborted.";
+    q->setError( UserDefinedError );
+    q->setErrorText( i18n( "Message sending aborted." ) );
     storeResult( false, i18n( "Message sending aborted." ) );
     return;
   }

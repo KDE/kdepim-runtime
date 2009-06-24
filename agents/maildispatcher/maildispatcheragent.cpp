@@ -45,8 +45,8 @@ class MailDispatcherAgent::Private
     Private( MailDispatcherAgent *parent )
         : q( parent )
         , currentJob( 0 )
-        , currentItem()
         , aborting( false )
+        , sendingInProgress( false )
         , sentAnything( false )
     {
     }
@@ -61,6 +61,7 @@ class MailDispatcherAgent::Private
     SendJob *currentJob;
     Item currentItem;
     bool aborting;
+    bool sendingInProgress;
     bool sentAnything;
     qulonglong sentItemsSize;
 
@@ -77,19 +78,24 @@ class MailDispatcherAgent::Private
 
 void MailDispatcherAgent::Private::abort()
 {
+  if( !q->isOnline() ) {
+    kDebug() << "Offline. Ignoring call.";
+    return;
+  }
   if( aborting ) {
     kDebug() << "Already aborting.";
     return;
   }
 
-  if( !currentJob ) {
+  if( !sendingInProgress && queue->isEmpty() ) {
     kDebug() << "MDA is idle.";
     Q_ASSERT( q->status() == AgentBase::Idle );
-    Q_ASSERT( queue->isEmpty() );
   } else {
     kDebug() << "Aborting...";
     aborting = true;
-    currentJob->abort();
+    if( currentJob ) {
+      currentJob->abort();
+    }
     // Further SendJobs will mark remaining items in the queue as 'aborted'.
   }
 }
@@ -98,13 +104,8 @@ void MailDispatcherAgent::Private::dispatch()
 {
   Q_ASSERT( queue );
 
-  if( !q->isOnline() ) {
-    kDebug() << "Offline. See you later.";
-    return;
-  }
-
-  if( currentJob ) {
-    kDebug() << "Another job is active. See you later.";
+  if( !q->isOnline() || sendingInProgress ) {
+    kDebug() << "Offline or busy. See you later.";
     return;
   }
 
@@ -119,6 +120,7 @@ void MailDispatcherAgent::Private::dispatch()
         i18np( "Sending messages (1 item in queue)...",
                "Sending messages (%1 items in queue)...", queue->count() ) );
     kDebug() << "Attempting to dispatch the next message.";
+    sendingInProgress = true;
     queue->fetchOne(); // will trigger itemFetched
   } else {
     kDebug() << "Empty queue.";
@@ -197,6 +199,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
 void MailDispatcherAgent::Private::itemFetched( Item &item )
 {
   kDebug() << "Fetched item" << item.id() << "; creating SendJob.";
+  Q_ASSERT( sendingInProgress );
   Q_ASSERT( !currentItem.isValid() );
   currentItem = item;
   Q_ASSERT( currentJob == 0 );
@@ -213,6 +216,8 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
 
 void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent )
 {
+  Q_ASSERT( sendingInProgress );
+  Q_ASSERT( job == currentJob );
   // The progress here is actually the TransportJob, not the entire SendJob,
   // because the post-job doesn't report progress.  This should be fine,
   // since the TransportJob is the lengthiest operation.
@@ -221,7 +226,6 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent
   const double transportWeight = 0.8;
   
   Q_UNUSED( percent );
-  Q_ASSERT( job );
   int perc = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
     / ( sentItemsSize + currentItem.size() + queue->totalSize() );
   kDebug() << "sentItemsSize" << sentItemsSize
@@ -243,6 +247,7 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent
 
 void MailDispatcherAgent::Private::sendResult( KJob *job )
 {
+  Q_ASSERT( sendingInProgress );
   Q_ASSERT( job == currentJob );
   currentJob->disconnect( q );
   currentJob = 0;
@@ -261,6 +266,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   }
 
   // dispatch next message
+  sendingInProgress = false;
   QTimer::singleShot( 0, q, SLOT( dispatch() ) );
 }
 

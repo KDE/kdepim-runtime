@@ -7,3 +7,8 @@
 * Figure out which / whether error strings should be i18n'd
 * Should probably use progressMessage instead of statusMessage, but it seems
   to be unimplemented in AgentInstance, and only a stub in AgentBase.
+
+Bugs:
+* Incorrect size reporting in itemChanged() from Monitor.  Leads to displaying
+  >100% progress.
+  (found with: offline, queue some, online, abort, clearerror)

@@ -139,6 +139,10 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
 
   const DispatchModeAttribute *mA = item.attribute<DispatchModeAttribute>();
   Q_ASSERT( mA );
+  if( mA->dispatchMode() == DispatchModeAttribute::Never ) {
+    kDebug() << "Item" << item.id() << "is queued to be sent manually.";
+    return;
+  }
   if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
       mA->dueDate() > QDateTime::currentDateTime() ) {
     kDebug() << "Item" << item.id() << "is to be sent in the future.";
@@ -250,8 +254,11 @@ void OutboxQueue::Private::itemRemoved( const Item &item )
 {
   // @p item has size=0, so get the size from our own copy.
   int idx = queue.indexOf( item );
-  Q_ASSERT( idx != -1 );
-  const Item my = queue.takeAt( idx );
+  if( idx == -1 ) {
+    // Item was not in queue at all.
+    return;
+  }
+  Item my( queue.takeAt( idx ) );
   kDebug() << "Item" << my.id() << "(size" << my.size() << ") was removed from the queue.";
   totalSize -= my.size();
 }

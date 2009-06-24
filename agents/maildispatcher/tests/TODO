@@ -2,3 +2,5 @@
 * figure out why ksyscoca is started (it's not the wallet apparently)
 * aborttest: test aborting when there is >1 message queued
 * test the various SendBehaviours and DispatchModes
+* dupetest -> probably faster and more effective if I just use random intervals
+  of time between queuing messages
