@@ -61,6 +61,7 @@ class OutboxQueue : public QObject
     class Private;
     Private* const d;
 
+    Q_PRIVATE_SLOT( d, void checkFuture() )
     Q_PRIVATE_SLOT( d, void collectionFetched( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
     Q_PRIVATE_SLOT( d, void outboxChanged() )

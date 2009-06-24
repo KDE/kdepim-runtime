@@ -19,6 +19,10 @@
 
 #include "outboxqueue.h"
 
+#include <QMultiMap>
+#include <QSet>
+#include <QTimer>
+
 #include <KDebug>
 
 #include <Akonadi/Attribute>
@@ -49,15 +53,18 @@ class OutboxQueue::Private
     Private( OutboxQueue *qq )
       : q( qq )
       , outbox( -1 )
+      , futureTimer( 0 )
     {
     }
-
 
     OutboxQueue *const q;
 
     Collection outbox;
     Monitor *monitor;
     QList<Item> queue;
+    QSet<Item> futureItems; // keeps track of items removed in the meantime
+    QMultiMap<QDateTime, Item> futureMap;
+    QTimer *futureTimer;
     qulonglong totalSize;
 
 #if 0
@@ -79,6 +86,7 @@ class OutboxQueue::Private
     void addIfComplete( const Item &item );
 
     // slots:
+    void checkFuture();
     void collectionFetched( KJob *job );
     void itemFetched( KJob *job );
     void outboxChanged();
@@ -143,13 +151,6 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
     kDebug() << "Item" << item.id() << "is queued to be sent manually.";
     return;
   }
-  if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
-      mA->dueDate() > QDateTime::currentDateTime() ) {
-    kDebug() << "Item" << item.id() << "is to be sent in the future.";
-    return;
-
-    // TODO: QTimer to check again on due date.
-  }
 
   const TransportAttribute *tA = item.attribute<TransportAttribute>();
   Q_ASSERT( tA );
@@ -166,7 +167,6 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
     return;
   }
 
-
   // This check requires fetchFullPayload. -> slow (?)
   /*
   if( !item.hasPayload<KMime::Message::Ptr>() ) {
@@ -175,11 +175,58 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
   */
 
+  if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
+      mA->dueDate() > QDateTime::currentDateTime() ) {
+    // All the above was OK, so accept it for the future.
+    kDebug() << "Item" << item.id() << "is accepted to be sent in the future.";
+    futureMap.insert( mA->dueDate(), item );
+    Q_ASSERT( !futureItems.contains( item ) );
+    futureItems.insert( item );
+    checkFuture();
+    return;
+  }
+
   kDebug() << "Item" << item.id() << "is accepted into the queue (size" << item.size() << ").";
   Q_ASSERT( !queue.contains( item ) );
   totalSize += item.size();
   queue.append( item );
   emit q->newItems();
+}
+
+void OutboxQueue::Private::checkFuture()
+{
+  kDebug() << "The future is here." << futureMap.count() << "items in futureMap.";
+  Q_ASSERT( futureTimer );
+  futureTimer->stop();
+  // By default, re-check in one hour.
+  futureTimer->setInterval( 60 * 60 * 1000 );
+
+  // Check items in ascending order of date.
+  while( !futureMap.isEmpty() ) {
+    QMap<QDateTime, Item>::iterator it = futureMap.begin();
+    kDebug() << "Item with due date" << it.key();
+    if( it.key() > QDateTime::currentDateTime() ) {
+      int secs = QDateTime::currentDateTime().secsTo( it.key() ) + 1;
+      kDebug() << "Future, in" << secs << "seconds.";
+      Q_ASSERT( secs >= 0 );
+      if( secs < 60 * 60 ) {
+        futureTimer->setInterval( secs * 1000 );
+      }
+      break; // all others are in the future too
+    }
+    if( !futureItems.contains( it.value() ) ) {
+      kDebug() << "Item disappeared.";
+    } else {
+      kDebug() << "Due date is here. Queuing.";
+      addIfComplete( it.value() );
+      futureItems.remove( it.value() );
+    }
+    futureMap.erase( it );
+  }
+
+  kDebug() << "Timer set to checkFuture again in" << futureTimer->interval() / 1000 << "seconds"
+    << "(that is" << futureTimer->interval() / 1000 / 60 << "minutes).";
+  futureTimer->start();
 }
 
 void OutboxQueue::Private::collectionFetched( KJob *job )
@@ -261,6 +308,8 @@ void OutboxQueue::Private::itemRemoved( const Item &item )
   Item my( queue.takeAt( idx ) );
   kDebug() << "Item" << my.id() << "(size" << my.size() << ") was removed from the queue.";
   totalSize -= my.size();
+
+  futureItems.remove( item );
 }
 
 void OutboxQueue::Private::itemProcessed( const Item &item, bool result )
@@ -293,6 +342,10 @@ OutboxQueue::OutboxQueue( QObject *parent )
   connect( LocalFolders::self(), SIGNAL( foldersReady() ),
       this, SLOT( outboxChanged() ) );
   LocalFolders::self()->fetch();
+
+  d->futureTimer = new QTimer( this );
+  connect( d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()) );
+  d->futureTimer->start( 60 * 60 * 1000 ); // 1 hour
 }
 
 OutboxQueue::~OutboxQueue()
