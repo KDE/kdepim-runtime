@@ -57,6 +57,7 @@ class MailDispatcherAgent : public Akonadi::AgentBase
     Q_PRIVATE_SLOT( d, void dispatch() )
     Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
     Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void emitStatusReady() )
 
 };
 

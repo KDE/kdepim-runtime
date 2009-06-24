@@ -66,6 +66,7 @@ class MailDispatcherAgent::Private
     void dispatch();
     void itemFetched( Item &item );
     void sendResult( KJob *job );
+    void emitStatusReady();
 
 };
 
@@ -104,15 +105,24 @@ void MailDispatcherAgent::Private::dispatch()
   }
 
   if( !queue->isEmpty() ) {
+    // TODO Sending message X of Y: <subject>
     emit q->status( AgentBase::Running,
-        i18n( "Dispatching messages (%1 messages in queue).", queue->count() ) );
+        i18np( "Sending messages (1 item in queue)...",
+               "Sending messages (%1 items in queue)...", queue->count() ) );
     kDebug() << "Attempting to dispatch the next message.";
     queue->fetchOne(); // will trigger itemFetched
   } else {
     kDebug() << "Empty queue.";
-    // Finished sending messages in queue, or finished marking messages as 'aborted'.
-    aborting = false;
-    emit q->status( AgentBase::Idle, i18n( "Ready to dispatch messages." ) );
+    if( aborting ) {
+      // Finished marking messages as 'aborted'.
+      aborting = false;
+      emit q->status( AgentBase::Idle, i18n( "Sending cancelled." ) );
+      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
+    } else {
+      // Finished sending messages in queue.
+      emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
+      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
+    }
   }
 }
 
@@ -200,6 +210,14 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
 
   // dispatch next message
   QTimer::singleShot( 0, q, SLOT( dispatch() ) );
+}
+
+void MailDispatcherAgent::Private::emitStatusReady()
+{
+  if( q->status() == AgentBase::Idle ) {
+    // If still idle after aborting, clear 'aborted' status.
+    emit q->status( AgentBase::Idle, i18n( "Ready to dispatch messages." ) );
+  }
 }
 
 
