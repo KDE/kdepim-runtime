@@ -651,12 +651,16 @@ void ImapResource::collectionChanged( const Collection & collection )
   const QString oldMailBox = mailBoxForRemoteId( oldRemoteId );
   const QString newMailBox = mailBoxForRemoteId( newRemoteId );
 
-  KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
-  job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
-  job->setSourceMailBox( oldMailBox );
-  job->setDestinationMailBox( newMailBox );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
-  job->start();
+  if ( oldMailBox != newMailBox ) {
+    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
+    job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+    job->setSourceMailBox( oldMailBox );
+    job->setDestinationMailBox( newMailBox );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
+    job->start();
+  } else {
+    changeProcessed();
+  }
 }
 
 void ImapResource::onRenameMailBoxDone( KJob *job )
