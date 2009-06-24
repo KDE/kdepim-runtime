@@ -47,6 +47,7 @@ class MailDispatcherAgent::Private
         , currentJob( 0 )
         , currentItem()
         , aborting( false )
+        , sentAnything( false )
     {
     }
 
@@ -60,6 +61,7 @@ class MailDispatcherAgent::Private
     SendJob *currentJob;
     Item currentItem;
     bool aborting;
+    bool sentAnything;
 
     // slots:
     void abort();
@@ -105,6 +107,7 @@ void MailDispatcherAgent::Private::dispatch()
   }
 
   if( !queue->isEmpty() ) {
+    sentAnything = true;
     // TODO Sending message X of Y: <subject>
     emit q->status( AgentBase::Running,
         i18np( "Sending messages (1 item in queue)...",
@@ -119,8 +122,14 @@ void MailDispatcherAgent::Private::dispatch()
       emit q->status( AgentBase::Idle, i18n( "Sending cancelled." ) );
       QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     } else {
-      // Finished sending messages in queue.
-      emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
+      if( sentAnything ) {
+        // Finished sending messages in queue.
+        sentAnything = false;
+        emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
+      } else {
+        // Empty queue.
+        emit q->status( AgentBase::Idle, i18n( "No items in queue." ) );
+      }
       QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     }
   }
@@ -163,9 +172,11 @@ void MailDispatcherAgent::doSetOnline( bool online )
   Q_ASSERT( d->queue );
   if( online ) {
     kDebug() << "Online. Dispatching messages.";
+    emit status( AgentBase::Idle, i18n( "Online, sending messages in queue." ) );
     QTimer::singleShot( 0, this, SLOT( dispatch() ) );
   } else {
     kDebug() << "Offline.";
+    emit status( AgentBase::Idle, i18n( "Offline, message sending suspended." ) );
 
     // TODO: This way, the OutboxQueue will continue to react to changes in
     // the outbox, but the MDA will just not send anything.  Is this what we
