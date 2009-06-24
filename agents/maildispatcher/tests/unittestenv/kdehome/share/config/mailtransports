@@ -9,3 +9,15 @@ host=akonadi_mailtransport_dummy_resource_0
 id=666
 name=Dummy Akonadi Transport
 type=Akonadi
+
+[Transport 549190884]
+auth=true
+encryption=SSL
+host=smtp.gmail.com
+id=549190884
+name=idanoka2-stored
+password=ﾾﾴﾰﾱﾾﾻﾶﾫﾺﾬﾫ
+port=465
+storepass=true
+user=idanoka2@gmail.com
+

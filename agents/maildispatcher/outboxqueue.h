@@ -42,6 +42,7 @@ class OutboxQueue : public QObject
     virtual ~OutboxQueue();
 
     bool isEmpty() const;
+    int count() const;
 
     /**
       Fetches an item and emits itemReady() when done.

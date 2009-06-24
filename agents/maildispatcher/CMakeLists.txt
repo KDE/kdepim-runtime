@@ -17,6 +17,9 @@ kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildispatcheragent.kcf
 qt4_add_dbus_adaptor(maildispatcheragent_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailDispatcher.Settings.xml settings.h Settings
 )
+qt4_add_dbus_adaptor( maildispatcheragent_SRCS
+  ${KDE4_DBUS_INTERFACES_DIR}/org.kde.Akonadi.MailDispatcher.xml maildispatcheragent.h MailDispatcherAgent
+)
 
 kde4_add_executable(akonadi_maildispatcher_agent RUN_UNINSTALLED ${maildispatcheragent_SRCS})
 

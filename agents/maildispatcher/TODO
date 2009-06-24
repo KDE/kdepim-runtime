@@ -5,3 +5,5 @@
   not get any new notifications.) This has to be fixed in Akonadi, but that
   means adding ObserverV2 or something.
 * Figure out which / whether error strings should be i18n'd
+
+* progress reporting

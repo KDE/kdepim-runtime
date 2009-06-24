@@ -281,6 +281,11 @@ bool OutboxQueue::isEmpty() const
   return d->queue.isEmpty();
 }
 
+int OutboxQueue::count() const
+{
+  return d->queue.count();
+}
+
 void OutboxQueue::fetchOne()
 {
   if( isEmpty() ) {

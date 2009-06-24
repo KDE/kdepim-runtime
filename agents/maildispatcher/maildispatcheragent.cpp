@@ -21,6 +21,7 @@
 #include "maildispatcheragent.h"
 
 //#include "configdialog.h"
+#include "maildispatcheradaptor.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
 #include "settings.h"
@@ -30,6 +31,7 @@
 #include <QTimer>
 
 #include <KDebug>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 #include <Akonadi/ItemFetchScope>
@@ -44,6 +46,7 @@ class MailDispatcherAgent::Private
         : q( parent )
         , currentJob( 0 )
         , currentItem()
+        , aborting( false )
     {
     }
 
@@ -54,8 +57,9 @@ class MailDispatcherAgent::Private
     MailDispatcherAgent * const q;
 
     OutboxQueue *queue;
-    KJob *currentJob;
+    SendJob *currentJob;
     Item currentItem;
+    bool aborting;
 
     // slots:
     void dispatch();
@@ -79,8 +83,17 @@ void MailDispatcherAgent::Private::dispatch()
     return;
   }
 
-  kDebug() << "Attempting to dispatch the next message.";
-  queue->fetchOne(); // will trigger itemFetched
+  if( !queue->isEmpty() ) {
+    emit q->status( AgentBase::Running,
+        i18n( "Dispatching messages (%1 messages in queue).", queue->count() ) );
+    kDebug() << "Attempting to dispatch the next message.";
+    queue->fetchOne(); // will trigger itemFetched
+  } else {
+    kDebug() << "Empty queue.";
+    // Finished sending messages in queue, or finished marking messages as 'aborted'.
+    aborting = false;
+    emit q->status( AgentBase::Idle, i18n( "Ready to dispatch messages." ) );
+  }
 }
 
 
@@ -91,6 +104,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   kDebug() << "maildispatcheragent: At your service, sir!";
 
   new SettingsAdaptor( Settings::self() );
+  new MailDispatcherAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -99,12 +113,31 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
       this, SLOT( itemFetched( Akonadi::Item& ) ) );
   connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
-      d->queue, SLOT(itemProcessed(Akonadi::Item)) );
+      d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
 {
   delete d;
+}
+
+void MailDispatcherAgent::abort()
+{
+  if( d->aborting ) {
+    kDebug() << "Already aborting.";
+    return;
+  }
+
+  if( !d->currentJob ) {
+    kDebug() << "MDA is idle.";
+    Q_ASSERT( status() == AgentBase::Idle );
+    Q_ASSERT( d->queue->isEmpty() );
+  } else {
+    kDebug() << "Aborting...";
+    d->aborting = true;
+    d->currentJob->abort();
+    // Further SendJobs will mark remaining items in the queue as 'aborted'.
+  }
 }
 
 void MailDispatcherAgent::configure( WId windowId )
@@ -136,7 +169,10 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   Q_ASSERT( !currentItem.isValid() );
   currentItem = item;
   Q_ASSERT( currentJob == 0 );
-  currentJob = new SendJob( item );
+  currentJob = new SendJob( item, q );
+  if( aborting ) {
+    currentJob->setMarkAborted();
+  }
   connect( currentJob, SIGNAL( result( KJob* ) ),
       q, SLOT( sendResult( KJob* ) ) );
   currentJob->start();

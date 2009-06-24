@@ -43,6 +43,20 @@ class SendJob : public KJob
     */
     virtual void start();
 
+    /**
+      If this function is called before the job is started, the SendJob will
+      just mark the item as aborted, instead of sending it.
+      Do not call this function more than once.
+    */
+    void setMarkAborted();
+
+    /**
+      Aborts sending the item.
+      This will give the item an ErrorAttribute of "aborted".
+      (No need to call setMarkAborted() if you call abort().)
+    */
+    void abort();
+
   private:
     class Private;
     //friend class Private;

@@ -1,5 +1,4 @@
 /*
-    Copyright 2008 Ingo Klöcker <kloecker@kde.org>
     Copyright 2009 Constantin Berzan <exit3219@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
@@ -18,47 +17,38 @@
     02110-1301, USA.
 */
 
-#ifndef MAILDISPATCHERAGENT_H
-#define MAILDISPATCHERAGENT_H
+#ifndef ABORTTEST_H
+#define ABORTTEST_H
 
-#include <Akonadi/AgentBase>
+#include <QtCore/QObject>
+
 #include <Akonadi/Collection>
-#include <Akonadi/Item>
 
+namespace Akonadi {
+  class Monitor;
+}
 
 /**
- * This agent dispatches mail put into the outbox collection.
+  This attempts to send a large message, then aborts it, then tries to send
+  it again and verify that it succeeds.
  */
-class MailDispatcherAgent : public Akonadi::AgentBase
+class AbortTest : public QObject
 {
   Q_OBJECT
 
-  public:
-    MailDispatcherAgent( const QString &id );
-    ~MailDispatcherAgent();
-
-  public Q_SLOTS:
-    void abort();
-
-    virtual void configure( WId windowId );
-
-  Q_SIGNALS:
-    /**
-      Emitted when the MDA has attempted to send an item.
-     */
-    void itemProcessed( const Akonadi::Item &item, bool result );
-
-  protected:
-    virtual void doSetOnline( bool online );
+  private Q_SLOTS:
+    void initTestCase();
+    void testAbort();
+    void testAbortWhileIdle();
 
   private:
-    class Private;
-    Private* const d;
-
-    Q_PRIVATE_SLOT( d, void dispatch() )
-    Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
-    Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
+    int akoTid;
+    int smtpTid;
+    Akonadi::Collection outbox;
+    Akonadi::Collection sink;
+    Akonadi::Monitor *monitor;
 
 };
 
-#endif // MAILDISPATCHERAGENT_H
+
+#endif

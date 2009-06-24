@@ -31,11 +31,12 @@ macro(add_akonadi_isolated_test _source)
 
   find_program(_testrunner akonaditest)
 
-  add_test( outboxinterface-${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
+  add_test( maildispatcheragent-${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
 endmacro(add_akonadi_isolated_test)
 
 
 
 
+add_akonadi_isolated_test( aborttest.cpp )
 add_akonadi_isolated_test( dupetest.cpp )
 

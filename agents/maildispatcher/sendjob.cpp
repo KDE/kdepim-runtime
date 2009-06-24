@@ -60,11 +60,15 @@ class SendJob::Private
     Private( const Item &itm, SendJob *qq )
       : q( qq )
       , item( itm )
+      , currentJob( 0 )
+      , aborting( false )
     {
     }
 
     SendJob *const q;
     Item item;
+    KJob *currentJob;
+    bool aborting;
 
     void storeResult( bool success, const QString &message = QString() );
 
@@ -81,15 +85,24 @@ void SendJob::Private::doTransport()
 {
   kDebug() << "Transporting message.";
 
+  if( aborting ) {
+    kDebug() << "Marking message as aborted.";
+    storeResult( false, i18n( "Message sending aborted." ) );
+    return;
+  }
+
   // get transport and addresses from attributes
   TransportAttribute *tA = item.attribute<TransportAttribute>();
   Q_ASSERT( tA );
-  TransportJob *job = TransportManager::self()->createTransportJob( tA->transportId() );
-  if( !job ) {
+  TransportJob *tjob = TransportManager::self()->createTransportJob( tA->transportId() );
+  if( !tjob ) {
     storeResult( false, i18n( "Could not initiate message transport. Possibly invalid transport." ) );
     return;
   }
-  AkonadiJob *ajob = dynamic_cast<AkonadiJob*>( job );
+  Q_ASSERT( currentJob == 0 );
+  currentJob = tjob;
+
+  AkonadiJob *ajob = dynamic_cast<AkonadiJob*>( currentJob );
   if( ajob ) {
     // It's an Akonadi job.
     ajob->setItemId( item.id() );
@@ -100,29 +113,38 @@ void SendJob::Private::doTransport()
     Q_ASSERT( item.hasPayload<Message::Ptr>() );
     const Message::Ptr message = item.payload<Message::Ptr>();
     const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
-    kDebug() << "msg:" << cmsg;
+    //kDebug() << "msg:" << cmsg;
     Q_ASSERT( !cmsg.isEmpty() );
 
     AddressAttribute *addrA = item.attribute<AddressAttribute>();
     Q_ASSERT( addrA );
-    job->setData( cmsg );
-    job->setSender( addrA->from() );
-    job->setTo( addrA->to() );
-    job->setCc( addrA->cc() );
-    job->setBcc( addrA->bcc() );
+    tjob->setData( cmsg );
+    tjob->setSender( addrA->from() );
+    tjob->setTo( addrA->to() );
+    tjob->setCc( addrA->cc() );
+    tjob->setBcc( addrA->bcc() );
   }
-  connect( job, SIGNAL( result( KJob * ) ), q, SLOT( transportResult( KJob * ) ) );
-  job->start(); // non-Akonadi
+  connect( currentJob, SIGNAL( result( KJob * ) ), q, SLOT( transportResult( KJob * ) ) );
+  currentJob->start(); // non-Akonadi
 
   // TODO something about timeouts.
 }
 
 void SendJob::Private::transportResult( KJob *job )
 {
+  Q_ASSERT( currentJob == job );
+  currentJob = 0;
+
   if( job->error() ) {
     kDebug() << "Error transporting.";
     q->setError( UserDefinedError );
-    q->setErrorText( i18n( "Failed to transport message." ) + ' ' + job->errorString() );
+    QString err;
+    if( aborting ) {
+      err = i18n( "Message transport aborted." );
+    } else {
+      err = i18n( "Failed to transport message." );
+    }
+    q->setErrorText( err + ' ' + job->errorString() );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success transporting.";
@@ -138,8 +160,9 @@ void SendJob::Private::transportResult( KJob *job )
       q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
       storeResult( false, q->errorString() );
     } else {
-      ItemMoveJob *job = new ItemMoveJob( item, sentMail );
-      QObject::connect( job, SIGNAL( result( KJob* ) ), this, SLOT( moveResult( KJob* ) ) );
+      Q_ASSERT( currentJob == 0 );
+      currentJob = new ItemMoveJob( item, sentMail );
+      QObject::connect( currentJob, SIGNAL( result( KJob* ) ), this, SLOT( moveResult( KJob* ) ) );
     }
 #endif
     storeResult( true );
@@ -149,6 +172,9 @@ void SendJob::Private::transportResult( KJob *job )
 void SendJob::Private::moveResult( KJob *job )
 {
   Q_ASSERT( false ); // moving to sent-mail disabled
+
+  Q_ASSERT( currentJob == job );
+  currentJob = 0;
 
   if( job->error() ) {
     kDebug() << "Error moving to sent-mail.";
@@ -165,17 +191,17 @@ void SendJob::Private::storeResult( bool success, const QString &message )
 {
   kDebug() << "success" << success << "message" << message;
 
-  StoreResultJob *job = new StoreResultJob( item, success, message);
-  connect( job, SIGNAL( result( KJob * ) ), q, SLOT( doEmitResult( KJob * ) ) );
+  Q_ASSERT( currentJob == 0 );
+  currentJob = new StoreResultJob( item, success, message);
+  connect( currentJob, SIGNAL( result( KJob * ) ), q, SLOT( doEmitResult( KJob * ) ) );
 }
 
 void SendJob::Private::doEmitResult( KJob *job )
 {
-  if( job->error() ) {
-    // This is bad.  Unless the item disappeared, the MDA will probably
-    // enter an infinite loop of trying to send the same item over and over
-    // again.  TODO what?
+  Q_ASSERT( currentJob == job );
+  currentJob = 0;
 
+  if( job->error() ) {
     kWarning() << "Error storing result.";
     q->setError( UserDefinedError );
     q->setErrorText( q->errorString() + ' ' + i18n( "Failed to store result in item." ) + ' ' + job->errorString() );
@@ -204,6 +230,35 @@ SendJob::~SendJob()
 void SendJob::start()
 {
   QTimer::singleShot( 0, this, SLOT( doTransport() ) );
+}
+
+void SendJob::setMarkAborted()
+{
+  Q_ASSERT( !d->aborting );
+  d->aborting = true;
+}
+
+void SendJob::abort()
+{
+  setMarkAborted();
+
+  if( !d->currentJob ) {
+    kDebug() << "Abort called but no active job.";
+    // Nothing to do; doTransport will abort when the time comes.
+  } else if( dynamic_cast<TransportJob*>( d->currentJob ) ) {
+    kDebug() << "Abort called, active transport job.";
+    // Abort transport.
+    d->currentJob->kill( KJob::EmitResult );
+    // TODO verify that a proper error (aborted) is set when a TransportJob is killed
+  } else if( dynamic_cast<ItemMoveJob*>( d->currentJob ) ) {
+    kDebug() << "Abort called, active itemMove job.";
+    // Item was already sent, so let it finish in peace.
+  } else if( dynamic_cast<StoreResultJob*>( d->currentJob ) ) {
+    kDebug() << "Abort called, active storeResult job.";
+    // Item was already sent, so let it finish in peace.
+  } else {
+    Q_ASSERT( false );
+  }
 }
 
 
