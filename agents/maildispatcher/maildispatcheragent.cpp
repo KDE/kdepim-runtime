@@ -21,7 +21,7 @@
 #include "maildispatcheragent.h"
 
 //#include "configdialog.h"
-#include "maildispatcheradaptor.h"
+//#include "maildispatcheradaptor.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
 #include "settings.h"
@@ -62,12 +62,32 @@ class MailDispatcherAgent::Private
     bool aborting;
 
     // slots:
+    void abort();
     void dispatch();
     void itemFetched( Item &item );
     void sendResult( KJob *job );
 
 };
 
+
+void MailDispatcherAgent::Private::abort()
+{
+  if( aborting ) {
+    kDebug() << "Already aborting.";
+    return;
+  }
+
+  if( !currentJob ) {
+    kDebug() << "MDA is idle.";
+    Q_ASSERT( q->status() == AgentBase::Idle );
+    Q_ASSERT( queue->isEmpty() );
+  } else {
+    kDebug() << "Aborting...";
+    aborting = true;
+    currentJob->abort();
+    // Further SendJobs will mark remaining items in the queue as 'aborted'.
+  }
+}
 
 void MailDispatcherAgent::Private::dispatch()
 {
@@ -104,7 +124,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   kDebug() << "maildispatcheragent: At your service, sir!";
 
   new SettingsAdaptor( Settings::self() );
-  new MailDispatcherAdaptor( this );
+  //new MailDispatcherAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -114,30 +134,12 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
       this, SLOT( itemFetched( Akonadi::Item& ) ) );
   connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
       d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
+  connect( this, SIGNAL(abortRequested()), this, SLOT(abort()) );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
 {
   delete d;
-}
-
-void MailDispatcherAgent::abort()
-{
-  if( d->aborting ) {
-    kDebug() << "Already aborting.";
-    return;
-  }
-
-  if( !d->currentJob ) {
-    kDebug() << "MDA is idle.";
-    Q_ASSERT( status() == AgentBase::Idle );
-    Q_ASSERT( d->queue->isEmpty() );
-  } else {
-    kDebug() << "Aborting...";
-    d->aborting = true;
-    d->currentJob->abort();
-    // Further SendJobs will mark remaining items in the queue as 'aborted'.
-  }
 }
 
 void MailDispatcherAgent::configure( WId windowId )

@@ -38,8 +38,6 @@ class MailDispatcherAgent : public Akonadi::AgentBase
     ~MailDispatcherAgent();
 
   public Q_SLOTS:
-    void abort();
-
     virtual void configure( WId windowId );
 
   Q_SIGNALS:
@@ -55,6 +53,7 @@ class MailDispatcherAgent : public Akonadi::AgentBase
     class Private;
     Private* const d;
 
+    Q_PRIVATE_SLOT( d, void abort() )
     Q_PRIVATE_SLOT( d, void dispatch() )
     Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
     Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
