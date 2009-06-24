@@ -34,6 +34,7 @@ class KJob;
 class OutboxQueue : public QObject
 {
   Q_OBJECT
+  friend class MailDispatcherAgent;
 
   public:
     // TODO docu
@@ -62,6 +63,7 @@ class OutboxQueue : public QObject
     Q_PRIVATE_SLOT( d, void itemChanged( Akonadi::Item ) )
     Q_PRIVATE_SLOT( d, void itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) )
     Q_PRIVATE_SLOT( d, void itemRemoved( Akonadi::Item ) )
+    Q_PRIVATE_SLOT( d, void itemProcessed( Akonadi::Item, bool ) )
 
 };
 

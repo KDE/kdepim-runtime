@@ -42,8 +42,9 @@ class MailDispatcherAgent::Private
   public:
     Private( MailDispatcherAgent *parent )
         : q( parent )
+        , currentJob( 0 )
+        , currentItem()
     {
-      currentJob = 0;
     }
 
     ~Private()
@@ -54,6 +55,7 @@ class MailDispatcherAgent::Private
 
     OutboxQueue *queue;
     KJob *currentJob;
+    Item currentItem;
 
     // slots:
     void dispatch();
@@ -96,6 +98,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
   connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
       this, SLOT( itemFetched( Akonadi::Item& ) ) );
+  connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
+      d->queue, SLOT(itemProcessed(Akonadi::Item)) );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
@@ -129,6 +133,8 @@ void MailDispatcherAgent::doSetOnline( bool online )
 void MailDispatcherAgent::Private::itemFetched( Item &item )
 {
   kDebug() << "Fetched item" << item.id() << "; creating SendJob.";
+  Q_ASSERT( !currentItem.isValid() );
+  currentItem = item;
   Q_ASSERT( currentJob == 0 );
   currentJob = new SendJob( item );
   connect( currentJob, SIGNAL( result( KJob* ) ),
@@ -141,6 +147,10 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   Q_ASSERT( job == currentJob );
   currentJob->disconnect( q );
   currentJob = 0;
+
+  Q_ASSERT( currentItem.isValid() );
+  emit q->itemProcessed( currentItem, !job->error() );
+  currentItem = Item();
 
   if( job->error() ) {
     // The SendJob gave the item an ErrorAttribute, so we don't have to

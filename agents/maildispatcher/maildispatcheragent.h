@@ -40,6 +40,12 @@ class MailDispatcherAgent : public Akonadi::AgentBase
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
+  Q_SIGNALS:
+    /**
+      Emitted when the MDA has attempted to send an item.
+     */
+    void itemProcessed( const Akonadi::Item &item, bool result );
+
   protected:
     virtual void doSetOnline( bool online );
 

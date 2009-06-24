@@ -59,6 +59,21 @@ class OutboxQueue::Private
     Monitor *monitor;
     QList<Item> queue;
 
+#if 0
+    // If an item is modified externally between the moment we pass it to
+    // the MDA and the time the MDA marks it as sent, then we will get
+    // itemChanged() and may mistakenly re-add the item to the queue.
+    // So we ignore the item that we pass to the MDA, until the MDA finishes
+    // sending it.
+    Item currentItem;
+#endif
+    // HACK: The above is not enough.
+    // Apparently change notifications are delayed sometimes (???)
+    // and we re-add an item long after it was sent.  So keep a list of sent
+    // items.
+    // TODO debug and figure out why this happens.
+    QSet<Item::Id> ignore;
+
     void initQueue();
     void addIfComplete( const Item &item );
 
@@ -70,6 +85,7 @@ class OutboxQueue::Private
     void itemChanged( const Item &item );
     void itemMoved( const Item &item, const Collection &source, const Collection &dest );
     void itemRemoved( const Item &item );
+    void itemProcessed( const Item &item, bool result );
 
 };
 
@@ -87,6 +103,16 @@ void OutboxQueue::Private::initQueue()
 
 void OutboxQueue::Private::addIfComplete( const Item &item )
 {
+  if( ignore.contains( item.id() ) ) {
+    kDebug() << "Item" << item.id() << "is ignored.";
+    return;
+  }
+
+  if( queue.contains( item ) ) {
+    kDebug() << "Item" << item.id() << "already in queue!";
+    return;
+  }
+
   if( item.remoteId().isEmpty() ) {
     kDebug() << "Item" << item.id() << "has an empty remoteId.";
     // HACK:
@@ -135,6 +161,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   */
 
   kDebug() << "Item" << item.id() << "is accepted into the queue.";
+  Q_ASSERT( !queue.contains( item ) );
   queue.append( item );
   emit q->newItems();
 }
@@ -212,6 +239,14 @@ void OutboxQueue::Private::itemRemoved( const Item &item )
   queue.removeAll( item );
 }
 
+void OutboxQueue::Private::itemProcessed( const Item &item, bool result )
+{
+  Q_ASSERT( ignore.contains( item.id() ) );
+  if( !result ) {
+    // Give the user a chance to re-send the item if it failed.
+    ignore.remove( item.id() );
+  }
+}
 
 
 
@@ -254,6 +289,8 @@ void OutboxQueue::fetchOne()
   }
 
   Item item = d->queue.takeFirst();
+  Q_ASSERT( !d->ignore.contains( item.id() ) );
+  d->ignore.insert( item.id() );
 
   ItemFetchJob *job = new ItemFetchJob( item );
   job->fetchScope().fetchAllAttributes();

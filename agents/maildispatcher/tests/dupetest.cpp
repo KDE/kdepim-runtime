@@ -42,8 +42,8 @@
 
 #include <outboxinterface/messagequeuejob.h>
 
-#define TIMEOUT_SECONDS 20
-#define MAXCOUNT 10
+#define TIMEOUT_SECONDS 60
+#define MAXCOUNT 99 // must be 2-digit!
 
 using namespace Akonadi;
 using namespace KMime;
@@ -93,13 +93,30 @@ void DupeTest::testDupes_data()
   QTest::newRow( "2-nodelay" ) << "\n2-nodelay" << 2 << 0;
   QTest::newRow( "5-nodelay" ) << "\n5-nodelay" << 5 << 0;
   QTest::newRow( "10-nodelay" ) << "\n10-nodelay" << 10 << 0;
+  QTest::newRow( "20-nodelay" ) << "\n20-nodelay" << 20 << 0;
+  QTest::newRow( "50-nodelay" ) << "\n50-nodelay" << 50 << 0;
+  QTest::newRow( "99-nodelay" ) << "\n99-nodelay" << 99 << 0;
+  QTest::newRow( "2-veryshortdelay" ) << "\n2-veryshortdelay" << 2 << 20;
+  QTest::newRow( "5-veryshortdelay" ) << "\n5-veryshortdelay" << 5 << 20;
+  QTest::newRow( "10-veryshortdelay" ) << "\n10-veryshortdelay" << 10 << 20;
+  QTest::newRow( "20-veryshortdelay" ) << "\n20-veryshortdelay" << 20 << 20;
+  QTest::newRow( "50-veryshortdelay" ) << "\n50-veryshortdelay" << 50 << 20;
+  QTest::newRow( "99-veryshortdelay" ) << "\n99-veryshortdelay" << 99 << 20;
   QTest::newRow( "2-shortdelay" ) << "\n2-shortdelay" << 2 << 100;
   QTest::newRow( "5-shortdelay" ) << "\n5-shortdelay" << 5 << 100;
   QTest::newRow( "10-shortdelay" ) << "\n10-shortdelay" << 10 << 100;
+  QTest::newRow( "20-shortdelay" ) << "\n20-shortdelay" << 20 << 100;
+  QTest::newRow( "50-shortdelay" ) << "\n50-shortdelay" << 50 << 100;
+  QTest::newRow( "99-shortdelay" ) << "\n99-shortdelay" << 99 << 99;
   QTest::newRow( "2-longdelay" ) << "\n2-longdelay" << 2 << 1000;
   QTest::newRow( "5-longdelay" ) << "\n5-longdelay" << 5 << 1000;
   QTest::newRow( "5-verylongdelay" ) << "\n5-verylongdelay" << 5 << 4000;
-  Q_ASSERT( 10 <= MAXCOUNT );
+  Q_ASSERT( 99 <= MAXCOUNT );
+  Q_ASSERT( MAXCOUNT < 100 ); // 2-digit
+
+  // TODO I'm not sure more items means a better test
+  // TODO test large items
+  // TODO test modifying items while they are being sent...
 }
 
 void DupeTest::testDupes()
@@ -123,8 +140,9 @@ void DupeTest::testDupes()
   // queue messages
   Q_ASSERT( monitor );
   QSignalSpy *addSpy = new QSignalSpy( monitor, SIGNAL( itemAdded( Akonadi::Item, Akonadi::Collection ) ) );
+  kDebug() << "Queuing" << count << "messages...";
   for( int i = 0; i < count; i++ ) {
-    kDebug() << "Queuing message" << i + 1 << "of" << count;
+    //kDebug() << "Queuing message" << i + 1 << "of" << count;
 
     Message::Ptr msg = Message::Ptr( new Message );
     msg->setContent( QString( "%1-msg%2\n" ).arg( message ).arg( i + 1, 2, 10, QLatin1Char( '0' ) ).toLatin1() );
@@ -164,33 +182,38 @@ void DupeTest::testDupes()
   QTest::qWait( 2000 );
 
   // verify what has been sent
-  QCOMPARE( addSpy->count(), count );
   fjob = new ItemFetchJob( sink, this );
   fjob->fetchScope().fetchFullPayload();
   AKVERIFYEXEC( fjob );
   const Item::List items = fjob->items();
-  QCOMPARE( items.count(), count );
   int found[ MAXCOUNT ];
   for( int i = 0; i < count; i++ ) {
     found[i] = 0;
   }
-  for( int i = 0; i < count; i++ ) {
+  for( int i = 0; i < items.count(); i++ ) {
     QVERIFY( items[i].hasPayload<Message::Ptr>() );
     Message::Ptr msg = items[i].payload<Message::Ptr>();
     const QByteArray content = msg->encodedContent();
-    kDebug() << "i" << i << "content" << content;
+    //kDebug() << "i" << i << "content" << content;
     int loc = content.indexOf( "-msg" );
     QVERIFY( loc >= 0 );
     bool ok;
     int who = content.mid( loc + 4, 2 ).toInt( &ok );
     QVERIFY( ok );
-    kDebug() << "identified msg" << who;
+    //kDebug() << "identified msg" << who;
     QVERIFY( who > 0 && who <= count );
     found[ who - 1 ]++;
   }
   for( int i = 0; i < count; i++ ) {
+    if( found[i] > 1 ) {
+      kDebug() << "found duplicate message" << i + 1 << "(" << found[i] << "times )";
+    } else if( found[i] < 1 ) {
+      kDebug() << "didn't find message" << i + 1;
+    }
     QCOMPARE( found[i], 1 );
   }
+  QCOMPARE( addSpy->count(), count );
+  QCOMPARE( items.count(), count );
 }
 
 QTEST_AKONADIMAIN( DupeTest, NoGUI )
