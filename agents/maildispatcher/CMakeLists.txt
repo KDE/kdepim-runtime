@@ -1,3 +1,5 @@
+add_subdirectory( tests )
+
 set( maildispatcheragent_SRCS
   maildispatcheragent.cpp
   outboxqueue.cpp

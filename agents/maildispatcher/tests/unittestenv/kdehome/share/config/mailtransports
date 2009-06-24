@@ -1,0 +1,11 @@
+[$Version]
+update_info=mailtransports.upd:initial-kmail-migration,mailtransports.upd:initial-knode-migration
+
+[General]
+default-transport=666
+
+[Transport 666]
+host=akonadi_mailtransport_dummy_resource_0
+id=666
+name=Dummy Akonadi Transport
+type=Akonadi
