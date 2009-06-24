@@ -75,6 +75,7 @@ class SendJob::Private
 
     // slots:
     void doTransport();
+    void transportPercent( KJob *job, unsigned long percent );
     void transportResult( KJob *job );
     void postJobResult( KJob *job );
     void doEmitResult( KJob *job ); // result of storeResult transaction
@@ -126,9 +127,22 @@ void SendJob::Private::doTransport()
     tjob->setBcc( addrA->bcc() );
   }
   connect( currentJob, SIGNAL( result( KJob * ) ), q, SLOT( transportResult( KJob * ) ) );
+  connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
+      q, SLOT(transportPercent(KJob*,unsigned long)) );
+  // The postJob and storeResultJob don't really keep track of progress...
   currentJob->start(); // non-Akonadi
 
   // TODO something about timeouts.
+}
+
+void SendJob::Private::transportPercent( KJob *job, unsigned long percent )
+{
+  Q_UNUSED( percent );
+  Q_ASSERT( currentJob == job );
+  kDebug() << "Processed amount" << job->processedAmount( KJob::Bytes )
+    << "total amount" << job->totalAmount( KJob::Bytes );
+  q->setTotalAmount( KJob::Bytes, job->totalAmount( KJob::Bytes ) ); // isn't set at the time of start()
+  q->setProcessedAmount( KJob::Bytes, job->processedAmount( KJob::Bytes ) );
 }
 
 void SendJob::Private::transportResult( KJob *job )
@@ -187,8 +201,6 @@ void SendJob::Private::transportResult( KJob *job )
 
 void SendJob::Private::postJobResult( KJob *job )
 {
-  Q_ASSERT( false ); // moving to sent-mail disabled
-
   Q_ASSERT( currentJob == job );
   currentJob = 0;
 

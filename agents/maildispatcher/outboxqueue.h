@@ -43,6 +43,10 @@ class OutboxQueue : public QObject
 
     bool isEmpty() const;
     int count() const;
+    /**
+      Returns the size (in bytes) of all items in the queue.
+    */
+    qulonglong totalSize() const;
 
     /**
       Fetches an item and emits itemReady() when done.

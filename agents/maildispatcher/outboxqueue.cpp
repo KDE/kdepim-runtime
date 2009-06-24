@@ -58,6 +58,7 @@ class OutboxQueue::Private
     Collection outbox;
     Monitor *monitor;
     QList<Item> queue;
+    qulonglong totalSize;
 
 #if 0
     // If an item is modified externally between the moment we pass it to
@@ -92,6 +93,7 @@ class OutboxQueue::Private
 
 void OutboxQueue::Private::initQueue()
 {
+  totalSize = 0;
   queue.clear();
 
   kDebug() << "Fetching items in collection" << outbox.id();
@@ -169,8 +171,9 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
   */
 
-  kDebug() << "Item" << item.id() << "is accepted into the queue.";
+  kDebug() << "Item" << item.id() << "is accepted into the queue (size" << item.size() << ").";
   Q_ASSERT( !queue.contains( item ) );
+  totalSize += item.size();
   queue.append( item );
   emit q->newItems();
 }
@@ -237,7 +240,7 @@ void OutboxQueue::Private::itemChanged( const Item &item )
 void OutboxQueue::Private::itemMoved( const Item &item, const Collection &source, const Collection &dest )
 {
   if( source == outbox ) {
-    queue.removeAll( item );
+    itemRemoved( item );
   } else if( dest == outbox ) {
     addIfComplete( item );
   }
@@ -245,7 +248,12 @@ void OutboxQueue::Private::itemMoved( const Item &item, const Collection &source
 
 void OutboxQueue::Private::itemRemoved( const Item &item )
 {
-  queue.removeAll( item );
+  // @p item has size=0, so get the size from our own copy.
+  int idx = queue.indexOf( item );
+  Q_ASSERT( idx != -1 );
+  const Item my = queue.takeAt( idx );
+  kDebug() << "Item" << my.id() << "(size" << my.size() << ") was removed from the queue.";
+  totalSize -= my.size();
 }
 
 void OutboxQueue::Private::itemProcessed( const Item &item, bool result )
@@ -292,7 +300,16 @@ bool OutboxQueue::isEmpty() const
 
 int OutboxQueue::count() const
 {
+  if( d->queue.count() == 0 ) {
+    // TODO Is this asking for too much?
+    Q_ASSERT( d->totalSize == 0 );
+  }
   return d->queue.count();
+}
+
+qulonglong OutboxQueue::totalSize() const
+{
+  return d->totalSize;
 }
 
 void OutboxQueue::fetchOne()
@@ -303,6 +320,7 @@ void OutboxQueue::fetchOne()
   }
 
   Item item = d->queue.takeFirst();
+  d->totalSize -= item.size();
   Q_ASSERT( !d->ignore.contains( item.id() ) );
   d->ignore.insert( item.id() );
 

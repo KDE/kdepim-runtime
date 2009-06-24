@@ -64,6 +64,7 @@ class SendJob : public KJob
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void doTransport() )
+    Q_PRIVATE_SLOT( d, void transportPercent( KJob*, unsigned long ) )
     Q_PRIVATE_SLOT( d, void transportResult( KJob *job ) )
     Q_PRIVATE_SLOT( d, void postJobResult( KJob *job ) )
     Q_PRIVATE_SLOT( d, void doEmitResult( KJob *job ) )

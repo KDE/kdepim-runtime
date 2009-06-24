@@ -62,11 +62,13 @@ class MailDispatcherAgent::Private
     Item currentItem;
     bool aborting;
     bool sentAnything;
+    qulonglong sentItemsSize;
 
     // slots:
     void abort();
     void dispatch();
     void itemFetched( Item &item );
+    void sendPercent( KJob *job, unsigned long percent );
     void sendResult( KJob *job );
     void emitStatusReady();
 
@@ -107,7 +109,11 @@ void MailDispatcherAgent::Private::dispatch()
   }
 
   if( !queue->isEmpty() ) {
-    sentAnything = true;
+    if( !sentAnything ) {
+      sentAnything = true;
+      sentItemsSize = 0;
+      emit q->percent( 0 );
+    }
     // TODO Sending message X of Y: <subject>
     emit q->status( AgentBase::Running,
         i18np( "Sending messages (1 item in queue)...",
@@ -119,12 +125,14 @@ void MailDispatcherAgent::Private::dispatch()
     if( aborting ) {
       // Finished marking messages as 'aborted'.
       aborting = false;
+      sentAnything = false;
       emit q->status( AgentBase::Idle, i18n( "Sending cancelled." ) );
       QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     } else {
       if( sentAnything ) {
         // Finished sending messages in queue.
         sentAnything = false;
+        emit q->percent( 100 );
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
       } else {
         // Empty queue.
@@ -198,7 +206,39 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   }
   connect( currentJob, SIGNAL( result( KJob* ) ),
       q, SLOT( sendResult( KJob* ) ) );
+  connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
+      q, SLOT(sendPercent(KJob*,unsigned long)) );
   currentJob->start();
+}
+
+void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent )
+{
+  // The progress here is actually the TransportJob, not the entire SendJob,
+  // because the post-job doesn't report progress.  This should be fine,
+  // since the TransportJob is the lengthiest operation.
+
+  // Give the transport 80% of the weight, and move-to-sendmail 20%.
+  const double transportWeight = 0.8;
+  
+  Q_UNUSED( percent );
+  Q_ASSERT( job );
+  int perc = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
+    / ( sentItemsSize + currentItem.size() + queue->totalSize() );
+  kDebug() << "sentItemsSize" << sentItemsSize
+    << "this job processed" << job->processedAmount( KJob::Bytes )
+    << "queue totalSize" << queue->totalSize()
+    << "total total size (sent+current+queue)" << ( sentItemsSize + currentItem.size() + queue->totalSize() )
+    << "new percentage" << perc << "old percentage" << q->progress();
+
+  if( perc != q->progress() ) {
+    // The progress can decrease too, if messages got added to the queue.
+    emit q->percent( perc );
+  }
+
+  // It is possible that the number of queued messages has changed.
+  emit q->status( AgentBase::Running,
+      i18np( "Sending messages (1 item in queue)...",
+             "Sending messages (%1 items in queue)...", 1 + queue->count() ) );
 }
 
 void MailDispatcherAgent::Private::sendResult( KJob *job )
@@ -208,6 +248,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   currentJob = 0;
 
   Q_ASSERT( currentItem.isValid() );
+  sentItemsSize += currentItem.size();
   emit q->itemProcessed( currentItem, !job->error() );
   currentItem = Item();
 
