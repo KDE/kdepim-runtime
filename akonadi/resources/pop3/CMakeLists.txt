@@ -1,13 +1,5 @@
 project(pop3)
 
-find_package(KDE4)
-find_package(Akonadi)
-find_package(KdepimLibs)
-find_program(XSLTPROC_EXECUTABLE xsltproc)
-macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
-
-include(KDE4Defaults)
-
 if (XSLTPROC_EXECUTABLE)
   # generates a D-Bus interface description from a KConfigXT file
   macro( kcfg_generate_dbus_interface _kcfg _name )
@@ -30,6 +22,7 @@ if(WIN32)
                         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
 endif(WIN32)
 
+# Is this still needed??
 set(KDE4_ICON_DIR ${KDE4_INSTALL_DIR}/share/icons)
 
 include_directories(
