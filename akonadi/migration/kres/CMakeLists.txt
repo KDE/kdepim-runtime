@@ -3,7 +3,7 @@ set(kres-migrator_srcs
     kabcmigrator.cpp
     kcalmigrator.cpp
     kresmigratorbase.cpp
-    infodialog.cpp
+    ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
@@ -20,6 +20,7 @@ add_resource_iface( birthdays/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.S
 
 kde4_add_app_icon(kres-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kres-migrator ${kres-migrator_srcs})
+
 target_link_libraries(kres-migrator
     ${KDEPIMLIBS_AKONADI_LIBS}
     ${KDE4_KRESOURCE_LIBS}

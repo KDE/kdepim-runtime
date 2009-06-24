@@ -35,8 +35,8 @@ void connectMigrator( KResMigratorBase *m, InfoDialog *dlg )
   if ( !dlg || !m )
     return;
   dlg->migratorAdded();
-  QObject::connect( m, SIGNAL(message(KResMigratorBase::MessageType,QString)), dlg,
-                    SLOT(message(KResMigratorBase::MessageType,QString)) );
+  QObject::connect( m, SIGNAL(message(KMigratorBase::MessageType,QString)), dlg,
+                    SLOT(message(KMigratorBase::MessageType,QString)) );
   QObject::connect( m, SIGNAL(destroyed()), dlg, SLOT(migratorDone()) );
 }
 
