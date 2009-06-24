@@ -27,7 +27,6 @@ include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
 add_subdirectory(akonadi_next)
-add_subdirectory(pop3)
 add_subdirectory(mailthreader)
 
 # http://gitorious.org/grantlee
