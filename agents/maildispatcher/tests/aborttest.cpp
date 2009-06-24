@@ -35,6 +35,7 @@
 #include <Akonadi/Monitor>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
+#include <akonadi/kmime/localfolders.h>
 
 #include <mailtransport/transport.h>
 #include <mailtransport/transportmanager.h>
@@ -44,7 +45,6 @@
 
 #include <outboxinterface/dispatcherinterface.h>
 #include <outboxinterface/errorattribute.h>
-#include <outboxinterface/localfolders.h>
 #include <outboxinterface/messagequeuejob.h>
 #include <outboxinterface/transportattribute.h>
 

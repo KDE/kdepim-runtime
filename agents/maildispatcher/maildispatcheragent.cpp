@@ -36,7 +36,10 @@
 
 #include <Akonadi/ItemFetchScope>
 
+#include <outboxinterface/dispatcherinterface.h>
+
 using namespace Akonadi;
+using namespace OutboxInterface;
 
 
 class MailDispatcherAgent::Private
@@ -164,6 +167,9 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
       d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
   connect( this, SIGNAL(abortRequested()), this, SLOT(abort()) );
+
+  // HACK: register attributes
+  DispatcherInterface::self();
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
