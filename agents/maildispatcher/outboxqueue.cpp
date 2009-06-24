@@ -33,7 +33,7 @@
 #include <outboxinterface/localfolders.h>
 #include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
-#include <outboxinterface/sentcollectionattribute.h>
+#include <outboxinterface/sentbehaviourattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -124,7 +124,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
 
   if( !item.hasAttribute<AddressAttribute>() ||
       !item.hasAttribute<DispatchModeAttribute>() ||
-      !item.hasAttribute<SentCollectionAttribute>() ||
+      !item.hasAttribute<SentBehaviourAttribute>() ||
       !item.hasAttribute<TransportAttribute>() ) {
     kWarning() << "Item" << item.id() << "does not have all required attributes.";
     return;
@@ -151,6 +151,15 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
     kWarning() << "Item" << item.id() << "has invalid transport.";
     return;
   }
+
+  const SentBehaviourAttribute *sA = item.attribute<SentBehaviourAttribute>();
+  Q_ASSERT( sA );
+  if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
+      sA->moveToCollection() < 0 ) {
+    kWarning() << "Item" << item.id() << "has invalid sent-mail collection.";
+    return;
+  }
+
 
   // This check requires fetchFullPayload. -> slow (?)
   /*

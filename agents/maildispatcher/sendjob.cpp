@@ -28,6 +28,7 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
+#include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
 
@@ -41,7 +42,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <outboxinterface/addressattribute.h>
-#include <outboxinterface/sentcollectionattribute.h>
+#include <outboxinterface/sentbehaviourattribute.h>
 #include <outboxinterface/transportattribute.h>
 
 using namespace Akonadi;
@@ -75,7 +76,7 @@ class SendJob::Private
     // slots:
     void doTransport();
     void transportResult( KJob *job );
-    void moveResult( KJob *job );
+    void postJobResult( KJob *job );
     void doEmitResult( KJob *job ); // result of storeResult transaction
 
 };
@@ -149,27 +150,42 @@ void SendJob::Private::transportResult( KJob *job )
   } else {
     kDebug() << "Success transporting.";
 
-#if 0
-    // Move to sent-mail
-    SentCollectionAttribute *sA = item.attribute<SentCollectionAttribute>();
+    // Delete or move to sent-mail.
+    SentBehaviourAttribute *sA = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT( sA );
-    kDebug() << "Moving to sent-mail collection with id" << sA->sentCollection();
-    Collection sentMail( sA->sentCollection() );
-    if( !sentMail.isValid() ) {
-      q->setError( UserDefinedError );
-      q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
-      storeResult( false, q->errorString() );
+    if( sA->sentBehaviour() == SentBehaviourAttribute::Delete ) {
+      kDebug() << "Deleting item from outbox.";
+      currentJob = new ItemDeleteJob( item );
+      QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
     } else {
-      Q_ASSERT( currentJob == 0 );
-      currentJob = new ItemMoveJob( item, sentMail );
-      QObject::connect( currentJob, SIGNAL( result( KJob* ) ), this, SLOT( moveResult( KJob* ) ) );
-    }
+#if 0 // intra-resource moves do not work
+      Collection moveTo( sA->moveToCollection() );
+      if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
+        if( !LocalFolders::self()->isReady() ) {
+          // We were unlucky and LocalFolders is recreating its stuff right now.
+          // We will not wait for it.
+          moveTo = Collection();
+        } else {
+          moveTo = LocalFolders::self()->sentMail();
+        }
+      }
+      kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
+      if( !moveTo.isValid() ) {
+        q->setError( UserDefinedError );
+        q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
+        storeResult( false, q->errorString() );
+      } else {
+        Q_ASSERT( currentJob == 0 );
+        currentJob = new ItemMoveJob( item, sentMail );
+        QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
+      }
 #endif
-    storeResult( true );
+      storeResult( true );
+    }
   }
 }
 
-void SendJob::Private::moveResult( KJob *job )
+void SendJob::Private::postJobResult( KJob *job )
 {
   Q_ASSERT( false ); // moving to sent-mail disabled
 
@@ -177,12 +193,12 @@ void SendJob::Private::moveResult( KJob *job )
   currentJob = 0;
 
   if( job->error() ) {
-    kDebug() << "Error moving to sent-mail.";
+    kDebug() << "Error deleting or moving to sent-mail.";
     q->setError( UserDefinedError );
-    q->setErrorText( i18n( "Failed to move message to sent-mail." ) + ' ' + job->errorString() );
+    q->setErrorText( i18n( "Sending succeeded, but failed to finalize message." ) + ' ' + job->errorString() );
     storeResult( false, q->errorString() );
   } else {
-    kDebug() << "Success moving to sent-mail.";
+    kDebug() << "Success deleting or moving to sent-mail.";
     storeResult( true );
   }
 }
@@ -249,15 +265,9 @@ void SendJob::abort()
     kDebug() << "Abort called, active transport job.";
     // Abort transport.
     d->currentJob->kill( KJob::EmitResult );
-    // TODO verify that a proper error (aborted) is set when a TransportJob is killed
-  } else if( dynamic_cast<ItemMoveJob*>( d->currentJob ) ) {
-    kDebug() << "Abort called, active itemMove job.";
-    // Item was already sent, so let it finish in peace.
-  } else if( dynamic_cast<StoreResultJob*>( d->currentJob ) ) {
-    kDebug() << "Abort called, active storeResult job.";
-    // Item was already sent, so let it finish in peace.
   } else {
-    Q_ASSERT( false );
+    kDebug() << "Abort called, but transport already finished.";
+    // Item was already sent, so let it finish in peace.
   }
 }
 

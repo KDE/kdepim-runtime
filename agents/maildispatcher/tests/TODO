@@ -1,2 +1,4 @@
 * test online / offline
 * figure out why ksyscoca is started (it's not the wallet apparently)
+* aborttest: test aborting when there is >1 message queued
+* test the various SendBehaviours and DispatchModes
