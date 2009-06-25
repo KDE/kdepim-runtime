@@ -1,136 +1,181 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>AgentWidget</class>
- <widget class="QWidget" name="AgentWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="AgentWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>497</height>
+    <width>657</width>
+    <height>633</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" colspan="6" >
-    <widget class="Akonadi::AgentInstanceWidget" native="1" name="instanceWidget" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="6">
+    <widget class="Akonadi::AgentInstanceWidget" name="instanceWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="contextMenuPolicy" >
+     <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="6" >
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+   <item row="1" column="0" colspan="6">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string>Details</string>
      </property>
-     <layout class="QFormLayout" name="formLayout" >
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
          <string>Identifier:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLabel" name="identifierLabel" >
-        <property name="text" >
+      <item row="0" column="1">
+       <widget class="QLabel" name="identifierLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
          <string/>
         </property>
-        <property name="textInteractionFlags" >
+        <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
          <string>Type:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QLabel" name="typeLabel" >
-        <property name="text" >
+      <item row="1" column="1">
+       <widget class="QLabel" name="typeLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
          <string/>
         </property>
-        <property name="textInteractionFlags" >
+        <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_5" >
-        <property name="text" >
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
          <string>Status:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" >
-       <widget class="QLabel" name="statusLabel" >
-        <property name="text" >
+      <item row="2" column="1">
+       <widget class="QLabel" name="statusLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
          <string/>
         </property>
-        <property name="wordWrap" >
+        <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <property name="textInteractionFlags" >
+        <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_7" >
-        <property name="text" >
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Status Message:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="statusMessageLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
          <string>Capabilities:</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" >
-       <widget class="QLabel" name="capabilitiesLabel" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+      <item row="4" column="1">
+       <widget class="QLabel" name="capabilitiesLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
-        <property name="wordWrap" >
+        <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <property name="textInteractionFlags" >
+        <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" >
-       <widget class="QLabel" name="label_9" >
-        <property name="text" >
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
          <string>Mimetypes:</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1" >
-       <widget class="QLabel" name="mimeTypeLabel" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+      <item row="5" column="1">
+       <widget class="QLabel" name="mimeTypeLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
-        <property name="wordWrap" >
+        <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <property name="textInteractionFlags" >
+        <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
@@ -138,12 +183,12 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <spacer name="horizontalSpacer" >
-     <property name="orientation" >
+   <item row="2" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>154</width>
        <height>20</height>
@@ -151,37 +196,37 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="1" >
-    <widget class="KPushButton" name="addButton" >
-     <property name="text" >
+   <item row="2" column="1">
+    <widget class="KPushButton" name="addButton">
+     <property name="text">
       <string>Add...</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="2" >
-    <widget class="KPushButton" name="removeButton" >
-     <property name="text" >
+   <item row="2" column="2">
+    <widget class="KPushButton" name="removeButton">
+     <property name="text">
       <string>Remove</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="3" >
-    <widget class="KPushButton" name="configButton" >
-     <property name="text" >
+   <item row="2" column="3">
+    <widget class="KPushButton" name="configButton">
+     <property name="text">
       <string>Configure...</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="4" >
-    <widget class="KPushButton" name="syncButton" >
-     <property name="text" >
+   <item row="2" column="4">
+    <widget class="KPushButton" name="syncButton">
+     <property name="text">
       <string>Synchronize</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="5" >
-    <widget class="KPushButton" name="restartButton" >
-     <property name="text" >
+   <item row="2" column="5">
+    <widget class="KPushButton" name="restartButton">
+     <property name="text">
       <string>Restart</string>
      </property>
     </widget>
@@ -197,7 +242,7 @@
   <customwidget>
    <class>Akonadi::AgentInstanceWidget</class>
    <extends>QWidget</extends>
-   <header location="global" >akonadi/agentinstancewidget.h</header>
+   <header location="global">akonadi/agentinstancewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
