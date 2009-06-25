@@ -10,6 +10,7 @@ macro(add_akonadi_isolated_test _source)
     ${QT_QTTEST_LIBRARY}
     ${QT_QTGUI_LIBRARY}
     ${KDE4_AKONADI_LIBS}
+    ${KDE4_AKONADI_KMIME_LIBS}
     ${KDE4_KDECORE_LIBS}
     ${KDE4_MAILTRANSPORT_LIBS}
     ${KDE4_KMIME_LIBS}
