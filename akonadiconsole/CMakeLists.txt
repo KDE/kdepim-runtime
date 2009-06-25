@@ -74,6 +74,7 @@ set_target_properties(akonadiconsole_bin PROPERTIES OUTPUT_NAME akonadiconsole)
 
 target_link_libraries( akonadiconsole_bin
   ${KDEPIMLIBS_AKONADI_LIBS}
+  akonadi_next
   akonadi-kabccommon
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   akonadi-kcal

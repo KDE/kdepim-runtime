@@ -38,7 +38,13 @@
 #include <akonadi/collectionpropertiesdialog.h>
 #include <akonadi/standardactionmanager.h>
 #include <akonadi/monitor.h>
+#include <akonadi/session.h>
 #include <xml/xmlwritejob.h>
+
+#include <akonadi_next/entitytreemodel.h>
+#include <akonadi_next/entitytreeview.h>
+#include <akonadi_next/statisticsproxymodel.h>
+#include <akonadi_next/statisticstooltipproxymodel.h>
 
 #include <kcal/kcalmodel.h>
 #include <kcal/incidence.h>
@@ -92,15 +98,30 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter->setObjectName( "collectionSplitter" );
   layout->addWidget( splitter );
 
-  mCollectionView = new Akonadi::CollectionView( xmlGuiWindow );
+  mCollectionView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
   splitter->addWidget( mCollectionView );
 
-  mCollectionModel = new Akonadi::CollectionStatisticsModel( this );
+  Session *session = new Session( "AkonadiConsole Browser Widget", this );
+
+  // monitor collection changes
+  Monitor *monitor = new Monitor( this );
+  monitor->setCollectionMonitored( Collection::root() );
+  monitor->fetchCollection( true );
+  monitor->setAllMonitored( true );
+
+  mCollectionModel = new EntityTreeModel( session, monitor, this );
+
+  StatisticsToolTipProxyModel *proxy1 = new StatisticsToolTipProxyModel( this );
+  proxy1->setSourceModel( mCollectionModel );
+
+  StatisticsProxyModel *proxy2 = new StatisticsProxyModel( this );
+  proxy2->setSourceModel( proxy1 );
+
   QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
   sortModel->setDynamicSortFilter( true );
   sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-  sortModel->setSourceModel( mCollectionModel );
+  sortModel->setSourceModel( proxy2 );
   mCollectionView->setModel( sortModel );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
@@ -167,10 +188,10 @@ void BrowserWidget::clear()
 
 void BrowserWidget::collectionActivated(const QModelIndex & index)
 {
-  mCurrentCollection = mCollectionView->model()->data( index, CollectionModel::CollectionIdRole ).toLongLong();
+  mCurrentCollection = mCollectionView->model()->data( index, EntityTreeModel::CollectionIdRole ).toLongLong();
   if ( mCurrentCollection <= 0 )
     return;
-  const Collection col = mCollectionView->currentIndex().data( CollectionModel::CollectionRole ).value<Collection>();
+  const Collection col = mCollectionView->currentIndex().data( EntityTreeModel::CollectionRole ).value<Collection>();
   mItemModel->setCollection( col );
   clear();
 }
