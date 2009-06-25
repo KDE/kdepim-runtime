@@ -29,6 +29,7 @@
 #include <akonadi/session.h>
 
 #include "../entitytreemodel.h"
+#include "../statisticsproxymodel.h"
 #include "../statisticstooltipproxymodel.h"
 
 using namespace Akonadi;
@@ -54,11 +55,14 @@ public:
 
     EntityTreeModel *baseModel = new EntityTreeModel( session, monitor, this );
     baseModel->setIncludeRootCollection( true );
-    treeView2->setModel( baseModel );
 
     StatisticsToolTipProxyModel *proxy1 = new StatisticsToolTipProxyModel( this );
     proxy1->setSourceModel( baseModel );
     treeView1->setModel( proxy1 );
+
+    StatisticsProxyModel *proxy2 = new StatisticsProxyModel( this );
+    proxy2->setSourceModel( baseModel );
+    treeView2->setModel( proxy2 );
 
     setCentralWidget( splitter );
   }

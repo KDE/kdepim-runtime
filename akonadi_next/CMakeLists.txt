@@ -32,6 +32,7 @@ set( akonadi_next_SRCS
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
   selectionproxymodel.cpp
+  statisticsproxymodel.cpp
   statisticstooltipproxymodel.cpp
   )
 
