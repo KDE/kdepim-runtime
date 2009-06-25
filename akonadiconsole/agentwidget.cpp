@@ -221,7 +221,16 @@ void AgentWidget::currentChanged(const Akonadi::AgentInstance& instance)
   if ( instance.isValid() ) {
     ui.identifierLabel->setText( instance.identifier() );
     ui.typeLabel->setText( instance.type().name() );
-    ui.statusLabel->setText( instance.isOnline() ? i18n( "Online" ) : i18n( "Offline" ) );
+    QString onlineStatus = ( instance.isOnline() ? i18n( "Online" ) : i18n( "Offline" ) );
+    QString agentStatus;
+    switch( instance.status() ) {
+      case AgentInstance::Idle: agentStatus = i18n( "Idle" ); break;
+      case AgentInstance::Running: agentStatus = i18n( "Running (%1%)", instance.progress() ); break;
+      case AgentInstance::Broken: agentStatus = i18n( "Broken" ); break;
+    }
+    ui.statusLabel->setText( i18nc( "Two statuses, for example \"Online, Running (66%)\" or \"Offline, Broken\"",
+          "%1, %2", onlineStatus, agentStatus ) );
+    ui.statusMessageLabel->setText( instance.statusMessage() );
     ui.capabilitiesLabel->setText( instance.type().capabilities().join( ", " ) );
     ui.mimeTypeLabel->setText( instance.type().mimeTypes().join( ", " ) );
   } else {
