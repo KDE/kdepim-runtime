@@ -452,7 +452,6 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       c.setName( pathPart );
       c.setRemoteId( remoteIdForMailBox( currentPath ) );
       c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
-      c.setRights( Collection::AllRights );
       c.setContentMimeTypes( contentTypes );
 
       CachePolicy cachePolicy;
