@@ -58,6 +58,9 @@ EntityTreeModel::EntityTreeModel( Session *session,
   d->m_monitor = monitor;
   d->m_session = session;
 
+  d->m_includeStatistics = true;
+  d->m_monitor->fetchCollectionStatistics( true );
+
   d->m_mimeChecker.setWantedMimeTypes( d->m_monitor->mimeTypesMonitored() );
 
   connect( monitor, SIGNAL( mimeTypeMonitored( const QString&, bool ) ),

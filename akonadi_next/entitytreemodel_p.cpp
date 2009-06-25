@@ -43,6 +43,8 @@ EntityTreeModelPrivate::EntityTreeModelPrivate( EntityTreeModel *parent )
     : q_ptr( parent ),
       m_collectionFetchStrategy( EntityTreeModel::FetchCollectionsRecursive ),
       m_itemPopulation( EntityTreeModel::ImmediatePopulation ),
+      m_includeUnsubscribed( true ),
+      m_includeStatistics( false ),
       m_showRootCollection( false )
 {
 }
@@ -82,6 +84,7 @@ void EntityTreeModelPrivate::fetchCollections( const Collection &collection, Col
   Q_Q( EntityTreeModel );
   CollectionFetchJob *job = new CollectionFetchJob( collection, type, m_session );
   job->includeUnsubscribed( m_includeUnsubscribed );
+  job->includeStatistics( m_includeStatistics );
   q->connect( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ),
               q, SLOT( collectionsFetched( const Akonadi::Collection::List& ) ) );
   q->connect( job, SIGNAL( result( KJob* ) ),
@@ -107,7 +110,8 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
       Akonadi::AgentInstance agentInstance = agentManager->instance( collection.resource() );
 
       if ( ( !m_mimeChecker.isWantedCollection( collection ) ) &&
-           ( !m_monitor->resourcesMonitored().contains( collection.resource().toUtf8() ) ) )
+           ( !m_monitor->resourcesMonitored().contains( collection.resource().toUtf8() ) ) &&
+             !m_monitor->isAllMonitored() )
         continue;
     }
 
@@ -300,10 +304,19 @@ void EntityTreeModelPrivate::monitoredCollectionChanged( const Akonadi::Collecti
   q->dataChanged( index, index );
 }
 
-void EntityTreeModelPrivate::monitoredCollectionStatisticsChanged( Akonadi::Collection::Id,
-                                                                   const Akonadi::CollectionStatistics& )
+void EntityTreeModelPrivate::monitoredCollectionStatisticsChanged( Akonadi::Collection::Id id,
+                                                                   const Akonadi::CollectionStatistics &statistics )
 {
-// kDebug();
+  Q_Q( EntityTreeModel );
+
+  if ( !m_collections.contains( id ) ) {
+    kWarning( 5250 ) << "Got statistics response for non-existing collection:" << id;
+  } else {
+    m_collections[ id ].setStatistics( statistics );
+
+    const QModelIndex index = q->indexForCollection( m_collections[ id ] );
+    q->dataChanged( index, index );
+  }
 }
 
 void EntityTreeModelPrivate::monitoredItemAdded( const Akonadi::Item& item, const Akonadi::Collection& collection )
