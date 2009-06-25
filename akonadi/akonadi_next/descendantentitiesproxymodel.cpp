@@ -473,7 +473,6 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelI
   Q_Q(DescendantEntitiesProxyModel);
   int c = descendedRow(parent);
   int d = descendedRow(destParent);
-  kDebug() << c << d;
   q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
 }
 
@@ -622,7 +621,6 @@ void DescendantEntitiesProxyModelPrivate::sourceDataChanged(const QModelIndex &t
     // As it is we emit once for each row.
     QModelIndex sourceBottomRight = q->sourceModel()->index(i, bottomRight.column(), bottomRight.parent());
     QModelIndex proxyBottomRight = q->mapFromSource(sourceBottomRight);
-    kDebug() << proxyTopLeft << proxyBottomRight;
     emit q->dataChanged(proxyTopLeft, proxyBottomRight);
   }
 }

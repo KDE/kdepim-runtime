@@ -24,7 +24,7 @@
 #ifndef KDEPIM_KINCIDENCECHOOSER_H
 #define KDEPIM_KINCIDENCECHOOSER_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 #include "htmldiffalgodisplay.h"
 #include "calendardiffalgo.h"
 
@@ -43,7 +43,7 @@ namespace KPIM {
   Dialog to change the korganizer configuration.
 */
 
-class KDEPIM_EXPORT KIncidenceChooser : public KDialog
+class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
 {
   Q_OBJECT
   public:

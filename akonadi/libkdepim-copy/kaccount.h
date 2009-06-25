@@ -33,7 +33,7 @@
 #ifndef KDEPIM_KACCOUNT_H
 #define KDEPIM_KACCOUNT_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 
 #include <QObject>
 #include <QString>
@@ -43,7 +43,7 @@ class KConfigGroup;
 namespace KPIM {
 
 /** Base class for mail and news accounts. */
-class KDEPIM_EXPORT KAccount
+class KDEPIM_COPY_EXPORT KAccount
 {
   Q_GADGET
   Q_ENUMS( Type )

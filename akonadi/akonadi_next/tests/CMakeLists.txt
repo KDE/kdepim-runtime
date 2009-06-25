@@ -9,6 +9,8 @@ set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 SET(testSources
   dynamictreemodel.cpp
+  ../selectionproxymodel.cpp
+  proxymodeltest.cpp
   ../modeltest.cpp
   ../descendantentitiesproxymodel.cpp
   ../abstractproxymodel.cpp
@@ -26,6 +28,7 @@ ENDMACRO(KDEUI_UNIT_TESTS)
 
 KDEUI_UNIT_TESTS(
   descendantentitiesproxymodeltest
+  selectionproxymodeltest
 )
 
 

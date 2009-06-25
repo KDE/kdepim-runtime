@@ -106,7 +106,9 @@ bool ResourcePrivateBase::doOpen()
 
 bool ResourcePrivateBase::doClose()
 {
-  writeConfig( mConfig );
+  if ( mConfig.isValid() ) {
+    writeConfig( mConfig );
+  }
 
   bool result = closeResource();
 

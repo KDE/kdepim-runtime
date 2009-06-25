@@ -19,6 +19,7 @@
 
 #include "collectionannotationsattribute.h"
 
+#include <KDebug>
 #include <QByteArray>
 #include <akonadi/attribute.h>
 
@@ -71,19 +72,23 @@ QByteArray CollectionAnnotationsAttribute::serialized() const
 void CollectionAnnotationsAttribute::deserialize( const QByteArray &data )
 {
   mAnnotations.clear();
-  QList<QByteArray> lines = data.split( '%' );
+  const QList<QByteArray> lines = data.split( '%' );
 
-  foreach ( const QByteArray &line, lines ) {
-    QByteArray trimmed = line.trimmed();
-    if ( trimmed.isEmpty() )
+  for ( int i = 0; i < lines.size(); ++i ) {
+    QByteArray line = lines[i];
+    if ( i != 0 && line.startsWith( ' ' ) )
+      line = line.mid( 1 );
+    if ( i != lines.size() - 1 && line.endsWith( ' ' ) )
+      line.chop( 1 );
+    if ( line.trimmed().isEmpty() )
       continue;
-    int wsIndex = trimmed.indexOf( ' ' );
+    int wsIndex = line.indexOf( ' ' );
     if ( wsIndex > 0 ) {
-      const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
-      const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
+      const QByteArray key = line.mid( 0, wsIndex );
+      const QByteArray value = line.mid( wsIndex+1 );
       mAnnotations[key] = value;
     } else {
-      mAnnotations.insert( trimmed, QByteArray() );
+      mAnnotations.insert( line, QByteArray() );
     }
   }
 }

@@ -1,0 +1,60 @@
+<ui version="4.0" >
+ <class>CollectionAttributesPage</class>
+ <widget class="QWidget" name="CollectionAttributesPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" colspan="3" >
+    <widget class="QTreeView" name="attrView" >
+     <property name="rootIsDecorated" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="KLineEdit" name="attrName" >
+     <property name="clickMessage" >
+      <string>New Attribute</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="KPushButton" name="addButton" >
+     <property name="text" >
+      <string>&amp;Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="KPushButton" name="deleteButton" >
+     <property name="enabled" >
+      <bool>true</bool>
+     </property>
+     <property name="text" >
+      <string>&amp;Delete</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

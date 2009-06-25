@@ -20,6 +20,7 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #ifndef AKONADI_COLLECTIONCHILDORDERATTRIBUTE_H
 #define AKONADI_COLLECTIONCHILDORDERATTRIBUTE_H
 
+#include "akonadi_next_export.h"
 #include <akonadi/attribute.h>
 
 // #include <QStringList>
@@ -33,7 +34,7 @@ namespace Akonadi
 * Holds an ordered list of remoteIds for child collections and items in a model.
 * @since 4.3
 */
-class AKONADI_EXPORT CollectionChildOrderAttribute : public Attribute
+class AKONADI_NEXT_EXPORT CollectionChildOrderAttribute : public Attribute
 {
 public:
   /**

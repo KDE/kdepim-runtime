@@ -16,9 +16,9 @@ macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.or
 find_package(Akonadi)
 macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi server libraries (from kdesupport)" "http://pim.kde.org/akonadi" TRUE "" "Akonadi is required to build kdepim-runtime.")
 
-set(SHARED_MIME_INFO_MINIMUM_VERSION "0.20")
+set(SHARED_MIME_INFO_MINIMUM_VERSION "0.30")
 find_package(SharedMimeInfo)
-macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesktop.org/wiki/Software/shared-mime-info" TRUE "0.20" "SharedMimeInfo is required.")
+macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesktop.org/wiki/Software/shared-mime-info" TRUE "0.30" "SharedMimeInfo is required.")
 
 find_package(LibXml2)
 macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
@@ -84,11 +84,17 @@ add_subdirectory(migration)
 add_subdirectory(defaultsetup)
 add_subdirectory(akonadi_next)
 add_subdirectory(kresources)
+add_subdirectory(akonadiconsole)
 
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
 #endif(OPENSYNC_FOUND)
 
+############### Here we install some extra stuff  ###############
+
+## install the MIME type spec file for KDEPIM specific MIME types
+install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 if(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
     macro_display_feature_log()

@@ -22,7 +22,7 @@
 #ifndef KDEPIM_DIFFALGO_H
 #define KDEPIM_DIFFALGO_H
 
-#include "kdepim_export.h"
+#include "libkdepim-copy_export.h"
 #include <QList>
 
 namespace KPIM {
@@ -76,7 +76,7 @@ class DiffAlgoDisplay
 };
 
 
-class KDEPIM_EXPORT DiffAlgo
+class KDEPIM_COPY_EXPORT DiffAlgo
 {
   public:
     /**

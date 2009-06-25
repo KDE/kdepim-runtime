@@ -42,7 +42,7 @@ ICalResource::ICalResource( const QString &id )
     : SingleFileResource<Settings>( id ), mCalendar( 0 ),
       mMimeVisitor( new KCalMimeTypeVisitor() ),
       mIncidenceAssigner( new AssignmentVisitor() ),
-      mNotesMimeType( QLatin1String( "application/x-vnd.akonadi.notes" ) )
+      mNotesMimeType( QLatin1String( "application/x-vnd.kde.notes" ) )
 {
   QStringList mimeTypes;
   if ( isNotesResource() ) {

@@ -321,6 +321,7 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
     //         << "columns:" << columns << "parent column:" << parent.column();
 
     Q_ASSERT ( model->hasIndex ( rows, 0, parent ) == false );
+    Q_ASSERT ( model->index(rows, 0, parent).isValid() == false );
     for ( int r = 0; r < rows; ++r ) {
         if ( model->canFetchMore ( parent ) ) {
             fetchingMore = true;
@@ -328,6 +329,7 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
             fetchingMore = false;
         }
         Q_ASSERT ( model->hasIndex ( r, columns, parent ) == false );
+        Q_ASSERT ( model->index(r, columns, parent).isValid() == false );
         for ( int c = 0; c < columns; ++c ) {
             Q_ASSERT ( model->hasIndex ( r, c, parent ) == true );
             QModelIndex index = model->index ( r, c, parent );

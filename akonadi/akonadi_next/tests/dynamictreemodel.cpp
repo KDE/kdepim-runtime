@@ -53,8 +53,6 @@ QModelIndex DynamicTreeModel::index(int row, int column, const QModelIndex &pare
 
   QList<qint64> rowIds = childIdColumns.at(column);
 
-//   kDebug() << rowIds;
-
   if ( row >= rowIds.size())
     return QModelIndex();
 
@@ -301,7 +299,6 @@ void ModelDataChangeCommand::doCommand()
   {
     for (int row = m_startRow; row < m_endRow; row++ )
     {
-      kDebug() << col << row;
       QString name = QUuid::createUuid().toString();
       m_model->m_items[childItems[col][row]] = name;
     }

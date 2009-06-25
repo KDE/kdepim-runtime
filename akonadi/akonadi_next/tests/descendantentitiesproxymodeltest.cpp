@@ -25,6 +25,8 @@
 #include "dynamictreemodel.h"
 #include "../modeltest.h"
 #include "../descendantentitiesproxymodel.h"
+#include "proxymodeltest.h"
+
 
 // #include "fakemonitor.h"
 
@@ -34,11 +36,43 @@
 
 using namespace Akonadi;
 
-class TestProxyModel : public QObject
+
+class DescendantEntitiesProxyModelTest : public ProxyModelTest
 {
   Q_OBJECT
+public:
+  DescendantEntitiesProxyModelTest( QObject *parent = 0 )
+      : ProxyModelTest( parent )
+  {
+  }
+
+  protected:
+    QVariantList getSignal(SignalType type, int start, int end)
+    {
+      return ProxyModelTest::getSignal(type, IndexFinder(), start, end);
+    }
+
+    void signalInsertion(const QString &name, int startRow, int rowsAffected)
+    {
+      ProxyModelTest::signalInsertion(name, IndexFinder(), startRow, rowsAffected, m_rowCount);
+      m_rowCount += rowsAffected;
+    }
+
+    void signalRemoval(const QString &name, int startRow, int rowsAffected)
+    {
+      ProxyModelTest::signalRemoval(name, IndexFinder(), startRow, rowsAffected, m_rowCount);
+      m_rowCount -= rowsAffected;
+    }
+
+    PersistentIndexChange getChange(int start, int end, int difference, bool toInvalid = false)
+    {
+      return ProxyModelTest::getChange(IndexFinder(), start, end, difference, toInvalid);
+    }
 
 private slots:
+  void initTestCase();
+
+  // TODO: Split these into tests in ProxyModelTest and initTestCase
   void testInsertionChangeAndRemoval();
   void testSameParentUp();
   void testSameParentDown();
@@ -46,16 +80,118 @@ private slots:
   void testDifferentParentDown();
   void testDifferentParentSameLevel();
   void testInsertionWithDescendants();
+
+private:
+  DescendantEntitiesProxyModel *m_proxyModel;
+  IndexFinder m_rootIdxFinder;
+  int m_rowCount;
 };
 
-void TestProxyModel::testInsertionChangeAndRemoval()
+
+void DescendantEntitiesProxyModelTest::initTestCase()
+{
+  m_proxyModel = new DescendantEntitiesProxyModel(this);
+  setProxyModel(m_proxyModel);
+
+  QList<QVariantList> signalList;
+  QVariantList expected;
+  QList<PersistentIndexChange> persistentList;
+  m_rowCount = 0;
+  int startRow = 0;
+  int rowsInserted = 1;
+
+  signalInsertion("insert01", startRow, rowsInserted);
+
+  startRow = 1;
+  rowsInserted = 10;
+  signalInsertion("insert02", startRow, rowsInserted);
+
+  startRow = 0;
+  signalInsertion("insert03", startRow, rowsInserted);
+
+  startRow = 21;
+  signalInsertion("insert04", startRow, rowsInserted);
+
+  startRow = 11;
+  signalInsertion("insert05", startRow, rowsInserted);
+
+  startRow = 31;
+  signalInsertion("insert06", startRow, rowsInserted);
+
+  startRow = 21;
+  signalInsertion("insert07", startRow, rowsInserted);
+
+  int accumulatedChange = 0;
+  startRow = 17;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted - 1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted - 1);
+  accumulatedChange += 10;
+
+  startRow = 23;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted - 1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted - 1);
+  accumulatedChange += 10;
+
+  startRow = 29;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted - 1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted - 1);
+  accumulatedChange += 10;
+  persistentList << getChange(17, 17, accumulatedChange);
+
+  startRow = 48;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted - 1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted - 1);
+  accumulatedChange += 10;
+  persistentList << getChange(18, 18, accumulatedChange);
+
+  startRow = 59;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted - 1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted - 1);
+  accumulatedChange += 10;
+
+  persistentList << getChange(19, m_rowCount - 1, accumulatedChange);
+
+  setExpected("insert08", signalList, persistentList);
+  signalList.clear();
+  persistentList.clear();
+  m_rowCount += accumulatedChange;
+
+  startRow = 11;
+  int rowsRemoved = 1;
+  signalRemoval("remove01", startRow, rowsRemoved);
+
+  startRow = 57;
+  rowsRemoved = 11;
+  signalRemoval("remove02", startRow, rowsRemoved);
+
+  startRow = 47;
+  rowsRemoved = 1;
+  signalRemoval("remove03", startRow, rowsRemoved);
+
+  startRow = 55;
+  signalRemoval("remove04", startRow, rowsRemoved);
+
+  startRow = 50;
+  signalRemoval("remove05", startRow, rowsRemoved);
+
+  startRow = 47;
+  rowsRemoved = 7;
+  signalRemoval("remove06", startRow, rowsRemoved);
+
+  startRow = 15;
+  rowsRemoved = 31;
+  signalRemoval("remove07", startRow, rowsRemoved);
+
+}
+
+
+void DescendantEntitiesProxyModelTest::testInsertionChangeAndRemoval()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -111,14 +247,12 @@ void TestProxyModel::testInsertionChangeAndRemoval()
   QVERIFY(true);
 }
 
-void TestProxyModel::testSameParentDown()
+void DescendantEntitiesProxyModelTest::testSameParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -144,14 +278,12 @@ void TestProxyModel::testSameParentDown()
   QVERIFY(true);
 }
 
-void TestProxyModel::testSameParentUp()
+void DescendantEntitiesProxyModelTest::testSameParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -197,14 +329,12 @@ void TestProxyModel::testSameParentUp()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentUp()
+void DescendantEntitiesProxyModelTest::testDifferentParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -234,14 +364,12 @@ void TestProxyModel::testDifferentParentUp()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentDown()
+void DescendantEntitiesProxyModelTest::testDifferentParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -271,14 +399,12 @@ void TestProxyModel::testDifferentParentDown()
   QVERIFY(true);
 }
 
-void TestProxyModel::testDifferentParentSameLevel()
+void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   QList<int> ancestorRows;
 
@@ -310,14 +436,12 @@ void TestProxyModel::testDifferentParentSameLevel()
 
 }
 
-void TestProxyModel::testInsertionWithDescendants()
+void DescendantEntitiesProxyModelTest::testInsertionWithDescendants()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
   DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
-
-  new ModelTest(proxy, this);
 
   // First insert 4 items to the root.
   ModelInsertCommand *ins = new ModelInsertCommand(model, this);
@@ -341,5 +465,5 @@ void TestProxyModel::testInsertionWithDescendants()
 }
 
 
-QTEST_KDEMAIN(TestProxyModel, GUI)
+QTEST_KDEMAIN(DescendantEntitiesProxyModelTest, GUI)
 #include "descendantentitiesproxymodeltest.moc"

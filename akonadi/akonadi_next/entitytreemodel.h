@@ -274,6 +274,11 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
      */
     virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
 
+    /**
+     * Removes the rows from @p start to @p end from @parent
+     */
+    virtual bool removeRows( int start, int end, const QModelIndex &parent = QModelIndex() );
+
   private:
     //@cond PRIVATE
     Q_DECLARE_PRIVATE( EntityTreeModel )
@@ -282,7 +287,6 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     // Make these private, they shouldn't be called by applications
     virtual bool insertRows( int , int, const QModelIndex& = QModelIndex() );
     virtual bool insertColumns( int, int, const QModelIndex& = QModelIndex() );
-    virtual bool removeRows( int, int, const QModelIndex& = QModelIndex() );
     virtual bool removeColumns( int, int, const QModelIndex& = QModelIndex() );
 
     Q_PRIVATE_SLOT( d_func(), void monitoredCollectionStatisticsChanged( Akonadi::Collection::Id,
