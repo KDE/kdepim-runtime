@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>657</width>
+    <width>662</width>
     <height>633</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" colspan="6">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="7">
     <widget class="Akonadi::AgentInstanceWidget" name="instanceWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -24,12 +24,15 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="6">
+   <item row="1" column="0" colspan="7">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Details</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -218,13 +221,20 @@
     </widget>
    </item>
    <item row="2" column="4">
+    <widget class="KPushButton" name="abortButton">
+     <property name="text">
+      <string>Abort</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
     <widget class="KPushButton" name="syncButton">
      <property name="text">
       <string>Synchronize</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="5">
+   <item row="2" column="6">
     <widget class="KPushButton" name="restartButton">
      <property name="text">
       <string>Restart</string>
