@@ -513,6 +513,17 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     c.setParent( m_root );
   else
     c.setParentRemoteId( QString::number( imapCollection.parent() ) );
+  EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
+  if ( imapAttr ) {
+    EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    if ( imapAttr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
+      kolabAttr->setDisplayName( i18n( "My Data" ) );
+      kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
+    } else {
+      kolabAttr->setDisplayName( imapAttr->displayName() );
+      kolabAttr->setIconName( imapAttr->iconName() );
+    }
+  }
   c.setName( imapCollection.name() );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;
