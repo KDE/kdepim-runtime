@@ -1,5 +1,4 @@
 /*
-    Copyright (c) 2008 Volker Krause <vkrause@kde.org>
     Copyright (c) 2009 Bertjan Broeksema <b.broeksema@kdemail.net>
 
     This library is free software; you can redistribute it and/or modify it
