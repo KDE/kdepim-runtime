@@ -52,8 +52,7 @@ static QString retrievePassword( const QString &idString )
   if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
     wallet->setFolder( "kmail" );
     wallet->readPassword( "account-" + idString, password );
-  } else
-    kWarning() << "No password retrieved.";
+  }
   delete wallet;
   return password;
 }
