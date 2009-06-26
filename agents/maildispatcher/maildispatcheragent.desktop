@@ -14,7 +14,8 @@ Name[uk]=Агент розподілу пошти Akonadi
 Name[x-test]=xxAkonadi Mail Dispatcher Agentxx
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
+Icon=mail-folder-outbox
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilities=Unique,Autostart
+X-Akonadi-Capabilities=Unique,Autostart,NoConfig
 X-Akonadi-Identifier=akonadi_maildispatcher_agent
