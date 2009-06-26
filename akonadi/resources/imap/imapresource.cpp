@@ -503,6 +503,11 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
 
 void ImapResource::retrieveItems( const Collection &col )
 {
+  if ( !m_account ) {
+    cancelTask();
+    return;
+  }
+
   kDebug( ) << col.remoteId();
 
   // Prevent fetching items from noselect folders.
