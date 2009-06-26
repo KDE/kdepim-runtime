@@ -35,7 +35,6 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KConfig>
 #include <KConfigGroup>
 #include <KStandardDirs>
-#include <KDebug>
 #include <KLocalizedString>
 #include <kwallet.h>
 using KWallet::Wallet;
@@ -145,7 +144,6 @@ bool KMailMigrator::migrateCurrentAccount()
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
 
   const QString type = group.readEntry( "Type" ).toLower();
-  kDebug() << "Account type: " << type;
   if ( type == "imap" || type == "dimap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT( imapAccountCreated( KJob * ) ) );

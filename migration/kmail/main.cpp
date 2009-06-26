@@ -86,7 +86,6 @@ int main( int argc, char **argv )
   }
 
   KMailMigrator *migrator = new KMailMigrator( typesToMigrate );
-  kDebug() << migrator << infoDialog;
   if ( infoDialog && migrator ) {
     infoDialog->migratorAdded();
     QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),
