@@ -337,90 +337,77 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
     QRegExp regexp( sMBoxSeperatorRegExp );
 
     if ( regexp.indexIn(line) < 0 ) {
+      qDebug() << "Found invalid seperator at:" << offset;
       unlock();
       return false; // The file is messed up or the index is incorrect.
     }
   }
 
+  // All entries are deleted, so just resize the file to a size of 0.
+  if ( deletedItems.size() == d->mEntries.size() ) {
+    d->mEntries.clear();
+    d->mMboxFile.resize( 0 );
+    kDebug() << "Purge comleted successfully, unlocking the file.";
+    return unlock();
+  }
+
   qSort( d->mEntries.begin(), d->mEntries.end(), lessThanByOffset );
   quint64 writeOffset = 0;
+  bool writeOffSetInitialized = false;
   QList<MsgInfo> resultingEntryList;
+
+  quint64 origFileSize = d->mMboxFile.size();
 
   QListIterator<MsgInfo> i( d->mEntries );
   while ( i.hasNext() ) {
     MsgInfo entry = i.next();
 
-    if ( deletedItems.contains( entry.first ) ) {
-      // This entry must get removed from the file.
+    if ( deletedItems.contains( entry.first ) && !writeOffSetInitialized ) {
       writeOffset = entry.first;
-
+      writeOffSetInitialized = true;
+    } else if ( writeOffset < entry.first && !deletedItems.contains( entry.first ) ) {
+      // The current message doesn't have to be deleted, but must be moved.
+      // First determine the size of the entry that must be moved.
+      quint64 entrySize = 0;
       if ( i.hasNext() ) {
-        // One ore more entries after this one, find the first that should be
-        // kept, or find eof if all following entries must be deleted.
-        MsgInfo entryToWrite;
-        bool nextEntryFound = false;
-        while ( i.hasNext() && !nextEntryFound ) {
-          entryToWrite = i.next();
-          if ( !deletedItems.contains( entryToWrite.first ) )
-            nextEntryFound = true;
-        }
-
-        if ( nextEntryFound ) {
-          if ( i.hasNext() ) { // Read the next entry to determine the size.
-            MsgInfo entryAfterEntryToWrite = i.next();
-            quint64 entryToWriteSize = entryAfterEntryToWrite.first - entryToWrite.first - 1;
-            quint64 mapSize = entryAfterEntryToWrite.first - writeOffset - 1;
-
-            // Now map writeOffSet to entryAfterEntryToWrite offset into mem.
-            uchar *memArea = d->mMboxFile.map( writeOffset, mapSize );
-
-            // Now read the entry that must be moved to writeOffset.
-            quint64 startOffset = entryToWrite.first - writeOffset;
-            char *start = reinterpret_cast<char*>( memArea + startOffset );
-            QByteArray entryToWriteData( start, entryToWriteSize );
-
-            memcpy( memArea, entryToWriteData.constData(), entryToWriteSize );
-
-            d->mMboxFile.unmap( memArea );
-
-            resultingEntryList << MsgInfo( writeOffset, entryToWrite.second );
-            writeOffset += entryToWriteSize + 1;
-          } else { // entryToWrite is the last entry in the file
-            quint64 entryToWriteSize = d->mMboxFile.size() - entryToWrite.first - 1;
-            quint64 mapSize = d->mMboxFile.size() - writeOffset - 1;
-
-            // Now map writeOffSet upto mapSize into mem.
-            uchar *memArea = d->mMboxFile.map( writeOffset, mapSize );
-
-            quint64 startOffset = entryToWrite.first - writeOffset;
-            char *start = reinterpret_cast<char*>( memArea + startOffset );
-            QByteArray entryToWriteData( start, entryToWriteSize );
-
-            memcpy( memArea, entryToWriteData.constData(), entryToWriteSize );
-
-            d->mMboxFile.unmap( memArea );
-
-            resultingEntryList << MsgInfo( writeOffset, entryToWrite.second );
-            writeOffset += entryToWriteSize + 1;
-
-            // Chop off the remaining bytes.
-            d->mMboxFile.resize( writeOffset );
-          }
-        } else {
-          // All entries after writeOffset are marked as deleted so resize the
-          // file.
-          d->mMboxFile.resize( writeOffset );
-        }
+        entrySize = i.next().first - entry.first - 1;
+        i.previous(); // Go back to make sure that we also handle the next entry.
       } else {
-        // It is the last entry of the file so just chop off the remaining content
-        // from writeOffset to end of file.
-        d->mMboxFile.resize( writeOffset );
+        entrySize = origFileSize - entry.first - 1;
       }
-    } else {
+
+      Q_ASSERT( entrySize > 0 ); // MBox entries really cannot have a size <= 0;
+
+      // we map the whole area of the file starting at the writeOffset up to the
+      // message that have to be moved into memory. This includes eventually the
+      // messages that are the deleted between the first deleted message
+      // encountered and the message that has to be moved.
+      quint64 mapSize = entry.first + entrySize - writeOffset;
+
+      // Now map writeOffSet + mapSize into mem.
+      uchar *memArea = d->mMboxFile.map( writeOffset, mapSize );
+
+      // Now read the entry that must be moved to writeOffset.
+      quint64 startOffset = entry.first - writeOffset;
+      char *start = reinterpret_cast<char*>( memArea + startOffset );
+      QByteArray entryToWriteData( start, entrySize );
+
+      memcpy( memArea, entryToWriteData.constData(), entrySize );
+
+      d->mMboxFile.unmap( memArea );
+
       resultingEntryList << MsgInfo( writeOffset, entry.second );
+      writeOffset += entrySize + 1;
+    } else if ( !deletedItems.contains( entry.first ) ) {
+      // Unmoved and not deleted entry, can only occure before the first deleted
+      // entry.
+      Q_ASSERT( !writeOffSetInitialized );
+      resultingEntryList << entry;
     }
   }
 
+  // Chop off remaining entry bits.
+  d->mMboxFile.resize( writeOffset );
   d->mEntries = resultingEntryList;
 
   kDebug() << "Purge comleted successfully, unlocking the file.";

@@ -289,6 +289,65 @@ void MboxTest::testEntries()
   QCOMPARE( infos2.at( 2 ).first, infos.at( 2 ).first );
 }
 
+void MboxTest::testPurge()
+{
+  MBox mbox1;
+  QVERIFY( mbox1.setLockType( MBox::None ) );
+  QVERIFY( mbox1.load( fileName() ) );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  QVERIFY( mbox1.save() );
+
+  QList<MsgInfo> list = mbox1.entryList();
+
+  // First test: Delete only the first (all messages afterwards have to be moved).
+  mbox1.purge( QSet<quint64>() << list.first().first );
+
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileName() ) );
+  QList<MsgInfo> list2 = mbox2.entryList();
+  QCOMPARE( list2.size(), 2 ); // Is a message actually gone?
+
+  quint64 newOffsetSecondMessage = list.last().first - list.at( 1 ).first;
+
+  QCOMPARE( list2.first().first, static_cast<quint64>( 0 ) );
+  QCOMPARE( list2.last().first, newOffsetSecondMessage );
+
+  // Second test: Delete the first two (the last message have to be moved).
+  removeTestFile();
+
+  QVERIFY( mbox1.load( fileName() ) );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  QVERIFY( mbox1.save() );
+
+  list = mbox1.entryList();
+
+  mbox1.purge( QSet<quint64>() << list.at( 0 ).first << list.at( 1 ).first );
+  QVERIFY( mbox2.load( fileName() ) );
+  list2 = mbox2.entryList();
+  QCOMPARE( list2.size(), 1 ); // Are the messages actually gone?
+  QCOMPARE( list2.first().first, static_cast<quint64>( 0 ) );
+
+  // Third test: Delete all messages.
+  removeTestFile();
+
+  QVERIFY( mbox1.load( fileName() ) );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  mbox1.appendEntry( mMail1 );
+  QVERIFY( mbox1.save() );
+
+  list = mbox1.entryList();
+
+  mbox1.purge( QSet<quint64>() << list.at( 0 ).first << list.at( 1 ).first << list.at( 2 ).first );
+  QVERIFY( mbox2.load( fileName() ) );
+  list2 = mbox2.entryList();
+  QCOMPARE( list2.size(), 0 ); // Are the messages actually gone?
+}
+
 void MboxTest::cleanupTestCase()
 {
   mTempDir->unlink();
