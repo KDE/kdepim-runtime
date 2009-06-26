@@ -701,7 +701,7 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
   // finish the task.
   changeProcessed();
 
-    if ( !job->error() ) {
+    if ( job->error() ) {
         kDebug() << "Failed to delete the folder, resync the folder tree";
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
