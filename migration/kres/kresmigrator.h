@@ -22,7 +22,6 @@
 
 #include "kresmigratorbase.h"
 
-#include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <kresources/manager.h>
 #include <kresources/resource.h>
@@ -77,7 +76,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           continue;
         }
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
-        if ( migrationState( *mIt ) == None ) {
+        if ( migrationState( (*mIt)->identifier() ) == None ) {
           emit message( Info, i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
           mPendingBridgedResources.removeAll( (*mIt)->identifier() );
           T* res = *mIt;
@@ -90,9 +89,10 @@ template <typename T> class KResMigrator : public KResMigratorBase
           }
           return;
         }
-        if ( migrationState( *mIt ) == Bridged && !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
+        if ( migrationState( (*mIt)->identifier() ) == Bridged &&
+             !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
           mPendingBridgedResources << (*mIt)->identifier();
-        if ( migrationState( *mIt ) == Complete )
+        if ( migrationState( (*mIt)->identifier() ) == Complete )
           emit message( Skip, i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
         ++mIt;
       }
@@ -165,7 +165,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         AgentManager::self()->removeInstance( bridge );
       }
 
-      setMigrationState( mCurrentKResource, Complete, instance.identifier() );
+      setMigrationState( mCurrentKResource->identifier(), Complete, instance.identifier(), mType );
       emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
       migrationCompletedHelper( instance );
     }
@@ -173,7 +173,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void migratedToBridge(const Akonadi::AgentInstance & instance)
     {
       mBridgingInProgress = false;
-      setMigrationState( mCurrentKResource, Bridged, instance.identifier() );
+      setMigrationState( mCurrentKResource->identifier(), Bridged, instance.identifier(), mType );
       emit message( Success, i18n( "Migration of '%1' to compatibility bridge succeeded.", mCurrentKResource->resourceName() ) );
       migrationCompletedHelper( instance );
     }

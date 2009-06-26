@@ -45,24 +45,24 @@ InfoDialog::~InfoDialog()
   KGlobal::deref();
 }
 
-void InfoDialog::message(KResMigratorBase::MessageType type, const QString & msg)
+void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
 {
   QListWidgetItem *item = new QListWidgetItem( msg, mList );
   switch ( type ) {
-    case KResMigratorBase::Success:
+    case KMigratorBase::Success:
       item->setIcon( KIcon( "dialog-ok-apply" ) );
       mChange = true;
       kDebug() << msg;
       break;
-    case KResMigratorBase::Skip:
+    case KMigratorBase::Skip:
       item->setIcon( KIcon( "dialog-ok" ) );
       kDebug() << msg;
       break;
-    case KResMigratorBase::Info:
+    case KMigratorBase::Info:
       item->setIcon( KIcon( "dialog-information" ) );
       kDebug() << msg;
       break;
-    case KResMigratorBase::Error:
+    case KMigratorBase::Error:
       item->setIcon( KIcon( "dialog-error" ) );
       mError = true;
       kError() << msg;
@@ -86,3 +86,5 @@ void InfoDialog::migratorDone()
       emit closeClicked();
   }
 }
+
+#include "infodialog.moc"

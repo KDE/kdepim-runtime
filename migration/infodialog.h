@@ -20,7 +20,7 @@
 #ifndef INFODIALOG_H
 #define INFODIALOG_H
 
-#include "kresmigratorbase.h"
+#include "kmigratorbase.h"
 
 #include <KDialog>
 
@@ -34,7 +34,7 @@ class InfoDialog : public KDialog
     ~InfoDialog();
 
   public slots:
-    void message( KResMigratorBase::MessageType type, const QString &msg );
+    void message( KMigratorBase::MessageType type, const QString &msg );
 
     void migratorAdded();
     void migratorDone();

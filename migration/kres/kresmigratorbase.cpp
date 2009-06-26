@@ -19,10 +19,8 @@
 
 #include "kresmigratorbase.h"
 
-#include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/agentmanager.h>
-#include <akonadi/agenttype.h>
 
 #include <kresources/manager.h>
 #include <kresources/resource.h>
@@ -30,75 +28,26 @@
 #include <KConfigGroup>
 #include <KGlobal>
 #include <KStandardDirs>
-
-#include <QMetaEnum>
-#include <QTimer>
+#include <KJob>
 
 using namespace Akonadi;
 
 KResMigratorBase::KResMigratorBase(const QString & type, const QString &bridgeType) :
+    KMigratorBase(),
     mType( type ),
     mBridgeType( bridgeType ),
     mCurrentKResource( 0 ),
     mBridgingInProgress( false )
 {
-  KGlobal::ref();
-
   KConfigGroup cfg( KGlobal::config(), "Bridged" );
   mPendingBridgedResources = cfg.readEntry( mType + "Resources", QStringList() );
-
-  // load the vtable before we continue
-  QTimer::singleShot( 0, this, SLOT(migrate()) );
-}
-
-KResMigratorBase::~ KResMigratorBase()
-{
-  KGlobal::deref();
-}
-
-KResMigratorBase::MigrationState KResMigratorBase::migrationState(KRES::Resource * res) const
-{
-  KConfigGroup cfg( KGlobal::config(), "Resource " + res->identifier() );
-  QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
-  const QString s = cfg.readEntry( "MigrationState", e.valueToKey( None ) );
-  MigrationState state = (MigrationState)e.keyToValue( s.toLatin1() );
-
-  if ( state != None ) {
-    const QString resId = cfg.readEntry( "ResourceIdentifier", "" );
-    // previously migrated but removed again
-    if ( !AgentManager::self()->instance( resId ).isValid() )
-      state = None;
-  }
-
-  return state;
-}
-
-void KResMigratorBase::setMigrationState( KRES::Resource * res, MigrationState state, const QString &resId )
-{
-  KConfigGroup cfg( KGlobal::config(), "Resource " + res->identifier() );
-  QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
-  QString stateStr = e.valueToKey( state );
-  cfg.writeEntry( "MigrationState", stateStr );
-  cfg.writeEntry( "ResourceIdentifier", resId );
-  cfg.sync();
-
-  cfg = KConfigGroup( KGlobal::config(), "Bridged" );
-  QStringList bridgedResources = cfg.readEntry( mType + "Resources", QStringList() );
-  if ( state == Bridged ) {
-    if ( !bridgedResources.contains( res->identifier() ) )
-      bridgedResources << res->identifier();
-  } else {
-    bridgedResources.removeAll( res->identifier() );
-  }
-  cfg.writeEntry( mType + "Resources", bridgedResources );
-  cfg.sync();
 }
 
 void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typeId)
 {
   kDebug() << res->type() << res->identifier() << typeId;
 
-  if ( migrationState( res ) != None ) {
+  if ( migrationState( res->identifier() ) != None ) {
     migrateNext();
     return;
   }
@@ -173,18 +122,6 @@ void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::
 void KResMigratorBase::setOmitClientBridge(bool b)
 {
   mOmitClientBridge = b;
-}
-
-void KResMigratorBase::createAgentInstance(const QString& typeId, QObject* receiver, const char* slot)
-{
-  const AgentType type = AgentManager::self()->type( typeId );
-  if ( !type.isValid() ) {
-    migrationFailed( i18n("Unable to obtain resource type '%1'.", typeId) );
-    return;
-  }
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  connect( job, SIGNAL(result(KJob*)), receiver, slot );
-  job->start();
 }
 
 
