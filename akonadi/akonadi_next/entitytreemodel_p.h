@@ -104,6 +104,7 @@ public:
   EntityTreeModel::CollectionFetchStrategy m_collectionFetchStrategy;
   EntityTreeModel::ItemPopulationStrategy m_itemPopulation;
   bool m_includeUnsubscribed;
+  bool m_includeStatistics;
   bool m_showRootCollection;
 
   void startFirstListJob();

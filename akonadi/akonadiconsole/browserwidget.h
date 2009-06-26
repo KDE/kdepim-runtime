@@ -38,8 +38,8 @@ class KJob;
 class KXmlGuiWindow;
 
 namespace Akonadi {
-class CollectionView;
-class CollectionModel;
+class EntityTreeView;
+class EntityTreeModel;
 class ItemModel;
 class Job;
 class StandardActionManager;
@@ -70,8 +70,8 @@ class BrowserWidget: public QWidget
     void clear();
 
   private:
-    Akonadi::CollectionModel *mCollectionModel;
-    Akonadi::CollectionView *mCollectionView;
+    Akonadi::EntityTreeModel *mCollectionModel;
+    Akonadi::EntityTreeView *mCollectionView;
     Akonadi::ItemModel *mItemModel;
     Ui::ItemViewWidget itemUi;
     Ui::ContentViewWidget contentUi;

@@ -28,6 +28,7 @@
 #include <QtCore/QFile>
 
 #include <akonadi/changerecorder.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 
 using namespace Akonadi;
@@ -208,6 +209,10 @@ void VCardDirResource::retrieveCollections()
     rights |= Collection::CanChangeCollection;
     c.setRights( rights );
   }
+
+  EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setIconName( "x-office-address-book" );
+
   Collection::List list;
   list << c;
   collectionsRetrieved( list );

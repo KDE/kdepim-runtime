@@ -1,5 +1,8 @@
 project(proxymodeltestapp)
 
+add_definitions(
+	-DAKONADI_NEXT_EXPORT=
+)
 set(proxymodeltestapp_SRCS
     main.cpp
     mainwindow.cpp
@@ -18,4 +21,17 @@ target_link_libraries(proxymodeltestapp
                       ${KDEPIMLIBS_KABC_LIBS}
 )
 
+
+set(statisticsmodeltestapp_SRCS
+    statisticsmodeltestapp.cpp
+)
+
+kde4_add_executable(statisticsmodeltestapp ${statisticsmodeltestapp_SRCS} )
+
+target_link_libraries(statisticsmodeltestapp
+                      akonadi_next
+                      ${KDEPIMLIBS_AKONADI_LIBS}
+                      ${KDE4_KIO_LIBS}
+                      ${KDEPIMLIBS_KABC_LIBS}
+)
 

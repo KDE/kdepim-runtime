@@ -32,6 +32,8 @@ set( akonadi_next_SRCS
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
   selectionproxymodel.cpp
+  statisticsproxymodel.cpp
+  statisticstooltipproxymodel.cpp
   )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
