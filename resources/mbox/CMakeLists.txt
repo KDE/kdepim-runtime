@@ -15,6 +15,7 @@ add_subdirectory(libmbox)
 
 set( mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
+  compactpage.cpp
   lockmethodpage.cpp
   deleteditemsattribute.cpp
   mboxresource.cpp
@@ -24,6 +25,7 @@ install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/a
 
 kde4_add_ui_files(mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}
+  compactpage.ui
   lockfilepage.ui
 )
 kde4_add_kcfg_files(mboxresource_SRCS settings.kcfgc)

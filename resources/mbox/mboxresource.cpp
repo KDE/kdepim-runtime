@@ -28,6 +28,7 @@
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
 
+#include "compactpage.h"
 #include "deleteditemsattribute.h"
 #include "lockmethodpage.h"
 #include "mbox.h"
@@ -80,6 +81,7 @@ MboxResource::~MboxResource()
 void MboxResource::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
+  dlg.addPage( "Compact frequency", new CompactPage() );
   dlg.addPage( "Lock method", new LockMethodPage() );
   dlg.setCaption( i18n("Select MBox file") );
   if ( dlg.exec() == QDialog::Accepted ) {
