@@ -24,11 +24,11 @@
 #include <kdemacros.h>
 
 #ifndef MBOX_EXPORT
-# if defined(MAKE_MAILDIR_LIB)
-   /* We are building this library */ 
+# if defined(MAKE_MBOX_LIB)
+   /* We are building this library */
 #  define MBOX_EXPORT KDE_EXPORT
 # else
-   /* We are using this library */ 
+   /* We are using this library */
 #  define MBOX_EXPORT KDE_IMPORT
 # endif
 #endif
