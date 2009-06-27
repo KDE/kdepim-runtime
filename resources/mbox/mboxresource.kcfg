@@ -38,4 +38,17 @@
       <default></default>
     </entry>
   </group>
+  <group name="Compacting">
+    <entry name="CompactFrequency" type="Enum">
+      <choices>
+        <choice name="never"/>
+        <choice name="per_x_messages"/>
+      </choices>
+      <default>per_x_messages</default>
+    </entry>
+    <entry name="MessageCount" type="UInt">
+      <label>Number of deleted messages before a purge is started.</label>
+      <default>50</default>
+    </entry>
+  </group>
 </kcfg>

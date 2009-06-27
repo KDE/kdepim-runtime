@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
-    <height>374</height>
+    <width>362</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,69 +28,6 @@ p, li { white-space: pre-wrap; }
      <property name="wordWrap">
       <bool>true</bool>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string/>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="3">
-       <widget class="QRadioButton" name="never">
-        <property name="text">
-         <string>&amp;Never compact automatically</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="per_x_messages">
-        <property name="text">
-         <string>C&amp;ompact every</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>10</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>50</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>100</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>500</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>messages</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item row="3" column="0">
@@ -136,23 +73,69 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="KButtonGroup" name="kcfg_CompactFrequency">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0" colspan="2">
+       <widget class="QRadioButton" name="never">
+        <property name="text">
+         <string>&amp;Never compact automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="per_x_messages">
+        <property name="text">
+         <string>C&amp;ompact every</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="KIntNumInput" name="kcfg_MessageCount">
+        <property name="label">
+         <string/>
+        </property>
+        <property name="suffix">
+         <string>msg</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KButtonGroup</class>
+   <extends>QGroupBox</extends>
+   <header>kbuttongroup.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KIntNumInput</class>
+   <extends>QWidget</extends>
+   <header>knuminput.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
    <sender>per_x_messages</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox</receiver>
+   <receiver>kcfg_MessageCount</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>89</x>
-     <y>249</y>
+     <x>75</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>254</y>
+     <x>198</x>
+     <y>253</y>
     </hint>
    </hints>
   </connection>
