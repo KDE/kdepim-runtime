@@ -358,6 +358,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
   quint64 origFileSize = d->mMboxFile.size();
 
+  qDebug() << "ENTRIES:" << d->mEntries;
   QListIterator<MsgInfo> i( d->mEntries );
   while ( i.hasNext() ) {
     MsgInfo entry = i.next();
@@ -365,15 +366,17 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
     if ( deletedItems.contains( entry.first ) && !writeOffSetInitialized ) {
       writeOffset = entry.first;
       writeOffSetInitialized = true;
-    } else if ( writeOffset < entry.first && !deletedItems.contains( entry.first ) ) {
+    } else if ( writeOffSetInitialized
+                && writeOffset < entry.first
+                && !deletedItems.contains( entry.first ) ) {
       // The current message doesn't have to be deleted, but must be moved.
       // First determine the size of the entry that must be moved.
       quint64 entrySize = 0;
       if ( i.hasNext() ) {
-        entrySize = i.next().first - entry.first - 1;
+        entrySize = i.next().first - entry.first;
         i.previous(); // Go back to make sure that we also handle the next entry.
       } else {
-        entrySize = origFileSize - entry.first - 1;
+        entrySize = origFileSize - entry.first;
       }
 
       Q_ASSERT( entrySize > 0 ); // MBox entries really cannot have a size <= 0;
@@ -389,15 +392,12 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
       // Now read the entry that must be moved to writeOffset.
       quint64 startOffset = entry.first - writeOffset;
-      char *start = reinterpret_cast<char*>( memArea + startOffset );
-      QByteArray entryToWriteData( start, entrySize );
-
-      memcpy( memArea, entryToWriteData.constData(), entrySize );
+      memmove( memArea, memArea + startOffset, entrySize );
 
       d->mMboxFile.unmap( memArea );
 
       resultingEntryList << MsgInfo( writeOffset, entry.second );
-      writeOffset += entrySize + 1;
+      writeOffset += entrySize;
     } else if ( !deletedItems.contains( entry.first ) ) {
       // Unmoved and not deleted entry, can only occure before the first deleted
       // entry.
