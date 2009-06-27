@@ -52,6 +52,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
 {
   ui.ktabwidget->addTab( page, title );
+  mManager->addWidget( page );
   mManager->updateWidgets();
 }
 
