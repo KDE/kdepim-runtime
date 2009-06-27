@@ -280,15 +280,12 @@ void MboxResource::onCollectionFetch( KJob *job )
 
   if ( job->error() ) {
     cancelTask( job->errorString() );
-    job->deleteLater();
     return;
   }
 
   CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob );
   Q_ASSERT( fetchJob->collections().size() == 1 );
-
-  job->deleteLater();
 
   Collection mboxCollection = fetchJob->collections().first();
   DeletedItemsAttribute *attr
@@ -313,7 +310,6 @@ void MboxResource::onCollectionModify( KJob *job )
     // item.
     cancelTask( i18n( "Failed to update the changed item because the old item "
                       "could not be deleted Reason: %1" ).arg( job->errorString() ) );
-    job->deleteLater();
     return;
   }
 
