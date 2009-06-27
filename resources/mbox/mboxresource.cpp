@@ -81,7 +81,7 @@ MboxResource::~MboxResource()
 void MboxResource::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.addPage( "Compact frequency", new CompactPage() );
+  dlg.addPage( "Compact frequency", new CompactPage( Settings::self()->path() ) );
   dlg.addPage( "Lock method", new LockMethodPage() );
   dlg.setCaption( i18n("Select MBox file") );
   if ( dlg.exec() == QDialog::Accepted ) {

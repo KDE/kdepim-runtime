@@ -24,13 +24,26 @@
 
 #include "ui_compactpage.h"
 
+class KJob;
+
 class CompactPage : public QWidget
 {
   Q_OBJECT
-  public:
-    CompactPage( QWidget *parent = 0 );
 
-  private:
+  public:
+    CompactPage( const QString &collectionId, QWidget *parent = 0 );
+
+  private slots:
+    void compact();
+    void onCollectionFetchCheck( KJob* );
+    void onCollectionFetchCompact( KJob* );
+    void onCollectionModify( KJob* );
+
+  private: // Methods
+    void checkCollectionId();
+
+  private: // Members
+    QString mCollectionId;
     Ui::CompactPage ui;
 };
 
