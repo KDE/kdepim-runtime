@@ -26,6 +26,7 @@
 #include "filteragent.h"
 
 #include "filteragentadaptor.h"
+#include "filterenginerfc822.h"
 
 #include <akonadi/collection.h>
 #include <akonadi/changerecorder.h>
@@ -92,9 +93,8 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
   // apply each filter
   foreach( FilterEngine * engine, *filterChain )
   {
-#if 0
-    engine->run( item, collection );
-#endif
+    if( !engine->run( item, collection ) )
+      break;
   }
 }
 
@@ -143,7 +143,7 @@ int FilterAgent::createFilter( const QString &filterId, const QString &mimeType,
 
   // TODO: store the program in a config file
 
-  engine = new FilterEngine( filterId, mimeType, source, program );
+  engine = new FilterEngineRfc822( filterId, mimeType, source, program );
 
   mEngines.insert( filterId, engine );
 

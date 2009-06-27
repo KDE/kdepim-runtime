@@ -61,8 +61,10 @@ include_directories(
 
 set(
 		AKONADI_FILTER_AGENT_SRCS
+		datarfc822.cpp
 		filteragent.cpp
 		filterengine.cpp
+		filterenginerfc822.cpp
 		main.cpp
 	)
 
@@ -86,6 +88,7 @@ kde4_add_executable(
 target_link_libraries(
 		akonadi_filter_agent
 		akonadi-filter
+		akonadi-kmime
 		${KDE4_AKONADI_LIBS}
 		ksieve
 		${KDE4_KDECORE_LIBS}

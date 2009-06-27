@@ -96,6 +96,7 @@ private:
   QString mLastError;
 
   QString mDefaultActionDescription;
+
 public:
 
   void setDefaultActionDescription( const QString &defaultActionDescription )

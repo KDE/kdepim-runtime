@@ -28,6 +28,8 @@
 #include <akonadi/filter/functiondescriptor.h>
 #include <akonadi/filter/datamemberdescriptor.h>
 
+#include <KDebug>
+
 namespace Akonadi
 {
 namespace Filter 
@@ -43,31 +45,19 @@ Data::~Data()
 
 QVariant Data::getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember )
 {
-#if 0
-  Q_ASSERT( function->outputDataType() == DataTypeString );
   Q_ASSERT( function->acceptableInputDataTypeMask() & dataMember->dataType() );
 
   switch( function->id() )
   {
     case StandardFunctionValueOf:
       Q_ASSERT( dataMember->dataType() == DataTypeString );
-      if( !getDataMemberDescriptorValue( dataMember, buffer ) )
-      {
-        // the value of a member that doesn't exist is an empty string
-        buffer = QString();
-      }
+      return getDataMemberValue( dataMember );
     break;
     case StandardFunctionSizeOf:
     case StandardFunctionCountOf:
     case StandardFunctionExists:
     case StandardFunctionDateIn:
-      Q_ASSERT( false ); // function data type mismatch
-    break;
-    case StandardFunctionAnyAddressIn:
-    break;
-    case StandardFunctionAnyAddressDomainIn:
-    break;
-    case StandardFunctionAnyAddressLocalPartIn:
+
     break;
     default:
       // unrecognized function: you should provide a handler for it by overriding getPropertyValue()
@@ -79,11 +69,10 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
       Q_ASSERT( false );
     break;
   }
-#endif
   return QVariant();
 }
 
-QVariant Data::getDataMemberDescriptorValue( const DataMemberDescriptor * dataMember )
+QVariant Data::getDataMemberValue( const DataMemberDescriptor * dataMember )
 {
   return QVariant();
 }

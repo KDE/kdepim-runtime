@@ -37,6 +37,24 @@ namespace Akonadi
 namespace Filter
 {
 
+enum DataMemberIdentifiers
+{
+  // standard functions
+  StandardDataMemberSubjectHeader = 1,
+  StandardDataMemberFromHeader = 2,
+  StandardDataMemberToHeader = 3,
+  StandardDataMemberCcHeader = 4,
+  StandardDataMemberBccHeader = 5,
+  StandardDataMemberAllRecipientHeaders = 6,
+  StandardDataMemberAllSenderHeaders = 7, // reply-to, from
+  StandardDataMemberReplyToHeader = 8,
+  StandardDataMemberAllHeaders = 9,
+  StandardDataMemberWholeItem = 10,
+
+  // custom functions
+  DataMemberDescriptorCustomFirst = 10000
+};
+
 /**
  *
  */
@@ -48,6 +66,7 @@ public:
    *
    */
   DataMemberDescriptor(
+      int id,                          //< The unique id of the data member
       const QString &keyword,          //< Unique data member keyword
       const QString &name,             //< The token that is displayed in the UI editors.
       DataType dataType                //< The output data type of this function
@@ -55,6 +74,11 @@ public:
   virtual ~DataMemberDescriptor();
 
 protected:
+
+  /**
+   * The unique id of the data member descriptor.
+   */
+  int mId;
 
   /**
    * The non-localized keyword of the data member. Must be unique
@@ -76,6 +100,11 @@ public:
   DataType dataType() const
   {
     return mDataType;
+  }
+
+  int id() const
+  {
+    return mId;
   }
 
   const QString & keyword() const

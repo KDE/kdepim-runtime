@@ -29,6 +29,7 @@
 #include <akonadi/filter/config-akonadi-filter.h>
 
 #include <QtCore/QString>
+#include <QtCore/QVariant>
 
 namespace Akonadi
 {
@@ -41,13 +42,18 @@ enum DataType
   DataTypeString      = 1,
   DataTypeInteger     = 1 << 1,
   DataTypeStringList  = 1 << 2,
-  DataTypeDateTime    = 1 << 3,
+  DataTypeDate        = 1 << 3,
   DataTypeBoolean     = 1 << 4,
   DataTypeAddress     = 1 << 5,
   DataTypeAddressList = 1 << 6
 };
 
 typedef qint64 Integer;
+
+inline Integer variantToInteger( const QVariant &val, bool * ok )
+{
+  return val.toLongLong( ok );
+}
 
 } // namespace Filter
 

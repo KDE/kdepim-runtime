@@ -248,8 +248,8 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
     case DataTypeBoolean:
       addLineData( data.toBool() ? QLatin1String( "true" ) : QLatin1String( "false" ) ); 
     break;
-    case DataTypeDateTime:
-      Q_ASSERT_X( false, "SieveEncoder::encodeData()", "DateTime encoding not implemented yet!" );
+    case DataTypeDate:
+      Q_ASSERT_X( false, "SieveEncoder::encodeData()", "Date encoding not implemented yet!" );
     break;
     default:
       Q_ASSERT_X( false, "SieveEncoder::encodeData()", "Unhandled data type" );

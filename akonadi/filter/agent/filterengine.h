@@ -28,6 +28,9 @@
 
 #include <QtCore/QString>
 
+#include <akonadi/item.h>
+#include <akonadi/collection.h>
+
 namespace Akonadi
 {
 namespace Filter
@@ -72,7 +75,7 @@ public:
       Akonadi::Filter::Program * program
     );
 
-  ~FilterEngine();
+  virtual ~FilterEngine();
 
 protected:
 
@@ -139,6 +142,21 @@ public:
    */
   void setProgram( Akonadi::Filter::Program * program );
 
+  /**
+   * Returns the filtering program set by setProgram()
+   */
+  Akonadi::Filter::Program * program()
+  {
+    return mProgram;
+  }
+
+
+  /**
+   * This must be reimplemented by subclasses to handle item processing.
+   * The method should return true if processing should continue (and eventually
+   * other filter engines should be applied) or false if processing should stop.
+   */
+  virtual bool run( const Akonadi::Item &item, const Akonadi::Collection &collection ) = 0;
 };
 
 #endif //!_FILTERENGINE_H_

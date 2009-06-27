@@ -32,7 +32,6 @@
 
 #include <akonadi/filter/condition.h>
 
-
 namespace Akonadi
 {
 namespace Filter
@@ -84,6 +83,7 @@ private:
   void fillPropertyTestControls( ConditionDescriptor * descriptor );
 protected slots:
   void typeComboBoxActivated( int index );
+  void operatorDescriptorComboBoxActivated( int index );
 }; // class ConditionSelector
 
 } // namespace UI

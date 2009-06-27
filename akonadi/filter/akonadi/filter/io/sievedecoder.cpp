@@ -423,7 +423,7 @@ void SieveDecoder::onTestEnd()
           }
 
           QString name = i18n( "the field '%1'", field );
-          DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( field, name, DataTypeString );
+          DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( DataMemberDescriptorCustomFirst, field, name, DataTypeString );
           componentFactory()->registerDataMember( newDataMemberDescriptor );
           dataMember = newDataMemberDescriptor;
         }

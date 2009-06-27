@@ -50,7 +50,7 @@ public:
   virtual QVariant getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember );
 
 protected:
-  virtual QVariant getDataMemberDescriptorValue( const DataMemberDescriptor * dataMember );
+  virtual QVariant getDataMemberValue( const DataMemberDescriptor * dataMember );
 };
 
 } // namespace Filter

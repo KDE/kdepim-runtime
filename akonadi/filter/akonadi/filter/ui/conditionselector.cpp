@@ -32,8 +32,8 @@
 #include <akonadi/filter/ui/coolcombobox.h>
 #include <akonadi/filter/ui/extensionlabel.h>
 #include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/ui/valueeditor.h>
 
-#include <KLineEdit>
 #include <KLocale>
 
 #include <QtGui/QLayout>
@@ -42,9 +42,6 @@
 static int gSpacing = -1; // 0 would be nice for several reasons, but it looks confusing in windows and cde styles... -1 means default
 static int gIndent = 20;
 static const qreal gSemiTransparentWidgetsOpacity = 0.32;
-
-//#define NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT 1
-//#define PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW 1
 
 namespace Akonadi
 {
@@ -69,19 +66,23 @@ class ConditionSelectorPrivate
 public:
   QList< ConditionDescriptor * > mConditionDescriptorList; // FIXME: This could be shared between all the editors with the same componentfactory
   Private::CoolComboBox * mTypeComboBox;
-  //KComboBox * mDataMemberDescriptorComboBox;
   Private::ExtensionLabel * mExtensionLabel;
   KComboBox * mOperatorDescriptorComboBox;
-  KLineEdit * mValueLineEdit;
+  Private::ValueEditor * mValueEditor;
   QWidget * mChildConditionListBase;
   QWidget * mRightControlsBase;
+  QGridLayout * mRightControlsLayout;
   QList< ConditionSelector * > mChildConditionSelectorList;
   QVBoxLayout * mChildConditionListLayout;  
 };
 
 
-
-ConditionSelector::ConditionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, ConditionSelector * parentConditionSelector )
+ConditionSelector::ConditionSelector(
+    QWidget * parent,
+    ComponentFactory * componentfactory,
+    EditorFactory * editorComponentFactory,
+    ConditionSelector * parentConditionSelector
+  )
   : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   mParentConditionSelector = parentConditionSelector;
@@ -190,42 +191,25 @@ ConditionSelector::ConditionSelector( QWidget * parent, ComponentFactory * compo
   }
 
   mPrivate->mRightControlsBase = new QWidget( this );
-#ifndef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-  mPrivate->mRightControlsBase->setFixedWidth( 450 );
+  mPrivate->mRightControlsBase->setFixedWidth( 400 );
   g->addWidget( mPrivate->mRightControlsBase, 0, 2, 1, 1 );
-#endif
 
-#ifdef NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
-  mPrivate->mRightControlsBase->hide();
-#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
-
-  QGridLayout * rightGrid = new QGridLayout( mPrivate->mRightControlsBase );
-  rightGrid->setMargin( 0 );
+  mPrivate->mRightControlsLayout = new QGridLayout( mPrivate->mRightControlsBase );
+  mPrivate->mRightControlsLayout->setMargin( 0 );
   if( gSpacing != -1 )
-    rightGrid->setSpacing( gSpacing );
+    mPrivate->mRightControlsLayout->setSpacing( gSpacing );
 
-#if 0
-  mPrivate->mDataMemberDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
-  mPrivate->mDataMemberDescriptorComboBox->hide();
-  rightGrid->addWidget( mPrivate->mDataMemberDescriptorComboBox, 0, 0 );
-#ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-  rightGrid->setColumnStretch( 0, 1 );
-#endif
-#endif
 
   mPrivate->mOperatorDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
   mPrivate->mOperatorDescriptorComboBox->hide();
-#ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
   mPrivate->mOperatorDescriptorComboBox->setFixedWidth( 200 );
-#endif
-  rightGrid->addWidget( mPrivate->mOperatorDescriptorComboBox, 0, 1 );
+  mPrivate->mRightControlsLayout->addWidget( mPrivate->mOperatorDescriptorComboBox, 0, 1 );
+  connect( mPrivate->mOperatorDescriptorComboBox, SIGNAL( activated( int ) ), this, SLOT( operatorDescriptorComboBoxActivated( int ) ) );
 
-  mPrivate->mValueLineEdit = new KLineEdit( mPrivate->mRightControlsBase );
-  mPrivate->mValueLineEdit->hide();
-#ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-  mPrivate->mValueLineEdit->setFixedWidth( 180 );
-#endif
-  rightGrid->addWidget( mPrivate->mValueLineEdit, 0, 2 );
+  mPrivate->mValueEditor = Private::ValueEditor::editorForDataType( DataTypeString, mPrivate->mRightControlsBase );
+  Q_ASSERT( mPrivate->mValueEditor );
+  mPrivate->mValueEditor->widget()->hide();
+  mPrivate->mRightControlsLayout->addWidget( mPrivate->mValueEditor->widget(), 0, 2 );
 
   mPrivate->mExtensionLabel = new Private::ExtensionLabel( this );
   g->addWidget( mPrivate->mExtensionLabel, 1, 0, 1, 1 );
@@ -238,13 +222,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, ComponentFactory * compo
   if( gSpacing != -1 )
     mPrivate->mChildConditionListLayout->setSpacing( gSpacing );
 
-#ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-  mPrivate->mChildConditionListLayout->addWidget( mPrivate->mRightControlsBase );
-  mPrivate->mRightControlsBase->hide();
-  g->addWidget( mPrivate->mChildConditionListBase, 1, 1, 1, 1 );
-#else
   g->addWidget( mPrivate->mChildConditionListBase, 1, 1, 1, 2 );
-#endif
 
   mPrivate->mChildConditionListBase->hide();
 
@@ -254,6 +232,7 @@ ConditionSelector::ConditionSelector( QWidget * parent, ComponentFactory * compo
 
 ConditionSelector::~ConditionSelector()
 {
+  delete mPrivate->mValueEditor; // delete this as it might not be a wieget
   qDeleteAll( mPrivate->mConditionDescriptorList );
   delete mPrivate;
 }
@@ -267,7 +246,6 @@ QSize ConditionSelector::minimumSizeHint() const
 {
   return layout()->minimumSize();
 }
-
 
 void ConditionSelector::setupUIForActiveType()
 {
@@ -294,66 +272,39 @@ void ConditionSelector::setupUIForActiveType()
   switch( d->mType )
   {
     case Condition::ConditionTypeUnknown:
-#if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->hide();
-#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( gSemiTransparentWidgetsOpacity );
-#if 0
-      mPrivate->mDataMemberDescriptorComboBox->hide();
-#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
-      mPrivate->mValueLineEdit->hide();
+      mPrivate->mValueEditor->widget()->hide();
       mPrivate->mExtensionLabel->hide();
       mPrivate->mChildConditionListBase->hide();
     break;
     case Condition::ConditionTypeTrue:
     case Condition::ConditionTypeFalse:
-#if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->hide();
-#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-#if 0
-      mPrivate->mDataMemberDescriptorComboBox->hide();
-#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
-      mPrivate->mValueLineEdit->hide();
+      mPrivate->mValueEditor->widget()->hide();
       mPrivate->mExtensionLabel->hide();
       mPrivate->mChildConditionListBase->hide();
     break;
     case Condition::ConditionTypePropertyTest:
-#if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->show();
-#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
-
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-#if 0
-      mPrivate->mDataMemberDescriptorComboBox->show();
-#endif
       mPrivate->mOperatorDescriptorComboBox->show();
-      mPrivate->mValueLineEdit->show();
-#ifdef PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW
-      mPrivate->mChildConditionListBase->show();
-      mPrivate->mExtensionLabel->show();
-      mPrivate->mExtensionLabel->setOverlayColor( Qt::black );
-#else
+      mPrivate->mValueEditor->widget()->show();
       mPrivate->mChildConditionListBase->hide();
       mPrivate->mExtensionLabel->hide();
-#endif
     break;
     case Condition::ConditionTypeNot:
     case Condition::ConditionTypeAnd:
     case Condition::ConditionTypeOr:
-#if defined(NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT) || defined(PROPERTY_TEST_CONDITION_WIDGETS_APPEAR_BELOW)
       mPrivate->mRightControlsBase->hide();
-#endif //NON_PROPERTY_TEST_CONDITION_BOXES_EXTEND_TO_THE_RIGHT
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
       mPrivate->mExtensionLabel->setFixedHeight( ( d->mType == Condition::ConditionTypeNot ) ? ( mPrivate->mTypeComboBox->sizeHint().height() - 5 ) : -1 );
       mPrivate->mExtensionLabel->setOverlayColor( d->mColor );
-#if 0
-      mPrivate->mDataMemberDescriptorComboBox->hide();
-#endif
       mPrivate->mOperatorDescriptorComboBox->hide();
-      mPrivate->mValueLineEdit->hide();
+      mPrivate->mValueEditor->widget()->hide();
 
       if( mPrivate->mChildConditionSelectorList.count() == 0 )
       {
@@ -499,31 +450,59 @@ void ConditionSelector::reset()
 
 void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descriptor )
 {
-#if 0
-  mPrivate->mDataMemberDescriptorComboBox->clear();
-
-  QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( descriptor->mFunctionDescriptor->acceptableInputDataTypeMask() );
-
-  foreach( const DataMemberDescriptor * dataMember, dataMembers )
-  {
-    mPrivate->mDataMemberDescriptorComboBox->addItem( dataMember->name() );
-  }
-#endif
-
   mPrivate->mOperatorDescriptorComboBox->clear();
 
-  const QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
+  QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
   if( operators.isEmpty() )
   {
     // doesn't need an operator
     mPrivate->mOperatorDescriptorComboBox->hide();
-    mPrivate->mValueLineEdit->hide();
+    mPrivate->mValueEditor->widget()->hide();
     return;
   }
   foreach( const OperatorDescriptor * op, operators )
   {
     mPrivate->mOperatorDescriptorComboBox->addItem( op->name(), QVariant( (qlonglong)op ) );
   }
+  operatorDescriptorComboBoxActivated( -1 );
+}
+
+void ConditionSelector::operatorDescriptorComboBoxActivated( int )
+{
+  const OperatorDescriptor * op = operatorDescriptorForActiveType();
+
+  if( !op )
+  {
+    mPrivate->mValueEditor->widget()->hide();
+    return;
+  }
+
+  switch( op->rightOperandDataType() )
+  {
+    case DataTypeNone:
+      mPrivate->mValueEditor->widget()->hide();
+      return;
+    break;
+    case DataTypeString:
+    case DataTypeInteger:
+    case DataTypeDate:
+      // ok
+    break;
+    default:
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled operator data type" );
+      mPrivate->mValueEditor->widget()->hide();
+      return;
+    break;
+  }
+
+  if( mPrivate->mValueEditor->dataType() != op->rightOperandDataType() )
+  {
+    delete mPrivate->mValueEditor;
+    mPrivate->mValueEditor = Private::ValueEditor::editorForDataType( op->rightOperandDataType(), mPrivate->mRightControlsBase );
+    Q_ASSERT( mPrivate->mValueEditor );
+    mPrivate->mRightControlsLayout->addWidget( mPrivate->mValueEditor->widget(), 0, 2 );
+  }
+  mPrivate->mValueEditor->widget()->show();
 }
 
 void ConditionSelector::fillFromCondition( Condition::Base * condition )
@@ -651,6 +630,26 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       qDeleteAll( mPrivate->mChildConditionSelectorList );
       mPrivate->mChildConditionSelectorList.clear();
       fillPropertyTestControls( descriptor );
+      int cnt = mPrivate->mOperatorDescriptorComboBox->count();
+      for( int idx = 0; idx < cnt; idx++ )
+      {
+        QVariant v = mPrivate->mOperatorDescriptorComboBox->itemData( idx );
+        if( v.isNull() )
+          continue;
+
+        bool ok;
+        qlonglong ptr = v.toLongLong( &ok );
+        if( !ok )
+          continue;
+        const OperatorDescriptor * op = reinterpret_cast< const OperatorDescriptor * >( ptr );
+        if( op == static_cast< Condition::PropertyTest * >( condition )->functionOperatorDescriptor() )
+        {
+          mPrivate->mOperatorDescriptorComboBox->setCurrentIndex( idx );
+          operatorDescriptorComboBoxActivated( idx );
+          mPrivate->mValueEditor->setValue( static_cast< Condition::PropertyTest * >( condition )->operand() );
+          break;
+        }
+      }
     }
     break;
     default:
@@ -750,7 +749,9 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
       Q_ASSERT( d->mFunctionDescriptor );
       Q_ASSERT( d->mDataMemberDescriptor );
 
-      QString txt = mPrivate->mValueLineEdit->text();
+      QVariant val = mPrivate->mValueEditor->value();
+      if( !val.isValid() )
+        return 0; // message already shown
 
       const OperatorDescriptor * op = operatorDescriptorForActiveType();
       Q_ASSERT( op );
@@ -760,7 +761,7 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
           d->mFunctionDescriptor,
           d->mDataMemberDescriptor,
           op,
-          QVariant( txt )
+          val
         );
     }
     break;

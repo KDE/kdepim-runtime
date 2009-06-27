@@ -33,10 +33,12 @@ namespace Filter
 {
 
 DataMemberDescriptor::DataMemberDescriptor(
+    int id,
     const QString &keyword,
     const QString &name,
     DataType dataType
   ) :
+  mId( id ),
   mKeyword( keyword ),
   mName( name ),
   mDataType( dataType )

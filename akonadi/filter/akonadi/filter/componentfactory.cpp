@@ -47,6 +47,7 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberFromHeader,
           QString::fromAscii( "from" ),
           i18n( "From address" ),
           DataTypeAddress
@@ -55,6 +56,25 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberToHeader,
+          QString::fromAscii( "from" ),
+          i18n( "From address" ),
+          DataTypeAddress
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberReplyToHeader,
+          QString::fromAscii( "replyto" ),
+          i18n( "Reply-To address" ),
+          DataTypeAddress
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberCcHeader,
           QString::fromAscii( "cc" ),
           i18n( "CC address list" ),
           DataTypeAddressList
@@ -63,6 +83,7 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberAllRecipientHeaders,
           QString::fromAscii( "anyrecipient" ),
           i18n( "recipient address list" ),
           DataTypeAddressList
@@ -71,6 +92,16 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberAllSenderHeaders,
+          QString::fromAscii( "anysender" ),
+          i18n( "sender address list" ),
+          DataTypeAddressList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberBccHeader,
           QString::fromAscii( "bcc" ),
           i18n( "BCC address list" ),
           DataTypeAddressList
@@ -79,6 +110,7 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberAllHeaders,
           QString::fromAscii( "anyheader" ),
           i18n( "header list" ),
           DataTypeStringList
@@ -87,6 +119,7 @@ ComponentFactory::ComponentFactory()
 
   registerDataMember(
       new DataMemberDescriptor(
+          StandardDataMemberWholeItem,
           QString::fromAscii( "item" ),
           i18n( "whole item" ),
           DataTypeString
@@ -121,7 +154,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           StandardFunctionValueOf,
           QString::fromAscii( "header" ),
-          i18n( "if the value of" ),
+          i18n( "if" ), // the value of
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
         )
@@ -176,8 +209,8 @@ ComponentFactory::ComponentFactory()
           StandardFunctionDateIn,
           QString::fromAscii( "date" ),
           i18n( "if the date from" ),
-          DataTypeDateTime,
-          DataTypeString | DataTypeDateTime
+          DataTypeDate,
+          DataTypeString | DataTypeDate
         )
     );
 
@@ -187,7 +220,7 @@ ComponentFactory::ComponentFactory()
           QString::fromAscii( "exists" ),
           i18n( "if exists" ),
           DataTypeBoolean,
-          DataTypeString | DataTypeStringList | DataTypeDateTime | DataTypeInteger | DataTypeBoolean | DataTypeAddress | DataTypeAddressList
+          DataTypeString | DataTypeStringList | DataTypeDate | DataTypeInteger | DataTypeBoolean | DataTypeAddress | DataTypeAddressList
         )
     );
 
@@ -281,8 +314,8 @@ ComponentFactory::ComponentFactory()
           StandardOperatorDateIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
-          DataTypeDateTime,
-          DataTypeDateTime
+          DataTypeDate,
+          DataTypeDate
         )
     );
 
@@ -291,8 +324,8 @@ ComponentFactory::ComponentFactory()
           StandardOperatorDateIsAfter,
           QString::fromAscii( "after" ),
           i18n( "is after" ),
-          DataTypeDateTime,
-          DataTypeDateTime
+          DataTypeDate,
+          DataTypeDate
         )
     );
 
@@ -301,8 +334,8 @@ ComponentFactory::ComponentFactory()
           StandardOperatorDateIsBefore,
           QString::fromAscii( "before" ),
           i18n( "is before" ),
-          DataTypeDateTime,
-          DataTypeDateTime
+          DataTypeDate,
+          DataTypeDate
         )
     );
 

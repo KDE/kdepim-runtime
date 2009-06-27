@@ -28,6 +28,7 @@ set(
 		programeditor.cpp
 		ruleeditor.cpp
 		rulelisteditor.cpp
+		valueeditor.cpp
 	)
 
 kde4_add_library(

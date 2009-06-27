@@ -30,6 +30,10 @@
 #include <akonadi/filter/operatordescriptor.h>
 
 #include <KDebug>
+#include <KLocale>
+
+#include <QtCore/QRegExp>
+#include <QtCore/QDateTime>
 
 namespace Akonadi
 {
@@ -219,47 +223,136 @@ PropertyTest::~PropertyTest()
 
 bool PropertyTest::matches( Data * data )
 {
-#if 0
   // Generic function test implementation.
   //
   // Override this method in a derived class if you want to provide
   // an optimized/custom match (then override ComponentFactory::createPropertyTestCondition() to return your subclasses).
 
-  switch( mFunctionDescriptor->dataType() )
+  QVariant val = data->getPropertyValue( mFunctionDescriptor, mDataMemberDescriptor );
+
+  bool ok;
+
+  switch( mOperatorDescriptor->rightOperandDataType() )
   {
-    case DataTypeString:
-    {
-      QString buffer;
-      if( !data->getPropertyValue( mFunctionDescriptor, dataMember, buffer ) )
-        return false;
-    }
-    break;
     case DataTypeInteger:
     {
-      Integer buffer;
-      if( !data->getPropertyValue( mFunctionDescriptor, functionArgument, buffer ) )
+      Integer left = variantToInteger( val, &ok );
+      if( !ok )
+      {
+        setLastError( i18n( "Could not convert the left operand to integer" ) );
         return false;
+      }
+
+      Integer right = variantToInteger( mOperand, &ok );
+      if( !ok )
+      {
+        setLastError( i18n( "Could not convert the right operand to integer" ) );
+        return false;
+      } 
+
+      Q_ASSERT( mOperatorDescriptor );
+
+      switch( mOperatorDescriptor->id() )
+      {
+        case StandardOperatorGreaterThan:
+          return left > right;
+        break;
+        case StandardOperatorLowerThan:
+          return left < right;
+        break;
+        case StandardOperatorIntegerIsEqualTo:
+          return left == right;
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
+        break;
+      }
     }
     break;
-    case DataTypeStringList:
+    case DataTypeString:
     {
-      QStringList buffer;
-      if( !data->getPropertyValue( mFunctionDescriptor, functionArgument, buffer ) )
-        return false;
+      QString left = val.toString();
+      QString right = mOperand.toString();
+
+      Q_ASSERT( mOperatorDescriptor );
+
+      switch( mOperatorDescriptor->id() )
+      {
+        case StandardOperatorStringIsEqualTo:
+          return left == right;
+        break;
+        case StandardOperatorContains:
+          return left.contains( right );
+        break;
+        case StandardOperatorIntegerIsEqualTo:
+          return left == right;
+        break;
+        case StandardOperatorIsInAddressbook:
+          // FIXME: Implementation missing
+          Q_ASSERT_X( false, __FUNCTION__, "Not implemented yet" );
+        break;
+        case StandardOperatorStringMatchesRegexp:
+        {
+          QRegExp exp( right );
+          return left.contains( exp );
+        }
+        break;
+        case StandardOperatorStringMatchesWildcard:
+        {
+          QRegExp exp( right, Qt::CaseSensitive, QRegExp::Wildcard );
+          return left.contains( exp );
+        }
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
+        break;
+      }
     }
     break;
-    case DataTypeDateTime:
+    case DataTypeDate:
     {
-      QDateTime buffer;
-      if( !data->getPropertyValue( mFunctionDescriptor, functionArgument, buffer ) )
+      QDateTime left = val.toDateTime();
+      if( !left.isValid() )
+      {
+        setLastError( i18n( "Could not convert the left operand to date/time" ) );
         return false;
+      }
+      QDateTime right = mOperand.toDateTime();
+      if( !right.isValid() )
+      {
+        setLastError( i18n( "Could not convert the right operand to date/time" ) );
+        return false;
+      }
+
+      Q_ASSERT( mOperatorDescriptor );
+
+      switch( mOperatorDescriptor->id() )
+      {
+        case StandardOperatorDateIsEqualTo:
+          return left.date() == right.date();
+        break;
+        case StandardOperatorDateIsAfter:
+          return left.date() > right.date();
+        break;
+        case StandardOperatorDateIsBefore:
+          return left.date() < right.date();
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
+        break;
+      }
+    }
+    break;
+    case DataTypeNone:
+    {
+      // left operand type should be boolean!
     }
     break;
     default:
-      Q_ASSERT(false); // should never end up here
+      Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
     break;
   }
-#endif
+
   return false;
 }
 
