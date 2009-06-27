@@ -6,151 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
-    <height>526</height>
+    <width>493</width>
+    <height>121</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="QCheckBox" name="startServer">
-     <property name="whatsThis">
-      <string>Choose whether Akonadi should use an internal or external MySQL server.</string>
-     </property>
-     <property name="text">
-      <string>Use internal MySQL server</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Internal MySQL Server</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>MySQL server executable:</string>
-        </property>
-        <property name="buddy">
-         <cstring>serverPath</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="KUrlRequester" name="serverPath">
-        <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;MySQL server location&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the location of your internal MySQL server or click on the Browse button.</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="title">
-      <string>External MySQL Server</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Database name:</string>
-        </property>
-        <property name="buddy">
-         <cstring>name</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="KLineEdit" name="name">
-        <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;Database Name&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the name of your Akonadi database on your external MySQL server.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Host:</string>
-        </property>
-        <property name="buddy">
-         <cstring>host</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="KLineEdit" name="host">
-        <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;Host&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the hostname or the IP address of the machine hosting your MySQL server.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Username:</string>
-        </property>
-        <property name="buddy">
-         <cstring>username</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="KLineEdit" name="username">
-        <property name="whatsThis">
-         <string>Enter the username required to access your MySQL database.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Password:</string>
-        </property>
-        <property name="buddy">
-         <cstring>password</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="KLineEdit" name="password">
-        <property name="whatsThis">
-         <string>Enter the password required to access your MySQL database.</string>
-        </property>
-        <property name="passwordMode">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Options:</string>
-        </property>
-        <property name="buddy">
-         <cstring>options</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="KLineEdit" name="options">
-        <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;External MySQL server options&lt;/b&gt;&lt;/p&gt;&lt;br&gt;If necessary, you may pass options to your MySQL server.</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Status</string>
@@ -219,80 +80,15 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>89</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
   <customwidget>
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
   </customwidget>
-  <customwidget>
-   <class>KUrlRequester</class>
-   <extends>QFrame</extends>
-   <header>kurlrequester.h</header>
-  </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>startServer</tabstop>
-  <tabstop>serverPath</tabstop>
-  <tabstop>name</tabstop>
-  <tabstop>host</tabstop>
-  <tabstop>username</tabstop>
-  <tabstop>password</tabstop>
-  <tabstop>options</tabstop>
- </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>startServer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>groupBox_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>53</x>
-     <y>18</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>56</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>startServer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>groupBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>135</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>146</x>
-     <y>110</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

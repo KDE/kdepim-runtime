@@ -7,7 +7,10 @@ target_link_libraries(kcm_akonadi_resources  ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_AKO
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
-kde4_add_ui_files(akonadi_server_kcm_srcs serverconfigmodule.ui )
+kde4_add_ui_files(akonadi_server_kcm_srcs serverconfigmodule.ui
+                                          servermysqlstorage.ui
+                                          serverpsqlstorage.ui
+                                          serverstoragedriver.ui)
 kde4_add_plugin(kcm_akonadi_server ${akonadi_server_kcm_srcs})
 target_link_libraries(kcm_akonadi_server  ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${AKONADI_COMMON_LIBRARIES})
 
