@@ -21,11 +21,10 @@
 #ifndef MTDUMMYRESOURCE_H
 #define MTDUMMYRESOURCE_H
 
-//#include <Akonadi/TransportResource>
-// FIXME why doens't it work CamelCase?
-#include <akonadi/transportresource.h>
+#include <Akonadi/Item>
+#include <Akonadi/ResourceBase>
 
-class MTDummyResource : public Akonadi::TransportResource
+class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::ResourceBase::Transport
 {
   Q_OBJECT
 
@@ -33,10 +32,11 @@ class MTDummyResource : public Akonadi::TransportResource
     MTDummyResource( const QString &id );
     ~MTDummyResource();
 
-  public Q_SLOTS:
+  public:
     virtual void configure( WId windowId );
 
-    virtual void send( Akonadi::Item::Id message );
+    /* reimpl from ResourceBase::Transport */
+    virtual void sendItem( Akonadi::Item::Id message );
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -45,6 +45,12 @@ class MTDummyResource : public Akonadi::TransportResource
 
   protected:
     virtual void aboutToQuit();
+
+  private Q_SLOTS:
+    void jobResult( KJob *job );
+
+  private:
+    Akonadi::Item::Id currentlySending;
 
 };
 

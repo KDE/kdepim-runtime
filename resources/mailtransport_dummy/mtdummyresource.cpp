@@ -33,11 +33,12 @@
 using namespace Akonadi;
 
 MTDummyResource::MTDummyResource( const QString &id )
-  : TransportResource( id )
+  : ResourceBase( id )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
+  currentlySending = -1;
 }
 
 MTDummyResource::~MTDummyResource()
@@ -78,10 +79,23 @@ void MTDummyResource::configure( WId windowId )
   dlg.exec();
 }
 
-void MTDummyResource::send( Item::Id message )
+void MTDummyResource::sendItem( Item::Id message )
 {
+  kDebug() << "id" << message;
+  Q_ASSERT( currentlySending == -1 );
+  currentlySending = message;
   ItemCopyJob *job = new ItemCopyJob( Item( message ), Collection( Settings::self()->sink() ) );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( emitResult( KJob * ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)) );
+}
+
+void MTDummyResource::jobResult( KJob *job )
+{
+  if( job->error() ) {
+    emitTransportResult( currentlySending, false, job->errorString() );
+  } else {
+    emitTransportResult( currentlySending, true );
+  }
+  currentlySending = -1;
 }
 
 AKONADI_RESOURCE_MAIN( MTDummyResource )
