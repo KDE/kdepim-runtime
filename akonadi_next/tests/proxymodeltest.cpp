@@ -171,6 +171,7 @@ void ProxyModelTest::handleSignal(QVariantList expected)
 
   QVariantList result = getResultSignal();
   QCOMPARE(result.takeAt(0).toInt(), signalType);
+  // Check that the signal we expected to recieve was emitted exactly.
   switch (signalType)
   {
   case RowsAboutToBeInserted:
@@ -299,9 +300,10 @@ void ProxyModelTest::doTest()
   QVERIFY(m_expectedSignals.contains(currentTag));
   QVERIFY(m_persistentChanges.contains(currentTag));
 
+  // The signals we expect to recieve to pass this test.
   QList<QVariantList> signalList = m_expectedSignals.value(currentTag);
 
-  // Take persistent indexes.
+  // The persistent indexes that we expect to be changed (and by how much)
   QList<PersistentIndexChange> changeList = m_persistentChanges.value(currentTag);
 
   QList<QPersistentModelIndex> persistentIndexes;
@@ -309,6 +311,8 @@ void ProxyModelTest::doTest()
   const int columnCount = m_model->columnCount();
   QMutableListIterator<PersistentIndexChange> it(changeList);
 
+  // The indexes are defined by the test are described with IndexFinder before anything in the model exists.
+  // Now that the indexes should exist, resolve them in the change objects.
   QList<QItemSelectionRange> changedRanges;
   while (it.hasNext())
   {
@@ -321,9 +325,10 @@ void ProxyModelTest::doTest()
     QModelIndex topLeft = m_proxyModel->index( change.startRow, 0, parent );
     QModelIndex bottomRight = m_proxyModel->index( change.endRow, columnCount - 1, parent );
 
+    // We store the changed ranges so that we know which ranges should not be changed
     changedRanges << QItemSelectionRange(topLeft, bottomRight);
 
-
+    // Store the inital state of the indexes in the model which we expect to change.
     for (int row = change.startRow; row <= change.endRow; ++row )
     {
       for (int column = 0; column < columnCount; ++column)
@@ -333,6 +338,8 @@ void ProxyModelTest::doTest()
         change.indexes << idx;
         change.persistentIndexes << QPersistentModelIndex(idx);
       }
+
+      // Also store the descendants of changed indexes so that we can verify the effect on them
       QModelIndex idx = m_proxyModel->index(row, 0, parent);
       QModelIndexList descs = getDescendantIndexes(idx);
       change.descendantIndexes << descs;
@@ -341,10 +348,13 @@ void ProxyModelTest::doTest()
     it.setValue(change);
   }
 
+  // Any indexes outside of the ranges we expect to be changed are stored
+  // so that we can later verify that they remain unchanged.
   QModelIndexList unchangedIndexes = getUnchangedIndexes(QModelIndex(), changedRanges);
 
   QList<QPersistentModelIndex> unchangedPersistentIndexes = toPersistent(unchangedIndexes);
 
+  // Run the test.
   foreach(ModelChangeCommand *command, commandList)
   {
     command->doCommand();
@@ -352,18 +362,23 @@ void ProxyModelTest::doTest()
 
   while (!signalList.isEmpty())
   {
+    // Process each signal we recieved as a result of running the test.
     QVariantList expected = signalList.takeAt(0);
     handleSignal(expected);
   }
+  // Make sure we didn't get any signals we didn't expect.
   QVERIFY(m_modelSpy->isEmpty());
 
 
+  // Persistent indexes should change by the amount described in change objects.
   foreach (PersistentIndexChange change, changeList)
   {
     for (int i = 0; i < change.indexes.size(); i++)
     {
       QModelIndex idx = change.indexes.at(i);
       QPersistentModelIndex persistentIndex = change.persistentIndexes.at(i);
+
+      // Persistent indexes go to an invalid state if they are removed from the model.
       if (change.toInvalid)
       {
         QVERIFY(!persistentIndex.isValid());
@@ -378,16 +393,20 @@ void ProxyModelTest::doTest()
     {
       QModelIndex idx = change.descendantIndexes.at(i);
       QPersistentModelIndex persistentIndex = change.persistentDescendantIndexes.at(i);
+
+      // The descendant indexes of indexes which were removed should now also be invalid.
       if (change.toInvalid)
       {
         QVERIFY(!persistentIndex.isValid());
         continue;
       }
+      // Otherwise they should be unchanged.
       QCOMPARE(idx.row(), persistentIndex.row());
       QCOMPARE(idx.column(), persistentIndex.column());
       QCOMPARE(idx.parent(), persistentIndex.parent());
     }
   }
+  // Indexes unaffected by the signals should be unchanged.
   for (int i = 0; i < unchangedIndexes.size(); ++i)
   {
     QModelIndex unchangedIdx = unchangedIndexes.at(i);
@@ -588,9 +607,5 @@ void ProxyModelTest::testInsertAndRemove_data()
 
   QTest::newRow("remove07") << commandList;
   commandList.clear();
-
-
-
-
 
 }
