@@ -37,11 +37,11 @@
 #include <mailtransport/akonadijob.h> // TODO really stinks that it needs special treatment
 #include <mailtransport/transportmanager.h>
 
+#include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/addressattribute.h>
 #include <outboxinterface/sentbehaviourattribute.h>
 #include <outboxinterface/transportattribute.h>
 

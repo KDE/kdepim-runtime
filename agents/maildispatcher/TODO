@@ -7,6 +7,7 @@
 * Figure out which / whether error strings should be i18n'd
 * Should probably use progressMessage instead of statusMessage, but it seems
   to be unimplemented in AgentInstance, and only a stub in AgentBase.
+* Do something about timeouts.
 
 Bugs:
 * Incorrect size reporting in itemChanged() from Monitor.  Leads to displaying

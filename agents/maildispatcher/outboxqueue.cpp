@@ -30,12 +30,12 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Monitor>
+#include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/localfolders.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/addressattribute.h>
 #include <outboxinterface/dispatchmodeattribute.h>
 #include <outboxinterface/sentbehaviourattribute.h>
 #include <outboxinterface/transportattribute.h>
