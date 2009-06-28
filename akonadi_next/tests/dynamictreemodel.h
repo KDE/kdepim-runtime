@@ -22,7 +22,7 @@
 
 // #include <QAbstractItemModel>
 
-#include "../abstractitemmodel.h"
+#include "abstractitemmodel.h"
 
 #include <QHash>
 #include <QList>
