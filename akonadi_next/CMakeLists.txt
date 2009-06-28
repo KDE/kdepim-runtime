@@ -10,6 +10,7 @@ include_directories(
   ${KDEPIMLIBS_INCLUDE_DIR}
   ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 include(KDE4Defaults)
