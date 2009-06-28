@@ -25,6 +25,8 @@
 
 #include <QtCore/QAbstractItemModel>
 
+#include "akonadi_next_export.h"
+
 class AbstractItemModelPrivate;
 
 /**
@@ -48,7 +50,7 @@ class AbstractItemModelPrivate;
  *
  * /sa AbstractProxyModel.
  */
-class AbstractItemModel : public QAbstractItemModel
+class AKONADI_NEXT_EXPORT AbstractItemModel : public QAbstractItemModel
 {
   Q_OBJECT
 
