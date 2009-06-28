@@ -71,8 +71,8 @@ int main( int argc, char **argv )
   if ( typesToMigrate.isEmpty() )
     return 1;
 
-  KApplication app;
-  app.setQuitOnLastWindowClosed( false );
+  KApplication *app = new KApplication();
+  app->setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
   KGlobal::locale()->insertCatalog( "libakonadi" );
@@ -93,7 +93,7 @@ int main( int argc, char **argv )
     QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
   }
 
-  const int result = app.exec();
+  const int result = app->exec();
   if ( infoDialog && infoDialog->hasError() )
     return 3;
   return result;
