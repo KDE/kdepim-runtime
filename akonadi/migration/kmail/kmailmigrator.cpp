@@ -30,7 +30,7 @@
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
-#include <akonadi/resources/mbox/settings.h>
+#include "settings.h"
 
 #include <KConfig>
 #include <KConfigGroup>
