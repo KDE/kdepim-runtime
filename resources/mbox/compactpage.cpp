@@ -90,7 +90,7 @@ void CompactPage::onCollectionFetchCheck( KJob *job )
 void CompactPage::onCollectionFetchCompact( KJob *job )
 {
   if ( job->error() ) {
-    ui.messageLabel->setText( i18n( "Failed to fetch te collection." ) );
+    ui.messageLabel->setText( i18n( "Failed to fetch the collection." ) );
     ui.compactButton->setEnabled( true );
     return;
   }
