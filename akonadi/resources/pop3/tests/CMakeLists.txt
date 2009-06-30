@@ -35,6 +35,7 @@ macro(add_akonadi_isolated_test _source)
     ${KDE4_KDECORE_LIBS}
     ${KDE4_KMIME_LIBS}
     ${QT_QTCORE_LIBRARY}
+    ${QT_QTNETWORK_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
   )
 
