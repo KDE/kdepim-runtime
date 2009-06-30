@@ -43,6 +43,6 @@ Type=AkonadiResource
 Exec=akonadi_kolabproxy_resource
 Icon=kolab
 
-X-Akonadi-MimeTypes=text/directory
+X-Akonadi-MimeTypes=text/directory,text/calendar,application/x-vnd.kde.contactgroup
 X-Akonadi-Capabilities=Resource,Unique,NoConfig
 X-Akonadi-Identifier=akonadi_kolabproxy_resource
