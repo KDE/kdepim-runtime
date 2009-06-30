@@ -23,7 +23,7 @@ automoc4_add_library(akonadi_template_loader SHARED
 target_link_libraries(akonadi_template_loader
   akonadi_next
   ${QT_QTCORE_LIBRARY}
-  ${KDE4_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KIO_LIBS}
   ${AKONADI_COMMON_LIBRARIES}
   ${QT_QTCORE_LIBRARY}

@@ -22,7 +22,7 @@ install(FILES akonaditemplateresource.desktop
 kde4_add_executable(akonadi_template_resource RUN_UNINSTALLED ${template_resource_SRCS})
 
 target_link_libraries(akonadi_template_resource
-                      ${KDE4_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTCORE_LIBRARY}

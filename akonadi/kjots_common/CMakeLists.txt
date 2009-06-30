@@ -16,7 +16,7 @@ kde4_add_library(kjots_common SHARED ${kjots_common_SRCS} )
 target_link_libraries(kjots_common
                       akonadi_next
                       grantlee_core_library
-                      ${KDE4_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
 )
 

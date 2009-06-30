@@ -14,7 +14,7 @@ set(akonadi_serializer_kjots_PART_SRCS
 kde4_add_plugin( akonadi_serializer_kjots ${akonadi_serializer_kjots_PART_SRCS} )
 target_link_libraries(akonadi_serializer_kjots
                       kjots_common ${AKONADI_COMMON_LIBRARIES} 
-                      ${KDE4_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
                       ${QT_QTXML_LIBRARY}
                       ${QT_QTCORE_LIBRARY}
 )

@@ -40,7 +40,7 @@ kde4_add_library(
 target_link_libraries(
 		akonadi-filter-ui
 		akonadi-filter
-		${KDE4_AKONADI_LIBS}
+		${KDEPIMLIBS_AKONADI_LIBS}
 		ksieve
 		${KDE4_KDECORE_LIBS}
 		${KDE4_KDEUI_LIBS}

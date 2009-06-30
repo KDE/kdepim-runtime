@@ -51,7 +51,7 @@ kde4_add_library(
 
 target_link_libraries(
 		akonadi-filter
-		${KDE4_AKONADI_LIBS}
+		${KDEPIMLIBS_AKONADI_LIBS}
 		ksieve
 		${KDE4_KDECORE_LIBS}
 		${QT_LIBRARIES}

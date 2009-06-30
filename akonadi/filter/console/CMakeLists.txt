@@ -59,12 +59,12 @@ target_link_libraries(
 		akonadi_filter_console
 		akonadi-filter
 		akonadi-filter-ui
-		${KDE4_AKONADI_LIBS}
+		${KDEPIMLIBS_AKONADI_LIBS}
 		${KDE4_KDECORE_LIBS}
 		${QT_LIBRARIES}
 		#${KDE4_KIO_LIBS}
-		#${KDE4_KABC_LIBS}
-		#${KDE4_KMIME_LIBS}
+		#${KDEPIMLIBS_KABC_LIBS}
+		#${KDEPIMLIBS_KMIME_LIBS}
 )
 
 install(

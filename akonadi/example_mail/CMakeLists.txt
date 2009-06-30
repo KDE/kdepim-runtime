@@ -18,10 +18,10 @@ kde4_add_executable(example_mail ${example_mail_SRCS} )
 target_link_libraries(example_mail
                       akonadi_next
                       akonadi_template_loader
-                      ${KDE4_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDE4_KIO_LIBS}
-                      ${KDE4_KABC_LIBS}
-                      ${KDE4_KMIME_LIBS}
+                      ${KDEPIMLIBS_KABC_LIBS}
+                      ${KDEPIMLIBS_KMIME_LIBS}
 )
 
 install(TARGETS example_mail
