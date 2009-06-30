@@ -21,7 +21,7 @@ macro(add_akonadi_isolated_test _source)
   target_link_libraries(${_targetName}
     ${QT_QTTEST_LIBRARY}
     ${QT_QTGUI_LIBRARY}
-    ${KDE4_AKONADI_LIBS}
+    ${KDEPIMLIBS_AKONADI_LIBS}
     ${KDE4_KDECORE_LIBS}
     ${KDE4_KRESOURCE_LIBS}
     ${KDEPIMLIBS_KABC_LIBS}
