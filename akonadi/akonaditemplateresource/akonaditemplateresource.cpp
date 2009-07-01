@@ -62,8 +62,8 @@ void TemplateResource::retrieveCollections()
 
   list << rootCol;
 
-  QStringList dirs = m_rootDir.entryList( QDir::AllDirs );
-  foreach( QString dir, dirs ) {
+  const QStringList dirs = m_rootDir.entryList( QDir::AllDirs );
+  foreach( const QString& dir, dirs ) {
     if ( dir.startsWith( "." ) )
       continue;
     Collection col;
@@ -80,9 +80,9 @@ void TemplateResource::retrieveCollections()
 void TemplateResource::retrieveItems( const Akonadi::Collection& col )
 {
   QDir dir( m_rootDir.canonicalPath() + "/" + col.remoteId() );
-  QStringList files = dir.entryList(QStringList() << "*.html", QDir::Files );
+  const QStringList files = dir.entryList(QStringList() << "*.html", QDir::Files );
   Item::List list;
-  foreach( QString filename, files ) {
+  foreach(const  QString& filename, files ) {
     Item item;
     item.setRemoteId( filename );
     item.setMimeType( "text/x-vnd.grantlee-template" );
