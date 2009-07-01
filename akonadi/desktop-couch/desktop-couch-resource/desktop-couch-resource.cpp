@@ -32,6 +32,7 @@
 #include <QtDBus/QDBusConnection>
 #include <QDebug>
 using namespace Akonadi;
+using KABC::PhoneNumber;
 
 DesktopCouchResource::DesktopCouchResource( const QString &id )
   : ResourceBase( id )
@@ -70,18 +71,40 @@ bool DesktopCouchResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 static KABC::Addressee variantToAddressee( const QVariant& v )
 {
   KABC::Addressee a;
-  a.setUid( v.toMap()["_id"].toString() );
-  a.setGivenName( v.toMap()["first_name"].toString() );
-  a.setFamilyName( v.toMap()["last_name"].toString() );
+  QVariantMap vMap = v.toMap();
+  a.setUid( vMap["_id"].toString() );
+  a.setGivenName( vMap["first_name"].toString() );
+  a.setFamilyName( vMap["last_name"].toString() );
 
   // extract email addresses
-  const QVariantMap emails = v.toMap()["email_addresses"].toMap();
+  const QVariantMap emails = vMap["email_addresses"].toMap();
   Q_FOREACH( QVariant email, emails ) {
     QVariantMap emailmap = email.toMap();
     const QString emailstr = emailmap["address"].toString();
     if ( !emailstr.isEmpty() )
       a.insertEmail( emailstr );
   }
+
+  // birthday
+  a.setBirthday( QDateTime::fromString( vMap["birth_date"].toString() ) );
+
+  //phone numbers
+  const QVariantMap numbers = vMap["phone_numbers"].toMap();
+  Q_FOREACH( QVariant number, numbers ) {
+    QVariantMap numbermap = number.toMap();
+    const QString numberstr = numbermap["number"].toString();
+    if ( !numberstr.isEmpty() ) {
+      PhoneNumber phonenumber;
+      phonenumber.setNumber(numberstr);
+      phonenumber.setId(numbermap["description"].toString());
+
+      // FIXME type
+
+      // FIXME priority
+      a.insertPhoneNumber( phonenumber );
+    }
+  }
+
   return a;
 }
 
