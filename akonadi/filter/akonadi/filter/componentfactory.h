@@ -99,26 +99,6 @@ private:
 
 public:
 
-  void setDefaultActionDescription( const QString &defaultActionDescription )
-  {
-    mDefaultActionDescription = defaultActionDescription;
-  }
-
-  const QString & defaultActionDescription()
-  {
-    return mDefaultActionDescription;
-  }
-
-  void setLastError( const QString &error )
-  {
-    mLastError = error;
-  }
-
-  const QString & lastError() const
-  {
-    return mLastError;
-  }
-
   /**
    * Registers a FunctionDescriptor to be used by the filter condtions.
    */
@@ -162,7 +142,6 @@ public:
    * This is used primairly by the UI filter editors.
    */
   virtual const QList< const CommandDescriptor * > * enumerateCommands();
-
 
   /**
    * Registers a DataMemberDescriptor to be used by the filtering conditions.
@@ -215,16 +194,171 @@ public:
    */
   virtual QList< const OperatorDescriptor * > enumerateOperators( int leftOperandDataTypeMask );
 
-
+  /**
+   * Creates an instance of a filtering program.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Program object.
+   *
+   * Returns the Program pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   */
   virtual Program * createProgram();
 
+  /**
+   * Creates an instance of a filtering rule.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Rule object.
+   *
+   * Returns the Rule pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   */
   virtual Rule * createRule( Component * parent );
 
+  /**
+   * Creates an instance of a standard And Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the And pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default And condition is what you want most of the times.
+   */
   virtual Condition::And * createAndCondition( Component * parent );
+
+  /**
+   * Creates an instance of a standard Or Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the Or pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default Or condition is what you want most of the times.
+   */
   virtual Condition::Or * createOrCondition( Component * parent );
+
+  /**
+   * Creates an instance of a standard Not Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the Not pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default Not condition is what you want most of the times.
+   */
   virtual Condition::Not * createNotCondition( Component * parent );
+
+  /**
+   * Creates an instance of a standard "Always True" Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the True pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default True condition is what you want most of the times.
+   */
   virtual Condition::True * createTrueCondition( Component * parent );
+
+  /**
+   * Creates an instance of a standard "Always False" Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the False pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default False condition is what you want most of the times.
+   */
   virtual Condition::False * createFalseCondition( Component * parent );
+
+  /**
+   * Creates an instance of the PropertyTest Condition.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the PropertyTest pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   */
   virtual Condition::Base * createPropertyTestCondition(
       Component * parent,
       const FunctionDescriptor * function,
@@ -233,9 +367,88 @@ public:
       const QVariant &operand
     );
 
+  /**
+   * FIXME: This needs work
+   *
+   * Creates an instance of the Command Action.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the Command pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   */
   virtual Action::Base * createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
+
+  /**
+   * Creates an instance of the RuleList Action.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the RuleList pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   */
   virtual Action::RuleList * createRuleList( Component * parent );
+
+  /**
+   * Creates an instance of the standard Stop Action.
+   * The other components of the filtering framework will
+   * call this function instead of directly instantiating the class.
+   *
+   * May be reimplemented by subclasses in order to return their
+   * own customized implementation of the Condition object.
+   *
+   * Returns the Stop pointer in case of success and NULL
+   * in case of error. In the latter case lastError() may be used
+   * to obtain additional informations about the cause of failure.
+   *
+   * The default implementation fails only in case of out-of-memory condition.
+   *
+   * A failure in a subclass reimplementation should be signaled by a NULL return
+   * value and should cause a call to setLastError().
+   *
+   * In fact it's very unlikely that you'll ever need to reimplement this
+   * function since the default Stop action is what you want most of the times.
+   */
   virtual Action::Stop * createStopAction( Component * parent );
+
+
+  void setDefaultActionDescription( const QString &defaultActionDescription )
+  {
+    mDefaultActionDescription = defaultActionDescription;
+  }
+
+  const QString & defaultActionDescription()
+  {
+    return mDefaultActionDescription;
+  }
+
+  void setLastError( const QString &error )
+  {
+    mLastError = error;
+  }
+
+  const QString & lastError() const
+  {
+    return mLastError;
+  }
 }; // class ComponentFactory
 
 } // namespace Filter

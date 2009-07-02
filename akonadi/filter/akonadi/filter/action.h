@@ -180,28 +180,84 @@ public:
 
 }; // class Stop
 
+/**
+ * A standard factory-customizable command action.
+ *
+ * This is the primary mean to implement actions on the agent and IO side.
+ *
+ * This class implements a command based on the CommandDescriptor class
+ * which is stored in the ComponentFactory object. You can register
+ * several CommandDescriptor objects: all of the will be "automagically"
+ * handled by this class.
+ */
 class AKONADI_FILTER_EXPORT Command : public Base
 {
 public:
+
+  /**
+   * Create an instance of the Command action with the specified
+   * parent Component, the specified CommandDescriptor and the
+   * specified list of actual parameters. The parameters are stored as variants
+   * and must correspond to the list of formal parameters described in the
+   * CommandDescriptor object. The parent and command parameters must not be NULL.
+   *
+   * This class is usually instantiated via the I/O classes (see IO::Decoder).
+   */
   Command( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
+
+  /**
+   * Destroys the command action and any data associated with it.
+   */
   virtual ~Command();
+
 protected:
+
+  /**
+   * The descriptor of this command. This is a shallow pointer:
+   * the ownership is of the caller (read: the ComponentFactory)
+   * which must ensure the validity for the entire lifetime of the object.
+   */
   const CommandDescriptor * mCommandDescriptor;
+
+  /**
+   * The list of actual parameters for this command.
+   */
   QList< QVariant > mParams;
+
 public:
+
+  /**
+   * Returns the CommandDescriptor object associated with this Command object.
+   * This is never NULL.
+   */
   const CommandDescriptor * commandDescriptor() const
   {
     return mCommandDescriptor;
   }
 
+  /**
+   * Returns the list of actual parameters associated with this command.
+   */
   const QList< QVariant > * params() const
   {
     return &mParams;
   }
 
+  /**
+   * Executes this command on the specified Data set
+   * and returns the result of the processing.
+   *
+   * Reimplemented from Action::Base.
+   */
   virtual ProcessingStatus execute( Data * data );
 
+  /**
+   * This is mainly used for debug purposes: dumps the
+   * action to the console. The prefix string is inserted
+   * at the beginning of each output line.
+   */
   virtual void dump( const QString &prefix );
+
 }; // class Command
 
 } // namespace Action

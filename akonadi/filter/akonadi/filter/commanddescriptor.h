@@ -38,55 +38,109 @@ namespace Akonadi
 namespace Filter
 {
 
+/**
+ * The "well-known" command identifiers used in the CommandDescriptor class.
+ * Custom commands should use identifiers starting at CommandCustomFirst.
+ */
 enum CommandIdentifiers
 {
-  // standard commands
+  /**
+   * The standard "Leave Message on Server" command.
+   * In Sieve this is encoded as "keep".
+   */
   StandardCommandLeaveMessageOnServer = 1,
-  // custom commands
+
+  /**
+   * The standard "Move Item to Collection" command.
+   */
+  StandardCommandMoveItemToCollection = 2,
+
+  /**
+   * The base identifier for user defined commands.
+   */
   CommandCustomFirst = 10000
 };
 
 
 /**
- * 
+ * This class describes a ComponentFactory-customizable action.
  *
+ * Your agent / client-side implementation may register several
+ * CommandDescriptor objects with the ComponentFactory.
+ *
+ * The ComponentFactory will instantiate an Action::Command
+ * class which will handle the operation automagically (in the filtering agent).
+ *
+ * The I/O routines (see IO::Encoder and IO::Decoder) will also
+ * use this class to encode/decode the action to/from the storage format.
  */
 class AKONADI_FILTER_EXPORT CommandDescriptor
 {
 public:
+
+  /**
+   * A single formal parameter for the command described by CommandDescriptor.
+   *
+   * The parameter has a name (which is used as command token in the storage)
+   * and a data type.
+   */
   class ParameterDescriptor
   {
   protected:
+
+    /**
+     * The name of this parameter
+     */
     QString mName;
+
+    /**
+     * The data type of this parameter.
+     */
     DataType mDataType;
-    bool mIsTerminal;
+
   public:
+
+    /**
+     * Create an instance of the ParameterDescriptor
+     */
     ParameterDescriptor( DataType dataType, const QString &name )
       : mName( name ), mDataType( dataType )
     {
     }
+
   public:
 
+    /**
+     * Returns the name associated to this parameter
+     */
     const QString & name() const
     {
       return mName;
     }
+
+    /**
+     * Returns the expected data type of this parameter.
+     */
     DataType dataType() const
     {
       return mDataType;
     }
-  };
+  }; // class ParameterDescriptor
 public:
+
   /**
    * Create a command descriptor with the specified keyword
-   *
    */
   CommandDescriptor(
       int id,                          //< The id of the command: it should be unique within an application
       const QString &keyword,          //< Unique command keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
-      bool isTerminal = false          //< Is this command terminal ?
+      bool isTerminal = false          //< Is this command terminal ? Terminal commands stop the script upon succesfull execution.
     );
+
+  /**
+   * Destroy a CommandDescriptor object.
+   */
   virtual ~CommandDescriptor();
 
 protected:
@@ -112,37 +166,57 @@ protected:
   QList< ParameterDescriptor * > mParameters;
 
   /**
-   * Is this command a terminal one (that is.. does it stop processing with success ?)
+   * Is this command a terminal one (that is.. does it stop processing upon successfull execution ?)
    */
   bool mIsTerminal;
 
 public:
 
+  /**
+   * Returns the unique identifier associated to this command action.
+   */
   int id() const
   {
     return mId;
   }
 
+  /**
+   * Returns the non-localized keyword for this command action.
+   */
   const QString & keyword() const
   {
     return mKeyword;
   }
 
+  /**
+   * Returns the localized name for this command action.
+   */
   const QString & name() const
   {
     return mName;
   }
 
+  /**
+   * Returns true if this action is terminal and terminates the filtering
+   * script execution upon succesfull execution. Returns false otherwise.
+   */
   bool isTerminal() const
   {
     return mIsTerminal;
   }
 
+  /**
+   * Returns the list of parameter descriptors associated with this command.
+   */
   const QList< ParameterDescriptor * > * parameters() const
   {
     return &mParameters;
   }
 
+  /**
+   * Adds a single parameter to this command. The ownership of the pointer
+   * is taken by this class.
+   */
   void addParameter( ParameterDescriptor * parameter )
   {
     mParameters.append( parameter );

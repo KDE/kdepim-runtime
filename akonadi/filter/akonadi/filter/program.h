@@ -84,9 +84,14 @@ public:
     mDescription = description;
   }
 
+  /**
+   * Reimplemented from Component. Returns true.
+   */
   virtual bool isProgram() const;
 
-
+  /**
+   * Reimplemented from Component: dumps the program on the console.
+   */
   virtual void dump( const QString &prefix );
 };
 

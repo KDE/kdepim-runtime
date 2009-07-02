@@ -60,6 +60,9 @@ void Base::dump( const QString &prefix )
   debugOutput( prefix, "Action::Base" );
 }
 
+
+
+
 Stop::Stop( Component * parent )
   : Base( ActionTypeStop, parent )
 {
@@ -80,6 +83,9 @@ void Stop::dump( const QString &prefix )
 }
 
 
+
+
+
 Command::Command( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
   : Base( ActionTypeCommand, parent ), mCommandDescriptor( command ), mParams( params )
 {
@@ -91,7 +97,7 @@ Command::~Command()
 
 Command::ProcessingStatus Command::execute( Data * data )
 {
-  
+  // FIXME: Impl missing here
   return SuccessAndContinue;
 }
 

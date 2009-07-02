@@ -47,6 +47,7 @@ CommandDescriptor::CommandDescriptor(
 
 CommandDescriptor::~CommandDescriptor()
 {
+  qDeleteAll( mParameters );
 }
 
 } // namespace Filter
