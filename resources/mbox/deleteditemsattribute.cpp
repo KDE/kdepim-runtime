@@ -23,10 +23,10 @@ DeletedItemsAttribute::DeletedItemsAttribute()
 {
 }
 
-DeletedItemsAttribute::DeletedItemsAttribute(const DeletedItemsAttribute &other)
+DeletedItemsAttribute::DeletedItemsAttribute( const DeletedItemsAttribute &other )
   : Akonadi::Attribute()
 {
-  if (&other == this)
+  if ( &other == this )
     return;
 
   mDeletedItemOffsets = other.mDeletedItemOffsets;
@@ -36,14 +36,14 @@ DeletedItemsAttribute::~DeletedItemsAttribute()
 {
 }
 
-void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
+void DeletedItemsAttribute::addDeletedItemOffset( quint64 offset )
 {
   mDeletedItemOffsets.insert( offset );
 }
 
 Akonadi::Attribute *DeletedItemsAttribute::clone() const
 {
-  return new DeletedItemsAttribute(*this);
+  return new DeletedItemsAttribute( *this );
 }
 
 QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
@@ -51,13 +51,13 @@ QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
   return mDeletedItemOffsets;
 }
 
-void DeletedItemsAttribute::deserialize(const QByteArray &data)
+void DeletedItemsAttribute::deserialize( const QByteArray &data )
 {
   QList<QByteArray> offsets = data.split(',');
   mDeletedItemOffsets.clear();
 
-  foreach(const QByteArray& offset, offsets) {
-    mDeletedItemOffsets.insert(offset.toULongLong());
+  foreach( const QByteArray& offset, offsets ) {
+    mDeletedItemOffsets.insert( offset.toULongLong() );
   }
 }
 
@@ -65,12 +65,12 @@ QByteArray DeletedItemsAttribute::serialized() const
 {
   QByteArray serialized;
 
-  foreach(quint64 offset, mDeletedItemOffsets) {
+  foreach( quint64 offset, mDeletedItemOffsets ) {
     serialized += QByteArray::number(offset);
     serialized += ',';
   }
 
-  serialized.chop(1); // Remove the last ','
+  serialized.chop( 1 ); // Remove the last ','
 
   return serialized;
 }

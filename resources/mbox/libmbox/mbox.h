@@ -71,7 +71,7 @@ class MBOX_EXPORT MBox
      *
      * Note: One <em>must</em> call open() before calling this method.
      */
-    QList<MsgInfo> entryList(const QSet<quint64> &deletedItems = QSet<quint64>()) const;
+    QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
      * Loads a mbox on disk  into the current mbox. Messages already present are
@@ -140,7 +140,7 @@ class MBOX_EXPORT MBox
      *
      * @see lock(), unlock()
      */
-    QByteArray readEntryHeaders(quint64 offset);
+    QByteArray readEntryHeaders( quint64 offset );
 
 
     /**
@@ -165,7 +165,7 @@ class MBOX_EXPORT MBox
      * to make sure that it doesn't leave a locked file for one of the lockfile
      * / mutt_dotlock methods.
      */
-    bool setLockType(LockType ltype);
+    bool setLockType( LockType ltype );
 
     /**
      * Sets the lockfile that should be used by the procmail or the KDE lock
@@ -173,7 +173,7 @@ class MBOX_EXPORT MBox
      * lock methods is used the name of the lock file will be equal to
      * MBOXFILENAME.lock.
      */
-    void setLockFile(const QString &lockFile);
+    void setLockFile( const QString &lockFile );
 
     /**
      * Unlock the mbox file.
@@ -187,17 +187,17 @@ class MBOX_EXPORT MBox
   private:
     bool open();
 
-    static QByteArray escapeFrom(const QByteArray &msg);
+    static QByteArray escapeFrom( const QByteArray &msg );
 
     /**
      * Generates a mbox message sperator line for given message.
      */
-    static QByteArray mboxMessageSeparator(const QByteArray &msg);
+    static QByteArray mboxMessageSeparator( const QByteArray &msg );
 
     /**
      * Unescapes the raw message read from the file.
      */
-    static void unescapeFrom(char *msg, size_t size);
+    static void unescapeFrom( char *msg, size_t size );
 
   private:
     class Private;

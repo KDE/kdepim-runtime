@@ -82,7 +82,7 @@ void CompactPage::onCollectionFetchCheck( KJob *job )
 
   if ( attr->deletedItemOffsets().size() > 0 ) {
     ui.compactButton->setEnabled( true );
-    ui.messageLabel->setText( i18np("(1 message marked for deletion)",
+    ui.messageLabel->setText( i18np( "(1 message marked for deletion)",
      "(%1 messages marked for deletion)", attr->deletedItemOffsets().size() ) );
   }
 }

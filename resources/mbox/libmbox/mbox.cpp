@@ -26,14 +26,15 @@
 
 #include "mbox.h"
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QProcess>
+#include <QtCore/QReadWriteLock>
+
+#include <fcntl.h>
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
-#include <QtCore/QFileInfo>
-#include <QtCore/QReadWriteLock>
-#include <QtCore/QProcess>
-#include <fcntl.h>
 #include <kurl.h>
 
 class MBox::Private
@@ -70,15 +71,15 @@ static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
 
 /// private static methods.
 
-QByteArray quoteAndEncode(const QString &str)
+QByteArray quoteAndEncode( const QString &str )
 {
-  return QFile::encodeName(KShell::quoteArg(str));
+  return QFile::encodeName( KShell::quoteArg( str ) );
 }
 
 /// public methods.
 
 MBox::MBox()
-  : d(new Private())
+  : d( new Private() )
 {
   // Set some sane defaults
   d->mFileLocked = false;
@@ -117,11 +118,11 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
     ++nextOffset;
   } else if ( nextOffset == 1 && d->mAppendedEntries.at( 0 ) != '\n' ) {
     // This should actually not happen, but catch it anyway.
-    if (d->mMboxFile.size() < 0 ) {
-      d->mAppendedEntries.append( "\n");
+    if ( d->mMboxFile.size() < 0 ) {
+      d->mAppendedEntries.append( "\n" );
       ++nextOffset;
     }
-  } else if (nextOffset >= 2) {
+  } else if ( nextOffset >= 2 ) {
     if ( d->mAppendedEntries.at( nextOffset - 1 ) != '\n' ) {
       if ( d->mAppendedEntries.at( nextOffset ) != '\n' ) {
         d->mAppendedEntries.append( "\n\n" );
@@ -166,7 +167,7 @@ bool MBox::load( const QString &fileName )
   if ( d->mFileLocked )
     return false;
 
-  d->mMboxFile.setFileName( KUrl(fileName).path() );
+  d->mMboxFile.setFileName( KUrl( fileName ).path() );
   if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
     return false;
 
@@ -186,7 +187,7 @@ bool MBox::load( const QString &fileName )
 
     line = d->mMboxFile.readLine();
 
-    if ( regexp.indexIn(line) >= 0 || d->mMboxFile.atEnd() ) {
+    if ( regexp.indexIn( line ) >= 0 || d->mMboxFile.atEnd() ) {
       // Found the separator or at end of file, the message starts at offs
       quint64 msgSize = pos - offs;
 
@@ -212,7 +213,7 @@ bool MBox::load( const QString &fileName )
         d->mEntries << info;
       }
 
-      if ( regexp.indexIn(line) >= 0 )
+      if ( regexp.indexIn( line ) >= 0 )
         prevSeparator = line;
 
       offs += msgSize; // Mark the beginning of the next message.
@@ -236,13 +237,13 @@ bool MBox::lock()
   {
     case ProcmailLockfile:
       args << "-l20" << "-r5";
-      if (!d->mLockFileName.isEmpty())
+      if ( !d->mLockFileName.isEmpty() )
         args << quoteAndEncode(d->mLockFileName);
       else
         args << quoteAndEncode(d->mMboxFile.fileName() + ".lock");
 
       rc = QProcess::execute("lockfile", args);
-      if(rc != 0) {
+      if( rc != 0 ) {
         kDebug() << "lockfile -l20 -r5 " << d->mMboxFile.fileName()
                  << ": Failed ("<< rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
@@ -253,10 +254,10 @@ bool MBox::lock()
       break;
 
     case MuttDotlock:
-      args << quoteAndEncode(d->mMboxFile.fileName());
-      rc = QProcess::execute("mutt_dotlock", args);
+      args << quoteAndEncode( d->mMboxFile.fileName() );
+      rc = QProcess::execute( "mutt_dotlock", args );
 
-      if(rc != 0) {
+      if( rc != 0 ) {
         kDebug() << "mutt_dotlock " << d->mMboxFile.fileName()
                  << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true; // In case the MBox object was created read/write we
@@ -267,10 +268,10 @@ bool MBox::lock()
       break;
 
     case MuttDotlockPrivileged:
-      args << "-p" << quoteAndEncode(d->mMboxFile.fileName());
-      rc = QProcess::execute("mutt_dotlock", args);
+      args << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      rc = QProcess::execute( "mutt_dotlock", args );
 
-      if(rc != 0) {
+      if( rc != 0 ) {
         kDebug() << "mutt_dotlock -p " << d->mMboxFile.fileName() << ":"
                  << ": Failed (" << rc << ") switching to read only mode";
         d->mReadOnly = true;
@@ -420,23 +421,23 @@ KMime::Message *MBox::readEntry(quint64 offset)
   QByteArray line = d->mMboxFile.readLine();
   QRegExp regexp( sMBoxSeperatorRegExp );
 
-  if (regexp.indexIn(line) < 0) {
+  if ( regexp.indexIn( line ) < 0) {
     unlock();
     return 0; // The file is messed up or the index is incorrect.
   }
 
   QByteArray message;
   line = d->mMboxFile.readLine();
-  while (regexp.indexIn(line) < 0 && !d->mMboxFile.atEnd()) {
+  while ( regexp.indexIn( line ) < 0 && !d->mMboxFile.atEnd() ) {
     message += line;
     line = d->mMboxFile.readLine();
   }
 
   // Remove te last '\n' added by writeEntry.
-  if (message.endsWith('\n'))
+  if ( message.endsWith( '\n' ) )
     message.chop(1);
 
-  unescapeFrom(message.data(), message.size());
+  unescapeFrom( message.data(), message.size() );
 
   if ( ! wasLocked ) {
     const bool unlocked = unlock();
@@ -451,22 +452,22 @@ KMime::Message *MBox::readEntry(quint64 offset)
   return mail;
 }
 
-QByteArray MBox::readEntryHeaders(quint64 offset)
+QByteArray MBox::readEntryHeaders( quint64 offset )
 {
   bool wasLocked = d->mFileLocked;
   if ( ! wasLocked )
     lock();
 
   Q_ASSERT( d->mFileLocked );
-  Q_ASSERT(d->mMboxFile.isOpen());
-  Q_ASSERT(d->mMboxFile.size() > 0);
-  Q_ASSERT(static_cast<quint64>(d->mMboxFile.size()) > offset);
+  Q_ASSERT( d->mMboxFile.isOpen() );
+  Q_ASSERT( d->mMboxFile.size() > 0 );
+  Q_ASSERT( static_cast<quint64>(d->mMboxFile.size()) > offset );
 
-  d->mMboxFile.seek(offset);
+  d->mMboxFile.seek( offset );
   QByteArray headers;
   QByteArray line = d->mMboxFile.readLine();
 
-  while (!line[0] == '\n') {
+  while ( !line[0] == '\n' ) {
     headers += line;
     line = d->mMboxFile.readLine();
   }
@@ -516,7 +517,7 @@ bool MBox::setLockType(LockType ltype)
       break;
     case MuttDotlock: // fall through
     case MuttDotlockPrivileged:
-      if (KStandardDirs::findExe("mutt_dotlock").isEmpty()) {
+      if ( KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
         kDebug() << "Could not find the mutt_dotlock executable";
         return false;
       }
@@ -529,7 +530,7 @@ bool MBox::setLockType(LockType ltype)
   return true;
 }
 
-void MBox::setLockFile(const QString &lockFile)
+void MBox::setLockFile( const QString &lockFile )
 {
   d->mLockFileName = lockFile;
 }
@@ -543,20 +544,20 @@ bool MBox::unlock()
   {
     case ProcmailLockfile:
       // QFile::remove returns true on succes so negate the result.
-      if (!d->mLockFileName.isEmpty())
-        rc = !QFile(d->mLockFileName).remove();
+      if ( !d->mLockFileName.isEmpty() )
+        rc = !QFile( d->mLockFileName ).remove();
       else
-        rc = !QFile(d->mMboxFile.fileName() + ".lock").remove();
+        rc = !QFile( d->mMboxFile.fileName() + ".lock" ).remove();
       break;
 
     case MuttDotlock:
-      args << "-u" << quoteAndEncode(d->mMboxFile.fileName());
-      rc = QProcess::execute("mutt_dotlock", args);
+      args << "-u" << quoteAndEncode( d->mMboxFile.fileName() );
+      rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
     case MuttDotlockPrivileged:
-      args << "-u" << "-p" << quoteAndEncode(d->mMboxFile.fileName());
-      rc = QProcess::execute("mutt_dotlock", args);
+      args << "-u" << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
     case None: // Fall through.
@@ -588,23 +589,23 @@ bool MBox::open()
   return true;
 }
 
-QByteArray MBox::mboxMessageSeparator(const QByteArray &msg)
+QByteArray MBox::mboxMessageSeparator( const QByteArray &msg )
 {
   KMime::Message mail;
-  mail.setHead(KMime::CRLFtoLF(msg));
+  mail.setHead( KMime::CRLFtoLF( msg ) );
   mail.parse();
 
   QByteArray seperator = "From ";
 
-  KMime::Headers::From *from = mail.from(false);
-  if (!from || from->addresses().isEmpty())
+  KMime::Headers::From *from = mail.from( false );
+  if ( !from || from->addresses().isEmpty() )
     seperator += "unknown@unknown.invalid";
   else
     seperator += from->addresses().first() + " ";
 
   KMime::Headers::Date *date = mail.date(false);
   if (!date || date->isEmpty())
-    seperator += QDateTime::currentDateTime().toString(Qt::TextDate).toUtf8() + '\n';
+    seperator += QDateTime::currentDateTime().toString( Qt::TextDate ).toUtf8() + '\n';
   else
     seperator += date->as7BitString(false) + '\n';
 
@@ -613,17 +614,17 @@ QByteArray MBox::mboxMessageSeparator(const QByteArray &msg)
 
 #define STRDIM(x) (sizeof(x)/sizeof(*x)-1)
 
-QByteArray MBox::escapeFrom(const QByteArray &str)
+QByteArray MBox::escapeFrom( const QByteArray &str )
 {
   const unsigned int strLen = str.length();
-  if ( strLen <= STRDIM("From ") )
+  if ( strLen <= STRDIM( "From " ) )
     return str;
 
   // worst case: \nFrom_\nFrom_\nFrom_... => grows to 7/6
-  QByteArray result(int( strLen + 5 ) / 6 * 7 + 1, '\0');
+  QByteArray result( int( strLen + 5 ) / 6 * 7 + 1, '\0');
 
   const char * s = str.data();
-  const char * const e = s + strLen - STRDIM("From ");
+  const char * const e = s + strLen - STRDIM( "From ");
   char * d = result.data();
 
   bool onlyAnglesAfterLF = false; // dont' match ^From_
@@ -652,9 +653,9 @@ QByteArray MBox::escapeFrom(const QByteArray &str)
 }
 
 // performs (\n|^)>{n}From_ -> \1>{n-1}From_ conversion
-void MBox::unescapeFrom(char* str, size_t strLen)
+void MBox::unescapeFrom( char* str, size_t strLen )
 {
-  if (!str)
+  if ( !str )
     return;
   if ( strLen <= STRDIM(">From ") )
     return;
@@ -665,7 +666,7 @@ void MBox::unescapeFrom(char* str, size_t strLen)
   // might even be slower...
   const char * s = str;
   char * d = str;
-  const char * const e = str + strLen - STRDIM(">From ");
+  const char * const e = str + strLen - STRDIM( ">From ");
 
   while ( s < e ) {
     if ( *s == '\n' && *(s+1) == '>' ) { // we can do the lookahead, since e is 6 chars from the end!
@@ -673,7 +674,7 @@ void MBox::unescapeFrom(char* str, size_t strLen)
       *d++ = *s++;  // == '>'
       while ( s < e && *s == '>' )
         *d++ = *s++;
-      if ( qstrncmp( s, "From ", STRDIM("From ") ) == 0 )
+      if ( qstrncmp( s, "From ", STRDIM( "From ") ) == 0 )
         --d;
     }
     *d++ = *s++; // yes, s might be e here, but e is not the end :-)

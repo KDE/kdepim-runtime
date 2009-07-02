@@ -37,25 +37,25 @@
 
 using namespace Akonadi;
 
-static Entity::Id collectionId(const QString &remoteItemId)
+static Entity::Id collectionId( const QString &remoteItemId )
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").first().toLongLong();
+  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
+  return remoteItemId.split( "::" ).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").at(1);
+  Q_ASSERT(remoteItemId.split( "::" ).size() == 3);
+  return remoteItemId.split( "::" ).at(1);
 }
 
-static quint64 itemOffset(const QString &remoteItemId)
+static quint64 itemOffset( const QString &remoteItemId )
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").last().toULongLong();
+  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
+  return remoteItemId.split( "::" ).last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id )
@@ -143,7 +143,7 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   quint64 offset = itemOffset( rid );
   KMime::Message *mail = mMBox->readEntry( offset );
   if ( !mail ) {
-    emit error( i18n("Failed to read message with uid '%1'.", rid ) );
+    emit error( i18n( "Failed to read message with uid '%1'.", rid ) );
     return false;
   }
 
@@ -180,7 +180,7 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
                       + collection.remoteId() + "::" + QString::number( offset );
 
   Item i( item );
-  i.setRemoteId(rid);
+  i.setRemoteId( rid );
 
   changeCommitted( i );
 }
