@@ -41,6 +41,11 @@ void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
   mDeletedItemOffsets.insert( offset );
 }
 
+void DeletedItemsAttribute::clear()
+{
+  mDeletedItemOffsets.clear();
+}
+
 Akonadi::Attribute *DeletedItemsAttribute::clone() const
 {
   return new DeletedItemsAttribute(*this);
@@ -73,6 +78,11 @@ QByteArray DeletedItemsAttribute::serialized() const
   serialized.chop(1); // Remove the last ','
 
   return serialized;
+}
+
+int DeletedItemsAttribute::offsetCount() const
+{
+  return mDeletedItemOffsets.size();
 }
 
 QByteArray DeletedItemsAttribute::type() const

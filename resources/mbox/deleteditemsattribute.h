@@ -35,11 +35,21 @@ class DeletedItemsAttribute : public Akonadi::Attribute
 
     void addDeletedItemOffset(quint64);
 
+    /**
+     * Removes all offsets.
+     */
+    void clear();
+
     virtual Attribute *clone() const;
 
     QSet<quint64> deletedItemOffsets() const;
 
     virtual void deserialize(const QByteArray &data);
+
+    /**
+     * Returns the number of offsets stored in this attribute.
+     */
+    int offsetCount() const;
 
     virtual QByteArray serialized() const;
 
