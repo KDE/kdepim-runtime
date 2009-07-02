@@ -93,8 +93,6 @@ void MboxTest::testSetLockMethod()
   }
 
   QVERIFY( mbox1.setLockType( MBox::None ) );
-  QEXPECT_FAIL("", "KDELockFile method is not yet implmented", Continue);
-  QVERIFY( mbox1.setLockType( MBox::KDELockFile ) );
 }
 
 void MboxTest::testLockBeforeLoad()
@@ -115,10 +113,6 @@ void MboxTest::testLockBeforeLoad()
   }
 
   QVERIFY( mbox.setLockType( MBox::None ) );
-  QVERIFY( !mbox.lock() );
-
-  QEXPECT_FAIL("", "KDELockFile method is not yet implmented", Continue);
-  QVERIFY( mbox.setLockType( MBox::KDELockFile ) );
   QVERIFY( !mbox.lock() );
 }
 

@@ -34,7 +34,6 @@ class MBOX_EXPORT MBox
 {
   public:
     enum LockType {
-      KDELockFile,           // Uses KLockFile
       ProcmailLockfile,
       MuttDotlock,
       MuttDotlockPrivileged,

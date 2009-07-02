@@ -224,7 +224,15 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   Collection mboxCollection = fetchJob->collections().first();
   DeletedItemsAttribute *attr
     = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
-  attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
+
+  if ( Settings::self()->compactFrequency() == Settings::per_x_messages
+       && Settings::self()->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
+    kDebug() << "Compacting mbox file";
+    mMBox->purge( attr->deletedItemOffsets() << itemOffset( item.remoteId() ) );
+    mboxCollection.removeAttribute<DeletedItemsAttribute>();
+  } else {
+    attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
+  }
 
   CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
   if ( !modifyJob->exec() ) {
@@ -252,10 +260,6 @@ bool MboxResource::readFromFile( const QString &fileName )
       break;
     case Settings::mutt_dotlock_privileged:
       mMBox->setLockType( MBox::MuttDotlockPrivileged );
-      break;
-    case Settings::kde_lock_file:
-      mMBox->setLockType( MBox::KDELockFile );
-      mMBox->setLockFile( Settings::self()->lockfile() );
       break;
   }
 

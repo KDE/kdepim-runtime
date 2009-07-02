@@ -28,7 +28,6 @@
         <choice name="procmail"/>
         <choice name="mutt_dotlock"/>
         <choice name="mutt_dotlock_privileged"/>
-        <choice name="kde_lock_file"/>
         <choice name="none"/>
       </choices>
       <default>procmail</default>

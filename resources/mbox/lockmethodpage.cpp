@@ -49,8 +49,6 @@ void LockMethodPage::checkAvailableLockMethods()
     {
       if (ui.procmail->isEnabled())
         ui.procmail->setChecked(true);
-      else
-        ui.kde_lock_file->setChecked(true);
     }
   }
 }

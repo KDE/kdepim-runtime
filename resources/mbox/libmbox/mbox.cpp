@@ -28,7 +28,6 @@
 
 #include <kdebug.h>
 #include <klocalizedstring.h>
-#include <klockfile.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <QtCore/QFileInfo>
@@ -40,19 +39,13 @@
 class MBox::Private
 {
   public:
-    Private() : mInitialMboxFileSize( 0 ), mLock( 0 )
+    Private() : mInitialMboxFileSize( 0 )
     {}
 
     ~Private()
     {
       if ( mMboxFile.isOpen() )
         mMboxFile.close();
-
-      if ( mLock && mLock->isLocked() )
-        mLock->unlock();
-
-      delete mLock;
-      mLock = 0;
     }
 
     void close()
@@ -67,7 +60,6 @@ class MBox::Private
     QList<MsgInfo> mEntries;
     bool mFileLocked;
     quint64 mInitialMboxFileSize;
-    KLockFile *mLock;
     LockType mLockType;
     QFile mMboxFile;
     QString mLockFileName;
@@ -242,16 +234,6 @@ bool MBox::lock()
 
   switch(d->mLockType)
   {
-    case KDELockFile:
-      /* FIXME: Don't use the mbox file itself as lock file.
-      if ((rc = d->mLock.lock(KLockFile::ForceFlag))) {
-        kDebug() << "KLockFile lock failed: (" << rc
-                 << ") switching to read only mode";
-        d->mReadOnly = true;
-      }
-      */
-      break; // We only need to lock the file using the QReadWriteLock
-
     case ProcmailLockfile:
       args << "-l20" << "-r5";
       if (!d->mLockFileName.isEmpty())
@@ -526,9 +508,6 @@ bool MBox::setLockType(LockType ltype)
   }
 
   switch ( ltype ) {
-    case KDELockFile:
-      kDebug() << "KLockFile not supported yet"; // FIXME
-      return false;
     case ProcmailLockfile:
       if ( KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
         kDebug() << "Could not find the lockfile executable";
@@ -562,11 +541,6 @@ bool MBox::unlock()
 
   switch( d->mLockType )
   {
-    case KDELockFile:
-      // FIXME
-      //d->mLock.unlock();
-      break;
-
     case ProcmailLockfile:
       // QFile::remove returns true on succes so negate the result.
       if (!d->mLockFileName.isEmpty())

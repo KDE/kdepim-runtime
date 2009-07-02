@@ -41,11 +41,6 @@ void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
   mDeletedItemOffsets.insert( offset );
 }
 
-void DeletedItemsAttribute::clear()
-{
-  mDeletedItemOffsets.clear();
-}
-
 Akonadi::Attribute *DeletedItemsAttribute::clone() const
 {
   return new DeletedItemsAttribute(*this);

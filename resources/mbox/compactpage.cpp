@@ -109,7 +109,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
     ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );
   } else {
     ui.messageLabel->setText( i18np( "(Deleting 1 message)",
-      "(Deleting %1 messages)", attr->deletedItemOffsets().size() ) );
+      "(Deleting %1 messages)", attr->offsetCount() ) );
     // TODO: implement and connect to messageProcessed signal.
     if ( mbox.purge( attr->deletedItemOffsets() ) ) {
       mboxCollection.removeAttribute<DeletedItemsAttribute>();
