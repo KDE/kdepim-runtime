@@ -123,7 +123,10 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
 
 void CompactPage::onCollectionModify( KJob *job )
 {
-  ui.messageLabel->setText( i18n( "MBox file compacted." ) );
+  if ( job->error() )
+    ui.messageLabel->setText( i18n( "Failed to compact the mbox file." ) );
+  else
+    ui.messageLabel->setText( i18n( "MBox file compacted." ) );
 }
 
 #include "compactpage.moc"
