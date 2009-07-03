@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Desktop Couch Resource
+Name[gl]=Recurso Sofá de Escritorio
+Name[pt]=Recurso de Agenda do Ambiente de Trabalho
+Name[pt_BR]=Recurso de Agenda do Ambiente de Trabalho
+Name[sv]=Soffresurs för skrivbordet
+Name[uk]=Стільничний ресурс Couch
 Type=AkonadiResource
 Exec=akonadi_desktop-couch_resource
 Icon=text-directory
