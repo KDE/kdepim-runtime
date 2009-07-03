@@ -159,6 +159,8 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void MboxResource::aboutToQuit()
 {
+  writeFile();
+  Settings::self()->writeConfig();
 }
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -180,6 +182,7 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     return;
   }
 
+  fileDirty();
   const QString rid = QString::number( collection.id() ) + "::"
                       + collection.remoteId() + "::" + QString::number( offset );
 
@@ -232,6 +235,7 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
        && Settings::self()->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
     kDebug() << "Compacting mbox file";
     mMBox->purge( attr->deletedItemOffsets() << itemOffset( item.remoteId() ) );
+    fileDirty();
     mboxCollection.removeAttribute<DeletedItemsAttribute>();
   } else {
     attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
