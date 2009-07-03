@@ -102,7 +102,9 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void ICalResource::aboutToQuit()
 {
-  writeFile();
+  if ( !Settings::self()->readOnly() )
+    writeFile();
+
   Settings::self()->writeConfig();
 }
 

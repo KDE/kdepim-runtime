@@ -159,7 +159,8 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void MboxResource::aboutToQuit()
 {
-  writeFile();
+  if ( !Settings::self()->readOnly() )
+    writeFile();
   Settings::self()->writeConfig();
 }
 

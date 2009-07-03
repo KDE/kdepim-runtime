@@ -60,7 +60,8 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
 void VCardResource::aboutToQuit()
 {
-  writeFile();
+  if ( !Settings::self()->readOnly() )
+    writeFile();
   Settings::self()->writeConfig();
 }
 
