@@ -171,9 +171,10 @@ bool MBox::load( const QString &fileName )
   if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
     return false;
 
-  if ( ! lock() )
+  if ( !lock() )
     return false;
 
+  d->mInitialMboxFileSize = d->mMboxFile.size();
   d->mAppendedEntries.clear();
   d->mEntries.clear();
 
