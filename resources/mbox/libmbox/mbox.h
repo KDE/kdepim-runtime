@@ -103,13 +103,13 @@ class MBOX_EXPORT MBox
      * (i.e. the file that is loaded with load( const QString & ) or the file
      * from the last save( const QString & ) call if that was not the same file).
      * This method will first check if all lines at the offsets are actually
-     * seperator lines if this is not the no message will be deleted to prevent
+     * separator lines if this is not the no message will be deleted to prevent
      * corruption.
      *
      * @param deletedItems Offsets of the messages that should be removed from
      *                     the file.
      *
-     * @return true if all offsets refer to a mbox seperator line and a file was
+     * @return true if all offsets refer to a mbox separator line and a file was
      *         loaded, false otherewhise. In the latter the physical file has
      *         not changed.
      */

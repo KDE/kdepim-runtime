@@ -80,13 +80,17 @@ MboxResource::~MboxResource()
 
 void MboxResource::configure( WId windowId )
 {
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.addPage( "Compact frequency", new CompactPage( Settings::self()->path() ) );
-  dlg.addPage( "Lock method", new LockMethodPage() );
-  dlg.setCaption( i18n("Select MBox file") );
-  if ( dlg.exec() == QDialog::Accepted ) {
+  QPointer<SingleFileResourceConfigDialog<Settings> > dlg
+    = new SingleFileResourceConfigDialog<Settings>( windowId );
+
+  dlg->addPage( "Compact frequency", new CompactPage( Settings::self()->path() ) );
+  dlg->addPage( "Lock method", new LockMethodPage() );
+  dlg->setCaption( i18n( "Select MBox file" ) );
+  if ( dlg->exec() == QDialog::Accepted ) {
     reloadFile();
   }
+
+  delete dlg;
 }
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
@@ -215,8 +219,7 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
                           , CollectionFetchJob::Base );
 
   if ( !fetchJob->exec() ) {
-    cancelTask( i18n( "Could not fetch the collection: %1" )
-                  .arg( fetchJob->errorString() ) );
+    cancelTask( i18n( "Could not fetch the collection: %1", fetchJob->errorString() ) );
     return;
   }
 
@@ -313,7 +316,7 @@ void MboxResource::onCollectionModify( KJob *job )
     // of the collection. In this case we shouldn't try to store the modified
     // item.
     cancelTask( i18n( "Failed to update the changed item because the old item "
-                      "could not be deleted Reason: %1" ).arg( job->errorString() ) );
+                      "could not be deleted Reason: %1", job->errorString() ) );
     return;
   }
 

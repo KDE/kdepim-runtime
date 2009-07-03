@@ -68,17 +68,8 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="kcfg_Lockfile">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="whatsThis">
-         <string>Name of the lock file that is used by procmail. If this is left empty it will be set to the name of the mbox file appended with .lock</string>
-        </property>
+      <item row="0" column="1">
+       <widget class="KComboBox" name="kcfg_Lockfile">
         <property name="editable">
          <bool>true</bool>
         </property>
@@ -114,7 +105,19 @@ p, li { white-space: pre-wrap; }
    <header>kbuttongroup.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>procmail</tabstop>
+  <tabstop>kcfg_Lockfile</tabstop>
+  <tabstop>mutt_dotlock</tabstop>
+  <tabstop>mutt_dotlock_privileged</tabstop>
+  <tabstop>none</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -124,12 +127,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>90</x>
-     <y>145</y>
+     <x>64</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>172</x>
-     <y>284</y>
+     <x>211</x>
+     <y>140</y>
     </hint>
    </hints>
   </connection>

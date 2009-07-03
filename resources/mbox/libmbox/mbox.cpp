@@ -18,8 +18,8 @@
     02110-1301, USA.
 
     NOTE: Most of the code inside here is an slightly adjusted version of
-          kdepim/kmail/kmfoldermbox.cpp. This is why I added a copyright line
-          for Stefan Taferner.
+          kdepim/kmail/kmfoldermbox.cpp. This is why I added a line for Stefan
+          Taferner.
 
           Bertjan Broeksema, april 2009
 */
@@ -197,7 +197,7 @@ bool MBox::load( const QString &fileName )
         MsgInfo info;
         info.first = offs;
 
-        // There is always a blank line and a seperator line between two emails.
+        // There is always a blank line and a separator line between two emails.
         // Sometimes there are two '\n' characters added to the email (i.e. when
         // the mail self did not end with a '\n' char) and sometimes only one to
         // achieve this. When reading the file it is not possible to see which
@@ -207,7 +207,7 @@ bool MBox::load( const QString &fileName )
         else
           info.second = msgSize - 1;
 
-        // Don't add the seperator size and the newline up to the message size.
+        // Don't add the separator size and the newline up to the message size.
         info.second -= prevSeparator.size() + 1;
 
         d->mEntries << info;
@@ -320,7 +320,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
     QRegExp regexp( sMBoxSeperatorRegExp );
 
     if ( regexp.indexIn(line) < 0 ) {
-      qDebug() << "Found invalid seperator at:" << offset;
+      qDebug() << "Found invalid separator at:" << offset;
       unlock();
       return false; // The file is messed up or the index is incorrect.
     }
@@ -382,7 +382,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
       resultingEntryList << MsgInfo( writeOffset, entry.second );
       writeOffset += entrySize;
     } else if ( !deletedItems.contains( entry.first ) ) {
-      // Unmoved and not deleted entry, can only occure before the first deleted
+      // Unmoved and not deleted entry, can only ocure before the first deleted
       // entry.
       Q_ASSERT( !writeOffSetInitialized );
       resultingEntryList << entry;
@@ -595,21 +595,21 @@ QByteArray MBox::mboxMessageSeparator( const QByteArray &msg )
   mail.setHead( KMime::CRLFtoLF( msg ) );
   mail.parse();
 
-  QByteArray seperator = "From ";
+  QByteArray separator = "From ";
 
   KMime::Headers::From *from = mail.from( false );
   if ( !from || from->addresses().isEmpty() )
-    seperator += "unknown@unknown.invalid";
+    separator += "unknown@unknown.invalid";
   else
-    seperator += from->addresses().first() + " ";
+    separator += from->addresses().first() + ' ';
 
   KMime::Headers::Date *date = mail.date(false);
   if (!date || date->isEmpty())
-    seperator += QDateTime::currentDateTime().toString( Qt::TextDate ).toUtf8() + '\n';
+    separator += QDateTime::currentDateTime().toString( Qt::TextDate ).toUtf8() + '\n';
   else
-    seperator += date->as7BitString(false) + '\n';
+    separator += date->as7BitString(false) + '\n';
 
-  return seperator;
+  return separator;
 }
 
 #define STRDIM(x) (sizeof(x)/sizeof(*x)-1)

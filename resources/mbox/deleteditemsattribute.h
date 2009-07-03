@@ -17,6 +17,9 @@
     02110-1301, USA.
 */
 
+#ifndef DELETEDITEMSATTRIBUTE_H
+#define DELETEDITEMSATTRIBUTE_H
+
 #include <akonadi/attribute.h>
 #include <QtCore/QSet>
 
@@ -53,4 +56,6 @@ class DeletedItemsAttribute : public Akonadi::Attribute
   private:
     QSet<quint64> mDeletedItemOffsets;
 };
+
+#endif
 
