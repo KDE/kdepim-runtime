@@ -344,7 +344,10 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 {
   Q_Q( EntityTreeModel );
 
-  const Collection collection = getParentCollections( item ).at( 0 );
+  const QList<Collection> parents = getParentCollections( item );
+  if ( parents.isEmpty() )
+      return;
+  const Collection collection = parents.at( 0 );
 
   const int row = indexOf( m_childEntities.value( collection.id() ), item.id() );
 
