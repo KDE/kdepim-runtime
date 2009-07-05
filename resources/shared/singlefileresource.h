@@ -65,8 +65,8 @@ class SingleFileResource : public SingleFileResourceBase
      */
     void readFile()
     {
-      if ( KDirWatch::self()->contains( mCurrentUrl.path() ) )
-        KDirWatch::self()->removeFile( mCurrentUrl.path() );
+      if ( KDirWatch::self()->contains( mCurrentUrl.toLocalFile() ) )
+        KDirWatch::self()->removeFile( mCurrentUrl.toLocalFile() );
 
       const bool nameWasChanged = mCurrentUrl.fileName() != name() && !mCurrentUrl.isEmpty();
 
@@ -83,8 +83,8 @@ class SingleFileResource : public SingleFileResourceBase
           setName( mCurrentUrl.fileName() );
 
         // check if the file does not exist yet, if so, create it
-        if ( !QFile::exists( mCurrentUrl.path() ) ) {
-          QFile f( mCurrentUrl.path() );
+        if ( !QFile::exists( mCurrentUrl.toLocalFile() ) ) {
+          QFile f( mCurrentUrl.toLocalFile() );
 
           // first create try to create the directory the file should be located in
           QDir dir = QFileInfo(f).dir();
@@ -101,13 +101,13 @@ class SingleFileResource : public SingleFileResourceBase
           }
         }
 
-        if ( !readFromFile( mCurrentUrl.path() ) ) {
+        if ( !readFromFile( mCurrentUrl.toLocalFile() ) ) {
           mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
           return;
         }
 
         if ( Settings::self()->monitorFile() )
-          KDirWatch::self()->addFile( mCurrentUrl.path() );
+          KDirWatch::self()->addFile( mCurrentUrl.toLocalFile() );
 
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
         synchronize();
@@ -160,7 +160,7 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mCurrentUrl.isLocalFile() ) {
         KDirWatch::self()->stopScan();
-        const bool writeResult = writeToFile( mCurrentUrl.path() );
+        const bool writeResult = writeToFile( mCurrentUrl.toLocalFile() );
         KDirWatch::self()->startScan();
         if ( !writeResult )
           return;

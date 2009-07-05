@@ -121,7 +121,7 @@ void Backup::create( const KUrl& filename )
     params.clear();
     params << "-C" << tempDir->name();
     params << "-cjf";
-    params << filename.path() << filesToBackup;
+    params << filename.toLocalFile() << filesToBackup;
     proc->setWorkingDirectory( tempDir->name() );
     proc->setProgram( KStandardDirs::findExe( "tar" ), params );
     result = proc->execute();

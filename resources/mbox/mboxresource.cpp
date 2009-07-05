@@ -271,7 +271,7 @@ bool MboxResource::readFromFile( const QString &fileName )
       break;
   }
 
-  return mMBox->load( KUrl( fileName ).path() );
+  return mMBox->load( KUrl( fileName ).toLocalFile() );
 }
 
 bool MboxResource::writeToFile( const QString &fileName )

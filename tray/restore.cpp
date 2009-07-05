@@ -72,7 +72,7 @@ void Restore::restore( const KUrl& filename )
     QStringList params;
     params << "-C" << tempDir->name();
     params << "-xjf";
-    params << filename.path();
+    params << filename.toLocalFile();
     proc->setWorkingDirectory( tempDir->name() );
     proc->setProgram( KStandardDirs::findExe( "tar" ), params );
     int result = proc->execute();

@@ -105,7 +105,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
 
   MBox mbox;
   // TODO: Set lock method.
-  if ( !mbox.load( KUrl( mCollectionId ).path() ) ) {
+  if ( !mbox.load( KUrl( mCollectionId ).toLocalFile() ) ) {
     ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );
   } else {
     ui.messageLabel->setText( i18np( "(Deleting 1 message)",

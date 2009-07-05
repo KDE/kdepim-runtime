@@ -149,7 +149,7 @@ bool VCardResource::readFromFile( const QString &fileName )
 {
   mAddressees.clear();
 
-  QFile file( KUrl( fileName ).path() );
+  QFile file( KUrl( fileName ).toLocalFile() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
     return false;

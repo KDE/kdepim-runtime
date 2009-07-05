@@ -167,7 +167,7 @@ bool MBox::load( const QString &fileName )
   if ( d->mFileLocked )
     return false;
 
-  d->mMboxFile.setFileName( KUrl( fileName ).path() );
+  d->mMboxFile.setFileName( KUrl( fileName ).toLocalFile() );
   if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
     return false;
 
@@ -481,7 +481,7 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
 bool MBox::save( const QString &fileName )
 {
-  if ( !fileName.isEmpty() && KUrl( fileName ).path() != d->mMboxFile.fileName() )
+  if ( !fileName.isEmpty() && KUrl( fileName ).toLocalFile() != d->mMboxFile.fileName() )
   {
     // File saved != file loaded from
     return false; // FIXME: Implement this case
