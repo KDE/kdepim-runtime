@@ -216,7 +216,7 @@ void ProxyModelTest::handleSignal(QVariantList expected)
     QVERIFY(topLeft.isValid() && bottomRight.isValid());
 
     QCOMPARE(qvariant_cast<QModelIndex>(result.at(0)), topLeft );
-    QCOMPARE(qvariant_cast<QModelIndex>(result.at(0)), bottomRight );
+    QCOMPARE(qvariant_cast<QModelIndex>(result.at(1)), bottomRight );
   }
 
   }
