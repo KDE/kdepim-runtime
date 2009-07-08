@@ -197,7 +197,7 @@ QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role
   {
     proxyIndex = mapFromSource(*it);
 
-    if (!proxyIndex->isValid())
+    if (!proxyIndex.isValid())
       continue;
 
     proxyList << proxyIndex;

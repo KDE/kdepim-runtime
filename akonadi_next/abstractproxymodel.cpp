@@ -142,7 +142,7 @@ QModelIndexList AbstractProxyModel::match(const QModelIndex& start, int role, co
   {
     proxyIndex = mapFromSource(*it);
 
-    if (!proxyIndex->isValid())
+    if (!proxyIndex.isValid())
       continue;
 
     proxyList << proxyIndex;
