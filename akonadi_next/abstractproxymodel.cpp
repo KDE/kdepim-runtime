@@ -129,3 +129,10 @@ QStringList AbstractProxyModel::mimeTypes() const
   Q_ASSERT( sourceModel() );
   return sourceModel()->mimeTypes();
 }
+
+
+QModelIndexList AbstractProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
+{
+  return sourceModel()->match(mapToSource(start), role, value, hits, flags);
+}
+
