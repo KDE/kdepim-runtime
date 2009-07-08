@@ -566,6 +566,27 @@ void ProxyModelTest::testInsertAndRemove_data()
   QTest::newRow("insert09") << commandList;
   commandList.clear();
 
+  ModelDataChangeCommand *dataChange = new ModelDataChangeCommand(m_model, this);
+
+  dataChange->setAncestorRowNumbers(QList<int>() << 10 );
+  dataChange->setStartRow(0);
+  dataChange->setEndRow(0);
+
+  commandList << dataChange;
+
+  QTest::newRow("change01") << commandList;
+  commandList.clear();
+
+  dataChange = new ModelDataChangeCommand(m_model, this);
+  dataChange->setAncestorRowNumbers(QList<int>() << 10);
+  dataChange->setStartRow(4);
+  dataChange->setEndRow(7);
+
+  commandList << dataChange;
+
+  QTest::newRow("change02") << commandList;
+  commandList.clear();
+
   ModelRemoveCommand *rem;
 
   // Remove a single item without children.

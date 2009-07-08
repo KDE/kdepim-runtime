@@ -64,6 +64,21 @@ public:
       m_rowCount -= rowsAffected;
     }
 
+    void signalDataChange(const QString &name, int startRow, int endRow)
+    {
+      IndexFinder topLeftFinder(m_proxyModel, QList<int>() << startRow );
+      IndexFinder bottomRightFinder(m_proxyModel, QList<int>() << endRow );
+      ProxyModelTest::signalDataChange(name, topLeftFinder, bottomRightFinder);
+    }
+
+    QVariantList getDataChangedSignal(int startRow, int endRow)
+    {
+      IndexFinder topLeftFinder(m_proxyModel, QList<int>() << startRow );
+      IndexFinder bottomRightFinder(m_proxyModel, QList<int>() << endRow );
+
+      return QVariantList() << DataChanged << QVariant::fromValue(topLeftFinder) << QVariant::fromValue(bottomRightFinder);
+    }
+
     PersistentIndexChange getChange(int start, int end, int difference, bool toInvalid = false)
     {
       return ProxyModelTest::getChange(IndexFinder(), start, end, difference, toInvalid);
@@ -183,6 +198,32 @@ void DescendantEntitiesProxyModelTest::initTestCase()
   persistentList.clear();
   m_rowCount += 50;
 
+  startRow = 11;
+
+  signalDataChange("change01", startRow, startRow);
+
+  // Although the source model emits only one range is changed, this proxy model puts children indexes
+  // in the way, breaking the continuous range.
+  // Currently separate signals are emitted for each changed row.
+  // This should really emit one signal for each continuous range instead. That's a TODO.
+  startRow = 65;
+  int endRow = 65;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 66;
+  endRow = 66;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 97;
+  endRow = 97;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 108;
+  endRow = 108;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  setExpected("change02", signalList, persistentList);
+  signalList.clear();
 
   startRow = 11;
   int rowsRemoved = 1;

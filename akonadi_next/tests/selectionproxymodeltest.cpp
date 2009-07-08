@@ -179,8 +179,18 @@ private slots:
     indexFinder = IndexFinder( m_proxyModel, QList<int>() << 0 << 2);
     signalInsertion("insert09", indexFinder, startRow, rowsInserted, rowCount);
 
-    indexFinder = IndexFinder(m_proxyModel, QList<int>() << 0);
+    QVariantList signal;
+    IndexFinder topLeftFinder(m_proxyModel, QList<int>() << 0 << 0 );
+    IndexFinder bottomRightFinder(m_proxyModel, QList<int>() << 0 << 0 );
 
+    signalDataChange("change01", topLeftFinder, bottomRightFinder);
+
+    topLeftFinder = IndexFinder(m_proxyModel, QList<int>() << 0 << 4 );
+    bottomRightFinder = IndexFinder(m_proxyModel, QList<int>() << 0 << 7 );
+
+    signalDataChange("change02", topLeftFinder, bottomRightFinder);
+
+    indexFinder = IndexFinder(m_proxyModel, QList<int>() << 0);
     int rowsRemoved = 1;
     rowCount = 40;
     signalRemoval("remove01", indexFinder, startRow, rowsRemoved, rowCount);
