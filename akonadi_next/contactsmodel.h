@@ -49,6 +49,9 @@ public:
 
   virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
 
+  virtual QModelIndexList match(const QModelIndex & start, int role, const QVariant &value, int hits = 1,
+          Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap )) const;
+
 private:
     Q_DECLARE_PRIVATE(ContactsModel)
     ContactsModelPrivate *d_ptr;
