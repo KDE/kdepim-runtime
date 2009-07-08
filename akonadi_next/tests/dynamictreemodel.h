@@ -26,7 +26,6 @@
 
 #include <QHash>
 #include <QList>
-#include <QUuid>
 
 #include <QDebug>
 

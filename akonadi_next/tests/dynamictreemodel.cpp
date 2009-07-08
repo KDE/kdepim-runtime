@@ -308,7 +308,7 @@ void ModelDataChangeCommand::doCommand()
   {
     for (int row = m_startRow; row <= m_endRow; row++ )
     {
-      QString name = QUuid::createUuid().toString();
+      QString name = QString::number( m_model->newId() );
       m_model->m_items[childItems[col][row]] = name;
     }
   }
