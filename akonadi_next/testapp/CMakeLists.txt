@@ -1,6 +1,12 @@
 project(proxymodeltestapp)
 
-include_directories( ${KDE4_INCLUDES} ${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/.. ${PROJECT_SOURCE_DIR}/.. )
+include_directories( ${KDE4_INCLUDES}
+  ${PROJECT_BINARY_DIR}
+  ${PROJECT_BINARY_DIR}/..
+  ${PROJECT_SOURCE_DIR}/..
+  ${PROJECT_BINARY_DIR}/../tests
+  ${PROJECT_SOURCE_DIR}/../tests
+)
 
 add_definitions(
 	-DAKONADI_NEXT_EXPORT=
