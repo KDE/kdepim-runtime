@@ -529,6 +529,30 @@ void ProxyModelTest::testInsertAndRemove_data()
   QTest::newRow("insert08") << commandList;
   commandList.clear();
 
+  // Insert a tree of items in one go.
+  ModelInsertWithDescendantsCommand *insWithDescs = new ModelInsertWithDescendantsCommand(m_model, this);
+  insWithDescs->setStartRow(2);
+  insWithDescs->setAncestorRowNumbers(QList<int>() << 10 );
+  QList<ModelInsertWithDescendantsCommand::InsertFragment> fragments;
+  ModelInsertWithDescendantsCommand::InsertFragment fragment;
+
+  ModelInsertWithDescendantsCommand::InsertFragment subFragment;
+  subFragment.numRows = 10;
+
+  ModelInsertWithDescendantsCommand::InsertFragment subSubFragment;
+  subSubFragment.numRows = 10;
+  subFragment.subfragments.insert(4, subSubFragment);
+
+  fragment.numRows = 10;
+  fragment.subfragments.insert(5, subFragment);
+  fragment.subfragments.insert(2, subFragment);
+  fragments << fragment;
+  insWithDescs->setFragments(fragments );
+  commandList << insWithDescs;
+
+  QTest::newRow("insert09") << commandList;
+  commandList.clear();
+
   ModelRemoveCommand *rem;
 
   // Remove a single item without children.

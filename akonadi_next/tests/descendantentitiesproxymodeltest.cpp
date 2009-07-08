@@ -155,29 +155,58 @@ void DescendantEntitiesProxyModelTest::initTestCase()
   persistentList.clear();
   m_rowCount += accumulatedChange;
 
+  // When this proxy recieves a rowsAboutToBeInserted signal, it can't know
+  // how many rows need to be inserted (total descendants).
+  // So, it first inserts only the rows signaled by the source model (and not
+  // the descendants). When the source model signals rowsInserted, we can
+  // examine the new rows for descendants. These of need to be signalled separately
+  // by this proxy
+
+  startRow = 14;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  startRow = 17;
+  rowsInserted = 20;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  startRow = 40;
+  rowsInserted = 20;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  persistentList << getChange(14, m_rowCount - 1, 50);
+
+  setExpected("insert09", signalList, persistentList);
+  signalList.clear();
+  persistentList.clear();
+  m_rowCount += 50;
+
+
   startRow = 11;
   int rowsRemoved = 1;
   signalRemoval("remove01", startRow, rowsRemoved);
 
-  startRow = 57;
+  startRow = 107;
   rowsRemoved = 11;
   signalRemoval("remove02", startRow, rowsRemoved);
 
-  startRow = 47;
+  startRow = 97;
   rowsRemoved = 1;
   signalRemoval("remove03", startRow, rowsRemoved);
 
-  startRow = 55;
+  startRow = 105;
   signalRemoval("remove04", startRow, rowsRemoved);
 
-  startRow = 50;
+  startRow = 100;
   signalRemoval("remove05", startRow, rowsRemoved);
 
-  startRow = 47;
+  startRow = 97;
   rowsRemoved = 7;
   signalRemoval("remove06", startRow, rowsRemoved);
 
-  startRow = 15;
+  startRow = 65;
   rowsRemoved = 31;
   signalRemoval("remove07", startRow, rowsRemoved);
 

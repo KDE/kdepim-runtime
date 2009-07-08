@@ -175,6 +175,10 @@ private slots:
     signalList.clear();
     persistentList.clear();
 
+    // Although a tree of items is inserted, only ten base items are relevant to the model.
+    indexFinder = IndexFinder( m_proxyModel, QList<int>() << 0 << 2);
+    signalInsertion("insert09", indexFinder, startRow, rowsInserted, rowCount);
+
     indexFinder = IndexFinder(m_proxyModel, QList<int>() << 0);
 
     int rowsRemoved = 1;
