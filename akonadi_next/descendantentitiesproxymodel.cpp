@@ -331,7 +331,7 @@ QModelIndex DescendantEntitiesProxyModel::mapFromSource(const QModelIndex & sour
     int row = d->descendedRow( sourceIndex );
     if (row < 0)
       return QModelIndex();
-    return createIndex( row, sourceIndex.column(), reinterpret_cast<void *>( sourceIndex.internalId() ) );
+    return createIndex( row, sourceIndex.column() );
   } else {
     return QModelIndex();
   }
