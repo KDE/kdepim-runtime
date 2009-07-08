@@ -15,9 +15,8 @@ set(proxymodeltestapp_SRCS
     main.cpp
     mainwindow.cpp
     ../tests/dynamictreemodel.cpp
-    ../abstractitemmodel.cpp
-    ../abstractitemmodel_p.cpp
-    ../abstractproxymodel.cpp
+    selectionpmwidget.cpp
+    descendantpmwidget.cpp
 )
 
 kde4_add_executable(proxymodeltestapp ${proxymodeltestapp_SRCS} )
