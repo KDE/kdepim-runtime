@@ -53,6 +53,10 @@ void ModelSpy::setModel(AbstractProxyModel *model)
           SLOT(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
   connect(m_model, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
           SLOT(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+
+  connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+          SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
+
 }
 
 void ModelSpy::rowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
