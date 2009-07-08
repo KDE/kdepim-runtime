@@ -115,6 +115,8 @@ protected:
   void signalRemoval(const QString &name, IndexFinder parentFinder, int startRow, int rowsAffected, int rowCount = -1);
   void noSignal(const QString &name);
 
+  void signalDataChange(const QString &name, IndexFinder topLeft, IndexFinder bottomRight);
+
   void doTest();
   void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges = QList<PersistentIndexChange>() );
   void handleSignal(QVariantList expected);

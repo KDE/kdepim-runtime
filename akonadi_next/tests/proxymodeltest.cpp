@@ -146,6 +146,15 @@ void ProxyModelTest::signalRemoval(const QString &name, IndexFinder parentFinder
   setExpected(name, signalList, persistentList);
 }
 
+void ProxyModelTest::signalDataChange(const QString &name, IndexFinder topLeft, IndexFinder bottomRight)
+{
+  QList<QVariantList> signalList;
+  QVariantList signal;
+  signal << DataChanged << QVariant::fromValue(topLeft) << QVariant::fromValue(bottomRight);
+  signalList << signal;
+  setExpected(name, signalList);
+}
+
 void ProxyModelTest::noSignal(const QString &name)
 {
   QList<PersistentIndexChange> persistentList;
