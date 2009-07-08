@@ -65,7 +65,7 @@ void SettingsDialog::validate()
     return;
   }
 
-  const QFileInfo file( currentUrl.path() );
+  const QFileInfo file( currentUrl.toLocalFile() );
   if ( file.exists() && !file.isWritable() ) {
     ui.kcfg_ReadOnly->setEnabled( false );
     ui.kcfg_ReadOnly->setChecked( true );

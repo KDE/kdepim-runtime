@@ -39,6 +39,7 @@ class MboxTest : public QObject
     void testBlankLines();
     void cleanupTestCase();
     void testEntries();
+    void testPurge();
 
   private:
     QString fileName();

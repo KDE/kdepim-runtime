@@ -22,15 +22,15 @@
 
 // #include <QAbstractItemModel>
 
-#include "../abstractitemmodel.h"
+#include "abstractitemmodel.h"
 
 #include <QHash>
 #include <QList>
-#include <QUuid>
 
 #include <QDebug>
 
 #include <kdebug.h>
+#include "indexfinder.h"
 
 template<typename T> class QList;
 
@@ -128,15 +128,24 @@ class ModelInsertWithDescendantsCommand : public ModelInsertCommand
   Q_OBJECT
 
 public:
+
+  struct InsertFragment
+  {
+    int numRows;
+    QHash<int, InsertFragment> subfragments;
+  };
+
   ModelInsertWithDescendantsCommand(DynamicTreeModel *model, QObject *parent = 0);
   virtual ~ModelInsertWithDescendantsCommand() {}
 
-  void setNumDescendants(QList<QPair<int, int > > descs);
+  void setFragments(QList<InsertFragment> fragments);
 
   virtual void doCommand();
 
 protected:
-  QList<QPair<int, int> > m_descs;
+  void insertFragment(qint64 parentIdentifier, InsertFragment fragment);
+
+  QList<InsertFragment> m_fragments;
 };
 
 class ModelRemoveCommand : public ModelChangeCommand

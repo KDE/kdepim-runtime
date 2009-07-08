@@ -26,8 +26,7 @@ kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.pn
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs})
 target_link_libraries(kmail-migrator
   ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDE4_KDECORE_LIBS}
-  ${QT_QTGUI_LIBRARY}
+  ${KDE4_KDEUI_LIBS}
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})

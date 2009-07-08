@@ -4,6 +4,7 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile />
   <group name="General">
     <entry name="Path" type="Path">
       <label>Path to mbox file.</label>
@@ -28,7 +29,6 @@
         <choice name="procmail"/>
         <choice name="mutt_dotlock"/>
         <choice name="mutt_dotlock_privileged"/>
-        <choice name="kde_lock_file"/>
         <choice name="none"/>
       </choices>
       <default>procmail</default>
@@ -36,6 +36,19 @@
     <entry name="Lockfile" type="String">
       <label>Lockfile</label>
       <default></default>
+    </entry>
+  </group>
+  <group name="Compacting">
+    <entry name="CompactFrequency" type="Enum">
+      <choices>
+        <choice name="never"/>
+        <choice name="per_x_messages"/>
+      </choices>
+      <default>per_x_messages</default>
+    </entry>
+    <entry name="MessageCount" type="UInt">
+      <label>Number of deleted messages before a purge is started.</label>
+      <default>50</default>
     </entry>
   </group>
 </kcfg>

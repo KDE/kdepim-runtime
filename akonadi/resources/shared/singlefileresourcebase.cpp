@@ -99,7 +99,7 @@ void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
 
 void SingleFileResourceBase::fileChanged( const QString & fileName )
 {
-  if ( fileName != mCurrentUrl.path() )
+  if ( fileName != mCurrentUrl.toLocalFile() )
     return;
 
   // handle conflicts

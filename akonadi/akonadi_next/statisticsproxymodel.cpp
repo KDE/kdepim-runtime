@@ -121,7 +121,7 @@ QVariant StatisticsProxyModel::headerData( int section, Qt::Orientation orientat
 Qt::ItemFlags StatisticsProxyModel::flags( const QModelIndex & index ) const
 {
   if ( index.column()>=columnCount( index.parent() )-3 ) {
-    return flags( index.sibling( index.row(), 0 ) )
+    return QSortFilterProxyModel::flags( index.sibling( index.row(), 0 ) )
          & ( Qt::ItemIsSelectable | Qt::ItemIsDragEnabled // Allowed flags
            | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled );
   }

@@ -52,6 +52,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
 {
   ui.ktabwidget->addTab( page, title );
+  mManager->addWidget( page );
   mManager->updateWidgets();
 }
 
@@ -72,7 +73,7 @@ void SingleFileResourceConfigDialogBase::validate()
     ui.kcfg_MonitorFile->setEnabled( true );
     ui.statusLabel->setVisible( false );
 
-    const QFileInfo file( currentUrl.path() );
+    const QFileInfo file( currentUrl.toLocalFile() );
     if ( file.exists() && !file.isWritable() ) {
       ui.kcfg_ReadOnly->setEnabled( false );
       ui.kcfg_ReadOnly->setChecked( true );

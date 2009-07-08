@@ -21,8 +21,14 @@
 #define SERVERCONFIGMODULE_H
 
 #include "ui_serverconfigmodule.h"
+#include "ui_servermysqlstorage.h"
+#include "ui_serverpsqlstorage.h"
+#include "ui_serverstoragedriver.h"
 
 #include <KCModule>
+
+class QComboBox;
+class QStackedWidget;
 
 class ServerConfigModule : public KCModule
 {
@@ -39,9 +45,19 @@ class ServerConfigModule : public KCModule
     void startStopClicked();
     void restartClicked();
     void selfTestClicked();
+    void driverChanged(int);
 
   private:
     Ui::ServerConfigModule ui;
+    Ui::StorageDriver ui_driver;
+    Ui::MySQLStoragePage ui_mysql;
+    Ui::PSQLStoragePage  ui_psql;
+
+    QStackedWidget *m_stackWidget;
+    QWidget *m_mysqlWidget;
+    QWidget *m_psqlWidget;
+
+    QComboBox *m_driverBox;
 };
 
 #endif

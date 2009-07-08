@@ -196,42 +196,51 @@ ModelInsertWithDescendantsCommand::ModelInsertWithDescendantsCommand(DynamicTree
 
 }
 
-void ModelInsertWithDescendantsCommand::setNumDescendants(QList<QPair<int, int > > descs)
+void ModelInsertWithDescendantsCommand::setFragments(QList<InsertFragment> fragments)
 {
-  m_descs = descs;
+  m_fragments = fragments;
+}
+
+void ModelInsertWithDescendantsCommand::insertFragment(qint64 parentIdentifier, InsertFragment fragment)
+{
+  for(int col = 0; col < m_numCols; col++ )
+  {
+    if (m_model->m_childItems[parentIdentifier].size() <= col)
+    {
+      m_model->m_childItems[parentIdentifier].append(QList<qint64>());
+    }
+    for (int row = 0; row < fragment.numRows; row++)
+    {
+      qint64 id = m_model->newId();
+      QString name = QString::number(id);
+
+      m_model->m_items.insert(id, name);
+      m_model->m_childItems[parentIdentifier][col].append(id);
+
+      if (col == 0 && fragment.subfragments.contains(row) )
+      {
+        insertFragment(id, fragment.subfragments.take(row));
+      }
+    }
+  }
+
 }
 
 void ModelInsertWithDescendantsCommand::doCommand()
 {
-  QModelIndex idx = findIndex(m_rowNumbers);
+  QModelIndex fragmentParent = findIndex(m_rowNumbers);
 
-  QPair<int, int> firstPair = m_descs.value(0);
-  QModelIndex parent = m_model->index(firstPair.first, 0, idx);
-  int row = m_model->rowCount(parent);
-  m_model->beginInsertRows(parent, row, row + firstPair.second - 1);
+  qint64 fragmentParentIdentifier = fragmentParent.internalId();
 
-  qint64 parentId = parent.internalId();
-  QListIterator<QPair<int, int> > i(m_descs);
-  while (i.hasNext())
-  {
-    QPair<int, int> pair = i.next();
-    for(int col = 0; col < m_numCols; col++ )
-    {
-      if (m_model->m_childItems[parentId].size() <= col)
-      {
-        m_model->m_childItems[parentId].append(QList<qint64>());
-      }
-      for (int i = 0; i < pair.second; i++)
-      {
-        qint64 id = m_model->newId();
-        QString name = QString::number(id);
+  const int column = 0;
 
-        m_model->m_items.insert(id, name);
-        m_model->m_childItems[parentId][col].append(id);
-      }
-    }
-    parentId = m_model->m_childItems[parentId][0].at(pair.first);
-  }
+  qint64 rootIdentifier = m_model->m_childItems[fragmentParentIdentifier][column][m_startRow];
+  QModelIndex fragmentIndex = m_model->index(m_startRow, column, fragmentParent);
+
+  InsertFragment fragment = m_fragments.at(0);
+
+  m_model->beginInsertRows(fragmentIndex, 0, fragment.numRows - 1);
+  insertFragment(rootIdentifier, fragment);
   m_model->endInsertRows();
 }
 
@@ -297,9 +306,9 @@ void ModelDataChangeCommand::doCommand()
 
   for (int col = m_startColumn; col < m_startColumn + m_numCols; col++)
   {
-    for (int row = m_startRow; row < m_endRow; row++ )
+    for (int row = m_startRow; row <= m_endRow; row++ )
     {
-      QString name = QUuid::createUuid().toString();
+      QString name = QString::number( m_model->newId() );
       m_model->m_items[childItems[col][row]] = name;
     }
   }

@@ -1,5 +1,4 @@
 /*
-    Copyright (c) 2008 Volker Krause <vkrause@kde.org>
     Copyright (c) 2009 Bertjan Broeksema <b.broeksema@kdemail.net>
 
     This library is free software; you can redistribute it and/or modify it
@@ -25,7 +24,7 @@
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
 
-LockMethodPage::LockMethodPage(QWidget * parent) : QWidget( parent )
+LockMethodPage::LockMethodPage( QWidget *parent ) : QWidget( parent )
 {
   ui.setupUi( this );
   checkAvailableLockMethods();
@@ -36,22 +35,20 @@ void LockMethodPage::checkAvailableLockMethods()
   // FIXME: I guess this whole checking makes only sense on linux machines.
 
   // Check for procmail lock method.
-  if (KStandardDirs::findExe("lockfile") == QString()) {
-    ui.procmail->setEnabled(false);
-    if (ui.procmail->isChecked()) // Select another lock method if necessary
-      ui.mutt_dotlock->setChecked(true);
+  if ( KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+    ui.procmail->setEnabled( false );
+    if ( ui.procmail->isChecked() ) // Select another lock method if necessary
+      ui.mutt_dotlock->setChecked( true );
   }
 
   // Check for mutt lock method.
-  if (KStandardDirs::findExe("mutt_dotlock") == QString()) {
-    ui.mutt_dotlock->setEnabled(false);
-    ui.mutt_dotlock_privileged->setEnabled(false);
-    if (ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked())
+  if ( KStandardDirs::findExe( "mutt_dotlock" ).isEmpty() ) {
+    ui.mutt_dotlock->setEnabled( false );
+    ui.mutt_dotlock_privileged->setEnabled( false );
+    if ( ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked() )
     {
-      if (ui.procmail->isEnabled())
+      if ( ui.procmail->isEnabled() )
         ui.procmail->setChecked(true);
-      else
-        ui.kde_lock_file->setChecked(true);
     }
   }
 }

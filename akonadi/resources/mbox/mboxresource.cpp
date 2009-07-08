@@ -28,6 +28,7 @@
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
 
+#include "compactpage.h"
 #include "deleteditemsattribute.h"
 #include "lockmethodpage.h"
 #include "mbox.h"
@@ -36,25 +37,25 @@
 
 using namespace Akonadi;
 
-static Entity::Id collectionId(const QString &remoteItemId)
+static Entity::Id collectionId( const QString &remoteItemId )
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").first().toLongLong();
+  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
+  return remoteItemId.split( "::" ).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").at(1);
+  Q_ASSERT(remoteItemId.split( "::" ).size() == 3);
+  return remoteItemId.split( "::" ).at(1);
 }
 
-static quint64 itemOffset(const QString &remoteItemId)
+static quint64 itemOffset( const QString &remoteItemId )
 {
   // [CollectionId]:[RemoteCollectionId]:[Offset]
-  Q_ASSERT(remoteItemId.split("::").size() == 3);
-  return remoteItemId.split("::").last().toULongLong();
+  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
+  return remoteItemId.split( "::" ).last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id )
@@ -79,12 +80,17 @@ MboxResource::~MboxResource()
 
 void MboxResource::configure( WId windowId )
 {
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.addPage( "Lock method", new LockMethodPage() );
-  dlg.setCaption( i18n("Select MBox file") );
-  if ( dlg.exec() == QDialog::Accepted ) {
+  QPointer<SingleFileResourceConfigDialog<Settings> > dlg
+    = new SingleFileResourceConfigDialog<Settings>( windowId );
+
+  dlg->addPage( "Compact frequency", new CompactPage( Settings::self()->path() ) );
+  dlg->addPage( "Lock method", new LockMethodPage() );
+  dlg->setCaption( i18n( "Select MBox file" ) );
+  if ( dlg->exec() == QDialog::Accepted ) {
     reloadFile();
   }
+
+  delete dlg;
 }
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
@@ -141,7 +147,7 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   quint64 offset = itemOffset( rid );
   KMime::Message *mail = mMBox->readEntry( offset );
   if ( !mail ) {
-    emit error( i18n("Failed to read message with uid '%1'.", rid ) );
+    emit error( i18n( "Failed to read message with uid '%1'.", rid ) );
     return false;
   }
 
@@ -153,6 +159,9 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void MboxResource::aboutToQuit()
 {
+  if ( !Settings::self()->readOnly() )
+    writeFile();
+  Settings::self()->writeConfig();
 }
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -174,11 +183,12 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     return;
   }
 
+  fileDirty();
   const QString rid = QString::number( collection.id() ) + "::"
                       + collection.remoteId() + "::" + QString::number( offset );
 
   Item i( item );
-  i.setRemoteId(rid);
+  i.setRemoteId( rid );
 
   changeCommitted( i );
 }
@@ -213,8 +223,7 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
                           , CollectionFetchJob::Base );
 
   if ( !fetchJob->exec() ) {
-    cancelTask( i18n( "Could not fetch the collection: %1" )
-                  .arg( fetchJob->errorString() ) );
+    cancelTask( i18n( "Could not fetch the collection: %1", fetchJob->errorString() ) );
     return;
   }
 
@@ -222,7 +231,16 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   Collection mboxCollection = fetchJob->collections().first();
   DeletedItemsAttribute *attr
     = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
-  attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
+
+  if ( Settings::self()->compactFrequency() == Settings::per_x_messages
+       && Settings::self()->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
+    kDebug() << "Compacting mbox file";
+    mMBox->purge( attr->deletedItemOffsets() << itemOffset( item.remoteId() ) );
+    fileDirty();
+    mboxCollection.removeAttribute<DeletedItemsAttribute>();
+  } else {
+    attr->addDeletedItemOffset( itemOffset( item.remoteId() ) );
+  }
 
   CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
   if ( !modifyJob->exec() ) {
@@ -251,13 +269,9 @@ bool MboxResource::readFromFile( const QString &fileName )
     case Settings::mutt_dotlock_privileged:
       mMBox->setLockType( MBox::MuttDotlockPrivileged );
       break;
-    case Settings::kde_lock_file:
-      mMBox->setLockType( MBox::KDELockFile );
-      mMBox->setLockFile( Settings::self()->lockfile() );
-      break;
   }
 
-  return mMBox->load( KUrl( fileName ).path() );
+  return mMBox->load( KUrl( fileName ).toLocalFile() );
 }
 
 bool MboxResource::writeToFile( const QString &fileName )
@@ -278,15 +292,12 @@ void MboxResource::onCollectionFetch( KJob *job )
 
   if ( job->error() ) {
     cancelTask( job->errorString() );
-    job->deleteLater();
     return;
   }
 
   CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob );
   Q_ASSERT( fetchJob->collections().size() == 1 );
-
-  job->deleteLater();
 
   Collection mboxCollection = fetchJob->collections().first();
   DeletedItemsAttribute *attr
@@ -310,8 +321,7 @@ void MboxResource::onCollectionModify( KJob *job )
     // of the collection. In this case we shouldn't try to store the modified
     // item.
     cancelTask( i18n( "Failed to update the changed item because the old item "
-                      "could not be deleted Reason: %1" ).arg( job->errorString() ) );
-    job->deleteLater();
+                      "could not be deleted Reason: %1", job->errorString() ) );
     return;
   }
 

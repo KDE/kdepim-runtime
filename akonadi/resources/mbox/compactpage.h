@@ -17,24 +17,34 @@
     02110-1301, USA.
 */
 
-#ifndef LOCKMETHODPAGE_H
-#define LOCKMETHODPAGE_H
+#ifndef COMPACTPAGE_H
+#define COMPACTPAGE_H
 
 #include <QtGui/QWidget>
 
-#include "ui_lockfilepage.h"
+#include "ui_compactpage.h"
 
-class LockMethodPage : public QWidget
+class KJob;
+
+class CompactPage : public QWidget
 {
   Q_OBJECT
+
   public:
-    LockMethodPage( QWidget *parent = 0 );
+    explicit CompactPage( const QString &collectionId, QWidget *parent = 0 );
 
-  private:
-    void checkAvailableLockMethods();
+  private slots:
+    void compact();
+    void onCollectionFetchCheck( KJob* );
+    void onCollectionFetchCompact( KJob* );
+    void onCollectionModify( KJob* );
 
-  private:
-    Ui::LockFilePage ui;
+  private: // Methods
+    void checkCollectionId();
+
+  private: // Members
+    QString mCollectionId;
+    Ui::CompactPage ui;
 };
 
 #endif

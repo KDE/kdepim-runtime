@@ -64,6 +64,21 @@ public:
       m_rowCount -= rowsAffected;
     }
 
+    void signalDataChange(const QString &name, int startRow, int endRow)
+    {
+      IndexFinder topLeftFinder(m_proxyModel, QList<int>() << startRow );
+      IndexFinder bottomRightFinder(m_proxyModel, QList<int>() << endRow );
+      ProxyModelTest::signalDataChange(name, topLeftFinder, bottomRightFinder);
+    }
+
+    QVariantList getDataChangedSignal(int startRow, int endRow)
+    {
+      IndexFinder topLeftFinder(m_proxyModel, QList<int>() << startRow );
+      IndexFinder bottomRightFinder(m_proxyModel, QList<int>() << endRow );
+
+      return QVariantList() << DataChanged << QVariant::fromValue(topLeftFinder) << QVariant::fromValue(bottomRightFinder);
+    }
+
     PersistentIndexChange getChange(int start, int end, int difference, bool toInvalid = false)
     {
       return ProxyModelTest::getChange(IndexFinder(), start, end, difference, toInvalid);
@@ -79,7 +94,6 @@ private slots:
   void testDifferentParentUp();
   void testDifferentParentDown();
   void testDifferentParentSameLevel();
-  void testInsertionWithDescendants();
 
 private:
   DescendantEntitiesProxyModel *m_proxyModel;
@@ -156,29 +170,84 @@ void DescendantEntitiesProxyModelTest::initTestCase()
   persistentList.clear();
   m_rowCount += accumulatedChange;
 
+  // When this proxy recieves a rowsAboutToBeInserted signal, it can't know
+  // how many rows need to be inserted (total descendants).
+  // So, it first inserts only the rows signaled by the source model (and not
+  // the descendants). When the source model signals rowsInserted, we can
+  // examine the new rows for descendants. These of need to be signalled separately
+  // by this proxy
+
+  startRow = 14;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  startRow = 17;
+  rowsInserted = 20;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  startRow = 40;
+  rowsInserted = 20;
+  signalList << getSignal(RowsAboutToBeInserted, startRow, startRow + rowsInserted -1);
+  signalList << getSignal(RowsInserted, startRow, startRow + rowsInserted -1);
+
+  persistentList << getChange(14, m_rowCount - 1, 50);
+
+  setExpected("insert09", signalList, persistentList);
+  signalList.clear();
+  persistentList.clear();
+  m_rowCount += 50;
+
+  startRow = 11;
+
+  signalDataChange("change01", startRow, startRow);
+
+  // Although the source model emits only one range is changed, this proxy model puts children indexes
+  // in the way, breaking the continuous range.
+  // Currently separate signals are emitted for each changed row.
+  // This should really emit one signal for each continuous range instead. That's a TODO.
+  startRow = 65;
+  int endRow = 65;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 66;
+  endRow = 66;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 97;
+  endRow = 97;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  startRow = 108;
+  endRow = 108;
+  signalList << getDataChangedSignal(startRow, endRow);
+
+  setExpected("change02", signalList, persistentList);
+  signalList.clear();
+
   startRow = 11;
   int rowsRemoved = 1;
   signalRemoval("remove01", startRow, rowsRemoved);
 
-  startRow = 57;
+  startRow = 107;
   rowsRemoved = 11;
   signalRemoval("remove02", startRow, rowsRemoved);
 
-  startRow = 47;
+  startRow = 97;
   rowsRemoved = 1;
   signalRemoval("remove03", startRow, rowsRemoved);
 
-  startRow = 55;
+  startRow = 105;
   signalRemoval("remove04", startRow, rowsRemoved);
 
-  startRow = 50;
+  startRow = 100;
   signalRemoval("remove05", startRow, rowsRemoved);
 
-  startRow = 47;
+  startRow = 97;
   rowsRemoved = 7;
   signalRemoval("remove06", startRow, rowsRemoved);
 
-  startRow = 15;
+  startRow = 65;
   rowsRemoved = 31;
   signalRemoval("remove07", startRow, rowsRemoved);
 
@@ -435,35 +504,6 @@ void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
   QVERIFY(true);
 
 }
-
-void DescendantEntitiesProxyModelTest::testInsertionWithDescendants()
-{
-  DynamicTreeModel *model = new DynamicTreeModel(this);
-
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
-  proxy->setSourceModel(model);
-
-  // First insert 4 items to the root.
-  ModelInsertCommand *ins = new ModelInsertCommand(model, this);
-  ins->setStartRow(0);
-  ins->setEndRow(3);
-  ins->doCommand();
-
-  ModelInsertWithDescendantsCommand *insDesc = new ModelInsertWithDescendantsCommand(model, this);
-  QList<QPair<int, int> > descs;
-  QPair<int, int> pair;
-  pair.first = 1;   // On the first row,
-  pair.second = 4;  // insert 4 items.
-  descs << pair;
-  pair.first = 2;   // Make the 6th new item
-  pair.second = 5;  // have 5 descendants itself.
-  descs << pair;
-  insDesc->setNumDescendants(descs);
-  insDesc->doCommand();
-
-  QVERIFY(true);
-}
-
 
 QTEST_KDEMAIN(DescendantEntitiesProxyModelTest, GUI)
 #include "descendantentitiesproxymodeltest.moc"

@@ -60,7 +60,8 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
 void VCardResource::aboutToQuit()
 {
-  writeFile();
+  if ( !Settings::self()->readOnly() )
+    writeFile();
   Settings::self()->writeConfig();
 }
 
@@ -148,7 +149,7 @@ bool VCardResource::readFromFile( const QString &fileName )
 {
   mAddressees.clear();
 
-  QFile file( KUrl( fileName ).path() );
+  QFile file( KUrl( fileName ).toLocalFile() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
     return false;

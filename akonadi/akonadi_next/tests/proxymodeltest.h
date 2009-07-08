@@ -1,3 +1,21 @@
+/*
+    Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 #ifndef PROXY_MODEL_TEST_H
 #define PROXY_MODEL_TEST_H
@@ -11,40 +29,10 @@
 #include "../abstractproxymodel.h"
 #include "../abstractitemmodel.h"
 #include "dynamictreemodel.h"
+#include "indexfinder.h"
 
 Q_DECLARE_METATYPE( QModelIndex )
 
-
-class IndexFinder
-{
-public:
-  IndexFinder() : m_model(0) {}
-
-  IndexFinder(QAbstractItemModel *model, QList<int> rows = QList<int>() )
-      :  m_rows(rows), m_model(model)
-  {
-  }
-
-  QModelIndex getIndex()
-  {
-    const int col = 0;
-    QModelIndex parent = QModelIndex();
-    QListIterator<int> i(m_rows);
-    while (i.hasNext())
-    {
-      parent = m_model->index(i.next(), col, parent);
-      Q_ASSERT(parent.isValid());
-    }
-    return parent;
-  }
-
-private:
-  QList<int> m_rows;
-  QAbstractItemModel *m_model;
-};
-
-
-Q_DECLARE_METATYPE( IndexFinder )
 
 class ModelSpy : public QObject, public QList<QVariantList>
 {
@@ -127,8 +115,10 @@ protected:
   void signalRemoval(const QString &name, IndexFinder parentFinder, int startRow, int rowsAffected, int rowCount = -1);
   void noSignal(const QString &name);
 
+  void signalDataChange(const QString &name, IndexFinder topLeft, IndexFinder bottomRight);
+
   void doTest();
-  void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges);
+  void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges = QList<PersistentIndexChange>() );
   void handleSignal(QVariantList expected);
   QVariantList getResultSignal();
 

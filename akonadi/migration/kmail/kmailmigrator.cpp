@@ -35,28 +35,32 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KConfig>
 #include <KConfigGroup>
 #include <KStandardDirs>
-#include <KDebug>
 #include <KLocalizedString>
 #include <kwallet.h>
 using KWallet::Wallet;
 
 using namespace KMail;
 
+/* Enums for use over DBus. Can't include settings.h for each resource because
+   all have same class name. If resource interfaces are changed, these will need
+   changing too. */
 enum ImapEncryption { Unencrypted = 1, Ssl, Tls };
 enum ImapAuthentication { ClearText = 1, Login, Plain, CramMD5, DigestMD5, NTLM,
                           GSSAPI, Anonymous };
+enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, KdeLockFile, MboxNone };
 
-static QString retrievePassword( const QString &idString )
+static void migratePassword( const QString &idString, const AgentInstance &instance,
+                             const QString &newFolder )
 {
   QString password;
   Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
   if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
     wallet->setFolder( "kmail" );
     wallet->readPassword( "account-" + idString, password );
-  } else
-    kWarning() << "No password retrieved.";
+    wallet->setFolder( newFolder );
+    wallet->writePassword( instance.identifier() + "rc" , password );
+  }
   delete wallet;
-  return password;
 }
 
 KMailMigrator::KMailMigrator( const QStringList &typesToMigrate ) :
@@ -145,7 +149,6 @@ bool KMailMigrator::migrateCurrentAccount()
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
 
   const QString type = group.readEntry( "Type" ).toLower();
-  kDebug() << "Account type: " << type;
   if ( type == "imap" || type == "dimap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT( imapAccountCreated( KJob * ) ) );
@@ -218,7 +221,7 @@ void KMailMigrator::imapAccountCreated( KJob *job )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
-  iface->setPassword( retrievePassword( config.readEntry( "Id" ) ) );
+  migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   //instance.reconfigure();
   migrationCompleted( instance );
@@ -268,7 +271,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   }
   iface->setAuthenticationMethod( config.readEntry( "auth" ));
 
-  iface->setPassword( retrievePassword( config.readEntry( "Id" ) ) );
+  migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
   //instance.reconfigure();
   migrationCompleted( instance );
@@ -298,15 +301,15 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   iface->setPath( config.readEntry( "Location" ) );
   const QString lockType = config.readEntry( "LockType" ).toLower();
   if ( lockType == "procmail_locktype" ) {
-    iface->setLockfileMethod( Settings::procmail );
+    iface->setLockfileMethod( Procmail );
     iface->setLockfile( config.readEntry( "ProcmailLockFile" ) );
   }
   else if ( lockType == "mutt_dotlock" )
-    iface->setLockfileMethod( Settings::mutt_dotlock );
+    iface->setLockfileMethod( MuttDotLock );
   else if ( lockType == "mutt_dotlock_privileged" )
-    iface->setLockfileMethod( Settings::mutt_dotlock_privileged );
+    iface->setLockfileMethod( MuttDotLockPrivileged );
   else if ( lockType == "none" )
-    iface->setLockfileMethod( Settings::none );
+    iface->setLockfileMethod( MboxNone );
 
   instance.reconfigure();
   migrationCompleted( instance );

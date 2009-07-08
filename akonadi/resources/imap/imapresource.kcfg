@@ -23,8 +23,5 @@
       <label>Defines if the server side subscription is enabled</label>
       <default>false</default>
     </entry>
-    <entry name="Password" type="String">
-      <label>Password</label>
-    </entry>
   </group>
 </kcfg>

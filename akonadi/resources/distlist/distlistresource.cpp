@@ -98,7 +98,7 @@ bool DistListResource::readFromFile( const QString &fileName )
 {
   mContactGroups.clear();
 
-  QFile file( KUrl( fileName ).path() );
+  QFile file( KUrl( fileName ).toLocalFile() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open distribution list file '%1'.", fileName ) );
     return false;

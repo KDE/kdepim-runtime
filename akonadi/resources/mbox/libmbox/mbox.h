@@ -34,7 +34,6 @@ class MBOX_EXPORT MBox
 {
   public:
     enum LockType {
-      KDELockFile,           // Uses KLockFile
       ProcmailLockfile,
       MuttDotlock,
       MuttDotlockPrivileged,
@@ -72,7 +71,7 @@ class MBOX_EXPORT MBox
      *
      * Note: One <em>must</em> call open() before calling this method.
      */
-    QList<MsgInfo> entryList(const QSet<quint64> &deletedItems = QSet<quint64>()) const;
+    QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
      * Loads a mbox on disk  into the current mbox. Messages already present are
@@ -104,13 +103,13 @@ class MBOX_EXPORT MBox
      * (i.e. the file that is loaded with load( const QString & ) or the file
      * from the last save( const QString & ) call if that was not the same file).
      * This method will first check if all lines at the offsets are actually
-     * seperator lines if this is not the no message will be deleted to prevent
+     * separator lines if this is not the no message will be deleted to prevent
      * corruption.
      *
      * @param deletedItems Offsets of the messages that should be removed from
      *                     the file.
      *
-     * @return true if all offsets refer to a mbox seperator line and a file was
+     * @return true if all offsets refer to a mbox separator line and a file was
      *         loaded, false otherewhise. In the latter the physical file has
      *         not changed.
      */
@@ -141,7 +140,7 @@ class MBOX_EXPORT MBox
      *
      * @see lock(), unlock()
      */
-    QByteArray readEntryHeaders(quint64 offset);
+    QByteArray readEntryHeaders( quint64 offset );
 
 
     /**
@@ -166,7 +165,7 @@ class MBOX_EXPORT MBox
      * to make sure that it doesn't leave a locked file for one of the lockfile
      * / mutt_dotlock methods.
      */
-    bool setLockType(LockType ltype);
+    bool setLockType( LockType ltype );
 
     /**
      * Sets the lockfile that should be used by the procmail or the KDE lock
@@ -174,7 +173,7 @@ class MBOX_EXPORT MBox
      * lock methods is used the name of the lock file will be equal to
      * MBOXFILENAME.lock.
      */
-    void setLockFile(const QString &lockFile);
+    void setLockFile( const QString &lockFile );
 
     /**
      * Unlock the mbox file.
@@ -188,17 +187,17 @@ class MBOX_EXPORT MBox
   private:
     bool open();
 
-    static QByteArray escapeFrom(const QByteArray &msg);
+    static QByteArray escapeFrom( const QByteArray &msg );
 
     /**
      * Generates a mbox message sperator line for given message.
      */
-    static QByteArray mboxMessageSeparator(const QByteArray &msg);
+    static QByteArray mboxMessageSeparator( const QByteArray &msg );
 
     /**
      * Unescapes the raw message read from the file.
      */
-    static void unescapeFrom(char *msg, size_t size);
+    static void unescapeFrom( char *msg, size_t size );
 
   private:
     class Private;

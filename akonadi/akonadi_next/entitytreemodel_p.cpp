@@ -254,6 +254,9 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
 
   const int row = indexOf( m_childEntities.value( collection.parent() ), collection.id() );
 
+  if ( row < 0 )
+    return;
+
 //   int row = m_childEntities.value(collection.parent()).indexOf(collection.id());
   Q_ASSERT( row >= 0 );
   const QModelIndex parentIndex = q->indexForCollection( m_collections.value( collection.parent() ) );
@@ -344,10 +347,10 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 {
   Q_Q( EntityTreeModel );
 
-  const QList<Collection> parents = getParentCollections( item );
+  const Collection::List parents = getParentCollections( item );
   if ( parents.isEmpty() )
-      return;
-  const Collection collection = parents.at( 0 );
+    return;
+  const Collection collection = parents.first();
 
   const int row = indexOf( m_childEntities.value( collection.id() ), item.id() );
 
