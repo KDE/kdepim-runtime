@@ -442,18 +442,11 @@ void DescendantEntitiesProxyModelPrivate::descendNewIndexes()
       continue;
     }
 
-    int c = descendedRow(idx);
-    const int column = 0;
-    for (int childRow = 0; childRow < c; childRow++)
-    {
-      QModelIndex childIndex = q->sourceModel()->index( childRow, column, idx.parent() );
-      if (q->sourceModel()->hasChildren(childIndex))
-        c += descendantCount(childIndex);
-    }
+    // if descCount > 0, this is a new index which has new child indexes.
 
-    int proxyStart = c;
+    int proxyStart = descendedRow(idx);
     // Need to ignore terminals so we know how many rows will be inserted by removing them.
-    int proxyEnd = c + descendantCount(idx, IgnoreTerminals);
+    int proxyEnd = proxyStart + descendantCount(idx, IgnoreTerminals);
 
     if (isDescended(idx))
     {
