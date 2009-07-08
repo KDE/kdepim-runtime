@@ -61,7 +61,7 @@ macro(NEPOMUK_ADD_ONTOLOGY_CLASSES _sources)
     endif(NOT ${rcgen_result} EQUAL 0)
 
     add_custom_command(OUTPUT ${_out_headers} ${_out_sources}
-      COMMAND ${RCGEN} ${_fastmode} --writeall --templates ${_templates} --target ${_targetdir}/ --ontologies ${_ontologies}
+      COMMAND ${RCGEN} ${_fastmode} --writeall --target ${_targetdir}/ --ontologies ${_ontologies}
       DEPENDS ${_ontologies}
       COMMENT "Generating ontology source files from ${_ontofilenames}"
       )
