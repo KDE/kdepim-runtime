@@ -79,7 +79,6 @@ private slots:
   void testDifferentParentUp();
   void testDifferentParentDown();
   void testDifferentParentSameLevel();
-  void testInsertionWithDescendants();
 
 private:
   DescendantEntitiesProxyModel *m_proxyModel;
@@ -435,35 +434,6 @@ void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
   QVERIFY(true);
 
 }
-
-void DescendantEntitiesProxyModelTest::testInsertionWithDescendants()
-{
-  DynamicTreeModel *model = new DynamicTreeModel(this);
-
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
-  proxy->setSourceModel(model);
-
-  // First insert 4 items to the root.
-  ModelInsertCommand *ins = new ModelInsertCommand(model, this);
-  ins->setStartRow(0);
-  ins->setEndRow(3);
-  ins->doCommand();
-
-  ModelInsertWithDescendantsCommand *insDesc = new ModelInsertWithDescendantsCommand(model, this);
-  QList<QPair<int, int> > descs;
-  QPair<int, int> pair;
-  pair.first = 1;   // On the first row,
-  pair.second = 4;  // insert 4 items.
-  descs << pair;
-  pair.first = 2;   // Make the 6th new item
-  pair.second = 5;  // have 5 descendants itself.
-  descs << pair;
-  insDesc->setNumDescendants(descs);
-  insDesc->doCommand();
-
-  QVERIFY(true);
-}
-
 
 QTEST_KDEMAIN(DescendantEntitiesProxyModelTest, GUI)
 #include "descendantentitiesproxymodeltest.moc"
