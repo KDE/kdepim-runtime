@@ -185,5 +185,10 @@ QStringList EntityFilterProxyModel::mimeTypes() const
   return sourceModel()->mimeTypes();
 }
 
+QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
+{
+  return sourceModel()->match(mapToSource(start), role, value, hits, flags);
+}
+
 #include "entityfilterproxymodel.moc"
 
