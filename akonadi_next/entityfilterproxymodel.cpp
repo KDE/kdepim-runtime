@@ -192,13 +192,16 @@ QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role
   QModelIndexList::const_iterator it;
   const QModelIndexList::const_iterator begin = sourceList.constBegin();
   const QModelIndexList::const_iterator end = sourceList.constEnd();
+  QModelIndex proxyIndex;
   for (it = begin; it != end; ++it)
   {
-    if (!it->isValid())
-      continue;
-    proxyList << mapFromSource(*it);
-  }
+    proxyIndex = mapFromSource(*it);
 
+    if (!proxyIndex->isValid())
+      continue;
+
+    proxyList << proxyIndex;
+  }
   return proxyList;
 }
 

@@ -130,7 +130,6 @@ QStringList AbstractProxyModel::mimeTypes() const
   return sourceModel()->mimeTypes();
 }
 
-
 QModelIndexList AbstractProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
   QModelIndexList proxyList;
@@ -138,11 +137,15 @@ QModelIndexList AbstractProxyModel::match(const QModelIndex& start, int role, co
   QModelIndexList::const_iterator it;
   const QModelIndexList::const_iterator begin = sourceList.constBegin();
   const QModelIndexList::const_iterator end = sourceList.constEnd();
+  QModelIndex proxyIndex;
   for (it = begin; it != end; ++it)
   {
-    if (!it->isValid())
+    proxyIndex = mapFromSource(*it);
+
+    if (!proxyIndex->isValid())
       continue;
-    proxyList << mapFromSource(*it);
+
+    proxyList << proxyIndex;
   }
   return proxyList;
 }
