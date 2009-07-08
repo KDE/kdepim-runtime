@@ -116,7 +116,7 @@ protected:
   void noSignal(const QString &name);
 
   void doTest();
-  void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges);
+  void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges = QList<PersistentIndexChange>() );
   void handleSignal(QVariantList expected);
   QVariantList getResultSignal();
 
