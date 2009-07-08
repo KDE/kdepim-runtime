@@ -705,6 +705,16 @@ bool EntityTreeModel::hasChildren( const QModelIndex &parent ) const
   return ((rowCount(parent) > 0) || (canFetchMore( parent ) && d->m_itemPopulation == LazyPopulation));
 }
 
+QModelIndexList EntityTreeModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags ) const
+{
+  if (role != AmazingCompletionRole)
+    return AbstractItemModel::match(start, role, value, hits, flags);
+
+  // Maybe try to match nepomuk tags?
+  return QModelIndexList();
+
+}
+
 bool EntityTreeModel::insertRows( int, int, const QModelIndex& )
 {
   return false;
