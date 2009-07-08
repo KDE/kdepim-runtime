@@ -29,40 +29,10 @@
 #include "../abstractproxymodel.h"
 #include "../abstractitemmodel.h"
 #include "dynamictreemodel.h"
+#include "indexfinder.h"
 
 Q_DECLARE_METATYPE( QModelIndex )
 
-
-class IndexFinder
-{
-public:
-  IndexFinder() : m_model(0) {}
-
-  IndexFinder(QAbstractItemModel *model, QList<int> rows = QList<int>() )
-      :  m_rows(rows), m_model(model)
-  {
-  }
-
-  QModelIndex getIndex()
-  {
-    const int col = 0;
-    QModelIndex parent = QModelIndex();
-    QListIterator<int> i(m_rows);
-    while (i.hasNext())
-    {
-      parent = m_model->index(i.next(), col, parent);
-      Q_ASSERT(parent.isValid());
-    }
-    return parent;
-  }
-
-private:
-  QList<int> m_rows;
-  QAbstractItemModel *m_model;
-};
-
-
-Q_DECLARE_METATYPE( IndexFinder )
 
 class ModelSpy : public QObject, public QList<QVariantList>
 {
