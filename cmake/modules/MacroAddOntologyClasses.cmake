@@ -59,9 +59,14 @@ macro(NEPOMUK_ADD_ONTOLOGY_CLASSES _sources)
     if(NOT ${rcgen_result} EQUAL 0)
       message(SEND_ERROR "Failed to generate Nepomuk resource classes list.")
     endif(NOT ${rcgen_result} EQUAL 0)
+    
+    list(LENGTH _templates _template_count)
+    if(${_template_count} GREATER 0)
+      list(INSERT _templates 0 --templates)
+    endif(${_template_count} GREATER 0)
 
     add_custom_command(OUTPUT ${_out_headers} ${_out_sources}
-      COMMAND ${RCGEN} ${_fastmode} --writeall --target ${_targetdir}/ --ontologies ${_ontologies}
+      COMMAND ${RCGEN} ${_fastmode} --writeall ${_templates} --target ${_targetdir}/ --ontologies ${_ontologies}
       DEPENDS ${_ontologies}
       COMMENT "Generating ontology source files from ${_ontofilenames}"
       )
