@@ -32,6 +32,7 @@
 #include <KStandardDirs>
 
 #include <QtCore/QDir>
+#include <QtCore/QCryptographicHash>
 
 using namespace Akonadi;
 
@@ -56,6 +57,27 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
 QString SingleFileResourceBase::cacheFile() const
 {
   return KStandardDirs::locateLocal( "cache", "akonadi/" + identifier() );
+}
+
+QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) const
+{
+  QFile file( fileName );
+  if ( !file.exists() )
+    return QByteArray();
+
+  if ( !file.open( QIODevice::ReadOnly ) )
+    return QByteArray();
+
+  QCryptographicHash hash( QCryptographicHash::Md5 );
+  qint64 blockSize = 512 * 1024; // Read blocks of 512K
+
+  while ( !file.atEnd() ) {
+    hash.addData( file.read( blockSize ) );
+  }
+
+  file.close();
+
+  return hash.result();
 }
 
 void SingleFileResourceBase::setSupportedMimetypes( const QStringList & mimeTypes, const QString &icon )
@@ -120,7 +142,16 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
   }
 
   readFile();
-  synchronize();
+
+  // There is only a need to synchronize when the file was changed by another
+  // process. AT this point we're sure that it is the file that the resource
+  // was configured for because of the check at the beginning of this function.
+  if ( mPreviousHash != mCurrentHash ) {
+    // Notify resources, so that information bound to the file like indexes etc.
+    // can be updated.
+    // handleFileChange();
+    synchronize();
+  }
 }
 
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
@@ -128,14 +159,25 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
   if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
     emit status( Broken, i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() ) );
   } else {
-    readFromFile( KUrl( cacheFile() ).toLocalFile() );
+    QString fileName = KUrl( cacheFile() ).toLocalFile();
+
+    const QByteArray newHash = calculateHash( fileName );
+    if ( mCurrentHash != newHash )
+      readFromFile( fileName );
+
+    mPreviousHash = mCurrentHash;
+    mCurrentHash = newHash;
   }
 
   mDownloadJob = 0;
   KGlobal::deref();
 
   emit status( Idle, i18nc( "@info:status", "Ready" ) );
-  synchronize();
+
+  // If the previous written file had exactly the same hash as the file we just
+  // have received
+  if ( mPreviousHash != mCurrentHash )
+    synchronize();
 }
 
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )

@@ -77,6 +77,12 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      */
     QString cacheFile() const;
 
+    /**
+     * Calculates an MD5 hash for given file. If the file does not exists
+     * or the path is empty, this will return an emty QByteArray.
+     */
+    QByteArray calculateHash( const QString &fileName ) const;
+
   protected:
     QTimer mDirtyTimer;
     KUrl mCurrentUrl;
@@ -84,6 +90,8 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     QString mCollectionIcon;
     KIO::FileCopyJob *mDownloadJob;
     KIO::FileCopyJob *mUploadJob;
+    QByteArray mPreviousHash;
+    QByteArray mCurrentHash;
 
   private Q_SLOTS:
     void handleProgress( KJob *, unsigned long );
