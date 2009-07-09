@@ -55,17 +55,20 @@ public slots:
     void requestDatabaseDeletion( const QString& db );
     void requestDocumentListing( const QString& db );
     void requestDocument( const CouchDBDocumentInfo& info );
+    void updateDocument( const CouchDBDocumentInfo& info, const QVariant& v );
 
 signals:
     void databasesListed( const QStringList& );
     void documentsListed( const CouchDBDocumentInfoList& );
     void documentRetrieved( const QVariant & v );
+    void documentUpdated( bool ok, const QString& error = QString() );
 
 private slots:
     void init();
     void slotDatabaseListingFinished(int, bool);
     void slotDocumentListingFinished(int, bool);
     void slotDocumentRetrievalFinished(int, bool);
+    void slotDocumentUpdateFinished(int, bool);
 private:
     class Private;
     Private * const d;

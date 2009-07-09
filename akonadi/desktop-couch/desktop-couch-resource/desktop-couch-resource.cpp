@@ -45,6 +45,7 @@ DesktopCouchResource::DesktopCouchResource( const QString &id )
                             Settings::self(), QDBusConnection::ExportAdaptors );
                             */
   changeRecorder()->itemFetchScope().fetchFullPayload();
+  synchronizeCollectionTree();
 }
 
 DesktopCouchResource::~DesktopCouchResource()
@@ -66,6 +67,11 @@ bool DesktopCouchResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   setProperty( "akonadiItem", QVariant::fromValue(item) );
 
   return true;
+}
+
+static QVariant addresseeToVariant( const KABC::Addressee& a )
+{
+    return QVariant( );
 }
 
 static KABC::Addressee variantToAddressee( const QVariant& v )
@@ -163,7 +169,12 @@ void DesktopCouchResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     addressee  = item.payload<KABC::Addressee>();
 
   if ( !addressee.isEmpty() ) {
-  //  mAddressees.insert( addressee.uid(), addressee );
+    
+    CouchDBDocumentInfo info;
+    info.setId( item.remoteId() );
+    info.setDatabase( "contacts" );
+    QVariant v = addresseeToVariant( addressee );
+    db.updateDocument( info, v );
 
     Item i( item );
     i.setRemoteId( addressee.uid() );

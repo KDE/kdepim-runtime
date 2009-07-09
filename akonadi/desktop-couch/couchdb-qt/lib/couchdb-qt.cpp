@@ -94,6 +94,7 @@ class CouchDBQt::Private
     }
     QVariant parseJSONString( const QString& json );
     CouchDBDocumentInfoList variantMapToDocInfoList( const QVariant& map );
+    QString serializeToJSONString( const QVariant& v);
 
     int requestId;
     QString database;
@@ -104,9 +105,9 @@ class CouchDBQt::Private
 QVariant CouchDBQt::Private::parseJSONString( const QString& json )
 {
 
-  bool error;
-  QVariant data = driver.parse ( json, &error );
-  if ( error ) {
+  bool ok;
+  QVariant data = driver.parse ( json, &ok );
+  if ( !ok ) {
     qCritical("%i - Error: %s", driver.errorLine(), driver.error().toLatin1().data());
     exit (1);
   }
@@ -115,6 +116,11 @@ QVariant CouchDBQt::Private::parseJSONString( const QString& json )
     //qDebug() << data;
   }
   return data;
+}
+
+QString CouchDBQt::Private::serializeToJSONString( const QVariant& v )
+{
+    return driver.serialize( v );
 }
 
 CouchDBDocumentInfoList CouchDBQt::Private::variantMapToDocInfoList( const QVariant& vmap )
@@ -253,3 +259,29 @@ void CouchDBQt::slotDocumentRetrievalFinished(int request, bool error)
   const QVariant docAsVariant = d->parseJSONString( doc );
   emit documentRetrieved( docAsVariant );
 }
+
+
+void CouchDBQt::updateDocument( const CouchDBDocumentInfo& info, const QVariant& v )
+{
+  const QString str = d->serializeToJSONString( v );
+  d->http.disconnect( SIGNAL( requestFinished(int,bool) ) );
+  connect( &d->http, SIGNAL( requestFinished(int,bool) ),
+           this, SLOT( slotDocumentUpdatedFinished(int, bool) ) );
+
+  d->requestId = d->http.post( QString("/%1/%2").arg( info.database() ).arg( info.id() ),
+                               str.toUtf8() );
+}
+
+void CouchDBQt::slotDocumentUpdateFinished(int request, bool error)
+{
+  if ( error ) {
+    emit documentUpdated( false, d->http.errorString() );
+    return;
+  }
+  if ( request != d->requestId ) {
+    emit documentUpdated( false, tr("Invalid request id") );
+    return;
+  }
+  emit documentUpdated( true );
+}
+
