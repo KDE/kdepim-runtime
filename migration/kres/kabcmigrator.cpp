@@ -39,22 +39,26 @@ bool KABCMigrator::migrateResource( KABC::Resource* res)
 {
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
-    migrateFileResource( res );
+    return migrateFileResource( res );
   else
     return false;
   return true;
 }
 
-void KABCMigrator::migrateFileResource(KABC::Resource * res)
+bool KABCMigrator::migrateFileResource(KABC::Resource * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
   const QString format = kresCfg.readEntry( "FileFormat", "" );
-  if ( format != "vcard" ) {
-    migrationFailed( i18n("Unsupported file format found. "
+  if ( format == "binary" ) {
+    emit message( Warning, i18n("Unsupported file format found. "
         "The file format '%1' is no longer supported, please convert to another one.", format ) );
-    return;
+    return false;
+  } else if ( format != "vcard" ) {
+    emit message( Skip, i18n( "File format '%1' is not yet supported natively.", format ) );
+    return false;
   }
   createAgentInstance( "akonadi_vcard_resource", this, SLOT(fileResourceCreated(KJob*)) );
+  return true;
 }
 
 void KABCMigrator::fileResourceCreated(KJob * job)

@@ -43,7 +43,7 @@ class KABCMigrator : public KResMigrator<KABC::Resource>
     void fileResourceCreated( KJob* job );
 
   private:
-    void migrateFileResource( KABC::Resource *res );
+    bool migrateFileResource( KABC::Resource *res );
 };
 
 #endif
