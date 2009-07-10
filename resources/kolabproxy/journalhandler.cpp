@@ -26,6 +26,7 @@
 
 #include <QBuffer>
 #include <QDomDocument>
+#include <kcal/kcalmimetypevisitor.h>
 
 
 JournalHandler::JournalHandler() : IncidenceHandler()
@@ -77,5 +78,5 @@ QByteArray JournalHandler::incidenceToXml(KCal::Incidence *incidence)
 
 QStringList  JournalHandler::contentMimeTypes()
 {
-  return QStringList() << "text/calendar";
+  return QStringList() << Akonadi::KCalMimeTypeVisitor::journalMimeType();
 }

@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Akonadi Imap
+Name=IMAP E-Mail Server
 Name[de]=Akonadi-Imap
 Name[ga]=IMAP Akonadi
 Name[gl]=Imap de Akonadi
@@ -10,7 +10,7 @@ Name[pt_BR]=IMAP Akonadi
 Name[sv]=Akonadi IMAP
 Name[x-test]=xxAkonadi Imapxx
 Name[zh_CN]=Akonadi IMAP
-Comment=Connects to an IMAP-server. Based on the KIMAP from kdepimlibs.
+Comment=Connects to an IMAP e-mail server.
 Comment[da]=Forbinder til en IMAP-server. Baseret på KIMAP fra kdepimlibs.
 Comment[de]=Verbindet zu einem IMAP-Server. Basiert auf der KIMAP-Bibliothek der kdepimlibs.
 Comment[el]=Σύνδεση με έναν διακομηστή IMAP.  Βασισμένο στη βιβλιοθήκη IMAP του kdepimlibs.
@@ -35,7 +35,7 @@ Comment[zh_CN]=连接到一个 IMAP 服务器。基于 kdepimlibs 中的 KIMAP �
 Comment[zh_TW]=連到 IMAP 伺服器。基於從 kdepimlibs 而來的 KIMAP 函式庫。
 Type=AkonadiResource
 Exec=akonadi_imap_resource
-Icon=message-rfc822
+Icon=network-server
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Resource

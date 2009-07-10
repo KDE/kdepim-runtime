@@ -30,6 +30,7 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtNetwork/QSslSocket>
+#include <QHostInfo>
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -37,6 +38,8 @@
 #include <kmessagebox.h>
 #include <KWindowSystem>
 #include <KAboutData>
+
+#include <solid/networking.h>
 
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
@@ -71,6 +74,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectiondeletejob.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -100,8 +104,8 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
 
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(startConnect()) );
-  startConnect();
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
+  reconnect();
 }
 
 ImapResource::~ImapResource()
@@ -188,7 +192,8 @@ void ImapResource::configure( WId windowId )
     setName( KGlobal::mainComponent().aboutData()->appName() );
   }
 
-  startConnect();
+  if ( dlg.result() == QDialog::Accepted )
+    reconnect();
 }
 
 void ImapResource::startConnect( bool forceManualAuth )
@@ -389,6 +394,7 @@ void ImapResource::retrieveCollections()
   root.setName( m_account->server() + '/' + m_account->userName() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+  root.setRights( Collection::ReadOnly );
 
   CachePolicy policy;
   policy.setInheritFromParent( false );
@@ -425,23 +431,27 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
     QString currentPath;
 
     foreach ( const QString &pathPart, pathParts ) {
+      const bool isDummy = pathPart != pathParts.last();
       currentPath+='/'+pathPart;
       if ( currentPath.startsWith( '/' ) ) {
         currentPath.remove( 0, 1 );
       }
 
       if ( reportedPaths.contains( currentPath ) ) {
+        if ( !isDummy )
+          kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
         parentPath = currentPath;
         continue;
       } else {
         reportedPaths << currentPath;
       }
 
+      const QList<QByteArray> currentFlags  = isDummy ? (QList<QByteArray>() << "\\NoSelect") : flags[i];
+
       Collection c;
       c.setName( pathPart );
       c.setRemoteId( remoteIdForMailBox( currentPath ) );
       c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
-      c.setRights( Collection::AllRights );
       c.setContentMimeTypes( contentTypes );
 
       CachePolicy cachePolicy;
@@ -452,13 +462,24 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       // If the folder is the Inbox, make some special settings.
       if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
         cachePolicy.setIntervalCheckTime( 1 );
-        c.setName( "Inbox" );
+        EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+        attr->setDisplayName( i18n( "Inbox" ) );
+        attr->setIconName( "mail-folder-inbox" );
+      }
+
+      // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
+      if ( currentPath == QLatin1String( "user" ) && currentFlags.contains( "\\NoSelect" ) ) {
+        EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+        attr->setDisplayName( i18n( "Shared Folders" ) );
+        attr->setIconName( "x-mail-distribution-list" );
       }
 
       // If this folder is a noselect folder, make some special settings.
-      if ( flags[i].contains( "\\NoSelect" ) ) {
+      if ( currentFlags.contains( "\\NoSelect" ) ) {
         cachePolicy.setSyncOnDemand( false );
         c.addAttribute( new NoSelectAttribute( true ) );
+        c.setContentMimeTypes( QStringList() << Collection::mimeType() );
+        c.setRights( Collection::ReadOnly );
       }
 
       c.setCachePolicy( cachePolicy );
@@ -482,6 +503,11 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
 
 void ImapResource::retrieveItems( const Collection &col )
 {
+  if ( !m_account ) {
+    cancelTask();
+    return;
+  }
+
   kDebug( ) << col.remoteId();
 
   // Prevent fetching items from noselect folders.
@@ -629,12 +655,16 @@ void ImapResource::collectionChanged( const Collection & collection )
   const QString oldMailBox = mailBoxForRemoteId( oldRemoteId );
   const QString newMailBox = mailBoxForRemoteId( newRemoteId );
 
-  KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
-  job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
-  job->setSourceMailBox( oldMailBox );
-  job->setDestinationMailBox( newMailBox );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
-  job->start();
+  if ( oldMailBox != newMailBox ) {
+    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
+    job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+    job->setSourceMailBox( oldMailBox );
+    job->setDestinationMailBox( newMailBox );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
+    job->start();
+  } else {
+    changeProcessed();
+  }
 }
 
 void ImapResource::onRenameMailBoxDone( KJob *job )
@@ -671,7 +701,7 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
   // finish the task.
   changeProcessed();
 
-    if ( !job->error() ) {
+    if ( job->error() ) {
         kDebug() << "Failed to delete the folder, resync the folder tree";
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
@@ -835,6 +865,11 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   foreach ( const QByteArray &entry, rawAnnotations.keys() ) {
     annotations[entry] = rawAnnotations[entry][attribute];
   }
+
+  // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
+  // which contains the current date and time and thus constantly changes for no good
+  // reason which triggers a change notification and thus a bunch of Akonadi operations
+  annotations.remove( "/vendor/cmu/cyrus-imapd/lastupdate" );
 
   Collection collection = job->property( "akonadiCollection" ).value<Collection>();
 
@@ -1106,6 +1141,36 @@ void ImapResource::itemsClear( const Collection &collection )
   }
 
   transaction->exec();
+}
+
+void ImapResource::doSetOnline(bool online)
+{
+  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected )
+    m_account->disconnect();
+  else if ( online )
+    startConnect();
+  ResourceBase::doSetOnline( online );
+}
+
+bool ImapResource::needsNetwork() const
+{
+  const QString hostName = Settings::self()->imapServer().section( ":", 0, 0 );
+  // ### is there a better way to do this?
+  if ( hostName == QLatin1String( "127.0.0.1" ) ||
+       hostName == QLatin1String( "localhost" ) ||
+       hostName == QHostInfo::localHostName() ) {
+    return false;
+  }
+  return true;
+}
+
+void ImapResource::reconnect()
+{
+  setNeedsNetwork( needsNetwork() );
+  setOnline( false ); // we are not connected initially
+  setOnline( !needsNetwork() ||
+             Solid::Networking::status() == Solid::Networking::Unknown ||
+             Solid::Networking::status() == Solid::Networking::Connected );
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )

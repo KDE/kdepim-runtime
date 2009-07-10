@@ -39,6 +39,18 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     KolabProxyResource( const QString &id );
     ~KolabProxyResource();
 
+    /**
+      Creates a new KolabHandler for @p imapCollection given it actually is a Kolab
+      folder.
+      @return @c true if @p imapCollection is a Kolab folder, @c false otherwise.
+    */
+    bool registerHandlerForCollection( const Akonadi::Collection& imapCollection );
+
+    /**
+      Returns the root collection.
+    */
+    inline Akonadi::Collection root() const { return m_root; }
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
@@ -53,9 +65,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapCollectionChanged(const Akonadi::Collection &collection);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
-    void imapCollectionFetched(KJob *job);
     void retrieveItemFetchDone(KJob *);
-    void retrieveCollectionsFetchDone(KJob* job);
+    void retrieveCollectionsTreeDone(KJob* job);
     void addImapItem(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
     void deleteImapItem(const Akonadi::Item& item);
 
@@ -66,13 +77,23 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
+    virtual void collectionChanged(const Akonadi::Collection& collection);
+    virtual void collectionRemoved(const Akonadi::Collection& collection);
 
   private:
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
 
+  private slots:
+    void imapItemCreationResult( KJob* job );
+    void imapItemUpdateFetchResult( KJob* job );
+    void imapItemUpdateResult( KJob *job );
+    void imapFolderCreateResult( KJob* job );
+    void kolabFolderChangeResult( KJob* job );
+
+  private:
     Akonadi::Monitor *m_monitor;
-    Akonadi::Monitor *m_colectionMonitor;
-    QStringList m_managedCollections;
+    Akonadi::Monitor *m_collectionMonitor;
     QMap<Akonadi::Item::Id, KolabHandler*> m_monitoredCollections;
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
