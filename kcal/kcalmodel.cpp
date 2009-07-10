@@ -121,8 +121,7 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
   // guard against use with collections that do not have the right contents
   if ( !d->collectionIsValid() ) {
     if ( role == Qt::DisplayRole )
-      // FIXME: i18n when strings unfreeze for 4.4
-      return QString::fromLatin1( "This model can only handle event, task, journal or free-busy list folders. The current collection holds mimetypes: %1").arg(
+      return i18n( "This model can only handle event, task, journal or free-busy list folders. The current collection holds mimetypes: %1",
                  collection().contentMimeTypes().join( QLatin1String(",") ) );
     return QVariant();
   }

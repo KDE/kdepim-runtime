@@ -87,16 +87,18 @@ QVariant KABCModel::data( const QModelIndex &index, int role ) const
   if ( index.row() >= rowCount() )
     return QVariant();
 
-  if ( !d->collectionIsValid( collection() ) )
+  if ( !d->collectionIsValid( collection() ) ) {
       if ( role == Qt::DisplayRole )
-          // FIXME: i18n when strings unfreeze for 4.4
-          return QString::fromLatin1( "This model can only handle contact folders. The current collection holds mimetypes: %1").arg(
+          return i18n( "This model can only handle contact folders. The current collection holds mimetypes: %1",
                        collection().contentMimeTypes().join( QLatin1String(",") ) );
-      return QVariant();
+      else
+         return QVariant();
+    }
 
   const Item item = itemForIndex( index );
 
   if ( item.mimeType() == KABC::Addressee::mimeType() ) {
+
     if ( !item.hasPayload<KABC::Addressee>() )
       return QVariant();
 
