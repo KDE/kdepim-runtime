@@ -85,6 +85,7 @@ void EntityTreeModelPrivate::fetchCollections( const Collection &collection, Col
   CollectionFetchJob *job = new CollectionFetchJob( collection, type, m_session );
   job->includeUnsubscribed( m_includeUnsubscribed );
   job->includeStatistics( m_includeStatistics );
+  job->setContentMimeTypes( m_monitor->mimeTypesMonitored() );
   q->connect( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ),
               q, SLOT( collectionsFetched( const Akonadi::Collection::List& ) ) );
   q->connect( job, SIGNAL( result( KJob* ) ),
@@ -107,11 +108,10 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
     }
     // ... otherwise we add it to the set of collections we need to handle.
     if ( collection.parent() == Collection::root().id() ) {
-      Akonadi::AgentInstance agentInstance = agentManager->instance( collection.resource() );
 
-      if ( ( !m_mimeChecker.isWantedCollection( collection ) ) &&
-           ( !m_monitor->resourcesMonitored().contains( collection.resource().toUtf8() ) ) &&
-             !m_monitor->isAllMonitored() )
+      if ( !m_monitor->resourcesMonitored().isEmpty() &&
+           !m_monitor->resourcesMonitored().contains( collection.resource().toUtf8() ) &&
+           !m_monitor->isAllMonitored() )
         continue;
     }
 
@@ -502,10 +502,14 @@ void EntityTreeModelPrivate::startFirstListJob()
 
   // Includes recursive trees. Lower levels are fetched in the onRowsInserted slot if
   // necessary.
+  // HACK: fix this for recursive listing if we filter on mimetypes that only exit deeper
+  // in the hierarchy
   if ( ( m_collectionFetchStrategy == EntityTreeModel::FetchFirstLevelChildCollections)
-    || ( m_collectionFetchStrategy == EntityTreeModel::FetchCollectionsRecursive ) ) {
+    /*|| ( m_collectionFetchStrategy == EntityTreeModel::FetchCollectionsRecursive )*/ ) {
     fetchCollections( rootCollection, CollectionFetchJob::FirstLevel );
   }
+  if ( m_collectionFetchStrategy == EntityTreeModel::FetchCollectionsRecursive )
+    fetchCollections( rootCollection, CollectionFetchJob::Recursive );
   // If the root collection is not collection::root, then it could have items, and they will need to be
   // retrieved now.
 

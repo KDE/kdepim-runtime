@@ -62,6 +62,10 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
       item->setIcon( KIcon( "dialog-information" ) );
       kDebug() << msg;
       break;
+    case KMigratorBase::Warning:
+      item->setIcon( KIcon( "dialog-warning" ) );
+      kDebug() << msg;
+      break;
     case KMigratorBase::Error:
       item->setIcon( KIcon( "dialog-error" ) );
       mError = true;

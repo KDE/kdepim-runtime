@@ -19,39 +19,22 @@
  * 02110-1301  USA
  */
 
-#include "mainwindow.h"
+#ifndef SELECTION_PM_WIDGET_H
+#define SELECTION_PM_WIDGET_H
 
-#include <QSplitter>
-#include <QTabWidget>
+#include <QWidget>
 
-#include "../tests/dynamictreemodel.h"
-#include "../entitytreeview.h"
+class DynamicTreeModel;
 
-#include "../descendantentitiesproxymodel.h"
-#include "../selectionproxymodel.h"
-
-#include "../modeltest.h"
-
-#include "descendantpmwidget.h"
-#include "selectionpmwidget.h"
-
-using namespace Akonadi;
-
-MainWindow::MainWindow() : KXmlGuiWindow()
+class SelectionProxyWidget : public QWidget
 {
+public:
+  SelectionProxyWidget(QWidget* parent = 0);
 
-  QTabWidget *tabWidget = new QTabWidget( this );
-  DescendantProxyModelWidget *descPMWidget = new DescendantProxyModelWidget();
-  SelectionProxyWidget *selProxyWidget = new SelectionProxyWidget();
-  tabWidget->addTab(descPMWidget, "descendant PM");
-  tabWidget->addTab(selProxyWidget, "selection PM");
+private:
+  DynamicTreeModel *m_rootModel;
 
-  setCentralWidget( tabWidget );
-}
+};
 
-
-MainWindow::~MainWindow()
-{
-}
-
+#endif
 

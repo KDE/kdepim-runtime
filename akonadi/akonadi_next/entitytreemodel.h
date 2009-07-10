@@ -100,6 +100,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
 
       RemoteIdRole,                           ///< The remoteId of the entity
       CollectionChildOrderRole,               ///< Ordered list of child items if available
+      AmazingCompletionRole,                  ///< Role used to implement amazing completion
       UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
       TerminalUserRole = 10000                ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
     };
@@ -250,6 +251,11 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     virtual bool canFetchMore( const QModelIndex & parent ) const;
     virtual void fetchMore( const QModelIndex & parent );
     virtual bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
+
+    /**
+    Reimplemented to handle the AmazingCompletionRole.
+    */
+    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
 
   protected:
     /**

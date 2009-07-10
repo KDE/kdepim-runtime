@@ -41,6 +41,33 @@ public:
   virtual void setSourceModel ( QAbstractItemModel * sourceModel );
 
   /**
+  Do not include the children of selected items in the model.
+
+  This will normally be used with includeAllSelected to get the following effect:
+
+  @code
+  A
+  B
+  - C
+  - - D
+  - - - E
+  - F
+  G
+  @endcode
+
+  If B, C, E and G are selected, you get a flat list of the selected items.
+
+  @code
+  B
+  C
+  E
+  G
+  @endcode
+
+  */
+  void setOmitChildren(bool omit);
+
+  /**
     @code
     A
     B

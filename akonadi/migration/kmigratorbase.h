@@ -43,6 +43,7 @@ class KMigratorBase : public QObject
       Success,
       Skip,
       Info,
+      Warning,
       Error
     };
 

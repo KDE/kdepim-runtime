@@ -101,16 +101,23 @@ class SingleFileResource : public SingleFileResourceBase
           }
         }
 
-        if ( !readFromFile( mCurrentUrl.toLocalFile() ) ) {
-          mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
-          return;
+        const QByteArray newHash = calculateHash( mCurrentUrl.path() );
+        if ( mCurrentHash != newHash ) {
+          if ( !readFromFile( mCurrentUrl.toLocalFile() ) ) {
+            mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
+            return;
+          }
+
+          synchronize();
         }
+
+        mPreviousHash = mCurrentHash;
+        mCurrentHash = newHash;
 
         if ( Settings::self()->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.toLocalFile() );
 
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
-        synchronize();
       }
       else
       {
@@ -161,6 +168,9 @@ class SingleFileResource : public SingleFileResourceBase
       if ( mCurrentUrl.isLocalFile() ) {
         KDirWatch::self()->stopScan();
         const bool writeResult = writeToFile( mCurrentUrl.toLocalFile() );
+        // Update the hash so we can detect at fileChanged() if the file actually
+        // did change.
+        mCurrentHash = calculateHash( mCurrentUrl.path() );
         KDirWatch::self()->startScan();
         if ( !writeResult )
           return;
@@ -181,6 +191,10 @@ class SingleFileResource : public SingleFileResourceBase
         // Write te items to the localy cached file.
         if ( !writeToFile( cacheFile() ) )
           return;
+
+        // Update the hash so we can detect at fileChanged() if the file actually
+        // did change.
+        mCurrentHash = calculateHash( cacheFile() );
 
         KGlobal::ref();
         // Start a job to upload the localy cached file to the remote location.

@@ -131,6 +131,12 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
     virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
     virtual QStringList mimeTypes() const;
 
+    /**
+    Reimplemented to handle the AmazingCompletionRole.
+    */
+    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
+
+
   protected:
     virtual bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent ) const;
 

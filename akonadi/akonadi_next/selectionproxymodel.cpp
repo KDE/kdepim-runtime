@@ -34,6 +34,7 @@ public:
   SelectionProxyModelPrivate(SelectionProxyModel *model)
     : q_ptr(model),
       m_startWithChildTrees(false),
+      m_omitChildren(false),
       m_omitDescendants(false),
       m_includeAllSelected(false),
       m_rowBlocksToRemove(0)
@@ -134,6 +135,7 @@ public:
   // TODO: Find out if this breaks when indexes are modified because of higher siblings move/insert/remove
   mutable QHash< void *, QPersistentModelIndex> m_map;
 
+  bool m_omitChildren;
   bool m_startWithChildTrees;
   bool m_omitDescendants;
   bool m_includeAllSelected;
@@ -818,6 +820,13 @@ SelectionProxyModel::~SelectionProxyModel()
   delete d_ptr;
 }
 
+void SelectionProxyModel::setOmitChildren(bool omit)
+{
+  Q_D(SelectionProxyModel);
+
+  d->m_omitChildren = omit;
+}
+
 void SelectionProxyModel::setOmitDescendants(bool omitDescendants)
 {
   Q_D(SelectionProxyModel);
@@ -838,7 +847,7 @@ void SelectionProxyModel::setIncludeAllSelected(bool includeAllSelected)
 
   // TODO: Fix ordering in this configuration.
 
-  if ( includeAllSelected && d->m_omitDescendants && d->m_startWithChildTrees )
+  if ( includeAllSelected && ( d->m_omitDescendants && d->m_startWithChildTrees ) || ( d->m_omitChildren ) )
   {
     d->m_includeAllSelected = includeAllSelected;
   }
@@ -948,6 +957,9 @@ int SelectionProxyModel::rowCount(const QModelIndex &index) const
     }
   }
 
+  if ( d->m_omitChildren )
+    return 0;
+
   QModelIndex srcIndex = mapToSource(index);
 
   if (!d->isInModel(srcIndex))
@@ -1006,7 +1018,7 @@ QModelIndex SelectionProxyModel::parent(const QModelIndex &index) const
   Q_D(const SelectionProxyModel);
 
   QModelIndex sourceIndex = mapToSource(index);
-  if (d->m_rootIndexList.contains(sourceIndex.parent()) && d->m_startWithChildTrees)
+  if (d->m_rootIndexList.contains(sourceIndex.parent()) && ( d->m_startWithChildTrees || d->m_omitChildren ) )
   {
     return QModelIndex();
   }
