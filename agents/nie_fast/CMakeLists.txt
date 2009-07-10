@@ -1,4 +1,4 @@
-include(MacroAddOntologyClasses)
+include(NepomukAddOntologyClasses)
 NEPOMUK_ADD_ONTOLOGY_CLASSES(
   nie_SRCS
   FAST
@@ -9,6 +9,5 @@ NEPOMUK_ADD_ONTOLOGY_CLASSES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../nie/nmo.rdfs
   )
 
-add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 kde4_add_library(niefast STATIC ${nie_SRCS})
 target_link_libraries(niefast ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES})
