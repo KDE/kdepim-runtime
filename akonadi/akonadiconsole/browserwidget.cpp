@@ -234,7 +234,12 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
   } else if ( item.hasPayload<KCal::Incidence::Ptr>() ) {
     contentUi.incidenceView->setItem( item );
     contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
-  } else {
+  } else if ( item.mimeType() == "message/rfc822" )
+  {
+    contentUi.mailView->setMessageItem( item, true );
+    contentUi.stack->setCurrentWidget( contentUi.mailViewPage );
+  } else
+  {
     contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
   }
 
