@@ -23,8 +23,9 @@
 
 #include <Akonadi/Item>
 #include <Akonadi/ResourceBase>
+#include <Akonadi/TransportResourceBase>
 
-class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::ResourceBase::Transport
+class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::TransportResourceBase
 {
   Q_OBJECT
 
