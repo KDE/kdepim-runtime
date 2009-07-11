@@ -104,6 +104,7 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 
 NepomukContactFeeder::~NepomukContactFeeder()
 {
+  delete mNrlModel;
 }
 
 void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
