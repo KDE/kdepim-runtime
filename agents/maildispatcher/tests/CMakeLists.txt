@@ -16,7 +16,6 @@ macro(add_akonadi_isolated_test _source)
     ${KDE4_KMIME_LIBS}
     ${QT_QTCORE_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
-    outboxinterface
   )
 
   # based on kde4_add_unit_test

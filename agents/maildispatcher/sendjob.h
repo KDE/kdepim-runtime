@@ -66,6 +66,8 @@ class SendJob : public KJob
     Q_PRIVATE_SLOT( d, void doTransport() )
     Q_PRIVATE_SLOT( d, void transportPercent( KJob*, unsigned long ) )
     Q_PRIVATE_SLOT( d, void transportResult( KJob *job ) )
+    Q_PRIVATE_SLOT( d, void resourceProgress( const Akonadi::AgentInstance &instance ) )
+    Q_PRIVATE_SLOT( d, void resourceResult( qlonglong itemId, bool success, const QString &message ) )
     Q_PRIVATE_SLOT( d, void postJobResult( KJob *job ) )
     Q_PRIVATE_SLOT( d, void doEmitResult( KJob *job ) )
 

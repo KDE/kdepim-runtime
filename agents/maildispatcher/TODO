@@ -8,6 +8,7 @@
 * Should probably use progressMessage instead of statusMessage, but it seems
   to be unimplemented in AgentInstance, and only a stub in AgentBase.
 * Do something about timeouts.
+* Test aborting and progress reporting for resource-based transports.
 
 Bugs:
 * Incorrect size reporting in itemChanged() from Monitor.  Leads to displaying

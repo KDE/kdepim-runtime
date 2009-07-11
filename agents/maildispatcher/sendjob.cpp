@@ -21,6 +21,8 @@
 
 #include "storeresultjob.h"
 
+#include <QDBusInterface>
+#include <QDBusReply>
 #include <QTimer>
 
 #include <KDebug>
@@ -32,24 +34,23 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
 
-#include <mailtransport/transport.h>
-#include <mailtransport/transportjob.h>
-#include <mailtransport/akonadijob.h> // TODO really stinks that it needs special treatment
-#include <mailtransport/transportmanager.h>
-
-#include <akonadi/kmime/addressattribute.h>
-#include <akonadi/kmime/messageparts.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/sentbehaviourattribute.h>
-#include <outboxinterface/transportattribute.h>
+#include <mailtransport/sentbehaviourattribute.h>
+#include <mailtransport/transport.h>
+#include <mailtransport/transportattribute.h>
+#include <mailtransport/transportjob.h>
+#include <mailtransport/transportmanager.h>
+
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
+#include <akonadi/kmime/addressattribute.h>
+#include <akonadi/kmime/messageparts.h>
 
 using namespace Akonadi;
 using namespace KMime;
 using namespace MailTransport;
-using namespace OutboxInterface;
-
 
 /**
  * Private class that helps to provide binary compatibility between releases.
@@ -62,6 +63,7 @@ class SendJob::Private
       : q( qq )
       , item( itm )
       , currentJob( 0 )
+      , iface( 0 )
       , aborting( false )
     {
     }
@@ -69,16 +71,21 @@ class SendJob::Private
     SendJob *const q;
     Item item;
     KJob *currentJob;
+    QString resourceId;
+    QDBusInterface *iface;
     bool aborting;
 
+    void doTransport(); // slot
+    void doAkonadiTransport();
+    void doTraditionalTransport();
+    void transportPercent( KJob *job, unsigned long percent ); // slot
+    void transportResult( KJob *job ); // slot
+    void resourceProgress( const AgentInstance &instance ); // slot
+    void resourceResult( qlonglong itemId, bool success, const QString &message ); // slot
+    void doPostJob( bool transportSuccess, const QString &transportMessage ); // result of transport
+    void postJobResult( KJob *job ); // slot
     void storeResult( bool success, const QString &message = QString() );
-
-    // slots:
-    void doTransport();
-    void transportPercent( KJob *job, unsigned long percent );
-    void transportResult( KJob *job );
-    void postJobResult( KJob *job );
-    void doEmitResult( KJob *job ); // result of storeResult transaction
+    void doEmitResult( KJob *job ); // slot: result of storeResult transaction
 
 };
 
@@ -95,46 +102,81 @@ void SendJob::Private::doTransport()
     return;
   }
 
-  // get transport and addresses from attributes
+  // Is it an Akonadi transport or a traditional one?
   TransportAttribute *tA = item.attribute<TransportAttribute>();
   Q_ASSERT( tA );
-  TransportJob *tjob = TransportManager::self()->createTransportJob( tA->transportId() );
-  if( !tjob ) {
+  if( !tA->transport() ) {
     storeResult( false, i18n( "Could not initiate message transport. Possibly invalid transport." ) );
     return;
   }
+  TransportType type = tA->transport()->transportType();
+  Q_ASSERT( type.isValid() );
+  if( type.type() == Transport::EnumType::Akonadi ) {
+    // Send the item directly to the resource that will send it.
+    resourceId = tA->transport()->host();
+    doAkonadiTransport();
+  } else {
+    // Use a traditional transport job.
+    doTraditionalTransport();
+  }
+}
+
+void SendJob::Private::doAkonadiTransport()
+{
+  Q_ASSERT( !resourceId.isEmpty() );
+  Q_ASSERT( iface == 0 );
+  iface = new QDBusInterface(
+      QLatin1String( "org.freedesktop.Akonadi.Resource." ) + resourceId,
+      QLatin1String( "/Transport" ), QLatin1String( "org.freedesktop.Akonadi.Resource.Transport" ),
+      QDBusConnection::sessionBus(), q );
+  if( !iface->isValid() ) {
+    storeResult( false, i18n( "Failed to get D-Bus interface of resource %1.", resourceId ) );
+    return;
+  }
+
+  // Signals.
+  QObject::connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
+      q, SLOT(resourceProgress(Akonadi::AgentInstance)) );
+  QObject::connect( iface, SIGNAL(transportResult(qlonglong,bool,QString)),
+      q, SLOT(resourceResult(qlonglong,bool,QString)) );
+
+  // Start sending.
+  QDBusReply<void> reply = iface->call( QLatin1String( "send" ), item.id() );
+  if( !reply.isValid() ) {
+    storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
+    return;
+  }
+}
+
+void SendJob::Private::doTraditionalTransport()
+{
+  TransportAttribute *tA = item.attribute<TransportAttribute>();
+  TransportJob *tjob = TransportManager::self()->createTransportJob( tA->transportId() );
+  Q_ASSERT( tjob );
   Q_ASSERT( currentJob == 0 );
   currentJob = tjob;
 
-  AkonadiJob *ajob = dynamic_cast<AkonadiJob*>( currentJob );
-  if( ajob ) {
-    // It's an Akonadi job.
-    ajob->setItemId( item.id() );
-    // FIXME this keeps all the attributes and flags of the MDA...
-  } else {
-    // It's a SMTP or Sendmail job.
-    // get message from payload
-    Q_ASSERT( item.hasPayload<Message::Ptr>() );
-    const Message::Ptr message = item.payload<Message::Ptr>();
-    const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
-    //kDebug() << "msg:" << cmsg;
-    Q_ASSERT( !cmsg.isEmpty() );
+  // Message.
+  Q_ASSERT( item.hasPayload<Message::Ptr>() );
+  const Message::Ptr message = item.payload<Message::Ptr>();
+  const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
+  //kDebug() << "msg:" << cmsg;
+  Q_ASSERT( !cmsg.isEmpty() );
 
-    AddressAttribute *addrA = item.attribute<AddressAttribute>();
-    Q_ASSERT( addrA );
-    tjob->setData( cmsg );
-    tjob->setSender( addrA->from() );
-    tjob->setTo( addrA->to() );
-    tjob->setCc( addrA->cc() );
-    tjob->setBcc( addrA->bcc() );
-  }
-  connect( currentJob, SIGNAL( result( KJob * ) ), q, SLOT( transportResult( KJob * ) ) );
-  connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
+  // Addresses.
+  AddressAttribute *addrA = item.attribute<AddressAttribute>();
+  Q_ASSERT( addrA );
+  tjob->setData( cmsg );
+  tjob->setSender( addrA->from() );
+  tjob->setTo( addrA->to() );
+  tjob->setCc( addrA->cc() );
+  tjob->setBcc( addrA->bcc() );
+
+  // Signals.
+  connect( tjob, SIGNAL(result(KJob*)), q, SLOT(transportResult(KJob*)) );
+  connect( tjob, SIGNAL(percent(KJob*,unsigned long)),
       q, SLOT(transportPercent(KJob*,unsigned long)) );
-  // The postJob and storeResultJob don't really keep track of progress...
-  currentJob->start(); // non-Akonadi
-
-  // TODO something about timeouts.
+  tjob->start(); // non-Akonadi
 }
 
 void SendJob::Private::transportPercent( KJob *job, unsigned long percent )
@@ -143,7 +185,7 @@ void SendJob::Private::transportPercent( KJob *job, unsigned long percent )
   Q_ASSERT( currentJob == job );
   kDebug() << "Processed amount" << job->processedAmount( KJob::Bytes )
     << "total amount" << job->totalAmount( KJob::Bytes );
-  q->setTotalAmount( KJob::Bytes, job->totalAmount( KJob::Bytes ) ); // isn't set at the time of start()
+  q->setTotalAmount( KJob::Bytes, job->totalAmount( KJob::Bytes ) ); // Is not set at the time of start().
   q->setProcessedAmount( KJob::Bytes, job->processedAmount( KJob::Bytes ) );
 }
 
@@ -151,8 +193,38 @@ void SendJob::Private::transportResult( KJob *job )
 {
   Q_ASSERT( currentJob == job );
   currentJob = 0;
+  doPostJob( !job->error(), job->errorString() );
+}
 
-  if( job->error() ) {
+void SendJob::Private::resourceProgress( const AgentInstance &instance )
+{
+  if( !iface ) {
+    // We might have gotten a very late signal.
+    kWarning() << "called but no resource job running!";
+    return;
+  }
+
+  if( instance.identifier() == resourceId ) {
+    // This relies on the resource's progress representing the progress of
+    // sending this item.
+    q->setPercent( instance.progress() );
+  }
+}
+
+void SendJob::Private::resourceResult( qlonglong itemId, bool success, const QString &message )
+{
+  Q_ASSERT( iface );
+  delete iface; // So that abort() knows the transport job is over.
+  iface = 0;
+  Q_ASSERT( itemId == item.id() );
+  doPostJob( success, message );
+}
+
+void SendJob::Private::doPostJob( bool transportSuccess, const QString &transportMessage )
+{
+  kDebug() << "success" << transportSuccess << "message" << transportMessage;
+
+  if( !transportSuccess ) {
     kDebug() << "Error transporting.";
     q->setError( UserDefinedError );
     QString err;
@@ -161,7 +233,7 @@ void SendJob::Private::transportResult( KJob *job )
     } else {
       err = i18n( "Failed to transport message." );
     }
-    q->setErrorText( err + ' ' + job->errorString() );
+    q->setErrorText( err + ' ' + transportMessage );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success transporting.";
@@ -223,7 +295,7 @@ void SendJob::Private::storeResult( bool success, const QString &message )
 
   Q_ASSERT( currentJob == 0 );
   currentJob = new StoreResultJob( item, success, message);
-  connect( currentJob, SIGNAL( result( KJob * ) ), q, SLOT( doEmitResult( KJob * ) ) );
+  connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(doEmitResult(KJob*)) );
 }
 
 void SendJob::Private::doEmitResult( KJob *job )
@@ -272,18 +344,21 @@ void SendJob::abort()
 {
   setMarkAborted();
 
-  if( !d->currentJob ) {
-    kDebug() << "Abort called but no active job.";
-    // Nothing to do; doTransport will abort when the time comes.
-  } else if( dynamic_cast<TransportJob*>( d->currentJob ) ) {
+  if( dynamic_cast<TransportJob*>( d->currentJob ) ) {
     kDebug() << "Abort called, active transport job.";
     // Abort transport.
     d->currentJob->kill( KJob::EmitResult );
+  } else if( d->iface != 0 ) {
+    kDebug() << "Abort called, propagating to resource.";
+    // Abort resource doing transport.
+    AgentInstance instance = AgentManager::self()->instance( d->resourceId );
+    instance.abort();
   } else {
-    kDebug() << "Abort called, but transport already finished.";
-    // Item was already sent, so let it finish in peace.
+    kDebug() << "Abort called, but no transport job is active.";
+    // Either transport has not started, in which case doTransport will
+    // mark the item as aborted, or the item has already been sent, in which
+    // case there is nothing we can do.
   }
 }
-
 
 #include "sendjob.moc"

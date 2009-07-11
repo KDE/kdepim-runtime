@@ -36,13 +36,12 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/dispatchmodeattribute.h>
-#include <outboxinterface/sentbehaviourattribute.h>
-#include <outboxinterface/transportattribute.h>
+#include <mailtransport/dispatchmodeattribute.h>
+#include <mailtransport/sentbehaviourattribute.h>
+#include <mailtransport/transportattribute.h>
 
 using namespace Akonadi;
-using namespace OutboxInterface;
-
+using namespace MailTransport;
 
 /**
  * @internal

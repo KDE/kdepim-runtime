@@ -26,10 +26,10 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
 
-#include <outboxinterface/errorattribute.h>
+#include <mailtransport/errorattribute.h>
 
 using namespace Akonadi;
-using namespace OutboxInterface;
+using namespace MailTransport;
 
 
 /**

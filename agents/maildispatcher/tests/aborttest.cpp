@@ -37,16 +37,15 @@
 #include <akonadi/private/collectionpathresolver_p.h>
 #include <akonadi/kmime/localfolders.h>
 
+#include <mailtransport/dispatcherinterface.h>
+#include <mailtransport/errorattribute.h>
+#include <mailtransport/messagequeuejob.h>
 #include <mailtransport/transport.h>
+#include <mailtransport/transportattribute.h>
 #include <mailtransport/transportmanager.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
-
-#include <outboxinterface/dispatcherinterface.h>
-#include <outboxinterface/errorattribute.h>
-#include <outboxinterface/messagequeuejob.h>
-#include <outboxinterface/transportattribute.h>
 
 #define SPAM_ADDRESS "idanoka@gmail.com"
 // NOTE: This test relies on a large SMTP message taking long enough to deliver,
@@ -56,8 +55,6 @@
 using namespace Akonadi;
 using namespace KMime;
 using namespace MailTransport;
-using namespace OutboxInterface;
-
 
 void AbortTest::initTestCase()
 {

@@ -34,13 +34,13 @@
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
 
+#include <mailtransport/messagequeuejob.h>
 #include <mailtransport/transport.h>
 #include <mailtransport/transportmanager.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <outboxinterface/messagequeuejob.h>
 
 #define TIMEOUT_SECONDS 60
 #define MAXCOUNT 99 // must be 2-digit!
@@ -48,8 +48,6 @@
 using namespace Akonadi;
 using namespace KMime;
 using namespace MailTransport;
-using namespace OutboxInterface;
-
 
 void DupeTest::initTestCase()
 {
