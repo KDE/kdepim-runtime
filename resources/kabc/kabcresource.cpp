@@ -89,6 +89,8 @@ KABCResource::KABCResource( const QString &id )
     mDelayedSaveTimer( new QTimer( this ) ),
     mContactGroupMimeChecker( new MimeTypeChecker() )
 {
+  KGlobal::locale()->insertCatalog("akonadi_kresourceassistant");
+
   mAddressBook->setErrorHandler( mErrorHandler );
   connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
 
