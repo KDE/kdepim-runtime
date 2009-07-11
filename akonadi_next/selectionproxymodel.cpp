@@ -879,7 +879,10 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
           SLOT(sourceModelReset()));
   connect(sourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
           SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex & )));
-
+  connect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
+          SLOT(sourceLayoutAboutToBeChanged()));
+  connect(sourceModel, SIGNAL(layoutChanged()),
+          SLOT(sourceLayoutChanged()));
 }
 
 QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) const
