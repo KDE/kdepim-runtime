@@ -182,15 +182,15 @@ static const QByteArray simpleMail4 =
 void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
   // Delete all mails so the maildir is clean for the next test
-  foreach( const Item &item, items ) {
-    ItemDeleteJob *job = new ItemDeleteJob( item );
-    QVERIFY( job->exec() );
-  }
+  ItemDeleteJob *job = new ItemDeleteJob( items );
+  QVERIFY( job->exec() );
+
   QTime time;
   time.start();
   int lastCount = -1;
   forever {
     qApp->processEvents();
+    QTest::qWait( 500 );
     QDir maildir( mMaildirPath );
     maildir.refresh();
     int curCount = maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count();
@@ -218,6 +218,7 @@ void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
   int lastCount = -1;
   forever {
     qApp->processEvents();
+    QTest::qWait( 500 );
     QDir maildir( mMaildirPath );
     maildir.refresh();
     int curCount = static_cast<int>( maildir.entryList( QDir::Files | QDir::NoDotAndDotDot ).count() );

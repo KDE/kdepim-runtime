@@ -102,7 +102,7 @@ POP3Resource::~POP3Resource()
 }
 
 void POP3Resource::retrieveCollections()
-{
+{ 
   kDebug() << "Starting mail check...";
   emit status( Running, i18n( "Starting mail check..." ) );
 
