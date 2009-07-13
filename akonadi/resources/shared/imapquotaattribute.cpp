@@ -84,41 +84,41 @@ QByteArray ImapQuotaAttribute::serialized() const
 
   // First the roots list
   foreach ( const QByteArray &root, mRoots ) {
-    result+=root+' ';
+    result+=root+" % ";
   }
-  result.chop( 1 );
+  result.chop( 3 );
 
-  result+= " %%% "; // Members separator
+  result+= " %%%% "; // Members separator
 
   // Then the limit maps list
   for ( int i=0; i<mRoots.size(); ++i ) {
     const QMap<QByteArray, qint64> limits = mLimits[i];
     foreach ( const QByteArray &key, limits.keys() ) {
       result+= key;
-      result+= ' ';
-      result+= QByteArray::number( limits[key] );
       result+= " % "; // We use this separator as '%' is not allowed in keys or values
+      result+= QByteArray::number( limits[key] );
+      result+= " %% "; // Pairs separator
     }
-    result.chop( 3 );
-    result+= " %% "; // Maps separator
+    result.chop( 4 );
+    result+= " %%% "; // Maps separator
   }
-  result.chop( 4 );
+  result.chop( 5 );
 
-  result+= " %%% "; // Members separator
+  result+= " %%%% "; // Members separator
 
   // Then the usage maps list
   for ( int i=0; i<mRoots.size(); ++i ) {
     const QMap<QByteArray, qint64> usages = mUsages[i];
     foreach ( const QByteArray &key, usages.keys() ) {
       result+= key;
-      result+= ' ';
-      result+= QByteArray::number( usages[key] );
       result+= " % "; // We use this separator as '%' is not allowed in keys or values
+      result+= QByteArray::number( usages[key] );
+      result+= " %% "; // Pairs separator
     }
-    result.chop( 3 );
-    result+= " %% "; // Maps separator
+    result.chop( 4 );
+    result+= " %%% "; // Maps separator
   }
-  result.chop( 4 );
+  result.chop( 5 );
 
   return result;
 }
@@ -136,7 +136,7 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
 
   QString string = QString::fromUtf8(data); // QByteArray has no proper split, so we're forced to convert to QString...
 
-  QStringList members = string.split( "%%%" );
+  QStringList members = string.split( "%%%%" );
 
   // We expect exactly three members (roots, limits and usages), otherwise something is funky
   if ( members.size() != 3 ) {
@@ -144,20 +144,24 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
     return;
   }
 
-  QStringList roots = members[0].trimmed().simplified().split( ' ' );
+  QStringList roots = members[0].trimmed().split( " % " );
   foreach ( const QString &root, roots ) {
-    mRoots << root.toUtf8();
+    mRoots << root.trimmed().toUtf8();
   }
 
-  QStringList allLimits = members[1].trimmed().split( "%%" );
+  QStringList allLimits = members[1].trimmed().split( "%%%" );
 
   foreach ( const QString &limits, allLimits ) {
     QMap<QByteArray, qint64> limitsMap;
-    QList<QByteArray> lines = limits.toUtf8().split( '%' );
+    QStringList strLines = limits.split( "%%" );
+    QList<QByteArray> lines;
+    foreach ( const QString strLine, strLines ) {
+      lines << strLine.trimmed().toUtf8();
+    }
 
     foreach ( const QByteArray &line, lines ) {
       QByteArray trimmed = line.trimmed();
-      int wsIndex = trimmed.indexOf( ' ' );
+      int wsIndex = trimmed.indexOf( '%' );
       const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
       const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
       limitsMap[key] = value.toLongLong();
@@ -166,15 +170,19 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
     mLimits << limitsMap;
   }
 
-  QStringList allUsages = members[2].trimmed().split( "%%" );
+  QStringList allUsages = members[2].trimmed().split( "%%%" );
 
   foreach ( const QString &usages, allUsages ) {
     QMap<QByteArray, qint64> usagesMap;
-    QList<QByteArray> lines = usages.toUtf8().split( '%' );
+    QStringList strLines = usages.split( "%%" );
+    QList<QByteArray> lines;
+    foreach ( const QString strLine, strLines ) {
+      lines << strLine.trimmed().toUtf8();
+    }
 
     foreach ( const QByteArray &line, lines ) {
       QByteArray trimmed = line.trimmed();
-      int wsIndex = trimmed.indexOf( ' ' );
+      int wsIndex = trimmed.indexOf( '%' );
       const QByteArray key = trimmed.mid( 0, wsIndex ).trimmed();
       const QByteArray value = trimmed.mid( wsIndex+1, line.length()-wsIndex ).trimmed();
       usagesMap[key] = value.toLongLong();

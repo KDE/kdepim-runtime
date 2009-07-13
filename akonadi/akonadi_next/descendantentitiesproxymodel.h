@@ -132,6 +132,14 @@ class AKONADI_NEXT_EXPORT DescendantEntitiesProxyModel : public AbstractProxyMod
     virtual QModelIndex parent(const QModelIndex&) const;
     virtual int columnCount(const QModelIndex&) const;
 
+
+    /**
+    Reimplemented to match all descendants.
+    */
+    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value,
+        int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
+
+
 private:
   Q_DECLARE_PRIVATE( DescendantEntitiesProxyModel )
   //@cond PRIVATE

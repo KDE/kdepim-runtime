@@ -54,6 +54,8 @@ KCalResource::KCalResource( const QString &id )
     mDelayedSaveTimer( new QTimer( this ) ),
     mIncidenceAssigner( new KCal::AssignmentVisitor() )
 {
+  KGlobal::locale()->insertCatalog("akonadi_kresourceassistant");
+
   // setup for UID generation
   const QString prodId = QLatin1String( "-//Akonadi//NONSGML KDE Compatibility Resource %1//EN" );
   KCal::CalFormat::setApplication( QLatin1String( progName ), prodId.arg( progVersion ) );

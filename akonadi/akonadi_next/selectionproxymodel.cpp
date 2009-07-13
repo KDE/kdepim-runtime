@@ -389,11 +389,32 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
 void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
 
+  Q_Q(SelectionProxyModel);
+
+  if (isInModel(srcParent))
+  {
+    if (isInModel(destParent))
+    {
+      // The easy case.
+      q->beginMoveRows(q->mapFromSource(srcParent), srcStart, srcEnd, q->mapFromSource(destParent), destRow);
+      return;
+    }
+  }
 }
 
 void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
+  Q_Q(SelectionProxyModel);
 
+  if (isInModel(srcParent))
+  {
+    if (isInModel(destParent))
+    {
+      // The easy case.
+      q->endMoveRows();
+      return;
+    }
+  }
 }
 
 bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
@@ -879,7 +900,10 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
           SLOT(sourceModelReset()));
   connect(sourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
           SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex & )));
-
+  connect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
+          SLOT(sourceLayoutAboutToBeChanged()));
+  connect(sourceModel, SIGNAL(layoutChanged()),
+          SLOT(sourceLayoutChanged()));
 }
 
 QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) const
@@ -890,6 +914,7 @@ QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) cons
     return QModelIndex();
 
   QModelIndex idx = d->m_map.value(proxyIndex.internalPointer());
+  idx = idx.sibling(proxyIndex.row(), proxyIndex.column());
   return idx;
 
 }

@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
-$EXTRACTRC `find . -name \*.ui` >> rc.cpp || exit 11
-$XGETTEXT *.cpp -o $podir/akonadi_kabc_resource.pot
+$XGETTEXT kabcresource.cpp -o $podir/akonadi_kabc_resource.pot
+$XGETTEXT kresourceassistant.cpp -o $podir/akonadi_kresourceassistant.pot

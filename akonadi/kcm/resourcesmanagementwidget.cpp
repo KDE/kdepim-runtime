@@ -30,6 +30,8 @@
 #include <akonadi/agenttypedialog.h>
 #include <akonadi/control.h>
 
+#include <kwindowsystem.h>
+
 #include <KDebug>
 #include <KMenu>
 #include <KMessageBox>
@@ -105,8 +107,10 @@ void ResourcesManagementWidget::addClicked()
 void ResourcesManagementWidget::editClicked()
 {
     Akonadi::AgentInstance instance = d->ui.resourcesList->currentAgentInstance();
-    if ( instance.isValid() )
+    if ( instance.isValid() ) {
+        KWindowSystem::allowExternalProcessWindowActivation();
         instance.configure( this );
+    }
 }
 
 void ResourcesManagementWidget::removeClicked()
