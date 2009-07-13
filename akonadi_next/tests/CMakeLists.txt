@@ -23,6 +23,7 @@ ENDMACRO(KDEUI_UNIT_TESTS)
 KDEUI_UNIT_TESTS(
   descendantentitiesproxymodeltest
   selectionproxymodeltest
+  testmoves
 )
 
 
