@@ -720,4 +720,34 @@ Qt::ItemFlags DescendantEntitiesProxyModel::flags( const QModelIndex &index ) co
 }
 
 
+QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
+{
+  QModelIndexList proxyList;
+
+  QModelIndex sourceStart = mapToSource(start);
+  QModelIndex parent = sourceModel()->parent(sourceStart);
+
+  proxyList << sourceModel()->match(sourceStart, role, value, hits, flags);
+
+  for (int i = sourceStart.row(); i < sourceModel()->rowCount(parent); i++)
+  {
+    QModelIndex idx = sourceStart.sibling(i, sourceStart.column());
+    Q_ASSERT(idx.isValid());
+    if (sourceModel()->hasChildren(idx))
+    {
+      QModelIndex idx2 = sourceModel()->index(0, idx.column(), idx);
+      if (!idx2.isValid())
+        break;
+      QModelIndexList l = match(mapFromSource(idx2), role, value, hits, flags);
+      proxyList << l;
+    }
+  }
+
+  return proxyList;
+
+}
+
+
+
+
 #include "moc_descendantentitiesproxymodel.cpp"
