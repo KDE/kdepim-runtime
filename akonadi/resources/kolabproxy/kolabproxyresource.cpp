@@ -259,22 +259,57 @@ void KolabProxyResource::imapItemUpdateFetchResult(KJob* job)
     return;
   }
 
-  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob->items().size() == 1 );
-  Item imapItem = fetchJob->items().first();
+  const Item kolabItem = job->property( KOLAB_ITEM ).value<Item>();
 
-  KolabHandler *handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
-  if (!handler) {
+  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob->items().size() <= 1 );
+  if ( fetchJob->items().size() == 1 ) {
+    Item imapItem = fetchJob->items().first();
+
+    KolabHandler *handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
+    if (!handler) {
+      kWarning() << "No handler found";
+      cancelTask();
+      return;
+    }
+
+    handler->toKolabFormat( kolabItem , imapItem );
+    ItemModifyJob *mjob = new ItemModifyJob( imapItem );
+    mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
+    connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
+  } else {
+    // HACK FIXME how can that happen at all?
+    CollectionFetchJob *fetch = new CollectionFetchJob( Collection( kolabItem.storageCollectionId() ), CollectionFetchJob::Base, this );
+    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+    connect( fetch, SLOT(result(KJob*)), SLOT(imapUpdateCollectionFetchResult(KJob*)) );
+  }
+}
+
+void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob* job )
+{
+  CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
+  if ( job->error() || fetchJob->collections().size() != 1 ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  const Item kolabItem = job->property( KOLAB_ITEM ).value<Item>();
+  const Collection kolabCollection = fetchJob->collections().first();
+  const Collection imapCollection( kolabCollection.remoteId().toUInt() );
+
+  KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
+  if ( !handler ) {
     kWarning() << "No handler found";
     cancelTask();
     return;
   }
+  Item imapItem(handler->contentMimeTypes()[0]);
+  handler->toKolabFormat( kolabItem, imapItem );
 
-  const Item kolabItem = fetchJob->property( KOLAB_ITEM ).value<Item>();
-  handler->toKolabFormat( kolabItem , imapItem );
-  ItemModifyJob *mjob = new ItemModifyJob( imapItem );
-  mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
-  connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
+  ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
+  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
+  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
 }
 
 void KolabProxyResource::imapItemUpdateResult(KJob* job)
