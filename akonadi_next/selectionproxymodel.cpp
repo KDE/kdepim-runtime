@@ -389,11 +389,32 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
 void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
 
+  Q_Q(SelectionProxyModel);
+
+  if (isInModel(srcParent))
+  {
+    if (isInModel(destParent))
+    {
+      // The easy case.
+      q->beginMoveRows(q->mapFromSource(srcParent), srcStart, srcEnd, q->mapFromSource(destParent), destRow);
+      return;
+    }
+  }
 }
 
 void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
+  Q_Q(SelectionProxyModel);
 
+  if (isInModel(srcParent))
+  {
+    if (isInModel(destParent))
+    {
+      // The easy case.
+      q->endMoveRows();
+      return;
+    }
+  }
 }
 
 bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
