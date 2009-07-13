@@ -30,7 +30,7 @@ public:
   AmazingCompleter::ViewHandler m_viewHandler;
   QVariant m_matchData;
 
-  Q_DECLARE_PUBLIC(AmazingCompleter);
+  Q_DECLARE_PUBLIC(AmazingCompleter)
   AmazingCompleter *q_ptr;
 
 };

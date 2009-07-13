@@ -47,7 +47,7 @@ protected:
   virtual void connectModelToView(QAbstractItemModel *model, QAbstractItemView *view);
 
 private:
-  Q_DECLARE_PRIVATE(AmazingCompleter);
+  Q_DECLARE_PRIVATE(AmazingCompleter)
 
   AmazingCompleterPrivate *d_ptr;
 
