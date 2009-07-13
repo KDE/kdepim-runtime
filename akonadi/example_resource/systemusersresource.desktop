@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=System Users
+Comment=Users on the local system
+Type=AkonadiResource
+Exec=akonadi_systemusers_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource,Unique
+X-Akonadi-Identifier=akonadi_systemusers_resource
