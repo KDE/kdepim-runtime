@@ -42,8 +42,6 @@ public:
 private:
   DynamicTreeModel *m_model;
 
-  ModelSpy *spy;
-
 };
 
 
@@ -67,9 +65,6 @@ void MoveTester::init()
   insertCommand->setStartRow(0);
   insertCommand->setEndRow(9);
   insertCommand->doCommand();
-
-  spy = new ModelSpy(this);
-  spy->setModel(m_model);
 
 }
 
