@@ -69,12 +69,6 @@ class AKONADI_NEXT_EXPORT AbstractProxyModel : public QAbstractProxyModel
     virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
     virtual QStringList mimeTypes() const;
 
-    /**
-    Reimplemented to handle the AmazingCompletionRole.
-    */
-    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value,
-        int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
-
   protected:
     void beginMoveRows( const QModelIndex &srcParent, int start, int end,
                         const QModelIndex &destinationParent, int destinationRow);
