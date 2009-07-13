@@ -37,7 +37,10 @@ set( akonadi_next_SRCS
   selectionproxymodel.cpp
   statisticsproxymodel.cpp
   statisticstooltipproxymodel.cpp
-  )
+  amazingcompleter.cpp
+  amazingview.cpp
+  amazingdelegate.cpp
+)
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
 
