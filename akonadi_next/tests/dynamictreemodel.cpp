@@ -357,3 +357,20 @@ void ModelMoveCommand::doCommand()
   m_model->endMoveRows();
 }
 
+
+ModelFakeMoveCommand::ModelFakeMoveCommand(DynamicTreeModel *model, QObject *parent)
+: ModelChangeCommand(model, parent)
+{
+
+}
+
+void ModelFakeMoveCommand::doCommand()
+{
+  QModelIndex srcParent = findIndex(m_rowNumbers);
+  QModelIndex destParent = findIndex(m_destRowNumbers);
+
+  m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+
+
+  m_model->endMoveRows();
+}

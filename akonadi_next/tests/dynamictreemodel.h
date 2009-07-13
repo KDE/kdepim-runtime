@@ -74,6 +74,7 @@ private:
   friend class ModelRemoveCommand;
   friend class ModelDataChangeCommand;
   friend class ModelMoveCommand;
+  friend class ModelFakeMoveCommand;
   friend class ModelMoveLayoutChangeCommand;
 //   friend class ModelSortIndexCommand;
   friend class ModelSortIndexLayoutChangeCommand;
@@ -183,6 +184,26 @@ public:
   ModelMoveCommand(DynamicTreeModel *model, QObject *parent);
 
   virtual ~ModelMoveCommand() {}
+
+  virtual void doCommand();
+
+  void setDestAncestors( QList<int> rows ) { m_destRowNumbers = rows; }
+
+  void setDestRow(int row) { m_destRow = row; }
+
+protected:
+  QList<int> m_destRowNumbers;
+  int m_destRow;
+};
+
+
+class ModelFakeMoveCommand : public ModelChangeCommand
+{
+  Q_OBJECT
+public:
+  ModelFakeMoveCommand(DynamicTreeModel *model, QObject *parent);
+
+  virtual ~ModelFakeMoveCommand() {}
 
   virtual void doCommand();
 
