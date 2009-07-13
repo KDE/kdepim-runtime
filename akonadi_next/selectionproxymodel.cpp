@@ -893,6 +893,7 @@ QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) cons
     return QModelIndex();
 
   QModelIndex idx = d->m_map.value(proxyIndex.internalPointer());
+  idx = idx.sibling(proxyIndex.row(), proxyIndex.column());
   return idx;
 
 }
