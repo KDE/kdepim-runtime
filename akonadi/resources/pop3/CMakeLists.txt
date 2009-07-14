@@ -37,12 +37,14 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( pop3resource_SRCS
   pop3resource.cpp
+  accountdialog.cpp
 )
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
+kde4_add_ui_files( pop3resource_SRCS popsettings.ui)
 kde4_add_kcfg_files(pop3resource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/pop3resource.kcfg org.kde.Akonadi.POP3.Settings)
 qt4_add_dbus_adaptor(pop3resource_SRCS
@@ -57,6 +59,7 @@ target_link_libraries( akonadi_pop3_resource
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KMIME_LIBS}
+  ${KDE4_MAILTRANSPORT_LIBRARY}
 )
 
 add_subdirectory(tests)

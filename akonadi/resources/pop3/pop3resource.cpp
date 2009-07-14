@@ -17,6 +17,7 @@
    Boston, MA 02110-1301, USA.
 */
 #include "pop3resource.h"
+#include "accountdialog.h"
 
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -257,6 +258,11 @@ void POP3Resource::aboutToQuit()
 void POP3Resource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
+
+  AccountDialog accountDialog;
+  accountDialog.exec();
+
+  synchronize();
 }
 
 void POP3Resource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
