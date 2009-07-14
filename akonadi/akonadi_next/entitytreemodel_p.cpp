@@ -252,29 +252,39 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
 {
   Q_Q( EntityTreeModel );
 
-  const int row = indexOf( m_childEntities.value( collection.parent() ), collection.id() );
 
-  if ( row < 0 )
+  // This may be a signal for a collection we've already removed by removing its ancestor.
+  if (!m_collections.contains(collection.id()))
     return;
 
-//   int row = m_childEntities.value(collection.parent()).indexOf(collection.id());
-  Q_ASSERT( row >= 0 );
+  const int row = indexOf( m_childEntities.value( collection.parent() ), collection.id() );
+    
   const QModelIndex parentIndex = q->indexForCollection( m_collections.value( collection.parent() ) );
 
   q->beginRemoveRows( parentIndex, row, row );
 
-  // TODO: Also need to handle all descendant collections and items here.
-
-  // Remove deleted collection.
-  m_collections.remove( collection.id() );
-
-  // Remove children of deleted collection.
-  m_childEntities.remove( collection.id() );
+  // Delete all descendant collections and items.
+  removeChildEntities(collection.id());
 
   // Remove deleted collection from its parent.
   m_childEntities[ collection.parent() ].removeAt( row );
 
   q->endRemoveRows();
+}
+
+void EntityTreeModelPrivate::removeChildEntities(Collection::Id colId)
+{
+  foreach (Node *node, m_childEntities.value(colId))
+  {
+    if (Node::Item == node->type)
+    {
+      m_items.remove(node->id);
+    } else {
+      removeChildEntities(node->id);
+      m_collections.remove(node->id);
+    }
+    m_childEntities.remove(node->id);
+  }
 }
 
 void EntityTreeModelPrivate::monitoredCollectionMoved( const Akonadi::Collection& collection,

@@ -89,6 +89,7 @@ public:
   Entity::Id childAt( Collection::Id, int position, bool *ok ) const;
   int indexOf( Collection::Id parent, Collection::Id id ) const;
   Item getItem( Item::Id id ) const;
+  void removeChildEntities(Collection::Id colId);
 
   QHash<Collection::Id, Collection> m_collections;
   QHash<Entity::Id, Item> m_items;
