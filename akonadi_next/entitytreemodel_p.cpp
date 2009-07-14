@@ -219,15 +219,58 @@ void EntityTreeModelPrivate::monitoredMimeTypeChanged( const QString & mimeType,
     m_mimeChecker.removeWantedMimeType( mimeType );
 }
 
-void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
+void EntityTreeModelPrivate::retrieveAncestors(const Akonadi::Collection& collection)
 {
   Q_Q( EntityTreeModel );
+  // Unlike fetchCollections, this method fetches collections by traversing up, not down.
+  CollectionFetchJob *job = new CollectionFetchJob( Collection( collection.parent() ), CollectionFetchJob::Base, m_session );
+  job->includeUnsubscribed( m_includeUnsubscribed );
+  job->includeStatistics( m_includeStatistics );
+  q->connect( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ),
+              q, SLOT( ancestorsFetched( const Akonadi::Collection::List& ) ) );
+  q->connect( job, SIGNAL( result( KJob* ) ),
+              q, SLOT( fetchJobDone( KJob* ) ) );
+}
 
-  // Some collection trees contain multiple mimetypes. Even though server side filtering ensures we
-  // only get the ones we're interested in from the job, we have to filter on collections recieved through signals too.
-  if ( !m_mimeChecker.isWantedCollection( collection ) )
-    return;
+void EntityTreeModelPrivate::ancestorsFetched(const Akonadi::Collection::List& collectionList)
+{
+  // List is a size of one.
+  foreach(const Collection &collection, collectionList)
+  {
+    // We should find a collection already in the tree before we reach the collection root.
+    // We're looking to bridge a gap here.
+    Q_ASSERT(collection != Collection::root());
 
+    // We already checked this either on the previous recursion or in monitoredCollectionAdded.
+    Q_ASSERT(!m_collections.contains(collection.id()));
+
+    m_ancestors.prepend(collection);
+    if (m_collections.contains(collection.parent()))
+    {
+      m_ancestors.prepend( m_collections.value(collection.parent()) );
+      insertAncestors(m_ancestors);
+    } else {
+      retrieveAncestors(collection);
+    }
+  }
+}
+
+void EntityTreeModelPrivate::insertAncestors(const Akonadi::Collection::List& collectionList)
+{
+  Collection::List::const_iterator it;
+  const Collection::List::const_iterator begin = collectionList.constBegin() + 1;
+  const Collection::List::const_iterator end = collectionList.constEnd();
+  for (it = begin; it != end; ++it)
+  {
+    insertCollection(*it, *(it-1));
+  }
+  m_ancestors.clear();
+}
+
+void EntityTreeModelPrivate::insertCollection( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
+{
+
+  Q_Q( EntityTreeModel );
   // TODO: Use order attribute of parent if available
   // Otherwise prepend collections and append items. Currently this prepends all collections.
 
@@ -249,6 +292,27 @@ void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection
   node->type = Node::Collection;
   m_childEntities[ parent.id() ].prepend( node );
   q->endInsertRows();
+}
+
+void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
+{
+
+  // Some collection trees contain multiple mimetypes. Even though server side filtering ensures we
+  // only get the ones we're interested in from the job, we have to filter on collections recieved through signals too.
+  if ( !m_mimeChecker.isWantedCollection( collection ) )
+    return;
+
+  if (!m_collections.contains(parent.id()))
+  {
+    // The collection we're interested in is contained in a collection we're not interested in.
+    // We download the ancestors of the collection we're interested in to complete the tree.
+    m_ancestors.prepend(collection);
+    retrieveAncestors(collection);
+    return;
+  }
+
+  insertCollection(collection, parent);
+  
 }
 
 void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collection& collection )
