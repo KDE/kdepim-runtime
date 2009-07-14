@@ -1,11 +1,17 @@
 [Desktop Entry]
 Name=IMAP E-Mail Server
+Name[gl]=Servidor de correo IMAP
 Name[nds]=IMAP-Nettpostserver
+Name[nn]=IMAP e-posttenar
+Name[pt]=Servidor de E-Mail IMAP
 Name[pt_BR]=Servidor de e-mails IMAP
 Name[sv]=IMAP e-postserver
 Name[x-test]=xxIMAP E-Mail Serverxx
 Comment=Connects to an IMAP e-mail server.
+Comment[gl]=Conéctase a un servidor de correo IMAP.
 Comment[nds]=Stellt en Verbinnen na en IMAP-Nettpostserver op.
+Comment[nn]=Koplar til ein IMAP-basert e-posttenar.
+Comment[pt]=Liga-se a um servidor de e-mail em IMAP.
 Comment[pt_BR]=Conecta a um servidor de e-mails IMAP.
 Comment[sv]=Ansluter till en IMAP e-postserver.
 Comment[x-test]=xxConnects to an IMAP e-mail server.xx

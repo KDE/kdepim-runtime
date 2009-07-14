@@ -1,11 +1,17 @@
 [Desktop Entry]
 Name=Kolab Groupware Server
+Name[gl]=Servidor de traballo en grupo Kolab
 Name[nds]=Kolab-Arbeitkoppel-Server
+Name[nn]=Kolab Groupware-tenar
+Name[pt]=Servidor de Groupware Kolab
 Name[pt_BR]=Servidor groupware Kolab
 Name[sv]=Kolab grupprogramserver
 Name[x-test]=xxKolab Groupware Serverxx
 Comment=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
+Comment[gl]=Fornece acceso aos cartafoles de traballo en grupo de Kolab dun servidor de IMAP (hai que configurar as contas IMAP por separado).
 Comment[nds]=Stellt Togriep op Kolab-Arbeitkoppel-Ornern op en IMAP-Server praat (IMAP-Kontos mööt enkelt inricht warrn).
+Comment[nn]=Gjev tilgang til Kolab gruppevare-mapper på ein IMAP-tenar (du må i tillegg setja opp IMAP-kontoane)
+Comment[pt]=Oferece o acesso às pastas de 'groupware' do Kolab num servidor IMAP (as contas de IMAP têm de ser definidas em separado).
 Comment[pt_BR]=Fornece acesso as pastas groupware Kolab em um servidor IMAP (as contas IMAP precisam ser definidas separadamente).
 Comment[sv]=Ger tillgång till Kolab grupprogramkorgar på en IMAP-server (IMAP-konton måste ställas in separat).
 Comment[x-test]=xxProvides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).xx
