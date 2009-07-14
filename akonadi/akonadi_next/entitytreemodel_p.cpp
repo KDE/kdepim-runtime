@@ -356,10 +356,10 @@ void EntityTreeModelPrivate::monitoredItemRemoved( const Akonadi::Item &item )
 
   const QModelIndex parentIndex = q->indexForCollection( m_collections.value( collection.id() ) );
 
-  q->beginInsertRows( parentIndex, row, row );
+  q->beginRemoveRows( parentIndex, row, row );
   m_items.remove( item.id() );
   m_childEntities[ collection.id() ].removeAt( row );
-  q->endInsertRows();
+  q->endRemoveRows();
 }
 
 void EntityTreeModelPrivate::monitoredItemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
