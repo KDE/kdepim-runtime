@@ -222,8 +222,11 @@ void EntityTreeModelPrivate::monitoredMimeTypeChanged( const QString & mimeType,
 void EntityTreeModelPrivate::monitoredCollectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
 {
   Q_Q( EntityTreeModel );
-//   if ( !passesFilter( collection.contentMimeTypes() ) )
-//     return;
+
+  // Some collection trees contain multiple mimetypes. Even though server side filtering ensures we
+  // only get the ones we're interested in from the job, we have to filter on collections recieved through signals too.
+  if ( !m_mimeChecker.isWantedCollection( collection ) )
+    return;
 
   // TODO: Use order attribute of parent if available
   // Otherwise prepend collections and append items. Currently this prepends all collections.
