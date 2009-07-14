@@ -236,7 +236,7 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
     contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
   } else if ( item.mimeType() == "message/rfc822" )
   {
-    contentUi.mailView->setMessageItem( item, true );
+    contentUi.mailView->setMessageItem( item, KMReaderWin::Force );
     contentUi.stack->setCurrentWidget( contentUi.mailViewPage );
   } else
   {
