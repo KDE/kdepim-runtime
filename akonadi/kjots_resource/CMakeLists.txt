@@ -12,8 +12,7 @@ include_directories(
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 # Temporary for development
-FILE(WRITE ${PROJECT_BINARY_DIR}/datadir.h "#define DATADIR \"" ${PROJECT_SOURCE_DIR}../kjots_common/data/ "\"\n\n" )
-include_directories( ${PROJECT_BINARY_DIR} )
+include_directories( ${PROJECT_BINARY_DIR}/../kjots_common )
 
 ########### next target ###############
 

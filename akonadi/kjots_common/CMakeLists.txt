@@ -8,7 +8,9 @@ set( kjots_common_SRCS
 )
 
 # Temporary for development
-FILE(WRITE ${PROJECT_BINARY_DIR}/datadir.h "#define DATADIR \"" ${PROJECT_SOURCE_DIR}/data/ "\"\n\n" )
+set(DATADIR "${PROJECT_SOURCE_DIR}/data/" )
+configure_file(datadir.h.cmake ${PROJECT_BINARY_DIR}/datadir.h)
+
 include_directories( ${PROJECT_BINARY_DIR} )
 
 kde4_add_library(kjots_common SHARED ${kjots_common_SRCS} )
