@@ -8,9 +8,6 @@ include_directories( ${KDE4_INCLUDES}
   ${PROJECT_SOURCE_DIR}/../tests
 )
 
-add_definitions(
-	-DAKONADI_NEXT_EXPORT=
-)
 set(proxymodeltestapp_SRCS
     main.cpp
     mainwindow.cpp
