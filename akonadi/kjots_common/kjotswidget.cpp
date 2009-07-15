@@ -186,6 +186,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   selProxy->setSourceModel(etm);
 
   // TODO: Write a QAbstractItemView subclass to render kjots selection.
+  connect(selProxy, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(renderSelection()));
   connect(selProxy, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(renderSelection()));
   connect(selProxy, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(renderSelection()));
 
