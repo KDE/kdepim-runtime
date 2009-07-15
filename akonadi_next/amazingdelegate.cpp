@@ -24,6 +24,12 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
   if (!item.isValid())
       QStyledItemDelegate::paint(painter, option, index);
 
+  if (!item.hasPayload<KABC::Addressee>())
+  {
+    kWarning() << "Not a KABC::Addressee" << item.id() << item.remoteId();
+    return;
+  }
+
   KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
   painter->save();

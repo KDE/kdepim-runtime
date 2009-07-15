@@ -61,6 +61,11 @@ MailModel::~MailModel()
 
 QVariant MailModel::getData(const Item &item, int column, int role) const
 {
+  if (!item.hasPayload<MessagePtr>())
+  {
+    kWarning() << "Not a message" << item.id() << item.remoteId() << item.mimeType();
+    return QVariant();
+  }
   const MessagePtr mail = item.payload<MessagePtr>();
   if (role == Qt::DisplayRole)
   {
