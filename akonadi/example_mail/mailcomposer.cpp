@@ -40,6 +40,7 @@
 
 #include "contactsmodel.h"
 #include <descendantentitiesproxymodel.h>
+#include <entityfilterproxymodel.h>
 
 using namespace Akonadi;
 
@@ -67,6 +68,10 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   descProxyModel->setSourceModel(contactsModel);
   descProxyModel->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
+  EntityFilterProxyModel *filter = new EntityFilterProxyModel(this);
+  filter->setSourceModel(descProxyModel);
+  filter->addMimeTypeExclusionFilter(Collection::mimeType());
+
   QLineEdit *emailLineEdit = new QLineEdit(this);
 
   QLabel *subjectLabel = new QLabel(this);
@@ -88,7 +93,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   this->setLayout(layout);
 
   AmazingCompleter *completer = new AmazingCompleter(this);
-  completer->setModel(descProxyModel);
+  completer->setModel(filter);
   completer->setMatchingRole(Akonadi::EntityTreeModel::AmazingCompletionRole);
   completer->setWidget(emailLineEdit);
 
