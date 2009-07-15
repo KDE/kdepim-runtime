@@ -65,6 +65,7 @@ protected slots:
   void renderSelection();
   void changeTheme();
   void exportSelection();
+  void savePage(const QModelIndex &, int, int);
 //   void dataChanged(const QModelIndex &, const QModelIndex &);
 
 private:

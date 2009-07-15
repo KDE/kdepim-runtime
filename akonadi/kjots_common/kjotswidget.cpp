@@ -190,6 +190,8 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   connect(selProxy, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(renderSelection()));
   connect(selProxy, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(renderSelection()));
 
+  connect(selProxy, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)), SLOT(savePage(const QModelIndex &, int, int) ) );
+
   stackedWidget = new QStackedWidget( splitter );
 
   editor = new KTextEdit( stackedWidget );
@@ -200,15 +202,38 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   browser = new QTextBrowser( stackedWidget );
   stackedWidget->addWidget( browser );
   stackedWidget->setCurrentWidget( browser );
-
-  connect( etm, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-      SLOT( dataChanged(const QModelIndex &, const QModelIndex &)));
-
 }
 
 KJotsWidget::~KJotsWidget()
 {
 
+}
+
+
+void KJotsWidget::savePage(const QModelIndex &parent, int start, int end)
+{
+//   QModelIndexList deselectedIndexes = deselected.indexes();
+//   if (deselectedIndexes.size() != 1)
+//     return;
+//
+//   QModelIndex idx = deselectedIndexes.at(0);
+
+
+  if(parent.isValid() || start != 0 || end != 0)
+    return;
+
+  const int column = 0;
+  QModelIndex idx = selProxy->index(start, column, parent);
+  Item item = idx.data(EntityTreeModel::ItemRole).value<Item>();
+  if (!item.isValid())
+    return;
+  KJotsPage page = item.payload<KJotsPage>();
+
+
+  kDebug() << editor->toPlainText();
+  page.setContent(editor->toPlainText());
+  item.setPayload(page);
+  selProxy->setData(idx, QVariant::fromValue(item), EntityTreeModel::ItemRole );
 }
 
 QString KJotsWidget::renderSelectionToHtml()
