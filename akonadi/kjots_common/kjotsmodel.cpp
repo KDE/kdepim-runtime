@@ -54,7 +54,8 @@ QString KJotsEntity::content()
   if (item.isValid())
   {
     KJotsPage page = item.payload<KJotsPage>();
-    return page.content();
+    return page.content().replace("\n", "<br />");
+//     return page.content();
   }
   return QString();
 }

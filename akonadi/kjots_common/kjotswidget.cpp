@@ -229,8 +229,6 @@ void KJotsWidget::savePage(const QModelIndex &parent, int start, int end)
     return;
   KJotsPage page = item.payload<KJotsPage>();
 
-
-  kDebug() << editor->toPlainText();
   page.setContent(editor->toPlainText());
   item.setPayload(page);
   selProxy->setData(idx, QVariant::fromValue(item), EntityTreeModel::ItemRole );
