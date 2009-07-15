@@ -6,6 +6,7 @@
 #include <kdebug.h>
 #include "entitytreemodel.h"
 #include <kabc/addressee.h>
+#include <klocalizedstring.h>
 
 using namespace Akonadi;
 
@@ -33,8 +34,17 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
   int yOffset = (option.rect.height() - PaintingScaleFactor) / 2;
   painter->translate(option.rect.x(), option.rect.y() + yOffset);
 
-  painter->drawText(50, 0, addressee.formattedName());
-  painter->drawText(50, 15, addressee.preferredEmail());
+  Collection parentCollection = index.data(EntityTreeModel::ParentCollection).value<Collection>();
+
+  QString name = addressee.givenName() + " " + addressee.familyName();
+
+  QString email = addressee.preferredEmail();
+  if (email.isEmpty())
+    email = i18nc("An email address is not known for a contact. This is the default text provided", "<no email>");
+
+  painter->drawText(50, 0, name);
+  painter->drawText(50, 15, email);
+  painter->drawText(50, 30, parentCollection.name());
 
 
   painter->restore();
@@ -50,7 +60,7 @@ QSize AmazingContactItemDelegate::sizeHint(const QStyleOptionViewItem& option, c
     return QStyledItemDelegate::sizeHint(option, index);
 
   QSize s = QStyledItemDelegate::sizeHint(option, index);
-  s.setHeight( s.height() * 2.5);
+  s.setHeight( s.height() * 4.5);
   return s;
 
 }
