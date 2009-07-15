@@ -59,8 +59,8 @@ class AKONADI_NEXT_EXPORT FavoriteCollectionsModel : public SelectionProxyModel
     using SelectionProxyModel::setStartWithChildTrees;
     using SelectionProxyModel::setIncludeAllSelected;
 
-    Q_PRIVATE_SLOT( d, void clearAndUpdateSelection() );
-    Q_PRIVATE_SLOT( d, void updateSelection() );
+    Q_PRIVATE_SLOT( d, void clearAndUpdateSelection() )
+    Q_PRIVATE_SLOT( d, void updateSelection() )
 
     //@cond PRIVATE
     class Private;
