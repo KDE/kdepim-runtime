@@ -50,6 +50,7 @@ class AKONADI_NEXT_EXPORT FavoriteCollectionsModel : public SelectionProxyModel
     void setCollections( const Collection::List &collections );
     Collection::List collections() const;
 
+    virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
   private:
     using SelectionProxyModel::setSourceModel;

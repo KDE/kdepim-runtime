@@ -89,5 +89,16 @@ Collection::List Akonadi::FavoriteCollectionsModel::collections() const
   return d->collections;
 }
 
+QVariant Akonadi::FavoriteCollectionsModel::headerData( int section, Qt::Orientation orientation, int role) const
+{
+  if ( section == 0
+    && orientation == Qt::Horizontal
+    && role == Qt::DisplayRole ) {
+    return "Favorite Folders";
+  } else {
+    return SelectionProxyModel::headerData( section, orientation, role );
+  }
+}
+
 #include "favoritecollectionsmodel.moc"
 
