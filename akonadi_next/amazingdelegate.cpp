@@ -7,6 +7,7 @@
 #include "entitytreemodel.h"
 #include <kabc/addressee.h>
 #include <klocalizedstring.h>
+#include <akonadi/entitydisplayattribute.h>
 
 using namespace Akonadi;
 
@@ -38,13 +39,30 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
 
   QString name = addressee.givenName() + " " + addressee.familyName();
 
+  KABC::Picture pic =addressee.photo();
+
+  if (!pic.isEmpty())
+  {
+    QImage image = pic.data();
+    painter->drawImage(QRect(0, 0, 40, 40), image);
+  }
+ 
+  QString parentName;
+  if (parentCollection.hasAttribute<EntityDisplayAttribute>() && !parentCollection.attribute<EntityDisplayAttribute>()->displayName().isEmpty())
+  {
+    parentName = parentCollection.attribute<EntityDisplayAttribute>()->displayName();
+  } else
+  {
+    parentName = parentCollection.name();
+  }
+
   QString email = addressee.preferredEmail();
   if (email.isEmpty())
     email = i18nc("An email address is not known for a contact. This is the default text provided", "<no email>");
 
   painter->drawText(50, 0, name);
   painter->drawText(50, 15, email);
-  painter->drawText(50, 30, parentCollection.name());
+  painter->drawText(50, 30, parentName);
 
 
   painter->restore();
