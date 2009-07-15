@@ -28,8 +28,6 @@ KJotsPlasmoid::KJotsPlasmoid( QObject *parent, const QVariantList &args )
     : Plasma::PopupApplet( parent, args ), w( 0 )
 {
   setPopupIcon( "kjots" );
-  setMinimumSize( QSizeF( 450, 400 ) );
-  setPreferredSize( QSizeF( 450, 400 ) );
 }
 
 
