@@ -43,6 +43,7 @@
 
 #include <akonadi_next/entitytreemodel.h>
 #include <akonadi_next/entitytreeview.h>
+#include <akonadi_next/favoritecollectionsmodel.h>
 #include <akonadi_next/statisticsproxymodel.h>
 #include <akonadi_next/statisticstooltipproxymodel.h>
 
@@ -98,9 +99,17 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter->setObjectName( "collectionSplitter" );
   layout->addWidget( splitter );
 
+  QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
+  splitter2->setObjectName( "collectionSplitter" );
+
   mCollectionView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
-  splitter->addWidget( mCollectionView );
+  splitter2->addWidget( mCollectionView );
+
+  Akonadi::EntityTreeView *favoritesView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
+  splitter2->addWidget( favoritesView );
+
+  splitter->addWidget( splitter2 );
 
   Session *session = new Session( "AkonadiConsole Browser Widget", this );
 
@@ -124,9 +133,12 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   sortModel->setSourceModel( proxy2 );
   mCollectionView->setModel( sortModel );
 
-  QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
-  splitter2->setObjectName( "itemSplitter" );
-  splitter->addWidget( splitter2 );
+  FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mCollectionModel, this );
+  favoritesView->setModel( favoritesModel );
+
+  QSplitter *splitter3 = new QSplitter( Qt::Vertical, this );
+  splitter3->setObjectName( "itemSplitter" );
+  splitter->addWidget( splitter3 );
 
   QWidget *itemViewParent = new QWidget( this );
   itemUi.setupUi( itemViewParent );
@@ -143,13 +155,13 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   connect( itemUi.itemView, SIGNAL(activated(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
   connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
-  splitter2->addWidget( itemViewParent );
+  splitter3->addWidget( itemViewParent );
   itemViewParent->layout()->setMargin( 0 );
 
   QWidget *contentViewParent = new QWidget( this );
   contentUi.setupUi( contentViewParent );
   connect( contentUi.saveButton, SIGNAL(clicked()), SLOT(save()) );
-  splitter2->addWidget( contentViewParent );
+  splitter3->addWidget( contentViewParent );
 
   connect( contentUi.attrAddButton, SIGNAL(clicked()), SLOT(addAttribute()) );
   connect( contentUi.attrDeleteButton, SIGNAL(clicked()), SLOT(delAttribute()) );
