@@ -56,6 +56,6 @@ endif (Grantlee_FOUND)
 
 #### Clients ####
 
-add_subdirectory(plasmoid)
+add_subdirectory(kjots_plasmoid)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
