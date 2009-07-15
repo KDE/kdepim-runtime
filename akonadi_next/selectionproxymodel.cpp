@@ -1091,4 +1091,10 @@ int SelectionProxyModel::columnCount(const QModelIndex &index) const
   return sourceModel()->columnCount(mapToSource(index));
 }
 
+QItemSelectionModel *SelectionProxyModel::selectionModel() const
+{
+  Q_D(const SelectionProxyModel);
+  return d->m_selectionModel;
+}
+
 #include "moc_selectionproxymodel.cpp"

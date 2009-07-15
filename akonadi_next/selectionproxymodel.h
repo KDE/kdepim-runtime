@@ -40,6 +40,8 @@ public:
 
   virtual void setSourceModel ( QAbstractItemModel * sourceModel );
 
+  QItemSelectionModel *selectionModel() const;
+
   /**
   Do not include the children of selected items in the model.
 
