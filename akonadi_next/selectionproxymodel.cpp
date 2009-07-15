@@ -307,45 +307,51 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &p
 {
   Q_Q(SelectionProxyModel);
 
-  if (!parent.isValid())
+  QModelIndexList affectedList;
+  for (int row = start; row <= end; row++)
   {
-    // Might have to remove some stuff from our model.
-    int startRow;
-    const int column = 0;
-    for (int row = start; row <= end; ++row)
+    affectedList << parent.child(row, parent.column());
+  }
+
+  int proxyStart = -1;
+  int proxyEnd = -1;
+  foreach(const QModelIndex &idx, m_rootIndexList)
+  {
+    if (isDescendantOf(affectedList, idx))
     {
-      QModelIndex idx = q->sourceModel()->index(row, column);
-      if (m_rootIndexList.contains(idx))
+      if (proxyStart == -1)
       {
-        startRow = row;
-        ++row;
-        idx = q->sourceModel()->index(row, column);
-        while(m_rootIndexList.contains(idx))
-        {
-          ++row;
-          idx = q->sourceModel()->index(row, column);
-        }
-        --row;
-        int proxyStartRow = q->mapFromSource(q->sourceModel()->index(startRow, column)).row();
-        m_rowBlocksToRemove++;
-        q->beginRemoveRows(QModelIndex(), proxyStartRow, proxyStartRow + (row - startRow));
+        proxyStart = idx.row();
+        proxyEnd = proxyStart;
+      } else {
+        proxyEnd++;
+      }
+      
+    } else
+    {
+      if (proxyStart != -1)
+      {
+        q->beginRemoveRows(QModelIndex(), proxyStart, proxyEnd);
+        return;
       }
     }
   }
 
-  if (isInModel(parent))
+  if (proxyStart != -1)
   {
-    q->beginRemoveRows(q->mapFromSource(parent), start, end);
+    q->beginRemoveRows(QModelIndex(), proxyStart, proxyEnd);
+    return;
+  }
+  
+  QModelIndex proxyParent = q->mapFromSource(parent);
+
+  if (!proxyParent.isValid())
+  {
+    // An index we don't care about.
     return;
   }
 
-  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
-  {
-    const int proxyStartRow = q->mapFromSource(sourceStart).row();
-    q->beginRemoveRows(QModelIndex(), proxyStartRow, proxyStartRow + (end - start));
-    return;
-  }
+  q->beginRemoveRows(proxyParent, start, end);
 }
 
 void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
@@ -353,37 +359,33 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
   Q_Q(SelectionProxyModel);
   Q_UNUSED(end)
 
-  if (!parent.isValid())
+  // Rows to remove are now invalid indexes.
+  QMutableListIterator<QPersistentModelIndex> it(m_rootIndexList);
+  bool rowsRemoved = false;
+  while (it.hasNext())
   {
-    // Rows to remove are now invalid indexes.
-    QMutableListIterator<QPersistentModelIndex> it(m_rootIndexList);
-    while (it.hasNext())
+    QPersistentModelIndex idx = it.next();
+    if (!idx.isValid())
     {
-      QPersistentModelIndex idx = it.next();
-      if (!idx.isValid())
-      {
-        it.remove();
-      }
-    }
-    if (m_rowBlocksToRemove > 0)
-    {
-      --m_rowBlocksToRemove;
-      q->endRemoveRows();
+      it.remove();
+      rowsRemoved = true;
     }
   }
-
-  if(isInModel(parent))
+  if (rowsRemoved)
   {
     q->endRemoveRows();
     return;
   }
 
-  QModelIndex sourceStart = q->sourceModel()->index(start, 0, parent);
-  if (m_startWithChildTrees && m_rootIndexList.contains(sourceStart))
+  QModelIndex proxyParent = q->mapFromSource(parent);
+
+  if (!proxyParent.isValid())
   {
-    q->endRemoveRows();
+    // An index we don't care about.
     return;
   }
+
+  q->endRemoveRows();
 }
 
 void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
