@@ -15,7 +15,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 include_directories(
     akonadi_next
-    kjots_common
     ${AKONADI_INCLUDE_DIR}
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIR}
@@ -38,6 +37,11 @@ find_package(Grantlee)
 if (Grantlee_FOUND)
   message("Found Grantlee. Building KJots.")
 
+
+  include_directories(
+    kjots_common
+  )
+
   add_subdirectory(akonaditemplateloader)
   add_subdirectory(akonaditemplateresource)
 
@@ -51,11 +55,11 @@ if (Grantlee_FOUND)
   add_subdirectory(kjots_resource)
 
   add_subdirectory(kjotsapp)
+  add_subdirectory(kjots_plasmoid)
 endif (Grantlee_FOUND)
 
 
 #### Clients ####
 
-add_subdirectory(kjots_plasmoid)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
