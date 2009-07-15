@@ -15,6 +15,7 @@ public:
   AmazingCompleterPrivate(AmazingCompleter *completer) //, QAbstractItemModel *model)
     :   m_matchingRole(Qt::DisplayRole),
         m_completionRole(Qt::DisplayRole),
+        m_minumumLength(3),
         q_ptr(completer)
   {
 
@@ -29,6 +30,7 @@ public:
   int m_completionRole;
   AmazingCompleter::ViewHandler m_viewHandler;
   QVariant m_matchData;
+  int m_minumumLength;
 
   Q_DECLARE_PUBLIC(AmazingCompleter)
   AmazingCompleter *q_ptr;
@@ -61,6 +63,14 @@ void AmazingCompleter::setCompletionPrefix(const QVariant& matchData)
     return;
   }
 
+  QString matchString = matchData.toString();
+  if (matchString.size() < d->m_minumumLength)
+  {
+    d->m_view->hide();
+    return;
+  }
+
+  
   QModelIndex idx = d->m_model->index(0, 0);
 
   if (!idx.isValid())

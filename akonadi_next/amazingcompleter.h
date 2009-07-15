@@ -37,6 +37,8 @@ public:
   */
   void setMatchingRole(int role);
 
+  void setMinimumLength(int length);
+
 public slots:
   void setCompletionPrefixString(const QString &matchData);
   void setCompletionPrefix(const QVariant &matchData);
