@@ -187,6 +187,9 @@ void MailWidget::someSlot(const Akonadi::Item &item, const QSet< QByteArray > &p
   kDebug() << item.remoteId();
 
   QModelIndex idx = listView->selectionModel()->selection().indexes().at(0);
+
+  if (!idx.isValid())
+    return;
   renderMail(idx);
 }
 
@@ -202,6 +205,11 @@ void MailWidget::renderMail(const QModelIndex &idx)
   Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
   if ( i.isValid() )
   {
+    if (!i.hasPayload<MessagePtr>());
+    {
+      kWarning() << "not a MessagePtr" << i.id() << i.remoteId() << i.mimeType();
+      return;
+    }
     const MessagePtr mail = i.payload<MessagePtr>();
     KMime::Content *content = mail->mainBodyPart();
     if (!content)
