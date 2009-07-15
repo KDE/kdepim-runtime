@@ -341,17 +341,22 @@ void EntityTreeModelPrivate::monitoredCollectionRemoved( const Akonadi::Collecti
 
 void EntityTreeModelPrivate::removeChildEntities(Collection::Id colId)
 {
-  foreach (Node *node, m_childEntities.value(colId))
+  
+  QList<Node*>::const_iterator it;
+  QList<Node*> childList = m_childEntities.value(colId);
+  const QList<Node*>::const_iterator begin = childList.constBegin();
+  const QList<Node*>::const_iterator end = childList.constEnd();
+  for (it = begin; it != end; ++it)
   {
-    if (Node::Item == node->type)
+    if (Node::Item == (*it)->type)
     {
-      m_items.remove(node->id);
+      m_items.remove((*it)->id);
     } else {
-      removeChildEntities(node->id);
-      m_collections.remove(node->id);
+      removeChildEntities((*it)->id);
+      m_collections.remove((*it)->id);
     }
-    m_childEntities.remove(node->id);
   }
+  m_childEntities.remove(colId);
 }
 
 void EntityTreeModelPrivate::monitoredCollectionMoved( const Akonadi::Collection& collection,
