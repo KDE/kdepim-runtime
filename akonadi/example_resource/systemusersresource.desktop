@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=System Users
+Name[sv]=Systemanvändare
 Comment=Users on the local system
+Comment[sv]=Användare av det lokala systemet
 Type=AkonadiResource
 Exec=akonadi_systemusers_resource
 Icon=text-directory
