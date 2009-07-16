@@ -25,7 +25,7 @@
 #include <QTreeView>
 #include <QHBoxLayout>
 #include "dynamictreemodel.h"
-#include "selectionproxymodel.h"
+#include "kselectionproxymodel.h"
 
 SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
 {

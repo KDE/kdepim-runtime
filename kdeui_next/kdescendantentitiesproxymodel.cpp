@@ -18,7 +18,7 @@
 */
 
 
-#include "descendantentitiesproxymodel.h"
+#include "kdescendantentitiesproxymodel.h"
 
 #include "kdebug.h"
 
@@ -827,4 +827,4 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
   return proxyList.mid(0, hits);
 }
 
-#include "moc_descendantentitiesproxymodel.cpp"
+#include "moc_kdescendantentitiesproxymodel.cpp"

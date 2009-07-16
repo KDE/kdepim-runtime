@@ -23,7 +23,7 @@
 #include <qtestevent.h>
 
 #include "dynamictreemodel.h"
-#include "../descendantentitiesproxymodel.h"
+#include "../kdescendantentitiesproxymodel.h"
 #include "proxymodeltest.h"
 
 #include <QTreeView>
@@ -499,4 +499,4 @@ void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
 }
 
 QTEST_KDEMAIN(DescendantEntitiesProxyModelTest, GUI)
-#include "descendantentitiesproxymodeltest.moc"
+#include "kdescendantentitiesproxymodeltest.moc"

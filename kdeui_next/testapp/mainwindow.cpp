@@ -26,8 +26,8 @@
 
 #include "../tests/dynamictreemodel.h"
 
-#include "../descendantentitiesproxymodel.h"
-#include "../selectionproxymodel.h"
+#include "../kdescendantentitiesproxymodel.h"
+#include "../kselectionproxymodel.h"
 
 #include "descendantpmwidget.h"
 #include "selectionpmwidget.h"

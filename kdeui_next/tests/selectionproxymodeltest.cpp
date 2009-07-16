@@ -21,7 +21,7 @@
 
 #include <QTimer>
 
-#include "../selectionproxymodel.h"
+#include "../kselectionproxymodel.h"
 
 class ModelWatcher : public QObject
 {
@@ -232,5 +232,5 @@ private:
 
 
 QTEST_KDEMAIN(SelectionProxyModelTest, GUI)
-#include "selectionproxymodeltest.moc"
+#include "kselectionproxymodeltest.moc"
 

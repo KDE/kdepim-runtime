@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "selectionproxymodel.h"
+#include "kselectionproxymodel.h"
 
 #include <QItemSelectionRange>
 
@@ -1096,4 +1096,4 @@ QItemSelectionModel *SelectionProxyModel::selectionModel() const
   return d->m_selectionModel;
 }
 
-#include "moc_selectionproxymodel.cpp"
+#include "moc_kselectionproxymodel.cpp"

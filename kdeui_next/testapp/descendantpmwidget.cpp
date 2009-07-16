@@ -25,9 +25,9 @@
 #include <QSplitter>
 
 #include "dynamictreemodel.h"
-#include "descendantentitiesproxymodel.h"
+#include "kdescendantentitiesproxymodel.h"
 #include <QHBoxLayout>
-#include "selectionproxymodel.h"
+#include "kselectionproxymodel.h"
 #include <QLineEdit>
 
 DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget(parent)
