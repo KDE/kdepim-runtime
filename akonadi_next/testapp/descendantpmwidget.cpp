@@ -27,6 +27,8 @@
 #include "dynamictreemodel.h"
 #include "descendantentitiesproxymodel.h"
 #include <QHBoxLayout>
+#include "selectionproxymodel.h"
+#include <QLineEdit>
 
 using namespace Akonadi;
 
@@ -38,6 +40,18 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget
 
 
   m_rootModel = new DynamicTreeModel(this);
+
+  m_descProxyModel = new DescendantEntitiesProxyModel(this);
+  m_descProxyModel->setSourceModel(m_rootModel);
+
+  DescendantEntitiesProxyModel *descProxyModel2 = new DescendantEntitiesProxyModel(this);
+  descProxyModel2->setSourceModel(m_rootModel);
+  descProxyModel2->setDisplayAncestorData(true);
+
+  m_itemSelectionModel = new QItemSelectionModel(m_descProxyModel, this);
+
+  m_selectionProxyModel = new SelectionProxyModel(m_itemSelectionModel, this);
+  m_selectionProxyModel->setSourceModel(m_descProxyModel);
 
   QList<int> ancestorRows;
 
@@ -74,22 +88,57 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget
   treeview->setModel(m_rootModel);
   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  DescendantEntitiesProxyModel *descProxyModel = new DescendantEntitiesProxyModel(this);
-  descProxyModel->setSourceModel(m_rootModel);
-
-  QTreeView *descView = new QTreeView( vSplitter );
-  descView->setModel(descProxyModel);
-
-  DescendantEntitiesProxyModel *descProxyModel2 = new DescendantEntitiesProxyModel(this);
-  descProxyModel2->setSourceModel(m_rootModel);
-  descProxyModel2->setDisplayAncestorData(true);
+  m_descView = new QTreeView( vSplitter );
+  m_descView->setModel(m_descProxyModel);
 
   QTreeView *descView2 = new QTreeView( vSplitter );
   descView2->setModel(descProxyModel2);
 
+
+  QWidget *w = new QWidget(vSplitter);
+  QVBoxLayout *vLayout = new QVBoxLayout(w);
+  QTreeView *matchView = new QTreeView(w);
+  matchView->setModel(m_selectionProxyModel);
+  m_lineEdit = new QLineEdit(w);
+  connect(m_lineEdit, SIGNAL(textChanged(const QString &)), SLOT(doMatch(const QString &)));
+  connect(m_descView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(refreshMatch()));
+
+  vLayout->addWidget(m_lineEdit);
+  vLayout->addWidget(matchView);
+
   setLayout(layout);
+
 
 }
 
+
+void DescendantProxyModelWidget::doMatch(const QString &matchData)
+{
+  m_itemSelectionModel->clearSelection();
+
+  if (matchData.isEmpty())
+    return;
+
+  QModelIndex start = m_descView->currentIndex();
+
+  if (!start.isValid())
+    start = m_descProxyModel->index(0, 0);
+
+  // TODO: get from user.
+  int hits = -1;
+
+  QModelIndexList matches = m_descProxyModel->match(start, Qt::DisplayRole, matchData, hits, Qt::MatchContains);
+
+  foreach(const QModelIndex &matchingIndex, matches)
+  {
+    m_itemSelectionModel->select(matchingIndex, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+  }
+}
+
+
+void DescendantProxyModelWidget::refreshMatch()
+{
+  doMatch(m_lineEdit->text());
+}
 
 
