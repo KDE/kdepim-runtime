@@ -801,7 +801,7 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
       QModelIndex proxyFirst = mapFromSource(firstIndexHit);
       proxyList << proxyFirst;
 
-      if (!matchAll && ( proxyList.size() <= hits))
+      if (!matchAll && ( proxyList.size() >= hits))
       {
         return proxyList.mid(0, hits);
       }
