@@ -790,7 +790,7 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
         lastRow = parentRowCount - 1;
       } else {
         firstIndexHit = sourceList.first();
-        lastRow = firstIndexHit.row() + 1;
+        lastRow = firstIndexHit.row() - 1;
       }
 
       proxyList << d->matchDescendants(sourceStart, role, value, hits, flags, lastRow, matchAll);
