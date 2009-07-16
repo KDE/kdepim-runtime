@@ -795,7 +795,7 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
 
       proxyList << d->matchDescendants(sourceStart, role, value, hits, flags, lastRow, matchAll);
 
-      if (!firstIndexHit.isValid())
+      if (sourceList.isEmpty())
         break;
 
       QModelIndex proxyFirst = mapFromSource(firstIndexHit);
