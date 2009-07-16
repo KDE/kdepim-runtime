@@ -105,7 +105,7 @@ private slots:
   {
     // Make different selections and run all of the tests.
     m_selectionModel = new QItemSelectionModel(sourceModel());
-    m_proxyModel = new SelectionProxyModel(m_selectionModel, this);
+    m_proxyModel = new KSelectionProxyModel(m_selectionModel, this);
     setProxyModel(m_proxyModel);
 
     ModelWatcher *watcher = new ModelWatcher(this);
@@ -227,7 +227,7 @@ private slots:
 
 private:
   QItemSelectionModel *m_selectionModel;
-  SelectionProxyModel *m_proxyModel;
+  KSelectionProxyModel *m_proxyModel;
 };
 
 

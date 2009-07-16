@@ -25,9 +25,9 @@
 
 #include "kdeui_next_export.h"
 
-class DescendantEntitiesProxyModelPrivate;
+class KDescendantEntitiesProxyModelPrivate;
 
-class KDEUI_NEXT_EXPORT DescendantEntitiesProxyModel : public QAbstractProxyModel
+class KDEUI_NEXT_EXPORT KDescendantEntitiesProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 
@@ -38,12 +38,12 @@ class KDEUI_NEXT_EXPORT DescendantEntitiesProxyModel : public QAbstractProxyMode
      *
      * @param parent The parent object.
      */
-    DescendantEntitiesProxyModel( QObject *parent = 0 );
+    KDescendantEntitiesProxyModel( QObject *parent = 0 );
 
     /**
      * Destroys the descendant entities proxy model.
      */
-    virtual ~DescendantEntitiesProxyModel();
+    virtual ~KDescendantEntitiesProxyModel();
 
     /**
      * Sets the source @p model of the proxy.
@@ -140,9 +140,9 @@ class KDEUI_NEXT_EXPORT DescendantEntitiesProxyModel : public QAbstractProxyMode
 
 
 private:
-  Q_DECLARE_PRIVATE( DescendantEntitiesProxyModel )
+  Q_DECLARE_PRIVATE( KDescendantEntitiesProxyModel )
   //@cond PRIVATE
-  DescendantEntitiesProxyModelPrivate *d_ptr;
+  KDescendantEntitiesProxyModelPrivate *d_ptr;
 
   Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
   Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))

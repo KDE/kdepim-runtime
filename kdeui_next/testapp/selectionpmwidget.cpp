@@ -79,7 +79,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
 //   QTreeView *descView = new QTreeView( hSplitter1 );
 //   descView->setModel(descProxyModel);
 
-  SelectionProxyModel *selProxyModel1 = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxyModel1 = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxyModel1->setSourceModel(m_rootModel);
 
 //   new ModelTest(selProxyModel, this);
@@ -87,21 +87,21 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
   QTreeView *selView1 = new QTreeView( hSplitter2 );
   selView1->setModel(selProxyModel1);
 
-  SelectionProxyModel *selProxyModel2 = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxyModel2 = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxyModel2->setSourceModel(m_rootModel);
   selProxyModel2->setStartWithChildTrees(true);
 
   QTreeView *selView2 = new QTreeView( hSplitter1 );
   selView2->setModel(selProxyModel2);
 
-  SelectionProxyModel *selProxyModel3 = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxyModel3 = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxyModel3->setSourceModel(m_rootModel);
   selProxyModel3->setOmitDescendants(true);
 
   QTreeView *selView3 = new QTreeView( hSplitter2 );
   selView3->setModel(selProxyModel3);
 
-  SelectionProxyModel *selProxyModel4 = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxyModel4 = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxyModel4->setSourceModel(m_rootModel);
   selProxyModel4->setStartWithChildTrees(true);
   selProxyModel4->setOmitDescendants(true);
@@ -109,7 +109,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
   QTreeView *selView4 = new QTreeView( hSplitter1 );
   selView4->setModel(selProxyModel4);
 
-  SelectionProxyModel *selProxyModel5 = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxyModel5 = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxyModel5->setSourceModel(m_rootModel);
   selProxyModel5->setStartWithChildTrees(true);
   selProxyModel5->setOmitDescendants(true);

@@ -23,10 +23,10 @@
 
 #include <KDebug>
 
-class SelectionProxyModelPrivate
+class KSelectionProxyModelPrivate
 {
 public:
-  SelectionProxyModelPrivate(SelectionProxyModel *model)
+  KSelectionProxyModelPrivate(KSelectionProxyModel *model)
     : q_ptr(model),
       m_startWithChildTrees(false),
       m_omitChildren(false),
@@ -37,8 +37,8 @@ public:
 
   }
 
-  Q_DECLARE_PUBLIC(SelectionProxyModel)
-  SelectionProxyModel *q_ptr;
+  Q_DECLARE_PUBLIC(KSelectionProxyModel)
+  KSelectionProxyModel *q_ptr;
 
   QItemSelectionModel *m_selectionModel;
   QList<QPersistentModelIndex> m_rootIndexList;
@@ -135,11 +135,13 @@ public:
   bool m_omitDescendants;
   bool m_includeAllSelected;
 
+  KSelectionProxyModel::Behaviours m_behaviours;
+
   // Number of separate blocks that need to be removed as a result of sourceRowsRemoved.
   int m_rowBlocksToRemove;
 };
 
-QModelIndexList SelectionProxyModelPrivate::toNonPersistent(const QList<QPersistentModelIndex> &list) const
+QModelIndexList KSelectionProxyModelPrivate::toNonPersistent(const QList<QPersistentModelIndex> &list) const
 {
   QModelIndexList returnList;
   QList<QPersistentModelIndex>::const_iterator it;
@@ -149,9 +151,9 @@ QModelIndexList SelectionProxyModelPrivate::toNonPersistent(const QList<QPersist
   return returnList;
 }
 
-void SelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void KSelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   QModelIndexList list = toNonPersistent(m_rootIndexList);
   if (!m_rootIndexList.contains(topLeft) && isInModel(topLeft))
@@ -203,28 +205,28 @@ void SelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, c
 }
 
 
-void SelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
+void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
   emit q->layoutAboutToBeChanged();
 }
 
-void SelectionProxyModelPrivate::sourceLayoutChanged()
+void KSelectionProxyModelPrivate::sourceLayoutChanged()
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
   emit q->layoutChanged();
 }
 
-void SelectionProxyModelPrivate::sourceModelAboutToBeReset()
+void KSelectionProxyModelPrivate::sourceModelAboutToBeReset()
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
   // TODO: Uncomment for Qt 4.6
 //   q->beginResetModel();
 }
 
-void SelectionProxyModelPrivate::sourceModelReset()
+void KSelectionProxyModelPrivate::sourceModelReset()
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   // No need to try to refill this. When the model is reset it doesn't have a meaningful selection anymore,
   // but when it gets one we'll be notified anyway.
@@ -233,7 +235,7 @@ void SelectionProxyModelPrivate::sourceModelReset()
 //   q->endResetModel();
 }
 
-QPair<int, int> SelectionProxyModelPrivate::getRootRange(const QModelIndex &sourceParent, int start, int end) const
+QPair<int, int> KSelectionProxyModelPrivate::getRootRange(const QModelIndex &sourceParent, int start, int end) const
 {
   int listStart = -1;
   int listEnd = -1;
@@ -259,9 +261,9 @@ QPair<int, int> SelectionProxyModelPrivate::getRootRange(const QModelIndex &sour
   return qMakePair(listStart, listEnd);
 }
 
-void SelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
+void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   if (isInModel(parent))
   {
@@ -281,9 +283,9 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &
 
 }
 
-void SelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
+void KSelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
   Q_UNUSED(end);
 
   if (isInModel(parent))
@@ -298,9 +300,9 @@ void SelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, i
   }
 }
 
-void SelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   QModelIndexList affectedList;
   for (int row = start; row <= end; row++)
@@ -349,9 +351,9 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &p
   q->beginRemoveRows(proxyParent, start, end);
 }
 
-void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
+void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
   Q_UNUSED(end)
 
   // Rows to remove are now invalid indexes.
@@ -383,10 +385,10 @@ void SelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, in
   q->endRemoveRows();
 }
 
-void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+void KSelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
 
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   if (isInModel(srcParent))
   {
@@ -400,9 +402,9 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &src
   }
 }
 
-void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
+void KSelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   if (isInModel(srcParent))
   {
@@ -416,7 +418,7 @@ void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, i
   }
 }
 
-bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
+bool KSelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const
 {
   QModelIndex parent = idx.parent();
   while (parent.isValid())
@@ -428,7 +430,7 @@ bool SelectionProxyModelPrivate::isDescendantOf(QModelIndexList &list, const QMo
   return false;
 }
 
-QModelIndexList SelectionProxyModelPrivate::getNewIndexes(const QItemSelection &selection) const
+QModelIndexList KSelectionProxyModelPrivate::getNewIndexes(const QItemSelection &selection) const
 {
   QModelIndexList indexes;
   const int column = 0;
@@ -458,9 +460,9 @@ QModelIndexList SelectionProxyModelPrivate::getNewIndexes(const QItemSelection &
   return indexes;
 }
 
-void SelectionProxyModelPrivate::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected )
+void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected )
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   // Any deselected indexes in the m_rootIndexList are removed. Then, any
   // indexes in the selected range which are not a descendant of one of the already selected indexes
@@ -586,7 +588,7 @@ void SelectionProxyModelPrivate::selectionChanged(const QItemSelection &selected
     insertionSort(newIndexes);
 }
 
-int SelectionProxyModelPrivate::getTargetRow(const QModelIndexList &list, const QModelIndex &index) const
+int KSelectionProxyModelPrivate::getTargetRow(const QModelIndexList &list, const QModelIndex &index) const
 {
   // What's going on?
   // Consider a tree like
@@ -689,7 +691,7 @@ int SelectionProxyModelPrivate::getTargetRow(const QModelIndexList &list, const 
   return firstCommonParent + siblingOffset;
 }
 
-QList<QPair<QModelIndex, QModelIndexList> > SelectionProxyModelPrivate::regroup(const QModelIndexList &list) const
+QList<QPair<QModelIndex, QModelIndexList> > KSelectionProxyModelPrivate::regroup(const QModelIndexList &list) const
 {
   QList<QPair<QModelIndex, QModelIndexList> > groups;
 
@@ -702,9 +704,9 @@ QList<QPair<QModelIndex, QModelIndexList> > SelectionProxyModelPrivate::regroup(
   return groups;
 }
 
-void SelectionProxyModelPrivate::insertionSort(const QModelIndexList &list)
+void KSelectionProxyModelPrivate::insertionSort(const QModelIndexList &list)
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   // TODO: regroup indexes in list into contiguous ranges with the same parent.
 //   QList<QPair<QModelIndex, QModelIndexList> > regroup(list);
@@ -735,9 +737,9 @@ void SelectionProxyModelPrivate::insertionSort(const QModelIndexList &list)
   return;
 }
 
-void SelectionProxyModelPrivate::createProxyChain()
+void KSelectionProxyModelPrivate::createProxyChain()
 {
-  Q_Q(SelectionProxyModel);
+  Q_Q(KSelectionProxyModel);
 
   QAbstractItemModel *model = const_cast<QAbstractItemModel *>(m_selectionModel->model());
   QAbstractProxyModel *nextProxyModel;
@@ -765,7 +767,7 @@ void SelectionProxyModelPrivate::createProxyChain()
   }
 }
 
-QItemSelection SelectionProxyModelPrivate::getRootRanges(const QItemSelection &selection) const
+QItemSelection KSelectionProxyModelPrivate::getRootRanges(const QItemSelection &selection) const
 {
   QModelIndexList parents;
   QItemSelection rootSelection;
@@ -787,7 +789,7 @@ QItemSelection SelectionProxyModelPrivate::getRootRanges(const QItemSelection &s
   return rootSelection;
 }
 
-QModelIndex SelectionProxyModelPrivate::selectionIndexToSourceIndex(const QModelIndex &index) const
+QModelIndex KSelectionProxyModelPrivate::selectionIndexToSourceIndex(const QModelIndex &index) const
 {
   QModelIndex seekIndex = index;
   QListIterator<QAbstractProxyModel*> i(m_proxyChain);
@@ -801,7 +803,7 @@ QModelIndex SelectionProxyModelPrivate::selectionIndexToSourceIndex(const QModel
   return seekIndex;
 }
 
-bool SelectionProxyModelPrivate::isInModel(const QModelIndex &sourceIndex) const
+bool KSelectionProxyModelPrivate::isInModel(const QModelIndex &sourceIndex) const
 {
   if (m_rootIndexList.contains(sourceIndex))
   {
@@ -823,10 +825,10 @@ bool SelectionProxyModelPrivate::isInModel(const QModelIndex &sourceIndex) const
   return false;
 }
 
-SelectionProxyModel::SelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
-  : QAbstractProxyModel(parent), d_ptr(new SelectionProxyModelPrivate(this))
+KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
+  : QAbstractProxyModel(parent), d_ptr(new KSelectionProxyModelPrivate(this))
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
 
   d->m_selectionModel = selectionModel;
 
@@ -835,35 +837,49 @@ SelectionProxyModel::SelectionProxyModel(QItemSelectionModel *selectionModel, QO
 
 }
 
-SelectionProxyModel::~SelectionProxyModel()
+KSelectionProxyModel::~KSelectionProxyModel()
 {
   delete d_ptr;
 }
 
-void SelectionProxyModel::setOmitChildren(bool omit)
+void KSelectionProxyModel::setBehaviours(Behaviours behaviours)
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
+  d->m_behaviours = behaviours;
+}
+
+KSelectionProxyModel::Behaviours KSelectionProxyModel::behaviours() const
+{
+  Q_D(const KSelectionProxyModel);
+  return d->m_behaviours;
+}
+
+
+
+void KSelectionProxyModel::setOmitChildren(bool omit)
+{
+  Q_D(KSelectionProxyModel);
 
   d->m_omitChildren = omit;
 }
 
-void SelectionProxyModel::setOmitDescendants(bool omitDescendants)
+void KSelectionProxyModel::setOmitDescendants(bool omitDescendants)
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
 
   d->m_omitDescendants = omitDescendants;
 }
 
-void SelectionProxyModel::setStartWithChildTrees(bool startWithChildTrees)
+void KSelectionProxyModel::setStartWithChildTrees(bool startWithChildTrees)
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
 
   d->m_startWithChildTrees = startWithChildTrees;
 }
 
-void SelectionProxyModel::setIncludeAllSelected(bool includeAllSelected)
+void KSelectionProxyModel::setIncludeAllSelected(bool includeAllSelected)
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
 
   // TODO: Fix ordering in this configuration.
 
@@ -873,9 +889,9 @@ void SelectionProxyModel::setIncludeAllSelected(bool includeAllSelected)
   }
 }
 
-void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
+void KSelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
 {
-  Q_D(SelectionProxyModel);
+  Q_D(KSelectionProxyModel);
 
   QAbstractProxyModel::setSourceModel(sourceModel);
   d->createProxyChain();
@@ -907,9 +923,9 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
           SLOT(sourceLayoutChanged()));
 }
 
-QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) const
+QModelIndex KSelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
-  Q_D(const SelectionProxyModel);
+  Q_D(const KSelectionProxyModel);
 
   if (!proxyIndex.isValid())
     return QModelIndex();
@@ -920,9 +936,9 @@ QModelIndex SelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) cons
 
 }
 
-QModelIndex SelectionProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
+QModelIndex KSelectionProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
-  Q_D( const SelectionProxyModel );
+  Q_D(const KSelectionProxyModel);
   int row = d->m_rootIndexList.indexOf( sourceIndex );
   if ( row != -1 )
   {
@@ -954,9 +970,9 @@ QModelIndex SelectionProxyModel::mapFromSource(const QModelIndex &sourceIndex) c
   return QModelIndex();
 }
 
-int SelectionProxyModelPrivate::childrenCount(const QModelIndexList &list) const
+int KSelectionProxyModelPrivate::childrenCount(const QModelIndexList &list) const
 {
-  Q_Q(const SelectionProxyModel);
+  Q_Q(const KSelectionProxyModel);
   int count = 0;
 
   foreach(const QModelIndex &idx, list)
@@ -967,9 +983,9 @@ int SelectionProxyModelPrivate::childrenCount(const QModelIndexList &list) const
   return count;
 }
 
-int SelectionProxyModel::rowCount(const QModelIndex &index) const
+int KSelectionProxyModel::rowCount(const QModelIndex &index) const
 {
-  Q_D(const SelectionProxyModel);
+  Q_D(const KSelectionProxyModel);
 
   if (!index.isValid())
   {
@@ -1003,9 +1019,9 @@ int SelectionProxyModel::rowCount(const QModelIndex &index) const
   return sourceModel()->rowCount(srcIndex);
 }
 
-QModelIndex SelectionProxyModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex KSelectionProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
-  Q_D(const SelectionProxyModel);
+  Q_D(const KSelectionProxyModel);
   if (!hasIndex(row, column, parent))
     return QModelIndex();
 
@@ -1039,9 +1055,9 @@ QModelIndex SelectionProxyModel::index(int row, int column, const QModelIndex &p
   }
 }
 
-QModelIndex SelectionProxyModel::parent(const QModelIndex &index) const
+QModelIndex KSelectionProxyModel::parent(const QModelIndex &index) const
 {
-  Q_D(const SelectionProxyModel);
+  Q_D(const KSelectionProxyModel);
 
   QModelIndex sourceIndex = mapToSource(index);
   if (d->m_rootIndexList.contains(sourceIndex.parent()) && ( d->m_startWithChildTrees || d->m_omitChildren ) )
@@ -1056,7 +1072,7 @@ QModelIndex SelectionProxyModel::parent(const QModelIndex &index) const
   return proxyParent;
 }
 
-Qt::ItemFlags SelectionProxyModel::flags( const QModelIndex &index ) const
+Qt::ItemFlags KSelectionProxyModel::flags( const QModelIndex &index ) const
 {
   if (!index.isValid())
     return 0;
@@ -1065,7 +1081,7 @@ Qt::ItemFlags SelectionProxyModel::flags( const QModelIndex &index ) const
   return sourceModel()->flags(srcIndex);
 }
 
-QVariant SelectionProxyModel::data( const QModelIndex & index, int role ) const
+QVariant KSelectionProxyModel::data( const QModelIndex & index, int role ) const
 {
   if (index.isValid())
   {
@@ -1075,24 +1091,24 @@ QVariant SelectionProxyModel::data( const QModelIndex & index, int role ) const
   return QVariant();
 }
 
-QVariant SelectionProxyModel::headerData( int section, Qt::Orientation orientation, int role  ) const
+QVariant KSelectionProxyModel::headerData( int section, Qt::Orientation orientation, int role  ) const
 {
   return sourceModel()->headerData(section, orientation, role);
 }
 
-bool SelectionProxyModel::hasChildren ( const QModelIndex & parent) const
+bool KSelectionProxyModel::hasChildren ( const QModelIndex & parent) const
 {
   return rowCount(parent) > 0;
 }
 
-int SelectionProxyModel::columnCount(const QModelIndex &index) const
+int KSelectionProxyModel::columnCount(const QModelIndex &index) const
 {
   return sourceModel()->columnCount(mapToSource(index));
 }
 
-QItemSelectionModel *SelectionProxyModel::selectionModel() const
+QItemSelectionModel *KSelectionProxyModel::selectionModel() const
 {
-  Q_D(const SelectionProxyModel);
+  Q_D(const KSelectionProxyModel);
   return d->m_selectionModel;
 }
 

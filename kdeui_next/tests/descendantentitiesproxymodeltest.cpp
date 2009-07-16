@@ -89,7 +89,7 @@ private slots:
   void testDifferentParentSameLevel();
 
 private:
-  DescendantEntitiesProxyModel *m_proxyModel;
+  KDescendantEntitiesProxyModel *m_proxyModel;
   IndexFinder m_rootIdxFinder;
   int m_rowCount;
 };
@@ -97,7 +97,7 @@ private:
 
 void DescendantEntitiesProxyModelTest::initTestCase()
 {
-  m_proxyModel = new DescendantEntitiesProxyModel(this);
+  m_proxyModel = new KDescendantEntitiesProxyModel(this);
   setProxyModel(m_proxyModel);
 
   QList<QVariantList> signalList;
@@ -251,7 +251,7 @@ void DescendantEntitiesProxyModelTest::testInsertionChangeAndRemoval()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
 
@@ -313,7 +313,7 @@ void DescendantEntitiesProxyModelTest::testSameParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
   QList<int> ancestorRows;
@@ -344,7 +344,7 @@ void DescendantEntitiesProxyModelTest::testSameParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
   QList<int> ancestorRows;
@@ -395,7 +395,7 @@ void DescendantEntitiesProxyModelTest::testDifferentParentUp()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
   QList<int> ancestorRows;
@@ -430,7 +430,7 @@ void DescendantEntitiesProxyModelTest::testDifferentParentDown()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
   QList<int> ancestorRows;
@@ -465,7 +465,7 @@ void DescendantEntitiesProxyModelTest::testDifferentParentSameLevel()
 {
   DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DescendantEntitiesProxyModel *proxy = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *proxy = new KDescendantEntitiesProxyModel(this);
   proxy->setSourceModel(model);
 
   QList<int> ancestorRows;

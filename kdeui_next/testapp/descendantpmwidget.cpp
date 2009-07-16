@@ -41,16 +41,16 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget
 
   const int numCols = 2;
 
-  m_descProxyModel = new DescendantEntitiesProxyModel(this);
+  m_descProxyModel = new KDescendantEntitiesProxyModel(this);
   m_descProxyModel->setSourceModel(m_rootModel);
 
-  DescendantEntitiesProxyModel *descProxyModel2 = new DescendantEntitiesProxyModel(this);
+  KDescendantEntitiesProxyModel *descProxyModel2 = new KDescendantEntitiesProxyModel(this);
   descProxyModel2->setSourceModel(m_rootModel);
   descProxyModel2->setDisplayAncestorData(true);
 
   m_itemSelectionModel = new QItemSelectionModel(m_descProxyModel, this);
 
-  m_selectionProxyModel = new SelectionProxyModel(m_itemSelectionModel, this);
+  m_selectionProxyModel = new KSelectionProxyModel(m_itemSelectionModel, this);
   m_selectionProxyModel->setSourceModel(m_descProxyModel);
 
   QList<int> ancestorRows;

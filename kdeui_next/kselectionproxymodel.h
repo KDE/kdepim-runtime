@@ -26,19 +26,32 @@
 
 class QItemSelectionModel;
 
-class SelectionProxyModelPrivate;
+class KSelectionProxyModelPrivate;
 
-class KDEUI_NEXT_EXPORT SelectionProxyModel : public QAbstractProxyModel
+class KDEUI_NEXT_EXPORT KSelectionProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 public:
-  explicit SelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0 );
+  explicit KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0 );
 
-  virtual ~SelectionProxyModel();
+  virtual ~KSelectionProxyModel();
 
   virtual void setSourceModel ( QAbstractItemModel * sourceModel );
 
   QItemSelectionModel *selectionModel() const;
+
+  enum Behaviour
+  {
+    OmitChildren,
+    OmitDescendants,
+    StartWithChildTrees,
+    IncludeAllSelected
+  };
+  Q_DECLARE_FLAGS(Behaviours, Behaviour)
+  
+
+  void setBehaviours(Behaviours behaviours);
+  Behaviours behaviours() const;
 
   /**
   Do not include the children of selected items in the model.
@@ -174,9 +187,9 @@ public:
   virtual int columnCount(const QModelIndex&) const;
 
 private:
-  Q_DECLARE_PRIVATE(SelectionProxyModel)
+  Q_DECLARE_PRIVATE(KSelectionProxyModel)
   //@cond PRIVATE
-  SelectionProxyModelPrivate *d_ptr;
+  KSelectionProxyModelPrivate *d_ptr;
 
   Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
   Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
@@ -194,5 +207,8 @@ private:
   //@endcond
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(KSelectionProxyModel::Behaviours)
+
 
 #endif

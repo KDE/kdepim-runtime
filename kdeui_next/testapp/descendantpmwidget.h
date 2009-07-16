@@ -30,8 +30,8 @@ class QTreeView;
 class QLineEdit;
 class QItemSelectionModel;
 
-class DescendantEntitiesProxyModel;
-class SelectionProxyModel;
+class KDescendantEntitiesProxyModel;
+class KSelectionProxyModel;
 
 class DescendantProxyModelWidget : public QWidget
 {
@@ -45,8 +45,8 @@ protected slots:
 
 private:
   DynamicTreeModel *m_rootModel;
-  DescendantEntitiesProxyModel *m_descProxyModel;
-  SelectionProxyModel *m_selectionProxyModel;
+  KDescendantEntitiesProxyModel *m_descProxyModel;
+  KSelectionProxyModel *m_selectionProxyModel;
   QItemSelectionModel *m_itemSelectionModel;
   QTreeView *m_descView;
   QLineEdit *m_lineEdit;
