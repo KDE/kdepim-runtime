@@ -7,6 +7,8 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+add_subdirectory( tests )
+
 # maildir access library
 add_subdirectory(libmaildir)
 
