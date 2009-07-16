@@ -34,7 +34,7 @@ class AKONADI_NEXT_EXPORT SelectionProxyModel : public AbstractProxyModel
 {
   Q_OBJECT
 public:
-  SelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0 );
+  explicit SelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0 );
 
   virtual ~SelectionProxyModel();
 
