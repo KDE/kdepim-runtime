@@ -1,4 +1,4 @@
-project(akonaditests)
+project(kdeui_next_tests)
 
 ENABLE_TESTING()
 

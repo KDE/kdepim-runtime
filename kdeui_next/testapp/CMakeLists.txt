@@ -20,9 +20,6 @@ kde4_add_executable(proxymodeltestapp ${proxymodeltestapp_SRCS} )
 
 target_link_libraries(proxymodeltestapp
                       kdeui_next
-                      ${KDEPIMLIBS_AKONADI_LIBS}
-                      ${KDE4_KIO_LIBS}
-                      ${KDEPIMLIBS_KABC_LIBS}
 )
 
 
