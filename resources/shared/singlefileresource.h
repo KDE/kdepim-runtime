@@ -101,7 +101,7 @@ class SingleFileResource : public SingleFileResourceBase
           }
         }
 
-        const QByteArray newHash = calculateHash( mCurrentUrl.path() );
+        const QByteArray newHash = calculateHash( mCurrentUrl.toLocalFile() );
         if ( mCurrentHash != newHash ) {
           if ( !readFromFile( mCurrentUrl.toLocalFile() ) ) {
             mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
@@ -170,7 +170,7 @@ class SingleFileResource : public SingleFileResourceBase
         const bool writeResult = writeToFile( mCurrentUrl.toLocalFile() );
         // Update the hash so we can detect at fileChanged() if the file actually
         // did change.
-        mCurrentHash = calculateHash( mCurrentUrl.path() );
+        mCurrentHash = calculateHash( mCurrentUrl.toLocalFile() );
         KDirWatch::self()->startScan();
         if ( !writeResult )
           return;
