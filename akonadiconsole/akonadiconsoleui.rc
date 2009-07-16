@@ -9,6 +9,8 @@
   <Menu name="collection"><text>&amp;Collection</text>
     <Action name="akonadi_collection_create"/>
     <Separator/>
+    <Action name="akonadi_collection_add_to_favorites"/>
+    <Separator/>
     <Action name="akonadi_collection_copy"/>
     <Separator/>
     <Action name="akonadi_collection_sync"/>
@@ -34,6 +36,8 @@
 
  <Menu name="akonadi_collectionview_contextmenu">
   <Action name="akonadi_collection_create"/>
+  <Separator/>
+  <Action name="akonadi_collection_add_to_favorites"/>
   <Separator/>
   <Action name="akonadi_collection_copy"/>
   <Action name="akonadi_paste"/>

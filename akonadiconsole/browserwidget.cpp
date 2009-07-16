@@ -175,6 +175,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mStdActionManager = new StandardActionManager( xmlGuiWindow->actionCollection(), xmlGuiWindow );
   mStdActionManager->setCollectionSelectionModel( mCollectionView->selectionModel() );
   mStdActionManager->setItemSelectionModel( itemUi.itemView->selectionModel() );
+  mStdActionManager->setFavoriteCollectionsModel( favoritesModel );
   mStdActionManager->createAllActions();
 
 #ifndef NEPOMUK_FOUND
