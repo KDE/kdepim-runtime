@@ -29,7 +29,6 @@
 #include "emaillineedit.h"
 #include <QTreeView>
 #include "amazingcompleter.h"
-#include "amazingview.h"
 #include "amazingdelegate.h"
 #include "entitytreemodel.h"
 
