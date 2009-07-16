@@ -26,8 +26,8 @@
 #include <QLineEdit>
 #include <QLabel>
 
-#include "emaillineedit.h"
 #include <QTreeView>
+#include <QListView>
 #include "amazingcompleter.h"
 #include "amazingdelegate.h"
 #include "entitytreemodel.h"
@@ -79,8 +79,8 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
 
   QTextEdit *textEdit = new QTextEdit(this);
 
-  AmazingView *amazingView = new AmazingView(this);
-  amazingView->setItemDelegate(new AmazingContactItemDelegate(this));
+  QListView *popup = new QListView(this);
+  popup->setItemDelegate(new AmazingContactItemDelegate(this));
 
   layout->addWidget(toLabel, 0, 0);
   layout->addWidget(emailLineEdit, 0, 1);
@@ -98,7 +98,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
 
   connect(emailLineEdit, SIGNAL(textChanged(QString)), completer, SLOT(setCompletionPrefixString(QString)));
 
-  completer->setView(amazingView, AmazingCompleter::Popup);
+  completer->setView(popup, AmazingCompleter::Popup);
 
 }
 
