@@ -135,9 +135,6 @@ class DescendantEntitiesProxyModelPrivate
 
   QModelIndexList matchDescendants(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags, int until, const bool matchAll) const;
 
-  QModelIndexList mapFromSource(const QModelIndexList &sourceList) const;
-
-
   enum Operation
   {
     InsertOperation,
@@ -752,22 +749,6 @@ QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QMod
 
   return matches;
 }
-
-QModelIndexList DescendantEntitiesProxyModelPrivate::mapFromSource(const QModelIndexList &sourceList) const
-{
-  QModelIndexList proxyList;
-
-  QModelIndexList::const_iterator it;
-  const QModelIndexList::const_iterator begin = sourceList.constBegin();
-  const QModelIndexList::const_iterator end = sourceList.constEnd();
-  for (it = begin; it != end; ++it)
-  {
-    proxyList << *it;
-  }
-
-  return proxyList;
-}
-
 
 QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
