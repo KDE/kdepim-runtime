@@ -259,10 +259,12 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
 
     /**
+      Reimplement this in a subclass to return true if @p item matches @p value with @p flags in the AmazingCompletionRole.
     */
     virtual bool match(const Item &item, const QVariant &value, Qt::MatchFlags flags) const;
 
     /**
+      Reimplement this in a subclass to return true if @p collection matches @p value with @p flags in the AmazingCompletionRole.
     */
     virtual bool match(const Collection &collection, const QVariant &value, Qt::MatchFlags flags) const;
 
