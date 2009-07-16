@@ -258,6 +258,15 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     */
     virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
 
+    /**
+    */
+    virtual bool match(const Item &item, const QVariant &value, Qt::MatchFlags flags) const;
+
+    /**
+    */
+    virtual bool match(const Collection &collection, const QVariant &value, Qt::MatchFlags flags) const;
+
+    
   protected:
     /**
      * Clears and resets the model. Always call this instead of the reset method in the superclass.

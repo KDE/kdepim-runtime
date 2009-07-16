@@ -49,8 +49,15 @@ public:
 
   virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
 
-  virtual QModelIndexList match(const QModelIndex & start, int role, const QVariant &value, int hits = 1,
-          Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap )) const;
+  /**
+    Returns true if @p matchdata matches @p item using @p flags.
+  */
+  virtual bool match(Item item, const QVariant &matchData, Qt::MatchFlags flags ) const;
+
+  /**
+    Returns true if @p matchdata matches @p col using @p flags.
+  */
+  virtual bool match(Collection col, const QVariant &matchData, Qt::MatchFlags flags ) const;
 
 private:
     Q_DECLARE_PRIVATE(ContactsModel)

@@ -713,13 +713,56 @@ bool EntityTreeModel::hasChildren( const QModelIndex &parent ) const
   return ((rowCount(parent) > 0) || (canFetchMore( parent ) && d->m_itemPopulation == LazyPopulation));
 }
 
-QModelIndexList EntityTreeModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags ) const
+bool EntityTreeModel::match(const Item &item, const QVariant &value, Qt::MatchFlags flags) const
 {
-  if (role != AmazingCompletionRole)
-    return AbstractItemModel::match(start, role, value, hits, flags);
+  Q_UNUSED(item);
+  Q_UNUSED(value);
+  Q_UNUSED(flags);
+  return false;
+}
 
-  // Maybe try to match nepomuk tags?
-  return QModelIndexList();
+bool EntityTreeModel::match(const Collection &collection, const QVariant &value, Qt::MatchFlags flags) const
+{
+  Q_UNUSED(collection);
+  Q_UNUSED(value);
+  Q_UNUSED(flags);
+  return false;
+}
+
+QModelIndexList EntityTreeModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags ) const
+{  
+  if (role != AmazingCompletionRole)
+    return Akonadi::EntityTreeModel::match(start, role, value, hits, flags);
+
+  // Try to match names, and email addresses.
+  QModelIndexList list;
+  const int column = 0;
+  int row = start.row();
+  QModelIndex parentIdx = start.parent();
+  int parentRowCount = rowCount(parentIdx);
+
+  while (row < parentRowCount && (hits == -1 || list.size() < hits))
+  {
+    QModelIndex idx = index(row, column, parentIdx);
+    Item item = idx.data(ItemRole).value<Item>();
+    if (!item.isValid())
+    {
+      Collection col = idx.data(CollectionRole).value<Collection>();
+      if (!col.isValid())
+      {
+        continue;
+      }
+      if (match(col, value, flags))
+        list << idx;
+    } else {
+      if (match(item, value, flags))
+      {
+        list << idx;
+      }
+    }
+    ++row;
+  }
+  return list;
 
 }
 

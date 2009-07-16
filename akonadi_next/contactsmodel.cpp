@@ -37,16 +37,6 @@ public:
     m_itemHeaders << "Given Name" << "Family Name" << "Email";
   }
 
-  /**
-    Returns true if @p matchdata matches @p item using @p flags.
-  */
-  bool match(Item item, const QString &matchData, int flags ) const;
-
-  /**
-    Returns true if @p matchdata matches @p col using @p flags.
-  */
-  bool match(Collection col, const QString &matchData, int flags ) const;
-
   Q_DECLARE_PUBLIC(ContactsModel)
   ContactsModel *q_ptr;
 
@@ -56,24 +46,28 @@ public:
 };
 
 
-bool ContactsModelPrivate::match(Item item, const QString& matchData, int flags) const
+bool ContactsModel::match(Item item, const QVariant& matchData, Qt::MatchFlags flags) const
 {
-
   if (!item.hasPayload<KABC::Addressee>())
     return false;
 
+  if (!matchData.canConvert(QVariant::String))
+    return false;
+
+  const QString matchString = matchData.toString();
+
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
-  if ( addressee.familyName().startsWith(matchData, Qt::CaseInsensitive)
-      || addressee.givenName().startsWith(matchData, Qt::CaseInsensitive)
-      || addressee.preferredEmail().startsWith(matchData, Qt::CaseInsensitive))
+  if ( addressee.familyName().startsWith(matchString, Qt::CaseInsensitive)
+      || addressee.givenName().startsWith(matchString, Qt::CaseInsensitive)
+      || addressee.preferredEmail().startsWith(matchString, Qt::CaseInsensitive))
     return true;
 
 
   if (item.hasAttribute<EntityDisplayAttribute>() &&
     !item.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
   {
-    if (item.attribute<EntityDisplayAttribute>()->displayName().startsWith(matchData))
+    if (item.attribute<EntityDisplayAttribute>()->displayName().startsWith(matchString))
       return true;
   }
 
@@ -81,12 +75,17 @@ bool ContactsModelPrivate::match(Item item, const QString& matchData, int flags)
 }
 
 
-bool ContactsModelPrivate::match(Collection col, const QString& matchData, int flags) const
+bool ContactsModel::match(Collection col, const QVariant& matchData, Qt::MatchFlags flags) const
 {
+  if (!matchData.canConvert(QVariant::String))
+    return false;
+
+  const QString matchString = matchData.toString();
+  
   if (col.hasAttribute<EntityDisplayAttribute>() &&
       !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
-    return col.attribute<EntityDisplayAttribute>()->displayName().startsWith(matchData);
-  return col.name().startsWith(matchData);
+    return col.attribute<EntityDisplayAttribute>()->displayName().startsWith(matchString);
+  return col.name().startsWith(matchString);
 }
 
 
@@ -184,50 +183,5 @@ QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation,
 
   return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
 }
-
-
-QModelIndexList ContactsModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
-{
-  Q_D(const ContactsModel);
-  if (role != AmazingCompletionRole)
-    return Akonadi::EntityTreeModel::match(start, role, value, hits, flags);
-
-  if (QVariant::String != value.type())
-    return QModelIndexList();
-
-  QString matchData = value.toString();
-
-  // Try to match names, and email addresses.
-  QModelIndexList list;
-  const int column = 0;
-  int row = start.row();
-  QModelIndex parentIdx = start.parent();
-  int parentRowCount = rowCount(parentIdx);
-
-  while (row < parentRowCount && (hits == -1 || list.size() < hits))
-  {
-    QModelIndex idx = index(row, column, parentIdx);
-    Item item = idx.data(ItemRole).value<Item>();
-    if (!item.isValid())
-    {
-      Collection col = idx.data(CollectionRole).value<Collection>();
-      if (!col.isValid())
-      {
-        return QModelIndexList();
-      }
-      if (d->match(col, matchData, flags))
-        list << idx;
-    } else {
-      if (d->match(item, matchData, flags))
-      {
-        list << idx;
-      }
-    }
-    ++row;
-  }
-  return list;
-}
-
-
 
 #include "contactsmodel.moc"
