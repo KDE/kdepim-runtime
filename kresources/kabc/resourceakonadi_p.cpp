@@ -114,6 +114,23 @@ bool ResourceAkonadi::Private::closeResource()
   return true;
 }
 
+void ResourceAkonadi::Private::clearResource()
+{
+  kDebug( 5700 );
+  // clear local caches
+  mParent->mAddrMap.clear();
+
+  // take a copy of mDistListMap, then clear it and finally qDeleteAll
+  // the copy to avoid problems with removeDistributionList() called by
+  // ~DistributionList().
+  BoolGuard internalChange( mInternalDataChange, true );
+  DistributionListMap tempDistListMap( mParent->mDistListMap );
+  mParent->mDistListMap.clear();
+  qDeleteAll( tempDistListMap );
+
+  SharedResourcePrivate<SubResource>::clearResource();
+}
+
 Akonadi::Item ResourceAkonadi::Private::createItem( const QString &kresId )
 {
   Akonadi::Item item;

@@ -63,6 +63,8 @@ class KABC::ResourceAkonadi::Private : public SharedResourcePrivate<SubResource>
 
     bool closeResource();
 
+    void clearResource();
+
     void subResourceAdded( SubResourceBase *subResource );
 
     void subResourceRemoved( SubResourceBase *subResource );
