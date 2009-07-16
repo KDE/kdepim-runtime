@@ -816,10 +816,14 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
     }
   }
 
+  QModelIndex nextStart = start.sibling(start.row() + parentRowCount + 1, column);
+  if (nextStart.isValid())
+    proxyList << match(nextStart, role, value, hits, flags);
+
+  if (matchAll)
+    return proxyList;
+
   return proxyList.mid(0, hits);
 }
-
-
-
 
 #include "moc_descendantentitiesproxymodel.cpp"
