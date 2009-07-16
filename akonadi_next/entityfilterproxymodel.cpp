@@ -203,8 +203,15 @@ QStringList EntityFilterProxyModel::mimeTypes() const
 
 QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
+  if (EntityTreeModel::AmazingCompletionRole != role)
+    return QSortFilterProxyModel::match(start, role, value, hits, flags);
+
+  // We match everything in the source model because sorting will change what we should show.
+  const int allHits = -1;
+
   QModelIndexList proxyList;
-  QModelIndexList sourceList = sourceModel()->match(mapToSource(start), role, value, hits, flags);
+  QMap<int, QModelIndex> proxyMap;
+  QModelIndexList sourceList = sourceModel()->match(mapToSource(start), role, value, allHits, flags);
   QModelIndexList::const_iterator it;
   const QModelIndexList::const_iterator begin = sourceList.constBegin();
   const QModelIndexList::const_iterator end = sourceList.constEnd();
@@ -213,12 +220,18 @@ QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role
   {
     proxyIndex = mapFromSource(*it);
 
+    // Any filtered indexes will be invalid when mapped.
     if (!proxyIndex.isValid())
       continue;
 
-    proxyList << proxyIndex;
+    // Inserting in a QMap gives us sorting by key for free.
+    proxyMap.insert(proxyIndex.row(), proxyIndex);
   }
-  return proxyList;
+
+  if (hits == -1)
+    return proxyMap.values();
+
+  return proxyMap.values().mid(0, hits);
 }
 
 #include "entityfilterproxymodel.moc"
