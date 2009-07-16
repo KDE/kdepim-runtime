@@ -728,7 +728,7 @@ QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QMod
   const int column = start.column();
   QModelIndex idx = start;
 
-  while (idx.row() < until)
+  while (idx.row() <= until)
   {
     Q_ASSERT(idx.isValid());
 
