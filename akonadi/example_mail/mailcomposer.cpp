@@ -93,7 +93,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   this->setLayout(layout);
 
   AmazingCompleter *completer = new AmazingCompleter(this);
-  completer->setModel(filter);
+  completer->setModel(descProxyModel);
   completer->setMatchingRole(Akonadi::EntityTreeModel::AmazingCompletionRole);
   completer->setWidget(emailLineEdit);
 
