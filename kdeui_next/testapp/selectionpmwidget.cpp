@@ -26,6 +26,7 @@
 #include <QHBoxLayout>
 #include "dynamictreemodel.h"
 #include "kselectionproxymodel.h"
+#include <QLabel>
 
 SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
 {
@@ -69,55 +70,58 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
   dataChCmd->setEndRow(4);
   dataChCmd->doCommand();
 
-  QTreeView *treeview = new QTreeView( hSplitter1 );
-  treeview->setModel(m_rootModel);
-  treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  QTreeView *rootView = createLabelledView("Dynamic Tree Model", hSplitter1);
+  rootView->setModel(m_rootModel);
+  rootView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-//   DescendantEntitiesProxyModel *descProxyModel = new DescendantEntitiesProxyModel(this);
-//   descProxyModel->setSourceModel(m_rootModel);
+  KSelectionProxyModel *selectedBranchesModel = new KSelectionProxyModel(rootView->selectionModel(), this);
+  selectedBranchesModel->setSourceModel(m_rootModel);
+  selectedBranchesModel->setFilterBehavior(KSelectionProxyModel::SelectedBranches);
 
-//   QTreeView *descView = new QTreeView( hSplitter1 );
-//   descView->setModel(descProxyModel);
+  QTreeView *selectedBranchesView = createLabelledView("Selected Branches", hSplitter2);
+  selectedBranchesView->setModel(selectedBranchesModel);
 
-  KSelectionProxyModel *selProxyModel1 = new KSelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel1->setSourceModel(m_rootModel);
+  KSelectionProxyModel *selectedBranchesRootsModel = new KSelectionProxyModel(rootView->selectionModel(), this);
+  selectedBranchesRootsModel->setSourceModel(m_rootModel);
+  selectedBranchesRootsModel->setFilterBehavior(KSelectionProxyModel::SelectedBranchesRoots);
 
-//   new ModelTest(selProxyModel, this);
+  QTreeView *selectedBranchesRootsView = createLabelledView("Selected branches roots", hSplitter2 );
+  selectedBranchesRootsView->setModel(selectedBranchesRootsModel);
 
-  QTreeView *selView1 = new QTreeView( hSplitter2 );
-  selView1->setModel(selProxyModel1);
+  KSelectionProxyModel *selectedBranchesChildrenModel = new KSelectionProxyModel(rootView->selectionModel(), this);
+  selectedBranchesChildrenModel->setSourceModel(m_rootModel);
+  selectedBranchesChildrenModel->setFilterBehavior(KSelectionProxyModel::SelectedBranchesChildren);
 
-  KSelectionProxyModel *selProxyModel2 = new KSelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel2->setSourceModel(m_rootModel);
-  selProxyModel2->setStartWithChildTrees(true);
+  QTreeView *selectedBranchesChildrenView = createLabelledView("Selected Branches Children", hSplitter1 );
+  selectedBranchesChildrenView->setModel(selectedBranchesChildrenModel);
 
-  QTreeView *selView2 = new QTreeView( hSplitter1 );
-  selView2->setModel(selProxyModel2);
+  KSelectionProxyModel *onlySelectedModel = new KSelectionProxyModel(rootView->selectionModel(), this);
+  onlySelectedModel->setSourceModel(m_rootModel);
+  onlySelectedModel->setFilterBehavior(KSelectionProxyModel::OnlySelected);
 
-  KSelectionProxyModel *selProxyModel3 = new KSelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel3->setSourceModel(m_rootModel);
-  selProxyModel3->setOmitDescendants(true);
+  QTreeView *onlySelectedView = createLabelledView("Only selected", hSplitter1 );
+  onlySelectedView->setModel(onlySelectedModel);
 
-  QTreeView *selView3 = new QTreeView( hSplitter2 );
-  selView3->setModel(selProxyModel3);
+  KSelectionProxyModel *onlySelectedChildrenModel = new KSelectionProxyModel(rootView->selectionModel(), this);
+  onlySelectedChildrenModel->setSourceModel(m_rootModel);
+  onlySelectedChildrenModel->setFilterBehavior(KSelectionProxyModel::OnlySelectedChildren);
 
-  KSelectionProxyModel *selProxyModel4 = new KSelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel4->setSourceModel(m_rootModel);
-  selProxyModel4->setStartWithChildTrees(true);
-  selProxyModel4->setOmitDescendants(true);
-
-  QTreeView *selView4 = new QTreeView( hSplitter1 );
-  selView4->setModel(selProxyModel4);
-
-  KSelectionProxyModel *selProxyModel5 = new KSelectionProxyModel(treeview->selectionModel(), this);
-  selProxyModel5->setSourceModel(m_rootModel);
-  selProxyModel5->setStartWithChildTrees(true);
-  selProxyModel5->setOmitDescendants(true);
-  selProxyModel5->setIncludeAllSelected(true);
-
-  QTreeView *selView5 = new QTreeView( hSplitter2 );
-  selView5->setModel(selProxyModel5);
+  QTreeView *onlySelectedChildrenView = createLabelledView("Only Selected Children", hSplitter2 );
+  onlySelectedChildrenView->setModel(onlySelectedChildrenModel);
 
   setLayout(layout);
 
+}
+
+QTreeView* SelectionProxyWidget::createLabelledView(const QString &labelText, QWidget *parent)
+{
+  QWidget *labelledTreeWidget = new QWidget(parent);
+  QVBoxLayout *layout = new QVBoxLayout(labelledTreeWidget);
+
+  QLabel *label = new QLabel(labelText, labelledTreeWidget);
+  QTreeView *treeview = new QTreeView( labelledTreeWidget );
+  
+  layout->addWidget(label);
+  layout->addWidget(treeview);
+  return treeview;  
 }
