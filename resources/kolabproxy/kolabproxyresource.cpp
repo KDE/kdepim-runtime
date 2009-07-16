@@ -339,6 +339,7 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   Collection imapCollection( collection );
   imapCollection.setId( -1 );
   imapCollection.setRemoteId( QString() );
+  imapCollection.setContentMimeTypes( QStringList() << Collection::mimeType() << QLatin1String( "message/rfc822" ) );
   Collection imapParent( parent.remoteId().toLongLong() );
   imapCollection.setParent( imapParent );
   CollectionAnnotationsAttribute* attr =
