@@ -27,8 +27,6 @@
 #include "dynamictreemodel.h"
 #include "selectionproxymodel.h"
 
-using namespace Akonadi;
-
 SelectionProxyWidget::SelectionProxyWidget(QWidget* parent): QWidget(parent)
 {
 

@@ -30,8 +30,6 @@
 #include "selectionproxymodel.h"
 #include <QLineEdit>
 
-using namespace Akonadi;
-
 DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget(parent)
 {
   QHBoxLayout *layout = new QHBoxLayout(this);

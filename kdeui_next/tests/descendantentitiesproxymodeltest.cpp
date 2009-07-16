@@ -34,9 +34,6 @@
 
 #include <kdebug.h>
 
-using namespace Akonadi;
-
-
 class DescendantEntitiesProxyModelTest : public ProxyModelTest
 {
   Q_OBJECT

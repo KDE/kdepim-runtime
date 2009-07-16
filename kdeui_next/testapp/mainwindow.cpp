@@ -35,8 +35,6 @@
 #include "descendantpmwidget.h"
 #include "selectionpmwidget.h"
 
-using namespace Akonadi;
-
 MainWindow::MainWindow() : KXmlGuiWindow()
 {
 

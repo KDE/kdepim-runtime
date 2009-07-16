@@ -22,11 +22,6 @@
 
 #include "kdebug.h"
 
-using namespace Akonadi;
-
-namespace Akonadi
-{
-
 /**
   @internal
 
@@ -169,8 +164,6 @@ class DescendantEntitiesProxyModelPrivate
   void descendNewIndexes();
 
 };
-
-}
 
 DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
       : AbstractProxyModel( parent ),

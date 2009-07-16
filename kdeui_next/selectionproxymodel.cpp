@@ -23,11 +23,6 @@
 
 #include <KDebug>
 
-using namespace Akonadi;
-
-namespace Akonadi
-{
-
 class SelectionProxyModelPrivate
 {
 public:
@@ -143,8 +138,6 @@ public:
   // Number of separate blocks that need to be removed as a result of sourceRowsRemoved.
   int m_rowBlocksToRemove;
 };
-
-}
 
 QModelIndexList SelectionProxyModelPrivate::toNonPersistent(const QList<QPersistentModelIndex> &list) const
 {

@@ -23,9 +23,6 @@
 
 #include "../selectionproxymodel.h"
 
-using namespace Akonadi;
-
-
 class ModelWatcher : public QObject
 {
   Q_OBJECT

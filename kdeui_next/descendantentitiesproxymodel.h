@@ -24,11 +24,9 @@
 #include "abstractproxymodel.h"
 #include "akonadi_next_export.h"
 
-namespace Akonadi
-{
 class DescendantEntitiesProxyModelPrivate;
 
-class AKONADI_NEXT_EXPORT DescendantEntitiesProxyModel : public AbstractProxyModel
+class KDEUI_NEXT_EXPORT DescendantEntitiesProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 
@@ -166,7 +164,5 @@ private:
 
   //@endcond
 };
-
-}
 
 #endif

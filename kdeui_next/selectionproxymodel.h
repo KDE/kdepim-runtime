@@ -25,12 +25,11 @@
 #include "abstractproxymodel.h"
 #include "akonadi_next_export.h"
 
-namespace Akonadi
-{
+class QItemSelectionModel;
 
 class SelectionProxyModelPrivate;
 
-class AKONADI_NEXT_EXPORT SelectionProxyModel : public AbstractProxyModel
+class KDEUI_NEXT_EXPORT SelectionProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 public:
@@ -191,13 +190,10 @@ private:
   Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
   Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
   Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
-//
   Q_PRIVATE_SLOT(d_func(), void selectionChanged( const QItemSelection & selected, const QItemSelection & deselected ) )
 
   //@endcond
 
 };
-
-}
 
 #endif
