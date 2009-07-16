@@ -38,7 +38,6 @@ set( akonadi_next_SRCS
   statisticsproxymodel.cpp
   statisticstooltipproxymodel.cpp
   amazingcompleter.cpp
-  amazingview.cpp
   amazingdelegate.cpp
   favoritecollectionsmodel.cpp
 )
