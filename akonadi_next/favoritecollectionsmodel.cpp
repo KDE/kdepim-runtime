@@ -22,6 +22,10 @@
 
 #include <QtGui/QItemSelectionModel>
 
+#include <kconfiggroup.h>
+#include <kglobal.h>
+#include <ksharedconfig.h>
+
 #include "entitytreemodel.h"
 
 using namespace Akonadi;
@@ -55,6 +59,31 @@ class FavoriteCollectionsModel::Private
       }
     }
 
+    void loadConfig()
+    {
+      KSharedConfigPtr config = KGlobal::config();
+      KConfigGroup group = config->group( "FavoriteCollectionsModel" );
+      QList<qint64> ids = group.readEntry( "FavoriteCollectionIds", QList<qint64>() );
+
+      foreach ( qint64 id, ids ) {
+        collections << Collection( id );
+      }
+
+    }
+
+    void saveConfig()
+    {
+      QList<qint64> ids;
+      foreach ( const Collection &c, collections ) {
+        ids << c.id();
+      }
+
+      KSharedConfigPtr config = KGlobal::config();
+      KConfigGroup group = config->group( "FavoriteCollectionsModel" );
+      group.writeEntry( "FavoriteCollectionIds", ids );
+      config->sync();
+    }
+
     FavoriteCollectionsModel * const q;
 
     Collection::List collections;
@@ -71,6 +100,9 @@ FavoriteCollectionsModel::FavoriteCollectionsModel( EntityTreeModel *source, QOb
   connect( source, SIGNAL( modelReset() ), this, SLOT( clearAndUpdateSelection() ) );
   connect( source, SIGNAL( layoutChanged() ), this, SLOT( clearAndUpdateSelection() ) );
   connect( source, SIGNAL( rowsInserted(QModelIndex, int, int) ), this, SLOT( updateSelection() ) );
+
+  d->loadConfig();
+  d->clearAndUpdateSelection();
 }
 
 FavoriteCollectionsModel::~FavoriteCollectionsModel()
@@ -82,12 +114,14 @@ void FavoriteCollectionsModel::setCollections( const Collection::List &collectio
 {
   d->collections = collections;
   d->clearAndUpdateSelection();
+  d->saveConfig();
 }
 
 void FavoriteCollectionsModel::addCollection( const Collection &collection )
 {
   d->collections << collection;
   d->updateSelection();
+  d->saveConfig();
 }
 
 Collection::List FavoriteCollectionsModel::collections() const
