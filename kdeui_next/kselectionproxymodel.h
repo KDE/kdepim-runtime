@@ -79,14 +79,13 @@ public:
 
   enum FilterBehavior
   {
-    ExclusiveRoots = 0x00,
-    OmitChildren = 0x01,
-    OmitGrandChildren = 0x02,
-    StartWithChildTrees = 0x04,
-    IncludeAllSelected = 0x08,
-    ChilrenOfSelected = OmitGrandChildren | StartWithChildTrees,
-    OnlySelected = IncludeAllSelected | OmitGrandChildren,
-    OnlySelectedChildren = IncludeAllSelected | ChilrenOfSelected
+    SelectedBranches,
+    OmitChildTrees,
+    OmitGrandChildTrees,
+    StartWithChildTrees,
+    ChilrenOfSelected,
+    OnlySelected,
+    OnlySelectedChildren
   };
   Q_ENUMS(FilterBehavior);
 
