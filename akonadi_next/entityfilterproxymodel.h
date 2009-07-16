@@ -25,6 +25,7 @@
 #include "akonadi_next_export.h"
 namespace Akonadi {
 
+class EntityFilterProxyModelPrivate;
 /**
  * @short A proxy model that filters entities by mime type.
  *
@@ -142,8 +143,8 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
 
   private:
     //@cond PRIVATE
-    class Private;
-    Private* const d;
+    Q_DECLARE_PRIVATE(EntityFilterProxyModel)
+    EntityFilterProxyModelPrivate *d_ptr;
     //@endcond
 };
 
