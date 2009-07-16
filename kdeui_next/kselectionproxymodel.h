@@ -28,14 +28,51 @@ class QItemSelectionModel;
 
 class KSelectionProxyModelPrivate;
 
+/**
+@brief A Proxy Model which presents a subset of its source model to observers.
+
+The KSelectionProxyModel is most useful as a convenience for displaying the selection in one view in another view.
+
+For example, when a user clicks a mail folder in one view in an email applcation, the contained emails should be displayed in another view.
+
+@code
+
+MyModel *sourceModel = new MyModel(this);
+QTreeView *leftView = new QTreeView(this);
+leftView->setModel(sourceModel);
+
+KSelectionProxyModel *selectionProxy = new KSelectionProxyModel(leftView->selectionModel(), this);
+
+QTreeView *rightView = new QTreeView(this);
+rightView->setModel(selectionProxy);
+@endcode
+
+This takes away the need for the developer to handle the selection between the views, including all the mapToSource, mapFromSource and setRootIndex calls.
+
+Additionally, this class can be used to programmatically choose some items from the source model to display in the view. For example,
+this is how KMails Favourite folder View works, and how the AmazingCompleter works.
+
+*/
 class KDEUI_NEXT_EXPORT KSelectionProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT
 public:
+  /**
+  ctor.
+
+  @p selectionModel The selection model used to filter what is presented by the proxy.
+  */
+  
   explicit KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0 );
 
+  /**
+  dtor
+  */
   virtual ~KSelectionProxyModel();
 
+  /**
+  reimp.
+  */
   virtual void setSourceModel ( QAbstractItemModel * sourceModel );
 
   QItemSelectionModel *selectionModel() const;
@@ -47,8 +84,7 @@ public:
     StartWithChildTrees,
     IncludeAllSelected
   };
-  Q_DECLARE_FLAGS(Behaviours, Behaviour)
-  
+  Q_DECLARE_FLAGS(Behaviours, Behaviour)  
 
   void setBehaviours(Behaviours behaviours);
   Behaviours behaviours() const;
