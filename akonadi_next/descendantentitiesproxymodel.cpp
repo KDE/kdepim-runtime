@@ -766,19 +766,21 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
   const bool matchAll = (hits == -1);
   const int firstHit = 1;
   const int column = 1;
+  const int proxyRowCount = rowCount();
 
   sourceList = sourceModel()->match(sourceStart, role, value, firstHit, flags);
 
   int lastRow;
   if (sourceList.isEmpty())
   {
-    lastRow = parentRowCount;
+    lastRow = parentRowCount - 1;
     proxyList = d->matchDescendants(mapToSource(start), role, value, hits, flags, lastRow, matchAll);
 
-    if (!matchAll && ( proxyList.size() <= hits))
-    {
-      return d->mapFromSource(proxyList.mid(0, hits));
-    }
+    if (matchAll)
+      return proxyList;
+
+    return proxyList.mid(0, hits);
+
   } else {
     forever
     {
