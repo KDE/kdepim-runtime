@@ -47,7 +47,10 @@ class AKONADI_NEXT_EXPORT FavoriteCollectionsModel : public SelectionProxyModel
      */
     virtual ~FavoriteCollectionsModel();
 
+  public Q_SLOTS:
     void setCollections( const Collection::List &collections );
+    void addCollection( const Collection &collection );
+  public:
     Collection::List collections() const;
 
     virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;

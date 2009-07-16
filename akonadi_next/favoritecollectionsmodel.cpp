@@ -78,18 +78,24 @@ FavoriteCollectionsModel::~FavoriteCollectionsModel()
   delete d;
 }
 
-void Akonadi::FavoriteCollectionsModel::setCollections( const Collection::List &collections )
+void FavoriteCollectionsModel::setCollections( const Collection::List &collections )
 {
   d->collections = collections;
   d->clearAndUpdateSelection();
 }
 
-Collection::List Akonadi::FavoriteCollectionsModel::collections() const
+void FavoriteCollectionsModel::addCollection( const Collection &collection )
+{
+  d->collections << collection;
+  d->updateSelection();
+}
+
+Collection::List FavoriteCollectionsModel::collections() const
 {
   return d->collections;
 }
 
-QVariant Akonadi::FavoriteCollectionsModel::headerData( int section, Qt::Orientation orientation, int role) const
+QVariant FavoriteCollectionsModel::headerData( int section, Qt::Orientation orientation, int role) const
 {
   if ( section == 0
     && orientation == Qt::Horizontal
