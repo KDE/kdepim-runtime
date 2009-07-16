@@ -28,6 +28,7 @@
 class DynamicTreeModel;
 class QTreeView;
 class QLineEdit;
+class QItemSelectionModel;
 
 namespace Akonadi
 {
