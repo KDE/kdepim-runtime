@@ -80,10 +80,8 @@ public:
   enum FilterBehavior
   {
     SelectedBranches,
-    OmitChildTrees,
-    OmitGrandChildTrees,
-    StartWithChildTrees,
-    ChilrenOfSelected,
+    SelectedBranchesRoots,
+    SelectedBranchesChildren,
     OnlySelected,
     OnlySelectedChildren
   };

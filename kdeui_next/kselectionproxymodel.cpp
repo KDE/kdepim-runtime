@@ -846,6 +846,50 @@ void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
 {
   Q_D(KSelectionProxyModel);
   d->m_filterBehavior = behavior;
+  
+  switch(behavior)
+  {
+  case SelectedBranches:
+  {
+    d->m_omitChildren = false;
+    d->m_omitDescendants = false;
+    d->m_startWithChildTrees = false;
+    d->m_includeAllSelected = false;
+    break;
+  }
+  case SelectedBranchesRoots:
+  {
+    d->m_omitChildren = true;
+    d->m_startWithChildTrees = false;
+    d->m_includeAllSelected = false;
+    break;
+  }
+  case SelectedBranchesChildren:
+  {
+    d->m_omitChildren = false;
+    d->m_omitDescendants = true;
+    d->m_startWithChildTrees = true;
+    d->m_includeAllSelected = false;
+    break;
+  }
+  case OnlySelected:
+  {
+    d->m_omitChildren = true;
+    d->m_startWithChildTrees = false;
+    d->m_includeAllSelected = true;
+    break;
+  }
+  case OnlySelectedChildren:
+  {
+    d->m_omitChildren = false;
+    d->m_omitDescendants = true;
+    d->m_startWithChildTrees = true;
+    d->m_includeAllSelected = true;
+    break;
+  }
+  }
+  reset();
+  
 }
 
 KSelectionProxyModel::FilterBehavior KSelectionProxyModel::filterBehavior() const
