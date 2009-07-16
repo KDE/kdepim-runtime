@@ -218,9 +218,9 @@ public:
   virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
   virtual bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const;
-  virtual QModelIndex index(int, int, const QModelIndex&) const;
+  virtual QModelIndex index(int, int, const QModelIndex& = QModelIndex() ) const;
   virtual QModelIndex parent(const QModelIndex&) const;
-  virtual int columnCount(const QModelIndex&) const;
+  virtual int columnCount(const QModelIndex& = QModelIndex() ) const;
 
 private:
   Q_DECLARE_PRIVATE(KSelectionProxyModel)
