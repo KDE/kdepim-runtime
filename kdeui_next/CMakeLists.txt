@@ -1,4 +1,4 @@
-project(akonadi_next)
+project(kdeui_next)
 
 find_package(KDE4 REQUIRED)
 find_package(Akonadi REQUIRED)
@@ -17,34 +17,14 @@ include(KDE4Defaults)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
-set( akonadi_next_SRCS
-  abstractitemmodel.cpp
-  abstractitemmodel_p.cpp
-  abstractproxymodel.cpp
-#   qsortfilterproxymodel.cpp
-  entitytreemodel.cpp
-  entitytreemodel_p.cpp
+set( kdeui_next_SRCS
   descendantentitiesproxymodel.cpp
-  entityfilterproxymodel.cpp
-  entitytreeview.cpp
-  collectionchildorderattribute.cpp
-  modeltest.cpp
-  emaillineedit.cpp
-  # TODO Move this to akonadi-kabc
-  contactsmodel.cpp
-  # TODO Move this to akonadi-mail?
-  mailmodel.cpp
   selectionproxymodel.cpp
-  statisticsproxymodel.cpp
-  statisticstooltipproxymodel.cpp
-  amazingcompleter.cpp
-  amazingdelegate.cpp
-  favoritecollectionsmodel.cpp
 )
 
-kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
+kde4_add_library(kdeui_next SHARED ${kdeui_next_SRCS} )
 
-target_link_libraries(akonadi_next
+target_link_libraries(kdeui_next
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTGUI_LIBRARY}
@@ -54,9 +34,9 @@ target_link_libraries(akonadi_next
                       ${KDEPIMLIBS_KMIME_LIBS}
 )
 
-set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+set_target_properties(kdeui_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 
-install(TARGETS akonadi_next ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kdeui_next ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory(tests)
 add_subdirectory(testapp)
