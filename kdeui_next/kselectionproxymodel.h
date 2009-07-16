@@ -77,7 +77,7 @@ public:
 
   QItemSelectionModel *selectionModel() const;
 
-  enum Behaviour
+  enum FilterBehavior
   {
     ExclusiveRoots = 0x00,
     OmitChildren = 0x01,
@@ -88,16 +88,17 @@ public:
     OnlySelected = IncludeAllSelected | OmitGrandChildren,
     OnlySelectedChildren = IncludeAllSelected | ChilrenOfSelected
   };
+  Q_ENUMS(FilterBehavior);
 
   /**
-    Set the behaviours of this model.
-    The behaviours of the model govern the content of the model based on the selection of the contained QItemSelectionModel.
+    Set the filter behaviors of this model.
+    The filter behaviors of the model govern the content of the model based on the selection of the contained QItemSelectionModel.
 
-    See kdeui/proxymodeltestapp to try out the different proxy model behaviours.
+    See kdeui/proxymodeltestapp to try out the different proxy model behaviors.
 
-    The most useful behaviours are ExclusiveRoots, OnlySelected and OnlySelectedChildren.
+    The most useful behaviors are ExclusiveRoots, OnlySelected and OnlySelectedChildren.
 
-    The default behaviour is ExclusiveRoots. This means that this proxy model will contain the roots of the items in the source model.
+    The default behavior is ExclusiveRoots. This means that this proxy model will contain the roots of the items in the source model.
     Any descendants which are also selected have no additional effect.
     For example if the source model is like:
 
@@ -142,9 +143,9 @@ public:
         - G
     @endverbatim
 
-    This is the behaviour used by KJots when rendering books.
+    This is the behavior used by KJots when rendering books.
 
-    If the behaviour is set to OmitChildren, then the children of selected indexes are not part of the model. If 'A', 'B' and 'D' are selected,
+    If the behavior is set to OmitChildren, then the children of selected indexes are not part of the model. If 'A', 'B' and 'D' are selected,
 
     @verbatim
     (root)
@@ -192,11 +193,11 @@ public:
       - L
     @endverbatim
     
-    Note that selecting 'E' in this behaviour would have no effect because its ancestor 'B' is already in the model. The ChildrenOfSelected behaviour is provided for convenience.
+    Note that selecting 'E' in this behavior would have no effect because its ancestor 'B' is already in the model. The ChildrenOfSelected behavior is provided for convenience.
 
     IncludeAllSelected has the effect of including all selected items in the tree even if an ancestor is already in the tree.
-    This behaviour can not be used on its own because it would cause duplicates in the proxy.
-    It must be combined with either OmitGrandChildren or ChildrenOfSelected. The OnlySelected and OnlySelectedChildren behaviours are provide for convenience.
+    This behavior can not be used on its own because it would cause duplicates in the proxy.
+    It must be combined with either OmitGrandChildren or ChildrenOfSelected. The OnlySelected and OnlySelectedChildren behaviors are provide for convenience.
 
     The OnlySelectedChildren has an effect similar to ChilrenOfSelected. The difference is that children of selected items appear in the model even if their children are already
     part of the model. For example, if 'A', 'B', 'D' and 'I' are selected:
@@ -215,7 +216,7 @@ public:
     This would be useful for example if showing containers (for example maildirs) in one view and their items in another. Sub-maildirs would still appear in the proxy, but
     could be filtered out using a QSortfilterProxyModel.
 
-    The OnlySelected behaviour causes the selected items to be part of the proxy model, even if their descendants are already selected, but children of selected items are not included.
+    The OnlySelected behavior causes the selected items to be part of the proxy model, even if their descendants are already selected, but children of selected items are not included.
 
     Again, if 'A', 'B', 'D' and 'I' are selected:
 
@@ -227,11 +228,11 @@ public:
       - I
     @endverbatim
 
-    This is the behaviour used by the Favourite Folder View in KMail.
+    This is the behavior used by the Favourite Folder View in KMail.
 
   */
-  void setBehaviour(Behaviour behaviour);
-  Behaviour behaviour() const;
+  void setFilterBehavior(FilterBehavior behavior);
+  FilterBehavior filterBehavior() const;
 
   /**
   Do not include the children of selected items in the model.

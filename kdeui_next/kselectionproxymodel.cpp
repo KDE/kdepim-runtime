@@ -135,7 +135,7 @@ public:
   bool m_omitDescendants;
   bool m_includeAllSelected;
 
-  KSelectionProxyModel::Behaviours m_behaviours;
+  KSelectionProxyModel::FilterBehavior m_filterBehavior;
 
   // Number of separate blocks that need to be removed as a result of sourceRowsRemoved.
   int m_rowBlocksToRemove;
@@ -842,16 +842,16 @@ KSelectionProxyModel::~KSelectionProxyModel()
   delete d_ptr;
 }
 
-void KSelectionProxyModel::setBehaviours(Behaviours behaviours)
+void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
 {
   Q_D(KSelectionProxyModel);
-  d->m_behaviours = behaviours;
+  d->m_filterBehavior = behavior;
 }
 
-KSelectionProxyModel::Behaviours KSelectionProxyModel::behaviours() const
+KSelectionProxyModel::FilterBehavior KSelectionProxyModel::filterBehavior() const
 {
   Q_D(const KSelectionProxyModel);
-  return d->m_behaviours;
+  return d->m_filterBehavior;
 }
 
 
