@@ -41,6 +41,8 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget
 
   m_rootModel = new DynamicTreeModel(this);
 
+  const int numCols = 2;
+
   m_descProxyModel = new DescendantEntitiesProxyModel(this);
   m_descProxyModel->setSourceModel(m_rootModel);
 
@@ -55,34 +57,30 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget* parent): QWidget
 
   QList<int> ancestorRows;
 
-  ModelInsertCommand *ins;
+  ModelInsertCommand *insertCommand;
   int max_runs = 4;
   for (int i = 0; i < max_runs; i++)
   {
-    ins = new ModelInsertCommand(m_rootModel, this);
-    ins->setAncestorRowNumbers(ancestorRows);
-    ins->setStartRow(0);
-    ins->setEndRow(4);
-    ins->doCommand();
-    ancestorRows << 2;
+    insertCommand = new ModelInsertCommand(m_rootModel, this);
+    insertCommand->setAncestorRowNumbers(ancestorRows);
+    insertCommand->setNumCols(numCols);
+    insertCommand->setStartRow(0);
+    insertCommand->setEndRow(9);
+    insertCommand->doCommand();
+    ancestorRows << 9;
   }
-
   ancestorRows.clear();
-  ancestorRows << 3;
-  for (int i = 0; i < max_runs - 1; i++)
+  ancestorRows << 4;
+  for (int i = 0; i < max_runs; i++)
   {
-    ins = new ModelInsertCommand(m_rootModel, this);
-    ins->setAncestorRowNumbers(ancestorRows);
-    ins->setStartRow(0);
-    ins->setEndRow(4);
-    ins->doCommand();
-    ancestorRows << 3;
+    insertCommand = new ModelInsertCommand(m_rootModel, this);
+    insertCommand->setAncestorRowNumbers(ancestorRows);
+    insertCommand->setNumCols(numCols);
+    insertCommand->setStartRow(0);
+    insertCommand->setEndRow(9);
+    insertCommand->doCommand();
+    ancestorRows << 4;
   }
-
-  ModelDataChangeCommand *dataChCmd = new ModelDataChangeCommand(m_rootModel, this);
-  dataChCmd->setStartRow(0);
-  dataChCmd->setEndRow(4);
-  dataChCmd->doCommand();
 
   QTreeView *treeview = new QTreeView( vSplitter );
   treeview->setModel(m_rootModel);
