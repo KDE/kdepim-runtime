@@ -12,6 +12,7 @@
     <Action name="akonadi_collection_add_to_favorites"/>
     <Separator/>
     <Action name="akonadi_collection_copy"/>
+    <Action name="akonadi_collection_copy_to_menu"/>
     <Separator/>
     <Action name="akonadi_collection_sync"/>
     <Action name="akonadi_manage_local_subscriptions" />
@@ -22,6 +23,7 @@
   </Menu>
   <Menu name="item"><text>&amp;Item</text>
     <Action name="akonadi_item_copy"/>
+    <Action name="akonadi_item_copy_to_menu"/>
     <Separator/>
     <Action name="akonadi_item_delete"/>
   </Menu>
@@ -40,6 +42,7 @@
   <Action name="akonadi_collection_add_to_favorites"/>
   <Separator/>
   <Action name="akonadi_collection_copy"/>
+  <Action name="akonadi_collection_copy_to_menu"/>
   <Action name="akonadi_paste"/>
   <Separator/>
   <Action name="akonadi_collection_delete"/>
@@ -52,6 +55,7 @@
 
  <Menu name="akonadi_itemview_contextmenu">
    <Action name="akonadi_item_copy"/>
+   <Action name="akonadi_item_copy_to_menu"/>
    <Action name="akonadi_paste"/>
    <Action name="akonadi_item_delete"/>
  </Menu>
