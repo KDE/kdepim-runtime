@@ -616,7 +616,7 @@ int SelectionProxyModelPrivate::getTargetRow(const QModelIndexList &list, const 
 
 
   QList<QModelIndexList> rootAncestors;
-  foreach(const QModelIndex root, list)
+  foreach(const QModelIndex &root, list)
   {
     QModelIndexList ancestors;
     ancestors << root;

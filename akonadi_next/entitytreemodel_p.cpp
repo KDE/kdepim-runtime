@@ -101,7 +101,7 @@ void EntityTreeModelPrivate::collectionsFetched( const Akonadi::Collection::List
 
   Akonadi::AgentManager *agentManager = Akonadi::AgentManager::self();
 
-  foreach ( const Collection collection, collections ) {
+  foreach ( const Collection &collection, collections ) {
     if ( m_collections.contains( collection.id() ) ) {
       // If we already know about the collection, there is nothing left to do
       continue;
