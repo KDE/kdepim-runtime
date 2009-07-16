@@ -218,7 +218,8 @@ void SelectionProxyModelPrivate::sourceLayoutChanged()
 void SelectionProxyModelPrivate::sourceModelAboutToBeReset()
 {
   Q_Q(SelectionProxyModel);
-  q->beginResetModel();
+  // TODO: Uncomment for Qt 4.6
+//   q->beginResetModel();
 }
 
 void SelectionProxyModelPrivate::sourceModelReset()
@@ -228,7 +229,8 @@ void SelectionProxyModelPrivate::sourceModelReset()
   // No need to try to refill this. When the model is reset it doesn't have a meaningful selection anymore,
   // but when it gets one we'll be notified anyway.
   m_rootIndexList.clear();
-  q->endResetModel();
+  // TODO: Uncomment for Qt 4.6
+//   q->endResetModel();
 }
 
 QPair<int, int> SelectionProxyModelPrivate::getRootRange(const QModelIndex &sourceParent, int start, int end) const
@@ -391,7 +393,8 @@ void SelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &src
     if (isInModel(destParent))
     {
       // The easy case.
-      q->beginMoveRows(q->mapFromSource(srcParent), srcStart, srcEnd, q->mapFromSource(destParent), destRow);
+      // TODO: Uncomment for Qt 4.6
+//       q->beginMoveRows(q->mapFromSource(srcParent), srcStart, srcEnd, q->mapFromSource(destParent), destRow);
       return;
     }
   }
@@ -406,7 +409,8 @@ void SelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, i
     if (isInModel(destParent))
     {
       // The easy case.
-      q->endMoveRows();
+      // TODO: Uncomment for Qt 4.6
+//       q->endMoveRows();
       return;
     }
   }
@@ -885,10 +889,12 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
           SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
   connect(sourceModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
           SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
-  connect(sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
-          SLOT(sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
-  connect(sourceModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
-          SLOT(sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+          
+  // TODO: Uncomment for Qt4.6
+//   connect(sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+//           SLOT(sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+//   connect(sourceModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+//           SLOT(sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
   connect(sourceModel, SIGNAL(modelAboutToBeReset()),
           SLOT(sourceModelAboutToBeReset()));
   connect(sourceModel, SIGNAL(modelReset()),

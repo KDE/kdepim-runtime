@@ -327,7 +327,8 @@ void ModelMoveCommand::doCommand()
   QModelIndex srcParent = findIndex(m_rowNumbers);
   QModelIndex destParent = findIndex(m_destRowNumbers);
 
-  m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+  // TODO: Uncomment for Qt 4.6
+//   m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
 
   for (int column = 0; column < m_numCols; ++column)
   {
@@ -354,7 +355,8 @@ void ModelMoveCommand::doCommand()
     }
   }
 
-  m_model->endMoveRows();
+  // TODO: Uncomment for Qt 4.6
+//   m_model->endMoveRows();
 }
 
 
@@ -369,8 +371,10 @@ void ModelFakeMoveCommand::doCommand()
   QModelIndex srcParent = findIndex(m_rowNumbers);
   QModelIndex destParent = findIndex(m_destRowNumbers);
 
-  m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
+  // TODO: Uncomment for Qt 4.6
+//   m_model->beginMoveRows(srcParent, m_startRow, m_endRow, destParent, m_destRow);
 
 
-  m_model->endMoveRows();
+  // TODO: Uncomment for Qt 4.6
+//   m_model->endMoveRows();
 }

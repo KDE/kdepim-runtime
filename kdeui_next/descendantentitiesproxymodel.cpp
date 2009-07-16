@@ -237,10 +237,13 @@ void DescendantEntitiesProxyModel::setSourceModel(QAbstractItemModel * sourceMod
           SLOT(sourceRowsRemoved(const QModelIndex, int, int)) );
   connect( sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex, int, int)),
           SLOT(sourceRowsAboutToBeRemoved(const QModelIndex, int, int)) );
-  connect( sourceModel, SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex, int)),
-          SLOT(sourceRowsMoved(const QModelIndex, int, int, const QModelIndex, int)) );
-  connect( sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int)),
-          SLOT(sourceRowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int) ) );
+
+          
+  // Uncomment for Qt4.6          
+//   connect( sourceModel, SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex, int)),
+//           SLOT(sourceRowsMoved(const QModelIndex, int, int, const QModelIndex, int)) );
+//   connect( sourceModel, SIGNAL(rowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int)),
+//           SLOT(sourceRowsAboutToBeMoved(const QModelIndex, int, int, const QModelIndex, int) ) );
 
   d->m_descendantsCount.clear();
   reset();
@@ -460,7 +463,8 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelI
   Q_Q(DescendantEntitiesProxyModel);
   int c = descendedRow(parent);
   int d = descendedRow(destParent);
-  q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
+  // TODO: Uncomment for Qt 4.6
+//   q->beginMoveRows(QModelIndex(), c+1+start, c+1+end, QModelIndex(), d+1+destRow);
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sourceParentIndex, int start, int end, const QModelIndex &destParentIndex, int destRow)
@@ -473,7 +477,9 @@ void DescendantEntitiesProxyModelPrivate::sourceRowsMoved(const QModelIndex &sou
   Q_UNUSED(destRow);
 
   m_descendantsCount.clear();
-  q->endMoveRows();
+
+  // TODO: Uncomment for Qt 4.6
+//   q->endMoveRows();
 }
 
 
@@ -497,7 +503,8 @@ void DescendantEntitiesProxyModelPrivate::sourceModelAboutToBeReset()
 {
   Q_Q(DescendantEntitiesProxyModel);
 
-  q->beginResetModel();
+  // TODO: Uncomment for Qt 4.6
+//   q->beginResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceModelReset()
@@ -505,7 +512,8 @@ void DescendantEntitiesProxyModelPrivate::sourceModelReset()
   Q_Q(DescendantEntitiesProxyModel);
 
   m_descendantsCount.clear();
-  q->endResetModel();
+  // TODO: Uncomment for Qt 4.6
+//   q->endResetModel();
 }
 
 void DescendantEntitiesProxyModelPrivate::sourceLayoutAboutToBeChanged()
