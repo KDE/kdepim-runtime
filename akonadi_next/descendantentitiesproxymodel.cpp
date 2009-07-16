@@ -806,12 +806,13 @@ QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, in
         return proxyList.mid(0, hits);
       }
 
-      sourceStart = firstIndexHit.sibling(lastRow + 1, column);
+      if (proxyFirst.row() == proxyRowCount - 1)
+        break;
 
-      QModelIndex nextIndex = firstIndexHit.sibling(lastRow + 1, column);
+      sourceStart = mapToSource(index(proxyFirst.row() + 1, proxyFirst.column()));
+      Q_ASSERT(sourceStart.isValid());
 
-      sourceList = sourceModel()->match(nextIndex, role, value, firstHit, flags);
-
+      sourceList = sourceModel()->match(sourceStart, role, value, firstHit, flags);
     }
   }
 
