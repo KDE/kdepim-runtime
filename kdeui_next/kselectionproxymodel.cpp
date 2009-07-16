@@ -898,41 +898,6 @@ KSelectionProxyModel::FilterBehavior KSelectionProxyModel::filterBehavior() cons
   return d->m_filterBehavior;
 }
 
-
-
-void KSelectionProxyModel::setOmitChildren(bool omit)
-{
-  Q_D(KSelectionProxyModel);
-
-  d->m_omitChildren = omit;
-}
-
-void KSelectionProxyModel::setOmitDescendants(bool omitDescendants)
-{
-  Q_D(KSelectionProxyModel);
-
-  d->m_omitDescendants = omitDescendants;
-}
-
-void KSelectionProxyModel::setStartWithChildTrees(bool startWithChildTrees)
-{
-  Q_D(KSelectionProxyModel);
-
-  d->m_startWithChildTrees = startWithChildTrees;
-}
-
-void KSelectionProxyModel::setIncludeAllSelected(bool includeAllSelected)
-{
-  Q_D(KSelectionProxyModel);
-
-  // TODO: Fix ordering in this configuration.
-
-  if ( includeAllSelected && ( d->m_omitDescendants && d->m_startWithChildTrees ) || ( d->m_omitChildren ) )
-  {
-    d->m_includeAllSelected = includeAllSelected;
-  }
-}
-
 void KSelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
 {
   Q_D(KSelectionProxyModel);
