@@ -25,12 +25,9 @@
 #include <QTabWidget>
 
 #include "../tests/dynamictreemodel.h"
-#include "../entitytreeview.h"
 
 #include "../descendantentitiesproxymodel.h"
 #include "../selectionproxymodel.h"
-
-#include "../modeltest.h"
 
 #include "descendantpmwidget.h"
 #include "selectionpmwidget.h"

@@ -28,7 +28,7 @@
 #include <kdebug.h>
 
 DynamicTreeModel::DynamicTreeModel(QObject *parent)
-  : AbstractItemModel(parent),
+  : QAbstractItemModel(parent),
     nextId(1)
 {
 }

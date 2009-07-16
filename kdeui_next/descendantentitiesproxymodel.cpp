@@ -166,7 +166,7 @@ class DescendantEntitiesProxyModelPrivate
 };
 
 DescendantEntitiesProxyModel::DescendantEntitiesProxyModel( QObject *parent )
-      : AbstractProxyModel( parent ),
+      : QAbstractProxyModel( parent ),
         d_ptr( new DescendantEntitiesProxyModelPrivate(this) )
 {
   Q_D( DescendantEntitiesProxyModel );
@@ -718,7 +718,7 @@ Qt::ItemFlags DescendantEntitiesProxyModel::flags( const QModelIndex &index ) co
   // Can't allow that...
   if (!index.isValid())
     return 0;
-  return AbstractProxyModel::flags(index);
+  return QAbstractProxyModel::flags(index);
 }
 
 QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QModelIndex &start, int role, const QVariant &value, int hits, Qt::MatchFlags flags, int until, const bool matchAll) const

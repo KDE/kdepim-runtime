@@ -19,7 +19,7 @@
 
 #include "selectionproxymodel.h"
 
-#include "entitytreemodel.h"
+#include <QItemSelectionRange>
 
 #include <KDebug>
 
@@ -824,7 +824,7 @@ bool SelectionProxyModelPrivate::isInModel(const QModelIndex &sourceIndex) const
 }
 
 SelectionProxyModel::SelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
-  : AbstractProxyModel(parent), d_ptr(new SelectionProxyModelPrivate(this))
+  : QAbstractProxyModel(parent), d_ptr(new SelectionProxyModelPrivate(this))
 {
   Q_D(SelectionProxyModel);
 
@@ -877,7 +877,7 @@ void SelectionProxyModel::setSourceModel( QAbstractItemModel *sourceModel )
 {
   Q_D(SelectionProxyModel);
 
-  AbstractProxyModel::setSourceModel(sourceModel);
+  QAbstractProxyModel::setSourceModel(sourceModel);
   d->createProxyChain();
   d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
 

@@ -25,9 +25,8 @@
 #include <qtest_kde.h>
 #include <qtestevent.h>
 #include <QItemSelectionRange>
+#include <QAbstractProxyModel>
 
-#include "../abstractproxymodel.h"
-#include "../abstractitemmodel.h"
 #include "dynamictreemodel.h"
 #include "indexfinder.h"
 
@@ -40,7 +39,7 @@ class ModelSpy : public QObject, public QList<QVariantList>
 public:
   ModelSpy(QObject *parent);
 
-  void setModel(AbstractProxyModel *model);
+  void setModel(QAbstractItemModel *model);
 
 protected slots:
   void rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
@@ -53,7 +52,7 @@ protected slots:
   void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
-  AbstractProxyModel *m_model;
+  QAbstractItemModel *m_model;
 };
 
 struct PersistentIndexChange
@@ -89,7 +88,7 @@ class ProxyModelTest : public QObject
 public:
   ProxyModelTest(QObject *parent = 0);
 
-  void setProxyModel(AbstractProxyModel *proxyModel);
+  void setProxyModel(QAbstractProxyModel *proxyModel);
   DynamicTreeModel* sourceModel();
 
 private slots:
@@ -126,7 +125,7 @@ private:
   QHash<QString, QList<QVariantList> > m_expectedSignals;
   QHash<QString, QList<PersistentIndexChange> > m_persistentChanges;
   DynamicTreeModel *m_model;
-  AbstractProxyModel *m_proxyModel;
+  QAbstractProxyModel *m_proxyModel;
   ModelSpy *m_modelSpy;
 
 };

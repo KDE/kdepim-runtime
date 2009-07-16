@@ -23,12 +23,8 @@
 #include <qtestevent.h>
 
 #include "dynamictreemodel.h"
-#include "../modeltest.h"
 #include "../descendantentitiesproxymodel.h"
 #include "proxymodeltest.h"
-
-
-// #include "fakemonitor.h"
 
 #include <QTreeView>
 

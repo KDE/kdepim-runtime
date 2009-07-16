@@ -20,10 +20,9 @@
 #ifndef SELECTIONPROXYMODEL_H
 #define SELECTIONPROXYMODEL_H
 
-#include <QItemSelectionModel>
+#include <QAbstractProxyModel>
 
-#include "abstractproxymodel.h"
-#include "akonadi_next_export.h"
+#include "kdeui_next_export.h"
 
 class QItemSelectionModel;
 

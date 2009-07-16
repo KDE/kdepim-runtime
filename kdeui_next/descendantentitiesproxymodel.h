@@ -21,8 +21,9 @@
 #ifndef DESCENDANTENTITIESPROXYMODEL_H
 #define DESCENDANTENTITIESPROXYMODEL_H
 
-#include "abstractproxymodel.h"
-#include "akonadi_next_export.h"
+#include <QAbstractProxyModel>
+
+#include "kdeui_next_export.h"
 
 class DescendantEntitiesProxyModelPrivate;
 

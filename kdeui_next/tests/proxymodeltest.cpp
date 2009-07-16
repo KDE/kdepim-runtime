@@ -22,7 +22,6 @@
 #include <QSignalSpy>
 
 #include "dynamictreemodel.h"
-#include "../modeltest.h"
 #include <QItemSelectionModel>
 
 typedef QList<ModelChangeCommand*> CommandList;
@@ -36,7 +35,7 @@ ModelSpy::ModelSpy(QObject *parent)
   qRegisterMetaType<IndexFinder>("IndexFinder");
 }
 
-void ModelSpy::setModel(AbstractProxyModel *model)
+void ModelSpy::setModel(QAbstractItemModel *model)
 {
   Q_ASSERT(model);
   m_model = model;
@@ -236,7 +235,7 @@ QVariantList ProxyModelTest::getResultSignal()
   return m_modelSpy->takeAt(0);
 }
 
-void ProxyModelTest::setProxyModel(AbstractProxyModel *proxyModel)
+void ProxyModelTest::setProxyModel(QAbstractProxyModel *proxyModel)
 {
   m_proxyModel = proxyModel;
   m_proxyModel->setSourceModel(m_model);

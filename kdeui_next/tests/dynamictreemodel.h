@@ -20,9 +20,7 @@
 #ifndef DYNAMICTREEMODEL_H
 #define DYNAMICTREEMODEL_H
 
-// #include <QAbstractItemModel>
-
-#include "abstractitemmodel.h"
+#include <QAbstractItemModel>
 
 #include <QHash>
 #include <QList>
@@ -34,7 +32,7 @@
 
 template<typename T> class QList;
 
-class DynamicTreeModel : public AbstractItemModel
+class DynamicTreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 
