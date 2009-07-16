@@ -740,7 +740,11 @@ QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QMod
         return matches.mid(0, hits);
       }
     }
-    idx = idx.sibling(idx.row() + 1, column);
+
+    if (idx.row() == until)
+      break;
+
+    idx = idx.sibling(idx.row() + 1, start.column());
   }
 
   return matches;
