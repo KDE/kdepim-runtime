@@ -730,11 +730,7 @@ QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QMod
 
   while (idx.row() < until)
   {
-
-    // HACK:
-    if (!idx.isValid())
-      break;
-    // Q_ASSERT(idx.isValid())
+    Q_ASSERT(idx.isValid());
 
     if (q->sourceModel()->hasChildren(idx))
     {
