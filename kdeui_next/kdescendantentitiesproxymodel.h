@@ -27,6 +27,43 @@
 
 class KDescendantEntitiesProxyModelPrivate;
 
+/**
+@brief Proxy Model for restructuring a Tree into a list.
+
+Given a model which is represented as a tree:
+
+\image html entitytreemodel.png "A plain EntityTreeModel in a view"
+
+The KDescendantEntitiesProxyModel restructures the sourceModel to represent it as a flat list.
+
+@code
+// ... Create an entityTreeModel
+KDescendantEntitiesProxyModel *descProxy = new KDescendantEntitiesProxyModel(this);
+descProxy->setSourceModel(entityTree);
+view->setModel(descProxy);
+@endcode
+
+\image html descendantentitiesproxymodel.png "A KDescendantEntitiesProxyModel."
+
+KDescendantEntitiesProxyModel can also display the ancestors of the index in the source model as part of its display.
+
+@code
+// ... Create an entityTreeModel
+KDescendantEntitiesProxyModel *descProxy = new KDescendantEntitiesProxyModel(this);
+descProxy->setSourceModel(entityTree);
+
+// #### This is new
+descProxy->setDisplayAncestorData(true, QString(" / "));
+
+view->setModel(descProxy);
+
+@endcode
+
+\image html descendantentitiesproxymodel-withansecnames.png "A KDescendantEntitiesProxyModel with ancestor names."
+
+@since 4.4
+@author Stephen Kelly <steveire@gmail.com>
+*/
 class KDEUI_NEXT_EXPORT KDescendantEntitiesProxyModel : public QAbstractProxyModel
 {
   Q_OBJECT

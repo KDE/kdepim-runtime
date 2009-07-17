@@ -52,6 +52,9 @@ This takes away the need for the developer to handle the selection between the v
 Additionally, this class can be used to programmatically choose some items from the source model to display in the view. For example,
 this is how KMails Favourite folder View works, and how the AmazingCompleter works.
 
+@since 4.4
+@author Stephen Kelly <steveire@gmail.com>
+
 */
 class KDEUI_NEXT_EXPORT KSelectionProxyModel : public QAbstractProxyModel
 {
