@@ -1,0 +1,41 @@
+[Misc]
+Name=RSS serializer
+Name[de]=RSS-Serialisierung
+Name[el]=Προμηθευτής RSS
+Name[en_GB]=RSS serialiser
+Name[es]=Envíos en serie de RSS
+Name[et]=RSS-i jadasti
+Name[fr]=Sérialiseur de flux RSS
+Name[ga]=Srathóir RSS
+Name[gl]=Serializador RSS
+Name[ja]=RSS 用シリアライザ
+Name[km]=ការ​បោះពុម្ព RSS
+Name[nds]=RSS-Reegmnoduul
+Name[pt]=Serializador de RSS
+Name[pt_BR]=Serializador de RSS
+Name[sv]=RSS-serialisering
+Name[tr]=RSS sıralandırıcı
+Name[uk]=Серіалізатор RSS
+Name[x-test]=xxRSS serializerxx
+Comment=An Akonadi serializer plugin for RSS articles
+Comment[de]=Akonadi-Modul zur Serialisierung von RSS-Artikeln
+Comment[el]=Ένα πρόσθετο προσφοράς άρθρων για το Akonadi
+Comment[en_GB]=An Akonadi serialiser plugin for RSS articles
+Comment[es]=Un complemento para los envíos en serie de Akonadi para los artículos RSS
+Comment[et]=Akonadi RSS-artiklite jadastamisplugin
+Comment[fr]=Un module de mise en série d'Akonadi pour des articles RSS
+Comment[ga]=Breiseán srathóra Akonadi le haghaidh alt RSS
+Comment[gl]=Unha extensión de Akonadi para serializar artículos RSS
+Comment[ja]=RSS の記事のための Akonadi シリアライザプラグイン
+Comment[km]=កម្មវិធី​ជំនួយ​បោះពុម្ព​របស់ Akonadi សម្រាប់​អត្ថបទ RSS
+Comment[nds]=En Akonadi-Inreegmoduul för RSS-Artikeln
+Comment[pt]=Um 'plugin' de serialização do Akonadi para artigos de RSS
+Comment[pt_BR]=Um plug-in de serialização do Akonadi para artigos de RSS
+Comment[sv]=Ett insticksprogram till Akonadi för serialisering av RSS-artiklar
+Comment[tr]=RSS yazıları için bir Akonadi sıralandırıcısı
+Comment[uk]=Додаток серіалізатора Akonadi для статей RSS
+Comment[x-test]=xxAn Akonadi serializer plugin for RSS articlesxx
+
+[Plugin]
+Type=application/rss+xml
+X-KDE-Library=akonadi_serializer_rss
