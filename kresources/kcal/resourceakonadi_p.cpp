@@ -295,8 +295,6 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
           mCalendar.deleteIncidence( cachedIncidence );
         }
 
-        delete cachedIncidence;
-
         it = mUidToResourceMap.erase( it );
       } else {
         ++it;
@@ -389,7 +387,6 @@ void ResourceAkonadi::Private::incidenceChanged( const IncidencePtr &incidencePt
                        << ") changed type. Replacing it.";
 
       mCalendar.deleteIncidence( cachedIncidence );
-      delete cachedIncidence;
       mCalendar.addIncidence( incidencePtr->clone() );
     }
   }
@@ -416,7 +413,6 @@ void ResourceAkonadi::Private::incidenceRemoved( const QString &uid, const QStri
   {
     BoolGuard internalModification( mInternalCalendarModification, true );
     mCalendar.deleteIncidence( cachedIncidence );
-    delete cachedIncidence;
   }
 
   if ( !isLoading() ) {
