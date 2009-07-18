@@ -379,7 +379,6 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
         kWarning() << "Item changed incidence type. Replacing it.";
 
         mResource->deleteIncidence( incidence );
-        delete incidence;
         mResource->addIncidence( incidencePtr->clone() );
         scheduleSaveCalendar();
       } else {
@@ -412,7 +411,6 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
       kError() << "Failed to save incidence" << incidence->uid();
       // resource error emitted by savingError()
     }
-    delete incidence;
     changeCommitted( item );
     return;
   }
