@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2009 Canonical
 
-    Author: Till Adam <till@kdab.net>
+    Author: Till Adam <till@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by

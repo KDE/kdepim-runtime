@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2009 Canonical
 
-    Author: Till Adam <till@kdab.net>
+    Author: Till Adam <till@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -21,7 +21,8 @@
 
 #include "couchdb-qt.h"
 
-#include "json_driver.hh"
+#include <serializer.h>
+#include <parser.h>
 
 #include <QtNetwork/QHttp>
 #include <QtCore/QUrl>
@@ -29,6 +30,8 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QVariant>
+
+using namespace QJson;
 
 class CouchDBDocumentInfo::Private
 {
@@ -92,23 +95,24 @@ class CouchDBQt::Private
     :requestId(-1)
     {
     }
-    QVariant parseJSONString( const QString& json );
+    QVariant parseJSONString( const QByteArray& json );
     CouchDBDocumentInfoList variantMapToDocInfoList( const QVariant& map );
     QString serializeToJSONString( const QVariant& v);
 
     int requestId;
     QString database;
     QHttp http;
-    JSonDriver driver;
+    Parser parser;
+    Serializer serializer;
 };
 
-QVariant CouchDBQt::Private::parseJSONString( const QString& json )
+QVariant CouchDBQt::Private::parseJSONString( const QByteArray& json )
 {
 
   bool ok;
-  QVariant data = driver.parse ( json, &ok );
+  QVariant data = parser.parse ( json, &ok );
   if ( !ok ) {
-    qCritical("%i - Error: %s", driver.errorLine(), driver.error().toLatin1().data());
+    qCritical("%i - Error: %s", parser.errorLine(), parser.errorString().toLatin1().data());
     exit (1);
   }
   else {
@@ -120,7 +124,7 @@ QVariant CouchDBQt::Private::parseJSONString( const QString& json )
 
 QString CouchDBQt::Private::serializeToJSONString( const QVariant& v )
 {
-    return driver.serialize( v );
+    return serializer.serialize( v );
 }
 
 CouchDBDocumentInfoList CouchDBQt::Private::variantMapToDocInfoList( const QVariant& vmap )
@@ -187,7 +191,7 @@ void CouchDBQt::slotDatabaseListingFinished(int request, bool error)
     return;
   }
   // FIXME DOS?
-  const QString dbstring = d->http.readAll();
+  const QByteArray dbstring = d->http.readAll();
   const QVariant dbs = d->parseJSONString( dbstring );
   QStringList dbstringlist;
   Q_FOREACH( QVariant v, dbs.toList() ) {
@@ -225,7 +229,7 @@ void CouchDBQt::slotDocumentListingFinished(int request, bool error)
     return;
   }
   // FIXME DOS?
-  const QString docs = d->http.readAll();
+  const QByteArray docs = d->http.readAll();
   //qDebug() << docs;
   const QVariant docsAsVariant = d->parseJSONString( docs );
   const CouchDBDocumentInfoList docList = d->variantMapToDocInfoList( docsAsVariant );
@@ -254,7 +258,7 @@ void CouchDBQt::slotDocumentRetrievalFinished(int request, bool error)
     return;
   }
   // FIXME DOS?
-  const QString doc = d->http.readAll();
+  const QByteArray doc = d->http.readAll();
   //qDebug() << doc;
   const QVariant docAsVariant = d->parseJSONString( doc );
   emit documentRetrieved( docAsVariant );
