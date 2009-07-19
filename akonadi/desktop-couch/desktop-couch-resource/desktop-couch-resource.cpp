@@ -71,7 +71,13 @@ bool DesktopCouchResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 
 static QVariant addresseeToVariant( const KABC::Addressee& a )
 {
-    return QVariant( );
+    QVariantMap vMap;
+    vMap.insert( "_id", a.uid() );
+    vMap.insert( "_rev", a.custom( "akonadi-desktop-couch-resource", "_rev" ) );
+
+    // FIXME handle known fields
+    // FIXME restore unknown fields from customs
+    return vMap;
 }
 
 static KABC::Addressee variantToAddressee( const QVariant& v )
@@ -110,6 +116,9 @@ static KABC::Addressee variantToAddressee( const QVariant& v )
       a.insertPhoneNumber( phonenumber );
     }
   }
+  a.insertCustom( "akonadi-desktop-couch-resource", "_rev", vMap["_rev"].toString() );
+
+  // FIXME enter all other fields as custom headers as well
 
   return a;
 }
@@ -176,6 +185,8 @@ void DesktopCouchResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     QVariant v = addresseeToVariant( addressee );
     db.updateDocument( info, v );
 
+    // FIXME make async and check error 
+    // setProperty( "akonadiItem", QVariant::fromValue(item) );
     Item i( item );
     i.setRemoteId( addressee.uid() );
     changeCommitted( i );
