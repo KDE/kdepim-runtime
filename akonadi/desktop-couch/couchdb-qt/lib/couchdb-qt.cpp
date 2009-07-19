@@ -270,7 +270,7 @@ void CouchDBQt::updateDocument( const CouchDBDocumentInfo& info, const QVariant&
   const QString str = d->serializeToJSONString( v );
   d->http.disconnect( SIGNAL( requestFinished(int,bool) ) );
   connect( &d->http, SIGNAL( requestFinished(int,bool) ),
-           this, SLOT( slotDocumentUpdatedFinished(int, bool) ) );
+           this, SLOT( slotDocumentUpdateFinished(int, bool) ) );
 
   d->requestId = d->http.post( QString("/%1/%2").arg( info.database() ).arg( info.id() ),
                                str.toUtf8() );
