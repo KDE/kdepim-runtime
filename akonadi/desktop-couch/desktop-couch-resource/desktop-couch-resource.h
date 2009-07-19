@@ -23,10 +23,11 @@
 #define DESKTOPCOUCHRESOURCE_H
 
 #include <akonadi/resourcebase.h>
+#include <akonadi/agentbase.h>
 #include <kabc/addressee.h>
 #include <couchdb-qt.h>
 
-class DesktopCouchResource : public Akonadi::ResourceBase
+class DesktopCouchResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
