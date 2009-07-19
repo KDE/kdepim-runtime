@@ -268,12 +268,17 @@ void CouchDBQt::slotDocumentRetrievalFinished(int request, bool error)
 void CouchDBQt::updateDocument( const CouchDBDocumentInfo& info, const QVariant& v )
 {
   const QString str = d->serializeToJSONString( v );
+  if ( str.isNull() ) {
+    emit documentUpdated( false, tr("Error parsing JSON document") );
+    return;
+  }
   d->http.disconnect( SIGNAL( requestFinished(int,bool) ) );
   connect( &d->http, SIGNAL( requestFinished(int,bool) ),
            this, SLOT( slotDocumentUpdateFinished(int, bool) ) );
 
-  d->requestId = d->http.post( QString("/%1/%2").arg( info.database() ).arg( info.id() ),
-                               str.toUtf8() );
+  QHttpRequestHeader header("PUT", QString("/%1/%2").arg( info.database() ).arg( info.id() ),1,1);   /* header */
+  
+  d->requestId = d->http.request( header, str.toUtf8() );
 }
 
 void CouchDBQt::slotDocumentUpdateFinished(int request, bool error)
@@ -286,6 +291,17 @@ void CouchDBQt::slotDocumentUpdateFinished(int request, bool error)
     emit documentUpdated( false, tr("Invalid request id") );
     return;
   }
+  // json level error handling looks like this:
+  // "{"error":"conflict","reason":"Document update conflict."}
+  // "{"ok":true,"id":"428004fb5c5a8db558a98f7527e2b9d10","rev":"1-967a00dff5e02add41819138abb3284d"}
+  const QVariantMap map = d->parseJSONString( d->http.readAll() ).toMap();
+  if ( map.contains("error") ) {
+    const QString err = map["reason"].toString();
+    qWarning() << err;
+    emit documentUpdated( false, err );
+    return;
+  }
+  Q_ASSERT( map.contains("ok") && map["ok"].toBool() == true );
   emit documentUpdated( true );
 }
 
