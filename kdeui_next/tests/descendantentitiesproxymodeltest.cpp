@@ -51,6 +51,11 @@ public:
       m_rowCount += rowsAffected;
     }
 
+    void signalMove(const QString &name, int startRow, int endRow, int destRow)
+    {
+      ProxyModelTest::signalMove(name, IndexFinder(), startRow, endRow, IndexFinder(), destRow);
+    }
+
     void signalRemoval(const QString &name, int startRow, int rowsAffected)
     {
       ProxyModelTest::signalRemoval(name, IndexFinder(), startRow, rowsAffected, m_rowCount);
@@ -191,8 +196,18 @@ void DescendantEntitiesProxyModelTest::initTestCase()
   persistentList.clear();
   m_rowCount += 50;
 
-  startRow = 11;
+  startRow = 31;
+  int endRow = 31;
+  int destRow = 36;
+  signalMove("move01", startRow, endRow, destRow);
 
+
+  startRow = 36;
+  endRow = 36;
+  destRow = 31;
+  signalMove("move02", startRow, endRow, destRow);
+
+  startRow = 11;
   signalDataChange("change01", startRow, startRow);
 
   // Although the source model emits only one range is changed, this proxy model puts children indexes
@@ -200,7 +215,7 @@ void DescendantEntitiesProxyModelTest::initTestCase()
   // Currently separate signals are emitted for each changed row.
   // This should really emit one signal for each continuous range instead. That's a TODO.
   startRow = 65;
-  int endRow = 65;
+  endRow = 65;
   signalList << getDataChangedSignal(startRow, endRow);
 
   startRow = 66;
