@@ -46,6 +46,8 @@ public:
 
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
+  void clear();
+
 protected slots:
 
   /**
@@ -109,6 +111,8 @@ protected:
   int m_numCols;
 
 };
+
+typedef QList<ModelChangeCommand*> ModelChangeCommandList;
 
 class ModelInsertCommand : public ModelChangeCommand
 {

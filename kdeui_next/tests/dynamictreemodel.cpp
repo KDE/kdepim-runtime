@@ -139,9 +139,17 @@ QVariant DynamicTreeModel::data(const QModelIndex &index, int role) const
   return QVariant();
 }
 
+void DynamicTreeModel::clear()
+{
+  m_items.clear();
+  m_childItems.clear();
+  nextId = 1;
+  reset();
+}
+
 
 ModelChangeCommand::ModelChangeCommand( DynamicTreeModel *model, QObject *parent )
-    : QObject(parent), m_model(model), m_numCols(1)
+    : QObject(parent), m_model(model), m_numCols(1), m_startRow(-1), m_endRow(-1)
 {
 
 }
