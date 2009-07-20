@@ -95,12 +95,17 @@ void ModelSpy::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottom
 
 
 ProxyModelTest::ProxyModelTest(QObject *parent)
-: QObject(parent), m_model(new DynamicTreeModel(this)), m_proxyModel(0), m_modelSpy(new ModelSpy(this))
+: QObject(parent),
+  m_model(new DynamicTreeModel(this)),
+  m_proxyModel(0),
+  m_modelSpy(new ModelSpy(this)),
+  m_modelCommander(new ModelCommander(m_model, this))
 {
 }
 
 void ProxyModelTest::initTestCase()
 {
+  m_modelCommander->setDefaultCommands();
 }
 
 DynamicTreeModel* ProxyModelTest::sourceModel()
@@ -304,7 +309,7 @@ QModelIndexList ProxyModelTest::getUnchangedIndexes(const QModelIndex &parent, Q
 
 void ProxyModelTest::doTest()
 {
-  QFETCH( CommandList, commandList );
+//   QFETCH( CommandList, commandList );
 
   const char *currentTag = QTest::currentDataTag();
 
@@ -365,12 +370,8 @@ void ProxyModelTest::doTest()
   QModelIndexList unchangedIndexes = getUnchangedIndexes(QModelIndex(), changedRanges);
 
   QList<QPersistentModelIndex> unchangedPersistentIndexes = toPersistent(unchangedIndexes);
-
   // Run the test.
-  foreach(ModelChangeCommand *command, commandList)
-  {
-    command->doCommand();
-  }
+  m_modelCommander->executeNextCommand();
 
   while (!signalList.isEmpty())
   {
@@ -433,236 +434,24 @@ void ProxyModelTest::doTest()
 void ProxyModelTest::testInsertAndRemove_data()
 {
   QTest::addColumn<CommandList>("commandList");
+  QTest::newRow("insert01");
 
-  CommandList commandList;
-
-  // Insert a single item at the top.
-  ModelInsertCommand *ins;
-  ins = new ModelInsertCommand(sourceModel(), this);
-  ins->setStartRow(0);
-  ins->setEndRow(0);
-  ins->doCommand();
-
-  QTest::newRow("insert01") << commandList;
-  commandList.clear();
-
-  // Give the top level item 10 children.
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 0 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-
-  commandList << ins;
-
-  QTest::newRow("insert02") << commandList;
-  commandList.clear();
-
-  // Give the top level item 10 'older' siblings.
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-
-  commandList << ins;
-
-  QTest::newRow("insert03") << commandList;
-  commandList.clear();
-
-  // Give the top level item 10 'younger' siblings.
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setStartRow(11);
-  ins->setEndRow(20);
-
-  commandList << ins;
-
-  QTest::newRow("insert04") << commandList;
-  commandList.clear();
-
-  // Add more children to the top level item.
-  // First 'older'
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-
-  commandList << ins;
-
-  QTest::newRow("insert05") << commandList;
-  commandList.clear();
-
-  // Then younger
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 );
-  ins->setStartRow(20);
-  ins->setEndRow(29);
-
-  commandList << ins;
-
-  QTest::newRow("insert06") << commandList;
-  commandList.clear();
-
-  // Then somewhere in the middle.
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 );
-  ins->setStartRow(10);
-  ins->setEndRow(19);
-
-  commandList << ins;
-
-  QTest::newRow("insert07") << commandList;
-  commandList.clear();
-
-  // Add some more items for removing later.
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 << 5 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-  commandList << ins;
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 << 5 << 5 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-  commandList << ins;
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 << 5 << 5 << 5 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-  commandList << ins;
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 << 6 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-  commandList << ins;
-  ins = new ModelInsertCommand(m_model, this);
-  ins->setAncestorRowNumbers(QList<int>() << 10 << 7 );
-  ins->setStartRow(0);
-  ins->setEndRow(9);
-  commandList << ins;
-
-  QTest::newRow("insert08") << commandList;
-  commandList.clear();
-
-  // Insert a tree of items in one go.
-  ModelInsertWithDescendantsCommand *insWithDescs = new ModelInsertWithDescendantsCommand(m_model, this);
-  insWithDescs->setStartRow(2);
-  insWithDescs->setAncestorRowNumbers(QList<int>() << 10 );
-  QList<ModelInsertWithDescendantsCommand::InsertFragment> fragments;
-  ModelInsertWithDescendantsCommand::InsertFragment fragment;
-
-  ModelInsertWithDescendantsCommand::InsertFragment subFragment;
-  subFragment.numRows = 10;
-
-  ModelInsertWithDescendantsCommand::InsertFragment subSubFragment;
-  subSubFragment.numRows = 10;
-  subFragment.subfragments.insert(4, subSubFragment);
-
-  fragment.numRows = 10;
-  fragment.subfragments.insert(5, subFragment);
-  fragment.subfragments.insert(2, subFragment);
-  fragments << fragment;
-  insWithDescs->setFragments(fragments );
-  commandList << insWithDescs;
-
-  QTest::newRow("insert09") << commandList;
-  commandList.clear();
-
-  ModelDataChangeCommand *dataChange = new ModelDataChangeCommand(m_model, this);
-
-  dataChange->setAncestorRowNumbers(QList<int>() << 10 );
-  dataChange->setStartRow(0);
-  dataChange->setEndRow(0);
-
-  commandList << dataChange;
-
-  QTest::newRow("change01") << commandList;
-  commandList.clear();
-
-  dataChange = new ModelDataChangeCommand(m_model, this);
-  dataChange->setAncestorRowNumbers(QList<int>() << 10);
-  dataChange->setStartRow(4);
-  dataChange->setEndRow(7);
-
-  commandList << dataChange;
-
-  QTest::newRow("change02") << commandList;
-  commandList.clear();
-
-  ModelRemoveCommand *rem;
-
-  // Remove a single item without children.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 );
-  rem->setStartRow(0);
-  rem->setEndRow(0);
-
-  commandList << rem;
-
-  QTest::newRow("remove01") << commandList;
-  commandList.clear();
-
-  // Remove a single item with 10 children.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 );
-  rem->setStartRow(6);
-  rem->setEndRow(6);
-
-  commandList << rem;
-
-  QTest::newRow("remove02") << commandList;
-  commandList.clear();
-
-  // Remove a single item with no children from the top.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 << 5 );
-  rem->setStartRow(0);
-  rem->setEndRow(0);
-
-  commandList << rem;
-
-  QTest::newRow("remove03") << commandList;
-  commandList.clear();
-
-  // Remove a single second level item with no children from the bottom.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 << 5 );
-  rem->setStartRow(8);
-  rem->setEndRow(8);
-
-  commandList << rem;
-
-  QTest::newRow("remove04") << commandList;
-  commandList.clear();
-
-  // Remove a single second level item with no children from the middle.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 << 5 );
-  rem->setStartRow(3);
-  rem->setEndRow(3);
-
-  commandList << rem;
-
-  QTest::newRow("remove05") << commandList;
-  commandList.clear();
-
-  // clear the children of a second level item.
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 << 5 );
-  rem->setStartRow(0);
-  rem->setEndRow(6);
-
-  commandList << rem;
-
-  QTest::newRow("remove06") << commandList;
-  commandList.clear();
-
-  // Clear a sub-tree;
-  rem = new ModelRemoveCommand(m_model, this);
-  rem->setAncestorRowNumbers(QList<int>() << 10 );
-  rem->setStartRow(4);
-  rem->setEndRow(4);
-
-  commandList << rem;
-
-  QTest::newRow("remove07") << commandList;
-  commandList.clear();
+  QTest::newRow("insert02");
+  QTest::newRow("insert03");
+  QTest::newRow("insert04");
+  QTest::newRow("insert05");
+  QTest::newRow("insert06");
+  QTest::newRow("insert07");
+  QTest::newRow("insert08");
+  QTest::newRow("insert09");
+  QTest::newRow("change01");
+  QTest::newRow("change02");
+  QTest::newRow("remove01");
+  QTest::newRow("remove02");
+  QTest::newRow("remove03");
+  QTest::newRow("remove04");
+  QTest::newRow("remove05");
+  QTest::newRow("remove06");
+  QTest::newRow("remove07");
 
 }

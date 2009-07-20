@@ -29,6 +29,7 @@
 
 #include "dynamictreemodel.h"
 #include "indexfinder.h"
+#include "modelcommander.h"
 
 Q_DECLARE_METATYPE( QModelIndex )
 
@@ -127,6 +128,7 @@ private:
   DynamicTreeModel *m_model;
   QAbstractProxyModel *m_proxyModel;
   ModelSpy *m_modelSpy;
+  ModelCommander *m_modelCommander;
 
 };
 
