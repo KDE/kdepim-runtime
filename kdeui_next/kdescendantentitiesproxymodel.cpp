@@ -727,6 +727,7 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
   QModelIndexList matches;
 
   const int column = start.column();
+  const int firstRow = 0;
   QModelIndex idx = start;
 
   while (idx.row() <= until)
@@ -735,7 +736,8 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
 
     if (q->sourceModel()->hasChildren(idx))
     {
-      matches << q->match(q->mapFromSource(idx.child(0, column)), role, value, hits, flags);
+      QModelIndex firstChild = idx.child(firstRow, column);
+      matches << q->match(q->mapFromSource(firstChild), role, value, hits, flags);
       if (!matchAll && (matches.size() >= hits))
       {
         return matches.mid(0, hits);
