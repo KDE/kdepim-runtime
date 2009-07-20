@@ -50,6 +50,8 @@ class AKONADI_NEXT_EXPORT FavoriteCollectionsModel : public SelectionProxyModel
   public Q_SLOTS:
     void setCollections( const Collection::List &collections );
     void addCollection( const Collection &collection );
+    void removeCollection( const Collection &collection );
+
   public:
     Collection::List collections() const;
 

@@ -124,6 +124,21 @@ void FavoriteCollectionsModel::addCollection( const Collection &collection )
   d->saveConfig();
 }
 
+void FavoriteCollectionsModel::removeCollection( const Collection &collection )
+{
+  d->collections.removeAll( collection );
+
+  EntityTreeModel *model = qobject_cast<EntityTreeModel*>( sourceModel() );
+  Q_ASSERT( model!=0 );
+
+  QModelIndex index = model->indexForCollection( model->collectionForId( collection.id() ) );
+  selectionModel()->select( index,
+                            QItemSelectionModel::Deselect );
+
+  d->updateSelection();
+  d->saveConfig();
+}
+
 Collection::List FavoriteCollectionsModel::collections() const
 {
   return d->collections;
