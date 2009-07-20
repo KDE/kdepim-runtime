@@ -743,11 +743,12 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
         return matches.mid(0, hits);
       }
     }
-
-    if (idx.row() == until)
+    int row = idx.row();
+    if (row == until)
+    {
       break;
-
-    idx = idx.sibling(idx.row() + 1, start.column());
+    }
+    idx = idx.sibling(row + 1, column);
   }
 
   return matches;
