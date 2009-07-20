@@ -112,9 +112,10 @@ protected:
   QModelIndexList getDescendantIndexes(const QModelIndex &index);
   QList< QPersistentModelIndex > toPersistent(QModelIndexList list);
 
-  PersistentIndexChange getChange(IndexFinder parentFinder, int start, int end, int difference, bool toInvalid = false);
+  PersistentIndexChange getChange(IndexFinder sourceFinder, int start, int end, int difference, bool toInvalid = false);
   QVariantList getSignal(SignalType type, IndexFinder parentFinder, int start, int end);
   void signalInsertion(const QString &name, IndexFinder parentFinder, int startRow, int rowsAffected, int rowCount = -1);
+  void signalMove(const QString &name, IndexFinder srcFinder, int start, int end, IndexFinder destFinder, int destRow );
   void signalRemoval(const QString &name, IndexFinder parentFinder, int startRow, int rowsAffected, int rowCount = -1);
   void noSignal(const QString &name);
 
@@ -124,6 +125,7 @@ protected:
   void setExpected(const QString &name, const QList<QVariantList> &list, const QList<PersistentIndexChange> &persistentChanges = QList<PersistentIndexChange>() );
   void handleSignal(QVariantList expected);
   QVariantList getResultSignal();
+  int getChange(bool sameParent, int start, int end, int currentPosition, int destinationStart);
 
 private:
   QHash<QString, QList<QVariantList> > m_expectedSignals;

@@ -163,6 +163,69 @@ void ProxyModelTest::signalInsertion(const QString &name, IndexFinder parentFind
   setExpected(name, signalList, persistentList);
 }
 
+int ProxyModelTest::getChange(bool sameParent, int start, int end, int currentPosition, int destinationStart)
+{
+  const int displacementOffset = end - start + 1;
+  int change = displacementOffset;
+
+  if (sameParent)
+  {
+    const bool movingUp = destinationStart < start;
+    const int middlePosition = movingUp ? start : end;
+
+    if (movingUp)
+    {
+      if (currentPosition >= middlePosition)
+        change = destinationStart - start;
+    } else if (currentPosition <= middlePosition)
+    {
+      change = destinationStart - end - 1;
+    } else {
+      change = -1 * (displacementOffset);
+    }
+  } else // if (sameParent)
+  {
+    if (currentPosition > end)
+    {
+      change = start - end - 1;
+    } else {
+      change = destinationStart - start;
+    }
+  }
+
+  return change;
+}
+
+
+void ProxyModelTest::signalMove(const QString &name, IndexFinder srcFinder, int start, int end, IndexFinder destFinder, int destRow)
+{
+  QList<QVariantList> signalList;
+  QVariantList signal;
+  signal << RowsAboutToBeMoved << QVariant::fromValue(srcFinder) << start << end << QVariant::fromValue(destFinder) << destRow;
+  signalList << signal;
+  signal.clear();
+  signal << RowsMoved << QVariant::fromValue(srcFinder) << start << end << QVariant::fromValue(destFinder) << destRow;
+  signalList << signal;
+  signal.clear();
+
+  QList<PersistentIndexChange> persistentList;
+
+  int difference = 5;
+  if (end > destRow)
+  {
+    difference *= -1;
+    persistentList << getChange(srcFinder, start, end, difference );
+    persistentList << getChange(srcFinder, destRow +1, end -1, (start - end) );
+  } else {
+    persistentList << getChange(srcFinder, start, end, difference - 1 );
+    persistentList << getChange(srcFinder, end + 1, destRow -1, -1*(start - end + 1) );
+
+  }
+
+
+  setExpected(name, signalList, persistentList);
+}
+
 void ProxyModelTest::signalRemoval(const QString &name, IndexFinder parentFinder, int startRow, int rowsAffected, int rowCount)
 {
   QVERIFY(startRow >= 0 && rowsAffected > 0);
