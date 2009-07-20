@@ -10,6 +10,7 @@
     <Action name="akonadi_collection_create"/>
     <Separator/>
     <Action name="akonadi_collection_add_to_favorites"/>
+    <Action name="akonadi_collection_rename_favorite"/>
     <Action name="akonadi_collection_remove_from_favorites"/>
     <Separator/>
     <Action name="akonadi_collection_copy"/>
@@ -41,6 +42,7 @@
   <Action name="akonadi_collection_create"/>
   <Separator/>
   <Action name="akonadi_collection_add_to_favorites"/>
+  <Action name="akonadi_collection_rename_favorite"/>
   <Action name="akonadi_collection_remove_from_favorites"/>
   <Separator/>
   <Action name="akonadi_collection_copy"/>
