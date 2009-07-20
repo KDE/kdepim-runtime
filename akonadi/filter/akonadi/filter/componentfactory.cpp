@@ -57,8 +57,8 @@ ComponentFactory::ComponentFactory()
   registerDataMember(
       new DataMemberDescriptor(
           StandardDataMemberToHeader,
-          QString::fromAscii( "from" ),
-          i18n( "From address" ),
+          QString::fromAscii( "to" ),
+          i18n( "To address" ),
           DataTypeAddress
         )
     );
