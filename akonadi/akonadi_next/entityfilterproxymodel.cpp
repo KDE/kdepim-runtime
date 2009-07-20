@@ -31,30 +31,35 @@
 
 using namespace Akonadi;
 
+namespace Akonadi {
 /**
  * @internal
  */
-class EntityFilterProxyModel::Private
+class EntityFilterProxyModelPrivate
 {
   public:
-    Private( EntityFilterProxyModel *parent )
-      : mParent( parent ),
+    EntityFilterProxyModelPrivate( EntityFilterProxyModel *parent )
+      : q_ptr( parent ),
         m_headerSet(0)
     {
     }
 
-    EntityFilterProxyModel *mParent;
     QStringList includedMimeTypes;
     QStringList excludedMimeTypes;
 
     QPersistentModelIndex m_rootIndex;
 
     int m_headerSet;
+
+    Q_DECLARE_PUBLIC(EntityFilterProxyModel)
+    EntityFilterProxyModel *q_ptr;
 };
+
+}
 
 EntityFilterProxyModel::EntityFilterProxyModel( QObject *parent )
   : QSortFilterProxyModel( parent ),
-    d( new Private( this ) )
+    d_ptr( new EntityFilterProxyModelPrivate( this ) )
 {
   // TODO: Override setSourceModel and do this there?
   setSupportedDragActions( Qt::CopyAction | Qt::MoveAction );
@@ -62,35 +67,40 @@ EntityFilterProxyModel::EntityFilterProxyModel( QObject *parent )
 
 EntityFilterProxyModel::~EntityFilterProxyModel()
 {
-  delete d;
+  delete d_ptr;
 }
 
 void EntityFilterProxyModel::addMimeTypeInclusionFilters(const QStringList &typeList)
 {
+  Q_D(EntityFilterProxyModel);
   d->includedMimeTypes << typeList;
   invalidateFilter();
 }
 
 void EntityFilterProxyModel::addMimeTypeExclusionFilters(const QStringList &typeList)
 {
+  Q_D(EntityFilterProxyModel);
   d->excludedMimeTypes << typeList;
   invalidateFilter();
 }
 
 void EntityFilterProxyModel::addMimeTypeInclusionFilter(const QString &type)
 {
+  Q_D(EntityFilterProxyModel);
   d->includedMimeTypes << type;
   invalidateFilter();
 }
 
 void EntityFilterProxyModel::addMimeTypeExclusionFilter(const QString &type)
 {
+  Q_D(EntityFilterProxyModel);
   d->excludedMimeTypes << type;
   invalidateFilter();
 }
 
 bool EntityFilterProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent) const
 {
+  Q_D(const EntityFilterProxyModel);
   // All rows that are not below m_rootIndex are unfiltered.
 
   bool found = false;
@@ -130,16 +140,19 @@ bool EntityFilterProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex 
 
 QStringList EntityFilterProxyModel::mimeTypeInclusionFilters() const
 {
+  Q_D(const EntityFilterProxyModel);
   return d->includedMimeTypes;
 }
 
 QStringList EntityFilterProxyModel::mimeTypeExclusionFilters() const
 {
+  Q_D(const EntityFilterProxyModel);
   return d->excludedMimeTypes;
 }
 
 void EntityFilterProxyModel::clearFilters()
 {
+  Q_D(EntityFilterProxyModel);
   d->includedMimeTypes.clear();
   d->excludedMimeTypes.clear();
   invalidateFilter();
@@ -147,18 +160,21 @@ void EntityFilterProxyModel::clearFilters()
 
 void EntityFilterProxyModel::setRootIndex(const QModelIndex &srcIndex)
 {
+  Q_D(EntityFilterProxyModel);
   d->m_rootIndex = srcIndex;
   reset();
 }
 
 void EntityFilterProxyModel::setHeaderSet(int set)
 {
+  Q_D(EntityFilterProxyModel);
   d->m_headerSet = set;
 }
 
 
 QVariant EntityFilterProxyModel::headerData(int section, Qt::Orientation orientation, int role ) const
 {
+  Q_D(const EntityFilterProxyModel);
   role += (EntityTreeModel::TerminalUserRole * d->m_headerSet);
   return sourceModel()->headerData(section, orientation, role);
 }
@@ -187,8 +203,15 @@ QStringList EntityFilterProxyModel::mimeTypes() const
 
 QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
+  if (EntityTreeModel::AmazingCompletionRole != role)
+    return QSortFilterProxyModel::match(start, role, value, hits, flags);
+
+  // We match everything in the source model because sorting will change what we should show.
+  const int allHits = -1;
+
   QModelIndexList proxyList;
-  QModelIndexList sourceList = sourceModel()->match(mapToSource(start), role, value, hits, flags);
+  QMap<int, QModelIndex> proxyMap;
+  QModelIndexList sourceList = sourceModel()->match(mapToSource(start), role, value, allHits, flags);
   QModelIndexList::const_iterator it;
   const QModelIndexList::const_iterator begin = sourceList.constBegin();
   const QModelIndexList::const_iterator end = sourceList.constEnd();
@@ -197,12 +220,18 @@ QModelIndexList EntityFilterProxyModel::match(const QModelIndex& start, int role
   {
     proxyIndex = mapFromSource(*it);
 
+    // Any filtered indexes will be invalid when mapped.
     if (!proxyIndex.isValid())
       continue;
 
-    proxyList << proxyIndex;
+    // Inserting in a QMap gives us sorting by key for free.
+    proxyMap.insert(proxyIndex.row(), proxyIndex);
   }
-  return proxyList;
+
+  if (hits == -1)
+    return proxyMap.values();
+
+  return proxyMap.values().mid(0, hits);
 }
 
 #include "entityfilterproxymodel.moc"

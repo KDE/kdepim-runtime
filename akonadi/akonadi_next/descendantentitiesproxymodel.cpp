@@ -133,6 +133,7 @@ class DescendantEntitiesProxyModelPrivate
   */
   int descendedRow(const QModelIndex &sourceIndex) const;
 
+  QModelIndexList matchDescendants(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags, int until, const bool matchAll) const;
 
   enum Operation
   {
@@ -719,35 +720,110 @@ Qt::ItemFlags DescendantEntitiesProxyModel::flags( const QModelIndex &index ) co
   return AbstractProxyModel::flags(index);
 }
 
+QModelIndexList DescendantEntitiesProxyModelPrivate::matchDescendants(const QModelIndex &start, int role, const QVariant &value, int hits, Qt::MatchFlags flags, int until, const bool matchAll) const
+{
+  Q_Q(const DescendantEntitiesProxyModel);
+  QModelIndexList matches;
+
+  const int column = start.column();
+  QModelIndex idx = start;
+
+  while (idx.row() <= until)
+  {
+    Q_ASSERT(idx.isValid());
+
+    if (q->sourceModel()->hasChildren(idx))
+    {
+      matches << q->match(q->mapFromSource(idx.child(0, column)), role, value, hits, flags);
+      if (!matchAll && (matches.size() >= hits))
+      {
+        return matches.mid(0, hits);
+      }
+    }
+
+    if (idx.row() == until)
+      break;
+
+    idx = idx.sibling(idx.row() + 1, start.column());
+  }
+
+  return matches;
+}
 
 QModelIndexList DescendantEntitiesProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
+  Q_D(const DescendantEntitiesProxyModel);
+
+  QModelIndexList sourceList;
   QModelIndexList proxyList;
 
+  QModelIndex beginIndex = start;
   QModelIndex sourceStart = mapToSource(start);
   QModelIndex parent = sourceModel()->parent(sourceStart);
 
-  proxyList << sourceModel()->match(sourceStart, role, value, hits, flags);
+  int parentRowCount = sourceModel()->rowCount(sourceModel()->parent(sourceStart));
 
-  for (int i = sourceStart.row(); i < sourceModel()->rowCount(parent); i++)
+  const bool matchAll = (hits == -1);
+  const int firstHit = 1;
+  const int column = 1;
+  const int proxyRowCount = rowCount();
+
+  sourceList = sourceModel()->match(sourceStart, role, value, firstHit, flags);
+
+  int lastRow;
+  if (sourceList.isEmpty())
   {
-    QModelIndex idx = sourceStart.sibling(i, sourceStart.column());
-    Q_ASSERT(idx.isValid());
-    if (sourceModel()->hasChildren(idx))
+    lastRow = parentRowCount - 1;
+    proxyList = d->matchDescendants(mapToSource(start), role, value, hits, flags, lastRow, matchAll);
+
+    if (matchAll)
+      return proxyList;
+
+    return proxyList.mid(0, hits);
+
+  } else {
+    forever
     {
-      QModelIndex idx2 = sourceModel()->index(0, idx.column(), idx);
-      if (!idx2.isValid())
+      QModelIndex firstIndexHit;
+      if (sourceList.isEmpty())
+      {
+        lastRow = parentRowCount - 1;
+      } else {
+        firstIndexHit = sourceList.first();
+        lastRow = firstIndexHit.row() - 1;
+      }
+
+      proxyList << d->matchDescendants(sourceStart, role, value, hits, flags, lastRow, matchAll);
+
+      if (sourceList.isEmpty())
         break;
-      QModelIndexList l = match(mapFromSource(idx2), role, value, hits, flags);
-      proxyList << l;
+
+      QModelIndex proxyFirst = mapFromSource(firstIndexHit);
+      proxyList << proxyFirst;
+
+      if (!matchAll && ( proxyList.size() >= hits))
+      {
+        return proxyList.mid(0, hits);
+      }
+
+      if (proxyFirst.row() == proxyRowCount - 1)
+        break;
+
+      sourceStart = mapToSource(index(proxyFirst.row() + 1, proxyFirst.column()));
+      Q_ASSERT(sourceStart.isValid());
+
+      sourceList = sourceModel()->match(sourceStart, role, value, firstHit, flags);
     }
   }
 
-  return proxyList;
+  QModelIndex nextStart = start.sibling(start.row() + parentRowCount + 1, column);
+  if (nextStart.isValid())
+    proxyList << match(nextStart, role, value, hits, flags);
 
+  if (matchAll)
+    return proxyList;
+
+  return proxyList.mid(0, hits);
 }
-
-
-
 
 #include "moc_descendantentitiesproxymodel.cpp"

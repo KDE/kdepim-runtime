@@ -182,7 +182,6 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
       kWarning() << "Item changed incidence type. Replacing it.";
 
       mCalendar->deleteIncidence( incidence );
-      delete incidence;
       mCalendar->addIncidence( payload.get()->clone() );
     }
   }

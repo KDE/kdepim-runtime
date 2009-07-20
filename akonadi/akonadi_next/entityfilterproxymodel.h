@@ -25,6 +25,7 @@
 #include "akonadi_next_export.h"
 namespace Akonadi {
 
+class EntityFilterProxyModelPrivate;
 /**
  * @short A proxy model that filters entities by mime type.
  *
@@ -132,7 +133,7 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
     virtual QStringList mimeTypes() const;
 
     /**
-    Reimplemented to handle the AmazingCompletionRole.
+      Reimplemented to handle the AmazingCompletionRole.
     */
     virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
 
@@ -142,8 +143,8 @@ class AKONADI_NEXT_EXPORT EntityFilterProxyModel : public QSortFilterProxyModel
 
   private:
     //@cond PRIVATE
-    class Private;
-    Private* const d;
+    Q_DECLARE_PRIVATE(EntityFilterProxyModel)
+    EntityFilterProxyModelPrivate *d_ptr;
     //@endcond
 };
 

@@ -1,3 +1,21 @@
+/*
+    Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 
 #include "amazingcompleter.h"
@@ -15,6 +33,7 @@ public:
   AmazingCompleterPrivate(AmazingCompleter *completer) //, QAbstractItemModel *model)
     :   m_matchingRole(Qt::DisplayRole),
         m_completionRole(Qt::DisplayRole),
+        m_minumumLength(3),
         q_ptr(completer)
   {
 
@@ -29,6 +48,7 @@ public:
   int m_completionRole;
   AmazingCompleter::ViewHandler m_viewHandler;
   QVariant m_matchData;
+  int m_minumumLength;
 
   Q_DECLARE_PUBLIC(AmazingCompleter)
   AmazingCompleter *q_ptr;
@@ -61,6 +81,14 @@ void AmazingCompleter::setCompletionPrefix(const QVariant& matchData)
     return;
   }
 
+  QString matchString = matchData.toString();
+  if (matchString.size() < d->m_minumumLength)
+  {
+    d->m_view->hide();
+    return;
+  }
+
+  
   QModelIndex idx = d->m_model->index(0, 0);
 
   if (!idx.isValid())

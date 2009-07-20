@@ -22,7 +22,7 @@
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
-#include <akonadi/kcal/kcalmimetypevisitor.h>
+#include <kcal/kcalmimetypevisitor.h>
 
 #include <kcal/calformat.h>
 #include <KLocale>

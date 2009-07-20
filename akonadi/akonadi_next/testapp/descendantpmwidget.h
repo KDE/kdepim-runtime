@@ -26,14 +26,33 @@
 #include <QWidget>
 
 class DynamicTreeModel;
+class QTreeView;
+class QLineEdit;
+class QItemSelectionModel;
+
+namespace Akonadi
+{
+class DescendantEntitiesProxyModel;
+class SelectionProxyModel;
+}
 
 class DescendantProxyModelWidget : public QWidget
 {
+  Q_OBJECT
 public:
   DescendantProxyModelWidget(QWidget *parent = 0);
 
+protected slots:
+  void doMatch(const QString &matchData);
+  void refreshMatch();
+
 private:
   DynamicTreeModel *m_rootModel;
+  Akonadi::DescendantEntitiesProxyModel *m_descProxyModel;
+  Akonadi::SelectionProxyModel *m_selectionProxyModel;
+  QItemSelectionModel *m_itemSelectionModel;
+  QTreeView *m_descView;
+  QLineEdit *m_lineEdit;
 
 };
 

@@ -23,7 +23,7 @@
 #include "journalhandler.h"
 
 #include <akonadi/collection.h>
-#include <akonadi/kcal/kcalmimetypevisitor.h>
+#include <kcal/kcalmimetypevisitor.h>
 #include <kabc/addressee.h>
 
 KolabHandler::KolabHandler()

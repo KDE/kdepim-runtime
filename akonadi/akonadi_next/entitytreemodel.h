@@ -101,6 +101,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
       RemoteIdRole,                           ///< The remoteId of the entity
       CollectionChildOrderRole,               ///< Ordered list of child items if available
       AmazingCompletionRole,                  ///< Role used to implement amazing completion
+      ParentCollection,                       ///< The parent collection of the entity
       UserRole = Qt::UserRole + 1000,         ///< Role for user extensions.
       TerminalUserRole = 10000                ///< Last role for user extensions. Don't use a role beyond this or headerData will break.
     };
@@ -257,6 +258,17 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
     */
     virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
 
+    /**
+      Reimplement this in a subclass to return true if @p item matches @p value with @p flags in the AmazingCompletionRole.
+    */
+    virtual bool match(const Item &item, const QVariant &value, Qt::MatchFlags flags) const;
+
+    /**
+      Reimplement this in a subclass to return true if @p collection matches @p value with @p flags in the AmazingCompletionRole.
+    */
+    virtual bool match(const Collection &collection, const QVariant &value, Qt::MatchFlags flags) const;
+
+    
   protected:
     /**
      * Clears and resets the model. Always call this instead of the reset method in the superclass.
@@ -309,6 +321,7 @@ class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
 
     Q_PRIVATE_SLOT( d_func(), void itemsFetched( Akonadi::Item::List ) )
     Q_PRIVATE_SLOT( d_func(), void collectionsFetched( Akonadi::Collection::List ) )
+    Q_PRIVATE_SLOT( d_func(), void ancestorsFetched( Akonadi::Collection::List ) )
 
     Q_PRIVATE_SLOT( d_func(), void monitoredMimeTypeChanged( const QString&, bool ) )
 

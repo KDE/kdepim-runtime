@@ -130,7 +130,7 @@ class AKONADI_NEXT_EXPORT DescendantEntitiesProxyModel : public AbstractProxyMod
     virtual bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const;
     virtual QModelIndex index(int, int, const QModelIndex &parent = QModelIndex() ) const;
     virtual QModelIndex parent(const QModelIndex&) const;
-    virtual int columnCount(const QModelIndex&) const;
+    virtual int columnCount(const QModelIndex& index = QModelIndex()) const;
 
 
     /**

@@ -422,7 +422,13 @@ bool ResourceAkonadi::doOpen()
 
 void ResourceAkonadi::doClose()
 {
+  // this clear() should not emit resourceChanged inspite of incidence pointers becoming
+  // invalid. None of the other resources to it and bug 196215 suggests it can even lead
+  // to crashes
+  bool blocked = blockSignals( true );
   d->clear();
+  blockSignals( blocked );
+
   d->doClose();
 }
 
