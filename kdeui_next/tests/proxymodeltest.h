@@ -42,6 +42,9 @@ public:
 
   void setModel(QAbstractItemModel *model);
 
+  void startSpying();
+  void stopSpying();
+
 protected slots:
   void rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
   void rowsInserted(const QModelIndex &parent, int start, int end);

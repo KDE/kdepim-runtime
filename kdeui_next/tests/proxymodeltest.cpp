@@ -39,7 +39,11 @@ void ModelSpy::setModel(QAbstractItemModel *model)
 {
   Q_ASSERT(model);
   m_model = model;
+  startSpying();
+}
 
+void ModelSpy::startSpying()
+{
   connect(m_model, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
           SLOT(rowsAboutToBeInserted(const QModelIndex &, int, int)));
   connect(m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
@@ -55,6 +59,27 @@ void ModelSpy::setModel(QAbstractItemModel *model)
 
   connect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
           SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
+
+}
+
+
+void ModelSpy::stopSpying()
+{
+  disconnect(m_model, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+          this, SLOT(rowsAboutToBeInserted(const QModelIndex &, int, int)));
+  disconnect(m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+          this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  disconnect(m_model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+          this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  disconnect(m_model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+          this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+  disconnect(m_model, SIGNAL(rowsAboutToBeMoved(const QModelIndex &, int, int,const QModelIndex &, int)),
+          this, SLOT(rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+  disconnect(m_model, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+          this, SLOT(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+
+  disconnect(m_model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+          this, SLOT(dataChanged(const QModelIndex &, const QModelIndex &)));
 
 }
 
@@ -106,6 +131,11 @@ ProxyModelTest::ProxyModelTest(QObject *parent)
 void ProxyModelTest::init()
 {
   m_modelCommander->setDefaultCommands();
+
+  m_modelSpy->stopSpying();
+  m_model->clear();
+  m_modelSpy->startSpying();
+
 }
 
 DynamicTreeModel* ProxyModelTest::sourceModel()
@@ -316,6 +346,12 @@ void ProxyModelTest::doTest()
   QVERIFY(currentTag != 0);
   QVERIFY(m_expectedSignals.contains(currentTag));
   QVERIFY(m_persistentChanges.contains(currentTag));
+
+  m_modelSpy->stopSpying();
+
+  // Get the model into the state it is expected to be in.
+  m_modelCommander->executeUntil(currentTag);
+  m_modelSpy->startSpying();
 
   // The signals we expect to recieve to pass this test.
   QList<QVariantList> signalList = m_expectedSignals.value(currentTag);
