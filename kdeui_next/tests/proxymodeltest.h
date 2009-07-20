@@ -93,7 +93,7 @@ public:
   DynamicTreeModel* sourceModel();
 
 private slots:
-  void initTestCase();
+  void init();
 
   void testInsertAndRemove_data();
   void testInsertAndRemove() { doTest(); }

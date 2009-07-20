@@ -103,7 +103,7 @@ ProxyModelTest::ProxyModelTest(QObject *parent)
 {
 }
 
-void ProxyModelTest::initTestCase()
+void ProxyModelTest::init()
 {
   m_modelCommander->setDefaultCommands();
 }
