@@ -157,7 +157,10 @@ void ProxyModelTest::signalInsertion(const QString &name, IndexFinder parentFind
   signalList << getSignal(RowsInserted, parentFinder, startRow, startRow + rowsAffected - 1 );
 
   QList<PersistentIndexChange> persistentList;
-  if (rowCount > 0)
+  // The parent must have at least one row if anything is to change.
+  if (rowCount > 0 && startRow < rowCount)
+    // When rows are inserted, the rows from startRow to rowCount() -1 (ie, the last row)
+    // will be moved down.
     persistentList << getChange(parentFinder, startRow, rowCount - 1, rowsAffected);
 
   setExpected(name, signalList, persistentList);
@@ -234,9 +237,12 @@ void ProxyModelTest::signalRemoval(const QString &name, IndexFinder parentFinder
   signalList << getSignal(RowsRemoved, parentFinder, startRow, startRow + rowsAffected - 1 );
 
   QList<PersistentIndexChange> persistentList;
-  if (rowCount > 0)
+
+  // The removed indexes go invalid.
+  persistentList << getChange(parentFinder, startRow, startRow + rowsAffected - 1, -1, true);
+  // Rows after it will be moved to higher rows.
+  if (rowCount > 0 && (startRow + rowsAffected) < rowCount)
   {
-    persistentList << getChange(parentFinder, startRow, startRow + rowsAffected - 1, -1, true);
     persistentList << getChange(parentFinder, startRow + rowsAffected, rowCount - 1, rowsAffected * -1 );
   }
 
@@ -264,6 +270,7 @@ void ProxyModelTest::noSignal(const QString &name)
 
 PersistentIndexChange ProxyModelTest::getChange(IndexFinder parentFinder, int start, int end, int difference, bool toInvalid)
 {
+  Q_ASSERT(start <= end);
   PersistentIndexChange change;
   change.parentFinder = parentFinder;
   change.startRow = start;
@@ -310,6 +317,7 @@ void ProxyModelTest::handleSignal(QVariantList expected)
     QModelIndex destParent = destParentFinder.getIndex();
     QCOMPARE(qvariant_cast<QModelIndex>(result.at(3)), destParent );
     QCOMPARE(result.at(4), expected.at(4) );
+    break;
   }
   case DataChanged:
   {
@@ -436,6 +444,7 @@ void ProxyModelTest::doTest()
     QModelIndex parent = change.parentFinder.getIndex();
 
     QVERIFY(change.startRow >= 0);
+    QVERIFY(change.startRow <= change.endRow);
     QVERIFY(change.endRow < m_proxyModel->rowCount(parent));
 
     QModelIndex topLeft = m_proxyModel->index( change.startRow, 0, parent );
