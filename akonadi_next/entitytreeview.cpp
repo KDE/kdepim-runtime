@@ -38,7 +38,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/control.h>
 #include <akonadi/item.h>
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include <kdebug.h>
 

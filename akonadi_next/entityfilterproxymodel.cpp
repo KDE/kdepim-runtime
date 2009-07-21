@@ -21,7 +21,7 @@
 
 #include "entityfilterproxymodel.h"
 
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include <kdebug.h>
 #include <kmimetype.h>

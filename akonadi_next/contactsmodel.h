@@ -20,7 +20,7 @@
 #ifndef CONTACTSMODEL_H
 #define CONTACTSMODEL_H
 
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include "akonadi_next_export.h"
 
