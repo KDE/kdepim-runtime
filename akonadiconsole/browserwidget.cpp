@@ -30,6 +30,7 @@
 #include <akonadi/collectionstatisticsmodel.h>
 #include <akonadi/collectionview.h>
 #include <akonadi/control.h>
+#include <akonadi/entitytreemodel.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -41,7 +42,6 @@
 #include <akonadi/session.h>
 #include <xml/xmlwritejob.h>
 
-#include <akonadi_next/entitytreemodel.h>
 #include <akonadi_next/entitytreeview.h>
 #include <akonadi_next/favoritecollectionsmodel.h>
 #include <akonadi_next/statisticsproxymodel.h>
