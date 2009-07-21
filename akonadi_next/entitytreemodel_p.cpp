@@ -33,8 +33,6 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
-#include "collectionchildorderattribute.h"
-
 #include <kdebug.h>
 
 using namespace Akonadi;

@@ -40,7 +40,6 @@
 #include <akonadi/session.h>
 
 #include "collectionutils_p.h"
-#include "collectionchildorderattribute.h"
 
 #include "kdebug.h"
 
