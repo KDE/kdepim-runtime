@@ -100,3 +100,16 @@ install(
 		COMPONENT
 			Devel
 	)
+
+install(
+		FILES
+			io/afldecoder.h
+			io/decoder.h
+			io/encoder.h
+			io/sievedecoder.h
+			io/sieveencoder.h
+		DESTINATION
+			${INCLUDE_INSTALL_DIR}/akonadi/filter/io
+		COMPONENT
+			Devel
+	)
