@@ -20,7 +20,7 @@
 
 #include "amazingcompleter.h"
 
-#include "selectionproxymodel.h"
+#include <akonadi/selectionproxymodel.h>
 #include <qlistview.h>
 
 #include <kdebug.h>

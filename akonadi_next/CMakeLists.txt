@@ -22,19 +22,14 @@ set( akonadi_next_SRCS
   abstractitemmodel_p.cpp
   abstractproxymodel.cpp
 #   qsortfilterproxymodel.cpp
-  entitytreemodel.cpp
-  entitytreemodel_p.cpp
-  descendantentitiesproxymodel.cpp
   entityfilterproxymodel.cpp
   entitytreeview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
-  emaillineedit.cpp
   # TODO Move this to akonadi-kabc
   contactsmodel.cpp
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
-  selectionproxymodel.cpp
   statisticsproxymodel.cpp
   statisticstooltipproxymodel.cpp
   amazingcompleter.cpp
@@ -58,5 +53,3 @@ set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOV
 
 install(TARGETS akonadi_next ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-add_subdirectory(tests)
-add_subdirectory(testapp)

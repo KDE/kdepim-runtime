@@ -26,7 +26,7 @@
 #include <kglobal.h>
 #include <ksharedconfig.h>
 
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 using namespace Akonadi;
 
@@ -116,8 +116,7 @@ FavoriteCollectionsModel::FavoriteCollectionsModel( EntityTreeModel *source, QOb
     d( new Private( this ) )
 {
   setSourceModel( source );
-  setOmitChildren( true );
-  setIncludeAllSelected( true );
+  setFilterBehavior(OnlySelected);
 
   connect( source, SIGNAL( modelReset() ), this, SLOT( clearAndUpdateSelection() ) );
   connect( source, SIGNAL( layoutChanged() ), this, SLOT( clearAndUpdateSelection() ) );
