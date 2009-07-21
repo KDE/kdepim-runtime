@@ -19,7 +19,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 set( akonadi_next_SRCS
 #   qsortfilterproxymodel.cpp
-  entityfilterproxymodel.cpp
   entitytreeview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
@@ -27,11 +26,8 @@ set( akonadi_next_SRCS
   contactsmodel.cpp
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
-  statisticsproxymodel.cpp
-  statisticstooltipproxymodel.cpp
   amazingcompleter.cpp
   amazingdelegate.cpp
-  favoritecollectionsmodel.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
