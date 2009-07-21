@@ -43,6 +43,7 @@
 #include <xml/xmlwritejob.h>
 
 #include <akonadi_next/entitytreeview.h>
+#include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
@@ -57,6 +58,7 @@
 
 #include <kdebug.h>
 #include <kconfig.h>
+#include <kconfiggroup.h>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kxmlguiwindow.h>
@@ -184,6 +186,18 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 #else
   Nepomuk::ResourceManager::instance()->init();
 #endif
+
+  const KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+  EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
+  saver->restoreState( cfg );
+}
+
+BrowserWidget::~BrowserWidget()
+{
+  KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+  EntityTreeViewStateSaver saver( mCollectionView );
+  saver.saveState( cfg );
+  cfg.sync();
 }
 
 void BrowserWidget::clear()

@@ -52,6 +52,7 @@ class BrowserWidget: public QWidget
 
   public:
     explicit BrowserWidget( KXmlGuiWindow *xmlGuiWindow, QWidget *parent = 0 );
+    ~BrowserWidget();
 
   public slots:
     void dumpToXml();
