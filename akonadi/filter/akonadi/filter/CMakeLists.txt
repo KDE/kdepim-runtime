@@ -80,7 +80,21 @@ install(
 
 install(
 		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/config-akonadi-filter.h
+			action.h
+			agent.h
+			commanddescriptor.h
+			component.h
+			condition.h
+			data.h
+			datamemberdescriptor.h
+			datatype.h
+			componentfactory.h
+			functiondescriptor.h
+			operatordescriptor.h
 			program.h
+			rule.h
+			rulelist.h
 		DESTINATION
 			${INCLUDE_INSTALL_DIR}/akonadi/filter
 		COMPONENT
