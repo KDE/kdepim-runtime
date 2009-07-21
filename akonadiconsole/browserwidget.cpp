@@ -102,7 +102,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   layout->addWidget( splitter );
 
   QSplitter *splitter2 = new QSplitter( Qt::Vertical, this );
-  splitter2->setObjectName( "collectionSplitter" );
+  splitter2->setObjectName( "ffvSplitter" );
 
   mCollectionView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
