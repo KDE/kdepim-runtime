@@ -52,7 +52,8 @@ class EntityTreeView::Private
 public:
   Private( EntityTreeView *parent )
       : mParent( parent ),
-      xmlGuiClient( 0 ), showChildCollectionTree(false) {
+      xmlGuiClient( 0 )
+  {
   }
 
   void init();
@@ -67,19 +68,7 @@ public:
   QTimer dragExpandTimer;
 
   KXMLGUIClient *xmlGuiClient;
-  bool showChildCollectionTree;
 };
-
-void EntityTreeView::showChildCollectionTree( bool include )
-{
-  d->showChildCollectionTree = include;
-}
-
-bool EntityTreeView::childCollectionTreeShown() const
-{
-  return d->showChildCollectionTree;
-}
-
 void EntityTreeView::Private::init()
 {
   mParent->header()->setClickable( true );
@@ -190,23 +179,6 @@ EntityTreeView::EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget * parent ) 
 EntityTreeView::~EntityTreeView()
 {
   delete d;
-}
-
-void EntityTreeView::setRootIndex(const QModelIndex &idx)
-{
-  QAbstractItemView::setRootIndex(idx);
-  if (!d->showChildCollectionTree)
-  {
-    QModelIndex rowIndex = idx.child( 0, 0);
-    while (rowIndex.isValid())
-    {
-      if ( model()->data( rowIndex, EntityTreeModel::MimeTypeRole ) == Collection::mimeType() )
-      {
-        setRowHidden( rowIndex.row(), idx, true );
-      }
-      rowIndex = rowIndex.sibling( rowIndex.row() + 1, rowIndex.column() );
-    }
-  }
 }
 
 void EntityTreeView::setModel( QAbstractItemModel * model )
