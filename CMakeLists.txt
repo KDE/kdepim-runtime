@@ -51,6 +51,11 @@ include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 
+############### Generate akonadi-config.h ###############
+
+configure_file(akonadi-version.h.cmake "${kdepim-runtime_BINARY_DIR}/akonadi-version.h" @ONLY)
+
+
 ############### Macros ###############
 
 # generates a D-Bus interface description from a KConfigXT file

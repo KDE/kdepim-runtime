@@ -32,12 +32,10 @@
 */
 
 #include "journal.h"
-#include "kdepim-version.h"
+#include "akonadi-version.h"
 
 #include <kcal/journal.h>
 #include <kdebug.h>
-
-static const char korgVersion[] = KDEPIM_VERSION;
 
 using namespace Kolab;
 
@@ -182,5 +180,5 @@ void Journal::setFields( const KCal::Journal* journal )
 
 QString Journal::productID() const
 {
-  return QString( "KOrganizer " ) + korgVersion + ", Kolab resource";
+  return QString( "Akonadi " ) + AKONADI_VERSION + ", Kolab resource";
 }
