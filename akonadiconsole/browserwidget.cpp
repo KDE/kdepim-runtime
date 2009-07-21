@@ -43,9 +43,9 @@
 #include <xml/xmlwritejob.h>
 
 #include <akonadi_next/entitytreeview.h>
-#include <akonadi_next/favoritecollectionsmodel.h>
-#include <akonadi_next/statisticsproxymodel.h>
-#include <akonadi_next/statisticstooltipproxymodel.h>
+#include <akonadi/favoritecollectionsmodel.h>
+#include <akonadi/statisticsproxymodel.h>
+#include <akonadi/statisticstooltipproxymodel.h>
 
 #include <kcal/kcalmodel.h>
 #include <kcal/incidence.h>
