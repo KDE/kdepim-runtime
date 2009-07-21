@@ -23,7 +23,7 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <akonadi/itemfetchscope.h>
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include <QAbstractItemModel>
 

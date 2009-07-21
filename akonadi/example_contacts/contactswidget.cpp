@@ -26,7 +26,7 @@
 #include <QTextBrowser>
 
 #include <akonadi/control.h>
-#include "descendantentitiesproxymodel.h"
+#include "descendantsproxymodel.h"
 #include <akonadi/entitydisplayattribute.h>
 // #include "entitytreemodel.h"
 #include "entityfilterproxymodel.h"
@@ -35,7 +35,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
-#include "selectionproxymodel.h"    
+#include <akonadi/selectionproxymodel.h>
 
 #include <KLocale>
 
@@ -103,13 +103,13 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   selProxy->setSourceModel(etm);
 //   new ModelTest(selProxy, this);
 
-  descList = new DescendantEntitiesProxyModel(this);
+  descList = new DescendantsProxyModel(this);
   descList->setSourceModel(selProxy);
+  descList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 //   new ModelTest(descList, this);
 
   itemList = new EntityFilterProxyModel(this);
   itemList->setSourceModel(descList);
-  itemList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );

@@ -26,9 +26,8 @@
 #include <QTextBrowser>
 
 #include <akonadi/control.h>
-#include "descendantentitiesproxymodel.h"
 #include <akonadi/entitydisplayattribute.h>
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 #include "entityfilterproxymodel.h"
 #include "entitytreeview.h"
 #include <akonadi/item.h>

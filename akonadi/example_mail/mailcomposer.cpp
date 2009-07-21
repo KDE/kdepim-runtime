@@ -30,7 +30,7 @@
 #include <QListView>
 #include "amazingcompleter.h"
 #include "amazingdelegate.h"
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
@@ -38,7 +38,7 @@
 #include <akonadi/itemfetchscope.h>
 
 #include "contactsmodel.h"
-#include <descendantentitiesproxymodel.h>
+#include <descendantsproxymodel.h>
 #include <entityfilterproxymodel.h>
 
 using namespace Akonadi;
@@ -63,7 +63,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
 
   ContactsModel *contactsModel = new ContactsModel( session, monitor, this);
 
-  DescendantEntitiesProxyModel *descProxyModel = new DescendantEntitiesProxyModel(this);
+  DescendantsProxyModel *descProxyModel = new DescendantsProxyModel(this);
   descProxyModel->setSourceModel(contactsModel);
   descProxyModel->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
@@ -80,6 +80,8 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   QTextEdit *textEdit = new QTextEdit(this);
 
   QListView *popup = new QListView(this);
+
+  QListView *amazingView = new QListView(this);
   popup->setItemDelegate(new AmazingContactItemDelegate(this));
 
   layout->addWidget(toLabel, 0, 0);
@@ -87,12 +89,12 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   layout->addWidget(subjectLabel, 1, 0);
   layout->addWidget(subjectLineEdit, 1, 1);
   layout->addWidget(textEdit, 2, 0, 1, 2);
-//   layout->addWidget(amazingView, 3, 0, 1, 2);
+  layout->addWidget(amazingView, 3, 0, 1, 2);
 
   this->setLayout(layout);
 
   AmazingCompleter *completer = new AmazingCompleter(this);
-  completer->setModel(descProxyModel);
+  completer->setModel(filter);
   completer->setMatchingRole(Akonadi::EntityTreeModel::AmazingCompletionRole);
   completer->setWidget(emailLineEdit);
 

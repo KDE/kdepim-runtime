@@ -42,17 +42,17 @@
 #include "collectionchildorderattribute.h"
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodel.h>
-#include "descendantentitiesproxymodel.h"
+#include "descendantsproxymodel.h"
 #include <akonadi/entitydisplayattribute.h>
 #include "entityfilterproxymodel.h"
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 #include "entitytreeview.h"
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
-#include "selectionproxymodel.h"
+#include <akonadi/selectionproxymodel.h>
 
 #include <grantlee/template.h>
 #include <grantlee/engine.h>

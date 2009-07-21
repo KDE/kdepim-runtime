@@ -22,7 +22,7 @@
 #ifndef KJOTSMODEL_H
 #define KJOTSMODEL_H
 
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 namespace Akonadi
 {
