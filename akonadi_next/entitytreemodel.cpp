@@ -50,7 +50,7 @@ EntityTreeModel::EntityTreeModel( Session *session,
                                   Monitor *monitor,
                                   QObject *parent
                                 )
-    : AbstractItemModel( parent ),
+    : QAbstractItemModel( parent ),
     d_ptr( new EntityTreeModelPrivate( this ) )
 {
   Q_D( EntityTreeModel );

@@ -20,9 +20,8 @@
 #ifndef AKONADI_ENTITYTREEMODEL_H
 #define AKONADI_ENTITYTREEMODEL_H
 
-#include "abstractitemmodel.h"
 
-// #include <QtCore/QAbstractItemModel>
+#include <QtCore/QAbstractItemModel>
 #include <QtCore/QStringList>
 
 #include <akonadi/collection.h>
@@ -78,7 +77,7 @@ class EntityTreeModelPrivate;
  * @author Stephen Kelly <steveire@gmail.com>
  * @since 4.4
  */
-class AKONADI_NEXT_EXPORT EntityTreeModel : public AbstractItemModel
+class AKONADI_NEXT_EXPORT EntityTreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 
