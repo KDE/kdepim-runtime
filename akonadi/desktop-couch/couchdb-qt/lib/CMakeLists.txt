@@ -7,13 +7,17 @@ install(FILES
 
 set(COUCHDBQT_MOC_HDRS
     couchdb-qt.h
+    couchdbqtchangenotifier.h
 )
 
 set(CMAKE_INSTALL_NAME_DIR ${LIB_INSTALL_DIR})
 
 qt4_wrap_cpp(COUCHDBQT_MOC_SRCS ${COUCHDBQT_MOC_HDRS})
 
-set (COUCHDBQT_SRCS couchdb-qt.cpp)
+set (COUCHDBQT_SRCS
+  couchdb-qt.cpp
+  couchdbqtchangenotifier.cpp
+)
 
 add_library (couchdb-qt SHARED ${COUCHDBQT_SRCS} ${COUCHDBQT_MOC_SRCS})
 target_link_libraries( couchdb-qt ${QT_LIBRARIES} ${QJSON_LIBRARIES})

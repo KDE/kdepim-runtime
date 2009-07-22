@@ -34,6 +34,7 @@ public:
     void setId( const QString& );
     QString database() const;
     void setDatabase( const QString& );
+
 private:
     void swap( CouchDBDocumentInfo& );
     class Private;
@@ -49,6 +50,8 @@ public:
     CouchDBQt();
     virtual ~CouchDBQt();
 
+    bool notificationsEnabled( const QString& db ) const;
+
 public slots:
     void requestDatabaseListing();
     void requestDatabaseCreation( const QString& db );
@@ -56,12 +59,14 @@ public slots:
     void requestDocumentListing( const QString& db );
     void requestDocument( const CouchDBDocumentInfo& info );
     void updateDocument( const CouchDBDocumentInfo& info, const QVariant& v );
+    void setNotificationsEnabled( const QString& db, bool on );
 
 signals:
     void databasesListed( const QStringList& );
     void documentsListed( const CouchDBDocumentInfoList& );
     void documentRetrieved( const QVariant & v );
     void documentUpdated( bool ok, const QString& error = QString() );
+    void changeNotification( const QString& db, const QVariant& change );
 
 private slots:
     void init();
@@ -69,6 +74,7 @@ private slots:
     void slotDocumentListingFinished(int, bool);
     void slotDocumentRetrievalFinished(int, bool);
     void slotDocumentUpdateFinished(int, bool);
+    void slotNotificationTriggered( const QString& db );
 private:
     class Private;
     Private * const d;

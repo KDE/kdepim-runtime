@@ -21,6 +21,8 @@
 
 #include "couchdb-qt.h"
 
+#include "couchdbqtchangenotifier.h"
+
 #include <serializer.h>
 #include <parser.h>
 
@@ -87,7 +89,6 @@ QString CouchDBDocumentInfo::database() const
   return d->dbname;
 }
 
-
 class CouchDBQt::Private
 {
   public:
@@ -104,6 +105,7 @@ class CouchDBQt::Private
     QHttp http;
     Parser parser;
     Serializer serializer;
+    QMap<QString, CouchDBQtChangeNotifier*> notifiers;
 };
 
 QVariant CouchDBQt::Private::parseJSONString( const QByteArray& json )
@@ -171,6 +173,27 @@ CouchDBQt::~CouchDBQt()
 void CouchDBQt::init()
 {
   d->requestId = d->http.setHost("localhost", 5984);
+}
+
+void CouchDBQt::setNotificationsEnabled( const QString& db, bool on )
+{
+  if ( on ) {
+    if ( !d->notifiers.contains( db ) ) {
+      CouchDBQtChangeNotifier *notifier = new CouchDBQtChangeNotifier( db );
+      connect( notifier, SIGNAL(notification(QString,QVariant)),
+               this, SLOT(slotNotificationTriggered(QString)) );
+      d->notifiers.insert( db, notifier );
+    }
+  } else {
+    if ( d->notifiers.contains( db ) ) {
+      delete d->notifiers.take( db );
+    }
+  }
+}
+
+bool CouchDBQt::notificationsEnabled( const QString& db) const
+{
+  return d->notifiers.contains( db );
 }
 
 void CouchDBQt::requestDatabaseListing()
@@ -305,3 +328,7 @@ void CouchDBQt::slotDocumentUpdateFinished(int request, bool error)
   emit documentUpdated( true );
 }
 
+void CouchDBQt::slotNotificationTriggered( const QString& db )
+{
+  qWarning() << "Notified: " << db;
+}
