@@ -20,6 +20,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 set( akonadi_next_SRCS
 #   qsortfilterproxymodel.cpp
   entitytreeview.cpp
+  favoritecollectionsview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
   # TODO Move this to akonadi-kabc
