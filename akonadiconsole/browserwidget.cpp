@@ -122,6 +122,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   monitor->setAllMonitored( true );
 
   mCollectionModel = new EntityTreeModel( session, monitor, this );
+  mCollectionModel->setItemPopulationStrategy( EntityTreeModel::NoItemPopulation );
 
   StatisticsToolTipProxyModel *proxy1 = new StatisticsToolTipProxyModel( this );
   proxy1->setSourceModel( mCollectionModel );
