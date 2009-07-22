@@ -45,6 +45,7 @@
 #include <akonadi_next/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
+#include <akonadi_next/favoritecollectionsview.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
 
@@ -108,7 +109,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
   splitter2->addWidget( mCollectionView );
 
-  Akonadi::EntityTreeView *favoritesView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
+  FavoriteCollectionsView *favoritesView = new FavoriteCollectionsView( xmlGuiWindow, this );
+  favoritesView->setViewMode( QListView::IconMode );
   splitter2->addWidget( favoritesView );
 
   splitter->addWidget( splitter2 );
