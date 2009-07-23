@@ -116,6 +116,12 @@ ImapResource::~ImapResource()
 
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+    if ( !m_account || !m_account->session() ) {
+        cancelTask( i18n( "There is curently no connection to the IMAP server." ) );
+        reconnect();
+        return false;
+    }
+
     const QString remoteId = item.remoteId();
     const QStringList temp = remoteId.split( "-+-" );
     const QString mailBox = mailBoxForRemoteId( temp[0] );
@@ -385,7 +391,8 @@ void ImapResource::retrieveCollections()
 {
   if ( !m_account || !m_account->session() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
-    cancelTask();
+    cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+    reconnect();
     return;
   }
 
@@ -503,7 +510,8 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
 void ImapResource::retrieveItems( const Collection &col )
 {
   if ( !m_account ) {
-    cancelTask();
+    cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+    reconnect();
     return;
   }
 
