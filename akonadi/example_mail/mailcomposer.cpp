@@ -36,10 +36,10 @@
 #include <akonadi/session.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/descendantsproxymodel.h>
+#include <akonadi/entityfilterproxymodel.h>
 
 #include "contactsmodel.h"
-#include <descendantsproxymodel.h>
-#include <entityfilterproxymodel.h>
 
 using namespace Akonadi;
 

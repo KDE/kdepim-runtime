@@ -26,10 +26,10 @@
 #include <QTextBrowser>
 
 #include <akonadi/control.h>
-#include "descendantsproxymodel.h"
+#include <akonadi/descendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
 // #include "entitytreemodel.h"
-#include "entityfilterproxymodel.h"
+#include <akonadi/entityfilterproxymodel.h>
 #include "entitytreeview.h"
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>

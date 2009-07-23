@@ -42,9 +42,9 @@
 #include "collectionchildorderattribute.h"
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodel.h>
-#include "descendantsproxymodel.h"
+#include <akonadi/descendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
-#include "entityfilterproxymodel.h"
+#include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/entitytreemodel.h>
 #include "entitytreeview.h"
 #include <akonadi/item.h>
