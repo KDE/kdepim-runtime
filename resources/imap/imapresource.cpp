@@ -766,19 +766,12 @@ void ImapResource::onGetAclDone( KJob *job )
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   // Store the mailbox ACLs
-  if ( !collection.hasAttribute( "imapacl" ) ) {
-    ImapAclAttribute *aclAttribute  = new ImapAclAttribute( acl->allRights() );
-    collection.addAttribute( aclAttribute );
-  } else {
-    ImapAclAttribute *aclAttribute =
-      static_cast<ImapAclAttribute*>( collection.attribute( "imapacl" ) );
-    const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
-    if ( oldRights != acl->allRights() ) {
-      aclAttribute->setRights( acl->allRights() );
-    }
+  ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>( Collection::AddIfMissing );
+  const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
+  if ( oldRights != acl->allRights() ) {
+    aclAttribute->setRights( acl->allRights() );
+    CollectionModifyJob *modify = new CollectionModifyJob( collection );
   }
-
-  CollectionModifyJob *modify = new CollectionModifyJob( collection );
 }
 
 void ImapResource::onRightsReceived( KJob *job )
@@ -840,24 +833,18 @@ void ImapResource::onQuotasReceived( KJob *job )
   }
 
   // Store the mailbox Quotas
-  if ( !collection.hasAttribute( "imapquota" ) ) {
-    ImapQuotaAttribute *quotaAttribute  = new ImapQuotaAttribute( newRoots, newLimits, newUsages );
-    collection.addAttribute( quotaAttribute );
-  } else {
-    ImapQuotaAttribute *quotaAttribute =
-      static_cast<ImapQuotaAttribute*>( collection.attribute( "imapquota" ) );
-    const QList<QByteArray> oldRoots = quotaAttribute->roots();
-    const QList< QMap<QByteArray, qint64> > oldLimits = quotaAttribute->limits();
-    const QList< QMap<QByteArray, qint64> > oldUsages = quotaAttribute->usages();
+  ImapQuotaAttribute *quotaAttribute = collection.attribute<ImapQuotaAttribute>( Collection::AddIfMissing );
+  const QList<QByteArray> oldRoots = quotaAttribute->roots();
+  const QList< QMap<QByteArray, qint64> > oldLimits = quotaAttribute->limits();
+  const QList< QMap<QByteArray, qint64> > oldUsages = quotaAttribute->usages();
 
-    if ( oldRoots != newRoots
-      || oldLimits != newLimits
-      || oldUsages != newUsages ) {
-      quotaAttribute->setQuotas( newRoots, newLimits, newUsages );
-    }
+  if ( oldRoots != newRoots
+    || oldLimits != newLimits
+    || oldUsages != newUsages )
+  {
+    quotaAttribute->setQuotas( newRoots, newLimits, newUsages );
+    CollectionModifyJob *modify = new CollectionModifyJob( collection );
   }
-
-  CollectionModifyJob *modify = new CollectionModifyJob( collection );
 }
 
 void ImapResource::onGetMetaDataDone( KJob *job )
@@ -892,9 +879,8 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
   if ( oldAnnotations != annotations ) {
     annotationsAttribute->setAnnotations( annotations );
+    CollectionModifyJob *modify = new CollectionModifyJob( collection );
   }
-
-  CollectionModifyJob *modify = new CollectionModifyJob( collection );
 }
 
 void ImapResource::onSelectDone( KJob *job )
