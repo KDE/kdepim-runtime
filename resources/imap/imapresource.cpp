@@ -90,6 +90,8 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
+static const char AKONADI_COLLECTION[] = "akonadiCollection";
+
 ImapResource::ImapResource( const QString &id )
         :ResourceBase( id ), m_account( 0 )
 {
@@ -229,7 +231,7 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
   MessagePtr msg = item.payload<MessagePtr>();
 
   KIMAP::AppendJob *job = new KIMAP::AppendJob( m_account->session() );
-  job->setProperty( "akonadiCollection", QVariant::fromValue( collection ) );
+  job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
   job->setProperty( "akonadiItem", QVariant::fromValue( item ) );
   job->setMailBox( mailBox );
   job->setContent( msg->encodedContent( true ) );
@@ -270,10 +272,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
     store->start();
   }
 
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
-  if ( !collection.isValid() ) {
-    collection = collectionFromRemoteId( collectionRemoteId );
-  }
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   // Get the current uid next value and store it
   UidNextAttribute *uidAttr = 0;
@@ -526,7 +525,7 @@ void ImapResource::retrieveItems( const Collection &col )
   // First get the annotations from the mailbox if it's supported
   if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
     KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_account->session() );
-    meta->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    meta->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
     meta->setMailBox( mailBox );
     if ( capabilities.contains( "METADATA" ) ) {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
@@ -542,13 +541,13 @@ void ImapResource::retrieveItems( const Collection &col )
   // Get the ACLs from the mailbox if it's supported
   if ( capabilities.contains( "ACL" ) ) {
     KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_account->session() );
-    acl->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    acl->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
     acl->start();
 
     KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->session() );
-    rights->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    rights->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
     rights->setMailBox( mailBox );
     connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
     rights->start();
@@ -557,7 +556,7 @@ void ImapResource::retrieveItems( const Collection &col )
   // Get the QUOTA info from the mailbox if it's supported
   if ( capabilities.contains( "QUOTA" ) ) {
     KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_account->session() );
-    quota->setProperty( "akonadiCollection", QVariant::fromValue( col ) );
+    quota->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
     quota->start();
@@ -565,6 +564,7 @@ void ImapResource::retrieveItems( const Collection &col )
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
+  select->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
   select->setMailBox( mailBox );
   select->start();
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_account->session() );
@@ -622,7 +622,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
   const QString mailBox = mailBoxForRemoteId( remoteName );
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( m_account->session() );
-  job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+  job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
   job->setMailBox( mailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onCreateMailBoxDone( KJob* ) ) );
   job->start();
@@ -630,7 +630,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
 
 void ImapResource::onCreateMailBoxDone( KJob *job )
 {
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( !job->error() ) {
     changeCommitted( collection );
@@ -657,7 +657,7 @@ void ImapResource::collectionChanged( const Collection & collection )
 
   if ( oldMailBox != newMailBox ) {
     KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
-    job->setProperty( "akonadiCollection", QVariant::fromValue( c ) );
+    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
     job->setSourceMailBox( oldMailBox );
     job->setDestinationMailBox( newMailBox );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
@@ -669,7 +669,7 @@ void ImapResource::collectionChanged( const Collection & collection )
 
 void ImapResource::onRenameMailBoxDone( KJob *job )
 {
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( !job->error() ) {
     changeCommitted( collection );
@@ -690,7 +690,7 @@ void ImapResource::collectionRemoved( const Collection &collection )
   const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
 
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_account->session() );
-  job->setProperty( "akonadiCollection", QVariant::fromValue( collection ) );
+  job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
   job->setMailBox( mailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onDeleteMailBoxDone( KJob* ) ) );
   job->start();
@@ -750,7 +750,7 @@ void ImapResource::onGetAclDone( KJob *job )
   }
 
   KIMAP::GetAclJob *acl = qobject_cast<KIMAP::GetAclJob*>( job );
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   // Store the mailbox ACLs
   if ( !collection.hasAttribute( "imapacl" ) ) {
@@ -775,7 +775,7 @@ void ImapResource::onRightsReceived( KJob *job )
   }
 
   KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   KIMAP::Acl::Rights imapRights = rightsJob->rights();
   Collection::Rights newRights = Collection::ReadOnly;
@@ -815,7 +815,7 @@ void ImapResource::onQuotasReceived( KJob *job )
   }
 
   KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob*>( job );
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   QList<QByteArray> newRoots = quotaJob->roots();
   QList< QMap<QByteArray, qint64> > newLimits;
@@ -871,7 +871,7 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   // reason which triggers a change notification and thus a bunch of Akonadi operations
   annotations.remove( "/vendor/cmu/cyrus-imapd/lastupdate" );
 
-  Collection collection = job->property( "akonadiCollection" ).value<Collection>();
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   // Store the mailbox metadata
   CollectionAnnotationsAttribute *annotationsAttribute =
@@ -908,8 +908,7 @@ void ImapResource::onSelectDone( KJob *job )
     processed.append( mailBox );
   }
 
-  Collection collection = collectionFromRemoteId( remoteIdForMailBox( mailBox ) );
-  Q_ASSERT( collection.isValid() );
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   // Get the current uid validity value and store it
   int oldUidValidity = 0;
@@ -1095,37 +1094,6 @@ QString ImapResource::mailBoxForRemoteId( const QString &remoteId ) const
   QString path = remoteId;
   path.replace( rootRemoteId(), "" );
   return path;
-}
-
-Collection ImapResource::collectionFromRemoteId( const QString &remoteId )
-{
-  CollectionFetchJob *fetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  fetch->setResource( identifier() );
-  fetch->exec();
-
-  Collection::List collections = fetch->collections();
-  foreach ( const Collection &collection, collections ) {
-    if ( collection.remoteId()==remoteId ) {
-      return collection;
-    }
-  }
-
-  return Collection();
-}
-
-Item ImapResource::itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId )
-{
-  ItemFetchJob *fetch = new ItemFetchJob( collection );
-  fetch->exec();
-
-  Item::List items = fetch->items();
-  foreach ( const Item &item, items ) {
-    if ( item.remoteId()==remoteId ) {
-      return item;
-    }
-  }
-
-  return Item();
 }
 
 void ImapResource::itemsClear( const Collection &collection )
