@@ -576,7 +576,6 @@ void ImapResource::retrieveItems( const Collection &col )
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
-  select->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
   select->setMailBox( mailBox );
   select->start();
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_account->session() );
@@ -584,6 +583,7 @@ void ImapResource::retrieveItems( const Collection &col )
 
   // Issue another select to get the updated info from the mailbox
   select = new KIMAP::SelectJob( m_account->session() );
+  select->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
   select->setMailBox( mailBox );
   connect( select, SIGNAL( result( KJob* ) ),
            this, SLOT( onSelectDone( KJob* ) ) );
