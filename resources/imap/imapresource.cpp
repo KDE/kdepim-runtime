@@ -200,13 +200,16 @@ void ImapResource::configure( WId windowId )
     setName( KGlobal::mainComponent().aboutData()->appName() );
   }
 
-  if ( dlg.result() == QDialog::Accepted )
+  if ( dlg.result() == QDialog::Accepted ) {
+    Settings::self()->writeConfig();
     reconnect();
+  }
 }
 
 void ImapResource::startConnect( bool forceManualAuth )
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
+    emit status( Broken, i18n( "No server configured yet." ) );
     return;
   }
 
@@ -214,6 +217,7 @@ void ImapResource::startConnect( bool forceManualAuth )
 
   if ( password.isEmpty() || forceManualAuth ) {
     if ( !manualAuth( Settings::self()->userName(), password ) ) {
+      emit status( Broken, i18n( "Autentication failed." ) );
       return;
     }
   }
@@ -738,7 +742,7 @@ void ImapResource::onConnectError( int code, const QString &message )
     } else {
       KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_account->session() );
       logout->start();
-      emit warning( i18n( "Could not connect to the IMAP-server %1.", m_account->server() ) );
+      emit status( Broken, i18n( "Could not connect to the IMAP-server %1.", m_account->server() ) );
     }
   }
 
@@ -748,6 +752,7 @@ void ImapResource::onConnectError( int code, const QString &message )
 
 void ImapResource::onConnectSuccess()
 {
+  emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
 }
 
