@@ -51,6 +51,14 @@ public:
   virtual int getColumnCount(int headerSet) const;
 
   class State;
+
+protected:
+  // Work around QAIM api bug. These might get into Qt 4.6.
+  // http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=247023
+  void invalidatePersistentIndexes();
+  void beginResetModel();
+  void endResetModel();
+  
 private:
   State *m_currentState;
   State *m_genericState;

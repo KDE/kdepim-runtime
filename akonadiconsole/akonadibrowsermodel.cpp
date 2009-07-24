@@ -285,6 +285,7 @@ AkonadiBrowserModel::ItemDisplayMode AkonadiBrowserModel::itemDisplayMode() cons
 
 void AkonadiBrowserModel::setItemDisplayMode( AkonadiBrowserModel::ItemDisplayMode itemDisplayMode )
 {
+  beginResetModel();
   m_itemDisplayMode = itemDisplayMode;
   switch (itemDisplayMode)
   {
@@ -302,7 +303,26 @@ void AkonadiBrowserModel::setItemDisplayMode( AkonadiBrowserModel::ItemDisplayMo
     m_currentState = m_genericState;
     break;
   }
-  reset();
+  endResetModel();
 }
 
+void AkonadiBrowserModel::invalidatePersistentIndexes()
+{
+  QModelIndexList oldList = this->persistentIndexList();
+  QModelIndexList newList;
+  for (int i=0; i < oldList.size(); i++)
+    newList << QModelIndex();
+  this->changePersistentIndexList(oldList, newList);
+}
+
+void AkonadiBrowserModel::beginResetModel()
+{
+  QMetaObject::invokeMethod(this, "modelAboutToBeReset", Qt::DirectConnection);
+}
+
+void AkonadiBrowserModel::endResetModel()
+{
+  invalidatePersistentIndexes();
+  QMetaObject::invokeMethod(this, "modelReset", Qt::DirectConnection);
+}
 
