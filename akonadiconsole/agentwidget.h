@@ -45,6 +45,7 @@ class AgentWidget : public QWidget
     void synchronizeAgent();
     void synchronizeTree();
     void toggleOnline();
+    void abortAgent();
     void restartAgent();
     void cloneAgent();
     void cloneAgent( KJob *job );
