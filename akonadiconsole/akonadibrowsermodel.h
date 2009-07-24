@@ -48,7 +48,7 @@ public:
 
   virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 
-  virtual int getNumColumns(int headerSet) const;
+  virtual int getColumnCount(int headerSet) const;
 
   class State;
 private:

@@ -235,7 +235,7 @@ QVariant AkonadiBrowserModel::getData(const Akonadi::Collection& collection, int
   return Akonadi::EntityTreeModel::getData(collection, column, role);
 }
 
-int AkonadiBrowserModel::getNumColumns(int headerSet) const
+int AkonadiBrowserModel::getColumnCount(int headerSet) const
 {
   if (ItemListHeaders == headerSet)
   {
